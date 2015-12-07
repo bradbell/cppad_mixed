@@ -1,0 +1,69 @@
+$Id:$
+-----------------------------------------------------------------------------
+dismod_at: Estimating Disease Rates as Functions of Age and Time
+          Copyright (C) 2014-15 University of Washington
+             (Bradley M. Bell bradbell@uw.edu)
+
+This program is distributed under the terms of the
+	     GNU Affero General Public License version 3.0 or later
+see http://www.gnu.org/licenses/agpl.txt
+-----------------------------------------------------------------------------
+/*
+$begin cppad_mixed_fix_like$$
+$spell
+	cppad
+	vec
+	CppAD
+	const
+$$
+
+$section Fixed Likelihood$$
+
+$head Syntax$$
+$icode%vec% = %mixed_object%.fix_like(%fixed_vec%)%$$
+
+$head mixed_object$$
+We use $cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$
+to denote an object of a class that is
+derived from the $code cppad_mixed$$ base class.
+
+$head a1_double$$
+The type $code a1_double$$ below is one of the
+see $cref/AD Types/cppad_mixed_public/AD Types/$$.
+
+$head Virtual Function$$
+The following virtual function must be implemented in the derived class:
+$codei%
+	virtual CppAD::vector<a1_double> fix_like(
+		const CppAD::vector<a1_double>& %fixed_vec%
+	)
+%$$
+
+$head fixed_vec$$
+This argument has prototype
+$codei%
+	const CppAD::vector<a1_double>& %fixed_vec%
+%$$
+It contains a value for the
+$cref/fixed effects/cppad_mixed/Fixed Effects, theta/$$ vector.
+
+$head vec$$
+This result has prototype
+$codei%
+	CppAD::vector<%a1_double%> %vec%
+%$$
+It is a
+$cref/negative log-density vector
+	/cppad_mixed
+	/Negative Log-Density Vector
+/$$
+corresponding to the fixed likelihood
+$cref/g(theta)/cppad_mixed_theory/Fixed Likelihood, g(theta)/$$.
+In the case where there is no prior, the vector $icode vec$$
+should be empty; i.e., $icode%vec%.size() == 0%$$.
+
+$head Example$$
+The file $cref mixed_derived_xam.cpp$$ contains an example
+of defining this virtual function.
+
+$end

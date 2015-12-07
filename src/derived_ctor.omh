@@ -1,0 +1,79 @@
+// $Id:$
+/* --------------------------------------------------------------------------
+dismod_at: Estimating Disease Rates as Functions of Age and Time
+          Copyright (C) 2014-15 University of Washington
+             (Bradley M. Bell bradbell@uw.edu)
+
+This program is distributed under the terms of the
+	     GNU Affero General Public License version 3.0 or later
+see http://www.gnu.org/licenses/agpl.txt
+-------------------------------------------------------------------------- */
+$begin cppad_mixed_derived_ctor$$
+$spell
+	bool
+	cppad
+	dismod
+$$
+
+$section cppad_mixed Derived Class Constructor$$
+
+$head Syntax$$
+$icode%mixed_derived% %mixed_object%(
+	%n_fixed%, %n_random%, %quasi_fixed%, %...%
+)%$$
+
+$head See Also$$
+$cref/initialize/cppad_mixed_initialize/$$
+
+$head mixed_derived$$
+This is the name of the class derived in the following fashion:
+$codei%
+	class %mixed_derived% : public dismod_at::cppad_mixed {
+%$$
+The derived class constructor must call its base class constructor as follows:
+$codei%
+	cppad_mixed(%n_fixed%, %n_random%, %quasi_fixed%)
+%$$
+
+$head mixed_object$$
+This is the derived class object that is constructed by the syntax above.
+
+$head n_fixed$$
+This argument has prototype
+$codei%
+	size_t %n_fixed%
+%$$
+and is the number of
+$cref/fixed effects/cppad_mixed/Fixed Effects, theta/$$ in the model.
+
+$head n_random$$
+This argument has prototype
+$codei%
+	size_t %n_random%
+%$$
+and is the number of
+$cref/random effects/cppad_mixed/Random Effects, u/$$ in the model.
+In the case where there are
+$cref/no random effects/cppad_mixed/Problem/No Random Effects/$$,
+$icode%n_random% = 0%$$.
+
+$head quasi_fixed$$
+This argument has prototype
+$codei%
+	bool %quasi_fixed%
+%$$
+If it is true, a quasi-Newton method is used to
+$cref/optimize the fixed effects/cppad_mixed_optimize_fixed/$$.
+Otherwise a full Newton method is used.
+The full Newton method requires much more memory for computation
+of second derivatives of the Laplace approximation.
+
+$head ...$$
+Other arguments to the derived class constructor
+(that are not used by the base class constructor).
+
+$head Example$$
+The file $cref mixed_derived_xam.cpp$$ contains an example
+that uses this derived class.
+
+$end

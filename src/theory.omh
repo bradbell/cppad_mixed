@@ -1,0 +1,237 @@
+$Id:$
+-----------------------------------------------------------------------------
+dismod_at: Estimating Disease Rates as Functions of Age and Time
+          Copyright (C) 2014-15 University of Washington
+             (Bradley M. Bell bradbell@uw.edu)
+
+This program is distributed under the terms of the
+	     GNU Affero General Public License version 3.0 or later
+see http://www.gnu.org/licenses/agpl.txt
+-----------------------------------------------------------------------------
+$begin cppad_mixed_theory$$
+$latex \newcommand{\dtheta}[1]{ \frac{\R{d}}{\R{d} \theta_{ #1}} }$$
+
+
+$section Laplace Approximation for Mixed Effects Models$$
+$spell
+	cppad
+	Kasper Kristensen
+	Anders Nielsen
+	Casper Berg
+	Hans Skaug
+	Bradley Bell
+$$
+
+$head Reference$$
+TMB: Automatic Differentiation and Laplace Approximation,
+Kasper Kristensen, Anders Nielsen, Casper W. Berg, Hans Skaug, Bradley M. Bell,
+Journal of Statistical Software, Accepted 2015-02.
+
+$head Total Likelihood$$
+The reference above defines $latex f( \theta, u)$$
+to be the negative log-likelihood of the
+$latex z$$, $latex y$$, $latex u$$ and $latex \theta$$; i.e.,
+$latex \[
+- \log [  \;
+	\B{p} ( y |  \theta, u ) \B{p} ( u | \theta )  \;
+	\B{p} ( z | \theta )\B{p} ( \theta ) \;
+]
+\] $$
+
+
+$head Random Likelihood, f(theta, u)$$
+We use $latex f( \theta , u )$$ for the part of the likelihood
+that depends on the random effects $latex u$$;
+$latex \[
+	f( \theta, u ) = - \log [ \B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) ]
+\] $$
+
+$subhead Assumption$$
+The function $latex f(\theta, u)$$ is assumed to be smooth.
+Furthermore, there are no constraints on the value of $latex u$$.
+
+$head Fixed Likelihood, g(theta)$$
+We use $latex g( \theta )$$ for the part of the likelihood
+that only depends on the fixed effects $latex \theta$$;
+$latex \[
+	g( \theta ) = - \log [ \B{p} ( z | \theta ) \B{p} ( \theta ) ]
+\]$$
+The function $latex g( \theta )$$ may not be smooth, to be specific, it
+can have absolute values in it (corresponding to the Laplace densities).
+Furthermore, there may be  constraints on the value of $latex \theta$$.
+
+$head Objective$$
+
+$subhead Optimal Random Effects, u^(theta)$$
+Given the fixed effects $latex \theta$$,
+we use $latex \hat{u} ( \theta )$$ to denote
+the random effects that maximize the random likelihood; i.e.,
+$latex \[
+	\hat{u} ( \theta ) = \R{argmin} \; f( \theta, u ) \; \R{w.r.t.} \; u
+\] $$
+
+$subhead Laplace Approximation, h(theta, u)$$
+Using the notation above,
+the Laplace approximation as a function of both
+the fixed and random effects is
+$latex \[
+h( \theta, u )
+=
++ \frac{1}{2} \log \det f_{uu}^{(2)} ( \theta, u )
++ f( \theta, u )
+- \frac{n}{2} \log ( 2 \pi )
+\] $$
+where $latex n$$ is the number of random effects.
+
+$subhead Random Objective, r(theta)$$
+We refer to
+$latex \[
+	r( \theta )
+	=
+	h[ \theta , \hat{u} ( \theta ) ]
+	\approx
+	- \log \left[ \int_{-\infty}^{+\infty}
+		\B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) \; \B{d} u
+	\right]
+\] $$
+as the random objective.
+This corresponds to equation (4) in the
+$cref/reference/cppad_mixed_theory/Reference/$$.
+
+$subhead Total Objective, L(theta)$$
+The total objective, as a function of the fixed effects, is
+$latex \[
+L ( \theta )
+=
+r( \theta ) + g( \theta )
+\] $$
+
+$head Derivative of Random Objective$$
+The derivative of the random part of the objective is given by
+$latex \[
+r^{(1)} ( \theta )
+=
+h_\theta^{(1)} [ \theta , \hat{u} ( \theta ) ]
++
+h_u^{(1)} [ \theta , \hat{u} ( \theta ) ] u^{(1)} ( \theta )
+\] $$
+Thus the derivative of $latex r ( \theta )$$ can be computed
+if we can compute the derivative of $latex \hat{u} ( \theta )$$
+and the partials of $latex h( \theta , u )$$.
+
+$subhead Derivative of u^(theta)$$
+Because $latex f(\theta, u)$$ is smooth,
+and $latex \hat{u} ( \theta )$$ is optimal w.r.t $latex u$$,
+we obtain
+$latex \[
+	f_u^{(1)} [ \theta , \hat{u} ( \theta ) ] = 0
+\] $$
+From this equation,
+and the implicit function theorem,
+it follows that
+$latex \[
+\hat{u}^{(1)} ( \theta )
+=
+- f_{uu}^{(2)} \left[ \theta , \hat{u} ( \theta ) \right]^{-1}
+	f_{u \theta}^{(2)} \left[ \theta , \hat{u} ( \theta )  \right]
+\]$$
+
+$subhead Partial Derivatives of h(theta, u)$$
+Let $latex \partial_k$$ denote the partial with respect to the $th k$$
+component of the combined vector $latex ( \theta , u )$$.
+$latex \[
+\partial_k [ h( \theta , u ) ]
+=
+\partial_k [ f( \theta , u ) ]
++
+\frac{1}{2} \sum_{i=0}^{n-1} \sum_{j=0}^{n-1}
+	f_{uu}^{(2)} ( \theta , u )_{i,j}^{-1}
+	\partial_k [ f_{uu}^{(2)} ( \theta , u)_{i,j} ]
+\] $$
+Note that $latex f_{uu}^{(2)} ( \theta , u )$$
+is often sparse and only non-zero
+components need be included in the summation.
+This is discussed in more detail near equation (8) in the
+$cref/reference/cppad_mixed_theory/Reference/$$.
+
+$head Hessian of Random Objective$$
+Note that the Hessian of the random objective
+$latex r^{(2)} ( \theta ) $$ is required when
+$cref/quasi_fixed/cppad_mixed_derived_ctor/quasi_fixed/$$ is false.
+In this case, the following representation is used:
+
+$subhead U(beta, theta, u)$$
+We define  the function
+$latex \[
+U ( \beta , \theta , u )
+=
+u - f_{uu}^{(2)} ( \theta , u )^{-1} f_u^{(1)} ( \beta , u  )
+\] $$
+It follows that
+$latex \[
+	U \left[ \theta , \theta , \hat{u} ( \theta ) \right] = \hat{u} ( \theta )
+\]$$
+and
+$latex \[
+U_{\beta}^{(1)} \left[ \theta, \theta , \hat{u} ( \theta ) \right]
+=
+- f_{uu}^{(2)} \left[ \theta , \hat{u} ( \theta ) \right]^{-1}
+	f_{u \theta}^{(2)} \left[ \theta , \hat{u} ( \theta )  \right]
+=
+\hat{u}^{(1)} ( \theta )
+\] $$
+
+$subhead W(beta, theta, u)$$
+We define  the function
+$latex \[
+W ( \beta , \theta , u )
+=
+U( \beta , \theta , u )
+-
+f_{uu}^{(2)} [ \beta , U( \beta , \theta , u) ]^{-1}
+	f_u^{(1)} [ \beta , U( \beta , \theta , u)  ]
+\] $$
+It follows that
+$latex \[
+	W \left[ \theta , \theta , \hat{u} ( \theta ) \right] = \hat{u} ( \theta )
+\] $$
+and
+$latex \[
+W_{\beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+=
+-
+f_{uu}^{(2)} \left[ \theta , \hat{u} ( \theta ) \right]^{-1}
+	f_{u \theta}^{(2)} [ \beta , \hat{u} ( \theta )  ]
+=
+\hat{u}^{(1)} ( \theta )
+\] $$
+I think that the second partials of $latex W^i$$ w.r.t
+$latex \beta$$ are equal to $latex u_i^{(2)} ( \theta )$$,
+but I have not yet proven so.
+
+$subhead Approximate Random Objective, H(beta, theta, u)$$
+Given these facts we define
+$latex \[
+H( \beta , \theta , u)
+=
++ \frac{1}{2} \log \det f_{uu}^{(2)} [ \beta, W( \beta , \theta , u) ]
++ f[ \beta, W( \beta , \theta , u) ]
+- \frac{n}{2} \log ( 2 \pi )
+\] $$
+It follow that
+$latex \[
+r( \theta ) = H( \theta , \theta , \hat{u} ( \theta ) )
+\] $$
+$latex \[
+r^{(1)} ( \theta )
+=
+H_{\beta}^{(1)} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
+\] $$
+$latex \[
+r^{(2)} ( \theta )
+=
+H_{\beta \beta}^{(1)} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
+\] $$
+(The last equation has yet to be proved.)
+
+$end

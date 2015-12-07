@@ -1,0 +1,122 @@
+$Id:$
+-----------------------------------------------------------------------------
+dismod_at: Estimating Disease Rates as Functions of Age and Time
+          Copyright (C) 2014-15 University of Washington
+             (Bradley M. Bell bradbell@uw.edu)
+
+This program is distributed under the terms of the
+	     GNU Affero General Public License version 3.0 or later
+see http://www.gnu.org/licenses/agpl.txt
+-----------------------------------------------------------------------------
+$begin cppad_mixed$$
+$spell
+	cppad
+	CppAD
+	vec
+$$
+
+$section cppad_mixed: Laplace Approximation For Mixed Effects Models$$
+
+$head Fixed Effects, theta$$
+For each $code cppad_mixed$$ object,
+there is a vector of fixed effects $latex theta$$.
+The number of the fixed effects, and their order is constant
+(for each $code cppad_mixed$$ object).
+We sometimes use $latex \theta$$ to denote the vector of fixed effects.
+
+$head Random Effects, u$$
+For each $code cppad_mixed$$ object, there is a vector of random effects.
+The number of the random effects, and their order is constant
+(for each $code cppad_mixed$$ object).
+We sometimes use $latex u$$ to denote the vector of random effects.
+
+$head Data, y, z$$
+We use $latex y$$, ($latex z$$) to denote the set of data points that are
+dependent on (independent of) the random effects.
+
+$head Density Functions$$
+The following are
+known functions of $latex y$$, $latex z$$, $latex \theta$$, and $latex u$$:
+
+$subhead p(theta)$$
+The density for the fixed effects
+is denoted by $latex \B{p}( \theta )$$.
+
+$subhead p(z | theta)$$
+The density for the data that does not depend on the random effects
+is denoted by $latex \B{p}( z | \theta )$$.
+
+$subhead p(y | theta, u)$$
+The density for the data that depends on both the fixed and random effects
+is denoted by $latex \B{p}( y | \theta, u)$$.
+
+$subhead p(u | theta)$$
+The density for the random effects
+is denoted by $latex \B{p}( u | \theta)$$.
+
+$head Problem$$
+We are given the problem of
+estimating the fixed effects by maximizing the likelihood with
+respect to $latex \theta$$; i.e.,
+$latex \[
+\B{p}( y , z , \theta )
+=
+\B{p} ( \theta ) \B{p} ( z | \theta ) \int_{-\infty}^{+\infty}
+		\B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) \; \B{d} u
+\] $$
+
+$subhead No Random Effects$$
+In the case where there are not random effects, the vector $latex u$$
+is empty and the optimal fixed effects maximize
+$latex \[
+\B{p} ( \theta ) \B{p} ( z | \theta )
+\] $$
+
+
+$subhead Fixed Effects Estimation$$
+We approximate this solution by replacing the integral above with its
+Laplace approximation (see $cref cppad_mixed_theory$$) and
+optimizing the approximate objective.
+Let $latex \hat{\theta}$$ be to optimal solution for the approximate
+problem.
+
+$subhead Random Effects Estimation$$
+We then estimate the random effects by maximizing the likelihood,
+at the fixed effects estimate, with respect to the random effects
+$latex u$$; i.e.,
+$latex \[
+\B{p} ( y , u | \hat{\theta} )
+=
+\B{p}( y | \hat{\theta} , u )  \B{p} ( u | \hat{\theta} )
+\] $$
+
+$subhead Constraints$$
+The random effects vector $latex u$$ does have any constraints
+(so that the Laplace approximation makes sense).
+The fixed effects have constraints of the form
+$latex \[
+	c_L \leq c(\theta) \leq c_U
+\] $$
+Where $latex c( \theta ) $$ is a smooth function of the fixed effects,
+and $latex c_L$$, $latex c_U$$ are vectors in the range of $latex c(x)$$.
+In the case where there are no constraints on the fixed effects,
+the range space is the empty vector.
+
+$head Negative Log-Density Vector$$
+If $icode vec$$ is a density vector corresponding to $latex \B{p}(x)$$,
+the corresponding negative log-density is given by
+$pre
+	$$
+$latex - \log [ \B{p} (x) ] = $$
+$icode%vec%[0] + CppAD::abs(%vec%[1]) + %...% CppAD::abs(%vec%[%s%-1])
+%$$
+where $icode%s% = %vec%.size()%$$.
+
+$childtable%
+	example/devel/cppad_mixed/user/user.omh%
+	devel/cppad_mixed/theory.omh%
+	include/dismod_at/cppad_mixed.hpp
+%$$
+
+
+$end
