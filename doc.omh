@@ -14,6 +14,16 @@ $spell
 	CppAD
 	vec
 $$
+$comment BEGIN: settings used by all section ---------------------------- $$
+$escape $$
+$aindex section head subhead$$
+$latex
+	\newcommand{\R}[1]{ {\rm #1} }
+	\newcommand{\B}[1]{ {\bf #1} }
+	\newcommand{\W}[1]{ \; #1 \; }
+$$
+$aindex section head subhead$$
+$comment END: settings used by all section ---------------------------- $$
 
 $section cppad_mixed: Laplace Approximation For Mixed Effects Models$$
 
@@ -113,8 +123,9 @@ $icode%vec%[0] + CppAD::abs(%vec%[1]) + %...% CppAD::abs(%vec%[%s%-1])
 where $icode%s% = %vec%.size()%$$.
 
 $childtable%
-	example/devel/cppad_mixed/user/user.omh%
 	devel/cppad_mixed/theory.omh%
+	example/devel/cppad_mixed/user/user.omh%
+	src/manage_gsl_rng.cpp%
 	include/dismod_at/cppad_mixed.hpp
 %$$
 

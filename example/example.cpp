@@ -1,6 +1,6 @@
 // $Id$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -26,7 +26,7 @@ $end
 # include <iostream>
 # include <cassert>
 # include <cstring>
-# include <dismod_at/configure.hpp>
+# include <cppad_mixed/configure.hpp>
 
 // optional
 extern bool cholmod_xam(void);
@@ -54,62 +54,7 @@ extern bool optimize_random_xam(void);
 extern bool fix_like_eval_xam(void);
 extern bool ran_like_grad_xam(void);
 extern bool ranobj_hes_xam(void);
-
-// model subdirectory
-extern bool avg_no_ode_xam(void);
-extern bool avg_yes_ode_xam(void);
-extern bool fit_model_xam(void);
-extern bool like_all_xam(void);
-extern bool like_one_xam(void);
-extern bool prior_fixed_xam(void);
-extern bool prior_random_xam(void);
-
-// utility subdirectory
-extern bool avgint_subset_xam(void);
-extern bool bilinear_interp_xam(void);
-extern bool child_info_xam(void);
-extern bool data_subset_xam(void);
-extern bool eigen_ode2_xam(void);
-extern bool fixed_effect_xam(void);
-extern bool integrate_1d_xam(void);
-extern bool integrate_2d_xam(void);
-extern bool interp_weight_xam(void);
 extern bool manage_gsl_rng_xam(void);
-extern bool pack_info_xam(void);
-extern bool pack_diff_prior_xam(void);
-extern bool pack_value_prior_xam(void);
-extern bool random_effect_xam(void);
-extern bool residual_density_xam(void);
-extern bool sim_random_xam(void);
-extern bool smooth2ode_xam(void);
-extern bool solve_ode_xam(void);
-extern bool to_string_xam(void);
-extern bool variable_name_xam(void);
-
-// table subdirectory
-extern bool check_pini_n_age_xam(void);
-extern bool create_table_xam(void);
-extern bool get_age_table_xam(void);
-extern bool get_avgint_table_xam(void);
-extern bool get_option_table_xam(void);
-extern bool get_column_max_xam(void);
-extern bool get_covariate_table_xam(void);
-extern bool get_data_table_xam(void);
-extern bool get_density_table_xam(void);
-extern bool get_integrand_table_xam(void);
-extern bool get_prior_table_xam(void);
-extern bool get_mulcov_table_xam(void);
-extern bool get_node_table_xam(void);
-extern bool get_rate_table_xam(void);
-extern bool get_sample_table_xam(void);
-extern bool get_simulate_table_xam(void);
-extern bool get_smooth_grid_xam(void);
-extern bool get_table_column_xam(void);
-extern bool get_time_table_xam(void);
-extern bool get_weight_grid_xam(void);
-extern bool put_table_row_xam(void);
-extern bool smooth_info_xam(void);
-extern bool weight_info_xam(void);
 
 // anonymous namespace
 namespace {
@@ -143,7 +88,6 @@ namespace {
 // main program that runs all the tests
 int main(void)
 {
-	// cppad_mixed subdirectory
 	RUN(mixed_constraint_xam);
 	RUN(mixed_derived_xam);
 	RUN(constraint_eval_xam);
@@ -160,6 +104,7 @@ int main(void)
 	RUN(hes_ran_fun_xam);
 	RUN(ranobj_eval_xam);
 	RUN(ipopt_xam_run);
+	RUN(manage_gsl_rng_xam);
 	RUN(newton_step_xam);
 	RUN(ran_like_grad_xam);
 	RUN(no_random_xam);
@@ -167,61 +112,6 @@ int main(void)
 	RUN(optimize_random_xam);
 	RUN(fix_like_eval_xam);
 
-	// model subdirectory
-	RUN(avg_no_ode_xam);
-	RUN(avg_yes_ode_xam);
-	RUN(fit_model_xam);
-	RUN(like_all_xam);
-	RUN(like_one_xam);
-	RUN(prior_fixed_xam);
-	RUN(prior_random_xam);
-
-	// utility subdirectory
-	RUN(avgint_subset_xam);
-	RUN(bilinear_interp_xam);
-	RUN(child_info_xam);
-	RUN(data_subset_xam);
-	RUN(eigen_ode2_xam);
-	RUN(fixed_effect_xam);
-	RUN(integrate_1d_xam);
-	RUN(integrate_2d_xam);
-	RUN(interp_weight_xam);
-	RUN(manage_gsl_rng_xam);
-	RUN(pack_info_xam);
-	RUN(pack_diff_prior_xam);
-	RUN(pack_value_prior_xam);
-	RUN(residual_density_xam);
-	RUN(random_effect_xam);
-	RUN(sim_random_xam);
-	RUN(smooth2ode_xam);
-	RUN(solve_ode_xam);
-	RUN(to_string_xam);
-	RUN(variable_name_xam);
-
-	// table subdirectory
-	RUN(check_pini_n_age_xam);
-	RUN(create_table_xam);
-	RUN(get_age_table_xam);
-	RUN(get_avgint_table_xam);
-	RUN(get_option_table_xam);
-	RUN(get_column_max_xam);
-	RUN(get_covariate_table_xam);
-	RUN(get_data_table_xam);
-	RUN(get_density_table_xam);
-	RUN(get_integrand_table_xam);
-	RUN(get_prior_table_xam);
-	RUN(get_mulcov_table_xam);
-	RUN(get_node_table_xam);
-	RUN(get_rate_table_xam);
-	RUN(get_sample_table_xam);
-	RUN(get_simulate_table_xam);
-	RUN(get_smooth_grid_xam);
-	RUN(get_table_column_xam);
-	RUN(get_time_table_xam);
-	RUN(get_weight_grid_xam);
-	RUN(put_table_row_xam);
-	RUN(smooth_info_xam);
-	RUN(weight_info_xam);
 
 # if DISMOD_AT_HAS_SUITESPARSE
 	RUN(cholmod_xam);

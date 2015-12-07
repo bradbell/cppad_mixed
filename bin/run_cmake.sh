@@ -30,12 +30,6 @@ cmake_verbose_makefile='0'
 cmake_build_type='DEBUG'
 # &&
 #
-# &head python_three_command&&
-# Command used to execute python3 on this machine:
-# &codep
-python_three_command='python3'
-# &&
-#
 # &head extra_cxx_flags&&
 # Extra C++ flags used during compilation:
 # &codep
@@ -132,7 +126,6 @@ cmake \
 	-D CMAKE_VERBOSE_MAKEFILE=$cmake_verbose_makefile \
 	-D CMAKE_BUILD_TYPE=$cmake_build_type \
 	\
-	-D python_three_command=$python_three_command \
 	-D extra_cxx_flags="$extra_cxx_flags" \
 	-D dismod_at_prefix="$dismod_at_prefix" \
 	-D cppad_prefix="$cppad_prefix" \

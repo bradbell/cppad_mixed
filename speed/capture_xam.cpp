@@ -26,8 +26,9 @@ $head Syntax$$
 $codei%build/speed/capture_xam %random_seed%$$
 
 $head random_seed$$
-Is the $cref/random_seed/option_table/random_seed/$$ used during the
-simulation.
+Is the random seed 
+$cref/s_in/manage_gsl_rng/new_gsl_rng/s_in/$$ used during the call to
+$cref manage_gsl_rng$$.
 
 $head Notation$$
 $table

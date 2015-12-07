@@ -12,13 +12,6 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cassert>
 # include <cstring>
 
-// this directory
-extern bool age_time_order(void);
-extern bool data_model_subset(void);
-extern bool meas_mulcov(void);
-extern bool n_mixture(void);
-extern bool rate_mulcov(void);
-
 // cppad_mixed subdirectory
 extern bool binomial(void);
 extern bool delta_ranobj(void);
@@ -59,13 +52,6 @@ namespace {
 // main program that runs all the tests
 int main(void)
 {
-	// this directory
-	RUN(age_time_order);
-	RUN(data_model_subset);
-	RUN(meas_mulcov);
-	RUN(n_mixture);
-	RUN(rate_mulcov);
-
 	// cppad_mixed subdirectory
 	RUN(binomial);
 	RUN(delta_ranobj);

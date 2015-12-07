@@ -11,34 +11,26 @@
 # Build C++ Examples / Tests
 #
 LINK_DIRECTORIES(
-	${dismod_at_BINARY_DIR}/cpp
 	${ipopt_LIBRARY_DIRS}
 )
 # Program cpp, not installed, and depends on following source files
-ADD_EXECUTABLE(test_devel EXCLUDE_FROM_ALL
-	cppad_mixed/binomial.cpp
-	cppad_mixed/delta_ranobj.cpp
-	cppad_mixed/der_var_hes.cpp
-	cppad_mixed/zero_random_one.cpp
-	cppad_mixed/zero_random_two.cpp
-	age_time_order.cpp
-	data_model_subset.cpp
-	meas_mulcov.cpp
-	n_mixture.cpp
-	rate_mulcov.cpp
-	test_devel.cpp
+ADD_EXECUTABLE(test EXCLUDE_FROM_ALL
+	binomial.cpp
+	delta_ranobj.cpp
+	der_var_hes.cpp
+	zero_random_one.cpp
+	zero_random_two.cpp
+	test.cpp
 )
 SET_TARGET_PROPERTIES(
-	test_devel PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
+	test PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
 )
-TARGET_LINK_LIBRARIES(test_devel
-	devel
+TARGET_LINK_LIBRARIES(test
 	cppad_mixed
 	cppad_mixed_eigen
 	cppad_mixed
 	${ipopt_LIBRARIES}
-	sqlite3
 	gsl
 	gslcblas
 )
-ADD_CUSTOM_TARGET(check_test_devel test_devel DEPENDS test_devel )
+ADD_CUSTOM_TARGET(check_test test DEPENDS test )
