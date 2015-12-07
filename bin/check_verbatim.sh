@@ -27,9 +27,6 @@ p
 : skip
 EOF
 special_case='
-	devel/table/get_db_input.cpp
-	devel/utility/pack_info.cpp
-	omh/install/unix.omh
 	bin/check_verbatim.sh
 '
 # -----------------------------------------------------------------------------

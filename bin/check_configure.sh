@@ -49,4 +49,4 @@ do
 		exit 1
 	fi
 done
-exit 0
+echo 'check_configure.sh: OK'

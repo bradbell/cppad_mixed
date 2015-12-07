@@ -118,7 +118,7 @@ h_u^{(1)} [ \theta , \hat{u} ( \theta ) ] \hat{u}^{(1)} ( \theta )
 \] $$
 
 $code
-$verbatim%test/src/der_var_hes.cpp
+$verbatim%test/der_var_hes.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
