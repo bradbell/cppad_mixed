@@ -1,0 +1,18 @@
+# temporary file used to make commits.
+git_commit.sh
+# temporary file for all purposes
+junk
+junk.*
+# cmake confiuration files
+include/cppad_mixed/configure.hpp
+# web version of documentation directory
+doc.tgz
+# directories that are automatically created
+build
+doc
+# directories that are used for stashing files
+new
+# vim swap files
+*.swp
+# log files
+*.log
