@@ -1,7 +1,7 @@
 #! /bin/python3
 # $Id:$
 #  --------------------------------------------------------------------------
-# dismod_at: Estimating Disease Rates as Functions of Age and Time
+# cppad_mixed: Estimating Disease Rates as Functions of Age and Time
 #           Copyright (C) 2014-15 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
@@ -28,7 +28,7 @@ import time as timer
 import collections
 #
 sys.path.append( os.path.join( os.getcwd(), 'python' ) )
-import dismod_at
+import cppad_mixed
 # ---------------------------------------------------------------------------
 # optiono_csv:       file that contains options to import_cascade
 # option_table_in:   a dictionary containing values in option file
@@ -221,7 +221,7 @@ option_dir = os.path.dirname(option_csv)
 #
 new = True
 file_name        = os.path.join(option_dir, cascade_dir + '.db')
-db_connection    = dismod_at.create_connection(file_name, new)
+db_connection    = cppad_mixed.create_connection(file_name, new)
 # ---------------------------------------------------------------------------
 # integrand_table_in: integrand file as a list of dictionaries
 # data_table_in:      data file as a list of dictionaries
@@ -268,7 +268,7 @@ row_list       = list()
 for time in time_list :
 	row_list.append([time])
 tbl_name = 'time'
-dismod_at.create_table(db_connection, tbl_name, col_name, col_type, row_list)
+cppad_mixed.create_table(db_connection, tbl_name, col_name, col_type, row_list)
 # ---------------------------------------------------------------------------
 # Output age table.
 # age_list:
@@ -292,7 +292,7 @@ row_list  = list()
 for age in age_list :
 	row_list.append([age])
 tbl_name = 'age'
-dismod_at.create_table(db_connection, tbl_name, col_name, col_type, row_list)
+cppad_mixed.create_table(db_connection, tbl_name, col_name, col_type, row_list)
 # ---------------------------------------------------------------------------
 # rate_prior_in_dict:
 #
@@ -358,7 +358,7 @@ for row in integrand_table_in :
 			name = 'mtother'
 		row_list.append( [ name , float( row['eta'] ) ] )
 tbl_name = 'integrand'
-dismod_at.create_table(db_connection, tbl_name, col_name, col_type, row_list)
+cppad_mixed.create_table(db_connection, tbl_name, col_name, col_type, row_list)
 # ---------------------------------------------------------------------------
 # Output density table
 # density_name2id
@@ -373,7 +373,7 @@ row_list = [
 	['log_laplace']
 ]
 tbl_name = 'density'
-dismod_at.create_table(db_connection, tbl_name, col_name, col_type, row_list)
+cppad_mixed.create_table(db_connection, tbl_name, col_name, col_type, row_list)
 #
 density_name2id = dict()
 for density_id in range( len(row_list) ) :
@@ -403,7 +403,7 @@ for row in data_table_in :
 				node_name2id[name] = node_id
 			parent = node_name2id[name]
 tbl_name = 'node'
-dismod_at.create_table(db_connection, tbl_name, col_name, col_type, row_list)
+cppad_mixed.create_table(db_connection, tbl_name, col_name, col_type, row_list)
 node_table_list = row_list
 # ---------------------------------------------------------------------------
 # Output weight table
@@ -413,13 +413,13 @@ col_name =   [ 'weight_name', 'n_age',   'n_time'   ]
 col_type =   [ 'text',        'integer', 'integer'  ]
 row_list = [ [ 'weight_one',  1,          1         ] ]
 tbl_name = 'weight'
-dismod_at.create_table(db_connection, tbl_name, col_name, col_type, row_list)
+cppad_mixed.create_table(db_connection, tbl_name, col_name, col_type, row_list)
 #
 col_name =   [  'weight_id', 'age_id',   'time_id',  'weight' ]
 col_type =   [  'integer',   'integer',  'integer',  'real'   ]
 row_list = [ [  0,           0,          0,           1.0     ] ]
 tbl_name = 'weight_grid'
-dismod_at.create_table(db_connection, tbl_name, col_name, col_type, row_list)
+cppad_mixed.create_table(db_connection, tbl_name, col_name, col_type, row_list)
 # ---------------------------------------------------------------------------
 # Output data table
 # have_mtall_data
@@ -544,7 +544,7 @@ if previous_row != None :
 #
 have_mtall_data = len(mtall_list) > 0
 tbl_name = 'data'
-dismod_at.create_table(db_connection, tbl_name, col_name, col_type, row_list)
+cppad_mixed.create_table(db_connection, tbl_name, col_name, col_type, row_list)
 # ---------------------------------------------------------------------------
 # Output covariate table
 #
@@ -574,7 +574,7 @@ for name in covariate_name2id :
 			max_difference = None
 	row_list.append( [name , reference, max_difference] )
 tbl_name = 'covariate'
-dismod_at.create_table(db_connection, tbl_name, col_name, col_type, row_list)
+cppad_mixed.create_table(db_connection, tbl_name, col_name, col_type, row_list)
 # ---------------------------------------------------------------------------
 # Start recording information for prior smooth and smooth_grid tables
 # ---------------------------------------------------------------------------
@@ -943,7 +943,7 @@ for rate in [ 'pini', 'iota', 'rho', 'chi' ] :
 rate     = 'omega'
 row_list.append( [ rate, rate_smooth_id[rate], child_omega_smooth_id ] )
 tbl_name = 'rate'
-dismod_at.create_table(db_connection, tbl_name, col_name, col_type, row_list)
+cppad_mixed.create_table(db_connection, tbl_name, col_name, col_type, row_list)
 # --------------------------------------------------------------------------
 # Output mulcov table
 col_name2type = collections.OrderedDict([
@@ -1048,7 +1048,7 @@ if 'a_local' in covariate_name2id and have_mtall_data :
 		] )
 #
 tbl_name = 'mulcov'
-dismod_at.create_table(db_connection, tbl_name, col_name, col_type, row_list)
+cppad_mixed.create_table(db_connection, tbl_name, col_name, col_type, row_list)
 #
 # --------------------------------------------------------------------------
 # Output, prior, smooth, and smooth_grid tables
@@ -1068,20 +1068,20 @@ col_type = list( prior_col_name2type.values() )
 row_list = prior_row_list
 tbl_name = 'prior'
 make_column_unique(row_list, 0)
-dismod_at.create_table(db_connection, tbl_name, col_name, col_type, row_list)
+cppad_mixed.create_table(db_connection, tbl_name, col_name, col_type, row_list)
 #
 col_name = list( smooth_col_name2type.keys() )
 col_type = list( smooth_col_name2type.values() )
 row_list = smooth_row_list
 tbl_name = 'smooth'
 make_column_unique(row_list, 0)
-dismod_at.create_table(db_connection, tbl_name, col_name, col_type, row_list)
+cppad_mixed.create_table(db_connection, tbl_name, col_name, col_type, row_list)
 #
 col_name = list( smooth_grid_col_name2type.keys() )
 col_type = list( smooth_grid_col_name2type.values() )
 row_list = smooth_grid_row_list
 tbl_name = 'smooth_grid'
-dismod_at.create_table(db_connection, tbl_name, col_name, col_type, row_list)
+cppad_mixed.create_table(db_connection, tbl_name, col_name, col_type, row_list)
 # ---------------------------------------------------------------------------
 # Output option table.
 parent_node_id = node_name2id[ option_table_in['parent_node_name'] ]
@@ -1109,7 +1109,7 @@ row_list = [
 	[ 'derivative_test_random', 'none'                           ]
 ]
 tbl_name = 'option'
-dismod_at.create_table(db_connection, tbl_name, col_name, col_type, row_list)
+cppad_mixed.create_table(db_connection, tbl_name, col_name, col_type, row_list)
 # --------------------------------------------------------------------------
 # avgint table
 col_name2type = collections.OrderedDict([
@@ -1142,6 +1142,6 @@ for time_id in range( len(time_list) ) :
 			row[0]  = integrand_name2id[integrand]
 			row_list.append( copy.copy(row) )
 tbl_name = 'avgint'
-dismod_at.create_table(db_connection, tbl_name, col_name, col_type, row_list)
+cppad_mixed.create_table(db_connection, tbl_name, col_name, col_type, row_list)
 # --------------------------------------------------------------------------
 print('import_cascade.py: OK')

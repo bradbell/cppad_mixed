@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # $Id$
 #  --------------------------------------------------------------------------
-# dismod_at: Estimating Disease Rates as Functions of Age and Time
+# cppad_mixed: Estimating Disease Rates as Functions of Age and Time
 #           Copyright (C) 2014-15 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
@@ -44,9 +44,9 @@ then
 fi
 cat << EOF
 omh/table/${name}_table.omh$wlt                   user doc for $name table
-include/dismod_at/get_${name}_table.hpp$wlt       C++ struct for $name table
+include/cppad_mixed/get_${name}_table.hpp$wlt       C++ struct for $name table
 devel/table/get_${name}_table.cpp$wlt             read $name table in C++
-python/dismod_at/create_database.py$wgt           create all tables
+python/cppad_mixed/create_database.py$wgt           create all tables
 example/table/${name}_table.py$wlt                $name table example
 example/table/create_database.py$wgt              create_database.py example
 example/get_started/get_started_db.py$wgt         calls create_database

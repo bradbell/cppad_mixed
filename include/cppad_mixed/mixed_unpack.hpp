@@ -1,6 +1,6 @@
 // $Id:$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -8,10 +8,10 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# ifndef DISMOD_AT_MIXED_UNPACK_HPP
-# define DISMOD_AT_MIXED_UNPACK_HPP
-# include <dismod_at/cppad_mixed.hpp>
-# include <dismod_at/a2_double.hpp>
+# ifndef CPPAD_MIXED_MIXED_UNPACK_HPP
+# define CPPAD_MIXED_MIXED_UNPACK_HPP
+# include <cppad_mixed/cppad_mixed.hpp>
+# include <cppad_mixed/a2_double.hpp>
 
 /*
 $begin cppad_mixed_unpack$$
@@ -100,7 +100,7 @@ and random effects as one vector.
 
 $end
 */
-namespace dismod_at { // BEGIN_DISMOD_AT_NAMESPACE
+namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 template <class Float_unpack, class Float_pack>
 void cppad_mixed::unpack(
@@ -137,6 +137,6 @@ void cppad_mixed::unpack(
 }
 
 
-} // END_DISMOD_AT_NAMESPACE
+} // END_CPPAD_MIXED_NAMESPACE
 
 # endif

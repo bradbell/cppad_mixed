@@ -1,6 +1,6 @@
 // $Id:$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -28,7 +28,7 @@ $cref/initialize/cppad_mixed_initialize/$$
 $head mixed_derived$$
 This is the name of the class derived in the following fashion:
 $codei%
-	class %mixed_derived% : public dismod_at::cppad_mixed {
+	class %mixed_derived% : public cppad_mixed::cppad_mixed {
 %$$
 The derived class constructor must call its base class constructor as follows:
 $codei%

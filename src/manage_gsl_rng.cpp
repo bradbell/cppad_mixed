@@ -1,6 +1,6 @@
 // $Id:$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -76,7 +76,7 @@ $codei%
 
 
 $children%
-	example/devel/utility/manage_gsl_rng_xam.cpp
+	example/user/manage_gsl_rng_xam.cpp
 %$$
 $head Example$$
 The file $cref manage_gsl_rng_xam.cpp$$ contains an example and test of
@@ -89,14 +89,14 @@ $end
 # include <gsl/gsl_rng.h>
 # include <ctime>
 # include <cassert>
-# include <dismod_at/manage_gsl_rng.hpp>
+# include <cppad_mixed/manage_gsl_rng.hpp>
 
 namespace {
 	static size_t count_seed_       = 0;
 	static gsl_rng* const null_ptr_ = 0;
 	static gsl_rng*       rng_      = null_ptr_;
 }
-namespace dismod_at {
+namespace cppad_mixed {
 	size_t new_gsl_rng(size_t s_in)
 	{	// check that we do not currently have a random number generator
 		assert( rng_ == null_ptr_ );

@@ -113,7 +113,7 @@ int main(void)
 	RUN(fix_like_eval_xam);
 
 
-# if DISMOD_AT_HAS_SUITESPARSE
+# if CPPAD_MIXED_HAS_SUITESPARSE
 	RUN(cholmod_xam);
 # endif
 

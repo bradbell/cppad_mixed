@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # $Id:$
 #  --------------------------------------------------------------------------
-# dismod_at: Estimating Disease Rates as Functions of Age and Time
+# cppad_mixed: Estimating Disease Rates as Functions of Age and Time
 #           Copyright (C) 2014-15 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
@@ -41,8 +41,8 @@ Enter the following commands:
 	ssh.sh $remote_machine -l
 	rm -rf doc
 	tar -xzf doc.tgz
-	rm -r $remote_directory/dismod_at
-	cp -r doc $remote_directory/dismod_at
+	rm -r $remote_directory/cppad_mixed
+	cp -r doc $remote_directory/cppad_mixed
 	exit
 ------------------------------
 EOF

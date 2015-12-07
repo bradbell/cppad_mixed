@@ -1,6 +1,6 @@
 // $Id$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -8,14 +8,14 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# ifndef DISMOD_AT_CPPAD_MIXED_HPP
-# define DISMOD_AT_CPPAD_MIXED_HPP
+# ifndef CPPAD_MIXED_CPPAD_MIXED_HPP
+# define CPPAD_MIXED_CPPAD_MIXED_HPP
 
 # include <map>
 # include <cppad/cppad.hpp>
-# include <dismod_at/newton_step.hpp>
-# include <dismod_at/sparse_hes_info.hpp>
-# include <dismod_at/sparse_jac_info.hpp>
+# include <cppad_mixed/newton_step.hpp>
+# include <cppad_mixed/sparse_hes_info.hpp>
+# include <cppad_mixed/sparse_jac_info.hpp>
 
 // private examples
 extern bool constraint_eval_xam(void);
@@ -36,7 +36,7 @@ extern bool hes_cross_xam(void);
 extern bool der_var_hes(void);
 extern bool delta_ranobj(void);
 
-namespace dismod_at { // BEGIN_DISMOD_AT_NAMESPACE
+namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 class cppad_mixed {
 	friend class optimize_random_eval;
@@ -180,13 +180,13 @@ $codep */
 	);
 /* $$
 $childtable%
-	devel/cppad_mixed/derived_ctor.omh%
-	devel/cppad_mixed/initialize.cpp%
-	devel/cppad_mixed/ran_like.omh%
-	devel/cppad_mixed/fix_like.omh%
-	devel/cppad_mixed/constraint.omh%
-	devel/cppad_mixed/optimize_random.cpp%
-	devel/cppad_mixed/optimize_fixed.cpp
+	src/derived_ctor.omh%
+	src/initialize.cpp%
+	src/ran_like.omh%
+	src/fix_like.omh%
+	src/constraint.omh%
+	src/optimize_random.cpp%
+	src/optimize_fixed.cpp
 %$$
 $end
 */
@@ -218,30 +218,30 @@ $$
 
 $section cppad_mixed Private Declarations$$
 
-$childtable%include/dismod_at/mixed_pack.hpp
-	%include/dismod_at/mixed_unpack.hpp
-	%devel/cppad_mixed/constraint_eval.cpp
-	%devel/cppad_mixed/constraint_jac.cpp
-	%devel/cppad_mixed/constraint_hes.cpp
-	%devel/cppad_mixed/init_ran_like.cpp
-	%devel/cppad_mixed/init_hes_ran.cpp
-	%devel/cppad_mixed/init_hes_cross.cpp
-	%devel/cppad_mixed/newton_step.cpp
-	%devel/cppad_mixed/init_ranobj.cpp
-	%devel/cppad_mixed/init_hes_ranobj.cpp
-	%devel/cppad_mixed/init_fix_like.cpp
-	%devel/cppad_mixed/init_constraint.cpp
-	%devel/cppad_mixed/ranobj_eval.cpp
-	%devel/cppad_mixed/logdet_grad.cpp
-	%devel/cppad_mixed/ranobj_grad.cpp
-	%devel/cppad_mixed/ran_like_grad.cpp
-	%devel/cppad_mixed/ranobj_hes.cpp
-	%devel/cppad_mixed/fix_like_eval.cpp
-	%devel/cppad_mixed/fix_like_jac.cpp
-	%devel/cppad_mixed/fix_like_hes.cpp
-	%devel/cppad_mixed/chol_hes_ran.cpp
-	%include/dismod_at/sparse_hes_info.hpp
-	%include/dismod_at/sparse_jac_info.hpp
+$childtable%include/cppad_mixed/mixed_pack.hpp
+	%include/cppad_mixed/mixed_unpack.hpp
+	%src/constraint_eval.cpp
+	%src/constraint_jac.cpp
+	%src/constraint_hes.cpp
+	%src/init_ran_like.cpp
+	%src/init_hes_ran.cpp
+	%src/init_hes_cross.cpp
+	%src/newton_step.cpp
+	%src/init_ranobj.cpp
+	%src/init_hes_ranobj.cpp
+	%src/init_fix_like.cpp
+	%src/init_constraint.cpp
+	%src/ranobj_eval.cpp
+	%src/logdet_grad.cpp
+	%src/ranobj_grad.cpp
+	%src/ran_like_grad.cpp
+	%src/ranobj_hes.cpp
+	%src/fix_like_eval.cpp
+	%src/fix_like_jac.cpp
+	%src/fix_like_hes.cpp
+	%src/chol_hes_ran.cpp
+	%include/cppad_mixed/sparse_hes_info.hpp
+	%include/cppad_mixed/sparse_jac_info.hpp
 %$$
 
 $head n_fixed_$$
@@ -638,9 +638,9 @@ $end
 */
 };
 
-} // END_DISMOD_AT_NAMESPACE
+} // END_CPPAD_MIXED_NAMESPACE
 
-# include <dismod_at/mixed_pack.hpp>
-# include <dismod_at/mixed_unpack.hpp>
+# include <cppad_mixed/mixed_pack.hpp>
+# include <cppad_mixed/mixed_unpack.hpp>
 
 # endif

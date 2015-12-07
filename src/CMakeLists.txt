@@ -1,6 +1,6 @@
 # $Id$
 #  --------------------------------------------------------------------------
-# dismod_at: Estimating Disease Rates as Functions of Age and Time
+# cppad_mixed: Estimating Disease Rates as Functions of Age and Time
 #           Copyright (C) 2014-15 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
@@ -56,5 +56,5 @@ INSTALL(
 	FILES 
 	${cppad_mixed_SOURCE_DIR}/include/cppad_mixed/cppad_mixed.hpp
 	${cppad_mixed_SOURCE_DIR}/include/cppad_mixed/manage_gsl_rng.hpp
-	DESTINATION ${dismod_at_prefix}/include/cppad
+	DESTINATION ${cppad_mixed_prefix}/include/cppad
 )

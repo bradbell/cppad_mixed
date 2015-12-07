@@ -1,6 +1,6 @@
 // $Id:$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -8,8 +8,8 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <dismod_at/cppad_mixed.hpp>
-# include <dismod_at/chol_hes_ran.hpp>
+# include <cppad_mixed/cppad_mixed.hpp>
+# include <cppad_mixed/chol_hes_ran.hpp>
 /*
 $begin ranobj_grad$$
 $spell
@@ -65,7 +65,7 @@ Upon return, it contains the value of the derivative w.r.t
 the fixed effects; i.e. $latex r^{(1)} ( \theta )$$.
 
 $children%
-	example/devel/cppad_mixed/private/ranobj_grad_xam.cpp
+	example/private/ranobj_grad_xam.cpp
 %$$
 $head Example$$
 The file $cref ranobj_grad_xam.cpp$$ contains an example
@@ -74,7 +74,7 @@ It returns true, if the test passes, and false otherwise.
 
 $end
 */
-namespace dismod_at { // BEGIN_DISMOD_AT_NAMESPACE
+namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // ----------------------------------------------------------------------------
 void cppad_mixed::ranobj_grad(
 	const d_vector& fixed_vec  ,
@@ -184,4 +184,4 @@ void cppad_mixed::ranobj_grad(
 	return;
 }
 
-} // END_DISMOD_AT_NAMESPACE
+} // END_CPPAD_MIXED_NAMESPACE

@@ -1,6 +1,6 @@
 // $Id$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -21,7 +21,7 @@ This example is not part of the
 $cref/cppad_mixed public API/cppad_mixed_public/$$.
 
 $code
-$verbatim%example/devel/cppad_mixed/private/newton_step_xam.cpp
+$verbatim%example/private/newton_step_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -29,7 +29,7 @@ $end
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>
-# include <dismod_at/newton_step.hpp>
+# include <cppad_mixed/newton_step.hpp>
 
 bool newton_step_xam(void)
 {
@@ -63,7 +63,7 @@ bool newton_step_xam(void)
 	for(size_t j = 0; j < n_random; j++)
 		u[j] = 0.0;
 	//
-	dismod_at::newton_step newton_atom;
+	cppad_mixed::newton_step newton_atom;
 	newton_atom.initialize(a1_adfun, theta, u);
 	//
 	vector<a1_double> a1_theta_u_v(n_fixed + 2 * n_random);

@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # $Id$
 #  --------------------------------------------------------------------------
-# dismod_at: Estimating Disease Rates as Functions of Age and Time
+# cppad_mixed: Estimating Disease Rates as Functions of Age and Time
 #           Copyright (C) 2014-15 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
@@ -36,18 +36,18 @@ cmake_build_type='DEBUG'
 extra_cxx_flags='-std=c++11 -Wall'
 # &&
 #
-# &head dismod_at_prefix&&
-# Prefix where dismod_at will be installed:
+# &head cppad_mixed_prefix&&
+# Prefix where cppad_mixed will be installed:
 # &codep
-dismod_at_prefix="$HOME/prefix/dismod_at"
+cppad_mixed_prefix="$HOME/prefix/cppad_mixed"
 # &&
 #
 # &head Other Prefixes&&
 # Prefixes where the required packages were installed:
 # &codep
-eigen_prefix="$HOME/prefix/dismod_at"
-ipopt_prefix="$HOME/prefix/dismod_at"
-cppad_prefix="$HOME/prefix/dismod_at"
+eigen_prefix="$HOME/prefix/cppad_mixed"
+ipopt_prefix="$HOME/prefix/cppad_mixed"
+cppad_prefix="$HOME/prefix/cppad_mixed"
 # &&
 #
 # &head cppad_mixed_set_sparsity&&
@@ -58,7 +58,7 @@ cppad_mixed_set_sparsity="NO"
 # &&
 #
 # &head cppad_mixed_libdir&&
-# Sub-directory of dismod_at_prefix where cppad_mixed libraries are installed.
+# Sub-directory of cppad_mixed_prefix where cppad_mixed libraries are installed.
 # The eigen part of the library is separate so different flags can be used
 # to compile the part of the code that uses eigen.
 # The following will properly link the &code cppad_mixed&& library:
@@ -72,7 +72,7 @@ cppad_mixed_libdir='lib64'
 #
 # &head suitesparse_prefix&&
 # Prefix where optional package was installed (use NOTFOUND if not installed).
-# This is only required by example/devel/cppad_mixed/cholmod_xam.cpp.
+# This is only required by example/cholmod_xam.cpp.
 # &codep
 suitesparse_prefix="$HOME/prefix/suitesparse"
 # &&
@@ -127,7 +127,7 @@ cmake \
 	-D CMAKE_BUILD_TYPE=$cmake_build_type \
 	\
 	-D extra_cxx_flags="$extra_cxx_flags" \
-	-D dismod_at_prefix="$dismod_at_prefix" \
+	-D cppad_mixed_prefix="$cppad_mixed_prefix" \
 	-D cppad_prefix="$cppad_prefix" \
 	-D ipopt_prefix="$cppad_prefix" \
 	-D eigen_prefix="$eigen_prefix" \

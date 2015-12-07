@@ -1,7 +1,7 @@
 #! /bin/python3
 # $Id:$
 #  --------------------------------------------------------------------------
-# dismod_at: Estimating Disease Rates as Functions of Age and Time
+# cppad_mixed: Estimating Disease Rates as Functions of Age and Time
 #           Copyright (C) 2014-15 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
@@ -24,7 +24,7 @@ import csv
 import pdb
 #
 sys.path.append( os.path.join( os.getcwd(), 'python' ) )
-import dismod_at
+import cppad_mixed
 # ---------------------------------------------------------------------------
 if sys.argv[0] != 'bin/database2csv.py' :
 	msg  = 'bin/database2csv.py: must be executed from its parent directory'
@@ -39,13 +39,13 @@ database_dir      = os.path.split(database_file_arg)[0]
 # ----------------------------------------------------------------------------
 file_name   = database_file_arg
 new         = False
-connection  = dismod_at.create_connection(file_name, new)
+connection  = cppad_mixed.create_connection(file_name, new)
 cmd     = "SELECT * FROM sqlite_master WHERE type='table' AND name='var'"
 cursor  = connection.cursor()
 result  = cursor.execute(cmd).fetchall()
 if len(result) == 0 :
 	msg  = 'bin/database2csv.py: must first run init command; i.e.\n'
-	msg += '\tdismod_at ' + file_name + ' init'
+	msg += '\tcppad_mixed ' + file_name + ' init'
 	sys.exit(msg)
 #
 cmd = cmd.replace('var', 'sample')
@@ -91,7 +91,7 @@ if have_fit :
 	table_list.append('fit_var')
 	table_list.append('fit_data_subset')
 for table in table_list :
-	table_data[table] = dismod_at.get_table_dict(connection, table)
+	table_data[table] = cppad_mixed.get_table_dict(connection, table)
 # ----------------------------------------------------------------------------
 # parent_node_id, fit_sample_index
 for row in table_data['option'] :

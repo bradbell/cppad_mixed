@@ -1,6 +1,6 @@
 // $Id:$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -138,7 +138,7 @@ $latex \[
 	s = f_{uu} ( \theta , u )^{-1} v
 \] $$
 
-$children%example/devel/cppad_mixed/private/newton_step_xam.cpp
+$children%example/private/newton_step_xam.cpp
 %$$
 $head Example$$
 The file $cref newton_step_xam.cpp$$ is an example
@@ -149,10 +149,10 @@ $end
 ----------------------------------------------------------------------------
 */
 # include <Eigen/Sparse>
-# include <dismod_at/newton_step.hpp>
-# include <dismod_at/configure.hpp>
+# include <cppad_mixed/newton_step.hpp>
+# include <cppad_mixed/configure.hpp>
 
-namespace dismod_at { // BEGIN_DISMOD_AT_NAMESPACE
+namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // -------------------------------------------------------------------------
 // newton_step_alog ctor
@@ -300,11 +300,11 @@ void newton_step_algo::operator()(
 // -------------------------------------------------------------------------
 // newton_step ctor
 newton_step::newton_step(void)
-: atom_fun_(DISMOD_AT_NULL_PTR)
+: atom_fun_(CPPAD_MIXED_NULL_PTR)
 { }
 // newton_step destructor
 newton_step::~newton_step(void)
-{	if( atom_fun_ != DISMOD_AT_NULL_PTR )
+{	if( atom_fun_ != CPPAD_MIXED_NULL_PTR )
 		delete atom_fun_;
 }
 // initialize
@@ -312,7 +312,7 @@ void newton_step::initialize(
 	CppAD::ADFun<a1_double>&          a1_adfun   ,
 	const CppAD::vector<double>&      theta      ,
 	const CppAD::vector<double>&      u          )
-{	assert( atom_fun_ == DISMOD_AT_NULL_PTR );
+{	assert( atom_fun_ == CPPAD_MIXED_NULL_PTR );
 	//
 	size_t n_fixed  = theta.size();
 	size_t n_random = u.size();
@@ -334,11 +334,11 @@ void newton_step::initialize(
 	atom_fun_ = new CppAD::checkpoint<double>(
 		name, algo, a1_theta_u_v, a1_logdet_step, sparsity
 	);
-	assert( atom_fun_ != DISMOD_AT_NULL_PTR );
+	assert( atom_fun_ != CPPAD_MIXED_NULL_PTR );
 }
 // size_var
 size_t newton_step::size_var(void)
-{	if( atom_fun_ ==  DISMOD_AT_NULL_PTR )
+{	if( atom_fun_ ==  CPPAD_MIXED_NULL_PTR )
 		return 0;
 	return atom_fun_->size_var();
 }
@@ -346,8 +346,8 @@ size_t newton_step::size_var(void)
 void newton_step::eval(
 	const a1d_vector& a1_theta_u_v  ,
 	a1d_vector&       a1_logdet_step )
-{	assert( atom_fun_ != DISMOD_AT_NULL_PTR );
+{	assert( atom_fun_ != CPPAD_MIXED_NULL_PTR );
 	(*atom_fun_)(a1_theta_u_v, a1_logdet_step);
 }
 
-} // END_DISMOD_AT_NAMESPACE
+} // END_CPPAD_MIXED_NAMESPACE

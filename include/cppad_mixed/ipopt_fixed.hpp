@@ -1,6 +1,6 @@
 // $Id:$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -8,8 +8,8 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# ifndef DISMOD_AT_IPOPT_FIXED_HPP
-# define DISMOD_AT_IPOPT_FIXED_HPP
+# ifndef CPPAD_MIXED_IPOPT_FIXED_HPP
+# define CPPAD_MIXED_IPOPT_FIXED_HPP
 
 /*
 $begin ipopt_fixed$$
@@ -39,17 +39,17 @@ $head fixed_opt()$$
 This member function returns the optimal solution (so far)
 for the fixed effects.
 
-$childtable%devel/cppad_mixed/ipopt_fixed.cpp
-	%example/devel/cppad_mixed/ipopt_xam.omh
+$childtable%src/ipopt_fixed.cpp
+	%example/ipopt_xam.omh
 %$$
 
 $end
 -----------------------------------------------------------------------------
 */
 # include <coin/IpTNLP.hpp>
-# include <dismod_at/cppad_mixed.hpp>
+# include <cppad_mixed/cppad_mixed.hpp>
 
-namespace dismod_at { // BEGIN_DISMOD_AT_NAMESPACE
+namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 	//
 	// ipopt_fixed
 	class ipopt_fixed : public Ipopt::TNLP
@@ -249,6 +249,6 @@ namespace dismod_at { // BEGIN_DISMOD_AT_NAMESPACE
 		// -----------------------------------------------------------------
 		bool check_grad_f(bool trace, double relative_tol);
 	};
-} // END_DISMOD_AT_NAMESPACE
+} // END_CPPAD_MIXED_NAMESPACE
 
 # endif

@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # $Id:$
 #  --------------------------------------------------------------------------
-# dismod_at: Estimating Disease Rates as Functions of Age and Time
+# cppad_mixed: Estimating Disease Rates as Functions of Age and Time
 #           Copyright (C) 2014-15 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
@@ -11,7 +11,7 @@
 # ---------------------------------------------------------------------------
 # BEGIN USER_SETTINGS
 # prefix below which eigen will be installed
-eigen_prefix="$HOME/prefix/dismod_at"
+eigen_prefix="$HOME/prefix/cppad_mixed"
 # END USER_SETTINGS
 # ---------------------------------------------------------------------------
 if [ $0 != 'bin/install_eigen.sh' ]

@@ -1,6 +1,6 @@
 // $Id:$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -8,7 +8,7 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <dismod_at/cppad_mixed.hpp>
+# include <cppad_mixed/cppad_mixed.hpp>
 
 /*
 $begin constraint_jac$$
@@ -78,7 +78,7 @@ Upon return, it contains the value of the Jacobian elements
 that are possibly non-zero (and will have the same size as $icode row_out$$).
 
 $children%
-	example/devel/cppad_mixed/private/constraint_jac_xam.cpp
+	example/private/constraint_jac_xam.cpp
 %$$
 $head Example$$
 The file $cref constraint_jac_xam.cpp$$ contains an example
@@ -88,7 +88,7 @@ It returns true, if the test passes, and false otherwise.
 $end
 */
 
-namespace dismod_at { // BEGIN_DISMOD_AT_NAMESPACE
+namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 void cppad_mixed::constraint_jac(
 	const d_vector&        fixed_vec   ,
@@ -145,4 +145,4 @@ void cppad_mixed::constraint_jac(
 }
 
 
-} // END_DISMOD_AT_NAMESPACE
+} // END_CPPAD_MIXED_NAMESPACE

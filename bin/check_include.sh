@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # $Id$
 #  --------------------------------------------------------------------------
-# dismod_at: Estimating Disease Rates as Functions of Age and Time
+# cppad_mixed: Estimating Disease Rates as Functions of Age and Time
 #           Copyright (C) 2014-15 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
@@ -15,22 +15,22 @@ then
 	exit 1
 fi
 # -----------------------------------------------------------------------------
-cd include/dismod_at
+cd include/cppad_mixed
 list=`ls *.hpp`
 for file in $list
 do
 	check=`echo $file | tr 'a-z' 'A-Z'`
-	check=`echo $check  | sed -e 's|\.|_|' -e 's|^|DISMOD_AT_|'`
+	check=`echo $check  | sed -e 's|\.|_|' -e 's|^|CPPAD_MIXED_|'`
 	if ! grep "^# ifndef $check" $file > /dev/null
 	then
 		echo "# ifndef $check"
-		echo "missing in file include/dismod_at/$file"
+		echo "missing in file include/cppad_mixed/$file"
 		exit 1
 	fi
 	if ! grep "^# define $check" $file > /dev/null
 	then
 		echo "# define $check"
-		echo "missing in file include/dismod_at/$file"
+		echo "missing in file include/cppad_mixed/$file"
 		exit 1
 	fi
 done

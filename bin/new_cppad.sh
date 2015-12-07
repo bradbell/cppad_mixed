@@ -1,6 +1,6 @@
 # $Id:$
 #  --------------------------------------------------------------------------
-# dismod_at: Estimating Disease Rates as Functions of Age and Time
+# cppad_mixed: Estimating Disease Rates as Functions of Age and Time
 #           Copyright (C) 2014-15 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
@@ -20,7 +20,7 @@ echo_eval() {
 	eval $*
 }
 # -----------------------------------------------------------------------------
-dir="$HOME/prefix/dismod_at/include/cppad"
+dir="$HOME/prefix/cppad_mixed/include/cppad"
 echo_eval rm -r $dir
 echo_eval cp -r $HOME/cppad.git/cppad $dir
 echo "sed -e 's|HAS_COLPACK .*|HAS_COLPACK 0|' -i $dir/configure.hpp"

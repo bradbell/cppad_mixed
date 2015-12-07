@@ -1,6 +1,6 @@
 // $Id:$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -81,7 +81,7 @@ and is the $cref ipopt_options$$ for optimizing the random effects.
 
 $head fixed_lower$$
 specifies the lower limits for the
-$cref/fixed_effects/model_variables/Fixed Effects, theta/$$.
+$fixed_effects/cppad_mixed/Fixed Effects, theta/$$.
 Note that $code -inf$$
 is used for minus infinity; i.e., no lower limit.
 
@@ -181,8 +181,8 @@ Laplace approximation optimization only includes the case where
 the $cref/random likelihood/cppad_mixed_ran_like/$$ is smooth.
 
 $comment ipoot_options is also used by optimize_random$$
-$children%include/dismod_at/ipopt_fixed.hpp
-	%devel/cppad_mixed/ipopt_options.omh
+$children%include/cppad_mixed/ipopt_fixed.hpp
+	%src/ipopt_options.omh
 %$$
 
 $head Example$$
@@ -199,11 +199,11 @@ $end
 ------------------------------------------------------------------------------
 */
 # include <coin/IpIpoptApplication.hpp>
-# include <dismod_at/cppad_mixed.hpp>
-# include <dismod_at/ipopt_fixed.hpp>
+# include <cppad_mixed/cppad_mixed.hpp>
+# include <cppad_mixed/ipopt_fixed.hpp>
 
 
-namespace dismod_at { // BEGIN_DISMOD_AT_NAMESPACE
+namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 CppAD::vector<double> cppad_mixed::optimize_fixed(
 	const std::string& fixed_options     ,
@@ -366,4 +366,4 @@ CppAD::vector<double> cppad_mixed::optimize_fixed(
 	return fixed_nlp->fixed_opt();
 }
 
-} // END_DISMOD_AT_NAMESPACE
+} // END_CPPAD_MIXED_NAMESPACE

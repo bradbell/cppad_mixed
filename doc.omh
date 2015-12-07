@@ -1,6 +1,6 @@
 $Id:$
 -----------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -123,10 +123,10 @@ $icode%vec%[0] + CppAD::abs(%vec%[1]) + %...% CppAD::abs(%vec%[%s%-1])
 where $icode%s% = %vec%.size()%$$.
 
 $childtable%
-	devel/cppad_mixed/theory.omh%
-	example/devel/cppad_mixed/user/user.omh%
+	src/theory.omh%
+	example/user/user.omh%
 	src/manage_gsl_rng.cpp%
-	include/dismod_at/cppad_mixed.hpp
+	include/cppad_mixed/cppad_mixed.hpp
 %$$
 
 

@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # $Id:$
 #  --------------------------------------------------------------------------
-# dismod_at: Estimating Disease Rates as Functions of Age and Time
+# cppad_mixed: Estimating Disease Rates as Functions of Age and Time
 #           Copyright (C) 2014-15 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
@@ -14,9 +14,9 @@ then
 	echo 'bin/check_cppad_mixed.sh: must be executed from its parent directory'
 	exit 1
 fi
-include_file="$HOME/prefix/dismod_at/include/dismod_at/cppad_mixed.hpp"
-library_file="$HOME/prefix/dismod_at/lib64/libcppad_mixed.a"
-example_file="example/devel/cppad_mixed/user/no_random_xam.cpp"
+include_file="$HOME/prefix/cppad_mixed/include/cppad_mixed/cppad_mixed.hpp"
+library_file="$HOME/prefix/cppad_mixed/lib64/libcppad_mixed.a"
+example_file="example/user/no_random_xam.cpp"
 for file in $include_file $libary_file
 do
 	if [ ! -e "$file" ]
@@ -51,9 +51,9 @@ echo_eval g++ \
 	-g \
 	-O0 \
 	-I ../../include \
-	-I $HOME/prefix/dismod_at/include \
+	-I $HOME/prefix/cppad_mixed/include \
 	example.cpp \
-	-L $HOME/prefix/dismod_at/lib64 \
+	-L $HOME/prefix/cppad_mixed/lib64 \
 	-lcppad_mixed \
 	-lcppad_mixed_eigen \
 	-lcppad_mixed \

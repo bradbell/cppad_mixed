@@ -1,6 +1,6 @@
 // $Id:$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -65,10 +65,10 @@ $cref/H(beta, theta, u)
 $end
 */
 # include <Eigen/Sparse>
-# include <dismod_at/cppad_mixed.hpp>
+# include <cppad_mixed/cppad_mixed.hpp>
 
 
-namespace dismod_at { // BEGIN_DISMOD_AT_NAMESPACE
+namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // ----------------------------------------------------------------------------
 void cppad_mixed::init_ranobj(
@@ -155,4 +155,4 @@ void cppad_mixed::init_ranobj(
 	return;
 }
 
-} // END_DISMOD_AT_NAMESPACE
+} // END_CPPAD_MIXED_NAMESPACE

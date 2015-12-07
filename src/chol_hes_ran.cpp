@@ -1,6 +1,6 @@
 // $Id:$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -8,8 +8,8 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <dismod_at/cppad_mixed.hpp>
-# include <dismod_at/chol_hes_ran.hpp>
+# include <cppad_mixed/cppad_mixed.hpp>
+# include <cppad_mixed/chol_hes_ran.hpp>
 # include <Eigen/Sparse>
 
 /*
@@ -44,15 +44,15 @@ $cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$.
 
 $head Purpose$$
 $code chol_hes_ran_$$ should be a $cref cppad_mixed_private$$ member variable,
-but it is instead a static in the $code dismod_at$$ namespace
+but it is instead a static in the $code cppad_mixed$$ namespace
 so that the warnings that Eigen generates
 do not need to be suppressed by all the routines that include
-$code dismod_at/cppad_mixed.hpp$$.
+$code cppad_mixed/cppad_mixed.hpp$$.
 
 $head chol_hes_ran_$$
 This variable has prototype
 $codep */
-	namespace dismod_at {
+	namespace cppad_mixed {
 		Eigen::SimplicialLDLT<
 			Eigen::SparseMatrix<double> , Eigen::Lower
 		> chol_hes_ran_;
@@ -169,7 +169,7 @@ $cref/factorize_chol_hes_ran/chol_hes_ran/factorize_chol_hes_ran/$$.
 $end
 */
 
-namespace dismod_at { // BEGIN_DISMOD_AT_NAMESPACE
+namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 void analyze_chol_hes_ran(
 	size_t                       n_fixed  ,
@@ -230,4 +230,4 @@ double logdet_chol_hes_ran(size_t n_random)
 }
 
 
-} // END_DISMOD_AT_NAMESPACE
+} // END_CPPAD_MIXED_NAMESPACE

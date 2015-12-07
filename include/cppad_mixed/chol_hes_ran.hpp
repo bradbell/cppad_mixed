@@ -1,6 +1,6 @@
 // $Id:$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -8,12 +8,12 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# ifndef DISMOD_AT_CHOL_HES_RAN_HPP
-# define DISMOD_AT_CHOL_HES_RAN_HPP
+# ifndef CPPAD_MIXED_CHOL_HES_RAN_HPP
+# define CPPAD_MIXED_CHOL_HES_RAN_HPP
 
 # include <Eigen/Sparse>
 
-namespace dismod_at {
+namespace cppad_mixed {
 	// This would be member of cppad_mixed class if it were not for all the
 	// warnings Eigen generates.
 	extern Eigen::SimplicialLDLT<

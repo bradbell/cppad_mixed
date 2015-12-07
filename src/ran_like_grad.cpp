@@ -1,6 +1,6 @@
 // $Id:$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -8,7 +8,7 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <dismod_at/cppad_mixed.hpp>
+# include <cppad_mixed/cppad_mixed.hpp>
 /*
 $begin ran_like_grad$$
 $spell
@@ -63,7 +63,7 @@ $codei%
 It contains the gradient $latex f_u^{(1)} ( \theta , u )$$.
 
 $children%
-	example/devel/cppad_mixed/private/ran_like_grad_xam.cpp
+	example/private/ran_like_grad_xam.cpp
 %$$
 $head Example$$
 The file $cref ran_like_grad_xam.cpp$$ contains an example
@@ -73,7 +73,7 @@ It returns true, if the test passes, and false otherwise.
 $end
 */
 
-namespace dismod_at { // BEGIN_DISMOD_AT_NAMESPACE
+namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ran_like_grad
@@ -108,5 +108,5 @@ CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_grad(
 }
 
 
-} // END_DISMOD_AT_NAMESPACE
+} // END_CPPAD_MIXED_NAMESPACE
 

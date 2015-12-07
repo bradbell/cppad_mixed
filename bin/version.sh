@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # $Id:$
 #  --------------------------------------------------------------------------
-# dismod_at: Estimating Disease Rates as Functions of Age and Time
+# cppad_mixed: Estimating Disease Rates as Functions of Age and Time
 #           Copyright (C) 2014-15 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
@@ -37,7 +37,7 @@ then
 		version="$2"
 	fi
 	echo $version
-	sed -e "s|\(SET(dismod_at_version\).*|\1 \"$version\" )|" \
+	sed -e "s|\(SET(cppad_mixed_version\).*|\1 \"$version\" )|" \
 		-i.old  CMakeLists.txt
 	if diff CMakeLists.txt.old CMakeLists.txt
 	then
@@ -51,8 +51,8 @@ then
 fi
 # -----------------------------------------------------------------------------
 # get the current version number
-version=`sed -n -e '/SET(dismod_at_version/p' CMakeLists.txt | \
-	sed -e 's|SET(dismod_at_version *"\([0-9]\{8\}\)".*|\1|'`
+version=`sed -n -e '/SET(cppad_mixed_version/p' CMakeLists.txt | \
+	sed -e 's|SET(cppad_mixed_version *"\([0-9]\{8\}\)".*|\1|'`
 if ! (echo $version | grep '[0-9]\{8\}') > /dev/null
 then
 	echo 'bin/version.sh: Cannot find verison number in CMakeLists.txt'
@@ -72,7 +72,7 @@ list='
 '
 for name in $list
 do
-	sed -e "s|dismod_at-[0-9]\{8\}|dismod_at-$version|"  \
+	sed -e "s|cppad_mixed-[0-9]\{8\}|cppad_mixed-$version|"  \
 		-e "s|version = '[0-9]\{8\}'|version = '$version'|" \
 		-i.old $name
 	#

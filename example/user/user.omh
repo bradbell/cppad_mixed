@@ -1,6 +1,6 @@
 $Id:$
 -----------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -13,12 +13,12 @@ $begin cppad_mixed_user$$
 $section Approx_mixed User Examples$$
 
 $childtable%
-	example/devel/cppad_mixed/user/mixed_derived_xam.cpp%
-	example/devel/cppad_mixed/user/optimize_random_xam.cpp%
-	example/devel/cppad_mixed/user/optimize_fixed_xam.cpp%
-	example/devel/cppad_mixed/user/no_random_xam.cpp%
-	example/devel/cppad_mixed/user/data_mismatch_xam.cpp%
-	example/devel/cppad_mixed/user/mixed_constraint_xam.cpp%
+	example/user/mixed_derived_xam.cpp%
+	example/user/optimize_random_xam.cpp%
+	example/user/optimize_fixed_xam.cpp%
+	example/user/no_random_xam.cpp%
+	example/user/data_mismatch_xam.cpp%
+	example/user/mixed_constraint_xam.cpp%
 	speed/capture_xam.cpp
 %$$
 

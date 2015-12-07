@@ -1,6 +1,6 @@
 // $Id$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -8,12 +8,12 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# ifndef DISMOD_AT_NEWTON_STEP_HPP
-# define DISMOD_AT_NEWTON_STEP_HPP
+# ifndef CPPAD_MIXED_NEWTON_STEP_HPP
+# define CPPAD_MIXED_NEWTON_STEP_HPP
 
 # include <cppad/cppad.hpp>
 
-namespace dismod_at { // BEGIN_DISMOD_AT_NAMESPACE
+namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 
 class newton_step_algo {
@@ -57,6 +57,6 @@ public:
 };
 
 
-} // END_DISMOD_AT_NAMESPACE
+} // END_CPPAD_MIXED_NAMESPACE
 
 # endif

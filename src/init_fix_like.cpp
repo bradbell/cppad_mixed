@@ -1,6 +1,6 @@
 // $Id:$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -8,7 +8,7 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <dismod_at/cppad_mixed.hpp>
+# include <cppad_mixed/cppad_mixed.hpp>
 
 /*
 $begin init_fix_like$$
@@ -102,7 +102,7 @@ $end
 */
 # define DEBUG_FIX_LIKE_FUN 0
 
-namespace dismod_at { // BEGIN_DISMOD_AT_NAMESPACE
+namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 {	assert( fixed_vec.size() == n_fixed_ );
@@ -231,4 +231,4 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 }
 
 
-} // END_DISMOD_AT_NAMESPACE
+} // END_CPPAD_MIXED_NAMESPACE

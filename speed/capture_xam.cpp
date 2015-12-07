@@ -1,6 +1,6 @@
 // $Id:$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -174,9 +174,9 @@ $end
 # include <ctime>
 # include <gsl/gsl_randist.h>
 # include <cppad/vector.hpp>
-# include <dismod_at/cppad_mixed.hpp>
-# include <dismod_at/manage_gsl_rng.hpp>
-# include <dismod_at/configure.hpp>
+# include <cppad_mixed/cppad_mixed.hpp>
+# include <cppad_mixed/manage_gsl_rng.hpp>
+# include <cppad_mixed/configure.hpp>
 
 namespace { // BEGIN_EMPTY_NAMESPACE
 
@@ -193,7 +193,7 @@ void simulate(
 {	assert( theta.size() == 3 );
 	assert( y.size() == I * T );
 	// random number generator
-	gsl_rng* rng = dismod_at::get_gsl_rng();
+	gsl_rng* rng = cppad_mixed::get_gsl_rng();
 	//
 	// simulate population sizes
 	vector<double> N(I);
@@ -227,7 +227,7 @@ void simulate(
 }
 
 // cppad_mixed derived class
-class mixed_derived : public dismod_at::cppad_mixed {
+class mixed_derived : public cppad_mixed::cppad_mixed {
 private:
 	const size_t          I_; // number of locations
 	const size_t          T_; // number of times
@@ -247,7 +247,7 @@ public:
 		vector<size_t>&        y           )
 		:
 		// n_fixed = 3, n_random = T
-		dismod_at::cppad_mixed(3, T, quasi_fixed) ,
+		cppad_mixed::cppad_mixed(3, T, quasi_fixed) ,
 		I_(I)            ,
 		T_(T)            ,
 		y_(y)
@@ -388,10 +388,10 @@ int main(int argc, char *argv[])
 	}
 	//
 	size_t random_seed = std::atoi( argv[1] );
-	random_seed        = dismod_at::new_gsl_rng( random_seed );
+	random_seed        = cppad_mixed::new_gsl_rng( random_seed );
 	//
 	size_t n_fixed  = 3;
-	std::time_t start_time = std::time( DISMOD_AT_NULL_PTR );
+	std::time_t start_time = std::time( CPPAD_MIXED_NULL_PTR );
 	// problem size
 	size_t n_random = 30;
 	size_t I = 25;
@@ -475,7 +475,7 @@ int main(int argc, char *argv[])
 		u_upper,
 		u_in
 	);
-	std::time_t end_time = std::time( DISMOD_AT_NULL_PTR );
+	std::time_t end_time = std::time( CPPAD_MIXED_NULL_PTR );
 	// check reults
 	for(size_t j = 0; j < n_fixed; j++)
 		ok &= std::fabs( theta_out[j] / theta_sim[j] - 1.0 ) < 3e-1;
@@ -490,7 +490,7 @@ int main(int argc, char *argv[])
 			cout << theta_out[j] / theta_sim[j] - 1.0 << endl;
 	}
 	//
-	dismod_at::free_gsl_rng();
+	cppad_mixed::free_gsl_rng();
 	#
 	if( ok )
 		return 0;

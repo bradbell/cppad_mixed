@@ -1,6 +1,6 @@
 // $Id$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -19,7 +19,7 @@ $$
 $section C++ mixed_derived: Example and Test$$
 
 $code
-$verbatim%example/devel/cppad_mixed/user/mixed_derived_xam.cpp
+$verbatim%example/user/mixed_derived_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -27,7 +27,7 @@ $end
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>
-# include <dismod_at/cppad_mixed.hpp>
+# include <cppad_mixed/cppad_mixed.hpp>
 
 
 namespace {
@@ -35,7 +35,7 @@ namespace {
 	using CppAD::log;
 	using CppAD::AD;
 
-	class mixed_derived : public dismod_at::cppad_mixed {
+	class mixed_derived : public cppad_mixed::cppad_mixed {
 	private:
 		const vector<double>& y_;
 	public:
@@ -46,7 +46,7 @@ namespace {
 			bool   quasi_fixed                ,
 			const vector<double>& y           )
 			:
-			dismod_at::cppad_mixed(n_fixed, n_random, quasi_fixed) ,
+			cppad_mixed::cppad_mixed(n_fixed, n_random, quasi_fixed) ,
 			y_(y)
 		{ }
 		// implementation of ran_like
@@ -132,8 +132,8 @@ bool mixed_derived_xam(void)
 	double pi  = 4.0 * std::atan(1.0);
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 
-	typedef dismod_at::cppad_mixed::a1_double a1_double;
-	typedef dismod_at::cppad_mixed::a2_double a2_double;
+	typedef cppad_mixed::cppad_mixed::a1_double a1_double;
+	typedef cppad_mixed::cppad_mixed::a2_double a2_double;
 
 	size_t n_data   = 10;
 	size_t n_fixed  = n_data;

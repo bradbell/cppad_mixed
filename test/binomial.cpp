@@ -1,6 +1,6 @@
 // $Id:$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -11,8 +11,8 @@ see http://www.gnu.org/licenses/agpl.txt
 
 # include <gsl/gsl_randist.h>
 # include <cppad/vector.hpp>
-# include <dismod_at/cppad_mixed.hpp>
-# include <dismod_at/manage_gsl_rng.hpp>
+# include <cppad_mixed/cppad_mixed.hpp>
+# include <cppad_mixed/manage_gsl_rng.hpp>
 
 namespace { // BEGIN_EMPTY_NAMESPACE
 
@@ -30,7 +30,7 @@ void simulate(
 {	assert( theta.size() == 1 );
 	assert( y.size() == I );
 	//
-	gsl_rng* rng = dismod_at::get_gsl_rng();
+	gsl_rng* rng = cppad_mixed::get_gsl_rng();
 	//
 	// simulate population sizes
 	double p  = theta[0];
@@ -40,7 +40,7 @@ void simulate(
 }
 
 // cppad_mixed derived class
-class mixed_derived : public dismod_at::cppad_mixed {
+class mixed_derived : public cppad_mixed::cppad_mixed {
 private:
 	const size_t          N_;      // size of population
 	const vector<size_t>& y_;      // reference to data values
@@ -51,7 +51,7 @@ public:
 	mixed_derived(size_t N, vector<size_t>&  y)
 		:
 		// n_fixed = 1, n_random = 0, quasi_fixed = false
-		dismod_at::cppad_mixed(1, 0, false) ,
+		cppad_mixed::cppad_mixed(1, 0, false) ,
 		N_(N)                               ,
 		y_(y)
 	{	logfac_.resize(N+1);
@@ -117,7 +117,7 @@ public:
 bool binomial(void)
 {	bool ok = true;
 	size_t n_fixed = 1;
-	size_t random_seed = dismod_at::new_gsl_rng(0);
+	size_t random_seed = cppad_mixed::new_gsl_rng(0);
 
 	// simulation parameters
 	size_t N = 20;
@@ -180,6 +180,6 @@ bool binomial(void)
 	//
 	if( ! ok )
 		std::cout << endl << "random_seed = " << random_seed << endl;
-	dismod_at::free_gsl_rng();
+	cppad_mixed::free_gsl_rng();
 	return ok;
 }

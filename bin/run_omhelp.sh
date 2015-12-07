@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # $Id$
 #  --------------------------------------------------------------------------
-# dismod_at: Estimating Disease Rates as Functions of Age and Time
+# cppad_mixed: Estimating Disease Rates as Functions of Age and Time
 #           Copyright (C) 2014-15 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
@@ -44,25 +44,25 @@ then
 fi
 # -----------------------------------------------------------------------------
 version=`bin/version.sh get`
-if [ ! -e "doc/dismod_at-$version.tgz" ]
+if [ ! -e "doc/cppad_mixed-$version.tgz" ]
 then
-	echo_eval rm -rf "doc/dismod_at-$version"
-	echo_eval mkdir "doc/dismod_at-$version"
+	echo_eval rm -rf "doc/cppad_mixed-$version"
+	echo_eval mkdir "doc/cppad_mixed-$version"
 	for file in `git ls-files`
 	do
 		sub_dir=`echo $file | sed -e 's|/[^/]*$||'`
 		if [ "$sub_dir" != "$file" ]
 		then
-			if [ ! -e doc/dismod_at-$version/$sub_dir ]
+			if [ ! -e doc/cppad_mixed-$version/$sub_dir ]
 			then
-				mkdir -p doc/dismod_at-$version/$sub_dir
+				mkdir -p doc/cppad_mixed-$version/$sub_dir
 			fi
 		fi
-		cp $file doc/dismod_at-$version/$file
+		cp $file doc/cppad_mixed-$version/$file
 	done
 	echo_eval cd doc
-	echo_eval tar -czf dismod_at-$version.tgz dismod_at-$version
-	echo_eval rm -r dismod_at-$version
+	echo_eval tar -czf cppad_mixed-$version.tgz cppad_mixed-$version
+	echo_eval rm -r cppad_mixed-$version
 else
 	echo_eval cd doc
 fi

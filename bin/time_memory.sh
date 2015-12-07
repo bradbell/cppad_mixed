@@ -1,7 +1,7 @@
 # /usr/bin/bash -e
 # $Id:$
 #  --------------------------------------------------------------------------
-# dismod_at: Estimating Disease Rates as Functions of Age and Time
+# cppad_mixed: Estimating Disease Rates as Functions of Age and Time
 #           Copyright (C) 2014-15 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
@@ -25,9 +25,9 @@ random_seed="$1"
 # -----------------------------------------------------------------------------
 python3 speed/simulated.py $random_seed | tee build/speed/time.out
 cd build/speed
-../devel/dismod_at example.db start
+../devel/cppad_mixed example.db start
 rm memory.out.*
-valgrind --tool=massif ../devel/dismod_at example.db fit
+valgrind --tool=massif ../devel/cppad_mixed example.db fit
 ms_print massif.out.* > memory.out
 new.sh time.out memory.out
 cd ../..

@@ -1,6 +1,6 @@
 // $Id$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -118,7 +118,7 @@ h_u^{(1)} [ \theta , \hat{u} ( \theta ) ] \hat{u}^{(1)} ( \theta )
 \] $$
 
 $code
-$verbatim%test/devel/cppad_mixed/der_var_hes.cpp
+$verbatim%test/src/der_var_hes.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -126,7 +126,7 @@ $end
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>
-# include <dismod_at/cppad_mixed.hpp>
+# include <cppad_mixed/cppad_mixed.hpp>
 
 namespace {
 	using CppAD::vector;
@@ -135,7 +135,7 @@ namespace {
 	using CppAD::abs;
 	using CppAD::AD;
 
-	class mixed_derived : public dismod_at::cppad_mixed {
+	class mixed_derived : public cppad_mixed::cppad_mixed {
 	private:
 		const double y_;
 		const double sigma_u_, sigma_y_;
@@ -148,7 +148,7 @@ namespace {
 			double sigma_u      ,
 			double sigma_y      ) :
 			// quasi_fixed = false
-			dismod_at::cppad_mixed(n_fixed, n_random, false) ,
+			cppad_mixed::cppad_mixed(n_fixed, n_random, false) ,
 			y_(y) , sigma_u_(sigma_u), sigma_y_(sigma_y)
 		{	assert( n_fixed == 1 );
 			assert( n_random == 1 );

@@ -1,6 +1,6 @@
 // $Id$
 /* --------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -23,7 +23,7 @@ This example is not part of the
 $cref/cppad_mixed public API/cppad_mixed_public/$$.
 
 $code
-$verbatim%example/devel/cppad_mixed/private/ran_like_grad_xam.cpp
+$verbatim%example/private/ran_like_grad_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -31,14 +31,14 @@ $end
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>
-# include <dismod_at/cppad_mixed.hpp>
+# include <cppad_mixed/cppad_mixed.hpp>
 
 namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
 
-	class mixed_derived : public dismod_at::cppad_mixed {
+	class mixed_derived : public cppad_mixed::cppad_mixed {
 	private:
 		const vector<double>& y_;
 	public:
@@ -49,7 +49,7 @@ namespace {
 			const vector<double>& y           )
 			:
 			// quasi_fixed = false
-			dismod_at::cppad_mixed(n_fixed, n_random, false) ,
+			cppad_mixed::cppad_mixed(n_fixed, n_random, false) ,
 			y_(y)
 		{ }
 	private:

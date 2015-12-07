@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # $Id:$
 #  --------------------------------------------------------------------------
-# dismod_at: Estimating Disease Rates as Functions of Age and Time
+# cppad_mixed: Estimating Disease Rates as Functions of Age and Time
 #           Copyright (C) 2014-15 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
@@ -16,9 +16,9 @@ then
 fi
 file_list=`git ls-files | sed -n -e '/\.cpp$/p'`
 define_list='
-	DISMOD_AT_VERSION
-	DISMOD_AT_HAS_SUITESPARSE
-	DISMOD_AT_NULL_PTR
+	CPPAD_MIXED_VERSION
+	CPPAD_MIXED_HAS_SUITESPARSE
+	CPPAD_MIXED_NULL_PTR
 	CPPAD_MIXED_SET_SPARSITY
 '
 for file in $file_list
@@ -32,19 +32,19 @@ do
 			required='yes'
 		fi
 	done
-	if grep '# *include *<dismod_at/configure.hpp>' $file > /dev/null
+	if grep '# *include *<cppad_mixed/configure.hpp>' $file > /dev/null
 	then
 		present='yes'
 	fi
 	if [ "$required" == 'yes' ] && [ "$present" == 'no' ]
 	then
-		echo "missing: # include <dismod_at/configure.hpp>"
+		echo "missing: # include <cppad_mixed/configure.hpp>"
 		echo "	$file"
 		exit 1
 	fi
 	if [ "$required" == 'no' ] && [ "$present" == 'yes' ]
 	then
-		echo "unecessary: # include <dismod_at/configure.hpp>"
+		echo "unecessary: # include <cppad_mixed/configure.hpp>"
 		echo "	$file"
 		exit 1
 	fi

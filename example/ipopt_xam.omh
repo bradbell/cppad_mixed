@@ -1,6 +1,6 @@
 $Id:$
 -----------------------------------------------------------------------------
-dismod_at: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
@@ -40,6 +40,6 @@ L(x, \lambda, z^L, z^U )
 - ( x_1 - 2 )^2  + \lambda ( x_0^2 + x_1 - 1) + z^L (- x_0 - 1) + z^U (x_0 - 1)
 \] $$
 
-$childtable%example/devel/cppad_mixed/ipopt_xam_run.cpp%$$
+$childtable%example/ipopt_xam_run.cpp%$$
 
 $end
