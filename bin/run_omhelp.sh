@@ -44,13 +44,8 @@ then
 fi
 # -----------------------------------------------------------------------------
 version=`bin/version.sh get`
-list=`ls doc/cppad_mixed-*.tgz`
-for file in $list
-do
-	echo_eval rm $file
-done
-echo_eval rm -rf "doc/cppad_mixed-$version"
-echo_eval mkdir "doc/cppad_mixed-$version"
+rm -rf doc
+echo_eval mkdir -p doc/cppad_mixed-$version
 for file in `git ls-files`
 do
 	sub_dir=`echo $file | sed -e 's|/[^/]*$||'`
