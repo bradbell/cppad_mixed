@@ -26,7 +26,7 @@ $$
 $aindex section head subhead$$
 $comment END: settings used by all section ---------------------------- $$
 
-$section cppad_mixed: Laplace Approximation For Mixed Effects Models$$
+$section Laplace Approximation of Mixed Effects Models: cppad_mixed-20151208$$
 
 $head Fixed Effects, theta$$
 For each $code cppad_mixed$$ object,
@@ -123,11 +123,12 @@ $icode%vec%[0] + CppAD::abs(%vec%[1]) + %...% CppAD::abs(%vec%[%s%-1])
 %$$
 where $icode%s% = %vec%.size()%$$.
 
-$childtable%
-	src/theory.omh%
-	example/user/user.omh%
-	src/manage_gsl_rng.cpp%
-	include/cppad/mixed/cppad_mixed.hpp
+$childtable%omh/install_unix.omh
+	%src/theory.omh
+	%example/user/user.omh
+	%src/manage_gsl_rng.cpp
+	%include/cppad/mixed/cppad_mixed.hpp
+	%omh/whats_new.omh
 %$$
 
 

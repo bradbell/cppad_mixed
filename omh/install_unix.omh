@@ -1,0 +1,166 @@
+$Id:$
+-----------------------------------------------------------------------------
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
+          Copyright (C) 2014-15 University of Washington
+             (Bradley M. Bell bradbell@uw.edu)
+
+This program is distributed under the terms of the
+	     GNU Affero General Public License version 3.0 or later
+see http://www.gnu.org/licenses/agpl.txt
+-----------------------------------------------------------------------------
+$begin install_unix$$
+$dollar @$$
+$spell
+	cppad
+	tarball
+	xzf
+	tgz
+	ipopt
+	config
+	gsl-devel
+	eigen
+	CppAD
+	libdir
+	pkgconfig
+	cmake
+$$
+
+$section Installing cppad_mixed in Unix$$
+
+$head Download$$
+Download the tarball $href%cppad_mixed-20151208.tgz%$$
+and then extract it using the command
+$codei%
+	tar -xzf cppad_mixed-20151208.tgz
+%$$
+
+$head System Requirements$$
+The following programs are required by cppad_mixed
+and should have standard system installs:
+
+$subhead C++ Compiler$$
+The $code cppad_mixed$$ program can be compiled by any C++98 compliant compiler;
+e.g., $code g++$$.
+(Note that a C++11 compiler would be better.)
+
+$subhead Fortran Compiler$$
+A fortran compiler is required by $code ipopt$$ which in turn
+is required by $code cppad_mixed$$.
+
+$subhead cmake$$
+$href%http://www.cmake.org/%cmake%$$,
+a program that installs other programs.
+
+$subhead pkg-config$$
+The $href%http://www.freedesktop.org/wiki/Software/pkg-config/%pkg-config%$$
+program must be installed.
+
+$subhead gsl$$
+$href%http://gnuwin32.sourceforge.net/packages/gsl.htm%gsl%$$,
+the gnu scientific library.
+Note that the development headers are required; e.g.,
+on Fedora or Red-Hat one needs to install $code gsl-devel$$.
+
+$head Special Requirements$$
+The following programs are required by cppad_mixed
+and may not have standard system installs:
+
+$subhead eigen$$
+The $href%http://eigen.tuxfamily.org%eigen%$$
+linear algebra package.
+The commands
+$codei%
+	cd cppad_mixed-20151208
+	bin/install_eigen.sh
+%$$
+can be used for this purpose.
+If necessary, first adjust the setting
+of the following variables in that script.
+$code
+$verbatim%bin/install_eigen.sh%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
+$$
+
+$subhead Ipopt$$
+The $href%https://projects.coin-or.org/Ipopt%Ipopt%$$
+optimization package.
+The commands
+$codei%
+	cd cppad_mixed-20151208
+	bin/install_ipopt.sh
+%$$
+can be used for this purpose.
+If necessary, first adjust the setting
+of the following variables in that script.
+$code
+$verbatim%bin/install_ipopt.sh%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
+$$
+
+$subhead CppAD$$
+The $href%http://www.coin-or.org/CppAD/%cppad%$$
+C++ algorithmic differentiation package.
+The commands
+$codei%
+	cd cppad_mixed-20151208
+	bin/install_cppad.sh
+%$$
+can be used for this purpose.
+If necessary, first adjust the setting
+of the following variables in that script.
+$code
+$verbatim%bin/install_cppad.sh%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
+$$
+
+$head cppad_mixed$$
+The steps above should only need to be executed once, not for
+each new version of $code cppad_mixed$$
+(unless the $cref whats_new$$ release notes say otherwise).
+The steps below will need to be executed each time you install
+a new version of $code cppad_mixed$$:
+
+$subhead Setup$$
+$children%bin/run_cmake.sh%$$
+The file $cref%bin/run_cmake.sh%run_cmake.sh%$$ has setting that
+you should change so they correspond to your machine.
+
+$subhead Cmake Command$$
+After changing $code bin/run_cmake.sh$$ to work for your system,
+execute the following command:
+$codep
+	bin/run_cmake.sh
+$$
+It is possible that, when running the $code bin/run_cmake.sh$$ command,
+you will get the message $code package 'ipopt' not found$$.
+In this case, you need to execute the following command
+$codei%
+	export PKG_CONFIG_PATH="@PKG_CONFIG_PATH:%ipopt_prefix%/%libdir%/pkgconfig"
+%$$
+where $icode ipopt_prefix$$ is the prefix for the Ipopt install and
+$icode libdir$$ is $code lib$$ or $code lib64$$ depending on which directory
+exists.
+In the default case this would be
+$codei%
+export PKG_CONFIG_PATH="@PKG_CONFIG_PATH:@HOME/prefix/cppad_mixed/lib64/pkgconfig"
+%$$
+
+$subhead Test$$
+The following commands are optional and will
+build and run the examples, correctness tests, and speed tests:
+$codep
+	cd build
+	make check
+	make speed
+$$
+
+$subhead Install$$
+The following command will,
+build the cppad_mixed library and include files:
+$codep
+	cd build
+	make install
+$$
+
+$head Example$$
+The file $cref capture_xam.cpp$$ contains an examples and speed test
+of $code cppad_mixed$$.
+
+$end
