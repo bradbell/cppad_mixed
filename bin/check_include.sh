@@ -15,7 +15,7 @@ then
 	exit 1
 fi
 # -----------------------------------------------------------------------------
-cd include/cppad_mixed
+cd include/cppad/mixed
 list=`ls *.hpp`
 for file in $list
 do
@@ -24,13 +24,13 @@ do
 	if ! grep "^# ifndef $check" $file > /dev/null
 	then
 		echo "# ifndef $check"
-		echo "missing in file include/cppad_mixed/$file"
+		echo "missing in file include/cppad/mixed/$file"
 		exit 1
 	fi
 	if ! grep "^# define $check" $file > /dev/null
 	then
 		echo "# define $check"
-		echo "missing in file include/cppad_mixed/$file"
+		echo "missing in file include/cppad/mixed/$file"
 		exit 1
 	fi
 done

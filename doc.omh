@@ -10,6 +10,7 @@ see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
 $begin cppad_mixed$$
 $spell
+	CppAD
 	cppad
 	CppAD
 	vec
@@ -126,7 +127,7 @@ $childtable%
 	src/theory.omh%
 	example/user/user.omh%
 	src/manage_gsl_rng.cpp%
-	include/cppad_mixed/cppad_mixed.hpp
+	include/cppad/mixed/cppad_mixed.hpp
 %$$
 
 

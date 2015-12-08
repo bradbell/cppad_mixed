@@ -8,10 +8,11 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad_mixed/cppad_mixed.hpp>
+# include <cppad/mixed/cppad_mixed.hpp>
 /*
 $begin ran_like_grad$$
 $spell
+	CppAD
 	cppad
 	vec
 	const
@@ -73,7 +74,7 @@ It returns true, if the test passes, and false otherwise.
 $end
 */
 
-namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ran_like_grad
@@ -108,5 +109,5 @@ CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_grad(
 }
 
 
-} // END_CPPAD_MIXED_NAMESPACE
+} } // END_CPPAD_MIXED_NAMESPACE
 

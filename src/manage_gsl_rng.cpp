@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin manage_gsl_rng$$
 $spell
+	CppAD
 	std
 	gsl
 	rng
@@ -89,14 +90,14 @@ $end
 # include <gsl/gsl_rng.h>
 # include <ctime>
 # include <cassert>
-# include <cppad_mixed/manage_gsl_rng.hpp>
+# include <cppad/mixed/manage_gsl_rng.hpp>
 
 namespace {
 	static size_t count_seed_       = 0;
 	static gsl_rng* const null_ptr_ = 0;
 	static gsl_rng*       rng_      = null_ptr_;
 }
-namespace cppad_mixed {
+namespace CppAD { namespace mixed {
 	size_t new_gsl_rng(size_t s_in)
 	{	// check that we do not currently have a random number generator
 		assert( rng_ == null_ptr_ );
@@ -128,4 +129,4 @@ namespace cppad_mixed {
 		gsl_rng_free(rng_);
 		rng_ = null_ptr_;
 	}
-}
+} }

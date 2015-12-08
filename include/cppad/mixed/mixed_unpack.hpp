@@ -8,14 +8,15 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# ifndef CPPAD_MIXED_MIXED_PACK_HPP
-# define CPPAD_MIXED_MIXED_PACK_HPP
-# include <cppad_mixed/cppad_mixed.hpp>
-# include <cppad_mixed/a2_double.hpp>
+# ifndef CPPAD_MIXED_MIXED_UNPACK_HPP
+# define CPPAD_MIXED_MIXED_UNPACK_HPP
+# include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/a2_double.hpp>
 
 /*
-$begin cppad_mixed_pack$$
+$begin cppad_mixed_unpack$$
 $spell
+	CppAD
 	cppad
 	vec
 	const
@@ -27,9 +28,9 @@ $$
 $section cppad_mixed: Pack Fixed Effect and Random Effects Into One Vector$$
 
 $head Syntax$$
-$codei%pack(%fixed_one%, %random_vec%, %both_vec%)
+$codei%unpack(%fixed_one%, %random_vec%, %both_vec%)
 %$$
-$codei%pack(%fixed_one%, %fixed_two%, %random_vec%, %three_vec%)
+$codei%unpack(%fixed_one%, %fixed_two%, %random_vec%, %three_vec%)
 %$$
 
 $head Private$$
@@ -37,20 +38,21 @@ This function is $code private$$ to the $code cppad_mixed$$ class
 and cannot be used by a derived
 $cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$.
 
-$head Float_unpack$$
+$head Float_pack$$
 This can be any type.
 
-$head Float_pack$$
-If $icode x$$ has type $icode Float_unpack$$,
-the syntax $icode%Float_pack%(%x%)%$$ must convert $icode x$$
-to the type $icode Float_pack$$.
+$head Float_unpack$$
+If $icode x$$ has type $icode Float_pack$$,
+the syntax $icode%Float_unpack%(%x%)%$$ must convert $icode x$$
+to the type $icode Float_unpack$$.
 
 $head fixed_one$$
 This argument has prototype
 $codei%
-	const CppAD::vector<%Float_unpack%>& %fixed_one%
+	CppAD::vector<%Float_unpack%>& %fixed_one%
 %$$
-It specifies the a value for the
+The input value of its elements does not matter.
+Upon return, it contains the value of the first
 $cref/fixed effects/cppad_mixed/Fixed Effects, theta/$$.
 The size of this vector must be equal to
 $cref/n_fixed_/cppad_mixed_private/n_fixed_/$$.
@@ -58,9 +60,10 @@ $cref/n_fixed_/cppad_mixed_private/n_fixed_/$$.
 $head fixed_two$$
 This argument has prototype
 $codei%
-	const CppAD::vector<%Float_unpack%>& %fixed_two%
+	CppAD::vector<%Float_unpack%>& %fixed_two%
 %$$
-If present, it also specifies the a value for the
+The input value of its elements does not matter.
+Upon return, it contains the value of the second
 $cref/fixed effects/cppad_mixed/Fixed Effects, theta/$$.
 The size of this vector must be equal to
 $cref/n_fixed_/cppad_mixed_private/n_fixed_/$$.
@@ -68,78 +71,73 @@ $cref/n_fixed_/cppad_mixed_private/n_fixed_/$$.
 $head random_vec$$
 This argument has prototype
 $codei%
-	const CppAD::vector<%Float_unpack%>& %random_vec%
+	CppAD::vector<%Float_unpack%>& %random_vec%
 %$$
-It specifies a value for the
+The input value of its elements does not matter.
+Upon return, it contains the value of the
 $cref/random effects/cppad_mixed/Random Effects, u/$$.
 The size of this vector must be equal to
-$cref/n_fixed_/cppad_mixed_private/n_random_/$$.
+$cref/n_random_/cppad_mixed_private/n_random_/$$.
 
 $head both_vec$$
 This argument has prototype
 $codei%
-	CppAD::vector<%Float_pack%>& %both_vec%
+	const CppAD::vector<%Float_pack%>& %both_vec%
 %$$
 If present, the size of this vector must be equal to
 $icode%n_fixed_% + %n_random_%$$.
-The input value of its elements does not matter.
-Upon return, it contains the values in
-$icode fixed_one$$ and $icode random_vec$$ as one vector in that order;
-i.e., $icode fixed_one$$ comes first and then $icode random_vec$$.
+It contains the fixed effect and random effects as one vector.
 
 $head three_vec$$
 This argument has prototype
 $codei%
-	CppAD::vector<%Float_pack%>& %three_vec%
+	const CppAD::vector<%Float_pack%>& %three_vec%
 %$$
 If present, the size of this vector must be equal to
 $codei%2*%n_fixed_% + %n_random_%$$.
-The input value of its elements does not matter.
-Upon return, it contains the values in
-$icode fixed_one$$, $icode fixed_two$$, and $icode random_vec$$ as one vector.
-The order of the result is unspecified.
+It contains the first fixed effects vector,
+the second fixed effects vector,
+and random effects as one vector.
 
 $end
 */
-# include <cppad_mixed/cppad_mixed.hpp>
-# include <cppad_mixed/a2_double.hpp>
-
-namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 template <class Float_unpack, class Float_pack>
-void cppad_mixed::pack(
-	const CppAD::vector<Float_unpack>& fixed_one  ,
-	const CppAD::vector<Float_unpack>& random_vec ,
-	CppAD::vector<Float_pack>&         both_vec   ) const
+void cppad_mixed::unpack(
+	CppAD::vector<Float_unpack>&      fixed_one  ,
+	CppAD::vector<Float_unpack>&      random_vec ,
+	const CppAD::vector<Float_pack>&  both_vec   ) const
 {
 	assert( fixed_one.size() == n_fixed_ );
 	assert( random_vec.size() == n_random_ );
 	assert( both_vec.size() == n_fixed_ + n_random_ );
 	for(size_t j = 0; j < n_fixed_; j++)
-		both_vec[j] = Float_pack( fixed_one[j] );
+		fixed_one[j] = Float_unpack( both_vec[j] );
 	for(size_t j = 0; j < n_random_; j++)
-		both_vec[n_fixed_ + j] = Float_pack( random_vec[j] );
+		random_vec[j] = Float_unpack( both_vec[n_fixed_ + j] );
 }
+
 template <class Float_unpack, class Float_pack>
-void cppad_mixed::pack(
-	const CppAD::vector<Float_unpack>& fixed_one  ,
-	const CppAD::vector<Float_unpack>& fixed_two  ,
-	const CppAD::vector<Float_unpack>& random_vec ,
-	CppAD::vector<Float_pack>&         three_vec  ) const
+void cppad_mixed::unpack(
+	CppAD::vector<Float_unpack>&      fixed_one  ,
+	CppAD::vector<Float_unpack>&      fixed_two  ,
+	CppAD::vector<Float_unpack>&      random_vec ,
+	const CppAD::vector<Float_pack>&  three_vec  ) const
 {
 	assert( fixed_one.size() == n_fixed_ );
 	assert( fixed_two.size() == n_fixed_ );
 	assert( random_vec.size() == n_random_ );
 	assert( three_vec.size() == 2 * n_fixed_ + n_random_ );
 	for(size_t j = 0; j < n_fixed_; j++)
-	{	three_vec[j] = Float_pack( fixed_one[j] );
-		three_vec[n_fixed_ + j] = Float_pack( fixed_two[j] );
+	{	fixed_one[j] = Float_unpack( three_vec[j] );
+		fixed_two[j] = Float_unpack( three_vec[n_fixed_ + j] );
 	}
 	for(size_t j = 0; j < n_random_; j++)
-		three_vec[2 * n_fixed_ + j] = Float_pack( random_vec[j] );
+		random_vec[j] = Float_unpack( three_vec[2 * n_fixed_ + j] );
 }
 
 
-} // END_CPPAD_MIXED_NAMESPACE
+} } // END_CPPAD_MIXED_NAMESPACE
 
 # endif

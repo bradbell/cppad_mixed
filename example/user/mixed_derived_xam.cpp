@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin mixed_derived_xam.cpp$$
 $spell
+	CppAD
 	cppad
 	interp
 	xam
@@ -27,7 +28,7 @@ $end
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>
-# include <cppad_mixed/cppad_mixed.hpp>
+# include <cppad/mixed/cppad_mixed.hpp>
 
 
 namespace {
@@ -35,7 +36,7 @@ namespace {
 	using CppAD::log;
 	using CppAD::AD;
 
-	class mixed_derived : public cppad_mixed::cppad_mixed {
+	class mixed_derived : public CppAD::mixed::cppad_mixed {
 	private:
 		const vector<double>& y_;
 	public:
@@ -46,7 +47,7 @@ namespace {
 			bool   quasi_fixed                ,
 			const vector<double>& y           )
 			:
-			cppad_mixed::cppad_mixed(n_fixed, n_random, quasi_fixed) ,
+			CppAD::mixed::cppad_mixed(n_fixed, n_random, quasi_fixed) ,
 			y_(y)
 		{ }
 		// implementation of ran_like
@@ -132,8 +133,8 @@ bool mixed_derived_xam(void)
 	double pi  = 4.0 * std::atan(1.0);
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 
-	typedef cppad_mixed::cppad_mixed::a1_double a1_double;
-	typedef cppad_mixed::cppad_mixed::a2_double a2_double;
+	typedef CppAD::mixed::cppad_mixed::a1_double a1_double;
+	typedef CppAD::mixed::cppad_mixed::a2_double a2_double;
 
 	size_t n_data   = 10;
 	size_t n_fixed  = n_data;

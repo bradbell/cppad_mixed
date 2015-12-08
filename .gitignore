@@ -4,7 +4,7 @@ git_commit.sh
 junk
 junk.*
 # cmake confiuration files
-include/cppad_mixed/configure.hpp
+include/cppad/mixed/configure.hpp
 # web version of documentation directory
 doc.tgz
 # directories that are automatically created

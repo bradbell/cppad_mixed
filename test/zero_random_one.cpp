@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin zero_random_one.cpp$$
 $spell
+	CppAD
 	cppad
 	hes
 	eval
@@ -58,14 +59,14 @@ $end
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>
-# include <cppad_mixed/cppad_mixed.hpp>
+# include <cppad/mixed/cppad_mixed.hpp>
 
 namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
 
-	class mixed_derived : public cppad_mixed::cppad_mixed {
+	class mixed_derived : public CppAD::mixed::cppad_mixed {
 	private:
 		const size_t n_fixed_;
 		const size_t n_random_;
@@ -82,7 +83,7 @@ namespace {
 			double sigma_y                    ,
 			const vector<double>& y           ) :
 			// quasi_fixed = false
-			cppad_mixed::cppad_mixed(n_fixed, n_random, false) ,
+			CppAD::mixed::cppad_mixed(n_fixed, n_random, false) ,
 			n_fixed_(n_fixed)                          ,
 			n_random_(n_random)                        ,
 			sigma_u_(sigma_u)                          ,

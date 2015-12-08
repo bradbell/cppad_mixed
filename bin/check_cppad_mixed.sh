@@ -14,7 +14,7 @@ then
 	echo 'bin/check_cppad_mixed.sh: must be executed from its parent directory'
 	exit 1
 fi
-include_file="$HOME/prefix/cppad_mixed/include/cppad_mixed/cppad_mixed.hpp"
+include_file="$HOME/prefix/cppad_mixed/include/cppad/mixed/cppad_mixed.hpp"
 library_file="$HOME/prefix/cppad_mixed/lib64/libcppad_mixed.a"
 example_file="example/user/no_random_xam.cpp"
 for file in $include_file $libary_file

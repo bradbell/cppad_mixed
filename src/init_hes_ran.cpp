@@ -8,13 +8,14 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad_mixed/cppad_mixed.hpp>
-# include <cppad_mixed/configure.hpp>
-# include <cppad_mixed/chol_hes_ran.hpp>
+# include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/configure.hpp>
+# include <cppad/mixed/chol_hes_ran.hpp>
 
 /*
 $begin init_hes_ran$$
 $spell
+	CppAD
 	init
 	cppad
 	hes hes
@@ -144,7 +145,7 @@ $end
 */
 
 
-namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 void cppad_mixed::init_hes_ran(
 	const d_vector& fixed_vec  ,
@@ -312,4 +313,4 @@ void cppad_mixed::init_hes_ran(
 }
 
 
-} // END_CPPAD_MIXED_NAMESPACE
+} } // END_CPPAD_MIXED_NAMESPACE

@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin no_random_xam.cpp$$
 $spell
+	CppAD
 	cppad
 	hes
 	eval
@@ -51,14 +52,14 @@ $end
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>
-# include <cppad_mixed/cppad_mixed.hpp>
+# include <cppad/mixed/cppad_mixed.hpp>
 
 namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
 
-	class mixed_derived : public cppad_mixed::cppad_mixed {
+	class mixed_derived : public CppAD::mixed::cppad_mixed {
 	private:
 		size_t                n_fixed_;
 		const vector<double>& z_;
@@ -69,7 +70,7 @@ namespace {
 			size_t n_random                   ,
 			bool   quasi_fixed                ,
 			const vector<double>& z           ) :
-			cppad_mixed::cppad_mixed(n_fixed, n_random, quasi_fixed) ,
+			CppAD::mixed::cppad_mixed(n_fixed, n_random, quasi_fixed) ,
 			n_fixed_(n_fixed)                                      ,
 			z_(z)
 		{	assert(z.size() == n_fixed); }

@@ -14,6 +14,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin ipopt_fixed$$
 $spell
+	CppAD
 	ranobj
 	cppad
 	obj
@@ -47,9 +48,9 @@ $end
 -----------------------------------------------------------------------------
 */
 # include <coin/IpTNLP.hpp>
-# include <cppad_mixed/cppad_mixed.hpp>
+# include <cppad/mixed/cppad_mixed.hpp>
 
-namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 	//
 	// ipopt_fixed
 	class ipopt_fixed : public Ipopt::TNLP
@@ -249,6 +250,6 @@ namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// -----------------------------------------------------------------
 		bool check_grad_f(bool trace, double relative_tol);
 	};
-} // END_CPPAD_MIXED_NAMESPACE
+} } // END_CPPAD_MIXED_NAMESPACE
 
 # endif

@@ -12,6 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin ipopt_xam_nlp$$
 $spell
+	CppAD
 	Ipopt
 $$
 
@@ -133,6 +134,7 @@ $end
 ------------------------------------------------------------------------------
 $begin ipopt_xam_ctor$$
 $spell
+	CppAD
 	ipopt_xam_nlp
 $$
 
@@ -148,6 +150,7 @@ $end
 ------------------------------------------------------------------------------
 $begin ipopt_xam_get_nlp_info$$
 $spell
+	CppAD
 	ipopt_xam_get_nlp_info
 	nnz_jac
 	Jacobian
@@ -205,6 +208,7 @@ $end
 -------------------------------------------------------------------------------
 $begin ipopt_xam_get_bounds_info$$
 $spell
+	CppAD
 	ipopt_xam_nlp
 	bool
 $$
@@ -266,6 +270,7 @@ $end
 -------------------------------------------------------------------------------
 $begin ipopt_xam_get_starting_point$$
 $spell
+	CppAD
 	init
 	ipopt_xam_nlp
 	bool
@@ -345,6 +350,7 @@ $end
 -------------------------------------------------------------------------------
 $begin ipopt_xam_eval_f$$
 $spell
+	CppAD
 	ipopt_xam_nlp
 	bool
 	eval
@@ -394,6 +400,7 @@ $end
 -------------------------------------------------------------------------------
 $begin ipopt_xam_eval_grad_f$$
 $spell
+	CppAD
 	ipopt_xam_nlp
 	bool
 	eval
@@ -443,6 +450,7 @@ $end
 -------------------------------------------------------------------------------
 $begin ipopt_xam_eval_g$$
 $spell
+	CppAD
 	ipopt_xam_nlp
 	bool
 	const
@@ -499,6 +507,7 @@ $end
 -------------------------------------------------------------------------------
 $begin ipopt_xam_eval_jac_g$$
 $spell
+	CppAD
 	ipopt_xam_nlp
 	bool
 	eval
@@ -594,6 +603,7 @@ $end
 -------------------------------------------------------------------------------
 $begin ipopt_xam_eval_h$$
 $spell
+	CppAD
 	ipopt_xam_nlp
 	bool
 	eval
@@ -711,6 +721,7 @@ $end
 -------------------------------------------------------------------------------
 $begin ipopt_xam_finalize_solution$$
 $spell
+	CppAD
 	ipopt_xam_nlp
 	bool
 	eval
@@ -858,6 +869,7 @@ $end
 -------------------------------------------------------------------------------
 $begin ipopt_xam_run$$
 $spell
+	CppAD
 	ipopt_xam_run
 	bool
 	eval

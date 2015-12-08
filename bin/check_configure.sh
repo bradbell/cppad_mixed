@@ -32,19 +32,19 @@ do
 			required='yes'
 		fi
 	done
-	if grep '# *include *<cppad_mixed/configure.hpp>' $file > /dev/null
+	if grep '# *include *<cppad/mixed/configure.hpp>' $file > /dev/null
 	then
 		present='yes'
 	fi
 	if [ "$required" == 'yes' ] && [ "$present" == 'no' ]
 	then
-		echo "missing: # include <cppad_mixed/configure.hpp>"
+		echo "missing: # include <cppad/mixed/configure.hpp>"
 		echo "	$file"
 		exit 1
 	fi
 	if [ "$required" == 'no' ] && [ "$present" == 'yes' ]
 	then
-		echo "unecessary: # include <cppad_mixed/configure.hpp>"
+		echo "unecessary: # include <cppad/mixed/configure.hpp>"
 		echo "	$file"
 		exit 1
 	fi

@@ -170,8 +170,8 @@ ENDIF( cppad_mixed_has_nullptr_flag )
 MESSAGE(STATUS "cppad_mixed_has_nullptr = ${cppad_mixed_has_nullptr_01}")
 # ----------------------------------------------------------------------------
 CONFIGURE_FILE(
-	${CMAKE_CURRENT_SOURCE_DIR}/include/cppad_mixed/configure.hpp.in
-	${CMAKE_CURRENT_SOURCE_DIR}/include/cppad_mixed/configure.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/include/cppad/mixed/configure.hpp.in
+	${CMAKE_CURRENT_SOURCE_DIR}/include/cppad/mixed/configure.hpp
 )
 # ----------------------------------------------------------------------------
 # subdirectories

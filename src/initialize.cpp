@@ -8,11 +8,12 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad_mixed/cppad_mixed.hpp>
+# include <cppad/mixed/cppad_mixed.hpp>
 
 /*
 $begin cppad_mixed_initialize$$
 $spell
+	CppAD
 	ranobj
 	logdet
 	cppad
@@ -145,7 +146,7 @@ of using $code initialize$$.
 $end
 */
 
-namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 std::map<std::string, size_t> cppad_mixed::initialize(
 	const d_vector& fixed_vec  ,
@@ -233,4 +234,4 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	return size_map;
 }
 
-} // END_CPPAD_MIXED_NAMESPACE
+} } // END_CPPAD_MIXED_NAMESPACE

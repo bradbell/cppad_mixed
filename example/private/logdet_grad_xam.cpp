@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin logdet_grad_xam.cpp$$
 $spell
+	CppAD
 	cppad
 	hes
 	interp
@@ -34,15 +35,15 @@ $end
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>
-# include <cppad_mixed/cppad_mixed.hpp>
-# include <cppad_mixed/mixed_pack.hpp>
+# include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/mixed_pack.hpp>
 
 namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
 
-	class mixed_derived : public cppad_mixed::cppad_mixed {
+	class mixed_derived : public CppAD::mixed::cppad_mixed {
 	private:
 		const vector<double>& y_;
 	public:
@@ -53,7 +54,7 @@ namespace {
 			const vector<double>& y           )
 			:
 			// quasi_fixed = false
-			cppad_mixed::cppad_mixed(n_fixed, n_random, false) ,
+			CppAD::mixed::cppad_mixed(n_fixed, n_random, false) ,
 			y_(y)
 		{ }
 	private:

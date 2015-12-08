@@ -11,7 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 // Finite difference test of ranobj_grad.cpp
 // BEGIN C++
 # include <cppad/cppad.hpp>
-# include <cppad_mixed/cppad_mixed.hpp>
+# include <cppad/mixed/cppad_mixed.hpp>
 
 namespace {
 	using CppAD::vector;
@@ -20,7 +20,7 @@ namespace {
 	using CppAD::abs;
 	using CppAD::AD;
 
-	class mixed_derived : public cppad_mixed::cppad_mixed {
+	class mixed_derived : public CppAD::mixed::cppad_mixed {
 	private:
 		const double y_;
 		const double sigma_u_, sigma_y_;
@@ -33,7 +33,7 @@ namespace {
 			double sigma_u      ,
 			double sigma_y      ) :
 			// quasi_fixed = flase
-			cppad_mixed::cppad_mixed(n_fixed, n_random, false) ,
+			CppAD::mixed::cppad_mixed(n_fixed, n_random, false) ,
 			y_(y) , sigma_u_(sigma_u), sigma_y_(sigma_y)
 		{	assert( n_fixed == 1 );
 			assert( n_random == 2 );

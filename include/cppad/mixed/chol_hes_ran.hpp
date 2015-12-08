@@ -13,7 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 
 # include <Eigen/Sparse>
 
-namespace cppad_mixed {
+namespace CppAD { namespace mixed {
 	// This would be member of cppad_mixed class if it were not for all the
 	// warnings Eigen generates.
 	extern Eigen::SimplicialLDLT<
@@ -35,7 +35,7 @@ namespace cppad_mixed {
 		CppAD::ADFun<double>&        hessian
 	);
 	extern double logdet_chol_hes_ran(size_t n_random);
-}
+} }
 
 
 # endif

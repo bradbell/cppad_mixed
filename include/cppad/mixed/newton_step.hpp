@@ -13,7 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 
 # include <cppad/cppad.hpp>
 
-namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 
 class newton_step_algo {
@@ -57,6 +57,6 @@ public:
 };
 
 
-} // END_CPPAD_MIXED_NAMESPACE
+} } // END_CPPAD_MIXED_NAMESPACE
 
 # endif

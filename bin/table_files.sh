@@ -44,7 +44,7 @@ then
 fi
 cat << EOF
 omh/table/${name}_table.omh$wlt                   user doc for $name table
-include/cppad_mixed/get_${name}_table.hpp$wlt       C++ struct for $name table
+include/cppad/mixed/get_${name}_table.hpp$wlt       C++ struct for $name table
 devel/table/get_${name}_table.cpp$wlt             read $name table in C++
 python/cppad_mixed/create_database.py$wgt           create all tables
 example/table/${name}_table.py$wlt                $name table example

@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin newton_step_xam.cpp$$
 $spell
+	CppAD
 	cppad
 $$
 
@@ -29,7 +30,7 @@ $end
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>
-# include <cppad_mixed/newton_step.hpp>
+# include <cppad/mixed/newton_step.hpp>
 
 bool newton_step_xam(void)
 {
@@ -63,7 +64,7 @@ bool newton_step_xam(void)
 	for(size_t j = 0; j < n_random; j++)
 		u[j] = 0.0;
 	//
-	cppad_mixed::newton_step newton_atom;
+	CppAD::mixed::newton_step newton_atom;
 	newton_atom.initialize(a1_adfun, theta, u);
 	//
 	vector<a1_double> a1_theta_u_v(n_fixed + 2 * n_random);

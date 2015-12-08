@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin cppad_mixed_optimize_fixed$$
 $spell
+	CppAD
 	cppad
 	ipopt
 	xam
@@ -181,7 +182,7 @@ Laplace approximation optimization only includes the case where
 the $cref/random likelihood/cppad_mixed_ran_like/$$ is smooth.
 
 $comment ipoot_options is also used by optimize_random$$
-$children%include/cppad_mixed/ipopt_fixed.hpp
+$children%include/cppad/mixed/ipopt_fixed.hpp
 	%src/ipopt_options.omh
 %$$
 
@@ -199,11 +200,11 @@ $end
 ------------------------------------------------------------------------------
 */
 # include <coin/IpIpoptApplication.hpp>
-# include <cppad_mixed/cppad_mixed.hpp>
-# include <cppad_mixed/ipopt_fixed.hpp>
+# include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/ipopt_fixed.hpp>
 
 
-namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 CppAD::vector<double> cppad_mixed::optimize_fixed(
 	const std::string& fixed_options     ,
@@ -366,4 +367,4 @@ CppAD::vector<double> cppad_mixed::optimize_fixed(
 	return fixed_nlp->fixed_opt();
 }
 
-} // END_CPPAD_MIXED_NAMESPACE
+} } // END_CPPAD_MIXED_NAMESPACE

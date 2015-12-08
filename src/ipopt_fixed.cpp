@@ -8,7 +8,7 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad_mixed/ipopt_fixed.hpp>
+# include <cppad/mixed/ipopt_fixed.hpp>
 
 namespace {
 
@@ -146,11 +146,12 @@ namespace {
 	}
 }
 
-namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /* $$
 ------------------------------------------------------------------------------
 $begin ipopt_fixed_ctor$$
 $spell
+	CppAD
 	ranobj
 	cppad
 	obj
@@ -464,6 +465,7 @@ $end
 ------------------------------------------------------------------------------
 $begin ipopt_fixed_get_nlp_info$$
 $spell
+	CppAD
 	ranobj
 	cppad
 	obj
@@ -525,6 +527,7 @@ bool ipopt_fixed::get_nlp_info(
 -------------------------------------------------------------------------------
 $begin ipopt_fixed_get_bounds_info$$
 $spell
+	CppAD
 	ranobj
 	cppad
 	obj
@@ -610,6 +613,7 @@ bool ipopt_fixed::get_bounds_info(
 -------------------------------------------------------------------------------
 $begin ipopt_fixed_get_starting_point$$
 $spell
+	CppAD
 	ranobj
 	cppad
 	obj
@@ -705,6 +709,7 @@ bool ipopt_fixed::get_starting_point(
 -------------------------------------------------------------------------------
 $begin ipopt_fixed_eval_f$$
 $spell
+	CppAD
 	ranobj
 	cppad
 	obj
@@ -787,6 +792,7 @@ bool ipopt_fixed::eval_f(
 -------------------------------------------------------------------------------
 $begin ipopt_fixed_eval_grad_f$$
 $spell
+	CppAD
 	ranobj
 	cppad
 	obj
@@ -885,6 +891,7 @@ bool ipopt_fixed::eval_grad_f(
 -------------------------------------------------------------------------------
 $begin ipopt_fixed_eval_g$$
 $spell
+	CppAD
 	ranobj
 	cppad
 	obj
@@ -965,6 +972,7 @@ bool ipopt_fixed::eval_g(
 -------------------------------------------------------------------------------
 $begin ipopt_fixed_eval_jac_g$$
 $spell
+	CppAD
 	ranobj
 	cppad
 	obj
@@ -1119,6 +1127,7 @@ bool ipopt_fixed::eval_jac_g(
 -------------------------------------------------------------------------------
 $begin ipopt_fixed_eval_h$$
 $spell
+	CppAD
 	ranobj
 	cppad
 	obj
@@ -1294,6 +1303,7 @@ bool ipopt_fixed::eval_h(
 -------------------------------------------------------------------------------
 $begin ipopt_fixed_finalize_solution$$
 $spell
+	CppAD
 	ranobj
 	cppad
 	obj
@@ -1524,6 +1534,7 @@ void ipopt_fixed::finalize_solution(
 -------------------------------------------------------------------------------
 $begin ipopt_fixed_check_grad_f$$
 $spell
+	CppAD
 	cppad
 	Ipopt
 	eval
@@ -1705,4 +1716,4 @@ bool ipopt_fixed::check_grad_f(bool trace, double relative_tol)
 	return ok;
 }
 // ---------------------------------------------------------------------------
-} // END_CPPAD_MIXED_NAMESPACE
+} } // END_CPPAD_MIXED_NAMESPACE

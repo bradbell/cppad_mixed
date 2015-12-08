@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin cppad_mixed_fix_like$$
 $spell
+	CppAD
 	cppad
 	vec
 	CppAD

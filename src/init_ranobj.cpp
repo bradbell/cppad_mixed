@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin init_ranobj$$
 $spell
+	CppAD
 	init
 	ranobj
 	cppad
@@ -65,10 +66,10 @@ $cref/H(beta, theta, u)
 $end
 */
 # include <Eigen/Sparse>
-# include <cppad_mixed/cppad_mixed.hpp>
+# include <cppad/mixed/cppad_mixed.hpp>
 
 
-namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // ----------------------------------------------------------------------------
 void cppad_mixed::init_ranobj(
@@ -155,4 +156,4 @@ void cppad_mixed::init_ranobj(
 	return;
 }
 
-} // END_CPPAD_MIXED_NAMESPACE
+} } // END_CPPAD_MIXED_NAMESPACE

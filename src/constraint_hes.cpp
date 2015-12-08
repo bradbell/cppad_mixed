@@ -8,11 +8,12 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad_mixed/cppad_mixed.hpp>
+# include <cppad/mixed/cppad_mixed.hpp>
 
 /*
 $begin constraint_hes$$
 $spell
+	CppAD
 	cppad
 	eval
 	vec
@@ -107,7 +108,7 @@ It returns true, if the test passes, and false otherwise.
 $end
 */
 
-namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 void cppad_mixed::constraint_hes(
 	const d_vector&        fixed_vec   ,
@@ -166,4 +167,4 @@ void cppad_mixed::constraint_hes(
 }
 
 
-} // END_CPPAD_MIXED_NAMESPACE
+} } // END_CPPAD_MIXED_NAMESPACE

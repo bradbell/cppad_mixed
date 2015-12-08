@@ -13,6 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin sparse_jac_info$$
 $spell
+	CppAD
 	const
 	std
 	bool

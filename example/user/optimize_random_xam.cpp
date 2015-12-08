@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin optimize_random_xam.cpp$$
 $spell
+	CppAD
 	cppad
 	interp
 	xam
@@ -27,14 +28,14 @@ $end
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>
-# include <cppad_mixed/cppad_mixed.hpp>
+# include <cppad/mixed/cppad_mixed.hpp>
 
 namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
 
-	class mixed_derived : public cppad_mixed::cppad_mixed {
+	class mixed_derived : public CppAD::mixed::cppad_mixed {
 	private:
 		const vector<double>& y_;
 	public:
@@ -45,7 +46,7 @@ namespace {
 			bool   quasi_fixed                ,
 			const vector<double>& y           )
 			:
-			cppad_mixed::cppad_mixed(n_fixed, n_random, quasi_fixed) ,
+			CppAD::mixed::cppad_mixed(n_fixed, n_random, quasi_fixed) ,
 			y_(y)
 		{ }
 	private:

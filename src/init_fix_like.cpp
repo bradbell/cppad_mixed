@@ -8,11 +8,12 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad_mixed/cppad_mixed.hpp>
+# include <cppad/mixed/cppad_mixed.hpp>
 
 /*
 $begin init_fix_like$$
 $spell
+	CppAD
 	init
 	cppad
 	jac
@@ -102,7 +103,7 @@ $end
 */
 # define DEBUG_FIX_LIKE_FUN 0
 
-namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 {	assert( fixed_vec.size() == n_fixed_ );
@@ -231,4 +232,4 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 }
 
 
-} // END_CPPAD_MIXED_NAMESPACE
+} } // END_CPPAD_MIXED_NAMESPACE

@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin newton_step$$
 $spell
+	CppAD
 	cppad
 	logdet
 	adfun
@@ -149,10 +150,10 @@ $end
 ----------------------------------------------------------------------------
 */
 # include <Eigen/Sparse>
-# include <cppad_mixed/newton_step.hpp>
-# include <cppad_mixed/configure.hpp>
+# include <cppad/mixed/newton_step.hpp>
+# include <cppad/mixed/configure.hpp>
 
-namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // -------------------------------------------------------------------------
 // newton_step_alog ctor
@@ -350,4 +351,4 @@ void newton_step::eval(
 	(*atom_fun_)(a1_theta_u_v, a1_logdet_step);
 }
 
-} // END_CPPAD_MIXED_NAMESPACE
+} } // END_CPPAD_MIXED_NAMESPACE

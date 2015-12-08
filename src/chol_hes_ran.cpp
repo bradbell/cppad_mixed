@@ -8,13 +8,14 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad_mixed/cppad_mixed.hpp>
-# include <cppad_mixed/chol_hes_ran.hpp>
+# include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/chol_hes_ran.hpp>
 # include <Eigen/Sparse>
 
 /*
 $begin chol_hes_ran$$
 $spell
+	CppAD
 	init_chol_hes
 	CppAD
 	cppad
@@ -52,11 +53,11 @@ $code cppad_mixed/cppad_mixed.hpp$$.
 $head chol_hes_ran_$$
 This variable has prototype
 $codep */
-	namespace cppad_mixed {
+	namespace CppAD { namespace mixed {
 		Eigen::SimplicialLDLT<
 			Eigen::SparseMatrix<double> , Eigen::Lower
 		> chol_hes_ran_;
-	}
+	} }
 /* $$
 This is lower triangular Cholesky factorization of the Hessian of the
 $cref/random likelihood
@@ -169,7 +170,7 @@ $cref/factorize_chol_hes_ran/chol_hes_ran/factorize_chol_hes_ran/$$.
 $end
 */
 
-namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 void analyze_chol_hes_ran(
 	size_t                       n_fixed  ,
@@ -230,4 +231,4 @@ double logdet_chol_hes_ran(size_t n_random)
 }
 
 
-} // END_CPPAD_MIXED_NAMESPACE
+} } // END_CPPAD_MIXED_NAMESPACE

@@ -14,6 +14,7 @@ $latex \newcommand{\dtheta}[1]{ \frac{\R{d}}{\R{d} \theta_{ #1}} }$$
 
 $section Laplace Approximation for Mixed Effects Models$$
 $spell
+	CppAD
 	cppad
 	Kasper Kristensen
 	Anders Nielsen

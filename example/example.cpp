@@ -26,7 +26,7 @@ $end
 # include <iostream>
 # include <cassert>
 # include <cstring>
-# include <cppad_mixed/configure.hpp>
+# include <cppad/mixed/configure.hpp>
 
 // optional
 extern bool cholmod_xam(void);

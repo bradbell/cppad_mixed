@@ -13,9 +13,9 @@ see http://www.gnu.org/licenses/agpl.txt
 
 # include <map>
 # include <cppad/cppad.hpp>
-# include <cppad_mixed/newton_step.hpp>
-# include <cppad_mixed/sparse_hes_info.hpp>
-# include <cppad_mixed/sparse_jac_info.hpp>
+# include <cppad/mixed/newton_step.hpp>
+# include <cppad/mixed/sparse_hes_info.hpp>
+# include <cppad/mixed/sparse_jac_info.hpp>
 
 // private examples
 extern bool constraint_eval_xam(void);
@@ -36,7 +36,7 @@ extern bool hes_cross_xam(void);
 extern bool der_var_hes(void);
 extern bool delta_ranobj(void);
 
-namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 class cppad_mixed {
 	friend class optimize_random_eval;
@@ -45,6 +45,7 @@ public:
 /*
 $begin cppad_mixed_public$$
 $spell
+	CppAD
 	init
 	ranobj
 	cppad
@@ -195,6 +196,7 @@ private:
 ------------------------------------------------------------------------------
 $begin cppad_mixed_private$$
 $spell
+	CppAD
 	init
 	ranobj
 	var
@@ -218,8 +220,8 @@ $$
 
 $section cppad_mixed Private Declarations$$
 
-$childtable%include/cppad_mixed/mixed_pack.hpp
-	%include/cppad_mixed/mixed_unpack.hpp
+$childtable%include/cppad/mixed/mixed_pack.hpp
+	%include/cppad/mixed/mixed_unpack.hpp
 	%src/constraint_eval.cpp
 	%src/constraint_jac.cpp
 	%src/constraint_hes.cpp
@@ -240,8 +242,8 @@ $childtable%include/cppad_mixed/mixed_pack.hpp
 	%src/fix_like_jac.cpp
 	%src/fix_like_hes.cpp
 	%src/chol_hes_ran.cpp
-	%include/cppad_mixed/sparse_hes_info.hpp
-	%include/cppad_mixed/sparse_jac_info.hpp
+	%include/cppad/mixed/sparse_hes_info.hpp
+	%include/cppad/mixed/sparse_jac_info.hpp
 %$$
 
 $head n_fixed_$$
@@ -638,9 +640,9 @@ $end
 */
 };
 
-} // END_CPPAD_MIXED_NAMESPACE
+} } // END_CPPAD_MIXED_NAMESPACE
 
-# include <cppad_mixed/mixed_pack.hpp>
-# include <cppad_mixed/mixed_unpack.hpp>
+# include <cppad/mixed/mixed_pack.hpp>
+# include <cppad/mixed/mixed_unpack.hpp>
 
 # endif

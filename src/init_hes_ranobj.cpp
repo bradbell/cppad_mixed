@@ -8,11 +8,12 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad_mixed/cppad_mixed.hpp>
+# include <cppad/mixed/cppad_mixed.hpp>
 
 /*
 $begin init_hes_ranobj$$
 $spell
+	CppAD
 	init
 	ranobj
 	cppad
@@ -81,7 +82,7 @@ $cref/sparse Hessian Call/sparse_hes_info/Sparse Hessian Call/f/$$.
 $end
 */
 
-namespace cppad_mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 void cppad_mixed::init_hes_ranobj(
 	const d_vector& fixed_vec  ,
@@ -155,4 +156,4 @@ void cppad_mixed::init_hes_ranobj(
 	init_hes_ranobj_done_ = true;
 }
 
-} // END_CPPAD_MIXED_NAMESPACE
+} } // END_CPPAD_MIXED_NAMESPACE

@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin capture_xam.cpp$$
 $spell
+	CppAD
 	cppad
 	Biometrics
 	Royle
@@ -26,7 +27,7 @@ $head Syntax$$
 $codei%build/speed/capture_xam %random_seed%$$
 
 $head random_seed$$
-Is the random seed 
+Is the random seed
 $cref/s_in/manage_gsl_rng/new_gsl_rng/s_in/$$ used during the call to
 $cref manage_gsl_rng$$.
 
@@ -174,9 +175,9 @@ $end
 # include <ctime>
 # include <gsl/gsl_randist.h>
 # include <cppad/vector.hpp>
-# include <cppad_mixed/cppad_mixed.hpp>
-# include <cppad_mixed/manage_gsl_rng.hpp>
-# include <cppad_mixed/configure.hpp>
+# include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/manage_gsl_rng.hpp>
+# include <cppad/mixed/configure.hpp>
 
 namespace { // BEGIN_EMPTY_NAMESPACE
 
@@ -193,7 +194,7 @@ void simulate(
 {	assert( theta.size() == 3 );
 	assert( y.size() == I * T );
 	// random number generator
-	gsl_rng* rng = cppad_mixed::get_gsl_rng();
+	gsl_rng* rng = CppAD::mixed::get_gsl_rng();
 	//
 	// simulate population sizes
 	vector<double> N(I);
@@ -227,7 +228,7 @@ void simulate(
 }
 
 // cppad_mixed derived class
-class mixed_derived : public cppad_mixed::cppad_mixed {
+class mixed_derived : public CppAD::mixed::cppad_mixed {
 private:
 	const size_t          I_; // number of locations
 	const size_t          T_; // number of times
@@ -247,7 +248,7 @@ public:
 		vector<size_t>&        y           )
 		:
 		// n_fixed = 3, n_random = T
-		cppad_mixed::cppad_mixed(3, T, quasi_fixed) ,
+		CppAD::mixed::cppad_mixed(3, T, quasi_fixed) ,
 		I_(I)            ,
 		T_(T)            ,
 		y_(y)
@@ -388,7 +389,7 @@ int main(int argc, char *argv[])
 	}
 	//
 	size_t random_seed = std::atoi( argv[1] );
-	random_seed        = cppad_mixed::new_gsl_rng( random_seed );
+	random_seed        = CppAD::mixed::new_gsl_rng( random_seed );
 	//
 	size_t n_fixed  = 3;
 	std::time_t start_time = std::time( CPPAD_MIXED_NULL_PTR );
@@ -490,7 +491,7 @@ int main(int argc, char *argv[])
 			cout << theta_out[j] / theta_sim[j] - 1.0 << endl;
 	}
 	//
-	cppad_mixed::free_gsl_rng();
+	CppAD::mixed::free_gsl_rng();
 	#
 	if( ok )
 		return 0;
