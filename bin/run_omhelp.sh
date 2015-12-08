@@ -6,7 +6,7 @@
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
-# 	     GNU Affero General Public License version 3.0 or later
+#	     GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
 if [ "$0" != 'bin/run_omhelp.sh' ]
@@ -44,28 +44,27 @@ then
 fi
 # -----------------------------------------------------------------------------
 version=`bin/version.sh get`
-if [ ! -e "doc/cppad_mixed-$version.tgz" ]
-then
-	echo_eval rm -rf "doc/cppad_mixed-$version"
-	echo_eval mkdir "doc/cppad_mixed-$version"
-	for file in `git ls-files`
-	do
-		sub_dir=`echo $file | sed -e 's|/[^/]*$||'`
-		if [ "$sub_dir" != "$file" ]
+list=`ls doc/cppad_mixed-*.tgz`
+for file in $list
+do
+	echo_eval rm $file
+done
+echo_eval rm -rf "doc/cppad_mixed-$version"
+echo_eval mkdir "doc/cppad_mixed-$version"
+for file in `git ls-files`
+do
+	sub_dir=`echo $file | sed -e 's|/[^/]*$||'`
+	if [ "$sub_dir" != "$file" ]
+	then
+		if [ ! -e doc/cppad_mixed-$version/$sub_dir ]
 		then
-			if [ ! -e doc/cppad_mixed-$version/$sub_dir ]
-			then
-				mkdir -p doc/cppad_mixed-$version/$sub_dir
-			fi
+			mkdir -p doc/cppad_mixed-$version/$sub_dir
 		fi
-		cp $file doc/cppad_mixed-$version/$file
-	done
-	echo_eval cd doc
-	echo_eval tar -czf cppad_mixed-$version.tgz cppad_mixed-$version
-	echo_eval rm -r cppad_mixed-$version
-else
-	echo_eval cd doc
-fi
+	fi
+	cp $file doc/cppad_mixed-$version/$file
+done
+echo_eval cd doc
+echo_eval tar -czf cppad_mixed-$version.tgz cppad_mixed-$version
 # -----------------------------------------------------------------------------
 #
 flags=''
