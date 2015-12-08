@@ -124,7 +124,7 @@ cmake \
 	\
 	-D extra_cxx_flags="$extra_cxx_flags" \
 	-D cppad_prefix="$cppad_prefix" \
-	-D ipopt_prefix="$cppad_prefix" \
+	-D ipopt_prefix="$ipopt_prefix" \
 	-D eigen_prefix="$eigen_prefix" \
 	\
 	-D set_sparsity="$set_sparsity" \
