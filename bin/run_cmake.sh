@@ -19,9 +19,9 @@
 # &section bin/run_cmake.sh: User Configuration Options&&
 #
 # &head cmake_verbose_makefile&&
-# Use '0' for normal and '1' for verbose make output:
+# Use 'NO' for normal and 'YES' for verbose make output:
 # &codep
-cmake_verbose_makefile='0'
+cmake_verbose_makefile='NO'
 # &&
 #
 # &head cmake_build_type&&
@@ -44,11 +44,11 @@ eigen_prefix="$HOME/prefix/cppad_mixed"
 ipopt_prefix="$HOME/prefix/cppad_mixed"
 # &&
 #
-# &head cppad_mixed_set_sparsity&&
+# &head set_sparsity&&
 # If YES, use sets of indices for sparsity patterns.
 # If NO use arrays of bools:
 # &codep
-cppad_mixed_set_sparsity="NO"
+set_sparsity="NO"
 # &&
 #
 # &head cmake_libdir&&
@@ -100,7 +100,7 @@ then
 	cmake_verbose_makefile='1'
 elif [ "$user_option" == '--set_sparsity' ]
 then
-	cppad_mixed_set_sparsity="YES"
+	set_sparsity="YES"
 elif [ "$user_option" != '' ]
 then
 	echo "'$1' is an invalid option"
@@ -113,6 +113,10 @@ then
 	echo_eval mkdir build
 fi
 echo_eval cd build
+if [ -e CMakeCache.txt ]
+then
+	rm CMakeCache.txt
+fi
 cmake \
 	-Wno-dev \
 	-D CMAKE_VERBOSE_MAKEFILE=$cmake_verbose_makefile \
@@ -123,7 +127,7 @@ cmake \
 	-D ipopt_prefix="$cppad_prefix" \
 	-D eigen_prefix="$eigen_prefix" \
 	\
-	-D cppad_mixed_set_sparsity="$cppad_mixed_set_sparsity" \
+	-D set_sparsity="$set_sparsity" \
 	-D cmake_libdir="$cmake_libdir" \
 	-D suitesparse_prefix="$suitesparse_prefix" \
 	..

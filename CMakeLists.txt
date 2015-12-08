@@ -18,8 +18,8 @@
 #                        -D cppad_prefix=value \
 #                        -D eigen_prefix=value \
 #                        -D ipopt_prefix=value \
-# optional variables:    -D cppad_mixed_set_sparsity=value \
-#                        -D suitesparse_prefix=value \
+#                        -D set_sparsity=value \
+# optional variables:    -D suitesparse_prefix=value \
 # ============================================================================
 # Macro definitions
 # ============================================================================
@@ -61,11 +61,18 @@ ENDMACRO(get_prefix)
 #
 MACRO( required_definition variable type docstring )
 	SET( ${variable} NOTFOUND CACHE ${type} "${docstring}" )
-	IF( ${variable} )
-		MESSAGE( STATUS "${variable} = ${${variable}}" )
-	ELSE( ${variable} )
+	IF( ${variable} STREQUAL NOTFOUND )
 		MESSAGE( FATAL_ERROR "${variable} is not set by cmake command" )
-	ENDIF( ${variable} )
+	ELSE( ${variable} STREQUAL NOTFOUND )
+		MESSAGE( STATUS "${variable} = ${${variable}}" )
+	ENDIF( ${variable} STREQUAL NOTFOUND )
+	IF( ${type} STREQUAL "BOOL" )
+		IF( ${variable} )
+			SET( ${variable}_01 1 )
+		ELSE( ${variable} )
+			SET( ${variable}_01 0 )
+		ENDIF( ${variable} )
+	ENDIF( ${type} STREQUAL "BOOL" )
 ENDMACRO( required_definition )
 # ----------------------------------------------------------------------------
 # optional_definition( variable type docstring )
@@ -111,6 +118,9 @@ required_definition( extra_cxx_flags STRING
 required_definition( cmake_libdir STRING
 	"directory below each prefix where libraries are installed"
 )
+required_definition(set_sparsity BOOL
+	"use sets, instead of bools, to represent sparsity patterns"
+)
 # ----------------------------------------------------------------------------
 # get required package prefixes
 get_prefix(cppad)
@@ -118,12 +128,6 @@ get_prefix(eigen)
 get_prefix(ipopt)
 # ----------------------------------------------------------------------------
 # optional special cmake variables
-optional_definition(cppad_mixed_set_sparsity BOOL
-	"use sets, instead of bools, to represent sparsity patterns (optional)"
-)
-optional_definition(suitesparse_prefix BOOL
-	"prefix used to install suitesparse (optional)"
-)
 IF( suitesparse_prefix )
 	SET( suitesparse_prefix_01 1 )
 	get_prefix(suitesparse)

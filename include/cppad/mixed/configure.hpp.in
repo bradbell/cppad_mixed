@@ -13,7 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 
 # define CPPAD_MIXED_VERSION         "@cppad_mixed_version@"
 # define CPPAD_MIXED_HAS_SUITESPARSE @suitesparse_prefix_01@
-# define CPPAD_MIXED_SET_SPARSITY    @cppad_mixed_set_sparsity_01@
+# define CPPAD_MIXED_SET_SPARSITY    @set_sparsity_01@
 
 # if @cppad_mixed_has_nullptr_01@
 # define CPPAD_MIXED_NULL_PTR  nullptr

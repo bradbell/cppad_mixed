@@ -28,6 +28,7 @@ p
 EOF
 special_case='
 	bin/check_verbatim.sh
+	omh/install_unix.omh
 '
 # -----------------------------------------------------------------------------
 # Make sure that OMhelp verbatim commands referr to same file as command
