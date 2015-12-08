@@ -59,7 +59,7 @@ $spell
 	bool
 $$
 
-$section cppad_mixed Public Declarations$$
+$section cppad_mixed: Public Declarations$$
 
 $head AD Types$$
 $index a_double$$
@@ -218,7 +218,7 @@ $spell
 	logdet
 $$
 
-$section cppad_mixed Private Declarations$$
+$section cppad_mixed: Private Declarations$$
 
 $childtable%include/cppad/mixed/mixed_pack.hpp
 	%include/cppad/mixed/mixed_unpack.hpp

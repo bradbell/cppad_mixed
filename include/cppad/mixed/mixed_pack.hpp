@@ -25,7 +25,7 @@ $spell
 	hpp
 $$
 
-$section cppad_mixed: Pack Fixed Effect and Random Effects Into One Vector$$
+$section Pack Fixed Effect and Random Effects Into One Vector$$
 
 $head Syntax$$
 $codei%pack(%fixed_one%, %random_vec%, %both_vec%)

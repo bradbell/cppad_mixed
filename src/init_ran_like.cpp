@@ -21,7 +21,7 @@ $spell
 	Cpp
 $$
 
-$section cppad_mixed: Initialize Random Likelihood$$
+$section Initialize Random Likelihood$$
 
 $head Syntax$$
 $codei%init_ran_like(%fixed_vec%, %random_vec%)%$$

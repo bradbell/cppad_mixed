@@ -19,7 +19,7 @@ $spell
 	xam
 $$
 
-$section C++ cppad_mixed constraints: Example and Test$$
+$section constraints: Example and Test$$
 
 $head Model$$
 $latex \[

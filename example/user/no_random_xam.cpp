@@ -19,7 +19,7 @@ $spell
 	xam
 $$
 
-$section C++ cppad_mixed: User Example and Test with no Random Effects$$.
+$section User Example and Test with no Random Effects$$.
 
 $head Model$$
 $latex \[

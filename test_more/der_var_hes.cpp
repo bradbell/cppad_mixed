@@ -19,7 +19,7 @@ $spell
 	xam
 $$
 
-$section C++ cppad_mixed: Derivative Test where Hessian Depends on Random Effects$$
+$section Derivative Test where Hessian Depends on Random Effects$$
 
 $head Model$$
 $latex \[

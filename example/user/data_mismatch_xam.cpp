@@ -19,7 +19,7 @@ $spell
 	xam
 $$
 
-$section C++ cppad_mixed: Random Effects Variance May Cause Data Mismatch$$
+$section Random Effects Variance May Cause Data Mismatch$$
 
 $head Model$$
 $latex \[

@@ -28,7 +28,7 @@ $spell
 	alloc
 $$
 
-$section cppad_mixed: Initialization After Constructor$$
+$section Initialization After Constructor$$
 
 $head Syntax$$
 $icode%size_map% = %mixed_object%.initialize(%fixed_vec%, %random_vec%)%$$

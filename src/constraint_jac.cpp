@@ -23,7 +23,7 @@ $spell
 	jac
 $$
 
-$section cppad_mixed: Jacobian of Constraint w.r.t Fixed Effects$$
+$section Jacobian of Constraint w.r.t Fixed Effects$$
 
 $head Syntax$$
 $icode%mixed_object%.constraint_jac(
