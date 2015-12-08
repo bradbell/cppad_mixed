@@ -14,8 +14,8 @@
 # standard variables:    -D CMAKE_VERBOSE_MAKEFILE=value \
 #                        -D CMAKE_BUILD_TYPE=value \
 # required variables:    -D extra_cxx_flags=value \
-#                        -D cppad_mixed_prefix=value \
-#                        -D cppad_mixed_libdir=value \
+#                        -D cmake_libdir=value \
+#                        -D cppad_prefix=value \
 #                        -D eigen_prefix=value \
 #                        -D ipopt_prefix=value \
 # optional variables:    -D cppad_mixed_set_sparsity=value \
@@ -108,11 +108,8 @@ MESSAGE(STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 required_definition( extra_cxx_flags STRING
 	"extra flags used by C++ compiler (debug and release are automatic)"
 )
-required_definition(cppad_mixed_prefix PATH
-	"prefix where cppad_mixed will be installed"
-)
-required_definition( cppad_mixed_libdir STRING
-	"directory below cppad_mixed_prefix where libraries are installed"
+required_definition( cmake_libdir STRING
+	"directory below each prefix where libraries are installed"
 )
 # ----------------------------------------------------------------------------
 # get required package prefixes
@@ -122,7 +119,10 @@ get_prefix(ipopt)
 # ----------------------------------------------------------------------------
 # optional special cmake variables
 optional_definition(cppad_mixed_set_sparsity BOOL
-	"use sets (instead of bools) to represent sparsity patterns"
+	"use sets, instead of bools, to represent sparsity patterns (optional)"
+)
+optional_definition(suitesparse_prefix BOOL
+	"prefix used to install suitesparse (optional)"
 )
 IF( suitesparse_prefix )
 	SET( suitesparse_prefix_01 1 )

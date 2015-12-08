@@ -9,13 +9,14 @@
 #	     GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
-if [ ! -e 'bin/check_cppad_mixed.sh' ]
+if [ ! -e 'bin/check_install.sh' ]
 then
-	echo 'bin/check_cppad_mixed.sh: must be executed from its parent directory'
+	echo 'bin/check_install.sh: must be executed from its parent directory'
 	exit 1
 fi
-include_file="$HOME/prefix/cppad_mixed/include/cppad/mixed/cppad_mixed.hpp"
-library_file="$HOME/prefix/cppad_mixed/lib64/libcppad_mixed.a"
+cppad_prefix="$HOME/prefix/cppad_mixed"
+include_file="$cppad_prefix/include/cppad/mixed/cppad_mixed.hpp"
+library_file="$cppad_prefix/lib64/libcppad_mixed.a"
 example_file="example/user/no_random_xam.cpp"
 for file in $include_file $libary_file
 do
@@ -51,14 +52,13 @@ echo_eval g++ \
 	-g \
 	-O0 \
 	-I ../../include \
-	-I $HOME/prefix/cppad_mixed/include \
+	-I $HOME/prefix/cppad/include \
 	example.cpp \
-	-L $HOME/prefix/cppad_mixed/lib64 \
+	-L $HOME/prefix/cppad/lib64 \
 	-lcppad_mixed \
 	-lcppad_mixed_eigen \
 	-lcppad_mixed \
 	$ipopt_libs \
-	-lsqlite3 \
 	-lgsl \
 	-lgslcblas \
 	-o example
@@ -67,5 +67,5 @@ if ! ./example
 then
 	exit 1
 fi
-echo 'check_cppad_mixed.sh: OK'
+echo 'check_install.sh: OK'
 exit 0

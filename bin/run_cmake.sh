@@ -36,18 +36,12 @@ cmake_build_type='DEBUG'
 extra_cxx_flags='-std=c++11 -Wall'
 # &&
 #
-# &head cppad_mixed_prefix&&
-# Prefix where cppad_mixed will be installed:
+# &head Prefixes&&
+# Prefixes where the required packages are installed:
 # &codep
-cppad_mixed_prefix="$HOME/prefix/cppad_mixed"
-# &&
-#
-# &head Other Prefixes&&
-# Prefixes where the required packages were installed:
-# &codep
+cppad_prefix="$HOME/prefix/cppad_mixed"
 eigen_prefix="$HOME/prefix/cppad_mixed"
 ipopt_prefix="$HOME/prefix/cppad_mixed"
-cppad_prefix="$HOME/prefix/cppad_mixed"
 # &&
 #
 # &head cppad_mixed_set_sparsity&&
@@ -57,17 +51,16 @@ cppad_prefix="$HOME/prefix/cppad_mixed"
 cppad_mixed_set_sparsity="NO"
 # &&
 #
-# &head cppad_mixed_libdir&&
-# Sub-directory of cppad_mixed_prefix where cppad_mixed libraries are installed.
+# &head cmake_libdir&&
+# Sub-directory of each prefix where libraries are installed.
 # The eigen part of the library is separate so different flags can be used
 # to compile the part of the code that uses eigen.
 # The following will properly link the &code cppad_mixed&& library:
 # &codep
 #	-lcppad_mixed -lcppad_mixed_eigen -lcppad_mixed
 # &&
-# If you do not need to install cppad_mixed, use NOTFOUND for this setting:
 # &codep
-cppad_mixed_libdir='lib64'
+cmake_libdir='lib64'
 # &&
 #
 # &head suitesparse_prefix&&
@@ -81,7 +74,6 @@ suitesparse_prefix="$HOME/prefix/suitesparse"
 # Here are some example changes that are used for the IHME cluster
 # &codep
 # suitesparse_prefix="NOTFOUND"
-# python_three_command='/usr/local/anaconda3-current/bin/python'
 # extra_cxx_flags='-Wall'
 # &&
 # &end
@@ -127,13 +119,12 @@ cmake \
 	-D CMAKE_BUILD_TYPE=$cmake_build_type \
 	\
 	-D extra_cxx_flags="$extra_cxx_flags" \
-	-D cppad_mixed_prefix="$cppad_mixed_prefix" \
 	-D cppad_prefix="$cppad_prefix" \
 	-D ipopt_prefix="$cppad_prefix" \
 	-D eigen_prefix="$eigen_prefix" \
 	\
 	-D cppad_mixed_set_sparsity="$cppad_mixed_set_sparsity" \
-	-D cppad_mixed_libdir="$cppad_mixed_libdir" \
+	-D cmake_libdir="$cmake_libdir" \
 	-D suitesparse_prefix="$suitesparse_prefix" \
 	..
 # ---------------------------------------------------------------------------

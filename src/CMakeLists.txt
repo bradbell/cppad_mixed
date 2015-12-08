@@ -50,11 +50,11 @@ SET_TARGET_PROPERTIES(cppad_mixed_eigen
 # ---------------------------------------------------------------------------
 INSTALL(
 	TARGETS cppad_mixed cppad_mixed_eigen
-		DESTINATION ${cppad_prefix}/${cppad_libdir}
+	DESTINATION ${cppad_prefix}/${cmake_libdir}
 )
 INSTALL(
 	FILES
 	${cppad_mixed_SOURCE_DIR}/include/cppad/mixed/cppad_mixed.hpp
 	${cppad_mixed_SOURCE_DIR}/include/cppad/mixed/manage_gsl_rng.hpp
-	DESTINATION ${cppad_mixed_prefix}/include/cppad
+	DESTINATION ${cppad_prefix}/include/cppad/mixed
 )

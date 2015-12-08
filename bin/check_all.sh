@@ -15,29 +15,20 @@ then
 	exit 1
 fi
 # ---------------------------------------------------------------------------
-speed_test=''
-while [ "$speed_test" != 'y' ] && [ "$speed_test" != 'n' ]
-do
-	read -p 'Include speed tests [y/n] ?' speed_test
-done
 bin/check_example.sh
 bin/check_include.sh
 bin/check_verbatim.sh
 bin/check_configure.sh
-#
+# ----------------------------------------------------------------------------
 bin/run_omhelp.sh xml
 #
 bin/run_cmake.sh
 #
 cd build
 make check
-if [ "$speed_test" == 'y' ]
-then
-	make speed
-fi
+make speed
 make install
 cd ..
-# 2DO: get check of install to work
-# bin/check_cppad_mixed.sh
+bin/check_install.sh
 #
 echo 'check_all.sh: OK'
