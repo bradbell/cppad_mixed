@@ -25,11 +25,7 @@ echo_eval() {
 }
 # ---------------------------------------------------------------------------
 # create distribution
-echo_eval rm -rf doc
-echo_eval bin/run_omhelp.sh xml printable
-echo_eval bin/run_omhelp.sh xml
-echo_eval bin/run_omhelp.sh htm printable
-echo_eval bin/run_omhelp.sh htm
+echo_eval bin/run_omhelp.sh all
 #
 echo_eval tar -czf doc.tgz doc
 # --------------------------------------------------------------------------

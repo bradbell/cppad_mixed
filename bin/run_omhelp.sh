@@ -20,23 +20,12 @@ echo_eval() {
 	echo $*
 	eval $*
 }
-if [ "$1" != 'htm' ] && [ "$1" != 'xml' ]
+if [ "$1" != 'htm' ] && [ "$1" != 'xml' ] && [ "$1" != 'all' ]
 then
-	echo "usage: bin/run_omhelp.sh (htm|xml) [printable]"
+	echo "usage: bin/run_omhelp.sh (htm|xml|all)"
 	exit 1
 fi
-if [ "$2" != '' ] && [ "$2" != 'printable' ]
-then
-	echo "usage: bin/run_omhelp.sh (htm|xml) [printable]"
-	exit 1
-fi
-ext="$1"
-if [ "$2" == 'printable' ]
-then
-	printable='yes'
-else
-	printable='no'
-fi
+option="$1"
 # -----------------------------------------------------------------------------
 if [ ! -e 'doc' ]
 then
@@ -62,26 +51,29 @@ echo_eval cd doc
 echo_eval tar -czf cppad_mixed-$version.tgz cppad_mixed-$version
 # -----------------------------------------------------------------------------
 #
-flags=''
-if [ "$ext" == 'xml' ]
+if [ "$option" == 'htm' ]
 then
-	flags="$flags -xml"
-fi
-if [ "$printable" == 'yes' ]
+	flag_list=':'
+elif [ "$option" == 'xml' ]
 then
-	flags="$flags -printable"
+	flag_list='-xml:'
+else
+	flag_list='-xml: -xml:-printable :-printable :'
 fi
-cmd="omhelp ../doc.omh -debug -noframe $flags"
-echo "$cmd > omhelp.$ext.log"
-if ! $cmd  > ../omhelp.$ext.log
-then
-	cat ../omhelp.$ext.log
-	exit 1
-fi
-#
-if grep '^OMhelp Warning:' ../omhelp.$ext.log
-then
-	exit 1
-fi
+for pair in $flag_list
+do
+	flags=`echo $pair | sed -e 's|:| |'`
+	cmd="omhelp ../doc.omh -debug -noframe $flags"
+	echo "$cmd > omhelp.log"
+	if ! $cmd  > ../omhelp.log
+	then
+		cat ../omhelp.log
+		exit 1
+	fi
+	if grep '^OMhelp Warning:' ../omhelp.log
+	then
+		exit 1
+	fi
+done
 echo 'run_omhelp.sh: OK'
 exit 0
