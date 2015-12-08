@@ -32,8 +32,8 @@ echo_eval() {
 }
 # --------------------------------------------------------------------------
 web_page='https://github.com/coin-or/CppAD.git'
-hash_key='9aebc1ca2c0949dec7c2d156517db26e60f28159'
-version='20151108'
+hash_key='9e5e64a8a3dce0cab9cd858f73e49638495f615e'
+version='20151208'
 # --------------------------------------------------------------------------
 if [ ! -e build/external ]
 then
@@ -51,12 +51,17 @@ echo_eval cd cppad-$version
 echo_eval git checkout --quiet $hash_key
 bin/version.sh set $version
 bin/version.sh copy
+# -----------------------------------------------------------------------------
 #
 if [ ! -e build ]
 then
 	mkdir build
 fi
 echo_eval cd build
+if [ -e CMakeCache.txt ]
+then
+	rm CMakeCache.txt
+fi
 # -----------------------------------------------------------------------------
 if [ -e /usr/lib64 ]
 then
@@ -66,7 +71,7 @@ else
 fi
 #
 cmake_args="-D CMAKE_VERBOSE_MAKEFILE=0"
-cmake_args="$cmake_args -D cmake_install_prefix=$cppad_prefix"
+cmake_args="$cmake_args -D cppad_prefix=$cppad_prefix"
 cmake_args="$cmake_args -D cmake_install_libdirs=$libdirs"
 echo "cmake $cmake_args -D cppad_cxx_flags='$extra_cxx_flags' .."
 cmake $cmake_args -D cppad_cxx_flags="$extra_cxx_flags" ..

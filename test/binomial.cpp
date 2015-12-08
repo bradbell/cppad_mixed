@@ -10,7 +10,7 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 
 # include <gsl/gsl_randist.h>
-# include <cppad/vector.hpp>
+# include <cppad/utility.hpp> // CppAD::vector
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/manage_gsl_rng.hpp>
 
