@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin zero_random_two.cpp$$
+$begin zero_random_one.cpp$$
 $spell
 	CppAD
 	cppad
@@ -23,35 +23,35 @@ $section C++ Case Where Optimum is Non-Zero Fixed and Zero Random Effects$$
 
 $head Model$$
 $latex \[
-	\B{p}( y_i | \theta , u ) \sim \B{N} left( \theta_0 , \theta_1^2 \right)
+	\B{p}( y_0 | \theta , u ) \sim \B{N} left( \theta , \sigma_y^2 \right)
 \] $$
 $latex \[
-	\B{p}( u_i | \theta ) \sim \B{N} ( 0 , 1 )
+	\B{p}( y_1 | \theta , u ) \sim \B{N} left( u + \theta , \sigma_y^2 \right)
 \] $$
 $latex \[
-	\B{p}( \theta ) \sim \B{N} ( 1 , 1 )
+	\B{p}( u | \theta ) \sim \B{N} \left( 0 , \sigma_u^2 \right)
 \] $$
 It follows that the Laplace approximation is exact and
 $latex \[
-	\B{p}( y_i | \theta ) \sim \B{N} \left( \theta_0 , \theta_1^2 \right)
+	\B{p}( y_0 | \theta ) \sim \B{N} \left( \theta , sigma_y^2 \right)
+\] $$
+$latex \[
+\B{p}( y_1 | \theta ) \sim \B{N} \left( \theta , \sigma_u^2 + \sigma_y^2 \right)
 \] $$
 The corresponding objective for the fixed effects is equivalent to:
 $latex \[
 F( \theta ) = \frac{1}{2} \left[
-	( \theta_0 - 1 )^2 + ( \theta_1 - 1 )^2 +
-		N \log \left( \theta_1^2 \right) +
-		\theta_1^{-2} \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
+	\sigma_y^{-2} ( y_0 - \theta )^2 +
+	\left( \sigma_y^2 + \sigma_u^2 \right)^{-1} ( y_1 - \theta )^2
 \right]
 \] $$
 The constraints on the fixed effect are
 $latex \[
-	- \infty \leq \theta_0 \leq + \infty
-	\R{\; and \;}
-	0.1 \leq \theta_1 \leq 100
+	- \infty \leq \theta \leq + \infty
 \] $$
 
 $code
-$verbatim%test/zero_random_two.cpp
+$verbatim%test_more/zero_random_one.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -70,6 +70,8 @@ namespace {
 	private:
 		const size_t n_fixed_;
 		const size_t n_random_;
+		const double sigma_u_;
+		const double sigma_y_;
 		const vector<double> y_;
 	// ----------------------------------------------------------------------
 	public:
@@ -77,13 +79,20 @@ namespace {
 		mixed_derived(
 			size_t n_fixed                    ,
 			size_t n_random                   ,
+			double sigma_u                    ,
+			double sigma_y                    ,
 			const vector<double>& y           ) :
 			// quasi_fixed = false
 			CppAD::mixed::cppad_mixed(n_fixed, n_random, false) ,
 			n_fixed_(n_fixed)                          ,
 			n_random_(n_random)                        ,
+			sigma_u_(sigma_u)                          ,
+			sigma_y_(sigma_y)                          ,
 			y_(y)
-		{	assert( n_fixed_ == 2);}
+		{	assert( n_fixed_ == 1);
+			assert( n_random_ == 1 );
+			assert( y_.size() == 2 );
+		}
 	// ----------------------------------------------------------------------
 	private:
 		// implementation of ran_like
@@ -101,10 +110,15 @@ namespace {
 			// square root of 2 * pi
 			Float sqrt_2pi = Float( CppAD::sqrt(8.0 * CppAD::atan(1.0) ) );
 
-			for(size_t i = 0; i < u.size(); i++)
-			{	// p(u_i | theta)
-				vec[0] += log(sqrt_2pi) + u[i] * u[i] / Float(2.0);
-			}
+			// p(y_1 | theta, u)
+			Float mu    = u[0] + theta[0];
+			Float res   = (y_[1] - mu) / sigma_y_;
+			vec[0]     += log(sqrt_2pi * sigma_y_) + res * res / Float(2.0);
+
+			// p(u | theta)
+			res     = u[0] / sigma_u_;
+			vec[0] += log(sqrt_2pi) + res * res / Float(2.0);
+
 			return vec;
 		}
 		// implementation of fix_like
@@ -119,26 +133,11 @@ namespace {
 			// compute these factors once
 			Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
 
-			// prior for fixed effects
-			for(size_t j = 0; j < n_fixed_; j++)
-			{	Float mu     = Float(1.0);
-				Float sigma  = Float(1.0);
-				Float res    = (fixed_vec[j] - mu) / sigma;
+			// p(y_0 | theta)
+			Float mu     = fixed_vec[0];
+			Float res    = (y_[0] - mu) / sigma_y_;
+			vec[0] += log(sqrt_2pi * sigma_y_) + res * res / Float(2.0);
 
-				// p(theta_j )
-				vec[0]  += log(sqrt_2pi * sigma) + res * res / Float(2.0);
-			}
-
-
-			// data given fixed effects
-			for(size_t i = 0; i < y_.size(); i++)
-			{	Float mu     = fixed_vec[0];
-				Float sigma  = fixed_vec[1];
-				Float res    = (y_[i] - mu) / sigma;
-
-				// p(y_i | theta)
-				vec[0] += log(sqrt_2pi * sigma) + res * res / Float(2.0);
-			}
 			return vec;
 		}
 	// ----------------------------------------------------------------------
@@ -173,33 +172,33 @@ namespace {
 	};
 }
 
-bool zero_random_two(void)
+bool zero_random_one(void)
 {
 	bool   ok = true;
 	double inf = std::numeric_limits<double>::infinity();
 	double tol = 1e-8;
 
-	size_t n_data   = 10;
-	size_t n_fixed  = 2;
-	size_t n_random = 3;;
+	double sigma_u  = 0.1;
+	double sigma_y  = 0.1 * 0.05;
+	size_t n_fixed  = 1;
+	size_t n_random = 1;;
+	size_t n_data   = 2;
 	vector<double>
 		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
-	fixed_lower[0] = - inf; fixed_in[0] = 2.0; fixed_upper[0] = inf;
-	fixed_lower[1] = .01;   fixed_in[1] = 0.5; fixed_upper[1] = inf;
+	fixed_lower[0] = - inf; fixed_in[0] = 0.05;  fixed_upper[0] = inf;
 	//
 	// explicit constriants (in addition to l1 terms)
 	vector<double> constraint_lower(0), constraint_upper(0);
 	//
 	vector<double> data(n_data);
-	for(size_t i = 0; i < n_data; i++)
-		data[i]       = double(i + 1);
+	data[0] = 0.05;
+	data[1] = 0.05;
 	//
 	vector<double>	random_in(n_random);
-	for(size_t i = 0; i < n_random; i++)
-		random_in[i] = 1.0;
+	random_in[0] = 0.1;
 
 	// object that is derived from cppad_mixed
-	mixed_derived mixed_object(n_fixed, n_random, data);
+	mixed_derived mixed_object(n_fixed, n_random, sigma_u, sigma_y, data);
 	mixed_object.initialize(fixed_in, random_in);
 
 	// optimize the fixed effects
@@ -235,33 +234,26 @@ bool zero_random_two(void)
 	);
 
 	// results of optimization
-	double theta_0 = fixed_out[0];
-	double theta_1 = fixed_out[1];
+	double theta = fixed_out[0];
 
 	// compute partials of F
-	double sum   = 0.0;
-	double sumsq = 0.0;
-	for(size_t i = 0; i < n_data; i++)
-	{	sum   += theta_0 - data[i];
-		sumsq += (theta_0 - data[i]) * (theta_0 - data[i]);
-	}
-	double F_0 = (theta_0 - 1.0) + sum / (theta_1 * theta_1);
-	double F_1 = theta_1 - 1.0;
-	F_1       += double(n_data) / theta_1;
-	F_1       -= sumsq  / (theta_1 * theta_1 * theta_1);
+	double F_theta = (theta - data[0]) / (sigma_y * sigma_y);
+	F_theta       += (theta - data[1]) / (sigma_y*sigma_y + sigma_u*sigma_u);
 
 	// Note that no constraints are active, (not even the l1 terms)
 	// so the partials should be zero.
-	ok &= CppAD::abs( F_0 ) <= 2.0 * tol;
-	ok &= CppAD::abs( F_1 ) <= 2.0 * tol;
+	ok &= CppAD::abs( F_theta ) <= 2.0 * tol;
 
 	// Compute the optimal random effects
 	vector<double> random_out = mixed_object.optimize_random(
 		random_options, fixed_out, random_lower, random_upper, random_in
 	);
-	// partial of p(u | theta) w.r.t u_i is equal to u_i
-	for(size_t i = 0; i < n_random; i++)
-		ok &= CppAD::abs( random_out[i] ) <= 2.0 * tol;
+	double u = random_out[0];
+
+	// partial of p(u | theta) w.r.t u
+	double p_u = (theta + u - data[0]) / (sigma_y * sigma_y);
+	ok &= CppAD::abs( u )   <= 2.0 * tol;
+	ok &= CppAD::abs( p_u ) <= 2.0 * tol;
 
 	return ok;
 }

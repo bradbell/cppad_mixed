@@ -181,13 +181,13 @@ CONFIGURE_FILE(
 # subdirectories
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(example)
-ADD_SUBDIRECTORY(test)
+ADD_SUBDIRECTORY(test_more)
 ADD_SUBDIRECTORY(speed)
 # ----------------------------------------------------------------------------
 ADD_CUSTOM_TARGET(check DEPENDS
 	cppad_mixed
 	check_example
-	check_test
+	check_test_more
 )
 ADD_CUSTOM_TARGET(speed DEPENDS
 	speed_capture_xam

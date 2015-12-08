@@ -14,18 +14,18 @@ LINK_DIRECTORIES(
 	${ipopt_LIBRARY_DIRS}
 )
 # Program cpp, not installed, and depends on following source files
-ADD_EXECUTABLE(test EXCLUDE_FROM_ALL
+ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
 	binomial.cpp
 	delta_ranobj.cpp
 	der_var_hes.cpp
 	zero_random_one.cpp
 	zero_random_two.cpp
-	test.cpp
+	test_more.cpp
 )
 SET_TARGET_PROPERTIES(
-	test PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
+	test_more PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
 )
-TARGET_LINK_LIBRARIES(test
+TARGET_LINK_LIBRARIES(test_more
 	cppad_mixed
 	cppad_mixed_eigen
 	cppad_mixed
@@ -33,4 +33,4 @@ TARGET_LINK_LIBRARIES(test
 	gsl
 	gslcblas
 )
-ADD_CUSTOM_TARGET(check_test test DEPENDS test )
+ADD_CUSTOM_TARGET(check_test_more test_more DEPENDS test_more )
