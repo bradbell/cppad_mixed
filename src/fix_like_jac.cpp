@@ -31,7 +31,7 @@ $icode%mixed_object%.fix_like_jac(
 )%$$
 
 $head mixed_object$$
-We use $cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$
+We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 

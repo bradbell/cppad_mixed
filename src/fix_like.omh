@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
 /*
-$begin cppad_mixed_fix_like$$
+$begin fix_like$$
 $spell
 	CppAD
 	cppad
@@ -24,13 +24,13 @@ $head Syntax$$
 $icode%vec% = %mixed_object%.fix_like(%fixed_vec%)%$$
 
 $head mixed_object$$
-We use $cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$
+We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
 $head a1_double$$
 The type $code a1_double$$ below is one of the
-see $cref/AD Types/cppad_mixed_public/AD Types/$$.
+see $cref/AD Types/public/AD Types/$$.
 
 $head Virtual Function$$
 The following virtual function must be implemented in the derived class:
@@ -59,7 +59,7 @@ $cref/negative log-density vector
 	/Negative Log-Density Vector
 /$$
 corresponding to the fixed likelihood
-$cref/g(theta)/cppad_mixed_theory/Fixed Likelihood, g(theta)/$$.
+$cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 In the case where there is no prior, the vector $icode vec$$
 should be empty; i.e., $icode%vec%.size() == 0%$$.
 

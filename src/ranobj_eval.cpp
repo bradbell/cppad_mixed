@@ -32,7 +32,7 @@ $icode%h% = %mixed_object%.ranobj_eval(%fixed_vec%, %random_vec%)%$$
 $head Purpose$$
 This routine evaluates the Laplace approximation
 $cref/h(theta, u)
-	/cppad_mixed_theory
+	/theory
 	/Objective
 	/Laplace Approximation, h(theta, u)
 /$$.
@@ -40,7 +40,7 @@ Note that if the random effects are optimal,
 then the Laplace approximation is equal to the random objective.
 
 $head mixed_object$$
-We use $cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$
+We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
@@ -64,7 +64,7 @@ vector $latex u$$ at which $latex h( \theta , u)$$ is evaluated.
 Note that the Laplace approximation is equal to the random objective when
 $latex u$$ is the
 $cref/optimal random effects
-	/cppad_mixed_theory
+	/theory
 	/Objective
 	/Optimal Random Effects, u^(theta)
 /$$

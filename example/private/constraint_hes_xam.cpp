@@ -22,7 +22,7 @@ $section C++ constraint_hes: Example and Test$$
 
 $head Private$$
 This example is not part of the
-$cref/cppad_mixed public API/cppad_mixed_public/$$.
+$cref/cppad_mixed public API/public/$$.
 
 $code
 $verbatim%example/private/constraint_hes_xam.cpp

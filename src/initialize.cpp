@@ -11,7 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/cppad_mixed.hpp>
 
 /*
-$begin cppad_mixed_initialize$$
+$begin initialize$$
 $spell
 	CppAD
 	ranobj
@@ -36,12 +36,12 @@ $icode%size_map% = %mixed_object%.initialize(%fixed_vec%, %random_vec%)%$$
 $head Purpose$$
 Some of the $code cppad_mixed$$ initialization requires calling the
 derived class version of the
-$cref/ran_like/cppad_mixed_ran_like/$$ function.
+$cref/ran_like/ran_like/$$ function.
 Hence this initialization cannot be done until
-after the $cref/derived constructor/cppad_mixed_derived_ctor/$$ completes.
+after the $cref/derived constructor/derived_ctor/$$ completes.
 
 $head mixed_object$$
-We use $cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$
+We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
@@ -92,12 +92,12 @@ $latex f_{u \theta}^{(2)} ( \theta , u )$$.
 $subhead ran_like_fun$$
 $icode%size_map%["ran_like_fun"]%$$ is the
 number of variables in the $code ADFun<double>$$ version of
-$cref/ran_like/cppad_mixed_ran_like/$$.
+$cref/ran_like/ran_like/$$.
 
 $subhead ran_like_a1fun$$
 $icode%size_map%["ran_like_a1fun"]%$$ is the
 number of variables in the $code ADFun<a1_double>$$ version of
-$cref/ran_like/cppad_mixed_ran_like/$$.
+$cref/ran_like/ran_like/$$.
 
 $subhead hes_ran_fun$$
 $icode%size_map%["hes_ran_fun_"]%$$ is the

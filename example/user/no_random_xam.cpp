@@ -29,7 +29,7 @@ $latex \[
 	\B{p}( \theta_i ) \sim \B{N} ( 0 , 1 )
 \] $$
 The corresponding fixed likelihood
-$cref/g(theta)/cppad_mixed_theory/Fixed Likelihood, g(theta)/$$
+$cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$
 is
 $latex \[
 g( \theta ) = \frac{1}{2} \sum_{i} \left[

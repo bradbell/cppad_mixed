@@ -30,7 +30,7 @@ $icode%mixed_object%.constraint_hes(
 )%$$
 
 $head mixed_object$$
-We use $cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$
+We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
@@ -49,9 +49,9 @@ $codei%
 	const CppAD::vector<double>& %weight%
 %$$
 It specifies the value of the weights for the
-components of the $cref/constraint/cppad_mixed_constraint/$$.
+components of the $cref/constraint/constraint/$$.
 It has the same size as the corresponding return value
-$cref/c_vec/cppad_mixed_constraint/c_vec/$$.
+$cref/c_vec/constraint/c_vec/$$.
 
 $head Hessian$$
 We use $latex w$$ to denote the vector corresponding to $icode weight$$

@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin cppad_mixed_optimize_fixed$$
+$begin optimize_fixed$$
 $spell
 	CppAD
 	cppad
@@ -39,7 +39,7 @@ $icode%mixed_object%.optimize_fixed(
 
 $head Purpose$$
 This routine maximizes the total objective
-$cref/L(theta)/cppad_mixed_theory/Objective/Total Objective, L(theta)/$$.
+$cref/L(theta)/theory/Objective/Total Objective, L(theta)/$$.
 
 $head inf$$
 The value $code inf$$ below refers to
@@ -48,7 +48,7 @@ $codei%
 %$$
 
 $head mixed_object$$
-We use $cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$
+We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
@@ -58,7 +58,7 @@ $codei%
 	const std::string& %fixed_options%
 %$$
 and is the $cref ipopt_options$$ for optimizing the fixed effects.
-If $cref/quasi_fixed/cppad_mixed_derived_ctor/quasi_fixed/$$
+If $cref/quasi_fixed/derived_ctor/quasi_fixed/$$
 is true,
 the following changes are made to the standard Ipopt options specification:
 $list number$$
@@ -93,7 +93,7 @@ is used for plus infinity; i.e., no upper limit.
 
 $head constraint_lower$$
 specifies the lower limits for the
-$cref/constraints/cppad_mixed_constraint/$$.
+$cref/constraints/constraint/$$.
 Note that $code -inf$$
 is used for minus infinity; i.e., no lower limit.
 
@@ -122,7 +122,7 @@ $codei%
 	const CppAD::vector<double>& %random_lower%
 %$$
 It must have size equal to
-$cref/n_random/cppad_mixed_derived_ctor/n_random/$$ and
+$cref/n_random/derived_ctor/n_random/$$ and
 specifies the lower limits for the optimization of the
 $cref/random effects/cppad_mixed/Random Effects, u/$$
 vector $latex u$$.
@@ -130,7 +130,7 @@ This may be useful to keep the random effects
 out of regions of numerical instability.
 On the other hand, the calculation of the
 $cref/derivative of u^(theta)
-	/cppad_mixed_theory
+	/theory
 	/Derivative of Random Objective
 	/Derivative of u^(theta)
 /$$
@@ -144,7 +144,7 @@ $codei%
 	const CppAD::vector<double>& %random_upper%
 %$$
 It must have size equal to
-$cref/n_random/cppad_mixed_derived_ctor/n_random/$$ and
+$cref/n_random/derived_ctor/n_random/$$ and
 specifies the upper limits for the optimization of the random effect.
 The value plus infinity can be used to specify no lower limit.
 
@@ -154,7 +154,7 @@ $codei%
 	const CppAD::vector<double>& %random_in%
 %$$
 It must have size equal to
-$cref/n_random/cppad_mixed_derived_ctor/n_random/$$ and
+$cref/n_random/derived_ctor/n_random/$$ and
 specifies the initial value used for the optimization of the
 $cref/random effects/cppad_mixed/Random Effects, u/$$ vector $latex u$$.
 It must hold that
@@ -177,9 +177,9 @@ $codei%
 for $icode%j% = 0 , %...%, %n_fixed_%-1%$$.
 
 $head Laplace Approximation$$
-The $cref/theory/cppad_mixed_theory/$$ for the
+The $cref/theory/theory/$$ for the
 Laplace approximation optimization only includes the case where
-the $cref/random likelihood/cppad_mixed_ran_like/$$ is smooth.
+the $cref/random likelihood/ran_like/$$ is smooth.
 
 $comment ipoot_options is also used by optimize_random$$
 $children%include/cppad/mixed/ipopt_fixed.hpp

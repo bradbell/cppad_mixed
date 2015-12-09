@@ -27,7 +27,7 @@ $head Syntax$$
 $icode%c_vec% = %mixed_object%.constraint_eval(%fixed_vec%)%$$
 
 $head mixed_object$$
-We use $cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$
+We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
@@ -47,7 +47,7 @@ $codei%
 %$$
 and is the constraint function value
 corresponding to the fixed effects; see
-$cref/c_vec/cppad_mixed_constraint/c_vec/$$.
+$cref/c_vec/constraint/c_vec/$$.
 
 $children%
 	example/private/constraint_eval_xam.cpp

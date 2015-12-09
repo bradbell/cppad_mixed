@@ -41,10 +41,10 @@ $codei%factorize_chol_hes_ran(
 
 $head Private$$
 This function should not used by a derived
-$cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$.
+$cref/mixed_object/derived_ctor/mixed_object/$$.
 
 $head Purpose$$
-$code chol_hes_ran_$$ should be a $cref cppad_mixed_private$$ member variable,
+$code chol_hes_ran_$$ should be a $cref private$$ member variable,
 but it is instead a static in the $code cppad_mixed$$ namespace
 so that the warnings that Eigen generates
 do not need to be suppressed by all the routines that include
@@ -61,7 +61,7 @@ $codep */
 /* $$
 This is lower triangular Cholesky factorization of the Hessian of the
 $cref/random likelihood
-	/cppad_mixed_theory
+	/theory
 	/Random Likelihood, f(theta, u)
 /$$
 with respect to the random effects; i.e.

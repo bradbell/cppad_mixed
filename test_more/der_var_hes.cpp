@@ -30,7 +30,7 @@ $latex \[
 \] $$
 The negative log-likelihood for the random effects
 $cref/f(theta, u)
-	/cppad_mixed_theory/
+	/theory/
 	Random Likelihood, f(theta, u)
 /$$
 is

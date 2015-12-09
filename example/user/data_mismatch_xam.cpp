@@ -32,7 +32,7 @@ $latex \[
 	\B{p}( u | \theta ) \sim \B{N} ( 0 , \sigma_u^2 )
 \] $$
 The fixed likelihood
-$cref/g(theta)/cppad_mixed_theory/Fixed Likelihood, g(theta)/$$
+$cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$
 is
 $latex \[
 g( \theta ) = \frac{1}{2} \left[
@@ -41,7 +41,7 @@ g( \theta ) = \frac{1}{2} \left[
 \] $$
 The random likelihood
 $cref/f(theta, u)
-	/cppad_mixed_theory/
+	/theory/
 	Random Likelihood, f(theta, u)
 /$$
 is
@@ -61,11 +61,11 @@ is maximal, and there is no prior for $latex \theta$$.
 This example demonstrates that $latex \theta = z$$ and $latex u = 0$$
 may not be optimal for the this case.
 To be specific it shows that the derivative of
-$cref/L(theta)/cppad_mixed_theory/Objective/Total Objective, L(theta)/$$
+$cref/L(theta)/theory/Objective/Total Objective, L(theta)/$$
 may be non-zero.
 
 $head Theory$$
-See the $tref cppad_mixed_theory$$ section for the
+See the $tref theory$$ section for the
 theory behind the calculations below:
 
 $head Derivatives$$

@@ -27,14 +27,14 @@ $icode%grad% = %mixed_object%.ran_like_grad( %fixed_vec%, %random_vec%)%$$
 
 $head Purpose$$
 This routine computes the gradient of the random likelihood
-$cref/f(theta, u)/cppad_mixed_theory/Random Likelihood, f(theta, u)/$$
+$cref/f(theta, u)/theory/Random Likelihood, f(theta, u)/$$
 with respect to the random effects vector $latex u$$; i.e.
 $latex \[
 	f_u^{(1)} ( \theta, u )
 \] $$
 
 $head mixed_object$$
-We use $cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$
+We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 

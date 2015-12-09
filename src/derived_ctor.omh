@@ -8,7 +8,7 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-$begin cppad_mixed_derived_ctor$$
+$begin derived_ctor$$
 $spell
 	CppAD
 	bool
@@ -24,7 +24,7 @@ $icode%mixed_derived% %mixed_object%(
 )%$$
 
 $head See Also$$
-$cref/initialize/cppad_mixed_initialize/$$
+$cref/initialize/initialize/$$
 
 $head mixed_derived$$
 This is the name of the class derived in the following fashion:
@@ -64,7 +64,7 @@ $codei%
 	bool %quasi_fixed%
 %$$
 If it is true, a quasi-Newton method is used to
-$cref/optimize the fixed effects/cppad_mixed_optimize_fixed/$$.
+$cref/optimize the fixed effects/optimize_fixed/$$.
 Otherwise a full Newton method is used.
 The full Newton method requires much more memory for computation
 of second derivatives of the Laplace approximation.

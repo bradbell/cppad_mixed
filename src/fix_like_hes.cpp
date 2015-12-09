@@ -30,7 +30,7 @@ $icode%mixed_object%.fix_like_hes(
 )%$$
 
 $head mixed_object$$
-We use $cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$
+We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
@@ -51,9 +51,9 @@ $codei%
 It specifies the value of the weights for the
 components of the
 $cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
-corresponding to the $cref/fix_like/cppad_mixed_fix_like/$$.
+corresponding to the $cref/fix_like/fix_like/$$.
 It has the same size as the corresponding return value
-$cref/vec/cppad_mixed_fix_like/vec/$$.
+$cref/vec/fix_like/vec/$$.
 
 $head Hessian$$
 We use $latex w$$ to denote the vector corresponding to $icode weight$$

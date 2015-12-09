@@ -47,7 +47,7 @@ class cppad_mixed {
 	friend class CppAD::mixed::ipopt_fixed;
 public:
 /*
-$begin cppad_mixed_public$$
+$begin public$$
 $spell
 	CppAD
 	init
@@ -94,7 +94,7 @@ $codep */
 		const a1d_vector& random_vec
 	) = 0;
 /* $$
-See $cref/ran_like/cppad_mixed_ran_like/$$.
+See $cref/ran_like/ran_like/$$.
 
 $subhead fix_like$$
 $codep */
@@ -102,7 +102,7 @@ $codep */
 		const a1d_vector& fixed_vec
 	) = 0 ;
 /* $$
-See $cref/fix_like/cppad_mixed_fix_like/$$.
+See $cref/fix_like/fix_like/$$.
 
 $subhead constraint$$
 $codep */
@@ -110,7 +110,7 @@ $codep */
 		const a1d_vector& fixed_vec
 	) = 0 ;
 /* $$
-See $cref/constraint/cppad_mixed_constraint/$$.
+See $cref/constraint/constraint/$$.
 
 $subhead fatal_error$$
 $codep */
@@ -127,7 +127,7 @@ This routine displays a warning message and then returns.
 
 $head constructor$$
 Construct an $code cppad_mixed$$ derived class object; see
-$cref/derived_ctor/cppad_mixed_derived_ctor/$$.
+$cref/derived_ctor/derived_ctor/$$.
 $codep */
 	cppad_mixed(size_t n_fixed, size_t n_random, bool quasi_fixed)
 /* $$
@@ -149,7 +149,7 @@ $comment */
 /* $$
 $head initialize$$
 Directly after construction, use this function to initialize
-the derived class object; see $cref/initialize/cppad_mixed_initialize/$$.
+the derived class object; see $cref/initialize/initialize/$$.
 $codep */
 	std::map<std::string, size_t> initialize(
 		const d_vector& fixed_vec, const d_vector& random_vec
@@ -157,7 +157,7 @@ $codep */
 /* $$
 $head optimize_random$$
 Given the fixed effects, optimize with respect to the random effects;
-see  $cref/optimize_random/cppad_mixed_optimize_random/$$.
+see  $cref/optimize_random/optimize_random/$$.
 $codep */
 	d_vector optimize_random(
 		const std::string& options      ,
@@ -169,7 +169,7 @@ $codep */
 /* $$
 $head optimize_fixed$$
 Optimize the total objective with respect to the fixed effects;
-see  $cref/optimize_fixed/cppad_mixed_optimize_fixed/$$.
+see  $cref/optimize_fixed/optimize_fixed/$$.
 $codep */
 	d_vector optimize_fixed(
 		const std::string& fixed_options    ,
@@ -198,7 +198,7 @@ $end
 private:
 /*
 ------------------------------------------------------------------------------
-$begin cppad_mixed_private$$
+$begin private$$
 $spell
 	CppAD
 	init
@@ -262,7 +262,7 @@ $codep */
 /* $$
 $head quasi_fixed_$$
 Are we using a quasi-Newton method (or full Newton method)
-when $cref/optimizing fixed effects/cppad_mixed_optimize_fixed/$$.
+when $cref/optimizing fixed effects/optimize_fixed/$$.
 $codep */
 	const bool quasi_fixed_;
 /* $$
@@ -287,7 +287,7 @@ $head ran_like$$
 If $icode%n_random_% > 0%$$ and $code init_ran_like_done_$$,
 $cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$ and
 $cref/ran_like_a1fun_/init_ran_like/ran_like_a1fun_/$$ are
-recordings of the user's $cref/ran_like/cppad_mixed_ran_like/$$.
+recordings of the user's $cref/ran_like/ran_like/$$.
 function.
 $codep */
 	CppAD::ADFun<double>      ran_like_fun_;
@@ -301,7 +301,7 @@ If $icode%n_random_% > 0%$$ and $code init_hes_ran_done_$$,
 $cref/hes_ran_/init_hes_ran/hes_ran_/$$ contains
 information for the Hessian of the
 $cref/random likelihood
-	/cppad_mixed_theory
+	/theory
 	/Random Likelihood, f(theta, u)
 /$$
 with respect to the random effects; i.e.
@@ -319,7 +319,7 @@ If $icode%n_random_% > 0%$$ and $code init_hes_cross_done_$$,
 $cref/hes_cross_/init_hes_cross/hes_cross_/$$ contains
 information for the cross partials of the Hessian of the
 $cref/random likelihood
-	/cppad_mixed_theory
+	/theory
 	/Random Likelihood, f(theta, u)
 /$$
 ; i.e.  $latex f_{u \theta}^{(2)} ( \theta , u )$$.
@@ -360,7 +360,7 @@ $code init_hes_ranobj_done_$$,
 $cref/hes_ranobj_/init_hes_ranobj/hes_ranobj_/$$ contains
 information for the Hessian of the
 $cref/random objective
-	/cppad_mixed_theory
+	/theory
 	/Objective
 	/Random Objective, r(theta)
 /$$
@@ -371,7 +371,7 @@ $codep */
 $head fix_like_$$
 $cref/fix_like_fun_/init_fix_like/fix_like_fun_/$$
 is a recording of the fixed part of the likelihood function; see,
-$cref/fix_like/cppad_mixed_fix_like/$$.
+$cref/fix_like/fix_like/$$.
 $codep */
 	CppAD::ADFun<double>        fix_like_fun_;     // g(theta)
 /* $$
@@ -381,7 +381,7 @@ with this ADFun object:
 $subhead fix_like_jac_$$
 $cref/fix_like_jac_/init_fix_like/fix_like_jac_/$$
 contains information for the Jacobian of the
-$cref/fixed likelihood/cppad_mixed_theory/Fixed Likelihood, g(theta)/$$.
+$cref/fixed likelihood/theory/Fixed Likelihood, g(theta)/$$.
 $codep */
 	sparse_jac_info             fix_like_jac_;
 /* $$
@@ -390,7 +390,7 @@ $subhead fix_like_hes_$$
 If $icode quasi_fixed$$ is false,
 $cref/fix_like_hes_/init_fix_like/fix_like_hes_/$$
 contains information for the Hessian of the
-$cref/fixed likelihood/cppad_mixed_theory/Fixed Likelihood, g(theta)/$$.
+$cref/fixed likelihood/theory/Fixed Likelihood, g(theta)/$$.
 $codep */
 	sparse_hes_info             fix_like_hes_;
 /* $$
@@ -398,7 +398,7 @@ $codep */
 $head constraint_fun_$$
 $cref/constraint_fun_/init_constraint/constraint_fun_/$$
 is a recording of the fixed part of the likelihood function; see,
-$cref/constraint/cppad_mixed_constraint/$$.
+$cref/constraint/constraint/$$.
 $codep */
 	CppAD::ADFun<double>        constraint_fun_;     // c(theta)
 /* $$
@@ -417,7 +417,7 @@ $subhead constraint_hes_$$
 If $icode quasi_fixed$$ is false,
 $cref/constraint_hes_/init_constraint/constraint_hes_/$$
 contains information for the Hessian of the
-$cref/constraints/cppad_mixed_constraint/$$ function $latex c( \theta )$$.
+$cref/constraints/constraint/$$ function $latex c( \theta )$$.
 The corresponding ADFun object is
 $cref/constraint_fun_/init_constraint/constraint_fun_/$$.
 $codep */

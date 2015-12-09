@@ -36,7 +36,7 @@ $codei%pack(%fixed_one%, %fixed_two%, %random_vec%, %three_vec%)
 $head Private$$
 This function is $code private$$ to the $code cppad_mixed$$ class
 and cannot be used by a derived
-$cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$.
+$cref/mixed_object/derived_ctor/mixed_object/$$.
 
 $head Float_unpack$$
 This can be any type.
@@ -54,7 +54,7 @@ $codei%
 It specifies the a value for the
 $cref/fixed effects/cppad_mixed/Fixed Effects, theta/$$.
 The size of this vector must be equal to
-$cref/n_fixed_/cppad_mixed_private/n_fixed_/$$.
+$cref/n_fixed_/private/n_fixed_/$$.
 
 $head fixed_two$$
 This argument has prototype
@@ -64,7 +64,7 @@ $codei%
 If present, it also specifies the a value for the
 $cref/fixed effects/cppad_mixed/Fixed Effects, theta/$$.
 The size of this vector must be equal to
-$cref/n_fixed_/cppad_mixed_private/n_fixed_/$$.
+$cref/n_fixed_/private/n_fixed_/$$.
 
 $head random_vec$$
 This argument has prototype
@@ -74,7 +74,7 @@ $codei%
 It specifies a value for the
 $cref/random effects/cppad_mixed/Random Effects, u/$$.
 The size of this vector must be equal to
-$cref/n_fixed_/cppad_mixed_private/n_random_/$$.
+$cref/n_fixed_/private/n_random_/$$.
 
 $head both_vec$$
 This argument has prototype

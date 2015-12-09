@@ -8,7 +8,7 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
-$begin cppad_mixed_theory$$
+$begin theory$$
 $latex \newcommand{\dtheta}[1]{ \frac{\R{d}}{\R{d} \theta_{ #1}} }$$
 
 
@@ -97,7 +97,7 @@ $latex \[
 \] $$
 as the random objective.
 This corresponds to equation (4) in the
-$cref/reference/cppad_mixed_theory/Reference/$$.
+$cref/reference/theory/Reference/$$.
 
 $subhead Total Objective, L(theta)$$
 The total objective, as a function of the fixed effects, is
@@ -153,12 +153,12 @@ Note that $latex f_{uu}^{(2)} ( \theta , u )$$
 is often sparse and only non-zero
 components need be included in the summation.
 This is discussed in more detail near equation (8) in the
-$cref/reference/cppad_mixed_theory/Reference/$$.
+$cref/reference/theory/Reference/$$.
 
 $head Hessian of Random Objective$$
 Note that the Hessian of the random objective
 $latex r^{(2)} ( \theta ) $$ is required when
-$cref/quasi_fixed/cppad_mixed_derived_ctor/quasi_fixed/$$ is false.
+$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false.
 In this case, the following representation is used:
 
 $subhead U(beta, theta, u)$$

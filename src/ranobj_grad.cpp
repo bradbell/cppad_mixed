@@ -31,12 +31,12 @@ $icode%mixed_object%.ranobj_grad(%fixed_vec%, %random_vec%, %r_fixed%)%$$
 $head Purpose$$
 This routine computes the
 $cref/derivative of the random objective
-	/cppad_mixed_theory/
+	/theory/
 	Derivative of Random Objective
 /$$.
 
 $head mixed_object$$
-We use $cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$
+We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 

@@ -27,7 +27,7 @@ $head Syntax$$
 $icode%vec% = %mixed_object%.fix_like_eval(%fixed_vec%)%$$
 
 $head mixed_object$$
-We use $cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$
+We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
@@ -48,7 +48,7 @@ $codei%
 and is a
 $cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
 corresponding to the fixed part of the negative log-likelihood
-$cref/g(theta)/cppad_mixed_theory/Fixed Likelihood, g(theta)/$$.
+$cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 To be specific;
 $pre
 	$$

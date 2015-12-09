@@ -235,7 +235,7 @@ is used for plus infinity; i.e., no upper limit.
 
 $head constraint_lower$$
 specifies the lower limits for the
-$cref/constraints/cppad_mixed_constraint/$$.
+$cref/constraints/constraint/$$.
 Note that
 $code%
 	- std::numeric_limits<double>::infinity()
@@ -276,7 +276,7 @@ and should not be modified.
 
 $subhead fix_like_n_abs_$$
 number of absolute value terms in the
-$cref/fix_like/cppad_mixed_fix_like/$$.
+$cref/fix_like/fix_like/$$.
 
 $head prior_nnz_jac_$$
 number of non-zeros in the Jacobian of the fixed likelihood.

@@ -38,13 +38,13 @@ $latex \[
 \] $$
 see
 $cref/H(beta, theta, u)
-	/cppad_mixed_theory
+	/theory
 	/Hessian of Random Objective
 	/Approximate Random Objective, H(beta, theta, u)
 /$$.
 
 $head mixed_object$$
-We use $cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$
+We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
@@ -64,7 +64,7 @@ $codei%
 %$$
 Given the fixed effects $latex \theta$$, it is the corresponding
 $cref/optimal random effects
-	/cppad_mixed_theory
+	/theory
 	/Objective
 	/Optimal Random Effects, u^(theta)
 /$$

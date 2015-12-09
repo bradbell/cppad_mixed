@@ -33,7 +33,7 @@ $codei%init_constraint(%fixed_vec%)%$$
 $head Private$$
 This function is $code private$$ to the $code cppad_mixed$$ class
 and cannot be used by a derived
-$cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$.
+$cref/mixed_object/derived_ctor/mixed_object/$$.
 
 $head fixed_vec$$
 This argument has prototype
@@ -55,11 +55,11 @@ $codei%
 %$$
 must be empty; i.e., $code constraint_fun_.size_var() == 0$$.
 If the return value for
-$cref/constraint/cppad_mixed_constraint/$$ is empty,
+$cref/constraint/constraint/$$ is empty,
 $code constraint_fun_$$ is not modified.
 Otherwise,
 upon return it contains the corresponding recording for the
-$cref/constraint/cppad_mixed_constraint/$$ $latex c( \theta )$$.
+$cref/constraint/constraint/$$ $latex c( \theta )$$.
 
 $head constraint_jac_$$
 The input value of
@@ -70,7 +70,7 @@ does not matter.
 If $icode quasi_fixed$$ is false,
 upon return $code constraint_jac_$$ contains
 $cref sparse_jac_info$$ for the
-Jacobian of the $cref/constraints/cppad_mixed_constraint/$$.
+Jacobian of the $cref/constraints/constraint/$$.
 
 $subhead constraint_fun_$$
 This ADFun object can be used for the
@@ -86,7 +86,7 @@ If $icode quasi_fixed$$ is false,
 upon return $code constraint_hes_$$ contains
 $cref sparse_hes_info$$ for the
 lower triangle of a weighted Hessian for the
-$cref/constraints/cppad_mixed_constraint/$$.
+$cref/constraints/constraint/$$.
 
 $subhead constraint_fun_$$
 This ADFun object can be used for the

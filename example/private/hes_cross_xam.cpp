@@ -23,7 +23,7 @@ $section C++ Hessian Cross Terms: Example and Test$$
 
 $head Private$$
 This example is not part of the
-$cref/cppad_mixed public API/cppad_mixed_public/$$.
+$cref/cppad_mixed public API/public/$$.
 
 $code
 $verbatim%example/private/hes_cross_xam.cpp

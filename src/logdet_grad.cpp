@@ -33,7 +33,7 @@ $head Purpose$$
 This routine computes the total derivative of the log determinant
 of the Hessian of the random likelihood
 $cref/f(theta, u)
-	/cppad_mixed_theory/
+	/theory/
 	Random Likelihood, f(theta, u)
 /$$
 with respect to the random effects vector $latex u$$; i.e.
@@ -45,7 +45,7 @@ $latex \[
 \] $$
 
 $head mixed_object$$
-We use $cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$
+We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 

@@ -86,7 +86,7 @@ $latex \[
 
 $subhead Fixed Effects Estimation$$
 We approximate this solution by replacing the integral above with its
-Laplace approximation (see $cref cppad_mixed_theory$$) and
+Laplace approximation (see $cref theory$$) and
 optimizing the approximate objective.
 Let $latex \hat{\theta}$$ be to optimal solution for the approximate
 problem.

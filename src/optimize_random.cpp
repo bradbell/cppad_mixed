@@ -11,7 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/ipopt/solve.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
 /*
-$begin cppad_mixed_optimize_random$$
+$begin optimize_random$$
 $spell
 	CppAD
 	cppad
@@ -32,11 +32,11 @@ $icode%mixed_object%.optimize_random(
 
 $head Purpose$$
 This routine maximizes the
-$cref/random likelihood/cppad_mixed_ran_like/$$
+$cref/random likelihood/ran_like/$$
 corresponding to the object $icode mixed_object$$.
 
 $head mixed_object$$
-We use $cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$
+We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
@@ -62,7 +62,7 @@ $codei%
 	const CppAD::vector<double>& %random_lower%
 %$$
 It must have size equal to
-$cref/n_random/cppad_mixed_derived_ctor/n_random/$$ and
+$cref/n_random/derived_ctor/n_random/$$ and
 specifies the lower limits for the optimization of the
 $cref/random effects/cppad_mixed/Random Effects, u/$$
 vector $latex u$$.
@@ -74,7 +74,7 @@ $codei%
 	const CppAD::vector<double>& %random_upper%
 %$$
 It must have size equal to
-$cref/n_random/cppad_mixed_derived_ctor/n_random/$$ and
+$cref/n_random/derived_ctor/n_random/$$ and
 specifies the upper limits for the optimization of the random effect.
 The value plus infinity can be used to specify no lower limit.
 
@@ -84,7 +84,7 @@ $codei%
 	const CppAD::vector<double>& %random_in%
 %$$
 It must have size equal to
-$cref/n_random/cppad_mixed_derived_ctor/n_random/$$ and
+$cref/n_random/derived_ctor/n_random/$$ and
 specifies the initial value used for the optimization of the
 $cref/random effects/cppad_mixed/Random Effects, u/$$ vector $latex u$$.
 It must hold that

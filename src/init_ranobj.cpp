@@ -29,7 +29,7 @@ $codei%init_ranobj(%fixed_vec%, %random_vec%)%$$
 $head Private$$
 This function is $code private$$ to the $code cppad_mixed$$ class
 and cannot be used by a derived
-$cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$.
+$cref/mixed_object/derived_ctor/mixed_object/$$.
 
 $head fixed_vec$$
 This argument has prototype
@@ -58,7 +58,7 @@ does not matter.
 Upon return it contains a second order accurate recording of the
 approximate random objective; see
 $cref/H(beta, theta, u)
-	/cppad_mixed_theory
+	/theory
 	/Hessian of Random Objective
 	/Approximate Random Objective, H(beta, theta, u)
 /$$.

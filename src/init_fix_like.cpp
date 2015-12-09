@@ -33,7 +33,7 @@ $codei%init_fix_like(%fixed_vec%)%$$
 $head Private$$
 This function is $code private$$ to the $code cppad_mixed$$ class
 and cannot be used by a derived
-$cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$.
+$cref/mixed_object/derived_ctor/mixed_object/$$.
 
 $head fixed_vec$$
 This argument has prototype
@@ -55,15 +55,15 @@ $codei%
 %$$
 must be empty; i.e., $code fix_like_fun_.size_var() == 0$$.
 If the return value for
-$cref/fix_like/cppad_mixed_fix_like/$$ is empty,
+$cref/fix_like/fix_like/$$ is empty,
 $code fix_like_fun_$$ is not modified.
 Otherwise,
 upon return it contains the corresponding recording for the
-$cref/fix_like/cppad_mixed_fix_like/$$.
+$cref/fix_like/fix_like/$$.
 The function result is the
 $cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
 corresponding to the function
-$cref/g(theta)/cppad_mixed_theory/Fixed Likelihood, g(theta)/$$.
+$cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 
 $head fix_like_jac_$$
 The input value of
@@ -76,7 +76,7 @@ upon return $code fix_like_jac_$$ contains
 $cref sparse_jac_info$$ for the
 Jacobian corresponding to
 $latex g^{(1)}) ( \theta )$$ see
-$cref/g(theta)/cppad_mixed_theory/Fixed Likelihood, g(theta)/$$.
+$cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 
 $subhead fix_like_fun_$$
 This ADFun object can be used for the
@@ -93,7 +93,7 @@ upon return $code fix_like_hes_$$ contains
 $cref sparse_hes_info$$ for the
 lower triangle of a Hessian corresponding to
 $latex g^{(2)}) ( \theta )$$ see
-$cref/g(theta)/cppad_mixed_theory/Fixed Likelihood, g(theta)/$$.
+$cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 
 $subhead fix_like_fun_$$
 This ADFun object can be used for the

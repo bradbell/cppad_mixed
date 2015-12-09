@@ -29,7 +29,7 @@ $codei%init_ran_like(%fixed_vec%, %random_vec%)%$$
 $head Private$$
 This function is $code private$$ to the $code cppad_mixed$$ class
 and cannot be used by a derived
-$cref/mixed_object/cppad_mixed_derived_ctor/mixed_object/$$.
+$cref/mixed_object/derived_ctor/mixed_object/$$.
 
 $head fixed_vec$$
 This argument has prototype
@@ -56,7 +56,7 @@ $codei%
 %$$
 does not matter.
 Upon return it contains a recording of the function
-$cref/ran_like/cppad_mixed_ran_like/$$.
+$cref/ran_like/ran_like/$$.
 
 $head ran_like_a1fun_$$
 The input value of the member variable
@@ -65,7 +65,7 @@ $codei%
 %$$
 does not matter.
 Upon return it contains a recording of the function
-$cref/ran_like/cppad_mixed_ran_like/$$.
+$cref/ran_like/ran_like/$$.
 
 $end
 */
