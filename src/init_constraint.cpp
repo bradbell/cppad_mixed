@@ -94,7 +94,6 @@ $cref/sparse Hessian call/sparse_hes_info/Sparse Hessian Call/f/$$.
 
 $end
 */
-namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 void cppad_mixed::init_constraint(const d_vector& fixed_vec  )
 {	assert( fixed_vec.size() == n_fixed_ );
@@ -268,4 +267,3 @@ void cppad_mixed::init_constraint(const d_vector& fixed_vec  )
 }
 
 
-} } // END_CPPAD_MIXED_NAMESPACE

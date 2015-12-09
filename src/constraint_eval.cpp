@@ -60,7 +60,6 @@ It returns true, if the test passes, and false otherwise.
 $end
 */
 
-namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 CppAD::vector<double> cppad_mixed::constraint_eval(const d_vector& fixed_vec)
 {
@@ -78,4 +77,3 @@ CppAD::vector<double> cppad_mixed::constraint_eval(const d_vector& fixed_vec)
 }
 
 
-} } // END_CPPAD_MIXED_NAMESPACE

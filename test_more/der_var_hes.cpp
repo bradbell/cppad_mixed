@@ -136,7 +136,7 @@ namespace {
 	using CppAD::abs;
 	using CppAD::AD;
 
-	class mixed_derived : public CppAD::mixed::cppad_mixed {
+	class mixed_derived : public cppad_mixed {
 	private:
 		const double y_;
 		const double sigma_u_, sigma_y_;
@@ -149,7 +149,7 @@ namespace {
 			double sigma_u      ,
 			double sigma_y      ) :
 			// quasi_fixed = false
-			CppAD::mixed::cppad_mixed(n_fixed, n_random, false) ,
+			cppad_mixed(n_fixed, n_random, false) ,
 			y_(y) , sigma_u_(sigma_u), sigma_y_(sigma_y)
 		{	assert( n_fixed == 1 );
 			assert( n_random == 1 );

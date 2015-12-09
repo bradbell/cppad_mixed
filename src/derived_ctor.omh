@@ -29,7 +29,7 @@ $cref/initialize/cppad_mixed_initialize/$$
 $head mixed_derived$$
 This is the name of the class derived in the following fashion:
 $codei%
-	class %mixed_derived% : public CppAD::mixed::cppad_mixed {
+	class %mixed_derived% : public cppad_mixed {
 %$$
 The derived class constructor must call its base class constructor as follows:
 $codei%

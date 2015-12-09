@@ -36,11 +36,15 @@ extern bool hes_cross_xam(void);
 extern bool der_var_hes(void);
 extern bool delta_ranobj(void);
 
-namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+
+namespace CppAD { namespace mixed {
+	class optimize_random_eval;
+	class ipopt_fixed;
+} }
 
 class cppad_mixed {
-	friend class optimize_random_eval;
-	friend class ipopt_fixed;
+	friend class CppAD::mixed::optimize_random_eval;
+	friend class CppAD::mixed::ipopt_fixed;
 public:
 /*
 $begin cppad_mixed_public$$
@@ -335,7 +339,7 @@ as the log of the determinant of $latex f_{uu} ( \theta , u )$$;
 see $cref/initialize newton_step/newton_step/initialize/$$.
 $codep */
 	// computation of the Hessian as an atomic operation
-	newton_step                 newton_atom_;
+	CppAD::mixed::newton_step   newton_atom_;
 /* $$
 
 $head ranobj_fun_$$
@@ -640,7 +644,6 @@ $end
 */
 };
 
-} } // END_CPPAD_MIXED_NAMESPACE
 
 # include <cppad/mixed/mixed_pack.hpp>
 # include <cppad/mixed/mixed_unpack.hpp>

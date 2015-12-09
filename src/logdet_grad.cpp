@@ -92,7 +92,6 @@ It returns true, if the test passes, and false otherwise.
 
 $end
 */
-namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // ----------------------------------------------------------------------------
 void cppad_mixed::logdet_grad(
 	const d_vector& fixed_vec  ,
@@ -117,7 +116,7 @@ void cppad_mixed::logdet_grad(
 	// compute an LDL^T Cholesky factorization of f_{uu}^{(2)}(theta, u)
 	d_vector both(n_fixed_ + n_random_);
 	pack(fixed_vec, random_vec, both);
-	factorize_chol_hes_ran(
+	CppAD::mixed::factorize_chol_hes_ran(
 		n_fixed_, n_random_, hes_ran_.row, hes_ran_.col, both, hes_ran_fun_
 	);
 
@@ -146,7 +145,7 @@ void cppad_mixed::logdet_grad(
 		}
 		sparse_matrix b(n_random_, 1);
 		b.insert(j, 0) = 1.0;
-		sparse_matrix x = chol_hes_ran_.solve(b);
+		sparse_matrix x = CppAD::mixed::chol_hes_ran_.solve(b);
 		assert( x.outerSize() == 1 );
 		for(inner_itr itr(x, 0); itr; ++itr)
 		{	size_t i    = itr.row();
@@ -179,4 +178,3 @@ void cppad_mixed::logdet_grad(
 	return;
 }
 
-} } // END_CPPAD_MIXED_NAMESPACE

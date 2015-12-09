@@ -101,7 +101,6 @@ and random effects as one vector.
 
 $end
 */
-namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 template <class Float_unpack, class Float_pack>
 void cppad_mixed::unpack(
@@ -138,6 +137,5 @@ void cppad_mixed::unpack(
 }
 
 
-} } // END_CPPAD_MIXED_NAMESPACE
 
 # endif

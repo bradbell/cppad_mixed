@@ -40,7 +40,7 @@ void simulate(
 }
 
 // cppad_mixed derived class
-class mixed_derived : public CppAD::mixed::cppad_mixed {
+class mixed_derived : public cppad_mixed {
 private:
 	const size_t          N_;      // size of population
 	const vector<size_t>& y_;      // reference to data values
@@ -51,7 +51,7 @@ public:
 	mixed_derived(size_t N, vector<size_t>&  y)
 		:
 		// n_fixed = 1, n_random = 0, quasi_fixed = false
-		CppAD::mixed::cppad_mixed(1, 0, false) ,
+		cppad_mixed(1, 0, false) ,
 		N_(N)                               ,
 		y_(y)
 	{	logfac_.resize(N+1);

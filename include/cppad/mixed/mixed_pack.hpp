@@ -105,7 +105,6 @@ $end
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/a2_double.hpp>
 
-namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 template <class Float_unpack, class Float_pack>
 void cppad_mixed::pack(
@@ -141,6 +140,5 @@ void cppad_mixed::pack(
 }
 
 
-} } // END_CPPAD_MIXED_NAMESPACE
 
 # endif

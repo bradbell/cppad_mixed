@@ -228,7 +228,7 @@ void simulate(
 }
 
 // cppad_mixed derived class
-class mixed_derived : public CppAD::mixed::cppad_mixed {
+class mixed_derived : public cppad_mixed {
 private:
 	const size_t          I_; // number of locations
 	const size_t          T_; // number of times
@@ -248,7 +248,7 @@ public:
 		vector<size_t>&        y           )
 		:
 		// n_fixed = 3, n_random = T
-		CppAD::mixed::cppad_mixed(3, T, quasi_fixed) ,
+		cppad_mixed(3, T, quasi_fixed) ,
 		I_(I)            ,
 		T_(T)            ,
 		y_(y)

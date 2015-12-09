@@ -69,7 +69,6 @@ $cref/ran_like/cppad_mixed_ran_like/$$.
 
 $end
 */
-namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 void cppad_mixed::init_ran_like(
 	const d_vector& fixed_vec  ,
@@ -155,4 +154,3 @@ void cppad_mixed::init_ran_like(
 }
 
 
-} } // END_CPPAD_MIXED_NAMESPACE

@@ -69,7 +69,6 @@ $end
 # include <cppad/mixed/cppad_mixed.hpp>
 
 
-namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // ----------------------------------------------------------------------------
 void cppad_mixed::init_ranobj(
@@ -156,4 +155,3 @@ void cppad_mixed::init_ranobj(
 	return;
 }
 
-} } // END_CPPAD_MIXED_NAMESPACE

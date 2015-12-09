@@ -68,7 +68,7 @@ namespace {
 	using CppAD::log;
 	using CppAD::AD;
 
-	class mixed_derived : public CppAD::mixed::cppad_mixed {
+	class mixed_derived : public cppad_mixed {
 	private:
 		size_t                n_fixed_;
 		const vector<double>& y_;
@@ -79,7 +79,7 @@ namespace {
 			size_t n_random                   ,
 			bool   quasi_fixed                ,
 			const vector<double>& y           ) :
-			CppAD::mixed::cppad_mixed(n_fixed, n_random, quasi_fixed) ,
+			cppad_mixed(n_fixed, n_random, quasi_fixed) ,
 			n_fixed_(n_fixed)                                      ,
 			y_(y)
 		{}

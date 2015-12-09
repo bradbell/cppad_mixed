@@ -74,7 +74,6 @@ It returns true, if the test passes, and false otherwise.
 $end
 */
 
-namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // ran_like_grad
@@ -109,5 +108,4 @@ CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_grad(
 }
 
 
-} } // END_CPPAD_MIXED_NAMESPACE
 

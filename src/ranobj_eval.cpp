@@ -88,7 +88,6 @@ It returns true, if the test passes, and false otherwise.
 $end
 */
 
-namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // ----------------------------------------------------------------------------
 double cppad_mixed::ranobj_eval(
 	const d_vector& fixed_vec  ,
@@ -106,12 +105,12 @@ double cppad_mixed::ranobj_eval(
 	// compute an LDL^T Cholesky factorization of f_{uu}^{(2)}(theta, u)
 	d_vector both(n_fixed_ + n_random_);
 	pack(fixed_vec, random_vec, both);
-	factorize_chol_hes_ran(
+	CppAD::mixed::factorize_chol_hes_ran(
 		n_fixed_, n_random_, hes_ran_.row, hes_ran_.col, both, hes_ran_fun_
 	);
 
 	// compute the logdet( f_{uu}^{(2)}(theta, u )
-	double logdet = logdet_chol_hes_ran(n_random_);
+	double logdet = CppAD::mixed::logdet_chol_hes_ran(n_random_);
 
 	// constant term
 	double pi   = CppAD::atan(1.0) * 4.0;
@@ -128,4 +127,3 @@ double cppad_mixed::ranobj_eval(
 }
 
 
-} } // END_CPPAD_MIXED_NAMESPACE

@@ -11,12 +11,14 @@ see http://www.gnu.org/licenses/agpl.txt
 
 $begin whats_new$$
 $spell
+	CppAD
+	namespace
 	cppad
 $$
 
 $section Changed and Additions to cppad_mixed$$
 
-$head 2015-12-08$$
+$head 2015-12-09$$
 $list number$$
 First version of $code cppad_mixed$$ as a package separate from
 the $href%http://moby.ihme.washington.edu/bradbell/dismod_at%dismod_at%$$
@@ -25,6 +27,9 @@ $lnext
 Use the
 $href%http://www.coin-or.org/CppAD/Doc/addon.htm%CppAD addon%$$
 conventions for the install of $code cppad_mixed$$.
+$lnext
+Put $code cppad_mixed$$ class in the global namespace,
+(objects are in the $code CppAD::mixed$$ namespace).
 $lend
 
 

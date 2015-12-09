@@ -146,7 +146,6 @@ of using $code initialize$$.
 $end
 */
 
-namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 std::map<std::string, size_t> cppad_mixed::initialize(
 	const d_vector& fixed_vec  ,
@@ -234,4 +233,3 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	return size_map;
 }
 
-} } // END_CPPAD_MIXED_NAMESPACE

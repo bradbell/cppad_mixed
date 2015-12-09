@@ -110,7 +110,6 @@ It returns true, if the test passes, and false otherwise.
 $end
 */
 
-namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // helper class used by optimize_random
@@ -264,5 +263,4 @@ CppAD::vector<double> cppad_mixed::optimize_random(
 }
 
 
-} } // END_CPPAD_MIXED_NAMESPACE
 

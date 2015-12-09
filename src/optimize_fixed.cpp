@@ -204,7 +204,6 @@ $end
 # include <cppad/mixed/ipopt_fixed.hpp>
 
 
-namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 CppAD::vector<double> cppad_mixed::optimize_fixed(
 	const std::string& fixed_options     ,
@@ -315,7 +314,7 @@ CppAD::vector<double> cppad_mixed::optimize_fixed(
 	app->Options()->GetNumericValue(tag, fixed_tolerance, prefix);
 
 	// object that is used to evalutate objective and constraints
-	SmartPtr<ipopt_fixed> fixed_nlp = new ipopt_fixed(
+	SmartPtr<CppAD::mixed::ipopt_fixed> fixed_nlp = new CppAD::mixed::ipopt_fixed(
 		random_options,
 		fixed_tolerance,
 		fixed_lower,
@@ -367,4 +366,3 @@ CppAD::vector<double> cppad_mixed::optimize_fixed(
 	return fixed_nlp->fixed_opt();
 }
 
-} } // END_CPPAD_MIXED_NAMESPACE

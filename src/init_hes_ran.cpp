@@ -134,8 +134,8 @@ $latex \[
 \]$$
 in the same order as the $icode a1_val_out$$ above.
 
-$head chol_hes_ran_$$
-The static $code chol_hes_ran_$$ is initialized by a call to
+$head CppAD::mixed::chol_hes_ran_$$
+The static $code CppAD::mixed::chol_hes_ran_$$ is initialized by a call to
 $cref/analyze_chol_hes_ran/chol_hes_ran/analyze_chol_hes_ran/$$.
 
 $contents%example/private/hes_ran_fun_xam.cpp
@@ -145,7 +145,6 @@ $end
 */
 
 
-namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 void cppad_mixed::init_hes_ran(
 	const d_vector& fixed_vec  ,
@@ -309,8 +308,7 @@ void cppad_mixed::init_hes_ran(
 	init_hes_ran_done_ = true;
 
 	// now analyze the lower triangular Cholesky factorization
-	analyze_chol_hes_ran(n_fixed_, n_random_, hes_ran_.row, hes_ran_.col);
+	CppAD::mixed::analyze_chol_hes_ran(n_fixed_, n_random_, hes_ran_.row, hes_ran_.col);
 }
 
 
-} } // END_CPPAD_MIXED_NAMESPACE

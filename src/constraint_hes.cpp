@@ -108,7 +108,6 @@ It returns true, if the test passes, and false otherwise.
 $end
 */
 
-namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 void cppad_mixed::constraint_hes(
 	const d_vector&        fixed_vec   ,
@@ -167,4 +166,3 @@ void cppad_mixed::constraint_hes(
 }
 
 
-} } // END_CPPAD_MIXED_NAMESPACE
