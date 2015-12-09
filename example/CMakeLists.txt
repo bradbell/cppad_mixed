@@ -57,8 +57,8 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	private/ran_like_grad_xam.cpp
 	private/ranobj_hes_xam.cpp
 	user/manage_gsl_rng_xam.cpp
-	user/mixed_constraint_xam.cpp
-	user/mixed_derived_xam.cpp
+	user/constraint_xam.cpp
+	user/derived_xam.cpp
 	user/data_mismatch_xam.cpp
 	user/no_random_xam.cpp
 	user/optimize_fixed_xam.cpp

@@ -71,7 +71,7 @@ $codei%
 %$$
 This is a recording of the function $latex f(theta, u)$$
 for which we are checkpointing the Newton step and log determinant for.
-The routine $cref/pack(theta, u)/cppad_mixed_pack/$$ is used to
+The routine $cref/pack(theta, u)/cppad_pack/$$ is used to
 convert the pair of vectors into the argument vector for $icode a1_adfun$$.
 
 $subhead theta$$

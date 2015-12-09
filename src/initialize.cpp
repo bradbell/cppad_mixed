@@ -140,7 +140,7 @@ number of bytes allocated by
 $code CppAD::thread_alloc$$ after the initialization is completed.
 
 $head Example$$
-The file $cref mixed_derived_xam.cpp$$ contains an example
+The file $cref derived_xam.cpp$$ contains an example
 of using $code initialize$$.
 
 $end

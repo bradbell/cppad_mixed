@@ -224,8 +224,8 @@ $$
 
 $section cppad_mixed: Private Declarations$$
 
-$childtable%include/cppad/mixed/mixed_pack.hpp
-	%include/cppad/mixed/mixed_unpack.hpp
+$childtable%include/cppad/mixed/pack.hpp
+	%include/cppad/mixed/unpack.hpp
 	%src/constraint_eval.cpp
 	%src/constraint_jac.cpp
 	%src/constraint_hes.cpp
@@ -425,7 +425,7 @@ $codep */
 /* $$
 ------------------------------------------------------------------------------
 $head pack$$
-See $cref cppad_mixed_pack$$.
+See $cref cppad_pack$$.
 $codep */
 	template <class Float_unpack, class Float_pack>
 	void pack(
@@ -442,7 +442,7 @@ $codep */
 	) const;
 /* $$
 $head unpack$$
-See $cref cppad_mixed_unpack$$.
+See $cref cppad_unpack$$.
 $codep */
 	template <class Float_unpack, class Float_pack>
 	void unpack(
@@ -645,7 +645,7 @@ $end
 };
 
 
-# include <cppad/mixed/mixed_pack.hpp>
-# include <cppad/mixed/mixed_unpack.hpp>
+# include <cppad/mixed/pack.hpp>
+# include <cppad/mixed/unpack.hpp>
 
 # endif

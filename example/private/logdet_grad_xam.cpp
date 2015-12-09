@@ -36,7 +36,7 @@ $end
 // BEGIN C++
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
-# include <cppad/mixed/mixed_pack.hpp>
+# include <cppad/mixed/pack.hpp>
 
 namespace {
 	using CppAD::vector;

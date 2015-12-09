@@ -84,7 +84,7 @@ In the case where there are no random effects, the vector $icode vec$$
 should be empty; i.e., $icode%vec%.size() == 0%$$.
 
 $head Example$$
-The file $cref mixed_derived_xam.cpp$$ contains an example
+The file $cref derived_xam.cpp$$ contains an example
 of defining this virtual function.
 
 $end

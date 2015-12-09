@@ -74,7 +74,7 @@ Other arguments to the derived class constructor
 (that are not used by the base class constructor).
 
 $head Example$$
-The file $cref mixed_derived_xam.cpp$$ contains an example
+The file $cref derived_xam.cpp$$ contains an example
 that uses this derived class.
 
 $end

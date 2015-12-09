@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin mixed_constraint_xam.cpp$$
+$begin constraint_xam.cpp$$
 $spell
 	CppAD
 	cppad
@@ -53,7 +53,7 @@ L( \theta , \lambda ) =
 \] $$
 
 $code
-$verbatim%example/user/mixed_constraint_xam.cpp
+$verbatim%example/user/constraint_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -163,7 +163,7 @@ namespace {
 	};
 }
 
-bool mixed_constraint_xam(void)
+bool constraint_xam(void)
 {
 	bool   ok = true;
 	double inf = std::numeric_limits<double>::infinity();

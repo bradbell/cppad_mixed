@@ -8,13 +8,13 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# ifndef CPPAD_MIXED_MIXED_PACK_HPP
-# define CPPAD_MIXED_MIXED_PACK_HPP
+# ifndef CPPAD_MIXED_PACK_HPP
+# define CPPAD_MIXED_PACK_HPP
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/a2_double.hpp>
 
 /*
-$begin cppad_mixed_pack$$
+$begin cppad_pack$$
 $spell
 	CppAD
 	cppad

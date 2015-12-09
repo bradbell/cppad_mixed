@@ -60,7 +60,7 @@ In the case where there are no constraints,
 $icode%c_vec%.size() == 0%$$.
 
 $head Example$$
-The file $cref mixed_constraint_xam.cpp$$ contains an example
+The file $cref constraint_xam.cpp$$ contains an example
 using constraints.
 
 $end
