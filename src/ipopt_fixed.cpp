@@ -167,10 +167,10 @@ $spell
 	tol
 $$
 
-$section Ipopt Example: Constructor and Destructor$$
+$section Ipopt Fixed Optimization Callback Constructor and Destructor$$
 
 $head Syntax$$
-$codei%ipopt_fixed %ipopt_object%(
+$codei%CppAD::mixed::ipopt_fixed %ipopt_object%(
 	%random_options%,
 	%fixed_tolerance%,
 	%fixed_lower%,
