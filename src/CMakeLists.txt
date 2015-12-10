@@ -53,8 +53,6 @@ INSTALL(
 	DESTINATION ${cppad_prefix}/${cmake_libdir}
 )
 INSTALL(
-	FILES
-	${cppad_mixed_SOURCE_DIR}/include/cppad/mixed/cppad_mixed.hpp
-	${cppad_mixed_SOURCE_DIR}/include/cppad/mixed/manage_gsl_rng.hpp
+	DIRECTORY ${cppad_mixed_SOURCE_DIR}/include/cppad/mixed/
 	DESTINATION ${cppad_prefix}/include/cppad/mixed
 )
