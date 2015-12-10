@@ -1,0 +1,28 @@
+$Id:$
+-----------------------------------------------------------------------------
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
+          Copyright (C) 2014-15 University of Washington
+             (Bradley M. Bell bradbell@uw.edu)
+
+This program is distributed under the terms of the
+	     GNU Affero General Public License version 3.0 or later
+see http://www.gnu.org/licenses/agpl.txt
+-----------------------------------------------------------------------------
+$begin namespace$$
+$spell
+	Namespace
+	CppAD
+$$
+
+$section The CppAD::mixed Namespace Declarations$$
+These declarations are in the $code CppAD::mixed$$ namespace.
+With the exception of $cref manage_gsl_rng$$,
+they are $bold not$$ part of the user API and may change with time.
+
+$childtable%src/manage_gsl_rng.cpp
+	%src/chol_hes_ran.cpp
+	%include/cppad/mixed/ipopt_fixed.hpp
+	%src/newton_step.cpp
+%$$
+
+$end

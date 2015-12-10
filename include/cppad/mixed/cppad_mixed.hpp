@@ -187,15 +187,13 @@ $codep */
 		const d_vector&    random_in
 	);
 /* $$
-$childtable%
-	src/derived_ctor.omh%
-	src/initialize.cpp%
-	src/ran_like.omh%
-	src/fix_like.omh%
-	src/constraint.omh%
-	src/optimize_random.cpp%
-	src/optimize_fixed.cpp%
-	src/manage_gsl_rng.cpp
+$childtable%src/derived_ctor.omh
+	%src/initialize.cpp
+	%src/ran_like.omh
+	%src/fix_like.omh
+	%src/constraint.omh
+	%src/optimize_random.cpp
+	%src/optimize_fixed.cpp
 %$$
 $end
 */
@@ -228,7 +226,8 @@ $$
 
 $section cppad_mixed: Private Declarations$$
 These $code cppad_mixed$$ class declarations are $code private$$.
-They are $bold not$$ part of the user API and
+They are $bold not$$ part of the user API,
+they may change with time, and they
 can $bold not$$ be used by a derived class object
 $cref/mixed_object/derived_ctor/mixed_object/$$.
 
@@ -240,7 +239,6 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/init_ran_like.cpp
 	%src/init_hes_ran.cpp
 	%src/init_hes_cross.cpp
-	%src/newton_step.cpp
 	%src/init_ranobj.cpp
 	%src/init_hes_ranobj.cpp
 	%src/init_fix_like.cpp
@@ -253,10 +251,8 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/fix_like_eval.cpp
 	%src/fix_like_jac.cpp
 	%src/fix_like_hes.cpp
-	%src/chol_hes_ran.cpp
 	%include/cppad/mixed/sparse_hes_info.hpp
 	%include/cppad/mixed/sparse_jac_info.hpp
-	%include/cppad/mixed/ipopt_fixed.hpp
 %$$
 
 $head n_fixed_$$

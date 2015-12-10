@@ -126,6 +126,7 @@ where $icode%s% = %vec%.size()%$$.
 $childtable%omh/install_unix.omh
 	%src/theory.omh
 	%omh/base_class.omh
+	%omh/namespace.omh
 	%example/user/user.omh
 	%omh/whats_new.omh
 %$$
