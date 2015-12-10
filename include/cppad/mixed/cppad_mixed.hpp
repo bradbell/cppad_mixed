@@ -194,7 +194,8 @@ $childtable%
 	src/fix_like.omh%
 	src/constraint.omh%
 	src/optimize_random.cpp%
-	src/optimize_fixed.cpp
+	src/optimize_fixed.cpp%
+	src/manage_gsl_rng.cpp
 %$$
 $end
 */
@@ -254,6 +255,7 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/chol_hes_ran.cpp
 	%include/cppad/mixed/sparse_hes_info.hpp
 	%include/cppad/mixed/sparse_jac_info.hpp
+	%include/cppad/mixed/ipopt_fixed.hpp
 %$$
 
 $head n_fixed_$$

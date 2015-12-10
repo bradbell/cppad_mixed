@@ -20,11 +20,11 @@ $$
 $section Set, Get, And Free A GSL Random Number Generator$$
 
 $head Syntax$$
-$icode%s_out% = new_gsl_rng(%s_in%)
+$icode%s_out% = CppAD::mixed::new_gsl_rng(%s_in%)
 %$$
-$icode%rng% = get_gsl_rng()
+$icode%rng% = CppAD::mixed::get_gsl_rng()
 %$$
-$codei%free_gsl_rng()
+$codei%CppAD::mixed::free_gsl_rng()
 %$$
 
 $head Purpose$$

@@ -125,9 +125,8 @@ where $icode%s% = %vec%.size()%$$.
 
 $childtable%omh/install_unix.omh
 	%src/theory.omh
-	%example/user/user.omh
-	%src/manage_gsl_rng.cpp
 	%include/cppad/mixed/cppad_mixed.hpp
+	%example/user/user.omh
 	%omh/whats_new.omh
 %$$
 

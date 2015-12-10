@@ -182,8 +182,7 @@ Laplace approximation optimization only includes the case where
 the $cref/random likelihood/ran_like/$$ is smooth.
 
 $comment ipoot_options is also used by optimize_random$$
-$children%include/cppad/mixed/ipopt_fixed.hpp
-	%src/ipopt_options.omh
+$children%src/ipopt_options.omh
 %$$
 
 $head Example$$
