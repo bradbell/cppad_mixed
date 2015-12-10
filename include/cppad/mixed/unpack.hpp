@@ -56,7 +56,7 @@ $codei%
 %$$
 The input value of its elements does not matter.
 Upon return, it contains the value of the first
-$cref/fixed effects/cppad_mixed/Fixed Effects, theta/$$.
+$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$.
 The size of this vector must be equal to
 $cref/n_fixed_/private/n_fixed_/$$.
 
@@ -67,7 +67,7 @@ $codei%
 %$$
 The input value of its elements does not matter.
 Upon return, it contains the value of the second
-$cref/fixed effects/cppad_mixed/Fixed Effects, theta/$$.
+$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$.
 The size of this vector must be equal to
 $cref/n_fixed_/private/n_fixed_/$$.
 
@@ -78,7 +78,7 @@ $codei%
 %$$
 The input value of its elements does not matter.
 Upon return, it contains the value of the
-$cref/random effects/cppad_mixed/Random Effects, u/$$.
+$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$.
 The size of this vector must be equal to
 $cref/n_random_/private/n_random_/$$.
 

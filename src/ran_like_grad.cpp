@@ -47,7 +47,7 @@ $codei%
 	const CppAD::vector<a1_double>& %fixed_vec%
 %$$
 It specifies the value of the
-$cref/fixed effects/cppad_mixed/Fixed Effects, theta/$$
+$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$.
 
 $head random_vec$$
@@ -56,7 +56,7 @@ $codei%
 	const CppAD::vector<a1_double>& %random_vec%
 %$$
 It specifies the value of the
-$cref/random effects/cppad_mixed/Random Effects, u/$$
+$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$.
 
 $head grad$$

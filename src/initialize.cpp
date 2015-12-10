@@ -54,7 +54,7 @@ $codei%
 	const CppAD::vector<double>& %fixed_vec%
 %$$
 It specifies the value of the
-$cref/fixed effects/cppad_mixed/Fixed Effects, theta/$$
+$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$ at which certain $code CppAD::ADFun$$
 objects are recorded.
 
@@ -64,7 +64,7 @@ $codei%
 	const CppAD::vector<double>& %random_vec%
 %$$
 It specifies the value of the
-$cref/random effects/cppad_mixed/Random Effects, u/$$
+$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$ at which certain $code CppAD::ADFun$$
 objects are recorded.
 

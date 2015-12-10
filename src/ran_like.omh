@@ -54,7 +54,7 @@ $codei%
 	const CppAD::vector<%Float%>& %fixed_vec%
 %$$
 It contains a value for the
-$cref/fixed effects/cppad_mixed/Fixed Effects, theta/$$ vector.
+$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$ vector.
 
 $head random_vec$$
 This argument has prototype
@@ -62,7 +62,7 @@ $codei%
 	const CppAD::vector<%Float%>& %random_vec%
 %$$
 It contains a value for the
-$cref/random effects/cppad_mixed/Random Effects, u/$$ vector.
+$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ vector.
 
 $head vec$$
 This result has prototype

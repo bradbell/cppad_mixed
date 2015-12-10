@@ -10,6 +10,7 @@ see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
 $begin cppad_mixed$$
 $spell
+	Jax
 	CppAD
 	cppad
 	CppAD
@@ -27,27 +28,49 @@ $aindex section head subhead$$
 $comment END: settings used by all section ---------------------------- $$
 
 $section Laplace Approximation of Mixed Effects Models: cppad_mixed-20151208$$
+$table
+$cnext
+	One section per page $pre  $$ $cnext
+	All sections in one page
+$rnext
+MathJax $pre  $$ $cnext
+	$href%cppad_mixed.htm%$$
+	$pre  $$ $cnext
+	$href%_printable.htm%$$
+$rnext
+MathML $pre  $$ $cnext
+	$href%cppad_mixed.xml%$$ $pre  $$ $cnext
+	$href%_printable.xml%$$
+$tend
 
-$head Fixed Effects, theta$$
+$head License$$
+$href%http://www.gnu.org/licenses/agpl.txt
+	%GNU Affero General Public License version 3.0 or later
+%$$
+
+$head Source Code Repository$$
+$href%https://github.com/bradbell/cppad_mixed%$$
+
+$head Notation$$
+The densities below are
+known functions of $latex y$$, $latex z$$, $latex \theta$$, and $latex u$$:
+
+$subhead Fixed Effects, theta$$
 For each $code cppad_mixed$$ object,
-there is a vector of fixed effects $latex theta$$.
+there is a vector of fixed effects $icode theta$$.
 The number of the fixed effects, and their order is constant
 (for each $code cppad_mixed$$ object).
 We sometimes use $latex \theta$$ to denote the vector of fixed effects.
 
-$head Random Effects, u$$
-For each $code cppad_mixed$$ object, there is a vector of random effects.
+$subhead Random Effects, u$$
+For each $code cppad_mixed$$ object, there is a vector of random effects
+$icode u$$.
 The number of the random effects, and their order is constant
 (for each $code cppad_mixed$$ object).
-We sometimes use $latex u$$ to denote the vector of random effects.
 
-$head Data, y, z$$
+$subhead Data, y, z$$
 We use $latex y$$, ($latex z$$) to denote the set of data points that are
 dependent on (independent of) the random effects.
-
-$head Density Functions$$
-The following are
-known functions of $latex y$$, $latex z$$, $latex \theta$$, and $latex u$$:
 
 $subhead p(theta)$$
 The density for the fixed effects
@@ -66,6 +89,8 @@ The density for the random effects
 is denoted by $latex \B{p}( u | \theta)$$.
 
 $head Problem$$
+
+$subhead Maximum Likelihood$$
 We are given the problem of
 estimating the fixed effects by maximizing the likelihood with
 respect to $latex \theta$$; i.e.,

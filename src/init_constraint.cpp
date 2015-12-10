@@ -44,7 +44,7 @@ $codei%
 	const CppAD::vector<double>& %fixed_vec%
 %$$
 It specifies the value of the
-$cref/fixed effects/cppad_mixed/Fixed Effects, theta/$$
+$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$ at which the initialization is done.
 
 $head init_constraint_done_$$

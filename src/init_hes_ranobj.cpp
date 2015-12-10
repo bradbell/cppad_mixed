@@ -44,7 +44,7 @@ $codei%
 	const CppAD::vector<double>& %fixed_vec%
 %$$
 It specifies the value of the
-$cref/fixed effects/cppad_mixed/Fixed Effects, theta/$$
+$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$ at which the initialization is done.
 
 $head random_vec$$
@@ -53,7 +53,7 @@ $codei%
 	const CppAD::vector<double>& %random_vec%
 %$$
 It specifies the initial value for the
-$cref/random effects/cppad_mixed/Random Effects, u/$$ optimization.
+$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ optimization.
 
 
 $head hes_ranobj_$$

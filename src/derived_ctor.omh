@@ -45,7 +45,7 @@ $codei%
 	size_t %n_fixed%
 %$$
 and is the number of
-$cref/fixed effects/cppad_mixed/Fixed Effects, theta/$$ in the model.
+$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$ in the model.
 
 $head n_random$$
 This argument has prototype
@@ -53,7 +53,7 @@ $codei%
 	size_t %n_random%
 %$$
 and is the number of
-$cref/random effects/cppad_mixed/Random Effects, u/$$ in the model.
+$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ in the model.
 In the case where there are
 $cref/no random effects/cppad_mixed/Problem/No Random Effects/$$,
 $icode%n_random% = 0%$$.

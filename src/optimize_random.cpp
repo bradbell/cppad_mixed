@@ -56,7 +56,7 @@ $codei%
 	const CppAD::vector<double>& %fixed_vec%
 %$$
 It specifies the value of the
-$cref/fixed effects/cppad_mixed/Fixed Effects, theta/$$
+$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$.
 
 $head random_lower$$
@@ -67,7 +67,7 @@ $codei%
 It must have size equal to
 $cref/n_random/derived_ctor/n_random/$$ and
 specifies the lower limits for the optimization of the
-$cref/random effects/cppad_mixed/Random Effects, u/$$
+$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$.
 The value minus infinity can be used to specify no lower limit.
 
@@ -89,7 +89,7 @@ $codei%
 It must have size equal to
 $cref/n_random/derived_ctor/n_random/$$ and
 specifies the initial value used for the optimization of the
-$cref/random effects/cppad_mixed/Random Effects, u/$$ vector $latex u$$.
+$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ vector $latex u$$.
 It must hold that
 $codei%
 	%random_lower%[%i%] <= %random_in%[%i%] <= %random_upper%[%i%]
@@ -102,7 +102,7 @@ $codei%
 	CppAD::vector<double> %random_out%
 %$$
 It is the final value (obtained by optimization) of the
-$cref/random effects/cppad_mixed/Random Effects, u/$$
+$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$.
 
 $head Example$$
