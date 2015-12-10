@@ -18,7 +18,7 @@ $spell
 	xam
 $$
 
-$section C++ constraint_jac: Example and Test$$
+$section constraint_jac: Example and Test$$
 
 $head Private$$
 This example is not part of the

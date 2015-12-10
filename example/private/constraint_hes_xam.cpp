@@ -18,7 +18,7 @@ $spell
 	xam
 $$
 
-$section C++ constraint_hes: Example and Test$$
+$section constraint_hes: Example and Test$$
 
 $head Private$$
 This example is not part of the

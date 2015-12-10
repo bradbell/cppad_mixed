@@ -15,7 +15,7 @@ $spell
 	cppad
 $$
 
-$section C++ newton_step: Example and Test$$
+$section newton_step: Example and Test$$
 
 $head Private$$
 This example is not part of the

@@ -18,7 +18,7 @@ $spell
 	xam
 $$
 
-$section C++ Hessian Cross Terms: Example and Test$$
+$section Hessian Cross Terms: Example and Test$$
 
 
 $head Private$$

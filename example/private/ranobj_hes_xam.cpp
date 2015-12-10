@@ -21,7 +21,7 @@ $spell
 	xam
 $$
 
-$section C++ ranobj_hes: Example and Test$$
+$section ranobj_hes: Example and Test$$
 
 $head Private$$
 This example is not part of the

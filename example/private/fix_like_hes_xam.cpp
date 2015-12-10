@@ -18,7 +18,7 @@ $spell
 	xam
 $$
 
-$section C++ fix_like_hes: Example and Test$$
+$section fix_like_hes: Example and Test$$
 
 $head Private$$
 This example is not part of the

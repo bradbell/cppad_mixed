@@ -19,7 +19,7 @@ $spell
 	xam
 $$
 
-$section C++ Case Where Optimum is Non-Zero Fixed and Zero Random Effects$$
+$section Case Where Optimum is Non-Zero Fixed and Zero Random Effects$$
 
 $head Model$$
 $latex \[

@@ -19,7 +19,7 @@ $spell
 	logdet
 $$
 
-$section C++ logdet_grad: Example and Test$$
+$section logdet_grad: Example and Test$$
 
 
 $head Private$$

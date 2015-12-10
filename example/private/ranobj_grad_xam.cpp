@@ -19,7 +19,7 @@ $spell
 	xam
 $$
 
-$section C++ ranobj_grad: Example and Test$$
+$section ranobj_grad: Example and Test$$
 
 $head Private$$
 This example is not part of the

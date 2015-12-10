@@ -17,7 +17,7 @@ $spell
 	xam
 $$
 
-$section C++ ran_like_grad: Example and Test$$
+$section ran_like_grad: Example and Test$$
 
 $head Private$$
 This example is not part of the

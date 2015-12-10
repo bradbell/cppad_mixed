@@ -18,7 +18,7 @@ $spell
 	xam
 $$
 
-$section C++ hes_ran_fun_: Example and Test$$
+$section hes_ran_fun_: Example and Test$$
 
 
 $head Private$$

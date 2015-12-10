@@ -18,7 +18,7 @@ $spell
 	xam
 $$
 
-$section C++ constraint_eval: Example and Test$$
+$section constraint_eval: Example and Test$$
 
 $head Private$$
 This example is not part of the

@@ -20,7 +20,7 @@ $spell
 	xam
 $$
 
-$section C++ ranobj_eval: Example and Test$$
+$section ranobj_eval: Example and Test$$
 
 $head Private$$
 This example is not part of the
