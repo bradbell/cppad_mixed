@@ -18,7 +18,7 @@ $$
 
 $section Changed and Additions to cppad_mixed$$
 
-$head 2015-12-09$$
+$head 2015-12-10$$
 $list number$$
 First version of $code cppad_mixed$$ as a package separate from
 the $href%http://moby.ihme.washington.edu/bradbell/dismod_at%dismod_at%$$
@@ -30,6 +30,9 @@ conventions for the install of $code cppad_mixed$$.
 $lnext
 Put $code cppad_mixed$$ class in the global namespace,
 (objects are in the $code CppAD::mixed$$ namespace).
+$lnext
+Modify file names and documentation because everything now refers to
+the $code cppad_mixed$$ package.
 $lend
 
 

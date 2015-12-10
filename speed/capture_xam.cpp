@@ -17,11 +17,12 @@ $spell
 	Royle
 	Resample
 	Poisson
-	covariate
 	xam
+	logit
+	covariate
 $$
 
-$section A Capture Re-capture Model$$
+$section A Capture Re-capture Example and Speed Test$$
 
 $head Syntax$$
 $codei%build/speed/capture_xam %random_seed%$$
@@ -50,7 +51,7 @@ $latex p_{i,t}$$ $cnext
 $rnext
 $latex u_t$$   $cnext random effect for each sampling time
 $rnext
-$latex \theta_0$$ $cnext constant multiplier in covariate relation
+$latex \theta_0$$ $cnext constant term in logit of probability
 $rnext
 $latex \theta_1$$ $cnext mean for $latex N_i$$ given $latex \theta$$
 $rnext
@@ -70,9 +71,9 @@ Furthermore, we assume that this probability
 is independent for each $latex (i, t)$$.
 
 $head Capture Probability$$
-Section 2.4 of the reference below suggest a covariate
-model for the probability of capture.
-We add random effects to this model as follows:
+Section 2.4 of the reference below suggest a
+covariate model for the probability of capture.
+We use a similar model defined by
 $latex \[
 	\R{logit} ( p_{i,t} ) = - u_t - \theta_0
 \] $$
@@ -80,7 +81,6 @@ It follows that
 $latex \[
 	p_{i,t} = [ 1 + \exp(  u_t + \theta_0 ) ]^{-1}
 \] $$
-Note that the covariate vector $latex x$$ is assumed to be known.
 
 $head Population Probability$$
 We use a Poisson distribution to model the
@@ -185,7 +185,7 @@ using CppAD::vector;
 using std::exp;
 using std::log;
 
-// simulate covariates, x, and data, y
+// simulate data, y
 void simulate(
 	size_t                 I     ,
 	size_t                 T     ,
@@ -399,7 +399,7 @@ int main(int argc, char *argv[])
 	//
 	size_t T = n_random;
 	vector<double> theta_sim(n_fixed);
-	theta_sim[0] =   0.50;  // constant term in covariate model
+	theta_sim[0] =   0.50;  // constant term in logit model
 	theta_sim[1] =   5.0;   // mean population size
 	theta_sim[2] =   1.00;  // standard deviation of random effects
 

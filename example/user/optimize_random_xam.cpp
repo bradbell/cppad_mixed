@@ -17,7 +17,7 @@ $spell
 	xam
 $$
 
-$section C++ optimize_random: Example and Test$$
+$section Optimize Random Effects: Example and Test$$
 
 $code
 $verbatim%example/user/optimize_random_xam.cpp

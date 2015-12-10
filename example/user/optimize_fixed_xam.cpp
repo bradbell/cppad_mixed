@@ -19,7 +19,7 @@ $spell
 	xam
 $$
 
-$section C++ optimize_fixed_xam: Example and Test$$
+$section Optimize Fixed Effects: Example and Test$$
 
 $head Model$$
 $latex \[

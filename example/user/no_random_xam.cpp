@@ -19,7 +19,7 @@ $spell
 	xam
 $$
 
-$section User Example and Test with no Random Effects$$.
+$section No Random Effects: Example and Test$$.
 
 $head Model$$
 $latex \[

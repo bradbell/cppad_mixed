@@ -17,7 +17,7 @@ $spell
 	xam
 $$
 
-$section C++ mixed_derived: Example and Test$$
+$section mixed_cppad Derived Class: Example and Test$$
 
 $code
 $verbatim%example/user/derived_xam.cpp

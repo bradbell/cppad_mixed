@@ -19,7 +19,7 @@ $spell
 	xam
 $$
 
-$section constraints: Example and Test$$
+$section Using Constraints: Example and Test$$
 
 $head Model$$
 $latex \[
