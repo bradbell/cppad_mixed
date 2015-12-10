@@ -1,0 +1,29 @@
+$Id:$
+-----------------------------------------------------------------------------
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
+          Copyright (C) 2014-15 University of Washington
+             (Bradley M. Bell bradbell@uw.edu)
+
+This program is distributed under the terms of the
+	     GNU Affero General Public License version 3.0 or later
+see http://www.gnu.org/licenses/agpl.txt
+-----------------------------------------------------------------------------
+$begin base_class$$
+$spell
+	cppad
+$$
+
+$section The cppad_mixed Base Class$$
+
+$head Public$$
+The $cref public$$ declarations in the $code cppad_mixed$$ base class
+are part of the user API.
+
+$head Private$$
+The $cref private$$ declarations in the $code cppad_mixed$$ base class
+are implementation details
+
+
+$children%include/cppad/mixed/cppad_mixed.hpp%$$
+
+$end

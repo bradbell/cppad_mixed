@@ -64,8 +64,8 @@ $spell
 $$
 
 $section cppad_mixed: Public Declarations$$
-These $code cppad_mixed$$ class declarations are
-$code public$$ and can be used by a derived
+These $code cppad_mixed$$ class declarations are $code public$$.
+They are part of the user API and can be used by a derived class object
 $cref/mixed_object/derived_ctor/mixed_object/$$.
 
 $head AD Types$$
@@ -227,8 +227,9 @@ $spell
 $$
 
 $section cppad_mixed: Private Declarations$$
-These $code cppad_mixed$$ class declarations are
-$code private$$ and cannot be used by a derived
+These $code cppad_mixed$$ class declarations are $code private$$.
+They are $bold not$$ part of the user API and
+can $bold not$$ be used by a derived class object
 $cref/mixed_object/derived_ctor/mixed_object/$$.
 
 $childtable%include/cppad/mixed/pack.hpp
