@@ -26,6 +26,9 @@ $section Evaluate Constraint Function$$
 $head Syntax$$
 $icode%c_vec% = %mixed_object%.constraint_eval(%fixed_vec%)%$$
 
+$head Private$$
+This $code cppad_mixed$$ member function is $cref private$$.
+
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is

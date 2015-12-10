@@ -44,6 +44,9 @@ $latex \[
 	\partial_u \log \det [ f_{uu}^{(2)} ( \theta, u ) ]
 \] $$
 
+$head Private$$
+This $code cppad_mixed$$ member function is $cref private$$.
+
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is

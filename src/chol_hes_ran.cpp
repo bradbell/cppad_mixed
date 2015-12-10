@@ -33,15 +33,11 @@ $$
 $section Sparse Cholesky Factorization of Hessian w.r.t Random Effects$$
 
 $head Syntax$$
-$codei%analyze_chol_hes_ran(%n_fixed%, %n_random%, %row%, %col%)
+$codei%CppAD::mixed::analyze_chol_hes_ran(%n_fixed%, %n_random%, %row%, %col%)
 %$$
-$codei%factorize_chol_hes_ran(
+$codei%CppAD::mixed::factorize_chol_hes_ran(
 	%n_fixed%, %n_random%, %row%, %col%, %both%, %hessian%
 )%$$
-
-$head Private$$
-This function should not used by a derived
-$cref/mixed_object/derived_ctor/mixed_object/$$.
 
 $head Purpose$$
 $code chol_hes_ran_$$ should be a $cref private$$ member variable,

@@ -23,6 +23,9 @@ $section Random Likelihood$$
 $head Syntax$$
 $icode%vec% = %mixed_object%.ran_like(%fixed_vec%, %random_vec%)%$$
 
+$head Public$$
+This $code cppad_mixed$$ member function is $cref public$$.
+
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is

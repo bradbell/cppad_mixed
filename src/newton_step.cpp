@@ -26,7 +26,7 @@ $$
 $section Checkpoint Newton Step and Log Determinant Calculation$$
 
 $head Syntax$$
-$codei%newton_step %newton_atom%()
+$codei%CppAD::mixed::newton_step %newton_atom%()
 %$$
 $icode%newton_atom%.initialize(%a1_adfun%, %theta%, %u%)
 %$$

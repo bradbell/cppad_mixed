@@ -28,15 +28,18 @@ $$
 $section Pack Fixed Effect and Random Effects Into One Vector$$
 
 $head Syntax$$
-$codei%unpack(%fixed_one%, %random_vec%, %both_vec%)
+$icode%mixed_object%.unpack(%fixed_one%, %random_vec%, %both_vec%)
 %$$
-$codei%unpack(%fixed_one%, %fixed_two%, %random_vec%, %three_vec%)
+$icode%mixed_object%.unpack(%fixed_one%, %fixed_two%, %random_vec%, %three_vec%)
 %$$
 
 $head Private$$
-This function is $code private$$ to the $code cppad_mixed$$ class
-and cannot be used by a derived
-$cref/mixed_object/derived_ctor/mixed_object/$$.
+This $code cppad_mixed$$ member function is $cref private$$.
+
+$head mixed_object$$
+We use $cref/mixed_object/derived_ctor/mixed_object/$$
+to denote an object of a class that is
+derived from the $code cppad_mixed$$ base class.
 
 $head Float_pack$$
 This can be any type.

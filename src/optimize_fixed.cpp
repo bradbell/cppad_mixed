@@ -47,6 +47,9 @@ $codei%
 	std::numeric_limits<double>::infinity()
 %$$
 
+$head Public$$
+This $code cppad_mixed$$ member function is $cref public$$.
+
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is

@@ -39,6 +39,9 @@ $cref/h(theta, u)
 Note that if the random effects are optimal,
 then the Laplace approximation is equal to the random objective.
 
+$head Private$$
+This $code cppad_mixed$$ member function is $cref private$$.
+
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is

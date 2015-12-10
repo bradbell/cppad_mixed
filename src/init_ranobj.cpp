@@ -24,12 +24,15 @@ $$
 $section Second Order Representation of Random Objective$$
 
 $head Syntax$$
-$codei%init_ranobj(%fixed_vec%, %random_vec%)%$$
+$icode%mixed_object%.init_ranobj(%fixed_vec%, %random_vec%)%$$
 
 $head Private$$
-This function is $code private$$ to the $code cppad_mixed$$ class
-and cannot be used by a derived
-$cref/mixed_object/derived_ctor/mixed_object/$$.
+This $code cppad_mixed$$ member function is $cref private$$.
+
+$head mixed_object$$
+We use $cref/mixed_object/derived_ctor/mixed_object/$$
+to denote an object of a class that is
+derived from the $code cppad_mixed$$ base class.
 
 $head fixed_vec$$
 This argument has prototype
