@@ -251,8 +251,6 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/fix_like_eval.cpp
 	%src/fix_like_jac.cpp
 	%src/fix_like_hes.cpp
-	%include/cppad/mixed/sparse_hes_info.hpp
-	%include/cppad/mixed/sparse_jac_info.hpp
 %$$
 
 $head n_fixed_$$
@@ -312,7 +310,7 @@ $cref/random likelihood
 with respect to the random effects; i.e.
 $latex f_{uu}^{(2)} ( \theta , u )$$.
 $codep */
-	sparse_hes_info             hes_ran_;
+	CppAD::mixed::sparse_hes_info hes_ran_;
 	// recording of sparse Hessian calculation
 	CppAD::ADFun<double>        hes_ran_fun_;
 	//
@@ -329,7 +327,7 @@ $cref/random likelihood
 /$$
 ; i.e.  $latex f_{u \theta}^{(2)} ( \theta , u )$$.
 $codep */
-	sparse_hes_info             hes_cross_;
+	CppAD::mixed::sparse_hes_info hes_cross_;
 	//
 	friend bool ::hes_cross_xam(void);
 /* $$
@@ -370,7 +368,7 @@ $cref/random objective
 	/Random Objective, r(theta)
 /$$
 $codep */
-	sparse_hes_info             hes_ranobj_;
+	CppAD::mixed::sparse_hes_info hes_ranobj_;
 /* $$
 
 $head fix_like_$$
@@ -388,7 +386,7 @@ $cref/fix_like_jac_/init_fix_like/fix_like_jac_/$$
 contains information for the Jacobian of the
 $cref/fixed likelihood/theory/Fixed Likelihood, g(theta)/$$.
 $codep */
-	sparse_jac_info             fix_like_jac_;
+	CppAD::mixed::sparse_jac_info fix_like_jac_;
 /* $$
 
 $subhead fix_like_hes_$$
@@ -397,7 +395,7 @@ $cref/fix_like_hes_/init_fix_like/fix_like_hes_/$$
 contains information for the Hessian of the
 $cref/fixed likelihood/theory/Fixed Likelihood, g(theta)/$$.
 $codep */
-	sparse_hes_info             fix_like_hes_;
+	CppAD::mixed::sparse_hes_info fix_like_hes_;
 /* $$
 
 $head constraint_fun_$$
@@ -415,7 +413,7 @@ $cref/constraint_jac_/init_constraint/constraint_jac_/$$
 contains information for the Jacobian of the
 constraint function $latex c ( \theta )$$.
 $codep */
-	sparse_jac_info             constraint_jac_;
+	CppAD::mixed::sparse_jac_info constraint_jac_;
 /* $$
 
 $subhead constraint_hes_$$
@@ -426,7 +424,7 @@ $cref/constraints/constraint/$$ function $latex c( \theta )$$.
 The corresponding ADFun object is
 $cref/constraint_fun_/init_constraint/constraint_fun_/$$.
 $codep */
-	sparse_hes_info             constraint_hes_;
+	CppAD::mixed::sparse_hes_info constraint_hes_;
 /* $$
 ------------------------------------------------------------------------------
 $head pack$$

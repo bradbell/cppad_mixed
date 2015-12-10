@@ -127,7 +127,7 @@ void cppad_mixed::fix_like_jac(
 	// just checking to see if example/devel/model/fit_model_xam is this case
 	assert( row_out.size() != 0 );
 
-	assert( fix_like_jac_.direction == sparse_jac_info::Forward );
+	assert(fix_like_jac_.direction == CppAD::mixed::sparse_jac_info::Forward);
 	CppAD::vector< std::set<size_t> > not_used;
 	fix_like_fun_.SparseJacobianForward(
 		fixed_vec       ,

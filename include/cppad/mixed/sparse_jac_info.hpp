@@ -26,7 +26,7 @@ $spell
 $section Sparse Jacobian Information$$
 
 $head Syntax$$
-$codei%sparse_jac_info %jac_info%$$
+$codei%CppAD::mixed::sparse_jac_info %jac_info%$$
 
 $head Purpose$$
 This structure holds information about a specific Jacobian.
@@ -128,12 +128,13 @@ $icode%jac_info%.col[%k%]%$$.
 
 $end
 */
-
+namespace CppAD { namespace mixed {
 	struct sparse_jac_info {
 		enum Direction { Forward , Reverse } direction;
 		CppAD::vector<size_t>                row;
 		CppAD::vector<size_t>                col;
 		CppAD::sparse_jacobian_work          work;
 	};
+} }
 
 # endif

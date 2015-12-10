@@ -25,7 +25,7 @@ $spell
 $section Sparse Hessian Information$$
 
 $head Syntax$$
-$codei%sparse_hes_info %hes_info%$$
+$codei%CppAD::mixed::sparse_hes_info %hes_info%$$
 
 $head Purpose$$
 This structure holds information about a specific Hessian.
@@ -116,11 +116,12 @@ $icode%hes_info%.col[%k%]%$$.
 
 $end
 */
-
+namespace CppAD { namespace mixed {
 	struct sparse_hes_info {
 		CppAD::vector<size_t>      row;
 		CppAD::vector<size_t>      col;
 		CppAD::sparse_hessian_work work;
 	};
+} }
 
 # endif

@@ -192,7 +192,7 @@ void cppad_mixed::init_constraint(const d_vector& fixed_vec  )
 	}
 
 	// set direction for the sparse jacobian calculation
-	constraint_jac_.direction = sparse_jac_info::Forward;
+	constraint_jac_.direction = CppAD::mixed::sparse_jac_info::Forward;
 
 	// compute the work vector for reuse during Jacobian sparsity calculations
 	d_vector jac( constraint_jac_.row.size() );

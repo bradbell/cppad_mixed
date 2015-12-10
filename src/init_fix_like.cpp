@@ -174,7 +174,7 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	}
 
 	// direction for this sparse Jacobian
-	fix_like_jac_.direction = sparse_jac_info::Forward;
+	fix_like_jac_.direction = CppAD::mixed::sparse_jac_info::Forward;
 
 	// compute the work vector for reuse during Jacobian sparsity calculations
 	d_vector jac( fix_like_jac_.row.size() );
