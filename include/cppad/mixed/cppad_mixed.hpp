@@ -64,6 +64,9 @@ $spell
 $$
 
 $section cppad_mixed: Public Declarations$$
+These $code cppad_mixed$$ class declarations are
+$code public$$ and can be used by a derived
+$cref/mixed_object/derived_ctor/mixed_object/$$.
 
 $head AD Types$$
 $index a_double$$
@@ -223,6 +226,9 @@ $spell
 $$
 
 $section cppad_mixed: Private Declarations$$
+These $code cppad_mixed$$ class declarations are
+$code private$$ and cannot be used by a derived
+$cref/mixed_object/derived_ctor/mixed_object/$$.
 
 $childtable%include/cppad/mixed/pack.hpp
 	%include/cppad/mixed/unpack.hpp
@@ -425,7 +431,7 @@ $codep */
 /* $$
 ------------------------------------------------------------------------------
 $head pack$$
-See $cref cppad_pack$$.
+See $cref pack$$.
 $codep */
 	template <class Float_unpack, class Float_pack>
 	void pack(
@@ -442,7 +448,7 @@ $codep */
 	) const;
 /* $$
 $head unpack$$
-See $cref cppad_unpack$$.
+See $cref unpack$$.
 $codep */
 	template <class Float_unpack, class Float_pack>
 	void unpack(

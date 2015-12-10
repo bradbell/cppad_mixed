@@ -14,7 +14,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/a2_double.hpp>
 
 /*
-$begin cppad_pack$$
+$begin pack$$
 $spell
 	CppAD
 	cppad
