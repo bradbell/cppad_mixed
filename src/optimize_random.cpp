@@ -114,6 +114,8 @@ $end
 */
 
 
+namespace { // BEGIN_EMPTY_NAMESPACE
+
 // ----------------------------------------------------------------------------
 // helper class used by optimize_random
 class optimize_random_eval {
@@ -174,6 +176,8 @@ public:
 		}
 	}
 };
+
+} // END_EMPTY_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // optimize_random
