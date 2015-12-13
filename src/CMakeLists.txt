@@ -10,10 +10,10 @@
 # ---------------------------------------------------------------------------
 # cppad_mixed
 ADD_LIBRARY(cppad_mixed
-	constraint_eval.cpp
-	constraint_eval.cpp
-	constraint_jac.cpp
-	constraint_hes.cpp
+	fix_constraint_eval.cpp
+	fix_constraint_eval.cpp
+	fix_constraint_jac.cpp
+	fix_constraint_hes.cpp
 	ran_like_grad.cpp
 	ranobj_hes.cpp
 	initialize.cpp
@@ -25,7 +25,7 @@ ADD_LIBRARY(cppad_mixed
 	fix_like_jac.cpp
 	fix_like_hes.cpp
 	init_fix_like.cpp
-	init_constraint.cpp
+	init_fix_constraint.cpp
 	init_hes_cross.cpp
 	init_hes_ranobj.cpp
 	init_ran_like.cpp

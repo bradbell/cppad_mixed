@@ -42,9 +42,9 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	example.cpp
 	${suitesparse_EXAMPLES}
 	ipopt_xam_run.cpp
-	private/constraint_eval_xam.cpp
-	private/constraint_hes_xam.cpp
-	private/constraint_jac_xam.cpp
+	private/fix_constraint_eval_xam.cpp
+	private/fix_constraint_hes_xam.cpp
+	private/fix_constraint_jac_xam.cpp
 	private/logdet_grad_xam.cpp
 	private/ranobj_grad_xam.cpp
 	private/fix_like_hes_xam.cpp
@@ -57,7 +57,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	private/ran_like_grad_xam.cpp
 	private/ranobj_hes_xam.cpp
 	user/manage_gsl_rng_xam.cpp
-	user/constraint_xam.cpp
+	user/fix_constraint_xam.cpp
 	user/derived_xam.cpp
 	user/data_mismatch_xam.cpp
 	user/no_random_xam.cpp

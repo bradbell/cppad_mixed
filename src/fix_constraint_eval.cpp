@@ -11,7 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/cppad_mixed.hpp>
 
 /*
-$begin constraint_eval$$
+$begin fix_constraint_eval$$
 $spell
 	CppAD
 	cppad
@@ -50,13 +50,13 @@ $codei%
 %$$
 and is the constraint function value
 corresponding to the fixed effects; see
-$cref/c_vec/constraint/c_vec/$$.
+$cref/c_vec/fix_constraint/c_vec/$$.
 
 $children%
-	example/private/constraint_eval_xam.cpp
+	example/private/fix_constraint_eval_xam.cpp
 %$$
 $head Example$$
-The file $cref constraint_eval_xam.cpp$$ contains an example
+The file $cref fix_constraint_eval_xam.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
@@ -72,11 +72,11 @@ CppAD::vector<double> cppad_mixed::constraint_eval(const d_vector& fixed_vec)
 		"cppad_mixed::initialize was not called before constraint_eval";
 		fatal_error(error_message);
 	}
-	if( constraint_fun_.size_var() == 0 )
+	if( fix_constraint_fun_.size_var() == 0 )
 	{	return CppAD::vector<double>(0); // empty vector
 	}
-	assert( constraint_fun_.Domain() == n_fixed_ );
-	return constraint_fun_.Forward(0, fixed_vec);
+	assert( fix_constraint_fun_.Domain() == n_fixed_ );
+	return fix_constraint_fun_.Forward(0, fixed_vec);
 }
 
 

@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin constraint_xam.cpp$$
+$begin fix_constraint_xam.cpp$$
 $spell
 	CppAD
 	cppad
@@ -53,7 +53,7 @@ L( \theta , \lambda ) =
 \] $$
 
 $code
-$verbatim%example/user/constraint_xam.cpp
+$verbatim%example/user/fix_constraint_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -139,7 +139,7 @@ namespace {
 			const vector<a1_double>& fixed_vec  )
 		{	return implement_fix_like(fixed_vec); }
 		//
-		virtual vector<a1_double> constraint(
+		virtual vector<a1_double> fix_constraint(
 			const vector<a1_double>& fixed_vec  )
 		{	vector<a1_double> ret_val(1);
 			//
@@ -163,7 +163,7 @@ namespace {
 	};
 }
 
-bool constraint_xam(void)
+bool fix_constraint_xam(void)
 {
 	bool   ok = true;
 	double inf = std::numeric_limits<double>::infinity();

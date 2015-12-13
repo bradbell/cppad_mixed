@@ -112,7 +112,7 @@ namespace {
 			const vector<a1_double>& fixed_vec  )
 		{	return a1d_vector(0); } // empty vector
 		//
-		virtual vector<a1_double> constraint(
+		virtual vector<a1_double> fix_constraint(
 			const vector<a1_double>& fixed_vec  )
 		{	return a1d_vector(0); } // empty vector
 		//

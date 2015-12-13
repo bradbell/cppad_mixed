@@ -9,23 +9,23 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin constraint_eval_xam.cpp$$
+$begin fix_constraint_hes_xam.cpp$$
 $spell
 	CppAD
 	cppad
-	eval
+	hes
 	interp
 	xam
 $$
 
-$section constraint_eval: Example and Test$$
+$section constraint_hes: Example and Test$$
 
 $head Private$$
 This example is not part of the
 $cref/cppad_mixed public API/public/$$.
 
 $code
-$verbatim%example/private/constraint_eval_xam.cpp
+$verbatim%example/private/fix_constraint_hes_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -119,7 +119,7 @@ namespace {
 		{	return implement_fix_like(fixed_vec); }
 		//
 		// constraint is 1/2 norm squared of the fixed effects
-		virtual vector<a1_double> constraint(
+		virtual vector<a1_double> fix_constraint(
 			const vector<a1_double>& fixed_vec  )
 		{	assert( fixed_vec.size() == n_fixed_ );
 			vector<a1_double> c_vec(1);
@@ -141,7 +141,7 @@ namespace {
 	};
 }
 
-bool constraint_eval_xam(void)
+bool fix_constraint_hes_xam(void)
 {
 	bool   ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
@@ -163,13 +163,26 @@ bool constraint_eval_xam(void)
 	mixed_object.initialize(fixed_vec, random_vec);
 
 	// compute the constraint function and check result
-	CppAD::vector<double> c = mixed_object.constraint_eval(fixed_vec);
-	ok &= c.size() == 1;
-	double check = 0.0;
+	CppAD::vector<size_t> row, col;
+	CppAD::vector<double> weight(1), val;
+	weight[0] = 1.0;
+	mixed_object.constraint_hes(fixed_vec, weight, row, col, val);
+
+
+	// check derivatives
+	CppAD::vector<bool> found(n_fixed);
 	for(size_t j = 0; j < n_fixed; j++)
-		check += fixed_vec[j] * fixed_vec[j];
-	check /= 2.0;
-	ok &= CppAD::abs( c[0] / check - 1.0 ) <= eps;
+		found[j] = false;
+	ok &= row.size() == n_fixed;
+	for(size_t k = 0; k < row.size(); k++)
+	{	size_t i = row[k];
+		size_t j = col[k];
+		double check = 1.0;
+		ok      &= i == j;
+		ok      &= ( val[k] / check - 1.0) <= eps;
+		ok      &= ! found[i];
+		found[i] = true;
+	}
 
 	return ok;
 }

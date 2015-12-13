@@ -18,6 +18,9 @@ $$
 
 $section Changed and Additions to cppad_mixed$$
 
+$head 2015-12-13$$
+Change $code constraint$$ to $cref fix_constraint$$.
+
 $head 2015-12-10$$
 $list number$$
 First version of $code cppad_mixed$$ as a package separate from

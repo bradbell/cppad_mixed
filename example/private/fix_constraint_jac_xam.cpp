@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin constraint_jac_xam.cpp$$
+$begin fix_constraint_jac_xam.cpp$$
 $spell
 	CppAD
 	cppad
@@ -25,7 +25,7 @@ This example is not part of the
 $cref/cppad_mixed public API/public/$$.
 
 $code
-$verbatim%example/private/constraint_jac_xam.cpp
+$verbatim%example/private/fix_constraint_jac_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -119,7 +119,7 @@ namespace {
 		{	return implement_fix_like(fixed_vec); }
 		//
 		// constraint is 1/2 norm squared of the fixed effects
-		virtual vector<a1_double> constraint(
+		virtual vector<a1_double> fix_constraint(
 			const vector<a1_double>& fixed_vec  )
 		{	assert( fixed_vec.size() == n_fixed_ );
 			vector<a1_double> c_vec(1);
@@ -141,7 +141,7 @@ namespace {
 	};
 }
 
-bool constraint_jac_xam(void)
+bool fix_constraint_jac_xam(void)
 {
 	bool   ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();

@@ -100,13 +100,13 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		s_vector fix_like_hes_col_; // column indices for Hessian of prior
 		d_vector fix_like_hes_val_; // values for Hessian of prior
 		//
-		s_vector constraint_jac_row_; // row for Jacobian of constraint
-		s_vector constraint_jac_col_; // column for Jacobian of constraint
-		d_vector constraint_jac_val_; // values for Jacobian of constraint
+		s_vector fix_constraint_jac_row_; // row for Jacobian of constraint
+		s_vector fix_constraint_jac_col_; // column for Jacobian of constraint
+		d_vector fix_constraint_jac_val_; // values for Jacobian of constraint
 		//
-		s_vector constraint_hes_row_; // row for Hessian of constraint
-		s_vector constraint_hes_col_; // column for Hessian of constraint
-		d_vector constraint_hes_val_; // values for Hessian of constraint
+		s_vector fix_constraint_hes_row_; // row for Hessian of constraint
+		s_vector fix_constraint_hes_col_; // column for Hessian of constraint
+		d_vector fix_constraint_hes_val_; // values for Hessian of constraint
 		//
 		// only defined when n_random_ > 0
 		s_vector ranobj_hes_row_; // row indices for Hessian of Laplace
@@ -117,7 +117,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		s_vector lag_hes_col_;   // column indices for Hessian of Lagrangian
 		s_vector ranobj_2_lag_;    // maps ranobj_hes_row_ to lag_hes_row_
 		s_vector fix_like2lag_;      // maps fix_like_hes_row_ to lag_hes_row_
-		s_vector constraint_2_lag_; // maps constraint_hes_row to lag_hes_row
+		s_vector constraint_2_lag_; // maps fix_constraint_hes_row to lag_hes_row
 		// ---------------------------------------------------------------
 		// temporaries (size set by constructor only)
 		d_vector        fixed_tmp_;         // size n_fixed_

@@ -233,16 +233,16 @@ $code%
 %$$
 is used for plus infinity; i.e., no upper limit.
 
-$head constraint_lower$$
+$head fix_constraint_lower$$
 specifies the lower limits for the
-$cref/constraints/constraint/$$.
+$cref/constraints/fix_constraint/$$.
 Note that
 $code%
 	- std::numeric_limits<double>::infinity()
 %$$
 is used for minus infinity; i.e., no lower limit.
 
-$head constraint_upper$$
+$head fix_constraint_upper$$
 specifies the upper limits for the constraints.
 Note that
 $code%
@@ -352,13 +352,13 @@ mixed_object_      ( mixed_object    )
 		fix_like_n_abs_ = fix_like_vec.size() - 1;
 	// -----------------------------------------------------------------------
 	// set fix_like_jac_row_, fix_like_jac_col_, fix_like_jac_val_
-	// constraint_jac_row_, constraint_jac_col_, constraint_jac_val_
+	// fix_constraint_jac_row_, fix_constraint_jac_col_, fix_constraint_jac_val_
 	// -----------------------------------------------------------------------
 	mixed_object.fix_like_jac(
 		fixed_in, fix_like_jac_row_, fix_like_jac_col_, fix_like_jac_val_
 	);
 	mixed_object.constraint_jac(
-		fixed_in, constraint_jac_row_, constraint_jac_col_, constraint_jac_val_
+		fixed_in, fix_constraint_jac_row_, fix_constraint_jac_col_, fix_constraint_jac_val_
 	);
 	// -----------------------------------------------------------------------
 	// set nnz_jac_g_
@@ -373,7 +373,7 @@ mixed_object_      ( mixed_object    )
 	// derivative w.r.t auxillary variables
 	nnz_jac_g_ += 2 * fix_like_n_abs_;
 	// derivative of the constraints
-	nnz_jac_g_ += constraint_jac_row_.size();
+	nnz_jac_g_ += fix_constraint_jac_row_.size();
 	// -----------------------------------------------------------------------
 	// set lag_hes_row_, lag_hes_col_, ranobj_2_lag_, fix_like2lag_
 	// -----------------------------------------------------------------------
@@ -407,22 +407,22 @@ mixed_object_      ( mixed_object    )
 		mixed_object.constraint_hes(
 			fixed_in,
 			weight,
-			constraint_hes_row_,
-			constraint_hes_col_,
-			constraint_hes_val_
+			fix_constraint_hes_row_,
+			fix_constraint_hes_col_,
+			fix_constraint_hes_val_
 		);
 		//
 		// merge to form sparsity for Lagrangian
 		ranobj_2_lag_.resize( ranobj_hes_row_.size() );
 		fix_like2lag_.resize( fix_like_hes_row_.size() );
-		constraint_2_lag_.resize( constraint_hes_row_.size() );
+		constraint_2_lag_.resize( fix_constraint_hes_row_.size() );
 		merge_sparse(
 			ranobj_hes_row_      ,
 			ranobj_hes_col_      ,
 			fix_like_hes_row_        ,
 			fix_like_hes_col_        ,
-			constraint_hes_row_   ,
-			constraint_hes_col_   ,
+			fix_constraint_hes_row_   ,
+			fix_constraint_hes_col_   ,
 			lag_hes_row_          ,
 			lag_hes_col_          ,
 			ranobj_2_lag_        ,
@@ -436,7 +436,7 @@ mixed_object_      ( mixed_object    )
 		for(size_t k = 0; k < fix_like_hes_row_.size(); k++)
 			assert( fix_like2lag_[k] < lag_hes_row_.size() );
 		//
-		for(size_t k = 0; k < constraint_hes_row_.size(); k++)
+		for(size_t k = 0; k < fix_constraint_hes_row_.size(); k++)
 			assert( constraint_2_lag_[k] < lag_hes_row_.size() );
 # endif
 		// -------------------------------------------------------------------
@@ -1074,10 +1074,10 @@ bool ipopt_fixed::eval_jac_g(
 			ell++;
 		}
 		// explicit constraints
-		for(size_t k = 0; k < constraint_jac_row_.size(); k++)
+		for(size_t k = 0; k < fix_constraint_jac_row_.size(); k++)
 		{	assert( ell < nnz_jac_g_ );
-			iRow[ell] = Index( constraint_jac_row_[k] );
-			jCol[ell] = Index( constraint_jac_col_[k] );
+			iRow[ell] = Index( fix_constraint_jac_row_[k] );
+			jCol[ell] = Index( fix_constraint_jac_col_[k] );
 			ell++;
 		}
 		assert( ell == nnz_jac_g_ );
@@ -1112,13 +1112,13 @@ bool ipopt_fixed::eval_jac_g(
 	// Jacobian of explicit constraints
 	mixed_object_.constraint_jac(
 		fixed_tmp_,
-		constraint_jac_row_,
-		constraint_jac_col_,
-		constraint_jac_val_
+		fix_constraint_jac_row_,
+		fix_constraint_jac_col_,
+		fix_constraint_jac_val_
 	);
-	for(size_t k = 0; k < constraint_jac_row_.size(); k++)
+	for(size_t k = 0; k < fix_constraint_jac_row_.size(); k++)
 	{	assert( ell < nnz_jac_g_ );
-		values[ell++] = Number( constraint_jac_val_[k] );
+		values[ell++] = Number( fix_constraint_jac_val_[k] );
 	}
 	assert( ell == nnz_jac_g_ );
 	return true;
@@ -1288,13 +1288,13 @@ bool ipopt_fixed::eval_h(
 	mixed_object_.constraint_hes(
 		fixed_tmp_,
 		w_constraint_tmp_,
-		constraint_hes_row_,
-		constraint_hes_col_,
-		constraint_hes_val_
+		fix_constraint_hes_row_,
+		fix_constraint_hes_col_,
+		fix_constraint_hes_val_
 	);
-	for(size_t k = 0; k < constraint_hes_row_.size(); k++)
+	for(size_t k = 0; k < fix_constraint_hes_row_.size(); k++)
 	{	assert( constraint_2_lag_[k] < nnz_h_lag_ );
-		values[ constraint_2_lag_[k] ] += Number( constraint_hes_val_[k] );
+		values[ constraint_2_lag_[k] ] += Number( fix_constraint_hes_val_[k] );
 	}
 	//
 	return true;

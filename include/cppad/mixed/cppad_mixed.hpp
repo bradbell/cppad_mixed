@@ -18,9 +18,9 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/sparse_jac_info.hpp>
 
 // private examples
-extern bool constraint_eval_xam(void);
-extern bool constraint_jac_xam(void);
-extern bool constraint_hes_xam(void);
+extern bool fix_constraint_eval_xam(void);
+extern bool fix_constraint_jac_xam(void);
+extern bool fix_constraint_hes_xam(void);
 extern bool ran_like_grad_xam(void);
 extern bool ranobj_hes_xam(void);
 extern bool fix_like_eval_xam(void);
@@ -109,11 +109,11 @@ See $cref/fix_like/fix_like/$$.
 
 $subhead constraint$$
 $codep */
-	virtual a1d_vector constraint(
+	virtual a1d_vector fix_constraint(
 		const a1d_vector& fixed_vec
 	) = 0 ;
 /* $$
-See $cref/constraint/constraint/$$.
+See $cref fix_constraint$$.
 
 $subhead fatal_error$$
 $codep */
@@ -191,7 +191,7 @@ $childtable%src/derived_ctor.omh
 	%src/initialize.cpp
 	%src/ran_like.omh
 	%src/fix_like.omh
-	%src/constraint.omh
+	%src/fix_constraint.omh
 	%src/optimize_random.cpp
 	%src/optimize_fixed.cpp
 %$$
@@ -233,16 +233,16 @@ $cref/mixed_object/derived_ctor/mixed_object/$$.
 
 $childtable%include/cppad/mixed/pack.hpp
 	%include/cppad/mixed/unpack.hpp
-	%src/constraint_eval.cpp
-	%src/constraint_jac.cpp
-	%src/constraint_hes.cpp
+	%src/fix_constraint_eval.cpp
+	%src/fix_constraint_jac.cpp
+	%src/fix_constraint_hes.cpp
 	%src/init_ran_like.cpp
 	%src/init_hes_ran.cpp
 	%src/init_hes_cross.cpp
 	%src/init_ranobj.cpp
 	%src/init_hes_ranobj.cpp
 	%src/init_fix_like.cpp
-	%src/init_constraint.cpp
+	%src/init_fix_constraint.cpp
 	%src/ranobj_eval.cpp
 	%src/logdet_grad.cpp
 	%src/ranobj_grad.cpp
@@ -398,33 +398,33 @@ $codep */
 	CppAD::mixed::sparse_hes_info fix_like_hes_;
 /* $$
 
-$head constraint_fun_$$
-$cref/constraint_fun_/init_constraint/constraint_fun_/$$
+$head fix_constraint_fun_$$
+$cref/fix_constraint_fun_/init_fix_constraint/fix_constraint_fun_/$$
 is a recording of the fixed part of the likelihood function; see,
-$cref/constraint/constraint/$$.
+$cref fix_constraint$$.
 $codep */
-	CppAD::ADFun<double>        constraint_fun_;     // c(theta)
+	CppAD::ADFun<double>        fix_constraint_fun_;     // c(theta)
 /* $$
 The following objects hold information for computing derivatives
 with this ADFun object:
 
-$subhead constraint_jac_$$
-$cref/constraint_jac_/init_constraint/constraint_jac_/$$
+$subhead fix_constraint_jac_$$
+$cref/fix_constraint_jac_/init_fix_constraint/fix_constraint_jac_/$$
 contains information for the Jacobian of the
 constraint function $latex c ( \theta )$$.
 $codep */
-	CppAD::mixed::sparse_jac_info constraint_jac_;
+	CppAD::mixed::sparse_jac_info fix_constraint_jac_;
 /* $$
 
-$subhead constraint_hes_$$
+$subhead fix_constraint_hes_$$
 If $icode quasi_fixed$$ is false,
-$cref/constraint_hes_/init_constraint/constraint_hes_/$$
+$cref/fix_constraint_hes_/init_fix_constraint/fix_constraint_hes_/$$
 contains information for the Hessian of the
-$cref/constraints/constraint/$$ function $latex c( \theta )$$.
+$cref/constraints/fix_constraint/$$ function $latex c( \theta )$$.
 The corresponding ADFun object is
-$cref/constraint_fun_/init_constraint/constraint_fun_/$$.
+$cref/fix_constraint_fun_/init_fix_constraint/fix_constraint_fun_/$$.
 $codep */
-	CppAD::mixed::sparse_hes_info constraint_hes_;
+	CppAD::mixed::sparse_hes_info fix_constraint_hes_;
 /* $$
 ------------------------------------------------------------------------------
 $head pack$$
@@ -507,8 +507,8 @@ See $cref init_fix_like$$.
 $codep */
 	void init_fix_like(const d_vector& fixed_vec);
 /* $$
-$head init_constraint$$
-See $cref init_constraint$$.
+$head init_fix_constraint$$
+See $cref init_fix_constraint$$.
 $codep */
 	void init_constraint(const d_vector& fixed_vec);
 /* $$
@@ -573,16 +573,16 @@ $codep */
 	friend bool ::ranobj_hes_xam(void);
 /* $$
 -------------------------------------------------------------------------------
-$head constraint_eval$$
-See $cref constraint_eval$$
+$head fix_constraint_eval$$
+See $cref fix_constraint_eval$$
 $codep */
 	// constraint_eval
 	d_vector constraint_eval(const d_vector& fixed_vec);
-	friend bool ::constraint_eval_xam(void);
+	friend bool ::fix_constraint_eval_xam(void);
 /* $$
 $end
-$head constraint_jac$$
-See $cref constraint_jac$$
+$head fix_constraint_jac$$
+See $cref fix_constraint_jac$$
 $codep */
 	// constraint_jac
 	void constraint_jac(
@@ -591,11 +591,11 @@ $codep */
 		CppAD::vector<size_t>& col_out     ,
 		d_vector&              val_out
 	);
-	friend bool ::constraint_jac_xam(void);
+	friend bool ::fix_constraint_jac_xam(void);
 /* $$
 $end
-$head constraint_hes$$
-See $cref constraint_hes$$
+$head fix_constraint_hes$$
+See $cref fix_constraint_hes$$
 $codep */
 	// constraint_hes
 	void constraint_hes(
@@ -605,7 +605,7 @@ $codep */
 		CppAD::vector<size_t>& col_out     ,
 		d_vector&              val_out
 	);
-	friend bool ::constraint_hes_xam(void);
+	friend bool ::fix_constraint_hes_xam(void);
 /* $$
 -------------------------------------------------------------------------------
 $head fix_like_eval$$

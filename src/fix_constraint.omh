@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
 /*
-$begin constraint$$
+$begin fix_constraint$$
 $spell
 	CppAD
 	cppad
@@ -38,7 +38,7 @@ see $cref/AD Types/public/AD Types/$$.
 $head Virtual Function$$
 The following virtual function must be implemented in the derived class:
 $codei%
-	virtual CppAD::vector<a1_double> constraint(
+	virtual CppAD::vector<a1_double> fix_constraint(
 		const CppAD::vector<a1_double>& %fixed_vec%
 	)
 %$$
@@ -63,7 +63,7 @@ In the case where there are no constraints,
 $icode%c_vec%.size() == 0%$$.
 
 $head Example$$
-The file $cref constraint_xam.cpp$$ contains an example
+The file $cref fix_constraint_xam.cpp$$ contains an example
 using constraints.
 
 $end

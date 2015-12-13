@@ -32,11 +32,11 @@ $end
 extern bool cholmod_xam(void);
 
 // cppad_mixed subdirectory
-extern bool constraint_xam(void);
+extern bool fix_constraint_xam(void);
 extern bool derived_xam(void);
-extern bool constraint_eval_xam(void);
-extern bool constraint_hes_xam(void);
-extern bool constraint_jac_xam(void);
+extern bool fix_constraint_eval_xam(void);
+extern bool fix_constraint_hes_xam(void);
+extern bool fix_constraint_jac_xam(void);
 extern bool data_mismatch_xam(void);
 extern bool logdet_grad_xam(void);
 extern bool ranobj_grad_xam(void);
@@ -88,11 +88,11 @@ namespace {
 // main program that runs all the tests
 int main(void)
 {
-	RUN(constraint_xam);
+	RUN(fix_constraint_xam);
 	RUN(derived_xam);
-	RUN(constraint_eval_xam);
-	RUN(constraint_hes_xam);
-	RUN(constraint_jac_xam);
+	RUN(fix_constraint_eval_xam);
+	RUN(fix_constraint_hes_xam);
+	RUN(fix_constraint_jac_xam);
 	RUN(data_mismatch_xam);
 	RUN(logdet_grad_xam);
 	RUN(ranobj_grad_xam);

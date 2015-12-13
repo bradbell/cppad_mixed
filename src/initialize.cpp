@@ -211,7 +211,7 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	init_fix_like(fixed_vec);
 	assert( init_fix_like_done_ );
 
-	// constraint_fun_
+	// fix_constraint_fun_
 	assert( ! init_constraint_done_ );
 	init_constraint(fixed_vec);
 	assert( init_constraint_done_ );
@@ -229,7 +229,7 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	size_map["newton_atom"]    = newton_atom_.size_var();
 	size_map["ranobj_fun"]    = ranobj_fun_.size_var();
 	size_map["fix_like_fun"]   = fix_like_fun_.size_var();
-	size_map["constraint"]     = constraint_fun_.size_var();
+	size_map["constraint"]     = fix_constraint_fun_.size_var();
 	//
 	size_map["num_bytes_before"]  = num_bytes_before;
 	size_map["num_bytes_after"]   = CppAD::thread_alloc::inuse(thread);
