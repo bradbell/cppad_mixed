@@ -21,8 +21,10 @@ $section Changed and Additions to cppad_mixed$$
 $head 2015-12-14$$
 Provide a default definition for
 $cref/ran_likelihood/ran_likelihood/vec/Default/$$,
-$cref/fix_likelihood/fix_likelihood/vec/Default/$$, and
-$cref/fix_constraint/fix_constraint/c_vec/Default/$$.
+$cref/fix_likelihood/fix_likelihood/vec/Default/$$,
+$cref/fix_constraint/fix_constraint/c_vec/Default/$$,
+$cref/fatal_error/public/User Defined/fatal_error/$$, and
+$cref/warning/public/User Defined/warning/$$.
 
 $head 2015-12-13$$
 Change

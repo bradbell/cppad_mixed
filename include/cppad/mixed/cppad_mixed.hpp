@@ -49,6 +49,9 @@ public:
 /*
 $begin public$$
 $spell
+	std
+	cerr
+	endl
 	CppAD
 	init
 	ranobj
@@ -116,17 +119,25 @@ $codep */
 See $cref fix_constraint$$.
 
 $subhead fatal_error$$
+This routine displays an error message and then exits the program.
+For example, its default definition is
 $codep */
-	virtual void fatal_error(const std::string& error_message) = 0;
+	virtual void fatal_error(const std::string& error_message)
+	{	std::cerr << "cppad_mixed error: " << error_message << std::endl;
+		assert(false);
+	}
+
 /* $$
-This routine displays error message and then exits the program
-(hence it does not return).
 
 $subhead warning$$
-$codep */
-	virtual void warning(const std::string& warning_message) = 0;
-/* $$
 This routine displays a warning message and then returns.
+For example, its default definition is
+$codep */
+	virtual void warning(const std::string& warning_message)
+	{	std::cerr << "cppad_mixed warning: " << warning_message << std::endl;
+		assert(false);
+	}
+/* $$
 
 $head constructor$$
 Construct an $code cppad_mixed$$ derived class object; see

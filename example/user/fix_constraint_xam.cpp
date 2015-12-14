@@ -150,15 +150,6 @@ namespace {
 			//
 			return ret_val;
 		}
-		//
-		virtual void fatal_error(const std::string& error_message)
-		{	std::cerr << "Error: " << error_message << std::endl;
-			std::exit(1);
-		}
-		//
-		virtual void warning(const std::string& warning_message)
-		{	std::cerr << "Warning: " << warning_message << std::endl;
-		}
 		// ------------------------------------------------------------------
 	};
 }

@@ -105,16 +105,6 @@ namespace {
 		virtual vector<a1_double> fix_likelihood(
 			const vector<a1_double>& fixed_vec  )
 		{	return implement_fix_like(fixed_vec); }
-		//
-		virtual void fatal_error(const std::string& error_message)
-		{	std::cerr << "Error: " << error_message << std::endl;
-			assert(false);
-		}
-		//
-		virtual void warning(const std::string& warning_message)
-		{	std::cerr << "Warning: " << warning_message << std::endl;
-			assert(false);
-		}
 		// ------------------------------------------------------------------
 	};
 }
