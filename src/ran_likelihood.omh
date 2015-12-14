@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
 /*
-$begin ran_like$$
+$begin ran_likelihood$$
 $spell
 	CppAD
 	cppad
@@ -21,7 +21,7 @@ $$
 $section Random Likelihood$$
 
 $head Syntax$$
-$icode%vec% = %mixed_object%.ran_like(%fixed_vec%, %random_vec%)%$$
+$icode%vec% = %mixed_object%.ran_likelihood(%fixed_vec%, %random_vec%)%$$
 
 $head Public$$
 This $code cppad_mixed$$ member function is $cref public$$.
@@ -42,7 +42,7 @@ $code a1_double$$, $code a2_double$$,
 the following virtual function and must be implemented
 in the derived class:
 $codei%
-	virtual CppAD::vector<%Float%> ran_like(
+	virtual CppAD::vector<%Float%> ran_likelihood(
 		const CppAD::vector<%Float%>& %fixed_vec%  ,
 		const CppAD::vector<%Float%>& %random_vec%
 	)

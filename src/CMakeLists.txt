@@ -14,7 +14,7 @@ ADD_LIBRARY(cppad_mixed
 	fix_constraint_eval.cpp
 	fix_constraint_jac.cpp
 	fix_constraint_hes.cpp
-	ran_like_grad.cpp
+	ran_likelihood_grad.cpp
 	ranobj_hes.cpp
 	initialize.cpp
 	ipopt_fixed.cpp
@@ -28,7 +28,7 @@ ADD_LIBRARY(cppad_mixed
 	init_fix_constraint.cpp
 	init_hes_cross.cpp
 	init_hes_ranobj.cpp
-	init_ran_like.cpp
+	init_ran_likelihood.cpp
 )
 SET_TARGET_PROPERTIES(cppad_mixed
 	PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"

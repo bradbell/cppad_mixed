@@ -81,8 +81,8 @@ see $cref/f(theta, u)/
 	Random Likelihood, f(theta, u)
 /$$
 
-$subhead ran_like_fun_, ran_like_a1fun_$$
-Either $code ran_like_fun_$$ or $code ran_like_a1fun_$$
+$subhead ran_likelihood_fun_, ran_likelihood_a1fun_$$
+Either $code ran_likelihood_fun_$$ or $code ran_likelihood_a1fun_$$
 can be used for the ADFun object in the
 $cref/sparse Hessian Call/sparse_hes_info/Sparse Hessian Call/f/$$.
 
@@ -94,7 +94,7 @@ These indices are relative to both the fixed and random effects
 with the fixed effects coming first.
 $lnext
 You can replace the $code a1_double$$ vectors by $code double$$ vectors,
-and replace $code ran_like_a1fun_$$ by $code ran_like_fun_$$,
+and replace $code ran_likelihood_a1fun_$$ by $code ran_likelihood_fun_$$,
 and get the results in $code double$$ instead of $code a1_double$$.
 $lend
 
@@ -171,7 +171,7 @@ void cppad_mixed::init_hes_ran(
 	sparsity_pattern r(n_total);
 	for(i = n_fixed_; i < n_total; i++)
 		r[i].insert(i);
-	ran_like_fun_.ForSparseJac(n_total, r);
+	ran_likelihood_fun_.ForSparseJac(n_total, r);
 
 	// compute sparsity pattern corresponding to paritls w.r.t. (theta, u)
 	// of partial w.r.t. u of f(theta, u)
@@ -179,7 +179,7 @@ void cppad_mixed::init_hes_ran(
 	sparsity_pattern s(1), pattern;
 	assert( s[0].empty() );
 	s[0].insert(0);
-	pattern = ran_like_fun_.RevSparseHes(n_total, s, transpose);
+	pattern = ran_likelihood_fun_.RevSparseHes(n_total, s, transpose);
 
 
 	// determine row and column indices in lower triangle of Hessian
@@ -227,13 +227,13 @@ void cppad_mixed::init_hes_ran(
 		{	for(j = 0; j < n_column; j++)
 				r[i * n_column + j] = (i == i_column + j);
 		}
-		ran_like_fun_.ForSparseJac(n_column, r);
+		ran_likelihood_fun_.ForSparseJac(n_column, r);
 
 		// compute sparsity pattern corresponding to paritls w.r.t. (theta, u)
 		// of partial w.r.t. the selected columns
 		bool transpose = true;
 		s[0] = true;
-		h = ran_like_fun_.RevSparseHes(n_column, s, transpose);
+		h = ran_likelihood_fun_.RevSparseHes(n_column, s, transpose);
 
 		// fill in the corresponding columns of total_sparsity
 		for(i = 0; i < n_total; i++)
@@ -280,7 +280,7 @@ void cppad_mixed::init_hes_ran(
 	d_vector val_out(K);
 
 	// compute the work vector
-	ran_like_fun_.SparseHessian(
+	ran_likelihood_fun_.SparseHessian(
 		both,
 		w,
 		pattern,
@@ -297,7 +297,7 @@ void cppad_mixed::init_hes_ran(
 		a1_both[i] = both[i];
 	a1_w[0] = w[0];
 	CppAD::Independent(a1_both);
-	ran_like_a1fun_.SparseHessian(
+	ran_likelihood_a1fun_.SparseHessian(
 		a1_both,
 		a1_w,
 		not_used,

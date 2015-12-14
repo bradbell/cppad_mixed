@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin ran_like_grad_xam.cpp$$
+$begin ran_likelihood_grad_xam.cpp$$
 $spell
 	CppAD
 	cppad
@@ -24,7 +24,7 @@ This example is not part of the
 $cref/cppad_mixed public API/public/$$.
 
 $code
-$verbatim%example/private/ran_like_grad_xam.cpp
+$verbatim%example/private/ran_likelihood_grad_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -76,11 +76,11 @@ namespace {
 		}
 	public:
 		//
-		virtual vector<a2_double> ran_like(
+		virtual vector<a2_double> ran_likelihood(
 			const vector<a2_double>& fixed_vec  ,
 			const vector<a2_double>& random_vec )
 		{	return implement_ran_like(fixed_vec, random_vec); }
-		virtual vector<a1_double> ran_like(
+		virtual vector<a1_double> ran_likelihood(
 			const vector<a1_double>& fixed_vec  ,
 			const vector<a1_double>& random_vec )
 		{	return implement_ran_like(fixed_vec, random_vec); }
@@ -107,7 +107,7 @@ namespace {
 	};
 }
 
-bool ran_like_grad_xam(void)
+bool ran_likelihood_grad_xam(void)
 {
 	bool   ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
@@ -132,7 +132,7 @@ bool ran_like_grad_xam(void)
 
 	// compute gradient with respect to random effects
 	vector<a1_double> grad =
-		mixed_object.ran_like_grad(fixed_vec, random_vec);
+		mixed_object.ran_likelihood_grad(fixed_vec, random_vec);
 
 	// check the gradient
 	for(size_t i = 0; i < n_random; i++)

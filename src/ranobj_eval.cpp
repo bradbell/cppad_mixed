@@ -95,7 +95,7 @@ $end
 double cppad_mixed::ranobj_eval(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec )
-{	assert( init_ran_like_done_ );
+{	assert( init_ran_likelihood_done_ );
 	assert( init_hes_ran_done_ );
 
 	assert( fixed_vec.size() == n_fixed_ );
@@ -120,7 +120,7 @@ double cppad_mixed::ranobj_eval(
 	double constant_term = CppAD::log(2.0 * pi) * double(n_random_) / 2.0;
 
 	// f(theta , u)
-	d_vector vec = ran_like_fun_.Forward(0, both);
+	d_vector vec = ran_likelihood_fun_.Forward(0, both);
 	assert( vec.size() == 1);
 
 	// h(theta, u)

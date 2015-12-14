@@ -32,7 +32,7 @@ $icode%mixed_object%.optimize_random(
 
 $head Purpose$$
 This routine maximizes the
-$cref/random likelihood/ran_like/$$
+$cref/random likelihood/ran_likelihood/$$
 corresponding to the object $icode mixed_object$$.
 
 $head Public$$
@@ -158,7 +158,7 @@ public:
 			random_vec[j] = x[j];
 
 		// compute log-density vector
-		ADvector vec = mixed_object_.ran_like(fixed_vec_, random_vec);
+		ADvector vec = mixed_object_.ran_likelihood(fixed_vec_, random_vec);
 
 		// initialize smooth part of negative log-likelihood
 		size_t k = 0;
@@ -194,7 +194,7 @@ CppAD::vector<double> cppad_mixed::optimize_random(
 		"cppad_mixed::initialize was not called before optimize_random";
 		fatal_error(error_message);
 	}
-	if( ! init_ran_like_done_ )
+	if( ! init_ran_likelihood_done_ )
 	{	std::string error_message =
 		"cppad_mixed::optimize_random there are no random effects";
 		fatal_error(error_message);
@@ -212,7 +212,7 @@ CppAD::vector<double> cppad_mixed::optimize_random(
 	// determine initial density vector
 	d_vector both_vec(n_fixed_ + n_random_);
 	pack(fixed_vec, random_in, both_vec);
-	d_vector vec = ran_like_fun_.Forward(0, both_vec);
+	d_vector vec = ran_likelihood_fun_.Forward(0, both_vec);
 
 	// number of absolute value terms in objective
 	size_t n_abs = vec.size() - 1;

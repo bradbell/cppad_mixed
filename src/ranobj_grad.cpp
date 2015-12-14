@@ -111,17 +111,17 @@ void cppad_mixed::ranobj_grad(
 	// Compute derivative of f(theta , u ) w.r.t theta and u
 	d_vector w(1), f_both(n_fixed_ + n_random_);
 	w[0] = 1.0;
-	ran_like_fun_.Forward(0, both);
-	f_both = ran_like_fun_.Reverse(1, w);
+	ran_likelihood_fun_.Forward(0, both);
+	f_both = ran_likelihood_fun_.Reverse(1, w);
 	d_vector f_fixed(n_fixed_), f_random(n_random_);
 	unpack(f_fixed, f_random, f_both);
 	//
 	// Compute the Hessian cross terms f_{u theta}^{(2)} ( theta , u )
-	// 2DO: another ran_like_fun_.Forward(0, both) is done by SparseHessian
+	// 2DO: another ran_likelihood_fun_.Forward(0, both) is done by SparseHessian
 	CppAD::vector< std::set<size_t> > not_used;
 	K = hes_cross_.row.size();
 	CppAD::vector<double> val_out(K);
-	ran_like_fun_.SparseHessian(
+	ran_likelihood_fun_.SparseHessian(
 		both,
 		w,
 		not_used,

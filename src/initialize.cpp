@@ -36,7 +36,7 @@ $icode%size_map% = %mixed_object%.initialize(%fixed_vec%, %random_vec%)%$$
 $head Purpose$$
 Some of the $code cppad_mixed$$ initialization requires calling the
 derived class version of the
-$cref/ran_like/ran_like/$$ function.
+$cref ran_likelihood$$ function.
 Hence this initialization cannot be done until
 after the $cref/derived constructor/derived_ctor/$$ completes.
 
@@ -92,15 +92,15 @@ number of non-zero cross entries in hessian of
 random likelihood w.r.t fixed and random effects
 $latex f_{u \theta}^{(2)} ( \theta , u )$$.
 
-$subhead ran_like_fun$$
+$subhead ran_likelihood_fun$$
 $icode%size_map%["ran_like_fun"]%$$ is the
 number of variables in the $code ADFun<double>$$ version of
-$cref/ran_like/ran_like/$$.
+$cref ran_likelihood$$.
 
-$subhead ran_like_a1fun$$
+$subhead ran_likelihood_a1fun$$
 $icode%size_map%["ran_like_a1fun"]%$$ is the
 number of variables in the $code ADFun<a1_double>$$ version of
-$cref/ran_like/ran_like/$$.
+$cref ran_likelihood$$.
 
 $subhead hes_ran_fun$$
 $icode%size_map%["hes_ran_fun_"]%$$ is the
@@ -163,7 +163,7 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	{	a1d_vector a1_fixed_vec( n_fixed_ ), a1_random_vec;
 		for(size_t i = 0; i < n_fixed_; i++)
 			a1_fixed_vec[i] = fixed_vec[i];
-		a1d_vector vec = ran_like(a1_fixed_vec, a1_random_vec);
+		a1d_vector vec = ran_likelihood(a1_fixed_vec, a1_random_vec);
 		if( vec.size() != 0 )
 		{	std::string msg = "There are no random effects (n_random = 0),";
 			msg += "\nbut the function ran_like returns a non-empty vector";
@@ -173,9 +173,9 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	else
 	{
 		// ran_like_
-		assert( ! init_ran_like_done_ );
+		assert( ! init_ran_likelihood_done_ );
 		init_ran_like(fixed_vec, random_vec);
-		assert( init_ran_like_done_ );
+		assert( init_ran_likelihood_done_ );
 
 		// hes_ran_
 		assert( ! init_hes_ran_done_ );
@@ -191,7 +191,7 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 		{
 			// newton_atom_
 			assert( ! record_newton_atom_done_ );
-			newton_atom_.initialize(ran_like_a1fun_, fixed_vec, random_vec);
+			newton_atom_.initialize(ran_likelihood_a1fun_, fixed_vec, random_vec);
 			record_newton_atom_done_ = true;
 
 			// ranobj_fun_
@@ -223,8 +223,8 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	std::map<std::string, size_t> size_map;
 	size_map["hes_ran_row"]    = hes_ran_.row.size();
 	size_map["hes_cross_row"]  = hes_cross_.row.size();
-	size_map["ran_like_fun"]   = ran_like_fun_.size_var();
-	size_map["ran_like_a1fun"] = ran_like_a1fun_.size_var();
+	size_map["ran_like_fun"]   = ran_likelihood_fun_.size_var();
+	size_map["ran_like_a1fun"] = ran_likelihood_a1fun_.size_var();
 	size_map["hes_ran_fun"]    = hes_ran_fun_.size_var();
 	size_map["newton_atom"]    = newton_atom_.size_var();
 	size_map["ranobj_fun"]    = ranobj_fun_.size_var();

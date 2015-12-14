@@ -79,11 +79,11 @@ namespace {
 		}
 	public:
 		//
-		virtual vector<a2_double> ran_like(
+		virtual vector<a2_double> ran_likelihood(
 			const vector<a2_double>& fixed_vec  ,
 			const vector<a2_double>& random_vec )
 		{	return implement_ran_like(fixed_vec, random_vec); }
-		virtual vector<a1_double> ran_like(
+		virtual vector<a1_double> ran_likelihood(
 			const vector<a1_double>& fixed_vec  ,
 			const vector<a1_double>& random_vec )
 		{	return implement_ran_like(fixed_vec, random_vec); }
@@ -141,7 +141,7 @@ bool hes_cross_xam(void)
 	w[0] = 1.0;
 	CppAD::vector< std::set<size_t> > not_used;
 	mixed_object.pack(fixed_vec, random_vec, both);
-	mixed_object.ran_like_fun_.SparseHessian(
+	mixed_object.ran_likelihood_fun_.SparseHessian(
 		both,
 		w,
 		not_used,

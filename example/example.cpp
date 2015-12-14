@@ -52,7 +52,7 @@ extern bool no_random_xam(void);
 extern bool optimize_fixed_xam(void);
 extern bool optimize_random_xam(void);
 extern bool fix_like_eval_xam(void);
-extern bool ran_like_grad_xam(void);
+extern bool ran_likelihood_grad_xam(void);
 extern bool ranobj_hes_xam(void);
 extern bool manage_gsl_rng_xam(void);
 
@@ -106,7 +106,7 @@ int main(void)
 	RUN(ipopt_xam_run);
 	RUN(manage_gsl_rng_xam);
 	RUN(newton_step_xam);
-	RUN(ran_like_grad_xam);
+	RUN(ran_likelihood_grad_xam);
 	RUN(no_random_xam);
 	RUN(optimize_fixed_xam);
 	RUN(optimize_random_xam);

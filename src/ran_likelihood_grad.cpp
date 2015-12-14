@@ -10,7 +10,7 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
 /*
-$begin ran_like_grad$$
+$begin ran_likelihood_grad$$
 $spell
 	CppAD
 	cppad
@@ -23,7 +23,7 @@ $$
 $section Gradient of Random Likelihood w.r.t. Random Effects$$
 
 $head Syntax$$
-$icode%grad% = %mixed_object%.ran_like_grad( %fixed_vec%, %random_vec%)%$$
+$icode%grad% = %mixed_object%.ran_likelihood_grad( %fixed_vec%, %random_vec%)%$$
 
 $head Purpose$$
 This routine computes the gradient of the random likelihood
@@ -67,10 +67,10 @@ $codei%
 It contains the gradient $latex f_u^{(1)} ( \theta , u )$$.
 
 $children%
-	example/private/ran_like_grad_xam.cpp
+	example/private/ran_likelihood_grad_xam.cpp
 %$$
 $head Example$$
-The file $cref ran_like_grad_xam.cpp$$ contains an example
+The file $cref ran_likelihood_grad_xam.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
@@ -80,10 +80,10 @@ $end
 
 // ----------------------------------------------------------------------------
 // ran_like_grad
-CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_grad(
+CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_likelihood_grad(
 	const a1d_vector&        fixed_vec   ,
 	const a1d_vector&        random_vec  )
-{	assert( init_ran_like_done_ );
+{	assert( init_ran_likelihood_done_ );
 
 	// number of fixed and random effects
 	assert( n_fixed_  == fixed_vec.size() );
@@ -94,13 +94,13 @@ CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_grad(
 	pack(fixed_vec, random_vec, both_vec);
 
 	// zero order forward mode
-	ran_like_a1fun_.Forward(0, both_vec);
+	ran_likelihood_a1fun_.Forward(0, both_vec);
 
 	// first order reverse f_{theta,u}^{(1) ( theta , u )
-	assert( ran_like_a1fun_.Range() == 1);
+	assert( ran_likelihood_a1fun_.Range() == 1);
 	a1d_vector a1_w(1), grad_both(n_fixed_ + n_random_);
 	a1_w[0] = 1.0;
-	grad_both = ran_like_a1fun_.Reverse(1, a1_w);
+	grad_both = ran_likelihood_a1fun_.Reverse(1, a1_w);
 
 	// extract u part of the gradient
 	a1d_vector grad_ran(n_random_);

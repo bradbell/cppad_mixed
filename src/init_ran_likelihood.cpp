@@ -11,7 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/cppad_mixed.hpp>
 
 /*
-$begin init_ran_like$$
+$begin init_ran_likelihood$$
 $spell
 	CppAD
 	init
@@ -52,23 +52,23 @@ It specifies the value of the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$ at which the initialization is done.
 
-$head ran_like_fun_$$
+$head ran_likelihood_fun_$$
 The input value of the member variable
 $codei%
-	CppAD::ADFun<double> ran_like_fun_
+	CppAD::ADFun<double> ran_likelihood_fun_
 %$$
 does not matter.
 Upon return it contains a recording of the function
-$cref/ran_like/ran_like/$$.
+$cref ran_likelihood$$.
 
-$head ran_like_a1fun_$$
+$head ran_likelihood_a1fun_$$
 The input value of the member variable
 $codei%
-	CppAD::ADFun<double> ran_like_a1fun_
+	CppAD::ADFun<double> ran_likelihood_a1fun_
 %$$
 does not matter.
 Upon return it contains a recording of the function
-$cref/ran_like/ran_like/$$.
+$cref ran_likelihood$$.
 
 $end
 */
@@ -76,7 +76,7 @@ $end
 void cppad_mixed::init_ran_like(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec )
-{	assert( ! init_ran_like_done_ );
+{	assert( ! init_ran_likelihood_done_ );
 	//
 	using CppAD::AD;
 	using CppAD::ADFun;
@@ -84,7 +84,7 @@ void cppad_mixed::init_ran_like(
 	using CppAD::Independent;
 	//
 	// ------------------------------------------------------------------
-	// record ran_like_a1fun_
+	// record ran_likelihood_a1fun_
 	// ------------------------------------------------------------------
 	// combine into one vector
 	a2d_vector a2_both( n_fixed_ + n_random_ );
@@ -98,7 +98,7 @@ void cppad_mixed::init_ran_like(
 	unpack(a2_theta, a2_u, a2_both);
 
 	// compute ran_like using a2_double operations
-	a2d_vector a2_vec = ran_like(a2_theta, a2_u);
+	a2d_vector a2_vec = ran_likelihood(a2_theta, a2_u);
 	if( a2_vec.size() == 0 )
 	{	std::string error_message =
 		"cppad_mixed: number of random effects > 0 and ran_like has size 0";
@@ -111,14 +111,14 @@ void cppad_mixed::init_ran_like(
 	}
 
 	// save the recording
-	ran_like_a1fun_.Dependent(a2_both, a2_vec);
+	ran_likelihood_a1fun_.Dependent(a2_both, a2_vec);
 
 	// optimize the recording
 # ifndef NDEBUG
-	ran_like_a1fun_.optimize();
+	ran_likelihood_a1fun_.optimize();
 # endif
 	// ------------------------------------------------------------------
-	// record ran_like_fun_
+	// record ran_likelihood_fun_
 	// ------------------------------------------------------------------
 	// combine into one vector
 	a1d_vector a1_both( n_fixed_ + n_random_ );
@@ -132,7 +132,7 @@ void cppad_mixed::init_ran_like(
 	unpack(a1_theta, a1_u, a1_both);
 
 	// compute ran_like using a1_double operations
-	a1d_vector a1_vec = ran_like(a1_theta, a1_u);
+	a1d_vector a1_vec = ran_likelihood(a1_theta, a1_u);
 	if( a1_vec.size() == 0 )
 	{	std::string error_message =
 		"cppad_mixed: number of random effects > 0 and ran_like has size 0";
@@ -145,14 +145,14 @@ void cppad_mixed::init_ran_like(
 	}
 
 	// save the recording
-	ran_like_fun_.Dependent(a1_both, a1_vec);
+	ran_likelihood_fun_.Dependent(a1_both, a1_vec);
 
 	// optimize the recording
 # ifndef NDEBUG
-	ran_like_fun_.optimize();
+	ran_likelihood_fun_.optimize();
 # endif
 	// ------------------------------------------------------------------
-	init_ran_like_done_ = true;
+	init_ran_likelihood_done_ = true;
 	return;
 }
 

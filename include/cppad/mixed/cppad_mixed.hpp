@@ -21,7 +21,7 @@ see http://www.gnu.org/licenses/agpl.txt
 extern bool fix_constraint_eval_xam(void);
 extern bool fix_constraint_jac_xam(void);
 extern bool fix_constraint_hes_xam(void);
-extern bool ran_like_grad_xam(void);
+extern bool ran_likelihood_grad_xam(void);
 extern bool ranobj_hes_xam(void);
 extern bool fix_like_eval_xam(void);
 extern bool fix_like_jac_xam(void);
@@ -86,18 +86,18 @@ $head User Defined$$
 The following are $code cppad_mixed$$ pure virtual functions and hence must
 be defined by the user's derived class:
 
-$subhead ran_like$$
+$subhead ran_likelihood$$
 $codep */
-	virtual a2d_vector ran_like(
+	virtual a2d_vector ran_likelihood(
 		const a2d_vector& fixed_vec  ,
 		const a2d_vector& random_vec
 	) = 0;
-	virtual a1d_vector ran_like(
+	virtual a1d_vector ran_likelihood(
 		const a1d_vector& fixed_vec  ,
 		const a1d_vector& random_vec
 	) = 0;
 /* $$
-See $cref/ran_like/ran_like/$$.
+See $cref ran_likelihood$$.
 
 $subhead fix_like$$
 $codep */
@@ -142,7 +142,7 @@ $comment */
 	initialize_done_(false)         ,
 	init_fix_like_done_(false)    ,
 	init_constraint_done_(false)  ,
-	init_ran_like_done_(false)    ,
+	init_ran_likelihood_done_(false)    ,
 	init_hes_ran_done_(false)     ,
 	init_hes_cross_done_(false)   ,
 	record_newton_atom_done_(false) ,
@@ -189,7 +189,7 @@ $codep */
 /* $$
 $childtable%src/derived_ctor.omh
 	%src/initialize.cpp
-	%src/ran_like.omh
+	%src/ran_likelihood.omh
 	%src/fix_like.omh
 	%src/fix_constraint.omh
 	%src/optimize_random.cpp
@@ -236,7 +236,7 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/fix_constraint_eval.cpp
 	%src/fix_constraint_jac.cpp
 	%src/fix_constraint_hes.cpp
-	%src/init_ran_like.cpp
+	%src/init_ran_likelihood.cpp
 	%src/init_hes_ran.cpp
 	%src/init_hes_cross.cpp
 	%src/init_ranobj.cpp
@@ -246,7 +246,7 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/ranobj_eval.cpp
 	%src/logdet_grad.cpp
 	%src/ranobj_grad.cpp
-	%src/ran_like_grad.cpp
+	%src/ran_likelihood_grad.cpp
 	%src/ranobj_hes.cpp
 	%src/fix_like_eval.cpp
 	%src/fix_like_jac.cpp
@@ -277,7 +277,7 @@ $codep */
 	bool                init_fix_like_done_;
 	bool                init_constraint_done_;
 	// only called when n_random_ > 0
-	bool                init_ran_like_done_;
+	bool                init_ran_likelihood_done_;
 	bool                init_hes_ran_done_;
 	bool                init_hes_cross_done_;
 	// only called when n_random_ > 0 and quasi_fixed_ is false
@@ -286,15 +286,15 @@ $codep */
 	bool                init_hes_ranobj_done_;
 /* $$
 
-$head ran_like$$
-If $icode%n_random_% > 0%$$ and $code init_ran_like_done_$$,
-$cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$ and
-$cref/ran_like_a1fun_/init_ran_like/ran_like_a1fun_/$$ are
-recordings of the user's $cref/ran_like/ran_like/$$.
+$head ran_likelihood$$
+If $icode%n_random_% > 0%$$ and $code init_ran_likelihood_done_$$,
+$cref/ran_likelihood_fun_/init_ran_likelihood/ran_likelihood_fun_/$$ and
+$cref/ran_likelihood_a1fun_/init_ran_likelihood/ran_likelihood_a1fun_/$$ are
+recordings of the user's $cref ran_likelihood$$.
 function.
 $codep */
-	CppAD::ADFun<double>      ran_like_fun_;
-	CppAD::ADFun<a1_double>   ran_like_a1fun_;
+	CppAD::ADFun<double>      ran_likelihood_fun_;
+	CppAD::ADFun<a1_double>   ran_likelihood_a1fun_;
 /* $$
 The following objects hold information for computing derivatives
 with these ADFun objects:
@@ -462,8 +462,8 @@ $codep */
 	) const;
 /* $$
 ------------------------------------------------------------------------------
-$head init_ran_like$$
-See $cref init_ran_like$$.
+$head init_ran_likelihood$$
+See $cref init_ran_likelihood$$.
 $codep */
 	void init_ran_like(
 		const d_vector& fixed_vec ,
@@ -548,15 +548,15 @@ $codep */
 	friend bool ::delta_ranobj(void);
 /* $$
 ------------------------------------------------------------------------------
-$head ran_like_grad$$
-See $cref ran_like_grad$$
+$head ran_likelihood_grad$$
+See $cref ran_likelihood_grad$$
 $codep */
 	// ran_like_grad
-	a1d_vector ran_like_grad(
+	a1d_vector ran_likelihood_grad(
 		const a1d_vector&       fixed_vec   ,
 		const a1d_vector&       random_vec
 	);
-	friend bool ::ran_like_grad_xam(void);
+	friend bool ::ran_likelihood_grad_xam(void);
 /* $$
 ------------------------------------------------------------------------------
 $head ranobj_hes$$

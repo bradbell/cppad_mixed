@@ -93,7 +93,7 @@ void cppad_mixed::init_ranobj(
 
 	// evaluate gradient f_u^{(1)} (beta , u )
 	a1d_vector grad(n_random_);
-	grad = ran_like_grad(beta, u);
+	grad = ran_likelihood_grad(beta, u);
 
 	// Evaluate the log determinant of f_{uu}^{(2)} ( theta , u)
 	// and Newton step s = f_{uu}^{(2)} ( theta , u) f_u^{(1)} (beta, u)
@@ -119,7 +119,7 @@ void cppad_mixed::init_ranobj(
 		U[j] = u[j] - logdet_step[1 + j];
 
 	// evaluate gradient f_u^{(1)} (beta , U )
-	grad = ran_like_grad(beta, U);
+	grad = ran_likelihood_grad(beta, U);
 
 	// Evaluate the log determinant and newton step
 	a1d_vector beta_U_v(n_fixed_ + 2 * n_random_ );
@@ -146,7 +146,7 @@ void cppad_mixed::init_ranobj(
 	}
 	newton_atom_.eval(beta_W_v, logdet_step);
 	pack(beta, W, both);
-	f    = ran_like_a1fun_.Forward(0, both);
+	f    = ran_likelihood_a1fun_.Forward(0, both);
 	H[0] = logdet_step[0] / 2.0 + f[0] - constant_term;
 	//
 	ranobj_fun_.Dependent(beta_theta_u, H);

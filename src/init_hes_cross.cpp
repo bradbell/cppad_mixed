@@ -72,8 +72,8 @@ see $cref/f(theta, u)/
 	Random Likelihood, f(theta, u)
 /$$
 
-$subhead ran_like_fun_, ran_like_a1fun_$$
-Either $code ran_like_fun_$$ or $code ran_like_a1fun_$$
+$subhead ran_likelihood_fun_, ran_likelihood_a1fun_$$
+Either $code ran_likelihood_fun_$$ or $code ran_likelihood_a1fun_$$
 can be used for the ADFun object in the
 $cref/sparse Hessian Call/sparse_hes_info/Sparse Hessian Call/f/$$.
 
@@ -122,7 +122,7 @@ void cppad_mixed::init_hes_cross(
 	sparsity_pattern r(n_total);
 	for(i = 0; i < n_fixed_; i++)
 		r[i].insert(i);
-	ran_like_fun_.ForSparseJac(n_total, r);
+	ran_likelihood_fun_.ForSparseJac(n_total, r);
 
 	// compute sparsity pattern corresponding to paritls w.r.t. (theta, u)
 	// of partial w.r.t. theta of f(theta, u)
@@ -130,7 +130,7 @@ void cppad_mixed::init_hes_cross(
 	sparsity_pattern s(1), pattern;
 	assert( s[0].empty() );
 	s[0].insert(0);
-	pattern = ran_like_fun_.RevSparseHes(n_total, s, transpose);
+	pattern = ran_likelihood_fun_.RevSparseHes(n_total, s, transpose);
 
 
 	// User row index for random effect and column index for fixed effect
@@ -174,13 +174,13 @@ void cppad_mixed::init_hes_cross(
 		{	for(j = 0; j < n_column; j++)
 				r[i * n_column + j] = (i == i_column + j);
 		}
-		ran_like_fun_.ForSparseJac(n_column, r);
+		ran_likelihood_fun_.ForSparseJac(n_column, r);
 
 		// compute sparsity pattern corresponding to paritls w.r.t. (theta, u)
 		// of partial w.r.t. the selected columns
 		bool transpose = true;
 		s[0] = true;
-		h = ran_like_fun_.RevSparseHes(n_column, s, transpose);
+		h = ran_likelihood_fun_.RevSparseHes(n_column, s, transpose);
 
 		// fill in the corresponding columns of total_sparsity
 		for(i = 0; i < n_total; i++)
@@ -223,7 +223,7 @@ void cppad_mixed::init_hes_cross(
 	d_vector val_out(K);
 
 	// compute the work vector
-	ran_like_fun_.SparseHessian(
+	ran_likelihood_fun_.SparseHessian(
 		both,
 		w,
 		pattern,

@@ -54,7 +54,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	private/ranobj_eval_xam.cpp
 	private/newton_step_xam.cpp
 	private/fix_like_eval_xam.cpp
-	private/ran_like_grad_xam.cpp
+	private/ran_likelihood_grad_xam.cpp
 	private/ranobj_hes_xam.cpp
 	user/manage_gsl_rng_xam.cpp
 	user/fix_constraint_xam.cpp
