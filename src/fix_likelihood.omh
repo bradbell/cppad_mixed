@@ -63,8 +63,14 @@ $cref/negative log-density vector
 /$$
 corresponding to the fixed likelihood
 $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
-In the case where there is no prior, the vector $icode vec$$
-should be empty; i.e., $icode%vec%.size() == 0%$$.
+
+$subhead Default$$
+The base class definition (default) for $code fix_likelihood$$
+returns an empty vector;
+i.e., $icode%vec%.size() == 0%$$.
+This corresponds to the case where all of the data depends on the
+random effects; i.e., the data vector
+$cref/z/cppad_mixed/Notation/Data, y, z/$$ is empty.
 
 $head Example$$
 The file $cref derived_xam.cpp$$ contains an example

@@ -155,10 +155,6 @@ namespace {
 			const vector<a1_double>& fixed_vec  )
 		{	return implement_fix_like(fixed_vec); }
 		//
-		virtual vector<a1_double> fix_constraint(
-			const vector<a1_double>& fixed_vec  )
-		{	return a1d_vector(0); } // empty vector
-		//
 		virtual void fatal_error(const std::string& error_message)
 		{	std::cerr << "Error: " << error_message << std::endl;
 			std::exit(1);

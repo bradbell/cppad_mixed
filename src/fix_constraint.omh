@@ -59,8 +59,12 @@ $codei%
 It is the value of the
 $cref/constraint function/cppad_mixed/Problem/Constraints/$$
 $latex c( \theta )$$.
-In the case where there are no constraints,
-$icode%c_vec%.size() == 0%$$.
+
+$subhead Default$$
+The base class definition (default) for $code fix_likelihood$$
+returns an empty vector;
+i.e., $icode%c_vec%.size() == 0%$$.
+In the case where there are no constraints of this form.
 
 $head Example$$
 The file $cref fix_constraint_xam.cpp$$ contains an example

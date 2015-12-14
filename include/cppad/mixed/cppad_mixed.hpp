@@ -90,28 +90,28 @@ $subhead ran_likelihood$$
 $codep */
 	virtual a2d_vector ran_likelihood(
 		const a2d_vector& fixed_vec  ,
-		const a2d_vector& random_vec
-	) = 0;
+		const a2d_vector& random_vec )
+	{	return a2d_vector(0); }
 	virtual a1d_vector ran_likelihood(
 		const a1d_vector& fixed_vec  ,
-		const a1d_vector& random_vec
-	) = 0;
+		const a1d_vector& random_vec )
+	{	return a1d_vector(0); }
 /* $$
 See $cref ran_likelihood$$.
 
 $subhead fix_likelihood$$
 $codep */
 	virtual a1d_vector fix_likelihood(
-		const a1d_vector& fixed_vec
-	) = 0 ;
+		const a1d_vector& fixed_vec )
+	{	return a1d_vector(0); }
 /* $$
 See $cref fix_likelihood$$.
 
 $subhead constraint$$
 $codep */
 	virtual a1d_vector fix_constraint(
-		const a1d_vector& fixed_vec
-	) = 0 ;
+		const a1d_vector& fixed_vec )
+	{	return a1d_vector(0); }
 /* $$
 See $cref fix_constraint$$.
 

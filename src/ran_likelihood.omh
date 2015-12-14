@@ -83,8 +83,16 @@ The Laplace approximation only makes sense if this function is smooth; i.e,
 $codei%
 	%vec%.size() == 1
 %$$
-In the case where there are no random effects, the vector $icode vec$$
-should be empty; i.e., $icode%vec%.size() == 0%$$.
+
+$subhead Default$$
+The base class definition (default) for $code ran_likelihood$$
+returns an empty vector;
+i.e., $icode%vec%.size() == 0%$$.
+This corresponds to the case where none of the data depends on the
+random effects; i.e., the data vector
+$cref/y/cppad_mixed/Notation/Data, y, z/$$ is empty.
+In this case there random effects vector should also be empty.
+
 
 $head Example$$
 The file $cref derived_xam.cpp$$ contains an example
