@@ -16,6 +16,7 @@ see http://www.gnu.org/licenses/agpl.txt
 extern bool binomial(void);
 extern bool delta_ranobj(void);
 extern bool der_var_hes(void);
+extern bool n_mixture(void);
 extern bool zero_random_one(void);
 extern bool zero_random_two(void);
 
@@ -56,6 +57,7 @@ int main(void)
 	RUN(binomial);
 	RUN(delta_ranobj);
 	RUN(der_var_hes);
+	RUN(n_mixture);
 	RUN(zero_random_one);
 	RUN(zero_random_two);
 

@@ -18,9 +18,10 @@ ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
 	binomial.cpp
 	delta_ranobj.cpp
 	der_var_hes.cpp
+	n_mixture.cpp
+	test_more.cpp
 	zero_random_one.cpp
 	zero_random_two.cpp
-	test_more.cpp
 )
 SET_TARGET_PROPERTIES(
 	test_more PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
