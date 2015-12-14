@@ -41,8 +41,8 @@ extern bool data_mismatch_xam(void);
 extern bool logdet_grad_xam(void);
 extern bool ranobj_grad_xam(void);
 extern bool eigen_xam(void);
-extern bool fix_like_hes_xam(void);
-extern bool fix_like_jac_xam(void);
+extern bool fix_likelihood_hes_xam(void);
+extern bool fix_likelihood_jac_xam(void);
 extern bool hes_cross_xam(void);
 extern bool hes_ran_fun_xam(void);
 extern bool ranobj_eval_xam(void);
@@ -51,7 +51,7 @@ extern bool newton_step_xam(void);
 extern bool no_random_xam(void);
 extern bool optimize_fixed_xam(void);
 extern bool optimize_random_xam(void);
-extern bool fix_like_eval_xam(void);
+extern bool fix_likelihood_eval_xam(void);
 extern bool ran_likelihood_grad_xam(void);
 extern bool ranobj_hes_xam(void);
 extern bool manage_gsl_rng_xam(void);
@@ -98,8 +98,8 @@ int main(void)
 	RUN(ranobj_grad_xam);
 	RUN(ranobj_hes_xam);
 	RUN(eigen_xam);
-	RUN(fix_like_hes_xam);
-	RUN(fix_like_jac_xam);
+	RUN(fix_likelihood_hes_xam);
+	RUN(fix_likelihood_jac_xam);
 	RUN(hes_cross_xam);
 	RUN(hes_ran_fun_xam);
 	RUN(ranobj_eval_xam);
@@ -110,7 +110,7 @@ int main(void)
 	RUN(no_random_xam);
 	RUN(optimize_fixed_xam);
 	RUN(optimize_random_xam);
-	RUN(fix_like_eval_xam);
+	RUN(fix_likelihood_eval_xam);
 
 
 # if CPPAD_MIXED_HAS_SUITESPARSE

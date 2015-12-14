@@ -111,7 +111,7 @@ namespace {
 			const vector<a1_double>& random_vec )
 		{	return a1d_vector(0); } // empty vector
 		//
-		virtual vector<a1_double> fix_like(
+		virtual vector<a1_double> fix_likelihood(
 			const vector<a1_double>& fixed_vec  )
 		{	return implement_fix_like(fixed_vec); }
 		//

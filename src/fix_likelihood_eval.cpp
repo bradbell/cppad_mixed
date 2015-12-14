@@ -11,7 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/cppad_mixed.hpp>
 
 /*
-$begin fix_like_eval$$
+$begin fix_likelihood_eval$$
 $spell
 	CppAD
 	cppad
@@ -61,10 +61,10 @@ $icode%vec%[0] + CppAD::abs(%vec%[1]) + %...% CppAD::abs(%vec%[%s%-1])
 where $icode%s% = %vec%.size()%$$.
 
 $children%
-	example/private/fix_like_eval_xam.cpp
+	example/private/fix_likelihood_eval_xam.cpp
 %$$
 $head Example$$
-The file $cref fix_like_eval_xam.cpp$$ contains an example
+The file $cref fix_likelihood_eval_xam.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
@@ -74,12 +74,12 @@ $end
 
 CppAD::vector<double> cppad_mixed::fix_like_eval(const d_vector& fixed_vec)
 {	assert( init_fix_like_done_ );
-	if( fix_like_fun_.size_var() == 0 )
+	if( fix_likelihood_fun_.size_var() == 0 )
 	{	// empty vector case
 		return CppAD::vector<double>(0);
 	}
-	assert( fix_like_fun_.Domain() == n_fixed_ );
-	return fix_like_fun_.Forward(0, fixed_vec);
+	assert( fix_likelihood_fun_.Domain() == n_fixed_ );
+	return fix_likelihood_fun_.Forward(0, fixed_vec);
 }
 
 

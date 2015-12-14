@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin fix_like_jac_xam.cpp$$
+$begin fix_likelihood_jac_xam.cpp$$
 $spell
 	CppAD
 	cppad
@@ -25,7 +25,7 @@ This example is not part of the
 $cref/cppad_mixed public API/public/$$.
 
 $code
-$verbatim%example/private/fix_like_jac_xam.cpp
+$verbatim%example/private/fix_likelihood_jac_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -114,7 +114,7 @@ namespace {
 			const vector<a1_double>& random_vec )
 		{	return implement_ran_like(fixed_vec, random_vec); }
 		//
-		virtual vector<a1_double> fix_like(
+		virtual vector<a1_double> fix_likelihood(
 			const vector<a1_double>& fixed_vec  )
 		{	return implement_fix_like(fixed_vec); }
 		//
@@ -133,7 +133,7 @@ namespace {
 	};
 }
 
-bool fix_like_jac_xam(void)
+bool fix_likelihood_jac_xam(void)
 {
 	bool   ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();

@@ -11,7 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/cppad_mixed.hpp>
 
 /*
-$begin init_fix_like$$
+$begin init_fix_likelihood$$
 $spell
 	CppAD
 	init
@@ -47,58 +47,58 @@ It specifies the value of the
 $cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$ at which the initialization is done.
 
-$head init_fix_like_done_$$
+$head init_fix_likelihood_done_$$
 When this function is called, this member variable must be false.
 Upon return it is true.
 
-$head fix_like_fun_$$
+$head fix_likelihood_fun_$$
 On input, the member variable
 $codei%
-	CppAD::ADFun<double> fix_like_fun_
+	CppAD::ADFun<double> fix_likelihood_fun_
 %$$
-must be empty; i.e., $code fix_like_fun_.size_var() == 0$$.
+must be empty; i.e., $code fix_likelihood_fun_.size_var() == 0$$.
 If the return value for
-$cref/fix_like/fix_like/$$ is empty,
-$code fix_like_fun_$$ is not modified.
+$cref fix_likelihood$$ is empty,
+$code fix_likelihood_fun_$$ is not modified.
 Otherwise,
 upon return it contains the corresponding recording for the
-$cref/fix_like/fix_like/$$.
+$cref fix_likelihood$$.
 The function result is the
 $cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
 corresponding to the function
 $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 
-$head fix_like_jac_$$
+$head fix_likelihood_jac_$$
 The input value of
 $codei%
-	sparse_jac_info fix_like_jac_
+	sparse_jac_info fix_likelihood_jac_
 %$$
 does not matter.
 If $icode quasi_fixed$$ is false,
-upon return $code fix_like_jac_$$ contains
+upon return $code fix_likelihood_jac_$$ contains
 $cref sparse_jac_info$$ for the
 Jacobian corresponding to
 $latex g^{(1)}) ( \theta )$$ see
 $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 
-$subhead fix_like_fun_$$
+$subhead fix_likelihood_fun_$$
 This ADFun object can be used for the
 $cref/sparse Jacobian call/sparse_jac_info/Sparse Jacobian Call/f/$$.
 
-$head fix_like_hes_$$
+$head fix_likelihood_hes_$$
 The input value of
 $codei%
-	sparse_hes_info fix_like_hes_
+	sparse_hes_info fix_likelihood_hes_
 %$$
 does not matter.
 If $icode quasi_fixed$$ is false,
-upon return $code fix_like_hes_$$ contains
+upon return $code fix_likelihood_hes_$$ contains
 $cref sparse_hes_info$$ for the
 lower triangle of a Hessian corresponding to
 $latex g^{(2)}) ( \theta )$$ see
 $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 
-$subhead fix_like_fun_$$
+$subhead fix_likelihood_fun_$$
 This ADFun object can be used for the
 $cref/sparse Hessian call/sparse_hes_info/Sparse Hessian Call/f/$$.
 
@@ -112,7 +112,7 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	assert( ! init_fix_like_done_ );
 
 	// ------------------------------------------------------------------------
-	// fix_like_fun_
+	// fix_likelihood_fun_
 	// ------------------------------------------------------------------------
 	// convert to an a1d_vector
 	a1d_vector a1_theta(n_fixed_);
@@ -135,98 +135,98 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	Independent(a1_theta);
 
 	// compute fix_like
-	a1d_vector a1_vec = fix_like(a1_theta);
+	a1d_vector a1_vec = fix_likelihood(a1_theta);
 	if( a1_vec.size() == 0 )
 	{	CppAD::AD<double>::abort_recording();
 		init_fix_like_done_ = true;
-		assert( fix_like_fun_.size_var() == 0 );
+		assert( fix_likelihood_fun_.size_var() == 0 );
 		return;
 	}
 
 	// save the recording
-	fix_like_fun_.Dependent(a1_theta, a1_vec);
+	fix_likelihood_fun_.Dependent(a1_theta, a1_vec);
 
 	// optimize the recording
 # ifdef NDEBUG
-	fix_like_fun_.optimize();
+	fix_likelihood_fun_.optimize();
 # endif
 
 	// ------------------------------------------------------------------------
-	// fix_like_jac_.row, fix_like_jac_.col, fix_like_jac_.work
+	// fix_likelihood_jac_.row, fix_likelihood_jac_.col, fix_likelihood_jac_.work
 	// ------------------------------------------------------------------------
 	// compute the sparsity pattern for the Jacobian
 	typedef CppAD::vector< std::set<size_t> > sparsity_pattern;
 	sparsity_pattern r(n_fixed_);
 	for(size_t j = 0; j < n_fixed_; j++)
 		r[j].insert(j);
-	sparsity_pattern pattern = fix_like_fun_.ForSparseJac(n_fixed_, r);
+	sparsity_pattern pattern = fix_likelihood_fun_.ForSparseJac(n_fixed_, r);
 
 	// convert sparsity to row and column index form
-	fix_like_jac_.row.clear();
-	fix_like_jac_.col.clear();
+	fix_likelihood_jac_.row.clear();
+	fix_likelihood_jac_.col.clear();
 	std::set<size_t>::iterator itr;
-	for(size_t i = 0; i < fix_like_fun_.Range(); i++)
+	for(size_t i = 0; i < fix_likelihood_fun_.Range(); i++)
 	{	for(itr = pattern[i].begin(); itr != pattern[i].end(); itr++)
 		{	size_t j = *itr;
-			fix_like_jac_.row.push_back(i);
-			fix_like_jac_.col.push_back(j);
+			fix_likelihood_jac_.row.push_back(i);
+			fix_likelihood_jac_.col.push_back(j);
 		}
 	}
 
 	// direction for this sparse Jacobian
-	fix_like_jac_.direction = CppAD::mixed::sparse_jac_info::Forward;
+	fix_likelihood_jac_.direction = CppAD::mixed::sparse_jac_info::Forward;
 
 	// compute the work vector for reuse during Jacobian sparsity calculations
-	d_vector jac( fix_like_jac_.row.size() );
-	fix_like_fun_.SparseJacobianForward(
+	d_vector jac( fix_likelihood_jac_.row.size() );
+	fix_likelihood_fun_.SparseJacobianForward(
 		fixed_vec       ,
 		pattern         ,
-		fix_like_jac_.row  ,
-		fix_like_jac_.col  ,
+		fix_likelihood_jac_.row  ,
+		fix_likelihood_jac_.col  ,
 		jac             ,
-		fix_like_jac_.work
+		fix_likelihood_jac_.work
 	);
 	if( quasi_fixed_ )
 	{	init_fix_like_done_ = true;
 		return;
 	}
 	// ------------------------------------------------------------------------
-	// fix_like_hes_.row, fix_like_hes_.col, fix_like_hes_.work
+	// fix_likelihood_hes_.row, fix_likelihood_hes_.col, fix_likelihood_hes_.work
 	// ------------------------------------------------------------------------
 	// no need to recalculate forward sparsity pattern.
 	//
 	// sparsity pattern for the Hessian
 	sparsity_pattern s(1);
-	for(size_t i = 0; i < fix_like_fun_.Range(); i++ )
+	for(size_t i = 0; i < fix_likelihood_fun_.Range(); i++ )
 		s[0].insert(i);
 	pattern.clear();
-	pattern = fix_like_fun_.RevSparseHes(n_fixed_, s);
+	pattern = fix_likelihood_fun_.RevSparseHes(n_fixed_, s);
 
 	// determine row and column indices in lower triangle of Hessian
-	fix_like_hes_.row.clear();
-	fix_like_hes_.col.clear();
+	fix_likelihood_hes_.row.clear();
+	fix_likelihood_hes_.col.clear();
 	for(size_t i = 0; i < n_fixed_; i++)
 	{	for(itr = pattern[i].begin(); itr != pattern[i].end(); itr++)
 		{	size_t j = *itr;
 			// only compute lower triangular part
 			if( i >= j )
-			{	fix_like_hes_.row.push_back(i);
-				fix_like_hes_.col.push_back(j);
+			{	fix_likelihood_hes_.row.push_back(i);
+				fix_likelihood_hes_.col.push_back(j);
 			}
 		}
 	}
-	size_t K = fix_like_hes_.row.size();
+	size_t K = fix_likelihood_hes_.row.size();
 
 	// compute the work vector for reuse during Hessian sparsity calculations
-	d_vector weight( fix_like_fun_.Range() ), hes(K);
-	fix_like_fun_.SparseHessian(
+	d_vector weight( fix_likelihood_fun_.Range() ), hes(K);
+	fix_likelihood_fun_.SparseHessian(
 		fixed_vec       ,
 		weight          ,
 		pattern         ,
-		fix_like_hes_.row  ,
-		fix_like_hes_.col  ,
+		fix_likelihood_hes_.row  ,
+		fix_likelihood_hes_.col  ,
 		hes             ,
-		fix_like_hes_.work
+		fix_likelihood_hes_.work
 	);
 
 	init_fix_like_done_ = true;

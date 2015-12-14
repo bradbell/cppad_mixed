@@ -21,10 +21,10 @@ ADD_LIBRARY(cppad_mixed
 	manage_gsl_rng.cpp
 	optimize_fixed.cpp
 	optimize_random.cpp
-	fix_like_eval.cpp
-	fix_like_jac.cpp
-	fix_like_hes.cpp
-	init_fix_like.cpp
+	fix_likelihood_eval.cpp
+	fix_likelihood_jac.cpp
+	fix_likelihood_hes.cpp
+	init_fix_likelihood.cpp
 	init_fix_constraint.cpp
 	init_hes_cross.cpp
 	init_hes_ranobj.cpp

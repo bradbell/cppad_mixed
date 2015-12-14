@@ -23,9 +23,9 @@ extern bool fix_constraint_jac_xam(void);
 extern bool fix_constraint_hes_xam(void);
 extern bool ran_likelihood_grad_xam(void);
 extern bool ranobj_hes_xam(void);
-extern bool fix_like_eval_xam(void);
-extern bool fix_like_jac_xam(void);
-extern bool fix_like_hes_xam(void);
+extern bool fix_likelihood_eval_xam(void);
+extern bool fix_likelihood_jac_xam(void);
+extern bool fix_likelihood_hes_xam(void);
 extern bool hes_ran_fun_xam(void);
 extern bool ranobj_eval_xam(void);
 extern bool logdet_grad_xam(void);
@@ -99,13 +99,13 @@ $codep */
 /* $$
 See $cref ran_likelihood$$.
 
-$subhead fix_like$$
+$subhead fix_likelihood$$
 $codep */
-	virtual a1d_vector fix_like(
+	virtual a1d_vector fix_likelihood(
 		const a1d_vector& fixed_vec
 	) = 0 ;
 /* $$
-See $cref/fix_like/fix_like/$$.
+See $cref fix_likelihood$$.
 
 $subhead constraint$$
 $codep */
@@ -190,7 +190,7 @@ $codep */
 $childtable%src/derived_ctor.omh
 	%src/initialize.cpp
 	%src/ran_likelihood.omh
-	%src/fix_like.omh
+	%src/fix_likelihood.omh
 	%src/fix_constraint.omh
 	%src/optimize_random.cpp
 	%src/optimize_fixed.cpp
@@ -241,16 +241,16 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/init_hes_cross.cpp
 	%src/init_ranobj.cpp
 	%src/init_hes_ranobj.cpp
-	%src/init_fix_like.cpp
+	%src/init_fix_likelihood.cpp
 	%src/init_fix_constraint.cpp
 	%src/ranobj_eval.cpp
 	%src/logdet_grad.cpp
 	%src/ranobj_grad.cpp
 	%src/ran_likelihood_grad.cpp
 	%src/ranobj_hes.cpp
-	%src/fix_like_eval.cpp
-	%src/fix_like_jac.cpp
-	%src/fix_like_hes.cpp
+	%src/fix_likelihood_eval.cpp
+	%src/fix_likelihood_jac.cpp
+	%src/fix_likelihood_hes.cpp
 %$$
 
 $head n_fixed_$$
@@ -371,31 +371,31 @@ $codep */
 	CppAD::mixed::sparse_hes_info hes_ranobj_;
 /* $$
 
-$head fix_like_$$
-$cref/fix_like_fun_/init_fix_like/fix_like_fun_/$$
+$head fix_likelihood_$$
+$cref/fix_likelihood_fun_/init_fix_likelihood/fix_likelihood_fun_/$$
 is a recording of the fixed part of the likelihood function; see,
-$cref/fix_like/fix_like/$$.
+$cref fix_likelihood$$.
 $codep */
-	CppAD::ADFun<double>        fix_like_fun_;     // g(theta)
+	CppAD::ADFun<double>        fix_likelihood_fun_;     // g(theta)
 /* $$
 The following objects hold information for computing derivatives
 with this ADFun object:
 
-$subhead fix_like_jac_$$
-$cref/fix_like_jac_/init_fix_like/fix_like_jac_/$$
+$subhead fix_likelihood_jac_$$
+$cref/fix_likelihood_jac_/init_fix_likelihood/fix_likelihood_jac_/$$
 contains information for the Jacobian of the
 $cref/fixed likelihood/theory/Fixed Likelihood, g(theta)/$$.
 $codep */
-	CppAD::mixed::sparse_jac_info fix_like_jac_;
+	CppAD::mixed::sparse_jac_info fix_likelihood_jac_;
 /* $$
 
-$subhead fix_like_hes_$$
+$subhead fix_likelihood_hes_$$
 If $icode quasi_fixed$$ is false,
-$cref/fix_like_hes_/init_fix_like/fix_like_hes_/$$
+$cref/fix_likelihood_hes_/init_fix_likelihood/fix_likelihood_hes_/$$
 contains information for the Hessian of the
 $cref/fixed likelihood/theory/Fixed Likelihood, g(theta)/$$.
 $codep */
-	CppAD::mixed::sparse_hes_info fix_like_hes_;
+	CppAD::mixed::sparse_hes_info fix_likelihood_hes_;
 /* $$
 
 $head fix_constraint_fun_$$
@@ -502,8 +502,8 @@ $codep */
 		const d_vector& random_vec
 	);
 /* $$
-$head init_fix_like$$
-See $cref init_fix_like$$.
+$head init_fix_likelihood$$
+See $cref init_fix_likelihood$$.
 $codep */
 	void init_fix_like(const d_vector& fixed_vec);
 /* $$
@@ -608,16 +608,16 @@ $codep */
 	friend bool ::fix_constraint_hes_xam(void);
 /* $$
 -------------------------------------------------------------------------------
-$head fix_like_eval$$
-See $cref fix_like_eval$$
+$head fix_likelihood_eval$$
+See $cref fix_likelihood_eval$$
 $codep */
 	// fix_like_eval
 	d_vector fix_like_eval(const d_vector& fixed_vec);
-	friend bool ::fix_like_eval_xam(void);
+	friend bool ::fix_likelihood_eval_xam(void);
 /* $$
 $end
-$head fix_like_jac$$
-See $cref fix_like_jac$$
+$head fix_likelihood_jac$$
+See $cref fix_likelihood_jac$$
 $codep */
 	// fix_like_jac
 	void fix_like_jac(
@@ -626,11 +626,11 @@ $codep */
 		CppAD::vector<size_t>& col_out     ,
 		d_vector&              val_out
 	);
-	friend bool ::fix_like_jac_xam(void);
+	friend bool ::fix_likelihood_jac_xam(void);
 /* $$
 $end
-$head fix_like_hes$$
-See $cref fix_like_hes$$
+$head fix_likelihood_hes$$
+See $cref fix_likelihood_hes$$
 $codep */
 	// fix_like_hes
 	void fix_like_hes(
@@ -640,7 +640,7 @@ $codep */
 		CppAD::vector<size_t>& col_out     ,
 		d_vector&              val_out
 	);
-	friend bool ::fix_like_hes_xam(void);
+	friend bool ::fix_likelihood_hes_xam(void);
 /* $$
 $end
 -------------------------------------------------------------------------------

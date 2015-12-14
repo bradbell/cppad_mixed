@@ -122,7 +122,7 @@ number of variables in the $code ADFun<double>$$
 object used to evaluate Hessian, w.r.t. fixed effects, of the objective
 $latex r^{(2)} ( \theta )$$.
 
-$subhead fix_like_fun$$
+$subhead fix_likelihood_fun$$
 $icode%size_map%["fix_like"]%$$ is the
 number of variables in the $code ADFun<double>$$ function
 that computes the fixed likelihood $latex g( \theta )$$.
@@ -206,7 +206,7 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 		}
 	}
 
-	// fix_like_fun_
+	// fix_likelihood_fun_
 	assert( ! init_fix_like_done_ );
 	init_fix_like(fixed_vec);
 	assert( init_fix_like_done_ );
@@ -228,7 +228,7 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	size_map["hes_ran_fun"]    = hes_ran_fun_.size_var();
 	size_map["newton_atom"]    = newton_atom_.size_var();
 	size_map["ranobj_fun"]    = ranobj_fun_.size_var();
-	size_map["fix_like_fun"]   = fix_like_fun_.size_var();
+	size_map["fix_like_fun"]   = fix_likelihood_fun_.size_var();
 	size_map["constraint"]     = fix_constraint_fun_.size_var();
 	//
 	size_map["num_bytes_before"]  = num_bytes_before;

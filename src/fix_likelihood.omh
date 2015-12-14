@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
 /*
-$begin fix_like$$
+$begin fix_likelihood$$
 $spell
 	CppAD
 	cppad
@@ -21,7 +21,7 @@ $$
 $section Fixed Likelihood$$
 
 $head Syntax$$
-$icode%vec% = %mixed_object%.fix_like(%fixed_vec%)%$$
+$icode%vec% = %mixed_object%.fix_likelihood(%fixed_vec%)%$$
 
 $head Public$$
 This $code cppad_mixed$$ member function is $cref public$$.
@@ -38,7 +38,7 @@ see $cref/AD Types/public/AD Types/$$.
 $head Virtual Function$$
 The following virtual function must be implemented in the derived class:
 $codei%
-	virtual CppAD::vector<a1_double> fix_like(
+	virtual CppAD::vector<a1_double> fix_likelihood(
 		const CppAD::vector<a1_double>& %fixed_vec%
 	)
 %$$

@@ -9,23 +9,23 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin fix_like_eval_xam.cpp$$
+$begin fix_likelihood_hes_xam.cpp$$
 $spell
 	CppAD
 	cppad
-	eval
+	hes
 	interp
 	xam
 $$
 
-$section fix_like_eval: Example and Test$$
+$section fix_like_hes: Example and Test$$
 
 $head Private$$
 This example is not part of the
 $cref/cppad_mixed public API/public/$$.
 
 $code
-$verbatim%example/private/fix_like_eval_xam.cpp
+$verbatim%example/private/fix_likelihood_hes_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -91,16 +91,15 @@ namespace {
 			vec[0] = Float(0.0);
 
 			// compute these factors once
-			Float mu     = Float(1.0);
-			Float sqrt_2 = CppAD::sqrt( Float(2.0) );
+			Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
 
 			for(size_t j = 0; j < n_fixed_; j++)
-			{
-				// This is a Laplace term
-				vec[0] += CppAD::log( sqrt_2 );
+			{	Float mu     = Float(1.0);
+				Float sigma  = Float(1.0);
+				Float res    = (fixed_vec[j] - mu);
 
-				// part of the density that needs absolute value
-				vec.push_back(sqrt_2 * (fixed_vec[j] - mu) );
+				// This is a Gaussian term, so entire density is smooth
+				vec[0]  += log(sqrt_2pi * sigma) + res * res / Float(2.0);
 			}
 			return vec;
 		}
@@ -114,7 +113,7 @@ namespace {
 			const vector<a1_double>& random_vec )
 		{	return implement_ran_like(fixed_vec, random_vec); }
 		//
-		virtual vector<a1_double> fix_like(
+		virtual vector<a1_double> fix_likelihood(
 			const vector<a1_double>& fixed_vec  )
 		{	return implement_fix_like(fixed_vec); }
 		//
@@ -133,11 +132,10 @@ namespace {
 	};
 }
 
-bool fix_like_eval_xam(void)
+bool fix_likelihood_hes_xam(void)
 {
 	bool   ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
-	double sqrt_2 = CppAD::sqrt(2.0);
 
 	size_t n_data   = 10;
 	size_t n_fixed  = 2;
@@ -155,22 +153,30 @@ bool fix_like_eval_xam(void)
 	mixed_derived mixed_object(n_fixed, n_random, data);
 	mixed_object.initialize(fixed_vec, random_vec);
 
-	// compute fixed negative log-density vector
-	CppAD::vector<double> vec = mixed_object.fix_like_eval(fixed_vec);
-
-	// check smooth part
-	double check = CppAD::log(2.0);
-	ok &= CppAD::abs( vec[0] / check - 1.0 ) <= eps;
-
-	// check number of absolute values
-	ok &= vec.size() == n_fixed + 1;
-
-	// check argument to absolute value
+	// compute prior hessian
+	CppAD::vector<size_t> row, col;
+	CppAD::vector<double> val, weight(n_fixed);
 	for(size_t j = 0; j < n_fixed; j++)
-	{	// note that the true value is not equal to 1.0 so can deivide by check
-		check = sqrt_2 * ( fixed_vec[j] - 1.0 );
-		ok &= CppAD::abs( vec[1 + j] / check - 1.0 ) <= eps;
+		weight[j] = 1.0;
+	mixed_object.fix_like_hes(fixed_vec, weight, row, col, val);
+
+	// initialize which variables have been found so far
+	CppAD::vector<bool> found(3);
+	for(size_t j = 0; j < n_fixed; j++)
+		found[j] = false;
+
+	// check derivatives
+	for(size_t k = 0; k < row.size(); k++)
+	{	size_t i = row[k];
+		size_t j = col[k];
+		double check = 1.0;
+		ok      &= i == j;
+		ok      &= ! found[i];
+		ok      &= ( val[k] / check - 1.0) <= eps;
+		found[i] = true;
 	}
+	for(size_t j = 0; j < n_fixed; j++)
+		ok &= found[j];
 
 	return ok;
 }

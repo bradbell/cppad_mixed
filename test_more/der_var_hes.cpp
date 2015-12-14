@@ -182,7 +182,7 @@ namespace {
 			return vec;
 		}
 		//
-		virtual vector<a1_double> fix_like(
+		virtual vector<a1_double> fix_likelihood(
 			const vector<a1_double>& fixed_vec  )
 		{	return a1d_vector(0); } // empty vector
 		//
