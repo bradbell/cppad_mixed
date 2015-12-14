@@ -175,8 +175,8 @@ $codei%CppAD::mixed::ipopt_fixed %ipopt_object%(
 	%fixed_tolerance%,
 	%fixed_lower%,
 	%fixed_upper%,
-	%constraint_lower%,
-	%constraint_upper%,
+	%fix_constraint_lower%,
+	%fix_constraint_upper%,
 	%fixed_in%,
 	%random_lower%,
 	%random_upper%,
@@ -233,7 +233,7 @@ $code%
 %$$
 is used for plus infinity; i.e., no upper limit.
 
-$head fix_constraint_lower$$
+$head fix_fix_constraint_lower$$
 specifies the lower limits for the
 $cref/constraints/fix_constraint/$$.
 Note that
@@ -242,7 +242,7 @@ $code%
 %$$
 is used for minus infinity; i.e., no lower limit.
 
-$head fix_constraint_upper$$
+$head fix_fix_constraint_upper$$
 specifies the upper limits for the constraints.
 Note that
 $code%
@@ -298,8 +298,8 @@ ipopt_fixed::ipopt_fixed(
 	const double&       fixed_tolerance    ,
 	const d_vector&     fixed_lower        ,
 	const d_vector&     fixed_upper        ,
-	const d_vector&     constraint_lower   ,
-	const d_vector&     constraint_upper   ,
+	const d_vector&     fix_constraint_lower   ,
+	const d_vector&     fix_constraint_upper   ,
 	const d_vector&     fixed_in           ,
 	const d_vector&     random_lower       ,
 	const d_vector&     random_upper       ,
@@ -309,11 +309,11 @@ random_options_    ( random_options )          ,
 fixed_tolerance_   ( fixed_tolerance  )        ,
 n_fixed_           ( fixed_in.size()  )        ,
 n_random_          ( random_in.size() )        ,
-n_constraint_      ( constraint_lower.size() ) ,
+n_constraint_      ( fix_constraint_lower.size() ) ,
 fixed_lower_       ( fixed_lower      )        ,
 fixed_upper_       ( fixed_upper      )        ,
-constraint_lower_  ( constraint_lower )        ,
-constraint_upper_  ( constraint_upper )        ,
+fix_constraint_lower_  ( fix_constraint_lower )        ,
+fix_constraint_upper_  ( fix_constraint_upper )        ,
 fixed_in_          ( fixed_in         )        ,
 random_lower_      ( random_lower     )        ,
 random_upper_      ( random_upper     )        ,
@@ -335,11 +335,11 @@ mixed_object_      ( mixed_object    )
 				std::max(nlp_upper_bound_inf_, 1.1 * fixed_upper[j] );
 	}
 	for(size_t j = 0; j < n_constraint_; j++)
-	{	if( constraint_lower[j] != - inf ) nlp_lower_bound_inf_ =
-				std::min(nlp_lower_bound_inf_, 1.1 * constraint_lower[j] );
+	{	if( fix_constraint_lower[j] != - inf ) nlp_lower_bound_inf_ =
+				std::min(nlp_lower_bound_inf_, 1.1 * fix_constraint_lower[j] );
 		//
-		if( constraint_upper[j] != inf ) nlp_upper_bound_inf_ =
-				std::max(nlp_upper_bound_inf_, 1.1 * constraint_upper[j] );
+		if( fix_constraint_upper[j] != inf ) nlp_upper_bound_inf_ =
+				std::max(nlp_upper_bound_inf_, 1.1 * fix_constraint_upper[j] );
 	}
 	// -----------------------------------------------------------------------
 	// set fix_like_n_abs_
@@ -603,8 +603,8 @@ bool ipopt_fixed::get_bounds_info(
 	//
 	// explicit constraints
 	for(size_t j = 0; j < n_constraint_; j++)
-	{	g_l[2 * fix_like_n_abs_ + j] = constraint_lower_[j];
-		g_u[2 * fix_like_n_abs_ + j] = constraint_upper_[j];
+	{	g_l[2 * fix_like_n_abs_ + j] = fix_constraint_lower_[j];
+		g_u[2 * fix_like_n_abs_ + j] = fix_constraint_upper_[j];
 	}
 	//
 	return true;
@@ -1467,7 +1467,7 @@ void ipopt_fixed::finalize_solution(
 	// check explicit constraints
 	for(size_t j = 0; j < n_constraint_; j++)
 	{	ok &= check_in_limits(
-			constraint_lower_[j], c_vec_tmp_[j], constraint_upper_[j], tol
+			fix_constraint_lower_[j], c_vec_tmp_[j], fix_constraint_upper_[j], tol
 		);
 	}
 	// Evaluate gradient of f w.r.t x

@@ -139,7 +139,7 @@ bool binomial(void)
 	mixed_object.initialize(theta_in, u_in);
 
 	// lower and upper limits
-	vector<double> constraint_lower, constraint_upper;
+	vector<double> fix_constraint_lower, fix_constraint_upper;
 	vector<double> theta_lower(n_fixed), theta_upper(n_fixed);
 	// limits on p
 	theta_lower[0] = 1e-4;
@@ -166,8 +166,8 @@ bool binomial(void)
 		random_options,
 		theta_lower,
 		theta_upper,
-		constraint_lower,
-		constraint_upper,
+		fix_constraint_lower,
+		fix_constraint_upper,
 		theta_in,
 		u_lower,
 		u_upper,

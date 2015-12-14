@@ -94,13 +94,13 @@ specifies the upper limits for the fixed effects.
 Note that $code inf$$
 is used for plus infinity; i.e., no upper limit.
 
-$head fix_constraint_lower$$
+$head fix_fix_constraint_lower$$
 specifies the lower limits for the
 $cref/constraints/fix_constraint/$$.
 Note that $code -inf$$
 is used for minus infinity; i.e., no lower limit.
 
-$head fix_constraint_upper$$
+$head fix_fix_constraint_upper$$
 specifies the upper limits for the constraints.
 Note that $code inf$$
 is used for plus infinity; i.e., no upper limit.
@@ -212,8 +212,8 @@ CppAD::vector<double> cppad_mixed::optimize_fixed(
 	const std::string& random_options    ,
 	const d_vector&    fixed_lower       ,
 	const d_vector&    fixed_upper       ,
-	const d_vector&    constraint_lower  ,
-	const d_vector&    constraint_upper  ,
+	const d_vector&    fix_constraint_lower  ,
+	const d_vector&    fix_constraint_upper  ,
 	const d_vector&    fixed_in          ,
 	const d_vector&    random_lower      ,
 	const d_vector&    random_upper      ,
@@ -321,8 +321,8 @@ CppAD::vector<double> cppad_mixed::optimize_fixed(
 		fixed_tolerance,
 		fixed_lower,
 		fixed_upper,
-		constraint_lower,
-		constraint_upper,
+		fix_constraint_lower,
+		fix_constraint_upper,
 		fixed_in,
 		random_lower,
 		random_upper,

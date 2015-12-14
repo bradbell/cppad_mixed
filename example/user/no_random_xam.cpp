@@ -153,7 +153,7 @@ bool no_random_xam(void)
 	vector<double> random_in(0);
 	//
 	// no constriants
-	vector<double> constraint_lower(0), constraint_upper(0);
+	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
 	//
 	vector<double> z(n_fixed);
 	for(size_t i = 0; i < n_fixed; i++)
@@ -187,8 +187,8 @@ bool no_random_xam(void)
 		random_options,
 		fixed_lower,
 		fixed_upper,
-		constraint_lower,
-		constraint_upper,
+		fix_constraint_lower,
+		fix_constraint_upper,
 		fixed_in,
 		random_lower,
 		random_upper,

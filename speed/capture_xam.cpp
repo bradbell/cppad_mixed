@@ -408,7 +408,7 @@ int main(int argc, char *argv[])
 	simulate(I, T, theta_sim, y);
 
 	// lower and upper limits
-	vector<double> constraint_lower, constraint_upper;
+	vector<double> fix_constraint_lower, fix_constraint_upper;
 	vector<double>
 		theta_lower(n_fixed), theta_in(n_fixed), theta_upper(n_fixed);
 	// constant term
@@ -469,8 +469,8 @@ int main(int argc, char *argv[])
 		random_options,
 		theta_lower,
 		theta_upper,
-		constraint_lower,
-		constraint_upper,
+		fix_constraint_lower,
+		fix_constraint_upper,
 		theta_in,
 		u_lower,
 		u_upper,

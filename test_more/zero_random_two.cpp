@@ -188,7 +188,7 @@ bool zero_random_two(void)
 	fixed_lower[1] = .01;   fixed_in[1] = 0.5; fixed_upper[1] = inf;
 	//
 	// explicit constriants (in addition to l1 terms)
-	vector<double> constraint_lower(0), constraint_upper(0);
+	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
 	//
 	vector<double> data(n_data);
 	for(size_t i = 0; i < n_data; i++)
@@ -226,8 +226,8 @@ bool zero_random_two(void)
 		random_options,
 		fixed_lower,
 		fixed_upper,
-		constraint_lower,
-		constraint_upper,
+		fix_constraint_lower,
+		fix_constraint_upper,
 		fixed_in,
 		random_lower,
 		random_upper,

@@ -341,7 +341,7 @@ bool data_mismatch_xam(void)
 	random_in[0]   = 0.0;
 	//
 	// no constriants
-	vector<double> constraint_lower(0), constraint_upper(0);
+	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
 	//
 	// object that is derived from cppad_mixed
 	bool quasi_fixed = false;
@@ -381,8 +381,8 @@ bool data_mismatch_xam(void)
 		random_options,
 		fixed_lower,
 		fixed_upper,
-		constraint_lower,
-		constraint_upper,
+		fix_constraint_lower,
+		fix_constraint_upper,
 		fixed_in,
 		random_lower,
 		random_upper,

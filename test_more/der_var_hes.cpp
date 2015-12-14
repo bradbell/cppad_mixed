@@ -284,7 +284,7 @@ bool der_var_hes(void)
 	random_vec[0]   = 0.0;
 	//
 	// no constriants
-	vector<double> constraint_lower(0), constraint_upper(0);
+	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
 	//
 	// object that is derived from cppad_mixed
 	mixed_derived mixed_object( n_fixed, n_random, y, sigma_u, sigma_y );

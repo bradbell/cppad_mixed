@@ -75,8 +75,8 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		//
 		const d_vector& fixed_lower_;     // fixed effects lower limits
 		const d_vector& fixed_upper_;     // fixed effects upper limit
-		const d_vector& constraint_lower_;// constraint lower limits
-		const d_vector& constraint_upper_;// constraint upper limit
+		const d_vector& fix_constraint_lower_;// constraint lower limits
+		const d_vector& fix_constraint_upper_;// constraint upper limit
 		const d_vector& fixed_in_;        // fixed effects initial value
 		const d_vector& random_lower_;    // lower limit for random effects
 		const d_vector& random_upper_;    // upper limit for random effects
@@ -154,8 +154,8 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			const double&      fixed_tolerance   ,
 			const d_vector& fixed_lower          ,
 			const d_vector& fixed_upper          ,
-			const d_vector& constraint_lower     ,
-			const d_vector& constraint_upper     ,
+			const d_vector& fix_constraint_lower     ,
+			const d_vector& fix_constraint_upper     ,
 			const d_vector& fixed_in             ,
 			const d_vector& random_lower         ,
 			const d_vector& random_upper         ,

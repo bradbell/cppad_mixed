@@ -181,9 +181,9 @@ bool fix_constraint_xam(void)
 	}
 	//
 	// explicit constriants (in addition to l1 terms)
-	vector<double> constraint_lower(1), constraint_upper(1);
-	constraint_lower[0] = 1.0;
-	constraint_upper[0] = 1.0;
+	vector<double> fix_constraint_lower(1), fix_constraint_upper(1);
+	fix_constraint_lower[0] = 1.0;
+	fix_constraint_upper[0] = 1.0;
 	//
 	vector<double> data(n_data), random_in(n_random);
 	for(size_t i = 0; i < n_data; i++)
@@ -220,8 +220,8 @@ bool fix_constraint_xam(void)
 		random_options,
 		fixed_lower,
 		fixed_upper,
-		constraint_lower,
-		constraint_upper,
+		fix_constraint_lower,
+		fix_constraint_upper,
 		fixed_in,
 		random_lower,
 		random_upper,
