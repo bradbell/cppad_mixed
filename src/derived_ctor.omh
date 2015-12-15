@@ -16,7 +16,7 @@ $spell
 	dismod
 $$
 
-$section cppad_mixed Derived Class Constructor$$
+$section User Defined Class Derived From cppad_mixed$$
 
 $head Syntax$$
 $icode%mixed_derived% %mixed_object%(

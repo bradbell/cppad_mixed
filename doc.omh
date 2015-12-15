@@ -88,6 +88,10 @@ $subhead p(u | theta)$$
 The density for the random effects
 is denoted by $latex \B{p}( u | \theta)$$.
 
+$subhead c(theta)$$
+The fixed effects constraint function, denoted by $latex c( \theta )$$,
+is a smooth function of the fixed effects,
+
 $head Problem$$
 
 $subhead Maximum Likelihood$$
@@ -133,8 +137,7 @@ The fixed effects have constraints of the form
 $latex \[
 	c_L \leq c(\theta) \leq c_U
 \] $$
-Where $latex c( \theta ) $$ is a smooth function of the fixed effects,
-and $latex c_L$$, $latex c_U$$ are vectors in the range of $latex c(x)$$.
+where and $latex c_L$$, $latex c_U$$ are vectors in the range of $latex c(x)$$.
 In the case where there are no constraints on the fixed effects,
 the range space is the empty vector.
 

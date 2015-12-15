@@ -18,7 +18,7 @@ $spell
 	const
 $$
 
-$section Fixed Likelihood$$
+$section User Defined Fixed Likelihood Function$$
 
 $head Syntax$$
 $icode%vec% = %mixed_object%.fix_likelihood(%fixed_vec%)%$$
@@ -62,15 +62,25 @@ $cref/negative log-density vector
 	/Negative Log-Density Vector
 /$$
 corresponding to the fixed likelihood
-$cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
+$cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$ where
+$latex \[
+	g( \theta ) = - \log [ \B{p} ( z | \theta ) \B{p} ( \theta ) ]
+\] $$
 
 $subhead Default$$
 The base class definition (default) for $code fix_likelihood$$
 returns an empty vector;
 i.e., $icode%vec%.size() == 0%$$.
-This corresponds to the case where all of the data depends on the
+This corresponds to the case where:
+$list number$$
+All of the data depends on the
 random effects; i.e., the data vector
 $cref/z/cppad_mixed/Notation/Data, y, z/$$ is empty.
+$lnext
+There is no prior
+$cref/p(theta)/cppad_mixed/Notation/p(theta)/$$
+for the fixed effects.
+$lend
 
 $head Example$$
 The file $cref derived_xam.cpp$$ contains an example

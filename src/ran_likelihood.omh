@@ -18,7 +18,7 @@ $spell
 	const
 $$
 
-$section Random Likelihood$$
+$section User Defined Random Likelihood Function$$
 
 $head Syntax$$
 $icode%vec% = %mixed_object%.ran_likelihood(%fixed_vec%, %random_vec%)%$$
@@ -75,7 +75,7 @@ $cref/negative log-density vector
 	/Negative Log-Density Vector
 /$$
 corresponding to the random likelihood
-$cref/f(theta, u)/theory/Random Likelihood, f(theta, u)/$$; i.e.,
+$cref/f(theta, u)/theory/Random Likelihood, f(theta, u)/$$ where
 $latex \[
 	f( \theta , u) = - \log [ \B{p}( y | \theta, u) \B{p} ( u | \theta ) ]
 \] $$
@@ -92,7 +92,6 @@ This corresponds to the case where none of the data depends on the
 random effects; i.e., the data vector
 $cref/y/cppad_mixed/Notation/Data, y, z/$$ is empty.
 In this case there random effects vector should also be empty.
-
 
 $head Example$$
 The file $cref derived_xam.cpp$$ contains an example

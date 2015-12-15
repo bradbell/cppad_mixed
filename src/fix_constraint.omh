@@ -18,7 +18,7 @@ $spell
 	const
 $$
 
-$section Constraints on the Fixed Effects$$
+$section User Defined Fixed Effects Constraint Function$$
 
 $head Syntax$$
 $icode%vec% = %mixed_object%.constraint(%fixed_vec%)%$$
@@ -58,10 +58,10 @@ $codei%
 %$$
 It is the value of the
 $cref/constraint function/cppad_mixed/Problem/Constraints/$$
-$latex c( \theta )$$.
+$cref/c(theta)/cppad_mixed/Notation/c(theta)/$$.
 
 $subhead Default$$
-The base class definition (default) for $code fix_likelihood$$
+The base class definition (default) for $code fix_constraint$$
 returns an empty vector;
 i.e., $icode%vec%.size() == 0%$$.
 In the case where there are no constraints of this form.

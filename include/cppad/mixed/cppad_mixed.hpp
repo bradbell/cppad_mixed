@@ -120,7 +120,7 @@ See $cref fix_constraint$$.
 
 $subhead fatal_error$$
 This routine displays an error message and then exits the program.
-For example, its default definition is
+Its default definition below can be replaced by a user definition.
 $codep */
 	virtual void fatal_error(const std::string& error_message)
 	{	std::cerr << "cppad_mixed error: " << error_message << std::endl;
@@ -131,7 +131,7 @@ $codep */
 
 $subhead warning$$
 This routine displays a warning message and then returns.
-For example, its default definition is
+Its default definition below can be replaced by a user definition.
 $codep */
 	virtual void warning(const std::string& warning_message)
 	{	std::cerr << "cppad_mixed warning: " << warning_message << std::endl;
@@ -199,13 +199,15 @@ $codep */
 	);
 /* $$
 $childtable%src/derived_ctor.omh
-	%src/initialize.cpp
 	%src/ran_likelihood.omh
 	%src/fix_likelihood.omh
 	%src/fix_constraint.omh
+	%src/initialize.cpp
 	%src/optimize_random.cpp
 	%src/optimize_fixed.cpp
 %$$
+
+
 $end
 */
 private:
