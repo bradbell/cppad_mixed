@@ -122,12 +122,12 @@ namespace {
 		virtual vector<a1_double> fix_constraint(
 			const vector<a1_double>& fixed_vec  )
 		{	assert( fixed_vec.size() == n_fixed_ );
-			vector<a1_double> c_vec(1);
-			c_vec[0] = 0.0;
+			vector<a1_double> vec(1);
+			vec[0] = 0.0;
 			for(size_t j = 0; j < n_fixed_; j++)
-				c_vec[0] += fixed_vec[j] * fixed_vec[j];
-			c_vec[0] /= 2.0;
-			return c_vec;
+				vec[0] += fixed_vec[j] * fixed_vec[j];
+			vec[0] /= 2.0;
+			return vec;
 		}
 		//
 		virtual void fatal_error(const std::string& error_message)

@@ -54,7 +54,7 @@ $codei%
 It specifies the value of the weights for the
 components of the $cref fix_constraint$$.
 It has the same size as the corresponding return value
-$cref/c_vec/fix_constraint/c_vec/$$.
+$cref/vec/fix_constraint/vec/$$.
 
 $head Hessian$$
 We use $latex w$$ to denote the vector corresponding to $icode weight$$

@@ -24,7 +24,7 @@ $$
 $section Evaluate Constraint Function$$
 
 $head Syntax$$
-$icode%c_vec% = %mixed_object%.constraint_eval(%fixed_vec%)%$$
+$icode%vec% = %mixed_object%.constraint_eval(%fixed_vec%)%$$
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
@@ -43,14 +43,14 @@ It specifies the value of the
 $cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$ at which $latex c( \theta )$$ is evaluated.
 
-$head c_vec$$
+$head vec$$
 The return value has prototype
 $codei%
-	CppAD::vector<double> %c_vec%
+	CppAD::vector<double> %vec%
 %$$
 and is the constraint function value
 corresponding to the fixed effects; see
-$cref/c_vec/fix_constraint/c_vec/$$.
+$cref/vec/fix_constraint/vec/$$.
 
 $children%
 	example/private/fix_constraint_eval_xam.cpp
