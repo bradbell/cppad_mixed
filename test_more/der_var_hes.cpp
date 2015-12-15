@@ -156,9 +156,9 @@ namespace {
 		}
 	public:
 		// ------------------------------------------------------------------
-		// implementation of ran_like as p(y|theta, u) * p(u|theta)
+		// implementation of ran_likelihood as p(y|theta, u) * p(u|theta)
 		template <class Float>
-		vector<Float> implement_ran_like(
+		vector<Float> implement_ran_likelihood(
 			const vector<Float>& fixed_vec  ,
 			const vector<Float>& random_vec )
 		{	Float theta = fixed_vec[0];
@@ -189,11 +189,11 @@ namespace {
 		virtual vector<a2_double> ran_likelihood(
 			const vector<a2_double>& fixed_vec   ,
 			const vector<a2_double>& random_vec  )
-		{	return implement_ran_like(fixed_vec, random_vec); }
+		{	return implement_ran_likelihood(fixed_vec, random_vec); }
 		virtual vector<a1_double> ran_likelihood(
 			const vector<a1_double>& fixed_vec   ,
 			const vector<a1_double>& random_vec  )
-		{	return implement_ran_like(fixed_vec, random_vec); }
+		{	return implement_ran_likelihood(fixed_vec, random_vec); }
 		//
 		virtual vector<a1_double> fix_constraint(
 			const vector<a1_double>& fixed_vec  )

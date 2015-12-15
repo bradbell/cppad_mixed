@@ -88,7 +88,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		double nlp_lower_bound_inf_; // Ipopt's code for - infinity
 		double nlp_upper_bound_inf_; // Ipopt's code for + infinity
 		//
-		size_t fix_like_n_abs_; // number of absolute values in prior
+		size_t fix_likelihood_n_abs_; // number of absolute values in prior
 		size_t nnz_jac_g_;   // number non-zeros in Jacobian of constraints
 		size_t nnz_h_lag_;   // number non-zeros in Hessian of Lagragian
 		//
@@ -116,15 +116,15 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		s_vector lag_hes_row_;   // row indices for Hessian of Lagrangian
 		s_vector lag_hes_col_;   // column indices for Hessian of Lagrangian
 		s_vector ranobj_2_lag_;    // maps ranobj_hes_row_ to lag_hes_row_
-		s_vector fix_like2lag_;      // maps fix_likelihood_hes_row_ to lag_hes_row_
+		s_vector fix_likelihood2lag_;      // maps fix_likelihood_hes_row_ to lag_hes_row_
 		s_vector constraint_2_lag_; // maps fix_constraint_hes_row to lag_hes_row
 		// ---------------------------------------------------------------
 		// temporaries (size set by constructor only)
 		d_vector        fixed_tmp_;         // size n_fixed_
-		d_vector        fix_like_vec_tmp_;  // size fix_like_n_abs_ + 1
+		d_vector        fix_likelihood_vec_tmp_;  // size fix_likelihood_n_abs_ + 1
 		d_vector        c_vec_tmp_;         // size n_constraint_
 		d_vector        H_beta_tmp_;        // size n_fixed_
-		d_vector        w_fix_like_tmp_;    // size 2 * fix_like_n_abs
+		d_vector        w_fix_likelihood_tmp_;    // size 2 * fix_likelihood_n_abs
 		d_vector        w_constraint_tmp_;  // size n_constraint
 		// ---------------------------------------------------------------
 		// empty until finalize_solution called

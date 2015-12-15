@@ -75,9 +75,9 @@ namespace {
 			z_(z)
 		{	assert(z.size() == n_fixed); }
 	private:
-		// implementation of fix_like as p(z|theta) * p(theta)
+		// implementation of fix_likelihood as p(z|theta) * p(theta)
 		template <class Float>
-		vector<Float> implement_fix_like(
+		vector<Float> implement_fix_likelihood(
 			const vector<Float>& fixed_vec  )
 		{
 			// initialize log-density
@@ -104,7 +104,7 @@ namespace {
 		// User defined virtual functions
 		virtual vector<a1_double> fix_likelihood(
 			const vector<a1_double>& fixed_vec  )
-		{	return implement_fix_like(fixed_vec); }
+		{	return implement_fix_likelihood(fixed_vec); }
 		// ------------------------------------------------------------------
 	};
 }

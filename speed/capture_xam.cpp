@@ -152,7 +152,7 @@ $latex \[
 
 $head p(theta)$$
 $index no prior$$
-$index fix_like, none$$
+$index fix_likelihood, none$$
 For this example there is no prior $latex \B{p}(\theta)$$.
 
 $head Reference$$
@@ -268,9 +268,9 @@ public:
 		for(size_t k = 2; k < K_; k++)
 			logfac_[k] = log( double(k) ) + logfac_[k-1];
 	}
-	// implementaion of ran_like
+	// implementaion of ran_likelihood
 	template <class Float>
-	vector<Float> implement_ran_like(
+	vector<Float> implement_ran_likelihood(
 		const vector<Float>&  theta  ,
 		const vector<Float>&  u      )
 	{	vector<Float> vec(1);
@@ -352,12 +352,12 @@ public:
 	virtual vector<a2_double> ran_likelihood(
 		const vector<a2_double>& fixed_vec  ,
 		const vector<a2_double>& random_vec )
-	{	return implement_ran_like(fixed_vec, random_vec); }
+	{	return implement_ran_likelihood(fixed_vec, random_vec); }
 	//
 	virtual vector<a1_double> ran_likelihood(
 		const vector<a1_double>& fixed_vec  ,
 		const vector<a1_double>& random_vec )
-	{	return implement_ran_like(fixed_vec, random_vec); }
+	{	return implement_ran_likelihood(fixed_vec, random_vec); }
 	//
 	virtual vector<a1_double> fix_likelihood(
 		const vector<a1_double>& fixed_vec  )

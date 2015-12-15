@@ -85,9 +85,9 @@ public:
 		for(size_t k = 2; k <= K; k++)
 			logfac_[k] = log( double(k) ) + logfac_[k-1];
 	}
-	// implementaion of fix_like
+	// implementaion of fix_likelihood
 	template <class Float>
-	vector<Float> implement_fix_like(const vector<Float>&  theta)
+	vector<Float> implement_fix_likelihood(const vector<Float>&  theta)
 	{	vector<Float> vec(1);
 		Float eps( 10.0 * std::numeric_limits<double>::epsilon() );
 		//  ------------------------------------------------------------
@@ -139,7 +139,7 @@ public:
 	//
 	virtual vector<a1_double> fix_likelihood(
 		const vector<a1_double>& fixed_vec  )
-	{	return implement_fix_like<a1_double>(fixed_vec); }
+	{	return implement_fix_likelihood<a1_double>(fixed_vec); }
 	//
 	virtual vector<a1_double> fix_constraint(
 		const vector<a1_double>& fixed_vec  )

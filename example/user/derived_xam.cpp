@@ -50,9 +50,9 @@ namespace {
 			cppad_mixed(n_fixed, n_random, quasi_fixed) ,
 			y_(y)
 		{ }
-		// implementation of ran_like
+		// implementation of ran_likelihood
 		template <class Float>
-		vector<Float> implement_ran_like(
+		vector<Float> implement_ran_likelihood(
 			const vector<Float>& theta  ,
 			const vector<Float>& u      )
 		{	vector<Float> vec(1);
@@ -74,9 +74,9 @@ namespace {
 			}
 			return vec;
 		}
-		// implementation of fix_like
+		// implementation of fix_likelihood
 		template <class Float>
-		vector<Float> implement_fix_like(
+		vector<Float> implement_fix_likelihood(
 			const vector<Float>& theta  )
 		{	vector<Float> vec(1);
 
@@ -102,15 +102,15 @@ namespace {
 		virtual vector<a2_double> ran_likelihood(
 			const vector<a2_double>& fixed_vec  ,
 			const vector<a2_double>& random_vec )
-		{	return implement_ran_like(fixed_vec, random_vec); }
+		{	return implement_ran_likelihood(fixed_vec, random_vec); }
 		virtual vector<a1_double> ran_likelihood(
 			const vector<a1_double>& fixed_vec  ,
 			const vector<a1_double>& random_vec )
-		{	return implement_ran_like(fixed_vec, random_vec); }
+		{	return implement_ran_likelihood(fixed_vec, random_vec); }
 		//
 		virtual vector<a1_double> fix_likelihood(
 			const vector<a1_double>& fixed_vec  )
-		{	return implement_fix_like(fixed_vec); }
+		{	return implement_fix_likelihood(fixed_vec); }
 		//
 		virtual void fatal_error(const std::string& error_message)
 		{	std::cerr << "fatal_error = " << error_message << std::endl;
@@ -159,7 +159,7 @@ bool derived_xam(void)
 
 	// Evaluate the random likelihood
 	vector<a2_double> a2_vec(1);
-	a2_vec = mixed_object.implement_ran_like(a2_fixed, a2_random);
+	a2_vec = mixed_object.implement_ran_likelihood(a2_fixed, a2_random);
 
 	// check the random likelihood
 	double sum = 0.0;

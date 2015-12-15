@@ -24,7 +24,7 @@ $$
 $section Evaluate Fixed Likelihood$$
 
 $head Syntax$$
-$icode%vec% = %mixed_object%.fix_like_eval(%fixed_vec%)%$$
+$icode%vec% = %mixed_object%.fix_likelihood_eval(%fixed_vec%)%$$
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
@@ -72,8 +72,8 @@ $end
 */
 
 
-CppAD::vector<double> cppad_mixed::fix_like_eval(const d_vector& fixed_vec)
-{	assert( init_fix_like_done_ );
+CppAD::vector<double> cppad_mixed::fix_likelihood_eval(const d_vector& fixed_vec)
+{	assert( init_fix_likelihood_done_ );
 	if( fix_likelihood_fun_.size_var() == 0 )
 	{	// empty vector case
 		return CppAD::vector<double>(0);

@@ -151,8 +151,8 @@ $comment */
 	n_random_(n_random)             ,
 	quasi_fixed_(quasi_fixed)       ,
 	initialize_done_(false)         ,
-	init_fix_like_done_(false)    ,
-	init_constraint_done_(false)  ,
+	init_fix_likelihood_done_(false)    ,
+	init_fix_constraint_done_(false)  ,
 	init_ran_likelihood_done_(false)    ,
 	init_hes_ran_done_(false)     ,
 	init_hes_cross_done_(false)   ,
@@ -287,8 +287,8 @@ The following flag is false after construction and true after
 the corresponding member function is called:
 $codep */
 	bool                initialize_done_;
-	bool                init_fix_like_done_;
-	bool                init_constraint_done_;
+	bool                init_fix_likelihood_done_;
+	bool                init_fix_constraint_done_;
 	// only called when n_random_ > 0
 	bool                init_ran_likelihood_done_;
 	bool                init_hes_ran_done_;
@@ -478,7 +478,7 @@ $codep */
 $head init_ran_likelihood$$
 See $cref init_ran_likelihood$$.
 $codep */
-	void init_ran_like(
+	void init_ran_likelihood(
 		const d_vector& fixed_vec ,
 		const d_vector& random_vec
 	);
@@ -518,12 +518,12 @@ $codep */
 $head init_fix_likelihood$$
 See $cref init_fix_likelihood$$.
 $codep */
-	void init_fix_like(const d_vector& fixed_vec);
+	void init_fix_likelihood(const d_vector& fixed_vec);
 /* $$
 $head init_fix_constraint$$
 See $cref init_fix_constraint$$.
 $codep */
-	void init_constraint(const d_vector& fixed_vec);
+	void init_fix_constraint(const d_vector& fixed_vec);
 /* $$
 ------------------------------------------------------------------------------
 $head ranobj_eval$$
@@ -564,7 +564,7 @@ $codep */
 $head ran_likelihood_grad$$
 See $cref ran_likelihood_grad$$
 $codep */
-	// ran_like_grad
+	// ran_likelihood_grad
 	a1d_vector ran_likelihood_grad(
 		const a1d_vector&       fixed_vec   ,
 		const a1d_vector&       random_vec
@@ -624,16 +624,16 @@ $codep */
 $head fix_likelihood_eval$$
 See $cref fix_likelihood_eval$$
 $codep */
-	// fix_like_eval
-	d_vector fix_like_eval(const d_vector& fixed_vec);
+	// fix_likelihood_eval
+	d_vector fix_likelihood_eval(const d_vector& fixed_vec);
 	friend bool ::fix_likelihood_eval_xam(void);
 /* $$
 $end
 $head fix_likelihood_jac$$
 See $cref fix_likelihood_jac$$
 $codep */
-	// fix_like_jac
-	void fix_like_jac(
+	// fix_likelihood_jac
+	void fix_likelihood_jac(
 		const d_vector&        fixed_vec   ,
 		CppAD::vector<size_t>& row_out     ,
 		CppAD::vector<size_t>& col_out     ,
@@ -645,8 +645,8 @@ $end
 $head fix_likelihood_hes$$
 See $cref fix_likelihood_hes$$
 $codep */
-	// fix_like_hes
-	void fix_like_hes(
+	// fix_likelihood_hes
+	void fix_likelihood_hes(
 		const d_vector&        fixed_vec   ,
 		const d_vector&        weight      ,
 		CppAD::vector<size_t>& row_out     ,

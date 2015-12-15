@@ -28,7 +28,7 @@ $$
 $section Initialize Fixed Likelihood$$
 
 $head Syntax$$
-$icode%mixed_object%.init_fix_like(%fixed_vec%)%$$
+$icode%mixed_object%.init_fix_likelihood(%fixed_vec%)%$$
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
@@ -107,9 +107,9 @@ $end
 # define DEBUG_FIX_LIKE_FUN 0
 
 
-void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
+void cppad_mixed::init_fix_likelihood(const d_vector& fixed_vec  )
 {	assert( fixed_vec.size() == n_fixed_ );
-	assert( ! init_fix_like_done_ );
+	assert( ! init_fix_likelihood_done_ );
 
 	// ------------------------------------------------------------------------
 	// fix_likelihood_fun_
@@ -134,11 +134,11 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 # endif
 	Independent(a1_theta);
 
-	// compute fix_like
+	// compute fix_likelihood
 	a1d_vector a1_vec = fix_likelihood(a1_theta);
 	if( a1_vec.size() == 0 )
 	{	CppAD::AD<double>::abort_recording();
-		init_fix_like_done_ = true;
+		init_fix_likelihood_done_ = true;
 		assert( fix_likelihood_fun_.size_var() == 0 );
 		return;
 	}
@@ -187,7 +187,7 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 		fix_likelihood_jac_.work
 	);
 	if( quasi_fixed_ )
-	{	init_fix_like_done_ = true;
+	{	init_fix_likelihood_done_ = true;
 		return;
 	}
 	// ------------------------------------------------------------------------
@@ -229,7 +229,7 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 		fix_likelihood_hes_.work
 	);
 
-	init_fix_like_done_ = true;
+	init_fix_likelihood_done_ = true;
 	return;
 }
 

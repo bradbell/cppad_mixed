@@ -79,7 +79,7 @@ $end
 
 
 // ----------------------------------------------------------------------------
-// ran_like_grad
+// ran_likelihood_grad
 CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_likelihood_grad(
 	const a1d_vector&        fixed_vec   ,
 	const a1d_vector&        random_vec  )

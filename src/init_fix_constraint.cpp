@@ -28,7 +28,7 @@ $$
 $section Initialize Constraints as Function of Fixed Effects$$
 
 $head Syntax$$
-$icode%mixed_object%.init_constraint(%fixed_vec%)%$$
+$icode%mixed_object%.init_fix_constraint(%fixed_vec%)%$$
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
@@ -98,9 +98,9 @@ $cref/sparse Hessian call/sparse_hes_info/Sparse Hessian Call/f/$$.
 $end
 */
 
-void cppad_mixed::init_constraint(const d_vector& fixed_vec  )
+void cppad_mixed::init_fix_constraint(const d_vector& fixed_vec  )
 {	assert( fixed_vec.size() == n_fixed_ );
-	assert( ! init_constraint_done_ );
+	assert( ! init_fix_constraint_done_ );
 
 	// ------------------------------------------------------------------------
 	// fix_constraint_fun_
@@ -117,7 +117,7 @@ void cppad_mixed::init_constraint(const d_vector& fixed_vec  )
 	a1d_vector a1_vec = fix_constraint(a1_theta);
 	if( a1_vec.size() == 0 )
 	{	CppAD::AD<double>::abort_recording();
-		init_constraint_done_ = true;
+		init_fix_constraint_done_ = true;
 		assert( fix_constraint_fun_.size_var() == 0 );
 		return;
 	}
@@ -205,7 +205,7 @@ void cppad_mixed::init_constraint(const d_vector& fixed_vec  )
 		fix_constraint_jac_.work
 	);
 	if( quasi_fixed_ )
-	{	init_constraint_done_ = true;
+	{	init_fix_constraint_done_ = true;
 		return;
 	}
 	// ------------------------------------------------------------------------
@@ -265,7 +265,7 @@ void cppad_mixed::init_constraint(const d_vector& fixed_vec  )
 		fix_constraint_hes_.work
 	);
 
-	init_constraint_done_ = true;
+	init_fix_constraint_done_ = true;
 	return;
 }
 

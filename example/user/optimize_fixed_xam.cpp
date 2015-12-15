@@ -88,9 +88,9 @@ namespace {
 		}
 	// ----------------------------------------------------------------------
 	private:
-		// implementation of ran_like
+		// implementation of ran_likelihood
 		template <class Float>
-		vector<Float> implement_ran_like(
+		vector<Float> implement_ran_likelihood(
 			const vector<Float>& theta  ,
 			const vector<Float>& u      )
 		{	assert( theta.size() == n_fixed_ );
@@ -116,9 +116,9 @@ namespace {
 			}
 			return vec;
 		}
-		// implementation of fix_like
+		// implementation of fix_likelihood
 		template <class Float>
-		vector<Float> implement_fix_like(
+		vector<Float> implement_fix_likelihood(
 			const vector<Float>& fixed_vec  )
 		{	assert( fixed_vec.size() == n_fixed_ );
 			vector<Float> vec(1);
@@ -145,15 +145,15 @@ namespace {
 		virtual vector<a2_double> ran_likelihood(
 			const vector<a2_double>& fixed_vec  ,
 			const vector<a2_double>& random_vec )
-		{	return implement_ran_like(fixed_vec, random_vec); }
+		{	return implement_ran_likelihood(fixed_vec, random_vec); }
 		virtual vector<a1_double> ran_likelihood(
 			const vector<a1_double>& fixed_vec  ,
 			const vector<a1_double>& random_vec )
-		{	return implement_ran_like(fixed_vec, random_vec); }
+		{	return implement_ran_likelihood(fixed_vec, random_vec); }
 		//
 		virtual vector<a1_double> fix_likelihood(
 			const vector<a1_double>& fixed_vec  )
-		{	return implement_fix_like(fixed_vec); }
+		{	return implement_fix_likelihood(fixed_vec); }
 		// ------------------------------------------------------------------
 	};
 }

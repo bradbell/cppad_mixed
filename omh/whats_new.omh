@@ -34,8 +34,8 @@ $lend
 $head 2015-12-13$$
 Change
 $code constraint$$ to $cref fix_constraint$$,
-$code ran_like$$ to $cref ran_likelihood$$, and
-$code fix_like$$ to $cref fix_likelihood$$.
+$code ran_likelihood$$ to $cref ran_likelihood$$, and
+$code fix_likelihood$$ to $cref fix_likelihood$$.
 
 $head 2015-12-10$$
 $list number$$

@@ -26,7 +26,7 @@ $$
 $section Jacobian of Fixed Likelihood$$
 
 $head Syntax$$
-$icode%mixed_object%.fix_like_jac(
+$icode%mixed_object%.fix_likelihood_jac(
 	%fixed_vec%, %row_out%, %col_out%, %val_out%
 )%$$
 
@@ -54,7 +54,7 @@ $codei%
 %$$
 If the input size of this array is non-zero,
 the entire vector must be the same
-as for a previous call to $code fix_like_jac$$.
+as for a previous call to $code fix_likelihood_jac$$.
 If it's input size is zero,
 upon return it contains the row indices for the Jacobian elements
 that are possibly non-zero.
@@ -66,7 +66,7 @@ $codei%
 %$$
 If the input size of this array is non-zero,
 the entire vector must be the same as for
-a previous call to $code fix_like_jac$$.
+a previous call to $code fix_likelihood_jac$$.
 If it's input size is zero,
 upon return it contains the column indices for the Jacobian elements
 that are possibly non-zero (and will have the same size as $icode row_out$$).
@@ -77,7 +77,7 @@ $codei%
 	CppAD::vector<double>& %val_out%
 %$$
 If the input size of this array is non-zero, it must have the same size
-as for a previous call to $code fix_like_jac$$.
+as for a previous call to $code fix_likelihood_jac$$.
 Upon return, it contains the value of the Jacobian elements
 that are possibly non-zero (and will have the same size as $icode row_out$$).
 
@@ -93,12 +93,12 @@ $end
 */
 
 
-void cppad_mixed::fix_like_jac(
+void cppad_mixed::fix_likelihood_jac(
 	const d_vector&        fixed_vec   ,
 	CppAD::vector<size_t>& row_out     ,
 	CppAD::vector<size_t>& col_out     ,
 	d_vector&              val_out     )
-{	assert( init_fix_like_done_ );
+{	assert( init_fix_likelihood_done_ );
 	assert( row_out.size() == col_out.size() );
 	assert( row_out.size() == val_out.size() );
 	//

@@ -186,9 +186,9 @@ namespace {
 			assert( n_random == 1 );
 		}
 	private:
-		// implementation of fix_like as p(z|theta) * p(theta)
+		// implementation of fix_likelihood as p(z|theta) * p(theta)
 		template <class Float>
-		vector<Float> implement_fix_like(
+		vector<Float> implement_fix_likelihood(
 			const vector<Float>& fixed_vec  )
 		{	Float theta = fixed_vec[0];
 
@@ -209,9 +209,9 @@ namespace {
 		}
 	public:
 		// ------------------------------------------------------------------
-		// implementation of ran_like as p(y|theta, u) * p(u|theta)
+		// implementation of ran_likelihood as p(y|theta, u) * p(u|theta)
 		template <class Float>
-		vector<Float> implement_ran_like(
+		vector<Float> implement_ran_likelihood(
 			const vector<Float>& fixed_vec  ,
 			const vector<Float>& random_vec )
 		{	Float theta = fixed_vec[0];
@@ -237,16 +237,16 @@ namespace {
 		//
 		virtual vector<a1_double> fix_likelihood(
 			const vector<a1_double>& fixed_vec  )
-		{	return implement_fix_like(fixed_vec); }
+		{	return implement_fix_likelihood(fixed_vec); }
 		//
 		virtual vector<a2_double> ran_likelihood(
 			const vector<a2_double>& fixed_vec   ,
 			const vector<a2_double>& random_vec  )
-		{	return implement_ran_like(fixed_vec, random_vec); }
+		{	return implement_ran_likelihood(fixed_vec, random_vec); }
 		virtual vector<a1_double> ran_likelihood(
 			const vector<a1_double>& fixed_vec   ,
 			const vector<a1_double>& random_vec  )
-		{	return implement_ran_like(fixed_vec, random_vec); }
+		{	return implement_ran_likelihood(fixed_vec, random_vec); }
 		// ==================================================================
 		// Routines used to check that objective derivative is zero at solution
 		double g_theta(double theta)
