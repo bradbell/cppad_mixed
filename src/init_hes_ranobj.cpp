@@ -64,7 +64,7 @@ $codei%
 does not matter.
 Upon return it contains the
 $cref sparse_hes_info$$
-for the Hessian
+for the lower triangle of the Hessian
 $latex \[
 	r^{(2)} ( \theta )
 	=

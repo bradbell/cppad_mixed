@@ -26,6 +26,8 @@ $spell
 	hes
 	num
 	alloc
+	jac
+	Jacobian
 $$
 
 $section Initialization After Constructor$$
@@ -80,67 +82,113 @@ $codei%
 %$$
 is the corresponding size.
 
-$subhead hes_ran_row$$
-$icode%size_map%["hes_ran_row"]%$$ is the
-number of non-zero entries in hessian of
-random likelihood w.r.t random effects
-$latex f_{uu}^{(2)} ( \theta , u )$$.
+$subhead fix_constraint_fun_$$
+$icode%size_map%["fix_constraint_fun_"]%$$ is the number of variables in
+$cref/fix_constraint_fun_/init_fix_constraint/fix_constraint_fun_/$$.
 
-$subhead hes_cross_row$$
-$icode%size_map%["hes_cross_row"]%$$ is the
-number of non-zero cross entries in hessian of
-random likelihood w.r.t fixed and random effects
-$latex f_{u \theta}^{(2)} ( \theta , u )$$.
+$subhead fix_constraint_hes_$$
+$icode%size_map%["fix_constraint_hes_"]%$$ is the size of the row vector in
+$cref/fix_constraint_hes_/init_fix_constraint/fix_constraint_hes_/$$.
+This is also the number of non-zeros
+in the Hessian $latex c^{(2)} ( \theta )$$.
 
-$subhead ran_likelihood_fun$$
-$icode%size_map%["ran_likelihood_fun"]%$$ is the
-number of variables in the $code ADFun<double>$$ version of
-$cref ran_likelihood$$.
+$subhead fix_constraint_jac_$$
+$icode%size_map%["fix_constraint_jac_"]%$$ is the size of the row vector in
+$cref/fix_constraint_jac_/init_fix_constraint/fix_constraint_jac_/$$.
+This is also the number of non-zeros
+in the Jacobian $latex c^{(1)} ( \theta )$$.
 
-$subhead ran_likelihood_a1fun$$
-$icode%size_map%["ran_likelihood_a1fun"]%$$ is the
-number of variables in the $code ADFun<a1_double>$$ version of
-$cref ran_likelihood$$.
+$subhead fix_likelihood_fun_$$
+$icode%size_map%["fix_likelihood_fun_"]%$$ is the number of variables in
+$cref/fix_likelihood_fun_/init_fix_likelihood/fix_likelihood_fun_/$$.
 
-$subhead hes_ran_fun$$
-$icode%size_map%["hes_ran_fun_"]%$$ is the
-number of variables in the $code ADFun<double>$$ object that
-computes the Hessian with respect to the random effects.
+$subhead fix_likelihood_hes_$$
+$icode%size_map%["fix_likelihood_hes_"]%$$ is the size of the row vector in
+$cref/fix_likelihood_hes_/init_fix_likelihood/fix_likelihood_hes_/$$.
+This is also the number of non-zeros
+in the Hessian $latex g^{(2)} ( \theta )$$.
 
-$subhead newton_atom$$
-$icode%size_map%["newton_atom"]%$$ is the
-number of variables in the $code ADFun<double>$$
-object used to evaluate the newton step
+$subhead fix_likelihood_jac_$$
+$icode%size_map%["fix_likelihood_jac_"]%$$ is the size of the row vector in
+$cref/fix_likelihood_jac_/init_fix_likelihood/fix_likelihood_jac_/$$.
+This is also the number of non-zeros
+in the Jacobian $latex g^{(1)} ( \theta )$$.
+
+$subhead hes_ran_$$
+$icode%size_map%["hes_ran_"]%$$ is the size of the row vector in
+$cref/hes_ran_/init_hes_ran/hes_ran_/$$.
+This is also the number of non-zeros
+in the lower triangle of the Hessian
 $latex \[
-	s = f_{uu}^{(2)} ( \theta , u )^{-1} v
+	f_{uu}^{(2)} ( \theta , u )
+\]$$
+see $cref/f(theta, u)/
+	theory/
+	Random Likelihood, f(theta, u)
+/$$
+
+$subhead hes_cross_$$
+$icode%size_map%["hes_cross_"]%$$ is the size of the row vector in
+$cref/hes_cross_/init_hes_cross/hes_cross_/$$.
+This is also the number of non-zeros
+in the Hessian
+$latex \[
+	f_{u \theta}^{(2)} ( \theta , u )
+\]$$
+see $cref/f(theta, u)/
+	theory/
+	Random Likelihood, f(theta, u)
+/$$
+
+$subhead hes_ran_fun_$$
+$icode%size_map%["hes_ran_fun_"]%$$ is the number of variables in
+$cref/hes_ran_fun_/init_hes_ran/hes_ran_fun_/$$.
+
+$subhead hes_ranobj_$$
+$icode%size_map%["hes_ranobj_"]%$$ is the size of the row vector in
+$cref/hes_ranobj_/init_hes_ranobj/hes_ranobj_/$$.
+This is also the number of non-zeros
+in the lower triangle of the Hessian
+$latex \[
+	r^{(2)} ( \theta )
+	=
+	H_{\beta \beta}^{(2)} [ \beta, \theta , \hat{u} ( \theta) ]
 \] $$
-and the log of the determinant of the matrix being inverted.
+see
+$cref/H(beta, theta, u)
+	/theory
+	/Hessian of Random Objective
+	/Approximate Random Objective, H(beta, theta, u)
+/$$.
 
-$subhead ranobj_fun$$
-$icode%size_map%["ranobj_2"]%$$ is the
-number of variables in the $code ADFun<double>$$
-object used to evaluate Hessian, w.r.t. fixed effects, of the objective
-$latex r^{(2)} ( \theta )$$.
-
-$subhead fix_likelihood_fun$$
-$icode%size_map%["fix_likelihood"]%$$ is the
-number of variables in the $code ADFun<double>$$ function
-that computes the fixed likelihood $latex g( \theta )$$.
-
-$subhead constraint$$
-$icode%size_map%["constraint"]%$$ is the
-number of variables in the $code ADFun<double>$$ function
-that computes the general constraints for the fixed effects.
-
-$subhead num_bytes_before$$
-$icode%size_map%["num_bytes_before"]%$$ is the
-number of bytes allocated by
-$code CppAD::thread_alloc$$ before the initialization is started.
+$subhead newton_atom_$$
+If $cref/quasi_fixed_/private/quasi_fixed_/$$ is false,
+$icode%size_map%["newton_atom_"]%$$ is the number of variables in the
+$cref/newton_atom_/private/newton_atom_/$$
+tape used to represent the $cref newton_step$$ checkpoint function.
 
 $subhead num_bytes_after$$
-$icode%size_map%["num_bytes_after"]%$$ is the
-number of bytes allocated by
-$code CppAD::thread_alloc$$ after the initialization is completed.
+$icode%size_map%["num_bytes_after"]%$$ is the number of bytes
+allocated by $code CppAD::thread_alloc$$ and still in use
+when $code initialization$$ is completed.
+
+$subhead num_bytes_before$$
+$icode%size_map%["num_bytes_before"]%$$ is the number of bytes
+allocated by $code CppAD::thread_alloc$$ and still in use
+when $code initialize$$ starts.
+
+$subhead ran_likelihood_a1fun_$$
+$icode%size_map%["ran_likelihood_a1fun_"]%$$ is the number of variables in
+$cref/ran_likelihood_a1fun_/init_ran_likelihood/ran_likelihood_a1fun_/$$.
+
+$subhead ran_likelihood_fun_$$
+$icode%size_map%["ran_likelihood_fun_"]%$$ is the number of variables in
+$cref/ran_likelihood_fun_/init_ran_likelihood/ran_likelihood_fun_/$$.
+
+$subhead ranobj_fun_$$
+$icode%size_map%["ranobj_fun_"]%$$ is the number of variables in
+$cref/ranobj_fun_/init_ranobj/ranobj_fun_/$$.
+
 
 $head Example$$
 The file $cref derived_xam.cpp$$ contains an example
@@ -191,7 +239,9 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 		{
 			// newton_atom_
 			assert( ! record_newton_atom_done_ );
-			newton_atom_.initialize(ran_likelihood_a1fun_, fixed_vec, random_vec);
+			newton_atom_.initialize(
+				ran_likelihood_a1fun_, fixed_vec, random_vec
+			);
 			record_newton_atom_done_ = true;
 
 			// ranobj_fun_
@@ -221,18 +271,29 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 
 	// return value
 	std::map<std::string, size_t> size_map;
-	size_map["hes_ran_row"]    = hes_ran_.row.size();
-	size_map["hes_cross_row"]  = hes_cross_.row.size();
-	size_map["ran_likelihood_fun"]   = ran_likelihood_fun_.size_var();
-	size_map["ran_likelihood_a1fun"] = ran_likelihood_a1fun_.size_var();
-	size_map["hes_ran_fun"]    = hes_ran_fun_.size_var();
-	size_map["newton_atom"]    = newton_atom_.size_var();
-	size_map["ranobj_fun"]    = ranobj_fun_.size_var();
-	size_map["fix_likelihood_fun"]   = fix_likelihood_fun_.size_var();
-	size_map["constraint"]     = fix_constraint_fun_.size_var();
+	size_map["num_bytes_before"]      = num_bytes_before;
+	size_map["ran_likelihood_fun_"]   = ran_likelihood_fun_.size_var();
+	size_map["ran_likelihood_a1fun_"] = ran_likelihood_a1fun_.size_var();
 	//
-	size_map["num_bytes_before"]  = num_bytes_before;
-	size_map["num_bytes_after"]   = CppAD::thread_alloc::inuse(thread);
+	size_map["hes_ran_"]              = hes_ran_.row.size();
+	size_map["hes_ran_fun_"]          = hes_ran_fun_.size_var();
+	//
+	size_map["hes_cross_"]            = hes_cross_.row.size();
+	if( ! quasi_fixed_ )
+	{	size_map["newton_step_"]      = newton_atom_.size_var();
+		//
+		size_map["ranobj_fun_"]       = ranobj_fun_.size_var();
+		size_map["hes_ranobj_"]       = hes_ranobj_.row.size();
+	}
+	size_map["fix_likelihood_fun_"]   = fix_likelihood_fun_.size_var();
+	size_map["fix_likelihood_jac_"]   = fix_likelihood_jac_.row.size();
+	size_map["fix_likelihood_hes_"]   = fix_likelihood_hes_.row.size();
+	//
+	size_map["fix_constraint_fun_"]   = fix_constraint_fun_.size_var();
+	size_map["fix_constraint_jac_"]   = fix_constraint_jac_.row.size();
+	size_map["fix_constraint_hes_"]   = fix_constraint_hes_.row.size();
+	//
+	size_map["num_bytes_after"]       = CppAD::thread_alloc::inuse(thread);
 	return size_map;
 }
 

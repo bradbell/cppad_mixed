@@ -425,8 +425,7 @@ int main(int argc, char *argv[])
 	theta_upper[2] = 4.0;
 
 	// create derived object
-	// bool quasi_fixed = (random_seed % 2) == 0;
-	bool quasi_fixed = true;
+	bool quasi_fixed = (random_seed % 2) == 0;
 	mixed_derived mixed_object(I, T, quasi_fixed, y);
 
 	// initialize point to start optimization at
@@ -438,8 +437,9 @@ int main(int argc, char *argv[])
 
 	// print sizes
 	cout << endl
-	<< "n_fixed = "  << n_fixed << endl
-	<< "n_random = " << n_random << endl;
+	<< "n_fixed     = "  << n_fixed << endl
+	<< "n_random    = " << n_random << endl
+	<< "quasi_fixed = " << quasi_fixed << endl;
 	std::map<std::string, size_t>::const_iterator itr;
 	for(itr = size_map.begin(); itr != size_map.end(); ++itr)
 		cout << itr->first << " = " << itr->second << endl;
