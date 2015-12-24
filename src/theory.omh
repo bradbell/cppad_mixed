@@ -149,6 +149,7 @@ $latex \[
 	f_{uu}^{(2)} ( \theta , u )_{i,j}^{-1}
 	\partial_k [ f_{uu}^{(2)} ( \theta , u)_{i,j} ]
 \] $$
+where $latex n$$ is the number of random effects.
 Note that $latex f_{uu}^{(2)} ( \theta , u )$$
 is often sparse and only non-zero
 components need be included in the summation.
@@ -206,9 +207,12 @@ f_{uu}^{(2)} \left[ \theta , \hat{u} ( \theta ) \right]^{-1}
 =
 \hat{u}^{(1)} ( \theta )
 \] $$
-I think that the second partials of $latex W^i$$ w.r.t
-$latex \beta$$ are equal to $latex u_i^{(2)} ( \theta )$$,
-but I have not yet proven so.
+It has been proved that, for $latex i = 0 , \ldots , n-1$$,
+$latex \[
+	W^i_{\beta \beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+	=
+	\hat{u}_i^{(2)} ( \theta )
+\] $$
 
 $subhead Approximate Random Objective, H(beta, theta, u)$$
 Given these facts we define
@@ -233,6 +237,5 @@ r^{(2)} ( \theta )
 =
 H_{\beta \beta}^{(1)} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
 \] $$
-(The last equation has yet to be proved.)
 
 $end

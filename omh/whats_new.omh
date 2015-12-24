@@ -18,6 +18,20 @@ $$
 
 $section Changed and Additions to cppad_mixed$$
 
+$head 2015-12-24$$
+Change remarks about
+$cref/W(beta, theta, u)
+	/theory
+	/Hessian of Random Objective
+	/W(beta, theta, u)
+/$$
+to mention that the following has been proven
+$latex \[
+	W^i_{\beta \beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+	=
+	\hat{u}_i^{(2)} ( \theta )
+\] $$
+
 $head 2015-12-16$$
 Overhaul the set of values and documentation for the
 $cref/size_map/initialize/size_map/$$ memory diagnostic.
