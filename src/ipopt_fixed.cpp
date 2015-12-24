@@ -945,6 +945,11 @@ bool ipopt_fixed::eval_g(
 	for(size_t j = 0; j < n_fixed_; j++)
 		fixed_tmp_[j] = double( x[j] );
 	//
+	// check if this is a new x
+	if( n_random_ > 0 && new_x ) random_cur_ = mixed_object_.optimize_random(
+		random_options_, fixed_tmp_, random_lower_, random_upper_, random_in_
+	);
+	//
 	// fixed part of objective
 	// (2DO: cache fix_likelihood_vec_tmp_ for eval_f with same x)
 	fix_likelihood_vec_tmp_ = mixed_object_.fix_likelihood_eval(fixed_tmp_);
@@ -1087,6 +1092,11 @@ bool ipopt_fixed::eval_jac_g(
 	// fixed effects
 	for(size_t j = 0; j < n_fixed_; j++)
 		fixed_tmp_[j] = double( x[j] );
+	//
+	// check if this is a new x
+	if( n_random_ > 0 && new_x ) random_cur_ = mixed_object_.optimize_random(
+		random_options_, fixed_tmp_, random_lower_, random_upper_, random_in_
+	);
 	//
 	// Jacobian of fixed part of objective
 	// (2DO: do not revaluate when eval_grad_f had same x)

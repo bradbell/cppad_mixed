@@ -178,7 +178,9 @@ void cppad_mixed::ranobj_grad(
 			// partial of optimal random effect for this (i, j)
 			double ui_thetaj = itr.value();
 			// partial of random part of objective w.r.t this random effect
-			double h_ui = f_random[i] + 0.5 * logdet_ran[i];
+			// Note f_random = 0 because u is optimal for the fixed effects
+			// double h_ui = f_random[i] + 0.5 * logdet_ran[i];
+			double h_ui = 0.5 * logdet_ran[i];
 			// contribution to total derivative
 			r_fixed[j] += h_ui * ui_thetaj;
 		}

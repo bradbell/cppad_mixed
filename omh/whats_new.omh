@@ -19,6 +19,12 @@ $$
 $section Changed and Additions to cppad_mixed$$
 
 $head 2015-12-24$$
+$list number$$
+There was a bug in the $cref ipopt_fixed_eval_g$$ routine.
+It was not caching the value of $latex \hat{u}( \theta )$$
+each time that $latex \theta$$ changed.
+This has been fixed.
+$lnext
 Change remarks about
 $cref/W(beta, theta, u)
 	/theory
@@ -31,6 +37,7 @@ $latex \[
 	=
 	\hat{u}_i^{(2)} ( \theta )
 \] $$
+$lend
 
 $head 2015-12-16$$
 Overhaul the set of values and documentation for the

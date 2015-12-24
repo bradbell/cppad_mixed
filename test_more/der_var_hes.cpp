@@ -269,7 +269,6 @@ bool der_var_hes(void)
 {
 	bool   ok = true;
 	double inf = std::numeric_limits<double>::infinity();
-	double eps = 100.0 * std::numeric_limits<double>::epsilon();
 
 	size_t n_fixed  = 1;
 	size_t n_random = 1;
@@ -300,6 +299,7 @@ bool der_var_hes(void)
 	// optimize the random effects
 	std::string options;
 	options += "Integer print_level 0\n";
+	options += "Numeric tol         1e-10\n";
 	options += "String  sb          yes\n";
 	options += "String  derivative_test second-order\n";
 	vector<double> uhat(n_random);
@@ -317,7 +317,7 @@ bool der_var_hes(void)
 	);
 	double r_theta = mixed_object.r_theta(fixed_vec[0], uhat[0]);
 	//
-	ok &= CppAD::abs( r_fixed[0] / r_theta - 1.0 ) < eps;
+	ok &= CppAD::abs( r_fixed[0] / r_theta - 1.0 ) < 1e-10;
 	//
 	return ok;
 }
