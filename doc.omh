@@ -112,23 +112,19 @@ $latex \[
 \B{p} ( \theta ) \B{p} ( z | \theta )
 \] $$
 
+$subhead Optimal Random Effects, u^(theta)$$
+Given a value for the fixed effects $latex \theta$$,
+we estimate the corresponding optimal random effects
+$latex \hat{u} ( \theta )$$ by optimizing the
+$cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$
+$latex f( \theta , u )$$ with respect to the random effects $latex u$$;
+see $cref/u^(theta)/theory/Objective/Optimal Random Effects, u^(theta)/$$.
 
-$subhead Fixed Effects Estimation$$
+$subhead Optimal Fixed Effects, theta^$$
 We approximate this solution by replacing the integral above with its
-Laplace approximation (see $cref theory$$) and
-optimizing the approximate objective.
-Let $latex \hat{\theta}$$ be to optimal solution for the approximate
-problem.
-
-$subhead Random Effects Estimation$$
-We then estimate the random effects by maximizing the likelihood,
-at the fixed effects estimate, with respect to the random effects
-$latex u$$; i.e.,
-$latex \[
-\B{p} ( y , u | \hat{\theta} )
-=
-\B{p}( y | \hat{\theta} , u )  \B{p} ( u | \hat{\theta} )
-\] $$
+Laplace approximation and
+optimizing the corresponding objective $latex L( \theta )$$; see
+$cref/total objective/theory/Objective/Total Objective, L(theta)/$$.
 
 $subhead Constraints$$
 The random effects vector $latex u$$ does have any constraints

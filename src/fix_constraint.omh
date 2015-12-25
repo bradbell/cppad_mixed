@@ -21,7 +21,7 @@ $$
 $section User Defined Fixed Effects Constraint Function$$
 
 $head Syntax$$
-$icode%vec% = %mixed_object%.constraint(%fixed_vec%)%$$
+$icode%vec% = %mixed_object%.fix_constraint(%fixed_vec%)%$$
 
 $head Public$$
 This $code cppad_mixed$$ member function is $cref public$$.
