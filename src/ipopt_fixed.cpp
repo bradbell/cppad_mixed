@@ -233,7 +233,7 @@ $code%
 %$$
 is used for plus infinity; i.e., no upper limit.
 
-$head fix_fix_constraint_lower$$
+$head fix_constraint_lower$$
 specifies the lower limits for the
 $cref/constraints/fix_constraint/$$.
 Note that
@@ -242,7 +242,7 @@ $code%
 %$$
 is used for minus infinity; i.e., no lower limit.
 
-$head fix_fix_constraint_upper$$
+$head fix_constraint_upper$$
 specifies the upper limits for the constraints.
 Note that
 $code%
