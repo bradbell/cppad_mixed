@@ -18,6 +18,18 @@ $$
 
 $section Changed and Additions to cppad_mixed$$
 
+$head 2015-12-25$$
+$list number$$
+Only use subscripts for derivative notation; i.e., remove the
+superscripts (1) and (2) from derivatives. This enables us
+(in the future) to use superscripts for indices and subscripts for derivatives.
+$lnext
+Change $latex z^L, z^U$$ to $latex z_L , z_U$$ in
+$cref ipopt_xam$$ (because the corresponding variables are
+$icode z_L$$ and $icode z_U$$); see
+$cref/finalize_solution/ipopt_fixed_finalize_solution/z_L/$$.
+$lend
+
 $head 2015-12-24$$
 $list number$$
 There was a bug in the $cref ipopt_fixed_eval_g$$ routine.

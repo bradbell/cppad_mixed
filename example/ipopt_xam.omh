@@ -32,13 +32,13 @@ $head Lagrangian$$
 For $latex x \in \B{R}^2$$,
 $latex -1 \leq x_0 \leq 1$$,
 $latex \lambda \in \B{R}$$,
-$latex z^L \in \B{R}_+$$,
-$latex z^U \in \B{R}_+$$,
+$latex z_L \in \B{R}_+$$,
+$latex z_U \in \B{R}_+$$,
 the Lagrangian is
 $latex \[
-L(x, \lambda, z^L, z^U )
+L(x, \lambda, z_L, z_U )
 =
-- ( x_1 - 2 )^2  + \lambda ( x_0^2 + x_1 - 1) + z^L (- x_0 - 1) + z^U (x_0 - 1)
+- ( x_1 - 2 )^2  + \lambda ( x_0^2 + x_1 - 1) + z_L (- x_0 - 1) + z_U (x_0 - 1)
 \] $$
 
 $childtable%example/ipopt_xam_run.cpp%$$
