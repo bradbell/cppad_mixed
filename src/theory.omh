@@ -166,7 +166,7 @@ $latex r^{(2)} ( \theta ) $$ is required when
 $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false.
 In this case, the following representation is used:
 
-$subhead U(beta, theta, u)$$
+$subhead First Order Optimal Random Effects, U(beta, theta, u)$$
 We define  the function
 $latex \[
 U ( \beta , \theta , u )
@@ -187,7 +187,7 @@ U_{\beta}^{(1)} \left[ \theta, \theta , \hat{u} ( \theta ) \right]
 \hat{u}^{(1)} ( \theta )
 \] $$
 
-$subhead W(beta, theta, u)$$
+$subhead Second Order Optimal Random Effects, W(beta, theta, u)$$
 We define  the function
 $latex \[
 W ( \beta , \theta , u )

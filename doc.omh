@@ -80,13 +80,13 @@ $subhead p(z | theta)$$
 The density for the data that does not depend on the random effects
 is denoted by $latex \B{p}( z | \theta )$$.
 
-$subhead p(y | theta, u)$$
-The density for the data that depends on both the fixed and random effects
-is denoted by $latex \B{p}( y | \theta, u)$$.
-
 $subhead p(u | theta)$$
 The density for the random effects
 is denoted by $latex \B{p}( u | \theta)$$.
+
+$subhead p(y | theta, u)$$
+The density for the data that depends on both the fixed and random effects
+is denoted by $latex \B{p}( y | \theta, u)$$.
 
 $subhead c(theta)$$
 The fixed effects constraint function, denoted by $latex c( \theta )$$,
@@ -153,6 +153,7 @@ $childtable%omh/install_unix.omh
 	%omh/namespace.omh
 	%example/user/user.omh
 	%omh/whats_new.omh
+	%omh/math_notation.omh
 %$$
 
 

@@ -1,0 +1,127 @@
+$Id:$
+-----------------------------------------------------------------------------
+cppad_mixed: Estimating Disease Rates as Functions of Age and Time
+          Copyright (C) 2014-15 University of Washington
+             (Bradley M. Bell bradbell@uw.edu)
+
+This program is distributed under the terms of the
+	     GNU Affero General Public License version 3.0 or later
+see http://www.gnu.org/licenses/agpl.txt
+-----------------------------------------------------------------------------
+$begin math_notation$$
+
+$section Mathematical Notation$$
+
+$head c$$
+The notation $cref/c(theta)/cppad_mixed/Notation/c(theta)/$$
+( $latex c( \theta )$$ )
+is used for the fixed effects constraints as a function.
+
+$head c_L$$
+The notation $cref/c_L/cppad_mixed/Notation/c(theta)/$$
+( $latex c_L $$ )
+is used for the lower limit of the constraints on the fixed effects.
+
+$head c_U$$
+The notation $cref/c_U/cppad_mixed/Notation/c(theta)/$$
+( $latex c_U $$ )
+is used for the upper limit of the constraints on the fixed effects.
+
+$head f$$
+The notation $cref/f(theta, u)/theory/Random Likelihood, f(theta, u)/$$
+( $latex f( \theta , u )$$ )
+is used for the random likelihood function.
+
+$head g$$
+The notation $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$
+( $latex g( \theta )$$ )
+is used for the fixed likelihood function.
+
+$head h$$
+The notation
+$cref/h(theta, u)/theory/Objective/Laplace Approximation, h(theta, u)/$$
+( $latex h( \theta , u )$$ )
+is used for the Laplace approximation function.
+
+$head H$$
+The notation $cref/H(beta, theta, u)
+	/theory
+	/Hessian of Random Objective
+	/Approximate Random Objective, H(beta, theta, u)
+/$$
+( $latex U( \beta , \theta , u )$$ )
+is used for the second order random objective.
+
+$head p$$
+The notations
+$latex \B{p} ( \cdot )$$ and
+$latex \B{p} ( \cdot | \cdot )$$ are use for the
+probability density (conditional probability density) functions;
+see
+$cref/p(theta)/cppad_mixed/Notation/p(theta)/$$,
+$cref/p(z | theta)/cppad_mixed/Notation/p(theta)/$$,
+$cref/p(u | theta)/cppad_mixed/Notation/p(theta)/$$,
+$cref/p(y | theta, u)/cppad_mixed/Notation/p(theta)/$$.
+
+$head r$$
+The notation
+$cref/r(theta)/theory/Objective/Random Objective, r(theta)/$$
+( $latex r( \theta )$$ )
+is used for the random objective function.
+
+$head L$$
+The notation
+$cref/L(theta)/theory/Objective/Total Objective, L(theta)/$$
+( $latex L( \theta )$$ )
+is used for the total objective function.
+
+$head u$$
+The notation $cref/u/cppad_mixed/Notation/Random Effects, u/$$
+( $latex \theta$$ )
+is used for the vector of fixed effects.
+
+$head U$$
+The notation $cref/U(beta, theta, u)
+	/theory
+	/Hessian of Random Objective
+	/First Order Optimal Random Effects, U(beta, theta, u)
+/$$
+( $latex U( \beta , \theta , u )$$ )
+is used for the first order optimal random effects.
+
+$head W$$
+The notation $cref/W(beta, theta, u)
+	/theory
+	/Hessian of Random Objective
+	/Second Order Optimal Random Effects, W(beta, theta, u)
+/$$
+( $latex W( \beta , \theta , u )$$ )
+is used for the second order approximation of optimal random effects.
+
+$head u^(theta)$$
+The notation
+$cref/u^(theta)/cppad_mixed/Problem/Optimal Random Effects, u^(theta)/$$
+( $latex \hat{u}( \theta )$$ )
+is used for the optimal random effects.
+
+$head theta$$
+The notation $cref/theta/cppad_mixed/Notation/Fixed Effects, theta/$$
+( $latex \theta$$ )
+is used for the vector of fixed effects.
+
+$head theta^$$
+The notation
+$cref/theta^/cppad_mixed/Problem/Optimal Fixed Effects, theta^/$$
+( $latex \hat{\theta}$$ )
+is used for the optimal fixed effects.
+
+$head y$$
+The notation $cref/y/cppad_mixed/Notation/Data, y, z/$$
+is used for data that depends on the random effects.
+
+$head z$$
+The notation $cref/z/cppad_mixed/Notation/Data, y, z/$$
+is used for data that does $bold not$$ depend on the random effects.
+
+
+$end

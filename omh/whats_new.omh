@@ -29,7 +29,7 @@ Change remarks about
 $cref/W(beta, theta, u)
 	/theory
 	/Hessian of Random Objective
-	/W(beta, theta, u)
+	/Second Order Optimal Random Effects, W(beta, theta, u)
 /$$
 to mention that the following has been proven
 $latex \[
