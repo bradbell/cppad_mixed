@@ -45,7 +45,7 @@ $codei%
 %$$
 It specifies the value of the
 $cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$ at which $latex g^{(1)} ( \theta )$$ is evaluated.
+vector $latex \theta$$ at which $latex g_\theta ( \theta )$$ is evaluated.
 
 $head row_out$$
 This argument has prototype

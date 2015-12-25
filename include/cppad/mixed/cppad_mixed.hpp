@@ -321,7 +321,7 @@ $cref/random likelihood
 	/Random Likelihood, f(theta, u)
 /$$
 with respect to the random effects; i.e.
-$latex f_{uu}^{(2)} ( \theta , u )$$.
+$latex f_{u,u} ( \theta , u )$$.
 $codep */
 	CppAD::mixed::sparse_hes_info hes_ran_;
 	// recording of sparse Hessian calculation
@@ -338,7 +338,7 @@ $cref/random likelihood
 	/theory
 	/Random Likelihood, f(theta, u)
 /$$
-; i.e.  $latex f_{u \theta}^{(2)} ( \theta , u )$$.
+; i.e.  $latex f_{u,\theta} ( \theta , u )$$.
 $codep */
 	CppAD::mixed::sparse_hes_info hes_cross_;
 	//

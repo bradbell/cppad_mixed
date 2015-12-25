@@ -90,13 +90,13 @@ $subhead fix_constraint_hes_$$
 $icode%size_map%["fix_constraint_hes_"]%$$ is the size of the row vector in
 $cref/fix_constraint_hes_/init_fix_constraint/fix_constraint_hes_/$$.
 This is also the number of non-zeros
-in the Hessian $latex c^{(2)} ( \theta )$$.
+in the Hessian $latex c_{\theta,\theta} ( \theta )$$.
 
 $subhead fix_constraint_jac_$$
 $icode%size_map%["fix_constraint_jac_"]%$$ is the size of the row vector in
 $cref/fix_constraint_jac_/init_fix_constraint/fix_constraint_jac_/$$.
 This is also the number of non-zeros
-in the Jacobian $latex c^{(1)} ( \theta )$$.
+in the Jacobian $latex c_\theta ( \theta )$$.
 
 $subhead fix_likelihood_fun_$$
 $icode%size_map%["fix_likelihood_fun_"]%$$ is the number of variables in
@@ -106,13 +106,13 @@ $subhead fix_likelihood_hes_$$
 $icode%size_map%["fix_likelihood_hes_"]%$$ is the size of the row vector in
 $cref/fix_likelihood_hes_/init_fix_likelihood/fix_likelihood_hes_/$$.
 This is also the number of non-zeros
-in the Hessian $latex g^{(2)} ( \theta )$$.
+in the Hessian $latex g_{\theta,\theta} ( \theta )$$.
 
 $subhead fix_likelihood_jac_$$
 $icode%size_map%["fix_likelihood_jac_"]%$$ is the size of the row vector in
 $cref/fix_likelihood_jac_/init_fix_likelihood/fix_likelihood_jac_/$$.
 This is also the number of non-zeros
-in the Jacobian $latex g^{(1)} ( \theta )$$.
+in the Jacobian $latex g_\theta ( \theta )$$.
 
 $subhead hes_ran_$$
 $icode%size_map%["hes_ran_"]%$$ is the size of the row vector in
@@ -120,7 +120,7 @@ $cref/hes_ran_/init_hes_ran/hes_ran_/$$.
 This is also the number of non-zeros
 in the lower triangle of the Hessian
 $latex \[
-	f_{uu}^{(2)} ( \theta , u )
+	f_{u,u} ( \theta , u )
 \]$$
 see $cref/f(theta, u)/
 	theory/
@@ -133,7 +133,7 @@ $cref/hes_cross_/init_hes_cross/hes_cross_/$$.
 This is also the number of non-zeros
 in the Hessian
 $latex \[
-	f_{u \theta}^{(2)} ( \theta , u )
+	f_{u,\theta} ( \theta , u )
 \]$$
 see $cref/f(theta, u)/
 	theory/
@@ -150,9 +150,9 @@ $cref/hes_ranobj_/init_hes_ranobj/hes_ranobj_/$$.
 This is also the number of non-zeros
 in the lower triangle of the Hessian
 $latex \[
-	r^{(2)} ( \theta )
+	r_{\theta,\theta} ( \theta )
 	=
-	H_{\beta \beta}^{(2)} [ \beta, \theta , \hat{u} ( \theta) ]
+	H_{\beta,\beta} [ \beta, \theta , \hat{u} ( \theta) ]
 \] $$
 see
 $cref/H(beta, theta, u)

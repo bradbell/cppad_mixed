@@ -65,7 +65,7 @@ Upon return it contains the
 $cref sparse_hes_info$$
 for the Hessian
 $latex \[
-	f_{u \theta}^{(2)} ( \theta , u )
+	f_{u,\theta} ( \theta , u )
 \]$$
 see $cref/f(theta, u)/
 	theory/

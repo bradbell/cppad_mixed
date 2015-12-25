@@ -57,7 +57,7 @@ $codei%
 %$$
 and is the value of fixed effects $latex u$$.
 It is assumed that these random effects are optimal for the specified
-fixed effects and hence $latex f_u^{(1)} ( \theta , u ) = 0$$.
+fixed effects and hence $latex f_u ( \theta , u ) = 0$$.
 
 $head r_fixed$$
 This argument has prototype
@@ -66,7 +66,7 @@ $codei%
 %$$
 If the input size must be equal to $code n_fixed_$$.
 Upon return, it contains the value of the derivative w.r.t
-the fixed effects; i.e. $latex r^{(1)} ( \theta )$$.
+the fixed effects; i.e. $latex r_\theta ( \theta )$$.
 
 $children%
 	example/private/ranobj_grad_xam.cpp
@@ -96,7 +96,7 @@ void cppad_mixed::ranobj_grad(
 	size_t K = hes_ran_.row.size();
 	assert( K == hes_ran_.col.size() );
 
-	// compute an LDL^T Cholesky factorization of f_{uu}^{(2)}(theta, u)
+	// compute an LDL^T Cholesky factorization of f_{u,u}(theta, u)
 	d_vector both(n_fixed_ + n_random_);
 	pack(fixed_vec, random_vec, both);
 	CppAD::mixed::factorize_chol_hes_ran(
@@ -104,7 +104,7 @@ void cppad_mixed::ranobj_grad(
 	);
 
 	//
-	// Compute derivative of logdet of f_{uu}^{(2)} ( theta , u )
+	// Compute derivative of logdet of f_{u,u} ( theta , u )
 	d_vector logdet_fix(n_fixed_), logdet_ran(n_random_);
 	logdet_grad(fixed_vec, random_vec, logdet_fix, logdet_ran);
 	//

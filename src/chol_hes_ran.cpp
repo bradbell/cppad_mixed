@@ -61,7 +61,7 @@ $cref/random likelihood
 	/Random Likelihood, f(theta, u)
 /$$
 with respect to the random effects; i.e.
-$latex f_{uu}^{(2)} ( \theta , u )$$.
+$latex f_{u,u} ( \theta , u )$$.
 
 
 $head n_fixed$$
@@ -184,7 +184,7 @@ void analyze_chol_hes_ran(
 		hessian_pattern.insert(row[k] - n_fixed, col[k] - n_fixed) = not_used;
 	}
 	// analyze the pattern for an LDL^T Cholesky factorization of
-	// f_{uu}^{(2)}(theta, u)
+	// f_{u,u}(theta, u)
 	chol_hes_ran_.analyzePattern(hessian_pattern);
 }
 
@@ -208,7 +208,7 @@ void factorize_chol_hes_ran(
 		hessian_value.insert(row[k] - n_fixed, col[k] - n_fixed) = val[k];
 	}
 	// LDL^T Cholesky factorization of for specified values of the Hessian
-	// f_{uu}^{(2)}(theta, u)
+	// f_{u,u}(theta, u)
 	chol_hes_ran_.factorize(hessian_value);
 }
 
@@ -216,7 +216,7 @@ double logdet_chol_hes_ran(size_t n_random)
 {	using Eigen::Dynamic;
     typedef Eigen::Matrix<double, Dynamic, Dynamic> dense_matrix;
 
-	// compute the logdet( f_{uu}^{(2)}(theta, u )
+	// compute the logdet( f_{u,u}(theta, u )
 	dense_matrix diag = chol_hes_ran_.vectorD();
 	assert( diag.size() == int(n_random) );
 	double logdet = 0.0;

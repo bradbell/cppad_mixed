@@ -137,7 +137,7 @@ $cref/derivative of u^(theta)
 	/Derivative of Random Objective
 	/Derivative of u^(theta)
 /$$
-$latex \hat{u}^{(1)} ( \theta )$$ will not be correct when these constraints
+$latex \hat{u}_\theta ( \theta )$$ will not be correct when these constraints
 are active (and this could have adverse effects on the optimization).
 The value minus infinity can be used to specify no lower limit.
 

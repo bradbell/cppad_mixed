@@ -74,7 +74,7 @@ Upon return it contains the
 $cref sparse_hes_info$$
 for the lower triangle of the Hessian
 $latex \[
-	f_{uu}^{(2)} ( \theta , u )
+	f_{u,u} ( \theta , u )
 \]$$
 see $cref/f(theta, u)/
 	theory/
@@ -133,7 +133,7 @@ does not matter.
 Upon return its zero order forward mode computes
 the lower triangle of the sparse Hessian
 $latex \[
-	f_{uu}^{(2)} ( \theta , u )
+	f_{u,u} ( \theta , u )
 \]$$
 in the same order as the $icode a1_val_out$$ above.
 

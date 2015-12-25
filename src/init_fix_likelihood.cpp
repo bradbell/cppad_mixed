@@ -78,7 +78,7 @@ If $icode quasi_fixed$$ is false,
 upon return $code fix_likelihood_jac_$$ contains
 $cref sparse_jac_info$$ for the
 Jacobian corresponding to
-$latex g^{(1)}) ( \theta )$$ see
+$latex g_\theta) ( \theta )$$ see
 $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 
 $subhead fix_likelihood_fun_$$
@@ -95,7 +95,7 @@ If $icode quasi_fixed$$ is false,
 upon return $code fix_likelihood_hes_$$ contains
 $cref sparse_hes_info$$ for the
 lower triangle of a Hessian corresponding to
-$latex g^{(2)}) ( \theta )$$ see
+$latex g_{\theta,\theta}) ( \theta )$$ see
 $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 
 $subhead fix_likelihood_fun_$$

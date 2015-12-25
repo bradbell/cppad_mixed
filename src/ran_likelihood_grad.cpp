@@ -30,7 +30,7 @@ This routine computes the gradient of the random likelihood
 $cref/f(theta, u)/theory/Random Likelihood, f(theta, u)/$$
 with respect to the random effects vector $latex u$$; i.e.
 $latex \[
-	f_u^{(1)} ( \theta, u )
+	f_u ( \theta, u )
 \] $$
 
 $head Private$$
@@ -64,7 +64,7 @@ The return value has prototype
 $codei%
 	CppAD::vector<a1_double>& %grad%
 %$$
-It contains the gradient $latex f_u^{(1)} ( \theta , u )$$.
+It contains the gradient $latex f_u ( \theta , u )$$.
 
 $children%
 	example/private/ran_likelihood_grad_xam.cpp

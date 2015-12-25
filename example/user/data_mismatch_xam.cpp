@@ -71,39 +71,39 @@ theory behind the calculations below:
 $head Derivatives$$
 $latex \[
 \begin{array}{rcl}
-g_\theta^{(1)} ( \theta )
+g_\theta ( \theta )
 & = &
 ( \theta - z ) \sigma_z^{-2}
 \\
-f_\theta^{(1)} ( \theta , u )
+f_\theta ( \theta , u )
 & = &
 [ \exp(u) \theta - y ] \exp(u) \sigma_y^{-2}
 \\
-f_u^{(1)} ( \theta , u )
+f_u ( \theta , u )
 & = &
 u / \sigma_u^2 + [ \exp(u) \theta - y ] \exp(u) \theta \sigma_y^{-2}
 \\
-f_{uu}^{(2)} ( \theta , u )
+f_{u,u} ( \theta , u )
 & = &
 \sigma_u^{-2}
 +
 [ 2 \exp(u) \theta - y ] \exp(u) \theta \sigma_y^{-2}
 \\
-f_{u \theta}^{(2)} ( \theta , u )
+f_{u,\theta} ( \theta , u )
 & = &
 [ 2 \exp(u) \theta - y ] \exp(u) \sigma_y^{-2}
 \\
-\hat{u}_\theta^{(1)} ( \theta )
+\hat{u}_\theta ( \theta )
 & = &
-- f_{u \theta}^{(2)} [ \theta , \hat{u} ( \theta ) ]
+- f_{u,\theta} [ \theta , \hat{u} ( \theta ) ]
 /
-f_{uu}^{(2)} [ \theta , \hat{u} ( \theta ) ]
+f_{u,u} [ \theta , \hat{u} ( \theta ) ]
 \\
-f_{uuu}^{(3)} ( \theta , u )
+f_{u,u,u} ( \theta , u )
 & = &
 [ 4 \exp(u) \theta - y ] \exp(u) \theta \sigma_y^{-2}
 \\
-f_{uu \theta}^{(3)} ( \theta , u )
+f_{u,u,\theta} ( \theta , u )
 & = &
 [ 4 \exp(u) \theta - y ] \exp(u) \sigma_y^{-2}
 \end{array}
@@ -114,35 +114,35 @@ $latex \[
 \begin{array}{rcl}
 h( \theta , u )
 & = &
-\frac{1}{2} \log f_{uu}^{(2)} ( \theta , u )
+\frac{1}{2} \log f_{u,u} ( \theta , u )
 +
 f( \theta , u )
 -
 \log( 2 \pi )
 \\
-h_\theta^{(1)} ( \theta , u )
+h_\theta ( \theta , u )
 & = &
-\frac{1}{2} f_{uu \theta}^{(3)} ( \theta , u ) / f_{uu}^{(2)} ( \theta , u )
+\frac{1}{2} f_{u,u,\theta} ( \theta , u ) / f_{u,u} ( \theta , u )
 +
-f_\theta^{(1)} ( \theta , u )
+f_\theta ( \theta , u )
 \\
-h_u^{(1)} ( \theta , u )
+h_u ( \theta , u )
 & = &
-\frac{1}{2} f_{uuu}^{(3)} ( \theta , u ) / f_{uu}^{(2)} ( \theta , u )
+\frac{1}{2} f_{u,u,u} ( \theta , u ) / f_{u,u} ( \theta , u )
 +
-f_u^{(1)} ( \theta , u )
+f_u ( \theta , u )
 \\
 L( \theta )
 & = &
 h [ \theta , \hat{u} ( \theta ) ] + g ( \theta )
 \\
-L_\theta^{(1)} ( \theta )
+L_\theta ( \theta )
 & = &
-h_\theta^{(1)} [ \theta , \hat{u} ( \theta ) ]
+h_\theta [ \theta , \hat{u} ( \theta ) ]
 +
-h_u^{(1)} [ \theta , \hat{u} ( \theta ) ] \hat{u}^{(1)} ( \theta )
+h_u [ \theta , \hat{u} ( \theta ) ] \hat{u}_\theta ( \theta )
 +
-g_\theta^{(1)} ( \theta )
+g_\theta ( \theta )
 \end{array}
 \] $$
 

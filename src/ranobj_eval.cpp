@@ -105,14 +105,14 @@ double cppad_mixed::ranobj_eval(
 	size_t K = hes_ran_.row.size();
 	assert( K == hes_ran_.col.size() );
 
-	// compute an LDL^T Cholesky factorization of f_{uu}^{(2)}(theta, u)
+	// compute an LDL^T Cholesky factorization of f_{u,u}(theta, u)
 	d_vector both(n_fixed_ + n_random_);
 	pack(fixed_vec, random_vec, both);
 	CppAD::mixed::factorize_chol_hes_ran(
 		n_fixed_, n_random_, hes_ran_.row, hes_ran_.col, both, hes_ran_fun_
 	);
 
-	// compute the logdet( f_{uu}^{(2)}(theta, u )
+	// compute the logdet( f_{u,u}(theta, u )
 	double logdet = CppAD::mixed::logdet_chol_hes_ran(n_random_);
 
 	// constant term

@@ -39,9 +39,9 @@ $cref/f(theta, u)
 with respect to the random effects vector $latex u$$; i.e.
 it computes both
 $latex \[
-	\partial_\theta \log \det [ f_{uu}^{(2)} ( \theta, u ) ]
+	\partial_\theta \log \det [ f_{u,u} ( \theta, u ) ]
 	\; \R{and} \;
-	\partial_u \log \det [ f_{uu}^{(2)} ( \theta, u ) ]
+	\partial_u \log \det [ f_{u,u} ( \theta, u ) ]
 \] $$
 
 $head Private$$
@@ -116,7 +116,7 @@ void cppad_mixed::logdet_grad(
 	size_t K = hes_ran_.row.size();
 	assert( K == hes_ran_.col.size() );
 
-	// compute an LDL^T Cholesky factorization of f_{uu}^{(2)}(theta, u)
+	// compute an LDL^T Cholesky factorization of f_{u,u}(theta, u)
 	d_vector both(n_fixed_ + n_random_);
 	pack(fixed_vec, random_vec, both);
 	CppAD::mixed::factorize_chol_hes_ran(

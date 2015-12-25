@@ -78,7 +78,7 @@ the fixed and random effects is
 $latex \[
 h( \theta, u )
 =
-+ \frac{1}{2} \log \det f_{uu}^{(2)} ( \theta, u )
++ \frac{1}{2} \log \det f_{u,u} ( \theta, u )
 + f( \theta, u )
 - \frac{n}{2} \log ( 2 \pi )
 \] $$
@@ -110,11 +110,11 @@ r( \theta ) + g( \theta )
 $head Derivative of Random Objective$$
 The derivative of the random part of the objective is given by
 $latex \[
-r^{(1)} ( \theta )
+r_\theta ( \theta )
 =
-h_\theta^{(1)} [ \theta , \hat{u} ( \theta ) ]
+h_\theta [ \theta , \hat{u} ( \theta ) ]
 +
-h_u^{(1)} [ \theta , \hat{u} ( \theta ) ] u^{(1)} ( \theta )
+h_u [ \theta , \hat{u} ( \theta ) ] \hat{u}_\theta ( \theta )
 \] $$
 Thus the derivative of $latex r ( \theta )$$ can be computed
 if we can compute the derivative of $latex \hat{u} ( \theta )$$
@@ -125,16 +125,16 @@ Because $latex f(\theta, u)$$ is smooth,
 and $latex \hat{u} ( \theta )$$ is optimal w.r.t $latex u$$,
 we obtain
 $latex \[
-	f_u^{(1)} [ \theta , \hat{u} ( \theta ) ] = 0
+	f_u [ \theta , \hat{u} ( \theta ) ] = 0
 \] $$
 From this equation,
 and the implicit function theorem,
 it follows that
 $latex \[
-\hat{u}^{(1)} ( \theta )
+\hat{u}_\theta ( \theta )
 =
-- f_{uu}^{(2)} \left[ \theta , \hat{u} ( \theta ) \right]^{-1}
-	f_{u \theta}^{(2)} \left[ \theta , \hat{u} ( \theta )  \right]
+- f_{u,u} \left[ \theta , \hat{u} ( \theta ) \right]^{-1}
+	f_{u,\theta} \left[ \theta , \hat{u} ( \theta )  \right]
 \]$$
 
 $subhead Partial Derivatives of h(theta, u)$$
@@ -146,11 +146,11 @@ $latex \[
 \partial_k [ f( \theta , u ) ]
 +
 \frac{1}{2} \sum_{i=0}^{n-1} \sum_{j=0}^{n-1}
-	f_{uu}^{(2)} ( \theta , u )_{i,j}^{-1}
-	\partial_k [ f_{uu}^{(2)} ( \theta , u)_{i,j} ]
+	f_{u,u} ( \theta , u )_{i,j}^{-1}
+	\partial_k [ f_{u,u} ( \theta , u)_{i,j} ]
 \] $$
 where $latex n$$ is the number of random effects.
-Note that $latex f_{uu}^{(2)} ( \theta , u )$$
+Note that $latex f_{u,u} ( \theta , u )$$
 is often sparse and only non-zero
 components need be included in the summation.
 This is discussed in more detail near equation (8) in the
@@ -162,7 +162,7 @@ $latex \[
 
 $head Hessian of Random Objective$$
 Note that the Hessian of the random objective
-$latex r^{(2)} ( \theta ) $$ is required when
+$latex r_{\theta,\theta} ( \theta ) $$ is required when
 $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false.
 In this case, the following representation is used:
 
@@ -171,7 +171,7 @@ We define  the function
 $latex \[
 U ( \beta , \theta , u )
 =
-u - f_{uu}^{(2)} ( \theta , u )^{-1} f_u^{(1)} ( \beta , u  )
+u - f_{u,u} ( \theta , u )^{-1} f_u ( \beta , u  )
 \] $$
 It follows that
 $latex \[
@@ -179,12 +179,12 @@ $latex \[
 \]$$
 and
 $latex \[
-U_{\beta}^{(1)} \left[ \theta, \theta , \hat{u} ( \theta ) \right]
+U_{\beta} \left[ \theta, \theta , \hat{u} ( \theta ) \right]
 =
-- f_{uu}^{(2)} \left[ \theta , \hat{u} ( \theta ) \right]^{-1}
-	f_{u \theta}^{(2)} \left[ \theta , \hat{u} ( \theta )  \right]
+- f_{u,u} \left[ \theta , \hat{u} ( \theta ) \right]^{-1}
+	f_{u,\theta} \left[ \theta , \hat{u} ( \theta )  \right]
 =
-\hat{u}^{(1)} ( \theta )
+\hat{u}_\theta ( \theta )
 \] $$
 
 $subhead Second Order Optimal Random Effects, W(beta, theta, u)$$
@@ -194,8 +194,8 @@ W ( \beta , \theta , u )
 =
 U( \beta , \theta , u )
 -
-f_{uu}^{(2)} [ \beta , U( \beta , \theta , u) ]^{-1}
-	f_u^{(1)} [ \beta , U( \beta , \theta , u)  ]
+f_{u,u} [ \beta , U( \beta , \theta , u) ]^{-1}
+	f_u [ \beta , U( \beta , \theta , u)  ]
 \] $$
 It follows that
 $latex \[
@@ -206,16 +206,16 @@ $latex \[
 W_{\beta} [ \theta , \theta , \hat{u} ( \theta ) ]
 =
 -
-f_{uu}^{(2)} \left[ \theta , \hat{u} ( \theta ) \right]^{-1}
-	f_{u \theta}^{(2)} [ \beta , \hat{u} ( \theta )  ]
+f_{u,u} \left[ \theta , \hat{u} ( \theta ) \right]^{-1}
+	f_{u,\theta} [ \beta , \hat{u} ( \theta )  ]
 =
-\hat{u}^{(1)} ( \theta )
+\hat{u}_\theta ( \theta )
 \] $$
 It has been proved that, for $latex i = 0 , \ldots , n-1$$,
 $latex \[
 	W^i_{\beta \beta} [ \theta , \theta , \hat{u} ( \theta ) ]
 	=
-	\hat{u}_i^{(2)} ( \theta )
+	\hat{u}^i_{\theta , \theta} ( \theta )
 \] $$
 
 $subhead Approximate Random Objective, H(beta, theta, u)$$
@@ -223,7 +223,7 @@ Given these facts we define
 $latex \[
 H( \beta , \theta , u)
 =
-+ \frac{1}{2} \log \det f_{uu}^{(2)} [ \beta, W( \beta , \theta , u) ]
++ \frac{1}{2} \log \det f_{u,u} [ \beta, W( \beta , \theta , u) ]
 + f[ \beta, W( \beta , \theta , u) ]
 - \frac{n}{2} \log ( 2 \pi )
 \] $$
@@ -232,14 +232,14 @@ $latex \[
 r( \theta ) = H( \theta , \theta , \hat{u} ( \theta ) )
 \] $$
 $latex \[
-r^{(1)} ( \theta )
+r_\theta ( \theta )
 =
-H_{\beta}^{(1)} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
+H_{\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
 \] $$
 $latex \[
-r^{(2)} ( \theta )
+r_{\theta,\theta} ( \theta )
 =
-H_{\beta \beta}^{(1)} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
+H_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
 \] $$
 
 $end

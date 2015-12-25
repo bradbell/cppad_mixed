@@ -35,7 +35,7 @@ to mention that the following has been proven
 $latex \[
 	W^i_{\beta \beta} [ \theta , \theta , \hat{u} ( \theta ) ]
 	=
-	\hat{u}_i^{(2)} ( \theta )
+	\hat{u}^i_{\theta , \theta} ( \theta )
 \] $$
 $lend
 

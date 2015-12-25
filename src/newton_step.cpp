@@ -274,7 +274,7 @@ void newton_step_algo::operator()(
 		hessian.insert(i, j) = a1_val_out[k];
 	}
 
-	// compute an LDL^T Cholesky factorization of f_{uu}^{(2)}(theta, u)
+	// compute an LDL^T Cholesky factorization of f_{u,u}(theta, u)
 	Eigen::SimplicialLDLT<sparse_matrix, Eigen::Lower> chol;
 	chol.analyzePattern(hessian);
 	chol.factorize(hessian);
@@ -285,7 +285,7 @@ void newton_step_algo::operator()(
 		rhs(j) = a1_theta_u_v[n_fixed_ + n_random_ + j];
 	step = chol.solve(rhs);
 
-	// compute the logdet( f_{uu}^{(2)}(theta, u )
+	// compute the logdet( f_{u,u}(theta, u )
 	dense_matrix diag = chol.vectorD();
 	a1_double logdet = a1_double(0.0);
 	for(size_t j = 0; j < n_random_; j++)

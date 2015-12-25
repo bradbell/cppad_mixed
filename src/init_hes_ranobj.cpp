@@ -66,9 +66,9 @@ Upon return it contains the
 $cref sparse_hes_info$$
 for the lower triangle of the Hessian
 $latex \[
-	r^{(2)} ( \theta )
+	r_{\theta,\theta} ( \theta )
 	=
-	H_{\beta \beta}^{(2)} [ \beta, \theta , \hat{u} ( \theta) ]
+	H_{\beta,\beta} [ \beta, \theta , \hat{u} ( \theta) ]
 \] $$
 see
 $cref/H(beta, theta, u)

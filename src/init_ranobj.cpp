@@ -91,12 +91,12 @@ void cppad_mixed::init_ranobj(
 	a1d_vector beta(n_fixed_), theta(n_fixed_), u(n_random_);
 	unpack(beta, theta, u, beta_theta_u);
 
-	// evaluate gradient f_u^{(1)} (beta , u )
+	// evaluate gradient f_u (beta , u )
 	a1d_vector grad(n_random_);
 	grad = ran_likelihood_grad(beta, u);
 
-	// Evaluate the log determinant of f_{uu}^{(2)} ( theta , u)
-	// and Newton step s = f_{uu}^{(2)} ( theta , u) f_u^{(1)} (beta, u)
+	// Evaluate the log determinant of f_{u,u} ( theta , u)
+	// and Newton step s = f_{u,u} ( theta , u) f_u (beta, u)
 	a1d_vector theta_u_v(n_fixed_ + 2 * n_random_ );
 	for(size_t j = 0; j < n_fixed_; j++)
 		theta_u_v[j] = theta[j];
@@ -118,7 +118,7 @@ void cppad_mixed::init_ranobj(
 	for(size_t j = 0; j < n_random_; j++)
 		U[j] = u[j] - logdet_step[1 + j];
 
-	// evaluate gradient f_u^{(1)} (beta , U )
+	// evaluate gradient f_u (beta , U )
 	grad = ran_likelihood_grad(beta, U);
 
 	// Evaluate the log determinant and newton step
