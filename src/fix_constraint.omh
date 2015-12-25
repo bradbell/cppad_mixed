@@ -57,7 +57,7 @@ $codei%
 	CppAD::vector<%a1_double%> %vec%
 %$$
 It is the value of the
-$cref/constraint function/cppad_mixed/Problem/Constraints/$$
+$cref/constraint function/cppad_mixed/Problem/Fixed Constraints/$$
 $cref/c(theta)/cppad_mixed/Notation/c(theta)/$$.
 
 $subhead Default$$

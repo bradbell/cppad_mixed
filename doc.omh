@@ -126,9 +126,7 @@ Laplace approximation and
 optimizing the corresponding objective $latex L( \theta )$$; see
 $cref/total objective/theory/Objective/Total Objective, L(theta)/$$.
 
-$subhead Constraints$$
-The random effects vector $latex u$$ does have any constraints
-(so that the Laplace approximation makes sense).
+$subhead Fixed Constraints$$
 The fixed effects have constraints of the form
 $latex \[
 	c_L \leq c(\theta) \leq c_U
