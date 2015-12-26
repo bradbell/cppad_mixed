@@ -126,7 +126,7 @@ Laplace approximation and
 optimizing the corresponding objective $latex L( \theta )$$; see
 $cref/total objective/theory/Objective/Total Objective, L(theta)/$$.
 
-$subhead Fixed Constraints$$
+$subhead Fixed Constraints, c$$
 The fixed effects have constraints of the form
 $latex \[
 	c_L \leq c(\theta) \leq c_U

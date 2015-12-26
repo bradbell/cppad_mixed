@@ -107,7 +107,7 @@ This argument has prototype
 $icode%
 	CppAD::vector<%Base%>& %hes%
 %$$
-Its input size must be the same as $icode%hes_info%.row.size()%$$
+Its input size must be $icode%hes_info%.row.size()%$$
 and the value of its elements does not matter.
 Upon return $icode%hes%[%k%]%$$ is the Hessian at row index
 $icode%hes_info%.row[%k%]%$$ and column index

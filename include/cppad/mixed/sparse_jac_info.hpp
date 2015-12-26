@@ -119,7 +119,7 @@ This argument has prototype
 $icode%
 	CppAD::vector<%Base%>& %jac%
 %$$
-Its input size must be the same as $icode%jac_info%.row.size()%$$
+Its input size must be $icode%jac_info%.row.size()%$$
 and the value of its elements does not matter.
 Upon return $icode%jac%[%k%]%$$ is the Jacobian at row index
 $icode%jac_info%.row[%k%]%$$ and column index
