@@ -59,7 +59,7 @@ $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ optimization.
 $head hes_ranobj_$$
 The input value of the member variable
 $codei%
-	sparse_hes_info hes_ranobj_
+	CppAD::mixed::sparse_hes_info hes_ranobj_
 %$$
 does not matter.
 Upon return it contains the

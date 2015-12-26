@@ -71,7 +71,7 @@ $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 $head fix_likelihood_jac_$$
 The input value of
 $codei%
-	sparse_jac_info fix_likelihood_jac_
+	CppAD::mixed::sparse_jac_info fix_likelihood_jac_
 %$$
 does not matter.
 If $icode quasi_fixed$$ is false,
@@ -88,7 +88,7 @@ $cref/sparse Jacobian call/sparse_jac_info/Sparse Jacobian Call/f/$$.
 $head fix_likelihood_hes_$$
 The input value of
 $codei%
-	sparse_hes_info fix_likelihood_hes_
+	CppAD::mixed::sparse_hes_info fix_likelihood_hes_
 %$$
 does not matter.
 If $icode quasi_fixed$$ is false,

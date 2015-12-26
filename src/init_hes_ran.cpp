@@ -67,7 +67,7 @@ vector $latex u$$ at which the initialization is done.
 $head hes_ran_$$
 The input value of the member variable
 $codei%
-	sparse_hes_info hes_ran_
+	CppAD::mixed::sparse_hes_info hes_ran_
 %$$
 does not matter.
 Upon return it contains the

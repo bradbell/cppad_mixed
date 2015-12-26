@@ -67,7 +67,7 @@ $cref fix_constraint$$ $latex c( \theta )$$.
 $head fix_constraint_jac_$$
 The input value of
 $codei%
-	sparse_jac_info fix_constraint_jac_
+	CppAD::mixed::sparse_jac_info fix_constraint_jac_
 %$$
 does not matter.
 If $icode quasi_fixed$$ is false,
@@ -82,7 +82,7 @@ $cref/sparse jacobian call/sparse_jac_info/Sparse Jacobian Call/f/$$.
 $head fix_constraint_hes_$$
 The input value of
 $codei%
-	sparse_hes_info fix_constraint_hes_
+	CppAD::mixed::sparse_hes_info fix_constraint_hes_
 %$$
 does not matter.
 If $icode quasi_fixed$$ is false,
