@@ -101,8 +101,9 @@ EOF
 
 	md)
 	cat << EOF  >> bin/add_copyright.$$
-\$Id:\$
-\`
+<!-- \$Id:\$ -->
+# License
+<pre>
 -----------------------------------------------------------------------------
 cppad_mixed: Estimating Disease Rates as Functions of Age and Time
           Copyright (C) 2014-15 University of Washington
@@ -111,7 +112,8 @@ cppad_mixed: Estimating Disease Rates as Functions of Age and Time
 This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
------------------------------------------------------------------------------\`
+-----------------------------------------------------------------------------
+</pre>
 EOF
 	;;
 
