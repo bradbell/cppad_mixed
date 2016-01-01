@@ -35,7 +35,7 @@ fi
 version=`bin/version.sh get`
 rm -rf doc
 echo_eval mkdir -p doc/cppad_mixed-$version
-for file in `git ls-files`
+for file in `bin/ls_files.sh`
 do
 	sub_dir=`echo $file | sed -e 's|/[^/]*$||'`
 	if [ "$sub_dir" != "$file" ]

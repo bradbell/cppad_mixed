@@ -16,7 +16,7 @@ then
 fi
 # -----------------------------------------------------------------------------
 dir_list=''
-list=`git ls-files example`
+list=`bin/ls_files.sh | sed -n -e '/^example\//p'`
 for file in $list
 do
 	name=`echo $file | sed -e 's|example/||'`

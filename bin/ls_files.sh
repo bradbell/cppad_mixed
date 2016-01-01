@@ -9,26 +9,27 @@
 #	     GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
-if [ "$0" != "bin/search.sh" ]
+if [ "$0" != "bin/ls_files.sh" ]
 then
-	echo "bin/search.sh: must be executed from its parent directory"
+	echo "bin/ls_files.sh: must be executed from its parent directory"
 	exit 1
 fi
 # ---------------------------------------------------------------------------
-if [ "$1" == '' ]
+if [ "$1" != '' ]
 then
-	echo 'usage: bin/search.sh grep_string'
+	echo 'usage: bin/ls_files.sh'
 	exit 1
 fi
-list=`bin/ls_files.sh`
-for file in $list
+# -----------------------------------------------------------------------------
+list_all=`git ls-files`
+git ls-files -d "$1" > ls_files.$$
+for file in $list_all
 do
-	# make git has not staged a delete of this file
-	if [ -e "$file" ]
+	pattern=`echo $file | sed -e 's|/|[/]|g' -e 's|^|^|' -e 's|$|$|'`
+	if ! grep "$pattern" ls_files.$$ > /dev/null
 	then
-		if grep --ignore-case "$1" $file > /dev/null
-		then
-			echo $file
-		fi
+		echo "$file"
 	fi
 done
+rm ls_files.$$
+exit 0

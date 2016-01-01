@@ -16,80 +16,13 @@ $spell
 	cppad
 $$
 
-$section Changed and Additions to cppad_mixed$$
+$section Changed and Additions to cppad_mixed During 2016$$
 
-$head 2015-12-25$$
-$list number$$
-Only use subscripts for derivative notation; i.e., remove the
-superscripts (1) and (2) from derivatives. This enables us
-(in the future) to use superscripts for indices and subscripts for derivatives.
-$lnext
-Change $latex z^L, z^U$$ to $latex z_L , z_U$$ in
-$cref ipopt_xam$$ (because the corresponding variables are
-$icode z_L$$ and $icode z_U$$); see
-$cref/finalize_solution/ipopt_fixed_finalize_solution/z_L/$$.
-$lend
+$childtable%omh/whats_new_15.omh
+%$$
 
-$head 2015-12-24$$
-$list number$$
-There was a bug in the $cref ipopt_fixed_eval_g$$ routine.
-It was not caching the value of $latex \hat{u}( \theta )$$
-each time that $latex \theta$$ changed.
-This has been fixed.
-$lnext
-Change remarks about
-$cref/W(beta, theta, u)
-	/theory
-	/Hessian of Random Objective
-	/Second Order Optimal Random Effects, W(beta, theta, u)
-/$$
-to mention that the following has been proven
-$latex \[
-	W^i_{\beta \beta} [ \theta , \theta , \hat{u} ( \theta ) ]
-	=
-	\hat{u}^i_{\theta , \theta} ( \theta )
-\] $$
-$lend
-
-$head 2015-12-16$$
-Overhaul the set of values and documentation for the
-$cref/size_map/initialize/size_map/$$ memory diagnostic.
-
-$head 2015-12-14$$
-$list number$$
-Provide a default definition for
-$cref/ran_likelihood/ran_likelihood/vec/Default/$$,
-$cref/fix_likelihood/fix_likelihood/vec/Default/$$,
-$cref/fix_constraint/fix_constraint/vec/Default/$$,
-$cref/fatal_error/public/User Defined/fatal_error/$$, and
-$cref/warning/public/User Defined/warning/$$.
-$lnext
-Change section titles for these sections
-to highlight that they are user defined;
-$lend
-
-$head 2015-12-13$$
-Change
-$code constraint$$ to $cref fix_constraint$$,
-$code ran_likelihood$$ to $cref ran_likelihood$$, and
-$code fix_likelihood$$ to $cref fix_likelihood$$.
-
-$head 2015-12-10$$
-$list number$$
-First version of $code cppad_mixed$$ as a package separate from
-the $href%http://moby.ihme.washington.edu/bradbell/dismod_at%dismod_at%$$
-package.
-$lnext
-Use the
-$href%http://www.coin-or.org/CppAD/Doc/addon.htm%CppAD addon%$$
-conventions for the install of $code cppad_mixed$$.
-$lnext
-Put $code cppad_mixed$$ class in the global namespace,
-(objects are in the $code CppAD::mixed$$ namespace).
-$lnext
-Modify file names and documentation because everything now refers to
-the $code cppad_mixed$$ package.
-$lend
+$head 01-01$$
+Advance to newer version of CppAD; (must rerun $code bin/install_cppad.sh$$).
 
 
 $end

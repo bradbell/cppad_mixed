@@ -15,7 +15,7 @@ then
 	exit 1
 fi
 # -----------------------------------------------------------------------------
-list=`git ls-files | sed -e '/^\.gitignore/d'`
+list=`bin/ls_files.sh | sed -e '/^\.gitignore/d'`
 for file in $list
 do
 	text='Copyright (C) 2014-.. University of Washington'

@@ -14,7 +14,7 @@ then
 	echo "bin/check_configure.sh: must be executed from its parent directory"
 	exit 1
 fi
-file_list=`git ls-files | sed -n -e '/\.cpp$/p'`
+file_list=`bin/ls_files.sh | sed -n -e '/\.cpp$/p'`
 define_list='
 	CPPAD_MIXED_VERSION
 	CPPAD_MIXED_HAS_SUITESPARSE

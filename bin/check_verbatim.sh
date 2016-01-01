@@ -34,7 +34,7 @@ special_case='
 # Make sure that OMhelp verbatim commands referr to same file as command
 echo "Checking that OMhelp verbatim commands include from file they appear in."
 echo "----------------------------------------------------------------------"
-list=`git ls-files`
+list=`bin/ls_files.sh`
 different="no"
 for file in $list
 do
