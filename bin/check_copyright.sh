@@ -2,7 +2,7 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-14 University of Washington
+#           Copyright (C) 2014-16 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -40,11 +40,11 @@ for file in $list
 do
 	if [ -e "$file" ] && [ "$file" != '.gitignore' ]
 	then
-		text='Copyright (C) 2014-15 University of Washington'
+		text='Copyright (C) 2014-16 University of Washington'
 		if ! grep "$text" $file > /dev/null
 		then
 			echo $file
-			sed -e 's|Copyright (C) 2014-..|Copyright (C) 2014-15|' -i.$$ $file
+			sed -e 's|Copyright (C) 2014-..|Copyright (C) 2014-16|' -i.$$ $file
 			if diff $file.$$ $file
 			then
 				echo 'bin/check_copyright.sh: program error'
