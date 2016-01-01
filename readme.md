@@ -1,7 +1,7 @@
 <!-- $Id:$ -->
 # License
 <pre>
-cppad_mixed: Estimating Disease Rates as Functions of Age and Time
+cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
           Copyright (C) 2014-15 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 This program is distributed under the terms of the

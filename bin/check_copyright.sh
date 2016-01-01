@@ -1,12 +1,12 @@
 #! /bin/bash -e
 # $Id$
 #  --------------------------------------------------------------------------
-# cppad_mixed: Estimating Disease Rates as Functions of Age and Time
+# cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
 #           Copyright (C) 2014-14 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
-# 	     GNU Affero General Public License version 3.0 or later
+#	     GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
 if [ "$0" != "bin/check_copyright.sh" ]
