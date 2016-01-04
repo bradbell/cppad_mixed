@@ -27,7 +27,7 @@ ADD_LIBRARY(cppad_mixed
 	manage_gsl_rng.cpp
 	optimize_fixed.cpp
 	optimize_random.cpp
-	ran_like_grad.cpp
+	ran_like_jac.cpp
 	ran_obj_hes.cpp
 )
 SET_TARGET_PROPERTIES(cppad_mixed
@@ -39,10 +39,10 @@ ADD_LIBRARY(cppad_mixed_eigen
 	chol_hes_ran.cpp
 	init_hes_ran.cpp
 	init_ran_obj.cpp
+	logdet_jac.cpp
 	newton_step.cpp
 	ran_obj_eval.cpp
-	logdet_jac.cpp
-	ran_obj_grad.cpp
+	ran_obj_jac.cpp
 )
 SET_TARGET_PROPERTIES(cppad_mixed_eigen
 	PROPERTIES COMPILE_FLAGS "${eigen_cxx_flags}"

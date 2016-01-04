@@ -11,8 +11,9 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/chol_hes_ran.hpp>
 /*
-$begin ran_obj_grad$$
+$begin ran_obj_jac$$
 $spell
+	jac
 	CppAD
 	ran_obj
 	cppad
@@ -26,7 +27,7 @@ $$
 $section Derivative of Random Objective$$
 
 $head Syntax$$
-$icode%mixed_object%.ran_obj_grad(%fixed_vec%, %random_vec%, %r_fixed%)%$$
+$icode%mixed_object%.ran_obj_jac(%fixed_vec%, %random_vec%, %r_fixed%)%$$
 
 $head Purpose$$
 This routine computes the
@@ -69,17 +70,17 @@ Upon return, it contains the value of the derivative w.r.t
 the fixed effects; i.e. $latex r_\theta ( \theta )$$.
 
 $children%
-	example/private/ran_obj_grad_xam.cpp
+	example/private/ran_obj_jac_xam.cpp
 %$$
 $head Example$$
-The file $cref ran_obj_grad_xam.cpp$$ contains an example
+The file $cref ran_obj_jac_xam.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
 $end
 */
 // ----------------------------------------------------------------------------
-void cppad_mixed::ran_obj_grad(
+void cppad_mixed::ran_obj_jac(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec ,
 	d_vector&       r_fixed    )

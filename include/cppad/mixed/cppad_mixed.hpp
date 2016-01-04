@@ -27,9 +27,9 @@ extern bool fix_like_jac_xam(void);
 extern bool hes_cross_xam(void);
 extern bool hes_ran_fun_xam(void);
 extern bool logdet_jac_xam(void);
-extern bool ran_like_grad_xam(void);
+extern bool ran_like_jac_xam(void);
 extern bool ran_obj_eval_xam(void);
-extern bool ran_obj_grad_xam(void);
+extern bool ran_obj_jac_xam(void);
 extern bool ran_obj_hes_xam(void);
 
 //  tests
@@ -260,9 +260,9 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/fix_like_hes.cpp
 	%src/fix_like_jac.cpp
 	%src/logdet_jac.cpp
-	%src/ran_like_grad.cpp
+	%src/ran_like_jac.cpp
 	%src/ran_obj_eval.cpp
-	%src/ran_obj_grad.cpp
+	%src/ran_obj_jac.cpp
 	%src/ran_obj_hes.cpp
 %$$
 
@@ -610,14 +610,14 @@ $codep */
 	friend bool ::logdet_jac_xam(void);
 /* $$
 
-$subhead ran_like_grad$$
-See $cref ran_like_grad$$
+$subhead ran_like_jac$$
+See $cref ran_like_jac$$
 $codep */
-	a1d_vector ran_like_grad(
+	a1d_vector ran_like_jac(
 		const a1d_vector&       fixed_vec   ,
 		const a1d_vector&       random_vec
 	);
-	friend bool ::ran_like_grad_xam(void);
+	friend bool ::ran_like_jac_xam(void);
 /* $$
 
 $subhead ran_obj_eval$$
@@ -630,15 +630,15 @@ $codep */
 	friend bool ::ran_obj_eval_xam(void);
 /* $$
 
-$subhead ran_obj_grad$$
-See $cref ran_obj_grad$$
+$subhead ran_obj_jac$$
+See $cref ran_obj_jac$$
 $codep */
-	void ran_obj_grad(
+	void ran_obj_jac(
 		const d_vector& fixed_vec  ,
 		const d_vector& random_vec ,
 		d_vector&       r_fixed
 	);
-	friend bool ::ran_obj_grad_xam(void);
+	friend bool ::ran_obj_jac_xam(void);
 	friend bool ::der_var_hes(void);
 	friend bool ::delta_ran_obj(void);
 /* $$

@@ -10,8 +10,9 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
 /*
-$begin ran_like_grad$$
+$begin ran_like_jac$$
 $spell
+	jac
 	CppAD
 	cppad
 	vec
@@ -23,7 +24,7 @@ $$
 $section Gradient of Random Likelihood w.r.t. Random Effects$$
 
 $head Syntax$$
-$icode%grad% = %mixed_object%.ran_like_grad( %fixed_vec%, %random_vec%)%$$
+$icode%grad% = %mixed_object%.ran_like_jac( %fixed_vec%, %random_vec%)%$$
 
 $head Purpose$$
 This routine computes the gradient of the random likelihood
@@ -67,10 +68,10 @@ $codei%
 It contains the gradient $latex f_u ( \theta , u )$$.
 
 $children%
-	example/private/ran_like_grad_xam.cpp
+	example/private/ran_like_jac_xam.cpp
 %$$
 $head Example$$
-The file $cref ran_like_grad_xam.cpp$$ contains an example
+The file $cref ran_like_jac_xam.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
@@ -79,8 +80,8 @@ $end
 
 
 // ----------------------------------------------------------------------------
-// ran_like_grad
-CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_grad(
+// ran_like_jac
+CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_jac(
 	const a1d_vector&        fixed_vec   ,
 	const a1d_vector&        random_vec  )
 {	assert( init_ran_like_done_ );

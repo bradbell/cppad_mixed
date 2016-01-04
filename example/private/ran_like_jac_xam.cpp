@@ -9,22 +9,23 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin ran_like_grad_xam.cpp$$
+$begin ran_like_jac_xam.cpp$$
 $spell
+	jac
 	CppAD
 	cppad
 	interp
 	xam
 $$
 
-$section ran_like_grad: Example and Test$$
+$section ran_like_jac: Example and Test$$
 
 $head Private$$
 This example is not part of the
 $cref/cppad_mixed public API/public/$$.
 
 $code
-$verbatim%example/private/ran_like_grad_xam.cpp
+$verbatim%example/private/ran_like_jac_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -107,7 +108,7 @@ namespace {
 	};
 }
 
-bool ran_like_grad_xam(void)
+bool ran_like_jac_xam(void)
 {
 	bool   ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
@@ -132,7 +133,7 @@ bool ran_like_grad_xam(void)
 
 	// compute gradient with respect to random effects
 	vector<a1_double> grad =
-		mixed_object.ran_like_grad(fixed_vec, random_vec);
+		mixed_object.ran_like_jac(fixed_vec, random_vec);
 
 	// check the gradient
 	for(size_t i = 0; i < n_random; i++)

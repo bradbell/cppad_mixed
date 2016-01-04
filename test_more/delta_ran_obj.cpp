@@ -8,7 +8,7 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-// Finite difference test of ran_obj_grad.cpp
+// Finite difference test of ran_obj_jac.cpp
 // BEGIN C++
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
@@ -142,7 +142,7 @@ bool delta_ran_obj(void)
 	//
 	// compute the derivative of the random part of objective
 	vector<double> r_fixed(n_fixed);
-	mixed_object.ran_obj_grad(fixed_vec, uhat, r_fixed);
+	mixed_object.ran_obj_jac(fixed_vec, uhat, r_fixed);
 	//
 	// check using finite central differences
 	for(size_t j = 0; j < n_fixed; j++)

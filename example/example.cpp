@@ -40,8 +40,8 @@ extern bool fix_con_hes_xam(void);
 extern bool fix_con_jac_xam(void);
 extern bool fix_constraint_xam(void);
 extern bool fix_like_eval_xam(void);
-extern bool fix_like_hes_xam(void);
 extern bool fix_like_jac_xam(void);
+extern bool fix_like_hes_xam(void);
 extern bool hes_cross_xam(void);
 extern bool hes_ran_fun_xam(void);
 extern bool ipopt_xam_run(void);
@@ -51,9 +51,9 @@ extern bool newton_step_xam(void);
 extern bool no_random_xam(void);
 extern bool optimize_fixed_xam(void);
 extern bool optimize_random_xam(void);
-extern bool ran_like_grad_xam(void);
+extern bool ran_like_jac_xam(void);
 extern bool ran_obj_eval_xam(void);
-extern bool ran_obj_grad_xam(void);
+extern bool ran_obj_jac_xam(void);
 extern bool ran_obj_hes_xam(void);
 
 // anonymous namespace
@@ -96,8 +96,8 @@ int main(void)
 	RUN(fix_con_jac_xam);
 	RUN(fix_constraint_xam);
 	RUN(fix_like_eval_xam);
-	RUN(fix_like_hes_xam);
 	RUN(fix_like_jac_xam);
+	RUN(fix_like_hes_xam);
 	RUN(hes_cross_xam);
 	RUN(hes_ran_fun_xam);
 	RUN(ipopt_xam_run);
@@ -107,9 +107,9 @@ int main(void)
 	RUN(no_random_xam);
 	RUN(optimize_fixed_xam);
 	RUN(optimize_random_xam);
-	RUN(ran_like_grad_xam);
+	RUN(ran_like_jac_xam);
 	RUN(ran_obj_eval_xam);
-	RUN(ran_obj_grad_xam);
+	RUN(ran_obj_jac_xam);
 	RUN(ran_obj_hes_xam);
 
 
