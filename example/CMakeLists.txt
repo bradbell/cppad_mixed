@@ -50,7 +50,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	private/fix_like_jac_xam.cpp
 	private/hes_cross_xam.cpp
 	private/hes_ran_fun_xam.cpp
-	private/logdet_grad_xam.cpp
+	private/logdet_jac_xam.cpp
 	private/newton_step_xam.cpp
 	private/ran_like_grad_xam.cpp
 	private/ran_obj_eval_xam.cpp

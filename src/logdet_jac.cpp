@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -11,8 +11,10 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/chol_hes_ran.hpp>
 /*
-$begin logdet_grad$$
+$begin logdet_jac$$
 $spell
+	Jacobian
+	jac
 	CppAD
 	cppad
 	hes
@@ -23,10 +25,10 @@ $spell
 	logdet
 $$
 
-$section Derivative of Log Determinant of Hessian w.r.t. Random Effects$$
+$section Jacobian of Log Determinant of Hessian w.r.t. Random Effects$$
 
 $head Syntax$$
-$icode%mixed_object%.logdet_grad(
+$icode%mixed_object%.logdet_jac(
 	%fixed_vec%, %random_vec%, %logdet_fix%, %logdet_ran%)%$$
 
 $head Purpose$$
@@ -86,17 +88,17 @@ Upon return, it contains the value of the derivative w.r.t
 the random effects.
 
 $children%
-	example/private/logdet_grad_xam.cpp
+	example/private/logdet_jac_xam.cpp
 %$$
 $head Example$$
-The file $cref logdet_grad_xam.cpp$$ contains an example
+The file $cref logdet_jac_xam.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
 $end
 */
 // ----------------------------------------------------------------------------
-void cppad_mixed::logdet_grad(
+void cppad_mixed::logdet_jac(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec ,
 	d_vector&       logdet_fix ,

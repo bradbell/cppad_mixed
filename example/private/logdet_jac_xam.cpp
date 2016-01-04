@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -9,8 +9,9 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin logdet_grad_xam.cpp$$
+$begin logdet_jac_xam.cpp$$
 $spell
+	jac
 	CppAD
 	cppad
 	hes
@@ -19,7 +20,7 @@ $spell
 	logdet
 $$
 
-$section logdet_grad: Example and Test$$
+$section logdet_jac: Example and Test$$
 
 
 $head Private$$
@@ -27,7 +28,7 @@ This example is not part of the
 $cref/cppad_mixed public API/public/$$.
 
 $code
-$verbatim%example/private/logdet_grad_xam.cpp
+$verbatim%example/private/logdet_jac_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -111,7 +112,7 @@ namespace {
 	};
 }
 
-bool logdet_grad_xam(void)
+bool logdet_jac_xam(void)
 {
 	bool   ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
@@ -135,7 +136,7 @@ bool logdet_grad_xam(void)
 
 	// compute derivative of logdet of Hessian
 	vector<double> logdet_fix(n_fixed), logdet_ran(n_random);
-	mixed_object.logdet_grad(fixed_vec, random_vec, logdet_fix, logdet_ran);
+	mixed_object.logdet_jac(fixed_vec, random_vec, logdet_fix, logdet_ran);
 
 	// Hessian_{i,j} = 1.0 / (theta[i] * theta[i]) if i == j
 	//               = 0.0 otherwise

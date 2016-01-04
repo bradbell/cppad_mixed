@@ -26,7 +26,7 @@ extern bool fix_like_hes_xam(void);
 extern bool fix_like_jac_xam(void);
 extern bool hes_cross_xam(void);
 extern bool hes_ran_fun_xam(void);
-extern bool logdet_grad_xam(void);
+extern bool logdet_jac_xam(void);
 extern bool ran_like_grad_xam(void);
 extern bool ran_obj_eval_xam(void);
 extern bool ran_obj_grad_xam(void);
@@ -259,7 +259,7 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/fix_like_eval.cpp
 	%src/fix_like_hes.cpp
 	%src/fix_like_jac.cpp
-	%src/logdet_grad.cpp
+	%src/logdet_jac.cpp
 	%src/ran_like_grad.cpp
 	%src/ran_obj_eval.cpp
 	%src/ran_obj_grad.cpp
@@ -598,16 +598,16 @@ $codep */
 	friend bool ::fix_like_hes_xam(void);
 /* $$
 
-$subhead logdet_grad$$
-See $cref logdet_grad$$
+$subhead logdet_jac$$
+See $cref logdet_jac$$
 $codep */
-	void logdet_grad(
+	void logdet_jac(
 		const d_vector& fixed_vec  ,
 		const d_vector& random_vec ,
 		d_vector&       logdet_fix ,
 		d_vector&       logdet_ran
 	);
-	friend bool ::logdet_grad_xam(void);
+	friend bool ::logdet_jac_xam(void);
 /* $$
 
 $subhead ran_like_grad$$

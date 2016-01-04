@@ -41,7 +41,7 @@ ADD_LIBRARY(cppad_mixed_eigen
 	init_ran_obj.cpp
 	newton_step.cpp
 	ran_obj_eval.cpp
-	logdet_grad.cpp
+	logdet_jac.cpp
 	ran_obj_grad.cpp
 )
 SET_TARGET_PROPERTIES(cppad_mixed_eigen

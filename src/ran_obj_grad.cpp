@@ -106,7 +106,7 @@ void cppad_mixed::ran_obj_grad(
 	//
 	// Compute derivative of logdet of f_{u,u} ( theta , u )
 	d_vector logdet_fix(n_fixed_), logdet_ran(n_random_);
-	logdet_grad(fixed_vec, random_vec, logdet_fix, logdet_ran);
+	logdet_jac(fixed_vec, random_vec, logdet_fix, logdet_ran);
 	//
 	// Compute derivative of f(theta , u ) w.r.t theta and u
 	d_vector w(1), f_both(n_fixed_ + n_random_);
