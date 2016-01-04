@@ -10,14 +10,14 @@
 # ---------------------------------------------------------------------------
 # cppad_mixed
 ADD_LIBRARY(cppad_mixed
-	fix_constraint_eval.cpp
-	fix_constraint_eval.cpp
-	fix_constraint_hes.cpp
-	fix_constraint_jac.cpp
+	fix_con_eval.cpp
+	fix_con_eval.cpp
+	fix_con_hes.cpp
+	fix_con_jac.cpp
 	fix_likelihood_eval.cpp
 	fix_likelihood_hes.cpp
 	fix_likelihood_jac.cpp
-	init_fix_constraint.cpp
+	init_fix_con.cpp
 	init_fix_likelihood.cpp
 	init_hes_cross.cpp
 	init_hes_ran_obj.cpp

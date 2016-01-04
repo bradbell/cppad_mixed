@@ -11,7 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/cppad_mixed.hpp>
 
 /*
-$begin fix_constraint_hes$$
+$begin fix_con_hes$$
 $spell
 	CppAD
 	cppad
@@ -25,7 +25,7 @@ $$
 $section Hessian of Constraints w.r.t Fixed Effects$$
 
 $head Syntax$$
-$icode%mixed_object%.fix_constraint_hes(
+$icode%mixed_object%.fix_con_hes(
 	%fixed_vec%, %weight%, %row_out%, %col_out%, %val_out%
 )%$$
 
@@ -101,10 +101,10 @@ Upon return, it contains the value of the Hessian elements
 that are possibly non-zero (and will have the same size as $icode row_out$$).
 
 $children%
-	example/private/fix_constraint_hes_xam.cpp
+	example/private/fix_con_hes_xam.cpp
 %$$
 $head Example$$
-The file $cref fix_constraint_hes_xam.cpp$$ contains an example
+The file $cref fix_con_hes_xam.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
@@ -112,7 +112,7 @@ $end
 */
 
 
-void cppad_mixed::fix_constraint_hes(
+void cppad_mixed::fix_con_hes(
 	const d_vector&        fixed_vec   ,
 	const d_vector&        weight      ,
 	CppAD::vector<size_t>& row_out     ,
@@ -125,12 +125,12 @@ void cppad_mixed::fix_constraint_hes(
 		"cppad_mixed::initialize was not called before constraint_hes";
 		fatal_error(error_message);
 	}
-	if( fix_constraint_hes_.row.size() == 0 )
+	if( fix_con_hes_.row.size() == 0 )
 	{	// Sparse Hessian has no rows
 		assert( row_out.size() == 0 );
 		assert( col_out.size() == 0 );
-		assert( fix_constraint_hes_.row.size() == 0 );
-		assert( fix_constraint_hes_.col.size() == 0 );
+		assert( fix_con_hes_.row.size() == 0 );
+		assert( fix_con_hes_.col.size() == 0 );
 		val_out.resize(0);
 		return;
 	}
@@ -138,17 +138,17 @@ void cppad_mixed::fix_constraint_hes(
 	assert( row_out.size() == col_out.size() );
 	assert( row_out.size() == val_out.size() );
 	if( row_out.size() == 0 )
-	{	row_out = fix_constraint_hes_.row;
-		col_out = fix_constraint_hes_.col;
+	{	row_out = fix_con_hes_.row;
+		col_out = fix_con_hes_.col;
 		val_out.resize( row_out.size() );
 	}
 # ifndef NDEBUG
 	else
-	{	size_t n_nonzero = fix_constraint_hes_.row.size();
+	{	size_t n_nonzero = fix_con_hes_.row.size();
 		assert( row_out.size() == n_nonzero );
 		for(size_t k = 0; k < n_nonzero; k++)
-		{	assert( row_out[k] == fix_constraint_hes_.row[k] );
-			assert( col_out[k] == fix_constraint_hes_.col[k] );
+		{	assert( row_out[k] == fix_con_hes_.row[k] );
+			assert( col_out[k] == fix_con_hes_.col[k] );
 		}
 	}
 # endif
@@ -162,7 +162,7 @@ void cppad_mixed::fix_constraint_hes(
 		row_out         ,
 		col_out         ,
 		val_out         ,
-		fix_constraint_hes_.work
+		fix_con_hes_.work
 	);
 
 	return;

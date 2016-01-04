@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin fix_constraint_jac_xam.cpp$$
+$begin fix_con_jac_xam.cpp$$
 $spell
 	CppAD
 	cppad
@@ -25,7 +25,7 @@ This example is not part of the
 $cref/cppad_mixed public API/public/$$.
 
 $code
-$verbatim%example/private/fix_constraint_jac_xam.cpp
+$verbatim%example/private/fix_con_jac_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -141,7 +141,7 @@ namespace {
 	};
 }
 
-bool fix_constraint_jac_xam(void)
+bool fix_con_jac_xam(void)
 {
 	bool   ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
@@ -165,7 +165,7 @@ bool fix_constraint_jac_xam(void)
 	// compute the constraint function and check result
 	CppAD::vector<size_t> row, col;
 	CppAD::vector<double> val;
-	mixed_object.fix_constraint_jac(fixed_vec, row, col, val);
+	mixed_object.fix_con_jac(fixed_vec, row, col, val);
 
 	// check derivatives
 	ok &= row.size() == n_fixed;

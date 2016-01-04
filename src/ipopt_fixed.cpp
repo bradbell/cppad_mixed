@@ -352,13 +352,13 @@ mixed_object_      ( mixed_object    )
 		fix_likelihood_n_abs_ = fix_likelihood_vec.size() - 1;
 	// -----------------------------------------------------------------------
 	// set fix_likelihood_jac_row_, fix_likelihood_jac_col_, fix_likelihood_jac_val_
-	// fix_constraint_jac_row_, fix_constraint_jac_col_, fix_constraint_jac_val_
+	// fix_con_jac_row_, fix_con_jac_col_, fix_con_jac_val_
 	// -----------------------------------------------------------------------
 	mixed_object.fix_likelihood_jac(
 		fixed_in, fix_likelihood_jac_row_, fix_likelihood_jac_col_, fix_likelihood_jac_val_
 	);
-	mixed_object.fix_constraint_jac(
-		fixed_in, fix_constraint_jac_row_, fix_constraint_jac_col_, fix_constraint_jac_val_
+	mixed_object.fix_con_jac(
+		fixed_in, fix_con_jac_row_, fix_con_jac_col_, fix_con_jac_val_
 	);
 	// -----------------------------------------------------------------------
 	// set nnz_jac_g_
@@ -373,7 +373,7 @@ mixed_object_      ( mixed_object    )
 	// derivative w.r.t auxillary variables
 	nnz_jac_g_ += 2 * fix_likelihood_n_abs_;
 	// derivative of the constraints
-	nnz_jac_g_ += fix_constraint_jac_row_.size();
+	nnz_jac_g_ += fix_con_jac_row_.size();
 	// -----------------------------------------------------------------------
 	// set lag_hes_row_, lag_hes_col_, ran_obj_2_lag_, fix_likelihood2lag_
 	// -----------------------------------------------------------------------
@@ -404,25 +404,25 @@ mixed_object_      ( mixed_object    )
 		weight.resize( n_constraint_ );
 		for(size_t i = 0; i < weight.size(); i++)
 			weight[i] = 1.0;
-		mixed_object.fix_constraint_hes(
+		mixed_object.fix_con_hes(
 			fixed_in,
 			weight,
-			fix_constraint_hes_row_,
-			fix_constraint_hes_col_,
-			fix_constraint_hes_val_
+			fix_con_hes_row_,
+			fix_con_hes_col_,
+			fix_con_hes_val_
 		);
 		//
 		// merge to form sparsity for Lagrangian
 		ran_obj_2_lag_.resize( ran_obj_hes_row_.size() );
 		fix_likelihood2lag_.resize( fix_likelihood_hes_row_.size() );
-		constraint_2_lag_.resize( fix_constraint_hes_row_.size() );
+		constraint_2_lag_.resize( fix_con_hes_row_.size() );
 		merge_sparse(
 			ran_obj_hes_row_      ,
 			ran_obj_hes_col_      ,
 			fix_likelihood_hes_row_        ,
 			fix_likelihood_hes_col_        ,
-			fix_constraint_hes_row_   ,
-			fix_constraint_hes_col_   ,
+			fix_con_hes_row_   ,
+			fix_con_hes_col_   ,
 			lag_hes_row_          ,
 			lag_hes_col_          ,
 			ran_obj_2_lag_        ,
@@ -436,7 +436,7 @@ mixed_object_      ( mixed_object    )
 		for(size_t k = 0; k < fix_likelihood_hes_row_.size(); k++)
 			assert( fix_likelihood2lag_[k] < lag_hes_row_.size() );
 		//
-		for(size_t k = 0; k < fix_constraint_hes_row_.size(); k++)
+		for(size_t k = 0; k < fix_con_hes_row_.size(); k++)
 			assert( constraint_2_lag_[k] < lag_hes_row_.size() );
 # endif
 		// -------------------------------------------------------------------
@@ -964,7 +964,7 @@ bool ipopt_fixed::eval_g(
 	}
 	//
 	// include explicit constraints
-	c_vec_tmp_ = mixed_object_.fix_constraint_eval(fixed_tmp_);
+	c_vec_tmp_ = mixed_object_.fix_con_eval(fixed_tmp_);
 	assert( c_vec_tmp_.size() == n_constraint_ );
 	for(size_t j = 0; j < n_constraint_; j++)
 	{	assert( 2 * fix_likelihood_n_abs_ + j < size_t(m) );
@@ -1079,10 +1079,10 @@ bool ipopt_fixed::eval_jac_g(
 			ell++;
 		}
 		// explicit constraints
-		for(size_t k = 0; k < fix_constraint_jac_row_.size(); k++)
+		for(size_t k = 0; k < fix_con_jac_row_.size(); k++)
 		{	assert( ell < nnz_jac_g_ );
-			iRow[ell] = Index( fix_constraint_jac_row_[k] );
-			jCol[ell] = Index( fix_constraint_jac_col_[k] );
+			iRow[ell] = Index( fix_con_jac_row_[k] );
+			jCol[ell] = Index( fix_con_jac_col_[k] );
 			ell++;
 		}
 		assert( ell == nnz_jac_g_ );
@@ -1120,15 +1120,15 @@ bool ipopt_fixed::eval_jac_g(
 	}
 	//
 	// Jacobian of explicit constraints
-	mixed_object_.fix_constraint_jac(
+	mixed_object_.fix_con_jac(
 		fixed_tmp_,
-		fix_constraint_jac_row_,
-		fix_constraint_jac_col_,
-		fix_constraint_jac_val_
+		fix_con_jac_row_,
+		fix_con_jac_col_,
+		fix_con_jac_val_
 	);
-	for(size_t k = 0; k < fix_constraint_jac_row_.size(); k++)
+	for(size_t k = 0; k < fix_con_jac_row_.size(); k++)
 	{	assert( ell < nnz_jac_g_ );
-		values[ell++] = Number( fix_constraint_jac_val_[k] );
+		values[ell++] = Number( fix_con_jac_val_[k] );
 	}
 	assert( ell == nnz_jac_g_ );
 	return true;
@@ -1295,16 +1295,16 @@ bool ipopt_fixed::eval_h(
 	// Hessian of Lagrangian of weighted explicit constraints
 	for(size_t j = 0; j < n_constraint_; j++)
 		w_constraint_tmp_[j] = lambda[2 * fix_likelihood_n_abs_ + j];
-	mixed_object_.fix_constraint_hes(
+	mixed_object_.fix_con_hes(
 		fixed_tmp_,
 		w_constraint_tmp_,
-		fix_constraint_hes_row_,
-		fix_constraint_hes_col_,
-		fix_constraint_hes_val_
+		fix_con_hes_row_,
+		fix_con_hes_col_,
+		fix_con_hes_val_
 	);
-	for(size_t k = 0; k < fix_constraint_hes_row_.size(); k++)
+	for(size_t k = 0; k < fix_con_hes_row_.size(); k++)
 	{	assert( constraint_2_lag_[k] < nnz_h_lag_ );
-		values[ constraint_2_lag_[k] ] += Number( fix_constraint_hes_val_[k] );
+		values[ constraint_2_lag_[k] ] += Number( fix_con_hes_val_[k] );
 	}
 	//
 	return true;
@@ -1471,7 +1471,7 @@ void ipopt_fixed::finalize_solution(
 	}
 	//
 	// explicit constraints at the final fixed effects vector
-	c_vec_tmp_ = mixed_object_.fix_constraint_eval(fixed_opt_);
+	c_vec_tmp_ = mixed_object_.fix_con_eval(fixed_opt_);
 	assert( c_vec_tmp_.size() == n_constraint_ );
 
 	// check explicit constraints

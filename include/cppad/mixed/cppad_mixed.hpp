@@ -18,9 +18,9 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/sparse_jac_info.hpp>
 
 // private examples
-extern bool fix_constraint_eval_xam(void);
-extern bool fix_constraint_hes_xam(void);
-extern bool fix_constraint_jac_xam(void);
+extern bool fix_con_eval_xam(void);
+extern bool fix_con_hes_xam(void);
+extern bool fix_con_jac_xam(void);
 extern bool fix_likelihood_eval_xam(void);
 extern bool fix_likelihood_hes_xam(void);
 extern bool fix_likelihood_jac_xam(void);
@@ -152,7 +152,7 @@ $comment */
 	quasi_fixed_(quasi_fixed)       ,
 	initialize_done_(false)         ,
 	init_fix_likelihood_done_(false)    ,
-	init_fix_constraint_done_(false)  ,
+	init_fix_con_done_(false)  ,
 	init_ran_likelihood_done_(false)    ,
 	init_hes_ran_done_(false)     ,
 	init_hes_cross_done_(false)   ,
@@ -246,16 +246,16 @@ $cref/mixed_object/derived_ctor/mixed_object/$$.
 
 $childtable%include/cppad/mixed/pack.hpp
 	%include/cppad/mixed/unpack.hpp
-	%src/init_fix_constraint.cpp
+	%src/init_fix_con.cpp
 	%src/init_fix_likelihood.cpp
 	%src/init_hes_cross.cpp
 	%src/init_hes_ran.cpp
 	%src/init_hes_ran_obj.cpp
 	%src/init_ran_likelihood.cpp
 	%src/init_ran_obj.cpp
-	%src/fix_constraint_eval.cpp
-	%src/fix_constraint_hes.cpp
-	%src/fix_constraint_jac.cpp
+	%src/fix_con_eval.cpp
+	%src/fix_con_hes.cpp
+	%src/fix_con_jac.cpp
 	%src/fix_likelihood_eval.cpp
 	%src/fix_likelihood_hes.cpp
 	%src/fix_likelihood_jac.cpp
@@ -288,7 +288,7 @@ the corresponding member function is called:
 $codep */
 	bool                initialize_done_;
 	bool                init_fix_likelihood_done_;
-	bool                init_fix_constraint_done_;
+	bool                init_fix_con_done_;
 	// only called when n_random_ > 0
 	bool                init_ran_likelihood_done_;
 	bool                init_hes_ran_done_;
@@ -412,7 +412,7 @@ $codep */
 /* $$
 
 $head fix_constraint_fun_$$
-$cref/fix_constraint_fun_/init_fix_constraint/fix_constraint_fun_/$$
+$cref/fix_constraint_fun_/init_fix_con/fix_constraint_fun_/$$
 is a recording of the fixed part of the likelihood function; see,
 $cref fix_constraint$$.
 $codep */
@@ -421,23 +421,23 @@ $codep */
 The following objects hold information for computing derivatives
 with this ADFun object:
 
-$subhead fix_constraint_jac_$$
-$cref/fix_constraint_jac_/init_fix_constraint/fix_constraint_jac_/$$
+$subhead fix_con_jac_$$
+$cref/fix_con_jac_/init_fix_con/fix_con_jac_/$$
 contains information for the Jacobian of the
 constraint function $latex c ( \theta )$$.
 $codep */
-	CppAD::mixed::sparse_jac_info fix_constraint_jac_;
+	CppAD::mixed::sparse_jac_info fix_con_jac_;
 /* $$
 
-$subhead fix_constraint_hes_$$
+$subhead fix_con_hes_$$
 If $icode quasi_fixed$$ is false,
-$cref/fix_constraint_hes_/init_fix_constraint/fix_constraint_hes_/$$
+$cref/fix_con_hes_/init_fix_con/fix_con_hes_/$$
 contains information for the Hessian of the
 $cref/constraints/fix_constraint/$$ function $latex c( \theta )$$.
 The corresponding ADFun object is
-$cref/fix_constraint_fun_/init_fix_constraint/fix_constraint_fun_/$$.
+$cref/fix_constraint_fun_/init_fix_con/fix_constraint_fun_/$$.
 $codep */
-	CppAD::mixed::sparse_hes_info fix_constraint_hes_;
+	CppAD::mixed::sparse_hes_info fix_con_hes_;
 /* $$
 $head Template Member Functions$$
 $subhead pack$$
@@ -476,10 +476,10 @@ $codep */
 /* $$
 $head Initialization Member Functions$$
 
-$subhead init_fix_constraint$$
-See $cref init_fix_constraint$$.
+$subhead init_fix_con$$
+See $cref init_fix_con$$.
 $codep */
-	void init_fix_constraint(const d_vector& fixed_vec);
+	void init_fix_con(const d_vector& fixed_vec);
 /* $$
 
 $subhead init_fix_likelihood$$
@@ -534,37 +534,37 @@ $codep */
 /* $$
 $head Other Member Functions$$
 
-$subhead fix_constraint_eval$$
-See $cref fix_constraint_eval$$
+$subhead fix_con_eval$$
+See $cref fix_con_eval$$
 $codep */
-	d_vector fix_constraint_eval(const d_vector& fixed_vec);
-	friend bool ::fix_constraint_eval_xam(void);
+	d_vector fix_con_eval(const d_vector& fixed_vec);
+	friend bool ::fix_con_eval_xam(void);
 /* $$
 
-$subhead fix_constraint_jac$$
-See $cref fix_constraint_jac$$
+$subhead fix_con_jac$$
+See $cref fix_con_jac$$
 $codep */
 	// constraint_jac
-	void fix_constraint_jac(
+	void fix_con_jac(
 		const d_vector&        fixed_vec   ,
 		CppAD::vector<size_t>& row_out     ,
 		CppAD::vector<size_t>& col_out     ,
 		d_vector&              val_out
 	);
-	friend bool ::fix_constraint_jac_xam(void);
+	friend bool ::fix_con_jac_xam(void);
 /* $$
 
-$subhead fix_constraint_hes$$
-See $cref fix_constraint_hes$$
+$subhead fix_con_hes$$
+See $cref fix_con_hes$$
 $codep */
-	void fix_constraint_hes(
+	void fix_con_hes(
 		const d_vector&        fixed_vec   ,
 		const d_vector&        weight      ,
 		CppAD::vector<size_t>& row_out     ,
 		CppAD::vector<size_t>& col_out     ,
 		d_vector&              val_out
 	);
-	friend bool ::fix_constraint_hes_xam(void);
+	friend bool ::fix_con_hes_xam(void);
 /* $$
 
 $subhead fix_likelihood_eval$$

@@ -42,9 +42,9 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	example.cpp
 	${suitesparse_EXAMPLES}
 	ipopt_xam_run.cpp
-	private/fix_constraint_eval_xam.cpp
-	private/fix_constraint_hes_xam.cpp
-	private/fix_constraint_jac_xam.cpp
+	private/fix_con_eval_xam.cpp
+	private/fix_con_hes_xam.cpp
+	private/fix_con_jac_xam.cpp
 	private/fix_likelihood_eval_xam.cpp
 	private/fix_likelihood_hes_xam.cpp
 	private/fix_likelihood_jac_xam.cpp

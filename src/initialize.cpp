@@ -84,17 +84,17 @@ is the corresponding size.
 
 $subhead fix_constraint_fun_$$
 $icode%size_map%["fix_constraint_fun_"]%$$ is the number of variables in
-$cref/fix_constraint_fun_/init_fix_constraint/fix_constraint_fun_/$$.
+$cref/fix_constraint_fun_/init_fix_con/fix_constraint_fun_/$$.
 
-$subhead fix_constraint_hes_$$
-$icode%size_map%["fix_constraint_hes_"]%$$ is the size of the row vector in
-$cref/fix_constraint_hes_/init_fix_constraint/fix_constraint_hes_/$$.
+$subhead fix_con_hes_$$
+$icode%size_map%["fix_con_hes_"]%$$ is the size of the row vector in
+$cref/fix_con_hes_/init_fix_con/fix_con_hes_/$$.
 This is also the number of non-zeros
 in the Hessian $latex c_{\theta,\theta} ( \theta )$$.
 
-$subhead fix_constraint_jac_$$
-$icode%size_map%["fix_constraint_jac_"]%$$ is the size of the row vector in
-$cref/fix_constraint_jac_/init_fix_constraint/fix_constraint_jac_/$$.
+$subhead fix_con_jac_$$
+$icode%size_map%["fix_con_jac_"]%$$ is the size of the row vector in
+$cref/fix_con_jac_/init_fix_con/fix_con_jac_/$$.
 This is also the number of non-zeros
 in the Jacobian $latex c_\theta ( \theta )$$.
 
@@ -261,9 +261,9 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	assert( init_fix_likelihood_done_ );
 
 	// fix_constraint_fun_
-	assert( ! init_fix_constraint_done_ );
-	init_fix_constraint(fixed_vec);
-	assert( init_fix_constraint_done_ );
+	assert( ! init_fix_con_done_ );
+	init_fix_con(fixed_vec);
+	assert( init_fix_con_done_ );
 
 	// initialize_done_
 	initialize_done_ = true;
@@ -289,8 +289,8 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	size_map["fix_likelihood_hes_"]   = fix_likelihood_hes_.row.size();
 	//
 	size_map["fix_constraint_fun_"]   = fix_constraint_fun_.size_var();
-	size_map["fix_constraint_jac_"]   = fix_constraint_jac_.row.size();
-	size_map["fix_constraint_hes_"]   = fix_constraint_hes_.row.size();
+	size_map["fix_con_jac_"]   = fix_con_jac_.row.size();
+	size_map["fix_con_hes_"]   = fix_con_hes_.row.size();
 	//
 	size_map["num_bytes_after"]       = CppAD::thread_alloc::inuse(thread);
 	return size_map;

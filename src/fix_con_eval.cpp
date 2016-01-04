@@ -11,7 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/cppad_mixed.hpp>
 
 /*
-$begin fix_constraint_eval$$
+$begin fix_con_eval$$
 $spell
 	CppAD
 	cppad
@@ -24,7 +24,7 @@ $$
 $section Evaluate Constraint Function$$
 
 $head Syntax$$
-$icode%vec% = %mixed_object%.fix_constraint_eval(%fixed_vec%)%$$
+$icode%vec% = %mixed_object%.fix_con_eval(%fixed_vec%)%$$
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
@@ -53,10 +53,10 @@ corresponding to the fixed effects; see
 $cref/vec/fix_constraint/vec/$$.
 
 $children%
-	example/private/fix_constraint_eval_xam.cpp
+	example/private/fix_con_eval_xam.cpp
 %$$
 $head Example$$
-The file $cref fix_constraint_eval_xam.cpp$$ contains an example
+The file $cref fix_con_eval_xam.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
@@ -64,7 +64,7 @@ $end
 */
 
 
-CppAD::vector<double> cppad_mixed::fix_constraint_eval(const d_vector& fixed_vec)
+CppAD::vector<double> cppad_mixed::fix_con_eval(const d_vector& fixed_vec)
 {
 	// make sure initialize has been called
 	if( ! initialize_done_ )

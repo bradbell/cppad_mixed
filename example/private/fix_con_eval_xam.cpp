@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin fix_constraint_eval_xam.cpp$$
+$begin fix_con_eval_xam.cpp$$
 $spell
 	CppAD
 	cppad
@@ -25,7 +25,7 @@ This example is not part of the
 $cref/cppad_mixed public API/public/$$.
 
 $code
-$verbatim%example/private/fix_constraint_eval_xam.cpp
+$verbatim%example/private/fix_con_eval_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -141,7 +141,7 @@ namespace {
 	};
 }
 
-bool fix_constraint_eval_xam(void)
+bool fix_con_eval_xam(void)
 {
 	bool   ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
@@ -163,7 +163,7 @@ bool fix_constraint_eval_xam(void)
 	mixed_object.initialize(fixed_vec, random_vec);
 
 	// compute the constraint function and check result
-	CppAD::vector<double> c = mixed_object.fix_constraint_eval(fixed_vec);
+	CppAD::vector<double> c = mixed_object.fix_con_eval(fixed_vec);
 	ok &= c.size() == 1;
 	double check = 0.0;
 	for(size_t j = 0; j < n_fixed; j++)
