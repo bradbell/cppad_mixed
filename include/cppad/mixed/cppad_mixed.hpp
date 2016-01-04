@@ -110,7 +110,7 @@ $codep */
 /* $$
 See $cref fix_likelihood$$.
 
-$subhead constraint$$
+$subhead fix_constraint$$
 $codep */
 	virtual a1d_vector fix_constraint(
 		const a1d_vector& fixed_vec )
