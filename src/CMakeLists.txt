@@ -22,12 +22,12 @@ ADD_LIBRARY(cppad_mixed
 	init_hes_cross.cpp
 	init_hes_ran_obj.cpp
 	initialize.cpp
-	init_ran_likelihood.cpp
+	init_ran_like.cpp
 	ipopt_fixed.cpp
 	manage_gsl_rng.cpp
 	optimize_fixed.cpp
 	optimize_random.cpp
-	ran_likelihood_grad.cpp
+	ran_like_grad.cpp
 	ran_obj_hes.cpp
 )
 SET_TARGET_PROPERTIES(cppad_mixed

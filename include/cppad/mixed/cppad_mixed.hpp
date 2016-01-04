@@ -27,7 +27,7 @@ extern bool fix_like_jac_xam(void);
 extern bool hes_cross_xam(void);
 extern bool hes_ran_fun_xam(void);
 extern bool logdet_grad_xam(void);
-extern bool ran_likelihood_grad_xam(void);
+extern bool ran_like_grad_xam(void);
 extern bool ran_obj_eval_xam(void);
 extern bool ran_obj_grad_xam(void);
 extern bool ran_obj_hes_xam(void);
@@ -153,7 +153,7 @@ $comment */
 	initialize_done_(false)         ,
 	init_fix_like_done_(false)    ,
 	init_fix_con_done_(false)  ,
-	init_ran_likelihood_done_(false)    ,
+	init_ran_like_done_(false)    ,
 	init_hes_ran_done_(false)     ,
 	init_hes_cross_done_(false)   ,
 	record_newton_atom_done_(false) ,
@@ -251,7 +251,7 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/init_hes_cross.cpp
 	%src/init_hes_ran.cpp
 	%src/init_hes_ran_obj.cpp
-	%src/init_ran_likelihood.cpp
+	%src/init_ran_like.cpp
 	%src/init_ran_obj.cpp
 	%src/fix_con_eval.cpp
 	%src/fix_con_hes.cpp
@@ -260,7 +260,7 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/fix_like_hes.cpp
 	%src/fix_like_jac.cpp
 	%src/logdet_grad.cpp
-	%src/ran_likelihood_grad.cpp
+	%src/ran_like_grad.cpp
 	%src/ran_obj_eval.cpp
 	%src/ran_obj_grad.cpp
 	%src/ran_obj_hes.cpp
@@ -290,7 +290,7 @@ $codep */
 	bool                init_fix_like_done_;
 	bool                init_fix_con_done_;
 	// only called when n_random_ > 0
-	bool                init_ran_likelihood_done_;
+	bool                init_ran_like_done_;
 	bool                init_hes_ran_done_;
 	bool                init_hes_cross_done_;
 	// only called when n_random_ > 0 and quasi_fixed_ is false
@@ -300,9 +300,9 @@ $codep */
 /* $$
 
 $head ran_likelihood$$
-If $icode%n_random_% > 0%$$ and $code init_ran_likelihood_done_$$,
-$cref/ran_likelihood_fun_/init_ran_likelihood/ran_likelihood_fun_/$$ and
-$cref/ran_likelihood_a1fun_/init_ran_likelihood/ran_likelihood_a1fun_/$$ are
+If $icode%n_random_% > 0%$$ and $code init_ran_like_done_$$,
+$cref/ran_likelihood_fun_/init_ran_like/ran_likelihood_fun_/$$ and
+$cref/ran_likelihood_a1fun_/init_ran_like/ran_likelihood_a1fun_/$$ are
 recordings of the user's $cref ran_likelihood$$.
 function.
 $codep */
@@ -515,10 +515,10 @@ $codep */
 	);
 /* $$
 
-$subhead init_ran_likelihood$$
-See $cref init_ran_likelihood$$.
+$subhead init_ran_like$$
+See $cref init_ran_like$$.
 $codep */
-	void init_ran_likelihood(
+	void init_ran_like(
 		const d_vector& fixed_vec ,
 		const d_vector& random_vec
 	);
@@ -611,14 +611,14 @@ $codep */
 	friend bool ::logdet_grad_xam(void);
 /* $$
 
-$subhead ran_likelihood_grad$$
-See $cref ran_likelihood_grad$$
+$subhead ran_like_grad$$
+See $cref ran_like_grad$$
 $codep */
-	a1d_vector ran_likelihood_grad(
+	a1d_vector ran_like_grad(
 		const a1d_vector&       fixed_vec   ,
 		const a1d_vector&       random_vec
 	);
-	friend bool ::ran_likelihood_grad_xam(void);
+	friend bool ::ran_like_grad_xam(void);
 /* $$
 
 $subhead ran_obj_eval$$

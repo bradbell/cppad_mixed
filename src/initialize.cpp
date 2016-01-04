@@ -178,11 +178,11 @@ when $code initialize$$ starts.
 
 $subhead ran_likelihood_a1fun_$$
 $icode%size_map%["ran_likelihood_a1fun_"]%$$ is the number of variables in
-$cref/ran_likelihood_a1fun_/init_ran_likelihood/ran_likelihood_a1fun_/$$.
+$cref/ran_likelihood_a1fun_/init_ran_like/ran_likelihood_a1fun_/$$.
 
 $subhead ran_likelihood_fun_$$
 $icode%size_map%["ran_likelihood_fun_"]%$$ is the number of variables in
-$cref/ran_likelihood_fun_/init_ran_likelihood/ran_likelihood_fun_/$$.
+$cref/ran_likelihood_fun_/init_ran_like/ran_likelihood_fun_/$$.
 
 $subhead ran_obj_fun_$$
 $icode%size_map%["ran_obj_fun_"]%$$ is the number of variables in
@@ -220,9 +220,9 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	else
 	{
 		// ran_likelihood_
-		assert( ! init_ran_likelihood_done_ );
-		init_ran_likelihood(fixed_vec, random_vec);
-		assert( init_ran_likelihood_done_ );
+		assert( ! init_ran_like_done_ );
+		init_ran_like(fixed_vec, random_vec);
+		assert( init_ran_like_done_ );
 
 		// hes_ran_
 		assert( ! init_hes_ran_done_ );

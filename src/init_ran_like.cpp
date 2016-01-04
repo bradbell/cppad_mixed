@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -11,7 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/cppad_mixed.hpp>
 
 /*
-$begin init_ran_likelihood$$
+$begin init_ran_like$$
 $spell
 	CppAD
 	init
@@ -24,7 +24,7 @@ $$
 $section Initialize Random Likelihood$$
 
 $head Syntax$$
-$icode%mixed_object%.init_ran_likelihood(%fixed_vec%, %random_vec%)%$$
+$icode%mixed_object%.init_ran_like(%fixed_vec%, %random_vec%)%$$
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
@@ -73,10 +73,10 @@ $cref ran_likelihood$$.
 $end
 */
 
-void cppad_mixed::init_ran_likelihood(
+void cppad_mixed::init_ran_like(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec )
-{	assert( ! init_ran_likelihood_done_ );
+{	assert( ! init_ran_like_done_ );
 	//
 	using CppAD::AD;
 	using CppAD::ADFun;
@@ -152,7 +152,7 @@ void cppad_mixed::init_ran_likelihood(
 	ran_likelihood_fun_.optimize();
 # endif
 	// ------------------------------------------------------------------
-	init_ran_likelihood_done_ = true;
+	init_ran_like_done_ = true;
 	return;
 }
 

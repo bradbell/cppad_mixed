@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -194,7 +194,7 @@ CppAD::vector<double> cppad_mixed::optimize_random(
 		"cppad_mixed::initialize was not called before optimize_random";
 		fatal_error(error_message);
 	}
-	if( ! init_ran_likelihood_done_ )
+	if( ! init_ran_like_done_ )
 	{	std::string error_message =
 		"cppad_mixed::optimize_random there are no random effects";
 		fatal_error(error_message);

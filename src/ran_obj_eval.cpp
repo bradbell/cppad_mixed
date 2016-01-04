@@ -95,7 +95,7 @@ $end
 double cppad_mixed::ran_obj_eval(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec )
-{	assert( init_ran_likelihood_done_ );
+{	assert( init_ran_like_done_ );
 	assert( init_hes_ran_done_ );
 
 	assert( fixed_vec.size() == n_fixed_ );

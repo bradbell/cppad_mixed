@@ -51,7 +51,7 @@ extern bool newton_step_xam(void);
 extern bool no_random_xam(void);
 extern bool optimize_fixed_xam(void);
 extern bool optimize_random_xam(void);
-extern bool ran_likelihood_grad_xam(void);
+extern bool ran_like_grad_xam(void);
 extern bool ran_obj_eval_xam(void);
 extern bool ran_obj_grad_xam(void);
 extern bool ran_obj_hes_xam(void);
@@ -107,7 +107,7 @@ int main(void)
 	RUN(no_random_xam);
 	RUN(optimize_fixed_xam);
 	RUN(optimize_random_xam);
-	RUN(ran_likelihood_grad_xam);
+	RUN(ran_like_grad_xam);
 	RUN(ran_obj_eval_xam);
 	RUN(ran_obj_grad_xam);
 	RUN(ran_obj_hes_xam);

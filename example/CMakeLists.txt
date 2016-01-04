@@ -52,7 +52,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	private/hes_ran_fun_xam.cpp
 	private/logdet_grad_xam.cpp
 	private/newton_step_xam.cpp
-	private/ran_likelihood_grad_xam.cpp
+	private/ran_like_grad_xam.cpp
 	private/ran_obj_eval_xam.cpp
 	private/ran_obj_grad_xam.cpp
 	private/ran_obj_hes_xam.cpp

@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -10,7 +10,7 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
 /*
-$begin ran_likelihood_grad$$
+$begin ran_like_grad$$
 $spell
 	CppAD
 	cppad
@@ -23,7 +23,7 @@ $$
 $section Gradient of Random Likelihood w.r.t. Random Effects$$
 
 $head Syntax$$
-$icode%grad% = %mixed_object%.ran_likelihood_grad( %fixed_vec%, %random_vec%)%$$
+$icode%grad% = %mixed_object%.ran_like_grad( %fixed_vec%, %random_vec%)%$$
 
 $head Purpose$$
 This routine computes the gradient of the random likelihood
@@ -67,10 +67,10 @@ $codei%
 It contains the gradient $latex f_u ( \theta , u )$$.
 
 $children%
-	example/private/ran_likelihood_grad_xam.cpp
+	example/private/ran_like_grad_xam.cpp
 %$$
 $head Example$$
-The file $cref ran_likelihood_grad_xam.cpp$$ contains an example
+The file $cref ran_like_grad_xam.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
@@ -79,11 +79,11 @@ $end
 
 
 // ----------------------------------------------------------------------------
-// ran_likelihood_grad
-CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_likelihood_grad(
+// ran_like_grad
+CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_grad(
 	const a1d_vector&        fixed_vec   ,
 	const a1d_vector&        random_vec  )
-{	assert( init_ran_likelihood_done_ );
+{	assert( init_ran_like_done_ );
 
 	// number of fixed and random effects
 	assert( n_fixed_  == fixed_vec.size() );
