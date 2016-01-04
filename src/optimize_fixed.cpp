@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -132,10 +132,9 @@ vector $latex u$$.
 This may be useful to keep the random effects
 out of regions of numerical instability.
 On the other hand, the calculation of the
-$cref/derivative of u^(theta)
+$cref/derivative of optimal random effects
 	/theory
-	/Derivative of Random Objective
-	/Derivative of u^(theta)
+	/Derivative of Optimal Random Effects
 /$$
 $latex \hat{u}_\theta ( \theta )$$ will not be correct when these constraints
 are active (and this could have adverse effects on the optimization).

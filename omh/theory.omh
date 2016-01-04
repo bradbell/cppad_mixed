@@ -109,20 +109,7 @@ L ( \theta )
 r( \theta ) + g( \theta )
 \] $$
 
-$head Derivative of Random Objective$$
-The derivative of the random part of the objective is given by
-$latex \[
-r_\theta ( \theta )
-=
-h_\theta [ \theta , \hat{u} ( \theta ) ]
-+
-h_u [ \theta , \hat{u} ( \theta ) ] \hat{u}_\theta ( \theta )
-\] $$
-Thus the derivative of $latex r ( \theta )$$ can be computed
-if we can compute the derivative of $latex \hat{u} ( \theta )$$
-and the partials of $latex h( \theta , u )$$.
-
-$subhead Derivative of u^(theta)$$
+$head Derivative of Optimal Random Effects$$
 Because $latex f(\theta, u)$$ is smooth,
 and $latex \hat{u} ( \theta )$$ is optimal w.r.t $latex u$$,
 we obtain
@@ -139,7 +126,18 @@ $latex \[
 	f_{u,\theta} \left[ \theta , \hat{u} ( \theta )  \right]
 \]$$
 
-$subhead Partial Derivatives of h(theta, u)$$
+$head Derivative of Random Objective$$
+The derivative of the random part of the objective is given by
+$latex \[
+r_\theta ( \theta )
+=
+h_\theta [ \theta , \hat{u} ( \theta ) ]
++
+h_u [ \theta , \hat{u} ( \theta ) ] \hat{u}_\theta ( \theta )
+\] $$
+Thus the derivative of $latex r ( \theta )$$ can be computed
+using the derivative of $latex \hat{u} ( \theta )$$
+and the partials of $latex h( \theta , u )$$.
 Let $latex \partial_k$$ denote the partial with respect to the $th k$$
 component of the combined vector $latex ( \theta , u )$$.
 $latex \[
