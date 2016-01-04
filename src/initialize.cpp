@@ -13,6 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin initialize$$
 $spell
+	init
 	CppAD
 	ran_obj
 	logdet
@@ -82,9 +83,9 @@ $codei%
 %$$
 is the corresponding size.
 
-$subhead fix_constraint_fun_$$
-$icode%size_map%["fix_constraint_fun_"]%$$ is the number of variables in
-$cref/fix_constraint_fun_/init_fix_con/fix_constraint_fun_/$$.
+$subhead fix_con_fun_$$
+$icode%size_map%["fix_con_fun_"]%$$ is the number of variables in
+$cref/fix_con_fun_/init_fix_con/fix_con_fun_/$$.
 
 $subhead fix_con_hes_$$
 $icode%size_map%["fix_con_hes_"]%$$ is the size of the row vector in
@@ -98,9 +99,9 @@ $cref/fix_con_jac_/init_fix_con/fix_con_jac_/$$.
 This is also the number of non-zeros
 in the Jacobian $latex c_\theta ( \theta )$$.
 
-$subhead fix_likelihood_fun_$$
-$icode%size_map%["fix_likelihood_fun_"]%$$ is the number of variables in
-$cref/fix_likelihood_fun_/init_fix_like/fix_likelihood_fun_/$$.
+$subhead fix_like_fun_$$
+$icode%size_map%["fix_like_fun_"]%$$ is the number of variables in
+$cref/fix_like_fun_/init_fix_like/fix_like_fun_/$$.
 
 $subhead fix_like_hes_$$
 $icode%size_map%["fix_like_hes_"]%$$ is the size of the row vector in
@@ -176,13 +177,13 @@ $icode%size_map%["num_bytes_before"]%$$ is the number of bytes
 allocated by $code CppAD::thread_alloc$$ and still in use
 when $code initialize$$ starts.
 
-$subhead ran_likelihood_a1fun_$$
-$icode%size_map%["ran_likelihood_a1fun_"]%$$ is the number of variables in
-$cref/ran_likelihood_a1fun_/init_ran_like/ran_likelihood_a1fun_/$$.
+$subhead init_ran_like_a1fun_$$
+$icode%size_map%["init_ran_like_a1fun_"]%$$ is the number of variables in
+$cref/init_ran_like_a1fun_/init_ran_like/init_ran_like_a1fun_/$$.
 
-$subhead ran_likelihood_fun_$$
-$icode%size_map%["ran_likelihood_fun_"]%$$ is the number of variables in
-$cref/ran_likelihood_fun_/init_ran_like/ran_likelihood_fun_/$$.
+$subhead ran_like_fun_$$
+$icode%size_map%["ran_like_fun_"]%$$ is the number of variables in
+$cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$.
 
 $subhead ran_obj_fun_$$
 $icode%size_map%["ran_obj_fun_"]%$$ is the number of variables in
@@ -239,7 +240,7 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 			// newton_atom_
 			assert( ! record_newton_atom_done_ );
 			newton_atom_.initialize(
-				ran_likelihood_a1fun_, fixed_vec, random_vec
+				init_ran_like_a1fun_, fixed_vec, random_vec
 			);
 			record_newton_atom_done_ = true;
 
@@ -255,12 +256,12 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 		}
 	}
 
-	// fix_likelihood_fun_
+	// fix_like_fun_
 	assert( ! init_fix_like_done_ );
 	init_fix_like(fixed_vec);
 	assert( init_fix_like_done_ );
 
-	// fix_constraint_fun_
+	// fix_con_fun_
 	assert( ! init_fix_con_done_ );
 	init_fix_con(fixed_vec);
 	assert( init_fix_con_done_ );
@@ -271,8 +272,8 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	// return value
 	std::map<std::string, size_t> size_map;
 	size_map["num_bytes_before"]      = num_bytes_before;
-	size_map["ran_likelihood_fun_"]   = ran_likelihood_fun_.size_var();
-	size_map["ran_likelihood_a1fun_"] = ran_likelihood_a1fun_.size_var();
+	size_map["ran_like_fun_"]   = ran_like_fun_.size_var();
+	size_map["init_ran_like_a1fun_"] = init_ran_like_a1fun_.size_var();
 	//
 	size_map["hes_ran_"]              = hes_ran_.row.size();
 	size_map["hes_ran_fun_"]          = hes_ran_fun_.size_var();
@@ -284,11 +285,11 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 		size_map["ran_obj_fun_"]       = ran_obj_fun_.size_var();
 		size_map["hes_ran_obj_"]       = hes_ran_obj_.row.size();
 	}
-	size_map["fix_likelihood_fun_"]   = fix_likelihood_fun_.size_var();
+	size_map["fix_like_fun_"]   = fix_like_fun_.size_var();
 	size_map["fix_like_jac_"]   = fix_like_jac_.row.size();
 	size_map["fix_like_hes_"]   = fix_like_hes_.row.size();
 	//
-	size_map["fix_constraint_fun_"]   = fix_constraint_fun_.size_var();
+	size_map["fix_con_fun_"]   = fix_con_fun_.size_var();
 	size_map["fix_con_jac_"]   = fix_con_jac_.row.size();
 	size_map["fix_con_hes_"]   = fix_con_hes_.row.size();
 	//

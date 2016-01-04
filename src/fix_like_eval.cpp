@@ -74,12 +74,12 @@ $end
 
 CppAD::vector<double> cppad_mixed::fix_like_eval(const d_vector& fixed_vec)
 {	assert( init_fix_like_done_ );
-	if( fix_likelihood_fun_.size_var() == 0 )
+	if( fix_like_fun_.size_var() == 0 )
 	{	// empty vector case
 		return CppAD::vector<double>(0);
 	}
-	assert( fix_likelihood_fun_.Domain() == n_fixed_ );
-	return fix_likelihood_fun_.Forward(0, fixed_vec);
+	assert( fix_like_fun_.Domain() == n_fixed_ );
+	return fix_like_fun_.Forward(0, fixed_vec);
 }
 
 

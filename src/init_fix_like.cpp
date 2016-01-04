@@ -51,15 +51,15 @@ $head init_fix_like_done_$$
 When this function is called, this member variable must be false.
 Upon return it is true.
 
-$head fix_likelihood_fun_$$
+$head fix_like_fun_$$
 On input, the member variable
 $codei%
-	CppAD::ADFun<double> fix_likelihood_fun_
+	CppAD::ADFun<double> fix_like_fun_
 %$$
-must be empty; i.e., $code fix_likelihood_fun_.size_var() == 0$$.
+must be empty; i.e., $code fix_like_fun_.size_var() == 0$$.
 If the return value for
 $cref fix_likelihood$$ is empty,
-$code fix_likelihood_fun_$$ is not modified.
+$code fix_like_fun_$$ is not modified.
 Otherwise,
 upon return it contains the corresponding recording for the
 $cref fix_likelihood$$.
@@ -81,7 +81,7 @@ Jacobian corresponding to
 $latex g_\theta) ( \theta )$$ see
 $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 
-$subhead fix_likelihood_fun_$$
+$subhead fix_like_fun_$$
 This ADFun object can be used for the
 $cref/sparse Jacobian call/sparse_jac_info/Sparse Jacobian Call/f/$$.
 
@@ -98,7 +98,7 @@ lower triangle of a Hessian corresponding to
 $latex g_{\theta,\theta}) ( \theta )$$ see
 $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 
-$subhead fix_likelihood_fun_$$
+$subhead fix_like_fun_$$
 This ADFun object can be used for the
 $cref/sparse Hessian call/sparse_hes_info/Sparse Hessian Call/f/$$.
 
@@ -112,7 +112,7 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	assert( ! init_fix_like_done_ );
 
 	// ------------------------------------------------------------------------
-	// fix_likelihood_fun_
+	// fix_like_fun_
 	// ------------------------------------------------------------------------
 	// convert to an a1d_vector
 	a1d_vector a1_theta(n_fixed_);
@@ -139,16 +139,16 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	if( a1_vec.size() == 0 )
 	{	CppAD::AD<double>::abort_recording();
 		init_fix_like_done_ = true;
-		assert( fix_likelihood_fun_.size_var() == 0 );
+		assert( fix_like_fun_.size_var() == 0 );
 		return;
 	}
 
 	// save the recording
-	fix_likelihood_fun_.Dependent(a1_theta, a1_vec);
+	fix_like_fun_.Dependent(a1_theta, a1_vec);
 
 	// optimize the recording
 # ifdef NDEBUG
-	fix_likelihood_fun_.optimize();
+	fix_like_fun_.optimize();
 # endif
 
 	// ------------------------------------------------------------------------
@@ -159,13 +159,13 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	sparsity_pattern r(n_fixed_);
 	for(size_t j = 0; j < n_fixed_; j++)
 		r[j].insert(j);
-	sparsity_pattern pattern = fix_likelihood_fun_.ForSparseJac(n_fixed_, r);
+	sparsity_pattern pattern = fix_like_fun_.ForSparseJac(n_fixed_, r);
 
 	// convert sparsity to row and column index form
 	fix_like_jac_.row.clear();
 	fix_like_jac_.col.clear();
 	std::set<size_t>::iterator itr;
-	for(size_t i = 0; i < fix_likelihood_fun_.Range(); i++)
+	for(size_t i = 0; i < fix_like_fun_.Range(); i++)
 	{	for(itr = pattern[i].begin(); itr != pattern[i].end(); itr++)
 		{	size_t j = *itr;
 			fix_like_jac_.row.push_back(i);
@@ -178,7 +178,7 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 
 	// compute the work vector for reuse during Jacobian sparsity calculations
 	d_vector jac( fix_like_jac_.row.size() );
-	fix_likelihood_fun_.SparseJacobianForward(
+	fix_like_fun_.SparseJacobianForward(
 		fixed_vec       ,
 		pattern         ,
 		fix_like_jac_.row  ,
@@ -197,10 +197,10 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	//
 	// sparsity pattern for the Hessian
 	sparsity_pattern s(1);
-	for(size_t i = 0; i < fix_likelihood_fun_.Range(); i++ )
+	for(size_t i = 0; i < fix_like_fun_.Range(); i++ )
 		s[0].insert(i);
 	pattern.clear();
-	pattern = fix_likelihood_fun_.RevSparseHes(n_fixed_, s);
+	pattern = fix_like_fun_.RevSparseHes(n_fixed_, s);
 
 	// determine row and column indices in lower triangle of Hessian
 	fix_like_hes_.row.clear();
@@ -218,8 +218,8 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	size_t K = fix_like_hes_.row.size();
 
 	// compute the work vector for reuse during Hessian sparsity calculations
-	d_vector weight( fix_likelihood_fun_.Range() ), hes(K);
-	fix_likelihood_fun_.SparseHessian(
+	d_vector weight( fix_like_fun_.Range() ), hes(K);
+	fix_like_fun_.SparseHessian(
 		fixed_vec       ,
 		weight          ,
 		pattern         ,

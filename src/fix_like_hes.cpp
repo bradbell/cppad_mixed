@@ -147,7 +147,7 @@ void cppad_mixed::fix_like_hes(
 # endif
 
 	CppAD::vector< std::set<size_t> > not_used;
-	fix_likelihood_fun_.SparseHessian(
+	fix_like_fun_.SparseHessian(
 		fixed_vec       ,
 		weight          ,
 		not_used        ,

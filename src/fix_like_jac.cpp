@@ -129,7 +129,7 @@ void cppad_mixed::fix_like_jac(
 
 	assert(fix_like_jac_.direction == CppAD::mixed::sparse_jac_info::Forward);
 	CppAD::vector< std::set<size_t> > not_used;
-	fix_likelihood_fun_.SparseJacobianForward(
+	fix_like_fun_.SparseJacobianForward(
 		fixed_vec       ,
 		not_used        ,
 		row_out         ,

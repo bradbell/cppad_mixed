@@ -51,15 +51,15 @@ $head init_fix_con_done_$$
 When this function is called, this member variable must be false.
 Upon return it is true.
 
-$head fix_constraint_fun_$$
+$head fix_con_fun_$$
 On input, the member variable
 $codei%
-	CppAD::ADFun<double> fix_constraint_fun_
+	CppAD::ADFun<double> fix_con_fun_
 %$$
-must be empty; i.e., $code fix_constraint_fun_.size_var() == 0$$.
+must be empty; i.e., $code fix_con_fun_.size_var() == 0$$.
 If the return value for
 $cref fix_constraint$$ is empty,
-$code fix_constraint_fun_$$ is not modified.
+$code fix_con_fun_$$ is not modified.
 Otherwise,
 upon return it contains the corresponding recording for the
 $cref fix_constraint$$ $latex c( \theta )$$.
@@ -75,7 +75,7 @@ upon return $code fix_con_jac_$$ contains
 $cref sparse_jac_info$$ for the
 Jacobian of the $cref/constraints/fix_constraint/$$.
 
-$subhead fix_constraint_fun_$$
+$subhead fix_con_fun_$$
 This ADFun object can be used for the
 $cref/sparse jacobian call/sparse_jac_info/Sparse Jacobian Call/f/$$.
 
@@ -91,7 +91,7 @@ $cref sparse_hes_info$$ for the
 lower triangle of a weighted Hessian for the
 $cref/constraints/fix_constraint/$$.
 
-$subhead fix_constraint_fun_$$
+$subhead fix_con_fun_$$
 This ADFun object can be used for the
 $cref/sparse Hessian call/sparse_hes_info/Sparse Hessian Call/f/$$.
 
@@ -103,7 +103,7 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec  )
 	assert( ! init_fix_con_done_ );
 
 	// ------------------------------------------------------------------------
-	// fix_constraint_fun_
+	// fix_con_fun_
 	// ------------------------------------------------------------------------
 	// convert to an a1d_vector
 	a1d_vector a1_theta(n_fixed_);
@@ -118,16 +118,16 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec  )
 	if( a1_vec.size() == 0 )
 	{	CppAD::AD<double>::abort_recording();
 		init_fix_con_done_ = true;
-		assert( fix_constraint_fun_.size_var() == 0 );
+		assert( fix_con_fun_.size_var() == 0 );
 		return;
 	}
 
 	// save the recording
-	fix_constraint_fun_.Dependent(a1_theta, a1_vec);
+	fix_con_fun_.Dependent(a1_theta, a1_vec);
 
 	// optimize the recording
 # ifdef NDEBUG
-	fix_constraint_fun_.optimize();
+	fix_con_fun_.optimize();
 # endif
 
 	// ------------------------------------------------------------------------
@@ -136,8 +136,8 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec  )
 	// compute the sparsity pattern for the Jacobian
 	using CppAD::vectorBool;
 	typedef CppAD::vector< std::set<size_t> > sparsity_pattern;
-	size_t m            = fix_constraint_fun_.Range();
-	size_t n            = fix_constraint_fun_.Domain();
+	size_t m            = fix_con_fun_.Range();
+	size_t n            = fix_con_fun_.Domain();
 	sparsity_pattern pattern(m);
 	if( n < m )
 	{	size_t n_col = vectorBool::bit_per_unit();
@@ -149,7 +149,7 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec  )
 			{	for(size_t j = 0; j < n_col; j++)
 					r[i * n_col + j] = (i == j_col + j);
 			}
-			s = fix_constraint_fun_.ForSparseJac(n_col, r);
+			s = fix_con_fun_.ForSparseJac(n_col, r);
 			for(size_t i = 0; i < m; i++)
 			{	for(size_t j = 0; j < n_col; j++)
 				{	if( j_col + j < n )
@@ -169,7 +169,7 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec  )
 			{	for(size_t j = 0; j < m; j++)
 					r[i * m + j] = (i_row + i == j);
 			}
-			s = fix_constraint_fun_.RevSparseJac(n_row, r);
+			s = fix_con_fun_.RevSparseJac(n_row, r);
 			for(size_t i = 0; i < n_row; i++)
 			{	for(size_t j = 0; j < n; j++)
 				{	if( i_row + i < m )
@@ -196,7 +196,7 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec  )
 
 	// compute the work vector for reuse during Jacobian sparsity calculations
 	d_vector jac( fix_con_jac_.row.size() );
-	fix_constraint_fun_.SparseJacobianForward(
+	fix_con_fun_.SparseJacobianForward(
 		fixed_vec       ,
 		pattern         ,
 		fix_con_jac_.row  ,
@@ -226,9 +226,9 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec  )
 		{	for(size_t j = 0; j < n_col; j++)
 				r[i * n_col + j] = (i == j_col + j);
 		}
-		fix_constraint_fun_.ForSparseJac(n_col, r);
+		fix_con_fun_.ForSparseJac(n_col, r);
 		bool transpose = true;
-		h = fix_constraint_fun_.RevSparseHes(n_col, s, transpose);
+		h = fix_con_fun_.RevSparseHes(n_col, s, transpose);
 		//
 		for(size_t i = 0; i < n; i++)
 		{	for(size_t j = 0; j < n_col; j++)
@@ -254,8 +254,8 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec  )
 	size_t K = fix_con_hes_.row.size();
 
 	// compute the work vector for reuse during Hessian sparsity calculations
-	d_vector weight( fix_constraint_fun_.Range() ), hes(K);
-	fix_constraint_fun_.SparseHessian(
+	d_vector weight( fix_con_fun_.Range() ), hes(K);
+	fix_con_fun_.SparseHessian(
 		fixed_vec       ,
 		weight          ,
 		pattern         ,

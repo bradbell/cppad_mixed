@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -141,7 +141,7 @@ bool hes_cross_xam(void)
 	w[0] = 1.0;
 	CppAD::vector< std::set<size_t> > not_used;
 	mixed_object.pack(fixed_vec, random_vec, both);
-	mixed_object.ran_likelihood_fun_.SparseHessian(
+	mixed_object.ran_like_fun_.SparseHessian(
 		both,
 		w,
 		not_used,

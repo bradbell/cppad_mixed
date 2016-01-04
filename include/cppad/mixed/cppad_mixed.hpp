@@ -301,13 +301,13 @@ $codep */
 
 $head ran_likelihood$$
 If $icode%n_random_% > 0%$$ and $code init_ran_like_done_$$,
-$cref/ran_likelihood_fun_/init_ran_like/ran_likelihood_fun_/$$ and
-$cref/ran_likelihood_a1fun_/init_ran_like/ran_likelihood_a1fun_/$$ are
+$cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$ and
+$cref/init_ran_like_a1fun_/init_ran_like/init_ran_like_a1fun_/$$ are
 recordings of the user's $cref ran_likelihood$$.
 function.
 $codep */
-	CppAD::ADFun<double>      ran_likelihood_fun_;
-	CppAD::ADFun<a1_double>   ran_likelihood_a1fun_;
+	CppAD::ADFun<double>      ran_like_fun_;
+	CppAD::ADFun<a1_double>   init_ran_like_a1fun_;
 /* $$
 The following objects hold information for computing derivatives
 with these ADFun objects:
@@ -385,11 +385,11 @@ $codep */
 /* $$
 
 $head fix_likelihood_$$
-$cref/fix_likelihood_fun_/init_fix_like/fix_likelihood_fun_/$$
+$cref/fix_like_fun_/init_fix_like/fix_like_fun_/$$
 is a recording of the fixed part of the likelihood function; see,
 $cref fix_likelihood$$.
 $codep */
-	CppAD::ADFun<double>        fix_likelihood_fun_;     // g(theta)
+	CppAD::ADFun<double>        fix_like_fun_;     // g(theta)
 /* $$
 The following objects hold information for computing derivatives
 with this ADFun object:
@@ -411,12 +411,12 @@ $codep */
 	CppAD::mixed::sparse_hes_info fix_like_hes_;
 /* $$
 
-$head fix_constraint_fun_$$
-$cref/fix_constraint_fun_/init_fix_con/fix_constraint_fun_/$$
+$head fix_con_fun_$$
+$cref/fix_con_fun_/init_fix_con/fix_con_fun_/$$
 is a recording of the fixed part of the likelihood function; see,
 $cref fix_constraint$$.
 $codep */
-	CppAD::ADFun<double>        fix_constraint_fun_;     // c(theta)
+	CppAD::ADFun<double>        fix_con_fun_;     // c(theta)
 /* $$
 The following objects hold information for computing derivatives
 with this ADFun object:
@@ -435,7 +435,7 @@ $cref/fix_con_hes_/init_fix_con/fix_con_hes_/$$
 contains information for the Hessian of the
 $cref/constraints/fix_constraint/$$ function $latex c( \theta )$$.
 The corresponding ADFun object is
-$cref/fix_constraint_fun_/init_fix_con/fix_constraint_fun_/$$.
+$cref/fix_con_fun_/init_fix_con/fix_con_fun_/$$.
 $codep */
 	CppAD::mixed::sparse_hes_info fix_con_hes_;
 /* $$
@@ -544,7 +544,6 @@ $codep */
 $subhead fix_con_jac$$
 See $cref fix_con_jac$$
 $codep */
-	// constraint_jac
 	void fix_con_jac(
 		const d_vector&        fixed_vec   ,
 		CppAD::vector<size_t>& row_out     ,

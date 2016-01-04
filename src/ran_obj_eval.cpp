@@ -120,7 +120,7 @@ double cppad_mixed::ran_obj_eval(
 	double constant_term = CppAD::log(2.0 * pi) * double(n_random_) / 2.0;
 
 	// f(theta , u)
-	d_vector vec = ran_likelihood_fun_.Forward(0, both);
+	d_vector vec = ran_like_fun_.Forward(0, both);
 	assert( vec.size() == 1);
 
 	// h(theta, u)

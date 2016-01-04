@@ -52,19 +52,19 @@ It specifies the value of the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$ at which the initialization is done.
 
-$head ran_likelihood_fun_$$
+$head ran_like_fun_$$
 The input value of the member variable
 $codei%
-	CppAD::ADFun<double> ran_likelihood_fun_
+	CppAD::ADFun<double> ran_like_fun_
 %$$
 does not matter.
 Upon return it contains a recording of the function
 $cref ran_likelihood$$.
 
-$head ran_likelihood_a1fun_$$
+$head init_ran_like_a1fun_$$
 The input value of the member variable
 $codei%
-	CppAD::ADFun<double> ran_likelihood_a1fun_
+	CppAD::ADFun<double> init_ran_like_a1fun_
 %$$
 does not matter.
 Upon return it contains a recording of the function
@@ -84,7 +84,7 @@ void cppad_mixed::init_ran_like(
 	using CppAD::Independent;
 	//
 	// ------------------------------------------------------------------
-	// record ran_likelihood_a1fun_
+	// record init_ran_like_a1fun_
 	// ------------------------------------------------------------------
 	// combine into one vector
 	a2d_vector a2_both( n_fixed_ + n_random_ );
@@ -111,14 +111,14 @@ void cppad_mixed::init_ran_like(
 	}
 
 	// save the recording
-	ran_likelihood_a1fun_.Dependent(a2_both, a2_vec);
+	init_ran_like_a1fun_.Dependent(a2_both, a2_vec);
 
 	// optimize the recording
 # ifndef NDEBUG
-	ran_likelihood_a1fun_.optimize();
+	init_ran_like_a1fun_.optimize();
 # endif
 	// ------------------------------------------------------------------
-	// record ran_likelihood_fun_
+	// record ran_like_fun_
 	// ------------------------------------------------------------------
 	// combine into one vector
 	a1d_vector a1_both( n_fixed_ + n_random_ );
@@ -145,11 +145,11 @@ void cppad_mixed::init_ran_like(
 	}
 
 	// save the recording
-	ran_likelihood_fun_.Dependent(a1_both, a1_vec);
+	ran_like_fun_.Dependent(a1_both, a1_vec);
 
 	// optimize the recording
 # ifndef NDEBUG
-	ran_likelihood_fun_.optimize();
+	ran_like_fun_.optimize();
 # endif
 	// ------------------------------------------------------------------
 	init_ran_like_done_ = true;

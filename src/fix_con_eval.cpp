@@ -72,11 +72,11 @@ CppAD::vector<double> cppad_mixed::fix_con_eval(const d_vector& fixed_vec)
 		"cppad_mixed::initialize was not called before constraint_eval";
 		fatal_error(error_message);
 	}
-	if( fix_constraint_fun_.size_var() == 0 )
+	if( fix_con_fun_.size_var() == 0 )
 	{	return CppAD::vector<double>(0); // empty vector
 	}
-	assert( fix_constraint_fun_.Domain() == n_fixed_ );
-	return fix_constraint_fun_.Forward(0, fixed_vec);
+	assert( fix_con_fun_.Domain() == n_fixed_ );
+	return fix_con_fun_.Forward(0, fixed_vec);
 }
 
 

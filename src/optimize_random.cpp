@@ -212,7 +212,7 @@ CppAD::vector<double> cppad_mixed::optimize_random(
 	// determine initial density vector
 	d_vector both_vec(n_fixed_ + n_random_);
 	pack(fixed_vec, random_in, both_vec);
-	d_vector vec = ran_likelihood_fun_.Forward(0, both_vec);
+	d_vector vec = ran_like_fun_.Forward(0, both_vec);
 
 	// number of absolute value terms in objective
 	size_t n_abs = vec.size() - 1;
