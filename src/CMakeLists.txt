@@ -12,23 +12,23 @@
 ADD_LIBRARY(cppad_mixed
 	fix_constraint_eval.cpp
 	fix_constraint_eval.cpp
-	fix_constraint_jac.cpp
 	fix_constraint_hes.cpp
-	ran_likelihood_grad.cpp
-	ran_obj_hes.cpp
+	fix_constraint_jac.cpp
+	fix_likelihood_eval.cpp
+	fix_likelihood_hes.cpp
+	fix_likelihood_jac.cpp
+	init_fix_constraint.cpp
+	init_fix_likelihood.cpp
+	init_hes_cross.cpp
+	init_hes_ran_obj.cpp
 	initialize.cpp
+	init_ran_likelihood.cpp
 	ipopt_fixed.cpp
 	manage_gsl_rng.cpp
 	optimize_fixed.cpp
 	optimize_random.cpp
-	fix_likelihood_eval.cpp
-	fix_likelihood_jac.cpp
-	fix_likelihood_hes.cpp
-	init_fix_likelihood.cpp
-	init_fix_constraint.cpp
-	init_hes_cross.cpp
-	init_hes_ran_obj.cpp
-	init_ran_likelihood.cpp
+	ran_likelihood_grad.cpp
+	ran_obj_hes.cpp
 )
 SET_TARGET_PROPERTIES(cppad_mixed
 	PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"

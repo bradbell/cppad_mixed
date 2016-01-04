@@ -32,29 +32,29 @@ $end
 extern bool cholmod_xam(void);
 
 // cppad_mixed subdirectory
-extern bool fix_constraint_xam(void);
+extern bool data_mismatch_xam(void);
 extern bool derived_xam(void);
+extern bool eigen_xam(void);
 extern bool fix_constraint_eval_xam(void);
 extern bool fix_constraint_hes_xam(void);
 extern bool fix_constraint_jac_xam(void);
-extern bool data_mismatch_xam(void);
-extern bool logdet_grad_xam(void);
-extern bool ran_obj_grad_xam(void);
-extern bool eigen_xam(void);
+extern bool fix_constraint_xam(void);
+extern bool fix_likelihood_eval_xam(void);
 extern bool fix_likelihood_hes_xam(void);
 extern bool fix_likelihood_jac_xam(void);
 extern bool hes_cross_xam(void);
 extern bool hes_ran_fun_xam(void);
-extern bool ran_obj_eval_xam(void);
 extern bool ipopt_xam_run(void);
+extern bool logdet_grad_xam(void);
+extern bool manage_gsl_rng_xam(void);
 extern bool newton_step_xam(void);
 extern bool no_random_xam(void);
 extern bool optimize_fixed_xam(void);
 extern bool optimize_random_xam(void);
-extern bool fix_likelihood_eval_xam(void);
 extern bool ran_likelihood_grad_xam(void);
+extern bool ran_obj_eval_xam(void);
+extern bool ran_obj_grad_xam(void);
 extern bool ran_obj_hes_xam(void);
-extern bool manage_gsl_rng_xam(void);
 
 // anonymous namespace
 namespace {
@@ -88,29 +88,29 @@ namespace {
 // main program that runs all the tests
 int main(void)
 {
-	RUN(fix_constraint_xam);
+	RUN(data_mismatch_xam);
 	RUN(derived_xam);
+	RUN(eigen_xam);
 	RUN(fix_constraint_eval_xam);
 	RUN(fix_constraint_hes_xam);
 	RUN(fix_constraint_jac_xam);
-	RUN(data_mismatch_xam);
-	RUN(logdet_grad_xam);
-	RUN(ran_obj_grad_xam);
-	RUN(ran_obj_hes_xam);
-	RUN(eigen_xam);
+	RUN(fix_constraint_xam);
+	RUN(fix_likelihood_eval_xam);
 	RUN(fix_likelihood_hes_xam);
 	RUN(fix_likelihood_jac_xam);
 	RUN(hes_cross_xam);
 	RUN(hes_ran_fun_xam);
-	RUN(ran_obj_eval_xam);
 	RUN(ipopt_xam_run);
+	RUN(logdet_grad_xam);
 	RUN(manage_gsl_rng_xam);
 	RUN(newton_step_xam);
-	RUN(ran_likelihood_grad_xam);
 	RUN(no_random_xam);
 	RUN(optimize_fixed_xam);
 	RUN(optimize_random_xam);
-	RUN(fix_likelihood_eval_xam);
+	RUN(ran_likelihood_grad_xam);
+	RUN(ran_obj_eval_xam);
+	RUN(ran_obj_grad_xam);
+	RUN(ran_obj_hes_xam);
 
 
 # if CPPAD_MIXED_HAS_SUITESPARSE

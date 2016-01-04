@@ -45,21 +45,21 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	private/fix_constraint_eval_xam.cpp
 	private/fix_constraint_hes_xam.cpp
 	private/fix_constraint_jac_xam.cpp
-	private/logdet_grad_xam.cpp
-	private/ran_obj_grad_xam.cpp
+	private/fix_likelihood_eval_xam.cpp
 	private/fix_likelihood_hes_xam.cpp
 	private/fix_likelihood_jac_xam.cpp
 	private/hes_cross_xam.cpp
 	private/hes_ran_fun_xam.cpp
-	private/ran_obj_eval_xam.cpp
+	private/logdet_grad_xam.cpp
 	private/newton_step_xam.cpp
-	private/fix_likelihood_eval_xam.cpp
 	private/ran_likelihood_grad_xam.cpp
+	private/ran_obj_eval_xam.cpp
+	private/ran_obj_grad_xam.cpp
 	private/ran_obj_hes_xam.cpp
-	user/manage_gsl_rng_xam.cpp
-	user/fix_constraint_xam.cpp
-	user/derived_xam.cpp
 	user/data_mismatch_xam.cpp
+	user/derived_xam.cpp
+	user/fix_constraint_xam.cpp
+	user/manage_gsl_rng_xam.cpp
 	user/no_random_xam.cpp
 	user/optimize_fixed_xam.cpp
 	user/optimize_random_xam.cpp
