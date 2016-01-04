@@ -131,20 +131,20 @@ bool ran_like_jac_xam(void)
 	mixed_derived mixed_object(n_fixed, n_random, data);
 	mixed_object.initialize(theta, u);
 
-	// compute gradient with respect to random effects
-	vector<a1_double> grad =
+	// compute Jacobian with respect to random effects
+	vector<a1_double> jac =
 		mixed_object.ran_like_jac(fixed_vec, random_vec);
 
-	// check the gradient
+	// check the Jacobian
 	for(size_t i = 0; i < n_random; i++)
 	{	a1_double sigma  = fixed_vec[i];
 		a1_double mu     = random_vec[i];
 		a1_double res    = (a1_double(data[i]) - mu) / sigma;
 		a1_double check  = - res / sigma;
 		//
-		// std::cout << "grad[i] = " << grad[i];
+		// std::cout << "jac[i] = " << jac[i];
 		// std::cout << ", check = " << check << std::endl;
-		ok              &= abs( grad[i] / check - 1.0) <= eps;
+		ok              &= abs( jac[i] / check - 1.0) <= eps;
 	}
 
 	return ok;

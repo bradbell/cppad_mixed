@@ -12,6 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin ran_like_jac$$
 $spell
+	Jacobian
 	jac
 	CppAD
 	cppad
@@ -21,13 +22,13 @@ $spell
 	xam
 $$
 
-$section Gradient of Random Likelihood w.r.t. Random Effects$$
+$section Jacobian of Random Likelihood w.r.t. Random Effects$$
 
 $head Syntax$$
-$icode%grad% = %mixed_object%.ran_like_jac( %fixed_vec%, %random_vec%)%$$
+$icode%jac% = %mixed_object%.ran_like_jac( %fixed_vec%, %random_vec%)%$$
 
 $head Purpose$$
-This routine computes the gradient of the random likelihood
+This routine computes the Jacobian of the random likelihood
 $cref/f(theta, u)/theory/Random Likelihood, f(theta, u)/$$
 with respect to the random effects vector $latex u$$; i.e.
 $latex \[
@@ -60,12 +61,12 @@ It specifies the value of the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$.
 
-$head grad$$
+$head jac$$
 The return value has prototype
 $codei%
-	CppAD::vector<a1_double>& %grad%
+	CppAD::vector<a1_double>& %jac%
 %$$
-It contains the gradient $latex f_u ( \theta , u )$$.
+It contains the Jacobian $latex f_u ( \theta , u )$$.
 
 $children%
 	example/private/ran_like_jac_xam.cpp
@@ -99,16 +100,16 @@ CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_jac(
 
 	// first order reverse f_{theta,u}^{(1) ( theta , u )
 	assert( init_ran_like_a1fun_.Range() == 1);
-	a1d_vector a1_w(1), grad_both(n_fixed_ + n_random_);
+	a1d_vector a1_w(1), jac_both(n_fixed_ + n_random_);
 	a1_w[0] = 1.0;
-	grad_both = init_ran_like_a1fun_.Reverse(1, a1_w);
+	jac_both = init_ran_like_a1fun_.Reverse(1, a1_w);
 
-	// extract u part of the gradient
-	a1d_vector grad_ran(n_random_);
+	// extract u part of the Jacobian
+	a1d_vector jac_ran(n_random_);
 	for(size_t j = 0; j < n_random_; j++)
-		grad_ran[j] = grad_both[n_fixed_ + j];
+		jac_ran[j] = jac_both[n_fixed_ + j];
 	//
-	return grad_ran;
+	return jac_ran;
 }
 
 
