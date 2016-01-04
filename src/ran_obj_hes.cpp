@@ -10,10 +10,10 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
 /*
-$begin ranobj_hes$$
+$begin ran_obj_hes$$
 $spell
 	CppAD
-	ranobj
+	ran_obj
 	cppad
 	obj
 	hes
@@ -26,7 +26,7 @@ $$
 $section Hessian of Random Part of Objective w.r.t Fixed Effects$$
 
 $head Syntax$$
-$icode%mixed_object%.ranobj_hes(
+$icode%mixed_object%.ran_obj_hes(
 	%fixed_vec%, %random_vec%, %row_out%, %col_out%, %val_out%
 )%$$
 
@@ -79,7 +79,7 @@ $codei%
 %$$
 If the input size of this array is non-zero,
 the entire vector must be the same
-as for a previous call to $code ranobj_hes$$.
+as for a previous call to $code ran_obj_hes$$.
 If it's input size is zero,
 upon return it contains the row indices for the Hessian elements
 that are possibly non-zero;
@@ -95,7 +95,7 @@ $codei%
 %$$
 If the input size of this array is non-zero,
 the entire vector must be the same as for
-a previous call to $code ranobj_hes$$.
+a previous call to $code ran_obj_hes$$.
 If it's input size is zero,
 upon return it contains the column indices for the Hessian elements
 that are possibly non-zero (and will have the same size as $icode row_out$$).
@@ -111,15 +111,15 @@ $codei%
 	CppAD::vector<double>& %val_out%
 %$$
 If the input size of this array is non-zero, it must have the same size
-as for a previous call to $code ranobj_hes$$.
+as for a previous call to $code ran_obj_hes$$.
 Upon return, it contains the value of the Hessian elements
 that are possibly non-zero (and will have the same size as $icode row_out$$).
 
 $children%
-	example/private/ranobj_hes_xam.cpp
+	example/private/ran_obj_hes_xam.cpp
 %$$
 $head Example$$
-The file $cref ranobj_hes_xam.cpp$$ contains an example
+The file $cref ran_obj_hes_xam.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
@@ -128,19 +128,19 @@ $end
 
 
 // ----------------------------------------------------------------------------
-// ranobj_hes
-void cppad_mixed::ranobj_hes(
+// ran_obj_hes
+void cppad_mixed::ran_obj_hes(
 	const d_vector&          fixed_vec   ,
 	const d_vector&          random_vec  ,
 	CppAD::vector<size_t>&   row_out     ,
 	CppAD::vector<size_t>&   col_out     ,
 	d_vector&                val_out     )
-{	assert( init_hes_ranobj_done_ );
+{	assert( init_hes_ran_obj_done_ );
 	assert( n_fixed_  == fixed_vec.size() );
 	assert( n_random_ == random_vec.size() );
 
 	// size of outputs
-	size_t n_nonzero = hes_ranobj_.row.size();
+	size_t n_nonzero = hes_ran_obj_.row.size();
 	if( n_nonzero == 0 )
 	{	// special case where Hessian is zero.
 		assert( row_out.size() == 0 );
@@ -149,7 +149,7 @@ void cppad_mixed::ranobj_hes(
 		return;
 	}
 	// check recording
-	assert( hes_ranobj_.col.size() == n_nonzero );
+	assert( hes_ran_obj_.col.size() == n_nonzero );
 
 	// make sure outputs have proper dimension
 	assert( row_out.size() == col_out.size() );
@@ -161,8 +161,8 @@ void cppad_mixed::ranobj_hes(
 		col_out.resize(n_nonzero);
 		val_out.resize(n_nonzero);
 		for(size_t k = 0; k < n_nonzero; k++)
-		{	row_out[k] = hes_ranobj_.row[k];
-			col_out[k] = hes_ranobj_.col[k];
+		{	row_out[k] = hes_ran_obj_.row[k];
+			col_out[k] = hes_ran_obj_.col[k];
 		}
 	}
 
@@ -174,24 +174,24 @@ void cppad_mixed::ranobj_hes(
 	d_vector w(1);
 	w[0] = 1.0;
 
-	// First call to SparseHessian is during init_hes_ranobj
+	// First call to SparseHessian is during init_hes_ran_obj
 	CppAD::vector< std::set<size_t> > not_used(0);
 
 	// compute the sparse Hessian
-	ranobj_fun_.SparseHessian(
+	ran_obj_fun_.SparseHessian(
 		beta_theta_u,
 		w,
 		not_used,
-		hes_ranobj_.row,
-		hes_ranobj_.col,
+		hes_ran_obj_.row,
+		hes_ran_obj_.col,
 		val_out,
-		hes_ranobj_.work
+		hes_ran_obj_.work
 	);
 
 # ifndef NDEBUG
 	for(size_t k = 0; k < n_nonzero; k++)
-	{	assert( row_out[k] == hes_ranobj_.row[k] );
-		assert( col_out[k] == hes_ranobj_.col[k] );
+	{	assert( row_out[k] == hes_ran_obj_.row[k] );
+		assert( col_out[k] == hes_ran_obj_.col[k] );
 	}
 # endif
 }

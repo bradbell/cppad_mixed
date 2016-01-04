@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -39,13 +39,13 @@ extern bool fix_constraint_hes_xam(void);
 extern bool fix_constraint_jac_xam(void);
 extern bool data_mismatch_xam(void);
 extern bool logdet_grad_xam(void);
-extern bool ranobj_grad_xam(void);
+extern bool ran_obj_grad_xam(void);
 extern bool eigen_xam(void);
 extern bool fix_likelihood_hes_xam(void);
 extern bool fix_likelihood_jac_xam(void);
 extern bool hes_cross_xam(void);
 extern bool hes_ran_fun_xam(void);
-extern bool ranobj_eval_xam(void);
+extern bool ran_obj_eval_xam(void);
 extern bool ipopt_xam_run(void);
 extern bool newton_step_xam(void);
 extern bool no_random_xam(void);
@@ -53,7 +53,7 @@ extern bool optimize_fixed_xam(void);
 extern bool optimize_random_xam(void);
 extern bool fix_likelihood_eval_xam(void);
 extern bool ran_likelihood_grad_xam(void);
-extern bool ranobj_hes_xam(void);
+extern bool ran_obj_hes_xam(void);
 extern bool manage_gsl_rng_xam(void);
 
 // anonymous namespace
@@ -95,14 +95,14 @@ int main(void)
 	RUN(fix_constraint_jac_xam);
 	RUN(data_mismatch_xam);
 	RUN(logdet_grad_xam);
-	RUN(ranobj_grad_xam);
-	RUN(ranobj_hes_xam);
+	RUN(ran_obj_grad_xam);
+	RUN(ran_obj_hes_xam);
 	RUN(eigen_xam);
 	RUN(fix_likelihood_hes_xam);
 	RUN(fix_likelihood_jac_xam);
 	RUN(hes_cross_xam);
 	RUN(hes_ran_fun_xam);
-	RUN(ranobj_eval_xam);
+	RUN(ran_obj_eval_xam);
 	RUN(ipopt_xam_run);
 	RUN(manage_gsl_rng_xam);
 	RUN(newton_step_xam);

@@ -11,11 +11,11 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/cppad_mixed.hpp>
 
 /*
-$begin init_hes_ranobj$$
+$begin init_hes_ran_obj$$
 $spell
 	CppAD
 	init
-	ranobj
+	ran_obj
 	cppad
 	obj
 	hes
@@ -27,7 +27,7 @@ $$
 $section Initialize Hessian of Approximate Random Objective$$
 
 $head Syntax$$
-$icode%mixed_object%.init_hes_ranobj(%fixed_vec%, %random_vec%)%$$
+$icode%mixed_object%.init_hes_ran_obj(%fixed_vec%, %random_vec%)%$$
 
 
 $head Private$$
@@ -56,10 +56,10 @@ It specifies the initial value for the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ optimization.
 
 
-$head hes_ranobj_$$
+$head hes_ran_obj_$$
 The input value of the member variable
 $codei%
-	CppAD::mixed::sparse_hes_info hes_ranobj_
+	CppAD::mixed::sparse_hes_info hes_ran_obj_
 %$$
 does not matter.
 Upon return it contains the
@@ -78,7 +78,7 @@ $cref/H(beta, theta, u)
 Note that the matrix is symmetric and hence can be recovered from
 its lower triangle.
 
-$subhead ranobj_fun_$$
+$subhead ran_obj_fun_$$
 This ADFun object should be used in the
 $cref/sparse Hessian Call/sparse_hes_info/Sparse Hessian Call/f/$$.
 
@@ -86,11 +86,11 @@ $end
 */
 
 
-void cppad_mixed::init_hes_ranobj(
+void cppad_mixed::init_hes_ran_obj(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec )
-{	assert( ! init_hes_ranobj_done_ );
-	assert( init_ranobj_done_ );
+{	assert( ! init_hes_ran_obj_done_ );
+	assert( init_ran_obj_done_ );
 	size_t i, j;
 
 	// total number of variables in H
@@ -107,7 +107,7 @@ void cppad_mixed::init_hes_ranobj(
 	sparsity_pattern r(n_total);
 	for(i = 0; i < n_fixed_; i++)
 		r[i].insert(i);
-	ranobj_fun_.ForSparseJac(n_fixed_, r);
+	ran_obj_fun_.ForSparseJac(n_fixed_, r);
 
 	// compute sparsity pattern corresponding to partial w.r.t (beta, theta, u)
 	// of parital w.r.t beta of H(beta, theta, u)
@@ -116,11 +116,11 @@ void cppad_mixed::init_hes_ranobj(
 	s[0].insert(0);
 	bool transpose = true;
 	sparsity_pattern pattern =
-		ranobj_fun_.RevSparseHes(n_fixed_, s, transpose);
+		ran_obj_fun_.RevSparseHes(n_fixed_, s, transpose);
 
 	// determine row and column indices in lower triangle of Hessian
-	hes_ranobj_.row.clear();
-	hes_ranobj_.col.clear();
+	hes_ran_obj_.row.clear();
+	hes_ran_obj_.col.clear();
 	std::set<size_t>::iterator itr;
 	for(i = 0; i < n_fixed_; i++)
 	{	for(
@@ -131,8 +131,8 @@ void cppad_mixed::init_hes_ranobj(
 		{	j = *itr;
 			// only compute lower triangular part
 			if( i >= j )
-			{	hes_ranobj_.row.push_back(i);
-				hes_ranobj_.col.push_back(j);
+			{	hes_ran_obj_.row.push_back(i);
+				hes_ran_obj_.col.push_back(j);
 			}
 		}
 	}
@@ -142,19 +142,19 @@ void cppad_mixed::init_hes_ranobj(
 	w[0] = 1.0;
 
 	// place where results go (not used here)
-	d_vector val_out( hes_ranobj_.row.size() );
+	d_vector val_out( hes_ran_obj_.row.size() );
 
 	// compute the work vector
-	ranobj_fun_.SparseHessian(
+	ran_obj_fun_.SparseHessian(
 		beta_theta_u,
 		w,
 		pattern,
-		hes_ranobj_.row,
-		hes_ranobj_.col,
+		hes_ran_obj_.row,
+		hes_ran_obj_.col,
 		val_out,
-		hes_ranobj_.work
+		hes_ran_obj_.work
 	);
 	//
-	init_hes_ranobj_done_ = true;
+	init_hes_ran_obj_done_ = true;
 }
 

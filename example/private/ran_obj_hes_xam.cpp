@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -9,18 +9,19 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin ranobj_eval_xam.cpp$$
+$begin ran_obj_hes_xam.cpp$$
 $spell
 	CppAD
-	ranobj
+	ran_obj
 	cppad
 	obj
+	hes
 	eval
 	interp
 	xam
 $$
 
-$section ranobj_eval: Example and Test$$
+$section ran_obj_hes: Example and Test$$
 
 $head Private$$
 This example is not part of the
@@ -39,7 +40,7 @@ $latex \[
 \] $$
 
 $code
-$verbatim%example/private/ranobj_eval_xam.cpp
+$verbatim%example/private/ran_obj_hes_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -129,7 +130,7 @@ namespace {
 	};
 }
 
-bool ranobj_eval_xam(void)
+bool ran_obj_hes_xam(void)
 {
 	bool   ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
@@ -139,14 +140,18 @@ bool ranobj_eval_xam(void)
 	size_t n_fixed  = 2;
 	size_t n_random = n_data;
 	vector<double> data(n_data), fixed_vec(n_fixed), random_vec(n_random);
-	vector<double> uhat(n_random);
+	vector<double> beta(n_fixed), theta(n_fixed), uhat(n_random);
 
 	fixed_vec[0] = 2.0;
-	fixed_vec[1] = 1.0;
+	fixed_vec[1] = 0.5;
 	for(size_t i = 0; i < n_data; i++)
 	{	data[i]       = double(i + 1);
 		random_vec[i] = i / double(n_data);
 	}
+
+	// object that is derived from cppad_mixed
+	mixed_derived mixed_object(n_fixed, n_random, data);
+	mixed_object.initialize(fixed_vec, random_vec);
 
 	// lower and upper limits for random effects
 	double inf = std::numeric_limits<double>::infinity();
@@ -155,10 +160,6 @@ bool ranobj_eval_xam(void)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
 	}
-
-	// object that is derived from cppad_mixed
-	mixed_derived mixed_object(n_fixed, n_random, data);
-	mixed_object.initialize( fixed_vec, random_vec);
 
 	// optimize the random effects
 	std::string options;
@@ -169,20 +170,58 @@ bool ranobj_eval_xam(void)
 		options, fixed_vec, random_lower, random_upper, random_vec
 	);
 
-	// compute random part of Laplace approximation
-	double h = mixed_object.ranobj_eval(fixed_vec, uhat);
+	// compute Hessian of random part of Laplace approximation
+	vector<size_t> row, col;
+	vector<double> val;
+	mixed_object.ran_obj_hes(fixed_vec, random_vec, row, col, val);
+
+	// check size of result vectors
+	size_t K = row.size();
+	ok &= col.size() == K;
+	ok &= val.size() == K;
 
 	// For this case the Laplace approximation is exactly equal the integral
 	// p(y | theta ) = integral of p(y | theta , u) p(u | theta) du
-	double mu    = fixed_vec[0];
-	double sum   = 0.0;
-	double sigma  = fixed_vec[1];
-	double delta  = CppAD::sqrt( sigma * sigma + 1.0 );
+	// record the function L(theta) = p(y | theta)
+	typedef AD<double> a1_double;
+	vector<a1_double> a1_fixed_vec(n_fixed), a1_L(1);
+	a1_fixed_vec[0]  = fixed_vec[0];
+	a1_fixed_vec[1]  = fixed_vec[1];
+	CppAD::Independent(a1_fixed_vec);
+	a1_double mu     = a1_fixed_vec[0];
+	a1_double sigma  = a1_fixed_vec[1];
+	a1_double delta  = CppAD::sqrt( sigma * sigma + 1.0 );
+	a1_L[0] = 0.0;
 	for(size_t i = 0; i < n_data; i++)
-	{	double res    = (data[i] - mu) / delta;
-		sum          += CppAD::log(sqrt_2pi * delta) + res*res / 2.0;
+	{	a1_double res  = (data[i] - mu) / delta;
+		a1_L[0]       += log(sqrt_2pi * delta) + res*res / 2.0;
 	}
-	ok &= abs( h / sum - 1.0 ) < eps;
+	CppAD::ADFun<double> f(a1_fixed_vec, a1_L);
+
+	// compute Hessian of L
+	vector<double> hes = f.Hessian(fixed_vec, 0);
+
+	// check results
+	ok &= hes.size() == 4;
+	size_t check_count = 0;
+	size_t non_zero    = 0;
+	for(size_t i = 0; i < 2; i++)
+	{	for(size_t j = 0; j <= i; j++)
+		{	// only check lower triangle non-zero values
+			if( hes[ i * 2 + j ] != 0.0 )
+			{	non_zero++;
+				for(size_t k = 0; k < K; k++)
+				{	if( row[k] == i && col[k] == j )
+					{	ok &= abs( val[k] / hes[i*n_fixed+j] - 1.0 ) <= eps;
+						check_count++;
+					}
+				}
+			}
+		}
+	}
+	// should be only two non
+	ok &= check_count == non_zero;
+	ok &= K == non_zero;
 
 	return ok;
 }

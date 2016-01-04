@@ -1,14 +1,14 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-// Finite difference test of ranobj_grad.cpp
+// Finite difference test of ran_obj_grad.cpp
 // BEGIN C++
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
@@ -97,7 +97,7 @@ namespace {
 
 }
 
-bool delta_ranobj(void)
+bool delta_ran_obj(void)
 {
 	bool   ok = true;
 	double inf = std::numeric_limits<double>::infinity();
@@ -142,7 +142,7 @@ bool delta_ranobj(void)
 	//
 	// compute the derivative of the random part of objective
 	vector<double> r_fixed(n_fixed);
-	mixed_object.ranobj_grad(fixed_vec, uhat, r_fixed);
+	mixed_object.ran_obj_grad(fixed_vec, uhat, r_fixed);
 	//
 	// check using finite central differences
 	for(size_t j = 0; j < n_fixed; j++)
@@ -151,12 +151,12 @@ bool delta_ranobj(void)
 		uhat = mixed_object.optimize_random(
 			options, fixed_vec, random_lower, random_upper, random_vec
 		);
-		double r_plus  = mixed_object.ranobj_eval(fixed_vec, uhat);
+		double r_plus  = mixed_object.ran_obj_eval(fixed_vec, uhat);
 		fixed_vec[j]   = theta_j - 2.0 * eps;
 		uhat = mixed_object.optimize_random(
 			options, fixed_vec, random_lower, random_upper, random_vec
 		);
-		double r_minus = mixed_object.ranobj_eval(fixed_vec, uhat);
+		double r_minus = mixed_object.ran_obj_eval(fixed_vec, uhat);
 		fixed_vec[j]   = theta_j;
 		//
 		double check = (r_plus - r_minus) / (4.0 * eps);

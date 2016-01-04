@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -14,7 +14,7 @@ see http://www.gnu.org/licenses/agpl.txt
 
 // cppad_mixed subdirectory
 extern bool binomial(void);
-extern bool delta_ranobj(void);
+extern bool delta_ran_obj(void);
 extern bool der_var_hes(void);
 extern bool n_mixture(void);
 extern bool zero_random_one(void);
@@ -55,7 +55,7 @@ int main(void)
 {
 	// cppad_mixed subdirectory
 	RUN(binomial);
-	RUN(delta_ranobj);
+	RUN(delta_ran_obj);
 	RUN(der_var_hes);
 	RUN(n_mixture);
 	RUN(zero_random_one);

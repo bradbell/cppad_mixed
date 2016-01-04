@@ -1,7 +1,7 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-15 University of Washington
+#           Copyright (C) 2014-16 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -15,7 +15,7 @@ ADD_LIBRARY(cppad_mixed
 	fix_constraint_jac.cpp
 	fix_constraint_hes.cpp
 	ran_likelihood_grad.cpp
-	ranobj_hes.cpp
+	ran_obj_hes.cpp
 	initialize.cpp
 	ipopt_fixed.cpp
 	manage_gsl_rng.cpp
@@ -27,7 +27,7 @@ ADD_LIBRARY(cppad_mixed
 	init_fix_likelihood.cpp
 	init_fix_constraint.cpp
 	init_hes_cross.cpp
-	init_hes_ranobj.cpp
+	init_hes_ran_obj.cpp
 	init_ran_likelihood.cpp
 )
 SET_TARGET_PROPERTIES(cppad_mixed
@@ -38,11 +38,11 @@ SET_TARGET_PROPERTIES(cppad_mixed
 ADD_LIBRARY(cppad_mixed_eigen
 	chol_hes_ran.cpp
 	init_hes_ran.cpp
-	init_ranobj.cpp
+	init_ran_obj.cpp
 	newton_step.cpp
-	ranobj_eval.cpp
+	ran_obj_eval.cpp
 	logdet_grad.cpp
-	ranobj_grad.cpp
+	ran_obj_grad.cpp
 )
 SET_TARGET_PROPERTIES(cppad_mixed_eigen
 	PROPERTIES COMPILE_FLAGS "${eigen_cxx_flags}"

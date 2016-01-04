@@ -22,19 +22,19 @@ extern bool fix_constraint_eval_xam(void);
 extern bool fix_constraint_jac_xam(void);
 extern bool fix_constraint_hes_xam(void);
 extern bool ran_likelihood_grad_xam(void);
-extern bool ranobj_hes_xam(void);
+extern bool ran_obj_hes_xam(void);
 extern bool fix_likelihood_eval_xam(void);
 extern bool fix_likelihood_jac_xam(void);
 extern bool fix_likelihood_hes_xam(void);
 extern bool hes_ran_fun_xam(void);
-extern bool ranobj_eval_xam(void);
+extern bool ran_obj_eval_xam(void);
 extern bool logdet_grad_xam(void);
-extern bool ranobj_grad_xam(void);
+extern bool ran_obj_grad_xam(void);
 extern bool hes_cross_xam(void);
 
 //  tests
 extern bool der_var_hes(void);
-extern bool delta_ranobj(void);
+extern bool delta_ran_obj(void);
 
 
 namespace CppAD { namespace mixed {
@@ -54,7 +54,7 @@ $spell
 	endl
 	CppAD
 	init
-	ranobj
+	ran_obj
 	cppad
 	obj
 	const
@@ -157,8 +157,8 @@ $comment */
 	init_hes_ran_done_(false)     ,
 	init_hes_cross_done_(false)   ,
 	record_newton_atom_done_(false) ,
-	init_ranobj_done_(false)     ,
-	init_hes_ranobj_done_(false)
+	init_ran_obj_done_(false)     ,
+	init_hes_ran_obj_done_(false)
 	{ }
 /* $$
 $head initialize$$
@@ -217,7 +217,7 @@ $begin private$$
 $spell
 	CppAD
 	init
-	ranobj
+	ran_obj
 	var
 	cppad
 	hes hes
@@ -252,15 +252,15 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/init_ran_likelihood.cpp
 	%src/init_hes_ran.cpp
 	%src/init_hes_cross.cpp
-	%src/init_ranobj.cpp
-	%src/init_hes_ranobj.cpp
+	%src/init_ran_obj.cpp
+	%src/init_hes_ran_obj.cpp
 	%src/init_fix_likelihood.cpp
 	%src/init_fix_constraint.cpp
-	%src/ranobj_eval.cpp
+	%src/ran_obj_eval.cpp
 	%src/logdet_grad.cpp
-	%src/ranobj_grad.cpp
+	%src/ran_obj_grad.cpp
 	%src/ran_likelihood_grad.cpp
-	%src/ranobj_hes.cpp
+	%src/ran_obj_hes.cpp
 	%src/fix_likelihood_eval.cpp
 	%src/fix_likelihood_jac.cpp
 	%src/fix_likelihood_hes.cpp
@@ -295,8 +295,8 @@ $codep */
 	bool                init_hes_cross_done_;
 	// only called when n_random_ > 0 and quasi_fixed_ is false
 	bool                record_newton_atom_done_;
-	bool                init_ranobj_done_;
-	bool                init_hes_ranobj_done_;
+	bool                init_ran_obj_done_;
+	bool                init_hes_ran_obj_done_;
 /* $$
 
 $head ran_likelihood$$
@@ -358,22 +358,22 @@ $codep */
 	CppAD::mixed::newton_step   newton_atom_;
 /* $$
 
-$head ranobj_fun_$$
+$head ran_obj_fun_$$
 If $icode%n_random_% > 0%$$, quasi_fixed_ is false, and
-$code init_ranobj_done_$$,
+$code init_ran_obj_done_$$,
 this is a recording of the second approximation for the
 random part of the Laplace approximation, $latex H( \beta , \theta , u)$$;
-see $cref/ranobj_fun_/init_ranobj/ranobj_fun_/$$.
+see $cref/ran_obj_fun_/init_ran_obj/ran_obj_fun_/$$.
 $codep */
-	CppAD::ADFun<double>        ranobj_fun_;   // for computing H_beta_beta
+	CppAD::ADFun<double>        ran_obj_fun_;   // for computing H_beta_beta
 /* $$
 The following objects hold information for computing derivatives
 with this ADFun object:
 
-$subhead hes_ranobj_$$
+$subhead hes_ran_obj_$$
 If $icode%n_random_% > 0%$$, quasi_fixed_ is false, and
-$code init_hes_ranobj_done_$$,
-$cref/hes_ranobj_/init_hes_ranobj/hes_ranobj_/$$ contains
+$code init_hes_ran_obj_done_$$,
+$cref/hes_ran_obj_/init_hes_ran_obj/hes_ran_obj_/$$ contains
 information for the Hessian of the
 $cref/random objective
 	/theory
@@ -381,7 +381,7 @@ $cref/random objective
 	/Random Objective, r(theta)
 /$$
 $codep */
-	CppAD::mixed::sparse_hes_info hes_ranobj_;
+	CppAD::mixed::sparse_hes_info hes_ran_obj_;
 /* $$
 
 $head fix_likelihood_$$
@@ -499,18 +499,18 @@ $codep */
 		const d_vector& random_vec
 	);
 /* $$
-$head init_ranobj$$
-See $cref init_ranobj$$.
+$head init_ran_obj$$
+See $cref init_ran_obj$$.
 $codep */
-	void init_ranobj(
+	void init_ran_obj(
 		const d_vector& fixed_vec ,
 		const d_vector& random_vec
 	);
 /* $$
-$head init_hes_ranobj$$
-See $cref init_hes_ranobj$$.
+$head init_hes_ran_obj$$
+See $cref init_hes_ran_obj$$.
 $codep */
-	void init_hes_ranobj(
+	void init_hes_ran_obj(
 		const d_vector& fixed_vec ,
 		const d_vector& random_vec
 	);
@@ -526,14 +526,14 @@ $codep */
 	void init_fix_constraint(const d_vector& fixed_vec);
 /* $$
 ------------------------------------------------------------------------------
-$head ranobj_eval$$
-See $cref ranobj_eval$$
+$head ran_obj_eval$$
+See $cref ran_obj_eval$$
 $codep */
-	double ranobj_eval(
+	double ran_obj_eval(
 		const d_vector& fixed_vec  ,
 		const d_vector& random_vec
 	);
-	friend bool ::ranobj_eval_xam(void);
+	friend bool ::ran_obj_eval_xam(void);
 /* $$
 ------------------------------------------------------------------------------
 $head logdet_grad$$
@@ -548,17 +548,17 @@ $codep */
 	friend bool ::logdet_grad_xam(void);
 /* $$
 ------------------------------------------------------------------------------
-$head ranobj_grad$$
-See $cref ranobj_grad$$
+$head ran_obj_grad$$
+See $cref ran_obj_grad$$
 $codep */
-	void ranobj_grad(
+	void ran_obj_grad(
 		const d_vector& fixed_vec  ,
 		const d_vector& random_vec ,
 		d_vector&       r_fixed
 	);
-	friend bool ::ranobj_grad_xam(void);
+	friend bool ::ran_obj_grad_xam(void);
 	friend bool ::der_var_hes(void);
-	friend bool ::delta_ranobj(void);
+	friend bool ::delta_ran_obj(void);
 /* $$
 ------------------------------------------------------------------------------
 $head ran_likelihood_grad$$
@@ -572,18 +572,18 @@ $codep */
 	friend bool ::ran_likelihood_grad_xam(void);
 /* $$
 ------------------------------------------------------------------------------
-$head ranobj_hes$$
-See $cref ranobj_hes$$
+$head ran_obj_hes$$
+See $cref ran_obj_hes$$
 $codep */
-	// ranobj_hes
-	void ranobj_hes(
+	// ran_obj_hes
+	void ran_obj_hes(
 		const d_vector&         fixed_vec   ,
 		const d_vector&         random_vec  ,
 		CppAD::vector<size_t>&  row_out     ,
 		CppAD::vector<size_t>&  col_out     ,
 		d_vector&               val_out
 	);
-	friend bool ::ranobj_hes_xam(void);
+	friend bool ::ran_obj_hes_xam(void);
 /* $$
 -------------------------------------------------------------------------------
 $head fix_constraint_eval$$

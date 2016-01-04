@@ -152,7 +152,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 $begin ipopt_fixed_ctor$$
 $spell
 	CppAD
-	ranobj
+	ran_obj
 	cppad
 	obj
 	hes
@@ -375,7 +375,7 @@ mixed_object_      ( mixed_object    )
 	// derivative of the constraints
 	nnz_jac_g_ += fix_constraint_jac_row_.size();
 	// -----------------------------------------------------------------------
-	// set lag_hes_row_, lag_hes_col_, ranobj_2_lag_, fix_likelihood2lag_
+	// set lag_hes_row_, lag_hes_col_, ran_obj_2_lag_, fix_likelihood2lag_
 	// -----------------------------------------------------------------------
 	if( mixed_object_.quasi_fixed_ )
 	{	// Using quasi-Newton method
@@ -385,9 +385,9 @@ mixed_object_      ( mixed_object    )
 	{	// Using full Newton method
 
 		// row and column indices for contribution from random part of objective
-		if( n_random_ > 0 ) mixed_object.ranobj_hes(
+		if( n_random_ > 0 ) mixed_object.ran_obj_hes(
 			fixed_in, random_in,
-			ranobj_hes_row_, ranobj_hes_col_, ranobj_hes_val_
+			ran_obj_hes_row_, ran_obj_hes_col_, ran_obj_hes_val_
 		);
 		// row and column indices for contribution from prior
 		d_vector weight( 1 + fix_likelihood_n_abs_ );
@@ -413,25 +413,25 @@ mixed_object_      ( mixed_object    )
 		);
 		//
 		// merge to form sparsity for Lagrangian
-		ranobj_2_lag_.resize( ranobj_hes_row_.size() );
+		ran_obj_2_lag_.resize( ran_obj_hes_row_.size() );
 		fix_likelihood2lag_.resize( fix_likelihood_hes_row_.size() );
 		constraint_2_lag_.resize( fix_constraint_hes_row_.size() );
 		merge_sparse(
-			ranobj_hes_row_      ,
-			ranobj_hes_col_      ,
+			ran_obj_hes_row_      ,
+			ran_obj_hes_col_      ,
 			fix_likelihood_hes_row_        ,
 			fix_likelihood_hes_col_        ,
 			fix_constraint_hes_row_   ,
 			fix_constraint_hes_col_   ,
 			lag_hes_row_          ,
 			lag_hes_col_          ,
-			ranobj_2_lag_        ,
+			ran_obj_2_lag_        ,
 			fix_likelihood2lag_          ,
 			constraint_2_lag_
 		);
 # ifndef NDEBUG
-		for(size_t k = 0; k < ranobj_hes_row_.size(); k++)
-			assert( ranobj_2_lag_[k] < lag_hes_row_.size() );
+		for(size_t k = 0; k < ran_obj_hes_row_.size(); k++)
+			assert( ran_obj_2_lag_[k] < lag_hes_row_.size() );
 		//
 		for(size_t k = 0; k < fix_likelihood_hes_row_.size(); k++)
 			assert( fix_likelihood2lag_[k] < lag_hes_row_.size() );
@@ -466,7 +466,7 @@ $end
 $begin ipopt_fixed_get_nlp_info$$
 $spell
 	CppAD
-	ranobj
+	ran_obj
 	cppad
 	obj
 	ipopt_fixed_get_nlp_info
@@ -528,7 +528,7 @@ bool ipopt_fixed::get_nlp_info(
 $begin ipopt_fixed_get_bounds_info$$
 $spell
 	CppAD
-	ranobj
+	ran_obj
 	cppad
 	obj
 	ipopt
@@ -614,7 +614,7 @@ bool ipopt_fixed::get_bounds_info(
 $begin ipopt_fixed_get_starting_point$$
 $spell
 	CppAD
-	ranobj
+	ran_obj
 	cppad
 	obj
 	init
@@ -710,7 +710,7 @@ bool ipopt_fixed::get_starting_point(
 $begin ipopt_fixed_eval_f$$
 $spell
 	CppAD
-	ranobj
+	ran_obj
 	cppad
 	obj
 	ipopt
@@ -768,7 +768,7 @@ bool ipopt_fixed::eval_f(
 		random_cur_ = mixed_object_.optimize_random(
 		random_options_, fixed_tmp_, random_lower_, random_upper_, random_in_
 		);
-		H = mixed_object_.ranobj_eval(fixed_tmp_, random_cur_);
+		H = mixed_object_.ran_obj_eval(fixed_tmp_, random_cur_);
 	}
 	obj_value = Number(H);
 	if( fix_likelihood_vec_tmp_.size() == 0 )
@@ -793,7 +793,7 @@ bool ipopt_fixed::eval_f(
 $begin ipopt_fixed_eval_grad_f$$
 $spell
 	CppAD
-	ranobj
+	ran_obj
 	cppad
 	obj
 	ipopt
@@ -856,7 +856,7 @@ bool ipopt_fixed::eval_grad_f(
 		random_options_, fixed_tmp_, random_lower_, random_upper_, random_in_
 		);
 		// Jacobian for random part of the Lalpace objective
-		mixed_object_.ranobj_grad(
+		mixed_object_.ran_obj_grad(
 			fixed_tmp_, random_cur_, H_beta_tmp_
 		);
 	}
@@ -892,7 +892,7 @@ bool ipopt_fixed::eval_grad_f(
 $begin ipopt_fixed_eval_g$$
 $spell
 	CppAD
-	ranobj
+	ran_obj
 	cppad
 	obj
 	ipopt
@@ -978,7 +978,7 @@ bool ipopt_fixed::eval_g(
 $begin ipopt_fixed_eval_jac_g$$
 $spell
 	CppAD
-	ranobj
+	ran_obj
 	cppad
 	obj
 	ipopt
@@ -1138,7 +1138,7 @@ bool ipopt_fixed::eval_jac_g(
 $begin ipopt_fixed_eval_h$$
 $spell
 	CppAD
-	ranobj
+	ran_obj
 	cppad
 	obj
 	ipopt
@@ -1267,13 +1267,13 @@ bool ipopt_fixed::eval_h(
 		random_options_, fixed_tmp_, random_lower_, random_upper_, random_in_
 		);
 		// compute Hessian of random part w.r.t. fixed effects
-		mixed_object_.ranobj_hes(
+		mixed_object_.ran_obj_hes(
 			fixed_tmp_, random_cur_,
-			ranobj_hes_row_, ranobj_hes_col_, ranobj_hes_val_
+			ran_obj_hes_row_, ran_obj_hes_col_, ran_obj_hes_val_
 		);
-		for(size_t k = 0; k < ranobj_hes_row_.size(); k++)
-			values[ ranobj_2_lag_[k] ] +=
-				obj_factor * Number( ranobj_hes_val_[k] );
+		for(size_t k = 0; k < ran_obj_hes_row_.size(); k++)
+			values[ ran_obj_2_lag_[k] ] +=
+				obj_factor * Number( ran_obj_hes_val_[k] );
 	}
 	//
 	// Hessian of Lagrangian of weighted prior w.r.t. fixed effects
@@ -1314,7 +1314,7 @@ bool ipopt_fixed::eval_h(
 $begin ipopt_fixed_finalize_solution$$
 $spell
 	CppAD
-	ranobj
+	ran_obj
 	cppad
 	obj
 	ipopt

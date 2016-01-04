@@ -14,7 +14,7 @@ see http://www.gnu.org/licenses/agpl.txt
 $begin initialize$$
 $spell
 	CppAD
-	ranobj
+	ran_obj
 	logdet
 	cppad
 	std
@@ -144,9 +144,9 @@ $subhead hes_ran_fun_$$
 $icode%size_map%["hes_ran_fun_"]%$$ is the number of variables in
 $cref/hes_ran_fun_/init_hes_ran/hes_ran_fun_/$$.
 
-$subhead hes_ranobj_$$
-$icode%size_map%["hes_ranobj_"]%$$ is the size of the row vector in
-$cref/hes_ranobj_/init_hes_ranobj/hes_ranobj_/$$.
+$subhead hes_ran_obj_$$
+$icode%size_map%["hes_ran_obj_"]%$$ is the size of the row vector in
+$cref/hes_ran_obj_/init_hes_ran_obj/hes_ran_obj_/$$.
 This is also the number of non-zeros
 in the lower triangle of the Hessian
 $latex \[
@@ -184,9 +184,9 @@ $subhead ran_likelihood_fun_$$
 $icode%size_map%["ran_likelihood_fun_"]%$$ is the number of variables in
 $cref/ran_likelihood_fun_/init_ran_likelihood/ran_likelihood_fun_/$$.
 
-$subhead ranobj_fun_$$
-$icode%size_map%["ranobj_fun_"]%$$ is the number of variables in
-$cref/ranobj_fun_/init_ranobj/ranobj_fun_/$$.
+$subhead ran_obj_fun_$$
+$icode%size_map%["ran_obj_fun_"]%$$ is the number of variables in
+$cref/ran_obj_fun_/init_ran_obj/ran_obj_fun_/$$.
 
 
 $head Example$$
@@ -243,15 +243,15 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 			);
 			record_newton_atom_done_ = true;
 
-			// ranobj_fun_
-			assert( ! init_ranobj_done_ );
-			init_ranobj(fixed_vec, random_vec);
-			assert( init_ranobj_done_ );
+			// ran_obj_fun_
+			assert( ! init_ran_obj_done_ );
+			init_ran_obj(fixed_vec, random_vec);
+			assert( init_ran_obj_done_ );
 
-			// hes_ranobj_
-			assert( ! init_hes_ranobj_done_ );
-			init_hes_ranobj(fixed_vec, random_vec);
-			assert( init_hes_ranobj_done_ );
+			// hes_ran_obj_
+			assert( ! init_hes_ran_obj_done_ );
+			init_hes_ran_obj(fixed_vec, random_vec);
+			assert( init_hes_ran_obj_done_ );
 		}
 	}
 
@@ -281,8 +281,8 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	if( ! quasi_fixed_ )
 	{	size_map["newton_step_"]      = newton_atom_.size_var();
 		//
-		size_map["ranobj_fun_"]       = ranobj_fun_.size_var();
-		size_map["hes_ranobj_"]       = hes_ranobj_.row.size();
+		size_map["ran_obj_fun_"]       = ran_obj_fun_.size_var();
+		size_map["hes_ran_obj_"]       = hes_ran_obj_.row.size();
 	}
 	size_map["fix_likelihood_fun_"]   = fix_likelihood_fun_.size_var();
 	size_map["fix_likelihood_jac_"]   = fix_likelihood_jac_.row.size();

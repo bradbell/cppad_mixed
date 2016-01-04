@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -9,17 +9,17 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin ranobj_grad_xam.cpp$$
+$begin ran_obj_grad_xam.cpp$$
 $spell
 	CppAD
-	ranobj
+	ran_obj
 	cppad
 	obj
 	interp
 	xam
 $$
 
-$section ranobj_grad: Example and Test$$
+$section ran_obj_grad: Example and Test$$
 
 $head Private$$
 This example is not part of the
@@ -40,7 +40,7 @@ $latex \[
 \] $$
 
 $code
-$verbatim%example/private/ranobj_grad_xam.cpp
+$verbatim%example/private/ran_obj_grad_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -127,7 +127,7 @@ namespace {
 	};
 }
 
-bool ranobj_grad_xam(void)
+bool ran_obj_grad_xam(void)
 {
 	bool   ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
@@ -169,7 +169,7 @@ bool ranobj_grad_xam(void)
 
 	// compute total derivative of random part of objective
 	vector<double> r_fixed(n_fixed);
-	mixed_object.ranobj_grad(fixed_vec, uhat, r_fixed);
+	mixed_object.ran_obj_grad(fixed_vec, uhat, r_fixed);
 
 	// For this case the Laplace approximation is exactly equal the integral
 	// p(y | theta ) = integral of p(y | theta , u) p(u | theta) du

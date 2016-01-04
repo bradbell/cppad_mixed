@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -309,7 +309,7 @@ bool der_var_hes(void)
 	//
 	// compute the derivative of the random part of objective
 	vector<double> r_fixed(n_fixed);
-	mixed_object.ranobj_grad(fixed_vec, uhat, r_fixed);
+	mixed_object.ran_obj_grad(fixed_vec, uhat, r_fixed);
 	//
 	// check the derivative of the random part of objective
 	uhat = mixed_object.optimize_random(

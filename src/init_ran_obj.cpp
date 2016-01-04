@@ -9,11 +9,11 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin init_ranobj$$
+$begin init_ran_obj$$
 $spell
 	CppAD
 	init
-	ranobj
+	ran_obj
 	cppad
 	obj
 	vec
@@ -24,7 +24,7 @@ $$
 $section Second Order Representation of Random Objective$$
 
 $head Syntax$$
-$icode%mixed_object%.init_ranobj(%fixed_vec%, %random_vec%)%$$
+$icode%mixed_object%.init_ran_obj(%fixed_vec%, %random_vec%)%$$
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
@@ -52,10 +52,10 @@ It specifies the value of the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$ at which the initialization is done.
 
-$head ranobj_fun_$$
+$head ran_obj_fun_$$
 The input value of the member variable
 $codei%
-	CppAD::ADFun<double> ranobj_fun_
+	CppAD::ADFun<double> ran_obj_fun_
 %$$
 does not matter.
 Upon return it contains a second order accurate recording of the
@@ -73,10 +73,10 @@ $end
 
 
 // ----------------------------------------------------------------------------
-void cppad_mixed::init_ranobj(
+void cppad_mixed::init_ran_obj(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec )
-{	assert( ! init_ranobj_done_ );
+{	assert( ! init_ran_obj_done_ );
 	assert( record_newton_atom_done_ );
 
 	//	create an a1d_vector containing (beta, theta, u)
@@ -148,12 +148,12 @@ void cppad_mixed::init_ranobj(
 	f    = ran_likelihood_a1fun_.Forward(0, both);
 	H[0] = logdet_step[0] / 2.0 + f[0] - constant_term;
 	//
-	ranobj_fun_.Dependent(beta_theta_u, H);
+	ran_obj_fun_.Dependent(beta_theta_u, H);
 # ifdef NDEBUG
-	ranobj_fun_.optimize();
+	ran_obj_fun_.optimize();
 # endif
 	//
-	init_ranobj_done_ = true;
+	init_ran_obj_done_ = true;
 	return;
 }
 

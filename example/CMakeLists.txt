@@ -1,7 +1,7 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-15 University of Washington
+#           Copyright (C) 2014-16 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -46,16 +46,16 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	private/fix_constraint_hes_xam.cpp
 	private/fix_constraint_jac_xam.cpp
 	private/logdet_grad_xam.cpp
-	private/ranobj_grad_xam.cpp
+	private/ran_obj_grad_xam.cpp
 	private/fix_likelihood_hes_xam.cpp
 	private/fix_likelihood_jac_xam.cpp
 	private/hes_cross_xam.cpp
 	private/hes_ran_fun_xam.cpp
-	private/ranobj_eval_xam.cpp
+	private/ran_obj_eval_xam.cpp
 	private/newton_step_xam.cpp
 	private/fix_likelihood_eval_xam.cpp
 	private/ran_likelihood_grad_xam.cpp
-	private/ranobj_hes_xam.cpp
+	private/ran_obj_hes_xam.cpp
 	user/manage_gsl_rng_xam.cpp
 	user/fix_constraint_xam.cpp
 	user/derived_xam.cpp

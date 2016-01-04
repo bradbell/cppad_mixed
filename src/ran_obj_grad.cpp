@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -11,10 +11,10 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/chol_hes_ran.hpp>
 /*
-$begin ranobj_grad$$
+$begin ran_obj_grad$$
 $spell
 	CppAD
-	ranobj
+	ran_obj
 	cppad
 	hes
 	vec
@@ -26,7 +26,7 @@ $$
 $section Derivative of Random Objective$$
 
 $head Syntax$$
-$icode%mixed_object%.ranobj_grad(%fixed_vec%, %random_vec%, %r_fixed%)%$$
+$icode%mixed_object%.ran_obj_grad(%fixed_vec%, %random_vec%, %r_fixed%)%$$
 
 $head Purpose$$
 This routine computes the
@@ -69,17 +69,17 @@ Upon return, it contains the value of the derivative w.r.t
 the fixed effects; i.e. $latex r_\theta ( \theta )$$.
 
 $children%
-	example/private/ranobj_grad_xam.cpp
+	example/private/ran_obj_grad_xam.cpp
 %$$
 $head Example$$
-The file $cref ranobj_grad_xam.cpp$$ contains an example
+The file $cref ran_obj_grad_xam.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
 $end
 */
 // ----------------------------------------------------------------------------
-void cppad_mixed::ranobj_grad(
+void cppad_mixed::ran_obj_grad(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec ,
 	d_vector&       r_fixed    )
