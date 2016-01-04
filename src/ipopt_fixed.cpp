@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -357,7 +357,7 @@ mixed_object_      ( mixed_object    )
 	mixed_object.fix_likelihood_jac(
 		fixed_in, fix_likelihood_jac_row_, fix_likelihood_jac_col_, fix_likelihood_jac_val_
 	);
-	mixed_object.constraint_jac(
+	mixed_object.fix_constraint_jac(
 		fixed_in, fix_constraint_jac_row_, fix_constraint_jac_col_, fix_constraint_jac_val_
 	);
 	// -----------------------------------------------------------------------
@@ -404,7 +404,7 @@ mixed_object_      ( mixed_object    )
 		weight.resize( n_constraint_ );
 		for(size_t i = 0; i < weight.size(); i++)
 			weight[i] = 1.0;
-		mixed_object.constraint_hes(
+		mixed_object.fix_constraint_hes(
 			fixed_in,
 			weight,
 			fix_constraint_hes_row_,
@@ -964,7 +964,7 @@ bool ipopt_fixed::eval_g(
 	}
 	//
 	// include explicit constraints
-	c_vec_tmp_ = mixed_object_.constraint_eval(fixed_tmp_);
+	c_vec_tmp_ = mixed_object_.fix_constraint_eval(fixed_tmp_);
 	assert( c_vec_tmp_.size() == n_constraint_ );
 	for(size_t j = 0; j < n_constraint_; j++)
 	{	assert( 2 * fix_likelihood_n_abs_ + j < size_t(m) );
@@ -1120,7 +1120,7 @@ bool ipopt_fixed::eval_jac_g(
 	}
 	//
 	// Jacobian of explicit constraints
-	mixed_object_.constraint_jac(
+	mixed_object_.fix_constraint_jac(
 		fixed_tmp_,
 		fix_constraint_jac_row_,
 		fix_constraint_jac_col_,
@@ -1295,7 +1295,7 @@ bool ipopt_fixed::eval_h(
 	// Hessian of Lagrangian of weighted explicit constraints
 	for(size_t j = 0; j < n_constraint_; j++)
 		w_constraint_tmp_[j] = lambda[2 * fix_likelihood_n_abs_ + j];
-	mixed_object_.constraint_hes(
+	mixed_object_.fix_constraint_hes(
 		fixed_tmp_,
 		w_constraint_tmp_,
 		fix_constraint_hes_row_,
@@ -1471,7 +1471,7 @@ void ipopt_fixed::finalize_solution(
 	}
 	//
 	// explicit constraints at the final fixed effects vector
-	c_vec_tmp_ = mixed_object_.constraint_eval(fixed_opt_);
+	c_vec_tmp_ = mixed_object_.fix_constraint_eval(fixed_opt_);
 	assert( c_vec_tmp_.size() == n_constraint_ );
 
 	// check explicit constraints

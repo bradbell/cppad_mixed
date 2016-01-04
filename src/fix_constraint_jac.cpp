@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -26,7 +26,7 @@ $$
 $section Jacobian of Constraint w.r.t Fixed Effects$$
 
 $head Syntax$$
-$icode%mixed_object%.constraint_jac(
+$icode%mixed_object%.fix_constraint_jac(
 	%fixed_vec%, %row_out%, %col_out%, %val_out%
 )%$$
 
@@ -93,7 +93,7 @@ $end
 */
 
 
-void cppad_mixed::constraint_jac(
+void cppad_mixed::fix_constraint_jac(
 	const d_vector&        fixed_vec   ,
 	CppAD::vector<size_t>& row_out     ,
 	CppAD::vector<size_t>& col_out     ,

@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -590,7 +590,7 @@ $head fix_constraint_eval$$
 See $cref fix_constraint_eval$$
 $codep */
 	// constraint_eval
-	d_vector constraint_eval(const d_vector& fixed_vec);
+	d_vector fix_constraint_eval(const d_vector& fixed_vec);
 	friend bool ::fix_constraint_eval_xam(void);
 /* $$
 $end
@@ -598,7 +598,7 @@ $head fix_constraint_jac$$
 See $cref fix_constraint_jac$$
 $codep */
 	// constraint_jac
-	void constraint_jac(
+	void fix_constraint_jac(
 		const d_vector&        fixed_vec   ,
 		CppAD::vector<size_t>& row_out     ,
 		CppAD::vector<size_t>& col_out     ,
@@ -611,7 +611,7 @@ $head fix_constraint_hes$$
 See $cref fix_constraint_hes$$
 $codep */
 	// constraint_hes
-	void constraint_hes(
+	void fix_constraint_hes(
 		const d_vector&        fixed_vec   ,
 		const d_vector&        weight      ,
 		CppAD::vector<size_t>& row_out     ,

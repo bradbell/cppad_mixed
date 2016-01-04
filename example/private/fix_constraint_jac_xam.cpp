@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -165,7 +165,7 @@ bool fix_constraint_jac_xam(void)
 	// compute the constraint function and check result
 	CppAD::vector<size_t> row, col;
 	CppAD::vector<double> val;
-	mixed_object.constraint_jac(fixed_vec, row, col, val);
+	mixed_object.fix_constraint_jac(fixed_vec, row, col, val);
 
 	// check derivatives
 	ok &= row.size() == n_fixed;
