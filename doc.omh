@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -92,6 +92,17 @@ $subhead c(theta)$$
 The fixed effects constraint function, denoted by $latex c( \theta )$$,
 is a smooth function of the fixed effects,
 
+$subhead Optimal Random Effects, u^(theta)$$
+Given a value for the fixed effects $latex \theta$$,
+the corresponding optimal random effects are defined by
+$latex \[
+\hat{u} ( \theta )
+=
+\; \R{argmax}  \B{p} ( y | \theta , u) \; \B{p} ( u | \theta )
+\] $$
+Note that this definition agrees with the other definition for
+$cref/u^(theta)/theory/Objective/Optimal Random Effects, u^(theta)/$$.
+
 $head Problem$$
 
 $subhead Maximum Likelihood$$
@@ -111,20 +122,6 @@ is empty and the optimal fixed effects maximize
 $latex \[
 \B{p} ( \theta ) \B{p} ( z | \theta )
 \] $$
-
-$subhead Optimal Random Effects, u^(theta)$$
-Given a value for the fixed effects $latex \theta$$,
-we estimate the corresponding optimal random effects
-$latex \hat{u} ( \theta )$$ by optimizing the
-$cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$
-$latex f( \theta , u )$$ with respect to the random effects $latex u$$;
-see $cref/u^(theta)/theory/Objective/Optimal Random Effects, u^(theta)/$$.
-
-$subhead Optimal Fixed Effects, theta^$$
-We approximate this solution by replacing the integral above with its
-Laplace approximation and
-optimizing the corresponding objective $latex L( \theta )$$; see
-$cref/total objective/theory/Objective/Total Objective, L(theta)/$$.
 
 $subhead Fixed Constraints, c$$
 The fixed effects have constraints of the form

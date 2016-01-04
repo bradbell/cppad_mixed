@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -70,6 +70,8 @@ the random effects that maximize the random likelihood; i.e.,
 $latex \[
 	\hat{u} ( \theta ) = \R{argmin} \; f( \theta, u ) \; \R{w.r.t.} \; u
 \] $$
+Note that this definition agrees with the other definition for
+$cref/u^(theta)/cppad_mixed/Notation/Optimal Random Effects, u^(theta)/$$.
 
 $subhead Laplace Approximation, h(theta, u)$$
 Using the notation above,

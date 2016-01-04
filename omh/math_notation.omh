@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -100,7 +100,7 @@ is used for the second order approximation of optimal random effects.
 
 $head u^(theta)$$
 The notation
-$cref/u^(theta)/cppad_mixed/Problem/Optimal Random Effects, u^(theta)/$$
+$cref/u^(theta)/cppad_mixed/Notation/Optimal Random Effects, u^(theta)/$$
 ( $latex \hat{u}( \theta )$$ )
 is used for the optimal random effects.
 
@@ -108,12 +108,6 @@ $head theta$$
 The notation $cref/theta/cppad_mixed/Notation/Fixed Effects, theta/$$
 ( $latex \theta$$ )
 is used for the vector of fixed effects.
-
-$head theta^$$
-The notation
-$cref/theta^/cppad_mixed/Problem/Optimal Fixed Effects, theta^/$$
-( $latex \hat{\theta}$$ )
-is used for the optimal fixed effects.
 
 $head y$$
 The notation $cref/y/cppad_mixed/Notation/Data, y, z/$$
