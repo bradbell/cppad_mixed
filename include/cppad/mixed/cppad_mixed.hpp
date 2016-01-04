@@ -19,18 +19,18 @@ see http://www.gnu.org/licenses/agpl.txt
 
 // private examples
 extern bool fix_constraint_eval_xam(void);
-extern bool fix_constraint_jac_xam(void);
 extern bool fix_constraint_hes_xam(void);
-extern bool ran_likelihood_grad_xam(void);
-extern bool ran_obj_hes_xam(void);
+extern bool fix_constraint_jac_xam(void);
 extern bool fix_likelihood_eval_xam(void);
-extern bool fix_likelihood_jac_xam(void);
 extern bool fix_likelihood_hes_xam(void);
-extern bool hes_ran_fun_xam(void);
-extern bool ran_obj_eval_xam(void);
-extern bool logdet_grad_xam(void);
-extern bool ran_obj_grad_xam(void);
+extern bool fix_likelihood_jac_xam(void);
 extern bool hes_cross_xam(void);
+extern bool hes_ran_fun_xam(void);
+extern bool logdet_grad_xam(void);
+extern bool ran_likelihood_grad_xam(void);
+extern bool ran_obj_eval_xam(void);
+extern bool ran_obj_grad_xam(void);
+extern bool ran_obj_hes_xam(void);
 
 //  tests
 extern bool der_var_hes(void);
@@ -246,24 +246,24 @@ $cref/mixed_object/derived_ctor/mixed_object/$$.
 
 $childtable%include/cppad/mixed/pack.hpp
 	%include/cppad/mixed/unpack.hpp
-	%src/fix_constraint_eval.cpp
-	%src/fix_constraint_jac.cpp
-	%src/fix_constraint_hes.cpp
-	%src/init_ran_likelihood.cpp
-	%src/init_hes_ran.cpp
-	%src/init_hes_cross.cpp
-	%src/init_ran_obj.cpp
-	%src/init_hes_ran_obj.cpp
-	%src/init_fix_likelihood.cpp
 	%src/init_fix_constraint.cpp
-	%src/ran_obj_eval.cpp
-	%src/logdet_grad.cpp
-	%src/ran_obj_grad.cpp
-	%src/ran_likelihood_grad.cpp
-	%src/ran_obj_hes.cpp
+	%src/init_fix_likelihood.cpp
+	%src/init_hes_cross.cpp
+	%src/init_hes_ran.cpp
+	%src/init_hes_ran_obj.cpp
+	%src/init_ran_likelihood.cpp
+	%src/init_ran_obj.cpp
+	%src/fix_constraint_eval.cpp
+	%src/fix_constraint_hes.cpp
+	%src/fix_constraint_jac.cpp
 	%src/fix_likelihood_eval.cpp
-	%src/fix_likelihood_jac.cpp
 	%src/fix_likelihood_hes.cpp
+	%src/fix_likelihood_jac.cpp
+	%src/logdet_grad.cpp
+	%src/ran_likelihood_grad.cpp
+	%src/ran_obj_eval.cpp
+	%src/ran_obj_grad.cpp
+	%src/ran_obj_hes.cpp
 %$$
 
 $head n_fixed_$$
@@ -439,8 +439,8 @@ $cref/fix_constraint_fun_/init_fix_constraint/fix_constraint_fun_/$$.
 $codep */
 	CppAD::mixed::sparse_hes_info fix_constraint_hes_;
 /* $$
-------------------------------------------------------------------------------
-$head pack$$
+$head Template Member Functions$$
+$subhead pack$$
 See $cref pack$$.
 $codep */
 	template <class Float_unpack, class Float_pack>
@@ -457,7 +457,7 @@ $codep */
 		CppAD::vector<Float_pack>&         three_vec
 	) const;
 /* $$
-$head unpack$$
+$subhead unpack$$
 See $cref unpack$$.
 $codep */
 	template <class Float_unpack, class Float_pack>
@@ -474,24 +474,21 @@ $codep */
 		const CppAD::vector<Float_pack>&   three_vec
 	) const;
 /* $$
-------------------------------------------------------------------------------
-$head init_ran_likelihood$$
-See $cref init_ran_likelihood$$.
+$head Initialization Member Functions$$
+
+$subhead init_fix_constraint$$
+See $cref init_fix_constraint$$.
 $codep */
-	void init_ran_likelihood(
-		const d_vector& fixed_vec ,
-		const d_vector& random_vec
-	);
+	void init_fix_constraint(const d_vector& fixed_vec);
 /* $$
-$head init_hes_ran$$
-See $cref init_hes_ran$$.
+
+$subhead init_fix_likelihood$$
+See $cref init_fix_likelihood$$.
 $codep */
-	void init_hes_ran(
-		const d_vector& fixed_vec ,
-		const d_vector& random_vec
-	);
+	void init_fix_likelihood(const d_vector& fixed_vec);
 /* $$
-$head init_hes_cross$$
+
+$subhead init_hes_cross$$
 See $cref init_hes_cross$$.
 $codep */
 	void init_hes_cross(
@@ -499,15 +496,17 @@ $codep */
 		const d_vector& random_vec
 	);
 /* $$
-$head init_ran_obj$$
-See $cref init_ran_obj$$.
+
+$subhead init_hes_ran$$
+See $cref init_hes_ran$$.
 $codep */
-	void init_ran_obj(
+	void init_hes_ran(
 		const d_vector& fixed_vec ,
 		const d_vector& random_vec
 	);
 /* $$
-$head init_hes_ran_obj$$
+
+$subhead init_hes_ran_obj$$
 See $cref init_hes_ran_obj$$.
 $codep */
 	void init_hes_ran_obj(
@@ -515,86 +514,34 @@ $codep */
 		const d_vector& random_vec
 	);
 /* $$
-$head init_fix_likelihood$$
-See $cref init_fix_likelihood$$.
+
+$subhead init_ran_likelihood$$
+See $cref init_ran_likelihood$$.
 $codep */
-	void init_fix_likelihood(const d_vector& fixed_vec);
-/* $$
-$head init_fix_constraint$$
-See $cref init_fix_constraint$$.
-$codep */
-	void init_fix_constraint(const d_vector& fixed_vec);
-/* $$
-------------------------------------------------------------------------------
-$head ran_obj_eval$$
-See $cref ran_obj_eval$$
-$codep */
-	double ran_obj_eval(
-		const d_vector& fixed_vec  ,
+	void init_ran_likelihood(
+		const d_vector& fixed_vec ,
 		const d_vector& random_vec
 	);
-	friend bool ::ran_obj_eval_xam(void);
 /* $$
-------------------------------------------------------------------------------
-$head logdet_grad$$
-See $cref logdet_grad$$
+
+$subhead init_ran_obj$$
+See $cref init_ran_obj$$.
 $codep */
-	void logdet_grad(
-		const d_vector& fixed_vec  ,
-		const d_vector& random_vec ,
-		d_vector&       logdet_fix ,
-		d_vector&       logdet_ran
+	void init_ran_obj(
+		const d_vector& fixed_vec ,
+		const d_vector& random_vec
 	);
-	friend bool ::logdet_grad_xam(void);
 /* $$
-------------------------------------------------------------------------------
-$head ran_obj_grad$$
-See $cref ran_obj_grad$$
-$codep */
-	void ran_obj_grad(
-		const d_vector& fixed_vec  ,
-		const d_vector& random_vec ,
-		d_vector&       r_fixed
-	);
-	friend bool ::ran_obj_grad_xam(void);
-	friend bool ::der_var_hes(void);
-	friend bool ::delta_ran_obj(void);
-/* $$
-------------------------------------------------------------------------------
-$head ran_likelihood_grad$$
-See $cref ran_likelihood_grad$$
-$codep */
-	// ran_likelihood_grad
-	a1d_vector ran_likelihood_grad(
-		const a1d_vector&       fixed_vec   ,
-		const a1d_vector&       random_vec
-	);
-	friend bool ::ran_likelihood_grad_xam(void);
-/* $$
-------------------------------------------------------------------------------
-$head ran_obj_hes$$
-See $cref ran_obj_hes$$
-$codep */
-	// ran_obj_hes
-	void ran_obj_hes(
-		const d_vector&         fixed_vec   ,
-		const d_vector&         random_vec  ,
-		CppAD::vector<size_t>&  row_out     ,
-		CppAD::vector<size_t>&  col_out     ,
-		d_vector&               val_out
-	);
-	friend bool ::ran_obj_hes_xam(void);
-/* $$
--------------------------------------------------------------------------------
-$head fix_constraint_eval$$
+$head Other Member Functions$$
+
+$subhead fix_constraint_eval$$
 See $cref fix_constraint_eval$$
 $codep */
-	// constraint_eval
 	d_vector fix_constraint_eval(const d_vector& fixed_vec);
 	friend bool ::fix_constraint_eval_xam(void);
 /* $$
-$end
-$head fix_constraint_jac$$
+
+$subhead fix_constraint_jac$$
 See $cref fix_constraint_jac$$
 $codep */
 	// constraint_jac
@@ -606,11 +553,10 @@ $codep */
 	);
 	friend bool ::fix_constraint_jac_xam(void);
 /* $$
-$end
-$head fix_constraint_hes$$
+
+$subhead fix_constraint_hes$$
 See $cref fix_constraint_hes$$
 $codep */
-	// constraint_hes
 	void fix_constraint_hes(
 		const d_vector&        fixed_vec   ,
 		const d_vector&        weight      ,
@@ -620,19 +566,17 @@ $codep */
 	);
 	friend bool ::fix_constraint_hes_xam(void);
 /* $$
--------------------------------------------------------------------------------
-$head fix_likelihood_eval$$
+
+$subhead fix_likelihood_eval$$
 See $cref fix_likelihood_eval$$
 $codep */
-	// fix_likelihood_eval
 	d_vector fix_likelihood_eval(const d_vector& fixed_vec);
 	friend bool ::fix_likelihood_eval_xam(void);
 /* $$
-$end
-$head fix_likelihood_jac$$
+
+$subhead fix_likelihood_jac$$
 See $cref fix_likelihood_jac$$
 $codep */
-	// fix_likelihood_jac
 	void fix_likelihood_jac(
 		const d_vector&        fixed_vec   ,
 		CppAD::vector<size_t>& row_out     ,
@@ -641,11 +585,10 @@ $codep */
 	);
 	friend bool ::fix_likelihood_jac_xam(void);
 /* $$
-$end
-$head fix_likelihood_hes$$
+
+$subhead fix_likelihood_hes$$
 See $cref fix_likelihood_hes$$
 $codep */
-	// fix_likelihood_hes
 	void fix_likelihood_hes(
 		const d_vector&        fixed_vec   ,
 		const d_vector&        weight      ,
@@ -654,6 +597,64 @@ $codep */
 		d_vector&              val_out
 	);
 	friend bool ::fix_likelihood_hes_xam(void);
+/* $$
+
+$subhead logdet_grad$$
+See $cref logdet_grad$$
+$codep */
+	void logdet_grad(
+		const d_vector& fixed_vec  ,
+		const d_vector& random_vec ,
+		d_vector&       logdet_fix ,
+		d_vector&       logdet_ran
+	);
+	friend bool ::logdet_grad_xam(void);
+/* $$
+
+$subhead ran_likelihood_grad$$
+See $cref ran_likelihood_grad$$
+$codep */
+	a1d_vector ran_likelihood_grad(
+		const a1d_vector&       fixed_vec   ,
+		const a1d_vector&       random_vec
+	);
+	friend bool ::ran_likelihood_grad_xam(void);
+/* $$
+
+$subhead ran_obj_eval$$
+See $cref ran_obj_eval$$
+$codep */
+	double ran_obj_eval(
+		const d_vector& fixed_vec  ,
+		const d_vector& random_vec
+	);
+	friend bool ::ran_obj_eval_xam(void);
+/* $$
+
+$subhead ran_obj_grad$$
+See $cref ran_obj_grad$$
+$codep */
+	void ran_obj_grad(
+		const d_vector& fixed_vec  ,
+		const d_vector& random_vec ,
+		d_vector&       r_fixed
+	);
+	friend bool ::ran_obj_grad_xam(void);
+	friend bool ::der_var_hes(void);
+	friend bool ::delta_ran_obj(void);
+/* $$
+
+$subhead ran_obj_hes$$
+See $cref ran_obj_hes$$
+$codep */
+	void ran_obj_hes(
+		const d_vector&         fixed_vec   ,
+		const d_vector&         random_vec  ,
+		CppAD::vector<size_t>&  row_out     ,
+		CppAD::vector<size_t>&  col_out     ,
+		d_vector&               val_out
+	);
+	friend bool ::ran_obj_hes_xam(void);
 /* $$
 $end
 -------------------------------------------------------------------------------
