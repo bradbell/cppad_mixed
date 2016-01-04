@@ -160,13 +160,9 @@ $latex \[
 	\partial_k ( f[ \theta , \hat{u} ( \theta ) ] ) = 0
 \] $$
 
-$head Hessian of Random Objective$$
-Note that the Hessian of the random objective
-$latex r_{\theta,\theta} ( \theta ) $$ is required when
-$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false.
-In this case, the following representation is used:
+$head Approximate Optimal Random Effects$$
 
-$subhead First Order Optimal Random Effects, U(beta, theta, u)$$
+$subhead First Order, U(beta, theta, u)$$
 We define  the function
 $latex \[
 U ( \beta , \theta , u )
@@ -187,7 +183,7 @@ U_{\beta} \left[ \theta, \theta , \hat{u} ( \theta ) \right]
 \hat{u}_\theta ( \theta )
 \] $$
 
-$subhead Second Order Optimal Random Effects, W(beta, theta, u)$$
+$subhead Second Order, W(beta, theta, u)$$
 We define  the function
 $latex \[
 W ( \beta , \theta , u )
@@ -218,7 +214,7 @@ $latex \[
 	\hat{u}^i_{\theta , \theta} ( \theta )
 \] $$
 
-$subhead Approximate Random Objective, H(beta, theta, u)$$
+$head Approximate Random Objective, H(beta, theta, u)$$
 Given these facts we define
 $latex \[
 H( \beta , \theta , u)
@@ -229,17 +225,21 @@ H( \beta , \theta , u)
 \] $$
 It follow that
 $latex \[
-r( \theta ) = H( \theta , \theta , \hat{u} ( \theta ) )
-\] $$
-$latex \[
-r_\theta ( \theta )
+r_{\theta,\theta} ( \theta )
 =
-H_{\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
+H_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
 \] $$
+
+$head Hessian of Random Objective$$
+Note that the Hessian of the random objective
+$latex r_{\theta,\theta} ( \theta ) $$ is required when
+$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false.
+In this case, the representation
 $latex \[
 r_{\theta,\theta} ( \theta )
 =
 H_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
 \] $$
+is used to compute this Hessian.
 
 $end

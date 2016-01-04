@@ -46,7 +46,6 @@ is used for the Laplace approximation function.
 $head H$$
 The notation $cref/H(beta, theta, u)
 	/theory
-	/Hessian of Random Objective
 	/Approximate Random Objective, H(beta, theta, u)
 /$$
 ( $latex U( \beta , \theta , u )$$ )
@@ -83,8 +82,8 @@ is used for the vector of fixed effects.
 $head U$$
 The notation $cref/U(beta, theta, u)
 	/theory
-	/Hessian of Random Objective
-	/First Order Optimal Random Effects, U(beta, theta, u)
+	/Approximate Optimal Random Effects
+	/First Order, U(beta, theta, u)
 /$$
 ( $latex U( \beta , \theta , u )$$ )
 is used for the first order optimal random effects.
@@ -92,8 +91,8 @@ is used for the first order optimal random effects.
 $head W$$
 The notation $cref/W(beta, theta, u)
 	/theory
-	/Hessian of Random Objective
-	/Second Order Optimal Random Effects, W(beta, theta, u)
+	/Approximate Optimal Random Effects
+	/Second Order, W(beta, theta, u)
 /$$
 ( $latex W( \beta , \theta , u )$$ )
 is used for the second order approximation of optimal random effects.
