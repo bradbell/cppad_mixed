@@ -345,17 +345,17 @@ mixed_object_      ( mixed_object    )
 	// set fix_likelihood_n_abs_
 	// -----------------------------------------------------------------------
 	// fixed likelihood at the initial fixed effects vector
-	d_vector fix_likelihood_vec = mixed_object_.fix_likelihood_eval(fixed_in);
+	d_vector fix_likelihood_vec = mixed_object_.fix_like_eval(fixed_in);
 	if( fix_likelihood_vec.size() == 0 )
 		fix_likelihood_n_abs_ = 0;
 	else
 		fix_likelihood_n_abs_ = fix_likelihood_vec.size() - 1;
 	// -----------------------------------------------------------------------
-	// set fix_likelihood_jac_row_, fix_likelihood_jac_col_, fix_likelihood_jac_val_
+	// set fix_like_jac_row_, fix_like_jac_col_, fix_like_jac_val_
 	// fix_con_jac_row_, fix_con_jac_col_, fix_con_jac_val_
 	// -----------------------------------------------------------------------
-	mixed_object.fix_likelihood_jac(
-		fixed_in, fix_likelihood_jac_row_, fix_likelihood_jac_col_, fix_likelihood_jac_val_
+	mixed_object.fix_like_jac(
+		fixed_in, fix_like_jac_row_, fix_like_jac_col_, fix_like_jac_val_
 	);
 	mixed_object.fix_con_jac(
 		fixed_in, fix_con_jac_row_, fix_con_jac_col_, fix_con_jac_val_
@@ -364,8 +364,8 @@ mixed_object_      ( mixed_object    )
 	// set nnz_jac_g_
 	// -----------------------------------------------------------------------
 	nnz_jac_g_ = 0;
-	for(size_t k = 0; k < fix_likelihood_jac_row_.size(); k++)
-	{	if( fix_likelihood_jac_row_[k] != 0 )
+	for(size_t k = 0; k < fix_like_jac_row_.size(); k++)
+	{	if( fix_like_jac_row_[k] != 0 )
 		{	 // this is an absolute value term
 			nnz_jac_g_ += 2;
 		}
@@ -393,12 +393,12 @@ mixed_object_      ( mixed_object    )
 		d_vector weight( 1 + fix_likelihood_n_abs_ );
 		for(size_t i = 0; i < weight.size(); i++)
 			weight[i] = 1.0;
-		mixed_object.fix_likelihood_hes(
+		mixed_object.fix_like_hes(
 			fixed_in,
 			weight,
-			fix_likelihood_hes_row_,
-			fix_likelihood_hes_col_,
-			fix_likelihood_hes_val_
+			fix_like_hes_row_,
+			fix_like_hes_col_,
+			fix_like_hes_val_
 		);
 		// row and column indices for contribution from constraint
 		weight.resize( n_constraint_ );
@@ -414,13 +414,13 @@ mixed_object_      ( mixed_object    )
 		//
 		// merge to form sparsity for Lagrangian
 		ran_obj_2_lag_.resize( ran_obj_hes_row_.size() );
-		fix_likelihood2lag_.resize( fix_likelihood_hes_row_.size() );
+		fix_likelihood2lag_.resize( fix_like_hes_row_.size() );
 		constraint_2_lag_.resize( fix_con_hes_row_.size() );
 		merge_sparse(
 			ran_obj_hes_row_      ,
 			ran_obj_hes_col_      ,
-			fix_likelihood_hes_row_        ,
-			fix_likelihood_hes_col_        ,
+			fix_like_hes_row_        ,
+			fix_like_hes_col_        ,
 			fix_con_hes_row_   ,
 			fix_con_hes_col_   ,
 			lag_hes_row_          ,
@@ -433,7 +433,7 @@ mixed_object_      ( mixed_object    )
 		for(size_t k = 0; k < ran_obj_hes_row_.size(); k++)
 			assert( ran_obj_2_lag_[k] < lag_hes_row_.size() );
 		//
-		for(size_t k = 0; k < fix_likelihood_hes_row_.size(); k++)
+		for(size_t k = 0; k < fix_like_hes_row_.size(); k++)
 			assert( fix_likelihood2lag_[k] < lag_hes_row_.size() );
 		//
 		for(size_t k = 0; k < fix_con_hes_row_.size(); k++)
@@ -692,9 +692,9 @@ bool ipopt_fixed::get_starting_point(
 
 	// fixed likelihood at the initial fixed effects vector
 	if( fix_likelihood_vec_tmp_.size() == 0 )
-		assert( mixed_object_.fix_likelihood_eval(fixed_in_).size() == 0 );
+		assert( mixed_object_.fix_like_eval(fixed_in_).size() == 0 );
 	else
-	{	fix_likelihood_vec_tmp_ = mixed_object_.fix_likelihood_eval(fixed_in_);
+	{	fix_likelihood_vec_tmp_ = mixed_object_.fix_like_eval(fixed_in_);
 		assert( fix_likelihood_vec_tmp_.size() == 1 + fix_likelihood_n_abs_ );
 	}
 
@@ -772,12 +772,12 @@ bool ipopt_fixed::eval_f(
 	}
 	obj_value = Number(H);
 	if( fix_likelihood_vec_tmp_.size() == 0 )
-		assert( mixed_object_.fix_likelihood_eval(fixed_tmp_).size() == 0 );
+		assert( mixed_object_.fix_like_eval(fixed_tmp_).size() == 0 );
 	else
 	{
 		// fixed part of objective
 		// (2DO: cache fix_likelihood_vec_tmp_ for eval_g with same x)
-		fix_likelihood_vec_tmp_ = mixed_object_.fix_likelihood_eval(fixed_tmp_);
+		fix_likelihood_vec_tmp_ = mixed_object_.fix_like_eval(fixed_tmp_);
 		//
 		// only include smooth part of prior in objective
 		obj_value += Number( fix_likelihood_vec_tmp_[0] );
@@ -863,8 +863,8 @@ bool ipopt_fixed::eval_grad_f(
 	//
 	// Jacobian of fixed part of objective
 	// (2DO: do not revaluate when eval_jac_g has same x)
-	mixed_object_.fix_likelihood_jac(
-		fixed_tmp_, fix_likelihood_jac_row_, fix_likelihood_jac_col_, fix_likelihood_jac_val_
+	mixed_object_.fix_like_jac(
+		fixed_tmp_, fix_like_jac_row_, fix_like_jac_col_, fix_like_jac_val_
 	);
 
 	//
@@ -877,11 +877,11 @@ bool ipopt_fixed::eval_grad_f(
 	{	assert( n_fixed_ + j < size_t(n) );
 		grad_f[n_fixed_ + j] = Number( 1.0 );
 	}
-	for(size_t k = 0; k < fix_likelihood_jac_row_.size(); k++)
-	{	if( fix_likelihood_jac_row_[k] == 0 )
-		{	size_t j = fix_likelihood_jac_col_[k];
+	for(size_t k = 0; k < fix_like_jac_row_.size(); k++)
+	{	if( fix_like_jac_row_[k] == 0 )
+		{	size_t j = fix_like_jac_col_[k];
 			assert( j < size_t(n) );
-			grad_f[j] += Number( fix_likelihood_jac_val_[k] );
+			grad_f[j] += Number( fix_like_jac_val_[k] );
 		}
 	}
 	//
@@ -952,7 +952,7 @@ bool ipopt_fixed::eval_g(
 	//
 	// fixed part of objective
 	// (2DO: cache fix_likelihood_vec_tmp_ for eval_f with same x)
-	fix_likelihood_vec_tmp_ = mixed_object_.fix_likelihood_eval(fixed_tmp_);
+	fix_likelihood_vec_tmp_ = mixed_object_.fix_like_eval(fixed_tmp_);
 	//
 	// convert absolute value terms to constraints
 	for(size_t j = 0; j < fix_likelihood_n_abs_; j++)
@@ -1060,11 +1060,11 @@ bool ipopt_fixed::eval_jac_g(
 	if( values == NULL )
 	{	// just return row and column indices for l1 constraints
 		size_t ell = 0;
-		for(size_t k = 0; k < fix_likelihood_jac_row_.size(); k++)
-		{	if( fix_likelihood_jac_row_[k] != 0 )
+		for(size_t k = 0; k < fix_like_jac_row_.size(); k++)
+		{	if( fix_like_jac_row_[k] != 0 )
 			{	assert( ell + 1 < nnz_jac_g_ );
-				iRow[ell+1] = iRow[ell] = Index( fix_likelihood_jac_row_[k] );
-				jCol[ell+1] = jCol[ell] = Index( fix_likelihood_jac_col_[k] );
+				iRow[ell+1] = iRow[ell] = Index( fix_like_jac_row_[k] );
+				jCol[ell+1] = jCol[ell] = Index( fix_like_jac_col_[k] );
 				ell += 2;
 			}
 		}
@@ -1100,16 +1100,16 @@ bool ipopt_fixed::eval_jac_g(
 	//
 	// Jacobian of fixed part of objective
 	// (2DO: do not revaluate when eval_grad_f had same x)
-	mixed_object_.fix_likelihood_jac(
-		fixed_tmp_, fix_likelihood_jac_row_, fix_likelihood_jac_col_, fix_likelihood_jac_val_
+	mixed_object_.fix_like_jac(
+		fixed_tmp_, fix_like_jac_row_, fix_like_jac_col_, fix_like_jac_val_
 	);
 	size_t ell = 0;
-	for(size_t k = 0; k < fix_likelihood_jac_row_.size(); k++)
-	{	if( fix_likelihood_jac_row_[k] != 0 )
+	for(size_t k = 0; k < fix_like_jac_row_.size(); k++)
+	{	if( fix_like_jac_row_[k] != 0 )
 		{	assert( ell + 1 < nnz_jac_g_ );
-			values[ell] = Number( fix_likelihood_jac_val_[k] );
+			values[ell] = Number( fix_like_jac_val_[k] );
 			ell++;
-			values[ell] = Number( - fix_likelihood_jac_val_[k] );
+			values[ell] = Number( - fix_like_jac_val_[k] );
 			ell++;
 		}
 	}
@@ -1280,16 +1280,16 @@ bool ipopt_fixed::eval_h(
 	w_fix_likelihood_tmp_[0] = obj_factor;
 	for(size_t j = 0; j < fix_likelihood_n_abs_; j++)
 		w_fix_likelihood_tmp_[1 + j] = lambda[2 * j + 1] - lambda[2 * j];
-	mixed_object_.fix_likelihood_hes(
+	mixed_object_.fix_like_hes(
 		fixed_tmp_,
 		w_fix_likelihood_tmp_,
-		fix_likelihood_hes_row_,
-		fix_likelihood_hes_col_,
-		fix_likelihood_hes_val_
+		fix_like_hes_row_,
+		fix_like_hes_col_,
+		fix_like_hes_val_
 	);
-	for(size_t k = 0; k < fix_likelihood_hes_row_.size(); k++)
+	for(size_t k = 0; k < fix_like_hes_row_.size(); k++)
 	{	assert( fix_likelihood2lag_[k] < nnz_h_lag_ );
-		values[ fix_likelihood2lag_[k] ] += Number( fix_likelihood_hes_val_[k] );
+		values[ fix_likelihood2lag_[k] ] += Number( fix_like_hes_val_[k] );
 	}
 	//
 	// Hessian of Lagrangian of weighted explicit constraints
@@ -1457,9 +1457,9 @@ void ipopt_fixed::finalize_solution(
 	//
 	// fixed likelihood at the final fixed effects vector
 	if( fix_likelihood_vec_tmp_.size() == 0 )
-		assert( mixed_object_.fix_likelihood_eval(fixed_opt_).size() == 0 );
+		assert( mixed_object_.fix_like_eval(fixed_opt_).size() == 0 );
 	else
-	{	fix_likelihood_vec_tmp_ = mixed_object_.fix_likelihood_eval(fixed_opt_);
+	{	fix_likelihood_vec_tmp_ = mixed_object_.fix_like_eval(fixed_opt_);
 		assert( fix_likelihood_vec_tmp_.size() == 1 + fix_likelihood_n_abs_ );
 
 		// check constraints corresponding to l1 terms

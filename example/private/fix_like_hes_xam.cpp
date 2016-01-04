@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin fix_likelihood_hes_xam.cpp$$
+$begin fix_like_hes_xam.cpp$$
 $spell
 	CppAD
 	cppad
@@ -18,14 +18,14 @@ $spell
 	xam
 $$
 
-$section fix_likelihood_hes: Example and Test$$
+$section fix_like_hes: Example and Test$$
 
 $head Private$$
 This example is not part of the
 $cref/cppad_mixed public API/public/$$.
 
 $code
-$verbatim%example/private/fix_likelihood_hes_xam.cpp
+$verbatim%example/private/fix_like_hes_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -132,7 +132,7 @@ namespace {
 	};
 }
 
-bool fix_likelihood_hes_xam(void)
+bool fix_like_hes_xam(void)
 {
 	bool   ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
@@ -158,7 +158,7 @@ bool fix_likelihood_hes_xam(void)
 	CppAD::vector<double> val, weight(n_fixed);
 	for(size_t j = 0; j < n_fixed; j++)
 		weight[j] = 1.0;
-	mixed_object.fix_likelihood_hes(fixed_vec, weight, row, col, val);
+	mixed_object.fix_like_hes(fixed_vec, weight, row, col, val);
 
 	// initialize which variables have been found so far
 	CppAD::vector<bool> found(3);

@@ -14,11 +14,11 @@ ADD_LIBRARY(cppad_mixed
 	fix_con_eval.cpp
 	fix_con_hes.cpp
 	fix_con_jac.cpp
-	fix_likelihood_eval.cpp
-	fix_likelihood_hes.cpp
-	fix_likelihood_jac.cpp
+	fix_like_eval.cpp
+	fix_like_hes.cpp
+	fix_like_jac.cpp
 	init_fix_con.cpp
-	init_fix_likelihood.cpp
+	init_fix_like.cpp
 	init_hes_cross.cpp
 	init_hes_ran_obj.cpp
 	initialize.cpp

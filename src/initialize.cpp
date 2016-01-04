@@ -100,17 +100,17 @@ in the Jacobian $latex c_\theta ( \theta )$$.
 
 $subhead fix_likelihood_fun_$$
 $icode%size_map%["fix_likelihood_fun_"]%$$ is the number of variables in
-$cref/fix_likelihood_fun_/init_fix_likelihood/fix_likelihood_fun_/$$.
+$cref/fix_likelihood_fun_/init_fix_like/fix_likelihood_fun_/$$.
 
-$subhead fix_likelihood_hes_$$
-$icode%size_map%["fix_likelihood_hes_"]%$$ is the size of the row vector in
-$cref/fix_likelihood_hes_/init_fix_likelihood/fix_likelihood_hes_/$$.
+$subhead fix_like_hes_$$
+$icode%size_map%["fix_like_hes_"]%$$ is the size of the row vector in
+$cref/fix_like_hes_/init_fix_like/fix_like_hes_/$$.
 This is also the number of non-zeros
 in the Hessian $latex g_{\theta,\theta} ( \theta )$$.
 
-$subhead fix_likelihood_jac_$$
-$icode%size_map%["fix_likelihood_jac_"]%$$ is the size of the row vector in
-$cref/fix_likelihood_jac_/init_fix_likelihood/fix_likelihood_jac_/$$.
+$subhead fix_like_jac_$$
+$icode%size_map%["fix_like_jac_"]%$$ is the size of the row vector in
+$cref/fix_like_jac_/init_fix_like/fix_like_jac_/$$.
 This is also the number of non-zeros
 in the Jacobian $latex g_\theta ( \theta )$$.
 
@@ -256,9 +256,9 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	}
 
 	// fix_likelihood_fun_
-	assert( ! init_fix_likelihood_done_ );
-	init_fix_likelihood(fixed_vec);
-	assert( init_fix_likelihood_done_ );
+	assert( ! init_fix_like_done_ );
+	init_fix_like(fixed_vec);
+	assert( init_fix_like_done_ );
 
 	// fix_constraint_fun_
 	assert( ! init_fix_con_done_ );
@@ -285,8 +285,8 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 		size_map["hes_ran_obj_"]       = hes_ran_obj_.row.size();
 	}
 	size_map["fix_likelihood_fun_"]   = fix_likelihood_fun_.size_var();
-	size_map["fix_likelihood_jac_"]   = fix_likelihood_jac_.row.size();
-	size_map["fix_likelihood_hes_"]   = fix_likelihood_hes_.row.size();
+	size_map["fix_like_jac_"]   = fix_like_jac_.row.size();
+	size_map["fix_like_hes_"]   = fix_like_hes_.row.size();
 	//
 	size_map["fix_constraint_fun_"]   = fix_constraint_fun_.size_var();
 	size_map["fix_con_jac_"]   = fix_con_jac_.row.size();

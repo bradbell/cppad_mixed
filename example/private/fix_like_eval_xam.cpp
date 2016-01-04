@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -9,23 +9,23 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin fix_likelihood_jac_xam.cpp$$
+$begin fix_like_eval_xam.cpp$$
 $spell
 	CppAD
 	cppad
-	jac
+	eval
 	interp
 	xam
 $$
 
-$section fix_likelihood_jac: Example and Test$$
+$section fix_like_eval: Example and Test$$
 
 $head Private$$
 This example is not part of the
 $cref/cppad_mixed public API/public/$$.
 
 $code
-$verbatim%example/private/fix_likelihood_jac_xam.cpp
+$verbatim%example/private/fix_like_eval_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -133,7 +133,7 @@ namespace {
 	};
 }
 
-bool fix_likelihood_jac_xam(void)
+bool fix_like_eval_xam(void)
 {
 	bool   ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
@@ -155,29 +155,22 @@ bool fix_likelihood_jac_xam(void)
 	mixed_derived mixed_object(n_fixed, n_random, data);
 	mixed_object.initialize(fixed_vec, random_vec);
 
-	// compute prior jacobian
-	CppAD::vector<size_t> row, col;
-	CppAD::vector<double> val;
-	mixed_object.fix_likelihood_jac(fixed_vec, row, col, val);
+	// compute fixed negative log-density vector
+	CppAD::vector<double> vec = mixed_object.fix_like_eval(fixed_vec);
 
-	// initialize which rows have been found so far
-	CppAD::vector<bool> found(3);
-	for(size_t i = 0; i < 3; i++)
-		found[i] = false;
+	// check smooth part
+	double check = CppAD::log(2.0);
+	ok &= CppAD::abs( vec[0] / check - 1.0 ) <= eps;
 
-	// check derivatives
-	for(size_t k = 0; k < row.size(); k++)
-	{	size_t i = row[k];
-		size_t j = col[k];
-		double check = sqrt_2;
-		ok      &= i == j+1;
-		ok      &= ! found[i];
-		ok      &= ( val[k] / check - 1.0) <= eps;
-		found[i] = true;
+	// check number of absolute values
+	ok &= vec.size() == n_fixed + 1;
+
+	// check argument to absolute value
+	for(size_t j = 0; j < n_fixed; j++)
+	{	// note that the true value is not equal to 1.0 so can deivide by check
+		check = sqrt_2 * ( fixed_vec[j] - 1.0 );
+		ok &= CppAD::abs( vec[1 + j] / check - 1.0 ) <= eps;
 	}
-	ok &= found[0] == false;
-	ok &= found[1];
-	ok &= found[2];
 
 	return ok;
 }

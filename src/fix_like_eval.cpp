@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -11,7 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/cppad_mixed.hpp>
 
 /*
-$begin fix_likelihood_eval$$
+$begin fix_like_eval$$
 $spell
 	CppAD
 	cppad
@@ -24,7 +24,7 @@ $$
 $section Evaluate Fixed Likelihood$$
 
 $head Syntax$$
-$icode%vec% = %mixed_object%.fix_likelihood_eval(%fixed_vec%)%$$
+$icode%vec% = %mixed_object%.fix_like_eval(%fixed_vec%)%$$
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
@@ -61,10 +61,10 @@ $icode%vec%[0] + CppAD::abs(%vec%[1]) + %...% CppAD::abs(%vec%[%s%-1])
 where $icode%s% = %vec%.size()%$$.
 
 $children%
-	example/private/fix_likelihood_eval_xam.cpp
+	example/private/fix_like_eval_xam.cpp
 %$$
 $head Example$$
-The file $cref fix_likelihood_eval_xam.cpp$$ contains an example
+The file $cref fix_like_eval_xam.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
@@ -72,8 +72,8 @@ $end
 */
 
 
-CppAD::vector<double> cppad_mixed::fix_likelihood_eval(const d_vector& fixed_vec)
-{	assert( init_fix_likelihood_done_ );
+CppAD::vector<double> cppad_mixed::fix_like_eval(const d_vector& fixed_vec)
+{	assert( init_fix_like_done_ );
 	if( fix_likelihood_fun_.size_var() == 0 )
 	{	// empty vector case
 		return CppAD::vector<double>(0);
