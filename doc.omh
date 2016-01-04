@@ -143,7 +143,7 @@ $icode%vec%[0] + CppAD::abs(%vec%[1]) + %...% CppAD::abs(%vec%[%s%-1])
 where $icode%s% = %vec%.size()%$$.
 
 $childtable%omh/install_unix.omh
-	%src/theory.omh
+	%omh/theory.omh
 	%omh/base_class.omh
 	%omh/namespace.omh
 	%example/user/user.omh
