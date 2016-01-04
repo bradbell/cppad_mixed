@@ -81,8 +81,8 @@ see $cref/f(theta, u)/
 	Random Likelihood, f(theta, u)
 /$$
 
-$subhead ran_like_fun_, init_ran_like_a1fun_$$
-Either $code ran_like_fun_$$ or $code init_ran_like_a1fun_$$
+$subhead ran_like_fun_, ran_like_a1fun_$$
+Either $code ran_like_fun_$$ or $code ran_like_a1fun_$$
 can be used for the ADFun object in the
 $cref/sparse Hessian Call/sparse_hes_info/Sparse Hessian Call/f/$$.
 
@@ -94,7 +94,7 @@ These indices are relative to both the fixed and random effects
 with the fixed effects coming first.
 $lnext
 You can replace the $code a1_double$$ vectors by $code double$$ vectors,
-and replace $code init_ran_like_a1fun_$$ by $code ran_like_fun_$$,
+and replace $code ran_like_a1fun_$$ by $code ran_like_fun_$$,
 and get the results in $code double$$ instead of $code a1_double$$.
 $lend
 
@@ -297,7 +297,7 @@ void cppad_mixed::init_hes_ran(
 		a1_both[i] = both[i];
 	a1_w[0] = w[0];
 	CppAD::Independent(a1_both);
-	init_ran_like_a1fun_.SparseHessian(
+	ran_like_a1fun_.SparseHessian(
 		a1_both,
 		a1_w,
 		not_used,

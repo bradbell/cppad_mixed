@@ -302,12 +302,12 @@ $codep */
 $head ran_likelihood$$
 If $icode%n_random_% > 0%$$ and $code init_ran_like_done_$$,
 $cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$ and
-$cref/init_ran_like_a1fun_/init_ran_like/init_ran_like_a1fun_/$$ are
+$cref/ran_like_a1fun_/init_ran_like/ran_like_a1fun_/$$ are
 recordings of the user's $cref ran_likelihood$$.
 function.
 $codep */
 	CppAD::ADFun<double>      ran_like_fun_;
-	CppAD::ADFun<a1_double>   init_ran_like_a1fun_;
+	CppAD::ADFun<a1_double>   ran_like_a1fun_;
 /* $$
 The following objects hold information for computing derivatives
 with these ADFun objects:

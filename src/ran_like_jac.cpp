@@ -96,13 +96,13 @@ CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_jac(
 	pack(fixed_vec, random_vec, both_vec);
 
 	// zero order forward mode
-	init_ran_like_a1fun_.Forward(0, both_vec);
+	ran_like_a1fun_.Forward(0, both_vec);
 
 	// first order reverse f_{theta,u}^{(1) ( theta , u )
-	assert( init_ran_like_a1fun_.Range() == 1);
+	assert( ran_like_a1fun_.Range() == 1);
 	a1d_vector a1_w(1), jac_both(n_fixed_ + n_random_);
 	a1_w[0] = 1.0;
-	jac_both = init_ran_like_a1fun_.Reverse(1, a1_w);
+	jac_both = ran_like_a1fun_.Reverse(1, a1_w);
 
 	// extract u part of the Jacobian
 	a1d_vector jac_ran(n_random_);

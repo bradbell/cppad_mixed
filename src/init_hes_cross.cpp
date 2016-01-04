@@ -72,8 +72,8 @@ see $cref/f(theta, u)/
 	Random Likelihood, f(theta, u)
 /$$
 
-$subhead ran_like_fun_, init_ran_like_a1fun_$$
-Either $code ran_like_fun_$$ or $code init_ran_like_a1fun_$$
+$subhead ran_like_fun_, ran_like_a1fun_$$
+Either $code ran_like_fun_$$ or $code ran_like_a1fun_$$
 can be used for the ADFun object in the
 $cref/sparse Hessian Call/sparse_hes_info/Sparse Hessian Call/f/$$.
 

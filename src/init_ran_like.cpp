@@ -61,10 +61,10 @@ does not matter.
 Upon return it contains a recording of the function
 $cref ran_likelihood$$.
 
-$head init_ran_like_a1fun_$$
+$head ran_like_a1fun_$$
 The input value of the member variable
 $codei%
-	CppAD::ADFun<double> init_ran_like_a1fun_
+	CppAD::ADFun<double> ran_like_a1fun_
 %$$
 does not matter.
 Upon return it contains a recording of the function
@@ -84,7 +84,7 @@ void cppad_mixed::init_ran_like(
 	using CppAD::Independent;
 	//
 	// ------------------------------------------------------------------
-	// record init_ran_like_a1fun_
+	// record ran_like_a1fun_
 	// ------------------------------------------------------------------
 	// combine into one vector
 	a2d_vector a2_both( n_fixed_ + n_random_ );
@@ -111,11 +111,11 @@ void cppad_mixed::init_ran_like(
 	}
 
 	// save the recording
-	init_ran_like_a1fun_.Dependent(a2_both, a2_vec);
+	ran_like_a1fun_.Dependent(a2_both, a2_vec);
 
 	// optimize the recording
 # ifndef NDEBUG
-	init_ran_like_a1fun_.optimize();
+	ran_like_a1fun_.optimize();
 # endif
 	// ------------------------------------------------------------------
 	// record ran_like_fun_

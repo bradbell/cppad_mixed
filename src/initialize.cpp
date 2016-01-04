@@ -177,9 +177,9 @@ $icode%size_map%["num_bytes_before"]%$$ is the number of bytes
 allocated by $code CppAD::thread_alloc$$ and still in use
 when $code initialize$$ starts.
 
-$subhead init_ran_like_a1fun_$$
-$icode%size_map%["init_ran_like_a1fun_"]%$$ is the number of variables in
-$cref/init_ran_like_a1fun_/init_ran_like/init_ran_like_a1fun_/$$.
+$subhead ran_like_a1fun_$$
+$icode%size_map%["ran_like_a1fun_"]%$$ is the number of variables in
+$cref/ran_like_a1fun_/init_ran_like/ran_like_a1fun_/$$.
 
 $subhead ran_like_fun_$$
 $icode%size_map%["ran_like_fun_"]%$$ is the number of variables in
@@ -240,7 +240,7 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 			// newton_atom_
 			assert( ! record_newton_atom_done_ );
 			newton_atom_.initialize(
-				init_ran_like_a1fun_, fixed_vec, random_vec
+				ran_like_a1fun_, fixed_vec, random_vec
 			);
 			record_newton_atom_done_ = true;
 
@@ -273,7 +273,7 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	std::map<std::string, size_t> size_map;
 	size_map["num_bytes_before"]      = num_bytes_before;
 	size_map["ran_like_fun_"]   = ran_like_fun_.size_var();
-	size_map["init_ran_like_a1fun_"] = init_ran_like_a1fun_.size_var();
+	size_map["ran_like_a1fun_"] = ran_like_a1fun_.size_var();
 	//
 	size_map["hes_ran_"]              = hes_ran_.row.size();
 	size_map["hes_ran_fun_"]          = hes_ran_fun_.size_var();
