@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 
 $begin whats_new$$
 $spell
+	Cholesky
 	CppAD
 	namespace
 	cppad
@@ -21,6 +22,16 @@ $section Changed and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh
 %$$
+
+$head 01-05$$
+Improve the efficiency of the evaluation of the
+$cref optimize_fixed$$ objective function.
+To be specific, $cref/update/update_factor/$$ the Cholesky
+factor of $latex f_{u,u} [ \theta , \hat{u} ( theta ) ]$$
+when there is a change in the fixed effects vector $latex \theta$$.
+In addition, use matrices, instead of just column vectors,
+when back solving (to simplify code and allow sparse solver
+to obtain more efficiency).
 
 $head 01-04$$
 Regroup information in $cref theory$$ section of documentation so that
