@@ -13,6 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin update_factor$$
 $spell
+	Taylor
 	vec
 	Cholesky
 	cppad
@@ -59,6 +60,17 @@ $cref/random objective/theory/Objective/Random Objective, r(theta)/$$,
 this should be the
 $cref/optimal random effects/theory/Optimal Random Effects, u^(theta)/$$.
 
+$head hes_ran_fun_$$
+The $cref/hes_ran_fun_/private/hes_ran_fun_/$$ member variable
+will hold the first order Taylor coefficient corresponding
+to the specified fixed and random effects; i.e.,
+$codei%
+	hes_ran_fun_.Forward(0, %both%)
+%$$
+has been called where $icode both$$ is a packed version
+of the fixed and random effects.
+
+
 $head factorize_chol_hes_ran_$$
 On input, the static variable
 $codei%
@@ -66,7 +78,7 @@ $codei%
 %$$
 has been
 $cref/analyzed/chol_hes_ran/analyze_chol_hes_ran/$$
-using the sparsity patter for the Hessian.
+using the sparsity pattern for the Hessian.
 Upon return, $code chol_hes_ran_$$ contains the
 $cref/factorization/chol_hes_ran/factorize_chol_hes_ran/$$
 corresponding to the specified values for the fixed

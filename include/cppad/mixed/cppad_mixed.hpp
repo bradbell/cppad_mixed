@@ -315,7 +315,7 @@ $codep */
 The following objects hold information for computing derivatives
 with these ADFun objects:
 
-$subhead hes_ran_$$
+$head hes_ran_fun_$$
 If $icode%n_random_% > 0%$$ and $code init_hes_ran_done_$$,
 $cref/hes_ran_/init_hes_ran/hes_ran_/$$ contains
 information for the Hessian of the
@@ -333,7 +333,7 @@ $codep */
 	friend bool ::hes_ran_fun_xam(void);
 /* $$
 
-$subhead hes_cross_$$
+$head hes_cross_$$
 If $icode%n_random_% > 0%$$ and $code init_hes_cross_done_$$,
 $cref/hes_cross_/init_hes_cross/hes_cross_/$$ contains
 information for the cross partials of the Hessian of the

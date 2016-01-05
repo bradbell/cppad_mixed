@@ -15,6 +15,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin chol_hes_ran$$
 $spell
+	Taylor
 	CppAD
 	init_chol_hes
 	CppAD
@@ -36,7 +37,7 @@ $head Syntax$$
 $codei%CppAD::mixed::analyze_chol_hes_ran(%n_fixed%, %n_random%, %row%, %col%)
 %$$
 $codei%CppAD::mixed::factorize_chol_hes_ran(
-	%n_fixed%, %n_random%, %row%, %col%, %both%, %hessian%
+	%n_fixed%, %n_random%, %row%, %col%, %both%, %hes_ran_fun%
 )
 %$$
 $icode%logdet% = CppAD::mixed::logdet_chol_hes_ran(%n_random%)
@@ -120,23 +121,21 @@ and has size $icode%n_fixed% + %n_random%$$.
 This is the values of the fixed and random effects at which the Hessian
 is being computed and factored.
 
-$head hessian$$
+$head hes_ran_fun$$
 This argument has prototype
 $codei%
-	CppAD::ADFun<double>& %hessian%
+	CppAD::ADFun<double>& %hes_ran_fun%
 %$$
-It has $icode%hessian%.Domain() = %n_fixed% + %n_random%$$
-and $icode%hessian%.Range() = %row%.size()%$$
+It has $icode%hes_ran_fun%.Domain() = %n_fixed% + %n_random%$$
+and $icode%hes_ran_fun%.Range() = %row%.size()%$$
 The function call
 $codei%
-	%val% = %hessian%.Forward(0, %both%)
+	%val% = %hes_ran_fun%.Forward(0, %both%)
 %$$
 is used to compute the values of the Hessian.
-To be specific,
-for $icode%k% = 0 , %...% , %col%.size()%%$$,
-$icode%val%[%k%]%$$ is the value of the Hessian
-at row index $icode%row%[%k%]%$$
-and column index $icode%col%[%k%]%$$.
+Thus, upon return, the first order Taylor coefficient for the corresponding
+fixed and random effects are stored in $icode hes_ran_fun$$.
+
 
 $head analyze_chol_hes_ran$$
 The input value of this factorization does not matter.
@@ -193,16 +192,16 @@ void analyze_chol_hes_ran(
 }
 
 void factorize_chol_hes_ran(
-	size_t                       n_fixed  ,
-	size_t                       n_random ,
-	const CppAD::vector<size_t>& row      ,
-	const CppAD::vector<size_t>& col      ,
-	const CppAD::vector<double>& both     ,
-	CppAD::ADFun<double>&        hessian  )
+	size_t                       n_fixed      ,
+	size_t                       n_random     ,
+	const CppAD::vector<size_t>& row          ,
+	const CppAD::vector<size_t>& col          ,
+	const CppAD::vector<double>& both         ,
+	CppAD::ADFun<double>&        hes_ran_fun  )
 {
 	size_t K = row.size();
 	CppAD::vector<double> val(K);
-	val = hessian.Forward(0, both);
+	val = hes_ran_fun.Forward(0, both);
 
 	Eigen::SparseMatrix<double> hessian_value(n_random, n_random);
 	assert( row.size() == col.size() );
