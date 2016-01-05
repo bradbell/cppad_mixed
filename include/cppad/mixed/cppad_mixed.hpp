@@ -299,7 +299,8 @@ $codep */
 	bool                init_hes_ran_obj_done_;
 /* $$
 
-$head ran_likelihood$$
+$head ran_like_fun_$$
+$index ran_like_a1fun_$$
 If $icode%n_random_% > 0%$$ and $code init_ran_like_done_$$,
 $cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$ and
 $cref/ran_like_a1fun_/init_ran_like/ran_like_a1fun_/$$ are
@@ -384,7 +385,7 @@ $codep */
 	CppAD::mixed::sparse_hes_info hes_ran_obj_;
 /* $$
 
-$head fix_likelihood_$$
+$head fix_like_fun_$$
 $cref/fix_like_fun_/init_fix_like/fix_like_fun_/$$
 is a recording of the fixed part of the likelihood function; see,
 $cref fix_likelihood$$.
