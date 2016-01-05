@@ -68,7 +68,6 @@ Note that the Laplace approximation is equal to the random objective when
 $latex u$$ is the
 $cref/optimal random effects
 	/theory
-	/Objective
 	/Optimal Random Effects, u^(theta)
 /$$
 $latex \hat{u} ( \theta )$$.

@@ -67,7 +67,6 @@ $codei%
 Given the fixed effects $latex \theta$$, it is the corresponding
 $cref/optimal random effects
 	/theory
-	/Objective
 	/Optimal Random Effects, u^(theta)
 /$$
 $latex \hat{u} ( \theta )$$.

@@ -101,7 +101,7 @@ $latex \[
 \; \R{argmax}  \B{p} ( y | \theta , u) \; \B{p} ( u | \theta )
 \] $$
 Note that this definition agrees with the other definition for
-$cref/u^(theta)/theory/Objective/Optimal Random Effects, u^(theta)/$$.
+$cref/u^(theta)/theory/Optimal Random Effects, u^(theta)/$$.
 
 $head Problem$$
 

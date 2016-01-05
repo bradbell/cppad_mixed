@@ -61,9 +61,7 @@ The function $latex g( \theta )$$ may not be smooth, to be specific, it
 can have absolute values in it (corresponding to the Laplace densities).
 Furthermore, there may be  constraints on the value of $latex \theta$$.
 
-$head Objective$$
-
-$subhead Optimal Random Effects, u^(theta)$$
+$head Optimal Random Effects, u^(theta)$$
 Given the fixed effects $latex \theta$$,
 we use $latex \hat{u} ( \theta )$$ to denote
 the random effects that maximize the random likelihood; i.e.,
@@ -72,6 +70,8 @@ $latex \[
 \] $$
 Note that this definition agrees with the other definition for
 $cref/u^(theta)/cppad_mixed/Notation/Optimal Random Effects, u^(theta)/$$.
+
+$head Objective$$
 
 $subhead Laplace Approximation, h(theta, u)$$
 Using the notation above,
