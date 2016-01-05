@@ -128,8 +128,8 @@ void cppad_mixed::logdet_jac(
 	assert( logdet_ran.size() == n_random_ );
 
 	// declare eigen matrix types
-	typedef Eigen::SparseMatrix<double>                sparse_matrix;
-	typedef Eigen::SparseMatrix<double>::InnerIterator inner_itr;
+	typedef Eigen::SparseMatrix<double,Eigen::ColMajor>  sparse_matrix;
+	typedef Eigen::SparseMatrix<double>::InnerIterator   column_itr;
 
 	// number of non-zeros in Hessian
 	size_t K = hes_ran_.row.size();
@@ -142,8 +142,17 @@ void cppad_mixed::logdet_jac(
 		n_fixed_, n_random_, hes_ran_.row, hes_ran_.col, both, hes_ran_fun_
 	);
 
+	//
+	// b = Identity matrix
+	sparse_matrix b(n_random_, n_random_);
+	for(size_t j = 0; j < n_random_; j++)
+		b.insert(j, j) = 1.0;
+	//
+	// x = f_{u,u} (theta, u)^{-1}
+	sparse_matrix x = CppAD::mixed::chol_hes_ran_.solve(b);
+
 	// Compute derivative of sum_k w_k hessian_k
-	// where w_k is the inverse of the Hessian at (row[k], col[k]).
+	// where w_k f_{u,u} (theta, u)^{-1} at (row[k], col[k]).
 	// use order speicifcation for (hes_ran_.row, hes_ran_.col)
 	d_vector w(K);
 	for(size_t k = 0; k < K; k++)
@@ -165,11 +174,7 @@ void cppad_mixed::logdet_jac(
 			else
 				row = col = n_random_;
 		}
-		sparse_matrix b(n_random_, 1);
-		b.insert(j, 0) = 1.0;
-		sparse_matrix x = CppAD::mixed::chol_hes_ran_.solve(b);
-		assert( x.outerSize() == 1 );
-		for(inner_itr itr(x, 0); itr; ++itr)
+		for(column_itr itr(x, j); itr; ++itr)
 		{	size_t i    = itr.row();
 			if( col == j )
 			{	while( row < i )
