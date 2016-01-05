@@ -90,8 +90,8 @@ void cppad_mixed::ran_obj_jac(
 	assert( r_fixed.size() == n_fixed_ );
 
 	// declare eigen matrix types
-	typedef Eigen::SparseMatrix<double>                sparse_matrix;
-	typedef Eigen::SparseMatrix<double>::InnerIterator inner_itr;
+	typedef Eigen::SparseMatrix<double,Eigen::ColMajor>  sparse_matrix;
+	typedef Eigen::SparseMatrix<double>::InnerIterator   column_itr;
 
 	// number of non-zeros in Hessian
 	size_t K = hes_ran_.row.size();
@@ -131,49 +131,32 @@ void cppad_mixed::ran_obj_jac(
 		val_out,
 		hes_cross_.work
 	);
-	// initialize index in hes_cross_.row, hes_cross_.col
-	size_t k = 0;
-	size_t col = n_fixed_;
-	if( k < K )
-		col = hes_cross_.col[k];
-	assert( col <= n_fixed_ );
+	//
+	// b = - f_{u,theta} (theta , u) ]
+	sparse_matrix b(n_random_, n_fixed_);
+	for(size_t k = 0; k < K; k++)
+	{	assert( hes_cross_.row[k] >= n_fixed_ );
+		size_t row = hes_cross_.row[k] - n_fixed_;
+		size_t col = hes_cross_.col[k];
+		assert( row < n_random_ );
+		assert( col < n_fixed_ );
+		//
+		b.insert(row, col) = - val_out[k];
+	}
+	//
+	// x = - f_{u,u}(theta, u)^{-1} f_{u,theta}(theta, u)
+	//   = uhat_{theta} ( theta )
+	sparse_matrix x = CppAD::mixed::chol_hes_ran_.solve(b);
+	assert( x.outerSize() == n_fixed_ );
+	assert( x.innerSize() == n_random_ );
 	//
 	// Loop over fixed effects and compute r_fixed one component at a time
 	for(size_t j = 0; j < n_fixed_; j++)
 	{	// parial w.r.t fixed effects contribution to total derivative
 		r_fixed[j] =  f_fixed[j] + 0.5 * logdet_fix[j];
 		//
-		// set b_i = - f_{u,theta} (theta , u) ]_{i,j}
-		sparse_matrix b(n_random_, 1);
-		while( col < j )
-		{	k++;
-			if( k >= K )
-				col = n_fixed_;
-			else
-			{	col = hes_cross_.col[k];
-				assert( col < n_fixed_ );
-			}
-		}
-		while( col == j )
-		{	assert( hes_cross_.row[k] >= n_fixed_ );
-			size_t row = hes_cross_.row[k] - n_fixed_;
-			assert( row < n_random_ );
-			b.insert(row, 0) = - val_out[k];
-			k++;
-			if( k >= K )
-				col = n_fixed_;
-			else
-			{	col = hes_cross_.col[k];
-				assert( col < n_fixed_ );
-			}
-		}
-		//
-		// compute the partial of uhat(theta) w.r.t theta[j]
-		sparse_matrix x = CppAD::mixed::chol_hes_ran_.solve(b);
-		//
-		// compute effect on the total derivative
-		assert( x.outerSize() == 1 );
-		for(inner_itr itr(x, 0); itr; ++itr)
+		// compute effect of uhat_{theta(j)} (theta) on the total derivative
+		for(column_itr itr(x, j); itr; ++itr)
 		{	// random effect index
 			size_t i = itr.row();
 			// partial of optimal random effect for this (i, j)
