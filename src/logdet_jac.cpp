@@ -94,16 +94,9 @@ The static variable
 $codei%
 	CppAD::mixed::chol_hes_ran_
 %$$
-factorization routine
-$cref/factorize_chol_hes_ran/chol_hes_ran/factorize_chol_hes_ran/$$
-is called for the current Hessian values. To be specific
-$codei%
-	CppAD::mixed::factorize_chol_hes_ran(
-		n_fixed_, n_random_, hes_ran_.row, hes_ran_.col, %both%, hes_ran_fun_
-	);
-%$$
-where $icode both$$ is a packed version of the fixed and random
-effects.
+factorization is updated using
+$cref update_factor$$ for the specified values of the
+fixed and random effects.
 
 $children%
 	example/private/logdet_jac_xam.cpp
@@ -137,13 +130,8 @@ void cppad_mixed::logdet_jac(
 	assert( K == hes_ran_.col.size() );
 
 	// compute an LDL^T Cholesky factorization of f_{u,u}(theta, u)
-	d_vector both(n_fixed_ + n_random_);
-	pack(fixed_vec, random_vec, both);
-	CppAD::mixed::factorize_chol_hes_ran(
-		n_fixed_, n_random_, hes_ran_.row, hes_ran_.col, both, hes_ran_fun_
-	);
+	update_factor(fixed_vec, random_vec);
 
-	//
 	// b = Identity matrix
 	sparse_matrix b(n_random_, n_random_);
 	for(size_t j = 0; j < n_random_; j++)
