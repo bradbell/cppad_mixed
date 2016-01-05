@@ -117,7 +117,7 @@ void cppad_mixed::ran_obj_jac(
 	d_vector f_fixed(n_fixed_), f_random(n_random_);
 	unpack(f_fixed, f_random, f_both);
 	//
-	// Compute the Hessian cross terms f_{u theta}^{(2)} ( theta , u )
+	// Compute the Hessian cross terms f_{u,theta} ( theta , u )
 	// 2DO: another ran_like_fun_.Forward(0, both) is done by SparseHessian
 	CppAD::vector< std::set<size_t> > not_used;
 	K = hes_cross_.row.size();
@@ -143,7 +143,7 @@ void cppad_mixed::ran_obj_jac(
 	{	// parial w.r.t fixed effects contribution to total derivative
 		r_fixed[j] =  f_fixed[j] + 0.5 * logdet_fix[j];
 		//
-		// set b_i = - f_{u theta}^{(2)} (theta , u) ]_{i,j}
+		// set b_i = - f_{u,theta} (theta , u) ]_{i,j}
 		sparse_matrix b(n_random_, 1);
 		while( col < j )
 		{	k++;
