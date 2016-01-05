@@ -30,17 +30,18 @@ $section Jacobian of Log Determinant of Hessian w.r.t. Random Effects$$
 
 $head Syntax$$
 $icode%mixed_object%.logdet_jac(
-	%fixed_vec%, %random_vec%, %logdet_fix%, %logdet_ran%)%$$
+	%fixed_vec%, %random_vec%, %logdet_fix%, %logdet_ran%
+)%$$
 
 $head Purpose$$
-This routine computes the total derivative of the log determinant
+This routine computes the Jacobian of the log determinant
 of the Hessian of the random likelihood
 $cref/f(theta, u)
 	/theory/
 	Random Likelihood, f(theta, u)
 /$$
-with respect to the random effects vector $latex u$$; i.e.
-it computes both
+with respect to the random effects vector $latex u$$.
+To be specific, it computes both
 $latex \[
 	\partial_\theta \log \det [ f_{u,u} ( \theta, u ) ]
 	\; \R{and} \;
