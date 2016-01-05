@@ -8,23 +8,39 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
+
+$begin ran_constraint.omh$$
+
 $section The Random Constraints$$
 
 $head Under Construction$$
-This section is under construction and not yet in use$$.
+This section is just a plan; i.e. it is
+under construction and not yet in use.
 
-$head Random Constraints Matrix, A$$
+$head Random Constraint$$
+
+$subhead Matrix, A$$
 We are given a random constraint matrix $latex A$$ which is possibly sparse.
 The number of columns in $latex A$$ is the number random effects
 $cref/n_random/derived_ctor/n_random/$$.
-
-$head Number of Random Constraints$$
 The number of rows in $latex A$$ is the number of random constraints.
 
-$head Random Constraint Function, A*u^(theta)$$
-The random constraint function is a mapping from a value for the
-fixed effects $latex theta$$ to the vector $latex A \hat{u} ( \theta )$$
-where $latex \hat{u} ( \theta )$$ is the
-$cref/optimal random effects/theory/Optimal Random Effects, u^(theta)/$$.
+$subhead Function, A*u^(theta)$$
+We refer the the mapping from the fixed effects $latex \theta$$
+the vector $latex A \hat{u} ( \theta )$$ as the
+random constraint function.
+
+$subhead Equation$$
+The random constraint equation is
+$latex \[
+	0 = A \hat{u} ( \theta)
+\] $$
+This constraint is on the optimization problem for the
+$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
+$latex \theta$$.
+It is called the random constraint becasuse it is expressed in terms
+of the
+$cref/optimal random effects/theory/Optimal Random Effects, u^(theta)/$$
+$latex \hat{u} ( \theta )$$.
 
 $end
