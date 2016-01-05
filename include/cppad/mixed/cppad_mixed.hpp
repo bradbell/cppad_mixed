@@ -151,13 +151,13 @@ $comment */
 	n_random_(n_random)             ,
 	quasi_fixed_(quasi_fixed)       ,
 	initialize_done_(false)         ,
-	init_fix_like_done_(false)    ,
-	init_fix_con_done_(false)  ,
-	init_ran_like_done_(false)    ,
-	init_hes_ran_done_(false)     ,
-	init_hes_cross_done_(false)   ,
+	init_fix_like_done_(false)      ,
+	init_fix_con_done_(false)       ,
+	init_ran_like_done_(false)      ,
+	init_hes_ran_done_(false)       ,
+	init_hes_cross_done_(false)     ,
 	record_newton_atom_done_(false) ,
-	init_ran_obj_done_(false)     ,
+	init_ran_obj_done_(false)       ,
 	init_hes_ran_obj_done_(false)
 	{ }
 /* $$

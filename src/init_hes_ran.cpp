@@ -137,8 +137,12 @@ $latex \[
 \]$$
 in the same order as the $icode a1_val_out$$ above.
 
-$head CppAD::mixed::chol_hes_ran_$$
-The static $code CppAD::mixed::chol_hes_ran_$$ is initialized by a call to
+$head init_chol_hes_ran_$$
+The static variable
+$codei%
+	CppAD::mixed::chol_hes_ran_
+%$$
+is initialized by a call to
 $cref/analyze_chol_hes_ran/chol_hes_ran/analyze_chol_hes_ran/$$.
 
 $contents%example/private/hes_ran_fun_xam.cpp

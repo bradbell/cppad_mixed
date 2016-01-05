@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -37,12 +37,16 @@ $codei%CppAD::mixed::analyze_chol_hes_ran(%n_fixed%, %n_random%, %row%, %col%)
 %$$
 $codei%CppAD::mixed::factorize_chol_hes_ran(
 	%n_fixed%, %n_random%, %row%, %col%, %both%, %hessian%
-)%$$
+)
+%$$
+$icode%logdet% = CppAD::mixed::logdet_chol_hes_ran(%n_random%)
+%$$
 
 $head Purpose$$
-$code chol_hes_ran_$$ should be a $cref private$$ member variable,
-but it is instead a static in the $code cppad_mixed$$ namespace
-so that the warnings that Eigen generates
+The variable $code CppAD::mixed::chol_hes_ran_$$ should be a
+$cref private$$ member variable.
+It is instead a static variable in the $code CppAD::mixed$$ namespace
+so the warnings that Eigen generates
 do not need to be suppressed by all the routines that include
 $code cppad_mixed/cppad_mixed.hpp$$.
 
