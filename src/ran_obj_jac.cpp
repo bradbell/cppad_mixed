@@ -97,17 +97,21 @@ void cppad_mixed::ran_obj_jac(
 	size_t K = hes_ran_.row.size();
 	assert( K == hes_ran_.col.size() );
 
-	// compute an LDL^T Cholesky factorization of f_{u,u}(theta, u)
-	d_vector both(n_fixed_ + n_random_);
-	pack(fixed_vec, random_vec, both);
-	CppAD::mixed::factorize_chol_hes_ran(
-		n_fixed_, n_random_, hes_ran_.row, hes_ran_.col, both, hes_ran_fun_
-	);
-
 	//
 	// Compute derivative of logdet of f_{u,u} ( theta , u )
 	d_vector logdet_fix(n_fixed_), logdet_ran(n_random_);
 	logdet_jac(fixed_vec, random_vec, logdet_fix, logdet_ran);
+
+	// packed version of fixed and random effects
+	d_vector both(n_fixed_ + n_random_);
+	pack(fixed_vec, random_vec, both);
+
+	/* This factorization of f_{u,u}(theta, u) was computed by logdet_jac
+	CppAD::mixed::factorize_chol_hes_ran(
+		n_fixed_, n_random_, hes_ran_.row, hes_ran_.col, both, hes_ran_fun_
+	);
+	*/
+
 	//
 	// Compute derivative of f(theta , u ) w.r.t theta and u
 	d_vector w(1), f_both(n_fixed_ + n_random_);
@@ -147,8 +151,8 @@ void cppad_mixed::ran_obj_jac(
 	// x = - f_{u,u}(theta, u)^{-1} f_{u,theta}(theta, u)
 	//   = uhat_{theta} ( theta )
 	sparse_matrix x = CppAD::mixed::chol_hes_ran_.solve(b);
-	assert( x.outerSize() == n_fixed_ );
-	assert( x.innerSize() == n_random_ );
+	assert( size_t(x.outerSize()) == n_fixed_ );
+	assert( size_t (x.innerSize()) == n_random_ );
 	//
 	// Loop over fixed effects and compute r_fixed one component at a time
 	for(size_t j = 0; j < n_fixed_; j++)

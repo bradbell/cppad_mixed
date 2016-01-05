@@ -13,6 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin logdet_jac$$
 $spell
+	chol
 	Jacobian
 	jac
 	CppAD
@@ -86,6 +87,22 @@ $codei%
 Its input size must be equal to $code n_random_$$.
 Upon return, it contains the value of the derivative w.r.t
 the random effects.
+
+$head factorize_chol_hes_ran_$$
+The static variable
+$codei%
+	CppAD::mixed::chol_hes_ran_
+%$$
+factorization routine
+$cref/factorize_chol_hes_ran/chol_hes_ran/factorize_chol_hes_ran/$$
+is called for the current Hessian values. To be specific
+$codei%
+	CppAD::mixed::factorize_chol_hes_ran(
+		n_fixed_, n_random_, hes_ran_.row, hes_ran_.col, %both%, hes_ran_fun_
+	);
+%$$
+where $icode both$$ is a packed version of the fixed and random
+effects.
 
 $children%
 	example/private/logdet_jac_xam.cpp
