@@ -9,18 +9,12 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin logdet_jac_xam.cpp$$
+$begin update_factor_xam.cpp$$
 $spell
-	jac
-	CppAD
 	cppad
-	hes
-	interp
-	xam
-	logdet
 $$
 
-$section logdet_jac: Example and Test$$
+$section update_factor: Example and Test$$
 
 
 $head Private$$
@@ -28,7 +22,7 @@ This example is not part of the
 $cref/cppad_mixed public API/public/$$.
 
 $code
-$verbatim%example/private/logdet_jac_xam.cpp
+$verbatim%example/private/update_factor_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -37,6 +31,7 @@ $end
 // BEGIN C++
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/chol_hes_ran.hpp>
 
 namespace {
 	using CppAD::vector;
@@ -111,7 +106,7 @@ namespace {
 	};
 }
 
-bool logdet_jac_xam(void)
+bool update_factor_xam(void)
 {
 	bool   ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
@@ -133,19 +128,36 @@ bool logdet_jac_xam(void)
 	mixed_derived mixed_object(n_fixed, n_random, data);
 	mixed_object.initialize(theta, u);
 
-	// compute derivative of logdet of Hessian
-	vector<double> logdet_fix(n_fixed), logdet_ran(n_random);
-	mixed_object.logdet_jac(fixed_vec, random_vec, logdet_fix, logdet_ran);
+	// update the factorization of f_{u,u} (theta, u)
+	mixed_object.update_factor(fixed_vec, random_vec);
+
+	// declare eigen matrix types
+	typedef Eigen::SparseMatrix<double,Eigen::ColMajor>  sparse_matrix;
+	typedef Eigen::SparseMatrix<double>::InnerIterator   column_itr;
+
+	//
+	// Identity matrix
+	sparse_matrix eye(n_random, n_random);
+	for(size_t j = 0; j < n_random; j++)
+		eye.insert(j, j) = 1.0;
+
+	//
+	// inverse of Hessian
+	sparse_matrix inv_hes = CppAD::mixed::chol_hes_ran_.solve(eye);
 
 	// Hessian_{i,j} = 1.0 / (theta[i] * theta[i]) if i == j
 	//               = 0.0 otherwise
-	// log( det( Hessian ) ) = - 2.0 * sum_i log( theta[i] )
-	for(size_t i = 0; i < n_data; i++)
-		ok    &= logdet_ran[i] == 0.0;
-	for(size_t i = 0; i < n_data; i++)
-	{	double check   = - 2.0  / fixed_vec[i];
-		ok            &= abs( logdet_fix[i] / check - 1.0) <= eps;
+	size_t count = 0;
+	for(size_t j = 0; j < n_random; j++)
+	{	for(column_itr itr(inv_hes, j); itr; ++itr)
+		{	++count;
+			size_t i = itr.row();
+			ok      &= (i == j);
+			double check = theta[i] * theta[i];
+			ok      &= abs( check / itr.value() - 1.0) <= eps;
+		}
 	}
+	ok &= count == n_random;
 
 	return ok;
 }

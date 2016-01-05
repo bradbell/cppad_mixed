@@ -31,6 +31,7 @@ extern bool ran_like_jac_xam(void);
 extern bool ran_obj_eval_xam(void);
 extern bool ran_obj_jac_xam(void);
 extern bool ran_obj_hes_xam(void);
+extern bool update_factor_xam(void);
 
 //  tests
 extern bool der_var_hes(void);
@@ -264,6 +265,7 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/ran_obj_eval.cpp
 	%src/ran_obj_jac.cpp
 	%src/ran_obj_hes.cpp
+	%src/update_factor.cpp
 %$$
 
 $head n_fixed_$$
@@ -655,6 +657,16 @@ $codep */
 		d_vector&               val_out
 	);
 	friend bool ::ran_obj_hes_xam(void);
+/* $$
+
+$subhead update_factor$$
+See $cref update_factor$$
+$codep */
+	void update_factor(
+		const d_vector&         fixed_vec   ,
+		const d_vector&         random_vec
+	);
+	friend bool ::update_factor_xam(void);
 /* $$
 $end
 -------------------------------------------------------------------------------

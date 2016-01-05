@@ -31,7 +31,6 @@ $end
 // optional
 extern bool cholmod_xam(void);
 
-// cppad_mixed subdirectory
 extern bool data_mismatch_xam(void);
 extern bool derived_xam(void);
 extern bool eigen_xam(void);
@@ -55,6 +54,7 @@ extern bool ran_like_jac_xam(void);
 extern bool ran_obj_eval_xam(void);
 extern bool ran_obj_jac_xam(void);
 extern bool ran_obj_hes_xam(void);
+extern bool update_factor_xam(void);
 
 // anonymous namespace
 namespace {
@@ -111,6 +111,7 @@ int main(void)
 	RUN(ran_obj_eval_xam);
 	RUN(ran_obj_jac_xam);
 	RUN(ran_obj_hes_xam);
+	RUN(update_factor_xam);
 
 
 # if CPPAD_MIXED_HAS_SUITESPARSE

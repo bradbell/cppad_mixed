@@ -17,6 +17,21 @@ $head Under Construction$$
 This section is just a plan; i.e. it is
 under construction and not yet in use.
 
+$head Refactoring Plan$$
+
+$subhead Eigen Sparse Matrices$$
+Use Eigen sparse matrices to multiply out
+$latex \[
+	A * f_{u,u} ( \theta , u )^{-1} f_{u , \theta } ( \theta, u )
+\] $$
+to get the derivative of the constraint function $latex A \hat{u} ( \theta )$$.
+
+$subhead hes_ran_fun_$$
+This recording is not necessary for evaluation of the Hessian
+$latex f_{u,u} ( u , \theta )$$ and should be replaced by the corresponding
+calls to $code ran_like_fun_.SparseHessian$$.
+
+
 $head Random Constraint$$
 
 $subhead Matrix, A$$

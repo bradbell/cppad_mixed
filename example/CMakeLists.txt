@@ -32,6 +32,7 @@ LINK_DIRECTORIES(
 # example_eigen
 ADD_LIBRARY(example_eigen
 	private/eigen_xam.cpp
+	private/update_factor_xam.cpp
 )
 SET_TARGET_PROPERTIES(example_eigen
 	PROPERTIES COMPILE_FLAGS "${eigen_cxx_flags}"

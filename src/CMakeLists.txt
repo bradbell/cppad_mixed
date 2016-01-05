@@ -29,6 +29,7 @@ ADD_LIBRARY(cppad_mixed
 	optimize_random.cpp
 	ran_like_jac.cpp
 	ran_obj_hes.cpp
+	update_factor.cpp
 )
 SET_TARGET_PROPERTIES(cppad_mixed
 	PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
