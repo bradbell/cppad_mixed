@@ -169,6 +169,9 @@ bool ran_obj_eval_xam(void)
 		options, fixed_vec, random_lower, random_upper, random_vec
 	);
 
+	// must factor f_{u,u} (theta, uhat)
+	mixed_object.update_factor(fixed_vec, uhat);
+
 	// compute random part of Laplace approximation
 	double h = mixed_object.ran_obj_eval(fixed_vec, uhat);
 

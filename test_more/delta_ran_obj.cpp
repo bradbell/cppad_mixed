@@ -140,6 +140,9 @@ bool delta_ran_obj(void)
 		options, fixed_vec, random_lower, random_upper, random_vec
 	);
 	//
+	// factor f_{u,u} (theta, uhat)
+	mixed_object.update_factor(fixed_vec, uhat);
+	//
 	// compute the derivative of the random part of objective
 	vector<double> r_fixed(n_fixed);
 	mixed_object.ran_obj_jac(fixed_vec, uhat, r_fixed);
@@ -151,11 +154,19 @@ bool delta_ran_obj(void)
 		uhat = mixed_object.optimize_random(
 			options, fixed_vec, random_lower, random_upper, random_vec
 		);
+		//
+		// factor f_{u,u} (theta, uhat)
+		mixed_object.update_factor(fixed_vec, uhat);
+		//
 		double r_plus  = mixed_object.ran_obj_eval(fixed_vec, uhat);
 		fixed_vec[j]   = theta_j - 2.0 * eps;
 		uhat = mixed_object.optimize_random(
 			options, fixed_vec, random_lower, random_upper, random_vec
 		);
+		//
+		// factor f_{u,u} (theta, uhat)
+		mixed_object.update_factor(fixed_vec, uhat);
+		//
 		double r_minus = mixed_object.ran_obj_eval(fixed_vec, uhat);
 		fixed_vec[j]   = theta_j;
 		//

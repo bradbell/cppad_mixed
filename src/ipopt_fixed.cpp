@@ -765,9 +765,15 @@ bool ipopt_fixed::eval_f(
 	{	//
 		// compute the optimal random effects corresponding to fixed effects
 		if( new_x )
-		random_cur_ = mixed_object_.optimize_random(
-		random_options_, fixed_tmp_, random_lower_, random_upper_, random_in_
-		);
+		{	random_cur_ = mixed_object_.optimize_random(
+				random_options_,
+				fixed_tmp_,
+				random_lower_,
+				random_upper_,
+				random_in_
+			);
+			mixed_object_.update_factor(fixed_tmp_, random_cur_);
+		}
 		H = mixed_object_.ran_obj_eval(fixed_tmp_, random_cur_);
 	}
 	obj_value = Number(H);
@@ -852,9 +858,15 @@ bool ipopt_fixed::eval_grad_f(
 	{
 		// compute the optimal random effects corresponding to fixed effects
 		if( new_x )
-		random_cur_ = mixed_object_.optimize_random(
-		random_options_, fixed_tmp_, random_lower_, random_upper_, random_in_
-		);
+		{	random_cur_ = mixed_object_.optimize_random(
+				random_options_,
+				fixed_tmp_,
+				random_lower_,
+				random_upper_,
+				random_in_
+			);
+			mixed_object_.update_factor(fixed_tmp_, random_cur_);
+		}
 		// Jacobian for random part of the Lalpace objective
 		mixed_object_.ran_obj_jac(
 			fixed_tmp_, random_cur_, H_beta_tmp_
@@ -946,9 +958,16 @@ bool ipopt_fixed::eval_g(
 		fixed_tmp_[j] = double( x[j] );
 	//
 	// check if this is a new x
-	if( n_random_ > 0 && new_x ) random_cur_ = mixed_object_.optimize_random(
-		random_options_, fixed_tmp_, random_lower_, random_upper_, random_in_
-	);
+	if( n_random_ > 0 && new_x )
+	{	random_cur_ = mixed_object_.optimize_random(
+			random_options_,
+			fixed_tmp_,
+			random_lower_,
+			random_upper_,
+			random_in_
+		);
+		mixed_object_.update_factor(fixed_tmp_, random_cur_);
+	}
 	//
 	// fixed part of objective
 	// (2DO: cache fix_likelihood_vec_tmp_ for eval_f with same x)
@@ -1094,9 +1113,16 @@ bool ipopt_fixed::eval_jac_g(
 		fixed_tmp_[j] = double( x[j] );
 	//
 	// check if this is a new x
-	if( n_random_ > 0 && new_x ) random_cur_ = mixed_object_.optimize_random(
-		random_options_, fixed_tmp_, random_lower_, random_upper_, random_in_
-	);
+	if( n_random_ > 0 && new_x )
+	{	random_cur_ = mixed_object_.optimize_random(
+			random_options_,
+			fixed_tmp_,
+			random_lower_,
+			random_upper_,
+			random_in_
+		);
+		mixed_object_.update_factor(fixed_tmp_, random_cur_);
+	}
 	//
 	// Jacobian of fixed part of objective
 	// (2DO: do not revaluate when eval_grad_f had same x)
@@ -1263,9 +1289,15 @@ bool ipopt_fixed::eval_h(
 	{
 		// compute the optimal random effects corresponding to fixed effects
 		if( new_x )
-		random_cur_ = mixed_object_.optimize_random(
-		random_options_, fixed_tmp_, random_lower_, random_upper_, random_in_
-		);
+		{	random_cur_ = mixed_object_.optimize_random(
+				random_options_,
+				fixed_tmp_,
+				random_lower_,
+				random_upper_,
+				random_in_
+			);
+			mixed_object_.update_factor(fixed_tmp_, random_cur_);
+		}
 		// compute Hessian of random part w.r.t. fixed effects
 		mixed_object_.ran_obj_hes(
 			fixed_tmp_, random_cur_,

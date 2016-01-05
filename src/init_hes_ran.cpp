@@ -315,7 +315,9 @@ void cppad_mixed::init_hes_ran(
 	init_hes_ran_done_ = true;
 
 	// now analyze the lower triangular Cholesky factorization
-	CppAD::mixed::analyze_chol_hes_ran(n_fixed_, n_random_, hes_ran_.row, hes_ran_.col);
+	CppAD::mixed::analyze_chol_hes_ran(
+		n_fixed_, n_random_, hes_ran_.row, hes_ran_.col
+	);
 }
 
 

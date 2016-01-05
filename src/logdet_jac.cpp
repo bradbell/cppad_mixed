@@ -56,6 +56,14 @@ We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
+$head chol_hes_ran_$$
+It is assumed that the static variable
+$codei%
+	CppAD::mixed::chol_hes_ran_
+%$$
+updated using $cref update_factor$$ for the specified values of the
+fixed and random effects.
+
 $head fixed_vec$$
 This argument has prototype
 $codei%
@@ -89,15 +97,6 @@ Its input size must be equal to $code n_random_$$.
 Upon return, it contains the value of the derivative w.r.t
 the random effects.
 
-$head factorize_chol_hes_ran_$$
-The static variable
-$codei%
-	CppAD::mixed::chol_hes_ran_
-%$$
-factorization is updated using
-$cref update_factor$$ for the specified values of the
-fixed and random effects.
-
 $children%
 	example/private/logdet_jac_xam.cpp
 %$$
@@ -128,9 +127,6 @@ void cppad_mixed::logdet_jac(
 	// number of non-zeros in Hessian
 	size_t K = hes_ran_.row.size();
 	assert( K == hes_ran_.col.size() );
-
-	// compute an LDL^T Cholesky factorization of f_{u,u}(theta, u)
-	update_factor(fixed_vec, random_vec);
 
 	// b = Identity matrix
 	sparse_matrix b(n_random_, n_random_);

@@ -133,6 +133,9 @@ bool logdet_jac_xam(void)
 	mixed_derived mixed_object(n_fixed, n_random, data);
 	mixed_object.initialize(theta, u);
 
+	// factor f_{u,u} (thete, u)
+	mixed_object.update_factor(fixed_vec, random_vec);
+
 	// compute derivative of logdet of Hessian
 	vector<double> logdet_fix(n_fixed), logdet_ran(n_random);
 	mixed_object.logdet_jac(fixed_vec, random_vec, logdet_fix, logdet_ran);

@@ -168,6 +168,9 @@ bool ran_obj_jac_xam(void)
 		options, fixed_vec, random_lower, random_upper, random_vec
 	);
 
+	// factor f_{u,u} ( theta , uhat )
+	mixed_object.update_factor(fixed_vec, uhat);
+
 	// compute total derivative of random part of objective
 	vector<double> r_fixed(n_fixed);
 	mixed_object.ran_obj_jac(fixed_vec, uhat, r_fixed);

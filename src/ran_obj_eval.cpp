@@ -14,6 +14,8 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin ran_obj_eval$$
 $spell
+	chol
+	hes
 	CppAD
 	ran_obj
 	cppad
@@ -46,6 +48,14 @@ $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
+
+$head chol_hes_ran_$$
+It is assumed that the static variable
+$codei%
+	CppAD::mixed::chol_hes_ran_
+%$$
+updated using $cref update_factor$$ for the specified values of the
+fixed and random effects.
 
 $head fixed_vec$$
 This argument has prototype
@@ -104,12 +114,9 @@ double cppad_mixed::ran_obj_eval(
 	size_t K = hes_ran_.row.size();
 	assert( K == hes_ran_.col.size() );
 
-	// compute an LDL^T Cholesky factorization of f_{u,u}(theta, u)
+	// pack fixed and random effects into one vector
 	d_vector both(n_fixed_ + n_random_);
 	pack(fixed_vec, random_vec, both);
-	CppAD::mixed::factorize_chol_hes_ran(
-		n_fixed_, n_random_, hes_ran_.row, hes_ran_.col, both, hes_ran_fun_
-	);
 
 	// compute the logdet( f_{u,u}(theta, u )
 	double logdet = CppAD::mixed::logdet_chol_hes_ran(n_random_);
