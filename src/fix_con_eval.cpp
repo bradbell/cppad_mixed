@@ -21,7 +21,7 @@ $spell
 	Cpp
 $$
 
-$section Evaluate Constraint Function$$
+$section Evaluate Fixed Constraint Function$$
 
 $head Syntax$$
 $icode%vec% = %mixed_object%.fix_con_eval(%fixed_vec%)%$$

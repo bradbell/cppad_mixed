@@ -22,7 +22,7 @@ $spell
 	hes
 $$
 
-$section Hessian of Constraints w.r.t Fixed Effects$$
+$section Hessian of Fixed Constraints$$
 
 $head Syntax$$
 $icode%mixed_object%.fix_con_hes(

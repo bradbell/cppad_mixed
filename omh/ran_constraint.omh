@@ -9,13 +9,16 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
 
-$begin ran_constraint.omh$$
+$begin ran_constraint$$
 
 $section The Random Constraints$$
 
 $head Under Construction$$
-This section is just a plan; i.e. it is
+This section, and the following sub-sections, are just a plan; i.e. they are
 under construction and not yet in use.
+
+$childtable%src/ran_constraint.cpp
+%$$
 
 $head Refactoring Plan$$
 
@@ -26,26 +29,18 @@ $latex \[
 \] $$
 to get the derivative of the constraint function $latex A \hat{u} ( \theta )$$.
 
-$subhead hes_ran_fun_$$
-This recording is not necessary for evaluation of the Hessian
-$latex f_{u,u} ( u , \theta )$$ and should be replaced by the corresponding
-calls to $code ran_like_fun_.SparseHessian$$.
-
-
-$head Random Constraint$$
-
-$subhead Matrix, A$$
+$head Random Constraint Matrix, A$$
 We are given a random constraint matrix $latex A$$ which is possibly sparse.
 The number of columns in $latex A$$ is the number random effects
 $cref/n_random/derived_ctor/n_random/$$.
 The number of rows in $latex A$$ is the number of random constraints.
 
-$subhead Function, A*u^(theta)$$
+$head Random Constraint Function, A*u^(theta)$$
 We refer the the mapping from the fixed effects $latex \theta$$
 the vector $latex A \hat{u} ( \theta )$$ as the
 random constraint function.
 
-$subhead Equation$$
+$head Random Constraint Equation$$
 The random constraint equation is
 $latex \[
 	0 = A \hat{u} ( \theta)
@@ -57,5 +52,6 @@ It is called the random constraint becasuse it is expressed in terms
 of the
 $cref/optimal random effects/theory/Optimal Random Effects, u^(theta)/$$
 $latex \hat{u} ( \theta )$$.
+
 
 $end
