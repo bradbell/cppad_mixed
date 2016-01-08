@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -20,9 +20,9 @@ With the exception of $cref manage_gsl_rng$$,
 they are $bold not$$ part of the user API and may change with time.
 
 $childtable%src/manage_gsl_rng.cpp
-	%src/chol_hes_ran.cpp
+	%src/eigen/chol_hes_ran.cpp
 	%include/cppad/mixed/ipopt_fixed.hpp
-	%src/newton_step.cpp
+	%src/eigen/newton_step.cpp
 	%include/cppad/mixed/sparse_hes_info.hpp
 	%include/cppad/mixed/sparse_jac_info.hpp
 %$$

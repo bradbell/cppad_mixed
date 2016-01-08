@@ -250,22 +250,22 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/init_fix_con.cpp
 	%src/init_fix_like.cpp
 	%src/init_hes_cross.cpp
-	%src/init_hes_ran.cpp
+	%src/eigen/init_hes_ran.cpp
 	%src/init_hes_ran_obj.cpp
 	%src/init_ran_like.cpp
-	%src/init_ran_obj.cpp
+	%src/eigen/init_ran_obj.cpp
 	%src/fix_con_eval.cpp
 	%src/fix_con_hes.cpp
 	%src/fix_con_jac.cpp
 	%src/fix_like_eval.cpp
 	%src/fix_like_hes.cpp
 	%src/fix_like_jac.cpp
-	%src/logdet_jac.cpp
+	%src/eigen/logdet_jac.cpp
 	%src/ran_like_jac.cpp
-	%src/ran_obj_eval.cpp
-	%src/ran_obj_jac.cpp
+	%src/eigen/ran_obj_eval.cpp
+	%src/eigen/ran_obj_jac.cpp
 	%src/ran_obj_hes.cpp
-	%src/update_factor.cpp
+	%src/eigen/update_factor.cpp
 %$$
 
 $head n_fixed_$$

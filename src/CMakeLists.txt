@@ -36,14 +36,14 @@ SET_TARGET_PROPERTIES(cppad_mixed
 # ---------------------------------------------------------------------------
 # cppad_mixed_eigen
 ADD_LIBRARY(cppad_mixed_eigen
-	chol_hes_ran.cpp
-	init_hes_ran.cpp
-	init_ran_obj.cpp
-	logdet_jac.cpp
-	newton_step.cpp
-	ran_obj_eval.cpp
-	ran_obj_jac.cpp
-	update_factor.cpp
+	eigen/chol_hes_ran.cpp
+	eigen/init_hes_ran.cpp
+	eigen/init_ran_obj.cpp
+	eigen/logdet_jac.cpp
+	eigen/newton_step.cpp
+	eigen/ran_obj_eval.cpp
+	eigen/ran_obj_jac.cpp
+	eigen/update_factor.cpp
 )
 SET_TARGET_PROPERTIES(cppad_mixed_eigen
 	PROPERTIES COMPILE_FLAGS "${eigen_cxx_flags}"
