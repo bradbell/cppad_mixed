@@ -136,16 +136,6 @@ $latex \[
 \]$$
 in the same order as the $icode a1_val_out$$ above.
 
-$head init_chol_hes_ran_$$
-The input state of the member variable
-$codei%
-	CppAD::mixed::cholesky chol_hes_ran_
-%$$
-does not matter.
-Upon return, $code chol_hes_ran_$$ contains an
-$cref/analysis/cholesky_analyze/$$ of the sparsity pattern
-corresponding to the Hessian with respect to the random effects.
-
 $contents%example/private/hes_ran_fun_xam.cpp
 %$$
 
@@ -314,11 +304,6 @@ void cppad_mixed::init_hes_ran(
 	hes_ran_fun_.Dependent(a1_both, a1_val_out);
 	//
 	init_hes_ran_done_ = true;
-
-	// now analyze the lower triangular Cholesky factorization
-	chol_hes_ran_.analyze(
-		n_fixed_, n_random_, hes_ran_.row, hes_ran_.col
-	);
 }
 
 

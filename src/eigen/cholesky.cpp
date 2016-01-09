@@ -24,18 +24,19 @@ cholesky::~cholesky(void)
 
 /*
 ------------------------------------------------------------------------------
-$begin cholesky_analyze$$
+$begin cholesky_init$$
 $spell
 	Cholesky
 	chol_hes_ran
 	CppAD
 	const
+	init
 $$
 
 $section Initialize Cholesky Factor for a Specific Sparsity Pattern$$
 
 $head Syntax$$
-$icode%chol_hes_ran%.analyze(%n_fixed%, %n_random%, %row%, %col%)
+$icode%chol_hes_ran%.init(%n_fixed%, %n_random%, %row%, %col%)
 %$$
 
 $head chol_hes_ran$$
@@ -88,7 +89,7 @@ $codei%
 
 $end
 */
-void cholesky::analyze(
+void cholesky::init(
 	size_t                       n_fixed  ,
 	size_t                       n_random ,
 	const CppAD::vector<size_t>& row      ,
@@ -116,6 +117,7 @@ $spell
 	CppAD
 	const
 	Taylor
+	init
 $$
 
 $section Compute Cholesky Factor for Specific Fixed and Random Effects$$
@@ -132,23 +134,23 @@ $codei%
 	CppAD::mixed::cholesky %chol_hes_ran%
 %$$
 In addition, it must have a previous call to
-$cref cholesky_analyze$$.
+$cref cholesky_init$$.
 
 $head n_fixed$$
 Must be the same as $icode n_fixed$$ in previous call to
-$cref/cholesky_analyze/cholesky_analyze/n_fixed/$$.
+$cref/cholesky_init/cholesky_init/n_fixed/$$.
 
 $head n_random$$
 Must be the same as $icode n_random$$ in previous call to
-$cref/cholesky_analyze/cholesky_analyze/n_random/$$.
+$cref/cholesky_init/cholesky_init/n_random/$$.
 
 $head row$$
 Must be the same as $icode row$$ in previous call to
-$cref/cholesky_analyze/cholesky_analyze/row/$$.
+$cref/cholesky_init/cholesky_init/row/$$.
 
 $head col$$
 Must be the same as $icode col$$ in previous call to
-$cref/cholesky_analyze/cholesky_analyze/col/$$.
+$cref/cholesky_init/cholesky_init/col/$$.
 
 $head both$$
 This argument has prototype

@@ -152,15 +152,16 @@ $comment */
 	n_fixed_(n_fixed)               ,
 	n_random_(n_random)             ,
 	quasi_fixed_(quasi_fixed)       ,
-	initialize_done_(false)         ,
-	init_fix_like_done_(false)      ,
-	init_fix_con_done_(false)       ,
 	init_ran_like_done_(false)      ,
 	init_hes_ran_done_(false)       ,
+	init_cholesky_done_(false)      ,
 	init_hes_cross_done_(false)     ,
 	record_newton_atom_done_(false) ,
 	init_ran_obj_done_(false)       ,
-	init_hes_ran_obj_done_(false)
+	init_hes_ran_obj_done_(false)   ,
+	init_fix_like_done_(false)      ,
+	init_fix_con_done_(false)       ,
+	initialize_done_(false)
 	{ }
 /* $$
 $head initialize$$
@@ -292,19 +293,23 @@ $codep */
 /* $$
 $head initialize_done_$$
 The following flag is false after construction and true after
-the corresponding member function is called:
+the corresponding member function is called.
+This is the same order as the calls in the file $cref initialize$$:
 $codep */
-	bool                initialize_done_;
-	bool                init_fix_like_done_;
-	bool                init_fix_con_done_;
 	// only called when n_random_ > 0
 	bool                init_ran_like_done_;
 	bool                init_hes_ran_done_;
+	bool                init_cholesky_done_;
 	bool                init_hes_cross_done_;
 	// only called when n_random_ > 0 and quasi_fixed_ is false
 	bool                record_newton_atom_done_;
 	bool                init_ran_obj_done_;
 	bool                init_hes_ran_obj_done_;
+	// called in all cases
+	bool                init_fix_like_done_;
+	bool                init_fix_con_done_;
+	// true when all initialization (for this case) is done
+	bool                initialize_done_;
 /* $$
 
 $head ran_like_fun_$$
@@ -339,6 +344,19 @@ $codep */
 	friend bool ::hes_ran_fun_xam(void);
 /* $$
 
+$head chol_hes_ran_$$
+If $icode%n_random_% > 0%$$ and $code init_cholesky_done_$$,
+$code chol_hes_ran_$$ contains a
+$cref cholesky$$ factor for the Hessian of the
+$cref/random likelihood
+	/theory
+	/Random Likelihood, f(theta, u)
+/$$
+; i.e.  $latex f_{u,u} ( \theta , u )$$.
+$codep */
+	CppAD::mixed::cholesky chol_hes_ran_;
+/* $$
+
 $head hes_cross_$$
 If $icode%n_random_% > 0%$$ and $code init_hes_cross_done_$$,
 $cref/hes_cross_/init_hes_cross/hes_cross_/$$ contains
@@ -352,19 +370,6 @@ $codep */
 	CppAD::mixed::sparse_hes_info hes_cross_;
 	//
 	friend bool ::hes_cross_xam(void);
-/* $$
-
-$head chol_hes_ran_$$
-If $icode%n_random_% > 0%$$ and $code init_hes_ran_done_$$,
-$code chol_hes_ran_$$ contains a
-$cref cholesky$$ factor for the Hessian of the
-$cref/random likelihood
-	/theory
-	/Random Likelihood, f(theta, u)
-/$$
-; i.e.  $latex f_{u,u} ( \theta , u )$$.
-$codep */
-	CppAD::mixed::cholesky chol_hes_ran_;
 /* $$
 
 $head newton_atom_$$

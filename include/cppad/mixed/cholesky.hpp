@@ -72,8 +72,8 @@ public:
 	// ptr
 	const eigen_cholesky* ptr(void) const
 	{	return ptr_; }
-	// analyze
-	void analyze(
+	// init
+	void init(
 		size_t                       n_fixed  ,
 		size_t                       n_random ,
 		const CppAD::vector<size_t>& row      ,

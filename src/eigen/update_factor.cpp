@@ -76,7 +76,7 @@ $codei%
 	CppAD::mixed::cholesky chol_hes_ran_
 %$$
 has been
-$cref/analyzed/cholesky_analyze/$$
+$cref/initialized/cholesky_init/$$
 using the sparsity pattern for the Hessian.
 Upon return, $code chol_hes_ran_$$ contains the
 $cref/factorization/cholesky_factorize/$$
