@@ -17,6 +17,8 @@ $spell
 	cppad
 	dismod
 	chol_hes_ran
+	Eigen
+	Wno
 $$
 
 $section Changed and Additions to cppad_mixed During 2016$$
@@ -25,12 +27,21 @@ $childtable%omh/whats_new_15.omh
 %$$
 
 $head 01-09$$
+$list number$$
 The $cref/Cholesky factorization/cholesky/$$ of the Hessian
 with respect to the random effects has been changed from a static
 variable to the private member variable
 $cref/chol_hes_ran_/private/chol_hes_ran_/$$.
 This has many advantages; e.g.,
 it allows for multiple $cref derived_ctor$$ objects.
+$lnext
+Remove the need for the
+$code -Wno-shadow$$ and $code -Wno-deprecated-declarations$$ options
+when compiling Eigen files by using the CMake system option
+for the
+$href%http://eigen.tuxfamily.org%Eigen%$$ include directories.
+This should work on more systems.
+$lend
 
 $head 01-05$$
 Improve the efficiency of the evaluation of the

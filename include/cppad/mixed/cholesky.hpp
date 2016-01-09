@@ -39,32 +39,9 @@ $end
 ------------------------------------------------------------------------------
 */
 
+# include <Eigen/Sparse>
 # include <cppad/cppad.hpp>
 
-
-namespace CppAD { namespace mixed {
-
-	// some enum type that are in Eigen API
-	enum {
-		eigen_ColMajor,
-		eigen_RowMajor,
-		eigen_AutoAlign,
-		eigen_DontAlign
-	};
-	enum {
-		eigen_Lower,
-		eigen_Upper,
-		eigen_UnitDiag,
-		eigen_ZeroDiag,
-		eigen_UnitLower,
-		eigen_UnitUpper,
-		eigen_StrictlyLower,
-		eigen_StrictlyUpper,
-		eigen_SelfAdjoint,
-		eigen_Symmetric
-	};
-
-} }
 
 namespace Eigen {
 	// template classes
@@ -82,14 +59,8 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 class cholesky {
 public:
-	typedef Eigen::SparseMatrix<double, eigen_ColMajor, int>
-	eigen_sparse;
-
-	typedef Eigen::AMDOrdering<int>
-	eigen_ordering;
-
-	typedef Eigen::SimplicialLDLT<eigen_sparse, eigen_Lower, eigen_ordering>
-	eigen_cholesky;
+	typedef Eigen::SparseMatrix<double, Eigen::ColMajor>      eigen_sparse;
+	typedef Eigen::SimplicialLDLT<eigen_sparse, Eigen::Lower> eigen_cholesky;
 private:
 	eigen_cholesky* ptr_;
 	//
