@@ -35,7 +35,7 @@ ADD_LIBRARY(example_eigen
 	private/update_factor_xam.cpp
 )
 SET_TARGET_PROPERTIES(example_eigen
-	PROPERTIES COMPILE_FLAGS "${eigen_cxx_flags}"
+	PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
 )
 # -----------------------------------------------------------------------------
 # 2DO: move ipopt_xam_run to test.

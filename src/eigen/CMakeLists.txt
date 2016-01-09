@@ -19,7 +19,7 @@ ADD_LIBRARY(cppad_mixed_eigen
 	update_factor.cpp
 )
 SET_TARGET_PROPERTIES(cppad_mixed_eigen
-	PROPERTIES COMPILE_FLAGS "${eigen_cxx_flags}"
+	PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
 )
 INSTALL(
 	TARGETS cppad_mixed_eigen
