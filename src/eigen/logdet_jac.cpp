@@ -8,8 +8,8 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
+# include <Eigen/Sparse>
 # include <cppad/mixed/cppad_mixed.hpp>
-# include <cppad/mixed/chol_hes_ran.hpp>
 /*
 $begin logdet_jac$$
 $spell
@@ -121,8 +121,8 @@ void cppad_mixed::logdet_jac(
 	assert( logdet_ran.size() == n_random_ );
 
 	// declare eigen matrix types
-	typedef Eigen::SparseMatrix<double,Eigen::ColMajor>  sparse_matrix;
-	typedef Eigen::SparseMatrix<double>::InnerIterator   column_itr;
+	typedef typename CppAD::mixed::cholesky::eigen_sparse sparse_matrix;
+	typedef typename sparse_matrix::InnerIterator         column_itr;
 
 	// number of non-zeros in Hessian
 	size_t K = hes_ran_.row.size();
@@ -134,7 +134,7 @@ void cppad_mixed::logdet_jac(
 		b.insert(j, j) = 1.0;
 	//
 	// x = f_{u,u} (theta, u)^{-1}
-	sparse_matrix x = CppAD::mixed::chol_hes_ran_.solve(b);
+	sparse_matrix x = chol_hes_ran_.ptr()->solve(b);
 
 	// Compute derivative of sum_k w_k hessian_k
 	// where w_k f_{u,u} (theta, u)^{-1} at (row[k], col[k]).

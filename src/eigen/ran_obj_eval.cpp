@@ -9,7 +9,6 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
-# include <cppad/mixed/chol_hes_ran.hpp>
 
 /*
 $begin ran_obj_eval$$
@@ -119,7 +118,7 @@ double cppad_mixed::ran_obj_eval(
 	pack(fixed_vec, random_vec, both);
 
 	// compute the logdet( f_{u,u}(theta, u )
-	double logdet = CppAD::mixed::logdet_chol_hes_ran(n_random_);
+	double logdet = chol_hes_ran_.logdet(n_random_);
 
 	// constant term
 	double pi   = CppAD::atan(1.0) * 4.0;

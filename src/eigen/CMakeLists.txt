@@ -9,7 +9,7 @@
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
 ADD_LIBRARY(cppad_mixed_eigen
-	chol_hes_ran.cpp
+	cholesky.cpp
 	init_hes_ran.cpp
 	init_ran_obj.cpp
 	logdet_jac.cpp

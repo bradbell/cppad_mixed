@@ -8,8 +8,8 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
+# include <Eigen/Sparse>
 # include <cppad/mixed/cppad_mixed.hpp>
-# include <cppad/mixed/chol_hes_ran.hpp>
 /*
 $begin ran_obj_jac$$
 $spell
@@ -99,8 +99,8 @@ void cppad_mixed::ran_obj_jac(
 	assert( r_fixed.size() == n_fixed_ );
 
 	// declare eigen matrix types
-	typedef Eigen::SparseMatrix<double,Eigen::ColMajor>  sparse_matrix;
-	typedef Eigen::SparseMatrix<double>::InnerIterator   column_itr;
+	typedef typename CppAD::mixed::cholesky::eigen_sparse sparse_matrix;
+	typedef typename sparse_matrix::InnerIterator         column_itr;
 
 	// number of non-zeros in Hessian
 	size_t K = hes_ran_.row.size();
@@ -153,7 +153,7 @@ void cppad_mixed::ran_obj_jac(
 	//
 	// x = - f_{u,u}(theta, u)^{-1} f_{u,theta}(theta, u)
 	//   = uhat_{theta} ( theta )
-	sparse_matrix x = CppAD::mixed::chol_hes_ran_.solve(b);
+	sparse_matrix x = chol_hes_ran_.ptr()->solve(b);
 	assert( size_t(x.outerSize()) == n_fixed_ );
 	assert( size_t (x.innerSize()) == n_random_ );
 	//

@@ -29,9 +29,9 @@ $$
 $end
 */
 // BEGIN C++
+# include <Eigen/Sparse>
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
-# include <cppad/mixed/chol_hes_ran.hpp>
 
 namespace {
 	using CppAD::vector;
@@ -143,7 +143,7 @@ bool update_factor_xam(void)
 
 	//
 	// inverse of Hessian
-	sparse_matrix inv_hes = CppAD::mixed::chol_hes_ran_.solve(eye);
+	sparse_matrix inv_hes = mixed_object.chol_hes_ran_.ptr()->solve(eye);
 
 	// Hessian_{i,j} = 1.0 / (theta[i] * theta[i]) if i == j
 	//               = 0.0 otherwise

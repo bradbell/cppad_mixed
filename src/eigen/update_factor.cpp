@@ -8,8 +8,8 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
+# include <Eigen/Sparse>
 # include <cppad/mixed/cppad_mixed.hpp>
-# include <cppad/mixed/chol_hes_ran.hpp>
 /*
 $begin update_factor$$
 $spell
@@ -70,17 +70,16 @@ $codei%
 has been called where $icode both$$ is a packed version
 of the fixed and random effects.
 
-
 $head factorize_chol_hes_ran_$$
-On input, the static variable
+On input, the member variable
 $codei%
-	CppAD::mixed::chol_hes_ran_
+	CppAD::mixed::cholesky chol_hes_ran_
 %$$
 has been
-$cref/analyzed/chol_hes_ran/analyze_chol_hes_ran/$$
+$cref/analyzed/cholesky_analyze/$$
 using the sparsity pattern for the Hessian.
 Upon return, $code chol_hes_ran_$$ contains the
-$cref/factorization/chol_hes_ran/factorize_chol_hes_ran/$$
+$cref/factorization/cholesky_factorize/$$
 corresponding to the specified values for the fixed
 and random effects.
 
@@ -105,7 +104,7 @@ void cppad_mixed::update_factor(
 	// compute an LDL^T Cholesky factorization of f_{u,u} (theta, u)
 	d_vector both(n_fixed_ + n_random_);
 	pack(fixed_vec, random_vec, both);
-	CppAD::mixed::factorize_chol_hes_ran(
+	chol_hes_ran_.factorize(
 		n_fixed_, n_random_, hes_ran_.row, hes_ran_.col, both, hes_ran_fun_
 	);
 }

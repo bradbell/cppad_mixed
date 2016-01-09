@@ -16,6 +16,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/newton_step.hpp>
 # include <cppad/mixed/sparse_hes_info.hpp>
 # include <cppad/mixed/sparse_jac_info.hpp>
+# include <cppad/mixed/cholesky.hpp>
 
 // private examples
 extern bool fix_con_eval_xam(void);
@@ -216,6 +217,8 @@ private:
 ------------------------------------------------------------------------------
 $begin private$$
 $spell
+	chol
+	Cholesky
 	CppAD
 	init
 	ran_obj
@@ -351,6 +354,18 @@ $codep */
 	friend bool ::hes_cross_xam(void);
 /* $$
 
+$head chol_hes_ran_$$
+If $icode%n_random_% > 0%$$ and $code init_hes_ran_done_$$,
+$code chol_hes_ran_$$ contains a
+$cref cholesky$$ factor for the Hessian of the
+$cref/random likelihood
+	/theory
+	/Random Likelihood, f(theta, u)
+/$$
+; i.e.  $latex f_{u,u} ( \theta , u )$$.
+$codep */
+	CppAD::mixed::cholesky chol_hes_ran_;
+/* $$
 
 $head newton_atom_$$
 If $icode%n_random_% > 0%$$, quasi_fixed_ is false, and
@@ -363,6 +378,7 @@ $codep */
 	// computation of the Hessian as an atomic operation
 	CppAD::mixed::newton_step   newton_atom_;
 /* $$
+$comment ------------------------------------------------------------------- $$
 
 $head ran_obj_fun_$$
 If $icode%n_random_% > 0%$$, quasi_fixed_ is false, and
@@ -389,6 +405,7 @@ $cref/random objective
 $codep */
 	CppAD::mixed::sparse_hes_info hes_ran_obj_;
 /* $$
+$comment ------------------------------------------------------------------- $$
 
 $head fix_like_fun_$$
 $cref/fix_like_fun_/init_fix_like/fix_like_fun_/$$
@@ -416,6 +433,7 @@ $cref/fixed likelihood/theory/Fixed Likelihood, g(theta)/$$.
 $codep */
 	CppAD::mixed::sparse_hes_info fix_like_hes_;
 /* $$
+$comment ------------------------------------------------------------------- $$
 
 $head fix_con_fun_$$
 $cref/fix_con_fun_/init_fix_con/fix_con_fun_/$$

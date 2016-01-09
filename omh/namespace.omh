@@ -20,7 +20,7 @@ With the exception of $cref manage_gsl_rng$$,
 they are $bold not$$ part of the user API and may change with time.
 
 $childtable%src/manage_gsl_rng.cpp
-	%src/eigen/chol_hes_ran.cpp
+	%include/cppad/mixed/cholesky.hpp
 	%include/cppad/mixed/ipopt_fixed.hpp
 	%src/eigen/newton_step.cpp
 	%include/cppad/mixed/sparse_hes_info.hpp

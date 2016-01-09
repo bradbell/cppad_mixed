@@ -16,12 +16,21 @@ $spell
 	namespace
 	cppad
 	dismod
+	chol_hes_ran
 $$
 
 $section Changed and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh
 %$$
+
+$head 01-09$$
+The $cref/Cholesky factorization/cholesky/$$ of the Hessian
+with respect to the random effects has been changed from a static
+variable to the private member variable
+$cref/chol_hes_ran_/private/chol_hes_ran_/$$.
+This has many advantages; e.g.,
+it allows for multiple $cref derived_ctor$$ objects.
 
 $head 01-05$$
 Improve the efficiency of the evaluation of the

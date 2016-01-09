@@ -10,7 +10,6 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/configure.hpp>
-# include <cppad/mixed/chol_hes_ran.hpp>
 
 /*
 $begin init_hes_ran$$
@@ -138,12 +137,14 @@ $latex \[
 in the same order as the $icode a1_val_out$$ above.
 
 $head init_chol_hes_ran_$$
-The static variable
+The input state of the member variable
 $codei%
-	CppAD::mixed::chol_hes_ran_
+	CppAD::mixed::cholesky chol_hes_ran_
 %$$
-is initialized by a call to
-$cref/analyze_chol_hes_ran/chol_hes_ran/analyze_chol_hes_ran/$$.
+does not matter.
+Upon return, $code chol_hes_ran_$$ contains an
+$cref/analysis/cholesky_analyze/$$ of the sparsity pattern
+corresponding to the Hessian with respect to the random effects.
 
 $contents%example/private/hes_ran_fun_xam.cpp
 %$$
@@ -315,7 +316,7 @@ void cppad_mixed::init_hes_ran(
 	init_hes_ran_done_ = true;
 
 	// now analyze the lower triangular Cholesky factorization
-	CppAD::mixed::analyze_chol_hes_ran(
+	chol_hes_ran_.analyze(
 		n_fixed_, n_random_, hes_ran_.row, hes_ran_.col
 	);
 }

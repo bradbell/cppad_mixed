@@ -8,66 +8,41 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad/mixed/cppad_mixed.hpp>
-# include <cppad/mixed/chol_hes_ran.hpp>
+
 # include <Eigen/Sparse>
+# include <cppad/mixed/cholesky.hpp>
+
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+
+// constructor
+cholesky::cholesky(void)
+{	ptr_ = new eigen_cholesky; }
+
+// destructor
+cholesky::~cholesky(void)
+{	delete ptr_; }
 
 /*
-$begin chol_hes_ran$$
+------------------------------------------------------------------------------
+$begin cholesky_analyze$$
 $spell
-	Taylor
-	CppAD
-	init_chol_hes
-	CppAD
-	cppad
-	const
 	Cholesky
-	namespace
-	Eigen
-	hpp
-	Simplicial
-	triangular
-	dismod
-	logdet
+	chol_hes_ran
+	CppAD
+	const
 $$
 
-$section Sparse Cholesky Factorization of Hessian w.r.t Random Effects$$
+$section Initialize Cholesky Factor for a Specific Sparsity Pattern$$
 
 $head Syntax$$
-$codei%CppAD::mixed::analyze_chol_hes_ran(%n_fixed%, %n_random%, %row%, %col%)
-%$$
-$codei%CppAD::mixed::factorize_chol_hes_ran(
-	%n_fixed%, %n_random%, %row%, %col%, %both%, %hes_ran_fun%
-)
-%$$
-$icode%logdet% = CppAD::mixed::logdet_chol_hes_ran(%n_random%)
+$icode%chol_hes_ran%.analyze(%n_fixed%, %n_random%, %row%, %col%)
 %$$
 
-$head Purpose$$
-The variable $code CppAD::mixed::chol_hes_ran_$$ should be a
-$cref private$$ member variable.
-It is instead a static variable in the $code CppAD::mixed$$ namespace
-so the warnings that Eigen generates
-do not need to be suppressed by all the routines that include
-$code cppad_mixed/cppad_mixed.hpp$$.
-
-$head chol_hes_ran_$$
-This variable has prototype
-$codep */
-	namespace CppAD { namespace mixed {
-		Eigen::SimplicialLDLT<
-			Eigen::SparseMatrix<double> , Eigen::Lower
-		> chol_hes_ran_;
-	} }
-/* $$
-This is lower triangular Cholesky factorization of the Hessian of the
-$cref/random likelihood
-	/theory
-	/Random Likelihood, f(theta, u)
-/$$
-with respect to the random effects; i.e.
-$latex f_{u,u} ( \theta , u )$$.
-
+$head chol_hes_ran$$
+This object has prototype
+$codei%
+	CppAD::mixed::cholesky %chol_hes_ran%
+%$$
 
 $head n_fixed$$
 This argument has prototype
@@ -75,7 +50,6 @@ $codei%
 	size_t %n_fixed%
 %$$
 and is then number of fixed effects.
-
 
 $head n_random$$
 This argument has prototype
@@ -112,66 +86,9 @@ $codei%
 	%n_fixed% <= %col%[%k%] <= %row%[%k%]
 %$$
 
-$head both$$
-This argument has prototype
-$codei%
-	const CppAD::vector<double>& %both%
-%$$
-and has size $icode%n_fixed% + %n_random%$$.
-This is the values of the fixed and random effects at which the Hessian
-is being computed and factored.
-
-$head hes_ran_fun$$
-This argument has prototype
-$codei%
-	CppAD::ADFun<double>& %hes_ran_fun%
-%$$
-It has $icode%hes_ran_fun%.Domain() = %n_fixed% + %n_random%$$
-and $icode%hes_ran_fun%.Range() = %row%.size()%$$
-The function call
-$codei%
-	%val% = %hes_ran_fun%.Forward(0, %both%)
-%$$
-is used to compute the values of the Hessian.
-Thus, upon return, the first order Taylor coefficient for the corresponding
-fixed and random effects are stored in $icode hes_ran_fun$$.
-
-
-$head analyze_chol_hes_ran$$
-The input value of this factorization does not matter.
-Upon return, the sparsity pattern has been analyzed; i.e.,
-$codei%
-	chol_hes_ran_.analyzePattern(%hessian_pattern%)
-%$$
-has been called with the pattern corresponding to $icode row$$ and
-$icode col$$.
-
-$head factorize_chol_hes_ran$$
-The $icode row$$ and $icode col$$ values must be the same as for
-the previous call to
-$cref/analyze_chol_hes_ran/chol_hes_ran/analyze_chol_hes_ran/$$.
-Upon return, the Hessian has been evaluated and then factorized; i.e.,
-$codei%
-	chol_hes_ran_.factorize(%hessian_value%)
-%$$
-has been called with the values corresponding to the Hessian at the
-fixed and random effects specified by $icode both$$.
-
-$head logdet$$
-This return value has prototype
-$codei%
-	double %logdet%
-%$$
-Is the log of the determinant of the Hessian corresponding
-to the previous call to
-$cref/factorize_chol_hes_ran/chol_hes_ran/factorize_chol_hes_ran/$$.
-
 $end
 */
-
-namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
-
-void analyze_chol_hes_ran(
+void cholesky::analyze(
 	size_t                       n_fixed  ,
 	size_t                       n_random ,
 	const CppAD::vector<size_t>& row      ,
@@ -188,10 +105,80 @@ void analyze_chol_hes_ran(
 	}
 	// analyze the pattern for an LDL^T Cholesky factorization of
 	// f_{u,u}(theta, u)
-	chol_hes_ran_.analyzePattern(hessian_pattern);
+	ptr_->analyzePattern(hessian_pattern);
 }
+/*
+-----------------------------------------------------------------------------
+$begin cholesky_factorize$$
+$spell
+	Cholesky
+	chol_hes_ran
+	CppAD
+	const
+	Taylor
+$$
 
-void factorize_chol_hes_ran(
+$section Compute Cholesky Factor for Specific Fixed and Random Effects$$
+
+$head Syntax$$
+$icode%chol_hes_ran%.factorize(
+	%n_fixed%, %n_random%, %row%, %col%, %both%, %hes_ran_fun%
+)
+%$$
+
+$head chol_hes_ran$$
+This object has prototype
+$codei%
+	CppAD::mixed::cholesky %chol_hes_ran%
+%$$
+In addition, it must have a previous call to
+$cref cholesky_analyze$$.
+
+$head n_fixed$$
+Must be the same as $icode n_fixed$$ in previous call to
+$cref/cholesky_analyze/cholesky_analyze/n_fixed/$$.
+
+$head n_random$$
+Must be the same as $icode n_random$$ in previous call to
+$cref/cholesky_analyze/cholesky_analyze/n_random/$$.
+
+$head row$$
+Must be the same as $icode row$$ in previous call to
+$cref/cholesky_analyze/cholesky_analyze/row/$$.
+
+$head col$$
+Must be the same as $icode col$$ in previous call to
+$cref/cholesky_analyze/cholesky_analyze/col/$$.
+
+$head both$$
+This argument has prototype
+$codei%
+	const CppAD::vector<double>& %both%
+%$$
+and has size $icode%n_fixed% + %n_random%$$.
+This is the values of the fixed and random effects at which the Hessian
+is being computed and factored.
+The fixed effects come first and then the random effects.
+
+$head hes_ran_fun$$
+This argument has prototype
+$codei%
+	CppAD::ADFun<double>& %hes_ran_fun%
+%$$
+It has $icode%hes_ran_fun%.Domain() = %n_fixed% + %n_random%$$
+and $icode%hes_ran_fun%.Range() = %row%.size()%$$
+The function call
+$codei%
+	%val% = %hes_ran_fun%.Forward(0, %both%)
+%$$
+is used to compute the values of the Hessian.
+Thus, upon return, the first order Taylor coefficient for the corresponding
+fixed and random effects are stored in $icode hes_ran_fun$$.
+
+$end
+*/
+
+void cholesky::factorize(
 	size_t                       n_fixed      ,
 	size_t                       n_random     ,
 	const CppAD::vector<size_t>& row          ,
@@ -212,15 +199,52 @@ void factorize_chol_hes_ran(
 	}
 	// LDL^T Cholesky factorization of for specified values of the Hessian
 	// f_{u,u}(theta, u)
-	chol_hes_ran_.factorize(hessian_value);
+	ptr_->factorize(hessian_value);
 }
+/*
+------------------------------------------------------------------------------
+$begin cholesky_logdet$$
+$spell
+	Cholesky
+	logdet
+	chol_hes_ran
+	CppAD
+$$
 
-double logdet_chol_hes_ran(size_t n_random)
+$section Compute Log Determinant for Current Cholesky Factor$$
+
+$head Syntax$$
+$icode%logdet% = %chol_hes_ran%.logdet(%n_random%)
+%$$
+
+$head chol_hes_ran$$
+This object has prototype
+$codei%
+	CppAD::mixed::cholesky %chol_hes_ran%
+%$$
+In addition, it must have a previous call to
+$cref cholesky_factorize$$.
+
+$head n_random$$
+Must be the same as $icode n_random$$ in previous call to
+$cref/cholesky_factorize/cholesky_factorize/n_random/$$.
+
+$head logdet$$
+This return value has prototype
+$codei%
+	double %logdet%
+%$$
+Is the log of the determinant of the Hessian corresponding
+to the previous call to $codei%chol_hes_ran%.factorize%$$.
+
+$end
+*/
+double cholesky::logdet(size_t n_random) const
 {	using Eigen::Dynamic;
     typedef Eigen::Matrix<double, Dynamic, Dynamic> dense_matrix;
 
 	// compute the logdet( f_{u,u}(theta, u )
-	dense_matrix diag = chol_hes_ran_.vectorD();
+	dense_matrix diag = ptr_->vectorD();
 	assert( diag.size() == int(n_random) );
 	double logdet = 0.0;
 	for(size_t j = 0; j < n_random; j++)
