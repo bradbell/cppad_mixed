@@ -184,6 +184,7 @@ ADD_SUBDIRECTORY(example)
 ADD_SUBDIRECTORY(test_more)
 ADD_SUBDIRECTORY(speed)
 # ----------------------------------------------------------------------------
+# tests
 ADD_CUSTOM_TARGET(check DEPENDS
 	cppad_mixed
 	check_example
@@ -193,3 +194,8 @@ ADD_CUSTOM_TARGET(speed DEPENDS
 	speed_capture_xam
 )
 # ----------------------------------------------------------------------------
+# install
+INSTALL(
+	DIRECTORY ${CMAKE_SOURCE_DIR}/include/cppad/mixed/
+	DESTINATION ${cppad_prefix}/include/cppad/mixed
+)
