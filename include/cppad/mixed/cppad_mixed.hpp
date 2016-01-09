@@ -267,6 +267,9 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/ran_obj_hes.cpp
 	%src/eigen/update_factor.cpp
 %$$
+$comment -------------------------------------------------------------------
+	Private Member Variables
+$$
 
 $head n_fixed_$$
 The number of fixed effects is given by
@@ -442,6 +445,7 @@ $cref/fix_con_fun_/init_fix_con/fix_con_fun_/$$.
 $codep */
 	CppAD::mixed::sparse_hes_info fix_con_hes_;
 /* $$
+$comment ------------------------------------------------------------------- $$
 $head Template Member Functions$$
 $subhead pack$$
 See $cref pack$$.
@@ -477,6 +481,7 @@ $codep */
 		const CppAD::vector<Float_pack>&   three_vec
 	) const;
 /* $$
+$comment ------------------------------------------------------------------- $$
 $head Initialization Member Functions$$
 
 $subhead init_fix_con$$
@@ -535,6 +540,7 @@ $codep */
 		const d_vector& random_vec
 	);
 /* $$
+$comment ------------------------------------------------------------------- $$
 $head Other Member Functions$$
 
 $subhead fix_con_eval$$
