@@ -158,19 +158,6 @@ void cppad_mixed::logdet_jac(
 		assert( size_t(x.outerSize()) == 1 );
 		assert( size_t (x.innerSize()) == n_random_ );
 		//
-		while( col < j )
-		{	k++;
-			if( k < K )
-			{	assert( hes_ran_.row[k] >= n_fixed_ );
-				assert( hes_ran_.col[k] >= n_fixed_ );
-				row = hes_ran_.row[k] - n_fixed_;
-				col = hes_ran_.col[k] - n_fixed_;
-				assert( row < n_random_ );
-				assert( col < n_random_ );
-			}
-			else
-				row = col = n_random_;
-		}
 		for(column_itr itr(x, 0); itr; ++itr)
 		{	size_t i    = itr.row();
 			if( col == j )
@@ -195,6 +182,21 @@ void cppad_mixed::logdet_jac(
 				if( hes_ran_.row[k] != hes_ran_.col[k] )
 					w[k] = 2.0 * w[k];
 			}
+		}
+		// skip remaining rows that have zero values in the inverse
+		assert( col >= j );
+		while( col == j )
+		{	k++;
+			if( k < K )
+			{	assert( hes_ran_.row[k] >= n_fixed_ );
+				assert( hes_ran_.col[k] >= n_fixed_ );
+				row = hes_ran_.row[k] - n_fixed_;
+				col = hes_ran_.col[k] - n_fixed_;
+				assert( row < n_random_ );
+				assert( col < n_random_ );
+			}
+			else
+				row = col = n_random_;
 		}
 	}
 	d_vector dw(n_fixed_ + n_random_);
