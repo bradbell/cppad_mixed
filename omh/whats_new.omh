@@ -26,6 +26,10 @@ $section Changed and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 01-10$$
+Go back to using column vectors when solving linear equations
+(in case matrix results would be dense and require a lot of memory).
+
 $head 01-09$$
 $list number$$
 The $cref/Cholesky factorization/cholesky/$$ of the Hessian

@@ -254,6 +254,56 @@ double cholesky::logdet(size_t n_random) const
 
 	return logdet;
 }
+/*
+------------------------------------------------------------------------------
+$begin cholesky_solve$$
+$spell
+	Cholesky
+	logdet
+	chol_hes_ran
+	CppAD
+	const
+	eigen
+$$
+
+$section Solve Hessian Times Unknown Matrix Equals Known Matrix$$
+
+$head Syntax$$
+$icode%result% = %chol_hes_ran%.solve(%known%)
+%$$
+
+$head chol_hes_ran$$
+This object has prototype
+$codei%
+	CppAD::mixed::cholesky %chol_hes_ran%
+%$$
+In addition, it must have a previous call to
+$cref cholesky_factorize$$.
+
+$head known$$
+This argument has prototype
+$codei%
+	const cholesky::eigen_sparse& %known%
+%$$
+It is the known matrix (right hand side) in the linear equation.
+
+$head result$$
+The return value has prototype
+$codei%
+	cholesky::eigen_sparse& %result%
+%$$
+It is the solution of the equation
+$codei%
+	%Hessian% * %result% = %known%
+%$$
+where $icode Hessian$$ is the Hessian w.r.t the random effects
+$latex f_{u,u} ( \theta , u )$$ corresponding to the previous call to
+$cref cholesky_factorize$$.
+
+$end
+*/
+cholesky::eigen_sparse cholesky::solve(const eigen_sparse& known) const
+{	return ptr_->solve(known); }
 
 
 } } // END_CPPAD_MIXED_NAMESPACE

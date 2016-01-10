@@ -23,6 +23,7 @@ $spell
 	const
 	Cpp
 	xam
+	cholesky
 $$
 
 $section Derivative of Random Objective$$
@@ -46,11 +47,11 @@ to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
 $head chol_hes_ran_$$
-It is assumed that the static variable
+It is assumed that the member variable
 $codei%
-	CppAD::mixed::chol_hes_ran_
+	CppAD::mixed::cholesky chol_hes_ran_
 %$$
-updated using $cref update_factor$$ for the specified values of the
+was updated using $cref update_factor$$ for the specified values of the
 fixed and random effects.
 
 $head fixed_vec$$
@@ -99,8 +100,8 @@ void cppad_mixed::ran_obj_jac(
 	assert( r_fixed.size() == n_fixed_ );
 
 	// declare eigen matrix types
-	typedef typename CppAD::mixed::cholesky::eigen_sparse sparse_matrix;
-	typedef typename sparse_matrix::InnerIterator         column_itr;
+	typedef typename CppAD::mixed::cholesky::eigen_sparse eigen_sparse;
+	typedef typename eigen_sparse::InnerIterator          column_itr;
 
 	// number of non-zeros in Hessian
 	size_t K = hes_ran_.row.size();
@@ -138,32 +139,51 @@ void cppad_mixed::ran_obj_jac(
 		val_out,
 		hes_cross_.work
 	);
-	//
-	// b = - f_{u,theta} (theta , u) ]
-	sparse_matrix b(n_random_, n_fixed_);
-	for(size_t k = 0; k < K; k++)
+
+	// Use the column major order specification for
+	// (hes_cross_.row, hes_cross_.col)
+	size_t k = 0;
+	size_t col = n_random_;
+	size_t row = n_fixed_;
+	if( k < K )
 	{	assert( hes_cross_.row[k] >= n_fixed_ );
-		size_t row = hes_cross_.row[k] - n_fixed_;
-		size_t col = hes_cross_.col[k];
+		row = hes_cross_.row[k] - n_fixed_;
+		col = hes_cross_.col[k];
 		assert( row < n_random_ );
 		assert( col < n_fixed_ );
-		//
-		b.insert(row, col) = - val_out[k];
 	}
-	//
-	// x = - f_{u,u}(theta, u)^{-1} f_{u,theta}(theta, u)
-	//   = uhat_{theta} ( theta )
-	sparse_matrix x = chol_hes_ran_.ptr()->solve(b);
-	assert( size_t(x.outerSize()) == n_fixed_ );
-	assert( size_t (x.innerSize()) == n_random_ );
-	//
+
 	// Loop over fixed effects and compute r_fixed one component at a time
 	for(size_t j = 0; j < n_fixed_; j++)
-	{	// parial w.r.t fixed effects contribution to total derivative
+	{	// j-th column of - f_{u, theta} (theta, u)
+		eigen_sparse b(n_random_, 1);
+		while( col <= j )
+		{	assert( col == j );
+			b.insert(row, 0) = - val_out[k];
+			k++;
+			if( k < K )
+			{	assert( hes_cross_.row[k] >= n_fixed_ );
+				row = hes_cross_.row[k] - n_fixed_;
+				col = hes_cross_.col[k];
+				assert( row < n_random_ );
+				assert( col < n_fixed_ );
+			}
+			else
+			{	row = n_random_;
+				col = n_fixed_;
+			}
+		}
+		assert( col > j );
+		// j-th column of - f_{u,u}(theta, u)^{-1} f_{u,theta}(theta, u)
+		eigen_sparse x = chol_hes_ran_.solve(b);
+		assert( size_t(x.outerSize()) == 1 );
+		assert( size_t (x.innerSize()) == n_random_ );
+		//
+		// parial w.r.t fixed effects contribution to total derivative
 		r_fixed[j] =  f_fixed[j] + 0.5 * logdet_fix[j];
 		//
 		// compute effect of uhat_{theta(j)} (theta) on the total derivative
-		for(column_itr itr(x, j); itr; ++itr)
+		for(column_itr itr(x, 0); itr; ++itr)
 		{	// random effect index
 			size_t i = itr.row();
 			// partial of optimal random effect for this (i, j)

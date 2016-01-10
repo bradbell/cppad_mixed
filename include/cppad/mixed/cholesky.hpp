@@ -18,6 +18,8 @@ $spell
 	cholesky
 	chol
 	hes
+	eigen
+	typedef
 $$
 
 $section Cholesky Factor Class$$
@@ -32,6 +34,12 @@ It is called $icode chol_hes_ran$$ because it is only intended for
 a cholesky factor of the Hessian with respect to the random effects; i.e.,
 $latex f_{u,u} ( \theta , u )$$.
 
+$head eigen_sparse$$
+The type $code CppAD::mixed::cholesky::eigen_sparse$$ is defined by
+$codei%
+	typedef Eigen::SparseMatrix<double, Eigen::ColMajor>  eigen_sparse;
+%$$
+
 $childtable%src/eigen/cholesky.cpp
 %$$
 
@@ -42,18 +50,6 @@ $end
 # include <Eigen/Sparse>
 # include <cppad/cppad.hpp>
 
-
-namespace Eigen {
-	// template classes
-	template <typename _Scalar, int _Options, typename _Index>
-	class SparseMatrix;
-
-	template <typename Index>
-	class AMDOrdering;
-
-	template <typename _MatrixType, int _UpLo, typename _Ordering>
-	class SimplicialLDLT;
-}
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
@@ -69,9 +65,6 @@ public:
 	cholesky(void);
 	// destructor
 	~cholesky(void);
-	// ptr
-	const eigen_cholesky* ptr(void) const
-	{	return ptr_; }
 	// init
 	void init(
 		size_t                       n_fixed  ,
@@ -90,6 +83,8 @@ public:
 	);
 	// logdet
 	double logdet(size_t n_random) const;
+	// solve
+	eigen_sparse solve(const eigen_sparse& b) const;
 };
 
 

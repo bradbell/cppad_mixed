@@ -23,6 +23,7 @@ $spell
 	vec
 	const
 	Cpp
+	cholesky
 $$
 
 $section Evaluate Laplace Approximation and Random Objective$$
@@ -49,11 +50,11 @@ to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
 $head chol_hes_ran_$$
-It is assumed that the static variable
+It is assumed that the member variable
 $codei%
-	CppAD::mixed::chol_hes_ran_
+	CppAD::mixed::cholesky chol_hes_ran_
 %$$
-updated using $cref update_factor$$ for the specified values of the
+was updated using $cref update_factor$$ for the specified values of the
 fixed and random effects.
 
 $head fixed_vec$$

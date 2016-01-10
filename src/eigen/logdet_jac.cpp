@@ -24,6 +24,7 @@ $spell
 	Cpp
 	xam
 	logdet
+	cholesky
 $$
 
 $section Jacobian of Log Determinant of Hessian w.r.t. Random Effects$$
@@ -57,11 +58,11 @@ to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
 $head chol_hes_ran_$$
-It is assumed that the static variable
+It is assumed that the member variable
 $codei%
-	CppAD::mixed::chol_hes_ran_
+	CppAD::mixed::cholesky chol_hes_ran_
 %$$
-updated using $cref update_factor$$ for the specified values of the
+was updated using $cref update_factor$$ for the specified values of the
 fixed and random effects.
 
 $head fixed_vec$$
@@ -128,45 +129,60 @@ void cppad_mixed::logdet_jac(
 	size_t K = hes_ran_.row.size();
 	assert( K == hes_ran_.col.size() );
 
-	// b = Identity matrix
-	sparse_matrix b(n_random_, n_random_);
-	for(size_t j = 0; j < n_random_; j++)
-		b.insert(j, j) = 1.0;
-	//
-	// x = f_{u,u} (theta, u)^{-1}
-	sparse_matrix x = chol_hes_ran_.ptr()->solve(b);
-
 	// Compute derivative of sum_k w_k hessian_k
 	// where w_k f_{u,u} (theta, u)^{-1} at (row[k], col[k]).
-	// use order speicifcation for (hes_ran_.row, hes_ran_.col)
 	d_vector w(K);
 	for(size_t k = 0; k < K; k++)
 		w[k] = 0.0;
+
+	// Use the column major order speicifcation for
+	// (hes_ran_.row, hes_ran_.col)
 	size_t k  = 0;
 	size_t col = n_random_;
 	size_t row = n_random_;
 	if( k < K )
-	{	row = hes_ran_.row[k] - n_fixed_;
+	{	assert( hes_ran_.row[k] >= n_fixed_ );
+		assert( hes_ran_.col[k] >= n_fixed_ );
+		row = hes_ran_.row[k] - n_fixed_;
 		col = hes_ran_.col[k] - n_fixed_;
+		assert( row < n_random_ );
+		assert( col < n_random_ );
 	}
+	//
 	for(size_t j = 0; j < n_random_; j++)
-	{	while( col < j )
+	{	// j-th column of the identity matrix
+		sparse_matrix b(n_random_, 1);
+		b.insert(j, 0) = 1.0;
+		// x = j-th column of f_{u,u} (theta, u)^{-1}
+		sparse_matrix x = chol_hes_ran_.solve(b);
+		assert( size_t(x.outerSize()) == 1 );
+		assert( size_t (x.innerSize()) == n_random_ );
+		//
+		while( col < j )
 		{	k++;
 			if( k < K )
-			{	row = hes_ran_.row[k] - n_fixed_;
+			{	assert( hes_ran_.row[k] >= n_fixed_ );
+				assert( hes_ran_.col[k] >= n_fixed_ );
+				row = hes_ran_.row[k] - n_fixed_;
 				col = hes_ran_.col[k] - n_fixed_;
+				assert( row < n_random_ );
+				assert( col < n_random_ );
 			}
 			else
 				row = col = n_random_;
 		}
-		for(column_itr itr(x, j); itr; ++itr)
+		for(column_itr itr(x, 0); itr; ++itr)
 		{	size_t i    = itr.row();
 			if( col == j )
 			{	while( row < i )
 				{	k++;
 					if( k < K )
-					{	row = hes_ran_.row[k] - n_fixed_;
+					{	assert( hes_ran_.row[k] >= n_fixed_ );
+						assert( hes_ran_.col[k] >= n_fixed_ );
+						row = hes_ran_.row[k] - n_fixed_;
 						col = hes_ran_.col[k] - n_fixed_;
+						assert( row < n_random_ );
+						assert( col < n_random_ );
 					}
 					else
 						row = col = n_random_;
