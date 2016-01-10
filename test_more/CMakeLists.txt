@@ -19,6 +19,7 @@ ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
 	delta_ran_obj.cpp
 	der_var_hes.cpp
 	n_mixture.cpp
+	ran_obj_tst.cpp
 	test_more.cpp
 	zero_random_one.cpp
 	zero_random_two.cpp

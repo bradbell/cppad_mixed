@@ -143,8 +143,8 @@ void cppad_mixed::ran_obj_jac(
 	// Use the column major order specification for
 	// (hes_cross_.row, hes_cross_.col)
 	size_t k = 0;
-	size_t col = n_random_;
-	size_t row = n_fixed_;
+	size_t row = n_random_;
+	size_t col = n_fixed_;
 	if( k < K )
 	{	assert( hes_cross_.row[k] >= n_fixed_ );
 		row = hes_cross_.row[k] - n_fixed_;

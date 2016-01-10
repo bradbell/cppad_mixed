@@ -18,6 +18,9 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/sparse_jac_info.hpp>
 # include <cppad/mixed/cholesky.hpp>
 
+// private tests
+extern bool ran_obj_tst(void);
+
 // private examples
 extern bool fix_con_eval_xam(void);
 extern bool fix_con_hes_xam(void);
@@ -47,6 +50,7 @@ namespace CppAD { namespace mixed {
 class cppad_mixed {
 	friend class CppAD::mixed::optimize_random_eval;
 	friend class CppAD::mixed::ipopt_fixed;
+	friend bool ::ran_obj_tst(void);
 public:
 /*
 $begin public$$
