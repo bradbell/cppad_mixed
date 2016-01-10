@@ -55,37 +55,31 @@ $codei%
 %$$
 It has size zero when it is constructed.
 After initialization it should either have size zero,
-or the same size as $icode row$$
-and contain the column indices
-corresponding to possibly non-zero elements of the matrix.
+or the same size as $icode row$$.
 
-$head Sparsity Pattern$$
-If $icode%mat_info%.val.size()%$$ is zero,
-we refer to $icode mat_info$$ as an sparsity pattern.
-In this case, for $icode%k% = 0 , ... , %K%-1%$$,
+$subhead Sparsity Pattern$$
+If $icode mat_info$$ is a sparsity pattern,
+For $icode%k% = 0 , ... , %K%-1%$$,
 the element with index
 $codei%
 	(%mat_info%.row[%k%], %mat_info%.col[%k%])
 %$$
 is possibly non-zero.
+In this case, the elements of the vector $icode%mat_info%.val%$$ are
+not specified.
 
-$head Sparse Matrix$$
-If $icode%mat_info%.val.size()%$$ is equal to
-$icode%mat_info%.row.size()%$$,
-we refer to $icode mat_info$$ as a sparse matrix.
-In this case, for $icode%k% = 0 , ... , %K%-1%$$,
+$subhead Sparse Matrix$$
+If $icode mat_info$$ is a sparse matrix,
+For $icode%k% = 0 , ... , %K%-1%$$,
 the element with index
 $codei%
 	(%mat_info%.row[%k%], %mat_info%.col[%k%])
 %$$
-has value $icode%mat_info%.val[%k%]%$$ and all the
-other elements of the matrix are zero.
+is possibly non-zero and has value $icode%mat_info%.val[%k%]%$$.
 
-$head Empty Matrix$$
+$subhead Empty Matrix$$
 If $icode K$$ is zero ($icode%mat_info%.row.size()%$$ is zero),
 we refer to the matrix as an empty matrix.
-Note that the empty matrix is the only case that is
-both a sparsity pattern and a sparse matrix.
 
 $end
 */

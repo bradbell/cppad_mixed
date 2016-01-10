@@ -232,9 +232,7 @@ This argument has prototype
 $codei%
 	const CppAD::mixed::sparse_mat_info& %jac_info%
 %$$
-It is a
-$cref/sparse matrix/sparse_mat_info/Sparse Matrix/$$ representation
-of the Jacobian of the
+It is a representation of the Jacobian of the
 $cref/random constraint function
 	/cppad_mixed
 	/Notation
@@ -256,23 +254,122 @@ $cref/derivative of optimal random effects
 	/Derivative of Optimal Random Effects
 /$$.
 
+$subhead Sparsity Pattern$$
+If the input value of $icode%jac_info%.row.size()%$$ is zero,
+Upon return, $icode jac_info$$ constains a
+$cref/sparsity pattern/sparse_mat_info/val/Sparsity Pattern/$$
+for the Jacobian of the random constraint function.
+In addition, the size of $icode%jac_info%.val%$$ is equal
+to the size of $icode%jac_info%.row%$$.
+
+$subhead Sparse Matrix$$
+If the input value of $icode%jac_info%.row.size()%$$ is non-zero,
+$icode jac_info$$ contains the values returned by a previous call.
+Upon return, $icode jac_info$$ constains a
+$cref/sparse matrix/sparse_mat_info/val/Sparse Matrix/$$
+equal to the Jacobian of the random constraint function.
+
+
 $children%
-	example/private/ran_con_eval_xam.cpp
+	example/private/ran_con_jac.cpp
 %$$
 $head Example$$
-The file $cref ran_con_eval_xam.cpp$$ contains an example
+The file $cref ran_con_jac.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
 $end
 */
-void CppAD::vector<double> cppad_mixed::ran_con_eval(
+void CppAD::vector<double> cppad_mixed::ran_con_jac(
 	const d_vector&          fixed_vec  ,
 	const d_vector&          random_vec ,
-	CppAD::vector<size_t>&   row        ,
-	CppAD::vector<size_t>&   col        ,
-	d_vector&                val        )
-{
+	CppAD::vector<size_t>&   jac_info   )
+{	assert( fixed_vec.size()  == n_fixed_ );
+	assert( random_vec.size() == n_random_ );
 
+	size_t L = jac_info.row.size();
+	assert( jac_info.col.size() == L );
+	assert( jac_info.val.size() == L );
+
+	// declare eigen matrix types
+	typedef typename CppAD::mixed::cholesky::eigen_sparse eigen_sparse;
+	typedef typename eigen_sparse::InnerIterator          column_itr;
+
+	// packed version of fixed and random effects
+	d_vector both(n_fixed_ + n_random_);
+	pack(fixed_vec, random_vec, both);
+
+	// Compute the Hessian cross terms f_{u,theta} ( theta , u )
+	CppAD::vector< std::set<size_t> > not_used;
+	size_t K = hes_cross_.row.size();
+	d_vector val_out(K), w(1);
+	w[0] = 1.0;
+	ran_like_fun_.SparseHessian(
+		both,
+		w,
+		not_used,
+		hes_cross_.row,
+		hes_cross_.col,
+		val_out,
+		hes_cross_.work
+	);
+
+	// Use the column major order specification for
+	// (hes_cross_.row, hes_cross_.col)
+	size_t k = 0;
+	size_t row = n_random_;
+	size_t col = n_fixed_;
+	if( k < K )
+	{	assert( hes_cross_.row[k] >= n_fixed_ );
+		row = hes_cross_.row[k] - n_fixed_;
+		col = hes_cross_.col[k];
+		assert( row < n_random_ );
+		assert( col < n_fixed_ );
+	}
+	// initialize matrix product A * uhat_theta( \theta )
+	eigen_sparse Au_theta( ran_con_mat_.rows(), n_fixed );
+
+	// Loop over fixed effects
+	size_t L   = jac_info.row.size();
+	size_t ell = 0;
+	for(size_t j = 0; j < n_fixed_; j++)
+	{	// j-th column of - f_{u, theta} (theta, u)
+		eigen_sparse b(n_random_, 1);
+		while( col <= j )
+		{	assert( col == j );
+			b.insert(row, 0) = - val_out[k];
+			k++;
+			if( k < K )
+			{	assert( hes_cross_.row[k] >= n_fixed_ );
+				row = hes_cross_.row[k] - n_fixed_;
+				col = hes_cross_.col[k];
+				assert( row < n_random_ );
+				assert( col < n_fixed_ );
+			}
+			else
+			{	row = n_random_;
+				col = n_fixed_;
+			}
+		}
+		assert( col > j );
+		// j-th column of - f_{u,u}(theta, u)^{-1} f_{u,theta}(theta, u)
+		eigen_sparse x    = chol_hes_ran_.solve(b);
+		// multipliy A times j-th column of uhat_theta
+		eigen_sparse jac_j = ran_con_mat_ * x;
+		// convert to sparse_mat_info format
+		for(column_itr itr(jac_j, 0); itr; itr++)
+		{	size_t i = itr.row();
+			if( L == 0 )
+			{	jac_info.row.push_back(i);
+				jac_info.col.push_back(j);
+				jac_info.val.push_back(0.0);
+			}
+			assert( jac_info.row(ell) == i );
+			assert( jac_info.col(ell) == j );
+			jac_info.val[ell] = itr.value();
+			ell++;
+		}
+	}
+	return;
 }
 
