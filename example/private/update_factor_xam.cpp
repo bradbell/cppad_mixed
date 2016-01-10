@@ -132,18 +132,18 @@ bool update_factor_xam(void)
 	mixed_object.update_factor(fixed_vec, random_vec);
 
 	// declare eigen matrix types
-	typedef Eigen::SparseMatrix<double,Eigen::ColMajor>  sparse_matrix;
-	typedef Eigen::SparseMatrix<double>::InnerIterator   column_itr;
+	typedef CppAD::mixed::cholesky::eigen_sparse eigen_sparse;
+	typedef eigen_sparse::InnerIterator          column_itr;
 
 	//
 	// Identity matrix
-	sparse_matrix eye(n_random, n_random);
+	eigen_sparse eye(n_random, n_random);
 	for(size_t j = 0; j < n_random; j++)
 		eye.insert(j, j) = 1.0;
 
 	//
 	// inverse of Hessian
-	sparse_matrix inv_hes = mixed_object.chol_hes_ran_.solve(eye);
+	eigen_sparse inv_hes = mixed_object.chol_hes_ran_.solve(eye);
 
 	// Hessian_{i,j} = 1.0 / (theta[i] * theta[i]) if i == j
 	//               = 0.0 otherwise

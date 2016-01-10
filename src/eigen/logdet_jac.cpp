@@ -122,8 +122,8 @@ void cppad_mixed::logdet_jac(
 	assert( logdet_ran.size() == n_random_ );
 
 	// declare eigen matrix types
-	typedef typename CppAD::mixed::cholesky::eigen_sparse sparse_matrix;
-	typedef typename sparse_matrix::InnerIterator         column_itr;
+	typedef typename CppAD::mixed::cholesky::eigen_sparse eigen_sparse;
+	typedef typename eigen_sparse::InnerIterator          column_itr;
 
 	// number of non-zeros in Hessian
 	size_t K = hes_ran_.row.size();
@@ -151,10 +151,10 @@ void cppad_mixed::logdet_jac(
 	//
 	for(size_t j = 0; j < n_random_; j++)
 	{	// j-th column of the identity matrix
-		sparse_matrix b(n_random_, 1);
+		eigen_sparse b(n_random_, 1);
 		b.insert(j, 0) = 1.0;
 		// x = j-th column of f_{u,u} (theta, u)^{-1}
-		sparse_matrix x = chol_hes_ran_.solve(b);
+		eigen_sparse x = chol_hes_ran_.solve(b);
 		assert( size_t(x.outerSize()) == 1 );
 		assert( size_t (x.innerSize()) == n_random_ );
 		//
