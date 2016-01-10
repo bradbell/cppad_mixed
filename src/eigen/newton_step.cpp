@@ -261,10 +261,10 @@ void newton_step_algo::operator()(
 	// declare eigen matrix types
 	using Eigen::Dynamic;
 	typedef Eigen::Matrix<a1_double, Dynamic, Dynamic> dense_matrix;
-	typedef Eigen::SparseMatrix<a1_double>             sparse_matrix;
+	typedef Eigen::SparseMatrix<a1_double>             a1_eigen_sparse;
 
 	// create a lower triangular eigen sparse matrix representation of Hessian
-	sparse_matrix hessian(n_random_, n_random_);
+	a1_eigen_sparse hessian(n_random_, n_random_);
 	size_t K = row_.size();
 	for(size_t k = 0; k < K; k++)
 	{	assert( n_fixed_ <= col_[k]  );
@@ -275,7 +275,7 @@ void newton_step_algo::operator()(
 	}
 
 	// compute an LDL^T Cholesky factorization of f_{u,u}(theta, u)
-	Eigen::SimplicialLDLT<sparse_matrix, Eigen::Lower> chol;
+	Eigen::SimplicialLDLT<a1_eigen_sparse, Eigen::Lower> chol;
 	chol.analyzePattern(hessian);
 	chol.factorize(hessian);
 
