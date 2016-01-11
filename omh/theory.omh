@@ -155,9 +155,10 @@ is often sparse and only non-zero
 components need be included in the summation.
 This is discussed in more detail near equation (8) in the
 $cref/reference/theory/Reference/$$.
-We also note that if $latex k$$ corresponds to a component of $latex u$$ then
+We also note that if $latex k$$ corresponds to a component of $latex u$$
+and $latex u = \hat{u} ( \theta )$$,
 $latex \[
-	\partial_k ( f[ \theta , \hat{u} ( \theta ) ] ) = 0
+	\partial_k [ f ( \theta , u ) ] = 0
 \] $$
 
 $head Approximate Optimal Random Effects$$
