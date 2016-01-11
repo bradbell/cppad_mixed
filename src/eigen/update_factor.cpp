@@ -28,14 +28,14 @@ $section Update the Factorization of Hessian w.r.t. Random Effects$$
 $head Syntax$$
 $icode%mixed_object%.update_factor(%fixed_vec%, %random_vec%)%$$
 
+$head Private$$
+This $code cppad_mixed$$ member function is $cref private$$.
+
 $head Purpose$$
 This routine updates the Cholesky factorization of the Hessian
 $latex f_{u,u} ( \theta , u )^{-1} $$
 so that it corresponds to the current value of
 $latex \theta$$ and $latex u$$.
-
-$head Private$$
-This $code cppad_mixed$$ member function is $cref private$$.
 
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$

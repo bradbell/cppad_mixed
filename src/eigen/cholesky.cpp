@@ -39,6 +39,11 @@ $head Syntax$$
 $icode%chol_hes_ran%.init(%n_fixed%, %n_random%, %row%, %col%)
 %$$
 
+$head Private$$
+The $code cholesky$$ class is an
+$cref/implementation detail/cholesky/Private/$$ and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
 $head chol_hes_ran$$
 This object has prototype
 $codei%
@@ -127,6 +132,11 @@ $icode%chol_hes_ran%.factorize(
 	%n_fixed%, %n_random%, %row%, %col%, %both%, %hes_ran_fun%
 )
 %$$
+
+$head Private$$
+The $code cholesky$$ class is an
+$cref/implementation detail/cholesky/Private/$$ and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head chol_hes_ran$$
 This object has prototype
@@ -219,6 +229,11 @@ $head Syntax$$
 $icode%logdet% = %chol_hes_ran%.logdet(%n_random%)
 %$$
 
+$head Private$$
+The $code cholesky$$ class is an
+$cref/implementation detail/cholesky/Private/$$ and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
 $head chol_hes_ran$$
 This object has prototype
 $codei%
@@ -271,6 +286,11 @@ $section Solve Hessian Times Unknown Matrix Equals Known Matrix$$
 $head Syntax$$
 $icode%result% = %chol_hes_ran%.solve(%known%)
 %$$
+
+$head Private$$
+The $code cholesky$$ class is an
+$cref/implementation detail/cholesky/Private/$$ and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head chol_hes_ran$$
 This object has prototype

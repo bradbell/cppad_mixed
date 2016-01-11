@@ -34,6 +34,9 @@ $icode%mixed_object%.logdet_jac(
 	%fixed_vec%, %random_vec%, %logdet_fix%, %logdet_ran%
 )%$$
 
+$head Private$$
+This $code cppad_mixed$$ member function is $cref private$$.
+
 $head Purpose$$
 This routine computes the Jacobian of the log determinant
 of the Hessian of the random likelihood
@@ -48,9 +51,6 @@ $latex \[
 	\; \R{and} \;
 	\partial_u \log \det [ f_{u,u} ( \theta, u ) ]
 \] $$
-
-$head Private$$
-This $code cppad_mixed$$ member function is $cref private$$.
 
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$

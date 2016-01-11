@@ -31,6 +31,9 @@ $section Evaluate Laplace Approximation and Random Objective$$
 $head Syntax$$
 $icode%h% = %mixed_object%.ran_obj_eval(%fixed_vec%, %random_vec%)%$$
 
+$head Private$$
+This $code cppad_mixed$$ member function is $cref private$$.
+
 $head Purpose$$
 This routine evaluates the Laplace approximation
 $cref/h(theta, u)
@@ -40,9 +43,6 @@ $cref/h(theta, u)
 /$$.
 Note that if the random effects are optimal,
 then the Laplace approximation is equal to the random objective.
-
-$head Private$$
-This $code cppad_mixed$$ member function is $cref private$$.
 
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$

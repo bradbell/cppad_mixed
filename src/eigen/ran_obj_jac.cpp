@@ -31,15 +31,15 @@ $section Derivative of Random Objective$$
 $head Syntax$$
 $icode%mixed_object%.ran_obj_jac(%fixed_vec%, %random_vec%, %r_fixed%)%$$
 
+$head Private$$
+This $code cppad_mixed$$ member function is $cref private$$.
+
 $head Purpose$$
 This routine computes the
 $cref/derivative of the random objective
 	/theory/
 	Derivative of Random Objective
 /$$.
-
-$head Private$$
-This $code cppad_mixed$$ member function is $cref private$$.
 
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
