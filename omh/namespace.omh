@@ -38,7 +38,8 @@ $tend
 
 
 $head Private$$
-These declarations are $code cppad_mixed$$ implementation details.
+These declarations are implementation details and not part of the
+$code CppAD::mixed$$ user API.
 $table
 $rref cholesky$$
 $rref ipopt_fixed$$

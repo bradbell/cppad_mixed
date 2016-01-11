@@ -26,7 +26,8 @@ $$
 $section Ipopt NLP Class Used to Optimize Fixed Effects$$
 
 $head Private$$
-This class is not part of the $cref cppad_mixed$$ API.
+This class is an implementation detail and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head nlp_lower_bound_inf()$$
 This member function returns the $code double$$ value used

@@ -35,6 +35,10 @@ $icode%sv% = newton_atom%.size_var()
 $icode%newton_atom%.eval(%a1_theta_u_v%, %a1_logdet_step%)
 %$$
 
+$head Private$$
+This class is an implementation detail and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
 $head Purpose$$
 This stores the operation sequence corresponding to the mappings
 

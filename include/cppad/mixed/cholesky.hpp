@@ -25,8 +25,12 @@ $$
 $section Cholesky Factor Class$$
 
 $head Syntax$$
-$icode%CppAD::mixed::cholesky %chol_hes_ran%%;
+$codei%CppAD::mixed::cholesky %chol_hes_ran%%;
 %$$
+
+$head Private$$
+This class is an implementation detail and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head chol_hes_ran$$
 This constructor creates a Cholesky factor.
