@@ -36,15 +36,15 @@ $section Initialization After Constructor$$
 $head Syntax$$
 $icode%size_map% = %mixed_object%.initialize(%fixed_vec%, %random_vec%)%$$
 
+$head Public$$
+This $code cppad_mixed$$ member function is $cref public$$.
+
 $head Purpose$$
 Some of the $code cppad_mixed$$ initialization requires calling the
 derived class version of the
 $cref ran_likelihood$$ function.
 Hence this initialization cannot be done until
 after the $cref/derived constructor/derived_ctor/$$ completes.
-
-$head Public$$
-This $code cppad_mixed$$ member function is $cref public$$.
 
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$

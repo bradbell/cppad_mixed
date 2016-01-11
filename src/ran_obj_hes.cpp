@@ -30,6 +30,9 @@ $icode%mixed_object%.ran_obj_hes(
 	%fixed_vec%, %random_vec%, %row_out%, %col_out%, %val_out%
 )%$$
 
+$head Private$$
+This $code cppad_mixed$$ member function is $cref private$$.
+
 $head Purpose$$
 This routine computes the Hessian w.r.t the fixed effects of
 random part of the of the objective; i.e.,
@@ -41,9 +44,6 @@ $cref/H(beta, theta, u)
 	/theory
 	/Approximate Random Objective, H(beta, theta, u)
 /$$.
-
-$head Private$$
-This $code cppad_mixed$$ member function is $cref private$$.
 
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$

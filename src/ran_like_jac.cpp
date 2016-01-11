@@ -27,6 +27,9 @@ $section Jacobian of Random Likelihood w.r.t. Random Effects$$
 $head Syntax$$
 $icode%jac% = %mixed_object%.ran_like_jac( %fixed_vec%, %random_vec%)%$$
 
+$head Private$$
+This $code cppad_mixed$$ member function is $cref private$$.
+
 $head Purpose$$
 This routine computes the Jacobian of the random likelihood
 $cref/f(theta, u)/theory/Random Likelihood, f(theta, u)/$$
@@ -34,9 +37,6 @@ with respect to the random effects vector $latex u$$; i.e.
 $latex \[
 	f_u ( \theta, u )
 \] $$
-
-$head Private$$
-This $code cppad_mixed$$ member function is $cref private$$.
 
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$

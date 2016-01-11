@@ -30,13 +30,13 @@ $icode%mixed_object%.optimize_random(
 	%options%, %fixed_vec%, %random_lower%, %random_upper%, %random_in%
 )%$$
 
+$head Public$$
+This $code cppad_mixed$$ member function is $cref public$$.
+
 $head Purpose$$
 This routine maximizes the
 $cref/random likelihood/ran_likelihood/$$
 corresponding to the object $icode mixed_object$$.
-
-$head Public$$
-This $code cppad_mixed$$ member function is $cref public$$.
 
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$

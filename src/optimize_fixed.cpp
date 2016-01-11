@@ -37,6 +37,9 @@ $icode%mixed_object%.optimize_fixed(
 	%random_in%
 )%$$
 
+$head Public$$
+This $code cppad_mixed$$ member function is $cref public$$.
+
 $head Purpose$$
 This routine maximizes the total objective
 $cref/L(theta)/theory/Objective/Total Objective, L(theta)/$$.
@@ -46,9 +49,6 @@ The value $code inf$$ below refers to
 $codei%
 	std::numeric_limits<double>::infinity()
 %$$
-
-$head Public$$
-This $code cppad_mixed$$ member function is $cref public$$.
 
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
