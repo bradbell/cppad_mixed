@@ -12,6 +12,14 @@ $begin math_notation$$
 
 $section Mathematical Notation$$
 
+$head A$$
+The notation $latex A$$ is used for the
+$cref/random constraint matrix
+	/cppad_mixed
+	/Notation
+	/Random Constraint Matrix, A
+/$$.
+
 $head c$$
 The notation $cref/c(theta)/cppad_mixed/Notation/c(theta)/$$
 ( $latex c( \theta )$$ )
@@ -79,6 +87,12 @@ The notation $cref/u/cppad_mixed/Notation/Random Effects, u/$$
 ( $latex \theta$$ )
 is used for the vector of fixed effects.
 
+$head u^(theta)$$
+The notation
+$cref/u^(theta)/cppad_mixed/Notation/Optimal Random Effects, u^(theta)/$$
+( $latex \hat{u}( \theta )$$ )
+is used for the optimal random effects.
+
 $head U$$
 The notation $cref/U(beta, theta, u)
 	/theory
@@ -96,12 +110,6 @@ The notation $cref/W(beta, theta, u)
 /$$
 ( $latex W( \beta , \theta , u )$$ )
 is used for the second order approximation of optimal random effects.
-
-$head u^(theta)$$
-The notation
-$cref/u^(theta)/cppad_mixed/Notation/Optimal Random Effects, u^(theta)/$$
-( $latex \hat{u}( \theta )$$ )
-is used for the optimal random effects.
 
 $head theta$$
 The notation $cref/theta/cppad_mixed/Notation/Fixed Effects, theta/$$

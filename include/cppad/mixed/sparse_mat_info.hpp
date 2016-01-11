@@ -13,12 +13,10 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin sparse_mat_info$$
 $spell
+	CppAD
 %$$
 
 $section Sparse Matrix Information$$
-
-$head Under Construction$$
-This section is under construction and not yet in use.
 
 $head Syntax$$
 $codei%CppAD::mixed::sparse_mat_info %mat_info%$$
@@ -79,7 +77,7 @@ is possibly non-zero and has value $icode%mat_info%.val[%k%]%$$.
 
 $subhead Empty Matrix$$
 If $icode K$$ is zero ($icode%mat_info%.row.size()%$$ is zero),
-we refer to the matrix as an empty matrix.
+we refer to the matrix as the empty matrix.
 
 $end
 */

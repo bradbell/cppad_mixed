@@ -103,6 +103,17 @@ $latex \[
 Note that this definition agrees with the other definition for
 $cref/u^(theta)/theory/Optimal Random Effects, u^(theta)/$$.
 
+$subhead Random Constraint Matrix, A$$
+The random constraint matrix is denoted by $latex A$$.
+It has row dimension equal to the number of constraints
+and column dimension equal to the number of random effects.
+
+$subhead Random Constraint Function, A*u^(theta)$$
+We refer to $latex A \; \hat{u} ( \theta )$$
+as the random constraint function.
+
+
+
 $head Problem$$
 
 $subhead Maximum Likelihood$$
@@ -131,6 +142,12 @@ $latex \[
 where and $latex c_L$$, $latex c_U$$ are vectors in the range of $latex c(x)$$.
 In the case where there are no constraints on the fixed effects,
 the range space is the empty vector.
+
+$subhead Random Constraints$$
+The random constraints are defined by the equation
+$latex \[
+	0 = A \; \hat{u} ( \theta )
+\] $$
 
 $head Negative Log-Density Vector$$
 If $icode vec$$ is a density vector corresponding to $latex \B{p}(x)$$,

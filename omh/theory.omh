@@ -126,6 +126,20 @@ $latex \[
 	f_{u,\theta} \left[ \theta , \hat{u} ( \theta )  \right]
 \]$$
 
+$head Derivative of Random Constraints$$
+The derivative of the
+$cref/random constraint function
+	/cppad_mixed
+	/Notation
+	/Random Constraint Function, A*u^(theta)
+/$$
+is given by
+$latex \[
+	\partial_\theta [ A \; \hat{u} ( \theta ) ]
+	=
+	A \; \hat{u}_\theta ( \theta )
+\]$$
+
 $head Derivative of Random Objective$$
 The derivative of the random part of the objective is given by
 $latex \[
@@ -231,6 +245,17 @@ r_{\theta,\theta} ( \theta )
 H_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
 \] $$
 
+$head Approximate Random Constraint Function$$
+We also define the approximation
+$cref/random constraint function
+	/cppad_mixed
+	/Notation
+	/Random Constraint Function, A*u^(theta)
+/$$
+$latex \[
+	B( \beta , \theta , u) = A \; W( \beta , \theta , u )
+\] $$
+
 $head Hessian of Random Objective$$
 Note that the Hessian of the random objective
 $latex r_{\theta,\theta} ( \theta ) $$ is required when
@@ -242,5 +267,26 @@ r_{\theta,\theta} ( \theta )
 H_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
 \] $$
 is used to compute this Hessian.
+
+$head Hessian of Random Constraints$$
+In the case where
+$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false
+we need to compute second derivatives of the random constraint function.
+To be specific, if $latex \lambda$$ is a vector
+with one component for each random constraint,
+the Hessian of
+$latex \[
+	\partial_\theta \partial_\theta [ \lambda^\R{T}  A ; \hat{u} ( \theta ) ]
+\] $$
+needs to be computed.
+In this case, we an use the formula
+$latex \[
+	\partial_\theta \partial_\theta [ \lambda^\R{T}  A ; \hat{u} ( \theta ) ]
+	=
+	\sum_i \lambda_i
+	B^i_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
+\] $$
+Note that here we use the super-script $latex i$$ for the
+$th i$$ component of the function $latex B( \beta , \theta , u)$$.
 
 $end

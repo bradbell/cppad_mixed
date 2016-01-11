@@ -12,6 +12,7 @@ $begin namespace$$
 $spell
 	Namespace
 	CppAD
+	cppad
 $$
 
 $section The CppAD::mixed Namespace Declarations$$
@@ -19,12 +20,31 @@ These declarations are in the $code CppAD::mixed$$ namespace.
 With the exception of $cref manage_gsl_rng$$,
 they are $bold not$$ part of the user API and may change with time.
 
-$childtable%src/manage_gsl_rng.cpp
+$children%src/manage_gsl_rng.cpp
+	%include/cppad/mixed/sparse_mat_info.hpp
 	%include/cppad/mixed/cholesky.hpp
 	%include/cppad/mixed/ipopt_fixed.hpp
 	%src/eigen/newton_step.cpp
 	%include/cppad/mixed/sparse_hes_info.hpp
 	%include/cppad/mixed/sparse_jac_info.hpp
 %$$
+
+$head Public$$
+These declarations are part the of the $code cppad_mixed$$ user API.
+$table
+$rref manage_gsl_rng$$
+$rref sparse_mat_info$$
+$tend
+
+
+$head Private$$
+These declarations are $code cppad_mixed$$ implementation details.
+$table
+$rref cholesky$$
+$rref ipopt_fixed$$
+$rref newton_step$$
+$rref sparse_hes_info$$
+$rref sparse_jac_info$$
+$tend
 
 $end
