@@ -153,7 +153,8 @@ bool fix_like_jac_xam(void)
 
 	// object that is derived from cppad_mixed
 	mixed_derived mixed_object(n_fixed, n_random, data);
-	mixed_object.initialize(fixed_vec, random_vec);
+	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	mixed_object.initialize(A_info, fixed_vec, random_vec);
 
 	// compute prior jacobian
 	CppAD::vector<size_t> row, col;

@@ -92,7 +92,8 @@ bool ran_obj_tst(void)
 
 	// object that is derived from cppad_mixed
 	mixed_derived mixed_object(n_fixed, n_random, data);
-	mixed_object.initialize(fixed_vec, random_vec);
+	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	mixed_object.initialize(A_info, fixed_vec, random_vec);
 
 	// lower and upper limits for random effects
 	double inf = std::numeric_limits<double>::infinity();

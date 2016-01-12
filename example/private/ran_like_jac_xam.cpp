@@ -129,7 +129,8 @@ bool ran_like_jac_xam(void)
 
 	// object that is derived from cppad_mixed
 	mixed_derived mixed_object(n_fixed, n_random, data);
-	mixed_object.initialize(theta, u);
+	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	mixed_object.initialize(A_info, theta, u);
 
 	// compute Jacobian with respect to random effects
 	vector<a1_double> jac =

@@ -126,7 +126,8 @@ bool update_factor_xam(void)
 
 	// object that is derived from cppad_mixed
 	mixed_derived mixed_object(n_fixed, n_random, data);
-	mixed_object.initialize(theta, u);
+	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	mixed_object.initialize(A_info, theta, u);
 
 	// update the factorization of f_{u,u} (theta, u)
 	mixed_object.update_factor(fixed_vec, random_vec);

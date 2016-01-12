@@ -17,6 +17,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/sparse_hes_info.hpp>
 # include <cppad/mixed/sparse_jac_info.hpp>
 # include <cppad/mixed/cholesky.hpp>
+# include <cppad/mixed/sparse_mat_info.hpp>
 
 // private tests
 extern bool ran_obj_tst(void);
@@ -156,6 +157,7 @@ $comment */
 	n_fixed_(n_fixed)               ,
 	n_random_(n_random)             ,
 	quasi_fixed_(quasi_fixed)       ,
+	init_ran_con_done_(false)       ,
 	init_ran_like_done_(false)      ,
 	init_hes_ran_done_(false)       ,
 	init_cholesky_done_(false)      ,
@@ -173,7 +175,9 @@ Directly after construction, use this function to initialize
 the derived class object; see $cref/initialize/initialize/$$.
 $codep */
 	std::map<std::string, size_t> initialize(
-		const d_vector& fixed_vec, const d_vector& random_vec
+		const CppAD::mixed::sparse_mat_info&  A_info     ,
+		const d_vector&                       fixed_vec  ,
+		const d_vector&                       random_vec
 	);
 /* $$
 $head optimize_random$$
@@ -222,6 +226,7 @@ private:
 ------------------------------------------------------------------------------
 $begin private$$
 $spell
+	eigen
 	chol
 	Cholesky
 	CppAD
@@ -255,13 +260,16 @@ $cref/mixed_object/derived_ctor/mixed_object/$$.
 
 $childtable%include/cppad/mixed/pack.hpp
 	%include/cppad/mixed/unpack.hpp
+
+	%src/eigen/init_hes_ran.cpp
+	%src/eigen/init_ran_con.cpp
+	%src/eigen/init_ran_obj.cpp
 	%src/init_fix_con.cpp
 	%src/init_fix_like.cpp
 	%src/init_hes_cross.cpp
-	%src/eigen/init_hes_ran.cpp
 	%src/init_hes_ran_obj.cpp
 	%src/init_ran_like.cpp
-	%src/eigen/init_ran_obj.cpp
+
 	%src/fix_con_eval.cpp
 	%src/fix_con_hes.cpp
 	%src/fix_con_jac.cpp
@@ -301,6 +309,7 @@ the corresponding member function is called.
 This is the same order as the calls in the file $cref initialize$$:
 $codep */
 	// only called when n_random_ > 0
+	bool                init_ran_con_done_;
 	bool                init_ran_like_done_;
 	bool                init_hes_ran_done_;
 	bool                init_cholesky_done_;
@@ -315,6 +324,14 @@ $codep */
 	// true when all initialization (for this case) is done
 	bool                initialize_done_;
 /* $$
+
+$head ran_con_mat_$$
+If $icode%n_random_% > 0%$$ and $code init_ran_con_done_$$,
+$cref/ran_con_mat_/init_ran_con/ran_con_mat_/$$
+contains the constraint matrix
+$codep */
+	CppAD::mixed::cholesky::eigen_sparse ran_con_mat_;
+/*$$
 
 $head ran_like_fun_$$
 $index ran_like_a1fun_$$
@@ -547,6 +564,15 @@ $codep */
 	void init_hes_ran_obj(
 		const d_vector& fixed_vec ,
 		const d_vector& random_vec
+	);
+/* $$
+
+$subhead init_ran_con$$
+See $cref init_ran_con$$.
+$codep */
+	void init_ran_con(
+		size_t                                n_random ,
+		const CppAD::mixed::sparse_mat_info&  A_info
 	);
 /* $$
 

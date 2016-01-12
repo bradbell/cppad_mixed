@@ -130,7 +130,8 @@ bool hes_cross_xam(void)
 
 	// object that is derived from cppad_mixed
 	mixed_derived mixed_object(n_fixed, n_random, data);
-	mixed_object.initialize(theta, u);
+	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	mixed_object.initialize(A_info, theta, u);
 
 	// number of non-zeros in Hessian cross terms
 	ok &= mixed_object.hes_cross_.row.size() == n_random;

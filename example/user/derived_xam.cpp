@@ -157,7 +157,8 @@ bool derived_xam(void)
 	// object that is derived from cppad_mixed
 	bool quasi_fixed = true;
 	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, data);
-	mixed_object.initialize(fixed_vec, random_vec);
+	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	mixed_object.initialize(A_info, fixed_vec, random_vec);
 
 	// Evaluate the random likelihood
 	vector<a2_double> a2_vec(1);

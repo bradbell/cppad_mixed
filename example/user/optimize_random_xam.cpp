@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -112,7 +112,8 @@ bool optimize_random_xam(void)
 	// object that is derived from cppad_mixed
 	bool quasi_fixed = true;
 	mixed_derived mixed_object(n_data, n_data, quasi_fixed, data);
-	mixed_object.initialize(fixed_vec, random_in);
+	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	mixed_object.initialize(A_info, fixed_vec, random_in);
 
 	// lower and upper limits for random effects
 	double inf = std::numeric_limits<double>::infinity();

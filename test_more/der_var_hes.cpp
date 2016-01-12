@@ -287,7 +287,8 @@ bool der_var_hes(void)
 	//
 	// object that is derived from cppad_mixed
 	mixed_derived mixed_object( n_fixed, n_random, y, sigma_u, sigma_y );
-	mixed_object.initialize(fixed_vec, random_vec);
+	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	mixed_object.initialize(A_info, fixed_vec, random_vec);
 	//
 	// lower and upper limits for random effects
 	vector<double> random_lower(n_random), random_upper(n_random);

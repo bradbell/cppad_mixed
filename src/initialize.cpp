@@ -8,7 +8,6 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad/mixed/cppad_mixed.hpp>
 
 /*
 $begin initialize$$
@@ -34,7 +33,9 @@ $$
 $section Initialization After Constructor$$
 
 $head Syntax$$
-$icode%size_map% = %mixed_object%.initialize(%fixed_vec%, %random_vec%)%$$
+$icode%size_map% = %mixed_object%.initialize(
+	%A_info%, %fixed_vec%, %random_vec%
+)%$$
 
 $head Public$$
 This $code cppad_mixed$$ member function is $cref public$$.
@@ -50,6 +51,21 @@ $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
+
+$head A_info$$
+This argument has prototype
+$codei%
+	const CppAD::mixed::sparse_mat_info& %A_info%
+%$$
+It is a
+$cref/sparse matrix/sparse_mat_info/val/Sparse Matrix/$$
+representation of the
+$cref/random constraint matrix
+	/cppad_mixed
+	/Notation
+	/Random Constraint Matrix, A
+/$$
+$latex A$$.
 
 $head fixed_vec$$
 This argument has prototype
@@ -196,13 +212,20 @@ of using $code initialize$$.
 
 $end
 */
-
+# include <cppad/mixed/cppad_mixed.hpp>
 
 std::map<std::string, size_t> cppad_mixed::initialize(
-	const d_vector& fixed_vec  ,
-	const d_vector& random_vec )
+	const CppAD::mixed::sparse_mat_info& A_info     ,
+	const d_vector&                      fixed_vec  ,
+	const d_vector&                      random_vec )
 {	if( initialize_done_ )
 	{	fatal_error("cppad_mixed::initialize was called twice");
+	}
+	if( fixed_vec.size() != n_fixed_ )
+	{	fatal_error("cppad_mixed::initialize fixed_vec has wrong size");
+	}
+	if( random_vec.size() != n_random_ )
+	{	fatal_error("cppad_mixed::initialize random_vec has wrong size");
 	}
 	size_t thread           = CppAD::thread_alloc::thread_num();
 	size_t num_bytes_before = CppAD::thread_alloc::inuse(thread);
@@ -220,6 +243,11 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	}
 	else
 	{
+		// ran_con_mat_
+		assert( ! init_ran_con_done_ );
+		init_ran_con(n_random_, A_info);
+		assert( init_ran_con_done_ );
+
 		// ran_likelihood_
 		assert( ! init_ran_like_done_ );
 		init_ran_like(fixed_vec, random_vec);

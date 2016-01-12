@@ -169,10 +169,9 @@ is often sparse and only non-zero
 components need be included in the summation.
 This is discussed in more detail near equation (8) in the
 $cref/reference/theory/Reference/$$.
-We also note that if $latex k$$ corresponds to a component of $latex u$$
-and $latex u = \hat{u} ( \theta )$$,
+We also note that if $latex k$$ corresponds to a component of $latex u$$ then
 $latex \[
-	\partial_k [ f ( \theta , u ) ] = 0
+	\partial_k ( f[ \theta , \hat{u} ( \theta ) ] ) = 0
 \] $$
 
 $head Approximate Optimal Random Effects$$
@@ -283,10 +282,8 @@ In this case, we an use the formula
 $latex \[
 	\partial_\theta \partial_\theta [ \lambda^\R{T}  A ; \hat{u} ( \theta ) ]
 	=
-	\sum_i \lambda_i
-	B^i_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
+	\lambda^\R{T}
+	B_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
 \] $$
-Note that here we use the super-script $latex i$$ for the
-$th i$$ component of the function $latex B( \beta , \theta , u)$$.
 
 $end

@@ -153,7 +153,8 @@ bool fix_like_eval_xam(void)
 
 	// object that is derived from cppad_mixed
 	mixed_derived mixed_object(n_fixed, n_random, data);
-	mixed_object.initialize(fixed_vec, random_vec);
+	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	mixed_object.initialize(A_info, fixed_vec, random_vec);
 
 	// compute fixed negative log-density vector
 	CppAD::vector<double> vec = mixed_object.fix_like_eval(fixed_vec);
