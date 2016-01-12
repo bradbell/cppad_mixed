@@ -162,7 +162,7 @@ $comment */
 	init_hes_ran_done_(false)       ,
 	init_cholesky_done_(false)      ,
 	init_hes_cross_done_(false)     ,
-	record_newton_atom_done_(false) ,
+	init_newton_atom_done_(false)   ,
 	init_ran_obj_done_(false)       ,
 	init_hes_ran_obj_done_(false)   ,
 	init_fix_like_done_(false)      ,
@@ -315,7 +315,7 @@ $codep */
 	bool                init_cholesky_done_;
 	bool                init_hes_cross_done_;
 	// only called when n_random_ > 0 and quasi_fixed_ is false
-	bool                record_newton_atom_done_;
+	bool                init_newton_atom_done_;
 	bool                init_ran_obj_done_;
 	bool                init_hes_ran_obj_done_;
 	// called in all cases
@@ -395,7 +395,7 @@ $codep */
 
 $head newton_atom_$$
 If $icode%n_random_% > 0%$$, quasi_fixed_ is false, and
-$code record_newton_atom_done_$$,
+$code init_newton_atom_done_$$,
 this is a CppAD atomic function that computes one Newton Step in the
 solution of the equation $latex f_u ( \theta, u) = 0$$ as well
 as the log of the determinant of $latex f_{uu} ( \theta , u )$$;

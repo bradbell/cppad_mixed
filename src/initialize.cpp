@@ -273,11 +273,11 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 		if( ! quasi_fixed_ )
 		{
 			// newton_atom_
-			assert( ! record_newton_atom_done_ );
+			assert( ! init_newton_atom_done_ );
 			newton_atom_.initialize(
 				ran_like_a1fun_, fixed_vec, random_vec
 			);
-			record_newton_atom_done_ = true;
+			init_newton_atom_done_ = true;
 
 			// ran_obj_fun_
 			assert( ! init_ran_obj_done_ );
