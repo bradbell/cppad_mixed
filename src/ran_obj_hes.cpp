@@ -177,7 +177,7 @@ void cppad_mixed::ran_obj_hes(
 	CppAD::vector< std::set<size_t> > not_used(0);
 
 	// compute the sparse Hessian
-	ran_obj_fun_.SparseHessian(
+	ran_objcon_fun_.SparseHessian(
 		beta_theta_u,
 		w,
 		not_used,

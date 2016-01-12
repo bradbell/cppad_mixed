@@ -13,6 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin init_hes_ran_obj$$
 $spell
+	objcon
 	CppAD
 	init
 	ran_obj
@@ -78,7 +79,7 @@ $cref/H(beta, theta, u)
 Note that the matrix is symmetric and hence can be recovered from
 its lower triangle.
 
-$subhead ran_obj_fun_$$
+$subhead ran_objcon_fun_$$
 This ADFun object should be used in the
 $cref/sparse Hessian Call/sparse_hes_info/Sparse Hessian Call/f/$$.
 
@@ -90,7 +91,7 @@ void cppad_mixed::init_hes_ran_obj(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec )
 {	assert( ! init_hes_ran_obj_done_ );
-	assert( init_ran_obj_done_ );
+	assert( init_ran_objcon_done_ );
 	size_t i, j;
 
 	// total number of variables in H
@@ -107,7 +108,7 @@ void cppad_mixed::init_hes_ran_obj(
 	sparsity_pattern r(n_total);
 	for(i = 0; i < n_fixed_; i++)
 		r[i].insert(i);
-	ran_obj_fun_.ForSparseJac(n_fixed_, r);
+	ran_objcon_fun_.ForSparseJac(n_fixed_, r);
 
 	// compute sparsity pattern corresponding to partial w.r.t (beta, theta, u)
 	// of parital w.r.t beta of H(beta, theta, u)
@@ -116,7 +117,7 @@ void cppad_mixed::init_hes_ran_obj(
 	s[0].insert(0);
 	bool transpose = true;
 	sparsity_pattern pattern =
-		ran_obj_fun_.RevSparseHes(n_fixed_, s, transpose);
+		ran_objcon_fun_.RevSparseHes(n_fixed_, s, transpose);
 
 	// determine row and column indices in lower triangle of Hessian
 	hes_ran_obj_.row.clear();
@@ -145,7 +146,7 @@ void cppad_mixed::init_hes_ran_obj(
 	d_vector val_out( hes_ran_obj_.row.size() );
 
 	// compute the work vector
-	ran_obj_fun_.SparseHessian(
+	ran_objcon_fun_.SparseHessian(
 		beta_theta_u,
 		w,
 		pattern,

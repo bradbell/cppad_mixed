@@ -162,7 +162,7 @@ $comment */
 	init_cholesky_done_(false)      ,
 	init_hes_cross_done_(false)     ,
 	init_newton_atom_done_(false)   ,
-	init_ran_obj_done_(false)       ,
+	init_ran_objcon_done_(false)    ,
 	init_hes_ran_obj_done_(false)   ,
 	init_fix_like_done_(false)      ,
 	init_fix_con_done_(false)       ,
@@ -225,6 +225,7 @@ private:
 ------------------------------------------------------------------------------
 $begin private$$
 $spell
+	objcon
 	eigen
 	chol
 	Cholesky
@@ -263,7 +264,7 @@ $childtable%include/cppad/mixed/pack.hpp
 
 	%src/eigen/init_hes_ran.cpp
 	%src/eigen/init_ran_con.cpp
-	%src/eigen/init_ran_obj.cpp
+	%src/eigen/init_ran_objcon.cpp
 	%src/init_fix_con.cpp
 	%src/init_fix_like.cpp
 	%src/init_hes_cross.cpp
@@ -318,7 +319,7 @@ $codep */
 	bool                init_hes_cross_done_;
 	// only called when n_random_ > 0 and quasi_fixed_ is false
 	bool                init_newton_atom_done_;
-	bool                init_ran_obj_done_;
+	bool                init_ran_objcon_done_;
 	bool                init_hes_ran_obj_done_;
 	// called in all cases
 	bool                init_fix_like_done_;
@@ -408,14 +409,14 @@ $codep */
 /* $$
 $comment ------------------------------------------------------------------- $$
 
-$head ran_obj_fun_$$
+$head ran_objcon_fun_$$
 If $icode%n_random_% > 0%$$, quasi_fixed_ is false, and
-$code init_ran_obj_done_$$,
+$code init_ran_objcon_done_$$,
 this is a recording of the second approximation for the
 random part of the Laplace approximation, $latex H( \beta , \theta , u)$$;
-see $cref/ran_obj_fun_/init_ran_obj/ran_obj_fun_/$$.
+see $cref/ran_objcon_fun_/init_ran_objcon/ran_objcon_fun_/$$.
 $codep */
-	CppAD::ADFun<double>        ran_obj_fun_;   // for computing H_beta_beta
+	CppAD::ADFun<double>        ran_objcon_fun_;   // for computing H_beta_beta
 /* $$
 The following objects hold information for computing derivatives
 with this ADFun object:
@@ -587,10 +588,10 @@ $codep */
 	);
 /* $$
 
-$subhead init_ran_obj$$
-See $cref init_ran_obj$$.
+$subhead init_ran_objcon$$
+See $cref init_ran_objcon$$.
 $codep */
-	void init_ran_obj(
+	void init_ran_objcon(
 		const d_vector& fixed_vec ,
 		const d_vector& random_vec
 	);

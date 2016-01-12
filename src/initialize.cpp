@@ -12,6 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin initialize$$
 $spell
+	objcon
 	init
 	CppAD
 	ran_obj
@@ -201,9 +202,9 @@ $subhead ran_like_fun_$$
 $icode%size_map%["ran_like_fun_"]%$$ is the number of variables in
 $cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$.
 
-$subhead ran_obj_fun_$$
-$icode%size_map%["ran_obj_fun_"]%$$ is the number of variables in
-$cref/ran_obj_fun_/init_ran_obj/ran_obj_fun_/$$.
+$subhead ran_objcon_fun_$$
+$icode%size_map%["ran_objcon_fun_"]%$$ is the number of variables in
+$cref/ran_objcon_fun_/init_ran_objcon/ran_objcon_fun_/$$.
 
 
 $head Example$$
@@ -279,10 +280,10 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 			);
 			init_newton_atom_done_ = true;
 
-			// ran_obj_fun_
-			assert( ! init_ran_obj_done_ );
-			init_ran_obj(fixed_vec, random_vec);
-			assert( init_ran_obj_done_ );
+			// ran_objcon_fun_
+			assert( ! init_ran_objcon_done_ );
+			init_ran_objcon(fixed_vec, random_vec);
+			assert( init_ran_objcon_done_ );
 
 			// hes_ran_obj_
 			assert( ! init_hes_ran_obj_done_ );
@@ -317,7 +318,7 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	if( ! quasi_fixed_ )
 	{	size_map["newton_step_"]      = newton_atom_.size_var();
 		//
-		size_map["ran_obj_fun_"]       = ran_obj_fun_.size_var();
+		size_map["ran_objcon_fun_"]       = ran_objcon_fun_.size_var();
 		size_map["hes_ran_obj_"]       = hes_ran_obj_.row.size();
 	}
 	size_map["fix_like_fun_"]   = fix_like_fun_.size_var();
