@@ -131,6 +131,14 @@ bool ran_con_eval_xam(void)
 
 	// constraint matrix will sum all the random effects
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	A_info.row.resize(n_random);
+	A_info.col.resize(n_random);
+	A_info.val.resize(n_random);
+	for(size_t j = 0; j < n_random; j++)
+	{	A_info.row[j] = 0;
+		A_info.col[j] = j;
+		A_info.val[j] = 1.0;
+	}
 	mixed_object.initialize(A_info,  fixed_vec, random_vec);
 
 	// evaluate the random constraint A * u
