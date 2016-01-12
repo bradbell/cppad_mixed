@@ -32,6 +32,7 @@ extern bool fix_like_jac_xam(void);
 extern bool hes_cross_xam(void);
 extern bool hes_ran_fun_xam(void);
 extern bool logdet_jac_xam(void);
+extern bool ran_con_jac_xam(void);
 extern bool ran_like_jac_xam(void);
 extern bool ran_obj_eval_xam(void);
 extern bool ran_obj_jac_xam(void);
@@ -249,6 +250,7 @@ $spell
 	xam
 	uu
 	logdet
+	Au
 $$
 
 $section cppad_mixed: Private Declarations$$
@@ -278,6 +280,7 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/fix_like_jac.cpp
 	%src/eigen/logdet_jac.cpp
 	%src/ran_like_jac.cpp
+	%src/eigen/ran_con_eval.cpp
 	%src/eigen/ran_obj_eval.cpp
 	%src/eigen/ran_obj_jac.cpp
 	%src/ran_obj_hes.cpp
@@ -670,6 +673,16 @@ $codep */
 		d_vector&       logdet_ran
 	);
 	friend bool ::logdet_jac_xam(void);
+/* $$
+
+$subhead ran_con_eval$$
+See $cref ran_con_eval$$
+$codep */
+	void ran_con_eval(
+		const d_vector& random_vec ,
+		d_vector&       Au
+	);
+	friend bool ::ran_con_eval_xam(void);
 /* $$
 
 $subhead ran_like_jac$$

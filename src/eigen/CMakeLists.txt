@@ -15,6 +15,7 @@ ADD_LIBRARY(cppad_mixed_eigen
 	init_ran_obj.cpp
 	logdet_jac.cpp
 	newton_step.cpp
+	ran_con_eval.cpp
 	ran_obj_eval.cpp
 	ran_obj_jac.cpp
 	update_factor.cpp
