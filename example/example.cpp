@@ -51,6 +51,7 @@ extern bool no_random_xam(void);
 extern bool optimize_fixed_xam(void);
 extern bool optimize_random_xam(void);
 extern bool ran_con_eval_xam(void);
+extern bool ran_con_jac_xam(void);
 extern bool ran_like_jac_xam(void);
 extern bool ran_obj_eval_xam(void);
 extern bool ran_obj_jac_xam(void);
@@ -109,6 +110,7 @@ int main(void)
 	RUN(optimize_fixed_xam);
 	RUN(optimize_random_xam);
 	RUN(ran_con_eval_xam);
+	RUN(ran_con_jac_xam);
 	RUN(ran_like_jac_xam);
 	RUN(ran_obj_eval_xam);
 	RUN(ran_obj_jac_xam);

@@ -54,6 +54,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	private/logdet_jac_xam.cpp
 	private/newton_step_xam.cpp
 	private/ran_con_eval_xam.cpp
+	private/ran_con_jac_xam.cpp
 	private/ran_like_jac_xam.cpp
 	private/ran_obj_eval_xam.cpp
 	private/ran_obj_jac_xam.cpp

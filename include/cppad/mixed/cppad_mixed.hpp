@@ -19,9 +19,6 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/cholesky.hpp>
 # include <cppad/mixed/sparse_mat_info.hpp>
 
-// private tests
-extern bool ran_obj_tst(void);
-
 // private examples
 extern bool fix_con_eval_xam(void);
 extern bool fix_con_hes_xam(void);
@@ -32,6 +29,7 @@ extern bool fix_like_jac_xam(void);
 extern bool hes_cross_xam(void);
 extern bool hes_ran_fun_xam(void);
 extern bool logdet_jac_xam(void);
+extern bool ran_con_eval_xam(void);
 extern bool ran_con_jac_xam(void);
 extern bool ran_like_jac_xam(void);
 extern bool ran_obj_eval_xam(void);
@@ -281,6 +279,7 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/eigen/logdet_jac.cpp
 	%src/ran_like_jac.cpp
 	%src/eigen/ran_con_eval.cpp
+	%src/eigen/ran_con_jac.cpp
 	%src/eigen/ran_obj_eval.cpp
 	%src/eigen/ran_obj_jac.cpp
 	%src/ran_obj_hes.cpp
@@ -683,6 +682,17 @@ $codep */
 		d_vector&       Au
 	);
 	friend bool ::ran_con_eval_xam(void);
+/* $$
+
+$subhead ran_con_jac$$
+See $cref ran_con_jac$$
+$codep */
+	void ran_con_jac(
+		const d_vector&                fixed_vec  ,
+		const d_vector&                random_vec ,
+		CppAD::mixed::sparse_mat_info& jac_info
+	);
+	friend bool ::ran_con_jac_xam(void);
 /* $$
 
 $subhead ran_like_jac$$
