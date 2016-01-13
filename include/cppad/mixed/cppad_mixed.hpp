@@ -163,7 +163,7 @@ $comment */
 	init_hes_cross_done_(false)     ,
 	init_newton_atom_done_(false)   ,
 	init_ran_objcon_done_(false)    ,
-	init_ran_objcon_hes_done_(false)   ,
+	init_ran_objcon_hes_done_(false),
 	init_fix_like_done_(false)      ,
 	init_fix_con_done_(false)       ,
 	initialize_done_(false)
@@ -743,6 +743,7 @@ $codep */
 	void ran_objcon_hes(
 		const d_vector&         fixed_vec   ,
 		const d_vector&         random_vec  ,
+		const d_vector&         weight      ,
 		CppAD::vector<size_t>&  row_out     ,
 		CppAD::vector<size_t>&  col_out     ,
 		d_vector&               val_out

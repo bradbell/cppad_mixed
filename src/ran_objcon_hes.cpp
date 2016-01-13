@@ -24,26 +24,41 @@ $spell
 	xam
 $$
 
-$section Hessian of Random Part of Objective w.r.t Fixed Effects$$
+$section Hessian of Random Objective and Random Constraints$$
 
 $head Syntax$$
 $icode%mixed_object%.ran_objcon_hes(
-	%fixed_vec%, %random_vec%, %row_out%, %col_out%, %val_out%
+	%fixed_vec%, %random_vec%, %weight%, %row_out%, %col_out%, %val_out%
 )%$$
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
 
 $head Purpose$$
-This routine computes the Hessian w.r.t the fixed effects of
-random part of the of the objective; i.e.,
+This routine computes the Hessian, w.r.t the fixed effects,
+of a vector times the random part of the of the objective
+and random constraints; i.e.,
 $latex \[
-	H_{\beta, \beta} ( \beta , \theta , u )
+	w_0 H_{\beta, \beta} ( \beta , \theta , u )
+	+
+	\sum_{i=1}^m
+	w_i B^{i-1}_{\beta, \beta} ( \beta , \theta , u )
 \] $$
+where $latex m$$ is the number of rows in the
+$cref/random constraint matrix
+	/cppad_mixed
+	/Notation
+	/Random Constraint Matrix, A
+/$$;
 see
 $cref/H(beta, theta, u)
 	/theory
 	/Approximate Random Objective, H(beta, theta, u)
+/$$
+and
+$cref/B(beta, theta, u)
+	/theory
+	/Approximate Random Constraint Function, B(beta, theta, u)
 /$$.
 
 $head mixed_object$$
@@ -71,6 +86,21 @@ $cref/optimal random effects
 	/Optimal Random Effects, u^(theta)
 /$$
 $latex \hat{u} ( \theta )$$.
+
+$head weight$$
+This argument has prototype
+$codei%
+	const CppAD::vector<double>& %weight%
+%$$
+It determines the weighting vector $latex w$$ in the summation
+$latex \[
+	w_0 H_{\beta, \beta} ( \beta , \theta , u )
+	+
+	\sum_{i=1}^m
+	w_i B^{i-1}_{\beta, \beta} ( \beta , \theta , u )
+\] $$
+The size of $icode weight$$ is
+$cref/n_ran_con_/init_ran_con/n_ran_con_/$$ plus one.
 
 $head row_out$$
 This argument has prototype
@@ -132,12 +162,14 @@ $end
 void cppad_mixed::ran_objcon_hes(
 	const d_vector&          fixed_vec   ,
 	const d_vector&          random_vec  ,
+	const d_vector&          weight      ,
 	CppAD::vector<size_t>&   row_out     ,
 	CppAD::vector<size_t>&   col_out     ,
 	d_vector&                val_out     )
 {	assert( init_ran_objcon_hes_done_ );
 	assert( n_fixed_  == fixed_vec.size() );
 	assert( n_random_ == random_vec.size() );
+	assert( n_ran_con_ + 1 == weight.size() );
 
 	// size of outputs
 	size_t n_nonzero = ran_objcon_hes_.row.size();
@@ -170,17 +202,13 @@ void cppad_mixed::ran_objcon_hes(
 	d_vector beta_theta_u( 2 * n_fixed_ + n_random_ );
 	pack(fixed_vec, fixed_vec, random_vec, beta_theta_u);
 
-	// create an a2d weighting vector
-	d_vector w(1);
-	w[0] = 1.0;
-
 	// First call to SparseHessian is during init_ran_objcon_hes
 	CppAD::vector< std::set<size_t> > not_used(0);
 
 	// compute the sparse Hessian
 	ran_objcon_fun_.SparseHessian(
 		beta_theta_u,
-		w,
+		weight,
 		not_used,
 		ran_objcon_hes_.row,
 		ran_objcon_hes_.col,
@@ -195,5 +223,3 @@ void cppad_mixed::ran_objcon_hes(
 	}
 # endif
 }
-
-

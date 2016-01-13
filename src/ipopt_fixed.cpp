@@ -310,6 +310,7 @@ fixed_tolerance_   ( fixed_tolerance  )        ,
 n_fixed_           ( fixed_in.size()  )        ,
 n_random_          ( random_in.size() )        ,
 n_fix_con_         ( fix_constraint_lower.size() ) ,
+n_ran_con_         ( mixed_object.n_ran_con_ ) ,
 fixed_lower_       ( fixed_lower      )        ,
 fixed_upper_       ( fixed_upper      )        ,
 fix_constraint_lower_  ( fix_constraint_lower )        ,
@@ -351,6 +352,19 @@ mixed_object_      ( mixed_object    )
 	else
 		fix_likelihood_n_abs_ = fix_likelihood_vec.size() - 1;
 	// -----------------------------------------------------------------------
+	// set size of temporary vectors
+	// -----------------------------------------------------------------------
+	fixed_tmp_.resize( n_fixed_ );
+	c_vec_tmp_.resize( n_fix_con_ );
+	H_beta_tmp_.resize( n_fixed_ );
+	w_fix_con_tmp_.resize( n_fix_con_ );
+	w_ran_objcon_tmp_.resize( n_ran_con_ + 1 );
+	w_fix_likelihood_tmp_.resize( fix_likelihood_n_abs_ + 1 );
+	if( fix_likelihood_vec.size() == 0 )
+		assert( fix_likelihood_vec_tmp_.size() == 0 );
+	else
+		fix_likelihood_vec_tmp_.resize( fix_likelihood_n_abs_ + 1 );
+	// -----------------------------------------------------------------------
 	// set fix_like_jac_row_, fix_like_jac_col_, fix_like_jac_val_
 	// fix_con_jac_row_, fix_con_jac_col_, fix_con_jac_val_
 	// -----------------------------------------------------------------------
@@ -385,10 +399,16 @@ mixed_object_      ( mixed_object    )
 	{	// Using full Newton method
 
 		// row and column indices for contribution from random part of objective
-		if( n_random_ > 0 ) mixed_object.ran_objcon_hes(
-			fixed_in, random_in,
-			ran_objcon_hes_row_, ran_objcon_hes_col_, ran_objcon_hes_val_
-		);
+		if( n_random_ > 0 )
+		{
+			w_ran_objcon_tmp_[0] = 1.0;
+			for(size_t i = 0; i < n_ran_con_; i++)
+				w_ran_objcon_tmp_[i+1] = 1.0;
+			 mixed_object.ran_objcon_hes(
+				fixed_in, random_in, w_ran_objcon_tmp_,
+				ran_objcon_hes_row_, ran_objcon_hes_col_, ran_objcon_hes_val_
+			);
+		}
 		// row and column indices for contribution from prior
 		d_vector weight( 1 + fix_likelihood_n_abs_ );
 		for(size_t i = 0; i < weight.size(); i++)
@@ -445,17 +465,6 @@ mixed_object_      ( mixed_object    )
 		nnz_h_lag_ = lag_hes_row_.size();
 		assert( nnz_h_lag_ == lag_hes_col_.size() );
 	}
-	// -----------------------------------------------------------------------
-	// set size of temporary vectors
-	// -----------------------------------------------------------------------
-	fixed_tmp_.resize( n_fixed_ );
-	c_vec_tmp_.resize( n_fix_con_ );
-	H_beta_tmp_.resize( n_fixed_ );
-	w_fix_likelihood_tmp_.resize( fix_likelihood_n_abs_ + 1 );
-	w_fix_con_tmp_.resize( n_fix_con_ );
-	assert( fix_likelihood_vec_tmp_.size() == 0 );
-	if( fix_likelihood_vec.size() > 0 )
-		fix_likelihood_vec_tmp_.resize( fix_likelihood_n_abs_ + 1 );
 	// -----------------------------------------------------------------------
 }
 ipopt_fixed::~ipopt_fixed(void)
@@ -1298,9 +1307,12 @@ bool ipopt_fixed::eval_h(
 			);
 			mixed_object_.update_factor(fixed_tmp_, random_cur_);
 		}
-		// compute Hessian of random part w.r.t. fixed effects
+		// compute Hessian of random part of objective w.r.t. fixed effects
+		w_ran_objcon_tmp_[0] = obj_factor;
+		for(size_t i = 0; i < n_ran_con_; i++)
+			w_ran_objcon_tmp_[i+1] = 0.0;
 		mixed_object_.ran_objcon_hes(
-			fixed_tmp_, random_cur_,
+			fixed_tmp_, random_cur_, w_ran_objcon_tmp_,
 			ran_objcon_hes_row_, ran_objcon_hes_col_, ran_objcon_hes_val_
 		);
 		for(size_t k = 0; k < ran_objcon_hes_row_.size(); k++)

@@ -108,26 +108,6 @@ namespace {
 			const vector<a1_double>& fixed_vec  ,
 			const vector<a1_double>& random_vec )
 		{	return implement_ran_likelihood(fixed_vec, random_vec); }
-		//
-		virtual vector<a1_double> fix_likelihood(
-			const vector<a1_double>& fixed_vec  )
-		{	a1d_vector vec(1);
-			vec[0] = 0.0;
-			return vec;
-		}
-		//
-		virtual vector<a1_double> fix_constraint(
-			const vector<a1_double>& fixed_vec  )
-		{	return vector<a1_double>(0); } // empty vector
-		//
-		virtual void fatal_error(const std::string& error_message)
-		{	std::cerr << "Error: " << error_message << std::endl;
-			std::exit(1);
-		}
-		//
-		virtual void warning(const std::string& warning_message)
-		{	std::cerr << "Warning: " << warning_message << std::endl;
-		}
 	};
 }
 
@@ -173,9 +153,11 @@ bool ran_objcon_hes_xam(void)
 	);
 
 	// compute Hessian of random part of Laplace approximation
+	vector<double> weight(1); // no random constraints
+	weight[0] = 1.0;
 	vector<size_t> row, col;
 	vector<double> val;
-	mixed_object.ran_objcon_hes(fixed_vec, random_vec, row, col, val);
+	mixed_object.ran_objcon_hes(fixed_vec, random_vec, weight, row, col, val);
 
 	// check size of result vectors
 	size_t K = row.size();
