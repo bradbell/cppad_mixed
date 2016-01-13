@@ -116,17 +116,21 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		//
 		s_vector lag_hes_row_;   // row indices for Hessian of Lagrangian
 		s_vector lag_hes_col_;   // column indices for Hessian of Lagrangian
-		s_vector ran_objcon_2_lag_;    // maps ran_objcon_hes_row_ to lag_hes_row_
-		s_vector fix_likelihood2lag_;      // maps fix_like_hes_row_ to lag_hes_row_
-		s_vector constraint_2_lag_; // maps fix_con_hes_row to lag_hes_row
+		s_vector ran_objcon_2_lag_; // ran_objcon_hes_row_ -> lag_hes_row_
+		s_vector fix_likelihood2lag_; // fix_like_hes_row_ -> lag_hes_row_
+		s_vector constraint_2_lag_; // fix_con_hes_row -> lag_hes_row
 		// ---------------------------------------------------------------
 		// temporaries (size set by constructor only)
 		d_vector        fixed_tmp_;         // size n_fixed_
-		d_vector        fix_likelihood_vec_tmp_;  // size fix_likelihood_n_abs_ + 1
 		d_vector        c_vec_tmp_;         // size n_fix_con_
 		d_vector        H_beta_tmp_;        // size n_fixed_
-		d_vector        w_fix_likelihood_tmp_;    // size 2 * fix_likelihood_n_abs
 		d_vector        w_constraint_tmp_;  // size n_fix_con_
+
+		// size fix_likelihood_n_abs_ + 1
+		d_vector        fix_likelihood_vec_tmp_;
+
+	    // size 2 * fix_likelihood_n_abs
+		d_vector        w_fix_likelihood_tmp_;
 		// ---------------------------------------------------------------
 		// empty until finalize_solution called
 		d_vector fixed_opt_;
@@ -155,8 +159,8 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			const double&      fixed_tolerance   ,
 			const d_vector& fixed_lower          ,
 			const d_vector& fixed_upper          ,
-			const d_vector& fix_constraint_lower     ,
-			const d_vector& fix_constraint_upper     ,
+			const d_vector& fix_constraint_lower ,
+			const d_vector& fix_constraint_upper ,
 			const d_vector& fixed_in             ,
 			const d_vector& random_lower         ,
 			const d_vector& random_upper         ,
