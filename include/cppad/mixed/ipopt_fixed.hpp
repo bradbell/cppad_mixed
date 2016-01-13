@@ -101,16 +101,15 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		CppAD::mixed::sparse_mat_info fix_con_jac_info_;
 		CppAD::mixed::sparse_mat_info fix_con_hes_info_;
 		//
-		// only defined when n_random_ > 0
-		s_vector ran_objcon_hes_row_; // row indices for Hessian of Laplace
-		s_vector ran_objcon_hes_col_; // column indices for Hessian of Laplace
-		d_vector ran_objcon_hes_val_; // values of Hessian of Laplace approx
+		// hessian of random objective and constraints
+		// (only defined when n_random_ > 0)
+		CppAD::mixed::sparse_mat_info ran_objcon_hes_info_;
 		//
 		s_vector lag_hes_row_;   // row indices for Hessian of Lagrangian
 		s_vector lag_hes_col_;   // column indices for Hessian of Lagrangian
 		s_vector ran_objcon_2_lag_; // ran_objcon_hes_row_ -> lag_hes_row_
 		s_vector fix_likelihood2lag_; // fix_like_hes_row_ -> lag_hes_row_
-		s_vector constraint_2_lag_; // fix_con_hes_row -> lag_hes_row
+		s_vector fix_con_2_lag_; // fix_con_hes_row -> lag_hes_row
 		// ---------------------------------------------------------------
 		// temporaries (size set by constructor only)
 		d_vector        fixed_tmp_;         // size n_fixed_

@@ -406,7 +406,7 @@ mixed_object_      ( mixed_object    )
 				w_ran_objcon_tmp_[i+1] = 1.0;
 			 mixed_object.ran_objcon_hes(
 				fixed_in, random_in, w_ran_objcon_tmp_,
-				ran_objcon_hes_row_, ran_objcon_hes_col_, ran_objcon_hes_val_
+				ran_objcon_hes_info_.row, ran_objcon_hes_info_.col, ran_objcon_hes_info_.val
 			);
 		}
 		// row and column indices for contribution from prior
@@ -433,12 +433,12 @@ mixed_object_      ( mixed_object    )
 		);
 		//
 		// merge to form sparsity for Lagrangian
-		ran_objcon_2_lag_.resize( ran_objcon_hes_row_.size() );
+		ran_objcon_2_lag_.resize( ran_objcon_hes_info_.row.size() );
 		fix_likelihood2lag_.resize( fix_like_hes_info_.row.size() );
-		constraint_2_lag_.resize( fix_con_hes_info_.row.size() );
+		fix_con_2_lag_.resize( fix_con_hes_info_.row.size() );
 		merge_sparse(
-			ran_objcon_hes_row_      ,
-			ran_objcon_hes_col_      ,
+			ran_objcon_hes_info_.row      ,
+			ran_objcon_hes_info_.col      ,
 			fix_like_hes_info_.row        ,
 			fix_like_hes_info_.col        ,
 			fix_con_hes_info_.row   ,
@@ -447,17 +447,17 @@ mixed_object_      ( mixed_object    )
 			lag_hes_col_          ,
 			ran_objcon_2_lag_        ,
 			fix_likelihood2lag_          ,
-			constraint_2_lag_
+			fix_con_2_lag_
 		);
 # ifndef NDEBUG
-		for(size_t k = 0; k < ran_objcon_hes_row_.size(); k++)
+		for(size_t k = 0; k < ran_objcon_hes_info_.row.size(); k++)
 			assert( ran_objcon_2_lag_[k] < lag_hes_row_.size() );
 		//
 		for(size_t k = 0; k < fix_like_hes_info_.row.size(); k++)
 			assert( fix_likelihood2lag_[k] < lag_hes_row_.size() );
 		//
 		for(size_t k = 0; k < fix_con_hes_info_.row.size(); k++)
-			assert( constraint_2_lag_[k] < lag_hes_row_.size() );
+			assert( fix_con_2_lag_[k] < lag_hes_row_.size() );
 # endif
 		// -------------------------------------------------------------------
 		// set nnz_h_lag_
@@ -1313,11 +1313,11 @@ bool ipopt_fixed::eval_h(
 			w_ran_objcon_tmp_[i+1] = 0.0;
 		mixed_object_.ran_objcon_hes(
 			fixed_tmp_, random_cur_, w_ran_objcon_tmp_,
-			ran_objcon_hes_row_, ran_objcon_hes_col_, ran_objcon_hes_val_
+			ran_objcon_hes_info_.row, ran_objcon_hes_info_.col, ran_objcon_hes_info_.val
 		);
-		for(size_t k = 0; k < ran_objcon_hes_row_.size(); k++)
+		for(size_t k = 0; k < ran_objcon_hes_info_.row.size(); k++)
 			values[ ran_objcon_2_lag_[k] ] +=
-				obj_factor * Number( ran_objcon_hes_val_[k] );
+				obj_factor * Number( ran_objcon_hes_info_.val[k] );
 	}
 	//
 	// Hessian of Lagrangian of weighted prior w.r.t. fixed effects
@@ -1347,8 +1347,8 @@ bool ipopt_fixed::eval_h(
 		fix_con_hes_info_.val
 	);
 	for(size_t k = 0; k < fix_con_hes_info_.row.size(); k++)
-	{	assert( constraint_2_lag_[k] < nnz_h_lag_ );
-		values[ constraint_2_lag_[k] ] += Number( fix_con_hes_info_.val[k] );
+	{	assert( fix_con_2_lag_[k] < nnz_h_lag_ );
+		values[ fix_con_2_lag_[k] ] += Number( fix_con_hes_info_.val[k] );
 	}
 	//
 	return true;
