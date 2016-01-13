@@ -8,7 +8,6 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad/mixed/cppad_mixed.hpp>
 
 /*
 $begin init_hes_ran_obj$$
@@ -85,6 +84,8 @@ $cref/sparse Hessian Call/sparse_hes_info/Sparse Hessian Call/f/$$.
 
 $end
 */
+# include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/configure.hpp>
 
 
 void cppad_mixed::init_hes_ran_obj(
@@ -92,6 +93,7 @@ void cppad_mixed::init_hes_ran_obj(
 	const d_vector& random_vec )
 {	assert( ! init_hes_ran_obj_done_ );
 	assert( init_ran_objcon_done_ );
+	assert( init_ran_con_done_ );
 	size_t i, j;
 
 	// total number of variables in H
@@ -101,9 +103,11 @@ void cppad_mixed::init_hes_ran_obj(
 	d_vector beta_theta_u(n_total);
 	pack(fixed_vec, fixed_vec, random_vec, beta_theta_u);
 
+	// 2DO: use CPPAD_MIXED_SET_SPARSITY to choose between set
+	// and vectorBool sparsity
 
 	// compute Jacobian sparsity corresponding to partial w.r.t beta
-	// of H(beta, beta, u)
+	// of [ H(beta, theta, u) , B(beta, theta, u) ]
 	typedef CppAD::vector< std::set<size_t> > sparsity_pattern;
 	sparsity_pattern r(n_total);
 	for(i = 0; i < n_fixed_; i++)
@@ -111,7 +115,8 @@ void cppad_mixed::init_hes_ran_obj(
 	ran_objcon_fun_.ForSparseJac(n_fixed_, r);
 
 	// compute sparsity pattern corresponding to partial w.r.t (beta, theta, u)
-	// of parital w.r.t beta of H(beta, theta, u)
+	// of parital w.r.t beta of H(beta, theta, u) which is the first component
+	// of ran_obj_fun_.
 	sparsity_pattern s(1);
 	assert( s[0].empty() );
 	s[0].insert(0);
@@ -138,8 +143,11 @@ void cppad_mixed::init_hes_ran_obj(
 		}
 	}
 
+	// number of constraints
+	size_t ncon = size_t( ran_con_mat_.rows() );
+
 	// create a weighting vector
-	d_vector w(1);
+	d_vector w(1 + ncon);
 	w[0] = 1.0;
 
 	// place where results go (not used here)
@@ -158,4 +166,3 @@ void cppad_mixed::init_hes_ran_obj(
 	//
 	init_hes_ran_obj_done_ = true;
 }
-

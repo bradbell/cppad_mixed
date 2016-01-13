@@ -244,7 +244,7 @@ r_{\theta,\theta} ( \theta )
 H_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
 \] $$
 
-$head Approximate Random Constraint Function$$
+$head Approximate Random Constraint Function, B(beta, theta, u)$$
 We also define the approximation
 $cref/random constraint function
 	/cppad_mixed

@@ -22,7 +22,7 @@ $spell
 	Cpp
 $$
 
-$section Second Order Representation of Random Objective$$
+$section Second Order Representation of Random Objective and Constraints$$
 
 $head Syntax$$
 $icode%mixed_object%.init_ran_objcon(%fixed_vec%, %random_vec%)%$$
@@ -64,21 +64,30 @@ approximate random objective; see
 $cref/H(beta, theta, u)
 	/theory
 	/Approximate Random Objective, H(beta, theta, u)
-/$$.
+/$$
+$latex H( \beta , \theta , u )$$,
+followed by the approximate random constraint function; see
+$cref/B(beta, theta, u)
+	/theory
+	/Approximate Random Constraint Function, B(beta, theta, u)
+/$$
+$latex B( \beta , \theta , u )$$.
 
 $end
 */
 # include <Eigen/Sparse>
 # include <cppad/mixed/cppad_mixed.hpp>
 
-
-
 // ----------------------------------------------------------------------------
 void cppad_mixed::init_ran_objcon(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec )
-{	assert( ! init_ran_objcon_done_ );
+{	assert( init_ran_con_done_ );
 	assert( init_newton_atom_done_ );
+	assert( ! init_ran_objcon_done_ );
+
+	// number of constraints
+	size_t ncon = size_t ( ran_con_mat_.rows() );
 
 	//	create an a1d_vector containing (beta, theta, u)
 	a1d_vector beta_theta_u( 2 * n_fixed_ + n_random_ );
@@ -111,7 +120,7 @@ void cppad_mixed::init_ran_objcon(
 	double pi   = CppAD::atan(1.0) * 4.0;
 	double constant_term = CppAD::log(2.0 * pi) * double(n_random_) / 2.0;
 	//
-	a1d_vector both(n_fixed_ + n_random_), f(1), H(1);
+	a1d_vector both(n_fixed_ + n_random_), f(1), HB(1 + ncon);
 	// -----------------------------------------------------------------------
 	// U(beta, theta, u)
 	a1d_vector U(n_random_);
@@ -136,7 +145,7 @@ void cppad_mixed::init_ran_objcon(
 	for(size_t j = 0; j < n_random_; j++)
 		W[j] = U[j] - logdet_step[1 + j];
 
-	// Evaluate the log determinant
+	// Evaluate the log determinant and random part of objective
 	a1d_vector beta_W_v(n_fixed_ + 2 * n_random_ );
 	for(size_t j = 0; j < n_fixed_; j++)
 		beta_W_v[j] = beta[j];
@@ -146,10 +155,40 @@ void cppad_mixed::init_ran_objcon(
 	}
 	newton_atom_.eval(beta_W_v, logdet_step);
 	pack(beta, W, both);
-	f    = ran_like_a1fun_.Forward(0, both);
-	H[0] = logdet_step[0] / 2.0 + f[0] - constant_term;
+	f     = ran_like_a1fun_.Forward(0, both);
+	HB[0] = logdet_step[0] / 2.0 + f[0] - constant_term;
+
+	if( ncon > 0 )
+	{
+		// Copy W to an a1 eigen matrix
+		using Eigen::Dynamic;
+		typedef Eigen::Matrix<a1_double, Dynamic, Dynamic>  a1_eigen_dense;
+		a1_eigen_dense eigen_W(n_random_, 1);
+		for(size_t j = 0; j < n_random_; j++)
+			eigen_W(j, 0) = W[j];
+
+		// Copy ran_con_mat_ to an a1 eigen matrix
+		using Eigen::ColMajor;
+		typedef Eigen::SparseMatrix<double,    ColMajor>   eigen_sparse;
+		typedef Eigen::SparseMatrix<a1_double, ColMajor>   a1_eigen_sparse;
+		typedef typename eigen_sparse::InnerIterator       column_itr;
+		a1_eigen_sparse eigen_A(ncon, n_random_);
+		for(size_t j = 0; j < n_fixed_; j++)
+		{	for(column_itr itr(ran_con_mat_, j); itr; ++itr)
+			{	size_t i = itr.row();
+				eigen_A.insert(i, j) = a1_double( itr.value() );
+			}
+		}
+
+		// do the multiplication
+		a1_eigen_dense eigen_B = eigen_A * eigen_W;
+
+		// copy results to range vector
+		for(size_t i = 0; i < ncon; i++)
+			HB[1 + i] = eigen_B(i, 0);
+	}
 	//
-	ran_objcon_fun_.Dependent(beta_theta_u, H);
+	ran_objcon_fun_.Dependent(beta_theta_u, HB);
 # ifdef NDEBUG
 	ran_objcon_fun_.optimize();
 # endif
@@ -157,4 +196,3 @@ void cppad_mixed::init_ran_objcon(
 	init_ran_objcon_done_ = true;
 	return;
 }
-

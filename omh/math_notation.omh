@@ -20,6 +20,14 @@ $cref/random constraint matrix
 	/Random Constraint Matrix, A
 /$$.
 
+$head B$$
+The notation $cref/B(beta, theta, u)
+	/theory
+	/Approximate Random Constraint Function, B(beta, theta, u)
+/$$
+( $latex B( \beta , \theta , u )$$ )
+is used for the second order random constraint approximation.
+
 $head c$$
 The notation $cref/c(theta)/cppad_mixed/Notation/c(theta)/$$
 ( $latex c( \theta )$$ )
@@ -56,7 +64,7 @@ The notation $cref/H(beta, theta, u)
 	/theory
 	/Approximate Random Objective, H(beta, theta, u)
 /$$
-( $latex U( \beta , \theta , u )$$ )
+( $latex H( \beta , \theta , u )$$ )
 is used for the second order random objective.
 
 $head p$$
