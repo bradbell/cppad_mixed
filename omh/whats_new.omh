@@ -16,7 +16,7 @@ $spell
 	namespace
 	cppad
 	dismod
-	chol_hes_ran
+	chol_ran_hes
 	Eigen
 	Wno
 $$
@@ -35,7 +35,7 @@ $list number$$
 The $cref/Cholesky factorization/cholesky/$$ of the Hessian
 with respect to the random effects has been changed from a static
 variable to the private member variable
-$cref/chol_hes_ran_/private/chol_hes_ran_/$$.
+$cref/chol_ran_hes_/private/chol_ran_hes_/$$.
 This has many advantages; e.g.,
 it allows for multiple $cref derived_ctor$$ objects.
 $lnext

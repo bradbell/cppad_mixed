@@ -10,7 +10,7 @@
 # ---------------------------------------------------------------------------
 ADD_LIBRARY(cppad_mixed_eigen
 	cholesky.cpp
-	init_hes_ran.cpp
+	init_ran_hes.cpp
 	init_ran_con.cpp
 	init_ran_objcon.cpp
 	logdet_jac.cpp

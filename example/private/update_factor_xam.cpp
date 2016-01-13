@@ -144,7 +144,7 @@ bool update_factor_xam(void)
 
 	//
 	// inverse of Hessian
-	eigen_sparse inv_hes = mixed_object.chol_hes_ran_.solve(eye);
+	eigen_sparse inv_hes = mixed_object.chol_ran_hes_.solve(eye);
 
 	// Hessian_{i,j} = 1.0 / (theta[i] * theta[i]) if i == j
 	//               = 0.0 otherwise

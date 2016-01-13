@@ -132,9 +132,9 @@ $cref/fix_like_jac_/init_fix_like/fix_like_jac_/$$.
 This is also the number of non-zeros
 in the Jacobian $latex g_\theta ( \theta )$$.
 
-$subhead hes_ran_$$
-$icode%size_map%["hes_ran_"]%$$ is the size of the row vector in
-$cref/hes_ran_/init_hes_ran/hes_ran_/$$.
+$subhead ran_hes_$$
+$icode%size_map%["ran_hes_"]%$$ is the size of the row vector in
+$cref/ran_hes_/init_ran_hes/ran_hes_/$$.
 This is also the number of non-zeros
 in the lower triangle of the Hessian
 $latex \[
@@ -158,13 +158,13 @@ see $cref/f(theta, u)/
 	Random Likelihood, f(theta, u)
 /$$
 
-$subhead hes_ran_fun_$$
-$icode%size_map%["hes_ran_fun_"]%$$ is the number of variables in
-$cref/hes_ran_fun_/init_hes_ran/hes_ran_fun_/$$.
+$subhead ran_hes_fun_$$
+$icode%size_map%["ran_hes_fun_"]%$$ is the number of variables in
+$cref/ran_hes_fun_/init_ran_hes/ran_hes_fun_/$$.
 
-$subhead hes_ran_obj_$$
-$icode%size_map%["hes_ran_obj_"]%$$ is the size of the row vector in
-$cref/hes_ran_obj_/init_hes_ran_obj/hes_ran_obj_/$$.
+$subhead ran_hes_obj_$$
+$icode%size_map%["ran_hes_obj_"]%$$ is the size of the row vector in
+$cref/ran_hes_obj_/init_ran_hes_obj/ran_hes_obj_/$$.
 This is also the number of non-zeros
 in the lower triangle of the Hessian
 $latex \[
@@ -254,15 +254,15 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 		init_ran_like(fixed_vec, random_vec);
 		assert( init_ran_like_done_ );
 
-		// hes_ran_
-		assert( ! init_hes_ran_done_ );
-		init_hes_ran(fixed_vec, random_vec);
-		assert( init_hes_ran_done_ );
+		// ran_hes_
+		assert( ! init_ran_hes_done_ );
+		init_ran_hes(fixed_vec, random_vec);
+		assert( init_ran_hes_done_ );
 
 		// cholesky factor
 		assert( ! init_cholesky_done_ );
-		chol_hes_ran_.init(
-			n_fixed_, n_random_, hes_ran_.row, hes_ran_.col
+		chol_ran_hes_.init(
+			n_fixed_, n_random_, ran_hes_.row, ran_hes_.col
 		);
 		init_cholesky_done_ = true;
 
@@ -285,10 +285,10 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 			init_ran_objcon(fixed_vec, random_vec);
 			assert( init_ran_objcon_done_ );
 
-			// hes_ran_obj_
-			assert( ! init_hes_ran_obj_done_ );
-			init_hes_ran_obj(fixed_vec, random_vec);
-			assert( init_hes_ran_obj_done_ );
+			// ran_hes_obj_
+			assert( ! init_ran_hes_obj_done_ );
+			init_ran_hes_obj(fixed_vec, random_vec);
+			assert( init_ran_hes_obj_done_ );
 		}
 	}
 
@@ -311,15 +311,15 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	size_map["ran_like_fun_"]   = ran_like_fun_.size_var();
 	size_map["ran_like_a1fun_"] = ran_like_a1fun_.size_var();
 	//
-	size_map["hes_ran_"]              = hes_ran_.row.size();
-	size_map["hes_ran_fun_"]          = hes_ran_fun_.size_var();
+	size_map["ran_hes_"]              = ran_hes_.row.size();
+	size_map["ran_hes_fun_"]          = ran_hes_fun_.size_var();
 	//
 	size_map["hes_cross_"]            = hes_cross_.row.size();
 	if( ! quasi_fixed_ )
 	{	size_map["newton_step_"]      = newton_atom_.size_var();
 		//
 		size_map["ran_objcon_fun_"]       = ran_objcon_fun_.size_var();
-		size_map["hes_ran_obj_"]       = hes_ran_obj_.row.size();
+		size_map["ran_hes_obj_"]       = ran_hes_obj_.row.size();
 	}
 	size_map["fix_like_fun_"]   = fix_like_fun_.size_var();
 	size_map["fix_like_jac_"]   = fix_like_jac_.row.size();

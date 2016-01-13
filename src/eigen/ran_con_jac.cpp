@@ -181,7 +181,7 @@ void cppad_mixed::ran_con_jac(
 		}
 		assert( col > j );
 		// j-th column of - f_{u,u}(theta, u)^{-1} f_{u,theta}(theta, u)
-		eigen_sparse x    = chol_hes_ran_.solve(b);
+		eigen_sparse x    = chol_ran_hes_.solve(b);
 		// multipliy A times j-th column of uhat_theta
 		eigen_sparse jac_j = ran_con_mat_ * x;
 		// convert to sparse_mat_info format

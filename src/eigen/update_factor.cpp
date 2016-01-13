@@ -60,25 +60,25 @@ $cref/random objective/theory/Objective/Random Objective, r(theta)/$$,
 this should be the
 $cref/optimal random effects/theory/Optimal Random Effects, u^(theta)/$$.
 
-$head hes_ran_fun_$$
-The $cref/hes_ran_fun_/private/hes_ran_fun_/$$ member variable
+$head ran_hes_fun_$$
+The $cref/ran_hes_fun_/private/ran_hes_fun_/$$ member variable
 will hold the first order Taylor coefficient corresponding
 to the specified fixed and random effects; i.e.,
 $codei%
-	hes_ran_fun_.Forward(0, %both%)
+	ran_hes_fun_.Forward(0, %both%)
 %$$
 has been called where $icode both$$ is a packed version
 of the fixed and random effects.
 
-$head factorize_chol_hes_ran_$$
+$head factorize_chol_ran_hes_$$
 On input, the member variable
 $codei%
-	CppAD::mixed::cholesky chol_hes_ran_
+	CppAD::mixed::cholesky chol_ran_hes_
 %$$
 has been
 $cref/initialized/cholesky_init/$$
 using the sparsity pattern for the Hessian.
-Upon return, $code chol_hes_ran_$$ contains the
+Upon return, $code chol_ran_hes_$$ contains the
 $cref/factorization/cholesky_factorize/$$
 corresponding to the specified values for the fixed
 and random effects.
@@ -97,15 +97,15 @@ $end
 void cppad_mixed::update_factor(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec )
-{	assert( init_hes_ran_done_ );
+{	assert( init_ran_hes_done_ );
 	assert( fixed_vec.size() == n_fixed_ );
 	assert( random_vec.size() == n_random_ );
 
 	// compute an LDL^T Cholesky factorization of f_{u,u} (theta, u)
 	d_vector both(n_fixed_ + n_random_);
 	pack(fixed_vec, random_vec, both);
-	chol_hes_ran_.factorize(
-		n_fixed_, n_random_, hes_ran_.row, hes_ran_.col, both, hes_ran_fun_
+	chol_ran_hes_.factorize(
+		n_fixed_, n_random_, ran_hes_.row, ran_hes_.col, both, ran_hes_fun_
 	);
 }
 

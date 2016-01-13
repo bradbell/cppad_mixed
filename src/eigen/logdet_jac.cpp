@@ -57,10 +57,10 @@ We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
-$head chol_hes_ran_$$
+$head chol_ran_hes_$$
 It is assumed that the member variable
 $codei%
-	CppAD::mixed::cholesky chol_hes_ran_
+	CppAD::mixed::cholesky chol_ran_hes_
 %$$
 was updated using $cref update_factor$$ for the specified values of the
 fixed and random effects.
@@ -87,7 +87,7 @@ $codei%
 Its input size must be equal to $code n_fixed_$$.
 Upon return, it contains the value of the derivative w.r.t
 the fixed effects.
-$codei%hes_ran_.col[%k%] - n_fixed_%$$ of the Hessian.
+$codei%ran_hes_.col[%k%] - n_fixed_%$$ of the Hessian.
 
 $head logdet_ran$$
 This argument has prototype
@@ -114,7 +114,7 @@ void cppad_mixed::logdet_jac(
 	const d_vector& random_vec ,
 	d_vector&       logdet_fix ,
 	d_vector&       logdet_ran )
-{	assert( init_hes_ran_done_ );
+{	assert( init_ran_hes_done_ );
 
 	assert( fixed_vec.size() == n_fixed_ );
 	assert( random_vec.size() == n_random_ );
@@ -126,8 +126,8 @@ void cppad_mixed::logdet_jac(
 	typedef typename eigen_sparse::InnerIterator          column_itr;
 
 	// number of non-zeros in Hessian
-	size_t K = hes_ran_.row.size();
-	assert( K == hes_ran_.col.size() );
+	size_t K = ran_hes_.row.size();
+	assert( K == ran_hes_.col.size() );
 
 	// Compute derivative of sum_k w_k hessian_k
 	// where w_k f_{u,u} (theta, u)^{-1} at (row[k], col[k]).
@@ -136,15 +136,15 @@ void cppad_mixed::logdet_jac(
 		w[k] = 0.0;
 
 	// Use the column major order speicifcation for
-	// (hes_ran_.row, hes_ran_.col)
+	// (ran_hes_.row, ran_hes_.col)
 	size_t k  = 0;
 	size_t col = n_random_;
 	size_t row = n_random_;
 	if( k < K )
-	{	assert( hes_ran_.row[k] >= n_fixed_ );
-		assert( hes_ran_.col[k] >= n_fixed_ );
-		row = hes_ran_.row[k] - n_fixed_;
-		col = hes_ran_.col[k] - n_fixed_;
+	{	assert( ran_hes_.row[k] >= n_fixed_ );
+		assert( ran_hes_.col[k] >= n_fixed_ );
+		row = ran_hes_.row[k] - n_fixed_;
+		col = ran_hes_.col[k] - n_fixed_;
 		assert( row < n_random_ );
 		assert( col < n_random_ );
 	}
@@ -154,7 +154,7 @@ void cppad_mixed::logdet_jac(
 		eigen_sparse b(n_random_, 1);
 		b.insert(j, 0) = 1.0;
 		// x = j-th column of f_{u,u} (theta, u)^{-1}
-		eigen_sparse x = chol_hes_ran_.solve(b);
+		eigen_sparse x = chol_ran_hes_.solve(b);
 		assert( size_t(x.outerSize()) == 1 );
 		assert( size_t (x.innerSize()) == n_random_ );
 		//
@@ -164,10 +164,10 @@ void cppad_mixed::logdet_jac(
 			{	while( row < i )
 				{	k++;
 					if( k < K )
-					{	assert( hes_ran_.row[k] >= n_fixed_ );
-						assert( hes_ran_.col[k] >= n_fixed_ );
-						row = hes_ran_.row[k] - n_fixed_;
-						col = hes_ran_.col[k] - n_fixed_;
+					{	assert( ran_hes_.row[k] >= n_fixed_ );
+						assert( ran_hes_.col[k] >= n_fixed_ );
+						row = ran_hes_.row[k] - n_fixed_;
+						col = ran_hes_.col[k] - n_fixed_;
 						assert( row < n_random_ );
 						assert( col < n_random_ );
 					}
@@ -179,7 +179,7 @@ void cppad_mixed::logdet_jac(
 			{	// note off diagonal elements need to be counted twice
 				// becasue only computing for lower triangle
 				w[k] = itr.value();
-				if( hes_ran_.row[k] != hes_ran_.col[k] )
+				if( ran_hes_.row[k] != ran_hes_.col[k] )
 					w[k] = 2.0 * w[k];
 			}
 		}
@@ -188,10 +188,10 @@ void cppad_mixed::logdet_jac(
 		while( col == j )
 		{	k++;
 			if( k < K )
-			{	assert( hes_ran_.row[k] >= n_fixed_ );
-				assert( hes_ran_.col[k] >= n_fixed_ );
-				row = hes_ran_.row[k] - n_fixed_;
-				col = hes_ran_.col[k] - n_fixed_;
+			{	assert( ran_hes_.row[k] >= n_fixed_ );
+				assert( ran_hes_.col[k] >= n_fixed_ );
+				row = ran_hes_.row[k] - n_fixed_;
+				col = ran_hes_.col[k] - n_fixed_;
 				assert( row < n_random_ );
 				assert( col < n_random_ );
 			}
@@ -200,7 +200,7 @@ void cppad_mixed::logdet_jac(
 		}
 	}
 	d_vector dw(n_fixed_ + n_random_);
-	dw = hes_ran_fun_.Reverse(1, w);
+	dw = ran_hes_fun_.Reverse(1, w);
 	//
 	// split out fixed and random parts of the derivative
 	unpack(logdet_fix, logdet_ran, dw);

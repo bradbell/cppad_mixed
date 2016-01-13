@@ -27,7 +27,7 @@ cholesky::~cholesky(void)
 $begin cholesky_init$$
 $spell
 	Cholesky
-	chol_hes_ran
+	chol_ran_hes
 	CppAD
 	const
 	init
@@ -36,7 +36,7 @@ $$
 $section Initialize Cholesky Factor for a Specific Sparsity Pattern$$
 
 $head Syntax$$
-$icode%chol_hes_ran%.init(%n_fixed%, %n_random%, %row%, %col%)
+$icode%chol_ran_hes%.init(%n_fixed%, %n_random%, %row%, %col%)
 %$$
 
 $head Private$$
@@ -44,10 +44,10 @@ The $code cholesky$$ class is an
 $cref/implementation detail/cholesky/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head chol_hes_ran$$
+$head chol_ran_hes$$
 This object has prototype
 $codei%
-	CppAD::mixed::cholesky %chol_hes_ran%
+	CppAD::mixed::cholesky %chol_ran_hes%
 %$$
 
 $head n_fixed$$
@@ -118,7 +118,7 @@ void cholesky::init(
 $begin cholesky_factorize$$
 $spell
 	Cholesky
-	chol_hes_ran
+	chol_ran_hes
 	CppAD
 	const
 	Taylor
@@ -128,8 +128,8 @@ $$
 $section Compute Cholesky Factor for Specific Fixed and Random Effects$$
 
 $head Syntax$$
-$icode%chol_hes_ran%.factorize(
-	%n_fixed%, %n_random%, %row%, %col%, %both%, %hes_ran_fun%
+$icode%chol_ran_hes%.factorize(
+	%n_fixed%, %n_random%, %row%, %col%, %both%, %ran_hes_fun%
 )
 %$$
 
@@ -138,10 +138,10 @@ The $code cholesky$$ class is an
 $cref/implementation detail/cholesky/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head chol_hes_ran$$
+$head chol_ran_hes$$
 This object has prototype
 $codei%
-	CppAD::mixed::cholesky %chol_hes_ran%
+	CppAD::mixed::cholesky %chol_ran_hes%
 %$$
 In addition, it must have a previous call to
 $cref cholesky_init$$.
@@ -172,20 +172,20 @@ This is the values of the fixed and random effects at which the Hessian
 is being computed and factored.
 The fixed effects come first and then the random effects.
 
-$head hes_ran_fun$$
+$head ran_hes_fun$$
 This argument has prototype
 $codei%
-	CppAD::ADFun<double>& %hes_ran_fun%
+	CppAD::ADFun<double>& %ran_hes_fun%
 %$$
-It has $icode%hes_ran_fun%.Domain() = %n_fixed% + %n_random%$$
-and $icode%hes_ran_fun%.Range() = %row%.size()%$$
+It has $icode%ran_hes_fun%.Domain() = %n_fixed% + %n_random%$$
+and $icode%ran_hes_fun%.Range() = %row%.size()%$$
 The function call
 $codei%
-	%val% = %hes_ran_fun%.Forward(0, %both%)
+	%val% = %ran_hes_fun%.Forward(0, %both%)
 %$$
 is used to compute the values of the Hessian.
 Thus, upon return, the first order Taylor coefficient for the corresponding
-fixed and random effects are stored in $icode hes_ran_fun$$.
+fixed and random effects are stored in $icode ran_hes_fun$$.
 
 $end
 */
@@ -196,11 +196,11 @@ void cholesky::factorize(
 	const CppAD::vector<size_t>& row          ,
 	const CppAD::vector<size_t>& col          ,
 	const CppAD::vector<double>& both         ,
-	CppAD::ADFun<double>&        hes_ran_fun  )
+	CppAD::ADFun<double>&        ran_hes_fun  )
 {
 	size_t K = row.size();
 	CppAD::vector<double> val(K);
-	val = hes_ran_fun.Forward(0, both);
+	val = ran_hes_fun.Forward(0, both);
 
 	Eigen::SparseMatrix<double> hessian_value(n_random, n_random);
 	assert( row.size() == col.size() );
@@ -219,14 +219,14 @@ $begin cholesky_logdet$$
 $spell
 	Cholesky
 	logdet
-	chol_hes_ran
+	chol_ran_hes
 	CppAD
 $$
 
 $section Compute Log Determinant for Current Cholesky Factor$$
 
 $head Syntax$$
-$icode%logdet% = %chol_hes_ran%.logdet(%n_random%)
+$icode%logdet% = %chol_ran_hes%.logdet(%n_random%)
 %$$
 
 $head Private$$
@@ -234,10 +234,10 @@ The $code cholesky$$ class is an
 $cref/implementation detail/cholesky/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head chol_hes_ran$$
+$head chol_ran_hes$$
 This object has prototype
 $codei%
-	CppAD::mixed::cholesky %chol_hes_ran%
+	CppAD::mixed::cholesky %chol_ran_hes%
 %$$
 In addition, it must have a previous call to
 $cref cholesky_factorize$$.
@@ -252,7 +252,7 @@ $codei%
 	double %logdet%
 %$$
 Is the log of the determinant of the Hessian corresponding
-to the previous call to $codei%chol_hes_ran%.factorize%$$.
+to the previous call to $codei%chol_ran_hes%.factorize%$$.
 
 $end
 */
@@ -275,7 +275,7 @@ $begin cholesky_solve$$
 $spell
 	Cholesky
 	logdet
-	chol_hes_ran
+	chol_ran_hes
 	CppAD
 	const
 	eigen
@@ -284,7 +284,7 @@ $$
 $section Solve Hessian Times Unknown Matrix Equals Known Matrix$$
 
 $head Syntax$$
-$icode%result% = %chol_hes_ran%.solve(%known%)
+$icode%result% = %chol_ran_hes%.solve(%known%)
 %$$
 
 $head Private$$
@@ -292,10 +292,10 @@ The $code cholesky$$ class is an
 $cref/implementation detail/cholesky/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head chol_hes_ran$$
+$head chol_ran_hes$$
 This object has prototype
 $codei%
-	CppAD::mixed::cholesky %chol_hes_ran%
+	CppAD::mixed::cholesky %chol_ran_hes%
 %$$
 In addition, it must have a previous call to
 $cref cholesky_factorize$$.

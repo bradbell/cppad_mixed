@@ -42,7 +42,7 @@ extern bool fix_like_eval_xam(void);
 extern bool fix_like_jac_xam(void);
 extern bool fix_like_hes_xam(void);
 extern bool hes_cross_xam(void);
-extern bool hes_ran_fun_xam(void);
+extern bool ran_hes_fun_xam(void);
 extern bool ipopt_xam_run(void);
 extern bool logdet_jac_xam(void);
 extern bool manage_gsl_rng_xam(void);
@@ -101,7 +101,7 @@ int main(void)
 	RUN(fix_like_jac_xam);
 	RUN(fix_like_hes_xam);
 	RUN(hes_cross_xam);
-	RUN(hes_ran_fun_xam);
+	RUN(ran_hes_fun_xam);
 	RUN(ipopt_xam_run);
 	RUN(logdet_jac_xam);
 	RUN(manage_gsl_rng_xam);

@@ -27,7 +27,7 @@ extern bool fix_like_eval_xam(void);
 extern bool fix_like_hes_xam(void);
 extern bool fix_like_jac_xam(void);
 extern bool hes_cross_xam(void);
-extern bool hes_ran_fun_xam(void);
+extern bool ran_hes_fun_xam(void);
 extern bool logdet_jac_xam(void);
 extern bool ran_con_eval_xam(void);
 extern bool ran_con_jac_xam(void);
@@ -158,12 +158,12 @@ $comment */
 	quasi_fixed_(quasi_fixed)       ,
 	init_ran_con_done_(false)       ,
 	init_ran_like_done_(false)      ,
-	init_hes_ran_done_(false)       ,
+	init_ran_hes_done_(false)       ,
 	init_cholesky_done_(false)      ,
 	init_hes_cross_done_(false)     ,
 	init_newton_atom_done_(false)   ,
 	init_ran_objcon_done_(false)    ,
-	init_hes_ran_obj_done_(false)   ,
+	init_ran_hes_obj_done_(false)   ,
 	init_fix_like_done_(false)      ,
 	init_fix_con_done_(false)       ,
 	initialize_done_(false)
@@ -262,13 +262,13 @@ $cref/mixed_object/derived_ctor/mixed_object/$$.
 $childtable%include/cppad/mixed/pack.hpp
 	%include/cppad/mixed/unpack.hpp
 
-	%src/eigen/init_hes_ran.cpp
+	%src/eigen/init_ran_hes.cpp
 	%src/eigen/init_ran_con.cpp
 	%src/eigen/init_ran_objcon.cpp
 	%src/init_fix_con.cpp
 	%src/init_fix_like.cpp
 	%src/init_hes_cross.cpp
-	%src/init_hes_ran_obj.cpp
+	%src/init_ran_hes_obj.cpp
 	%src/init_ran_like.cpp
 
 	%src/fix_con_eval.cpp
@@ -314,13 +314,13 @@ $codep */
 	// only called when n_random_ > 0
 	bool                init_ran_con_done_;
 	bool                init_ran_like_done_;
-	bool                init_hes_ran_done_;
+	bool                init_ran_hes_done_;
 	bool                init_cholesky_done_;
 	bool                init_hes_cross_done_;
 	// only called when n_random_ > 0 and quasi_fixed_ is false
 	bool                init_newton_atom_done_;
 	bool                init_ran_objcon_done_;
-	bool                init_hes_ran_obj_done_;
+	bool                init_ran_hes_obj_done_;
 	// called in all cases
 	bool                init_fix_like_done_;
 	bool                init_fix_con_done_;
@@ -358,9 +358,9 @@ $codep */
 The following objects hold information for computing derivatives
 with these ADFun objects:
 
-$head hes_ran_fun_$$
-If $icode%n_random_% > 0%$$ and $code init_hes_ran_done_$$,
-$cref/hes_ran_/init_hes_ran/hes_ran_/$$ contains
+$head ran_hes_fun_$$
+If $icode%n_random_% > 0%$$ and $code init_ran_hes_done_$$,
+$cref/ran_hes_/init_ran_hes/ran_hes_/$$ contains
 information for the Hessian of the
 $cref/random likelihood
 	/theory
@@ -369,16 +369,16 @@ $cref/random likelihood
 with respect to the random effects; i.e.
 $latex f_{u,u} ( \theta , u )$$.
 $codep */
-	CppAD::mixed::sparse_hes_info hes_ran_;
+	CppAD::mixed::sparse_hes_info ran_hes_;
 	// recording of sparse Hessian calculation
-	CppAD::ADFun<double>        hes_ran_fun_;
+	CppAD::ADFun<double>        ran_hes_fun_;
 	//
-	friend bool ::hes_ran_fun_xam(void);
+	friend bool ::ran_hes_fun_xam(void);
 /* $$
 
-$head chol_hes_ran_$$
+$head chol_ran_hes_$$
 If $icode%n_random_% > 0%$$ and $code init_cholesky_done_$$,
-$code chol_hes_ran_$$ contains a
+$code chol_ran_hes_$$ contains a
 $cref cholesky$$ factor for the Hessian of the
 $cref/random likelihood
 	/theory
@@ -386,7 +386,7 @@ $cref/random likelihood
 /$$
 ; i.e.  $latex f_{u,u} ( \theta , u )$$.
 $codep */
-	CppAD::mixed::cholesky chol_hes_ran_;
+	CppAD::mixed::cholesky chol_ran_hes_;
 /* $$
 
 $head hes_cross_$$
@@ -429,10 +429,10 @@ $codep */
 The following objects hold information for computing derivatives
 with this ADFun object:
 
-$subhead hes_ran_obj_$$
+$subhead ran_hes_obj_$$
 If $icode%n_random_% > 0%$$, quasi_fixed_ is false, and
-$code init_hes_ran_obj_done_$$,
-$cref/hes_ran_obj_/init_hes_ran_obj/hes_ran_obj_/$$ contains
+$code init_ran_hes_obj_done_$$,
+$cref/ran_hes_obj_/init_ran_hes_obj/ran_hes_obj_/$$ contains
 information for the Hessian of the
 $cref/random objective
 	/theory
@@ -440,7 +440,7 @@ $cref/random objective
 	/Random Objective, r(theta)
 /$$
 $codep */
-	CppAD::mixed::sparse_hes_info hes_ran_obj_;
+	CppAD::mixed::sparse_hes_info ran_hes_obj_;
 /* $$
 $comment ------------------------------------------------------------------- $$
 
@@ -560,19 +560,19 @@ $codep */
 	);
 /* $$
 
-$subhead init_hes_ran$$
-See $cref init_hes_ran$$.
+$subhead init_ran_hes$$
+See $cref init_ran_hes$$.
 $codep */
-	void init_hes_ran(
+	void init_ran_hes(
 		const d_vector& fixed_vec ,
 		const d_vector& random_vec
 	);
 /* $$
 
-$subhead init_hes_ran_obj$$
-See $cref init_hes_ran_obj$$.
+$subhead init_ran_hes_obj$$
+See $cref init_ran_hes_obj$$.
 $codep */
-	void init_hes_ran_obj(
+	void init_ran_hes_obj(
 		const d_vector& fixed_vec ,
 		const d_vector& random_vec
 	);

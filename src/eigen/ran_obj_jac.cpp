@@ -46,10 +46,10 @@ We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
-$head chol_hes_ran_$$
+$head chol_ran_hes_$$
 It is assumed that the member variable
 $codei%
-	CppAD::mixed::cholesky chol_hes_ran_
+	CppAD::mixed::cholesky chol_ran_hes_
 %$$
 was updated using $cref update_factor$$ for the specified values of the
 fixed and random effects.
@@ -104,8 +104,8 @@ void cppad_mixed::ran_obj_jac(
 	typedef typename eigen_sparse::InnerIterator          column_itr;
 
 	// number of non-zeros in Hessian
-	size_t K = hes_ran_.row.size();
-	assert( K == hes_ran_.col.size() );
+	size_t K = ran_hes_.row.size();
+	assert( K == ran_hes_.col.size() );
 
 	//
 	// Compute derivative of logdet of f_{u,u} ( theta , u )
@@ -175,7 +175,7 @@ void cppad_mixed::ran_obj_jac(
 		}
 		assert( col > j );
 		// j-th column of - f_{u,u}(theta, u)^{-1} f_{u,theta}(theta, u)
-		eigen_sparse x = chol_hes_ran_.solve(b);
+		eigen_sparse x = chol_ran_hes_.solve(b);
 		assert( size_t(x.outerSize()) == 1 );
 		assert( size_t (x.innerSize()) == n_random_ );
 		//

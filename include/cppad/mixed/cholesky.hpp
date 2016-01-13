@@ -25,16 +25,16 @@ $$
 $section Cholesky Factor Class$$
 
 $head Syntax$$
-$codei%CppAD::mixed::cholesky %chol_hes_ran%%;
+$codei%CppAD::mixed::cholesky %chol_ran_hes%%;
 %$$
 
 $head Private$$
 This class is an implementation detail and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head chol_hes_ran$$
+$head chol_ran_hes$$
 This constructor creates a Cholesky factor.
-It is called $icode chol_hes_ran$$ because it is only intended for
+It is called $icode chol_ran_hes$$ because it is only intended for
 a cholesky factor of the Hessian with respect to the random effects; i.e.,
 $latex f_{u,u} ( \theta , u )$$.
 
@@ -83,7 +83,7 @@ public:
 		const CppAD::vector<size_t>& row          ,
 		const CppAD::vector<size_t>& col          ,
 		const CppAD::vector<double>& both         ,
-		CppAD::ADFun<double>&        hes_ran_fun
+		CppAD::ADFun<double>&        ran_hes_fun
 	);
 	// logdet
 	double logdet(size_t n_random) const;

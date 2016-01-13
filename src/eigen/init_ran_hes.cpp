@@ -12,7 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/configure.hpp>
 
 /*
-$begin init_hes_ran$$
+$begin init_ran_hes$$
 $spell
 	CppAD
 	init
@@ -35,7 +35,7 @@ $$
 $section Initialize Hessian of Random Likelihood w.r.t Random Effects$$
 
 $head Syntax$$
-$icode%mixed_object%.init_hes_ran(%fixed_vec%, %random_vec%)%$$
+$icode%mixed_object%.init_ran_hes(%fixed_vec%, %random_vec%)%$$
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
@@ -63,10 +63,10 @@ It specifies the value of the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$ at which the initialization is done.
 
-$head hes_ran_$$
+$head ran_hes_$$
 The input value of the member variable
 $codei%
-	CppAD::mixed::sparse_hes_info hes_ran_
+	CppAD::mixed::sparse_hes_info ran_hes_
 %$$
 does not matter.
 Upon return it contains the
@@ -101,8 +101,8 @@ $head Random Effects Index$$
 To get the indices relative to just the random effects, subtract
 $code n_fixed_$$; i.e.,
 $codei%
-	hes_ran_.row[%k%] - n_fixed_
-	hes_ran_.col[%k%] - n_fixed_
+	ran_hes_.row[%k%] - n_fixed_
+	ran_hes_.col[%k%] - n_fixed_
 %$$
 are between zero and the $code n_random_$$ and
 are the row and column indices for the Hessian element
@@ -112,21 +112,21 @@ $icode a1_val_out$$ in the call to $code SparseHessian$$.
 $head Lower Triangle$$
 The result are only for the lower triangle of the Hessian; i.e.,
 $codei%
-	hes_ran_.row[%k%] >= hes_ran_.col[%k%]
+	ran_hes_.row[%k%] >= ran_hes_.col[%k%]
 %$$
 
 $head Order$$
 The results are in column major order; i.e.,
 $codei%
-	hes_ran_.col[%k%] <= hes_ran_.col[%k+1%]
-	if( hes_ran_.col[%k%] == hes_ran_.col[%k+1%] )
-		hes_ran_.row[%k%] < hes_ran_.row[%k+1%]
+	ran_hes_.col[%k%] <= ran_hes_.col[%k+1%]
+	if( ran_hes_.col[%k%] == ran_hes_.col[%k+1%] )
+		ran_hes_.row[%k%] < ran_hes_.row[%k+1%]
 %$$
 
-$head hes_ran_fun_$$
+$head ran_hes_fun_$$
 The input value of the member variables
 $codei%
-	CppAD::ADFun<double> hes_ran_fun_
+	CppAD::ADFun<double> ran_hes_fun_
 %$$
 does not matter.
 Upon return its zero order forward mode computes
@@ -136,7 +136,7 @@ $latex \[
 \]$$
 in the same order as the $icode a1_val_out$$ above.
 
-$contents%example/private/hes_ran_fun_xam.cpp
+$contents%example/private/ran_hes_fun_xam.cpp
 %$$
 
 $end
@@ -144,10 +144,10 @@ $end
 
 
 
-void cppad_mixed::init_hes_ran(
+void cppad_mixed::init_ran_hes(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec )
-{	assert( ! init_hes_ran_done_ );
+{	assert( ! init_ran_hes_done_ );
 	assert( fixed_vec.size() == n_fixed_ );
 	assert( random_vec.size() == n_random_ );
 	size_t i, j;
@@ -256,15 +256,15 @@ void cppad_mixed::init_hes_ran(
 # endif
 	// -----------------------------------------------------------------------
 
-	// set hes_ran_.row and hes_ran_.col in colum major order
+	// set ran_hes_.row and ran_hes_.col in colum major order
 	size_t K = row.size();
 	CppAD::vector<size_t> ind(K);
 	CppAD::index_sort(key, ind);
-	hes_ran_.row.resize(K);
-	hes_ran_.col.resize(K);
+	ran_hes_.row.resize(K);
+	ran_hes_.col.resize(K);
 	for(size_t k = 0; k < row.size(); k++)
-	{	hes_ran_.row[k] = row[ ind[k] ];
-		hes_ran_.col[k] = col[ ind[k] ];
+	{	ran_hes_.row[k] = row[ ind[k] ];
+		ran_hes_.col[k] = col[ ind[k] ];
 	}
 
 	// create a weighting vector
@@ -279,13 +279,13 @@ void cppad_mixed::init_hes_ran(
 		both,
 		w,
 		pattern,
-		hes_ran_.row,
-		hes_ran_.col,
+		ran_hes_.row,
+		ran_hes_.col,
 		val_out,
-		hes_ran_.work
+		ran_hes_.work
 	);
 
-	// now tape the same computation and store in hes_ran_fun_
+	// now tape the same computation and store in ran_hes_fun_
 	CppAD::vector< std::set<size_t> > not_used(0);
 	a1d_vector a1_both(n_total), a1_w(1), a1_val_out(K);
 	for(size_t i = 0; i < n_total; i++)
@@ -296,14 +296,14 @@ void cppad_mixed::init_hes_ran(
 		a1_both,
 		a1_w,
 		not_used,
-		hes_ran_.row,
-		hes_ran_.col,
+		ran_hes_.row,
+		ran_hes_.col,
 		a1_val_out,
-		hes_ran_.work
+		ran_hes_.work
 	);
-	hes_ran_fun_.Dependent(a1_both, a1_val_out);
+	ran_hes_fun_.Dependent(a1_both, a1_val_out);
 	//
-	init_hes_ran_done_ = true;
+	init_ran_hes_done_ = true;
 }
 
 

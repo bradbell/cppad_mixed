@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin hes_ran_fun_xam.cpp$$
+$begin ran_hes_fun_xam.cpp$$
 $spell
 	CppAD
 	cppad
@@ -18,7 +18,7 @@ $spell
 	xam
 $$
 
-$section hes_ran_fun_: Example and Test$$
+$section ran_hes_fun_: Example and Test$$
 
 
 $head Private$$
@@ -26,7 +26,7 @@ This example is not part of the
 $cref/cppad_mixed public API/public/$$.
 
 $code
-$verbatim%example/private/hes_ran_fun_xam.cpp
+$verbatim%example/private/ran_hes_fun_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -110,7 +110,7 @@ namespace {
 	};
 }
 
-bool hes_ran_fun_xam(void)
+bool ran_hes_fun_xam(void)
 {
 	bool   ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
@@ -134,16 +134,16 @@ bool hes_ran_fun_xam(void)
 	mixed_object.initialize(A_info, theta, u);
 
 	// number of non-zeros in Hessian w.r.t random effects
-	ok &= mixed_object.hes_ran_.row.size() == n_random;
-	ok &= mixed_object.hes_ran_.col.size() == n_random;
+	ok &= mixed_object.ran_hes_.row.size() == n_random;
+	ok &= mixed_object.ran_hes_.col.size() == n_random;
 
 	// compute Hessian with respect to random effects
 	vector<double> both_vec(n_fixed + n_random), val_out(n_random);
 	mixed_object.pack(fixed_vec, random_vec, both_vec);
-	val_out = mixed_object.hes_ran_fun_.Forward(0, both_vec);
+	val_out = mixed_object.ran_hes_fun_.Forward(0, both_vec);
 
-	CppAD::vector<size_t>& row(mixed_object.hes_ran_.row);
-	CppAD::vector<size_t>& col(mixed_object.hes_ran_.col);
+	CppAD::vector<size_t>& row(mixed_object.ran_hes_.row);
+	CppAD::vector<size_t>& col(mixed_object.ran_hes_.col);
 
 	// check Hessian
 	for(size_t k = 0; k < n_random; k++)

@@ -49,10 +49,10 @@ We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
-$head chol_hes_ran_$$
+$head chol_ran_hes_$$
 It is assumed that the member variable
 $codei%
-	CppAD::mixed::cholesky chol_hes_ran_
+	CppAD::mixed::cholesky chol_ran_hes_
 %$$
 was updated using $cref update_factor$$ for the specified values of the
 fixed and random effects.
@@ -105,21 +105,21 @@ double cppad_mixed::ran_obj_eval(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec )
 {	assert( init_ran_like_done_ );
-	assert( init_hes_ran_done_ );
+	assert( init_ran_hes_done_ );
 
 	assert( fixed_vec.size() == n_fixed_ );
 	assert( random_vec.size() == n_random_ );
 
 	// number of non-zeros in Hessian
-	size_t K = hes_ran_.row.size();
-	assert( K == hes_ran_.col.size() );
+	size_t K = ran_hes_.row.size();
+	assert( K == ran_hes_.col.size() );
 
 	// pack fixed and random effects into one vector
 	d_vector both(n_fixed_ + n_random_);
 	pack(fixed_vec, random_vec, both);
 
 	// compute the logdet( f_{u,u}(theta, u )
-	double logdet = chol_hes_ran_.logdet(n_random_);
+	double logdet = chol_ran_hes_.logdet(n_random_);
 
 	// constant term
 	double pi   = CppAD::atan(1.0) * 4.0;
