@@ -21,7 +21,7 @@ ADD_LIBRARY(cppad_mixed
 	init_fix_con.cpp
 	init_fix_like.cpp
 	init_hes_cross.cpp
-	init_ran_hes_obj.cpp
+	init_ran_obj_hes.cpp
 	initialize.cpp
 	init_ran_like.cpp
 	ipopt_fixed.cpp
