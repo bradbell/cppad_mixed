@@ -452,7 +452,7 @@ mixed_object_      ( mixed_object    )
 	c_vec_tmp_.resize( n_fix_con_ );
 	H_beta_tmp_.resize( n_fixed_ );
 	w_fix_likelihood_tmp_.resize( fix_likelihood_n_abs_ + 1 );
-	w_constraint_tmp_.resize( n_fix_con_ );
+	w_fix_con_tmp_.resize( n_fix_con_ );
 	assert( fix_likelihood_vec_tmp_.size() == 0 );
 	if( fix_likelihood_vec.size() > 0 )
 		fix_likelihood_vec_tmp_.resize( fix_likelihood_n_abs_ + 1 );
@@ -1326,10 +1326,10 @@ bool ipopt_fixed::eval_h(
 	//
 	// Hessian of Lagrangian of weighted explicit constraints
 	for(size_t j = 0; j < n_fix_con_; j++)
-		w_constraint_tmp_[j] = lambda[2 * fix_likelihood_n_abs_ + j];
+		w_fix_con_tmp_[j] = lambda[2 * fix_likelihood_n_abs_ + j];
 	mixed_object_.fix_con_hes(
 		fixed_tmp_,
-		w_constraint_tmp_,
+		w_fix_con_tmp_,
 		fix_con_hes_row_,
 		fix_con_hes_col_,
 		fix_con_hes_val_

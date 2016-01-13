@@ -124,7 +124,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		d_vector        fixed_tmp_;         // size n_fixed_
 		d_vector        c_vec_tmp_;         // size n_fix_con_
 		d_vector        H_beta_tmp_;        // size n_fixed_
-		d_vector        w_constraint_tmp_;  // size n_fix_con_
+		d_vector        w_fix_con_tmp_;     // size n_fix_con_
 
 		// size fix_likelihood_n_abs_ + 1
 		d_vector        fix_likelihood_vec_tmp_;
