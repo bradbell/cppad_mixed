@@ -155,8 +155,8 @@ void cppad_mixed::ran_con_jac(
 		assert( col < n_fixed_ );
 	}
 	// initialize matrix product A * uhat_theta( \theta )
-	size_t ncon = size_t ( ran_con_mat_.rows() );
-	eigen_sparse Au_theta( ncon, n_fixed_ );
+	assert( n_ran_con_ == size_t ( ran_con_mat_.rows() ) );
+	eigen_sparse Au_theta( n_ran_con_, n_fixed_ );
 
 	// Loop over fixed effects
 	size_t ell = 0;

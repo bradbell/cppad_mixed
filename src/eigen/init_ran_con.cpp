@@ -62,6 +62,14 @@ We assume that $icode%A_info.val[%k%] != 0%$$ for
 $icode%k% = 0 , ... , %K%-1%$$ where
 $icode%K% = %A_info%.row.size()%$$.
 
+$head n_ran_con_$$
+The input value of the member variable
+$codei%
+	size_t n_ran_con_
+%$$
+does not matter.
+Upon return it is the number of random constraints.
+
 $head ran_con_mat_$$
 The input value of the member variable
 $codei%
@@ -70,6 +78,10 @@ $codei%
 does not matter.
 Upon return it is an $code Eigen$$ sparse matrix representation
 of the random constraint matrix $latex A$$.
+The following condition can be asserted
+$codei%
+	n_ran_con_ == size_t( ran_con_mat_.rows() )
+%$$
 
 $end
 */
@@ -97,10 +109,14 @@ void cppad_mixed::init_ran_con(
 	}
 	assert( max_col_p1 <= n_random );
 
+	// set the number of random constraints
+	n_ran_con_ = max_row_p1;
+
 	// size of the matrix A
 	size_t nrow = max_row_p1;
 	size_t ncol = n_random;
 	ran_con_mat_.resize(nrow, ncol);
+
 	// we know number of non-zeros
 	ran_con_mat_.reserve(K);
 

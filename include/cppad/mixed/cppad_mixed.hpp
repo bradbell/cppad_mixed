@@ -328,6 +328,14 @@ $codep */
 	bool                initialize_done_;
 /* $$
 
+$head n_ran_con_$$
+If $icode%n_random_% > 0%$$ and $code init_ran_con_done_$$,
+$cref/n_ran_con_/init_ran_con/n_ran_con_/$$
+is the number of random constraints
+$codep */
+	size_t n_ran_con_;
+/* $$
+
 $head ran_con_mat_$$
 If $icode%n_random_% > 0%$$ and $code init_ran_con_done_$$,
 $cref/ran_con_mat_/init_ran_con/ran_con_mat_/$$

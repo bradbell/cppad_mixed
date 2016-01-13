@@ -83,8 +83,8 @@ void cppad_mixed::ran_con_eval(
 	const d_vector& random_vec ,
 	d_vector&       Au         )
 {	assert( random_vec.size() == n_random_ );
-	size_t ncon = size_t( ran_con_mat_.rows() );
-	assert( Au.size() == ncon );
+	assert( n_ran_con_ == size_t( ran_con_mat_.rows() ) );
+	assert( Au.size() == n_ran_con_ );
 	//
 	// copy random_vec to an eigen column matrix
 	typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> eigen_dense;
@@ -96,6 +96,6 @@ void cppad_mixed::ran_con_eval(
 	eigen_dense result = ran_con_mat_ * u;
 	//
 	// copy the return value to a CppAD::vector<double>
-	for(size_t i = 0; i < ncon; i++)
+	for(size_t i = 0; i < n_ran_con_; i++)
 		Au[i] = result(i, 0);
 }

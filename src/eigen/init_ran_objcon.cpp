@@ -71,7 +71,12 @@ $cref/B(beta, theta, u)
 	/theory
 	/Approximate Random Constraint Function, B(beta, theta, u)
 /$$
-$latex B( \beta , \theta , u )$$.
+$latex B( \beta , \theta , u )$$. Thus
+$codei%
+	ran_objcon_fun_.Domain() == n_fixed_ + n_fixed_ + n_random_
+	ran_objcon_fun_.Range()  == 1 + n_ran_con_
+%$$
+
 
 $end
 */
@@ -87,7 +92,7 @@ void cppad_mixed::init_ran_objcon(
 	assert( ! init_ran_objcon_done_ );
 
 	// number of constraints
-	size_t ncon = size_t ( ran_con_mat_.rows() );
+	assert( n_ran_con_ == size_t ( ran_con_mat_.rows() ) );
 
 	//	create an a1d_vector containing (beta, theta, u)
 	a1d_vector beta_theta_u( 2 * n_fixed_ + n_random_ );
@@ -120,7 +125,7 @@ void cppad_mixed::init_ran_objcon(
 	double pi   = CppAD::atan(1.0) * 4.0;
 	double constant_term = CppAD::log(2.0 * pi) * double(n_random_) / 2.0;
 	//
-	a1d_vector both(n_fixed_ + n_random_), f(1), HB(1 + ncon);
+	a1d_vector both(n_fixed_ + n_random_), f(1), HB(1 + n_ran_con_);
 	// -----------------------------------------------------------------------
 	// U(beta, theta, u)
 	a1d_vector U(n_random_);
@@ -158,7 +163,7 @@ void cppad_mixed::init_ran_objcon(
 	f     = ran_like_a1fun_.Forward(0, both);
 	HB[0] = logdet_step[0] / 2.0 + f[0] - constant_term;
 
-	if( ncon > 0 )
+	if( n_ran_con_ > 0 )
 	{
 		// Copy W to an a1 eigen matrix
 		using Eigen::Dynamic;
@@ -172,7 +177,7 @@ void cppad_mixed::init_ran_objcon(
 		typedef Eigen::SparseMatrix<double,    ColMajor>   eigen_sparse;
 		typedef Eigen::SparseMatrix<a1_double, ColMajor>   a1_eigen_sparse;
 		typedef typename eigen_sparse::InnerIterator       column_itr;
-		a1_eigen_sparse eigen_A(ncon, n_random_);
+		a1_eigen_sparse eigen_A(n_ran_con_, n_random_);
 		for(size_t j = 0; j < n_fixed_; j++)
 		{	for(column_itr itr(ran_con_mat_, j); itr; ++itr)
 			{	size_t i = itr.row();
@@ -184,7 +189,7 @@ void cppad_mixed::init_ran_objcon(
 		a1_eigen_dense eigen_B = eigen_A * eigen_W;
 
 		// copy results to range vector
-		for(size_t i = 0; i < ncon; i++)
+		for(size_t i = 0; i < n_ran_con_; i++)
 			HB[1 + i] = eigen_B(i, 0);
 	}
 	//

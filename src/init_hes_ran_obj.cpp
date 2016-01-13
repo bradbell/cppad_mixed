@@ -143,11 +143,8 @@ void cppad_mixed::init_hes_ran_obj(
 		}
 	}
 
-	// number of constraints
-	size_t ncon = size_t( ran_con_mat_.rows() );
-
 	// create a weighting vector
-	d_vector w(1 + ncon);
+	d_vector w(1 + n_ran_con_);
 	w[0] = 1.0;
 
 	// place where results go (not used here)
