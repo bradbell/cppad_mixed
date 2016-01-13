@@ -294,31 +294,31 @@ $end
 -------------------------------------------------------------------------------
 */
 ipopt_fixed::ipopt_fixed(
-	const std::string&  random_options     ,
-	const double&       fixed_tolerance    ,
-	const d_vector&     fixed_lower        ,
-	const d_vector&     fixed_upper        ,
-	const d_vector&     fix_constraint_lower   ,
-	const d_vector&     fix_constraint_upper   ,
-	const d_vector&     fixed_in           ,
-	const d_vector&     random_lower       ,
-	const d_vector&     random_upper       ,
-	const d_vector&     random_in          ,
+	const std::string&  random_options               ,
+	const double&       fixed_tolerance              ,
+	const d_vector&     fixed_lower                  ,
+	const d_vector&     fixed_upper                  ,
+	const d_vector&     fix_constraint_lower         ,
+	const d_vector&     fix_constraint_upper         ,
+	const d_vector&     fixed_in                     ,
+	const d_vector&     random_lower                 ,
+	const d_vector&     random_upper                 ,
+	const d_vector&     random_in                    ,
 	cppad_mixed&        mixed_object       ) :
-random_options_    ( random_options )          ,
-fixed_tolerance_   ( fixed_tolerance  )        ,
-n_fixed_           ( fixed_in.size()  )        ,
-n_random_          ( random_in.size() )        ,
-n_fix_con_         ( fix_constraint_lower.size() ) ,
-n_ran_con_         ( mixed_object.n_ran_con_ ) ,
-fixed_lower_       ( fixed_lower      )        ,
-fixed_upper_       ( fixed_upper      )        ,
-fix_constraint_lower_  ( fix_constraint_lower )        ,
-fix_constraint_upper_  ( fix_constraint_upper )        ,
-fixed_in_          ( fixed_in         )        ,
-random_lower_      ( random_lower     )        ,
-random_upper_      ( random_upper     )        ,
-random_in_         ( random_in        )        ,
+random_options_    ( random_options )                             ,
+fixed_tolerance_   ( fixed_tolerance  )                           ,
+n_fixed_           ( fixed_in.size()  )                           ,
+n_random_          ( random_in.size() )                           ,
+n_fix_con_         ( fix_constraint_lower.size() )                ,
+n_ran_con_         ( mixed_object.n_ran_con_ )                    ,
+fixed_lower_       ( fixed_lower      )                           ,
+fixed_upper_       ( fixed_upper      )                           ,
+fix_constraint_lower_  ( fix_constraint_lower )                   ,
+fix_constraint_upper_  ( fix_constraint_upper )                   ,
+fixed_in_          ( fixed_in         )                           ,
+random_lower_      ( random_lower     )                           ,
+random_upper_      ( random_upper     )                           ,
+random_in_         ( random_in        )                           ,
 mixed_object_      ( mixed_object    )
 {
 	double inf           = std::numeric_limits<double>::infinity();
@@ -365,14 +365,19 @@ mixed_object_      ( mixed_object    )
 	else
 		fix_likelihood_vec_tmp_.resize( fix_likelihood_n_abs_ + 1 );
 	// -----------------------------------------------------------------------
-	// set fix_like_jac_info_.row, fix_like_jac_info_.col, fix_like_jac_info_.val
-	// fix_con_jac_info_.row, fix_con_jac_info_.col, fix_con_jac_info_.val
-	// -----------------------------------------------------------------------
+	// set fix_like_jac_info_
 	mixed_object.fix_like_jac(
-		fixed_in, fix_like_jac_info_.row, fix_like_jac_info_.col, fix_like_jac_info_.val
+		fixed_in,
+		fix_like_jac_info_.row,
+		fix_like_jac_info_.col,
+		fix_like_jac_info_.val
 	);
+	// set fix_con_jac_info_
 	mixed_object.fix_con_jac(
-		fixed_in, fix_con_jac_info_.row, fix_con_jac_info_.col, fix_con_jac_info_.val
+		fixed_in,
+		fix_con_jac_info_.row,
+		fix_con_jac_info_.col,
+		fix_con_jac_info_.val
 	);
 	// -----------------------------------------------------------------------
 	// set nnz_jac_g_
@@ -398,15 +403,20 @@ mixed_object_      ( mixed_object    )
 	else
 	{	// Using full Newton method
 
-		// row and column indices for contribution from random part of objective
+		// row and column indices for contribution from
+		// random part of objective
 		if( n_random_ > 0 )
 		{
 			w_ran_objcon_tmp_[0] = 1.0;
 			for(size_t i = 0; i < n_ran_con_; i++)
 				w_ran_objcon_tmp_[i+1] = 1.0;
 			 mixed_object.ran_objcon_hes(
-				fixed_in, random_in, w_ran_objcon_tmp_,
-				ran_objcon_hes_info_.row, ran_objcon_hes_info_.col, ran_objcon_hes_info_.val
+				fixed_in,
+				random_in,
+				w_ran_objcon_tmp_,
+				ran_objcon_hes_info_.row,
+				ran_objcon_hes_info_.col,
+				ran_objcon_hes_info_.val
 			);
 		}
 		// row and column indices for contribution from prior
@@ -441,12 +451,12 @@ mixed_object_      ( mixed_object    )
 			ran_objcon_hes_info_.col      ,
 			fix_like_hes_info_.row        ,
 			fix_like_hes_info_.col        ,
-			fix_con_hes_info_.row   ,
-			fix_con_hes_info_.col   ,
-			lag_hes_row_          ,
-			lag_hes_col_          ,
-			ran_objcon_2_lag_        ,
-			fix_likelihood2lag_          ,
+			fix_con_hes_info_.row         ,
+			fix_con_hes_info_.col         ,
+			lag_hes_row_                  ,
+			lag_hes_col_                  ,
+			ran_objcon_2_lag_             ,
+			fix_likelihood2lag_           ,
 			fix_con_2_lag_
 		);
 # ifndef NDEBUG
@@ -885,7 +895,10 @@ bool ipopt_fixed::eval_grad_f(
 	// Jacobian of fixed part of objective
 	// (2DO: do not revaluate when eval_jac_g has same x)
 	mixed_object_.fix_like_jac(
-		fixed_tmp_, fix_like_jac_info_.row, fix_like_jac_info_.col, fix_like_jac_info_.val
+		fixed_tmp_,
+		fix_like_jac_info_.row,
+		fix_like_jac_info_.col,
+		fix_like_jac_info_.val
 	);
 
 	//
@@ -986,9 +999,11 @@ bool ipopt_fixed::eval_g(
 	for(size_t j = 0; j < fix_likelihood_n_abs_; j++)
 	{	// x[n_fixed_ + j] >= fix_likelihood_vec_tmp_[1 + j];
 		assert( 2 * j + 1 < size_t(m) );
-		g[2 * j] = Number(x[n_fixed_ + j] - fix_likelihood_vec_tmp_[1 + j]); // >= 0
+		// g[2 * j] >= 0
+		g[2 * j] = Number(x[n_fixed_ + j] - fix_likelihood_vec_tmp_[1 + j]);
 		// x[n_fixed_ + j] >= - fix_likelihood_vec_tmp_[1 + j]
-		g[2*j+1] = Number(x[n_fixed_ + j] + fix_likelihood_vec_tmp_[1 + j]); // >= 0
+		// g[2 * j + 1] >= 0
+		g[2*j+1] = Number(x[n_fixed_ + j] + fix_likelihood_vec_tmp_[1 + j]);
 	}
 	//
 	// include explicit constraints
@@ -1136,7 +1151,10 @@ bool ipopt_fixed::eval_jac_g(
 	// Jacobian of fixed part of objective
 	// (2DO: do not revaluate when eval_grad_f had same x)
 	mixed_object_.fix_like_jac(
-		fixed_tmp_, fix_like_jac_info_.row, fix_like_jac_info_.col, fix_like_jac_info_.val
+		fixed_tmp_,
+		fix_like_jac_info_.row,
+		fix_like_jac_info_.col,
+		fix_like_jac_info_.val
 	);
 	size_t ell = 0;
 	for(size_t k = 0; k < fix_like_jac_info_.row.size(); k++)
@@ -1312,8 +1330,12 @@ bool ipopt_fixed::eval_h(
 		for(size_t i = 0; i < n_ran_con_; i++)
 			w_ran_objcon_tmp_[i+1] = 0.0;
 		mixed_object_.ran_objcon_hes(
-			fixed_tmp_, random_cur_, w_ran_objcon_tmp_,
-			ran_objcon_hes_info_.row, ran_objcon_hes_info_.col, ran_objcon_hes_info_.val
+			fixed_tmp_,
+			random_cur_,
+			w_ran_objcon_tmp_,
+			ran_objcon_hes_info_.row,
+			ran_objcon_hes_info_.col,
+			ran_objcon_hes_info_.val
 		);
 		for(size_t k = 0; k < ran_objcon_hes_info_.row.size(); k++)
 			values[ ran_objcon_2_lag_[k] ] +=
@@ -1521,7 +1543,10 @@ void ipopt_fixed::finalize_solution(
 	// check explicit constraints
 	for(size_t j = 0; j < n_fix_con_; j++)
 	{	ok &= check_in_limits(
-			fix_constraint_lower_[j], c_vec_tmp_[j], fix_constraint_upper_[j], tol
+			fix_constraint_lower_[j],
+			c_vec_tmp_[j],
+			fix_constraint_upper_[j],
+			tol
 		);
 	}
 	// Evaluate gradient of f w.r.t x
