@@ -283,13 +283,13 @@ void newton_step_algo::operator()(
 	chol.analyzePattern(hessian);
 	chol.factorize(hessian);
 
-	// solve the equation f_{uu}{(2)}( theta, u ) * step = v
+	// solve the equation f_{u,u} ( theta, u ) * step = v
 	dense_matrix rhs(n_random_, 1), step(n_random_, 1);
 	for(size_t j = 0; j < n_random_; j++)
 		rhs(j) = a1_theta_u_v[n_fixed_ + n_random_ + j];
 	step = chol.solve(rhs);
 
-	// compute the logdet( f_{u,u}(theta, u )
+	// compute the logdet( f_{u,u} (theta, u ) )
 	dense_matrix diag = chol.vectorD();
 	a1_double logdet = a1_double(0.0);
 	for(size_t j = 0; j < n_random_; j++)

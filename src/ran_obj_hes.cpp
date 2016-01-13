@@ -37,7 +37,7 @@ $head Purpose$$
 This routine computes the Hessian w.r.t the fixed effects of
 random part of the of the objective; i.e.,
 $latex \[
-	H_\beta^{(2)} ( \beta , \theta , u )
+	H_{\beta, \beta} ( \beta , \theta , u )
 \] $$
 see
 $cref/H(beta, theta, u)
