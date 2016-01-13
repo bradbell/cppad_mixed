@@ -9,8 +9,9 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin ran_obj_hes_xam.cpp$$
+$begin ran_objcon_hes_xam.cpp$$
 $spell
+	objcon
 	CppAD
 	ran_obj
 	cppad
@@ -21,7 +22,7 @@ $spell
 	xam
 $$
 
-$section ran_obj_hes: Example and Test$$
+$section ran_objcon_hes: Example and Test$$
 
 $head Private$$
 This example is not part of the
@@ -40,7 +41,7 @@ $latex \[
 \] $$
 
 $code
-$verbatim%example/private/ran_obj_hes_xam.cpp
+$verbatim%example/private/ran_objcon_hes_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -130,7 +131,7 @@ namespace {
 	};
 }
 
-bool ran_obj_hes_xam(void)
+bool ran_objcon_hes_xam(void)
 {
 	bool   ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
@@ -174,7 +175,7 @@ bool ran_obj_hes_xam(void)
 	// compute Hessian of random part of Laplace approximation
 	vector<size_t> row, col;
 	vector<double> val;
-	mixed_object.ran_obj_hes(fixed_vec, random_vec, row, col, val);
+	mixed_object.ran_objcon_hes(fixed_vec, random_vec, row, col, val);
 
 	// check size of result vectors
 	size_t K = row.size();

@@ -10,8 +10,9 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
 /*
-$begin ran_obj_hes$$
+$begin ran_objcon_hes$$
 $spell
+	objcon
 	CppAD
 	ran_obj
 	cppad
@@ -26,7 +27,7 @@ $$
 $section Hessian of Random Part of Objective w.r.t Fixed Effects$$
 
 $head Syntax$$
-$icode%mixed_object%.ran_obj_hes(
+$icode%mixed_object%.ran_objcon_hes(
 	%fixed_vec%, %random_vec%, %row_out%, %col_out%, %val_out%
 )%$$
 
@@ -78,7 +79,7 @@ $codei%
 %$$
 If the input size of this array is non-zero,
 the entire vector must be the same
-as for a previous call to $code ran_obj_hes$$.
+as for a previous call to $code ran_objcon_hes$$.
 If it's input size is zero,
 upon return it contains the row indices for the Hessian elements
 that are possibly non-zero;
@@ -94,7 +95,7 @@ $codei%
 %$$
 If the input size of this array is non-zero,
 the entire vector must be the same as for
-a previous call to $code ran_obj_hes$$.
+a previous call to $code ran_objcon_hes$$.
 If it's input size is zero,
 upon return it contains the column indices for the Hessian elements
 that are possibly non-zero (and will have the same size as $icode row_out$$).
@@ -110,15 +111,15 @@ $codei%
 	CppAD::vector<double>& %val_out%
 %$$
 If the input size of this array is non-zero, it must have the same size
-as for a previous call to $code ran_obj_hes$$.
+as for a previous call to $code ran_objcon_hes$$.
 Upon return, it contains the value of the Hessian elements
 that are possibly non-zero (and will have the same size as $icode row_out$$).
 
 $children%
-	example/private/ran_obj_hes_xam.cpp
+	example/private/ran_objcon_hes_xam.cpp
 %$$
 $head Example$$
-The file $cref ran_obj_hes_xam.cpp$$ contains an example
+The file $cref ran_objcon_hes_xam.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
@@ -127,8 +128,8 @@ $end
 
 
 // ----------------------------------------------------------------------------
-// ran_obj_hes
-void cppad_mixed::ran_obj_hes(
+// ran_objcon_hes
+void cppad_mixed::ran_objcon_hes(
 	const d_vector&          fixed_vec   ,
 	const d_vector&          random_vec  ,
 	CppAD::vector<size_t>&   row_out     ,

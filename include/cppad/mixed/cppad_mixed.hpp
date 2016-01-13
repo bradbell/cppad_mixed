@@ -34,7 +34,7 @@ extern bool ran_con_jac_xam(void);
 extern bool ran_like_jac_xam(void);
 extern bool ran_obj_eval_xam(void);
 extern bool ran_obj_jac_xam(void);
-extern bool ran_obj_hes_xam(void);
+extern bool ran_objcon_hes_xam(void);
 extern bool update_factor_xam(void);
 
 //  tests
@@ -283,7 +283,7 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/eigen/ran_con_jac.cpp
 	%src/eigen/ran_obj_eval.cpp
 	%src/eigen/ran_obj_jac.cpp
-	%src/ran_obj_hes.cpp
+	%src/ran_objcon_hes.cpp
 	%src/eigen/update_factor.cpp
 %$$
 $comment -------------------------------------------------------------------
@@ -737,17 +737,17 @@ $codep */
 	friend bool ::delta_ran_obj(void);
 /* $$
 
-$subhead ran_obj_hes$$
-See $cref ran_obj_hes$$
+$subhead ran_objcon_hes$$
+See $cref ran_objcon_hes$$
 $codep */
-	void ran_obj_hes(
+	void ran_objcon_hes(
 		const d_vector&         fixed_vec   ,
 		const d_vector&         random_vec  ,
 		CppAD::vector<size_t>&  row_out     ,
 		CppAD::vector<size_t>&  col_out     ,
 		d_vector&               val_out
 	);
-	friend bool ::ran_obj_hes_xam(void);
+	friend bool ::ran_objcon_hes_xam(void);
 /* $$
 
 $subhead update_factor$$

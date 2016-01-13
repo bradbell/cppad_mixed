@@ -58,7 +58,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	private/ran_like_jac_xam.cpp
 	private/ran_obj_eval_xam.cpp
 	private/ran_obj_jac_xam.cpp
-	private/ran_obj_hes_xam.cpp
+	private/ran_objcon_hes_xam.cpp
 	user/data_mismatch_xam.cpp
 	user/derived_xam.cpp
 	user/fix_constraint_xam.cpp

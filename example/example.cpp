@@ -55,7 +55,7 @@ extern bool ran_con_jac_xam(void);
 extern bool ran_like_jac_xam(void);
 extern bool ran_obj_eval_xam(void);
 extern bool ran_obj_jac_xam(void);
-extern bool ran_obj_hes_xam(void);
+extern bool ran_objcon_hes_xam(void);
 extern bool update_factor_xam(void);
 
 // anonymous namespace
@@ -114,7 +114,7 @@ int main(void)
 	RUN(ran_like_jac_xam);
 	RUN(ran_obj_eval_xam);
 	RUN(ran_obj_jac_xam);
-	RUN(ran_obj_hes_xam);
+	RUN(ran_objcon_hes_xam);
 	RUN(update_factor_xam);
 
 

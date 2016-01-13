@@ -375,7 +375,7 @@ mixed_object_      ( mixed_object    )
 	// derivative of the constraints
 	nnz_jac_g_ += fix_con_jac_row_.size();
 	// -----------------------------------------------------------------------
-	// set lag_hes_row_, lag_hes_col_, ran_obj_2_lag_, fix_likelihood2lag_
+	// set lag_hes_row_, lag_hes_col_, ran_objcon_2_lag_, fix_likelihood2lag_
 	// -----------------------------------------------------------------------
 	if( mixed_object_.quasi_fixed_ )
 	{	// Using quasi-Newton method
@@ -385,9 +385,9 @@ mixed_object_      ( mixed_object    )
 	{	// Using full Newton method
 
 		// row and column indices for contribution from random part of objective
-		if( n_random_ > 0 ) mixed_object.ran_obj_hes(
+		if( n_random_ > 0 ) mixed_object.ran_objcon_hes(
 			fixed_in, random_in,
-			ran_obj_hes_row_, ran_obj_hes_col_, ran_obj_hes_val_
+			ran_objcon_hes_row_, ran_objcon_hes_col_, ran_objcon_hes_val_
 		);
 		// row and column indices for contribution from prior
 		d_vector weight( 1 + fix_likelihood_n_abs_ );
@@ -413,25 +413,25 @@ mixed_object_      ( mixed_object    )
 		);
 		//
 		// merge to form sparsity for Lagrangian
-		ran_obj_2_lag_.resize( ran_obj_hes_row_.size() );
+		ran_objcon_2_lag_.resize( ran_objcon_hes_row_.size() );
 		fix_likelihood2lag_.resize( fix_like_hes_row_.size() );
 		constraint_2_lag_.resize( fix_con_hes_row_.size() );
 		merge_sparse(
-			ran_obj_hes_row_      ,
-			ran_obj_hes_col_      ,
+			ran_objcon_hes_row_      ,
+			ran_objcon_hes_col_      ,
 			fix_like_hes_row_        ,
 			fix_like_hes_col_        ,
 			fix_con_hes_row_   ,
 			fix_con_hes_col_   ,
 			lag_hes_row_          ,
 			lag_hes_col_          ,
-			ran_obj_2_lag_        ,
+			ran_objcon_2_lag_        ,
 			fix_likelihood2lag_          ,
 			constraint_2_lag_
 		);
 # ifndef NDEBUG
-		for(size_t k = 0; k < ran_obj_hes_row_.size(); k++)
-			assert( ran_obj_2_lag_[k] < lag_hes_row_.size() );
+		for(size_t k = 0; k < ran_objcon_hes_row_.size(); k++)
+			assert( ran_objcon_2_lag_[k] < lag_hes_row_.size() );
 		//
 		for(size_t k = 0; k < fix_like_hes_row_.size(); k++)
 			assert( fix_likelihood2lag_[k] < lag_hes_row_.size() );
@@ -1299,13 +1299,13 @@ bool ipopt_fixed::eval_h(
 			mixed_object_.update_factor(fixed_tmp_, random_cur_);
 		}
 		// compute Hessian of random part w.r.t. fixed effects
-		mixed_object_.ran_obj_hes(
+		mixed_object_.ran_objcon_hes(
 			fixed_tmp_, random_cur_,
-			ran_obj_hes_row_, ran_obj_hes_col_, ran_obj_hes_val_
+			ran_objcon_hes_row_, ran_objcon_hes_col_, ran_objcon_hes_val_
 		);
-		for(size_t k = 0; k < ran_obj_hes_row_.size(); k++)
-			values[ ran_obj_2_lag_[k] ] +=
-				obj_factor * Number( ran_obj_hes_val_[k] );
+		for(size_t k = 0; k < ran_objcon_hes_row_.size(); k++)
+			values[ ran_objcon_2_lag_[k] ] +=
+				obj_factor * Number( ran_objcon_hes_val_[k] );
 	}
 	//
 	// Hessian of Lagrangian of weighted prior w.r.t. fixed effects

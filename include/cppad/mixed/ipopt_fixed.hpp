@@ -110,13 +110,13 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		d_vector fix_con_hes_val_; // values for Hessian of constraint
 		//
 		// only defined when n_random_ > 0
-		s_vector ran_obj_hes_row_; // row indices for Hessian of Laplace
-		s_vector ran_obj_hes_col_; // column indices for Hessian of Laplace
-		d_vector ran_obj_hes_val_; // values of Hessian of Laplace approx
+		s_vector ran_objcon_hes_row_; // row indices for Hessian of Laplace
+		s_vector ran_objcon_hes_col_; // column indices for Hessian of Laplace
+		d_vector ran_objcon_hes_val_; // values of Hessian of Laplace approx
 		//
 		s_vector lag_hes_row_;   // row indices for Hessian of Lagrangian
 		s_vector lag_hes_col_;   // column indices for Hessian of Lagrangian
-		s_vector ran_obj_2_lag_;    // maps ran_obj_hes_row_ to lag_hes_row_
+		s_vector ran_objcon_2_lag_;    // maps ran_objcon_hes_row_ to lag_hes_row_
 		s_vector fix_likelihood2lag_;      // maps fix_like_hes_row_ to lag_hes_row_
 		s_vector constraint_2_lag_; // maps fix_con_hes_row to lag_hes_row
 		// ---------------------------------------------------------------
