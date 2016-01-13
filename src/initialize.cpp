@@ -162,9 +162,9 @@ $subhead ran_hes_fun_$$
 $icode%size_map%["ran_hes_fun_"]%$$ is the number of variables in
 $cref/ran_hes_fun_/init_ran_hes/ran_hes_fun_/$$.
 
-$subhead ran_obj_hes_$$
-$icode%size_map%["ran_obj_hes_"]%$$ is the size of the row vector in
-$cref/ran_obj_hes_/init_ran_obj_hes/ran_obj_hes_/$$.
+$subhead ran_objcon_hes_$$
+$icode%size_map%["ran_objcon_hes_"]%$$ is the size of the row vector in
+$cref/ran_objcon_hes_/init_ran_objcon_hes/ran_objcon_hes_/$$.
 This is also the number of non-zeros
 in the lower triangle of the Hessian
 $latex \[
@@ -285,10 +285,10 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 			init_ran_objcon(fixed_vec, random_vec);
 			assert( init_ran_objcon_done_ );
 
-			// ran_obj_hes_
-			assert( ! init_ran_obj_hes_done_ );
-			init_ran_obj_hes(fixed_vec, random_vec);
-			assert( init_ran_obj_hes_done_ );
+			// ran_objcon_hes_
+			assert( ! init_ran_objcon_hes_done_ );
+			init_ran_objcon_hes(fixed_vec, random_vec);
+			assert( init_ran_objcon_hes_done_ );
 		}
 	}
 
@@ -319,7 +319,7 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	{	size_map["newton_step_"]      = newton_atom_.size_var();
 		//
 		size_map["ran_objcon_fun_"]       = ran_objcon_fun_.size_var();
-		size_map["ran_obj_hes_"]       = ran_obj_hes_.row.size();
+		size_map["ran_objcon_hes_"]       = ran_objcon_hes_.row.size();
 	}
 	size_map["fix_like_fun_"]   = fix_like_fun_.size_var();
 	size_map["fix_like_jac_"]   = fix_like_jac_.row.size();

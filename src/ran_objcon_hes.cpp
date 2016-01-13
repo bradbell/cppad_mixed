@@ -135,12 +135,12 @@ void cppad_mixed::ran_objcon_hes(
 	CppAD::vector<size_t>&   row_out     ,
 	CppAD::vector<size_t>&   col_out     ,
 	d_vector&                val_out     )
-{	assert( init_ran_obj_hes_done_ );
+{	assert( init_ran_objcon_hes_done_ );
 	assert( n_fixed_  == fixed_vec.size() );
 	assert( n_random_ == random_vec.size() );
 
 	// size of outputs
-	size_t n_nonzero = ran_obj_hes_.row.size();
+	size_t n_nonzero = ran_objcon_hes_.row.size();
 	if( n_nonzero == 0 )
 	{	// special case where Hessian is zero.
 		assert( row_out.size() == 0 );
@@ -149,7 +149,7 @@ void cppad_mixed::ran_objcon_hes(
 		return;
 	}
 	// check recording
-	assert( ran_obj_hes_.col.size() == n_nonzero );
+	assert( ran_objcon_hes_.col.size() == n_nonzero );
 
 	// make sure outputs have proper dimension
 	assert( row_out.size() == col_out.size() );
@@ -161,8 +161,8 @@ void cppad_mixed::ran_objcon_hes(
 		col_out.resize(n_nonzero);
 		val_out.resize(n_nonzero);
 		for(size_t k = 0; k < n_nonzero; k++)
-		{	row_out[k] = ran_obj_hes_.row[k];
-			col_out[k] = ran_obj_hes_.col[k];
+		{	row_out[k] = ran_objcon_hes_.row[k];
+			col_out[k] = ran_objcon_hes_.col[k];
 		}
 	}
 
@@ -174,7 +174,7 @@ void cppad_mixed::ran_objcon_hes(
 	d_vector w(1);
 	w[0] = 1.0;
 
-	// First call to SparseHessian is during init_ran_obj_hes
+	// First call to SparseHessian is during init_ran_objcon_hes
 	CppAD::vector< std::set<size_t> > not_used(0);
 
 	// compute the sparse Hessian
@@ -182,16 +182,16 @@ void cppad_mixed::ran_objcon_hes(
 		beta_theta_u,
 		w,
 		not_used,
-		ran_obj_hes_.row,
-		ran_obj_hes_.col,
+		ran_objcon_hes_.row,
+		ran_objcon_hes_.col,
 		val_out,
-		ran_obj_hes_.work
+		ran_objcon_hes_.work
 	);
 
 # ifndef NDEBUG
 	for(size_t k = 0; k < n_nonzero; k++)
-	{	assert( row_out[k] == ran_obj_hes_.row[k] );
-		assert( col_out[k] == ran_obj_hes_.col[k] );
+	{	assert( row_out[k] == ran_objcon_hes_.row[k] );
+		assert( col_out[k] == ran_objcon_hes_.col[k] );
 	}
 # endif
 }

@@ -10,7 +10,7 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 
 /*
-$begin init_ran_obj_hes$$
+$begin init_ran_objcon_hes$$
 $spell
 	objcon
 	CppAD
@@ -27,7 +27,7 @@ $$
 $section Initialize Hessian of Approximate Random Objective$$
 
 $head Syntax$$
-$icode%mixed_object%.init_ran_obj_hes(%fixed_vec%, %random_vec%)%$$
+$icode%mixed_object%.init_ran_objcon_hes(%fixed_vec%, %random_vec%)%$$
 
 
 $head Private$$
@@ -56,10 +56,10 @@ It specifies the initial value for the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ optimization.
 
 
-$head ran_obj_hes_$$
+$head ran_objcon_hes_$$
 The input value of the member variable
 $codei%
-	CppAD::mixed::sparse_hes_info ran_obj_hes_
+	CppAD::mixed::sparse_hes_info ran_objcon_hes_
 %$$
 does not matter.
 Upon return it contains the
@@ -88,10 +88,10 @@ $end
 # include <cppad/mixed/configure.hpp>
 
 
-void cppad_mixed::init_ran_obj_hes(
+void cppad_mixed::init_ran_objcon_hes(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec )
-{	assert( ! init_ran_obj_hes_done_ );
+{	assert( ! init_ran_objcon_hes_done_ );
 	assert( init_ran_objcon_done_ );
 	assert( init_ran_con_done_ );
 	size_t i, j;
@@ -125,8 +125,8 @@ void cppad_mixed::init_ran_obj_hes(
 		ran_objcon_fun_.RevSparseHes(n_fixed_, s, transpose);
 
 	// determine row and column indices in lower triangle of Hessian
-	ran_obj_hes_.row.clear();
-	ran_obj_hes_.col.clear();
+	ran_objcon_hes_.row.clear();
+	ran_objcon_hes_.col.clear();
 	std::set<size_t>::iterator itr;
 	for(i = 0; i < n_fixed_; i++)
 	{	for(
@@ -137,8 +137,8 @@ void cppad_mixed::init_ran_obj_hes(
 		{	j = *itr;
 			// only compute lower triangular part
 			if( i >= j )
-			{	ran_obj_hes_.row.push_back(i);
-				ran_obj_hes_.col.push_back(j);
+			{	ran_objcon_hes_.row.push_back(i);
+				ran_objcon_hes_.col.push_back(j);
 			}
 		}
 	}
@@ -148,18 +148,18 @@ void cppad_mixed::init_ran_obj_hes(
 	w[0] = 1.0;
 
 	// place where results go (not used here)
-	d_vector val_out( ran_obj_hes_.row.size() );
+	d_vector val_out( ran_objcon_hes_.row.size() );
 
 	// compute the work vector
 	ran_objcon_fun_.SparseHessian(
 		beta_theta_u,
 		w,
 		pattern,
-		ran_obj_hes_.row,
-		ran_obj_hes_.col,
+		ran_objcon_hes_.row,
+		ran_objcon_hes_.col,
 		val_out,
-		ran_obj_hes_.work
+		ran_objcon_hes_.work
 	);
 	//
-	init_ran_obj_hes_done_ = true;
+	init_ran_objcon_hes_done_ = true;
 }
