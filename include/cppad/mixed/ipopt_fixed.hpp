@@ -72,7 +72,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		//
 		const size_t n_fixed_;            // number of fixed effects
 		const size_t n_random_;           // number of random effects
-		const size_t n_constraint_;       // number of constraints
+		const size_t n_fix_con_;          // number of fixed constraints
 		//
 		const d_vector& fixed_lower_;     // fixed effects lower limits
 		const d_vector& fixed_upper_;     // fixed effects upper limit
@@ -123,10 +123,10 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// temporaries (size set by constructor only)
 		d_vector        fixed_tmp_;         // size n_fixed_
 		d_vector        fix_likelihood_vec_tmp_;  // size fix_likelihood_n_abs_ + 1
-		d_vector        c_vec_tmp_;         // size n_constraint_
+		d_vector        c_vec_tmp_;         // size n_fix_con_
 		d_vector        H_beta_tmp_;        // size n_fixed_
 		d_vector        w_fix_likelihood_tmp_;    // size 2 * fix_likelihood_n_abs
-		d_vector        w_constraint_tmp_;  // size n_constraint
+		d_vector        w_constraint_tmp_;  // size n_fix_con_
 		// ---------------------------------------------------------------
 		// empty until finalize_solution called
 		d_vector fixed_opt_;

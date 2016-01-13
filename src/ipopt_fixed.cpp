@@ -309,7 +309,7 @@ random_options_    ( random_options )          ,
 fixed_tolerance_   ( fixed_tolerance  )        ,
 n_fixed_           ( fixed_in.size()  )        ,
 n_random_          ( random_in.size() )        ,
-n_constraint_      ( fix_constraint_lower.size() ) ,
+n_fix_con_         ( fix_constraint_lower.size() ) ,
 fixed_lower_       ( fixed_lower      )        ,
 fixed_upper_       ( fixed_upper      )        ,
 fix_constraint_lower_  ( fix_constraint_lower )        ,
@@ -334,7 +334,7 @@ mixed_object_      ( mixed_object    )
 		if( fixed_upper[j] != inf ) nlp_upper_bound_inf_ =
 				std::max(nlp_upper_bound_inf_, 1.1 * fixed_upper[j] );
 	}
-	for(size_t j = 0; j < n_constraint_; j++)
+	for(size_t j = 0; j < n_fix_con_; j++)
 	{	if( fix_constraint_lower[j] != - inf ) nlp_lower_bound_inf_ =
 				std::min(nlp_lower_bound_inf_, 1.1 * fix_constraint_lower[j] );
 		//
@@ -401,7 +401,7 @@ mixed_object_      ( mixed_object    )
 			fix_like_hes_val_
 		);
 		// row and column indices for contribution from constraint
-		weight.resize( n_constraint_ );
+		weight.resize( n_fix_con_ );
 		for(size_t i = 0; i < weight.size(); i++)
 			weight[i] = 1.0;
 		mixed_object.fix_con_hes(
@@ -449,10 +449,10 @@ mixed_object_      ( mixed_object    )
 	// set size of temporary vectors
 	// -----------------------------------------------------------------------
 	fixed_tmp_.resize( n_fixed_ );
-	c_vec_tmp_.resize( n_constraint_ );
+	c_vec_tmp_.resize( n_fix_con_ );
 	H_beta_tmp_.resize( n_fixed_ );
 	w_fix_likelihood_tmp_.resize( fix_likelihood_n_abs_ + 1 );
-	w_constraint_tmp_.resize( n_constraint_ );
+	w_constraint_tmp_.resize( n_fix_con_ );
 	assert( fix_likelihood_vec_tmp_.size() == 0 );
 	if( fix_likelihood_vec.size() > 0 )
 		fix_likelihood_vec_tmp_.resize( fix_likelihood_n_abs_ + 1 );
@@ -516,7 +516,7 @@ bool ipopt_fixed::get_nlp_info(
 	IndexStyleEnum& index_style  )  // out
 {
 	n           = n_fixed_ + fix_likelihood_n_abs_;
-	m           = 2 * fix_likelihood_n_abs_ + n_constraint_;
+	m           = 2 * fix_likelihood_n_abs_ + n_fix_con_;
 	nnz_jac_g   = nnz_jac_g_;
 	nnz_h_lag   = nnz_h_lag_;
 	index_style = C_STYLE;
@@ -575,7 +575,7 @@ bool ipopt_fixed::get_bounds_info(
 		Number*     g_u      )   // out
 {
 	assert( n > 0 && size_t(n) == n_fixed_ + fix_likelihood_n_abs_ );
-	assert( m >= 0 && size_t(m) == 2 * fix_likelihood_n_abs_ + n_constraint_ );
+	assert( m >= 0 && size_t(m) == 2 * fix_likelihood_n_abs_ + n_fix_con_ );
 
 	for(size_t j = 0; j < n_fixed_; j++)
 	{	// map infinity to crazy value required by ipopt
@@ -602,7 +602,7 @@ bool ipopt_fixed::get_bounds_info(
 	}
 	//
 	// explicit constraints
-	for(size_t j = 0; j < n_constraint_; j++)
+	for(size_t j = 0; j < n_fix_con_; j++)
 	{	g_l[2 * fix_likelihood_n_abs_ + j] = fix_constraint_lower_[j];
 		g_u[2 * fix_likelihood_n_abs_ + j] = fix_constraint_upper_[j];
 	}
@@ -688,7 +688,7 @@ bool ipopt_fixed::get_starting_point(
 	assert( init_z == false );
 	assert( init_lambda == false );
 	assert( n > 0 && size_t(n) == n_fixed_ + fix_likelihood_n_abs_ );
-	assert( m >= 0 && size_t(m) == 2 * fix_likelihood_n_abs_ + n_constraint_ );
+	assert( m >= 0 && size_t(m) == 2 * fix_likelihood_n_abs_ + n_fix_con_ );
 
 	// fixed likelihood at the initial fixed effects vector
 	if( fix_likelihood_vec_tmp_.size() == 0 )
@@ -951,7 +951,7 @@ bool ipopt_fixed::eval_g(
 	Number*         g        )  // out
 {
 	assert( n > 0 && size_t(n) == n_fixed_ + fix_likelihood_n_abs_ );
-	assert( m >= 0 && size_t(m) == 2 * fix_likelihood_n_abs_ + n_constraint_ );
+	assert( m >= 0 && size_t(m) == 2 * fix_likelihood_n_abs_ + n_fix_con_ );
 	//
 	// fixed effects
 	for(size_t j = 0; j < n_fixed_; j++)
@@ -984,8 +984,8 @@ bool ipopt_fixed::eval_g(
 	//
 	// include explicit constraints
 	c_vec_tmp_ = mixed_object_.fix_con_eval(fixed_tmp_);
-	assert( c_vec_tmp_.size() == n_constraint_ );
-	for(size_t j = 0; j < n_constraint_; j++)
+	assert( c_vec_tmp_.size() == n_fix_con_ );
+	for(size_t j = 0; j < n_fix_con_; j++)
 	{	assert( 2 * fix_likelihood_n_abs_ + j < size_t(m) );
 		g[2 * fix_likelihood_n_abs_ + j] = c_vec_tmp_[j];
 	}
@@ -1073,7 +1073,7 @@ bool ipopt_fixed::eval_jac_g(
 	Number*         values   )  // out
 {
 	assert( n > 0 && size_t(n) == n_fixed_ + fix_likelihood_n_abs_ );
-	assert( m >= 0 && size_t(m) == 2 * fix_likelihood_n_abs_ + n_constraint_ );
+	assert( m >= 0 && size_t(m) == 2 * fix_likelihood_n_abs_ + n_fix_con_ );
 	assert( size_t(nele_jac) == nnz_jac_g_ );
 	//
 	if( values == NULL )
@@ -1266,7 +1266,7 @@ bool ipopt_fixed::eval_h(
 {
 	assert( ! mixed_object_.quasi_fixed_ );
 	assert( n > 0 && size_t(n) == n_fixed_ + fix_likelihood_n_abs_ );
-	assert( m >= 0 && size_t(m) == 2 * fix_likelihood_n_abs_ + n_constraint_ );
+	assert( m >= 0 && size_t(m) == 2 * fix_likelihood_n_abs_ + n_fix_con_ );
 	assert( size_t(nele_hess) == nnz_h_lag_ );
 	if( values == NULL )
 	{	for(size_t k = 0; k < nnz_h_lag_; k++)
@@ -1325,7 +1325,7 @@ bool ipopt_fixed::eval_h(
 	}
 	//
 	// Hessian of Lagrangian of weighted explicit constraints
-	for(size_t j = 0; j < n_constraint_; j++)
+	for(size_t j = 0; j < n_fix_con_; j++)
 		w_constraint_tmp_[j] = lambda[2 * fix_likelihood_n_abs_ + j];
 	mixed_object_.fix_con_hes(
 		fixed_tmp_,
@@ -1467,7 +1467,7 @@ void ipopt_fixed::finalize_solution(
 {	bool ok = true;
 	//
 	assert( n > 0 && size_t(n) == n_fixed_ + fix_likelihood_n_abs_ );
-	assert( m >= 0 && size_t(m) == 2 * fix_likelihood_n_abs_ + n_constraint_ );
+	assert( m >= 0 && size_t(m) == 2 * fix_likelihood_n_abs_ + n_fix_con_ );
 	assert( fixed_opt_.size() == 0 );
 	//
 	//
@@ -1504,10 +1504,10 @@ void ipopt_fixed::finalize_solution(
 	//
 	// explicit constraints at the final fixed effects vector
 	c_vec_tmp_ = mixed_object_.fix_con_eval(fixed_opt_);
-	assert( c_vec_tmp_.size() == n_constraint_ );
+	assert( c_vec_tmp_.size() == n_fix_con_ );
 
 	// check explicit constraints
-	for(size_t j = 0; j < n_constraint_; j++)
+	for(size_t j = 0; j < n_fix_con_; j++)
 	{	ok &= check_in_limits(
 			fix_constraint_lower_[j], c_vec_tmp_[j], fix_constraint_upper_[j], tol
 		);
@@ -1639,7 +1639,7 @@ $end
 bool ipopt_fixed::check_grad_f(bool trace, double relative_tol)
 {	using CppAD::abs;
 	size_t n        = n_fixed_ + fix_likelihood_n_abs_;
-	size_t m        = 2 * fix_likelihood_n_abs_ + n_constraint_;
+	size_t m        = 2 * fix_likelihood_n_abs_ + n_fix_con_;
 	double root_eps = std::sqrt( std::numeric_limits<double>::epsilon() );
 
 	// each x will be different
