@@ -94,21 +94,12 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		size_t nnz_jac_g_;   // number non-zeros in Jacobian of constraints
 		size_t nnz_h_lag_;   // number non-zeros in Hessian of Lagragian
 		//
-		s_vector fix_like_jac_row_; // row indices for Jacobian of prior
-		s_vector fix_like_jac_col_; // column indices for Jacobian of prior
-		d_vector fix_like_jac_val_; // values for Jacobian of prior
-		//
-		s_vector fix_like_hes_row_; // row indices for Hessian of prior
-		s_vector fix_like_hes_col_; // column indices for Hessian of prior
-		d_vector fix_like_hes_val_; // values for Hessian of prior
-		//
-		s_vector fix_con_jac_row_; // row for Jacobian of constraint
-		s_vector fix_con_jac_col_; // column for Jacobian of constraint
-		d_vector fix_con_jac_val_; // values for Jacobian of constraint
-		//
-		s_vector fix_con_hes_row_; // row for Hessian of constraint
-		s_vector fix_con_hes_col_; // column for Hessian of constraint
-		d_vector fix_con_hes_val_; // values for Hessian of constraint
+		// fixed likelihood jacobian and hessian
+		CppAD::mixed::sparse_mat_info fix_like_jac_info_;
+		CppAD::mixed::sparse_mat_info fix_like_hes_info_;
+		// fixed constraint jacobian and hessian
+		CppAD::mixed::sparse_mat_info fix_con_jac_info_;
+		CppAD::mixed::sparse_mat_info fix_con_hes_info_;
 		//
 		// only defined when n_random_ > 0
 		s_vector ran_objcon_hes_row_; // row indices for Hessian of Laplace
