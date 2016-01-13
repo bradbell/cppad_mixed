@@ -394,7 +394,8 @@ mixed_object_      ( mixed_object    )
 	// derivative of the constraints
 	nnz_jac_g_ += fix_con_jac_info_.row.size();
 	// -----------------------------------------------------------------------
-	// set lag_hes_row_, lag_hes_col_, ran_objcon_2_lag_, fix_likelihood2lag_
+	// set lag_hes_row_, lag_hes_col_
+	// ran_objcon_hes_2_lag_, fix_like_hes_2_lag_
 	// -----------------------------------------------------------------------
 	if( mixed_object_.quasi_fixed_ )
 	{	// Using quasi-Newton method
@@ -443,31 +444,35 @@ mixed_object_      ( mixed_object    )
 		);
 		//
 		// merge to form sparsity for Lagrangian
-		ran_objcon_2_lag_.resize( ran_objcon_hes_info_.row.size() );
-		fix_likelihood2lag_.resize( fix_like_hes_info_.row.size() );
-		fix_con_2_lag_.resize( fix_con_hes_info_.row.size() );
+		ran_objcon_hes_2_lag_.resize( ran_objcon_hes_info_.row.size() );
+		fix_like_hes_2_lag_.resize( fix_like_hes_info_.row.size() );
+		fix_con_hes_2_lag_.resize( fix_con_hes_info_.row.size() );
 		merge_sparse(
 			ran_objcon_hes_info_.row      ,
 			ran_objcon_hes_info_.col      ,
+			//
 			fix_like_hes_info_.row        ,
 			fix_like_hes_info_.col        ,
+			//
 			fix_con_hes_info_.row         ,
 			fix_con_hes_info_.col         ,
+			//
 			lag_hes_row_                  ,
 			lag_hes_col_                  ,
-			ran_objcon_2_lag_             ,
-			fix_likelihood2lag_           ,
-			fix_con_2_lag_
+			//
+			ran_objcon_hes_2_lag_         ,
+			fix_like_hes_2_lag_           ,
+			fix_con_hes_2_lag_
 		);
 # ifndef NDEBUG
 		for(size_t k = 0; k < ran_objcon_hes_info_.row.size(); k++)
-			assert( ran_objcon_2_lag_[k] < lag_hes_row_.size() );
+			assert( ran_objcon_hes_2_lag_[k] < lag_hes_row_.size() );
 		//
 		for(size_t k = 0; k < fix_like_hes_info_.row.size(); k++)
-			assert( fix_likelihood2lag_[k] < lag_hes_row_.size() );
+			assert( fix_like_hes_2_lag_[k] < lag_hes_row_.size() );
 		//
 		for(size_t k = 0; k < fix_con_hes_info_.row.size(); k++)
-			assert( fix_con_2_lag_[k] < lag_hes_row_.size() );
+			assert( fix_con_hes_2_lag_[k] < lag_hes_row_.size() );
 # endif
 		// -------------------------------------------------------------------
 		// set nnz_h_lag_
@@ -1338,7 +1343,7 @@ bool ipopt_fixed::eval_h(
 			ran_objcon_hes_info_.val
 		);
 		for(size_t k = 0; k < ran_objcon_hes_info_.row.size(); k++)
-			values[ ran_objcon_2_lag_[k] ] +=
+			values[ ran_objcon_hes_2_lag_[k] ] +=
 				obj_factor * Number( ran_objcon_hes_info_.val[k] );
 	}
 	//
@@ -1354,8 +1359,8 @@ bool ipopt_fixed::eval_h(
 		fix_like_hes_info_.val
 	);
 	for(size_t k = 0; k < fix_like_hes_info_.row.size(); k++)
-	{	assert( fix_likelihood2lag_[k] < nnz_h_lag_ );
-		values[ fix_likelihood2lag_[k] ] += Number( fix_like_hes_info_.val[k] );
+	{	assert( fix_like_hes_2_lag_[k] < nnz_h_lag_ );
+		values[fix_like_hes_2_lag_[k]] += Number( fix_like_hes_info_.val[k] );
 	}
 	//
 	// Hessian of Lagrangian of weighted explicit constraints
@@ -1369,8 +1374,8 @@ bool ipopt_fixed::eval_h(
 		fix_con_hes_info_.val
 	);
 	for(size_t k = 0; k < fix_con_hes_info_.row.size(); k++)
-	{	assert( fix_con_2_lag_[k] < nnz_h_lag_ );
-		values[ fix_con_2_lag_[k] ] += Number( fix_con_hes_info_.val[k] );
+	{	assert( fix_con_hes_2_lag_[k] < nnz_h_lag_ );
+		values[ fix_con_hes_2_lag_[k] ] += Number( fix_con_hes_info_.val[k] );
 	}
 	//
 	return true;

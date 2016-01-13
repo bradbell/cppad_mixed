@@ -107,9 +107,9 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		//
 		s_vector lag_hes_row_;   // row indices for Hessian of Lagrangian
 		s_vector lag_hes_col_;   // column indices for Hessian of Lagrangian
-		s_vector ran_objcon_2_lag_; // ran_objcon_hes_row_ -> lag_hes_row_
-		s_vector fix_likelihood2lag_; // fix_like_hes_row_ -> lag_hes_row_
-		s_vector fix_con_2_lag_; // fix_con_hes_row -> lag_hes_row
+		s_vector ran_objcon_hes_2_lag_; // ran_objcon_hes_row_ -> lag_hes_row_
+		s_vector fix_like_hes_2_lag_; // fix_like_hes_row_ -> lag_hes_row_
+		s_vector fix_con_hes_2_lag_; // fix_con_hes_row -> lag_hes_row
 		// ---------------------------------------------------------------
 		// temporaries (size set by constructor only)
 		d_vector        fixed_tmp_;         // size n_fixed_

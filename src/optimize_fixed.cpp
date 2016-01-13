@@ -31,6 +31,8 @@ $icode%mixed_object%.optimize_fixed(
 	%random_options%,
 	%fixed_lower%,
 	%fixed_upper%,
+	%fixed_constraint_lower%,
+	%fixed_constraint_upper%,
 	%fixed_in%,
 	%random_lower%,
 	%random_upper%,
