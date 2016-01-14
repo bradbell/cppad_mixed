@@ -32,12 +32,12 @@ $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$
 is
 $latex \[
 g( \theta ) = \sum_{i} \left[
-	\log ( \sigma \sqrt{2} ) + \sqrt{2} | z_i - \theta_i | / \sigma
+	\log ( \sigma \sqrt{2} ) + \sqrt{2} | z_i - exp( \theta_i ) | / \sigma
 \right]
 \] $$
 The optimal solution, with no constraints and no prior on $latex \theta$$ is
 $latex \[
-	\hat{\theta}_i = z_i
+	\hat{\theta}_i = \log( z_i )
 \] $$
 
 $code
@@ -89,7 +89,8 @@ namespace {
 
 			for(size_t j = 0; j < n_fixed_; j++)
 			{	// Data term
-				Float res   = (z_[j] - fixed_vec[j]) / sigma_;
+				Float res   = z_[j] - CppAD::exp( fixed_vec[j] );
+				res        /= Float( sigma_ );
 				vec[0]     += log(sqrt_2);
 				vec[1 + j] += sqrt_2 * res;
 			}
@@ -133,19 +134,19 @@ bool abs_density_xam(void)
 	//
 	vector<double> z(n_fixed);
 	for(size_t i = 0; i < n_fixed; i++)
-		z[i] = double(i+1);
+		z[i] = double(i+3);
 
 	// object that is derived from cppad_mixed
-	bool quasi_fixed = true;
+	bool quasi_fixed = false;
 	double sigma     = 1.0;
 	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, sigma, z);
 	mixed_object.initialize(A_info, fixed_in, random_in);
 
 	// optimize the fixed effects using quasi-Newton method
 	std::string fixed_options =
-		"Integer print_level               0\n"
+		"Integer print_level               5\n"
 		"String  sb                        yes\n"
-		"String  derivative_test           first-order\n"
+		"String  derivative_test           second-order\n"
 		"String  derivative_test_print_all yes\n"
 		"Numeric tol                       1e-8\n"
 	;
@@ -163,7 +164,7 @@ bool abs_density_xam(void)
 	);
 
 	for(size_t j = 0; j < n_fixed; j++)
-		ok &= CppAD::abs( fixed_out[j] - z[j] ) <= tol;
+		ok &= CppAD::abs( fixed_out[j] - CppAD::log( z[j] ) ) <= tol;
 
 	return ok;
 }
