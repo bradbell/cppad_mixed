@@ -90,7 +90,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		double nlp_lower_bound_inf_; // Ipopt's code for - infinity
 		double nlp_upper_bound_inf_; // Ipopt's code for + infinity
 		//
-		size_t fix_likelihood_n_abs_; // number of absolute values in prior
+		size_t fix_likelihood_nabs_; // number of absolute values in prior
 		size_t nnz_jac_g_;   // number non-zeros in Jacobian of constraints
 		size_t nnz_h_lag_;   // number non-zeros in Hessian of Lagragian
 		//
@@ -118,11 +118,11 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		d_vector        w_fix_con_tmp_;     // size n_fix_con_
 		d_vector        w_ran_objcon_tmp_;  // size n_ran_con_ + 1
 
-		// this vector has size fix_likelihood_n_abs_ + 1
+		// this vector has size fix_likelihood_nabs_ + 1
 		d_vector        w_fix_likelihood_tmp_;
 
 		// if mixed_object_.fix_like_eval returns a vector of size 0, this
-		// vector has size 0, otherwise it has size fix_likelihood_n_abs_ + 1
+		// vector has size 0, otherwise it has size fix_likelihood_nabs_ + 1
 		d_vector        fix_likelihood_vec_tmp_;
 		// ---------------------------------------------------------------
 		// empty until finalize_solution called
