@@ -241,6 +241,8 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 			msg += "\nbut the function ran_likelihood returns a non-empty vector";
 			fatal_error(msg);
 		}
+		// in this case, number of random constraints is zero (must be set)
+		n_ran_con_ = 0;
 	}
 	else
 	{

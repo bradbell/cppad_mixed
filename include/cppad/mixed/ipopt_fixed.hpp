@@ -100,6 +100,8 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// fixed constraint jacobian and hessian
 		CppAD::mixed::sparse_mat_info fix_con_jac_info_;
 		CppAD::mixed::sparse_mat_info fix_con_hes_info_;
+		// radom constraint jacobian
+		CppAD::mixed::sparse_mat_info ran_con_jac_info_;
 		//
 		// hessian of random objective and constraints
 		// (only defined when n_random_ > 0)
@@ -114,6 +116,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// temporaries (size set by constructor only)
 		d_vector        fixed_tmp_;         // size n_fixed_
 		d_vector        c_vec_tmp_;         // size n_fix_con_
+		d_vector        A_uhat_tmp_;        // size n_ran_con_
 		d_vector        H_beta_tmp_;        // size n_fixed_
 		d_vector        w_fix_con_tmp_;     // size n_fix_con_
 		d_vector        w_ran_objcon_tmp_;  // size n_ran_con_ + 1
