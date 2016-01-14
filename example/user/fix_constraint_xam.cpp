@@ -112,20 +112,9 @@ namespace {
 			}
 			return vec;
 		}
-		// implementation of fix_likelihood
-		template <class Float>
-		vector<Float> implement_fix_likelihood(
-			const vector<Float>& fixed_vec  )
-		{	vector<Float> vec(1);
-
-			// initialize part of log-density that is smooth
-			vec[0] = Float(0.0);
-
-			return vec;
-		}
 	public:
 		// ------------------------------------------------------------------
-		// User defined virtual functions
+		// ran_likelihood
 		virtual vector<a2_double> ran_likelihood(
 			const vector<a2_double>& fixed_vec  ,
 			const vector<a2_double>& random_vec )
@@ -134,11 +123,7 @@ namespace {
 			const vector<a1_double>& fixed_vec  ,
 			const vector<a1_double>& random_vec )
 		{	return implement_ran_likelihood(fixed_vec, random_vec); }
-		//
-		virtual vector<a1_double> fix_likelihood(
-			const vector<a1_double>& fixed_vec  )
-		{	return implement_fix_likelihood(fixed_vec); }
-		//
+		// fix_constraint
 		virtual vector<a1_double> fix_constraint(
 			const vector<a1_double>& fixed_vec  )
 		{	vector<a1_double> ret_val(1);

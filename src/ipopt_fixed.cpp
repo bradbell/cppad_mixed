@@ -1216,9 +1216,10 @@ bool ipopt_fixed::eval_jac_g(
 			ell++;
 		}
 		// explicit constraints
+		size_t offset = 2 * fix_likelihood_nabs_;
 		for(size_t k = 0; k < fix_con_jac_info_.row.size(); k++)
 		{	assert( ell < nnz_jac_g_ );
-			iRow[ell] = Index( fix_con_jac_info_.row[k] );
+			iRow[ell] = Index( offset + fix_con_jac_info_.row[k] );
 			jCol[ell] = Index( fix_con_jac_info_.col[k] );
 			ell++;
 		}
@@ -1606,7 +1607,9 @@ void ipopt_fixed::finalize_solution(
 	fixed_opt_.resize(n_fixed_);
 	for(size_t j = 0; j < n_fixed_; j++)
 	{	fixed_opt_[j] = x[j];
-		ok &= check_in_limits(fixed_lower_[j], x[j], fixed_upper_[j], tol);
+		ok &= check_in_limits(
+				fixed_lower_[j], x[j], fixed_upper_[j], 2.0 * tol
+		);
 	}
 	//
 	// check that the bound multipliers are feasible
@@ -1637,10 +1640,8 @@ void ipopt_fixed::finalize_solution(
 	// check explicit constraints
 	for(size_t j = 0; j < n_fix_con_; j++)
 	{	ok &= check_in_limits(
-			fix_constraint_lower_[j],
-			c_vec_tmp_[j],
-			fix_constraint_upper_[j],
-			tol
+			fix_constraint_lower_[j], c_vec_tmp_[j], fix_constraint_upper_[j],
+			2.0 * tol
 		);
 	}
 	// Evaluate gradient of f w.r.t x

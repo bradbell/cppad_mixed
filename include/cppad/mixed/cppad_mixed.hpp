@@ -141,7 +141,6 @@ Its default definition below can be replaced by a user definition.
 $codep */
 	virtual void warning(const std::string& warning_message)
 	{	std::cerr << "cppad_mixed warning: " << warning_message << std::endl;
-		assert(false);
 	}
 /* $$
 

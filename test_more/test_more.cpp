@@ -13,6 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cstring>
 
 // cppad_mixed subdirectory
+extern bool abs_fix_con(void);
 extern bool binomial(void);
 extern bool delta_ran_obj(void);
 extern bool der_var_hes(void);
@@ -54,7 +55,7 @@ namespace {
 // main program that runs all the tests
 int main(void)
 {
-	// cppad_mixed subdirectory
+	RUN(abs_fix_con);
 	RUN(binomial);
 	RUN(delta_ran_obj);
 	RUN(der_var_hes);

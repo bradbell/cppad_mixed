@@ -15,6 +15,7 @@ LINK_DIRECTORIES(
 )
 # Program cpp, not installed, and depends on following source files
 ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
+	abs_fix_con.cpp
 	binomial.cpp
 	delta_ran_obj.cpp
 	der_var_hes.cpp
