@@ -1111,9 +1111,12 @@ bool ipopt_fixed::eval_jac_g(
 		for(size_t k = 0; k < fix_like_jac_info_.row.size(); k++)
 		{	if( fix_like_jac_info_.row[k] != 0 )
 			{	assert( ell + 1 < nnz_jac_g_ );
-				iRow[ell+1] = iRow[ell] = Index( fix_like_jac_info_.row[k] );
-				jCol[ell+1] = jCol[ell] = Index( fix_like_jac_info_.col[k] );
-				ell += 2;
+				iRow[ell] = Index( 2 * (fix_like_jac_info_.row[k]-1) );
+				jCol[ell] = Index( fix_like_jac_info_.col[k] );
+				ell++;
+				iRow[ell] = Index( 2 * fix_like_jac_info_.row[k] - 1 );
+				jCol[ell] = Index( fix_like_jac_info_.col[k] );
+				ell++;
 			}
 		}
 		// auxillary variables for l1 constraints
@@ -1165,9 +1168,9 @@ bool ipopt_fixed::eval_jac_g(
 	for(size_t k = 0; k < fix_like_jac_info_.row.size(); k++)
 	{	if( fix_like_jac_info_.row[k] != 0 )
 		{	assert( ell + 1 < nnz_jac_g_ );
-			values[ell] = Number( fix_like_jac_info_.val[k] );
-			ell++;
 			values[ell] = Number( - fix_like_jac_info_.val[k] );
+			ell++;
+			values[ell] = Number( + fix_like_jac_info_.val[k] );
 			ell++;
 		}
 	}

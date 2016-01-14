@@ -31,6 +31,7 @@ $end
 // optional
 extern bool cholmod_xam(void);
 
+extern bool abs_density_xam(void);
 extern bool data_mismatch_xam(void);
 extern bool derived_xam(void);
 extern bool eigen_xam(void);
@@ -90,6 +91,7 @@ namespace {
 // main program that runs all the tests
 int main(void)
 {
+	RUN(abs_density_xam);
 	RUN(data_mismatch_xam);
 	RUN(derived_xam);
 	RUN(eigen_xam);
