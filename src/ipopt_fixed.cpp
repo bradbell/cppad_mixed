@@ -151,6 +151,8 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 ------------------------------------------------------------------------------
 $begin ipopt_fixed_ctor$$
 $spell
+	tmp
+	objcon
 	CppAD
 	ran_obj
 	cppad
@@ -193,7 +195,7 @@ $codei%
 	const CppAD::vector<double>& %fixed_in%
 	const CppAD::vector<double>& %fixed_upper%
 	const CppAD::vector<double>& %random_in%
-	cppad_mixed&                %mixed_object%
+	cppad_mixed&                 %mixed_object%
 %$$
 
 $head References$$
@@ -270,7 +272,54 @@ $head mixed_object$$
 The argument $icode mixed_object$$ is an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
-$head Non-Const Member Variables$$
+$head Argument$$
+If $icode name$$ is an argument to the constructor,
+the variable $icode%name%_%$$ is a copy of that argument.
+The variable $code mixed_object_$$ is not a copy but rather a reference
+to $icode mixed_object$$.
+
+$head Constants$$
+
+$subhead n_fixed_$$
+is the number of fixed effects.
+
+$subhead n_random_$$
+is the number of random effects.
+
+$subhead n_fix_con_$$
+is the number of fixed constraints.
+
+$subhead n_ran_con$$
+is the number of random constraints.
+
+$head Temporaries$$
+The following member variables sized by the constructor.
+They can be used as temporaries, but their sizes should not change.
+
+$subhead fixed_tmp_$$
+size $code n_fixed_$$
+
+$subhead c_vec_tmp_$$
+size $code n_fix_con_$$
+
+$subhead H_beta_tmp_$$
+size $code n_fixed_$$
+
+$subhead w_fix_con_tmp_$$
+size $code n_fix_con_$$
+
+$subhead w_ran_objcon_tmp_$$
+size $code n_ran_con_ + 1$$.
+
+$subhead w_fix_likelihood_tmp_$$
+size $code fix_likelihood_n_abs_ + 1$$
+
+$subhead fix_likelihood_vec_tmp_$$
+If $code mixed_object_.fix_like_eval$$
+returns a vector of size zero, this vector has size zero,
+otherwise it has size $code fix_likelihood_n_abs_ + 1$$
+
+$head Effectively Constant Member Variables$$
 The following member variables are set by the constructor
 and should not be modified.
 
@@ -278,17 +327,54 @@ $subhead fix_likelihood_n_abs_$$
 number of absolute value terms in the
 $cref fix_likelihood$$.
 
-$head prior_nnz_jac_$$
-number of non-zeros in the Jacobian of the fixed likelihood.
+$subhead nnz_jac_g_$$
+number of non-zeros in the Jacobian of the ipopt constraints.
 
-$head lag_hes_row_$$
-The row indices for the sparse representation of the Hessian
+$subhead nnz_h_lag_$$
+number of non-zeros in the Hessian of the ipopt constraints.
+
+$subhead lag_hes_row_$$
+Ipopt row indices for the sparse representation of the Hessian
 of the Lagrangian (for any Lagrange multiplier values).
 
-$head lag_hes_col_$$
-The column indices for the sparse representation of the Hessian
+$subhead lag_hes_col_$$
+Ipopt column indices for the sparse representation of the Hessian
 of the Lagrangian (for any Lagrange multiplier values).
 
+$subhead ran_objcon_hes_2_lag_$$
+Mapping from random object plus constraint Hessian sparse indices
+to ipopt Hessian sparse indices.
+
+$subhead fix_like_hes_2_lag_$$
+Mapping from fixed likelihood Hessian sparse indices
+to ipopt Hessian sparse indices.
+
+$head Sparsity Information$$
+The $code row$$ and $code col$$ vectors of these
+$cref sparse_mat_info$$ structures are set by the constructor
+and assumed to not change.
+The size of the $code val$$ vectors is set by the constructor,
+but element values may change.
+
+$subhead fix_like_jac_info_$$
+Sparse matrix information for the Jacobian of the
+fixed likelihood.
+
+$subhead fix_con_jac_info_$$
+Sparse matrix information for the Jacobian of the
+fixed constraints.
+
+$subhead fix_like_hes_info_$$
+Sparse matrix information for the Hessian of the
+fixed likelihood.
+
+$subhead fix_con_hes_info_$$
+Sparse matrix information for the Hessian of the
+fixed constraints.
+
+$subhead ran_objcon_hes_info_$$
+If $code n_random_ > 0$$, sparse matrix information for the Hessian of the
+random objective and constraints.
 
 $end
 -------------------------------------------------------------------------------
@@ -1156,7 +1242,7 @@ bool ipopt_fixed::eval_jac_g(
 		mixed_object_.update_factor(fixed_tmp_, random_cur_);
 	}
 	//
-	// Jacobian of fixed part of objective
+	// Jacobian of fixed effects likelihood
 	// (2DO: do not revaluate when eval_grad_f had same x)
 	mixed_object_.fix_like_jac(
 		fixed_tmp_,
@@ -1350,7 +1436,7 @@ bool ipopt_fixed::eval_h(
 				obj_factor * Number( ran_objcon_hes_info_.val[k] );
 	}
 	//
-	// Hessian of Lagrangian of weighted prior w.r.t. fixed effects
+	// Hessian of Lagrangian of weighted fixed effects likelihood
 	w_fix_likelihood_tmp_[0] = obj_factor;
 	for(size_t j = 0; j < fix_likelihood_n_abs_; j++)
 		w_fix_likelihood_tmp_[1 + j] = lambda[2 * j + 1] - lambda[2 * j];
@@ -1366,7 +1452,7 @@ bool ipopt_fixed::eval_h(
 		values[fix_like_hes_2_lag_[k]] += Number( fix_like_hes_info_.val[k] );
 	}
 	//
-	// Hessian of Lagrangian of weighted explicit constraints
+	// Hessian of Lagrangian of fixed constraints
 	for(size_t j = 0; j < n_fix_con_; j++)
 		w_fix_con_tmp_[j] = lambda[2 * fix_likelihood_n_abs_ + j];
 	mixed_object_.fix_con_hes(
