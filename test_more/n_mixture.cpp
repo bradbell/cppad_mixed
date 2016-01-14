@@ -127,32 +127,10 @@ public:
 	}
 // ------------------------------------------------------------------------
 public:
-	virtual vector<a2_double> ran_likelihood(
-		const vector<a2_double>& fixed_vec  ,
-		const vector<a2_double>& random_vec )
-	{	return vector<a2_double>(0); } // empty vector
-	//
-	virtual vector<a1_double> ran_likelihood(
-		const vector<a1_double>& fixed_vec  ,
-		const vector<a1_double>& random_vec )
-	{	return vector<a1_double>(0); } // empty vector
 	//
 	virtual vector<a1_double> fix_likelihood(
 		const vector<a1_double>& fixed_vec  )
 	{	return implement_fix_likelihood<a1_double>(fixed_vec); }
-	//
-	virtual vector<a1_double> fix_constraint(
-		const vector<a1_double>& fixed_vec  )
-	{	return vector<a1_double>(0); } // empty vector
-	//
-	virtual void fatal_error(const std::string& error_message)
-	{	std::cerr << "Error: " << error_message << std::endl;
-		std::exit(1);
-	}
-	//
-	virtual void warning(const std::string& warning_message)
-	{	std::cerr << "Warning: " << warning_message << std::endl;
-	}
 };
 } // END_EMPTY_NAMESPACE
 

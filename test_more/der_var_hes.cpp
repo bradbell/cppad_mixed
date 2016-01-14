@@ -182,10 +182,6 @@ namespace {
 			return vec;
 		}
 		//
-		virtual vector<a1_double> fix_likelihood(
-			const vector<a1_double>& fixed_vec  )
-		{	return a1d_vector(0); } // empty vector
-		//
 		virtual vector<a2_double> ran_likelihood(
 			const vector<a2_double>& fixed_vec   ,
 			const vector<a2_double>& random_vec  )
@@ -194,20 +190,6 @@ namespace {
 			const vector<a1_double>& fixed_vec   ,
 			const vector<a1_double>& random_vec  )
 		{	return implement_ran_likelihood(fixed_vec, random_vec); }
-		//
-		virtual vector<a1_double> fix_constraint(
-			const vector<a1_double>& fixed_vec  )
-		{	return a1d_vector(0); } // empty vector
-		//
-		virtual void fatal_error(const std::string& error_message)
-		{	std::cerr << "Error: " << error_message << std::endl;
-			assert(false);
-		}
-		//
-		virtual void warning(const std::string& warning_message)
-		{	std::cerr << "Warning: " << warning_message << std::endl;
-			assert(false);
-		}
 		// ==================================================================
 		// Routines used to check that objective derivative
 		double f_theta(double theta, double u)
