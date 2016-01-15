@@ -411,11 +411,19 @@ int main(int argc, char *argv[])
 	bool quasi_fixed = (random_seed % 2) == 0;
 	mixed_derived mixed_object(I, T, quasi_fixed, y);
 
+	// constrain the sum of the random effects to be zero
+	CppAD::mixed::sparse_mat_info A_info;
+	A_info.resize(T);
+	for(size_t t = 0; t < T; t++)
+	{	A_info.row[t] = 0;
+		A_info.col[t] = t;
+		A_info.val[t] = 1.0;
+	}
+
 	// initialize point to start optimization at
 	vector<double>  u_in(T);
 	for(size_t t = 0; t < T; t++)
-		u_in[t] = 0.0;
-	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+		u_in[t] = 0.01;
 	std::map<std::string, size_t> size_map =
 		mixed_object.initialize(A_info, theta_in, u_in);
 
