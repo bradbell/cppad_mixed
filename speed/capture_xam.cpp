@@ -423,7 +423,7 @@ int main(int argc, char *argv[])
 	// initialize point to start optimization at
 	vector<double>  u_in(T);
 	for(size_t t = 0; t < T; t++)
-		u_in[t] = 0.01;
+		u_in[t] = 0.0;
 	std::map<std::string, size_t> size_map =
 		mixed_object.initialize(A_info, theta_in, u_in);
 

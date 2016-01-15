@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin abs_density_xam.cpp$$
+$begin lasso_xam.cpp$$
 $spell
 	CppAD
 	cppad
@@ -19,31 +19,50 @@ $spell
 	xam
 $$
 
-$section Absolute Value In Log-Density: Example and Test$$.
+$section Lasso on Fixed Effects: Example and Test$$.
 
 $head Model$$
+We are given a set of times
+$latex \{ t_i \W{:} i = 0 , \ldots , N-1 \}$$ and
 $latex \[
-	\B{p}( z_i | \theta ) \sim \B{L} ( \theta_i , \sigma )
+\begin{array}{rcl}
+	q( \theta, s )
+	& = &
+	\theta_0 s + \theta_1 \sin ( 2 \pi s  ) + \theta_2 \cos ( 2 \pi s )
+	\\
+	z_i & = & q( \theta , t_i ) + e_i
+	\\
+	\B{p} ( e_i | \theta ) & \sim & \B{N} ( 0, \sigma )
+\end{array}
 \] $$
-where $latex \B{L} ( \mu , \sigma )$$ is the Laplace distribution
+The idea in Lasso is that one or more of the components of
+$latex \theta$$ are zero and using the Laplace prior
+we can recover this fact.
+We use $latex \B{L} ( \mu , \sigma )$$ to denote the Laplace distribution
 with mean $latex \mu$$ and standard deviation $latex \sigma$$.
+$latex \[
+	\B{p} ( \theta ) \sim \B{L} ( 0 , \delta )
+\] $$
 The corresponding fixed likelihood
 $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$
 is
 $latex \[
-g( \theta ) = \sum_{i} \left[
-	\log ( \sigma \sqrt{2} )
+g( \theta ) =
+\sum_{i=0}^{N-1} \left[
+	\log ( \sigma \sqrt{2 \pi} )
 	+
-	\sqrt{2} \; \left| \frac{ z_i - \exp( \theta_i )}{\sigma} \right|
+	\left( \frac{ z_i - q( \theta , t_i ) }{2 \sigma} \right)^2
 \right]
-\] $$
-The optimal solution, with no constraints and no prior on $latex \theta$$ is
-$latex \[
-	\hat{\theta}_i = \log( z_i )
++
+\sum_{j=0}^2 \left[
+	\log \left( \delta \sqrt{2} \right)
+	+
+	\sqrt{2} \; \left| \frac{\theta_j}{\delta} \right|
+\right]
 \] $$
 
 $code
-$verbatim%example/user/abs_density_xam.cpp
+$verbatim%example/user/lasso_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -52,6 +71,8 @@ $end
 // BEGIN C++
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/manage_gsl_rng.hpp>
+# include <gsl/gsl_randist.h>
 
 namespace {
 	using CppAD::vector;
@@ -62,6 +83,8 @@ namespace {
 	private:
 		size_t                n_fixed_;
 		double                sigma_;
+		double                delta_;
+		const vector<double>& t_;
 		const vector<double>& z_;
 	public:
 		// constructor
@@ -70,31 +93,48 @@ namespace {
 			size_t n_random                   ,
 			bool   quasi_fixed                ,
 			double sigma                      ,
+			double delta                      ,
+			const vector<double>& t           ,
 			const vector<double>& z           ) :
 			cppad_mixed(n_fixed, n_random, quasi_fixed) ,
 			n_fixed_(n_fixed)                           ,
 			sigma_(sigma)                               ,
+			delta_(delta)                               ,
+			t_(t)                                       ,
 			z_(z)
-		{	assert(z.size() == n_fixed); }
+		{	assert(n_fixed == 3);
+			assert( t.size() == z.size() );
+		}
 	private:
 		// implementation of fix_likelihood as p(z|theta) * p(theta)
 		template <class Float>
 		vector<Float> implement_fix_likelihood(
 			const vector<Float>& fixed_vec  )
-		{
+		{	size_t N = t_.size();
+
 			// initialize log-density
 			vector<Float> vec(1 + n_fixed_);
 			vec[0] = Float(0.0);
 
 			// compute this factors once
-			Float sqrt_2 = Float( CppAD::sqrt( 2.0 ) );
+			Float   pi     = Float( 4.0 * CppAD::atan(1.0) );
+			Float sqrt_2   = Float( CppAD::sqrt( 2.0 ) );
+			Float sqrt_2pi = CppAD::sqrt( 2.0 * pi );
 
-			for(size_t j = 0; j < n_fixed_; j++)
-			{	// Data term
-				Float res   = z_[j] - CppAD::exp( fixed_vec[j] );
+			// Data terms
+			for(size_t i = 0; i < N; i++)
+			{	Float q_i   = fixed_vec[0] * t_[i];
+			    q_i        += fixed_vec[1] * sin( 2.0 * pi * t_[i] );
+			    q_i        += fixed_vec[2] * cos( 2.0 * pi * t_[i] );
+				Float res   = z_[i] - q_i;
 				res        /= Float( sigma_ );
-				vec[0]     += log(sigma_ * sqrt_2);
-				vec[1 + j] += sqrt_2 * res;
+				vec[0]     += log(sigma_ * sqrt_2pi) + res * res / 2.0;
+			}
+
+			// Prior terms
+			for(size_t j = 0; j < n_fixed_; j++)
+			{	vec[0]    += log( delta_ * sqrt_2 );
+				vec[1 + j] = sqrt_2 * fixed_vec[j] / delta_;
 			}
 			return vec;
 		}
@@ -108,11 +148,13 @@ namespace {
 	};
 }
 
-bool abs_density_xam(void)
+bool lasso_xam(void)
 {
-	bool   ok = true;
-	double inf = std::numeric_limits<double>::infinity();
-	double tol = 1e-8;
+	bool   ok         = true;
+	double inf         = std::numeric_limits<double>::infinity();
+	// size_t random_seed = CppAD::mixed::new_gsl_rng(0);
+	CppAD::mixed::new_gsl_rng(0);
+    gsl_rng* rng       = CppAD::mixed::get_gsl_rng();
 
 	// fixed effects
 	size_t n_fixed  = 3;
@@ -134,14 +176,27 @@ bool abs_density_xam(void)
 	// no constriants
 	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
 	//
-	vector<double> z(n_fixed);
-	for(size_t i = 0; i < n_fixed; i++)
-		z[i] = double(i+3);
+	size_t n_data = 100;
+	double sigma  = 0.1;
+	double pi     = 4.0 * std::atan(1.0);
+	vector<double> z(n_data), t(n_data);
+	for(size_t i = 0; i < n_data; i++)
+	{	t[i] = double(i) / double(n_data - 1) - 0.5;
+		//
+		// simulation theta_0 = 0, theta_1 = 1, theta_2 = 0
+		double q_i = 0.0 * t[i];
+		q_i       += 1.0 * sin(2.0 * pi *t[i]);
+		q_i       += 0.0 * cos(2.0 * pi *t[i]);
+		double e_i = gsl_ran_gaussian(rng, sigma);
+		z[i]       = q_i + e_i;
+	}
 
 	// object that is derived from cppad_mixed
 	bool quasi_fixed = false;
-	double sigma     = 1.0;
-	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, sigma, z);
+	double delta     = 0.002;
+	mixed_derived mixed_object(
+		n_fixed, n_random, quasi_fixed, sigma, delta, t, z
+	);
 	mixed_object.initialize(A_info, fixed_in, random_in);
 
 	// optimize the fixed effects using quasi-Newton method
@@ -164,10 +219,15 @@ bool abs_density_xam(void)
 		random_upper,
 		random_in
 	);
+	// coefficients that should be zero
+	ok &= CppAD::abs( fixed_out[0] ) <= 1e-9;
+	ok &= CppAD::abs( fixed_out[2] ) <= 1e-9;
+	// non-zero coefficient has shrunk (due to prior)
+	ok &= fixed_out[1] < 1.0;
+	ok &= 0.75 < fixed_out[1];
 
-	for(size_t j = 0; j < n_fixed; j++)
-		ok &= CppAD::abs( fixed_out[j] - CppAD::log( z[j] ) ) <= tol;
-
+	//
+	CppAD::mixed::free_gsl_rng();
 	return ok;
 }
 // END C++

@@ -479,8 +479,8 @@ mixed_object_      ( mixed_object    )
 		// must update cholesky factor before calling ran_con_jac
 		// to determine the sparsity pattern.
 
-		// kludge because it apprears eigen is removing matrix cofficients
-		// that have a zero result.
+		// Begin kludge because it apprears eigen is removing matrix
+		// cofficients that have a zero result.
 		double eps = std::numeric_limits<double>::epsilon();
 		d_vector nz_random_in(n_random_);
 		for(size_t i = 0; i < n_random_; i++)
@@ -489,6 +489,7 @@ mixed_object_      ( mixed_object    )
 			else
 				nz_random_in[i] = random_in[i];
 		}
+		// End kludge
 		mixed_object_.update_factor(fixed_in, nz_random_in);
 		mixed_object.ran_con_jac(fixed_in, nz_random_in, ran_con_jac_info_);
 	}

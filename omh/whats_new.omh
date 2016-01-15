@@ -26,6 +26,9 @@ $section Changed and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 01-15$$
+Add a $cref/Lasso/lasso_xam.cpp/$$ example.
+
 $head 01-14$$
 $list number$$
 First version that actually works with

@@ -19,6 +19,7 @@ $childtable%example/user/abs_density_xam.cpp
 	%example/user/no_random_xam.cpp
 	%example/user/fix_constraint_xam.cpp
 	%example/user/ran_constraint_xam.cpp
+	%example/user/lasso_xam.cpp
 	%example/user/data_mismatch_xam.cpp
 	%speed/capture_xam.cpp
 %$$

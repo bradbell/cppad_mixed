@@ -46,6 +46,7 @@ extern bool hes_cross_xam(void);
 extern bool ran_hes_fun_xam(void);
 extern bool ipopt_xam_run(void);
 extern bool logdet_jac_xam(void);
+extern bool lasso_xam(void);
 extern bool manage_gsl_rng_xam(void);
 extern bool newton_step_xam(void);
 extern bool no_random_xam(void);
@@ -107,6 +108,7 @@ int main(void)
 	RUN(ran_hes_fun_xam);
 	RUN(ipopt_xam_run);
 	RUN(logdet_jac_xam);
+	RUN(lasso_xam);
 	RUN(manage_gsl_rng_xam);
 	RUN(newton_step_xam);
 	RUN(no_random_xam);
@@ -125,7 +127,6 @@ int main(void)
 # if CPPAD_MIXED_HAS_SUITESPARSE
 	RUN(cholmod_xam);
 # endif
-
 	// summary report
 	using std::cout;
 	using std::endl;
