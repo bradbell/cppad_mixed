@@ -228,9 +228,7 @@ bool ran_constraint_xam(void)
 	ok        &= CppAD::abs(sum) > 0.5;
 
 	// constrain sum of random effects to be zero
-	A_info.row.resize(n_random);
-	A_info.col.resize(n_random);
-	A_info.val.resize(n_random);
+	A_info.resize(n_random);
 	for(size_t k = 0; k < n_random; k++)
 	{	A_info.row[k] = 0;
 		A_info.col[k] = k;

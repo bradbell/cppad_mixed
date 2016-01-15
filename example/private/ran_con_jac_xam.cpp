@@ -158,9 +158,7 @@ bool ran_con_jac_xam(void)
 
 	// random constraint matrix
 	CppAD::mixed::sparse_mat_info A_info;
-	A_info.row.resize(n_random);
-	A_info.col.resize(n_random);
-	A_info.val.resize(n_random);
+	A_info.resize(n_random);
 	for(size_t j = 0; j < n_random; j++)
 	{	A_info.row[j] = 0;
 		A_info.col[j] = j;

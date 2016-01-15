@@ -14,12 +14,15 @@ see http://www.gnu.org/licenses/agpl.txt
 $begin sparse_mat_info$$
 $spell
 	CppAD
+	resize
 %$$
 
 $section Sparse Matrix Information$$
 
 $head Syntax$$
-$codei%CppAD::mixed::sparse_mat_info %mat_info%$$
+$codei%CppAD::mixed::sparse_mat_info %mat_info
+%$$
+$icode%mat_info%.resize(%size%)%$$
 
 $head Purpose$$
 This structure holds information about a sparse matrix.
@@ -79,6 +82,15 @@ $subhead Empty Matrix$$
 If $icode K$$ is zero ($icode%mat_info%.row.size()%$$ is zero),
 we refer to the matrix as the empty matrix.
 
+$head resize$$
+The $code resize$$ argument has prototype
+$codei%
+	size_t %size%
+%$$
+All of the vectors,
+$code row$$, $code col$$, and $code val$$,
+are modified to have the specified size.
+
 $end
 */
 namespace CppAD { namespace mixed {
@@ -86,6 +98,12 @@ namespace CppAD { namespace mixed {
 		CppAD::vector<size_t>  row;
 		CppAD::vector<size_t>  col;
 		CppAD::vector<double>  val;
+		//
+		void resize(size_t size)
+		{	row.resize(size);
+			col.resize(size);
+			val.resize(size);
+		}
 	};
 } }
 
