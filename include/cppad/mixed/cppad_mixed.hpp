@@ -328,7 +328,7 @@ $codep */
 /* $$
 
 $head n_ran_con_$$
-If $icode%n_random_% > 0%$$ and $code init_ran_con_done_$$,
+If $code init_ran_con_done_$$,
 $cref/n_ran_con_/init_ran_con/n_ran_con_/$$
 is the number of random constraints
 $codep */

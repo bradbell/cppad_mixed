@@ -476,6 +476,9 @@ mixed_object_      ( mixed_object    )
 	);
 	if( n_ran_con_ > 0 )
 	{	assert( n_random_ > 0 );
+		// must update cholesky factor before calling ran_con_jac
+		// to determine the sparsity pattern.
+		mixed_object_.update_factor(fixed_in, random_in);
 		mixed_object.ran_con_jac(fixed_in, random_in, ran_con_jac_info_);
 	}
 	// -----------------------------------------------------------------------
@@ -699,8 +702,10 @@ bool ipopt_fixed::get_bounds_info(
 		Number*     g_l      ,   // out
 		Number*     g_u      )   // out
 {
-	assert( n > 0 && size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
-	assert( m >= 0 && size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ );
+	assert( n > 0 );
+	assert( size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
+	assert( m >= 0 );
+	assert( size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
 
 	for(size_t j = 0; j < n_fixed_; j++)
 	{	// map infinity to crazy value required by ipopt
@@ -1091,8 +1096,10 @@ bool ipopt_fixed::eval_g(
 	Index           m        ,  // in
 	Number*         g        )  // out
 {
-	assert( n > 0 && size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
-	assert( m >= 0 && size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ );
+	assert( n > 0 );
+	assert( size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
+	assert( m >= 0 );
+	assert( size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
 	//
 	// fixed effects
 	for(size_t j = 0; j < n_fixed_; j++)
@@ -1222,8 +1229,10 @@ bool ipopt_fixed::eval_jac_g(
 	Index*          jCol     ,  // out
 	Number*         values   )  // out
 {
-	assert( n > 0 && size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
-	assert( m >= 0 && size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ );
+	assert( n > 0 );
+	assert( size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
+	assert( m >= 0 );
+	assert( size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
 	assert( size_t(nele_jac) == nnz_jac_g_ );
 	//
 	if( values == NULL )
@@ -1440,8 +1449,10 @@ bool ipopt_fixed::eval_h(
 	Number*       values         )  // out
 {
 	assert( ! mixed_object_.quasi_fixed_ );
-	assert( n > 0 && size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
-	assert( m >= 0 && size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ );
+	assert( n > 0 );
+	assert( size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
+	assert( m >= 0 );
+	assert( size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
 	assert( size_t(nele_hess) == nnz_h_lag_ );
 	if( values == NULL )
 	{	for(size_t k = 0; k < nnz_h_lag_; k++)
@@ -1654,8 +1665,10 @@ void ipopt_fixed::finalize_solution(
 	Ipopt::IpoptCalculatedQuantities* ip_cq     )  // in
 {	bool ok = true;
 	//
-	assert( n > 0 && size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
-	assert( m >= 0 && size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ );
+	assert( n > 0 );
+	assert( size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
+	assert( m >= 0 );
+	assert( size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
 	assert( fixed_opt_.size() == 0 );
 	//
 	//
@@ -1830,7 +1843,7 @@ $end
 bool ipopt_fixed::check_grad_f(bool trace, double relative_tol)
 {	using CppAD::abs;
 	size_t n        = n_fixed_ + fix_likelihood_nabs_;
-	size_t m        = 2 * fix_likelihood_nabs_ + n_fix_con_;
+	size_t m        = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
 	double root_eps = std::sqrt( std::numeric_limits<double>::epsilon() );
 
 	// each x will be different

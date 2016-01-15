@@ -27,12 +27,18 @@ $childtable%omh/whats_new_15.omh
 %$$
 
 $head 01-14$$
+$list number$$
+First version that actually works with
+$cref/random constraints/cppad_mixed/Problem/Random Constraints/$$.
+For example, see $cref ran_constraint_xam.cpp$$.
+$lnext
 Fix a bug when combining absolute value terms
 with $cref fix_constraint$$.
 In change the default $cref/warning/public/User Defined/warning/$$
 so that it does not abort ($code assert(false)$$).
 Furthermore, change the tolerance in one of the solution tests
 to avoid a warning (when convergence has been achieved).
+$lend
 
 $head 01-13$$
 Add test of absolute value terms in the

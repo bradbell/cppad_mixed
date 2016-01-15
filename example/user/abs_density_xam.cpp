@@ -32,7 +32,9 @@ $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$
 is
 $latex \[
 g( \theta ) = \sum_{i} \left[
-	\log ( \sigma \sqrt{2} ) + \sqrt{2} | z_i - exp( \theta_i ) | / \sigma
+	\log ( \sigma \sqrt{2} )
+	+
+	\sqrt{2} \; \left| \frac{ z_i - exp( \theta_i )}{\sigma} \right|
 \right]
 \] $$
 The optimal solution, with no constraints and no prior on $latex \theta$$ is
@@ -91,7 +93,7 @@ namespace {
 			{	// Data term
 				Float res   = z_[j] - CppAD::exp( fixed_vec[j] );
 				res        /= Float( sigma_ );
-				vec[0]     += log(sqrt_2);
+				vec[0]     += log(sigma_ * sqrt_2);
 				vec[1 + j] += sqrt_2 * res;
 			}
 			return vec;

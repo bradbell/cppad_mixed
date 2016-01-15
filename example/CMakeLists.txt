@@ -67,6 +67,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	user/no_random_xam.cpp
 	user/optimize_fixed_xam.cpp
 	user/optimize_random_xam.cpp
+	user/ran_constraint_xam.cpp
 )
 
 LINK_DIRECTORIES(
