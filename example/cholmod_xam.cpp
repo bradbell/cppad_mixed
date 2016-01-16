@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -9,10 +9,51 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-A      = [ 5, 4, 2; 4, 5, 1; 2, 1, 5]
-det(A) = 36
-inv(A) = [ 24, -18, -6; -18, 21, 3; -6, 3, 9] / det(A)
+$begin cholmod_xam.cpp$$
+$spell
+	Cholmod
+	Cholesky
+$$
+
+$section Example Using Cholmod Cholesky Factorization$$
+
+$head Problem Description$$
+We are given the matrix
+$latex \[
+	A = \left( \begin{array}{ccc}
+		5 & 4 & 2 \\
+		4 & 5 & 1 \\
+		2 & 1 & 5
+	\end{array} \right)
+\] $$
+We use $latex A^k$$ to denote the upper-left $latex k \times k$$
+principal minor. The determinant of its principal minors are:
+$latex \[
+\begin{array}{rcl}
+	\det ( A^1 ) & = & 5 \\
+	\det ( A^2 ) & = & 9 \\
+	\det ( A^3 ) & = & 36
+\end{array}
+\] $$
+In addition
+$latex \[
+	A^{-1} = \frac{1}{36}
+	\left( \begin{array}{ccc}
+		24  & -18 & -6 \\
+		-18 & 21  & 3 \\
+		-6  & 3   & 9
+	\end{array} \right)
+\] $$
+which can be checked by multiplying by $latex A$$.
+
+$head Source Code$$
+$code
+$verbatim%example/cholmod_xam.cpp%5%// BEGIN C++%// END C++%1%$$
+$$
+
+$end
 */
+// BEGIN C++
 # include <cholmod.h>
 # include <limits>
 # include <cmath>
@@ -172,3 +213,4 @@ bool cholmod_xam(void)
 
 	return ok;
 }
+// END C++

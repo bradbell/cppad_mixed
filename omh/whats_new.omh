@@ -27,10 +27,14 @@ $childtable%omh/whats_new_15.omh
 %$$
 
 $head 01-16$$
+$list number$$
 Include the constraint matrix $cref/A/capture_xam.cpp/A/$$
 in implementation and documentation of the $cref capture_xam.cpp$$ example.
 In addition, check that the result satisfies the constraint that
 the sum of the random effects is zero.
+$lnext
+Start a $cref wish_list$$.
+$lend
 
 
 $head 01-15$$
