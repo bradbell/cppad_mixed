@@ -519,6 +519,7 @@ int main(int argc, char *argv[])
 	{	u_lower[i] = -inf;
 		u_upper[i] = +inf;
 	}
+	// optimize fixed effects
 	vector<double> theta_out = mixed_object.optimize_fixed(
 		fixed_options,
 		random_options,
@@ -531,7 +532,22 @@ int main(int argc, char *argv[])
 		u_upper,
 		u_in
 	);
+	// correspnding optimal random effects
+	vector<double> u_out = mixed_object.optimize_random(
+		random_options,
+		theta_out,
+		u_lower,
+		u_upper,
+		u_in
+	);
 	std::time_t end_time = std::time( CPPAD_MIXED_NULL_PTR );
+	//
+	// check random effects
+	double sum = 0.0;
+	for(size_t j = 0; j < n_random; j++)
+		sum += u_out[j];
+	ok &= std::fabs( sum ) < 1e-8;
+	//
 	// check reults
 	for(size_t j = 0; j < n_fixed; j++)
 		ok &= std::fabs( theta_out[j] / theta_sim[j] - 1.0 ) < 3e-1;

@@ -27,9 +27,11 @@ $childtable%omh/whats_new_15.omh
 %$$
 
 $head 01-16$$
-Include the constraint matrix
-$cref/A/capture_xam.cpp/A/$$ in implementation and documentation of
-the $cref capture_xam.cpp$$ example.
+Include the constraint matrix $cref/A/capture_xam.cpp/A/$$
+in implementation and documentation of the $cref capture_xam.cpp$$ example.
+In addition, check that the result satisfies the constraint that
+the sum of the random effects is zero.
+
 
 $head 01-15$$
 Add a $cref/Lasso/lasso_xam.cpp/$$ example.
