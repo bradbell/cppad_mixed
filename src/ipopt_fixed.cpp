@@ -10,11 +10,6 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/ipopt_fixed.hpp>
 
-# ifdef CPPAD_MIXED_KLUDGE
-# undef CPPAD_MIXED_KLUDGE
-# endif
-# define CPPAD_MIXED_KLUDGE 1
-
 namespace {
 
 	// merge two (row, col) sparsity patterns into one
@@ -481,25 +476,11 @@ mixed_object_      ( mixed_object    )
 	);
 	if( n_ran_con_ > 0 )
 	{	assert( n_random_ > 0 );
-		// must update cholesky factor before calling ran_con_jac
-		// to determine the sparsity pattern.
-
-# if CPPAD_MIXED_KLUDGE
-		//  apprears eigen is removing matrix cofficients that are zero.
-		double eps = std::numeric_limits<double>::epsilon();
-		d_vector nz_random_in(n_random_);
-		for(size_t i = 0; i < n_random_; i++)
-		{	if( random_in[i] == 0.0 )
-				nz_random_in[i] = eps;
-			else
-				nz_random_in[i] = random_in[i];
-		}
-		mixed_object_.update_factor(fixed_in, nz_random_in);
-		mixed_object.ran_con_jac(fixed_in, nz_random_in, ran_con_jac_info_);
-# else
+		// Must update cholesky factor before calling ran_con_jac
+		// just to determine the sparsity pattern. Note that the values
+		// in ran_jac_info.val are not specified.
 		mixed_object_.update_factor(fixed_in, random_in);
 		mixed_object.ran_con_jac(fixed_in, random_in, ran_con_jac_info_);
-# endif
 	}
 	// -----------------------------------------------------------------------
 	// set nnz_jac_g_

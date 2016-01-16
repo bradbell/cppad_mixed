@@ -178,7 +178,7 @@ bool optimize_fixed_xam(void)
 	vector<double> data(n_data), random_in(n_random);
 	for(size_t i = 0; i < n_data; i++)
 	{	data[i]       = double(i + 1);
-		random_in[i] = i / double(n_data);
+		random_in[i] = 0.0;
 	}
 
 	// object that is derived from cppad_mixed

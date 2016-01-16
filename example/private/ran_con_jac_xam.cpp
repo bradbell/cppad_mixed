@@ -145,7 +145,7 @@ bool ran_con_jac_xam(void)
 	fixed_vec[1] = 1.0;
 	for(size_t i = 0; i < n_data; i++)
 	{	data[i]       = double(i + 2);
-		random_vec[i] = i / double(n_data);
+		random_vec[i] = 0.0;
 	}
 
 	// lower and upper limits for random effects
@@ -182,21 +182,25 @@ bool ran_con_jac_xam(void)
 	// must factor f_{u,u} (theta, uhat)
 	mixed_object.update_factor(fixed_vec, uhat);
 
-	// compute jacobian of random constraints
+	// compute sparstiy pattern for jacobian of random constraints
 	CppAD::mixed::sparse_mat_info jac_info;
 	mixed_object.ran_con_jac(fixed_vec, uhat, jac_info);
 
-	// extract the results
+	// check number of possibly non_zero elements.
 	ok &= jac_info.row.size() == 2;
 	//
 	// partial w.r.t. theta_0
 	ok &= jac_info.row[0] == 0;
 	ok &= jac_info.col[0] == 0;
-	double jac_0 = jac_info.val[0];
 	//
 	// partial w.r.t. theta_1
 	ok &= jac_info.row[1] == 0;
 	ok &= jac_info.col[1] == 1;
+
+	// Now compute the sparse Jacobian values
+	mixed_object.ran_con_jac(fixed_vec, uhat, jac_info);
+	//
+	double jac_0 = jac_info.val[0];
 	double jac_1 = jac_info.val[1];
 
 	// check results

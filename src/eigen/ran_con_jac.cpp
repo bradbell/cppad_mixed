@@ -66,8 +66,21 @@ $codei%
 The input size of the vectors in $icode jac_info$$
 is either zero, or the vectors are the same as the return value
 for a previous call to $code ran_con_jac$$.
-Upon return, $icode jac_info$$
-is a representation of the Jacobian of the
+
+$subhead Sparsity Patter$$
+In the case where the input size of the vectors in $icode jac_info$$
+is zero, only the
+$cref/sparsity pattern/sparse_mat_info/val/Sparsity Pattern/$$ is computed.
+Upon return, the size of $icode%jac_info%.val%$$ is equal to the
+size of $icode%jac_info%.row%$$, but the elements of
+$icode%jac_info%.val%$$ are not specified.
+
+$subhead Sparse Matrix$$
+If the input size of the vectors in $icode jac_info$$
+are non-zero,
+upon return $icode jac_info$$ is a
+$cref/sparse matrix/sparse_mat_info/val/Sparse Matrix/$$
+representation of the Jacobian of the
 $cref/random constraint function
 	/cppad_mixed
 	/Notation
@@ -165,7 +178,13 @@ void cppad_mixed::ran_con_jac(
 		eigen_sparse b(n_random_, 1);
 		while( col <= j )
 		{	assert( col == j );
-			b.insert(row, 0) = - val_out[k];
+			// Must put a non-zero value on left hand size
+			// because Eigens Cholesky solve seems to drop zeros.
+			if( L == 0 )
+				b.insert(row, 0) = 1.0;
+			else
+				b.insert(row, 0) = - val_out[k];
+			//
 			k++;
 			if( k < K )
 			{	assert( hes_cross_.row[k] >= n_fixed_ );
@@ -192,10 +211,16 @@ void cppad_mixed::ran_con_jac(
 				jac_info.col.push_back(j);
 				jac_info.val.push_back(0.0);
 			}
-			assert( jac_info.row[ell] == i );
-			assert( jac_info.col[ell] == j );
-			jac_info.val[ell] = itr.value();
-			ell++;
+			else
+			{	// check for case where eigen has dropped a zero elements
+				while( jac_info.row[ell] < i )
+					jac_info.val[ell++] = 0.0;
+				//
+				assert( jac_info.row[ell] == i );
+				assert( jac_info.col[ell] == j );
+				jac_info.val[ell] = itr.value();
+				ell++;
+			}
 		}
 	}
 	return;
