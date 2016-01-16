@@ -22,6 +22,8 @@ rename_cmd='s|\(.*\)|\1|'
 spell_cmd='s|^$spell|&|'
 #
 cat << EOF > junk.sed
+s|\\(\$cref/.*\\)/c(theta)/|\\n\\1/Fixed Constriant Function, c(theta)/|
+s|/Notation/p(theta)/|/Notation/Fixed Prior Density, p(theta)/|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]
@@ -30,7 +32,9 @@ then
 	exit 1
 fi
 # -----------------------------------------------------------------------------
+cp bin/batch_edit.sh $HOME/trash/batch_edit.sh
 git reset --hard
+cp $HOME/trash/batch_edit.sh bin/batch_edit.sh
 # ----------------------------------------------------------------------------
 # new directories
 for dir in $new_directories
@@ -51,7 +55,10 @@ done
 list_all=`bin/ls_files.sh`
 for file in $list_all
 do
-	echo_eval sed -f junk.sed -i $file
+	if [ "$file" != 'bin/batch_edit.sh' ]
+	then
+		echo_eval sed -f junk.sed -i $file
+	fi
 done
 # ----------------------------------------------------------------------------
 # files that have spelling changes

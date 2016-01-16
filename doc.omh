@@ -72,23 +72,23 @@ $subhead Data, y, z$$
 We use $latex y$$, ($latex z$$) to denote the set of data points that are
 dependent on (independent of) the random effects.
 
-$subhead p(theta)$$
-The density for the fixed effects
+$subhead Fixed Prior Density, p(theta)$$
+The fixed effects prior density
 is denoted by $latex \B{p}( \theta )$$.
 
-$subhead p(z | theta)$$
-The density for the data that does not depend on the random effects
+$subhead Fixed Data Density, p(z|theta)$$
+The data density, that does not depend on the random effects,
 is denoted by $latex \B{p}( z | \theta )$$.
 
-$subhead p(u | theta)$$
-The density for the random effects
+$subhead Random Prior Density, p(u|theta)$$
+The random effects prior density, given the fixed effects,
 is denoted by $latex \B{p}( u | \theta)$$.
 
-$subhead p(y | theta, u)$$
-The density for the data that depends on both the fixed and random effects
+$subhead Random Data Density, p(y|theta,u)$$
+The density for the data, given both the fixed and random effects,
 is denoted by $latex \B{p}( y | \theta, u)$$.
 
-$subhead c(theta)$$
+$subhead Fixed Constraint Function, c(theta)$$
 The fixed effects constraint function, denoted by $latex c( \theta )$$,
 is a smooth function of the fixed effects,
 
@@ -98,7 +98,7 @@ the corresponding optimal random effects are defined by
 $latex \[
 \hat{u} ( \theta )
 =
-\; \R{argmax}  \B{p} ( y | \theta , u) \; \B{p} ( u | \theta )
+\R{argmax}  \; \B{p} ( y | \theta , u) \; \B{p} ( u | \theta )
 \] $$
 Note that this definition agrees with the other definition for
 $cref/u^(theta)/theory/Optimal Random Effects, u^(theta)/$$.

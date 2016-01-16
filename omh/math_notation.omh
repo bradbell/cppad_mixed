@@ -29,17 +29,20 @@ The notation $cref/B(beta, theta, u)
 is used for the second order random constraint approximation.
 
 $head c$$
-The notation $cref/c(theta)/cppad_mixed/Notation/c(theta)/$$
+The notation
+$cref/c(theta)/cppad_mixed/Notation/Fixed Constraint Function, c(theta)/$$
 ( $latex c( \theta )$$ )
 is used for the fixed effects constraints as a function.
 
 $head c_L$$
-The notation $cref/c_L/cppad_mixed/Notation/c(theta)/$$
+The notation
+$cref/c_L/cppad_mixed/Notation/Fixed Constraint Function, c(theta)/$$
 ( $latex c_L $$ )
 is used for the lower limit of the constraints on the fixed effects.
 
 $head c_U$$
-The notation $cref/c_U/cppad_mixed/Notation/c(theta)/$$
+The notation
+$cref/c_U/cppad_mixed/Notation/Fixed Constraint Function, c(theta)/$$
 ( $latex c_U $$ )
 is used for the upper limit of the constraints on the fixed effects.
 
@@ -73,10 +76,10 @@ $latex \B{p} ( \cdot )$$ and
 $latex \B{p} ( \cdot | \cdot )$$ are use for the
 probability density (conditional probability density) functions;
 see
-$cref/p(theta)/cppad_mixed/Notation/p(theta)/$$,
-$cref/p(z | theta)/cppad_mixed/Notation/p(theta)/$$,
-$cref/p(u | theta)/cppad_mixed/Notation/p(theta)/$$,
-$cref/p(y | theta, u)/cppad_mixed/Notation/p(theta)/$$.
+$cref/p(theta)/cppad_mixed/Notation/Fixed Prior Density, p(theta)/$$,
+$cref/p(z | theta)/cppad_mixed/Notation/Fixed Prior Density, p(theta)/$$,
+$cref/p(u | theta)/cppad_mixed/Notation/Fixed Prior Density, p(theta)/$$,
+$cref/p(y | theta, u)/cppad_mixed/Notation/Fixed Prior Density, p(theta)/$$.
 
 $head r$$
 The notation

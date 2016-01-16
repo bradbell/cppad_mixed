@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -78,7 +78,7 @@ random effects; i.e., the data vector
 $cref/z/cppad_mixed/Notation/Data, y, z/$$ is empty.
 $lnext
 There is no prior
-$cref/p(theta)/cppad_mixed/Notation/p(theta)/$$
+$cref/p(theta)/cppad_mixed/Notation/Fixed Prior Density, p(theta)/$$
 for the fixed effects.
 $lend
 

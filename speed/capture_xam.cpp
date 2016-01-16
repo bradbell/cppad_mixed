@@ -93,7 +93,7 @@ $latex \[
 We assume that this probability
 is independent for each $latex i$$.
 
-$head p(u | theta)$$
+$head p(u|theta)$$
 We use a normal distribution, with mean zero and standard deviation
 $latex \theta_2$$,
 for the distribution of the random effects $latex u$$
@@ -105,8 +105,15 @@ $latex \[
 	\frac{1}{ \theta_2 \sqrt{ 2 \pi } }
 		\exp \left[ - \frac{1}{2} \frac{ u_t^2 }{ \theta_2^2 } \right]
 \] $$
+This specifies the
+$cref/random prior density
+	/cppad_mixed
+	/Notation
+	/Random Prior Density, p(u|theta)
+/$$.
 
-$head p(y | theta , u)$$
+
+$head p(y|theta,u)$$
 We define the vector of maximum measurement for each location by
 $latex \[
 	M_i = \max \left\{ y_{i,0} , \cdots , y_{i, T-1} \right\}
@@ -149,11 +156,67 @@ $latex \[
 =
 \prod_{i=0}^{I-1} L_i ( \theta , u )
 \] $$
+This specifies the
+$cref/random data density
+	/cppad_mixed
+	/Notation
+	/Random Data Density, p(y|theta,u)
+/$$.
+
+$head A$$
+The
+$cref/random constraint
+	/cppad_mixed
+	/Problem
+	/Random Constraints
+/$$
+for this example is
+$latex \[
+	0 = \hat{u}_0 ( \theta ) + \cdots + \hat{u}_{T-1} ( \theta )
+\] $$
+where $latex \hat{u} ( \theta )$$ is the
+$cref/optimal random effects
+	/cppad_mixed
+	/Notation
+	/Optimal Random Effects, u^(theta)
+/$$.
+The corresponding
+$cref/random constraint matrix
+	/cppad_mixed
+	/Notation
+	/Random Constraint Matrix, A
+/$$
+$latex A$$ is the row vector of size $latex T$$ with all ones; i.e.,
+$latex \[
+	A = [ 1 , \cdots , 1 ] \in \B{R}^{1 \times T}
+\] $$
 
 $head p(theta)$$
-$index no prior$$
-$index fix_likelihood, none$$
-For this example there is no prior $latex \B{p}(\theta)$$.
+For this example there is no
+$cref/fixed prior density
+	/cppad_mixed
+	/Notation
+	/Fixed Prior Density, p(theta)
+/$$
+$latex \B{p}(\theta)$$.
+
+$head p(z|theta)$$
+For this example there is no
+$cref/fixed data density
+	/cppad_mixed
+	/Notation
+	/Fixed Data Density, p(z|theta)
+/$$
+$latex \B{p}(z | \theta)$$.
+
+$head c(theta)$$
+For this example there is no
+$cref/fixed constraint function
+	/cppad_mixed
+	/Notation
+	/Fixed Data Density, p(z|theta)
+/$$
+$latex \B{p}(z | \theta)$$.
 
 $head Reference$$
 J. Andrew Royle,
