@@ -30,9 +30,9 @@ We use $latex A^k$$ to denote the upper-left $latex k \times k$$
 principal minor. The determinant of its principal minors are:
 $latex \[
 \begin{array}{rcl}
-	\det ( A^1 ) & = & 5 \\
-	\det ( A^2 ) & = & 9 \\
-	\det ( A^3 ) & = & 36
+	\det \left( A^1 \right) & = & 5 \\
+	\det \left( A^2 \right) & = & 9 \\
+	\det \left( A^3 \right) & = & 36
 \end{array}
 \] $$
 In addition
