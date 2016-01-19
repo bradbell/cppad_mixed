@@ -57,8 +57,10 @@ $end
 # include <cholmod.h>
 # include <limits>
 # include <cmath>
+# include <cassert>
 
 # define CHOLMOD_TRUE  1
+# define CHOLMOD_FALSE 0
 
 namespace {
 	void add_T_entry(cholmod_triplet *T, int r, int c, double x)
@@ -88,6 +90,13 @@ bool cholmod_xam(void)
 	cholmod_common com;
 	cholmod_start(&com);
 
+	// always do simplicial factorization
+	com.supernodal = CHOLMOD_SIMPLICIAL;
+
+	// do LDL' factorization and leave in LDL' form
+	com.final_ll = CHOLMOD_FALSE;
+
+
 	// allocate triplet
 	size_t nrow = 3;
 	size_t ncol = 3;
@@ -107,12 +116,42 @@ bool cholmod_xam(void)
 	add_T_entry(T, 2, 2, 5.);
 
 	// convert triplet to sparse representation of A
-	cholmod_sparse *A =
+	cholmod_sparse* A =
 		cholmod_triplet_to_sparse(T, 0, &com);
 
 	// factor the matrix
 	cholmod_factor *L = cholmod_analyze(A, &com);
 	cholmod_factorize(A, L, &com);
+
+	// check properties of factor
+	assert( L->n     == nrow );          // number of rows and coluns
+	assert( L->minor == nrow );          // successful factorization
+	assert( L->is_ll == CHOLMOD_FALSE ); // factorization is LDL'
+
+	// compute log of determinant of diagonal D
+	double log_det_A;
+	int*    L_p  = (int *) L->p;
+	int*    L_i  = (int *) L->i;
+	int*    L_nz = (int *) L->nz;
+	double* L_x  = (double *) L->x;
+	for(size_t j = 0; j < nrow; j++)
+	{	assert( L_nz[j] > 0 );
+		bool found = false;
+		for(int k = 0; k < L_nz[j]; k++)
+		{	if( size_t( L_i[ L_p[j] + k ] ) == j )
+			{	assert( ! found );
+				found = true;
+				// j-th element on diagonal of factorization
+				double dj = L_x[ L_p[j] + k ];
+				assert( dj > 0.0 );
+				log_det_A += std::log(dj);
+			}
+			assert(found);
+		}
+	}
+	// check its value
+	ok &= std::fabs( log_det_A / std::log(36.0) - 1.0 ) <= eps;
+
 
 	// sparsity pattern for right hand side column vector
 	size_t Bset_nrow       = nrow;
@@ -122,7 +161,7 @@ bool cholmod_xam(void)
 	int    Bset_packed     = CHOLMOD_TRUE;
 	int    Bset_stype      = 0;
 	int    Bset_xtype      = CHOLMOD_PATTERN;
-	cholmod_sparse *Bset = cholmod_allocate_sparse(
+	cholmod_sparse* Bset = cholmod_allocate_sparse(
 		Bset_nrow,
 		Bset_ncol,
 		Bset_nzmax,
@@ -135,7 +174,7 @@ bool cholmod_xam(void)
 
 	// sparsity pattern for solution column vector
 	size_t Xset_nzmax = nrow;
-	cholmod_sparse *Xset = cholmod_allocate_sparse(
+	cholmod_sparse* Xset = cholmod_allocate_sparse(
 		Bset_nrow,
 		Bset_ncol,
 		Xset_nzmax,
@@ -160,15 +199,15 @@ bool cholmod_xam(void)
 	// Recover the lower triangle of the symmetrix inverse matrix
 	for(size_t j = 0; j < ncol; j++)
 	{	// j-th column of identity matrix
-		int *Bset_p = (int *) Bset->p;
-		int *Bset_i = (int *) Bset->i;
+		int* Bset_p = (int *) Bset->p;
+		int* Bset_i = (int *) Bset->i;
 		Bset_p[0] = 0;   // column index
 		Bset_p[1] = 1;   // number of non-zeros in column vector
 		Bset_i[0] = j;   // row index
 
 		// entire column vector
-		int *Xset_p = (int *) Xset->p;
-		int *Xset_i = (int *) Xset->i;
+		int* Xset_p = (int *) Xset->p;
+		int* Xset_i = (int *) Xset->i;
 		Xset_p[0] = 0;        // column index
 		Xset_p[1] = nrow - j; // number of non-zeros in column vector
 		for(size_t i = j; i < nrow; i++)
