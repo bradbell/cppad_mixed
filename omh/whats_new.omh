@@ -19,12 +19,22 @@ $spell
 	chol_ran_hes
 	Eigen
 	Wno
+	valgrind
 $$
 
 $section Changed and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh
 %$$
+
+$head 01-19$$
+Fix a bug (found by $code valgrind$$) in the setting of the upper bound
+$cref/g_u/ipopt_fixed_get_bounds_info/g_u/$$ for the
+$cref/random constraints
+	/cppad_mixed
+	/Problem
+	/Random Constraints
+/$$.
 
 $head 01-16$$
 $list number$$

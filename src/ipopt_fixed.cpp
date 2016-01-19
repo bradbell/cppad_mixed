@@ -741,7 +741,7 @@ bool ipopt_fixed::get_bounds_info(
 	// random constraints
 	for(size_t j = 0; j < n_ran_con_; j++)
 	{	g_l[2 * fix_likelihood_nabs_ + n_fix_con_ + j] = 0.0;
-		g_u[2 * fix_likelihood_nabs_ + n_ran_con_ + j] = 0.0;
+		g_u[2 * fix_likelihood_nabs_ + n_fix_con_ + j] = 0.0;
 	}
 	//
 	return true;
