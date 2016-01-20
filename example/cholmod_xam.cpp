@@ -129,25 +129,17 @@ bool cholmod_xam(void)
 	assert( L->is_ll == CHOLMOD_FALSE ); // factorization is LDL'
 
 	// compute log of determinant of diagonal D
-	double log_det_A;
+	double log_det_A = 0.0;
 	int*    L_p  = (int *) L->p;
 	int*    L_i  = (int *) L->i;
-	int*    L_nz = (int *) L->nz;
 	double* L_x  = (double *) L->x;
 	for(size_t j = 0; j < nrow; j++)
-	{	assert( L_nz[j] > 0 );
-		bool found = false;
-		for(int k = 0; k < L_nz[j]; k++)
-		{	if( size_t( L_i[ L_p[j] + k ] ) == j )
-			{	assert( ! found );
-				found = true;
-				// j-th element on diagonal of factorization
-				double dj = L_x[ L_p[j] + k ];
-				assert( dj > 0.0 );
-				log_det_A += std::log(dj);
-			}
-			assert(found);
-		}
+	{	// first element for each column is always the diagonal element
+		assert( size_t( L_i [ L_p[j] ] ) == j );
+		// j-th element on diagonal of factorization
+		double dj = L_x[ L_p[j] ];
+		assert( dj > 0.0 );
+		log_det_A += std::log(dj);
 	}
 	// check its value
 	ok &= std::fabs( log_det_A / std::log(36.0) - 1.0 ) <= eps;
