@@ -188,15 +188,14 @@ bool cholmod_xam(void)
 	// non-zero values in the identity matrix are always one.
 	cholmod_dense *B = cholmod_ones(nrow, 1, xtype, &com);
 
-	// place where the solution is returned
-	cholmod_dense *X = cholmod_zeros(nrow, 1, xtype, &com);
-	double *X_x = (double *) X->x;
-
 	// work space vectors that can be reused
 	cholmod_dense *Y = NULL;
 	cholmod_dense *E = NULL;
 
-	// Recover the lower triangle of the symmetrix inverse matrix
+	// place where the solution is returned
+	cholmod_dense *X = NULL;
+
+	// Recover the lower triangle of the symmetric inverse matrix
 	for(size_t j = 0; j < ncol; j++)
 	{	// j-th column of identity matrix
 		int* Bset_p = (int *) Bset->p;
@@ -205,7 +204,7 @@ bool cholmod_xam(void)
 		Bset_p[1] = 1;   // number of non-zeros in column vector
 		Bset_i[0] = j;   // row index
 
-		// entire column vector
+		// just lower triangle for this column column vector
 		int* Xset_p = (int *) Xset->p;
 		int* Xset_i = (int *) Xset->i;
 		Xset_p[0] = 0;        // column index
@@ -225,6 +224,11 @@ bool cholmod_xam(void)
 			&E,
 			&com
 		);
+		// The four arrays Xset, X, Y, E may change each time
+		double *X_x  = (double *) X->x;
+		Xset_p       = (int *) Xset->p;
+		Xset_i       = (int *) Xset->i;
+		//
 		size_t X_len = (size_t) Xset_p[1];
 		ok &= X_len == nrow - j;
 		for(size_t i = j; i < nrow; i++)
@@ -234,21 +238,21 @@ bool cholmod_xam(void)
 	}
 
 	// free memory
-	cholmod_free_sparse(&Xset, &com);
-	cholmod_free_sparse(&Bset, &com);
-	cholmod_free_dense(&E, &com);
-	cholmod_free_dense(&Y, &com);
-	cholmod_free_dense(&X, &com);
-	cholmod_free_dense(&B, &com);
-	cholmod_free_factor(&L, &com);
-	cholmod_free_sparse(&A, &com);
-	cholmod_free_triplet(&T, &com);
+	cholmod_free_triplet(&T,    &com);
+	cholmod_free_sparse( &A,    &com);
+	cholmod_free_factor( &L,    &com);
+	cholmod_free_sparse( &Bset, &com);
+	cholmod_free_sparse( &Xset, &com);
+	cholmod_free_dense(  &B,    &com);
+	cholmod_free_dense(  &Y,    &com);
+	cholmod_free_dense(  &E,    &com);
+	cholmod_free_dense(  &X,    &com);
 
 	// finish up
 	cholmod_finish(&com);
 
-	// check memory count
-	ok &= com.memory_inuse == 0;
+	// check count of malloc'ed - free'd
+	ok &= com.malloc_count == 0;
 
 	return ok;
 }
