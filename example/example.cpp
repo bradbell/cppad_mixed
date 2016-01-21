@@ -93,6 +93,11 @@ namespace {
 // main program that runs all the tests
 int main(void)
 {
+# if CPPAD_MIXED_HAS_SUITESPARSE
+	RUN(cholmod_xam);
+# endif
+
+	// summary report
 	RUN(abs_density_xam);
 	RUN(data_mismatch_xam);
 	RUN(derived_xam);
@@ -123,10 +128,6 @@ int main(void)
 	RUN(ran_objcon_hes_xam);
 	RUN(update_factor_xam);
 
-# if CPPAD_MIXED_HAS_SUITESPARSE
-	RUN(cholmod_xam);
-# endif
-	// summary report
 	using std::cout;
 	using std::endl;
 	int return_flag;

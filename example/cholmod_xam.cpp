@@ -205,9 +205,13 @@ bool cholmod_xam(void)
 		for(size_t i = j; i < nrow; i++)
 			Xset_i[i-j] = (int) i; // row index
 
+		// Both these options seem to work.
+		// int sys = CHOLMOD_LDLt; // solve LDL^T * x = b
+		int sys = CHOLMOD_A;       // solve     A * x = b
+
 		// solve an (i, j) element of the inverse of A
 		cholmod_solve2(
-			CHOLMOD_A,
+			sys,
 			L,
 			B,
 			Bset,
