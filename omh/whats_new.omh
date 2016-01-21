@@ -27,6 +27,10 @@ $section Changed and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 01-21$$
+Change default directory where $code bin/install_eigen.sh$$ places
+the Eigen package (because warnings are suppressed for this directory).
+
 $head 01-19$$
 Fix a bug (found by $code valgrind$$) in the setting of the upper bound
 $cref/g_u/ipopt_fixed_get_bounds_info/g_u/$$ for the

@@ -10,8 +10,9 @@
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
 # BEGIN USER_SETTINGS
-# prefix below which eigen will be installed
-eigen_prefix="$HOME/prefix/cppad_mixed"
+# Prefix below which eigen will be installed. Use a special sub-directory so
+# because warnings are supressed for the directory where eigen is installed.
+eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
 # END USER_SETTINGS
 # ---------------------------------------------------------------------------
 if [ $0 != 'bin/install_eigen.sh' ]

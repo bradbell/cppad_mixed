@@ -14,15 +14,20 @@ then
 	echo 'bin/check_install.sh: must be executed from its parent directory'
 	exit 1
 fi
-cppad_prefix="$HOME/prefix/cppad_mixed"
-include_file="$cppad_prefix/include/cppad/mixed/cppad_mixed.hpp"
-library_file="$cppad_prefix/lib64/libcppad_mixed.a"
-example_file="example/user/no_random_xam.cpp"
-for file in $include_file $libary_file
+cppad_mixed_prefix="$HOME/prefix/cppad_mixed"
+example_file='example/user/no_random_xam.cpp'
+list="
+	$cppad_mixed_prefix/eigen/include/Eigen/Core
+	$cppad_mixed_prefix/include/cppad/cppad.hpp
+	$cppad_mixed_prefix/include/cppad/mixed/cppad_mixed.hpp
+	$cppad_mixed_prefix/lib64/libcppad_mixed.a
+	$example_file
+"
+for file in $list
 do
 	if [ ! -e "$file" ]
 	then
-		echo "$file does not exist"
+		echo "check_install.sh: Error: $file does not exist"
 		exit 1
 	fi
 done
@@ -51,11 +56,10 @@ echo_eval g++ \
 	-std=c++11 \
 	-g \
 	-O0 \
-	-I ../../include \
-	-I $HOME/prefix/cppad/include \
-	-isystem $HOME/prefix/eigen/include \
+	-I $cppad_mixed_prefix/include \
+	-isystem $cppad_mixed_prefix/eigen/include \
 	example.cpp \
-	-L $HOME/prefix/cppad/lib64 \
+	-L $cppad_mixed_prefix/lib64 \
 	-lcppad_mixed \
 	-lcppad_mixed_eigen \
 	-lcppad_mixed \
