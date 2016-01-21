@@ -123,7 +123,6 @@ int main(void)
 	RUN(ran_objcon_hes_xam);
 	RUN(update_factor_xam);
 
-
 # if CPPAD_MIXED_HAS_SUITESPARSE
 	RUN(cholmod_xam);
 # endif

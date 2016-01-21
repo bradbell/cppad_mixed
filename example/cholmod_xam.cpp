@@ -61,6 +61,8 @@ $end
 
 # define CHOLMOD_TRUE  1
 # define CHOLMOD_FALSE 0
+# define CHOLMOD_STYPE_NOT_SYMMETRIC   0
+# define CHOLMOD_STYPE_LOWER_TRIANGLE -1
 
 namespace {
 	void add_T_entry(cholmod_triplet *T, int r, int c, double x)
@@ -101,10 +103,10 @@ bool cholmod_xam(void)
 	size_t nrow = 3;
 	size_t ncol = 3;
 	size_t nzmax = nrow * ncol;
-	int    stype = -1;    // lower triangle specified for symmetric case
-	int    xtype = CHOLMOD_REAL;
+	int    T_stype = CHOLMOD_STYPE_LOWER_TRIANGLE;
+	int    T_xtype = CHOLMOD_REAL;
 	cholmod_triplet *T =
-		cholmod_allocate_triplet(nrow, ncol, nzmax, stype, xtype, &com);
+		cholmod_allocate_triplet(nrow, ncol, nzmax, T_stype, T_xtype, &com);
 	ok &= T->nnz ==  0;
 
 	// triplet entries corresponding to lower triangle of A
@@ -151,7 +153,7 @@ bool cholmod_xam(void)
 	size_t Bset_nzmax      = 1;
 	int    Bset_sorted     = CHOLMOD_TRUE;
 	int    Bset_packed     = CHOLMOD_TRUE;
-	int    Bset_stype      = 0;
+	int    Bset_stype      = CHOLMOD_STYPE_NOT_SYMMETRIC;
 	int    Bset_xtype      = CHOLMOD_PATTERN;
 	cholmod_sparse* Bset = cholmod_allocate_sparse(
 		Bset_nrow,
@@ -165,20 +167,19 @@ bool cholmod_xam(void)
 	);
 
 	// sparsity pattern for solution column vector
-	size_t Xset_nzmax = nrow;
 	cholmod_sparse* Xset = cholmod_allocate_sparse(
 		Bset_nrow,
 		Bset_ncol,
-		Xset_nzmax,
+		Bset_nzmax,
 		Bset_sorted,
 		Bset_packed,
 		Bset_stype,
-		Bset_xtype,
+		T_xtype,
 		&com
 	);
 
 	// non-zero values in the identity matrix are always one.
-	cholmod_dense *B = cholmod_ones(nrow, 1, xtype, &com);
+	cholmod_dense *B = cholmod_ones(nrow, 1, T_xtype, &com);
 
 	// work space vectors that can be reused
 	cholmod_dense *Y = NULL;
