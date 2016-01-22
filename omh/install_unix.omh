@@ -33,10 +33,10 @@ $children%bin/run_cmake.sh
 %$$
 
 $head Download$$
-Download the tarball $href%cppad_mixed-20160119.tgz%$$
+Download the tarball $href%cppad_mixed-20160122.tgz%$$
 and then extract it using the command
 $codei%
-	tar -xzf cppad_mixed-20160119.tgz
+	tar -xzf cppad_mixed-20160122.tgz
 %$$
 
 $head System Requirements$$
@@ -75,7 +75,7 @@ The $href%http://eigen.tuxfamily.org%eigen%$$
 linear algebra package.
 The commands
 $codei%
-	cd cppad_mixed-20160119
+	cd cppad_mixed-20160122
 	bin/install_eigen.sh
 %$$
 can be used for this purpose.
@@ -90,7 +90,7 @@ The $href%https://projects.coin-or.org/Ipopt%Ipopt%$$
 optimization package.
 The commands
 $codei%
-	cd cppad_mixed-20160119
+	cd cppad_mixed-20160122
 	bin/install_ipopt.sh
 %$$
 can be used for this purpose.
@@ -105,7 +105,7 @@ The $href%http://www.coin-or.org/CppAD/%cppad%$$
 C++ algorithmic differentiation package.
 The commands
 $codei%
-	cd cppad_mixed-20160119
+	cd cppad_mixed-20160122
 	bin/install_cppad.sh
 %$$
 can be used for this purpose.
