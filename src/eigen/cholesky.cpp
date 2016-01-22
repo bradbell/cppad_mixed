@@ -71,7 +71,7 @@ $codei%
 %$$
 These are the possibly non-zero row indices in the sparsity pattern
 of the lower triangle of the Hessian w.r.t just the random effects.
-For $icode%k% = 0 , %...% , %row%.size()%$$,
+For $icode%k% = 0 , %...% , %row%.size()-1%$$,
 $codei%
 	%n_fixed% <= %row%[%k%] < %n_fixed% + %n_random%
 %$$
@@ -87,7 +87,7 @@ $codei%
 These are the possibly non-zero column indices in the sparsity pattern
 of the lower triangle of the Hessian.
 It must have the same size as $icode row$$ and
-for $icode%k% = 0 , %...% , %col%.size()%$$,
+for $icode%k% = 0 , %...% , %col%.size()-1%$$,
 $codei%
 	%n_fixed% <= %col%[%k%] <= %row%[%k%]
 %$$
