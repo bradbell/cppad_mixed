@@ -22,7 +22,7 @@ $spell
 	valgrind
 $$
 
-$section Changed and Additions to cppad_mixed During 2016$$
+$section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh
 %$$
