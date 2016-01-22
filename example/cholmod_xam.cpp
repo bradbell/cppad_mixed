@@ -151,7 +151,7 @@ bool cholmod_xam(void)
 	size_t Bset_nrow       = nrow;
 	size_t Bset_ncol       = 1;
 	size_t Bset_nzmax      = 1;
-	int    Bset_sorted     = CHOLMOD_TRUE;
+	int    Bset_sorted     = CHOLMOD_FALSE;
 	int    Bset_packed     = CHOLMOD_TRUE;
 	int    Bset_stype      = CHOLMOD_STYPE_NOT_SYMMETRIC;
 	int    Bset_xtype      = CHOLMOD_PATTERN;
@@ -167,14 +167,15 @@ bool cholmod_xam(void)
 	);
 
 	// sparsity pattern for solution column vector
+	size_t Xset_nzmax = nrow;
 	cholmod_sparse* Xset = cholmod_allocate_sparse(
 		Bset_nrow,
 		Bset_ncol,
-		Bset_nzmax,
+		Xset_nzmax,
 		Bset_sorted,
 		Bset_packed,
 		Bset_stype,
-		T_xtype,
+		Bset_xtype,
 		&com
 	);
 
@@ -200,10 +201,10 @@ bool cholmod_xam(void)
 		// just lower triangle for this column column vector
 		int* Xset_p = (int *) Xset->p;
 		int* Xset_i = (int *) Xset->i;
-		Xset_p[0] = 0;        // column index
-		Xset_p[1] = nrow - j; // number of non-zeros in column vector
+		Xset_p[0]   = 0;        // column index
+		Xset_p[1]   = nrow - j; // number of rows to solve for
 		for(size_t i = j; i < nrow; i++)
-			Xset_i[i-j] = (int) i; // row index
+			Xset_i[i-j] = (int) i; // index of rows to solve for
 
 		// Both these options seem to work.
 		// int sys = CHOLMOD_LDLt; // solve LDL^T * x = b
@@ -226,12 +227,13 @@ bool cholmod_xam(void)
 		Xset_p       = (int *) Xset->p;
 		Xset_i       = (int *) Xset->i;
 		//
-		size_t X_len = (size_t) Xset_p[1];
-		ok &= X_len == nrow - j;
+		ok &= Xset_p[0] == 0;
+		ok &= Xset_p[1] == (int) (nrow - j);
 		for(size_t i = j; i < nrow; i++)
-		{	ok &= Xset_i[i-j] == (int) i;
+			ok &= Xset_i[i-j] == (int) i;
+		//
+		for(size_t i = j; i < nrow; i++)
 			ok &= std::fabs( X_x[i] / A_inv[i*ncol+j] - 1.0 ) <= eps;
-		}
 	}
 
 	// free memory
