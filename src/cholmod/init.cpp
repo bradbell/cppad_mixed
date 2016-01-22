@@ -25,7 +25,7 @@ $$
 $section Initialize Cholesky Factor for a Specific Sparsity Pattern$$
 
 $head Syntax$$
-$icode%chol_ran_hes%.init(%n_fixed%, %n_random%, %hes_info%)
+$icode%chol_ran_hes%.init(%hes_info%)
 %$$
 
 $head Private$$
@@ -38,20 +38,6 @@ This object has prototype
 $codei%
 	CppAD::mixed::cholmod %chol_ran_hes%
 %$$
-
-$head n_fixed$$
-This argument has prototype
-$codei%
-	size_t %n_fixed%
-%$$
-and is then number of fixed effects.
-
-$head n_random$$
-This argument has prototype
-$codei%
-	size_t %n_random%
-%$$
-and is then number of random effects.
 
 $head hes_info$$
 This argument had prototype
@@ -69,7 +55,7 @@ $cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order.
 $subhead row$$
 For $icode%k% = 0 , %...% , %hes_info%.row.size()-1%$$,
 $codei%
-	%n_fixed% <= %row%[%k%] < %n_fixed% + %n_random%
+	n_fixed_ <= %hes_info%.row[%k%] < n_fixed_ + n_random_
 %$$
 The reason for the offset is that these indices are relative to both
 the fixed and random effects and the fixed effects come before the
@@ -78,7 +64,7 @@ random effects.
 $subhead col$$
 For $icode%k% = 0 , %...% , %hes_info%.col%.size()-1%$$,
 $codei%
-	%n_fixed% <= %col%[%k%] <= %row%[%k%]
+	n_fixed_ <= %hes_info%.col[%k%] <= %hes_info%.row[%k%]
 %$$
 
 $head Assumptions$$
@@ -99,7 +85,7 @@ $codei%
 $head rhs$$
 This is set to dense column vector of $code n_random$$ zeros as follows:
 $codei%
-	rhs_ = cholmod_zeros(%n_random%, 1, CHOLMOD_REAL, &common_)
+	rhs_ = cholmod_zeros(n_random_, 1, CHOLMOD_REAL, &common_)
 %$$
 
 $end
@@ -110,10 +96,7 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-void cholmod::init(
-	size_t                               n_fixed  ,
-	size_t                               n_random ,
-	const CppAD::mixed::sparse_mat_info& hes_info )
+void cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
 {
 	assert(pos_matrix_ == CPPAD_NULL );
 	assert(factor_     == CPPAD_NULL );
@@ -126,8 +109,8 @@ void cholmod::init(
 
 	// set triplet corresponding to sparsity pattern and reserve spase
 	// for unspecified values (that end up in pos_matrix_.
-	size_t nrow  = n_random;
-	size_t ncol  = n_random;
+	size_t nrow  = n_random_;
+	size_t ncol  = n_random_;
 	size_t nzmax = hes_info.row.size();
 	int    stype = CHOLMOD_STYPE_LOWER_TRIANGLE;
 	int    xtype = CHOLMOD_REAL;
@@ -139,10 +122,10 @@ void cholmod::init(
 	double* T_x = (double *) triplet->x;
 	double nan  = std::numeric_limits<double>::quiet_NaN();
 	for(size_t k = 0; k < nzmax; k++)
-	{	assert( n_fixed <= hes_info.row[k] );
-		assert( n_fixed <= hes_info.col[k] );
-		T_i[k] = static_cast<int>( hes_info.row[k] - n_fixed );
-		T_j[k] = static_cast<int>( hes_info.col[k] - n_fixed );
+	{	assert( n_fixed_ <= hes_info.row[k] );
+		assert( n_fixed_ <= hes_info.col[k] );
+		T_i[k] = static_cast<int>( hes_info.row[k] - n_fixed_ );
+		T_j[k] = static_cast<int>( hes_info.col[k] - n_fixed_ );
 		T_x[k] = nan;
 	}
 	triplet->nnz = nzmax;
@@ -152,8 +135,8 @@ void cholmod::init(
 	pos_matrix_ = cholmod_triplet_to_sparse(triplet, nzmax, &common_);
 
 	// check assumptions
-	assert( pos_matrix_->nrow   == n_random );
-	assert( pos_matrix_->ncol   == n_random );
+	assert( pos_matrix_->nrow   == n_random_ );
+	assert( pos_matrix_->ncol   == n_random_ );
 	assert( pos_matrix_->nzmax  == hes_info.row.size() );
 	assert( pos_matrix_->stype  == CHOLMOD_STYPE_LOWER_TRIANGLE );
 	assert( pos_matrix_->itype  == CHOLMOD_INT );
@@ -168,7 +151,7 @@ void cholmod::init(
 	factor_ = cholmod_analyze(pos_matrix_, &common_);
 
 	// set rhs_ to column vector of zeros
-	rhs_ = cholmod_zeros(n_random, 1, CHOLMOD_REAL, &common_);
+	rhs_ = cholmod_zeros(n_random_, 1, CHOLMOD_REAL, &common_);
 
 	// done with triplet
 	cholmod_free_triplet(&triplet, &common_ );

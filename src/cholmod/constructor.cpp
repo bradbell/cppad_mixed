@@ -30,15 +30,33 @@ $$
 $section Cholmod Constructor$$
 
 $head Syntax$$
-$codei%CppAD::mixed::cholmod %chol_ran_hes%$$
+$codei%CppAD::mixed::cholmod %chol_ran_hes%(%n_fixed%, %n_random%)%$$
 
 $head Private$$
 This class is an implementation detail and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head Discussion$$
-This sets all the private member variables equal to the null pointer
-and initializes the common block with the call
+$head n_fixed_$$
+The argument $icode n_fixed$$ has prototype
+$codei%
+	size_t %n_fixed%
+%$$
+and the member variable $code n_fixed_$$ is set to this value,
+the number of fixed effects.
+
+$head n_random_$$
+The argument $icode n_random$$ has prototype
+$codei%
+	size_t %n_random%
+%$$
+and the member variable $code n_random_$$ is set to this value,
+the number of random effects.
+
+$head Pointers$$
+This sets all the pointer private member variable equal to null.
+
+$head common_$$
+The $code common_$$ variable is initialized as follows:
 $codei%
 	cholmod_start(&common_);
 %$$
@@ -57,8 +75,10 @@ $codei%
 
 $end
 */
-cholmod::cholmod(void)
+cholmod::cholmod(size_t n_fixed, size_t n_random)
 :
+n_fixed_   (n_fixed)         ,
+n_random_  (n_random)        ,
 pos_matrix_(CPPAD_NULL)      ,
 factor_    (CPPAD_NULL)      ,
 rhs_       (CPPAD_NULL)      ,

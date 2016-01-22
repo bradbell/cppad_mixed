@@ -23,9 +23,6 @@ $$
 
 $section Cholmod Cholesky Factor Class$$
 
-$head Syntax$$
-$codei%CppAD::mixed::cholmod %chol_ran_hes%$$
-
 $head Private$$
 This class is an implementation detail and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
@@ -59,6 +56,8 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 class cholmod {
 private:
+	const size_t      n_fixed_;    // number of fixed effects
+	const size_t      n_random_;   // number of random effects
 	cholmod_common    common_;
 	cholmod_sparse*   pos_matrix_; // The positive matrix we are factoring
 	cholmod_factor*   factor_;     // lower triangular LDL' factor
@@ -70,15 +69,11 @@ private:
 	cholmod_dense*    work_two_;   // second work space for solving equations
 public:
 	// constructor
-	cholmod(void);
+	cholmod(size_t n_fixed, size_t n_random);
 	// destructor
 	~cholmod(void);
 	// initialize
-	void init(
-		size_t                 n_fixed  ,
-		size_t                 n_random ,
-		const sparse_mat_info& hes_info
-	);
+	void init(const sparse_mat_info& hes_info);
 };
 
 
