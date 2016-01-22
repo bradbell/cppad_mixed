@@ -14,32 +14,61 @@ then
 	echo 'bin/check_install.sh: must be executed from its parent directory'
 	exit 1
 fi
+# $OMhelpKeyCharacter=&
+# &begin check_install.sh&& &newlinech #&&
+# &spell
+#	suitesparse cppad eigen xam cpp mkdir tmp cp sed isystem lcppad lgsl
+#	lgslcblas fi bool std cout endl ipopt conig eval config
+# &&
+#
+# &section Example and Test Using the Installed Version of cppad_mixed&&
+#
+# &head Purpose&&
+# This file ( &code bin/check_install.sh&& ) is only meant as an example
+# and will need to modify the steps for your particular system.
+#
+# &head cppad_mixed_prefix&&
+# This is the &cref/prefix/run_cmake.sh/Prefixes/&&
+# where &code cppad_mixed&& was installed:
+# &codep
 cppad_mixed_prefix="$HOME/prefix/cppad_mixed"
+# &&
+#
+# &head eigen_prefix&&
+# This is the prefix where &code eigen&& was installed:
+# &codep
+eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
+# &&
+#
+# &head example_file&&
+# This is the user example that we will compile using
+# the installed version of &code cppad_mixed&&:
+# &codep
 example_file='example/user/no_random_xam.cpp'
-list="
-	$cppad_mixed_prefix/eigen/include/Eigen/Core
-	$cppad_mixed_prefix/include/cppad/cppad.hpp
-	$cppad_mixed_prefix/include/cppad/mixed/cppad_mixed.hpp
-	$cppad_mixed_prefix/lib64/libcppad_mixed.a
-	$example_file
-"
-for file in $list
-do
-	if [ ! -e "$file" ]
-	then
-		echo "check_install.sh: Error: $file does not exist"
-		exit 1
-	fi
-done
-if [ -e build/tmp ]
-then
-	echo_eval rm -r build/tmp
-fi
-echo_eval mkdir -p build/tmp
-echo_eval cp $example_file build/tmp/example.cpp
-echo_eval cd build/tmp
-# ----------------------------------------------------------------------------
+# &&
+#
+# &head Create Temporary&&
+# The following commands create a temporary directory,
+# copy the example file into it,
+# and make it the current working directory:
+# &codep
+mkdir -p build/tmp
+cp $example_file build/tmp/example.cpp
+cd build/tmp
+# &&
+#
+# &head example_name&&
+# The following command gets the example name,
+# which is the example file minus the &code .cpp&& at the end:
+# &codep
 example_name=`echo $example_file | sed -e 's|.*/||' -e 's|\.cpp||'`
+# &&
+#
+# &head main&&
+# The following command creates a main program
+# (in the file $code example.cpp$$) that runs the example
+# and reports the result of its return &code bool&& value:
+# &codep
 cat << EOF >> example.cpp
 int main(void)
 {	if( ! $example_name() )
@@ -50,27 +79,40 @@ int main(void)
 	exit(0);
 }
 EOF
-# ----------------------------------------------------------------------------
-ipopt_libs=`pkg-config --libs ipopt`
-echo_eval g++ \
-	-std=c++11 \
-	-g \
-	-O0 \
-	-I $cppad_mixed_prefix/include \
-	-isystem $cppad_mixed_prefix/eigen/include \
-	example.cpp \
-	-L $cppad_mixed_prefix/lib64 \
-	-lcppad_mixed \
-	-lcppad_mixed_eigen \
-	-lcppad_mixed \
-	$ipopt_libs \
-	-lgsl \
-	-lgslcblas \
-	-o example
+# &&
 #
+# &head ipopt_libs&&
+# The following command determines the library link flags necessary
+# to link &code ipopt&& on this system:
+# &codep
+ipopt_libs=`pkg-config --libs ipopt`
+# &&
+#
+# &head Compile and Link&&
+# The command below compile and link the example program.
+# Note that the $code eigen$$ include files have installed in a
+# different directory and treated like system files because
+# they otherwise generate lots of warnings.
+# &codep
+g++ example.cpp \
+	-g -O0 -std=c++11 -Wall \
+	-I $cppad_mixed_prefix/include \
+	-isystem $eigen_prefix/include \
+	-L $cppad_mixed_prefix/lib64 -lcppad_mixed \
+	$ipopt_libs \
+	-lgsl -lgslcblas \
+	-o example
+# &&
+#
+# &head Run Example&&
+# The following commands run the example:
+# &codep
 if ! ./example
 then
+	echo 'check_install.sh: Error'
 	exit 1
 fi
 echo 'check_install.sh: OK'
+# &&
 exit 0
+# &end

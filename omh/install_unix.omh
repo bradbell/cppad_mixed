@@ -23,9 +23,14 @@ $spell
 	libdir
 	pkgconfig
 	cmake
+	suitesparse
 $$
 
 $section Installing cppad_mixed in Unix$$
+
+$children%bin/run_cmake.sh
+	%bin/check_install.sh
+%$$
 
 $head Download$$
 Download the tarball $href%cppad_mixed-20160119.tgz%$$
@@ -110,6 +115,13 @@ $code
 $verbatim%bin/install_cppad.sh%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
 $$
 
+$subhead SparseSuite$$
+The $href%http://faculty.cse.tamu.edu/davis/SuiteSparse%SuiteSparse%$$
+package is currently optional.
+Extra testing is done when
+$cref/suitesparse_prefix/run_cmake.sh/suitesparse_prefix/$$
+is specified in the $code cmake$$ command.
+
 $head cppad_mixed$$
 The steps above should only need to be executed once, not for
 each new version of $code cppad_mixed$$
@@ -118,7 +130,6 @@ The steps below will need to be executed each time you install
 a new version of $code cppad_mixed$$:
 
 $subhead Setup$$
-$children%bin/run_cmake.sh%$$
 The file $cref%bin/run_cmake.sh%run_cmake.sh%$$ has setting that
 you should change so they correspond to your machine.
 
@@ -162,5 +173,15 @@ $$
 $head Example$$
 The file $cref capture_xam.cpp$$ contains an examples and speed test
 of $code cppad_mixed$$.
+This example runs when one executes the commands
+$codep
+	cd build
+	make speed
+$$
+The file $cref check_install.sh$$ is an example of compiling, linking
+and running using an
+$cref/installed/install_unix/cppad_mixed/Install/$$ version of
+$code cppad_mixed$$.
+
 
 $end

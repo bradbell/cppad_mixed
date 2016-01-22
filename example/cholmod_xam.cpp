@@ -404,6 +404,3 @@ bool cholmod_xam(void)
 	return ok;
 }
 // END C++
-
-
-// END C++

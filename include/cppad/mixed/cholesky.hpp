@@ -25,8 +25,7 @@ $$
 $section Cholesky Factor Class$$
 
 $head Syntax$$
-$codei%CppAD::mixed::cholesky %chol_ran_hes%%;
-%$$
+$codei%CppAD::mixed::cholesky %chol_ran_hes%$$
 
 $head Private$$
 This class is an implementation detail and not part of the

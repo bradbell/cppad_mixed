@@ -29,20 +29,12 @@ LINK_DIRECTORIES(
 	${suitesparse_LIBRARY_DIRS}
 )
 # -----------------------------------------------------------------------------
-# example_eigen
-ADD_LIBRARY(example_eigen
-	private/eigen_xam.cpp
-	private/update_factor_xam.cpp
-)
-SET_TARGET_PROPERTIES(example_eigen
-	PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
-)
-# -----------------------------------------------------------------------------
 # 2DO: move ipopt_xam_run to test.
 ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	example.cpp
 	${suitesparse_EXAMPLES}
 	ipopt_xam_run.cpp
+	private/eigen_xam.cpp
 	private/fix_con_eval_xam.cpp
 	private/fix_con_hes_xam.cpp
 	private/fix_con_jac_xam.cpp
@@ -59,6 +51,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	private/ran_obj_eval_xam.cpp
 	private/ran_obj_jac_xam.cpp
 	private/ran_objcon_hes_xam.cpp
+	private/update_factor_xam.cpp
 	user/abs_density_xam.cpp
 	user/data_mismatch_xam.cpp
 	user/derived_xam.cpp
@@ -78,9 +71,6 @@ SET_TARGET_PROPERTIES(
 	example PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
 )
 TARGET_LINK_LIBRARIES(example
-	example_eigen
-	cppad_mixed
-	cppad_mixed_eigen
 	cppad_mixed
 	${ipopt_LIBRARIES}
 	${suitesparse_LIBRARIES}

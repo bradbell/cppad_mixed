@@ -8,8 +8,6 @@
 #	     GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
-ADD_SUBDIRECTORY(eigen)
-#
 ADD_LIBRARY(cppad_mixed
 	fix_con_eval.cpp
 	fix_con_eval.cpp
@@ -18,6 +16,17 @@ ADD_LIBRARY(cppad_mixed
 	fix_like_eval.cpp
 	fix_like_hes.cpp
 	fix_like_jac.cpp
+	eigen/cholesky.cpp
+	eigen/init_ran_hes.cpp
+	eigen/init_ran_con.cpp
+	eigen/init_ran_objcon.cpp
+	eigen/logdet_jac.cpp
+	eigen/newton_step.cpp
+	eigen/ran_con_eval.cpp
+	eigen/ran_con_jac.cpp
+	eigen/ran_obj_eval.cpp
+	eigen/ran_obj_jac.cpp
+	eigen/update_factor.cpp
 	init_fix_con.cpp
 	init_fix_like.cpp
 	init_hes_cross.cpp
