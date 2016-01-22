@@ -37,6 +37,7 @@ $latex f_{u,u} ( \theta , u )$$.
 
 $childtable%src/cholmod/constructor.cpp
 	%src/cholmod/init.cpp
+	%src/cholmod/update.cpp
 %$$
 
 $end
@@ -74,6 +75,8 @@ public:
 	~cholmod(void);
 	// initialize
 	void init(const sparse_mat_info& hes_info);
+	// factorize
+	void update(const sparse_mat_info& hes_info);
 };
 
 

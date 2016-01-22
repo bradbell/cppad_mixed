@@ -12,6 +12,7 @@ IF( suitesparse_prefix )
 	SET(suitesparse_files
 		cholmod/constructor.cpp
 		cholmod/init.cpp
+		cholmod/update.cpp
 	)
 ELSE( suitesparse_prefix )
 	SET(suitesparse_files "")

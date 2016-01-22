@@ -72,7 +72,7 @@ All of the $code cholmod$$ private pointers
 are null when this routine is called.
 
 $head pos_matrix_$$
-This is set to a packed real lower triangular real sparse matrix
+This is set to a packed, real, sorted, lower triangular, sparse matrix
 with the pattern specified by $icode hes_info$$ and
 the value $code nan$$ for each possibly non-zero value.
 
@@ -142,7 +142,7 @@ void cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
 	assert( pos_matrix_->itype  == CHOLMOD_INT );
 	assert( pos_matrix_->xtype  == CHOLMOD_REAL );
 	assert( pos_matrix_->dtype  == CHOLMOD_DOUBLE );
-	assert( pos_matrix_->sorted == CHOLMOD_FALSE );
+	assert( pos_matrix_->sorted == CHOLMOD_TRUE  );
 	assert( pos_matrix_->packed == CHOLMOD_TRUE  );
 
 
