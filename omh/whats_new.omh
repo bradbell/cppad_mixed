@@ -27,6 +27,12 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 01-22$$
+It is no longer necessary to link a separate $code cppad_mixed_eigen$$
+library. In addition, the new example $cref check_install.sh$$
+demonstrates compiling, linking and running a program using
+$code cppad_mixed$$.
+
 $head 01-21$$
 Change default directory where $code bin/install_eigen.sh$$ places
 the Eigen package (because warnings are suppressed for this directory).

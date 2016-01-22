@@ -17,11 +17,20 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 /*
 $begin cholmod_ctor$$
+$spell
+	cholmod
+	Cpp
+	chol
+	hes
+	initializes
+	simplicial
+	supernodal
+$$
 
 $section Cholmod Constructor$$
 
 $head Syntax$$
-$codei%CppAD::mixed::cholmod %chol_ran_hes%;$$
+$codei%CppAD::mixed::cholmod %chol_ran_hes%$$
 
 $head Private$$
 This class is an implementation detail and not part of the
@@ -34,11 +43,22 @@ $codei%
 	cholmod_start(&common_);
 %$$
 
+$subhead Simplicial Factorization$$
+The following value is set (and does not change):
+$codei%
+	common_.supernodal = CHOLMOD_SIMPLICIAL;
+%$$
+
+$subhead LDL' Factorization$$
+The following value is set (and does not change):
+$codei%
+	common_.final_ll = CHOLMOD_FLASE;
+%$$
+
 $end
 */
 cholmod::cholmod(void)
 :
-triplet_   (CPPAD_NULL)      ,
 pos_matrix_(CPPAD_NULL)      ,
 factor_    (CPPAD_NULL)      ,
 rhs_       (CPPAD_NULL)      ,
@@ -53,6 +73,10 @@ work_two_  (CPPAD_NULL)
 
 /*
 $begin cholmod_dtor$$
+$spell
+	Cholmod
+	Cpp
+$$
 
 $section Cholmod Destructor$$
 
@@ -71,7 +95,6 @@ $end
 */
 cholmod::~cholmod(void)
 {	// free all the private pointers
-	cholmod_free_triplet(&triplet_,    &common_ );
 	cholmod_free_sparse (&pos_matrix_, &common_ );
 	cholmod_free_factor (&factor_,     &common_ );
 	cholmod_free_dense  (&rhs_,        &common_ );
@@ -82,6 +105,12 @@ cholmod::~cholmod(void)
 	cholmod_free_dense  (&work_two_,   &common_ );
 	// clear common
 	cholmod_finish(&common_);
+
+	// always do simplicial factorization
+	common_.supernodal = CHOLMOD_SIMPLICIAL;
+
+	// do LDL' factorization and leave in LDL' form
+	common_.final_ll = CHOLMOD_FALSE;
 
 	// check nothing left allocated
 	assert( common_.malloc_count == 0 );

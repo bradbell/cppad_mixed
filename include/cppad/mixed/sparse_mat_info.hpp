@@ -105,6 +105,8 @@ we say that $icode mat_info$$ is in column major order.
 
 $end
 */
+# include <cppad/utility/vector.hpp>
+
 namespace CppAD { namespace mixed {
 	struct sparse_mat_info {
 		CppAD::vector<size_t>  row;

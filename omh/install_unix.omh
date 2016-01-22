@@ -67,7 +67,8 @@ Note that the development headers are required; e.g.,
 on Fedora or Red-Hat one needs to install $code gsl-devel$$.
 
 $head Special Requirements$$
-The following programs are required by cppad_mixed
+The following packages are required by cppad_mixed
+(except for SuiteSparse)
 and may not have standard system installs:
 
 $subhead eigen$$
@@ -115,7 +116,7 @@ $code
 $verbatim%bin/install_cppad.sh%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
 $$
 
-$subhead SparseSuite$$
+$subhead SuiteSparse$$
 The $href%http://faculty.cse.tamu.edu/davis/SuiteSparse%SuiteSparse%$$
 package is currently optional.
 Extra testing is done when
