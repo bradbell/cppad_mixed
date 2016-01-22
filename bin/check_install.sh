@@ -66,7 +66,7 @@ example_name=`echo $example_file | sed -e 's|.*/||' -e 's|\.cpp||'`
 #
 # &head main&&
 # The following command creates a main program
-# (in the file $code example.cpp$$) that runs the example
+# (in the file &code example.cpp&&) that runs the example
 # and reports the result of its return &code bool&& value:
 # &codep
 cat << EOF >> example.cpp
@@ -89,8 +89,8 @@ ipopt_libs=`pkg-config --libs ipopt`
 # &&
 #
 # &head Compile and Link&&
-# The command below compile and link the example program.
-# Note that the $code eigen$$ include files have installed in a
+# The command below compiles and links the example program.
+# Note that the &code eigen&& include files have installed in a
 # different directory and treated like system files because
 # they otherwise generate lots of warnings.
 # &codep
@@ -113,6 +113,6 @@ then
 	exit 1
 fi
 echo 'check_install.sh: OK'
-# &&
 exit 0
+# &&
 # &end
