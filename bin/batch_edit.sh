@@ -22,8 +22,7 @@ rename_cmd='s|\(.*\)|\1|'
 spell_cmd='s|^$spell|&|'
 #
 cat << EOF > junk.sed
-s|\\(\$cref/.*\\)/c(theta)/|\\n\\1/Fixed Constriant Function, c(theta)/|
-s|/Notation/p(theta)/|/Notation/Fixed Prior Density, p(theta)/|
+s|/sparse_mat_info/val/|/sparse_mat_info/Notation/|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

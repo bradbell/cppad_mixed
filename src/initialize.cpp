@@ -59,7 +59,7 @@ $codei%
 	const CppAD::mixed::sparse_mat_info& %A_info%
 %$$
 It is a
-$cref/sparse matrix/sparse_mat_info/val/Sparse Matrix/$$
+$cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
 representation of the
 $cref/random constraint matrix
 	/cppad_mixed

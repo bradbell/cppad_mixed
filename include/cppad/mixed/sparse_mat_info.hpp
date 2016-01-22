@@ -58,6 +58,17 @@ It has size zero when it is constructed.
 After initialization it should either have size zero,
 or the same size as $icode row$$.
 
+$head resize$$
+The $code resize$$ argument has prototype
+$codei%
+	size_t %size%
+%$$
+All of the vectors,
+$code row$$, $code col$$, and $code val$$,
+are modified to have the specified size.
+
+$head Notation$$
+
 $subhead Sparsity Pattern$$
 If $icode mat_info$$ is a sparsity pattern,
 For $icode%k% = 0 , ... , %K%-1%$$,
@@ -82,14 +93,15 @@ $subhead Empty Matrix$$
 If $icode K$$ is zero ($icode%mat_info%.row.size()%$$ is zero),
 we refer to the matrix as the empty matrix.
 
-$head resize$$
-The $code resize$$ argument has prototype
+
+$subhead Column Major Order$$
+If for $icode%k% = 0 , ... , %K%-1%$$,
 $codei%
-	size_t %size%
+	%mat_info%.col[%k%] <= %mat_info%.col[%k+1%]
+	if( %mat_info%.col[%k%] == %mat_info%.col[%k+1%] )
+		%mat_info%.row[%k%] < %mat_info%.row[%k+1%]
 %$$
-All of the vectors,
-$code row$$, $code col$$, and $code val$$,
-are modified to have the specified size.
+we say that $icode mat_info$$ is in column major order.
 
 $end
 */

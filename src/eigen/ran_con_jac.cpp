@@ -70,7 +70,7 @@ for a previous call to $code ran_con_jac$$.
 $subhead Sparsity Patter$$
 In the case where the input size of the vectors in $icode jac_info$$
 is zero, only the
-$cref/sparsity pattern/sparse_mat_info/val/Sparsity Pattern/$$ is computed.
+$cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$ is computed.
 Upon return, the size of $icode%jac_info%.val%$$ is equal to the
 size of $icode%jac_info%.row%$$, but the elements of
 $icode%jac_info%.val%$$ are not specified.
@@ -79,7 +79,7 @@ $subhead Sparse Matrix$$
 If the input size of the vectors in $icode jac_info$$
 are non-zero,
 upon return $icode jac_info$$ is a
-$cref/sparse matrix/sparse_mat_info/val/Sparse Matrix/$$
+$cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
 representation of the Jacobian of the
 $cref/random constraint function
 	/cppad_mixed
@@ -101,17 +101,14 @@ $cref/derivative of optimal random effects
 	/Derivative of Optimal Random Effects
 /$$.
 
-$head Column Major Order$$
-The results in $icode jac_info$$ are in column major order; i.e.,
-$codei%
-	%jac_info%.col[%k%] <= %jac_info%.col[%k+1%]
-	if( %jac_info%.col[%k%] == %jac_info%.col[%k+1%] )
-		%jac_info%.row[%k%] < %jac_info%.row[%k+1%]
-%$$
+$subhead Column Major Order$$
+The results in $icode jac_info$$ are in
+$cref/column major order/sparse_mat_info/Notation/Column Major Order/$$.
 
 $children%
 	example/private/ran_con_jac_xam.cpp
 %$$
+
 $head Example$$
 The file $cref ran_con_jac_xam.cpp$$ contains an example
 and test of this procedure.
