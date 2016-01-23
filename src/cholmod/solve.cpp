@@ -125,7 +125,7 @@ void cholmod::solve(
 	int sys = CHOLMOD_A;
 	// 2DO: would like to take advantate of rhs_ being sparse and only needing
 	// a subset of the result vector.
-	cholmod_solve2(
+	int flag = cholmod_solve2(
 		sys,
 		factor_,
 		rhs_,
@@ -137,7 +137,8 @@ void cholmod::solve(
 		&common_
 	);
 	// check assumptions
-	assert( sol_ != CPPAD_NULL  );
+	assert( flag == CHOLMOD_TRUE );
+	assert( sol_ != CPPAD_NULL   );
 	assert( sol_->nrow == nrow_ );
 	assert( sol_->ncol == 1     );
 	double* sol_x = (double *) sol_->x;

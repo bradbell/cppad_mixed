@@ -112,9 +112,10 @@ void cholmod::update( const CppAD::mixed::sparse_mat_info& hes_info )
 		}
 	}
 	// set factor_ to LDL^T factorization for this value of Hessian
-	cholmod_factorize(pos_matrix_, factor_, &common_);
+	int flag = cholmod_factorize(pos_matrix_, factor_, &common_);
 
 	// check assumptions
+	assert( flag           == CHOLMOD_TRUE );
 	assert( factor_->n     == nrow_ );
 	assert( factor_->minor == nrow_ );
 	assert( factor_->is_ll == CHOLMOD_FALSE );

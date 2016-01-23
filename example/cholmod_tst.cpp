@@ -59,24 +59,24 @@ $end
 # include <cmath>
 # include <cassert>
 
-# define CHOLMOD_TRUE  1
-# define CHOLMOD_FALSE 0
+# define CHOLMOD_TRUE                  1
+# define CHOLMOD_FALSE                 0
 # define CHOLMOD_STYPE_NOT_SYMMETRIC   0
 # define CHOLMOD_STYPE_LOWER_TRIANGLE -1
 
 namespace { // BEGIN_EMPTY_NAMESPACE
+	void add_T_entry(cholmod_triplet *T, int r, int c, double x)
+	{	size_t k = T->nnz;
 
-void add_T_entry(cholmod_triplet *T, int r, int c, double x)
-{	size_t k = T->nnz;
+		((int*)T->i)[k] = r;
+		((int*)T->j)[k] = c;
+		((double*)T->x)[k] = x;
 
-	((int*)T->i)[k] = r;
-	((int*)T->j)[k] = c;
-	((double*)T->x)[k] = x;
-
-	T->nnz++;
+		T->nnz++;
+	}
 }
 
-bool test_one(void)
+bool cholmod_tst(void)
 {	bool ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 
@@ -123,9 +123,10 @@ bool test_one(void)
 
 	// factor the matrix
 	cholmod_factor *L = cholmod_analyze(A, &com);
-	cholmod_factorize(A, L, &com);
+	int flag = cholmod_factorize(A, L, &com);
 
 	// check properties of factor
+	assert( flag     == CHOLMOD_TRUE );  // return flag OK
 	assert( L->n     == nrow );          // number of rows and coluns
 	assert( L->minor == nrow );          // successful factorization
 	assert( L->is_ll == CHOLMOD_FALSE ); // factorization is LDL'
@@ -214,7 +215,7 @@ bool test_one(void)
 		int sys = CHOLMOD_A;       // solve     A * x = b
 
 		// solve an (i, j) element of the inverse of A
-		cholmod_solve2(
+		flag = cholmod_solve2(
 			sys,
 			L,
 			B,
@@ -225,6 +226,8 @@ bool test_one(void)
 			&E,
 			&com
 		);
+		assert( flag == CHOLMOD_TRUE ); // return flag OK
+		//
 		// The four arrays Xset, X, Y, E may change each time
 		double *X_x  = (double *) X->x;
 		Xset_p       = (int *) Xset->p;
@@ -256,151 +259,6 @@ bool test_one(void)
 	// check count of malloc'ed - free'd
 	ok &= com.malloc_count == 0;
 
-	return ok;
-}
-
-bool test_two(void)
-{	bool ok = true;
-	double eps = 100. * std::numeric_limits<double>::epsilon();
-
-	double A_inv[] = {
-		 24.0, -18.0, -6.0,
-		-18.0,  21.0,  3.0,
-		 -6.0,   3.0,  9.0
-	};
-	for(size_t i = 0; i < sizeof(A_inv)/sizeof(A_inv[0]); i++)
-		A_inv[i] /= 36.;
-
-
-	cholmod_common com;
-	cholmod_start(&com);
-
-	// always do simplicial factorization
-	com.supernodal = CHOLMOD_SIMPLICIAL;
-
-	// do LDL' factorization and leave in LDL' form
-	com.final_ll = CHOLMOD_FALSE;
-
-
-	// allocate triplet
-	size_t nrow = 3;
-	size_t ncol = 3;
-	size_t nzmax = nrow * ncol;
-	int    T_stype = CHOLMOD_STYPE_LOWER_TRIANGLE;
-	int    T_xtype = CHOLMOD_REAL;
-	cholmod_triplet *T =
-		cholmod_allocate_triplet(nrow, ncol, nzmax, T_stype, T_xtype, &com);
-	ok &= T->nnz ==  0;
-
-	// triplet entries corresponding to lower triangle of A
-	add_T_entry(T, 0, 0, 5.);
-	add_T_entry(T, 1, 0, 4.);
-	add_T_entry(T, 2, 0, 2.);
-	add_T_entry(T, 1, 1, 5.);
-	add_T_entry(T, 2, 1, 1.);
-	add_T_entry(T, 2, 2, 5.);
-
-	// convert triplet to sparse representation of A
-	cholmod_sparse* A =
-		cholmod_triplet_to_sparse(T, 0, &com);
-
-	// factor the matrix
-	cholmod_factor *L = cholmod_analyze(A, &com);
-	cholmod_factorize(A, L, &com);
-
-	// check properties of factor
-	assert( L->n     == nrow );          // number of rows and coluns
-	assert( L->minor == nrow );          // successful factorization
-	assert( L->is_ll == CHOLMOD_FALSE ); // factorization is LDL'
-
-	// compute log of determinant of diagonal D
-	double log_det_A = 0.0;
-	int*    L_p  = (int *) L->p;
-	int*    L_i  = (int *) L->i;
-	double* L_x  = (double *) L->x;
-	for(size_t j = 0; j < nrow; j++)
-	{	// first element for each column is always the diagonal element
-		assert( size_t( L_i [ L_p[j] ] ) == j );
-		// j-th element on diagonal of factorization
-		double dj = L_x[ L_p[j] ];
-		assert( dj > 0.0 );
-		log_det_A += std::log(dj);
-	}
-	// check its value
-	ok &= std::fabs( log_det_A / std::log(36.0) - 1.0 ) <= eps;
-
-
-	// right hand size vector
-	cholmod_sparse *Bset = NULL;
-	cholmod_dense *B     = cholmod_zeros(nrow, 1, T_xtype, &com);
-
-	// work space vectors that can be reused
-	cholmod_dense *Y = NULL;
-	cholmod_dense *E = NULL;
-
-	// place where the solution is returned
-	cholmod_sparse *Xset = NULL;
-	cholmod_dense *X     = NULL;
-
-	// Both these options seem to work.
-	// int sys = CHOLMOD_LDLt; // solve LDL^T * x = b
-	int sys = CHOLMOD_A;       // solve     A * x = b
-
-	// Recover the lower triangle of the symmetric inverse matrix
-	for(size_t j = 0; j < ncol; j++)
-	{	// j-th column of identity matrix
-		double* B_x = (double *) B->x;
-
-		// set B to j-th unit vector
-		B_x[j]      = 1.0;
-
-		// solve A * x = b
-		cholmod_solve2(
-			sys,
-			L,
-			B,
-			Bset,
-			&X,
-			&Xset,
-			&Y,
-			&E,
-			&com
-		);
-		// restore B to zero vector
-		B_x[j] = 0.0;
-
-		// The four arrays Xset, X, Y, E may change each time
-		double *X_x  = (double *) X->x;
-		for(size_t i = 0; i < nrow; i++)
-			ok &= std::fabs( X_x[i] / A_inv[i*ncol+j] - 1.0 ) <= eps;
-	}
-
-	// free memory
-	cholmod_free_triplet(&T,    &com);
-	cholmod_free_sparse( &A,    &com);
-	cholmod_free_factor( &L,    &com);
-	cholmod_free_sparse( &Bset, &com);
-	cholmod_free_sparse( &Xset, &com);
-	cholmod_free_dense(  &B,    &com);
-	cholmod_free_dense(  &Y,    &com);
-	cholmod_free_dense(  &E,    &com);
-	cholmod_free_dense(  &X,    &com);
-
-	// finish up
-	cholmod_finish(&com);
-
-	// check count of malloc'ed - free'd
-	ok &= com.malloc_count == 0;
-
-	return ok;
-}
-
-} // END_EMPTY_NAMESPACE
-
-bool cholmod_tst(void)
-{	bool ok = true;
-	ok     &= test_one();
-	ok     &= test_two();
 	return ok;
 }
 // END C++
