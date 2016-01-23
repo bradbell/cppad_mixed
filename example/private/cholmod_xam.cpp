@@ -102,9 +102,8 @@ bool cholmod_xam(void)
 		A_inv[i] /= 36.;
 
 	// create cholmod object
-	size_t n_fixed  = 1; // number of fixed effects and offset in indices
-	size_t n_random = 3; // number of random effects and row dimension of A
-	CppAD::mixed::cholmod chol_ran_hes(n_fixed, n_random);
+	size_t nrow = 3; // number of rows in A
+	CppAD::mixed::cholmod chol_ran_hes(nrow);
 
 	// create a sparse matrix representation of the lower triangular of A
 	CppAD::mixed::sparse_mat_info A_info;
@@ -121,10 +120,6 @@ bool cholmod_xam(void)
 	A_info.row[4] = 2; A_info.col[4] = 1; A_info.val[4] = 1.0;
 	// A_2,2 = 5.0
 	A_info.row[5] = 2; A_info.col[5] = 2; A_info.val[5] = 5.0;
-	for(size_t k = 0; k < 6; k++)
-	{	A_info.row[k] += n_fixed;
-		A_info.col[k] += n_fixed;
-	}
 
 	// initialize the matrix using only the sparsity pattern
 	chol_ran_hes.init(A_info);

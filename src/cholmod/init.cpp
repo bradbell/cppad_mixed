@@ -12,6 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 ------------------------------------------------------------------------------
 $begin cholmod_init$$
 $spell
+	nrow
 	xam
 	Cholesky
 	chol_ran_hes
@@ -46,47 +47,37 @@ $codei%
 	const CppAD::mixed::sparse_mat_info& %hes_info%
 %$$
 It is a
-$cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$
-for the Hessian of the
-$cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$
-$latex f_{u,u} ( \theta , u )$$.
-Furthermore, it is in
-$cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order.
-
-$subhead row$$
-For $icode%k% = 0 , %...% , %hes_info%.row.size()-1%$$,
-$codei%
-	n_fixed_ <= %hes_info%.row[%k%] < n_fixed_ + n_random_
-%$$
-The reason for the offset is that these indices are relative to both
-the fixed and random effects and the fixed effects come before the
-random effects.
-
-$subhead col$$
-For $icode%k% = 0 , %...% , %hes_info%.col%.size()-1%$$,
-$codei%
-	n_fixed_ <= %hes_info%.col[%k%] <= %hes_info%.row[%k%]
-%$$
+$cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$ for the
+square matrices with
+$cref/nrow_/cholmod_ctor/nrow_/$$ rows that we will compute the
+Cholesky factor of.
+It is in
+$cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
+and
+$cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
 
 $head Assumptions$$
 All of the $code cholmod$$ private pointers
 are null when this routine is called.
 
 $head pos_matrix_$$
-This is set to a packed, real, sorted, lower triangular, sparse matrix
+Upon return,
+this is set to a packed, real, sorted, lower triangular, sparse matrix
 with the pattern specified by $icode hes_info$$ and
 the value $code nan$$ for each possibly non-zero value.
 
 $head factor_$$
-This is the result of
+Upon return,
+this is the result of
 $codei%
 	factor_ = cholmod_analyze(pos_matrix_, &common_)
 %$$
 
 $head rhs$$
-This is set to dense column vector of $code n_random$$ zeros as follows:
+Upon return,
+this is set to dense column vector of $code nrow_$$ zeros as follows:
 $codei%
-	rhs_ = cholmod_zeros(n_random_, 1, CHOLMOD_REAL, &common_)
+	rhs_ = cholmod_zeros(nrow_, 1, CHOLMOD_REAL, &common_)
 %$$
 
 $head Example$$
@@ -114,8 +105,8 @@ void cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
 
 	// set triplet corresponding to sparsity pattern and reserve spase
 	// for unspecified values (that end up in pos_matrix_.
-	size_t nrow  = n_random_;
-	size_t ncol  = n_random_;
+	size_t nrow  = nrow_;
+	size_t ncol  = nrow_;
 	size_t nzmax = hes_info.row.size();
 	int    stype = CHOLMOD_STYPE_LOWER_TRIANGLE;
 	int    xtype = CHOLMOD_REAL;
@@ -127,10 +118,8 @@ void cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
 	double* T_x = (double *) triplet->x;
 	double nan  = std::numeric_limits<double>::quiet_NaN();
 	for(size_t k = 0; k < nzmax; k++)
-	{	assert( n_fixed_ <= hes_info.row[k] );
-		assert( n_fixed_ <= hes_info.col[k] );
-		T_i[k] = static_cast<int>( hes_info.row[k] - n_fixed_ );
-		T_j[k] = static_cast<int>( hes_info.col[k] - n_fixed_ );
+	{	T_i[k] = static_cast<int>( hes_info.row[k] );
+		T_j[k] = static_cast<int>( hes_info.col[k] );
 		T_x[k] = nan;
 	}
 	triplet->nnz = nzmax;
@@ -140,8 +129,8 @@ void cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
 	pos_matrix_ = cholmod_triplet_to_sparse(triplet, nzmax, &common_);
 
 	// check assumptions
-	assert( pos_matrix_->nrow   == n_random_ );
-	assert( pos_matrix_->ncol   == n_random_ );
+	assert( pos_matrix_->nrow   == nrow_ );
+	assert( pos_matrix_->ncol   == nrow_ );
 	assert( pos_matrix_->nzmax  == hes_info.row.size() );
 	assert( pos_matrix_->stype  == CHOLMOD_STYPE_LOWER_TRIANGLE );
 	assert( pos_matrix_->itype  == CHOLMOD_INT );
@@ -152,16 +141,15 @@ void cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
 
 
 	// analyze the sparsity pattern for LDL^T Cholesky factorization of
-	// f_{u,u}(theta, u)
 	factor_ = cholmod_analyze(pos_matrix_, &common_);
 
 	// check assumptions
-	assert( factor_->n     == n_random_ );
-	assert( factor_->minor == n_random_ );
+	assert( factor_->n     == nrow_ );
+	assert( factor_->minor == nrow_ );
 	assert( factor_->is_ll == CHOLMOD_FALSE );
 
 	// set rhs_ to column vector of zeros
-	rhs_ = cholmod_zeros(n_random_, 1, CHOLMOD_REAL, &common_);
+	rhs_ = cholmod_zeros(nrow_, 1, CHOLMOD_REAL, &common_);
 
 	// done with triplet
 	cholmod_free_triplet(&triplet, &common_ );

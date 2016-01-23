@@ -12,6 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin cholmod_ctor$$
 $spell
+	nrow
 	xam
 	cholmod
 	Cpp
@@ -20,32 +21,26 @@ $spell
 	initializes
 	simplicial
 	supernodal
+	Cholesky
 $$
 
 $section Cholmod Constructor$$
 
 $head Syntax$$
-$codei%CppAD::mixed::cholmod %chol_ran_hes%(%n_fixed%, %n_random%)%$$
+$codei%CppAD::mixed::cholmod %chol_ran_hes%(%nrow%)%$$
 
 $head Private$$
 This class is an implementation detail and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head n_fixed_$$
-The argument $icode n_fixed$$ has prototype
+$head nrow_$$
+The argument $icode nrow$$ has prototype
 $codei%
-	size_t %n_fixed%
+	size_t %nrow%
 %$$
-and the member variable $code n_fixed_$$ is set to this value,
-the number of fixed effects.
-
-$head n_random_$$
-The argument $icode n_random$$ has prototype
-$codei%
-	size_t %n_random%
-%$$
-and the member variable $code n_random_$$ is set to this value,
-the number of random effects.
+It is the number of rows in the positive definite matrix
+we will compute the Cholesky of.
+The member variable $code nrow_$$ is set to this value.
 
 $head Pointers$$
 This sets all the pointer private member variable equal to null.
@@ -81,10 +76,9 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-cholmod::cholmod(size_t n_fixed, size_t n_random)
+cholmod::cholmod(size_t nrow)
 :
-n_fixed_   (n_fixed)         ,
-n_random_  (n_random)        ,
+nrow_      (nrow)            ,
 pos_matrix_(CPPAD_NULL)      ,
 factor_    (CPPAD_NULL)      ,
 rhs_       (CPPAD_NULL)      ,

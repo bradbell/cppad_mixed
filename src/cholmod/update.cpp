@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin cholmod_update$$
 $spell
+	Cholesky
 	xam
 	const
 	CppAD
@@ -34,7 +35,7 @@ $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Purpose$$
 This routine updates the $cref cholmod$$ factorization
-for new values in the Hessian  $latex f_{u,u} ( \theta , u )$$.
+for new values in the square positive definite matrix.
 
 
 $head chol_ran_hes$$
@@ -50,15 +51,15 @@ This argument has prototype
 $codei%
 	const CppAD::mixed::sparse_mat_info& %hes_info%
 %$$
-It contains a new
-$cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$ representation
-of the Hessian $latex f_{u,u} ( \theta , u )$$.
+It contains new values for the
+$cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
+we are computing the Cholesky factor of.
 The $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$
-is must be the same as in $cref/cholmod_init/cholmod_init/hes_info/$$.
+must be the same as in $cref/cholmod_init/cholmod_init/hes_info/$$.
 Hence, in particular, it must be in
-$cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order.
-In addition, the row and column indices in $code pos_matrix_$$ are
-shifted by $code n_fixed_$$.
+$cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
+and
+$cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
 
 $head pos_matrix_$$
 On input, the member variable
@@ -107,10 +108,10 @@ void cholmod::update( const CppAD::mixed::sparse_mat_info& hes_info )
 	double* A_x = (double *) pos_matrix_->x;
 	int*    A_p = (int *)    pos_matrix_->p;
 	int*    A_i = (int *)    pos_matrix_->i;
-	for(size_t j = 0; j < n_random_; j++)
+	for(size_t j = 0; j < nrow_; j++)
 	{	for(size_t k = (size_t) A_p[j]; k < (size_t) A_p[j+1]; k++)
-		{	assert( hes_info.row[k] == n_fixed_ + (size_t) A_i[k] );
-			assert( hes_info.col[k] == n_fixed_ + j );
+		{	assert( hes_info.row[k] == (size_t) A_i[k] );
+			assert( hes_info.col[k] == j );
 			A_x[k] = hes_info.val[k];
 		}
 	}
@@ -118,8 +119,8 @@ void cholmod::update( const CppAD::mixed::sparse_mat_info& hes_info )
 	cholmod_factorize(pos_matrix_, factor_, &common_);
 
 	// check assumptions
-	assert( factor_->n     == n_random_ );
-	assert( factor_->minor == n_random_ );
+	assert( factor_->n     == nrow_ );
+	assert( factor_->minor == nrow_ );
 	assert( factor_->is_ll == CHOLMOD_FALSE );
 	assert( factor_->xtype == CHOLMOD_REAL );
 }

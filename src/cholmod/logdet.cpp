@@ -66,7 +66,7 @@ double cholmod::logdet(void) const
 	int*    L_p  = (int *) factor_->p;
 	int*    L_i  = (int *) factor_->i;
 	double* L_x  = (double *) factor_->x;
-	for(size_t j = 0; j < n_random_; j++)
+	for(size_t j = 0; j < nrow_; j++)
 	{	// first element for each column is always the diagonal element
 		assert( size_t( L_i [ L_p[j] ] ) == j );
 		// j-th element on diagonal of D in factorization

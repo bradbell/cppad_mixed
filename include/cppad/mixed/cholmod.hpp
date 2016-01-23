@@ -31,9 +31,6 @@ $head Purpose$$
 This class has utilities that work with a $code cholmod$$ Cholesky factor
 ($code cholmod$$ is part of the
 $cref/SuiteSparse/install_unix/Special Requirements/SuiteSparse/$$ package).
-It is called $icode chol_ran_hes$$ because it is only intended for
-the cholesky factor of the Hessian with respect to the random effects; i.e.,
-$latex f_{u,u} ( \theta , u )$$.
 
 $head Example$$
 The file $cref cholmod_xam.cpp$$ contains an example and test
@@ -64,8 +61,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 class cholmod {
 private:
-	const size_t      n_fixed_;    // number of fixed effects
-	const size_t      n_random_;   // number of random effects
+	const size_t      nrow_;       // number of rows in pos_matrix_;
 	cholmod_common    common_;
 	cholmod_sparse*   pos_matrix_; // The positive matrix we are factoring
 	cholmod_factor*   factor_;     // lower triangular LDL' factor
@@ -77,7 +73,7 @@ private:
 	cholmod_dense*    work_two_;   // second work space for solving equations
 public:
 	// constructor
-	cholmod(size_t n_fixed, size_t n_random);
+	cholmod(size_t nrow);
 	// destructor
 	~cholmod(void);
 	// initialize
