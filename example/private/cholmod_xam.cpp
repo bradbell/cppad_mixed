@@ -76,6 +76,12 @@ $codep
 	cholmod_obj.logdet(A_info);
 $$
 
+$head solve$$
+See the following under Source Code below:
+$codep
+	cholmod_obj.solve(row_in, val_in, row_out, val_out);
+$$
+
 $head Source Code$$
 $code
 $verbatim%example/private/cholmod_xam.cpp%5%// BEGIN C++%// END C++%1%$$
@@ -102,7 +108,8 @@ bool cholmod_xam(void)
 		A_inv[i] /= 36.;
 
 	// create cholmod object
-	size_t nrow = 3; // number of rows in A
+	size_t nrow = 3;   // number of rows in A
+	size_t ncol = nrow;
 	CppAD::mixed::cholmod cholmod_obj(nrow);
 
 	// create a sparse matrix representation of the lower triangular of A
@@ -133,6 +140,18 @@ bool cholmod_xam(void)
 	// check its value
 	ok &= std::fabs( logdet_A / std::log(36.0) - 1.0 ) <= eps;
 
+	CppAD::vector<size_t> row_in(1), row_out(nrow);
+	CppAD::vector<double> val_in(1), val_out(nrow);
+	for(size_t i = 0; i < nrow; i++)
+		row_out[i] = i;
+	for(size_t j = 0; j < ncol; j++)
+	{	// solve for the j-th column of the inverse matrix
+		row_in[0] = j;
+		val_in[0] = 1.0;
+		cholmod_obj.solve(row_in, val_in, row_out, val_out);
+		for(size_t i = 0; i < nrow; i++)
+			ok &= std::fabs( val_out[i] / A_inv[i*ncol+j] - 1.0 ) <= eps;
+	}
 	return ok;
 }
 // END C++

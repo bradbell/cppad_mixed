@@ -41,6 +41,7 @@ $childtable%src/cholmod/constructor.cpp
 	%src/cholmod/init.cpp
 	%src/cholmod/update.cpp
 	%src/cholmod/logdet.cpp
+	%src/cholmod/solve.cpp
 	%example/private/cholmod_xam.cpp
 %$$
 
@@ -82,6 +83,13 @@ public:
 	void update(const sparse_mat_info& hes_info);
 	// log determinant
 	double logdet(void) const;
+	// solve linear equations
+	void solve(
+		const CppAD::vector<size_t>& row_in   ,
+		const CppAD::vector<double>& val_in   ,
+		const CppAD::vector<size_t>& row_out  ,
+		CppAD::vector<double>&       val_out
+	);
 };
 
 

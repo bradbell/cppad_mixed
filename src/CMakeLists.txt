@@ -14,6 +14,7 @@ IF( suitesparse_prefix )
 		cholmod/init.cpp
 		cholmod/update.cpp
 		cholmod/logdet.cpp
+		cholmod/solve.cpp
 	)
 ELSE( suitesparse_prefix )
 	SET(suitesparse_files "")

@@ -9,7 +9,6 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-------------------------------------------------------------------------------
 $begin cholmod_init$$
 $spell
 	nrow
@@ -118,8 +117,12 @@ void cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
 	double* T_x = (double *) triplet->x;
 	double nan  = std::numeric_limits<double>::quiet_NaN();
 	for(size_t k = 0; k < nzmax; k++)
-	{	T_i[k] = static_cast<int>( hes_info.row[k] );
+	{	assert( hes_info.row[k] < nrow_ );
+		assert( hes_info.col[k] < nrow_ );
+		//
+		T_i[k] = static_cast<int>( hes_info.row[k] );
 		T_j[k] = static_cast<int>( hes_info.col[k] );
+		//
 		T_x[k] = nan;
 	}
 	triplet->nnz = nzmax;
