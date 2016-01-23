@@ -150,6 +150,12 @@ void cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
 	// f_{u,u}(theta, u)
 	factor_ = cholmod_analyze(pos_matrix_, &common_);
 
+	// check assumptions
+	assert( factor_->n     == n_random_ );
+	assert( factor_->minor == n_random_ );
+	assert( factor_->is_ll == CHOLMOD_FALSE );
+	assert( factor_->xtype == CHOLMOD_PATTERN );
+
 	// set rhs_ to column vector of zeros
 	rhs_ = cholmod_zeros(n_random_, 1, CHOLMOD_REAL, &common_);
 

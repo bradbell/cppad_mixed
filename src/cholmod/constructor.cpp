@@ -9,12 +9,6 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 
-# include <cppad/mixed/cholmod.hpp>
-# include <cassert>
-# include <cppad/cppad.hpp>
-
-namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
-
 /*
 $begin cholmod_ctor$$
 $spell
@@ -75,6 +69,13 @@ $codei%
 
 $end
 */
+
+# include <cppad/mixed/cholmod.hpp>
+# include <cassert>
+# include <cppad/cppad.hpp>
+
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+
 cholmod::cholmod(size_t n_fixed, size_t n_random)
 :
 n_fixed_   (n_fixed)         ,

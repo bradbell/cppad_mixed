@@ -8,8 +8,6 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cholmod.h>
-# include <cppad/mixed/cholmod.hpp>
 /*
 $begin cholmod_update$$
 $spell
@@ -37,8 +35,14 @@ $head Purpose$$
 This routine updates the $cref cholmod$$ factorization
 for new values in the Hessian  $latex f_{u,u} ( \theta , u )$$.
 
+
 $head chol_ran_hes$$
-This is a $cref cholmod$$ object.
+This object has prototype
+$codei%
+	CppAD::mixed::cholmod %chol_ran_hes%
+%$$
+In addition, it must have a previous call to
+$cref cholmod_init$$.
 
 $head hes_info$$
 This argument has prototype
@@ -65,7 +69,6 @@ using the sparsity pattern as is in $icode hes_info$$.
 Upon return, values in $code pos_matrix_$$ have been set to the
 corresponding values in the vector $icode%hes_info%.val%$$.
 
-
 $head factor_$$
 On input, the member variable
 $codei%
@@ -91,6 +94,7 @@ $end
 // ----------------------------------------------------------------------------
 
 
+# include <cholmod.h>
 # include <cppad/mixed/cholmod.hpp>
 # include <cassert>
 
@@ -111,6 +115,12 @@ void cholmod::update( const CppAD::mixed::sparse_mat_info& hes_info )
 	}
 	// set factor_ to LDL^T factorization for this value of Hessian
 	cholmod_factorize(pos_matrix_, factor_, &common_);
+
+	// check assumptions
+	assert( factor_->n     == n_random_ );
+	assert( factor_->minor == n_random_ );
+	assert( factor_->is_ll == CHOLMOD_FALSE );
+	assert( factor_->xtype == CHOLMOD_PATTERN );
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

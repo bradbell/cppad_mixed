@@ -38,6 +38,7 @@ $latex f_{u,u} ( \theta , u )$$.
 $childtable%src/cholmod/constructor.cpp
 	%src/cholmod/init.cpp
 	%src/cholmod/update.cpp
+	%src/cholmod/logdet.cpp
 %$$
 
 $end
@@ -77,6 +78,8 @@ public:
 	void init(const sparse_mat_info& hes_info);
 	// factorize
 	void update(const sparse_mat_info& hes_info);
+	// log determinant
+	double logdet(void) const;
 };
 
 
