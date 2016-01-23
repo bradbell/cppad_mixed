@@ -16,7 +16,7 @@ $spell
 	const
 	CppAD
 	hes
-	cholmod
+	cholmod_obj
 	init
 	pos
 	chol
@@ -25,7 +25,7 @@ $$
 $section Update the Factorization of Hessian w.r.t. Random Effects$$
 
 $head Syntax$$
-$icode%chol_ran_hes%.cholmod_update(%hes_info%)%$$
+$icode%cholmod_obj%.update(%hes_info%)%$$
 
 
 $head Private$$
@@ -38,10 +38,10 @@ This routine updates the $cref cholmod$$ factorization
 for new values in the square positive definite matrix.
 
 
-$head chol_ran_hes$$
+$head cholmod_obj$$
 This object has prototype
 $codei%
-	CppAD::mixed::cholmod %chol_ran_hes%
+	CppAD::mixed::cholmod %cholmod_obj%
 %$$
 In addition, it must have a previous call to
 $cref cholmod_init$$.
@@ -81,10 +81,6 @@ using the sparsity pattern for the Hessian.
 Upon return, it contains the factorization
 $codei%
 	cholmod_factorize(pos_matrix_, factor_, &common_)
-%$$
-
-$comment%
-	example/private/cholmod_update.cpp
 %$$
 
 $head Example$$

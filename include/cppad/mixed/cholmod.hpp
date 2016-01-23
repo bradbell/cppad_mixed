@@ -28,13 +28,13 @@ This class is an implementation detail and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Purpose$$
-This class has utilities that work with a $code cholmod$$ Cholesky factor
-($code cholmod$$ is part of the
-$cref/SuiteSparse/install_unix/Special Requirements/SuiteSparse/$$ package).
+This class has utilities that work with a $code cholmod$$ Cholesky factor,
+$code cholmod$$ is part of the
+$cref/SuiteSparse/install_unix/Special Requirements/SuiteSparse/$$ package.
 
 $head Example$$
 The file $cref cholmod_xam.cpp$$ contains an example and test
-that uses this class.
+using the operations in this class.
 
 
 $childtable%src/cholmod/constructor.cpp

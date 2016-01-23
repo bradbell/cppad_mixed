@@ -14,7 +14,7 @@ $begin cholmod_ctor$$
 $spell
 	nrow
 	xam
-	cholmod
+	cholmod_obj
 	Cpp
 	chol
 	hes
@@ -27,7 +27,7 @@ $$
 $section Cholmod Constructor$$
 
 $head Syntax$$
-$codei%CppAD::mixed::cholmod %chol_ran_hes%(%nrow%)%$$
+$codei%CppAD::mixed::cholmod %cholmod_obj%(%nrow%)%$$
 
 $head Private$$
 This class is an implementation detail and not part of the

@@ -13,17 +13,16 @@ $begin cholmod_logdet$$
 $spell
 	xam
 	const
-	cholmod
+	cholmod_obj
 	Cholesky
 	logdet
-	chol_ran_hes
 	CppAD
 $$
 
 $section Compute Log Determinant for Current Cholesky Factor$$
 
 $head Syntax$$
-$icode%logdet% = %chol_ran_hes%.logdet()
+$icode%logdet% = %cholmod_obj%.logdet()
 %$$
 
 $head Private$$
@@ -31,10 +30,10 @@ The $cref cholmod$$ class is an
 $cref/implementation detail/cholesky/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head chol_ran_hes$$
+$head cholmod_obj$$
 This object has prototype
 $codei%
-	const CppAD::mixed::cholmod %chol_ran_hes%
+	const CppAD::mixed::cholmod %cholmod_obj%
 %$$
 In addition, it must have a previous call to
 $cref cholmod_update$$.

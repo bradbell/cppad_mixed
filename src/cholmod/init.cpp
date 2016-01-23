@@ -15,19 +15,19 @@ $spell
 	nrow
 	xam
 	Cholesky
-	chol_ran_hes
 	CppAD
 	const
 	init
-	cholmod
+	cholmod_obj
 	pos
 	rhs
+	hes
 $$
 
 $section Initialize Cholesky Factor for a Specific Sparsity Pattern$$
 
 $head Syntax$$
-$icode%chol_ran_hes%.init(%hes_info%)
+$icode%cholmod_obj%.init(%hes_info%)
 %$$
 
 $head Private$$
@@ -35,10 +35,10 @@ The $cref cholmod$$ class is an
 $cref/implementation detail/cholesky/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head chol_ran_hes$$
+$head cholmod_obj$$
 This object has prototype
 $codei%
-	CppAD::mixed::cholmod %chol_ran_hes%
+	CppAD::mixed::cholmod %cholmod_obj%
 %$$
 
 $head hes_info$$

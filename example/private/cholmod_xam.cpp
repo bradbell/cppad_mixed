@@ -11,11 +11,11 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin cholmod_xam.cpp$$
 $spell
+	nrow
 	init
-	Cholmod
 	Cholesky
 	CppAD
-	chol_ran_hes
+	cholmod cholmod_obj
 	logdet
 $$
 
@@ -54,26 +54,26 @@ which can be checked by multiplying by $latex A$$.
 $head constructor$$
 See the following code below:
 $codep
-	CppAD::mixed::cholmod chol_ran_hes;
+	CppAD::mixed::cholmod cholmod_obj(nrow);
 $$
 
 $head init$$
 See the following under
 $cref/Source Code/cholmod_xam.cpp/Source Code/$$ below:
 $codep
-	chol_ran_hes.init(A_info);
+	cholmod_obj.init(A_info);
 $$
 
 $head update$$
 See the following under Source Code below:
 $codep
-	chol_ran_hes.update(A_info);
+	cholmod_obj.update(A_info);
 $$
 
 $head logdet$$
 See the following under Source Code below:
 $codep
-	chol_ran_hes.logdet(A_info);
+	cholmod_obj.logdet(A_info);
 $$
 
 $head Source Code$$
@@ -103,7 +103,7 @@ bool cholmod_xam(void)
 
 	// create cholmod object
 	size_t nrow = 3; // number of rows in A
-	CppAD::mixed::cholmod chol_ran_hes(nrow);
+	CppAD::mixed::cholmod cholmod_obj(nrow);
 
 	// create a sparse matrix representation of the lower triangular of A
 	CppAD::mixed::sparse_mat_info A_info;
@@ -122,13 +122,13 @@ bool cholmod_xam(void)
 	A_info.row[5] = 2; A_info.col[5] = 2; A_info.val[5] = 5.0;
 
 	// initialize the matrix using only the sparsity pattern
-	chol_ran_hes.init(A_info);
+	cholmod_obj.init(A_info);
 
 	// factor the matrix using the values
-	chol_ran_hes.update(A_info);
+	cholmod_obj.update(A_info);
 
 	// compute log of determinant of A
-	double logdet_A = chol_ran_hes.logdet();
+	double logdet_A = cholmod_obj.logdet();
 
 	// check its value
 	ok &= std::fabs( logdet_A / std::log(36.0) - 1.0 ) <= eps;
