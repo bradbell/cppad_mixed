@@ -9,13 +9,13 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin cholmod_xam.cpp$$
+$begin cholmod_tst.cpp$$
 $spell
 	Cholmod
 	Cholesky
 $$
 
-$section Example Using Cholmod Cholesky Factorization$$
+$section Test Using Cholmod Cholesky Factorization$$
 
 $head Problem Description$$
 We are given the matrix
@@ -48,7 +48,7 @@ which can be checked by multiplying by $latex A$$.
 
 $head Source Code$$
 $code
-$verbatim%example/cholmod_xam.cpp%5%// BEGIN C++%// END C++%1%$$
+$verbatim%example/cholmod_tst.cpp%5%// BEGIN C++%// END C++%1%$$
 $$
 
 $end
@@ -76,7 +76,7 @@ void add_T_entry(cholmod_triplet *T, int r, int c, double x)
 	T->nnz++;
 }
 
-bool cholmod_xam_one(void)
+bool test_one(void)
 {	bool ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 
@@ -259,7 +259,7 @@ bool cholmod_xam_one(void)
 	return ok;
 }
 
-bool cholmod_xam_two(void)
+bool test_two(void)
 {	bool ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 
@@ -397,10 +397,10 @@ bool cholmod_xam_two(void)
 
 } // END_EMPTY_NAMESPACE
 
-bool cholmod_xam(void)
+bool cholmod_tst(void)
 {	bool ok = true;
-	ok     &= cholmod_xam_one();
-	ok     &= cholmod_xam_two();
+	ok     &= test_one();
+	ok     &= test_two();
 	return ok;
 }
 // END C++

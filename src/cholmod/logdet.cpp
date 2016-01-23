@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin cholmod_logdet$$
 $spell
+	xam
 	const
 	cholmod
 	Cholesky
@@ -45,6 +46,10 @@ $codei%
 %$$
 Is the log of the determinant of the Hessian corresponding
 to the previous call to $cref cholmod_update$$.
+
+$head Example$$
+The file $cref/cholmod_xam.cpp/cholmod_xam.cpp/logdet/$$ contains an
+example and test that uses this function.
 
 $end
 */

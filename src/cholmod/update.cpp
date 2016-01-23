@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin cholmod_update$$
 $spell
+	xam
 	const
 	CppAD
 	hes
@@ -84,10 +85,10 @@ $codei%
 $comment%
 	example/private/cholmod_update.cpp
 %$$
+
 $head Example$$
-The file $code cholmod_update.cpp$$ contains an example
-and test of this procedure.
-It returns true, if the test passes, and false otherwise.
+The file $cref/cholmod_xam.cpp/cholmod_xam.cpp/update/$$ contains an
+example and test that uses this function.
 
 $end
 */
@@ -120,7 +121,7 @@ void cholmod::update( const CppAD::mixed::sparse_mat_info& hes_info )
 	assert( factor_->n     == n_random_ );
 	assert( factor_->minor == n_random_ );
 	assert( factor_->is_ll == CHOLMOD_FALSE );
-	assert( factor_->xtype == CHOLMOD_PATTERN );
+	assert( factor_->xtype == CHOLMOD_REAL );
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

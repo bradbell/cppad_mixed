@@ -13,7 +13,7 @@
 # &begin run_cmake.sh&& &newlinech #&&
 # &spell
 #	cmake makefile cxx std dismod libdir lcppad cholmod xam cpp
-#	usr eigen ipopt cppad bools suitesparse devel hpp
+#	usr eigen ipopt cppad bools suitesparse devel hpp Cholesky
 # &&
 #
 # &section bin/run_cmake.sh: User Configuration Options&&
@@ -65,7 +65,8 @@ cmake_libdir='lib64'
 #
 # &head suitesparse_prefix&&
 # Prefix where optional package was installed (use NOTFOUND if not installed).
-# This is only required by example/cholmod_xam.cpp.
+# This is only required for testing &cref cholmod&&, an alternative
+# Cholesky factorization routine.
 # &codep
 suitesparse_prefix="$HOME/prefix/suitesparse"
 # &&

@@ -70,19 +70,18 @@ are modified to have the specified size.
 $head Notation$$
 
 $subhead Sparsity Pattern$$
-If $icode mat_info$$ is a sparsity pattern,
-For $icode%k% = 0 , ... , %K%-1%$$,
+We say that $icode mat_info$$ is a sparsity pattern if,
+for $icode%k% = 0 , ... , %K%-1%$$,
 the element with index
 $codei%
 	(%mat_info%.row[%k%], %mat_info%.col[%k%])
 %$$
-is possibly non-zero.
-In this case, the elements of the vector $icode%mat_info%.val%$$ are
-not specified.
+is possibly non-zero and the size or elements of
+$icode%mat_info%.val%$$ are not specified.
 
 $subhead Sparse Matrix$$
-If $icode mat_info$$ is a sparse matrix,
-For $icode%k% = 0 , ... , %K%-1%$$,
+We say that $icode mat_info$$ is a sparse matrix if,
+for $icode%k% = 0 , ... , %K%-1%$$,
 the element with index
 $codei%
 	(%mat_info%.row[%k%], %mat_info%.col[%k%])
@@ -91,8 +90,7 @@ is possibly non-zero and has value $icode%mat_info%.val[%k%]%$$.
 
 $subhead Empty Matrix$$
 If $icode K$$ is zero ($icode%mat_info%.row.size()%$$ is zero),
-we refer to the matrix as the empty matrix.
-
+we say that $icode mat_info$$ is the empty matrix.
 
 $subhead Column Major Order$$
 If for $icode%k% = 0 , ... , %K%-1%$$,
@@ -102,6 +100,13 @@ $codei%
 		%mat_info%.row[%k%] < %mat_info%.row[%k+1%]
 %$$
 we say that $icode mat_info$$ is in column major order.
+
+$subhead Lower Triangular$$
+If for $icode%k% = 0 , ... , %K%-1%$$,
+$codei%
+	%mat_info%.mat[%k%] <= %mat_info%.row[%k%]
+%$$
+we say that $icode mat_info$$ is in lower triangular.
 
 $end
 */

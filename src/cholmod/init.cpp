@@ -12,6 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 ------------------------------------------------------------------------------
 $begin cholmod_init$$
 $spell
+	xam
 	Cholesky
 	chol_ran_hes
 	CppAD
@@ -88,6 +89,10 @@ $codei%
 	rhs_ = cholmod_zeros(n_random_, 1, CHOLMOD_REAL, &common_)
 %$$
 
+$head Example$$
+The file $cref/cholmod_xam.cpp/cholmod_xam.cpp/init/$$ contains an
+example and test that uses this function.
+
 $end
 */
 
@@ -154,7 +159,6 @@ void cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
 	assert( factor_->n     == n_random_ );
 	assert( factor_->minor == n_random_ );
 	assert( factor_->is_ll == CHOLMOD_FALSE );
-	assert( factor_->xtype == CHOLMOD_PATTERN );
 
 	// set rhs_ to column vector of zeros
 	rhs_ = cholmod_zeros(n_random_, 1, CHOLMOD_REAL, &common_);

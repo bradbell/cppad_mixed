@@ -35,10 +35,16 @@ It is called $icode chol_ran_hes$$ because it is only intended for
 the cholesky factor of the Hessian with respect to the random effects; i.e.,
 $latex f_{u,u} ( \theta , u )$$.
 
+$head Example$$
+The file $cref cholmod_xam.cpp$$ contains an example and test
+that uses this class.
+
+
 $childtable%src/cholmod/constructor.cpp
 	%src/cholmod/init.cpp
 	%src/cholmod/update.cpp
 	%src/cholmod/logdet.cpp
+	%example/private/cholmod_xam.cpp
 %$$
 
 $end

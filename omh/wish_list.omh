@@ -19,7 +19,7 @@ $$
 
 $section CppAD Mixed Wish List$$
 
-$children%example/cholmod_xam.cpp
+$children%example/cholmod_tst.cpp
 %$$
 
 $head Cholmod$$
@@ -29,7 +29,7 @@ cholmod routines instead of the eigen package
 $href%http://eigen.tuxfamily.org/dox-devel/group__SparseCholesky__Module.html
 	%sparse choleksy
 %$$;
-see $cref cholmod_xam.cpp$$.
+see $cref cholmod_tst.cpp$$.
 This cannot be done for AD recordings used to compute section derivatives
 using the
 $cref/second order approximate optimal random effects

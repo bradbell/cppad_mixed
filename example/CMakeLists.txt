@@ -17,7 +17,10 @@ IF( suitesparse_prefix )
 	SET(suitesparse_LIBRARIES
 		"cholmod;amd;camd;colamd;ccolamd;suitesparseconfig"
 	)
-	SET(suitesparse_EXAMPLES "cholmod_xam.cpp")
+	SET(suitesparse_EXAMPLES
+		cholmod_tst.cpp
+		private/cholmod_xam.cpp
+	)
 ELSE( suitesparse_prefix )
 	SET(suitesparse_LIBRARY_DIRS "")
 	SET(suitesparse_LIBRARIES    "")

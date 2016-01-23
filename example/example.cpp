@@ -29,6 +29,7 @@ $end
 # include <cppad/mixed/configure.hpp>
 
 // optional
+extern bool cholmod_tst(void);
 extern bool cholmod_xam(void);
 
 extern bool abs_density_xam(void);
@@ -94,6 +95,7 @@ namespace {
 int main(void)
 {
 # if CPPAD_MIXED_HAS_SUITESPARSE
+	RUN(cholmod_tst);
 	RUN(cholmod_xam);
 # endif
 

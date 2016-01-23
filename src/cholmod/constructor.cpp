@@ -12,6 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin cholmod_ctor$$
 $spell
+	xam
 	cholmod
 	Cpp
 	chol
@@ -66,6 +67,10 @@ The following value is set (and does not change):
 $codei%
 	common_.final_ll = CHOLMOD_FLASE;
 %$$
+
+$head Example$$
+The file $cref/cholmod_xam.cpp/cholmod_xam.cpp/constructor/$$ contains an
+example and test that uses this constructor.
 
 $end
 */
