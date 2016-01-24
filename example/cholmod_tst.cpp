@@ -13,12 +13,16 @@ $begin cholmod_tst.cpp$$
 $spell
 	Cholmod
 	Cholesky
+	Xset
 $$
 
 $section Test Using Cholmod Cholesky Factorization$$
 
 $head Problem Description$$
-We are given the matrix
+Solve for $latex x$$ in the equation $latex A x = b$$ where $latex A$$
+is defined below and $latex b$$ is a column of the identity matrix.
+Hence the solution $latex x$$ is the corresponding column of
+$latex A^{-1}$$.
 $latex \[
 	G = \left( \begin{array}{ccc}
 		5 & 4 & 2 \\
@@ -34,12 +38,11 @@ $latex \[
 We use $latex G^k$$ to denote the upper-left $latex k \times k$$
 principal minor. The determinant of its principal minors are:
 $latex \[
-\begin{array}{rcl}
-	\det \left( G^1 \right) & = & 5 \\
-	\det \left( G^2 \right) & = & 9 \\
-	\det \left( G^3 \right) & = & 36
-\end{array}
+	\det \left( G^1 \right) = 5  \W{,}
+	\det \left( G^2 \right) = 9  \W{,}
+	\det \left( G^3 \right) = 36
 \] $$
+Hence, $latex G$$ and $latex A$$ are positive definite.
 In addition
 $latex \[
 	G^{-1} = \frac{1}{36}
@@ -57,8 +60,13 @@ $latex \[
 which can be checked by multiplying by $latex G G^{-1}$$.
 
 $head Question$$
-Why does the test below pass when $code ONLY_CHECK_LOWER_TRIANGLE$$
-has value $code 1$$ and fail when it has value $code 0$$ ?
+Does the $code cholmod_solve2$$ argument $code Xset$$ get set to
+the sparsity pattern for the solution vector $latex x$$ in the equation
+$latex A x = b$$ ?
+The documentation appears to specify that this is the case.
+If it is the case, the test below should pass when
+$code ONLY_CHECK_LOWER_TRIANGLE$$ has value $code 0$$,
+but it only passes when the value is $code 1$$.
 
 $head Source Code$$
 $code

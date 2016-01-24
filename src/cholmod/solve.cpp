@@ -29,7 +29,7 @@ $cref/implementation detail/cholesky/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Purpose$$
-This function solve the linear equation
+This function solves the linear equation
 $latex A x = b$$ where $latex A$$ is the positive definite matrix
 that has been factored,
 $latex b$$ is a known column vector,
@@ -75,14 +75,15 @@ that we are interested in knowing the value of.
 $head val_out$$
 This argument has prototype
 $codei%
-	const CppAD::vector<double>& %val_in%
+	CppAD::vector<double>& %val_in%
 %$$
 and it has the same size as $icode row_out$$.
-It specifies the values, in the column vector $latex x$$,
+The input value of its elements does not matter.
+Upon return, it contains the elements of $latex x$$,
 that we are interested in.
 For $icode%k% = 0 , %...%, %row_out%.size()-1%$$,
 $codei%
-	%b%[ %row_out%[%k%] ] = %val_out%[%k%]
+	%x%[ %row_out%[%k%] ] = %val_out%[%k%]
 %$$
 
 $head Example$$
