@@ -20,31 +20,45 @@ $section Test Using Cholmod Cholesky Factorization$$
 $head Problem Description$$
 We are given the matrix
 $latex \[
-	A = \left( \begin{array}{ccc}
+	G = \left( \begin{array}{ccc}
 		5 & 4 & 2 \\
 		4 & 5 & 1 \\
 		2 & 1 & 5
 	\end{array} \right)
+	\W{,}
+	A = \left( \begin{array}{cc}
+		G & 0 \\
+		0 & G
+	\end{array} \right)
 \] $$
-We use $latex A^k$$ to denote the upper-left $latex k \times k$$
+We use $latex G^k$$ to denote the upper-left $latex k \times k$$
 principal minor. The determinant of its principal minors are:
 $latex \[
 \begin{array}{rcl}
-	\det \left( A^1 \right) & = & 5 \\
-	\det \left( A^2 \right) & = & 9 \\
-	\det \left( A^3 \right) & = & 36
+	\det \left( G^1 \right) & = & 5 \\
+	\det \left( G^2 \right) & = & 9 \\
+	\det \left( G^3 \right) & = & 36
 \end{array}
 \] $$
 In addition
 $latex \[
-	A^{-1} = \frac{1}{36}
+	G^{-1} = \frac{1}{36}
 	\left( \begin{array}{ccc}
 		24  & -18 & -6 \\
 		-18 & 21  & 3 \\
 		-6  & 3   & 9
 	\end{array} \right)
+	\W{,}
+	A^{-1} = \left( \begin{array}{cc}
+		G^{-1} & 0 \\
+		0 & G^{-1}
+	\end{array} \right)
 \] $$
-which can be checked by multiplying by $latex A$$.
+which can be checked by multiplying by $latex G G^{-1}$$.
+
+$head Lower Triangle$$
+For some unknown reason, the code below does not work when
+changes $code ONLY_CHECK_LOWER_TRIANGLE$$ to have  value $code 0$$.
 
 $head Source Code$$
 $code
@@ -59,6 +73,7 @@ $end
 # include <cmath>
 # include <cassert>
 
+# define ONLY_CHECK_LOWER_TRIANGLE     1
 # define CHOLMOD_TRUE                  1
 # define CHOLMOD_FALSE                 0
 # define CHOLMOD_STYPE_NOT_SYMMETRIC   0
@@ -66,12 +81,10 @@ $end
 
 namespace { // BEGIN_EMPTY_NAMESPACE
 	void add_T_entry(cholmod_triplet *T, int r, int c, double x)
-	{	size_t k = T->nnz;
-
-		((int*)T->i)[k] = r;
-		((int*)T->j)[k] = c;
+	{	size_t k           = T->nnz;
+		((int*)T->i)[k]    = r;
+		((int*)T->j)[k]    = c;
 		((double*)T->x)[k] = x;
-
 		T->nnz++;
 	}
 }
@@ -81,14 +94,18 @@ bool cholmod_tst(void)
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 
 	double A_inv[] = {
-		 24.0, -18.0, -6.0,
-		-18.0,  21.0,  3.0,
-		 -6.0,   3.0,  9.0
+		 24.0, -18.0, -6.0,   0.0,   0.0,  0.0,
+		-18.0,  21.0,  3.0,   0.0,   0.0,  0.0,
+		 -6.0,   3.0,  9.0,   0.0,   0.0,  0.0,
+		  0.0,   0.0,  0.0,  24.0, -18.0, -6.0,
+		  0.0,   0.0,  0.0, -18.0,  21.0,  3.0,
+		  0.0,   0.0,  0.0,  -6.0,   3.0,  9.0
 	};
-	for(size_t i = 0; i < sizeof(A_inv)/sizeof(A_inv[0]); i++)
+	size_t nrow = 6;
+	for(size_t i = 0; i < nrow * nrow; i++)
 		A_inv[i] /= 36.;
 
-
+	// initialize common
 	cholmod_common com;
 	cholmod_start(&com);
 
@@ -98,10 +115,8 @@ bool cholmod_tst(void)
 	// do LDL' factorization and leave in LDL' form
 	com.final_ll = CHOLMOD_FALSE;
 
-
 	// allocate triplet
-	size_t nrow = 3;
-	size_t ncol = 3;
+	size_t ncol = nrow;
 	size_t nzmax = nrow * ncol;
 	int    T_stype = CHOLMOD_STYPE_LOWER_TRIANGLE;
 	int    T_xtype = CHOLMOD_REAL;
@@ -110,16 +125,21 @@ bool cholmod_tst(void)
 	ok &= T->nnz ==  0;
 
 	// triplet entries corresponding to lower triangle of A
-	add_T_entry(T, 0, 0, 5.);
+	add_T_entry(T, 0, 0, 5.); // First G block
 	add_T_entry(T, 1, 0, 4.);
 	add_T_entry(T, 2, 0, 2.);
 	add_T_entry(T, 1, 1, 5.);
 	add_T_entry(T, 2, 1, 1.);
 	add_T_entry(T, 2, 2, 5.);
+	add_T_entry(T, 3, 3, 5.); // Second G block
+	add_T_entry(T, 4, 3, 4.);
+	add_T_entry(T, 5, 3, 2.);
+	add_T_entry(T, 4, 4, 5.);
+	add_T_entry(T, 5, 4, 1.);
+	add_T_entry(T, 5, 5, 5.);
 
 	// convert triplet to sparse representation of A
-	cholmod_sparse* A =
-		cholmod_triplet_to_sparse(T, 0, &com);
+	cholmod_sparse* A = cholmod_triplet_to_sparse(T, 0, &com);
 
 	// factor the matrix
 	cholmod_factor *L = cholmod_analyze(A, &com);
@@ -131,27 +151,10 @@ bool cholmod_tst(void)
 	assert( L->minor == nrow );          // successful factorization
 	assert( L->is_ll == CHOLMOD_FALSE ); // factorization is LDL'
 
-	// compute log of determinant of diagonal D
-	double log_det_A = 0.0;
-	int*    L_p  = (int *) L->p;
-	int*    L_i  = (int *) L->i;
-	double* L_x  = (double *) L->x;
-	for(size_t j = 0; j < nrow; j++)
-	{	// first element for each column is always the diagonal element
-		assert( size_t( L_i [ L_p[j] ] ) == j );
-		// j-th element on diagonal of factorization
-		double dj = L_x[ L_p[j] ];
-		assert( dj > 0.0 );
-		log_det_A += std::log(dj);
-	}
-	// check its value
-	ok &= std::fabs( log_det_A / std::log(36.0) - 1.0 ) <= eps;
-
-
 	// sparsity pattern for right hand side column vector
 	size_t Bset_nrow       = nrow;
 	size_t Bset_ncol       = 1;
-	size_t Bset_nzmax      = 1;
+	size_t Bset_nzmax      = nrow;
 	int    Bset_sorted     = CHOLMOD_FALSE;
 	int    Bset_packed     = CHOLMOD_TRUE;
 	int    Bset_stype      = CHOLMOD_STYPE_NOT_SYMMETRIC;
@@ -166,21 +169,13 @@ bool cholmod_tst(void)
 		Bset_xtype,
 		&com
 	);
+	// just one component of the right hand side will be non-zero
+	int* Bset_p = (int *) Bset->p;
+	int* Bset_i = (int *) Bset->i;
+	Bset_p[0]   = 0;
+	Bset_p[1]   = 1;
 
-	// sparsity pattern for solution column vector
-	size_t Xset_nzmax = nrow;
-	cholmod_sparse* Xset = cholmod_allocate_sparse(
-		Bset_nrow,
-		Bset_ncol,
-		Xset_nzmax,
-		Bset_sorted,
-		Bset_packed,
-		Bset_stype,
-		Bset_xtype,
-		&com
-	);
-
-	// non-zero values in the identity matrix are always one.
+	// set B to a vector of ones zero vector
 	cholmod_dense *B = cholmod_ones(nrow, 1, T_xtype, &com);
 
 	// work space vectors that can be reused
@@ -189,32 +184,17 @@ bool cholmod_tst(void)
 
 	// place where the solution is returned
 	cholmod_dense *X = NULL;
+	cholmod_sparse* Xset = NULL;
 
 	// Recover the lower triangle of the symmetric inverse matrix
 	for(size_t j = 0; j < ncol; j++)
-	{	// j-th column of identity matrix
-		int* Bset_p = (int *) Bset->p;
-		int* Bset_i = (int *) Bset->i;
-		Bset_p[0] = 0;   // column index
-		Bset_p[1] = 1;   // number of non-zeros in column vector
-		Bset_i[0] = j;   // row index
-
-		// Just lower triangle for this column column vector.
-		// For some reason, if we attempt to solve for entire column vector,
-		// only the lower triangle is returned ?
-		int* Xset_p = (int *) Xset->p;
-		int* Xset_i = (int *) Xset->i;
-		Xset_p[0]   = 0;        // column index
-		Xset_p[1]   = nrow - j; // number of rows to solve for
-		for(size_t i = j; i < nrow; i++)
-			Xset_i[i-j] = (int) i; // index of rows to solve for
-
+	{	// j-th column of identity matrix (only use j-th row of B)
+		Bset_i[0] = (int) j;
 
 		// Both these options seem to work.
-		// int sys = CHOLMOD_LDLt; // solve LDL^T * x = b
-		int sys = CHOLMOD_A;       // solve     A * x = b
+		int sys = CHOLMOD_A;       // solve A * x = b
 
-		// solve an (i, j) element of the inverse of A
+		// solve for a column of the inverse of A
 		flag = cholmod_solve2(
 			sys,
 			L,
@@ -227,19 +207,37 @@ bool cholmod_tst(void)
 			&com
 		);
 		assert( flag == CHOLMOD_TRUE ); // return flag OK
+		assert( Xset->nrow   == nrow );
+		assert( Xset->ncol   == 1    );
+		assert( Xset->xtype  == CHOLMOD_PATTERN );
 		//
 		// The four arrays Xset, X, Y, E may change each time
-		double *X_x  = (double *) X->x;
-		Xset_p       = (int *) Xset->p;
-		Xset_i       = (int *) Xset->i;
+		double* X_x     = (double *) X->x;
+		int*    Xset_p  = (int *) Xset->p;
+		int*    Xset_i  = (int *) Xset->i;
+		size_t  ni      = size_t( Xset_p[1] );
 		//
-		ok &= Xset_p[0] == 0;
-		ok &= Xset_p[1] == (int) (nrow - j);
-		for(size_t i = j; i < nrow; i++)
-			ok &= Xset_i[i-j] == (int) i;
+		// solution vector for this right hand side
+		double x[nrow];
+		for(size_t i = 0; i < nrow; i++)
+			x[i] = 0.0;
 		//
-		for(size_t i = j; i < nrow; i++)
-			ok &= std::fabs( X_x[i] / A_inv[i*ncol+j] - 1.0 ) <= eps;
+		for(size_t k = 0; k < ni; k++)
+		{	size_t i = Xset_i[k];
+			x[i]     = X_x[i];
+		}
+# if ONLY_CHECK_LOWER_TRIANGLE
+		size_t i_start = j;
+# else
+		size_t i_start = 0;
+# endif
+		for(size_t i = i_start; i < nrow; i++)
+		{	double A_inv_ij = A_inv[ i * nrow + j];
+			if( A_inv_ij == 0.0 )
+				ok &= x[i] == 0.0;
+			else
+				ok &= std::fabs( x[i] / A_inv_ij - 1.0 ) <= eps;
+		}
 	}
 
 	// free memory
