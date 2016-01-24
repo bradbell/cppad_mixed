@@ -57,8 +57,8 @@ $latex \[
 which can be checked by multiplying by $latex G G^{-1}$$.
 
 $head Question$$
-Why does the test below fail when
-$code ONLY_CHECK_LOWER_TRIANGLE$$ is changed to have value $code 0$$ ?
+Why does the test below pass when $code ONLY_CHECK_LOWER_TRIANGLE$$
+has value $code 1$$ and fail when it has value $code 0$$ ?
 
 $head Source Code$$
 $code
@@ -72,6 +72,7 @@ $end
 # include <limits>
 # include <cmath>
 # include <cassert>
+# include <iostream>
 
 # define ONLY_CHECK_LOWER_TRIANGLE     1
 # define CHOLMOD_TRUE                  1
@@ -92,6 +93,14 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 bool cholmod_tst(void)
 {	bool ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
+
+	// Check that we are using version cholmod-3.0.4
+	// (which is distributed as part of SuiteSparse-4.4.3)
+	int version[3];
+	cholmod_version(version);
+	ok &= version[0] == 3;
+	ok &= version[1] == 0;
+	ok &= version[2] == 4;
 
 	double A_inv[] = {
 		 24.0, -18.0, -6.0,   0.0,   0.0,  0.0,
@@ -125,18 +134,20 @@ bool cholmod_tst(void)
 	ok &= T->nnz ==  0;
 
 	// triplet entries corresponding to lower triangle of A
-	add_T_entry(T, 0, 0, 5.); // First G block
-	add_T_entry(T, 1, 0, 4.);
-	add_T_entry(T, 2, 0, 2.);
-	add_T_entry(T, 1, 1, 5.);
-	add_T_entry(T, 2, 1, 1.);
-	add_T_entry(T, 2, 2, 5.);
-	add_T_entry(T, 3, 3, 5.); // Second G block
-	add_T_entry(T, 4, 3, 4.);
-	add_T_entry(T, 5, 3, 2.);
-	add_T_entry(T, 4, 4, 5.);
-	add_T_entry(T, 5, 4, 1.);
-	add_T_entry(T, 5, 5, 5.);
+	// first G block
+	add_T_entry(T, 0, 0, 5.); // A_00 = 5
+	add_T_entry(T, 1, 0, 4.); // A_10 = 4
+	add_T_entry(T, 2, 0, 2.); // A_20 = 2
+	add_T_entry(T, 1, 1, 5.); // A_11 = 5
+	add_T_entry(T, 2, 1, 1.); // A_21 = 1
+	add_T_entry(T, 2, 2, 5.); // A_22 = 5
+	// second G block
+	add_T_entry(T, 3, 3, 5.); // A_33 = 5
+	add_T_entry(T, 4, 3, 4.); // A_43 = 4
+	add_T_entry(T, 5, 3, 2.); // A_53 = 2
+	add_T_entry(T, 4, 4, 5.); // A_44 = 5
+	add_T_entry(T, 5, 4, 1.); // A_54 = 1
+	add_T_entry(T, 5, 5, 5.); // A_55 = 5
 
 	// convert triplet to sparse representation of A
 	cholmod_sparse* A = cholmod_triplet_to_sparse(T, 0, &com);
