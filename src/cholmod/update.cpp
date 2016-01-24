@@ -19,10 +19,9 @@ $spell
 	cholmod_obj
 	init
 	pos
-	chol
 $$
 
-$section Update the Factorization of Hessian w.r.t. Random Effects$$
+$section Update Factorization Using new Matrix Values$$
 
 $head Syntax$$
 $icode%cholmod_obj%.update(%hes_info%)%$$
@@ -36,7 +35,6 @@ $cref/CppAD::mixed/namespace/Private/$$ user API.
 $head Purpose$$
 This routine updates the $cref cholmod$$ factorization
 for new values in the square positive definite matrix.
-
 
 $head cholmod_obj$$
 This object has prototype

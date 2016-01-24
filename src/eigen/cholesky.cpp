@@ -83,29 +83,33 @@ void cholesky::init( const CppAD::mixed::sparse_mat_info& hes_info )
 	ptr_->analyzePattern(hessian_pattern);
 }
 /*
------------------------------------------------------------------------------
-$begin cholesky_factorize$$
+------------------------------------------------------------------------------
+$begin cholesky_update$$
 $spell
 	Cholesky
-	chol_ran_hes
-	CppAD
+	xam
 	const
-	Taylor
+	CppAD
+	chol_ran_hes
 	init
+	pos
+	ptr
+	eigen
 $$
 
-$section Compute Cholesky Factor for Specific Fixed and Random Effects$$
+$section Update Factorization Using new Matrix Values$$
 
 $head Syntax$$
-$icode%chol_ran_hes%.factorize(
-	%n_fixed%, %n_random%, %row%, %col%, %both%, %ran_hes_fun%
-)
-%$$
+$icode%chol_ran_hes%.update(%hes_info%)%$$
 
 $head Private$$
-The $code cholesky$$ class is an
+The $cref cholesky$$ class is an
 $cref/implementation detail/cholesky/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
+
+$head Purpose$$
+This routine updates the $cref cholesky$$ factorization
+for new values in the square positive definite matrix.
 
 $head chol_ran_hes$$
 This object has prototype
@@ -115,70 +119,53 @@ $codei%
 In addition, it must have a previous call to
 $cref cholesky_init$$.
 
-$head n_fixed$$
-Must be the number of fixed effects.
-
-$head n_random$$
-Must be the number of random effects.
-
-$head row$$
-Must be the row vector in
-$cref/ran_hes_/init_ran_hes/ran_hes_/$$.
-
-$head col$$
-Must be the column vector in
-$cref/ran_hes_/init_ran_hes/ran_hes_/$$.
-
-$head both$$
+$head hes_info$$
 This argument has prototype
 $codei%
-	const CppAD::vector<double>& %both%
+	const CppAD::mixed::sparse_mat_info& %hes_info%
 %$$
-and has size $icode%n_fixed% + %n_random%$$.
-This is the values of the fixed and random effects at which the Hessian
-is being computed and factored.
-The fixed effects come first and then the random effects.
+It contains new values for the
+$cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
+we are computing the Cholesky factor of.
+The $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$
+must be the same as in $cref/cholesky_init/cholesky_init/hes_info/$$.
+Hence, in particular, it must be in
+$cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
+and
+$cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
 
-$head ran_hes_fun$$
-This argument has prototype
+$head ptr_$$
+On input, the member variable
 $codei%
-	CppAD::ADFun<double>& %ran_hes_fun%
+	eigen_cholesky* ptr_
 %$$
-It has $icode%ran_hes_fun%.Domain() = %n_fixed% + %n_random%$$
-and $icode%ran_hes_fun%.Range() = %row%.size()%$$
-The function call
+has been $cref/initialized/cholesky_init/$$
+using the sparsity pattern for the Hessian.
+Upon return, it contains the factorization
 $codei%
-	%val% = %ran_hes_fun%.Forward(0, %both%)
+	ptr_->factorize(%hessian%)
 %$$
-is used to compute the values of the Hessian.
-Thus, upon return, the first order Taylor coefficient for the corresponding
-fixed and random effects are stored in $icode ran_hes_fun$$.
+where $icode hessian$$ is an $code eigen_sparse$$
+representation of the Hessian with values.
 
 $end
 */
-
-void cholesky::factorize(
-	size_t                       n_fixed      ,
-	size_t                       n_random     ,
-	const CppAD::vector<size_t>& row          ,
-	const CppAD::vector<size_t>& col          ,
-	const CppAD::vector<double>& both         ,
-	CppAD::ADFun<double>&        ran_hes_fun  )
-{
-	size_t K = row.size();
-	CppAD::vector<double> val(K);
-	val = ran_hes_fun.Forward(0, both);
-
-	Eigen::SparseMatrix<double> hessian_value(n_random, n_random);
-	assert( row.size() == col.size() );
-	for(size_t k = 0; k < row.size(); k++)
-	{	assert( n_fixed <= row[k] && row[k] < n_fixed + n_random );
-		assert( n_fixed <= col[k] && col[k] <= row[k] );
-		hessian_value.insert(row[k] - n_fixed, col[k] - n_fixed) = val[k];
+void cholesky::update(const CppAD::mixed::sparse_mat_info& hes_info)
+{	assert( hes_info.row.size() == hes_info.col.size() );
+	assert( hes_info.row.size() == hes_info.val.size() );
+	//
+	eigen_sparse hessian(n_random_, n_random_);
+	for(size_t k = 0; k < hes_info.row.size(); k++)
+	{	size_t r = hes_info.row[k];
+		size_t c = hes_info.col[k];
+		double v = hes_info.val[k];
+		assert( r < n_random_ );
+		assert( c < n_random_ );
+		hessian.insert(r, c) = v;
 	}
 	// LDL^T Cholesky factorization of for specified values of the Hessian
 	// f_{u,u}(theta, u)
-	ptr_->factorize(hessian_value);
+	ptr_->factorize(hessian);
 }
 /*
 ------------------------------------------------------------------------------
@@ -207,11 +194,10 @@ $codei%
 	CppAD::mixed::cholesky %chol_ran_hes%
 %$$
 In addition, it must have a previous call to
-$cref cholesky_factorize$$.
+$cref cholesky_update$$.
 
 $head n_random$$
-Must be the same as $icode n_random$$ in previous call to
-$cref/cholesky_factorize/cholesky_factorize/n_random/$$.
+Must be the number of random effects.
 
 $head logdet$$
 This return value has prototype
@@ -265,7 +251,7 @@ $codei%
 	CppAD::mixed::cholesky %chol_ran_hes%
 %$$
 In addition, it must have a previous call to
-$cref cholesky_factorize$$.
+$cref cholesky_update$$.
 
 $head known$$
 This argument has prototype
@@ -285,7 +271,7 @@ $codei%
 %$$
 where $icode Hessian$$ is the Hessian w.r.t the random effects
 $latex f_{u,u} ( \theta , u )$$ corresponding to the previous call to
-$cref cholesky_factorize$$.
+$cref cholesky_update$$.
 
 $end
 */

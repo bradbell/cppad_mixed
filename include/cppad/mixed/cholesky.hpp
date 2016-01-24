@@ -14,6 +14,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin cholesky$$
 $spell
+	Simplicial
 	CppAD
 	cholesky
 	chol
@@ -51,6 +52,13 @@ $codei%
 	typedef Eigen::SparseMatrix<double, Eigen::ColMajor>  eigen_sparse;
 %$$
 
+$head eigen_cholesky$$
+The type $code CppAD::mixed::cholesky::eigen_cholesky$$ is defined by
+$codei%
+	typedef Eigen::SimplicialLDLT<eigen_sparse, Eigen::Lower> eigen_cholesky;
+%$$
+
+
 $childtable%src/eigen/cholesky.cpp
 %$$
 
@@ -80,15 +88,8 @@ public:
 	~cholesky(void);
 	// init
 	void init(const CppAD::mixed::sparse_mat_info& hes_info);
-	// factorize
-	void factorize(
-		size_t                       n_fixed      ,
-		size_t                       n_random     ,
-		const CppAD::vector<size_t>& row          ,
-		const CppAD::vector<size_t>& col          ,
-		const CppAD::vector<double>& both         ,
-		CppAD::ADFun<double>&        ran_hes_fun
-	);
+	// update
+	void update(const CppAD::mixed::sparse_mat_info& hes_info);
 	// logdet
 	double logdet(size_t n_random) const;
 	// solve

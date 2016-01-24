@@ -78,8 +78,8 @@ $codei%
 has been
 $cref/initialized/cholesky_init/$$
 using the sparsity pattern for the Hessian.
-Upon return, $code chol_ran_hes_$$ contains the
-$cref/factorization/cholesky_factorize/$$
+Upon return, $code chol_ran_hes_$$ contains the updated
+$cref/factorization/cholesky_update/$$
 corresponding to the specified values for the fixed
 and random effects.
 
@@ -100,12 +100,28 @@ void cppad_mixed::update_factor(
 {	assert( init_ran_hes_done_ );
 	assert( fixed_vec.size() == n_fixed_ );
 	assert( random_vec.size() == n_random_ );
-
-	// compute an LDL^T Cholesky factorization of f_{u,u} (theta, u)
+	//
+	// set the sparsity pattern corresponding the Hessian
+	CppAD::mixed::sparse_mat_info hes_info;
+	size_t K = ran_hes_.row.size();
+	hes_info.row.resize(K);
+	hes_info.col.resize(K);
+	for(size_t k = 0; k < K; k++)
+	{	size_t r = ran_hes_.row[k];
+		size_t c = ran_hes_.col[k];
+		assert( n_fixed_ <= r && r < n_fixed_ + n_random_ );
+		assert( n_fixed_ <= c && c < n_fixed_ + n_random_ );
+		hes_info.row[k] = r - n_fixed_;
+		hes_info.col[k] = c - n_fixed_;
+	}
+	//
+	// pack fixed and random effects into one vector
 	d_vector both(n_fixed_ + n_random_);
 	pack(fixed_vec, random_vec, both);
-	chol_ran_hes_.factorize(
-		n_fixed_, n_random_, ran_hes_.row, ran_hes_.col, both, ran_hes_fun_
-	);
+	//
+	// set the value vector in the sparse matrix information
+	hes_info.val = ran_hes_fun_.Forward(0, both);
+	//
+	chol_ran_hes_.update(hes_info);
 }
 
