@@ -37,7 +37,7 @@ $$
 $section Initialize Cholesky Factor for a Specific Sparsity Pattern$$
 
 $head Syntax$$
-$icode%chol_ran_hes%.init(%n_fixed%, %n_random%, %row%, %col%)
+$icode%chol_ran_hes%.init(%hes_info%)
 %$$
 
 $head Private$$
@@ -51,64 +51,32 @@ $codei%
 	CppAD::mixed::cholesky %chol_ran_hes%
 %$$
 
-$head n_fixed$$
-This argument has prototype
+$head hes_info$$
+This argument had prototype
 $codei%
-	size_t %n_fixed%
+	const CppAD::mixed::sparse_mat_info& %hes_info%
 %$$
-and is then number of fixed effects.
-
-$head n_random$$
-This argument has prototype
-$codei%
-	size_t %n_random%
-%$$
-and is then number of random effects.
-
-$head row$$
-This argument has prototype
-$codei%
-	const CppAD::vector<size_t>& %row%
-%$$
-These are the possibly non-zero row indices in the sparsity pattern
-of the lower triangle of the Hessian w.r.t just the random effects.
-For $icode%k% = 0 , %...% , %row%.size()-1%$$,
-$codei%
-	%n_fixed% <= %row%[%k%] < %n_fixed% + %n_random%
-%$$
-The reason for the offset is that these indices are relative to both
-the fixed and random effects and the fixed effects come before the
-random effects.
-
-$head col$$
-This argument has prototype
-$codei%
-	const CppAD::vector<size_t>& %col%
-%$$
-These are the possibly non-zero column indices in the sparsity pattern
-of the lower triangle of the Hessian.
-It must have the same size as $icode row$$ and
-for $icode%k% = 0 , %...% , %col%.size()-1%$$,
-$codei%
-	%n_fixed% <= %col%[%k%] <= %row%[%k%]
-%$$
+It is a
+$cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$ for the
+matrix that we will compute the Cholesky factor of.
+It is in
+$cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
+and
+$cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
 
 $end
 */
-void cholesky::init(
-	size_t                       n_fixed  ,
-	size_t                       n_random ,
-	const CppAD::vector<size_t>& row      ,
-	const CppAD::vector<size_t>& col      )
+void cholesky::init( const CppAD::mixed::sparse_mat_info& hes_info )
 {	double not_used = 1.0;
 
-	Eigen::SparseMatrix<double> hessian_pattern(n_random, n_random);
-	assert( row.size() == col.size() );
-	for(size_t k = 0; k < row.size(); k++)
-	{
-		assert( n_fixed <= row[k] && row[k] < n_fixed + n_random );
-		assert( n_fixed <= col[k] && col[k] <= row[k] );
-		hessian_pattern.insert(row[k] - n_fixed, col[k] - n_fixed) = not_used;
+	Eigen::SparseMatrix<double> hessian_pattern(n_random_, n_random_);
+	assert( hes_info.row.size() == hes_info.col.size() );
+	for(size_t k = 0; k < hes_info.row.size(); k++)
+	{	size_t r = hes_info.row[k];
+		size_t c = hes_info.col[k];
+		assert( r < n_random_ );
+		assert( c < n_random_ );
+		hessian_pattern.insert(r, c) = not_used;
 	}
 	// analyze the pattern for an LDL^T Cholesky factorization of
 	// f_{u,u}(theta, u)
@@ -148,20 +116,18 @@ In addition, it must have a previous call to
 $cref cholesky_init$$.
 
 $head n_fixed$$
-Must be the same as $icode n_fixed$$ in previous call to
-$cref/cholesky_init/cholesky_init/n_fixed/$$.
+Must be the number of fixed effects.
 
 $head n_random$$
-Must be the same as $icode n_random$$ in previous call to
-$cref/cholesky_init/cholesky_init/n_random/$$.
+Must be the number of random effects.
 
 $head row$$
-Must be the same as $icode row$$ in previous call to
-$cref/cholesky_init/cholesky_init/row/$$.
+Must be the row vector in
+$cref/ran_hes_/init_ran_hes/ran_hes_/$$.
 
 $head col$$
-Must be the same as $icode col$$ in previous call to
-$cref/cholesky_init/cholesky_init/col/$$.
+Must be the column vector in
+$cref/ran_hes_/init_ran_hes/ran_hes_/$$.
 
 $head both$$
 This argument has prototype

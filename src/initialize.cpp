@@ -261,12 +261,10 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 		init_ran_hes(fixed_vec, random_vec);
 		assert( init_ran_hes_done_ );
 
-		// cholesky factor
-		assert( ! init_cholesky_done_ );
-		chol_ran_hes_.init(
-			n_fixed_, n_random_, ran_hes_.row, ran_hes_.col
-		);
-		init_cholesky_done_ = true;
+		// chol_ran_hes_
+		assert( ! init_chol_ran_hes_done_ );
+		init_chol_ran_hes();
+		assert( init_chol_ran_hes_done_ );
 
 		// hes_cross_
 		assert( ! init_hes_cross_done_ );

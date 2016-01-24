@@ -60,6 +60,7 @@ $end
 
 # include <Eigen/Sparse>
 # include <cppad/cppad.hpp>
+# include <cppad/mixed/sparse_mat_info.hpp>
 
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
@@ -78,12 +79,7 @@ public:
 	// destructor
 	~cholesky(void);
 	// init
-	void init(
-		size_t                       n_fixed  ,
-		size_t                       n_random ,
-		const CppAD::vector<size_t>& row      ,
-		const CppAD::vector<size_t>& col
-	);
+	void init(const CppAD::mixed::sparse_mat_info& hes_info);
 	// factorize
 	void factorize(
 		size_t                       n_fixed      ,

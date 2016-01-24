@@ -40,6 +40,7 @@ ADD_LIBRARY(cppad_mixed
 	eigen/ran_obj_eval.cpp
 	eigen/ran_obj_jac.cpp
 	eigen/update_factor.cpp
+	init_chol_ran_hes.cpp
 	init_fix_con.cpp
 	init_fix_like.cpp
 	init_hes_cross.cpp

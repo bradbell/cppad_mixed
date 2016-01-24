@@ -158,7 +158,7 @@ $comment */
 	init_ran_con_done_(false)       ,
 	init_ran_like_done_(false)      ,
 	init_ran_hes_done_(false)       ,
-	init_cholesky_done_(false)      ,
+	init_chol_ran_hes_done_(false)  ,
 	init_hes_cross_done_(false)     ,
 	init_newton_atom_done_(false)   ,
 	init_ran_objcon_done_(false)    ,
@@ -265,6 +265,7 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/eigen/init_ran_hes.cpp
 	%src/eigen/init_ran_con.cpp
 	%src/eigen/init_ran_objcon.cpp
+	%src/init_chol_ran_hes.cpp
 	%src/init_fix_con.cpp
 	%src/init_fix_like.cpp
 	%src/init_hes_cross.cpp
@@ -315,7 +316,7 @@ $codep */
 	bool                init_ran_con_done_;
 	bool                init_ran_like_done_;
 	bool                init_ran_hes_done_;
-	bool                init_cholesky_done_;
+	bool                init_chol_ran_hes_done_;
 	bool                init_hes_cross_done_;
 	// only called when n_random_ > 0 and quasi_fixed_ is false
 	bool                init_newton_atom_done_;
@@ -377,7 +378,7 @@ $codep */
 /* $$
 
 $head chol_ran_hes_$$
-If $icode%n_random_% > 0%$$ and $code init_cholesky_done_$$,
+If $icode%n_random_% > 0%$$ and $code init_chol_ran_hes_done_$$,
 $code chol_ran_hes_$$ contains a
 $cref cholesky$$ factor for the Hessian of the
 $cref/random likelihood
@@ -538,6 +539,12 @@ $codep */
 /* $$
 $comment ------------------------------------------------------------------- $$
 $head Initialization Member Functions$$
+
+$subhead init_chol_ran_hes$$
+See $cref init_chol_ran_hes$$.
+$codep */
+	void init_chol_ran_hes(void);
+/* $$
 
 $subhead init_fix_con$$
 See $cref init_fix_con$$.
