@@ -56,9 +56,9 @@ $latex \[
 \] $$
 which can be checked by multiplying by $latex G G^{-1}$$.
 
-$head Lower Triangle$$
-For some unknown reason, the code below does not work when
-changes $code ONLY_CHECK_LOWER_TRIANGLE$$ to have  value $code 0$$.
+$head Question$$
+Why does the test below fail when
+$code ONLY_CHECK_LOWER_TRIANGLE$$ is changed to have value $code 0$$ ?
 
 $head Source Code$$
 $code
@@ -175,7 +175,7 @@ bool cholmod_tst(void)
 	Bset_p[0]   = 0;
 	Bset_p[1]   = 1;
 
-	// set B to a vector of ones zero vector
+	// set B to a vector of ones
 	cholmod_dense *B = cholmod_ones(nrow, 1, T_xtype, &com);
 
 	// work space vectors that can be reused
@@ -186,15 +186,13 @@ bool cholmod_tst(void)
 	cholmod_dense *X = NULL;
 	cholmod_sparse* Xset = NULL;
 
-	// Recover the lower triangle of the symmetric inverse matrix
+	// one by one recover columns of A_inv
 	for(size_t j = 0; j < ncol; j++)
 	{	// j-th column of identity matrix (only use j-th row of B)
 		Bset_i[0] = (int) j;
 
-		// Both these options seem to work.
-		int sys = CHOLMOD_A;       // solve A * x = b
-
-		// solve for a column of the inverse of A
+       // solve A * x = b
+		int sys = CHOLMOD_A;
 		flag = cholmod_solve2(
 			sys,
 			L,
@@ -221,7 +219,6 @@ bool cholmod_tst(void)
 		double x[nrow];
 		for(size_t i = 0; i < nrow; i++)
 			x[i] = 0.0;
-		//
 		for(size_t k = 0; k < ni; k++)
 		{	size_t i = Xset_i[k];
 			x[i]     = X_x[i];
@@ -232,11 +229,11 @@ bool cholmod_tst(void)
 		size_t i_start = 0;
 # endif
 		for(size_t i = i_start; i < nrow; i++)
-		{	double A_inv_ij = A_inv[ i * nrow + j];
-			if( A_inv_ij == 0.0 )
+		{	double check_i = A_inv[ i * nrow + j];
+			if( check_i == 0.0 )
 				ok &= x[i] == 0.0;
 			else
-				ok &= std::fabs( x[i] / A_inv_ij - 1.0 ) <= eps;
+				ok &= std::fabs( x[i] / check_i - 1.0 ) <= eps;
 		}
 	}
 
