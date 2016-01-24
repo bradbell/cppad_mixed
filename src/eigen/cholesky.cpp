@@ -175,13 +175,13 @@ $spell
 	logdet
 	chol_ran_hes
 	CppAD
+	const
 $$
 
 $section Compute Log Determinant for Current Cholesky Factor$$
 
 $head Syntax$$
-$icode%logdet% = %chol_ran_hes%.logdet(%n_random%)
-%$$
+$icode%logdet% = %chol_ran_hes%.logdet()%$$
 
 $head Private$$
 The $code cholesky$$ class is an
@@ -191,13 +191,10 @@ $cref/CppAD::mixed/namespace/Private/$$ user API.
 $head chol_ran_hes$$
 This object has prototype
 $codei%
-	CppAD::mixed::cholesky %chol_ran_hes%
+	const CppAD::mixed::cholesky %chol_ran_hes%
 %$$
 In addition, it must have a previous call to
 $cref cholesky_update$$.
-
-$head n_random$$
-Must be the number of random effects.
 
 $head logdet$$
 This return value has prototype
@@ -209,15 +206,15 @@ to the previous call to $codei%chol_ran_hes%.factorize%$$.
 
 $end
 */
-double cholesky::logdet(size_t n_random) const
+double cholesky::logdet(void) const
 {	using Eigen::Dynamic;
     typedef Eigen::Matrix<double, Dynamic, Dynamic> dense_matrix;
 
 	// compute the logdet( f_{u,u}(theta, u )
 	dense_matrix diag = ptr_->vectorD();
-	assert( diag.size() == int(n_random) );
+	assert( diag.size() == int(n_random_) );
 	double logdet = 0.0;
-	for(size_t j = 0; j < n_random; j++)
+	for(size_t j = 0; j < n_random_; j++)
 		logdet += log( diag(j) );
 
 	return logdet;

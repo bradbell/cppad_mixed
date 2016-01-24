@@ -91,7 +91,7 @@ public:
 	// update
 	void update(const CppAD::mixed::sparse_mat_info& hes_info);
 	// logdet
-	double logdet(size_t n_random) const;
+	double logdet(void) const;
 	// solve
 	eigen_sparse solve(const eigen_sparse& b) const;
 };

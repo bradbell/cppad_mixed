@@ -119,7 +119,7 @@ double cppad_mixed::ran_obj_eval(
 	pack(fixed_vec, random_vec, both);
 
 	// compute the logdet( f_{u,u}(theta, u )
-	double logdet = chol_ran_hes_.logdet(n_random_);
+	double logdet = chol_ran_hes_.logdet();
 
 	// constant term
 	double pi   = CppAD::atan(1.0) * 4.0;
