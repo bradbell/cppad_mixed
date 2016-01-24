@@ -15,7 +15,8 @@ see http://www.gnu.org/licenses/agpl.txt
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // constructor
-cholesky::cholesky(void)
+cholesky::cholesky(size_t n_random)
+: n_random_(n_random)
 {	ptr_ = new eigen_cholesky; }
 
 // destructor

@@ -25,7 +25,7 @@ $$
 $section Cholesky Factor Class$$
 
 $head Syntax$$
-$codei%CppAD::mixed::cholesky %chol_ran_hes%$$
+$codei%CppAD::mixed::cholesky %chol_ran_hes%(%n_random%)%$$
 
 $head Private$$
 This class is an implementation detail and not part of the
@@ -36,6 +36,14 @@ This constructor creates a Cholesky factor.
 It is called $icode chol_ran_hes$$ because it is only intended for
 a cholesky factor of the Hessian with respect to the random effects; i.e.,
 $latex f_{u,u} ( \theta , u )$$.
+
+$head n_random_$$
+The argument $icode n_random$$ has prototype
+$codei%
+	size_t %n_random%
+%$$
+It is the number of random effects.
+The member variable $code n_random_$$ is set to this value.
 
 $head eigen_sparse$$
 The type $code CppAD::mixed::cholesky::eigen_sparse$$ is defined by
@@ -61,11 +69,12 @@ public:
 	typedef Eigen::SparseMatrix<double, Eigen::ColMajor>      eigen_sparse;
 	typedef Eigen::SimplicialLDLT<eigen_sparse, Eigen::Lower> eigen_cholesky;
 private:
+	const size_t    n_random_;
 	eigen_cholesky* ptr_;
 	//
 public:
 	// constructor
-	cholesky(void);
+	cholesky(size_t n_random);
 	// destructor
 	~cholesky(void);
 	// init

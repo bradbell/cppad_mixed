@@ -165,7 +165,8 @@ $comment */
 	init_ran_objcon_hes_done_(false),
 	init_fix_like_done_(false)      ,
 	init_fix_con_done_(false)       ,
-	initialize_done_(false)
+	initialize_done_(false)         ,
+	chol_ran_hes_(n_random)
 	{ }
 /* $$
 $head initialize$$
