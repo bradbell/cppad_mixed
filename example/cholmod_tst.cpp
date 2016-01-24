@@ -72,7 +72,6 @@ $end
 # include <limits>
 # include <cmath>
 # include <cassert>
-# include <iostream>
 
 # define ONLY_CHECK_LOWER_TRIANGLE     1
 # define CHOLMOD_TRUE                  1
