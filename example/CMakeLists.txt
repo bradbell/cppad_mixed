@@ -10,32 +10,17 @@
 # ---------------------------------------------------------------------------
 # Build C++ Examples / Tests
 #
-# 2DO: move cholmod_xam to test
-IF( suitesparse_prefix )
-	# no pkg-config for SuiteSparse so explicitly set corresponding values
-	SET(suitesparse_LIBRARY_DIRS ${suitesparse_prefix}/lib )
-	SET(suitesparse_LIBRARIES
-		"cholmod;amd;camd;colamd;ccolamd;suitesparseconfig"
-	)
-	SET(suitesparse_EXAMPLES
-		cholmod_tst.cpp
-		private/cholmod_xam.cpp
-	)
-ELSE( suitesparse_prefix )
-	SET(suitesparse_LIBRARY_DIRS "")
-	SET(suitesparse_LIBRARIES    "")
-	SET(suitesparse_EXAMPLES     "")
-ENDIF( suitesparse_prefix )
-
 LINK_DIRECTORIES(
 	${ipopt_LIBRARY_DIRS}
 	${suitesparse_LIBRARY_DIRS}
 )
 # -----------------------------------------------------------------------------
 # 2DO: move ipopt_xam_run to test.
+# 2DO: move cholmod_xam to test
 ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	example.cpp
-	${suitesparse_EXAMPLES}
+	cholmod_tst.cpp
+	private/cholmod_xam.cpp
 	ipopt_xam_run.cpp
 	private/eigen_xam.cpp
 	private/fix_con_eval_xam.cpp

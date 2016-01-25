@@ -70,7 +70,6 @@ on Fedora or Red-Hat one needs to install $code gsl-devel$$.
 
 $head Special Requirements$$
 The following packages are required by cppad_mixed
-(except for SuiteSparse with is optional)
 and may not have standard system installs:
 
 $subhead eigen$$
@@ -81,7 +80,7 @@ $codei%
 	cd cppad_mixed-20160122
 	bin/install_eigen.sh
 %$$
-can be used for this purpose.
+can be used to install this package.
 If necessary, first adjust the setting
 of the following variables in that script.
 $code
@@ -96,7 +95,7 @@ $codei%
 	cd cppad_mixed-20160122
 	bin/install_ipopt.sh
 %$$
-can be used for this purpose.
+can be used to install this package.
 If necessary, first adjust the setting
 of the following variables in that script.
 $code
@@ -111,7 +110,7 @@ $codei%
 	cd cppad_mixed-20160122
 	bin/install_cppad.sh
 %$$
-can be used for this purpose.
+can be used to install this package.
 If necessary, first adjust the setting
 of the following variables in that script.
 $code
@@ -119,11 +118,20 @@ $verbatim%bin/install_cppad.sh%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
 $$
 
 $subhead SuiteSparse$$
-The $href%http://faculty.cse.tamu.edu/davis/SuiteSparse%SuiteSparse%$$
-package is optional. If
-$cref/suitesparse_prefix/run_cmake.sh/suitesparse_prefix/$$
-is specified in the $code cmake$$ command line,
-$code cholmod$$ is used for the Cholesky factorization routines.
+The $href%http://faculty.cse.tamu.edu/davis/SuiteSparse%suitesparse%$$
+sparse matrix package.
+The commands
+$codei%
+	cd cppad_mixed-20160122
+	bin/install_suitesparse.sh
+%$$
+can be used to install this package.
+If necessary, first adjust the setting
+of the following variables in that script.
+$code
+$verbatim%bin/install_suitesparse.sh
+	%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
+$$
 
 $head cppad_mixed$$
 The steps above should only need to be executed once, not for

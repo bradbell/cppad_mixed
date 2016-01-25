@@ -42,6 +42,7 @@ extra_cxx_flags='-std=c++11 -Wall'
 cppad_prefix="$HOME/prefix/cppad_mixed"
 eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
 ipopt_prefix="$HOME/prefix/cppad_mixed"
+suitesparse_prefix="$HOME/prefix/cppad_mixed"
 # &&
 #
 # &head set_sparsity&&
@@ -61,14 +62,6 @@ set_sparsity="NO"
 # &&
 # &codep
 cmake_libdir='lib64'
-# &&
-#
-# &head suitesparse_prefix&&
-# Prefix where optional package was installed (use NOTFOUND if not installed).
-# This is only required for testing &cref cholmod&&, an alternative
-# Cholesky factorization routine.
-# &codep
-suitesparse_prefix="$HOME/prefix/suitesparse"
 # &&
 #
 # &head IHME Cluster Settings&&

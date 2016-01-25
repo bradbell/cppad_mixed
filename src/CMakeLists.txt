@@ -8,20 +8,12 @@
 #	     GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
-IF( suitesparse_prefix )
-	SET(suitesparse_files
-		cholmod/constructor.cpp
-		cholmod/init.cpp
-		cholmod/update.cpp
-		cholmod/logdet.cpp
-		cholmod/solve.cpp
-	)
-ELSE( suitesparse_prefix )
-	SET(suitesparse_files "")
-ENDIF( suitesparse_prefix )
-#
 ADD_LIBRARY(cppad_mixed
-	${suitesparse_files}
+	cholmod/constructor.cpp
+	cholmod/init.cpp
+	cholmod/update.cpp
+	cholmod/logdet.cpp
+	cholmod/solve.cpp
 	fix_con_eval.cpp
 	fix_con_eval.cpp
 	fix_con_hes.cpp

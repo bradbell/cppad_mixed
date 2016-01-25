@@ -41,12 +41,6 @@ cppad_mixed_prefix="$HOME/prefix/cppad_mixed"
 eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
 # &&
 #
-# &head suitesparse_prefix&&
-# This is the prefix where &code SuiteSparse&& was installed:
-# &codep
-suitesparse_prefix="$HOME/prefix/suitesparse"
-# &&
-#
 # &head example_file&&
 # This is the user example that we will compile using
 # the installed version of &code cppad_mixed&&:
@@ -104,7 +98,6 @@ suitesparse_libs='
 '
 # &&
 #
-#
 # &head Compile and Link&&
 # The command below compiles and links the example program.
 # Note that the &code eigen&& include files have installed in a
@@ -114,10 +107,9 @@ suitesparse_libs='
 g++ example.cpp \
 	-g -O0 -std=c++11 -Wall \
 	-I $cppad_mixed_prefix/include \
-	-I $suitesparse_prefix/include \
 	-isystem $eigen_prefix/include \
 	-L $cppad_mixed_prefix/lib64 -lcppad_mixed \
-	-L $suitesparse_prefix/lib \
+	-L $cppad_mixed_prefix/lib \
 	$ipopt_libs \
 	$suitesparse_libs \
 	-lgsl -lgslcblas \

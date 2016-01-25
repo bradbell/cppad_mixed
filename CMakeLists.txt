@@ -130,15 +130,7 @@ required_definition(set_sparsity BOOL
 get_prefix(cppad)
 get_prefix(eigen)
 get_prefix(ipopt)
-# ----------------------------------------------------------------------------
-# optional special cmake variables
-IF( suitesparse_prefix )
-	SET( suitesparse_prefix_01 1 )
-	get_prefix(suitesparse)
-ELSE( suitesparse_prefix )
-	SET( suitesparse_prefix_01 0 )
-	MESSAGE(STATUS "examples that use suitesparse will not be tested")
-ENDIF( suitesparse_prefix )
+get_prefix(suitesparse)
 # ----------------------------------------------------------------------------
 MESSAGE(STATUS "END:")
 # ----------------------------------------------------------------------------
@@ -146,6 +138,10 @@ MESSAGE(STATUS "END:")
 # (note CppAD must be installed with ipopt_prefix specified)
 FIND_PACKAGE(PkgConfig)
 pkg_check_modules(ipopt REQUIRED ipopt)
+# ----------------------------------------------------------------------------
+# no pkg-config for SuiteSparse so explicitly set corresponding values
+SET(suitesparse_LIBRARY_DIRS ${suitesparse_prefix}/lib )
+SET(suitesparse_LIBRARIES "cholmod;amd;camd;colamd;ccolamd;suitesparseconfig" )
 # ----------------------------------------------------------------------------
 # cppad_mixed_has_nullptr_01
 #
