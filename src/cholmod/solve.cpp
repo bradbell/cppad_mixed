@@ -67,21 +67,26 @@ $codei%
 $head row_out$$
 This argument has prototype
 $codei%
-	const CppAD::vector<size_t>& %row_out%
+	CppAD::vector<size_t>& %row_out%
 %$$
-It specifies the rows, in the column vector $latex x$$,
-that we are interested in knowing the value of.
+On input size of $icode row_out$$ is zero.
+Upon return, it contains the row indices for non-zero elements
+of the solution vector $latex x$$ in increasing order; i.e.,
+for $icode%k% = 1 , %...%, %row_in%.size()-1%$$,
+$codei%
+	%row_in%[%k-1%] < %row_out%[%k%]
+%$$
 
 $head val_out$$
 This argument has prototype
 $codei%
 	CppAD::vector<double>& %val_in%
 %$$
-and it has the same size as $icode row_out$$.
-The input value of its elements does not matter.
-Upon return, it contains the elements of $latex x$$,
-that we are interested in.
-For $icode%k% = 0 , %...%, %row_out%.size()-1%$$,
+On input the size of $icode val_out$$ is zero.
+Upon return, it has the same size at $icode row_out$$
+and contains the value of the non-zero elements of the solution.
+To be specific,
+for $icode%k% = 0 , %...%, %row_out%.size()-1%$$,
 $codei%
 	%x%[ %row_out%[%k%] ] = %val_out%[%k%]
 %$$
@@ -100,10 +105,11 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 void cholmod::solve(
 	const CppAD::vector<size_t>& row_in   ,
 	const CppAD::vector<double>& val_in   ,
-	const CppAD::vector<size_t>& row_out  ,
+	CppAD::vector<size_t>&       row_out  ,
 	CppAD::vector<double>&       val_out  )
 {	assert( row_in.size()  == val_in.size() );
-	assert( row_out.size() == val_out.size() );
+	assert( row_out.size() == 0 );
+	assert( val_out.size() == 0 );
 
 	assert( rhs_ != CPPAD_NULL  );
 	assert( rhs_->nrow == nrow_ );
@@ -113,8 +119,6 @@ void cholmod::solve(
 # ifndef NDEBUG
 	for(size_t k = 0; k < row_in.size(); k++)
 		assert( row_in[k] < nrow_ );
-	for(size_t k = 0; k < row_out.size(); k++)
-		assert( row_out[k] < nrow_ );
 	for(size_t j = 0; j < nrow_; j++)
 		assert( rhs_x[j] == 0.0 );
 # endif
@@ -145,8 +149,12 @@ void cholmod::solve(
 	double* sol_x = (double *) sol_->x;
 
 	// return result values
-	for(size_t k = 0; k < row_out.size(); k++)
-		val_out[k] = sol_x[ row_out[k] ];
+	for(size_t i = 0; i < nrow_; i++)
+	{	if( sol_x[i] != 0.0 )
+		{	row_out.push_back(i);
+			val_out.push_back( sol_x[i] );
+		}
+	}
 
 	// restore the vector rhs_ to be zero
 	for(size_t k = 0; k < row_in.size(); k++)

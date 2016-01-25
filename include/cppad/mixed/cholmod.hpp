@@ -87,7 +87,7 @@ public:
 	void solve(
 		const CppAD::vector<size_t>& row_in   ,
 		const CppAD::vector<double>& val_in   ,
-		const CppAD::vector<size_t>& row_out  ,
+		CppAD::vector<size_t>&       row_out  ,
 		CppAD::vector<double>&       val_out
 	);
 };

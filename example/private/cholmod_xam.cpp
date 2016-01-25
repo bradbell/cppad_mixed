@@ -138,17 +138,22 @@ bool cholmod_xam(void)
 	// check its value
 	ok &= std::fabs( logdet_A / std::log(36.0) - 1.0 ) <= eps;
 
-	CppAD::vector<size_t> row_in(1), row_out(nrow);
-	CppAD::vector<double> val_in(1), val_out(nrow);
-	for(size_t i = 0; i < nrow; i++)
-		row_out[i] = i;
+	CppAD::vector<size_t> row_in(1), row_out;
+	CppAD::vector<double> val_in(1), val_out;
 	for(size_t j = 0; j < ncol; j++)
 	{	// solve for the j-th column of the inverse matrix
 		row_in[0] = j;
 		val_in[0] = 1.0;
+		row_out.resize(0);
+		val_out.resize(0);
 		cholmod_obj.solve(row_in, val_in, row_out, val_out);
+		ok &= row_out.size() == val_out.size();
+		ok &= row_out.size() == nrow;
 		for(size_t i = 0; i < nrow; i++)
-			ok &= std::fabs( val_out[i] / A_inv[i*ncol+j] - 1.0 ) <= eps;
+		{	size_t k = row_out[i];
+			ok &= k == i;
+			ok &= std::fabs( val_out[k] / A_inv[i*ncol+j] - 1.0 ) <= eps;
+		}
 	}
 	return ok;
 }
