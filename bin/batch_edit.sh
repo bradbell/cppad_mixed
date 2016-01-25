@@ -12,15 +12,8 @@
 new_directories='
 '
 rename_files='
-	src/eigen/cholesky.cpp
-	include/cppad/mixed/cholesky.hpp
 '
 spell_files='
-	include/cppad/mixed/cppad_mixed.hpp
-	include/cppad/mixed/configure.hpp.in
-	include/cppad/mixed/choleig.hpp
-	src/eigen/choleig.cpp
-	src/eigen/init_ran_con.cpp
 '
 no_change_files='
 '
@@ -29,11 +22,8 @@ rename_cmd='s|cholesky.\([hc]\)pp|choleig.\1pp|'
 spell_cmd='s|^$spell|&\n\tcholeig|'
 #
 cat << EOF > junk.sed
-s|cholesky\\( *[{:(_/\$]\\)|choleig\\1|g
-s|CppAD::mixed::cholesky|CppAD::mixed::choleig|g
-s|cholesky.hpp|choleig.hpp|
-s|CHOLESKY_HPP|CHOLEIG_HPP|
-s|cholesky.cpp|choleig.cpp|
+s|set_sparsity|bool_sparsity|g
+s|SET_SPARSITY|BOOL_SPARSITY|g
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

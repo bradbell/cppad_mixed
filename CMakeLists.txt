@@ -18,7 +18,7 @@
 #                        -D cppad_prefix=value \
 #                        -D eigen_prefix=value \
 #                        -D ipopt_prefix=value \
-#                        -D set_sparsity=value \
+#                        -D bool_sparsity=value \
 # optional variables:    -D suitesparse_prefix=value \
 # ============================================================================
 # Macro definitions
@@ -122,7 +122,7 @@ required_definition( extra_cxx_flags STRING
 required_definition( cmake_libdir STRING
 	"directory below each prefix where libraries are installed"
 )
-required_definition(set_sparsity BOOL
+required_definition(bool_sparsity BOOL
 	"use sets, instead of bools, to represent sparsity patterns"
 )
 # ----------------------------------------------------------------------------

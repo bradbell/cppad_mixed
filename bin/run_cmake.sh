@@ -13,7 +13,7 @@
 # &begin run_cmake.sh&& &newlinech #&&
 # &spell
 #	cmake makefile cxx std dismod libdir lcppad cholmod xam cpp
-#	usr eigen ipopt cppad bools suitesparse devel hpp Cholesky
+#	usr eigen ipopt cppad bools suitesparse devel hpp Cholesky bool
 # &&
 #
 # &section bin/run_cmake.sh: User Configuration Options&&
@@ -45,11 +45,11 @@ ipopt_prefix="$HOME/prefix/cppad_mixed"
 suitesparse_prefix="$HOME/prefix/cppad_mixed"
 # &&
 #
-# &head set_sparsity&&
-# If YES, use sets of indices for sparsity patterns.
-# If NO use arrays of bools:
+# &head bool_sparsity&&
+# If YES, use arrays of bools for sparsity patterns,
+# otherwise use sets of indices.
 # &codep
-set_sparsity="NO"
+bool_sparsity='YES'
 # &&
 #
 # &head cmake_libdir&&
@@ -94,7 +94,7 @@ then
 	cmake_verbose_makefile='1'
 elif [ "$user_option" == '--set_sparsity' ]
 then
-	set_sparsity="YES"
+	bool_sparsity='NO'
 elif [ "$user_option" != '' ]
 then
 	echo "'$1' is an invalid option"
@@ -121,7 +121,7 @@ cmake \
 	-D ipopt_prefix="$ipopt_prefix" \
 	-D eigen_prefix="$eigen_prefix" \
 	\
-	-D set_sparsity="$set_sparsity" \
+	-D bool_sparsity="$bool_sparsity" \
 	-D cmake_libdir="$cmake_libdir" \
 	-D suitesparse_prefix="$suitesparse_prefix" \
 	..

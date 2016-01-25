@@ -103,7 +103,7 @@ void cppad_mixed::init_ran_objcon_hes(
 	d_vector beta_theta_u(n_total);
 	pack(fixed_vec, fixed_vec, random_vec, beta_theta_u);
 
-	// 2DO: use CPPAD_MIXED_SET_SPARSITY to choose between set
+	// 2DO: use CPPAD_MIXED_BOOL_SPARSITY to choose between set
 	// and vectorBool sparsity
 
 	// compute Jacobian sparsity corresponding to partial w.r.t beta

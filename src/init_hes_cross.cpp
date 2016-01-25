@@ -115,7 +115,7 @@ void cppad_mixed::init_hes_cross(
 	d_vector both(n_total);
 	pack(fixed_vec, random_vec, both);
 
-# if CPPAD_MIXED_SET_SPARSITY
+# if ! CPPAD_MIXED_BOOL_SPARSITY
 	// ----------------------------------------------------------------------
 	// compute Jacobian sparsity corresponding to parital w.r.t. fixed effects
 	typedef CppAD::vector< std::set<size_t> > sparsity_pattern;
