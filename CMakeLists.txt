@@ -13,13 +13,14 @@
 #                        -Wno-dev \
 # standard variables:    -D CMAKE_VERBOSE_MAKEFILE=value \
 #                        -D CMAKE_BUILD_TYPE=value \
-# required variables:    -D extra_cxx_flags=value \
-#                        -D cmake_libdir=value \
-#                        -D cppad_prefix=value \
+# prefixes:              -D cppad_prefix=value \
 #                        -D eigen_prefix=value \
 #                        -D ipopt_prefix=value \
+#                        -D suitesparse_prefix=value \
+# required variables:    -D extra_cxx_flags=value \
+#                        -D cmake_libdir=value \
 #                        -D bool_sparsity=value \
-# optional variables:    -D suitesparse_prefix=value \
+#                        -D suitesparse_prefix=value \
 # ============================================================================
 # Macro definitions
 # ============================================================================
@@ -116,6 +117,12 @@ MESSAGE(STATUS "BEGIN:")
 MESSAGE(STATUS "CMAKE_VERBOSE_MAKEFILE = ${CMAKE_VERBOSE_MAKEFILE}")
 MESSAGE(STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 # ----------------------------------------------------------------------------
+# get package prefixes
+get_prefix(cppad)
+get_prefix(eigen)
+get_prefix(ipopt)
+get_prefix(suitesparse)
+# ----------------------------------------------------------------------------
 required_definition( extra_cxx_flags STRING
 	"extra flags used by C++ compiler (debug and release are automatic)"
 )
@@ -125,12 +132,6 @@ required_definition( cmake_libdir STRING
 required_definition(bool_sparsity BOOL
 	"use sets, instead of bools, to represent sparsity patterns"
 )
-# ----------------------------------------------------------------------------
-# get required package prefixes
-get_prefix(cppad)
-get_prefix(eigen)
-get_prefix(ipopt)
-get_prefix(suitesparse)
 # ----------------------------------------------------------------------------
 MESSAGE(STATUS "END:")
 # ----------------------------------------------------------------------------

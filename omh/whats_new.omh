@@ -20,12 +20,23 @@ $spell
 	Eigen
 	Wno
 	valgrind
+	bool
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh
 %$$
+
+$head 01-25$$
+$list number$$
+Make $cref/SuiteSparse/install_unix/Special Requirements/SuiteSparse/$$
+a required package.
+$lnext
+Change the $cref run_cmake.sh$$ argument
+$code set_sparsity$$ to $cref/bool_sparsity/run_cmake.sh/bool_sparsity/$$
+(so that the default value is $code YES$$).
+$lend
 
 $head 01-22$$
 It is no longer necessary to link a separate $code cppad_mixed_eigen$$

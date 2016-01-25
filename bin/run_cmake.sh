@@ -30,12 +30,6 @@ cmake_verbose_makefile='NO'
 cmake_build_type='DEBUG'
 # &&
 #
-# &head extra_cxx_flags&&
-# Extra C++ flags used during compilation:
-# &codep
-extra_cxx_flags='-std=c++11 -Wall'
-# &&
-#
 # &head Prefixes&&
 # Prefixes where the required packages are installed:
 # &codep
@@ -45,6 +39,18 @@ ipopt_prefix="$HOME/prefix/cppad_mixed"
 suitesparse_prefix="$HOME/prefix/cppad_mixed"
 # &&
 #
+# &head extra_cxx_flags&&
+# Extra C++ flags used during compilation:
+# &codep
+extra_cxx_flags='-std=c++11 -Wall'
+# &&
+#
+# &head cmake_libdir&&
+# Sub-directory of each prefix where libraries are installed.
+# &codep
+cmake_libdir='lib64'
+# &&
+#
 # &head bool_sparsity&&
 # If YES, use arrays of bools for sparsity patterns,
 # otherwise use sets of indices.
@@ -52,22 +58,9 @@ suitesparse_prefix="$HOME/prefix/cppad_mixed"
 bool_sparsity='YES'
 # &&
 #
-# &head cmake_libdir&&
-# Sub-directory of each prefix where libraries are installed.
-# The eigen part of the library is separate so different flags can be used
-# to compile the part of the code that uses eigen.
-# The following will properly link the &code cppad_mixed&& library:
-# &codep
-#	-lcppad_mixed -lcppad_mixed_eigen -lcppad_mixed
-# &&
-# &codep
-cmake_libdir='lib64'
-# &&
-#
 # &head IHME Cluster Settings&&
 # Here are some example changes that are used for the IHME cluster
 # &codep
-# suitesparse_prefix="NOTFOUND"
 # extra_cxx_flags='-Wall'
 # &&
 # &end
