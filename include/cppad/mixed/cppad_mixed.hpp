@@ -18,6 +18,10 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/sparse_jac_info.hpp>
 # include <cppad/mixed/cholesky.hpp>
 # include <cppad/mixed/sparse_mat_info.hpp>
+# include <cppad/mixed/configure.hpp>
+# if CPPAD_MIXED_HAS_SUITESPARSE
+# include <cppad/mixed/cholmod.hpp>
+# endif
 
 // private examples
 extern bool fix_con_eval_xam(void);
@@ -387,7 +391,7 @@ $cref/random likelihood
 /$$
 ; i.e.  $latex f_{u,u} ( \theta , u )$$.
 $codep */
-	CppAD::mixed::cholesky chol_ran_hes_;
+	CPPAD_MIXED_CHOLESKY chol_ran_hes_;
 /* $$
 
 $head hes_cross_$$

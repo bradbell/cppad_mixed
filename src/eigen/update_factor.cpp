@@ -70,10 +70,10 @@ $codei%
 has been called where $icode both$$ is a packed version
 of the fixed and random effects.
 
-$head factorize_chol_ran_hes_$$
+$head chol_ran_hes_$$
 On input, the member variable
 $codei%
-	CppAD::mixed::cholesky chol_ran_hes_
+	CPPAD_MIXED_CHOLESKY chol_ran_hes_
 %$$
 has been
 $cref/initialized/cholesky_init/$$

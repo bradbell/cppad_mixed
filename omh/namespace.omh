@@ -13,14 +13,31 @@ $spell
 	Namespace
 	CppAD
 	cppad
+	hpp
+	gsl
+	rng
 $$
 
 $section The CppAD::mixed Namespace Declarations$$
-These declarations are in the $code CppAD::mixed$$ namespace.
-With the exception of $cref manage_gsl_rng$$,
-they are $bold not$$ part of the user API and may change with time.
+The declarations in the subsections below
+are in the $code CppAD::mixed$$ namespace
+and are $bold not$$ part of the
+$code cppad_mixed$$ user API (and may change with time).
 
-$children%src/manage_gsl_rng.cpp
+$head configure.hpp$$
+The $cref configure.hpp$$ declarations are an exception because
+they are $code cppad_mixed$$ preprocessor  symbols and hence
+not in the $code CppAD::mixed$$ namespace.
+These are $bold not$$ part of the user API.
+
+$head manage_gsl_rng$$
+The $cref manage_gsl_rng$$ declarations are an exception because
+they are part of the $code cppad_mixed$$ user API.
+These are in the $code CppAD::mixed$$ namespace.
+
+
+$children%include/cppad/mixed/configure.hpp.in
+	%src/manage_gsl_rng.cpp
 	%include/cppad/mixed/sparse_mat_info.hpp
 	%include/cppad/mixed/cholesky.hpp
 	%include/cppad/mixed/ipopt_fixed.hpp

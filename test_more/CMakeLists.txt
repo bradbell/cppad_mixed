@@ -10,9 +10,27 @@
 # ---------------------------------------------------------------------------
 # Build C++ Examples / Tests
 #
+IF( suitesparse_prefix )
+	# no pkg-config for SuiteSparse so explicitly set corresponding values
+	SET(suitesparse_LIBRARY_DIRS ${suitesparse_prefix}/lib )
+	SET(suitesparse_LIBRARIES
+		"cholmod;amd;camd;colamd;ccolamd;suitesparseconfig"
+	)
+	SET(suitesparse_EXAMPLES
+		cholmod_tst.cpp
+		private/cholmod_xam.cpp
+	)
+ELSE( suitesparse_prefix )
+	SET(suitesparse_LIBRARY_DIRS "")
+	SET(suitesparse_LIBRARIES    "")
+	SET(suitesparse_EXAMPLES     "")
+ENDIF( suitesparse_prefix )
+
 LINK_DIRECTORIES(
 	${ipopt_LIBRARY_DIRS}
+	${suitesparse_LIBRARY_DIRS}
 )
+#
 # Program cpp, not installed, and depends on following source files
 ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
 	abs_fix_con.cpp
@@ -33,6 +51,7 @@ TARGET_LINK_LIBRARIES(test_more
 	cppad_mixed_eigen
 	cppad_mixed
 	${ipopt_LIBRARIES}
+	${suitesparse_LIBRARIES}
 	gsl
 	gslcblas
 )

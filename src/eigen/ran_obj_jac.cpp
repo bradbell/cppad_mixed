@@ -49,7 +49,7 @@ derived from the $code cppad_mixed$$ base class.
 $head chol_ran_hes_$$
 It is assumed that the member variable
 $codei%
-	CppAD::mixed::cholesky chol_ran_hes_
+	CPPAD_MIXED_CHOLESKY chol_ran_hes_
 %$$
 was updated using $cref update_factor$$ for the specified values of the
 fixed and random effects.

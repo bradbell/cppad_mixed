@@ -24,6 +24,10 @@ $codei%CppAD::mixed::sparse_mat_info %mat_info
 %$$
 $icode%mat_info%.resize(%size%)%$$
 
+$head Private$$
+This class is an implementation detail and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
 $head Purpose$$
 This structure holds information about a sparse matrix.
 

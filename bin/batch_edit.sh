@@ -22,7 +22,10 @@ rename_cmd='s|\(.*\)|\1|'
 spell_cmd='s|^$spell|&|'
 #
 cat << EOF > junk.sed
-s|/sparse_mat_info/val/|/sparse_mat_info/Notation/|
+s|CppAD::mixed::cholesky|CppAD::mixed::cholmod|
+s|CppAD::mixed::cholmod::eigen_sparse|CppAD::mixed::cholesky::eigen_sparse|
+s|\$head factorize_chol_ran_hes_|\$head chol_ran_hes_|
+s|# include <cppad/mixed/cholesky.hpp>|&\\n#  include <cppad/mixed/cholmod.hpp>|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]
@@ -68,6 +71,8 @@ done
 # ----------------------------------------------------------------------------
 # files that should not change at all
 list='
+	include/cppad/mixed/cholesky.hpp
+	src/eigen/cholesky.cpp
 '
 for file in $list
 do

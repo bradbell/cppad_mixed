@@ -19,6 +19,7 @@ fi
 # &spell
 #	suitesparse cppad eigen xam cpp mkdir tmp cp sed isystem lcppad lgsl
 #	lgslcblas fi bool std cout endl ipopt conig eval config
+#	lcholmod lamd lcamd lcolamd lccolamd lsuitesparseconfig
 # &&
 #
 # &section Example and Test Using the Installed Version of cppad_mixed&&
@@ -38,6 +39,12 @@ cppad_mixed_prefix="$HOME/prefix/cppad_mixed"
 # This is the prefix where &code eigen&& was installed:
 # &codep
 eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
+# &&
+#
+# &head suitesparse_prefix&&
+# This is the prefix where &code SuiteSparse&& was installed:
+# &codep
+suitesparse_prefix="$HOME/prefix/suitesparse"
 # &&
 #
 # &head example_file&&
@@ -88,6 +95,16 @@ EOF
 ipopt_libs=`pkg-config --libs ipopt`
 # &&
 #
+# &head suitesparse_libs&&
+# The following command sets the library link flags necessary
+# to link &code SuiteSparse&& on this system:
+# &codep
+suitesparse_libs='
+	-lcholmod -lamd -lcamd -lcolamd -lccolamd -lsuitesparseconfig
+'
+# &&
+#
+#
 # &head Compile and Link&&
 # The command below compiles and links the example program.
 # Note that the &code eigen&& include files have installed in a
@@ -97,9 +114,12 @@ ipopt_libs=`pkg-config --libs ipopt`
 g++ example.cpp \
 	-g -O0 -std=c++11 -Wall \
 	-I $cppad_mixed_prefix/include \
+	-I $suitesparse_prefix/include \
 	-isystem $eigen_prefix/include \
 	-L $cppad_mixed_prefix/lib64 -lcppad_mixed \
+	-L $suitesparse_prefix/lib \
 	$ipopt_libs \
+	$suitesparse_libs \
 	-lgsl -lgslcblas \
 	-o example
 # &&

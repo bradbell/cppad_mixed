@@ -11,6 +11,8 @@ see http://www.gnu.org/licenses/agpl.txt
 $begin install_unix$$
 $dollar @$$
 $spell
+	cholmod
+	Cholesky
 	cppad
 	tarball
 	xzf
@@ -68,7 +70,7 @@ on Fedora or Red-Hat one needs to install $code gsl-devel$$.
 
 $head Special Requirements$$
 The following packages are required by cppad_mixed
-(except for SuiteSparse)
+(except for SuiteSparse with is optional)
 and may not have standard system installs:
 
 $subhead eigen$$
@@ -118,10 +120,10 @@ $$
 
 $subhead SuiteSparse$$
 The $href%http://faculty.cse.tamu.edu/davis/SuiteSparse%SuiteSparse%$$
-package is currently optional.
-Extra testing is done when
+package is optional. If
 $cref/suitesparse_prefix/run_cmake.sh/suitesparse_prefix/$$
-is specified in the $code cmake$$ command.
+is specified in the $code cmake$$ command line,
+$code cholmod$$ is used for the Cholesky factorization routines.
 
 $head cppad_mixed$$
 The steps above should only need to be executed once, not for

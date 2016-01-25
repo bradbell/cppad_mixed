@@ -47,7 +47,7 @@ $latex ( \theta , u )$$.
 $head chol_ran_hes_$$
 The member variable
 $codei%
-	CppAD::mixed::cholesky chol_ran_hes_
+	CPPAD_MIXED_CHOLESKY chol_ran_hes_
 %$$
 must not been previously initialized
 $codei%
