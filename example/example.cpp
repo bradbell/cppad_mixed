@@ -26,13 +26,10 @@ $end
 # include <iostream>
 # include <cassert>
 # include <cstring>
-# include <cppad/mixed/configure.hpp>
-
-// optional
-extern bool cholmod_tst(void);
-extern bool cholmod_xam(void);
 
 extern bool abs_density_xam(void);
+extern bool cholmod_tst(void);
+extern bool cholmod_xam(void);
 extern bool data_mismatch_xam(void);
 extern bool derived_xam(void);
 extern bool eigen_xam(void);
@@ -41,25 +38,25 @@ extern bool fix_con_hes_xam(void);
 extern bool fix_con_jac_xam(void);
 extern bool fix_constraint_xam(void);
 extern bool fix_like_eval_xam(void);
-extern bool fix_like_jac_xam(void);
 extern bool fix_like_hes_xam(void);
+extern bool fix_like_jac_xam(void);
 extern bool hes_cross_xam(void);
-extern bool ran_hes_fun_xam(void);
 extern bool ipopt_xam_run(void);
-extern bool logdet_jac_xam(void);
 extern bool lasso_xam(void);
+extern bool logdet_jac_xam(void);
 extern bool manage_gsl_rng_xam(void);
 extern bool newton_step_xam(void);
 extern bool no_random_xam(void);
 extern bool optimize_fixed_xam(void);
 extern bool optimize_random_xam(void);
-extern bool ran_constraint_xam(void);
 extern bool ran_con_eval_xam(void);
 extern bool ran_con_jac_xam(void);
+extern bool ran_constraint_xam(void);
+extern bool ran_hes_fun_xam(void);
 extern bool ran_like_jac_xam(void);
+extern bool ran_objcon_hes_xam(void);
 extern bool ran_obj_eval_xam(void);
 extern bool ran_obj_jac_xam(void);
-extern bool ran_objcon_hes_xam(void);
 extern bool update_factor_xam(void);
 
 // anonymous namespace
@@ -94,13 +91,9 @@ namespace {
 // main program that runs all the tests
 int main(void)
 {
-# if CPPAD_MIXED_HAS_SUITESPARSE
+	RUN(abs_density_xam);
 	RUN(cholmod_tst);
 	RUN(cholmod_xam);
-# endif
-
-	// summary report
-	RUN(abs_density_xam);
 	RUN(data_mismatch_xam);
 	RUN(derived_xam);
 	RUN(eigen_xam);
@@ -109,27 +102,28 @@ int main(void)
 	RUN(fix_con_jac_xam);
 	RUN(fix_constraint_xam);
 	RUN(fix_like_eval_xam);
-	RUN(fix_like_jac_xam);
 	RUN(fix_like_hes_xam);
+	RUN(fix_like_jac_xam);
 	RUN(hes_cross_xam);
-	RUN(ran_hes_fun_xam);
 	RUN(ipopt_xam_run);
-	RUN(logdet_jac_xam);
 	RUN(lasso_xam);
+	RUN(logdet_jac_xam);
 	RUN(manage_gsl_rng_xam);
 	RUN(newton_step_xam);
 	RUN(no_random_xam);
 	RUN(optimize_fixed_xam);
 	RUN(optimize_random_xam);
-	RUN(ran_constraint_xam);
 	RUN(ran_con_eval_xam);
 	RUN(ran_con_jac_xam);
+	RUN(ran_constraint_xam);
+	RUN(ran_hes_fun_xam);
 	RUN(ran_like_jac_xam);
+	RUN(ran_objcon_hes_xam);
 	RUN(ran_obj_eval_xam);
 	RUN(ran_obj_jac_xam);
-	RUN(ran_objcon_hes_xam);
 	RUN(update_factor_xam);
 
+	// summary report
 	using std::cout;
 	using std::endl;
 	int return_flag;

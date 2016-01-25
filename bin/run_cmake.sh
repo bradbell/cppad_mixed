@@ -58,6 +58,13 @@ cmake_libdir='lib64'
 bool_sparsity='YES'
 # &&
 #
+# &head cholmod_cholesky&&
+# If YES, use &cref cholmod&& Cholesky factorization where possible.
+# Otherwise always use Eigen's Cholesky factorization.
+# &codep
+cholmod_cholesky='YES'
+# &&
+#
 # &head IHME Cluster Settings&&
 # Here are some example changes that are used for the IHME cluster
 # &codep
@@ -77,6 +84,7 @@ usage: bin/run_cmake.sh \\
 	[--help] \\
 	[--verbose] \\
 	[--set_sparsity]
+	[--eigen_cholesky]
 EOF
 	exit 0
 else
@@ -88,6 +96,9 @@ then
 elif [ "$user_option" == '--set_sparsity' ]
 then
 	bool_sparsity='NO'
+elif [ "$user_option" == '--eigen_cholesky' ]
+then
+	cholmod_cholesky='NO'
 elif [ "$user_option" != '' ]
 then
 	echo "'$1' is an invalid option"
@@ -109,14 +120,15 @@ cmake \
 	-D CMAKE_VERBOSE_MAKEFILE=$cmake_verbose_makefile \
 	-D CMAKE_BUILD_TYPE=$cmake_build_type \
 	\
-	-D extra_cxx_flags="$extra_cxx_flags" \
 	-D cppad_prefix="$cppad_prefix" \
 	-D ipopt_prefix="$ipopt_prefix" \
 	-D eigen_prefix="$eigen_prefix" \
-	\
-	-D bool_sparsity="$bool_sparsity" \
-	-D cmake_libdir="$cmake_libdir" \
 	-D suitesparse_prefix="$suitesparse_prefix" \
+	\
+	-D extra_cxx_flags="$extra_cxx_flags" \
+	-D cmake_libdir="$cmake_libdir" \
+	-D bool_sparsity="$bool_sparsity" \
+	-D cholmod_cholesky="$cholmod_cholesky" \
 	..
 # ---------------------------------------------------------------------------
 echo 'run_cmake.sh: OK'

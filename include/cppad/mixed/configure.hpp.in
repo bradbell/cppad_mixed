@@ -36,12 +36,6 @@ $codei%
 	"%yyyymmdd%"
 %$$
 
-$head CPPAD_MIXED_HAS_SUITESPARSE$$
-This is symbol is either zero or one.
-If it is one, then optional
-$cref/SuiteSparse/install_unix/Special Requirements/SuiteSparse/$$
-package is available on this system.
-
 $head CPPAD_MIXED_BOOL_SPARSITY$$
 This is symbol is either zero or one.
 If it is one, then use CppAD $code vectorBool$$ sparsity patterns.
@@ -53,11 +47,12 @@ use it for the null pointer.
 Otherwise, use the value $code 0$$.
 
 $head CPPAD_MIXED_CHOLESKY$$
-If SuiteSparse is available, this symbol is
+If $cref/cholmod_cholesky/run_cmake.sh/cholmod_cholesky/$$ is $code YES$$,
+this symbol is defined as
 $codep
 	CppAD::mixed::cholmod
 $$
-Otherwise it is
+Otherwise it is defined as
 $codep
 	CppAD::mixed::choleig
 $$
@@ -66,7 +61,6 @@ $end
 */
 
 # define CPPAD_MIXED_VERSION         "@cppad_mixed_version@"
-# define CPPAD_MIXED_HAS_SUITESPARSE 1
 # define CPPAD_MIXED_BOOL_SPARSITY    @bool_sparsity_01@
 
 # if @cppad_mixed_has_nullptr_01@
@@ -75,7 +69,7 @@ $end
 # define CPPAD_MIXED_NULL_PTR  0
 # endif
 
-# if CPPAD_MIXED_HAS_SUITESPARSE
+# if @cholmod_cholesky_01@
 # define CPPAD_MIXED_CHOLESKY CppAD::mixed::cholmod
 # else
 # define CPPAD_MIXED_CHOLEKSY CppAD::mixed::choleig

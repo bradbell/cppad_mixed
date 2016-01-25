@@ -21,6 +21,7 @@ $spell
 	Wno
 	valgrind
 	bool
+	cholmod
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
@@ -36,6 +37,9 @@ $lnext
 Change the $cref run_cmake.sh$$ argument
 $code set_sparsity$$ to $cref/bool_sparsity/run_cmake.sh/bool_sparsity/$$
 (so that the default value is $code YES$$).
+$lnext
+Add the option to use $code cholmod$$ for sparse Cholesky factorization;
+see $cref/cholmod_cholesky/run_cmake.sh/cholmod_cholesky/$$.
 $lend
 
 $head 01-22$$

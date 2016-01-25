@@ -19,9 +19,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/choleig.hpp>
 # include <cppad/mixed/sparse_mat_info.hpp>
 # include <cppad/mixed/configure.hpp>
-# if CPPAD_MIXED_HAS_SUITESPARSE
 # include <cppad/mixed/cholmod.hpp>
-# endif
 
 // private examples
 extern bool fix_con_eval_xam(void);

@@ -20,7 +20,7 @@
 # required variables:    -D extra_cxx_flags=value \
 #                        -D cmake_libdir=value \
 #                        -D bool_sparsity=value \
-#                        -D suitesparse_prefix=value \
+#                        -D cholmod_cholesky=value
 # ============================================================================
 # Macro definitions
 # ============================================================================
@@ -131,6 +131,9 @@ required_definition( cmake_libdir STRING
 )
 required_definition(bool_sparsity BOOL
 	"use sets, instead of bools, to represent sparsity patterns"
+)
+required_definition(cholmod_cholesky BOOL
+	"use cholmod Cholesky factorizion where possible (instead of eigen)"
 )
 # ----------------------------------------------------------------------------
 MESSAGE(STATUS "END:")
