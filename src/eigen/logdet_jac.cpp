@@ -121,10 +121,6 @@ void cppad_mixed::logdet_jac(
 	assert( logdet_fix.size() == n_fixed_ );
 	assert( logdet_ran.size() == n_random_ );
 
-	// declare eigen matrix types
-	typedef typename CppAD::mixed::cholesky::eigen_sparse eigen_sparse;
-	typedef typename eigen_sparse::InnerIterator          column_itr;
-
 	// number of non-zeros in Hessian
 	size_t K = ran_hes_.row.size();
 	assert( K == ran_hes_.col.size() );
@@ -148,18 +144,20 @@ void cppad_mixed::logdet_jac(
 		assert( row < n_random_ );
 		assert( col < n_random_ );
 	}
-	//
+	CppAD::vector<size_t> row_b(1), row_x;
+	CppAD::vector<double> val_b(1), val_x;
 	for(size_t j = 0; j < n_random_; j++)
 	{	// j-th column of the identity matrix
-		eigen_sparse b(n_random_, 1);
-		b.insert(j, 0) = 1.0;
-		// x = j-th column of f_{u,u} (theta, u)^{-1}
-		eigen_sparse x = chol_ran_hes_.solve(b);
-		assert( size_t(x.outerSize()) == 1 );
-		assert( size_t (x.innerSize()) == n_random_ );
+		row_b[0] = j;
+		val_b[0] = 1.0;
 		//
-		for(column_itr itr(x, 0); itr; ++itr)
-		{	size_t i    = itr.row();
+		// x = j-th column of f_{u,u} (theta, u)^{-1}
+		row_x.resize(0);
+		val_x.resize(0);
+		chol_ran_hes_.solve(row_b, val_b, row_x, val_x);
+		//
+		for(size_t ell = 0; ell < row_x.size(); ell++)
+		{	size_t i    = row_x[ell];
 			if( col == j )
 			{	while( row < i )
 				{	k++;
@@ -178,7 +176,7 @@ void cppad_mixed::logdet_jac(
 			if( (row == i) && col == j)
 			{	// note off diagonal elements need to be counted twice
 				// becasue only computing for lower triangle
-				w[k] = itr.value();
+				w[k] = val_x[ell];
 				if( ran_hes_.row[k] != ran_hes_.col[k] )
 					w[k] = 2.0 * w[k];
 			}

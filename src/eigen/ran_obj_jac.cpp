@@ -99,10 +99,6 @@ void cppad_mixed::ran_obj_jac(
 	assert( random_vec.size() == n_random_ );
 	assert( r_fixed.size() == n_fixed_ );
 
-	// declare eigen matrix types
-	typedef typename CppAD::mixed::cholesky::eigen_sparse eigen_sparse;
-	typedef typename eigen_sparse::InnerIterator          column_itr;
-
 	// number of non-zeros in Hessian
 	size_t K = ran_hes_.row.size();
 	assert( K == ran_hes_.col.size() );
@@ -154,12 +150,17 @@ void cppad_mixed::ran_obj_jac(
 	}
 
 	// Loop over fixed effects and compute r_fixed one component at a time
+	CppAD::vector<size_t> row_b, row_x;
+	CppAD::vector<double> val_b, val_x;
 	for(size_t j = 0; j < n_fixed_; j++)
-	{	// j-th column of - f_{u, theta} (theta, u)
-		eigen_sparse b(n_random_, 1);
+	{	// b = j-th column of - f_{u, theta} (theta, u)
+		row_b.resize(0);
+		val_b.resize(0);
 		while( col <= j )
 		{	assert( col == j );
-			b.insert(row, 0) = - val_out[k];
+			row_b.push_back(row);
+			val_b.push_back( - val_out[k] );
+			//
 			k++;
 			if( k < K )
 			{	assert( hes_cross_.row[k] >= n_fixed_ );
@@ -174,20 +175,20 @@ void cppad_mixed::ran_obj_jac(
 			}
 		}
 		assert( col > j );
-		// j-th column of - f_{u,u}(theta, u)^{-1} f_{u,theta}(theta, u)
-		eigen_sparse x = chol_ran_hes_.solve(b);
-		assert( size_t(x.outerSize()) == 1 );
-		assert( size_t (x.innerSize()) == n_random_ );
+		// x = j-th column of - f_{u,u}(theta, u)^{-1} f_{u,theta}(theta, u)
+		row_x.resize(0);
+		val_x.resize(0);
+		chol_ran_hes_.solve(row_b, val_b, row_x, val_x);
 		//
 		// parial w.r.t fixed effects contribution to total derivative
 		r_fixed[j] =  f_fixed[j] + 0.5 * logdet_fix[j];
 		//
 		// compute effect of uhat_{theta(j)} (theta) on the total derivative
-		for(column_itr itr(x, 0); itr; ++itr)
+		for(size_t ell = 0; ell < row_x.size(); ell++)
 		{	// random effect index
-			size_t i = itr.row();
+			size_t i = row_x[ell];
 			// partial of optimal random effect for this (i, j)
-			double ui_thetaj = itr.value();
+			double ui_thetaj = val_x[ell];
 			// partial of random part of objective w.r.t this random effect
 			// Note f_random = 0 because u is optimal for the fixed effects
 			// double h_ui = f_random[i] + 0.5 * logdet_ran[i];
@@ -199,4 +200,3 @@ void cppad_mixed::ran_obj_jac(
 	//
 	return;
 }
-

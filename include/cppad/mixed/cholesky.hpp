@@ -93,7 +93,12 @@ public:
 	// logdet
 	double logdet(void) const;
 	// solve
-	eigen_sparse solve(const eigen_sparse& b) const;
+	void solve(
+		const CppAD::vector<size_t>& row_in  ,
+		const CppAD::vector<double>& val_in  ,
+		CppAD::vector<size_t>&       row_out ,
+		CppAD::vector<double>&       val_out
+	);
 };
 
 

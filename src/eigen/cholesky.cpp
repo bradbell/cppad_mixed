@@ -220,60 +220,119 @@ double cholesky::logdet(void) const
 	return logdet;
 }
 /*
-------------------------------------------------------------------------------
+-----------------------------------------------------------------------------
 $begin cholesky_solve$$
 $spell
-	Cholesky
-	logdet
 	chol_ran_hes
-	CppAD
+	cholesky
 	const
-	eigen
+	xam
+	CppAD
 $$
 
-$section Solve Hessian Times Unknown Matrix Equals Known Matrix$$
+$section Solve Linear Equations Using Cholesky Factor$$
 
 $head Syntax$$
-$icode%result% = %chol_ran_hes%.solve(%known%)
-%$$
+$codei%%chol_ran_hes%.solve(%row_in%, %val_in%, %row_out%, %val_out%)%$$
 
 $head Private$$
-The $code cholesky$$ class is an
+The $cref cholmod$$ class is an
 $cref/implementation detail/cholesky/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head chol_ran_hes$$
+$head Purpose$$
+This functions solves the linear equation
+$latex A x = b$$ where $latex A$$ is the positive definite matrix
+that has been factored,
+$latex b$$ is a known column vector,
+and $latex x$$ is unknown.
+
+$head col_ran_hes$$
 This object has prototype
 $codei%
-	CppAD::mixed::cholesky %chol_ran_hes%
+	const CppAD::mixed::cholesky %col_ran_hes%
 %$$
 In addition, it must have a previous call to
 $cref cholesky_update$$.
 
-$head known$$
+$head row_in$$
 This argument has prototype
 $codei%
-	const cholesky::eigen_sparse& %known%
+	const CppAD::vector<size_t>& %row_in%
 %$$
-It is the known matrix (right hand side) in the linear equation.
+It specifies the rows, in the column vector $latex b$$,
+that are possibly non-zero.
 
-$head result$$
-The return value has prototype
+$head val_in$$
+This argument has prototype
 $codei%
-	cholesky::eigen_sparse& %result%
+	const CppAD::vector<double>& %val_in%
 %$$
-It is the solution of the equation
+and it has the same size as $icode row_in$$.
+It specifies the values, in the column vector $latex b$$,
+that are possibly non-zero; to be specific,
+for $icode%k% = 0 , %...%, %row_in%.size()-1%$$,
 $codei%
-	%Hessian% * %result% = %known%
+	%b%[ %row_in%[%k%] ] = %val_in%[%k%]
+%$$.
+
+$head row_out$$
+This argument has prototype
+$codei%
+	CppAD::vector<size_t>& %row_out%
 %$$
-where $icode Hessian$$ is the Hessian w.r.t the random effects
-$latex f_{u,u} ( \theta , u )$$ corresponding to the previous call to
-$cref cholesky_update$$.
+On input size of $icode row_out$$ is zero.
+Upon return, it contains the row indices for non-zero elements
+of the solution vector $latex x$$ in increasing order; i.e.,
+for $icode%k% = 1 , %...%, %row_in%.size()-1%$$,
+$codei%
+	%row_in%[%k-1%] < %row_out%[%k%]
+%$$
+
+$head val_out$$
+This argument has prototype
+$codei%
+	CppAD::vector<double>& %val_in%
+%$$
+On input the size of $icode val_out$$ is zero.
+Upon return, it has the same size at $icode row_out$$
+and contains the value of the non-zero elements of the solution.
+To be specific,
+for $icode%k% = 0 , %...%, %row_out%.size()-1%$$,
+$codei%
+	%x%[ %row_out%[%k%] ] = %val_out%[%k%]
+%$$
 
 $end
 */
-cholesky::eigen_sparse cholesky::solve(const eigen_sparse& known) const
-{	return ptr_->solve(known); }
+void cholesky::solve(
+	const CppAD::vector<size_t>& row_in  ,
+	const CppAD::vector<double>& val_in  ,
+	CppAD::vector<size_t>&       row_out ,
+	CppAD::vector<double>&       val_out )
+{	assert( row_in.size() == val_in.size() );
+	assert( row_out.size() == 0 );
+	assert( val_out.size() == 0 );
+	//
+	eigen_sparse b(n_random_, 1);
+	for(size_t k = 0; k < row_in.size(); k++)
+	{	assert( row_in[k] < n_random_ );
+		b.insert( row_in[k], 0 ) = val_in[k];
+	}
+	//
+	eigen_sparse x = ptr_->solve(b);
+	assert( x.outerSize() == 1 );
+	assert( size_t( x.innerSize() ) == n_random_ );
+	//
+	typedef typename eigen_sparse::InnerIterator column_itr;
+	for(column_itr itr(x, 0); itr; ++itr)
+	{	assert( size_t( itr.row() ) < n_random_ );
+		size_t r = size_t( itr.row() );
+		double v = itr.value();
+		row_out.push_back(r);
+		val_out.push_back(v);
+	}
+}
 
 
 } } // END_CPPAD_MIXED_NAMESPACE

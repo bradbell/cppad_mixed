@@ -170,17 +170,24 @@ void cppad_mixed::ran_con_jac(
 
 	// Loop over fixed effects
 	size_t ell = 0;
+	CppAD::vector<size_t> row_b, row_x;
+	CppAD::vector<double> val_b, val_x;
 	for(size_t j = 0; j < n_fixed_; j++)
-	{	// j-th column of - f_{u, theta} (theta, u)
-		eigen_sparse b(n_random_, 1);
+	{	// b = j-th column of - f_{u, theta} (theta, u)
+		row_b.resize(0);
+		val_b.resize(0);
 		while( col <= j )
 		{	assert( col == j );
 			// Must put a non-zero value on left hand size
 			// because Eigens Cholesky solve seems to drop zeros.
 			if( L == 0 )
-				b.insert(row, 0) = 1.0;
+			{	row_b.push_back(row);
+				val_b.push_back(1.0);
+			}
 			else
-				b.insert(row, 0) = - val_out[k];
+			{	row_b.push_back(row);
+				val_b.push_back( - val_out[k] );
+			}
 			//
 			k++;
 			if( k < K )
@@ -196,8 +203,16 @@ void cppad_mixed::ran_con_jac(
 			}
 		}
 		assert( col > j );
-		// j-th column of - f_{u,u}(theta, u)^{-1} f_{u,theta}(theta, u)
-		eigen_sparse x    = chol_ran_hes_.solve(b);
+		// x = j-th column of - f_{u,u}(theta, u)^{-1} f_{u,theta}(theta, u)
+		row_x.resize(0);
+		val_x.resize(0);
+		chol_ran_hes_.solve(row_b, val_b, row_x, val_x);
+		//
+		// convert to an eigen column vector
+		eigen_sparse x(n_random_, 1);
+		for(size_t m = 0; m < row_x.size(); m++)
+			x.insert( row_x[m], 0) = val_x[m];
+		//
 		// multipliy A times j-th column of uhat_theta
 		eigen_sparse jac_j = ran_con_mat_ * x;
 		// convert to sparse_mat_info format

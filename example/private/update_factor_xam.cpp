@@ -119,34 +119,29 @@ bool update_factor_xam(void)
 	// update the factorization of f_{u,u} (theta, u)
 	mixed_object.update_factor(fixed_vec, random_vec);
 
-	// declare eigen matrix types
-	typedef CppAD::mixed::cholesky::eigen_sparse eigen_sparse;
-	typedef eigen_sparse::InnerIterator          column_itr;
-
 	//
-	// Identity matrix
-	eigen_sparse eye(n_random, n_random);
-	for(size_t j = 0; j < n_random; j++)
-		eye.insert(j, j) = 1.0;
-
-	//
-	// inverse of Hessian
-	eigen_sparse inv_hes = mixed_object.chol_ran_hes_.solve(eye);
-
 	// Hessian_{i,j} = 1.0 / (theta[i] * theta[i]) if i == j
 	//               = 0.0 otherwise
-	size_t count = 0;
+	// compute inverse of Hessian and check on column at a time
+	CppAD::vector<size_t> row_b(1), row_x;
+	CppAD::vector<double> val_b(1), val_x;
 	for(size_t j = 0; j < n_random; j++)
-	{	for(column_itr itr(inv_hes, j); itr; ++itr)
-		{	++count;
-			size_t i = itr.row();
+	{	// b = j-th column of identity matrix
+		row_b[0] = j;
+		val_b[0] = 1.0;
+		//
+		// x = j-th column of invese of Hessian
+		row_x.resize(0);
+		val_x.resize(0);
+		mixed_object.chol_ran_hes_.solve(row_b, val_b, row_x, val_x);
+		//
+		for(size_t k = 0; k < row_x.size(); k++)
+		{	size_t i = row_x[k];
 			ok      &= (i == j);
 			double check = theta[i] * theta[i];
-			ok      &= abs( check / itr.value() - 1.0) <= eps;
+			ok      &= abs( check / val_x[k] - 1.0) <= eps;
 		}
 	}
-	ok &= count == n_random;
-
 	return ok;
 }
 // END C++
