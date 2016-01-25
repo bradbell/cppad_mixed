@@ -13,6 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin configure.hpp$$
 $spell
+	choleig
 	hpp
 	CppAD
 	yyyymmdd
@@ -58,7 +59,7 @@ $codep
 $$
 Otherwise it is
 $codep
-	CppAD::mixed::cholesky
+	CppAD::mixed::choleig
 $$
 
 $end
@@ -77,7 +78,7 @@ $end
 # if CPPAD_MIXED_HAS_SUITESPARSE
 # define CPPAD_MIXED_CHOLESKY CppAD::mixed::cholmod
 # else
-# define CPPAD_MIXED_CHOLEKSY CppAD::mixed::cholesky
+# define CPPAD_MIXED_CHOLEKSY CppAD::mixed::choleig
 # endif
 
 

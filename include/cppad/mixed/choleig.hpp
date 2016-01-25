@@ -8,12 +8,13 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# ifndef CPPAD_MIXED_CHOLESKY_HPP
-# define CPPAD_MIXED_CHOLESKY_HPP
+# ifndef CPPAD_MIXED_CHOLEIG_HPP
+# define CPPAD_MIXED_CHOLEIG_HPP
 
 /*
-$begin cholesky$$
+$begin choleig$$
 $spell
+	choleig
 	Simplicial
 	CppAD
 	cholesky
@@ -26,7 +27,7 @@ $$
 $section Cholesky Factor Class$$
 
 $head Syntax$$
-$codei%CppAD::mixed::cholesky %chol_ran_hes%(%n_random%)%$$
+$codei%CppAD::mixed::choleig %chol_ran_hes%(%n_random%)%$$
 
 $head Private$$
 This class is an implementation detail and not part of the
@@ -47,19 +48,19 @@ It is the number of random effects.
 The member variable $code n_random_$$ is set to this value.
 
 $head eigen_sparse$$
-The type $code CppAD::mixed::cholesky::eigen_sparse$$ is defined by
+The type $code CppAD::mixed::choleig::eigen_sparse$$ is defined by
 $codei%
 	typedef Eigen::SparseMatrix<double, Eigen::ColMajor>  eigen_sparse;
 %$$
 
-$head eigen_cholesky$$
-The type $code CppAD::mixed::cholesky::eigen_cholesky$$ is defined by
+$head eigen_choleig$$
+The type $code CppAD::mixed::choleig::eigen_choleig$$ is defined by
 $codei%
 	typedef Eigen::SimplicialLDLT<eigen_sparse, Eigen::Lower> eigen_cholesky;
 %$$
 
 
-$childtable%src/eigen/cholesky.cpp
+$childtable%src/eigen/choleig.cpp
 %$$
 
 $end
@@ -73,7 +74,7 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-class cholesky {
+class choleig {
 public:
 	typedef Eigen::SparseMatrix<double, Eigen::ColMajor>      eigen_sparse;
 	typedef Eigen::SimplicialLDLT<eigen_sparse, Eigen::Lower> eigen_cholesky;
@@ -83,9 +84,9 @@ private:
 	//
 public:
 	// constructor
-	cholesky(size_t n_random);
+	choleig(size_t n_random);
 	// destructor
-	~cholesky(void);
+	~choleig(void);
 	// init
 	void init(const CppAD::mixed::sparse_mat_info& hes_info);
 	// update

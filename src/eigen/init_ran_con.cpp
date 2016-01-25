@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin init_ran_con$$
 $spell
+	choleig
 	init
 	cppad
 	const
@@ -73,7 +74,7 @@ Upon return it is the number of random constraints.
 $head ran_con_mat_$$
 The input value of the member variable
 $codei%
-	CppAD::mixed::cholesky::eigen_sparse ran_con_mat_
+	CppAD::mixed::choleig::eigen_sparse ran_con_mat_
 %$$
 does not matter.
 Upon return it is an $code Eigen$$ sparse matrix representation

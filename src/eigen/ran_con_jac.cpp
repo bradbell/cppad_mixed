@@ -130,7 +130,7 @@ void cppad_mixed::ran_con_jac(
 	assert( jac_info.val.size() == L );
 
 	// declare eigen matrix types
-	typedef typename CppAD::mixed::cholesky::eigen_sparse eigen_sparse;
+	typedef typename CppAD::mixed::choleig::eigen_sparse eigen_sparse;
 	typedef typename eigen_sparse::InnerIterator          column_itr;
 
 	// packed version of fixed and random effects

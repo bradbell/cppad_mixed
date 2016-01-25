@@ -29,7 +29,7 @@ $icode%cholmod_obj%.update(%hes_info%)%$$
 
 $head Private$$
 The $cref cholmod$$ class is an
-$cref/implementation detail/cholesky/Private/$$ and not part of the
+$cref/implementation detail/choleig/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Purpose$$

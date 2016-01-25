@@ -10,23 +10,24 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 
 # include <Eigen/Sparse>
-# include <cppad/mixed/cholesky.hpp>
+# include <cppad/mixed/choleig.hpp>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // constructor
-cholesky::cholesky(size_t n_random)
+choleig::choleig(size_t n_random)
 : n_random_(n_random)
 {	ptr_ = new eigen_cholesky; }
 
 // destructor
-cholesky::~cholesky(void)
+choleig::~choleig(void)
 {	delete ptr_; }
 
 /*
 ------------------------------------------------------------------------------
-$begin cholesky_init$$
+$begin choleig_init$$
 $spell
+	choleig
 	Cholesky
 	chol_ran_hes
 	CppAD
@@ -41,14 +42,14 @@ $icode%chol_ran_hes%.init(%hes_info%)
 %$$
 
 $head Private$$
-The $code cholesky$$ class is an
-$cref/implementation detail/cholesky/Private/$$ and not part of the
+The $code choleig$$ class is an
+$cref/implementation detail/choleig/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head chol_ran_hes$$
 This object has prototype
 $codei%
-	CppAD::mixed::cholesky %chol_ran_hes%
+	CppAD::mixed::choleig %chol_ran_hes%
 %$$
 
 $head hes_info$$
@@ -66,7 +67,7 @@ $cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
 
 $end
 */
-void cholesky::init( const CppAD::mixed::sparse_mat_info& hes_info )
+void choleig::init( const CppAD::mixed::sparse_mat_info& hes_info )
 {	double not_used = 1.0;
 
 	Eigen::SparseMatrix<double> hessian_pattern(n_random_, n_random_);
@@ -84,8 +85,9 @@ void cholesky::init( const CppAD::mixed::sparse_mat_info& hes_info )
 }
 /*
 ------------------------------------------------------------------------------
-$begin cholesky_update$$
+$begin choleig_update$$
 $spell
+	choleig
 	Cholesky
 	xam
 	const
@@ -103,21 +105,21 @@ $head Syntax$$
 $icode%chol_ran_hes%.update(%hes_info%)%$$
 
 $head Private$$
-The $cref cholesky$$ class is an
-$cref/implementation detail/cholesky/Private/$$ and not part of the
+The $cref choleig$$ class is an
+$cref/implementation detail/choleig/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Purpose$$
-This routine updates the $cref cholesky$$ factorization
+This routine updates the $cref choleig$$ factorization
 for new values in the square positive definite matrix.
 
 $head chol_ran_hes$$
 This object has prototype
 $codei%
-	CppAD::mixed::cholesky %chol_ran_hes%
+	CppAD::mixed::choleig %chol_ran_hes%
 %$$
 In addition, it must have a previous call to
-$cref cholesky_init$$.
+$cref choleig_init$$.
 
 $head hes_info$$
 This argument has prototype
@@ -128,7 +130,7 @@ It contains new values for the
 $cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
 we are computing the Cholesky factor of.
 The $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$
-must be the same as in $cref/cholesky_init/cholesky_init/hes_info/$$.
+must be the same as in $cref/choleig_init/choleig_init/hes_info/$$.
 Hence, in particular, it must be in
 $cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
 and
@@ -139,7 +141,7 @@ On input, the member variable
 $codei%
 	eigen_cholesky* ptr_
 %$$
-has been $cref/initialized/cholesky_init/$$
+has been $cref/initialized/choleig_init/$$
 using the sparsity pattern for the Hessian.
 Upon return, it contains the factorization
 $codei%
@@ -150,7 +152,7 @@ representation of the Hessian with values.
 
 $end
 */
-void cholesky::update(const CppAD::mixed::sparse_mat_info& hes_info)
+void choleig::update(const CppAD::mixed::sparse_mat_info& hes_info)
 {	assert( hes_info.row.size() == hes_info.col.size() );
 	assert( hes_info.row.size() == hes_info.val.size() );
 	//
@@ -169,8 +171,9 @@ void cholesky::update(const CppAD::mixed::sparse_mat_info& hes_info)
 }
 /*
 ------------------------------------------------------------------------------
-$begin cholesky_logdet$$
+$begin choleig_logdet$$
 $spell
+	choleig
 	Cholesky
 	logdet
 	chol_ran_hes
@@ -184,17 +187,17 @@ $head Syntax$$
 $icode%logdet% = %chol_ran_hes%.logdet()%$$
 
 $head Private$$
-The $code cholesky$$ class is an
-$cref/implementation detail/cholesky/Private/$$ and not part of the
+The $code choleig$$ class is an
+$cref/implementation detail/choleig/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head chol_ran_hes$$
 This object has prototype
 $codei%
-	const CppAD::mixed::cholesky %chol_ran_hes%
+	const CppAD::mixed::choleig %chol_ran_hes%
 %$$
 In addition, it must have a previous call to
-$cref cholesky_update$$.
+$cref choleig_update$$.
 
 $head logdet$$
 This return value has prototype
@@ -206,7 +209,7 @@ to the previous call to $codei%chol_ran_hes%.factorize%$$.
 
 $end
 */
-double cholesky::logdet(void) const
+double choleig::logdet(void) const
 {	using Eigen::Dynamic;
     typedef Eigen::Matrix<double, Dynamic, Dynamic> dense_matrix;
 
@@ -221,8 +224,9 @@ double cholesky::logdet(void) const
 }
 /*
 -----------------------------------------------------------------------------
-$begin cholesky_solve$$
+$begin choleig_solve$$
 $spell
+	choleig
 	chol_ran_hes
 	cholesky
 	const
@@ -237,7 +241,7 @@ $codei%%chol_ran_hes%.solve(%row_in%, %val_in%, %row_out%, %val_out%)%$$
 
 $head Private$$
 The $cref cholmod$$ class is an
-$cref/implementation detail/cholesky/Private/$$ and not part of the
+$cref/implementation detail/choleig/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Purpose$$
@@ -250,10 +254,10 @@ and $latex x$$ is unknown.
 $head col_ran_hes$$
 This object has prototype
 $codei%
-	const CppAD::mixed::cholesky %col_ran_hes%
+	const CppAD::mixed::choleig %col_ran_hes%
 %$$
 In addition, it must have a previous call to
-$cref cholesky_update$$.
+$cref choleig_update$$.
 
 $head row_in$$
 This argument has prototype
@@ -305,7 +309,7 @@ $codei%
 
 $end
 */
-void cholesky::solve(
+void choleig::solve(
 	const CppAD::vector<size_t>& row_in  ,
 	const CppAD::vector<double>& val_in  ,
 	CppAD::vector<size_t>&       row_out ,

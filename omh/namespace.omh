@@ -39,7 +39,7 @@ These are in the $code CppAD::mixed$$ namespace.
 $children%include/cppad/mixed/configure.hpp.in
 	%src/manage_gsl_rng.cpp
 	%include/cppad/mixed/sparse_mat_info.hpp
-	%include/cppad/mixed/cholesky.hpp
+	%include/cppad/mixed/choleig.hpp
 	%include/cppad/mixed/ipopt_fixed.hpp
 	%src/eigen/newton_step.cpp
 	%include/cppad/mixed/sparse_hes_info.hpp
@@ -59,7 +59,7 @@ $head Private$$
 These declarations are implementation details and not part of the
 $code CppAD::mixed$$ user API.
 $table
-$rref cholesky$$
+$rref choleig$$
 $rref ipopt_fixed$$
 $rref newton_step$$
 $rref sparse_hes_info$$

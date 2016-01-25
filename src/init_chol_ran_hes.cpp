@@ -60,7 +60,7 @@ $codei%
 has been called with $icode hes_info$$
 equal to the sparsity pattern for the
 Hessian of the random likelihood with respect to the random effects;
-see $cref cholesky_init$$.
+see $cref choleig_init$$.
 This sparsity information is relative to just the random effects;
 i.e., the row and column indices are relative to the vector $latex u )$$.
 For each row and column indices in $icode hes_info$$,

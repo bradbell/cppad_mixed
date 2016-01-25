@@ -12,20 +12,28 @@
 new_directories='
 '
 rename_files='
+	src/eigen/cholesky.cpp
+	include/cppad/mixed/cholesky.hpp
 '
 spell_files='
+	include/cppad/mixed/cppad_mixed.hpp
+	include/cppad/mixed/configure.hpp.in
+	include/cppad/mixed/choleig.hpp
+	src/eigen/choleig.cpp
+	src/eigen/init_ran_con.cpp
 '
 no_change_files='
 '
 #
-rename_cmd='s|\(.*\)|\1|'
-spell_cmd='s|^$spell|&|'
+rename_cmd='s|cholesky.\([hc]\)pp|choleig.\1pp|'
+spell_cmd='s|^$spell|&\n\tcholeig|'
 #
 cat << EOF > junk.sed
-s|CppAD::mixed::cholesky|CppAD::mixed::cholmod|
-s|CppAD::mixed::cholmod::eigen_sparse|CppAD::mixed::cholesky::eigen_sparse|
-s|\$head factorize_chol_ran_hes_|\$head chol_ran_hes_|
-s|# include <cppad/mixed/cholesky.hpp>|&\\n#  include <cppad/mixed/cholmod.hpp>|
+s|cholesky\\( *[{:(_/\$]\\)|choleig\\1|g
+s|CppAD::mixed::cholesky|CppAD::mixed::choleig|g
+s|cholesky.hpp|choleig.hpp|
+s|CHOLESKY_HPP|CHOLEIG_HPP|
+s|cholesky.cpp|choleig.cpp|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]
@@ -71,8 +79,6 @@ done
 # ----------------------------------------------------------------------------
 # files that should not change at all
 list='
-	include/cppad/mixed/cholesky.hpp
-	src/eigen/cholesky.cpp
 '
 for file in $list
 do

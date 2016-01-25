@@ -21,7 +21,7 @@ ADD_LIBRARY(cppad_mixed
 	fix_like_eval.cpp
 	fix_like_hes.cpp
 	fix_like_jac.cpp
-	eigen/cholesky.cpp
+	eigen/choleig.cpp
 	eigen/init_ran_hes.cpp
 	eigen/init_ran_con.cpp
 	eigen/init_ran_objcon.cpp
