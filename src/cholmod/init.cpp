@@ -31,7 +31,7 @@ $icode%cholmod_obj%.init(%hes_info%)
 
 $head Private$$
 The $cref cholmod$$ class is an
-$cref/implementation detail/choleig/Private/$$ and not part of the
+$cref/implementation detail/cholmod/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head cholmod_obj$$

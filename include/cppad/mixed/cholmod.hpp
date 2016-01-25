@@ -21,7 +21,7 @@ $spell
 	hes
 $$
 
-$section Cholmod Cholesky Factor Class$$
+$section A Cholmod Cholesky Factor Class$$
 
 $head Private$$
 This class is an implementation detail and not part of the

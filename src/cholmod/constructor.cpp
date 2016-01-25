@@ -28,8 +28,10 @@ $section Cholmod Constructor$$
 $head Syntax$$
 $codei%CppAD::mixed::cholmod %cholmod_obj%(%nrow%)%$$
 
+
 $head Private$$
-This class is an implementation detail and not part of the
+The $cref cholmod$$ class is an
+$cref/implementation detail/cholmod/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head nrow_$$

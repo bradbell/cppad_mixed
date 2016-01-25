@@ -24,7 +24,7 @@ $spell
 	typedef
 $$
 
-$section Cholesky Factor Class$$
+$section An Eigen Cholesky Factor Class$$
 
 $head Syntax$$
 $codei%CppAD::mixed::choleig %chol_ran_hes%(%n_random%)%$$
