@@ -22,22 +22,18 @@ $section CppAD Mixed Wish List$$
 $children%example/cholmod_tst.cpp
 %$$
 
-$head Cholmod$$
-The speed and memory usage may be improved if we use the
-$href%http://faculty.cse.tamu.edu/davis/SuiteSparse/%SuiteSparse%$$
-cholmod routines instead of the eigen package
-$href%http://eigen.tuxfamily.org/dox-devel/group__SparseCholesky__Module.html
-	%sparse choleksy
-%$$;
-see $cref cholmod_tst.cpp$$.
-This cannot be done for AD recordings used to compute section derivatives
-using the
-$cref/second order approximate optimal random effects
+$head Second Order Method$$
+The second order method,
+when $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false,
+uses the second order approximate optimal random effects
+$cref/W(beta, theta, u)
 	/theory
 	/Approximate Optimal Random Effects
 	/Second Order, W(beta, theta, u)
-/$$
-$latex W( \beta , \theta , u)$$.
+/$$.
+It might be more efficient (both in memory and speed)
+to uses a second order version of the implicit function theory
+derivatives.
 
 $head Optimizing Random Effects$$
 It may save significant execution time and memory to write a special

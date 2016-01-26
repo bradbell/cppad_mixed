@@ -29,6 +29,10 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 01-26$$
+Remove the old $cref cholmod$$ wish list its (completed) and add a
+$cref/second order method/wish_list/Second Order Method/$$ item.
+
 $head 01-25$$
 $list number$$
 Make $cref/SuiteSparse/install_unix/Special Requirements/SuiteSparse/$$
