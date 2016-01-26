@@ -72,7 +72,7 @@ $codei%
 	factor_ = cholmod_analyze(pos_matrix_, &common_)
 %$$
 
-$head rhs$$
+$head rhs_$$
 Upon return,
 this is set to dense column vector of $code nrow_$$ zeros as follows:
 $codei%

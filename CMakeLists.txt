@@ -117,6 +117,12 @@ MESSAGE(STATUS "BEGIN:")
 MESSAGE(STATUS "CMAKE_VERBOSE_MAKEFILE = ${CMAKE_VERBOSE_MAKEFILE}")
 MESSAGE(STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 # ----------------------------------------------------------------------------
+FOREACH( var set_sparsity )
+IF( ${var} )
+	MESSAGE(FATAL_ERROR "${var} no longer used in cppad_mixed cmake command")
+ENDIF( ${var} )
+ENDFOREACH( var )
+# ----------------------------------------------------------------------------
 # get package prefixes
 get_prefix(cppad)
 get_prefix(eigen)

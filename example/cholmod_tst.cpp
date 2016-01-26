@@ -226,6 +226,7 @@ bool cholmod_tst(void)
 		assert( Xset->nrow   == nrow );
 		assert( Xset->ncol   == 1    );
 		assert( Xset->xtype  == CHOLMOD_PATTERN );
+		assert( Xset->packed == CHOLMOD_TRUE);
 		//
 		// The four arrays Xset, X, Y, E may change each time
 		double* X_x     = (double *) X->x;

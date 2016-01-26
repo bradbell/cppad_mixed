@@ -32,8 +32,6 @@ SET_TARGET_PROPERTIES(
 )
 TARGET_LINK_LIBRARIES(test_more
 	cppad_mixed
-	cppad_mixed_eigen
-	cppad_mixed
 	${ipopt_LIBRARIES}
 	${suitesparse_LIBRARIES}
 	gsl

@@ -108,9 +108,9 @@ we say that $icode mat_info$$ is in column major order.
 $subhead Lower Triangular$$
 If for $icode%k% = 0 , ... , %K%-1%$$,
 $codei%
-	%mat_info%.mat[%k%] <= %mat_info%.row[%k%]
+	%mat_info%.row[%k%] >= %mat_info%.col[%k%]
 %$$
-we say that $icode mat_info$$ is in lower triangular.
+we say that $icode mat_info$$ is lower triangular.
 
 $end
 */

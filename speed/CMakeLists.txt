@@ -25,8 +25,6 @@ SET_TARGET_PROPERTIES(
 )
 TARGET_LINK_LIBRARIES(capture_xam
 	cppad_mixed
-	cppad_mixed_eigen
-	cppad_mixed
 	${ipopt_LIBRARIES}
 	${suitesparse_LIBRARIES}
 	gsl
@@ -37,4 +35,4 @@ ADD_CUSTOM_TARGET(
 	capture_xam ${random_seed}
 	DEPENDS capture_xam
 )
-ADD_DEPENDENCIES(speed_capture_xam cppad_mixed cppad_mixed_eigen)
+ADD_DEPENDENCIES(speed_capture_xam cppad_mixed)

@@ -13,7 +13,7 @@
 # prefix below which suitesparse will be installed
 suitesparse_prefix="$HOME/prefix/cppad_mixed"
 # is this a debugging version of suitesparse ('true' or 'false')
-debug='ture'
+debug='true'
 # END USER_SETTINGS
 # --------------------------------------------------------------------------
 program='bin/install_suitesparse.sh'
