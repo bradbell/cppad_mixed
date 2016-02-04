@@ -53,7 +53,7 @@ L( \theta , \lambda ) =
 \] $$
 
 $code
-$verbatim%example/user/fix_constraint_xam.cpp
+$srcfile%example/user/fix_constraint_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 

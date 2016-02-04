@@ -70,7 +70,7 @@ but it only passes when the value is $code 1$$.
 
 $head Source Code$$
 $code
-$verbatim%example/cholmod_tst.cpp%5%// BEGIN C++%// END C++%1%$$
+$srcfile%example/cholmod_tst.cpp%5%// BEGIN C++%// END C++%1%$$
 $$
 
 $end

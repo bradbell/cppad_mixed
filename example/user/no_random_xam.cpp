@@ -44,7 +44,7 @@ $latex \[
 \] $$
 
 $code
-$verbatim%example/user/no_random_xam.cpp
+$srcfile%example/user/no_random_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 

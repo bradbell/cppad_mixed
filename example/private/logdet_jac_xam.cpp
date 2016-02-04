@@ -28,7 +28,7 @@ This example is not part of the
 $cref/cppad_mixed public API/public/$$.
 
 $code
-$verbatim%example/private/logdet_jac_xam.cpp
+$srcfile%example/private/logdet_jac_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 

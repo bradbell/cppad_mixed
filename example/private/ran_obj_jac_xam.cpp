@@ -41,7 +41,7 @@ $latex \[
 \] $$
 
 $code
-$verbatim%example/private/ran_obj_jac_xam.cpp
+$srcfile%example/private/ran_obj_jac_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 

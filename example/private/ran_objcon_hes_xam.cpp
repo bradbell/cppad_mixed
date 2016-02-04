@@ -41,7 +41,7 @@ $latex \[
 \] $$
 
 $code
-$verbatim%example/private/ran_objcon_hes_xam.cpp
+$srcfile%example/private/ran_objcon_hes_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 

@@ -51,7 +51,7 @@ $latex \[
 \] $$
 
 $code
-$verbatim%example/user/optimize_fixed_xam.cpp
+$srcfile%example/user/optimize_fixed_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 

@@ -227,7 +227,7 @@ from Spatially Replicated Counts.
 $$
 
 $code
-$verbatim%speed/capture_xam.cpp
+$srcfile%speed/capture_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 

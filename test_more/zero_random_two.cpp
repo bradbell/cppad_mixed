@@ -51,7 +51,7 @@ $latex \[
 \] $$
 
 $code
-$verbatim%test_more/zero_random_two.cpp
+$srcfile%test_more/zero_random_two.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 

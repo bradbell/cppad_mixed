@@ -35,7 +35,7 @@ In addition, for the same case without the constraint,
 the optimal random effects do not satisfy this condition.
 
 $code
-$verbatim%example/user/ran_constraint_xam.cpp
+$srcfile%example/user/ran_constraint_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 

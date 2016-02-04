@@ -26,7 +26,7 @@ This example is not part of the
 $cref/cppad_mixed public API/public/$$.
 
 $code
-$verbatim%example/private/hes_cross_xam.cpp
+$srcfile%example/private/hes_cross_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 

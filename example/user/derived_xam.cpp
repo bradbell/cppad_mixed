@@ -20,7 +20,7 @@ $$
 $section mixed_cppad Derived Class: Example and Test$$
 
 $code
-$verbatim%example/user/derived_xam.cpp
+$srcfile%example/user/derived_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 

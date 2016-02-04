@@ -84,7 +84,7 @@ can be used to install this package.
 If necessary, first adjust the setting
 of the following variables in that script.
 $code
-$verbatim%bin/install_eigen.sh%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
+$srcfile%bin/install_eigen.sh%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
 $$
 
 $subhead Ipopt$$
@@ -99,7 +99,7 @@ can be used to install this package.
 If necessary, first adjust the setting
 of the following variables in that script.
 $code
-$verbatim%bin/install_ipopt.sh%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
+$srcfile%bin/install_ipopt.sh%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
 $$
 
 $subhead CppAD$$
@@ -114,7 +114,7 @@ can be used to install this package.
 If necessary, first adjust the setting
 of the following variables in that script.
 $code
-$verbatim%bin/install_cppad.sh%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
+$srcfile%bin/install_cppad.sh%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
 $$
 
 $subhead SuiteSparse$$
@@ -129,7 +129,7 @@ can be used to install this package.
 If necessary, first adjust the setting
 of the following variables in that script.
 $code
-$verbatim%bin/install_suitesparse.sh
+$srcfile%bin/install_suitesparse.sh
 	%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
 $$
 

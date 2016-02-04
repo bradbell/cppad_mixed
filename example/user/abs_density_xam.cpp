@@ -43,7 +43,7 @@ $latex \[
 \] $$
 
 $code
-$verbatim%example/user/abs_density_xam.cpp
+$srcfile%example/user/abs_density_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 

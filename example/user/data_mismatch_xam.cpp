@@ -147,7 +147,7 @@ g_\theta ( \theta )
 \] $$
 
 $code
-$verbatim%example/user/data_mismatch_xam.cpp
+$srcfile%example/user/data_mismatch_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 

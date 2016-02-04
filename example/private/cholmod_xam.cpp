@@ -82,7 +82,7 @@ $$
 
 $head Source Code$$
 $code
-$verbatim%example/private/cholmod_xam.cpp%5%// BEGIN C++%// END C++%1%$$
+$srcfile%example/private/cholmod_xam.cpp%5%// BEGIN C++%// END C++%1%$$
 $$
 
 $end

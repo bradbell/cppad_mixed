@@ -20,7 +20,7 @@ $$
 $section Optimize Random Effects: Example and Test$$
 
 $code
-$verbatim%example/user/optimize_random_xam.cpp
+$srcfile%example/user/optimize_random_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
