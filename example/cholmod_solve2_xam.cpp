@@ -9,14 +9,17 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin cholmod_tst.cpp$$
+$begin cholmod_solve2_xam.cpp$$
 $spell
 	Cholmod
 	Cholesky
 	Xset
+	Bset
+	sys
+	Pt
 $$
 
-$section Test Using Cholmod Cholesky Factorization$$
+$section Example Using cholmod_solve2 Cholesky Factorization$$
 
 $head Problem Description$$
 Solve for $latex x$$ in the equation $latex A x = b$$ where $latex A$$
@@ -59,18 +62,19 @@ $latex \[
 \] $$
 which can be checked by multiplying by $latex G G^{-1}$$.
 
-$head Question$$
-Does the $code cholmod_solve2$$ argument $code Xset$$ get set to
-the sparsity pattern for the solution vector $latex x$$ in the equation
-$latex A x = b$$ ?
-The documentation appears to specify that this is the case.
-If it is the case, the test below should pass when
-$code ONLY_CHECK_LOWER_TRIANGLE$$ has value $code 0$$,
-but it only passes when the value is $code 1$$.
+$head Bset$$
+I think the $code cholmod_solve2$$ documentation would be clearer if
+the sentence
+'The entries in $code Bset$$ are a subset of $code Xset$$
+(except if sys is $code CHOLMOD_P$$ or $code CHOLMOD_Pt$$ ).'
+were changed to
+'The entries in $code Bset$$ are a subset of $code Xset$$
+and only these entries are assured to appear in $code Xset$$
+(except if sys is $code CHOLMOD_P$$ or $code CHOLMOD_Pt$$ ).'
 
 $head Source Code$$
 $code
-$srcfile%example/cholmod_tst.cpp%5%// BEGIN C++%// END C++%1%$$
+$srcfile%example/cholmod_solve2_xam.cpp%5%// BEGIN C++%// END C++%1%$$
 $$
 
 $end
@@ -81,7 +85,6 @@ $end
 # include <cmath>
 # include <cassert>
 
-# define ONLY_CHECK_LOWER_TRIANGLE     1
 # define CHOLMOD_TRUE                  1
 # define CHOLMOD_FALSE                 0
 # define CHOLMOD_STYPE_NOT_SYMMETRIC   0
@@ -97,7 +100,7 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 	}
 }
 
-bool cholmod_tst(void)
+bool cholmod_solve2_xam(void)
 {	bool ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 
@@ -187,14 +190,15 @@ bool cholmod_tst(void)
 		Bset_xtype,
 		&com
 	);
-	// just one component of the right hand side will be non-zero
+	// We need to solve for three components of the right hand side
 	int* Bset_p = (int *) Bset->p;
 	int* Bset_i = (int *) Bset->i;
 	Bset_p[0]   = 0;
-	Bset_p[1]   = 1;
+	Bset_p[1]   = 3;
 
 	// set B to a vector of ones
-	cholmod_dense *B = cholmod_ones(nrow, 1, T_xtype, &com);
+	cholmod_dense *B = cholmod_zeros(nrow, 1, T_xtype, &com);
+	double* B_x     = (double *) B->x;
 
 	// work space vectors that can be reused
 	cholmod_dense *Y = NULL;
@@ -206,8 +210,20 @@ bool cholmod_tst(void)
 
 	// one by one recover columns of A_inv
 	for(size_t j = 0; j < ncol; j++)
-	{	// j-th column of identity matrix (only use j-th row of B)
-		Bset_i[0] = (int) j;
+	{	if( j < 3 )
+		{	// we need to solve for first three components of X
+			Bset_i[0] = 0;
+			Bset_i[1] = 1;
+			Bset_i[2] = 2;
+		}
+		else
+		{	// we need to solve for last three components of X
+			Bset_i[0] = 3;
+			Bset_i[1] = 4;
+			Bset_i[2] = 5;
+		}
+		// j-th column of identity matrix (only use j-th row of B)
+		B_x[j] = 1.0;
 
        // solve A * x = b
 		int sys = CHOLMOD_A;
@@ -222,6 +238,9 @@ bool cholmod_tst(void)
 			&E,
 			&com
 		);
+		// restore B to zero vector
+		B_x[j] = 0.0;
+		//
 		assert( flag == CHOLMOD_TRUE ); // return flag OK
 		assert( Xset->nrow   == nrow );
 		assert( Xset->ncol   == 1    );
@@ -242,12 +261,7 @@ bool cholmod_tst(void)
 		{	size_t i = Xset_i[k];
 			x[i]     = X_x[i];
 		}
-# if ONLY_CHECK_LOWER_TRIANGLE
-		size_t i_start = j;
-# else
-		size_t i_start = 0;
-# endif
-		for(size_t i = i_start; i < nrow; i++)
+		for(size_t i = 0; i < nrow; i++)
 		{	double check_i = A_inv[ i * nrow + j];
 			if( check_i == 0.0 )
 				ok &= x[i] == 0.0;

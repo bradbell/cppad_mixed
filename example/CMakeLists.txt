@@ -19,7 +19,7 @@ LINK_DIRECTORIES(
 # 2DO: move cholmod_xam to test
 ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	example.cpp
-	cholmod_tst.cpp
+	cholmod_solve2_xam.cpp
 	private/cholmod_xam.cpp
 	ipopt_xam_run.cpp
 	private/eigen_xam.cpp
