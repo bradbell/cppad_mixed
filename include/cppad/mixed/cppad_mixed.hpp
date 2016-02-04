@@ -82,24 +82,24 @@ $cref/mixed_object/derived_ctor/mixed_object/$$.
 
 $head AD Types$$
 $index a_double$$
-$codep */
+$srccode%cpp% */
 	typedef CppAD::AD<double>          a1_double;
 	typedef CppAD::AD<a1_double>       a2_double;
-/* $$
+/* %$$
 
 $head Vector Types$$
 $mindex d_vector a1d_vector a2d_vector$$
-$codep */
+$srccode%cpp% */
 	typedef CppAD::vector<double>      d_vector;
 	typedef CppAD::vector<a1_double>   a1d_vector;
 	typedef CppAD::vector<a2_double>   a2d_vector;
-/* $$
+/* %$$
 $head User Defined$$
 The following are $code cppad_mixed$$ pure virtual functions and hence must
 be defined by the user's derived class:
 
 $subhead ran_likelihood$$
-$codep */
+$srccode%cpp% */
 	virtual a2d_vector ran_likelihood(
 		const a2d_vector& fixed_vec  ,
 		const a2d_vector& random_vec )
@@ -108,51 +108,51 @@ $codep */
 		const a1d_vector& fixed_vec  ,
 		const a1d_vector& random_vec )
 	{	return a1d_vector(0); }
-/* $$
+/* %$$
 See $cref ran_likelihood$$.
 
 $subhead fix_likelihood$$
-$codep */
+$srccode%cpp% */
 	virtual a1d_vector fix_likelihood(
 		const a1d_vector& fixed_vec )
 	{	return a1d_vector(0); }
-/* $$
+/* %$$
 See $cref fix_likelihood$$.
 
 $subhead fix_constraint$$
-$codep */
+$srccode%cpp% */
 	virtual a1d_vector fix_constraint(
 		const a1d_vector& fixed_vec )
 	{	return a1d_vector(0); }
-/* $$
+/* %$$
 See $cref fix_constraint$$.
 
 $subhead fatal_error$$
 This routine displays an error message and then exits the program.
 Its default definition below can be replaced by a user definition.
-$codep */
+$srccode%cpp% */
 	virtual void fatal_error(const std::string& error_message)
 	{	std::cerr << "cppad_mixed error: " << error_message << std::endl;
 		assert(false);
 	}
 
-/* $$
+/* %$$
 
 $subhead warning$$
 This routine displays a warning message and then returns.
 Its default definition below can be replaced by a user definition.
-$codep */
+$srccode%cpp% */
 	virtual void warning(const std::string& warning_message)
 	{	std::cerr << "cppad_mixed warning: " << warning_message << std::endl;
 	}
-/* $$
+/* %$$
 
 $head constructor$$
 Construct an $code cppad_mixed$$ derived class object; see
 $cref/derived_ctor/derived_ctor/$$.
-$codep */
+$srccode%cpp% */
 	cppad_mixed(size_t n_fixed, size_t n_random, bool quasi_fixed)
-/* $$
+/* %$$
 $comment */
 	:
 	n_fixed_(n_fixed)               ,
@@ -175,17 +175,17 @@ $comment */
 $head initialize$$
 Directly after construction, use this function to initialize
 the derived class object; see $cref/initialize/initialize/$$.
-$codep */
+$srccode%cpp% */
 	std::map<std::string, size_t> initialize(
 		const CppAD::mixed::sparse_mat_info&  A_info     ,
 		const d_vector&                       fixed_vec  ,
 		const d_vector&                       random_vec
 	);
-/* $$
+/* %$$
 $head optimize_random$$
 Given the fixed effects, optimize with respect to the random effects;
 see  $cref/optimize_random/optimize_random/$$.
-$codep */
+$srccode%cpp% */
 	d_vector optimize_random(
 		const std::string& options      ,
 		const d_vector&    fixed_vec    ,
@@ -193,11 +193,11 @@ $codep */
 		const d_vector&    random_upper ,
 		const d_vector&    random_in
 	);
-/* $$
+/* %$$
 $head optimize_fixed$$
 Optimize the total objective with respect to the fixed effects;
 see  $cref/optimize_fixed/optimize_fixed/$$.
-$codep */
+$srccode%cpp% */
 	d_vector optimize_fixed(
 		const std::string& fixed_options    ,
 		const std::string& random_options   ,
@@ -210,7 +210,7 @@ $codep */
 		const d_vector&    random_upper     ,
 		const d_vector&    random_in
 	);
-/* $$
+/* %$$
 $childtable%src/derived_ctor.omh
 	%src/ran_likelihood.omh
 	%src/fix_likelihood.omh
@@ -297,25 +297,25 @@ $$
 
 $head n_fixed_$$
 The number of fixed effects is given by
-$codep */
+$srccode%cpp% */
 	const size_t n_fixed_;
-/* $$
+/* %$$
 $head n_random_$$
 The number of random effects is given by
-$codep */
+$srccode%cpp% */
 	const size_t n_random_;
-/* $$
+/* %$$
 $head quasi_fixed_$$
 Are we using a quasi-Newton method (or full Newton method)
 when $cref/optimizing fixed effects/optimize_fixed/$$.
-$codep */
+$srccode%cpp% */
 	const bool quasi_fixed_;
-/* $$
+/* %$$
 $head initialize_done_$$
 The following flag is false after construction and true after
 the corresponding member function is called.
 This is the same order as the calls in the file $cref initialize$$:
-$codep */
+$srccode%cpp% */
 	// only called when n_random_ > 0
 	bool                init_ran_con_done_;
 	bool                init_ran_like_done_;
@@ -331,23 +331,23 @@ $codep */
 	bool                init_fix_con_done_;
 	// true when all initialization (for this case) is done
 	bool                initialize_done_;
-/* $$
+/* %$$
 
 $head n_ran_con_$$
 If $code init_ran_con_done_$$,
 $cref/n_ran_con_/init_ran_con/n_ran_con_/$$
 is the number of random constraints
-$codep */
+$srccode%cpp% */
 	size_t n_ran_con_;
-/* $$
+/* %$$
 
 $head ran_con_mat_$$
 If $icode%n_random_% > 0%$$ and $code init_ran_con_done_$$,
 $cref/ran_con_mat_/init_ran_con/ran_con_mat_/$$
 contains the constraint matrix
-$codep */
+$srccode%cpp% */
 	CppAD::mixed::choleig::eigen_sparse ran_con_mat_;
-/*$$
+/* %$$
 
 $head ran_like_fun_$$
 $index ran_like_a1fun_$$
@@ -356,10 +356,10 @@ $cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$ and
 $cref/ran_like_a1fun_/init_ran_like/ran_like_a1fun_/$$ are
 recordings of the user's $cref ran_likelihood$$.
 function.
-$codep */
+$srccode%cpp% */
 	CppAD::ADFun<double>      ran_like_fun_;
 	CppAD::ADFun<a1_double>   ran_like_a1fun_;
-/* $$
+/* %$$
 The following objects hold information for computing derivatives
 with these ADFun objects:
 
@@ -373,13 +373,13 @@ $cref/random likelihood
 /$$
 with respect to the random effects; i.e.
 $latex f_{u,u} ( \theta , u )$$.
-$codep */
+$srccode%cpp% */
 	CppAD::mixed::sparse_hes_info ran_hes_;
 	// recording of sparse Hessian calculation
 	CppAD::ADFun<double>        ran_hes_fun_;
 	//
 	friend bool ::ran_hes_fun_xam(void);
-/* $$
+/* %$$
 
 $head chol_ran_hes_$$
 If $icode%n_random_% > 0%$$ and $code init_chol_ran_hes_done_$$,
@@ -390,9 +390,9 @@ $cref/random likelihood
 	/Random Likelihood, f(theta, u)
 /$$
 ; i.e.  $latex f_{u,u} ( \theta , u )$$.
-$codep */
+$srccode%cpp% */
 	CPPAD_MIXED_CHOLESKY chol_ran_hes_;
-/* $$
+/* %$$
 
 $head hes_cross_$$
 If $icode%n_random_% > 0%$$ and $code init_hes_cross_done_$$,
@@ -403,11 +403,11 @@ $cref/random likelihood
 	/Random Likelihood, f(theta, u)
 /$$
 ; i.e.  $latex f_{u,\theta} ( \theta , u )$$.
-$codep */
+$srccode%cpp% */
 	CppAD::mixed::sparse_hes_info hes_cross_;
 	//
 	friend bool ::hes_cross_xam(void);
-/* $$
+/* %$$
 
 $head newton_atom_$$
 If $icode%n_random_% > 0%$$, quasi_fixed_ is false, and
@@ -416,10 +416,10 @@ this is a CppAD atomic function that computes one Newton Step in the
 solution of the equation $latex f_u ( \theta, u) = 0$$ as well
 as the log of the determinant of $latex f_{uu} ( \theta , u )$$;
 see $cref/initialize newton_step/newton_step/initialize/$$.
-$codep */
+$srccode%cpp% */
 	// computation of the Hessian as an atomic operation
 	CppAD::mixed::newton_step   newton_atom_;
-/* $$
+/* %$$
 $comment ------------------------------------------------------------------- $$
 
 $head ran_objcon_fun_$$
@@ -428,9 +428,9 @@ $code init_ran_objcon_done_$$,
 this is a recording of the second approximation for the
 random part of the Laplace approximation, $latex H( \beta , \theta , u)$$;
 see $cref/ran_objcon_fun_/init_ran_objcon/ran_objcon_fun_/$$.
-$codep */
+$srccode%cpp% */
 	CppAD::ADFun<double>        ran_objcon_fun_;   // for computing H_beta_beta
-/* $$
+/* %$$
 The following objects hold information for computing derivatives
 with this ADFun object:
 
@@ -444,18 +444,18 @@ $cref/random objective
 	/Objective
 	/Random Objective, r(theta)
 /$$
-$codep */
+$srccode%cpp% */
 	CppAD::mixed::sparse_hes_info ran_objcon_hes_;
-/* $$
+/* %$$
 $comment ------------------------------------------------------------------- $$
 
 $head fix_like_fun_$$
 $cref/fix_like_fun_/init_fix_like/fix_like_fun_/$$
 is a recording of the fixed part of the likelihood function; see,
 $cref fix_likelihood$$.
-$codep */
+$srccode%cpp% */
 	CppAD::ADFun<double>        fix_like_fun_;     // g(theta)
-/* $$
+/* %$$
 The following objects hold information for computing derivatives
 with this ADFun object:
 
@@ -463,27 +463,27 @@ $subhead fix_like_jac_$$
 $cref/fix_like_jac_/init_fix_like/fix_like_jac_/$$
 contains information for the Jacobian of the
 $cref/fixed likelihood/theory/Fixed Likelihood, g(theta)/$$.
-$codep */
+$srccode%cpp% */
 	CppAD::mixed::sparse_jac_info fix_like_jac_;
-/* $$
+/* %$$
 
 $subhead fix_like_hes_$$
 If $icode quasi_fixed$$ is false,
 $cref/fix_like_hes_/init_fix_like/fix_like_hes_/$$
 contains information for the Hessian of the
 $cref/fixed likelihood/theory/Fixed Likelihood, g(theta)/$$.
-$codep */
+$srccode%cpp% */
 	CppAD::mixed::sparse_hes_info fix_like_hes_;
-/* $$
+/* %$$
 $comment ------------------------------------------------------------------- $$
 
 $head fix_con_fun_$$
 $cref/fix_con_fun_/init_fix_con/fix_con_fun_/$$
 is a recording of the fixed part of the likelihood function; see,
 $cref fix_constraint$$.
-$codep */
+$srccode%cpp% */
 	CppAD::ADFun<double>        fix_con_fun_;     // c(theta)
-/* $$
+/* %$$
 The following objects hold information for computing derivatives
 with this ADFun object:
 
@@ -491,9 +491,9 @@ $subhead fix_con_jac_$$
 $cref/fix_con_jac_/init_fix_con/fix_con_jac_/$$
 contains information for the Jacobian of the
 constraint function $latex c ( \theta )$$.
-$codep */
+$srccode%cpp% */
 	CppAD::mixed::sparse_jac_info fix_con_jac_;
-/* $$
+/* %$$
 
 $subhead fix_con_hes_$$
 If $icode quasi_fixed$$ is false,
@@ -502,14 +502,14 @@ contains information for the Hessian of the
 $cref/constraints/fix_constraint/$$ function $latex c( \theta )$$.
 The corresponding ADFun object is
 $cref/fix_con_fun_/init_fix_con/fix_con_fun_/$$.
-$codep */
+$srccode%cpp% */
 	CppAD::mixed::sparse_hes_info fix_con_hes_;
-/* $$
+/* %$$
 $comment ------------------------------------------------------------------- $$
 $head Template Member Functions$$
 $subhead pack$$
 See $cref pack$$.
-$codep */
+$srccode%cpp% */
 	template <class Float_unpack, class Float_pack>
 	void pack(
 		const CppAD::vector<Float_unpack>& fixed_one  ,
@@ -523,10 +523,10 @@ $codep */
 		const CppAD::vector<Float_unpack>& random_vec ,
 		CppAD::vector<Float_pack>&         three_vec
 	) const;
-/* $$
+/* %$$
 $subhead unpack$$
 See $cref unpack$$.
-$codep */
+$srccode%cpp% */
 	template <class Float_unpack, class Float_pack>
 	void unpack(
 		CppAD::vector<Float_unpack>&       fixed_one  ,
@@ -540,94 +540,94 @@ $codep */
 		CppAD::vector<Float_unpack>&       random_vec ,
 		const CppAD::vector<Float_pack>&   three_vec
 	) const;
-/* $$
+/* %$$
 $comment ------------------------------------------------------------------- $$
 $head Initialization Member Functions$$
 
 $subhead init_chol_ran_hes$$
 See $cref init_chol_ran_hes$$.
-$codep */
+$srccode%cpp% */
 	void init_chol_ran_hes(void);
-/* $$
+/* %$$
 
 $subhead init_fix_con$$
 See $cref init_fix_con$$.
-$codep */
+$srccode%cpp% */
 	void init_fix_con(const d_vector& fixed_vec);
-/* $$
+/* %$$
 
 $subhead init_fix_like$$
 See $cref init_fix_like$$.
-$codep */
+$srccode%cpp% */
 	void init_fix_like(const d_vector& fixed_vec);
-/* $$
+/* %$$
 
 $subhead init_hes_cross$$
 See $cref init_hes_cross$$.
-$codep */
+$srccode%cpp% */
 	void init_hes_cross(
 		const d_vector& fixed_vec ,
 		const d_vector& random_vec
 	);
-/* $$
+/* %$$
 
 $subhead init_ran_hes$$
 See $cref init_ran_hes$$.
-$codep */
+$srccode%cpp% */
 	void init_ran_hes(
 		const d_vector& fixed_vec ,
 		const d_vector& random_vec
 	);
-/* $$
+/* %$$
 
 $subhead init_ran_objcon_hes$$
 See $cref init_ran_objcon_hes$$.
-$codep */
+$srccode%cpp% */
 	void init_ran_objcon_hes(
 		const d_vector& fixed_vec ,
 		const d_vector& random_vec
 	);
-/* $$
+/* %$$
 
 $subhead init_ran_con$$
 See $cref init_ran_con$$.
-$codep */
+$srccode%cpp% */
 	void init_ran_con(
 		size_t                                n_random ,
 		const CppAD::mixed::sparse_mat_info&  A_info
 	);
-/* $$
+/* %$$
 
 $subhead init_ran_like$$
 See $cref init_ran_like$$.
-$codep */
+$srccode%cpp% */
 	void init_ran_like(
 		const d_vector& fixed_vec ,
 		const d_vector& random_vec
 	);
-/* $$
+/* %$$
 
 $subhead init_ran_objcon$$
 See $cref init_ran_objcon$$.
-$codep */
+$srccode%cpp% */
 	void init_ran_objcon(
 		const d_vector& fixed_vec ,
 		const d_vector& random_vec
 	);
-/* $$
+/* %$$
 $comment ------------------------------------------------------------------- $$
 $head Other Member Functions$$
 
 $subhead fix_con_eval$$
 See $cref fix_con_eval$$
-$codep */
+$srccode%cpp% */
 	d_vector fix_con_eval(const d_vector& fixed_vec);
 	friend bool ::fix_con_eval_xam(void);
-/* $$
+/* %$$
 
 $subhead fix_con_jac$$
 See $cref fix_con_jac$$
-$codep */
+$srccode%cpp% */
 	void fix_con_jac(
 		const d_vector&        fixed_vec   ,
 		CppAD::vector<size_t>& row_out     ,
@@ -635,11 +635,11 @@ $codep */
 		d_vector&              val_out
 	);
 	friend bool ::fix_con_jac_xam(void);
-/* $$
+/* %$$
 
 $subhead fix_con_hes$$
 See $cref fix_con_hes$$
-$codep */
+$srccode%cpp% */
 	void fix_con_hes(
 		const d_vector&        fixed_vec   ,
 		const d_vector&        weight      ,
@@ -648,18 +648,18 @@ $codep */
 		d_vector&              val_out
 	);
 	friend bool ::fix_con_hes_xam(void);
-/* $$
+/* %$$
 
 $subhead fix_like_eval$$
 See $cref fix_like_eval$$
-$codep */
+$srccode%cpp% */
 	d_vector fix_like_eval(const d_vector& fixed_vec);
 	friend bool ::fix_like_eval_xam(void);
-/* $$
+/* %$$
 
 $subhead fix_like_jac$$
 See $cref fix_like_jac$$
-$codep */
+$srccode%cpp% */
 	void fix_like_jac(
 		const d_vector&        fixed_vec   ,
 		CppAD::vector<size_t>& row_out     ,
@@ -667,11 +667,11 @@ $codep */
 		d_vector&              val_out
 	);
 	friend bool ::fix_like_jac_xam(void);
-/* $$
+/* %$$
 
 $subhead fix_like_hes$$
 See $cref fix_like_hes$$
-$codep */
+$srccode%cpp% */
 	void fix_like_hes(
 		const d_vector&        fixed_vec   ,
 		const d_vector&        weight      ,
@@ -680,11 +680,11 @@ $codep */
 		d_vector&              val_out
 	);
 	friend bool ::fix_like_hes_xam(void);
-/* $$
+/* %$$
 
 $subhead logdet_jac$$
 See $cref logdet_jac$$
-$codep */
+$srccode%cpp% */
 	void logdet_jac(
 		const d_vector& fixed_vec  ,
 		const d_vector& random_vec ,
@@ -692,52 +692,52 @@ $codep */
 		d_vector&       logdet_ran
 	);
 	friend bool ::logdet_jac_xam(void);
-/* $$
+/* %$$
 
 $subhead ran_con_eval$$
 See $cref ran_con_eval$$
-$codep */
+$srccode%cpp% */
 	void ran_con_eval(
 		const d_vector& random_vec ,
 		d_vector&       Au
 	);
 	friend bool ::ran_con_eval_xam(void);
-/* $$
+/* %$$
 
 $subhead ran_con_jac$$
 See $cref ran_con_jac$$
-$codep */
+$srccode%cpp% */
 	void ran_con_jac(
 		const d_vector&                fixed_vec  ,
 		const d_vector&                random_vec ,
 		CppAD::mixed::sparse_mat_info& jac_info
 	);
 	friend bool ::ran_con_jac_xam(void);
-/* $$
+/* %$$
 
 $subhead ran_like_jac$$
 See $cref ran_like_jac$$
-$codep */
+$srccode%cpp% */
 	a1d_vector ran_like_jac(
 		const a1d_vector&       fixed_vec   ,
 		const a1d_vector&       random_vec
 	);
 	friend bool ::ran_like_jac_xam(void);
-/* $$
+/* %$$
 
 $subhead ran_obj_eval$$
 See $cref ran_obj_eval$$
-$codep */
+$srccode%cpp% */
 	double ran_obj_eval(
 		const d_vector& fixed_vec  ,
 		const d_vector& random_vec
 	);
 	friend bool ::ran_obj_eval_xam(void);
-/* $$
+/* %$$
 
 $subhead ran_obj_jac$$
 See $cref ran_obj_jac$$
-$codep */
+$srccode%cpp% */
 	void ran_obj_jac(
 		const d_vector& fixed_vec  ,
 		const d_vector& random_vec ,
@@ -746,11 +746,11 @@ $codep */
 	friend bool ::ran_obj_jac_xam(void);
 	friend bool ::der_var_hes(void);
 	friend bool ::delta_ran_obj(void);
-/* $$
+/* %$$
 
 $subhead ran_objcon_hes$$
 See $cref ran_objcon_hes$$
-$codep */
+$srccode%cpp% */
 	void ran_objcon_hes(
 		const d_vector&         fixed_vec   ,
 		const d_vector&         random_vec  ,
@@ -760,17 +760,17 @@ $codep */
 		d_vector&               val_out
 	);
 	friend bool ::ran_objcon_hes_xam(void);
-/* $$
+/* %$$
 
 $subhead update_factor$$
 See $cref update_factor$$
-$codep */
+$srccode%cpp% */
 	void update_factor(
 		const d_vector&         fixed_vec   ,
 		const d_vector&         random_vec
 	);
 	friend bool ::update_factor_xam(void);
-/* $$
+/* %$$
 $end
 -------------------------------------------------------------------------------
 */

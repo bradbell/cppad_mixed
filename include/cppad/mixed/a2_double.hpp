@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -13,7 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include<cppad/cppad.hpp>
 
 /*
-$begin a2_double$$
+$begin a2_double.hpp$$
 $spell
 	CppAD
 	CppAD
@@ -21,9 +21,10 @@ $spell
 	dismod
 	typedef
 	hpp
+	cppad
 $$
 
-$section a2_double$$
+$section a2_double.hpp$$
 
 $head Syntax$$
 $codei%# include <cppad/mixed/a2_double.hpp>%$$
@@ -33,11 +34,11 @@ Defines the type $code a2_double$$ as two levels of $code AD$$ in
 the CppAD package.
 
 $head Source Code$$
-$codep */
+$srccode%cpp% */
 namespace CppAD { namespace mixed {
 	typedef CppAD::AD< CppAD::AD<double> > a2_double;
 } }
-/* $$
+/* %$$
 $end
 */
 

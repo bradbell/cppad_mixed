@@ -45,6 +45,7 @@ $children%include/cppad/mixed/configure.hpp.in
 	%include/cppad/mixed/sparse_hes_info.hpp
 	%include/cppad/mixed/sparse_jac_info.hpp
 	%include/cppad/mixed/cholmod.hpp
+	%include/cppad/mixed/a2_double.hpp
 %$$
 
 $head Public$$

@@ -12,7 +12,6 @@
 new_directories='
 '
 rename_files='
-	bin/check_verbatim.sh
 '
 spell_files='
 '
@@ -23,8 +22,14 @@ rename_cmd='s|_verbatim|_srcfile|'
 spell_cmd='s|^$spell|&\n\tcholeig|'
 #
 cat << EOF > junk.sed
-s|\$verbatim|\$srcfile|g
-s|check_verbatim|check_srcfile|g
+/\$codep [*]\//! b two
+: one
+N
+/\/[*] *\$\\\$/! b one
+s|\$codep [*]/|\$srccode%cpp% */|
+s|/[*] *\$\\\$|/* %\$\$|
+#
+: two
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

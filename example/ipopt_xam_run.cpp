@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -19,7 +19,7 @@ $$
 $section Ipopt Example: Declare Non-linear Program Problem Class$$
 
 $nospell
-$codep */
+$srccode%cpp% */
 # include <cmath>
 # include <coin/IpIpoptApplication.hpp>
 # include <coin/IpTNLP.hpp>
@@ -128,7 +128,7 @@ namespace {
 
 	};
 }
-/* $$
+/* %$$
 $$ $comment end of nospell$$
 $end
 ------------------------------------------------------------------------------
@@ -140,12 +140,12 @@ $$
 
 $section Ipopt Example: Constructor and Destructor$$
 
-$codep */
+$srccode%cpp% */
 ipopt_xam_nlp::ipopt_xam_nlp(void)
 { }
 ipopt_xam_nlp::~ipopt_xam_nlp(void)
 { }
-/* $$
+/* %$$
 $end
 ------------------------------------------------------------------------------
 $begin ipopt_xam_get_nlp_info$$
@@ -188,7 +188,7 @@ $cref/USER_REQUESTED_STOP
 	/ipopt_xam_finalize_solution/status/USER_REQUESTED_STOP/$$.
 
 $head Source$$
-$codep */
+$srccode%cpp% */
 bool ipopt_xam_nlp::get_nlp_info(
 	Index&          n            ,  // out
 	Index&          m            ,  // out
@@ -203,7 +203,7 @@ bool ipopt_xam_nlp::get_nlp_info(
 	index_style = C_STYLE;
 	return true;
 }
-/* $$
+/* %$$
 $end
 -------------------------------------------------------------------------------
 $begin ipopt_xam_get_bounds_info$$
@@ -242,7 +242,7 @@ $cref/USER_REQUESTED_STOP
 	/ipopt_xam_finalize_solution/status/USER_REQUESTED_STOP/$$.
 
 $head Source$$
-$codep */
+$srccode%cpp% */
 bool ipopt_xam_nlp::get_bounds_info(
 		Index       n        ,   // in
 		Number*     x_l      ,   // out
@@ -265,7 +265,7 @@ bool ipopt_xam_nlp::get_bounds_info(
 	//
 	return true;
 }
-/* $$
+/* %$$
 $end
 -------------------------------------------------------------------------------
 $begin ipopt_xam_get_starting_point$$
@@ -323,7 +323,7 @@ $cref/USER_REQUESTED_STOP
 	/ipopt_xam_finalize_solution/status/USER_REQUESTED_STOP/$$.
 
 $head Source$$
-$codep */
+$srccode%cpp% */
 bool ipopt_xam_nlp::get_starting_point(
 	Index           n            ,  // in
 	bool            init_x       ,  // in
@@ -345,7 +345,7 @@ bool ipopt_xam_nlp::get_starting_point(
 
 	return true;
 }
-/* $$
+/* %$$
 $end
 -------------------------------------------------------------------------------
 $begin ipopt_xam_eval_f$$
@@ -383,7 +383,7 @@ $cref/USER_REQUESTED_STOP
 	/ipopt_xam_finalize_solution/status/USER_REQUESTED_STOP/$$.
 
 $head Source$$
-$codep */
+$srccode%cpp% */
 bool ipopt_xam_nlp::eval_f(
 	Index           n         ,  // in
 	const Number*   x         ,  // in
@@ -395,7 +395,7 @@ bool ipopt_xam_nlp::eval_f(
 
 	return true;
 }
-/* $$
+/* %$$
 $end
 -------------------------------------------------------------------------------
 $begin ipopt_xam_eval_grad_f$$
@@ -433,7 +433,7 @@ $cref/USER_REQUESTED_STOP
 	/ipopt_xam_finalize_solution/status/USER_REQUESTED_STOP/$$.
 
 $head Source$$
-$codep */
+$srccode%cpp% */
 bool ipopt_xam_nlp::eval_grad_f(
 	Index           n         ,  // in
 	const Number*   x         ,  // in
@@ -445,7 +445,7 @@ bool ipopt_xam_nlp::eval_grad_f(
 	grad_f[1] = - 2.0 * (x[1] - 2.0);
 	return true;
 }
-/* $$
+/* %$$
 $end
 -------------------------------------------------------------------------------
 $begin ipopt_xam_eval_g$$
@@ -485,7 +485,7 @@ $cref/USER_REQUESTED_STOP
 	/ipopt_xam_finalize_solution/status/USER_REQUESTED_STOP/$$.
 
 $head Source$$
-$codep */
+$srccode%cpp% */
 bool ipopt_xam_nlp::eval_g(
 	Index           n        ,  // in
 	const Number*   x        ,  // in
@@ -502,7 +502,7 @@ bool ipopt_xam_nlp::eval_g(
 	//
 	return true;
 }
-/* $$
+/* %$$
 $end
 -------------------------------------------------------------------------------
 $begin ipopt_xam_eval_jac_g$$
@@ -568,7 +568,7 @@ $cref/USER_REQUESTED_STOP
 	/ipopt_xam_finalize_solution/status/USER_REQUESTED_STOP/$$.
 
 $head Source$$
-$codep */
+$srccode%cpp% */
 bool ipopt_xam_nlp::eval_jac_g(
 	Index           n        ,  // in
 	const Number*   x        ,  // in
@@ -598,7 +598,7 @@ bool ipopt_xam_nlp::eval_jac_g(
 	//
 	return true;
 }
-/* $$
+/* %$$
 $end
 -------------------------------------------------------------------------------
 $begin ipopt_xam_eval_h$$
@@ -683,7 +683,7 @@ $cref/USER_REQUESTED_STOP
 	/ipopt_xam_finalize_solution/status/USER_REQUESTED_STOP/$$.
 
 $head Source$$
-$codep */
+$srccode%cpp% */
 bool ipopt_xam_nlp::eval_h(
 	Index         n              ,  // in
 	const Number* x              ,  // in
@@ -716,7 +716,7 @@ bool ipopt_xam_nlp::eval_h(
 	//
 	return true;
 }
-/* $$
+/* %$$
 $end
 -------------------------------------------------------------------------------
 $begin ipopt_xam_finalize_solution$$
@@ -823,7 +823,7 @@ Algorithm received an invalid number (such as NaN or Inf) from
 the NLP; see also option check_derivatives_for_naninf.
 
 $head Source$$
-$codep */
+$srccode%cpp% */
 void ipopt_xam_nlp::finalize_solution(
 	Ipopt::SolverReturn               status    ,  // in
 	Index                             n         ,  // in
@@ -864,7 +864,7 @@ void ipopt_xam_nlp::finalize_solution(
 	// set member variable finalize_solution_ok_
 	finalize_solution_ok_ = ok;
 }
-/* $$
+/* %$$
 $end
 -------------------------------------------------------------------------------
 $begin ipopt_xam_run$$
@@ -890,7 +890,7 @@ This return value is true, if the test passes,
 and false otherwise.
 
 $head Source$$
-$codep */
+$srccode%cpp% */
 bool ipopt_xam_run(void)
 {	bool ok = true;
 	using Ipopt::SmartPtr;
@@ -919,6 +919,6 @@ bool ipopt_xam_run(void)
 
 	return ok;
 }
-/* $$
+/* %$$
 $end
 */
