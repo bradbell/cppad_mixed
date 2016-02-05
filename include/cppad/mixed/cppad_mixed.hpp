@@ -266,7 +266,7 @@ $cref/mixed_object/derived_ctor/mixed_object/$$.
 $childtable%include/cppad/mixed/pack.hpp
 	%include/cppad/mixed/unpack.hpp
 
-	%src/eigen/init_ran_hes.cpp
+	%src/init_ran_hes.cpp
 	%src/eigen/init_ran_con.cpp
 	%src/eigen/init_ran_objcon.cpp
 	%src/init_chol_ran_hes.cpp
@@ -282,14 +282,14 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/fix_like_eval.cpp
 	%src/fix_like_hes.cpp
 	%src/fix_like_jac.cpp
-	%src/eigen/logdet_jac.cpp
+	%src/logdet_jac.cpp
 	%src/ran_like_jac.cpp
 	%src/eigen/ran_con_eval.cpp
 	%src/eigen/ran_con_jac.cpp
-	%src/eigen/ran_obj_eval.cpp
-	%src/eigen/ran_obj_jac.cpp
+	%src/ran_obj_eval.cpp
+	%src/ran_obj_jac.cpp
 	%src/ran_objcon_hes.cpp
-	%src/eigen/update_factor.cpp
+	%src/update_factor.cpp
 %$$
 $comment -------------------------------------------------------------------
 	Private Member Variables

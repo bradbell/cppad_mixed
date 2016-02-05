@@ -12,19 +12,26 @@
 new_directories='
 '
 rename_files='
-	example/cholmod_solve2_xam.cpp
+	src/eigen/init_ran_hes.cpp
+	src/eigen/logdet_jac.cpp
+	src/eigen/ran_obj_eval.cpp
+	src/eigen/ran_obj_jac.cpp
+	src/eigen/update_factor.cpp
 '
 spell_files='
 '
 no_change_files='
 '
 #
-rename_cmd='s|example|example/private|'
+rename_cmd='s|/eigen/|/|'
 spell_cmd='s|^$spell|&\n\tcholeig|'
 #
 cat << EOF > junk.sed
-s|cholmod_solve2_xam.cpp|private/cholmod_solve2_xam.cpp|
-s|begin private/cholmod_solve2_xam|begin cholmod_solve2_xam|
+s|eigen/init_ran_hes.cpp|init_ran_hes.cpp|g
+s|eigen/logdet_jac.cpp|logdet_jac.cpp|g
+s|eigen/ran_obj_eval.cpp|ran_obj_eval.cpp|g
+s|eigen/ran_obj_jac.cpp|ran_obj_jac.cpp|g
+s|eigen/update_factor.cpp|update_factor.cpp|g
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]
@@ -50,6 +57,7 @@ for old in $rename_files
 do
 	new=`echo $old | sed -e "$rename_cmd"`
 	echo_eval git mv $old $new
+	echo "s|$old|$new|g" >> junk.sed
 done
 # ----------------------------------------------------------------------------
 list_all=`bin/ls_files.sh`
