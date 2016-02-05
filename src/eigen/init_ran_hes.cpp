@@ -24,7 +24,6 @@ $spell
 	logdet
 	Cholesky
 	namespace
-	Eigen
 	hpp
 	Simplicial
 	triangular
