@@ -74,7 +74,7 @@ and only these entries are assured to appear in $code Xset$$
 
 $head Source Code$$
 $code
-$srcfile%example/cholmod_solve2_xam.cpp%5%// BEGIN C++%// END C++%1%$$
+$srcfile%example/private/cholmod_solve2_xam.cpp%5%// BEGIN C++%// END C++%1%$$
 $$
 
 $end

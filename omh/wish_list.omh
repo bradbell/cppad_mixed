@@ -19,7 +19,7 @@ $$
 
 $section CppAD Mixed Wish List$$
 
-$children%example/cholmod_solve2_xam.cpp
+$children%example/private/cholmod_solve2_xam.cpp
 %$$
 
 $head Second Order Method$$
