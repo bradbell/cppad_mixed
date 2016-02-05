@@ -71,7 +71,9 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 class cholmod {
 private:
-	const size_t      nrow_;       // number of rows in pos_matrix_;
+	const size_t          nrow_;   // number of rows in pos_matrix_
+	CppAD::vector<size_t> key_;    // sorting keys
+	CppAD::vector<size_t> index_;  // sorting indices
 	cholmod_common    common_;
 	cholmod_sparse*   pos_matrix_; // The positive matrix we are factoring
 	cholmod_factor*   factor_;     // lower triangular LDL' factor

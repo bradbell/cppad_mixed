@@ -53,10 +53,10 @@ $codei%
 It contains all of the rows of column vector $latex b$$ that are
 non-zero and the rows of the column vector $icode x$$
 that are desired.
-These values must be sorted; i.e.,
-for $icode%k% = 1 , %...%, %row%.size()-1%$$
+These values must be unique; i.e.,
+for $icode%j% != %k%$$,
 $codei%
-	%row%[%k-1%] < %row%[%k%]
+	%row%[%j%] != %row%[%k%]
 %$$
 It follows that $icode%row%.size()%$$ is less than or equal
 $cref/nrow_/cholmod_ctor/nrow_/$$.
@@ -96,6 +96,7 @@ example and test that uses this function.
 $end
 */
 # include <cppad/mixed/cholmod.hpp>
+# include <cppad/utility/index_sort.hpp>
 # include <cassert>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
@@ -161,12 +162,19 @@ void cholmod::solve2(
 	assert( sol_->nrow == nrow_ );
 	assert( sol_->ncol == 1     );
 	double* sol_x = (double *) sol_->x;
+	//
+	// sort_ is an index sort of sol_set_i
+	size_t ni = (size_t) sol_set_p[1];
+	key_.resize(ni);
+	index_.resize(ni);
+	for(size_t ell = 0; ell < ni; ell++)
+		key_[ell] = (size_t) sol_set_i[ell];
+	CppAD::index_sort(key_, index_);
 
 	// return result values
-	size_t ni = (size_t) sol_set_p[1];
 	size_t k  = 0;
 	for(size_t ell = 0; ell < ni; ell++)
-	{	size_t i = sol_set_i[ell];
+	{	size_t i = key_[ index_[ell] ];
 		assert( i <= row[k] );
 		if( i == row[k] )
 		{	val_out[k] = sol_x[i];

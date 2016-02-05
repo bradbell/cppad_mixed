@@ -149,17 +149,22 @@ void cppad_mixed::ran_obj_jac(
 	}
 
 	// Loop over fixed effects and compute r_fixed one component at a time
-	CppAD::vector<size_t> row_b, row_x;
+	CppAD::vector<bool> found(n_random_);
+	CppAD::vector<size_t> row_solve;
 	CppAD::vector<double> val_b, val_x;
 	for(size_t j = 0; j < n_fixed_; j++)
-	{	// b = j-th column of - f_{u, theta} (theta, u)
-		row_b.resize(0);
+	{	// vectors for this column
+		row_solve.resize(0);
 		val_b.resize(0);
+		val_x.resize(0);
+
+		// b = j-th column of - f_{u, theta} (theta, u)
 		while( col <= j )
-		{	assert( col == j );
-			row_b.push_back(row);
-			val_b.push_back( - val_out[k] );
-			//
+		{	if( col == j )
+			{	row_solve.push_back(row);
+				val_b.push_back( - val_out[k] );
+				found[row] = true;
+			}
 			k++;
 			if( k < K )
 			{	assert( hes_cross_.row[k] >= n_fixed_ );
@@ -174,18 +179,27 @@ void cppad_mixed::ran_obj_jac(
 			}
 		}
 		assert( col > j );
+		//
+		// make sure we are solving for all rows where
+		// derivative of logdet w.r.t random effects is non-zero.
+		for(size_t i = 0; i < n_random_; i++)
+		{	if( ! found[i] && logdet_ran[i] != 0.0 )
+			{	row_solve.push_back(i);
+				val_b.push_back(0.0);
+			}
+		}
+
 		// x = j-th column of - f_{u,u}(theta, u)^{-1} f_{u,theta}(theta, u)
-		row_x.resize(0);
-		val_x.resize(0);
-		chol_ran_hes_.solve(row_b, val_b, row_x, val_x);
+		val_x.resize( row_solve.size() );
+		chol_ran_hes_.solve2(row_solve, val_b, val_x);
 		//
 		// parial w.r.t fixed effects contribution to total derivative
 		r_fixed[j] =  f_fixed[j] + 0.5 * logdet_fix[j];
 		//
 		// compute effect of uhat_{theta(j)} (theta) on the total derivative
-		for(size_t ell = 0; ell < row_x.size(); ell++)
+		for(size_t ell = 0; ell < row_solve.size(); ell++)
 		{	// random effect index
-			size_t i = row_x[ell];
+			size_t i = row_solve[ell];
 			// partial of optimal random effect for this (i, j)
 			double ui_thetaj = val_x[ell];
 			// partial of random part of objective w.r.t this random effect

@@ -130,8 +130,7 @@ void cppad_mixed::logdet_jac(
 	for(size_t k = 0; k < K; k++)
 		w[k] = 0.0;
 
-	// Use the column major order specifications for
-	// (ran_hes_.row, ran_hes_.col)
+	// starting index in (ran_hes_.row, ran_hes_.col)
 	size_t k  = 0;
 	size_t col = n_random_;
 	size_t row = n_random_;
@@ -143,10 +142,13 @@ void cppad_mixed::logdet_jac(
 		assert( row < n_random_ );
 		assert( col < n_random_ );
 	}
+	CppAD::vector<size_t> row_solve;
+	d_vector val_in, val_out;
 	for(size_t j = 0; j < n_random_; j++)
 	{	// vectors for this column
-		CppAD::vector<size_t> row_solve;
-		d_vector val_in;
+		row_solve.resize(0);
+		val_in.resize(0);
+		val_out.resize(0);
 
 		// only need for rows where f_{u,u} (theta_u) is possibly not zero
 		size_t k_start    = K;
@@ -180,6 +182,8 @@ void cppad_mixed::logdet_jac(
 			else
 				row = col = n_random_;
 		}
+		assert( col > j );
+		//
 		// Cannot compute cholesky factor if f_{u,u} (theta, u) is zero
 		assert( ! row_j_zero );
 		if( row_j_zero )
@@ -188,7 +192,7 @@ void cppad_mixed::logdet_jac(
 		}
 		// if k_start == K, we do not need any components of the inverse
 		if( k_start < K )
-		{	d_vector val_out( row_solve.size() );
+		{	val_out.resize( row_solve.size() );
 			//
 			chol_ran_hes_.solve2(row_solve, val_in, val_out);
 			//
