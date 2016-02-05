@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin cholmod_solve$$
 $spell
+	rhs
 	cholesky
 	cholmod_obj
 	const
@@ -95,6 +96,10 @@ $head Example$$
 The file $cref/cholmod_xam.cpp/cholmod_xam.cpp/solve/$$ contains an
 example and test that uses this function.
 
+$head 2DO$$
+Convert this routine to have $icode row_out$$ an input that
+specifies which rows are required (so do not solve for all non-zero rows).
+
 $end
 */
 # include <cppad/mixed/cholmod.hpp>
@@ -126,10 +131,17 @@ void cholmod::solve(
 	for(size_t k = 0; k < row_in.size(); k++)
 		rhs_x[ row_in[k] ] = val_in[k];
 
+	// 2DO: set the non-zero entries using row_out values
+	// instead of specifying all as possibly non-zero
+	int* rhs_set_p = (int *) rhs_set_->p;
+	int* rhs_set_i = (int *) rhs_set_->i;
+	rhs_set_p[0] = 0;
+	rhs_set_p[1] = static_cast<size_t>(nrow_);
+	for(size_t k = 0; k < nrow_; k++)
+		rhs_set_i[k] = (int) k;
+
 	// solve the linear equation A * sol = rhs
 	int sys = CHOLMOD_A;
-	// 2DO: would like to take advantate of rhs_ being sparse and only needing
-	// a subset of the result vector.
 	int flag = cholmod_solve2(
 		sys,
 		factor_,

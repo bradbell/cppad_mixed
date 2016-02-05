@@ -19,9 +19,6 @@ $$
 
 $section CppAD Mixed Wish List$$
 
-$children%example/private/cholmod_solve2_xam.cpp
-%$$
-
 $head Second Order Method$$
 The second order method,
 when $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false,

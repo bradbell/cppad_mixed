@@ -79,6 +79,15 @@ $codei%
 	rhs_ = cholmod_zeros(nrow_, 1, CHOLMOD_REAL, &common_)
 %$$
 
+$head rhs_set_$$
+Upon return,
+this is a sparse column vector with $code nrow_$$ rows.
+It is packed, sorted, not symmetric, and just a sparsity pattern.
+There are $code nrow_$$
+possibly non-zero elements, but which elements
+are non-zero is not specified
+(expected to be set for each $cref cholmod_solve$$ usage).
+
 $head Example$$
 The file $cref/cholmod_xam.cpp/cholmod_xam.cpp/init/$$ contains an
 example and test that uses this function.
@@ -153,6 +162,33 @@ void cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
 
 	// set rhs_ to column vector of zeros
 	rhs_ = cholmod_zeros(nrow_, 1, CHOLMOD_REAL, &common_);
+
+	// set rhs_set_ to be a sparsity pattern, but do not specify the
+	// actual non-zero entries.
+	ncol       = 1;
+	nzmax      = nrow;
+	int sorted = CHOLMOD_TRUE;
+	int packed = CHOLMOD_TRUE;
+	stype      = CHOLMOD_STYPE_NOT_SYMMETRIC;
+	xtype      = CHOLMOD_PATTERN;
+	rhs_set_   = cholmod_allocate_sparse(
+		nrow_,
+		ncol,
+		nzmax,
+		sorted,
+		packed,
+		stype,
+		xtype,
+		&common_
+	);
+	// check
+	assert( rhs_set_->nrow   == nrow_ );
+	assert( rhs_set_->ncol   == 1     );
+	assert( rhs_set_->nzmax  == nrow_ );
+	assert( rhs_set_->stype  == CHOLMOD_STYPE_NOT_SYMMETRIC );
+	assert( rhs_set_->itype  == CHOLMOD_INT );
+	assert( rhs_set_->sorted == CHOLMOD_TRUE  );
+	assert( rhs_set_->packed == CHOLMOD_TRUE  );
 
 	// done with triplet
 	cholmod_free_triplet(&triplet, &common_ );

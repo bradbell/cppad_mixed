@@ -36,6 +36,11 @@ $head Example$$
 The file $cref cholmod_xam.cpp$$ contains an example and test
 using the operations in this class.
 
+$head Preprocessor Symbols$$
+The following extra $codei%CHOLMOD_%*%$$ symbols are defined
+$srcfile%include/cppad/mixed/cholmod.hpp
+	%4%// BEGIN SYMBOLS%// END SYMBOLS%1%$$
+
 
 $childtable%src/cholmod/constructor.cpp
 	%src/cholmod/init.cpp
@@ -43,6 +48,7 @@ $childtable%src/cholmod/constructor.cpp
 	%src/cholmod/logdet.cpp
 	%src/cholmod/solve.cpp
 	%example/private/cholmod_xam.cpp
+	%example/private/cholmod_solve2_xam.cpp
 %$$
 
 $end
@@ -52,10 +58,12 @@ $end
 # include <cholmod.h>
 # include <cppad/mixed/sparse_mat_info.hpp>
 
+// BEGIN SYMBOLS
 # define CHOLMOD_TRUE                  1
 # define CHOLMOD_FALSE                 0
 # define CHOLMOD_STYPE_NOT_SYMMETRIC   0
 # define CHOLMOD_STYPE_LOWER_TRIANGLE -1
+// END SYMBOLS
 
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
