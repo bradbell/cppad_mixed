@@ -80,6 +80,12 @@ $codep
 	cholmod_obj.solve(row_in, val_in, row_out, val_out);
 $$
 
+$head solve2$$
+2DO: add the following under Source Code below:
+$codep
+	cholmod_obj.solve2(row, val_in, val_out);
+$$
+
 $head Source Code$$
 $code
 $srcfile%example/private/cholmod_xam.cpp%5%// BEGIN C++%// END C++%1%$$

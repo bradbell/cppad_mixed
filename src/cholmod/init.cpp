@@ -83,6 +83,7 @@ $head rhs_set_$$
 Upon return,
 this is a sparse column vector with $code nrow_$$ rows.
 It is packed, sorted, not symmetric, and just a sparsity pattern.
+(Note that sorted refers the column order and does not matter for vectors.)
 There are $code nrow_$$
 possibly non-zero elements, but which elements
 are non-zero is not specified
