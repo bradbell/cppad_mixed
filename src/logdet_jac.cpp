@@ -125,12 +125,12 @@ void cppad_mixed::logdet_jac(
 	assert( K == ran_hes_.col.size() );
 
 	// Compute derivative of sum_k w_k hessian_k
-	// where w_k f_{u,u} (theta, u)^{-1} at (row[k], col[k]).
+	// where w_k is f_{u,u} (theta, u)^{-1} at (row[k], col[k]).
 	d_vector w(K);
 	for(size_t k = 0; k < K; k++)
 		w[k] = 0.0;
 
-	// Use the column major order speicifcation for
+	// Use the column major order specifications for
 	// (ran_hes_.row, ran_hes_.col)
 	size_t k  = 0;
 	size_t col = n_random_;
@@ -143,47 +143,32 @@ void cppad_mixed::logdet_jac(
 		assert( row < n_random_ );
 		assert( col < n_random_ );
 	}
-	CppAD::vector<size_t> row_b(1), row_x;
-	CppAD::vector<double> val_b(1), val_x;
 	for(size_t j = 0; j < n_random_; j++)
-	{	// j-th column of the identity matrix
-		row_b[0] = j;
-		val_b[0] = 1.0;
-		//
-		// x = j-th column of f_{u,u} (theta, u)^{-1}
-		row_x.resize(0);
-		val_x.resize(0);
-		chol_ran_hes_.solve(row_b, val_b, row_x, val_x);
-		//
-		for(size_t ell = 0; ell < row_x.size(); ell++)
-		{	size_t i    = row_x[ell];
-			if( col == j )
-			{	while( row < i )
-				{	k++;
-					if( k < K )
-					{	assert( ran_hes_.row[k] >= n_fixed_ );
-						assert( ran_hes_.col[k] >= n_fixed_ );
-						row = ran_hes_.row[k] - n_fixed_;
-						col = ran_hes_.col[k] - n_fixed_;
-						assert( row < n_random_ );
-						assert( col < n_random_ );
-					}
-					else
-						row = col = n_random_;
+	{	// vectors for this column
+		CppAD::vector<size_t> row_solve;
+		d_vector val_in;
+
+		// only need for rows where f_{u,u} (theta_u) is possibly not zero
+		size_t k_start    = K;
+		bool   row_j_zero = true;
+		while( col <= j )
+		{	if( col == j )
+			{	// this row of f_{u,u} (theta, u) is possibly non-zero
+				row_solve.push_back( row );
+				// val_in needs to be j-th column of identity matrix
+				// so solution is j-th column of inverse
+				if( row == j )
+				{	val_in.push_back(1.0);
+					row_j_zero = false;
 				}
+				else
+					val_in.push_back(0.0);
+				//
+				// index in hes_ran_ where j-th column starts
+				if( k_start == K )
+					k_start = k;
 			}
-			if( (row == i) && col == j)
-			{	// note off diagonal elements need to be counted twice
-				// becasue only computing for lower triangle
-				w[k] = val_x[ell];
-				if( ran_hes_.row[k] != ran_hes_.col[k] )
-					w[k] = 2.0 * w[k];
-			}
-		}
-		// skip remaining rows that have zero values in the inverse
-		assert( col >= j );
-		while( col == j )
-		{	k++;
+			k++;
 			if( k < K )
 			{	assert( ran_hes_.row[k] >= n_fixed_ );
 				assert( ran_hes_.col[k] >= n_fixed_ );
@@ -194,6 +179,30 @@ void cppad_mixed::logdet_jac(
 			}
 			else
 				row = col = n_random_;
+		}
+		// Cannot compute cholesky factor if f_{u,u} (theta, u) is zero
+		assert( ! row_j_zero );
+		if( row_j_zero )
+		{	row_solve.push_back(j);
+			val_in.push_back(1.0);
+		}
+		// if k_start == K, we do not need any components of the inverse
+		if( k_start < K )
+		{	d_vector val_out( row_solve.size() );
+			//
+			chol_ran_hes_.solve2(row_solve, val_in, val_out);
+			//
+			size_t nrow = row_solve.size();
+			if( row_j_zero )
+				nrow--;
+			for(size_t ell = 0; ell < nrow; ell++)
+			{	size_t k    = k_start + ell;
+				// note off diagonal elements need to be counted twice
+				// becasue only computing for lower triangle
+				w[k] = val_out[ell];
+				if( row_solve[ell] != j )
+					w[k] = 2.0 * w[k];
+			}
 		}
 	}
 	d_vector dw(n_fixed_ + n_random_);
