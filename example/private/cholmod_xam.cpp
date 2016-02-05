@@ -94,7 +94,7 @@ $codep
 $$
 
 $head solve2$$
-2DO: add the following under Source Code below:
+See the following under Source Code below:
 $codep
 	cholmod_obj.solve2(row, val_in, val_out);
 $$
@@ -174,6 +174,7 @@ bool cholmod_xam(void)
 	// check its value
 	ok &= std::fabs( logdet_A / (2.0 * std::log(36.0)) - 1.0 ) <= eps;
 
+	// test solve
 	CppAD::vector<size_t> row_in(1), row_out;
 	CppAD::vector<double> val_in(1), val_out;
 	for(size_t j = 0; j < ncol; j++)
@@ -197,6 +198,30 @@ bool cholmod_xam(void)
 				ok &= x[i] == 0.0;
 			else
 				ok &= std::fabs( x[i] / check_i - 1.0 ) <= eps;
+		}
+	}
+
+	// test solve2
+	CppAD::vector<size_t> row(3);
+	val_in.resize(3), val_out.resize(3);
+	for(size_t j = 0; j < ncol; j++)
+	{	// solve for the j-th column of the inverse matrix
+		for(size_t k = 0; k < 3; k++)
+		{	if( j < 3 )
+				row[k] = k;
+			else
+				row[k] = k + 3;
+			if( row[k] == j )
+				val_in[k] = 1.0;
+			else
+				val_in[k] = 0.0;
+		}
+		cholmod_obj.solve2(row, val_in, val_out);
+		//
+		for(size_t k = 0; k < row.size(); k++)
+		{	size_t i       = row[k];
+			double check_i = A_inv[ i * nrow + j ];
+			ok &= std::fabs( val_out[k] / check_i - 1.0 ) <= eps;
 		}
 	}
 	return ok;
