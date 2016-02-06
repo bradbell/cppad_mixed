@@ -352,14 +352,6 @@ $srccode%cpp% */
 	size_t n_ran_con_;
 /* %$$
 
-$head ran_con_mat_$$
-If $icode%n_random_% > 0%$$ and $code init_ran_con_done_$$,
-$cref/ran_con_mat_/init_ran_con/ran_con_mat_/$$
-contains the constraint matrix
-$srccode%cpp% */
-	CppAD::mixed::choleig::eigen_sparse ran_con_mat_;
-/* %$$
-
 $head ran_like_fun_$$
 $index ran_like_a1fun_$$
 If $icode%n_random_% > 0%$$ and $code init_ran_like_done_$$,
@@ -603,10 +595,7 @@ $srccode%cpp% */
 $subhead init_ran_con$$
 See $cref init_ran_con$$.
 $srccode%cpp% */
-	void init_ran_con(
-		size_t                                n_random ,
-		const CppAD::mixed::sparse_mat_info&  A_info
-	);
+	void init_ran_con(void);
 /* %$$
 
 $subhead init_ran_like$$

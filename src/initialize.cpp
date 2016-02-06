@@ -228,9 +228,9 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	}
 	else
 	{
-		// ran_con_mat_
+		// n_ran_con_
 		assert( ! init_ran_con_done_ );
-		init_ran_con(n_random_, A_info_);
+		init_ran_con();
 		assert( init_ran_con_done_ );
 
 		// ran_likelihood_
