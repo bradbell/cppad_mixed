@@ -80,7 +80,6 @@ $codei%
 
 $end
 */
-# include <Eigen/Sparse>
 # include <cppad/mixed/cppad_mixed.hpp>
 
 // ----------------------------------------------------------------------------
