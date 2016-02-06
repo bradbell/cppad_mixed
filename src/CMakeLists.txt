@@ -24,12 +24,12 @@ ADD_LIBRARY(cppad_mixed
 	fix_like_jac.cpp
 	eigen/choleig.cpp
 	init_ran_hes.cpp
-	eigen/init_ran_con.cpp
-	eigen/init_ran_objcon.cpp
+	init_ran_con.cpp
+	init_ran_objcon.cpp
 	logdet_jac.cpp
 	eigen/newton_step.cpp
-	eigen/ran_con_eval.cpp
-	eigen/ran_con_jac.cpp
+	ran_con_eval.cpp
+	ran_con_jac.cpp
 	ran_obj_eval.cpp
 	ran_obj_jac.cpp
 	update_factor.cpp
