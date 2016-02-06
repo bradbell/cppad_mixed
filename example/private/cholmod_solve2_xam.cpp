@@ -104,13 +104,13 @@ bool cholmod_solve2_xam(void)
 {	bool ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 
-	// Check that we are using version cholmod-3.0.4
+	// Example of checking for cholmod-3.0.4
 	// (which is distributed as part of SuiteSparse-4.4.3)
-	int version[3];
-	cholmod_version(version);
-	ok &= version[0] == 3;
-	ok &= version[1] == 0;
-	ok &= version[2] == 4;
+	// int version[3];
+	// cholmod_version(version);
+	// ok &= version[0] == 3;
+	// ok &= version[1] == 0;
+	// ok &= version[2] == 4;
 
 	double A_inv[] = {
 		 24.0, -18.0, -6.0,   0.0,   0.0,  0.0,
@@ -225,7 +225,7 @@ bool cholmod_solve2_xam(void)
 		// j-th column of identity matrix (only use j-th row of B)
 		B_x[j] = 1.0;
 
-       // solve A * x = b
+		// solve A * x = b
 		int sys = CHOLMOD_A;
 		flag = cholmod_solve2(
 			sys,
