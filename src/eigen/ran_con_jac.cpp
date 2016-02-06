@@ -129,10 +129,6 @@ void cppad_mixed::ran_con_jac(
 	assert( jac_info.col.size() == L );
 	assert( jac_info.val.size() == L );
 
-	// declare eigen matrix types
-	typedef typename CppAD::mixed::choleig::eigen_sparse eigen_sparse;
-	typedef typename eigen_sparse::InnerIterator          column_itr;
-
 	// packed version of fixed and random effects
 	d_vector both(n_fixed_ + n_random_);
 	pack(fixed_vec, random_vec, both);
@@ -164,30 +160,22 @@ void cppad_mixed::ran_con_jac(
 		assert( row < n_random_ );
 		assert( col < n_fixed_ );
 	}
-	// initialize matrix product A * uhat_theta( \theta )
-	assert( n_ran_con_ == size_t ( ran_con_mat_.rows() ) );
-	eigen_sparse Au_theta( n_ran_con_, n_fixed_ );
 
+	// 2DO: figure out how to make this a sparse calculation.
+	// The problem is propagating the sparsity though Choleksy inverse.
+	CppAD::vector<size_t> row_solve(n_random_);
+	d_vector val_b(n_random_), val_x(n_random_), Au_theta_j(n_ran_con_);
+	for(size_t i = 0; i < n_random_; i++)
+	{	row_solve[i] = i;
+		val_b[i]     = 0.0;
+	}
 	// Loop over fixed effects
 	size_t ell = 0;
-	CppAD::vector<size_t> row_b, row_x;
-	CppAD::vector<double> val_b, val_x;
 	for(size_t j = 0; j < n_fixed_; j++)
 	{	// b = j-th column of - f_{u, theta} (theta, u)
-		row_b.resize(0);
-		val_b.resize(0);
 		while( col <= j )
 		{	assert( col == j );
-			// Must put a non-zero value on left hand size
-			// because Eigens Cholesky solve seems to drop zeros.
-			if( L == 0 )
-			{	row_b.push_back(row);
-				val_b.push_back(1.0);
-			}
-			else
-			{	row_b.push_back(row);
-				val_b.push_back( - val_out[k] );
-			}
+			val_b[row] = -val_out[k];
 			//
 			k++;
 			if( k < K )
@@ -204,33 +192,32 @@ void cppad_mixed::ran_con_jac(
 		}
 		assert( col > j );
 		// x = j-th column of - f_{u,u}(theta, u)^{-1} f_{u,theta}(theta, u)
-		row_x.resize(0);
-		val_x.resize(0);
-		chol_ran_hes_.solve(row_b, val_b, row_x, val_x);
-		//
-		// convert to an eigen column vector
-		eigen_sparse x(n_random_, 1);
-		for(size_t m = 0; m < row_x.size(); m++)
-			x.insert( row_x[m], 0) = val_x[m];
+		//   = j-th column of uhat_theta ( theta )
+		chol_ran_hes_.solve2(row_solve, val_b, val_x);
 		//
 		// multipliy A times j-th column of uhat_theta
-		eigen_sparse jac_j = ran_con_mat_ * x;
-		// convert to sparse_mat_info format
-		for(column_itr itr(jac_j, 0); itr; ++itr)
-		{	size_t i = itr.row();
+		for(size_t i = 0; i < n_ran_con_; i++)
+			Au_theta_j[i] = 0.0;
+		size_t M = A_info_.row.size();
+		for(size_t m = 0; m < M; m++)
+		{	size_t r = A_info_.row[m];
+			size_t c = A_info_.col[m];
+			double v = A_info_.val[m];
+			Au_theta_j[r] += v * val_x[c];
+		}
+		for(size_t i = 0; i < n_ran_con_; i++)
+		{	// 2DO: convert this from dense to a true sparsity pattern
 			if( L == 0 )
-			{	jac_info.row.push_back(i);
+			{	// compute sparsity
+				jac_info.row.push_back(i);
 				jac_info.col.push_back(j);
 				jac_info.val.push_back(0.0);
 			}
 			else
-			{	// check for case where eigen has dropped a zero elements
-				while( jac_info.row[ell] < i )
-					jac_info.val[ell++] = 0.0;
-				//
+			{	// compute values
 				assert( jac_info.row[ell] == i );
 				assert( jac_info.col[ell] == j );
-				jac_info.val[ell] = itr.value();
+				jac_info.val[ell] = Au_theta_j[i];
 				ell++;
 			}
 		}
