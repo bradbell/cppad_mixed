@@ -17,12 +17,13 @@ $spell
 	const
 	xam
 	CppAD
+	nrow
 $$
 
 $section Solve Linear Equations Using Cholesky Factor$$
 
 $head Syntax$$
-$codei%%cholmod_obj%.solve(%row_in%, %val_in%, %row_out%, %val_out%)%$$
+$codei%%cholmod_obj%.solve(%row%, %val_in%, %val_out%)%$$
 
 $head Private$$
 The $cref cholmod$$ class is an
@@ -44,101 +45,95 @@ $codei%
 In addition, it must have a previous call to
 $cref cholmod_update$$.
 
-$head row_in$$
+$head row$$
 This argument has prototype
 $codei%
-	const CppAD::vector<size_t>& %row_in%
+	const CppAD::vector<size_t>& %row%
 %$$
-It specifies the rows, in the column vector $latex b$$,
-that are possibly non-zero.
+It contains all of the rows of column vector $latex b$$ that are
+non-zero and the rows of the column vector $icode x$$
+that are desired.
+These values must be unique; i.e.,
+for $icode%j% != %k%$$,
+$codei%
+	%row%[%j%] != %row%[%k%]
+%$$
+It follows that $icode%row%.size()%$$ is less than or equal
+$cref/nrow_/cholmod_ctor/nrow_/$$.
 
 $head val_in$$
 This argument has prototype
 $codei%
 	const CppAD::vector<double>& %val_in%
 %$$
-and it has the same size as $icode row_in$$.
-It specifies the values, in the column vector $latex b$$,
-that are possibly non-zero; to be specific,
-for $icode%k% = 0 , %...%, %row_in%.size()-1%$$,
+and it has the same size as $icode row$$.
+It specifies the values in the column vector $latex b$$
+for each of the corresponding rows; i.e.,
+for $icode%k% = 0 , %...%, %row%.size()-1%$$,
 $codei%
-	%b%[ %row_in%[%k%] ] = %val_in%[%k%]
+	%b%[ %row%[%k%] ] = %val_in%[%k%]
 %$$.
-
-$head row_out$$
-This argument has prototype
-$codei%
-	CppAD::vector<size_t>& %row_out%
-%$$
-On input size of $icode row_out$$ is zero.
-Upon return, it contains the row indices for non-zero elements
-of the solution vector $latex x$$ in increasing order; i.e.,
-for $icode%k% = 1 , %...%, %row_in%.size()-1%$$,
-$codei%
-	%row_in%[%k-1%] < %row_out%[%k%]
-%$$
 
 $head val_out$$
 This argument has prototype
 $codei%
-	CppAD::vector<double>& %val_in%
+	const CppAD::vector<double>& %val_out%
 %$$
-On input the size of $icode val_out$$ is zero.
-Upon return, it has the same size at $icode row_out$$
-and contains the value of the non-zero elements of the solution.
-To be specific,
-for $icode%k% = 0 , %...%, %row_out%.size()-1%$$,
+and it has the same size as $icode row$$.
+On input, the value of its elements do not matter.
+Upon return, it contains the values in the column vector $latex b$$
+for each of the corresponding rows; i.e.,
+for $icode%k% = 0 , %...%, %row%.size()-1%$$,
 $codei%
-	%x%[ %row_out%[%k%] ] = %val_out%[%k%]
-%$$
+	%x%[ %row%[%k%] ] = %val_out%[%k%]
+%$$.
+
 
 $head Example$$
 The file $cref/cholmod_xam.cpp/cholmod_xam.cpp/solve/$$ contains an
 example and test that uses this function.
 
-$head 2DO$$
-Convert this routine to have $icode row_out$$ an input that
-specifies which rows are required (so do not solve for all non-zero rows).
-
 $end
 */
 # include <cppad/mixed/cholmod.hpp>
+# include <cppad/utility/index_sort.hpp>
 # include <cassert>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 void cholmod::solve(
-	const CppAD::vector<size_t>& row_in   ,
+	const CppAD::vector<size_t>& row      ,
 	const CppAD::vector<double>& val_in   ,
-	CppAD::vector<size_t>&       row_out  ,
 	CppAD::vector<double>&       val_out  )
-{	assert( row_in.size()  == val_in.size() );
-	assert( row_out.size() == 0 );
-	assert( val_out.size() == 0 );
-
+{	assert( row.size() == val_in.size() );
+	assert( row.size() == val_out.size() );
+	assert( row.size() <= nrow_ );
+# ifndef NDEBUG
+	for(size_t k = 1; k < row.size(); k++)
+		assert( row[k-1] < row[k] && row[k] < nrow_ );
+# endif
+	//
 	assert( rhs_ != CPPAD_NULL  );
 	assert( rhs_->nrow == nrow_ );
 	assert( rhs_->ncol == 1     );
 	double* rhs_x = (double *) rhs_->x;
-	//
 # ifndef NDEBUG
-	for(size_t k = 0; k < row_in.size(); k++)
-		assert( row_in[k] < nrow_ );
 	for(size_t j = 0; j < nrow_; j++)
 		assert( rhs_x[j] == 0.0 );
 # endif
-	// set non-zero entries in right hand size
-	for(size_t k = 0; k < row_in.size(); k++)
-		rhs_x[ row_in[k] ] = val_in[k];
-
-	// 2DO: set the non-zero entries using row_out values
-	// instead of specifying all as possibly non-zero
+	//
+	assert( rhs_set_ != CPPAD_NULL );
 	int* rhs_set_p = (int *) rhs_set_->p;
 	int* rhs_set_i = (int *) rhs_set_->i;
+	//
+	// set non-zero entries in right hand size rhs_
+	for(size_t k = 0; k < row.size(); k++)
+		rhs_x[ row[k] ] = val_in[k];
+	//
 	rhs_set_p[0] = 0;
-	rhs_set_p[1] = static_cast<size_t>(nrow_);
-	for(size_t k = 0; k < nrow_; k++)
-		rhs_set_i[k] = (int) k;
+	rhs_set_p[1] = static_cast<size_t>( row.size() );
+	for(size_t k = 0; k < row.size(); k++)
+		rhs_set_i[k] = (int) row[k];
 
 	// solve the linear equation A * sol = rhs
 	int sys = CHOLMOD_A;
@@ -155,22 +150,41 @@ void cholmod::solve(
 	);
 	// check assumptions
 	assert( flag == CHOLMOD_TRUE );
+	//
+	assert( sol_set_->nrow == nrow_ );
+	assert( sol_set_->ncol == 1 );
+	assert( sol_set_->xtype == CHOLMOD_PATTERN );
+	assert( sol_set_->packed == CHOLMOD_TRUE);
+	int* sol_set_p = (int *) sol_set_->p;
+	int* sol_set_i = (int *) sol_set_->i;
+	//
 	assert( sol_ != CPPAD_NULL   );
 	assert( sol_->nrow == nrow_ );
 	assert( sol_->ncol == 1     );
 	double* sol_x = (double *) sol_->x;
+	//
+	// sort_ is an index sort of sol_set_i
+	size_t ni = (size_t) sol_set_p[1];
+	key_.resize(ni);
+	index_.resize(ni);
+	for(size_t ell = 0; ell < ni; ell++)
+		key_[ell] = (size_t) sol_set_i[ell];
+	CppAD::index_sort(key_, index_);
 
 	// return result values
-	for(size_t i = 0; i < nrow_; i++)
-	{	if( sol_x[i] != 0.0 )
-		{	row_out.push_back(i);
-			val_out.push_back( sol_x[i] );
+	size_t k  = 0;
+	for(size_t ell = 0; ell < ni; ell++)
+	{	size_t i = key_[ index_[ell] ];
+		assert( i <= row[k] );
+		if( i == row[k] )
+		{	val_out[k] = sol_x[i];
+			k++;
 		}
 	}
 
 	// restore the vector rhs_ to be zero
-	for(size_t k = 0; k < row_in.size(); k++)
-		rhs_x[ row_in[k] ] = 0.0;
+	for(size_t k = 0; k < row.size(); k++)
+		rhs_x[ row[k] ] = 0.0;
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

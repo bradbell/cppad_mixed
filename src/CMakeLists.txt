@@ -14,7 +14,6 @@ ADD_LIBRARY(cppad_mixed
 	cholmod/update.cpp
 	cholmod/logdet.cpp
 	cholmod/solve.cpp
-	cholmod/solve2.cpp
 	fix_con_eval.cpp
 	fix_con_eval.cpp
 	fix_con_hes.cpp

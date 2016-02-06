@@ -90,13 +90,7 @@ $$
 $head solve$$
 See the following under Source Code below:
 $codep
-	cholmod_obj.solve(row_in, val_in, row_out, val_out);
-$$
-
-$head solve2$$
-See the following under Source Code below:
-$codep
-	cholmod_obj.solve2(row, val_in, val_out);
+	cholmod_obj.solve(row, val_in, val_out);
 $$
 
 $head Source Code$$
@@ -175,35 +169,8 @@ bool cholmod_xam(void)
 	ok &= std::fabs( logdet_A / (2.0 * std::log(36.0)) - 1.0 ) <= eps;
 
 	// test solve
-	CppAD::vector<size_t> row_in(1), row_out;
-	CppAD::vector<double> val_in(1), val_out;
-	for(size_t j = 0; j < ncol; j++)
-	{	// solve for the j-th column of the inverse matrix
-		row_in[0] = j;
-		val_in[0] = 1.0;
-		row_out.resize(0);
-		val_out.resize(0);
-		cholmod_obj.solve(row_in, val_in, row_out, val_out);
-		//
-		// solution vector
-		CppAD::vector<double> x(nrow);
-		for(size_t i = 0; i < nrow; i++)
-			x[i] = 0.0;
-		for(size_t k = 0; k < row_out.size(); k++)
-			x[ row_out[k] ] = val_out[k];
-		//
-		for(size_t i = 0; i < nrow; i++)
-		{	double check_i = A_inv[ i * nrow + j ];
-			if( check_i == 0.0 )
-				ok &= x[i] == 0.0;
-			else
-				ok &= std::fabs( x[i] / check_i - 1.0 ) <= eps;
-		}
-	}
-
-	// test solve2
 	CppAD::vector<size_t> row(3);
-	val_in.resize(3), val_out.resize(3);
+	CppAD::vector<double> val_in(3), val_out(3);
 	for(size_t j = 0; j < ncol; j++)
 	{	// solve for the j-th column of the inverse matrix
 		for(size_t k = 0; k < 3; k++)
@@ -216,7 +183,7 @@ bool cholmod_xam(void)
 			else
 				val_in[k] = 0.0;
 		}
-		cholmod_obj.solve2(row, val_in, val_out);
+		cholmod_obj.solve(row, val_in, val_out);
 		//
 		for(size_t k = 0; k < row.size(); k++)
 		{	size_t i       = row[k];

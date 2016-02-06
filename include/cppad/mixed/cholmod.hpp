@@ -47,7 +47,6 @@ $childtable%src/cholmod/constructor.cpp
 	%src/cholmod/update.cpp
 	%src/cholmod/logdet.cpp
 	%src/cholmod/solve.cpp
-	%src/cholmod/solve2.cpp
 	%example/private/cholmod_xam.cpp
 	%example/private/cholmod_solve2_xam.cpp
 %$$
@@ -96,12 +95,6 @@ public:
 	double logdet(void) const;
 	// solve linear equations
 	void solve(
-		const CppAD::vector<size_t>& row_in   ,
-		const CppAD::vector<double>& val_in   ,
-		CppAD::vector<size_t>&       row_out  ,
-		CppAD::vector<double>&       val_out
-	);
-	void solve2(
 		const CppAD::vector<size_t>& row      ,
 		const CppAD::vector<double>& val_in   ,
 		CppAD::vector<double>&       val_out

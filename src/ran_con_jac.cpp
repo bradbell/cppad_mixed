@@ -193,7 +193,7 @@ void cppad_mixed::ran_con_jac(
 		assert( col > j );
 		// x = j-th column of - f_{u,u}(theta, u)^{-1} f_{u,theta}(theta, u)
 		//   = j-th column of uhat_theta ( theta )
-		chol_ran_hes_.solve2(row_solve, val_b, val_x);
+		chol_ran_hes_.solve(row_solve, val_b, val_x);
 		//
 		// multipliy A times j-th column of uhat_theta
 		for(size_t i = 0; i < n_ran_con_; i++)

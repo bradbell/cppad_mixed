@@ -124,25 +124,19 @@ bool update_factor_xam(void)
 	//
 	// Hessian_{i,j} = 1.0 / (theta[i] * theta[i]) if i == j
 	//               = 0.0 otherwise
-	// compute inverse of Hessian and check on column at a time
-	CppAD::vector<size_t> row_b(1), row_x;
-	CppAD::vector<double> val_b(1), val_x;
+	// compute inverse of Hessian and check one column at a time
+	CppAD::vector<size_t> row(1);
+	CppAD::vector<double> val_b(1), val_x(1);
 	for(size_t j = 0; j < n_random; j++)
 	{	// b = j-th column of identity matrix
-		row_b[0] = j;
+		row[0]   = j;
 		val_b[0] = 1.0;
 		//
 		// x = j-th column of invese of Hessian
-		row_x.resize(0);
-		val_x.resize(0);
-		mixed_object.chol_ran_hes_.solve(row_b, val_b, row_x, val_x);
+		mixed_object.chol_ran_hes_.solve(row, val_b, val_x);
 		//
-		for(size_t k = 0; k < row_x.size(); k++)
-		{	size_t i = row_x[k];
-			ok      &= (i == j);
-			double check = theta[i] * theta[i];
-			ok      &= abs( check / val_x[k] - 1.0) <= eps;
-		}
+		double check = theta[j] * theta[j];
+		ok      &= abs( check / val_x[0] - 1.0) <= eps;
 	}
 	return ok;
 }
