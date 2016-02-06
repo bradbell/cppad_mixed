@@ -29,6 +29,20 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 02-06$$
+$list number$$
+Change the random constraint matrix $icode A_info$$
+to be an argument to the
+$cref/derived class constructor/derived_ctor/A_info/$$
+instead of an argument to the
+$cref initialize$$ routine.
+$lnext
+Simplify the random constraint matrix source code.
+$lnext
+Make more efficient use of
+the $code cholmod$$ Cholesky factorization package.
+$lend
+
 $head 01-26$$
 Remove the old $cref cholmod$$ wish list its (completed) and add a
 $cref/second order method/wish_list/Second Order Method/$$ item.
