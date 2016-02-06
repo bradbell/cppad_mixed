@@ -90,9 +90,8 @@ void cppad_mixed::init_ran_objcon(
 {	assert( init_ran_con_done_ );
 	assert( init_newton_atom_done_ );
 	assert( ! init_ran_objcon_done_ );
-
-	// number of constraints
-	assert( n_ran_con_ == size_t ( ran_con_mat_.rows() ) );
+	assert( A_info_.row.size() == A_info_.col.size() );
+	assert( A_info_.row.size() == A_info_.val.size() );
 
 	//	create an a1d_vector containing (beta, theta, u)
 	a1d_vector beta_theta_u( 2 * n_fixed_ + n_random_ );
@@ -165,32 +164,18 @@ void cppad_mixed::init_ran_objcon(
 
 	if( n_ran_con_ > 0 )
 	{
-		// Copy W to an a1 eigen matrix
-		using Eigen::Dynamic;
-		typedef Eigen::Matrix<a1_double, Dynamic, Dynamic>  a1_eigen_dense;
-		a1_eigen_dense eigen_W(n_random_, 1);
-		for(size_t j = 0; j < n_random_; j++)
-			eigen_W(j, 0) = W[j];
-
-		// Copy ran_con_mat_ to an a1 eigen matrix
-		using Eigen::ColMajor;
-		typedef Eigen::SparseMatrix<double,    ColMajor>   eigen_sparse;
-		typedef Eigen::SparseMatrix<a1_double, ColMajor>   a1_eigen_sparse;
-		typedef typename eigen_sparse::InnerIterator       column_itr;
-		a1_eigen_sparse eigen_A(n_ran_con_, n_random_);
-		for(size_t j = 0; j < n_fixed_; j++)
-		{	for(column_itr itr(ran_con_mat_, j); itr; ++itr)
-			{	size_t i = itr.row();
-				eigen_A.insert(i, j) = a1_double( itr.value() );
-			}
-		}
-
-		// do the multiplication
-		a1_eigen_dense eigen_B = eigen_A * eigen_W;
-
-		// copy results to range vector
+		// multiply the matrix A times the vector W and put result in
+		// HB (with an index offset of 1)
 		for(size_t i = 0; i < n_ran_con_; i++)
-			HB[1 + i] = eigen_B(i, 0);
+			HB[1 + i] = a1_double(0.0);
+
+		size_t K = A_info_.row.size();
+		for(size_t k = 0; k < K; k++)
+		{	size_t i = A_info_.row[k];
+			size_t j = A_info_.col[k];
+			double v = A_info_.val[k];
+			HB[1 + i]  += a1_double(v) * W[j];
+		}
 	}
 	//
 	ran_objcon_fun_.Dependent(beta_theta_u, HB);
