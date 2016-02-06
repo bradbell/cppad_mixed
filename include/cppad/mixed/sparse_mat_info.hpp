@@ -105,6 +105,15 @@ $codei%
 %$$
 we say that $icode mat_info$$ is in column major order.
 
+$subhead Row Major Order$$
+If for $icode%k% = 0 , ... , %K%-1%$$,
+$codei%
+	%mat_info%.row[%k%] <= %mat_info%.row[%k+1%]
+	if( %mat_info%.row[%k%] == %mat_info%.row[%k+1%] )
+		%mat_info%.col[%k%] < %mat_info%.col[%k+1%]
+%$$
+we say that $icode mat_info$$ is in row major order.
+
 $subhead Lower Triangular$$
 If for $icode%k% = 0 , ... , %K%-1%$$,
 $codei%

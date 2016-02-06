@@ -34,9 +34,7 @@ $$
 $section Initialization After Constructor$$
 
 $head Syntax$$
-$icode%size_map% = %mixed_object%.initialize(
-	%A_info%, %fixed_vec%, %random_vec%
-)%$$
+$icode%size_map% = %mixed_object%.initialize(%fixed_vec%, %random_vec%)%$$
 
 $head Public$$
 This $code cppad_mixed$$ member function is $cref public$$.
@@ -52,21 +50,6 @@ $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
-
-$head A_info$$
-This argument has prototype
-$codei%
-	const CppAD::mixed::sparse_mat_info& %A_info%
-%$$
-It is a
-$cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
-representation of the
-$cref/random constraint matrix
-	/cppad_mixed
-	/Notation
-	/Random Constraint Matrix, A
-/$$
-$latex A$$.
 
 $head fixed_vec$$
 This argument has prototype
@@ -216,7 +199,6 @@ $end
 # include <cppad/mixed/cppad_mixed.hpp>
 
 std::map<std::string, size_t> cppad_mixed::initialize(
-	const CppAD::mixed::sparse_mat_info& A_info     ,
 	const d_vector&                      fixed_vec  ,
 	const d_vector&                      random_vec )
 {	if( initialize_done_ )
@@ -248,7 +230,7 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	{
 		// ran_con_mat_
 		assert( ! init_ran_con_done_ );
-		init_ran_con(n_random_, A_info);
+		init_ran_con(n_random_, A_info_);
 		assert( init_ran_con_done_ );
 
 		// ran_likelihood_

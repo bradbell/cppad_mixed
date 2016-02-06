@@ -34,6 +34,7 @@ namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
+	using CppAD::mixed::sparse_mat_info;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -44,9 +45,10 @@ namespace {
 			size_t n_fixed                    ,
 			size_t n_random                   ,
 			bool   quasi_fixed                ,
+			const  sparse_mat_info& A_info    ,
 			const vector<double>& y           )
 			:
-			cppad_mixed(n_fixed, n_random, quasi_fixed) ,
+			cppad_mixed(n_fixed, n_random, quasi_fixed, A_info) ,
 			y_(y)
 		{ }
 	private:
@@ -111,9 +113,9 @@ bool optimize_random_xam(void)
 
 	// object that is derived from cppad_mixed
 	bool quasi_fixed = true;
-	mixed_derived mixed_object(n_data, n_data, quasi_fixed, data);
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
-	mixed_object.initialize(A_info, fixed_vec, random_in);
+	mixed_derived mixed_object(n_data, n_data, quasi_fixed, A_info, data);
+	mixed_object.initialize(fixed_vec, random_in);
 
 	// lower and upper limits for random effects
 	double inf = std::numeric_limits<double>::infinity();

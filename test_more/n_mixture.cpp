@@ -25,6 +25,7 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 using CppAD::vector;
 using std::exp;
 using std::log;
+using CppAD::mixed::sparse_mat_info;
 
 // simulate covariates, x, and data, y
 void simulate(
@@ -62,10 +63,15 @@ private:
 // ------------------------------------------------------------------------
 public:
 	// constructor
-	mixed_derived(size_t K, size_t I, size_t T, vector<size_t>&  y)
-		:
+	mixed_derived(
+		size_t K,
+		size_t I,
+		size_t T,
+		vector<size_t>&  y,
+		const sparse_mat_info& A_info
+	) :
 		// n_fixed = 2, n_random = 0, quasi_fixed = false
-		cppad_mixed(2, 0, false),
+		cppad_mixed(2, 0, false, A_info),
 		K_(K)   ,
 		I_(I)   ,
 		T_(T)   ,
@@ -155,15 +161,17 @@ bool n_mixture(void)
 	double sigma  = std::sqrt( lambda );
 	size_t K      = size_t( lambda + 5.0 * sigma) + 1;
 
+	// empty matrix
+	CppAD::mixed::sparse_mat_info A_info;
+
 	// create derived object
-	mixed_derived mixed_object(K, I, T, y);
+	mixed_derived mixed_object(K, I, T, y, A_info);
 
 	// initialize point to start optimization at
 	vector<double> theta_in( n_fixed ), u_in(0);
 	for(size_t j = 0; j < n_fixed; j++)
 		theta_in[j] = theta_sim[j];
-	CppAD::mixed::sparse_mat_info A_info; // empty matrix
-	mixed_object.initialize(A_info, theta_in, u_in);
+	mixed_object.initialize(theta_in, u_in);
 
 	// lower and upper limits
 	vector<double> fix_constraint_lower, fix_constraint_upper;

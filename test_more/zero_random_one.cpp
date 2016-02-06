@@ -65,6 +65,7 @@ namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
+	using CppAD::mixed::sparse_mat_info;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -81,9 +82,10 @@ namespace {
 			size_t n_random                   ,
 			double sigma_u                    ,
 			double sigma_y                    ,
+			const  sparse_mat_info& A_info    ,
 			const vector<double>& y           ) :
 			// quasi_fixed = false
-			cppad_mixed(n_fixed, n_random, false) ,
+			cppad_mixed(n_fixed, n_random, false, A_info) ,
 			n_fixed_(n_fixed)                          ,
 			n_random_(n_random)                        ,
 			sigma_u_(sigma_u)                          ,
@@ -185,9 +187,11 @@ bool zero_random_one(void)
 	random_in[0] = 0.1;
 
 	// object that is derived from cppad_mixed
-	mixed_derived mixed_object(n_fixed, n_random, sigma_u, sigma_y, data);
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
-	mixed_object.initialize(A_info, fixed_in, random_in);
+	mixed_derived mixed_object(
+		n_fixed, n_random, sigma_u, sigma_y, A_info, data
+	);
+	mixed_object.initialize(fixed_in, random_in);
 
 	// optimize the fixed effects
 	std::string fixed_options =

@@ -20,6 +20,7 @@ using CppAD::vector;
 using std::exp;
 using std::log;
 using std::endl;
+using CppAD::mixed::sparse_mat_info;
 
 // simulate covariates, x, and data, y
 void simulate(
@@ -48,10 +49,13 @@ private:
 // ------------------------------------------------------------------------
 public:
 	// constructor
-	mixed_derived(size_t N, vector<size_t>&  y)
-		:
+	mixed_derived(
+		size_t N                      ,
+		vector<size_t>&  y            ,
+		const sparse_mat_info& A_info
+	) :
 		// n_fixed = 1, n_random = 0, quasi_fixed = false
-		cppad_mixed(1, 0, false) ,
+		cppad_mixed(1, 0, false, A_info) ,
 		N_(N)                               ,
 		y_(y)
 	{	logfac_.resize(N+1);
@@ -108,15 +112,16 @@ bool binomial(void)
 	vector<size_t> y(I);
 	simulate(N, I, theta_sim, y);
 
+	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+
 	// create derived object
-	mixed_derived mixed_object(N, y);
+	mixed_derived mixed_object(N, y, A_info);
 
 	// initialize point to start optimization at
 	vector<double> theta_in( n_fixed ), u_in(0);
 	for(size_t j = 0; j < n_fixed; j++)
 		theta_in[j] = theta_sim[j];
-	CppAD::mixed::sparse_mat_info A_info; // empty matrix
-	mixed_object.initialize(A_info, theta_in, u_in);
+	mixed_object.initialize(theta_in, u_in);
 
 	// lower and upper limits
 	vector<double> fix_constraint_lower, fix_constraint_upper;

@@ -42,6 +42,7 @@ namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
+	using CppAD::mixed::sparse_mat_info;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -51,10 +52,11 @@ namespace {
 		mixed_derived(
 			size_t n_fixed                    ,
 			size_t n_random                   ,
+			const  sparse_mat_info& A_info    ,
 			const vector<double>& y           )
 			:
 			// quasi_fixed = false
-			cppad_mixed(n_fixed, n_random, false) ,
+			cppad_mixed(n_fixed, n_random, false, A_info) ,
 			y_(y)
 		{ }
 	private:
@@ -117,9 +119,9 @@ bool logdet_jac_xam(void)
 	}
 
 	// object that is derived from cppad_mixed
-	mixed_derived mixed_object(n_fixed, n_random, data);
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
-	mixed_object.initialize(A_info, theta, u);
+	mixed_derived mixed_object(n_fixed, n_random, A_info, data);
+	mixed_object.initialize(theta, u);
 
 	// factor f_{u,u} (thete, u)
 	mixed_object.update_factor(fixed_vec, random_vec);

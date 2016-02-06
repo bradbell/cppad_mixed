@@ -247,6 +247,7 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 using CppAD::vector;
 using std::exp;
 using std::log;
+using CppAD::mixed::sparse_mat_info;
 
 // simulate data, y
 void simulate(
@@ -308,10 +309,11 @@ public:
 		size_t                 I           ,
 		size_t                 T           ,
 		bool                   quasi_fixed ,
+		const  sparse_mat_info& A_info     ,
 		vector<size_t>&        y           )
 		:
 		// n_fixed = 3, n_random = T
-		cppad_mixed(3, T, quasi_fixed) ,
+		cppad_mixed(3, T, quasi_fixed, A_info) ,
 		I_(I)            ,
 		T_(T)            ,
 		y_(y)
@@ -470,10 +472,6 @@ int main(int argc, char *argv[])
 	theta_in[2]    = theta_sim[2] / 2.0;
 	theta_upper[2] = 4.0;
 
-	// create derived object
-	bool quasi_fixed = (random_seed % 2) == 0;
-	mixed_derived mixed_object(I, T, quasi_fixed, y);
-
 	// constrain the sum of the random effects to be zero
 	CppAD::mixed::sparse_mat_info A_info;
 	A_info.resize(T);
@@ -483,12 +481,16 @@ int main(int argc, char *argv[])
 		A_info.val[t] = 1.0;
 	}
 
+	// create derived object
+	bool quasi_fixed = (random_seed % 2) == 0;
+	mixed_derived mixed_object(I, T, quasi_fixed, A_info, y);
+
 	// initialize point to start optimization at
 	vector<double>  u_in(T);
 	for(size_t t = 0; t < T; t++)
 		u_in[t] = 0.0;
 	std::map<std::string, size_t> size_map =
-		mixed_object.initialize(A_info, theta_in, u_in);
+		mixed_object.initialize(theta_in, u_in);
 
 	// print sizes
 	cout << endl

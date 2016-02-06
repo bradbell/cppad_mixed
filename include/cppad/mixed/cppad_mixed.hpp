@@ -151,13 +151,18 @@ $head constructor$$
 Construct an $code cppad_mixed$$ derived class object; see
 $cref/derived_ctor/derived_ctor/$$.
 $srccode%cpp% */
-	cppad_mixed(size_t n_fixed, size_t n_random, bool quasi_fixed)
+	cppad_mixed(
+		size_t                                  n_fixed   ,
+		size_t                                  n_random  ,
+		bool                                  quasi_fixed ,
+		const CppAD::mixed::sparse_mat_info&  A_info      )
 /* %$$
 $comment */
 	:
 	n_fixed_(n_fixed)               ,
 	n_random_(n_random)             ,
 	quasi_fixed_(quasi_fixed)       ,
+	A_info_(A_info)                 ,
 	init_ran_con_done_(false)       ,
 	init_ran_like_done_(false)      ,
 	init_ran_hes_done_(false)       ,
@@ -177,7 +182,6 @@ Directly after construction, use this function to initialize
 the derived class object; see $cref/initialize/initialize/$$.
 $srccode%cpp% */
 	std::map<std::string, size_t> initialize(
-		const CppAD::mixed::sparse_mat_info&  A_info     ,
 		const d_vector&                       fixed_vec  ,
 		const d_vector&                       random_vec
 	);
@@ -311,6 +315,13 @@ when $cref/optimizing fixed effects/optimize_fixed/$$.
 $srccode%cpp% */
 	const bool quasi_fixed_;
 /* %$$
+
+$head A_info$$
+contains the random constraint matrix
+$srccode%cpp% */
+	const CppAD::mixed::sparse_mat_info A_info_;
+/* %$$
+
 $head initialize_done_$$
 The following flag is false after construction and true after
 the corresponding member function is called.

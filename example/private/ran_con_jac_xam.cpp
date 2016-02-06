@@ -75,6 +75,7 @@ namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
+	using CppAD::mixed::sparse_mat_info;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -84,10 +85,11 @@ namespace {
 		mixed_derived(
 			size_t n_fixed                    ,
 			size_t n_random                   ,
+			const  sparse_mat_info& A_info    ,
 			const vector<double>& y           )
 			:
 			// quasi_fixed = false
-			cppad_mixed(n_fixed, n_random, false) ,
+			cppad_mixed(n_fixed, n_random, false, A_info) ,
 			y_(y)
 		{	assert( n_fixed == 2);
 		}
@@ -166,8 +168,8 @@ bool ran_con_jac_xam(void)
 	}
 
 	// object that is derived from cppad_mixed
-	mixed_derived mixed_object(n_fixed, n_random, data);
-	mixed_object.initialize(A_info,  fixed_vec, random_vec);
+	mixed_derived mixed_object(n_fixed, n_random, A_info, data);
+	mixed_object.initialize(fixed_vec, random_vec);
 
 	// optimize the random effects
 	std::string options;

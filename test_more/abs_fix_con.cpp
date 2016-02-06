@@ -17,6 +17,7 @@ namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
+	using CppAD::mixed::sparse_mat_info;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -29,9 +30,10 @@ namespace {
 			size_t n_fixed                    ,
 			size_t n_random                   ,
 			bool   quasi_fixed                ,
+			const  sparse_mat_info& A_info    ,
 			double sigma                      ,
 			const vector<double>& z           ) :
-			cppad_mixed(n_fixed, n_random, quasi_fixed) ,
+			cppad_mixed(n_fixed, n_random, quasi_fixed, A_info) ,
 			n_fixed_(n_fixed)                           ,
 			sigma_(sigma)                               ,
 			z_(z)
@@ -111,8 +113,10 @@ bool abs_fix_con(void)
 	// object that is derived from cppad_mixed
 	bool quasi_fixed = false;
 	double sigma     = 1.0;
-	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, sigma, z);
-	mixed_object.initialize(A_info, fixed_in, random_in);
+	mixed_derived mixed_object(
+			n_fixed, n_random, quasi_fixed, A_info, sigma, z
+	);
+	mixed_object.initialize(fixed_in, random_in);
 
 	// optimize the fixed effects using quasi-Newton method
 	std::string fixed_options =

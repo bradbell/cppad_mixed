@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -14,13 +14,14 @@ $spell
 	bool
 	cppad
 	dismod
+	const
 $$
 
 $section User Defined Class Derived From cppad_mixed$$
 
 $head Syntax$$
 $icode%mixed_derived% %mixed_object%(
-	%n_fixed%, %n_random%, %quasi_fixed%, %...%
+	%n_fixed%, %n_random%, %quasi_fixed%, %A_info%, %...%
 )%$$
 
 $head See Also$$
@@ -33,7 +34,7 @@ $codei%
 %$$
 The derived class constructor must call its base class constructor as follows:
 $codei%
-	cppad_mixed(%n_fixed%, %n_random%, %quasi_fixed%)
+	cppad_mixed(%n_fixed%, %n_random%, %quasi_fixed%, %A_info%)
 %$$
 
 $head mixed_object$$
@@ -68,6 +69,21 @@ $cref/optimize the fixed effects/optimize_fixed/$$.
 Otherwise a full Newton method is used.
 The full Newton method requires much more memory for computation
 of second derivatives of the Laplace approximation.
+
+$head A_info$$
+This argument has prototype
+$codei%
+	const CppAD::mixed::sparse_mat_info& %A_info%
+%$$
+It is a
+$cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
+representation of the
+$cref/random constraint matrix
+	/cppad_mixed
+	/Notation
+	/Random Constraint Matrix, A
+/$$
+$latex A$$.
 
 $head ...$$
 Other arguments to the derived class constructor

@@ -163,6 +163,7 @@ namespace {
 	using CppAD::exp;
 	using CppAD::abs;
 	using CppAD::AD;
+	using CppAD::mixed::sparse_mat_info;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -174,12 +175,13 @@ namespace {
 			size_t n_fixed      ,
 			size_t n_random     ,
 			bool   quasi_fixed  ,
+			const  sparse_mat_info& A_info    ,
 			double y            ,
 			double z            ,
 			double sigma_u      ,
 			double sigma_y      ,
 			double sigma_z      ) :
-			cppad_mixed(n_fixed, n_random, quasi_fixed) ,
+			cppad_mixed(n_fixed, n_random, quasi_fixed, A_info) ,
 			y_(y), z_(z)                               ,
 			sigma_u_(sigma_u), sigma_y_(sigma_y), sigma_z_(sigma_z )
 		{	assert( n_fixed == 1 );
@@ -329,14 +331,15 @@ bool data_mismatch_xam(void)
 	// no constriants
 	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
 	//
+	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	//
 	// object that is derived from cppad_mixed
 	bool quasi_fixed = false;
 	mixed_derived mixed_object(
-		n_fixed, n_random, quasi_fixed, y, z, sigma_u, sigma_y, sigma_z
+	n_fixed, n_random, quasi_fixed, A_info, y, z, sigma_u, sigma_y, sigma_z
 
 	);
-	CppAD::mixed::sparse_mat_info A_info; // empty matrix
-	mixed_object.initialize(A_info, fixed_in, random_in);
+	mixed_object.initialize(fixed_in, random_in);
 	//
 	// compute the derivative of the objective at the starting point
 	double theta_in   = fixed_in[0];

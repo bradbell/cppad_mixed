@@ -47,11 +47,12 @@ namespace {
 	public:
 		// constructor
 		mixed_derived(
-			size_t n_fixed                    ,
-			size_t n_random                   ,
-			const vector<double>& y           ) :
+			size_t                         n_fixed   ,
+			size_t                         n_random  ,
+			const vector<double>&          y         ,
+			CppAD::mixed::sparse_mat_info& A_info    ) :
 			// quasi_fixed = false
-			cppad_mixed(n_fixed, n_random, false) ,
+			cppad_mixed(n_fixed, n_random, false, A_info) ,
 			n_fixed_(n_fixed) ,
 			y_(y)
 		{	assert( n_fixed == 2);
@@ -150,9 +151,9 @@ bool fix_con_eval_xam(void)
 	}
 
 	// object that is derived from cppad_mixed
-	mixed_derived mixed_object(n_fixed, n_random, data);
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
-	mixed_object.initialize(A_info, fixed_vec, random_vec);
+	mixed_derived mixed_object(n_fixed, n_random, data, A_info);
+	mixed_object.initialize(fixed_vec, random_vec);
 
 	// compute the constraint function and check result
 	CppAD::vector<double> c = mixed_object.fix_con_eval(fixed_vec);
