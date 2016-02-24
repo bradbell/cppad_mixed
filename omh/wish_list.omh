@@ -19,6 +19,9 @@ $$
 
 $section CppAD Mixed Wish List$$
 
+$head Statistics of Estimates$$
+Use two Newton steps for asymptotic statistic calculations.
+
 $head Second Order Method$$
 The second order method,
 when $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false,
@@ -30,7 +33,7 @@ $cref/W(beta, theta, u)
 /$$.
 It might be more efficient (both in memory and speed)
 to uses a second order version of the implicit function theory
-derivatives.
+derivatives or something similar to how ADOLC does it..
 
 $head Optimizing Random Effects$$
 It may save significant execution time and memory to write a special
