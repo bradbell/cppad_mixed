@@ -29,6 +29,11 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 02-26$$
+Fix a bug in the use of $cref cholmod_solve$$,
+to be specific, accessing past the end of the
+$cref/row/cholmod_solve/row/$$ vector.
+
 $head 02-06$$
 $list number$$
 Change the random constraint matrix $icode A_info$$

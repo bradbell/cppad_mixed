@@ -172,15 +172,17 @@ void cholmod::solve(
 	CppAD::index_sort(key_, index_);
 
 	// return result values
-	size_t k  = 0;
-	for(size_t ell = 0; ell < ni; ell++)
-	{	size_t i = key_[ index_[ell] ];
+	size_t k   = 0;
+	size_t ell = 0;
+	while(ell < ni && k < row.size() )
+	{	size_t i = key_[ index_[ell++] ];
 		assert( i <= row[k] );
 		if( i == row[k] )
 		{	val_out[k] = sol_x[i];
 			k++;
 		}
 	}
+	assert( k == row.size() );
 
 	// restore the vector rhs_ to be zero
 	for(size_t k = 0; k < row.size(); k++)
