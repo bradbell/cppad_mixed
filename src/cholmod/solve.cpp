@@ -53,10 +53,9 @@ $codei%
 It contains all of the rows of column vector $latex b$$ that are
 non-zero and the rows of the column vector $icode x$$
 that are desired.
-These values must be unique; i.e.,
-for $icode%j% != %k%$$,
+These values are in strictly increasing order; i.e.,
 $codei%
-	%row%[%j%] != %row%[%k%]
+	%row%[%k%] < %row%[%k%+1]
 %$$
 It follows that $icode%row%.size()%$$ is less than or equal
 $cref/nrow_/cholmod_ctor/nrow_/$$.

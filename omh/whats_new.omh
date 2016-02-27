@@ -30,9 +30,10 @@ $childtable%omh/whats_new_15.omh
 %$$
 
 $head 02-26$$
-Fix a bug in the use of $cref cholmod_solve$$,
+Fix a bug in the use of $cref cholmod_solve$$.
 to be specific, accessing past the end of the
-$cref/row/cholmod_solve/row/$$ vector.
+$cref/row/cholmod_solve/row/$$ vector, in addition it must be
+in increasing order (and was not specified as such).
 
 $head 02-06$$
 $list number$$

@@ -157,13 +157,27 @@ void cppad_mixed::ran_obj_jac(
 		row_solve.resize(0);
 		val_b.resize(0);
 		val_x.resize(0);
+		//
+		// increment through all row indices
+		size_t i = 0;
 
 		// b = j-th column of - f_{u, theta} (theta, u)
 		while( col <= j )
-		{	if( col == j )
+		{	// make sure we are solving for all rows where
+			// derivative of logdet w.r.t random effects is non-zero.
+			while( i < row )
+			{	if( logdet_ran[i] != 0.0 )
+				{	row_solve.push_back(i);
+					val_b.push_back(0.0);
+				}
+				i++;
+			}
+			if( col == j )
 			{	row_solve.push_back(row);
 				val_b.push_back( - val_out[k] );
 				found[row] = true;
+				assert( i == row );
+				i++;
 			}
 			k++;
 			if( k < K )
@@ -179,14 +193,14 @@ void cppad_mixed::ran_obj_jac(
 			}
 		}
 		assert( col > j );
-		//
 		// make sure we are solving for all rows where
 		// derivative of logdet w.r.t random effects is non-zero.
-		for(size_t i = 0; i < n_random_; i++)
-		{	if( ! found[i] && logdet_ran[i] != 0.0 )
+		while( i < n_random_ )
+		{	if( logdet_ran[i] != 0.0 )
 			{	row_solve.push_back(i);
 				val_b.push_back(0.0);
 			}
+			i++;
 		}
 
 		// x = j-th column of - f_{u,u}(theta, u)^{-1} f_{u,theta}(theta, u)
