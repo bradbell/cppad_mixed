@@ -316,7 +316,7 @@ $srccode%cpp% */
 	const bool quasi_fixed_;
 /* %$$
 
-$head A_info$$
+$head A_info_$$
 contains the random constraint matrix
 $srccode%cpp% */
 	const CppAD::mixed::sparse_mat_info A_info_;
@@ -428,7 +428,7 @@ $comment ------------------------------------------------------------------- $$
 $head ran_objcon_fun_$$
 If $icode%n_random_% > 0%$$, quasi_fixed_ is false, and
 $code init_ran_objcon_done_$$,
-this is a recording of the second approximation for the
+this is a recording of the second order approximation for the
 random part of the Laplace approximation, $latex H( \beta , \theta , u)$$;
 see $cref/ran_objcon_fun_/init_ran_objcon/ran_objcon_fun_/$$.
 $srccode%cpp% */

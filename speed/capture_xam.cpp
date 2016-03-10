@@ -493,10 +493,7 @@ int main(int argc, char *argv[])
 		mixed_object.initialize(theta_in, u_in);
 
 	// print sizes
-	cout << endl
-	<< "n_fixed     = "  << n_fixed << endl
-	<< "n_random    = " << n_random << endl
-	<< "quasi_fixed = " << quasi_fixed << endl;
+	cout << endl;
 	std::map<std::string, size_t>::const_iterator itr;
 	for(itr = size_map.begin(); itr != size_map.end(); ++itr)
 		cout << itr->first << " = " << itr->second << endl;

@@ -12,6 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin initialize$$
 $spell
+	chol
 	objcon
 	init
 	CppAD
@@ -79,116 +80,82 @@ $codei%
 It represent the size of certain aspects of the problem.
 For each of $code cppad_mixed$$ member variables listed below
 $codei%
-	%size_map%[%member_variable%]
+	%size_map%[%expression%]
 %$$
-is the corresponding size.
-
-$subhead fix_con_fun_$$
-$icode%size_map%["fix_con_fun_"]%$$ is the number of variables in
-$cref/fix_con_fun_/init_fix_con/fix_con_fun_/$$.
-
-$subhead fix_con_hes_$$
-$icode%size_map%["fix_con_hes_"]%$$ is the size of the row vector in
-$cref/fix_con_hes_/init_fix_con/fix_con_hes_/$$.
-This is also the number of non-zeros
-in the Hessian $latex c_{\theta,\theta} ( \theta )$$.
-
-$subhead fix_con_jac_$$
-$icode%size_map%["fix_con_jac_"]%$$ is the size of the row vector in
-$cref/fix_con_jac_/init_fix_con/fix_con_jac_/$$.
-This is also the number of non-zeros
-in the Jacobian $latex c_\theta ( \theta )$$.
-
-$subhead fix_like_fun_$$
-$icode%size_map%["fix_like_fun_"]%$$ is the number of variables in
-$cref/fix_like_fun_/init_fix_like/fix_like_fun_/$$.
-
-$subhead fix_like_hes_$$
-$icode%size_map%["fix_like_hes_"]%$$ is the size of the row vector in
-$cref/fix_like_hes_/init_fix_like/fix_like_hes_/$$.
-This is also the number of non-zeros
-in the Hessian $latex g_{\theta,\theta} ( \theta )$$.
-
-$subhead fix_like_jac_$$
-$icode%size_map%["fix_like_jac_"]%$$ is the size of the row vector in
-$cref/fix_like_jac_/init_fix_like/fix_like_jac_/$$.
-This is also the number of non-zeros
-in the Jacobian $latex g_\theta ( \theta )$$.
-
-$subhead ran_hes_$$
-$icode%size_map%["ran_hes_"]%$$ is the size of the row vector in
-$cref/ran_hes_/init_ran_hes/ran_hes_/$$.
-This is also the number of non-zeros
-in the lower triangle of the Hessian
-$latex \[
-	f_{u,u} ( \theta , u )
-\]$$
-see $cref/f(theta, u)/
-	theory/
-	Random Likelihood, f(theta, u)
-/$$
-
-$subhead hes_cross_$$
-$icode%size_map%["hes_cross_"]%$$ is the size of the row vector in
-$cref/hes_cross_/init_hes_cross/hes_cross_/$$.
-This is also the number of non-zeros
-in the Hessian
-$latex \[
-	f_{u,\theta} ( \theta , u )
-\]$$
-see $cref/f(theta, u)/
-	theory/
-	Random Likelihood, f(theta, u)
-/$$
-
-$subhead ran_hes_fun_$$
-$icode%size_map%["ran_hes_fun_"]%$$ is the number of variables in
-$cref/ran_hes_fun_/init_ran_hes/ran_hes_fun_/$$.
-
-$subhead ran_objcon_hes_$$
-$icode%size_map%["ran_objcon_hes_"]%$$ is the size of the row vector in
-$cref/ran_objcon_hes_/init_ran_objcon_hes/ran_objcon_hes_/$$.
-This is also the number of non-zeros
-in the lower triangle of the Hessian
-$latex \[
-	r_{\theta,\theta} ( \theta )
-	=
-	H_{\beta,\beta} [ \beta, \theta , \hat{u} ( \theta) ]
-\] $$
-see
-$cref/H(beta, theta, u)
-	/theory
-	/Approximate Random Objective, H(beta, theta, u)
-/$$.
-
-$subhead newton_atom_$$
-If $cref/quasi_fixed_/private/quasi_fixed_/$$ is false,
-$icode%size_map%["newton_atom_"]%$$ is the number of variables in the
-$cref/newton_atom_/private/newton_atom_/$$
-tape used to represent the $cref newton_step$$ checkpoint function.
-
-$subhead num_bytes_after$$
-$icode%size_map%["num_bytes_after"]%$$ is the number of bytes
-allocated by $code CppAD::thread_alloc$$ and still in use
-when $code initialization$$ is completed.
+where expression is one of the following:
+$table
+$icode expression$$ $cnext Link
+$rnext
+$code n_fixed_$$  $cnext
+	$cref/n_fixed_/private/n_fixed_/$$
+$rnext
+$code n_random_$$  $cnext
+	$cref/n_random_/private/n_random_/$$
+$rnext
+$code quasi_fixed_$$  $cnext
+	$cref/quasi_fixed_/private/quasi_fixed_/$$
+$rnext
+$code A_info_.row.size()$$  $cnext
+	$cref/A_info_/private/A_info_/$$
+$rnext
+$code n_ran_con_$$  $cnext
+	$cref/n_ran_con_/private/n_ran_con_/$$
+$rnext
+$code ran_like_fun_.size_var()$$  $cnext
+	$cref/ran_like_fun_/private/ran_like_fun_/$$
+$rnext
+$code ran_like_a1fun_.size_var()$$  $cnext
+	$cref/ran_like_fun_/private/ran_like_fun_/$$
+$rnext
+$code ran_hes_.row()$$  $cnext
+	$cref/ran_hes_fun_/private/ran_hes_fun_/$$
+$rnext
+$code ran_hes_fun_.size_var()$$  $cnext
+	$cref/ran_hes_fun_/private/ran_hes_fun_/$$
+$rnext
+$code 2DO$$ $cnext
+	$cref/chol_ran_hes_/private/chol_ran_hes_/$$
+$rnext
+$code hes_cross_.row.size()$$ $cnext
+	$cref/hes_cross_/private/hes_cross_/$$
+$rnext
+$code newton_atom_.size_var()$$ $cnext
+	$cref/newton_atom_/private/newton_atom_/$$
+$rnext
+$code ran_objcon_fun_.size_var()$$ $cnext
+	$cref/ran_objcon_fun_/private/ran_objcon_fun_/$$
+$rnext
+$code ran_objcon_hes_.row.size()$$ $cnext
+	$cref/ran_objcon_hes_/private/ran_objcon_fun_/ran_objcon_hes_/$$
+$rnext
+$code fix_like_fun.size_var()$$ $cnext
+	$cref/fix_like_fun_/private/fix_like_fun_/$$
+$rnext
+$code fix_like_jac_.row.size()$$ $cnext
+	$cref/fix_like_jac_/private/fix_like_fun_/fix_like_jac_/$$
+$rnext
+$code fix_like_hes_.row.size()$$ $cnext
+	$cref/fix_like_hes_/private/fix_like_fun_/fix_like_hes_/$$
+$rnext
+$code fix_con_fun.size_var()$$ $cnext
+	$cref/fix_con_fun_/private/fix_con_fun_/$$
+$rnext
+$code fix_con_jac_.row.size()$$ $cnext
+	$cref/fix_con_jac_/private/fix_con_fun_/fix_con_jac_/$$
+$rnext
+$code fix_con_hes_.row.size()$$ $cnext
+	$cref/fix_con_hes_/private/fix_con_fun_/fix_con_hes_/$$
+$tend
 
 $subhead num_bytes_before$$
 $icode%size_map%["num_bytes_before"]%$$ is the number of bytes
 allocated by $code CppAD::thread_alloc$$ and still in use
 when $code initialize$$ starts.
 
-$subhead ran_like_a1fun_$$
-$icode%size_map%["ran_like_a1fun_"]%$$ is the number of variables in
-$cref/ran_like_a1fun_/init_ran_like/ran_like_a1fun_/$$.
-
-$subhead ran_like_fun_$$
-$icode%size_map%["ran_like_fun_"]%$$ is the number of variables in
-$cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$.
-
-$subhead ran_objcon_fun_$$
-$icode%size_map%["ran_objcon_fun_"]%$$ is the number of variables in
-$cref/ran_objcon_fun_/init_ran_objcon/ran_objcon_fun_/$$.
-
+$subhead num_bytes_after$$
+$icode%size_map%["num_bytes_after"]%$$ is the number of bytes
+allocated by $code CppAD::thread_alloc$$ and still in use
+when $code initialization$$ is completed.
 
 $head Example$$
 The file $cref derived_xam.cpp$$ contains an example
@@ -289,29 +256,27 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 
 	// return value
 	std::map<std::string, size_t> size_map;
-	size_map["num_bytes_before"]      = num_bytes_before;
-	size_map["ran_like_fun_"]   = ran_like_fun_.size_var();
-	size_map["ran_like_a1fun_"] = ran_like_a1fun_.size_var();
-	//
-	size_map["ran_hes_"]              = ran_hes_.row.size();
-	size_map["ran_hes_fun_"]          = ran_hes_fun_.size_var();
-	//
-	size_map["hes_cross_"]            = hes_cross_.row.size();
-	if( ! quasi_fixed_ )
-	{	size_map["newton_step_"]      = newton_atom_.size_var();
-		//
-		size_map["ran_objcon_fun_"]       = ran_objcon_fun_.size_var();
-		size_map["ran_objcon_hes_"]       = ran_objcon_hes_.row.size();
-	}
-	size_map["fix_like_fun_"]   = fix_like_fun_.size_var();
-	size_map["fix_like_jac_"]   = fix_like_jac_.row.size();
-	size_map["fix_like_hes_"]   = fix_like_hes_.row.size();
-	//
-	size_map["fix_con_fun_"]   = fix_con_fun_.size_var();
-	size_map["fix_con_jac_"]   = fix_con_jac_.row.size();
-	size_map["fix_con_hes_"]   = fix_con_hes_.row.size();
-	//
-	size_map["num_bytes_after"]       = CppAD::thread_alloc::inuse(thread);
+	size_map["num_bytes_before"]           = num_bytes_before;
+	size_map["n_fixed_"]                   = n_fixed_;
+	size_map["n_random_"]                  = n_random_;
+	size_map["quasi_fixed_"]               = quasi_fixed_;
+	size_map["A_info_.row.size()"]         = A_info_.row.size();
+	size_map["n_ran_con_"]                 = n_ran_con_;
+	size_map["ran_like_fun_.size_var()"]   = ran_like_fun_.size_var();
+	size_map["ran_like_a1fun_.size_var()"] = ran_like_a1fun_.size_var();
+	size_map["ran_hes_.row.size()"]        = ran_hes_.row.size();
+	size_map["ran_hes_fun_.size_var()"]    = ran_hes_fun_.size_var();
+	size_map["hes_cross_.row.size()"]      = hes_cross_.row.size();
+	size_map["newton_atom_.size_var()"]    = newton_atom_.size_var();
+	size_map["ran_objcon_fun_.size_var()"] = ran_objcon_fun_.size_var();
+	size_map["ran_objcon_hes_.row.size()"] = ran_objcon_hes_.row.size();
+	size_map["fix_like_fun_.size_var()"]   = fix_like_fun_.size_var();
+	size_map["fix_like_jac_.row.size()"]   = fix_like_jac_.row.size();
+	size_map["fix_like_hes_.row.size()"]   = fix_like_hes_.row.size();
+	size_map["fix_con_fun_.size_var()"]    = fix_con_fun_.size_var();
+	size_map["fix_con_jac_.row.size()"]    = fix_con_jac_.row.size();
+	size_map["fix_con_hes_.row.size()"]    = fix_con_hes_.row.size();
+	size_map["num_bytes_after"]            = CppAD::thread_alloc::inuse(thread);
 	return size_map;
 }
 
