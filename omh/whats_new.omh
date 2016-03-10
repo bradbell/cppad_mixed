@@ -29,6 +29,10 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 03-09$$
+The summary of memory usage has been changed; see
+$cref/size_map/initialize/size_map/$$.
+
 $head 02-26$$
 Fix a bug in the use of $cref cholmod_solve$$.
 to be specific, accessing past the end of the
