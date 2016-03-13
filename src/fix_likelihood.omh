@@ -8,7 +8,6 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
-/*
 $begin fix_likelihood$$
 $spell
 	CppAD
@@ -36,7 +35,7 @@ The type $code a1_double$$ below is one of the
 see $cref/AD Types/public/AD Types/$$.
 
 $head Virtual Function$$
-The following virtual function must be implemented in the derived class:
+The following virtual function may be implemented in the derived class:
 $codei%
 	virtual CppAD::vector<a1_double> fix_likelihood(
 		const CppAD::vector<a1_double>& %fixed_vec%

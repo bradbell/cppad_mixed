@@ -73,6 +73,7 @@ $spell
 	ctor
 	std
 	bool
+	hes
 $$
 
 $section cppad_mixed: Public Declarations$$
@@ -110,6 +111,22 @@ $srccode%cpp% */
 	{	return a1d_vector(0); }
 /* %$$
 See $cref ran_likelihood$$.
+
+$subhead ran_likelihood_hes$$
+$srccode%cpp% */
+	virtual void ran_likelihood_hes(
+		const a1d_vector&          fixed_vec  ,
+		const a1d_vector&          random_vec ,
+		CppAD::vector<size_t>&     row        ,
+		CppAD::vector<size_t>&     col        ,
+		CppAD::vector<a1d_vector>& val        )
+	{	row.resize(0);
+		col.resize(0);
+		val.resize(0);
+		return;
+	}
+/* %$$
+See $cref ran_likelihood_hes$$.
 
 $subhead fix_likelihood$$
 $srccode%cpp% */
@@ -217,6 +234,7 @@ $srccode%cpp% */
 /* %$$
 $childtable%src/derived_ctor.omh
 	%src/ran_likelihood.omh
+	%src/ran_likelihood_hes.omh
 	%src/fix_likelihood.omh
 	%src/fix_constraint.omh
 	%src/initialize.cpp

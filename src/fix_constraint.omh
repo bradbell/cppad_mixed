@@ -1,14 +1,13 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
-/*
 $begin fix_constraint$$
 $spell
 	CppAD
@@ -36,7 +35,7 @@ The type $icode a1_double$$ below is one of the
 see $cref/AD Types/public/AD Types/$$.
 
 $head Virtual Function$$
-The following virtual function must be implemented in the derived class:
+The following virtual function may be implemented in the derived class:
 $codei%
 	virtual CppAD::vector<a1_double> fix_constraint(
 		const CppAD::vector<a1_double>& %fixed_vec%
