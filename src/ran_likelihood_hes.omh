@@ -15,6 +15,7 @@ $spell
 	cppad
 	CppAD
 	const
+	checkpointing
 $$
 
 $section User Define Hessian With Respect to Random Effects$$
@@ -23,8 +24,8 @@ $head Under Construction$$
 This feature is under construction and is not currently available for use.
 
 $head Syntax$$
-$codei%mixed_object.ran_likelihood_hes(
-	%fixed_vec%, %random_vec%, %row%, %col%, %val%
+$icode%val% = mixed_object.ran_likelihood_hes(
+	%fixed_vec%, %random_vec%, %row%, %col%
 )%$$
 
 $head Purpose$$
@@ -32,6 +33,11 @@ In some cases the user can define a more efficient version of the Hessian
 $latex f_{u,u} ( \theta , u )$$ than can be obtained by applying AD to
 the $cref ran_likelihood$$ function.
 In this case one may define this function directly.
+For example, it may be possible that the user defined
+$code ran_likelihood_hes$$ uses CppAD checkpointing.
+If uses puts checkpointing in $cref ran_likelihood$$, it would be present in
+$cref/ran_like_a1fun_/private/ran_like_fun_/$$ but it would be lost
+when recording the operations for $cref/ran_hes_fun_/Private/ran_hes_fun_/$$.
 
 $head Public$$
 This $code cppad_mixed$$ member function is $cref public$$.
@@ -73,37 +79,32 @@ $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ vector
 $latex u$$.
 
 $head K$$
-Upon return the vectors
-$icode row$$, $icode col$$, and $icode val$$
-must have the same size.
-We use $icode K$$ to denote the size of these vectors.
+We use $icode K$$ to denote the size of the
+$icode row$$ and $icode col$$ vectors (which must be equal).
 
 $head row$$
 This argument has prototype
 $codei%
-	CppAD::vector<size_t>& %row%
+	const CppAD::vector<size_t>& %row%
 %$$
-The input size and value of its elements does not matter.
-Upon return it contains the row indices for the sparse Hessian values.
+It contains the row indices for the Hessian values.
 For $icode%k% = 0 , %...% , %K%-1%$$,
 $icode%row%[%k%] < %random_vec%.size()%$$.
 
 $head col$$
 This argument has prototype
 $codei%
-	CppAD::vector<size_t>& %col%
+	const CppAD::vector<size_t>& %col%
 %$$
-The input size and value of its elements does not matter.
-Upon return it contains the column indices for the sparse Hessian values.
+It contains the column indices for the Hessian values.
 For $icode%k% = 0 , %...% , %K%-1%$$,
 $icode%col%[%k%] < %random_vec%.size()%$$.
 
 $head val$$
-This argument has prototype
+The return value has prototype
 $codei%
 	CppAD::vector<a1_double>& %val%
 %$$
-The input size and value of its elements does not matter.
 Upon return it contains the values in the sparse Hessian.
 For $icode%k% = 0 , %...% , %K%-1%$$,
 $icode%val%[%k%]%$$ is the second partial of the random likelihood
@@ -111,27 +112,21 @@ $latex f( \theta , u )$$ with respect to
 $icode%u%[ %row%[k] ]%$$ and
 $icode%u%[ %col%[k] ]%$$.
 
-$head Lower Triangle$$
-Only the lower triangle of the possible non-zero elements of
-the hessian is returned; i.e.
-for $icode%k% = 0 , %...% , %K%-1%$$,
-$codei%
-	%row%[%k%] >= %col%[%k%]
-%$$
-
 $head Default$$
 The base class definition (default) for version of
-$code ran_likelihood_hes$$ returns size zero vectors for
-$icode row$$, $icode col$$ and $icode val$$.
-If the return value for these vectors is zero,
-the Hessian $latex f_{u,u} ( \theta , u )$$
+$code ran_likelihood_hes$$ returns a size zero vector for $icode val$$
+(the empty vector).
+In this case,
+Hessian $latex f_{u,u} ( \theta , u )$$
 is computed by applying AD to the $cref ran_likelihood$$ function.
-If the return value is non-zero,
-the Hessian $latex f_{u,u} ( \theta , u)$$ is computed using this function.
 
-$head n_random$$
-If $cref/n_random/derived_ctor/n_random/$$ is zero,
-then return value of $icode row$$, $icode col$$ and $icode val$$
-must be zero.
+$head Plan$$
+This plan is for the case where $icode%val%.size() > 0%$$.
+$list number$$
+The function
+$cref/ran_hes_fun_/private/ran_hes_fun_/$$ will be recorded using
+$code ran_likelihood_hes$$ (as apposed to using $code ran_like_a1fun_$$.
+$lend
+
 
 $end

@@ -114,17 +114,12 @@ See $cref ran_likelihood$$.
 
 $subhead ran_likelihood_hes$$
 $srccode%cpp% */
-	virtual void ran_likelihood_hes(
+	virtual a1d_vector ran_likelihood_hes(
 		const a1d_vector&          fixed_vec  ,
 		const a1d_vector&          random_vec ,
 		CppAD::vector<size_t>&     row        ,
-		CppAD::vector<size_t>&     col        ,
-		a1d_vector&                val        )
-	{	row.resize(0);
-		col.resize(0);
-		val.resize(0);
-		return;
-	}
+		CppAD::vector<size_t>&     col        )
+	{	return a1d_vector(0); }
 /* %$$
 See $cref ran_likelihood_hes$$.
 
