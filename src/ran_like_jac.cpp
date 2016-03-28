@@ -91,6 +91,20 @@ CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_jac(
 	assert( n_fixed_  == fixed_vec.size() );
 	assert( n_random_ == random_vec.size() );
 
+	// -----------------------------------------------------------------------
+	// check if there is a user defined version of the Jacobian
+	a1d_vector jac_ran = ran_likelihood_jac(fixed_vec, random_vec);
+	if( jac_ran.size() != 0 )
+	{	if( jac_ran.size() != n_random_ )
+		{	std::string error_message = "cppad_mixed: "
+			"ran_likelihood_jac return value does not have size n_random_.";
+			fatal_error(error_message);
+		}
+		return jac_ran;
+	}
+	// -----------------------------------------------------------------------
+	// must compute jac_ran using ran_like_a1fun_ and AD
+
 	// create an a1d_vector containing (theta, u)
 	a1d_vector both_vec( n_fixed_ + n_random_ );
 	pack(fixed_vec, random_vec, both_vec);
@@ -105,7 +119,7 @@ CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_jac(
 	jac_both = ran_like_a1fun_.Reverse(1, a1_w);
 
 	// extract u part of the Jacobian
-	a1d_vector jac_ran(n_random_);
+	jac_ran.resize(n_random_);
 	for(size_t j = 0; j < n_random_; j++)
 		jac_ran[j] = jac_both[n_fixed_ + j];
 	//

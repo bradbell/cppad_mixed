@@ -29,6 +29,9 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 03-28$$
+Add the $cref ran_likelihood_xam.cpp$$ example.
+
 $head 03-09$$
 The summary of memory usage has been changed; see
 $cref/size_map/initialize/size_map/$$.

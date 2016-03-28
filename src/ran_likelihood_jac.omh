@@ -82,9 +82,9 @@ The return value has prototype
 $codei%
 	CppAD::vector<a1_double>& %vec%
 %$$
-Upon return it contains the values in the Jacobian.
-Let $icode n$$ be the size of $icode random_vec$$.
-For $icode%j% = 0 , %...% , %n%-1%$$,
+Upon return its size is the same as $icode random_vec$$
+and it contains the values in the Jacobian.
+To be specific,
 $icode%vec%[%j%]%$$ is the partial of the random likelihood
 $latex f( \theta , u )$$ with respect to $latex u_j$$.
 
