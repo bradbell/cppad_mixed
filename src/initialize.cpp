@@ -186,8 +186,17 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 			a1_fixed_vec[i] = fixed_vec[i];
 		a1d_vector vec = ran_likelihood(a1_fixed_vec, a1_random_vec);
 		if( vec.size() != 0 )
-		{	std::string msg = "There are no random effects (n_random = 0),";
-			msg += "\nbut the function ran_likelihood returns a non-empty vector";
+		{	std::string msg = "There are no random effects, n_random = 0,";
+			msg += "\nbut ran_likelihood returns a non-empty vector";
+			fatal_error(msg);
+		}
+		CppAD::vector<size_t> row, col;
+		a1d_vector val;
+		ran_likelihood_hes(a1_fixed_vec, a1_random_vec, row, col, val);
+		if( row.size() != 0 || col.size() != 0 || val.size() != 0 )
+		{	std::string msg = "There are no random effects, n_random = 0,";
+			msg += "\nbut ran_likelihood_hes returns a non-empty value for";
+			msg += "\nrow, col, or val";
 			fatal_error(msg);
 		}
 		// in this case, number of random constraints is zero (must be set)

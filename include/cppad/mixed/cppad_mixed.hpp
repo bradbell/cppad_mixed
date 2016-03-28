@@ -119,7 +119,7 @@ $srccode%cpp% */
 		const a1d_vector&          random_vec ,
 		CppAD::vector<size_t>&     row        ,
 		CppAD::vector<size_t>&     col        ,
-		CppAD::vector<a1d_vector>& val        )
+		a1d_vector&                val        )
 	{	row.resize(0);
 		col.resize(0);
 		val.resize(0);

@@ -73,9 +73,10 @@ $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ vector
 $latex u$$.
 
 $head K$$
-We use $icode K$$ to denote the size of the arrays
-$icode row$$, $icode col$$, and $icode val$$.
-(Upon return these vectors must have the same size.)
+Upon return the vectors
+$icode row$$, $icode col$$, and $icode val$$
+must have the same size.
+We use $icode K$$ to denote the size of these vectors.
 
 $head row$$
 This argument has prototype
@@ -122,7 +123,15 @@ $head Default$$
 The base class definition (default) for version of
 $code ran_likelihood_hes$$ returns size zero vectors for
 $icode row$$, $icode col$$ and $icode val$$.
-In this case, the Hessian $latex f_{u,u} ( \theta , u )$$
+If the return value for these vectors is zero,
+the Hessian $latex f_{u,u} ( \theta , u )$$
 is computed by applying AD to the $cref ran_likelihood$$ function.
+If the return value is non-zero,
+the Hessian $latex f_{u,u} ( \theta , u)$$ is computed using this function.
+
+$head n_random$$
+If $cref/n_random/derived_ctor/n_random/$$ is zero,
+then return value of $icode row$$, $icode col$$ and $icode val$$
+must be zero.
 
 $end
