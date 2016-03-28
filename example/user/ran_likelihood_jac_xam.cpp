@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin ran_likelihood_xam.cpp$$
+$begin ran_likelihood_jac_xam.cpp$$
 $spell
 	CppAD
 	cppad
@@ -20,7 +20,7 @@ $$
 $section mixed_cppad Derived Class: Example and Test$$
 
 $code
-$srcfile%example/user/ran_likelihood_xam.cpp
+$srcfile%example/user/ran_likelihood_jac_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -156,6 +156,7 @@ bool ran_likelihood_jac_xam(void)
 	vector<double> check = f.Jacobian(random_vec);
 
 	// check the jacobian values
+	// (when NDEBUG is not defined, cppad_mixed also does this check)
 	for(size_t i = 0; i < n_data; i++)
 		ok &= CppAD::NearEqual( Value(a1_jac[i]), check[i], eps, eps);
 

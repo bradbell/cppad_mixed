@@ -100,6 +100,24 @@ CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_jac(
 			"ran_likelihood_jac return value does not have size n_random_.";
 			fatal_error(error_message);
 		}
+# ifdef NDEBUG
+		// check the values
+		d_vector both_vec( n_fixed_ + n_random_ );
+		pack(fixed_vec, random_vec, both_vec);
+		ran_like_fun_.Forward(0, both_vec);
+		d_vector w(1), jac_both(n_fixed_ + n_random_);
+		w[0] = 1.0;
+		jac_both = ran_like_fun_.Reverse(1, a1_w);
+		double eps = 100. * std::numeric_limits<double>::epsilon();
+		bool ok = true;
+		for(size_t j = 0; j < n_random_; j++)
+			ok &= CppAD::NearEqual(jac_ran[j], jac_both[n_fixed_+j], eps, eps);
+		if( ! ok )
+		{	std::string error_message = "cppad_mixed: "
+				"ran_likelihood_jac Jacobian does not agree with AD jac.";
+			fatal_error(error_message);
+		}
+# endif
 		return jac_ran;
 	}
 	// -----------------------------------------------------------------------

@@ -96,6 +96,11 @@ In this case,
 the Jacobian $latex f_u ( \theta , u )$$
 is computed by applying AD to the $cref ran_likelihood$$ function.
 
+$head Derivative Test$$
+If $code NDEBUG$$ is not defined,
+the routine $cref ran_like_jac$$ checks that the derivatives agree
+with the AD derivatives.
+
 $children%
 	example/user/ran_likelihood_jac_xam.cpp
 %$$
