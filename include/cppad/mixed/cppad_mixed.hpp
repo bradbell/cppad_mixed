@@ -57,6 +57,7 @@ public:
 /*
 $begin public$$
 $spell
+	jac
 	choleig
 	std
 	cerr
@@ -111,6 +112,15 @@ $srccode%cpp% */
 	{	return a1d_vector(0); }
 /* %$$
 See $cref ran_likelihood$$.
+
+$subhead ran_likelihood_jac$$
+$srccode%cpp% */
+	virtual a1d_vector ran_likelihood_jac(
+		const a1d_vector&          fixed_vec  ,
+		const a1d_vector&          random_vec )
+	{	return a1d_vector(0); }
+/* %$$
+See $cref ran_likelihood_jac$$.
 
 $subhead ran_likelihood_hes$$
 $srccode%cpp% */
@@ -229,12 +239,13 @@ $srccode%cpp% */
 /* %$$
 $childtable%src/derived_ctor.omh
 	%src/ran_likelihood.omh
-	%src/ran_likelihood_hes.omh
 	%src/fix_likelihood.omh
 	%src/fix_constraint.omh
 	%src/initialize.cpp
 	%src/optimize_random.cpp
 	%src/optimize_fixed.cpp
+	%src/ran_likelihood_jac.omh
+	%src/ran_likelihood_hes.omh
 %$$
 
 

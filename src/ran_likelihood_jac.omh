@@ -8,36 +8,35 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-$begin ran_likelihood_hes$$
+$begin ran_likelihood_jac$$
 $spell
-	hes
+	jac
 	vec
 	cppad
 	CppAD
 	const
 	checkpointing
+	Jacobian
 $$
 
-$section User Define Hessian With Respect to Random Effects$$
+$section User Define Jacobian With Respect to Random Effects$$
 
 $head Under Construction$$
 This feature is under construction and is not currently available for use.
 
 $head Syntax$$
-$icode%val% = mixed_object.ran_likelihood_hes(
-	%fixed_vec%, %random_vec%, %row%, %col%
-)%$$
+$icode%vec% = mixed_object.ran_likelihood_jac(%fixed_vec%, %random_vec%)%$$
 
 $head See Also$$
-$cref ran_likelihood_jac$$
+$cref ran_likelihood_hes$$
 
 $head Purpose$$
-In some cases the user can define a more efficient version of the Hessian
-$latex f_{u,u} ( \theta , u )$$ than can be obtained by applying AD to
+In some cases the user can define a more efficient version of the Jacobian
+$latex f_u ( \theta , u )$$ than can be obtained by applying AD to
 the $cref ran_likelihood$$ function.
 In this case one may define this function directly.
 For example, it may be possible for the user to defined
-$code ran_likelihood_hes$$ using CppAD checkpointing.
+$code ran_likelihood_jac$$ using CppAD checkpointing.
 If one puts checkpointing in $cref ran_likelihood$$, it would be present in
 $cref/ran_like_a1fun_/private/ran_like_fun_/$$ but it would be lost
 when recording derivatives calculated by $code ran_like_a1fun_$$.
@@ -54,11 +53,9 @@ $head Virtual Function$$
 The following virtual function may be implemented
 in the derived class:
 $codei%
-	virtual CppAD::vector<a1_double> ran_likelihood_hes(
+	virtual CppAD::vector<a1_double> ran_likelihood_jac(
 		const CppAD::vector<a1_double>& %fixed_vec%   ,
-		const CppAD::vector<a1_double>& %random_vec%  ,
-		const CppAD::vector<size_t>&          %row%   ,
-		const CppAD::vector<size_t>&          %col%
+		const CppAD::vector<a1_double>& %random_vec%
 	)
 %$$
 
@@ -80,55 +77,31 @@ It contains a value for the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ vector
 $latex u$$.
 
-$head K$$
-We use $icode K$$ to denote the size of the
-$icode row$$ and $icode col$$ vectors (which must be equal).
-
-$head row$$
-This argument has prototype
-$codei%
-	const CppAD::vector<size_t>& %row%
-%$$
-It contains the row indices for the Hessian values.
-For $icode%k% = 0 , %...% , %K%-1%$$,
-$icode%row%[%k%] < %random_vec%.size()%$$.
-
-$head col$$
-This argument has prototype
-$codei%
-	const CppAD::vector<size_t>& %col%
-%$$
-It contains the column indices for the Hessian values.
-For $icode%k% = 0 , %...% , %K%-1%$$,
-$icode%col%[%k%] < %random_vec%.size()%$$.
-
-$head val$$
+$head vec$$
 The return value has prototype
 $codei%
-	CppAD::vector<a1_double>& %val%
+	CppAD::vector<a1_double>& %vec%
 %$$
-Upon return it contains the possibly non-zero values in the Hessian.
-To be specific,
-for $icode%k% = 0 , %...% , %K%-1%$$,
-$icode%val%[%k%]%$$ is the second partial of the random likelihood
-$latex f( \theta , u )$$ with respect to
-$icode%u%[ %row%[k] ]%$$ and
-$icode%u%[ %col%[k] ]%$$.
+Upon return it contains the values in the Jacobian.
+Let $icode n$$ be the size of $icode random_vec$$.
+For $icode%j% = 0 , %...% , %n%-1%$$,
+$icode%vec%[%j%]%$$ is the partial of the random likelihood
+$latex f( \theta , u )$$ with respect to $latex u_j$$.
 
 $head Default$$
 The base class definition (default) for version of
-$code ran_likelihood_hes$$ returns a size zero vector for $icode val$$
+$code ran_likelihood_jac$$ returns a size zero vector for $icode vec$$
 (the empty vector).
 In this case,
-Hessian $latex f_{u,u} ( \theta , u )$$
+the Jacobian $latex f_u ( \theta , u )$$
 is computed by applying AD to the $cref ran_likelihood$$ function.
 
 $head Plan$$
-This plan is for the case where $icode%val%.size() > 0%$$.
+This plan is for the case where $icode%vec%.size() > 0%$$.
 $list number$$
-The function
-$cref/ran_hes_fun_/private/ran_hes_fun_/$$ will be recorded using
-$code ran_likelihood_hes$$ (as apposed to using $code ran_like_a1fun_$$.
+The function $cref ran_like_jac$$ will use
+$code ran_likelihood_jac$$, as apposed to $code ran_like_a1fun_$$,
+to evaluate the jacobian of the random likelihood.
 $lend
 
 
