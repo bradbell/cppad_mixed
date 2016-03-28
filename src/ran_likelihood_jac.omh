@@ -96,13 +96,12 @@ In this case,
 the Jacobian $latex f_u ( \theta , u )$$
 is computed by applying AD to the $cref ran_likelihood$$ function.
 
-$head Plan$$
-This plan is for the case where $icode%vec%.size() > 0%$$.
-$list number$$
-The function $cref ran_like_jac$$ will use
-$code ran_likelihood_jac$$, as apposed to $code ran_like_a1fun_$$,
-to evaluate the jacobian of the random likelihood.
-$lend
+$children%
+	example/user/ran_likelihood_jac_xam.cpp
+%$$
+$head Example$$
+The file $cref ran_likelihood_jac_xam.cpp$$ contains an example
+of defining this virtual function.
 
 
 $end

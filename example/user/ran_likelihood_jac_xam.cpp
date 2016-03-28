@@ -52,6 +52,7 @@ namespace {
 			cppad_mixed(n_fixed, n_random, quasi_fixed, A_info) ,
 			y_(y)
 		{ }
+		// ------------------------------------------------------------------
 		// implementation of ran_likelihood
 		template <class Float>
 		vector<Float> implement_ran_likelihood(
@@ -77,11 +78,33 @@ namespace {
 			return vec;
 		}
 		// ------------------------------------------------------------------
+		// ran_likelihood_jac
+		vector<a1_double> ran_likelihood_jac(
+			const vector<a1_double>& theta  ,
+			const vector<a1_double>& u      )
+		{
+			// return value
+			vector<a1_double> vec(y_.size());
+
+			// for each data and random effect
+			for(size_t i = 0; i < y_.size(); i++)
+			{	a1_double mu     = u[i];
+				a1_double sigma  = theta[i];
+				a1_double res    = (y_[i] - mu) / sigma;
+				a1_double res_ui = - 1.0 / sigma;
+
+				// This is a Gaussian term, so entire density is smooth
+				vec[i]  =  res * res_ui;
+			}
+			return vec;
+		}
+		// ------------------------------------------------------------------
 		// example a2 version of ran_likelihood
 		virtual vector<a2_double> ran_likelihood(
 			const vector<a2_double>& fixed_vec  ,
 			const vector<a2_double>& random_vec )
 		{	return implement_ran_likelihood(fixed_vec, random_vec); }
+		// ------------------------------------------------------------------
 		// example a1 version of ran_likelihood
 		virtual vector<a1_double> ran_likelihood(
 			const vector<a1_double>& fixed_vec  ,
@@ -90,14 +113,11 @@ namespace {
 	};
 }
 
-bool ran_likelihood_xam(void)
+bool ran_likelihood_jac_xam(void)
 {
 	bool   ok  = true;
-	double pi  = 4.0 * std::atan(1.0);
 	double eps = 100. * std::numeric_limits<double>::epsilon();
-
 	typedef cppad_mixed::a1_double a1_double;
-	typedef cppad_mixed::a2_double a2_double;
 
 	size_t n_data   = 10;
 	size_t n_fixed  = n_data;
@@ -105,18 +125,15 @@ bool ran_likelihood_xam(void)
 	vector<double>    data(n_data);
 	vector<double>    fixed_vec(n_fixed), random_vec(n_random);
 	vector<a1_double> a1_fixed(n_fixed), a1_random(n_random);
-	vector<a2_double> a2_fixed(n_fixed), a2_random(n_random);
 
 	for(size_t i = 0; i < n_data; i++)
 	{	data[i]       = double(i + 1);
 		//
 		fixed_vec[i]  = 1.5;
 		a1_fixed[i]   = a1_double( fixed_vec[i] );
-		a2_fixed[i]   = a2_double( fixed_vec[i] );
 		//
 		random_vec[i] = 0.0;
 		a1_random[i]  = a1_double( random_vec[i] );
-		a2_random[i]  = a2_double( random_vec[i] );
 	}
 
 	// object that is derived from cppad_mixed
@@ -125,24 +142,22 @@ bool ran_likelihood_xam(void)
 	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, A_info, data);
 	mixed_object.initialize(fixed_vec, random_vec);
 
-	// Evaluate a1_double version of random likelihood
-	vector<a1_double> a1_vec(1);
-	a1_vec = mixed_object.ran_likelihood(a1_fixed, a1_random);
+	// record Evaluation of a1_double version of random likelihood
+	CppAD::Independent(a1_random);
+	vector<a1_double> a1_fun(1);
+	a1_fun = mixed_object.ran_likelihood(a1_fixed, a1_random);
+	CppAD::ADFun<double> f(a1_random, a1_fun);
 
-	// Evaluate a2_double version of random likelihood
-	vector<a2_double> a2_vec(1);
-	a2_vec = mixed_object.ran_likelihood(a2_fixed, a2_random);
+	// Evaluate ran_likelihood_jac
+	vector<a1_double> a1_jac(n_random);
+	a1_jac = mixed_object.ran_likelihood_jac(a1_fixed, a1_random);
 
-	// check the random likelihood
-	double sum = 0.0;
+	// Compute the Jacobian using AD
+	vector<double> check = f.Jacobian(random_vec);
+
+	// check the jacobian values
 	for(size_t i = 0; i < n_data; i++)
-	{	double mu     = random_vec[i];
-		double sigma  = fixed_vec[i];
-		double res    = (data[i] - mu) / sigma;
-		sum          += (std::log(2 * pi * sigma * sigma) + res * res) / 2.0;
-	}
-	ok &= abs( a1_vec[0] / a1_double(sum) - a1_double(1.0) ) < eps;
-	ok &= abs( a2_vec[0] / a2_double(sum) - a2_double(1.0) ) < eps;
+		ok &= CppAD::NearEqual( Value(a1_jac[i]), check[i], eps, eps);
 
 	return ok;
 }
