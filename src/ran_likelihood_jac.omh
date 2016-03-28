@@ -89,7 +89,7 @@ $icode%vec%[%j%]%$$ is the partial of the random likelihood
 $latex f( \theta , u )$$ with respect to $latex u_j$$.
 
 $head Default$$
-The base class definition (default) for version of
+The base class definition (default version) of
 $code ran_likelihood_jac$$ returns a size zero vector for $icode vec$$
 (the empty vector).
 In this case,

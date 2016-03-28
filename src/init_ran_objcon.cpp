@@ -123,7 +123,7 @@ void cppad_mixed::init_ran_objcon(
 	double pi   = CppAD::atan(1.0) * 4.0;
 	double constant_term = CppAD::log(2.0 * pi) * double(n_random_) / 2.0;
 	//
-	a1d_vector both(n_fixed_ + n_random_), f(1), HB(1 + n_ran_con_);
+	a1d_vector f(1), HB(1 + n_ran_con_);
 	// -----------------------------------------------------------------------
 	// U(beta, theta, u)
 	a1d_vector U(n_random_);
@@ -157,8 +157,7 @@ void cppad_mixed::init_ran_objcon(
 		beta_W_v[n_fixed_ + n_random_ + j] = 0.0;
 	}
 	newton_atom_.eval(beta_W_v, logdet_step);
-	pack(beta, W, both);
-	f     = ran_like_a1fun_.Forward(0, both);
+	f     = ran_likelihood(beta, W);
 	HB[0] = logdet_step[0] / 2.0 + f[0] - constant_term;
 
 	if( n_ran_con_ > 0 )

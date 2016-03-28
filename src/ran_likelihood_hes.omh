@@ -116,7 +116,7 @@ $icode%u%[ %row%[k] ]%$$ and
 $icode%u%[ %col%[k] ]%$$.
 
 $head Default$$
-The base class definition (default) for version of
+The base class definition (default version) of
 $code ran_likelihood_hes$$ returns a size zero vector for $icode val$$
 (the empty vector).
 In this case,
