@@ -30,7 +30,11 @@ $childtable%omh/whats_new_15.omh
 %$$
 
 $head 03-28$$
+$list number$$
 Add the $cref ran_likelihood_xam.cpp$$ example.
+$lnext
+Add the option for a user defined $cref ran_likelihood_jac$$ function.
+$lend
 
 $head 03-09$$
 The summary of memory usage has been changed; see

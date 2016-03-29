@@ -96,24 +96,35 @@ CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_jac(
 	a1d_vector jac_ran = ran_likelihood_jac(fixed_vec, random_vec);
 	if( jac_ran.size() != 0 )
 	{	if( jac_ran.size() != n_random_ )
-		{	std::string error_message = "cppad_mixed: "
+		{	std::string error_message =
 			"ran_likelihood_jac return value does not have size n_random_.";
 			fatal_error(error_message);
 		}
-# ifdef NDEBUG
-		// check the values
+# ifndef NDEBUG
+		// pack (fixed_vec, random_vec) into both_vec
+		// same order as chose by cppad/mixed/pack.hpp
 		d_vector both_vec( n_fixed_ + n_random_ );
-		pack(fixed_vec, random_vec, both_vec);
+		for(size_t i = 0; i < n_fixed_; i++)
+			both_vec[i] = Value( Var2Par( fixed_vec[i] ) );
+		for(size_t j = 0; j < n_random_; j++)
+			 both_vec[n_fixed_ + j] = Value( Var2Par( random_vec[j] ) );
+		//
+		// evaluate zero order forward mode for (fixed_vec, random_vec)
 		ran_like_fun_.Forward(0, both_vec);
+		// evaluate first order reverse
 		d_vector w(1), jac_both(n_fixed_ + n_random_);
 		w[0] = 1.0;
-		jac_both = ran_like_fun_.Reverse(1, a1_w);
+		jac_both = ran_like_fun_.Reverse(1, w);
+		//
 		double eps = 100. * std::numeric_limits<double>::epsilon();
 		bool ok = true;
 		for(size_t j = 0; j < n_random_; j++)
-			ok &= CppAD::NearEqual(jac_ran[j], jac_both[n_fixed_+j], eps, eps);
+		{	ok &= CppAD::NearEqual(
+				Value(Var2Par(jac_ran[j])), jac_both[n_fixed_ + j], eps, eps
+			);
+		}
 		if( ! ok )
-		{	std::string error_message = "cppad_mixed: "
+		{	std::string error_message =
 				"ran_likelihood_jac Jacobian does not agree with AD jac.";
 			fatal_error(error_message);
 		}

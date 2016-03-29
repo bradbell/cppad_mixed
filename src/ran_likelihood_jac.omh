@@ -21,9 +21,6 @@ $$
 
 $section User Define Jacobian With Respect to Random Effects$$
 
-$head Under Construction$$
-This feature is under construction and is not currently available for use.
-
 $head Syntax$$
 $icode%vec% = mixed_object.ran_likelihood_jac(%fixed_vec%, %random_vec%)%$$
 
