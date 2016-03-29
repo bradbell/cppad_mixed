@@ -131,5 +131,12 @@ $cref/ran_hes_fun_/private/ran_hes_fun_/$$ will be recorded using
 $code ran_likelihood_hes$$ (as apposed to using $code ran_like_a1fun_$$.
 $lend
 
+$children%
+	example/user/ran_likelihood_hes_xam.cpp
+%$$
+$head Example$$
+The file $cref ran_likelihood_hes_xam.cpp$$ contains an example
+of defining this virtual function.
+
 
 $end

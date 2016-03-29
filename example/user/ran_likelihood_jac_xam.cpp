@@ -15,9 +15,10 @@ $spell
 	cppad
 	interp
 	xam
+	Jacobian
 $$
 
-$section mixed_cppad Derived Class: Example and Test$$
+$section Random Likelihood Jacobian: Example and Test$$
 
 $code
 $srcfile%example/user/ran_likelihood_jac_xam.cpp

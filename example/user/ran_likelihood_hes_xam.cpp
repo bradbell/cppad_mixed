@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin ran_likelihood_xam.cpp$$
+$begin ran_likelihood_hes_xam.cpp$$
 $spell
 	CppAD
 	cppad
@@ -17,10 +17,10 @@ $spell
 	xam
 $$
 
-$section Random Likelihood: Example and Test$$
+$section Random Likelihood Hessian: Example and Test$$
 
 $code
-$srcfile%example/user/ran_likelihood_xam.cpp
+$srcfile%example/user/ran_likelihood_hes_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -52,6 +52,7 @@ namespace {
 			cppad_mixed(n_fixed, n_random, quasi_fixed, A_info) ,
 			y_(y)
 		{ }
+		// ------------------------------------------------------------------
 		// implementation of ran_likelihood
 		template <class Float>
 		vector<Float> implement_ran_likelihood(
@@ -67,7 +68,7 @@ namespace {
 
 			// for each data and random effect
 			for(size_t i = 0; i < y_.size(); i++)
-			{	Float mu     = u[i];
+			{	Float mu     = exp( u[i] );
 				Float sigma  = theta[i];
 				Float res    = (y_[i] - mu) / sigma;
 
@@ -77,11 +78,46 @@ namespace {
 			return vec;
 		}
 		// ------------------------------------------------------------------
+		// ran_likelihood_hes
+		vector<a1_double> ran_likelihood_hes(
+			const vector<a1_double>& theta  ,
+			const vector<a1_double>& u      ,
+			const vector<size_t>&    row    ,
+			const vector<size_t>&    col    )
+		{	size_t K = row.size();
+			assert( col.size() == K );
+
+			// return value
+			vector<a1_double> val(K);
+
+			// for each component of the return value
+			for(size_t k = 0; k < K; k++)
+			{	// initialize it as zero
+				val[k] = a1_double(0.0);
+
+				// for this function, only the diagonal elements are non-zero
+				if( row[k] == col[k] )
+				{	size_t i = row[k];
+					//
+					a1_double mu        = exp( u[i] );
+					a1_double sigma     = theta[i];
+					a1_double res       = (y_[i] - mu) / sigma;
+					a1_double res_ui    = - mu / sigma;
+					a1_double res_ui_ui = - mu / sigma;
+					a1_double sq_ui     = res * res_ui;
+					a1_double sq_ui_ui  = res_ui * res_ui + res * res_ui_ui;
+					val[k]              = sq_ui_ui;
+				}
+			}
+			return val;
+		}
+		// ------------------------------------------------------------------
 		// example a2 version of ran_likelihood
 		virtual vector<a2_double> ran_likelihood(
 			const vector<a2_double>& fixed_vec  ,
 			const vector<a2_double>& random_vec )
 		{	return implement_ran_likelihood(fixed_vec, random_vec); }
+		// ------------------------------------------------------------------
 		// example a1 version of ran_likelihood
 		virtual vector<a1_double> ran_likelihood(
 			const vector<a1_double>& fixed_vec  ,
@@ -90,14 +126,11 @@ namespace {
 	};
 }
 
-bool ran_likelihood_xam(void)
+bool ran_likelihood_hes_xam(void)
 {
 	bool   ok  = true;
-	double pi  = 4.0 * std::atan(1.0);
 	double eps = 100. * std::numeric_limits<double>::epsilon();
-
 	typedef cppad_mixed::a1_double a1_double;
-	typedef cppad_mixed::a2_double a2_double;
 
 	size_t n_data   = 10;
 	size_t n_fixed  = n_data;
@@ -105,18 +138,15 @@ bool ran_likelihood_xam(void)
 	vector<double>    data(n_data);
 	vector<double>    fixed_vec(n_fixed), random_vec(n_random);
 	vector<a1_double> a1_fixed(n_fixed), a1_random(n_random);
-	vector<a2_double> a2_fixed(n_fixed), a2_random(n_random);
 
 	for(size_t i = 0; i < n_data; i++)
 	{	data[i]       = double(i + 1);
 		//
 		fixed_vec[i]  = 1.5;
 		a1_fixed[i]   = a1_double( fixed_vec[i] );
-		a2_fixed[i]   = a2_double( fixed_vec[i] );
 		//
 		random_vec[i] = 0.0;
 		a1_random[i]  = a1_double( random_vec[i] );
-		a2_random[i]  = a2_double( random_vec[i] );
 	}
 
 	// object that is derived from cppad_mixed
@@ -125,25 +155,35 @@ bool ran_likelihood_xam(void)
 	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, A_info, data);
 	mixed_object.initialize(fixed_vec, random_vec);
 
-	// Evaluate a1_double version of random likelihood
-	vector<a1_double> a1_vec(1);
-	a1_vec = mixed_object.ran_likelihood(a1_fixed, a1_random);
+	// record Evaluation of a1_double version of random likelihood
+	CppAD::Independent(a1_random);
+	vector<a1_double> a1_fun(1);
+	a1_fun = mixed_object.ran_likelihood(a1_fixed, a1_random);
+	CppAD::ADFun<double> f(a1_random, a1_fun);
 
-	// Evaluate a2_double version of random likelihood
-	vector<a2_double> a2_vec(1);
-	a2_vec = mixed_object.ran_likelihood(a2_fixed, a2_random);
-
-	// check the random likelihood
-	double sum = 0.0;
+	// sparsity pattern of Hessian for this function
+	vector<size_t>    row(n_data), col(n_data);
+	vector<a1_double> val(n_data);
 	for(size_t i = 0; i < n_data; i++)
-	{	double mu     = random_vec[i];
-		double sigma  = fixed_vec[i];
-		double res    = (data[i] - mu) / sigma;
-		sum          += (std::log(2 * pi * sigma * sigma) + res * res) / 2.0;
-	}
-	ok &= abs( a1_vec[0] / a1_double(sum) - a1_double(1.0) ) < eps;
-	ok &= abs( a2_vec[0] / a2_double(sum) - a2_double(1.0) ) < eps;
+	{	row[i] = i;
+		col[i] = i;
+	};
 
+	// Evaluate ran_likelihood_hes
+	val = mixed_object.ran_likelihood_hes(a1_fixed, a1_random, row, col);
+
+	// Compute the Hessian using AD
+	vector<double> w(1), check(n_random * n_random);
+	w[0]  = 1.0;
+	check = f.Hessian(random_vec, w);
+
+	// check the Hessian values
+	// (when NDEBUG is not defined, cppad_mixed also does this check)
+	for(size_t i = 0; i < n_data; i++)
+	{	ok &= CppAD::NearEqual(
+			Value(val[i]), check[i * n_random + i], eps, eps
+		);
+	}
 	return ok;
 }
 // END C++
