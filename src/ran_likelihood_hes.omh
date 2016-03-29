@@ -20,9 +20,6 @@ $$
 
 $section User Define Hessian With Respect to Random Effects$$
 
-$head Under Construction$$
-This feature is under construction and is not currently available for use.
-
 $head Syntax$$
 $icode%val% = mixed_object.ran_likelihood_hes(
 	%fixed_vec%, %random_vec%, %row%, %col%
@@ -122,14 +119,6 @@ $code ran_likelihood_hes$$ returns a size zero vector for $icode val$$
 In this case,
 Hessian $latex f_{u,u} ( \theta , u )$$
 is computed by applying AD to the $cref ran_likelihood$$ function.
-
-$head Plan$$
-This plan is for the case where $icode%val%.size() > 0%$$.
-$list number$$
-The function
-$cref/ran_hes_fun_/private/ran_hes_fun_/$$ will be recorded using
-$code ran_likelihood_hes$$ (as apposed to using $code ran_like_a1fun_$$.
-$lend
 
 $children%
 	example/user/ran_likelihood_hes_xam.cpp

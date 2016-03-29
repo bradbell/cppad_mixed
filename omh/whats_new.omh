@@ -29,6 +29,9 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 03-29$$
+Add the option for a user defined $cref ran_likelihood_hes$$ function.
+
 $head 03-28$$
 $list number$$
 Add the $cref ran_likelihood_xam.cpp$$ example.

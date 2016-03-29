@@ -125,10 +125,10 @@ See $cref ran_likelihood_jac$$.
 $subhead ran_likelihood_hes$$
 $srccode%cpp% */
 	virtual a1d_vector ran_likelihood_hes(
-		const a1d_vector&          fixed_vec  ,
-		const a1d_vector&          random_vec ,
-		CppAD::vector<size_t>&     row        ,
-		CppAD::vector<size_t>&     col        )
+		const a1d_vector&            fixed_vec  ,
+		const a1d_vector&            random_vec ,
+		const CppAD::vector<size_t>& row        ,
+		const CppAD::vector<size_t>& col        )
 	{	return a1d_vector(0); }
 /* %$$
 See $cref ran_likelihood_hes$$.

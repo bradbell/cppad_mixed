@@ -8,29 +8,17 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-// test of using ran_likelihood_jac for computation of random Jacobian
+// test of using ran_likelihood_hes for computation of random Hessian
 /*
 $head Model$$
 $latex \[
-	\B{p}( y_i | \theta , u ) \sim \B{N} ( u_i + \theta_0 , \theta_1^2 )
+	\B{p}( y_i | \theta , u ) \sim \B{N} ( \exp(u_i) + \theta_0 , \theta_1^2 )
 \] $$
 $latex \[
 	\B{p}( u_i | \theta ) \sim \B{N} ( 0 , 1 )
 \] $$
 $latex \[
 	\B{p}( \theta ) \sim \B{N} ( 4 , 1 )
-\] $$
-It follows that the Laplace approximation is exact and
-$latex \[
-	\B{p}( y_i | \theta ) \sim \B{N} \left( \theta_0 , 1 + \theta_1^2 \right)
-\] $$
-The corresponding objective for the fixed effects is equivalent to:
-$latex \[
-F( \theta ) = \frac{1}{2} \left[
-	( \theta_0 - 4 )^2 + ( \theta_1 - 4 )^2 +
-		N \log \left( 1 + \theta_1^2 \right) +
-		( 1 + \theta_1^2)^{-1} \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
-\right]
 \] $$
 */
 // BEGIN C++
@@ -42,6 +30,9 @@ namespace {
 	using CppAD::log;
 	using CppAD::AD;
 	using CppAD::mixed::sparse_mat_info;
+
+	// use the default ran_likelihood_hes
+	bool default_ran_likelihood_hes_ = false;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -83,7 +74,7 @@ namespace {
 			Float sqrt_2pi = Float( CppAD::sqrt(8.0 * CppAD::atan(1.0) ) );
 
 			for(size_t i = 0; i < n_random_; i++)
-			{	Float mu     = u[i] + theta[0];
+			{	Float mu     = exp( u[i] ) * theta[0];
 				Float sigma  = theta[1];
 				Float res    = (y_[i] - mu) / sigma;
 
@@ -96,28 +87,42 @@ namespace {
 			return vec;
 		}
 		// ------------------------------------------------------------------
-		// ran_likelihood_jac
-		vector<a1_double> ran_likelihood_jac(
+		// ran_likelihood_hes
+		vector<a1_double> ran_likelihood_hes(
 			const vector<a1_double>& theta  ,
-			const vector<a1_double>& u      )
-		{
+			const vector<a1_double>& u      ,
+			const vector<size_t>&    row    ,
+			const vector<size_t>&    col    )
+		{	//
+			if( default_ran_likelihood_hes_ )
+				return vector<a1_double>(0);
+			//
+			size_t K = row.size();
+			assert( col.size() == K );
+
 			// return value
-			vector<a1_double> vec(n_random_);
+			vector<a1_double> val(n_random_);
 
-			// for each data and random effect
-			for(size_t i = 0; i < n_random_; i++)
-			{	a1_double mu     = u[i] + theta[0];
-				a1_double sigma  = theta[1];
-				a1_double res    = (y_[i] - mu) / sigma;
-				a1_double res_ui = - 1.0 / sigma;
+			// for each component of the return value
+			for(size_t k = 0; k < n_random_; k++)
+			{	// initialize it as zero
+				val[k] = a1_double(0.0);
 
-				// derivative of p(y_i | u, theta) w.r.t. u[i]
-				vec[i]  =  res * res_ui;
-
-				// derivative of p(u_i | theta) w.r.t. u[i]
-				vec[i] += u[i];
+				// for this ran_likelihood only the diagonal is non-zero
+				if( row[k] == col[k] )
+				{	size_t i = row[k];
+					//
+					a1_double mu        = exp( u[i] ) * theta[0];
+					a1_double sigma     = theta[1];
+					a1_double res       = (y_[i] - mu) / sigma;
+					a1_double res_ui    = - mu / sigma;
+					a1_double res_ui_ui = - mu / sigma;
+					a1_double sq_ui     = res * res_ui;
+					a1_double sq_ui_ui  = res_ui * res_ui + res * res_ui_ui;
+					val[k]              = sq_ui_ui + 1.0;
+				}
 			}
-			return vec;
+			return val;
 		}
 		// ------------------------------------------------------------------
 		// implementation of fix_likelihood
@@ -162,7 +167,7 @@ namespace {
 	};
 }
 
-bool ran_likelihood_jac(void)
+bool ran_likelihood_hes(void)
 {
 	bool   ok = true;
 	double inf = std::numeric_limits<double>::infinity();
@@ -173,7 +178,7 @@ bool ran_likelihood_jac(void)
 	size_t n_random = n_data;
 	vector<double>
 		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
-	fixed_lower[0] = - inf; fixed_in[0] = 2.0; fixed_upper[0] = inf;
+	fixed_lower[0] = - inf; fixed_in[0] = 5.0; fixed_upper[0] = inf;
 	fixed_lower[1] = .01;   fixed_in[1] = 0.5; fixed_upper[1] = inf;
 	//
 	// explicit constriants (in addition to l1 terms)
@@ -185,14 +190,14 @@ bool ran_likelihood_jac(void)
 		random_in[i] = 1.0;
 	}
 
-	// object that is derived from cppad_mixed
-	bool quasi_fixed = false; // so that ran_likelihood_jac gets used
+	// Newton method uses more derivatives than quasi-newton method
+	bool quasi_fixed = false;
+
+	// random constraint matrix
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
-	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, A_info, data);
-	mixed_object.initialize(fixed_in, random_in);
 
 	// optimize the fixed effects using quasi-Newton method
-	// If the derivatives are correct, the optimzation converges in 11
+	// If the derivatives are correct, the optimzation converges in 6
 	// iterations. If convergence fails, change print_level to 5
 	std::string fixed_options =
 		"Integer print_level               0\n"
@@ -200,7 +205,7 @@ bool ran_likelihood_jac(void)
 		"String  derivative_test           second-order\n"
 		"String  derivative_test_print_all no\n"
 		"Numeric tol                       1e-8\n"
-		"Integer max_iter                  12\n"
+		"Integer max_iter                  7\n"
 	;
 	std::string random_options =
 		"Integer print_level     0\n"
@@ -213,40 +218,35 @@ bool ran_likelihood_jac(void)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
 	}
-	vector<double> fixed_out = mixed_object.optimize_fixed(
-		fixed_options,
-		random_options,
-		fixed_lower,
-		fixed_upper,
-		fix_constraint_lower,
-		fix_constraint_upper,
-		fixed_in,
-		random_lower,
-		random_upper,
-		random_in
-	);
+	vector< vector<double> > theta_out(2);
+	for(size_t user_defined = 0; user_defined < 2; user_defined++)
+	{	default_ran_likelihood_hes_ = ! default_ran_likelihood_hes_;
 
-	// results of optimization
-	double theta_0 = fixed_out[0];
-	double theta_1 = fixed_out[1];
-
-	// compute partials of F
-	double sum   = 0.0;
-	double sumsq = 0.0;
-	for(size_t i = 0; i < n_data; i++)
-	{	sum   += theta_0 - data[i];
-		sumsq += (theta_0 - data[i]) * (theta_0 - data[i]);
+		// object that is derived from cppad_mixed
+		mixed_derived mixed_object(
+			n_fixed, n_random, quasi_fixed, A_info, data
+		);
+		mixed_object.initialize(fixed_in, random_in);
+		vector<double> fixed_out = mixed_object.optimize_fixed(
+			fixed_options,
+			random_options,
+			fixed_lower,
+			fixed_upper,
+			fix_constraint_lower,
+			fix_constraint_upper,
+			fixed_in,
+			random_lower,
+			random_upper,
+			random_in
+		);
+		theta_out[user_defined] = fixed_out;
 	}
-	double den = 1.0 + theta_1 * theta_1;
-	double F_0 = (theta_0 - 4.0) + sum / den;
-	double F_1 = theta_1 - 4.0;
-	F_1       += double(n_data) * theta_1 / den;
-	F_1       -= sumsq * theta_1  / (den * den);
 
-	// Note that no constraints are active, (not even the l1 terms)
-	// so the partials should be zero.
-	ok &= CppAD::abs( F_0 ) <= tol;
-	ok &= CppAD::abs( F_1 ) <= tol;
+	// check that the results were the same
+	// with and without the user defined ran_likelihood_hes
+	double eps = 5.0 * tol;
+	ok &= CppAD::NearEqual( theta_out[0][0], theta_out[1][0], eps, eps );
+	ok &= CppAD::NearEqual( theta_out[0][1], theta_out[1][1], eps, eps );
 
 	return ok;
 }
