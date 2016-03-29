@@ -607,6 +607,15 @@ $srccode%cpp% */
 	);
 /* %$$
 
+$subhead init_ran_hes_check$$
+See $cref init_ran_hes_check$$.
+$srccode%cpp% */
+	void init_ran_hes_check(
+		const d_vector& fixed_vec ,
+		const d_vector& random_vec
+	);
+/* %$$
+
 $subhead init_ran_objcon_hes$$
 See $cref init_ran_objcon_hes$$.
 $srccode%cpp% */

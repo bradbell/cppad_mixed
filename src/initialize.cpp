@@ -76,6 +76,10 @@ $head ran_likelihood_jac$$
 If $cref ran_likelihood_jac$$ returns a non-empty vector,
 a check is done to make sure the derivative computations are correct.
 
+$head ran_likelihood_hes$$
+If $cref ran_likelihood_hes$$ returns a non-empty vector,
+a check is done to make sure the derivative computations are correct.
+
 $head size_map$$
 The return value has prototype
 $codei%
@@ -249,6 +253,9 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 		}
 		// check ran_likelihood_jac
 		ran_like_jac_check(fixed_vec, random_vec);
+		//
+		// check ran_likelihood_hes
+		init_ran_hes_check(fixed_vec, random_vec);
 	}
 
 	// fix_like_fun_
