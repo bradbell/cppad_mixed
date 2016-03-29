@@ -284,25 +284,46 @@ void cppad_mixed::init_ran_hes(
 		ran_hes_.work
 	);
 
-	// now tape the same computation and store in ran_hes_fun_
-	CppAD::vector< std::set<size_t> > not_used(0);
-	a1d_vector a1_both(n_total), a1_w(1), a1_val_out(K);
+	// Declare the independent and dependent variables for taping calculation
+	// of Hessian of the random likelihood w.r.t. the random effects
+	a1d_vector a1_both(n_total);
 	for(size_t i = 0; i < n_total; i++)
 		a1_both[i] = both[i];
-	a1_w[0] = w[0];
 	CppAD::Independent(a1_both);
-	ran_like_a1fun_.SparseHessian(
-		a1_both,
-		a1_w,
-		not_used,
-		ran_hes_.row,
-		ran_hes_.col,
-		a1_val_out,
-		ran_hes_.work
+
+	// unpack the independent variables into a1_fixed and a1_random
+	a1d_vector a1_fixed(n_fixed_), a1_random(n_random_);
+	unpack(a1_fixed, a1_random, a1_both);
+
+	// Evaluate ran_likelihood_hes. Its row indices are relative
+	// to just the random effects, not both fixed and random effects.
+	for(size_t k = 0; k < K; k++)
+	{	assert( ran_hes_.row[k] >= n_fixed_ );
+		assert( ran_hes_.col[k] >= n_fixed_ );
+		row[k] = ran_hes_.row[k] - n_fixed_;
+		col[k] = ran_hes_.col[k] - n_fixed_;
+	}
+	a1d_vector a1_val_out = ran_likelihood_hes(
+		a1_fixed, a1_random, row, col
 	);
+	if( a1_val_out.size() == 0 )
+	{	// The user has not defined ran_likelihood_hes, so use AD to calcuate
+		// the Hessian of the randome likelihood w.r.t the random effects.
+		CppAD::vector< std::set<size_t> > not_used(0);
+		a1d_vector a1_w(1);
+		a1_w[0] = w[0];
+		a1_val_out.resize(K);
+		ran_like_a1fun_.SparseHessian(
+			a1_both,
+			a1_w,
+			not_used,
+			ran_hes_.row,
+			ran_hes_.col,
+			a1_val_out,
+			ran_hes_.work
+		);
+	}
 	ran_hes_fun_.Dependent(a1_both, a1_val_out);
 	//
 	init_ran_hes_done_ = true;
 }
-
-
