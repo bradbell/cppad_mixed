@@ -247,16 +247,8 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 			init_ran_objcon_hes(fixed_vec, random_vec);
 			assert( init_ran_objcon_hes_done_ );
 		}
-
 		// check ran_likelihood_jac
-		a1d_vector jac = ran_likelihood_jac(a1_fixed_vec, a1_random_vec);
-		if( jac.size() != 0 )
-		{	std::string error_message =
-			"ran_likelihood_jac Jacobian value does not agree with AD value";
-			ran_like_jac_check(
-				a1_fixed_vec, a1_random_vec, jac, error_message
-			);
-		}
+		ran_like_jac_check(fixed_vec, random_vec);
 	}
 
 	// fix_like_fun_

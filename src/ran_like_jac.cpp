@@ -134,12 +134,10 @@ $spell
 	vec
 $$
 
-$section Check Random Likelihood Jacobian$$
+$section Check User Defined ran_likelihood_jac$$
 
 $head Syntax$$
-%mixed_object%.ran_like_jac_check(
-	%fixed_vec%, %random_vec%, %jac%, %error_message%
-)
+$icode%mixed_object%.ran_like_jac_check(%fixed_vec%, %random_vec%)%$$
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
@@ -152,7 +150,7 @@ derived from the $code cppad_mixed$$ base class.
 $head fixed_vec$$
 This argument has prototype
 $codei%
-	const CppAD::vector<a1_double>& %fixed_vec%
+	const CppAD::vector<double>& %fixed_vec%
 %$$
 It specifies the value of the
 $cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
@@ -161,55 +159,50 @@ vector $latex \theta$$.
 $head random_vec$$
 This argument has prototype
 $codei%
-	const CppAD::vector<a1_double>& %random_vec%
+	const CppAD::vector<double>& %random_vec%
 %$$
 It specifies the value of the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$.
 
-$head jac$$
-This argument has prototype
-$codei%
-	const CppAD::vector<a1_double>& %jac%
-%$$
-It contains the Jacobian of the Random Likelihood
-with respect to the random effects; i.e., $latex f_u ( \theta , u )$$.
-
 $head ran_like_fun_$$
-The input value of the member variable
+The member variable
 $codei%
 	CppAD::ADFun<double> ran_like_fun_
 %$$
 must contain a recording of the random likelihood function; see
 $cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$.
 
-$head error_message$$
-This argument has prototype
-$codei%
-	const std::string& %error_message%
-%$$
-The values in $icode jac$$ are checked using the
-$code ADFun<double>$$ object $cref/ran_like_fun_/Private/ran_like_fun_/$$.
-If the result to not agree with $icode jac$$,
+$head ran_likelihood_jac$$
+If the return value from $cref ran_likelihood_jac$$ is non-empty,
+it is checked for correctness.
+To be specific, the return vector is checked using
+$cref/ran_like_fun_/Private/ran_like_fun_/$$.
+If the results do no agree,
 $cref/fatal_error/Public/User Defined/fatal_error/$$ is called with
-$icode error_message$$ as its argument.
+an appropriate error message.
 
 $end
 -----------------------------------------------------------------------------
 */
 void cppad_mixed::ran_like_jac_check(
-	const a1d_vector&        fixed_vec       ,
-	const a1d_vector&        random_vec      ,
-	const a1d_vector&        jac             ,
-	const std::string&       error_message   )
+	const d_vector&        fixed_vec       ,
+	const d_vector&        random_vec      )
 {
+	// evaluate ran_likelihood_jac
+	a1d_vector a1_fixed(n_fixed_), a1_random(n_random_);
+	for(size_t i = 0; i < n_fixed_; i++)
+		a1_fixed[i] = fixed_vec[i];
+	for(size_t i = 0; i < n_random_; i++)
+		a1_random[i] = random_vec[i];
+	a1d_vector jac = ran_likelihood_jac(a1_fixed, a1_random);
+	if( jac.size() == 0 )
+		return;
+	//
 	// pack (fixed_vec, random_vec) into both_vec
 	// same order as chose by cppad/mixed/pack.hpp
 	d_vector both_vec( n_fixed_ + n_random_ );
-	for(size_t i = 0; i < n_fixed_; i++)
-		both_vec[i] = Value( Var2Par( fixed_vec[i] ) );
-	for(size_t j = 0; j < n_random_; j++)
-		 both_vec[n_fixed_ + j] = Value( Var2Par( random_vec[j] ) );
+	pack(fixed_vec, random_vec, both_vec);
 	//
 	// evaluate zero order forward mode for (fixed_vec, random_vec)
 	ran_like_fun_.Forward(0, both_vec);
@@ -226,6 +219,9 @@ void cppad_mixed::ran_like_jac_check(
 		);
 	}
 	if( ! ok )
+	{	const std::string error_message =
+		"ran_likelihood_jac Jacobian value does not agree with AD value";
 		fatal_error(error_message);
+	}
 	return;
 }

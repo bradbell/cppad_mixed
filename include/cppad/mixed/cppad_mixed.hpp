@@ -753,10 +753,8 @@ $subhead ran_like_jac_check$$
 See $cref ran_like_jac_check$$
 $srccode%cpp% */
 	void ran_like_jac_check(
-		const a1d_vector&       fixed_vec     ,
-		const a1d_vector&       random_vec    ,
-		const a1d_vector&       jac           ,
-		const std::string&      error_message
+		const d_vector&       fixed_vec     ,
+		const d_vector&       random_vec
 	);
 /* %$$
 
