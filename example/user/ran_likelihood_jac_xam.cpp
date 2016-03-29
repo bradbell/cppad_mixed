@@ -157,7 +157,7 @@ bool ran_likelihood_jac_xam(void)
 	vector<double> check = f.Jacobian(random_vec);
 
 	// check the jacobian values
-	// (when NDEBUG is not defined, cppad_mixed also does this check)
+	// (mixed_object.initilaize also does this check)
 	for(size_t i = 0; i < n_data; i++)
 		ok &= CppAD::NearEqual( Value(a1_jac[i]), check[i], eps, eps);
 

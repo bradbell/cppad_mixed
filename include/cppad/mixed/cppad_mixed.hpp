@@ -749,6 +749,17 @@ $srccode%cpp% */
 	friend bool ::ran_like_jac_xam(void);
 /* %$$
 
+$subhead ran_like_jac_check$$
+See $cref ran_like_jac_check$$
+$srccode%cpp% */
+	void ran_like_jac_check(
+		const a1d_vector&       fixed_vec     ,
+		const a1d_vector&       random_vec    ,
+		const a1d_vector&       jac           ,
+		const std::string&      error_message
+	);
+/* %$$
+
 $subhead ran_obj_eval$$
 See $cref ran_obj_eval$$
 $srccode%cpp% */

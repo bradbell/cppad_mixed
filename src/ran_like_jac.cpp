@@ -75,13 +75,9 @@ $head Example$$
 The file $cref ran_like_jac_xam.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
-
+----------------------------------------------------------------------------
 $end
 */
-
-
-// ----------------------------------------------------------------------------
-// ran_like_jac
 CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_jac(
 	const a1d_vector&        fixed_vec   ,
 	const a1d_vector&        random_vec  )
@@ -100,35 +96,6 @@ CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_jac(
 			"ran_likelihood_jac return value does not have size n_random_.";
 			fatal_error(error_message);
 		}
-# ifndef NDEBUG
-		// pack (fixed_vec, random_vec) into both_vec
-		// same order as chose by cppad/mixed/pack.hpp
-		d_vector both_vec( n_fixed_ + n_random_ );
-		for(size_t i = 0; i < n_fixed_; i++)
-			both_vec[i] = Value( Var2Par( fixed_vec[i] ) );
-		for(size_t j = 0; j < n_random_; j++)
-			 both_vec[n_fixed_ + j] = Value( Var2Par( random_vec[j] ) );
-		//
-		// evaluate zero order forward mode for (fixed_vec, random_vec)
-		ran_like_fun_.Forward(0, both_vec);
-		// evaluate first order reverse
-		d_vector w(1), jac_both(n_fixed_ + n_random_);
-		w[0] = 1.0;
-		jac_both = ran_like_fun_.Reverse(1, w);
-		//
-		double eps = 100. * std::numeric_limits<double>::epsilon();
-		bool ok = true;
-		for(size_t j = 0; j < n_random_; j++)
-		{	ok &= CppAD::NearEqual(
-				Value(Var2Par(jac_ran[j])), jac_both[n_fixed_ + j], eps, eps
-			);
-		}
-		if( ! ok )
-		{	std::string error_message =
-				"ran_likelihood_jac Jacobian does not agree with AD jac.";
-			fatal_error(error_message);
-		}
-# endif
 		return jac_ran;
 	}
 	// -----------------------------------------------------------------------
@@ -155,5 +122,110 @@ CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_jac(
 	return jac_ran;
 }
 
+/*
+$begin ran_like_jac_check$$
+$spell
+	Jacobian
+	jac
+	cppad
+	const
+	CppAD
+	std
+	vec
+$$
 
+$section Check Random Likelihood Jacobian$$
 
+$head Syntax$$
+%mixed_object%.ran_like_jac_check(
+	%fixed_vec%, %random_vec%, %jac%, %error_message%
+)
+
+$head Private$$
+This $code cppad_mixed$$ member function is $cref private$$.
+
+$head mixed_object$$
+We use $cref/mixed_object/derived_ctor/mixed_object/$$
+to denote an object of a class that is
+derived from the $code cppad_mixed$$ base class.
+
+$head fixed_vec$$
+This argument has prototype
+$codei%
+	const CppAD::vector<a1_double>& %fixed_vec%
+%$$
+It specifies the value of the
+$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
+vector $latex \theta$$.
+
+$head random_vec$$
+This argument has prototype
+$codei%
+	const CppAD::vector<a1_double>& %random_vec%
+%$$
+It specifies the value of the
+$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
+vector $latex u$$.
+
+$head jac$$
+This argument has prototype
+$codei%
+	const CppAD::vector<a1_double>& %jac%
+%$$
+It contains the Jacobian of the Random Likelihood
+with respect to the random effects; i.e., $latex f_u ( \theta , u )$$.
+
+$head ran_like_fun_$$
+The input value of the member variable
+$codei%
+	CppAD::ADFun<double> ran_like_fun_
+%$$
+must contain a recording of the random likelihood function; see
+$cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$.
+
+$head error_message$$
+This argument has prototype
+$codei%
+	const std::string& %error_message%
+%$$
+The values in $icode jac$$ are checked using the
+$code ADFun<double>$$ object $cref/ran_like_fun_/Private/ran_like_fun_/$$.
+If the result to not agree with $icode jac$$,
+$cref/fatal_error/Public/User Defined/fatal_error/$$ is called with
+$icode error_message$$ as its argument.
+
+$end
+-----------------------------------------------------------------------------
+*/
+void cppad_mixed::ran_like_jac_check(
+	const a1d_vector&        fixed_vec       ,
+	const a1d_vector&        random_vec      ,
+	const a1d_vector&        jac             ,
+	const std::string&       error_message   )
+{
+	// pack (fixed_vec, random_vec) into both_vec
+	// same order as chose by cppad/mixed/pack.hpp
+	d_vector both_vec( n_fixed_ + n_random_ );
+	for(size_t i = 0; i < n_fixed_; i++)
+		both_vec[i] = Value( Var2Par( fixed_vec[i] ) );
+	for(size_t j = 0; j < n_random_; j++)
+		 both_vec[n_fixed_ + j] = Value( Var2Par( random_vec[j] ) );
+	//
+	// evaluate zero order forward mode for (fixed_vec, random_vec)
+	ran_like_fun_.Forward(0, both_vec);
+	// evaluate first order reverse
+	d_vector w(1), jac_both(n_fixed_ + n_random_);
+	w[0] = 1.0;
+	jac_both = ran_like_fun_.Reverse(1, w);
+	//
+	double eps = 100. * std::numeric_limits<double>::epsilon();
+	bool ok = true;
+	for(size_t j = 0; j < n_random_; j++)
+	{	ok &= CppAD::NearEqual(
+			Value(Var2Par(jac[j])), jac_both[n_fixed_ + j], eps, eps
+		);
+	}
+	if( ! ok )
+		fatal_error(error_message);
+	return;
+}
