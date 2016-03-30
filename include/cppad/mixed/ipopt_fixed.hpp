@@ -50,6 +50,7 @@ $end
 */
 # include <coin/IpTNLP.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/fixed_solution.hpp>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 	//
@@ -128,8 +129,8 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// vector has size 0, otherwise it has size fix_likelihood_nabs_ + 1
 		d_vector        fix_likelihood_vec_tmp_;
 		// ---------------------------------------------------------------
-		// empty until finalize_solution called
-		d_vector fixed_opt_;
+		// solution to the fixed effects optimization problem
+		CppAD::mixed::fixed_solution solution_;
 		// ---------------------------------------------------------------
 		// Optimal random effects cooressponding to current fixed effects.
 		// Set by any eval routine when new_x is true, i.e. new fixed effects.
@@ -139,12 +140,14 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// get minus infinity
 		double nlp_lower_bound_inf(void) const
 		{	return nlp_lower_bound_inf_; }
+		//
 		// get plus infinity
 		double nlp_upper_bound_inf(void) const
 		{	return nlp_upper_bound_inf_; }
-		// optimal solution so far
-		d_vector fixed_opt(void) const
-		{	return fixed_opt_; }
+		//
+		// optimal solution
+		CppAD::mixed::fixed_solution solution(void) const
+		{	return solution_; }
 		//
 		// did finalize_solution agree that the solution had converged
 		bool finalize_solution_ok_;

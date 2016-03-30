@@ -1566,6 +1566,7 @@ $spell
 	endl
 	fabs
 	tol
+	solution solution
 $$
 
 $section Get Solution Results$$
@@ -1575,6 +1576,12 @@ $codei%finalize_solution(
 	%status%, %n%, %x%, %z_L%, %z_U%, %m%, %g%,%$$
 $icode%lambda%, %obj_value%, %ip_data%, %ip_cq%
 )%$$
+
+$head solution_$$
+This routine checks the solution values and sets the member variable
+$codei%
+	CppAD::mixed fixed_solution solution_
+%$$.
 
 $head n$$
 is the number of variables in the problem (dimension of x).
@@ -1670,17 +1677,35 @@ void ipopt_fixed::finalize_solution(
 	assert( size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
 	assert( m >= 0 );
 	assert( size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
-	assert( fixed_opt_.size() == 0 );
 	//
+	// solution_.fixed_opt
+	assert( solution_.fixed_opt.size() == 0 );
+	solution_.fixed_opt.resize(n_fixed_);
+	for(size_t j = 0; j < n_fixed_; j++)
+		solution_.fixed_opt[j] = x[j];
 	//
-	// relaxed verison of tolerance
+	// solution_.fixed_lag (see below)
+	//
+	// solution_.fix_con_lag
+	assert( solution_.fix_con_lag.size() == 0 );
+	solution_.fix_con_lag.resize(n_fix_con_);
+	size_t offset = 2 * fix_likelihood_nabs_;
+	for(size_t j = 0; j < n_fix_con_; j++)
+		solution_.fix_con_lag[j] = lambda[ offset + j];
+	//
+	// solution_.ran_con_lag
+	assert( solution_.ran_con_lag.size() == 0 );
+	solution_.ran_con_lag.resize(n_ran_con_);
+	offset = 2 * fix_likelihood_nabs_ + n_fix_con_;
+	for(size_t j = 0; j < n_ran_con_; j++)
+		solution_.ran_con_lag[j] = lambda[ offset + j];
+	//
+	// short name for fixed effects tolerance
 	double tol = fixed_tolerance_;
 	//
-	// check that x is within its limits
-	fixed_opt_.resize(n_fixed_);
+	// check that x is within its limits and set soluton_.fixed_opt
 	for(size_t j = 0; j < n_fixed_; j++)
-	{	fixed_opt_[j] = x[j];
-		ok &= check_in_limits(
+	{	ok &= check_in_limits(
 			fixed_lower_[j], x[j], fixed_upper_[j], 2.0 * tol
 		);
 	}
@@ -1691,11 +1716,14 @@ void ipopt_fixed::finalize_solution(
 		ok &= 0.0 <= z_U[j];
 	}
 	//
+	// fixed_opt is an alias for solution_.fixed_opt
+	d_vector& fixed_opt = solution_.fixed_opt;
+	//
 	// fixed likelihood at the final fixed effects vector
 	if( fix_likelihood_vec_tmp_.size() == 0 )
-		assert( mixed_object_.fix_like_eval(fixed_opt_).size() == 0 );
+		assert( mixed_object_.fix_like_eval(fixed_opt).size() == 0 );
 	else
-	{	fix_likelihood_vec_tmp_ = mixed_object_.fix_like_eval(fixed_opt_);
+	{	fix_likelihood_vec_tmp_ = mixed_object_.fix_like_eval(fixed_opt);
 		assert( fix_likelihood_vec_tmp_.size() == 1 + fix_likelihood_nabs_ );
 
 		// check constraints corresponding to l1 terms
@@ -1707,7 +1735,7 @@ void ipopt_fixed::finalize_solution(
 	}
 	//
 	// explicit constraints at the final fixed effects vector
-	c_vec_tmp_ = mixed_object_.fix_con_eval(fixed_opt_);
+	c_vec_tmp_ = mixed_object_.fix_con_eval(fixed_opt);
 	assert( c_vec_tmp_.size() == n_fix_con_ );
 
 	// check explicit constraints
@@ -1736,6 +1764,9 @@ void ipopt_fixed::finalize_solution(
 	);
 
 	// Check the partial of the Lagrangian w.r.t fixed effects
+	// and set solution_.fixed_lag
+	assert( solution_.fixed_lag.size() == 0 );
+	solution_.fixed_lag.resize(n_fixed_);
 	double average = 0.0;
 	for(size_t j = 0; j < n_fixed_; j++)
 	{	Number sum = grad_f[j];
@@ -1749,11 +1780,20 @@ void ipopt_fixed::finalize_solution(
 		// Ipopt does not seem to set z_U[j] and z_L[j] accuractely
 		double scale = CppAD::abs( (1.0 + tol) * x[j] );
 		bool at_lower = x[j] - fixed_lower_[j] <= scale;
+		solution_.fixed_lag[j] = 0.0;
 		if( at_lower )
-			sum = std::min(sum, 0.0);
+		{	if( sum > 0 )
+			{	solution_.fixed_lag[j] = - sum;
+				sum = 0.0;
+			}
+		}
 		bool at_upper = fixed_upper_[j] - x[j] <= scale;
 		if( at_upper )
-			sum = std::max(sum, 0.0);
+		{	if( sum <  0 )
+			{	solution_.fixed_lag[j] = - sum;
+				sum = 0.0;
+			}
+		}
 		//
 		average += CppAD::abs(sum) / double(n_fixed_);
 	}

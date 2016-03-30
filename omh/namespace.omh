@@ -34,6 +34,7 @@ $children%include/cppad/mixed/configure.hpp.in
 	%include/cppad/mixed/choleig.hpp
 	%include/cppad/mixed/ipopt_fixed.hpp
 	%src/eigen/newton_step.cpp
+	%include/cppad/mixed/fixed_solution.hpp
 	%include/cppad/mixed/sparse_hes_info.hpp
 	%include/cppad/mixed/sparse_jac_info.hpp
 	%include/cppad/mixed/cholmod.hpp
@@ -57,6 +58,7 @@ $rref choleig$$
 $rref cholmod$$
 $rref ipopt_fixed$$
 $rref newton_step$$
+$rref fixed_solution$$
 $rref sparse_hes_info$$
 $rref sparse_jac_info$$
 $tend
