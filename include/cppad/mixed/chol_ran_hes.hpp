@@ -15,7 +15,8 @@ see http://www.gnu.org/licenses/agpl.txt
 
 namespace CppAD { namespace mixed {
 	// This would be member of cppad_mixed class if it were not for all the
-	// warnings Eigen generates.
+	// warnings Eigen generates. 2DO: review this because the Eigen warning
+	// problem has been fixed using the SYSTEM include option.
 	extern Eigen::SimplicialLDLT<
 		Eigen::SparseMatrix<double> , Eigen::Lower
 	> chol_ran_hes_;

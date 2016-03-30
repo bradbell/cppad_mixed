@@ -20,21 +20,13 @@ $$
 
 $section The CppAD::mixed Namespace Declarations$$
 The declarations in the subsections below
-are in the $code CppAD::mixed$$ namespace
-and are $bold not$$ part of the
-$code cppad_mixed$$ user API (and may change with time).
+are in the $code CppAD::mixed$$ namespace.
 
 $head configure.hpp$$
 The $cref configure.hpp$$ declarations are an exception because
 they are $code cppad_mixed$$ preprocessor  symbols and hence
 not in the $code CppAD::mixed$$ namespace.
 These are $bold not$$ part of the user API.
-
-$head manage_gsl_rng$$
-The $cref manage_gsl_rng$$ declarations are an exception because
-they are part of the $code cppad_mixed$$ user API.
-These are in the $code CppAD::mixed$$ namespace.
-
 
 $children%include/cppad/mixed/configure.hpp.in
 	%src/manage_gsl_rng.cpp
@@ -58,14 +50,15 @@ $tend
 
 $head Private$$
 These declarations are implementation details and not part of the
-$code CppAD::mixed$$ user API.
+$code CppAD::mixed$$ user API
+(and may change with time).
 $table
 $rref choleig$$
+$rref cholmod$$
 $rref ipopt_fixed$$
 $rref newton_step$$
 $rref sparse_hes_info$$
 $rref sparse_jac_info$$
-$rref cholmod$$
 $tend
 
 $end
