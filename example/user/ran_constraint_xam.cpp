@@ -191,7 +191,7 @@ namespace {
 			random_upper[i] = +inf;
 		}
 		// optmize fixed effects
-		vector<double> fixed_out = mixed_object.optimize_fixed(
+		CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 			fixed_options,
 			random_options,
 			fixed_lower,
@@ -203,7 +203,8 @@ namespace {
 			random_upper,
 			random_in
 		);
-
+		vector<double> fixed_out = solution.fixed_opt;
+		//
 		// corresponding optimal random effects
 		vector<double> random_out = mixed_object.optimize_random(
 			random_options,

@@ -162,7 +162,7 @@ bool no_random_xam(void)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
 	}
-	vector<double> fixed_out = mixed_object.optimize_fixed(
+	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_options,
 		random_options,
 		fixed_lower,
@@ -174,7 +174,8 @@ bool no_random_xam(void)
 		random_upper,
 		random_in
 	);
-
+	vector<double> fixed_out = solution.fixed_opt;
+	//
 	for(size_t j = 0; j < n_fixed; j++)
 		ok &= CppAD::abs( fixed_out[j] - z[j] / 2.0 ) <= tol;
 

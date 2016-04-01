@@ -29,6 +29,17 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 04-01$$
+$bold API Change:$$
+The $cref optimize_fixed$$ routine now returns the optimal Lagrange
+multipliers (as well as the optimal fixed effects). If $icode fixed_out$$
+was the return value for the previous version of $code optimize_fixed$$,
+and $icode solution$$ is the current return value,
+$codei%
+	%fixed_out% = %solution%.fixed_opt
+%$$.
+This shows how to convert old $code optimize_fixed$$ calls to the new form.
+
 $head 03-29$$
 Add the option for a user defined $cref ran_likelihood_hes$$ function.
 

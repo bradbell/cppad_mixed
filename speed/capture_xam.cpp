@@ -519,7 +519,7 @@ int main(int argc, char *argv[])
 		u_upper[i] = +inf;
 	}
 	// optimize fixed effects
-	vector<double> theta_out = mixed_object.optimize_fixed(
+	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_options,
 		random_options,
 		theta_lower,
@@ -531,6 +531,8 @@ int main(int argc, char *argv[])
 		u_upper,
 		u_in
 	);
+	vector<double> theta_out = solution.fixed_opt;
+	//
 	// correspnding optimal random effects
 	vector<double> u_out = mixed_object.optimize_random(
 		random_options,

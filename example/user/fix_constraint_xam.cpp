@@ -194,7 +194,7 @@ bool fix_constraint_xam(void)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
 	}
-	vector<double> fixed_out = mixed_object.optimize_fixed(
+	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_options,
 		random_options,
 		fixed_lower,
@@ -206,7 +206,8 @@ bool fix_constraint_xam(void)
 		random_upper,
 		random_in
 	);
-
+	vector<double> fixed_out = solution.fixed_opt;
+	//
 	// check constraint
 	double sum = 0.0;
 	for(size_t i = 0; i < n_fixed; i++)

@@ -156,7 +156,7 @@ bool abs_density_xam(void)
 		"String  derivative_test_print_all yes\n"
 		"Numeric tol                       1e-8\n"
 	;
-	vector<double> fixed_out = mixed_object.optimize_fixed(
+	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_options,
 		random_options,
 		fixed_lower,
@@ -168,6 +168,7 @@ bool abs_density_xam(void)
 		random_upper,
 		random_in
 	);
+	vector<double> fixed_out = solution.fixed_opt;
 
 	for(size_t j = 0; j < n_fixed; j++)
 		ok &= CppAD::abs( fixed_out[j] - CppAD::log( z[j] ) ) <= tol;

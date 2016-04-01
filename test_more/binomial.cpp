@@ -146,7 +146,7 @@ bool binomial(void)
 		"String  derivative_test second-order\n"
 	;
 	vector<double> u_lower(0), u_upper(0);
-	vector<double> theta_out = mixed_object.optimize_fixed(
+	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_options,
 		random_options,
 		theta_lower,
@@ -158,6 +158,8 @@ bool binomial(void)
 		u_upper,
 		u_in
 	);
+	vector<double> theta_out = solution.fixed_opt;
+	//
 	for(size_t j = 0; j < n_fixed; j++)
 	{	// std::cout << endl << theta_out[j] / theta_sim[j] - 1.0 << endl;
 		ok &= std::fabs( theta_out[j] / theta_sim[j] - 1.0) < 1e-2;

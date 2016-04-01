@@ -125,7 +125,7 @@ bool abs_fix_con(void)
 		"String  derivative_test           second-order\n"
 		"Numeric tol                       1e-8\n"
 	;
-	vector<double> fixed_out = mixed_object.optimize_fixed(
+	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_options,
 		random_options,
 		fixed_lower,
@@ -137,7 +137,8 @@ bool abs_fix_con(void)
 		random_upper,
 		random_in
 	);
-
+	vector<double> fixed_out = solution.fixed_opt;
+	//
 	for(size_t j = 0; j < n_fixed; j++)
 	{	double check = CppAD::log( z[j] );
 		if( j == 0 )

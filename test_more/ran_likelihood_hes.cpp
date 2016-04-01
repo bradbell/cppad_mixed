@@ -227,7 +227,7 @@ bool ran_likelihood_hes(void)
 			n_fixed, n_random, quasi_fixed, A_info, data
 		);
 		mixed_object.initialize(fixed_in, random_in);
-		vector<double> fixed_out = mixed_object.optimize_fixed(
+		CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 			fixed_options,
 			random_options,
 			fixed_lower,
@@ -239,7 +239,7 @@ bool ran_likelihood_hes(void)
 			random_upper,
 			random_in
 		);
-		theta_out[user_defined] = fixed_out;
+		theta_out[user_defined] = solution.fixed_opt;
 	}
 
 	// check that the results were the same

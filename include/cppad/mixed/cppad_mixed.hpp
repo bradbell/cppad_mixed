@@ -225,7 +225,7 @@ $head optimize_fixed$$
 Optimize the total objective with respect to the fixed effects;
 see  $cref/optimize_fixed/optimize_fixed/$$.
 $srccode%cpp% */
-	d_vector optimize_fixed(
+	CppAD::mixed::fixed_solution optimize_fixed(
 		const std::string& fixed_options    ,
 		const std::string& random_options   ,
 		const d_vector&    fixed_lower      ,
@@ -237,8 +237,6 @@ $srccode%cpp% */
 		const d_vector&    random_upper     ,
 		const d_vector&    random_in
 	);
-	// complete results for previous call to optimize_fixed
-	CppAD::mixed::fixed_solution solution_;
 /* %$$
 $childtable%src/derived_ctor.omh
 	%src/ran_likelihood.omh

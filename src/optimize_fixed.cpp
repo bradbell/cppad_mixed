@@ -26,7 +26,7 @@ $section Optimize Fixed Effects$$
 
 $head Syntax$$
 $icode%fixed_out% =%$$
-$icode%mixed_object%.optimize_fixed(
+$icode%solution%.optimize_fixed(
 	%fixed_options%,
 	%random_options%,
 	%fixed_lower%,
@@ -167,18 +167,14 @@ $codei%
 %$$
 for each valid index $icode i$$.
 
-$head fixed_out$$
+$head solution$$
 The return value has prototype
 $codei%
-	CppAD::vector<double> %fixed_out%
+	CppAD::mixed::fixed_solution %solution%
 %$$
-It is the final value (obtained by optimization) of the
-fixed effects vector.
-This vector satisfies its bounds; i.e.,
-$codei%
-	%fixed_lower%[%j%] <= %fixed_out%[%j%] <= %fixed_upper%[%j%]
-%$$
-for $icode%j% = 0 , %...%, %n_fixed_%-1%$$.
+It is the solution (obtained by optimization) of the
+fixed effects vector and its Lagrange multipliers; see
+$cref fixed_solution$$.
 
 $head Laplace Approximation$$
 The $cref/theory/theory/$$ for the
@@ -208,7 +204,7 @@ $end
 
 
 
-CppAD::vector<double> cppad_mixed::optimize_fixed(
+CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 	const std::string& fixed_options     ,
 	const std::string& random_options    ,
 	const d_vector&    fixed_lower       ,
@@ -317,7 +313,8 @@ CppAD::vector<double> cppad_mixed::optimize_fixed(
 	app->Options()->GetNumericValue(tag, fixed_tolerance, prefix);
 
 	// object that is used to evalutate objective and constraints
-	SmartPtr<CppAD::mixed::ipopt_fixed> fixed_nlp = new CppAD::mixed::ipopt_fixed(
+	SmartPtr<CppAD::mixed::ipopt_fixed> fixed_nlp =
+	new CppAD::mixed::ipopt_fixed(
 		random_options,
 		fixed_tolerance,
 		fixed_lower,
@@ -365,10 +362,7 @@ CppAD::vector<double> cppad_mixed::optimize_fixed(
 	{	warning("optimize_fixed: solution check failed");
 	}
 	//
-	// after calling finalize_solution we make a copy in this->solution_
-	solution_ = fixed_nlp->solution();
-	//
-	// return fixed effects
-	return solution_.fixed_opt;
+	// return the entire solution including the lagrange multipliers
+	return fixed_nlp->solution();
 }
 

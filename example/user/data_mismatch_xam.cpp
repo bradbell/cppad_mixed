@@ -366,7 +366,7 @@ bool data_mismatch_xam(void)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
 	}
-	vector<double> fixed_out = mixed_object.optimize_fixed(
+	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_options,
 		random_options,
 		fixed_lower,
@@ -378,6 +378,8 @@ bool data_mismatch_xam(void)
 		random_upper,
 		random_in
 	);
+	vector<double> fixed_out = solution.fixed_opt;
+	//
 	vector<double> random_out = mixed_object.optimize_random(
 		random_options, fixed_out, random_lower, random_upper, random_in
 	);
