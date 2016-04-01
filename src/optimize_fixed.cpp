@@ -365,10 +365,10 @@ CppAD::vector<double> cppad_mixed::optimize_fixed(
 	{	warning("optimize_fixed: solution check failed");
 	}
 	//
-	// we have called finalize_solution so can now get it
-	CppAD::mixed::fixed_solution solution = fixed_nlp->solution();
+	// after calling finalize_solution we make a copy in this->solution_
+	solution_ = fixed_nlp->solution();
 	//
 	// return fixed effects
-	return solution.fixed_opt;
+	return solution_.fixed_opt;
 }
 

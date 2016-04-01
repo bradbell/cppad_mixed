@@ -20,6 +20,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/sparse_mat_info.hpp>
 # include <cppad/mixed/configure.hpp>
 # include <cppad/mixed/cholmod.hpp>
+# include <cppad/mixed/fixed_solution.hpp>
 
 // private examples
 extern bool fix_con_eval_xam(void);
@@ -236,6 +237,8 @@ $srccode%cpp% */
 		const d_vector&    random_upper     ,
 		const d_vector&    random_in
 	);
+	// complete results for previous call to optimize_fixed
+	CppAD::mixed::fixed_solution solution_;
 /* %$$
 $childtable%src/derived_ctor.omh
 	%src/ran_likelihood.omh
