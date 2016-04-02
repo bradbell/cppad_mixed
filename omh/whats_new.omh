@@ -29,6 +29,10 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 04-02$$
+Add a brief description for each of the
+$cref/user defined functions/public/User Defined Functions/$$.
+
 $head 04-01$$
 $bold API Change:$$
 The $cref optimize_fixed$$ routine now returns the optimal Lagrange
@@ -132,7 +136,7 @@ For example, see $cref ran_constraint_xam.cpp$$.
 $lnext
 Fix a bug when combining absolute value terms
 with $cref fix_constraint$$.
-In change the default $cref/warning/public/User Defined/warning/$$
+In change the default $cref/warning/public/User Defined Functions/warning/$$
 so that it does not abort ($code assert(false)$$).
 Furthermore, change the tolerance in one of the solution tests
 to avoid a warning (when convergence has been achieved).

@@ -394,7 +394,7 @@ it is checked for correctness.
 To be specific, the return vector is checked using
 $cref/ran_like_fun_/Private/ran_like_fun_/$$.
 If the results do no agree,
-$cref/fatal_error/Public/User Defined/fatal_error/$$ is called with
+$cref/fatal_error/Public/User Defined Functions/fatal_error/$$ is called with
 an appropriate error message.
 
 $end
