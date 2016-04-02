@@ -25,7 +25,7 @@ $icode%mixed_derived% %mixed_object%(
 )%$$
 
 $head See Also$$
-$cref/initialize/initialize/$$
+$cref initialize$$
 
 $head mixed_derived$$
 This is the name of the class derived in the following fashion:

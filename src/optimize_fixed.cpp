@@ -192,7 +192,7 @@ fixed effects vector and its Lagrange multipliers; see
 $cref fixed_solution$$.
 
 $head Laplace Approximation$$
-The $cref/theory/theory/$$ for the
+The $cref theory$$ for the
 Laplace approximation optimization only includes the case where
 the $cref/random likelihood/ran_likelihood/$$ is smooth.
 

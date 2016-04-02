@@ -172,7 +172,7 @@ $srccode%cpp% */
 
 $head constructor$$
 Construct an $code cppad_mixed$$ derived class object; see
-$cref/derived_ctor/derived_ctor/$$.
+$cref derived_ctor$$.
 $srccode%cpp% */
 	cppad_mixed(
 		size_t                                  n_fixed   ,
@@ -202,7 +202,7 @@ $comment */
 /* $$
 $head initialize$$
 Directly after construction, use this function to initialize
-the derived class object; see $cref/initialize/initialize/$$.
+the derived class object; see $cref initialize$$.
 $srccode%cpp% */
 	std::map<std::string, size_t> initialize(
 		const d_vector&                       fixed_vec  ,
@@ -211,7 +211,7 @@ $srccode%cpp% */
 /* %$$
 $head optimize_random$$
 Given the fixed effects, optimize with respect to the random effects;
-see  $cref/optimize_random/optimize_random/$$.
+see  $cref optimize_random$$.
 $srccode%cpp% */
 	d_vector optimize_random(
 		const std::string& options      ,
@@ -223,7 +223,7 @@ $srccode%cpp% */
 /* %$$
 $head optimize_fixed$$
 Optimize the total objective with respect to the fixed effects;
-see  $cref/optimize_fixed/optimize_fixed/$$.
+see  $cref optimize_fixed$$.
 $srccode%cpp% */
 	CppAD::mixed::fixed_solution optimize_fixed(
 		const std::string& fixed_options    ,
