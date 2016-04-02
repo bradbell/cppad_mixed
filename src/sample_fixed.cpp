@@ -185,3 +185,16 @@ is $latex \sqrt{\bar{D}} w^i$$.
 $end
 ------------------------------------------------------------------------------
 */
+# include <cppad/mixed/cppad_mixed.hpp>
+
+double cppad_mixed::sample_fixed(
+	d_vector&                            sample               ,
+	double                               non_zero             ,
+	const CppAD::mixed::fixed_solution&  solution             ,
+	const d_vector&                      fixed_lower          ,
+	const d_vector&                      fixed_upper          ,
+	const d_vector&                      fix_constraint_lower ,
+	const d_vector&                      fix_constraint_upper )
+{	// under construction
+	return 0.0;
+}

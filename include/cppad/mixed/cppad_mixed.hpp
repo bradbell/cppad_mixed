@@ -246,6 +246,20 @@ $srccode%cpp% */
 		const d_vector&    random_in
 	);
 /* %$$
+$head sample_fixed$$
+Sample from the posterior distribution for the estimate of the fixed effects;
+see  $cref sample_fixed$$.
+$srccode%cpp% */
+	double sample_fixed(
+		d_vector&                            sample           ,
+		double                               non_zero         ,
+		const CppAD::mixed::fixed_solution&  solution         ,
+		const d_vector&                      fixed_lower      ,
+		const d_vector&                      fixed_upper      ,
+		const d_vector&                      fix_constraint_lower ,
+		const d_vector&                      fix_constraint_upper
+	);
+/* %$$
 $childtable%src/derived_ctor.omh
 	%src/ran_likelihood.omh
 	%src/fix_likelihood.omh
