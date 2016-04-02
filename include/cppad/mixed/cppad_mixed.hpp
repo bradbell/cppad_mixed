@@ -245,6 +245,7 @@ $childtable%src/derived_ctor.omh
 	%src/initialize.cpp
 	%src/optimize_random.cpp
 	%src/optimize_fixed.cpp
+	%src/sample_fixed.cpp
 	%src/ran_likelihood_jac.omh
 	%src/ran_likelihood_hes.omh
 %$$

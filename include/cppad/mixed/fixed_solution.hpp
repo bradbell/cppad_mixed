@@ -18,7 +18,7 @@ $spell
 	vec
 $$
 
-$section Fixed Effects Optimal Solution Information$$
+$section Optimal Solution Returned by optimize_fixed$$
 
 $head Syntax$$
 $codei%CppAD::mixed::fixed_solution %solution%$$
@@ -27,8 +27,9 @@ $head Private$$
 This structure is an implementation detail and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head Purpose$$
-This structure holds the results corresponding to $cref optimize_fixed$$.
+$head Convention$$
+If a Lagrange multiplier is zero, the correspond constraint
+is not active at the optimal solution.
 
 $head fixed_opt$$
 This field has prototype
