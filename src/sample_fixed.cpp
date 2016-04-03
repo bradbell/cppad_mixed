@@ -41,8 +41,12 @@ This argument has prototype
 $codei%
 	CppAD::vector<double>& %sample%
 %$$
-and its size is
-$cref/n_fixed/derived_ctor/n_fixed/$$ times $icode n_sample$$.
+and its size is a multiple of
+$cref/n_fixed/derived_ctor/n_fixed/$$.
+We define
+$codei%
+	%n_sample% = %sample_size% / %n_fixed%
+%$$
 The input value of its elements does not matter.
 Upon return,
 for $codei%i% = 0 , %...%, %n_sample%-1%$$,
@@ -62,12 +66,6 @@ and is a value between zero and one.
 It specifies the fraction of off diagonal elements in
 the posterior covariance that are included in the simulation.
 
-$head n_sample$$
-This argument has prototype
-$codei%
-	size_t %n_sample%
-%$$
-and is the number of samples of the fixed effects to generate.
 
 $head solution$$
 is the $cref/solution/optimize_fixed/solution/$$
@@ -195,6 +193,23 @@ double cppad_mixed::sample_fixed(
 	const d_vector&                      fixed_upper          ,
 	const d_vector&                      fix_constraint_lower ,
 	const d_vector&                      fix_constraint_upper )
-{	// under construction
-	return 0.0;
+{
+	assert( sample.size() > 0 );
+	assert( sample.size() % n_fixed_ == 0 );
+	assert( 0.0 <= non_zero && non_zero <= 1.0 );
+	//
+	assert( solution.fixed_opt.size() == n_fixed_ );
+	assert( solution.fixed_lag.size() == n_fixed_ );
+	assert( solution.fix_con_lag.size() == fix_con_fun_.Range() );
+	assert( solution.ran_con_lag.size() == n_ran_con_ );
+	//
+	assert( fixed_lower.size() == n_fixed_ );
+	assert( fixed_upper.size() == n_fixed_ );
+	assert( fix_constraint_lower.size() == n_ran_con_ );
+	assert( fix_constraint_upper.size() == n_ran_con_ );
+	//
+	size_t n_sample = sample.size() / n_fixed_;
+	//
+	// under construction
+	return 1.0 / double(n_sample);
 }
