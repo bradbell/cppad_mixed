@@ -15,6 +15,7 @@ $spell
 	covariance
 	pairwise
 	CppAD
+	cppad
 $$
 
 $section Simulating the Posterior Distribution for the Fixed Effects$$
@@ -27,7 +28,10 @@ $icode%correlation% = %mixed_object%.sample_fixed(
 	%fixed_lower%,
 	%fixed_upper%,
 	%fixed_constraint_lower%,
-	%fixed_constraint_upper%
+	%fixed_constraint_upper%,
+	%random_lower%,
+	%random_upper%,
+	%random_in%,
 )%$$
 
 $head Under Construction$$
@@ -35,6 +39,18 @@ $head Under Construction$$
 $head Purpose$$
 Sample the asymptotic posterior distribution for the
 optimal fixed effects (given the model and the data).
+
+$head quasi_fixed$$
+If $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ was true when
+$icode mixed_object$$ was constructed,
+The $cref initialize$$ routine did not include the full Newton method
+(hence uses less memory).
+This memory is allocated and used during $code sample_fixed$$.
+
+$head mixed_object$$
+We use $cref/mixed_object/derived_ctor/mixed_object/$$
+to denote an object of a class that is
+derived from the $code cppad_mixed$$ base class.
 
 $head sample$$
 This argument has prototype
@@ -71,6 +87,10 @@ $head solution$$
 is the $cref/solution/optimize_fixed/solution/$$
 for a previous call to $cref optimize_fixed$$.
 
+$head random_options$$
+is the $cref/random_options/optimize_fixed/random_options/$$
+for a previous call to $code optimize_fixed$$.
+
 $head fixed_lower$$
 is the $cref/fixed_lower/optimize_fixed/fixed_lower/$$
 for a previous call to $code optimize_fixed$$.
@@ -85,6 +105,18 @@ for a previous call to $code optimize_fixed$$.
 
 $head fix_constraint_upper$$
 is the $cref/fix_constraint_upper/optimize_fixed/fix_constraint_upper/$$
+for a previous call to $code optimize_fixed$$.
+
+$head random_lower$$
+is the $cref/random_lower/optimize_fixed/random_lower/$$
+for a previous call to $code optimize_fixed$$.
+
+$head random_upper$$
+is the $cref/random_upper/optimize_fixed/random_upper/$$
+for a previous call to $code optimize_fixed$$.
+
+$head random_in$$
+is the $cref/random_in/optimize_fixed/random_in/$$
 for a previous call to $code optimize_fixed$$.
 
 $head correlation$$
@@ -189,26 +221,71 @@ double cppad_mixed::sample_fixed(
 	d_vector&                            sample               ,
 	double                               non_zero             ,
 	const CppAD::mixed::fixed_solution&  solution             ,
+	const std::string&                   random_options       ,
 	const d_vector&                      fixed_lower          ,
 	const d_vector&                      fixed_upper          ,
 	const d_vector&                      fix_constraint_lower ,
-	const d_vector&                      fix_constraint_upper )
+	const d_vector&                      fix_constraint_upper ,
+	const d_vector&                      random_lower         ,
+	const d_vector&                      random_upper         ,
+	const d_vector&                      random_in            )
 {
+	// sample
 	assert( sample.size() > 0 );
 	assert( sample.size() % n_fixed_ == 0 );
+	// non_zero
 	assert( 0.0 <= non_zero && non_zero <= 1.0 );
-	//
+	// solution
 	assert( solution.fixed_opt.size() == n_fixed_ );
 	assert( solution.fixed_lag.size() == n_fixed_ );
 	assert( solution.fix_con_lag.size() == fix_con_fun_.Range() );
 	assert( solution.ran_con_lag.size() == n_ran_con_ );
-	//
+	// fixed_(lower and upper)
 	assert( fixed_lower.size() == n_fixed_ );
 	assert( fixed_upper.size() == n_fixed_ );
-	assert( fix_constraint_lower.size() == n_ran_con_ );
-	assert( fix_constraint_upper.size() == n_ran_con_ );
+	// fix_constraint(lower and upper)
+	assert( fix_constraint_lower.size() == fix_con_fun_.Range() );
+	assert( fix_constraint_upper.size() == fix_con_fun_.Range() );
+	// random_(lower, upper, in)
+	assert( random_lower.size() == n_random_ );
+	assert( random_upper.size() == n_random_ );
+	assert( random_in.size() == n_random_ );
 	//
+	// number of samples
 	size_t n_sample = sample.size() / n_fixed_;
+	//
+	// optimal fixed effects
+	const d_vector& fixed_opt( solution.fixed_opt );
+	//
+	// optimize the random effects
+	d_vector random_opt = optimize_random(
+		random_options, fixed_opt, random_lower, random_upper, random_in
+	);
+	//
+	// If Quasi-Newton method was used, must initilaize routines
+	// that are only used for the Hessian calculation; see initilaize.cpp
+	if( n_random_ != 0 && ! init_newton_atom_done_ )
+	{	assert( quasi_fixed_ );
+		assert( ! init_ran_objcon_done_ );
+		assert( ! init_ran_objcon_hes_done_ );
+		//
+		// newton_atom_
+		assert( ran_like_a1fun_.size_var() > 0  );
+		newton_atom_.initialize(
+			ran_like_a1fun_, fixed_opt, random_opt
+		);
+		assert( init_newton_atom_done_ );
+		//
+		// ran_objcon_fun_
+		assert( ! init_ran_objcon_done_ );
+		init_ran_objcon(fixed_opt, random_opt);
+		assert( init_ran_objcon_done_ );
+		//
+		// ran_objcon_hes_
+		assert( ! init_ran_objcon_hes_done_ );
+		init_ran_objcon_hes(fixed_opt, random_opt);
+		assert( init_ran_objcon_hes_done_ );
+	}
 	//
 	// under construction
 	return 1.0 / double(n_sample);

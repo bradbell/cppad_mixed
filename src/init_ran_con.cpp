@@ -40,7 +40,9 @@ $codei%
 	size_t n_ran_con_
 %$$
 does not matter.
-Upon return it is the number of random constraints.
+Upon return it is the number of random constraints; i.e.,
+the number of rows in the matrix
+$cref/A_info/derived_ctor/A_info/$$.
 
 $end
 */

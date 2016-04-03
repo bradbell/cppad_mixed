@@ -25,14 +25,14 @@ $$
 $section Optimize Fixed Effects$$
 
 $head Syntax$$
-$icode%fixed_out% =%$$
-$icode%solution%.optimize_fixed(
+$icode%solution% =%$$
+$icode%mixed_object%.optimize_fixed(
 	%fixed_options%,
 	%random_options%,
 	%fixed_lower%,
 	%fixed_upper%,
-	%fixed_constraint_lower%,
-	%fixed_constraint_upper%,
+	%fix_constraint_lower%,
+	%fix_constraint_upper%,
 	%fixed_in%,
 	%random_lower%,
 	%random_upper%,
@@ -231,6 +231,19 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 	const d_vector&    random_upper      ,
 	const d_vector&    random_in         )
 {	bool ok = true;
+	//
+	// fixed_(lower, upper, in)
+	assert( fixed_lower.size() == n_fixed_ );
+	assert( fixed_upper.size() == n_fixed_ );
+	assert( fixed_in.size()    == n_fixed_ );
+	// fix_constraint(lower and upper)
+	assert( fix_constraint_lower.size() == fix_con_fun_.Range() );
+	assert( fix_constraint_upper.size() == fix_con_fun_.Range() );
+	// random_(lower, upper, in)
+	assert( random_lower.size() == n_random_ );
+	assert( random_upper.size() == n_random_ );
+	assert( random_in.size() == n_random_ );
+	//
 	using Ipopt::SmartPtr;
 	// make sure initialize has been called
 	if( ! initialize_done_ )
@@ -240,9 +253,7 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 	}
 
 # ifndef NDEBUG
-	assert( fixed_lower.size() == fixed_in.size() );
-	assert( fixed_lower.size() == fixed_upper.size() );
-	for(size_t j = 0; j < fixed_lower.size(); j++)
+	for(size_t j = 0; j < n_fixed_; j++)
 	{	assert( fixed_lower[j] <= fixed_in[j] );
 		assert( fixed_in[j]    <= fixed_upper[j] );
 	}
