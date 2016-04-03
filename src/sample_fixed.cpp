@@ -140,7 +140,12 @@ $latex \[
 	\B{C} ( \hat{\theta}, \hat{\theta} )
 	=
 	L^{(2)} ( \hat{\theta} )^{-1}
-\]$$.
+\]$$
+Absolute value terms in the
+$cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
+for the $cref fix_likelihood$$ are not include in this Hessian
+(because they do not have a derivative, let alone Hessian, at zero).
+
 
 $head Approximate Constraints$$
 Let $latex n$$ be the number of fixed constraints,
@@ -256,12 +261,14 @@ double cppad_mixed::sample_fixed(
 	//
 	// optimal fixed effects
 	const d_vector& fixed_opt( solution.fixed_opt );
-	//
+	// -----------------------------------------------------------------------
 	// optimize the random effects
 	d_vector random_opt = optimize_random(
 		random_options, fixed_opt, random_lower, random_upper, random_in
 	);
-	//
+	// update the cholesky factor for this fixed and random effect
+	update_factor(fixed_opt, random_opt);
+	// -----------------------------------------------------------------------
 	// If Quasi-Newton method was used, must initilaize routines
 	// that are only used for the Hessian calculation; see initilaize.cpp
 	if( n_random_ != 0 && ! init_newton_atom_done_ )
@@ -286,7 +293,23 @@ double cppad_mixed::sample_fixed(
 		init_ran_objcon_hes(fixed_opt, random_opt);
 		assert( init_ran_objcon_hes_done_ );
 	}
+	assert( init_newton_atom_done_ );
+	assert( init_ran_objcon_done_ );
+	assert( init_ran_objcon_hes_done_ );
+	// -----------------------------------------------------------------------
+	// Hessian w.r.t. fixed effects for random part of objective,no constraints
+	CppAD::vector<size_t> row_ran(0), col_ran(0);
+	d_vector hes_ran(0), w_ran(n_ran_con_ + 1);
+	w_ran[0] = 1.0;
+	for(size_t j = 1; j <=n_ran_con_; j++)
+		w_ran[j] = 0.0;
+	ran_objcon_hes(fixed_opt, random_opt, w_ran, row_ran, col_ran, hes_ran);
 	//
+	// Hessian of the fixed likelihood
+	// size_t n_fix = fix_like_fun_.Range();
+	// CppAD::vector<size_t>& row_fix(0), col_fix(0);
+	// d_vector hes_fix(0), w_fix(n_fix);
+	// -----------------------------------------------------------------------
 	// under construction
 	return 1.0 / double(n_sample);
 }

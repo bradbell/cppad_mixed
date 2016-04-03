@@ -69,7 +69,10 @@ corresponding to the function
 $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 
 $head fix_like_jac_$$
-The input value of
+If the return value for
+$cref fix_likelihood$$ is empty,
+$code fix_like_jac_$$ is not modified.
+Otherwise, the input value of
 $codei%
 	CppAD::mixed::sparse_jac_info fix_like_jac_
 %$$
@@ -86,7 +89,10 @@ This ADFun object can be used for the
 $cref/sparse Jacobian call/sparse_jac_info/Sparse Jacobian Call/f/$$.
 
 $head fix_like_hes_$$
-The input value of
+If the return value for
+$cref fix_likelihood$$ is empty,
+$code fix_like_hes_$$ is not modified.
+Otherwise, the input value of
 $codei%
 	CppAD::mixed::sparse_hes_info fix_like_hes_
 %$$
