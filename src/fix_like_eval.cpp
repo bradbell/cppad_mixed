@@ -34,6 +34,10 @@ We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
+$head fix_likelihood$$
+In the special case where $cref fix_likelihood$$ returns the empty vector,
+$icode vec$$ is also the empty vector.
+
 $head fixed_vec$$
 This argument has prototype
 $codei%

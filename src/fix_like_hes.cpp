@@ -37,6 +37,10 @@ We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
+$head fix_likelihood$$
+In the special case where $cref fix_likelihood$$ returns the empty vector,
+vectors $icode row_out$$, $icode col_out$$, and $icode val_out$$ are empty.
+
 $head fixed_vec$$
 This argument has prototype
 $codei%
@@ -124,10 +128,11 @@ void cppad_mixed::fix_like_hes(
 	assert( row_out.size() == col_out.size() );
 	assert( row_out.size() == val_out.size() );
 	//
-	if( fix_like_jac_.row.size() == 0 )
-	{	assert( fix_like_jac_.col.size() == 0 );
+	if( fix_like_hes_.row.size() == 0 )
+	{	assert( fix_like_hes_.col.size() == 0 );
 		assert( row_out.size() == 0 );
-		val_out.resize(0);
+		assert( col_out.size() == 0 );
+		assert( val_out.size() == 0 );
 		return;
 	}
 	if( row_out.size() == 0 )

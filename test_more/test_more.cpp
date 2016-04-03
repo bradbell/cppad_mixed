@@ -18,6 +18,7 @@ extern bool binomial(void);
 extern bool delta_ran_obj(void);
 extern bool der_var_hes(void);
 extern bool n_mixture(void);
+extern bool no_fix_likelihood(void);
 extern bool ran_likelihood_hes(void);
 extern bool ran_likelihood_jac(void);
 extern bool ran_obj_tst(void);
@@ -57,17 +58,21 @@ namespace {
 // main program that runs all the tests
 int main(void)
 {
+	RUN(no_fix_likelihood);
+# if 0
 	RUN(abs_fix_con);
 	RUN(binomial);
 	RUN(delta_ran_obj);
 	RUN(delta_ran_obj);
 	RUN(der_var_hes);
 	RUN(n_mixture);
+	RUN(no_fix_likelihood);
 	RUN(ran_likelihood_hes);
 	RUN(ran_likelihood_jac);
 	RUN(ran_obj_tst);
 	RUN(zero_random_one);
 	RUN(zero_random_two);
+# endif
 
 	// summary report
 	int return_flag;
