@@ -298,17 +298,29 @@ double cppad_mixed::sample_fixed(
 	assert( init_ran_objcon_hes_done_ );
 	// -----------------------------------------------------------------------
 	// Hessian w.r.t. fixed effects for random part of objective,no constraints
-	CppAD::vector<size_t> row_ran(0), col_ran(0);
-	d_vector hes_ran(0), w_ran(n_ran_con_ + 1);
+	d_vector w_ran(n_ran_con_ + 1);
 	w_ran[0] = 1.0;
 	for(size_t j = 1; j <=n_ran_con_; j++)
 		w_ran[j] = 0.0;
-	ran_objcon_hes(fixed_opt, random_opt, w_ran, row_ran, col_ran, hes_ran);
+	//
+	CppAD::mixed::sparse_mat_info ran_hes;
+	ran_objcon_hes(
+		fixed_opt, random_opt, w_ran, ran_hes.row, ran_hes.col, ran_hes.val
+	);
 	//
 	// Hessian of the fixed likelihood
-	// size_t n_fix = fix_like_fun_.Range();
-	// CppAD::vector<size_t>& row_fix(0), col_fix(0);
-	// d_vector hes_fix(0), w_fix(n_fix);
+	size_t n_fix_like = 0;
+	if( fix_like_fun_.size_var() != 0 )
+		n_fix_like = fix_like_fun_.Range();
+	d_vector w_fix(n_fix_like);
+	w_fix[0] = 1.0;
+	for(size_t j = 1; j < n_fix_like; j++)
+		w_fix[0] = 0.0;
+	//
+	CppAD::mixed::sparse_mat_info fix_hes;
+	fix_con_hes(
+			fixed_opt, w_fix, fix_hes.row, fix_hes.col, fix_hes.val
+	);
 	// -----------------------------------------------------------------------
 	// under construction
 	return 1.0 / double(n_sample);
