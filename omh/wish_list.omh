@@ -19,6 +19,17 @@ $$
 
 $section CppAD Mixed Wish List$$
 
+$head sparse_mat_info$$
+Use $cref sparse_mat_info$$ instead of
+$icode row$$, $icode col$$, $icode val$$ triples
+in syntax for following routines:
+$cref fix_con_hes$$,
+$cref fix_con_jac$$,
+$cref fix_like_hes$$,
+$cref fix_like_jac$$,
+$cref ran_objcon_hes$$.
+
+
 $head Statistics of Estimates$$
 Use two Newton steps for asymptotic statistic calculations.
 
