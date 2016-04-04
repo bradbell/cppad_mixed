@@ -302,7 +302,7 @@ double cppad_mixed::sample_fixed(
 	assert( init_ran_objcon_done_ );
 	assert( init_ran_objcon_hes_done_ );
 	// -----------------------------------------------------------------------
-	// Compute unconstrained covariance
+	// Compute our approximation for unconstrained covariance full_cov
 	//
 	// Lower triangle of Hessian w.r.t. fixed effects
 	// for random part of objective,no constraints
@@ -355,11 +355,43 @@ double cppad_mixed::sample_fixed(
 	// Inverse of total_hes is our approximate unconstrained covariance
 	eigen_cholesky cholesky;
 	cholesky.compute(total_hes);
-	eigen_sparse uncon_cov = cholesky.solve(eye);
+	eigen_sparse full_cov = cholesky.solve(eye);
+	// -----------------------------------------------------------------------
+	// Bound constrained variables get removed form the covariance
+	//
+	// full2reduced, reduced2full, n_reduced
+	CppAD::vector<size_t> full2reduced(n_fixed_), reduced2full(0);
+	for(size_t i = 0; i < n_fixed_; i++)
+	{	if( solution.fixed_lag[i] != 0.0 )
+		{	// this variable is not in the reduced matrix
+			full2reduced[i] = n_fixed_;
+		}
+		else
+		{	// mapping from full index to reduced index
+			full2reduced[i] = reduced2full.size();
+			// mapping from reduced index to full index
+			reduced2full.push_back(i);
+		}
+	}
+	size_t n_reduced = reduced2full.size();
+	//
+	// reduced_cov
+	eigen_sparse reduced_cov(n_reduced, n_reduced);
+	for(size_t r_col = 0; r_col < n_reduced; r_col++)
+	{	size_t f_col = reduced2full[r_col];
+		for(sparse_itr itr(full_cov, f_col); itr; ++itr)
+		{	size_t f_row = itr.row();
+			size_t r_row = full2reduced[f_row];
+			if( r_row != n_fixed_ )
+			{	assert( r_row < n_reduced );
+				reduced_cov.insert(r_row, r_col);
+			}
+		}
+	}
 	// -----------------------------------------------------------------------
 	// under construction
 	double sum = 0.0;
-	for(sparse_itr itr(uncon_cov, 0); itr; ++itr)
+	for(sparse_itr itr(reduced_cov, 0); itr; ++itr)
 		sum += itr.value();
 	return sum;
 }
