@@ -67,7 +67,7 @@ The input size of the vectors in $icode jac_info$$
 is either zero, or the vectors are the same as the return value
 for a previous call to $code ran_con_jac$$.
 
-$subhead Sparsity Patter$$
+$subhead Sparsity Pattern$$
 In the case where the input size of the vectors in $icode jac_info$$
 is zero, only the
 $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$ is computed.

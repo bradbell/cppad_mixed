@@ -240,6 +240,11 @@ double cppad_mixed::sample_fixed(
 	typedef Eigen::SimplicialLDLT<eigen_sparse, Eigen::Lower> eigen_cholesky;
 	typedef eigen_sparse::InnerIterator                       sparse_itr;
 	//
+	// number of fixed constraints
+	size_t n_fix_con = 0;
+	if( fix_con_fun_.size_var() != 0 )
+		n_fix_con = fix_con_fun_.Range();
+	//
 	// sample
 	assert( sample.size() > 0 );
 	assert( sample.size() % n_fixed_ == 0 );
@@ -248,14 +253,14 @@ double cppad_mixed::sample_fixed(
 	// solution
 	assert( solution.fixed_opt.size() == n_fixed_ );
 	assert( solution.fixed_lag.size() == n_fixed_ );
-	assert( solution.fix_con_lag.size() == fix_con_fun_.Range() );
+	assert( solution.fix_con_lag.size() == n_fix_con );
 	assert( solution.ran_con_lag.size() == n_ran_con_ );
 	// fixed_(lower and upper)
 	assert( fixed_lower.size() == n_fixed_ );
 	assert( fixed_upper.size() == n_fixed_ );
 	// fix_constraint(lower and upper)
-	assert( fix_constraint_lower.size() == fix_con_fun_.Range() );
-	assert( fix_constraint_upper.size() == fix_con_fun_.Range() );
+	assert( fix_constraint_lower.size() == n_fix_con );
+	assert( fix_constraint_upper.size() == n_fix_con );
 	// random_(lower, upper, in)
 	assert( random_lower.size() == n_random_ );
 	assert( random_upper.size() == n_random_ );
@@ -333,7 +338,7 @@ double cppad_mixed::sample_fixed(
 		w_fix[0] = 0.0;
 	//
 	CppAD::mixed::sparse_mat_info fix_info;
-	fix_con_hes(
+	fix_like_hes(
 			fixed_opt, w_fix, fix_info.row, fix_info.col, fix_info.val
 	);
 	eigen_sparse fix_hes = CppAD::mixed::triple2eigen(
@@ -350,12 +355,56 @@ double cppad_mixed::sample_fixed(
 	// identity matrix
 	eigen_sparse eye(n_fixed_, n_fixed_);
 	for(size_t i = 0; i < n_fixed_; i++)
-		eye.insert(i, i);
+		eye.insert(i, i) = 1.0;
 	//
 	// Inverse of total_hes is our approximate unconstrained covariance
 	eigen_cholesky cholesky;
 	cholesky.compute(total_hes);
 	eigen_sparse full_cov = cholesky.solve(eye);
+	// -----------------------------------------------------------------------
+	// Subtract fixed and random constraints from the full covariance
+	//
+	// jacobian of the fixed constraints
+	CppAD::mixed::sparse_mat_info fix_con_info;
+	if( n_fix_con > 0 )
+	{	fix_con_jac(
+			fixed_opt, fix_con_info.row, fix_con_info.col, fix_con_info.val
+		);
+	}
+	// jacobian of the random constraints
+	CppAD::mixed::sparse_mat_info ran_con_info;
+	if( n_ran_con_ > 0 )
+	{	ran_con_jac(fixed_opt, random_opt, ran_con_info);
+	}
+	// sparsity triple for both fixed and random constraints
+	CppAD::mixed::sparse_mat_info con_info;
+	for(size_t k = 0; k < fix_con_info.row.size(); k++)
+	{	con_info.row.push_back( fix_con_info.row[k] );
+		con_info.col.push_back( fix_con_info.col[k] );
+		con_info.val.push_back( fix_con_info.val[k] );
+	}
+	for(size_t k = 0; k < ran_con_info.row.size(); k++)
+	{	con_info.row.push_back( ran_con_info.row[k] );
+		con_info.col.push_back( ran_con_info.col[k] );
+		con_info.val.push_back( ran_con_info.val[k] );
+	}
+	//
+	if( con_info.row.size() > 0 )
+	{	eigen_sparse E = CppAD::mixed::triple2eigen(
+			n_fixed_      ,
+			n_fixed_      ,
+			con_info.row  ,
+			con_info.col  ,
+			con_info.val
+		);
+		eigen_sparse EC = E * full_cov;
+		cholesky.compute( EC * E.transpose() );
+		eye.resize(n_fix_con, n_fix_con);
+		for(size_t i = 0; i < n_fix_con; i++)
+			eye.insert(i, i) = 1.0;
+		eigen_sparse ECE_inv = cholesky.solve(eye);
+		full_cov -= EC.transpose() * ECE_inv * EC;
+	}
 	// -----------------------------------------------------------------------
 	// Bound constrained variables get removed form the covariance
 	//
