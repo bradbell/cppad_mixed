@@ -33,6 +33,7 @@ $children%include/cppad/mixed/configure.hpp.in
 	%include/cppad/mixed/sparse_mat_info.hpp
 	%include/cppad/mixed/choleig.hpp
 	%include/cppad/mixed/ipopt_fixed.hpp
+	%include/cppad/mixed/triple2eigen.hpp
 	%src/eigen/newton_step.cpp
 	%include/cppad/mixed/fixed_solution.hpp
 	%include/cppad/mixed/sparse_hes_info.hpp
@@ -61,6 +62,7 @@ $rref newton_step$$
 $rref fixed_solution$$
 $rref sparse_hes_info$$
 $rref sparse_jac_info$$
+$rref triple2eigen$$
 $tend
 
 $end

@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 
 # include <Eigen/Sparse>
 # include <cppad/mixed/choleig.hpp>
+# include <cppad/mixed/triple2eigen.hpp>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
@@ -68,17 +69,16 @@ $cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
 $end
 */
 void choleig::init( const CppAD::mixed::sparse_mat_info& hes_info )
-{	double not_used = 1.0;
-
-	Eigen::SparseMatrix<double> hessian_pattern(n_random_, n_random_);
-	assert( hes_info.row.size() == hes_info.col.size() );
-	for(size_t k = 0; k < hes_info.row.size(); k++)
-	{	size_t r = hes_info.row[k];
-		size_t c = hes_info.col[k];
-		assert( r < n_random_ );
-		assert( c < n_random_ );
-		hessian_pattern.insert(r, c) = not_used;
-	}
+{	assert( hes_info.row.size() == hes_info.col.size() );
+	CppAD::vector<double> not_used(0);
+	//
+	eigen_sparse hessian_pattern = CppAD::mixed::triple2eigen(
+			n_random_           ,
+			n_random_           ,
+			hes_info.row        ,
+			hes_info.col        ,
+			not_used
+	);
 	// analyze the pattern for an LDL^T Cholesky factorization of
 	// f_{u,u}(theta, u)
 	ptr_->analyzePattern(hessian_pattern);
@@ -156,15 +156,13 @@ void choleig::update(const CppAD::mixed::sparse_mat_info& hes_info)
 {	assert( hes_info.row.size() == hes_info.col.size() );
 	assert( hes_info.row.size() == hes_info.val.size() );
 	//
-	eigen_sparse hessian(n_random_, n_random_);
-	for(size_t k = 0; k < hes_info.row.size(); k++)
-	{	size_t r = hes_info.row[k];
-		size_t c = hes_info.col[k];
-		double v = hes_info.val[k];
-		assert( r < n_random_ );
-		assert( c < n_random_ );
-		hessian.insert(r, c) = v;
-	}
+	eigen_sparse hessian = CppAD::mixed::triple2eigen(
+		n_random_      ,
+		n_random_      ,
+		hes_info.row   ,
+		hes_info.col   ,
+		hes_info.val
+	);
 	// LDL^T Cholesky factorization of for specified values of the Hessian
 	// f_{u,u}(theta, u)
 	ptr_->factorize(hessian);
