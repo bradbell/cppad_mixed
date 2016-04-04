@@ -79,9 +79,13 @@ $codei%
 	double  %non_zero%
 %$$
 and is a value between zero and one.
-It specifies the fraction of off diagonal elements in
+It specifies the fraction of the elements in
 the posterior covariance that are included in the simulation.
-
+Diagonal elements are always included in the simulation, so
+$codei%
+	%non_zero% >= 1.0 - %n_fixed% / (%n_fixed% * %n_fixed%)
+%$$
+has the same effects at $icode non_zero$$ equal to one.
 
 $head solution$$
 is the $cref/solution/optimize_fixed/solution/$$
@@ -125,7 +129,7 @@ $codei%
 	double %correlation%
 %$$
 This is the largest absolute correlation
-that is treated as zero when simulating the posterior samples.
+that is converted to zero before simulating the posterior samples.
 If $icode%non_zero% = 1.0%$$, no values are treated as zero
 and $icode%correlation% = 0.0%$$.
 
@@ -201,7 +205,7 @@ D_{i,j}       & \R{otherwise}
 \] $$
 We define $latex \bar{D} = D ( \alpha )$$ where $latex \alpha$$
 is smallest value, greater than or equal zero,
-such that the fraction of non-zero off diagonal values in
+such that the fraction of non-zero values in
 $latex \bar{D}$$ is greater than or equal $icode non_zero$$.
 The return value $cref/correlation/sample_fixed/correlation/$$ is
 the maximum value of $latex | D_{i,j} | / \sqrt{ D_ii D_jj }$$
@@ -237,7 +241,7 @@ double cppad_mixed::sample_fixed(
 	const d_vector&                      random_in            )
 {
 	typedef Eigen::SparseMatrix<double, Eigen::ColMajor>      eigen_sparse;
-	typedef Eigen::SimplicialLDLT<eigen_sparse, Eigen::Lower> eigen_cholesky;
+	typedef Eigen::SimplicialLLT<eigen_sparse, Eigen::Lower>  eigen_cholesky;
 	typedef eigen_sparse::InnerIterator                       sparse_itr;
 	//
 	// number of fixed constraints
@@ -405,6 +409,50 @@ double cppad_mixed::sample_fixed(
 		eigen_sparse ECE_inv = cholesky.solve(eye);
 		full_cov -= EC.transpose() * ECE_inv * EC;
 	}
+	// ----------------------------------------------------------------------
+	// determine which components of the reduced covaraince to zero out
+	//
+	// only really need lower triangle, but use full matrix to simplify code
+	size_t n_fixed_sq = n_fixed_ * n_fixed_;
+	CppAD::vector<double> diagonal(n_fixed_), ratio(0), row(0), col(0);
+	for(size_t j = 0; j < n_fixed_; j++)
+	{	diagonal[j]               = 0.0;
+		for(sparse_itr itr(full_cov, j); itr; ++itr)
+		{	assert( size_t( itr.col() ) == j );
+			if( itr.row() == itr.col() )
+				diagonal[j] = itr.value();
+		}
+		assert( diagonal[j] > 0.0 );
+	}
+	double eps = 100. * std::numeric_limits<double>::epsilon();
+	for(size_t j = 0; j < n_fixed_; j++)
+	{	for(sparse_itr itr(full_cov, j); itr; ++itr)
+		{	assert( size_t( itr.col() ) == j );
+			size_t r = itr.row();
+			size_t c = itr.col();
+			if( r == c )
+				ratio.push_back( 1.0 );
+			else
+			{	double scale = std::sqrt( diagonal[r] * diagonal[c] );
+				ratio.push_back( std::min( itr.value() / scale, 1.0 - eps ) );
+			}
+			row.push_back(r);
+			col.push_back(c);
+		}
+	}
+	CppAD::vector<size_t> ind(n_fixed_sq);
+	CppAD::index_sort(ratio, ind);
+	//
+	double correlation = 0.0;
+	size_t n_zero      = (1.0 - non_zero) * n_fixed_sq;
+	n_zero             = std::min(n_zero, n_fixed_sq - n_fixed_);
+	if( n_fixed_sq - ratio.size() < n_zero )
+	{	size_t n_change = n_zero - (n_fixed_sq - ratio.size());
+		for(size_t k = 0; k < n_change; k++)
+			full_cov.coeffRef( row[ind[k]], col[ind[k]] ) = 0.0;
+		// maximum correlation that was changed to zero
+		correlation = ratio[ ind[ n_change - 1 ] ];
+	}
 	// -----------------------------------------------------------------------
 	// Bound constrained variables get removed form the covariance
 	//
@@ -442,5 +490,5 @@ double cppad_mixed::sample_fixed(
 	double sum = 0.0;
 	for(sparse_itr itr(reduced_cov, 0); itr; ++itr)
 		sum += itr.value();
-	return sum;
+	return correlation + sum;
 }
