@@ -27,6 +27,10 @@ $icode%mat% = CppAD::mixed::triple2eigen(
 	%nr%, %nc%,  %row%, %col%, %val%
 )%$$
 
+$head Private$$
+This routine is an implementation detail and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
 $head Scalar$$
 Is the element type for the sparse matrix.
 If $icode d$$ is a $code double$$ value,  $icode%Scalar%(d)%$$
@@ -84,7 +88,7 @@ $icode%val%[%k%]%$$.
 $head mat$$
 The return value has prototype
 $codei%
-	Eigen::SparseMatrix<%Scalar%> %mat%
+	Eigen::SparseMatrix<%Scalar%, Eigen::ColMajor> %mat%
 %$$
 and is a sparse representation of the specified matrix.
 

@@ -12,24 +12,18 @@
 new_directories='
 '
 rename_files='
-src/eigen/init_ran_con.cpp
-src/eigen/init_ran_objcon.cpp
-src/eigen/ran_con_eval.cpp
-src/eigen/ran_con_jac.cpp
+src/sample_fixed.cpp
 '
 spell_files='
 '
 no_change_files='
 '
 #
-rename_cmd='s|/eigen/|/|'
-spell_cmd='s|^$spell|&\n\tcholeig|'
+rename_cmd='s|src/sample_fixed.cpp|src/eigen/sample_fixed.cpp|'
+spell_cmd='s|^$spell|&|'
 #
 cat << EOF > junk.sed
-s|eigen/init_ran_con.cpp|init_ran_con.cpp|g
-s|eigen/init_ran_objcon.cpp|init_ran_objcon.cpp|g
-s|eigen/ran_con_eval.cpp|ran_con_eval.cpp|g
-s|eigen/ran_con_jac.cpp|ran_con_jac.cpp|g
+s|sample_fixed.cpp|eigen/sample_fixed.cpp|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

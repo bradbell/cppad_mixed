@@ -221,6 +221,7 @@ $end
 ------------------------------------------------------------------------------
 */
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/triple2eigen.hpp>
 
 double cppad_mixed::sample_fixed(
 	d_vector&                            sample               ,
@@ -235,6 +236,10 @@ double cppad_mixed::sample_fixed(
 	const d_vector&                      random_upper         ,
 	const d_vector&                      random_in            )
 {
+	typedef Eigen::SparseMatrix<double, Eigen::ColMajor>      eigen_sparse;
+	// typedef Eigen::SimplicialLDLT<eigen_sparse, Eigen::Lower> eigen_cholesky;
+	typedef eigen_sparse::InnerIterator                       sparse_itr;
+	//
 	// sample
 	assert( sample.size() > 0 );
 	assert( sample.size() % n_fixed_ == 0 );
@@ -257,7 +262,7 @@ double cppad_mixed::sample_fixed(
 	assert( random_in.size() == n_random_ );
 	//
 	// number of samples
-	size_t n_sample = sample.size() / n_fixed_;
+	// size_t n_sample = sample.size() / n_fixed_;
 	//
 	// optimal fixed effects
 	const d_vector& fixed_opt( solution.fixed_opt );
@@ -297,18 +302,26 @@ double cppad_mixed::sample_fixed(
 	assert( init_ran_objcon_done_ );
 	assert( init_ran_objcon_hes_done_ );
 	// -----------------------------------------------------------------------
-	// Hessian w.r.t. fixed effects for random part of objective,no constraints
+	// Lower triangle of Hessian w.r.t. fixed effects
+	// for random part of objective,no constraints
 	d_vector w_ran(n_ran_con_ + 1);
 	w_ran[0] = 1.0;
 	for(size_t j = 1; j <=n_ran_con_; j++)
 		w_ran[j] = 0.0;
 	//
-	CppAD::mixed::sparse_mat_info ran_hes;
+	CppAD::mixed::sparse_mat_info ran_info;
 	ran_objcon_hes(
-		fixed_opt, random_opt, w_ran, ran_hes.row, ran_hes.col, ran_hes.val
+		fixed_opt, random_opt, w_ran, ran_info.row, ran_info.col, ran_info.val
+	);
+	eigen_sparse ran_hes = CppAD::mixed::triple2eigen(
+		n_fixed_      ,
+		n_fixed_      ,
+		ran_info.row  ,
+		ran_info.col  ,
+		ran_info.val
 	);
 	//
-	// Hessian of the fixed likelihood
+	// Lower triangle of Hessian of the fixed likelihood
 	size_t n_fix_like = 0;
 	if( fix_like_fun_.size_var() != 0 )
 		n_fix_like = fix_like_fun_.Range();
@@ -317,11 +330,24 @@ double cppad_mixed::sample_fixed(
 	for(size_t j = 1; j < n_fix_like; j++)
 		w_fix[0] = 0.0;
 	//
-	CppAD::mixed::sparse_mat_info fix_hes;
+	CppAD::mixed::sparse_mat_info fix_info;
 	fix_con_hes(
-			fixed_opt, w_fix, fix_hes.row, fix_hes.col, fix_hes.val
+			fixed_opt, w_fix, fix_info.row, fix_info.col, fix_info.val
 	);
+	eigen_sparse fix_hes = CppAD::mixed::triple2eigen(
+		n_fixed_      ,
+		n_fixed_      ,
+		fix_info.row  ,
+		fix_info.col  ,
+		fix_info.val
+	);
+	//
+	// Hessian of total objective
+	eigen_sparse total_hes = ran_hes + fix_hes;
 	// -----------------------------------------------------------------------
 	// under construction
-	return 1.0 / double(n_sample);
+	double sum = 0.0;
+	for(sparse_itr itr(total_hes, 0); itr; ++itr)
+		sum += itr.value();
+	return sum;
 }
