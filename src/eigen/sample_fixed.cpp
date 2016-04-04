@@ -237,7 +237,7 @@ double cppad_mixed::sample_fixed(
 	const d_vector&                      random_in            )
 {
 	typedef Eigen::SparseMatrix<double, Eigen::ColMajor>      eigen_sparse;
-	// typedef Eigen::SimplicialLDLT<eigen_sparse, Eigen::Lower> eigen_cholesky;
+	typedef Eigen::SimplicialLDLT<eigen_sparse, Eigen::Lower> eigen_cholesky;
 	typedef eigen_sparse::InnerIterator                       sparse_itr;
 	//
 	// sample
@@ -302,6 +302,8 @@ double cppad_mixed::sample_fixed(
 	assert( init_ran_objcon_done_ );
 	assert( init_ran_objcon_hes_done_ );
 	// -----------------------------------------------------------------------
+	// Compute unconstrained covariance
+	//
 	// Lower triangle of Hessian w.r.t. fixed effects
 	// for random part of objective,no constraints
 	d_vector w_ran(n_ran_con_ + 1);
@@ -342,12 +344,22 @@ double cppad_mixed::sample_fixed(
 		fix_info.val
 	);
 	//
-	// Hessian of total objective
+	// Hessian of total objective (observed information matrix)
 	eigen_sparse total_hes = ran_hes + fix_hes;
+	//
+	// identity matrix
+	eigen_sparse eye(n_fixed_, n_fixed_);
+	for(size_t i = 0; i < n_fixed_; i++)
+		eye.insert(i, i);
+	//
+	// Inverse of total_hes is our approximate unconstrained covariance
+	eigen_cholesky cholesky;
+	cholesky.compute(total_hes);
+	eigen_sparse uncon_cov = cholesky.solve(eye);
 	// -----------------------------------------------------------------------
 	// under construction
 	double sum = 0.0;
-	for(sparse_itr itr(total_hes, 0); itr; ++itr)
+	for(sparse_itr itr(uncon_cov, 0); itr; ++itr)
 		sum += itr.value();
 	return sum;
 }
