@@ -413,6 +413,22 @@ double cppad_mixed::sample_fixed(
 		eigen_sparse ECE_inv = cholesky.solve(eye);
 		full_cov -= EC.transpose() * ECE_inv * EC;
 	}
+	// -----------------------------------------------------------------------
+	// full2reduced, reduced2full, n_reduced
+	CppAD::vector<size_t> full2reduced(n_fixed_), reduced2full(0);
+	for(size_t i = 0; i < n_fixed_; i++)
+	{	if( solution.fixed_lag[i] != 0.0 )
+		{	// this variable is not in the reduced matrix
+			full2reduced[i] = n_fixed_;
+		}
+		else
+		{	// mapping from full index to reduced index
+			full2reduced[i] = reduced2full.size();
+			// mapping from reduced index to full index
+			reduced2full.push_back(i);
+		}
+	}
+	size_t n_reduced = reduced2full.size();
 	// ----------------------------------------------------------------------
 	// determine which components of the reduced covaraince to zero out
 	//
@@ -435,13 +451,18 @@ double cppad_mixed::sample_fixed(
 			size_t r = itr.row();
 			size_t c = itr.col();
 			if( r == c )
+			{	// diagonal eleemnts all have ratio 1.0
 				ratio.push_back( 1.0 );
-			else
+				row.push_back(r);
+				col.push_back(c);
+			}
+			// off diagonal elements are zero for variables at bounds
+			else if( full2reduced[j] != n_fixed_ )
 			{	double scale = std::sqrt( diagonal[r] * diagonal[c] );
 				ratio.push_back( std::min( itr.value() / scale, 1.0 - eps ) );
+				row.push_back(r);
+				col.push_back(c);
 			}
-			row.push_back(r);
-			col.push_back(c);
 		}
 	}
 	CppAD::vector<size_t> ind(n_fixed_sq);
@@ -460,21 +481,6 @@ double cppad_mixed::sample_fixed(
 	// -----------------------------------------------------------------------
 	// Bound constrained variables get removed form the covariance
 	//
-	// full2reduced, reduced2full, n_reduced
-	CppAD::vector<size_t> full2reduced(n_fixed_), reduced2full(0);
-	for(size_t i = 0; i < n_fixed_; i++)
-	{	if( solution.fixed_lag[i] != 0.0 )
-		{	// this variable is not in the reduced matrix
-			full2reduced[i] = n_fixed_;
-		}
-		else
-		{	// mapping from full index to reduced index
-			full2reduced[i] = reduced2full.size();
-			// mapping from reduced index to full index
-			reduced2full.push_back(i);
-		}
-	}
-	size_t n_reduced = reduced2full.size();
 	//
 	// reduced_cov
 	eigen_sparse reduced_cov(n_reduced, n_reduced);
