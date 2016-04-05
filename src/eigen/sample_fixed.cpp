@@ -16,6 +16,7 @@ $spell
 	pairwise
 	CppAD
 	cppad
+	const
 $$
 
 $section Simulating the Posterior Distribution for the Fixed Effects$$
@@ -24,6 +25,7 @@ $head Syntax$$
 $icode%correlation% = %mixed_object%.sample_fixed(
 	%sample%,
 	%non_zero%,
+	%information_info%,
 	%solution%,
 	%fixed_lower%,
 	%fixed_upper%,
@@ -34,11 +36,11 @@ $icode%correlation% = %mixed_object%.sample_fixed(
 	%random_in%,
 )%$$
 
-$head Under Construction$$
-
 $head Purpose$$
-Sample the asymptotic posterior distribution for the
+This is just an example of how one might draw samples from
+the asymptotic posterior distribution for the
 optimal fixed effects (given the model and the data).
+It is not implemented.
 
 $head quasi_fixed$$
 If $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ was true when
@@ -86,6 +88,15 @@ $codei%
 	%non_zero% >= 1.0 - %n_fixed% / (%n_fixed% * %n_fixed%)
 %$$
 has the same effects at $icode non_zero$$ equal to one.
+
+$head information_info$$
+The argument has prototype
+$codei%
+	const CppAD::mixed::sparse_mat_info %information_info%
+%$$
+This is a sparse matrix representation for the
+lower triangle of the observed information matrix; see
+$cref information_mat$$.
 
 $head solution$$
 is the $cref/solution/optimize_fixed/solution/$$
@@ -232,6 +243,7 @@ $end
 double cppad_mixed::sample_fixed(
 	d_vector&                            sample               ,
 	double                               non_zero             ,
+	const CppAD::mxied::sparse_mat_info& information_info     ,
 	const CppAD::mixed::fixed_solution&  solution             ,
 	const std::string&                   random_options       ,
 	const d_vector&                      fixed_lower          ,
@@ -299,7 +311,7 @@ double cppad_mixed::sample_fixed(
 		newton_atom_.initialize(
 			ran_like_a1fun_, fixed_opt, random_opt
 		);
-		assert( init_newton_atom_done_ );
+		init_newton_atom_done_ = true;
 		//
 		// ran_objcon_fun_
 		assert( ! init_ran_objcon_done_ );
@@ -315,50 +327,14 @@ double cppad_mixed::sample_fixed(
 	assert( init_ran_objcon_done_ );
 	assert( init_ran_objcon_hes_done_ );
 	// -----------------------------------------------------------------------
-	// Compute our approximation for unconstrained covariance full_cov
-	//
-	// Lower triangle of Hessian w.r.t. fixed effects
-	// for random part of objective,no constraints
-	d_vector w_ran(n_ran_con_ + 1);
-	w_ran[0] = 1.0;
-	for(size_t j = 1; j <=n_ran_con_; j++)
-		w_ran[j] = 0.0;
-	//
-	CppAD::mixed::sparse_mat_info ran_info;
-	ran_objcon_hes(
-		fixed_opt, random_opt, w_ran, ran_info.row, ran_info.col, ran_info.val
+	// full covariance (inverse of the observed information matrix)
+	eigen_sparse total_hes = CppAD::mixed::triple2eigen(
+		n_fixed_              ,
+		n_fixed_              ,
+		information_info.row  ,
+		information_info.col  ,
+		information_info.val
 	);
-	eigen_sparse ran_hes = CppAD::mixed::triple2eigen(
-		n_fixed_      ,
-		n_fixed_      ,
-		ran_info.row  ,
-		ran_info.col  ,
-		ran_info.val
-	);
-	//
-	// Lower triangle of Hessian of the fixed likelihood
-	size_t n_fix_like = 0;
-	if( fix_like_fun_.size_var() != 0 )
-		n_fix_like = fix_like_fun_.Range();
-	d_vector w_fix(n_fix_like);
-	w_fix[0] = 1.0;
-	for(size_t j = 1; j < n_fix_like; j++)
-		w_fix[0] = 0.0;
-	//
-	CppAD::mixed::sparse_mat_info fix_info;
-	fix_like_hes(
-			fixed_opt, w_fix, fix_info.row, fix_info.col, fix_info.val
-	);
-	eigen_sparse fix_hes = CppAD::mixed::triple2eigen(
-		n_fixed_      ,
-		n_fixed_      ,
-		fix_info.row  ,
-		fix_info.col  ,
-		fix_info.val
-	);
-	//
-	// Hessian of total objective (observed information matrix)
-	eigen_sparse total_hes = ran_hes + fix_hes;
 	//
 	// identity matrix
 	eigen_sparse eye(n_fixed_, n_fixed_);

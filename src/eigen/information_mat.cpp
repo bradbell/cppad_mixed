@@ -78,12 +78,19 @@ lower triangle of the observed information matrix.
 (Note that this matrix is symmetric and hence determined by its
 lower triangle.)
 
-$children%
-	example/user/information_mat_xam.cpp
+$children%example/user/information_mat_xam.cpp
+	%src/eigen/sample_fixed.cpp
 %$$
+
 $head Example$$
 The file $cref information_mat_xam.cpp$$ contains an example and
 test of this routine. It returns true for success and false for failure.
+
+$head Sampling Fixed Effect$$
+The routine $cref sample_fixed$$ contains an example of how one might
+sample from the posterior of the fixed effects.
+The corresponding source code is not tests and is only meant
+as a crude example.
 
 $end
 ------------------------------------------------------------------------------
