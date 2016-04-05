@@ -246,19 +246,12 @@ $srccode%cpp% */
 		const d_vector&    random_in
 	);
 /* %$$
-$head sample_fixed$$
-Sample from the posterior distribution for the estimate of the fixed effects;
-see  $cref sample_fixed$$.
+$head information_mat$$
+Compute the observed information matrix; see  $cref information_mat$$.
 $srccode%cpp% */
-	double sample_fixed(
-		d_vector&                            sample               ,
-		double                               non_zero             ,
+CppAD::mixed::sparse_mat_info information_mat(
 		const CppAD::mixed::fixed_solution&  solution             ,
 		const std::string&                   random_options       ,
-		const d_vector&                      fixed_lower          ,
-		const d_vector&                      fixed_upper          ,
-		const d_vector&                      fix_constraint_lower ,
-		const d_vector&                      fix_constraint_upper ,
 		const d_vector&                      random_lower         ,
 		const d_vector&                      random_upper         ,
 		const d_vector&                      random_in
@@ -271,7 +264,7 @@ $childtable%src/derived_ctor.omh
 	%src/initialize.cpp
 	%src/optimize_random.cpp
 	%src/optimize_fixed.cpp
-	%src/eigen/sample_fixed.cpp
+	%src/eigen/information_mat.cpp
 	%src/ran_likelihood_jac.omh
 	%src/ran_likelihood_hes.omh
 %$$

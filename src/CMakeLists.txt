@@ -22,6 +22,7 @@ ADD_LIBRARY(cppad_mixed
 	fix_like_hes.cpp
 	fix_like_jac.cpp
 	eigen/choleig.cpp
+	eigen/information_mat.cpp
 	init_ran_hes.cpp
 	init_ran_con.cpp
 	init_ran_objcon.cpp
@@ -45,7 +46,6 @@ ADD_LIBRARY(cppad_mixed
 	optimize_random.cpp
 	ran_like_jac.cpp
 	ran_objcon_hes.cpp
-	eigen/sample_fixed.cpp
 )
 SET_TARGET_PROPERTIES(cppad_mixed
 	PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
