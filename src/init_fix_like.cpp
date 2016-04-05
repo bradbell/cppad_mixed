@@ -97,12 +97,14 @@ $codei%
 	CppAD::mixed::sparse_hes_info fix_like_hes_
 %$$
 does not matter.
-If $icode quasi_fixed$$ is false,
-upon return $code fix_like_hes_$$ contains
+Upon return $code fix_like_hes_$$ contains
 $cref sparse_hes_info$$ for the
 lower triangle of a Hessian corresponding to
 $latex g_{\theta,\theta}) ( \theta )$$ see
 $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
+If $icode quasi_fixed$$ is true,
+this is not used by $cref optimize_fixed$$, but it may be used by
+$cref information_mat$$.
 
 $subhead fix_like_fun_$$
 This ADFun object can be used for the
@@ -110,7 +112,6 @@ $cref/sparse Hessian call/sparse_hes_info/Sparse Hessian Call/f/$$.
 
 $end
 */
-# define DEBUG_FIX_LIKE_FUN 0
 
 
 void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
@@ -126,18 +127,6 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 		a1_theta[j] = fixed_vec[j];
 
 	// start recording a1_double operations
-# if DEBUG_FIX_LIKE_FUN
-	{	assert( n_fixed_ == 98 );
-		assert( n_fixed_ * sizeof(double) == 784 );
-		const char* file_name = "/tmp/fileJBRDSl";
-		std::ifstream infile(file_name, std::ifstream::binary);
-		CppAD::vector<double> double_buffer(n_fixed_);
-		char   *char_buffer   = reinterpret_cast<char *>(double_buffer.data());
-		infile.read(char_buffer, n_fixed_ * sizeof(double) );
-		for(size_t j = 0; j < n_fixed_; j++)
-			a1_theta[j] = double_buffer[j];
-	}
-# endif
 	Independent(a1_theta);
 
 	// compute fix_likelihood
@@ -192,10 +181,6 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 		jac             ,
 		fix_like_jac_.work
 	);
-	if( quasi_fixed_ )
-	{	init_fix_like_done_ = true;
-		return;
-	}
 	// ------------------------------------------------------------------------
 	// fix_like_hes_.row, fix_like_hes_.col, fix_like_hes_.work
 	// ------------------------------------------------------------------------

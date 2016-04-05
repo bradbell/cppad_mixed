@@ -29,10 +29,14 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 04-05$$
+The new routine $cref information_mat$$ computes
+the observed information matrix.
+
 $head 04-03$$
 There was an error (introduced on 04-02 )
 in the new $cref/syntax/optimize_fixed/Syntax/$$
-for $code optimize_fixed$$ This has been fixed.
+for $code optimize_fixed$$. This has been fixed.
 
 $head 04-02$$
 Add a brief description for each of the

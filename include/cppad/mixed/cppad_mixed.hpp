@@ -516,7 +516,6 @@ $srccode%cpp% */
 /* %$$
 
 $subhead fix_like_hes_$$
-If $icode quasi_fixed$$ is false,
 $cref/fix_like_hes_/init_fix_like/fix_like_hes_/$$
 contains information for the Hessian of the
 $cref/fixed likelihood/theory/Fixed Likelihood, g(theta)/$$.

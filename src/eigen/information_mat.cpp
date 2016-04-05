@@ -78,6 +78,13 @@ lower triangle of the observed information matrix.
 (Note that this matrix is symmetric and hence determined by its
 lower triangle.)
 
+$children%
+	example/user/information_mat_xam.cpp
+%$$
+$head Example$$
+The file $cref information_mat_xam.cpp$$ contains an example and
+test of this routine. It returns true for success and false for failure.
+
 $end
 ------------------------------------------------------------------------------
 */
@@ -123,7 +130,7 @@ CppAD::mixed::sparse_mat_info cppad_mixed::information_mat(
 		newton_atom_.initialize(
 			ran_like_a1fun_, fixed_opt, random_opt
 		);
-		assert( init_newton_atom_done_ );
+		init_newton_atom_done_ = true;;
 		//
 		// ran_objcon_fun_
 		assert( ! init_ran_objcon_done_ );

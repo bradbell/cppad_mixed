@@ -44,6 +44,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	user/data_mismatch_xam.cpp
 	user/derived_xam.cpp
 	user/fix_constraint_xam.cpp
+	user/information_mat_xam.cpp
 	user/lasso_xam.cpp
 	user/manage_gsl_rng_xam.cpp
 	user/no_random_xam.cpp

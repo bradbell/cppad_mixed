@@ -19,6 +19,10 @@ $$
 
 $section CppAD Mixed Wish List$$
 
+$head User Example$$
+Move user examples below specific routines, instead of in
+$cref user$$ section.
+
 $head sparse_mat_info$$
 Use $cref sparse_mat_info$$ instead of
 $icode row$$, $icode col$$, $icode val$$ triples
