@@ -226,6 +226,8 @@ $end
 */
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/triple2eigen.hpp>
+# include <cppad/mixed/manage_gsl_rng.hpp>
+# include <gsl/gsl_randist.h>
 
 double cppad_mixed::sample_fixed(
 	d_vector&                            sample               ,
@@ -239,7 +241,9 @@ double cppad_mixed::sample_fixed(
 	const d_vector&                      random_lower         ,
 	const d_vector&                      random_upper         ,
 	const d_vector&                      random_in            )
-{
+{	using Eigen::Dynamic;
+	using CppAD::mixed::get_gsl_rng;
+	typedef Eigen::Matrix<double, Dynamic, Dynamic>           eigen_matrix;
 	typedef Eigen::SparseMatrix<double, Eigen::ColMajor>      eigen_sparse;
 	typedef Eigen::SimplicialLLT<eigen_sparse, Eigen::Lower>  eigen_cholesky;
 	typedef eigen_sparse::InnerIterator                       sparse_itr;
@@ -271,7 +275,7 @@ double cppad_mixed::sample_fixed(
 	assert( random_in.size() == n_random_ );
 	//
 	// number of samples
-	// size_t n_sample = sample.size() / n_fixed_;
+	size_t n_sample = sample.size() / n_fixed_;
 	//
 	// optimal fixed effects
 	const d_vector& fixed_opt( solution.fixed_opt );
@@ -486,9 +490,32 @@ double cppad_mixed::sample_fixed(
 		}
 	}
 	// -----------------------------------------------------------------------
-	// under construction
-	double sum = 0.0;
-	for(sparse_itr itr(reduced_cov, 0); itr; ++itr)
-		sum += itr.value();
-	return correlation + sum;
+	// Simulate the samples
+	//
+	// Cholesky factor for reduced covariance
+	cholesky.compute(reduced_cov);
+	//
+	for(size_t i_sample = 0; i_sample < n_sample; i_sample++)
+	{	eigen_matrix w(n_reduced, 1);
+		// simulate a normal with mean zero and variance on
+		for(size_t j = 0; j < n_reduced; j++)
+			w(j, 0) = gsl_ran_gaussian(get_gsl_rng(), 1.0);
+		// multily by Cholesky factor
+		eigen_matrix s = cholesky.matrixL() * w;
+		// store in sample
+		for(size_t j = 0; j < n_reduced; j++)
+			sample[ i_sample * n_fixed_ + reduced2full[j] ] = s(j, 0);
+		for(size_t j = 0; j < n_fixed_; j++)
+		{	if( full2reduced[j] == n_fixed_ )
+			{	if( solution.fixed_lag[j] > 0.0 )
+					sample[ i_sample * n_fixed_ + j ] = fixed_lower[j];
+				else
+				{	assert( solution.fixed_lag[j] < 0.0 );
+					sample[ i_sample * n_fixed_ + j ] = fixed_upper[j];
+				}
+			}
+		}
+	}
+	// -----------------------------------------------------------------------
+	return correlation;
 }
