@@ -82,7 +82,7 @@ for the fixed effects.
 $lend
 
 $head Example$$
-The file $cref derived_xam.cpp$$ contains an example
+The file $cref derived_ctor_xam.cpp$$ contains an example
 of defining this virtual function.
 
 $end

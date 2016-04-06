@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin derived_xam.cpp$$
+$begin derived_ctor_xam.cpp$$
 $spell
 	CppAD
 	cppad
@@ -20,7 +20,7 @@ $$
 $section mixed_cppad Derived Class: Example and Test$$
 
 $code
-$srcfile%example/user/derived_xam.cpp
+$srcfile%example/user/derived_ctor_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -129,7 +129,7 @@ namespace {
 	};
 }
 
-bool derived_xam(void)
+bool derived_ctor_xam(void)
 {
 	bool   ok  = true;
 	double pi  = 4.0 * std::atan(1.0);

@@ -12,18 +12,18 @@
 new_directories='
 '
 rename_files='
-src/sample_fixed.cpp
+	example/user/derived_xam.cpp
 '
 spell_files='
 '
 no_change_files='
 '
 #
-rename_cmd='s|src/sample_fixed.cpp|src/eigen/sample_fixed.cpp|'
+rename_cmd='s|derived_xam.cpp|derived_ctor_xam.cpp|'
 spell_cmd='s|^$spell|&|'
 #
 cat << EOF > junk.sed
-s|sample_fixed.cpp|eigen/sample_fixed.cpp|
+s|derived_xam|derived_ctor_xam|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]
