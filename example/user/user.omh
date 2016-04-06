@@ -9,6 +9,9 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
 $begin user$$
+$spell
+	cppad
+$$
 
 $section User API Examples$$
 
@@ -26,13 +29,17 @@ $table
 $rref derived_ctor_xam.cpp$$
 $rref ran_likelihood_xam.cpp$$
 $rref fix_likelihood_xam.cpp$$
-$rref optimize_random_xam.cpp$$
-$rref optimize_fixed_xam.cpp$$
 $rref fix_constraint_xam.cpp$$
 $rref ran_constraint_xam.cpp$$
-$rref information_mat_xam.cpp$$
-$rref ran_likelihood_hes_xam.cpp$$
 $rref ran_likelihood_jac_xam.cpp$$
+$rref ran_likelihood_hes_xam.cpp$$
+$tend
+
+$head cppad_mixed Functions$$
+$table
+$rref optimize_random_xam.cpp$$
+$rref optimize_fixed_xam.cpp$$
+$rref information_mat_xam.cpp$$
 $tend
 
 $head Other Examples$$

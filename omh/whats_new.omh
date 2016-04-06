@@ -39,7 +39,8 @@ All the other user defined virtual routines examples
 have been simplified.
 To be specific, each has its own specific example.
 In addition, the $cref user$$ examples have been split in
-the user defined routines and other examples.
+the user defined routines, $code cppad_mixed$$ defined routines,
+and other examples.
 
 $head 04-05$$
 The new routine $cref information_mat$$ computes
