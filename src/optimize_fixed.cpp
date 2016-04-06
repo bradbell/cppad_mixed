@@ -196,10 +196,10 @@ The $cref theory$$ for the
 Laplace approximation optimization only includes the case where
 the $cref/random likelihood/ran_likelihood/$$ is smooth.
 
-$comment ipoot_options is also used by optimize_random$$
-$children%src/ipopt_options.omh
+$comment ipopt_options is also used by optimize_random$$
+$children%example/user/optimize_fixed_xam.cpp
+	%src/ipopt_options.omh
 %$$
-
 $head Example$$
 The file $cref optimize_fixed_xam.cpp$$ contains an example
 and test of this procedure.

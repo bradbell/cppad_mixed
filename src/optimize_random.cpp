@@ -105,6 +105,9 @@ It is the final value (obtained by optimization) of the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$.
 
+$children%
+	example/user/optimize_random_xam.cpp
+%$$
 $head Example$$
 The file $cref optimize_random_xam.cpp$$ contains an example
 and test of this procedure.

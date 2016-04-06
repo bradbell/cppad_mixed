@@ -65,8 +65,12 @@ returns an empty vector;
 i.e., $icode%vec%.size() == 0%$$.
 In the case where there are no constraints of this form.
 
+$children%
+	example/user/fix_constraint_xam.cpp
+%$$
 $head Example$$
 The file $cref fix_constraint_xam.cpp$$ contains an example
 using constraints.
+It returns true, if the test passes, and false otherwise.
 
 $end
