@@ -38,161 +38,62 @@ namespace {
 	using CppAD::mixed::sparse_mat_info;
 
 	class mixed_derived : public cppad_mixed {
-	private:
-		const vector<double>& y_;
 	public:
+		vector<std::string> warning_message_;
+		//
 		// constructor
 		mixed_derived(
 			size_t n_fixed                    ,
 			size_t n_random                   ,
 			bool   quasi_fixed                ,
-			const  sparse_mat_info& A_info    ,
-			const vector<double>& y           )
+			const  sparse_mat_info& A_info    )
 			:
-			cppad_mixed(n_fixed, n_random, quasi_fixed, A_info) ,
-			y_(y)
+			cppad_mixed(n_fixed, n_random, quasi_fixed, A_info)
 		{ }
-		// implementation of ran_likelihood
-		template <class Float>
-		vector<Float> implement_ran_likelihood(
-			const vector<Float>& theta  ,
-			const vector<Float>& u      )
-		{	vector<Float> vec(1);
-
-			// compute this factor once
-			Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
-
-			// initialize summation
-			vec[0] = Float(0.0);
-
-			// for each data and random effect
-			for(size_t i = 0; i < y_.size(); i++)
-			{	Float mu     = u[i];
-				Float sigma  = theta[i];
-				Float res    = (y_[i] - mu) / sigma;
-
-				// This is a Gaussian term, so entire density is smooth
-				vec[0]  += log(sqrt_2pi * sigma) + res * res / Float(2.0);
-			}
-			return vec;
-		}
-		// implementation of fix_likelihood
-		template <class Float>
-		vector<Float> implement_fix_likelihood(
-			const vector<Float>& theta  )
-		{	vector<Float> vec(1);
-
-			// initialize part of log-density that is smooth
-			vec[0] = Float(0.0);
-
-			// compute these factors once
-			Float one    = Float(1.0);
-			Float sqrt_2 = CppAD::sqrt( Float(2.0) );
-
-			for(size_t i = 0; i < y_.size(); i++)
-			{	Float sigma  = theta[i];
-
-				// This is a Laplace term, so using Laso for this variable
-				vec[0] += CppAD::log( sqrt_2 * sigma);
-
-				// part of the density that needs absolute value
-				vec.push_back(sqrt_2 * (sigma - one) );
-			}
-			return vec;
-		}
-		// ------------------------------------------------------------------
-		// example a2 version of ran_likelihood
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& fixed_vec  ,
-			const vector<a2_double>& random_vec )
-		{	return implement_ran_likelihood(fixed_vec, random_vec); }
-		// example a1 version of ran_likelihood
-		virtual vector<a1_double> ran_likelihood(
-			const vector<a1_double>& fixed_vec  ,
-			const vector<a1_double>& random_vec )
-		{	return implement_ran_likelihood(fixed_vec, random_vec); }
-		// example fix_likelihood
-		virtual vector<a1_double> fix_likelihood(
-			const vector<a1_double>& fixed_vec  )
-		{	return implement_fix_likelihood(fixed_vec); }
-		//
 		// example changing fatal error handler
 		virtual void fatal_error(const std::string& error_message)
-		{	std::cerr << "fatal_error = " << error_message << std::endl;
-			std::exit(1);
+		{	// throw a std:string
+			throw error_message;
 		}
 		//
 		// example changing warning handler
 		virtual void warning(const std::string& warning_message)
-		{	std::cerr << "warning = " << warning_message << std::endl;
+		{	warning_message_.push_back( warning_message );
 		}
 	};
 }
 
 bool derived_ctor_xam(void)
 {
-	bool   ok  = true;
-	double pi  = 4.0 * std::atan(1.0);
-	double eps = 100. * std::numeric_limits<double>::epsilon();
-
-	typedef cppad_mixed::a1_double a1_double;
-	typedef cppad_mixed::a2_double a2_double;
-
-	size_t n_data   = 10;
-	size_t n_fixed  = n_data;
-	size_t n_random = n_data;
-	vector<double>    data(n_data);
-	vector<double>    fixed_vec(n_fixed), random_vec(n_random);
-	vector<a1_double> a1_fixed(n_fixed), a1_random(n_random);
-	vector<a2_double> a2_fixed(n_fixed), a2_random(n_random);
-
-	for(size_t i = 0; i < n_data; i++)
-	{	data[i]       = double(i + 1);
-		//
-		fixed_vec[i]  = 1.5;
-		a1_fixed[i]   = a1_double( fixed_vec[i] );
-		a2_fixed[i]   = a2_double( fixed_vec[i] );
-		//
-		random_vec[i] = 0.0;
-		a1_random[i]  = a1_double( random_vec[i] );
-		a2_random[i]  = a2_double( random_vec[i] );
-	}
-
-	// object that is derived from cppad_mixed
+	//
+	size_t n_fixed   = 1;
+	size_t n_random  = 0;
 	bool quasi_fixed = true;
-	CppAD::mixed::sparse_mat_info A_info; // empty matrix
-	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, A_info, data);
+	//
+	CppAD::mixed::sparse_mat_info A_info;
+	vector<double> fixed_vec(n_fixed), random_vec(n_random);
+	fixed_vec[0] = 0.0;
+	//
+	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, A_info);
 	mixed_object.initialize(fixed_vec, random_vec);
+	//
+	bool ok = false;
+	try
+	{	// warnings
+		mixed_object.warning("first warning");
+		mixed_object.warning("second warning");
 
-	// Evaluate the random likelihood
-	vector<a2_double> a2_vec(1);
-	a2_vec = mixed_object.implement_ran_likelihood(a2_fixed, a2_random);
-
-	// check the random likelihood
-	double sum = 0.0;
-	for(size_t i = 0; i < n_data; i++)
-	{	double mu     = random_vec[i];
-		double sigma  = fixed_vec[i];
-		double res    = (data[i] - mu) / sigma;
-		sum          += (std::log(2 * pi * sigma * sigma) + res * res) / 2.0;
+		// fatal error
+		mixed_object.fatal_error("only fatal error");
 	}
-	ok &= abs( a2_vec[0] / a2_double(sum) - a2_double(1.0) ) < eps;
-
-	// Evaluate the fixed likelihood
-	vector<a1_double> a1_vec(1 + n_fixed);
-	a1_vec = mixed_object.fix_likelihood(a1_fixed);
-
-	// check the fixed likelihood
-	sum = 0.0;
-	for(size_t j = 0; j < n_fixed; j++)
-	{	double sigma  = fixed_vec[j];
-		sum          += std::log( std::sqrt(2.0) * sigma );
+	catch ( std::string error_message)
+	{	ok  = true;
+		ok &= error_message == "only fatal error";
 		//
-		double check  = std::sqrt(2.0) * (sigma - 1.0);
-		ok  &= abs( a1_vec[1+j] / check - 1.0 ) < eps;
+		ok &= mixed_object.warning_message_.size() == 2;
+		ok &= mixed_object.warning_message_[0] == "first warning";
+		ok &= mixed_object.warning_message_[1] == "second warning";
 	}
-	ok &= abs( a1_vec[0] / sum - 1.0 ) < eps;
-
 	return ok;
 }
 // END C++

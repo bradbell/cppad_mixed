@@ -37,6 +37,7 @@ extern bool fix_con_eval_xam(void);
 extern bool fix_con_hes_xam(void);
 extern bool fix_con_jac_xam(void);
 extern bool fix_constraint_xam(void);
+extern bool fix_likelihood_xam(void);
 extern bool fix_like_eval_xam(void);
 extern bool fix_like_hes_xam(void);
 extern bool fix_like_jac_xam(void);
@@ -105,6 +106,7 @@ int main(void)
 	RUN(fix_con_hes_xam);
 	RUN(fix_con_jac_xam);
 	RUN(fix_constraint_xam);
+	RUN(fix_likelihood_xam);
 	RUN(fix_like_eval_xam);
 	RUN(fix_like_hes_xam);
 	RUN(fix_like_jac_xam);

@@ -29,6 +29,18 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 04-06$$
+The user defined virtual routines
+$cref/fatal_error/public/User Defined Functions/fatal_error/$$
+and
+$cref/warning/public/User Defined Functions/warning/$$
+have new examples in $cref derived_ctor_xam.cpp$$.
+All the other user defined virtual routines examples
+have been simplified.
+To be specific, each has its own specific example.
+In addition, the $cref user$$ examples have been split in
+the user defined routines and other examples.
+
 $head 04-05$$
 The new routine $cref information_mat$$ computes
 the observed information matrix.
