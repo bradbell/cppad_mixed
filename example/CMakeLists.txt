@@ -55,6 +55,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	user/ran_likelihood_xam.cpp
 	user/ran_likelihood_hes_xam.cpp
 	user/ran_likelihood_jac_xam.cpp
+	user/sample_fixed_xam.cpp
 )
 
 LINK_DIRECTORIES(

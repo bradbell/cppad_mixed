@@ -29,6 +29,10 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 04-07$$
+The new routine $cref sample_fixed$$ samples from the posterior
+distribution for the estimate of the fixed effects.
+
 $head 04-06$$
 The user defined virtual routines
 $cref/fatal_error/public/User Defined Functions/fatal_error/$$

@@ -17,6 +17,7 @@ $spell
 	CppAD
 	cppad
 	const
+	gsl_rng
 $$
 
 $section Simulating the Posterior Distribution for Fixed Effects$$
@@ -29,20 +30,24 @@ $icode%correlation% = %mixed_object%.sample_fixed(
 	%solution%,
 	%fixed_lower%,
 	%fixed_upper%,
-	%fixed_constraint_lower%,
-	%fixed_constraint_upper%,
+	%fix_constraint_lower%,
+	%fix_constraint_upper%,
 	%random_options%,
 	%random_lower%,
 	%random_upper%,
 	%random_in%,
 )%$$
 
-$head Under Construction$$
-
 $head Purpose$$
 This routine draw samples from
 the asymptotic posterior distribution for the
 optimal fixed effects (given the model and the data).
+
+$head manage_gsl_rng$$
+It is assumed that
+$cref/get_gsl_rng/manage_gsl_rng/get_gsl_rng/$$ will return
+a pointer to a GSL random number generator.
+
 
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
@@ -252,7 +257,9 @@ Further suppose that for $icode%i% = 0 , %...%, %n_sample%-1%$$,
 $latex w^i \in \B{R}^n$$ is simulated as independent normal random vectors
 with identity covariance matrix.
 The $th i$$ the samples for the fixed effects estimate $latex \hat{\theta}$$
-is $latex \sqrt{\bar{D}} w^i$$.
+$latex \[
+	\hat{\theta}_i + \sqrt{\bar{D}} w^i
+\] $$
 
 $end
 ------------------------------------------------------------------------------
@@ -451,7 +458,6 @@ double cppad_mixed::sample_fixed(
 	// -----------------------------------------------------------------------
 	// Bound constrained variables get removed form the covariance
 	//
-	//
 	// reduced_cov
 	eigen_sparse reduced_cov(n_reduced, n_reduced);
 	for(size_t r_col = 0; r_col < n_reduced; r_col++)
@@ -461,7 +467,7 @@ double cppad_mixed::sample_fixed(
 			size_t r_row = full2reduced[f_row];
 			if( r_row != n_fixed_ )
 			{	assert( r_row < n_reduced );
-				reduced_cov.insert(r_row, r_col);
+				reduced_cov.insert(r_row, r_col) = itr.value();
 			}
 		}
 	}
@@ -478,19 +484,12 @@ double cppad_mixed::sample_fixed(
 			w(j, 0) = gsl_ran_gaussian(get_gsl_rng(), 1.0);
 		// multily by Cholesky factor
 		eigen_matrix s = cholesky.matrixL() * w;
-		// store in sample
-		for(size_t j = 0; j < n_reduced; j++)
-			sample[ i_sample * n_fixed_ + reduced2full[j] ] = s(j, 0);
+		//
+		// store corresponding sample
 		for(size_t j = 0; j < n_fixed_; j++)
-		{	if( full2reduced[j] == n_fixed_ )
-			{	if( solution.fixed_lag[j] > 0.0 )
-					sample[ i_sample * n_fixed_ + j ] = fixed_lower[j];
-				else
-				{	assert( solution.fixed_lag[j] < 0.0 );
-					sample[ i_sample * n_fixed_ + j ] = fixed_upper[j];
-				}
-			}
-		}
+			sample[ i_sample * n_fixed_ + j] = fixed_opt[j];
+		for(size_t j = 0; j < n_reduced; j++)
+			sample[ i_sample * n_fixed_ + reduced2full[j] ] += s(j, 0);
 	}
 	// -----------------------------------------------------------------------
 	return correlation;
