@@ -268,11 +268,16 @@ bool information_mat_xam(void)
 		random_upper,
 		random_in
 	);
+	vector<double> random_opt = mixed_object.optimize_random(
+		random_options,
+		solution.fixed_opt,
+		random_lower,
+		random_upper,
+		random_in
+	);
 	// compute corresponding information matrix
 	CppAD::mixed::sparse_mat_info
-	information_info = mixed_object.information_mat(
-		solution, random_options, random_lower, random_upper, random_in
-	);
+	information_info = mixed_object.information_mat(solution, random_opt);
 	//
 	// there are three non-zero entries in the lower triangle
 	ok  &= information_info.row.size() == 3;

@@ -251,10 +251,7 @@ Compute the observed information matrix; see  $cref information_mat$$.
 $srccode%cpp% */
 	CppAD::mixed::sparse_mat_info information_mat(
 		const CppAD::mixed::fixed_solution&  solution             ,
-		const std::string&                   random_options       ,
-		const d_vector&                      random_lower         ,
-		const d_vector&                      random_upper         ,
-		const d_vector&                      random_in
+		const d_vector&                      random_opt
 	);
 /* %$$
 $head sample_fixed$$
@@ -265,14 +262,7 @@ $srccode%cpp% */
 		double                               non_zero             ,
 		const CppAD::mixed::sparse_mat_info& information_info     ,
 		const CppAD::mixed::fixed_solution&  solution             ,
-		const d_vector&                      fixed_lower          ,
-		const d_vector&                      fixed_upper          ,
-		const d_vector&                      fix_constraint_lower ,
-		const d_vector&                      fix_constraint_upper ,
-		const std::string&                   random_options       ,
-		const d_vector&                      random_lower         ,
-		const d_vector&                      random_upper         ,
-		const d_vector&                      random_in
+		const d_vector&                      random_opt
 	);
 /* %$$
 $childtable%src/derived_ctor.omh

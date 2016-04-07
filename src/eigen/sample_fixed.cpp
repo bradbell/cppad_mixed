@@ -28,14 +28,7 @@ $icode%correlation% = %mixed_object%.sample_fixed(
 	%non_zero%,
 	%information_info%,
 	%solution%,
-	%fixed_lower%,
-	%fixed_upper%,
-	%fix_constraint_lower%,
-	%fix_constraint_upper%,
-	%random_options%,
-	%random_lower%,
-	%random_upper%,
-	%random_in%,
+	%random_opt%
 )%$$
 
 $head Purpose$$
@@ -107,45 +100,22 @@ is the $cref/solution/optimize_fixed/solution/$$
 for a the call to $cref optimize_fixed$$ corresponding to
 $icode information_info$$.
 
-$head fixed_lower$$
-is the $cref/fixed_lower/optimize_fixed/fixed_lower/$$
-for the call to $code optimize_fixed$$ corresponding to
-$icode information_info$$.
-
-$head fixed_upper$$
-is the $cref/fixed_upper/optimize_fixed/fixed_upper/$$
-for the call to $code optimize_fixed$$ corresponding to
-$icode information_info$$.
-
-$head fix_constraint_lower$$
-is the $cref/fix_constraint_lower/optimize_fixed/fix_constraint_lower/$$
-for the call to $code optimize_fixed$$ corresponding to
-$icode information_info$$.
-
-$head fix_constraint_upper$$
-is the $cref/fix_constraint_upper/optimize_fixed/fix_constraint_upper/$$
-for the call to $code optimize_fixed$$ corresponding to
-$icode information_info$$.
-
-$head random_options$$
-is the $cref/random_options/optimize_fixed/random_options/$$
-for the call to $code optimize_fixed$$ corresponding to
-$icode information_info$$.
-
-$head random_lower$$
-is the $cref/random_lower/optimize_fixed/random_lower/$$
-for the call to $code optimize_fixed$$ corresponding to
-$icode information_info$$.
-
-$head random_upper$$
-is the $cref/random_upper/optimize_fixed/random_upper/$$
-for the call to $code optimize_fixed$$ corresponding to
-$icode information_info$$.
-
-$head random_in$$
-is the $cref/random_in/optimize_fixed/random_in/$$
-for the call to $code optimize_fixed$$ corresponding to
-$icode information_info$$.
+$head random_opt$$
+is the optimal random effects corresponding to the solution; i.e.
+$codei%
+	%random_opt% = %mixed_object%.optimize_random(
+		%random_options%,
+		%solution%.fixed_opt,
+		%random_lower%,
+		%random_upper%,
+		%random_in%
+	)
+%$$
+$icode random_options$$,
+$icode random_lower$$,
+$icode random_upper$$, and
+$icode random_in$$, are the same
+as in the call to $code optimize_fixed$$ that corresponds to $icode solution$$.
 
 $head correlation$$
 The return value has prototype
@@ -274,14 +244,7 @@ double cppad_mixed::sample_fixed(
 	double                               non_zero             ,
 	const CppAD::mixed::sparse_mat_info& information_info     ,
 	const CppAD::mixed::fixed_solution&  solution             ,
-	const d_vector&                      fixed_lower          ,
-	const d_vector&                      fixed_upper          ,
-	const d_vector&                      fix_constraint_lower ,
-	const d_vector&                      fix_constraint_upper ,
-	const std::string&                   random_options       ,
-	const d_vector&                      random_lower         ,
-	const d_vector&                      random_upper         ,
-	const d_vector&                      random_in            )
+	const d_vector&                      random_opt           )
 {	using Eigen::Dynamic;
 	using CppAD::mixed::get_gsl_rng;
 	typedef Eigen::Matrix<double, Dynamic, Dynamic>           eigen_matrix;
@@ -304,16 +267,8 @@ double cppad_mixed::sample_fixed(
 	assert( solution.fixed_lag.size() == n_fixed_ );
 	assert( solution.fix_con_lag.size() == n_fix_con );
 	assert( solution.ran_con_lag.size() == n_ran_con_ );
-	// fixed_(lower and upper)
-	assert( fixed_lower.size() == n_fixed_ );
-	assert( fixed_upper.size() == n_fixed_ );
-	// fix_constraint(lower and upper)
-	assert( fix_constraint_lower.size() == n_fix_con );
-	assert( fix_constraint_upper.size() == n_fix_con );
-	// random_(lower, upper, in)
-	assert( random_lower.size() == n_random_ );
-	assert( random_upper.size() == n_random_ );
-	assert( random_in.size() == n_random_ );
+	// random_opt
+	assert( random_opt.size() == n_random_ );
 	//
 	// number of samples
 	size_t n_sample = sample.size() / n_fixed_;
@@ -321,10 +276,6 @@ double cppad_mixed::sample_fixed(
 	// optimal fixed effects
 	const d_vector& fixed_opt( solution.fixed_opt );
 	// -----------------------------------------------------------------------
-	// optimize the random effects
-	d_vector random_opt = optimize_random(
-		random_options, fixed_opt, random_lower, random_upper, random_in
-	);
 	// update the cholesky factor for this fixed and random effect
 	update_factor(fixed_opt, random_opt);
 	// -----------------------------------------------------------------------

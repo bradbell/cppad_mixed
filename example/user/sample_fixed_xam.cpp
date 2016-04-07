@@ -205,11 +205,18 @@ bool sample_fixed_xam(void)
 	ok &= solution.fix_con_lag.size() == 0;
 	ok &= solution.ran_con_lag.size() == 0.0;
 	//
+	// corresponding optimal random effects
+	vector<double> random_opt = mixed_object.optimize_random(
+		random_options,
+		solution.fixed_opt,
+		random_lower,
+		random_upper,
+		random_in
+	);
+	//
 	// compute corresponding information matrix
 	CppAD::mixed::sparse_mat_info
-	information_info = mixed_object.information_mat(
-		solution, random_options, random_lower, random_upper, random_in
-	);
+	information_info = mixed_object.information_mat(solution, random_opt);
 	//
 	// sample from the posterior for fixed effects
 	size_t n_sample = 10000;
@@ -220,14 +227,7 @@ bool sample_fixed_xam(void)
 		non_zero,
 		information_info,
 		solution,
-		fixed_lower,
-		fixed_upper,
-		fix_constraint_lower,
-		fix_constraint_upper,
-		random_options,
-		random_lower,
-		random_upper,
-		random_in
+		random_opt
 	);
 	// check no covariance change to zero
 	ok &= correlation == 0.0;
