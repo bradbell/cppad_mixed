@@ -31,10 +31,13 @@ $icode%correlation% = %mixed_object%.sample_fixed(
 	%fixed_upper%,
 	%fixed_constraint_lower%,
 	%fixed_constraint_upper%,
+	%random_options%,
 	%random_lower%,
 	%random_upper%,
 	%random_in%,
 )%$$
+
+$head Under Construction$$
 
 $head Purpose$$
 This routine draw samples from
@@ -99,11 +102,6 @@ is the $cref/solution/optimize_fixed/solution/$$
 for a the call to $cref optimize_fixed$$ corresponding to
 $icode information_info$$.
 
-$head random_options$$
-is the $cref/random_options/optimize_fixed/random_options/$$
-for a the call to $code optimize_fixed$$ corresponding to
-$icode information_info$$.
-
 $head fixed_lower$$
 is the $cref/fixed_lower/optimize_fixed/fixed_lower/$$
 for the call to $code optimize_fixed$$ corresponding to
@@ -121,6 +119,11 @@ $icode information_info$$.
 
 $head fix_constraint_upper$$
 is the $cref/fix_constraint_upper/optimize_fixed/fix_constraint_upper/$$
+for the call to $code optimize_fixed$$ corresponding to
+$icode information_info$$.
+
+$head random_options$$
+is the $cref/random_options/optimize_fixed/random_options/$$
 for the call to $code optimize_fixed$$ corresponding to
 $icode information_info$$.
 
@@ -262,13 +265,13 @@ $end
 double cppad_mixed::sample_fixed(
 	d_vector&                            sample               ,
 	double                               non_zero             ,
-	const CppAD::mxied::sparse_mat_info& information_info     ,
+	const CppAD::mixed::sparse_mat_info& information_info     ,
 	const CppAD::mixed::fixed_solution&  solution             ,
-	const std::string&                   random_options       ,
 	const d_vector&                      fixed_lower          ,
 	const d_vector&                      fixed_upper          ,
 	const d_vector&                      fix_constraint_lower ,
 	const d_vector&                      fix_constraint_upper ,
+	const std::string&                   random_options       ,
 	const d_vector&                      random_lower         ,
 	const d_vector&                      random_upper         ,
 	const d_vector&                      random_in            )

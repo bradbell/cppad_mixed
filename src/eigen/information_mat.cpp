@@ -82,19 +82,13 @@ $cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
 for the $cref fix_likelihood$$ are not include in this Hessian
 because they do not have a derivative (let alone Hessian) at zero.
 
-$children%example/user/information_mat_xam.cpp
-	%src/eigen/sample_fixed.cpp
+$children%
+	example/user/information_mat_xam.cpp
 %$$
 
 $head Example$$
 The file $cref information_mat_xam.cpp$$ contains an example and
 test of this routine. It returns true for success and false for failure.
-
-$head Sampling Fixed Effect$$
-The routine $cref sample_fixed$$ contains an example of how one might
-sample from the posterior of the fixed effects.
-The corresponding source code is not tests and is only meant
-as a crude example.
 
 $end
 ------------------------------------------------------------------------------

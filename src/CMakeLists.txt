@@ -11,9 +11,13 @@
 ADD_LIBRARY(cppad_mixed
 	cholmod/constructor.cpp
 	cholmod/init.cpp
-	cholmod/update.cpp
 	cholmod/logdet.cpp
 	cholmod/solve.cpp
+	cholmod/update.cpp
+	eigen/choleig.cpp
+	eigen/information_mat.cpp
+	eigen/newton_step.cpp
+	eigen/sample_fixed.cpp
 	fix_con_eval.cpp
 	fix_con_eval.cpp
 	fix_con_hes.cpp
@@ -21,31 +25,28 @@ ADD_LIBRARY(cppad_mixed
 	fix_like_eval.cpp
 	fix_like_hes.cpp
 	fix_like_jac.cpp
-	eigen/choleig.cpp
-	eigen/information_mat.cpp
-	init_ran_hes.cpp
-	init_ran_con.cpp
-	init_ran_objcon.cpp
-	logdet_jac.cpp
-	eigen/newton_step.cpp
-	ran_con_eval.cpp
-	ran_con_jac.cpp
-	ran_obj_eval.cpp
-	ran_obj_jac.cpp
-	update_factor.cpp
 	init_chol_ran_hes.cpp
 	init_fix_con.cpp
 	init_fix_like.cpp
 	init_hes_cross.cpp
-	init_ran_objcon_hes.cpp
 	initialize.cpp
+	init_ran_con.cpp
+	init_ran_hes.cpp
 	init_ran_like.cpp
+	init_ran_objcon.cpp
+	init_ran_objcon_hes.cpp
 	ipopt_fixed.cpp
+	logdet_jac.cpp
 	manage_gsl_rng.cpp
 	optimize_fixed.cpp
 	optimize_random.cpp
+	ran_con_eval.cpp
+	ran_con_jac.cpp
 	ran_like_jac.cpp
 	ran_objcon_hes.cpp
+	ran_obj_eval.cpp
+	ran_obj_jac.cpp
+	update_factor.cpp
 )
 SET_TARGET_PROPERTIES(cppad_mixed
 	PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
