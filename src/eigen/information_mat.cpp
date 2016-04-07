@@ -54,19 +54,19 @@ for a previous call to $cref optimize_fixed$$.
 
 $head random_options$$
 is the $cref/random_options/optimize_fixed/random_options/$$
-for a previous call to $code optimize_fixed$$.
+for the call to $code optimize_fixed$$ corresponding to $icode solution$$.
 
 $head random_lower$$
 is the $cref/random_lower/optimize_fixed/random_lower/$$
-for a previous call to $code optimize_fixed$$.
+for the call to $code optimize_fixed$$ corresponding to $icode solution$$.
 
 $head random_upper$$
 is the $cref/random_upper/optimize_fixed/random_upper/$$
-for a previous call to $code optimize_fixed$$.
+for the call to $code optimize_fixed$$ corresponding to $icode solution$$.
 
 $head random_in$$
 is the $cref/random_in/optimize_fixed/random_in/$$
-for a previous call to $code optimize_fixed$$.
+for the call to $code optimize_fixed$$ corresponding to $icode solution$$.
 
 $head information_info$$
 The return value has prototype
@@ -75,8 +75,12 @@ $codei%
 %$$
 This is a sparse matrix representation for the
 lower triangle of the observed information matrix.
-(Note that this matrix is symmetric and hence determined by its
-lower triangle.)
+This matrix is symmetric and hence determined by its
+lower triangle.
+Absolute value terms in the
+$cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
+for the $cref fix_likelihood$$ are not include in this Hessian
+because they do not have a derivative (let alone Hessian) at zero.
 
 $children%example/user/information_mat_xam.cpp
 	%src/eigen/sample_fixed.cpp

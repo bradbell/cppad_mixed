@@ -19,7 +19,7 @@ $spell
 	const
 $$
 
-$section Simulating the Posterior Distribution for the Fixed Effects$$
+$section Simulating the Posterior Distribution for Fixed Effects$$
 
 $head Syntax$$
 $icode%correlation% = %mixed_object%.sample_fixed(
@@ -37,17 +37,9 @@ $icode%correlation% = %mixed_object%.sample_fixed(
 )%$$
 
 $head Purpose$$
-This is just an example of how one might draw samples from
+This routine draw samples from
 the asymptotic posterior distribution for the
 optimal fixed effects (given the model and the data).
-It is not implemented.
-
-$head quasi_fixed$$
-If $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ was true when
-$icode mixed_object$$ was constructed,
-The $cref initialize$$ routine did not include the full Newton method
-(hence uses less memory).
-This memory is allocated and used during $code sample_fixed$$.
 
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
@@ -61,11 +53,11 @@ $codei%
 %$$
 and its size is a multiple of
 $cref/n_fixed/derived_ctor/n_fixed/$$.
+The input value of its elements does not matter.
 We define
 $codei%
 	%n_sample% = %sample_size% / %n_fixed%
 %$$
-The input value of its elements does not matter.
 Upon return,
 for $codei%i% = 0 , %...%, %n_sample%-1%$$,
 $codei%j% = 0 , %...%, %n_fixed%-1%$$,
@@ -83,7 +75,7 @@ $codei%
 and is a value between zero and one.
 It specifies the fraction of the elements in
 the posterior covariance that are included in the simulation.
-Diagonal elements are always included in the simulation, so
+Diagonal elements are always included in the simulation, hence
 $codei%
 	%non_zero% >= 1.0 - %n_fixed% / (%n_fixed% * %n_fixed%)
 %$$
@@ -95,44 +87,57 @@ $codei%
 	const CppAD::mixed::sparse_mat_info %information_info%
 %$$
 This is a sparse matrix representation for the
-lower triangle of the observed information matrix; see
-$cref information_mat$$.
+lower triangle of the observed information matrix corresponding to
+$icode solution$$; i.e., the matrix returned by
+$codei%
+%information_info% = %mixed_object%.information_mat(
+	%solution%, %random_options%, %random_lower%, %random_upper%, %random_in%
+)%$$
 
 $head solution$$
 is the $cref/solution/optimize_fixed/solution/$$
-for a previous call to $cref optimize_fixed$$.
+for a the call to $cref optimize_fixed$$ corresponding to
+$icode information_info$$.
 
 $head random_options$$
 is the $cref/random_options/optimize_fixed/random_options/$$
-for a previous call to $code optimize_fixed$$.
+for a the call to $code optimize_fixed$$ corresponding to
+$icode information_info$$.
 
 $head fixed_lower$$
 is the $cref/fixed_lower/optimize_fixed/fixed_lower/$$
-for a previous call to $code optimize_fixed$$.
+for the call to $code optimize_fixed$$ corresponding to
+$icode information_info$$.
 
 $head fixed_upper$$
 is the $cref/fixed_upper/optimize_fixed/fixed_upper/$$
-for a previous call to $code optimize_fixed$$.
+for the call to $code optimize_fixed$$ corresponding to
+$icode information_info$$.
 
 $head fix_constraint_lower$$
 is the $cref/fix_constraint_lower/optimize_fixed/fix_constraint_lower/$$
-for a previous call to $code optimize_fixed$$.
+for the call to $code optimize_fixed$$ corresponding to
+$icode information_info$$.
 
 $head fix_constraint_upper$$
 is the $cref/fix_constraint_upper/optimize_fixed/fix_constraint_upper/$$
-for a previous call to $code optimize_fixed$$.
+for the call to $code optimize_fixed$$ corresponding to
+$icode information_info$$.
 
 $head random_lower$$
 is the $cref/random_lower/optimize_fixed/random_lower/$$
-for a previous call to $code optimize_fixed$$.
+for the call to $code optimize_fixed$$ corresponding to
+$icode information_info$$.
 
 $head random_upper$$
 is the $cref/random_upper/optimize_fixed/random_upper/$$
-for a previous call to $code optimize_fixed$$.
+for the call to $code optimize_fixed$$ corresponding to
+$icode information_info$$.
 
 $head random_in$$
 is the $cref/random_in/optimize_fixed/random_in/$$
-for a previous call to $code optimize_fixed$$.
+for the call to $code optimize_fixed$$ corresponding to
+$icode information_info$$.
 
 $head correlation$$
 The return value has prototype
@@ -144,23 +149,34 @@ that is converted to zero before simulating the posterior samples.
 If $icode%non_zero% = 1.0%$$, no values are treated as zero
 and $icode%correlation% = 0.0%$$.
 
+$head Method$$
 
-$head Unconstrained Covariance$$
-We use $latex L ( \theta )$$ to denote the
-$cref/total objective/theory/Objective/Total Objective, L(theta)/$$.
-If $latex \hat{\theta}$$ is the optimal value for the fixed effects,
-the corresponding estimate for the covariance of $latex \hat{\theta}$$ is
-given by
+$subhead Notation$$
+Given two random vectors $latex u$$ and $latex v$$,
+we use the notation $code \B{C}( u , v )$$
+for the corresponding covariance matrix;
+i.e.,
 $latex \[
-	\B{C} ( \hat{\theta}, \hat{\theta} )
+	\B{C}( u , v )
 	=
-	L^{(2)} ( \hat{\theta} )^{-1}
-\]$$
-Absolute value terms in the
-$cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
-for the $cref fix_likelihood$$ are not include in this Hessian
-(because they do not have a derivative, let alone Hessian, at zero).
+	\B{E} \left( [ u - \B{E} (u) ] [ v - \B{E} (v) ]^\R{T} \right)
+\] $$
 
+$subhead Unconstrained Covariance$$
+We use $latex \tilde{L} ( \theta )$$ to denote the
+$cref/total objective/theory/Objective/Total Objective, L(theta)/$$
+with absolute values terms in $cref fix_likelihood$$ excluded.
+We use $latex \tilde{\theta}$$ for the unconstrained optimal estimate
+of the fixed effects (without absolute value terms) and
+approximation its auto-covariance by
+$latex \[
+	\B{C} ( \tilde{\theta} , \tilde{\theta} )
+	=
+	H^{-1}
+\]$$
+where $latex H$$ is the Hessian
+corresponding to $icode information_info$$; i.e.,
+the observed information matrix.
 
 $head Approximate Constraints$$
 Let $latex n$$ be the number of fixed constraints,
@@ -168,48 +184,51 @@ $latex n$$ the number of active constraints,
 and the equations $latex e( \theta ) = b$$ the active constraints
 where $latex e : \B{R}^n \rightarrow \B{R}^m$$, $latex b \in \B{R}^m$$,
 and the inequality constraints have been converted to equalities at the
-active bounds.
-Define the random variable $latex \tilde{e}$$ as the affine
-approximation for $latex e( \theta )$$.
+active bounds (including the bounds on the fixed effects).
+Define the random variable the approximation for $latex e( \theta )$$ by
 $latex \[
-	\tilde{e} = b + e^{(1)} ( \hat{\theta} ) ( \theta - \hat{\theta} )
+\hat{e} =
+e( \hat{\theta} ) + e^{(1)} \left( \hat{\theta} \right)
+	\left( \tilde{\theta} - \hat{\theta} \right)
 \] $$
 
 $head Constrained Covariance$$
-We approximate the distribution for $latex \hat{\theta}$$ as normal,
-hence $latex \tilde{e}$$ is also normal.
-Furthermore, we approximate the distribution for $latex \hat{\theta}$$,
-by is conditional distribution given that $latex \tilde{e}$$
-is equal to $latex b$$.
-In other words,
+We approximate the distribution for
+$latex \tilde{\theta}$$ and $latex \hat{\theta}$$ as normal,
+hence $latex \hat{e}$$ is also normal.
+We further approximate the distribution for $latex \hat{\theta}$$,
+by the conditional distribution for $latex \tilde{\theta}$$ given
+$latex \hat{e}$$; i.e.,
 $latex \[
-	\B{C} ( \hat{\theta} | b \W{,} \hat{\theta} | b )
+	\B{C} \left( \hat{\theta} \W{,} \hat{\theta} \right)
 	=
-	\B{C} ( \hat{\theta} \W{,} \hat{\theta} )
+	\B{C} \left( \tilde{\theta} \W{,} \tilde{\theta} \right)
 	-
-	\B{C} ( \hat{\theta} \W{,} \tilde{e} )
-	\B{C} ( \tilde{e}  \W{,} \tilde{e} )^{-1}
-	\B{C} ( \tilde{e}  \W{,} \hat{\theta} )
+	\B{C} \left( \tilde{\theta} \W{,} \hat{e} \right)
+	\B{C} \left( \hat{e}  \W{,} \hat{e} \right)^{-1}
+	\B{C} \left( \hat{e}  \W{,} \tilde{\theta} \right)
 \] $$
 Using the notation
-$latex C = L^{(2)} ( \hat{\theta} )^{-1}$$
+$latex C = \B{C} \left( \hat{\theta} \W{,} \hat{\theta} \right)$$
 and
-$latex E = e^{(1)} ( \hat{\theta} )$$,
+$latex E = e^{(1)} \left( \hat{\theta} \right)$$,
 we define
 $latex \[
 	D
 	=
-	\B{C} ( \hat{\theta} | b \W{,} \hat{\theta} | b )
+	\B{C} \left( \hat{\theta} \W{,} \hat{\theta} \right)
 	=
 	C - C E^\R{T} \left( E C E^\R{T} \right)^{-1}  E C
 \] $$
+
+$head Sparse Constrained Covariance$$
 We use $latex D( \alpha )$$ for the matrix where the
 off diagonal elements of $latex D$$ corresponding to an absolute correlation
 less than $latex \alpha$$ are replaced by zero.
 To be specific,
 $latex \[
 D_{i,j} ( \alpha ) = \left\{ \begin{array}{ll}
-0 & \R{if} \; i \neq j \; \R{and} \; \alpha \geq | D_{i,j} | / \sqrt{D_ii D_jj}
+0 & \R{if} \; i \neq j \; \R{and} \; | D_{i,j} | / \sqrt{D_ii D_jj} \leq \alpha
 \\
 D_{i,j}       & \R{otherwise}
 \end{array} \right.
@@ -298,34 +317,6 @@ double cppad_mixed::sample_fixed(
 	);
 	// update the cholesky factor for this fixed and random effect
 	update_factor(fixed_opt, random_opt);
-	// -----------------------------------------------------------------------
-	// If Quasi-Newton method was used, must initilaize routines
-	// that are only used for the Hessian calculation; see initilaize.cpp
-	if( n_random_ != 0 && ! init_newton_atom_done_ )
-	{	assert( quasi_fixed_ );
-		assert( ! init_ran_objcon_done_ );
-		assert( ! init_ran_objcon_hes_done_ );
-		//
-		// newton_atom_
-		assert( ran_like_a1fun_.size_var() > 0  );
-		newton_atom_.initialize(
-			ran_like_a1fun_, fixed_opt, random_opt
-		);
-		init_newton_atom_done_ = true;
-		//
-		// ran_objcon_fun_
-		assert( ! init_ran_objcon_done_ );
-		init_ran_objcon(fixed_opt, random_opt);
-		assert( init_ran_objcon_done_ );
-		//
-		// ran_objcon_hes_
-		assert( ! init_ran_objcon_hes_done_ );
-		init_ran_objcon_hes(fixed_opt, random_opt);
-		assert( init_ran_objcon_hes_done_ );
-	}
-	assert( init_newton_atom_done_ );
-	assert( init_ran_objcon_done_ );
-	assert( init_ran_objcon_hes_done_ );
 	// -----------------------------------------------------------------------
 	// full covariance (inverse of the observed information matrix)
 	eigen_sparse total_hes = CppAD::mixed::triple2eigen(
