@@ -29,14 +29,16 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
-$head 04-08$$
+$head 04-07$$
+$list number$$
+The new routine $cref sample_fixed$$ samples from the posterior
+distribution for the estimate of the fixed effects.
+$lnext
 Changed $cref ipopt_fixed_check_grad_f$$ to down to step size
 $code 1e-9$$ (used to just go to $code 1e-7$$.
 In addition, in error report changed $code step=$$ to $code best_step=$$.
+$lend
 
-$head 04-07$$
-The new routine $cref sample_fixed$$ samples from the posterior
-distribution for the estimate of the fixed effects.
 
 $head 04-06$$
 The user defined virtual routines
