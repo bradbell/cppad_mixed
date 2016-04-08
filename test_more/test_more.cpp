@@ -58,11 +58,8 @@ namespace {
 // main program that runs all the tests
 int main(void)
 {
-	RUN(no_fix_likelihood);
-# if 0
 	RUN(abs_fix_con);
 	RUN(binomial);
-	RUN(delta_ran_obj);
 	RUN(delta_ran_obj);
 	RUN(der_var_hes);
 	RUN(n_mixture);
@@ -72,7 +69,6 @@ int main(void)
 	RUN(ran_obj_tst);
 	RUN(zero_random_one);
 	RUN(zero_random_two);
-# endif
 
 	// summary report
 	int return_flag;
