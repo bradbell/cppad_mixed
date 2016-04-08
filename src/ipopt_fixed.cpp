@@ -1564,7 +1564,6 @@ $spell
 	std
 	cout
 	endl
-	fabs
 	tol
 	solution solution
 $$
@@ -1842,7 +1841,7 @@ $codei%
 If it is true, a trace of this computation is printed on standard output.
 
 $head relative_step$$
-For each $icode%relative_step% = 1e-3, 1e-4, %...%, 1e-8%$$:
+For each $icode%relative_step% = 1e-3, 1e-4, %...%, 1e-9%$$:
 If the upper and lower bounds are finite,
 the step is relative to the upper minus the lower bound
 (for each component of $icode x$$).
@@ -1939,7 +1938,7 @@ bool ipopt_fixed::check_grad_f(bool trace, double relative_tol)
 		double best_diff       = std::numeric_limits<double>::infinity();
 		double best_step       = std::numeric_limits<double>::infinity();
 		double best_approx     = std::numeric_limits<double>::infinity();
-		double relative_step[] = { 1e-5, 1e-4, 1e-6, 1e-3, 1e-7 };
+		double relative_step[] = {1e-3, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9};
 		size_t n_try           = sizeof(relative_step) / sizeof(double);
 		size_t i_try           = 0;
 		while( i_try < n_try && best_diff > relative_tol )
@@ -1948,7 +1947,7 @@ bool ipopt_fixed::check_grad_f(bool trace, double relative_tol)
 			double step = relative_step[i_try] * ( x_upper[j] - x_lower[j] );
 			if( x_upper[j] == nlp_upper_bound_inf_ ||
 				x_lower[j] == nlp_lower_bound_inf_  )
-			{	step = relative_step[i_try] * abs( x_start[j] );
+			{	step = relative_step[i_try] * CppAD::abs( x_start[j] );
 				step = std::max( step, relative_step[i_try] );
 			}
 
@@ -1972,8 +1971,9 @@ bool ipopt_fixed::check_grad_f(bool trace, double relative_tol)
 
 			// relative difference
 			double diff           = grad_f[j] - approx;
-			double denominator    = abs(grad_f[j]) + root_eps * obj_value;
-			double relative_diff  = abs(diff) / denominator;
+			double denominator    = CppAD::abs(grad_f[j]);
+			denominator          += root_eps * CppAD::abs(obj_value);
+			double relative_diff  = CppAD::abs(diff) / denominator;
 
 			// best
 			if( relative_diff < best_diff )
@@ -1990,7 +1990,7 @@ bool ipopt_fixed::check_grad_f(bool trace, double relative_tol)
 		if( trace_j ) std::cout
 			<< std::setprecision(3)
 			<< "j="     << std::setw(2) << j
-			<< ",step=" << std::setw(9) << best_step
+			<< ",best_step=" << std::setw(6) << best_step
 			<< ",f="    << std::setw(9) << obj_value
 			<< ",grad=" << std::setw(9) << grad_f[j]
 			<< ",appr=" << std::setw(9) << best_approx
