@@ -20,6 +20,7 @@ $spell
 	CppAD
 	std
 	inf
+	iter
 $$
 
 $section Optimize Fixed Effects$$
@@ -74,6 +75,10 @@ The value used for $icode hessian_approximation$$ is $code limit-memory$$
 and cannot be specified differently in $icode fixed_options$$.
 $lnext
 The default value used for $icode limited_memory_max_history$$ is 30.
+$lnext
+If $icode max_iter$$ is zero,
+$icode%solution%.fixed_opt = %fixed_in%$$
+(this is not necessarily true for Ipopt).
 $lend
 
 
@@ -333,10 +338,16 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 			begin_1++;
 	}
 	// get the tolerance settting for the fixed effects optimization
-	const std::string tag    = "tol";
-	const std::string prefix = "";
+	std::string tag    = "tol";
+	std::string prefix = "";
 	double fixed_tolerance;
 	app->Options()->GetNumericValue(tag, fixed_tolerance, prefix);
+	// get the maximum number of iterations
+	tag    = "max_iter";
+	prefix = "";
+	Ipopt::Index fixed_max_iter;
+	app->Options()->GetIntegerValue(tag, fixed_max_iter, prefix);
+	assert( fixed_max_iter >= 0 );
 
 	// object that is used to evalutate objective and constraints
 	SmartPtr<CppAD::mixed::ipopt_fixed> fixed_nlp =
@@ -381,14 +392,25 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 
 	// solve the problem
 	status = app->OptimizeTNLP(fixed_nlp);
-	if( status != Ipopt::Solve_Succeeded )
-	{	warning("optimize_fixed: ipopt failed to converge");
-	}
-	if( ! fixed_nlp->finalize_solution_ok_ )
-	{	warning("optimize_fixed: solution check failed");
+
+	// special case where we are not trying to solve
+	if( fixed_max_iter > 0 )
+	{
+		if( status != Ipopt::Solve_Succeeded )
+		{	warning("optimize_fixed: ipopt failed to converge");
+		}
+		if( ! fixed_nlp->finalize_solution_ok_ )
+		{	warning("optimize_fixed: solution check failed");
+		}
 	}
 	//
 	// return the entire solution including the lagrange multipliers
-	return fixed_nlp->solution();
+	CppAD::mixed::fixed_solution solution = fixed_nlp->solution();
+	//
+	// special case were we return fixed_in
+	if( fixed_max_iter == 0 )
+		solution.fixed_opt = fixed_in;
+	//
+	return solution;
 }
 
