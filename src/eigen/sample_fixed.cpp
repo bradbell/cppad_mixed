@@ -393,7 +393,7 @@ double cppad_mixed::sample_fixed(
 			}
 		}
 	}
-	CppAD::vector<size_t> ind(n_fixed_sq);
+	CppAD::vector<size_t> ind(ratio.size());
 	CppAD::index_sort(ratio, ind);
 	//
 	double correlation = 0.0;

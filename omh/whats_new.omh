@@ -30,9 +30,14 @@ $childtable%omh/whats_new_15.omh
 %$$
 
 $head 04-08$$
+$list number$$
 Changed $cref ipopt_fixed_check_grad_f$$ to handle case where
 the function at both central difference points is zero,
 and the derivatives is also zero.
+$lnext
+Test (and fix) $cref sample_fixed$$ for a case where one of the fixed effects
+was at its upper or lower limit.
+$lend
 
 $head 04-07$$
 $list number$$
