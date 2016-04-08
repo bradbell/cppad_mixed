@@ -1935,6 +1935,7 @@ bool ipopt_fixed::check_grad_f(bool trace, double relative_tol)
 	// loop over directions where upper > lower
 	for(size_t j = 0; j < n; j++) if( x_lower[j] < x_upper[j] )
 	{	// loop over relative step sizes
+		double abs_obj         = CppAD::abs(obj_value);
 		double best_diff       = std::numeric_limits<double>::infinity();
 		double best_step       = std::numeric_limits<double>::infinity();
 		double best_approx     = std::numeric_limits<double>::infinity();
@@ -1956,12 +1957,14 @@ bool ipopt_fixed::check_grad_f(bool trace, double relative_tol)
 			double x_plus = std::min(x_start[j] + step, x_upper[j]);
 			x_step[j]     = x_plus;
 			eval_f(n, x_step.data(), new_x, obj_plus);
+			abs_obj = std::max(abs_obj, CppAD::abs(obj_plus) );
 
 			// x_minus, obj_minus
 			double obj_minus;
 			double x_minus = std::max(x_start[j] - step, x_lower[j]);
 			x_step[j]      = x_minus;
 			eval_f(n, x_step.data(), new_x, obj_minus);
+			abs_obj = std::max(abs_obj, CppAD::abs(obj_minus) );
 
 			// restore j-th component of x_step
 			x_step[j]      = x_start[j];
@@ -1972,7 +1975,9 @@ bool ipopt_fixed::check_grad_f(bool trace, double relative_tol)
 			// relative difference
 			double diff           = grad_f[j] - approx;
 			double denominator    = CppAD::abs(grad_f[j]);
-			denominator          += root_eps * CppAD::abs(obj_value);
+			denominator          += root_eps * CppAD::abs(abs_obj);
+			if( denominator == 0.0 )
+				denominator = 1.0;
 			double relative_diff  = CppAD::abs(diff) / denominator;
 
 			// best

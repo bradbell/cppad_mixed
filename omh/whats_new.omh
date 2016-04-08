@@ -29,6 +29,11 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 04-08$$
+Changed $cref ipopt_fixed_check_grad_f$$ to handle case where
+the function at both central difference points is zero,
+and the derivatives is also zero.
+
 $head 04-07$$
 $list number$$
 The new routine $cref sample_fixed$$ samples from the posterior

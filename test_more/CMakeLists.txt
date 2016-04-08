@@ -19,6 +19,7 @@ LINK_DIRECTORIES(
 ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
 	abs_fix_con.cpp
 	binomial.cpp
+	check_grad.cpp
 	delta_ran_obj.cpp
 	der_var_hes.cpp
 	n_mixture.cpp

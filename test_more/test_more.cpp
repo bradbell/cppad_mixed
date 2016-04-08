@@ -15,6 +15,7 @@ see http://www.gnu.org/licenses/agpl.txt
 // cppad_mixed subdirectory
 extern bool abs_fix_con(void);
 extern bool binomial(void);
+extern bool check_grad(void);
 extern bool delta_ran_obj(void);
 extern bool der_var_hes(void);
 extern bool n_mixture(void);
@@ -60,6 +61,7 @@ int main(void)
 {
 	RUN(abs_fix_con);
 	RUN(binomial);
+	RUN(check_grad);
 	RUN(delta_ran_obj);
 	RUN(der_var_hes);
 	RUN(n_mixture);
