@@ -30,6 +30,14 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 04-09$$
+Improve documentation of
+$cref/fixed_options/optimize_fixed/fixed_options/$$
+and add the special case of
+$cref/max_iter/optimize_fixed/fixed_options/max_iter/$$
+equal to $code -1$$.
+
+
 $head 04-08$$
 $list number$$
 Changed $cref ipopt_fixed_check_grad_f$$ to handle case where
@@ -38,12 +46,6 @@ and the derivatives is also zero.
 $lnext
 Test (and fix) $cref sample_fixed$$ for a case where one of the fixed effects
 was at its upper or lower limit.
-$lnext
-In special case where
-$cref/fixed_options/optimize_fixed/fixed_options/$$ sets
-$icode max_iter$$ to zero,
-return the initial fixed effects in place of the optimal ones.
-In addition, do not warn about not converging.
 $lend
 
 $head 04-07$$

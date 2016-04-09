@@ -67,20 +67,33 @@ and is the $cref ipopt_options$$ for optimizing the fixed effects.
 If $cref/quasi_fixed/derived_ctor/quasi_fixed/$$
 is true,
 the following changes are made to the standard Ipopt options specification:
-$list number$$
-If specified, the $icode derivative_test$$ must be $code none$$ or
-$code first-order$$.
-$lnext
-The value used for $icode hessian_approximation$$ is $code limit-memory$$
-and cannot be specified differently in $icode fixed_options$$.
-$lnext
-The default value used for $icode limited_memory_max_history$$ is 30.
-$lnext
-If $icode max_iter$$ is zero,
-$icode%solution%.fixed_opt = %fixed_in%$$
-(this is not necessarily true for Ipopt).
-$lend
 
+$subhead derivative_test$$
+If $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is true,
+the $icode derivative_test$$ must be $code none$$ or
+$code first-order$$.
+
+$subhead hessian_approximation$$
+If $icode quasi_fixed$$ is true,
+$icode hessian_approximation$$ will be set to $code limit-memory$$.
+If it is also set in $icode fixed_options$$, it must have this value.
+
+$subhead limited_memory_max_history$$
+If $icode quasi_fixed$$ is true,
+$icode limited_memory_max_history$$ will be set to an unspecified value and
+cannot be cannot be set in $icode fixed_options$$.
+
+$subhead max_iter$$
+If $icode%max_iter% <= 0%$$ in $icode fixed_options$$,
+Ipopt is run with $icode%max_iter% = 0%$$ and the return status
+$code Ipopt::Maximum_Iterations_Exceeded$$ is consider normal; i.e.,
+does not generate a warning or error message.
+If $icode%max_iter% == 0%$$ in the options,
+it may be that $icode%solution%.fixed_opt != %fixed_in%$$
+(Ipopt moves non-equality constraints to the interior of the constraint).
+If $icode%max_iter% == -1%$$ in the options,
+$icode%solution%.fixed_opt == %fixed_in%$$
+(this is the only difference between $code -1$$ and $code 0$$).
 
 $head random_options$$
 This argument has prototype
@@ -277,6 +290,13 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 		app->Options()->SetIntegerValue(
 			"limited_memory_max_history", 30);
 	}
+	// get the initial value for maximum number of iterations
+	std::string tag    = "max_iter";
+	std::string prefix = "";
+	Ipopt::Index fixed_max_iter;
+	app->Options()->GetIntegerValue(tag, fixed_max_iter, prefix);
+	assert( fixed_max_iter >= 0 );
+	//
 	// Set options for optimization of the fixed effects
 	const std::string& options = fixed_options;
 	size_t begin_1, end_1, begin_2, end_2, begin_3, end_3;
@@ -313,7 +333,9 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 				if( tok_2 == "hessian_approximation" )
 					ok &= tok_3 == "limited-memory";
 				if( tok_2 == "derivative_test" )
-					ok &= tok_3 == "none" ||tok_3 == "first-order";
+					ok &= tok_3 == "none" || tok_3 == "first-order";
+				if( tok_2 == "limited_memory_max_history" )
+					ok = false;
 				if( ! ok )
 				{	std::string msg = "cppad_mixed: constructed with";
 					msg += " quasi_fixed true so cannot have ";
@@ -328,6 +350,11 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 		}
 		else if ( tok_1 == "Integer" )
 		{	Ipopt::Index value = std::atoi( tok_3.c_str() );
+			if( tok_2 == "max_iter" )
+			{	fixed_max_iter = value;
+				if( value == -1 )
+					value = 0;
+			}
 			app->Options()->SetIntegerValue(tok_2.c_str(), value);
 		}
 		else assert(false);
@@ -338,16 +365,10 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 			begin_1++;
 	}
 	// get the tolerance settting for the fixed effects optimization
-	std::string tag    = "tol";
-	std::string prefix = "";
+	tag    = "tol";
+	prefix = "";
 	double fixed_tolerance;
 	app->Options()->GetNumericValue(tag, fixed_tolerance, prefix);
-	// get the maximum number of iterations
-	tag    = "max_iter";
-	prefix = "";
-	Ipopt::Index fixed_max_iter;
-	app->Options()->GetIntegerValue(tag, fixed_max_iter, prefix);
-	assert( fixed_max_iter >= 0 );
 
 	// object that is used to evalutate objective and constraints
 	SmartPtr<CppAD::mixed::ipopt_fixed> fixed_nlp =
@@ -404,8 +425,9 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 		}
 	}
 	else
-	{	ok  = status == Ipopt::Maximum_Iterations_Exceeded;
-		ok != status == Ipopt::Solve_Succeeded;
+	{	assert( ok );
+		ok  = status == Ipopt::Maximum_Iterations_Exceeded;
+		ok |= status == Ipopt::Solve_Succeeded;
 		if( ! ok )
 		{	warning("optimize_fixed: unexpected error during zero iterations");
 		}
@@ -415,7 +437,7 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 	CppAD::mixed::fixed_solution solution = fixed_nlp->solution();
 	//
 	// special case were we return fixed_in
-	if( fixed_max_iter == 0 )
+	if( fixed_max_iter == -1 )
 		solution.fixed_opt = fixed_in;
 	//
 	return solution;

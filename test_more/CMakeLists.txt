@@ -22,7 +22,7 @@ ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
 	check_grad.cpp
 	delta_ran_obj.cpp
 	der_var_hes.cpp
-	max_iter_zero.cpp
+	max_iter_neg.cpp
 	n_mixture.cpp
 	no_fix_likelihood.cpp
 	ran_likelihood_hes.cpp

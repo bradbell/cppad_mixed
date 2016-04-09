@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$section Zero Fixed Iterations$$.
+$section Fixed Iterations Eqaul to Minus One$$.
 
 $head Model$$
 $latex \[
@@ -95,7 +95,7 @@ namespace {
 	};
 }
 
-bool max_iter_zero(void)
+bool max_iter_neg(void)
 {
 	bool   ok = true;
 
@@ -134,7 +134,7 @@ bool max_iter_zero(void)
 		"String  derivative_test           first-order\n"
 		"String  derivative_test_print_all yes\n"
 		"Numeric tol                       1e-8\n"
-		"Integer max_iter                  0\n"
+		"Integer max_iter                  -1\n"
 	;
 	std::string random_options =
 		"Integer print_level 0\n"
