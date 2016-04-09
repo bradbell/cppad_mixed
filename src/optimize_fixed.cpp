@@ -403,6 +403,13 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 		{	warning("optimize_fixed: solution check failed");
 		}
 	}
+	else
+	{	ok  = status == Ipopt::Maximum_Iterations_Exceeded;
+		ok != status == Ipopt::Solve_Succeeded;
+		if( ! ok )
+		{	warning("optimize_fixed: unexpected error during zero iterations");
+		}
+	}
 	//
 	// return the entire solution including the lagrange multipliers
 	CppAD::mixed::fixed_solution solution = fixed_nlp->solution();
