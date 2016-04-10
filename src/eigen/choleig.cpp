@@ -28,6 +28,7 @@ choleig::~choleig(void)
 ------------------------------------------------------------------------------
 $begin choleig_init$$
 $spell
+	pos
 	choleig
 	Cholesky
 	chol_ran_hes
@@ -39,7 +40,7 @@ $$
 $section Initialize Cholesky Factor for a Specific Sparsity Pattern$$
 
 $head Syntax$$
-$icode%chol_ran_hes%.init(%hes_info%)
+$icode%pos% = chol_ran_hes%.init(%hes_info%)
 %$$
 
 $head Private$$
@@ -150,9 +151,13 @@ $codei%
 where $icode hessian$$ is an $code eigen_sparse$$
 representation of the Hessian with values.
 
+$head pos$$
+If the matrix is positive definite, $icode pos$$ is true.
+Otherwise, it is false.
+
 $end
 */
-void choleig::update(const CppAD::mixed::sparse_mat_info& hes_info)
+bool choleig::update(const CppAD::mixed::sparse_mat_info& hes_info)
 {	assert( hes_info.row.size() == hes_info.col.size() );
 	assert( hes_info.row.size() == hes_info.val.size() );
 	//
@@ -166,6 +171,11 @@ void choleig::update(const CppAD::mixed::sparse_mat_info& hes_info)
 	// LDL^T Cholesky factorization of for specified values of the Hessian
 	// f_{u,u}(theta, u)
 	ptr_->factorize(hessian);
+	//
+	if( ptr_->info() == Eigen::NumericalIssue )
+		return false;
+	assert( ptr_->info() == Eigen::Success );
+	return true;
 }
 /*
 ------------------------------------------------------------------------------

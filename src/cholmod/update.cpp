@@ -24,7 +24,7 @@ $$
 $section Update Factorization Using new Matrix Values$$
 
 $head Syntax$$
-$icode%cholmod_obj%.update(%hes_info%)%$$
+$icode%pos% = cholmod_obj%.update(%hes_info%)%$$
 
 
 $head Private$$
@@ -81,6 +81,10 @@ $codei%
 	cholmod_factorize(pos_matrix_, factor_, &common_)
 %$$
 
+$head pos$$
+If the matrix is positive definite, $icode pos$$ is true.
+Otherwise, it is false.
+
 $head Example$$
 The file $cref/cholmod_xam.cpp/cholmod_xam.cpp/update/$$ contains an
 example and test that uses this function.
@@ -96,7 +100,7 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-void cholmod::update( const CppAD::mixed::sparse_mat_info& hes_info )
+bool cholmod::update( const CppAD::mixed::sparse_mat_info& hes_info )
 {
 	// set the values in pos_matrix_
 	double* A_x = (double *) pos_matrix_->x;
@@ -118,6 +122,11 @@ void cholmod::update( const CppAD::mixed::sparse_mat_info& hes_info )
 	assert( factor_->minor == nrow_ );
 	assert( factor_->is_ll == CHOLMOD_FALSE );
 	assert( factor_->xtype == CHOLMOD_REAL );
+	//
+	if( common_.status == CHOLMOD_NOT_POSDEF )
+		return false;
+	assert( common_.status == CHOLMOD_OK );
+	return true;
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

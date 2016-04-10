@@ -90,7 +90,7 @@ public:
 	// init
 	void init(const CppAD::mixed::sparse_mat_info& hes_info);
 	// update
-	void update(const CppAD::mixed::sparse_mat_info& hes_info);
+	bool update(const CppAD::mixed::sparse_mat_info& hes_info);
 	// logdet
 	double logdet(void) const;
 	// solve
