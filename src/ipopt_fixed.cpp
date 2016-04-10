@@ -1841,7 +1841,8 @@ $codei%
 If it is true, a trace of this computation is printed on standard output.
 
 $head relative_step$$
-For each $icode%relative_step% = 1e-3, 1e-4, %...%, 1e-9%$$:
+For an unspecified set of relative step sizes between
+$code 1e-3$$ and $code 1e-10$$:
 If the upper and lower bounds are finite,
 the step is relative to the upper minus the lower bound
 (for each component of $icode x$$).
@@ -1932,6 +1933,16 @@ bool ipopt_fixed::check_grad_f(bool trace, double relative_tol)
 	eval_f(Index(n), x_step.data(), new_x, obj_value);
 	new_x = true;
 
+	// log of maximum and minimum relative step to try
+	double log_max_rel = std::log(1e-3);
+	double log_min_rel = std::log(1e-10);
+	//
+	// number of relative steps to try
+	size_t n_try = 5;
+	//
+	// difference of log of relative step between trys
+	double log_diff = (log_max_rel - log_min_rel) / double(n_try - 1);
+	//
 	// loop over directions where upper > lower
 	for(size_t j = 0; j < n; j++) if( x_lower[j] < x_upper[j] )
 	{	// loop over relative step sizes
@@ -1939,17 +1950,16 @@ bool ipopt_fixed::check_grad_f(bool trace, double relative_tol)
 		double best_diff       = std::numeric_limits<double>::infinity();
 		double best_step       = std::numeric_limits<double>::infinity();
 		double best_approx     = std::numeric_limits<double>::infinity();
-		double relative_step[] = {1e-3, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9};
-		size_t n_try           = sizeof(relative_step) / sizeof(double);
 		size_t i_try           = 0;
 		while( i_try < n_try && best_diff > relative_tol )
-		{
+		{	double relative_step = std::exp(log_min_rel + log_diff * i_try);
+			//
 			// step size
-			double step = relative_step[i_try] * ( x_upper[j] - x_lower[j] );
+			double step = relative_step * ( x_upper[j] - x_lower[j] );
 			if( x_upper[j] == nlp_upper_bound_inf_ ||
 				x_lower[j] == nlp_lower_bound_inf_  )
-			{	step = relative_step[i_try] * CppAD::abs( x_start[j] );
-				step = std::max( step, relative_step[i_try] );
+			{	step = relative_step * CppAD::abs( x_start[j] );
+				step = std::max( step, relative_step );
 			}
 
 			// x_plus, obj_plus

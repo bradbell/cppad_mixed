@@ -30,6 +30,10 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 04-10$$
+If the gradient check $cref ipopt_fixed_check_grad_f$$ fails,
+it now results in warning instead of a fatal error.
+
 $head 04-09$$
 Improve documentation of
 $cref/fixed_options/optimize_fixed/fixed_options/$$

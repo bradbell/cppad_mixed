@@ -63,10 +63,8 @@ This argument has prototype
 $codei%
 	const std::string& %fixed_options%
 %$$
-and is the $cref ipopt_options$$ for optimizing the fixed effects.
-If $cref/quasi_fixed/derived_ctor/quasi_fixed/$$
-is true,
-the following changes are made to the standard Ipopt options specification:
+and is the $cref ipopt_options$$ for optimizing the fixed effects
+with the following qualifications:
 
 $subhead derivative_test$$
 If $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is true,
@@ -392,7 +390,8 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 	double relative_tol  = 1e-3;
 	ok = fixed_nlp->check_grad_f(trace, relative_tol);
 	if( ! ok )
-	{	fatal_error("optimize_fixed: check_grad_f failed");
+	{	warning("optimize_fixed: check_grad_f failed");
+		ok = true;
 	}
 # endif
 
