@@ -16,6 +16,7 @@ see http://www.gnu.org/licenses/agpl.txt
 extern bool abs_fix_con(void);
 extern bool binomial(void);
 extern bool check_grad(void);
+extern bool cholmod_solve2(void);
 extern bool delta_ran_obj(void);
 extern bool der_var_hes(void);
 extern bool max_iter_neg(void);
@@ -64,6 +65,7 @@ int main(void)
 	RUN(abs_fix_con);
 	RUN(binomial);
 	RUN(check_grad);
+	RUN(cholmod_solve2);
 	RUN(delta_ran_obj);
 	RUN(der_var_hes);
 	RUN(max_iter_neg);
