@@ -31,8 +31,14 @@ $childtable%omh/whats_new_15.omh
 %$$
 
 $head 04-10$$
+$list number$$
 If the gradient check $cref ipopt_fixed_check_grad_f$$ fails,
 it now results in warning instead of a fatal error.
+$lnext
+Check the Hessian of the
+$cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$
+$latex f_uu ( \theta , u)$$ is positive definite.
+$lend
 
 $head 04-09$$
 Improve documentation of
