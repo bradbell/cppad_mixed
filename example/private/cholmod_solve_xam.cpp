@@ -9,14 +9,18 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin cholmod_solve2_test$$
+$begin cholmod_solve_xam$$
 $spell
 	cholmod
 $$
 
-$section Test Where cholmod_solve2 Does not Detect a Non-positive Matrix$$
+$section Example Using cholmod_solve With a Non-positive Matrix$$
 
-$head matrix$$
+$head Problem Description$$
+Solve for $latex x$$ in the equation $latex A x = b$$ where $latex A$$
+is defined below and $latex b$$ is a column of the identity matrix.
+Hence the solution $latex x$$ is the corresponding column of
+$latex A^{-1}$$ which for this case is equal to $latex A$$.
 $latex \[
 	A = \left( \begin{array}{cc}
 		1 & 0 \\
@@ -24,15 +28,8 @@ $latex \[
 	\end{array} \right)
 \] $$
 
-$head Problem$$
-The following check in the example below returns $icode%ok% = true%$$:
-$srccode%cpp%
-	// One might expect com.status to be equal to CHOLMOD_NOT_POSDEF
-	ok &= ! (com.status == CHOLMOD_NOT_POSDEF);
-%$$
-
 $head Source Code$$
-$srcfile%test_more/cholmod_solve2.cpp%0%// BEGIN C++%// END C++%1%$$
+$srcfile%example/private/cholmod_solve_xam.cpp%0%// BEGIN C++%// END C++%1%$$
 
 $end
 */
@@ -46,7 +43,6 @@ $end
 # define CHOLMOD_FALSE                 0
 # define CHOLMOD_STYPE_LOWER_TRIANGLE -1
 
-# define DEMONSTRATE_PROBLEM 0
 
 namespace { // BEGIN_EMPTY_NAMESPACE
 	void add_T_entry(cholmod_triplet *T, int r, int c, double x)
@@ -58,8 +54,9 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 	}
 }
 
-bool cholmod_solve2(void)
-{	bool ok = true;
+bool cholmod_solve_xam(void)
+{	bool ok    = true;
+	double eps = 10. * std::numeric_limits<double>::epsilon();
 
 	// Elements for the the matrix A
 	size_t nrow = 2;
@@ -106,16 +103,41 @@ bool cholmod_solve2(void)
 	assert( L->n     == nrow );          // number of rows and coluns
 	assert( L->minor == nrow );          // successful factorization
 	assert( L->is_ll == CHOLMOD_FALSE ); // factorization is LDL'
+	assert( com.status == CHOLMOD_OK  ); // no problem with factorization
 
-	// ----------------------------------------------------------------------
-	// One might expect com.status to be equal to CHOLMOD_NOT_POSDEF
-	ok &= ! (com.status == CHOLMOD_NOT_POSDEF);
-	// ----------------------------------------------------------------------
+	// initialize right hand side vector
+	cholmod_dense *B = cholmod_zeros(nrow, 1, T_xtype, &com);
+	double* B_x = (double *) B->x;
+
+	for(size_t j = 0; j < ncol; j++)
+	{	// solve equation with B corresponding to j-th column of identity
+		B_x[j] = 1.0;
+		int sys = CHOLMOD_A;
+		cholmod_dense *X = cholmod_solve(sys, L, B, &com);
+		double* X_x = (double *) X->x;
+
+		// restore B
+		B_x[j] = 0.0;
+
+		// check solution
+		for(size_t i = 0; i < nrow; i++)
+		{	// inv(A) = A
+			double check = A_data[ i * ncol + j];
+			if( check == 0.0 )
+				ok &= X_x[i] == 0.0;
+			else
+				ok &= std::fabs( X_x[i] / check - 1.0 ) <= eps;
+		}
+
+		// done with this X
+		cholmod_free_dense(&X, &com);
+	}
 
 	// free memory
 	cholmod_free_triplet(&T,    &com);
 	cholmod_free_sparse( &A,    &com);
 	cholmod_free_factor( &L,    &com);
+	cholmod_free_dense(  &B,    &com);
 
 	// finish up
 	cholmod_finish(&com);

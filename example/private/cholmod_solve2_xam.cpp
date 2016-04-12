@@ -171,6 +171,7 @@ bool cholmod_solve2_xam(void)
 	assert( L->n     == nrow );          // number of rows and coluns
 	assert( L->minor == nrow );          // successful factorization
 	assert( L->is_ll == CHOLMOD_FALSE ); // factorization is LDL'
+	assert( com.status == CHOLMOD_OK );  // no problem with factorization
 
 	// sparsity pattern for right hand side column vector
 	size_t Bset_nrow       = nrow;
