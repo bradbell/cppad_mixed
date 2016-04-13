@@ -35,6 +35,7 @@ $children%include/cppad/mixed/configure.hpp.in
 	%include/cppad/mixed/ipopt_fixed.hpp
 	%include/cppad/mixed/triple2eigen.hpp
 	%src/eigen/newton_step.cpp
+	%src/eigen/undetermined.cpp
 	%include/cppad/mixed/fixed_solution.hpp
 	%include/cppad/mixed/sparse_hes_info.hpp
 	%include/cppad/mixed/sparse_jac_info.hpp
