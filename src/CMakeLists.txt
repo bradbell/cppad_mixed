@@ -18,6 +18,7 @@ ADD_LIBRARY(cppad_mixed
 	eigen/information_mat.cpp
 	eigen/newton_step.cpp
 	eigen/sample_fixed.cpp
+	eigen/undetermined.cpp
 	fix_con_eval.cpp
 	fix_con_eval.cpp
 	fix_con_hes.cpp

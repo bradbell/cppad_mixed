@@ -179,13 +179,14 @@ namespace {
 	}
 	//
 	void elementary(size_pair pivot, double_matrix& E)
-	{	size_t r = pivot.first;
-		size_t c = pivot.second;
-		double v = E(r, c);
+	{	size_t nr = size_t( E.rows() );
+		size_t r  = pivot.first;
+		size_t c  = pivot.second;
+		double v  = E(r, c);
 		E.row(r) /= v;
 		// fix roundoff on piovot element
 		E(r, c) = 1.0;
-		for(size_t i = 0; i < E.rows(); i++)
+		for(size_t i = 0; i < nr; i++)
 		{	if( i != r )
 			{	E.row(i) -= E(i, c) * E.row(r);
 				// fix roundoff on pivot column
@@ -204,16 +205,16 @@ size_t undertermined(
 	double_matrix&                d     )
 {	size_t nr = A.rows();
 	size_t nc = A.cols();
-	assert( nr < nc );
-	assert( b.rows() == nr );
-	assert( C.rows() == nr )
-	assert( d.rows() == nr );
-	assert( b.cols() == 1  );
-	assert( d.cols() == 1  );
-	assert( C.cols() == nc - nr );
+	assert(  nr < nc );
+	assert(  size_t( b.rows() ) == nr );
+	assert(  size_t( C.rows() ) == nr );
+	assert(  size_t( d.rows() ) == nr );
+	assert(  size_t( b.cols() ) == 1  );
+	assert(  size_t( d.cols() ) == 1  );
+	assert(  size_t( C.cols() ) == nc - nr );
 	//
 	// E = [ A | b ]
-	double_matrix = E(nr, nc + 1 );
+	double_matrix E(nr, nc + 1 );
 	E.block(0, 0, nr, nc) = A;
 	E.block(0, 0, nr, 1)  = b;
 	//
@@ -230,20 +231,22 @@ size_t undertermined(
 	// maximum of absoltue value of elements of A
 	double max_abs_value;
 	//
-	for(size_t k = 0; k < nr; k++)
+	for(size_t rank = 0; rank < nr; rank++)
 	{	//
 		// determine the next pivot element
 		size_pair pivot = max_abs(E, row_used, col_used);
 		size_t r = pivot.first;
 		size_t c = pivot.second;
-		if( k == 0 )
+		if( rank == 0 )
 		{	// This is the element in A with maximum absolute value
 			max_abs_value = std::fabs( E(r, c) );
 			if( max_abs_value == 0.0 )
 			{	// maxtrix has rank zero
-				return 0;
+				return rank;
 			}
 		}
+		if( std::fabs( E(r, c) ) <= delta * max_abs_value )
+			return rank;
 		//
 		// preform elementary row operations for this pivot
 		elementary(pivot, E);
@@ -260,7 +263,7 @@ size_t undertermined(
 	D = pivotrow2col;
 	//
 	// I and C
-	k = 0;
+	size_t k = 0;
 	for(size_t j = 0; j < nc; j++)
 	{	// skip columns that are used for pivot operations
 		if( ! col_used[j] )
@@ -273,5 +276,5 @@ size_t undertermined(
 	// d
 	d = E.col(nc);
 	//
-	return
+	return nr;
 }
