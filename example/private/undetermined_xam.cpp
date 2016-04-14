@@ -59,11 +59,11 @@ bool undetermined_xam(void)
 	}
 	//
 	// Split dependent and independent variables
-	double delta = 1e-7;
+	double tol = 1e-7;
 	size_vec      D(nr), I(nc - nr);
 	double_matrix C(nr, nc - nr);
 	double_vec    e(nr);
-	size_t rank = CppAD::mixed::undetermined(A, b, delta, D, I, C, e);
+	size_t rank = CppAD::mixed::undetermined(A, b, tol, D, I, C, e);
 	ok         &= rank == nr;
 	//
 	// choose a value for the independent variables

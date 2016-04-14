@@ -17,6 +17,7 @@ $spell
 	cols
 	nr
 	nc
+	tol
 $$
 
 $section
@@ -24,7 +25,7 @@ Express An Undetermined Linear System As Dependent and Independent Variables
 $$
 
 $head Syntax$$
-$icode%rank% = undetermined(%A%, %b%, %delta%, %D%, %I%, %C%, %e%)%$$
+$icode%rank% = undetermined(%A%, %b%, %tol%, %D%, %I%, %C%, %e%)%$$
 
 $head Purpose$$
 We are give a matrix $latex A \in \B{R}^{m \times n}$$
@@ -70,15 +71,11 @@ $codei%
 %$$
 where $icode%b%.rows() = %nr%$$ and $icode%b%.cols() == 1%$$.
 
-$head delta$$
-This is the tolerance used for detecting a rank deficient matrix.
-To be specific, let $latex |A|_\infty$$ be the maximum absolute element
-of the matrix $latex A$$.
-This algorithm uses the element with maximum absolute as a pivot for each
-Gaussian elimination step.
-If there is no element left with absolute value greater than
-$latex \delta |A|_\infty$$,
-this routine aborts with $icode%rank% !=  %nr%$$.
+$head tol$$
+This is the tolerance, relative to one,
+used for detecting a rank deficient matrix.
+To be specific, $icode tol$$ times the maximum value in a row
+is considered a zero element for that row.
 
 $head D$$
 This argument has prototype
@@ -138,7 +135,7 @@ $codei%
 	size_t %rank%
 %$$
 and it is the rank of the matrix to tolerance
-$cref/delta/undetermined/delta/$$.
+$cref/tol/undetermined/tol/$$.
 
 $end
 ------------------------------------------------------------------------------
@@ -205,7 +202,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 size_t undetermined(
 	const double_matrix&          A     ,
 	const double_vec&             b     ,
-	double                        delta ,
+	double                        tol   ,
 	size_vec&                     D     ,
 	size_vec&                     I     ,
 	double_matrix&                C     ,
@@ -225,6 +222,16 @@ size_t undetermined(
 	E.block(0, 0,  nr, nc) = A;
 	E.block(0, nc, nr, 1)  = b;
 	//
+	// Normalize E so all rows have same size maximum element
+	for(size_t i = 0; i < nr; i++)
+	{	double scale = 0.0;
+		for(size_t j = 0; j < nc; j++)
+			scale = std::max(scale, fabs( E(i, j) ) );
+		if( scale > 0.0 )
+			E.row(i) /= scale;
+	}
+	// note that the maximum absolute element in E(:,nc-1) is 1
+	//
 	// which rows and colums have been used for pivots
 	bool_vec row_used(nr), col_used(nc);
 	for(size_t i = 0; i < nr; i++)
@@ -235,8 +242,6 @@ size_t undetermined(
 	// mapping from pivot row to pivot column
 	size_vec pivotrow2col(nr);
 	//
-	// maximum of absoltue value of elements of A
-	double max_abs_value;
 	//
 	for(size_t rank = 0; rank < nr; rank++)
 	{	//
@@ -244,15 +249,7 @@ size_t undetermined(
 		size_pair pivot = max_abs(E, row_used, col_used);
 		size_t r = pivot.first;
 		size_t c = pivot.second;
-		if( rank == 0 )
-		{	// This is the element in A with maximum absolute value
-			max_abs_value = std::fabs( E(r, c) );
-			if( max_abs_value == 0.0 )
-			{	// maxtrix has rank zero
-				return rank;
-			}
-		}
-		if( std::fabs( E(r, c) ) <= delta * max_abs_value )
+		if( std::fabs( E(r, c) ) <= tol )
 			return rank;
 		//
 		// preform elementary row operations for this pivot
