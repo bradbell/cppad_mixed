@@ -28,6 +28,7 @@ $end
 # include <cstring>
 
 extern bool abs_density_xam(void);
+extern bool cholmod_solve_xam(void);
 extern bool cholmod_solve2_xam(void);
 extern bool cholmod_xam(void);
 extern bool data_mismatch_xam(void);
@@ -98,6 +99,7 @@ namespace {
 int main(void)
 {
 	RUN(abs_density_xam);
+	RUN(cholmod_solve_xam);
 	RUN(cholmod_solve2_xam);
 	RUN(cholmod_xam);
 	RUN(data_mismatch_xam);
