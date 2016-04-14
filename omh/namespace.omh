@@ -64,6 +64,7 @@ $rref fixed_solution$$
 $rref sparse_hes_info$$
 $rref sparse_jac_info$$
 $rref triple2eigen$$
+$rref undetermined$$
 $tend
 
 $end

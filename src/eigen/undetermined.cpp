@@ -15,16 +15,16 @@ $spell
 	Eigen
 	CppAD
 	cols
+	nr
+	nc
 $$
 
 $section
 Express An Undetermined Linear System As Dependent and Independent Variables
 $$
 
-$head Under Construction$$
-
 $head Syntax$$
-$codei%rank% = undetermined(%A%, %b%, %delta%, %D%, %I%, %C%, %d%)%$$
+$icode%rank% = undetermined(%A%, %b%, %delta%, %D%, %I%, %C%, %e%)%$$
 
 $head Purpose$$
 We are give a matrix $latex A \in \B{R}^{m \times n}$$
@@ -38,7 +38,7 @@ A matrix $latex C \in \B{R}^{m \times (n - m)}$$
 and a vector $latex e \in \B{R}^m$$,
 such that the constraint is equivalent to
 $latex \[
-	x_D + C x_I = d
+	x_D + C x_I = e
 \] $$
 where $latex D$$ is a subset, of size $latex m$$,
 of the column indices and $latex I$$ is the complementary subset of the
@@ -55,12 +55,20 @@ $codei%
 It is assumed that the rank of
 $latex A$$ is equal to $icode%A%.rows()%$$.
 
+$subhead nr$$
+We use the notation $icode%nr% = %A%.rows()%$$; i.e.,
+the number of rows in $icode A$$.
+
+$subhead nc$$
+We use the notation $icode%nc% = %A%.cols()%$$; i.e.,
+the number of columns in $icode A$$.
+
 $head b$$
 This argument has prototype
 $codei%
 	const Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>& %b%
 %$$
-where $icode%b%.rows() = %A%.rows()%$$.
+where $icode%b%.rows() = %nr%$$ and $icode%b%.cols() == 1%$$.
 
 $head delta$$
 This is the tolerance used for detecting a rank deficient matrix.
@@ -70,38 +78,36 @@ This algorithm uses the element with maximum absolute as a pivot for each
 Gaussian elimination step.
 If there is no element left with absolute value greater than
 $latex \delta |A|_\infty$$,
-this routine aborts with $icode%rank% !=  %A%.rows()%$$.
+this routine aborts with $icode%rank% !=  %nr%$$.
 
 $head D$$
 This argument has prototype
 $codei%
-	CppAD::vector<size_t>& %D%
+	Eigen::Matrix<size_t, Eigen::Dynamic, 1>& %D%
 %$$
-where $icode%D%.size() = %A%.rows()%$$.
+where $icode%D%.rows() = %nr%$$.
 The input value of its elements does not matter.
-If $icode%rank% == %A%.rows()%$$,
+If $icode%rank% == %nr%$$,
 upon return the vector $latex x_D$$ is
 $codei%
-	( %x%[%D%[0]] , %x%[%D%[1]] , %...% , %x%[%D%[%m%-1]] )^T
+	( %x%[%D%[0]] , %x%[%D%[1]] , %...% , %x%[%D%[%nr%-1]] )^T
 %$$
-where $icode%m% = %A%.rows()%$$ and $code ^T$$ denotes transpose.
 
 $head I$$
 This argument has prototype
 $codei%
-	CppAD::vector<size_t>& %I%
+	Eigen::Matrix<size_t, Eigen::Dynamic, 1>& %I%
 %$$
-where $icode%I%.size() = %A%.cols() - %A%.rows()%$$.
+where $icode%I%.rows() = %nc - %nr%$$.
 The input value of its elements does not matter.
-If $icode%rank% == %A%.rows()%$$,
+If $icode%rank% == %nr%$$,
 upon return the vector $latex x_I$$ is
 $codei%
-	( %x%[%I%[0]] , %x%[%I%[1]] , %...% , %x%[%I%[%p%-1]] )^T
+	( %x%[%I%[0]] , %x%[%I%[1]] , %...% , %x%[%I%[%nr%-%nc%-1]] )^T
 %$$
-where $icode%p% = %A%.cols() - %A%.rows()%$$.
 Furthermore the union of the sets corresponding
 to $latex D$$ and $latex I$$ is $latex \{ 0 , \ldots , n-1 \}$$
-where $icode%n% = %A%.cols()%$$.
+where $icode%n% = %nc%$$.
 It follows that the sets do not intersect and none of the elements are
 repeated in the vectors $icode D$$ or $icode I$$.
 
@@ -110,21 +116,21 @@ This argument has prototype
 $codei%
 	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>& %C%
 %$$
-and $icode%C%.rows() == %A%.rows()%$$,
-$icode%C%.cols() == %A%.cols() - %A%.rows()%$$.
+and $icode%C%.rows() == %nr%$$,
+$icode%C%.cols() == %nc - %nr%$$.
 The input value of its elements does not matter.
-If $icode%rank% == %A%.rows()%$$,
-upon return it is the matrix $latex C$$ in $latex x_D + C x_I = d$$.
+If $icode%rank% == %nr%$$,
+upon return it is the matrix $latex C$$ in $latex x_D + C x_I = e$$.
 
-$head d$$
+$head e$$
 This argument has prototype
 $codei%
-	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>& %d%
+	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>& %e%
 %$$
-and $icode%d%.rows() == %A%.rows()%$$.
+and $icode%e%.rows() == %nr%$$ and $icode%e%.cols() == 1%$$.
 The input value of its elements does not matter.
-If $icode%rank% == %A%.rows()%$$,
-upon return it is the vector $latex e$$ in $latex x_D + C x_I = d$$.
+If $icode%rank% == %nr%$$,
+upon return it is the vector $latex e$$ in $latex x_D + C x_I = e$$.
 
 $head rank$$
 The return value has prototype
@@ -142,14 +148,13 @@ $end
 # include <cmath>
 # include <iostream>
 # include <Eigen/Core>
-# include <cppad/utility/index_sort.hpp>
-# include <cppad/utility/vector.hpp>
 
 namespace {
 	using Eigen::Dynamic;
 	typedef Eigen::Matrix<double, Dynamic, Dynamic> double_matrix;
-	typedef CppAD::vector<bool>                     bool_vec;
-	typedef CppAD::vector<size_t>                   size_vec;
+	typedef Eigen::Matrix<double, Dynamic, 1>       double_vec;
+	typedef Eigen::Matrix<bool,   Dynamic, 1>       bool_vec;
+	typedef Eigen::Matrix<size_t, Dynamic, 1>       size_vec;
 	typedef std::pair<size_t, size_t>               size_pair;
 	//
 	size_pair max_abs(
@@ -195,28 +200,30 @@ namespace {
 	}
 }
 
-size_t undertermined(
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+
+size_t undetermined(
 	const double_matrix&          A     ,
-	const double_matrix&          b     ,
+	const double_vec&             b     ,
 	double                        delta ,
 	size_vec&                     D     ,
 	size_vec&                     I     ,
 	double_matrix&                C     ,
-	double_matrix&                d     )
+	double_vec&                   e     )
 {	size_t nr = A.rows();
 	size_t nc = A.cols();
 	assert(  nr < nc );
 	assert(  size_t( b.rows() ) == nr );
+	assert(  size_t( D.rows() ) == nr );
+	assert(  size_t( I.rows() ) == nc - nr );
 	assert(  size_t( C.rows() ) == nr );
-	assert(  size_t( d.rows() ) == nr );
-	assert(  size_t( b.cols() ) == 1  );
-	assert(  size_t( d.cols() ) == 1  );
+	assert(  size_t( e.rows() ) == nr );
 	assert(  size_t( C.cols() ) == nc - nr );
 	//
 	// E = [ A | b ]
 	double_matrix E(nr, nc + 1 );
-	E.block(0, 0, nr, nc) = A;
-	E.block(0, 0, nr, 1)  = b;
+	E.block(0, 0,  nr, nc) = A;
+	E.block(0, nc, nr, 1)  = b;
 	//
 	// which rows and colums have been used for pivots
 	bool_vec row_used(nr), col_used(nc);
@@ -273,8 +280,10 @@ size_t undertermined(
 		}
 	}
 	//
-	// d
-	d = E.col(nc);
+	// e
+	e = E.col(nc);
 	//
 	return nr;
 }
+
+} } // END_CPPAD_MIXED_NAMESPACE

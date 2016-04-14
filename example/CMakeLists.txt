@@ -40,6 +40,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	private/ran_obj_eval_xam.cpp
 	private/ran_obj_jac_xam.cpp
 	private/ran_objcon_hes_xam.cpp
+	private/undetermined_xam.cpp
 	private/update_factor_xam.cpp
 	user/abs_density_xam.cpp
 	user/data_mismatch_xam.cpp
