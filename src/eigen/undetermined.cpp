@@ -39,7 +39,7 @@ A matrix $latex C \in \B{R}^{m \times (n - m)}$$
 and a vector $latex e \in \B{R}^m$$,
 such that the constraint is equivalent to
 $latex \[
-	x_D + C x_I = e
+	x_D = C x_I + e
 \] $$
 where $latex D$$ is a subset, of size $latex m$$,
 of the column indices and $latex I$$ is the complementary subset of the
@@ -95,7 +95,7 @@ This argument has prototype
 $codei%
 	Eigen::Matrix<size_t, Eigen::Dynamic, 1>& %I%
 %$$
-where $icode%I%.rows() = %nc - %nr%$$.
+where $icode%I%.rows() = %nc% - %nr%$$.
 The input value of its elements does not matter.
 If $icode%rank% == %nr%$$,
 upon return the vector $latex x_I$$ is
@@ -103,8 +103,7 @@ $codei%
 	( %x%[%I%[0]] , %x%[%I%[1]] , %...% , %x%[%I%[%nr%-%nc%-1]] )^T
 %$$
 Furthermore the union of the sets corresponding
-to $latex D$$ and $latex I$$ is $latex \{ 0 , \ldots , n-1 \}$$
-where $icode%n% = %nc%$$.
+to $latex D$$ and $latex I$$ is $codei%{ 0 , %...% , %nc%-1 }%$$.
 It follows that the sets do not intersect and none of the elements are
 repeated in the vectors $icode D$$ or $icode I$$.
 
@@ -114,10 +113,10 @@ $codei%
 	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>& %C%
 %$$
 and $icode%C%.rows() == %nr%$$,
-$icode%C%.cols() == %nc - %nr%$$.
+$icode%C%.cols() == %nc% - %nr%$$.
 The input value of its elements does not matter.
 If $icode%rank% == %nr%$$,
-upon return it is the matrix $latex C$$ in $latex x_D + C x_I = e$$.
+upon return it is the matrix $latex C$$ in $latex x_D = C x_I + e$$.
 
 $head e$$
 This argument has prototype
@@ -127,7 +126,7 @@ $codei%
 and $icode%e%.rows() == %nr%$$ and $icode%e%.cols() == 1%$$.
 The input value of its elements does not matter.
 If $icode%rank% == %nr%$$,
-upon return it is the vector $latex e$$ in $latex x_D + C x_I = e$$.
+upon return it is the vector $latex e$$ in $latex x_D = C x_I + e$$.
 
 $head rank$$
 The return value has prototype
@@ -148,14 +147,14 @@ $end
 
 namespace {
 	using Eigen::Dynamic;
-	typedef Eigen::Matrix<double, Dynamic, Dynamic> double_matrix;
+	typedef Eigen::Matrix<double, Dynamic, Dynamic> double_mat;
 	typedef Eigen::Matrix<double, Dynamic, 1>       double_vec;
 	typedef Eigen::Matrix<bool,   Dynamic, 1>       bool_vec;
 	typedef Eigen::Matrix<size_t, Dynamic, 1>       size_vec;
 	typedef std::pair<size_t, size_t>               size_pair;
 	//
 	size_pair max_abs(
-		const double_matrix& E        ,
+		const double_mat&    E        ,
 		const bool_vec&      row_used ,
 		const bool_vec&      col_used )
 	{
@@ -180,7 +179,7 @@ namespace {
 		return ret;
 	}
 	//
-	void elementary(size_pair pivot, double_matrix& E)
+	void elementary(size_pair pivot, double_mat& E)
 	{	size_t nr = size_t( E.rows() );
 		size_t r  = pivot.first;
 		size_t c  = pivot.second;
@@ -200,12 +199,12 @@ namespace {
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 size_t undetermined(
-	const double_matrix&          A     ,
+	const double_mat&             A     ,
 	const double_vec&             b     ,
 	double                        tol   ,
 	size_vec&                     D     ,
 	size_vec&                     I     ,
-	double_matrix&                C     ,
+	double_mat&                   C     ,
 	double_vec&                   e     )
 {	size_t nr = A.rows();
 	size_t nc = A.cols();
@@ -218,7 +217,7 @@ size_t undetermined(
 	assert(  size_t( C.cols() ) == nc - nr );
 	//
 	// E = [ A | b ]
-	double_matrix E(nr, nc + 1 );
+	double_mat E(nr, nc + 1 );
 	E.block(0, 0,  nr, nc) = A;
 	E.block(0, nc, nr, 1)  = b;
 	//
@@ -272,7 +271,7 @@ size_t undetermined(
 	{	// skip columns that are used for pivot operations
 		if( ! col_used[j] )
 		{	I[k] = j;
-			C.col(k) = E.col(j);
+			C.col(k) = - E.col(j);
 			k++;
 		}
 	}

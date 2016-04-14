@@ -23,9 +23,8 @@ $$
 $section Simulating the Posterior Distribution for Fixed Effects$$
 
 $head Syntax$$
-$icode%correlation% = %mixed_object%.sample_fixed(
+$codei%mixed_object%.sample_fixed(
 	%sample%,
-	%non_zero%,
 	%information_info%,
 	%solution%,
 	%random_opt%
@@ -67,20 +66,10 @@ $codei%
 %$$
 is the $th j$$ component of the $th i$$ sample of the
 optimal fixed effects $latex \hat{\theta}$$.
-
-$head non_zero$$
-This argument has prototype
-$codei%
-	double  %non_zero%
-%$$
-and is a value between zero and one.
-It specifies the fraction of the elements in
-the posterior covariance that are included in the simulation.
-Diagonal elements are always included in the simulation, hence
-$codei%
-	%non_zero% >= 1.0 - %n_fixed% / (%n_fixed% * %n_fixed%)
-%$$
-has the same effects at $icode non_zero$$ equal to one.
+These samples are independent for different $latex i$$,
+and for fixed $latex i$$, they have the
+$cref/constrained covariance/sample_fixed/Theory/Constrained Covariance/$$
+$latex D$$.
 
 $head information_info$$
 The argument has prototype
@@ -117,17 +106,7 @@ $icode random_upper$$, and
 $icode random_in$$, are the same
 as in the call to $code optimize_fixed$$ that corresponds to $icode solution$$.
 
-$head correlation$$
-The return value has prototype
-$codei%
-	double %correlation%
-%$$
-This is the largest absolute correlation
-that is converted to zero before simulating the posterior samples.
-If $icode%non_zero% = 1.0%$$, no values are treated as zero
-and $icode%correlation% = 0.0%$$.
-
-$head Method$$
+$head Theory$$
 
 $subhead Notation$$
 Given two random vectors $latex u$$ and $latex v$$,
@@ -156,102 +135,80 @@ where $latex H$$ is the Hessian
 corresponding to $icode information_info$$; i.e.,
 the observed information matrix.
 
-$head Approximate Constraints$$
-Let $latex n$$ be the number of fixed constraints,
-$latex n$$ the number of active constraints,
-and the equations $latex e( \theta ) = b$$ the active constraints
-where $latex e : \B{R}^n \rightarrow \B{R}^m$$, $latex b \in \B{R}^m$$,
+$subhead Constraints Equations$$
+Let $latex n$$ be the number of fixed effects,
+$latex m$$ the number of active constraints,
+and the equations $latex e( \theta ) = b$$ the active constraints.
+Here $latex e : \B{R}^n \rightarrow \B{R}^m$$ and $latex b \in \B{R}^m$$
 and the inequality constraints have been converted to equalities at the
 active bounds (including the bounds on the fixed effects).
 Define the random variable the approximation for $latex e( \theta )$$ by
 $latex \[
-\hat{e} =
+\tilde{e} ( \theta ) =
 e( \hat{\theta} ) + e^{(1)} \left( \hat{\theta} \right)
-	\left( \tilde{\theta} - \hat{\theta} \right)
+	\left( \theta - \hat{\theta} \right)
 \] $$
 
-$head Constrained Covariance$$
+$subhead Constrained Covariance$$
 We approximate the distribution for
-$latex \tilde{\theta}$$ and $latex \hat{\theta}$$ as normal,
-hence $latex \hat{e}$$ is also normal.
-We further approximate the distribution for $latex \hat{\theta}$$,
-by the conditional distribution for $latex \tilde{\theta}$$ given
-$latex \hat{e}$$; i.e.,
+$latex \tilde{\theta}$$ normal,
+and the distribution for $latex \hat{\theta}$$
+as the conditional distribution of $latex \tilde{\theta}$$ given
+the value of $latex \tilde{e} ( \tilde{\theta} )$$; i.e.,
 $latex \[
 	\B{C} \left( \hat{\theta} \W{,} \hat{\theta} \right)
 	=
 	\B{C} \left( \tilde{\theta} \W{,} \tilde{\theta} \right)
 	-
-	\B{C} \left( \tilde{\theta} \W{,} \hat{e} \right)
-	\B{C} \left( \hat{e}  \W{,} \hat{e} \right)^{-1}
-	\B{C} \left( \hat{e}  \W{,} \tilde{\theta} \right)
+	\B{C} \left( \tilde{\theta} \W{,} \tilde{e} \right)
+	\B{C} \left( \tilde{e}  \W{,} \tilde{e} \right)^{-1}
+	\B{C} \left( \tilde{e}  \W{,} \tilde{\theta} \right)
 \] $$
 Using the notation
-$latex C = \B{C} \left( \hat{\theta} \W{,} \hat{\theta} \right)$$
-and
+$latex D = \B{C} \left( \hat{\theta} \W{,} \hat{\theta} \right)$$,
+$latex C = \B{C} \left( \tilde{\theta} \W{,} \tilde{\theta} \right)$$,
 $latex E = e^{(1)} \left( \hat{\theta} \right)$$,
-we define
+we have
 $latex \[
-	D
-	=
-	\B{C} \left( \hat{\theta} \W{,} \hat{\theta} \right)
-	=
-	C - C E^\R{T} \left( E C E^\R{T} \right)^{-1}  E C
-\] $$
-
-$head Sparse Constrained Covariance$$
-We use $latex D( \alpha )$$ for the matrix where the
-off diagonal elements of $latex D$$ corresponding to an absolute correlation
-less than $latex \alpha$$ are replaced by zero.
-To be specific,
-$latex \[
-D_{i,j} ( \alpha ) = \left\{ \begin{array}{ll}
-0 & \R{if} \; i \neq j \; \R{and} \; | D_{i,j} | / \sqrt{D_ii D_jj} \leq \alpha
-\\
-D_{i,j}       & \R{otherwise}
-\end{array} \right.
-\] $$
-We define $latex \bar{D} = D ( \alpha )$$ where $latex \alpha$$
-is smallest value, greater than or equal zero,
-such that the fraction of non-zero values in
-$latex \bar{D}$$ is greater than or equal $icode non_zero$$.
-The return value $cref/correlation/sample_fixed/correlation/$$ is
-the maximum value of $latex | D_{i,j} | / \sqrt{ D_ii D_jj }$$
-that is converted to zero in the definition of $latex \bar{D}$$.
-
-$head Simulation$$
-We use $latex \sqrt{\bar{D}}$$ to denote a Cholesky factor of
-$latex \bar{D}$$; i.e.,
-$latex \bar{D} = \sqrt{\bar{D}} \sqrt{\bar{D}}^\R{T}$$.
-Further suppose that for $icode%i% = 0 , %...%, %n_sample%-1%$$,
-$latex w^i \in \B{R}^n$$ is simulated as independent normal random vectors
-with identity covariance matrix.
-The $th i$$ the samples for the fixed effects estimate $latex \hat{\theta}$$
-$latex \[
-	\hat{\theta}_i + \sqrt{\bar{D}} w^i
+	D = C - C E^\R{T} \left( E C E^\R{T} \right)^{-1}  E C
 \] $$
 
 $end
 ------------------------------------------------------------------------------
 */
+# include <Eigen/Cholesky>
 # include <cppad/mixed/cppad_mixed.hpp>
-# include <cppad/mixed/triple2eigen.hpp>
+# include <cppad/mixed/undetermined.hpp>
 # include <cppad/mixed/manage_gsl_rng.hpp>
 # include <gsl/gsl_randist.h>
 
-double cppad_mixed::sample_fixed(
+# define DEBUG_PRINT 0
+
+namespace {
+	using Eigen::Dynamic;
+	using CppAD::mixed::get_gsl_rng;
+	typedef Eigen::Matrix<double, Dynamic, Dynamic>     double_mat;
+	typedef Eigen::Matrix<double, Dynamic, 1>           double_vec;
+	typedef Eigen::Matrix<size_t, Dynamic, 1>           size_vec;
+	typedef Eigen::LLT<double_mat, Eigen::Lower>        double_cholesky;
+	//
+# if DEBUG_PRINT
+	void print(const char* name , const double_mat& mat)
+	{	std::cout << "\n" << name << " =\n" << mat << "\n"; }
+	void print(const char* name , double_vec& vec)
+	{	std::cout << "\n" << name << "^T = " << vec.transpose() << "\n"; }
+	void print(const char* name , size_vec& vec)
+	{	std::cout << "\n" << name << "^T = " << vec.transpose() << "\n"; }
+# endif
+}
+
+
+void cppad_mixed::sample_fixed(
 	d_vector&                            sample               ,
-	double                               non_zero             ,
 	const CppAD::mixed::sparse_mat_info& information_info     ,
 	const CppAD::mixed::fixed_solution&  solution             ,
 	const d_vector&                      random_opt           )
-{	using Eigen::Dynamic;
-	using CppAD::mixed::get_gsl_rng;
-	typedef Eigen::Matrix<double, Dynamic, Dynamic>           eigen_matrix;
-	typedef Eigen::SparseMatrix<double, Eigen::ColMajor>      eigen_sparse;
-	typedef Eigen::SimplicialLLT<eigen_sparse, Eigen::Lower>  eigen_cholesky;
-	typedef eigen_sparse::InnerIterator                       sparse_itr;
-	//
+{
 	// number of fixed constraints
 	size_t n_fix_con = 0;
 	if( fix_con_fun_.size_var() != 0 )
@@ -260,8 +217,9 @@ double cppad_mixed::sample_fixed(
 	// sample
 	assert( sample.size() > 0 );
 	assert( sample.size() % n_fixed_ == 0 );
-	// non_zero
-	assert( 0.0 <= non_zero && non_zero <= 1.0 );
+	// information_info
+	assert( information_info.row.size() == information_info.col.size() );
+	assert( information_info.row.size() == information_info.val.size() );
 	// solution
 	assert( solution.fixed_opt.size() == n_fixed_ );
 	assert( solution.fixed_lag.size() == n_fixed_ );
@@ -279,169 +237,187 @@ double cppad_mixed::sample_fixed(
 	// update the cholesky factor for this fixed and random effect
 	update_factor(fixed_opt, random_opt);
 	// -----------------------------------------------------------------------
-	// full covariance (inverse of the observed information matrix)
-	eigen_sparse total_hes = CppAD::mixed::triple2eigen(
-		n_fixed_              ,
-		n_fixed_              ,
-		information_info.row  ,
-		information_info.col  ,
-		information_info.val
-	);
+	// Create con_mat and con_rhs
 	//
-	// identity matrix
-	eigen_sparse eye(n_fixed_, n_fixed_);
-	for(size_t i = 0; i < n_fixed_; i++)
-		eye.insert(i, i) = 1.0;
+	// number of active bound constraints
+	size_t n_bnd_active = 0;
+	for(size_t j = 0; j < n_fixed_; j++)
+	{	if( solution.fixed_lag[j] != 0.0 )
+			n_bnd_active++;
+	}
+	// number fixed constraints active
+	size_t n_fix_active = 0;
+	size_vec fix_active_index(n_fix_con);
+	for(size_t i = 0; i < n_fix_con; i++)
+	{	fix_active_index[i] = n_fixed_;
+		if( solution.fix_con_lag[i] != 0.0 )
+			fix_active_index[i] = n_fix_active++;
+	}
+	// number of random constraints active
+	size_t n_ran_active = n_ran_con_;
 	//
-	// Inverse of total_hes is our approximate unconstrained covariance
-	eigen_cholesky cholesky;
-	cholesky.compute(total_hes);
-	eigen_sparse full_cov = cholesky.solve(eye);
-	// -----------------------------------------------------------------------
-	// Subtract fixed and random constraints from the full covariance
+	// matrix with all the active constraints
+	size_t n_con_active = n_bnd_active  + n_fix_active + n_ran_active;
+	double_mat con_mat = double_mat::Zero(n_con_active, n_fixed_);
+	double_vec    con_rhs(n_con_active);
+	size_t con_row = 0;
 	//
-	// jacobian of the fixed constraints
-	CppAD::mixed::sparse_mat_info fix_con_info;
+	// put the bounds in con_mat and con_rhs
+	for(size_t j = 0; j < n_fixed_; j++) if( solution.fixed_lag[j] != 0.0 )
+	{	con_mat(con_row, j) = 1.0;
+		con_rhs(con_row)    = fixed_opt[j];
+		++con_row;
+	}
+	// put fixed constraints in con_mat and con_rhs
 	if( n_fix_con > 0 )
-	{	fix_con_jac(
+	{	assert( con_row == n_bnd_active );
+		//
+		// fixed constraint function value
+		CppAD::vector<double> rhs = fix_con_eval(fixed_opt);
+		for(size_t r = 0; r < n_fix_con; r++)
+		{	if( solution.fix_con_lag[r] != 0.0 )
+			{	assert( fix_active_index[r] != n_fixed_ );
+				size_t i = fix_active_index[r];
+				con_rhs(con_row + i)  = rhs[r];
+			}
+		}
+		//
+		// jacobian of the fixed constraints
+		CppAD::mixed::sparse_mat_info fix_con_info;
+		fix_con_jac(
 			fixed_opt, fix_con_info.row, fix_con_info.col, fix_con_info.val
 		);
+		size_t K = fix_con_info.row.size();
+		for(size_t k = 0; k < K; k++)
+		{	size_t r = fix_con_info.row[k];
+			if( solution.fix_con_lag[r] != 0.0 )
+			{	assert( fix_active_index[r] != n_fixed_ );
+				size_t i = fix_active_index[r];
+				size_t c  = fix_con_info.col[k];
+				double v  = fix_con_info.val[k];
+				con_mat(con_row + i, c) = v;
+			}
+		}
+		con_row += n_fix_active;
 	}
-	// jacobian of the random constraints
+	// put random constraints in con_mat and con_rhs
 	CppAD::mixed::sparse_mat_info ran_con_info;
 	if( n_ran_con_ > 0 )
-	{	ran_con_jac(fixed_opt, random_opt, ran_con_info);
-	}
-	// sparsity triple for both fixed and random constraints
-	CppAD::mixed::sparse_mat_info con_info;
-	for(size_t k = 0; k < fix_con_info.row.size(); k++)
-	{	con_info.row.push_back( fix_con_info.row[k] );
-		con_info.col.push_back( fix_con_info.col[k] );
-		con_info.val.push_back( fix_con_info.val[k] );
-	}
-	for(size_t k = 0; k < ran_con_info.row.size(); k++)
-	{	con_info.row.push_back( ran_con_info.row[k] );
-		con_info.col.push_back( ran_con_info.col[k] );
-		con_info.val.push_back( ran_con_info.val[k] );
-	}
-	//
-	if( con_info.row.size() > 0 )
-	{	eigen_sparse E = CppAD::mixed::triple2eigen(
-			n_fixed_      ,
-			n_fixed_      ,
-			con_info.row  ,
-			con_info.col  ,
-			con_info.val
-		);
-		eigen_sparse EC = E * full_cov;
-		cholesky.compute( EC * E.transpose() );
-		eye.resize(n_fix_con, n_fix_con);
-		for(size_t i = 0; i < n_fix_con; i++)
-			eye.insert(i, i) = 1.0;
-		eigen_sparse ECE_inv = cholesky.solve(eye);
-		full_cov -= EC.transpose() * ECE_inv * EC;
+	{	assert( con_row == n_bnd_active + n_fix_active );
+		//
+		// random constrain value is zero
+		for(size_t i = 0; i < n_ran_con_; i++)
+			con_rhs(con_row + i) = 0.0;
+		//
+		// jacobian of the random constraints
+		ran_con_jac(fixed_opt, random_opt, ran_con_info);
+		//
+		size_t K = ran_con_info.row.size();
+		for(size_t k = 0; k < K; k++)
+		{	size_t r = ran_con_info.row[k];
+			size_t c  = ran_con_info.col[k];
+			double v  = ran_con_info.val[k];
+			con_mat(con_row + r, c) = v;
+		}
 	}
 	// -----------------------------------------------------------------------
-	// full2reduced, reduced2full, n_reduced
-	CppAD::vector<size_t> full2reduced(n_fixed_), reduced2full(0);
-	for(size_t i = 0; i < n_fixed_; i++)
-	{	if( solution.fixed_lag[i] != 0.0 )
-		{	// this variable is not in the reduced matrix
-			full2reduced[i] = n_fixed_;
-		}
-		else
-		{	// mapping from full index to reduced index
-			full2reduced[i] = reduced2full.size();
-			// mapping from reduced index to full index
-			reduced2full.push_back(i);
-		}
-	}
-	size_t n_reduced = reduced2full.size();
+	// split the variables into Dependent and Independent set
 	// ----------------------------------------------------------------------
-	// determine which components of the reduced covaraince to zero out
-	//
-	// only really need lower triangle, but use full matrix to simplify code
-	size_t n_fixed_sq = n_fixed_ * n_fixed_;
-	CppAD::vector<double> diagonal(n_fixed_), ratio(0), row(0), col(0);
-	for(size_t j = 0; j < n_fixed_; j++)
-	{	diagonal[j]               = 0.0;
-		for(sparse_itr itr(full_cov, j); itr; ++itr)
-		{	assert( size_t( itr.col() ) == j );
-			if( itr.row() == itr.col() )
-				diagonal[j] = itr.value();
-		}
-		assert( diagonal[j] > 0.0 );
-	}
-	double eps = 100. * std::numeric_limits<double>::epsilon();
-	for(size_t j = 0; j < n_fixed_; j++)
-	{	for(sparse_itr itr(full_cov, j); itr; ++itr)
-		{	assert( size_t( itr.col() ) == j );
-			size_t r = itr.row();
-			size_t c = itr.col();
-			if( r == c )
-			{	// diagonal eleemnts all have ratio 1.0
-				ratio.push_back( 1.0 );
-				row.push_back(r);
-				col.push_back(c);
-			}
-			// off diagonal elements are zero for variables at bounds
-			else if( full2reduced[j] != n_fixed_ )
-			{	double scale = std::sqrt( diagonal[r] * diagonal[c] );
-				ratio.push_back( std::min( itr.value() / scale, 1.0 - eps ) );
-				row.push_back(r);
-				col.push_back(c);
-			}
+	size_t         n_ind = n_fixed_ - n_con_active;
+	double         tol = 1e-8;
+	size_vec       dependent(n_con_active);
+	size_vec       independent(n_fixed_ - n_con_active);
+	double_mat  ind2dep_mat(n_con_active, n_ind);
+	double_vec     ind2dep_rhs(n_con_active);
+	if( n_con_active > 0 )
+	{	size_t rank = CppAD::mixed::undetermined(
+			con_mat,
+			con_rhs,
+			tol,
+			dependent,
+			independent,
+			ind2dep_mat,
+			ind2dep_rhs
+		);
+		if( rank < n_con_active )
+		{	const char* error_message =
+			"sample_fixed: constraint matrix does not have full rank";
+			fatal_error(error_message);
 		}
 	}
-	CppAD::vector<size_t> ind(ratio.size());
-	CppAD::index_sort(ratio, ind);
-	//
-	double correlation = 0.0;
-	size_t n_zero      = (1.0 - non_zero) * n_fixed_sq;
-	n_zero             = std::min(n_zero, n_fixed_sq - n_fixed_);
-	if( n_fixed_sq - ratio.size() < n_zero )
-	{	size_t n_change = n_zero - (n_fixed_sq - ratio.size());
-		for(size_t k = 0; k < n_change; k++)
-			full_cov.coeffRef( row[ind[k]], col[ind[k]] ) = 0.0;
-		// maximum correlation that was changed to zero
-		correlation = ratio[ ind[ n_change - 1 ] ];
+	else
+	{	assert( n_ind == n_fixed_ );
+		for(size_t j = 0; j < n_fixed_; j++)
+			independent[j] = j;
 	}
+	// ----------------------------------------------------------------------
+	// Conpute covariance for independent variables
 	// -----------------------------------------------------------------------
-	// Bound constrained variables get removed form the covariance
-	//
-	// reduced_cov
-	eigen_sparse reduced_cov(n_reduced, n_reduced);
-	for(size_t r_col = 0; r_col < n_reduced; r_col++)
-	{	size_t f_col = reduced2full[r_col];
-		for(sparse_itr itr(full_cov, f_col); itr; ++itr)
-		{	size_t f_row = itr.row();
-			size_t r_row = full2reduced[f_row];
-			if( r_row != n_fixed_ )
-			{	assert( r_row < n_reduced );
-				reduced_cov.insert(r_row, r_col) = itr.value();
-			}
-		}
+	// Hessian for full set of variables
+	double_mat full_hes = double_mat::Zero(n_fixed_, n_fixed_);
+	for(size_t k = 0; k < information_info.row.size(); k++)
+	{	// note only lower triangle is stored in information_info
+		size_t r = information_info.row[k];
+		size_t c = information_info.col[k];
+		double v = information_info.val[k];
+		full_hes(r, c) = v;
+		full_hes(c, r) = v;
 	}
+	// derivative of mapping from indepedent variables to full variable set
+	double_mat ind2full_mat =
+		double_mat::Zero(n_fixed_, n_fixed_ - n_con_active);
+	double_vec ind2full_rhs = double_vec::Zero(n_fixed_);
+	//
+	// independent variable part of the mapping
+	for(size_t j = 0; j < n_ind; j++)
+	{	size_t i       = independent[j];
+		ind2full_mat(i, j) = 1.0;
+	}
+	//
+	// dependent variable part of mapping
+	for(size_t k = 0; k < n_con_active; k++)
+	{	size_t i        = dependent[k];
+		ind2full_mat.row(i) = ind2dep_mat.row(k);
+		ind2full_rhs[i]     = ind2dep_rhs[k];
+	}
+	// Hessian  for independent variable
+	double_mat ind_hes = ind2full_mat.transpose() * full_hes * ind2full_mat;
+	//
+	// identity matrix
+	double_mat eye = double_mat::Identity(n_ind, n_ind);
+	//
+	// Inverse of ind_hes is our approximation for its covariance
+	double_cholesky cholesky;
+	cholesky.compute(ind_hes);
+	double_mat ind_cov = cholesky.solve(eye);
 	// -----------------------------------------------------------------------
 	// Simulate the samples
+	// -----------------------------------------------------------------------
 	//
-	// Cholesky factor for reduced covariance
-	cholesky.compute(reduced_cov);
+	// Cholesky factor for independent covariance
+	cholesky.compute(ind_cov);
 	//
 	for(size_t i_sample = 0; i_sample < n_sample; i_sample++)
-	{	eigen_matrix w(n_reduced, 1);
-		// simulate a normal with mean zero and variance on
-		for(size_t j = 0; j < n_reduced; j++)
+	{	double_mat w(n_ind, 1);
+		// simulate a normal with mean zero and variance one
+		for(size_t j = 0; j < n_ind; j++)
 			w(j, 0) = gsl_ran_gaussian(get_gsl_rng(), 1.0);
 		// multily by Cholesky factor
-		eigen_matrix s = cholesky.matrixL() * w;
+		double_vec ind = cholesky.matrixL() * w;
+		//
+		// map from independent variables to full set of variables
+		double_vec full = ind2full_mat * ind + ind2full_rhs;
+		//
 		//
 		// store corresponding sample
 		for(size_t j = 0; j < n_fixed_; j++)
-			sample[ i_sample * n_fixed_ + j] = fixed_opt[j];
-		for(size_t j = 0; j < n_reduced; j++)
-			sample[ i_sample * n_fixed_ + reduced2full[j] ] += s(j, 0);
+		{	sample[ i_sample * n_fixed_ + j] = fixed_opt[j];
+			// full[j] should be near zero when bound is active
+			// but skip its addition to avoid roundoff error.
+			if( solution.fixed_lag[j] == 0.0 )
+				sample[ i_sample * n_fixed_ + j] += full[j];
+		}
 	}
 	// -----------------------------------------------------------------------
-	return correlation;
+	return;
 }

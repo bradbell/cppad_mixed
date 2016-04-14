@@ -257,9 +257,8 @@ $srccode%cpp% */
 $head sample_fixed$$
 Compute the observed information matrix; see  $cref sample_fixed$$.
 $srccode%cpp% */
-	double sample_fixed(
+	void sample_fixed(
 		d_vector&                            sample               ,
-		double                               non_zero             ,
 		const CppAD::mixed::sparse_mat_info& information_info     ,
 		const CppAD::mixed::fixed_solution&  solution             ,
 		const d_vector&                      random_opt

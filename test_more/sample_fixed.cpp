@@ -222,16 +222,12 @@ bool sample_fixed(void)
 	// sample from the posterior for fixed effects
 	size_t n_sample = 10000;
 	CppAD::vector<double> sample( n_sample * n_fixed );
-	double non_zero = 1.0;
-	double correlation = mixed_object.sample_fixed(
+	mixed_object.sample_fixed(
 		sample,
-		non_zero,
 		information_info,
 		solution,
 		random_opt
 	);
-	// check no covariance change to zero
-	ok &= correlation == 0.0;
 	//
 	typedef Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > matrix;
 	//

@@ -38,14 +38,14 @@ bool undetermined_xam(void)
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 	//
 	using Eigen::Dynamic;
-	typedef Eigen::Matrix<double, Dynamic, Dynamic> double_matrix;
+	typedef Eigen::Matrix<double, Dynamic, Dynamic> double_mat;
 	typedef Eigen::Matrix<double, Dynamic, 1>       double_vec;
 	typedef Eigen::Matrix<size_t, Dynamic, 1>       size_vec;
 	//
 	// create matrix equation A * x = b
 	size_t nr    = 3;
 	size_t nc    = 5;
-	double_matrix A(nr, nc);
+	double_mat    A(nr, nc);
 	double_vec    b(nr);
 	for(size_t i = 0; i < nr; i++)
 	{	for(size_t j = 0; j < nc; j++)
@@ -61,7 +61,7 @@ bool undetermined_xam(void)
 	// Split dependent and independent variables
 	double tol = 1e-7;
 	size_vec      D(nr), I(nc - nr);
-	double_matrix C(nr, nc - nr);
+	double_mat    C(nr, nc - nr);
 	double_vec    e(nr);
 	size_t rank = CppAD::mixed::undetermined(A, b, tol, D, I, C, e);
 	ok         &= rank == nr;
@@ -72,7 +72,7 @@ bool undetermined_xam(void)
 		xI[j] = double(j + 1);
 	//
 	// compute the corresponding value for the dependent variables
-	double_vec xD = e - C * xI;
+	double_vec xD = C * xI + e;
 	//
 	// from the correponding x vector
 	double_vec x(nc);
