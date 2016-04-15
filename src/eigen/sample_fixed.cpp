@@ -176,6 +176,8 @@ $latex \[
 $end
 ------------------------------------------------------------------------------
 */
+# include <Eigen/Core>
+# include <Eigen/LU>
 # include <Eigen/Cholesky>
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/undetermined.hpp>
@@ -190,7 +192,8 @@ namespace {
 	typedef Eigen::Matrix<double, Dynamic, Dynamic>     double_mat;
 	typedef Eigen::Matrix<double, Dynamic, 1>           double_vec;
 	typedef Eigen::Matrix<size_t, Dynamic, 1>           size_vec;
-	typedef Eigen::LLT<double_mat, Eigen::Lower>        double_cholesky;
+	typedef Eigen::LDLT<double_mat, Eigen::Lower>       double_cholesky;
+	typedef Eigen::PermutationMatrix<Dynamic, Dynamic, int>  permutation_mat;
 	//
 # if DEBUG_PRINT
 	void print(const char* name , const double_mat& mat)
@@ -321,102 +324,58 @@ void cppad_mixed::sample_fixed(
 		}
 	}
 	// -----------------------------------------------------------------------
-	// split the variables into Dependent and Independent set
+	// compute conditional covariance
 	// ----------------------------------------------------------------------
-	size_t         n_ind = n_fixed_ - n_con_active;
-	double         tol = 1e-8;
-	size_vec       dependent(n_con_active);
-	size_vec       independent(n_fixed_ - n_con_active);
-	double_mat  ind2dep_mat(n_con_active, n_ind);
-	double_vec     ind2dep_rhs(n_con_active);
-	if( n_con_active > 0 )
-	{	size_t rank = CppAD::mixed::undetermined(
-			con_mat,
-			con_rhs,
-			tol,
-			dependent,
-			independent,
-			ind2dep_mat,
-			ind2dep_rhs
-		);
-		if( rank < n_con_active )
-		{	const char* error_message =
-			"sample_fixed: constraint matrix does not have full rank";
-			fatal_error(error_message);
-		}
-	}
-	else
-	{	assert( n_ind == n_fixed_ );
-		for(size_t j = 0; j < n_fixed_; j++)
-			independent[j] = j;
-	}
-	// ----------------------------------------------------------------------
-	// Conpute covariance for independent variables
-	// -----------------------------------------------------------------------
-	// Hessian for full set of variables
-	double_mat full_hes = double_mat::Zero(n_fixed_, n_fixed_);
+	//
+	// information matrix
+	double_mat info_mat = double_mat::Zero(n_fixed_, n_fixed_);
 	for(size_t k = 0; k < information_info.row.size(); k++)
 	{	// note only lower triangle is stored in information_info
 		size_t r = information_info.row[k];
 		size_t c = information_info.col[k];
 		double v = information_info.val[k];
-		full_hes(r, c) = v;
-		full_hes(c, r) = v;
-	}
-	// derivative of mapping from indepedent variables to full variable set
-	double_mat ind2full_mat =
-		double_mat::Zero(n_fixed_, n_fixed_ - n_con_active);
-	double_vec ind2full_rhs = double_vec::Zero(n_fixed_);
-	//
-	// independent variable part of the mapping
-	for(size_t j = 0; j < n_ind; j++)
-	{	size_t i       = independent[j];
-		ind2full_mat(i, j) = 1.0;
+		info_mat(r, c) = v;
+		info_mat(c, r) = v;
 	}
 	//
-	// dependent variable part of mapping
-	for(size_t k = 0; k < n_con_active; k++)
-	{	size_t i        = dependent[k];
-		ind2full_mat.row(i) = ind2dep_mat.row(k);
-		ind2full_rhs[i]     = ind2dep_rhs[k];
-	}
-	// Hessian  for independent variable
-	double_mat ind_hes = ind2full_mat.transpose() * full_hes * ind2full_mat;
+	// covariance matrix with out constraints
+	double_mat C = double_mat( info_mat.inverse() );
 	//
-	// identity matrix
-	double_mat eye = double_mat::Identity(n_ind, n_ind);
+	// conditional covariance
+	double_mat& E(con_mat);
+	double_mat  EC    = E * C;
+	double_mat  ECET  = EC * E.transpose();
+	double_mat  D     = C - EC.transpose() * ECET.inverse() * EC;
 	//
-	// Inverse of ind_hes is our approximation for its covariance
+	// LDLT factorizaton of D
 	double_cholesky cholesky;
-	cholesky.compute(ind_hes);
-	double_mat ind_cov = cholesky.solve(eye);
+	cholesky.compute(D);
+	//
+	// diagonal elements of LDLT factorization
+	double_vec diag      = cholesky.vectorD();
+	double_vec diag_root(n_fixed_);
+	for(size_t j = 0; j < n_fixed_; j++)
+	{	if( diag[j] > 0.0 )
+			diag_root[j] = std::sqrt( diag[j] );
+		else
+			diag_root[j] = 0.0;
+	}
+	double_mat L      = cholesky.matrixL();
+	permutation_mat P = permutation_mat( cholesky.transpositionsP() );
 	// -----------------------------------------------------------------------
 	// Simulate the samples
 	// -----------------------------------------------------------------------
-	//
-	// Cholesky factor for independent covariance
-	cholesky.compute(ind_cov);
-	//
 	for(size_t i_sample = 0; i_sample < n_sample; i_sample++)
-	{	double_mat w(n_ind, 1);
+	{	double_vec w(n_fixed_);
 		// simulate a normal with mean zero and variance one
-		for(size_t j = 0; j < n_ind; j++)
-			w(j, 0) = gsl_ran_gaussian(get_gsl_rng(), 1.0);
+		for(size_t j = 0; j < n_fixed_; j++)
+			w[j] = diag_root[j] * gsl_ran_gaussian(get_gsl_rng(), 1.0);
 		// multily by Cholesky factor
-		double_vec ind = cholesky.matrixL() * w;
-		//
-		// map from independent variables to full set of variables
-		double_vec full = ind2full_mat * ind + ind2full_rhs;
-		//
+		double_vec s = P.transpose() * L * w;
 		//
 		// store corresponding sample
 		for(size_t j = 0; j < n_fixed_; j++)
-		{	sample[ i_sample * n_fixed_ + j] = fixed_opt[j];
-			// full[j] should be near zero when bound is active
-			// but skip its addition to avoid roundoff error.
-			if( solution.fixed_lag[j] == 0.0 )
-				sample[ i_sample * n_fixed_ + j] += full[j];
-		}
+			sample[ i_sample * n_fixed_ + j] = fixed_opt[j] + s[j];
 	}
 	// -----------------------------------------------------------------------
 	return;

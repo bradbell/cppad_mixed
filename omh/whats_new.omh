@@ -40,6 +40,10 @@ $cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$
 $latex f_uu ( \theta , u)$$ is positive definite.
 $lend
 
+$head 04-15$$
+Fix $cref sample_fixed$$ so that it now works properly
+when some of the components of $cref fix_constraint$$ are active.
+
 $head 04-09$$
 Improve documentation of
 $cref/fixed_options/optimize_fixed/fixed_options/$$

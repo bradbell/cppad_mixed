@@ -163,25 +163,27 @@ CppAD::mixed::sparse_mat_info cppad_mixed::information_mat(
 	);
 	// -----------------------------------------------------------------------
 	// Lower triangle of Hessian of the fixed likelihood
+	eigen_sparse fix_hes(n_fixed_, n_fixed_);
 	size_t n_fix_like = 0;
 	if( fix_like_fun_.size_var() != 0 )
-		n_fix_like = fix_like_fun_.Range();
-	d_vector w_fix(n_fix_like);
-	w_fix[0] = 1.0;
-	for(size_t j = 1; j < n_fix_like; j++)
-		w_fix[0] = 0.0;
-	//
-	CppAD::mixed::sparse_mat_info fix_info;
-	fix_like_hes(
-			fixed_opt, w_fix, fix_info.row, fix_info.col, fix_info.val
-	);
-	eigen_sparse fix_hes = CppAD::mixed::triple2eigen(
-		n_fixed_      ,
-		n_fixed_      ,
-		fix_info.row  ,
-		fix_info.col  ,
-		fix_info.val
-	);
+	{	n_fix_like = fix_like_fun_.Range();
+		d_vector w_fix(n_fix_like);
+		w_fix[0] = 1.0;
+		for(size_t j = 1; j < n_fix_like; j++)
+			w_fix[0] = 0.0;
+		//
+		CppAD::mixed::sparse_mat_info fix_info;
+		fix_like_hes(
+				fixed_opt, w_fix, fix_info.row, fix_info.col, fix_info.val
+		);
+		fix_hes = CppAD::mixed::triple2eigen(
+			n_fixed_      ,
+			n_fixed_      ,
+			fix_info.row  ,
+			fix_info.col  ,
+			fix_info.val
+		);
+	}
 	// -----------------------------------------------------------------------
 	// Hessian of total objective (observed information matrix)
 	eigen_sparse total_hes = ran_hes + fix_hes;

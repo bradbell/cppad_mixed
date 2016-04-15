@@ -1685,17 +1685,10 @@ void ipopt_fixed::finalize_solution(
 	//
 	// solution_.fixed_lag (see below)
 	//
-	// solution_.fix_con_lag
-	assert( solution_.fix_con_lag.size() == 0 );
-	solution_.fix_con_lag.resize(n_fix_con_);
-	size_t offset = 2 * fix_likelihood_nabs_;
-	for(size_t j = 0; j < n_fix_con_; j++)
-		solution_.fix_con_lag[j] = lambda[ offset + j];
-	//
 	// solution_.ran_con_lag
 	assert( solution_.ran_con_lag.size() == 0 );
 	solution_.ran_con_lag.resize(n_ran_con_);
-	offset = 2 * fix_likelihood_nabs_ + n_fix_con_;
+	size_t offset = 2 * fix_likelihood_nabs_ + n_fix_con_;
 	for(size_t j = 0; j < n_ran_con_; j++)
 		solution_.ran_con_lag[j] = lambda[ offset + j];
 	//
@@ -1737,12 +1730,32 @@ void ipopt_fixed::finalize_solution(
 	c_vec_tmp_ = mixed_object_.fix_con_eval(fixed_opt);
 	assert( c_vec_tmp_.size() == n_fix_con_ );
 
-	// check explicit constraints
+	// check explicit constraints and  set solution_.fix_con_lag
+	assert( solution_.fix_con_lag.size() == 0 );
+	solution_.fix_con_lag.resize(n_fix_con_);
+	offset     = 2 * fix_likelihood_nabs_;
+	double inf = std::numeric_limits<double>::infinity();
 	for(size_t j = 0; j < n_fix_con_; j++)
 	{	ok &= check_in_limits(
 			fix_constraint_lower_[j], c_vec_tmp_[j], fix_constraint_upper_[j],
 			2.0 * tol
 		);
+		double lam_j  = lambda[offset + j];
+		double scale = 0.0;;
+		if( fix_constraint_lower_[j] != -inf )
+			scale = std::fabs( fix_constraint_lower_[j] );
+		if( fix_constraint_upper_[j] != inf )
+			scale = std::max(scale, std::fabs( fix_constraint_upper_[j] ) );
+		if( scale == 0.0 )
+		{	// both limits are infinity
+			lam_j = 0.0;
+		}
+		if( c_vec_tmp_[j] - fix_constraint_lower_[j] < tol * scale )
+			lam_j = std::min(lam_j, 0.0);
+		if( fix_constraint_upper_[j] - c_vec_tmp_[j] < tol * scale )
+			lam_j = std::max(lam_j, 0.0);
+		//
+		solution_.fix_con_lag[j] = lam_j;
 	}
 	// Evaluate gradient of f w.r.t x
 	CppAD::vector<Number> grad_f(n);

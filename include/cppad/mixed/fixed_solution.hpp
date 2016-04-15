@@ -66,6 +66,18 @@ is greater than zero (less than zero), it is
 the Lagrange multiplier for the upper (lower) bound
 for the $th i$$ component of the fixed constraint function.
 
+$head Warning$$
+The size of the fixed constraints upper and lower limits
+$cref/fix_constraint_upper/optimize_fixed/fix_constraint_upper/$$ and
+$cref/fix_constraint_lower/optimize_fixed/fix_constraint_lower/$$ are
+used to determine the scale for the values of the fixed constraint function.
+If for the $th i$$ component function,
+one of the limits is infinite and the other is zero,
+this scale cannot be determined and the values of
+$icode%solution%.fix_con_lag[%i%]%$$ may not properly indicate
+if the constraint is active.
+
+
 $head ran_con_lag$$
 This field has prototype
 $codei%
