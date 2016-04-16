@@ -31,9 +31,14 @@ $childtable%omh/whats_new_15.omh
 %$$
 
 $head 04-16$$
+$list number$$
 The routine $cref ipopt_fixed_check_derivative$$ now checks
 $cref ipopt_fixed_eval_jac_g$$ in addition to
 $cref ipopt_fixed_eval_grad_f$$.
+$lnext
+Fix a bug in the computation of the derivative of the random constraints
+$cref ran_con_jac$$.
+$lend
 
 $head 04-10$$
 $list number$$

@@ -167,12 +167,13 @@ void cppad_mixed::ran_con_jac(
 	d_vector val_b(n_random_), val_x(n_random_), Au_theta_j(n_ran_con_);
 	for(size_t i = 0; i < n_random_; i++)
 	{	row_solve[i] = i;
-		val_b[i]     = 0.0;
 	}
 	// Loop over fixed effects
 	size_t ell = 0;
 	for(size_t j = 0; j < n_fixed_; j++)
 	{	// b = j-th column of - f_{u, theta} (theta, u)
+		for(size_t i = 0; i < n_random_; i++)
+			val_b[i]     = 0.0;
 		while( col <= j )
 		{	assert( col == j );
 			val_b[row] = -val_out[k];

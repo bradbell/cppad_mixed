@@ -1958,18 +1958,15 @@ bool ipopt_fixed::check_derivative(bool trace, double relative_tol)
 	Number* values   = jac_g.data();
 	eval_jac_g(Index(n), x, new_x, Index(m), nele_jac, NULL, NULL, values);
 
-	// initialize x_step
-	CppAD::vector<double> x_step(x_start);
-
 	// eval_f
 	double obj_value;
 	new_x = false;
-	eval_f(Index(n), x_step.data(), new_x, obj_value);
+	eval_f(Index(n), x_start.data(), new_x, obj_value);
 
 	// eval_g
 	CppAD::vector<double> con_value(m);
 	new_x = false;
-	eval_g(Index(n), x_step.data(), new_x, Index(m), con_value.data() );
+	eval_g(Index(n), x_start.data(), new_x, Index(m), con_value.data() );
 
 	// log of maximum and minimum relative step to try
 	double log_max_rel = std::log(1e-3);
@@ -1980,6 +1977,9 @@ bool ipopt_fixed::check_derivative(bool trace, double relative_tol)
 	//
 	// difference of log of relative step between trys
 	double log_diff = (log_max_rel - log_min_rel) / double(n_try - 1);
+
+	// initialize x_step
+	CppAD::vector<double> x_step(x_start);
 	//
 	// check grad_f
 	for(size_t j = 0; j < n; j++) if( x_lower[j] < x_upper[j] )

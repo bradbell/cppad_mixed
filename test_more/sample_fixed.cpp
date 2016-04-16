@@ -44,16 +44,17 @@ namespace {
 			cppad_mixed(n_fixed, n_random, quasi_fixed, A_info) ,
 			n_fixed_(n_fixed)                                      ,
 			y_(y)
-		{}
+		{	assert( n_fixed      == y_.size() );
+			assert( n_random % 2 == 0 );
+			assert( n_random / 2 == y_.size() );
+		}
 	private:
 		// implementation of ran_likelihood
 		template <class Float>
 		vector<Float> implement_ran_likelihood(
 			const vector<Float>& theta  ,
 			const vector<Float>& u      )
-		{	assert( u.size() == y_.size() );
-			assert( theta.size() == y_.size() );
-			vector<Float> vec(1);
+		{	vector<Float> vec(1);
 
 			// initialize part of log-density that is always smooth
 			vec[0] = Float(0.0);
@@ -61,8 +62,9 @@ namespace {
 			// pi
 			Float sqrt_2pi = Float( CppAD::sqrt(8.0 * CppAD::atan(1.0) ) );
 
-			for(size_t i = 0; i < y_.size(); i++)
-			{	Float mu     = u[i] + theta[i] + theta[0];
+			size_t n_data = y_.size();
+			for(size_t i = 0; i < n_data; i++)
+			{	Float mu     = u[2*i] + u[2*i+1] + theta[i] + theta[0];
 				Float sigma  = Float(1.0);
 				Float res    = (y_[i] - mu) / sigma;
 
@@ -70,7 +72,8 @@ namespace {
 				vec[0] += log(sqrt_2pi * sigma) + res*res / Float(2.0);
 
 				// p(u_i | theta)
-				vec[0] += log(sqrt_2pi) + u[i] * u[i] / Float(2.0);
+				vec[0] += log(sqrt_2pi) + u[2*i] * u[2*i] / Float(2.0);
+				vec[0] += log(sqrt_2pi) + u[2*i+1] * u[2*i+1] / Float(2.0);
 			}
 			return vec;
 		}
@@ -85,9 +88,9 @@ namespace {
 			{	ret_val[i] = 0.0;
 				for(size_t j = 0; j < fixed_vec.size(); j++)
 				{	if( i == 0 )
-						ret_val[i] += fixed_vec[j];
-					else
 						ret_val[i] += fixed_vec[j] * fixed_vec[j];
+					else
+						ret_val[i] += CppAD::cos( fixed_vec[j] );
 				}
 			}
 			return ret_val;
@@ -123,9 +126,9 @@ bool sample_fixed(void)
 	// initialize gsl random number generator
 	size_t random_seed = CppAD::mixed::new_gsl_rng(0);
 	//
-	size_t n_data   = 4;
+	size_t n_data   = 5;
 	size_t n_fixed  = n_data;
-	size_t n_random = n_data;
+	size_t n_random = 2 * n_data;
 	vector<double>
 		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
 	for(size_t i = 0; i < n_fixed; i++)
@@ -146,10 +149,18 @@ bool sample_fixed(void)
 	{	data[i]       = double(i + 1);
 		random_in[i] = 0.0;
 	}
+	// constraint the sum of the first two random effect estimates to zero
+	// (this results in a constraint on the first fixed effect)
+	CppAD::mixed::sparse_mat_info A_info;
+	A_info.resize(2);
+	for(size_t k = 0; k < A_info.row.size(); k++)
+	{	A_info.row[k] = 0;
+		A_info.col[k] = k;
+		A_info.val[k] = 1.0;
+	}
 
 	// object that is derived from cppad_mixed
 	bool quasi_fixed = true;
-	CppAD::mixed::sparse_mat_info A_info; // empty matrix
 	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, A_info, data);
 	mixed_object.initialize(fixed_in, random_in);
 
@@ -160,6 +171,7 @@ bool sample_fixed(void)
 		"String  derivative_test           first-order\n"
 		"String  derivative_test_print_all yes\n"
 		"Numeric tol                       1e-8\n"
+		"Integer max_iter                  50\n"
 	;
 	std::string random_options =
 		"Integer print_level     0\n"
@@ -187,8 +199,8 @@ bool sample_fixed(void)
 		random_in
 	);
 	//
-	// now change the limit on the first fixed effect so it is active
-	size_t bnd_j   = 0;
+	// now change the limit on the second fixed effect so it is active
+	size_t bnd_j   = 1;
 	fixed_lower[bnd_j] = 1.5 * solution.fixed_opt[bnd_j];
 	fixed_in[bnd_j]    = 2.0 * solution.fixed_opt[bnd_j];
 	//
@@ -226,7 +238,8 @@ bool sample_fixed(void)
 		else
 			ok &= solution.fix_con_lag[i] == 0.0;
 	}
-	ok &= solution.ran_con_lag.size() == 0;
+	ok &= solution.ran_con_lag.size() == 1;
+	ok &= solution.ran_con_lag[0] != 0.0;
 	//
 	// corresponding optimal random effects
 	vector<double> random_opt = mixed_object.optimize_random(
@@ -262,54 +275,73 @@ bool sample_fixed(void)
 	sample_cov *= 1.0 / double(n_sample);
 	//
 	// unconstrained information matrix
-	double_mat full_info = double_mat::Zero(n_fixed, n_fixed);
+	double_mat info_mat = double_mat::Zero(n_fixed, n_fixed);
 	size_t K = information_info.row.size();
 	for(size_t k = 0; k < K; k++)
 	{	size_t i = information_info.row[k];
 		size_t j = information_info.col[k];
-		full_info(i, j) = information_info.val[k];
-		full_info(j, i) = information_info.val[k];
+		info_mat(i, j) = information_info.val[k];
+		info_mat(j, i) = information_info.val[k];
 	}
 	//
-	// consider the first and second fixed effects to be functions
-	// of the other fixed effect as follows
-	// theta[0] = lower[0]
-	// theta[1] = fix_con[0] - lower[0] - theta[2] - ...
+	// Jacobian of random effects at solution
+	CppAD::mixed::sparse_mat_info ran_con_jac_info;
+	// sparsity pattern
+	mixed_object.ran_con_jac(
+		solution.fixed_opt,
+		random_opt,
+		ran_con_jac_info
+	);
+	// value of jacobian
+	mixed_object.ran_con_jac(
+		solution.fixed_opt,
+		random_opt,
+		ran_con_jac_info
+	);
 	//
-	// theta[0:end] = E * theta[2:end] + b
+	// Derivatives of active constraints
+	double_mat E = double_mat::Zero(3, n_fixed);
+	// the active bound constraint
+	E(0, bnd_j) = 1.0;
+	// the active fix_constraint
+	for(size_t j = 0; j < n_fixed; j++)
+		E(1, j) = 2.0 * solution.fixed_opt[j];
+	// the A_info constraints are alwasy active and has one one constraint
+	for(size_t k = 0; k < ran_con_jac_info.row.size(); k++)
+	{	size_t r = ran_con_jac_info.row[k];
+		size_t c = ran_con_jac_info.col[k];
+		double v = ran_con_jac_info.val[k];
+		ok &= r == 0;
+		E(2, c) = v;
+	}
 	//
-	double_mat E = double_mat::Zero(n_fixed, n_fixed - 2);
-	for(size_t j = 0; j < n_fixed - 2; j++)
-		E(1, j) = - 1.0;
-	for(size_t i = 2; i < n_fixed; i++)
-		E(i, i-2) = 1.0;
+	// unconstrained covraince
+	double_mat C = info_mat.inverse();
 	//
-	// information matrix on the reduced set of variables
-	double_mat reduced_info = E.transpose() * full_info * E;
-	//
-	// covariance on the reduced set of variables
-	double_mat reduced_cov  = reduced_info.inverse();
-	//
-	// covariance on the full set of variables
-	double_mat full_cov = E * reduced_cov * E.transpose();
+	// conditional covaraince matrix
+	double_mat EC   = E * C;
+	double_mat ECET = EC * E.transpose();
+	double_mat D  = C - EC.transpose() * ECET.inverse() * EC;
 	//
 	double max_cov = 0.0;
 	for(size_t i = 0; i < n_fixed; i++)
-		max_cov = std::max( max_cov, full_cov(i, i) );
+		max_cov = std::max( max_cov, D(i, i) );
 	//
 	//
 	double max_err = 0.0;
 	for(size_t i = 0; i < n_fixed; i++)
 	{	for(size_t j = 0; j < n_fixed; j++)
 		{	double value = sample_cov(i, j);
-			double check = full_cov(i, j);
+			double check = D(i, j);
 			max_err = std::max(max_err, std::fabs(value - check) / max_cov );
 		}
 	}
 	ok &= max_err < .05;
 	//
 	if( ! ok )
+	{	std::cout << "\nmax_err = " << max_err << "\n";
 		std::cout << "\nrandom_seed = " << random_seed << "\n";
+	}
 	//
 	return ok;
 }

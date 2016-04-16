@@ -240,7 +240,7 @@ void cppad_mixed::sample_fixed(
 	// update the cholesky factor for this fixed and random effect
 	update_factor(fixed_opt, random_opt);
 	// -----------------------------------------------------------------------
-	// Create con_mat and con_rhs
+	// Create con_mat
 	//
 	// number of active bound constraints
 	size_t n_bnd_active = 0;
@@ -262,28 +262,16 @@ void cppad_mixed::sample_fixed(
 	// matrix with all the active constraints
 	size_t n_con_active = n_bnd_active  + n_fix_active + n_ran_active;
 	double_mat con_mat = double_mat::Zero(n_con_active, n_fixed_);
-	double_vec    con_rhs(n_con_active);
 	size_t con_row = 0;
 	//
-	// put the bounds in con_mat and con_rhs
+	// put the bounds in con_mat
 	for(size_t j = 0; j < n_fixed_; j++) if( solution.fixed_lag[j] != 0.0 )
 	{	con_mat(con_row, j) = 1.0;
-		con_rhs(con_row)    = fixed_opt[j];
 		++con_row;
 	}
-	// put fixed constraints in con_mat and con_rhs
+	// put fixed constraints in con_mat
 	if( n_fix_con > 0 )
 	{	assert( con_row == n_bnd_active );
-		//
-		// fixed constraint function value
-		CppAD::vector<double> rhs = fix_con_eval(fixed_opt);
-		for(size_t r = 0; r < n_fix_con; r++)
-		{	if( solution.fix_con_lag[r] != 0.0 )
-			{	assert( fix_active_index[r] != n_fixed_ );
-				size_t i = fix_active_index[r];
-				con_rhs(con_row + i)  = rhs[r];
-			}
-		}
 		//
 		// jacobian of the fixed constraints
 		CppAD::mixed::sparse_mat_info fix_con_info;
@@ -303,16 +291,15 @@ void cppad_mixed::sample_fixed(
 		}
 		con_row += n_fix_active;
 	}
-	// put random constraints in con_mat and con_rhs
+	// put random constraints in con_mat
 	CppAD::mixed::sparse_mat_info ran_con_info;
-	if( n_ran_con_ > 0 )
+	if( n_ran_active > 0 )
 	{	assert( con_row == n_bnd_active + n_fix_active );
 		//
-		// random constrain value is zero
-		for(size_t i = 0; i < n_ran_con_; i++)
-			con_rhs(con_row + i) = 0.0;
-		//
 		// jacobian of the random constraints
+		// sparsity pattern
+		ran_con_jac(fixed_opt, random_opt, ran_con_info);
+		// values
 		ran_con_jac(fixed_opt, random_opt, ran_con_info);
 		//
 		size_t K = ran_con_info.row.size();
