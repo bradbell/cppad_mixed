@@ -61,6 +61,7 @@ namespace {
 // main program that runs all the tests
 int main(void)
 {
+	// This comment expected by bin/test_one.sh
 	RUN(abs_fix_con);
 	RUN(binomial);
 	RUN(check_grad);
@@ -75,6 +76,7 @@ int main(void)
 	RUN(sample_fixed);
 	RUN(zero_random_one);
 	RUN(zero_random_two);
+	// This comment also expected by bin/test_one.sh
 
 	// summary report
 	int return_flag;
