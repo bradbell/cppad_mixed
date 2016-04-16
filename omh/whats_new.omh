@@ -30,6 +30,11 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh
 %$$
 
+$head 04-16$$
+The routine $cref ipopt_fixed_check_derivative$$ now checks
+$cref ipopt_fixed_eval_jac_g$$ in addition to
+$cref ipopt_fixed_eval_grad_f$$.
+
 $head 04-10$$
 $list number$$
 If the gradient check $cref ipopt_fixed_check_derivative$$ fails,

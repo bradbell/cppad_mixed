@@ -837,7 +837,7 @@ $end
 
 	// set auxillary variables to corresponding minimum feasible value
 	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
-		x[n_fixed_ + j] = CppAD::abs( fix_likelihood_vec_tmp_[1 + j] );
+		x[n_fixed_ + j] = std::fabs( fix_likelihood_vec_tmp_[1 + j] );
 
 	return true;
 }
@@ -1797,7 +1797,7 @@ $end
 		}
 		// sum += z_U[j] - z_L[j]; does not work because
 		// Ipopt does not seem to set z_U[j] and z_L[j] accuractely
-		double scale = CppAD::abs( (1.0 + tol) * x[j] );
+		double scale = std::fabs( (1.0 + tol) * x[j] );
 		bool at_lower = x[j] - fixed_lower_[j] <= scale;
 		solution_.fixed_lag[j] = 0.0;
 		if( at_lower )
@@ -1814,7 +1814,7 @@ $end
 			}
 		}
 		//
-		average += CppAD::abs(sum) / double(n_fixed_);
+		average += std::fabs(sum) / double(n_fixed_);
 	}
 	// needed to relax tolerance for bfgs method (Newton is more accurate)
 	ok &= average <= 30. * tol;
@@ -1829,7 +1829,7 @@ $end
 				sum   += lambda[i] * values[k];
 			}
 		}
-		average += CppAD::abs(sum) / double(n_fixed_);
+		average += std::fabs(sum) / double(n_fixed_);
 	}
 	ok &= average <= tol;
 
@@ -1902,13 +1902,11 @@ $end
 -------------------------------------------------------------------------------
 */
 bool ipopt_fixed::check_derivative(bool trace, double relative_tol)
-{	using CppAD::abs;
+{	using std::fabs;
 	size_t n        = n_fixed_ + fix_likelihood_nabs_;
 	size_t m        = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
 	double root_eps = std::sqrt( std::numeric_limits<double>::epsilon() );
 
-	// each x will be different
-	bool  new_x = true;
 
 	// start starting point
 	CppAD::vector<double> x_start(n);
@@ -1941,8 +1939,24 @@ bool ipopt_fixed::check_derivative(bool trace, double relative_tol)
 
 	// eval_grad_f
 	CppAD::vector<double> grad_f(n);
-	eval_grad_f( Index(n), x_start.data(), new_x, grad_f.data() );
+	Number* x     = x_start.data();
+	bool    new_x = true;
+	eval_grad_f( Index(n), x, new_x, grad_f.data() );
 
+	// get iRow and jCol for eval_jac_g
+	CppAD::vector<Index> iRow(nnz_jac_g_), jCol(nnz_jac_g_);
+	new_x            = false;
+	Index   nele_jac = Index( nnz_jac_g_ );
+	eval_jac_g(
+		Index(n), x, new_x, Index(m), nele_jac, iRow.data(), jCol.data(), NULL
+	);
+
+	// eval_jac_g
+	CppAD::vector<double> jac_g(nnz_jac_g_);
+	new_x            = false;
+	nele_jac         = Index( nnz_jac_g_ );
+	Number* values   = jac_g.data();
+	eval_jac_g(Index(n), x, new_x, Index(m), nele_jac, NULL, NULL, values);
 
 	// initialize x_step
 	CppAD::vector<double> x_step(x_start);
@@ -1951,7 +1965,11 @@ bool ipopt_fixed::check_derivative(bool trace, double relative_tol)
 	double obj_value;
 	new_x = false;
 	eval_f(Index(n), x_step.data(), new_x, obj_value);
-	new_x = true;
+
+	// eval_g
+	CppAD::vector<double> con_value(m);
+	new_x = false;
+	eval_g(Index(n), x_step.data(), new_x, Index(m), con_value.data() );
 
 	// log of maximum and minimum relative step to try
 	double log_max_rel = std::log(1e-3);
@@ -1963,22 +1981,23 @@ bool ipopt_fixed::check_derivative(bool trace, double relative_tol)
 	// difference of log of relative step between trys
 	double log_diff = (log_max_rel - log_min_rel) / double(n_try - 1);
 	//
-	// loop over directions where upper > lower
+	// check grad_f
 	for(size_t j = 0; j < n; j++) if( x_lower[j] < x_upper[j] )
-	{	// loop over relative step sizes
-		double abs_obj         = CppAD::abs(obj_value);
-		double best_diff       = std::numeric_limits<double>::infinity();
+	{	double abs_obj         = fabs(obj_value);
+		double best_err        = std::numeric_limits<double>::infinity();
 		double best_step       = std::numeric_limits<double>::infinity();
 		double best_approx     = std::numeric_limits<double>::infinity();
+		//
+		// loop over relative step sizes
 		size_t i_try           = 0;
-		while( i_try < n_try && best_diff > relative_tol )
+		while( i_try < n_try && best_err > relative_tol )
 		{	double relative_step = std::exp(log_min_rel + log_diff * i_try);
 			//
 			// step size
 			double step = relative_step * ( x_upper[j] - x_lower[j] );
 			if( x_upper[j] == nlp_upper_bound_inf_ ||
 				x_lower[j] == nlp_lower_bound_inf_  )
-			{	step = relative_step * CppAD::abs( x_start[j] );
+			{	step = relative_step * fabs( x_start[j] );
 				step = std::max( step, relative_step );
 			}
 
@@ -1986,15 +2005,17 @@ bool ipopt_fixed::check_derivative(bool trace, double relative_tol)
 			double obj_plus;
 			double x_plus = std::min(x_start[j] + step, x_upper[j]);
 			x_step[j]     = x_plus;
-			eval_f(n, x_step.data(), new_x, obj_plus);
-			abs_obj = std::max(abs_obj, CppAD::abs(obj_plus) );
+			new_x         = true;
+			eval_f(Index(n), x_step.data(), new_x, obj_plus);
+			abs_obj = std::max(abs_obj, fabs(obj_plus) );
 
 			// x_minus, obj_minus
 			double obj_minus;
 			double x_minus = std::max(x_start[j] - step, x_lower[j]);
 			x_step[j]      = x_minus;
-			eval_f(n, x_step.data(), new_x, obj_minus);
-			abs_obj = std::max(abs_obj, CppAD::abs(obj_minus) );
+			new_x          = true;
+			eval_f(Index(n), x_step.data(), new_x, obj_minus);
+			abs_obj = std::max(abs_obj, fabs(obj_minus) );
 
 			// restore j-th component of x_step
 			x_step[j]      = x_start[j];
@@ -2004,15 +2025,15 @@ bool ipopt_fixed::check_derivative(bool trace, double relative_tol)
 
 			// relative difference
 			double diff           = grad_f[j] - approx;
-			double denominator    = CppAD::abs(grad_f[j]);
-			denominator          += root_eps * CppAD::abs(abs_obj);
+			double denominator    = fabs(grad_f[j]);
+			denominator          += root_eps * fabs(abs_obj);
 			if( denominator == 0.0 )
 				denominator = 1.0;
-			double relative_diff  = CppAD::abs(diff) / denominator;
+			double relative_err  = fabs(diff) / denominator;
 
 			// best
-			if( relative_diff < best_diff )
-			{	best_diff   = relative_diff;
+			if( relative_err < best_err )
+			{	best_err    = relative_err;
 				best_step   = step;
 				best_approx = approx;
 			}
@@ -2021,19 +2042,118 @@ bool ipopt_fixed::check_derivative(bool trace, double relative_tol)
 			++i_try;
 		}
 		// trace
-		bool trace_j = trace || best_diff > relative_tol;
+		bool trace_j = trace || best_err > relative_tol;
 		if( trace_j ) std::cout
 			<< std::setprecision(3)
 			<< "j="     << std::setw(2) << j
-			<< ",best_step=" << std::setw(6) << best_step
+			<< ",step=" << std::setw(6) << best_step
 			<< ",f="    << std::setw(9) << obj_value
 			<< ",grad=" << std::setw(9) << grad_f[j]
-			<< ",appr=" << std::setw(9) << best_approx
-			<< ",diff=" << std::setw(9) << best_diff
+			<< ",apx=" << std::setw(9) << best_approx
+			<< ",err=" << std::setw(9) << best_err
 			<< std::endl;
 		//
 		// ok
-		ok &= ok && best_diff <= relative_tol;
+		ok &= ok && best_err <= relative_tol;
+	}
+	//
+	// check jac_g
+	for(size_t j = 0; j < n; j++) if( x_lower[j] < x_upper[j] )
+	{	CppAD::vector<double>
+			abs_con(m), best_err(m), best_step(m), best_approx(m), jac(m);
+		CppAD::vector<bool> found(m);
+		for(size_t i = 0; i < m; i++)
+		{	abs_con[i]      = fabs(con_value[i]);
+			best_err[i]     = std::numeric_limits<double>::infinity();
+			best_step[i]    = std::numeric_limits<double>::infinity();
+			best_approx[i]  = std::numeric_limits<double>::infinity();
+			found[i]        = false;
+		}
+		double max_best_err  = std::numeric_limits<double>::infinity();
+		//
+		// loop over relative step sizes
+		size_t i_try           = 0;
+		while( i_try < n_try && max_best_err > relative_tol )
+		{	double relative_step = std::exp(log_min_rel + log_diff * i_try);
+			//
+			// step size
+			double step = relative_step * ( x_upper[j] - x_lower[j] );
+			if( x_upper[j] == nlp_upper_bound_inf_ ||
+				x_lower[j] == nlp_lower_bound_inf_  )
+			{	step = relative_step * fabs( x_start[j] );
+				step = std::max( step, relative_step );
+			}
+
+			// x_plus, con_plus
+			CppAD::vector<double> con_plus(m);
+			double x_plus = std::min(x_start[j] + step, x_upper[j]);
+			x_step[j]     = x_plus;
+			new_x         = true;
+			eval_g(Index(n), x_step.data(), new_x, Index(m), con_plus.data());
+
+			// x_minus con_minus
+			CppAD::vector<double> con_minus(m);
+			double x_minus = std::max(x_start[j] - step, x_lower[j]);
+			x_step[j]      = x_minus;
+			new_x          = true;
+			eval_g(Index(n), x_step.data(), new_x, Index(m), con_minus.data());
+
+			// restore j-th component of x_step
+			x_step[j]      = x_start[j];
+
+			// 2DO: this loop in k is inefficent (could sort by jCol)
+			max_best_err = 0.0;
+			for(size_t i = 0; i < m; i++)
+			for(size_t k = 0; k < nnz_jac_g_; k++)
+			if( size_t( iRow[k]) == i && size_t( jCol[k] ) == j )
+			{	// found an entry for this (i, j) pair
+				found[i] = true;
+				jac[i]   = jac_g[k];
+				//
+				// scale for i-th constraint
+				abs_con[i] = std::max(abs_con[i], fabs(con_plus[i]) );
+				abs_con[i] = std::max(abs_con[i], fabs(con_minus[i]) );
+
+				// finite difference approximation for derivative
+				double approx = (con_plus[i]-con_minus[i])/(x_plus-x_minus);
+
+				// relative difference
+				double diff           = jac[i] - approx;
+				double denominator    = fabs(jac[i]);
+				denominator          += root_eps * fabs(abs_con[i]);
+				if( denominator == 0.0 )
+					denominator = 1.0;
+				double relative_err  = fabs(diff) / denominator;
+
+				// best
+				if( relative_err < best_err[i] )
+				{	best_err[i]    = relative_err;
+					best_step[i]   = step;
+					best_approx[i] = approx;
+				}
+				max_best_err = std::max(max_best_err, best_err[i]);
+			}
+			//
+			// next try
+			++i_try;
+		}
+		for(size_t i = 0; i < m; i++) if( found[i] )
+		{	// trace
+			bool trace_ij = trace || best_err[i] > relative_tol;
+			if( trace_ij ) std::cout
+				<< std::setprecision(3)
+				<< "i="     << std::setw(2) << i
+				<< "j="     << std::setw(2) << j
+				<< ",step=" << std::setw(6) << best_step[i]
+				<< ",g="    << std::setw(9) << con_value[i]
+				<< ",jac=" << std::setw(9) << jac[i]
+				<< ",apx=" << std::setw(9) << best_approx[i]
+				<< ",err=" << std::setw(9) << best_err[i]
+				<< std::endl;
+		}
+		//
+		// ok
+		ok &= ok && max_best_err <= relative_tol;
 	}
 	return ok;
 }
