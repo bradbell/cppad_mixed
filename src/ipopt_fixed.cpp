@@ -1838,7 +1838,7 @@ $end
 }
 /*
 -------------------------------------------------------------------------------
-$begin ipopt_fixed_check_grad_f$$
+$begin ipopt_fixed_check_derivative$$
 $spell
 	CppAD
 	cppad
@@ -1851,7 +1851,7 @@ $$
 $section Check eval_grad_f Routine Using Finite Differences$$
 
 $head Syntax$$
-$icode%ok% = check_grad_f(%trace%, %relative_tol%)%$$
+$icode%ok% = check_derivative(%trace%, %relative_tol%)%$$
 
 $head trace$$
 This argument has prototype
@@ -1901,7 +1901,7 @@ to the cppad_mixed API (as an alternative to Ipopt's derivative checker).
 $end
 -------------------------------------------------------------------------------
 */
-bool ipopt_fixed::check_grad_f(bool trace, double relative_tol)
+bool ipopt_fixed::check_derivative(bool trace, double relative_tol)
 {	using CppAD::abs;
 	size_t n        = n_fixed_ + fix_likelihood_nabs_;
 	size_t m        = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;

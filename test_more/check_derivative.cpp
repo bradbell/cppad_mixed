@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$section Test ipopt_fixed::check_grad_f$$.
+$section Test ipopt_fixed::check_derivative$$.
 
 $head Model$$
 $latex \[

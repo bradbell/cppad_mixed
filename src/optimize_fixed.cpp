@@ -388,9 +388,9 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 	// check derivative calculation
 	bool   trace         = false;
 	double relative_tol  = 1e-3;
-	ok = fixed_nlp->check_grad_f(trace, relative_tol);
+	ok = fixed_nlp->check_derivative(trace, relative_tol);
 	if( ! ok )
-	{	warning("optimize_fixed: check_grad_f failed");
+	{	warning("optimize_fixed: check_derivative failed");
 		ok = true;
 	}
 # endif

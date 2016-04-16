@@ -12,18 +12,19 @@
 new_directories='
 '
 rename_files='
-	example/user/derived_xam.cpp
+	test_more/check_grad.cpp
 '
 spell_files='
 '
 no_change_files='
 '
 #
-rename_cmd='s|derived_xam.cpp|derived_ctor_xam.cpp|'
+rename_cmd='s|check_grad.cpp|check_derivative.cpp|'
 spell_cmd='s|^$spell|&|'
 #
 cat << EOF > junk.sed
-s|derived_xam|derived_ctor_xam|
+s|check_grad_f|check_derivative|
+s|check_grad.cpp|check_derivative.cpp|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]
