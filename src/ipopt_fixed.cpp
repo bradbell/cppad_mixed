@@ -187,18 +187,6 @@ $codei%CppAD::mixed::ipopt_fixed %ipopt_object%(
 	%mixed_object%
 )%$$
 
-$head Prototype$$
-The arguments has prototypes
-$codei%
-	const std::string&           %random_options%
-	const double&                %fixed_tolerance%
-	const CppAD::vector<double>& %fixed_lower%
-	const CppAD::vector<double>& %fixed_in%
-	const CppAD::vector<double>& %fixed_upper%
-	const CppAD::vector<double>& %random_in%
-	cppad_mixed&                 %mixed_object%
-%$$
-
 $head References$$
 The values of the arguments are stored by reference and hence
 the arguments must not be deleted while $icode ipopt_object$$
@@ -384,9 +372,8 @@ $subhead ran_objcon_hes_info_$$
 If $code n_random_ > 0$$, sparse matrix information for the Hessian of the
 random objective and constraints.
 
-$end
--------------------------------------------------------------------------------
-*/
+$head Prototype$$
+$srccode%cpp% */
 ipopt_fixed::ipopt_fixed(
 	const std::string&  random_options               ,
 	const double&       fixed_tolerance              ,
@@ -399,6 +386,9 @@ ipopt_fixed::ipopt_fixed(
 	const d_vector&     random_upper                 ,
 	const d_vector&     random_in                    ,
 	cppad_mixed&        mixed_object       ) :
+/* %$$
+$end
+*/
 random_options_    ( random_options )                             ,
 fixed_tolerance_   ( fixed_tolerance  )                           ,
 n_fixed_           ( fixed_in.size()  )                           ,
@@ -590,7 +580,6 @@ mixed_object_      ( mixed_object    )
 ipopt_fixed::~ipopt_fixed(void)
 { }
 /* $$
-$end
 ------------------------------------------------------------------------------
 $begin ipopt_fixed_get_nlp_info$$
 $spell
@@ -634,15 +623,17 @@ If set to false, the optimization will terminate with status set to
 $cref/USER_REQUESTED_STOP
 	/ipopt_fixed_finalize_solution/status/USER_REQUESTED_STOP/$$.
 
-$end
--------------------------------------------------------------------------------
-*/
+$head Prototype$$
+$srccode%cpp% */
 bool ipopt_fixed::get_nlp_info(
 	Index&          n            ,  // out
 	Index&          m            ,  // out
 	Index&          nnz_jac_g    ,  // out
 	Index&          nnz_h_lag    ,  // out
 	IndexStyleEnum& index_style  )  // out
+/* %$$
+$end
+*/
 {
 	n           = n_fixed_ + fix_likelihood_nabs_;
 	m           = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
@@ -692,9 +683,8 @@ If set to false, the optimization will terminate with status set to
 $cref/USER_REQUESTED_STOP
 	/ipopt_fixed_finalize_solution/status/USER_REQUESTED_STOP/$$.
 
-$end
--------------------------------------------------------------------------------
-*/
+$head Prototype$$
+$srccode%cpp% */
 bool ipopt_fixed::get_bounds_info(
 		Index       n        ,   // in
 		Number*     x_l      ,   // out
@@ -702,6 +692,9 @@ bool ipopt_fixed::get_bounds_info(
 		Index       m        ,   // in
 		Number*     g_l      ,   // out
 		Number*     g_u      )   // out
+/* %$$
+$end
+*/
 {
 	assert( n > 0 );
 	assert( size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
@@ -807,9 +800,8 @@ If set to false, the optimization will terminate with status set to
 $cref/USER_REQUESTED_STOP
 	/ipopt_fixed_finalize_solution/status/USER_REQUESTED_STOP/$$.
 
-$end
--------------------------------------------------------------------------------
-*/
+$head Prototype$$
+$srccode%cpp% */
 bool ipopt_fixed::get_starting_point(
 	Index           n            ,  // in
 	bool            init_x       ,  // in
@@ -820,6 +812,9 @@ bool ipopt_fixed::get_starting_point(
 	Index           m            ,  // in
 	bool            init_lambda  ,  // in
 	Number*         lambda       )  // out
+/* %$$
+$end
+*/
 {
 	assert( init_x == true );
 	assert( init_z == false );
@@ -885,14 +880,16 @@ If set to false, the optimization will terminate with status set to
 $cref/USER_REQUESTED_STOP
 	/ipopt_fixed_finalize_solution/status/USER_REQUESTED_STOP/$$.
 
-$end
--------------------------------------------------------------------------------
-*/
+$head Prototype$$
+$srccode%cpp% */
 bool ipopt_fixed::eval_f(
 	Index           n         ,  // in
 	const Number*   x         ,  // in
 	bool            new_x     ,  // in
 	Number&         obj_value )  // out
+/* %$$
+$end
+*/
 {
 	assert( n > 0 && size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
 	//
@@ -975,14 +972,16 @@ If set to false, the optimization will terminate with status set to
 $cref/USER_REQUESTED_STOP
 	/ipopt_fixed_finalize_solution/status/USER_REQUESTED_STOP/$$.
 
-$end
--------------------------------------------------------------------------------
-*/
+$head Prototype$$
+$srccode%cpp% */
 bool ipopt_fixed::eval_grad_f(
 	Index           n         ,  // in
 	const Number*   x         ,  // in
 	bool            new_x     ,  // in
 	Number*         grad_f    )  // out
+/* %$$
+$end
+*/
 {
 	assert( n > 0 && size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
 	//
@@ -1087,15 +1086,17 @@ if set to false, the optimization will terminate with status set to
 $cref/USER_REQUESTED_STOP
 	/ipopt_fixed_finalize_solution/status/USER_REQUESTED_STOP/$$.
 
-$end
--------------------------------------------------------------------------------
-*/
+$head Prototype$$
+$srccode%cpp% */
 bool ipopt_fixed::eval_g(
 	Index           n        ,  // in
 	const Number*   x        ,  // in
 	bool            new_x    ,  // in
 	Index           m        ,  // in
 	Number*         g        )  // out
+/* %$$
+$end
+*/
 {
 	assert( n > 0 );
 	assert( size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
@@ -1217,9 +1218,8 @@ if set to false, the optimization will terminate with status set to
 $cref/USER_REQUESTED_STOP
 	/ipopt_fixed_finalize_solution/status/USER_REQUESTED_STOP/$$.
 
-$end
--------------------------------------------------------------------------------
-*/
+$head Prototype$$
+$srccode%cpp% */
 bool ipopt_fixed::eval_jac_g(
 	Index           n        ,  // in
 	const Number*   x        ,  // in
@@ -1229,6 +1229,9 @@ bool ipopt_fixed::eval_jac_g(
 	Index*          iRow     ,  // out
 	Index*          jCol     ,  // out
 	Number*         values   )  // out
+/* %$$
+$end
+*/
 {
 	assert( n > 0 );
 	assert( size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
@@ -1433,9 +1436,8 @@ if set to false, the optimization will terminate with status set to
 $cref/USER_REQUESTED_STOP
 	/ipopt_fixed_finalize_solution/status/USER_REQUESTED_STOP/$$.
 
-$end
--------------------------------------------------------------------------------
-*/
+$head Prototype$$
+$srccode%cpp% */
 bool ipopt_fixed::eval_h(
 	Index         n              ,  // in
 	const Number* x              ,  // in
@@ -1448,6 +1450,9 @@ bool ipopt_fixed::eval_h(
 	Index*        iRow           ,  // out
 	Index*        jCol           ,  // out
 	Number*       values         )  // out
+/* %$$
+$end
+*/
 {
 	assert( ! mixed_object_.quasi_fixed_ );
 	assert( n > 0 );
@@ -1655,9 +1660,8 @@ $subhead INVALID_NUMBER_DETECTED$$
 Algorithm received an invalid number (such as NaN or Inf) from
 the NLP; see also option check_derivatives_for_naninf.
 
-$end
--------------------------------------------------------------------------------
-*/
+$head Prototype$$
+$srccode%cpp% */
 void ipopt_fixed::finalize_solution(
 	Ipopt::SolverReturn               status    ,  // in
 	Index                             n         ,  // in
@@ -1670,6 +1674,9 @@ void ipopt_fixed::finalize_solution(
 	Number                            obj_value ,  // in
 	const Ipopt::IpoptData*           ip_data   ,  // in
 	Ipopt::IpoptCalculatedQuantities* ip_cq     )  // in
+/* %$$
+$end
+*/
 {	bool ok = true;
 	//
 	assert( n > 0 );
