@@ -21,6 +21,13 @@ echo_eval() {
 	eval $*
 }
 # -----------------------------------------------------------------------------
+input=''
+while [ "$input" != 'd' ] &&  [ "$input" != 'r' ]
+do
+	msg='Debug [d], Release [r] ?'
+	read -p "$msg" input
+done
+# -----------------------------------------------------------------------------
 list=`ls bin/check_*.sh`
 for script in $list
 do
@@ -32,7 +39,12 @@ done
 # ----------------------------------------------------------------------------
 bin/run_omhelp.sh xml
 #
-bin/run_cmake.sh
+if [ "$input" == 'r' ]
+then
+	bin/run_cmake.sh --release
+else
+	bin/run_cmake.sh
+fi
 #
 cd build
 make check

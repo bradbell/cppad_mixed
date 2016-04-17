@@ -23,12 +23,17 @@ $spell
 	bool
 	cholmod
 	iter
+	cmake
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
 
-$childtable%omh/whats_new_15.omh
-%$$
+$childtable%omh/whats_new_15.omh%$$
+
+$head 04-17$$
+Fix some errors and warnings when
+$cref/cmake_build_type/run_cmake.sh/cmake_build_type/$$ was
+$code RELEASE$$.
 
 $head 04-16$$
 $list number$$

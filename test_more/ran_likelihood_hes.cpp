@@ -97,8 +97,7 @@ namespace {
 			if( default_ran_likelihood_hes_ )
 				return vector<a1_double>(0);
 			//
-			size_t K = row.size();
-			assert( col.size() == K );
+			assert( col.size() == row.size() );
 
 			// return value
 			vector<a1_double> val(n_random_);

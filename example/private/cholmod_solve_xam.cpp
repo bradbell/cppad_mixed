@@ -96,7 +96,10 @@ bool cholmod_solve_xam(void)
 
 	// factor the matrix
 	cholmod_factor *L = cholmod_analyze(A, &com);
-	int flag = cholmod_factorize(A, L, &com);
+# ifndef NDEBUG
+	int flag =
+# endif
+	cholmod_factorize(A, L, &com);
 
 	// check properties of factor
 	assert( flag     == CHOLMOD_TRUE );  // return flag OK

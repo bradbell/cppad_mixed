@@ -77,34 +77,39 @@ echo_eval() {
 	echo $*
 	eval $*
 }
-if [ "$1" == '--help' ]
-then
-	cat << EOF
+while [ "$1" != '' ]
+do
+	if [ "$1" == '--help' ]
+	then
+		cat << EOF
 usage: bin/run_cmake.sh \\
 	[--help] \\
 	[--verbose] \\
-	[--set_sparsity]
-	[--eigen_cholesky]
+	[--set_sparsity] \\
+	[--eigen_cholesky] \\
+	[--release]
 EOF
-	exit 0
-else
-	user_option="$1"
-fi
-if [ "$user_option" == '--verbose' ]
-then
-	cmake_verbose_makefile='1'
-elif [ "$user_option" == '--set_sparsity' ]
-then
-	bool_sparsity='NO'
-elif [ "$user_option" == '--eigen_cholesky' ]
-then
-	cholmod_cholesky='NO'
-elif [ "$user_option" != '' ]
-then
-	echo "'$1' is an invalid option"
-	bin/run_cmake.sh --help
-	exit 1
-fi
+		exit 0
+	fi
+	if [ "$1" == '--verbose' ]
+	then
+		cmake_verbose_makefile='1'
+	elif [ "$1" == '--set_sparsity' ]
+	then
+		bool_sparsity='NO'
+	elif [ "$1" == '--eigen_cholesky' ]
+	then
+		cholmod_cholesky='NO'
+	elif [ "$1" == '--release' ]
+	then
+		cmake_build_type='RELEASE'
+	else
+		echo "'$1' is an invalid option"
+		bin/run_cmake.sh --help
+		exit 1
+	fi
+	shift
+done
 # ---------------------------------------------------------------------------
 if [ ! -e build ]
 then

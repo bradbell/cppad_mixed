@@ -110,9 +110,11 @@ double cppad_mixed::ran_obj_eval(
 	assert( fixed_vec.size() == n_fixed_ );
 	assert( random_vec.size() == n_random_ );
 
+# ifndef NDEBUG
 	// number of non-zeros in Hessian
 	size_t K = ran_hes_.row.size();
 	assert( K == ran_hes_.col.size() );
+# endif
 
 	// pack fixed and random effects into one vector
 	d_vector both(n_fixed_ + n_random_);

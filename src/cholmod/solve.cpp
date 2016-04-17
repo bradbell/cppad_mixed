@@ -136,7 +136,10 @@ void cholmod::solve(
 
 	// solve the linear equation A * sol = rhs
 	int sys = CHOLMOD_A;
-	int flag = cholmod_solve2(
+# ifndef NDEBUG
+	int flag =
+# endif
+	cholmod_solve2(
 		sys,
 		factor_,
 		rhs_,
