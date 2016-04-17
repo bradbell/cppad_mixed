@@ -27,7 +27,10 @@ $$
 $aindex section head subhead$$
 $comment END: settings used by all section ---------------------------- $$
 
-$section Laplace Approximation of Mixed Effects Models: cppad_mixed-20160416$$
+$section
+C++ Laplace Approximation of Mixed Effects Models:
+cppad_mixed-20160416
+$$
 $table
 $cnext
 	One section per page $pre  $$ $cnext
