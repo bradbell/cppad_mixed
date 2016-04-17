@@ -110,7 +110,7 @@ $head Theory$$
 
 $subhead Notation$$
 Given two random vectors $latex u$$ and $latex v$$,
-we use the notation $code \B{C}( u , v )$$
+we use the notation $latex \B{C}( u , v )$$
 for the corresponding covariance matrix;
 i.e.,
 $latex \[
