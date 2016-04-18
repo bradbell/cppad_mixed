@@ -31,7 +31,8 @@ done
 list=`ls bin/check_*.sh`
 for script in $list
 do
-	if [ "$script" != 'bin/check_all.sh' ]
+	if [ "$script" != 'bin/check_all.sh' ] \
+	&& [ "$script" != 'bin/check_install.sh' ]
 	then
 		$script
 	fi
@@ -41,9 +42,15 @@ bin/run_omhelp.sh xml
 #
 if [ "$input" == 'r' ]
 then
-	bin/run_cmake.sh --release
+	echo_eval bin/run_cmake.sh --release
+	sed \
+		-e "s|^cmake_build_type=.*|cmake_build_type='RELEASE'|" \
+		-i bin/check_install.sh
 else
-	bin/run_cmake.sh
+	echo_eval bin/run_cmake.sh
+	sed \
+		-e "s|^cmake_build_type=.*|cmake_build_type='DEBUG'|" \
+		-i bin/check_install.sh
 fi
 #
 cd build
@@ -52,5 +59,13 @@ make speed
 make install
 cd ..
 bin/check_install.sh
+#
+if [ "$input" == 'r' ]
+then
+	bin/run_cmake.sh --release
+	sed \
+		-e "s|^cmake_build_type=.*|cmake_build_type='DEBUG'|" \
+		-i bin/check_install.sh
+fi
 #
 echo 'check_all.sh: OK'

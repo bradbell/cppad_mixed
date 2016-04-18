@@ -20,6 +20,7 @@ fi
 #	suitesparse cppad eigen xam cpp mkdir tmp cp sed isystem lcppad lgsl
 #	lgslcblas fi bool std cout endl ipopt conig eval config
 #	lcholmod lamd lcamd lcolamd lccolamd lsuitesparseconfig
+#	cmake elif
 # &&
 #
 # &section Example and Test Using the Installed Version of cppad_mixed&&
@@ -46,6 +47,13 @@ eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
 # the installed version of &code cppad_mixed&&:
 # &codep
 example_file='example/user/no_random_xam.cpp'
+# &&
+#
+# &head cmake_build_type&&
+# This is either DEBUG or RELEASE, depending on if the install version
+# of &code cppad_mixed&& is a debug or release version.
+# &codep
+cmake_build_type='DEBUG'
 # &&
 #
 # &head Create Temporary&&
@@ -104,8 +112,18 @@ suitesparse_libs='
 # different directory and treated like system files because
 # they otherwise generate lots of warnings.
 # &codep
+if [ "$cmake_build_type" == 'DEBUG' ]
+then
+	flags='-g -O0 -std=c++11 -Wall'
+elif [ "$cmake_build_type" == 'RELEASE' ]
+then
+	flags='-O3 -DNDEBUG -std=c++11 -Wall'
+else
+	echo 'check_install.sh: cmake_build_type not DEBUG or RELEASE'
+	exit 1
+fi
 g++ example.cpp \
-	-g -O0 -std=c++11 -Wall \
+	$flags \
 	-I $cppad_mixed_prefix/include \
 	-isystem $eigen_prefix/include \
 	-L $cppad_mixed_prefix/lib64 -lcppad_mixed \

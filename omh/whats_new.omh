@@ -30,10 +30,15 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 04-18$$
+Advance to newer version of CppAD; (must rerun $code bin/install_cppad.sh$$).
+This fixed the remaining warnings when building a release version.
+
 $head 04-17$$
 Fix some errors and warnings when
 $cref/cmake_build_type/run_cmake.sh/cmake_build_type/$$ was
 $code RELEASE$$.
+
 
 $head 04-16$$
 $list number$$
