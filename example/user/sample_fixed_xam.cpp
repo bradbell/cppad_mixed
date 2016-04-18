@@ -225,6 +225,8 @@ bool sample_fixed_xam(void)
 		sample,
 		information_info,
 		solution,
+		fixed_lower,
+		fixed_upper,
 		random_opt
 	);
 	//

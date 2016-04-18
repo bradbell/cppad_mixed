@@ -27,6 +27,8 @@ $codei%mixed_object%.sample_fixed(
 	%sample%,
 	%information_info%,
 	%solution%,
+	%fixed_lower%,
+	%fixed_upper%,
 	%random_opt%
 )%$$
 
@@ -88,6 +90,16 @@ $head solution$$
 is the $cref/solution/optimize_fixed/solution/$$
 for a the call to $cref optimize_fixed$$ corresponding to
 $icode information_info$$.
+
+$head fixed_lower$$
+is the same as
+$cref/fixed_lower/optimize_fixed/fixed_lower/$$
+in the call to $code optimize_fixed$$ that corresponds to $icode solution$$.
+
+$head fixed_upper$$
+is the same as
+$cref/fixed_upper/optimize_fixed/fixed_upper/$$
+in the call to $code optimize_fixed$$ that corresponds to $icode solution$$.
 
 $head random_opt$$
 is the optimal random effects corresponding to the solution; i.e.
@@ -210,6 +222,8 @@ void cppad_mixed::sample_fixed(
 	d_vector&                            sample               ,
 	const CppAD::mixed::sparse_mat_info& information_info     ,
 	const CppAD::mixed::fixed_solution&  solution             ,
+	const d_vector&                      fixed_lower          ,
+	const d_vector&                      fixed_upper          ,
 	const d_vector&                      random_opt           )
 {
 	// number of fixed constraints
@@ -360,9 +374,15 @@ void cppad_mixed::sample_fixed(
 		// multily by Cholesky factor
 		double_vec s = P.transpose() * L * w;
 		//
-		// store corresponding sample
 		for(size_t j = 0; j < n_fixed_; j++)
+		{
+			// store corresponding sample
 			sample[ i_sample * n_fixed_ + j] = fixed_opt[j] + s[j];
+			//
+			// a constraint that is not active might go out of bounds
+			s[j] = std::min(s[j], fixed_upper[j]);
+			s[j] = std::max(s[j], fixed_lower[j]);
+		}
 	}
 	// -----------------------------------------------------------------------
 	return;

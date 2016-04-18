@@ -262,6 +262,8 @@ $srccode%cpp% */
 		d_vector&                            sample               ,
 		const CppAD::mixed::sparse_mat_info& information_info     ,
 		const CppAD::mixed::fixed_solution&  solution             ,
+		const d_vector&                      fixed_lower          ,
+		const d_vector&                      fixed_upper          ,
 		const d_vector&                      random_opt
 	);
 /* %$$

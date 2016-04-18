@@ -261,6 +261,8 @@ bool sample_fixed(void)
 		sample,
 		information_info,
 		solution,
+		fixed_lower,
+		fixed_upper,
 		random_opt
 	);
 	//
