@@ -12,6 +12,7 @@ build
 doc
 # directories that are used for stashing files
 new
+new.*
 # vim swap files
 *.swp
 # log files
