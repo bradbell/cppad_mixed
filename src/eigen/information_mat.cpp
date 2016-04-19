@@ -15,7 +15,7 @@ $spell
 	cppad
 $$
 
-$section Compute the Observed Information Matrix$$
+$section Compute the Observed Information For Fixed Effects$$
 
 $head Syntax$$
 $icode%information_info% = %mixed_object%.information_mat(

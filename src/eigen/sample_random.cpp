@@ -28,14 +28,17 @@ $$
 $section Simulation the Posterior Distribution for Random Effects$$
 
 $head Syntax$$
-$icode%sample% = %mixed_object%.sample_random(
+$icode%mixed_object%.sample_random(
+	%sample%,
 	%fixed_vec%,
+	%random_options%,
 	%random_lower%,
 	%random_upper%,
 	%random_in%
 )%$$
 
-$head Under Construction$$
+$head Public$$
+This $code cppad_mixed$$ member function is $cref public$$.
 
 $head Purpose$$
 This routine draws samples from
@@ -52,13 +55,37 @@ We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
+$head sample$$
+This argument has prototype
+$codei%
+	CppAD::vector<double>& %sample%
+%$$
+and its size is a multiple of
+$cref/n_random/derived_ctor/n_random/$$.
+The input value of its elements does not matter.
+We define
+$codei%
+	%n_sample% = %sample_size% / %n_random%
+%$$
+Upon return,
+for $codei%i% = 0 , %...%, %n_sample%-1%$$,
+$codei%j% = 0 , %...%, %n_random%-1%$$,
+$codei%
+	%sample%[ %i% * %n_random% + %j% ]
+%$$
+is the $th j$$ component of the $th i$$ sample of the
+optimal random effects $latex \hat{u}(\theta)$$.
+These samples are independent for different $latex i$$,
+and for fixed $latex i$$, they have the
+$cref/covariance/sample_random/Covariance/$$ defined below.
+
+$head random_options$$
+The argument is the $cref ipopt_options$$ for optimizing the random effects.
+
 $head fixed_vec$$
 This argument specifies the value of the
 $cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$.
-
-$head random_options$$
-The argument is the $cref ipopt_options$$ for optimizing the random effects.
 
 $head random_lower$$
 This argument must have size equal to
@@ -86,15 +113,10 @@ $codei%
 %$$
 for each valid index $icode i$$.
 
-$head sample$$
-The return value
-size is the number of random effects $icode n_random$$.
-
 $head Covariance$$
-Each call to $icode sample_fixed$$ simulates an independent normal
+Each sample of $icode sample_fixed$$ is an independent normal
 from the asymptotic distribution for the random effects.
-The mean for distribution is the optimal value
-of the random effects corresponding to $icode fixed_vec$$; i.e.,
+The mean for distribution is the
 $cref/optimal random effects/theory/Optimal Random Effects, u^(theta)/$$
 $latex \hat{u} ( \theta )$$.
 The variance for each call is the inverse of the observed information
@@ -105,11 +127,18 @@ $latex \[
 This normal distribution is truncated to be within the limits
 $icode random_lower$$, $icode random_upper$$.
 
+$children%example/user/sample_random_xam.cpp
+%$$
+$head Example$$
+The file $cref sample_random_xam.cpp$$ is an example
+and test of $code sample_random$$.
+
 $head Prototype$$
 $srccode%cpp% */
-CppAD::vector<double> cppad_mixed::sample_random(
-	const d_vector&    fixed_vec      ,
+void cppad_mixed::sample_random(
+	d_vector&          sample         ,
 	const std::string& random_options ,
+	const d_vector&    fixed_vec      ,
 	const d_vector&    random_lower   ,
 	const d_vector&    random_upper   ,
 	const d_vector&    random_in      )
@@ -120,21 +149,25 @@ $end
 	typedef Eigen::Matrix<double, Dynamic, Dynamic> double_mat;
 	typedef Eigen::Matrix<double, Dynamic, 1>       double_vec;
 	typedef Eigen::LLT<double_mat, Eigen::Lower>    double_cholesky;
-
-	assert( fixed_vec.size()    == n_fixed_ );
+	//
+	assert( sample.size() % n_random_ == 0   );
+	assert( fixed_vec.size()    == n_fixed_  );
 	assert( random_lower.size() == n_random_ );
 	assert( random_upper.size() == n_random_ );
 	assert( random_in.size()    == n_random_ );
+	//
+	// number of samples
+	size_t n_sample = sample.size() / n_random_;
 	//
 	// optimal random effects
 	d_vector random_opt = optimize_random(
 		random_options, fixed_vec, random_lower, random_upper, random_in
 	);
-	//
 	// update the Cholesky factor corresponding to f_uu (theta, u)
 	update_factor(fixed_vec, random_opt);
 	//
-	// determine the corresponding covariance f_uu(theta, u)^{-1}
+	// 2DO: It would be much better to use the Cholesky factor of
+	// f_uu(theta, u) instead of inverting and then computing a dense Cholesky.
 	CppAD::vector<size_t> row_solve(n_random_);
 	d_vector val_x(n_random_), val_b(n_random_);
 	for(size_t i = 0; i < n_random_; i++)
@@ -149,27 +182,26 @@ $end
 		for(size_t i = 0; i < n_random_; i++)
 			cov_mat(i, j) = val_x[i];
 	}
-	//
-	// cholesky factor covariance matrix
 	double_cholesky cholesky;
 	cholesky.compute(cov_mat);
 	double_mat L = cholesky.matrixL();
 	//
 	// simulate a normal with mean zero and variance one
 	double_vec w(n_random_);
-	for(size_t j = 0; j < n_random_; j++)
-		w[j] = gsl_ran_gaussian(CppAD::mixed::get_gsl_rng(), 1.0);
-	//
-	// multiply by Cholesky factor
-	double_vec s = L * w;
-	//
-	// add random_opt an truncate to random limits
-	d_vector sample(n_random_);
-	for(size_t i = 0; i < n_random_; i++)
-	{	sample[i] = random_opt[i] + s(i, 0);
-		sample[i] = std::min(sample[i], random_upper[i]);
-		sample[i] = std::max(sample[i], random_lower[i]);
+	for(size_t i_sample = 0; i_sample < n_sample; i_sample++)
+	{	for(size_t j = 0; j < n_random_; j++)
+			w[j] = gsl_ran_gaussian(CppAD::mixed::get_gsl_rng(), 1.0);
+		//
+		// multiply by Cholesky factor
+		double_vec s = L * w;
+		//
+		// add random_opt an truncate to random limits
+		for(size_t j = 0; j < n_random_; j++)
+		{	double samp = random_opt[j] + s(j, 0);
+			samp = std::min(samp, random_upper[j]);
+			samp = std::max(samp, random_lower[j]);
+			sample[i_sample * n_random_ + j] = samp;
+		}
 	}
-	//
-	return sample;
+	return;
 }

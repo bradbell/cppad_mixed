@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin sample_fixed_xam.cpp$$
+$begin sample_random_xam.cpp$$
 $spell
 	CppAD
 	cppad
@@ -22,7 +22,7 @@ $$
 $section Sample From Fixed Effects Posterior: Example and Test$$
 
 $code
-$srcfile%example/user/sample_fixed_xam.cpp
+$srcfile%example/user/sample_random_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -92,29 +92,6 @@ namespace {
 			}
 			return vec;
 		}
-		// implementation of fix_likelihood
-		template <class Float>
-		vector<Float> implement_fix_likelihood(
-			const vector<Float>& fixed_vec  )
-		{	assert( fixed_vec.size() == n_fixed_ );
-			vector<Float> vec(1);
-
-			// initialize part of log-density that is smooth
-			vec[0] = Float(0.0);
-
-			// compute these factors once
-			Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
-
-			for(size_t j = 0; j < n_fixed_; j++)
-			{	Float mu     = Float(4.0);
-				Float sigma  = Float(1.0);
-				Float res    = (fixed_vec[j] - mu) / sigma;
-
-				// This is a Gaussian term, so entire density is smooth
-				vec[0]  += log(sqrt_2pi * sigma) + res * res / Float(2.0);
-			}
-			return vec;
-		}
 	// ----------------------------------------------------------------------
 	public:
 		// User defined virtual functions
@@ -126,15 +103,11 @@ namespace {
 			const vector<a1_double>& fixed_vec  ,
 			const vector<a1_double>& random_vec )
 		{	return implement_ran_likelihood(fixed_vec, random_vec); }
-		//
-		virtual vector<a1_double> fix_likelihood(
-			const vector<a1_double>& fixed_vec  )
-		{	return implement_fix_likelihood(fixed_vec); }
 		// ------------------------------------------------------------------
 	};
 }
 
-bool sample_fixed_xam(void)
+bool sample_random_xam(void)
 {
 	bool   ok = true;
 	double inf = std::numeric_limits<double>::infinity();
@@ -145,34 +118,22 @@ bool sample_fixed_xam(void)
 	size_t n_data   = 10;
 	size_t n_fixed  = 2;
 	size_t n_random = n_data;
-	vector<double>
-		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
-	fixed_lower[0] = - inf; fixed_in[0] = 2.0; fixed_upper[0] = inf;
-	fixed_lower[1] = .01;   fixed_in[1] = 0.5; fixed_upper[1] = inf;
-	//
-	// explicit constriants (in addition to l1 terms)
-	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
 	//
 	vector<double> data(n_data), random_in(n_random);
 	for(size_t i = 0; i < n_data; i++)
 	{	data[i]       = double(i + 1);
-		random_in[i] = 0.0;
+		random_in[i]    = 0.0;
 	}
+	vector<double> fixed_vec(n_fixed);
+	for(size_t i = 0; i < n_fixed; i++)
+		fixed_vec[i] = double(i + 1);
 
 	// object that is derived from cppad_mixed
 	bool quasi_fixed = true;
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
 	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, A_info, data);
-	mixed_object.initialize(fixed_in, random_in);
+	mixed_object.initialize(fixed_vec, random_in);
 
-	// optimize the fixed effects using quasi-Newton method
-	std::string fixed_options =
-		"Integer print_level               0\n"
-		"String  sb                        yes\n"
-		"String  derivative_test           first-order\n"
-		"String  derivative_test_print_all yes\n"
-		"Numeric tol                       1e-8\n"
-	;
 	std::string random_options =
 		"Integer print_level     0\n"
 		"String  sb              yes\n"
@@ -184,83 +145,54 @@ bool sample_fixed_xam(void)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
 	}
-	// optimize fixed effects
-	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
-		fixed_options,
-		random_options,
-		fixed_lower,
-		fixed_upper,
-		fix_constraint_lower,
-		fix_constraint_upper,
-		fixed_in,
-		random_lower,
-		random_upper,
-		random_in
-	);
 	//
-	// check that none of the constraints are active
-	ok &= solution.fixed_lag.size() == n_fixed;
-	for(size_t i = 0; i < n_fixed; i++)
-		ok &= solution.fixed_lag[i] == 0.0;
-	ok &= solution.fix_con_lag.size() == 0;
-	ok &= solution.ran_con_lag.size() == 0.0;
-	//
-	// corresponding optimal random effects
+	// compute the optimal random effects
 	vector<double> random_opt = mixed_object.optimize_random(
+		random_options, fixed_vec, random_lower, random_upper, random_in
+	);
+	//
+	// sample from the posterior for random effects given fixed effects
+	// and compute the  sample covariance matrix
+	size_t n_sample = 10000;
+	vector<double> sample(n_sample * n_random);
+	mixed_object.sample_random(
+		sample,
 		random_options,
-		solution.fixed_opt,
+		fixed_vec,
 		random_lower,
 		random_upper,
 		random_in
 	);
-	//
-	// compute corresponding information matrix
-	CppAD::mixed::sparse_mat_info
-	information_info = mixed_object.information_mat(solution, random_opt);
-	//
-	// sample from the posterior for fixed effects
-	size_t n_sample = 10000;
-	CppAD::vector<double> sample( n_sample * n_fixed );
-	mixed_object.sample_fixed(
-		sample,
-		information_info,
-		solution,
-		fixed_lower,
-		fixed_upper,
-		random_opt
-	);
-	//
-	typedef Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > matrix;
-	//
-	// compute sample covariance matrix
-	matrix sample_cov = matrix::Zero(n_fixed, n_fixed);
-	for(size_t i = 0; i < n_sample; i++)
-	{	matrix diff(n_fixed, 1);
-		for(size_t j = 0; j < n_fixed; j++)
-			diff(j, 0) = sample[ i * n_fixed + j] - solution.fixed_opt[j];
-		sample_cov += diff * diff.transpose();
+	vector<double> sample_cov(n_random * n_random);
+	for(size_t i = 0; i < n_random; i++)
+		for(size_t j = 0; j < n_random; j++)
+			sample_cov[i * n_random + j] = 0;
+	for(size_t i_sample = 0; i_sample < n_sample; i_sample++)
+	{	vector<double> diff(n_random);
+		for(size_t j = 0; j < n_random; j++)
+			diff[j] = sample[i_sample * n_random + j] - random_opt[j];
+		for(size_t i = 0; i < n_random; i++)
+			for(size_t j = 0; j < n_random; j++)
+				sample_cov[i * n_random + j] +=
+					diff[i] * diff[j] / double(n_sample);
 	}
-	sample_cov *= 1.0 / double(n_sample);
 	//
-	matrix info_mat(n_fixed, n_fixed);
-	size_t K = ( n_fixed * (n_fixed + 1) ) / 2;
-	ok &= K == information_info.row.size();
-	for(size_t k = 0; k < K; k++)
-	{	size_t i = information_info.row[k];
-		size_t j = information_info.col[k];
-		info_mat(i, j) = information_info.val[k];
-		info_mat(j, i) = information_info.val[k];
-	}
-	matrix cov_mat = info_mat.inverse();
-	//
-	for(size_t i = 0; i < n_fixed; i++)
-	{	for(size_t j = 0; j < n_fixed; j++)
-		{	double value = sample_cov(i, j);
-			double check = cov_mat(i, j);
-			double scale = std::sqrt( cov_mat(i, i) * cov_mat(j, j) );
-			ok &= std::fabs(value - check) / scale < .05;
+	// The observed information (for the random effects) is diagnal and
+	// the (i, i) entry is the second partial w.r.t. u[i] of
+	//	0.5 * ( (y[i] - theta[0] - u[i])^2 / theta[1]^2 + u[i]^2  )
+	double check   = 1.0 / (fixed_vec[1] * fixed_vec[1]) + 1.0;
+	check          = 1.0 / check;
+	double max_err = 0.0;
+	for(size_t i = 0; i < n_random; i++)
+	{	for(size_t j = 0; j < n_random; j++)
+		{	double value = sample_cov[i * n_random + j];
+			if( i == j )
+				max_err = std::max(max_err, fabs(value - check) / check);
+			else
+				max_err = std::max(max_err, fabs(value) / check);
 		}
 	}
+	std::cout << "max_err = " << max_err << std::endl;
 	//
 	if( ! ok )
 		std::cout << "\nrandom_seed = " << random_seed << "\n";

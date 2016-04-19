@@ -32,6 +32,9 @@ $codei%mixed_object%.sample_fixed(
 	%random_opt%
 )%$$
 
+$head Public$$
+This $code cppad_mixed$$ member function is $cref public$$.
+
 $head Purpose$$
 This routine draw samples from
 the asymptotic posterior distribution for the
@@ -184,6 +187,12 @@ we have
 $latex \[
 	D = C - C E^\R{T} \left( E C E^\R{T} \right)^{-1}  E C
 \] $$
+
+$children%example/user/sample_fixed_xam.cpp
+%$$
+$head Example$$
+The file $cref sample_fixed_xam.cpp$$ is an example
+and test of $code sample_fixed$$.
 
 $end
 ------------------------------------------------------------------------------

@@ -27,6 +27,10 @@ $$
 $head Syntax$$
 $icode%rank% = undetermined(%A%, %b%, %tol%, %D%, %I%, %C%, %e%)%$$
 
+$head Private$$
+This function is an implementation detail and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
 $head Purpose$$
 We are give a matrix $latex A \in \B{R}^{m \times n}$$
 and a vector $latex b \in \B{R}^m$$,
@@ -135,6 +139,12 @@ $codei%
 %$$
 and it is the rank of the matrix to tolerance
 $cref/tol/undetermined/tol/$$.
+
+$children%example/private/undetermined_xam.cpp
+%$$
+$head Example$$
+The file $cref undetermined_xam.cpp$$ is an example
+and test of $code undetermined$$.
 
 $end
 ------------------------------------------------------------------------------

@@ -30,6 +30,10 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 04-19$$
+Add $cref sample_random$$ for sampling the posterior of the random
+effects given the fixed effects.
+
 $head 04-18$$
 Advance to newer version of CppAD; (must rerun $code bin/install_cppad.sh$$).
 This fixed the remaining warnings when building a release version.

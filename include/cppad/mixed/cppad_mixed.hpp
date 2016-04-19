@@ -266,9 +266,10 @@ $srccode%cpp% */
 $head sample_random$$
 $cref sample_random$$, $title sample_random$$.
 $srccode%cpp% */
-	CppAD::vector<double> sample_random(
-		const d_vector&                      fixed_vec            ,
+	void sample_random(
+		d_vector&                            sample               ,
 		const std::string&                   random_options       ,
+		const d_vector&                      fixed_vec            ,
 		const d_vector&                      random_lower         ,
 		const d_vector&                      random_upper         ,
 		const d_vector&                      random_in

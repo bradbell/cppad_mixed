@@ -64,6 +64,7 @@ extern bool ran_objcon_hes_xam(void);
 extern bool ran_obj_eval_xam(void);
 extern bool ran_obj_jac_xam(void);
 extern bool sample_fixed_xam(void);
+extern bool sample_random_xam(void);
 extern bool update_factor_xam(void);
 extern bool undetermined_xam(void);
 
@@ -137,6 +138,7 @@ int main(void)
 	RUN(ran_obj_eval_xam);
 	RUN(ran_obj_jac_xam);
 	RUN(sample_fixed_xam);
+	RUN(sample_random_xam);
 	RUN(undetermined_xam);
 	RUN(update_factor_xam);
 	// This comment also expected by bin/test_one.sh
