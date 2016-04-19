@@ -15,6 +15,7 @@ $spell
 	eigen
 	optimizer
 	cppad
+	Cholesky
 $$
 
 $section CppAD Mixed Wish List$$
@@ -34,8 +35,10 @@ $cref fix_like_jac$$,
 $cref ran_objcon_hes$$.
 
 
-$head Statistics of Estimates$$
-Use two Newton steps for asymptotic statistic calculations.
+$head sample_random$$
+It would be much more efficient if the $cref sample_random$$
+routine used the Cholesky factor $latex f_uu ( \theta , u )$$ to
+simulate values instead of inverting and then computing a Cholesky factor.
 
 $head Second Order Method$$
 The second order method,
