@@ -192,7 +192,6 @@ $end
 # include <Eigen/LU>
 # include <Eigen/Cholesky>
 # include <cppad/mixed/cppad_mixed.hpp>
-# include <cppad/mixed/undetermined.hpp>
 # include <cppad/mixed/manage_gsl_rng.hpp>
 # include <gsl/gsl_randist.h>
 
@@ -368,7 +367,7 @@ void cppad_mixed::sample_fixed(
 	// -----------------------------------------------------------------------
 	for(size_t i_sample = 0; i_sample < n_sample; i_sample++)
 	{	double_vec w(n_fixed_);
-		// simulate a normal with mean zero and variance one
+		// simulate a normal with mean zero and variance sqrt{D(j,j)}
 		for(size_t j = 0; j < n_fixed_; j++)
 			w[j] = diag_root[j] * gsl_ran_gaussian(get_gsl_rng(), 1.0);
 		// multily by Cholesky factor

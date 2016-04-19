@@ -180,8 +180,7 @@ $srccode%cpp% */
 /* %$$
 
 $head constructor$$
-Construct an $code cppad_mixed$$ derived class object; see
-$cref derived_ctor$$.
+$cref derived_ctor$$, $title derived_ctor$$.
 $srccode%cpp% */
 	cppad_mixed(
 		size_t                                  n_fixed   ,
@@ -210,8 +209,7 @@ $comment */
 	{ }
 /* $$
 $head initialize$$
-Directly after construction, use this function to initialize
-the derived class object; see $cref initialize$$.
+$cref initialize$$, $title initialize$$
 $srccode%cpp% */
 	std::map<std::string, size_t> initialize(
 		const d_vector&                       fixed_vec  ,
@@ -219,8 +217,7 @@ $srccode%cpp% */
 	);
 /* %$$
 $head optimize_random$$
-Given the fixed effects, optimize with respect to the random effects;
-see  $cref optimize_random$$.
+$cref optimize_random$$, $title optimize_random$$.
 $srccode%cpp% */
 	d_vector optimize_random(
 		const std::string& options      ,
@@ -231,8 +228,7 @@ $srccode%cpp% */
 	);
 /* %$$
 $head optimize_fixed$$
-Optimize the total objective with respect to the fixed effects;
-see  $cref optimize_fixed$$.
+$cref optimize_fixed$$, $title optimize_fixed$$.
 $srccode%cpp% */
 	CppAD::mixed::fixed_solution optimize_fixed(
 		const std::string& fixed_options    ,
@@ -248,7 +244,7 @@ $srccode%cpp% */
 	);
 /* %$$
 $head information_mat$$
-Compute the observed information matrix; see  $cref information_mat$$.
+$cref information_mat$$, $title information_mat$$.
 $srccode%cpp% */
 	CppAD::mixed::sparse_mat_info information_mat(
 		const CppAD::mixed::fixed_solution&  solution             ,
@@ -256,7 +252,7 @@ $srccode%cpp% */
 	);
 /* %$$
 $head sample_fixed$$
-Compute the observed information matrix; see  $cref sample_fixed$$.
+$cref sample_fixed$$, $title sample_fixed$$.
 $srccode%cpp% */
 	void sample_fixed(
 		d_vector&                            sample               ,
@@ -265,6 +261,17 @@ $srccode%cpp% */
 		const d_vector&                      fixed_lower          ,
 		const d_vector&                      fixed_upper          ,
 		const d_vector&                      random_opt
+	);
+/* %$$
+$head sample_random$$
+$cref sample_random$$, $title sample_random$$.
+$srccode%cpp% */
+	CppAD::vector<double> sample_random(
+		const d_vector&                      fixed_vec            ,
+		const std::string&                   random_options       ,
+		const d_vector&                      random_lower         ,
+		const d_vector&                      random_upper         ,
+		const d_vector&                      random_in
 	);
 /* %$$
 $childtable%src/derived_ctor.omh
@@ -276,6 +283,7 @@ $childtable%src/derived_ctor.omh
 	%src/optimize_fixed.cpp
 	%src/eigen/information_mat.cpp
 	%src/eigen/sample_fixed.cpp
+	%src/eigen/sample_random.cpp
 	%src/ran_likelihood_jac.omh
 	%src/ran_likelihood_hes.omh
 %$$
