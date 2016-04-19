@@ -88,7 +88,10 @@ namespace {
 				vec[0] += log(sqrt_2pi * sigma) + res * res / Float(2.0);
 
 				// p(u_i | theta)
-				vec[0] += log(sqrt_2pi) + u[i] * u[i] / Float(2.0);
+				Float sq = u[i] * u[i];
+				if( i == 0 )
+					sq = (u[0] + u[1]) * (u[0] + u[1]);
+				vec[0] += log(sqrt_2pi) + sq / Float(2.0);
 			}
 			return vec;
 		}
@@ -177,22 +180,29 @@ bool sample_random_xam(void)
 					diff[i] * diff[j] / double(n_sample);
 	}
 	//
-	// The observed information (for the random effects) is diagnal and
-	// the (i, i) entry is the second partial w.r.t. u[i] of
-	//	0.5 * ( (y[i] - theta[0] - u[i])^2 / theta[1]^2 + u[i]^2  )
-	double check   = 1.0 / (fixed_vec[1] * fixed_vec[1]) + 1.0;
-	check          = 1.0 / check;
+	// For i > 1, the terms involving u[i] is
+	//	  0.5 * ( (y[i] - theta[0] - u[i])^2 / theta[1]^2 + u[i]^2  )
+	// The terms involving u[0] and u[1] are
+	//	  0.5 * ( (y[1] - theta[0] - u[1])^2 / theta[1]^2 + u[1]^2  )
+	//	+ 0.5 * ( (y[0] - theta[0] - u[0])^2 / theta[1]^2 + (u[0]+u[1])^2  )
+	double diag = 1.0 / (fixed_vec[1] * fixed_vec[1]) + 1.0;
+	typedef Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > double_mat;
+	double_mat info_mat = double_mat::Zero(n_random, n_random);
+	for(size_t i = 0; i < n_random; i++)
+		info_mat(i, i) = diag;
+	info_mat(0, 1)  = 1.0;
+	info_mat(1, 0)  = 1.0;
+	info_mat(1, 1) += 1.0;
+	//
+	double_mat cov_mat = info_mat.inverse();
 	double max_err = 0.0;
 	for(size_t i = 0; i < n_random; i++)
 	{	for(size_t j = 0; j < n_random; j++)
 		{	double value = sample_cov[i * n_random + j];
-			if( i == j )
-				max_err = std::max(max_err, fabs(value - check) / check);
-			else
-				max_err = std::max(max_err, fabs(value) / check);
+			double check = cov_mat(i, j);
+			max_err = std::max(max_err, fabs(value - check) / diag);
 		}
 	}
-	std::cout << "max_err = " << max_err << std::endl;
 	//
 	if( ! ok )
 		std::cout << "\nrandom_seed = " << random_seed << "\n";
