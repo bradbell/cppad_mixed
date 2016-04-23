@@ -30,6 +30,12 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 04-23$$
+There was bug whereby the $cref/solution/optimize_fixed/solution/$$
+returned by $code optimize_fixed$$ would have non-zero values for
+$cref/fixed_lag/fixed_solution/fixed_lag/$$ that should have been zero.
+This has been fixed.
+
 $head 04-19$$
 Add $cref sample_random$$ for sampling the posterior of the random
 effects given the fixed effects.

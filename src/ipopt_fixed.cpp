@@ -1797,8 +1797,12 @@ $end
 		}
 		// sum += z_U[j] - z_L[j]; does not work because
 		// Ipopt does not seem to set z_U[j] and z_L[j] accuractely
-		double scale = std::fabs( (1.0 + tol) * x[j] );
-		bool at_lower = x[j] - fixed_lower_[j] <= scale;
+		double scale = std::fabs( x[j] );
+		if( fixed_lower_[j] != - inf )
+			scale = std::max(scale, std::fabs( fixed_lower_[j] ) );
+		if( fixed_upper_[j] != + inf )
+			scale = std::max(scale, std::fabs( fixed_upper_[j] ) );
+		bool at_lower = x[j] - fixed_lower_[j] <= scale * tol;
 		solution_.fixed_lag[j] = 0.0;
 		if( at_lower )
 		{	if( sum > 0 )
@@ -1806,7 +1810,7 @@ $end
 				sum = 0.0;
 			}
 		}
-		bool at_upper = fixed_upper_[j] - x[j] <= scale;
+		bool at_upper = fixed_upper_[j] - x[j] <= scale * tol;
 		if( at_upper )
 		{	if( sum <  0 )
 			{	solution_.fixed_lag[j] = - sum;

@@ -18,6 +18,7 @@ extern bool binomial(void);
 extern bool check_grad(void);
 extern bool delta_ran_obj(void);
 extern bool der_var_hes(void);
+extern bool fixed_lag(void);
 extern bool max_iter_neg(void);
 extern bool n_mixture(void);
 extern bool no_fix_likelihood(void);
@@ -67,6 +68,7 @@ int main(void)
 	RUN(check_grad);
 	RUN(delta_ran_obj);
 	RUN(der_var_hes);
+	RUN(fixed_lag);
 	RUN(max_iter_neg);
 	RUN(n_mixture);
 	RUN(no_fix_likelihood);
