@@ -122,7 +122,7 @@ $latex \hat{u} ( \theta )$$.
 The variance for each call is the inverse of the observed information
 matrix; i.e.
 $latex \[
-	f[ \theta , \hat{u} ( \theta ) ] ^{-1}
+	f_{uu} [ \theta , \hat{u} ( \theta ) ] ^{-1}
 \] $$
 This normal distribution is truncated to be within the limits
 $icode random_lower$$, $icode random_upper$$.
