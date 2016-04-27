@@ -1757,9 +1757,9 @@ $end
 		{	// both limits are infinity
 			lam_j = 0.0;
 		}
-		if( c_vec_tmp_[j] - fix_constraint_lower_[j] < tol * scale )
+		if( c_vec_tmp_[j] - fix_constraint_lower_[j] < tol * 10. * scale )
 			lam_j = std::min(lam_j, 0.0);
-		if( fix_constraint_upper_[j] - c_vec_tmp_[j] < tol * scale )
+		if( fix_constraint_upper_[j] - c_vec_tmp_[j] < tol * 10. * scale )
 			lam_j = std::max(lam_j, 0.0);
 		//
 		solution_.fix_con_lag[j] = lam_j;
@@ -1802,7 +1802,7 @@ $end
 			scale = std::max(scale, std::fabs( fixed_lower_[j] ) );
 		if( fixed_upper_[j] != + inf )
 			scale = std::max(scale, std::fabs( fixed_upper_[j] ) );
-		bool at_lower = x[j] - fixed_lower_[j] <= scale * tol;
+		bool at_lower = x[j] - fixed_lower_[j] <= scale * 10. * tol;
 		solution_.fixed_lag[j] = 0.0;
 		if( at_lower )
 		{	if( sum > 0 )
@@ -1810,7 +1810,7 @@ $end
 				sum = 0.0;
 			}
 		}
-		bool at_upper = fixed_upper_[j] - x[j] <= scale * tol;
+		bool at_upper = fixed_upper_[j] - x[j] <= scale * 10. * tol;
 		if( at_upper )
 		{	if( sum <  0 )
 			{	solution_.fixed_lag[j] = - sum;

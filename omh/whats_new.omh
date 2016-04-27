@@ -30,6 +30,22 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 04-27$$
+$list number$$
+Add more discussion about the connection between the Lagrange multipliers
+and the fixed effects bounds in the
+$cref/fixed_solution/fixed_solution/fixed_lag/Bounds/$$ section.
+$lnext
+Relax the tolerance used by $code cppad_mixed$$
+when checking if a fixed effect
+$cref/bound/fixed_solution/fixed_lag/Bounds/$$
+or a fixed constraint
+$cref/bound/fixed_solution/fix_con_lag/Bounds/$$
+is active. This should give better detection.
+$lend
+
+
+
 $head 04-23$$
 There was bug whereby the $cref/solution/optimize_fixed/solution/$$
 returned by $code optimize_fixed$$ would have non-zero values for
