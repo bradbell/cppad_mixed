@@ -20,6 +20,16 @@ $$
 
 $section CppAD Mixed Wish List$$
 
+$head sample_random$$
+$list number$$
+It would be much more efficient if the $cref sample_random$$
+routine used the Cholesky factor $latex f_{uu} ( \theta , u )$$ to
+simulate values instead of inverting and then computing a Cholesky factor.
+$lnext
+Use the current simulation as a proposal density for a Metropolis
+sampling of the random effects (because they have small sample statistics).
+$lend
+
 $head User Example$$
 Move user examples below specific routines, instead of in
 $cref user$$ section.
@@ -33,12 +43,6 @@ $cref fix_con_jac$$,
 $cref fix_like_hes$$,
 $cref fix_like_jac$$,
 $cref ran_objcon_hes$$.
-
-
-$head sample_random$$
-It would be much more efficient if the $cref sample_random$$
-routine used the Cholesky factor $latex f_{uu} ( \theta , u )$$ to
-simulate values instead of inverting and then computing a Cholesky factor.
 
 $head Second Order Method$$
 The second order method,
