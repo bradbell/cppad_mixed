@@ -22,10 +22,10 @@ $$
 $section Cholmod Posterior Simulations Using Sparse Hessian of Likelihood$$
 
 $head Problem$$
-Suppose that $latex S$$ is a sparse positive definite matrix and
+Suppose that $latex H$$ is a sparse positive definite matrix and
 the factorization
 $latex \[
-	L D L^\R{T} = P S P^\R{T}
+	L D L^\R{T} = P H P^\R{T}
 \] $$
 where $latex L$$ is lower triangular, $latex D$$ is diagonal,
 and $latex P$$ is a permutation matrix.
@@ -42,7 +42,7 @@ See $cref/sparse observed information matrix
 $head Example$$
 Solve for this example
 $latex \[
-	S = \left( \begin{array}{ccc}
+	H = \left( \begin{array}{ccc}
 		1 & 1 & 0 \\
 		1 & 5 & 0 \\
 		0 & 0 & 4
@@ -141,22 +141,22 @@ bool cholmod_solve2_sim(void)
 		cholmod_allocate_triplet(nrow, ncol, nzmax, T_stype, T_xtype, &com);
 	ok &= T->nnz ==  0;
 
-	// triplet entries corresponding to lower triangle of S
-	add_T_entry(T, 0, 0, 1.); // S_00 = 1
-	add_T_entry(T, 1, 0, 2.); // S_10 = 2
-	add_T_entry(T, 1, 1, 5.); // S_11 = 5
-	add_T_entry(T, 2, 2, 4.); // S_22 = 4
+	// triplet entries corresponding to lower triangle of H
+	add_T_entry(T, 0, 0, 1.); // H_00 = 1
+	add_T_entry(T, 1, 0, 2.); // H_10 = 2
+	add_T_entry(T, 1, 1, 5.); // H_11 = 5
+	add_T_entry(T, 2, 2, 4.); // H_22 = 4
 	ok &= T->nnz ==  4;
 
-	// convert triplet to sparse representation of S
-	cholmod_sparse* S = cholmod_triplet_to_sparse(T, 0, &com);
+	// convert triplet to sparse representation of H
+	cholmod_sparse* H = cholmod_triplet_to_sparse(T, 0, &com);
 
 	// factor the matrix
-	cholmod_factor *L = cholmod_analyze(S, &com);
+	cholmod_factor *L = cholmod_analyze(H, &com);
 # ifndef NDEBUG
 	int flag =
 # endif
-	cholmod_factorize(S, L, &com);
+	cholmod_factorize(H, L, &com);
 
 	// pointer the the in index vectors for the factor
 	int* L_p    = (int *)    L->p;
@@ -297,7 +297,7 @@ bool cholmod_solve2_sim(void)
 
 	// free memory
 	cholmod_free_triplet(&T,    &com);
-	cholmod_free_sparse( &S,    &com);
+	cholmod_free_sparse( &H,    &com);
 	cholmod_free_factor( &L,    &com);
 	cholmod_free_sparse( &Bset, &com);
 	cholmod_free_sparse( &Xset, &com);
