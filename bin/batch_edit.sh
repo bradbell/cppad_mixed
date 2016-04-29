@@ -12,19 +12,18 @@
 new_directories='
 '
 rename_files='
-	test_more/check_grad.cpp
+	example/private/cholmod_solve2_xam.cpp
 '
 spell_files='
 '
 no_change_files='
 '
 #
-rename_cmd='s|check_grad.cpp|check_derivative.cpp|'
+rename_cmd='s|cholmod_solve2_xam|cholmod_solve2_a|'
 spell_cmd='s|^$spell|&|'
 #
 cat << EOF > junk.sed
-s|check_grad_f|check_derivative|
-s|check_grad.cpp|check_derivative.cpp|
+s|cholmod_solve2_xam|cholmod_solve2_a|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]
