@@ -254,7 +254,7 @@ $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Purpose$$
 This functions solves the linear equation
-$latex A x = b$$ where $latex A$$ is the positive definite matrix
+$latex H x = b$$ where $latex H$$ is the positive definite matrix
 that has been factored,
 $latex b$$ is a known column vector,
 and $latex x$$ is unknown.
