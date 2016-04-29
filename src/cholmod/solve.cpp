@@ -32,7 +32,7 @@ $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Purpose$$
 This function solves the linear equation
-$latex A x = b$$ where $latex A$$ is the positive definite matrix
+$latex H x = b$$ where $latex H$$ is the positive definite matrix
 that has been factored,
 $latex b$$ is a known column vector,
 and $latex x$$ is unknown.
@@ -134,7 +134,7 @@ void cholmod::solve(
 	for(size_t k = 0; k < row.size(); k++)
 		rhs_set_i[k] = (int) row[k];
 
-	// solve the linear equation A * sol = rhs
+	// solve the linear equation H * sol = rhs
 	int sys = CHOLMOD_A;
 # ifndef NDEBUG
 	int flag =

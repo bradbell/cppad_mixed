@@ -103,16 +103,16 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 bool cholmod::update( const CppAD::mixed::sparse_mat_info& hes_info )
 {
 	// set the values in pos_matrix_
-	double* A_x = (double *) pos_matrix_->x;
-	int*    A_p = (int *)    pos_matrix_->p;
+	double* H_x = (double *) pos_matrix_->x;
+	int*    H_p = (int *)    pos_matrix_->p;
 # ifndef NDEBUG
-	int*    A_i = (int *)    pos_matrix_->i;
+	int*    H_i = (int *)    pos_matrix_->i;
 # endif
 	for(size_t j = 0; j < nrow_; j++)
-	{	for(size_t k = (size_t) A_p[j]; k < (size_t) A_p[j+1]; k++)
-		{	assert( hes_info.row[k] == (size_t) A_i[k] );
+	{	for(size_t k = (size_t) H_p[j]; k < (size_t) H_p[j+1]; k++)
+		{	assert( hes_info.row[k] == (size_t) H_i[k] );
 			assert( hes_info.col[k] == j );
-			A_x[k] = hes_info.val[k];
+			H_x[k] = hes_info.val[k];
 		}
 	}
 	// set factor_ to LDL^T factorization for this value of Hessian

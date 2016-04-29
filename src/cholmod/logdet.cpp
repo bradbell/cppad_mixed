@@ -60,8 +60,8 @@ $end
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 double cholmod::logdet(void) const
-{	// factorization A = LDL'
-	double logdet_A = 0.0;
+{	// factorization P H P' = L D L'
+	double logdet_H = 0.0;
 	int*    L_p  = (int *) factor_->p;
 	double* L_x  = (double *) factor_->x;
 # ifndef NDEBUG
@@ -73,9 +73,9 @@ double cholmod::logdet(void) const
 		// j-th element on diagonal of D in factorization
 		double dj = L_x[ L_p[j] ];
 		assert( dj > 0.0 );
-		logdet_A += std::log(dj);
+		logdet_H += std::log(dj);
 	}
-	return logdet_A;
+	return logdet_H;
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

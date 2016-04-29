@@ -17,12 +17,12 @@ $$
 $section Example Using cholmod_solve With a Non-positive Matrix$$
 
 $head Problem Description$$
-Solve for $latex x$$ in the equation $latex A x = b$$ where $latex A$$
+Solve for $latex x$$ in the equation $latex H x = b$$ where $latex H$$
 is defined below and $latex b$$ is a column of the identity matrix.
 Hence the solution $latex x$$ is the corresponding column of
-$latex A^{-1}$$ which for this case is equal to $latex A$$.
+$latex H^{-1}$$ which for this case is equal to $latex H$$.
 $latex \[
-	A = \left( \begin{array}{cc}
+	H = \left( \begin{array}{cc}
 		1 & 0 \\
 		0 & -1
 	\end{array} \right)
@@ -58,9 +58,9 @@ bool cholmod_solve_xam(void)
 {	bool ok    = true;
 	double eps = 10. * std::numeric_limits<double>::epsilon();
 
-	// Elements for the the matrix A
+	// Elements for the the matrix H
 	size_t nrow = 2;
-	double A_data[] = {
+	double H_data[] = {
 		 1.0,   0.0,
 		 0.0,  -1.0
 	};
@@ -84,22 +84,22 @@ bool cholmod_solve_xam(void)
 		cholmod_allocate_triplet(nrow, ncol, nzmax, T_stype, T_xtype, &com);
 	ok &= T->nnz ==  0;
 
-	// triplet entries corresponding to lower triangle of A
+	// triplet entries corresponding to lower triangle of H
 	for(size_t i = 0; i < nrow; i++)
 	{	for(size_t j = 0; j <= i; j++)
-			add_T_entry(T, i, j, A_data[i * ncol + j] );
+			add_T_entry(T, i, j, H_data[i * ncol + j] );
 	}
 	ok &= T->nnz == 3;
 
-	// convert triplet to sparse representation of A
-	cholmod_sparse* A = cholmod_triplet_to_sparse(T, 0, &com);
+	// convert triplet to sparse representation of H
+	cholmod_sparse* H = cholmod_triplet_to_sparse(T, 0, &com);
 
 	// factor the matrix
-	cholmod_factor *L = cholmod_analyze(A, &com);
+	cholmod_factor *L = cholmod_analyze(H, &com);
 # ifndef NDEBUG
 	int flag =
 # endif
-	cholmod_factorize(A, L, &com);
+	cholmod_factorize(H, L, &com);
 
 	// check properties of factor
 	assert( flag     == CHOLMOD_TRUE );  // return flag OK
@@ -124,8 +124,8 @@ bool cholmod_solve_xam(void)
 
 		// check solution
 		for(size_t i = 0; i < nrow; i++)
-		{	// inv(A) = A
-			double check = A_data[ i * ncol + j];
+		{	// inv(H) = H
+			double check = H_data[ i * ncol + j];
 			if( check == 0.0 )
 				ok &= X_x[i] == 0.0;
 			else
@@ -138,7 +138,7 @@ bool cholmod_solve_xam(void)
 
 	// free memory
 	cholmod_free_triplet(&T,    &com);
-	cholmod_free_sparse( &A,    &com);
+	cholmod_free_sparse( &H,    &com);
 	cholmod_free_factor( &L,    &com);
 	cholmod_free_dense(  &B,    &com);
 
