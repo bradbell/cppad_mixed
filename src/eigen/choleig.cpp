@@ -232,7 +232,7 @@ double choleig::logdet(void) const
 }
 /*
 -----------------------------------------------------------------------------
-$begin choleig_solve$$
+$begin choleig_solve_H$$
 $spell
 	choleig
 	chol_ran_hes

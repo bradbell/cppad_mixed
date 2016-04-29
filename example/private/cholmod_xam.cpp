@@ -87,7 +87,7 @@ $codep
 	cholmod_obj.logdet(H_info);
 $$
 
-$head solve$$
+$head solve_H$$
 See the following under Source Code below:
 $codep
 	cholmod_obj.solve_H(row, val_in, val_out);

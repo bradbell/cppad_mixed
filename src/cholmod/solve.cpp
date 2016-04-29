@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin cholmod_solve$$
+$begin cholmod_solve_H$$
 $spell
 	rhs
 	cholesky
@@ -89,7 +89,7 @@ $codei%
 
 
 $head Example$$
-The file $cref/cholmod_xam.cpp/cholmod_xam.cpp/solve/$$ contains an
+The file $cref/cholmod_xam.cpp/cholmod_xam.cpp/solve_H/$$ contains an
 example and test that uses this function.
 
 $end

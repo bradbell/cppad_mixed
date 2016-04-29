@@ -87,7 +87,7 @@ It is packed, sorted, not symmetric, and just a sparsity pattern.
 There are $code nrow_$$
 possibly non-zero elements, but which elements
 are non-zero is not specified
-(expected to be set for each $cref cholmod_solve$$ usage).
+(expected to be set for each $cref cholmod_solve_H$$ usage).
 
 $head Example$$
 The file $cref/cholmod_xam.cpp/cholmod_xam.cpp/init/$$ contains an
