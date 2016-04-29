@@ -23,7 +23,7 @@ $$
 $section Solve Linear Equations Using Cholesky Factor$$
 
 $head Syntax$$
-$codei%%cholmod_obj%.solve(%row%, %val_in%, %val_out%)%$$
+$codei%%cholmod_obj%.solve_H(%row%, %val_in%, %val_out%)%$$
 
 $head Private$$
 The $cref cholmod$$ class is an
@@ -100,7 +100,7 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-void cholmod::solve(
+void cholmod::solve_H(
 	const CppAD::vector<size_t>& row      ,
 	const CppAD::vector<double>& val_in   ,
 	CppAD::vector<double>&       val_out  )

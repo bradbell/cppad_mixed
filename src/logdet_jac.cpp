@@ -194,7 +194,7 @@ void cppad_mixed::logdet_jac(
 		if( k_start < K )
 		{	val_out.resize( row_solve.size() );
 			//
-			chol_ran_hes_.solve(row_solve, val_in, val_out);
+			chol_ran_hes_.solve_H(row_solve, val_in, val_out);
 			//
 			size_t nrow = row_solve.size();
 			if( row_j_zero )

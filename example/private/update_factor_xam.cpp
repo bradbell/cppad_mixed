@@ -133,7 +133,7 @@ bool update_factor_xam(void)
 		val_b[0] = 1.0;
 		//
 		// x = j-th column of invese of Hessian
-		mixed_object.chol_ran_hes_.solve(row, val_b, val_x);
+		mixed_object.chol_ran_hes_.solve_H(row, val_b, val_x);
 		//
 		double check = theta[j] * theta[j];
 		ok      &= abs( check / val_x[0] - 1.0) <= eps;

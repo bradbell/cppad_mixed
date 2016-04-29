@@ -90,7 +90,7 @@ $$
 $head solve$$
 See the following under Source Code below:
 $codep
-	cholmod_obj.solve(row, val_in, val_out);
+	cholmod_obj.solve_H(row, val_in, val_out);
 $$
 
 $head Source Code$$
@@ -183,7 +183,7 @@ bool cholmod_xam(void)
 			else
 				val_in[k] = 0.0;
 		}
-		cholmod_obj.solve(row, val_in, val_out);
+		cholmod_obj.solve_H(row, val_in, val_out);
 		//
 		for(size_t k = 0; k < row.size(); k++)
 		{	size_t i       = row[k];

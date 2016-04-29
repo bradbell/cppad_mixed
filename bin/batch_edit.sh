@@ -12,7 +12,6 @@
 new_directories='
 '
 rename_files='
-	example/private/cholmod_solve2_xam.cpp
 '
 spell_files='
 '
@@ -23,7 +22,11 @@ rename_cmd='s|cholmod_solve2_xam|cholmod_solve2_a|'
 spell_cmd='s|^$spell|&|'
 #
 cat << EOF > junk.sed
-s|cholmod_solve2_xam|cholmod_solve2_a|
+s|\.solve(|.solve_H(|
+s|void solve(|void solve_H(|
+s|::solve(|::solve_H(|
+s|chol\.solve_H(|chol.solve(|
+s|CppAD::ipopt::solve_H(|CppAD::ipopt::solve(|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

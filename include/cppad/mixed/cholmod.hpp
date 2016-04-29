@@ -96,7 +96,7 @@ public:
 	// log determinant
 	double logdet(void) const;
 	// solve linear equations
-	void solve(
+	void solve_H(
 		const CppAD::vector<size_t>& row      ,
 		const CppAD::vector<double>& val_in   ,
 		CppAD::vector<double>&       val_out

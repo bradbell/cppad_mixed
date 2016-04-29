@@ -177,7 +177,7 @@ $end
 	double_mat cov_mat(n_random_, n_random_);
 	for(size_t j = 0; j < n_random_; j++)
 	{	val_b[j] = 1.0;
-		chol_ran_hes_.solve(row_solve, val_b, val_x);
+		chol_ran_hes_.solve_H(row_solve, val_b, val_x);
 		val_b[j] = 0.0;
 		for(size_t i = 0; i < n_random_; i++)
 			cov_mat(i, j) = val_x[i];

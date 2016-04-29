@@ -245,7 +245,7 @@ $$
 $section Solve Linear Equations Using Cholesky Factor$$
 
 $head Syntax$$
-$codei%%chol_ran_hes%.solve(%row_in%, %val_in%, %row_out%, %val_out%)%$$
+$codei%%chol_ran_hes%.solve_H(%row_in%, %val_in%, %row_out%, %val_out%)%$$
 
 $head Private$$
 The $cref cholmod$$ class is an
@@ -317,7 +317,7 @@ $codei%
 
 $end
 */
-void choleig::solve(
+void choleig::solve_H(
 	const CppAD::vector<size_t>& row_in  ,
 	const CppAD::vector<double>& val_in  ,
 	CppAD::vector<size_t>&       row_out ,

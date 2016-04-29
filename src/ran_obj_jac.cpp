@@ -205,7 +205,7 @@ void cppad_mixed::ran_obj_jac(
 
 		// x = j-th column of - f_{u,u}(theta, u)^{-1} f_{u,theta}(theta, u)
 		val_x.resize( row_solve.size() );
-		chol_ran_hes_.solve(row_solve, val_b, val_x);
+		chol_ran_hes_.solve_H(row_solve, val_b, val_x);
 		//
 		// parial w.r.t fixed effects contribution to total derivative
 		r_fixed[j] =  f_fixed[j] + 0.5 * logdet_fix[j];

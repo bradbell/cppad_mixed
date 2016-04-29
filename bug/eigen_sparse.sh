@@ -29,12 +29,12 @@ int main(void)
     typedef sparse_matrix::InnerIterator                       column_itr;
     //
     int n = 5;
-    sparse_matrix A(n, n), x(n, 1), y(n, 1);
+    sparse_matrix H(n, n), x(n, 1), y(n, 1);
     for(int i = 0; i < n; i++)
-    {   A.insert(i, i) = 1.0;         // n by n identity matrix
+    {   H.insert(i, i) = 1.0;         // n by n identity matrix
         x.insert(i, 0) = double(i);   // transpose of (0, 1, ..., n-1)
     }
-    y = A * x;
+    y = H * x;
     std::cout << "Test if Eignes's sparse matrix multiply stores zeros\\n";
     for(int j = 0; j < y.outerSize(); j++)
     {   for(column_itr itr(y, j); itr; ++itr)
@@ -44,9 +44,9 @@ int main(void)
             std::cout << "y(" << row << "," << col << ")=" << value << "\\n";
         }
     }
-    sparse_cholesky C;  // begin sparse Cholesky solve x = A * y
-    C.analyzePattern(A);
-    C.factorize(A);
+    sparse_cholesky C;  // begin sparse Cholesky solve x = H * y
+    C.analyzePattern(H);
+    C.factorize(H);
     y = C.solve(x);     // end sparse Cholesky solve
     std::cout << "Test if Eignes's sparse Cholesky solve stores zeros\\n";
     for(int j = 0; j < y.outerSize(); j++)
