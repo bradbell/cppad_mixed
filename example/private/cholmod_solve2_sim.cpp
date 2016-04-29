@@ -21,44 +21,28 @@ $$
 
 $section Cholmod Posterior Simulations Using Sparse Hessian of Likelihood$$
 
-$head Purpose$$
-Suppose that $latex A$$ is a sparse positive definite Hessian of
-a likelihood at the maximum likelihood estimate for its unknown parameters.
-The corresponding asymptotic covariance for posterior distribution
-of the parameters is normal with covariance $latex A^{1}$$.
-A vector $latex x$$ with this covariance can be simulated as
+$head Problem$$
+Suppose that $latex S$$ is a sparse positive definite matrix and
+the factorization
 $latex \[
-	x = R b
-\] $$
-where $latex R$$ is defined by $latex A^{-1} = R R^\R{T}$$ and
-$latex b$$ is a normal with mean zero and the identity covariance.
-Suppose we have used $code cholmod$$ to compute the factorization
-$latex \[
-	L D L^\R{T} = P A P^\R{T}
+	L D L^\R{T} = P S P^\R{T}
 \] $$
 where $latex L$$ is lower triangular, $latex D$$ is diagonal,
 and $latex P$$ is a permutation matrix.
-It follows that
+Furthermore, we are given a vector $latex w$$ and wish to compute
 $latex \[
-	A = P^\R{T} L D L^\R{T} P
+	v = P^\R{T} L^{-\R{T}} D^{-1/2} w
 \] $$
-$latex \[
-	A^{-1} = P^\R{T} L^{-\R{T}} D^{-1} L^{-1} P
-\] $$
-$latex \[
-	R = P^\R{T} L^{-\R{T}} D^{-1/2}
-\] $$
-$latex \[
-	x = P^\R{T} L^{-\R{T}} D^{-1/2} b
-\] $$
-A vector $latex x$$ with covariance $latex A^{-1}$$
-can be computed by using this formula where $latex b$$
-is simulated with the identity for its covariance.
+See $cref/sparse observed information matrix
+	/theory
+	/Sparse Observed Information Matrix
+/$$.
+
 
 $head Example$$
 Solve for this example
 $latex \[
-	A = \left( \begin{array}{ccc}
+	S = \left( \begin{array}{ccc}
 		1 & 1 & 0 \\
 		1 & 5 & 0 \\
 		0 & 0 & 4
@@ -99,10 +83,10 @@ $latex \[
 \] $$
 It follows that, for this example
 $latex \[
-	x = L^{-\R{T}} ( b_0 , b_1 , b_2 / 2 )^\R{T}
+	v = L^{-\R{T}} ( w_0 , w_1 , w_2 / 2 )^\R{T}
 \] $$
 $latex \[
-	x = ( b_0 - 2 b_1 , b_1 , b_2 / 2 )^\R{T}
+	v = ( w_0 - 2 w_1 , w_1 , w_2 / 2 )^\R{T}
 \] $$
 
 $head Source Code$$
@@ -157,22 +141,22 @@ bool cholmod_solve2_sim(void)
 		cholmod_allocate_triplet(nrow, ncol, nzmax, T_stype, T_xtype, &com);
 	ok &= T->nnz ==  0;
 
-	// triplet entries corresponding to lower triangle of A
-	add_T_entry(T, 0, 0, 1.); // A_00 = 1
-	add_T_entry(T, 1, 0, 2.); // A_10 = 2
-	add_T_entry(T, 1, 1, 5.); // A_11 = 5
-	add_T_entry(T, 2, 2, 4.); // A_22 = 4
+	// triplet entries corresponding to lower triangle of S
+	add_T_entry(T, 0, 0, 1.); // S_00 = 1
+	add_T_entry(T, 1, 0, 2.); // S_10 = 2
+	add_T_entry(T, 1, 1, 5.); // S_11 = 5
+	add_T_entry(T, 2, 2, 4.); // S_22 = 4
 	ok &= T->nnz ==  4;
 
-	// convert triplet to sparse representation of A
-	cholmod_sparse* A = cholmod_triplet_to_sparse(T, 0, &com);
+	// convert triplet to sparse representation of S
+	cholmod_sparse* S = cholmod_triplet_to_sparse(T, 0, &com);
 
 	// factor the matrix
-	cholmod_factor *L = cholmod_analyze(A, &com);
+	cholmod_factor *L = cholmod_analyze(S, &com);
 # ifndef NDEBUG
 	int flag =
 # endif
-	cholmod_factorize(A, L, &com);
+	cholmod_factorize(S, L, &com);
 
 	// pointer the the in index vectors for the factor
 	int* L_p    = (int *)    L->p;
@@ -215,7 +199,7 @@ bool cholmod_solve2_sim(void)
 	for(size_t i = 0; i < nrow; i++)
 		Bset_i[i] = i;
 
-	// set the vector B = b
+	// set the vector B = w
 	cholmod_dense *B = cholmod_zeros(nrow, 1, T_xtype, &com);
 	double* B_x     = (double *) B->x;
 	for(size_t i = 0; i < nrow; i++)
@@ -235,7 +219,7 @@ bool cholmod_solve2_sim(void)
 	cholmod_dense *X = NULL;
 	cholmod_sparse* Xset = NULL;
 
-	// set B = D^{-1/2} b
+	// set B = D^{-1/2} v
 	for(size_t j = 0; j < ncol; j++)
 	{	// first element for each column is alwasy the diagonal element
 		assert( size_t( L_i [ L_p[j] ] ) == j );
@@ -245,7 +229,7 @@ bool cholmod_solve2_sim(void)
 		B_x[j] = B_x[j] / std::sqrt( dj );
 	}
 
-	// set X = L^-T * D^{-1/2} b
+	// set X = L^-T * D^{-1/2} w
 	int sys = CHOLMOD_Lt;
 # ifndef NDEBUG
 	flag =
@@ -275,13 +259,13 @@ bool cholmod_solve2_sim(void)
 	size_t  ni      = size_t( Xset_p[1] );
 	assert( ni == nrow );
 	//
-	// set B = L^-T * D^{-1/2} b
+	// set B = L^-T * D^{-1/2} w
 	for(size_t k = 0; k < ni; k++)
 	{	size_t i = Xset_i[k];
 		B_x[i]   = X_x[i];
 	}
 
-	// set X = P^T * L^-T * D^{-1/2} b
+	// set X = P^T * L^-T * D^{-1/2} w
 	sys = CHOLMOD_Pt;
 # ifndef NDEBUG
 	flag =
@@ -313,7 +297,7 @@ bool cholmod_solve2_sim(void)
 
 	// free memory
 	cholmod_free_triplet(&T,    &com);
-	cholmod_free_sparse( &A,    &com);
+	cholmod_free_sparse( &S,    &com);
 	cholmod_free_factor( &L,    &com);
 	cholmod_free_sparse( &Bset, &com);
 	cholmod_free_sparse( &Xset, &com);
