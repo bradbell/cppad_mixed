@@ -200,7 +200,7 @@ bool cholmod_solve2_a(void)
 	Bset_p[0]   = 0;
 	Bset_p[1]   = 3;
 
-	// set B to a vector of ones
+	// set B to a vector of zeros
 	cholmod_dense *B = cholmod_zeros(nrow, 1, T_xtype, &com);
 	double* B_x     = (double *) B->x;
 

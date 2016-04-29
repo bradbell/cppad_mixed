@@ -30,6 +30,11 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 04-29$$
+Add an $cref cholmod_solve2_sim.cpp$$, an example that shows
+how to use Cholmod to efficiently sample a distribution that
+has covariance equal to the inverse of a sparse positive definite matrix.
+
 $head 04-27$$
 $list number$$
 Add more discussion about the connection between the Lagrange multipliers

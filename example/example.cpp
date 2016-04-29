@@ -30,6 +30,7 @@ $end
 extern bool abs_density_xam(void);
 extern bool cholmod_solve_xam(void);
 extern bool cholmod_solve2_a(void);
+extern bool cholmod_solve2_sim(void);
 extern bool cholmod_xam(void);
 extern bool data_mismatch_xam(void);
 extern bool derived_ctor_xam(void);
@@ -104,6 +105,7 @@ int main(void)
 	RUN(abs_density_xam);
 	RUN(cholmod_solve_xam);
 	RUN(cholmod_solve2_a);
+	RUN(cholmod_solve2_sim);
 	RUN(cholmod_xam);
 	RUN(data_mismatch_xam);
 	RUN(derived_ctor_xam);

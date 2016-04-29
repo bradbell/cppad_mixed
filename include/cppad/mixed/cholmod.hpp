@@ -50,6 +50,7 @@ $childtable%src/cholmod/constructor.cpp
 	%example/private/cholmod_xam.cpp
 	%example/private/cholmod_solve_xam.cpp
 	%example/private/cholmod_solve2_a.cpp
+	%example/private/cholmod_solve2_sim.cpp
 %$$
 
 $end

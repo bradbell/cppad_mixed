@@ -21,6 +21,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	example.cpp
 	private/cholmod_solve_xam.cpp
 	private/cholmod_solve2_a.cpp
+	private/cholmod_solve2_sim.cpp
 	private/cholmod_xam.cpp
 	ipopt_xam_run.cpp
 	private/eigen_xam.cpp
