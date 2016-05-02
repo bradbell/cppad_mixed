@@ -11,7 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin init_ran_con$$
 $spell
-	choleig
+	ldlt_eigen
 	init
 	cppad
 	const

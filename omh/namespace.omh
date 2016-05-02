@@ -31,7 +31,7 @@ These are $bold not$$ part of the user API.
 $children%include/cppad/mixed/configure.hpp.in
 	%src/manage_gsl_rng.cpp
 	%include/cppad/mixed/sparse_mat_info.hpp
-	%include/cppad/mixed/choleig.hpp
+	%include/cppad/mixed/ldlt_eigen.hpp
 	%include/cppad/mixed/ipopt_fixed.hpp
 	%include/cppad/mixed/triple2eigen.hpp
 	%src/eigen/newton_step.cpp
@@ -56,7 +56,7 @@ These declarations are implementation details and not part of the
 $code CppAD::mixed$$ user API
 (and may change with time).
 $table
-$rref choleig$$
+$rref ldlt_eigen$$
 $rref cholmod$$
 $rref ipopt_fixed$$
 $rref newton_step$$

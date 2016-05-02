@@ -10,26 +10,26 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 
 # include <Eigen/Sparse>
-# include <cppad/mixed/choleig.hpp>
+# include <cppad/mixed/ldlt_eigen.hpp>
 # include <cppad/mixed/triple2eigen.hpp>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // constructor
-choleig::choleig(size_t n_random)
+ldlt_eigen::ldlt_eigen(size_t n_random)
 : n_random_(n_random)
-{	ptr_ = new eigen_cholesky; }
+{	ptr_ = new eigen_ldlt; }
 
 // destructor
-choleig::~choleig(void)
+ldlt_eigen::~ldlt_eigen(void)
 {	delete ptr_; }
 
 /*
 ------------------------------------------------------------------------------
-$begin choleig_init$$
+$begin ldlt_eigen_init$$
 $spell
 	pos
-	choleig
+	ldlt_eigen
 	Cholesky
 	chol_ran_hes
 	CppAD
@@ -44,14 +44,14 @@ $icode%pos% = chol_ran_hes%.init(%hes_info%)
 %$$
 
 $head Private$$
-The $code choleig$$ class is an
-$cref/implementation detail/choleig/Private/$$ and not part of the
+The $code ldlt_eigen$$ class is an
+$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head chol_ran_hes$$
 This object has prototype
 $codei%
-	CppAD::mixed::choleig %chol_ran_hes%
+	CppAD::mixed::ldlt_eigen %chol_ran_hes%
 %$$
 
 $head hes_info$$
@@ -69,7 +69,7 @@ $cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
 
 $end
 */
-void choleig::init( const CppAD::mixed::sparse_mat_info& hes_info )
+void ldlt_eigen::init( const CppAD::mixed::sparse_mat_info& hes_info )
 {	assert( hes_info.row.size() == hes_info.col.size() );
 	CppAD::vector<double> not_used(0);
 	//
@@ -86,9 +86,9 @@ void choleig::init( const CppAD::mixed::sparse_mat_info& hes_info )
 }
 /*
 ------------------------------------------------------------------------------
-$begin choleig_update$$
+$begin ldlt_eigen_update$$
 $spell
-	choleig
+	ldlt_eigen
 	Cholesky
 	xam
 	const
@@ -106,21 +106,21 @@ $head Syntax$$
 $icode%chol_ran_hes%.update(%hes_info%)%$$
 
 $head Private$$
-The $cref choleig$$ class is an
-$cref/implementation detail/choleig/Private/$$ and not part of the
+The $cref ldlt_eigen$$ class is an
+$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Purpose$$
-This routine updates the $cref choleig$$ factorization
+This routine updates the $cref ldlt_eigen$$ factorization
 for new values in the square positive definite matrix.
 
 $head chol_ran_hes$$
 This object has prototype
 $codei%
-	CppAD::mixed::choleig %chol_ran_hes%
+	CppAD::mixed::ldlt_eigen %chol_ran_hes%
 %$$
 In addition, it must have a previous call to
-$cref choleig_init$$.
+$cref ldlt_eigen_init$$.
 
 $head hes_info$$
 This argument has prototype
@@ -131,7 +131,7 @@ It contains new values for the
 $cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
 we are computing the Cholesky factor of.
 The $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$
-must be the same as in $cref/choleig_init/choleig_init/hes_info/$$.
+must be the same as in $cref/ldlt_eigen_init/ldlt_eigen_init/hes_info/$$.
 Hence, in particular, it must be in
 $cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
 and
@@ -140,9 +140,9 @@ $cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
 $head ptr_$$
 On input, the member variable
 $codei%
-	eigen_cholesky* ptr_
+	eigen_ldlt* ptr_
 %$$
-has been $cref/initialized/choleig_init/$$
+has been $cref/initialized/ldlt_eigen_init/$$
 using the sparsity pattern for the Hessian.
 Upon return, it contains the factorization
 $codei%
@@ -157,7 +157,7 @@ Otherwise, it is false.
 
 $end
 */
-bool choleig::update(const CppAD::mixed::sparse_mat_info& hes_info)
+bool ldlt_eigen::update(const CppAD::mixed::sparse_mat_info& hes_info)
 {	assert( hes_info.row.size() == hes_info.col.size() );
 	assert( hes_info.row.size() == hes_info.val.size() );
 	//
@@ -179,9 +179,9 @@ bool choleig::update(const CppAD::mixed::sparse_mat_info& hes_info)
 }
 /*
 ------------------------------------------------------------------------------
-$begin choleig_logdet$$
+$begin ldlt_eigen_logdet$$
 $spell
-	choleig
+	ldlt_eigen
 	Cholesky
 	logdet
 	chol_ran_hes
@@ -195,17 +195,17 @@ $head Syntax$$
 $icode%logdet% = %chol_ran_hes%.logdet()%$$
 
 $head Private$$
-The $code choleig$$ class is an
-$cref/implementation detail/choleig/Private/$$ and not part of the
+The $code ldlt_eigen$$ class is an
+$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head chol_ran_hes$$
 This object has prototype
 $codei%
-	const CppAD::mixed::choleig %chol_ran_hes%
+	const CppAD::mixed::ldlt_eigen %chol_ran_hes%
 %$$
 In addition, it must have a previous call to
-$cref choleig_update$$.
+$cref ldlt_eigen_update$$.
 
 $head logdet$$
 This return value has prototype
@@ -217,7 +217,7 @@ to the previous call to $codei%chol_ran_hes%.factorize%$$.
 
 $end
 */
-double choleig::logdet(void) const
+double ldlt_eigen::logdet(void) const
 {	using Eigen::Dynamic;
     typedef Eigen::Matrix<double, Dynamic, Dynamic> dense_matrix;
 
@@ -232,9 +232,9 @@ double choleig::logdet(void) const
 }
 /*
 -----------------------------------------------------------------------------
-$begin choleig_solve_H$$
+$begin ldlt_eigen_solve_H$$
 $spell
-	choleig
+	ldlt_eigen
 	chol_ran_hes
 	cholesky
 	const
@@ -249,7 +249,7 @@ $codei%%chol_ran_hes%.solve_H(%row_in%, %val_in%, %row_out%, %val_out%)%$$
 
 $head Private$$
 The $cref cholmod$$ class is an
-$cref/implementation detail/choleig/Private/$$ and not part of the
+$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Purpose$$
@@ -262,10 +262,10 @@ and $latex x$$ is unknown.
 $head col_ran_hes$$
 This object has prototype
 $codei%
-	const CppAD::mixed::choleig %col_ran_hes%
+	const CppAD::mixed::ldlt_eigen %col_ran_hes%
 %$$
 In addition, it must have a previous call to
-$cref choleig_update$$.
+$cref ldlt_eigen_update$$.
 
 $head row_in$$
 This argument has prototype
@@ -317,7 +317,7 @@ $codei%
 
 $end
 */
-void choleig::solve_H(
+void ldlt_eigen::solve_H(
 	const CppAD::vector<size_t>& row_in  ,
 	const CppAD::vector<double>& val_in  ,
 	CppAD::vector<size_t>&       row_out ,

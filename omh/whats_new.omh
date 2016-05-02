@@ -271,7 +271,7 @@ Go back to using column vectors when solving linear equations
 
 $head 01-09$$
 $list number$$
-The $cref/Cholesky factorization/choleig/$$ of the Hessian
+The $cref/Cholesky factorization/ldlt_eigen/$$ of the Hessian
 with respect to the random effects has been changed from a static
 variable to the private member variable
 $cref/chol_ran_hes_/private/chol_ran_hes_/$$.

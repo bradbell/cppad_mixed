@@ -16,7 +16,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/newton_step.hpp>
 # include <cppad/mixed/sparse_hes_info.hpp>
 # include <cppad/mixed/sparse_jac_info.hpp>
-# include <cppad/mixed/choleig.hpp>
+# include <cppad/mixed/ldlt_eigen.hpp>
 # include <cppad/mixed/sparse_mat_info.hpp>
 # include <cppad/mixed/configure.hpp>
 # include <cppad/mixed/cholmod.hpp>
@@ -60,7 +60,7 @@ public:
 $begin public$$
 $spell
 	jac
-	choleig
+	ldlt_eigen
 	std
 	cerr
 	endl
@@ -297,7 +297,7 @@ private:
 ------------------------------------------------------------------------------
 $begin private$$
 $spell
-	choleig
+	ldlt_eigen
 	objcon
 	eigen
 	chol
@@ -452,7 +452,7 @@ $srccode%cpp% */
 $head chol_ran_hes_$$
 If $icode%n_random_% > 0%$$ and $code init_chol_ran_hes_done_$$,
 $code chol_ran_hes_$$ contains a
-$cref choleig$$ factor for the Hessian of the
+$cref ldlt_eigen$$ factor for the Hessian of the
 $cref/random likelihood
 	/theory
 	/Random Likelihood, f(theta, u)

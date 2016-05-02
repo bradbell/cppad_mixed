@@ -86,7 +86,7 @@ usage: bin/run_cmake.sh \\
 	[--help] \\
 	[--verbose] \\
 	[--set_sparsity] \\
-	[--eigen_cholesky] \\
+	[--eigen_ldlt] \\
 	[--release]
 EOF
 		exit 0
@@ -97,7 +97,7 @@ EOF
 	elif [ "$1" == '--set_sparsity' ]
 	then
 		bool_sparsity='NO'
-	elif [ "$1" == '--eigen_cholesky' ]
+	elif [ "$1" == '--eigen_ldlt' ]
 	then
 		cholmod_cholesky='NO'
 	elif [ "$1" == '--release' ]

@@ -13,7 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin configure.hpp$$
 $spell
-	choleig
+	ldlt_eigen
 	hpp
 	CppAD
 	yyyymmdd
@@ -54,7 +54,7 @@ $codep
 $$
 Otherwise it is defined as
 $codep
-	CppAD::mixed::choleig
+	CppAD::mixed::ldlt_eigen
 $$
 
 $end
@@ -72,7 +72,7 @@ $end
 # if @cholmod_cholesky_01@
 # define CPPAD_MIXED_CHOLESKY CppAD::mixed::cholmod
 # else
-# define CPPAD_MIXED_CHOLEKSY CppAD::mixed::choleig
+# define CPPAD_MIXED_CHOLEKSY CppAD::mixed::ldlt_eigen
 # endif
 
 

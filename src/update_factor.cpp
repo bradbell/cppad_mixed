@@ -75,10 +75,10 @@ $codei%
 	CPPAD_MIXED_CHOLESKY chol_ran_hes_
 %$$
 has been
-$cref/initialized/choleig_init/$$
+$cref/initialized/ldlt_eigen_init/$$
 using the sparsity pattern for the Hessian.
 Upon return, $code chol_ran_hes_$$ contains the updated
-$cref/factorization/choleig_update/$$
+$cref/factorization/ldlt_eigen_update/$$
 corresponding to the specified values for the fixed
 and random effects.
 

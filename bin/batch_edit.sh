@@ -12,21 +12,21 @@
 new_directories='
 '
 rename_files='
+	include/cppad/mixed/choleig.hpp
+	src/eigen/choleig.cpp
 '
 spell_files='
 '
 no_change_files='
 '
 #
-rename_cmd='s|cholmod_solve2_xam|cholmod_solve2_a|'
+rename_cmd='s|choleig|ldlt_eigen|'
 spell_cmd='s|^$spell|&|'
 #
 cat << EOF > junk.sed
-s|\.solve(|.solve_H(|
-s|void solve(|void solve_H(|
-s|::solve(|::solve_H(|
-s|chol\.solve_H(|chol.solve(|
-s|CppAD::ipopt::solve_H(|CppAD::ipopt::solve(|
+s|choleig|ldlt_eigen|g
+s|eigen_cholesky|eigen_ldlt|g
+s|CHOLEIG_HPP|LDLT_EIGEN_HPP|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]
