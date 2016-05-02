@@ -9,8 +9,9 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin cholmod_logdet$$
+$begin ldlt_cholmod_logdet$$
 $spell
+	ldlt
 	xam
 	const
 	cholmod_obj
@@ -26,8 +27,8 @@ $icode%logdet% = %cholmod_obj%.logdet()
 %$$
 
 $head Private$$
-The $cref cholmod$$ class is an
-$cref/implementation detail/cholmod/Private/$$ and not part of the
+The $cref ldlt_cholmod$$ class is an
+$cref/implementation detail/ldlt_cholmod/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head cholmod_obj$$
@@ -36,7 +37,7 @@ $codei%
 	const CppAD::mixed::cholmod %cholmod_obj%
 %$$
 In addition, it must have a previous call to
-$cref cholmod_update$$.
+$cref ldlt_cholmod_update$$.
 
 $head logdet$$
 This return value has prototype
@@ -44,16 +45,16 @@ $codei%
 	double %logdet%
 %$$
 Is the log of the determinant of the Hessian corresponding
-to the previous call to $cref cholmod_update$$.
+to the previous call to $cref ldlt_cholmod_update$$.
 
 $head Example$$
-The file $cref/cholmod_xam.cpp/cholmod_xam.cpp/logdet/$$ contains an
+The file $cref/ldlt_cholmod_xam.cpp/ldlt_cholmod_xam.cpp/logdet/$$ contains an
 example and test that uses this function.
 
 $end
 */
 
-# include <cppad/mixed/cholmod.hpp>
+# include <cppad/mixed/ldlt_cholmod.hpp>
 # include <cassert>
 # include <cmath>
 

@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin cholmod_xam.cpp$$
+$begin ldlt_cholmod_xam.cpp$$
 $spell
 	nrow
 	init
@@ -70,7 +70,7 @@ $$
 
 $head init$$
 See the following under
-$cref/Source Code/cholmod_xam.cpp/Source Code/$$ below:
+$cref/Source Code/ldlt_cholmod_xam.cpp/Source Code/$$ below:
 $codep
 	cholmod_obj.init(H_info);
 $$
@@ -95,18 +95,18 @@ $$
 
 $head Source Code$$
 $code
-$srcfile%example/private/cholmod_xam.cpp%5%// BEGIN C++%// END C++%1%$$
+$srcfile%example/private/ldlt_cholmod_xam.cpp%5%// BEGIN C++%// END C++%1%$$
 $$
 
 $end
 */
 // BEGIN C++
-# include <cppad/mixed/cholmod.hpp>
+# include <cppad/mixed/ldlt_cholmod.hpp>
 # include <limits>
 # include <cmath>
 # include <cassert>
 
-bool cholmod_xam(void)
+bool ldlt_cholmod_xam(void)
 {	bool ok    = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 

@@ -248,7 +248,7 @@ $head Syntax$$
 $codei%%chol_ran_hes%.solve_H(%row_in%, %val_in%, %row_out%, %val_out%)%$$
 
 $head Private$$
-The $cref cholmod$$ class is an
+The $cref ldlt_cholmod$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 

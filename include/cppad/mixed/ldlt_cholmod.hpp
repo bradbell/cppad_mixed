@@ -8,11 +8,11 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# ifndef CPPAD_MIXED_CHOLMOD_HPP
-# define CPPAD_MIXED_CHOLMOD_HPP
+# ifndef CPPAD_MIXED_LDLT_CHOLMOD_HPP
+# define CPPAD_MIXED_LDLT_CHOLMOD_HPP
 
 /*
-$begin cholmod$$
+$begin ldlt_cholmod$$
 $spell
 	Cholmod
 	CppAD
@@ -33,12 +33,12 @@ $code cholmod$$ is part of the
 $cref/SuiteSparse/install_unix/Special Requirements/SuiteSparse/$$ package.
 
 $head Example$$
-The file $cref cholmod_xam.cpp$$ contains an example and test
+The file $cref ldlt_cholmod_xam.cpp$$ contains an example and test
 using the operations in this class.
 
 $head Preprocessor Symbols$$
 The following extra $codei%CHOLMOD_%*%$$ symbols are defined
-$srcfile%include/cppad/mixed/cholmod.hpp
+$srcfile%include/cppad/mixed/ldlt_cholmod.hpp
 	%4%// BEGIN SYMBOLS%// END SYMBOLS%1%$$
 
 
@@ -47,7 +47,7 @@ $childtable%src/cholmod/constructor.cpp
 	%src/cholmod/update.cpp
 	%src/cholmod/logdet.cpp
 	%src/cholmod/solve.cpp
-	%example/private/cholmod_xam.cpp
+	%example/private/ldlt_cholmod_xam.cpp
 	%example/private/cholmod_solve_xam.cpp
 	%example/private/cholmod_solve2_a.cpp
 	%example/private/cholmod_solve2_sim.cpp

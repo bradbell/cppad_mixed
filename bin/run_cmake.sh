@@ -59,7 +59,7 @@ bool_sparsity='YES'
 # &&
 #
 # &head cholmod_cholesky&&
-# If YES, use &cref cholmod&& Cholesky factorization where possible.
+# If YES, use &cref ldlt_cholmod&& Cholesky factorization where possible.
 # Otherwise always use Eigen's Cholesky factorization.
 # &codep
 cholmod_cholesky='YES'

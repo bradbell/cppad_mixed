@@ -12,21 +12,41 @@
 new_directories='
 '
 rename_files='
-	include/cppad/mixed/choleig.hpp
-	src/eigen/choleig.cpp
+	include/cppad/mixed/cholmod.hpp
+	example/private/cholmod_xam.cpp
 '
 spell_files='
+	src/cholmod/constructor.cpp
+	src/cholmod/init.cpp
+	src/cholmod/update.cpp
+	src/cholmod/logdet.cpp
+	src/cholmod/solve.cpp
 '
 no_change_files='
 '
 #
-rename_cmd='s|choleig|ldlt_eigen|'
-spell_cmd='s|^$spell|&|'
+rename_cmd='s|cholmod|ldlt_cholmod|'
+spell_cmd='s|^$spell|&\n\tldlt|'
 #
 cat << EOF > junk.sed
-s|choleig|ldlt_eigen|g
-s|eigen_cholesky|eigen_ldlt|g
-s|CHOLEIG_HPP|LDLT_EIGEN_HPP|
+s|\$begin cholmod\\([^_]\\)|\$begin ldlt_cholmod\\1|g
+s|&cref cholmod|\\&cref ldlt_cholmod|g
+s|\$cref cholmod|\$cref ldlt_cholmod|g
+s|\$rref cholmod|\$rref ldlt_cholmod|g
+s|\\(\$cref/[^/]*\\)/cholmod/|\\1/ldlt_cholmod/|g
+s|cholmod_xam|ldlt_cholmod_xam|g
+s|cholmod.hpp|ldlt_cholmod.hpp|g
+s|cholmod_dtor|ldlt_&|g
+s|cholmod_ctor|ldlt_&|g
+s|cholmod_init|ldlt_&|g
+s|cholmod_logdet|ldlt_&|g
+s|cholmod_solve_H|ldlt_&|g
+s|cholmod_update|ldlt_&|g
+#
+s|ldlt_cholmod_solve2|cholmod_solve2|g
+s|ldlt_ldlt_cholmod|ldlt_cholmod|g
+#
+s|CHOLMOD_HPP|LDLT_CHOLMOD_HPP|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

@@ -9,8 +9,9 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin cholmod_update$$
+$begin ldlt_cholmod_update$$
 $spell
+	ldlt
 	Cholesky
 	xam
 	const
@@ -28,12 +29,12 @@ $icode%pos% = cholmod_obj%.update(%hes_info%)%$$
 
 
 $head Private$$
-The $cref cholmod$$ class is an
-$cref/implementation detail/cholmod/Private/$$ and not part of the
+The $cref ldlt_cholmod$$ class is an
+$cref/implementation detail/ldlt_cholmod/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Purpose$$
-This routine updates the $cref cholmod$$ factorization
+This routine updates the $cref ldlt_cholmod$$ factorization
 for new values in the square positive definite matrix.
 
 $head cholmod_obj$$
@@ -42,7 +43,7 @@ $codei%
 	CppAD::mixed::cholmod %cholmod_obj%
 %$$
 In addition, it must have a previous call to
-$cref cholmod_init$$.
+$cref ldlt_cholmod_init$$.
 
 $head hes_info$$
 This argument has prototype
@@ -53,7 +54,7 @@ It contains new values for the
 $cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
 we are computing the Cholesky factor of.
 The $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$
-must be the same as in $cref/cholmod_init/cholmod_init/hes_info/$$.
+must be the same as in $cref/ldlt_cholmod_init/ldlt_cholmod_init/hes_info/$$.
 Hence, in particular, it must be in
 $cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
 and
@@ -64,7 +65,7 @@ On input, the member variable
 $codei%
 	cholmod_sparse* pos_matrix_
 %$$
-has been $cref/initialized/cholmod_init/pos_matrix_/$$
+has been $cref/initialized/ldlt_cholmod_init/pos_matrix_/$$
 using the sparsity pattern as is in $icode hes_info$$.
 Upon return, values in $code pos_matrix_$$ have been set to the
 corresponding values in the vector $icode%hes_info%.val%$$.
@@ -74,7 +75,7 @@ On input, the member variable
 $codei%
 	cholmod_factor* factor_
 %$$
-has been $cref/initialized/cholmod_init/factor_/$$
+has been $cref/initialized/ldlt_cholmod_init/factor_/$$
 using the sparsity pattern for the Hessian.
 Upon return, it contains the factorization
 $codei%
@@ -86,7 +87,7 @@ If the matrix is positive definite, $icode pos$$ is true.
 Otherwise, it is false.
 
 $head Example$$
-The file $cref/cholmod_xam.cpp/cholmod_xam.cpp/update/$$ contains an
+The file $cref/ldlt_cholmod_xam.cpp/ldlt_cholmod_xam.cpp/update/$$ contains an
 example and test that uses this function.
 
 $end
@@ -95,7 +96,7 @@ $end
 
 
 # include <cholmod.h>
-# include <cppad/mixed/cholmod.hpp>
+# include <cppad/mixed/ldlt_cholmod.hpp>
 # include <cassert>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE

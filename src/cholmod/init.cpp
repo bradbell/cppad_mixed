@@ -9,8 +9,9 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin cholmod_init$$
+$begin ldlt_cholmod_init$$
 $spell
+	ldlt
 	nrow
 	xam
 	Cholesky
@@ -30,8 +31,8 @@ $icode%cholmod_obj%.init(%hes_info%)
 %$$
 
 $head Private$$
-The $cref cholmod$$ class is an
-$cref/implementation detail/cholmod/Private/$$ and not part of the
+The $cref ldlt_cholmod$$ class is an
+$cref/implementation detail/ldlt_cholmod/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head cholmod_obj$$
@@ -48,7 +49,7 @@ $codei%
 It is a
 $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$ for the
 square matrices with
-$cref/nrow_/cholmod_ctor/nrow_/$$ rows that we will compute the
+$cref/nrow_/ldlt_cholmod_ctor/nrow_/$$ rows that we will compute the
 Cholesky factor of.
 It is in
 $cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
@@ -87,16 +88,16 @@ It is packed, sorted, not symmetric, and just a sparsity pattern.
 There are $code nrow_$$
 possibly non-zero elements, but which elements
 are non-zero is not specified
-(expected to be set for each $cref cholmod_solve_H$$ usage).
+(expected to be set for each $cref ldlt_cholmod_solve_H$$ usage).
 
 $head Example$$
-The file $cref/cholmod_xam.cpp/cholmod_xam.cpp/init/$$ contains an
+The file $cref/ldlt_cholmod_xam.cpp/ldlt_cholmod_xam.cpp/init/$$ contains an
 example and test that uses this function.
 
 $end
 */
 
-# include <cppad/mixed/cholmod.hpp>
+# include <cppad/mixed/ldlt_cholmod.hpp>
 # include <cassert>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE

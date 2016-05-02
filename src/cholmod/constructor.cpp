@@ -9,8 +9,9 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin cholmod_ctor$$
+$begin ldlt_cholmod_ctor$$
 $spell
+	ldlt
 	nrow
 	xam
 	cholmod_obj
@@ -30,8 +31,8 @@ $codei%CppAD::mixed::cholmod %cholmod_obj%(%nrow%)%$$
 
 
 $head Private$$
-The $cref cholmod$$ class is an
-$cref/implementation detail/cholmod/Private/$$ and not part of the
+The $cref ldlt_cholmod$$ class is an
+$cref/implementation detail/ldlt_cholmod/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head nrow_$$
@@ -65,13 +66,13 @@ $codei%
 %$$
 
 $head Example$$
-The file $cref/cholmod_xam.cpp/cholmod_xam.cpp/constructor/$$ contains an
+The file $cref/ldlt_cholmod_xam.cpp/ldlt_cholmod_xam.cpp/constructor/$$ contains an
 example and test that uses this constructor.
 
 $end
 */
 
-# include <cppad/mixed/cholmod.hpp>
+# include <cppad/mixed/ldlt_cholmod.hpp>
 # include <cassert>
 # include <cppad/cppad.hpp>
 
@@ -93,8 +94,9 @@ work_two_  (CPPAD_NULL)
 }
 
 /*
-$begin cholmod_dtor$$
+$begin ldlt_cholmod_dtor$$
 $spell
+	ldlt
 	Cholmod
 	Cpp
 $$

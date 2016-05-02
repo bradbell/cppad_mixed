@@ -9,8 +9,9 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin cholmod_solve_H$$
+$begin ldlt_cholmod_solve_H$$
 $spell
+	ldlt
 	rhs
 	cholesky
 	cholmod_obj
@@ -26,8 +27,8 @@ $head Syntax$$
 $codei%%cholmod_obj%.solve_H(%row%, %val_in%, %val_out%)%$$
 
 $head Private$$
-The $cref cholmod$$ class is an
-$cref/implementation detail/cholmod/Private/$$ and not part of the
+The $cref ldlt_cholmod$$ class is an
+$cref/implementation detail/ldlt_cholmod/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Purpose$$
@@ -43,7 +44,7 @@ $codei%
 	const CppAD::mixed::cholmod %cholmod_obj%
 %$$
 In addition, it must have a previous call to
-$cref cholmod_update$$.
+$cref ldlt_cholmod_update$$.
 
 $head row$$
 This argument has prototype
@@ -58,7 +59,7 @@ $codei%
 	%row%[%k%] < %row%[%k%+1]
 %$$
 It follows that $icode%row%.size()%$$ is less than or equal
-$cref/nrow_/cholmod_ctor/nrow_/$$.
+$cref/nrow_/ldlt_cholmod_ctor/nrow_/$$.
 
 $head val_in$$
 This argument has prototype
@@ -89,12 +90,12 @@ $codei%
 
 
 $head Example$$
-The file $cref/cholmod_xam.cpp/cholmod_xam.cpp/solve_H/$$ contains an
+The file $cref/ldlt_cholmod_xam.cpp/ldlt_cholmod_xam.cpp/solve_H/$$ contains an
 example and test that uses this function.
 
 $end
 */
-# include <cppad/mixed/cholmod.hpp>
+# include <cppad/mixed/ldlt_cholmod.hpp>
 # include <cppad/utility/index_sort.hpp>
 # include <cassert>
 
