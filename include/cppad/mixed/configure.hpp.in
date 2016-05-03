@@ -50,7 +50,7 @@ $head CPPAD_MIXED_CHOLESKY$$
 If $cref/cholmod_cholesky/run_cmake.sh/cholmod_cholesky/$$ is $code YES$$,
 this symbol is defined as
 $codep
-	CppAD::mixed::cholmod
+	CppAD::mixed::ldlt_cholmod
 $$
 Otherwise it is defined as
 $codep
@@ -70,7 +70,7 @@ $end
 # endif
 
 # if @cholmod_cholesky_01@
-# define CPPAD_MIXED_CHOLESKY CppAD::mixed::cholmod
+# define CPPAD_MIXED_CHOLESKY CppAD::mixed::ldlt_cholmod
 # else
 # define CPPAD_MIXED_CHOLEKSY CppAD::mixed::ldlt_eigen
 # endif

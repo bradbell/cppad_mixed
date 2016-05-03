@@ -18,7 +18,8 @@ $spell
 	CppAD
 	const
 	init
-	cholmod_obj
+	ldlt_obj
+	cholmod
 	pos
 	rhs
 	hes
@@ -27,7 +28,7 @@ $$
 $section Initialize Cholesky Factor for a Specific Sparsity Pattern$$
 
 $head Syntax$$
-$icode%cholmod_obj%.init(%hes_info%)
+$icode%ldlt_obj%.init(%hes_info%)
 %$$
 
 $head Private$$
@@ -35,10 +36,10 @@ The $cref ldlt_cholmod$$ class is an
 $cref/implementation detail/ldlt_cholmod/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head cholmod_obj$$
+$head ldlt_obj$$
 This object has prototype
 $codei%
-	CppAD::mixed::cholmod %cholmod_obj%
+	CppAD::mixed::ldlt_cholmod %ldlt_obj%
 %$$
 
 $head hes_info$$
@@ -102,7 +103,7 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-void cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
+void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
 {
 	assert(pos_matrix_ == CPPAD_NULL );
 	assert(factor_     == CPPAD_NULL );

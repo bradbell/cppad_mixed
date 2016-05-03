@@ -14,7 +14,8 @@ $spell
 	ldlt
 	nrow
 	xam
-	cholmod_obj
+	ldlt_obj
+	cholmod
 	Cpp
 	chol
 	hes
@@ -27,7 +28,7 @@ $$
 $section Cholmod Constructor$$
 
 $head Syntax$$
-$codei%CppAD::mixed::cholmod %cholmod_obj%(%nrow%)%$$
+$codei%CppAD::mixed::ldlt_cholmod %ldlt_obj%(%nrow%)%$$
 
 
 $head Private$$
@@ -78,7 +79,7 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-cholmod::cholmod(size_t nrow)
+ldlt_cholmod::ldlt_cholmod(size_t nrow)
 :
 nrow_      (nrow)            ,
 pos_matrix_(CPPAD_NULL)      ,
@@ -116,7 +117,7 @@ $codei%
 
 $end
 */
-cholmod::~cholmod(void)
+ldlt_cholmod::~ldlt_cholmod(void)
 {	// free all the private pointers
 	cholmod_free_sparse (&pos_matrix_, &common_ );
 	cholmod_free_factor (&factor_,     &common_ );

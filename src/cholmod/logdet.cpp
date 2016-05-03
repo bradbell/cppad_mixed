@@ -14,7 +14,8 @@ $spell
 	ldlt
 	xam
 	const
-	cholmod_obj
+	ldlt_obj
+	cholmod
 	Cholesky
 	logdet
 	CppAD
@@ -23,7 +24,7 @@ $$
 $section Compute Log Determinant for Current Cholesky Factor$$
 
 $head Syntax$$
-$icode%logdet% = %cholmod_obj%.logdet()
+$icode%logdet% = %ldlt_obj%.logdet()
 %$$
 
 $head Private$$
@@ -31,10 +32,10 @@ The $cref ldlt_cholmod$$ class is an
 $cref/implementation detail/ldlt_cholmod/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head cholmod_obj$$
+$head ldlt_obj$$
 This object has prototype
 $codei%
-	const CppAD::mixed::cholmod %cholmod_obj%
+	const CppAD::mixed::ldlt_cholmod %ldlt_obj%
 %$$
 In addition, it must have a previous call to
 $cref ldlt_cholmod_update$$.
@@ -60,7 +61,7 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-double cholmod::logdet(void) const
+double ldlt_cholmod::logdet(void) const
 {	// factorization P H P' = L D L'
 	double logdet_H = 0.0;
 	int*    L_p  = (int *) factor_->p;

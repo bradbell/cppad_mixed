@@ -14,7 +14,8 @@ $spell
 	ldlt
 	rhs
 	cholesky
-	cholmod_obj
+	ldlt_obj
+	cholmod
 	const
 	xam
 	CppAD
@@ -24,7 +25,7 @@ $$
 $section Solve Linear Equations Using Cholesky Factor$$
 
 $head Syntax$$
-$codei%%cholmod_obj%.solve_H(%row%, %val_in%, %val_out%)%$$
+$codei%%ldlt_obj%.solve_H(%row%, %val_in%, %val_out%)%$$
 
 $head Private$$
 The $cref ldlt_cholmod$$ class is an
@@ -38,10 +39,10 @@ that has been factored,
 $latex b$$ is a known column vector,
 and $latex x$$ is unknown.
 
-$head cholmod_obj$$
+$head ldlt_obj$$
 This object has prototype
 $codei%
-	const CppAD::mixed::cholmod %cholmod_obj%
+	const CppAD::mixed::ldlt_cholmod %ldlt_obj%
 %$$
 In addition, it must have a previous call to
 $cref ldlt_cholmod_update$$.
@@ -101,7 +102,7 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-void cholmod::solve_H(
+void ldlt_cholmod::solve_H(
 	const CppAD::vector<size_t>& row      ,
 	const CppAD::vector<double>& val_in   ,
 	CppAD::vector<double>&       val_out  )

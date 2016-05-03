@@ -15,7 +15,7 @@ $spell
 	init
 	Cholesky
 	CppAD
-	cholmod cholmod_obj
+	cholmod ldlt_obj
 	logdet
 $$
 
@@ -65,32 +65,32 @@ which can be checked by multiplying by $latex G G^{-1}$$.
 $head constructor$$
 See the following code below:
 $codep
-	CppAD::mixed::cholmod cholmod_obj(nrow);
+	CppAD::mixed::ldlt_cholmod ldlt_obj(nrow);
 $$
 
 $head init$$
 See the following under
 $cref/Source Code/ldlt_cholmod_xam.cpp/Source Code/$$ below:
 $codep
-	cholmod_obj.init(H_info);
+	ldlt_obj.init(H_info);
 $$
 
 $head update$$
 See the following under Source Code below:
 $codep
-	cholmod_obj.update(H_info);
+	ldlt_obj.update(H_info);
 $$
 
 $head logdet$$
 See the following under Source Code below:
 $codep
-	cholmod_obj.logdet(H_info);
+	ldlt_obj.logdet(H_info);
 $$
 
 $head solve_H$$
 See the following under Source Code below:
 $codep
-	cholmod_obj.solve_H(row, val_in, val_out);
+	ldlt_obj.solve_H(row, val_in, val_out);
 $$
 
 $head Source Code$$
@@ -124,7 +124,7 @@ bool ldlt_cholmod_xam(void)
 	// create cholmod object
 	size_t nrow = 6;    // number of rows in H
 	size_t ncol = nrow; // number of columns in H
-	CppAD::mixed::cholmod cholmod_obj(nrow);
+	CppAD::mixed::ldlt_cholmod ldlt_obj(nrow);
 	assert( nrow * ncol == sizeof(H_inv) / sizeof(H_inv[0]) );
 
 	// create a sparse matrix representation of the lower triangular of H
@@ -157,13 +157,13 @@ bool ldlt_cholmod_xam(void)
 	H_info.row[11] = 5; H_info.col[11] = 5; H_info.val[11] = 5.0;
 
 	// initialize the matrix using only the sparsity pattern
-	cholmod_obj.init(H_info);
+	ldlt_obj.init(H_info);
 
 	// factor the matrix using the values
-	cholmod_obj.update(H_info);
+	ldlt_obj.update(H_info);
 
 	// compute log of determinant of H
-	double logdet_H = cholmod_obj.logdet();
+	double logdet_H = ldlt_obj.logdet();
 
 	// check its value
 	ok &= std::fabs( logdet_H / (2.0 * std::log(36.0)) - 1.0 ) <= eps;
@@ -183,7 +183,7 @@ bool ldlt_cholmod_xam(void)
 			else
 				val_in[k] = 0.0;
 		}
-		cholmod_obj.solve_H(row, val_in, val_out);
+		ldlt_obj.solve_H(row, val_in, val_out);
 		//
 		for(size_t k = 0; k < row.size(); k++)
 		{	size_t i       = row[k];

@@ -70,7 +70,7 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-class cholmod {
+class ldlt_cholmod {
 private:
 	const size_t          nrow_;   // number of rows in pos_matrix_
 	CppAD::vector<size_t> key_;    // sorting keys
@@ -86,9 +86,9 @@ private:
 	cholmod_dense*    work_two_;   // second work space for solving equations
 public:
 	// constructor
-	cholmod(size_t nrow);
+	ldlt_cholmod(size_t nrow);
 	// destructor
-	~cholmod(void);
+	~ldlt_cholmod(void);
 	// initialize
 	void init(const sparse_mat_info& hes_info);
 	// factorize

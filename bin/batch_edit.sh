@@ -12,15 +12,8 @@
 new_directories='
 '
 rename_files='
-	include/cppad/mixed/cholmod.hpp
-	example/private/cholmod_xam.cpp
 '
 spell_files='
-	src/cholmod/constructor.cpp
-	src/cholmod/init.cpp
-	src/cholmod/update.cpp
-	src/cholmod/logdet.cpp
-	src/cholmod/solve.cpp
 '
 no_change_files='
 '
@@ -29,24 +22,14 @@ rename_cmd='s|cholmod|ldlt_cholmod|'
 spell_cmd='s|^$spell|&\n\tldlt|'
 #
 cat << EOF > junk.sed
-s|\$begin cholmod\\([^_]\\)|\$begin ldlt_cholmod\\1|g
-s|&cref cholmod|\\&cref ldlt_cholmod|g
-s|\$cref cholmod|\$cref ldlt_cholmod|g
-s|\$rref cholmod|\$rref ldlt_cholmod|g
-s|\\(\$cref/[^/]*\\)/cholmod/|\\1/ldlt_cholmod/|g
-s|cholmod_xam|ldlt_cholmod_xam|g
-s|cholmod.hpp|ldlt_cholmod.hpp|g
-s|cholmod_dtor|ldlt_&|g
-s|cholmod_ctor|ldlt_&|g
-s|cholmod_init|ldlt_&|g
-s|cholmod_logdet|ldlt_&|g
-s|cholmod_solve_H|ldlt_&|g
-s|cholmod_update|ldlt_&|g
+s|class cholmod|class ldlt_cholmod|g
+s|::cholmod|::ldlt_cholmod|g
+s|cholmod::|ldlt_cholmod::|g
+s|cholmod(|ldlt_cholmod(|g
+s|cholmod_obj|ldlt_obj|g
+s|^\\tldlt_obj\$|&\\n\\tcholmod|g
 #
-s|ldlt_cholmod_solve2|cholmod_solve2|g
-s|ldlt_ldlt_cholmod|ldlt_cholmod|g
-#
-s|CHOLMOD_HPP|LDLT_CHOLMOD_HPP|
+s|ldlt_ldlt_|ldlt_|g
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

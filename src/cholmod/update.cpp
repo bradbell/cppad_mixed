@@ -17,7 +17,8 @@ $spell
 	const
 	CppAD
 	hes
-	cholmod_obj
+	ldlt_obj
+	cholmod
 	init
 	pos
 $$
@@ -25,7 +26,7 @@ $$
 $section Update Factorization Using new Matrix Values$$
 
 $head Syntax$$
-$icode%pos% = cholmod_obj%.update(%hes_info%)%$$
+$icode%pos% = ldlt_obj%.update(%hes_info%)%$$
 
 
 $head Private$$
@@ -37,10 +38,10 @@ $head Purpose$$
 This routine updates the $cref ldlt_cholmod$$ factorization
 for new values in the square positive definite matrix.
 
-$head cholmod_obj$$
+$head ldlt_obj$$
 This object has prototype
 $codei%
-	CppAD::mixed::cholmod %cholmod_obj%
+	CppAD::mixed::ldlt_cholmod %ldlt_obj%
 %$$
 In addition, it must have a previous call to
 $cref ldlt_cholmod_init$$.
@@ -101,7 +102,7 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-bool cholmod::update( const CppAD::mixed::sparse_mat_info& hes_info )
+bool ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& hes_info )
 {
 	// set the values in pos_matrix_
 	double* H_x = (double *) pos_matrix_->x;
