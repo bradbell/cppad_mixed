@@ -47,7 +47,7 @@ use it for the null pointer.
 Otherwise, use the value $code 0$$.
 
 $head CPPAD_MIXED_CHOLESKY$$
-If $cref/cholmod_cholesky/run_cmake.sh/cholmod_cholesky/$$ is $code YES$$,
+If $cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$ is $code YES$$,
 this symbol is defined as
 $codep
 	CppAD::mixed::ldlt_cholmod
@@ -69,10 +69,10 @@ $end
 # define CPPAD_MIXED_NULL_PTR  0
 # endif
 
-# if @cholmod_cholesky_01@
+# if @ldlt_cholmod_01@
 # define CPPAD_MIXED_CHOLESKY CppAD::mixed::ldlt_cholmod
 # else
-# define CPPAD_MIXED_CHOLEKSY CppAD::mixed::ldlt_eigen
+# define CPPAD_MIXED_CHOLESKY CppAD::mixed::ldlt_eigen
 # endif
 
 

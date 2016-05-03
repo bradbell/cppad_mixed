@@ -22,7 +22,7 @@ $spell
 	nrow
 $$
 
-$section Solve Linear Equations Using Cholesky Factor$$
+$section Solve Linear Equations Using LDLT Factor$$
 
 $head Syntax$$
 $codei%%ldlt_obj%.solve_H(%row%, %val_in%, %val_out%)%$$

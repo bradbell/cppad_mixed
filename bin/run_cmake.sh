@@ -13,7 +13,7 @@
 # &begin run_cmake.sh&& &newlinech #&&
 # &spell
 #	cmake makefile cxx std dismod libdir lcppad cholmod xam cpp
-#	usr eigen ipopt cppad bools suitesparse devel hpp Cholesky bool
+#	usr eigen ipopt cppad bools suitesparse devel hpp ldlt bool
 # &&
 #
 # &section bin/run_cmake.sh: User Configuration Options&&
@@ -58,11 +58,11 @@ cmake_libdir='lib64'
 bool_sparsity='YES'
 # &&
 #
-# &head cholmod_cholesky&&
-# If YES, use &cref ldlt_cholmod&& Cholesky factorization where possible.
-# Otherwise always use Eigen's Cholesky factorization.
+# &head ldlt_cholmod&&
+# If YES, use &cref ldlt_cholmod&& LDLT factorization where possible.
+# Otherwise always use &cref ldlt_eigen&& for LDLT factorization.
 # &codep
-cholmod_cholesky='YES'
+ldlt_cholmod='YES'
 # &&
 #
 # &head IHME Cluster Settings&&
@@ -86,7 +86,7 @@ usage: bin/run_cmake.sh \\
 	[--help] \\
 	[--verbose] \\
 	[--set_sparsity] \\
-	[--eigen_ldlt] \\
+	[--ldlt_eigen] \\
 	[--release]
 EOF
 		exit 0
@@ -97,9 +97,9 @@ EOF
 	elif [ "$1" == '--set_sparsity' ]
 	then
 		bool_sparsity='NO'
-	elif [ "$1" == '--eigen_ldlt' ]
+	elif [ "$1" == '--ldlt_eigen' ]
 	then
-		cholmod_cholesky='NO'
+		ldlt_cholmod='NO'
 	elif [ "$1" == '--release' ]
 	then
 		cmake_build_type='RELEASE'
@@ -133,7 +133,7 @@ cmake \
 	-D extra_cxx_flags="$extra_cxx_flags" \
 	-D cmake_libdir="$cmake_libdir" \
 	-D bool_sparsity="$bool_sparsity" \
-	-D cholmod_cholesky="$cholmod_cholesky" \
+	-D ldlt_cholmod="$ldlt_cholmod" \
 	..
 # ---------------------------------------------------------------------------
 echo 'run_cmake.sh: OK'

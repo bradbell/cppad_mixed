@@ -278,104 +278,107 @@ $$
 $section Solve Linear Equations Using LDLT Factor$$
 
 $head Syntax$$
-$codei%%ldlt_obj%.solve_H(%row_in%, %val_in%, %row_out%, %val_out%)%$$
+$codei%%ldlt_obj%.solve_H(%row%, %val_in%, %val_out%)%$$
 
 $head Private$$
-The $cref ldlt_cholmod$$ class is an
+The $cref ldlt_eigen$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Purpose$$
-This functions solves the linear equation
+This function solves the linear equation
 $latex H x = b$$ where $latex H$$ is the positive definite matrix
 that has been factored,
 $latex b$$ is a known column vector,
 and $latex x$$ is unknown.
 
-$head col_ran_hes$$
+$head ldlt_obj$$
 This object has prototype
 $codei%
-	const CppAD::mixed::ldlt_eigen %col_ran_hes%
+	const CppAD::mixed::ldlt_eigen %ldlt_obj%
 %$$
 In addition, it must have a previous call to
 $cref ldlt_eigen_update$$.
 
-$head row_in$$
+$head row$$
 This argument has prototype
 $codei%
-	const CppAD::vector<size_t>& %row_in%
+	const CppAD::vector<size_t>& %row%
 %$$
-It specifies the rows, in the column vector $latex b$$,
-that are possibly non-zero.
+It contains all of the rows of column vector $latex b$$ that are
+non-zero and the rows of the column vector $icode x$$
+that are desired.
+These values are in strictly increasing order; i.e.,
+$codei%
+	%row%[%k%] < %row%[%k%+1]
+%$$
+It follows that $icode%row%.size()%$$ is less than or equal
+$cref/n_random/ldlt_eigen_ctor/n_random/$$.
 
 $head val_in$$
 This argument has prototype
 $codei%
 	const CppAD::vector<double>& %val_in%
 %$$
-and it has the same size as $icode row_in$$.
-It specifies the values, in the column vector $latex b$$,
-that are possibly non-zero; to be specific,
-for $icode%k% = 0 , %...%, %row_in%.size()-1%$$,
+and it has the same size as $icode row$$.
+It specifies the values in the column vector $latex b$$
+for each of the corresponding rows; i.e.,
+for $icode%k% = 0 , %...%, %row%.size()-1%$$,
 $codei%
-	%b%[ %row_in%[%k%] ] = %val_in%[%k%]
+	%b%[ %row%[%k%] ] = %val_in%[%k%]
 %$$.
-
-$head row_out$$
-This argument has prototype
-$codei%
-	CppAD::vector<size_t>& %row_out%
-%$$
-On input size of $icode row_out$$ is zero.
-Upon return, it contains the row indices for non-zero elements
-of the solution vector $latex x$$ in increasing order; i.e.,
-for $icode%k% = 1 , %...%, %row_in%.size()-1%$$,
-$codei%
-	%row_in%[%k-1%] < %row_out%[%k%]
-%$$
 
 $head val_out$$
 This argument has prototype
 $codei%
-	CppAD::vector<double>& %val_in%
+	const CppAD::vector<double>& %val_out%
 %$$
-On input the size of $icode val_out$$ is zero.
-Upon return, it has the same size at $icode row_out$$
-and contains the value of the non-zero elements of the solution.
-To be specific,
-for $icode%k% = 0 , %...%, %row_out%.size()-1%$$,
+and it has the same size as $icode row$$.
+On input, the value of its elements do not matter.
+Upon return, it contains the values in the column vector $latex b$$
+for each of the corresponding rows; i.e.,
+for $icode%k% = 0 , %...%, %row%.size()-1%$$,
 $codei%
-	%x%[ %row_out%[%k%] ] = %val_out%[%k%]
-%$$
+	%x%[ %row%[%k%] ] = %val_out%[%k%]
+%$$.
+
 
 $end
 */
 void ldlt_eigen::solve_H(
-	const CppAD::vector<size_t>& row_in  ,
+	const CppAD::vector<size_t>& row     ,
 	const CppAD::vector<double>& val_in  ,
-	CppAD::vector<size_t>&       row_out ,
 	CppAD::vector<double>&       val_out )
-{	assert( row_in.size() == val_in.size() );
-	assert( row_out.size() == 0 );
-	assert( val_out.size() == 0 );
+{	assert( row.size() == val_in.size() );
+	assert( row.size() == val_out.size() );
 	//
 	eigen_sparse b(n_random_, 1);
-	for(size_t k = 0; k < row_in.size(); k++)
-	{	assert( row_in[k] < n_random_ );
-		b.insert( row_in[k], 0 ) = val_in[k];
+	for(size_t k = 0; k < row.size(); k++)
+	{	assert( row[k] < n_random_ );
+		b.insert( row[k], 0 ) = val_in[k];
+		val_out[k] = 0.0;
 	}
 	//
 	eigen_sparse x = ptr_->solve(b);
 	assert( x.outerSize() == 1 );
 	assert( size_t( x.innerSize() ) == n_random_ );
 	//
+# ifndef NDEBUG
+	int previous_row = -1;
+# endif
+	size_t k = 0;
 	typedef typename eigen_sparse::InnerIterator column_itr;
 	for(column_itr itr(x, 0); itr; ++itr)
 	{	assert( size_t( itr.row() ) < n_random_ );
+		assert( previous_row < itr.row() );
+# ifndef NDEBUG
+		previous_row = itr.row();
+# endif
 		size_t r = size_t( itr.row() );
-		double v = itr.value();
-		row_out.push_back(r);
-		val_out.push_back(v);
+		while( k < row.size() && row[k] < r )
+			k++;
+		if( k < row.size() && row[k] == r )
+			val_out[k] = itr.value();
 	}
 }
 

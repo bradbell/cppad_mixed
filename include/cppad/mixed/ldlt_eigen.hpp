@@ -78,9 +78,8 @@ public:
 	double logdet(void) const;
 	// solve
 	void solve_H(
-		const CppAD::vector<size_t>& row_in  ,
+		const CppAD::vector<size_t>& row     ,
 		const CppAD::vector<double>& val_in  ,
-		CppAD::vector<size_t>&       row_out ,
 		CppAD::vector<double>&       val_out
 	);
 };
