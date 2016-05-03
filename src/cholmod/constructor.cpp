@@ -25,7 +25,7 @@ $spell
 	Cholesky
 $$
 
-$section Cholmod Constructor$$
+$section Cholmod LDLT Constructor$$
 
 $head Syntax$$
 $codei%CppAD::mixed::ldlt_cholmod %ldlt_obj%(%nrow%)%$$

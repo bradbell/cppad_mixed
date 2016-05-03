@@ -28,19 +28,19 @@ they are $code cppad_mixed$$ preprocessor  symbols and hence
 not in the $code CppAD::mixed$$ namespace.
 These are $bold not$$ part of the user API.
 
-$children%include/cppad/mixed/configure.hpp.in
-	%src/manage_gsl_rng.cpp
-	%include/cppad/mixed/sparse_mat_info.hpp
-	%include/cppad/mixed/ldlt_eigen.hpp
-	%include/cppad/mixed/ipopt_fixed.hpp
-	%include/cppad/mixed/triple2eigen.hpp
-	%src/eigen/newton_step.cpp
-	%src/eigen/undetermined.cpp
+$children%include/cppad/mixed/a2_double.hpp
+	%include/cppad/mixed/configure.hpp.in
 	%include/cppad/mixed/fixed_solution.hpp
+	%include/cppad/mixed/ipopt_fixed.hpp
+	%include/cppad/mixed/ldlt_cholmod.hpp
+	%include/cppad/mixed/ldlt_eigen.hpp
+	%src/manage_gsl_rng.cpp
+	%src/eigen/newton_step.cpp
 	%include/cppad/mixed/sparse_hes_info.hpp
 	%include/cppad/mixed/sparse_jac_info.hpp
-	%include/cppad/mixed/ldlt_cholmod.hpp
-	%include/cppad/mixed/a2_double.hpp
+	%include/cppad/mixed/sparse_mat_info.hpp
+	%include/cppad/mixed/triple2eigen.hpp
+	%src/eigen/undetermined.cpp
 %$$
 
 $head Public$$

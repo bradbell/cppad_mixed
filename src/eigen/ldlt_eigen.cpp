@@ -14,8 +14,43 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/triple2eigen.hpp>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+/*
+$begin ldlt_eigen_ctor$$
+$spell
+	ldlt_obj
+	eigen
+	ptr
+	CppAD
+	Cholesky
+$$
 
-// constructor
+$section Eigen LDLT Constructor$$
+
+$head Syntax$$
+$codei%CppAD::mixed::ldlt_eigen %ldlt_obj%(%n_random%)%$$
+
+
+$head Private$$
+The $cref ldlt_eigen$$ class is an
+$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
+$head n_random$$
+The argument $icode n_random$$ has prototype
+$codei%
+	size_t %n_random%
+%$$
+It is the number of rows in the positive definite matrix
+we will compute the Cholesky of.
+The member variable $code n_random_$$ is set to this value.
+
+$head ptr_$$
+This member variable points to a newly constructed
+$code eigen_ldlt$$ object.
+
+$end
+*/
+
 ldlt_eigen::ldlt_eigen(size_t n_random)
 : n_random_(n_random)
 {	ptr_ = new eigen_ldlt; }
@@ -31,16 +66,17 @@ $spell
 	pos
 	ldlt_eigen
 	Cholesky
-	chol_ran_hes
+	ldlt_obj
 	CppAD
 	const
 	init
+	hes
 $$
 
 $section Initialize Cholesky Factor for a Specific Sparsity Pattern$$
 
 $head Syntax$$
-$icode%pos% = chol_ran_hes%.init(%hes_info%)
+$icode%pos% = %ldlt_obj%.init(%hes_info%)
 %$$
 
 $head Private$$
@@ -48,10 +84,10 @@ The $code ldlt_eigen$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head chol_ran_hes$$
+$head ldlt_obj$$
 This object has prototype
 $codei%
-	CppAD::mixed::ldlt_eigen %chol_ran_hes%
+	CppAD::mixed::ldlt_eigen %ldlt_obj%
 %$$
 
 $head hes_info$$
@@ -93,17 +129,18 @@ $spell
 	xam
 	const
 	CppAD
-	chol_ran_hes
+	ldlt_obj
 	init
 	pos
 	ptr
 	eigen
+	hes
 $$
 
 $section Update Factorization Using new Matrix Values$$
 
 $head Syntax$$
-$icode%chol_ran_hes%.update(%hes_info%)%$$
+$icode%ldlt_obj%.update(%hes_info%)%$$
 
 $head Private$$
 The $cref ldlt_eigen$$ class is an
@@ -114,10 +151,10 @@ $head Purpose$$
 This routine updates the $cref ldlt_eigen$$ factorization
 for new values in the square positive definite matrix.
 
-$head chol_ran_hes$$
+$head ldlt_obj$$
 This object has prototype
 $codei%
-	CppAD::mixed::ldlt_eigen %chol_ran_hes%
+	CppAD::mixed::ldlt_eigen %ldlt_obj%
 %$$
 In addition, it must have a previous call to
 $cref ldlt_eigen_init$$.
@@ -184,7 +221,7 @@ $spell
 	ldlt_eigen
 	Cholesky
 	logdet
-	chol_ran_hes
+	ldlt_obj
 	CppAD
 	const
 $$
@@ -192,17 +229,17 @@ $$
 $section Compute Log Determinant for Current Cholesky Factor$$
 
 $head Syntax$$
-$icode%logdet% = %chol_ran_hes%.logdet()%$$
+$icode%logdet% = %ldlt_obj%.logdet()%$$
 
 $head Private$$
 The $code ldlt_eigen$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head chol_ran_hes$$
+$head ldlt_obj$$
 This object has prototype
 $codei%
-	const CppAD::mixed::ldlt_eigen %chol_ran_hes%
+	const CppAD::mixed::ldlt_eigen %ldlt_obj%
 %$$
 In addition, it must have a previous call to
 $cref ldlt_eigen_update$$.
@@ -213,7 +250,7 @@ $codei%
 	double %logdet%
 %$$
 Is the log of the determinant of the Hessian corresponding
-to the previous call to $codei%chol_ran_hes%.factorize%$$.
+to the previous call to $codei%ldlt_obj%.factorize%$$.
 
 $end
 */
@@ -235,17 +272,18 @@ double ldlt_eigen::logdet(void) const
 $begin ldlt_eigen_solve_H$$
 $spell
 	ldlt_eigen
-	chol_ran_hes
+	ldlt_obj
 	cholesky
 	const
 	xam
 	CppAD
+	hes
 $$
 
 $section Solve Linear Equations Using Cholesky Factor$$
 
 $head Syntax$$
-$codei%%chol_ran_hes%.solve_H(%row_in%, %val_in%, %row_out%, %val_out%)%$$
+$codei%%ldlt_obj%.solve_H(%row_in%, %val_in%, %row_out%, %val_out%)%$$
 
 $head Private$$
 The $cref ldlt_cholmod$$ class is an
