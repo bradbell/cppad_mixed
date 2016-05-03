@@ -22,7 +22,6 @@ $spell
 	initializes
 	simplicial
 	supernodal
-	Cholesky
 $$
 
 $section Cholmod LDLT Constructor$$
@@ -41,8 +40,8 @@ The argument $icode nrow$$ has prototype
 $codei%
 	size_t %nrow%
 %$$
-It is the number of rows in the positive definite matrix
-we will compute the Cholesky of.
+It is the number of rows in the symmetric matrix
+we will compute the LDLT factor of.
 The member variable $code nrow_$$ is set to this value.
 
 $head Pointers$$

@@ -23,7 +23,7 @@ $spell
 	pos
 $$
 
-$section Update Factorization Using new Matrix Values$$
+$section Update LDLT Factorization Using new Matrix Values$$
 
 $head Syntax$$
 $icode%pos% = ldlt_obj%.update(%hes_info%)%$$

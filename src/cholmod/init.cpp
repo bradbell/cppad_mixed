@@ -14,7 +14,6 @@ $spell
 	ldlt
 	nrow
 	xam
-	Cholesky
 	CppAD
 	const
 	init
@@ -25,7 +24,7 @@ $spell
 	hes
 $$
 
-$section Initialize Cholesky Factor for a Specific Sparsity Pattern$$
+$section Initialize LDLT Factor for a Specific Sparsity Pattern$$
 
 $head Syntax$$
 $icode%ldlt_obj%.init(%hes_info%)
@@ -51,7 +50,7 @@ It is a
 $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$ for the
 square matrices with
 $cref/nrow_/ldlt_cholmod_ctor/nrow_/$$ rows that we will compute the
-Cholesky factor of.
+LDLT factor of.
 It is in
 $cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
 and
@@ -155,7 +154,7 @@ void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
 	assert( pos_matrix_->packed == CHOLMOD_TRUE  );
 
 
-	// analyze the sparsity pattern for LDL^T Cholesky factorization of
+	// analyze the sparsity pattern for LDLT factorization of
 	factor_ = cholmod_analyze(pos_matrix_, &common_);
 
 	// check assumptions

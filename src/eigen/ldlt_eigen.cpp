@@ -21,7 +21,6 @@ $spell
 	eigen
 	ptr
 	CppAD
-	Cholesky
 $$
 
 $section Eigen LDLT Constructor$$
@@ -40,8 +39,7 @@ The argument $icode n_random$$ has prototype
 $codei%
 	size_t %n_random%
 %$$
-It is the number of rows in the positive definite matrix
-we will compute the Cholesky of.
+It is the number of rows in the symmetric matrix we will compute factor.
 The member variable $code n_random_$$ is set to this value.
 
 $head ptr_$$
@@ -65,7 +63,6 @@ $begin ldlt_eigen_init$$
 $spell
 	pos
 	ldlt_eigen
-	Cholesky
 	ldlt_obj
 	CppAD
 	const
@@ -73,7 +70,7 @@ $spell
 	hes
 $$
 
-$section Initialize Cholesky Factor for a Specific Sparsity Pattern$$
+$section Initialize LDLT Factor for a Specific Sparsity Pattern$$
 
 $head Syntax$$
 $icode%pos% = %ldlt_obj%.init(%hes_info%)
@@ -97,7 +94,7 @@ $codei%
 %$$
 It is a
 $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$ for the
-matrix that we will compute the Cholesky factor of.
+matrix that we will compute the LDLT factor of.
 It is in
 $cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
 and
@@ -116,7 +113,7 @@ void ldlt_eigen::init( const CppAD::mixed::sparse_mat_info& hes_info )
 			hes_info.col        ,
 			not_used
 	);
-	// analyze the pattern for an LDL^T Cholesky factorization of
+	// analyze the pattern for an LDLT factorization of
 	// f_{u,u}(theta, u)
 	ptr_->analyzePattern(hessian_pattern);
 }
@@ -125,7 +122,6 @@ void ldlt_eigen::init( const CppAD::mixed::sparse_mat_info& hes_info )
 $begin ldlt_eigen_update$$
 $spell
 	ldlt_eigen
-	Cholesky
 	xam
 	const
 	CppAD
@@ -166,7 +162,7 @@ $codei%
 %$$
 It contains new values for the
 $cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
-we are computing the Cholesky factor of.
+we are computing the LDLT factor of.
 The $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$
 must be the same as in $cref/ldlt_eigen_init/ldlt_eigen_init/hes_info/$$.
 Hence, in particular, it must be in
@@ -205,7 +201,7 @@ bool ldlt_eigen::update(const CppAD::mixed::sparse_mat_info& hes_info)
 		hes_info.col   ,
 		hes_info.val
 	);
-	// LDL^T Cholesky factorization of for specified values of the Hessian
+	// LDLT factorization of for specified values of the Hessian
 	// f_{u,u}(theta, u)
 	ptr_->factorize(hessian);
 	//
@@ -219,14 +215,13 @@ bool ldlt_eigen::update(const CppAD::mixed::sparse_mat_info& hes_info)
 $begin ldlt_eigen_logdet$$
 $spell
 	ldlt_eigen
-	Cholesky
 	logdet
 	ldlt_obj
 	CppAD
 	const
 $$
 
-$section Compute Log Determinant for Current Cholesky Factor$$
+$section Compute Log Determinant for Current LDLT Factor$$
 
 $head Syntax$$
 $icode%logdet% = %ldlt_obj%.logdet()%$$
@@ -280,7 +275,7 @@ $spell
 	hes
 $$
 
-$section Solve Linear Equations Using Cholesky Factor$$
+$section Solve Linear Equations Using LDLT Factor$$
 
 $head Syntax$$
 $codei%%ldlt_obj%.solve_H(%row_in%, %val_in%, %row_out%, %val_out%)%$$
