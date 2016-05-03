@@ -121,7 +121,11 @@ double cppad_mixed::ran_obj_eval(
 	pack(fixed_vec, random_vec, both);
 
 	// compute the logdet( f_{u,u}(theta, u )
-	double logdet = chol_ran_hes_.logdet();
+	int sign;
+	double logdet = chol_ran_hes_.logdet(sign);
+	if( sign != 1 ) fatal_error(
+		"ran_obj_eval: Hessian w.r.t. random effects is not positive definite"
+	);
 
 	// constant term
 	double pi   = CppAD::atan(1.0) * 4.0;

@@ -131,12 +131,13 @@ $spell
 	ptr
 	eigen
 	hes
+	bool
 $$
 
 $section Update Factorization Using new Matrix Values$$
 
 $head Syntax$$
-$icode%ldlt_obj%.update(%hes_info%)%$$
+$icode%flag% = ldlt_obj%.update(%hes_info%)%$$
 
 $head Private$$
 The $cref ldlt_eigen$$ class is an
@@ -184,9 +185,12 @@ $codei%
 where $icode hessian$$ is an $code eigen_sparse$$
 representation of the Hessian with values.
 
-$head pos$$
-If the matrix is positive definite, $icode pos$$ is true.
-Otherwise, it is false.
+$head flag$$
+The return value has prototype
+$codei%
+	bool %flag%
+%$$
+It is true for success and false for numerical issues.
 
 $end
 */
@@ -224,7 +228,7 @@ $$
 $section Compute Log Determinant for Current LDLT Factor$$
 
 $head Syntax$$
-$icode%logdet% = %ldlt_obj%.logdet()%$$
+$icode%logdet% = %ldlt_obj%.logdet(%sign%)%$$
 
 $head Private$$
 The $code ldlt_eigen$$ class is an
@@ -239,17 +243,27 @@ $codei%
 In addition, it must have a previous call to
 $cref ldlt_eigen_update$$.
 
+$head sign$$
+This argument has prototype
+$codei%
+	int& %sign%
+%$$
+Its input value does no matter,
+upon return it is $code +1$$ if the determinant is positive,
+$code 0$$ if the determinant is zero,
+and $code -1$$ if the determinant is negative.
+
 $head logdet$$
 This return value has prototype
 $codei%
 	double %logdet%
 %$$
-Is the log of the determinant of the Hessian corresponding
+Is the log of the absolute value of the determinant corresponding
 to the previous call to $codei%ldlt_obj%.factorize%$$.
 
 $end
 */
-double ldlt_eigen::logdet(void) const
+double ldlt_eigen::logdet(int& sign) const
 {	using Eigen::Dynamic;
     typedef Eigen::Matrix<double, Dynamic, Dynamic> dense_matrix;
 
@@ -257,8 +271,16 @@ double ldlt_eigen::logdet(void) const
 	dense_matrix diag = ptr_->vectorD();
 	assert( diag.size() == int(n_random_) );
 	double logdet = 0.0;
+	sign = 1;
 	for(size_t j = 0; j < n_random_; j++)
-		logdet += log( diag(j) );
+	{	if( diag(j) == 0.0 )
+		{	sign = 0;
+			return - std::numeric_limits<double>::infinity();
+		}
+		if( diag(j) < 0.0 )
+			sign = - sign;
+		logdet += log( std::fabs( diag(j) ) );
+	}
 
 	return logdet;
 }

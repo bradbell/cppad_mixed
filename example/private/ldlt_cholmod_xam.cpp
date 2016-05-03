@@ -163,7 +163,9 @@ bool ldlt_cholmod_xam(void)
 	ldlt_obj.update(H_info);
 
 	// compute log of determinant of H
-	double logdet_H = ldlt_obj.logdet();
+	int sign;
+	double logdet_H = ldlt_obj.logdet(sign);
+	ok &= sign == 1;
 
 	// check its value
 	ok &= std::fabs( logdet_H / (2.0 * std::log(36.0)) - 1.0 ) <= eps;

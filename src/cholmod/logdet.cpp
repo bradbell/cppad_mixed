@@ -24,7 +24,7 @@ $$
 $section Compute Log Determinant for Current Cholesky Factor$$
 
 $head Syntax$$
-$icode%logdet% = %ldlt_obj%.logdet()
+$icode%logdet% = %ldlt_obj%.logdet(%sign%)
 %$$
 
 $head Private$$
@@ -40,12 +40,22 @@ $codei%
 In addition, it must have a previous call to
 $cref ldlt_cholmod_update$$.
 
+$head sign$$
+This argument has prototype
+$codei%
+	int& %sign%
+%$$
+Its input value does no matter,
+upon return it is $code +1$$ if the determinant is positive,
+$code 0$$ if the determinant is zero,
+and $code -1$$ if the determinant is negative.
+
 $head logdet$$
 This return value has prototype
 $codei%
 	double %logdet%
 %$$
-Is the log of the determinant of the Hessian corresponding
+Is the log of the absolute value of the determinant corresponding
 to the previous call to $cref ldlt_cholmod_update$$.
 
 $head Example$$
@@ -61,7 +71,7 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-double ldlt_cholmod::logdet(void) const
+double ldlt_cholmod::logdet(int& sign) const
 {	// factorization P H P' = L D L'
 	double logdet_H = 0.0;
 	int*    L_p  = (int *) factor_->p;
@@ -69,13 +79,19 @@ double ldlt_cholmod::logdet(void) const
 # ifndef NDEBUG
 	int*    L_i  = (int *) factor_->i;
 # endif
+	sign = 1;
 	for(size_t j = 0; j < nrow_; j++)
 	{	// first element for each column is always the diagonal element
 		assert( size_t( L_i [ L_p[j] ] ) == j );
 		// j-th element on diagonal of D in factorization
 		double dj = L_x[ L_p[j] ];
-		assert( dj > 0.0 );
-		logdet_H += std::log(dj);
+		if( dj == 0.0 )
+		{	sign = 0;
+			return - std::numeric_limits<double>::infinity();
+		}
+		if( dj < 0.0 )
+			sign = - sign;
+		logdet_H += std::log( std::fabs(dj) );
 	}
 	return logdet_H;
 }

@@ -43,6 +43,11 @@ $lnext
 There was a problem choosing $code ldlt_cholmod$$ to be $code NO$$.
 This has been fixed by changing the $cref ldlt_eigen_solve_H$$
 function to work the same as the $cref ldlt_cholmod_solve_H$$ function.
+$lnext
+Add more detection, and reporting as a
+$cref/fatal_error/public/User Defined Functions/fatal_error/$$,
+when the Hessian w.r.t. the random effects
+$latex f_{uu} ( \theta , u)$$ is not positive definite.
 $lend
 
 

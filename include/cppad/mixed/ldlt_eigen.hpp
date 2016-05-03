@@ -75,7 +75,7 @@ public:
 	// update
 	bool update(const CppAD::mixed::sparse_mat_info& hes_info);
 	// logdet
-	double logdet(void) const;
+	double logdet(int& sign) const;
 	// solve
 	void solve_H(
 		const CppAD::vector<size_t>& row     ,

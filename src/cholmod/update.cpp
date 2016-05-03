@@ -134,20 +134,6 @@ bool ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& hes_info )
 		return false;
 	assert( common_.status == CHOLMOD_OK );
 	// ---------------------------------------------------------------------
-	// cholmod_solve2 misses some cases, see test_more/cholmod_solve2.cpp
-	int*    L_p  = (int *) factor_->p;
-	double* L_x  = (double *) factor_->x;
-# ifndef NDEBUG
-	int*    L_i  = (int *) factor_->i;
-# endif
-	for(size_t j = 0; j < nrow_; j++)
-	{	// first element for each column is always the diagonal element
-		assert( size_t( L_i [ L_p[j] ] ) == j );
-		// j-th element on diagonal of D in factorization
-		if( L_x[ L_p[j] ] <= 0.0 )
-			return false;
-	}
-	// ---------------------------------------------------------------------
 	return true;
 }
 

@@ -94,7 +94,7 @@ public:
 	// factorize
 	bool update(const sparse_mat_info& hes_info);
 	// log determinant
-	double logdet(void) const;
+	double logdet(int& sign) const;
 	// solve linear equations
 	void solve_H(
 		const CppAD::vector<size_t>& row      ,
