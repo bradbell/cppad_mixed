@@ -420,7 +420,11 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 		{	warning("optimize_fixed: ipopt failed to converge");
 		}
 		if( ! fixed_nlp->finalize_solution_ok_ )
-		{	warning("optimize_fixed: solution check failed");
+		{	warning(
+				"optimize_fixed: solution check failed;\n"
+				"fixed_tolerance may be too small, also\n"
+				"see discussion of bounds in fixed_solution documentation."
+			);
 		}
 	}
 	else

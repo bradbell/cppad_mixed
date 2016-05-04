@@ -1803,6 +1803,8 @@ $end
 		if( fixed_upper_[j] != + inf )
 			scale = std::max(scale, std::fabs( fixed_upper_[j] ) );
 		bool at_lower = x[j] - fixed_lower_[j] <= scale * 10. * tol;
+		// catch special case where lower and upper limits are zero
+		at_lower     |= fixed_lower_[j] == fixed_upper_[j];
 		solution_.fixed_lag[j] = 0.0;
 		if( at_lower )
 		{	if( sum > 0 )
@@ -1810,7 +1812,8 @@ $end
 				sum = 0.0;
 			}
 		}
-		bool at_upper = fixed_upper_[j] - x[j] <= scale * 10. * tol;
+		bool at_upper = ! at_lower;
+		at_upper     &= fixed_upper_[j] - x[j] <= scale * 10. * tol;
 		if( at_upper )
 		{	if( sum <  0 )
 			{	solution_.fixed_lag[j] = - sum;
