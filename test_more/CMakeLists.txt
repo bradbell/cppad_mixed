@@ -30,6 +30,7 @@ ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
 	ran_likelihood_jac.cpp
 	ran_obj_tst.cpp
 	sample_fixed.cpp
+	solution_check.cpp
 	test_more.cpp
 	zero_random_one.cpp
 	zero_random_two.cpp

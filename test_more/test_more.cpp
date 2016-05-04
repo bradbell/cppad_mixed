@@ -26,6 +26,7 @@ extern bool ran_likelihood_hes(void);
 extern bool ran_likelihood_jac(void);
 extern bool ran_obj_tst(void);
 extern bool sample_fixed(void);
+extern bool solution_check(void);
 extern bool zero_random_one(void);
 extern bool zero_random_two(void);
 
@@ -76,6 +77,7 @@ int main(void)
 	RUN(ran_likelihood_jac);
 	RUN(ran_obj_tst);
 	RUN(sample_fixed);
+	RUN(solution_check);
 	RUN(zero_random_one);
 	RUN(zero_random_two);
 	// This comment also expected by bin/test_one.sh

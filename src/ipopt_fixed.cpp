@@ -1797,34 +1797,45 @@ $end
 		}
 		// sum += z_U[j] - z_L[j]; does not work because
 		// Ipopt does not seem to set z_U[j] and z_L[j] accuractely
+		//
+		// initialize
+		solution_.fixed_lag[j] = 0.0;
+		//
+		// scale
 		double scale = std::fabs( x[j] );
 		if( fixed_lower_[j] != - inf )
 			scale = std::max(scale, std::fabs( fixed_lower_[j] ) );
 		if( fixed_upper_[j] != + inf )
 			scale = std::max(scale, std::fabs( fixed_upper_[j] ) );
+		//
+		// at_lower
 		bool at_lower = x[j] - fixed_lower_[j] <= scale * 10. * tol;
 		// catch special case where lower and upper limits are zero
 		at_lower     |= fixed_lower_[j] == fixed_upper_[j];
-		solution_.fixed_lag[j] = 0.0;
+		at_lower     &= sum > 0.0;
 		if( at_lower )
-		{	if( sum > 0 )
-			{	solution_.fixed_lag[j] = - sum;
-				sum = 0.0;
-			}
-		}
-		bool at_upper = ! at_lower;
-		at_upper     &= fixed_upper_[j] - x[j] <= scale * 10. * tol;
-		if( at_upper )
-		{	if( sum <  0 )
-			{	solution_.fixed_lag[j] = - sum;
-				sum = 0.0;
-			}
-		}
+			solution_.fixed_lag[j] = - sum;
 		//
-		average += std::fabs(sum) / double(n_fixed_);
+		// at_upper
+		bool at_upper = fixed_upper_[j] - x[j] <= scale * 10. * tol;
+		at_upper     |= fixed_lower_[j] == fixed_upper_[j];
+		at_upper     &= sum < 0.0;
+		if( at_upper )
+			solution_.fixed_lag[j] = - sum;
+		//
+		if( ! (at_lower || at_upper) )
+		{	double check;
+			check = std::fabs(sum);
+			if( sum >= 0.0  && fixed_lower_[j] > -inf )
+				check = sum * (x[j] - fixed_lower_[j]);
+			else if( sum <= 0.0 && fixed_upper_[j] < +inf )
+				check = - sum * (fixed_upper_[j] - x[j]);
+			assert( check >= 0.0 );
+			//
+			average += check / double(n_fixed_);
+		}
 	}
-	// needed to relax tolerance for bfgs method (Newton is more accurate)
-	ok &= average <= 30. * tol;
+	ok &= average <= 3. * tol;
 
 	// Check the partial of the Lagrangian w.r.t auxillary variables
 	average = 0.0;
