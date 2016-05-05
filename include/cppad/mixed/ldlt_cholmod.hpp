@@ -72,11 +72,11 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 class ldlt_cholmod {
 private:
-	const size_t          nrow_;   // number of rows in pos_matrix_
+	const size_t          nrow_;   // number of rows in sym_matrix_
 	CppAD::vector<size_t> key_;    // sorting keys
 	CppAD::vector<size_t> index_;  // sorting indices
 	cholmod_common    common_;
-	cholmod_sparse*   pos_matrix_; // The positive matrix we are factoring
+	cholmod_sparse*   sym_matrix_; // The symmetric matrix we are factoring
 	cholmod_factor*   factor_;     // lower triangular LDL' factor
 	cholmod_dense*    rhs_;        // right hand side of equation
 	cholmod_sparse*   rhs_set_;    // sparsity pattern for rhs

@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin ldlt_cholmod_init$$
 $spell
+	sym
 	ldlt
 	nrow
 	xam
@@ -60,7 +61,7 @@ $head Assumptions$$
 All of the $code cholmod$$ private pointers
 are null when this routine is called.
 
-$head pos_matrix_$$
+$head sym_matrix_$$
 Upon return,
 this is set to a packed, real, sorted, lower triangular, sparse matrix
 with the pattern specified by $icode hes_info$$ and
@@ -70,7 +71,7 @@ $head factor_$$
 Upon return,
 this is the result of
 $codei%
-	factor_ = cholmod_analyze(pos_matrix_, &common_)
+	factor_ = cholmod_analyze(sym_matrix_, &common_)
 %$$
 
 $head rhs_$$
@@ -104,7 +105,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
 {
-	assert(pos_matrix_ == CPPAD_NULL );
+	assert(sym_matrix_ == CPPAD_NULL );
 	assert(factor_     == CPPAD_NULL );
 	assert(rhs_        == CPPAD_NULL );
 	assert(rhs_set_    == CPPAD_NULL );
@@ -114,7 +115,7 @@ void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
 	assert(work_two_   == CPPAD_NULL );
 
 	// set triplet corresponding to sparsity pattern and reserve spase
-	// for unspecified values (that end up in pos_matrix_.
+	// for unspecified values (that end up in sym_matrix_.
 	size_t nrow  = nrow_;
 	size_t ncol  = nrow_;
 	size_t nzmax = hes_info.row.size();
@@ -140,22 +141,22 @@ void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
 
 	// convert triplet to a sparse matrix
 	nzmax = 0; // just need max corresponding to the triplet
-	pos_matrix_ = cholmod_triplet_to_sparse(triplet, nzmax, &common_);
+	sym_matrix_ = cholmod_triplet_to_sparse(triplet, nzmax, &common_);
 
 	// check assumptions
-	assert( pos_matrix_->nrow   == nrow_ );
-	assert( pos_matrix_->ncol   == nrow_ );
-	assert( pos_matrix_->nzmax  == hes_info.row.size() );
-	assert( pos_matrix_->stype  == CHOLMOD_STYPE_LOWER_TRIANGLE );
-	assert( pos_matrix_->itype  == CHOLMOD_INT );
-	assert( pos_matrix_->xtype  == CHOLMOD_REAL );
-	assert( pos_matrix_->dtype  == CHOLMOD_DOUBLE );
-	assert( pos_matrix_->sorted == CHOLMOD_TRUE  );
-	assert( pos_matrix_->packed == CHOLMOD_TRUE  );
+	assert( sym_matrix_->nrow   == nrow_ );
+	assert( sym_matrix_->ncol   == nrow_ );
+	assert( sym_matrix_->nzmax  == hes_info.row.size() );
+	assert( sym_matrix_->stype  == CHOLMOD_STYPE_LOWER_TRIANGLE );
+	assert( sym_matrix_->itype  == CHOLMOD_INT );
+	assert( sym_matrix_->xtype  == CHOLMOD_REAL );
+	assert( sym_matrix_->dtype  == CHOLMOD_DOUBLE );
+	assert( sym_matrix_->sorted == CHOLMOD_TRUE  );
+	assert( sym_matrix_->packed == CHOLMOD_TRUE  );
 
 
 	// analyze the sparsity pattern for LDLT factorization of
-	factor_ = cholmod_analyze(pos_matrix_, &common_);
+	factor_ = cholmod_analyze(sym_matrix_, &common_);
 
 	// check assumptions
 	assert( factor_->n     == nrow_ );

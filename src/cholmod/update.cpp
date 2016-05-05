@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin ldlt_cholmod_update$$
 $spell
+	sym
 	ldlt
 	Cholesky
 	xam
@@ -36,7 +37,7 @@ $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Purpose$$
 This routine updates the $cref ldlt_cholmod$$ factorization
-for new values in the square positive definite matrix.
+for new values in the square symmetric matrix.
 
 $head ldlt_obj$$
 This object has prototype
@@ -61,14 +62,14 @@ $cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
 and
 $cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
 
-$head pos_matrix_$$
+$head sym_matrix_$$
 On input, the member variable
 $codei%
-	cholmod_sparse* pos_matrix_
+	cholmod_sparse* sym_matrix_
 %$$
-has been $cref/initialized/ldlt_cholmod_init/pos_matrix_/$$
+has been $cref/initialized/ldlt_cholmod_init/sym_matrix_/$$
 using the sparsity pattern as is in $icode hes_info$$.
-Upon return, values in $code pos_matrix_$$ have been set to the
+Upon return, values in $code sym_matrix_$$ have been set to the
 corresponding values in the vector $icode%hes_info%.val%$$.
 
 $head factor_$$
@@ -80,7 +81,7 @@ has been $cref/initialized/ldlt_cholmod_init/factor_/$$
 using the sparsity pattern for the Hessian.
 Upon return, it contains the factorization
 $codei%
-	cholmod_factorize(pos_matrix_, factor_, &common_)
+	cholmod_factorize(sym_matrix_, factor_, &common_)
 %$$
 
 $head pos$$
@@ -104,11 +105,11 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 bool ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& hes_info )
 {
-	// set the values in pos_matrix_
-	double* H_x = (double *) pos_matrix_->x;
-	int*    H_p = (int *)    pos_matrix_->p;
+	// set the values in sym_matrix_
+	double* H_x = (double *) sym_matrix_->x;
+	int*    H_p = (int *)    sym_matrix_->p;
 # ifndef NDEBUG
-	int*    H_i = (int *)    pos_matrix_->i;
+	int*    H_i = (int *)    sym_matrix_->i;
 # endif
 	for(size_t j = 0; j < nrow_; j++)
 	{	for(size_t k = (size_t) H_p[j]; k < (size_t) H_p[j+1]; k++)
@@ -121,7 +122,7 @@ bool ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& hes_info )
 # ifndef NDEBUG
 	int flag =
 # endif
-	cholmod_factorize(pos_matrix_, factor_, &common_);
+	cholmod_factorize(sym_matrix_, factor_, &common_);
 
 	// check assumptions
 	assert( flag           == CHOLMOD_TRUE );

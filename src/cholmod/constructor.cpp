@@ -81,7 +81,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 ldlt_cholmod::ldlt_cholmod(size_t nrow)
 :
 nrow_      (nrow)            ,
-pos_matrix_(CPPAD_NULL)      ,
+sym_matrix_(CPPAD_NULL)      ,
 factor_    (CPPAD_NULL)      ,
 rhs_       (CPPAD_NULL)      ,
 rhs_set_   (CPPAD_NULL)      ,
@@ -118,7 +118,7 @@ $end
 */
 ldlt_cholmod::~ldlt_cholmod(void)
 {	// free all the private pointers
-	cholmod_free_sparse (&pos_matrix_, &common_ );
+	cholmod_free_sparse (&sym_matrix_, &common_ );
 	cholmod_free_factor (&factor_,     &common_ );
 	cholmod_free_dense  (&rhs_,        &common_ );
 	cholmod_free_sparse (&rhs_set_,    &common_ );
