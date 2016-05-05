@@ -12,7 +12,7 @@ ADD_LIBRARY(cppad_mixed
 	cholmod/constructor.cpp
 	cholmod/init.cpp
 	cholmod/logdet.cpp
-	cholmod/solve.cpp
+	cholmod/solve_H.cpp
 	cholmod/update.cpp
 	eigen/ldlt_eigen.cpp
 	eigen/information_mat.cpp

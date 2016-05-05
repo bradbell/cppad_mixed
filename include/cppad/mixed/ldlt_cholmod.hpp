@@ -46,7 +46,7 @@ $childtable%src/cholmod/constructor.cpp
 	%src/cholmod/init.cpp
 	%src/cholmod/update.cpp
 	%src/cholmod/logdet.cpp
-	%src/cholmod/solve.cpp
+	%src/cholmod/solve_H.cpp
 	%example/private/ldlt_cholmod_xam.cpp
 	%example/private/cholmod_solve_xam.cpp
 	%example/private/cholmod_solve2_a.cpp

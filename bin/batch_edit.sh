@@ -12,24 +12,18 @@
 new_directories='
 '
 rename_files='
+	src/cholmod/solve.cpp
 '
 spell_files='
 '
 no_change_files='
 '
 #
-rename_cmd='s|cholmod|ldlt_cholmod|'
+rename_cmd='s|solve.cpp|solve_H.cpp|'
 spell_cmd='s|^$spell|&\n\tldlt|'
 #
 cat << EOF > junk.sed
-s|class cholmod|class ldlt_cholmod|g
-s|::cholmod|::ldlt_cholmod|g
-s|cholmod::|ldlt_cholmod::|g
-s|cholmod(|ldlt_cholmod(|g
-s|cholmod_obj|ldlt_obj|g
-s|^\\tldlt_obj\$|&\\n\\tcholmod|g
-#
-s|ldlt_ldlt_|ldlt_|g
+s|solve.cpp|solve_H.cpp|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]
@@ -63,7 +57,14 @@ for file in $list_all
 do
 	if [ "$file" != 'bin/batch_edit.sh' ]
 	then
-		echo_eval sed -f junk.sed -i $file
+		sed -f junk.sed $file > junk.$$
+		if diff $file junk.$$
+		then
+			rm junk.$$
+		else
+			echo "sed -f junk.sed -i $file"
+			mv junk.$$ $file
+		fi
 	fi
 done
 # ----------------------------------------------------------------------------
@@ -74,9 +75,7 @@ do
 done
 # ----------------------------------------------------------------------------
 # files that should not change at all
-list='
-'
-for file in $list
+for file in $no_change_list
 do
 	echo_eval git checkout $file
 done
