@@ -13,7 +13,6 @@ $begin ldlt_cholmod_update$$
 $spell
 	sym
 	ldlt
-	Cholesky
 	xam
 	const
 	CppAD
@@ -24,7 +23,7 @@ $spell
 	pos
 $$
 
-$section Update LDLT Factorization Using new Matrix Values$$
+$section Update Factorization Using new Matrix Values$$
 
 $head Syntax$$
 $icode%pos% = ldlt_obj%.update(%hes_info%)%$$
@@ -54,7 +53,7 @@ $codei%
 %$$
 It contains new values for the
 $cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
-we are computing the Cholesky factor of.
+we are computing the LDLT factor of.
 The $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$
 must be the same as in $cref/ldlt_cholmod_init/ldlt_cholmod_init/hes_info/$$.
 Hence, in particular, it must be in

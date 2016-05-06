@@ -25,7 +25,7 @@ $spell
 	hes
 $$
 
-$section Initialize LDLT Factor for a Specific Sparsity Pattern$$
+$section Initialize Factor for a Specific Sparsity Pattern$$
 
 $head Syntax$$
 $icode%ldlt_obj%.init(%hes_info%)

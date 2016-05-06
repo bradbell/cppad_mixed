@@ -16,12 +16,11 @@ $spell
 	const
 	ldlt_obj
 	cholmod
-	Cholesky
 	logdet
 	CppAD
 $$
 
-$section Compute Log Determinant for Current Cholesky Factor$$
+$section Compute Log Determinant for Current Factor$$
 
 $head Syntax$$
 $icode%logdet% = %ldlt_obj%.logdet(%sign%)

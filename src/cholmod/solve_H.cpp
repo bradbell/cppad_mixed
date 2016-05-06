@@ -13,7 +13,6 @@ $begin ldlt_cholmod_solve_H$$
 $spell
 	ldlt
 	rhs
-	cholesky
 	ldlt_obj
 	cholmod
 	const
@@ -22,7 +21,7 @@ $spell
 	nrow
 $$
 
-$section Solve Linear Equations Using LDLT Factor$$
+$section Solve Linear Equations Using Factor$$
 
 $head Syntax$$
 $icode%ldlt_obj%.solve_H(%row%, %val_in%, %val_out%)%$$
