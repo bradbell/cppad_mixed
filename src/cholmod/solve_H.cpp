@@ -25,7 +25,7 @@ $$
 $section Solve Linear Equations Using LDLT Factor$$
 
 $head Syntax$$
-$codei%%ldlt_obj%.solve_H(%row%, %val_in%, %val_out%)%$$
+$icode%ldlt_obj%.solve_H(%row%, %val_in%, %val_out%)%$$
 
 $head Private$$
 The $cref ldlt_cholmod$$ class is an

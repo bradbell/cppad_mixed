@@ -33,10 +33,7 @@ Furthermore, we are given a vector $latex w$$ and wish to compute
 $latex \[
 	v = P^\R{T} L^{-\R{T}} D^{-1/2} w
 \] $$
-See $cref/sparse observed information matrix
-	/theory
-	/Sparse Observed Information Matrix
-/$$.
+See $cref/sparse observed information/theory/Sparse Observed Information/$$.
 
 
 $head Example$$
@@ -219,7 +216,7 @@ bool cholmod_solve2_sim(void)
 	cholmod_dense *X = NULL;
 	cholmod_sparse* Xset = NULL;
 
-	// set B = D^{-1/2} v
+	// set B = D^{-1/2} w
 	for(size_t j = 0; j < ncol; j++)
 	{	// first element for each column is alwasy the diagonal element
 		assert( size_t( L_i [ L_p[j] ] ) == j );
@@ -229,7 +226,7 @@ bool cholmod_solve2_sim(void)
 		B_x[j] = B_x[j] / std::sqrt( dj );
 	}
 
-	// set X = L^-T * D^{-1/2} w
+	// set X = L^{-T} * D^{-1/2} w
 	int sys = CHOLMOD_Lt;
 # ifndef NDEBUG
 	flag =
@@ -254,18 +251,16 @@ bool cholmod_solve2_sim(void)
 	//
 	// The four arrays Xset, X, Y, E may change each time
 	double* X_x     = (double *) X->x;
+# ifndef NDEBUG
 	int*    Xset_p  = (int *) Xset->p;
-	int*    Xset_i  = (int *) Xset->i;
-	size_t  ni      = size_t( Xset_p[1] );
-	assert( ni == nrow );
+	assert( size_t( Xset_p[1] ) == nrow );
+# endif
 	//
-	// set B = L^-T * D^{-1/2} w
-	for(size_t k = 0; k < ni; k++)
-	{	size_t i = Xset_i[k];
+	// set B = L^{-T} * D^{-1/2} w
+	for(size_t i = 0; i < nrow; i++)
 		B_x[i]   = X_x[i];
-	}
 
-	// set X = P^T * L^-T * D^{-1/2} w
+	// set X = P^T * L^{-T} * D^{-1/2} w
 	sys = CHOLMOD_Pt;
 # ifndef NDEBUG
 	flag =
@@ -284,16 +279,13 @@ bool cholmod_solve2_sim(void)
 	//
 	// The four arrays Xset, X, Y, E may change each time
 	X_x     = (double *) X->x;
+# ifndef NDEBUG
 	Xset_p  = (int *) Xset->p;
-	Xset_i  = (int *) Xset->i;
-	ni      = size_t( Xset_p[1] );
-	assert( ni == nrow );
+	assert(  size_t( Xset_p[1] ) == nrow );
+# endif
 	//
-	for(size_t k = 0; k < ni; k++)
-	{	size_t i = Xset_i[k];
-		double xi =  X_x[i];
-		ok &= std::fabs( xi / check[i] - 1.0 ) <= eps;
-	}
+	for(size_t i = 0; i < nrow; i++)
+		ok &= std::fabs( X_x[i] / check[i] - 1.0 ) <= eps;
 
 	// free memory
 	cholmod_free_triplet(&T,    &com);

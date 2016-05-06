@@ -281,7 +281,7 @@ $latex \[
 	B^i_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
 \] $$
 
-$head Sparse Observed Information Matrix$$
+$head Sparse Observed Information$$
 Suppose that $latex H$$ is a sparse positive definite Hessian of
 a likelihood at the maximum likelihood estimate for its unknown parameters.
 The corresponding asymptotic covariance for posterior distribution
