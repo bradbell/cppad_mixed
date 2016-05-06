@@ -260,7 +260,8 @@ void cppad_mixed::sample_fixed(
 	const d_vector& fixed_opt( solution.fixed_opt );
 	// -----------------------------------------------------------------------
 	// update the cholesky factor for this fixed and random effect
-	update_factor(fixed_opt, random_opt);
+	if( n_random_ > 0 )
+		update_factor(fixed_opt, random_opt);
 	// -----------------------------------------------------------------------
 	// Create con_mat
 	//

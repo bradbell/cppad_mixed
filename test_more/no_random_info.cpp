@@ -13,6 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/sparse_mat_info.hpp>
+# include <cppad/mixed/manage_gsl_rng.hpp>
 
 namespace {
 	using CppAD::vector;
@@ -81,6 +82,9 @@ bool no_random_info(void)
 	bool   ok = true;
 	double inf = std::numeric_limits<double>::infinity();
 	double eps = 10. * std::numeric_limits<double>::epsilon();
+	//
+	// initialize gsl random number generator
+	size_t random_seed = CppAD::mixed::new_gsl_rng(0);
 	//
 	size_t n_data   = 10;
 	size_t n_fixed  = n_data;
@@ -151,6 +155,29 @@ bool no_random_info(void)
 		double check = 1.0 / double( (i + 1) * (i + 1) );
 		ok &= CppAD::NearEqual( information_info.val[i], check, eps, eps);
 	}
+	//
+	// make sure can sample from fixed effects
+	size_t sample_size = 1;
+	vector<double> sample(n_fixed * sample_size);
+	mixed_object.sample_fixed(
+		sample,
+		information_info,
+		solution,
+		fixed_lower,
+		fixed_upper,
+		random_opt
+	);
+	//
+	// check that the sample is reasonable
+	for(size_t i = 0; i < n_fixed; i++)
+	{	double sigma = double(i + 1);
+		// note hessian is 1 / sigma^2 along diagonal
+		ok   &= std::fabs( sample[i] - solution.fixed_opt[i] ) < 4 * sigma;
+	}
+	if( ! ok )
+		std::cout << "\nrandom_seed = " << random_seed << "\n";
+	//
+	CppAD::mixed::free_gsl_rng();
 	return ok;
 }
 // END C++
