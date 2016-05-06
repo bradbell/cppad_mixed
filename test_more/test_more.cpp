@@ -22,6 +22,7 @@ extern bool fixed_lag(void);
 extern bool max_iter_neg(void);
 extern bool n_mixture(void);
 extern bool no_fix_likelihood(void);
+extern bool no_random_info(void);
 extern bool ran_likelihood_hes(void);
 extern bool ran_likelihood_jac(void);
 extern bool ran_obj_tst(void);
@@ -73,6 +74,7 @@ int main(void)
 	RUN(max_iter_neg);
 	RUN(n_mixture);
 	RUN(no_fix_likelihood);
+	RUN(no_random_info);
 	RUN(ran_likelihood_hes);
 	RUN(ran_likelihood_jac);
 	RUN(ran_obj_tst);

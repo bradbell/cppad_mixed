@@ -26,6 +26,7 @@ ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
 	max_iter_neg.cpp
 	n_mixture.cpp
 	no_fix_likelihood.cpp
+	no_random_info.cpp
 	ran_likelihood_hes.cpp
 	ran_likelihood_jac.cpp
 	ran_obj_tst.cpp

@@ -17,6 +17,7 @@ $spell
 	CppAD
 	cholmod ldlt_obj
 	logdet
+	sim_cov
 $$
 
 $section Example Using Cholmod Cholesky Factorization$$
@@ -92,6 +93,9 @@ See the following under Source Code below:
 $codep
 	ldlt_obj.solve_H(row, val_in, val_out);
 $$
+
+$head sim_cov$$
+Under Construction.
 
 $head Source Code$$
 $code

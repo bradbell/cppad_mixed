@@ -111,57 +111,63 @@ CppAD::mixed::sparse_mat_info cppad_mixed::information_mat(
 	//
 	// optimal fixed effects
 	const d_vector& fixed_opt( solution.fixed_opt );
-	// -----------------------------------------------------------------------
-	// update the cholesky factor for this fixed and random effect
-	update_factor(fixed_opt, random_opt);
-	// -----------------------------------------------------------------------
-	// If Quasi-Newton method was used, must initilaize routines
-	// that are only used for the Hessian calculation; see initilaize.cpp
-	if( n_random_ != 0 && ! init_newton_atom_done_ )
-	{	assert( quasi_fixed_ );
-		assert( ! init_ran_objcon_done_ );
-		assert( ! init_ran_objcon_hes_done_ );
-		//
-		// newton_atom_
-		assert( ran_like_a1fun_.size_var() > 0  );
-		newton_atom_.initialize(
-			ran_like_a1fun_, fixed_opt, random_opt
-		);
-		init_newton_atom_done_ = true;;
-		//
-		// ran_objcon_fun_
-		assert( ! init_ran_objcon_done_ );
-		init_ran_objcon(fixed_opt, random_opt);
-		assert( init_ran_objcon_done_ );
-		//
-		// ran_objcon_hes_
-		assert( ! init_ran_objcon_hes_done_ );
-		init_ran_objcon_hes(fixed_opt, random_opt);
-		assert( init_ran_objcon_hes_done_ );
-	}
-	assert( init_newton_atom_done_ );
-	assert( init_ran_objcon_done_ );
-	assert( init_ran_objcon_hes_done_ );
-	// -----------------------------------------------------------------------
-	// Lower triangle of Hessian w.r.t. fixed effects
-	// for random part of objective,no constraints
-	d_vector w_ran(n_ran_con_ + 1);
-	w_ran[0] = 1.0;
-	for(size_t j = 1; j <=n_ran_con_; j++)
-		w_ran[j] = 0.0;
 	//
-	CppAD::mixed::sparse_mat_info ran_info;
-	ran_objcon_hes(
+	// ----------------------------------------------------------------------
+	// compute Hessian w.r.t. fixed effect of random part of objective
+	eigen_sparse ran_hes(n_fixed_, n_fixed_);
+	if( n_random_ > 0 )
+	{	// ------------------------------------------------------------------
+		// update the cholesky factor for this fixed and random effect
+		update_factor(fixed_opt, random_opt);
+		// ------------------------------------------------------------------
+		// If Quasi-Newton method was used, must initilaize routines
+		// that are only used for the Hessian calculation; see initilaize.cpp
+		if( ! init_newton_atom_done_ )
+		{	assert( quasi_fixed_ );
+			assert( ! init_ran_objcon_done_ );
+			assert( ! init_ran_objcon_hes_done_ );
+			//
+			// newton_atom_
+			assert( ran_like_a1fun_.size_var() > 0  );
+			newton_atom_.initialize(
+				ran_like_a1fun_, fixed_opt, random_opt
+			);
+			init_newton_atom_done_ = true;;
+			//
+			// ran_objcon_fun_
+			assert( ! init_ran_objcon_done_ );
+			init_ran_objcon(fixed_opt, random_opt);
+			assert( init_ran_objcon_done_ );
+			//
+			// ran_objcon_hes_
+			assert( ! init_ran_objcon_hes_done_ );
+			init_ran_objcon_hes(fixed_opt, random_opt);
+			assert( init_ran_objcon_hes_done_ );
+		}
+		assert( init_newton_atom_done_ );
+		assert( init_ran_objcon_done_ );
+		assert( init_ran_objcon_hes_done_ );
+		// ------------------------------------------------------------------
+		// Lower triangle of Hessian w.r.t. fixed effects
+		// for random part of objective,no constraints
+		d_vector w_ran(n_ran_con_ + 1);
+		w_ran[0] = 1.0;
+		for(size_t j = 1; j <=n_ran_con_; j++)
+			w_ran[j] = 0.0;
+		//
+		CppAD::mixed::sparse_mat_info ran_info;
+		ran_objcon_hes(
 		fixed_opt, random_opt, w_ran, ran_info.row, ran_info.col, ran_info.val
-	);
-	eigen_sparse ran_hes = CppAD::mixed::triple2eigen(
-		n_fixed_      ,
-		n_fixed_      ,
-		ran_info.row  ,
-		ran_info.col  ,
-		ran_info.val
-	);
-	// -----------------------------------------------------------------------
+		);
+		ran_hes = CppAD::mixed::triple2eigen(
+			n_fixed_      ,
+			n_fixed_      ,
+			ran_info.row  ,
+			ran_info.col  ,
+			ran_info.val
+		);
+	}
+	// --------------------------------------------------------------------
 	// Lower triangle of Hessian of the fixed likelihood
 	eigen_sparse fix_hes(n_fixed_, n_fixed_);
 	size_t n_fix_like = 0;

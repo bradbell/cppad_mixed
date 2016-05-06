@@ -150,6 +150,10 @@ $end
 	typedef Eigen::Matrix<double, Dynamic, 1>       double_vec;
 	typedef Eigen::LLT<double_mat, Eigen::Lower>    double_cholesky;
 	//
+	// case where there is nothing to do
+	if( n_random_ == 0 )
+		return;
+	//
 	assert( sample.size() % n_random_ == 0   );
 	assert( fixed_vec.size()    == n_fixed_  );
 	assert( random_lower.size() == n_random_ );

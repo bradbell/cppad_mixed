@@ -139,7 +139,8 @@ bool no_random_xam(void)
 		z[i] = double(i+1);
 
 	// object that is derived from cppad_mixed
-	bool quasi_fixed = true;
+	// (test full netwon method to make sure it works with no random effects).
+	bool quasi_fixed = false;
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
 	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, A_info, z);
 	mixed_object.initialize(fixed_in, random_in);
