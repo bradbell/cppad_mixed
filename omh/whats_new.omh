@@ -32,7 +32,7 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
-$head 05-05$$
+$head 05-06$$
 Fix a bug in the $cref information_mat$$ calculation when
 the number of random effects
 $cref/n_random/derived_ctor/n_random/$$ was zero.
