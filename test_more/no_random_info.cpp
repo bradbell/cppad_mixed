@@ -8,7 +8,7 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-// information matrix with no random effects.
+// information matrix and sample_fixed in case where with no random effects.
 
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
@@ -97,6 +97,12 @@ bool no_random_info(void)
 		fixed_upper[i] = + inf;
 	}
 	//
+	// set one of the fixed effect to be zero
+	size_t set_zero_index = 2;
+	fixed_lower[set_zero_index] = 0.0;
+	fixed_in[set_zero_index]    = 0.0;
+	fixed_upper[set_zero_index] = 0.0;
+	//
 	// explicit constriants (in addition to l1 terms)
 	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
 	//
@@ -173,6 +179,10 @@ bool no_random_info(void)
 	{	double sigma = double(i + 1);
 		// note hessian is 1 / sigma^2 along diagonal
 		ok   &= std::fabs( sample[i] - solution.fixed_opt[i] ) < 4 * sigma;
+		if( i == set_zero_index )
+		{	ok &= solution.fixed_opt[i] == 0.0;
+			ok &= sample[i] == 0.0;
+		}
 	}
 	if( ! ok )
 		std::cout << "\nrandom_seed = " << random_seed << "\n";
