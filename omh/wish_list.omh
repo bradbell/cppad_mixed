@@ -30,10 +30,6 @@ Use the current simulation as a proposal density for a Metropolis
 sampling of the random effects (because they have small sample statistics).
 $lend
 
-$head User Example$$
-Move user examples below specific routines, instead of in
-$cref user$$ section.
-
 $head sparse_mat_info$$
 Use $cref sparse_mat_info$$ instead of
 $icode row$$, $icode col$$, $icode val$$ triples

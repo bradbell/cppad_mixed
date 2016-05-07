@@ -16,6 +16,10 @@ $$
 $section User API Examples$$
 
 
+$comment
+These user examples are not for a particular public member function.
+(The ones for a particular function are children of that function.)
+$$
 $children%example/user/abs_density_xam.cpp
 	%example/user/no_random_xam.cpp
 	%example/user/ran_constraint_xam.cpp
