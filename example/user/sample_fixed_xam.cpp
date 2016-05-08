@@ -59,12 +59,13 @@ namespace {
 			n_fixed_(n_fixed)     ,
 			n_random_(n_random)   ,
 			y_(y)
-		{	assert( n_fixed == 2);
+		{	assert( n_fixed == 3);
 			assert( y_.size() == n_random_ );
 		}
 	// ----------------------------------------------------------------------
 	private:
 		// implementation of ran_likelihood
+		// Note that theta[2] is not used
 		template <class Float>
 		vector<Float> implement_ran_likelihood(
 			const vector<Float>& theta  ,
@@ -105,7 +106,8 @@ namespace {
 			// compute these factors once
 			Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
 
-			for(size_t j = 0; j < n_fixed_; j++)
+			// Note that theta[2] is not included
+			for(size_t j = 0; j < 2; j++)
 			{	Float mu     = Float(4.0);
 				Float sigma  = Float(1.0);
 				Float res    = (fixed_vec[j] - mu) / sigma;
@@ -138,17 +140,21 @@ bool sample_fixed_xam(void)
 {
 	bool   ok = true;
 	double inf = std::numeric_limits<double>::infinity();
+	double eps = 10. * std::numeric_limits<double>::epsilon();
 	//
 	// initialize gsl random number generator
 	size_t random_seed = CppAD::mixed::new_gsl_rng(0);
 	//
 	size_t n_data   = 10;
-	size_t n_fixed  = 2;
+	size_t n_fixed  = 3;
 	size_t n_random = n_data;
 	vector<double>
 		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
 	fixed_lower[0] = - inf; fixed_in[0] = 2.0; fixed_upper[0] = inf;
 	fixed_lower[1] = .01;   fixed_in[1] = 0.5; fixed_upper[1] = inf;
+	// set upper and lower limit for theta[2] equal so that it is bounded
+	// (without this the information matrix would not invert).
+	fixed_lower[2] = 1.0;   fixed_in[2] = 1.0; fixed_upper[2] = 1.0;
 	//
 	// explicit constriants (in addition to l1 terms)
 	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
@@ -199,6 +205,8 @@ bool sample_fixed_xam(void)
 	);
 	//
 	// check that none of the constraints are active
+	// (Note that the Lagragian w.r.t. theta[2] will be zero because
+	// it does not affect the objective).
 	ok &= solution.fixed_lag.size() == n_fixed;
 	for(size_t i = 0; i < n_fixed; i++)
 		ok &= solution.fixed_lag[i] == 0.0;
@@ -242,8 +250,9 @@ bool sample_fixed_xam(void)
 	}
 	sample_cov *= 1.0 / double(n_sample);
 	//
-	matrix info_mat(n_fixed, n_fixed);
-	size_t K = ( n_fixed * (n_fixed + 1) ) / 2;
+	matrix info_mat(n_fixed-1, n_fixed-1);
+	// note theta[2] does not have any non-zero terms in Hessian
+	size_t K = ( (n_fixed-1) * n_fixed ) / 2;
 	ok &= K == information_info.row.size();
 	for(size_t k = 0; k < K; k++)
 	{	size_t i = information_info.row[k];
@@ -256,9 +265,13 @@ bool sample_fixed_xam(void)
 	for(size_t i = 0; i < n_fixed; i++)
 	{	for(size_t j = 0; j < n_fixed; j++)
 		{	double value = sample_cov(i, j);
-			double check = cov_mat(i, j);
-			double scale = std::sqrt( cov_mat(i, i) * cov_mat(j, j) );
-			ok &= std::fabs(value - check) / scale < .05;
+			if( i == 2 || j == 2 )
+				ok &= std::fabs(value) < eps;
+			else
+			{	double check = cov_mat(i, j);
+				double scale = std::sqrt( cov_mat(i, i) * cov_mat(j, j) );
+				ok &= std::fabs(value - check) / scale < .05;
+			}
 		}
 	}
 	//

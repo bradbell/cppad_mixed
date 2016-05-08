@@ -134,55 +134,67 @@ $latex \[
 	\B{E} \left( [ u - \B{E} (u) ] [ v - \B{E} (v) ]^\R{T} \right)
 \] $$
 
-$subhead Unconstrained Covariance$$
-We use $latex \tilde{L} ( \theta )$$ to denote the
+$subhead Fixed Effects Subset$$
+We use $latex \alpha$$ for the vector of fixed effects that do not have
+their upper or lower bound active (or equal); i.e., if $icode j$$ is such that
+$codei%
+%solution%.fixed_lag[%j%] == 0.0 && %fixed_lower%[%j%] < %fixed_upper%[%j%]
+%$$
+then $latex \theta_j$$ is one of the components in $latex \alpha$$.
+Note that each value of $latex \alpha$$ has a corresponding value for
+$latex \theta$$ where the active bounds are used for the components
+not in $latex \alpha$$.
+
+$subhead Unconstrained Subset Covariance$$
+We use $latex \tilde{L} ( \alpha )$$ to denote the
 $cref/total objective/theory/Objective/Total Objective, L(theta)/$$
-with absolute values terms in $cref fix_likelihood$$ excluded.
-We use $latex \tilde{\theta}$$ for the unconstrained optimal estimate
-of the fixed effects (without absolute value terms) and
+as a function of the subset of fixed effects $latex \alpha$$ and
+where the absolute values terms in $cref fix_likelihood$$ are excluded.
+We use $latex \tilde{\alpha}$$ for the unconstrained optimal estimate
+of the subset of fixed effects and
 approximation its auto-covariance by
 $latex \[
-	\B{C} ( \tilde{\theta} , \tilde{\theta} )
+	\B{C} ( \tilde{\alpha} , \tilde{\alpha} )
 	=
 	H^{-1}
 \]$$
-where $latex H$$ is the Hessian
-corresponding to $icode information_info$$; i.e.,
-the observed information matrix.
+where $latex H$$ is the Hessian corresponding to $icode information_info$$.
+Note that $icode information_info$$ is the observed information matrix
+corresponding to all the fixed effects $latex \theta$$.
 
-$subhead Constraints Equations$$
-Let $latex n$$ be the number of fixed effects,
-$latex m$$ the number of active constraints,
-and the equations $latex e( \theta ) = b$$ the active constraints.
+$subhead Constraint Equations$$
+Let $latex n$$ be the number of fixed effects in $latex \alpha$$,
+$latex m$$ the number of active constraints (not counting bounds),
+and the equations $latex e( \alpha ) = b$$ be those active constraints.
 Here $latex e : \B{R}^n \rightarrow \B{R}^m$$ and $latex b \in \B{R}^m$$
 and the inequality constraints have been converted to equalities at the
-active bounds (including the bounds on the fixed effects).
-Define the random variable the approximation for $latex e( \theta )$$ by
+active bounds (excluding the bounds on the fixed effects).
+Define the random variable the approximation for $latex e( \alpha )$$ by
 $latex \[
-\tilde{e} ( \theta ) =
-e( \hat{\theta} ) + e^{(1)} \left( \hat{\theta} \right)
-	\left( \theta - \hat{\theta} \right)
+\tilde{e} ( \alpha ) =
+e( \hat{\alpha} ) + e^{(1)} \left( \hat{\alpha} \right)
+	\left( \alpha - \hat{\alpha} \right)
 \] $$
 
 $subhead Constrained Covariance$$
 We approximate the distribution for
-$latex \tilde{\theta}$$ normal,
-and the distribution for $latex \hat{\theta}$$
-as the conditional distribution of $latex \tilde{\theta}$$ given
-the value of $latex \tilde{e} ( \tilde{\theta} )$$; i.e.,
+$latex \tilde{\alpha}$$ normal,
+and the distribution for $latex \hat{\alpha}$$
+as the conditional distribution of $latex \tilde{\alpha}$$ given
+the value of $latex \tilde{e} ( \tilde{\alpha} )$$; i.e.,
 $latex \[
-	\B{C} \left( \hat{\theta} \W{,} \hat{\theta} \right)
+	\B{C} \left( \hat{\alpha} \W{,} \hat{\alpha} \right)
 	=
-	\B{C} \left( \tilde{\theta} \W{,} \tilde{\theta} \right)
+	\B{C} \left( \tilde{\alpha} \W{,} \tilde{\alpha} \right)
 	-
-	\B{C} \left( \tilde{\theta} \W{,} \tilde{e} \right)
+	\B{C} \left( \tilde{\alpha} \W{,} \tilde{e} \right)
 	\B{C} \left( \tilde{e}  \W{,} \tilde{e} \right)^{-1}
-	\B{C} \left( \tilde{e}  \W{,} \tilde{\theta} \right)
+	\B{C} \left( \tilde{e}  \W{,} \tilde{\alpha} \right)
 \] $$
 Using the notation
-$latex D = \B{C} \left( \hat{\theta} \W{,} \hat{\theta} \right)$$,
-$latex C = \B{C} \left( \tilde{\theta} \W{,} \tilde{\theta} \right)$$,
-$latex E = e^{(1)} \left( \hat{\theta} \right)$$,
+$latex D = \B{C} \left( \hat{\alpha} \W{,} \hat{\alpha} \right)$$,
+$latex C = \B{C} \left( \tilde{\alpha} \W{,} \tilde{\alpha} \right)$$,
+$latex E = e^{(1)} \left( \hat{\alpha} \right)$$,
 we have
 $latex \[
 	D = C - C E^\R{T} \left( E C E^\R{T} \right)^{-1}  E C
@@ -263,14 +275,24 @@ void cppad_mixed::sample_fixed(
 	if( n_random_ > 0 )
 		update_factor(fixed_opt, random_opt);
 	// -----------------------------------------------------------------------
-	// Create con_mat
-	//
-	// number of active bound constraints
-	size_t n_bnd_active = 0;
+	// subset of variables that do not have active bounds
+	// mapping from fixed index to subset index and back
+	CppAD::vector<size_t> fixed2subset(n_fixed_);
+	size_t n_subset = 0;
 	for(size_t j = 0; j < n_fixed_; j++)
 	{	if( solution.fixed_lag[j] != 0.0 )
-			n_bnd_active++;
+			fixed2subset[j] = n_fixed_;
+		else if( fixed_lower[j] == fixed_upper[j] )
+			fixed2subset[j] = n_fixed_;
+		else
+			fixed2subset[j] = n_subset++;
 	}
+	assert( n_subset <= n_fixed_ );
+	// -----------------------------------------------------------------------
+	// Create con_mat
+	//
+	// number of variables in the subset that do not have active bounds
+	//
 	// number fixed constraints active
 	size_t n_fix_active = 0;
 	size_vec fix_active_index(n_fix_con);
@@ -283,33 +305,31 @@ void cppad_mixed::sample_fixed(
 	size_t n_ran_active = n_ran_con_;
 	//
 	// matrix with all the active constraints
-	size_t n_con_active = n_bnd_active  + n_fix_active + n_ran_active;
-	double_mat con_mat = double_mat::Zero(n_con_active, n_fixed_);
+	// (not counting bound constraints)
+	size_t n_con_active = n_fix_active + n_ran_active;
+	double_mat con_mat = double_mat::Zero(n_con_active, n_subset);
 	size_t con_row = 0;
 	//
-	// put the bounds in con_mat
-	for(size_t j = 0; j < n_fixed_; j++) if( solution.fixed_lag[j] != 0.0 )
-	{	con_mat(con_row, j) = 1.0;
-		++con_row;
-	}
 	// put fixed constraints in con_mat
 	if( n_fix_con > 0 )
-	{	assert( con_row == n_bnd_active );
-		//
-		// jacobian of the fixed constraints
+	{	// jacobian of the fixed constraints
 		CppAD::mixed::sparse_mat_info fix_con_info;
 		fix_con_jac(
 			fixed_opt, fix_con_info.row, fix_con_info.col, fix_con_info.val
 		);
 		size_t K = fix_con_info.row.size();
 		for(size_t k = 0; k < K; k++)
-		{	size_t r = fix_con_info.row[k];
-			if( solution.fix_con_lag[r] != 0.0 )
+		{	size_t r  = fix_con_info.row[k];
+			size_t c  = fix_con_info.col[k];
+			double v  = fix_con_info.val[k];
+			//
+			bool r_active  = solution.fix_con_lag[r] != 0.0;
+			bool in_subset = fixed2subset[c] != n_fixed_;
+			if( r_active & in_subset )
 			{	assert( fix_active_index[r] != n_fixed_ );
-				size_t i = fix_active_index[r];
-				size_t c  = fix_con_info.col[k];
-				double v  = fix_con_info.val[k];
-				con_mat(con_row + i, c) = v;
+				size_t i  = fix_active_index[r];
+				size_t j  = fixed2subset[c];
+				con_mat(con_row + i, j) = v;
 			}
 		}
 		con_row += n_fix_active;
@@ -317,7 +337,7 @@ void cppad_mixed::sample_fixed(
 	// put random constraints in con_mat
 	CppAD::mixed::sparse_mat_info ran_con_info;
 	if( n_ran_active > 0 )
-	{	assert( con_row == n_bnd_active + n_fix_active );
+	{	assert( con_row == n_fix_active );
 		//
 		// jacobian of the random constraints
 		// sparsity pattern
@@ -327,10 +347,14 @@ void cppad_mixed::sample_fixed(
 		//
 		size_t K = ran_con_info.row.size();
 		for(size_t k = 0; k < K; k++)
-		{	size_t r = ran_con_info.row[k];
-			size_t c  = ran_con_info.col[k];
-			double v  = ran_con_info.val[k];
-			con_mat(con_row + r, c) = v;
+		{	size_t r       = ran_con_info.row[k];
+			size_t c       = ran_con_info.col[k];
+			double v       = ran_con_info.val[k];
+			bool in_subset = fixed2subset[c] != n_fixed_;
+			if( in_subset )
+			{	size_t j  = fixed2subset[c];
+				con_mat(con_row + r, j) = v;
+			}
 		}
 	}
 	// -----------------------------------------------------------------------
@@ -338,14 +362,22 @@ void cppad_mixed::sample_fixed(
 	// ----------------------------------------------------------------------
 	//
 	// information matrix
-	double_mat info_mat = double_mat::Zero(n_fixed_, n_fixed_);
+	double_mat info_mat = double_mat::Zero(n_subset, n_subset);
 	for(size_t k = 0; k < information_info.row.size(); k++)
 	{	// note only lower triangle is stored in information_info
 		size_t r = information_info.row[k];
 		size_t c = information_info.col[k];
 		double v = information_info.val[k];
-		info_mat(r, c) = v;
-		info_mat(c, r) = v;
+		//
+		bool in_subset = fixed2subset[r] != n_fixed_;
+		in_subset     &= fixed2subset[c] != n_fixed_;
+		//
+		if( in_subset )
+		{	size_t i = fixed2subset[r];
+			size_t j = fixed2subset[c];
+			info_mat(i, j) = v;
+			info_mat(j, i) = v;
+		}
 	}
 	//
 	// covariance matrix with out constraints
@@ -363,8 +395,8 @@ void cppad_mixed::sample_fixed(
 	//
 	// diagonal elements of LDLT factorization
 	double_vec diag      = cholesky.vectorD();
-	double_vec diag_root(n_fixed_);
-	for(size_t j = 0; j < n_fixed_; j++)
+	double_vec diag_root(n_subset);
+	for(size_t j = 0; j < n_subset; j++)
 	{	if( diag[j] > 0.0 )
 			diag_root[j] = std::sqrt( diag[j] );
 		else
@@ -376,21 +408,28 @@ void cppad_mixed::sample_fixed(
 	// Simulate the samples
 	// -----------------------------------------------------------------------
 	for(size_t i_sample = 0; i_sample < n_sample; i_sample++)
-	{	double_vec w(n_fixed_);
-		// simulate a normal with mean zero and variance sqrt{D(j,j)}
-		for(size_t j = 0; j < n_fixed_; j++)
-			w[j] = diag_root[j] * gsl_ran_gaussian(get_gsl_rng(), 1.0);
+	{	double_vec w(n_subset);
+		// simulate a normal with mean zero and variance sqrt{D(k,k)}
+		for(size_t k = 0; k < n_subset; k++)
+			w[k] = diag_root[k] * gsl_ran_gaussian(get_gsl_rng(), 1.0);
 		// multily by Cholesky factor
 		double_vec s = P.transpose() * L * w;
 		//
+		// store this sample
 		for(size_t j = 0; j < n_fixed_; j++)
-		{
-			// store corresponding sample
-			sample[ i_sample * n_fixed_ + j] = fixed_opt[j] + s[j];
-			//
-			// a constraint that is not active might go out of bounds
-			s[j] = std::min(s[j], fixed_upper[j]);
-			s[j] = std::max(s[j], fixed_lower[j]);
+		{	if( fixed2subset[j] == n_fixed_ )
+				sample[ i_sample * n_fixed_ + j] = fixed_opt[j];
+			else
+			{	size_t k       = fixed2subset[j];
+				double fixed_j = fixed_opt[j] + s[k];
+				//
+				// check if this component went out of bounds
+				fixed_j = std::min(fixed_j, fixed_upper[j]);
+				fixed_j = std::max(fixed_j, fixed_lower[j]);
+				//
+				// store this component of the sample
+				sample[ i_sample * n_fixed_ + j] = fixed_j;
+			}
 		}
 	}
 	// -----------------------------------------------------------------------
