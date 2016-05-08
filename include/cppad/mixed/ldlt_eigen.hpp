@@ -26,6 +26,9 @@ $$
 
 $section An Eigen LDLT Factor Class$$
 
+$head See Also$$
+$cref ldlt_cholmod$$
+
 $head Private$$
 This class is an implementation detail and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
@@ -42,8 +45,13 @@ $codei%
 	typedef Eigen::SimplicialLDLT<eigen_sparse, Eigen::Lower> eigen_ldlt;
 %$$
 
+$head Example$$
+The file $cref ldlt_eigen_xam.cpp$$ contains an example and test
+using the operations in this class.
+
 
 $childtable%src/eigen/ldlt_eigen.cpp
+	%example/private/ldlt_eigen_xam.cpp
 %$$
 
 $end

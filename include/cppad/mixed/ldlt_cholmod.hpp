@@ -23,6 +23,9 @@ $$
 
 $section A Cholmod Cholesky Factor Class$$
 
+$head See Also$$
+$cref ldlt_eigen$$
+
 $head Private$$
 This class is an implementation detail and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.

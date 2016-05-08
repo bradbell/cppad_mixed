@@ -9,17 +9,17 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin ldlt_cholmod_xam.cpp$$
+$begin ldlt_eigen_xam.cpp$$
 $spell
 	nrow
 	init
 	CppAD
-	cholmod ldlt_obj
+	eigen ldlt_obj
 	logdet
 	sim_cov
 $$
 
-$section Example Using Cholmod LDLT Factorization$$
+$section Example Using Eigen LDLT Factorization$$
 
 $head Problem Description$$
 We define the lower triangular matrix
@@ -62,12 +62,12 @@ which can be checked by multiplying by $latex H H^{-1}$$.
 $head constructor$$
 See the following code below:
 $codep
-	CppAD::mixed::ldlt_cholmod ldlt_obj(nrow);
+	CppAD::mixed::ldlt_eigen ldlt_obj(nrow);
 $$
 
 $head init$$
 See the following under
-$cref/Source Code/ldlt_cholmod_xam.cpp/Source Code/$$ below:
+$cref/Source Code/ldlt_eigen_xam.cpp/Source Code/$$ below:
 $codep
 	ldlt_obj.init(H_info);
 $$
@@ -98,18 +98,18 @@ $$
 
 $head Source Code$$
 $code
-$srcfile%example/private/ldlt_cholmod_xam.cpp%5%// BEGIN C++%// END C++%1%$$
+$srcfile%example/private/ldlt_eigen_xam.cpp%5%// BEGIN C++%// END C++%1%$$
 $$
 
 $end
 */
 // BEGIN C++
-# include <cppad/mixed/ldlt_cholmod.hpp>
+# include <cppad/mixed/ldlt_eigen.hpp>
 # include <limits>
 # include <cmath>
 # include <cassert>
 
-bool ldlt_cholmod_xam(void)
+bool ldlt_eigen_xam(void)
 {	bool ok    = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 
@@ -121,10 +121,10 @@ bool ldlt_cholmod_xam(void)
 	for(size_t i = 0; i < sizeof(H_inv)/sizeof(H_inv[0]); i++)
 		H_inv[i] /= 36.;
 
-	// create cholmod object
+	// create eigen object
 	size_t nrow = 3;    // number of rows in H
 	size_t ncol = nrow; // number of columns in H
-	CppAD::mixed::ldlt_cholmod ldlt_obj(nrow);
+	CppAD::mixed::ldlt_eigen ldlt_obj(nrow);
 	assert( nrow * ncol == sizeof(H_inv) / sizeof(H_inv[0]) );
 
 	// create a sparse matrix representation of the lower triangular of H
@@ -177,7 +177,7 @@ bool ldlt_cholmod_xam(void)
 			ok &= std::fabs( val_out[k] - check_i ) <= eps;
 		}
 	}
-
+	/*
 	// test sim_cov
 	CppAD::vector<double> w(3), v(3), c(3);
 	for(size_t i = 0; i < 3; i++)
@@ -189,9 +189,7 @@ bool ldlt_cholmod_xam(void)
 	c[0] = ( w[0] - 1.0 * c[1] - 1.0 * c[2] ) / 1.0;
 	for(size_t i = 0; i < 3; i++)
 		ok  &= std::fabs( v[i] - c[i] ) <= eps;
-
-
-
+	*/
 
 	return ok;
 }
