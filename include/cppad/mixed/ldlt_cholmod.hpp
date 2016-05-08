@@ -102,6 +102,11 @@ public:
 		const CppAD::vector<double>& val_in   ,
 		CppAD::vector<double>&       val_out
 	);
+	// simualte covariance
+	bool sim_cov(
+		const CppAD::vector<double>& w ,
+		CppAD::vector<double>&       v
+	);
 };
 
 

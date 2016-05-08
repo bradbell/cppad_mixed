@@ -31,6 +31,13 @@ $latex \[
 		1 & 2 & 0 \\
 		1 & 2 & 3
 	\end{array} \right)
+	\W{,}
+	L^\R{T} =
+	\left( \begin{array}{ccc}
+		1 & 1 & 1 \\
+		0 & 2 & 2 \\
+		0 & 0 & 3
+	\end{array} \right)
 \] $$
 and the positive definite matrix
 $latex \[
@@ -43,7 +50,8 @@ $latex \[
 \] $$
 The inverse of $latex H$$ is given by
 $latex \[
-	H^{-1} = \frac{1}{36}
+	H^{-1} = L^\R{-T} L^{-1} =
+	\frac{1}{36}
 	\left( \begin{array}{ccc}
 		45  & -9  & 0  \\
 		-9  & 13  & -4 \\
@@ -84,7 +92,10 @@ $codep
 $$
 
 $head sim_cov$$
-Under Construction.
+See the following under Source Code below:
+$codep
+	ok = ldlt_obj.sim_cov(w, v)
+$$
 
 $head Source Code$$
 $code
@@ -164,12 +175,25 @@ bool ldlt_cholmod_xam(void)
 		for(size_t k = 0; k < row.size(); k++)
 		{	size_t i       = row[k];
 			double check_i = H_inv[ i * nrow + j ];
-			if( check_i == 0.0 )
-				ok &= std::fabs( val_out[k] ) <= eps;
-			else
-				ok &= std::fabs( val_out[k] / check_i - 1.0 ) <= eps;
+			ok &= std::fabs( val_out[k] - check_i ) <= eps;
 		}
 	}
+
+	// test sim_cov
+	CppAD::vector<double> w(3), v(3), c(3);
+	for(size_t i = 0; i < 3; i++)
+		w[i] = double(i + 1);
+	ok &= ldlt_obj.sim_cov(w, v);
+	// solve w = L^{T} c
+	c[2] = w[2] / 3.0;
+	c[1] = ( w[1] - 2 * c[2] ) / 2.0;
+	c[0] = ( w[0] - 1.0 * c[1] - 1.0 * c[2] ) / 1.0;
+	for(size_t i = 0; i < 3; i++)
+		ok  &= std::fabs( v[i] - c[i] ) <= eps;
+
+
+
+
 	return ok;
 }
 // END C++

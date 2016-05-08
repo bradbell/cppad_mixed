@@ -111,12 +111,12 @@ bool ldlt_cholmod::sim_cov(
 	assert( v.size() == nrow_ );
 	//
 	int*    factor_p  = (int *) factor_->p;
-	double* frator_x  = (double *) factor_->x;
+	double* factor_x  = (double *) factor_->x;
 	int*    rhs_set_p = (int *) rhs_set_->p;
 	int*    rhs_set_i = (int *) rhs_set_->i;
 	double* rhs_x     = (double *) rhs_->x;
 # ifndef NDEBUG
-	int*    factor_i  = (int *) factor->i;
+	int*    factor_i  = (int *) factor_->i;
 # endif
 	//
 	// we will solve for all components on the right hand side
@@ -125,9 +125,9 @@ bool ldlt_cholmod::sim_cov(
 	for(size_t i = 0; i < nrow_; i++)
 		rhs_set_i[i] = i;
 	//
-	// set rhs_ = w, Gaussian white noise with mean zero and variance one
-	for(size_t i = 0; i < nrow_; i++);
-		rhs_x[i] = gsl_ran_gaussian(CppAD::mxied::get_gsl_rng(), 1.0);
+	// set rhs_ = w
+	for(size_t i = 0; i < nrow_; i++)
+		rhs_x[i] = w[i];
 	//
 	// set rhs_ = D^{-1/2} w
 	for(size_t i = 0; i < nrow_; i++)
@@ -171,12 +171,12 @@ bool ldlt_cholmod::sim_cov(
 	// set rhs_ = L^{-T} * D^{-1/2} w
 	double* sol_x = (double *) sol_->x;
 	for(size_t i = 0; i < nrow_; i++)
-		rhs_x[i]_ = sol_x[i];
+		rhs_x[i] = sol_x[i];
 	//
 	// set sol_ = P^T L^{-T} * D^{-1/2} w
 	sys = CHOLMOD_Pt;
 # ifndef NDEBUG
-	int flag =
+	flag =
 # endif
 	cholmod_solve2(
 		sys,
@@ -196,7 +196,7 @@ bool ldlt_cholmod::sim_cov(
 	assert( sol_set_->xtype == CHOLMOD_PATTERN );
 	assert( sol_set_->packed == CHOLMOD_TRUE);
 # ifndef NDEBUG
-	int*   sol_set_p = (int *) sol_set_->p;
+	sol_set_p = (int *) sol_set_->p;
 	assert( size_t( sol_set_p[1] ) == nrow_ );
 # endif
 	assert( sol_ != CPPAD_NULL   );
