@@ -23,32 +23,31 @@ $$
 $section Example Using Cholmod Cholesky Factorization$$
 
 $head Problem Description$$
-Solve for $latex x$$ in the equation $latex H x = b$$ where $latex H$$
-is defined below and $latex b$$ is a column of the identity matrix.
-Hence the solution $latex x$$ is the corresponding column of
-$latex H^{-1}$$.
+We define the lower triangular matrix
 $latex \[
-	H = \left( \begin{array}{ccc}
-		5 & 4 & 2 \\
-		4 & 5 & 1 \\
-		2 & 1 & 5
+	L =
+	\left( \begin{array}{ccc}
+		1 & 0 & 0 \\
+		1 & 2 & 0 \\
+		1 & 2 & 3
 	\end{array} \right)
 \] $$
-We use $latex H_k$$ to denote the upper-left $latex k \times k$$
-principal minor. The determinant of its principal minors are:
+and the positive definite matrix
 $latex \[
-	\det \left( H_1 \right) = 5  \W{,}
-	\det \left( H_2 \right) = 9  \W{,}
-	\det \left( H_3 \right) = 36
+	H = L L^\R{T} =
+	\left( \begin{array}{ccc}
+		1 & 1 & 1 \\
+		1 & 5 & 5 \\
+		1 & 5 & 14
+	\end{array} \right)
 \] $$
-Hence, $latex H$$ are positive definite.
-In addition
+The inverse of $latex H$$ is given by
 $latex \[
 	H^{-1} = \frac{1}{36}
 	\left( \begin{array}{ccc}
-		24  & -18 & -6 \\
-		-18 & 21  & 3 \\
-		-6  & 3   & 9
+		45  & -9  & 0  \\
+		-9  & 13  & -4 \\
+		0   & -4  & 4
 	\end{array} \right)
 \] $$
 which can be checked by multiplying by $latex H H^{-1}$$.
@@ -105,9 +104,9 @@ bool ldlt_cholmod_xam(void)
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 
 	double H_inv[] = {
-		 24.0, -18.0, -6.0,
-		-18.0,  21.0,  3.0,
-		 -6.0,   3.0,  9.0
+		45.0,  -9.0,  0.0,
+		-9.0,  13.0, -4.0,
+		0.0,   -4.0,  4.0
 	};
 	for(size_t i = 0; i < sizeof(H_inv)/sizeof(H_inv[0]); i++)
 		H_inv[i] /= 36.;
@@ -121,18 +120,18 @@ bool ldlt_cholmod_xam(void)
 	// create a sparse matrix representation of the lower triangular of H
 	CppAD::mixed::sparse_mat_info H_info;
 	H_info.resize(6);
-	// H_0,0  = 5.0
-	H_info.row[0]  = 0; H_info.col[0]  = 0; H_info.val[0]  = 5.0;
-	// H_1,0  = 4.0
-	H_info.row[1]  = 1; H_info.col[1]  = 0; H_info.val[1]  = 4.0;
-	// H_2,0  = 2.0
-	H_info.row[2]  = 2; H_info.col[2]  = 0; H_info.val[2]  = 2.0;
+	// H_0,0  = 1.0
+	H_info.row[0]  = 0; H_info.col[0]  = 0; H_info.val[0]  = 1.0;
+	// H_1,0  = 1.0
+	H_info.row[1]  = 1; H_info.col[1]  = 0; H_info.val[1]  = 1.0;
+	// H_2,0  = 1.0
+	H_info.row[2]  = 2; H_info.col[2]  = 0; H_info.val[2]  = 1.0;
 	// H_1,1  = 5.0
 	H_info.row[3]  = 1; H_info.col[3]  = 1; H_info.val[3]  = 5.0;
-	// H_2,1  = 1.0
-	H_info.row[4]  = 2; H_info.col[4]  = 1; H_info.val[4]  = 1.0;
-	// H_2,2  = 5.0
-	H_info.row[5]  = 2; H_info.col[5]  = 2; H_info.val[5]  = 5.0;
+	// H_2,1  = 5.0
+	H_info.row[4]  = 2; H_info.col[4]  = 1; H_info.val[4]  = 5.0;
+	// H_2,2  = 14.0
+	H_info.row[5]  = 2; H_info.col[5]  = 2; H_info.val[5]  = 14.0;
 	//
 	// initialize the matrix using only the sparsity pattern
 	ldlt_obj.init(H_info);
@@ -165,7 +164,10 @@ bool ldlt_cholmod_xam(void)
 		for(size_t k = 0; k < row.size(); k++)
 		{	size_t i       = row[k];
 			double check_i = H_inv[ i * nrow + j ];
-			ok &= std::fabs( val_out[k] / check_i - 1.0 ) <= eps;
+			if( check_i == 0.0 )
+				ok &= std::fabs( val_out[k] ) <= eps;
+			else
+				ok &= std::fabs( val_out[k] / check_i - 1.0 ) <= eps;
 		}
 	}
 	return ok;
