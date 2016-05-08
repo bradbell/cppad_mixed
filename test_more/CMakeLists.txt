@@ -23,6 +23,7 @@ ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
 	delta_ran_obj.cpp
 	der_var_hes.cpp
 	fixed_lag.cpp
+	ldlt_cholmod.cpp
 	max_iter_neg.cpp
 	n_mixture.cpp
 	no_fix_likelihood.cpp
