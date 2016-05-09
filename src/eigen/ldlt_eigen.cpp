@@ -473,7 +473,7 @@ $codei%
 	bool %ok%
 %$$
 It is true if all the elements of $latex D$$ are greater then zero; i.e.,
-if $latex H$$ is positive definite.
+$latex H$$ is positive definite.
 If $icode ok$$ is false,
 $latex H$$ is not positive definite and the values in $latex v$$ are
 the same as their input values.

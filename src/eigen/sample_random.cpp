@@ -43,7 +43,8 @@ This $code cppad_mixed$$ member function is $cref public$$.
 $head Purpose$$
 This routine draws samples from
 the asymptotic posterior distribution for the
-optimal random effects given the model, the data, and the fixed effects.
+optimal random effects given the model, the data, and the fixed effects; see
+$cref/sparse observed information/theory/Sparse Observed Information/$$.
 
 $head manage_gsl_rng$$
 It is assumed that
@@ -145,12 +146,7 @@ void cppad_mixed::sample_random(
 /* %$$
 $end
 */
-{	using Eigen::Dynamic;
-	typedef Eigen::Matrix<double, Dynamic, Dynamic> double_mat;
-	typedef Eigen::Matrix<double, Dynamic, 1>       double_vec;
-	typedef Eigen::LLT<double_mat, Eigen::Lower>    double_cholesky;
-	//
-	// case where there is nothing to do
+{	// case where there is nothing to do
 	if( n_random_ == 0 )
 		return;
 	//
@@ -170,38 +166,24 @@ $end
 	// update the Cholesky factor corresponding to f_uu (theta, u)
 	update_factor(fixed_vec, random_opt);
 	//
-	// 2DO: It would be much better to use the Cholesky factor of
-	// f_uu(theta, u) instead of inverting and then computing a dense Cholesky.
-	CppAD::vector<size_t> row_solve(n_random_);
-	d_vector val_x(n_random_), val_b(n_random_);
-	for(size_t i = 0; i < n_random_; i++)
-	{	row_solve[i] = i;
-		val_b[i]     = 0.0;
-	}
-	double_mat cov_mat(n_random_, n_random_);
-	for(size_t j = 0; j < n_random_; j++)
-	{	val_b[j] = 1.0;
-		chol_ran_hes_.solve_H(row_solve, val_b, val_x);
-		val_b[j] = 0.0;
-		for(size_t i = 0; i < n_random_; i++)
-			cov_mat(i, j) = val_x[i];
-	}
-	double_cholesky cholesky;
-	cholesky.compute(cov_mat);
-	double_mat L = cholesky.matrixL();
-	//
-	// simulate a normal with mean zero and variance one
-	double_vec w(n_random_);
 	for(size_t i_sample = 0; i_sample < n_sample; i_sample++)
-	{	for(size_t j = 0; j < n_random_; j++)
+	{	// simulate a normal with mean zero and variance one
+		d_vector w(n_random_);
+		for(size_t j = 0; j < n_random_; j++)
 			w[j] = gsl_ran_gaussian(CppAD::mixed::get_gsl_rng(), 1.0);
 		//
-		// multiply by Cholesky factor
-		double_vec s = L * w;
+		// set v to cholesky factor of f_uu(theta, u)^{-1} times w
+		d_vector v(n_random_);
+		bool ok = chol_ran_hes_.sim_cov(w, v);
+		if( ! ok )
+		{	std::string msg = "sample_random: Hessian w.r.t random effects"
+				" is not positive definite";
+			fatal_error(msg);
+		}
 		//
 		// add random_opt an truncate to random limits
 		for(size_t j = 0; j < n_random_; j++)
-		{	double samp = random_opt[j] + s(j, 0);
+		{	double samp = random_opt[j] + v[j];
 			samp = std::min(samp, random_upper[j]);
 			samp = std::max(samp, random_lower[j]);
 			sample[i_sample * n_random_ + j] = samp;

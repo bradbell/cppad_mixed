@@ -33,12 +33,18 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh%$$
 
 $head 05-08$$
+$list number$$
 Improve $cref sample_fixed$$ by removing fixed effects that have
 their upper or lower limits active (or equal); see
 $cref/fixed effects subset/sample_fixed/Theory/Fixed Effects Subset/$$.
 With this change the $cref information_mat$$ only needs to be
 positive definite on a subset of the fixed effects.
 The example $cref sample_fixed_xam.cpp$$ demonstrates this fact.
+$lnext
+Change $cref sample_random$$ to use the
+$cref/sparse observed information/theory/Sparse Observed Information/$$ method.
+This reduces the memory and time for computing these samples.
+$lend
 
 $head 05-06$$
 Fix a bug in the $cref information_mat$$ and $cref sample_fixed$$
