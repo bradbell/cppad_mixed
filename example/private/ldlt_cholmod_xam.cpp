@@ -93,7 +93,7 @@ $$
 $head sim_cov$$
 See the following under Source Code below:
 $codep
-	ok = ldlt_obj.sim_cov(w, v)
+	ok &= ldlt_obj.sim_cov(w, v)
 $$
 
 $head Source Code$$

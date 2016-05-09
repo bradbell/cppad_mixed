@@ -93,7 +93,7 @@ $$
 $head sim_cov$$
 See the following under Source Code below:
 $codep
-	ok = ldlt_obj.sim_cov(w, v)
+	ok &= ldlt_obj.sim_cov(w, v)
 $$
 
 $head Source Code$$
@@ -187,7 +187,7 @@ bool ldlt_eigen_xam(void)
 	c[1] = ( w[1] - 2 * c[2] ) / 2.0;
 	c[0] = ( w[0] - 1.0 * c[1] - 1.0 * c[2] ) / 1.0;
 	for(size_t i = 0; i < 3; i++)
-		ok  &= std::fabs( v[i] - c[i] ) <= eps;
+		ok &= std::fabs( v[i] - c[i] ) <= eps;
 
 	return ok;
 }

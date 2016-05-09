@@ -26,7 +26,7 @@ $$
 $section Eigen LDLT Constructor$$
 
 $head Syntax$$
-$codei%CppAD::mixed::ldlt_eigen %ldlt_obj%(%n_random%)%$$
+$codei%CppAD::mixed::ldlt_eigen %ldlt_obj%(%n_row%)%$$
 
 
 $head Private$$
@@ -34,13 +34,13 @@ The $cref ldlt_eigen$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head n_random$$
-The argument $icode n_random$$ has prototype
+$head n_row_$$
+The argument $icode n_row$$ has prototype
 $codei%
-	size_t %n_random%
+	size_t %n_row%
 %$$
 It is the number of rows in the symmetric matrix we will compute factor.
-The member variable $code n_random_$$ is set to this value.
+The member variable $code n_row_$$ is set to this value.
 
 $head ptr_$$
 This member variable points to a newly constructed
@@ -49,8 +49,8 @@ $code eigen_ldlt$$ object.
 $end
 */
 
-ldlt_eigen::ldlt_eigen(size_t n_random)
-: n_random_(n_random)
+ldlt_eigen::ldlt_eigen(size_t n_row)
+: n_row_(n_row)
 {	ptr_ = new eigen_ldlt; }
 
 // destructor
@@ -107,8 +107,8 @@ void ldlt_eigen::init( const CppAD::mixed::sparse_mat_info& hes_info )
 	CppAD::vector<double> not_used(0);
 	//
 	eigen_sparse hessian_pattern = CppAD::mixed::triple2eigen(
-			n_random_           ,
-			n_random_           ,
+			n_row_           ,
+			n_row_           ,
 			hes_info.row        ,
 			hes_info.col        ,
 			not_used
@@ -137,7 +137,7 @@ $$
 $section Update Factorization Using new Matrix Values$$
 
 $head Syntax$$
-$icode%flag% = ldlt_obj%.update(%hes_info%)%$$
+$icode%flag% = %ldlt_obj%.update(%hes_info%)%$$
 
 $head Private$$
 The $cref ldlt_eigen$$ class is an
@@ -199,8 +199,8 @@ bool ldlt_eigen::update(const CppAD::mixed::sparse_mat_info& hes_info)
 	assert( hes_info.row.size() == hes_info.val.size() );
 	//
 	eigen_sparse hessian = CppAD::mixed::triple2eigen(
-		n_random_      ,
-		n_random_      ,
+		n_row_      ,
+		n_row_      ,
 		hes_info.row   ,
 		hes_info.col   ,
 		hes_info.val
@@ -269,10 +269,10 @@ double ldlt_eigen::logdet(int& sign) const
 
 	// compute the logdet( f_{u,u}(theta, u )
 	dense_matrix diag = ptr_->vectorD();
-	assert( diag.size() == int(n_random_) );
+	assert( diag.size() == int(n_row_) );
 	double logdet = 0.0;
 	sign = 1;
-	for(size_t j = 0; j < n_random_; j++)
+	for(size_t j = 0; j < n_row_; j++)
 	{	if( diag(j) == 0.0 )
 		{	sign = 0;
 			return - std::numeric_limits<double>::infinity();
@@ -335,7 +335,7 @@ $codei%
 	%row%[%k%] < %row%[%k%+1]
 %$$
 It follows that $icode%row%.size()%$$ is less than or equal
-$cref/n_random/ldlt_eigen_ctor/n_random/$$.
+$cref/n_row_/ldlt_eigen_ctor/n_row_/$$.
 
 $head val_in$$
 This argument has prototype
@@ -374,16 +374,16 @@ void ldlt_eigen::solve_H(
 {	assert( row.size() == val_in.size() );
 	assert( row.size() == val_out.size() );
 	//
-	eigen_sparse b(n_random_, 1);
+	eigen_sparse b(n_row_, 1);
 	for(size_t k = 0; k < row.size(); k++)
-	{	assert( row[k] < n_random_ );
+	{	assert( row[k] < n_row_ );
 		b.insert( row[k], 0 ) = val_in[k];
 		val_out[k] = 0.0;
 	}
 	//
 	eigen_sparse x = ptr_->solve(b);
 	assert( x.outerSize() == 1 );
-	assert( size_t( x.innerSize() ) == n_random_ );
+	assert( size_t( x.innerSize() ) == n_row_ );
 	//
 # ifndef NDEBUG
 	int previous_row = -1;
@@ -391,7 +391,7 @@ void ldlt_eigen::solve_H(
 	size_t k = 0;
 	typedef typename eigen_sparse::InnerIterator column_itr;
 	for(column_itr itr(x, 0); itr; ++itr)
-	{	assert( size_t( itr.row() ) < n_random_ );
+	{	assert( size_t( itr.row() ) < n_row_ );
 		assert( previous_row < itr.row() );
 # ifndef NDEBUG
 		previous_row = itr.row();
@@ -490,13 +490,13 @@ bool ldlt_eigen::sim_cov(
 {	typedef Eigen::Matrix<double, Eigen::Dynamic, 1> column_vector;
 	//
 	// set b = w
-	column_vector b(n_random_);
-	for(size_t i = 0; i < n_random_; i++)
+	column_vector b(n_row_);
+	for(size_t i = 0; i < n_row_; i++)
 		b[i] = w[i];
 	//
 	// set b = D^{-1/2} w
 	column_vector diag = ptr_->vectorD();
-	for(size_t i = 0; i < n_random_; i++)
+	for(size_t i = 0; i < n_row_; i++)
 	{	if( diag[i] <= 0.0 )
 			return false;
 		b[i] = b[i] / std::sqrt( diag[i] );
@@ -509,7 +509,7 @@ bool ldlt_eigen::sim_cov(
 	b = ptr_->permutationP().transpose() * b;
 	//
 	// return v
-	for(size_t i = 0 ; i < n_random_; i++)
+	for(size_t i = 0 ; i < n_row_; i++)
 		v[i] = b[i];
 	//
 	return true;

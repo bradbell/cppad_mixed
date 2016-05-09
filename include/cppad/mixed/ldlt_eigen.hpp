@@ -70,12 +70,12 @@ public:
 	typedef Eigen::SparseMatrix<double, Eigen::ColMajor>      eigen_sparse;
 	typedef Eigen::SimplicialLDLT<eigen_sparse, Eigen::Lower> eigen_ldlt;
 private:
-	const size_t    n_random_;
-	eigen_ldlt* ptr_;
+	const size_t    n_row_;
+	eigen_ldlt*     ptr_;
 	//
 public:
 	// constructor
-	ldlt_eigen(size_t n_random);
+	ldlt_eigen(size_t n_row);
 	// destructor
 	~ldlt_eigen(void);
 	// init
