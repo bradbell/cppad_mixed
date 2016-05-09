@@ -13,7 +13,6 @@ $begin ldlt_cholmod_sim_cov$$
 $spell
 	ldlt_obj
 	sim_cov
-	gsl_rng
 	const
 	cholmod
 	bool
@@ -22,8 +21,6 @@ $spell
 $$
 
 $section Simulations with Covariance Corresponding to Factored Matrix$$
-
-$head Under Construction$$
 
 $head Syntax$$
 $icode%ok% = %ldlt_obj%.sim_cov(%w%, %v%)%$$

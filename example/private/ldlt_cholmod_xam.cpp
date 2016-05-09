@@ -181,7 +181,7 @@ bool ldlt_cholmod_xam(void)
 	// test sim_cov
 	CppAD::vector<double> w(3), v(3), c(3);
 	for(size_t i = 0; i < 3; i++)
-		w[i] = double(i + 1);
+		w[i] = double( 2 * i + 1);
 	ok &= ldlt_obj.sim_cov(w, v);
 	// solve w = L^{T} c
 	c[2] = w[2] / 3.0;
@@ -189,9 +189,6 @@ bool ldlt_cholmod_xam(void)
 	c[0] = ( w[0] - 1.0 * c[1] - 1.0 * c[2] ) / 1.0;
 	for(size_t i = 0; i < 3; i++)
 		ok  &= std::fabs( v[i] - c[i] ) <= eps;
-
-
-
 
 	return ok;
 }

@@ -90,6 +90,11 @@ public:
 		const CppAD::vector<double>& val_in  ,
 		CppAD::vector<double>&       val_out
 	);
+	// sim_cov
+	bool sim_cov(
+	const CppAD::vector<double>& w  ,
+	CppAD::vector<double>&       v
+	);
 };
 
 

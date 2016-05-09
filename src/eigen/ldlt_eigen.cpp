@@ -403,6 +403,116 @@ void ldlt_eigen::solve_H(
 			val_out[k] = itr.value();
 	}
 }
+/*
+$begin ldlt_eigen_sim_cov$$
+$spell
+	ldlt_obj
+	sim_cov
+	const
+	eigen
+	bool
+	xam
+	CppAD
+$$
 
+$section Simulations with Covariance Corresponding to Factored Matrix$$
+
+$head Syntax$$
+$icode%ok% = %ldlt_obj%.sim_cov(%w%, %v%)%$$
+
+$head Private$$
+The $cref ldlt_eigen$$ class is an
+$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
+$head Purpose$$
+This function simulates a normal random vector with mean zero
+and covariance $latex H^{-1}$$
+where $latex H$$ is the symmetric matrix that has been factored as
+$latex \[
+	L D L^\R{T} = P H P^\R{T}
+\] $$
+where $latex L$$ is lower triangular, $latex D$$ is diagonal,
+and $latex P$$ is a permutation matrix.
+
+$head ldlt_obj$$
+This object has prototype
+$codei%
+	const CppAD::mixed::ldlt_eigen %ldlt_obj%
+%$$
+In addition, it must have a previous call to
+$cref ldlt_eigen_update$$.
+
+$head w$$
+This argument has prototype
+$codei%
+	const CppAD::vector<double>& %w%
+%$$
+and its size is equal to the number of rows in $latex H$$.
+
+$head v$$
+This argument has prototype
+$codei%
+	CppAD::vector<double>& %v%
+%$$
+and its size is equal to the number of rows in $latex H$$.
+The input value of its elements does not matter.
+Upon return
+$latex \[
+	v = P^\R{T} L^{-\R{T}} D^{-1/2} w
+\] $$
+If $latex w$$ is mean zero, variance identity white noise,
+$latex w \sim \B{N} ( 0 , I )$$,
+then $latex v$$ will be mean zero and variance $latex H^{-1}$$,
+$latex v \sim \B{N} ( 0 , H^{-1} )$$; see
+$cref/sparse observed information/theory/Sparse Observed Information/$$.
+
+$head ok$$
+The return value has prototype
+$codei%
+	bool %ok%
+%$$
+It is true if all the elements of $latex D$$ are greater then zero; i.e.,
+if $latex H$$ is positive definite.
+If $icode ok$$ is false,
+$latex H$$ is not positive definite and the values in $latex v$$ are
+the same as their input values.
+
+$head Example$$
+The file $cref/ldlt_eigen_xam.cpp/ldlt_eigen_xam.cpp/sim_cov/$$ contains an
+example and test that uses this function.
+
+$end
+*/
+bool ldlt_eigen::sim_cov(
+	const CppAD::vector<double>& w  ,
+	CppAD::vector<double>&       v  )
+{	typedef Eigen::Matrix<double, Eigen::Dynamic, 1> column_vector;
+	//
+	// set b = w
+	column_vector b(n_random_);
+	for(size_t i = 0; i < n_random_; i++)
+		b[i] = w[i];
+	//
+	// set b = D^{-1/2} w
+	column_vector diag = ptr_->vectorD();
+	for(size_t i = 0; i < n_random_; i++)
+	{	if( diag[i] <= 0.0 )
+			return false;
+		b[i] = b[i] / std::sqrt( diag[i] );
+	}
+	//
+	// set b = L^{-T} * D^{-1/2} w
+	b = ptr_->matrixU().solve(b);
+	//
+	// set b = P^T L^{-T} * D^{-1/2} w
+	b = ptr_->permutationP().transpose() * b;
+	//
+	// return v
+	for(size_t i = 0 ; i < n_random_; i++)
+		v[i] = b[i];
+	//
+	return true;
+}
 
 } } // END_CPPAD_MIXED_NAMESPACE
