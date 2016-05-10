@@ -25,7 +25,7 @@ Express An Undetermined Linear System As Dependent and Independent Variables
 $$
 
 $head Syntax$$
-$icode%rank% = undetermined(%A%, %b%, %tol%, %D%, %I%, %C%, %e%)%$$
+$icode%rank% = CppAD::mixed::undetermined(%A%, %b%, %tol%, %D%, %I%, %C%, %e%)%$$
 
 $head Prototype$$
 $srcfile%src/eigen/undetermined.cpp%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
@@ -62,6 +62,8 @@ $latex A$$ is equal to $icode%A%.rows()%$$.
 $subhead nr$$
 We use the notation $icode%nr% = %A%.rows()%$$; i.e.,
 the number of rows in $icode A$$.
+It is ok if $icode%nr% == 0%$$ no constraints in which case
+$icode D$$ is empty.
 
 $subhead nc$$
 We use the notation $icode%nc% = %A%.cols()%$$; i.e.,
@@ -210,6 +212,12 @@ size_t undetermined(
 	assert(  size_t( C.rows() ) == nr );
 	assert(  size_t( e.rows() ) == nr );
 	assert(  size_t( C.cols() ) == nc - nr );
+	//
+	// special case
+	if( nr == 0 )
+	{	for(size_t i = 0; i < nc; i++)
+			I[i] = i;
+	}
 	//
 	// E = [ A | b ]
 	double_mat E(nr, nc + 1 );
