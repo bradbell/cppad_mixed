@@ -146,9 +146,11 @@ $latex \theta$$ where the active bounds are used for the components
 not in $latex \alpha$$.
 
 $subhead Unconstrained Subset Covariance$$
+Note that the bound constraints do not apply to the subset of fixed effects
+represented by $latex \alpha$$.
 We use $latex \tilde{L} ( \alpha )$$ to denote the
 $cref/total objective/theory/Objective/Total Objective, L(theta)/$$
-as a function of the subset of fixed effects $latex \alpha$$ and
+as a function of $latex \alpha$$ and
 where the absolute values terms in $cref fix_likelihood$$ are excluded.
 We use $latex \tilde{\alpha}$$ for the unconstrained optimal estimate
 of the subset of fixed effects and
@@ -172,9 +174,11 @@ active bounds (excluding the bounds on the fixed effects).
 Define the random variable the approximation for $latex e( \alpha )$$ by
 $latex \[
 \tilde{e} ( \alpha ) =
-e( \hat{\alpha} ) + e^{(1)} \left( \hat{\alpha} \right)
+e \left( \hat{\alpha} \right) + e^{(1)} \left( \hat{\alpha} \right)
 	\left( \alpha - \hat{\alpha} \right)
 \] $$
+where $latex \hat{\alpha}$$ is the subset of the optional estimate
+for the fixed effects $icode%solution%.fixed_opt%$$.
 
 $subhead Constrained Covariance$$
 We approximate the distribution for
