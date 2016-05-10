@@ -20,10 +20,10 @@ $spell
 	gsl_rng
 $$
 
-$section Simulating the Posterior Distribution for Fixed Effects$$
+$section Sample Posterior for Fixed Effects$$
 
 $head Syntax$$
-$codei%mixed_object%.sample_fixed(
+$icode%mixed_object%.sample_fixed(
 	%sample%,
 	%information_info%,
 	%solution%,
@@ -31,6 +31,10 @@ $codei%mixed_object%.sample_fixed(
 	%fixed_upper%,
 	%random_opt%
 )%$$
+
+$head Prototype$$
+$srcfile%src/eigen/sample_fixed.cpp
+	%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
 
 $head Public$$
 This $code cppad_mixed$$ member function is $cref public$$.
@@ -52,11 +56,7 @@ to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
 $head sample$$
-This argument has prototype
-$codei%
-	CppAD::vector<double>& %sample%
-%$$
-and its size is a multiple of
+The size $icode%sample%.size()%$$ is a multiple of
 $cref/n_fixed/derived_ctor/n_fixed/$$.
 The input value of its elements does not matter.
 We define
@@ -77,10 +77,6 @@ $cref/constrained covariance/sample_fixed/Theory/Constrained Covariance/$$
 $latex D$$.
 
 $head information_info$$
-The argument has prototype
-$codei%
-	const CppAD::mixed::sparse_mat_info %information_info%
-%$$
 This is a sparse matrix representation for the
 lower triangle of the observed information matrix corresponding to
 $icode solution$$; i.e., the matrix returned by
@@ -154,13 +150,13 @@ as a function of $latex \alpha$$ and
 where the absolute values terms in $cref fix_likelihood$$ are excluded.
 We use $latex \tilde{\alpha}$$ for the unconstrained optimal estimate
 of the subset of fixed effects and
-approximation its auto-covariance by
+approximate its auto-covariance by
 $latex \[
 	\B{C} ( \tilde{\alpha} , \tilde{\alpha} )
 	=
 	H^{-1}
 \]$$
-where $latex H$$ is the Hessian corresponding to $icode information_info$$.
+Here $latex H$$ is the Hessian corresponding to $icode information_info$$.
 Note that $icode information_info$$ is the observed information matrix
 corresponding to all the fixed effects $latex \theta$$.
 
@@ -241,14 +237,15 @@ namespace {
 # endif
 }
 
-
+// BEGIN PROTOTYPE
 void cppad_mixed::sample_fixed(
-	d_vector&                            sample               ,
-	const CppAD::mixed::sparse_mat_info& information_info     ,
-	const CppAD::mixed::fixed_solution&  solution             ,
-	const d_vector&                      fixed_lower          ,
-	const d_vector&                      fixed_upper          ,
-	const d_vector&                      random_opt           )
+	CppAD::vector<double>&                 sample               ,
+	const CppAD::mixed::sparse_mat_info&   information_info     ,
+	const CppAD::mixed::fixed_solution&    solution             ,
+	const CppAD::vector<double>&           fixed_lower          ,
+	const CppAD::vector<double>&           fixed_upper          ,
+	const CppAD::vector<double>&           random_opt           )
+// END PROTOTYPE
 {
 	// number of fixed constraints
 	size_t n_fix_con = 0;
