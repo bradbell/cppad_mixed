@@ -27,6 +27,9 @@ $$
 $head Syntax$$
 $icode%rank% = undetermined(%A%, %b%, %tol%, %D%, %I%, %C%, %e%)%$$
 
+$head Prototype$$
+$srcfile%src/eigen/undetermined.cpp%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
+
 $head Private$$
 This function is an implementation detail and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
@@ -53,10 +56,6 @@ solve for the dependent  variables $latex x_D$$
 as a function of independent variables $latex x_I$$.
 
 $head A$$
-This argument has prototype
-$codei%
-	const Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>& %A%
-%$$
 It is assumed that the rank of
 $latex A$$ is equal to $icode%A%.rows()%$$.
 
@@ -69,11 +68,8 @@ We use the notation $icode%nc% = %A%.cols()%$$; i.e.,
 the number of columns in $icode A$$.
 
 $head b$$
-This argument has prototype
-$codei%
-	const Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>& %b%
-%$$
-where $icode%b%.rows() = %nr%$$ and $icode%b%.cols() == 1%$$.
+It is assumed that $icode%b%.rows() = %nr%$$
+(note that $icode%b%.cols() == 1%$$).
 
 $head tol$$
 This is the tolerance, relative to one,
@@ -82,11 +78,8 @@ To be specific, $icode tol$$ times the maximum value in a row
 is considered a zero element for that row.
 
 $head D$$
-This argument has prototype
-$codei%
-	Eigen::Matrix<size_t, Eigen::Dynamic, 1>& %D%
-%$$
-where $icode%D%.rows() = %nr%$$.
+It is assumed that $icode%D%.rows() = %nr%$$
+(note that $icode%D%.cols() == 1%$$).
 The input value of its elements does not matter.
 If $icode%rank% == %nr%$$,
 upon return the vector $latex x_D$$ is
@@ -95,11 +88,8 @@ $codei%
 %$$
 
 $head I$$
-This argument has prototype
-$codei%
-	Eigen::Matrix<size_t, Eigen::Dynamic, 1>& %I%
-%$$
-where $icode%I%.rows() = %nc% - %nr%$$.
+It is assumed that $icode%I%.rows() = %nc% - %nr%$$
+(note that $icode%I%.cols() == 1%$$).
 The input value of its elements does not matter.
 If $icode%rank% == %nr%$$,
 upon return the vector $latex x_I$$ is
@@ -112,22 +102,15 @@ It follows that the sets do not intersect and none of the elements are
 repeated in the vectors $icode D$$ or $icode I$$.
 
 $head C$$
-This argument has prototype
-$codei%
-	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>& %C%
-%$$
-and $icode%C%.rows() == %nr%$$,
+It is assumed that $icode%C%.rows() == %nr%$$ and
 $icode%C%.cols() == %nc% - %nr%$$.
 The input value of its elements does not matter.
 If $icode%rank% == %nr%$$,
 upon return it is the matrix $latex C$$ in $latex x_D = C x_I + e$$.
 
 $head e$$
-This argument has prototype
-$codei%
-	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>& %e%
-%$$
-and $icode%e%.rows() == %nr%$$ and $icode%e%.cols() == 1%$$.
+It is assumed that $icode%e%.rows() == %nr%$$
+(note that $icode%e%.cols() == 1%$$).
 The input value of its elements does not matter.
 If $icode%rank% == %nr%$$,
 upon return it is the vector $latex e$$ in $latex x_D = C x_I + e$$.
@@ -142,6 +125,7 @@ $cref/tol/undetermined/tol/$$.
 
 $children%example/private/undetermined_xam.cpp
 %$$
+
 $head Example$$
 The file $cref undetermined_xam.cpp$$ is an example
 and test of $code undetermined$$.
@@ -158,7 +142,6 @@ $end
 namespace {
 	using Eigen::Dynamic;
 	typedef Eigen::Matrix<double, Dynamic, Dynamic> double_mat;
-	typedef Eigen::Matrix<double, Dynamic, 1>       double_vec;
 	typedef Eigen::Matrix<bool,   Dynamic, 1>       bool_vec;
 	typedef Eigen::Matrix<size_t, Dynamic, 1>       size_vec;
 	typedef std::pair<size_t, size_t>               size_pair;
@@ -168,9 +151,9 @@ namespace {
 		const bool_vec&      row_used ,
 		const bool_vec&      col_used )
 	{
-		// number of rows in A
+		// number of rows in E
 		size_t nr      = size_t( E.rows() );
-		// number of columns in A
+		// number of columns in E
 		size_t nc      = size_t( E.cols() ) - 1;
 		//
 		size_pair ret(0,0);
@@ -208,14 +191,16 @@ namespace {
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
+// BEGIN PROTOTYPE
 size_t undetermined(
-	const double_mat&             A     ,
-	const double_vec&             b     ,
-	double                        tol   ,
-	size_vec&                     D     ,
-	size_vec&                     I     ,
-	double_mat&                   C     ,
-	double_vec&                   e     )
+	const Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>& A     ,
+	const Eigen::Matrix<double, Eigen::Dynamic, 1>&              b     ,
+	double                                                       tol   ,
+	Eigen::Matrix<size_t, Eigen::Dynamic, 1>&                    D     ,
+	Eigen::Matrix<size_t, Eigen::Dynamic, 1>&                    I     ,
+	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>&       C     ,
+	Eigen::Matrix<double, Eigen::Dynamic, 1>&                    e     )
+// END PROTOTYPE
 {	size_t nr = A.rows();
 	size_t nc = A.cols();
 	assert(  nr < nc );
