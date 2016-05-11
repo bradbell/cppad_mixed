@@ -32,11 +32,26 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 05-11$$
+In $cref sample_fixed$$,
+$cref/Replace/sample_conditional/Replaced/$$ the
+$cref/conditional covariance
+	/sample_conditional
+	/Theory
+	/Conditional Covariance
+/$$
+method by the
+$cref/implicit covariance/sample_fixed/Theory/Implicit Covariance/$$
+method.
+In addition, return a fatal error messages when the implicit observed
+information is not positive definite.
+
+
 $head 05-08$$
 $list number$$
 Improve $cref sample_fixed$$ by removing fixed effects that have
 their upper or lower limits active (or equal); see
-$cref/fixed effects subset/sample_fixed/Theory/Fixed Effects Subset/$$.
+$cref/fixed effects subset/sample_conditional/Theory/Fixed Effects Subset/$$.
 With this change the $cref information_mat$$ only needs to be
 positive definite on a subset of the fixed effects.
 The example $cref sample_fixed_xam.cpp$$ demonstrates this fact.
