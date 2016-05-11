@@ -12,7 +12,6 @@
 new_directories='
 '
 rename_files='
-	src/cholmod/solve.cpp
 '
 spell_files='
 '
@@ -23,7 +22,7 @@ rename_cmd='s|solve.cpp|solve_H.cpp|'
 spell_cmd='s|^$spell|&\n\tldlt|'
 #
 cat << EOF > junk.sed
-s|solve.cpp|solve_H.cpp|
+s|CPPAD_MIXED_CHOLESKY|CPPAD_MIXED_LDLT|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

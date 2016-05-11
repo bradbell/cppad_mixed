@@ -72,7 +72,7 @@ of the fixed and random effects.
 $head chol_ran_hes_$$
 On input, the member variable
 $codei%
-	CPPAD_MIXED_CHOLESKY chol_ran_hes_
+	CPPAD_MIXED_LDLT chol_ran_hes_
 %$$
 has been
 $cref/initialized/ldlt_eigen_init/$$
