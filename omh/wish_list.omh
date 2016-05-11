@@ -26,6 +26,9 @@ routine used an LDLT factor of the observed implicit information
 instead if inverting the information and factoring the
 $cref/implicit covariance/sample_fixed/Theory/Implicit Covariance/$$.
 (The $cref sample_random$$ routine already does this.)
+In addition, it would be better to modify a non-positive definite
+information matrix instead of inverting it and then modifying the corresponding
+covariance (as is currently done).
 
 $head sparse_mat_info$$
 Use $cref sparse_mat_info$$ instead of

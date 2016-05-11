@@ -33,6 +33,7 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh%$$
 
 $head 05-11$$
+$list number$$
 In $cref sample_fixed$$,
 $cref/Replace/sample_conditional/Replaced/$$ the
 $cref/conditional covariance
@@ -43,9 +44,15 @@ $cref/conditional covariance
 method by the
 $cref/implicit covariance/sample_fixed/Theory/Implicit Covariance/$$
 method.
-In addition, return a fatal error messages when the
-observed implicit information is not positive definite.
-
+$lnext
+Return a warning when the
+observed implicit covariance is not positive definite.
+In addition, simulate samples from a modified covariance so user
+can look for variables that vary a lot and are undetermined.
+This method is suspect. It would be better to do this in information
+matrix space;
+see the wish list $cref/sample_fixed/wish_list/sample_fixed/$$ item.
+$lend
 
 $head 05-08$$
 $list number$$

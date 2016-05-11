@@ -444,14 +444,30 @@ void cppad_mixed::sample_fixed(
 	// diagonal elements of LDLT factorization
 	double_vec diag      = cholesky.vectorD();
 	double_vec diag_root(nI);
+	double inf     = std::numeric_limits<double>::infinity();
+	double min_pos = inf;
+	for(size_t j = 0; j < nI; j++)
+	{	if( diag[j] > 0.0 )
+			min_pos = std::min(min_pos, diag[j] );
+	}
+	if( min_pos == inf )
+	{	std::string msg =
+		"observed implicit covariance matrix is negative definite";
+		fatal_error(msg);
+	}
+	bool warning_done = false;
 	for(size_t j = 0; j < nI; j++)
 	{	// should return an error in this case
-		if( diag[j] <= 0.0 )
+		if( diag[j] <= 0.0  && (! warning_done) )
 		{	std::string msg =
-			"observed implicit information matrix is not positive definite";
-			fatal_error(msg);
+			"observed implicit covariance matrix is not positive definite.";
+			warning(msg);
+			warning_done = true;
 		}
-		diag_root[j] = std::sqrt( diag[j] );
+		if( diag[j] > 0.0 )
+			diag_root[j] = std::sqrt( diag[j] );
+		else
+			diag_root[j] = std::sqrt( min_pos / 100.0 );
 	}
 	double_mat L      = cholesky.matrixL();
 	permutation_mat P = permutation_mat( cholesky.transpositionsP() );
