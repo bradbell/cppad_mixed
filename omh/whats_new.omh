@@ -43,8 +43,8 @@ $cref/conditional covariance
 method by the
 $cref/implicit covariance/sample_fixed/Theory/Implicit Covariance/$$
 method.
-In addition, return a fatal error messages when the implicit observed
-information is not positive definite.
+In addition, return a fatal error messages when the
+observed implicit information is not positive definite.
 
 
 $head 05-08$$

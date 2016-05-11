@@ -186,7 +186,7 @@ would have the following observed information matrix:
 $latex \[
 	H_{I,I} + H_{I,D} C + C^\R{T} H_{D,I} + C^\R{T} H_{D,D} C
 \] $$
-This matrix is the implicit observed information and its inverse is the
+This matrix is the observed implicit information and its inverse is the
 Implicit Covariance.
 
 $children%example/user/sample_fixed_xam.cpp
@@ -448,7 +448,7 @@ void cppad_mixed::sample_fixed(
 	{	// should return an error in this case
 		if( diag[j] <= 0.0 )
 		{	std::string msg =
-			"implicit observed information matrix is not positive definite";
+			"observed implicit information matrix is not positive definite";
 			fatal_error(msg);
 		}
 		diag_root[j] = std::sqrt( diag[j] );

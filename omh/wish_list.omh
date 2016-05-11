@@ -20,15 +20,12 @@ $$
 
 $section CppAD Mixed Wish List$$
 
-$head sample_random$$
-$list number$$
-It would be much more efficient if the $cref sample_random$$
-routine used the Cholesky factor $latex f_{uu} ( \theta , u )$$ to
-simulate values instead of inverting and then computing a Cholesky factor.
-$lnext
-Use the current simulation as a proposal density for a Metropolis
-sampling of the random effects (because they have small sample statistics).
-$lend
+$head sample_fixed$$
+It would be much more efficient if the $cref sample_fixed$$
+routine used an LDLT factor of the observed implicit information
+instead if inverting the information and factoring the
+$cref/implicit covariance/sample_fixed/Theory/Implicit Covariance/$$.
+(The $cref sample_random$$ routine already does this.)
 
 $head sparse_mat_info$$
 Use $cref sparse_mat_info$$ instead of
