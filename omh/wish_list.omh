@@ -20,6 +20,13 @@ $$
 
 $section CppAD Mixed Wish List$$
 
+$head check_derivative$$
+Currently $code cppad_mixed$$ does its own
+$cref/derivative check/ipopt_fixed_check_derivative/$$ when
+$code NDEBUG$$ is not defined.
+It would be nice to have an option that turns this checking on and off
+(it can take a long time for large problems).
+
 $head sample_fixed$$
 It would be much more efficient if the $cref sample_fixed$$
 routine used an LDLT factor of the observed implicit information
