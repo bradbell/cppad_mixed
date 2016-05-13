@@ -1864,9 +1864,10 @@ $spell
 	eval
 	tol
 	bool
+	jac
 $$
 
-$section Check eval_grad_f Routine Using Finite Differences$$
+$section Check eval_grad_f and eval_jac_g Using Finite Differences$$
 
 $head Syntax$$
 $icode%ok% = check_derivative(%trace%, %relative_tol%)%$$
@@ -1913,7 +1914,7 @@ and the evaluated derivative are within the relative tolerance
 Otherwise, it is false.
 
 $head 2DO$$
-Create a check for the constraint functions and add this
+Add this
 to the cppad_mixed API (as an alternative to Ipopt's derivative checker).
 
 $end
