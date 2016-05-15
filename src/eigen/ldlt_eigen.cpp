@@ -137,7 +137,7 @@ $$
 $section Update Factorization Using new Matrix Values$$
 
 $head Syntax$$
-$icode%flag% = %ldlt_obj%.update(%H_info%)%$$
+$icode%ldlt_obj%.update(%H_info%)%$$
 
 $head Private$$
 The $cref ldlt_eigen$$ class is an
@@ -185,16 +185,10 @@ $codei%
 where $icode hessian$$ is an $code eigen_sparse$$
 representation of the Hessian with values.
 
-$head flag$$
-The return value has prototype
-$codei%
-	bool %flag%
-%$$
-It is true for success and false for numerical issues.
 
 $end
 */
-bool ldlt_eigen::update(const CppAD::mixed::sparse_mat_info& H_info)
+void ldlt_eigen::update(const CppAD::mixed::sparse_mat_info& H_info)
 {	assert( H_info.row.size() == H_info.col.size() );
 	assert( H_info.row.size() == H_info.val.size() );
 	//
@@ -209,10 +203,8 @@ bool ldlt_eigen::update(const CppAD::mixed::sparse_mat_info& H_info)
 	// f_{u,u}(theta, u)
 	ptr_->factorize(hessian);
 	//
-	if( ptr_->info() == Eigen::NumericalIssue )
-		return false;
 	assert( ptr_->info() == Eigen::Success );
-	return true;
+	return;
 }
 /*
 ------------------------------------------------------------------------------

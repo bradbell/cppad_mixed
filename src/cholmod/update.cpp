@@ -20,13 +20,12 @@ $spell
 	ldlt_obj
 	cholmod
 	init
-	pos
 $$
 
 $section Update Factorization Using new Matrix Values$$
 
 $head Syntax$$
-$icode%pos% = ldlt_obj%.update(%H_info%)%$$
+$icode%ldlt_obj%.update(%H_info%)%$$
 
 
 $head Private$$
@@ -83,10 +82,6 @@ $codei%
 	cholmod_factorize(sym_matrix_, factor_, &common_)
 %$$
 
-$head pos$$
-If the matrix is positive definite, $icode pos$$ is true.
-Otherwise, it is false.
-
 $head Example$$
 The file $cref/ldlt_cholmod_xam.cpp/ldlt_cholmod_xam.cpp/update/$$ contains an
 example and test that uses this function.
@@ -102,7 +97,7 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-bool ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& H_info )
+void ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& H_info )
 {
 	// set the values in sym_matrix_
 	double* H_x = (double *) sym_matrix_->x;
@@ -129,12 +124,9 @@ bool ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& H_info )
 	assert( factor_->minor == nrow_ );
 	assert( factor_->is_ll == CHOLMOD_FALSE );
 	assert( factor_->xtype == CHOLMOD_REAL );
-	//
-	if( common_.status == CHOLMOD_NOT_POSDEF )
-		return false;
 	assert( common_.status == CHOLMOD_OK );
 	// ---------------------------------------------------------------------
-	return true;
+	return;
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

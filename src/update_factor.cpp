@@ -121,12 +121,7 @@ void cppad_mixed::update_factor(
 	// set the value vector in the sparse matrix information
 	hes_info.val = ran_hes_fun_.Forward(0, both);
 	//
-	bool pos = ldlt_ran_hes_.update(hes_info);
-	if( ! pos )
-	{	std::string error_message =
-		"Hessian of the random likelihood w.r.t random effects"
-		" is not positive definate";
-		fatal_error(error_message);
-	}
+	// update the LDLT factor
+	ldlt_ran_hes_.update(hes_info);
 }
 

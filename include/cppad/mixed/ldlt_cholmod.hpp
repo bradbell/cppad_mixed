@@ -117,7 +117,7 @@ public:
 	// initialize
 	void init(const sparse_mat_info& hes_info);
 	// factorize
-	bool update(const sparse_mat_info& hes_info);
+	void update(const sparse_mat_info& hes_info);
 	// log determinant
 	double logdet(int& sign) const;
 	// solve linear equations
