@@ -285,7 +285,7 @@ $childtable%src/derived_ctor.omh
 	%src/optimize_fixed.cpp
 	%src/eigen/information_mat.cpp
 	%src/eigen/sample_fixed.cpp
-	%src/eigen/sample_random.cpp
+	%src/sample_random.cpp
 	%src/ran_likelihood_jac.omh
 	%src/ran_likelihood_hes.omh
 %$$

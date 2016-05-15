@@ -12,23 +12,18 @@
 new_directories='
 '
 rename_files='
-	src/init_chol_ran_hes.cpp
+	src/eigen/sample_random.cpp
 '
 spell_files='
-	src/initialize.cpp
-	src/logdet_jac.cpp
-	src/ran_obj_eval.cpp
-	src/ran_obj_jac.cpp
-	src/update_factor.cpp
 '
 no_change_files='
 '
 #
-rename_cmd='s|chol_ran_hes|ldlt_ran_hes|'
+rename_cmd='s|eigen/sample_random.cpp|sample_random.cpp|'
 spell_cmd='s|^\tchol$|\tldlt|'
 #
 cat << EOF > junk.sed
-s|chol_ran_hes|ldlt_ran_hes|g
+s|eigen/sample_random.cpp|sample_random.cpp|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

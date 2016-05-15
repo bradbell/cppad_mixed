@@ -34,7 +34,7 @@ $head See Also$$
 $cref sample_fixed$$
 
 $head Prototype$$
-$srcfile%src/eigen/sample_random.cpp
+$srcfile%src/sample_random.cpp
 	%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
 
 $head Public$$
