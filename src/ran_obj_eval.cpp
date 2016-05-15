@@ -121,9 +121,9 @@ double cppad_mixed::ran_obj_eval(
 	pack(fixed_vec, random_vec, both);
 
 	// compute the logdet( f_{u,u}(theta, u )
-	int sign;
-	double logdet = ldlt_ran_hes_.logdet(sign);
-	if( sign != 1 ) fatal_error(
+	size_t negative;
+	double logdet = ldlt_ran_hes_.logdet(negative);
+	if( negative != 0 ) fatal_error(
 		"ran_obj_eval: Hessian w.r.t. random effects is not positive definite"
 	);
 

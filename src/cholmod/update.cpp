@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin ldlt_cholmod_update$$
 $spell
+	bool
 	sym
 	ldlt
 	xam
@@ -25,7 +26,7 @@ $$
 $section Update Factorization Using new Matrix Values$$
 
 $head Syntax$$
-$icode%ldlt_obj%.update(%H_info%)%$$
+$icode%ok% = %ldlt_obj%.update(%H_info%)%$$
 
 
 $head Private$$
@@ -82,6 +83,14 @@ $codei%
 	cholmod_factorize(sym_matrix_, factor_, &common_)
 %$$
 
+$head ok$$
+The return value has prototype
+$codei%
+	bool %ok%
+%$$
+If it is true, the matrix was factored.
+Otherwise, the matrix is singular.
+
 $head Example$$
 The file $cref/ldlt_cholmod_xam.cpp/ldlt_cholmod_xam.cpp/update/$$ contains an
 example and test that uses this function.
@@ -97,7 +106,7 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-void ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& H_info )
+bool ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& H_info )
 {
 	// set the values in sym_matrix_
 	double* H_x = (double *) sym_matrix_->x;
@@ -121,12 +130,14 @@ void ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& H_info )
 	// check assumptions
 	assert( flag           == CHOLMOD_TRUE );
 	assert( factor_->n     == nrow_ );
-	assert( factor_->minor == nrow_ );
+	assert( factor_->minor <= nrow_ );
 	assert( factor_->is_ll == CHOLMOD_FALSE );
 	assert( factor_->xtype == CHOLMOD_REAL );
 	assert( common_.status == CHOLMOD_OK );
 	// ---------------------------------------------------------------------
-	return;
+	if( factor_->minor < nrow_ )
+		return false;
+	return true;
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

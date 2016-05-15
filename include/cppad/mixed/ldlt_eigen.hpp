@@ -101,9 +101,9 @@ public:
 	// init
 	void init(const CppAD::mixed::sparse_mat_info& hes_info);
 	// update
-	void update(const CppAD::mixed::sparse_mat_info& hes_info);
+	bool update(const CppAD::mixed::sparse_mat_info& hes_info);
 	// logdet
-	double logdet(int& sign) const;
+	double logdet(size_t& negative) const;
 	// solve
 	void solve_H(
 		const CppAD::vector<size_t>& row     ,

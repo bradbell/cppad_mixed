@@ -118,6 +118,14 @@ $icode random_upper$$, and
 $icode random_in$$, are the same
 as in the call to $code optimize_fixed$$ that corresponds to $icode solution$$.
 
+$head Positive Definite$$
+If the $cref/implicit information/sample_fixed/Theory/Implicit Information/$$
+matrix is not positive definite, at least one fixed effects is not determined
+by the model plus the data.
+You should be able to recognize it because its
+upper and lower limits are not equal, but the limits appear often
+in the simulated values (or it is uniformly distributed between these limits).
+
 $head Theory$$
 
 $subhead Notation$$
@@ -457,7 +465,17 @@ void cppad_mixed::sample_fixed(
 	// LDLT factorization of info_mat
 	CPPAD_MIXED_LDLT ldlt_info_mat(nI);
 	ldlt_info_mat.init( info_mat_info );
-	ldlt_info_mat.update( info_mat_info );
+	bool ok = ldlt_info_mat.update( info_mat_info );
+	if( ! ok )
+	{	std::string msg = "Implicit information matrix is singular";
+		fatal_error(msg);
+	}
+	size_t negative;
+	ldlt_info_mat.logdet(negative);
+	if( negative != 0 )
+	{	std::string msg = "Implicit information matrix is positive definite";
+		warning(msg);
+	}
 	//
 	// -----------------------------------------------------------------------
 	// Simulate the samples

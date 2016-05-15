@@ -122,6 +122,11 @@ void cppad_mixed::update_factor(
 	hes_info.val = ran_hes_fun_.Forward(0, both);
 	//
 	// update the LDLT factor
-	ldlt_ran_hes_.update(hes_info);
+	bool ok = ldlt_ran_hes_.update(hes_info);
+	if( ! ok )
+	{	std::string msg = "Hessian w.r.t. random effects is singular";
+		fatal_error(msg);
+	}
+	return;
 }
 

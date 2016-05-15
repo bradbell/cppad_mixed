@@ -84,7 +84,7 @@ $$
 $head logdet$$
 See the following under Source Code below:
 $codep
-	ldlt_obj.logdet(H_info);
+	logdet_H = ldlt_obj.logdet(negative);
 $$
 
 $head solve_H$$
@@ -163,9 +163,9 @@ bool ldlt_cholmod(void)
 	ldlt_obj.update(H_info);
 
 	// compute log of determinant of H
-	int sign;
-	double logdet_H = ldlt_obj.logdet(sign);
-	ok &= sign == 1;
+	size_t negative;
+	double logdet_H = ldlt_obj.logdet(negative);
+	ok &= negative == 0;
 
 	// check its value
 	ok &= std::fabs( logdet_H / (2.0 * std::log(36.0)) - 1.0 ) <= eps;

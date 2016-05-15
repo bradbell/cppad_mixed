@@ -20,11 +20,6 @@ $$
 
 $section CppAD Mixed Wish List$$
 
-$head sample_fixed$$
-Handle the case where the
-$cref/implicit information/sample_fixed/Theory/Implicit Information/$$ matrix
-is singular.
-
 $head check_derivative$$
 Currently $code cppad_mixed$$ does its own
 $cref/derivative check/ipopt_fixed_check_derivative/$$ when

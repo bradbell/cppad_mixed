@@ -141,7 +141,7 @@ $$
 $section Update Factorization Using new Matrix Values$$
 
 $head Syntax$$
-$icode%ldlt_obj%.update(%H_info%)%$$
+$icode%ok% = %ldlt_obj%.update(%H_info%)%$$
 
 $head Private$$
 The $cref ldlt_eigen$$ class is an
@@ -189,6 +189,14 @@ $codei%
 where $icode hessian$$ is an $code eigen_sparse$$
 representation of the Hessian with values.
 
+$head ok$$
+The return value has prototype
+$codei%
+	bool %ok%
+%$$
+If it is true, the matrix was factored.
+Otherwise, the matrix is singular.
+
 $head Example$$
 The file $cref/ldlt_eigen_xam.cpp/ldlt_eigen_xam.cpp/update/$$ contains an
 example and test that uses this function.
@@ -196,7 +204,7 @@ example and test that uses this function.
 
 $end
 */
-void ldlt_eigen::update(const CppAD::mixed::sparse_mat_info& H_info)
+bool ldlt_eigen::update(const CppAD::mixed::sparse_mat_info& H_info)
 {	assert( H_info.row.size() == H_info.col.size() );
 	assert( H_info.row.size() == H_info.val.size() );
 	//
@@ -211,8 +219,9 @@ void ldlt_eigen::update(const CppAD::mixed::sparse_mat_info& H_info)
 	// f_{u,u}(theta, u)
 	ptr_->factorize(hessian);
 	//
-	assert( ptr_->info() == Eigen::Success );
-	return;
+	if( ptr_->info() != Eigen::Success )
+		return false;
+	return true;
 }
 /*
 ------------------------------------------------------------------------------
@@ -229,7 +238,7 @@ $$
 $section Compute Log Determinant for Current LDLT Factor$$
 
 $head Syntax$$
-$icode%logdet% = %ldlt_obj%.logdet(%sign%)%$$
+$icode%logdet% = %ldlt_obj%.logdet(%negative%)%$$
 
 $head Private$$
 The $code ldlt_eigen$$ class is an
@@ -244,15 +253,15 @@ $codei%
 In addition, it must have a previous call to
 $cref ldlt_eigen_update$$.
 
-$head sign$$
+$head negative$$
 This argument has prototype
 $codei%
-	int& %sign%
+	size_t& %negative%
 %$$
 Its input value does no matter,
-upon return it is $code +1$$ if the determinant is positive,
-$code 0$$ if the determinant is zero,
-and $code -1$$ if the determinant is negative.
+upon return it is the number of elements of
+$cref/D/ldlt_cholmod/Factorization/D/$$
+that are less than zero.
 
 $head logdet$$
 This return value has prototype
@@ -260,7 +269,9 @@ $codei%
 	double %logdet%
 %$$
 Is the log of the absolute value of the determinant corresponding
-to the previous call to $codei%ldlt_obj%.factorize%$$.
+to the previous call to $cref ldlt_cholmod_update$$.
+If the matrix is singular, $icode logdet$$ is
+minus infinity.
 
 $head Example$$
 The file $cref/ldlt_eigen_xam.cpp/ldlt_eigen_xam.cpp/logdet/$$ contains an
@@ -268,25 +279,25 @@ example and test that uses this function.
 
 $end
 */
-double ldlt_eigen::logdet(int& sign) const
+double ldlt_eigen::logdet(size_t& negative) const
 {	using Eigen::Dynamic;
     typedef Eigen::Matrix<double, Dynamic, Dynamic> dense_matrix;
 
 	// compute the logdet( f_{u,u}(theta, u )
 	dense_matrix diag = ptr_->vectorD();
 	assert( diag.size() == int(n_row_) );
-	double logdet = 0.0;
-	sign = 1;
+	negative        = 0;
+	bool   has_zero = false;
+	double logdet   = 0.0;
 	for(size_t j = 0; j < n_row_; j++)
-	{	if( diag(j) == 0.0 )
-		{	sign = 0;
-			return - std::numeric_limits<double>::infinity();
-		}
+	{	has_zero != diag(j) == 0.0;
 		if( diag(j) < 0.0 )
-			sign = - sign;
+			negative++;
 		logdet += log( std::fabs( diag(j) ) );
 	}
-
+	if( has_zero )
+		return - std::numeric_limits<double>::infinity();
+	//
 	return logdet;
 }
 /*

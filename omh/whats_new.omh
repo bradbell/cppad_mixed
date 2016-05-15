@@ -33,12 +33,19 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh%$$
 
 $head 05-15$$
+$list number$$
 The $cref sample_fixed$$ routine now uses an LDLT factorization of the
 $cref/implicit information/sample_fixed/Theory/Implicit Information/$$
-instead of the implicit covariance. This avoids a matrix inverse.
-Some modifications to the $cref ldlt_cholmod$$ and $cref ldlt_eigen$$
-classes are necessary to handle the case where the
-implicit information is singular.
+instead of the implicit covariance.
+This is more efficient.
+$lnext
+Provide results from when matrix is invertible,
+but not $cref/positive definite/sample_fixed/Positive Definite/$$.
+This is intended to help determine which variables are
+not determined by the model plus data.
+$lnext
+Remove $code sample_fixed$$ wish list item.
+$lend
 
 $head 05-11$$
 $list number$$

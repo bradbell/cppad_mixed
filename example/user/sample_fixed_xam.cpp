@@ -152,8 +152,8 @@ bool sample_fixed_xam(void)
 		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
 	fixed_lower[0] = - inf; fixed_in[0] = 2.0; fixed_upper[0] = inf;
 	fixed_lower[1] = .01;   fixed_in[1] = 0.5; fixed_upper[1] = inf;
-	// set upper and lower limit for theta[2] equal so that it is bounded
-	// (without this the information matrix would not invert).
+	// Set upper and lower limit for theta[2] equal so that it is bounded
+	// (otherwise the implicit information matrix would be singular).
 	fixed_lower[2] = 1.0;   fixed_in[2] = 1.0; fixed_upper[2] = 1.0;
 	//
 	// explicit constriants (in addition to l1 terms)

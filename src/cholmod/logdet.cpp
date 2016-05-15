@@ -23,7 +23,7 @@ $$
 $section Compute Log Determinant for Current Factor$$
 
 $head Syntax$$
-$icode%logdet% = %ldlt_obj%.logdet(%sign%)
+$icode%logdet% = %ldlt_obj%.logdet(%negative%)
 %$$
 
 $head Private$$
@@ -39,15 +39,15 @@ $codei%
 In addition, it must have a previous call to
 $cref ldlt_cholmod_update$$.
 
-$head sign$$
+$head negative$$
 This argument has prototype
 $codei%
-	int& %sign%
+	size_t& %negative%
 %$$
 Its input value does no matter,
-upon return it is $code +1$$ if the determinant is positive,
-$code 0$$ if the determinant is zero,
-and $code -1$$ if the determinant is negative.
+upon return it is the number of elements of
+$cref/D/ldlt_cholmod/Factorization/D/$$
+that are less than zero.
 
 $head logdet$$
 This return value has prototype
@@ -56,6 +56,8 @@ $codei%
 %$$
 Is the log of the absolute value of the determinant corresponding
 to the previous call to $cref ldlt_cholmod_update$$.
+If the matrix is singular, $icode logdet$$ is
+minus infinity.
 
 $head Example$$
 The file $cref/ldlt_cholmod_xam.cpp/ldlt_cholmod_xam.cpp/logdet/$$ contains an
@@ -70,28 +72,30 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-double ldlt_cholmod::logdet(int& sign) const
+double ldlt_cholmod::logdet(size_t& negative) const
 {	// factorization P H P' = L D L'
-	double logdet_H = 0.0;
 	int*    L_p  = (int *) factor_->p;
 	double* L_x  = (double *) factor_->x;
 # ifndef NDEBUG
 	int*    L_i  = (int *) factor_->i;
 # endif
-	sign = 1;
+	negative        = 0;
+	bool has_zero   = false;
+	double logdet_H = 0.0;
 	for(size_t j = 0; j < nrow_; j++)
 	{	// first element for each column is always the diagonal element
 		assert( size_t( L_i [ L_p[j] ] ) == j );
 		// j-th element on diagonal of D in factorization
 		double dj = L_x[ L_p[j] ];
-		if( dj == 0.0 )
-		{	sign = 0;
-			return - std::numeric_limits<double>::infinity();
-		}
+		has_zero |= dj == 0.0;
 		if( dj < 0.0 )
-			sign = - sign;
-		logdet_H += std::log( std::fabs(dj) );
+			negative++;
+		if( ! has_zero )
+			logdet_H += std::log( std::fabs(dj) );
 	}
+	if( has_zero )
+		return - std::numeric_limits<double>::infinity();
+	//
 	return logdet_H;
 }
 
