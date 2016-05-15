@@ -26,7 +26,7 @@ $$
 $section Update Factorization Using new Matrix Values$$
 
 $head Syntax$$
-$icode%pos% = ldlt_obj%.update(%hes_info%)%$$
+$icode%pos% = ldlt_obj%.update(%H_info%)%$$
 
 
 $head Private$$
@@ -46,16 +46,16 @@ $codei%
 In addition, it must have a previous call to
 $cref ldlt_cholmod_init$$.
 
-$head hes_info$$
+$head H_info$$
 This argument has prototype
 $codei%
-	const CppAD::mixed::sparse_mat_info& %hes_info%
+	const CppAD::mixed::sparse_mat_info& %H_info%
 %$$
 It contains new values for the
 $cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
 we are computing the LDLT factor of.
 The $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$
-must be the same as in $cref/ldlt_cholmod_init/ldlt_cholmod_init/hes_info/$$.
+must be the same as in $cref/ldlt_cholmod_init/ldlt_cholmod_init/H_info/$$.
 Hence, in particular, it must be in
 $cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
 and
@@ -67,9 +67,9 @@ $codei%
 	cholmod_sparse* sym_matrix_
 %$$
 has been $cref/initialized/ldlt_cholmod_init/sym_matrix_/$$
-using the sparsity pattern as is in $icode hes_info$$.
+using the sparsity pattern as is in $icode H_info$$.
 Upon return, values in $code sym_matrix_$$ have been set to the
-corresponding values in the vector $icode%hes_info%.val%$$.
+corresponding values in the vector $icode%H_info%.val%$$.
 
 $head factor_$$
 On input, the member variable
@@ -102,7 +102,7 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-bool ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& hes_info )
+bool ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& H_info )
 {
 	// set the values in sym_matrix_
 	double* H_x = (double *) sym_matrix_->x;
@@ -112,9 +112,9 @@ bool ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& hes_info )
 # endif
 	for(size_t j = 0; j < nrow_; j++)
 	{	for(size_t k = (size_t) H_p[j]; k < (size_t) H_p[j+1]; k++)
-		{	assert( hes_info.row[k] == (size_t) H_i[k] );
-			assert( hes_info.col[k] == j );
-			H_x[k] = hes_info.val[k];
+		{	assert( H_info.row[k] == (size_t) H_i[k] );
+			assert( H_info.col[k] == j );
+			H_x[k] = H_info.val[k];
 		}
 	}
 	// set factor_ to LDL^T factorization for this value of Hessian

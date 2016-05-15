@@ -28,7 +28,7 @@ $$
 $section Initialize Factor for a Specific Sparsity Pattern$$
 
 $head Syntax$$
-$icode%ldlt_obj%.init(%hes_info%)
+$icode%ldlt_obj%.init(%H_info%)
 %$$
 
 $head Private$$
@@ -42,10 +42,10 @@ $codei%
 	CppAD::mixed::ldlt_cholmod %ldlt_obj%
 %$$
 
-$head hes_info$$
+$head H_info$$
 This argument had prototype
 $codei%
-	const CppAD::mixed::sparse_mat_info& %hes_info%
+	const CppAD::mixed::sparse_mat_info& %H_info%
 %$$
 It is a
 $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$ for the
@@ -64,7 +64,7 @@ are null when this routine is called.
 $head sym_matrix_$$
 Upon return,
 this is set to a packed, real, sorted, lower triangular, sparse matrix
-with the pattern specified by $icode hes_info$$ and
+with the pattern specified by $icode H_info$$ and
 the value $code nan$$ for each possibly non-zero value.
 
 $head factor_$$
@@ -103,7 +103,7 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
+void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& H_info )
 {
 	assert(sym_matrix_ == CPPAD_NULL );
 	assert(factor_     == CPPAD_NULL );
@@ -118,7 +118,7 @@ void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
 	// for unspecified values (that end up in sym_matrix_.
 	size_t nrow  = nrow_;
 	size_t ncol  = nrow_;
-	size_t nzmax = hes_info.row.size();
+	size_t nzmax = H_info.row.size();
 	int    stype = CHOLMOD_STYPE_LOWER_TRIANGLE;
 	int    xtype = CHOLMOD_REAL;
 	cholmod_triplet* triplet = cholmod_allocate_triplet(
@@ -129,11 +129,11 @@ void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
 	double* T_x = (double *) triplet->x;
 	double nan  = std::numeric_limits<double>::quiet_NaN();
 	for(size_t k = 0; k < nzmax; k++)
-	{	assert( hes_info.row[k] < nrow_ );
-		assert( hes_info.col[k] < nrow_ );
+	{	assert( H_info.row[k] < nrow_ );
+		assert( H_info.col[k] < nrow_ );
 		//
-		T_i[k] = static_cast<int>( hes_info.row[k] );
-		T_j[k] = static_cast<int>( hes_info.col[k] );
+		T_i[k] = static_cast<int>( H_info.row[k] );
+		T_j[k] = static_cast<int>( H_info.col[k] );
 		//
 		T_x[k] = nan;
 	}
@@ -146,7 +146,7 @@ void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& hes_info )
 	// check assumptions
 	assert( sym_matrix_->nrow   == nrow_ );
 	assert( sym_matrix_->ncol   == nrow_ );
-	assert( sym_matrix_->nzmax  == hes_info.row.size() );
+	assert( sym_matrix_->nzmax  == H_info.row.size() );
 	assert( sym_matrix_->stype  == CHOLMOD_STYPE_LOWER_TRIANGLE );
 	assert( sym_matrix_->itype  == CHOLMOD_INT );
 	assert( sym_matrix_->xtype  == CHOLMOD_REAL );

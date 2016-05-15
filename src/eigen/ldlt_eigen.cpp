@@ -73,7 +73,7 @@ $$
 $section Initialize LDLT Factor for a Specific Sparsity Pattern$$
 
 $head Syntax$$
-$icode%pos% = %ldlt_obj%.init(%hes_info%)
+$icode%pos% = %ldlt_obj%.init(%H_info%)
 %$$
 
 $head Private$$
@@ -87,10 +87,10 @@ $codei%
 	CppAD::mixed::ldlt_eigen %ldlt_obj%
 %$$
 
-$head hes_info$$
+$head H_info$$
 This argument had prototype
 $codei%
-	const CppAD::mixed::sparse_mat_info& %hes_info%
+	const CppAD::mixed::sparse_mat_info& %H_info%
 %$$
 It is a
 $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$ for the
@@ -102,15 +102,15 @@ $cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
 
 $end
 */
-void ldlt_eigen::init( const CppAD::mixed::sparse_mat_info& hes_info )
-{	assert( hes_info.row.size() == hes_info.col.size() );
+void ldlt_eigen::init( const CppAD::mixed::sparse_mat_info& H_info )
+{	assert( H_info.row.size() == H_info.col.size() );
 	CppAD::vector<double> not_used(0);
 	//
 	eigen_sparse hessian_pattern = CppAD::mixed::triple2eigen(
 			n_row_           ,
 			n_row_           ,
-			hes_info.row        ,
-			hes_info.col        ,
+			H_info.row        ,
+			H_info.col        ,
 			not_used
 	);
 	// analyze the pattern for an LDLT factorization of
@@ -137,7 +137,7 @@ $$
 $section Update Factorization Using new Matrix Values$$
 
 $head Syntax$$
-$icode%flag% = %ldlt_obj%.update(%hes_info%)%$$
+$icode%flag% = %ldlt_obj%.update(%H_info%)%$$
 
 $head Private$$
 The $cref ldlt_eigen$$ class is an
@@ -156,16 +156,16 @@ $codei%
 In addition, it must have a previous call to
 $cref ldlt_eigen_init$$.
 
-$head hes_info$$
+$head H_info$$
 This argument has prototype
 $codei%
-	const CppAD::mixed::sparse_mat_info& %hes_info%
+	const CppAD::mixed::sparse_mat_info& %H_info%
 %$$
 It contains new values for the
 $cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
 we are computing the LDLT factor of.
 The $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$
-must be the same as in $cref/ldlt_eigen_init/ldlt_eigen_init/hes_info/$$.
+must be the same as in $cref/ldlt_eigen_init/ldlt_eigen_init/H_info/$$.
 Hence, in particular, it must be in
 $cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
 and
@@ -194,16 +194,16 @@ It is true for success and false for numerical issues.
 
 $end
 */
-bool ldlt_eigen::update(const CppAD::mixed::sparse_mat_info& hes_info)
-{	assert( hes_info.row.size() == hes_info.col.size() );
-	assert( hes_info.row.size() == hes_info.val.size() );
+bool ldlt_eigen::update(const CppAD::mixed::sparse_mat_info& H_info)
+{	assert( H_info.row.size() == H_info.col.size() );
+	assert( H_info.row.size() == H_info.val.size() );
 	//
 	eigen_sparse hessian = CppAD::mixed::triple2eigen(
 		n_row_      ,
 		n_row_      ,
-		hes_info.row   ,
-		hes_info.col   ,
-		hes_info.val
+		H_info.row   ,
+		H_info.col   ,
+		H_info.val
 	);
 	// LDLT factorization of for specified values of the Hessian
 	// f_{u,u}(theta, u)
