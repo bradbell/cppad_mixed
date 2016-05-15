@@ -166,7 +166,7 @@ e \left( \hat{\theta} \right) + e^{(1)} \left( \hat{\theta} \right)
 where $latex \hat{\theta}$$ is the optional estimate
 for the fixed effects $icode%solution%.fixed_opt%$$.
 
-$subhead Implicit Covariance$$
+$subhead Implicit Information$$
 We apply the implicit function theorem to the approximate constraint
 equation above to get a representation:
 $latex \[
@@ -186,8 +186,11 @@ would have the following observed information matrix:
 $latex \[
 	H_{I,I} + H_{I,D} C + C^\R{T} H_{D,I} + C^\R{T} H_{D,D} C
 \] $$
-This matrix is the observed implicit information and its inverse is the
-Implicit Covariance.
+This matrix is the observed implicit information matrix.
+
+$subhead Implicit Covariance$$
+The inverse of the implicit information matrix
+is called the implicit covariance.
 
 $children%example/user/sample_fixed_xam.cpp
 	%src/eigen/sample_conditional.cpp
@@ -199,6 +202,10 @@ and test of $code sample_fixed$$.
 $head Other Method$$
 The routine $cref sample_conditional$$, is a old method that is no
 longer used for computing these samples.
+
+$head 2DO$$
+This routine uses dense matrices, perhaps it would be useful
+to converting this (and $cref undetermined$$) to all sparse matrices.
 
 $end
 ------------------------------------------------------------------------------
@@ -434,56 +441,47 @@ void cppad_mixed::sample_fixed(
 		info_mat += H_ID_C.transpose() + H_ID_C + C.transpose() * H_DD * C;
 	}
 	//
-	// covariance matrix with out constraints
-	double_mat cov = double_mat( info_mat.inverse() );
-	//
-	// LDLT factorizaton of cov
-	double_cholesky cholesky;
-	cholesky.compute(cov);
-	//
-	// diagonal elements of LDLT factorization
-	double_vec diag      = cholesky.vectorD();
-	double_vec diag_root(nI);
-	double inf     = std::numeric_limits<double>::infinity();
-	double min_pos = inf;
-	for(size_t j = 0; j < nI; j++)
-	{	if( diag[j] > 0.0 )
-			min_pos = std::min(min_pos, diag[j] );
-	}
-	if( min_pos == inf )
-	{	std::string msg =
-		"observed implicit covariance matrix is negative definite";
-		fatal_error(msg);
-	}
-	bool warning_done = false;
-	for(size_t j = 0; j < nI; j++)
-	{	// should return an error in this case
-		if( diag[j] <= 0.0  && (! warning_done) )
-		{	std::string msg =
-			"observed implicit covariance matrix is not positive definite.";
-			warning(msg);
-			warning_done = true;
+	// creae a sparse_mat_info representation of info_mat
+	CppAD::mixed::sparse_mat_info  info_mat_info;
+	for(size_t i = 0; i < nI; i++)
+	{	for(size_t j = 0; j <= i; j++)
+		{	double v = info_mat(i, j);
+			if( v != 0.0 )
+			{	info_mat_info.row.push_back(i);
+				info_mat_info.col.push_back(j);
+				info_mat_info.val.push_back(v);
+			}
 		}
-		if( diag[j] > 0.0 )
-			diag_root[j] = std::sqrt( diag[j] );
-		else
-			diag_root[j] = std::sqrt( min_pos / 100.0 );
 	}
-	double_mat L      = cholesky.matrixL();
-	permutation_mat P = permutation_mat( cholesky.transpositionsP() );
+	//
+	// LDLT factorization of info_mat
+	CPPAD_MIXED_LDLT ldlt_info_mat(nI);
+	ldlt_info_mat.init( info_mat_info );
+	ldlt_info_mat.update( info_mat_info );
+	//
 	// -----------------------------------------------------------------------
 	// Simulate the samples
 	// -----------------------------------------------------------------------
 	for(size_t i_sample = 0; i_sample < n_sample; i_sample++)
-	{	double_vec w(nI);
-		// simulate a normal with mean zero and variance sqrt{D(k,k)}
+	{	d_vector w(nI);
+		// simulate a normal with mean zero and variance one
 		for(size_t k = 0; k < nI; k++)
-			w[k] = diag_root[k] * gsl_ran_gaussian(get_gsl_rng(), 1.0);
+			w[k] = gsl_ran_gaussian(CppAD::mixed::get_gsl_rng(), 1.0);
 		//
-		// multily by Cholesky factor
-		double_vec alpha_I = P.transpose() * L * w;
+		// set v to cholesky fastor of info_mat^{-1} times w
+		d_vector v(nI);
+		bool ok = ldlt_info_mat.sim_cov(w, v);
+		if( ! ok )
+		{	std::string msg = "sample_fixed: implicit information matrix"
+				" is not positive definite";
+			fatal_error(msg);
+		}
 		//
-		// compute dependent variables
+		// independent variable values
+		double_vec alpha_I(nI);
+		for(size_t i = 0; i < nI; i++)
+			alpha_I[i] = v[i];
+		// dependent variables
 		double_vec alpha_D = C * alpha_I;
 		//
 		// store in alpha
@@ -493,7 +491,7 @@ void cppad_mixed::sample_fixed(
 		for(size_t k = 0; k < nD; k++)
 			alpha[D[k]] = alpha_D[k];
 		//
-		// store this sample
+		// store in sample
 		for(size_t j = 0; j < n_fixed_; j++)
 		{	if( fixed2subset[j] == n_fixed_ )
 				sample[ i_sample * n_fixed_ + j] = fixed_opt[j];

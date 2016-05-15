@@ -32,6 +32,14 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 05-15$$
+The $cref sample_fixed$$ routine now uses an LDLT factorization of the
+$cref/implicit information/sample_fixed/Theory/Implicit Information/$$
+instead of the implicit covariance. This avoids a matrix inverse.
+Some modifications to the $cref ldlt_cholmod$$ and $cref ldlt_eigen$$
+classes are necessary to handle the case where the
+implicit information is singular.
+
 $head 05-11$$
 $list number$$
 In $cref sample_fixed$$,
@@ -51,7 +59,7 @@ In addition, simulate samples from a modified covariance so user
 can look for variables that vary a lot and are undetermined.
 This method is suspect. It would be better to do this in information
 matrix space;
-see the wish list $cref/sample_fixed/wish_list/sample_fixed/$$ item.
+see the $code sample_fixed$$ wish list item.
 $lend
 
 $head 05-08$$

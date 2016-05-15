@@ -132,6 +132,10 @@ $head Example$$
 The file $cref undetermined_xam.cpp$$ is an example
 and test of $code undetermined$$.
 
+$head 2DO$$
+This routine uses dense matrices, perhaps it would be useful
+to convert this (and $cref sample_fixed$$) to all sparse matrices.
+
 $end
 ------------------------------------------------------------------------------
 */

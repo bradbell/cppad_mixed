@@ -20,6 +20,11 @@ $$
 
 $section CppAD Mixed Wish List$$
 
+$head sample_fixed$$
+Handle the case where the
+$cref/implicit information/sample_fixed/Theory/Implicit Information/$$ matrix
+is singular.
+
 $head check_derivative$$
 Currently $code cppad_mixed$$ does its own
 $cref/derivative check/ipopt_fixed_check_derivative/$$ when
@@ -29,16 +34,6 @@ It would be nice to have an option that turns this checking on and off
 In addition, it would be nice to have an option that prints all these
 checks, not just the ones that fail, so the use could get an idea
 if the problem is well scaled.
-
-$head sample_fixed$$
-It would be much more efficient if the $cref sample_fixed$$
-routine used an LDLT factor of the observed implicit information
-instead if inverting the information and factoring the
-$cref/implicit covariance/sample_fixed/Theory/Implicit Covariance/$$.
-(The $cref sample_random$$ routine already does this.)
-In addition, it would be better to modify a non-positive definite
-information matrix instead of inverting it and then modifying the corresponding
-covariance (as is currently done).
 
 $head sparse_mat_info$$
 Use $cref sparse_mat_info$$ instead of
