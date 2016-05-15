@@ -61,7 +61,7 @@ ldlt_eigen::~ldlt_eigen(void)
 ------------------------------------------------------------------------------
 $begin ldlt_eigen_init$$
 $spell
-	pos
+	xam
 	ldlt_eigen
 	ldlt_obj
 	CppAD
@@ -73,7 +73,7 @@ $$
 $section Initialize LDLT Factor for a Specific Sparsity Pattern$$
 
 $head Syntax$$
-$icode%pos% = %ldlt_obj%.init(%H_info%)
+$icode%ldlt_obj%.init(%H_info%)
 %$$
 
 $head Private$$
@@ -99,6 +99,10 @@ It is in
 $cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
 and
 $cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
+
+$head Example$$
+The file $cref/ldlt_eigen_xam.cpp/ldlt_eigen_xam.cpp/init/$$ contains an
+example and test that uses this function.
 
 $end
 */
@@ -185,6 +189,10 @@ $codei%
 where $icode hessian$$ is an $code eigen_sparse$$
 representation of the Hessian with values.
 
+$head Example$$
+The file $cref/ldlt_eigen_xam.cpp/ldlt_eigen_xam.cpp/update/$$ contains an
+example and test that uses this function.
+
 
 $end
 */
@@ -210,6 +218,7 @@ void ldlt_eigen::update(const CppAD::mixed::sparse_mat_info& H_info)
 ------------------------------------------------------------------------------
 $begin ldlt_eigen_logdet$$
 $spell
+	xam
 	ldlt_eigen
 	logdet
 	ldlt_obj
@@ -252,6 +261,10 @@ $codei%
 %$$
 Is the log of the absolute value of the determinant corresponding
 to the previous call to $codei%ldlt_obj%.factorize%$$.
+
+$head Example$$
+The file $cref/ldlt_eigen_xam.cpp/ldlt_eigen_xam.cpp/logdet/$$ contains an
+example and test that uses this function.
 
 $end
 */
@@ -398,6 +411,7 @@ void ldlt_eigen::solve_H(
 /*
 $begin ldlt_eigen_sim_cov$$
 $spell
+	std
 	ldlt_obj
 	sim_cov
 	const
@@ -453,7 +467,7 @@ and its size is equal to the number of rows in $latex H$$.
 The input value of its elements does not matter.
 Upon return
 $latex \[
-	v = P^\R{T} L^{-\R{T}} D^{-1/2} w
+	v = P^\R{T} L^{-\R{T}} \tilde{D}^{-1/2} w
 \] $$
 If $latex w$$ is mean zero, variance identity white noise,
 $latex w \sim \B{N} ( 0 , I )$$,
@@ -461,16 +475,29 @@ then $latex v$$ will be mean zero and variance $latex H^{-1}$$,
 $latex v \sim \B{N} ( 0 , H^{-1} )$$; see
 $cref/sparse observed information/theory/Sparse Observed Information/$$.
 
+$head Positive Definite$$
+In the formula for $latex v$$ above,
+the matrix $latex \tilde{D}$$ is a positive version of $latex D$$.
+To be specific,
+$latex \[
+\tilde{D}_{i,i} = \left\{ \begin{array}{ll}
+	D_{i,i} & \R{if} \; D_{i,i} \geq  \varepsilon^2 \; \max(D) \\
+	\varepsilon^2 \; \max(D) & \R{otherwise}
+\end{array} \right.
+\] $$
+where $latex \varepsilon$$
+$code std::numeric_limits<double>::epsilon()$$,
+and $latex \max(D)$$ is the largest element in $latex D$$.
+
 $head ok$$
 The return value has prototype
 $codei%
 	bool %ok%
 %$$
-It is true if all the elements of $latex D$$ are greater then zero; i.e.,
-$latex H$$ is positive definite.
-If $icode ok$$ is false,
-$latex H$$ is not positive definite and the values in $latex v$$ are
-the same as their input values.
+If $latex \max(D) > 0$$, this routine terminates with $icode ok$$
+equal to true.
+Otherwise it is false and the output values in $icode v$$
+are the same as their input values.
 
 $head Example$$
 The file $cref/ldlt_eigen_xam.cpp/ldlt_eigen_xam.cpp/sim_cov/$$ contains an
@@ -488,12 +515,20 @@ bool ldlt_eigen::sim_cov(
 	for(size_t i = 0; i < n_row_; i++)
 		b[i] = w[i];
 	//
-	// set b = D^{-1/2} w
+	// diagonal
 	column_vector diag = ptr_->vectorD();
+	double max_D = 0.0;
 	for(size_t i = 0; i < n_row_; i++)
-	{	if( diag[i] <= 0.0 )
-			return false;
-		b[i] = b[i] / std::sqrt( diag[i] );
+		max_D = std::max(max_D, diag[i] );
+	if( max_D <= 0.0 )
+		return false;
+	//
+	// set b = D^{-1/2} w
+	double eps = std::numeric_limits<double>::epsilon();
+	eps        = eps * eps * max_D;
+	for(size_t i = 0; i < n_row_; i++)
+	{	double di = std::max(diag[i], eps);
+		b[i] = b[i] / std::sqrt( di );
 	}
 	//
 	// set b = L^{-T} * D^{-1/2} w
