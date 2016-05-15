@@ -33,6 +33,26 @@ $head Private$$
 This class is an implementation detail and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
+$head Factorization$$
+The factorization is
+$latex \[
+	L D L^\R{T} = P H P^{T}
+\] $$
+where
+
+$subhead H$$
+is the matrix corresponding the current
+$cref/update/ldlt_cholmod_update/$$.
+
+$subhead L$$
+is a lower triangular matrix with ones on the diagonal,
+
+$subhead D$$
+is a diagonal matrix.
+
+$subhead P$$
+is a permutation matrix.
+
 $head eigen_sparse$$
 The type $code CppAD::mixed::ldlt_eigen::eigen_sparse$$ is defined by
 $codei%

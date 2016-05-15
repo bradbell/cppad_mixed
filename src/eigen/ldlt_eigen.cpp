@@ -427,13 +427,15 @@ $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Purpose$$
 This function simulates a normal random vector with mean zero
-and covariance $latex H^{-1}$$
-where $latex H$$ is the symmetric matrix that has been factored as
+and covariance $latex H^{-1}$$ where
 $latex \[
 	L D L^\R{T} = P H P^\R{T}
 \] $$
-where $latex L$$ is lower triangular, $latex D$$ is diagonal,
-and $latex P$$ is a permutation matrix.
+is the current factorization; see
+$cref/H/ldlt_eigen/Factorization/H/$$,
+$cref/L/ldlt_eigen/Factorization/L/$$,
+$cref/D/ldlt_eigen/Factorization/D/$$, and
+$cref/P/ldlt_eigen/Factorization/P/$$.
 
 $head ldlt_obj$$
 This object has prototype

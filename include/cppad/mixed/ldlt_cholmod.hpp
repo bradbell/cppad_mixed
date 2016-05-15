@@ -31,9 +31,30 @@ This class is an implementation detail and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Purpose$$
-This class has utilities that work with a $code cholmod$$ Cholesky factor,
+This class has utilities that work with a $code cholmod$$ LDLT factor,
 $code cholmod$$ is part of the
 $cref/SuiteSparse/install_unix/Special Requirements/SuiteSparse/$$ package.
+
+$head Factorization$$
+The factorization is
+$latex \[
+	L D L^\R{T} = P H P^{T}
+\] $$
+where
+
+$subhead H$$
+is the matrix corresponding the current
+$cref/update/ldlt_cholmod_update/$$.
+
+$subhead L$$
+is a lower triangular matrix with ones on the diagonal,
+
+$subhead D$$
+is a diagonal matrix.
+
+$subhead P$$
+is a permutation matrix.
+
 
 $head Example$$
 The file $cref ldlt_cholmod_xam.cpp$$ contains an example and test
