@@ -9,9 +9,9 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin init_chol_ran_hes$$
+$begin init_ldlt_ran_hes$$
 $spell
-	chol_ran_hes
+	ldlt_ran_hes
 	init
 	cppad
 	const
@@ -22,7 +22,7 @@ $$
 $section Initialize Cholesky Factor of Hessian of Random Likelihood$$
 
 $head Syntax$$
-$icode%mixed_object%.init_chol_ran_hes()%$$
+$icode%mixed_object%.init_ldlt_ran_hes()%$$
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
@@ -44,18 +44,18 @@ This sparsity information is relative to both the fixed and random effects;
 i.e., the row and column indices are relative to the vector
 $latex ( \theta , u )$$.
 
-$head chol_ran_hes_$$
+$head ldlt_ran_hes_$$
 The member variable
 $codei%
-	CPPAD_MIXED_LDLT chol_ran_hes_
+	CPPAD_MIXED_LDLT ldlt_ran_hes_
 %$$
 must not been previously initialized
 $codei%
-	size_t chol_ran_hes_
+	size_t ldlt_ran_hes_
 %$$
 Upon return, the function
 $codei%
-	chol_ran_hes_.init(%hes_info%)
+	ldlt_ran_hes_.init(%hes_info%)
 %$$
 has been called with $icode hes_info$$
 equal to the sparsity pattern for the
@@ -72,8 +72,8 @@ $end
 */
 # include <cppad/mixed/cppad_mixed.hpp>
 
-void cppad_mixed::init_chol_ran_hes(void)
-{	assert( ! init_chol_ran_hes_done_ );
+void cppad_mixed::init_ldlt_ran_hes(void)
+{	assert( ! init_ldlt_ran_hes_done_ );
 	assert( ran_hes_.row.size() == ran_hes_.col.size() );
 	//
 	CppAD::mixed::sparse_mat_info hes_info;
@@ -88,8 +88,8 @@ void cppad_mixed::init_chol_ran_hes(void)
 		hes_info.row[k] = r - n_fixed_;
 		hes_info.col[k] = c - n_fixed_;
 	}
-	chol_ran_hes_.init(hes_info);
+	ldlt_ran_hes_.init(hes_info);
 	//
-	init_chol_ran_hes_done_ = true;
+	init_ldlt_ran_hes_done_ = true;
 	return;
 }

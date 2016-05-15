@@ -174,7 +174,7 @@ $end
 		//
 		// set v to cholesky factor of f_uu(theta, u)^{-1} times w
 		d_vector v(n_random_);
-		bool ok = chol_ran_hes_.sim_cov(w, v);
+		bool ok = ldlt_ran_hes_.sim_cov(w, v);
 		if( ! ok )
 		{	std::string msg = "sample_random: Hessian w.r.t random effects"
 				" is not positive definite";

@@ -13,7 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin ran_obj_eval$$
 $spell
-	chol
+	ldlt
 	hes
 	CppAD
 	ran_obj
@@ -49,10 +49,10 @@ We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
-$head chol_ran_hes_$$
+$head ldlt_ran_hes_$$
 It is assumed that the member variable
 $codei%
-	CPPAD_MIXED_LDLT chol_ran_hes_
+	CPPAD_MIXED_LDLT ldlt_ran_hes_
 %$$
 was updated using $cref update_factor$$ for the specified values of the
 fixed and random effects.
@@ -122,7 +122,7 @@ double cppad_mixed::ran_obj_eval(
 
 	// compute the logdet( f_{u,u}(theta, u )
 	int sign;
-	double logdet = chol_ran_hes_.logdet(sign);
+	double logdet = ldlt_ran_hes_.logdet(sign);
 	if( sign != 1 ) fatal_error(
 		"ran_obj_eval: Hessian w.r.t. random effects is not positive definite"
 	);

@@ -12,7 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin ran_obj_jac$$
 $spell
-	chol
+	ldlt
 	jac
 	CppAD
 	ran_obj
@@ -45,10 +45,10 @@ We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
-$head chol_ran_hes_$$
+$head ldlt_ran_hes_$$
 It is assumed that the member variable
 $codei%
-	CPPAD_MIXED_LDLT chol_ran_hes_
+	CPPAD_MIXED_LDLT ldlt_ran_hes_
 %$$
 was updated using $cref update_factor$$ for the specified values of the
 fixed and random effects.
@@ -205,7 +205,7 @@ void cppad_mixed::ran_obj_jac(
 
 		// x = j-th column of - f_{u,u}(theta, u)^{-1} f_{u,theta}(theta, u)
 		val_x.resize( row_solve.size() );
-		chol_ran_hes_.solve_H(row_solve, val_b, val_x);
+		ldlt_ran_hes_.solve_H(row_solve, val_b, val_x);
 		//
 		// parial w.r.t fixed effects contribution to total derivative
 		r_fixed[j] =  f_fixed[j] + 0.5 * logdet_fix[j];

@@ -12,7 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin initialize$$
 $spell
-	chol
+	ldlt
 	objcon
 	init
 	CppAD
@@ -122,7 +122,7 @@ $code ran_hes_fun_.size_var()$$  $cnext
 	$cref/ran_hes_fun_/private/ran_hes_fun_/$$
 $rnext
 $code 2DO$$ $cnext
-	$cref/chol_ran_hes_/private/chol_ran_hes_/$$
+	$cref/ldlt_ran_hes_/private/ldlt_ran_hes_/$$
 $rnext
 $code hes_cross_.row.size()$$ $cnext
 	$cref/hes_cross_/private/hes_cross_/$$
@@ -222,10 +222,10 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 		init_ran_hes(fixed_vec, random_vec);
 		assert( init_ran_hes_done_ );
 
-		// chol_ran_hes_
-		assert( ! init_chol_ran_hes_done_ );
-		init_chol_ran_hes();
-		assert( init_chol_ran_hes_done_ );
+		// ldlt_ran_hes_
+		assert( ! init_ldlt_ran_hes_done_ );
+		init_ldlt_ran_hes();
+		assert( init_ldlt_ran_hes_done_ );
 
 		// hes_cross_
 		assert( ! init_hes_cross_done_ );

@@ -198,7 +198,7 @@ $comment */
 	init_ran_con_done_(false)       ,
 	init_ran_like_done_(false)      ,
 	init_ran_hes_done_(false)       ,
-	init_chol_ran_hes_done_(false)  ,
+	init_ldlt_ran_hes_done_(false)  ,
 	init_hes_cross_done_(false)     ,
 	init_newton_atom_done_(false)   ,
 	init_ran_objcon_done_(false)    ,
@@ -206,7 +206,7 @@ $comment */
 	init_fix_like_done_(false)      ,
 	init_fix_con_done_(false)       ,
 	initialize_done_(false)         ,
-	chol_ran_hes_(n_random)
+	ldlt_ran_hes_(n_random)
 	{ }
 /* $$
 $head initialize$$
@@ -339,7 +339,7 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/init_ran_hes.cpp
 	%src/init_ran_con.cpp
 	%src/init_ran_objcon.cpp
-	%src/init_chol_ran_hes.cpp
+	%src/init_ldlt_ran_hes.cpp
 	%src/init_fix_con.cpp
 	%src/init_fix_like.cpp
 	%src/init_hes_cross.cpp
@@ -397,7 +397,7 @@ $srccode%cpp% */
 	bool                init_ran_con_done_;
 	bool                init_ran_like_done_;
 	bool                init_ran_hes_done_;
-	bool                init_chol_ran_hes_done_;
+	bool                init_ldlt_ran_hes_done_;
 	bool                init_hes_cross_done_;
 	// only called when n_random_ > 0 and quasi_fixed_ is false
 	bool                init_newton_atom_done_;
@@ -450,9 +450,9 @@ $srccode%cpp% */
 	friend bool ::ran_hes_fun_xam(void);
 /* %$$
 
-$head chol_ran_hes_$$
-If $icode%n_random_% > 0%$$ and $code init_chol_ran_hes_done_$$,
-$code chol_ran_hes_$$ contains a
+$head ldlt_ran_hes_$$
+If $icode%n_random_% > 0%$$ and $code init_ldlt_ran_hes_done_$$,
+$code ldlt_ran_hes_$$ contains a
 $cref ldlt_eigen$$ factor for the Hessian of the
 $cref/random likelihood
 	/theory
@@ -460,7 +460,7 @@ $cref/random likelihood
 /$$
 ; i.e.  $latex f_{u,u} ( \theta , u )$$.
 $srccode%cpp% */
-	CPPAD_MIXED_LDLT chol_ran_hes_;
+	CPPAD_MIXED_LDLT ldlt_ran_hes_;
 /* %$$
 
 $head hes_cross_$$
@@ -612,10 +612,10 @@ $srccode%cpp% */
 $comment ------------------------------------------------------------------- $$
 $head Initialization Member Functions$$
 
-$subhead init_chol_ran_hes$$
-See $cref init_chol_ran_hes$$.
+$subhead init_ldlt_ran_hes$$
+See $cref init_ldlt_ran_hes$$.
 $srccode%cpp% */
-	void init_chol_ran_hes(void);
+	void init_ldlt_ran_hes(void);
 /* %$$
 
 $subhead init_fix_con$$

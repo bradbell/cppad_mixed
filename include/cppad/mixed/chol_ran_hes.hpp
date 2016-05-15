@@ -19,15 +19,15 @@ namespace CppAD { namespace mixed {
 	// problem has been fixed using the SYSTEM include option.
 	extern Eigen::SimplicialLDLT<
 		Eigen::SparseMatrix<double> , Eigen::Lower
-	> chol_ran_hes_;
+	> ldlt_ran_hes_;
 
-	extern void analyze_chol_ran_hes(
+	extern void analyze_ldlt_ran_hes(
 		size_t                       n_fixed  ,
 		size_t                       n_random ,
 		const CppAD::vector<size_t>& row      ,
 		const CppAD::vector<size_t>& col
 	);
-	extern void factorize_chol_ran_hes(
+	extern void factorize_ldlt_ran_hes(
 		size_t                       n_fixed  ,
 		size_t                       n_random ,
 		const CppAD::vector<size_t>& row      ,
@@ -35,7 +35,7 @@ namespace CppAD { namespace mixed {
 		const CppAD::vector<double>& both     ,
 		CppAD::ADFun<double>&        hessian
 	);
-	extern double logdet_chol_ran_hes(size_t n_random);
+	extern double logdet_ldlt_ran_hes(size_t n_random);
 } }
 
 

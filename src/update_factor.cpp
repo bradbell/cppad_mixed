@@ -18,7 +18,7 @@ $spell
 	cppad
 	const
 	CppAD
-	chol
+	ldlt
 	hes
 $$
 
@@ -69,15 +69,15 @@ $codei%
 has been called where $icode both$$ is a packed version
 of the fixed and random effects.
 
-$head chol_ran_hes_$$
+$head ldlt_ran_hes_$$
 On input, the member variable
 $codei%
-	CPPAD_MIXED_LDLT chol_ran_hes_
+	CPPAD_MIXED_LDLT ldlt_ran_hes_
 %$$
 has been
 $cref/initialized/ldlt_eigen_init/$$
 using the sparsity pattern for the Hessian.
-Upon return, $code chol_ran_hes_$$ contains the updated
+Upon return, $code ldlt_ran_hes_$$ contains the updated
 $cref/factorization/ldlt_eigen_update/$$
 corresponding to the specified values for the fixed
 and random effects.
@@ -121,7 +121,7 @@ void cppad_mixed::update_factor(
 	// set the value vector in the sparse matrix information
 	hes_info.val = ran_hes_fun_.Forward(0, both);
 	//
-	bool pos = chol_ran_hes_.update(hes_info);
+	bool pos = ldlt_ran_hes_.update(hes_info);
 	if( ! pos )
 	{	std::string error_message =
 		"Hessian of the random likelihood w.r.t random effects"

@@ -12,7 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin logdet_jac$$
 $spell
-	chol
+	ldlt
 	Jacobian
 	jac
 	CppAD
@@ -56,10 +56,10 @@ We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
-$head chol_ran_hes_$$
+$head ldlt_ran_hes_$$
 It is assumed that the member variable
 $codei%
-	CPPAD_MIXED_LDLT chol_ran_hes_
+	CPPAD_MIXED_LDLT ldlt_ran_hes_
 %$$
 was updated using $cref update_factor$$ for the specified values of the
 fixed and random effects.
@@ -194,7 +194,7 @@ void cppad_mixed::logdet_jac(
 		if( k_start < K )
 		{	val_out.resize( row_solve.size() );
 			//
-			chol_ran_hes_.solve_H(row_solve, val_in, val_out);
+			ldlt_ran_hes_.solve_H(row_solve, val_in, val_out);
 			//
 			size_t nrow = row_solve.size();
 			if( row_j_zero )

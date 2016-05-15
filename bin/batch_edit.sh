@@ -12,17 +12,23 @@
 new_directories='
 '
 rename_files='
+	src/init_chol_ran_hes.cpp
 '
 spell_files='
+	src/initialize.cpp
+	src/logdet_jac.cpp
+	src/ran_obj_eval.cpp
+	src/ran_obj_jac.cpp
+	src/update_factor.cpp
 '
 no_change_files='
 '
 #
-rename_cmd='s|solve.cpp|solve_H.cpp|'
-spell_cmd='s|^$spell|&\n\tldlt|'
+rename_cmd='s|chol_ran_hes|ldlt_ran_hes|'
+spell_cmd='s|^\tchol$|\tldlt|'
 #
 cat << EOF > junk.sed
-s|CPPAD_MIXED_CHOLESKY|CPPAD_MIXED_LDLT|
+s|chol_ran_hes|ldlt_ran_hes|g
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

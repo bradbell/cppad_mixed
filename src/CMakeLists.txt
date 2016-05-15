@@ -28,7 +28,7 @@ ADD_LIBRARY(cppad_mixed
 	fix_like_eval.cpp
 	fix_like_hes.cpp
 	fix_like_jac.cpp
-	init_chol_ran_hes.cpp
+	init_ldlt_ran_hes.cpp
 	init_fix_con.cpp
 	init_fix_like.cpp
 	init_hes_cross.cpp
