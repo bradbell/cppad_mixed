@@ -33,7 +33,7 @@ $icode%mixed_object%.sample_fixed(
 )%$$
 
 $head See Also$$
-$cref sample_conditional$$
+$cref sample_random$$, $cref sample_conditional$$
 
 $head Prototype$$
 $srcfile%src/eigen/sample_fixed.cpp

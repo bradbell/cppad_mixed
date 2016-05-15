@@ -8,13 +8,6 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-
-# include <Eigen/Core>
-# include <Eigen/Cholesky>
-# include <cppad/mixed/cppad_mixed.hpp>
-# include <cppad/mixed/manage_gsl_rng.hpp>
-# include <gsl/gsl_randist.h>
-
 /*
 $begin sample_random$$
 $spell
@@ -36,6 +29,13 @@ $icode%mixed_object%.sample_random(
 	%random_upper%,
 	%random_in%
 )%$$
+
+$head See Also$$
+$cref sample_fixed$$
+
+$head Prototype$$
+$srcfile%src/eigen/sample_random.cpp
+	%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
 
 $head Public$$
 This $code cppad_mixed$$ member function is $cref public$$.
@@ -133,9 +133,17 @@ $children%example/user/sample_random_xam.cpp
 $head Example$$
 The file $cref sample_random_xam.cpp$$ is an example
 and test of $code sample_random$$.
+$end
+-----------------------------------------------------------------------------
+*/
 
-$head Prototype$$
-$srccode%cpp% */
+# include <Eigen/Core>
+# include <Eigen/Cholesky>
+# include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/manage_gsl_rng.hpp>
+# include <gsl/gsl_randist.h>
+
+// BEGIN PROTOTYPE
 void cppad_mixed::sample_random(
 	d_vector&          sample         ,
 	const std::string& random_options ,
@@ -143,9 +151,7 @@ void cppad_mixed::sample_random(
 	const d_vector&    random_lower   ,
 	const d_vector&    random_upper   ,
 	const d_vector&    random_in      )
-/* %$$
-$end
-*/
+// END PROTOTYPE
 {	// case where there is nothing to do
 	if( n_random_ == 0 )
 		return;
