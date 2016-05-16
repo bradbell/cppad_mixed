@@ -2001,6 +2001,7 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 	CppAD::vector<double> x_step(x_start);
 	//
 	// check grad_f
+	size_t line_count = 0;
 	for(size_t j = 0; j < n; j++) if( x_lower[j] < x_upper[j] )
 	{	double abs_obj         = fabs(obj_value);
 		double best_err        = std::numeric_limits<double>::infinity();
@@ -2062,21 +2063,35 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 		}
 		// trace
 		bool trace_j = trace || best_err > relative_tol;
-		if( trace_j ) std::cout
-			<< std::setprecision(3)
-			<< "j="     << std::setw(2) << j
-			<< ",step=" << std::setw(6) << best_step
-			<< ",f="    << std::setw(9) << obj_value
-			<< ",grad=" << std::setw(9) << grad_f[j]
-			<< ",apx=" << std::setw(9) << best_approx
-			<< ",err=" << std::setw(9) << best_err
-			<< std::endl;
+		if( trace_j )
+		{	if( line_count % 20 == 0 )
+				std::cout << std::endl
+					<< std::right
+					<< std::setw(4)  << "j"
+					<< std::setw(7)  << "step"
+					<< std::setw(11) << "f"
+					<< std::setw(11) << "grad"
+					<< std::setw(11) << "apx"
+					<< std::setw(11) << "err"
+					<< std::endl;
+			std::cout
+				<< std::setprecision(4)
+				<< std::setw(4)  << j
+				<< std::setw(7)  << best_step
+				<< std::setw(11) << obj_value
+				<< std::setw(11) << grad_f[j]
+				<< std::setw(11) << best_approx
+				<< std::setw(11) << best_err
+				<< std::endl;
+			line_count++;
+		}
 		//
 		// ok
 		ok &= ok && best_err <= relative_tol;
 	}
 	//
 	// check jac_g
+	line_count = 0;
 	for(size_t j = 0; j < n; j++) if( x_lower[j] < x_upper[j] )
 	{	CppAD::vector<double>
 			abs_con(m), best_err(m), best_step(m), best_approx(m), jac(m);
@@ -2159,16 +2174,30 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 		for(size_t i = 0; i < m; i++) if( found[i] )
 		{	// trace
 			bool trace_ij = trace || best_err[i] > relative_tol;
-			if( trace_ij ) std::cout
-				<< std::setprecision(3)
-				<< "i="     << std::setw(2) << i
-				<< "j="     << std::setw(2) << j
-				<< ",step=" << std::setw(6) << best_step[i]
-				<< ",g="    << std::setw(9) << con_value[i]
-				<< ",jac=" << std::setw(9) << jac[i]
-				<< ",apx=" << std::setw(9) << best_approx[i]
-				<< ",err=" << std::setw(9) << best_err[i]
-				<< std::endl;
+			if( trace_ij )
+			{	if( line_count % 20 == 0 )
+					std::cout << std::endl
+						<< std::right
+						<< std::setw(4)  << "i"
+						<< std::setw(4)  << "j"
+						<< std::setw(7)  << "step"
+						<< std::setw(11) << "f"
+						<< std::setw(11) << "grad"
+						<< std::setw(11) << "apx"
+						<< std::setw(11) << "err"
+						<< std::endl;
+				std::cout
+					<< std::setprecision(4)
+					<< std::setw(4)  << i
+					<< std::setw(4)  << j
+					<< std::setw(7)  << best_step[i]
+					<< std::setw(11) << con_value[i]
+					<< std::setw(11) << jac[i]
+					<< std::setw(11) << best_approx[i]
+					<< std::setw(11) << best_err[i]
+					<< std::endl;
+				line_count++;
+			}
 		}
 		//
 		// ok

@@ -49,6 +49,8 @@ $lnext
 Add the $code adaptive$$ and $code trace-adaptive$$ choices to the
 $cref/derivative_test/optimize_fixed/fixed_options/derivative_test/$$
 fixed effects options.
+Note that this gives the user direct control over doing this test
+(which can be time intensive for large problems).
 $lend
 
 $head 05-11$$
