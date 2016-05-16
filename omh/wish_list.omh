@@ -20,16 +20,6 @@ $$
 
 $section CppAD Mixed Wish List$$
 
-$head check_derivative$$
-Currently $code cppad_mixed$$ does its own
-$cref/derivative check/ipopt_fixed_check_derivative/$$ when
-$code NDEBUG$$ is not defined.
-It would be nice to have an option that turns this checking on and off
-(it can take a long time for large problems).
-In addition, it would be nice to have an option that prints all these
-checks, not just the ones that fail, so the use could get an idea
-if the problem is well scaled.
-
 $head sparse_mat_info$$
 Use $cref sparse_mat_info$$ instead of
 $icode row$$, $icode col$$, $icode val$$ triples

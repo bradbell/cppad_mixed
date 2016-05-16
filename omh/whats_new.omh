@@ -45,6 +45,10 @@ This is intended to help determine which variables are
 not determined by the model plus data.
 $lnext
 Remove $code sample_fixed$$ wish list item.
+$lnext
+Add the $code adaptive$$ and $code trace-adaptive$$ choices to the
+$cref/derivative_test/optimize_fixed/fixed_options/derivative_test/$$
+fixed effects options.
 $lend
 
 $head 05-11$$
@@ -154,7 +158,7 @@ $code RELEASE$$.
 
 $head 04-16$$
 $list number$$
-The routine $cref ipopt_fixed_check_derivative$$ now checks
+The routine $cref ipopt_fixed_adaptive_derivative_check$$ now checks
 $cref ipopt_fixed_eval_jac_g$$ in addition to
 $cref ipopt_fixed_eval_grad_f$$.
 $lnext
@@ -164,7 +168,7 @@ $lend
 
 $head 04-10$$
 $list number$$
-If the gradient check $cref ipopt_fixed_check_derivative$$ fails,
+If the gradient check $cref ipopt_fixed_adaptive_derivative_check$$ fails,
 it now results in warning instead of a fatal error.
 $lnext
 Check the Hessian of the
@@ -186,7 +190,7 @@ equal to $code -1$$.
 
 $head 04-08$$
 $list number$$
-Changed $cref ipopt_fixed_check_derivative$$ to handle case where
+Changed $cref ipopt_fixed_adaptive_derivative_check$$ to handle case where
 the function at both central difference points is zero,
 and the derivatives is also zero.
 $lnext
@@ -199,7 +203,7 @@ $list number$$
 The new routine $cref sample_fixed$$ samples from the posterior
 distribution for the estimate of the fixed effects.
 $lnext
-Changed $cref ipopt_fixed_check_derivative$$ to down to step size
+Changed $cref ipopt_fixed_adaptive_derivative_check$$ to down to step size
 $code 1e-9$$ (used to just go to $code 1e-7$$.
 In addition, in error report changed $code step=$$ to $code best_step=$$.
 $lend

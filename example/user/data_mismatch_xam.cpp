@@ -351,7 +351,7 @@ bool data_mismatch_xam(void)
 	std::string fixed_options =
 		"Integer print_level               0\n"
 		"String  sb                        yes\n"
-		"String  derivative_test           first-order\n"
+		"String  derivative_test           adaptive\n"
 		"String  derivative_test_print_all yes\n"
 		"Numeric tol                       1e-8\n"
 	;

@@ -1856,7 +1856,7 @@ $end
 }
 /*
 -------------------------------------------------------------------------------
-$begin ipopt_fixed_check_derivative$$
+$begin ipopt_fixed_adaptive_derivative_check$$
 $spell
 	CppAD
 	cppad
@@ -1867,10 +1867,10 @@ $spell
 	jac
 $$
 
-$section Check eval_grad_f and eval_jac_g Using Finite Differences$$
+$section Adaptive Step Size check of eval_grad_f and eval_jac_g$$
 
 $head Syntax$$
-$icode%ok% = check_derivative(%trace%, %relative_tol%)%$$
+$icode%ok% = adaptive_derivative_check(%trace%, %relative_tol%)%$$
 
 $head trace$$
 This argument has prototype
@@ -1920,7 +1920,7 @@ to the cppad_mixed API (as an alternative to Ipopt's derivative checker).
 $end
 -------------------------------------------------------------------------------
 */
-bool ipopt_fixed::check_derivative(bool trace, double relative_tol)
+bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 {	using std::fabs;
 	size_t n        = n_fixed_ + fix_likelihood_nabs_;
 	size_t m        = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;

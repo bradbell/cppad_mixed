@@ -252,7 +252,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			Ipopt::IpoptCalculatedQuantities* ip_cq
 		);
 		// -----------------------------------------------------------------
-		bool check_derivative(bool trace, double relative_tol);
+		bool adaptive_derivative_check(bool trace, double relative_tol);
 	};
 } } // END_CPPAD_MIXED_NAMESPACE
 

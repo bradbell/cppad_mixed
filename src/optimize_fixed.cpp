@@ -67,9 +67,18 @@ and is the $cref ipopt_options$$ for optimizing the fixed effects
 with the following qualifications:
 
 $subhead derivative_test$$
-If $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is true,
-the $icode derivative_test$$ must be $code none$$ or
-$code first-order$$.
+If $icode derivative_test$$ is $code none$$,
+no derivative testing is done.
+If it is $code first-order$$,
+only first order derivatives are tested.
+If it is $code second-order$$ ($code only-second-order$$)
+second derivatives (and first derivatives) are tested.
+In these two cases $icode quasi_fixed$$ must be $code false$$.
+If $icode derivative_test$$ is $code adaptive$$,
+a special $code cppad_mixed$$ adaptive step size method is
+used to test first order derivatives.
+If it is $code trace-adaptive$$,
+the adaptive step size results are traced on standard output.
 
 $subhead hessian_approximation$$
 If $icode quasi_fixed$$ is true,
@@ -295,6 +304,9 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 	app->Options()->GetIntegerValue(tag, fixed_max_iter, prefix);
 	assert( fixed_max_iter >= 0 );
 	//
+	// default for adaptive derivative test
+	std::string adaptive_check = "none";
+	//
 	// Set options for optimization of the fixed effects
 	const std::string& options = fixed_options;
 	size_t begin_1, end_1, begin_2, end_2, begin_3, end_3;
@@ -325,7 +337,13 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 		std::string tok_3 = options.substr(begin_3, end_3 - begin_3);
 		// switch on option type
 		if ( tok_1 == "String" )
-		{	app->Options()->SetStringValue(tok_2.c_str(), tok_3.c_str());
+		{	if( tok_2 == "derivative_test" )
+			{	if( tok_3 == "adaptive" || tok_3 == "trace-adaptive" )
+				{	adaptive_check = tok_3;
+					tok_3 = "none";
+				}
+			}
+			app->Options()->SetStringValue(tok_2.c_str(), tok_3.c_str());
 			if( quasi_fixed_ )
 			{	ok = true;
 				if( tok_2 == "hessian_approximation" )
@@ -384,16 +402,21 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 		mixed_object
 	);
 
-# ifndef NDEBUG
 	// check derivative calculation
-	bool   trace         = false;
-	double relative_tol  = 1e-3;
-	ok = fixed_nlp->check_derivative(trace, relative_tol);
-	if( ! ok )
-	{	warning("optimize_fixed: check_derivative failed");
-		ok = true;
+	if( adaptive_check != "none" )
+	{	bool trace  = false;
+		if( adaptive_check == "trace-adaptive" )
+			trace = true;
+		else
+		{	assert( adaptive_check == "adaptive" );
+		}
+		double relative_tol  = 1e-3;
+		ok = fixed_nlp->adaptive_derivative_check(trace, relative_tol);
+		if( ! ok )
+		{	warning("optimize_fixed: adaptive derivative test failed");
+			ok = true;
+		}
 	}
-# endif
 
 	// Set values used for minus and plus infinity
 	app->Options()->SetNumericValue(
