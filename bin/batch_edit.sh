@@ -58,12 +58,18 @@ do
 	if [ "$file" != 'bin/batch_edit.sh' ]
 	then
 		sed -f junk.sed $file > junk.$$
-		if diff $file junk.$$
+		if diff $file junk.$$ > /dev/null
 		then
 			rm junk.$$
 		else
 			echo "sed -f junk.sed -i $file"
-			mv junk.$$ $file
+			if [ -x "$file" ]
+			then
+				mv junk.$$ $file
+				chmod +x $file
+			else
+				mv junk.$$ $file
+			fi
 		fi
 	fi
 done
