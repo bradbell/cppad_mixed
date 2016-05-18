@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin box_newton$$
 $spell
+	enum
 	CppAD
 	const
 	iter
@@ -21,9 +22,12 @@ $section Newton's Optimization with Box Constraints$$
 $head Under Construction$$
 
 $head Syntax$$
-$icode%x_out% = CppAD::mixed::box_newton(
-	%x_low%, %x_up%, %x_in%, %options%, %objective%
+$icode%status% = CppAD::mixed::box_newton(
+	%option%, %objective%, %x_low%, %x_up%, %x_in%, %x_out%
 )%$$
+
+$head Prototype$$
+$srcfile%src/box_newton.cpp%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
 
 $head Purpose$$
 Given a smooth function $latex f : \B{R}^n \rightarrow \B{R}$$,
@@ -45,76 +49,32 @@ p_j (x) = \left\{ \begin{array}{ll}
 where $latex f_j^{(1)} (x)$$ is the $th j$$ component of the
 derivative of $latex f(x)$$.
 
-$head Prototype$$
-$srcfile%src/box_newton.cpp%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
-
-$head x_low$$
-This vector has size $icode n$$ and specifies the lower limits
-$latex \ell$$. If $icode%x_low%[%j%]%$$ is minus infinity,
-there is no lower limit for the corresponding component of $latex x$$.
-
-$head x_up$$
-This vector has size $icode n$$ and specifies the upper limits
-$latex u$$. If $icode%x_up%[%j%]%$$ is plus infinity,
-there is no upper limit for the corresponding component of $latex x$$.
-
-$head x_in$$
-This vector has size $icode n$$ and specifies the initial value for
-$latex u$$ during the optimization.
-It must hold that, for $icode%j% = 0 , %...%, %n%-1%$$,
-$codei%
-	%x_low%[%j%] <= %x_in%[%j%] <= %x_up%[%j%]
-%$$
-
-$head options$$
-This argument has prototype
-$codei%
-	const CppAD::mixed::box_newton_options& %options%
-%$$
+$head option$$
+$srcfile%src/box_newton.cpp%0%// BEGIN OPTION%// END OPTION%1%$$
 
 $subhead tolerance$$
-This option has prototype
-$codei%
-	double %options%.tolerance
-%$$
-It is the convergence tolerance for the optimization. The method has
-converged when the infinity norm of the projected gradient
-$latex | p ( x ) |_\infty$$ is less than $icode%options%.tolerance%$$.
-The default value for this option is $code 1e-10$$.
+This is the convergence tolerance for the optimization. The method has
+converged when $latex | p_j ( x ) |$$ is less than
+or equal $icode%option%.tolerance%$$ for $latex j = 0 , \ldots , n-1$$.
 
 $subhead print_level$$
-This option has prototype
-$codei%
-	size_t %options%.print_level
-%$$
-It is the level of printing during this optimization process.
-The default value for this option is $code 0$$ which corresponds
-to no printing.
+This is the level of printing during this optimization process.
+The default value $code 0$$ corresponds to no printing.
 
 $subhead max_iter$$
-This option has prototype
-$codei%
-	size_t %options%.max_iter
-%$$
-It is the maximum number of iterations for the algorithm.
+This is the maximum number of iterations for the algorithm.
 Each iterations of the algorithm corresponds to one call to
 $codei%
 	%w% = %objective%.solve(%x%, %v%)
 %$$
-The default value for this option is $code 50$$
 
-$subhead max_line_search$$
-This option has prototype
-$codei%
-	size_t %options%.max_line_search
-%$$
-It is the maximum number of line search steps to
+$subhead max_line$$
+This is the maximum number of line search steps to
 perform during each iteration.
 Each line search step corresponds to one call to
 $codei%
 	%f% = %objective%.fun(%x%)
 %$$
-The default value for this option is $code 20$$
 
 $head fun$$
 The object $icode objective$$ supports the following syntax
@@ -159,7 +119,7 @@ $codei%
 	CppAD::vector<double> %g%
 %$$
 Its size is $icode n$$
-and it is the value of the gradient of $latex f(x)$$.
+and it is the value of the gradient $latex f^{(1)} (x)^\R{T}$$.
 
 $head solve$$
 The object $icode objective$$ supports the following syntax
@@ -191,43 +151,76 @@ It size is $code n$$ and it solves the equation
 $latex \[
 	f^{(2)} ( x ) \; v = w
 \] $$
+This equation can be solved because
+we assume that $latex f^{(2)} (x)$$ is positive definite,
 
+$head x_low$$
+This vector has size $icode n$$ and specifies the lower limits
+$latex \ell$$. If $icode%x_low%[%j%]%$$ is minus infinity,
+there is no lower limit for the corresponding component of $latex x$$.
+
+$head x_up$$
+This vector has size $icode n$$ and specifies the upper limits
+$latex u$$. If $icode%x_up%[%j%]%$$ is plus infinity,
+there is no upper limit for the corresponding component of $latex x$$.
+
+$head x_in$$
+This vector has size $icode n$$ and specifies the initial value for
+$latex u$$ during the optimization.
+It must hold that, for $icode%j% = 0 , %...%, %n%-1%$$,
+$codei%
+	%x_low%[%j%] <= %x_in%[%j%] <= %x_up%[%j%]
+%$$
 
 $head x_out$$
-The return value has prototype
-$codei%
-	CppAD::vector<double> %x_out%
-%$$
-It size is $code n$$ and it is a value of $icode x$$ such that
-the infinity norm of the projected gradient
-$latex | p ( x ) |_\infty$$ is less than $icode%options%.tolerance%$$.
+This vector has size is $code n$$.
+The input value of its elements does not matter.
+Upon return it is a value of $icode x$$ such that
+$latex | p_j ( x ) |_\infty$$ is less than or equal
+$icode%option%.tolerance%$$ for $latex j = 0, \ldots , n-1$$.
+
+$head status$$
+The return value is one of the following enum values
+$srcfile%src/box_newton.cpp%0%// BEGIN STATUS%// END STATUS%1%$$
+
 
 $end
 ------------------------------------------------------------------------------
 */
 namespace CppAD < namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-struct box_newton_options {
+// BEGIN OPTION
+struct box_newton_option {
 	double tolerance;
 	size_t print_level;
-	size_t max_iterions;
-	size_t max_line_search;
-	box_newton_options(void)
+	size_t max_iter;
+	size_t max_line;
+	box_newton_option(void) // set default values
 	: tolerance(1e-10)    ,
 	: print_level(0)      ,
 	: max_iter(50)        ,
-	: max_line_search(20)
+	: max_line(20)
 	{}
-}
+};
+// END OPTION
+
+// BEGIN STATUS
+enum box_newton_status {
+	box_newton_ok_enum       , // x_out is ok
+	box_newton_max_iter_enum , // maximum number of iterations reached
+	box_newton_max_line_enum   // maximum number of line search steps reached
+};
+// END STATUS
 
 // BEGIN PROTOTYPE
 template <class Objective>
-CppAD::vector<double> box_newton(
+box_newton_status box_newton(
+	box_newton_option             option     ,
+	Objective&                    objective  ,
 	const CppAD::vector<double>&  x_low      ,
 	const CppAD::vector<double>&  x_up       ,
 	const CppAD::vector<double>&  x_in       ,
-	box_newton_options            options    ,
-	Objective&                    objective  )
+	CppAD::vector<double>&        x_out      )
 // END PROTOTYPE
 
 
