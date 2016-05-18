@@ -37,25 +37,15 @@ $latex \[
 	\R{minimize} \; f(x) \; \R{subject \; to} \; \ell \leq x \leq u
 \] $$
 
-$head Project Gradient$$
-We define the projected gradient $latex p(x)$$ by
-$latex \[
-p_j (x) = \left\{ \begin{array}{ll}
-	0 & \R{if} \; f_j^{(1)} ( x ) \geq 0 \; \R{and} \; x_j = \ell_j \\
-	0 & \R{if} \; f_j^{(1)} ( x ) \leq 0 \; \R{and} \; x_j = u_j    \\
-	f_j^{(1)} (x) & \R{otherwise}
-	\end{array} \right.
-\] $$
-where $latex f_j^{(1)} (x)$$ is the $th j$$ component of the
-derivative of $latex f(x)$$.
-
 $head option$$
 $srcfile%src/box_newton.cpp%0%// BEGIN OPTION%// END OPTION%1%$$
 
 $subhead tolerance$$
 This is the convergence tolerance for the optimization. The method has
-converged when $latex | p_j ( x ) |$$ is less than
-or equal $icode%option%.tolerance%$$ for $latex j = 0 , \ldots , n-1$$.
+converged when the absolute value of the
+change in the current best approximate solution
+is less than or equal $icode%option%.tolerance%$$ for all components
+of $latex x$$.
 
 $subhead print_level$$
 This is the level of printing during this optimization process.
@@ -175,9 +165,11 @@ $codei%
 $head x_out$$
 This vector has size is $code n$$.
 The input value of its elements does not matter.
-Upon return it is a value of $icode x$$ such that
-$latex | p_j ( x ) |_\infty$$ is less than or equal
-$icode%option%.tolerance%$$ for $latex j = 0, \ldots , n-1$$.
+Upon return it is the best approximate solution so far.
+If $icode status$$ is $code box_newton_ok_enum$$,
+for $latex j = 0, \ldots , n-1$$ the absolute value of the
+change in $icode%x_out%[%j%]%$$ (between iterations)
+is less than or equal $icode%option%.tolerance%$$.
 
 $head status$$
 The return value is one of the following enum values
@@ -215,7 +207,7 @@ enum box_newton_status {
 // BEGIN PROTOTYPE
 template <class Objective>
 box_newton_status box_newton(
-	box_newton_option             option     ,
+	const box_newton_option&      option     ,
 	Objective&                    objective  ,
 	const CppAD::vector<double>&  x_low      ,
 	const CppAD::vector<double>&  x_up       ,
