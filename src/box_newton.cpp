@@ -179,7 +179,10 @@ $srcfile%src/box_newton.cpp%0%// BEGIN STATUS%// END STATUS%1%$$
 $end
 ------------------------------------------------------------------------------
 */
-namespace CppAD < namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+# include <cppad/utility/vector.hpp>
+# include <cppad/utility/near_equal.hpp>
+
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // BEGIN OPTION
 struct box_newton_option {
@@ -187,11 +190,11 @@ struct box_newton_option {
 	size_t print_level;
 	size_t max_iter;
 	size_t max_line;
-	box_newton_option(void) // set default values
-	: tolerance(1e-10)    ,
-	: print_level(0)      ,
-	: max_iter(50)        ,
-	: max_line(20)
+	box_newton_option(void) : // set default values
+	tolerance(1e-10)    ,
+	print_level(0)      ,
+	max_iter(50)        ,
+	max_line(20)
 	{}
 };
 // END OPTION
@@ -200,7 +203,9 @@ struct box_newton_option {
 enum box_newton_status {
 	box_newton_ok_enum       , // x_out is ok
 	box_newton_max_iter_enum , // maximum number of iterations reached
-	box_newton_max_line_enum   // maximum number of line search steps reached
+	box_newton_max_line_enum , // maximum number of line search steps reached
+	// v^T * Hessian * v not positive where v corresponds to previous solve
+	box_newton_neg_enum
 };
 // END STATUS
 
@@ -214,8 +219,88 @@ box_newton_status box_newton(
 	const CppAD::vector<double>&  x_in       ,
 	CppAD::vector<double>&        x_out      )
 // END PROTOTYPE
+{	size_t n = x_low.size();
+	assert( n == x_up.size() );
+	assert( n == x_in.size() );
+	assert( n == x_out.size() );
 
-
+	// initialize
+	CppAD::vector<double> x_cur(n), g_cur(n), p_cur(n), d_cur(n), dx_cur(n);
+	CppAD::vector<double> x_next(n);
+	CppAD::vector<bool> active(n);
+	double f_cur, eps;
+	x_cur  = x_in;
+	f_cur  = objective.fun(x_cur);
+	g_cur  = objective.grad(x_cur);
+	x_out  = x_cur;
+	eps    = 100. * std::numeric_limits<double>::epsilon();
+	//
+	size_t iter = 0;
+	while(iter < option.max_iter )
+	{	iter++;
+		//
+		// set active set and projected gradient
+		p_cur = g_cur;
+		for(size_t i = 0; i < n; i++)
+		{	bool lower = CppAD::NearEqual(x_cur[i], x_low[i], eps, eps);
+			lower     &= g_cur[i] > 0.0;
+			bool upper = CppAD::NearEqual(x_cur[i], x_up[i], eps, eps);
+			lower     &= g_cur[i] < 0.0;
+			active[i]  = lower || upper;
+			if( active[i] )
+				p_cur[i] = 0.0;
+		}
+		//
+		// Netwon direction corresponding to projected gradient
+		d_cur  = objective.solve(x_cur, p_cur);
+		//
+		// check for convergence
+		double dx_norm = 0.0;
+		for(size_t i = 0; i < n; i++)
+		{	double xi = x_cur[i] - d_cur[i];
+			xi        = std::max(xi, x_low[i]);
+			xi        = std::min(xi, x_up[i]);
+			dx_cur[i] = xi - x_cur[i];
+			dx_norm   = std::max( dx_norm, std::fabs(dx_cur[i]) );
+		}
+		if( dx_norm < option.tolerance )
+			return box_newton_ok_enum;
+		//
+		// directionanl derivative in dx_cur and p_cur directions
+		double df_dx = 0.0;
+		double df_p  = 0.0;
+		for(size_t i = 0; i < n; i++)
+		{	df_dx += g_cur[i] * dx_cur[i];
+			df_p  += g_cur[i] * p_cur[i];
+		}
+		if( df_p <= 0.0 )
+			return box_newton_ok_enum;
+		//
+		// if df_dx is not negative enough, use - p_cur direction
+		if( df_dx > - df_p / 10. )
+		for(size_t i = 0; i < n; i++)
+			dx_cur[i] = - p_cur[i];
+		df_dx = - df_p;
+		//
+		// line search
+		double lam   = 1.0;
+		size_t count = 0;
+		double rate  = 0.0;
+		while( count < option.max_line && rate > df_dx / 10. )
+		{	count++;
+			for(size_t i = 0; i < n; i++)
+				x_next[i] = x_cur[i] + lam * dx_cur[i];
+			double f_next = objective.fun(x_next);
+			double rate   = (f_next - f_cur) / lam;
+			lam           = lam / 2.0;
+		}
+		if( rate > df_dx / 10. )
+			return box_newton_max_line_enum;
+		//
+		x_out = x_next;
+	}
+	return box_newton_max_iter_enum;
+}
 
 
 } } // END_CPPAD_MIXED_NAMEPSPACE

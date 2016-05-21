@@ -9,6 +9,7 @@
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
 ADD_LIBRARY(cppad_mixed
+	box_newton.cpp
 	cholmod/constructor.cpp
 	cholmod/init.cpp
 	cholmod/logdet.cpp
