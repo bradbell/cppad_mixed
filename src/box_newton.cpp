@@ -76,10 +76,16 @@ $codei%
 	%f% = %objective%.fun(%x%)
 %$$
 
+$head double_vec$$
+We use the following type definition below
+$codep
+	typedef Eigen::Matrix<double, Eigen::Dynamic, 1> double_vec
+$$
+
 $subhead x$$
 This argument has prototype
 $codei%
-	const CppAD::vector<double>& %x%
+	const double_vec& %x%
 %$$
 and size $icode n$$ and
 is within the limits $icode x_low$$ and $icode x_up$$.
@@ -102,7 +108,7 @@ $codei%
 $subhead x$$
 This argument has prototype
 $codei%
-	const CppAD::vector<double>& %x%
+	const double_vec& %x%
 %$$
 and is the same as in the previous call to
 $icode%objective%.fun(%x%)%$$.
@@ -110,7 +116,7 @@ $icode%objective%.fun(%x%)%$$.
 $subhead g$$
 The return value has prototype
 $codei%
-	CppAD::vector<double> %g%
+	double_vec %g%
 %$$
 Its size is $icode n$$
 and it is the value of the gradient $latex f^{(1)} (x)^\R{T}$$.
@@ -124,7 +130,7 @@ $codei%
 $subhead x$$
 This argument has prototype
 $codei%
-	const CppAD::vector<double>& %x%
+	const double_vec& %x%
 %$$
 and is the same as in the previous call to
 $icode%objective%.fun(%x%)%$$.
@@ -132,14 +138,14 @@ $icode%objective%.fun(%x%)%$$.
 $subhead w$$
 This argument has prototype
 $codei%
-	const CppAD::vector<double>& %w%
+	const double_vec& %w%
 %$$
 and size $icode n$$.
 
 $subhead v$$
 The return value has prototype
 $codei%
-	CppAD::vector<double> %v%
+	double_vec %v%
 %$$
 It size is $code n$$ and it solves the equation
 $latex \[
