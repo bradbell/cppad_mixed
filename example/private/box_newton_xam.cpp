@@ -35,6 +35,7 @@ $end
 # include <cppad/mixed/configure.hpp>
 # include <cppad/mixed/ldlt_cholmod.hpp>
 # include <cppad/mixed/ldlt_eigen.hpp>
+# include <cppad/mixed/box_newton.hpp>
 
 namespace {
 	using CppAD::AD;

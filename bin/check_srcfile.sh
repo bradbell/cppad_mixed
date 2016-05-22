@@ -9,6 +9,7 @@
 #	     GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
+# Make sure that OMhelp srcfile commands referr to same file as command
 if [ ! -e "bin/check_srcfile.sh" ]
 then
 	echo "bin/check_srcfile.sh: must be executed from its parent directory"
@@ -32,9 +33,6 @@ special_case='
 	omh/install_unix.omh
 '
 # -----------------------------------------------------------------------------
-# Make sure that OMhelp srcfile commands referr to same file as command
-echo "Checking that OMhelp \$srcfile commands include from file they appear in."
-echo "----------------------------------------------------------------------"
 list=`bin/ls_files.sh`
 different="no"
 for file in $list
@@ -49,22 +47,22 @@ do
 	done
 	if [ "$ref_list" != '' ]
 	then
+		count=0
 		for ref in $ref_list
 		do
+			count=`expr $count + 1`
 			if [ "$file" != "$ref" ]
 			then
-				echo "an \$srcfile in $file references $ref"
+				echo "\$srcfile number $count in $file references $ref"
 				different="yes"
 			fi
 		done
 	fi
 done
-echo "-------------------------------------------------------------------"
 if [ $different = "yes" ]
 then
 	echo "Error: nothing should be between the two dashed lines above"
 	exit 1
-else
-	echo "OK: nothing is between the two dashed lines above"
-	exit 0
 fi
+echo 'check_srcfile.sh: OK'
+exit 0

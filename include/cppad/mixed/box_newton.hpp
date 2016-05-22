@@ -1,4 +1,6 @@
 // $Id:$
+# ifndef CPPAD_MIXED_BOX_NEWTON_HPP
+# define CPPAD_MIXED_BOX_NEWTON_HPP
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
           Copyright (C) 2014-16 University of Washington
@@ -27,7 +29,8 @@ $icode%status% = CppAD::mixed::box_newton(
 )%$$
 
 $head Prototype$$
-$srcfile%src/box_newton.cpp%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
+$srcfile%include/cppad/mixed/box_newton.hpp
+	%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
 
 $head Private$$
 This function is an implementation detail and not part of the
@@ -42,7 +45,8 @@ $latex \[
 \] $$
 
 $head option$$
-$srcfile%src/box_newton.cpp%0%// BEGIN OPTION%// END OPTION%1%$$
+$srcfile%include/cppad/mixed/box_newton.hpp
+	%0%// BEGIN OPTION%// END OPTION%1%$$
 
 $subhead tolerance$$
 This is the convergence tolerance for the optimization. The method has
@@ -177,7 +181,8 @@ is less than or equal $icode%option%.tolerance%$$.
 
 $head status$$
 The return value is one of the following enum values
-$srcfile%src/box_newton.cpp%0%// BEGIN STATUS%// END STATUS%1%$$
+$srcfile%include/cppad/mixed/box_newton.hpp
+	%0%// BEGIN STATUS%// END STATUS%1%$$
 
 
 $end
@@ -309,3 +314,5 @@ box_newton_status box_newton(
 
 
 } } // END_CPPAD_MIXED_NAMEPSPACE
+
+# endif
