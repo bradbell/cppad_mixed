@@ -20,6 +20,7 @@ define_list='
 	CPPAD_MIXED_HAS_SUITESPARSE
 	CPPAD_MIXED_NULL_PTR
 	CPPAD_MIXED_BOOL_SPARSITY
+	CPPAD_MIXED_LDLT
 '
 for file in $file_list
 do
@@ -36,12 +37,13 @@ do
 	then
 		present='yes'
 	fi
-	if [ "$required" == 'yes' ] && [ "$present" == 'no' ]
-	then
-		echo "missing: # include <cppad/mixed/configure.hpp>"
-		echo "	$file"
-		exit 1
-	fi
+	# This case should generate an error during testing
+	# if [ "$required" == 'yes' ] && [ "$present" == 'no' ]
+	# then
+	#	echo "missing: # include <cppad/mixed/configure.hpp>"
+	#	echo "	$file"
+	#	exit 1
+	# fi
 	if [ "$required" == 'no' ] && [ "$present" == 'yes' ]
 	then
 		echo "unecessary: # include <cppad/mixed/configure.hpp>"

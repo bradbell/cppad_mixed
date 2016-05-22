@@ -382,7 +382,7 @@ $cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$.
 $head ran_hes_$$
 The member variable
 $codei%
-	CppAD::mixed::sparser_hes_info ran_hes_
+	CppAD::mixed::sparse_hes_info ran_hes_
 %$$
 must contain the information for evaluating the random effects
 Hessian using $code ran_like_fun_$$; see

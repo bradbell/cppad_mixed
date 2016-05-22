@@ -31,50 +31,105 @@ $end
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>
-# include <cppad/example/cppad_eigen.hpp>
+# include <cppad/mixed/sparse_mat_info.hpp>
+# include <cppad/mixed/configure.hpp>
+# include <cppad/mixed/ldlt_cholmod.hpp>
+# include <cppad/mixed/ldlt_eigen.hpp>
 
 namespace {
-	using Eigen::Dynamic;
 	using CppAD::AD;
-	typedef Eigen::Matrix<double, Dynamic, 1>       double_vec;
-	typedef Eigen::Matrix< AD<double>, Dynamic, 1>  adouble_vec;
+	using CppAD::vector;
 
-	using CppAD::AD;
-
-	AD<double> fun(const adouble_vec& ax)
-	{	size_t n       = ax.size();
-		AD<double> sum = 0.0;
+	AD<double> f(const vector< AD<double> >& ax)
+	{	size_t n        = ax.size();
+		AD<double> asum = 0.0;
 		for(size_t i = 0; i < n; i++)
-			sum += double(i + 1) * x[i] * x[i];
-		return exp(sum);
+			asum += AD<double>(i + 1) * ax[i] * ax[i];
+		return exp(asum);
 	}
 
 	class Objective
 	{
 	private:
-		CppAD::ADFun<double> fun_;
+		CppAD::ADFun<double>          fun_;
+		CppAD::mixed::sparse_mat_info hes_info_;
+		CppAD::sparse_hessian_work    work_;
+		CPPAD_MIXED_LDLT              ldlt_hes_;
 	public:
-		Objective(size_t n)
-		{	adouble_vec ax(n), ay(1);
-			ax    = adouble_vec::Zero(n);
-			ay[0] = fun(ax);
+		Objective(size_t n) : ldlt_hes_(n)
+		{	// record objective function
+			vector< AD<double> > ax(n), ay(1);
+			for(size_t i = 0; i < n; i++)
+				ax[i] = 0.0;
+			ay[0] = f(ax);
 			fun_.Dependent(ax, ay);
+			// Hessian sparsity pattern
+			vector< std::set<size_t> > pattern(n);
+			hes_info_.resize(n);
+			for(size_t i = 0; i < n; i++)
+			{	pattern[i].insert(i);
+				hes_info_.row[i] = i;
+				hes_info_.col[i] = i;
+			}
+			// prepare hes_info_.work for Hessian calculations
+			vector<double> x(n), w(1);
+			for(size_t i = 0; i < n; i++)
+				x[i] = 0.0;
+			w[0] = 1.0;
+			fun_.SparseHessian(
+				x,
+				w,
+				pattern,
+				hes_info_.row,
+				hes_info_.col,
+				hes_info_.val,
+				work_
+			);
+			// initilaize LDLT factor
+			ldlt_hes_.init( hes_info_ );
 			return;
 		}
-		double fun(const double_vec& x)
-		{	double_vec y(1);
+		double fun(const vector<double>& x)
+		{	vector<double> y(1);
 			y = fun_.Forward(0, x);
 			return y[0];
 		}
-		double_vec grad(const double_vec& x)
-		{	double_vec w(1), dw(n);
+		vector<double> grad(const vector<double>& x)
+		{	size_t n = x.size();
+			vector<double> w(1), dw(n);
 			w[0] = 1.0;
+			// use fact that previous forward was for same x
 			dw   = fun_.Reverse(1, dw);
 			return dw;
 		}
+		vector<double> solve(const vector<double>& x, const vector<double>& p)
+		{	size_t n = x.size();
+			//
+			vector<double> w(1);
+			vector< std::set<size_t> > not_used(0);
+			w[0] = 1.0;
+			fun_.SparseHessian(
+				x,
+				w,
+				not_used,
+				hes_info_.row,
+				hes_info_.col,
+				hes_info_.val,
+				work_
+			);
+			ldlt_hes_.update( hes_info_ );
+			vector<size_t> row(n);
+			vector<double> val_in(n), v(n);
+			for(size_t i = 0; i < n; i++)
+				row[i]    = i;
+			ldlt_hes_.solve_H(row, p, v);
+			return v;
+		}
 	};
-
+}
 bool box_newton_xam(void)
-{
+{	bool ok = true;
+	// Under Construction
+	return ok;
 }
 // END C++

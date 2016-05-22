@@ -76,16 +76,10 @@ $codei%
 	%f% = %objective%.fun(%x%)
 %$$
 
-$head double_vec$$
-We use the following type definition below
-$codep
-	typedef Eigen::Matrix<double, Eigen::Dynamic, 1> double_vec
-$$
-
 $subhead x$$
 This argument has prototype
 $codei%
-	const double_vec& %x%
+	const CppAD::vector<double>& %x%
 %$$
 and size $icode n$$ and
 is within the limits $icode x_low$$ and $icode x_up$$.
@@ -108,7 +102,7 @@ $codei%
 $subhead x$$
 This argument has prototype
 $codei%
-	const double_vec& %x%
+	const CppAD::vector<double>& %x%
 %$$
 and is the same as in the previous call to
 $icode%objective%.fun(%x%)%$$.
@@ -116,7 +110,7 @@ $icode%objective%.fun(%x%)%$$.
 $subhead g$$
 The return value has prototype
 $codei%
-	double_vec %g%
+	CppAD::vector<double> %g%
 %$$
 Its size is $icode n$$
 and it is the value of the gradient $latex f^{(1)} (x)^\R{T}$$.
@@ -124,32 +118,32 @@ and it is the value of the gradient $latex f^{(1)} (x)^\R{T}$$.
 $head solve$$
 The object $icode objective$$ supports the following syntax
 $codei%
-	%v% = %solve%.solve(%x%, %w%)
+	%v% = %solve%.solve(%x%, %p%)
 %$$
 
 $subhead x$$
 This argument has prototype
 $codei%
-	const double_vec& %x%
+	const CppAD::vector<double>& %x%
 %$$
 and is the same as in the previous call to
 $icode%objective%.fun(%x%)%$$.
 
-$subhead w$$
+$subhead p$$
 This argument has prototype
 $codei%
-	const double_vec& %w%
+	const CppAD::vector<double>& %p%
 %$$
 and size $icode n$$.
 
 $subhead v$$
 The return value has prototype
 $codei%
-	double_vec %v%
+	CppAD::vector<double> %v%
 %$$
 It size is $code n$$ and it solves the equation
 $latex \[
-	f^{(2)} ( x ) \; v = w
+	f^{(2)} ( x ) \; v = p
 \] $$
 This equation can be solved because
 we assume that $latex f^{(2)} (x)$$ is positive definite,
@@ -189,7 +183,7 @@ $srcfile%src/box_newton.cpp%0%// BEGIN STATUS%// END STATUS%1%$$
 $end
 ------------------------------------------------------------------------------
 */
-# include <Eigen/Core>
+# include <cppad/utility/vector.hpp>
 # include <cppad/utility/near_equal.hpp>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
@@ -222,24 +216,22 @@ enum box_newton_status {
 // BEGIN PROTOTYPE
 template <class Objective>
 box_newton_status box_newton(
-	const box_newton_option&                        option     ,
-	Objective&                                      objective  ,
-	const Eigen::Matrix<double, Eigen::Dynamic, 1>& x_low      ,
-	const Eigen::Matrix<double, Eigen::Dynamic, 1>& x_up       ,
-	const Eigen::Matrix<double, Eigen::Dynamic, 1>& x_in       ,
-	const Eigen::Matrix<double, Eigen::Dynamic, 1>& x_out      )
+	const box_newton_option&      option     ,
+	Objective&                    objective  ,
+	const CppAD::vector<double>&  x_low      ,
+	const CppAD::vector<double>&  x_up       ,
+	const CppAD::vector<double>&  x_in       ,
+	CppAD::vector<double>&        x_out      )
 // END PROTOTYPE
-{	typedef Eigen::Matrix<double, Eigen::Dynamic, 1> double_vec;
-	typedef Eigen::Matrix<bool, Eigen::Dynamic, 1>   bool_vec;
-
-	size_t n = x_low.size();
+{	size_t n = x_low.size();
 	assert( n == x_up.size() );
 	assert( n == x_in.size() );
 	assert( n == x_out.size() );
 
 	// initialize
-	double_vec x_cur(n), g_cur(n), p_cur(n), d_cur(n), dx_cur(n), x_next(n);
-	bool_vec active(n);
+	CppAD::vector<double> x_cur(n), g_cur(n), p_cur(n), d_cur(n), dx_cur(n);
+	CppAD::vector<double> x_next(n);
+	CppAD::vector<bool> active(n);
 	double f_cur, eps;
 	x_cur  = x_in;
 	f_cur  = objective.fun(x_cur);
@@ -279,15 +271,20 @@ box_newton_status box_newton(
 			return box_newton_ok_enum;
 		//
 		// directionanl derivative in dx_cur and p_cur directions
-		double df_dx = g_cur.transpose() * dx_cur;
-		double df_p  = g_cur.transpose() * p_cur;
+		double df_dx = 0.0;
+		double df_p  = 0.0;
+		for(size_t i = 0; i < n; i++)
+		{	df_dx += g_cur[i] * dx_cur[i];
+			df_p  += g_cur[i] * p_cur[i];
+		}
 		if( df_p <= 0.0 )
 			return box_newton_ok_enum;
 		//
 		// if df_dx is not negative enough, use - p_cur direction
 		if( df_dx > - df_p / 10. )
-		{	dx_cur = - p_cur;
-			df_dx  = - df_p;
+		{	for(size_t i = 0; i < n; i++)
+				dx_cur[i] = - p_cur[i];
+			df_dx = - df_p;
 		}
 		//
 		// line search
@@ -296,7 +293,8 @@ box_newton_status box_newton(
 		double rate  = 0.0;
 		while( count < option.max_line && rate > df_dx / 10. )
 		{	count++;
-			x_next = x_cur + lam * dx_cur;
+			for(size_t i = 0; i < n; i++)
+				x_next[i] = x_cur[i] + lam * dx_cur[i];
 			double f_next = objective.fun(x_next);
 			double rate   = (f_next - f_cur) / lam;
 			lam           = lam / 2.0;
@@ -308,5 +306,6 @@ box_newton_status box_newton(
 	}
 	return box_newton_max_iter_enum;
 }
+
 
 } } // END_CPPAD_MIXED_NAMEPSPACE

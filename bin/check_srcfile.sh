@@ -39,21 +39,24 @@ list=`bin/ls_files.sh`
 different="no"
 for file in $list
 do
-	reference=`sed -n -f junk.sed $file`
+	ref_list=`sed -n -f junk.sed $file`
 	for name in $special_case
 	do
 		if [ "$file" == "$name" ]
 		then
-			reference=''
+			ref_list=''
 		fi
 	done
-	if [ "$reference" != '' ]
+	if [ "$ref_list" != '' ]
 	then
-		if [ "$file" != "$reference" ]
-		then
-			echo "\$srcfile in $file references $reference"
-			different="yes"
-		fi
+		for ref in $ref_list
+		do
+			if [ "$file" != "$ref" ]
+			then
+				echo "an \$srcfile in $file references $ref"
+				different="yes"
+			fi
+		done
 	fi
 done
 echo "-------------------------------------------------------------------"
