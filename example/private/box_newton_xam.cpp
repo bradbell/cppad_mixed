@@ -45,8 +45,8 @@ namespace {
 	{	size_t n        = ax.size();
 		AD<double> asum = 0.0;
 		for(size_t i = 0; i < n; i++)
-		{	AD<double> diff = ax[i] - AD<double>(i + 1);
-			asum += AD<double>(i + 1) * diff * diff;
+		{	AD<double> diff = ax[i] / double(i + 1)  - 1.0;
+			asum += AD<double>(i + 1) * exp( diff * diff );
 		}
 		return asum;
 	}
@@ -136,14 +136,15 @@ bool box_newton_xam(void)
 
 	CppAD::mixed::box_newton_option option;
 	option.print_level = 0;
-	size_t n   = 3;
-	double eps = 100. * std::numeric_limits<double>::epsilon();
+	option.tolerance   = 1e-6;
+	size_t n   = 5;
+	double eps = 10. * option.tolerance;
 	//
 	Objective objective(n);
 	vector<double> x_low(n), x_up(n), x_in(n), x_out(n);
 	for(size_t i = 0; i < n; i++)
 	{	x_low[i] = 0.0;
-		x_up[i]  = double(n);
+		x_up[i]  = double(n - 2);
 		x_in[i]  = 0.0;
 	}
 	CppAD::mixed::box_newton_status status = CppAD::mixed::box_newton(
@@ -151,7 +152,7 @@ bool box_newton_xam(void)
 	);
 	ok &= status == CppAD::mixed::box_newton_ok_enum;
 	for(size_t i = 0; i < n; i++)
-	{	double check = double( std::min(n, i+1) );
+	{	double check = double( std::min(n-2, i+1) );
 		ok &= CppAD::NearEqual(x_out[i], check, eps, eps);
 	}
 

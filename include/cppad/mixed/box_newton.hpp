@@ -21,8 +21,6 @@ $$
 
 $section Newton's Optimization with Box Constraints$$
 
-$head Under Construction$$
-
 $head Syntax$$
 $icode%status% = CppAD::mixed::box_newton(
 	%option%, %objective%, %x_low%, %x_up%, %x_in%, %x_out%
@@ -256,15 +254,17 @@ box_newton_status box_newton(
 	double f_cur, eps, inf;
 	x_cur  = x_in;
 	f_cur  = objective.fun(x_cur);
-	x_out  = x_cur;
 	eps    = 100. * std::numeric_limits<double>::epsilon();
 	inf    = std::numeric_limits<double>::infinity();
 	//
-	size_t iter = 0;
+	size_t iter     = 0;
+	double lam_prev = 0.0;
 	while(iter < option.max_iter )
 	{	iter++;
 		if( option.print_level >= 1 )
-			std::cout << "iter = " << iter << ", f_cur = " << f_cur << "\n";
+			std::cout << "iter = " << iter
+			<< ", f_cur = " << f_cur
+			<< ", lam_prev = " << lam_prev << "\n";
 		if( option.print_level >= 2 )
 			std::cout << "x_cur = " << x_cur << "\n";
 		//
@@ -272,7 +272,6 @@ box_newton_status box_newton(
 		g_cur = objective.grad(x_cur);
 		//
 		// set active set and projected gradient
-		p_cur = g_cur;
 		for(size_t i = 0; i < n; i++)
 		{	bool lower = false;
 			if( x_low[i] > - inf )
@@ -287,6 +286,8 @@ box_newton_status box_newton(
 			active[i]  = lower || upper;
 			if( active[i] )
 				p_cur[i] = 0.0;
+			else
+				p_cur[i] = - g_cur[i];
 		}
 		if( option.print_level >= 3 )
 			std::cout << "p_cur = " << p_cur << "\n";
@@ -297,15 +298,15 @@ box_newton_status box_newton(
 			std::cout << "d_cur = " << d_cur << "\n";
 		//
 		// check for convergence
-		double dx_norm = 0.0;
+		double d_norm = 0.0;
 		for(size_t i = 0; i < n; i++)
-		{	double xi = x_cur[i] - d_cur[i];
+		{	double xi = x_cur[i] + d_cur[i];
 			xi        = std::max(xi, x_low[i]);
 			xi        = std::min(xi, x_up[i]);
 			dx_cur[i] = xi - x_cur[i];
-			dx_norm   = std::max( dx_norm, std::fabs(dx_cur[i]) );
+			d_norm    = std::max(d_norm, std::fabs(d_cur[i]) );
 		}
-		if( dx_norm < option.tolerance )
+		if( d_norm < option.tolerance )
 		{	x_out = x_cur;
 			return box_newton_ok_enum;
 		}
@@ -317,38 +318,42 @@ box_newton_status box_newton(
 		{	df_dx += g_cur[i] * dx_cur[i];
 			df_p  += g_cur[i] * p_cur[i];
 		}
-		if( df_p <= 0.0 )
+		if( df_p >= 0.0 )
 		{	x_out = x_cur;
 			return box_newton_ok_enum;
 		}
 		//
 		// if df_dx is not negative enough, use - p_cur direction
-		if( df_dx > - df_p / 10. )
+		if( df_dx > df_p / 10. )
 		{	for(size_t i = 0; i < n; i++)
-				dx_cur[i] = - p_cur[i];
-			df_dx = - df_p;
+				dx_cur[i] = p_cur[i];
+			df_dx = df_p;
 		}
 		//
 		// line search
-		double lam   = 1.0;
+		double lam   = 2.0;
 		size_t count = 0;
 		double rate  = 0.0;
 		double f_next;
 		while( count < option.max_line && rate > df_dx / 10. )
 		{	count++;
+			lam  = lam / 2.0;
 			for(size_t i = 0; i < n; i++)
-				x_next[i] = x_cur[i] + lam * dx_cur[i];
+			{	x_next[i] = x_cur[i] + lam * dx_cur[i];
+				x_next[i] = std::max(x_next[i], x_low[i]);
+				x_next[i] = std::min(x_next[i], x_up[i]);
+			}
 			f_next  = objective.fun(x_next);
 			rate    = (f_next - f_cur) / lam;
-			lam     = lam / 2.0;
 		}
 		if( rate > df_dx / 10. )
 		{	x_out = x_cur;
 			return box_newton_max_line_enum;
 		}
 		//
-		x_cur = x_next;
-		f_cur = f_next;
+		x_cur    = x_next;
+		f_cur    = f_next;
+		lam_prev = lam;
 	}
 	x_out = x_cur;
 	return box_newton_max_iter_enum;
