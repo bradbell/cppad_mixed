@@ -13,6 +13,8 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin box_newton$$
 $spell
+	xam
+	optimizer
 	enum
 	CppAD
 	const
@@ -52,6 +54,7 @@ converged when the maximum absolute Newton step component
 is less than or equal $icode%option%.tolerance%$$,
 or when the derivative in the direction of the negative
 projected gradient is not negative.
+Note that this tolerance has the same units as $icode x$$.
 
 $subhead print_level$$
 This is the level of printing during this optimization process.
@@ -209,6 +212,12 @@ The return value is one of the following enum values
 $srcfile%include/cppad/mixed/box_newton.hpp
 	%0%// BEGIN STATUS%// END STATUS%1%$$
 
+$children%example/private/box_newton_xam.cpp
+%$$
+$head Example$$
+The file $cref box_newton_xam.cpp$$ contains an example and test
+of this optimizer.
+
 
 $end
 ------------------------------------------------------------------------------
@@ -225,7 +234,7 @@ struct box_newton_option {
 	size_t max_iter;
 	size_t max_line;
 	box_newton_option(void) : // set default values
-	tolerance(1e-10)    ,
+	tolerance(1e-6)     ,
 	print_level(0)      ,
 	max_iter(50)        ,
 	max_line(20)

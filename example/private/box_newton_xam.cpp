@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin box_newton_xam.cpp$$
 $spell
+	xam
 	cppad
 $$
 
