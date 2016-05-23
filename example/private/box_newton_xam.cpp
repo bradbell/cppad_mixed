@@ -45,8 +45,10 @@ namespace {
 	{	size_t n        = ax.size();
 		AD<double> asum = 0.0;
 		for(size_t i = 0; i < n; i++)
-			asum += AD<double>(i + 1) * ax[i] * ax[i];
-		return exp(asum);
+		{	AD<double> diff = ax[i] - AD<double>(i + 1);
+			asum += AD<double>(i + 1) * diff * diff;
+		}
+		return asum;
 	}
 
 	class Objective
@@ -62,6 +64,7 @@ namespace {
 			vector< AD<double> > ax(n), ay(1);
 			for(size_t i = 0; i < n; i++)
 				ax[i] = 0.0;
+			CppAD::Independent(ax);
 			ay[0] = f(ax);
 			fun_.Dependent(ax, ay);
 			// Hessian sparsity pattern
@@ -100,7 +103,7 @@ namespace {
 			vector<double> w(1), dw(n);
 			w[0] = 1.0;
 			// use fact that previous forward was for same x
-			dw   = fun_.Reverse(1, dw);
+			dw   = fun_.Reverse(1, w);
 			return dw;
 		}
 		vector<double> solve(const vector<double>& x, const vector<double>& p)
@@ -130,7 +133,28 @@ namespace {
 }
 bool box_newton_xam(void)
 {	bool ok = true;
-	// Under Construction
+
+	CppAD::mixed::box_newton_option option;
+	option.print_level = 0;
+	size_t n   = 3;
+	double eps = 100. * std::numeric_limits<double>::epsilon();
+	//
+	Objective objective(n);
+	vector<double> x_low(n), x_up(n), x_in(n), x_out(n);
+	for(size_t i = 0; i < n; i++)
+	{	x_low[i] = 0.0;
+		x_up[i]  = double(n);
+		x_in[i]  = 0.0;
+	}
+	CppAD::mixed::box_newton_status status = CppAD::mixed::box_newton(
+		option, objective, x_low, x_up, x_in, x_out
+	);
+	ok &= status == CppAD::mixed::box_newton_ok_enum;
+	for(size_t i = 0; i < n; i++)
+	{	double check = double( std::min(n, i+1) );
+		ok &= CppAD::NearEqual(x_out[i], check, eps, eps);
+	}
+
 	return ok;
 }
 // END C++

@@ -58,6 +58,22 @@ of $latex x$$.
 $subhead print_level$$
 This is the level of printing during this optimization process.
 The default value $code 0$$ corresponds to no printing.
+$codei%
+%print_level% >= 1
+%$$
+the value of the objective $icode f_cur$$, is printed at each iteration.
+$codei%
+%print_level% >= 2
+%$$
+the current argument vector $icode x_cur$$ is printed at each iteration.
+$codei%
+%print_level% >= 3
+%$$
+the current projected gradient $icode p_cur$$ at each iteration.
+$codei%
+%print_level% >= 4
+%$$
+minus the Newton step $icode d_cur$$ is printed at each iteration.
 
 $subhead max_iter$$
 This is the maximum number of iterations for the algorithm.
@@ -237,31 +253,48 @@ box_newton_status box_newton(
 	CppAD::vector<double> x_cur(n), g_cur(n), p_cur(n), d_cur(n), dx_cur(n);
 	CppAD::vector<double> x_next(n);
 	CppAD::vector<bool> active(n);
-	double f_cur, eps;
+	double f_cur, eps, inf;
 	x_cur  = x_in;
 	f_cur  = objective.fun(x_cur);
-	g_cur  = objective.grad(x_cur);
 	x_out  = x_cur;
 	eps    = 100. * std::numeric_limits<double>::epsilon();
+	inf    = std::numeric_limits<double>::infinity();
 	//
 	size_t iter = 0;
 	while(iter < option.max_iter )
 	{	iter++;
+		if( option.print_level >= 1 )
+			std::cout << "iter = " << iter << ", f_cur = " << f_cur << "\n";
+		if( option.print_level >= 2 )
+			std::cout << "x_cur = " << x_cur << "\n";
+		//
+		// current gradient
+		g_cur = objective.grad(x_cur);
 		//
 		// set active set and projected gradient
 		p_cur = g_cur;
 		for(size_t i = 0; i < n; i++)
-		{	bool lower = CppAD::NearEqual(x_cur[i], x_low[i], eps, eps);
-			lower     &= g_cur[i] > 0.0;
-			bool upper = CppAD::NearEqual(x_cur[i], x_up[i], eps, eps);
-			lower     &= g_cur[i] < 0.0;
+		{	bool lower = false;
+			if( x_low[i] > - inf )
+			{	lower  = CppAD::NearEqual(x_cur[i], x_low[i], eps, eps);
+				lower &= g_cur[i] > 0.0;
+			}
+			bool upper = false;
+			if( x_up[i] < + inf )
+			{	upper  = CppAD::NearEqual(x_cur[i], x_up[i], eps, eps);
+				upper &= g_cur[i] < 0.0;
+			}
 			active[i]  = lower || upper;
 			if( active[i] )
 				p_cur[i] = 0.0;
 		}
+		if( option.print_level >= 3 )
+			std::cout << "p_cur = " << p_cur << "\n";
 		//
 		// Netwon direction corresponding to projected gradient
 		d_cur  = objective.solve(x_cur, p_cur);
+		if( option.print_level >= 4 )
+			std::cout << "d_cur = " << d_cur << "\n";
 		//
 		// check for convergence
 		double dx_norm = 0.0;
@@ -273,7 +306,9 @@ box_newton_status box_newton(
 			dx_norm   = std::max( dx_norm, std::fabs(dx_cur[i]) );
 		}
 		if( dx_norm < option.tolerance )
+		{	x_out = x_cur;
 			return box_newton_ok_enum;
+		}
 		//
 		// directionanl derivative in dx_cur and p_cur directions
 		double df_dx = 0.0;
@@ -283,7 +318,9 @@ box_newton_status box_newton(
 			df_p  += g_cur[i] * p_cur[i];
 		}
 		if( df_p <= 0.0 )
+		{	x_out = x_cur;
 			return box_newton_ok_enum;
+		}
 		//
 		// if df_dx is not negative enough, use - p_cur direction
 		if( df_dx > - df_p / 10. )
@@ -296,19 +333,24 @@ box_newton_status box_newton(
 		double lam   = 1.0;
 		size_t count = 0;
 		double rate  = 0.0;
+		double f_next;
 		while( count < option.max_line && rate > df_dx / 10. )
 		{	count++;
 			for(size_t i = 0; i < n; i++)
 				x_next[i] = x_cur[i] + lam * dx_cur[i];
-			double f_next = objective.fun(x_next);
-			double rate   = (f_next - f_cur) / lam;
-			lam           = lam / 2.0;
+			f_next  = objective.fun(x_next);
+			rate    = (f_next - f_cur) / lam;
+			lam     = lam / 2.0;
 		}
 		if( rate > df_dx / 10. )
+		{	x_out = x_cur;
 			return box_newton_max_line_enum;
+		}
 		//
-		x_out = x_next;
+		x_cur = x_next;
+		f_cur = f_next;
 	}
+	x_out = x_cur;
 	return box_newton_max_iter_enum;
 }
 
