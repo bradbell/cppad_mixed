@@ -39,7 +39,8 @@ $end
 namespace {
 	using CppAD::AD;
 	using CppAD::vector;
-
+	//
+	// objective
 	AD<double> f(const vector< AD<double> >& ax)
 	{	size_t n        = ax.size();
 		AD<double> asum = 0.0;
@@ -49,7 +50,7 @@ namespace {
 		}
 		return asum;
 	}
-
+	// class
 	class Objective
 	{
 	private:
@@ -58,6 +59,7 @@ namespace {
 		CppAD::sparse_hessian_work    work_;
 		CPPAD_MIXED_LDLT              ldlt_hes_;
 	public:
+		// constructor
 		Objective(size_t n) : ldlt_hes_(n)
 		{	// record objective function
 			vector< AD<double> > ax(n), ay(1);
@@ -92,11 +94,13 @@ namespace {
 			ldlt_hes_.init( hes_info_ );
 			return;
 		}
+		// fun
 		double fun(const vector<double>& x)
 		{	vector<double> y(1);
 			y = fun_.Forward(0, x);
 			return y[0];
 		}
+		// grad
 		vector<double> grad(const vector<double>& x)
 		{	size_t n = x.size();
 			vector<double> w(1), dw(n);
@@ -105,6 +109,7 @@ namespace {
 			dw   = fun_.Reverse(1, w);
 			return dw;
 		}
+		// solve
 		vector<double> solve(const vector<double>& x, const vector<double>& p)
 		{	size_t n = x.size();
 			//
