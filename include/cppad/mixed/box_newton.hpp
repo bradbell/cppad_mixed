@@ -48,10 +48,10 @@ $srcfile%include/cppad/mixed/box_newton.hpp
 
 $subhead tolerance$$
 This is the convergence tolerance for the optimization. The method has
-converged when the absolute value of the
-change in the current best approximate solution
-is less than or equal $icode%option%.tolerance%$$ for all components
-of $latex x$$.
+converged when the maximum absolute Newton step component
+is less than or equal $icode%option%.tolerance%$$,
+or when the derivative in the direction of the negative
+projected gradient is not negative.
 
 $subhead print_level$$
 This is the level of printing during this optimization process.
@@ -59,25 +59,34 @@ The default value $code 0$$ corresponds to no printing.
 $codei%
 %print_level% >= 1
 %$$
-the value of the objective $icode f_cur$$, is printed at each iteration.
+the iteration counter $icode iter$$,
+the value of the objective $icode f$$,
+maximum absolute component in the Newton step $icode |d|$$,
+and line search step size $icode lam$$,
+are  printed at the end of each iteration.
+In addition, the return $icode status$$ is printed.
+Note that a line search step size starts of $code 1$$
+means that a Newton step was take for this iteration.
 $codei%
 %print_level% >= 2
 %$$
-the current argument vector $icode x_cur$$ is printed at each iteration.
+the current argument vector $icode x$$ is printed for each iteration.
 $codei%
 %print_level% >= 3
 %$$
-the current projected gradient $icode p_cur$$ at each iteration.
+the gradient $icode g$$ and
+the negative of the gradient projected onto the constraint box
+$icode p$$ are printed for each iteration.
 $codei%
 %print_level% >= 4
 %$$
-minus the Newton step $icode d_cur$$ is printed at each iteration.
+the Newton step $icode d$$ is printed for each iteration.
 
 $subhead max_iter$$
 This is the maximum number of iterations for the algorithm.
 Each iterations of the algorithm corresponds to one call to
 $codei%
-	%w% = %objective%.solve(%x%, %v%)
+	%d% = %objective%.solve(%x%, %p%)
 %$$
 
 $subhead max_line$$
@@ -136,7 +145,7 @@ and it is the value of the gradient $latex f^{(1)} (x)^\R{T}$$.
 $head solve$$
 The object $icode objective$$ supports the following syntax
 $codei%
-	%v% = %solve%.solve(%x%, %p%)
+	%d% = %solve%.solve(%x%, %p%)
 %$$
 
 $subhead x$$
@@ -153,18 +162,20 @@ $codei%
 	const CppAD::vector<double>& %p%
 %$$
 and size $icode n$$.
+This is the negative of the gradient projected onto the constraint box.
 
-$subhead v$$
+$subhead d$$
 The return value has prototype
 $codei%
-	CppAD::vector<double> %v%
+	CppAD::vector<double> %d%
 %$$
 It size is $code n$$ and it solves the equation
 $latex \[
-	f^{(2)} ( x ) \; v = p
+	f^{(2)} ( x ) \; d = p
 \] $$
 This equation can be solved because
 we assume that $latex f^{(2)} (x)$$ is positive definite,
+The value $icode d$$ is the Newton step.
 
 $head x_low$$
 This vector has size $icode n$$ and specifies the lower limits
@@ -227,7 +238,7 @@ enum box_newton_status {
 	box_newton_ok_enum       , // x_out is ok
 	box_newton_max_iter_enum , // maximum number of iterations reached
 	box_newton_max_line_enum , // maximum number of line search steps reached
-	// v^T * Hessian * v not positive where v corresponds to previous solve
+	// d^T * f^{(2)}(x) * d not positive where d is the Newton step
 	box_newton_neg_enum
 };
 // END STATUS
@@ -246,7 +257,12 @@ box_newton_status box_newton(
 	assert( n == x_up.size() );
 	assert( n == x_in.size() );
 	assert( n == x_out.size() );
-
+# ifndef NDEBUG
+	for(size_t i = 0; i < n; i++)
+	{	assert( x_low[i] <= x_in[i] );
+		assert( x_in[i]  <= x_up[i] );
+	}
+# endif
 	// initialize
 	CppAD::vector<double> x_cur(n), g_cur(n), p_cur(n), d_cur(n), dx_cur(n);
 	CppAD::vector<double> x_next(n);
@@ -258,15 +274,10 @@ box_newton_status box_newton(
 	inf    = std::numeric_limits<double>::infinity();
 	//
 	size_t iter     = 0;
-	double lam_prev = 0.0;
 	while(iter < option.max_iter )
 	{	iter++;
-		if( option.print_level >= 1 )
-			std::cout << "iter = " << iter
-			<< ", f_cur = " << f_cur
-			<< ", lam_prev = " << lam_prev << "\n";
 		if( option.print_level >= 2 )
-			std::cout << "x_cur = " << x_cur << "\n";
+			std::cout << "x = " << x_cur << std::endl;
 		//
 		// current gradient
 		g_cur = objective.grad(x_cur);
@@ -290,12 +301,14 @@ box_newton_status box_newton(
 				p_cur[i] = - g_cur[i];
 		}
 		if( option.print_level >= 3 )
-			std::cout << "p_cur = " << p_cur << "\n";
+		{	std::cout << "g  = " << g_cur << std::endl;
+			std::cout << "p  = " << p_cur << std::endl;
+		}
 		//
 		// Netwon direction corresponding to projected gradient
 		d_cur  = objective.solve(x_cur, p_cur);
 		if( option.print_level >= 4 )
-			std::cout << "d_cur = " << d_cur << "\n";
+			std::cout << "d  = " << d_cur << std::endl;
 		//
 		// check for convergence
 		double d_norm = 0.0;
@@ -308,6 +321,7 @@ box_newton_status box_newton(
 		}
 		if( d_norm < option.tolerance )
 		{	x_out = x_cur;
+			std::cout << "box_newton_ok" << std::endl;
 			return box_newton_ok_enum;
 		}
 		//
@@ -320,6 +334,7 @@ box_newton_status box_newton(
 		}
 		if( df_p >= 0.0 )
 		{	x_out = x_cur;
+			std::cout << "box_newton_ok" << std::endl;
 			return box_newton_ok_enum;
 		}
 		//
@@ -348,14 +363,22 @@ box_newton_status box_newton(
 		}
 		if( rate > df_dx / 10. )
 		{	x_out = x_cur;
+			std::cout << "box_newton_max_line" << std::endl;
 			return box_newton_max_line_enum;
 		}
+		if( option.print_level > 1 )
+			std::cout << std::endl;
+		if( option.print_level >= 1 )
+			std::cout << "iter = " << iter
+			<< ", f = " << f_cur
+			<< ", |d| = " << d_norm
+			<< ", lam = " << lam << std::endl;
 		//
 		x_cur    = x_next;
 		f_cur    = f_next;
-		lam_prev = lam;
 	}
 	x_out = x_cur;
+	std::cout << "box_newton_max_iter" << std::endl;
 	return box_newton_max_iter_enum;
 }
 

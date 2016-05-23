@@ -16,8 +16,6 @@ $$
 
 $section box_newton_xam: Example and Test$$
 
-$head Under Construction$$
-
 $head Private$$
 This example is not part of the
 $cref/cppad_mixed public API/public/$$.
@@ -123,11 +121,11 @@ namespace {
 			);
 			ldlt_hes_.update( hes_info_ );
 			vector<size_t> row(n);
-			vector<double> val_in(n), v(n);
+			vector<double> d(n);
 			for(size_t i = 0; i < n; i++)
 				row[i]    = i;
-			ldlt_hes_.solve_H(row, p, v);
-			return v;
+			ldlt_hes_.solve_H(row, p, d);
+			return d;
 		}
 	};
 }
