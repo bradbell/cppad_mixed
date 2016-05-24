@@ -50,11 +50,13 @@ $srcfile%include/cppad/mixed/box_newton.hpp
 
 $subhead tolerance$$
 This is the convergence tolerance for the optimization. The method has
-converged when the maximum absolute Newton step component
-is less than or equal $icode%option%.tolerance%$$,
+converged when the norm of the Newton step projected to feasible
+set is less than or equal $icode%option%.tolerance%$$,
 or when the derivative in the direction of the negative
-projected gradient is not negative.
-Note that this tolerance has the same units as $icode x$$.
+projected gradient is not negative,
+or when the function value difference for the Newton step is a small
+multiple of numerical precision.
+Note that tolerance has the same units as $icode x$$.
 
 $subhead print_level$$
 This is the level of printing during this optimization process.
@@ -64,26 +66,36 @@ $codei%
 %$$
 the iteration counter $icode iter$$,
 the value of the objective $icode f$$,
-maximum absolute component in the Newton step $icode |d|$$,
-and line search step size $icode lam$$,
+norm of the Newton step projected to feasible set $icode |dx|$$,
+the directive in the current $icode dx$$ direction $icode f_dx$$,
+the directive in the current $icode p$$ direction $icode f_p$$,
+and line search step size $icode lam_dx$$ or $icode lam_p$$,
 are  printed at the end of each iteration.
+If $icode lam_dx$$ ($icode lam_p$$) is printed,
+$icode dx$$ ($icode p$$) is used for the search direction.
 In addition, the return $icode status$$ is printed.
 Note that a line search step size starts of $code 1$$
 means that a Newton step was take for this iteration.
 $codei%
 %print_level% >= 2
 %$$
-the current argument vector $icode x$$ is printed for each iteration.
+The lower limit $icode x_low$$, upper limit $icode x_up$$,
+initial point $icode x_in$$,
+and initial function value $icode f_in$$,
+are printed before the first iteration.
+The current argument vector $icode x$$,
+the gradient $icode g$$,
+the negative of the gradient projected onto the constraint box $icode p$$,
+the Newton step $icode d$$,
+and its projection to the feasible set $icode dx$$,
+are printed for each iteration.
 $codei%
 %print_level% >= 3
 %$$
-the gradient $icode g$$ and
-the negative of the gradient projected onto the constraint box
-$icode p$$ are printed for each iteration.
-$codei%
-%print_level% >= 4
-%$$
-the Newton step $icode d$$ is printed for each iteration.
+the line search parameter $icode lam$$,
+corresponding function values $icode f$$,
+and the average derivative in the current line search direction $icode f_lam$$,
+are printed for each iteration of the line search.
 
 $subhead max_iter$$
 This is the maximum number of iterations for the algorithm.
@@ -203,9 +215,9 @@ This vector has size is $code n$$.
 The input value of its elements does not matter.
 Upon return it is the best approximate solution so far.
 If $icode status$$ is $code box_newton_ok_enum$$,
-for $latex j = 0, \ldots , n-1$$ the absolute value of the
-change in $icode%x_out%[%j%]%$$ (between iterations)
-is less than or equal $icode%option%.tolerance%$$.
+the $cref/tolerance/box_newton/option/tolerance/$$
+condition has been satisfied or the derivative in the
+direction of the negative projected gradient is non-negative.
 
 $head status$$
 The return value is one of the following enum values
@@ -237,7 +249,7 @@ struct box_newton_option {
 	tolerance(1e-6)     ,
 	print_level(0)      ,
 	max_iter(50)        ,
-	max_line(20)
+	max_line(10)
 	{}
 };
 // END OPTION
@@ -246,9 +258,7 @@ struct box_newton_option {
 enum box_newton_status {
 	box_newton_ok_enum       , // x_out is ok
 	box_newton_max_iter_enum , // maximum number of iterations reached
-	box_newton_max_line_enum , // maximum number of line search steps reached
-	// d^T * f^{(2)}(x) * d not positive where d is the Newton step
-	box_newton_neg_enum
+	box_newton_max_line_enum   // maximum number of line search steps reached
 };
 // END STATUS
 
@@ -279,14 +289,19 @@ box_newton_status box_newton(
 	double f_cur, eps, inf;
 	x_cur  = x_in;
 	f_cur  = objective.fun(x_cur);
-	eps    = 100. * std::numeric_limits<double>::epsilon();
+	eps    = 1e3 * std::numeric_limits<double>::epsilon();
 	inf    = std::numeric_limits<double>::infinity();
+	//
+	if( option.print_level >= 2 )
+	{	std::cout << "x_low = " << x_low << std::endl;
+		std::cout << "x_up  = " << x_up << std::endl;
+		std::cout << "x_in  = " << x_in << std::endl;
+		std::cout << "f_in  = " << f_cur << std::endl;
+	}
 	//
 	size_t iter     = 0;
 	while(iter < option.max_iter )
 	{	iter++;
-		if( option.print_level >= 2 )
-			std::cout << "x = " << x_cur << std::endl;
 		//
 		// current gradient
 		g_cur = objective.grad(x_cur);
@@ -309,85 +324,118 @@ box_newton_status box_newton(
 			else
 				p_cur[i] = - g_cur[i];
 		}
-		if( option.print_level >= 3 )
-		{	std::cout << "g  = " << g_cur << std::endl;
-			std::cout << "p  = " << p_cur << std::endl;
-		}
 		//
 		// Netwon direction corresponding to projected gradient
 		d_cur  = objective.solve(x_cur, p_cur);
-		if( option.print_level >= 4 )
-			std::cout << "d  = " << d_cur << std::endl;
 		//
 		// check for convergence
-		double d_norm = 0.0;
+		double dx_norm = 0.0;
+		double p_norm  = 0.0;
 		for(size_t i = 0; i < n; i++)
 		{	double xi = x_cur[i] + d_cur[i];
 			xi        = std::max(xi, x_low[i]);
 			xi        = std::min(xi, x_up[i]);
 			dx_cur[i] = xi - x_cur[i];
-			d_norm    = std::max(d_norm, std::fabs(d_cur[i]) );
+			dx_norm  += dx_cur[i] * dx_cur[i];
+			p_norm   += p_cur[i] * p_cur[i];
 		}
-		if( d_norm < option.tolerance )
+		dx_norm = std::sqrt( dx_norm );
+		p_norm  = std::sqrt( p_norm );
+		if( option.print_level >= 2 )
+		{	std::cout << "x  = " << x_cur << std::endl;
+			std::cout << "g  = " << g_cur << std::endl;
+			std::cout << "p  = " << p_cur << std::endl;
+			std::cout << "d  = " << d_cur << std::endl;
+			std::cout << "dx = " << dx_cur << std::endl;
+		}
+		if( dx_norm < option.tolerance )
 		{	x_out = x_cur;
-			std::cout << "box_newton_ok" << std::endl;
+			if( option.print_level >= 1 )
+				std::cout << "box_newton_ok" << std::endl;
 			return box_newton_ok_enum;
 		}
 		//
 		// directionanl derivative in dx_cur and p_cur directions
-		double df_dx = 0.0;
-		double df_p  = 0.0;
+		double f_dx = 0.0;
+		double f_p  = 0.0;
 		for(size_t i = 0; i < n; i++)
-		{	df_dx += g_cur[i] * dx_cur[i];
-			df_p  += g_cur[i] * p_cur[i];
+		{	f_dx += g_cur[i] * dx_cur[i];
+			f_p  += g_cur[i] * p_cur[i];
 		}
-		if( df_p >= 0.0 )
+		if( f_p >= 0.0 )
 		{	x_out = x_cur;
-			std::cout << "box_newton_ok" << std::endl;
+			if( option.print_level >= 1 )
+				std::cout << "box_newton_ok" << std::endl;
 			return box_newton_ok_enum;
 		}
 		//
-		// if df_dx is not negative enough, use - p_cur direction
-		if( df_dx > df_p / 10. )
-		{	for(size_t i = 0; i < n; i++)
-				dx_cur[i] = p_cur[i];
-			df_dx = df_p;
-		}
+		// if f_dx is not negative enough, use p_cur direction
+		bool use_p = f_dx * p_norm / dx_norm > f_p / 10.0;
+		double f_q = f_dx;
+		if( use_p )
+			f_q = f_p;
 		//
 		// line search
 		double lam   = 2.0;
 		size_t count = 0;
-		double rate  = 0.0;
+		double f_lam = 0.0;
 		double f_next;
-		while( count < option.max_line && rate > df_dx / 10. )
+		while( count < option.max_line && f_lam > f_q / 10. )
 		{	count++;
 			lam  = lam / 2.0;
 			for(size_t i = 0; i < n; i++)
-			{	x_next[i] = x_cur[i] + lam * dx_cur[i];
+			{	if( use_p )
+					x_next[i] = x_cur[i] + lam * p_cur[i];
+				else
+					x_next[i] = x_cur[i] + lam * dx_cur[i];
 				x_next[i] = std::max(x_next[i], x_low[i]);
 				x_next[i] = std::min(x_next[i], x_up[i]);
 			}
 			f_next  = objective.fun(x_next);
-			rate    = (f_next - f_cur) / lam;
+			f_lam   = (f_next - f_cur) / lam;
+			if( option.print_level >= 3 )
+				std::cout << "lam = " << lam
+				<< ", f = " << f_next
+				<< ", f_lam = " << f_lam
+				<< std::endl;
+			if( CppAD::NearEqual(f_cur, f_next, eps, eps) )
+			{	if( count == 1 )
+				{	if( option.print_level >= 1 )
+						std::cout << "box_newton_ok" << std::endl;
+					return box_newton_ok_enum;
+				}
+				else
+				{	if( option.print_level >= 1 )
+						std::cout << "box_newton_max_line" << std::endl;
+					return box_newton_max_line_enum;
+				}
+			}
 		}
-		if( rate > df_dx / 10. )
+		if( f_lam > f_q / 10. )
 		{	x_out = x_cur;
-			std::cout << "box_newton_max_line" << std::endl;
+			if( option.print_level >= 1 )
+				std::cout << "box_newton_max_line" << std::endl;
 			return box_newton_max_line_enum;
 		}
-		if( option.print_level > 1 )
-			std::cout << std::endl;
-		if( option.print_level >= 1 )
-			std::cout << "iter = " << iter
-			<< ", f = " << f_cur
-			<< ", |d| = " << d_norm
-			<< ", lam = " << lam << std::endl;
-		//
 		x_cur    = x_next;
 		f_cur    = f_next;
+		//
+		if( option.print_level >= 1 )
+		{	std::cout
+				<< "iter = " << iter
+				<< ", f = "    << f_cur
+				<< ", |dx| = " << dx_norm
+				<< ", f_dx = " << f_dx
+				<< ", f_p = " << f_p;
+			if( use_p )
+				std::cout << ", lam_p = "  << lam << std::endl;
+			else
+				std::cout << ", lam_dx = "  << lam << std::endl;
+		}
 	}
 	x_out = x_cur;
-	std::cout << "box_newton_max_iter" << std::endl;
+	if( option.print_level >= 1 )
+			std::cout << "box_newton_max_iter" << std::endl;
 	return box_newton_max_iter_enum;
 }
 

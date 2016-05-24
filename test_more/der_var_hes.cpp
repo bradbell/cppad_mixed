@@ -307,7 +307,7 @@ bool der_var_hes(void)
 	);
 	double r_theta = mixed_object.r_theta(fixed_vec[0], uhat[0]);
 	//
-	ok &= CppAD::abs( r_fixed[0] / r_theta - 1.0 ) < 1e-10;
+	ok &= CppAD::abs( r_fixed[0] / r_theta - 1.0 ) < 1e-9;
 	//
 	return ok;
 }
