@@ -170,15 +170,15 @@ bool ran_likelihood_hes(void)
 {
 	bool   ok = true;
 	double inf = std::numeric_limits<double>::infinity();
-	double tol = 1e-7;
+	double tol = 1e-8;
 
 	size_t n_data   = 10;
 	size_t n_fixed  = 2;
 	size_t n_random = n_data;
 	vector<double>
 		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
-	fixed_lower[0] = 0.01; fixed_in[0] = 0.5; fixed_upper[0] = 2.0;
-	fixed_lower[1] = 0.01; fixed_in[1] = 5.0; fixed_upper[1] = double(n_data);
+	fixed_lower[0] = - inf; fixed_in[0] = 5.0; fixed_upper[0] = inf;
+	fixed_lower[1] = .01;   fixed_in[1] = 0.5; fixed_upper[1] = inf;
 	//
 	// explicit constriants (in addition to l1 terms)
 	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
@@ -199,12 +199,12 @@ bool ran_likelihood_hes(void)
 	// If the derivatives are correct, the optimzation converges in 6
 	// iterations. If convergence fails, change print_level to 5
 	std::string fixed_options =
-		"Integer print_level               5\n"
+		"Integer print_level               0\n"
 		"String  sb                        yes\n"
 		"String  derivative_test           second-order\n"
 		"String  derivative_test_print_all no\n"
 		"Numeric tol                       1e-8\n"
-		"Integer max_iter                  10\n"
+		"Integer max_iter                  7\n"
 	;
 	std::string random_options =
 		"Integer print_level     0\n"

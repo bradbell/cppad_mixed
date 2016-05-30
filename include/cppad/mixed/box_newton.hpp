@@ -399,7 +399,8 @@ box_newton_status box_newton(
 				<< ", f_lam = " << f_lam
 				<< std::endl;
 			if( CppAD::NearEqual(f_cur, f_next, eps, eps) )
-			{	if( count == 1 )
+			{	x_out = x_cur;
+				if( count == 1 )
 				{	if( option.print_level >= 1 )
 						std::cout << "box_newton_ok" << std::endl;
 					return box_newton_ok_enum;
