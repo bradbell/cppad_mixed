@@ -50,13 +50,53 @@ $srcfile%include/cppad/mixed/box_newton.hpp
 
 $subhead tolerance$$
 This is the convergence tolerance for the optimization. The method has
-converged when the norm of the Newton step projected to feasible
-set is less than or equal $icode%option%.tolerance%$$,
-or when the derivative in the direction of the negative
-projected gradient is not negative,
-or when the function value difference for the Newton step is a small
-multiple of numerical precision.
+converged when one of the following occurs:
+$list number$$
+The norm of the Newton step
+$cref/d/box_newton/solve/d/$$ projected to feasible
+set is less than or equal $icode tolerance$$.
 Note that tolerance has the same units as $icode x$$.
+$lnext
+The derivative in the direction of the negative
+projected gradient is not negative; i.e., it is zero.
+$lnext
+The function value difference for the Newton step is a small
+multiple of numerical precision.
+$lend
+
+$subhead direction_ratio$$
+If the derivative of the function value in the Newton step direction,
+divided by its derivative in the negative projected gradient direction,
+is less than $icode direction_ratio%$$,
+the negative projected gradient is used for the line search direction.
+Note that the directional derivatives are normalized before making this
+comparison; i.e., divided by the norm of the corresponding direction.
+Also note that this ratio should be greater than zero and less than one
+(If it is greater than or equal to one, the negative projected gradient
+direction will always be used).
+
+$subhead line_ratio$$
+The step size in the line search direction will be decreases until
+the average descent is less than or equal $icode line_ratio$$
+times the initial directional derivative in the line search direction.
+Note this direction derivative is not normalized before making the comparison.
+Also note that this ratio should be greater than zero and less than one half
+(one half is the average descent rate for a convex quadratic function).
+
+$subhead max_iter$$
+This is the maximum number of iterations for the algorithm.
+Each iterations of the algorithm corresponds to one call to
+$codei%
+	%d% = %objective%.solve(%x%, %p%)
+%$$
+
+$subhead max_line$$
+This is the maximum number of line search steps to
+perform during each iteration.
+Each line search step corresponds to one call to
+$codei%
+	%f% = %objective%.fun(%x%)
+%$$
 
 $subhead print_level$$
 This is the level of printing during this optimization process.
@@ -96,21 +136,6 @@ the line search parameter $icode lam$$,
 corresponding function values $icode f$$,
 and the average derivative in the current line search direction $icode f_lam$$,
 are printed for each iteration of the line search.
-
-$subhead max_iter$$
-This is the maximum number of iterations for the algorithm.
-Each iterations of the algorithm corresponds to one call to
-$codei%
-	%d% = %objective%.solve(%x%, %p%)
-%$$
-
-$subhead max_line$$
-This is the maximum number of line search steps to
-perform during each iteration.
-Each line search step corresponds to one call to
-$codei%
-	%f% = %objective%.fun(%x%)
-%$$
 
 $head fun$$
 The object $icode objective$$ supports the following syntax
@@ -242,14 +267,18 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // BEGIN OPTION
 struct box_newton_option {
 	double tolerance;
-	size_t print_level;
+	double direction_ratio;
+	double line_ratio;
 	size_t max_iter;
 	size_t max_line;
+	size_t print_level;
 	box_newton_option(void) : // set default values
-	tolerance(1e-6)     ,
-	print_level(0)      ,
-	max_iter(50)        ,
-	max_line(10)
+	tolerance(1e-6)       ,
+	direction_ratio(0.1)  ,
+	line_ratio(0.05)      ,
+	max_iter(50)          ,
+	max_line(10)          ,
+	print_level(0)
 	{}
 };
 // END OPTION
@@ -370,7 +399,7 @@ box_newton_status box_newton(
 		}
 		//
 		// if f_dx is not negative enough, use p_cur direction
-		bool use_p = f_dx * p_norm / dx_norm > f_p / 10.0;
+		bool use_p = f_dx * p_norm / dx_norm > f_p * option.direction_ratio;
 		double f_q = f_dx;
 		if( use_p )
 			f_q = f_p;
@@ -380,7 +409,7 @@ box_newton_status box_newton(
 		size_t count = 0;
 		double f_lam = 0.0;
 		double f_next;
-		while( count < option.max_line && f_lam > f_q / 10. )
+		while( count < option.max_line && f_lam > f_q * option.line_ratio )
 		{	count++;
 			lam  = lam / 2.0;
 			for(size_t i = 0; i < n; i++)
