@@ -12,18 +12,17 @@
 new_directories='
 '
 rename_files='
-	src/eigen/sample_random.cpp
+	example/private/box_newton_xam.cpp
 '
 spell_files='
 '
 no_change_files='
 '
 #
-rename_cmd='s|eigen/sample_random.cpp|sample_random.cpp|'
-spell_cmd='s|^\tchol$|\tldlt|'
+rename_cmd='s|private/box_newton_xam.cpp|user/box_newton_xam.cpp|'
 #
 cat << EOF > junk.sed
-s|eigen/sample_random.cpp|sample_random.cpp|
+s|private/box_newton_xam.cpp|user/box_newton_xam.cpp|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

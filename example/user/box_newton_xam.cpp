@@ -17,12 +17,8 @@ $$
 
 $section box_newton_xam: Example and Test$$
 
-$head Private$$
-This example is not part of the
-$cref/cppad_mixed public API/public/$$.
-
 $code
-$srcfile%example/private/box_newton_xam.cpp
+$srcfile%example/user/box_newton_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 

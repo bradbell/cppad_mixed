@@ -32,8 +32,8 @@ $head Prototype$$
 $srcfile%include/cppad/mixed/box_newton.hpp
 	%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
 
-$head Private$$
-This function is an implementation detail and not part of the
+$head Public$$
+This function is part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Purpose$$
@@ -253,7 +253,7 @@ The return value is one of the following enum values
 $srcfile%include/cppad/mixed/box_newton.hpp
 	%0%// BEGIN STATUS%// END STATUS%1%$$
 
-$children%example/private/box_newton_xam.cpp
+$children%example/user/box_newton_xam.cpp
 %$$
 $head Example$$
 The file $cref box_newton_xam.cpp$$ contains an example and test

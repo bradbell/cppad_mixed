@@ -24,7 +24,7 @@ are in the $code CppAD::mixed$$ namespace.
 
 $head configure.hpp$$
 The $cref configure.hpp$$ declarations are an exception because
-they are $code cppad_mixed$$ preprocessor  symbols and hence
+they are $code cppad_mixed$$ preprocessor symbols and hence
 not in the $code CppAD::mixed$$ namespace.
 These are $bold not$$ part of the user API.
 
@@ -47,6 +47,7 @@ $children%include/cppad/mixed/a2_double.hpp
 $head Public$$
 These declarations are part the of the $code cppad_mixed$$ user API.
 $table
+$rref box_newton$$
 $rref manage_gsl_rng$$
 $rref sparse_mat_info$$
 $tend
