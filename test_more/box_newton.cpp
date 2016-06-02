@@ -9,23 +9,14 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin box_newton_xam.cpp$$
-$spell
-	xam
-	cppad
-$$
-
-$section box_newton_xam: Example and Test$$
-
-$code
-$srcfile%example/user/box_newton_xam.cpp
-	%0%// BEGIN C++%// END C++%1%$$
-$$
-
-$end
+Example using cppad_mixed cholesky factor.
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>
+# include <cppad/mixed/sparse_mat_info.hpp>
+# include <cppad/mixed/configure.hpp>
+# include <cppad/mixed/ldlt_cholmod.hpp>
+# include <cppad/mixed/ldlt_eigen.hpp>
 # include <cppad/mixed/box_newton.hpp>
 
 namespace {
@@ -47,9 +38,13 @@ namespace {
 	{
 	private:
 		CppAD::ADFun<double>          fun_;
+		CppAD::mixed::sparse_mat_info hes_info_;
+		CppAD::sparse_hessian_work    work_;
+		CPPAD_MIXED_LDLT              ldlt_hes_;
+		size_t                        n_iter_;
 	public:
 		// constructor
-		Objective(size_t n)
+		Objective(size_t n) : ldlt_hes_(n), n_iter_(0)
 		{	// record objective function
 			vector< AD<double> > ax(n), ay(1);
 			for(size_t i = 0; i < n; i++)
@@ -57,6 +52,30 @@ namespace {
 			CppAD::Independent(ax);
 			ay[0] = f(ax);
 			fun_.Dependent(ax, ay);
+			// Hessian sparsity pattern
+			vector< std::set<size_t> > pattern(n);
+			hes_info_.resize(n);
+			for(size_t i = 0; i < n; i++)
+			{	pattern[i].insert(i);
+				hes_info_.row[i] = i;
+				hes_info_.col[i] = i;
+			}
+			// prepare hes_info_.work for Hessian calculations
+			vector<double> x(n), w(1);
+			for(size_t i = 0; i < n; i++)
+				x[i] = 0.0;
+			w[0] = 1.0;
+			fun_.SparseHessian(
+				x,
+				w,
+				pattern,
+				hes_info_.row,
+				hes_info_.col,
+				hes_info_.val,
+				work_
+			);
+			// initilaize LDLT factor
+			ldlt_hes_.init( hes_info_ );
 			return;
 		}
 		// fun
@@ -78,21 +97,34 @@ namespace {
 		vector<double> solve(const vector<double>& x, const vector<double>& p)
 		{	size_t n = x.size();
 			//
-			// This example uses the actual Hessian H = f^{(2)} (x).
-			// (calculate entire Hessian even though we know it is diagonal).
-			vector<double> w(1), H(n * n);
-			w[0] = 1;
-			H = fun_.Hessian(x, w);
-			//
-			// use fact that Hessian is diagonal
+			// This example uses the actual Hessian f^{(2)} (x).
+			vector<double> w(1);
+			vector< std::set<size_t> > not_used(0);
+			w[0] = 1.0;
+			n_iter_++;
+			if( n_iter_ % 5 == 1 )
+			{
+				fun_.SparseHessian(
+					x,
+					w,
+					not_used,
+					hes_info_.row,
+					hes_info_.col,
+					hes_info_.val,
+					work_
+				);
+				ldlt_hes_.update( hes_info_ );
+			}
+			vector<size_t> row(n);
 			vector<double> d(n);
-			for(size_t j = 0; j < n; j++)
-				d[j] = p[j] / H[ j * n + j ];
+			for(size_t i = 0; i < n; i++)
+				row[i]    = i;
+			ldlt_hes_.solve_H(row, p, d);
 			return d;
 		}
 	};
 }
-bool box_newton_xam(void)
+bool box_newton(void)
 {	bool ok = true;
 
 	CppAD::mixed::box_newton_option option;

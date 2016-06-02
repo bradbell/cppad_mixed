@@ -18,6 +18,7 @@ LINK_DIRECTORIES(
 # Program cpp, not installed, and depends on following source files
 ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
 	abs_fix_con.cpp
+	box_newton.cpp
 	binomial.cpp
 	check_derivative.cpp
 	delta_ran_obj.cpp
