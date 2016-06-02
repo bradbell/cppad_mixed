@@ -20,6 +20,10 @@ $$
 
 $section CppAD Mixed Wish List$$
 
+$head CppAD Errors$$
+Report $code cppad$$ error messages using a call to the $code cppad_mixed$$
+$cref/fatal_error/public/User Defined Functions/fatal_error/$$ function.
+
 $head sparse_mat_info$$
 Use $cref sparse_mat_info$$ instead of
 $icode row$$, $icode col$$, $icode val$$ triples
