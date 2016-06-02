@@ -122,7 +122,7 @@ namespace CppAD{ namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // helper class used by optimize_random
-class optimize_random_objective {
+class optimize_random_box_newton {
 	typedef CppAD::vector<double> d_vector;
 private:
 	const size_t         n_random_;     // number of random effects
@@ -133,7 +133,7 @@ private:
 	cppad_mixed&         mixed_object_; // cppad_mixed for this problem
 public:
 	// constructor
-	optimize_random_objective(
+	optimize_random_box_newton(
 		size_t            n_random      ,
 		const d_vector&   fixed_vec     ,
 		cppad_mixed&      mixed_object  ) :
@@ -224,7 +224,7 @@ CppAD::vector<double> cppad_mixed::optimize_random(
 	assert( n_random_ == random_upper.size() );
 
 	// call back object used by optimizer
-	CppAD::mixed::optimize_random_objective objective(
+	CppAD::mixed::optimize_random_box_newton objective(
 		n_random_, fixed_vec, *this
 	);
 	//
