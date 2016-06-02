@@ -113,6 +113,7 @@ namespace {
 		vector<double> solve(const vector<double>& x, const vector<double>& p)
 		{	size_t n = x.size();
 			//
+			// This example uses the actual Hessian f^{(2)} (x).
 			vector<double> w(1);
 			vector< std::set<size_t> > not_used(0);
 			w[0] = 1.0;

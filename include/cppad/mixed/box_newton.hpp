@@ -116,6 +116,8 @@ $icode dx$$ ($icode p$$) is used for the search direction.
 In addition, the return $icode status$$ is printed.
 Note that a line search step size starts of $code 1$$
 means that a Newton step was take for this iteration.
+If the status is $code box_newton_ok$$,
+the convergence test that passed is also printed.
 $codei%
 %print_level% >= 2
 %$$
@@ -211,11 +213,13 @@ $codei%
 %$$
 It size is $code n$$ and it solves the equation
 $latex \[
-	f^{(2)} ( x ) \; d = p
+	H \; d = p
 \] $$
-This equation can be solved because
-we assume that $latex f^{(2)} (x)$$ is positive definite,
-The value $icode d$$ is the Newton step.
+where $latex H$$ is an approximation for the Hessian
+$latex f^{(2)} (x)$$.
+For example, one possible choice for $latex H$$ is the value of the
+Hessian at the initial point $icode x_in$$.
+Another possible choice for $latex H$$ is actual Hessian $latex f^{(2)} (x)$$.
 
 $head x_low$$
 This vector has size $icode n$$ and specifies the lower limits
@@ -318,7 +322,7 @@ box_newton_status box_newton(
 	double f_cur, eps, inf;
 	x_cur  = x_in;
 	f_cur  = objective.fun(x_cur);
-	eps    = 1e3 * std::numeric_limits<double>::epsilon();
+	eps    = 1e2 * std::numeric_limits<double>::epsilon();
 	inf    = std::numeric_limits<double>::infinity();
 	//
 	if( option.print_level >= 2 )
@@ -380,7 +384,7 @@ box_newton_status box_newton(
 		if( dx_norm < option.tolerance )
 		{	x_out = x_cur;
 			if( option.print_level >= 1 )
-				std::cout << "box_newton_ok" << std::endl;
+				std::cout << "box_newton_ok: |dx| = " << dx_norm << std::endl;
 			return box_newton_ok_enum;
 		}
 		//
@@ -394,7 +398,7 @@ box_newton_status box_newton(
 		if( f_p >= 0.0 )
 		{	x_out = x_cur;
 			if( option.print_level >= 1 )
-				std::cout << "box_newton_ok" << std::endl;
+				std::cout << "box_newton_ok: f_p = " << f_p << std::endl;
 			return box_newton_ok_enum;
 		}
 		//
@@ -431,7 +435,8 @@ box_newton_status box_newton(
 			{	x_out = x_cur;
 				if( count == 1 )
 				{	if( option.print_level >= 1 )
-						std::cout << "box_newton_ok" << std::endl;
+						std::cout << "box_newton_ok: f_cur = " << f_cur
+						<< ", f_next = " << f_next << std::endl;
 					return box_newton_ok_enum;
 				}
 				else

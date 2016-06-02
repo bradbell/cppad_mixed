@@ -128,6 +128,7 @@ private:
 	const size_t         n_random_;     // number of random effects
 	const size_t         n_fixed_;      // number of fixed effects
 	const d_vector       fixed_vec_;    // value of fixed effects
+	size_t               n_iter_;       // number of iterations so far
 	d_vector             random_vec_;   // previous random_vec
 	cppad_mixed&         mixed_object_; // cppad_mixed for this problem
 public:
@@ -141,7 +142,7 @@ public:
 	fixed_vec_( fixed_vec )        ,
 	random_vec_( n_random )         ,
 	mixed_object_( mixed_object )
-	{ }
+	{	n_iter_ = 0; }
 	// fun
 	double fun(const d_vector& random_vec)
 	{	assert( random_vec.size() == n_random_ );
@@ -179,7 +180,10 @@ public:
 			assert( random_vec[i] == random_vec_[i] );
 # endif
 		// update the Hessian factor mixed_object_.ldlt_ran_hes_
-		mixed_object_.update_factor(fixed_vec_, random_vec);
+		// once every 10 iterations
+		if( n_iter_ % 5 == 0 )
+			mixed_object_.update_factor(fixed_vec_, random_vec);
+		n_iter_++;
 		// solve H * d = p
 		d_vector d(n_random_);
 		CppAD::vector<size_t> row(n_random_);

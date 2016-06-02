@@ -23,8 +23,6 @@ fi
 path_to_file="$1"
 dir=`echo $path_to_file | sed -e 's|/.*||'`
 name=`echo $path_to_file | sed -e 's|.*/||' -e 's|\.cpp$||'`
-if ! grep '^# if 0' $dir/$dir.cpp > /dev/null
-then
 # ---------------------------------------------------------------------------
 cat << EOF > test_one.$$
 /This comment expected by bin\\/test_one.sh/b start_run
@@ -39,9 +37,9 @@ b done
 s|\$|\\n# endif|
 : done
 EOF
+echo_eval git checkout $dir/$dir.cpp
 echo_eval sed -f test_one.$$ -i $dir/$dir.cpp
 echo_eval rm test_one.$$
 # ---------------------------------------------------------------------------
-fi
 echo_eval cd build
 echo_eval make "check_$dir"
