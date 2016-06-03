@@ -388,7 +388,7 @@ bool data_mismatch_xam(void)
 	double theta_out   = fixed_out[0];
 	double u_out       = random_out[0];
 	double L_theta_out = mixed_object.L_theta(theta_out, u_out);
-	ok &= abs( L_theta_out ) <= 1e-5;
+	ok &= abs( L_theta_out ) <= 2e-8;
 	//
 	// Now demonstrate that the solution is still close to the expected values
 	ok &= abs( theta_out / z - 1.0 ) <= 1e-2;

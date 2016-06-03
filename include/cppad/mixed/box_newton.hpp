@@ -50,19 +50,8 @@ $srcfile%include/cppad/mixed/box_newton.hpp
 
 $subhead tolerance$$
 This is the convergence tolerance for the optimization. The method has
-converged when one of the following occurs:
-$list number$$
-The norm of the Newton step
-$cref/d/box_newton/solve/d/$$ projected to feasible
-set is less than or equal $icode tolerance$$.
-Note that tolerance has the same units as $icode x$$.
-$lnext
-The derivative in the direction of the negative
-projected gradient is not negative; i.e., it is zero.
-$lnext
-The function value difference for the Newton step is a small
-multiple of numerical precision.
-$lend
+converged when the norm of the projected gradient is less than
+$icode%tolerance% > 0%$$.
 
 $subhead direction_ratio$$
 If the derivative of the function value in the Newton step direction,
@@ -77,11 +66,17 @@ direction will always be used).
 
 $subhead line_ratio$$
 The step size in the line search direction will be decreases until
-the average descent is less than or equal $icode line_ratio$$
+the descent of the objective, divided by the line search step size,
+is less than or equal $icode line_ratio$$
 times the initial directional derivative in the line search direction.
 Note this direction derivative is not normalized before making the comparison.
 Also note that this ratio should be greater than zero and less than one half
 (one half is the average descent rate for a convex quadratic function).
+If the change in the function value is close to
+numerical precision, the norm of the projected gradient,
+divided by the line search step size,
+is compared to $icode line_ratio$$ and used for line search
+termination.
 
 $subhead max_iter$$
 This is the maximum number of iterations for the algorithm.
@@ -138,6 +133,10 @@ the line search parameter $icode lam$$,
 corresponding function values $icode f$$,
 and the average derivative in the current line search direction $icode f_lam$$,
 are printed for each iteration of the line search.
+If the change in the objective is to small (near numerical precision),
+the rate of descent of the norm of the
+projected gradient $icode p_lam$$ is printed
+instead of $icode f_lam$$.
 
 $head fun$$
 The object $icode objective$$ supports the following syntax
@@ -317,7 +316,7 @@ box_newton_status box_newton(
 # endif
 	// initialize
 	CppAD::vector<double> x_cur(n), g_cur(n), p_cur(n), d_cur(n), dx_cur(n);
-	CppAD::vector<double> x_next(n);
+	CppAD::vector<double> x_next(n), p_next(n);
 	CppAD::vector<bool> active(n);
 	double f_cur, eps, inf;
 	x_cur  = x_in;
@@ -361,19 +360,13 @@ box_newton_status box_newton(
 		// Netwon direction corresponding to projected gradient
 		d_cur  = objective.solve(x_cur, p_cur);
 		//
-		// check for convergence
-		double dx_norm = 0.0;
-		double p_norm  = 0.0;
+		// dx is projection of d onto the constraints
 		for(size_t i = 0; i < n; i++)
 		{	double xi = x_cur[i] + d_cur[i];
 			xi        = std::max(xi, x_low[i]);
 			xi        = std::min(xi, x_up[i]);
 			dx_cur[i] = xi - x_cur[i];
-			dx_norm  += dx_cur[i] * dx_cur[i];
-			p_norm   += p_cur[i] * p_cur[i];
 		}
-		dx_norm = std::sqrt( dx_norm );
-		p_norm  = std::sqrt( p_norm );
 		if( option.print_level >= 2 )
 		{	std::cout << "x  = " << x_cur << std::endl;
 			std::cout << "g  = " << g_cur << std::endl;
@@ -381,24 +374,25 @@ box_newton_status box_newton(
 			std::cout << "d  = " << d_cur << std::endl;
 			std::cout << "dx = " << dx_cur << std::endl;
 		}
-		if( dx_norm < option.tolerance )
-		{	x_out = x_cur;
-			if( option.print_level >= 1 )
-				std::cout << "box_newton_ok: |dx| = " << dx_norm << std::endl;
-			return box_newton_ok_enum;
-		}
 		//
-		// directionanl derivative in dx_cur and p_cur directions
-		double f_dx = 0.0;
-		double f_p  = 0.0;
+		// directional derivatvies and norms
+		double f_dx    = 0.0;
+		double f_p     = 0.0;
+		double dx_norm = 0.0;
+		double p_norm  = 0.0;
 		for(size_t i = 0; i < n; i++)
-		{	f_dx += g_cur[i] * dx_cur[i];
-			f_p  += g_cur[i] * p_cur[i];
+		{	f_dx     += g_cur[i] * dx_cur[i];
+			f_p      += g_cur[i] * p_cur[i];
+			dx_norm  += dx_cur[i] * dx_cur[i];
+			p_norm   += p_cur[i] * p_cur[i];
 		}
-		if( f_p >= 0.0 )
+		assert( f_p == - p_norm );
+		dx_norm = std::sqrt( dx_norm );
+		p_norm  = std::sqrt( p_norm );
+		if( p_norm < option.tolerance )
 		{	x_out = x_cur;
 			if( option.print_level >= 1 )
-				std::cout << "box_newton_ok: f_p = " << f_p << std::endl;
+				std::cout << "box_newton_ok: |p| = " << p_norm << std::endl;
 			return box_newton_ok_enum;
 		}
 		//
@@ -412,8 +406,12 @@ box_newton_status box_newton(
 		double lam   = 2.0;
 		size_t count = 0;
 		double f_lam = 0.0;
+		double p_lam = 0.0;
 		double f_next;
-		while( count < option.max_line && f_lam > f_q * option.line_ratio )
+		while(
+			count < option.max_line               &&
+			f_lam > f_q * option.line_ratio       &&
+			p_lam > - p_norm * option.line_ratio  )
 		{	count++;
 			lam  = lam / 2.0;
 			for(size_t i = 0; i < n; i++)
@@ -426,27 +424,37 @@ box_newton_status box_newton(
 			}
 			f_next  = objective.fun(x_next);
 			f_lam   = (f_next - f_cur) / lam;
-			if( option.print_level >= 3 )
+			p_lam   = 0.0;
+			if( CppAD::NearEqual(f_cur, f_next, eps, eps) )
+			{	// gradient
+				p_next  = objective.grad(x_next);
+				for(size_t i = 0; i < n; i++)
+				{	// Quick way to convert gradient to projected gradient.
+					// Note quiet correct and perhaps we should compute
+					// projection for the point x_next.
+					if( p_cur[i] == 0.0 )
+						p_next[i] = 0.0;
+					// norm squared of projected gradient
+					p_lam += p_next[i] * p_next[i];
+				}
+				// norm of projected gradient at x_next
+				p_lam = std::sqrt( p_lam );
+				// rate of descent of projected gradient
+				p_lam = (p_lam - p_norm) / lam;
+				if( option.print_level >= 3 )
+					std::cout << "lam = " << lam
+					<< ", |p| = " << p_norm
+					<< ", p_lam = " << p_lam
+					<< std::endl;
+			}
+			else if( option.print_level >= 3 )
 				std::cout << "lam = " << lam
 				<< ", f = " << f_next
 				<< ", f_lam = " << f_lam
 				<< std::endl;
-			if( CppAD::NearEqual(f_cur, f_next, eps, eps) )
-			{	x_out = x_cur;
-				if( count == 1 )
-				{	if( option.print_level >= 1 )
-						std::cout << "box_newton_ok: f_cur = " << f_cur
-						<< ", f_next = " << f_next << std::endl;
-					return box_newton_ok_enum;
-				}
-				else
-				{	if( option.print_level >= 1 )
-						std::cout << "box_newton_max_line" << std::endl;
-					return box_newton_max_line_enum;
-				}
-			}
 		}
-		if( f_lam > f_q / 10. )
+		if( f_lam > f_q * option.line_ratio      &&
+		    p_lam > - p_norm * option.line_ratio )
 		{	x_out = x_cur;
 			if( option.print_level >= 1 )
 				std::cout << "box_newton_max_line" << std::endl;
