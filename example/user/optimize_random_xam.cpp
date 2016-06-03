@@ -125,15 +125,28 @@ bool optimize_random_xam(void)
 		random_upper[i] = +inf;
 	}
 
-	// determine the optimal random effects
-	std::string options;
-	options += "Integer print_level 0\n";
-	options += "String  sb          yes\n";
-	options += "String  derivative_test second-order\n";
+	// -----------------------------------------------------------------------
+	// use ipopt to determine the optimal random effects
+	std::string ipopt_options;
+	ipopt_options += "Integer print_level 0\n";
+	ipopt_options += "String  sb          yes\n";
+	ipopt_options += "String  derivative_test second-order\n";
 	vector<double> random_out = mixed_object.optimize_random(
-		options, fixed_vec, random_lower, random_upper, random_in
+		ipopt_options, fixed_vec, random_lower, random_upper, random_in
 	);
 
+	// check the result
+	for(size_t i = 0; i < n_data; i++)
+	{	// debugging print out
+		// std::cout << random_out[i] / data[i] - 1.0 << std::endl;
+		ok &= CppAD::abs(random_out[i] / data[i] - 1.0) < 1e-10;
+	}
+	// -----------------------------------------------------------------------
+	// use box_newton to determine the optimal random effects
+	CppAD::mixed::box_newton_options box_options; // use defaults
+	random_out = mixed_object.optimize_random(
+		box_options, fixed_vec, random_lower, random_upper, random_in
+	);
 	// check the result
 	for(size_t i = 0; i < n_data; i++)
 	{	// debugging print out

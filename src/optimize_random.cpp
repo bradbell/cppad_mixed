@@ -57,6 +57,9 @@ the $cref/ipopt/install_unix/Special Requirements/Ipopt/$$ optimizer
 is used to optimize the random effects.
 In this case $icode options$$
 is the $cref ipopt_options$$ for optimizing the random effects.
+Note that this records the objective as a function of just the random effects
+(the fixed effects are parameters)
+before doing the optimization.
 
 $subhead CppAD::mixed::box_newton_options$$
 If the argument $icode options$$ has the prototype
@@ -66,6 +69,11 @@ $codei%
 the $cref box_newton$$ optimizer
 is used to optimize the random effects; see the corresponding
 $cref/options/box_newton/options/$$ documentation.
+Note that this uses the $cref initialize$$ results which tape the objective
+as a function of the fixed and random effects
+(the fixed effects are variables).
+Hence the objective does not get recorded, but is not as efficient a
+representation for optimizing the random effects.
 
 $head fixed_vec$$
 This argument has prototype

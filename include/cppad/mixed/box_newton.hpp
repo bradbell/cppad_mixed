@@ -13,6 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin box_newton$$
 $spell
+	namespace
 	xam
 	optimizer
 	enum
@@ -38,13 +39,14 @@ $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Purpose$$
 Given a smooth function $latex f : \B{R}^n \rightarrow \B{R}$$,
-together with its derivative and positive definite Hessian,
+together with its derivative and Hessian,
 this routine solves the problem
 $latex \[
 	\R{minimize} \; f(x) \; \R{subject \; to} \; \ell \leq x \leq u
 \] $$
 
 $head options$$
+The following declaration is made in the $code CppAD::mixed$$ namespace:
 $srcfile%include/cppad/mixed/box_newton.hpp
 	%0%// BEGIN OPTION%// END OPTION%1%$$
 
@@ -249,6 +251,7 @@ direction of the negative projected gradient is non-negative.
 
 $head status$$
 The return value is one of the following enum values
+(which are in the $code CppAD::mixed$$ namespace).
 $srcfile%include/cppad/mixed/box_newton.hpp
 	%0%// BEGIN STATUS%// END STATUS%1%$$
 
