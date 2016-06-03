@@ -21,6 +21,7 @@ $spell
 	CppAD
 	std
 	Ipopt
+	optimizer
 $$
 
 $section Optimize Random Effects$$
@@ -45,11 +46,26 @@ to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
 $head options$$
-The argument $icode options$$ has prototype
+There are two possible types for $icode options$$:
+
+$subhead std::string$$
+If the argument $icode options$$ has the prototype
 $codei%
 	const std::string& %options%
 %$$
-and is the $cref ipopt_options$$ for optimizing the random effects.
+the $cref/ipopt/install_unix/Special Requirements/Ipopt/$$ optimizer
+is used to optimize the random effects.
+In this case $icode options$$
+is the $cref ipopt_options$$ for optimizing the random effects.
+
+$subhead CppAD::mixed::box_newton_options$$
+If the argument $icode options$$ has the prototype
+$codei%
+	const CppAD::mixed::box_newton_option& %options%
+%$$
+the $cref box_newton$$ optimizer
+is used to optimize the random effects; see the corresponding
+$cref/options/box_newton/options/$$ documentation.
 
 $head fixed_vec$$
 This argument has prototype
@@ -118,9 +134,13 @@ $end
 */
 
 
+// ============================================================================
+// box_newton verison of optimize_random
+// ============================================================================
+// Cannot use empty namespace for optimize_random_box_newton because it
+// needs to access cppad_mixed private objects (hence needs to be a friend).
 namespace CppAD{ namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
-
-// ----------------------------------------------------------------------------
+//
 // helper class used by optimize_random
 class optimize_random_box_newton {
 	typedef CppAD::vector<double> d_vector;
@@ -195,15 +215,14 @@ public:
 };
 
 } } // END_CPPAD_MIXED_NAMESPACE
-
 // ----------------------------------------------------------------------------
 // optimize_random
 CppAD::vector<double> cppad_mixed::optimize_random(
-	const std::string& not_used , // will be changed to box_newton_options
-	const d_vector&    fixed_vec       ,
-	const d_vector&    random_lower    ,
-	const d_vector&    random_upper    ,
-	const d_vector&    random_in       )
+	const CppAD::mixed::box_newton_options& options ,
+	const d_vector&    fixed_vec                    ,
+	const d_vector&    random_lower                 ,
+	const d_vector&    random_upper                 ,
+	const d_vector&    random_in                    )
 {
 	// make sure initialize has been called
 	if( ! initialize_done_ )
@@ -229,13 +248,11 @@ CppAD::vector<double> cppad_mixed::optimize_random(
 	);
 	//
 	// call optimizer
-	CppAD::mixed::box_newton_options options;
-	options.print_level = 0;
-	options.tolerance   = 1e-10;
 	d_vector random_out(n_random_);
 	CppAD::mixed::box_newton_status status = CppAD::mixed::box_newton(
 		options, objective, random_lower, random_upper, random_in, random_out
 	);
+	// check return status
 	switch( status )
 	{	case CppAD::mixed::box_newton_ok_enum:
 		break;
@@ -256,5 +273,161 @@ CppAD::vector<double> cppad_mixed::optimize_random(
 	return random_out;
 }
 
+// ============================================================================
+// ipopt verison of optimize_random
+// ============================================================================
 
+namespace { // BEGIN_EMPTY_NAMESPACE
 
+// ----------------------------------------------------------------------------
+// helper class used by optimize_random
+class optimize_random_ipopt {
+public:
+	// same as cppad_mixed::d_vector
+	typedef CppAD::vector<double>              Dvector;
+
+	// same as cppad_mixed::a1d_vector
+	typedef CppAD::vector< CppAD::AD<double> > ADvector;
+private:
+	const size_t     n_abs_;
+	const size_t     n_fixed_;
+	const size_t     n_random_;
+	ADvector         fixed_vec_;
+	cppad_mixed&    mixed_object_;
+public:
+	// constructor
+	optimize_random_ipopt(
+		size_t           n_abs           ,
+		size_t           n_random        ,
+		const Dvector&   fixed_vec       ,
+		cppad_mixed&    mixed_object
+	) :
+	n_abs_        ( n_abs )            ,
+	n_fixed_      ( fixed_vec.size() ) ,
+	n_random_     ( n_random )         ,
+	mixed_object_( mixed_object )
+	{	fixed_vec_.resize( n_fixed_ );
+		for(size_t i = 0; i < n_fixed_; i++)
+			fixed_vec_[i] = fixed_vec[i];
+	}
+
+	// evaluate objective and constraints
+	void operator()(ADvector& fg, const ADvector& x)
+	{	assert( fg.size() == 1 + 2 * n_abs_ );
+
+		// extract the random effects from x
+		ADvector random_vec(n_random_);
+		for(size_t j = 0; j < n_random_; j++)
+			random_vec[j] = x[j];
+
+		// compute log-density vector
+		ADvector vec = mixed_object_.ran_likelihood(fixed_vec_, random_vec);
+
+		// initialize smooth part of negative log-likelihood
+		size_t k = 0;
+		fg[k++]  = vec[0];
+
+		// terms corresponding to data likelihood absolute values
+		size_t n_abs   = vec.size() - 1;
+		for(size_t j = 0; j < n_abs; j++)
+		{	// x[ n_random_ + j] >= abs(log_den[1 + j]
+			fg[k++] = x[ n_random_ + j] - vec[1 + j];
+			fg[k++] = x[ n_random_ + j] + vec[1 + j];
+			//
+			// smooth contribution to log-likelihood
+			fg[0]  += x[ n_random_ + j];
+		}
+	}
+};
+
+} // END_EMPTY_NAMESPACE
+
+// ----------------------------------------------------------------------------
+// optimize_random
+CppAD::vector<double> cppad_mixed::optimize_random(
+	const std::string& options         ,
+	const d_vector&    fixed_vec       ,
+	const d_vector&    random_lower    ,
+	const d_vector&    random_upper    ,
+	const d_vector&    random_in       )
+{
+	// make sure initialize has been called
+	if( ! initialize_done_ )
+	{	std::string error_message =
+		"cppad_mixed::initialize was not called before optimize_random";
+		fatal_error(error_message);
+	}
+	if( ! init_ran_like_done_ )
+	{	std::string error_message =
+		"cppad_mixed::optimize_random there are no random effects";
+		fatal_error(error_message);
+	}
+
+	// number of fixed and random effects
+	assert( n_fixed_  == fixed_vec.size() );
+	assert( n_random_ == random_in.size() );
+	assert( n_random_ == random_lower.size() );
+	assert( n_random_ == random_upper.size() );
+
+	// infinity
+	double inf = std::numeric_limits<double>::infinity();
+
+	// determine initial density vector
+	d_vector both_vec(n_fixed_ + n_random_);
+	pack(fixed_vec, random_in, both_vec);
+	d_vector vec = ran_like_fun_.Forward(0, both_vec);
+
+	// number of absolute value terms in objective
+	size_t n_abs = vec.size() - 1;
+
+	// number of independent variable is number of random effects
+	// plus number of log-density terms that require absolute values
+	size_t nx = n_random_ + n_abs;
+
+	// set initial x vector
+	d_vector xi(nx);
+	for(size_t j = 0; j < n_random_; j++)
+		xi[j] = random_in[j];
+	for(size_t j = 0; j < n_abs; j++)
+		xi[n_random_ + j] = CppAD::abs( vec[j] );
+
+	// ipopts default value for infinity (use options to change it)
+	double ipopt_infinity = 1e19;
+
+	// set lower and upper limits for x
+	d_vector xl(nx), xu(nx);
+	for(size_t j = 0; j < nx; j++)
+	{	if( random_lower[j] == - inf )
+			xl[j] = - ipopt_infinity;
+		else
+			xl[j] = random_lower[j];
+		if( random_lower[j] == + inf )
+			xu[j] = + ipopt_infinity;
+		else
+			xu[j] = random_upper[j];
+	}
+
+	// set limits for abs contraint representation
+	d_vector gl(2*n_abs), gu(2*n_abs);
+	for(size_t j = 0; j < 2*n_abs; j++)
+	{	gl[j] = 0.0;
+		gu[j] = + ipopt_infinity;
+	}
+
+	// construct fg_eval  object
+	optimize_random_ipopt fg_eval(n_abs, n_random_, fixed_vec, *this);
+
+	// optimizer options
+	assert( options[ options.size() - 1] == '\n' );
+	std::string solve_options = options + "Sparse  true  reverse \n";
+
+	// return solution
+	CppAD::ipopt::solve_result<d_vector> solution;
+
+	// solve the optimization problem
+	CppAD::ipopt::solve(
+		solve_options, xi, xl, xu, gl, gu, fg_eval, solution
+	);
+
+	return solution.x;
+}

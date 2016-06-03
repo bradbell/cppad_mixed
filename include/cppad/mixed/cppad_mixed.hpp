@@ -22,6 +22,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/ldlt_cholmod.hpp>
 # include <cppad/mixed/ldlt_eigen.hpp>
 # include <cppad/mixed/fixed_solution.hpp>
+# include <cppad/mixed/box_newton.hpp>
 
 // private examples
 extern bool fix_con_eval_xam(void);
@@ -228,6 +229,13 @@ $srccode%cpp% */
 		const d_vector&    random_lower ,
 		const d_vector&    random_upper ,
 		const d_vector&    random_in
+	);
+	d_vector optimize_random(
+		const CppAD::mixed::box_newton_options& options ,
+		const d_vector&                         fixed_vec    ,
+		const d_vector&                         random_lower ,
+		const d_vector&                         random_upper ,
+		const d_vector&                         random_in
 	);
 /* %$$
 $head optimize_fixed$$
