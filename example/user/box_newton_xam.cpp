@@ -95,11 +95,11 @@ namespace {
 bool box_newton_xam(void)
 {	bool ok = true;
 
-	CppAD::mixed::box_newton_option option;
-	option.print_level = 0;
-	option.tolerance   = 1e-6;
+	CppAD::mixed::box_newton_options options;
+	options.print_level = 0;
+	options.tolerance   = 1e-6;
 	size_t n   = 5;
-	double eps = 10. * option.tolerance;
+	double eps = 10. * options.tolerance;
 	//
 	Objective objective(n);
 	vector<double> x_low(n), x_up(n), x_in(n), x_out(n);
@@ -109,7 +109,7 @@ bool box_newton_xam(void)
 		x_in[i]  = 0.0;
 	}
 	CppAD::mixed::box_newton_status status = CppAD::mixed::box_newton(
-		option, objective, x_low, x_up, x_in, x_out
+		options, objective, x_low, x_up, x_in, x_out
 	);
 	ok &= status == CppAD::mixed::box_newton_ok_enum;
 	for(size_t i = 0; i < n; i++)

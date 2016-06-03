@@ -25,7 +25,7 @@ $section Newton's Optimization with Box Constraints$$
 
 $head Syntax$$
 $icode%status% = CppAD::mixed::box_newton(
-	%option%, %objective%, %x_low%, %x_up%, %x_in%, %x_out%
+	%options%, %objective%, %x_low%, %x_up%, %x_in%, %x_out%
 )%$$
 
 $head Prototype$$
@@ -44,7 +44,7 @@ $latex \[
 	\R{minimize} \; f(x) \; \R{subject \; to} \; \ell \leq x \leq u
 \] $$
 
-$head option$$
+$head options$$
 $srcfile%include/cppad/mixed/box_newton.hpp
 	%0%// BEGIN OPTION%// END OPTION%1%$$
 
@@ -56,12 +56,12 @@ $icode%tolerance% > 0%$$.
 $subhead direction_ratio$$
 If the derivative of the function value in the Newton step direction,
 divided by its derivative in the negative projected gradient direction,
-is less than $icode direction_ratio%$$,
+is less than $icode direction_ratio$$,
 the negative projected gradient is used for the line search direction.
 Note that the directional derivatives are normalized before making this
 comparison; i.e., divided by the norm of the corresponding direction.
 Also note that this ratio should be greater than zero and less than one
-(If it is greater than or equal to one, the negative projected gradient
+(If it is greater than one, the negative projected gradient
 direction will always be used).
 
 $subhead line_ratio$$
@@ -243,7 +243,7 @@ This vector has size is $code n$$.
 The input value of its elements does not matter.
 Upon return it is the best approximate solution so far.
 If $icode status$$ is $code box_newton_ok_enum$$,
-the $cref/tolerance/box_newton/option/tolerance/$$
+the $cref/tolerance/box_newton/options/tolerance/$$
 condition has been satisfied or the derivative in the
 direction of the negative projected gradient is non-negative.
 
@@ -268,14 +268,14 @@ $end
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // BEGIN OPTION
-struct box_newton_option {
+struct box_newton_options {
 	double tolerance;
 	double direction_ratio;
 	double line_ratio;
 	size_t max_iter;
 	size_t max_line;
 	size_t print_level;
-	box_newton_option(void) : // set default values
+	box_newton_options(void) : // set default values
 	tolerance(1e-6)       ,
 	direction_ratio(0.1)  ,
 	line_ratio(0.05)      ,
@@ -297,7 +297,7 @@ enum box_newton_status {
 // BEGIN PROTOTYPE
 template <class Objective>
 box_newton_status box_newton(
-	const box_newton_option&      option     ,
+	const box_newton_options&      options   ,
 	Objective&                    objective  ,
 	const CppAD::vector<double>&  x_low      ,
 	const CppAD::vector<double>&  x_up       ,
@@ -324,7 +324,7 @@ box_newton_status box_newton(
 	eps    = 1e2 * std::numeric_limits<double>::epsilon();
 	inf    = std::numeric_limits<double>::infinity();
 	//
-	if( option.print_level >= 2 )
+	if( options.print_level >= 2 )
 	{	std::cout << "x_low = " << x_low << std::endl;
 		std::cout << "x_up  = " << x_up << std::endl;
 		std::cout << "x_in  = " << x_in << std::endl;
@@ -332,7 +332,7 @@ box_newton_status box_newton(
 	}
 	//
 	size_t iter     = 0;
-	while(iter < option.max_iter )
+	while(iter < options.max_iter )
 	{	iter++;
 		//
 		// current gradient
@@ -367,7 +367,7 @@ box_newton_status box_newton(
 			xi        = std::min(xi, x_up[i]);
 			dx_cur[i] = xi - x_cur[i];
 		}
-		if( option.print_level >= 2 )
+		if( options.print_level >= 2 )
 		{	std::cout << "x  = " << x_cur << std::endl;
 			std::cout << "g  = " << g_cur << std::endl;
 			std::cout << "p  = " << p_cur << std::endl;
@@ -389,15 +389,15 @@ box_newton_status box_newton(
 		assert( f_p == - p_norm );
 		dx_norm = std::sqrt( dx_norm );
 		p_norm  = std::sqrt( p_norm );
-		if( p_norm < option.tolerance )
+		if( p_norm < options.tolerance )
 		{	x_out = x_cur;
-			if( option.print_level >= 1 )
+			if( options.print_level >= 1 )
 				std::cout << "box_newton_ok: |p| = " << p_norm << std::endl;
 			return box_newton_ok_enum;
 		}
 		//
 		// if f_dx is not negative enough, use p_cur direction
-		bool use_p = f_dx * p_norm / dx_norm > f_p * option.direction_ratio;
+		bool use_p = f_dx * p_norm / dx_norm > f_p * options.direction_ratio;
 		double f_q = f_dx;
 		if( use_p )
 			f_q = f_p;
@@ -409,9 +409,9 @@ box_newton_status box_newton(
 		double p_lam = 0.0;
 		double f_next;
 		while(
-			count < option.max_line               &&
-			f_lam > f_q * option.line_ratio       &&
-			p_lam > - p_norm * option.line_ratio  )
+			count < options.max_line               &&
+			f_lam > f_q * options.line_ratio       &&
+			p_lam > - p_norm * options.line_ratio  )
 		{	count++;
 			lam  = lam / 2.0;
 			for(size_t i = 0; i < n; i++)
@@ -441,29 +441,29 @@ box_newton_status box_newton(
 				p_lam = std::sqrt( p_lam );
 				// rate of descent of projected gradient
 				p_lam = (p_lam - p_norm) / lam;
-				if( option.print_level >= 3 )
+				if( options.print_level >= 3 )
 					std::cout << "lam = " << lam
 					<< ", |p| = " << p_norm
 					<< ", p_lam = " << p_lam
 					<< std::endl;
 			}
-			else if( option.print_level >= 3 )
+			else if( options.print_level >= 3 )
 				std::cout << "lam = " << lam
 				<< ", f = " << f_next
 				<< ", f_lam = " << f_lam
 				<< std::endl;
 		}
-		if( f_lam > f_q * option.line_ratio      &&
-		    p_lam > - p_norm * option.line_ratio )
+		if( f_lam > f_q * options.line_ratio      &&
+		    p_lam > - p_norm * options.line_ratio )
 		{	x_out = x_cur;
-			if( option.print_level >= 1 )
+			if( options.print_level >= 1 )
 				std::cout << "box_newton_max_line" << std::endl;
 			return box_newton_max_line_enum;
 		}
 		x_cur    = x_next;
 		f_cur    = f_next;
 		//
-		if( option.print_level >= 1 )
+		if( options.print_level >= 1 )
 		{	std::cout
 				<< "iter = " << iter
 				<< ", f = "    << f_cur
@@ -477,7 +477,7 @@ box_newton_status box_newton(
 		}
 	}
 	x_out = x_cur;
-	if( option.print_level >= 1 )
+	if( options.print_level >= 1 )
 			std::cout << "box_newton_max_iter" << std::endl;
 	return box_newton_max_iter_enum;
 }

@@ -199,7 +199,7 @@ public:
 // ----------------------------------------------------------------------------
 // optimize_random
 CppAD::vector<double> cppad_mixed::optimize_random(
-	const std::string& options         ,
+	const std::string& not_used , // will be changed to box_newton_options
 	const d_vector&    fixed_vec       ,
 	const d_vector&    random_lower    ,
 	const d_vector&    random_upper    ,
@@ -229,12 +229,12 @@ CppAD::vector<double> cppad_mixed::optimize_random(
 	);
 	//
 	// call optimizer
-	CppAD::mixed::box_newton_option option;
-	option.print_level = 0;
-	option.tolerance   = 1e-10;
+	CppAD::mixed::box_newton_options options;
+	options.print_level = 0;
+	options.tolerance   = 1e-10;
 	d_vector random_out(n_random_);
 	CppAD::mixed::box_newton_status status = CppAD::mixed::box_newton(
-		option, objective, random_lower, random_upper, random_in, random_out
+		options, objective, random_lower, random_upper, random_in, random_out
 	);
 	switch( status )
 	{	case CppAD::mixed::box_newton_ok_enum:
