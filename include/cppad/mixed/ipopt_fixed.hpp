@@ -136,6 +136,8 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// Set by any eval routine when new_x is true, i.e. new fixed effects.
 		d_vector random_cur_;
 		// ---------------------------------------------------------------
+		// routine used the set random_cur_ (and update ldlt factor)
+		void new_random(const d_vector& fixed_vec);
 	public:
 		// get minus infinity
 		double nlp_lower_bound_inf(void) const

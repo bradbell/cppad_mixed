@@ -147,6 +147,8 @@ namespace {
 }
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+
+
 /* $$
 ------------------------------------------------------------------------------
 $begin ipopt_fixed_ctor$$
@@ -903,15 +905,7 @@ $end
 	{	//
 		// compute the optimal random effects corresponding to fixed effects
 		if( new_x )
-		{	random_cur_ = mixed_object_.optimize_random(
-				random_options_,
-				fixed_tmp_,
-				random_lower_,
-				random_upper_,
-				random_in_
-			);
-			mixed_object_.update_factor(fixed_tmp_, random_cur_);
-		}
+			new_random(fixed_tmp_);
 		H = mixed_object_.ran_obj_eval(fixed_tmp_, random_cur_);
 	}
 	obj_value = Number(H);
@@ -999,15 +993,7 @@ $end
 	{
 		// compute the optimal random effects corresponding to fixed effects
 		if( new_x )
-		{	random_cur_ = mixed_object_.optimize_random(
-				random_options_,
-				fixed_tmp_,
-				random_lower_,
-				random_upper_,
-				random_in_
-			);
-			mixed_object_.update_factor(fixed_tmp_, random_cur_);
-		}
+			new_random(fixed_tmp_);
 		// Jacobian for random part of the Lalpace objective
 		mixed_object_.ran_obj_jac(
 			fixed_tmp_, random_cur_, H_beta_tmp_
@@ -1108,16 +1094,8 @@ $end
 		fixed_tmp_[j] = double( x[j] );
 	//
 	// check if this is a new x
-	if( n_random_ > 0 && new_x )
-	{	random_cur_ = mixed_object_.optimize_random(
-			random_options_,
-			fixed_tmp_,
-			random_lower_,
-			random_upper_,
-			random_in_
-		);
-		mixed_object_.update_factor(fixed_tmp_, random_cur_);
-	}
+	if( new_x && n_random_ > 0 )
+		new_random(fixed_tmp_);
 	//
 	// fixed likelihood
 	// (2DO: cache fix_likelihood_vec_tmp_ for eval_f with same x)
@@ -1288,16 +1266,8 @@ $end
 		fixed_tmp_[j] = double( x[j] );
 	//
 	// check if this is a new x
-	if( n_random_ > 0 && new_x )
-	{	random_cur_ = mixed_object_.optimize_random(
-			random_options_,
-			fixed_tmp_,
-			random_lower_,
-			random_upper_,
-			random_in_
-		);
-		mixed_object_.update_factor(fixed_tmp_, random_cur_);
-	}
+	if( new_x && n_random_ > 0 )
+		new_random(fixed_tmp_);
 	//
 	// Jacobian of fixed effects likelihood
 	// (2DO: do not revaluate when eval_grad_f had same x)
@@ -1481,15 +1451,7 @@ $end
 	{
 		// compute the optimal random effects corresponding to fixed effects
 		if( new_x )
-		{	random_cur_ = mixed_object_.optimize_random(
-				random_options_,
-				fixed_tmp_,
-				random_lower_,
-				random_upper_,
-				random_in_
-			);
-			mixed_object_.update_factor(fixed_tmp_, random_cur_);
-		}
+			new_random(fixed_tmp_);
 		// compute Hessian of random part of objective w.r.t. fixed effects
 		w_ran_objcon_tmp_[0] = obj_factor;
 		// include random constraints in this Hessian calculation
@@ -2204,6 +2166,77 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 		ok &= ok && max_best_err <= relative_tol;
 	}
 	return ok;
+}
+/*$
+$begin ipopt_fixed_new_random$$
+$spell
+	vec
+	ipopt
+	const
+$$
+
+$section Compute New Random Effects and Update Factor$$
+
+$head Syntax$$
+$codei%new_random(%fixed_vec%)%$$
+
+$head ipopt_fixed$$
+This is a private member function of the $cref ipopt_fixed$$ class.
+
+$head n_random_$$
+Is assumed that this member variable is greater than zero.
+
+$head random_options_$$
+This member variable contains
+the value of the $cref/random_options/ipopt_fixed_ctor/random_options/$$
+in the $code ipopt_fixed$$ constructor.
+
+$head random_lower_$$
+This member variable contains
+the value of the $cref/random_lower/ipopt_fixed_ctor/random_lower/$$
+in the $code ipopt_fixed$$ constructor.
+
+$head random_upper_$$
+This member variable contains
+the value of the $cref/random_upper/ipopt_fixed_ctor/random_upper/$$
+in the $code ipopt_fixed$$ constructor.
+
+$head random_in_$$
+This member variable contains
+the value of the $cref/random_in/ipopt_fixed_ctor/random_in/$$
+in the $code ipopt_fixed$$ constructor.
+
+$head fixed_vec$$
+This argument has prototype
+$codei%
+	const d_vector& %fixed_vec%
+%$$
+it is the value of the fixed effects that we are computing the random
+effects and updated factor for.
+
+$head random_cur_$$
+This member variable contain is set the optimal random effects
+corresponding to $icode fixed_vec$$.
+
+$head mixed_object_$$
+The factor in this member variables is updated using the call
+$codei%
+	mixed_object_.update_factor(%fixed_vec%, random_cur_)
+%$$.
+
+$end
+*/
+void ipopt_fixed::new_random(const d_vector& fixed_vec)
+{	assert( n_random_ > 0 );
+	// compute the optimal random effects corresponding to fixed effects
+	random_cur_ = mixed_object_.optimize_random(
+		random_options_,
+		fixed_vec,
+		random_lower_,
+		random_upper_,
+		random_in_
+	);
+	mixed_object_.update_factor(fixed_vec, random_cur_);
 }
 // ---------------------------------------------------------------------------
 } } // END_CPPAD_MIXED_NAMESPACE
