@@ -507,11 +507,8 @@ int main(int argc, char *argv[])
 		"Numeric tol                       1e-8\n"
 		"Integer max_iter                  40\n"
 	;
-	std::string random_ipopt_options =
-		"Integer print_level 0\n"
-		"String  sb          yes\n"
-		"String  derivative_test none\n"
-	;
+	// random_ipopt_options is empty, so use box_newton for random effects
+	std::string random_ipopt_options = "";
 	CppAD::mixed::box_newton_options random_box_options;
 	double inf = std::numeric_limits<double>::infinity();
 	vector<double> u_lower(n_random), u_upper(n_random);
@@ -537,7 +534,7 @@ int main(int argc, char *argv[])
 	//
 	// correspnding optimal random effects
 	vector<double> u_out = mixed_object.optimize_random(
-		random_ipopt_options,
+		random_box_options,
 		theta_out,
 		u_lower,
 		u_upper,

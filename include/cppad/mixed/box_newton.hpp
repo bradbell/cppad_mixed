@@ -321,10 +321,11 @@ box_newton_status box_newton(
 	CppAD::vector<double> x_cur(n), g_cur(n), p_cur(n), d_cur(n), dx_cur(n);
 	CppAD::vector<double> x_next(n), p_next(n);
 	CppAD::vector<bool> active(n);
-	double f_cur, eps, inf;
+	double f_cur, eps, small, inf;
 	x_cur  = x_in;
 	f_cur  = objective.fun(x_cur);
 	eps    = 1e2 * std::numeric_limits<double>::epsilon();
+	small  = 1e2 * std::numeric_limits<double>::min();
 	inf    = std::numeric_limits<double>::infinity();
 	//
 	if( options.print_level >= 2 )
@@ -345,12 +346,12 @@ box_newton_status box_newton(
 		for(size_t i = 0; i < n; i++)
 		{	bool lower = false;
 			if( x_low[i] > - inf )
-			{	lower  = CppAD::NearEqual(x_cur[i], x_low[i], eps, eps);
+			{	lower  = CppAD::NearEqual(x_cur[i], x_low[i], eps, small);
 				lower &= g_cur[i] > 0.0;
 			}
 			bool upper = false;
 			if( x_up[i] < + inf )
-			{	upper  = CppAD::NearEqual(x_cur[i], x_up[i], eps, eps);
+			{	upper  = CppAD::NearEqual(x_cur[i], x_up[i], eps, small);
 				upper &= g_cur[i] < 0.0;
 			}
 			active[i]  = lower || upper;
@@ -428,12 +429,12 @@ box_newton_status box_newton(
 			f_next  = objective.fun(x_next);
 			f_lam   = (f_next - f_cur) / lam;
 			p_lam   = 0.0;
-			if( CppAD::NearEqual(f_cur, f_next, eps, eps) )
+			if( CppAD::NearEqual(f_cur, f_next, eps, small) )
 			{	// gradient
 				p_next  = objective.grad(x_next);
 				for(size_t i = 0; i < n; i++)
 				{	// Quick way to convert gradient to projected gradient.
-					// Note quiet correct and perhaps we should compute
+					// Not quiet correct and perhaps we should compute
 					// projection for the point x_next.
 					if( p_cur[i] == 0.0 )
 						p_next[i] = 0.0;
