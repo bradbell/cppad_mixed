@@ -193,6 +193,12 @@ $srccode%cpp% */
 		const CppAD::mixed::sparse_mat_info&  A_info
 	);
 /* %$$
+
+$head destructor$$
+$srccode%cpp% */
+	~cppad_mixed(void);
+/* %$$
+
 $head initialize$$
 $cref initialize$$, $title initialize$$
 $srccode%cpp% */
@@ -401,6 +407,13 @@ $srccode%cpp% */
 	bool                init_fix_con_done_;
 	// true when all initialization (for this case) is done
 	bool                initialize_done_;
+
+/* %$$
+$head cppad_error_handler$$
+Used to map CppAD error messages to
+$cref/fatal_error/public/User Defined Functions/fatal_error/$$.
+$srccode%cpp% */
+	CppAD::ErrorHandler cppad_error_handler_;
 /* %$$
 
 $head n_ran_con_$$

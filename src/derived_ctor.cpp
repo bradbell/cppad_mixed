@@ -102,6 +102,33 @@ $end
 */
 # include<cppad/mixed/cppad_mixed.hpp>
 
+namespace { // BEGIN_EMPTY_NAMESPACE
+	std::list<cppad_mixed*> base_object_list_;
+	void handler(
+		bool known       ,
+		int  line        ,
+		const char *file ,
+		const char *exp  ,
+		const char *msg  )
+     {	// use the most recent cppad_mixed fatal_error routine
+		assert( ! base_object_list_.empty() );
+		std::string error_message;
+		error_message += "detected by CppAD:\nline = ";
+		error_message +=  CppAD::to_string(line);
+		error_message += "\nfile = ";
+		error_message +=  file;
+		error_message += "\nexp  = ";
+		error_message +=  exp;
+		error_message += "\nmsg  = ";
+		error_message +=  msg;
+		base_object_list_.back()->fatal_error(error_message);
+		// should not return
+		assert(false);
+     }
+
+} // END_EMPTY_NAMESPACE
+
+// base class constructor
 cppad_mixed::cppad_mixed(
 	size_t                                  n_fixed   ,
 	size_t                                  n_random  ,
@@ -123,5 +150,14 @@ init_ran_objcon_hes_done_(false),
 init_fix_like_done_(false)      ,
 init_fix_con_done_(false)       ,
 initialize_done_(false)         ,
+cppad_error_handler_(handler)   ,
 ldlt_ran_hes_(n_random)
-{ }
+{	// store pointer to this object
+	base_object_list_.push_back( this );
+}
+
+// base class destructor
+cppad_mixed::~cppad_mixed(void)
+{	// remove point to this object
+	base_object_list_.remove( this );
+}

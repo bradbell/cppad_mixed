@@ -33,6 +33,10 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 06-04$$
+Redirect CppAD error messages through
+$cref/fatal_error/public/User Defined Functions/fatal_error/$$.
+
 $head 06-03$$
 Add the option to use
 $cref/box_newton/optimize_random/options/box_newton_options/$$
