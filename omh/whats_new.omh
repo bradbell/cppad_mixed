@@ -48,6 +48,11 @@ The $icode random_options$$ have been split into
 $cref/random_box_options/optimize_fixed/random_box_options/$$ and
 $cref/random_ipopt_options/optimize_fixed/random_ipopt_options/$$.
 
+$subhead sample_random$$
+The $icode random_options$$ have been split into
+$cref/random_box_options/sample_random/random_box_options/$$ and
+$cref/random_ipopt_options/sample_random/random_ipopt_options/$$.
+
 $head 05-15$$
 $list number$$
 The $cref sample_fixed$$ routine now uses an LDLT factorization of the

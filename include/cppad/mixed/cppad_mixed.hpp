@@ -279,12 +279,13 @@ $head sample_random$$
 $cref sample_random$$, $title sample_random$$.
 $srccode%cpp% */
 	void sample_random(
-		d_vector&                            sample               ,
-		const std::string&                   random_options       ,
-		const d_vector&                      fixed_vec            ,
-		const d_vector&                      random_lower         ,
-		const d_vector&                      random_upper         ,
-		const d_vector&                      random_in
+		d_vector&                               sample               ,
+		const CppAD::mixed::box_newton_options& random_box_options ,
+		const std::string&                      random_ipopt_options ,
+		const d_vector&                         fixed_vec            ,
+		const d_vector&                         random_lower         ,
+		const d_vector&                         random_upper         ,
+		const d_vector&                         random_in
 	);
 /* %$$
 $childtable%src/derived_ctor.omh

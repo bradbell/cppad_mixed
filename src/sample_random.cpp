@@ -16,6 +16,8 @@ $spell
 	cppad
 	const
 	CppAD
+	std
+	ipopt
 $$
 
 $section Simulation the Posterior Distribution for Random Effects$$
@@ -24,7 +26,8 @@ $head Syntax$$
 $icode%mixed_object%.sample_random(
 	%sample%,
 	%fixed_vec%,
-	%random_options%,
+	%random_box_options%,
+	%random_ipopt_options%,
 	%random_lower%,
 	%random_upper%,
 	%random_in%
@@ -80,8 +83,26 @@ These samples are independent for different $latex i$$,
 and for fixed $latex i$$, they have the
 $cref/covariance/sample_random/Covariance/$$ defined below.
 
-$head random_options$$
-The argument is the $cref ipopt_options$$ for optimizing the random effects.
+$head random_box_options$$
+This argument has prototype
+$codei%
+	const CppAD::mixed::box_newton_options& %random_box_options%
+%$$
+and is the $cref box_newton$$ options for optimizing the random effects.
+If $icode random_ipopt_options$$ is empty,
+$code box_newton$$ with these options is used
+to optimize the random effects;
+see $cref/box_newton_options/optimize_random/options/box_newton_options/$$.
+
+$head random_ipopt_options$$
+This argument has prototype
+$codei%
+	const std::string& %random_ipopt_options%
+%$$
+and is the $cref ipopt_options$$ for optimizing the random effects.
+If $icode random_ipopt_options$$ is non-empty,
+$code ipopt$$ with these options is used to optimize the random effects;
+see $cref/string/optimize_random/options/string/$$.
 
 $head fixed_vec$$
 This argument specifies the value of the
@@ -145,8 +166,9 @@ $end
 
 // BEGIN PROTOTYPE
 void cppad_mixed::sample_random(
-	d_vector&          sample         ,
-	const std::string& random_options ,
+	d_vector&                               sample               ,
+	const CppAD::mixed::box_newton_options& random_box_options   ,
+	const std::string&                      random_ipopt_options ,
 	const d_vector&    fixed_vec      ,
 	const d_vector&    random_lower   ,
 	const d_vector&    random_upper   ,
@@ -166,8 +188,14 @@ void cppad_mixed::sample_random(
 	size_t n_sample = sample.size() / n_random_;
 	//
 	// optimal random effects
-	d_vector random_opt = optimize_random(
-		random_options, fixed_vec, random_lower, random_upper, random_in
+	d_vector random_opt;
+	if( random_ipopt_options == "" )
+		random_opt = optimize_random(
+		random_box_options, fixed_vec, random_lower, random_upper, random_in
+	);
+	else
+		random_opt = optimize_random(
+		random_ipopt_options, fixed_vec, random_lower, random_upper, random_in
 	);
 	// update the Cholesky factor corresponding to f_uu (theta, u)
 	update_factor(fixed_vec, random_opt);
