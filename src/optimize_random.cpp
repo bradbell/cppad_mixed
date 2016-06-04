@@ -48,7 +48,7 @@ derived from the $code cppad_mixed$$ base class.
 $head options$$
 There are two possible types for $icode options$$:
 
-$subhead std::string$$
+$subhead string$$
 If the argument $icode options$$ has the prototype
 $codei%
 	const std::string& %options%
@@ -61,7 +61,7 @@ Note that this records the objective as a function of just the random effects
 (the fixed effects are parameters)
 before doing the optimization.
 
-$subhead CppAD::mixed::box_newton_options$$
+$subhead box_newton_options$$
 If the argument $icode options$$ has the prototype
 $codei%
 	const CppAD::mixed::box_newton_option& %options%

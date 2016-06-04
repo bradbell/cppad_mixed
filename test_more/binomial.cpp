@@ -140,15 +140,17 @@ bool binomial(void)
 		"Numeric tol                       1e-5\n"
 		"Integer max_iter                  100\n"
 	;
-	std::string random_options =
+	std::string random_ipopt_options =
 		"Integer print_level 0\n"
 		"String  sb          yes\n"
 		"String  derivative_test second-order\n"
 	;
+	CppAD::mixed::box_newton_options random_box_options;
 	vector<double> u_lower(0), u_upper(0);
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_options,
-		random_options,
+		random_box_options,
+		random_ipopt_options,
 		theta_lower,
 		theta_upper,
 		fix_constraint_lower,

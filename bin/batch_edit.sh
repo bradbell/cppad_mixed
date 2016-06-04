@@ -12,17 +12,47 @@
 new_directories='
 '
 rename_files='
-	example/private/box_newton_xam.cpp
 '
 spell_files='
 '
 no_change_files='
+	src/sample_random.cpp
 '
 #
 rename_cmd='s|private/box_newton_xam.cpp|user/box_newton_xam.cpp|'
 #
 cat << EOF > junk.sed
-s|private/box_newton_xam.cpp|user/box_newton_xam.cpp|
+/^\\tstd::string random_options *= *"";/! b one
+s/random_options/random_ipopt_options/
+s/.*/&\\n\\tCppAD::mixed::box_newton_options random_box_options;/
+: one
+/^\\t*std::string random_options *= *\$/! b three
+#
+: two
+N
+/;/! b two
+s/random_options/random_ipopt_options/
+s/^\\(\\t*\\).*/&\\n\\1CppAD::mixed::box_newton_options random_box_options;/
+#
+: three
+/^\\t\\trandom_options,\$/! b four
+s/random_options/random_box_options/
+s/.*/&\\n\\t\\trandom_ipopt_options,/
+#
+: four
+/optimize_fixed(/! b six
+: five
+N
+/;/! b five
+s/\\n\\(\\t*\\)random_options,/\\n\\1random_box_options,\\n\\1random_ipopt_options,/
+: six
+#
+/optimize_random(/! b eight
+: seven
+N
+/;/! b seven
+s/random_options,/random_ipopt_options,/
+: eight
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]
@@ -80,7 +110,7 @@ do
 done
 # ----------------------------------------------------------------------------
 # files that should not change at all
-for file in $no_change_list
+for file in $no_change_files
 do
 	echo_eval git checkout $file
 done

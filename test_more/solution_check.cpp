@@ -109,11 +109,12 @@ bool solution_check(void)
 		"String  derivative_test_print_all yes\n"
 		"Numeric tol                       1e-8\n"
 	;
-	std::string random_options =
+	std::string random_ipopt_options =
 		"Integer print_level 0\n"
 		"String  sb          yes\n"
 		"String  derivative_test second-order\n"
 	;
+	CppAD::mixed::box_newton_options random_box_options;
 	vector<double> random_lower(n_random), random_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)
 	{	random_lower[i] = -inf;
@@ -121,7 +122,8 @@ bool solution_check(void)
 	}
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_options,
-		random_options,
+		random_box_options,
+		random_ipopt_options,
 		fixed_lower,
 		fixed_upper,
 		fix_constraint_lower,

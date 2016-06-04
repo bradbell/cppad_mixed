@@ -355,12 +355,13 @@ bool data_mismatch_xam(void)
 		"String  derivative_test_print_all yes\n"
 		"Numeric tol                       1e-8\n"
 	;
-	std::string random_options =
+	std::string random_ipopt_options =
 		"Integer print_level     0\n"
 		"String  sb              yes\n"
 		"String  derivative_test second-order\n"
 		"Numeric tol             1e-8\n"
 	;
+	CppAD::mixed::box_newton_options random_box_options;
 	vector<double> random_lower(n_random), random_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)
 	{	random_lower[i] = -inf;
@@ -368,7 +369,8 @@ bool data_mismatch_xam(void)
 	}
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_options,
-		random_options,
+		random_box_options,
+		random_ipopt_options,
 		fixed_lower,
 		fixed_upper,
 		fix_constraint_lower,
@@ -381,7 +383,7 @@ bool data_mismatch_xam(void)
 	vector<double> fixed_out = solution.fixed_opt;
 	//
 	vector<double> random_out = mixed_object.optimize_random(
-		random_options, fixed_out, random_lower, random_upper, random_in
+		random_ipopt_options, fixed_out, random_lower, random_upper, random_in
 	);
 	//
 	// compute the derivative of the objective at the final point

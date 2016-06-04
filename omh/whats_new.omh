@@ -26,11 +26,27 @@ $spell
 	cmake
 	ldlt
 	choleig
+	ipopt
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
+
+$head 06-03$$
+Add the option to use
+$cref/box_newton/optimize_random/options/box_newton_options/$$
+to optimize the random effects.
+This changes the user API for the following functions:
+
+$subhead optimize_random$$
+The $cref/options/optimize_random/options/$$ argument determines
+if $code ipopt$$ or $code box_newton$$ is used.
+
+$subhead optimize_fixed$$
+The $icode random_options$$ have been split into
+$cref/random_box_options/optimize_fixed/random_box_options/$$ and
+$cref/random_ipopt_options/optimize_fixed/random_ipopt_options/$$.
 
 $head 05-15$$
 $list number$$

@@ -136,14 +136,16 @@ bool max_iter_neg(void)
 		"Numeric tol                       1e-8\n"
 		"Integer max_iter                  -1\n"
 	;
-	std::string random_options =
+	std::string random_ipopt_options =
 		"Integer print_level 0\n"
 		"String  sb          yes\n"
 		"String  derivative_test second-order\n"
 	;
+	CppAD::mixed::box_newton_options random_box_options;
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_options,
-		random_options,
+		random_box_options,
+		random_ipopt_options,
 		fixed_lower,
 		fixed_upper,
 		fix_constraint_lower,

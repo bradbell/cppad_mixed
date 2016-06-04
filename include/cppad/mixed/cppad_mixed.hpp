@@ -242,8 +242,9 @@ $head optimize_fixed$$
 $cref optimize_fixed$$, $title optimize_fixed$$.
 $srccode%cpp% */
 	CppAD::mixed::fixed_solution optimize_fixed(
-		const std::string& fixed_options    ,
-		const std::string& random_options   ,
+		const std::string&                       fixed_options         ,
+		const CppAD::mixed::box_newton_options&  random_box_options    ,
+		const std::string&                       random_ipopt_options  ,
 		const d_vector&    fixed_lower      ,
 		const d_vector&    fixed_upper      ,
 		const d_vector&    fix_constraint_lower ,

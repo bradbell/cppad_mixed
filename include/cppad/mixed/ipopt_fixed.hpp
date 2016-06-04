@@ -68,8 +68,9 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		typedef Ipopt::TNLP::IndexStyleEnum IndexStyleEnum;
 		// ---------------------------------------------------------------
 		// member variables set during constructor
-		const std::string random_options_; // options for opt random effects
-		const double fixed_tolerance_;    // ipopt relative tolerance
+		const box_newton_options&  random_box_options_;
+		const std::string&         random_ipopt_options_;
+		const double fixed_tolerance_;  // ipopt relative tolerance
 		//
 		const size_t n_fixed_;            // number of fixed effects
 		const size_t n_random_;           // number of random effects
@@ -156,8 +157,9 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		//
 		// constructor
 		ipopt_fixed(
-			const std::string& random_options    ,
-			const double&      fixed_tolerance   ,
+			const box_newton_options& random_box_options   ,
+			const std::string&        random_ipopt_options ,
+			const double&   fixed_tolerance      ,
 			const d_vector& fixed_lower          ,
 			const d_vector& fixed_upper          ,
 			const d_vector& fix_constraint_lower ,

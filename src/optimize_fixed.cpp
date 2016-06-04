@@ -29,7 +29,8 @@ $head Syntax$$
 $icode%solution% =%$$
 $icode%mixed_object%.optimize_fixed(
 	%fixed_options%,
-	%random_options%,
+	%random_box_options%,
+	%random_ipopt_options%,
 	%fixed_lower%,
 	%fixed_upper%,
 	%fix_constraint_lower%,
@@ -102,13 +103,26 @@ If $icode%max_iter% == -1%$$ in the options,
 $icode%solution%.fixed_opt == %fixed_in%$$
 (this is the only difference between $code -1$$ and $code 0$$).
 
-$head random_options$$
+$head random_box_options$$
 This argument has prototype
 $codei%
-	const std::string& %random_options%
+	const CppAD::mixed::box_newton_options& %random_box_options%
+%$$
+and is the $cref box_newton$$ options for optimizing the random effects.
+If $icode random_ipopt_options$$ is empty,
+$code box_newton$$ with these options is used
+to optimize the random effects;
+see $cref/box_newton_options/optimize_random/options/box_newton_options/$$.
+
+$head random_ipopt_options$$
+This argument has prototype
+$codei%
+	const std::string& %random_ipopt_options%
 %$$
 and is the $cref ipopt_options$$ for optimizing the random effects.
-
+If $icode random_ipopt_options$$ is non-empty,
+$code ipopt$$ with these options is used to optimize the random effects;
+see $cref/string/optimize_random/options/string/$$.
 
 $head fixed_lower$$
 This argument has prototype
@@ -245,8 +259,9 @@ $end
 
 
 CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
-	const std::string& fixed_options     ,
-	const std::string& random_options    ,
+	const std::string&                      fixed_options           ,
+	const CppAD::mixed::box_newton_options& random_box_options      ,
+	const std::string&                      random_ipopt_options    ,
 	const d_vector&    fixed_lower       ,
 	const d_vector&    fixed_upper       ,
 	const d_vector&    fix_constraint_lower  ,
@@ -389,7 +404,8 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 	// object that is used to evalutate objective and constraints
 	SmartPtr<CppAD::mixed::ipopt_fixed> fixed_nlp =
 	new CppAD::mixed::ipopt_fixed(
-		random_options,
+		random_box_options,
+		random_ipopt_options,
 		fixed_tolerance,
 		fixed_lower,
 		fixed_upper,
