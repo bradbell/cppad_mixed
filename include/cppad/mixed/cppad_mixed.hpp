@@ -190,28 +190,9 @@ $srccode%cpp% */
 		size_t                                  n_fixed   ,
 		size_t                                  n_random  ,
 		bool                                  quasi_fixed ,
-		const CppAD::mixed::sparse_mat_info&  A_info      )
+		const CppAD::mixed::sparse_mat_info&  A_info
+	);
 /* %$$
-$comment */
-	:
-	n_fixed_(n_fixed)               ,
-	n_random_(n_random)             ,
-	quasi_fixed_(quasi_fixed)       ,
-	A_info_(A_info)                 ,
-	init_ran_con_done_(false)       ,
-	init_ran_like_done_(false)      ,
-	init_ran_hes_done_(false)       ,
-	init_ldlt_ran_hes_done_(false)  ,
-	init_hes_cross_done_(false)     ,
-	init_newton_atom_done_(false)   ,
-	init_ran_objcon_done_(false)    ,
-	init_ran_objcon_hes_done_(false),
-	init_fix_like_done_(false)      ,
-	init_fix_con_done_(false)       ,
-	initialize_done_(false)         ,
-	ldlt_ran_hes_(n_random)
-	{ }
-/* $$
 $head initialize$$
 $cref initialize$$, $title initialize$$
 $srccode%cpp% */
@@ -288,7 +269,7 @@ $srccode%cpp% */
 		const d_vector&                         random_in
 	);
 /* %$$
-$childtable%src/derived_ctor.omh
+$childtable%src/derived_ctor.cpp
 	%src/ran_likelihood.omh
 	%src/fix_likelihood.omh
 	%src/fix_constraint.omh

@@ -8,6 +8,7 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
+/*
 $begin derived_ctor$$
 $spell
 	CppAD
@@ -98,3 +99,29 @@ that uses this derived class.
 It returns true for success and false for failure.
 
 $end
+*/
+# include<cppad/mixed/cppad_mixed.hpp>
+
+cppad_mixed::cppad_mixed(
+	size_t                                  n_fixed   ,
+	size_t                                  n_random  ,
+	bool                                  quasi_fixed ,
+	const CppAD::mixed::sparse_mat_info&  A_info      )
+:
+n_fixed_(n_fixed)               ,
+n_random_(n_random)             ,
+quasi_fixed_(quasi_fixed)       ,
+A_info_(A_info)                 ,
+init_ran_con_done_(false)       ,
+init_ran_like_done_(false)      ,
+init_ran_hes_done_(false)       ,
+init_ldlt_ran_hes_done_(false)  ,
+init_hes_cross_done_(false)     ,
+init_newton_atom_done_(false)   ,
+init_ran_objcon_done_(false)    ,
+init_ran_objcon_hes_done_(false),
+init_fix_like_done_(false)      ,
+init_fix_con_done_(false)       ,
+initialize_done_(false)         ,
+ldlt_ran_hes_(n_random)
+{ }
