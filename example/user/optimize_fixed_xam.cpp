@@ -204,11 +204,15 @@ bool optimize_fixed_xam(void)
 		"Numeric tol             1e-8\n"
 	;
 	CppAD::mixed::box_newton_options random_box_options;
+	random_box_options.tolerance = 1e-8;
+	//
 	vector<double> random_lower(n_random), random_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
 	}
+	// ------------------------------------------------------------------
+	// use ipopt for random effects optimization
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_options,
 		random_box_options,
@@ -245,7 +249,46 @@ bool optimize_fixed_xam(void)
 	// so the partials should be zero.
 	ok &= CppAD::abs( F_0 ) <= tol;
 	ok &= CppAD::abs( F_1 ) <= tol;
+	// ------------------------------------------------------------------
+	// use box_newton for random effects optimization
+	random_ipopt_options = "";
+	solution = mixed_object.optimize_fixed(
+		fixed_options,
+		random_box_options,
+		random_ipopt_options,
+		fixed_lower,
+		fixed_upper,
+		fix_constraint_lower,
+		fix_constraint_upper,
+		fixed_in,
+		random_lower,
+		random_upper,
+		random_in
+	);
+	fixed_out = solution.fixed_opt;
 
+	// results of optimization
+	theta_0 = fixed_out[0];
+	theta_1 = fixed_out[1];
+
+	// compute partials of F
+	sum   = 0.0;
+	sumsq = 0.0;
+	for(size_t i = 0; i < n_data; i++)
+	{	sum   += theta_0 - data[i];
+		sumsq += (theta_0 - data[i]) * (theta_0 - data[i]);
+	}
+	den = 1.0 + theta_1 * theta_1;
+	F_0 = (theta_0 - 4.0) + sum / den;
+	F_1 = theta_1 - 4.0;
+	F_1       += double(n_data) * theta_1 / den;
+	F_1       -= sumsq * theta_1  / (den * den);
+
+	// Note that no constraints are active, (not even the l1 terms)
+	// so the partials should be zero.
+	ok &= CppAD::abs( F_0 ) <= tol;
+	ok &= CppAD::abs( F_1 ) <= tol;
+	//
 	return ok;
 }
 // END C++
