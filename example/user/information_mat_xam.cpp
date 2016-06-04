@@ -244,12 +244,8 @@ bool information_mat_xam(void)
 		"String  derivative_test_print_all yes\n"
 		"Numeric tol                       1e-8\n"
 	;
-	std::string random_ipopt_options =
-		"Integer print_level     0\n"
-		"String  sb              yes\n"
-		"String  derivative_test second-order\n"
-		"Numeric tol             1e-8\n"
-	;
+	// random_ipopt_options is empty, so using box_newton for random effects
+	std::string random_ipopt_options = "";
 	CppAD::mixed::box_newton_options random_box_options;
 	vector<double> random_lower(n_random), random_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)
@@ -271,7 +267,7 @@ bool information_mat_xam(void)
 		random_in
 	);
 	vector<double> random_opt = mixed_object.optimize_random(
-		random_ipopt_options,
+		random_box_options,
 		solution.fixed_opt,
 		random_lower,
 		random_upper,

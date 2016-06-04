@@ -179,6 +179,7 @@ namespace {
 			"String  derivative_test_print_all yes\n"
 			"Numeric tol                       1e-8\n"
 		;
+		// random_ipopt_options is non-empty, so using ipopt for random effects
 		std::string random_ipopt_options =
 			"Integer print_level     0\n"
 			"String  sb              yes\n"

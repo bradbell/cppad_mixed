@@ -279,7 +279,7 @@ struct box_newton_options {
 	size_t max_line;
 	size_t print_level;
 	box_newton_options(void) : // set default values
-	tolerance(1e-6)       ,
+	tolerance(1e-8)       ,
 	direction_ratio(0.1)  ,
 	line_ratio(0.05)      ,
 	max_iter(50)          ,
