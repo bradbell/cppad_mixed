@@ -40,8 +40,8 @@ scaled negative projected gradient direction.
 (Step size of one in negative projected gradient direction
 may be much too large or much too small).
 $lnext
-There was a bug in $cref ldlt_cholmod_solve_H$$ where an unecessary
-condtion was check and failed. The example
+There was a bug in $cref ldlt_cholmod_solve_H$$ where an unnecessary
+condition was check and failed. The example
 $cref cholmod_solve2_a.cpp$$ has been change to demonstrate that
 only a subset of the right hand side values matter.
 $lnext
