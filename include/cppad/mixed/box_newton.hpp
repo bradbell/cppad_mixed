@@ -47,8 +47,8 @@ $latex \[
 
 $head options$$
 The following declaration is made in the $code CppAD::mixed$$ namespace:
-$srcfile%include/cppad/mixed/box_newton.hpp
-	%0%// BEGIN OPTION%// END OPTION%1%$$
+$srcfile%include/cppad/mixed/box_newton_options.hpp
+	%0%// BEGIN OPTION%// END OPTION%0%$$
 
 $subhead tolerance$$
 This is the convergence tolerance for the optimization. The method has
@@ -57,13 +57,15 @@ $icode%tolerance% > 0%$$.
 
 $subhead direction_ratio$$
 If the derivative of the function value in the Newton step direction,
-divided by its derivative in the negative projected gradient direction,
+divided by its derivative in the scaled negative projected gradient direction,
 is less than $icode direction_ratio$$,
-the negative projected gradient is used for the line search direction.
-Note that the directional derivatives are normalized before making this
-comparison; i.e., divided by the norm of the corresponding direction.
-Also note that this ratio should be greater than zero and less than one
-(If it is greater than one, the negative projected gradient
+the scaled negative projected gradient is used for the line search direction.
+If $latex p$$ is the projected gradient, and $latex d$$ is the Newton step
+direction, $latex s = - p |d| / |p|$$
+is the scaled negative projected gradient.
+Note that $icode direction_ratio$$ should be
+greater than zero and less than or equal one.
+(If it is greater than one, the scaled negative projected gradient
 direction will always be used).
 
 $subhead line_ratio$$
@@ -71,14 +73,12 @@ The step size in the line search direction will be decreases until
 the descent of the objective, divided by the line search step size,
 is less than or equal $icode line_ratio$$
 times the initial directional derivative in the line search direction.
-Note this direction derivative is not normalized before making the comparison.
-Also note that this ratio should be greater than zero and less than one half
+Note that this ratio should be greater than zero and less than one half
 (one half is the average descent rate for a convex quadratic function).
 If the change in the function value is close to
 numerical precision, the norm of the projected gradient,
 divided by the line search step size,
-is compared to $icode line_ratio$$ and used for line search
-termination.
+is compared to $icode line_ratio$$ and used for line search termination.
 
 $subhead max_iter$$
 This is the maximum number of iterations for the algorithm.
@@ -104,15 +104,15 @@ $codei%
 the iteration counter $icode iter$$,
 the value of the objective $icode f$$,
 norm of the Newton step projected to feasible set $icode |dx|$$,
-the directive in the current $icode dx$$ direction $icode f_dx$$,
-the directive in the current $icode p$$ direction $icode f_p$$,
-and line search step size $icode lam_dx$$ or $icode lam_p$$,
-are  printed at the end of each iteration.
-If $icode lam_dx$$ ($icode lam_p$$) is printed,
-$icode dx$$ ($icode p$$) is used for the search direction.
+the derivative in the current $icode dx$$ direction $icode f_dx$$,
+the derivative in the current $icode s$$ direction $icode f_s$$,
+and line search step size $icode lam_dx$$ or $icode lam_s$$,
+are printed at the end of each iteration.
+If $icode lam_dx$$ ($icode lam_s$$) is printed,
+$icode dx$$ ($icode s$$) is used for the search direction.
 In addition, the return $icode status$$ is printed.
-Note that a line search step size starts of $code 1$$
-means that a Newton step was take for this iteration.
+Note that If the line search step size is $code 1$$,
+a Newton step was taken for this iteration.
 If the status is $code box_newton_ok$$,
 the convergence test that passed is also printed.
 $codei%
@@ -124,9 +124,10 @@ and initial function value $icode f_in$$,
 are printed before the first iteration.
 The current argument vector $icode x$$,
 the gradient $icode g$$,
-the negative of the gradient projected onto the constraint box $icode p$$,
+the negative projected gradient $icode p$$,
 the Newton step $icode d$$,
 and its projection to the feasible set $icode dx$$,
+and the scaled negative projected gradient $icode s$$,
 are printed for each iteration.
 $codei%
 %print_level% >= 3
@@ -137,7 +138,7 @@ and the average derivative in the current line search direction $icode f_lam$$,
 are printed for each iteration of the line search.
 If the change in the objective is to small (near numerical precision),
 the rate of descent of the norm of the
-projected gradient $icode p_lam$$ is printed
+scaled projected gradient $icode s_lam$$ is printed
 instead of $icode f_lam$$.
 
 $head fun$$
@@ -205,7 +206,7 @@ $codei%
 	const CppAD::vector<double>& %p%
 %$$
 and size $icode n$$.
-This is the negative of the gradient projected onto the constraint box.
+This is the scaled negative gradient projected onto the constraint box.
 
 $subhead d$$
 The return value has prototype
@@ -246,14 +247,13 @@ The input value of its elements does not matter.
 Upon return it is the best approximate solution so far.
 If $icode status$$ is $code box_newton_ok_enum$$,
 the $cref/tolerance/box_newton/options/tolerance/$$
-condition has been satisfied or the derivative in the
-direction of the negative projected gradient is non-negative.
+condition has been satisfied.
 
 $head status$$
 The return value is one of the following enum values
 (which are in the $code CppAD::mixed$$ namespace).
-$srcfile%include/cppad/mixed/box_newton.hpp
-	%0%// BEGIN STATUS%// END STATUS%1%$$
+$srcfile%include/cppad/mixed/box_newton_status.hpp
+	%0%// BEGIN STATUS%// END STATUS%0%$$
 
 $children%example/user/box_newton_xam.cpp
 %$$
@@ -267,35 +267,11 @@ $end
 */
 # include <cppad/utility/vector.hpp>
 # include <cppad/utility/near_equal.hpp>
+# include <cppad/mixed/box_newton_options.hpp>
+# include <cppad/mixed/box_newton_status.hpp>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-// BEGIN OPTION
-struct box_newton_options {
-	double tolerance;
-	double direction_ratio;
-	double line_ratio;
-	size_t max_iter;
-	size_t max_line;
-	size_t print_level;
-	box_newton_options(void) : // set default values
-	tolerance(1e-8)       ,
-	direction_ratio(0.1)  ,
-	line_ratio(0.05)      ,
-	max_iter(50)          ,
-	max_line(10)          ,
-	print_level(0)
-	{}
-};
-// END OPTION
-
-// BEGIN STATUS
-enum box_newton_status {
-	box_newton_ok_enum       , // x_out is ok
-	box_newton_max_iter_enum , // maximum number of iterations reached
-	box_newton_max_line_enum   // maximum number of line search steps reached
-};
-// END STATUS
 
 // BEGIN PROTOTYPE
 template <class Objective>
@@ -319,7 +295,7 @@ box_newton_status box_newton(
 # endif
 	// initialize
 	CppAD::vector<double> x_cur(n), g_cur(n), p_cur(n), d_cur(n), dx_cur(n);
-	CppAD::vector<double> x_next(n), p_next(n);
+	CppAD::vector<double> s_cur(n), x_next(n), p_next(n);
 	CppAD::vector<bool> active(n);
 	double f_cur, eps, small, inf;
 	x_cur  = x_in;
@@ -342,7 +318,7 @@ box_newton_status box_newton(
 		// current gradient
 		g_cur = objective.grad(x_cur);
 		//
-		// set active set and projected gradient
+		// set active set and negative projected gradient
 		for(size_t i = 0; i < n; i++)
 		{	bool lower = false;
 			if( x_low[i] > - inf )
@@ -371,28 +347,26 @@ box_newton_status box_newton(
 			xi        = std::min(xi, x_up[i]);
 			dx_cur[i] = xi - x_cur[i];
 		}
-		if( options.print_level >= 2 )
-		{	std::cout << "x  = " << x_cur << std::endl;
-			std::cout << "g  = " << g_cur << std::endl;
-			std::cout << "p  = " << p_cur << std::endl;
-			std::cout << "d  = " << d_cur << std::endl;
-			std::cout << "dx = " << dx_cur << std::endl;
-		}
 		//
 		// directional derivatvies and norms
 		double f_dx    = 0.0;
 		double f_p     = 0.0;
+		double d_norm  = 0.0;
 		double dx_norm = 0.0;
 		double p_norm  = 0.0;
 		for(size_t i = 0; i < n; i++)
 		{	f_dx     += g_cur[i] * dx_cur[i];
 			f_p      += g_cur[i] * p_cur[i];
+			d_norm   += d_cur[i] * d_cur[i];
 			dx_norm  += dx_cur[i] * dx_cur[i];
 			p_norm   += p_cur[i] * p_cur[i];
 		}
 		assert( f_p == - p_norm );
+		d_norm  = std::sqrt( d_norm );
 		dx_norm = std::sqrt( dx_norm );
 		p_norm  = std::sqrt( p_norm );
+		//
+		// check for convergence
 		if( p_norm < options.tolerance )
 		{	x_out = x_cur;
 			if( options.print_level >= 1 )
@@ -400,27 +374,41 @@ box_newton_status box_newton(
 			return box_newton_ok_enum;
 		}
 		//
-		// if f_dx is not negative enough, use p_cur direction
-		bool use_p = f_dx * p_norm / dx_norm > f_p * options.direction_ratio;
+		// scaled negative projected gradient
+		for(size_t i = 0; i < n; i++)
+			s_cur[i] = p_cur[i] * dx_norm / p_norm;
+		double f_s = f_p * dx_norm / p_norm;
+		//
+		if( options.print_level >= 2 )
+		{	std::cout << "x  = " << x_cur << std::endl;
+			std::cout << "g  = " << g_cur << std::endl;
+			std::cout << "p  = " << p_cur << std::endl;
+			std::cout << "d  = " << d_cur << std::endl;
+			std::cout << "dx = " << dx_cur << std::endl;
+			std::cout << "s  = " << s_cur << std::endl;
+		}
+		//
+		// if f_dx is not negative enough, use s_cur direction
+		bool use_s = f_dx > f_s * options.direction_ratio;
 		double f_q = f_dx;
-		if( use_p )
-			f_q = f_p;
+		if( use_s )
+			f_q = f_s;
 		//
 		// line search
-		double lam   = 2.0;
+		double lam   = 4.0;
 		size_t count = 0;
 		double f_lam = 0.0;
 		double p_lam = 0.0;
 		double f_next;
 		while(
 			count < options.max_line               &&
-			f_lam > f_q * options.line_ratio       &&
+			f_lam > f_s * options.line_ratio       &&
 			p_lam > - p_norm * options.line_ratio  )
 		{	count++;
-			lam  = lam / 2.0;
+			lam  = lam / 4.0;
 			for(size_t i = 0; i < n; i++)
-			{	if( use_p )
-					x_next[i] = x_cur[i] + lam * p_cur[i];
+			{	if( use_s )
+					x_next[i] = x_cur[i] + lam * s_cur[i];
 				else
 					x_next[i] = x_cur[i] + lam * dx_cur[i];
 				x_next[i] = std::max(x_next[i], x_low[i]);
@@ -473,8 +461,8 @@ box_newton_status box_newton(
 				<< ", f = "    << f_cur
 				<< ", |dx| = " << dx_norm
 				<< ", f_dx = " << f_dx
-				<< ", f_p = " << f_p;
-			if( use_p )
+				<< ", f_s = " << f_s;
+			if( use_s )
 				std::cout << ", lam_p = "  << lam << std::endl;
 			else
 				std::cout << ", lam_dx = "  << lam << std::endl;

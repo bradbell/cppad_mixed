@@ -22,7 +22,8 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/ldlt_cholmod.hpp>
 # include <cppad/mixed/ldlt_eigen.hpp>
 # include <cppad/mixed/fixed_solution.hpp>
-# include <cppad/mixed/box_newton.hpp>
+# include <cppad/mixed/box_newton_options.hpp>
+# include <cppad/mixed/box_newton_status.hpp>
 
 // private examples
 extern bool fix_con_eval_xam(void);

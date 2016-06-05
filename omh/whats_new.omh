@@ -33,6 +33,12 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 06-05$$
+Make $cref box_newton$$ more robust by doing line search in a
+scaled negative projected gradient direction.
+(Step size of one in negative projected gradient direction
+may be much too large or much too small).
+
 $head 06-04$$
 Redirect CppAD error messages through
 $cref/fatal_error/public/User Defined Functions/fatal_error/$$.

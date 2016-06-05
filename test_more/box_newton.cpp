@@ -29,7 +29,7 @@ namespace {
 		AD<double> asum = 0.0;
 		for(size_t i = 0; i < n; i++)
 		{	AD<double> diff = ax[i] / double(i + 1)  - 1.0;
-			asum += AD<double>(i + 1) * exp( diff * diff );
+			asum += 1e3 * AD<double>(i + 1) * exp( diff * diff );
 		}
 		return asum;
 	}
@@ -120,6 +120,8 @@ namespace {
 			for(size_t i = 0; i < n; i++)
 				row[i]    = i;
 			ldlt_hes_.solve_H(row, p, d);
+			if( n_iter_ % 2  == 0 )
+				return p;
 			return d;
 		}
 	};
