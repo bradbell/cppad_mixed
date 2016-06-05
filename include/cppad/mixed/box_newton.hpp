@@ -111,7 +111,8 @@ are printed at the end of each iteration.
 If $icode lam_dx$$ ($icode lam_s$$) is printed,
 $icode dx$$ ($icode s$$) is used for the search direction.
 In addition, the return $icode status$$ is printed.
-Note that If the line search step size is $code 1$$,
+If the line search step size is $code 1$$,
+and $code lam_dx$$ is printed,
 a Newton step was taken for this iteration.
 If the status is $code box_newton_ok$$,
 the convergence test that passed is also printed.
@@ -138,7 +139,7 @@ and the average derivative in the current line search direction $icode f_lam$$,
 are printed for each iteration of the line search.
 If the change in the objective is to small (near numerical precision),
 the rate of descent of the norm of the
-scaled projected gradient $icode s_lam$$ is printed
+projected gradient $icode p_lam$$ is printed
 instead of $icode f_lam$$.
 
 $head fun$$
@@ -463,7 +464,7 @@ box_newton_status box_newton(
 				<< ", f_dx = " << f_dx
 				<< ", f_s = " << f_s;
 			if( use_s )
-				std::cout << ", lam_p = "  << lam << std::endl;
+				std::cout << ", lam_s = "  << lam << std::endl;
 			else
 				std::cout << ", lam_dx = "  << lam << std::endl;
 		}
