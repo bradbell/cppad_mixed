@@ -117,16 +117,13 @@ void ldlt_cholmod::solve_H(
 	assert( rhs_->nrow == nrow_ );
 	assert( rhs_->ncol == 1     );
 	double* rhs_x = (double *) rhs_->x;
-# ifndef NDEBUG
-	for(size_t j = 0; j < nrow_; j++)
-		assert( rhs_x[j] == 0.0 );
-# endif
 	//
 	assert( rhs_set_ != CPPAD_NULL );
 	int* rhs_set_p = (int *) rhs_set_->p;
 	int* rhs_set_i = (int *) rhs_set_->i;
 	//
 	// set non-zero entries in right hand size rhs_
+	// (value of rhs_ in other rows does not matter because not in rhs_set)
 	for(size_t k = 0; k < row.size(); k++)
 		rhs_x[ row[k] ] = val_in[k];
 	//
@@ -186,10 +183,6 @@ void ldlt_cholmod::solve_H(
 		}
 	}
 	assert( k == row.size() );
-
-	// restore the vector rhs_ to be zero
-	for(size_t k = 0; k < row.size(); k++)
-		rhs_x[ row[k] ] = 0.0;
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

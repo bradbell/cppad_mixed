@@ -290,7 +290,7 @@ double ldlt_eigen::logdet(size_t& negative) const
 	bool   has_zero = false;
 	double logdet   = 0.0;
 	for(size_t j = 0; j < n_row_; j++)
-	{	has_zero != diag(j) == 0.0;
+	{	has_zero |= diag(j) == 0.0;
 		if( diag(j) < 0.0 )
 			negative++;
 		logdet += log( std::fabs( diag(j) ) );

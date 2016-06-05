@@ -34,10 +34,22 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh%$$
 
 $head 06-05$$
+$list number$$
 Make $cref box_newton$$ more robust by doing line search in a
 scaled negative projected gradient direction.
 (Step size of one in negative projected gradient direction
 may be much too large or much too small).
+$lnext
+There was a bug in $cref ldlt_cholmod_solve_H$$ where an unecessary
+condtion was check and failed. The example
+$cref cholmod_solve2_a.cpp$$ has been change to demonstrate that
+only a subset of the right hand side values matter.
+$lnext
+There was an error in the
+$cref ldlt_eigen_logdet$$ function in the special case where the
+determinant was zero. This has been fixed.
+$lend
+
 
 $head 06-04$$
 Redirect CppAD error messages through

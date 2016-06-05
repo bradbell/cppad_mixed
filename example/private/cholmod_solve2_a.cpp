@@ -200,8 +200,8 @@ bool cholmod_solve2_a(void)
 	Bset_p[0]   = 0;
 	Bset_p[1]   = 3;
 
-	// set B to a vector of zeros
-	cholmod_dense *B = cholmod_zeros(nrow, 1, T_xtype, &com);
+	// set B to a vector of ones
+	cholmod_dense *B = cholmod_ones(nrow, 1, T_xtype, &com);
 	double* B_x     = (double *) B->x;
 
 	// work space vectors that can be reused
@@ -214,20 +214,32 @@ bool cholmod_solve2_a(void)
 
 	// one by one recover columns of A_inv
 	for(size_t j = 0; j < ncol; j++)
-	{	if( j < 3 )
+	{
+		// set B_x to j-th column of identity matrix
+		for(size_t i = 0; i < 6; i++)
+			B_x[i] = 0.0;
+		B_x[j] = 1.0;
+
+		if( j < 3 )
 		{	// we need to solve for first three components of X
 			Bset_i[0] = 0;
 			Bset_i[1] = 1;
 			Bset_i[2] = 2;
+
+			// value of B_x in rows 3, 4, 5 do not matter
+			for(size_t i = 3; i < 6; i++)
+				B_x[i] = 2.0;
 		}
 		else
 		{	// we need to solve for last three components of X
 			Bset_i[0] = 3;
 			Bset_i[1] = 4;
 			Bset_i[2] = 5;
+
+			// value of B_x in rows 0, 1, 2 do not matter
+			for(size_t i = 0; i < 3; i++)
+				B_x[i] = 2.0;
 		}
-		// j-th column of identity matrix (only use j-th row of B)
-		B_x[j] = 1.0;
 
 		// solve A * x = b
 		int sys = CHOLMOD_A;
@@ -245,8 +257,6 @@ bool cholmod_solve2_a(void)
 			&E,
 			&com
 		);
-		// restore B to zero vector
-		B_x[j] = 0.0;
 		//
 		assert( flag == CHOLMOD_TRUE ); // return flag OK
 		assert( Xset->nrow   == nrow );
