@@ -403,7 +403,7 @@ box_newton_status box_newton(
 		double f_next;
 		while(
 			count < options.max_line               &&
-			f_lam > f_s * options.line_ratio       &&
+			f_lam > f_q * options.line_ratio       &&
 			p_lam > - p_norm * options.line_ratio  )
 		{	count++;
 			lam  = lam / 4.0;
