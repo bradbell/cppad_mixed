@@ -43,12 +43,6 @@ It might be more efficient (both in memory and speed)
 to uses a second order version of the implicit function theory
 derivatives or something similar to how ADOLC does it..
 
-$head Optimizing Random Effects$$
-It may save significant execution time and memory to write a special
-purpose optimizer for the random effects.
-We already have a recording for the Hessian w.r.t. the random effects,
-it is wasteful use an optimizer that does not take advantage of that Hessian.
-
 $head Windows Install$$
 Make and test a set of Windows install instructions for $code cppad_mixed$$.
 
