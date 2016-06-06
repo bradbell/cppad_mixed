@@ -33,6 +33,10 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 06-06$$
+Fix an minor error in $cref box_newton$$ line search termination criteria
+(did not affect any test results).
+
 $head 06-05$$
 $list number$$
 Make $cref box_newton$$ more robust by doing line search in a
