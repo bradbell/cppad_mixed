@@ -1681,7 +1681,7 @@ $end
 	// short name for fixed effects tolerance
 	double tol = fixed_tolerance_;
 	//
-	// check that x is within its limits and set soluton_.fixed_opt
+	// check that x is within its limits and set solution_.fixed_opt
 	for(size_t j = 0; j < n_fixed_; j++)
 	{	ok &= check_in_limits(
 			fixed_lower_[j], x[j], fixed_upper_[j], 2.0 * tol
@@ -1907,7 +1907,7 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 
 
 	// start starting point
-	CppAD::vector<double> x_start(n);
+	d_vector x_start(n);
 	bool init_x = true, init_z = false, init_lambda = false;
 	double *z_L = CPPAD_NULL, *z_U = CPPAD_NULL, *lambda = CPPAD_NULL;
 	bool ok = get_starting_point(
@@ -1924,7 +1924,7 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 	assert( ok );
 
 	// get lower and upper bounds
-	CppAD::vector<double> x_lower(n), x_upper(n), g_lower(m), g_upper(m);
+	d_vector x_lower(n), x_upper(n), g_lower(m), g_upper(m);
 	ok = get_bounds_info(
 		Index(n),
 		x_lower.data(),
@@ -1936,7 +1936,7 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 	assert( ok );
 
 	// eval_grad_f
-	CppAD::vector<double> grad_f(n);
+	d_vector grad_f(n);
 	Number* x     = x_start.data();
 	bool    new_x = true;
 	eval_grad_f( Index(n), x, new_x, grad_f.data() );
@@ -1950,7 +1950,7 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 	);
 
 	// eval_jac_g
-	CppAD::vector<double> jac_g(nnz_jac_g_);
+	d_vector jac_g(nnz_jac_g_);
 	new_x            = false;
 	nele_jac         = Index( nnz_jac_g_ );
 	Number* values   = jac_g.data();
@@ -1962,7 +1962,7 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 	eval_f(Index(n), x_start.data(), new_x, obj_value);
 
 	// eval_g
-	CppAD::vector<double> con_value(m);
+	d_vector con_value(m);
 	new_x = false;
 	eval_g(Index(n), x_start.data(), new_x, Index(m), con_value.data() );
 
@@ -1977,7 +1977,7 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 	double log_diff = (log_max_rel - log_min_rel) / double(n_try - 1);
 
 	// initialize x_step
-	CppAD::vector<double> x_step(x_start);
+	d_vector x_step(x_start);
 	//
 	// check grad_f
 	size_t line_count = 0;
@@ -2072,8 +2072,7 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 	// check jac_g
 	line_count = 0;
 	for(size_t j = 0; j < n; j++) if( x_lower[j] < x_upper[j] )
-	{	CppAD::vector<double>
-			abs_con(m), best_err(m), best_step(m), best_approx(m), jac(m);
+	{	d_vector abs_con(m), best_err(m), best_step(m), best_approx(m), jac(m);
 		CppAD::vector<bool> found(m);
 		for(size_t i = 0; i < m; i++)
 		{	abs_con[i]      = fabs(con_value[i]);
@@ -2098,14 +2097,14 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 			}
 
 			// x_plus, con_plus
-			CppAD::vector<double> con_plus(m);
+			d_vector con_plus(m);
 			double x_plus = std::min(x_start[j] + step, x_upper[j]);
 			x_step[j]     = x_plus;
 			new_x         = true;
 			eval_g(Index(n), x_step.data(), new_x, Index(m), con_plus.data());
 
 			// x_minus con_minus
-			CppAD::vector<double> con_minus(m);
+			d_vector con_minus(m);
 			double x_minus = std::max(x_start[j] - step, x_lower[j]);
 			x_step[j]      = x_minus;
 			new_x          = true;

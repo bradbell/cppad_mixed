@@ -37,10 +37,6 @@ $head nlp_upper_bound_inf()$$
 This member function returns the $code double$$ value used
 for plus infinity as an upper bound.
 
-$head fixed_opt()$$
-This member function returns the optimal solution (so far)
-for the fixed effects.
-
 $childtable%src/ipopt_fixed.cpp
 	%example/ipopt_xam.omh
 %$$
@@ -60,7 +56,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 	private:
 		// cppad_mixed types used by this class
 		typedef cppad_mixed::d_vector     d_vector;
-		typedef CppAD::vector<size_t>      s_vector;
+		typedef CppAD::vector<size_t>     s_vector;
 		//
 		// Ipopt types used by this class
 		typedef Ipopt::Number               Number;
