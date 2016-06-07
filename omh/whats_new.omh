@@ -33,6 +33,16 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 06-07$$
+$list number$$
+When $cref box_newton$$ fails, change message from
+$cref/fatal_error/public/User Defined Functions/fatal_error/$$ to
+$cref/warning/public/User Defined Functions/warning/$$.
+$lnext
+Make some minor improvements to $cref box_newton$$.
+$lend
+
+
 $head 06-06$$
 Fix an minor error in $cref box_newton$$ line search termination criteria
 (did not affect any test results).
