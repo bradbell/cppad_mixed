@@ -104,8 +104,8 @@ $codei%
 the iteration counter $icode iter$$,
 the value of the objective $icode f$$,
 norm of the Newton step projected to feasible set $icode |dx|$$,
-the derivative in the current $icode dx$$ direction $icode f_dx$$,
-the derivative in the current $icode s$$ direction $icode f_s$$,
+the derivative in the current $icode dx/|dx|$$ direction $icode f_dx$$,
+the derivative in the current $icode s/|s|$$ direction $icode f_s$$,
 and line search step size $icode lam_dx$$ or $icode lam_s$$,
 are printed at the end of each iteration.
 If $icode lam_dx$$ ($icode lam_s$$) is printed,
@@ -136,6 +136,9 @@ $codei%
 the line search parameter $icode lam$$,
 corresponding function values $icode f$$,
 and the average derivative in the current line search direction $icode f_lam$$,
+$latex \[
+	f_\lambda = \frac{ f(x + \lambda q ) - f(x) } { \lambda | q |}
+\] $$
 are printed for each iteration of the line search.
 If the change in the objective is to small (near numerical precision),
 the rate of descent of the norm of the
@@ -366,6 +369,10 @@ box_newton_status box_newton(
 		d_norm  = std::sqrt( d_norm );
 		dx_norm = std::sqrt( dx_norm );
 		p_norm  = std::sqrt( p_norm );
+		if( dx_norm > 0.0 )
+			f_dx = f_dx / dx_norm;
+		if( p_norm > 0.0 )
+			f_p  = f_p / p_norm;
 		//
 		// check for convergence
 		if( p_norm < options.tolerance )
@@ -377,8 +384,9 @@ box_newton_status box_newton(
 		//
 		// scaled negative projected gradient
 		for(size_t i = 0; i < n; i++)
-			s_cur[i] = p_cur[i] * dx_norm / p_norm;
-		double f_s = f_p * dx_norm / p_norm;
+			s_cur[i] = p_cur[i] * d_norm / p_norm;
+		double f_s    = f_p;
+		double s_norm = d_norm;
 		//
 		if( options.print_level >= 2 )
 		{	std::cout << "x  = " << x_cur << std::endl;
@@ -390,10 +398,13 @@ box_newton_status box_newton(
 		}
 		//
 		// if f_dx is not negative enough, use s_cur direction
-		bool use_s = f_dx > f_s * options.direction_ratio;
-		double f_q = f_dx;
+		bool use_s    = f_dx > f_s * options.direction_ratio;
+		double f_q    = f_dx;
+		double q_norm = dx_norm;
 		if( use_s )
-			f_q = f_s;
+		{	f_q    = f_s;
+			q_norm = s_norm;
+		}
 		//
 		// line search
 		double lam   = 4.0;
@@ -416,7 +427,7 @@ box_newton_status box_newton(
 				x_next[i] = std::min(x_next[i], x_up[i]);
 			}
 			f_next  = objective.fun(x_next);
-			f_lam   = (f_next - f_cur) / lam;
+			f_lam   = (f_next - f_cur) / (lam * q_norm);
 			p_lam   = 0.0;
 			if( CppAD::NearEqual(f_cur, f_next, eps, small) )
 			{	// gradient
@@ -433,7 +444,7 @@ box_newton_status box_newton(
 				// norm of projected gradient at x_next
 				p_lam = std::sqrt( p_lam );
 				// rate of descent of projected gradient
-				p_lam = (p_lam - p_norm) / lam;
+				p_lam = (p_lam - p_norm) / (lam * q_norm);
 				if( options.print_level >= 3 )
 					std::cout << "lam = " << lam
 					<< ", |p| = " << p_norm

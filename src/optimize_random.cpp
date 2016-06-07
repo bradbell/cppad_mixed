@@ -266,11 +266,11 @@ CppAD::vector<double> cppad_mixed::optimize_random(
 		break;
 
 		case CppAD::mixed::box_newton_max_iter_enum:
-		fatal_error("optmize_random: box_newton_max_iter");
+		warning("optmize_random: box_newton_max_iter");
 		break;
 
 		case CppAD::mixed::box_newton_max_line_enum:
-		fatal_error("optmize_random: box_newton_max_line");
+		warning("optmize_random: box_newton_max_line");
 		break;
 
 		default:

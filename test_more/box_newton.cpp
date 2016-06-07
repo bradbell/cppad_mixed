@@ -22,9 +22,9 @@ Example using cppad_mixed cholesky factor.
 namespace {
 	using CppAD::AD;
 	using CppAD::vector;
-	//
-	// objective
-	AD<double> f(const vector< AD<double> >& ax)
+	// -----------------------------------------------------------------------
+	// box_newton_one
+	AD<double> f_one(const vector< AD<double> >& ax)
 	{	size_t n        = ax.size();
 		AD<double> asum = 0.0;
 		for(size_t i = 0; i < n; i++)
@@ -34,7 +34,7 @@ namespace {
 		return asum;
 	}
 	// class
-	class Objective
+	class objective_one
 	{
 	private:
 		CppAD::ADFun<double>          fun_;
@@ -44,13 +44,13 @@ namespace {
 		size_t                        n_iter_;
 	public:
 		// constructor
-		Objective(size_t n) : ldlt_hes_(n), n_iter_(0)
+		objective_one(size_t n) : ldlt_hes_(n), n_iter_(0)
 		{	// record objective function
 			vector< AD<double> > ax(n), ay(1);
 			for(size_t i = 0; i < n; i++)
 				ax[i] = 0.0;
 			CppAD::Independent(ax);
-			ay[0] = f(ax);
+			ay[0] = f_one(ax);
 			fun_.Dependent(ax, ay);
 			// Hessian sparsity pattern
 			vector< std::set<size_t> > pattern(n);
@@ -125,32 +125,98 @@ namespace {
 			return d;
 		}
 	};
+	//
+	bool box_newton_one(void)
+	{	bool ok = true;
+
+		CppAD::mixed::box_newton_options options;
+		options.print_level = 0;
+		options.tolerance   = 1e-6;
+		size_t n   = 5;
+		double eps = 10. * options.tolerance;
+		//
+		objective_one objective(n);
+		vector<double> x_low(n), x_up(n), x_in(n), x_out(n);
+		for(size_t i = 0; i < n; i++)
+		{	x_low[i] = 0.0;
+			x_up[i]  = double(n - 2);
+			x_in[i]  = 0.0;
+		}
+		CppAD::mixed::box_newton_status status = CppAD::mixed::box_newton(
+			options, objective, x_low, x_up, x_in, x_out
+		);
+		ok &= status == CppAD::mixed::box_newton_ok_enum;
+		for(size_t i = 0; i < n; i++)
+		{	double check = double( std::min(n-2, i+1) );
+			ok &= CppAD::NearEqual(x_out[i], check, eps, eps);
+		}
+
+		return ok;
+	}
+	// -----------------------------------------------------------------------
+	// box_newton_two
+	class objective_two
+	{
+	public:
+		// constructor
+		objective_two(void)
+		{ }
+		// fun
+		double fun(const vector<double>& x)
+		{	double y = - x[0] * x[1];
+			return y;
+		}
+		// grad
+		vector<double> grad(const vector<double>& x)
+		{	vector<double> ret(2);
+			ret[0] = - x[1];
+			ret[1] = - x[0];
+			return ret;
+		}
+		// solve
+		vector<double> solve(const vector<double>& x, const vector<double>& p)
+		{	//           [ 0  -1 ]
+			// Hessian = [ -1  0 ]
+			vector<double> d(2);
+			d[0] = - p[1];
+			d[1] = - p[0];
+			return d;
+		}
+	};
+	//
+	bool box_newton_two(void)
+	{	bool ok = true;
+
+		CppAD::mixed::box_newton_options options;
+		options.print_level = 0;
+		options.tolerance   = 1e-10;
+		double eps = 10. * options.tolerance;
+		//
+		objective_two objective;
+		vector<double> x_low(2), x_up(2), x_in(2), x_out(2);
+		x_low[0] = x_low[1] = 0.0;
+		x_up[0]  = x_up[1]  = 1.0;
+		x_in[0]  = 1.0;
+		x_in[1]  = 0.7;
+		//
+		CppAD::mixed::box_newton_status status = CppAD::mixed::box_newton(
+			options, objective, x_low, x_up, x_in, x_out
+		);
+		ok &= status == CppAD::mixed::box_newton_ok_enum;
+		for(size_t i = 0; i < 2; i++)
+		{	// minimizer is (1, 1)
+			double check = 1.0;
+			ok &= CppAD::NearEqual(x_out[i], check, eps, eps);
+		}
+
+		return ok;
+	}
+	// -----------------------------------------------------------------------
 }
 bool box_newton(void)
 {	bool ok = true;
-
-	CppAD::mixed::box_newton_options options;
-	options.print_level = 0;
-	options.tolerance   = 1e-6;
-	size_t n   = 5;
-	double eps = 10. * options.tolerance;
-	//
-	Objective objective(n);
-	vector<double> x_low(n), x_up(n), x_in(n), x_out(n);
-	for(size_t i = 0; i < n; i++)
-	{	x_low[i] = 0.0;
-		x_up[i]  = double(n - 2);
-		x_in[i]  = 0.0;
-	}
-	CppAD::mixed::box_newton_status status = CppAD::mixed::box_newton(
-		options, objective, x_low, x_up, x_in, x_out
-	);
-	ok &= status == CppAD::mixed::box_newton_ok_enum;
-	for(size_t i = 0; i < n; i++)
-	{	double check = double( std::min(n-2, i+1) );
-		ok &= CppAD::NearEqual(x_out[i], check, eps, eps);
-	}
-
+	ok     &= box_newton_one();
+	ok     &= box_newton_two();
 	return ok;
 }
 // END C++
