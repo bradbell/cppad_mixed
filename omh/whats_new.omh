@@ -39,7 +39,9 @@ When $cref box_newton$$ fails, change message from
 $cref/fatal_error/public/User Defined Functions/fatal_error/$$ to
 $cref/warning/public/User Defined Functions/warning/$$.
 $lnext
-Make some minor improvements to $cref box_newton$$.
+Change the $code box_newton$$ convergence
+$cref/tolerance/box_newton/options/tolerance/$$ to be in terms of the
+Newton step (instead of projected gradient).
 $lend
 
 

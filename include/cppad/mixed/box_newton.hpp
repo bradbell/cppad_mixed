@@ -52,7 +52,7 @@ $srcfile%include/cppad/mixed/box_newton_options.hpp
 
 $subhead tolerance$$
 This is the convergence tolerance for the optimization. The method has
-converged when the norm of the projected gradient is less than
+converged when the norm of the Newton set $latex |d|$$ is less than
 $icode%tolerance% > 0%$$.
 
 $subhead direction_ratio$$
@@ -375,10 +375,10 @@ box_newton_status box_newton(
 			f_p  = f_p / p_norm;
 		//
 		// check for convergence
-		if( p_norm < options.tolerance )
+		if( d_norm < options.tolerance )
 		{	x_out = x_cur;
 			if( options.print_level >= 1 )
-				std::cout << "box_newton_ok: |p| = " << p_norm << std::endl;
+				std::cout << "box_newton_ok: |d| = " << d_norm << std::endl;
 			return box_newton_ok_enum;
 		}
 		//
@@ -471,7 +471,7 @@ box_newton_status box_newton(
 		{	std::cout
 				<< "iter = " << iter
 				<< ", f = "    << f_cur
-				<< ", |dx| = " << dx_norm
+				<< ", |d| = " << d_norm
 				<< ", f_dx = " << f_dx
 				<< ", f_s = " << f_s;
 			if( use_s )

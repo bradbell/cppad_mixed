@@ -358,6 +358,8 @@ bool data_mismatch_xam(void)
 	// random_ipopt_options is empty, so using box_newton for random effects
 	std::string random_ipopt_options = "";
 	CppAD::mixed::box_newton_options random_box_options;
+	random_box_options.print_level = 0;
+	random_box_options.tolerance   = 1e-10;
 	//
 	vector<double> random_lower(n_random), random_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)
