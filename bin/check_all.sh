@@ -11,7 +11,8 @@
 # ---------------------------------------------------------------------------
 if [ "$0" != "bin/check_all.sh" ]
 then
-	echo "bin/check_all.sh: must be executed from its parent directory"
+	echo 'bin/check_all.sh [d|r]'
+	echo 'must be executed from its parent directory'
 	exit 1
 fi
 # -----------------------------------------------------------------------------
@@ -21,7 +22,7 @@ echo_eval() {
 	eval $*
 }
 # -----------------------------------------------------------------------------
-input=''
+input="$1"
 while [ "$input" != 'd' ] &&  [ "$input" != 'r' ]
 do
 	msg='Debug [d], Release [r] ?'
