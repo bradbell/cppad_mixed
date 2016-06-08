@@ -33,6 +33,10 @@ $head Prototype$$
 $srcfile%include/cppad/mixed/box_newton.hpp
 	%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
 
+$head 2DO$$
+This routine works well where the bounds on $latex x$$ are not active.
+More work need to be done for the bounds are active.
+
 $head Public$$
 This function is part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.

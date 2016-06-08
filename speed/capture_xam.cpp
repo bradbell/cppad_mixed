@@ -32,30 +32,48 @@ Is the random seed
 $cref/s_in/manage_gsl_rng/new_gsl_rng/s_in/$$ used during the call to
 $cref manage_gsl_rng$$.
 
+$head Reference$$
+J. Andrew Royle,
+Biometrics 60, 108-115 March 2004,
+$italic
+N-Mixture Models for Estimating Population Size
+from Spatially Replicated Counts.
+$$
+
 $head Notation$$
 $table
-$latex T$$     $cnext number of sampling times
+$latex T$$     $cnext
+	number of sampling times
 $rnext
-$latex I$$     $cnext number of sampling locations
+$latex I$$     $cnext
+	number of sampling locations
+	($latex R$$ in reference)
 $rnext
-$latex N_i$$   $cnext size of the population at $th i$$ location
+$latex N_i$$   $cnext
+	size of the population at $th i$$ location
 $rnext
 $latex y_{i,t}$$ $cnext
 	number of captures at location $latex i$$ and time $latex t$$
+	($latex n_{i,t}$$ in reference)
 $rnext
 $latex M_i$$   $cnext
 	maximum of the measured number of captures at $th i$$ location
 $rnext
 $latex p_{i,t}$$ $cnext
-	probability of capture at location $latex i$$ and time $latex t$$
+	capture probability at location $latex i$$ and time $latex t$$
 $rnext
-$latex u_t$$   $cnext random effect for each sampling time
+$latex u_t$$
+	$cnext random effect for each sampling time
 $rnext
-$latex \theta_0$$ $cnext constant term in logit of probability
+$latex \theta_0$$
+	$cnext constant term in logit of capture probability
 $rnext
-$latex \theta_1$$ $cnext mean for $latex N_i$$ given $latex \theta$$
+$latex \theta_1$$
+	$cnext mean for $latex N_i$$ given $latex \theta$$
+	($latex \lambda$$ in reference)
 $rnext
-$latex \theta_2$$ $cnext standard deviation of random effects $latex u_t$$
+$latex \theta_2$$
+	$cnext standard deviation of random effects $latex u_t$$
 $tend
 
 $head Count Data$$
@@ -71,7 +89,8 @@ Furthermore, we assume that this probability
 is independent for each $latex (i, t)$$.
 
 $head Capture Probability$$
-Section 2.4 of the reference below suggest a
+Section 2.4 of the
+$cref/reference/capture_xam.cpp/Reference/$$ suggests a
 covariate model for the probability of capture.
 We use a similar model defined by
 $latex \[
@@ -111,7 +130,6 @@ $cref/random prior density
 	/Notation
 	/Random Prior Density, p(u|theta)
 /$$.
-
 
 $head p(y|theta,u)$$
 We define the vector of maximum measurement for each location by
@@ -217,14 +235,6 @@ $cref/fixed constraint function
 	/Fixed Data Density, p(z|theta)
 /$$
 $latex \B{p}(z | \theta)$$.
-
-$head Reference$$
-J. Andrew Royle,
-Biometrics 60, 108-115 March 2004,
-$italic
-N-Mixture Models for Estimating Population Size
-from Spatially Replicated Counts.
-$$
 
 $code
 $srcfile%speed/capture_xam.cpp

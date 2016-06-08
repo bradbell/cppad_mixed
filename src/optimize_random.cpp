@@ -74,6 +74,9 @@ as a function of the fixed and random effects
 (the fixed effects are variables).
 Hence the objective does not get recorded, but is not as efficient a
 representation for optimizing the random effects.
+There are some problems with the $code box_newton$$ optimizer
+when the bounds on the random effects are active; see
+$cref/2DO/box_newton/2DO/$$.
 
 $head fixed_vec$$
 This argument has prototype
