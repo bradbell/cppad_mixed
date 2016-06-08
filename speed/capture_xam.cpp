@@ -65,12 +65,12 @@ $rnext
 $latex u_t$$
 	$cnext random effect for each sampling time
 $rnext
-$latex \theta_1$$
-	$cnext constant term in logit of capture probability
-$rnext
 $latex \theta_0$$
 	$cnext mean for $latex N_i$$ given $latex \theta$$
 	($latex \lambda$$ in reference)
+$rnext
+$latex \theta_1$$
+	$cnext constant term in logit of capture probability
 $rnext
 $latex \theta_2$$
 	$cnext standard deviation of random effects $latex u_t$$
@@ -457,8 +457,8 @@ int main(int argc, char *argv[])
 	//
 	size_t T = n_random;
 	vector<double> theta_sim(n_fixed);
-	theta_sim[1] =   0.50;  // constant term in logit model
 	theta_sim[0] =   5.0;   // mean population size
+	theta_sim[1] =   0.50;  // constant term in logit model
 	theta_sim[2] =   1.00;  // standard deviation of random effects
 
 	// simulate y
@@ -469,14 +469,14 @@ int main(int argc, char *argv[])
 	vector<double> fix_constraint_lower, fix_constraint_upper;
 	vector<double>
 		theta_lower(n_fixed), theta_in(n_fixed), theta_upper(n_fixed);
-	// constant term
-	theta_lower[1] = 0.0;
-	theta_in[1]    =  theta_sim[1] / 2.0;
-	theta_upper[1] = +2.0;
 	// mean population
 	theta_lower[0] = 1.0;
 	theta_in[0]    = theta_sim[0] / 2.0;
 	theta_upper[0] = 20.0;
+	// constant term
+	theta_lower[1] = 0.0;
+	theta_in[1]    =  theta_sim[1] / 2.0;
+	theta_upper[1] = +2.0;
 	// standard deviation of random effects
 	theta_lower[2] = 1e-2;
 	theta_in[2]    = theta_sim[2] / 2.0;
@@ -583,7 +583,6 @@ int main(int argc, char *argv[])
 	}
 	//
 	CppAD::mixed::free_gsl_rng();
-	#
 	if( ok )
 		return 0;
 	return 1;
