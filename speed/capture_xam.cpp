@@ -442,7 +442,7 @@ int main(int argc, char *argv[])
 	size_t n_fixed  = 3;
 	std::time_t start_time = std::time( CPPAD_MIXED_NULL_PTR );
 	// problem size
-	size_t n_random = 30;
+	size_t n_random = 40;
 	size_t I = 25;
 	//
 	size_t T = n_random;
@@ -507,9 +507,19 @@ int main(int argc, char *argv[])
 		"Numeric tol                       1e-8\n"
 		"Integer max_iter                  40\n"
 	;
-	// random_ipopt_options is empty, so use box_newton for random effects
-	std::string random_ipopt_options = "";
+	std::string random_ipopt_options =
+		"Integer print_level               0\n"
+		"String  sb                        yes\n"
+		"String  derivative_test           none\n"
+		"String  derivative_test_print_all no\n"
+		"Numeric tol                       1e-8\n"
+		"Integer max_iter                  40\n"
+	;
+	random_ipopt_options = ""; // use box_newton
 	CppAD::mixed::box_newton_options random_box_options;
+	random_box_options.print_level = 0;
+	random_box_options.tolerance   = 1e-8;
+	random_box_options.max_iter    = 40;
 	double inf = std::numeric_limits<double>::infinity();
 	vector<double> u_lower(n_random), u_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)

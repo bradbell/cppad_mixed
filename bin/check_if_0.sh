@@ -20,7 +20,9 @@ for file in $list
 do
 	if grep '^# *if  *0 *$' $file
 	then
-		echo "present in $file"
+		echo "is present in $file."
+		echo 'Use the following command to fix this ?'
+		echo "git checkout $file"
 		exit 1
 	fi
 done
