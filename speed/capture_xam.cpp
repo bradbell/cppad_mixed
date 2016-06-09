@@ -59,8 +59,9 @@ $rnext
 $latex M_i$$   $cnext
 	maximum of the measured number of captures at $th i$$ location
 $rnext
-$latex p_{i,t}$$ $cnext
+$latex q_{i,t}$$ $cnext
 	capture probability at location $latex i$$ and time $latex t$$
+	($latex p_{i,t}$$ in reference)
 $rnext
 $latex u_t$$
 	$cnext random effect for each sampling time
@@ -78,12 +79,12 @@ $tend
 
 $head Count Data$$
 We use a binomial distribution to model the
-probability of $latex y_{i,t}$$ given $latex N_i$$ and $latex p_{i,t}$$; i.e,
+probability of $latex y_{i,t}$$ given $latex N_i$$ and $latex q_{i,t}$$; i.e,
 $latex \[
-\B{P} ( y_{i,t} | N_i , p_{i,t} )
+\B{P} ( y_{i,t} | N_i , q_{i,t} )
 =
 \left( \begin{array}{c} N_i \\ y_{i,t} \end{array} \right)
-p_{i,t}^{y(i,t)} \left( 1 - p_{i,t}^{y(i,t)} \right)
+q_{i,t}^{y(i,t)} \left( 1 - q_{i,t}^{y(i,t)} \right)
 \] $$
 Furthermore, we assume that this probability
 is independent for each $latex (i, t)$$.
@@ -94,11 +95,11 @@ $cref/reference/capture_xam.cpp/Reference/$$ suggests a
 covariate model for the probability of capture.
 We use a similar model defined by
 $latex \[
-	\R{logit} ( p_{i,t} ) = - u_t - \theta_1
+	\R{logit} ( q_{i,t} ) = - u_t - \theta_1
 \] $$
 It follows that
 $latex \[
-	p_{i,t} = [ 1 + \exp(  u_t + \theta_1 ) ]^{-1}
+	q_{i,t} = [ 1 + \exp(  u_t + \theta_1 ) ]^{-1}
 \] $$
 
 $head Population Probability$$
@@ -138,7 +139,7 @@ $latex \[
 \] $$
 We define a probability of capture function for each location and time by
 $latex \[
-p_{i,t} ( \theta , u ) =  [ 1 + \exp( u_t + \theta_1 ) ]^{-1}
+q_{i,t} ( \theta , u ) =  [ 1 + \exp( u_t + \theta_1 ) ]^{-1}
 \] $$
 The binomial likelihood for $latex y_{i, t}$$ given
 $latex N_i$$, $latex \theta$$, and $latex u$$ is
@@ -146,8 +147,8 @@ $latex \[
 B_{i,t} ( N_i, \theta , u )
 =
 \left( \begin{array}{c} {N(i)} \\ y_{i,t} \end{array} \right)
-	p_{i,t} ( \theta , u)^{y(i,t)}
-	\left( 1 - p_{i,t}( \theta , u)^{y(i,t)} \right)
+	q_{i,t} ( \theta , u)^{y(i,t)}
+	\left( 1 - q_{i,t}( \theta , u)^{y(i,t)} \right)
 \] $$
 We do not know the population at each location $latex N_i$$,
 but instead have a Poisson prior for $latex N_i$$.
@@ -293,8 +294,8 @@ void simulate(
 	{	for(size_t t = 0; t < T; t++)
 		{	// probability of capture
 			double ex = exp( u[t] + theta[1] );
-			double p = 1.0 /( 1.0  + ex );
-			y[ i * T + t ] = gsl_ran_binomial(rng, p, N[i]);
+			double q = 1.0 /( 1.0  + ex );
+			y[ i * T + t ] = gsl_ran_binomial(rng, q, N[i]);
 		}
 	}
 	//
@@ -367,14 +368,14 @@ public:
 		// log [ p(y | theta, u) ]
 		//  ------------------------------------------------------------
 		//
-		// y_{i,t} * log( p_{i,t} ) and log( 1.0 - p_{i,t} )
-		vector<Float> yit_log_p(I_ * T_), log_1p(I_ * T_);
+		// y_{i,t} * log( q_{i,t} ) and log( 1.0 - q_{i,t} )
+		vector<Float> yit_log_q(I_ * T_), log_1q(I_ * T_);
 		for(size_t i = 0; i < I_; i++)
 		{	for(size_t t = 0; t < T_; t++)
 			{	Float ex   = exp( u[t] + theta[1] );
-				Float    p = one / (one + ex );
-				yit_log_p[ i * T_ + t ]  = Float(y_[i*T_+t]) * log(p + eps);
-				log_1p[i * T_ + t ]      = log(one - p + eps);
+				Float    q = one / (one + ex );
+				yit_log_q[ i * T_ + t ]  = Float(y_[i*T_+t]) * log(q + eps);
+				log_1q[i * T_ + t ]      = log(one - q + eps);
 			}
 		}
 		//
@@ -410,10 +411,10 @@ public:
 					// log [ (k choose yit) / k! ]
 					// where the k! term is added outside the loop
 					double_sum += logfac_[yit] - logfac_[k - yit];
-					// log [ pit^yit ]
-					float_sum += yit_log_p[i * T_ + t];
-					// log [ (1 - pit)^(k - yit) ]
-					float_sum += Float(k - yit) * log_1p[i * T_ + t];
+					// log [ qit^yit ]
+					float_sum += yit_log_q[i * T_ + t];
+					// log [ (1 - qit)^(k - yit) ]
+					float_sum += Float(k - yit) * log_1q[i * T_ + t];
 				}
 				Li += exp( float_sum + double_sum );
 			}
