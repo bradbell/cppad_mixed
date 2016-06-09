@@ -45,9 +45,8 @@ $table
 $latex T$$     $cnext
 	number of sampling times
 $rnext
-$latex I$$     $cnext
+$latex R$$     $cnext
 	number of sampling locations
-	($latex R$$ in reference)
 $rnext
 $latex N_i$$   $cnext
 	size of the population at $th i$$ location
@@ -173,7 +172,7 @@ given the fixed and random effects, is
 $latex \[
 \B{p}( y | \theta , u )
 =
-\prod_{i=0}^{I-1} L_i ( \theta , u )
+\prod_{i=0}^{R-1} L_i ( \theta , u )
 \] $$
 This specifies the
 $cref/random data density
@@ -262,19 +261,19 @@ using CppAD::mixed::sparse_mat_info;
 
 // simulate data, y
 void simulate(
-	size_t                 I     ,
+	size_t                 R     ,
 	size_t                 T     ,
 	const vector<double>&  theta ,
 	vector<size_t>&        y     )
 {	assert( theta.size() == 3 );
-	assert( y.size() == I * T );
+	assert( y.size() == R * T );
 	// random number generator
 	gsl_rng* rng = CppAD::mixed::get_gsl_rng();
 	//
 	// simulate population sizes
-	vector<double> N(I);
+	vector<double> N(R);
 	double mu =  theta[0];
-	for(size_t i = 0; i < I; i++)
+	for(size_t i = 0; i < R; i++)
 		N[i] = gsl_ran_poisson(rng, mu );
 	//
 	// simulate random effects
@@ -290,7 +289,7 @@ void simulate(
 		u[t] = u[t] - sum / double(T);
 	//
 	// simulate data
-	for(size_t i = 0; i < I; i++)
+	for(size_t i = 0; i < R; i++)
 	{	for(size_t t = 0; t < T; t++)
 		{	// probability of capture
 			double ex = exp( u[t] + theta[1] );
@@ -305,7 +304,7 @@ void simulate(
 // cppad_mixed derived class
 class mixed_derived : public cppad_mixed {
 private:
-	const size_t          I_; // number of locations
+	const size_t          R_; // number of locations
 	const size_t          T_; // number of times
 	const vector<size_t>& y_; // reference to data values
 	// -----------------------------------------------------------------
@@ -317,7 +316,7 @@ private:
 public:
 	// constructor
 	mixed_derived(
-		size_t                 I           ,
+		size_t                 R           ,
 		size_t                 T           ,
 		bool                   quasi_fixed ,
 		const  sparse_mat_info& A_info     ,
@@ -325,13 +324,13 @@ public:
 		:
 		// n_fixed = 3, n_random = T
 		cppad_mixed(3, T, quasi_fixed, A_info) ,
-		I_(I)            ,
+		R_(R)            ,
 		T_(T)            ,
 		y_(y)
 	{	// set M_ and K_
-		M_.resize(I);
+		M_.resize(R);
 		K_ = 0;
-		for(size_t i = 0; i < I; i++)
+		for(size_t i = 0; i < R; i++)
 		{	M_[i] = 0;
 			for(size_t t = 0; t < T; t++)
 				M_[i] = std::max( M_[i], y[ i * T + t] );
@@ -369,8 +368,8 @@ public:
 		//  ------------------------------------------------------------
 		//
 		// y_{i,t} * log( q_{i,t} ) and log( 1.0 - q_{i,t} )
-		vector<Float> yit_log_q(I_ * T_), log_1q(I_ * T_);
-		for(size_t i = 0; i < I_; i++)
+		vector<Float> yit_log_q(R_ * T_), log_1q(R_ * T_);
+		for(size_t i = 0; i < R_; i++)
 		{	for(size_t t = 0; t < T_; t++)
 			{	Float ex   = exp( u[t] + theta[1] );
 				Float    q = one / (one + ex );
@@ -388,7 +387,7 @@ public:
 		}
 		//
 		// loop over locations
-		for(size_t i = 0; i < I_; i++)
+		for(size_t i = 0; i < R_; i++)
 		{	// initialize sum that defines L_i
 			Float Li = Float(0.0);
 			for(size_t k = M_[i]; k < 2 * M_[i] + 2; k++)
@@ -454,7 +453,7 @@ int main(int argc, char *argv[])
 	std::time_t start_time = std::time( CPPAD_MIXED_NULL_PTR );
 	// problem size
 	size_t n_random = 40;
-	size_t I = 25;
+	size_t R = 25;
 	//
 	size_t T = n_random;
 	vector<double> theta_sim(n_fixed);
@@ -463,8 +462,8 @@ int main(int argc, char *argv[])
 	theta_sim[2] =   1.00;  // standard deviation of random effects
 
 	// simulate y
-	vector<size_t> y(I * T);
-	simulate(I, T, theta_sim, y);
+	vector<size_t> y(R * T);
+	simulate(R, T, theta_sim, y);
 
 	// lower and upper limits
 	vector<double> fix_constraint_lower, fix_constraint_upper;
@@ -494,7 +493,7 @@ int main(int argc, char *argv[])
 
 	// create derived object
 	bool quasi_fixed = (random_seed % 2) == 0;
-	mixed_derived mixed_object(I, T, quasi_fixed, A_info, y);
+	mixed_derived mixed_object(R, T, quasi_fixed, A_info, y);
 
 	// initialize point to start optimization at
 	vector<double>  u_in(T);
