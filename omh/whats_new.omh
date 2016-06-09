@@ -33,6 +33,10 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 06-09$$
+Improve the $cref capture_xam.cpp$$ example by making correspondence
+to its reference clearer.
+
 $head 06-07$$
 $list number$$
 When $cref box_newton$$ fails, change message from

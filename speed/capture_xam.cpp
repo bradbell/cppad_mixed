@@ -51,6 +51,9 @@ $rnext
 $latex N_i$$   $cnext
 	size of the population at $th i$$ location
 $rnext
+$latex K$$   $cnext
+	max population size used to approximate infinite summation.
+$rnext
 $latex y_{i,t}$$ $cnext
 	number of captures at location $latex i$$ and time $latex t$$
 	($latex n_{i,t}$$ in reference)
@@ -293,6 +296,7 @@ void simulate(
 		N[i] = gsl_ran_poisson(rng, mu );
 	//
 	// simulate random effects
+	// (correct for loss of one degree of freedom)
 	vector<double> u(T);
 	double sigma = theta[2] * sqrt( double(T) / (double(T) - 1.0) );
 	double sum   = 0.0;
@@ -322,11 +326,11 @@ class mixed_derived : public cppad_mixed {
 private:
 	const size_t          R_; // number of locations
 	const size_t          T_; // number of times
+	size_t                K_; // max used when summing over population size
 	const vector<size_t>& y_; // reference to data values
 	// -----------------------------------------------------------------
 	// set by constructor and then effectively const
 	vector<size_t>        M_;      // max number of captures at each location
-	size_t                K_;      // practical bound on population size
 	vector<double>        logfac_; // logfac_[k] = log( k! )
 // ------------------------------------------------------------------------
 public:
@@ -334,6 +338,7 @@ public:
 	mixed_derived(
 		size_t                 R           ,
 		size_t                 T           ,
+		size_t                 K           ,
 		bool                   quasi_fixed ,
 		const  sparse_mat_info& A_info     ,
 		vector<size_t>&        y           )
@@ -342,17 +347,15 @@ public:
 		cppad_mixed(3, T, quasi_fixed, A_info) ,
 		R_(R)            ,
 		T_(T)            ,
+		K_(K)            ,
 		y_(y)
 	{	// set M_ and K_
 		M_.resize(R);
-		K_ = 0;
 		for(size_t i = 0; i < R; i++)
 		{	M_[i] = 0;
 			for(size_t t = 0; t < T; t++)
 				M_[i] = std::max( M_[i], y[ i * T + t] );
-			K_ = std::max( M_[i] , K_ );
 		}
-		K_ = 2 + 2 * K_ ;
 		logfac_.resize(K_);
 		logfac_[0]  = 0.0;
 		logfac_[1]  = 0.0;
@@ -470,6 +473,7 @@ int main(int argc, char *argv[])
 	// problem size
 	size_t n_random = 40;
 	size_t R = 25;
+	size_t K = 50;
 	//
 	size_t T = n_random;
 	vector<double> theta_sim(n_fixed);
@@ -509,7 +513,7 @@ int main(int argc, char *argv[])
 
 	// create derived object
 	bool quasi_fixed = (random_seed % 2) == 0;
-	mixed_derived mixed_object(R, T, quasi_fixed, A_info, y);
+	mixed_derived mixed_object(R, T, K, quasi_fixed, A_info, y);
 
 	// initialize point to start optimization at
 	vector<double>  u_in(T);
