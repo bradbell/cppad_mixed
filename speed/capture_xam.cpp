@@ -55,8 +55,13 @@ $latex y_{i,t}$$ $cnext
 	number of captures at location $latex i$$ and time $latex t$$
 	($latex n_{i,t}$$ in reference)
 $rnext
+$latex y_i$$ $cnext
+	is the vector of captures at location $latex i$$
+	$latex ( y_{i,0} , \ldots , y_{i, T-1} )$$.
+$rnext
 $latex M_i$$   $cnext
-	maximum of the measured number of captures at $th i$$ location
+	maximum of captures at $th i$$ location
+	($latex \max_t n_{i,t}$$ in reference)
 $rnext
 $latex q_{i,t}$$ $cnext
 	capture probability at location $latex i$$ and time $latex t$$
@@ -76,11 +81,11 @@ $latex \theta_2$$
 	$cnext standard deviation of random effects $latex u_t$$
 $tend
 
-$head Count Data$$
+$head p(y_it|N,q)$$
 We use a binomial distribution to model the
 probability of $latex y_{i,t}$$ given $latex N_i$$ and $latex q_{i,t}$$; i.e,
 $latex \[
-\B{P} ( y_{i,t} | N_i , q_{i,t} )
+\B{p} ( y_{i,t} | N , q )
 =
 \left( \begin{array}{c} N_i \\ y_{i,t} \end{array} \right)
 q_{i,t}^{y(i,t)} \left( 1 - q_{i,t}^{y(i,t)} \right)
@@ -88,7 +93,7 @@ q_{i,t}^{y(i,t)} \left( 1 - q_{i,t}^{y(i,t)} \right)
 Furthermore, we assume that this probability
 is independent for each $latex (i, t)$$.
 
-$head Capture Probability$$
+$head q_it(theta,u)$$
 Section 2.4 of the
 $cref/reference/capture_xam.cpp/Reference/$$ suggests a
 covariate model for the probability of capture.
@@ -98,18 +103,18 @@ $latex \[
 \] $$
 It follows that
 $latex \[
-	q_{i,t} = [ 1 + \exp(  u_t + \theta_1 ) ]^{-1}
+	q_{i,t}( \theta , u) = [ 1 + \exp(  u_t + \theta_1 ) ]^{-1}
 \] $$
 
-$head Population Probability$$
+$head p(N_i|theta)$$
 We use a Poisson distribution to model the
 probability of $latex N_i$$ given $latex \theta_0$$; i.e.,
 $latex \[
-\B{P} ( N_i | \theta  )
+\B{p} ( N_i | \theta  )
 =
 \theta_0^{N(i)} \frac{ \exp[ - \theta_0 ] }{ N_i ! }
 \] $$
-We assume that this probability
+We assume these this probability
 is independent for each $latex i$$.
 
 $head p(u|theta)$$
@@ -124,57 +129,68 @@ $latex \[
 	\frac{1}{ \theta_2 \sqrt{ 2 \pi } }
 		\exp \left[ - \frac{1}{2} \frac{ u_t^2 }{ \theta_2^2 } \right]
 \] $$
-This specifies the
+In $code cppad_mixed$$ notation, this specifies the
 $cref/random prior density
 	/cppad_mixed
 	/Notation
 	/Random Prior Density, p(u|theta)
 /$$.
 
-$head p(y|theta,u)$$
+$head M_i$$
 We define the vector of maximum measurement for each location by
 $latex \[
 	M_i = \max \left\{ y_{i,0} , \cdots , y_{i, T-1} \right\}
 \] $$
-We define a probability of capture function for each location and time by
+
+$head p(y_i|theta,u)$$
+The probability for $latex y_i$$ (the captures at location $latex i$$)
+given $latex N_i$$, $latex \theta$$, and $latex u$$ is
 $latex \[
-q_{i,t} ( \theta , u ) =  [ 1 + \exp( u_t + \theta_1 ) ]^{-1}
-\] $$
-The binomial likelihood for $latex y_{i, t}$$ given
-$latex N_i$$, $latex \theta$$, and $latex u$$ is
-$latex \[
-B_{i,t} ( N_i, \theta , u )
+\B{p}( y_i | N_i, \theta , u )
 =
+\prod_{t=0}^{T-1}
 \left( \begin{array}{c} {N(i)} \\ y_{i,t} \end{array} \right)
 	q_{i,t} ( \theta , u)^{y(i,t)}
 	\left( 1 - q_{i,t}( \theta , u)^{y(i,t)} \right)
 \] $$
 We do not know the population at each location $latex N_i$$,
 but instead have a Poisson prior for $latex N_i$$.
-The likelihood for the data at the $th i$$ location is
+We sum with respect to the possible values for $latex N_i$$
+to get the probability of $latex y_i$$ given
+$latex \theta$$ and $latex u$$.
 $latex \[
-L_i ( \theta , u )
+\B{p}( y_i | \theta , u )
 =
-\sum_{k=M(i)}^{2 M(i) + 1}
-	\theta_0^k \frac{ \exp( - \theta_0 ) }{ k ! }
-		\prod_{t=0}^{T-1} B_{i,t} ( k , \theta , u )
+\sum_{k=0}^K \B{p}( y_i | k, \theta , u ) \B{p}( k | \theta )
 \] $$
-We assume that this is a good approximation; i.e.,
-$latex \[
-L_i ( \theta , u )
-\approx
-\sum_{k=M(i)}^{+\infty}
-	\theta_0^k \frac{ \exp( - \theta_0 ) }{ k ! }
-		\prod_{t=0}^{T-1} B_{i,t} ( k , \theta , u )
-\] $$
+where $latex k$$ is the possible values for $latex N_i$$.
+Note that $latex K$$ should be plus infinity, but we use a fixed
+finite value for $latex K$$ as an approximation for the infinite sum.
+
+$head p(y|theta,u)$$
 Our model for the likelihood of the data at all the locations,
 given the fixed and random effects, is
 $latex \[
 \B{p}( y | \theta , u )
 =
-\prod_{i=0}^{R-1} L_i ( \theta , u )
+\prod_{i=0}^{R-1} \B{p}( y_i | \theta , u ) \B{p} ( N_i | \theta )
 \] $$
-This specifies the
+Expressed in terms of fixed effects $latex \theta$$
+and the random effects $latex u$$ this is
+$latex \[
+\B{p}( y | \theta , u )
+=
+\prod_{i=0}^{R-1}
+\left[
+\sum_{k=0}^{K-1}
+\theta_0^k \frac{ \exp[ - \theta_0 ] }{ k ! }
+\prod_{t=0}^{T-1}
+\left( \begin{array}{c} {k} \\ y_{i,t} \end{array} \right)
+	q_{i,t} ( \theta , u)^{y(i,t)}
+	\left( 1 - q_{i,t}( \theta , u)^{y(i,t)} \right)
+\right]
+\] $$.
+In $code cppad_mixed$$ notation, this specifies the
 $cref/random data density
 	/cppad_mixed
 	/Notation
