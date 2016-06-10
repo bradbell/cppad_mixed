@@ -595,11 +595,11 @@ int main(int argc, char *argv[])
 	std::map<std::string, size_t> size_map =
 		mixed_object.initialize(theta_in, u_in);
 
-	// print sizes
-	cout << endl;
-	std::map<std::string, size_t>::const_iterator itr;
-	for(itr = size_map.begin(); itr != size_map.end(); ++itr)
-		cout << itr->first << " = " << itr->second << endl;
+	// print amoumt of memory added to mixed_object during initialize
+	size_t num_bytes_before = size_map["num_bytes_before"];
+	size_t num_bytes_after  = size_map["num_bytes_after"];
+	cout << "memory added to mixed_object during initialize = "
+	<< num_bytes_after - num_bytes_before << endl;
 
 	// optimize the fixed effects
 	std::string fixed_options =
