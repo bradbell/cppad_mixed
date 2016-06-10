@@ -118,8 +118,8 @@ $latex M_i$$   $cnext
 	maximum of captures at $th i$$ location
 	($latex \max_t n_{i,t}$$ in reference)
 $rnext
-$latex q_{i,t}$$ $cnext
-	capture probability at location $latex i$$ and time $latex t$$
+$latex q_t$$ $cnext
+	capture probability at $latex t$$ same for all locations
 	($latex p_{i,t}$$ in reference)
 $rnext
 $latex u_t$$
@@ -141,27 +141,27 @@ $tend
 
 $head p(y_it|N,q)$$
 We use a binomial distribution to model the
-probability of $latex y_{i,t}$$ given $latex N_i$$ and $latex q_{i,t}$$; i.e,
+probability of $latex y_{i,t}$$ given $latex N_i$$ and $latex q_t$$; i.e,
 $latex \[
 \B{p} ( y_{i,t} | N , q )
 =
 \left( \begin{array}{c} N_i \\ y_{i,t} \end{array} \right)
-q_{i,t}^{y(i,t)} \left( 1 - q_{i,t}^{y(i,t)} \right)
+q_t^{y(i,t)} \left( 1 - q_t^{y(i,t)} \right)
 \] $$
 Furthermore, we assume that this probability
 is independent for each $latex (i, t)$$.
 
-$head q_it(theta,u)$$
+$head q_t(theta,u)$$
 Section 2.4 of the
 $cref/reference/capture_xam.cpp/Reference/$$ suggests a
 covariate model for the probability of capture.
 We use a similar model defined by
 $latex \[
-	\R{logit} ( q_{i,t} ) = - u_t - \theta_1
+	\R{logit} ( q_t ) = - u_t - \theta_1
 \] $$
 It follows that
 $latex \[
-	q_{i,t}( \theta , u) = [ 1 + \exp(  u_t + \theta_1 ) ]^{-1}
+	q_t( \theta , u) = [ 1 + \exp(  u_t + \theta_1 ) ]^{-1}
 \] $$
 
 $head p(N_i|theta)$$
@@ -208,8 +208,8 @@ $latex \[
 =
 \prod_{t=0}^{T-1}
 \left( \begin{array}{c} {N(i)} \\ y_{i,t} \end{array} \right)
-	q_{i,t} ( \theta , u)^{y(i,t)}
-	\left( 1 - q_{i,t}( \theta , u)^{y(i,t)} \right)
+	q_t ( \theta , u)^{y(i,t)}
+	\left( 1 - q_t( \theta , u)^{y(i,t)} \right)
 \] $$
 We do not know the population at each location $latex N_i$$,
 but instead have a Poisson prior for $latex N_i$$.
@@ -244,8 +244,8 @@ $latex \[
 \theta_0^k \frac{ \exp[ - \theta_0 ] }{ k ! }
 \prod_{t=0}^{T-1}
 \left( \begin{array}{c} {k} \\ y_{i,t} \end{array} \right)
-	q_{i,t} ( \theta , u)^{y(i,t)}
-	\left( 1 - q_{i,t}( \theta , u)^{y(i,t)} \right)
+	q_t ( \theta , u)^{y(i,t)}
+	\left( 1 - q_t( \theta , u)^{y(i,t)} \right)
 \right]
 \] $$.
 In $code cppad_mixed$$ notation, this specifies the
@@ -441,7 +441,7 @@ public:
 		// log [ p(y | theta, u) ]
 		//  ------------------------------------------------------------
 		//
-		// y_{i,t} * log( q_{i,t} ) and log( 1.0 - q_{i,t} )
+		// y_{i,t} * log( q_t ) and log( 1.0 - q_t )
 		vector<Float> yit_log_q(R_ * T_), log_1q(R_ * T_);
 		for(size_t i = 0; i < R_; i++)
 		{	for(size_t t = 0; t < T_; t++)
@@ -484,9 +484,9 @@ public:
 					// log [ (k choose yit) / k! ]
 					// where the k! term is added outside the loop
 					double_sum += logfac_[yit] - logfac_[k - yit];
-					// log [ qit^yit ]
+					// log [ qt^yit ]
 					float_sum += yit_log_q[i * T_ + t];
-					// log [ (1 - qit)^(k - yit) ]
+					// log [ (1 - qt)^(k - yit) ]
 					float_sum += Float(k - yit) * log_1q[i * T_ + t];
 				}
 				Li += exp( float_sum + double_sum );
