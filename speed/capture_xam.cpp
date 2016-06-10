@@ -507,7 +507,9 @@ public:
 		}
 		// - log [ p(y|theta,u) p(u|theta) ]
 		vec[0] = - vec[0];
+		//
 		// make sure result is finite
+		// (using theta_in which is probability worst case)
 		double inf = std::numeric_limits<double>::infinity();
 		assert( vec[0] < + Float(inf) );
 		assert( vec[0] > - Float(inf) );
@@ -694,9 +696,9 @@ int main(int argc, char *argv[])
 	ok &= std::fabs( sum ) < 1e-8;
 	//
 	// check reults
-	ok &= std::fabs( theta_out[0] / theta_sim[0] - 1.0 ) < 1e-1;
-	ok &= std::fabs( theta_out[1] - theta_sim[1] )       < 1e-1;
-	ok &= std::fabs( theta_out[2] / theta_sim[2] - 1.0 ) < 1e-1;
+	ok &= std::fabs( theta_out[0] / theta_sim[0] - 1.0 ) < 0.2;
+	ok &= std::fabs( theta_out[1] - theta_sim[1] )       < 0.2;
+	ok &= std::fabs( theta_out[2] - theta_sim[2] )       < 0.2;
 	//
 	cout << "elapsed seconds = " << end_time - start_time << endl;
 	cout << "random_seed = " << random_seed << endl;
@@ -706,7 +708,7 @@ int main(int argc, char *argv[])
 	{	cout << "capture_xam: Error" << endl;
 		cout << theta_out[0] / theta_sim[0] - 1.0 << endl;
 		cout << theta_out[1] - theta_sim[1]       << endl;
-		cout << theta_out[2] / theta_sim[2] - 1.0 << endl;
+		cout << theta_out[2] - theta_sim[2]       << endl;
 	}
 	//
 	CppAD::mixed::free_gsl_rng();
