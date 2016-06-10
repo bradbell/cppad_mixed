@@ -463,7 +463,7 @@ public:
 		for(size_t i = 0; i < R_; i++)
 		{	// initialize sum that defines L_i
 			Float Li = Float(0.0);
-			for(size_t k = M_[i]; k < 2 * M_[i] + 2; k++)
+			for(size_t k = M_[i]; k < K_; k++)
 			{	// initialize log of term for this k
 				//
 				// terms that need to be calculated with Float
