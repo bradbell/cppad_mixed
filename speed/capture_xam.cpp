@@ -91,6 +91,14 @@ Note that if $icode%random_seed% == 0%$$,
 the system clock is used to seed the random number generator.
 This is a positive integer.
 
+$head Example$$
+The $code cppad_mixed$$ automated testing system uses the following
+values for the arguments to $code capture_xam$$:
+$code
+$verbatim%speed/CMakeLists.txt
+	%0%# BEGIN capture_xam arguments%# END capture_xam arguments%0%$$
+$$
+
 $head Notation$$
 $table
 $latex R$$     $cnext
@@ -459,10 +467,10 @@ public:
 			log_poisson[k] -= logfac_[k];
 		}
 		//
-		// loop over locations
+		// log[ p(y|theta, u) ] to vec[0]
 		for(size_t i = 0; i < R_; i++)
-		{	// initialize sum that defines L_i
-			Float Li = Float(0.0);
+		{	// compute p(y_i|theta,u)
+			Float p_i = Float(0.0);
 			for(size_t k = M_[i]; k < K_; k++)
 			{	// initialize log of term for this k
 				//
@@ -488,10 +496,12 @@ public:
 					// log [ (1 - qt)^(k - yit) ]
 					float_sum += Float(k - yit) * log_1q[t];
 				}
-				Li += exp( float_sum + double_sum );
+				p_i += exp( float_sum + double_sum );
 			}
-			vec[0] += log( Li );
+			// add log[ p(y_i|theta,u) ] to vec[0]
+			vec[0] += log( p_i );
 		}
+		// - log [ p(y|theta,u) p(u|theta) ]
 		vec[0] = - vec[0];
 		return vec;
 	}
