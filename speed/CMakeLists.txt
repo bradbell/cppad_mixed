@@ -11,13 +11,13 @@
 # cppad_mixed speed test
 #
 # BEGIN capture_xam arguments
-SET(number_locations        40)
-SET(number_times            30)
-SET(max_population          30)
-SET(mean_population        5.0)
-SET(mean_logit_probability 0.5)
-SET(std_logit_probability  1.0)
-SET(random_seed              0)
+SET(number_locations          25)
+SET(number_times              40)
+SET(max_population            30)
+SET(mean_population          5.0)
+SET(mean_logit_probability   0.5)
+SET(std_logit_probability    1.0)
+SET(random_seed                0)
 # END capture_xam arguments
 #
 LINK_DIRECTORIES(

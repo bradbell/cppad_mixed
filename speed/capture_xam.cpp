@@ -507,6 +507,11 @@ public:
 		}
 		// - log [ p(y|theta,u) p(u|theta) ]
 		vec[0] = - vec[0];
+		// make sure result is finite
+		double inf = std::numeric_limits<double>::infinity();
+		assert( vec[0] < + Float(inf) );
+		assert( vec[0] > - Float(inf) );
+		//
 		return vec;
 	}
 // ------------------------------------------------------------------------
