@@ -442,14 +442,13 @@ public:
 		//  ------------------------------------------------------------
 		//
 		// y_{i,t} * log( q_t ) and log( 1.0 - q_t )
-		vector<Float> yit_log_q(R_ * T_), log_1q(R_ * T_);
-		for(size_t i = 0; i < R_; i++)
-		{	for(size_t t = 0; t < T_; t++)
-			{	Float ex   = exp( u[t] + theta[1] );
-				Float    q = one / (one + ex );
+		vector<Float> yit_log_q(R_ * T_), log_1q(T_);
+		for(size_t t = 0; t < T_; t++)
+		{	Float ex  = exp( u[t] + theta[1] );
+			Float q   = one / (one + ex );
+			log_1q[t] = log(one - q + eps);
+			for(size_t i = 0; i < R_; i++)
 				yit_log_q[ i * T_ + t ]  = Float(y_[i*T_+t]) * log(q + eps);
-				log_1q[i * T_ + t ]      = log(one - q + eps);
-			}
 		}
 		//
 		// log( theta[0]^k * exp( - theta[0] ) / k! )
@@ -487,7 +486,7 @@ public:
 					// log [ qt^yit ]
 					float_sum += yit_log_q[i * T_ + t];
 					// log [ (1 - qt)^(k - yit) ]
-					float_sum += Float(k - yit) * log_1q[i * T_ + t];
+					float_sum += Float(k - yit) * log_1q[t];
 				}
 				Li += exp( float_sum + double_sum );
 			}
