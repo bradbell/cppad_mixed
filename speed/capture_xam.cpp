@@ -572,18 +572,21 @@ int main(int argc, char *argv[])
 	vector<double> fix_constraint_lower, fix_constraint_upper;
 	vector<double>
 		theta_lower(n_fixed), theta_in(n_fixed), theta_upper(n_fixed);
-	// mean population
-	theta_lower[0] = 1.0;
-	theta_in[0]    = theta_sim[0] / 2.0;
-	theta_upper[0] = 20.0;
-	// constant term
-	theta_lower[1] = 0.0;
-	theta_in[1]    =  theta_sim[1] / 2.0;
-	theta_upper[1] = +2.0;
-	// standard deviation of random effects
-	theta_lower[2] = 1e-2;
-	theta_in[2]    = theta_sim[2] / 2.0;
-	theta_upper[2] = 4.0;
+	//
+	// theta[0] is estimate of mean_population
+	theta_lower[0] = 0.0;
+	theta_in[0]    = mean_population / 2.0;
+	theta_upper[0] = 2.0 * mean_population;
+	//
+	// theta[1] is estimate of mean_logit_probability
+	theta_lower[1] = mean_logit_probability - 2.0;
+	theta_in[1]    = mean_logit_probability - 0.5;
+	theta_upper[1] = mean_logit_probability + 2.0;
+	//
+	// theta[2] is estimate of std_logit_probability
+	theta_lower[2] = std_logit_probability / 10.;
+	theta_in[2]    = std_logit_probability / 2.0;
+	theta_upper[2] = std_logit_probability * 10.;
 
 	// constrain the sum of the random effects to be zero
 	CppAD::mixed::sparse_mat_info A_info;
