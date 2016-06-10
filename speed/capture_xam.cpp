@@ -10,7 +10,9 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
 $begin capture_xam.cpp$$
+$escape $$
 $spell
+	std
 	CppAD
 	cppad
 	Biometrics
@@ -25,12 +27,14 @@ $$
 $section A Capture Re-capture Example and Speed Test$$
 
 $head Syntax$$
-$codei%build/speed/capture_xam %random_seed%$$
-
-$head random_seed$$
-Is the random seed
-$cref/s_in/manage_gsl_rng/new_gsl_rng/s_in/$$ used during the call to
-$cref manage_gsl_rng$$.
+$codei%build/speed/capture_xam  \
+	%number_locations% \
+	%number_times%  \
+	%max_population% \
+	%mean_population% \
+	%mean_logit_probability% \
+	%std_logit_probability% \
+	%random_seed%$$
 
 $head Reference$$
 J. Andrew Royle,
@@ -40,19 +44,63 @@ N-Mixture Models for Estimating Population Size
 from Spatially Replicated Counts.
 $$
 
+$head number_locations$$
+Number of locations at which the measurements are made; i.e.
+$latex R$$ in the reference.
+Increasing this value increases the amount for each function evaluation,
+but does not change the number of fixed or random effects.
+This is a positive integer.
+
+$head number_times$$
+Number of times at which the measurements are made; i.e.,
+$latex T$$ in the reference.
+This is equal to the number of random effects in the model.
+This is a positive integer.
+
+$head max_population$$
+The is the maximum value in the finite summation with respect to
+population size; i.e.,
+$latex K$$ in the reference.
+This is a positive integer.
+
+$head mean_population$$
+Is the mean of the Poisson distribution for the population
+used to simulate data values;
+$latex \lambda$$ in reference.
+This is a positive floating point value.
+
+$head mean_logit_probability$$
+Is the mean of the logit of the capture probability
+(independent of the random effects)
+used to simulate data values.
+The is a floating point value and is the mean of the random effects.
+
+$head std_logit_probability$$
+Is the standard deviation of the logit of the capture probability
+(independent of the random effects)
+used to simulate data values.
+The is a positive floating point value and is
+the standard deviation of the random effects.
+
+$head random_seed$$
+Is the seed for the random number generator,
+to be specific,
+$cref/s_in/manage_gsl_rng/new_gsl_rng/s_in/$$ used during the call to
+$cref manage_gsl_rng$$.
+Note that if $icode%random_seed% == 0%$$,
+the system clock is used to seed the random number generator.
+This is a positive integer.
+
 $head Notation$$
 $table
-$latex T$$     $cnext
-	number of sampling times
-$rnext
 $latex R$$     $cnext
-	number of sampling locations
+	number of sampling locations; i.e., $icode number_locations$$.
+$rnext
+$latex T$$     $cnext
+	number of sampling times; i.e., $icode number_times$$.
 $rnext
 $latex N_i$$   $cnext
 	size of the population at $th i$$ location
-$rnext
-$latex K$$   $cnext
-	max population size used to approximate infinite summation.
 $rnext
 $latex y_{i,t}$$ $cnext
 	number of captures at location $latex i$$ and time $latex t$$
@@ -75,13 +123,16 @@ $latex u_t$$
 $rnext
 $latex \theta_0$$
 	$cnext mean for $latex N_i$$ given $latex \theta$$
-	($latex \lambda$$ in reference)
+	($latex \lambda$$ in reference); i.e.,
+	$icode mean_population$$.
 $rnext
 $latex \theta_1$$
-	$cnext constant term in logit of capture probability
+	$cnext mean of logit of capture probability; i.e.,
+	$icode mean_logit_probability$$.
 $rnext
 $latex \theta_2$$
-	$cnext standard deviation of random effects $latex u_t$$
+	$cnext standard deviation of logit of capture probability; i.e.,
+	$icode std_logit_probability$$.
 $tend
 
 $head p(y_it|N,q)$$
@@ -460,27 +511,46 @@ int main(int argc, char *argv[])
 	using std::cout;
 	using std::endl;
 	//
-	if( argc != 2 )
-	{	std::cerr << "usage: " << argv[0] << " random_seed" << endl;
+	if( argc != 8 )
+	{	std::cerr << "usage: " << argv[0] << "\\ \n"
+		<< " number_locations \\ \n"
+		<< " number_times \\ \n"
+		<< " max_population \\ \n"
+		<< " mean_population \\ \n"
+		<< " mean_logit_probability \\ \n"
+		<< " std_logit_probability \\ \n"
+		<< " random_seed \n";
 		std::exit(1);
 	}
 	//
-	size_t random_seed = std::atoi( argv[1] );
+	size_t number_locations       = std::atoi( argv[1] );
+	size_t number_times           = std::atoi( argv[2] );
+	size_t max_population         = std::atoi( argv[3] );
+	double mean_population        = std::atof( argv[4] );
+	double mean_logit_probability = std::atof( argv[5] );
+	double std_logit_probability  = std::atof( argv[6] );
+	size_t random_seed            = std::atoi( argv[7] );
+	//
+	// time that this program started
+	std::time_t start_time = std::time( CPPAD_MIXED_NULL_PTR );
+	//
+	// Get actual seed (in special case where original random_seed is zero).
 	random_seed        = CppAD::mixed::new_gsl_rng( random_seed );
 	//
+	// number of fixed and random effects
 	size_t n_fixed  = 3;
-	std::time_t start_time = std::time( CPPAD_MIXED_NULL_PTR );
-	// problem size
-	size_t n_random = 40;
-	size_t R = 25;
-	size_t K = 50;
+	size_t n_random = number_times;
 	//
-	size_t T = n_random;
+	// number of random effects
+	size_t T = number_times;
+	size_t R = number_locations;
+	size_t K = max_population;
+	//
 	vector<double> theta_sim(n_fixed);
-	theta_sim[0] =   5.0;   // mean population size
-	theta_sim[1] =   0.50;  // constant term in logit model
-	theta_sim[2] =   1.00;  // standard deviation of random effects
-
+	theta_sim[0] = mean_population;
+	theta_sim[1] = mean_logit_probability;
+	theta_sim[2] = std_logit_probability;
+	//
 	// simulate y
 	vector<size_t> y(R * T);
 	simulate(R, T, theta_sim, y);

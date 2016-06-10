@@ -10,7 +10,13 @@
 # ---------------------------------------------------------------------------
 # cppad_mixed speed test
 #
-SET(random_seed 0)
+SET(number_locations        25)
+SET(number_times            40)
+SET(max_population          50)
+SET(mean_population        5.0)
+SET(mean_logit_probability 0.5)
+SET(std_logit_probability  1.0)
+SET(random_seed              0)
 #
 LINK_DIRECTORIES(
 	${ipopt_LIBRARY_DIRS}
@@ -32,7 +38,14 @@ TARGET_LINK_LIBRARIES(capture_xam
 )
 ADD_CUSTOM_TARGET(
 	speed_capture_xam
-	capture_xam ${random_seed}
+	capture_xam
+		${number_locations}
+		${number_times}
+		${max_population}
+		${mean_population}
+		${mean_logit_probability}
+		${std_logit_probability}
+		${random_seed}
 	DEPENDS capture_xam
 )
 ADD_DEPENDENCIES(speed_capture_xam cppad_mixed)
