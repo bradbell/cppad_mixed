@@ -45,51 +45,55 @@ from Spatially Replicated Counts.
 $$
 
 $head number_locations$$
-Number of locations at which the measurements are made; i.e.
+This is a positive integer equal to the
+number of locations at which the measurements are made; i.e.
 $latex R$$ in the reference.
 Increasing this value increases the amount for each function evaluation,
 but does not change the number of fixed or random effects.
-This is a positive integer.
 
 $head number_times$$
-Number of times at which the measurements are made; i.e.,
+This is a positive integer equal to the
+number of times at which the measurements are made; i.e.,
 $latex T$$ in the reference.
-This is equal to the number of random effects in the model.
-This is a positive integer.
+This is also equal to the number of random effects in the model.
 
 $head max_population$$
-The is the maximum value in the finite summation with respect to
+This is a positive integer equal to the
+maximum value in the finite summation with respect to
 population size; i.e.,
 $latex K$$ in the reference.
-This is a positive integer.
 
 $head mean_population$$
-Is the mean of the Poisson distribution for the population
+This is a positive floating point value equal to the
+mean of the Poisson distribution for the population
 used to simulate data values;
 $latex \lambda$$ in reference.
-This is a positive floating point value.
 
 $head mean_logit_probability$$
-Is the mean of the logit of the capture probability
+This is a positive floating point value equal to the
+mean of the logit of the capture probability
 (independent of the random effects)
 used to simulate data values.
-The is a floating point value and is the mean of the random effects.
+The is also equal to the mean of the random effects.
 
 $head std_logit_probability$$
-Is the standard deviation of the logit of the capture probability
+This is a positive floating point value equal to the
+standard deviation of the logit of the capture probability
 (independent of the random effects)
 used to simulate data values.
-The is a positive floating point value and is
-the standard deviation of the random effects.
+The is also equal to the standard deviation of the random effects.
 
 $head random_seed$$
-Is the seed for the random number generator,
+This is a positive integer equal to the
+seed for the random number generator,
 to be specific,
 $cref/s_in/manage_gsl_rng/new_gsl_rng/s_in/$$ used during the call to
 $cref manage_gsl_rng$$.
 Note that if $icode%random_seed% == 0%$$,
 the system clock is used to seed the random number generator.
-This is a positive integer.
+The actual value used for $icode random_seed$$ is printed
+at the end of the program (so that you can reproduce results when
+the system clock is used).
 
 $head Example$$
 The $code cppad_mixed$$ automated testing system uses the following
@@ -544,6 +548,16 @@ int main(int argc, char *argv[])
 	double std_logit_probability  = std::atof( argv[6] );
 	size_t random_seed            = std::atoi( argv[7] );
 	//
+	cout << argv[0]
+	<< " " << number_locations
+	<< " " << number_times
+	<< " " << max_population
+	<< " " << mean_population
+	<< " " << mean_logit_probability
+	<< " " << std_logit_probability
+	<< " " << random_seed
+	<< endl;
+	//
 	// time that this program started
 	std::time_t start_time = std::time( CPPAD_MIXED_NULL_PTR );
 	//
@@ -675,8 +689,9 @@ int main(int argc, char *argv[])
 	ok &= std::fabs( sum ) < 1e-8;
 	//
 	// check reults
-	for(size_t j = 0; j < n_fixed; j++)
-		ok &= std::fabs( theta_out[j] / theta_sim[j] - 1.0 ) < 3e-1;
+	ok &= std::fabs( theta_out[0] / theta_sim[0] - 1.0 ) < 1e-1;
+	ok &= std::fabs( theta_out[1] - theta_sim[1] )       < 1e-1;
+	ok &= std::fabs( theta_out[2] / theta_sim[2] - 1.0 ) < 1e-1;
 	//
 	cout << "elapsed seconds = " << end_time - start_time << endl;
 	cout << "random_seed = " << random_seed << endl;
@@ -684,8 +699,9 @@ int main(int argc, char *argv[])
 		cout << "capture_xam: OK" << endl;
 	else
 	{	cout << "capture_xam: Error" << endl;
-		for(size_t j = 0; j < n_fixed; j++)
-			cout << theta_out[j] / theta_sim[j] - 1.0 << endl;
+		cout << theta_out[0] / theta_sim[0] - 1.0 << endl;
+		cout << theta_out[1] - theta_sim[1]       << endl;
+		cout << theta_out[2] / theta_sim[2] - 1.0 << endl;
 	}
 	//
 	CppAD::mixed::free_gsl_rng();

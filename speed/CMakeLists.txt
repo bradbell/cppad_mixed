@@ -11,8 +11,8 @@
 # cppad_mixed speed test
 #
 # BEGIN capture_xam arguments
-SET(number_locations        25)
-SET(number_times            40)
+SET(number_locations        40)
+SET(number_times            30)
 SET(max_population          30)
 SET(mean_population        5.0)
 SET(mean_logit_probability 0.5)
