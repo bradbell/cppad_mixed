@@ -99,6 +99,10 @@ $rnext
 $latex T$$     $cnext
 	number of sampling times; i.e., $icode number_times$$.
 $rnext
+$latex K$$     $cnext
+	maximum population in truncation of infinite summation; i.e.,
+	$icode max_population$$
+$rnext
 $latex N_i$$   $cnext
 	size of the population at $th i$$ location
 $rnext
