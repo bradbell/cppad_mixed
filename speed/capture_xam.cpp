@@ -529,9 +529,9 @@ public:
 				for(size_t t = 0; t < T_; t++)
 				{	size_t yit = y_[ i * T_ + t ];
 					//
+					// k choose yit = k! / [ yit! * (k - yit)! ]
 					// log [ (k choose yit) ]
-					// note that k! term was already added outside the loop
-					double_sum += logfac_[k] + logfac_[yit] - logfac_[k - yit];
+					double_sum += logfac_[k] - logfac_[yit] - logfac_[k - yit];
 					//
 					// log ( qt^yit )
 					float_sum += yit_log_q[i * T_ + t];
@@ -543,6 +543,7 @@ public:
 				// (output elements of log_pik are not affected by its input)
 				log_pik[ i * K_ + k ] = float_sum + double_sum;
 				//
+				// use normalization to avoid exponential overflow
 				// p_i += p(y_i|N_i=k,theta,u) p(N_i=k|theta) / exp(normalize)
 				p_i += exp( log_pik[ i * K_ + k ] - normalize );
 			}
@@ -776,7 +777,8 @@ int main(int argc, char *argv[])
 	cout << "random_seed = " << random_seed << endl;
 	if( ok )
 		cout << "capture_xam: OK" << endl;
-	{
+	else
+	{	cout << "capture_xam: Error" << endl;
 		cout << theta_out[0] / theta_sim[0] - 1.0 << endl;
 		cout << theta_out[1] - theta_sim[1]       << endl;
 		cout << theta_out[2] - theta_sim[2]       << endl;
