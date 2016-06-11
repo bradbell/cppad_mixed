@@ -420,7 +420,7 @@ public:
 		K_(K)            ,
 		y_(y)
 	{	//
-		// set M_ 
+		// set M_
 		M_.resize(R);
 		for(size_t i = 0; i < R; i++)
 		{	M_[i] = 0;
@@ -499,7 +499,7 @@ public:
 			// initialize p(y_i|theta,u)
 			Float p_i = Float(0.0);
 			for(size_t k = M_[i]; k < K_; k++)
-			{	// compute p(y_i|N_i=k,theta,u) p(N_i=k|theta) 
+			{	// compute p(y_i|N_i=k,theta,u) p(N_i=k|theta)
 				//
 				// initialize sum that needs to be calculated with Float
 				// p(N_i=k|theta)
@@ -526,7 +526,7 @@ public:
 				// (output elements of log_pik are not affected by its input)
 				log_pik[ i * K_ + k ] = float_sum + double_sum;
 				//
-				// p_i += p(y_i|N_i=k,theta,u) p(N_i=k|theta) / exp(normalize) 
+				// p_i += p(y_i|N_i=k,theta,u) p(N_i=k|theta) / exp(normalize)
 				p_i += exp( log_pik[ i * K_ + k ] - normalize );
 			}
 			// vec[0] += log[ p(y_i|theta,u) ]
@@ -545,7 +545,7 @@ public:
 		const vector<a2_double>& random_vec )
 	{	vector<a2_double> log_pik(R_ * K_), vec(1);
 		for(size_t ell = 0; ell < R_ * K_; ell++)
-			log_pik[ell] = a2_double(log_pik_[ell]);	
+			log_pik[ell] = a2_double(log_pik_[ell]);
 		vec = implement_ran_likelihood(fixed_vec, random_vec, log_pik);
 		//
 		// make sure result is finite
@@ -561,7 +561,7 @@ public:
 		const vector<a1_double>& random_vec )
 	{	vector<a1_double> log_pik(R_ * K_), vec(1);
 		for(size_t ell = 0; ell < R_ * K_; ell++)
-			log_pik[ell] = a1_double(log_pik_[ell]);	
+			log_pik[ell] = a1_double(log_pik_[ell]);
 		vec = implement_ran_likelihood(fixed_vec, random_vec, log_pik);
 		//
 		// make sure result is finite
