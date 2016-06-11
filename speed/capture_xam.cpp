@@ -28,13 +28,15 @@ $section A Capture Re-capture Example and Speed Test$$
 
 $head Syntax$$
 $codei%build/speed/capture_xam  \
+	%random_seed% \
 	%number_locations% \
 	%number_times%  \
 	%max_population% \
 	%mean_population% \
 	%mean_logit_probability% \
 	%std_logit_probability% \
-	%random_seed%$$
+	%random_constraint%
+%$$
 
 $head Reference$$
 J. Andrew Royle,
@@ -96,6 +98,37 @@ standard deviation of the logit of the capture probability
 (independent of the random effects)
 used to simulate data values.
 The is also equal to the standard deviation of the random effects.
+
+$head random_constraint$$
+This is either $code true$$ or $code false$$.
+If it is $code false$$, there is no
+$cref/random constraint
+	/cppad_mixed
+	/Problem
+	/Random Constraints
+/$$
+for this example.
+If it is $code true$$,
+the random constraint is
+$latex \[
+	0 = \hat{u}_0 ( \theta ) + \cdots + \hat{u}_{T-1} ( \theta )
+\] $$
+where $latex \hat{u} ( \theta )$$ is the
+$cref/optimal random effects
+	/cppad_mixed
+	/Notation
+	/Optimal Random Effects, u^(theta)
+/$$.
+The corresponding
+$cref/random constraint matrix
+	/cppad_mixed
+	/Notation
+	/Random Constraint Matrix, A
+/$$
+$latex A$$ is the row vector of size $latex T$$ with all ones; i.e.,
+$latex \[
+	A = [ 1 , \cdots , 1 ] \in \B{R}^{1 \times T}
+\] $$
 
 $head Example$$
 The $code cppad_mixed$$ automated testing system uses the following
@@ -269,34 +302,6 @@ $cref/random data density
 	/Random Data Density, p(y|theta,u)
 /$$.
 
-$head A$$
-The
-$cref/random constraint
-	/cppad_mixed
-	/Problem
-	/Random Constraints
-/$$
-for this example is
-$latex \[
-	0 = \hat{u}_0 ( \theta ) + \cdots + \hat{u}_{T-1} ( \theta )
-\] $$
-where $latex \hat{u} ( \theta )$$ is the
-$cref/optimal random effects
-	/cppad_mixed
-	/Notation
-	/Optimal Random Effects, u^(theta)
-/$$.
-The corresponding
-$cref/random constraint matrix
-	/cppad_mixed
-	/Notation
-	/Random Constraint Matrix, A
-/$$
-$latex A$$ is the row vector of size $latex T$$ with all ones; i.e.,
-$latex \[
-	A = [ 1 , \cdots , 1 ] \in \B{R}^{1 \times T}
-\] $$
-
 $head p(theta)$$
 For this example there is no
 $cref/fixed prior density
@@ -349,12 +354,14 @@ using CppAD::mixed::sparse_mat_info;
 
 // simulate data, y
 void simulate(
-	size_t                 R     ,
-	size_t                 T     ,
-	const vector<double>&  theta ,
-	vector<size_t>&        y     )
+	std::string&           random_constraint ,
+	size_t                 R                 ,
+	size_t                 T                 ,
+	const vector<double>&  theta             ,
+	vector<size_t>&        y                 )
 {	assert( theta.size() == 3 );
 	assert( y.size() == R * T );
+	//
 	// random number generator
 	gsl_rng* rng = CppAD::mixed::get_gsl_rng();
 	//
@@ -365,18 +372,23 @@ void simulate(
 		N[i] = gsl_ran_poisson(rng, mu );
 	//
 	// simulate random effects
-	// (correct for loss of one degree of freedom)
 	vector<double> u(T);
-	double sigma = theta[2] * sqrt( double(T) / (double(T) - 1.0) );
+	double sigma = theta[2];
 	double sum   = 0.0;
 	for(size_t t = 0; t < T; t++)
 	{	u[t] = gsl_ran_gaussian(rng, sigma);
 		sum += u[t];
 	}
-	// offset random effects to be mean zero (removes one degree of freedom)
-	for(size_t t = 0; t < T; t++)
-		u[t] = u[t] - sum / double(T);
-	//
+	// adjust the random effects when using random constraint
+	if( random_constraint == "true" )
+	{	for(size_t t = 0; t < T; t++)
+		{	// simulate mean zero values
+			u[t] = u[t] - sum / double(T);
+			//
+			// correct for loss of one degree of freedom
+			u[t] = u[t] * sqrt( double(T) / double(T-1) );
+		}
+	}
 	// simulate data
 	for(size_t i = 0; i < R; i++)
 	{	for(size_t t = 0; t < T; t++)
@@ -583,8 +595,9 @@ int main(int argc, char *argv[])
 {	bool ok = true;
 	using std::cout;
 	using std::endl;
+	using std::string;
 	//
-	if( argc != 8 )
+	if( argc != 9 )
 	{	std::cerr << "usage: " << argv[0] << "\\ \n"
 		<< " random_seed \\ \n"
 		<< " number_locations \\ \n"
@@ -592,27 +605,31 @@ int main(int argc, char *argv[])
 		<< " max_population \\ \n"
 		<< " mean_population \\ \n"
 		<< " mean_logit_probability \\ \n"
-		<< " std_logit_probability \n";
+		<< " std_logit_probability \\ \n"
+		<< " random_constraint \n";
 		std::exit(1);
 	}
 	//
-	size_t random_seed            = std::atoi( *++argv );
-	size_t number_locations       = std::atoi( *++argv );
-	size_t number_times           = std::atoi( *++argv );
-	size_t max_population         = std::atoi( *++argv );
-	double mean_population        = std::atof( *++argv );
-	double mean_logit_probability = std::atof( *++argv );
-	double std_logit_probability  = std::atof( *++argv );
+	size_t random_seed            = std::atoi( argv[1] );
+	size_t number_locations       = std::atoi( argv[2] );
+	size_t number_times           = std::atoi( argv[3] );
+	size_t max_population         = std::atoi( argv[4] );
+	double mean_population        = std::atof( argv[5] );
+	double mean_logit_probability = std::atof( argv[6] );
+	double std_logit_probability  = std::atof( argv[7] );
+	string random_constraint      = argv[8];
 	//
-	cout << argv[0]
+	cout   << argv[0]
+	<< " " << random_seed
 	<< " " << number_locations
 	<< " " << number_times
 	<< " " << max_population
 	<< " " << mean_population
 	<< " " << mean_logit_probability
 	<< " " << std_logit_probability
-	<< " " << random_seed
+	<< " " << random_constraint
 	<< endl;
+	//
 	//
 	// time that this program started
 	std::time_t start_time = std::time( CPPAD_MIXED_NULL_PTR );
@@ -636,7 +653,7 @@ int main(int argc, char *argv[])
 	//
 	// simulate y
 	vector<size_t> y(R * T);
-	simulate(R, T, theta_sim, y);
+	simulate(random_constraint, R, T, theta_sim, y);
 
 	// lower and upper limits
 	vector<double> fix_constraint_lower, fix_constraint_upper;
@@ -658,13 +675,15 @@ int main(int argc, char *argv[])
 	theta_in[2]    = std_logit_probability / 2.0;
 	theta_upper[2] = std_logit_probability * 10.;
 
-	// constrain the sum of the random effects to be zero
+	// random constraints
 	CppAD::mixed::sparse_mat_info A_info;
-	A_info.resize(T);
-	for(size_t t = 0; t < T; t++)
-	{	A_info.row[t] = 0;
-		A_info.col[t] = t;
-		A_info.val[t] = 1.0;
+	if( random_constraint == "true" )
+	{	A_info.resize(T);
+		for(size_t t = 0; t < T; t++)
+		{	A_info.row[t] = 0;
+			A_info.col[t] = t;
+			A_info.val[t] = 1.0;
+		}
 	}
 
 	// initialize random effects to start optimization at
@@ -757,8 +776,7 @@ int main(int argc, char *argv[])
 	cout << "random_seed = " << random_seed << endl;
 	if( ok )
 		cout << "capture_xam: OK" << endl;
-	else
-	{	cout << "capture_xam: Error" << endl;
+	{
 		cout << theta_out[0] / theta_sim[0] - 1.0 << endl;
 		cout << theta_out[1] - theta_sim[1]       << endl;
 		cout << theta_out[2] - theta_sim[2]       << endl;

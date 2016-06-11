@@ -11,13 +11,14 @@
 # cppad_mixed speed test
 #
 # BEGIN capture_xam arguments
+SET(random_seed                0)
 SET(number_locations          50)
 SET(number_times              30)
 SET(max_population            15)
-SET(mean_population          4.0)
+SET(mean_population          5.0)
 SET(mean_logit_probability  -0.5)
 SET(std_logit_probability    0.5)
-SET(random_seed                0)
+SET(random_constraint        true)
 # END capture_xam arguments
 #
 LINK_DIRECTORIES(
@@ -41,13 +42,14 @@ TARGET_LINK_LIBRARIES(capture_xam
 ADD_CUSTOM_TARGET(
 	speed_capture_xam
 	capture_xam
+		${random_seed}
 		${number_locations}
 		${number_times}
 		${max_population}
 		${mean_population}
 		${mean_logit_probability}
 		${std_logit_probability}
-		${random_seed}
+		${random_constraint}
 	DEPENDS capture_xam
 )
 ADD_DEPENDENCIES(speed_capture_xam cppad_mixed)

@@ -33,9 +33,19 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
-$head 06-09$$
-Improve the $cref capture_xam.cpp$$ example by making correspondence
-to its reference clearer.
+$head 06-11$$
+Improve the $cref capture_xam.cpp$$ example:
+$list number$$
+Make the  correspondence to its
+$cref/reference/capture_xam.cpp/Reference/$$ clearer.
+$lnext
+Add lots of command line arguments for optional settings; see
+$cref/syntax/capture_xam.cpp/Syntax/$$.
+$lnext
+Add a normalization factor to avoid floating point overflow during
+evaluation of its $cref ran_likelihood$$.
+$lend
+
 
 $head 06-07$$
 $list number$$
@@ -383,7 +393,8 @@ $cref/random constraints
 
 $head 01-16$$
 $list number$$
-Include the constraint matrix $cref/A/capture_xam.cpp/A/$$
+Include a
+$cref/random_constraint/capture_xam.cpp/random_constraint/$$
 in implementation and documentation of the $cref capture_xam.cpp$$ example.
 In addition, check that the result satisfies the constraint that
 the sum of the random effects is zero.
