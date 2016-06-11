@@ -22,6 +22,7 @@ $spell
 	xam
 	logit
 	covariate
+	ipopt
 $$
 
 $section A Capture Re-capture Example and Speed Test$$
@@ -53,11 +54,19 @@ seed for the random number generator,
 to be specific,
 $cref/s_in/manage_gsl_rng/new_gsl_rng/s_in/$$ used during the call to
 $cref manage_gsl_rng$$.
-Note that if $icode%random_seed% == 0%$$,
+
+$subhead actual_seed$$
+If $icode random_seed$$ is zero,
 the system clock is used to seed the random number generator.
-The actual value used for $icode random_seed$$ is printed
+The actual random seed $icode actual_seed$$ is printed
 at the end of the program (so that you can reproduce results when
 the system clock is used).
+
+$subhead quasi_fixed$$
+If the actual seed mod two, $icode|actual_seed| % 2|$$, is one,
+$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is true in the
+$code cppad_mixed$$ derived class constructor.
+Otherwise it is false.
 
 $head number_locations$$
 This is a positive integer equal to the
@@ -652,8 +661,8 @@ int main(int argc, char *argv[])
 	// time that this program started
 	std::time_t start_time = std::time( CPPAD_MIXED_NULL_PTR );
 	//
-	// Get actual seed (in special case where original random_seed is zero).
-	random_seed        = CppAD::mixed::new_gsl_rng( random_seed );
+	// Get actual seed (different when random_seed is zero).
+	size_t actual_seed     = CppAD::mixed::new_gsl_rng( random_seed );
 	//
 	// number of fixed and random effects
 	size_t n_fixed  = 3;
@@ -710,7 +719,7 @@ int main(int argc, char *argv[])
 		u_in[t] = 0.0;
 
 	// create derived object
-	bool quasi_fixed = (random_seed % 2) == 0;
+	bool quasi_fixed = (actual_seed % 2) == 0;
 	mixed_derived mixed_object(
 		R, T, K, quasi_fixed, A_info, y, theta_in, u_in
 	);
@@ -793,7 +802,7 @@ int main(int argc, char *argv[])
 	ok &= std::fabs( theta_out[2] - theta_sim[2] )       < 0.2;
 	//
 	cout << "elapsed seconds = " << end_time - start_time << endl;
-	cout << "random_seed = " << random_seed << endl;
+	cout << "actual_seed = " << actual_seed << endl;
 	if( ok )
 		cout << "capture_xam: OK" << endl;
 	else
