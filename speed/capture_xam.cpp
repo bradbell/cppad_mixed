@@ -397,8 +397,9 @@ private:
 	const vector<size_t>& y_; // reference to data values
 	// -----------------------------------------------------------------
 	// set by constructor and then effectively const
-	vector<size_t>        M_;      // max number of captures at each location
-	vector<double>        logfac_; // logfac_[k] = log( k! )
+	vector<size_t>  M_;       // max number of captures at each location
+	vector<double>  logfac_;  // logfac_[k] = log( k! )
+	vector<double>  log_pik_; // used by implement_ran_likelihood
 // ------------------------------------------------------------------------
 public:
 	// constructor
@@ -408,7 +409,9 @@ public:
 		size_t                 K           ,
 		bool                   quasi_fixed ,
 		const  sparse_mat_info& A_info     ,
-		vector<size_t>&        y           )
+		vector<size_t>&        y           ,
+		vector<double>&        fixed_in    ,
+		vector<double>&        random_in   )
 		:
 		// n_fixed = 3, n_random = T
 		cppad_mixed(3, T, quasi_fixed, A_info) ,
@@ -416,25 +419,37 @@ public:
 		T_(T)            ,
 		K_(K)            ,
 		y_(y)
-	{	// set M_ and K_
+	{	//
+		// set M_ 
 		M_.resize(R);
 		for(size_t i = 0; i < R; i++)
 		{	M_[i] = 0;
 			for(size_t t = 0; t < T; t++)
 				M_[i] = std::max( M_[i], y[ i * T + t] );
 		}
+		//
+		// set logfac_
 		logfac_.resize(K_);
 		logfac_[0]  = 0.0;
 		logfac_[1]  = 0.0;
 		for(size_t k = 2; k < K_; k++)
 			logfac_[k] = log( double(k) ) + logfac_[k-1];
+		//
+		// set log_pik_
+		log_pik_.resize(R_ * K_);
+		for(size_t ell = 0; ell < R_ * K_; ell++)
+			log_pik_[ell] = 0.0;
+		implement_ran_likelihood(fixed_in, random_in, log_pik_);
 	}
 	// implementaion of ran_likelihood
 	template <class Float>
 	vector<Float> implement_ran_likelihood(
-		const vector<Float>&  theta  ,
-		const vector<Float>&  u      )
-	{	vector<Float> vec(1);
+		const vector<Float>&  theta   ,
+		const vector<Float>&  u       ,
+		vector<Float>&        log_pik )
+	{	assert( log_pik.size() == R_* K_ );
+		vector<Float> vec(1);
+		//
 		Float one( 1.0 );
 		Float two( 2.0 );
 		Float pi2( 8.0 * std::atan(1.0) );
@@ -453,8 +468,10 @@ public:
 		// log [ p(y | theta, u) ]
 		//  ------------------------------------------------------------
 		//
-		// y_{i,t} * log( q_t ) and log( 1.0 - q_t )
-		vector<Float> yit_log_q(R_ * T_), log_1q(T_);
+		// y_{i,t} * log( qt )
+		vector<Float> yit_log_q(R_ * T_);
+		// log( 1.0 - qt )
+		vector<Float> log_1q(T_);
 		for(size_t t = 0; t < T_; t++)
 		{	Float ex  = exp( u[t] + theta[1] );
 			Float q   = one / (one + ex );
@@ -473,47 +490,52 @@ public:
 		//
 		// log[ p(y|theta, u) ] to vec[0]
 		for(size_t i = 0; i < R_; i++)
-		{	// compute p(y_i|theta,u)
+		{	// compute noramlizing constant for this i
+			Float normalize = Float(0.0);
+			for(size_t k = M_[i]; k < K_; k++)
+				normalize += log_pik[ i * K_ + k ];
+			normalize /= Float( K_ - M_[i] );
+			//
+			// initialize p(y_i|theta,u)
 			Float p_i = Float(0.0);
 			for(size_t k = M_[i]; k < K_; k++)
-			{	// initialize log of term for this k
+			{	// compute p(y_i|N_i=k,theta,u) p(N_i=k|theta) 
 				//
-				// terms that need to be calculated with Float
+				// initialize sum that needs to be calculated with Float
+				// p(N_i=k|theta)
 				Float float_sum = log_poisson[k];
 				//
-				// terms that dno not need to use Float
+				// initilaize sum that does not need to use Float
 				double double_sum = 0.0;
-				//
-				// terms in likelihood for data given k that do not
-				// depend on value of t
-				double_sum     += T_ * logfac_[k];
 				//
 				// now compute terms that depend on t
 				for(size_t t = 0; t < T_; t++)
 				{	size_t yit = y_[ i * T_ + t ];
 					//
-					// log [ (k choose yit) / k! ]
-					// where the k! term is added outside the loop
-					double_sum += logfac_[yit] - logfac_[k - yit];
-					// log [ qt^yit ]
+					// log [ (k choose yit) ]
+					// note that k! term was already added outside the loop
+					double_sum += logfac_[k] + logfac_[yit] - logfac_[k - yit];
+					//
+					// log ( qt^yit )
 					float_sum += yit_log_q[i * T_ + t];
+					//
 					// log [ (1 - qt)^(k - yit) ]
 					float_sum += Float(k - yit) * log_1q[t];
 				}
-				p_i += exp( float_sum + double_sum );
+				// log[ p(y_i|N_i=k,theta,u) p(N_i=k|theta)
+				// (output elements of log_pik are not affected by its input)
+				log_pik[ i * K_ + k ] = float_sum + double_sum;
+				//
+				// p_i += p(y_i|N_i=k,theta,u) p(N_i=k|theta) / exp(normalize) 
+				p_i += exp( log_pik[ i * K_ + k ] - normalize );
 			}
-			// add log[ p(y_i|theta,u) ] to vec[0]
-			vec[0] += log( p_i );
+			// vec[0] += log[ p(y_i|theta,u) ]
+			vec[0] += log( p_i ) + Float(K_ - M_[i]) * normalize;
 		}
 		// - log [ p(y|theta,u) p(u|theta) ]
 		vec[0] = - vec[0];
 		//
-		// make sure result is finite
-		// (using theta_in which is probability worst case)
-		double inf = std::numeric_limits<double>::infinity();
-		assert( vec[0] < + Float(inf) );
-		assert( vec[0] > - Float(inf) );
-		//
+		// result may be inifite or nan when only computing log_pik
 		return vec;
 	}
 // ------------------------------------------------------------------------
@@ -521,12 +543,34 @@ public:
 	virtual vector<a2_double> ran_likelihood(
 		const vector<a2_double>& fixed_vec  ,
 		const vector<a2_double>& random_vec )
-	{	return implement_ran_likelihood(fixed_vec, random_vec); }
+	{	vector<a2_double> log_pik(R_ * K_), vec(1);
+		for(size_t ell = 0; ell < R_ * K_; ell++)
+			log_pik[ell] = a2_double(log_pik_[ell]);	
+		vec = implement_ran_likelihood(fixed_vec, random_vec, log_pik);
+		//
+		// make sure result is finite
+		double inf = std::numeric_limits<double>::infinity();
+		assert( vec[0] < + a2_double(inf) );
+		assert( vec[0] > - a2_double(inf) );
+		//
+		return vec;
+	}
 	//
 	virtual vector<a1_double> ran_likelihood(
 		const vector<a1_double>& fixed_vec  ,
 		const vector<a1_double>& random_vec )
-	{	return implement_ran_likelihood(fixed_vec, random_vec); }
+	{	vector<a1_double> log_pik(R_ * K_), vec(1);
+		for(size_t ell = 0; ell < R_ * K_; ell++)
+			log_pik[ell] = a1_double(log_pik_[ell]);	
+		vec = implement_ran_likelihood(fixed_vec, random_vec, log_pik);
+		//
+		// make sure result is finite
+		double inf = std::numeric_limits<double>::infinity();
+		assert( vec[0] < + a1_double(inf) );
+		assert( vec[0] > - a1_double(inf) );
+		//
+		return vec;
+	}
 };
 } // END_EMPTY_NAMESPACE
 
@@ -618,14 +662,18 @@ int main(int argc, char *argv[])
 		A_info.val[t] = 1.0;
 	}
 
-	// create derived object
-	bool quasi_fixed = (random_seed % 2) == 0;
-	mixed_derived mixed_object(R, T, K, quasi_fixed, A_info, y);
-
-	// initialize point to start optimization at
+	// initialize random effects to start optimization at
 	vector<double>  u_in(T);
 	for(size_t t = 0; t < T; t++)
 		u_in[t] = 0.0;
+
+	// create derived object
+	bool quasi_fixed = (random_seed % 2) == 0;
+	mixed_derived mixed_object(
+		R, T, K, quasi_fixed, A_info, y, theta_in, u_in
+	);
+
+	// initialize derived object
 	std::map<std::string, size_t> size_map =
 		mixed_object.initialize(theta_in, u_in);
 
