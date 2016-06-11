@@ -62,6 +62,8 @@ This is a positive integer equal to the
 maximum value in the finite summation with respect to
 population size; i.e.,
 $latex K$$ in the reference.
+This must be greater than any of the simulated number of captures
+at any location and time; i.e., and $latex y_{i,t}$$.
 
 $head mean_population$$
 This is a positive floating point value equal to the
@@ -404,14 +406,14 @@ private:
 public:
 	// constructor
 	mixed_derived(
-		size_t                 R           ,
-		size_t                 T           ,
-		size_t                 K           ,
-		bool                   quasi_fixed ,
+		size_t                  R           ,
+		size_t                  T           ,
+		size_t                  K           ,
+		bool                    quasi_fixed ,
 		const  sparse_mat_info& A_info     ,
-		vector<size_t>&        y           ,
-		vector<double>&        fixed_in    ,
-		vector<double>&        random_in   )
+		vector<size_t>&         y           ,
+		vector<double>&         fixed_in    ,
+		vector<double>&         random_in   )
 		:
 		// n_fixed = 3, n_random = T
 		cppad_mixed(3, T, quasi_fixed, A_info) ,
@@ -419,13 +421,16 @@ public:
 		T_(T)            ,
 		K_(K)            ,
 		y_(y)
-	{	//
+	{	assert( fixed_in.size() == 3 );
+		assert( random_in.size() == T );
+		//
 		// set M_
 		M_.resize(R);
 		for(size_t i = 0; i < R; i++)
 		{	M_[i] = 0;
 			for(size_t t = 0; t < T; t++)
 				M_[i] = std::max( M_[i], y[ i * T + t] );
+			assert( M_[i] < K_ );
 		}
 		//
 		// set logfac_
