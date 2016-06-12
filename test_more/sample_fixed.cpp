@@ -165,7 +165,7 @@ bool sample_fixed(void)
 	mixed_object.initialize(fixed_in, random_in);
 
 	// options for optimization
-	std::string fixed_options =
+	std::string fixed_ipopt_options =
 		"Integer print_level               0\n"
 		"String  sb                        yes\n"
 		"String  derivative_test           first-order\n"
@@ -187,7 +187,7 @@ bool sample_fixed(void)
 	}
 	// optimize fixed effects
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
-		fixed_options,
+		fixed_ipopt_options,
 		random_ipopt_options,
 		fixed_lower,
 		fixed_upper,
@@ -211,7 +211,7 @@ bool sample_fixed(void)
 	//
 	// optimize fixed effects
 	solution = mixed_object.optimize_fixed(
-		fixed_options,
+		fixed_ipopt_options,
 		random_ipopt_options,
 		fixed_lower,
 		fixed_upper,

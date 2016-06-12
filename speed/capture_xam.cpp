@@ -731,7 +731,7 @@ int main(int argc, char *argv[])
 	<< num_bytes_after - num_bytes_before << endl;
 
 	// optimize the fixed effects
-	std::string fixed_options =
+	std::string fixed_ipopt_options =
 		"Integer print_level               5\n"
 		"String  sb                        yes\n"
 		"String  derivative_test           none\n"
@@ -756,7 +756,7 @@ int main(int argc, char *argv[])
 	}
 	// optimize fixed effects
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
-		fixed_options,
+		fixed_ipopt_options,
 		random_ipopt_options,
 		theta_lower,
 		theta_upper,

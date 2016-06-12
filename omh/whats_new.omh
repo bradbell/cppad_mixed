@@ -129,7 +129,7 @@ $lnext
 Remove $code sample_fixed$$ wish list item.
 $lnext
 Add the $code adaptive$$ and $code trace-adaptive$$ choices to the
-$cref/derivative_test/optimize_fixed/fixed_options/derivative_test/$$
+$cref/derivative_test/optimize_fixed/fixed_ipopt_options/derivative_test/$$
 fixed effects options.
 Note that this gives the user direct control over doing this test
 (which can be time intensive for large problems).
@@ -266,9 +266,9 @@ when some of the components of $cref fix_constraint$$ are active.
 
 $head 04-09$$
 Improve documentation of
-$cref/fixed_options/optimize_fixed/fixed_options/$$
+$cref/fixed_ipopt_options/optimize_fixed/fixed_ipopt_options/$$
 and add the special case of
-$cref/max_iter/optimize_fixed/fixed_options/max_iter/$$
+$cref/max_iter/optimize_fixed/fixed_ipopt_options/max_iter/$$
 equal to $code -1$$.
 
 

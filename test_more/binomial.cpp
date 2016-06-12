@@ -132,7 +132,7 @@ bool binomial(void)
 	assert( theta_lower[0] <= theta_sim[0] );
 
 	// optimize the fixed effects
-	std::string fixed_options =
+	std::string fixed_ipopt_options =
 		"Integer print_level               0\n"
 		"String  sb                        yes\n"
 		"String  derivative_test           second-order\n"
@@ -147,7 +147,7 @@ bool binomial(void)
 	;
 	vector<double> u_lower(0), u_upper(0);
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
-		fixed_options,
+		fixed_ipopt_options,
 		random_ipopt_options,
 		theta_lower,
 		theta_upper,

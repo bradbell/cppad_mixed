@@ -28,7 +28,7 @@ $section Optimize Fixed Effects$$
 $head Syntax$$
 $icode%solution% =%$$
 $icode%mixed_object%.optimize_fixed(
-	%fixed_options%,
+	%fixed_ipopt_options%,
 	%random_ipopt_options%,
 	%fixed_lower%,
 	%fixed_upper%,
@@ -58,10 +58,10 @@ We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
-$head fixed_options$$
+$head fixed_ipopt_options$$
 This argument has prototype
 $codei%
-	const std::string& %fixed_options%
+	const std::string& %fixed_ipopt_options%
 %$$
 and is the $cref ipopt_options$$ for optimizing the fixed effects
 with the following qualifications:
@@ -83,15 +83,15 @@ the adaptive step size results are traced on standard output.
 $subhead hessian_approximation$$
 If $icode quasi_fixed$$ is true,
 $icode hessian_approximation$$ will be set to $code limit-memory$$.
-If it is also set in $icode fixed_options$$, it must have this value.
+If it is also set in $icode fixed_ipopt_options$$, it must have this value.
 
 $subhead limited_memory_max_history$$
 If $icode quasi_fixed$$ is true,
 $icode limited_memory_max_history$$ will be set to an unspecified value and
-cannot be cannot be set in $icode fixed_options$$.
+cannot be cannot be set in $icode fixed_ipopt_options$$.
 
 $subhead max_iter$$
-If $icode%max_iter% <= 0%$$ in $icode fixed_options$$,
+If $icode%max_iter% <= 0%$$ in $icode fixed_ipopt_options$$,
 Ipopt is run with $icode%max_iter% = 0%$$ and the return status
 $code Ipopt::Maximum_Iterations_Exceeded$$ is consider normal; i.e.,
 does not generate a warning or error message.
@@ -244,7 +244,7 @@ $end
 
 
 CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
-	const std::string&                      fixed_options           ,
+	const std::string&                      fixed_ipopt_options           ,
 	const std::string&                      random_ipopt_options    ,
 	const d_vector&    fixed_lower       ,
 	const d_vector&    fixed_upper       ,
@@ -307,7 +307,7 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 	std::string adaptive_check = "none";
 	//
 	// Set options for optimization of the fixed effects
-	const std::string& options = fixed_options;
+	const std::string& options = fixed_ipopt_options;
 	size_t begin_1, end_1, begin_2, end_2, begin_3, end_3;
 	begin_1     = 0;
 	while( options[begin_1] == ' ')

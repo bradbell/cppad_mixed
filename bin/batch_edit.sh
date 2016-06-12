@@ -21,9 +21,7 @@ no_change_files='
 rename_cmd='s|private/box_newton_xam.cpp|user/box_newton_xam.cpp|'
 #
 cat << EOF > junk.sed
-/random_box_options;/d
-/^\\t*random_box_options,\$/d
-/random_box_options\\./d
+s|fixed_options|fixed_ipopt_options|g
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

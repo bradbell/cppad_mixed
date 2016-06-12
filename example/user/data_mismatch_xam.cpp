@@ -348,7 +348,7 @@ bool data_mismatch_xam(void)
 	ok &= abs( L_theta_in ) >= 1.0;
 	//
 	// optimize the fixed effects using quasi-Newton method
-	std::string fixed_options =
+	std::string fixed_ipopt_options =
 		"Integer print_level               0\n"
 		"String  sb                        yes\n"
 		"String  derivative_test           adaptive\n"
@@ -367,7 +367,7 @@ bool data_mismatch_xam(void)
 		random_upper[i] = +inf;
 	}
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
-		fixed_options,
+		fixed_ipopt_options,
 		random_ipopt_options,
 		fixed_lower,
 		fixed_upper,

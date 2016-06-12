@@ -194,7 +194,7 @@ bool ran_likelihood_jac(void)
 	// optimize the fixed effects using quasi-Newton method
 	// If the derivatives are correct, the optimzation converges in 11
 	// iterations. If convergence fails, change print_level to 5
-	std::string fixed_options =
+	std::string fixed_ipopt_options =
 		"Integer print_level               0\n"
 		"String  sb                        yes\n"
 		"String  derivative_test           second-order\n"
@@ -214,7 +214,7 @@ bool ran_likelihood_jac(void)
 		random_upper[i] = +inf;
 	}
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
-		fixed_options,
+		fixed_ipopt_options,
 		random_ipopt_options,
 		fixed_lower,
 		fixed_upper,

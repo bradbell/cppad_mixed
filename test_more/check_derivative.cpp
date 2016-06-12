@@ -127,7 +127,7 @@ bool check_grad(void)
 	mixed_object.initialize(fixed_in, random_in);
 
 	// optimize the fixed effects using quasi-Newton method
-	std::string fixed_options =
+	std::string fixed_ipopt_options =
 		"Integer print_level               0\n"
 		"String  sb                        yes\n"
 		"String  derivative_test           first-order\n"
@@ -145,7 +145,7 @@ bool check_grad(void)
 		random_upper[i] = +inf;
 	}
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
-		fixed_options,
+		fixed_ipopt_options,
 		random_ipopt_options,
 		fixed_lower,
 		fixed_upper,
