@@ -29,7 +29,6 @@ not in the $code CppAD::mixed$$ namespace.
 These are $bold not$$ part of the user API.
 
 $children%include/cppad/mixed/a2_double.hpp
-	%include/cppad/mixed/box_newton.hpp
 	%include/cppad/mixed/configure.hpp.in
 	%include/cppad/mixed/fixed_solution.hpp
 	%include/cppad/mixed/ipopt_fixed.hpp
@@ -47,7 +46,6 @@ $children%include/cppad/mixed/a2_double.hpp
 $head Public$$
 These declarations are part the of the $code cppad_mixed$$ user API.
 $table
-$rref box_newton$$
 $rref manage_gsl_rng$$
 $rref sparse_mat_info$$
 $tend

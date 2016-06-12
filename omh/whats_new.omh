@@ -35,7 +35,7 @@ $childtable%omh/whats_new_15.omh%$$
 
 $head 06-12$$
 Remove the option,
-to use $cref box_newton$$ to optimize the random effects
+to use $code box_newton$$ to optimize the random effects
 (added on $cref/06-03/whats_new/06-03/$$).
 It turns out this had some problems and did not yield the hoped for
 improvements in speed.
@@ -57,23 +57,23 @@ $lend
 
 $head 06-07$$
 $list number$$
-When $cref box_newton$$ fails, change message from
+When $code box_newton$$ fails, change message from
 $cref/fatal_error/public/User Defined Functions/fatal_error/$$ to
 $cref/warning/public/User Defined Functions/warning/$$.
 $lnext
 Change the $code box_newton$$ convergence
-$cref/tolerance/box_newton/options/tolerance/$$ to be in terms of the
+$code tolerance$$ to be in terms of the
 Newton step (instead of projected gradient).
 $lend
 
 
 $head 06-06$$
-Fix an minor error in $cref box_newton$$ line search termination criteria
+Fix an minor error in $code box_newton$$ line search termination criteria
 (did not affect any test results).
 
 $head 06-05$$
 $list number$$
-Make $cref box_newton$$ more robust by doing line search in a
+Make $code box_newton$$ more robust by doing line search in a
 scaled negative projected gradient direction.
 (Step size of one in negative projected gradient direction
 may be much too large or much too small).
@@ -95,7 +95,7 @@ $cref/fatal_error/public/User Defined Functions/fatal_error/$$.
 
 $head 06-03$$
 Add the option to use
-$cref box_newton$$
+$code box_newton$$
 to optimize the random effects.
 This changed the user API for the functions listed below
 (but has since been remove and the API has been changed back):

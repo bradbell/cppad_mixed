@@ -31,7 +31,6 @@ special_case='
 	bin/batch_edit.sh
 	bin/check_srcfile.sh
 	omh/install_unix.omh
-	include/cppad/mixed/box_newton.hpp
 '
 # -----------------------------------------------------------------------------
 list=`bin/ls_files.sh`
