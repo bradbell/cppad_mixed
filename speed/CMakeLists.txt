@@ -18,6 +18,7 @@ SET(max_population            15)
 SET(mean_population          5.0)
 SET(mean_logit_probability  -0.5)
 SET(std_logit_probability    0.5)
+SET(quasi_fixed              true)
 SET(random_constraint        true)
 # END capture_xam arguments
 #
@@ -49,6 +50,7 @@ ADD_CUSTOM_TARGET(
 		${mean_population}
 		${mean_logit_probability}
 		${std_logit_probability}
+		${quasi_fixed}
 		${random_constraint}
 	DEPENDS capture_xam
 )

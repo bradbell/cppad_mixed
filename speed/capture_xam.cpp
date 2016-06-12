@@ -36,6 +36,7 @@ $codei%build/speed/capture_xam  \
 	%mean_population% \
 	%mean_logit_probability% \
 	%std_logit_probability% \
+	%quasi_fixed% \
 	%random_constraint%
 %$$
 
@@ -60,12 +61,6 @@ the system clock is used to seed the random number generator.
 The actual random seed $icode actual_seed$$ is printed
 at the end of the program (so that you can reproduce results when
 the system clock is used).
-
-$subhead quasi_fixed$$
-If the actual seed mod two, $icode|actual_seed| % 2|$$, is one,
-$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is true in the
-$code cppad_mixed$$ derived class constructor.
-Otherwise it is false.
 
 $head number_locations$$
 This is a positive integer equal to the
@@ -113,6 +108,12 @@ standard deviation of the logit of the capture probability
 (independent of the random effects)
 used to simulate data values.
 The is also equal to the standard deviation of the random effects.
+
+$head quasi_fixed$$
+If the actual seed mod two, $icode|actual_seed| % 2|$$, is one,
+$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is true in the
+$code cppad_mixed$$ derived class constructor.
+Otherwise it is false.
 
 $head random_constraint$$
 This is either $code true$$ or $code false$$.
@@ -370,7 +371,7 @@ using CppAD::mixed::sparse_mat_info;
 
 // simulate data, y
 void simulate(
-	std::string&           random_constraint ,
+	bool                   random_constraint ,
 	size_t                 R                 ,
 	size_t                 T                 ,
 	const vector<double>&  theta             ,
@@ -396,7 +397,7 @@ void simulate(
 		sum += u[t];
 	}
 	// adjust the random effects when using random constraint
-	if( random_constraint == "true" )
+	if( random_constraint )
 	{	for(size_t t = 0; t < T; t++)
 		{	// simulate mean zero values
 			u[t] = u[t] - sum / double(T);
@@ -616,7 +617,7 @@ int main(int argc, char *argv[])
 	using std::endl;
 	using std::string;
 	//
-	if( argc != 9 )
+	if( argc != 10 )
 	{	std::cerr << "usage: " << argv[0] << "\\ \n"
 		<< " random_seed \\ \n"
 		<< " number_locations \\ \n"
@@ -625,6 +626,7 @@ int main(int argc, char *argv[])
 		<< " mean_population \\ \n"
 		<< " mean_logit_probability \\ \n"
 		<< " std_logit_probability \\ \n"
+		<< " quasi_fixed \\ \n"
 		<< " random_constraint \n";
 		std::exit(1);
 	}
@@ -636,7 +638,10 @@ int main(int argc, char *argv[])
 	double mean_population        = std::atof( argv[5] );
 	double mean_logit_probability = std::atof( argv[6] );
 	double std_logit_probability  = std::atof( argv[7] );
-	string random_constraint      = argv[8];
+	string quasi_fixed_str        = argv[8];
+	string random_constraint_str  = argv[9];
+	bool quasi_fixed              =  quasi_fixed_str == "true";
+	bool random_constraint        =  random_constraint_str == "true";
 	//
 	cout   << argv[0]
 	<< " " << random_seed
@@ -646,13 +651,15 @@ int main(int argc, char *argv[])
 	<< " " << mean_population
 	<< " " << mean_logit_probability
 	<< " " << std_logit_probability
-	<< " " << random_constraint
+	<< " " << quasi_fixed_str
+	<< " " << random_constraint_str
 	<< endl;
 	//
 	assert( max_population > 0.0 );
 	assert( mean_population > 0.0 );
 	assert( std_logit_probability > 0.0 );
-	assert( random_constraint == "true" || random_constraint == "false" );
+	assert( random_constraint || random_constraint_str=="false" );
+	assert( quasi_fixed || quasi_fixed_str=="false" );
 	//
 	// time that this program started
 	std::time_t start_time = std::time( CPPAD_MIXED_NULL_PTR );
@@ -700,7 +707,7 @@ int main(int argc, char *argv[])
 
 	// random constraints
 	CppAD::mixed::sparse_mat_info A_info;
-	if( random_constraint == "true" )
+	if( random_constraint )
 	{	A_info.resize(T);
 		for(size_t t = 0; t < T; t++)
 		{	A_info.row[t] = 0;
@@ -715,7 +722,6 @@ int main(int argc, char *argv[])
 		u_in[t] = 0.0;
 
 	// create derived object
-	bool quasi_fixed = (actual_seed % 2) == 0;
 	mixed_derived mixed_object(
 		R, T, K, quasi_fixed, A_info, y, theta_in, u_in
 	);
@@ -778,7 +784,7 @@ int main(int argc, char *argv[])
 	);
 	std::time_t end_time = std::time( CPPAD_MIXED_NULL_PTR );
 	//
-	if( random_constraint == "true" )
+	if( random_constraint )
 	{	// check random effects
 		double sum = 0.0;
 		for(size_t j = 0; j < n_random; j++)
