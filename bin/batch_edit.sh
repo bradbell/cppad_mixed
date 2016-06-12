@@ -16,43 +16,14 @@ rename_files='
 spell_files='
 '
 no_change_files='
-	src/sample_random.cpp
 '
 #
 rename_cmd='s|private/box_newton_xam.cpp|user/box_newton_xam.cpp|'
 #
 cat << EOF > junk.sed
-/^\\tstd::string random_options *= *"";/! b one
-s/random_options/random_ipopt_options/
-s/.*/&\\n\\tCppAD::mixed::box_newton_options random_box_options;/
-: one
-/^\\t*std::string random_options *= *\$/! b three
-#
-: two
-N
-/;/! b two
-s/random_options/random_ipopt_options/
-s/^\\(\\t*\\).*/&\\n\\1CppAD::mixed::box_newton_options random_box_options;/
-#
-: three
-/^\\t\\trandom_options,\$/! b four
-s/random_options/random_box_options/
-s/.*/&\\n\\t\\trandom_ipopt_options,/
-#
-: four
-/optimize_fixed(/! b six
-: five
-N
-/;/! b five
-s/\\n\\(\\t*\\)random_options,/\\n\\1random_box_options,\\n\\1random_ipopt_options,/
-: six
-#
-/optimize_random(/! b eight
-: seven
-N
-/;/! b seven
-s/random_options,/random_ipopt_options,/
-: eight
+/random_box_options;/d
+/^\\t*random_box_options,\$/d
+/random_box_options\\./d
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

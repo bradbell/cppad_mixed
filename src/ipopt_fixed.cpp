@@ -176,7 +176,6 @@ $section Ipopt Fixed Optimization Callback Constructor and Destructor$$
 
 $head Syntax$$
 $codei%CppAD::mixed::ipopt_fixed %ipopt_object%(
-	%random_box_options%,
 	%random_ipopt_options%,
 	%fixed_tolerance%,
 	%fixed_lower%,
@@ -195,26 +194,12 @@ The values of the arguments are stored by reference and hence
 the arguments must not be deleted while $icode ipopt_object$$
 is still being used.
 
-$head random_box_options$$
-This argument has prototype
-$codei%
-	const CppAD::mixed::box_newton_options& %random_box_options%
-%$$
-and is the $cref box_newton$$ options for optimizing the random effects.
-If $icode random_ipopt_options$$ is empty,
-$code box_newton$$ with these options is used
-to optimize the random effects;
-see $cref/box_newton_options/optimize_random/options/box_newton_options/$$.
-
 $head random_ipopt_options$$
 This argument has prototype
 $codei%
 	const std::string& %random_ipopt_options%
 %$$
 and is the $cref ipopt_options$$ for optimizing the random effects.
-If $icode random_ipopt_options$$ is non-empty,
-$code ipopt$$ with these options is used to optimize the random effects;
-see $cref/string/optimize_random/options/string/$$.
 
 $head fixed_tolerance$$
 Is the relative convergence criteria used by Ipopt for optimize fixed effects.
@@ -392,7 +377,6 @@ random objective and constraints.
 $head Prototype$$
 $srccode%cpp% */
 ipopt_fixed::ipopt_fixed(
-	const box_newton_options& random_box_options     ,
 	const std::string&        random_ipopt_options   ,
 	const double&       fixed_tolerance              ,
 	const d_vector&     fixed_lower                  ,
@@ -407,7 +391,6 @@ ipopt_fixed::ipopt_fixed(
 /* %$$
 $end
 */
-random_box_options_    ( random_box_options )                     ,
 random_ipopt_options_  ( random_ipopt_options )                   ,
 fixed_tolerance_   ( fixed_tolerance  )                           ,
 n_fixed_           ( fixed_in.size()  )                           ,
@@ -2202,12 +2185,6 @@ This is a private member function of the $cref ipopt_fixed$$ class.
 $head n_random_$$
 Is assumed that this member variable is greater than zero.
 
-$head random_box_options_$$
-This member variable contains
-the value of the
-$cref/random_box_options/ipopt_fixed_ctor/random_box_options/$$
-in the $code ipopt_fixed$$ constructor.
-
 $head random_ipopt_options_$$
 This member variable contains
 the value of the
@@ -2252,21 +2229,12 @@ $end
 void ipopt_fixed::new_random(const d_vector& fixed_vec)
 {	assert( n_random_ > 0 );
 	// compute the optimal random effects corresponding to fixed effects
-	if( random_ipopt_options_ == "" )
-		random_cur_ = mixed_object_.optimize_random(
-			random_box_options_,
-			fixed_vec,
-			random_lower_,
-			random_upper_,
-			random_in_
-	);
-	else
-		random_cur_ = mixed_object_.optimize_random(
-			random_ipopt_options_,
-			fixed_vec,
-			random_lower_,
-			random_upper_,
-			random_in_
+	random_cur_ = mixed_object_.optimize_random(
+		random_ipopt_options_,
+		fixed_vec,
+		random_lower_,
+		random_upper_,
+		random_in_
 	);
 	mixed_object_.update_factor(fixed_vec, random_cur_);
 }

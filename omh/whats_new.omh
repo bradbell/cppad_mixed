@@ -33,6 +33,14 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 06-12$$
+Remove the option,
+to use $cref box_newton$$ to optimize the random effects
+(added on $cref/06-03/whats_new/06-03/$$).
+It turns out this had some problems and did not yield the hoped for
+improvements in speed.
+
+
 $head 06-11$$
 Improve the $cref capture_xam.cpp$$ example:
 $list number$$
@@ -87,23 +95,24 @@ $cref/fatal_error/public/User Defined Functions/fatal_error/$$.
 
 $head 06-03$$
 Add the option to use
-$cref/box_newton/optimize_random/options/box_newton_options/$$
+$cref box_newton$$
 to optimize the random effects.
-This changes the user API for the following functions:
+This changed the user API for the functions listed below
+(but has since been remove and the API has been changed back):
 
 $subhead optimize_random$$
-The $cref/options/optimize_random/options/$$ argument determines
+The $icode options$$ argument determines
 if $code ipopt$$ or $code box_newton$$ is used.
 
 $subhead optimize_fixed$$
 The $icode random_options$$ have been split into
-$cref/random_box_options/optimize_fixed/random_box_options/$$ and
-$cref/random_ipopt_options/optimize_fixed/random_ipopt_options/$$.
+$icode random_box_options/$$ and
+$icode random_ipopt_options$$.
 
 $subhead sample_random$$
 The $icode random_options$$ have been split into
-$cref/random_box_options/sample_random/random_box_options/$$ and
-$cref/random_ipopt_options/sample_random/random_ipopt_options/$$.
+$icode random_box_options/$$ and
+$icode random_ipopt_options$$.
 
 $head 05-15$$
 $list number$$

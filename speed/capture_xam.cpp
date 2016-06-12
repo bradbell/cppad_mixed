@@ -36,8 +36,7 @@ $codei%build/speed/capture_xam  \
 	%mean_population% \
 	%mean_logit_probability% \
 	%std_logit_probability% \
-	%random_constraint%, \
-	%box_newton%
+	%random_constraint%
 %$$
 
 $head Reference$$
@@ -145,14 +144,6 @@ $latex A$$ is the row vector of size $latex T$$ with all ones; i.e.,
 $latex \[
 	A = [ 1 , \cdots , 1 ] \in \B{R}^{1 \times T}
 \] $$
-
-$head box_newton$$
-This is either $code true$$ or $code false$$.
-If it is $code true$$,
-$cref box_newton$$ is used to optimize the random effects.
-Otherwise,
-$cref/ipopt/install_unix/Special Requirements/Ipopt/$$
-is used to optimize the random effects.
 
 $head Example$$
 The $code cppad_mixed$$ automated testing system uses the following
@@ -625,7 +616,7 @@ int main(int argc, char *argv[])
 	using std::endl;
 	using std::string;
 	//
-	if( argc != 10 )
+	if( argc != 9 )
 	{	std::cerr << "usage: " << argv[0] << "\\ \n"
 		<< " random_seed \\ \n"
 		<< " number_locations \\ \n"
@@ -634,8 +625,7 @@ int main(int argc, char *argv[])
 		<< " mean_population \\ \n"
 		<< " mean_logit_probability \\ \n"
 		<< " std_logit_probability \\ \n"
-		<< " random_constraint \\ \n"
-		<< " box_newton \n";
+		<< " random_constraint \n";
 		std::exit(1);
 	}
 	//
@@ -647,7 +637,6 @@ int main(int argc, char *argv[])
 	double mean_logit_probability = std::atof( argv[6] );
 	double std_logit_probability  = std::atof( argv[7] );
 	string random_constraint      = argv[8];
-	string box_newton             = argv[9];
 	//
 	cout   << argv[0]
 	<< " " << random_seed
@@ -658,14 +647,12 @@ int main(int argc, char *argv[])
 	<< " " << mean_logit_probability
 	<< " " << std_logit_probability
 	<< " " << random_constraint
-	<< " " << box_newton
 	<< endl;
 	//
 	assert( max_population > 0.0 );
 	assert( mean_population > 0.0 );
 	assert( std_logit_probability > 0.0 );
 	assert( random_constraint == "true" || random_constraint == "false" );
-	assert( box_newton        == "true" || box_newton        == "false" );
 	//
 	// time that this program started
 	std::time_t start_time = std::time( CPPAD_MIXED_NULL_PTR );
@@ -760,12 +747,6 @@ int main(int argc, char *argv[])
 		"Numeric tol                       1e-8\n"
 		"Integer max_iter                  40\n"
 	;
-	CppAD::mixed::box_newton_options random_box_options;
-	random_box_options.print_level = 0;
-	random_box_options.tolerance   = 1e-8;
-	random_box_options.max_iter    = 40;
-	if( box_newton == "true" )
-		random_ipopt_options = "";
 	//
 	double inf = std::numeric_limits<double>::infinity();
 	vector<double> u_lower(n_random), u_upper(n_random);
@@ -776,7 +757,6 @@ int main(int argc, char *argv[])
 	// optimize fixed effects
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_options,
-		random_box_options,
 		random_ipopt_options,
 		theta_lower,
 		theta_upper,
@@ -789,9 +769,8 @@ int main(int argc, char *argv[])
 	);
 	vector<double> theta_out = solution.fixed_opt;
 	//
-	// correspnding optimal random effects
 	vector<double> u_out = mixed_object.optimize_random(
-		random_box_options,
+		random_ipopt_options,
 		theta_out,
 		u_lower,
 		u_upper,
@@ -816,6 +795,7 @@ int main(int argc, char *argv[])
 	cout << "actual_seed = " << actual_seed << endl;
 	if( ok )
 		cout << "capture_xam: OK" << endl;
+	else
 	{
 		cout << theta_out[0] / theta_sim[0] - 1.0 << endl;
 		cout << theta_out[1] - theta_sim[1]       << endl;

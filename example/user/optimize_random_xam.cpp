@@ -141,18 +141,6 @@ bool optimize_random_xam(void)
 		// std::cout << random_out[i] / data[i] - 1.0 << std::endl;
 		ok &= CppAD::abs(random_out[i] / data[i] - 1.0) < 1e-10;
 	}
-	// -----------------------------------------------------------------------
-	// use box_newton to determine the optimal random effects
-	CppAD::mixed::box_newton_options box_options; // use defaults
-	random_out = mixed_object.optimize_random(
-		box_options, fixed_vec, random_lower, random_upper, random_in
-	);
-	// check the result
-	for(size_t i = 0; i < n_data; i++)
-	{	// debugging print out
-		// std::cout << random_out[i] / data[i] - 1.0 << std::endl;
-		ok &= CppAD::abs(random_out[i] / data[i] - 1.0) < 1e-10;
-	}
 
 	return ok;
 }

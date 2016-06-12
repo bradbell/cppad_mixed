@@ -22,8 +22,6 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/ldlt_cholmod.hpp>
 # include <cppad/mixed/ldlt_eigen.hpp>
 # include <cppad/mixed/fixed_solution.hpp>
-# include <cppad/mixed/box_newton_options.hpp>
-# include <cppad/mixed/box_newton_status.hpp>
 
 // private examples
 extern bool fix_con_eval_xam(void);
@@ -50,13 +48,11 @@ extern bool sample_fixed(void);
 
 
 namespace CppAD { namespace mixed {
-	class optimize_random_box_newton;
 	class optimize_random_ipopt;
 	class ipopt_fixed;
 } }
 
 class cppad_mixed {
-	friend class CppAD::mixed::optimize_random_box_newton;
 	friend class CppAD::mixed::optimize_random_ipopt;
 	friend class CppAD::mixed::ipopt_fixed;
 	friend bool ::ran_obj_tst(void);
@@ -218,20 +214,12 @@ $srccode%cpp% */
 		const d_vector&    random_upper ,
 		const d_vector&    random_in
 	);
-	d_vector optimize_random(
-		const CppAD::mixed::box_newton_options& options ,
-		const d_vector&                         fixed_vec    ,
-		const d_vector&                         random_lower ,
-		const d_vector&                         random_upper ,
-		const d_vector&                         random_in
-	);
 /* %$$
 $head optimize_fixed$$
 $cref optimize_fixed$$, $title optimize_fixed$$.
 $srccode%cpp% */
 	CppAD::mixed::fixed_solution optimize_fixed(
 		const std::string&                       fixed_options         ,
-		const CppAD::mixed::box_newton_options&  random_box_options    ,
 		const std::string&                       random_ipopt_options  ,
 		const d_vector&    fixed_lower      ,
 		const d_vector&    fixed_upper      ,
@@ -268,7 +256,6 @@ $cref sample_random$$, $title sample_random$$.
 $srccode%cpp% */
 	void sample_random(
 		d_vector&                               sample               ,
-		const CppAD::mixed::box_newton_options& random_box_options ,
 		const std::string&                      random_ipopt_options ,
 		const d_vector&                         fixed_vec            ,
 		const d_vector&                         random_lower         ,

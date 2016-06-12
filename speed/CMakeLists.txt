@@ -19,7 +19,6 @@ SET(mean_population          5.0)
 SET(mean_logit_probability  -0.5)
 SET(std_logit_probability    0.5)
 SET(random_constraint        true)
-SET(box_newton               true)
 # END capture_xam arguments
 #
 LINK_DIRECTORIES(
@@ -51,7 +50,6 @@ ADD_CUSTOM_TARGET(
 		${mean_logit_probability}
 		${std_logit_probability}
 		${random_constraint}
-		${box_newton}
 	DEPENDS capture_xam
 )
 ADD_DEPENDENCIES(speed_capture_xam cppad_mixed)

@@ -131,7 +131,6 @@ bool abs_density_xam(void)
 	vector<double> random_in(0);
 	vector<double> random_lower(n_random), random_upper(n_random);
 	std::string random_ipopt_options = "";
-	CppAD::mixed::box_newton_options random_box_options;
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
 	//
 	// no constriants
@@ -159,7 +158,6 @@ bool abs_density_xam(void)
 	;
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_options,
-		random_box_options,
 		random_ipopt_options,
 		fixed_lower,
 		fixed_upper,

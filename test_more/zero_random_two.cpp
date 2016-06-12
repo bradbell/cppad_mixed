@@ -206,7 +206,6 @@ bool zero_random_two(void)
 		"String  derivative_test second-order\n"
 		"Numeric tol             1e-8\n"
 	;
-	CppAD::mixed::box_newton_options random_box_options;
 	vector<double> random_lower(n_random), random_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)
 	{	random_lower[i] = -inf;
@@ -214,7 +213,6 @@ bool zero_random_two(void)
 	}
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_options,
-		random_box_options,
 		random_ipopt_options,
 		fixed_lower,
 		fixed_upper,

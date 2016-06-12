@@ -133,12 +133,10 @@ bool no_random_info(void)
 		"String  derivative_test second-order\n"
 		"Numeric tol             1e-8\n"
 	;
-	CppAD::mixed::box_newton_options random_box_options;
 	//
 	// optimize fixed effects
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_options,
-		random_box_options,
 		random_ipopt_options,
 		fixed_lower,
 		fixed_upper,

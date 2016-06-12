@@ -196,11 +196,9 @@ bool n_mixture(void)
 		"String  sb          yes\n"
 		"String  derivative_test second-order\n"
 	;
-	CppAD::mixed::box_newton_options random_box_options;
 	vector<double> u_lower(0), u_upper(0);
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_options,
-		random_box_options,
 		random_ipopt_options,
 		theta_lower,
 		theta_upper,

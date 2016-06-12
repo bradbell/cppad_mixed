@@ -37,6 +37,15 @@ $head 2DO$$
 This routine works well where the bounds on $latex x$$ are not active.
 More work need to be done for the bounds are active.
 
+$head Not Used$$
+This routine is no longer being used to optimize the random effects.
+The last git hash for which is was used is
+$nospell
+$codep
+	e99cbf8440f329fe988f726da1b0acc34dad573a
+$$
+$$
+
 $head Public$$
 This function is part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
