@@ -88,6 +88,12 @@ population size; i.e.,
 $latex K$$ in the reference.
 This must be greater than any of the simulated number of captures
 at any location and time; i.e., and $latex y_{i,t}$$.
+Also note that $icode max_population$$ does not affect the simulated
+data $latex y_{i,t}$$.
+A suggested value is three times $icode mean_population$$.
+The value of $icode max_population$$ is large enough when increasing it
+takes more time but does not make a difference in the optimal fixed effects
+(use the same value for the other arguments and same actual seed).
 
 $head mean_population$$
 This is a positive floating point value equal to the
@@ -204,11 +210,11 @@ $latex \theta_2$$
 	$icode std_logit_probability$$.
 $tend
 
-$head p(y_it|N,q)$$
+$head p(y_it|N_i,q)$$
 We use a binomial distribution to model the
 probability of $latex y_{i,t}$$ given $latex N_i$$ and $latex q_t$$; i.e,
 $latex \[
-\B{p} ( y_{i,t} | N , q )
+\B{p} ( y_{i,t} | N_i , q )
 =
 \left( \begin{array}{c} N_i \\ y_{i,t} \end{array} \right)
 q_t^{y(i,t)} \left( 1 - q_t^{y(i,t)} \right)
@@ -284,7 +290,7 @@ $latex \theta$$ and $latex u$$.
 $latex \[
 \B{p}( y_i | \theta , u )
 =
-\sum_{k=0}^K \B{p}( y_i | k, \theta , u ) \B{p}( k | \theta )
+\sum_{k=0}^K \B{p}( y_i | N_i=k, \theta , u ) \B{p}( N_i=k | \theta )
 \] $$
 where $latex k$$ is the possible values for $latex N_i$$.
 Note that $latex K$$ should be plus infinity, but we use a fixed
@@ -296,10 +302,11 @@ given the fixed and random effects, is
 $latex \[
 \B{p}( y | \theta , u )
 =
-\prod_{i=0}^{R-1} \B{p}( y_i | \theta , u ) \B{p} ( N_i | \theta )
+\prod_{i=0}^{R-1} \B{p}( y_i | \theta , u )
 \] $$
-Expressed in terms of fixed effects $latex \theta$$
-and the random effects $latex u$$ this is
+Expressed in terms of fixed effects $latex \theta$$,
+the random effects $latex u$$,
+and the data $latex y$$, this is
 $latex \[
 \B{p}( y | \theta , u )
 =
@@ -312,7 +319,7 @@ $latex \[
 	q_t ( \theta , u)^{y(i,t)}
 	\left( 1 - q_t( \theta , u)^{y(i,t)} \right)
 \right]
-\] $$.
+\] $$
 In $code cppad_mixed$$ notation, this specifies the
 $cref/random data density
 	/cppad_mixed
@@ -525,11 +532,12 @@ public:
 		//
 		// log[ p(y|theta, u) ] to vec[0]
 		for(size_t i = 0; i < R_; i++)
-		{	// compute noramlizing constant for this i
-			Float normalize = Float(0.0);
-			for(size_t k = M_[i]; k < K_; k++)
-				normalize += log_pik[ i * K_ + k ];
-			normalize /= Float( K_ - M_[i] );
+		{	// compute maximum of log_pik for this i
+			Float max_log_pik = log_pik[ i * K_ + M_[i] ];
+			for(size_t k = M_[i] + 1; k < K_; k++)
+			{	if( log_pik[ i * K_ + k ] > max_log_pik )
+					max_log_pik = log_pik[ i * K_ + k ];
+			}
 			//
 			// initialize p(y_i|theta,u)
 			Float p_i = Float(0.0);
@@ -561,17 +569,18 @@ public:
 				// (output elements of log_pik are not affected by its input)
 				log_pik[ i * K_ + k ] = float_sum + double_sum;
 				//
-				// use normalization to avoid exponential overflow
-				// p_i += p(y_i|N_i=k,theta,u) p(N_i=k|theta) / exp(normalize)
-				p_i += exp( log_pik[ i * K_ + k ] - normalize );
+				// normalization avoids exponential overflow
+				// p_i += p(y_i|N_i=k,theta,u) p(N_i=k|theta) / exp(max_log_pik)
+				p_i += exp( log_pik[ i * K_ + k ] - max_log_pik );
 			}
 			// vec[0] += log[ p(y_i|theta,u) ]
-			vec[0] += log( p_i ) + Float(K_ - M_[i]) * normalize;
+			vec[0] += log( p_i ) + Float(K_ - M_[i]) * max_log_pik;
 		}
 		// - log [ p(y|theta,u) p(u|theta) ]
 		vec[0] = - vec[0];
 		//
 		// result may be inifite or nan when only computing log_pik
+		// (initial log_pik is used to compute normalization factors)
 		return vec;
 	}
 // ------------------------------------------------------------------------
@@ -790,11 +799,13 @@ int main(int argc, char *argv[])
 	);
 	std::time_t end_time = std::time( CPPAD_MIXED_NULL_PTR );
 	//
-	// check random effects
-	double sum = 0.0;
-	for(size_t j = 0; j < n_random; j++)
-		sum += u_out[j];
-	ok &= std::fabs( sum ) < 1e-8;
+	if( random_constraint == "true" )
+	{	// check random effects
+		double sum = 0.0;
+		for(size_t j = 0; j < n_random; j++)
+			sum += u_out[j];
+		ok &= std::fabs( sum ) < 1e-8;
+	}
 	//
 	// check reults
 	ok &= std::fabs( theta_out[0] / theta_sim[0] - 1.0 ) < 0.2;
@@ -805,8 +816,7 @@ int main(int argc, char *argv[])
 	cout << "actual_seed = " << actual_seed << endl;
 	if( ok )
 		cout << "capture_xam: OK" << endl;
-	else
-	{	cout << "capture_xam: Error" << endl;
+	{
 		cout << theta_out[0] / theta_sim[0] - 1.0 << endl;
 		cout << theta_out[1] - theta_sim[1]       << endl;
 		cout << theta_out[2] - theta_sim[2]       << endl;
