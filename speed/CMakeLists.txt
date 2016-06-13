@@ -12,9 +12,10 @@
 #
 # BEGIN capture_xam arguments
 SET(random_seed                0)
-SET(number_locations          40)
+SET(number_fixed_samples    1000)
+SET(number_locations          50)
 SET(number_times              40)
-SET(max_population            15)
+SET(max_population            25)
 SET(mean_population          5.0)
 SET(mean_logit_probability  -0.5)
 SET(std_logit_probability    0.5)
@@ -44,6 +45,7 @@ ADD_CUSTOM_TARGET(
 	speed_capture_xam
 	capture_xam
 		${random_seed}
+		${number_fixed_samples}
 		${number_locations}
 		${number_times}
 		${max_population}

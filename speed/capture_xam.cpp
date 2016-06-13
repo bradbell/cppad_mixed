@@ -31,6 +31,7 @@ $head Syntax$$
 $codei%build/speed/capture_xam  \
 	%random_seed% \
 	%number_locations% \
+	%number_fixed_samples% \
 	%number_times%  \
 	%max_population% \
 	%mean_population% \
@@ -49,7 +50,7 @@ from Spatially Replicated Counts.
 $$
 
 $head random_seed$$
-This is a positive integer equal to the
+This is a non-negative integer equal to the
 seed for the random number generator,
 to be specific,
 $cref/s_in/manage_gsl_rng/new_gsl_rng/s_in/$$ used during the call to
@@ -61,6 +62,27 @@ the system clock is used to seed the random number generator.
 The actual random seed $icode actual_seed$$ is printed
 at the end of the program (so that you can reproduce results when
 the system clock is used).
+
+$head number_fixed_samples%$$
+This is a non-negative integer equal to the number of samples simulated
+from the posterior distribution for the fixed effects using
+$cref sample_fixed$$.
+If it is zero, none of these samples are simulated.
+If it is non-zero, the samples are used to approximation the
+standard deviation for the optimal fixed effects.
+One should use a large number of samples (at least 100)
+for this purpose.
+
+$subhead quasi_fixed$$
+If $icode number_fixed_samples$$ is non-zero,
+and $icode quasi_fixed$$ is true,
+some initialization that was skipped during $cref initialize$$,
+is done so that the Hessian of the total objective
+$cref/L(theta)/theory/Objective/Total Objective, L(theta)/$$
+can be computed.
+In this case, the amount of memory used by the objects in the
+$cref/mixed_derived/derived_ctor/mixed_derived/$$ object
+to be the similar to when $icode quasi_fixed$$ is true.
 
 $head number_locations$$
 This is a positive integer equal to the
@@ -84,8 +106,8 @@ This must be greater than any of the simulated number of captures
 at any location and time; i.e., and $latex y_{i,t}$$.
 Also note that $icode max_population$$ does not affect the simulated
 data $latex y_{i,t}$$.
-A suggested value is three times $icode mean_population$$.
-The value of $icode max_population$$ is large enough when increasing it
+A suggested value is five times $icode mean_population$$.
+The value of $icode max_population$$ is large enough if increasing it
 takes more time but does not make a difference in the optimal fixed effects
 (use the same value for the other arguments and same actual seed).
 
@@ -110,10 +132,19 @@ used to simulate data values.
 The is also equal to the standard deviation of the random effects.
 
 $head quasi_fixed$$
-If the actual seed mod two, $icode|actual_seed| % 2|$$, is one,
-$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is true in the
-$code cppad_mixed$$ derived class constructor.
-Otherwise it is false.
+This is either $code true$$ or $code false$$.
+If $icode quasi_fixed$$ is true,
+it is also true in the $code cppad_mixed$$
+$cref/derived class constructor/derived_ctor/quasi_fixed/$$.
+In this case, the a quasi-Newton approximation for the Hessian
+of the total objective
+$cref/L(theta)/theory/Objective/Total Objective, L(theta)/$$.
+Otherwise, the Hessian of the total objective is computed using the
+approximate random objective
+$cref/H(beta, theta, u)
+	/theory
+	/Approximate Random Objective, H(beta, theta, u)
+/$$.
 
 $head random_constraint$$
 This is either $code true$$ or $code false$$.
@@ -619,9 +650,10 @@ int main(int argc, char *argv[])
 	using std::endl;
 	using std::string;
 	//
-	if( argc != 10 )
+	if( argc != 11 )
 	{	std::cerr << "usage: " << argv[0] << "\\ \n"
 		<< " random_seed \\ \n"
+		<< " number_fixed_samples \\ \n"
 		<< " number_locations \\ \n"
 		<< " number_times \\ \n"
 		<< " max_population \\ \n"
@@ -634,19 +666,21 @@ int main(int argc, char *argv[])
 	}
 	//
 	size_t random_seed            = std::atoi( argv[1] );
-	size_t number_locations       = std::atoi( argv[2] );
-	size_t number_times           = std::atoi( argv[3] );
-	size_t max_population         = std::atoi( argv[4] );
-	double mean_population        = std::atof( argv[5] );
-	double mean_logit_probability = std::atof( argv[6] );
-	double std_logit_probability  = std::atof( argv[7] );
-	string quasi_fixed_str        = argv[8];
-	string random_constraint_str  = argv[9];
+	size_t number_fixed_samples   = std::atoi( argv[2] );
+	size_t number_locations       = std::atoi( argv[3] );
+	size_t number_times           = std::atoi( argv[4] );
+	size_t max_population         = std::atoi( argv[5] );
+	double mean_population        = std::atof( argv[6] );
+	double mean_logit_probability = std::atof( argv[7] );
+	double std_logit_probability  = std::atof( argv[8] );
+	string quasi_fixed_str        = argv[9];
+	string random_constraint_str  = argv[10];
 	bool quasi_fixed              =  quasi_fixed_str == "true";
 	bool random_constraint        =  random_constraint_str == "true";
 	//
 	cout   << argv[0]
 	<< " " << random_seed
+	<< " " << number_fixed_samples
 	<< " " << number_locations
 	<< " " << number_times
 	<< " " << max_population
@@ -763,6 +797,7 @@ int main(int argc, char *argv[])
 		u_upper[i] = +inf;
 	}
 	// optimize fixed effects
+	cout << endl;
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_ipopt_options,
 		random_ipopt_options,
@@ -775,44 +810,110 @@ int main(int argc, char *argv[])
 		u_upper,
 		u_in
 	);
-	vector<double> theta_out = solution.fixed_opt;
+	cout << endl;
 	//
-	vector<double> u_out = mixed_object.optimize_random(
+	vector<double> theta_out = solution.fixed_opt;
+	vector<double> u_out     = mixed_object.optimize_random(
 		random_ipopt_options,
 		theta_out,
 		u_lower,
 		u_upper,
 		u_in
 	);
-	std::time_t end_time = std::time( CPPAD_MIXED_NULL_PTR );
 	//
+	bool flag;
 	if( random_constraint )
 	{	// check random effects
 		double sum = 0.0;
 		for(size_t j = 0; j < n_random; j++)
 			sum += u_out[j];
-		ok &= std::fabs( sum ) < 1e-8;
+		flag = std::fabs( sum ) < 1e-8;
+		if( ! flag ) cout
+			<< "sum = " << sum << endl;
+		ok &= flag;
 	}
 	//
-	// check reults
-	ok &= std::fabs( theta_out[0] / theta_sim[0] - 1.0 ) < 0.1;
-	ok &= std::fabs( theta_out[1] - theta_sim[1] )       < 0.1;
-	ok &= std::fabs( theta_out[2] - theta_sim[2] )       < 0.1;
+	// check results
+	double diff = theta_out[0] / theta_sim[0] - 1.0 ;
+	flag = std::fabs( diff ) < 0.2;
+	if( ! flag ) cout
+		<< "theta_out[0] / theta_sim[0] - 1.0 = " << diff << endl;
+	ok &= flag;
 	//
+	diff = theta_out[1] - theta_sim[1];
+	flag = std::fabs( diff ) < 0.2;
+	if( ! flag ) cout
+		<< "theta_out[1] - theta_sim[1] = " << diff << endl;
+	ok &= flag;
+	//
+	diff = theta_out[2] - theta_sim[2];
+	flag = std::fabs( diff ) < 0.2;
+	if( ! flag ) cout
+		<< "theta_out[2] - theta_sim[2] = " << diff << endl;
+	ok &= flag;
+	//
+	// print results
+	cout << "theta_out[0] - mean_population = ";
+	cout <<  theta_out[0] - mean_population << endl;
+	cout << "theta_out[1] - mean_logit_probability  = ";
+	cout <<  theta_out[1] - mean_logit_probability << endl;
+	cout << "theta_out[2] - std_logit_probability  = ";
+	cout <<  theta_out[2] - std_logit_probability << endl;
+	//
+	if( number_fixed_samples > 0 )
+	{	// compute infromation matrix
+		cout << "computing information matrix" << endl;
+		CppAD::mixed::sparse_mat_info
+		information_info = mixed_object.information_mat(solution, u_out);
+		//
+		// compute samples of fixed effects
+		cout << "computing fixed samples " << endl;
+		vector<double> sample( number_fixed_samples * n_fixed );
+		mixed_object.sample_fixed(
+			sample,
+			information_info,
+			solution,
+			theta_lower,
+			theta_upper,
+			u_out
+		);
+		//
+		// compute the sample standard deviations
+		vector<double> sample_std(n_fixed);
+		for(size_t j = 0; j < n_fixed; j++)
+			sample_std[j] = 0.0;
+		for(size_t i = 0; i < number_fixed_samples; i++)
+		{	for(size_t j = 0; j < n_fixed; j++)
+			{	double diff    = sample[i * n_fixed + j] - theta_out[j];
+				sample_std[j] += diff * diff;
+			}
+		}
+		for(size_t j = 0; j < n_fixed; j++)
+		{	sample_std[j] = std::sqrt( sample_std[j] / number_fixed_samples );
+			cout << "sample_std[" << j << "] = " << sample_std[j] << endl;
+			//
+			// check if results results are reasonable
+			diff = ( theta_out[j] - theta_sim[j] ) / sample_std[j];
+			flag = std::fabs(diff) < 3.0;
+			if( ! flag ) cout
+				<< "(theta_out[" << j << "] - theta_sim[" << j <<"])"
+				<< " / sample_std[" << j << "] =" << diff << endl;
+			ok &= flag;
+		}
+	}
+	//
+	// print timing results and actual seed
+	std::time_t end_time = std::time( CPPAD_MIXED_NULL_PTR );
 	cout << "elapsed seconds = " << end_time - start_time << endl;
 	cout << "actual_seed = " << actual_seed << endl;
-	if( ok )
-		cout << "capture_xam: OK" << endl;
-	else
-	{
-		cout << theta_out[0] / theta_sim[0] - 1.0 << endl;
-		cout << theta_out[1] - theta_sim[1]       << endl;
-		cout << theta_out[2] - theta_sim[2]       << endl;
-	}
 	//
+	// free memory allocated by new_gsl_rng
 	CppAD::mixed::free_gsl_rng();
 	if( ok )
+	{	cout << "capture_xam: OK" << endl;
 		return 0;
+	}
+	cout << "capture_xam: Error" << endl;
 	return 1;
 }
 // END C++
