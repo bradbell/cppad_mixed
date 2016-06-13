@@ -118,7 +118,7 @@ namespace {
 	};
 }
 
-bool sample_fixed(void)
+bool sample_fixed_1(void)
 {
 	bool   ok = true;
 	double inf = std::numeric_limits<double>::infinity();

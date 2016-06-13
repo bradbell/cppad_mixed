@@ -44,7 +44,7 @@ extern bool update_factor_xam(void);
 //  tests
 extern bool der_var_hes(void);
 extern bool delta_ran_obj(void);
-extern bool sample_fixed(void);
+extern bool sample_fixed_1(void);
 
 
 namespace CppAD { namespace mixed {
@@ -781,7 +781,7 @@ $srccode%cpp% */
 		CppAD::mixed::sparse_mat_info& jac_info
 	);
 	friend bool ::ran_con_jac_xam(void);
-	friend bool ::sample_fixed(void);
+	friend bool ::sample_fixed_1(void);
 /* %$$
 
 $subhead ran_like_jac$$
