@@ -98,8 +98,11 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 class ldlt_cholmod {
 private:
 	const size_t          nrow_;   // number of rows in sym_matrix_
-	CppAD::vector<size_t> key_;    // sorting keys
-	CppAD::vector<size_t> index_;  // sorting indices
+	CppAD::vector<size_t> key_;    // temporary sorting keys
+	CppAD::vector<size_t> index_;  // temporary sorting indices
+	// mapping from sparse_mat_info to cholmod_sparse order
+	CppAD::vector<size_t> info2cholmod_order_;
+	//
 	cholmod_common    common_;
 	cholmod_sparse*   sym_matrix_; // The symmetric matrix we are factoring
 	cholmod_factor*   factor_;     // lower triangular LDL' factor

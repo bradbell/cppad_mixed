@@ -197,9 +197,11 @@ CppAD::mixed::sparse_mat_info cppad_mixed::information_mat(
 	for(size_t j = 0; j < n_fixed_; j++)
 	{	for(sparse_itr itr(total_hes, j); itr; ++itr)
 		{	assert( size_t( itr.col() ) == j );
-			total_info.row.push_back( itr.row() );
-			total_info.col.push_back( itr.col() );
-			total_info.val.push_back( itr.value() );
+			size_t i = itr.row();
+			double v = itr.value();
+			total_info.row.push_back( i );
+			total_info.col.push_back( j );
+			total_info.val.push_back( v );
 		}
 	}
 	return total_info;

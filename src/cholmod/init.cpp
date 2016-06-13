@@ -99,6 +99,7 @@ $end
 */
 
 # include <cppad/mixed/ldlt_cholmod.hpp>
+# include <cppad/utility/index_sort.hpp>
 # include <cassert>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
@@ -116,13 +117,12 @@ void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& H_info )
 
 	// set triplet corresponding to sparsity pattern and reserve spase
 	// for unspecified values (that end up in sym_matrix_.
-	size_t nrow  = nrow_;
 	size_t ncol  = nrow_;
 	size_t nzmax = H_info.row.size();
 	int    stype = CHOLMOD_STYPE_LOWER_TRIANGLE;
 	int    xtype = CHOLMOD_REAL;
 	cholmod_triplet* triplet = cholmod_allocate_triplet(
-		nrow, ncol, nzmax, stype, xtype, &common_
+		nrow_, ncol, nzmax, stype, xtype, &common_
 	);
 	int* T_i    = (int *) triplet->i;
 	int* T_j    = (int *) triplet->j;
@@ -169,7 +169,7 @@ void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& H_info )
 	// set rhs_set_ to be a sparsity pattern, but do not specify the
 	// actual non-zero entries.
 	ncol       = 1;
-	nzmax      = nrow;
+	nzmax      = nrow_;
 	int sorted = CHOLMOD_TRUE;
 	int packed = CHOLMOD_TRUE;
 	stype      = CHOLMOD_STYPE_NOT_SYMMETRIC;
@@ -195,6 +195,34 @@ void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& H_info )
 
 	// done with triplet
 	cholmod_free_triplet(&triplet, &common_ );
+
+	// set info2cholmod_order_
+	int*    H_p = (int *)    sym_matrix_->p;
+	int*    H_i = (int *)    sym_matrix_->i;
+	assert( size_t( H_p[nrow_] ) == H_info.row.size() );
+	nzmax = H_info.row.size();
+	CppAD::vector<size_t> key(nzmax);
+	info2cholmod_order_.resize(nzmax);
+	size_t k = 0;
+	ncol     = nrow_;
+	for(size_t j = 0; j < ncol; j++)
+	{	size_t start = size_t( H_p[j] );
+		size_t end   = size_t( H_p[j+1] );
+		for(size_t ell = start; ell < end; ell++)
+		{	// H_info is in column major order
+			assert( H_info.col[k] == j );
+			size_t i = size_t(H_i[ell]);
+			assert( i < nrow_ );
+			// column major order for sym_martrix_
+			key[k++] = j * nrow_ + i;
+		}
+	}
+	assert( k == nzmax );
+	CppAD::index_sort(key, info2cholmod_order_);
+# ifndef NDEBUG
+	for(size_t k = 0; k < nzmax; k++)
+		assert( size_t(H_i[ info2cholmod_order_[k] ]) == H_info.row[k] );
+# endif
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

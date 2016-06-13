@@ -449,10 +449,11 @@ void cppad_mixed::sample_fixed(
 		info_mat += H_ID_C.transpose() + H_ID_C + C.transpose() * H_DD * C;
 	}
 	//
-	// creae a sparse_mat_info representation of info_mat
+	// create a sparse_mat_info representation of info_mat
+	// in column major order
 	CppAD::mixed::sparse_mat_info  info_mat_info;
-	for(size_t i = 0; i < nI; i++)
-	{	for(size_t j = 0; j <= i; j++)
+	for(size_t j = 0; j < nI; j++)
+	{	for(size_t i = j; i < nI; i++)
 		{	double v = info_mat(i, j);
 			if( v != 0.0 )
 			{	info_mat_info.row.push_back(i);

@@ -8,80 +8,11 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-/*
-$begin optimize_fixed_xam.cpp$$
-$spell
-	CppAD
-	cppad
-	hes
-	eval
-	interp
-	xam
-$$
-
-$section Optimize Fixed Effects: Example and Test$$
-
-$head Model$$
-$latex \[
-	\B{p}( y_i | \theta , u ) \sim \B{N} ( u_i + \theta_0 , \theta_1^2 )
-\] $$
-$latex \[
-	\B{p}( u_i | \theta ) \sim \B{N} ( 0 , 1 )
-\] $$
-$latex \[
-	\B{p}( \theta ) \sim \B{N} ( 4 , 1 )
-\] $$
-It follows that the Laplace approximation is exact and
-$latex \[
-	\B{p}( y_i | \theta ) \sim \B{N} \left( \theta_0 , 1 + \theta_1^2 \right)
-\] $$
-The constraints on the fixed effect are
-$latex \[
-	- \infty \leq \theta_0 \leq + \infty
-	\R{\; and \;}
-	0.1 \leq \theta_1 \leq 100
-\] $$
-
-$head Objective$$
-The corresponding objective for the fixed effects is equivalent to:
-$latex \[
-F( \theta ) = \frac{1}{2} \left[
-	( \theta_0 - 4 )^2 + ( \theta_1 - 4 )^2 +
-		N \log \left( 1 + \theta_1^2 \right) +
-		( 1 + \theta_1^2)^{-1} \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
-\right]
-\] $$
-
-$head First Order Partials$$
-The first order partial derivatives of the objective are:
-$latex \[
-F_0 ( \theta )
-=
-( \theta_0 - 4 )
--
-( 1 + \theta_1^2)^{-1} \sum_{i=0}^{N-1} ( y_i - \theta_0 )
-\] $$
-$latex \[
-F_1 ( \theta )
-=
-( \theta_1 - 4 )
-+
-N \left( 1 + \theta_1^2 \right)^{-1} \theta_1
--
-( 1 + \theta_1^2)^{-2} \theta_1 \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
-\] $$
-
-$head Source Code$$
-$code
-$srcfile%example/user/optimize_fixed_xam.cpp
-	%0%// BEGIN C++%// END C++%1%$$
-$$
-
-$end
-*/
-// BEGIN C++
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/sparse_mat_info.hpp>
+# include <cppad/mixed/manage_gsl_rng.hpp>
+# include <Eigen/Dense>
 
 namespace {
 	using CppAD::vector;
@@ -107,12 +38,13 @@ namespace {
 			n_fixed_(n_fixed)     ,
 			n_random_(n_random)   ,
 			y_(y)
-		{	assert( n_fixed == 2);
+		{	assert( n_fixed == 3);
 			assert( y_.size() == n_random_ );
 		}
 	// ----------------------------------------------------------------------
 	private:
 		// implementation of ran_likelihood
+		// Note that theta[2] is not used by ran_likelihood
 		template <class Float>
 		vector<Float> implement_ran_likelihood(
 			const vector<Float>& theta  ,
@@ -154,12 +86,12 @@ namespace {
 			vec[0] = Float(0.0);
 
 			// Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
-
 			for(size_t j = 0; j < n_fixed_; j++)
 			{	Float mu     = Float(4.0);
 				Float sigma  = Float(1.0);
 				Float res    = (fixed_vec[j] - mu) / sigma;
-
+				if( j == 2 )
+					res = fixed_vec[0] + fixed_vec[1] + fixed_vec[2];
 				// This is a Gaussian term, so entire density is smooth
 				vec[0]  += res * res / Float(2.0);
 				// following term does not depend on fixed effects
@@ -186,19 +118,22 @@ namespace {
 	};
 }
 
-bool optimize_fixed_xam(void)
+bool sample_fixed_2(void)
 {
 	bool   ok = true;
 	double inf = std::numeric_limits<double>::infinity();
-	double tol = 1e-8;
-
+	//
+	// initialize gsl random number generator
+	size_t random_seed = CppAD::mixed::new_gsl_rng(0);
+	//
 	size_t n_data   = 10;
-	size_t n_fixed  = 2;
+	size_t n_fixed  = 3;
 	size_t n_random = n_data;
 	vector<double>
 		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
 	fixed_lower[0] = - inf; fixed_in[0] = 2.0; fixed_upper[0] = inf;
 	fixed_lower[1] = .01;   fixed_in[1] = 0.5; fixed_upper[1] = inf;
+	fixed_lower[2] = - inf; fixed_in[2] = 2.0; fixed_upper[2] = inf;
 	//
 	// explicit constriants (in addition to l1 terms)
 	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
@@ -224,19 +159,17 @@ bool optimize_fixed_xam(void)
 		"Numeric tol                       1e-8\n"
 	;
 	std::string random_ipopt_options =
-		"Integer print_level     0\n"
-		"String  sb              yes\n"
-		"String  derivative_test second-order\n"
-		"Numeric tol             1e-8\n"
+		"Integer print_level               0\n"
+		"String  sb                        yes\n"
+		"String  derivative_test           second-order\n"
+		"Numeric tol                       1e-8\n"
 	;
-	//
 	vector<double> random_lower(n_random), random_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
 	}
-	// ------------------------------------------------------------------
-	// use ipopt for random effects optimization
+	// optimize fixed effects
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_ipopt_options,
 		random_ipopt_options,
@@ -249,31 +182,79 @@ bool optimize_fixed_xam(void)
 		random_upper,
 		random_in
 	);
-	vector<double> fixed_out = solution.fixed_opt;
-
-	// results of optimization
-	double theta_0 = fixed_out[0];
-	double theta_1 = fixed_out[1];
-
-	// compute partials of F
-	double sum   = 0.0;
-	double sumsq = 0.0;
-	for(size_t i = 0; i < n_data; i++)
-	{	double diff = data[i] - theta_0;
-		sum   += diff;
-		sumsq += diff * diff;
-	}
-	double den = 1.0 + theta_1 * theta_1;
-	double F_0 = (theta_0 - 4.0) - sum / den;
-	double F_1 = theta_1 - 4.0;
-	F_1       += double(n_data) * theta_1 / den;
-	F_1       -= theta_1 * sumsq / (den * den);
-
-	// Note that no constraints are active, (not even the l1 terms)
-	// so the partials should be zero.
-	ok &= CppAD::abs( F_0 ) <= tol;
-	ok &= CppAD::abs( F_1 ) <= tol;
 	//
+	// check that none of the constraints are active
+	// (Note that the Lagragian w.r.t. theta[2] will be zero because
+	// it does not affect the objective).
+	ok &= solution.fixed_lag.size() == n_fixed;
+	for(size_t i = 0; i < n_fixed; i++)
+		ok &= solution.fixed_lag[i] == 0.0;
+	ok &= solution.fix_con_lag.size() == 0;
+	ok &= solution.ran_con_lag.size() == 0.0;
+	//
+	// corresponding optimal random effects
+	vector<double> random_opt = mixed_object.optimize_random(
+		random_ipopt_options,
+		solution.fixed_opt,
+		random_lower,
+		random_upper,
+		random_in
+	);
+	//
+	// compute corresponding information matrix
+	CppAD::mixed::sparse_mat_info
+	information_info = mixed_object.information_mat(solution, random_opt);
+	//
+	// Note all entries in information matrix are non-zero
+	size_t K = ( (n_fixed + 1) * n_fixed ) / 2;
+	ok &= K == information_info.row.size();
+	//
+	// sample from the posterior for fixed effects
+	size_t n_sample = 10000;
+	CppAD::vector<double> sample( n_sample * n_fixed );
+	mixed_object.sample_fixed(
+		sample,
+		information_info,
+		solution,
+		fixed_lower,
+		fixed_upper,
+		random_opt
+	);
+	//
+	typedef Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > matrix;
+	//
+	// compute sample covariance matrix
+	matrix sample_cov = matrix::Zero(n_fixed, n_fixed);
+	for(size_t i = 0; i < n_sample; i++)
+	{	matrix diff(n_fixed, 1);
+		for(size_t j = 0; j < n_fixed; j++)
+			diff(j, 0) = sample[ i * n_fixed + j] - solution.fixed_opt[j];
+		sample_cov += diff * diff.transpose();
+	}
+	sample_cov *= 1.0 / double(n_sample);
+	//
+	matrix info_mat = matrix::Zero(n_fixed, n_fixed);
+	for(size_t k = 0; k < K; k++)
+	{	size_t i = information_info.row[k];
+		size_t j = information_info.col[k];
+		info_mat(i, j) = information_info.val[k];
+		info_mat(j, i) = information_info.val[k];
+	}
+	matrix cov_mat = info_mat.inverse();
+	//
+	for(size_t i = 0; i < n_fixed; i++)
+	{	for(size_t j = 0; j < n_fixed; j++)
+		{	double value = sample_cov(i, j);
+			double check = cov_mat(i, j);
+			double scale = std::sqrt( cov_mat(i, i) * cov_mat(j, j) );
+			ok &= std::fabs(value - check) / scale < .05;
+		}
+	}
+	//
+	if( ! ok )
+		std::cout << "\nrandom_seed = " << random_seed << "\n";
+	//
+	CppAD::mixed::free_gsl_rng();
 	return ok;
 }
 // END C++

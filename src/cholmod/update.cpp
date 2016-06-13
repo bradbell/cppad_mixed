@@ -110,16 +110,18 @@ bool ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& H_info )
 {
 	// set the values in sym_matrix_
 	double* H_x = (double *) sym_matrix_->x;
-	int*    H_p = (int *)    sym_matrix_->p;
 # ifndef NDEBUG
+	int*    H_p = (int *)    sym_matrix_->p;
 	int*    H_i = (int *)    sym_matrix_->i;
 # endif
-	for(size_t j = 0; j < nrow_; j++)
-	{	for(size_t k = (size_t) H_p[j]; k < (size_t) H_p[j+1]; k++)
-		{	assert( H_info.row[k] == (size_t) H_i[k] );
-			assert( H_info.col[k] == j );
-			H_x[k] = H_info.val[k];
-		}
+	for(size_t k = 0; k < H_info.row.size(); k++)
+	{	size_t ell = info2cholmod_order_[k];
+		H_x[ell]   = H_info.val[k];
+# ifndef NDEBUG
+		assert( size_t( H_i[ell] ) == H_info.row[k] );
+		size_t j = H_info.col[k];
+		assert( size_t(H_p[j]) <= ell && ell < size_t(H_p[j+1]) );
+# endif
 	}
 	// set factor_ to LDL^T factorization for this value of Hessian
 # ifndef NDEBUG
