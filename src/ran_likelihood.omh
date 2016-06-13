@@ -83,6 +83,13 @@ $codei%
 	%vec%.size() == 1
 %$$
 
+$subhead constant$$
+Adding or subtracting a constant to $icode%vec%[0]%$$,
+that does not depend on the fixed effects $latex \theta$$
+or the random effects $latex u$$,
+does not affect the optimal estimates for the fixed and random effects.
+
+
 $subhead Default$$
 The base class definition (default) for $code ran_likelihood$$
 returns an empty vector;

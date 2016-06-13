@@ -34,11 +34,19 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh%$$
 
 $head 06-12$$
+$list number$$
 Remove the option,
 to use $code box_newton$$ to optimize the random effects
 (added on $cref/06-03/whats_new/06-03/$$).
 It turns out this had some problems and did not yield the hoped for
 improvements in speed.
+$lnext
+Add comment about fact that constant terms in
+$cref/fix_likelihood/fix_likelihood/vec/constant/$$ and
+$cref/ran_likelihood/ran_likelihood/vec/constant/$$
+do not affect the result.
+In addition, change the $cref user$$ examples to demonstrate this fact.
+$lend
 
 
 $head 06-11$$

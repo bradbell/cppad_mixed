@@ -121,21 +121,24 @@ namespace {
 			// compute this factors once
 			Float   pi     = Float( 4.0 * CppAD::atan(1.0) );
 			Float sqrt_2   = Float( CppAD::sqrt( 2.0 ) );
-			Float sqrt_2pi = CppAD::sqrt( 2.0 * pi );
+			// Float sqrt_2pi = CppAD::sqrt( 2.0 * pi );
 
-			// Data terms
+			// Data terms p(z|theta)
 			for(size_t i = 0; i < N; i++)
 			{	Float q_i   = fixed_vec[0] * t_[i];
 			    q_i        += fixed_vec[1] * sin( 2.0 * pi * t_[i] );
 			    q_i        += fixed_vec[2] * cos( 2.0 * pi * t_[i] );
 				Float res   = z_[i] - q_i;
 				res        /= Float( sigma_ );
-				vec[0]     += log(sigma_ * sqrt_2pi) + res * res / 2.0;
+				vec[0]     += res * res / 2.0;
+				// following term does not depend on the fixed effects
+				// vec[0]     += log(sigma_ * sqrt_2pi);
 			}
 
-			// Prior terms
+			// Prior terms p(theta)
 			for(size_t j = 0; j < n_fixed_; j++)
-			{	vec[0]    += log( delta_ * sqrt_2 );
+			{	// following term does not depend on the fixed effects
+				// vec[0]    += log( delta_ * sqrt_2 );
 				vec[1 + j] = sqrt_2 * fixed_vec[j] / delta_;
 			}
 			return vec;

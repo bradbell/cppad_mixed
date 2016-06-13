@@ -566,7 +566,9 @@ public:
 				p_i += exp( log_pik[ i * K_ + k ] - max_log_pik );
 			}
 			// vec[0] += log[ p(y_i|theta,u) ]
-			vec[0] += log( p_i ) + Float(K_ - M_[i]) * max_log_pik;
+			vec[0] += log( p_i );
+			// following term does not depend on the fixed or random effects
+			// vec[0] += Float(K_ - M_[i]) * max_log_pik;
 		}
 		// - log [ p(y|theta,u) p(u|theta) ]
 		vec[0] = - vec[0];

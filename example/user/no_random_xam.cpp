@@ -87,17 +87,21 @@ namespace {
 			vec[0] = Float(0.0);
 
 			// compute this factors once
-			Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
+			// Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
 
 			for(size_t j = 0; j < n_fixed_; j++)
 			{
-				// Data term
+				// Data term p(z|theta)
 				Float res  = (z_[j] - fixed_vec[j]);
-				vec[0]    += log(sqrt_2pi ) + res * res / Float(2.0);
+				vec[0]    += res * res / Float(2.0);
+				// following term does not depend on fixed effects
+				// vec[0]    += log(sqrt_2pi );
 
-				// True prior term
+				// prior term p(theta)
 				res     = fixed_vec[j];
-				vec[0] += log(sqrt_2pi) + res * res / Float(2.0);
+				vec[0] += res * res / Float(2.0);
+				// following term does not depend on fixed effects
+				// vec[0]    += log(sqrt_2pi );
 			}
 			return vec;
 		}

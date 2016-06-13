@@ -66,6 +66,11 @@ $latex \[
 	g( \theta ) = - \log [ \B{p} ( z | \theta ) \B{p} ( \theta ) ]
 \] $$
 
+$subhead constant$$
+Adding or subtracting a constant to $icode%vec%[0]%$$,
+that does not depend on the fixed effects $latex \theta$$,
+does not affect the optimal estimates for the fixed or random effects.
+
 $subhead Default$$
 The base class definition (default) for $code fix_likelihood$$
 returns an empty vector;

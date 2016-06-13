@@ -61,7 +61,7 @@ namespace {
 		{	vector<Float> vec(1);
 
 			// compute this factor once
-			Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
+			// Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
 
 			// initialize summation
 			vec[0] = Float(0.0);
@@ -73,7 +73,9 @@ namespace {
 				Float res    = (y_[i] - mu) / sigma;
 
 				// This is a Gaussian term, so entire density is smooth
-				vec[0]  += log(sqrt_2pi * sigma) + res * res / Float(2.0);
+				vec[0]  += log(sigma) + res * res / Float(2.0);
+				// following term does not depend on fixed or random effects
+				// vec[0]  += log(sqrt_2pi);
 			}
 			return vec;
 		}

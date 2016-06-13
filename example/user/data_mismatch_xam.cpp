@@ -198,14 +198,16 @@ namespace {
 			vector<Float> vec(1);
 			vec[0] = Float(0.0);
 
-			// compute this factors once
-			Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
+			// compute this factor once
+			// Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
 
-			// Data term
+			// Data term p(z|theta)
 			Float res  = (z_ - theta) / sigma_z_;
-			vec[0]    += log(sqrt_2pi * sigma_z_ ) + res * res / Float(2.0);
+			vec[0]    += res * res / Float(2.0);
+			// the following term does not depend on fixed effects
+			// vec[0]    += log(sqrt_2pi * sigma_z_ );
 
-			// no prior for theta
+			// prior term p(theta)
 
 			return vec;
 		}
@@ -224,15 +226,19 @@ namespace {
 			vec[0] = Float(0.0);
 
 			// compute this factors once
-			Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
+			// Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
 
-			// Data term
+			// Data term p(y|theta,u)
 			Float res  = (y_ - exp(u) * theta) / sigma_y_;
-			vec[0]    += log(sqrt_2pi * sigma_y_ ) + res * res / Float(2.0);
+			vec[0]    += res * res / Float(2.0);
+			// the following term does not depend on fixed or random effects
+			// vec[0]    += log(sqrt_2pi * sigma_y_ );
 
-			// prior for u
+			// prior term p(u|theta)
 			res        = u / sigma_u_;
-			vec[0]    += log(sqrt_2pi * sigma_u_ ) + res * res / Float(2.0);
+			vec[0]    += res * res / Float(2.0);
+			// the following term does not depend on fixed or random effects
+			// vec[0]    += log(sqrt_2pi * sigma_u_ );
 
 			return vec;
 		}

@@ -95,7 +95,8 @@ namespace {
 			{	// Data term
 				Float res   = z_[j] - CppAD::exp( fixed_vec[j] );
 				res        /= Float( sigma_ );
-				vec[0]     += log(sigma_ * sqrt_2);
+				// the following term does not depend on fixed effects
+				// vec[0]     += log(sigma_ * sqrt_2);
 				vec[1 + j] += sqrt_2 * res;
 			}
 			return vec;

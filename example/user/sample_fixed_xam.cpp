@@ -77,8 +77,7 @@ namespace {
 			// initialize part of log-density that is always smooth
 			vec[0] = Float(0.0);
 
-			// pi
-			Float sqrt_2pi = Float( CppAD::sqrt(8.0 * CppAD::atan(1.0) ) );
+			// Float sqrt_2pi = Float( CppAD::sqrt(8.0 * CppAD::atan(1.0) ) );
 
 			for(size_t i = 0; i < n_random_; i++)
 			{	Float mu     = u[i] + theta[0];
@@ -86,10 +85,14 @@ namespace {
 				Float res    = (y_[i] - mu) / sigma;
 
 				// p(y_i | u, theta)
-				vec[0] += log(sqrt_2pi * sigma) + res * res / Float(2.0);
+				vec[0] += log(sigma) + res * res / Float(2.0);
+				// following term does not depend on fixed or random effects
+				// vec[0] += log(sqrt_2pi);
 
 				// p(u_i | theta)
-				vec[0] += log(sqrt_2pi) + u[i] * u[i] / Float(2.0);
+				vec[0] += u[i] * u[i] / Float(2.0);
+				// following term does not depend on fixed or random effects
+				// vec[0] += log(sqrt_2pi);
 			}
 			return vec;
 		}
@@ -103,8 +106,7 @@ namespace {
 			// initialize part of log-density that is smooth
 			vec[0] = Float(0.0);
 
-			// compute these factors once
-			Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
+			// Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
 
 			// Note that theta[2] is not included
 			for(size_t j = 0; j < 2; j++)
@@ -113,7 +115,9 @@ namespace {
 				Float res    = (fixed_vec[j] - mu) / sigma;
 
 				// This is a Gaussian term, so entire density is smooth
-				vec[0]  += log(sqrt_2pi * sigma) + res * res / Float(2.0);
+				vec[0]  += res * res / Float(2.0);
+				// following term does not depend on fixed effects
+				// vec[0]  += log(sqrt_2pi * sigma);
 			}
 			return vec;
 		}

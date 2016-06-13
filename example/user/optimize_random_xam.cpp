@@ -62,8 +62,7 @@ namespace {
 			// initialize part of log-density that is always smooth
 			vec[0] = Float(0.0);
 
-			// compute factor once
-			Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
+			// Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
 
 			for(size_t i = 0; i < y_.size(); i++)
 			{	Float mu     = u[i];
@@ -71,7 +70,9 @@ namespace {
 				Float res    = (y_[i] - mu) / sigma;
 
 				// Gaussian likelihood
-				vec[0]  += (sqrt_2pi * log(sigma) + res*res) / Float(2.0);
+				vec[0]  += log(sigma) + res * res / Float(2.0);
+				// following term does not depend on fixed or random effects
+				// vec[0]  += log(sqrt_2pi);
 			}
 			return vec;
 		}
