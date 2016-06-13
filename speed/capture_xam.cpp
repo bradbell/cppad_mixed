@@ -166,6 +166,19 @@ $latex K$$     $cnext
 	maximum population in truncation of infinite summation; i.e.,
 	$icode max_population$$
 $rnext
+$latex \theta_0$$
+	$cnext mean for $latex N_i$$ given $latex \theta$$
+	($latex \lambda$$ in reference); i.e.,
+	$icode mean_population$$.
+$rnext
+$latex \theta_1$$
+	$cnext mean of logit of capture probability; i.e.,
+	$icode mean_logit_probability$$.
+$rnext
+$latex \theta_2$$
+	$cnext standard deviation of logit of capture probability; i.e.,
+	$icode std_logit_probability$$.
+$rnext
 $latex N_i$$   $cnext
 	size of the population at $th i$$ location
 $rnext
@@ -187,19 +200,6 @@ $latex q_t$$ $cnext
 $rnext
 $latex u_t$$
 	$cnext random effect for each sampling time
-$rnext
-$latex \theta_0$$
-	$cnext mean for $latex N_i$$ given $latex \theta$$
-	($latex \lambda$$ in reference); i.e.,
-	$icode mean_population$$.
-$rnext
-$latex \theta_1$$
-	$cnext mean of logit of capture probability; i.e.,
-	$icode mean_logit_probability$$.
-$rnext
-$latex \theta_2$$
-	$cnext standard deviation of logit of capture probability; i.e.,
-	$icode std_logit_probability$$.
 $tend
 
 $head p(y_it|N_i,q)$$
@@ -220,11 +220,11 @@ $cref/reference/capture_xam.cpp/Reference/$$ suggests a
 covariate model for the probability of capture.
 We use a similar model defined by
 $latex \[
-	\R{logit} ( q_t ) = - u_t - \theta_1
+	\R{logit} ( q_t ) = u_t + \theta_1
 \] $$
 It follows that
 $latex \[
-	q_t( \theta , u) = [ 1 + \exp(  u_t + \theta_1 ) ]^{-1}
+q_t( \theta , u) = [ 1 + \exp(- u_t - \theta_1 ) ]^{-1}
 \] $$
 
 $head p(N_i|theta)$$
@@ -410,7 +410,7 @@ void simulate(
 	for(size_t i = 0; i < R; i++)
 	{	for(size_t t = 0; t < T; t++)
 		{	// probability of capture
-			double ex = exp( u[t] + theta[1] );
+			double ex = exp( - u[t] - theta[1] );
 			double q = 1.0 /( 1.0  + ex );
 			y[ i * T + t ] = gsl_ran_binomial(rng, q, N[i]);
 		}
@@ -507,7 +507,7 @@ public:
 		// log( 1.0 - qt )
 		vector<Float> log_1q(T_);
 		for(size_t t = 0; t < T_; t++)
-		{	Float ex  = exp( u[t] + theta[1] );
+		{	Float ex  = exp( - u[t] - theta[1] );
 			Float q   = one / (one + ex );
 			log_1q[t] = log(one - q + eps);
 			for(size_t i = 0; i < R_; i++)
@@ -795,9 +795,9 @@ int main(int argc, char *argv[])
 	}
 	//
 	// check reults
-	ok &= std::fabs( theta_out[0] / theta_sim[0] - 1.0 ) < 0.2;
-	ok &= std::fabs( theta_out[1] - theta_sim[1] )       < 0.2;
-	ok &= std::fabs( theta_out[2] - theta_sim[2] )       < 0.2;
+	ok &= std::fabs( theta_out[0] / theta_sim[0] - 1.0 ) < 0.1;
+	ok &= std::fabs( theta_out[1] - theta_sim[1] )       < 0.1;
+	ok &= std::fabs( theta_out[2] - theta_sim[2] )       < 0.1;
 	//
 	cout << "elapsed seconds = " << end_time - start_time << endl;
 	cout << "actual_seed = " << actual_seed << endl;
