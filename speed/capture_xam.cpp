@@ -241,14 +241,14 @@ $latex u_t$$
 	$cnext random effect for each sampling time
 $tend
 
-$head p(y_it|N_i,q)$$
+$head p(y_it|N_i,q_t)$$
 We use a binomial distribution to model the
 probability of $latex y_{i,t}$$ given $latex N_i$$ and $latex q_t$$; i.e,
 $latex \[
-\B{p} ( y_{i,t} | N_i , q )
+\B{p} ( y_{i,t} | N_i , q_t )
 =
 \left( \begin{array}{c} N_i \\ y_{i,t} \end{array} \right)
-q_t^{y(i,t)} \left( 1 - q_t^{y(i,t)} \right)
+q_t^{y(i,t)} \left( 1 - q_t \right)^{y(i,t)}
 \] $$
 Furthermore, we assume that this probability
 is independent for each $latex (i, t)$$.
@@ -311,7 +311,7 @@ $latex \[
 \prod_{t=0}^{T-1}
 \left( \begin{array}{c} {N(i)} \\ y_{i,t} \end{array} \right)
 	q_t ( \theta , u)^{y(i,t)}
-	\left( 1 - q_t( \theta , u)^{y(i,t)} \right)
+	\left( 1 - q_t( \theta , u) \right)^{y(i,t)}
 \] $$
 We do not know the population at each location $latex N_i$$,
 but instead have a Poisson prior for $latex N_i$$.
@@ -348,7 +348,7 @@ $latex \[
 \prod_{t=0}^{T-1}
 \left( \begin{array}{c} {k} \\ y_{i,t} \end{array} \right)
 	q_t ( \theta , u)^{y(i,t)}
-	\left( 1 - q_t( \theta , u)^{y(i,t)} \right)
+	\left( 1 - q_t( \theta , u) \right)^{y(i,t)}
 \right]
 \] $$
 In $code cppad_mixed$$ notation, this specifies the

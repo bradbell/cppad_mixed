@@ -165,6 +165,37 @@ Optional constraints.
 \end{frame}
 
 % ===========================================================================
+\Section{Model}
+% --------------------------------------------------------------------------
+
+\begin{frame}{Data}
+\begin{itemize}
+
+\item
+$y_{i,t}$ is the number of captures at location $i$ and time $t$.
+\pause
+
+\item
+$N_i$ is the size of the population at location $i$.
+\pause
+
+\item
+$q_t$ is the probability of capture at time $t$.
+\pause
+
+\item
+The conditional probability of $y_{i,t}$ given $N_i$ and $q_t$:
+\[
+\B{p} ( y_{i,t} | N_i , q_t )
+=
+\left( \begin{array}{c} N_i \\ y_{i,t} \end{array} \right)
+q_t^{y(i,t)} \left( 1 - q_t\right)^{y(i,t)}
+\]
+
+\end{itemize}
+\end{frame}
+
+% ===========================================================================
 \Section{Bibliography}
 %
 \bibliography{capture_xam}{}

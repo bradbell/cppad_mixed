@@ -22,7 +22,7 @@ echo_eval() {
 }
 if [ "$1" != 'capture_xam' ]
 then
-	echo "usage: bin/run_omhelp.sh capture_xam"
+	echo "usage: bin/run_tex.sh capture_xam"
 	exit 1
 fi
 name="$1"
