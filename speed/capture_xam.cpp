@@ -26,7 +26,7 @@ $spell
 	gsl_rng
 $$
 
-$section A Capture Re-capture Example and Speed Test$$
+$section A Capture Example and Speed Test$$
 
 $head Syntax$$
 $codei%build/speed/capture_xam  \
@@ -76,13 +76,13 @@ for this purpose.
 
 $subhead quasi_fixed$$
 If $icode quasi_fixed$$ is true,
-some initialization that was skipped during $cref initialize$$,
-is done so that the Hessian of the total objective
-$cref/L(theta)/theory/Objective/Total Objective, L(theta)/$$
-can be computed.
-In this case, the amount of memory used by the objects in the
+some initialization is skipped during $cref initialize$$,
+and is done during the computation of the
+$cref/information matrix/information_mat/$$.
+In this case, the amount of memory used by the
 $cref/mixed_derived/derived_ctor/mixed_derived/$$ object
-to be the similar to when $icode quasi_fixed$$ is true.
+after the information matrix is computed
+is similar after then initialization when $icode quasi_fixed$$ is false.
 
 $head number_locations$$
 This is a positive integer equal to the
@@ -579,7 +579,7 @@ public:
 				// p(N_i=k|theta)
 				Float float_sum = log_poisson[k];
 				//
-				// initilaize sum that does not need to use Float
+				// initialize sum that does not need to use Float
 				double double_sum = 0.0;
 				//
 				// now compute terms that depend on t
@@ -803,7 +803,7 @@ int main(int argc, char *argv[])
 	std::map<string, size_t> size_map =
 		mixed_object.initialize(theta_in, u_in);
 	//
-	// end timing of initilization
+	// end timing of initialization
 	std::time_t end_time = std::time( CPPAD_MIXED_NULL_PTR );
 	label_print("initialization_seconds", end_time - start_time);
 	//

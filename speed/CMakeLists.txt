@@ -21,7 +21,7 @@ SET(mean_logit_probability  -0.5)
 SET(std_logit_probability    0.5)
 SET(quasi_fixed              true)
 SET(random_constraint        true)
-SET(ipopt_trace              true)
+SET(trace_optimize_fixed     true)
 # END capture_xam arguments
 #
 LINK_DIRECTORIES(
@@ -55,7 +55,7 @@ ADD_CUSTOM_TARGET(
 		${std_logit_probability}
 		${quasi_fixed}
 		${random_constraint}
-		${ipopt_trace}
+		${trace_optimize_fixed}
 	DEPENDS capture_xam
 )
 ADD_DEPENDENCIES(speed_capture_xam cppad_mixed)

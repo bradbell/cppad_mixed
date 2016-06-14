@@ -99,6 +99,21 @@ EOF
 EOF
 	;;
 
+	tex | bib )
+	cat << EOF  >> bin/add_copyright.$$
+% \$Id:\$
+%  --------------------------------------------------------------------------
+% cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
+%           Copyright (C) 2014-16 University of Washington
+%              (Bradley M. Bell bradbell@uw.edu)
+%
+% This program is distributed under the terms of the
+%	     GNU Affero General Public License version 3.0 or later
+% see http://www.gnu.org/licenses/agpl.txt
+% ---------------------------------------------------------------------------
+EOF
+	;;
+
 	md)
 	cat << EOF  >> bin/add_copyright.$$
 <!-- \$Id:\$ -->
@@ -119,7 +134,7 @@ EOF
 
 	*)
 	echo "bin/add_copyright.sh: $file_name extension is one of"
-	echo 'cpp, hpp, omh, cmake, py, R, sed, sh, txt'
+	echo 'bib, cpp, hpp, omh, cmake, py, R, sed, sh, tex, txt'
 	exit 1
 esac
 # -----------------------------------------------------------------------------

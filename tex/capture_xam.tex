@@ -1,0 +1,174 @@
+% $Id:$
+%  --------------------------------------------------------------------------
+% cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
+%           Copyright (C) 2014-16 University of Washington
+%              (Bradley M. Bell bradbell@uw.edu)
+%
+% This program is distributed under the terms of the
+%	     GNU Affero General Public License version 3.0 or later
+% see http://www.gnu.org/licenses/agpl.txt
+% ---------------------------------------------------------------------------
+% Beamer template file.
+
+\documentclass{beamer}
+
+% Choose theme; e.g., default, Wasaw
+\usetheme{default}
+
+% To avoid font warnings caused by Beamer
+\usepackage{lmodern}
+
+% For web links
+\usepackage{hyperref}
+
+% use lable instead of default icon in bibliography
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+
+% Binary file not included for this talk
+% \pgfdeclareimage[height=0.5cm]{ihme-apl-logo}{ihme-apl-logo}
+% \logo{\pgfuseimage{ihme-apl-logo}}
+
+% Common macros
+\newcommand{\Green}[1]{\textcolor{green}{#1}}
+\newcommand{\Blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\B}[1]{{\bf #1}}
+\newcommand{\R}[1]{{\rm #1}}
+\newcommand{\Section}[1]{
+	\section{#1}
+	\begin{frame}
+	\begin{center}
+	\Blue{ \Large{#1} }
+	\end{center}
+	\end{frame}
+}
+%
+\title[cppad\_mixed]{
+The cppad\_mixed Capture Example and Speed Test}
+\author{Bradley M. Bell}
+\institute{
+	Applied Physics Laboratory, \\
+	Health Metrics and Evaluation, \\
+	University of Washington, \\
+	{\tt bradbell@uw.edu}
+}
+\date[2016-06-(20-24)]
+{AMDMB and TMB Developer's Workshop \\ June, 2016}
+%
+% This example definition is intended to be replaced by a renewcommand that
+% defines a specfic \TabbedItem just before it is used.
+\newcommand{\TabbedItem}[1]{
+\item
+\begin{tabbing}
+12345\=67890\=12345\=67890\=12345\=\kill
+#1
+\end{tabbing}
+}
+
+\begin{document}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\begin{frame}{Contents}
+\tableofcontents[pausesections]
+\end{frame}
+
+
+% ===========================================================================
+\Section{Introduction}
+% --------------------------------------------------------------------------
+
+\begin{frame}{cppad\_mixed}
+C++ Laplace approximation for non-linear mixed effect models
+\cite{BellCppADMixed}.
+\pause
+
+\begin{itemize}
+
+\item
+Open souce with souce code control on \texttt{github}.
+\pause
+
+\item
+Example of CppAD addon; e.g., traps CppAD error messages.
+\pause
+
+\item
+Easy to used debugger and asserts in complex modeling situations.
+\pause
+
+\item
+Can be used as a front end for TMB like applications in any language; e.g,
+python.
+\pause
+
+\item
+Can be used for starting point and/or proposal sampling in MCMC method.
+\pause
+
+\item
+Gaussian or Laplace priors and non-linear constraints
+on fixed effects.
+\pause
+
+\end{itemize}
+\end{frame}
+
+% --------------------------------------------------------------------------
+
+\begin{frame}{captrue\_xam}
+This is a \texttt{cppad\_mixed} example; see  \cite{Royle2004}.
+
+\begin{itemize}
+
+\item
+Tests both optimization and posterior sampling.
+\pause
+
+\item
+Reports timing test results.
+\pause
+
+\item
+Reports correctness test results.
+\pause
+
+\item
+Reports memory usage results.
+\pause
+
+\item
+Separate control of data set size.
+\pause
+
+\item
+Separate control of number of random effects.
+\pause
+
+\item
+Separate control of computational load.
+\pause
+
+\item
+Compare Newton and quasi-Newton methods.
+\pause
+
+\item
+Interesting numerical AD method used to avoid overflow.
+\pause
+
+\item
+Optional constraints.
+
+\end{itemize}
+\end{frame}
+
+% ===========================================================================
+\Section{Bibliography}
+%
+\bibliography{capture_xam}{}
+\bibliographystyle{alpha}
+
+
+\end{document}
