@@ -1,0 +1,108 @@
+$Id:$
+-----------------------------------------------------------------------------
+cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
+          Copyright (C) 2014-16 University of Washington
+             (Bradley M. Bell bradbell@uw.edu)
+
+This program is distributed under the terms of the
+	     GNU Affero General Public License version 3.0 or later
+see http://www.gnu.org/licenses/agpl.txt
+-----------------------------------------------------------------------------
+$begin ipopt_trace$$
+$spell
+	Lagragian
+	Ipopt
+	iter
+	inf
+	pr
+	infeasibility
+	inf
+	du
+	lg
+	mu
+	Eq
+	lg
+	rg
+	du
+	pr
+	ls
+	Wachter
+	Biegler
+$$
+
+$section Description of Ipopt Tracing Output$$
+The following is a description of the output for each iteration
+when its $icode print_level$$ option is $code 5$$:
+
+$head iter$$
+The current iteration count.
+This includes regular iterations and iterations during the restoration phase.
+If the algorithm is in the restoration phase,
+the letter r will be appended to the iteration number.
+
+$head objective$$
+The unscaled objective value at the current point.
+During the restoration phase, this value remains the unscaled objective
+value for the original problem.
+
+$head inf_pr$$
+The unscaled constraint violation at the current point.
+This quantity is the infinity-norm (max) of the (unscaled) constraint
+violation for $latex g(x)$$ in the Ipopt documentation.
+During the restoration phase, this value remains the constraint
+violation of the original problem at the current point.
+The option $code inf_pr_output$$ can be used to switch to the printing of
+a different quantity.
+
+$head inf_du$$
+The scaled dual infeasibility at the current point.
+This quantity measure the infinity-norm (max) of the
+internal dual infeasibility, i.e, the derivative of the lagragian
+with respect to the primal variables
+$latex \[
+	\nabla f(x) \nabla c(x) \lambda - z
+\]$$
+where $latex z $$ are the lagrange multipliers for the box constraints and
+$latex c(x) $$ are the nonlinear equality constraints
+(inequality constraints are reformulated using slack variables
+and problem scaling).
+During the restoration phase,
+this is the value of the dual infeasibility for the restoration phase problem.
+
+$head lg(mu)$$
+$latex \log_10$$ of the value of the barrier parameter $latex \mu$$.
+
+$head ||d||$$
+The infinity norm (max) of the primal step
+(for the original variables $latex x$$ and the internal slack
+variables $latex s$$).
+During the restoration phase,
+this value includes the values of additional variables that
+capture the violation in $latex c(x) = 0$$.
+
+$head lg(rg)$$
+$latex \log_10$$ of the value of the regularization term for the Hessian
+of the Lagrangian in the augmented system.
+A dash (-) indicates that no regularization was done.
+
+$head alpha_du$$
+The step size for the dual variables for the box constraints in the
+equality constrained formulation; i.e., $latex z$$.
+
+$head alpha_pr$$
+The step size for the primal variables
+$latex x$$ and $latex \lambda$$ in the equality constrained formulation.
+The number is usually followed by a character for additional diagnostic
+information regarding the step acceptance criterion.
+
+$head ls$$
+The number of backtracking line search steps
+(does not include second-order correction steps).
+
+$head Reference$$
+A. Wachter and L. T. Biegler.,
+On the implementation of a primal-dual interior point
+filter line search algorithm for large-scale nonlinear programming.
+Mathematical Programming, 106(1):25-57, 2006.
+
+$end

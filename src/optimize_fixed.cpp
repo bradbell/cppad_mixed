@@ -222,7 +222,8 @@ the $cref/random likelihood/ran_likelihood/$$ is smooth.
 
 $comment ipopt_options is also used by optimize_random$$
 $children%example/user/optimize_fixed_xam.cpp
-	%src/ipopt_options.omh
+	%omh/ipopt_options.omh
+	%omh/ipopt_trace.omh
 %$$
 $head Example$$
 The file $cref optimize_fixed_xam.cpp$$ contains an example

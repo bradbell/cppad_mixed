@@ -38,8 +38,10 @@ $codei%build/speed/capture_xam  \
 	%mean_population% \
 	%mean_logit_probability% \
 	%std_logit_probability% \
+	%trace_optimization% \
 	%quasi_fixed% \
-	%random_constraint%
+	%random_constraint% \
+	%trace_ipopt%
 %$$
 
 $head Reference$$
@@ -132,6 +134,11 @@ standard deviation of the logit of the capture probability
 used to simulate data values.
 The is also equal to the standard deviation of the random effects.
 
+$head trace_optimization$$
+This is either $code true$$ or $code false$$.
+If it is true, a $icode%print_level% = 5%$$
+$cref/trace/ipopt_trace/$$ of the ipopt optimization process is printed.
+
 $head quasi_fixed$$
 This is either $code true$$ or $code false$$.
 If $icode quasi_fixed$$ is true,
@@ -185,6 +192,14 @@ $code
 $verbatim%speed/CMakeLists.txt
 	%0%# BEGIN capture_xam arguments%# END capture_xam arguments%0%$$
 $$
+
+$head trace_ipopt$$
+This is either $code true$$ or $code false$$.
+If it is true, a $icode%print_level% = 5%$$
+$cref/trace/ipopt_trace/$$ of the fixed effects optimization
+is included in the program output.
+Otherwise the ipopt $icode print_level$$ is zero and
+no such trace is printed.
 
 $head Notation$$
 $table
@@ -651,21 +666,32 @@ int main(int argc, char *argv[])
 	using std::endl;
 	using std::string;
 	//
-	if( argc != 11 )
-	{	std::cerr << "usage: " << argv[0] << "\\ \n"
-		<< " random_seed \\ \n"
-		<< " number_fixed_samples \\ \n"
-		<< " number_locations \\ \n"
-		<< " number_times \\ \n"
-		<< " max_population \\ \n"
-		<< " mean_population \\ \n"
-		<< " mean_logit_probability \\ \n"
-		<< " std_logit_probability \\ \n"
-		<< " quasi_fixed \\ \n"
-		<< " random_constraint \n";
+	const char* arg_name[] = {
+		"random_seed",
+		"number_fixed_samples",
+		"number_locations",
+		"number_times",
+		"max_population",
+		"mean_population",
+		"mean_logit_probability",
+		"std_logit_probability",
+		"quasi_fixed",
+		"random_constraint",
+		"ipopt_trace"
+	};
+	size_t n_arg = sizeof(arg_name)/sizeof(arg_name[0]);
+	//
+	if( size_t(argc) != 1 + n_arg )
+	{	// print usage error message
+		std::cerr << "usage: " << argv[0];
+		for(size_t i = 0; i < n_arg; i++)
+			std::cerr << " \\ \n\t" << arg_name[i];
+		std::cerr << "\n";
 		std::exit(1);
 	}
 	//
+	// get command line arguments
+	assert( n_arg == 11 );
 	size_t random_seed            = std::atoi( argv[1] );
 	size_t number_fixed_samples   = std::atoi( argv[2] );
 	size_t number_locations       = std::atoi( argv[3] );
@@ -674,11 +700,15 @@ int main(int argc, char *argv[])
 	double mean_population        = std::atof( argv[6] );
 	double mean_logit_probability = std::atof( argv[7] );
 	double std_logit_probability  = std::atof( argv[8] );
+	//
 	string quasi_fixed_str        = argv[9];
 	string random_constraint_str  = argv[10];
+	string ipopt_trace_str        = argv[11];
 	bool quasi_fixed              =  quasi_fixed_str == "true";
 	bool random_constraint        =  random_constraint_str == "true";
+	bool ipopt_trace              =  ipopt_trace_str == "true";
 	//
+	// print the commmand line with actual converted values
 	cout   << argv[0]
 	<< " " << random_seed
 	<< " " << number_fixed_samples
@@ -690,13 +720,20 @@ int main(int argc, char *argv[])
 	<< " " << std_logit_probability
 	<< " " << quasi_fixed_str
 	<< " " << random_constraint_str
+	<< " " << ipopt_trace_str
 	<< endl;
+	//
+	// print the command line arugments with lables for each value
+	for(size_t i = 0; i < n_arg; i++)
+		cout << std::setw(25) << arg_name[i] << " = " << argv[1+i] << endl;
+	cout << endl;
 	//
 	assert( max_population > 0.0 );
 	assert( mean_population > 0.0 );
 	assert( std_logit_probability > 0.0 );
-	assert( random_constraint || random_constraint_str=="false" );
 	assert( quasi_fixed || quasi_fixed_str=="false" );
+	assert( random_constraint || random_constraint_str=="false" );
+	assert( ipopt_trace || ipopt_trace_str=="false" );
 	//
 	// time that this program started
 	std::time_t start_time = std::time( CPPAD_MIXED_NULL_PTR );
@@ -773,22 +810,28 @@ int main(int argc, char *argv[])
 	cout << "memory added to mixed_object during initialize = "
 	<< num_bytes_after - num_bytes_before << endl;
 
-	// optimize the fixed effects
+	// ipopt options for optimizing the random effects
+	std::string random_ipopt_options =
+		"String  sb                        yes\n"
+		"String  derivative_test           none\n"
+		"String  derivative_test_print_all no\n"
+		"Numeric tol                       1e-8\n"
+		"Integer max_iter                  40\n"
+		"Integer print_level               0\n"
+	;
+
+	// ipopt options for optimizing the fixd effects
 	std::string fixed_ipopt_options =
-		"Integer print_level               5\n"
 		"String  sb                        yes\n"
 		"String  derivative_test           none\n"
 		"String  derivative_test_print_all no\n"
 		"Numeric tol                       1e-8\n"
 		"Integer max_iter                  40\n"
 	;
-	std::string random_ipopt_options =
-		"Integer print_level               0\n"
-		"String  sb                        yes\n"
-		"String  derivative_test           none\n"
-		"String  derivative_test_print_all no\n"
-		"Numeric tol                       1e-8\n"
-		"Integer max_iter                  40\n"
+	if( ipopt_trace )
+		fixed_ipopt_options += "Integer print_level               5\n";
+	else
+		fixed_ipopt_options += "Integer print_level               0\n";
 	;
 	//
 	double inf = std::numeric_limits<double>::infinity();
