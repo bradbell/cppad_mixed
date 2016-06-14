@@ -23,6 +23,7 @@ $spell
 	logit
 	covariate
 	ipopt
+	gsl_rng
 $$
 
 $section A Capture Re-capture Example and Speed Test$$
@@ -54,7 +55,7 @@ This is a non-negative integer equal to the
 seed for the random number generator,
 to be specific,
 $cref/s_in/manage_gsl_rng/new_gsl_rng/s_in/$$ used during the call to
-$cref manage_gsl_rng$$.
+$code new_gsl_rng$$.
 
 $subhead actual_seed$$
 If $icode random_seed$$ is zero,
@@ -894,7 +895,7 @@ int main(int argc, char *argv[])
 			//
 			// check if results results are reasonable
 			diff = ( theta_out[j] - theta_sim[j] ) / sample_std[j];
-			flag = std::fabs(diff) < 3.0;
+			flag = std::fabs(diff) < 4.0;
 			if( ! flag ) cout
 				<< "(theta_out[" << j << "] - theta_sim[" << j <<"])"
 				<< " / sample_std[" << j << "] =" << diff << endl;

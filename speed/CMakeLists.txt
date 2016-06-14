@@ -13,7 +13,7 @@
 # BEGIN capture_xam arguments
 SET(random_seed                0)
 SET(number_fixed_samples    1000)
-SET(number_locations          50)
+SET(number_locations          40)
 SET(number_times              40)
 SET(max_population            25)
 SET(mean_population          5.0)
