@@ -184,7 +184,7 @@ $q_t$ is the probability of capture at time $t$.
 \pause
 
 \item
-The conditional probability of $y_{i,t}$ given $N_i$ and $q_t$:
+The conditional probability of $y_{i,t}$ given $N_i$ and $q_t$ is
 \[
 \B{p} ( y_{i,t} | N_i , q_t )
 =
@@ -194,7 +194,39 @@ q_t^{y(i,t)} \left( 1 - q_t\right)^{y(i,t)}
 
 \end{itemize}
 \end{frame}
+% --------------------------------------------------------------------------
 
+\begin{frame}{Capture Probability}
+\begin{itemize}
+
+\item
+$\theta_1$ is the mean of the logit of $q_t$.
+\pause
+
+\item
+$\theta_2$ is the standard deviation of $q_t$.
+\pause
+
+\item
+$u_t$ is the random effect at time $t$.
+\pause
+
+\item
+The logit of $q_t$ is
+\[
+	\log [ q_t / ( 1 - q_t ) ] = u_t + \theta_1
+\]
+\pause
+
+\item
+The probability of capture at time $t$ is
+\[
+	q_t ( \theta , u ) = [ 1 + \exp( - u_t - \theta_1 ) ]^{-1}
+\]
+
+
+\end{itemize}
+\end{frame}
 % ===========================================================================
 \Section{Bibliography}
 %
