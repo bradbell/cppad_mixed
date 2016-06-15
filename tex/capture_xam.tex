@@ -330,6 +330,36 @@ The probability of $y$ given $\theta$, and $u$ is
 
 \end{itemize}
 \end{frame}
+% --------------------------------------------------------------------------
+
+\begin{frame}{Random Likelihood}
+\begin{itemize}
+
+\item
+$\theta_2$ is the standard deviation of the logit of $q_t$.
+\pause
+
+\item
+We use a normal distribution for $u$ given $\theta$,
+\[
+\B{p} ( u | \theta )
+=
+\prod_{t=0}^{T-1}
+	\frac{1}{ \theta_2 \sqrt{ 2 \pi } }
+		\exp \left[ - \frac{1}{2} \frac{ u_t^2 }{ \theta_2^2 } \right]
+\]
+\pause
+
+\item
+The user defined random likelihood for this example is
+\[
+f( \theta , u )
+=
+- \log [ \B{p} ( y | \theta , u) \B{p} ( u | \theta ) ]
+\]
+
+\end{itemize}
+\end{frame}
 % ===========================================================================
 \Section{Bibliography}
 %
