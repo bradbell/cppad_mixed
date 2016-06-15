@@ -51,21 +51,16 @@ N-Mixture Models for Estimating Population Size
 from Spatially Replicated Counts.
 $$
 
-$head random_seed$$
+$head Input$$
+
+$subhead random_seed$$
 This is a non-negative integer equal to the
 seed for the random number generator,
 to be specific,
 $cref/s_in/manage_gsl_rng/new_gsl_rng/s_in/$$ used during the call to
 $code new_gsl_rng$$.
 
-$subhead actual_seed$$
-If $icode random_seed$$ is zero,
-the system clock, instead of $icode random_seed$$,
-is used to seed the random number generator.
-The actual random seed $icode actual_seed$$ is printed
-so that you can reproduce results when $icode random_seed$$ is zero.
-
-$head number_fixed_samples$$
+$subhead number_fixed_samples$$
 This is a positive integer equal to the number of samples simulated
 from the posterior distribution for the fixed effects using
 $cref sample_fixed$$.
@@ -74,30 +69,20 @@ standard deviation for the optimal fixed effects.
 One should use a large number of samples (at least 100)
 for this purpose.
 
-$subhead quasi_fixed$$
-If $icode quasi_fixed$$ is true,
-some initialization is skipped during $cref initialize$$,
-and is done during the computation of the
-$cref/information matrix/information_mat/$$.
-In this case, the amount of memory used by the
-$cref/mixed_derived/derived_ctor/mixed_derived/$$ object
-after the information matrix is computed
-is similar after then initialization when $icode quasi_fixed$$ is false.
-
-$head number_locations$$
+$subhead number_locations$$
 This is a positive integer equal to the
 number of locations at which the measurements are made; i.e.
 $latex R$$ in the reference.
 Increasing this value increases the amount for each function evaluation,
 but does not change the number of fixed or random effects.
 
-$head number_times$$
+$subhead number_times$$
 This is a positive integer equal to the
 number of times at which the measurements are made; i.e.,
 $latex T$$ in the reference.
 This is also equal to the number of random effects in the model.
 
-$head max_population$$
+$subhead max_population$$
 This is a positive integer equal to the
 maximum value in the finite summation with respect to
 population size; i.e.,
@@ -111,27 +96,27 @@ The value of $icode max_population$$ is large enough if increasing it
 takes more time but does not make a difference in the optimal fixed effects
 (use the same value for the other arguments and same actual seed).
 
-$head mean_population$$
+$subhead mean_population$$
 This is a positive floating point value equal to the
 mean of the Poisson distribution for the population
 used to simulate data values;
 $latex \lambda$$ in reference.
 
-$head mean_logit_probability$$
+$subhead mean_logit_probability$$
 This is a positive floating point value equal to the
 mean of the logit of the capture probability
 (independent of the random effects)
 used to simulate data values.
 The is also equal to the mean of the random effects.
 
-$head std_logit_probability$$
+$subhead std_logit_probability$$
 This is a positive floating point value equal to the
 standard deviation of the logit of the capture probability
 (independent of the random effects)
 used to simulate data values.
 The is also equal to the standard deviation of the random effects.
 
-$head quasi_fixed$$
+$subhead quasi_fixed$$
 This is either $code true$$ or $code false$$.
 If $icode quasi_fixed$$ is true,
 it is also true in the $code cppad_mixed$$
@@ -145,8 +130,16 @@ $cref/H(beta, theta, u)
 	/theory
 	/Approximate Random Objective, H(beta, theta, u)
 /$$.
+If $icode quasi_fixed$$ is true,
+some initialization is skipped during $cref initialize$$,
+and is done during the computation of the
+$cref/information matrix/information_mat/$$.
+In this case, the amount of memory used by the
+$cref/mixed_derived/derived_ctor/mixed_derived/$$ object
+after the information matrix is computed
+is similar after then initialization when $icode quasi_fixed$$ is false.
 
-$head random_constraint$$
+$subhead random_constraint$$
 This is either $code true$$ or $code false$$.
 If it is $code false$$, there is no
 $cref/random constraint
@@ -177,6 +170,111 @@ $latex \[
 	A = [ 1 , \cdots , 1 ] \in \B{R}^{1 \times T}
 \] $$
 
+$subhead trace_optimize_fixed$$
+This is either $code true$$ or $code false$$.
+If it is true, a $icode%print_level% = 5%$$
+$cref/trace/ipopt_trace/$$ of the fixed effects optimization
+is included in the program output.
+Otherwise the ipopt $icode print_level$$ is zero and
+no such trace is printed.
+
+$subhead Output$$
+
+$subhead actual_seed$$
+If $icode random_seed$$ is zero,
+the system clock, instead of $icode random_seed$$,
+is used to seed the random number generator.
+The actual random seed $icode actual_seed$$ is printed
+so that you can reproduce results when $icode random_seed$$ is zero.
+
+$subhead initialization_seconds$$
+Is the number of seconds used by the derived class
+$cref/constructor/derived_ctor/$$ and
+$cref/initialization/initialize/$$.
+
+$subhead initialization_bytes$$
+Is the amount of memory, in bytes, used by the derived class
+$cref/constructor/derived_ctor/$$ and
+$cref/initialization/initialize/$$.
+
+$subhead optimize_fixed_seconds$$
+Is the number of seconds used by the call to
+$cref optimize_fixed$$ that is used to compute the
+optimal fixed effects.
+
+$subhead optimize_random_seconds$$
+Is the number of seconds used by a single call to
+$cref optimize_random$$ that is used to compute the
+optimal random effects.
+
+$subhead information_mat_seconds$$
+Is the number of seconds used by the call to
+$cref information_mat$$ that computes the observed information matrix.
+
+$subhead sample_fixed_seconds$$
+Is the number of seconds used by the call to
+$cref sample_fixed$$ that computes the
+$cref/number_sample_fixed/capture_xam.cpp/Input/number_fixed_samples/$$
+samples for the fixed effects.
+
+$subhead sum_random_effects$$
+Is the sum of the optimal random effects.
+
+$subhead mean_population_estimate$$
+Is the estimate for the
+$cref/mean_population/capture_xam.cpp/Input/mean_population/$$
+computed by $cref optimize_fixed$$.
+
+$subhead mean_logit_probability_estimate$$
+Is the optimal estimate for the
+$cref/mean_logit_probability/capture_xam.cpp/Input/mean_logit_probability/$$
+(computed by $cref optimize_fixed$$).
+
+$subhead std_logit_probability_estimate$$
+Is the optimal estimate for the
+$cref/std_logit_probability/capture_xam.cpp/Input/std_logit_probability/$$.
+
+$subhead mean_population_std$$
+Is the sample standard deviation of $icode mean_population_estimate$$
+(corresponding to the sample computed by $cref sample_fixed$$).
+
+$subhead mean_logit_probability_std$$
+Is the sample standard deviation of $icode mean_logit_probability_estimate$$.
+
+$subhead std_logit_probability_std$$
+Is the sample standard deviation of $icode std_logit_probability_estimate$$.
+
+$subhead mean_population_ratio$$
+$codei%( %mean_population_estimate% - %mean_population% ) /
+	%mean_population_std%
+%$$
+
+$subhead mean_logit_probability_ratio$$
+$codei%( %mean_logit_probability_estimate% - %mean_logit_probability% ) /
+	%mean_logit_probability_std%
+%$$
+
+$subhead std_probability_ratio$$
+$codei%( %std_probability_estimate% - %std_probability% ) /
+	%std_probability_std%
+%$$
+
+$subhead capture_xam_ok$$
+The following conditions are checked. If they are all true,
+$icode capture_xam_ok$$ is true. Otherwise it is false.
+$list number$$
+$icode%sum_random_effects% < 1e-8 || (%random_constraint% == false)%$$
+$lnext
+$icode%mean_population_ratio% < 4.0%$$
+$lnext
+$icode%mean_logit_probability_ratio% < 4.0%$$
+$lnext
+$icode%std_logit_probability_ratio% < 4.0%$$
+$lend
+If $icode capture_xam_ok$$ is true, the program return value is
+$code 0$$ (no error condition).
+Otherwise it is $code 1$$ (error condition).
+
 $head Example$$
 The $code cppad_mixed$$ automated testing system uses the following
 values for the arguments to $code capture_xam$$:
@@ -184,14 +282,12 @@ $code
 $verbatim%speed/CMakeLists.txt
 	%0%# BEGIN capture_xam arguments%# END capture_xam arguments%0%$$
 $$
-
-$head trace_optimize_fixed$$
-This is either $code true$$ or $code false$$.
-If it is true, a $icode%print_level% = 5%$$
-$cref/trace/ipopt_trace/$$ of the fixed effects optimization
-is included in the program output.
-Otherwise the ipopt $icode print_level$$ is zero and
-no such trace is printed.
+You can run $code build/speed/capture$$ with these setting by executing
+the command
+$codep
+	cd build
+	make speed
+$$
 
 $head Notation$$
 $table
@@ -882,14 +978,6 @@ int main(int argc, char *argv[])
 	end_time = std::time( CPPAD_MIXED_NULL_PTR );
 	label_print("optimize_random_seconds", end_time - start_time);
 	//
-	// sum of random effects
-	double sum_random_effects = 0.0;
-	for(size_t j = 0; j < n_random; j++)
-		sum_random_effects += u_out[j];
-	if( random_constraint )
-		ok &= std::fabs( sum_random_effects ) < 1e-8;
-	label_print("sum_random_effects", sum_random_effects);
-	//
 	// information matrix
 	start_time = std::time( CPPAD_MIXED_NULL_PTR );
 	CppAD::mixed::sparse_mat_info
@@ -909,6 +997,14 @@ int main(int argc, char *argv[])
 	);
 	end_time = std::time( CPPAD_MIXED_NULL_PTR );
 	label_print("sample_fixed_seconds", end_time - start_time);
+	//
+	// sum of random effects
+	double sum_random_effects = 0.0;
+	for(size_t j = 0; j < n_random; j++)
+		sum_random_effects += u_out[j];
+	if( random_constraint )
+		ok &= std::fabs( sum_random_effects ) < 1e-8;
+	label_print("sum_random_effects", sum_random_effects);
 	//
 	// compute the sample standard deviations
 	vector<double> sample_std(n_fixed), estimate_ratio(n_fixed);

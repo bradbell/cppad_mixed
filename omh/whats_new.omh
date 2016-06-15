@@ -33,6 +33,9 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 06-15$$
+Continue to improve $cref capture_xam.cpp$$ example / speed test.
+
 $head 06-14$$
 Continue to improve $cref capture_xam.cpp$$ example / speed test.
 
@@ -430,7 +433,7 @@ $cref/random constraints
 $head 01-16$$
 $list number$$
 Include a
-$cref/random_constraint/capture_xam.cpp/random_constraint/$$
+$cref/random_constraint/capture_xam.cpp/Input/random_constraint/$$
 in implementation and documentation of the $cref capture_xam.cpp$$ example.
 In addition, check that the result satisfies the constraint that
 the sum of the random effects is zero.
