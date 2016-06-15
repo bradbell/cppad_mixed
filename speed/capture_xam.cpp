@@ -187,13 +187,13 @@ is used to seed the random number generator.
 The actual random seed $icode actual_seed$$ is printed
 so that you can reproduce results when $icode random_seed$$ is zero.
 
-$subhead initialization_seconds$$
-Is the number of seconds used by the derived class
+$subhead initialization_bytes$$
+Is the amount of memory, in bytes, used by the derived class
 $cref/constructor/derived_ctor/$$ and
 $cref/initialization/initialize/$$.
 
-$subhead initialization_bytes$$
-Is the amount of memory, in bytes, used by the derived class
+$subhead initialization_seconds$$
+Is the number of seconds used by the derived class
 $cref/constructor/derived_ctor/$$ and
 $cref/initialization/initialize/$$.
 
@@ -901,7 +901,6 @@ int main(int argc, char *argv[])
 	//
 	// end timing of initialization
 	std::time_t end_time = std::time( CPPAD_MIXED_NULL_PTR );
-	label_print("initialization_seconds", end_time - start_time);
 	//
 	// print amoumt of memory added to mixed_object during initialize
 	size_t num_bytes_before = size_map["num_bytes_before"];
@@ -915,6 +914,7 @@ int main(int argc, char *argv[])
 		initialization_bytes += bytes_str[i];
 	}
 	label_print("initialization_bytes", initialization_bytes);
+	label_print("initialization_seconds", end_time - start_time);
 	//
 	// ipopt options for optimizing the random effects
 	string random_ipopt_options =
