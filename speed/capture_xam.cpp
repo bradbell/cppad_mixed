@@ -253,6 +253,17 @@ q_t^{y(i,t)} \left( 1 - q_t \right)^{y(i,t)}
 Furthermore, we assume that this probability
 is independent for each $latex (i, t)$$.
 
+$head p(N_i|theta)$$
+We use a Poisson distribution to model the
+probability of $latex N_i$$ given $latex \theta_0$$; i.e.,
+$latex \[
+\B{p} ( N_i | \theta  )
+=
+\theta_0^{N(i)} \frac{ \exp[ - \theta_0 ] }{ N_i ! }
+\] $$
+We assume these this probability
+is independent for each $latex i$$.
+
 $head q_t(theta,u)$$
 Section 2.4 of the
 $cref/reference/capture_xam.cpp/Reference/$$ suggests a
@@ -265,36 +276,6 @@ It follows that
 $latex \[
 q_t( \theta , u) = [ 1 + \exp(- u_t - \theta_1 ) ]^{-1}
 \] $$
-
-$head p(N_i|theta)$$
-We use a Poisson distribution to model the
-probability of $latex N_i$$ given $latex \theta_0$$; i.e.,
-$latex \[
-\B{p} ( N_i | \theta  )
-=
-\theta_0^{N(i)} \frac{ \exp[ - \theta_0 ] }{ N_i ! }
-\] $$
-We assume these this probability
-is independent for each $latex i$$.
-
-$head p(u|theta)$$
-We use a normal distribution, with mean zero and standard deviation
-$latex \theta_2$$,
-for the distribution of the random effects $latex u$$
-given the fixed effects $latex \theta$$; i.e.,
-$latex \[
-\B{p} ( u | \theta )
-=
-\prod_{t=0}^{T-1}
-	\frac{1}{ \theta_2 \sqrt{ 2 \pi } }
-		\exp \left[ - \frac{1}{2} \frac{ u_t^2 }{ \theta_2^2 } \right]
-\] $$
-In $code cppad_mixed$$ notation, this specifies the
-$cref/random prior density
-	/cppad_mixed
-	/Notation
-	/Random Prior Density, p(u|theta)
-/$$.
 
 $head M_i$$
 We define the vector of maximum measurement for each location by
@@ -356,6 +337,25 @@ $cref/random data density
 	/cppad_mixed
 	/Notation
 	/Random Data Density, p(y|theta,u)
+/$$.
+
+$head p(u|theta)$$
+We use a normal distribution, with mean zero and standard deviation
+$latex \theta_2$$,
+for the distribution of the random effects $latex u$$
+given the fixed effects $latex \theta$$; i.e.,
+$latex \[
+\B{p} ( u | \theta )
+=
+\prod_{t=0}^{T-1}
+	\frac{1}{ \theta_2 \sqrt{ 2 \pi } }
+		\exp \left[ - \frac{1}{2} \frac{ u_t^2 }{ \theta_2^2 } \right]
+\] $$
+In $code cppad_mixed$$ notation, this specifies the
+$cref/random prior density
+	/cppad_mixed
+	/Notation
+	/Random Prior Density, p(u|theta)
 /$$.
 
 $head p(theta)$$

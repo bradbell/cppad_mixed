@@ -168,7 +168,7 @@ Optional constraints.
 \Section{Model}
 % --------------------------------------------------------------------------
 
-\begin{frame}{Data}
+\begin{frame}{Data Given Population Size and Capture Probability}
 \begin{itemize}
 
 \item
@@ -196,7 +196,31 @@ q_t^{y(i,t)} \left( 1 - q_t\right)^{y(i,t)}
 \end{frame}
 % --------------------------------------------------------------------------
 
-\begin{frame}{Capture Probability}
+\begin{frame}{Population Size Given Fixed Effects}
+\begin{itemize}
+
+\item
+$\theta_0$ is the mean of $N_i$ .
+\pause
+
+\item
+$\theta$ is the vector of fixed effects.
+\pause
+
+\item
+We use a Poisson distribution to model the probability of $N_i$
+given $\theta$
+\[
+\B{p} ( N_i | \theta  )
+=
+\theta_0^{N(i)} \frac{ \exp[ - \theta_0 ] }{ N_i ! }
+\]
+
+\end{itemize}
+\end{frame}
+% --------------------------------------------------------------------------
+
+\begin{frame}{Capture Probability Given Fixed and Random Effects}
 \begin{itemize}
 
 \item
@@ -204,12 +228,11 @@ $\theta_1$ is the mean of the logit of $q_t$.
 \pause
 
 \item
-$\theta_2$ is the standard deviation of $q_t$.
+$u_t$ is the random effect at time $t$.
 \pause
 
 \item
-$u_t$ is the random effect at time $t$.
-\pause
+$u$ is the vector of random effects.
 
 \item
 The logit of $q_t$ is
@@ -219,11 +242,91 @@ The logit of $q_t$ is
 \pause
 
 \item
-The probability of capture at time $t$ is
+The probability of capture at time $t$ given $\theta$ and $u$ is
 \[
-	q_t ( \theta , u ) = [ 1 + \exp( - u_t - \theta_1 ) ]^{-1}
+	q_t ( \theta , u )
+	=
+	\B{p} ( q_t | \theta , u )
+	=
+	[ 1 + \exp( - u_t - \theta_1 ) ]^{-1}
 \]
 
+
+\end{itemize}
+\end{frame}
+% --------------------------------------------------------------------------
+
+\begin{frame}{Data Given Fixed and Random Effects}
+\begin{itemize}
+
+\item
+$y_i$ vector of data at location $i$ and all times.
+\pause
+
+\item
+$T$ is the number of times.
+\pause
+
+\item
+The probability of $y_i$ given $N_i$, $\theta$, and $u$ is
+\[
+\B{p}( y_i | N_i, \theta , u )
+=
+\prod_{t=0}^{T-1}
+\left( \begin{array}{c} {N(i)} \\ y_{i,t} \end{array} \right)
+	q_t ( \theta , u)^{y(i,t)}
+	\left( 1 - q_t( \theta , u) \right)^{y(i,t)}
+\]
+\pause
+
+\item
+$K$ is maximum population in truncation of infinite summation.
+\pause
+
+\item
+Probability of $y_i$ given $\theta$, $u$, is modeled using the sum
+\[
+\B{p}( y_i | \theta , u )
+=
+\sum_{k=0}^K \B{p}( y_i | N_i=k, \theta , u ) \B{p}( N_i=k | \theta )
+\]
+\pause
+
+\end{itemize}
+\end{frame}
+% --------------------------------------------------------------------------
+%
+\begin{frame}{Data Given Fixed and Random Effects}
+\begin{itemize}
+
+\item
+$y$ vector of data at all locations and all times.
+\pause
+%
+\item
+$R$ is the number of locations.
+\pause
+%
+\item
+The probability of $y$ given $\theta$, and $u$ is
+\[
+\B{p}( y | \theta , u )
+=
+\prod_{i=0}^{R-1} \B{p}( y_i | \theta , u )
+=
+\]
+\pause
+\[
+\prod_{i=0}^{R-1}
+\left[
+\sum_{k=0}^{K-1}
+\theta_0^k \frac{ \exp[ - \theta_0 ] }{ k ! }
+\prod_{t=0}^{T-1}
+\left( \begin{array}{c} {k} \\ y_{i,t} \end{array} \right)
+	q_t ( \theta , u)^{y(i,t)}
+	\left( 1 - q_t( \theta , u) \right)^{y(i,t)}
+\right]
+\]
 
 \end{itemize}
 \end{frame}
