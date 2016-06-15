@@ -331,10 +331,10 @@ The probability of $y$ given $\theta$, and $u$ is
 \end{itemize}
 \end{frame}
 % ===========================================================================
-\Section{CppAD Mixed Input}
+\Section{Program Input}
 % --------------------------------------------------------------------------
 
-\begin{frame}{Random Likelihood}
+\begin{frame}{Random Likelihood Function}
 \begin{itemize}
 
 \item
@@ -363,7 +363,6 @@ f( \theta , u )
 \end{itemize}
 \end{frame}
 % --------------------------------------------------------------------------
-
 \begin{frame}{Other User Defined Functions}
 \begin{itemize}
 
@@ -404,6 +403,52 @@ A \hat{u} ( \theta )
 \end{itemize}
 \end{frame}
 % --------------------------------------------------------------------------
+\begin{frame}{Command Line Arguments}
+\fontsize{10}{11}\selectfont
+\begin{itemize}
+
+\item
+random\_seed: \hspace{4em} a non-negative integer.
+\pause
+
+\item
+number\_fixed\_samples: \hspace{0.2em} a positive integar.
+\pause
+
+\item
+number\_locations: \hspace{2em} a positive integer , $R$.
+\pause
+
+\item
+max\_population: \hspace{2.7em} a positive integer , $K$.
+\pause
+
+\item
+mean\_population: \hspace{2.2em} a positive real , $\theta_0$.
+\pause
+
+\item
+mean\_logit\_probability: \hspace{0em} a real , $\theta_1$.
+\pause
+
+\item
+std\_logit\_probability: \hspace{1em} a positive real , $\theta_2$.
+\pause
+
+\item
+quasi\_fixed: \hspace{4.8em} true or false.
+\pause
+
+\item
+random\_constraint: \hspace{1.6em} true or false.
+\pause
+
+\item
+trace\_optimize\_fixed: \hspace{1em} true or false.
+\pause
+
+\end{itemize}
+\end{frame}
 
 
 % ===========================================================================
