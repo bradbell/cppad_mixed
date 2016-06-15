@@ -165,7 +165,7 @@ Optional constraints.
 \end{frame}
 
 % ===========================================================================
-\Section{Model}
+\Section{Data Model}
 % --------------------------------------------------------------------------
 
 \begin{frame}{Data Given Population Size and Capture Probability}
@@ -330,6 +330,8 @@ The probability of $y$ given $\theta$, and $u$ is
 
 \end{itemize}
 \end{frame}
+% ===========================================================================
+\Section{CppAD Mixed Input}
 % --------------------------------------------------------------------------
 
 \begin{frame}{Random Likelihood}
@@ -360,6 +362,50 @@ f( \theta , u )
 
 \end{itemize}
 \end{frame}
+% --------------------------------------------------------------------------
+
+\begin{frame}{Other User Defined Functions}
+\begin{itemize}
+
+\item
+The is no prior for the fixed effects; i.e.,
+$\B{p}( \theta )$.
+\pause
+
+\item
+The is no data that only depends on fixed effects; i.e.,
+$\B{p}(z| \theta )$.
+\pause
+
+\item
+The is no fixed constraint functions; i.e,
+$c( \theta )$.
+\pause
+
+\item
+\[
+\hat{u} ( \theta ) = \R{argmin} \; f( \theta , u ) \; \R{w.r.t.} \; u
+\]
+\pause
+
+\item
+$A$ is the random constraint matrix.
+
+\item
+The random constraint function is
+\[
+0
+=
+A \hat{u} ( \theta )
+=
+\hat{u}_1 ( \theta ) + \cdots + \hat{u}_{T-1} ( \theta )
+\]
+
+\end{itemize}
+\end{frame}
+% --------------------------------------------------------------------------
+
+
 % ===========================================================================
 \Section{Bibliography}
 %

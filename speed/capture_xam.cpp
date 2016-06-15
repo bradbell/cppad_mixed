@@ -381,9 +381,9 @@ For this example there is no
 $cref/fixed constraint function
 	/cppad_mixed
 	/Notation
-	/Fixed Data Density, p(z|theta)
+	/Fixed Constraint Function, c(theta)
 /$$
-$latex \B{p}(z | \theta)$$.
+$latex c( \theta )$$.
 
 $code
 $srcfile%speed/capture_xam.cpp
