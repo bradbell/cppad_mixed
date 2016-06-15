@@ -188,9 +188,11 @@ The actual random seed $icode actual_seed$$ is printed
 so that you can reproduce results when $icode random_seed$$ is zero.
 
 $subhead initialization_bytes$$
-Is the amount of memory, in bytes, used by the derived class
+Is the amount of heap memory, in bytes, held by the derived class object
+after its
 $cref/constructor/derived_ctor/$$ and
-$cref/initialization/initialize/$$.
+$cref initialize$$ calls.
+Note that more temporary memory may have been used during these calls.
 
 $subhead initialization_seconds$$
 Is the number of seconds used by the derived class
