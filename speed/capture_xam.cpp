@@ -802,21 +802,6 @@ int main(int argc, char *argv[])
 	bool random_constraint    =  random_constraint_str == "true";
 	bool trace_optimize_fixed =  trace_optimize_fixed_str == "true";
 	//
-	// print the commmand line with actual converted values
-	std::cout   << argv[0]
-	<< " " << random_seed
-	<< " " << number_fixed_samples
-	<< " " << number_locations
-	<< " " << number_times
-	<< " " << max_population
-	<< " " << mean_population
-	<< " " << mean_logit_probability
-	<< " " << std_logit_probability
-	<< " " << quasi_fixed_str
-	<< " " << random_constraint_str
-	<< " " << trace_optimize_fixed_str
-	<< endl;
-	//
 	// print the command line arugments with labels for each value
 	for(size_t i = 0; i < n_arg; i++)
 		label_print(arg_name[i], argv[1+i]);
