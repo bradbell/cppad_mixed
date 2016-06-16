@@ -753,6 +753,11 @@ void label_print(const char* label, const Value& value)
 {	std::cout << std::setw(35) << std::left << label;
 	std::cout << " = " << value << std::endl;
 }
+void label_print(const char* label, const double& value)
+{	std::cout << std::setw(35) << std::left << label;
+	size_t n_digits = 3 + size_t( std::log10(value) + 1e-9 );
+	std::cout << " = " << std::setprecision(n_digits) << value << std::endl;
+}
 } // END_EMPTY_NAMESPACE
 
 int main(int argc, char *argv[])

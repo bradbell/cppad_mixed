@@ -38,7 +38,7 @@ os.chdir('build/speed')
 number_fixed_samples     = '1000'
 number_locations         = '50'
 number_times             = '10'
-max_population           = '25'
+max_population           = '50'
 mean_population          = '5.0'
 mean_logit_probability   = '-0.5'
 std_logit_probability    = '0.5'
@@ -125,6 +125,8 @@ for i in range( n_compare ) :
 theta_key = [
 	'mean_population', 'mean_logit_probability', 'std_logit_probability'
 ]
+time_even      = 0.0
+time_odd       = 0.0
 theta_sum_even = [ 0.0, 0.0, 0.0 ]
 theta_sum_odd  = [ 0.0, 0.0, 0.0 ]
 std_sum_even   = [ 0.0, 0.0, 0.0 ]
@@ -132,6 +134,8 @@ std_sum_odd    = [ 0.0, 0.0, 0.0 ]
 for i in range( n_compare ) :
 	even = 2 * i
 	odd  = even + 1
+	time_even += float( result_list[even]['optimize_fixed_seconds'] )
+	time_odd  += float( result_list[odd]['optimize_fixed_seconds'] )
 	for j in range(3) :
 		theta_true         = result_list[even][ theta_key[j] ]
 		theta_estimate     = result_list[even][ theta_key[j] + '_estimate' ]
@@ -145,14 +149,18 @@ for i in range( n_compare ) :
 		diff               = abs(float(theta_estimate) - float(theta_true ))
 		theta_sum_odd[j]  += diff;
 		std_sum_odd[j]    += float( theta_std )
+fmt      = '{0:30s} false = {1:4.2f} , true = {2:4.2f}'
+avg_even = time_even / n_compare
+avg_odd  = time_odd  / n_compare
+line     = fmt.format('optimize_fixed_seconds', avg_even, avg_odd)
+print(line)
 for j in range(3) :
 	avg_even = theta_sum_even[j] / n_compare
 	avg_odd  = theta_sum_odd[j]  / n_compare
 	std_even = std_sum_even[j] / n_compare
 	std_odd  = std_sum_odd[j]  / n_compare
 	key      = theta_key[j]
-	fmt      = '{0:30s} even = {1:4.2f} odd = {2:4.2f}'
-	line     = fmt.format(key, avg_even, avg_odd)
+	line     = fmt.format('err_' + key, avg_even, avg_odd)
 	print(line)
 	key      = key + '_std'
 	line     = fmt.format(key, std_even, std_odd)

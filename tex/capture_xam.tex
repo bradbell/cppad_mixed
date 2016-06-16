@@ -408,43 +408,69 @@ A \hat{u} ( \theta )
 \begin{itemize}
 
 \item
-random\_seed: \hspace{4em} a non-negative integer.
+random\_seed
+\hspace{4em} non-negative integer
+\hspace{0em} 1466036710
 \pause
 
 \item
-number\_fixed\_samples: \hspace{0.2em} a positive integar.
+number\_fixed\_samples
+\hspace{0.2em} positive integar
+\hspace{2.1em} 1000
 \pause
 
 \item
-number\_locations: \hspace{2em} a positive integer , $R$.
+number\_locations
+\hspace{2.0em} positive integer , $R$
+\hspace{0.6em} 50
 \pause
 
 \item
-max\_population: \hspace{2.7em} a positive integer , $K$.
+number\_times
+\hspace{3.5em} positive integer , $T$
+\hspace{0.5em} 10
 \pause
 
 \item
-mean\_population: \hspace{2.2em} a positive real , $\theta_0$.
+max\_population
+\hspace{2.7em} positive integer , $K$
+\hspace{0.5em} 50
 \pause
 
 \item
-mean\_logit\_probability: \hspace{0em} a real , $\theta_1$.
+mean\_population
+\hspace{2.2em} positive real , $\theta_0$
+\hspace{1.8em} 5.0
 \pause
 
 \item
-std\_logit\_probability: \hspace{1em} a positive real , $\theta_2$.
+mean\_logit\_probability
+\hspace{0em} real , $\theta_1$
+\hspace{5.1em} -0.5
 \pause
 
 \item
-quasi\_fixed: \hspace{4.8em} true or false.
+std\_logit\_probability
+\hspace{1em} positive real , $\theta_2$
+\hspace{1.9em} 0.5
 \pause
 
 \item
-random\_constraint: \hspace{1.6em} true or false.
+quasi\_fixed
+\hspace{4.8em} true or false
+\hspace{3.8em} true
 \pause
 
 \item
-trace\_optimize\_fixed: \hspace{1em} true or false.
+random\_constraint
+\hspace{1.6em} true or false
+\hspace{3.8em} false , true
+\pause
+
+\item
+trace\_optimize\_fixed
+\hspace{1em} true or false
+\hspace{3.8em} false
 \pause
 
 \end{itemize}
@@ -456,26 +482,32 @@ trace\_optimize\_fixed: \hspace{1em} true or false.
 
 \item
 initialization\_bytes
+\hspace{3.0em} 23,446,351 , 23,446,351
 \pause
 
 \item
 initialization\_seconds
+\hspace{2.0em} 1 , 1
 \pause
 
 \item
 optimize\_fixed\_seconds
+\hspace{1.3em} 31 , 32
 \pause
 
 \item
 optimize\_random\_seconds
+\hspace{0.05em} 1 , 1
 \pause
 
 \item
 information\_mat\_seconds
+\hspace{0.25em} 12 , 15
 \pause
 
 \item
 sample\_fixed\_seconds
+\hspace{1.9em} 0 , 0
 \pause
 
 \end{itemize}
@@ -487,42 +519,94 @@ sample\_fixed\_seconds
 
 \item
 sum\_random\_effects
+\hspace{4.9em} -0.0517 , -1.71e-14
 \pause
 
 \item
 mean\_population\_estimate
+\hspace{2.5em} 4.17 , 4.40
 \pause
 
 \item
 mean\_logit\_probability\_estimate
+\hspace{0.0em} -0.558 , -0.585
 \pause
 
 \item
 std\_logit\_probability\_estimate
+\hspace{1.3em} 0.394  , 0.354
 \pause
 
 \item
 mean\_population\_std
+\hspace{4.7em} 0.434 , 0.474
 \pause
 
 \item
 mean\_logit\_probability\_std
+\hspace{2.5em} 0.187 , 0.104
 \pause
 
 \item
 std\_logit\_probability\_std
+\hspace{3.5em} 0.104 , 0.093
 \pause
 
 \item
 mean\_population\_ratio
+\hspace{3.7em} -1.9 , -1.26
 \pause
 
 \item
 mean\_logit\_probability\_ratio
+\hspace{1.5em} -0.311 , -0.812
 \pause
 
 \item
 std\_logit\_probability\_ratio
+\hspace{2.5em} -1.02  , -1.57
+\pause
+
+
+\end{itemize}
+\end{frame}
+% --------------------------------------------------------------------------
+\begin{frame}{Averages for Twenty Runs Each}
+\begin{itemize}
+
+\item
+optimize\_fixed\_seconds
+\hspace{2.0em} 41.60 , 19.85
+\pause
+
+\item
+error\_mean\_population
+\hspace{2.15em} 0.46 , 0.43
+\pause
+
+\item
+mean\_population\_std
+\hspace{2.85em} 0.52 , 0.51
+\pause
+
+\item
+error\_mean\_logit\_probability
+\hspace{0.0em} 0.18 , 0.09
+\pause
+
+\item
+mean\_logit\_probability\_std
+\hspace{0.7em} 0.19 , 0.10
+\pause
+
+\item
+error\_std\_logit\_probability
+\hspace{1.0em} 0.11 , 0.10
+\pause
+
+\item
+std\_logit\_probability\_std
+\hspace{1.6em} 0.11 , 0.11
 \pause
 
 
