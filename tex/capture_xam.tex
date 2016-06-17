@@ -79,8 +79,8 @@ The cppad\_mixed Capture Example and Speed Test}
 \Section{Introduction}
 % --------------------------------------------------------------------------
 
-\begin{frame}{cppad\_mixed}
-C++ Laplace approximation for non-linear mixed effect models
+\begin{frame}{CppAD Mixed}
+C++ Laplace approximation for mixed effect models
 \cite{BellCppADMixed}.
 \pause
 
@@ -91,7 +91,7 @@ Open souce with souce code control on \texttt{github}.
 \pause
 
 \item
-Example of CppAD addon; e.g., traps CppAD error messages.
+CppAD addon; e.g., traps CppAD error messages.
 \pause
 
 \item
@@ -108,9 +108,14 @@ Can be used for starting point and/or proposal sampling in MCMC method.
 \pause
 
 \item
-Gaussian or Laplace priors and non-linear constraints
-on fixed effects.
+Gaussian or Laplace priors (Lasso) on fixed effects.
+
+\item
+Constraints on the fixed and random effects.
 \pause
+
+\item
+No user defined C++ template functions.
 
 \end{itemize}
 \end{frame}
