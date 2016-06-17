@@ -30,27 +30,24 @@ We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
-$head Float$$
-The type $icode Float$$ below can be either
-$code a1_double$$ or $code a2_double$$; see
+$head a2_double$$
+The type $code a2_double$$ below is one of the
 $cref/AD Types/public/AD Types/$$.
 
 $head Virtual Function$$
-For $icode Float$$ equal to
-$code a1_double$$, $code a2_double$$,
-the following virtual function may be implemented
+The following virtual function may be implemented
 in the derived class:
 $codei%
-	virtual CppAD::vector<%Float%> ran_likelihood(
-		const CppAD::vector<%Float%>& %fixed_vec%  ,
-		const CppAD::vector<%Float%>& %random_vec%
+	virtual CppAD::vector<a2_double> ran_likelihood(
+		const CppAD::vector<a2_double>& %fixed_vec%  ,
+		const CppAD::vector<a2_double>& %random_vec%
 	)
 %$$
 
 $head fixed_vec$$
 This argument has prototype
 $codei%
-	const CppAD::vector<%Float%>& %fixed_vec%
+	const CppAD::vector<a2_double>& %fixed_vec%
 %$$
 It contains a value for the
 $cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$ vector.
@@ -58,7 +55,7 @@ $cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$ vector.
 $head random_vec$$
 This argument has prototype
 $codei%
-	const CppAD::vector<%Float%>& %random_vec%
+	const CppAD::vector<a2_double>& %random_vec%
 %$$
 It contains a value for the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ vector.
@@ -66,7 +63,7 @@ $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ vector.
 $head vec$$
 This result has prototype
 $codei%
-	CppAD::vector<%Float%> %vec%
+	CppAD::vector<a2_double> %vec%
 %$$
 It is a
 $cref/negative log-density vector

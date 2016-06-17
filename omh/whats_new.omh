@@ -34,7 +34,14 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh%$$
 
 $head 06-17$$
+$list number$$
 Continue to improve $cref capture_xam.cpp$$ example / speed test.
+$lnext
+Drop the $code a1_double$$ version of the user defined
+$cref ran_likelihood$$ function.
+Also drop the corresponding template functions from the
+$cref user$$ examples.
+$lend
 
 
 $head 06-13$$

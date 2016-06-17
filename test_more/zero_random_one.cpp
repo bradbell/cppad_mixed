@@ -133,7 +133,9 @@ namespace {
 			vec[0] = a1_double(0.0);
 
 			// compute these factors once
-			a1_double sqrt_2pi = a1_double( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
+			a1_double sqrt_2pi = a1_double(
+				 CppAD::sqrt( 8.0 * CppAD::atan(1.0)
+			));
 
 			// p(y_0 | theta)
 			a1_double mu     = fixed_vec[0];

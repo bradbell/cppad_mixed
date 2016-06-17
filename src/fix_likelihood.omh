@@ -32,7 +32,7 @@ derived from the $code cppad_mixed$$ base class.
 
 $head a1_double$$
 The type $code a1_double$$ below is one of the
-see $cref/AD Types/public/AD Types/$$.
+$cref/AD Types/public/AD Types/$$.
 
 $head Virtual Function$$
 The following virtual function may be implemented in the derived class:

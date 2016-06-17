@@ -119,7 +119,9 @@ namespace {
 			vec[0] = a1_double(0.0);
 
 			// compute these factors once
-			a1_double sqrt_2pi = a1_double( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
+			a1_double sqrt_2pi = a1_double(
+				 CppAD::sqrt( 8.0 * CppAD::atan(1.0)
+			));
 
 			// prior for fixed effects
 			for(size_t j = 0; j < n_fixed_; j++)

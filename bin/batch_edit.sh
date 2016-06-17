@@ -22,52 +22,10 @@ no_change_files='
 rename_cmd='s|private/box_newton_xam.cpp|user/box_newton_xam.cpp|'
 #
 cat << EOF > junk.sed
-s|// Float sqrt_2pi = Float(\\(.*\\) );|// sqrt_2pi =\\1;|
-s|^\\tusing CppAD::mixed::sparse_mat_info;|&\\
-\\t//\\
-\\ttypedef AD<double>    a1_double;\\
-\\ttypedef AD<a1_double> a2_double;|
-#
-/^\\tprivate:/! b one
-N
-/\/\/ implementation/! b one
-s|^\\tprivate:\\n||
-# -------------------------------------------------------
-: one
-#
-/^\\t\\ttemplate <class Float>/! b five
-N
-/vector<Float> implement/! b five
-# -------------------------------------------------------
-/implement_fix_likelihood/! b three
-: two
-N
-/\\n\\t\\t}\$/! b two
-s|^\\t\\ttemplate <class Float>\\n||
-s|Float|a1_double|g
-s|vector<a1_double> implement_fix_likelihood|virtual &|
-s|implement_fix_likelihood|fix_likelihood|
-b end
-# -------------------------------------------------------
-: three
-/implement_ran_likelihood/! b end
-: four
-N
-/\\n\\t\\t}\$/! b four
-s|^\\t\\ttemplate <class Float>\\n||
-s|Float|a2_double|g
-s|vector<a2_double> implement_ran_likelihood|virtual &|
-s|implement_ran_likelihood|ran_likelihood|
-b end
-# -------------------------------------------------------
-: five
-/^\\t\\tvirtual/! b end
-: six
-N
-/return implement/! b six
-d
-# -------------------------------------------------------
-: end
+s|// a1_double sqrt_2pi = a1_double(\\(.*\\) );|// sqrt_2pi =\\1;|
+s|^\\(\\t\\t\\ta1_double sqrt_2pi = a1_double(\\)\\(.*\\) *) *) *);|\\1\\
+\\t\\t\\t\\t\\2)\\
+\\t\\t\\t));|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

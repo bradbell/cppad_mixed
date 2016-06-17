@@ -153,7 +153,7 @@ namespace {
 			// initialize part of log-density that is smooth
 			vec[0] = a1_double(0.0);
 
-			// a1_double sqrt_2pi = a1_double( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
+			// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
 
 			for(size_t j = 0; j < n_fixed_; j++)
 			{	a1_double mu     = a1_double(4.0);

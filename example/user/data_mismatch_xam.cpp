@@ -200,7 +200,7 @@ namespace {
 			vec[0] = a1_double(0.0);
 
 			// compute this factor once
-			// a1_double sqrt_2pi = a1_double( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
+			// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
 
 			// Data term p(z|theta)
 			a1_double res  = (z_ - theta) / sigma_z_;
