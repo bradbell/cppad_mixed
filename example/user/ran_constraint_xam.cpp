@@ -75,7 +75,6 @@ namespace {
 		{	assert( n_fixed == 2);
 			assert( y_.size() == n_random_ );
 		}
-	// ----------------------------------------------------------------------
 		// implementation of ran_likelihood
 		virtual vector<a2_double> ran_likelihood(
 			const vector<a2_double>& theta  ,
@@ -130,12 +129,8 @@ namespace {
 			}
 			return vec;
 		}
-	// ----------------------------------------------------------------------
-	public:
-		// User defined virtual functions
-		//
-		// ------------------------------------------------------------------
 	};
+	// ----------------------------------------------------------------------
 	double sum_random_effects(
 		size_t n_random, const CppAD::mixed::sparse_mat_info& A_info
 	)

@@ -212,7 +212,6 @@ namespace {
 
 			return vec;
 		}
-	public:
 		// ------------------------------------------------------------------
 		// implementation of ran_likelihood as p(y|theta, u) * p(u|theta)
 		virtual vector<a2_double> ran_likelihood(
@@ -242,8 +241,6 @@ namespace {
 
 			return vec;
 		}
-		//
-		//
 		// ==================================================================
 		// Routines used to check that objective derivative is zero at solution
 		double g_theta(double theta)

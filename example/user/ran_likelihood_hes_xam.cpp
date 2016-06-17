@@ -115,10 +115,6 @@ namespace {
 			}
 			return val;
 		}
-		// ------------------------------------------------------------------
-		// example a2 version of ran_likelihood
-		// ------------------------------------------------------------------
-		// example a1 version of ran_likelihood
 	};
 }
 
