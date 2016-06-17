@@ -102,7 +102,9 @@ namespace {
 			vec[0] = a2_double(0.0);
 
 			// square root of 2 * pi
-			a2_double sqrt_2pi = a2_double( CppAD::sqrt(8.0 * CppAD::atan(1.0) ) );
+			a2_double sqrt_2pi = a2_double(
+				 CppAD::sqrt(8.0 * CppAD::atan(1.0)
+			));
 
 			for(size_t i = 0; i < u.size(); i++)
 			{	// p(u_i | theta)

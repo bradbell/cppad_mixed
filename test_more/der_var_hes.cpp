@@ -173,7 +173,9 @@ namespace {
 			vec[0] = a2_double(0.0);
 
 			// compute this factors once
-			a2_double sqrt_2pi = a2_double( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
+			a2_double sqrt_2pi = a2_double(
+				 CppAD::sqrt( 8.0 * CppAD::atan(1.0)
+			));
 
 			// Data term
 			a2_double res  = (y_ - exp(u) * theta) / sigma_y_;

@@ -22,8 +22,8 @@ no_change_files='
 rename_cmd='s|private/box_newton_xam.cpp|user/box_newton_xam.cpp|'
 #
 cat << EOF > junk.sed
-s|// a1_double sqrt_2pi = a1_double(\\(.*\\) );|// sqrt_2pi =\\1;|
-s|^\\(\\t\\t\\ta1_double sqrt_2pi = a1_double(\\)\\(.*\\) *) *) *);|\\1\\
+s|// a2_double sqrt_2pi = a2_double(\\(.*\\) );|// sqrt_2pi =\\1;|
+s|^\\(\\t\\t\\ta2_double sqrt_2pi = a2_double(\\)\\(.*\\) *) *) *);|\\1\\
 \\t\\t\\t\\t\\2)\\
 \\t\\t\\t));|
 EOF

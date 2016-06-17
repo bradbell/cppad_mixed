@@ -61,7 +61,9 @@ namespace {
 			vec[0] = a2_double(0.0);
 
 			// pi
-			a2_double sqrt_2pi = a2_double( CppAD::sqrt(8.0 * CppAD::atan(1.0) ) );
+			a2_double sqrt_2pi = a2_double(
+				 CppAD::sqrt(8.0 * CppAD::atan(1.0)
+			));
 
 			size_t n_data = y_.size();
 			for(size_t i = 0; i < n_data; i++)

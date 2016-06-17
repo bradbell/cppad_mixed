@@ -62,7 +62,9 @@ namespace {
 		{	vector<a2_double> vec(1);
 
 			// compute this factor once
-			a2_double sqrt_2pi = a2_double( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
+			a2_double sqrt_2pi = a2_double(
+				 CppAD::sqrt( 8.0 * CppAD::atan(1.0)
+			));
 
 			// initialize summation
 			vec[0] = a2_double(0.0);
