@@ -42,6 +42,9 @@ namespace {
 	using CppAD::log;
 	using CppAD::AD;
 	using CppAD::mixed::sparse_mat_info;
+	//
+	typedef AD<double>    a1_double;
+	typedef AD<a1_double> a2_double;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -58,37 +61,27 @@ namespace {
 			cppad_mixed(n_fixed, n_random, false, A_info) ,
 			y_(y)
 		{ }
-	private:
 		// implementation of ran_likelihood
-		template <class Float>
-		vector<Float> implement_ran_likelihood(
-			const vector<Float>& theta  ,
-			const vector<Float>& u      )
-		{	vector<Float> vec(1);
+		virtual vector<a2_double> ran_likelihood(
+			const vector<a2_double>& theta  ,
+			const vector<a2_double>& u      )
+		{	vector<a2_double> vec(1);
 
 			// initialize part of log-density that is always smooth
-			vec[0] = Float(0.0);
+			vec[0] = a2_double(0.0);
 
 			for(size_t i = 0; i < y_.size(); i++)
-			{	Float mu     = u[i];
-				Float sigma  = theta[i];
-				Float res    = (y_[i] - mu) / sigma;
+			{	a2_double mu     = u[i];
+				a2_double sigma  = theta[i];
+				a2_double res    = (y_[i] - mu) / sigma;
 
 				// (do not need 2*pi inside of log)
-				vec[0]  += (log(sigma) + res*res) / Float(2.0);
+				vec[0]  += (log(sigma) + res*res) / a2_double(2.0);
 			}
 			return vec;
 		}
 	public:
 		//
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& fixed_vec  ,
-			const vector<a2_double>& random_vec )
-		{	return implement_ran_likelihood(fixed_vec, random_vec); }
-		virtual vector<a1_double> ran_likelihood(
-			const vector<a1_double>& fixed_vec  ,
-			const vector<a1_double>& random_vec )
-		{	return implement_ran_likelihood(fixed_vec, random_vec); }
 		//
 		virtual vector<a1_double> fix_likelihood(
 			const vector<a1_double>& fixed_vec  )

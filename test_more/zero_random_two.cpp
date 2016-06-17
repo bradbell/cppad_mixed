@@ -66,6 +66,9 @@ namespace {
 	using CppAD::log;
 	using CppAD::AD;
 	using CppAD::mixed::sparse_mat_info;
+	//
+	typedef AD<double>    a1_double;
+	typedef AD<a1_double> a2_double;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -87,77 +90,63 @@ namespace {
 			y_(y)
 		{	assert( n_fixed_ == 2);}
 	// ----------------------------------------------------------------------
-	private:
 		// implementation of ran_likelihood
-		template <class Float>
-		vector<Float> implement_ran_likelihood(
-			const vector<Float>& theta  ,
-			const vector<Float>& u      )
+		virtual vector<a2_double> ran_likelihood(
+			const vector<a2_double>& theta  ,
+			const vector<a2_double>& u      )
 		{	assert( theta.size() == n_fixed_ );
 			assert( u.size()     == n_random_ );
-			vector<Float> vec(1);
+			vector<a2_double> vec(1);
 
 			// initialize part of log-density that is always smooth
-			vec[0] = Float(0.0);
+			vec[0] = a2_double(0.0);
 
 			// square root of 2 * pi
-			Float sqrt_2pi = Float( CppAD::sqrt(8.0 * CppAD::atan(1.0) ) );
+			a2_double sqrt_2pi = a2_double( CppAD::sqrt(8.0 * CppAD::atan(1.0) ) );
 
 			for(size_t i = 0; i < u.size(); i++)
 			{	// p(u_i | theta)
-				vec[0] += log(sqrt_2pi) + u[i] * u[i] / Float(2.0);
+				vec[0] += log(sqrt_2pi) + u[i] * u[i] / a2_double(2.0);
 			}
 			return vec;
 		}
 		// implementation of fix_likelihood
-		template <class Float>
-		vector<Float> implement_fix_likelihood(
-			const vector<Float>& fixed_vec  )
-		{	vector<Float> vec(1);
+		virtual vector<a1_double> fix_likelihood(
+			const vector<a1_double>& fixed_vec  )
+		{	vector<a1_double> vec(1);
 
 			// initialize part of log-density that is smooth
-			vec[0] = Float(0.0);
+			vec[0] = a1_double(0.0);
 
 			// compute these factors once
-			Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
+			a1_double sqrt_2pi = a1_double( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
 
 			// prior for fixed effects
 			for(size_t j = 0; j < n_fixed_; j++)
-			{	Float mu     = Float(1.0);
-				Float sigma  = Float(1.0);
-				Float res    = (fixed_vec[j] - mu) / sigma;
+			{	a1_double mu     = a1_double(1.0);
+				a1_double sigma  = a1_double(1.0);
+				a1_double res    = (fixed_vec[j] - mu) / sigma;
 
 				// p(theta_j )
-				vec[0]  += log(sqrt_2pi * sigma) + res * res / Float(2.0);
+				vec[0]  += log(sqrt_2pi * sigma) + res * res / a1_double(2.0);
 			}
 
 
 			// data given fixed effects
 			for(size_t i = 0; i < y_.size(); i++)
-			{	Float mu     = fixed_vec[0];
-				Float sigma  = fixed_vec[1];
-				Float res    = (y_[i] - mu) / sigma;
+			{	a1_double mu     = fixed_vec[0];
+				a1_double sigma  = fixed_vec[1];
+				a1_double res    = (y_[i] - mu) / sigma;
 
 				// p(y_i | theta)
-				vec[0] += log(sqrt_2pi * sigma) + res * res / Float(2.0);
+				vec[0] += log(sqrt_2pi * sigma) + res * res / a1_double(2.0);
 			}
 			return vec;
 		}
 	// ----------------------------------------------------------------------
 	public:
 		// User defined virtual functions
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& fixed_vec  ,
-			const vector<a2_double>& random_vec )
-		{	return implement_ran_likelihood(fixed_vec, random_vec); }
-		virtual vector<a1_double> ran_likelihood(
-			const vector<a1_double>& fixed_vec  ,
-			const vector<a1_double>& random_vec )
-		{	return implement_ran_likelihood(fixed_vec, random_vec); }
 		//
-		virtual vector<a1_double> fix_likelihood(
-			const vector<a1_double>& fixed_vec  )
-		{	return implement_fix_likelihood(fixed_vec); }
 		// ------------------------------------------------------------------
 	};
 }

@@ -79,6 +79,9 @@ namespace {
 	using CppAD::log;
 	using CppAD::AD;
 	using CppAD::mixed::sparse_mat_info;
+	//
+	typedef AD<double>    a1_double;
+	typedef AD<a1_double> a2_double;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -107,29 +110,27 @@ namespace {
 		{	assert(n_fixed == 3);
 			assert( t.size() == z.size() );
 		}
-	private:
 		// implementation of fix_likelihood as p(z|theta) * p(theta)
-		template <class Float>
-		vector<Float> implement_fix_likelihood(
-			const vector<Float>& fixed_vec  )
+		virtual vector<a1_double> fix_likelihood(
+			const vector<a1_double>& fixed_vec  )
 		{	size_t N = t_.size();
 
 			// initialize log-density
-			vector<Float> vec(1 + n_fixed_);
-			vec[0] = Float(0.0);
+			vector<a1_double> vec(1 + n_fixed_);
+			vec[0] = a1_double(0.0);
 
 			// compute this factors once
-			Float   pi     = Float( 4.0 * CppAD::atan(1.0) );
-			Float sqrt_2   = Float( CppAD::sqrt( 2.0 ) );
-			// Float sqrt_2pi = CppAD::sqrt( 2.0 * pi );
+			a1_double   pi     = a1_double( 4.0 * CppAD::atan(1.0) );
+			a1_double sqrt_2   = a1_double( CppAD::sqrt( 2.0 ) );
+			// a1_double sqrt_2pi = CppAD::sqrt( 2.0 * pi );
 
 			// Data terms p(z|theta)
 			for(size_t i = 0; i < N; i++)
-			{	Float q_i   = fixed_vec[0] * t_[i];
+			{	a1_double q_i   = fixed_vec[0] * t_[i];
 			    q_i        += fixed_vec[1] * sin( 2.0 * pi * t_[i] );
 			    q_i        += fixed_vec[2] * cos( 2.0 * pi * t_[i] );
-				Float res   = z_[i] - q_i;
-				res        /= Float( sigma_ );
+				a1_double res   = z_[i] - q_i;
+				res        /= a1_double( sigma_ );
 				vec[0]     += res * res / 2.0;
 				// following term does not depend on the fixed effects
 				// vec[0]     += log(sigma_ * sqrt_2pi);
@@ -146,9 +147,6 @@ namespace {
 	public:
 		// ------------------------------------------------------------------
 		// User defined virtual functions
-		virtual vector<a1_double> fix_likelihood(
-			const vector<a1_double>& fixed_vec  )
-		{	return implement_fix_likelihood(fixed_vec); }
 		// ------------------------------------------------------------------
 	};
 }

@@ -136,6 +136,9 @@ namespace {
 	using CppAD::abs;
 	using CppAD::AD;
 	using CppAD::mixed::sparse_mat_info;
+	//
+	typedef AD<double>    a1_double;
+	typedef AD<a1_double> a2_double;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -159,39 +162,30 @@ namespace {
 	public:
 		// ------------------------------------------------------------------
 		// implementation of ran_likelihood as p(y|theta, u) * p(u|theta)
-		template <class Float>
-		vector<Float> implement_ran_likelihood(
-			const vector<Float>& fixed_vec  ,
-			const vector<Float>& random_vec )
-		{	Float theta = fixed_vec[0];
-			Float u     = random_vec[0];
+		virtual vector<a2_double> ran_likelihood(
+			const vector<a2_double>& fixed_vec  ,
+			const vector<a2_double>& random_vec )
+		{	a2_double theta = fixed_vec[0];
+			a2_double u     = random_vec[0];
 
 			// initialize log-density
-			vector<Float> vec(1);
-			vec[0] = Float(0.0);
+			vector<a2_double> vec(1);
+			vec[0] = a2_double(0.0);
 
 			// compute this factors once
-			Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
+			a2_double sqrt_2pi = a2_double( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
 
 			// Data term
-			Float res  = (y_ - exp(u) * theta) / sigma_y_;
-			vec[0]    += log(sqrt_2pi * sigma_y_ ) + res * res / Float(2.0);
+			a2_double res  = (y_ - exp(u) * theta) / sigma_y_;
+			vec[0]    += log(sqrt_2pi * sigma_y_ ) + res * res / a2_double(2.0);
 
 			// prior for u
 			res        = u / sigma_u_;
-			vec[0]    += log(sqrt_2pi * sigma_u_ ) + res * res / Float(2.0);
+			vec[0]    += log(sqrt_2pi * sigma_u_ ) + res * res / a2_double(2.0);
 
 			return vec;
 		}
 		//
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& fixed_vec   ,
-			const vector<a2_double>& random_vec  )
-		{	return implement_ran_likelihood(fixed_vec, random_vec); }
-		virtual vector<a1_double> ran_likelihood(
-			const vector<a1_double>& fixed_vec   ,
-			const vector<a1_double>& random_vec  )
-		{	return implement_ran_likelihood(fixed_vec, random_vec); }
 		// ==================================================================
 		// Routines used to check that objective derivative
 		double f_theta(double theta, double u)

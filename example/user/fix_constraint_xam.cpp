@@ -68,6 +68,9 @@ namespace {
 	using CppAD::log;
 	using CppAD::AD;
 	using CppAD::mixed::sparse_mat_info;
+	//
+	typedef AD<double>    a1_double;
+	typedef AD<a1_double> a2_double;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -85,34 +88,32 @@ namespace {
 			n_fixed_(n_fixed)                                      ,
 			y_(y)
 		{}
-	private:
 		// implementation of ran_likelihood
-		template <class Float>
-		vector<Float> implement_ran_likelihood(
-			const vector<Float>& theta  ,
-			const vector<Float>& u      )
+		virtual vector<a2_double> ran_likelihood(
+			const vector<a2_double>& theta  ,
+			const vector<a2_double>& u      )
 		{	assert( u.size() == y_.size() );
 			assert( theta.size() == y_.size() );
-			vector<Float> vec(1);
+			vector<a2_double> vec(1);
 
 			// initialize part of log-density that is always smooth
-			vec[0] = Float(0.0);
+			vec[0] = a2_double(0.0);
 
 			// pi
-			// Float sqrt_2pi = Float( CppAD::sqrt(8.0 * CppAD::atan(1.0) ) );
+			// a2_double sqrt_2pi = a2_double( CppAD::sqrt(8.0 * CppAD::atan(1.0) ) );
 
 			for(size_t i = 0; i < y_.size(); i++)
-			{	Float mu     = u[i] + theta[i];
-				Float sigma  = Float(1.0);
-				Float res    = (y_[i] - mu) / sigma;
+			{	a2_double mu     = u[i] + theta[i];
+				a2_double sigma  = a2_double(1.0);
+				a2_double res    = (y_[i] - mu) / sigma;
 
 				// p(y_i | u, theta)
-				vec[0] += res*res / Float(2.0);
+				vec[0] += res*res / a2_double(2.0);
 				// following term does not depend on fixed or random effects
 				// vec[0] += log(sqrt_2pi * sigma);
 
 				// p(u_i | theta)
-				vec[0] += u[i] * u[i] / Float(2.0);
+				vec[0] += u[i] * u[i] / a2_double(2.0);
 				// following term does not depend on fixed or random effects
 				// vec[0] += log(sqrt_2pi);
 			}
@@ -121,14 +122,6 @@ namespace {
 	public:
 		// ------------------------------------------------------------------
 		// ran_likelihood
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& fixed_vec  ,
-			const vector<a2_double>& random_vec )
-		{	return implement_ran_likelihood(fixed_vec, random_vec); }
-		virtual vector<a1_double> ran_likelihood(
-			const vector<a1_double>& fixed_vec  ,
-			const vector<a1_double>& random_vec )
-		{	return implement_ran_likelihood(fixed_vec, random_vec); }
 		// fix_constraint
 		virtual vector<a1_double> fix_constraint(
 			const vector<a1_double>& fixed_vec  )

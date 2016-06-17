@@ -57,43 +57,40 @@ namespace {
 			y_(y)
 		{	assert( n_fixed == 2);
 		}
-	private:
 		// implementation of ran_likelihood
-		template <class Float>
-		vector<Float> implement_ran_likelihood(
-			const vector<Float>& theta  ,
-			const vector<Float>& u      )
-		{	vector<Float> vec(1);
+		virtual vector<a2_double> ran_likelihood(
+			const vector<a2_double>& theta  ,
+			const vector<a2_double>& u      )
+		{	vector<a2_double> vec(1);
 
 			// compute this factor once
-			Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
+			a2_double sqrt_2pi = a2_double( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
 
 			// initialize summation
-			vec[0] = Float(0.0);
+			vec[0] = a2_double(0.0);
 
 			// for each data and random effect
 			for(size_t i = 0; i < y_.size(); i++)
-			{	Float mu     = theta[0] + u[i];
-				Float sigma  = theta[1];
-				Float res    = (y_[i] - mu) / sigma;
+			{	a2_double mu     = theta[0] + u[i];
+				a2_double sigma  = theta[1];
+				a2_double res    = (y_[i] - mu) / sigma;
 
 				// This is a Gaussian term, so entire density is smooth
-				vec[0]  += log(sqrt_2pi * sigma) + res * res / Float(2.0);
+				vec[0]  += log(sqrt_2pi * sigma) + res * res / a2_double(2.0);
 			}
 			return vec;
 		}
 		// implementation of fix_likelihood
-		template <class Float>
-		vector<Float> implement_fix_likelihood(
-			const vector<Float>& fixed_vec  )
-		{	vector<Float> vec(1);
+		virtual vector<a1_double> fix_likelihood(
+			const vector<a1_double>& fixed_vec  )
+		{	vector<a1_double> vec(1);
 
 			// initialize part of log-density that is smooth
-			vec[0] = Float(0.0);
+			vec[0] = a1_double(0.0);
 
 			// compute these factors once
-			Float mu     = Float(1.0);
-			Float sqrt_2 = CppAD::sqrt( Float(2.0) );
+			a1_double mu     = a1_double(1.0);
+			a1_double sqrt_2 = CppAD::sqrt( a1_double(2.0) );
 
 			for(size_t j = 0; j < n_fixed_; j++)
 			{
@@ -106,18 +103,7 @@ namespace {
 			return vec;
 		}
 	public:
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& fixed_vec  ,
-			const vector<a2_double>& random_vec )
-		{	return implement_ran_likelihood(fixed_vec, random_vec); }
-		virtual vector<a1_double> ran_likelihood(
-			const vector<a1_double>& fixed_vec  ,
-			const vector<a1_double>& random_vec )
-		{	return implement_ran_likelihood(fixed_vec, random_vec); }
 		//
-		virtual vector<a1_double> fix_likelihood(
-			const vector<a1_double>& fixed_vec  )
-		{	return implement_fix_likelihood(fixed_vec); }
 		//
 		// constraint is 1/2 norm squared of the fixed effects
 		virtual vector<a1_double> fix_constraint(

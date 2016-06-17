@@ -36,6 +36,9 @@ namespace {
 	using CppAD::log;
 	using CppAD::AD;
 	using CppAD::mixed::sparse_mat_info;
+	//
+	typedef AD<double>    a1_double;
+	typedef AD<a1_double> a2_double;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -53,40 +56,31 @@ namespace {
 			y_(y)
 		{ }
 		// implementation of ran_likelihood
-		template <class Float>
-		vector<Float> implement_ran_likelihood(
-			const vector<Float>& theta  ,
-			const vector<Float>& u      )
-		{	vector<Float> vec(1);
+		virtual vector<a2_double> ran_likelihood(
+			const vector<a2_double>& theta  ,
+			const vector<a2_double>& u      )
+		{	vector<a2_double> vec(1);
 
 			// compute this factor once
-			Float sqrt_2pi = Float( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
+			a2_double sqrt_2pi = a2_double( CppAD::sqrt( 8.0 * CppAD::atan(1.0) ) );
 
 			// initialize summation
-			vec[0] = Float(0.0);
+			vec[0] = a2_double(0.0);
 
 			// for each data and random effect
 			for(size_t i = 0; i < y_.size(); i++)
-			{	Float mu     = u[i];
-				Float sigma  = theta[i];
-				Float res    = (y_[i] - mu) / sigma;
+			{	a2_double mu     = u[i];
+				a2_double sigma  = theta[i];
+				a2_double res    = (y_[i] - mu) / sigma;
 
 				// This is a Gaussian term, so entire density is smooth
-				vec[0]  += log(sqrt_2pi * sigma) + res * res / Float(2.0);
+				vec[0]  += log(sqrt_2pi * sigma) + res * res / a2_double(2.0);
 			}
 			return vec;
 		}
 		// ------------------------------------------------------------------
 		// example a2 version of ran_likelihood
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& fixed_vec  ,
-			const vector<a2_double>& random_vec )
-		{	return implement_ran_likelihood(fixed_vec, random_vec); }
 		// example a1 version of ran_likelihood
-		virtual vector<a1_double> ran_likelihood(
-			const vector<a1_double>& fixed_vec  ,
-			const vector<a1_double>& random_vec )
-		{	return implement_ran_likelihood(fixed_vec, random_vec); }
 	};
 }
 
@@ -125,11 +119,7 @@ bool ran_likelihood_xam(void)
 	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, A_info, data);
 	mixed_object.initialize(fixed_vec, random_vec);
 
-	// Evaluate a1_double version of random likelihood
-	vector<a1_double> a1_vec(1);
-	a1_vec = mixed_object.ran_likelihood(a1_fixed, a1_random);
-
-	// Evaluate a2_double version of random likelihood
+	// Evaluate random likelihood
 	vector<a2_double> a2_vec(1);
 	a2_vec = mixed_object.ran_likelihood(a2_fixed, a2_random);
 
@@ -141,7 +131,6 @@ bool ran_likelihood_xam(void)
 		double res    = (data[i] - mu) / sigma;
 		sum          += (std::log(2 * pi * sigma * sigma) + res * res) / 2.0;
 	}
-	ok &= abs( a1_vec[0] / a1_double(sum) - a1_double(1.0) ) < eps;
 	ok &= abs( a2_vec[0] / a2_double(sum) - a2_double(1.0) ) < eps;
 
 	return ok;
