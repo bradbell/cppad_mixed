@@ -187,17 +187,14 @@ is used to seed the random number generator.
 The actual random seed $icode actual_seed$$ is printed
 so that you can reproduce results when $icode random_seed$$ is zero.
 
-$subhead initialization_bytes$$
-Is the amount of heap memory, in bytes, held by the derived class object
-after its
-$cref/constructor/derived_ctor/$$ and
-$cref initialize$$ calls.
-Note that more temporary memory may have been used during these calls.
+$subhead initialize_bytes$$
+Is the amount of heap memory, in bytes,
+added to the derived class object
+during its $cref initialize$$ call.
+Note that more temporary memory may have been used during this call.
 
-$subhead initialization_seconds$$
-Is the number of seconds used by the derived class
-$cref/constructor/derived_ctor/$$ and
-$cref/initialization/initialize/$$.
+$subhead initialize_seconds$$
+Is the number of seconds used by the derived class $cref initialize$$ call.
 
 $subhead optimize_fixed_seconds$$
 Is the number of seconds used by the call to
@@ -879,19 +876,16 @@ int main(int argc, char *argv[])
 	for(size_t t = 0; t < T; t++)
 		u_in[t] = 0.0;
 	//
-	// start timing of initialization
-	std::time_t start_time = std::time( CPPAD_MIXED_NULL_PTR );
-	//
 	// create derived object
 	mixed_derived mixed_object(
 		R, T, K, quasi_fixed, A_info, y, theta_in, u_in
 	);
 	//
-	// initialize derived object
+	// start timing of initialize
+	std::time_t start_time = std::time( CPPAD_MIXED_NULL_PTR );
 	std::map<string, size_t> size_map =
 		mixed_object.initialize(theta_in, u_in);
-	//
-	// end timing of initialization
+	// end timing of initialize
 	std::time_t end_time = std::time( CPPAD_MIXED_NULL_PTR );
 	//
 	// print amoumt of memory added to mixed_object during initialize
@@ -899,14 +893,14 @@ int main(int argc, char *argv[])
 	size_t num_bytes_after  = size_map["num_bytes_after"];
 	string bytes_str = CppAD::to_string(num_bytes_after - num_bytes_before);
 	size_t n_char = bytes_str.size();
-	string initialization_bytes = "";
+	string initialize_bytes = "";
 	for(size_t i = 0; i < n_char; i++)
 	{	if( i != 0 && (n_char - i) % 3 == 0 )
-			initialization_bytes += ",";
-		initialization_bytes += bytes_str[i];
+			initialize_bytes += ",";
+		initialize_bytes += bytes_str[i];
 	}
-	label_print("initialization_bytes", initialization_bytes);
-	label_print("initialization_seconds", end_time - start_time);
+	label_print("initialize_bytes", initialize_bytes);
+	label_print("initialize_seconds", end_time - start_time);
 	//
 	// ipopt options for optimizing the random effects
 	string random_ipopt_options =

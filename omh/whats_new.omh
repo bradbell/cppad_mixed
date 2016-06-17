@@ -33,11 +33,9 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
-$head 06-15$$
+$head 06-17$$
 Continue to improve $cref capture_xam.cpp$$ example / speed test.
 
-$head 06-14$$
-Continue to improve $cref capture_xam.cpp$$ example / speed test.
 
 $head 06-13$$
 $list number$$
