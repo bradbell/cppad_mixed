@@ -188,15 +188,12 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	size_t thread           = CppAD::thread_alloc::thread_num();
 	size_t num_bytes_before = CppAD::thread_alloc::inuse(thread);
 	//
-	// a1_fixed_vec, a1_random_vec
-	a1d_vector a1_fixed_vec( n_fixed_ ), a1_random_vec(n_random_);
-	for(size_t i = 0; i < n_fixed_; i++)
-		a1_fixed_vec[i] = fixed_vec[i];
-	for(size_t i = 0; i < n_random_; i++)
-		a1_random_vec[i] = random_vec[i];
-	//
 	if( n_random_ == 0 )
-	{	a1d_vector vec = ran_likelihood(a1_fixed_vec, a1_random_vec);
+	{	a2d_vector a2_fixed_vec( n_fixed_ ), a2_random_vec(n_random_);
+		for(size_t i = 0; i < n_fixed_; i++)
+			a2_fixed_vec[i] = fixed_vec[i];
+		//
+		a2d_vector vec = ran_likelihood(a2_fixed_vec, a2_random_vec);
 		if( vec.size() != 0 )
 		{	std::string msg = "There are no random effects, n_random = 0,";
 			msg += "\nbut ran_likelihood returns a non-empty vector";

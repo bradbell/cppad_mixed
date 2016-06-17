@@ -111,10 +111,6 @@ $srccode%cpp% */
 		const a2d_vector& fixed_vec  ,
 		const a2d_vector& random_vec )
 	{	return a2d_vector(0); }
-	virtual a1d_vector ran_likelihood(
-		const a1d_vector& fixed_vec  ,
-		const a1d_vector& random_vec )
-	{	return a1d_vector(0); }
 /* %$$
 See $cref ran_likelihood$$.
 

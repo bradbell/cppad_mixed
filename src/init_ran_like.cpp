@@ -101,7 +101,7 @@ void cppad_mixed::init_ran_like(
 	a2d_vector a2_vec = ran_likelihood(a2_theta, a2_u);
 	if( a2_vec.size() == 0 )
 	{	std::string error_message =
-		"cppad_mixed: number of random effects > 0 and ran_likelihood has size 0";
+			"cppad_mixed: n_random > 0 and ran_likelihood has size 0";
 		fatal_error(error_message);
 	}
 	if( a2_vec.size() != 1 )
@@ -127,17 +127,10 @@ void cppad_mixed::init_ran_like(
 	// start recording a1_double operations
 	Independent(a1_both);
 
-	// extract the fixed and random effects
-	a1d_vector a1_theta(n_fixed_), a1_u(n_random_);
-	unpack(a1_theta, a1_u, a1_both);
-
 	// compute ran_likelihood using a1_double operations
-	a1d_vector a1_vec = ran_likelihood(a1_theta, a1_u);
-	if( a1_vec.size() == 0 )
-	{	std::string error_message = "cppad_mixed: "
-			"number of random effects > 0 and ran_likelihood has size 0";
-		fatal_error(error_message);
-	}
+	a1d_vector a1_vec = ran_like_a1fun_.Forward(0, a1_both);
+	assert( a1_vec.size() > 0 );
+	//
 	if( a1_vec.size() != 1 )
 	{	std::string error_message =
 			"cppad_mixed: ran_likelihood does not have size zero or one.";

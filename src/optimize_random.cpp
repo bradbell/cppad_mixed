@@ -117,10 +117,10 @@ It returns true, if the test passes, and false otherwise.
 $end
 */
 
-namespace { // BEGIN_EMPTY_NAMESPACE
-
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // ----------------------------------------------------------------------------
 // helper class used by optimize_random
+// (not in empty namespace so can be friend of cppad_mixed class)
 class optimize_random_ipopt {
 public:
 	// same as cppad_mixed::d_vector
@@ -161,7 +161,9 @@ public:
 			random_vec[j] = x[j];
 
 		// compute log-density vector
-		ADvector vec = mixed_object_.ran_likelihood(fixed_vec_, random_vec);
+		ADvector both_vec(n_fixed_ + n_random_);
+		mixed_object_.pack(fixed_vec_, random_vec, both_vec);
+		ADvector vec = mixed_object_.ran_like_a1fun_.Forward(0, both_vec);
 
 		// initialize smooth part of negative log-likelihood
 		size_t k = 0;
@@ -179,8 +181,7 @@ public:
 		}
 	}
 };
-
-} // END_EMPTY_NAMESPACE
+} } // END_CPPAD_MIXED_NAMESPACE
 
 // ----------------------------------------------------------------------------
 // optimize_random
@@ -255,7 +256,9 @@ CppAD::vector<double> cppad_mixed::optimize_random(
 	}
 
 	// construct fg_eval  object
-	optimize_random_ipopt fg_eval(n_abs, n_random_, fixed_vec, *this);
+	CppAD::mixed::optimize_random_ipopt fg_eval(
+		n_abs, n_random_, fixed_vec, *this
+	);
 
 	// optimizer options
 	assert( options[ options.size() - 1] == '\n' );

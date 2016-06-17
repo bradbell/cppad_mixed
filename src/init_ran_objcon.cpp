@@ -86,7 +86,8 @@ $end
 void cppad_mixed::init_ran_objcon(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec )
-{	assert( init_ran_con_done_ );
+{	assert( init_ran_like_done_ );
+	assert( init_ran_con_done_ );
 	assert( init_newton_atom_done_ );
 	assert( ! init_ran_objcon_done_ );
 	assert( A_info_.row.size() == A_info_.col.size() );
@@ -157,9 +158,12 @@ void cppad_mixed::init_ran_objcon(
 		beta_W_v[n_fixed_ + n_random_ + j] = 0.0;
 	}
 	newton_atom_.eval(beta_W_v, logdet_step);
-	f     = ran_likelihood(beta, W);
+	//
+	a1d_vector beta_W(n_fixed_ + n_random_);
+	pack(beta, W, beta_W);
+	f     = ran_like_a1fun_.Forward(0, beta_W);
 	HB[0] = logdet_step[0] / 2.0 + f[0] - constant_term;
-
+	//
 	if( n_ran_con_ > 0 )
 	{
 		// multiply the matrix A times the vector W and put result in
