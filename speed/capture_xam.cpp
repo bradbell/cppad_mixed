@@ -610,12 +610,13 @@ public:
 		implement_ran_likelihood(fixed_in, random_in, log_pik_);
 	}
 	// implementaion of ran_likelihood
-	template <class Float>
-	vector<Float> implement_ran_likelihood(
-		const vector<Float>&  theta   ,
-		const vector<Float>&  u       ,
-		vector<Float>&        log_pik )
-	{	assert( log_pik.size() == R_* K_ );
+	template <class a2_double>
+	vector<a2_double> implement_ran_likelihood(
+		const vector<a2_double>&  theta   ,
+		const vector<a2_double>&  u       ,
+		vector<a2_double>&        log_pik )
+	{	typedef a2_double Float;
+		assert( log_pik.size() == R_* K_ );
 		vector<Float> vec(1);
 		//
 		Float one( 1.0 );
@@ -720,27 +721,10 @@ public:
 		for(size_t ell = 0; ell < R_ * K_; ell++)
 			log_pik[ell] = a2_double(log_pik_[ell]);
 		vec = implement_ran_likelihood(fixed_vec, random_vec, log_pik);
-		//
 		// make sure result is finite
 		double inf = std::numeric_limits<double>::infinity();
 		assert( vec[0] < + a2_double(inf) );
 		assert( vec[0] > - a2_double(inf) );
-		//
-		return vec;
-	}
-	//
-	virtual vector<a1_double> ran_likelihood(
-		const vector<a1_double>& fixed_vec  ,
-		const vector<a1_double>& random_vec )
-	{	vector<a1_double> log_pik(R_ * K_), vec(1);
-		for(size_t ell = 0; ell < R_ * K_; ell++)
-			log_pik[ell] = a1_double(log_pik_[ell]);
-		vec = implement_ran_likelihood(fixed_vec, random_vec, log_pik);
-		//
-		// make sure result is finite
-		double inf = std::numeric_limits<double>::infinity();
-		assert( vec[0] < + a1_double(inf) );
-		assert( vec[0] > - a1_double(inf) );
 		//
 		return vec;
 	}
