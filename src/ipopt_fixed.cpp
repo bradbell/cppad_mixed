@@ -9,6 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/ipopt_fixed.hpp>
+# include <cppad/mixed/exception.hpp>
 
 namespace {
 
@@ -892,6 +893,20 @@ bool ipopt_fixed::eval_f(
 /* %$$
 $end
 */
+{	try
+	{	try_eval_f(n, x, new_x, obj_value);
+	}
+	catch(const CppAD::mixed::exception& e)
+	{	abort_eval_message_ = e.where() + ": " + e.what();
+		return false;
+	}
+	return true;
+}
+void ipopt_fixed::try_eval_f(
+	Index           n         ,  // in
+	const Number*   x         ,  // in
+	bool            new_x     ,  // in
+	Number&         obj_value )  // out
 {
 	assert( n > 0 && size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
 	//
@@ -925,7 +940,7 @@ $end
 		for(size_t j = 0; j < fix_likelihood_nabs_; j++)
 			obj_value += x[n_fixed_ + j];
 	}
-	return true;
+	return;
 }
 /*
 -------------------------------------------------------------------------------
@@ -976,6 +991,20 @@ bool ipopt_fixed::eval_grad_f(
 /* %$$
 $end
 */
+{	try
+	{	try_eval_grad_f(n, x, new_x, grad_f);
+	}
+	catch(const CppAD::mixed::exception& e)
+	{	abort_eval_message_ = e.where() + ": " + e.what();
+		return false;
+	}
+	return true;
+}
+void ipopt_fixed::try_eval_grad_f(
+	Index           n         ,  // in
+	const Number*   x         ,  // in
+	bool            new_x     ,  // in
+	Number*         grad_f    )  // out
 {
 	assert( n > 0 && size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
 	//
@@ -1029,7 +1058,7 @@ $end
 		}
 	}
 	//
-	return true;
+	return;
 }
 /*
 -------------------------------------------------------------------------------
@@ -1083,6 +1112,21 @@ bool ipopt_fixed::eval_g(
 /* %$$
 $end
 */
+{	try
+	{	try_eval_g(n, x, new_x, m, g);
+	}
+	catch(const CppAD::mixed::exception& e)
+	{	abort_eval_message_ = e.where() + ": " + e.what();
+		return false;
+	}
+	return true;
+}
+void ipopt_fixed::try_eval_g(
+	Index           n        ,  // in
+	const Number*   x        ,  // in
+	bool            new_x    ,  // in
+	Index           m        ,  // in
+	Number*         g        )  // out
 {
 	assert( n > 0 );
 	assert( size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
@@ -1127,7 +1171,7 @@ $end
 	{	assert( 2 * fix_likelihood_nabs_ + n_fix_con_ + j < size_t(m) );
 		g[2 * fix_likelihood_nabs_ + n_fix_con_ + j] = A_uhat_tmp_[j];
 	}
-	return true;
+	return;
 }
 /*
 -------------------------------------------------------------------------------
@@ -1210,6 +1254,24 @@ bool ipopt_fixed::eval_jac_g(
 /* %$$
 $end
 */
+{	try
+	{	try_eval_jac_g(n, x, new_x, m, nele_jac, iRow, jCol, values);
+	}
+	catch(const CppAD::mixed::exception& e)
+	{	abort_eval_message_ = e.where() + ": " + e.what();
+		return false;
+	}
+	return true;
+}
+void ipopt_fixed::try_eval_jac_g(
+	Index           n        ,  // in
+	const Number*   x        ,  // in
+	bool            new_x    ,  // in
+	Index           m        ,  // in
+	Index           nele_jac ,  // in
+	Index*          iRow     ,  // out
+	Index*          jCol     ,  // out
+	Number*         values   )  // out
 {
 	assert( n > 0 );
 	assert( size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
@@ -1258,7 +1320,7 @@ $end
 			ell++;
 		}
 		assert( ell == nnz_jac_g_ );
-		return true;
+		return;
 	}
 	//
 	// fixed effects
@@ -1315,7 +1377,7 @@ $end
 		}
 	}
 	assert( ell == nnz_jac_g_ );
-	return true;
+	return;
 }
 /*
 -------------------------------------------------------------------------------
@@ -1423,6 +1485,39 @@ bool ipopt_fixed::eval_h(
 /* %$$
 $end
 */
+{	try
+	{	try_eval_h(
+			n,
+			x,
+			new_x,
+			obj_factor,
+			m,
+			lambda,
+			new_lambda,
+			nele_hess,
+			iRow,
+			jCol,
+			values
+		);
+	}
+	catch(const CppAD::mixed::exception& e)
+	{	abort_eval_message_ = e.where() + ": " + e.what();
+		return false;
+	}
+	return true;
+}
+void ipopt_fixed::try_eval_h(
+	Index         n              ,  // in
+	const Number* x              ,  // in
+	bool          new_x          ,  // in
+	Number        obj_factor     ,  // in
+	Index         m              ,  // in
+	const Number* lambda         ,  // in
+	bool          new_lambda     ,  // in
+	Index         nele_hess      ,  // in
+	Index*        iRow           ,  // out
+	Index*        jCol           ,  // out
+	Number*       values         )  // out
 {
 	assert( ! mixed_object_.quasi_fixed_ );
 	assert( n > 0 );
@@ -1435,7 +1530,7 @@ $end
 		{	iRow[k] = Index( lag_hes_row_[k] );
 			jCol[k] = Index( lag_hes_col_[k] );
 		}
-		return true;
+		return;
 	}
 	//
 	// fixed effects
@@ -1506,7 +1601,7 @@ $end
 		values[index] += Number( fix_con_hes_info_.val[k] );
 	}
 	//
-	return true;
+	return;
 }
 /*
 -------------------------------------------------------------------------------
@@ -1922,32 +2017,57 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 	d_vector grad_f(n);
 	Number* x     = x_start.data();
 	bool    new_x = true;
-	eval_grad_f( Index(n), x, new_x, grad_f.data() );
+	ok = eval_grad_f( Index(n), x, new_x, grad_f.data() );
+	if( ! ok )
+	{	std::cout << abort_eval_message_ << std::endl;
+		std::cout << "during adaptive derivative check" << std::endl;
+		return false;
+	}
 
 	// get iRow and jCol for eval_jac_g
 	CppAD::vector<Index> iRow(nnz_jac_g_), jCol(nnz_jac_g_);
 	new_x            = false;
 	Index   nele_jac = Index( nnz_jac_g_ );
-	eval_jac_g(
+	ok = eval_jac_g(
 		Index(n), x, new_x, Index(m), nele_jac, iRow.data(), jCol.data(), NULL
 	);
+	if( ! ok )
+	{	std::cout << abort_eval_message_ << std::endl;
+		std::cout << "during adaptive derivative check" << std::endl;
+		return false;
+	}
 
 	// eval_jac_g
 	d_vector jac_g(nnz_jac_g_);
 	new_x            = false;
 	nele_jac         = Index( nnz_jac_g_ );
 	Number* values   = jac_g.data();
-	eval_jac_g(Index(n), x, new_x, Index(m), nele_jac, NULL, NULL, values);
+	ok = eval_jac_g(Index(n), x, new_x, Index(m), nele_jac, NULL, NULL, values);
+	if( ! ok )
+	{	std::cout << abort_eval_message_ << std::endl;
+		std::cout << "during adaptive derivative check" << std::endl;
+		return false;
+	}
 
 	// eval_f
 	double obj_value;
 	new_x = false;
-	eval_f(Index(n), x_start.data(), new_x, obj_value);
+	ok = eval_f(Index(n), x_start.data(), new_x, obj_value);
+	if( ! ok )
+	{	std::cout << abort_eval_message_ << std::endl;
+		std::cout << "during adaptive derivative check" << std::endl;
+		return false;
+	}
 
 	// eval_g
 	d_vector con_value(m);
 	new_x = false;
-	eval_g(Index(n), x_start.data(), new_x, Index(m), con_value.data() );
+	ok = eval_g(Index(n), x_start.data(), new_x, Index(m), con_value.data() );
+	if( ! ok )
+	{	std::cout << abort_eval_message_ << std::endl;
+		std::cout << "during adaptive derivative check" << std::endl;
+		return false;
+	}
 
 	// log of maximum and minimum relative step to try
 	double log_max_rel = std::log(1e-3);
@@ -1988,7 +2108,12 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 			double x_plus = std::min(x_start[j] + step, x_upper[j]);
 			x_step[j]     = x_plus;
 			new_x         = true;
-			eval_f(Index(n), x_step.data(), new_x, obj_plus);
+			ok = eval_f(Index(n), x_step.data(), new_x, obj_plus);
+			if( ! ok )
+			{	std::cout << abort_eval_message_ << std::endl;
+				std::cout << "during adaptive derivative check" << std::endl;
+				return false;
+			}
 			abs_obj = std::max(abs_obj, fabs(obj_plus) );
 
 			// x_minus, obj_minus
@@ -1997,6 +2122,12 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 			x_step[j]      = x_minus;
 			new_x          = true;
 			eval_f(Index(n), x_step.data(), new_x, obj_minus);
+			if( ! ok )
+			{	std::cout << abort_eval_message_ << std::endl;
+				std::cout << "during adaptive derivative check" << std::endl;
+				return false;
+			}
+			abs_obj = std::max(abs_obj, fabs(obj_plus) );
 			abs_obj = std::max(abs_obj, fabs(obj_minus) );
 
 			// restore j-th component of x_step
@@ -2084,15 +2215,27 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 			double x_plus = std::min(x_start[j] + step, x_upper[j]);
 			x_step[j]     = x_plus;
 			new_x         = true;
-			eval_g(Index(n), x_step.data(), new_x, Index(m), con_plus.data());
-
+			ok = eval_g(
+				Index(n), x_step.data(), new_x, Index(m), con_plus.data()
+			);
+			if( ! ok )
+			{	std::cout << abort_eval_message_ << std::endl;
+				std::cout << "during adaptive derivative check" << std::endl;
+				return false;
+			}
 			// x_minus con_minus
 			d_vector con_minus(m);
 			double x_minus = std::max(x_start[j] - step, x_lower[j]);
 			x_step[j]      = x_minus;
 			new_x          = true;
-			eval_g(Index(n), x_step.data(), new_x, Index(m), con_minus.data());
-
+			ok = eval_g(
+				Index(n), x_step.data(), new_x, Index(m), con_minus.data()
+			);
+			if( ! ok )
+			{	std::cout << abort_eval_message_ << std::endl;
+				std::cout << "during adaptive derivative check" << std::endl;
+				return false;
+			}
 			// restore j-th component of x_step
 			x_step[j]      = x_start[j];
 

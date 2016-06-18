@@ -134,7 +134,57 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// ---------------------------------------------------------------
 		// routine used the set random_cur_ (and update ldlt factor)
 		void new_random(const d_vector& fixed_vec);
+		// ------------------------------------------------------------------
+		// Public versions wrap these functions in a try / catch block.
+		// If an eval fails, it sets this message and returns false.
+		std::string abort_eval_message_;
+		void try_eval_f(
+			Index           n        ,
+			const Number*   x        ,
+			bool            new_x    ,
+			Number&         obj_value
+		);
+		void try_eval_grad_f(
+			Index           n        ,
+			const Number*   x        ,
+			bool            new_x    ,
+			Number*         grad_f
+		);
+		void try_eval_g(
+			Index           n        ,
+			const Number*   x        ,
+			bool            new_x    ,
+			Index           m        ,
+			Number*         g
+		);
+		void try_eval_jac_g(
+			Index           n        ,
+			const Number*   x        ,
+			bool            new_x    ,
+			Index           m        ,
+			Index           nele_jac ,
+			Index*          iRow     ,
+			Index*          jCol     ,
+			Number*         values
+		);
+		void try_eval_h(
+			Index         n              ,
+			const Number* x              ,
+			bool          new_x          ,
+			Number        obj_factor     ,
+			Index         m              ,
+			const Number* lambda         ,
+			bool          new_lambda     ,
+			Index         nele_hess      ,
+			Index*        iRow           ,
+			Index*        jCol           ,
+			Number*       values
+		);
 	public:
+		//  get the user_requested_stop_message
+		std::string abort_eval_message(void) const
+		{	return abort_eval_message_; }
+		//
 		// get minus infinity
 		double nlp_lower_bound_inf(void) const
 		{	return nlp_lower_bound_inf_; }

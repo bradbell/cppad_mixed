@@ -9,6 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/exception.hpp>
 /*
 $begin update_factor$$
 $spell
@@ -124,8 +125,11 @@ void cppad_mixed::update_factor(
 	// update the LDLT factor
 	bool ok = ldlt_ran_hes_.update(hes_info);
 	if( ! ok )
-	{	std::string msg = "Hessian w.r.t. random effects is singular";
-		fatal_error(msg);
+	{	CppAD::mixed::exception e(
+			"cppad_mixed::update_factor",
+			"Hessian w.r.t. random effects is singular"
+		);
+		throw(e);
 	}
 	return;
 }

@@ -128,6 +128,11 @@ bool ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& H_info )
 	int flag =
 # endif
 	cholmod_factorize(sym_matrix_, factor_, &common_);
+	//
+	if( common_.status == CHOLMOD_NOT_POSDEF )
+		return false;
+	else
+		assert( common_.status == CHOLMOD_OK );
 
 	// check assumptions
 	assert( flag           == CHOLMOD_TRUE );
@@ -135,7 +140,6 @@ bool ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& H_info )
 	assert( factor_->minor <= nrow_ );
 	assert( factor_->is_ll == CHOLMOD_FALSE );
 	assert( factor_->xtype == CHOLMOD_REAL );
-	assert( common_.status == CHOLMOD_OK );
 	// ---------------------------------------------------------------------
 	if( factor_->minor < nrow_ )
 		return false;

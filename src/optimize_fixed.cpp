@@ -435,8 +435,21 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	// solve the problem
 	status = app->OptimizeTNLP(fixed_nlp);
 
-	// special case where we are not trying to solve
-	if( fixed_max_iter > 0 )
+	// check if fixed_nlp could not evaluate one of its functions
+	if( status == Ipopt::User_Requested_Stop )
+	{	warning( fixed_nlp->abort_eval_message() );
+	}
+	//
+	if( fixed_max_iter <= 0 )
+	{	// special case where we are not trying to solve
+		assert( ok );
+		ok  = status == Ipopt::Maximum_Iterations_Exceeded;
+		ok |= status == Ipopt::Solve_Succeeded;
+		if( ! ok )
+		{	warning("optimize_fixed: unexpected error during zero iterations");
+		}
+	}
+	else
 	{
 		if( status != Ipopt::Solve_Succeeded )
 		{	warning("optimize_fixed: ipopt failed to converge");
@@ -447,14 +460,6 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 				"fixed_tolerance may be too small, also\n"
 				"see discussion of bounds in fixed_solution documentation."
 			);
-		}
-	}
-	else
-	{	assert( ok );
-		ok  = status == Ipopt::Maximum_Iterations_Exceeded;
-		ok |= status == Ipopt::Solve_Succeeded;
-		if( ! ok )
-		{	warning("optimize_fixed: unexpected error during zero iterations");
 		}
 	}
 	//
