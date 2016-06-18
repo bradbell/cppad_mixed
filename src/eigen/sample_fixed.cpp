@@ -224,6 +224,7 @@ $end
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/manage_gsl_rng.hpp>
 # include <cppad/mixed/undetermined.hpp>
+# include <cppad/mixed/exception.hpp>
 # include <gsl/gsl_randist.h>
 
 # define DEBUG_PRINT 0
@@ -246,16 +247,14 @@ namespace {
 	{	std::cout << "\n" << name << "^T = " << vec.transpose() << "\n"; }
 # endif
 }
-
-// BEGIN PROTOTYPE
-void cppad_mixed::sample_fixed(
+// -------------------------------------------------------------------------
+void cppad_mixed::try_sample_fixed(
 	CppAD::vector<double>&                 sample               ,
 	const CppAD::mixed::sparse_mat_info&   information_info     ,
 	const CppAD::mixed::fixed_solution&    solution             ,
 	const CppAD::vector<double>&           fixed_lower          ,
 	const CppAD::vector<double>&           fixed_upper          ,
 	const CppAD::vector<double>&           random_opt           )
-// END PROTOTYPE
 {
 	// number of fixed constraints
 	size_t n_fix_con = 0;
@@ -528,5 +527,32 @@ void cppad_mixed::sample_fixed(
 		}
 	}
 	// -----------------------------------------------------------------------
+	return;
+}
+// -------------------------------------------------------------------------
+// BEGIN PROTOTYPE
+void cppad_mixed::sample_fixed(
+	CppAD::vector<double>&                 sample               ,
+	const CppAD::mixed::sparse_mat_info&   information_info     ,
+	const CppAD::mixed::fixed_solution&    solution             ,
+	const CppAD::vector<double>&           fixed_lower          ,
+	const CppAD::vector<double>&           fixed_upper          ,
+	const CppAD::vector<double>&           random_opt           )
+// END PROTOTYPE
+{	try
+	{	try_sample_fixed(
+			sample            ,
+			information_info  ,
+			solution          ,
+			fixed_lower       ,
+			fixed_upper       ,
+			random_opt
+		);
+	}
+	catch(const CppAD::mixed::exception& e)
+	{	std::string error_message = e.where() + ": " + e.what();
+		fatal_error(error_message);
+		assert(false);
+	}
 	return;
 }

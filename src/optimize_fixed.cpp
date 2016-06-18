@@ -241,12 +241,11 @@ $end
 # include <coin/IpIpoptApplication.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/ipopt_fixed.hpp>
+# include <cppad/mixed/exception.hpp>
 
-
-
-CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
-	const std::string&                      fixed_ipopt_options           ,
-	const std::string&                      random_ipopt_options    ,
+CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
+	const std::string& fixed_ipopt_options           ,
+	const std::string& random_ipopt_options    ,
 	const d_vector&    fixed_lower       ,
 	const d_vector&    fixed_upper       ,
 	const d_vector&    fix_constraint_lower  ,
@@ -468,4 +467,37 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 	//
 	return solution;
 }
-
+// ---------------------------------------------------------------------------
+CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
+	const std::string& fixed_ipopt_options           ,
+	const std::string& random_ipopt_options    ,
+	const d_vector&    fixed_lower       ,
+	const d_vector&    fixed_upper       ,
+	const d_vector&    fix_constraint_lower  ,
+	const d_vector&    fix_constraint_upper  ,
+	const d_vector&    fixed_in          ,
+	const d_vector&    random_lower      ,
+	const d_vector&    random_upper      ,
+	const d_vector&    random_in         )
+{	CppAD::mixed::fixed_solution ret;
+	try
+	{	ret = try_optimize_fixed(
+			fixed_ipopt_options     ,
+			random_ipopt_options    ,
+			fixed_lower             ,
+			fixed_upper             ,
+			fix_constraint_lower    ,
+			fix_constraint_upper    ,
+			fixed_in                ,
+			random_lower            ,
+			random_upper            ,
+			random_in
+		);
+	}
+	catch(const CppAD::mixed::exception& e)
+	{	std::string error_message = e.where() + ": " + e.what();
+		fatal_error(error_message);
+		assert(false);
+	}
+	return ret;
+}

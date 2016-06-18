@@ -149,16 +149,15 @@ $end
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/manage_gsl_rng.hpp>
 # include <gsl/gsl_randist.h>
+# include <cppad/mixed/exception.hpp>
 
-// BEGIN PROTOTYPE
-void cppad_mixed::sample_random(
-	d_vector&                               sample               ,
-	const std::string&                      random_ipopt_options ,
-	const d_vector&    fixed_vec      ,
-	const d_vector&    random_lower   ,
-	const d_vector&    random_upper   ,
-	const d_vector&    random_in      )
-// END PROTOTYPE
+void cppad_mixed::try_sample_random(
+	d_vector&          sample               ,
+	const std::string& random_ipopt_options ,
+	const d_vector&    fixed_vec            ,
+	const d_vector&    random_lower         ,
+	const d_vector&    random_upper         ,
+	const d_vector&    random_in            )
 {	// case where there is nothing to do
 	if( n_random_ == 0 )
 		return;
@@ -202,6 +201,33 @@ void cppad_mixed::sample_random(
 			samp = std::max(samp, random_lower[j]);
 			sample[i_sample * n_random_ + j] = samp;
 		}
+	}
+	return;
+}
+// --------------------------------------------------------------------------
+// BEGIN PROTOTYPE
+void cppad_mixed::sample_random(
+	d_vector&          sample               ,
+	const std::string& random_ipopt_options ,
+	const d_vector&    fixed_vec            ,
+	const d_vector&    random_lower         ,
+	const d_vector&    random_upper         ,
+	const d_vector&    random_in            )
+// END PROTOTYPE
+{	try
+	{	try_sample_random(
+			sample                ,
+			random_ipopt_options  ,
+			fixed_vec             ,
+			random_lower          ,
+			random_upper          ,
+			random_in
+		);
+	}
+	catch(const CppAD::mixed::exception& e)
+	{	std::string error_message = e.where() + ": " + e.what();
+		fatal_error(error_message);
+		assert(false);
 	}
 	return;
 }

@@ -96,8 +96,9 @@ $end
 */
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/triple2eigen.hpp>
+# include <cppad/mixed/exception.hpp>
 
-CppAD::mixed::sparse_mat_info cppad_mixed::information_mat(
+CppAD::mixed::sparse_mat_info cppad_mixed::try_information_mat(
 	const CppAD::mixed::fixed_solution&  solution             ,
 	const d_vector&                      random_opt           )
 {	using Eigen::Dynamic;
@@ -205,4 +206,19 @@ CppAD::mixed::sparse_mat_info cppad_mixed::information_mat(
 		}
 	}
 	return total_info;
+}
+// ---------------------------------------------------------------------------
+CppAD::mixed::sparse_mat_info cppad_mixed::information_mat(
+	const CppAD::mixed::fixed_solution&  solution             ,
+	const d_vector&                      random_opt           )
+{	CppAD::mixed::sparse_mat_info ret;
+	try
+	{	ret = try_information_mat(solution, random_opt);
+	}
+	catch(const CppAD::mixed::exception& e)
+	{	std::string error_message = e.where() + ": " + e.what();
+		fatal_error(error_message);
+		assert(false);
+	}
+	return ret;
 }

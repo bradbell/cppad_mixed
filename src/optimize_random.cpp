@@ -10,6 +10,7 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/ipopt/solve.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/exception.hpp>
 /*
 $begin optimize_random$$
 $spell
@@ -185,7 +186,7 @@ public:
 
 // ----------------------------------------------------------------------------
 // optimize_random
-CppAD::vector<double> cppad_mixed::optimize_random(
+CppAD::vector<double> cppad_mixed::try_optimize_random(
 	const std::string& options         ,
 	const d_vector&    fixed_vec       ,
 	const d_vector&    random_lower    ,
@@ -273,4 +274,24 @@ CppAD::vector<double> cppad_mixed::optimize_random(
 	);
 
 	return solution.x;
+}
+// ----------------------------------------------------------------------------
+CppAD::vector<double> cppad_mixed::optimize_random(
+	const std::string& options         ,
+	const d_vector&    fixed_vec       ,
+	const d_vector&    random_lower    ,
+	const d_vector&    random_upper    ,
+	const d_vector&    random_in       )
+{	CppAD::vector<double> ret;
+	try
+	{	ret = try_optimize_random(
+			options, fixed_vec, random_lower, random_upper, random_in
+		);
+	}
+	catch(const CppAD::mixed::exception& e)
+	{	std::string error_message = e.where() + ": " + e.what();
+		fatal_error(error_message);
+		assert(false);
+	}
+	return ret;
 }

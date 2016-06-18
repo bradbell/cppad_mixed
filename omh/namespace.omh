@@ -30,6 +30,7 @@ These are $bold not$$ part of the user API.
 
 $children%include/cppad/mixed/a2_double.hpp
 	%include/cppad/mixed/configure.hpp.in
+	%include/cppad/mixed/exception.hpp
 	%include/cppad/mixed/fixed_solution.hpp
 	%include/cppad/mixed/ipopt_fixed.hpp
 	%include/cppad/mixed/ldlt_cholmod.hpp
@@ -56,6 +57,7 @@ These declarations are implementation details and not part of the
 $code CppAD::mixed$$ user API
 (and may change with time).
 $table
+$rref exception$$
 $rref ldlt_eigen$$
 $rref ldlt_cholmod$$
 $rref ipopt_fixed$$

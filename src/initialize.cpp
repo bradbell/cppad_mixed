@@ -172,8 +172,9 @@ of using $code initialize$$.
 $end
 */
 # include <cppad/mixed/cppad_mixed.hpp>
-
-std::map<std::string, size_t> cppad_mixed::initialize(
+# include <cppad/mixed/exception.hpp>
+// ---------------------------------------------------------------------------
+std::map<std::string, size_t> cppad_mixed::try_initialize(
 	const d_vector&                      fixed_vec  ,
 	const d_vector&                      random_vec )
 {	if( initialize_done_ )
@@ -293,4 +294,18 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	size_map["num_bytes_after"]            = CppAD::thread_alloc::inuse(thread);
 	return size_map;
 }
-
+// ---------------------------------------------------------------------------
+std::map<std::string, size_t> cppad_mixed::initialize(
+	const d_vector&                      fixed_vec  ,
+	const d_vector&                      random_vec )
+{	std::map<std::string, size_t> ret;
+	try
+	{	ret = try_initialize(fixed_vec, random_vec);
+	}
+	catch(const CppAD::mixed::exception& e)
+	{	std::string error_message = e.where() + ": " + e.what();
+		fatal_error(error_message);
+		assert(false);
+	}
+	return ret;
+}

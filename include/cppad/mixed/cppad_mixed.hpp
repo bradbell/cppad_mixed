@@ -196,8 +196,8 @@ $head initialize$$
 $cref initialize$$, $title initialize$$
 $srccode%cpp% */
 	std::map<std::string, size_t> initialize(
-		const d_vector&                       fixed_vec  ,
-		const d_vector&                       random_vec
+		const d_vector&   fixed_vec  ,
+		const d_vector&   random_vec
 	);
 /* %$$
 $head optimize_random$$
@@ -215,15 +215,15 @@ $head optimize_fixed$$
 $cref optimize_fixed$$, $title optimize_fixed$$.
 $srccode%cpp% */
 	CppAD::mixed::fixed_solution optimize_fixed(
-		const std::string&                       fixed_ipopt_options         ,
-		const std::string&                       random_ipopt_options  ,
-		const d_vector&    fixed_lower      ,
-		const d_vector&    fixed_upper      ,
-		const d_vector&    fix_constraint_lower ,
-		const d_vector&    fix_constraint_upper ,
-		const d_vector&    fixed_in         ,
-		const d_vector&    random_lower     ,
-		const d_vector&    random_upper     ,
+		const std::string& fixed_ipopt_options   ,
+		const std::string& random_ipopt_options  ,
+		const d_vector&    fixed_lower           ,
+		const d_vector&    fixed_upper           ,
+		const d_vector&    fix_constraint_lower  ,
+		const d_vector&    fix_constraint_upper  ,
+		const d_vector&    fixed_in              ,
+		const d_vector&    random_lower          ,
+		const d_vector&    random_upper          ,
 		const d_vector&    random_in
 	);
 /* %$$
@@ -251,12 +251,12 @@ $head sample_random$$
 $cref sample_random$$, $title sample_random$$.
 $srccode%cpp% */
 	void sample_random(
-		d_vector&                               sample               ,
-		const std::string&                      random_ipopt_options ,
-		const d_vector&                         fixed_vec            ,
-		const d_vector&                         random_lower         ,
-		const d_vector&                         random_upper         ,
-		const d_vector&                         random_in
+		d_vector&            sample               ,
+		const std::string&   random_ipopt_options ,
+		const d_vector&      fixed_vec            ,
+		const d_vector&      random_lower         ,
+		const d_vector&      random_upper         ,
+		const d_vector&      random_in
 	);
 /* %$$
 $childtable%src/derived_ctor.cpp
@@ -677,6 +677,82 @@ $srccode%cpp% */
 	void init_ran_objcon(
 		const d_vector& fixed_vec ,
 		const d_vector& random_vec
+	);
+/* %$$
+$comment ------------------------------------------------------------------- $$
+$head Try Member Functions$$
+For each $codei%try_%name%$$ case below,
+the $cref public$$ function $icode name$$ calls the private function
+$codei%try_%name%$$ from a $code try$$ block
+with a corresponding $code catch$$ that maps a
+$code cppad_mixed$$ $cref exception$$ to a
+$cref/fatal_error/public/User Defined Functions/fatal_error/$$ call.
+
+$subhead try_initialize$$
+Called by public $cref/initialize/public/initialize/$$
+$srccode%cpp% */
+	std::map<std::string, size_t> try_initialize(
+		const d_vector&     fixed_vec  ,
+		const d_vector&     random_vec
+	);
+/* %$$
+$subhead try_optimize_random$$
+Called by public $cref/optimize_random/public/optimize_random/$$
+$srccode%cpp% */
+	d_vector try_optimize_random(
+		const std::string& options      ,
+		const d_vector&    fixed_vec    ,
+		const d_vector&    random_lower ,
+		const d_vector&    random_upper ,
+		const d_vector&    random_in
+	);
+/* %$$
+$subhead try_optimize_fixed$$
+Called by public $cref/optimize_fixed/public/optimize_fixed/$$
+$srccode%cpp% */
+	CppAD::mixed::fixed_solution try_optimize_fixed(
+		const std::string& fixed_ipopt_options   ,
+		const std::string& random_ipopt_options  ,
+		const d_vector&    fixed_lower           ,
+		const d_vector&    fixed_upper           ,
+		const d_vector&    fix_constraint_lower  ,
+		const d_vector&    fix_constraint_upper  ,
+		const d_vector&    fixed_in              ,
+		const d_vector&    random_lower          ,
+		const d_vector&    random_upper          ,
+		const d_vector&    random_in
+	);
+/* %$$
+$subhead try_information_mat$$
+Called by public $cref/information_mat/public/information_mat/$$
+$srccode%cpp% */
+	CppAD::mixed::sparse_mat_info try_information_mat(
+		const CppAD::mixed::fixed_solution&  solution             ,
+		const d_vector&                      random_opt
+	);
+/* %$$
+$subhead try_sample_fixed$$
+Called by public $cref/sample_fixed/public/sample_fixed/$$
+$srccode%cpp% */
+	void try_sample_fixed(
+		d_vector&                            sample               ,
+		const CppAD::mixed::sparse_mat_info& information_info     ,
+		const CppAD::mixed::fixed_solution&  solution             ,
+		const d_vector&                      fixed_lower          ,
+		const d_vector&                      fixed_upper          ,
+		const d_vector&                      random_opt
+	);
+/* %$$
+$subhead sample_random$$
+Called by public $cref/sample_random/public/sample_random/$$
+$srccode%cpp% */
+	void try_sample_random(
+		d_vector&             sample               ,
+		const std::string&    random_ipopt_options ,
+		const d_vector&       fixed_vec            ,
+		const d_vector&       random_lower         ,
+		const d_vector&       random_upper         ,
+		const d_vector&       random_in
 	);
 /* %$$
 $comment ------------------------------------------------------------------- $$

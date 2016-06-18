@@ -9,6 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/exception.hpp>
 
 /*
 $begin ran_obj_eval$$
@@ -123,8 +124,9 @@ double cppad_mixed::ran_obj_eval(
 	// compute the logdet( f_{u,u}(theta, u )
 	size_t negative;
 	double logdet = ldlt_ran_hes_.logdet(negative);
-	if( negative != 0 ) fatal_error(
-		"ran_obj_eval: Hessian w.r.t. random effects is not positive definite"
+	if( negative != 0 ) throw CppAD::mixed::exception(
+		"ran_obj_eval",
+		"The Hessian w.r.t. random effects is not positive definite."
 	);
 
 	// constant term

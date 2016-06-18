@@ -90,6 +90,14 @@ $head ...$$
 Other arguments to the derived class constructor
 (that are not used by the base class constructor).
 
+$head CppAD ErrorHandler$$
+A list of $code cppad_mixed$$ base class objects created by this
+constructor is created. If a CppAD error occurs, and one of these
+base class objects still exists, the
+$cref/fatal_error/public/User Defined Functions/fatal_error/$$ handler
+for a base class object is called with a corresponding error message.
+Which of the base class objects is used is not specified.
+
 $children%
 	example/user/derived_ctor_xam.cpp
 %$$
