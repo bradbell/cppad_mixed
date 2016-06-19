@@ -299,6 +299,23 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			const Ipopt::IpoptData*           ip_data   ,
 			Ipopt::IpoptCalculatedQuantities* ip_cq
 		);
+		virtual bool intermediate_callback(
+			Ipopt::AlgorithmMode mode                  ,
+			Index iter                                 ,
+			Number obj_value                           ,
+			Number inf_pr                              ,
+			Number inf_du                              ,
+			Number mu                                  ,
+			Number d_norm                              ,
+			Number regularization_size                 ,
+			Number alpha_du                            ,
+			Number alpha_pr                            ,
+			Index ls_trials                            ,
+			const Ipopt::IpoptData* ip_data            ,
+			Ipopt::IpoptCalculatedQuantities* ip_cq    )
+		{	bool ok = abort_eval_message_ == "";
+			return ok;
+		}
 		// -----------------------------------------------------------------
 		std::string adaptive_derivative_check(bool trace, double relative_tol);
 	};
