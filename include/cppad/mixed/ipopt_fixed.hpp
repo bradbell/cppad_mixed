@@ -135,9 +135,11 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// routine used the set random_cur_ (and update ldlt factor)
 		void new_random(const d_vector& fixed_vec);
 		// ------------------------------------------------------------------
+		// If empty, no error has been detected by the ipopt_fixed class
+		std::string error_message_;
+		// ------------------------------------------------------------------
 		// Public versions wrap these functions in a try / catch block.
 		// If an eval fails, it sets this message and returns false.
-		std::string abort_eval_message_;
 		void try_eval_f(
 			Index           n        ,
 			const Number*   x        ,
@@ -181,9 +183,11 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			Number*       values
 		);
 	public:
-		//  get the user_requested_stop_message
-		std::string abort_eval_message(void) const
-		{	return abort_eval_message_; }
+		//  get and clear the current ipopt_fixed error message
+		std::string get_error_message(void) const
+		{	return error_message_; }
+		void clear_error_message(void)
+		{	error_message_ = ""; }
 		//
 		// get minus infinity
 		double nlp_lower_bound_inf(void) const
@@ -313,11 +317,11 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			Index ls_trials                            ,
 			const Ipopt::IpoptData* ip_data            ,
 			Ipopt::IpoptCalculatedQuantities* ip_cq    )
-		{	bool ok = abort_eval_message_ == "";
+		{	bool ok = error_message_ == "";
 			return ok;
 		}
 		// -----------------------------------------------------------------
-		std::string adaptive_derivative_check(bool trace, double relative_tol);
+		bool adaptive_derivative_check(bool trace, double relative_tol);
 	};
 } } // END_CPPAD_MIXED_NAMESPACE
 

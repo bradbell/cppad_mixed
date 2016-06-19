@@ -400,6 +400,7 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		random_in,
 		mixed_object
 	);
+	assert( fixed_nlp->get_error_message() == "" );
 
 	// check derivative calculation
 	assert( ok );
@@ -411,15 +412,16 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		{	assert( adaptive_check == "adaptive" );
 		}
 		double relative_tol  = 1e-3;
-		std::string msg = fixed_nlp->adaptive_derivative_check(
+		ok = fixed_nlp->adaptive_derivative_check(
 			trace, relative_tol
 		);
-		if( msg == "fail" )
-		{	warning("optimize_fixed: adaptive derivative test failed");
-		}
-		else if( msg != "pass" )
-		{	msg = "optimize_fixed: " + msg;
+		if( fixed_nlp->get_error_message() != "" )
+		{	std::string msg = "optimize_fixed: ";
+			msg            += fixed_nlp->get_error_message();
 			fatal_error(msg);
+		}
+		if( ! ok )
+		{	warning("optimize_fixed: adaptive derivative test failed");
 		}
 	}
 
@@ -443,7 +445,7 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 
 	// check if fixed_nlp could not evaluate one of its functions
 	if( status == Ipopt::User_Requested_Stop )
-	{	warning( fixed_nlp->abort_eval_message() );
+	{	warning( fixed_nlp->get_error_message() );
 	}
 	//
 	if( fixed_max_iter <= 0 )
