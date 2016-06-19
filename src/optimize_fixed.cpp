@@ -402,6 +402,7 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	);
 
 	// check derivative calculation
+	assert( ok );
 	if( adaptive_check != "none" )
 	{	bool trace  = false;
 		if( adaptive_check == "trace-adaptive" )
@@ -410,10 +411,15 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		{	assert( adaptive_check == "adaptive" );
 		}
 		double relative_tol  = 1e-3;
-		ok = fixed_nlp->adaptive_derivative_check(trace, relative_tol);
-		if( ! ok )
+		std::string msg = fixed_nlp->adaptive_derivative_check(
+			trace, relative_tol
+		);
+		if( msg == "fail" )
 		{	warning("optimize_fixed: adaptive derivative test failed");
-			ok = true;
+		}
+		else if( msg != "pass" )
+		{	msg = "optimize_fixed: " + msg;
+			fatal_error(msg);
 		}
 	}
 

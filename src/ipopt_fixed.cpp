@@ -897,7 +897,7 @@ $end
 	{	try_eval_f(n, x, new_x, obj_value);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	abort_eval_message_ = e.where() + ": " + e.what();
+	{	abort_eval_message_ = "eval_f: " + e.where() + ":\n" + e.what();
 		return false;
 	}
 	return true;
@@ -995,7 +995,7 @@ $end
 	{	try_eval_grad_f(n, x, new_x, grad_f);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	abort_eval_message_ = e.where() + ": " + e.what();
+	{	abort_eval_message_ = "eval_grad_f: " + e.where() + ":\n" + e.what();
 		return false;
 	}
 	return true;
@@ -1116,7 +1116,7 @@ $end
 	{	try_eval_g(n, x, new_x, m, g);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	abort_eval_message_ = e.where() + ": " + e.what();
+	{	abort_eval_message_ = "eval_g: " + e.where() + ":\n" + e.what();
 		return false;
 	}
 	return true;
@@ -1258,7 +1258,7 @@ $end
 	{	try_eval_jac_g(n, x, new_x, m, nele_jac, iRow, jCol, values);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	abort_eval_message_ = e.where() + ": " + e.what();
+	{	abort_eval_message_ = "eval_jac_g: " + e.where() + ":\n" + e.what();
 		return false;
 	}
 	return true;
@@ -1501,7 +1501,7 @@ $end
 		);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	abort_eval_message_ = e.where() + ": " + e.what();
+	{	abort_eval_message_ = "eval_h: " + e.where() + ":\n" + e.what();
 		return false;
 	}
 	return true;
@@ -1922,12 +1922,13 @@ $spell
 	tol
 	bool
 	jac
+	std
 $$
 
 $section Adaptive Step Size check of eval_grad_f and eval_jac_g$$
 
 $head Syntax$$
-$icode%ok% = adaptive_derivative_check(%trace%, %relative_tol%)%$$
+$icode%msg% = adaptive_derivative_check(%trace%, %relative_tol%)%$$
 
 $head trace$$
 This argument has prototype
@@ -1959,16 +1960,19 @@ the square root of machine epsilon times the absolute value of $latex f(x)$$.
 Each component passes the tolerance test if it does so
 for one of the relative steps.
 
-$head ok$$
+$head msg$$
 The return value has prototype
 $codei%
-	bool %ok%
+	std::string %msg%
 %$$
-It is true if
+If it is $code pass$$,
 all the differences between the finite difference approximation
 and the evaluated derivative are within the relative tolerance
 (for one of the relative steps).
-Otherwise, it is false.
+If it is $code fail$$,
+at least one of the differences is not within the specified tolerance.
+Otherwise, one of the function evaluations failed and this is the
+corresponding error message.
 
 $head 2DO$$
 Add this
@@ -1977,12 +1981,16 @@ to the cppad_mixed API (as an alternative to Ipopt's derivative checker).
 $end
 -------------------------------------------------------------------------------
 */
-bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
+std::string ipopt_fixed::adaptive_derivative_check(
+	bool trace, double relative_tol
+)
 {	using std::fabs;
 	size_t n        = n_fixed_ + fix_likelihood_nabs_;
 	size_t m        = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
 	double root_eps = std::sqrt( std::numeric_limits<double>::epsilon() );
 
+	// the return value
+	std::string ret = "adaptive_derivative_check: ";
 
 	// start starting point
 	d_vector x_start(n);
@@ -2019,9 +2027,8 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 	bool    new_x = true;
 	ok = eval_grad_f( Index(n), x, new_x, grad_f.data() );
 	if( ! ok )
-	{	std::cout << abort_eval_message_ << std::endl;
-		std::cout << "during adaptive derivative check" << std::endl;
-		return false;
+	{	ret += abort_eval_message_;
+		return ret;
 	}
 
 	// get iRow and jCol for eval_jac_g
@@ -2032,11 +2039,9 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 		Index(n), x, new_x, Index(m), nele_jac, iRow.data(), jCol.data(), NULL
 	);
 	if( ! ok )
-	{	std::cout << abort_eval_message_ << std::endl;
-		std::cout << "during adaptive derivative check" << std::endl;
-		return false;
+	{	ret += abort_eval_message_;
+		return ret;
 	}
-
 	// eval_jac_g
 	d_vector jac_g(nnz_jac_g_);
 	new_x            = false;
@@ -2044,9 +2049,8 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 	Number* values   = jac_g.data();
 	ok = eval_jac_g(Index(n), x, new_x, Index(m), nele_jac, NULL, NULL, values);
 	if( ! ok )
-	{	std::cout << abort_eval_message_ << std::endl;
-		std::cout << "during adaptive derivative check" << std::endl;
-		return false;
+	{	ret += abort_eval_message_;
+		return ret;
 	}
 
 	// eval_f
@@ -2054,9 +2058,8 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 	new_x = false;
 	ok = eval_f(Index(n), x_start.data(), new_x, obj_value);
 	if( ! ok )
-	{	std::cout << abort_eval_message_ << std::endl;
-		std::cout << "during adaptive derivative check" << std::endl;
-		return false;
+	{	ret += abort_eval_message_;
+		return ret;
 	}
 
 	// eval_g
@@ -2064,9 +2067,8 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 	new_x = false;
 	ok = eval_g(Index(n), x_start.data(), new_x, Index(m), con_value.data() );
 	if( ! ok )
-	{	std::cout << abort_eval_message_ << std::endl;
-		std::cout << "during adaptive derivative check" << std::endl;
-		return false;
+	{	ret += abort_eval_message_;
+		return ret;
 	}
 
 	// log of maximum and minimum relative step to try
@@ -2110,9 +2112,8 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 			new_x         = true;
 			ok = eval_f(Index(n), x_step.data(), new_x, obj_plus);
 			if( ! ok )
-			{	std::cout << abort_eval_message_ << std::endl;
-				std::cout << "during adaptive derivative check" << std::endl;
-				return false;
+			{	ret += abort_eval_message_;
+				return ret;
 			}
 			abs_obj = std::max(abs_obj, fabs(obj_plus) );
 
@@ -2123,9 +2124,8 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 			new_x          = true;
 			eval_f(Index(n), x_step.data(), new_x, obj_minus);
 			if( ! ok )
-			{	std::cout << abort_eval_message_ << std::endl;
-				std::cout << "during adaptive derivative check" << std::endl;
-				return false;
+			{	ret += abort_eval_message_;
+				return ret;
 			}
 			abs_obj = std::max(abs_obj, fabs(obj_plus) );
 			abs_obj = std::max(abs_obj, fabs(obj_minus) );
@@ -2219,9 +2219,8 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 				Index(n), x_step.data(), new_x, Index(m), con_plus.data()
 			);
 			if( ! ok )
-			{	std::cout << abort_eval_message_ << std::endl;
-				std::cout << "during adaptive derivative check" << std::endl;
-				return false;
+			{	ret += abort_eval_message_;
+				return ret;
 			}
 			// x_minus con_minus
 			d_vector con_minus(m);
@@ -2232,9 +2231,8 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 				Index(n), x_step.data(), new_x, Index(m), con_minus.data()
 			);
 			if( ! ok )
-			{	std::cout << abort_eval_message_ << std::endl;
-				std::cout << "during adaptive derivative check" << std::endl;
-				return false;
+			{	ret += abort_eval_message_;
+				return ret;
 			}
 			// restore j-th component of x_step
 			x_step[j]      = x_start[j];
@@ -2307,7 +2305,11 @@ bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 		// ok
 		ok &= ok && max_best_err <= relative_tol;
 	}
-	return ok;
+	if( ok )
+		ret = "pass";
+	else
+		ret = "fail";
+	return ret;
 }
 /*$
 $begin ipopt_fixed_new_random$$

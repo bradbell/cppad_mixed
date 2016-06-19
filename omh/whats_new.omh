@@ -33,6 +33,24 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 06-08$$
+If during a call to $cref optimize_fixed$$,
+the Hessian of the
+$cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$
+$latex f_{uu} ( \theta , u )$$ may not be positive definite.
+This case used to aborted the optimization with a
+$cref/fatal_error/public/User Defined Functions/fatal_error/$$.
+Now a
+$cref/warning/public/User Defined Functions/warning/$$
+is used to report this condition and the
+$cref/solution/optimize_fixed/solution/$$ is returned with
+$codei%
+	%solution%.fixed_opt
+%$$
+equal to the fixed effects for this warning.
+
+
+
 $head 06-17$$
 $list number$$
 Continue to improve $cref capture_xam.cpp$$ example / speed test.

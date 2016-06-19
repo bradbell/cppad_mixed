@@ -34,7 +34,7 @@ is not active at the optimal solution.
 $head fixed_opt$$
 This field has prototype
 $codei%
-	CppAD::vector<double> %solution%.fixed
+	CppAD::vector<double> %solution%.fixed_opt
 %$$
 It has size zero when constructed
 and when set its size is $cref/n_fixed/derived_ctor/n_fixed/$$.
