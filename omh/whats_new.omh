@@ -33,7 +33,13 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
-$head 06-08$$
+$head 06-19$$
+If during a call to $cref optimize_fixed$$ a
+$cref/CppAD error/derived_ctor/CppAD ErrorHandler/$$ occurs,
+it no longer aborts the optimization.
+
+
+$head 06-18$$
 If during a call to $cref optimize_fixed$$,
 the Hessian of the
 $cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$

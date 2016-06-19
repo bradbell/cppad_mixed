@@ -444,9 +444,12 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	status = app->OptimizeTNLP(fixed_nlp);
 
 	// check if fixed_nlp could not evaluate one of its functions
+	if(	fixed_nlp->get_error_message() != "" )
+		warning( fixed_nlp->get_error_message() );
+# ifndef NDEBUG
 	if( status == Ipopt::User_Requested_Stop )
-	{	warning( fixed_nlp->get_error_message() );
-	}
+		assert( fixed_nlp->get_error_message() != "" );
+# endif
 	//
 	if( fixed_max_iter <= 0 )
 	{	// special case where we are not trying to solve

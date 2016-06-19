@@ -893,15 +893,14 @@ bool ipopt_fixed::eval_f(
 /* %$$
 $end
 */
-{	bool ok = error_message_ == "";
-	try
+{	try
 	{	try_eval_f(n, x, new_x, obj_value);
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	error_message_ = e.message("eval_f");
 		return false;
 	}
-	return ok;
+	return true;
 }
 void ipopt_fixed::try_eval_f(
 	Index           n         ,  // in
@@ -992,15 +991,14 @@ bool ipopt_fixed::eval_grad_f(
 /* %$$
 $end
 */
-{	bool ok = error_message_ == "";
-	try
+{	try
 	{	try_eval_grad_f(n, x, new_x, grad_f);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	error_message_ = e.message("eval_grad_f");
+	{	error_message_ = e.message("grad_f");
 		return false;
 	}
-	return ok;
+	return true;
 }
 void ipopt_fixed::try_eval_grad_f(
 	Index           n         ,  // in
@@ -1114,15 +1112,14 @@ bool ipopt_fixed::eval_g(
 /* %$$
 $end
 */
-{	bool ok = error_message_ == "";
-	try
+{	try
 	{	try_eval_g(n, x, new_x, m, g);
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	error_message_ = e.message("eval_g");
 		return false;
 	}
-	return ok;
+	return true;
 }
 void ipopt_fixed::try_eval_g(
 	Index           n        ,  // in
@@ -1257,16 +1254,14 @@ bool ipopt_fixed::eval_jac_g(
 /* %$$
 $end
 */
-{	bool ok = error_message_ == "";
-	try
-	{	if( ok )
-			try_eval_jac_g(n, x, new_x, m, nele_jac, iRow, jCol, values);
+{	try
+	{	try_eval_jac_g(n, x, new_x, m, nele_jac, iRow, jCol, values);
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	error_message_ = e.message("eval_jac_g");
 		return false;
 	}
-	return ok;
+	return true;
 }
 void ipopt_fixed::try_eval_jac_g(
 	Index           n        ,  // in
@@ -1490,8 +1485,7 @@ bool ipopt_fixed::eval_h(
 /* %$$
 $end
 */
-{	bool ok = error_message_ == "";
-	try
+{	try
 	{	try_eval_h(
 			n,
 			x,
@@ -1510,7 +1504,7 @@ $end
 	{	error_message_ = e.message("eval_h");
 		return false;
 	}
-	return ok;
+	return true;
 }
 void ipopt_fixed::try_eval_h(
 	Index         n              ,  // in
@@ -2381,7 +2375,7 @@ $end
 void ipopt_fixed::new_random(const d_vector& fixed_vec)
 {	assert( n_random_ > 0 );
 	// compute the optimal random effects corresponding to fixed effects
-	random_cur_ = mixed_object_.optimize_random(
+	random_cur_ = mixed_object_.try_optimize_random(
 		random_ipopt_options_,
 		fixed_vec,
 		random_lower_,

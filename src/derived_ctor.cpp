@@ -91,12 +91,12 @@ Other arguments to the derived class constructor
 (that are not used by the base class constructor).
 
 $head CppAD ErrorHandler$$
-A list of $code cppad_mixed$$ base class objects created by this
-constructor is created. If a CppAD error occurs, and one of these
-base class objects still exists, the
-$cref/fatal_error/public/User Defined Functions/fatal_error/$$ handler
-for a base class object is called with a corresponding error message.
-Which of the base class objects is used is not specified.
+If a CppAD error occurs, its
+$href%http://www.coin-or.org/CppAD/Doc/errorhandler.htm%ErrorHandler%$$
+is used to map it to either a
+$cref/fatal_error/public/User Defined Functions/fatal_error/$$
+or
+$cref/warning/public/User Defined Functions/warning/$$.
 
 $children%
 	example/user/derived_ctor_xam.cpp
@@ -109,9 +109,9 @@ It returns true for success and false for failure.
 $end
 */
 # include<cppad/mixed/cppad_mixed.hpp>
+# include<cppad/mixed/exception.hpp>
 
 namespace { // BEGIN_EMPTY_NAMESPACE
-	std::list<cppad_mixed*> base_object_list_;
 	void handler(
 		bool known       ,
 		int  line        ,
@@ -119,17 +119,19 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 		const char *exp  ,
 		const char *msg  )
      {	// use the most recent cppad_mixed fatal_error routine
-		assert( ! base_object_list_.empty() );
-		std::string error_message;
-		error_message += "detected by CppAD:\nline = ";
-		error_message +=  CppAD::to_string(line);
-		error_message += "\nfile = ";
-		error_message +=  file;
-		error_message += "\nexp  = ";
-		error_message +=  exp;
-		error_message += "\nmsg  = ";
-		error_message +=  msg;
-		base_object_list_.back()->fatal_error(error_message);
+		std::string thrower, brief;
+		//
+		thrower += "\nCppAD: file = ";
+		thrower += file;
+		thrower += "\nline = ";
+		thrower += CppAD::to_string(line);
+		//
+		brief   += "msg = ";
+		brief   += msg;
+		//
+		CppAD::mixed::exception e(thrower, brief);
+		throw(e);
+		//
 		// should not return
 		assert(false);
      }
@@ -160,12 +162,8 @@ init_fix_con_done_(false)       ,
 initialize_done_(false)         ,
 cppad_error_handler_(handler)   ,
 ldlt_ran_hes_(n_random)
-{	// store pointer to this object
-	base_object_list_.push_back( this );
-}
+{ }
 
 // base class destructor
 cppad_mixed::~cppad_mixed(void)
-{	// remove point to this object
-	base_object_list_.remove( this );
-}
+{ }

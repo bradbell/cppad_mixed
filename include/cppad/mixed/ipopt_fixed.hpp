@@ -136,6 +136,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		void new_random(const d_vector& fixed_vec);
 		// ------------------------------------------------------------------
 		// If empty, no error has been detected by the ipopt_fixed class
+		// Otherwise, this was the last error detected.
 		std::string error_message_;
 		// ------------------------------------------------------------------
 		// Public versions wrap these functions in a try / catch block.
