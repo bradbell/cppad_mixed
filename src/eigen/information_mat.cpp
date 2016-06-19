@@ -216,7 +216,7 @@ CppAD::mixed::sparse_mat_info cppad_mixed::information_mat(
 	{	ret = try_information_mat(solution, random_opt);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	std::string error_message = e.where() + ": " + e.what();
+	{	std::string error_message = e.message("information_mat");
 		fatal_error(error_message);
 		assert(false);
 	}

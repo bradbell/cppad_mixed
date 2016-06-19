@@ -897,7 +897,7 @@ $end
 	{	try_eval_f(n, x, new_x, obj_value);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	abort_eval_message_ = "eval_f: " + e.where() + ":\n" + e.what();
+	{	abort_eval_message_ = e.message("eval_f");
 		return false;
 	}
 	return true;
@@ -995,7 +995,7 @@ $end
 	{	try_eval_grad_f(n, x, new_x, grad_f);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	abort_eval_message_ = "eval_grad_f: " + e.where() + ":\n" + e.what();
+	{	abort_eval_message_ = e.message("eval_grad_f");
 		return false;
 	}
 	return true;
@@ -1116,7 +1116,7 @@ $end
 	{	try_eval_g(n, x, new_x, m, g);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	abort_eval_message_ = "eval_g: " + e.where() + ":\n" + e.what();
+	{	abort_eval_message_ = e.message("eval_g");
 		return false;
 	}
 	return true;
@@ -1258,7 +1258,7 @@ $end
 	{	try_eval_jac_g(n, x, new_x, m, nele_jac, iRow, jCol, values);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	abort_eval_message_ = "eval_jac_g: " + e.where() + ":\n" + e.what();
+	{	abort_eval_message_ = e.message("eval_jac_g");
 		return false;
 	}
 	return true;
@@ -1501,7 +1501,7 @@ $end
 		);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	abort_eval_message_ = "eval_h: " + e.where() + ":\n" + e.what();
+	{	abort_eval_message_ = e.message("eval_h");
 		return false;
 	}
 	return true;

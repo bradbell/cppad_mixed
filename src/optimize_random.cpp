@@ -289,7 +289,7 @@ CppAD::vector<double> cppad_mixed::optimize_random(
 		);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	std::string error_message = e.where() + ": " + e.what();
+	{	std::string error_message = e.message("optimize_random");
 		fatal_error(error_message);
 		assert(false);
 	}

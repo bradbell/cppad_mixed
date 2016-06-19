@@ -23,45 +23,44 @@ $$
 $section CppAD Mixed Exceptions$$
 
 $head Syntax$$
-$codei%CppAD::mixed exception(%where%, %what%) %e%
+$codei%CppAD::mixed exception(%thrower%, %brief%) %e%
 %$$
-$icode%place% = %e%.where()
-%$$
-$icode%description% = %e%.what()
+$icode%description% = %e%.message(%catcher%)
 %$$
 
 $head Private$$
 This class is an implementation detail and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head where$$
+$head thrower$$
 This argument has prototype
 $codei%
-	const std::string& %where%
+	const std::string& %thrower%
 %$$
-and is the name of the $code cppad_mixed$$
-routine in which the exception occurred.
+and is the name of the routine in which the exception occurred
+(the routine that threw the exception).
 
-$head what$$
+$head brief$$
 This argument has prototype
 $codei%
-	const std::string& %what%
+	const std::string& %brief%
 %$$
 and is a brief description of the exception.
 
-$head place$$
-This return value has prototype
+$head catcher$$
+This argument has prototype
 $codei%
-	std::string %place%
+	const std::string& %catcher%
 %$$
-and is the value of $icode where$$ when $icode e$$ was constructed.
+and is the name of the routine that caught the exception.
 
 $head description$$
-This argument has prototype
+This return has prototype
 $codei%
 	std::string %description%
 %$$
-and is the value of $icode what$$ when $icode e$$ was constructed.
+it is a message that includes
+$icode catcher$$, $icode thrower$$ and $icode brief$$.
 
 $end
 */
@@ -70,16 +69,16 @@ $end
 namespace CppAD { namespace mixed {
 	class exception {
 	private:
-		std::string where_;
-		std::string what_;
+		std::string thrower_;
+		std::string brief_;
 	public:
-		exception(const std::string& where, const std::string& what)
-		: where_( where ) , what_(what)
+		exception(const std::string& thrower, const std::string& brief)
+		: thrower_( thrower ) , brief_(brief)
 		{ }
-		std::string where(void) const
-		{	return where_; }
-		const std::string what(void) const
-		{	return what_; }
+		const std::string message(const std::string& catcher) const
+		{	std::string msg = catcher + ": " + thrower_ + ":\n" + brief_;
+			return msg;
+		}
 	};
 } }
 

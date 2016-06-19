@@ -303,7 +303,7 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	{	ret = try_initialize(fixed_vec, random_vec);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	std::string error_message = e.where() + ": " + e.what();
+	{	std::string error_message = e.message("initialize");
 		fatal_error(error_message);
 		assert(false);
 	}

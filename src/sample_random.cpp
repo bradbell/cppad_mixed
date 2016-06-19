@@ -225,7 +225,7 @@ void cppad_mixed::sample_random(
 		);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	std::string error_message = e.where() + ": " + e.what();
+	{	std::string error_message = e.message("sample_random");
 		fatal_error(error_message);
 		assert(false);
 	}

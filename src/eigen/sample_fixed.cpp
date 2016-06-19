@@ -550,7 +550,7 @@ void cppad_mixed::sample_fixed(
 		);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	std::string error_message = e.where() + ": " + e.what();
+	{	std::string error_message = e.message("sample_fixed");
 		fatal_error(error_message);
 		assert(false);
 	}

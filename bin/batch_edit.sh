@@ -16,16 +16,12 @@ rename_files='
 spell_files='
 '
 no_change_files='
-	test_more/no_random_info.cpp
 '
 #
 rename_cmd='s|private/box_newton_xam.cpp|user/box_newton_xam.cpp|'
 #
 cat << EOF > junk.sed
-s|// a2_double sqrt_2pi = a2_double(\\(.*\\) );|// sqrt_2pi =\\1;|
-s|^\\(\\t\\t\\ta2_double sqrt_2pi = a2_double(\\)\\(.*\\) *) *) *);|\\1\\
-\\t\\t\\t\\t\\2)\\
-\\t\\t\\t));|
+s|abort_eval_message_ *= *"\\([^:]*\\): ".*|abort_eval_message_ = e.message("\\1");|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

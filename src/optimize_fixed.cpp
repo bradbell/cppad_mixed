@@ -506,7 +506,7 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 		);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	std::string error_message = e.where() + ": " + e.what();
+	{	std::string error_message = e.message("optimize_fixed");
 		fatal_error(error_message);
 		assert(false);
 	}
