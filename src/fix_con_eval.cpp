@@ -69,7 +69,7 @@ CppAD::vector<double> cppad_mixed::fix_con_eval(const d_vector& fixed_vec)
 	// make sure initialize has been called
 	if( ! initialize_done_ )
 	{	std::string error_message =
-		"cppad_mixed::initialize was not called before constraint_eval";
+		"fix_con_eval: initialize was not called before constraint_eval";
 		fatal_error(error_message);
 	}
 	if( fix_con_fun_.size_var() == 0 )

@@ -102,7 +102,7 @@ void cppad_mixed::fix_con_jac(
 	// make sure initilialize has been called
 	if( ! initialize_done_  )
 	{	std::string error_message =
-		"cppad_mixed::initialize was not called before constraint_jac";
+		"fix_con_jac: initialize was not called before constraint_jac";
 		fatal_error(error_message);
 	}
 	if( fix_con_jac_.row.size() == 0 )

@@ -93,7 +93,8 @@ CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_jac(
 	if( jac_ran.size() != 0 )
 	{	if( jac_ran.size() != n_random_ )
 		{	std::string error_message =
-			"ran_likelihood_jac return value does not have size n_random_.";
+			"ran_like_jac: ran_likelihood_jac return value "
+			"does not have size n_random_.";
 			fatal_error(error_message);
 		}
 		return jac_ran;

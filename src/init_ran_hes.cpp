@@ -462,7 +462,8 @@ void cppad_mixed::init_ran_hes_check(
 	}
 	if( ! ok )
 	{	const std::string error_message =
-		"ran_likelihood_hes Hessiann value does not agree with AD value";
+		"init_ran_hes: a ran_likelihood_hes Hessian value "
+		"does not agree with AD value.";
 		fatal_error(error_message);
 	}
 	return;

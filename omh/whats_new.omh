@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 
 $begin whats_new$$
 $spell
+	suitesparse
 	Cholesky
 	CppAD
 	namespace
@@ -27,6 +28,7 @@ $spell
 	ldlt
 	choleig
 	ipopt
+	xam
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
@@ -34,9 +36,23 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh%$$
 
 $head 06-19$$
+$list number$$
 If during a call to $cref optimize_fixed$$ a
 $cref/CppAD error/derived_ctor/CppAD ErrorHandler/$$ occurs,
 it no longer aborts the optimization.
+$lnext
+Add the $icode build_type$$ choice
+(debug or release) to the install script for
+$cref/eigen/install_unix/Special Requirements/eigen/$$,
+$cref/ipopt/install_unix/Special Requirements/Ipopt/$$, and
+$cref/suitesparse/install_unix/Special Requirements/SuiteSparse/$$.
+Compiling debug versus release
+for the installs above and for the
+$cref/cmake_build_type/run_cmake.sh/cmake_build_type/$$
+made a difference of 40.0 seconds versus 5.5 seconds
+for the average of 20 values of $code capture_xam$$
+$cref/optimize_fixed_seconds/capture_xam.cpp/Output/optimize_fixed_seconds/$$.
+$lend
 
 
 $head 06-18$$

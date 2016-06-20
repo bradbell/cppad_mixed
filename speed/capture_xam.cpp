@@ -178,7 +178,7 @@ is included in the program output.
 Otherwise the ipopt $icode print_level$$ is zero and
 no such trace is printed.
 
-$subhead Output$$
+$head Output$$
 
 $subhead actual_seed$$
 If $icode random_seed$$ is zero,

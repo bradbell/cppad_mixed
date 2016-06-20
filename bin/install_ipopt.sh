@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-15 University of Washington
+#           Copyright (C) 2014-16 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -17,6 +17,17 @@ ipopt_prefix="$HOME/prefix/cppad_mixed"
 if [ $0 != 'bin/install_ipopt.sh' ]
 then
 	echo 'bin/install_ipopt.sh: must be executed from its parent directory'
+	exit 1
+fi
+if [ "$1" == 'debug' ]
+then
+	build_type='--enable-debug'
+elif [ "$1" == 'release' ]
+then
+	build_type=''
+else
+	echo 'bin/install_ipopt.sh: build_type'
+	echo 'where build_type is debug or release'
 	exit 1
 fi
 # -----------------------------------------------------------------------------
@@ -74,7 +85,7 @@ fi
 cd build
 cat << EOF > config.sh
 ../configure \\
-	--enable-debug \\
+	$build_type \\
 	--prefix=$ipopt_prefix \\
 	--libdir=$ipopt_prefix/$libdir \\
 	--with-blas-lib="-lblas" \\

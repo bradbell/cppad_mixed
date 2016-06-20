@@ -196,12 +196,12 @@ CppAD::vector<double> cppad_mixed::try_optimize_random(
 	// make sure initialize has been called
 	if( ! initialize_done_ )
 	{	std::string error_message =
-		"cppad_mixed::initialize was not called before optimize_random";
+		"optimize_random: initialize was not called before optimize_random";
 		fatal_error(error_message);
 	}
 	if( ! init_ran_like_done_ )
 	{	std::string error_message =
-		"cppad_mixed::optimize_random there are no random effects";
+		"optimize_random: there are no random effects";
 		fatal_error(error_message);
 	}
 

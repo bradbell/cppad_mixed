@@ -101,12 +101,12 @@ void cppad_mixed::init_ran_like(
 	a2d_vector a2_vec = ran_likelihood(a2_theta, a2_u);
 	if( a2_vec.size() == 0 )
 	{	std::string error_message =
-			"cppad_mixed: n_random > 0 and ran_likelihood has size 0";
+			"init_ran_like: n_random > 0 and ran_likelihood has size 0";
 		fatal_error(error_message);
 	}
 	if( a2_vec.size() != 1 )
 	{	std::string error_message =
-		"cppad_mixed: ran_likelihood does not have size zero or one.";
+		"init_ran_like: ran_likelihood does not have size zero or one.";
 		fatal_error(error_message);
 	}
 
@@ -133,7 +133,7 @@ void cppad_mixed::init_ran_like(
 	//
 	if( a1_vec.size() != 1 )
 	{	std::string error_message =
-			"cppad_mixed: ran_likelihood does not have size zero or one.";
+			"init_ran_like: ran_likelihood does not have size zero or one.";
 		fatal_error(error_message);
 	}
 

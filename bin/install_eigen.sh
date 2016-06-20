@@ -20,6 +20,17 @@ then
 	echo 'bin/install_eigen.sh: must be executed from its parent directory'
 	exit 1
 fi
+if [ "$1" == 'debug' ]
+then
+	build_type='Debug'
+elif [ "$1" == 'release' ]
+then
+	build_type='Release'
+else
+	echo 'bin/install_eigen.sh: build_type'
+	echo 'where build_type is debug or release'
+	exit 1
+fi
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
@@ -59,7 +70,11 @@ sed -e 's|Scalar l_ii = 0|Scalar l_ii = Scalar(0)|' \
 echo_eval mkdir build
 echo_eval cd build
 # --------------------------------------------------------------------------
-echo_eval cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=$eigen_prefix ..
+echo_eval cmake \
+	-Wno-dev \
+	-DCMAKE_INSTALL_PREFIX=$eigen_prefix \
+	-DCMAKE_BUILD_TYPE=$build_type \
+	..
 echo_eval make install
 # --------------------------------------------------------------------------
 include_dir="$eigen_prefix/include"

@@ -12,8 +12,6 @@
 # BEGIN USER_SETTINGS
 # prefix below which suitesparse will be installed
 suitesparse_prefix="$HOME/prefix/cppad_mixed"
-# is this a debugging version of suitesparse ('true' or 'false')
-debug='true'
 # END USER_SETTINGS
 # --------------------------------------------------------------------------
 program='bin/install_suitesparse.sh'
@@ -22,6 +20,13 @@ then
 	echo "$program: must be executed from its parent directory"
 	exit 1
 fi
+if [ "$1" != 'debug' ] && [ "$1" != 'release' ]
+then
+	echo 'bin/install_suitesparse.sh: build_type'
+	echo 'where build_type is debug or release'
+	exit 1
+fi
+build_type="$1"
 # --------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
@@ -54,7 +59,7 @@ sed \
 	-e 's|-lopenblas|-lblas|' \
 	-i.bak SuiteSparse_config/SuiteSparse_config.mk
 #
-if [ "$debug" == 'true' ]
+if [ "$build_type" == 'debug' ]
 then
 	sed \
 		-e 's|^ *CFLAGS *= *$|CFLAGS = -g|' \

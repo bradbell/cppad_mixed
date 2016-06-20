@@ -72,13 +72,17 @@ $head Special Requirements$$
 The following packages are required by cppad_mixed
 and may not have standard system installs:
 
+$subhead build_type$$
+The command line argument $icode build_type$$ below must be either
+$code debug$$ or $code release$$.
+
 $subhead eigen$$
 The $href%http://eigen.tuxfamily.org%eigen%$$
 linear algebra package.
 The commands
 $codei%
 	cd cppad_mixed-20160619
-	bin/install_eigen.sh
+	bin/install_eigen.sh %build_type%
 %$$
 can be used to install this package.
 If necessary, first adjust the setting
@@ -93,7 +97,7 @@ optimization package.
 The commands
 $codei%
 	cd cppad_mixed-20160619
-	bin/install_ipopt.sh
+	bin/install_ipopt.sh %build_type%
 %$$
 can be used to install this package.
 If necessary, first adjust the setting
@@ -123,7 +127,7 @@ sparse matrix package.
 The commands
 $codei%
 	cd cppad_mixed-20160619
-	bin/install_suitesparse.sh
+	bin/install_suitesparse.sh %build_type%
 %$$
 can be used to install this package.
 If necessary, first adjust the setting

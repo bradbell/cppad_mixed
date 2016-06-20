@@ -467,7 +467,8 @@ void cppad_mixed::try_sample_fixed(
 	ldlt_info_mat.init( info_mat_info );
 	bool ok = ldlt_info_mat.update( info_mat_info );
 	if( ! ok )
-	{	std::string msg = "Implicit information matrix is singular";
+	{	std::string msg =
+			"sample_fixed: Implicit information matrix is singular";
 		fatal_error(msg);
 	}
 	size_t negative;
