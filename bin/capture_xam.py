@@ -14,6 +14,7 @@ import subprocess
 import sys
 import os
 import math
+import re
 # ----------------------------------------------------------------------------
 def get_value(file_name, key) :
 	fp = open(file_name, 'r')
@@ -22,6 +23,7 @@ def get_value(file_name, key) :
 			pair = line.split('=')
 			value = pair[1].strip()
 			return value
+	fp.close()
 	# could not find key in the file
 	assert False
 # ----------------------------------------------------------------------------
@@ -81,6 +83,7 @@ for run_index in range( number_runs ) :
 		command   = separator.join(command_list) + ' > ' + file_name
 		print(command)
 		subprocess.call(command_list, stdout=fp)
+		fp.close()
 # ----------------------------------------------------------------------------
 # read results into list of dictionarys
 result_list = list()
@@ -94,6 +97,7 @@ for run_index in range( number_runs ) :
 		value = pair[1].strip()
 		result[key] = value
 	result_list.append(result)
+	fp.close()
 # ----------------------------------------------------------------------------
 # check that command line arguments are all equal
 # except for random_seed and random_constraint
@@ -122,6 +126,9 @@ for i in range( n_compare ) :
 	assert result_list[even]['random_constraint'] == 'false'
 	assert result_list[odd]['random_constraint'] == 'true'
 # ----------------------------------------------------------------------------
+# compute and print averages
+average_dict = dict()
+#
 theta_key = [
 	'mean_population', 'mean_logit_probability', 'std_logit_probability'
 ]
@@ -152,7 +159,8 @@ for i in range( n_compare ) :
 fmt      = '{0:30s} false = {1:4.2f} , true = {2:4.2f}'
 avg_even = time_even / n_compare
 avg_odd  = time_odd  / n_compare
-line     = fmt.format('optimize_fixed_seconds', avg_even, avg_odd)
+line     = fmt.format('optimize_fixed_seconds_avg', avg_even, avg_odd)
+average_dict['optimize_fixed_seconds_avg'] = (avg_even, avg_odd)
 print(line)
 for j in range(3) :
 	avg_even = theta_sum_even[j] / n_compare
@@ -160,8 +168,52 @@ for j in range(3) :
 	std_even = std_sum_even[j] / n_compare
 	std_odd  = std_sum_odd[j]  / n_compare
 	key      = theta_key[j]
-	line     = fmt.format('err_' + key, avg_even, avg_odd)
+	line     = fmt.format(key + '_error', avg_even, avg_odd)
+	average_dict[theta_key[j] + '_error'] = (std_even, std_odd )
 	print(line)
 	key      = key + '_std'
 	line     = fmt.format(key, std_even, std_odd)
 	print(line)
+	average_dict[theta_key[j] + '_std'] = (std_even, std_odd )
+# ----------------------------------------------------------------------------
+# create tex/capture_xam.new
+os.chdir('../../tex')
+file_name = 'capture_xam.tex'
+fp        = open(file_name, 'r')
+data      = fp.read()
+fp.close()
+#
+hspace    = '(\\\\hspace\{[0-9.em]*\})'
+single    = '( *[-0-9.,e]* *)'
+pair      = '( *[-0-9.,e]* *, *[-0-9.,e]*)'
+# input singles
+for key in result_list[0].keys() :
+	value   = result_list[0][key]
+	tmp     = '(' + key.replace('_', r'\\_') + ')'
+	pattern = '\n' + tmp + '\n' + hspace + '(.*)\n' + hspace + single
+	replace = '\n\\1\n\\2\\3\n\\4 ' + value
+	data    = re.sub(pattern, replace, data)
+# output pairs
+for key in result_list[0].keys() :
+	even    = result_list[0][key]
+	odd     = result_list[1][key]
+	tmp     = '(' + key.replace('_', r'\\_') + ')'
+	pattern = '\n' + tmp + '\n' + hspace + pair
+	replace = '\n\\1\n\\2 ' + even + ' , ' + odd
+	data    = re.sub(pattern, replace, data)
+# average pairs
+for key in average_dict.keys() :
+	even    = average_dict[key][0]
+	even    = '{0:4.2f}'.format(even)
+	odd     = average_dict[key][1]
+	odd     = '{0:4.2f}'.format(odd)
+	tmp     = '(' + key.replace('_', r'\\_') + ')'
+	pattern = '\n' + tmp + '\n' + hspace + pair
+	replace = '\n\\1\n\\2 ' + even + ' , ' + odd
+	data    = re.sub(pattern, replace, data)
+#
+file_name = 'capture_xam.new'
+fp        = open(file_name, 'w')
+fp.write(data)
+fp.close()
+sys.exit(0)
