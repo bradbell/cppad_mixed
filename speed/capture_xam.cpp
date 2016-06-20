@@ -491,7 +491,8 @@ $end
 // BEGIN C++
 # include <ctime>
 # include <gsl/gsl_randist.h>
-# include <cppad/utility.hpp> // CppAD::vector
+# include <cppad/utility/vector.hpp>
+# include <cppad/utility/elapsed_seconds.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/manage_gsl_rng.hpp>
 # include <cppad/mixed/configure.hpp>
@@ -722,7 +723,9 @@ public:
 			log_pik[ell] = a2_double(log_pik_[ell]);
 		vec = implement_ran_likelihood(fixed_vec, random_vec, log_pik);
 		// make sure result is finite
+# ifndef NDEBUG
 		double inf = std::numeric_limits<double>::infinity();
+# endif
 		assert( vec[0] < + a2_double(inf) );
 		assert( vec[0] > - a2_double(inf) );
 		//
@@ -866,13 +869,14 @@ int main(int argc, char *argv[])
 	);
 	//
 	// start timing of initialize
-	std::time_t start_time = std::time( CPPAD_MIXED_NULL_PTR );
+	CppAD::elapsed_seconds();
 	std::map<string, size_t> size_map =
 		mixed_object.initialize(theta_in, u_in);
 	// end timing of initialize
-	std::time_t end_time = std::time( CPPAD_MIXED_NULL_PTR );
+	double seconds = CppAD::elapsed_seconds();
 	//
 	// print amoumt of memory added to mixed_object during initialize
+	// (use commans to separate every three digits).
 	size_t num_bytes_before = size_map["num_bytes_before"];
 	size_t num_bytes_after  = size_map["num_bytes_after"];
 	string bytes_str = CppAD::to_string(num_bytes_after - num_bytes_before);
@@ -884,7 +888,7 @@ int main(int argc, char *argv[])
 		initialize_bytes += bytes_str[i];
 	}
 	label_print("initialize_bytes", initialize_bytes);
-	label_print("initialize_seconds", end_time - start_time);
+	label_print("initialize_seconds", seconds);
 	//
 	// ipopt options for optimizing the random effects
 	string random_ipopt_options =
@@ -916,7 +920,7 @@ int main(int argc, char *argv[])
 	}
 	//
 	// optimize fixed effects
-	start_time = std::time( CPPAD_MIXED_NULL_PTR );
+	CppAD::elapsed_seconds();
 	if( trace_optimize_fixed )
 		std::cout << endl;
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
@@ -931,12 +935,12 @@ int main(int argc, char *argv[])
 		u_upper,
 		u_in
 	);
-	end_time = std::time( CPPAD_MIXED_NULL_PTR );
+	seconds = CppAD::elapsed_seconds();
 	if( trace_optimize_fixed )
 		std::cout << endl;
-	label_print("optimize_fixed_seconds", end_time - start_time);
+	label_print("optimize_fixed_seconds", seconds);
 	//
-	start_time = std::time( CPPAD_MIXED_NULL_PTR );
+	CppAD::elapsed_seconds();
 	vector<double> theta_out = solution.fixed_opt;
 	vector<double> u_out     = mixed_object.optimize_random(
 		random_ipopt_options,
@@ -945,17 +949,17 @@ int main(int argc, char *argv[])
 		u_upper,
 		u_in
 	);
-	end_time = std::time( CPPAD_MIXED_NULL_PTR );
-	label_print("optimize_random_seconds", end_time - start_time);
+	seconds = CppAD::elapsed_seconds();
+	label_print("optimize_random_seconds", seconds);
 	//
 	// information matrix
-	start_time = std::time( CPPAD_MIXED_NULL_PTR );
+	CppAD::elapsed_seconds();
 	CppAD::mixed::sparse_mat_info
 	information_info = mixed_object.information_mat(solution, u_out);
-	end_time = std::time( CPPAD_MIXED_NULL_PTR );
-	label_print("information_mat_seconds", end_time - start_time);
+	seconds = CppAD::elapsed_seconds();
+	label_print("information_mat_seconds", seconds);
 	//
-	start_time = std::time( CPPAD_MIXED_NULL_PTR );
+	CppAD::elapsed_seconds();
 	vector<double> sample( number_fixed_samples * n_fixed );
 	mixed_object.sample_fixed(
 		sample,
@@ -965,8 +969,8 @@ int main(int argc, char *argv[])
 		theta_upper,
 		u_out
 	);
-	end_time = std::time( CPPAD_MIXED_NULL_PTR );
-	label_print("sample_fixed_seconds", end_time - start_time);
+	seconds = CppAD::elapsed_seconds();
+	label_print("sample_fixed_seconds", seconds);
 	//
 	// sum of random effects
 	double sum_random_effects = 0.0;
