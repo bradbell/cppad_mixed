@@ -50,10 +50,6 @@ The $code cppad_mixed$$ program can be compiled by any C++98 compliant compiler;
 e.g., $code g++$$.
 (Note that a C++11 compiler would be better.)
 
-$subhead Fortran Compiler$$
-A fortran compiler is required by $code ipopt$$ which in turn
-is required by $code cppad_mixed$$.
-
 $subhead cmake$$
 $href%http://www.cmake.org/%cmake%$$,
 a program that installs other programs.
@@ -61,6 +57,14 @@ a program that installs other programs.
 $subhead pkg-config$$
 The $href%http://www.freedesktop.org/wiki/Software/pkg-config/%pkg-config%$$
 program must be installed.
+
+$subhead curl$$
+The $href%https://curl.haxx.se/%curl%$$
+program must be installed.
+
+$subhead Fortran Compiler$$
+A fortran compiler is required by $code ipopt$$ which in turn
+is required by $code cppad_mixed$$.
 
 $subhead gsl$$
 $href%http://gnuwin32.sourceforge.net/packages/gsl.htm%gsl%$$,

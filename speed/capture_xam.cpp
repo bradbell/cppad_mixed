@@ -495,7 +495,6 @@ $end
 # include <cppad/utility/elapsed_seconds.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/manage_gsl_rng.hpp>
-# include <cppad/mixed/configure.hpp>
 
 namespace { // BEGIN_EMPTY_NAMESPACE
 
