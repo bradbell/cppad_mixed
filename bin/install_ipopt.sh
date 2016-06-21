@@ -57,7 +57,7 @@ cd build/external
 # --------------------------------------------------------------------------
 if [ ! -e $version.tgz ]
 then
-	echo_eval curl -O $web_page/$version.tgz
+	echo_eval wget $web_page/$version.tgz
 fi
 if [ -e $version ]
 then
