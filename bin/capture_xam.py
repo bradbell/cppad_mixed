@@ -150,6 +150,7 @@ for i in range( n_compare ) :
 		diff               = abs(float(theta_estimate) - float(theta_true ))
 		theta_sum_even[j] += diff;
 		std_sum_even[j]   += float( theta_std )
+		#
 		theta_true         = result_list[odd][ theta_key[j] ]
 		theta_estimate     = result_list[odd][ theta_key[j] + '_estimate' ]
 		theta_std          = result_list[odd][ theta_key[j] + '_std' ]
@@ -169,7 +170,7 @@ for j in range(3) :
 	std_odd  = std_sum_odd[j]  / n_compare
 	key      = theta_key[j]
 	line     = fmt.format(key + '_error', avg_even, avg_odd)
-	average_dict[theta_key[j] + '_error'] = (std_even, std_odd )
+	average_dict[theta_key[j] + '_error'] = (avg_even, avg_odd )
 	print(line)
 	key      = key + '_std'
 	line     = fmt.format(key, std_even, std_odd)
