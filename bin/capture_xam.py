@@ -46,7 +46,7 @@ mean_logit_probability   = '-0.5'
 std_logit_probability    = '0.5'
 quasi_fixed              = 'true'
 # random_constraint      = 'true'
-trace_optimize_fixed     = 'false'
+trace_optimize_fixed     = 'false' # cannot change this setting
 # ----------------------------------------------------------------------------
 # make sure cature_xam is up to date
 subprocess.call( [ 'make', 'capture_xam' ] )
@@ -184,22 +184,22 @@ data      = fp.read()
 fp.close()
 #
 hspace    = '(\\\\hspace\{[0-9.em]*\})'
-single    = '( *[-0-9.,e]* *)'
-pair      = '( *[-0-9.,e]* *, *[-0-9.,e]*)'
+single    = '( *[-0-9.,e]+ *| *true *| *false *)'
+pair      = '( *[-0-9.,e]+ *, *[-0-9.,e]+ *)'
 # input singles
 for key in result_list[0].keys() :
 	value   = result_list[0][key]
 	tmp     = '(' + key.replace('_', r'\\_') + ')'
-	pattern = '\n' + tmp + '\n' + hspace + '(.*)\n' + hspace + single
-	replace = '\n\\1\n\\2\\3\n\\4 ' + value
+	pattern = '\n' + tmp + '\n' + hspace + '(.*)\n' + hspace + single + '\n'
+	replace = '\n\\1\n\\2\\3\n\\4 ' + value + '\n'
 	data    = re.sub(pattern, replace, data)
 # output pairs
 for key in result_list[0].keys() :
 	even    = result_list[0][key]
 	odd     = result_list[1][key]
 	tmp     = '(' + key.replace('_', r'\\_') + ')'
-	pattern = '\n' + tmp + '\n' + hspace + pair
-	replace = '\n\\1\n\\2 ' + even + ' , ' + odd
+	pattern = '\n' + tmp + '\n' + hspace + pair + '\n'
+	replace = '\n\\1\n\\2 ' + even + ' , ' + odd + '\n'
 	data    = re.sub(pattern, replace, data)
 # average pairs
 for key in average_dict.keys() :
@@ -208,8 +208,8 @@ for key in average_dict.keys() :
 	odd     = average_dict[key][1]
 	odd     = '{0:4.2f}'.format(odd)
 	tmp     = '(' + key.replace('_', r'\\_') + ')'
-	pattern = '\n' + tmp + '\n' + hspace + pair
-	replace = '\n\\1\n\\2 ' + even + ' , ' + odd
+	pattern = '\n' + tmp + '\n' + hspace + pair + '\n'
+	replace = '\n\\1\n\\2 ' + even + ' , ' + odd + '\n'
 	data    = re.sub(pattern, replace, data)
 #
 file_name = 'capture_xam.new'
