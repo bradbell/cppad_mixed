@@ -868,11 +868,11 @@ int main(int argc, char *argv[])
 	);
 	//
 	// start timing of initialize
-	CppAD::elapsed_seconds();
+	double start_seconds = CppAD::elapsed_seconds();
 	std::map<string, size_t> size_map =
 		mixed_object.initialize(theta_in, u_in);
 	// end timing of initialize
-	double seconds = CppAD::elapsed_seconds();
+	double end_seconds = CppAD::elapsed_seconds();
 	//
 	// print amoumt of memory added to mixed_object during initialize
 	// (use commans to separate every three digits).
@@ -887,7 +887,7 @@ int main(int argc, char *argv[])
 		initialize_bytes += bytes_str[i];
 	}
 	label_print("initialize_bytes", initialize_bytes);
-	label_print("initialize_seconds", seconds);
+	label_print("initialize_seconds", end_seconds - start_seconds);
 	//
 	// ipopt options for optimizing the random effects
 	string random_ipopt_options =
@@ -919,7 +919,7 @@ int main(int argc, char *argv[])
 	}
 	//
 	// optimize fixed effects
-	CppAD::elapsed_seconds();
+	start_seconds = CppAD::elapsed_seconds();
 	if( trace_optimize_fixed )
 		std::cout << endl;
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
@@ -934,12 +934,12 @@ int main(int argc, char *argv[])
 		u_upper,
 		u_in
 	);
-	seconds = CppAD::elapsed_seconds();
+	end_seconds = CppAD::elapsed_seconds();
 	if( trace_optimize_fixed )
 		std::cout << endl;
-	label_print("optimize_fixed_seconds", seconds);
+	label_print("optimize_fixed_seconds", end_seconds - start_seconds);
 	//
-	CppAD::elapsed_seconds();
+	start_seconds = CppAD::elapsed_seconds();
 	vector<double> theta_out = solution.fixed_opt;
 	vector<double> u_out     = mixed_object.optimize_random(
 		random_ipopt_options,
@@ -948,17 +948,17 @@ int main(int argc, char *argv[])
 		u_upper,
 		u_in
 	);
-	seconds = CppAD::elapsed_seconds();
-	label_print("optimize_random_seconds", seconds);
+	end_seconds = CppAD::elapsed_seconds();
+	label_print("optimize_random_seconds", end_seconds - start_seconds);
 	//
 	// information matrix
-	CppAD::elapsed_seconds();
+	start_seconds = CppAD::elapsed_seconds();
 	CppAD::mixed::sparse_mat_info
 	information_info = mixed_object.information_mat(solution, u_out);
-	seconds = CppAD::elapsed_seconds();
-	label_print("information_mat_seconds", seconds);
+	end_seconds = CppAD::elapsed_seconds();
+	label_print("information_mat_seconds", end_seconds - start_seconds);
 	//
-	CppAD::elapsed_seconds();
+	start_seconds = CppAD::elapsed_seconds();
 	vector<double> sample( number_fixed_samples * n_fixed );
 	mixed_object.sample_fixed(
 		sample,
@@ -968,8 +968,8 @@ int main(int argc, char *argv[])
 		theta_upper,
 		u_out
 	);
-	seconds = CppAD::elapsed_seconds();
-	label_print("sample_fixed_seconds", seconds);
+	end_seconds = CppAD::elapsed_seconds();
+	label_print("sample_fixed_seconds", end_seconds - start_seconds);
 	//
 	// sum of random effects
 	double sum_random_effects = 0.0;
