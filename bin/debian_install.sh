@@ -56,7 +56,23 @@ bin/install_suitesparse.sh $build_type
 bin/install_cppad.sh
 # ----------------------------------------------------------------------------
 # cppad_mixed
-#
+# ----------------------------------------------------------------------------
+list=`echo $PKG_CONFIG_PATH | sed -e 's|:| |'`
+found='no'
+for dir in $list
+do
+	if [ -e $dir/ipopt.pc ]
+	then
+		found='yes'
+	fi
+done
+if [ found == 'no' ]
+then
+	echo "Cannot find ipopt.pc in the list of directorys in"
+	echo "PKG_CONFIG_PATH=$PATH_CONFIG_PATH"
+	exit 1
+fi
+# ----------------------------------------------------------------------------
 # 2DO: The CMakelists.txt files should be fixed so this is not necessary
 list='
 	example/CMakeLists.txt
@@ -80,12 +96,14 @@ do
 	fi
 	echo "$file fixed"
 done
+chmod +x bin/check_install.sh
+# ----------------------------------------------------------------------------
 #
 if [ "$build_type" == 'debug' ]
 then
-	bin/run_cmakd.sh
+	bin/run_cmake.sh
 else
-	bin/run_cmakd.sh --release
+	bin/run_cmake.sh --release
 fi
 cd build
 make check

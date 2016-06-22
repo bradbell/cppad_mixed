@@ -83,13 +83,16 @@ then
 	echo_eval mkdir build
 fi
 cd build
+# 2DO: remove coin_skip_warn_cxxflags=yes when bug in gcc is fixed; see
+# https://github.com/JuliaOpt/Ipopt.jl/issues/13
 cat << EOF > config.sh
 ../configure \\
 	$build_type \\
 	--prefix=$ipopt_prefix \\
 	--libdir=$ipopt_prefix/$libdir \\
 	--with-blas-lib="-lblas" \\
-	--with-lapack-lib="-llapack"
+	--with-lapack-lib="-llapack" \\
+	coin_skip_warn_cxxflags=yes
 EOF
 echo_eval cat config.sh
 echo_eval sh config.sh
