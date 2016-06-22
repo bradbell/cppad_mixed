@@ -22,7 +22,7 @@ $$
 $section Sample From Fixed Effects Posterior: Example and Test$$
 
 $code
-$srcfile%example/user/sample_fixed_xam.cpp
+$srcfile%example/user/auto_regressive_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -158,14 +158,7 @@ bool auto_regressive_xam(void)
 	bool quasi_fixed = true;
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
 	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, A_info, data);
-	double start_seconds = CppAD::elapsed_seconds();
-	std::map<std::string, size_t> size_map =
-		mixed_object.initialize(fixed_in, random_in);
-	double end_seconds = CppAD::elapsed_seconds();
-	// std::cout << "initilaize_time = " << end_seconds - start_seconds << "\n";
-	size_t before = size_map["num_bytes_before"];
-	size_t after  = size_map["num_bytes_after"];
-	// std::cout << "initilaize_bytes = " << before - after << std::endl;
+	mixed_object.initialize(fixed_in, random_in);
 
 	// optimize the fixed effects using quasi-Newton method
 	std::string fixed_ipopt_options =
@@ -186,7 +179,6 @@ bool auto_regressive_xam(void)
 		random_upper[i] = +inf;
 	}
 	// optimize fixed effects
-	start_seconds = CppAD::elapsed_seconds();
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_ipopt_options,
 		random_ipopt_options,
@@ -199,9 +191,6 @@ bool auto_regressive_xam(void)
 		random_upper,
 		random_in
 	);
-	end_seconds = CppAD::elapsed_seconds();
-	// std::cout << "optimize_fixed_seconds = "
-	//	<< end_seconds - start_seconds << "\n";
 	//
 	// check that none of the constraints are active
 	// (Note that the Lagragian w.r.t. theta[2] will be zero because

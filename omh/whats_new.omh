@@ -29,11 +29,26 @@ $spell
 	choleig
 	ipopt
 	xam
+	debian
+	omhelp
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
+
+$head 06-22$$
+$list number$$
+Add the $cref auto_regressive_xam.cpp$$ example.
+$lnext
+Create the scripts $code bin/debian_install.sh$$ for an easy install on Debian
+systems. There are some 2DO items in this install that need to be
+fixed so they work on all systems.
+$lnext
+Create the script $code bin/install_omhelp$$ an easy install of omhelp
+for Debian systems. This is needed to do $code cppad_mixed$$ development.
+$lend
+
 
 $head 06-19$$
 $list number$$

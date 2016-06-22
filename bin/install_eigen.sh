@@ -82,3 +82,6 @@ if [ ! -h $include_dir/Eigen ]
 then
 	echo_eval ln -s $include_dir/eigen3/Eigen $include_dir/Eigen
 fi
+# -----------------------------------------------------------------------------
+echo 'bin/install_eigen.sh: OK'
+exit 0

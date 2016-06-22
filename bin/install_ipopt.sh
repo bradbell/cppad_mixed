@@ -94,3 +94,6 @@ EOF
 echo_eval cat config.sh
 echo_eval sh config.sh
 echo_eval make install | tee make.log
+# -----------------------------------------------------------------------------
+echo 'bin/install_ipopt.sh: OK'
+exit 0

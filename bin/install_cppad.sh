@@ -80,3 +80,6 @@ echo "cmake $cmake_args -D cppad_cxx_flags='$extra_cxx_flags' .."
 cmake $cmake_args -D cppad_cxx_flags="$extra_cxx_flags" ..
 #
 echo_eval make install
+# -----------------------------------------------------------------------------
+echo 'bin/install_cppad.sh: OK'
+exit 0
