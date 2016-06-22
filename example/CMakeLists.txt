@@ -43,6 +43,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	private/undetermined_xam.cpp
 	private/update_factor_xam.cpp
 	user/abs_density_xam.cpp
+	user/auto_regressive_xam.cpp
 	user/data_mismatch_xam.cpp
 	user/derived_ctor_xam.cpp
 	user/fix_constraint_xam.cpp

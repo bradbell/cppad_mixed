@@ -26,6 +26,7 @@ $spell
 	pkgconfig
 	cmake
 	suitesparse
+	wget
 $$
 
 $section Installing cppad_mixed in Unix$$

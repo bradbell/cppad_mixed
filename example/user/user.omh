@@ -21,6 +21,7 @@ These user examples are not for a particular public member function.
 (The ones for a particular function are children of that function.)
 $$
 $children%example/user/abs_density_xam.cpp
+	%example/user/auto_regressive_xam.cpp
 	%example/user/no_random_xam.cpp
 	%example/user/ran_constraint_xam.cpp
 	%example/user/lasso_xam.cpp
@@ -49,6 +50,7 @@ $tend
 $head Other Examples$$
 $table
 $rref abs_density_xam.cpp$$
+$rref auto_regressive_xam.cpp$$
 $rref no_random_xam.cpp$$
 $rref ran_constraint_xam.cpp$$
 $rref lasso_xam.cpp$$
