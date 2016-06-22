@@ -45,7 +45,7 @@ echo_eval cd build/external
 # -----------------------------------------------------------------------------
 if [ ! -e $tarball ]
 then
-	echo_eval wget -O $web_page/$tarball
+	echo_eval wget $web_page/$tarball
 fi
 if [ -e 'SuiteSparse' ]
 then
