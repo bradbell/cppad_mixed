@@ -26,7 +26,7 @@ $$
 $head Reference$$
 TMB: Automatic Differentiation and Laplace Approximation,
 Kasper Kristensen, Anders Nielsen, Casper W. Berg, Hans Skaug, Bradley M. Bell,
-Journal of Statistical Software, Accepted 2015-02.
+Journal of Statistical Software 70, 1-21 April 2016.
 
 $head Total Likelihood$$
 The reference above defines $latex f( \theta, u)$$

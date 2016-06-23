@@ -52,7 +52,7 @@ The cppad\_mixed Capture Example and Speed Test}
 	{\tt bradbell@uw.edu}
 }
 \date[2016-06-(20-24)]
-{AMDMB and TMB Developer's Workshop \\ June, 2016}
+{ADMB and TMB Developer's Workshop \\ June, 2016}
 %
 % This example definition is intended to be replaced by a renewcommand that
 % defines a specfic \TabbedItem just before it is used.
@@ -87,15 +87,11 @@ C++ Laplace approximation for mixed effect models
 \begin{itemize}
 
 \item
-Open source with source code control on \texttt{github}.
+Implements the method in TMB paper \cite{Kristensen2016}.
 \pause
 
 \item
-Back end for TMB in any language; e.g, python.
-\pause
-
-\item
-Separate fixed and random likelihoods.
+Can be Back-end for TMB in ADMB, Stan, python, ... \ldots
 \pause
 
 \item
@@ -103,11 +99,15 @@ Starting point and proposal sampling for MCMC methods.
 \pause
 
 \item
+Separate fixed and random likelihoods.
+\pause
+
+\item
 Gaussian or Laplace priors (Lasso) on fixed effects.
 \pause
 
 \item
-Constraints on the fixed effects, two types on random effects.
+Constraints on the fixed effects, on random effects.
 \pause
 
 \item
@@ -134,11 +134,7 @@ Looking for package managers for particular systems:
 \begin{itemize}
 
 \item
-bash: shell available in unix environments.
-\pause
-
-\item
-wget: must be in your path
+bash shell and web get program wget.
 \pause
 
 \item
@@ -179,6 +175,10 @@ bin/run\_cmake.sh: edit the run.
 
 \item
 make check, make speed, make install
+\pause
+
+\item
+bin/debian\_install.sh: puts it all together for a Debian system
 \pause
 
 \end{itemize}
@@ -302,6 +302,7 @@ $u_t$ is the random effect at time $t$.
 
 \item
 $u$ is the vector of random effects.
+\pause
 
 \item
 The logit of $q_t$ is
@@ -436,17 +437,17 @@ f( \theta , u )
 \begin{itemize}
 
 \item
-The is no prior for the fixed effects; i.e.,
+There is no prior for the fixed effects; i.e.,
 $\B{p}( \theta )$.
 \pause
 
 \item
-The is no data that only depends on fixed effects; i.e.,
+There is no data that only depends on fixed effects; i.e.,
 $\B{p}(z| \theta )$.
 \pause
 
 \item
-The is no fixed constraint functions; i.e,
+There is no fixed constraint functions; i.e,
 $c( \theta )$.
 \pause
 
@@ -479,7 +480,7 @@ A \hat{u} ( \theta )
 \item
 random\_seed
 \hspace{4em} non-negative integer
-\hspace{0em} 0
+\hspace{0em} 0 , match previous
 \pause
 
 \item
