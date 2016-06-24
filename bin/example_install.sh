@@ -9,28 +9,39 @@
 #	     GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
-if [ $0 != 'bin/unix_install.sh' ]
+#
+# $OMhelpKeyCharacter=&
+# &begin example_install.sh&& &newlinech #&&
+#
+# &section An Example Installation&&
+#
+# &srcfile%bin/example_install.sh
+#	%0%# BEGIN BASH%# END BASH%1%&&
+# &end
+#
+# BEGIN BASH
+if [ $0 != 'bin/example_install.sh' ]
 then
-	echo 'bin/unix_install.sh: must be executed from its parent directory'
+	echo 'bin/example_install.sh: must be executed from its parent directory'
 	exit 1
 fi
 if [ "$1" != 'debug' ] && [ "$1" != 'release' ]
 then
-	echo 'bin/unix_install.sh: build_type'
+	echo 'bin/example_install.sh: build_type'
 	echo 'where build_type is debug or release'
 	exit 1
 fi
 build_type="$1"
 # -----------------------------------------------------------------------------
-if which apt-get > /dev/null
+if which apt-get >& /dev/null
 then
 	system_type='debian'
 	system_install='sudo apt-get install -y'
-elif which dnf > /dev/null
+elif which dnf >& /dev/null
 then
 	system_type='red_hat'
 	system_install='sudo dnf install -y'
-elif which yum > /dev/null
+elif which yum >& /dev/null
 then
 	system_type='red_hat'
 	system_install='sudo yum install -y'
@@ -127,5 +138,6 @@ make install
 cd ..
 bin/check_install.sh
 # ----------------------------------------------------------------------------
-echo 'bin/unix_install.sh: OK'
+echo 'bin/example_install.sh: OK'
 exit 0
+# END BASH

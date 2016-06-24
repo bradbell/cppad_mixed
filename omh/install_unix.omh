@@ -31,7 +31,8 @@ $$
 
 $section Installing cppad_mixed in Unix$$
 
-$children%bin/run_cmake.sh
+$children%bin/example_install.sh
+	%bin/run_cmake.sh
 	%bin/check_install.sh
 %$$
 
@@ -191,6 +192,17 @@ $codep
 $$
 
 $head Example$$
+
+$subhead Installation$$
+The file $cref example_install.sh$$ contains an example installation.
+
+$subhead Linking$$
+The file $cref check_install.sh$$ is an example of compiling, linking
+and running using an
+$cref/installed/install_unix/cppad_mixed/Install/$$ version of
+$code cppad_mixed$$.
+
+$subhead Using cppad_mixed$$
 The file $cref capture_xam.cpp$$ contains an examples and speed test
 of $code cppad_mixed$$.
 This example runs when one executes the commands
@@ -198,10 +210,6 @@ $codep
 	cd build
 	make speed
 $$
-The file $cref check_install.sh$$ is an example of compiling, linking
-and running using an
-$cref/installed/install_unix/cppad_mixed/Install/$$ version of
-$code cppad_mixed$$.
 
 
 $end

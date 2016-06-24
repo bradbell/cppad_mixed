@@ -46,8 +46,8 @@ was linked on some systems.
 This has been fixed.
 $lnext
 The script $code bin/debian_install$$ has been moved to
-$code bin/unix_install$$ and it should work for both Debian
-and Red Hat systems.
+$cref%bin/example_install.sh%example_install.sh%$$
+and it should work for both Debian and Red Hat systems.
 $lend
 
 $head 06-22$$
