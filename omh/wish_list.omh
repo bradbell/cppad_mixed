@@ -20,13 +20,6 @@ $$
 
 $section CppAD Mixed Wish List$$
 
-$head Partial Optimization$$
-For some errors that occur during optimization,
-it would be nice if $cref optimize_fixed$$ returned the best results so far.
-Perhaps we need a new class of error between
-$cref/fatal_error/public/User Defined Functions/fatal_error/$$ and
-$cref/warning/public/User Defined Functions/warning/$$.
-
 $head sparse_mat_info$$
 Use $cref sparse_mat_info$$ instead of
 $icode row$$, $icode col$$, $icode val$$ triples

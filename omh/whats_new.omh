@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 
 $begin whats_new$$
 $spell
+	gsl
 	suitesparse
 	Cholesky
 	CppAD
@@ -38,9 +39,16 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh%$$
 
 $head 06-24$$
+$list number$$
+There was a problem with how
+$cref/gsl/install_unix/System Requirements/gsl/$$
+was linked on some systems.
+This has been fixed.
+$lnext
 The script $code bin/debian_install$$ has been moved to
 $code bin/unix_install$$ and it should work for both Debian
 and Red Hat systems.
+$lend
 
 $head 06-22$$
 $list number$$
