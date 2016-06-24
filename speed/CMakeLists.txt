@@ -25,6 +25,7 @@ SET(trace_optimize_fixed     true)
 # END capture_xam arguments
 #
 LINK_DIRECTORIES(
+	${gsl_LIBRARY_DIRS}
 	${ipopt_LIBRARY_DIRS}
 	${suitesparse_LIBRARY_DIRS}
 )
@@ -37,10 +38,9 @@ SET_TARGET_PROPERTIES(
 )
 TARGET_LINK_LIBRARIES(capture_xam
 	cppad_mixed
+	${gsl_LIBRARIES}
 	${ipopt_LIBRARIES}
 	${suitesparse_LIBRARIES}
-	gsl
-	gslcblas
 )
 ADD_CUSTOM_TARGET(
 	speed_capture_xam

@@ -18,9 +18,9 @@ fi
 # &begin check_install.sh&& &newlinech #&&
 # &spell
 #	suitesparse cppad eigen xam cpp mkdir tmp cp sed isystem lcppad lgsl
-#	lgslcblas fi bool std cout endl ipopt conig eval config
+#	lblas fi bool std cout endl ipopt conig eval config
 #	lcholmod lamd lcamd lcolamd lccolamd lsuitesparseconfig
-#	cmake elif
+#	cmake elif gsl
 # &&
 #
 # &section Example and Test Using the Installed Version of cppad_mixed&&
@@ -90,6 +90,13 @@ int main(void)
 EOF
 # &&
 #
+# &head gsl_libs&&
+# The following command determines the library link flags necessary
+# to link &code ipopt&& on this system:
+# &codep
+gsl_libs=`pkg-config --libs gsl`
+# &&
+#
 # &head ipopt_libs&&
 # The following command determines the library link flags necessary
 # to link &code ipopt&& on this system:
@@ -128,9 +135,9 @@ g++ example.cpp \
 	-isystem $eigen_prefix/include \
 	-L $cppad_mixed_prefix/lib64 -lcppad_mixed \
 	-L $cppad_mixed_prefix/lib \
+	$gsl_libs \
 	$ipopt_libs \
 	$suitesparse_libs \
-	-lgsl -lgslcblas \
 	-o example
 # &&
 #

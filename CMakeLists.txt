@@ -144,10 +144,10 @@ required_definition(ldlt_cholmod BOOL
 # ----------------------------------------------------------------------------
 MESSAGE(STATUS "END:")
 # ----------------------------------------------------------------------------
-# set ipopt_LIBRARY_DIRS, ipopt_LIBRARIES
-# (note CppAD must be installed with ipopt_prefix specified)
+# set ipopt_LIBRARY_DIRS, ipopt_LIBRARIES, gsl_LIBRARY_DIRS, gsl_LIBRARIES
 FIND_PACKAGE(PkgConfig)
 pkg_check_modules(ipopt REQUIRED ipopt)
+pkg_check_modules(gsl REQUIRED gsl)
 # ----------------------------------------------------------------------------
 # no pkg-config for SuiteSparse so explicitly set corresponding values
 SET(suitesparse_LIBRARY_DIRS ${suitesparse_prefix}/lib )

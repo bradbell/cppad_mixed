@@ -37,6 +37,11 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 06-24$$
+The script $code bin/debian_install$$ has been moved to
+$code bin/unix_install$$ and it should work for both Debian
+and Red Hat systems.
+
 $head 06-22$$
 $list number$$
 Add the $cref auto_regressive_xam.cpp$$ example.

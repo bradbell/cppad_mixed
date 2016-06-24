@@ -11,6 +11,7 @@
 # Build C++ Examples / Tests
 #
 LINK_DIRECTORIES(
+	${gsl_LIBRARY_DIRS}
 	${ipopt_LIBRARY_DIRS}
 	${suitesparse_LIBRARY_DIRS}
 )
@@ -62,17 +63,13 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	user/sample_random_xam.cpp
 )
 
-LINK_DIRECTORIES(
-	${ipopt_LIBRARY_DIRS}
-)
 SET_TARGET_PROPERTIES(
 	example PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
 )
 TARGET_LINK_LIBRARIES(example
 	cppad_mixed
+	${gsl_LIBRARIES}
 	${ipopt_LIBRARIES}
 	${suitesparse_LIBRARIES}
-	gsl
-	gslcblas
 )
 ADD_CUSTOM_TARGET(check_example example DEPENDS example )

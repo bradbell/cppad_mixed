@@ -9,23 +9,35 @@
 #	     GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
-if [ $0 != 'bin/debian_install.sh' ]
+if [ $0 != 'bin/unix_install.sh' ]
 then
-	echo 'bin/debian_install.sh: must be executed from its parent directory'
-	exit 1
-fi
-if ! which apt-get
-then
-	echo 'bin/debian_install.sh: cannot find apt-get'
+	echo 'bin/unix_install.sh: must be executed from its parent directory'
 	exit 1
 fi
 if [ "$1" != 'debug' ] && [ "$1" != 'release' ]
 then
-	echo 'bin/debian_install.sh: build_type'
+	echo 'bin/unix_install.sh: build_type'
 	echo 'where build_type is debug or release'
 	exit 1
 fi
 build_type="$1"
+# -----------------------------------------------------------------------------
+if which apt-get > /dev/null
+then
+	system_type='debian'
+	system_install='sudo apt-get install -y'
+elif which dnf > /dev/null
+then
+	system_type='red_hat'
+	system_install='sudo dnf install -y'
+elif which yum > /dev/null
+then
+	system_type='red_hat'
+	system_install='sudo yum install -y'
+else
+	echo 'Cannot find the system pakcage manager'
+	exit 1
+fi
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
@@ -34,19 +46,33 @@ echo_eval() {
 }
 # --------------------------------------------------------------------------
 # system external installs
-list='
-	cmake
-	libblas-dev
-	liblapack-dev
-	pkg-config
-	g++
-	gfortran
-	libgsl0-dev
-	wget
-'
+if [ "$system_type" == 'debian' ]
+then
+	list='
+		cmake
+		wget
+		libblas-dev
+		liblapack-dev
+		pkg-config
+		g++
+		gfortran
+		libgsl0-dev
+	'
+else
+	list='
+		cmake
+		wget
+		blas-devel
+		lapack-devel
+		pkgconfig
+		gcc-c++
+		gcc-gfortran
+		gsl-devel
+	'
+fi
 for package in $list
 do
-	echo_eval sudo apt-get install -y $package
+	echo_eval $system_install $package
 done
 # ----------------------------------------------------------------------------
 # local external installs
@@ -58,7 +84,7 @@ bin/install_cppad.sh
 # cppad_mixed
 # ----------------------------------------------------------------------------
 list=`echo $PKG_CONFIG_PATH | sed -e 's|:| |'`
-found='no'
+found='no'    # have not yet found ipopt.pc
 for dir in $list
 do
 	if [ -e $dir/ipopt.pc ]
@@ -66,37 +92,26 @@ do
 		found='yes'
 	fi
 done
-if [ found == 'no' ]
+if [ $found == 'no' ]
 then
-	echo "Cannot find ipopt.pc in the list of directorys in"
-	echo "PKG_CONFIG_PATH=$PATH_CONFIG_PATH"
+	echo 'Cannot find ipopt.pc in the PKG_CONFIG_PATH directorys'
+	cmd=`grep 'ipopt_prefix='  bin/install_ipopt.sh`
+	eval $cmd
+	dir=`find $ipopt_prefix -name 'ipopt.pc' | head -1 | sed -e 's|/ipopt.pc||'`
+	if [ "$dir" != '' ]
+	then
+		echo "Execute the following comamnd:"
+		if [ "$PKG_CONFIG_PATH" == '' ]
+		then
+			echo "export PKG_CONFIG_PATH=\"$dir\""
+		else
+			echo "export PKG_CONFIG_PATH=\"\$PKG_CONFIG_PATH:$dir\""
+		fi
+	else
+		echo 'Perhaps bin/install_ipopt.sh failed ?'
+	fi
 	exit 1
 fi
-# ----------------------------------------------------------------------------
-# 2DO: The CMakelists.txt files should be fixed so this is not necessary
-list='
-	example/CMakeLists.txt
-	test_more/CMakeLists.txt
-	speed/CMakeLists.txt
-	bin/check_install.sh
-'
-for file in $list
-do
-	# use .log because it is ignored by git, see ../.gitignore
-	backup=`echo $file | sed -e 's|\..*|.log|'`
-	if [ ! -e $backup ]
-	then
-		echo_eval mv $file $backup
-		sed -e 's|gslcblas|blas|' $backup > $file
-	fi
-	if diff $backup $file > /dev/null
-	then
-		echo "kludge fix for $file failed"
-		exit 1
-	fi
-	echo "$file fixed"
-done
-chmod +x bin/check_install.sh
 # ----------------------------------------------------------------------------
 #
 if [ "$build_type" == 'debug' ]
@@ -109,6 +124,8 @@ cd build
 make check
 make speed
 make install
+cd ..
+bin/check_install.sh
 # ----------------------------------------------------------------------------
-echo 'bin/debian_install.sh: OK'
+echo 'bin/unix_install.sh: OK'
 exit 0
