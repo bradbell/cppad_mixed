@@ -15,6 +15,12 @@
 #
 # &section An Example Installation&&
 #
+# &head Syntax&&
+# &codei%bin/example_install.sh %build_type%&&
+#
+# &head build_type&&
+# is either $code debug$$ or $code release$$.
+#
 # &srcfile%bin/example_install.sh
 #	%0%# BEGIN BASH%# END BASH%1%&&
 # &end
