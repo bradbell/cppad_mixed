@@ -20,6 +20,12 @@ $$
 
 $section CppAD Mixed Wish List$$
 
+$head Newton Step$$
+Speed up the newton Step by making an
+atomic operation that solves equations
+and computes the log-determinant for symmetric matrices
+(using cholmod).
+
 $head sparse_mat_info$$
 Use $cref sparse_mat_info$$ instead of
 $icode row$$, $icode col$$, $icode val$$ triples
