@@ -184,6 +184,7 @@ a1_adfun_( a1_adfun     )
 	for(size_t j = 0; j < n_random_; j++)
 		a1_theta_u[n_fixed_ + j] = u[j];
 
+# if CPPAD_MIXED_BOOL_SPARSITY
 	// compute Jacobian sparsity corresponding to parital w.r.t. random effects
 	typedef CppAD::vectorBool sparsity_pattern;
 	sparsity_pattern r(n_both * n_both);
@@ -193,19 +194,19 @@ a1_adfun_( a1_adfun     )
 	}
 	a1_adfun_.ForSparseJac(n_both, r);
 
-	// compute sparsity pattern corresponding to Hessian w.r.t (theta, u)
+	// compute sparsity pattern corresponding to Hessian w.r.t. (theta, u)
 	bool transpose = true;
 	sparsity_pattern s(1), pattern;
 	s[0] = true;
 	pattern = a1_adfun_.RevSparseHes(n_both, s, transpose);
 
-	// Determine row and column indices in lower triangle of Hessian w.r.t u
+	// Determine row and column indices in lower triangle of Hessian w.r.t. u
 	// u indices start at n_fixed_
 	for(size_t i = n_fixed_; i < n_both; i++)
 	{	for(size_t j = n_fixed_; j < n_both; j++)
-		{	// only compute lower triangular of Hessian w.r.t u only
+		{	// only compute lower triangle of Hessian w.r.t. u only
 			if( pattern[i * n_both + j] && i >= j )
-			{	// only compute lower triangular of Hessian w.r.t u only
+			{	// only compute lower triangular of Hessian w.r.t. u only
 				if( i >= j )
 				{	row_.push_back(i);
 					col_.push_back(j);
@@ -213,6 +214,36 @@ a1_adfun_( a1_adfun     )
 			}
 		}
 	}
+# else
+	// Jacobian sparsity corresponding to partials w.r.t. random effects
+	typedef CppAD::vector< std::set<size_t> > sparsity_pattern;
+	sparsity_pattern r(n_both);
+	for(size_t i = n_fixed_; i < n_both; i++)
+		r[i].insert(i);
+	a1_adfun_.ForSparseJac(n_both, r);
+
+	// compute sparsity pattern corresponding to Hessian w.r.t. (theta, u)
+	bool transpose = true;
+	sparsity_pattern s(1), pattern;
+	assert( s[0].empty() );
+	s[0].insert(0);
+	pattern = a1_adfun_.RevSparseHes(n_both, s, transpose);
+
+	// Determine row and column indices in lower triangle of Hessian w.r.t. u
+	// u indices start at n_fixed_
+	std::set<size_t>::iterator itr;
+	for(size_t i = n_fixed_; i < n_both; i++)
+	{	for(itr = pattern[i].begin(); itr != pattern[i].end(); itr++)
+		{	size_t j = *itr;
+			assert( n_fixed_ <= j );
+			// only compute lower triangle of Hessian w.r.t. u only
+			if( i >= j )
+			{	row_.push_back(i);
+				col_.push_back(j);
+			}
+		}
+	}
+# endif
 
 	// create a weighting vector
 	a1d_vector a1_w(1);
