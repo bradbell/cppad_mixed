@@ -17,15 +17,15 @@ LINK_DIRECTORIES(
 )
 # -----------------------------------------------------------------------------
 # BEGIN ar1_xam arguments
+SET(trace_optimize_fixed     false)
 SET(random_seed                  0)
 SET(number_random              100)
-SET(trace_optimize_fixed     false)
 # END ar1_xam arguments
 ADD_CUSTOM_TARGET(speed_ar1_xam
 	ar1_xam
+		${trace_optimize_fixed}
 		${random_seed}
 		${number_random}
-		${trace_optimize_fixed}
 	DEPENDS ar1_xam
 )
 # -----------------------------------------------------------------------------

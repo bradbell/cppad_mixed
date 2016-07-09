@@ -21,11 +21,20 @@ $section A First Order Auto-Regressive Example and Speed Test$$
 
 $head Syntax$$
 $codei%build/speed/ar1_xam \
+	%trace_optimize_fixed% \
 	%random_seed% \
-	%number_random% \
-	%trace_optimize_fixed%$$
+	%number_random%
+%$$
 
 $head Input$$
+
+$subhead trace_optimize_fixed$$
+This is either $code true$$ or $code false$$.
+If it is true, a $icode%print_level% = 5%$$
+$cref/trace/ipopt_trace/$$ of the fixed effects optimization
+is included in the program output.
+Otherwise the ipopt $icode print_level$$ is zero and
+no such trace is printed.
 
 $subhead random_seed$$
 This is a non-negative integer equal to the
@@ -37,14 +46,6 @@ $code new_gsl_rng$$.
 $subhead number_random$$
 THis is a positive integer specifying the number of random effects.
 This is also the number of time points (and data values) in the model.
-
-$subhead trace_optimize_fixed$$
-This is either $code true$$ or $code false$$.
-If it is true, a $icode%print_level% = 5%$$
-$cref/trace/ipopt_trace/$$ of the fixed effects optimization
-is included in the program output.
-Otherwise the ipopt $icode print_level$$ is zero and
-no such trace is printed.
 
 $head Output$$
 
@@ -190,9 +191,9 @@ int main(int argc, const char* argv[])
 	double inf = std::numeric_limits<double>::infinity();
 	//
 	const char* arg_name[] = {
+		"trace_optimize_fixed",
 		"random_seed",
-		"number_random",
-		"trace_optimize_fixed"
+		"number_random"
 	};
 	size_t n_arg = sizeof(arg_name) / sizeof(arg_name[0]);
 	//
@@ -207,9 +208,9 @@ int main(int argc, const char* argv[])
 	//
 	// get command line arguments
 	assert( n_arg == 3 );
-	size_t random_seed            = std::atoi( argv[1] );
-	size_t number_random          = std::atoi( argv[2] );
-	bool   trace_optimize_fixed   = std::string( argv[3] ) == "true";
+	bool   trace_optimize_fixed   = std::string( argv[1] ) == "true";
+	size_t random_seed            = std::atoi( argv[2] );
+	size_t number_random          = std::atoi( argv[3] );
 	//
 	// print the command line arugments with labels for each value
 	for(size_t i = 0; i < n_arg; i++)
