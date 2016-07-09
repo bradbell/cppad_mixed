@@ -15,6 +15,7 @@ $spell
 	ar1_xam
 	gsl_rng
 	ipopt
+	cppad
 $$
 
 $section A First Order Auto-Regressive Example and Speed Test$$
@@ -66,10 +67,20 @@ If this program passes it's correctness test,
 $icode ar1_xam_ok$$ is true and the program return code is $code 0$$.
 Otherwise $icode ar1_xam_ok$$ it is false and the return code is $code 1$$.
 
+$head Example$$
+The $code cppad_mixed$$ automated testing system uses the following
+values for the arguments to $code ar1_xam$$:
+$code
+$verbatim%speed/CMakeLists.txt
+	%0%# BEGIN ar1_xam arguments%# END ar1_xam arguments%0%$$
+$$
+
+$head Source Code$$
 $code
 $srcfile%speed/ar1_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
+
 
 $end
 */

@@ -480,6 +480,7 @@ $cref/fixed constraint function
 /$$
 $latex c( \theta )$$.
 
+$head Source Code$$
 $code
 $srcfile%speed/capture_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
