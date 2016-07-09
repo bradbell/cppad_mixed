@@ -38,6 +38,10 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 07-09$$
+Change the $code auto_regressive_xam.cpp$$ example to the
+$cref ar1_xam.cpp$$ example and speed test.
+
 $head 06-24$$
 $list number$$
 There was a problem with how
@@ -52,7 +56,7 @@ $lend
 
 $head 06-22$$
 $list number$$
-Add the $cref auto_regressive_xam.cpp$$ example.
+Add the $code auto_regressive_xam.cpp$$ example.
 $lnext
 Create the scripts $code bin/debian_install.sh$$ for an easy install on Debian
 systems. There are some 2DO items in this install that need to be

@@ -195,6 +195,7 @@ ADD_CUSTOM_TARGET(check DEPENDS
 	check_test_more
 )
 ADD_CUSTOM_TARGET(speed DEPENDS
+	speed_ar1_xam
 	speed_capture_xam
 )
 # ----------------------------------------------------------------------------

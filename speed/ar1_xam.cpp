@@ -9,20 +9,64 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin auto_regressive_xam.cpp$$
+$begin ar1_xam.cpp$$
+$escape $$
 $spell
-	CppAD
-	cppad
-	hes
-	eval
-	interp
-	xam
+	ar1_xam
+	gsl_rng
+	ipopt
 $$
 
-$section Sample From Fixed Effects Posterior: Example and Test$$
+$section A First Order Auto-Regressive Example and Speed Test$$
+
+$head Syntax$$
+$codei%build/speed/ar1_xam \
+	%random_seed% \
+	%number_random% \
+	%trace_optimize_fixed%$$
+
+$head Input$$
+
+$subhead random_seed$$
+This is a non-negative integer equal to the
+seed for the random number generator,
+to be specific,
+$cref/s_in/manage_gsl_rng/new_gsl_rng/s_in/$$ used during the call to
+$code new_gsl_rng$$.
+
+$subhead number_random$$
+THis is a positive integer specifying the number of random effects.
+This is also the number of time points (and data values) in the model.
+
+$subhead trace_optimize_fixed$$
+This is either $code true$$ or $code false$$.
+If it is true, a $icode%print_level% = 5%$$
+$cref/trace/ipopt_trace/$$ of the fixed effects optimization
+is included in the program output.
+Otherwise the ipopt $icode print_level$$ is zero and
+no such trace is printed.
+
+$head Output$$
+
+$subhead actual_seed$$
+If $icode random_seed$$ is zero,
+the system clock, instead of $icode random_seed$$,
+is used to seed the random number generator.
+The actual random seed $icode actual_seed$$ is printed
+so that you can reproduce results when $icode random_seed$$ is zero.
+
+$subhead optimize_fixed_seconds$$
+Is the number of seconds used by the call to
+$cref optimize_fixed$$ that is used to compute the
+optimal fixed effects.
+
+$subhead ar1_xam_ok$$
+If this program passes it's correctness test,
+$icode ar1_xam_ok$$ is true and the program return code is $code 0$$.
+Otherwise $icode ar1_xam_ok$$ it is false and the return code is $code 1$$.
 
 $code
-$srcfile%example/user/auto_regressive_xam.cpp
+$srcfile%speed/ar1_xam.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -36,6 +80,7 @@ $end
 # include <Eigen/Dense>
 
 namespace {
+	using std::cout;
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
@@ -65,7 +110,7 @@ namespace {
 		{	assert( n_fixed == 2);
 			assert( y_.size() == n_random_ );
 		}
-	// ----------------------------------------------------------------------
+		// -------------------------------------------------------------------
 		// implementation of ran_likelihood
 		// Note that theta[2] is not used
 		virtual vector<a2_double> ran_likelihood(
@@ -127,23 +172,60 @@ namespace {
 			return vec;
 		}
 	};
+	template <class Value>
+	void label_print(const char* label, const Value& value)
+	{	cout << std::setw(35) << std::left << label;
+		cout << " = " << value << std::endl;
+	}
+	void label_print(const char* label, const double& value)
+	{	cout << std::setw(35) << std::left << label;
+		size_t n_digits = 3 + size_t( std::log10(value) + 1e-9 );
+		cout << " = " << std::setprecision(n_digits) << value << std::endl;
+	}
 }
 
-bool auto_regressive_xam(void)
+int main(int argc, const char* argv[])
 {
 	bool   ok = true;
 	double inf = std::numeric_limits<double>::infinity();
 	//
-	// initialize gsl random number generator
-	size_t random_seed = CppAD::mixed::new_gsl_rng(0);
+	const char* arg_name[] = {
+		"random_seed",
+		"number_random",
+		"trace_optimize_fixed"
+	};
+	size_t n_arg = sizeof(arg_name) / sizeof(arg_name[0]);
 	//
-	size_t n_data   = 100;
+	if( size_t(argc) != 1 + n_arg )
+	{	// print usage error message
+		std::cerr << "usage: " << argv[0];
+		for(size_t i = 0; i < n_arg; i++)
+			std::cerr << " \\ \n\t" << arg_name[i];
+		std::cerr << "\n";
+		std::exit(1);
+	}
+	//
+	// get command line arguments
+	assert( n_arg == 3 );
+	size_t random_seed            = std::atoi( argv[1] );
+	size_t number_random          = std::atoi( argv[2] );
+	bool   trace_optimize_fixed   = std::string( argv[3] ) == "true";
+	//
+	// print the command line arugments with labels for each value
+	for(size_t i = 0; i < n_arg; i++)
+		label_print(arg_name[i], argv[1+i]);
+	//
+	// initialize gsl random number generator
+	size_t actual_seed = CppAD::mixed::new_gsl_rng(random_seed);
+	label_print("actual_seed", actual_seed);
+	//
+	size_t n_data   = number_random;
 	size_t n_fixed  = 2;
-	size_t n_random = n_data;
+	size_t n_random = number_random;
 	vector<double>
 		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
 	fixed_lower[0] = - inf; fixed_in[0] = 2.0; fixed_upper[0] = inf;
-	fixed_lower[1] = .01;   fixed_in[1] = 0.5; fixed_upper[1] = inf;
+	fixed_lower[1] = .1;    fixed_in[1] = 0.5; fixed_upper[1] = inf;
 	//
 	// explicit constriants (in addition to l1 terms)
 	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
@@ -161,24 +243,29 @@ bool auto_regressive_xam(void)
 	mixed_object.initialize(fixed_in, random_in);
 
 	// optimize the fixed effects using quasi-Newton method
-	std::string fixed_ipopt_options =
-		"Integer print_level               5\n"
-		"String  sb                        yes\n"
-		"String  derivative_test           none\n"
-		"Numeric tol                       1e-7\n"
-	;
 	std::string random_ipopt_options =
 		"Integer print_level               0\n"
 		"String  sb                        yes\n"
 		"String  derivative_test           second-order\n"
 		"Numeric tol                       1e-7\n"
 	;
+	std::string fixed_ipopt_options =
+		"String  sb                        yes\n"
+		"String  derivative_test           none\n"
+		"Numeric tol                       1e-7\n"
+	;
+	if( trace_optimize_fixed )
+		fixed_ipopt_options += "Integer print_level               5\n";
+	else
+		fixed_ipopt_options += "Integer print_level               0\n";
+	//
 	vector<double> random_lower(n_random), random_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
 	}
 	// optimize fixed effects
+	double start_seconds = CppAD::elapsed_seconds();
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_ipopt_options,
 		random_ipopt_options,
@@ -191,24 +278,28 @@ bool auto_regressive_xam(void)
 		random_upper,
 		random_in
 	);
+	double end_seconds = CppAD::elapsed_seconds();
+	if( trace_optimize_fixed )
+		std::cout << std::endl;
+	label_print("optimize_fixed_seconds", end_seconds - start_seconds);
 	//
-	// check that none of the constraints are active
-	// (Note that the Lagragian w.r.t. theta[2] will be zero because
-	// it does not affect the objective).
+	// Check that only the lower limit on theta[1] is active.
 	ok &= solution.fixed_lag.size() == n_fixed;
-	for(size_t i = 0; i < n_fixed; i++)
-		ok &= solution.fixed_lag[i] == 0.0;
+	ok &= solution.fixed_lag[0] == 0.0;
+	ok &= solution.fixed_lag[1] != 0.0;
 	ok &= solution.fix_con_lag.size() == 0;
-	ok &= solution.ran_con_lag.size() == 0.0;
+	ok &= solution.ran_con_lag.size() == 0;
 	ok &= CppAD::abs( solution.fixed_opt[0] - 1.0 ) < 1e-1;
-	ok &= CppAD::abs( solution.fixed_opt[1] ) < 1e-1;
+	ok &= CppAD::abs( solution.fixed_opt[1] - fixed_lower[1] ) < 1e-8;
 	//
-	std::cout << "solution.fixed_opt = " << solution.fixed_opt << "\n";
-	//
-	if( ! ok )
-		std::cout << "\nrandom_seed = " << random_seed << "\n";
+	if( ok )
+		label_print("ar1_xam_ok", "true");
+	else
+		label_print("ar1_xam_ok", "false");
 	//
 	CppAD::mixed::free_gsl_rng();
-	return ok;
+	if( ok )
+		return 0;
+	return 1;
 }
 // END C++

@@ -8,8 +8,27 @@
 #	     GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
-# cppad_mixed speed test
-#
+# speed test
+# ---------------------------------------------------------------------------
+LINK_DIRECTORIES(
+	${gsl_LIBRARY_DIRS}
+	${ipopt_LIBRARY_DIRS}
+	${suitesparse_LIBRARY_DIRS}
+)
+# -----------------------------------------------------------------------------
+# BEGIN ar1_xam arguments
+SET(random_seed                  0)
+SET(number_random              100)
+SET(trace_optimize_fixed     false)
+# END ar1_xam arguments
+ADD_CUSTOM_TARGET(speed_ar1_xam
+	ar1_xam
+		${random_seed}
+		${number_random}
+		${trace_optimize_fixed}
+	DEPENDS ar1_xam
+)
+# -----------------------------------------------------------------------------
 # BEGIN capture_xam arguments
 SET(random_seed                0)
 SET(number_fixed_samples    1000)
@@ -23,27 +42,7 @@ SET(quasi_fixed              true)
 SET(random_constraint        true)
 SET(trace_optimize_fixed     true)
 # END capture_xam arguments
-#
-LINK_DIRECTORIES(
-	${gsl_LIBRARY_DIRS}
-	${ipopt_LIBRARY_DIRS}
-	${suitesparse_LIBRARY_DIRS}
-)
-#
-ADD_EXECUTABLE(capture_xam EXCLUDE_FROM_ALL
-	capture_xam.cpp
-)
-SET_TARGET_PROPERTIES(
-	capture_xam PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
-)
-TARGET_LINK_LIBRARIES(capture_xam
-	cppad_mixed
-	${gsl_LIBRARIES}
-	${ipopt_LIBRARIES}
-	${suitesparse_LIBRARIES}
-)
-ADD_CUSTOM_TARGET(
-	speed_capture_xam
+ADD_CUSTOM_TARGET(speed_capture_xam
 	capture_xam
 		${random_seed}
 		${number_fixed_samples}
@@ -58,4 +57,22 @@ ADD_CUSTOM_TARGET(
 		${trace_optimize_fixed}
 	DEPENDS capture_xam
 )
-ADD_DEPENDENCIES(speed_capture_xam cppad_mixed)
+# -----------------------------------------------------------------------------
+FOREACH( program_name capture_xam ar1_xam )
+	ADD_EXECUTABLE(
+		${program_name} EXCLUDE_FROM_ALL "${program_name}.cpp"
+	)
+	SET_TARGET_PROPERTIES(
+		${progam_name} PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
+	)
+	TARGET_LINK_LIBRARIES(
+		${program_name}
+		cppad_mixed
+		${gsl_LIBRARIES}
+		${ipopt_LIBRARIES}
+		${suitesparse_LIBRARIES}
+	)
+	ADD_DEPENDENCIES(
+		speed_${program_name} cppad_mixed
+	)
+ENDFOREACH( program_name )

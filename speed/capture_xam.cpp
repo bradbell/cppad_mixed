@@ -743,7 +743,7 @@ void label_print(const char* label, const double& value)
 }
 } // END_EMPTY_NAMESPACE
 
-int main(int argc, char *argv[])
+int main(int argc, const char *argv[])
 {	bool ok = true;
 	using std::endl;
 	using std::string;
