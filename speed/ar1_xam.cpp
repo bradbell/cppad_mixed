@@ -40,9 +40,9 @@ For $latex t = 0 , \ldots , T - 1$$,
 $latex y_t \sim \B{N}( u_t , \sigma_y^2 )$$.
 
 $subhead p( u | theta )$$
-For $latex t = 0$$, $latex u_t \sim \B{N}( 0 , \theta^2 )$$,
+For $latex t = 0$$, $latex u_t \sim \B{N}( 0 , \theta_0^2 )$$,
 and for $latex t = 1 , \ldots , T - 1$$,
-$latex u_t - u_{t-1} \sim \B{N}( 0 , \theta^2 )$$.
+$latex u_t - u_{t-1} \sim \B{N}( 0 , \theta_0^2 )$$.
 
 
 $head Input$$
@@ -75,10 +75,23 @@ is used to seed the random number generator.
 The actual random seed $icode actual_seed$$ is printed
 so that you can reproduce results when $icode random_seed$$ is zero.
 
+$subhead initialize_bytes$$
+Is the amount of heap memory, in bytes,
+added to the derived class object
+during its $cref initialize$$ call.
+Note that more temporary memory may have been used during this call.
+
+$subhead initialize_seconds$$
+Is the number of seconds used by the derived class $cref initialize$$ call.
+
 $subhead optimize_fixed_seconds$$
 Is the number of seconds used by the call to
 $cref optimize_fixed$$ that is used to compute the
 optimal fixed effects.
+
+$subhead theta_0_estimate$$
+Is the optimal estimate for $latex \theta_0$$; see the
+$cref/problem/ar1_xam.cpp/Problem/$$ definition.
 
 $subhead ar1_xam_ok$$
 If this program passes it's correctness test,
@@ -112,6 +125,7 @@ $end
 
 namespace {
 	using std::cout;
+	using std::string;
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
@@ -188,7 +202,7 @@ namespace {
 	}
 	void label_print(const char* label, const double& value)
 	{	cout << std::setw(35) << std::left << label;
-		size_t n_digits = 3 + size_t( std::log10(value) + 1e-9 );
+		size_t n_digits = 5 + size_t( std::log10(value) + 1e-9 );
 		cout << " = " << std::setprecision(n_digits) << value << std::endl;
 	}
 }
@@ -216,7 +230,7 @@ int main(int argc, const char* argv[])
 	//
 	// get command line arguments
 	assert( n_arg == 3 );
-	bool   trace_optimize_fixed   = std::string( argv[1] ) == "true";
+	bool   trace_optimize_fixed   = string( argv[1] ) == "true";
 	size_t random_seed            = std::atoi( argv[2] );
 	size_t number_times           = std::atoi( argv[3] );
 	//
@@ -241,7 +255,7 @@ int main(int argc, const char* argv[])
 	gsl_rng* rng = CppAD::mixed::get_gsl_rng();
 	vector<double> y(n_data), random_in(n_random);
 	for(size_t i = 0; i < n_data; i++)
-	{	y[i]         = double(i + 1) + gsl_ran_gaussian(rng, sigma_y);
+	{	y[i]         = double(i + 1) + gsl_ran_gaussian(rng, 0.0);
 		random_in[i] = 0.0;
 	}
 
@@ -249,16 +263,36 @@ int main(int argc, const char* argv[])
 	bool quasi_fixed = true;
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
 	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, A_info, y);
-	mixed_object.initialize(fixed_in, random_in);
+
+	// initialization
+	double start_seconds = CppAD::elapsed_seconds();
+	std::map<string, size_t> size_map =
+		mixed_object.initialize(fixed_in, random_in);
+	double end_seconds = CppAD::elapsed_seconds();
+	//
+	// print amoumt of memory added to mixed_object during initialize
+	// (use commans to separate every three digits).
+	size_t num_bytes_before = size_map["num_bytes_before"];
+	size_t num_bytes_after  = size_map["num_bytes_after"];
+	string bytes_str = CppAD::to_string(num_bytes_after - num_bytes_before);
+	size_t n_char = bytes_str.size();
+	string initialize_bytes = "";
+	for(size_t i = 0; i < n_char; i++)
+	{	if( i != 0 && (n_char - i) % 3 == 0 )
+			initialize_bytes += ",";
+		initialize_bytes += bytes_str[i];
+	}
+	label_print("initialize_bytes", initialize_bytes);
+	label_print("initialize_seconds", end_seconds - start_seconds);
 
 	// optimize the fixed effects using quasi-Newton method
-	std::string random_ipopt_options =
+	string random_ipopt_options =
 		"Integer print_level               0\n"
 		"String  sb                        yes\n"
 		"String  derivative_test           second-order\n"
 		"Numeric tol                       1e-7\n"
 	;
-	std::string fixed_ipopt_options =
+	string fixed_ipopt_options =
 		"String  sb                        yes\n"
 		"String  derivative_test           none\n"
 		"Numeric tol                       1e-7\n"
@@ -274,7 +308,7 @@ int main(int argc, const char* argv[])
 		random_upper[i] = +inf;
 	}
 	// optimize fixed effects
-	double start_seconds = CppAD::elapsed_seconds();
+	start_seconds = CppAD::elapsed_seconds();
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_ipopt_options,
 		random_ipopt_options,
@@ -287,7 +321,7 @@ int main(int argc, const char* argv[])
 		random_upper,
 		random_in
 	);
-	double end_seconds = CppAD::elapsed_seconds();
+	end_seconds = CppAD::elapsed_seconds();
 	if( trace_optimize_fixed )
 		std::cout << std::endl;
 	label_print("optimize_fixed_seconds", end_seconds - start_seconds);
@@ -298,6 +332,8 @@ int main(int argc, const char* argv[])
 	ok &= solution.fix_con_lag.size() == 0;
 	ok &= solution.ran_con_lag.size() == 0;
 	ok &= CppAD::abs( solution.fixed_opt[0] - 1.0 ) < 1e-1;
+	//
+	label_print("theta_0_estimate", solution.fixed_opt[0] );
 	//
 	if( ok )
 		label_print("ar1_xam_ok", "true");

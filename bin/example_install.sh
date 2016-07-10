@@ -38,6 +38,7 @@ then
 	exit 1
 fi
 build_type="$1"
+prefix='$HOME/prefix/cppad_mixed'
 # -----------------------------------------------------------------------------
 if which apt-get >& /dev/null
 then
@@ -89,21 +90,65 @@ else
 fi
 for package in $list
 do
-	echo_eval $system_install $package
+	echo $system_install $package
+	# echo_eval sudo $system_install $package
 done
 # ----------------------------------------------------------------------------
 # local external installs
-bin/install_eigen.sh $build_type
-bin/install_ipopt.sh $build_type
-bin/install_suitesparse.sh $build_type
-bin/install_cppad.sh
+for pkg in eigen ipopt suitesparse cppad
+do
+	# eval below converts $HOME in $prefix to its value for current user
+	case $pkg in
+		eigen)
+		pkg_prefix="$prefix/eigen"
+		eval file="$prefix/eigen/include/Eigen/Core"
+		;;
+
+		ipopt)
+		pkg_prefix="$prefix"
+		eval file="$prefix/include/coin/IpIpoptApplication.hpp"
+		;;
+
+		suitesparse)
+		pkg_prefix="$prefix"
+		eval file="$prefix/include/cholmod.h"
+		;;
+
+		cppad)
+		pkg_prefix="$prefix"
+		eval file="$prefix/include/cppad/cppad.hpp"
+		;;
+
+		*)
+		echo 'bin/example_install.sh: program error'
+		exit 1
+		;;
+	esac
+	#
+	skip='no'
+	if [ -e "$file" ]
+	then
+		while [ "$skip" != 'y' ] && [ "$skip" != 'n' ]
+		do
+			read -p "Use existing $pkg install [y/n] ?" skip
+		done
+	fi
+	if [ "$skip" == 'no' ] || [ "$skip" == 'n' ]
+	then
+		echo "$pkg_prefix"
+		sed -e "s|^eigen_prefix=.*|eigen_prefix=\"$pkg_prefix\"|" \
+			-i bin/install_eigen.sh
+		bin/install_$pkg.sh $build_type
+	fi
+done
 # ----------------------------------------------------------------------------
 # cppad_mixed
 # ----------------------------------------------------------------------------
-list=`echo $PKG_CONFIG_PATH | sed -e 's|:| |'`
+list=`echo $PKG_CONFIG_PATH | sed -e 's|:| |g'`
 found='no'    # have not yet found ipopt.pc
 for dir in $list
 do
+	echo $dir
 	if [ -e $dir/ipopt.pc ]
 	then
 		found='yes'
