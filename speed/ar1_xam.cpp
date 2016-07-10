@@ -24,8 +24,26 @@ $head Syntax$$
 $codei%build/speed/ar1_xam \
 	%trace_optimize_fixed% \
 	%random_seed% \
-	%number_random%
+	%number_times%
 %$$
+
+$head Problem$$
+
+$subhead Data$$
+For $latex t = 0 , \ldots , T - 1$$,
+$latex y_t = (1 + t) + e_t $$,
+where $latex e_t \sim \B{N}( 0, \sigma_y^2 )$$.
+
+
+$subhead p( y_t | u , theta )$$
+For $latex t = 0 , \ldots , T - 1$$,
+$latex y_t \sim \B{N}( u_t , \sigma_y^2 )$$.
+
+$subhead p( u | theta )$$
+For $latex t = 0$$, $latex u_t \sim \B{N}( 0 , \theta^2 )$$,
+and for $latex t = 1 , \ldots , T - 1$$,
+$latex u_t - u_{t-1} \sim \B{N}( 0 , \theta^2 )$$.
+
 
 $head Input$$
 
@@ -44,9 +62,9 @@ to be specific,
 $cref/s_in/manage_gsl_rng/new_gsl_rng/s_in/$$ used during the call to
 $code new_gsl_rng$$.
 
-$subhead number_random$$
-THis is a positive integer specifying the number of random effects.
-This is also the number of time points (and data values) in the model.
+$subhead number_times$$
+This is a positive integer specifying the number of time points.
+This is also the number of random effects and number of data values.
 
 $head Output$$
 
@@ -86,6 +104,7 @@ $end
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>
+# include <gsl/gsl_randist.h>
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/sparse_mat_info.hpp>
 # include <cppad/mixed/manage_gsl_rng.hpp>
@@ -100,7 +119,10 @@ namespace {
 	//
 	typedef AD<double>    a1_double;
 	typedef AD<a1_double> a2_double;
-
+	//
+	// The constant sigma_y
+	const double sigma_y = 0.1;
+	//
 	class mixed_derived : public cppad_mixed {
 	private:
 		const size_t          n_fixed_;
@@ -119,7 +141,7 @@ namespace {
 			n_fixed_(n_fixed)     ,
 			n_random_(n_random)   ,
 			y_(y)
-		{	assert( n_fixed == 2);
+		{	assert( n_fixed == 1);
 			assert( y_.size() == n_random_ );
 		}
 		// -------------------------------------------------------------------
@@ -131,55 +153,30 @@ namespace {
 		{	assert( theta.size() == n_fixed_ );
 			assert( u.size() == y_.size() );
 			vector<a2_double> vec(1);
-
-			// initialize part of log-density that is always smooth
+			//
+			// initialize summation
 			vec[0] = a2_double(0.0);
-
+			//
 			// sqrt_2pi = CppAD::sqrt(8.0 * CppAD::atan(1.0) );
-
+			//
 			for(size_t i = 0; i < n_random_; i++)
-			{	a2_double mu     = u[i] + theta[0] * double(i + 1);
-				a2_double sigma  = theta[1];
-				a2_double res    = (y_[i] - mu) / sigma;
-
+			{	a2_double sigma  = a2_double(sigma_y);
+				a2_double res    = (y_[i] - u[i]) / sigma;
+				//
 				// p(y_i | u, theta)
+				vec[0] += res * res / a2_double(2.0);
+				// following term does not depend on fixed or random effects
+				// vec[0] += log(sqrt_2pi);
+				//
+				// p(u_i | theta)
+				sigma = theta[0];
+				if( i == 0 )
+					res = u[i] / sigma;
+				else
+					res = ( u[i] - u[i-1] ) / sigma;
 				vec[0] += log(sigma) + res * res / a2_double(2.0);
 				// following term does not depend on fixed or random effects
 				// vec[0] += log(sqrt_2pi);
-
-				// p(u_i | theta)
-				if( i == 0 )
-					vec[0] += u[i] * u[i] / a2_double(2.0);
-				else
-				{	res     = u[i] - u[i-1];
-					vec[0] += res * res / a2_double(2.0);
-				}
-				// following term does not depend on fixed or random effects
-				// vec[0] += log(sqrt_2pi);
-			}
-			return vec;
-		}
-		// implementation of fix_likelihood
-		virtual vector<a1_double> fix_likelihood(
-			const vector<a1_double>& fixed_vec  )
-		{	assert( fixed_vec.size() == n_fixed_ );
-			vector<a1_double> vec(1);
-
-			// initialize part of log-density that is smooth
-			vec[0] = a1_double(0.0);
-
-			// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
-
-			// Note that theta[2] is not included
-			for(size_t j = 0; j < 2; j++)
-			{	a1_double mu     = a1_double(4.0);
-				a1_double sigma  = a1_double(1.0);
-				a1_double res    = (fixed_vec[j] - mu) / sigma;
-
-				// This is a Gaussian term, so entire density is smooth
-				vec[0]  += res * res / a1_double(2.0);
-				// following term does not depend on fixed effects
-				// vec[0]  += log(sqrt_2pi * sigma);
 			}
 			return vec;
 		}
@@ -204,7 +201,7 @@ int main(int argc, const char* argv[])
 	const char* arg_name[] = {
 		"trace_optimize_fixed",
 		"random_seed",
-		"number_random"
+		"number_times"
 	};
 	size_t n_arg = sizeof(arg_name) / sizeof(arg_name[0]);
 	//
@@ -221,7 +218,7 @@ int main(int argc, const char* argv[])
 	assert( n_arg == 3 );
 	bool   trace_optimize_fixed   = std::string( argv[1] ) == "true";
 	size_t random_seed            = std::atoi( argv[2] );
-	size_t number_random          = std::atoi( argv[3] );
+	size_t number_times           = std::atoi( argv[3] );
 	//
 	// print the command line arugments with labels for each value
 	for(size_t i = 0; i < n_arg; i++)
@@ -231,27 +228,27 @@ int main(int argc, const char* argv[])
 	size_t actual_seed = CppAD::mixed::new_gsl_rng(random_seed);
 	label_print("actual_seed", actual_seed);
 	//
-	size_t n_data   = number_random;
-	size_t n_fixed  = 2;
-	size_t n_random = number_random;
+	size_t n_data   = number_times;
+	size_t n_random = number_times;
+	size_t n_fixed  = 1;
 	vector<double>
 		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
-	fixed_lower[0] = - inf; fixed_in[0] = 2.0; fixed_upper[0] = inf;
-	fixed_lower[1] = .1;    fixed_in[1] = 0.5; fixed_upper[1] = inf;
+	fixed_lower[0] = 1e-5; fixed_in[0] = 2.0; fixed_upper[0] = inf;
 	//
 	// explicit constriants (in addition to l1 terms)
 	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
 	//
-	vector<double> data(n_data), random_in(n_random);
+	gsl_rng* rng = CppAD::mixed::get_gsl_rng();
+	vector<double> y(n_data), random_in(n_random);
 	for(size_t i = 0; i < n_data; i++)
-	{	data[i]      = double(i + 1);
+	{	y[i]         = double(i + 1) + gsl_ran_gaussian(rng, sigma_y);
 		random_in[i] = 0.0;
 	}
 
 	// object that is derived from cppad_mixed
 	bool quasi_fixed = true;
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
-	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, A_info, data);
+	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, A_info, y);
 	mixed_object.initialize(fixed_in, random_in);
 
 	// optimize the fixed effects using quasi-Newton method
@@ -298,11 +295,9 @@ int main(int argc, const char* argv[])
 	// Check that only the lower limit on theta[1] is active.
 	ok &= solution.fixed_lag.size() == n_fixed;
 	ok &= solution.fixed_lag[0] == 0.0;
-	ok &= solution.fixed_lag[1] != 0.0;
 	ok &= solution.fix_con_lag.size() == 0;
 	ok &= solution.ran_con_lag.size() == 0;
 	ok &= CppAD::abs( solution.fixed_opt[0] - 1.0 ) < 1e-1;
-	ok &= CppAD::abs( solution.fixed_opt[1] - fixed_lower[1] ) < 1e-8;
 	//
 	if( ok )
 		label_print("ar1_xam_ok", "true");
