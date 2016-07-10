@@ -90,8 +90,7 @@ else
 fi
 for package in $list
 do
-	echo $system_install $package
-	# echo_eval sudo $system_install $package
+	echo_eval $system_install $package
 done
 # ----------------------------------------------------------------------------
 # local external installs
@@ -136,7 +135,7 @@ do
 	if [ "$skip" == 'no' ] || [ "$skip" == 'n' ]
 	then
 		echo "$pkg_prefix"
-		sed -e "s|^eigen_prefix=.*|eigen_prefix=\"$pkg_prefix\"|" \
+		sed -e "s|^${pkg}_prefix=.*|${pkg}_prefix=\"$pkg_prefix\"|" \
 			-i bin/install_eigen.sh
 		bin/install_$pkg.sh $build_type
 	fi

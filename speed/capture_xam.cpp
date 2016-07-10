@@ -940,8 +940,11 @@ int main(int argc, const char *argv[])
 		std::cout << endl;
 	label_print("optimize_fixed_seconds", end_seconds - start_seconds);
 	//
-	start_seconds = CppAD::elapsed_seconds();
+	// estimate of fixed effects
 	vector<double> theta_out = solution.fixed_opt;
+	//
+	// estimate of random effects
+	start_seconds = CppAD::elapsed_seconds();
 	vector<double> u_out     = mixed_object.optimize_random(
 		random_ipopt_options,
 		theta_out,
@@ -959,6 +962,7 @@ int main(int argc, const char *argv[])
 	end_seconds = CppAD::elapsed_seconds();
 	label_print("information_mat_seconds", end_seconds - start_seconds);
 	//
+	// sample approximate posteroior for fixed effects
 	start_seconds = CppAD::elapsed_seconds();
 	vector<double> sample( number_fixed_samples * n_fixed );
 	mixed_object.sample_fixed(
@@ -981,6 +985,7 @@ int main(int argc, const char *argv[])
 	label_print("sum_random_effects", sum_random_effects);
 	//
 	// compute the sample standard deviations
+	// and ratio of error divided by sample standard deviation
 	vector<double> sample_std(n_fixed), estimate_ratio(n_fixed);
 	for(size_t j = 0; j < n_fixed; j++)
 		sample_std[j] = 0.0;

@@ -89,6 +89,21 @@ Is the number of seconds used by the call to
 $cref optimize_fixed$$ that is used to compute the
 optimal fixed effects.
 
+$subhead optimize_random_seconds$$
+Is the number of seconds used by a single call to
+$cref optimize_random$$ that is used to compute the
+optimal random effects.
+
+$subhead information_mat_seconds$$
+Is the number of seconds used by the call to
+$cref information_mat$$ that computes the observed information matrix.
+
+$subhead sample_fixed_seconds$$
+Is the number of seconds used by the call to
+$cref sample_fixed$$ that computes the
+$cref/number_sample_fixed/capture_xam.cpp/Input/number_fixed_samples/$$
+samples for the fixed effects.
+
 $subhead theta_0_estimate$$
 Is the optimal estimate for $latex \theta_0$$; see the
 $cref/problem/ar1_xam.cpp/Problem/$$ definition.
@@ -249,13 +264,17 @@ int main(int argc, const char* argv[])
 		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
 	fixed_lower[0] = 1e-5; fixed_in[0] = 2.0; fixed_upper[0] = inf;
 	//
-	// explicit constriants (in addition to l1 terms)
+	// explicit constriants
 	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
 	//
+	//
+	// difference
 	gsl_rng* rng = CppAD::mixed::get_gsl_rng();
-	vector<double> y(n_data), random_in(n_random);
+	vector<double> y(n_data), random_in(n_random), theta_sim(n_fixed);
+	theta_sim[0] = 1.0;
 	for(size_t i = 0; i < n_data; i++)
-	{	y[i]         = double(i + 1) + gsl_ran_gaussian(rng, 0.0);
+	{	y[i]         = double(i + 1) * theta_sim[0];
+		y[i]        += gsl_ran_gaussian(rng, sigma_y);
 		random_in[i] = 0.0;
 	}
 
@@ -326,14 +345,69 @@ int main(int argc, const char* argv[])
 		std::cout << std::endl;
 	label_print("optimize_fixed_seconds", end_seconds - start_seconds);
 	//
+	// estimate of fixed effects
+	vector<double> theta_out = solution.fixed_opt;
+	//
+	// estimate of random effects
+	start_seconds = CppAD::elapsed_seconds();
+	vector<double> u_out     = mixed_object.optimize_random(
+		random_ipopt_options,
+		theta_out,
+		random_lower,
+		random_upper,
+		random_in
+	);
+	end_seconds = CppAD::elapsed_seconds();
+	label_print("optimize_random_seconds", end_seconds - start_seconds);
+	//
+	// information matrix
+	start_seconds = CppAD::elapsed_seconds();
+	CppAD::mixed::sparse_mat_info
+	information_info = mixed_object.information_mat(solution, u_out);
+	end_seconds = CppAD::elapsed_seconds();
+	label_print("information_mat_seconds", end_seconds - start_seconds);
+	//
+	// sample approximate posteroior for fixed effects
+	size_t number_fixed_samples = 1000;
+	vector<double> sample( number_fixed_samples * n_fixed );
+	start_seconds = CppAD::elapsed_seconds();
+	mixed_object.sample_fixed(
+		sample,
+		information_info,
+		solution,
+		fixed_lower,
+		fixed_upper,
+		u_out
+	);
+	end_seconds = CppAD::elapsed_seconds();
+	label_print("sample_fixed_seconds", end_seconds - start_seconds);
+	//
+	// compute the sample standard deviations
+	// and ratio of error divided by sample standard deviation
+	vector<double> sample_std(n_fixed), estimate_ratio(n_fixed);
+	for(size_t j = 0; j < n_fixed; j++)
+		sample_std[j] = 0.0;
+	for(size_t i = 0; i < number_fixed_samples; i++)
+	{	for(size_t j = 0; j < n_fixed; j++)
+		{	double diff    = sample[i * n_fixed + j] - theta_out[j];
+			sample_std[j] += diff * diff;
+		}
+	}
+	for(size_t j = 0; j < n_fixed; j++)
+	{	sample_std[j] = std::sqrt( sample_std[j] / number_fixed_samples );
+		// check if results results are reasonable
+		estimate_ratio[j] = ( theta_out[j] - theta_sim[j] ) / sample_std[j];
+		ok  &= std::fabs(estimate_ratio[j]) < 4.0;
+	}
+	label_print("theta_0_estimate", theta_out[0] );
+	label_print("theta_0_std",      sample_std[0] );
+	label_print("theta_0_ratio",    estimate_ratio[0] );
+	//
 	// Check that only the lower limit on theta[1] is active.
 	ok &= solution.fixed_lag.size() == n_fixed;
 	ok &= solution.fixed_lag[0] == 0.0;
 	ok &= solution.fix_con_lag.size() == 0;
 	ok &= solution.ran_con_lag.size() == 0;
-	ok &= CppAD::abs( solution.fixed_opt[0] - 1.0 ) < 1e-1;
-	//
-	label_print("theta_0_estimate", solution.fixed_opt[0] );
 	//
 	if( ok )
 		label_print("ar1_xam_ok", "true");
