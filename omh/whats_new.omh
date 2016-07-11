@@ -44,6 +44,10 @@ Improve $cref example_install.sh$$.
 To be specific, give the user the option to use existing installs.
 $lnext
 Add more input and output options to $cref ar1_xam.cpp$$.
+$lnext
+Reduce that chance of random test failure using the
+$cref/example/capture_xam.cpp/Example/$$ settings 
+for $code capture_xam.cpp$$.
 $lend
 
 $head 07-09$$
