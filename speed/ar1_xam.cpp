@@ -308,7 +308,7 @@ int main(int argc, const char* argv[])
 	string random_ipopt_options =
 		"Integer print_level               0\n"
 		"String  sb                        yes\n"
-		"String  derivative_test           second-order\n"
+		"String  derivative_test           none\n"
 		"Numeric tol                       1e-7\n"
 	;
 	string fixed_ipopt_options =
