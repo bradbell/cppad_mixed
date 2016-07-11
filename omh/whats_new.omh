@@ -38,6 +38,14 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 07-10$$
+$list number$$
+Improve $cref example_install.sh$$.
+To be specific, give the user the option to use existing installs.
+$lnext
+Add more input and output options to $cref ar1_xam.cpp$$.
+$lend
+
 $head 07-09$$
 Change the $code auto_regressive_xam.cpp$$ example to the
 $cref ar1_xam.cpp$$ example and speed test.
