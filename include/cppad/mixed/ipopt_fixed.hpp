@@ -21,6 +21,7 @@ $spell
 	Ipopt
 	nlp
 	inf
+	std
 $$
 
 $section Ipopt NLP Class Used to Optimize Fixed Effects$$
@@ -28,6 +29,14 @@ $section Ipopt NLP Class Used to Optimize Fixed Effects$$
 $head Private$$
 This class is an implementation detail and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
+
+$head get_error_message()$$
+This function returns a $code std::string$$ value that
+corresponds to the most recent error message.
+If it is non-empty, there is no error.
+
+$head clear_error_message()$$
+This function sets the current error message to the empty string.
 
 $head nlp_lower_bound_inf()$$
 This member function returns the $code double$$ value used
@@ -64,19 +73,21 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		typedef Ipopt::TNLP::IndexStyleEnum IndexStyleEnum;
 		// ---------------------------------------------------------------
 		// member variables set during constructor
-		const std::string&         random_ipopt_options_;
-		const double fixed_tolerance_;  // ipopt relative tolerance
+		//
+		const std::string& random_ipopt_options_;
+		const double       fixed_tolerance_;  // ipopt relative tolerance
 		//
 		const size_t n_fixed_;            // number of fixed effects
 		const size_t n_random_;           // number of random effects
 		const size_t n_fix_con_;          // number of fixed constraints
 		const size_t n_ran_con_;          // number of random constraints
 		//
-		const d_vector& fixed_lower_;     // fixed effects lower limits
-		const d_vector& fixed_upper_;     // fixed effects upper limit
+		const d_vector& fixed_lower_;         // fixed effects lower limits
+		const d_vector& fixed_upper_;         // fixed effects upper limit
 		const d_vector& fix_constraint_lower_;// constraint lower limits
 		const d_vector& fix_constraint_upper_;// constraint upper limit
-		const d_vector& fixed_in_;        // fixed effects initial value
+		const d_vector& fixed_in_;            // fixed effects initial value
+		//
 		const d_vector& random_lower_;    // lower limit for random effects
 		const d_vector& random_upper_;    // upper limit for random effects
 		const d_vector& random_in_;       // random effects initial value
@@ -97,7 +108,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// fixed constraint jacobian and hessian
 		CppAD::mixed::sparse_mat_info fix_con_jac_info_;
 		CppAD::mixed::sparse_mat_info fix_con_hes_info_;
-		// radom constraint jacobian
+		// random constraint jacobian
 		CppAD::mixed::sparse_mat_info ran_con_jac_info_;
 		//
 		// hessian of random objective and constraints
