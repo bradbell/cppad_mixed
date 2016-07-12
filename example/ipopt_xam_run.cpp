@@ -183,9 +183,9 @@ is set to the numbering style used for row/col entries in the sparse matrix
 format (C_STYLE: 0-based, FORTRAN_STYLE: 1-based).
 
 $head ok$$
-if set to false, the optimization will terminate with status set to
-$cref/USER_REQUESTED_STOP
-	/ipopt_xam_finalize_solution/status/USER_REQUESTED_STOP/$$.
+if set to false, the optimization will treat this point like
+it was not feasible
+(the objective function could not be evaluated at this point).
 
 $head Source$$
 $srccode%cpp% */
@@ -237,9 +237,9 @@ $head g_u$$
 set to the upper bounds for $icode g(x)$$ (has size $icode m$$).
 
 $head ok$$
-if set to false, the optimization will terminate with status set to
-$cref/USER_REQUESTED_STOP
-	/ipopt_xam_finalize_solution/status/USER_REQUESTED_STOP/$$.
+if set to false, the optimization will treat this point like
+it was not feasible
+(the objective function could not be evaluated at this point).
 
 $head Source$$
 $srccode%cpp% */
@@ -318,9 +318,9 @@ set to the initial value for the $icode g(x)$$ multipliers
 (has size $icode m$$).
 
 $head ok$$
-if set to false, the optimization will terminate with status set to
-$cref/USER_REQUESTED_STOP
-	/ipopt_xam_finalize_solution/status/USER_REQUESTED_STOP/$$.
+if set to false, the optimization will treat this point like
+it was not feasible
+(the objective function could not be evaluated at this point).
 
 $head Source$$
 $srccode%cpp% */
@@ -378,9 +378,9 @@ $head obj_val$$
 set to the initial value of the objective function f(x).
 
 $head ok$$
-if set to false, the optimization will terminate with status set to
-$cref/USER_REQUESTED_STOP
-	/ipopt_xam_finalize_solution/status/USER_REQUESTED_STOP/$$.
+if set to false, the optimization will treat this point like
+it was not feasible
+(the objective function could not be evaluated at this point).
 
 $head Source$$
 $srccode%cpp% */
@@ -428,9 +428,9 @@ is set to the value for the gradient $latex \nabla f(x)$$
 (has size $icode m$$).
 
 $head ok$$
-if set to false, the optimization will terminate with status set to
-$cref/USER_REQUESTED_STOP
-	/ipopt_xam_finalize_solution/status/USER_REQUESTED_STOP/$$.
+if set to false, the optimization will treat this point like
+it was not feasible
+(the objective function could not be evaluated at this point).
 
 $head Source$$
 $srccode%cpp% */
@@ -480,9 +480,9 @@ $head g$$
 is set to the value for the constraint functions (has size $icode m$$).
 
 $head ok$$
-if set to false, the optimization will terminate with status set to
-$cref/USER_REQUESTED_STOP
-	/ipopt_xam_finalize_solution/status/USER_REQUESTED_STOP/$$.
+if set to false, the optimization will treat this point like
+it was not feasible
+(the objective function could not be evaluated at this point).
 
 $head Source$$
 $srccode%cpp% */
@@ -563,9 +563,9 @@ with row index $icode%iRow%[%k%]%$$
 and column index $icode%jCol%[%k%]%$$.
 
 $head ok$$
-if set to false, the optimization will terminate with status set to
-$cref/USER_REQUESTED_STOP
-	/ipopt_xam_finalize_solution/status/USER_REQUESTED_STOP/$$.
+if set to false, the optimization will treat this point like
+it was not feasible
+(the objective function could not be evaluated at this point).
 
 $head Source$$
 $srccode%cpp% */
@@ -678,9 +678,9 @@ with row index $icode%iRow%[%k%]%$$
 and column index $icode%jCol%[%k%]%$$.
 
 $head ok$$
-if set to false, the optimization will terminate with status set to
-$cref/USER_REQUESTED_STOP
-	/ipopt_xam_finalize_solution/status/USER_REQUESTED_STOP/$$.
+if set to false, the optimization will treat this point like
+it was not feasible
+(the objective function could not be evaluated at this point).
 
 $head Source$$
 $srccode%cpp% */
