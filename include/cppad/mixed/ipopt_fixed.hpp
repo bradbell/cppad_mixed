@@ -46,6 +46,14 @@ $head nlp_upper_bound_inf()$$
 This member function returns the $code double$$ value used
 for plus infinity as an upper bound.
 
+$head solution()$$
+This member function returns a
+$cref fixed_solution$$ object containing the
+optimal solution information.
+
+$head Default Destructor$$
+The default destructor is defined by this include file.
+
 $childtable%src/ipopt_fixed.cpp
 	%example/ipopt_xam.omh
 %$$
@@ -198,6 +206,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		//  get and clear the current ipopt_fixed error message
 		std::string get_error_message(void) const
 		{	return error_message_; }
+		//
 		void clear_error_message(void)
 		{	error_message_ = ""; }
 		//
@@ -212,6 +221,11 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// optimal solution
 		CppAD::mixed::fixed_solution solution(void) const
 		{	return solution_; }
+		//
+		// default destructor
+		virtual ~ipopt_fixed(void)
+		{ }
+		// -----------------------------------------------------------------
 		//
 		// did finalize_solution agree that the solution had converged
 		bool finalize_solution_ok_;
@@ -231,9 +245,6 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			cppad_mixed&   mixed_object
 		);
 		//
-		// default destructor
-		virtual ~ipopt_fixed(void);
-		// -----------------------------------------------------------------
 		virtual bool get_nlp_info(
 			Index&          n            ,
 			Index&          m            ,
