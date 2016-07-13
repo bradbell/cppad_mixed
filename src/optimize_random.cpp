@@ -130,20 +130,17 @@ public:
 	// same as cppad_mixed::a1d_vector
 	typedef CppAD::vector< CppAD::AD<double> > ADvector;
 private:
-	const size_t     n_abs_;
 	const size_t     n_fixed_;
 	const size_t     n_random_;
 	ADvector         fixed_vec_;
-	cppad_mixed&    mixed_object_;
+	cppad_mixed&     mixed_object_;
 public:
 	// constructor
 	optimize_random_ipopt(
-		size_t           n_abs           ,
 		size_t           n_random        ,
 		const Dvector&   fixed_vec       ,
-		cppad_mixed&    mixed_object
+		cppad_mixed&     mixed_object
 	) :
-	n_abs_        ( n_abs )            ,
 	n_fixed_      ( fixed_vec.size() ) ,
 	n_random_     ( n_random )         ,
 	mixed_object_( mixed_object )
@@ -151,35 +148,24 @@ public:
 		for(size_t i = 0; i < n_fixed_; i++)
 			fixed_vec_[i] = fixed_vec[i];
 	}
-
+	//
 	// evaluate objective and constraints
 	void operator()(ADvector& fg, const ADvector& x)
-	{	assert( fg.size() == 1 + 2 * n_abs_ );
-
+	{	assert( fg.size() == 1 );
+		//
 		// extract the random effects from x
 		ADvector random_vec(n_random_);
 		for(size_t j = 0; j < n_random_; j++)
 			random_vec[j] = x[j];
-
+		//
 		// compute log-density vector
 		ADvector both_vec(n_fixed_ + n_random_);
 		mixed_object_.pack(fixed_vec_, random_vec, both_vec);
 		ADvector vec = mixed_object_.ran_like_a1fun_.Forward(0, both_vec);
-
-		// initialize smooth part of negative log-likelihood
-		size_t k = 0;
-		fg[k++]  = vec[0];
-
-		// terms corresponding to data likelihood absolute values
-		size_t n_abs   = vec.size() - 1;
-		for(size_t j = 0; j < n_abs; j++)
-		{	// x[ n_random_ + j] >= abs(log_den[1 + j]
-			fg[k++] = x[ n_random_ + j] - vec[1 + j];
-			fg[k++] = x[ n_random_ + j] + vec[1 + j];
-			//
-			// smooth contribution to log-likelihood
-			fg[0]  += x[ n_random_ + j];
-		}
+		assert( vec.size() == 1 );
+		//
+		// return negative log-likelihood
+		fg[0] = vec[0];
 	}
 };
 } } // END_CPPAD_MIXED_NAMESPACE
@@ -204,38 +190,31 @@ CppAD::vector<double> cppad_mixed::try_optimize_random(
 		"optimize_random: there are no random effects";
 		fatal_error(error_message);
 	}
-
+	//
 	// number of fixed and random effects
 	assert( n_fixed_  == fixed_vec.size() );
 	assert( n_random_ == random_in.size() );
 	assert( n_random_ == random_lower.size() );
 	assert( n_random_ == random_upper.size() );
-
+	//
+	// no absolute value terms in random effects
+	assert( ran_like_fun_.Range() == 1 );
+	//
 	// infinity
 	double inf = std::numeric_limits<double>::infinity();
-
-	// determine initial density vector
-	d_vector both_vec(n_fixed_ + n_random_);
-	pack(fixed_vec, random_in, both_vec);
-	d_vector vec = ran_like_fun_.Forward(0, both_vec);
-
-	// number of absolute value terms in objective
-	size_t n_abs = vec.size() - 1;
-
+	//
 	// number of independent variable is number of random effects
 	// plus number of log-density terms that require absolute values
-	size_t nx = n_random_ + n_abs;
-
+	size_t nx = n_random_;
+	//
 	// set initial x vector
 	d_vector xi(nx);
 	for(size_t j = 0; j < n_random_; j++)
 		xi[j] = random_in[j];
-	for(size_t j = 0; j < n_abs; j++)
-		xi[n_random_ + j] = CppAD::abs( vec[j] );
-
+	//
 	// ipopts default value for infinity (use options to change it)
 	double ipopt_infinity = 1e19;
-
+	//
 	// set lower and upper limits for x
 	d_vector xl(nx), xu(nx);
 	for(size_t j = 0; j < nx; j++)
@@ -248,31 +227,27 @@ CppAD::vector<double> cppad_mixed::try_optimize_random(
 		else
 			xu[j] = random_upper[j];
 	}
-
-	// set limits for abs contraint representation
-	d_vector gl(2*n_abs), gu(2*n_abs);
-	for(size_t j = 0; j < 2*n_abs; j++)
-	{	gl[j] = 0.0;
-		gu[j] = + ipopt_infinity;
-	}
-
+	//
 	// construct fg_eval  object
 	CppAD::mixed::optimize_random_ipopt fg_eval(
-		n_abs, n_random_, fixed_vec, *this
+		n_random_, fixed_vec, *this
 	);
-
+	//
 	// optimizer options
 	assert( options[ options.size() - 1] == '\n' );
 	std::string solve_options = options + "Sparse  true  reverse \n";
-
+	//
 	// return solution
 	CppAD::ipopt::solve_result<d_vector> solution;
-
+	//
+	// empty vectors
+	d_vector gl(0), gu(0);
+	//
 	// solve the optimization problem
 	CppAD::ipopt::solve(
 		solve_options, xi, xl, xu, gl, gu, fg_eval, solution
 	);
-
+	//
 	return solution.x;
 }
 // ----------------------------------------------------------------------------
