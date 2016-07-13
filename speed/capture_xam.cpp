@@ -40,6 +40,7 @@ $codei%build/speed/capture_xam  \
 	%std_logit_probability% \
 	%quasi_fixed% \
 	%random_constraint% \
+	%ipopt_solve% \
 	%trace_optimize_fixed%
 %$$
 
@@ -169,6 +170,14 @@ $latex A$$ is the row vector of size $latex T$$ with all ones; i.e.,
 $latex \[
 	A = [ 1 , \cdots , 1 ] \in \B{R}^{1 \times T}
 \] $$
+
+
+$subhead ipopt_solve$$
+This is either $code true$$ or $code false$$.
+If it is true, the $code CppAD::ipopt::solve$$
+routine is used for optimizing the random effects,
+otherwise $code CppAD::mixed::ipopt_random$$ is used; see
+$cref/evaluation_method/optimize_random/options/evaluation_method/$$.
 
 $subhead trace_optimize_fixed$$
 This is either $code true$$ or $code false$$.
@@ -760,6 +769,7 @@ int main(int argc, const char *argv[])
 		"std_logit_probability",
 		"quasi_fixed",
 		"random_constraint",
+		"ipopt_solve",
 		"trace_optimize_fixed"
 	};
 	size_t n_arg = sizeof(arg_name)/sizeof(arg_name[0]);
@@ -774,7 +784,7 @@ int main(int argc, const char *argv[])
 	}
 	//
 	// get command line arguments
-	assert( n_arg == 11 );
+	assert( n_arg == 12 );
 	size_t random_seed            = std::atoi( argv[1] );
 	size_t number_fixed_samples   = std::atoi( argv[2] );
 	size_t number_locations       = std::atoi( argv[3] );
@@ -786,9 +796,11 @@ int main(int argc, const char *argv[])
 	//
 	string quasi_fixed_str          = argv[9];
 	string random_constraint_str    = argv[10];
-	string trace_optimize_fixed_str = argv[11];
+	string ipopt_solve_str          = argv[11];
+	string trace_optimize_fixed_str = argv[12];
 	bool quasi_fixed          =  quasi_fixed_str == "true";
 	bool random_constraint    =  random_constraint_str == "true";
+	bool ipopt_solve          =  ipopt_solve_str == "true";
 	bool trace_optimize_fixed =  trace_optimize_fixed_str == "true";
 	//
 	// print the command line arugments with labels for each value
@@ -803,6 +815,7 @@ int main(int argc, const char *argv[])
 	assert( std_logit_probability > 0.0 );
 	assert( quasi_fixed || quasi_fixed_str=="false" );
 	assert( random_constraint || random_constraint_str=="false" );
+	assert( ipopt_solve || ipopt_solve_str=="false" );
 	assert( trace_optimize_fixed || trace_optimize_fixed_str=="false" );
 	//
 	// Get actual seed (different when random_seed is zero).
@@ -899,6 +912,9 @@ int main(int argc, const char *argv[])
 		"Integer max_iter                  40\n"
 		"Integer print_level               0\n"
 	;
+	if( ipopt_solve ) random_ipopt_options +=
+		"String evaluation_method         ipopt_solve\n";
+	//
 	// ipopt options for optimizing the fixd effects
 	string fixed_ipopt_options =
 		"String  sb                        yes\n"

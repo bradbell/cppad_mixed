@@ -34,11 +34,22 @@ $spell
 	omhelp
 	config
 	src/cholmod/sim_cov.cpp
+	ar1
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
+
+$head 07-13$$
+A new method for optimizing the random effects has been included; see
+$cref/evaluation_method/optimize_random/options/evaluation_method/$$.
+The new method is now the default.
+An option was added so the speed tests could use the new or old method; see
+$icode ipopt_solve$$ in
+$cref/capture_xam/capture_xam.cpp/Input/ipopt_solve/$$ and
+$cref/ar1_xam/ar1_xam.cpp/Input/ipopt_solve/$$.
+
 
 $head 07-12$$
 $list number$$

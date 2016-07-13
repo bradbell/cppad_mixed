@@ -16,6 +16,7 @@ $spell
 	gsl_rng
 	ipopt
 	cppad
+	CppAD
 $$
 
 $section A First Order Auto-Regressive Example and Speed Test$$
@@ -23,6 +24,7 @@ $section A First Order Auto-Regressive Example and Speed Test$$
 $head Syntax$$
 $codei%build/speed/ar1_xam \
 	%trace_optimize_fixed% \
+	%ipopt_solve% \
 	%random_seed% \
 	%number_times%
 %$$
@@ -54,6 +56,13 @@ $cref/trace/ipopt_trace/$$ of the fixed effects optimization
 is included in the program output.
 Otherwise the ipopt $icode print_level$$ is zero and
 no such trace is printed.
+
+$subhead ipopt_solve$$
+This is either $code true$$ or $code false$$.
+If it is true, the $code CppAD::ipopt::solve$$
+routine is used for optimizing the random effects,
+otherwise $code CppAD::mixed::ipopt_random$$ is used; see
+$cref/evaluation_method/optimize_random/options/evaluation_method/$$.
 
 $subhead random_seed$$
 This is a non-negative integer equal to the
@@ -229,6 +238,7 @@ int main(int argc, const char* argv[])
 	//
 	const char* arg_name[] = {
 		"trace_optimize_fixed",
+		"ipopt_solve",
 		"random_seed",
 		"number_times"
 	};
@@ -244,10 +254,11 @@ int main(int argc, const char* argv[])
 	}
 	//
 	// get command line arguments
-	assert( n_arg == 3 );
+	assert( n_arg == 4 );
 	bool   trace_optimize_fixed   = string( argv[1] ) == "true";
-	size_t random_seed            = std::atoi( argv[2] );
-	size_t number_times           = std::atoi( argv[3] );
+	bool   ipopt_solve            = string( argv[2] ) == "true";
+	size_t random_seed            = std::atoi( argv[3] );
+	size_t number_times           = std::atoi( argv[4] );
 	//
 	// print the command line arugments with labels for each value
 	for(size_t i = 0; i < n_arg; i++)
@@ -311,6 +322,8 @@ int main(int argc, const char* argv[])
 		"String  derivative_test           none\n"
 		"Numeric tol                       1e-7\n"
 	;
+	if( ipopt_solve ) random_ipopt_options +=
+		"String  evaluation_method         ipopt_solve\n";
 	string fixed_ipopt_options =
 		"String  sb                        yes\n"
 		"String  derivative_test           none\n"
