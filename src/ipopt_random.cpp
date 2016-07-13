@@ -89,13 +89,14 @@ ipopt_random::ipopt_random(
 /* %$$
 $end
 */
-n_fixed_           ( fixed_vec.size()  )   ,
-n_random_          ( random_lower.size() ) ,
-fixed_vec_         ( fixed_vec )           ,
-random_lower_      ( random_lower )        ,
-random_upper_      ( random_upper )        ,
-random_in_         ( random_in )           ,
-mixed_object_      ( mixed_object    )
+n_fixed_             ( fixed_vec.size()  )                ,
+n_random_            ( random_lower.size() )              ,
+fixed_vec_           ( fixed_vec )                        ,
+random_lower_        ( random_lower )                     ,
+random_upper_        ( random_upper )                     ,
+random_in_           ( random_in )                        ,
+nnz_h_lag_           ( mixed_object.ran_hes_.row.size() ) ,
+mixed_object_        ( mixed_object    )
 {	// -----------------------------------------------------------------------
 	// set nlp_lower_bound_inf_, nlp_upper_bound_inf_
 	double inf           = std::numeric_limits<double>::infinity();
@@ -108,11 +109,7 @@ mixed_object_      ( mixed_object    )
 		if( random_upper[j] != inf ) nlp_upper_bound_inf_ =
 				std::max(nlp_upper_bound_inf_, 1.1 * random_upper[j] );
 	}
-	// ------------------------------------------------------------------------
-	// determine the number of non-zero entries in Hessian of objecive
-	// for the random effects; i.e., f_uu ( theta , u ).
-	nnz_h_lag_ = mixed_object_.ran_hes_.row.size();
-	//
+	objective_current_ = std::numeric_limits<double>::quiet_NaN();
 	return;
 }
 /* $$
@@ -345,6 +342,12 @@ if set to false, the optimization will treat this point like
 it was not feasible
 (the function could not be evaluated at this point).
 
+$head objective_current_$$
+After this call, $code objective_current_$$ will be the
+value of the objective corresponding to $icode x$$.
+Note that if $icode new_x$$ is false,
+this value does not change.
+
 $head mixed_object_.ran_like_fun_$$
 After this call, the zero order Taylor coefficients in this function
 will corresponding to the value of $icode fixed_vec_$$ and
@@ -364,19 +367,23 @@ $end
 	assert( mixed_object_.ran_like_fun_.Domain() == n_fixed_ + n_random_ );
 	assert( mixed_object_.ran_like_fun_.Range()  == 1 );
 	//
-	// random effects as a vector
-	d_vector random_vec(n_random_);
-	for(size_t j = 0; j < n_random_; j++)
-		random_vec[j] = x[j];
-	//
-	// pack both the fixed and random effects into one vector
-	d_vector both_vec(n_fixed_ + n_random_);
-	mixed_object_.pack(fixed_vec_, random_vec, both_vec);
-	//
-	// compute the log-density vector
-	d_vector vec = mixed_object_.ran_like_fun_.Forward(0, both_vec);
-	//
-	obj_value = vec[0];
+	if( new_x )
+	{	// random effects as a vector
+		d_vector random_vec(n_random_);
+		for(size_t j = 0; j < n_random_; j++)
+			random_vec[j] = x[j];
+		//
+		// pack both the fixed and random effects into one vector
+		d_vector both_vec(n_fixed_ + n_random_);
+		mixed_object_.pack(fixed_vec_, random_vec, both_vec);
+		//
+		// compute the log-density vector
+		d_vector vec = mixed_object_.ran_like_fun_.Forward(0, both_vec);
+		//
+		// store for re-use
+		objective_current_ = vec[0];
+	}
+	obj_value = objective_current_;
 	//
 	return true;
 }

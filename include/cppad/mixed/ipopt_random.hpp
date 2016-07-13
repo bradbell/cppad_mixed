@@ -89,12 +89,14 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		const d_vector& random_lower_;  // lower limit for random effects
 		const d_vector& random_upper_;  // upper limit for random effects
 		const d_vector& random_in_;     // initial value for random effects
+		const size_t nnz_h_lag_;        // # non-zeros in Hessian of Lagragian
+		// effectively const (not changed after constructor)
+		double nlp_lower_bound_inf_;    // Ipopt's code for - infinity
+		double nlp_upper_bound_inf_;    // Ipopt's code for + infinity
+		// values initialized by constructor
 		cppad_mixed&    mixed_object_;  // cppad_mixed for this problem
-		// ---------------------------------------------------------------
-		double nlp_lower_bound_inf_; // Ipopt's code for - infinity
-		double nlp_upper_bound_inf_; // Ipopt's code for + infinity
-		// ---------------------------------------------------------------
-		size_t nnz_h_lag_;   // number non-zeros in Hessian of Lagragian
+		// objective corresponding to the most recent x
+		double objective_current_;
 		// ------------------------------------------------------------------
 		// If empty, no error has been detected by the ipopt_random class
 		// Otherwise, this was the last error detected.
