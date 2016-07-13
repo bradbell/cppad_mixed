@@ -275,14 +275,12 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		"cppad_mixed::initialize was not called before optimize_fixed";
 		fatal_error(error_message);
 	}
-
 # ifndef NDEBUG
 	for(size_t j = 0; j < n_fixed_; j++)
 	{	assert( fixed_lower[j] <= fixed_in[j] );
 		assert( fixed_in[j]    <= fixed_upper[j] );
 	}
 # endif
-
 	// create a reference to this object
 	cppad_mixed& mixed_object(*this);
 

@@ -171,6 +171,8 @@ $spell
 	Jacobian
 	std
 	tol
+	nlp
+	inf
 $$
 
 $section Ipopt Fixed Optimization Callback Constructor and Destructor$$
@@ -317,6 +319,12 @@ otherwise it has size $code fix_likelihood_nabs_ + 1$$
 $head Effectively Constant Member Variables$$
 The following member variables are set by the constructor
 and should not be modified.
+
+$subhead nlp_lower_bound_inf_$$
+set to a finite value that is used by Ipopt for minus infinity.
+
+$subhead nlp_upper_bound_inf_$$
+set to a finite value that is used by Ipopt for plus infinity.
 
 $subhead fix_likelihood_nabs_$$
 number of absolute value terms in the

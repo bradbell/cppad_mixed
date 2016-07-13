@@ -175,8 +175,10 @@ $head nnz_jac_g$$
 is set to the number of nonzero entries in the Jacobian of g(x).
 
 $head nnz_h_lag$$
-is set to the number of nonzero entries in the Hessian of the Lagrangian
+is set to the number of nonzero entries in the
+lower-left triangle of the Hessian of the Lagrangian
 $latex f(x) + \lambda^\R{T} g(x)$$.
+(The Hessian is symmetric, and hence determined by its lower-left triangle.)
 
 $head index_style$$
 is set to the numbering style used for row/col entries in the sparse matrix
@@ -185,7 +187,7 @@ format (C_STYLE: 0-based, FORTRAN_STYLE: 1-based).
 $head ok$$
 if set to false, the optimization will treat this point like
 it was not feasible
-(the objective function could not be evaluated at this point).
+(the function could not be evaluated at this point).
 
 $head Source$$
 $srccode%cpp% */
@@ -239,7 +241,7 @@ set to the upper bounds for $icode g(x)$$ (has size $icode m$$).
 $head ok$$
 if set to false, the optimization will treat this point like
 it was not feasible
-(the objective function could not be evaluated at this point).
+(the function could not be evaluated at this point).
 
 $head Source$$
 $srccode%cpp% */
@@ -320,7 +322,7 @@ set to the initial value for the $icode g(x)$$ multipliers
 $head ok$$
 if set to false, the optimization will treat this point like
 it was not feasible
-(the objective function could not be evaluated at this point).
+(the function could not be evaluated at this point).
 
 $head Source$$
 $srccode%cpp% */
@@ -380,7 +382,7 @@ set to the initial value of the objective function f(x).
 $head ok$$
 if set to false, the optimization will treat this point like
 it was not feasible
-(the objective function could not be evaluated at this point).
+(the function could not be evaluated at this point).
 
 $head Source$$
 $srccode%cpp% */
@@ -430,7 +432,7 @@ is set to the value for the gradient $latex \nabla f(x)$$
 $head ok$$
 if set to false, the optimization will treat this point like
 it was not feasible
-(the objective function could not be evaluated at this point).
+(the function could not be evaluated at this point).
 
 $head Source$$
 $srccode%cpp% */
@@ -482,7 +484,7 @@ is set to the value for the constraint functions (has size $icode m$$).
 $head ok$$
 if set to false, the optimization will treat this point like
 it was not feasible
-(the objective function could not be evaluated at this point).
+(the function could not be evaluated at this point).
 
 $head Source$$
 $srccode%cpp% */
@@ -565,7 +567,7 @@ and column index $icode%jCol%[%k%]%$$.
 $head ok$$
 if set to false, the optimization will treat this point like
 it was not feasible
-(the objective function could not be evaluated at this point).
+(the function could not be evaluated at this point).
 
 $head Source$$
 $srccode%cpp% */

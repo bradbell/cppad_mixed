@@ -146,8 +146,15 @@ MESSAGE(STATUS "END:")
 # ----------------------------------------------------------------------------
 # set ipopt_LIBRARY_DIRS, ipopt_LIBRARIES, gsl_LIBRARY_DIRS, gsl_LIBRARIES
 FIND_PACKAGE(PkgConfig)
-pkg_check_modules(ipopt REQUIRED ipopt)
-pkg_check_modules(gsl REQUIRED gsl)
+FOREACH(pkg ipopt gsl)
+	pkg_check_modules( ${pkg} QUIET ${pkg} )
+	IF( ${pkg}_FOUND )
+		MESSAGE(STATUS "Found ${pkg}.pc file")
+	ELSE( ${pkg}_FOUND )
+		MESSAGE(STATUS "Cannot find ${pkg}.pc file")
+		MESSAGE(FATAL_ERROR  "PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH}")
+	ENDIF( ${pkg}_FOUND )
+ENDFOREACH(pkg)
 # ----------------------------------------------------------------------------
 # no pkg-config for SuiteSparse so explicitly set corresponding values
 SET(suitesparse_LIBRARY_DIRS ${suitesparse_prefix}/lib )

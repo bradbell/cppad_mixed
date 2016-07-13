@@ -32,11 +32,28 @@ $spell
 	xam
 	debian
 	omhelp
+	config
+	src/cholmod/sim_cov.cpp
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
+
+$head 07-12$$
+$list number$$
+Improve the error messages when
+$cref/pkg-config/install_unix/System Requirements/pkg-config/$$
+cannot find the configuration information
+for $cref/gsl/install_unix/System Requirements/gsl/$$
+or $cref/ipopt/install_unix/Special Requirements/Ipopt/$$.
+$lnext
+Fix a compile error (on some systems)
+in the file $code src/cholmod/sim_cov.cpp$$.
+$lnext
+Improve discussion of Ipopt callback $icode ok$$ flag; e.g., see
+$cref/ok/ipopt_xam_eval_f/ok/$$.
+$lend
 
 $head 07-10$$
 $list number$$

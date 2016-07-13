@@ -105,6 +105,7 @@ example and test that uses this function.
 
 $end
 */
+# include <cmath>
 # include <cppad/mixed/ldlt_cholmod.hpp>
 # include <cppad/utility/index_sort.hpp>
 # include <cassert>
