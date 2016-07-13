@@ -255,20 +255,22 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	const d_vector&    random_upper      ,
 	const d_vector&    random_in         )
 {	bool ok = true;
+	using Ipopt::SmartPtr;
 	//
 	// fixed_(lower, upper, in)
 	assert( fixed_lower.size() == n_fixed_ );
 	assert( fixed_upper.size() == n_fixed_ );
 	assert( fixed_in.size()    == n_fixed_ );
+	//
 	// fix_constraint(lower and upper)
 	assert( fix_constraint_lower.size() == fix_con_fun_.Range() );
 	assert( fix_constraint_upper.size() == fix_con_fun_.Range() );
+	//
 	// random_(lower, upper, in)
 	assert( random_lower.size() == n_random_ );
 	assert( random_upper.size() == n_random_ );
 	assert( random_in.size() == n_random_ );
 	//
-	using Ipopt::SmartPtr;
 	// make sure initialize has been called
 	if( ! initialize_done_ )
 	{	std::string error_message =
@@ -283,10 +285,10 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 # endif
 	// create a reference to this object
 	cppad_mixed& mixed_object(*this);
-
+	//
 	// Create an instance of an IpoptApplication
 	SmartPtr<Ipopt::IpoptApplication> app = IpoptApplicationFactory();
-
+	//
 	if( quasi_fixed_ )
 	{	// special defaults settings
 		app->Options()->SetStringValue(
@@ -303,7 +305,7 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	//
 	// default for adaptive derivative test
 	std::string adaptive_check = "none";
-	//
+	// ----------------------------------------------------------------------
 	// Set options for optimization of the fixed effects
 	const std::string& options = fixed_ipopt_options;
 	size_t begin_1, end_1, begin_2, end_2, begin_3, end_3;
@@ -377,13 +379,15 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		while( options[begin_1] == ' ' || options[begin_1] == '\n' )
 			begin_1++;
 	}
-	// get the tolerance settting for the fixed effects optimization
+	// ----------------------------------------------------------------------
+	// get the tolerance setting for the fixed effects optimization
 	tag    = "tol";
 	prefix = "";
 	double fixed_tolerance;
 	app->Options()->GetNumericValue(tag, fixed_tolerance, prefix);
-
-	// object that is used to evalutate objective and constraints
+	//
+	// object that is used to evalutate objective, constraints,
+	// and their derivatives
 	SmartPtr<CppAD::mixed::ipopt_fixed> fixed_nlp =
 	new CppAD::mixed::ipopt_fixed(
 		random_ipopt_options,
@@ -422,25 +426,25 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		{	warning("optimize_fixed: adaptive derivative test failed");
 		}
 	}
-
+	//
 	// Set values used for minus and plus infinity
 	app->Options()->SetNumericValue(
 		"nlp_lower_bound_inf", fixed_nlp->nlp_lower_bound_inf()
 	);
-
+	//
 	// variable to hold status values returned by app
 	Ipopt::ApplicationReturnStatus status;
-
+	//
 	// initialize app
 	status = app->Initialize();
 	ok    &= status == Ipopt::Solve_Succeeded;
 	if( ! ok )
 	{	fatal_error("optimize_fixed: initalization failed");
 	}
-
+	//
 	// solve the problem
 	status = app->OptimizeTNLP(fixed_nlp);
-
+	//
 	// check if fixed_nlp could not evaluate one of its functions
 	if(	fixed_nlp->get_error_message() != "" )
 		warning( fixed_nlp->get_error_message() );

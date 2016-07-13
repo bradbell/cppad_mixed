@@ -50,11 +50,13 @@ extern bool sample_fixed_1(void);
 namespace CppAD { namespace mixed {
 	class optimize_random_ipopt;
 	class ipopt_fixed;
+	class ipopt_random;
 } }
 
 class cppad_mixed {
 	friend class CppAD::mixed::optimize_random_ipopt;
 	friend class CppAD::mixed::ipopt_fixed;
+	friend class CppAD::mixed::ipopt_random;
 	friend bool ::ran_obj_tst(void);
 public:
 /*
