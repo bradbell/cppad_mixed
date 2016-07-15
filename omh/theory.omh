@@ -186,15 +186,11 @@ u - f_{u,u} ( \theta , u )^{-1} f_u ( \beta , u  )
 It follows that
 $latex \[
 	U \left[ \theta , \theta , \hat{u} ( \theta ) \right] = \hat{u} ( \theta )
-\]$$
-and
+\] $$
 $latex \[
-U_{\beta} \left[ \theta, \theta , \hat{u} ( \theta ) \right]
-=
-- f_{u,u} \left[ \theta , \hat{u} ( \theta ) \right]^{-1}
-	f_{u,\theta} \left[ \theta , \hat{u} ( \theta )  \right]
-=
-\hat{u}_\theta ( \theta )
+	U_{\beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+	=
+	\hat{u}_\theta ( \theta )
 \] $$
 
 $subhead Second Order, W(beta, theta, u)$$
@@ -204,24 +200,18 @@ W ( \beta , \theta , u )
 =
 U( \beta , \theta , u )
 -
-f_{u,u} [ \beta , U( \beta , \theta , u) ]^{-1}
-	f_u [ \beta , U( \beta , \theta , u)  ]
+f_{u,u} ( \theta , u )^{-1} f_u [ \beta , U( \beta , \theta , u)  ]
 \] $$
 It follows that
 $latex \[
 	W \left[ \theta , \theta , \hat{u} ( \theta ) \right] = \hat{u} ( \theta )
 \] $$
-and
 $latex \[
-W_{\beta} [ \theta , \theta , \hat{u} ( \theta ) ]
-=
--
-f_{u,u} \left[ \theta , \hat{u} ( \theta ) \right]^{-1}
-	f_{u,\theta} [ \beta , \hat{u} ( \theta )  ]
-=
-\hat{u}_\theta ( \theta )
+	W_{\beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+	=
+	\hat{u}_\theta ( \theta )
 \] $$
-It has been proved that, for $latex i = 0 , \ldots , n-1$$,
+and for random effects indices $latex i$$,
 $latex \[
 	W^i_{\beta \beta} [ \theta , \theta , \hat{u} ( \theta ) ]
 	=
@@ -234,7 +224,7 @@ $latex \[
 H( \beta , \theta , u)
 =
 + \frac{1}{2} \log \det f_{u,u} [ \beta, W( \beta , \theta , u) ]
-+ f[ \beta, W( \beta , \theta , u) ]
++ f[ \beta, U( \beta , \theta , u) ]
 - \frac{n}{2} \log ( 2 \pi )
 \] $$
 It follow that

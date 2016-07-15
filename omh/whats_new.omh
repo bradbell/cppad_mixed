@@ -41,6 +41,24 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 07-14$$
+A new method for computing the Hessian of the random objective
+$cref/Hessian of the random objective/theory/Hessian of Random Objective/$$
+was implemented.
+To be specific, two partial Newton steps
+(instead of two full Newton steps) are used in the
+$cref/second order
+	/theory
+	/Approximate Optimal Random Effects
+	/Second Order, W(beta, theta, u)
+/$$
+approximation for the optimal random effects
+$latex W( \beta , \theta , u )$$.
+This should speed up the computation of the
+$cref/information matrix/information_mat/$$.
+It should also speed up $cref optimize_fixed$$ when
+$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false.
+
 $head 07-13$$
 A new method for optimizing the random effects has been included; see
 $cref/evaluation_method/optimize_random/options/evaluation_method/$$.

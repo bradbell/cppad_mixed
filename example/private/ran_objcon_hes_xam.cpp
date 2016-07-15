@@ -154,7 +154,7 @@ bool ran_objcon_hes_xam(void)
 	weight[0] = 1.0;
 	vector<size_t> row, col;
 	vector<double> val;
-	mixed_object.ran_objcon_hes(fixed_vec, random_vec, weight, row, col, val);
+	mixed_object.ran_objcon_hes(fixed_vec, uhat, weight, row, col, val);
 
 	// check size of result vectors
 	size_t K = row.size();
