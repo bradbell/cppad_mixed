@@ -188,6 +188,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 	}
 	size_t thread           = CppAD::thread_alloc::thread_num();
 	size_t num_bytes_before = CppAD::thread_alloc::inuse(thread);
+	bool   bool_sparsity    = bool(CPPAD_MIXED_BOOL_SPARSITY);
 	//
 	if( n_random_ == 0 )
 	{	a2d_vector a2_fixed_vec( n_fixed_ ), a2_random_vec(n_random_);
@@ -227,7 +228,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 
 		// hes_cross_
 		assert( ! init_hes_cross_done_ );
-		init_hes_cross(fixed_vec, random_vec);
+		init_hes_cross(bool_sparsity, fixed_vec, random_vec);
 		assert( init_hes_cross_done_ );
 
 		if( ! quasi_fixed_ )

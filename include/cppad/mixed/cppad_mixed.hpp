@@ -626,7 +626,8 @@ $subhead init_hes_cross$$
 See $cref init_hes_cross$$.
 $srccode%cpp% */
 	void init_hes_cross(
-		const d_vector& fixed_vec ,
+		bool            bool_sparsity ,
+		const d_vector& fixed_vec     ,
 		const d_vector& random_vec
 	);
 /* %$$
