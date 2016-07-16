@@ -129,9 +129,10 @@ CppAD::mixed::sparse_mat_info cppad_mixed::try_information_mat(
 			assert( ! init_ran_objcon_hes_done_ );
 			//
 			// newton_atom_
+			bool bool_sparsity = bool(CPPAD_MIXED_BOOL_SPARSITY);
 			assert( ran_like_a1fun_.size_var() > 0  );
 			newton_atom_.initialize(
-				ran_like_a1fun_, fixed_opt, random_opt
+				bool_sparsity, ran_like_a1fun_, fixed_opt, random_opt
 			);
 			init_newton_atom_done_ = true;;
 			//

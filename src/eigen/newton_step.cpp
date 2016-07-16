@@ -21,6 +21,7 @@ $spell
 	CppAD
 	checkpointing
 	const
+	bool
 $$
 
 $section Checkpoint Newton Step and Log Determinant Calculation$$
@@ -28,7 +29,7 @@ $section Checkpoint Newton Step and Log Determinant Calculation$$
 $head Syntax$$
 $codei%CppAD::mixed::newton_step %newton_atom%()
 %$$
-$icode%newton_atom%.initialize(%a1_adfun%, %theta%, %u%)
+$icode%newton_atom%.initialize(%bool_sparsity%, %a1_adfun%, %theta%, %u%)
 %$$
 $icode%sv% = newton_atom%.size_var()
 %$$
@@ -65,8 +66,16 @@ $head initialize$$
 The $icode newton_atom$$ object must be initialized,
 before any calls to its $code eval$$ routine, using the syntax
 $codei%
-	newton_atom.initialize(%a1_adfun%, %theta%, %u%)
+	newton_atom.initialize(%bool_sparsity%, %a1_adfun%, %theta%, %u%)
 %$$
+
+$head bool_sparsity$$
+This argument has prototype
+$codei%
+	bool %bool_sparsity%
+%$$
+If it is true, boolean sparsity patterns are used for this computation,
+otherwise set sparsity patterns are used.
 
 $subhead a1_adfun$$
 This $code initialize$$ argument has prototype
@@ -157,14 +166,162 @@ $end
 # include <cppad/mixed/newton_step.hpp>
 # include <cppad/mixed/configure.hpp>
 
+namespace { // BEGIN_EMPTY_NAMESPACE
+// --------------------------------------------------------------------------
+// random_hes_use_set
+// --------------------------------------------------------------------------
+template <class Base>
+void random_hes_use_set(
+	size_t                             n_fixed  ,
+	size_t                             n_random ,
+	const CppAD::vector<Base>&         both     ,
+	CppAD::ADFun<Base>&                fun      ,
+	CppAD::vector<size_t>&             row      ,
+	CppAD::vector<size_t>&             col      ,
+	CppAD::sparse_hessian_work&        work     )
+{	assert( fun.Range() == 1 );
+	assert( both.size() == n_fixed + n_random );
+	// ----------------------------------------------------------------------
+	typedef CppAD::vector< std::set<size_t> > set_sparsity;
+	size_t n_both = n_fixed + n_random;
+	// ----------------------------------------------------------------------
+	// compute Jacobian sparsity corresponding to parital w.r.t. random effects
+	set_sparsity r(n_both);
+	for(size_t i = n_fixed; i < n_both; i++)
+		r[i].insert(i);
+	fun.ForSparseJac(n_both, r);
+	// ----------------------------------------------------------------------
+	// compute sparsity pattern corresponding to
+	// partial w.r.t. (theta, u) of partial w.r.t. u
+	bool transpose = true;
+	set_sparsity s(1), pattern;
+	assert( s[0].empty() );
+	s[0].insert(0);
+	pattern = fun.RevSparseHes(n_both, s, transpose);
+	// ----------------------------------------------------------------------
+	// Set the row and column indices
+	//
+	// subsample to just the random effects
+	std::set<size_t>::iterator itr;
+	for(size_t i = n_fixed; i < n_both; i++)
+	{	for(itr = pattern[i].begin(); itr != pattern[i].end(); itr++)
+		{	size_t j = *itr;
+			//
+			// partial w.r.t u[i] of partial w.r.t u[j]
+			assert( n_fixed <= j );
+			// only store lower triangle of symmetric Hessian
+			if( i >= j )
+			{	row.push_back(i);
+				col.push_back(j);
+			}
+		}
+	}
+	// ----------------------------------------------------------------------
+	// create a weighting vector
+	CppAD::vector<Base> w(1);
+	w[0] = 1.0;
+	//
+	// place where results go
+	CppAD::vector<Base> not_used(row.size());
+	//
+	// compute the work vector
+	fun.SparseHessian(
+		both,
+		w,
+		pattern,
+		row,
+		col,
+		not_used,
+		work
+	);
+	return;
+}
+// --------------------------------------------------------------------------
+// random_hes_use_bool
+// --------------------------------------------------------------------------
+template <class Base>
+void random_hes_use_bool(
+	size_t                             n_fixed  ,
+	size_t                             n_random ,
+	const CppAD::vector<Base>&         both     ,
+	CppAD::ADFun<Base>&                fun      ,
+	CppAD::vector<size_t>&             row      ,
+	CppAD::vector<size_t>&             col      ,
+	CppAD::sparse_hessian_work&        work     )
+{	assert( fun.Range() == 1 );
+	assert( both.size() == n_fixed + n_random );
+	// ----------------------------------------------------------------------
+	typedef CppAD::vectorBool bool_sparsity;
+	size_t n_both = n_fixed + n_random;
+	// ----------------------------------------------------------------------
+	// compute Jacobian sparsity corresponding to parital w.r.t. random effects
+	bool_sparsity r(n_both * n_random);
+	for(size_t i = 0; i < n_both; i++)
+	{	for(size_t j = 0; j < n_random; j++)
+			r[i * n_random + j] = (i >= n_fixed) & ((i - n_fixed) == j);
+	}
+	fun.ForSparseJac(n_random, r);
+	// ----------------------------------------------------------------------
+	// compute sparsity pattern corresponding to
+	// partial w.r.t. (theta, u) of partial w.r.t. u
+	bool transpose = true;
+	bool_sparsity s(1), pattern;
+	s[0] = true;
+	pattern = fun.RevSparseHes(n_random, s, transpose);
+	// ----------------------------------------------------------------------
+	// Set the row and column indices
+	//
+	// subsample to just the random effects
+	std::set<size_t>::iterator itr;
+	for(size_t i = n_fixed; i < n_both; i++)
+	{	for(size_t j = 0; j < n_random; j++)
+		{	if( pattern[ i * n_random + j ] & ( i >= j + n_fixed ) )
+			{	// partial w.r.t u[i] of partial w.r.t theta[j]
+				row.push_back(i);
+				col.push_back(j + n_fixed);
+			}
+		}
+	}
+	// ----------------------------------------------------------------------
+	// create a weighting vector
+	CppAD::vector<Base> w(1);
+	w[0] = 1.0;
+	//
+	// place where results go
+	CppAD::vector<Base> not_used(row.size());
+	//
+	// extend sparsity pattern to all the variables
+	bool_sparsity extended_pattern(n_both * n_both);
+	for(size_t i = 0; i < n_both; i++)
+	{	for(size_t j = 0; j < n_fixed; j++)
+			extended_pattern[ i * n_both + j ] = false;
+		for(size_t j = 0; j < n_random; j++)
+			extended_pattern[i*n_both + j + n_fixed] = pattern[i*n_random + j];
+	}
+	//
+	// compute the work vector
+	fun.SparseHessian(
+		both,
+		w,
+		extended_pattern,
+		row,
+		col,
+		not_used,
+		work
+	);
+	return;
+}
+} // END_EMPTY_NAMESPACE
+
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // -------------------------------------------------------------------------
 // newton_step_alog ctor
 newton_step_algo::newton_step_algo(
-	CppAD::ADFun<a1_double>&      a1_adfun ,
-	const CppAD::vector<double>&  theta    ,
-	const CppAD::vector<double>&  u        )
+	bool                          bool_sparsity ,
+	CppAD::ADFun<a1_double>&      a1_adfun      ,
+	const CppAD::vector<double>&  theta         ,
+	const CppAD::vector<double>&  u             )
 :
 n_fixed_ ( theta.size() ) ,
 n_random_( u.size()     ) ,
@@ -176,91 +333,30 @@ a1_adfun_( a1_adfun     )
 	//
 	// total number of variables
 	size_t n_both = n_fixed_ + n_random_;
-
+	//
 	//	create an a1d_vector containing (theta, u)
 	a1d_vector a1_theta_u(n_both);
 	for(size_t j = 0; j < n_fixed_; j++)
 		a1_theta_u[j] = theta[j];
 	for(size_t j = 0; j < n_random_; j++)
 		a1_theta_u[n_fixed_ + j] = u[j];
-
-# if CPPAD_MIXED_BOOL_SPARSITY
-	// compute Jacobian sparsity corresponding to parital w.r.t. random effects
-	typedef CppAD::vectorBool sparsity_pattern;
-	sparsity_pattern r(n_both * n_both);
-	for(size_t i = 0; i < n_both; i++)
-	{	for(size_t j = 0; j < n_both; j++)
-			r[i * n_both + j] = (i >= n_fixed_) && (i == j);
-	}
-	a1_adfun_.ForSparseJac(n_both, r);
-
-	// compute sparsity pattern corresponding to Hessian w.r.t. (theta, u)
-	bool transpose = true;
-	sparsity_pattern s(1), pattern;
-	s[0] = true;
-	pattern = a1_adfun_.RevSparseHes(n_both, s, transpose);
-
-	// Determine row and column indices in lower triangle of Hessian w.r.t. u
-	// u indices start at n_fixed_
-	for(size_t i = n_fixed_; i < n_both; i++)
-	{	for(size_t j = n_fixed_; j < n_both; j++)
-		{	// only compute lower triangle of Hessian w.r.t. u only
-			if( pattern[i * n_both + j] && i >= j )
-			{	// only compute lower triangular of Hessian w.r.t. u only
-				if( i >= j )
-				{	row_.push_back(i);
-					col_.push_back(j);
-				}
-			}
-		}
-	}
-# else
-	// Jacobian sparsity corresponding to partials w.r.t. random effects
-	typedef CppAD::vector< std::set<size_t> > sparsity_pattern;
-	sparsity_pattern r(n_both);
-	for(size_t i = n_fixed_; i < n_both; i++)
-		r[i].insert(i);
-	a1_adfun_.ForSparseJac(n_both, r);
-
-	// compute sparsity pattern corresponding to Hessian w.r.t. (theta, u)
-	bool transpose = true;
-	sparsity_pattern s(1), pattern;
-	assert( s[0].empty() );
-	s[0].insert(0);
-	pattern = a1_adfun_.RevSparseHes(n_both, s, transpose);
-
-	// Determine row and column indices in lower triangle of Hessian w.r.t. u
-	// u indices start at n_fixed_
-	std::set<size_t>::iterator itr;
-	for(size_t i = n_fixed_; i < n_both; i++)
-	{	for(itr = pattern[i].begin(); itr != pattern[i].end(); itr++)
-		{	size_t j = *itr;
-			assert( n_fixed_ <= j );
-			// only compute lower triangle of Hessian w.r.t. u only
-			if( i >= j )
-			{	row_.push_back(i);
-				col_.push_back(j);
-			}
-		}
-	}
-# endif
-
-	// create a weighting vector
-	a1d_vector a1_w(1);
-	a1_w[0] = 1.0;
-
-	// place where results go (not used here)
-	a1d_vector a1_val_out( row_.size() );
-
-	// compute the work vector
-	CppAD::sparse_hessian_work work;
-	a1_adfun_.SparseHessian(
+	//
+	if( bool_sparsity ) random_hes_use_bool(
+		n_fixed_,
+		n_random_,
 		a1_theta_u,
-		a1_w,
-		pattern,
+		a1_adfun_,
 		row_,
 		col_,
-		a1_val_out,
+		work_
+	);
+	else random_hes_use_set(
+		n_fixed_,
+		n_random_,
+		a1_theta_u,
+		a1_adfun_,
+		row_,
+		col_,
 		work_
 	);
 }
@@ -345,15 +441,16 @@ newton_step::~newton_step(void)
 }
 // initialize
 void newton_step::initialize(
-	CppAD::ADFun<a1_double>&          a1_adfun   ,
-	const CppAD::vector<double>&      theta      ,
-	const CppAD::vector<double>&      u          )
+	bool                              bool_sparsity ,
+	CppAD::ADFun<a1_double>&          a1_adfun      ,
+	const CppAD::vector<double>&      theta         ,
+	const CppAD::vector<double>&      u             )
 {	assert( atom_fun_ == CPPAD_MIXED_NULL_PTR );
 	//
 	size_t n_fixed  = theta.size();
 	size_t n_random = u.size();
 	// algo
-	newton_step_algo algo(a1_adfun, theta, u);
+	newton_step_algo algo(bool_sparsity, a1_adfun, theta, u);
 	// atom_fun_
 	a1d_vector a1_theta_u_v(n_fixed + 2 * n_random);
 	for(size_t j = 0; j < n_fixed; j++)

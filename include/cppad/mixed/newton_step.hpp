@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -29,8 +29,9 @@ private:
 		CppAD::sparse_hessian_work        work_;
 public:
 	newton_step_algo(
-		CppAD::ADFun<a1_double>&          a1_adfun   ,
-		const CppAD::vector<double>&      theta      ,
+		bool                              bool_sparsity ,
+		CppAD::ADFun<a1_double>&          a1_adfun      ,
+		const CppAD::vector<double>&      theta         ,
 		const CppAD::vector<double>&      u
 	);
 	void operator()(
@@ -48,8 +49,9 @@ public:
 	newton_step(void);
 	~newton_step(void);
 	void initialize(
-		CppAD::ADFun<a1_double>&          a1_adfun   ,
-		const CppAD::vector<double>&      fixed_vec  ,
+		bool                              bool_sparsity ,
+		CppAD::ADFun<a1_double>&          a1_adfun      ,
+		const CppAD::vector<double>&      fixed_vec     ,
 		const CppAD::vector<double>&      random_vec
 	);
 	size_t size_var(void);

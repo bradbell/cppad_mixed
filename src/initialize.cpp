@@ -236,7 +236,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 			// newton_atom_
 			assert( ! init_newton_atom_done_ );
 			newton_atom_.initialize(
-				ran_like_a1fun_, fixed_vec, random_vec
+				bool_sparsity, ran_like_a1fun_, fixed_vec, random_vec
 			);
 			init_newton_atom_done_ = true;
 

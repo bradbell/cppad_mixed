@@ -65,7 +65,8 @@ bool newton_step_xam(void)
 		u[j] = 0.0;
 	//
 	CppAD::mixed::newton_step newton_atom;
-	newton_atom.initialize(a1_adfun, theta, u);
+	bool bool_sparsity = true;
+	newton_atom.initialize(bool_sparsity, a1_adfun, theta, u);
 	//
 	vector<a1_double> a1_theta_u_v(n_fixed + 2 * n_random);
 	for(size_t j = 0; j < n_fixed + 2 * n_random; j++)
