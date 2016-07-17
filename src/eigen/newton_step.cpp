@@ -179,7 +179,10 @@ void random_hes_use_set(
 	CppAD::vector<size_t>&             row      ,
 	CppAD::vector<size_t>&             col      ,
 	CppAD::sparse_hessian_work&        work     )
-{	assert( fun.Range() == 1 );
+{	work.clear();
+	assert( row.size() == 0 );
+	assert( col.size() == 0 );
+	assert( fun.Range() == 1 );
 	assert( both.size() == n_fixed + n_random );
 	// ----------------------------------------------------------------------
 	typedef CppAD::vector< std::set<size_t> > set_sparsity;
@@ -248,7 +251,10 @@ void random_hes_use_bool(
 	CppAD::vector<size_t>&             row      ,
 	CppAD::vector<size_t>&             col      ,
 	CppAD::sparse_hessian_work&        work     )
-{	assert( fun.Range() == 1 );
+{	work.clear();
+	assert( row.size() == 0 );
+	assert( col.size() == 0 );
+	assert( fun.Range() == 1 );
 	assert( both.size() == n_fixed + n_random );
 	// ----------------------------------------------------------------------
 	typedef CppAD::vectorBool bool_sparsity;

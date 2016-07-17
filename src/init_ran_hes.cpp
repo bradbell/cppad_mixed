@@ -151,7 +151,10 @@ void ran_hes_use_set(
 	const CppAD::vector<double>&       both     ,
 	CppAD::ADFun<double>&              fun      ,
 	CppAD::mixed::sparse_hes_info&     hes_info )
-{	assert( fun.Range() == 1 );
+{	hes_info.work.clear();
+	assert( hes_info.row.size() == 0 );
+	assert( hes_info.col.size() == 0 );
+	assert( fun.Range() == 1 );
 	assert( both.size() == n_fixed + n_random );
 	// ----------------------------------------------------------------------
 	typedef CppAD::vector< std::set<size_t> > set_sparsity;
@@ -230,7 +233,10 @@ void ran_hes_use_bool(
 	const CppAD::vector<double>&       both     ,
 	CppAD::ADFun<double>&              fun      ,
 	CppAD::mixed::sparse_hes_info&     hes_info )
-{	assert( fun.Range() == 1 );
+{	hes_info.work.clear();
+	assert( hes_info.row.size() == 0 );
+	assert( hes_info.col.size() == 0 );
+	assert( fun.Range() == 1 );
 	assert( both.size() == n_fixed + n_random );
 	// ----------------------------------------------------------------------
 	typedef CppAD::vectorBool bool_sparsity;
