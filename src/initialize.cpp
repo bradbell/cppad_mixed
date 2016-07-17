@@ -218,7 +218,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 
 		// ran_hes_
 		assert( ! init_ran_hes_done_ );
-		init_ran_hes(fixed_vec, random_vec);
+		init_ran_hes(bool_sparsity, fixed_vec, random_vec);
 		assert( init_ran_hes_done_ );
 
 		// ldlt_ran_hes_
@@ -300,6 +300,7 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	const d_vector&                      fixed_vec  ,
 	const d_vector&                      random_vec )
 {	std::map<std::string, size_t> ret;
+# if 1
 	try
 	{	ret = try_initialize(fixed_vec, random_vec);
 	}
@@ -308,5 +309,9 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 		fatal_error(error_message);
 		assert(false);
 	}
+# else
+	// If you are debugging asserts, change the '# if 1' to '# if 0' above
+	ret = try_initialize(fixed_vec, random_vec);
+# endif
 	return ret;
 }
