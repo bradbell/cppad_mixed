@@ -613,7 +613,10 @@ $srccode%cpp% */
 $subhead init_fix_con$$
 See $cref init_fix_con$$.
 $srccode%cpp% */
-	void init_fix_con(const d_vector& fixed_vec);
+	void init_fix_con(
+		bool            bool_sparsity ,
+		const d_vector& fixed_vec
+	);
 /* %$$
 
 $subhead init_fix_like$$

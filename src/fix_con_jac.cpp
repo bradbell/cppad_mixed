@@ -135,15 +135,26 @@ void cppad_mixed::fix_con_jac(
 	assert( row_out.size() != 0 );
 
 	CppAD::vector< std::set<size_t> > not_used;
-	fix_con_fun_.SparseJacobianForward(
-		fixed_vec       ,
-		not_used        ,
-		row_out         ,
-		col_out         ,
-		val_out         ,
-		fix_con_jac_.work
-	);
-
+	if( fix_con_jac_.direction == CppAD::mixed::sparse_jac_info::Forward )
+	{	fix_con_fun_.SparseJacobianForward(
+			fixed_vec       ,
+			not_used        ,
+			row_out         ,
+			col_out         ,
+			val_out         ,
+			fix_con_jac_.work
+		);
+	}
+	else
+	{	fix_con_fun_.SparseJacobianReverse(
+			fixed_vec       ,
+			not_used        ,
+			row_out         ,
+			col_out         ,
+			val_out         ,
+			fix_con_jac_.work
+		);
+	}
 	return;
 }
 

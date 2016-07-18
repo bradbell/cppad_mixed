@@ -22,13 +22,15 @@ $spell
 	vec
 	const
 	Cpp
+	bool
 $$
 
 $section Initialize Hessian of Approximate Random Objective$$
 
 $head Syntax$$
-$icode%mixed_object%.init_ran_objcon_hes(%fixed_vec%, %random_vec%)%$$
-
+$icode%mixed_object%.init_ran_objcon_hes(
+	%bool_sparsity%, %fixed_vec%, %random_vec%
+)%$$
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
@@ -37,6 +39,14 @@ $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
+
+$head bool_sparsity$$
+This argument has prototype
+$codei%
+	bool %bool_sparsity%
+%$$
+If it is true, boolean sparsity patterns are used for this computation,
+otherwise set sparsity patterns are used.
 
 $head fixed_vec$$
 This argument has prototype
