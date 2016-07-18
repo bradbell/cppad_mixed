@@ -85,16 +85,161 @@ $cref/sparse Hessian Call/sparse_hes_info/Sparse Hessian Call/f/$$.
 $end
 */
 # include <cppad/mixed/cppad_mixed.hpp>
-# include <cppad/mixed/configure.hpp>
 
+namespace { // BEGIN_EMPTY_NAMESPACE
+
+// --------------------------------------------------------------------------
+// ran_objcon_hes_use_set
+// --------------------------------------------------------------------------
+void ran_objcon_hes_use_set(
+	size_t                             n_fixed      ,
+	size_t                             n_random     ,
+	const CppAD::vector<double>&       beta_theta_u ,
+	CppAD::ADFun<double>&              fun          ,
+	CppAD::mixed::sparse_hes_info&     hes_info     )
+{	typedef CppAD::vector< std::set<size_t> > set_sparsity;
+	hes_info.work.clear();
+	assert( hes_info.row.size() == 0 );
+	assert( hes_info.col.size() == 0 );
+	//
+	// total number of variables in H(beta, theta, u)
+	size_t n_total = 2 * n_fixed + n_random;
+	assert( beta_theta_u.size() == n_total );
+	// -----------------------------------------------------------------------
+	// compute Jacobian sparsity corresponding to partials w.r.t beta
+	set_sparsity r(n_total);
+	for(size_t i = 0; i < n_fixed; i++)
+		r[i].insert(i);
+	fun.ForSparseJac(n_fixed, r);
+	// -----------------------------------------------------------------------
+	// compute sparsity pattern corresponding to
+	// partial w.r.t. (beta, theta, u) of partial w.r.t beta of H
+	set_sparsity s(1), pattern;
+	assert( s[0].empty() );
+	s[0].insert(0);
+	bool transpose = true;
+	pattern = fun.RevSparseHes(n_fixed, s, transpose);
+	// -----------------------------------------------------------------------
+	// Set the row and column indices
+	//
+	// subsample to just the beta indices
+	std::set<size_t>::iterator itr;
+	for(size_t i = 0; i < n_fixed; i++)
+	{	for(itr = pattern[i].begin(); itr != pattern[i].end(); itr++ )
+		{	size_t j = *itr;
+			// only include lower triangular part
+			if( j <= i )
+			{	hes_info.row.push_back(i);
+				hes_info.col.push_back(j);
+			}
+		}
+	}
+	// -----------------------------------------------------------------------
+	// create a weighting vector
+	CppAD::vector<double> w( fun.Range() );
+	w[0] = 1.0;
+	//
+	// place where results go
+	CppAD::vector<double> not_used( hes_info.row.size() );
+	//
+	// compute the work vector
+	fun.SparseHessian(
+		beta_theta_u,
+		w,
+		pattern,
+		hes_info.row,
+		hes_info.col,
+		not_used,
+		hes_info.work
+	);
+	return;
+}
+
+// --------------------------------------------------------------------------
+// ran_objcon_hes_use_bool
+// --------------------------------------------------------------------------
+void ran_objcon_hes_use_bool(
+	size_t                             n_fixed      ,
+	size_t                             n_random     ,
+	const CppAD::vector<double>&       beta_theta_u ,
+	CppAD::ADFun<double>&              fun          ,
+	CppAD::mixed::sparse_hes_info&     hes_info     )
+{	typedef CppAD::vectorBool bool_sparsity;
+	hes_info.work.clear();
+	assert( hes_info.row.size() == 0 );
+	assert( hes_info.col.size() == 0 );
+	//
+	// total number of variables in H(beta, theta, u)
+	size_t n_total = 2 * n_fixed + n_random;
+	assert( beta_theta_u.size() == n_total );
+	// -----------------------------------------------------------------------
+	// compute Jacobian sparsity corresponding to partials w.r.t beta
+	bool_sparsity r(n_total * n_fixed);
+	for(size_t i = 0; i < n_fixed; i++)
+	{	for(size_t j = 0; j < n_fixed; j++)
+			r[i * n_fixed + j] = (i == j);
+	}
+	fun.ForSparseJac(n_fixed, r);
+	// -----------------------------------------------------------------------
+	// compute sparsity pattern corresponding to
+	// partial w.r.t. (beta, theta, u) of partial w.r.t beta of H
+	bool_sparsity s( fun.Range() ), pattern;
+	s[0] = true;
+	for(size_t j = 1; j < s.size(); j++)
+		s[j] = false;
+	bool transpose = true;
+	pattern = fun.RevSparseHes(n_fixed, s, transpose);
+	// -----------------------------------------------------------------------
+	// Set the row and column indices
+	//
+	// subsample to just the beta indices
+	for(size_t i = 0; i < n_fixed; i++)
+	{	// only include lower triangular part
+		for(size_t j = 0; j <= i; j++)
+		{	if( pattern[ i * n_fixed + j ] )
+			{	hes_info.row.push_back(i);
+				hes_info.col.push_back(j);
+			}
+		}
+	}
+	// -----------------------------------------------------------------------
+	// create a weighting vector
+	CppAD::vector<double> w( fun.Range() );
+	w[0] = 1.0;
+	//
+	// place where results go
+	CppAD::vector<double> not_used( hes_info.row.size() );
+	//
+	// extend sparsity pattern to all the variables
+	bool_sparsity extended_pattern(n_total * n_total);
+	for(size_t i = 0; i < n_total; i++)
+	{	for(size_t j = 0; j < n_fixed; j++)
+			extended_pattern[i * n_total + j] =
+				pattern[ i * n_fixed + j ];
+		for(size_t j = n_fixed; j < n_total; j++)
+			extended_pattern[i * n_total + j] = false;
+	}
+	//
+	// compute the work vector
+	fun.SparseHessian(
+		beta_theta_u,
+		w,
+		extended_pattern,
+		hes_info.row,
+		hes_info.col,
+		not_used,
+		hes_info.work
+	);
+	return;
+}
+} // END_EMPTY_NAMESPACE
 
 void cppad_mixed::init_ran_objcon_hes(
-	const d_vector& fixed_vec  ,
-	const d_vector& random_vec )
+	bool            bool_sparsity ,
+	const d_vector& fixed_vec     ,
+	const d_vector& random_vec    )
 {	assert( ! init_ran_objcon_hes_done_ );
 	assert( init_ran_objcon_done_ );
-	assert( init_ran_con_done_ );
-	size_t i, j;
 
 	// total number of variables in H
 	size_t n_total = 2 * n_fixed_ + n_random_;
@@ -103,63 +248,19 @@ void cppad_mixed::init_ran_objcon_hes(
 	d_vector beta_theta_u(n_total);
 	pack(fixed_vec, fixed_vec, random_vec, beta_theta_u);
 
-	// 2DO: use CPPAD_MIXED_BOOL_SPARSITY to choose between set
-	// and vectorBool sparsity
-
-	// compute Jacobian sparsity corresponding to partial w.r.t beta
-	// of [ H(beta, theta, u) , B(beta, theta, u) ]
-	typedef CppAD::vector< std::set<size_t> > sparsity_pattern;
-	sparsity_pattern r(n_total);
-	for(i = 0; i < n_fixed_; i++)
-		r[i].insert(i);
-	ran_objcon_fun_.ForSparseJac(n_fixed_, r);
-
-	// compute sparsity pattern corresponding to partial w.r.t (beta, theta, u)
-	// of parital w.r.t beta of H(beta, theta, u) which is the first component
-	// of ran_obj_fun_.
-	sparsity_pattern s(1);
-	assert( s[0].empty() );
-	s[0].insert(0);
-	bool transpose = true;
-	sparsity_pattern pattern =
-		ran_objcon_fun_.RevSparseHes(n_fixed_, s, transpose);
-
-	// determine row and column indices in lower triangle of Hessian
-	ran_objcon_hes_.row.clear();
-	ran_objcon_hes_.col.clear();
-	std::set<size_t>::iterator itr;
-	for(i = 0; i < n_fixed_; i++)
-	{	for(
-			itr  = pattern[i].begin();
-			itr != pattern[i].end();
-			itr++
-		)
-		{	j = *itr;
-			// only compute lower triangular part
-			if( i >= j )
-			{	ran_objcon_hes_.row.push_back(i);
-				ran_objcon_hes_.col.push_back(j);
-			}
-		}
-	}
-
-	// create a weighting vector
-	d_vector w(1 + n_ran_con_);
-	w[0] = 1.0;
-
-	// place where results go (not used here)
-	d_vector val_out( ran_objcon_hes_.row.size() );
-
-	// compute the work vector
-	ran_objcon_fun_.SparseHessian(
+	if( bool_sparsity ) ran_objcon_hes_use_bool(
+		n_fixed_,
+		n_random_,
 		beta_theta_u,
-		w,
-		pattern,
-		ran_objcon_hes_.row,
-		ran_objcon_hes_.col,
-		val_out,
-		ran_objcon_hes_.work
+		ran_objcon_fun_,
+		ran_objcon_hes_
 	);
-	//
+	else ran_objcon_hes_use_set(
+		n_fixed_,
+		n_random_,
+		beta_theta_u,
+		ran_objcon_fun_,
+		ran_objcon_hes_
+	);
 	init_ran_objcon_hes_done_ = true;
 }

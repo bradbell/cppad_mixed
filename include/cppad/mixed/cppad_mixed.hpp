@@ -655,7 +655,8 @@ $subhead init_ran_objcon_hes$$
 See $cref init_ran_objcon_hes$$.
 $srccode%cpp% */
 	void init_ran_objcon_hes(
-		const d_vector& fixed_vec ,
+		bool            bool_sparsity ,
+		const d_vector& fixed_vec     ,
 		const d_vector& random_vec
 	);
 /* %$$

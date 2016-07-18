@@ -247,7 +247,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 
 			// ran_objcon_hes_
 			assert( ! init_ran_objcon_hes_done_ );
-			init_ran_objcon_hes(fixed_vec, random_vec);
+			init_ran_objcon_hes(bool_sparsity, fixed_vec, random_vec);
 			assert( init_ran_objcon_hes_done_ );
 		}
 		// check ran_likelihood_jac

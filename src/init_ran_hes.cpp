@@ -261,7 +261,6 @@ void ran_hes_use_bool(
 	//
 	// subsample to just the random effects
 	CppAD::vector<size_t> row, col, key;
-	std::set<size_t>::iterator itr;
 	for(size_t i = n_fixed; i < n_both; i++)
 	{	for(size_t j = 0; j < n_random; j++)
 		{	if( pattern[ i * n_random + j ] & ( i >= j + n_fixed ) )
