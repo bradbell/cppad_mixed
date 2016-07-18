@@ -168,13 +168,10 @@ void cross_hes_use_set(
 		hes_info.col[k] = col[ ind[k] ];
 	}
 	// ----------------------------------------------------------------------
-	// create a weighting vector
+	// Compute work for reuse during future calls to SparseHessian
 	CppAD::vector<double> w(1);
 	w[0] = 1.0;
-	//
-	// place where results go
 	CppAD::vector<double> not_used(K);
-	//
 	// compute the work vector
 	fun.SparseHessian(
 		both,
@@ -247,11 +244,9 @@ void cross_hes_use_bool(
 		hes_info.col[k] = col[ ind[k] ];
 	}
 	// ----------------------------------------------------------------------
-	// create a weighting vector
+	// Compute work for reuse during future calls to SparseHessian
 	CppAD::vector<double> w(1);
 	w[0] = 1.0;
-	//
-	// place where results go
 	CppAD::vector<double> not_used(K);
 	//
 	// extend sparsity pattern to all the variables
@@ -262,8 +257,6 @@ void cross_hes_use_bool(
 		for(size_t j = n_fixed; j < n_both; j++)
 			extended_pattern[ i * n_both + j ] = false;
 	}
-	//
-	// compute the work vector
 	fun.SparseHessian(
 		both,
 		w,

@@ -145,14 +145,10 @@ void ran_objcon_hes_use_set(
 		}
 	}
 	// -----------------------------------------------------------------------
-	// create a weighting vector
+	// Compute work for reuse during future calls to SparseHessian
 	CppAD::vector<double> w( fun.Range() );
 	w[0] = 1.0;
-	//
-	// place where results go
 	CppAD::vector<double> not_used( hes_info.row.size() );
-	//
-	// compute the work vector
 	fun.SparseHessian(
 		beta_theta_u,
 		w,
@@ -213,11 +209,9 @@ void ran_objcon_hes_use_bool(
 		}
 	}
 	// -----------------------------------------------------------------------
-	// create a weighting vector
+	// Compute work for reuse during future calls to SparseHessian
 	CppAD::vector<double> w( fun.Range() );
 	w[0] = 1.0;
-	//
-	// place where results go
 	CppAD::vector<double> not_used( hes_info.row.size() );
 	//
 	// extend sparsity pattern to all the variables
@@ -229,8 +223,6 @@ void ran_objcon_hes_use_bool(
 		for(size_t j = n_fixed; j < n_total; j++)
 			extended_pattern[i * n_total + j] = false;
 	}
-	//
-	// compute the work vector
 	fun.SparseHessian(
 		beta_theta_u,
 		w,
