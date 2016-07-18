@@ -19,7 +19,6 @@
 #                        -D suitesparse_prefix=value \
 # required variables:    -D extra_cxx_flags=value \
 #                        -D cmake_libdir=value \
-#                        -D bool_sparsity=value \
 #                        -D ldlt_cholmod=value
 # ============================================================================
 # Macro definitions
@@ -134,9 +133,6 @@ required_definition( extra_cxx_flags STRING
 )
 required_definition( cmake_libdir STRING
 	"directory below each prefix where libraries are installed"
-)
-required_definition(bool_sparsity BOOL
-	"use sets, instead of bools, to represent sparsity patterns"
 )
 required_definition(ldlt_cholmod BOOL
 	"use cholmod LDLT factorization where possible (instead of eigen)"

@@ -36,11 +36,6 @@ $codei%
 	"%yyyymmdd%"
 %$$
 
-$head CPPAD_MIXED_BOOL_SPARSITY$$
-This is symbol is either zero or one.
-If it is one, then use CppAD $code vectorBool$$ sparsity patterns.
-Otherwise, use vectors of sets of indices for sparsity patterns.
-
 $head CPPAD_MIXED_NULL_PTR$$
 If the C++11 $code nullptr$$ token is available,
 use it for the null pointer.
@@ -61,7 +56,6 @@ $end
 */
 
 # define CPPAD_MIXED_VERSION         "@cppad_mixed_version@"
-# define CPPAD_MIXED_BOOL_SPARSITY    @bool_sparsity_01@
 
 # if @cppad_mixed_has_nullptr_01@
 # define CPPAD_MIXED_NULL_PTR  nullptr

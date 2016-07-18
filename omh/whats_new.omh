@@ -41,6 +41,17 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 07-18$$
+Add the $icode bool_sparsity$$ parameter to the following:
+$cref/initialize/initialize/bool_sparsity/$$,
+$cref/information_mat/information_mat/bool_sparsity/$$,
+$cref/capture_xam.cpp/capture_xam.cpp/bool_sparsity/$$,
+$cref/ar1_xam.cpp/ar1_xam.cpp/bool_sparsity/$$.
+In addition, remove $icode bool_sparsity$$ from the $cref run_cmake.sh$$
+configuration script.
+This puts the choose between boolean and set sparsity patterns
+during run-time, instead of during the $cref/install/install_unix/$$ process.
+
 $head 07-14$$
 A new method for computing the Hessian of the random objective
 $cref/Hessian of the random objective/theory/Hessian of Random Objective/$$
@@ -539,7 +550,7 @@ Make $cref/SuiteSparse/install_unix/Special Requirements/SuiteSparse/$$
 a required package.
 $lnext
 Change the $cref run_cmake.sh$$ argument
-$code set_sparsity$$ to $cref/bool_sparsity/run_cmake.sh/bool_sparsity/$$
+$code set_sparsity$$ to $code bool_sparsity$$
 (so that the default value is $code YES$$).
 $lnext
 Add the option to use $code cholmod$$ for sparse Cholesky factorization;

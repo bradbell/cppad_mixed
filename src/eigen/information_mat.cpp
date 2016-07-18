@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
 $begin information_mat$$
 $spell
+	bool
 	CppAD
 	cppad
 $$
@@ -20,6 +21,9 @@ $section Compute the Observed Information For Fixed Effects$$
 $head Syntax$$
 $icode%information_info% = %mixed_object%.information_mat(
 	%solution%, %random_opt%
+)%$$
+$icode%information_info% = %mixed_object%.information_mat(
+	%solution%, %random_opt%, %bool_sparsity%
 )%$$
 
 $head Purpose$$
@@ -69,6 +73,17 @@ $icode random_upper$$, and
 $icode random_in$$, are the same
 as in the call to $code optimize_fixed$$ that corresponds to $icode solution$$.
 
+$head bool_sparsity$$
+This optional argument has prototype
+$codei%
+	bool %bool_sparsity%
+%$$
+If it is true, boolean sparsity patterns are used for this computation,
+otherwise set sparsity patterns are used.
+If this argument is not present, the type of sparsity patterns
+is not specified.
+No sparsity patterns are computed when $icode quasi_fixed$$ is false.
+
 $head information_info$$
 The return value has prototype
 $codei%
@@ -100,7 +115,8 @@ $end
 
 CppAD::mixed::sparse_mat_info cppad_mixed::try_information_mat(
 	const CppAD::mixed::fixed_solution&  solution             ,
-	const d_vector&                      random_opt           )
+	const d_vector&                      random_opt           ,
+	bool                                 bool_sparsity        )
 {	using Eigen::Dynamic;
 	typedef Eigen::SparseMatrix<double, Eigen::ColMajor>      eigen_sparse;
 	typedef eigen_sparse::InnerIterator                       sparse_itr;
@@ -129,7 +145,6 @@ CppAD::mixed::sparse_mat_info cppad_mixed::try_information_mat(
 			assert( ! init_ran_objcon_hes_done_ );
 			//
 			// newton_atom_
-			bool bool_sparsity = bool(CPPAD_MIXED_BOOL_SPARSITY);
 			assert( ran_like_a1fun_.size_var() > 0  );
 			newton_atom_.initialize(
 				bool_sparsity, ran_like_a1fun_, fixed_opt, random_opt
@@ -211,10 +226,11 @@ CppAD::mixed::sparse_mat_info cppad_mixed::try_information_mat(
 // ---------------------------------------------------------------------------
 CppAD::mixed::sparse_mat_info cppad_mixed::information_mat(
 	const CppAD::mixed::fixed_solution&  solution             ,
-	const d_vector&                      random_opt           )
+	const d_vector&                      random_opt           ,
+	bool                                 bool_sparsity        )
 {	CppAD::mixed::sparse_mat_info ret;
 	try
-	{	ret = try_information_mat(solution, random_opt);
+	{	ret = try_information_mat(solution, random_opt, bool_sparsity);
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	std::string error_message = e.message("information_mat");

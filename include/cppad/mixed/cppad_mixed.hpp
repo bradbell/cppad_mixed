@@ -198,8 +198,9 @@ $head initialize$$
 $cref initialize$$, $title initialize$$
 $srccode%cpp% */
 	std::map<std::string, size_t> initialize(
-		const d_vector&   fixed_vec  ,
-		const d_vector&   random_vec
+		const d_vector&   fixed_vec            ,
+		const d_vector&   random_vec           ,
+		bool              bool_sparsity = true
 	);
 /* %$$
 $head optimize_random$$
@@ -234,7 +235,8 @@ $cref information_mat$$, $title information_mat$$.
 $srccode%cpp% */
 	CppAD::mixed::sparse_mat_info information_mat(
 		const CppAD::mixed::fixed_solution&  solution             ,
-		const d_vector&                      random_opt
+		const d_vector&                      random_opt           ,
+		bool                                 bool_sparsity = true
 	);
 /* %$$
 $head sample_fixed$$
@@ -700,8 +702,9 @@ $subhead try_initialize$$
 Called by public $cref/initialize/public/initialize/$$
 $srccode%cpp% */
 	std::map<std::string, size_t> try_initialize(
-		const d_vector&     fixed_vec  ,
-		const d_vector&     random_vec
+		const d_vector&     fixed_vec     ,
+		const d_vector&     random_vec    ,
+		bool                bool_sparsity
 	);
 /* %$$
 $subhead try_optimize_random$$
@@ -735,8 +738,9 @@ $subhead try_information_mat$$
 Called by public $cref/information_mat/public/information_mat/$$
 $srccode%cpp% */
 	CppAD::mixed::sparse_mat_info try_information_mat(
-		const CppAD::mixed::fixed_solution&  solution             ,
-		const d_vector&                      random_opt
+		const CppAD::mixed::fixed_solution&  solution      ,
+		const d_vector&                      random_opt    ,
+		bool                                 bool_sparsity
 	);
 /* %$$
 $subhead try_sample_fixed$$

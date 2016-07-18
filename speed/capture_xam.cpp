@@ -12,6 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 $begin capture_xam.cpp$$
 $escape $$
 $spell
+	bool
 	std
 	CppAD
 	cppad
@@ -41,6 +42,7 @@ $codei%build/speed/capture_xam  \
 	%quasi_fixed% \
 	%random_constraint% \
 	%ipopt_solve% \
+	%bool_sparsity% \
 	%trace_optimize_fixed%
 %$$
 
@@ -178,6 +180,11 @@ If it is true, the $code CppAD::ipopt::solve$$
 routine is used for optimizing the random effects,
 otherwise $code CppAD::mixed::ipopt_random$$ is used; see
 $cref/evaluation_method/optimize_random/options/evaluation_method/$$.
+
+$head bool_sparsity$$
+This is either $code true$$ or $code false$$.
+If it is true, boolean sparsity patterns are used for this computation,
+otherwise set sparsity patterns are used.
 
 $subhead trace_optimize_fixed$$
 This is either $code true$$ or $code false$$.
@@ -770,6 +777,7 @@ int main(int argc, const char *argv[])
 		"quasi_fixed",
 		"random_constraint",
 		"ipopt_solve",
+		"bool_sparsity",
 		"trace_optimize_fixed"
 	};
 	size_t n_arg = sizeof(arg_name)/sizeof(arg_name[0]);
@@ -784,7 +792,7 @@ int main(int argc, const char *argv[])
 	}
 	//
 	// get command line arguments
-	assert( n_arg == 12 );
+	assert( n_arg == 13 );
 	size_t random_seed            = std::atoi( argv[1] );
 	size_t number_fixed_samples   = std::atoi( argv[2] );
 	size_t number_locations       = std::atoi( argv[3] );
@@ -797,10 +805,12 @@ int main(int argc, const char *argv[])
 	string quasi_fixed_str          = argv[9];
 	string random_constraint_str    = argv[10];
 	string ipopt_solve_str          = argv[11];
-	string trace_optimize_fixed_str = argv[12];
+	string bool_sparsity_str        = argv[12];
+	string trace_optimize_fixed_str = argv[13];
 	bool quasi_fixed          =  quasi_fixed_str == "true";
 	bool random_constraint    =  random_constraint_str == "true";
 	bool ipopt_solve          =  ipopt_solve_str == "true";
+	bool bool_sparsity        =  bool_sparsity_str == "true";
 	bool trace_optimize_fixed =  trace_optimize_fixed_str == "true";
 	//
 	// print the command line arugments with labels for each value
@@ -816,6 +826,7 @@ int main(int argc, const char *argv[])
 	assert( quasi_fixed || quasi_fixed_str=="false" );
 	assert( random_constraint || random_constraint_str=="false" );
 	assert( ipopt_solve || ipopt_solve_str=="false" );
+	assert( bool_sparsity || bool_sparsity_str =="false" );
 	assert( trace_optimize_fixed || trace_optimize_fixed_str=="false" );
 	//
 	// Get actual seed (different when random_seed is zero).
@@ -884,7 +895,7 @@ int main(int argc, const char *argv[])
 	// start timing of initialize
 	double start_seconds = CppAD::elapsed_seconds();
 	std::map<string, size_t> size_map =
-		mixed_object.initialize(theta_in, u_in);
+		mixed_object.initialize(theta_in, u_in, bool_sparsity);
 	// end timing of initialize
 	double end_seconds = CppAD::elapsed_seconds();
 	//
@@ -974,7 +985,9 @@ int main(int argc, const char *argv[])
 	// information matrix
 	start_seconds = CppAD::elapsed_seconds();
 	CppAD::mixed::sparse_mat_info
-	information_info = mixed_object.information_mat(solution, u_out);
+	information_info = mixed_object.information_mat(
+		solution, u_out, bool_sparsity
+	);
 	end_seconds = CppAD::elapsed_seconds();
 	label_print("information_mat_seconds", end_seconds - start_seconds);
 	//

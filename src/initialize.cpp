@@ -12,6 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin initialize$$
 $spell
+	bool
 	ldlt
 	objcon
 	init
@@ -35,7 +36,12 @@ $$
 $section Initialization After Constructor$$
 
 $head Syntax$$
-$icode%size_map% = %mixed_object%.initialize(%fixed_vec%, %random_vec%)%$$
+$icode%size_map% = %mixed_object%.initialize(%fixed_vec%, %random_vec%)
+%$$
+$icode%size_map% = %mixed_object%.initialize(
+	%fixed_vec%, %random_vec%, %bool_sparsity%
+)
+%$$
 
 $head Public$$
 This $code cppad_mixed$$ member function is $cref public$$.
@@ -71,6 +77,16 @@ It specifies the value of the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$ at which certain $code CppAD::ADFun$$
 objects are recorded.
+
+$head bool_sparsity$$
+This optional argument has prototype
+$codei%
+	bool %bool_sparsity%
+%$$
+If it is true, boolean sparsity patterns are used for this computation,
+otherwise set sparsity patterns are used.
+If this argument is not present, the type of sparsity patterns
+is not specified.
 
 $head ran_likelihood_jac$$
 If $cref ran_likelihood_jac$$ returns a non-empty vector,
@@ -175,8 +191,9 @@ $end
 # include <cppad/mixed/exception.hpp>
 // ---------------------------------------------------------------------------
 std::map<std::string, size_t> cppad_mixed::try_initialize(
-	const d_vector&                      fixed_vec  ,
-	const d_vector&                      random_vec )
+	const d_vector&                      fixed_vec     ,
+	const d_vector&                      random_vec    ,
+	bool                                 bool_sparsity )
 {	if( initialize_done_ )
 	{	fatal_error("cppad_mixed::initialize was called twice");
 	}
@@ -188,7 +205,6 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 	}
 	size_t thread           = CppAD::thread_alloc::thread_num();
 	size_t num_bytes_before = CppAD::thread_alloc::inuse(thread);
-	bool   bool_sparsity    = bool(CPPAD_MIXED_BOOL_SPARSITY);
 	//
 	if( n_random_ == 0 )
 	{	a2d_vector a2_fixed_vec( n_fixed_ ), a2_random_vec(n_random_);
@@ -297,12 +313,13 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 }
 // ---------------------------------------------------------------------------
 std::map<std::string, size_t> cppad_mixed::initialize(
-	const d_vector&                      fixed_vec  ,
-	const d_vector&                      random_vec )
+	const d_vector&    fixed_vec     ,
+	const d_vector&    random_vec    ,
+	bool               bool_sparsity )
 {	std::map<std::string, size_t> ret;
 # if 1
 	try
-	{	ret = try_initialize(fixed_vec, random_vec);
+	{	ret = try_initialize(fixed_vec, random_vec, bool_sparsity);
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	std::string error_message = e.message("initialize");

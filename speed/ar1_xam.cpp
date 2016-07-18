@@ -12,6 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 $begin ar1_xam.cpp$$
 $escape $$
 $spell
+	bool
 	ar1_xam
 	gsl_rng
 	ipopt
@@ -25,6 +26,7 @@ $head Syntax$$
 $codei%build/speed/ar1_xam \
 	%trace_optimize_fixed% \
 	%ipopt_solve% \
+	%bool_sparsity% \
 	%random_seed% \
 	%number_times%
 %$$
@@ -63,6 +65,11 @@ If it is true, the $code CppAD::ipopt::solve$$
 routine is used for optimizing the random effects,
 otherwise $code CppAD::mixed::ipopt_random$$ is used; see
 $cref/evaluation_method/optimize_random/options/evaluation_method/$$.
+
+$head bool_sparsity$$
+This is either $code true$$ or $code false$$.
+If it is true, boolean sparsity patterns are used for this computation,
+otherwise set sparsity patterns are used.
 
 $subhead random_seed$$
 This is a non-negative integer equal to the
@@ -239,6 +246,7 @@ int main(int argc, const char* argv[])
 	const char* arg_name[] = {
 		"trace_optimize_fixed",
 		"ipopt_solve",
+		"bool_sparsity",
 		"random_seed",
 		"number_times"
 	};
@@ -254,11 +262,12 @@ int main(int argc, const char* argv[])
 	}
 	//
 	// get command line arguments
-	assert( n_arg == 4 );
+	assert( n_arg == 5 );
 	bool   trace_optimize_fixed   = string( argv[1] ) == "true";
 	bool   ipopt_solve            = string( argv[2] ) == "true";
-	size_t random_seed            = std::atoi( argv[3] );
-	size_t number_times           = std::atoi( argv[4] );
+	bool   bool_sparsity          = string( argv[3] ) == "true";
+	size_t random_seed            = std::atoi( argv[4] );
+	size_t number_times           = std::atoi( argv[5] );
 	//
 	// print the command line arugments with labels for each value
 	for(size_t i = 0; i < n_arg; i++)
@@ -297,7 +306,7 @@ int main(int argc, const char* argv[])
 	// initialization
 	double start_seconds = CppAD::elapsed_seconds();
 	std::map<string, size_t> size_map =
-		mixed_object.initialize(fixed_in, random_in);
+		mixed_object.initialize(fixed_in, random_in, bool_sparsity);
 	double end_seconds = CppAD::elapsed_seconds();
 	//
 	// print amoumt of memory added to mixed_object during initialize
@@ -376,7 +385,9 @@ int main(int argc, const char* argv[])
 	// information matrix
 	start_seconds = CppAD::elapsed_seconds();
 	CppAD::mixed::sparse_mat_info
-	information_info = mixed_object.information_mat(solution, u_out);
+	information_info = mixed_object.information_mat(
+		solution, u_out, bool_sparsity
+	);
 	end_seconds = CppAD::elapsed_seconds();
 	label_print("information_mat_seconds", end_seconds - start_seconds);
 	//

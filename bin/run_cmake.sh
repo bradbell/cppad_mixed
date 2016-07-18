@@ -51,13 +51,6 @@ extra_cxx_flags='-std=c++11 -Wall'
 cmake_libdir='lib64'
 # &&
 #
-# &head bool_sparsity&&
-# If YES, use arrays of bools for sparsity patterns,
-# otherwise use sets of indices.
-# &codep
-bool_sparsity='YES'
-# &&
-#
 # &head ldlt_cholmod&&
 # If YES, use &cref ldlt_cholmod&& LDLT factorization where possible.
 # Otherwise always use &cref ldlt_eigen&& for LDLT factorization.
@@ -85,7 +78,6 @@ do
 usage: bin/run_cmake.sh \\
 	[--help] \\
 	[--verbose] \\
-	[--set_sparsity] \\
 	[--ldlt_eigen] \\
 	[--release]
 EOF
@@ -94,9 +86,6 @@ EOF
 	if [ "$1" == '--verbose' ]
 	then
 		cmake_verbose_makefile='1'
-	elif [ "$1" == '--set_sparsity' ]
-	then
-		bool_sparsity='NO'
 	elif [ "$1" == '--ldlt_eigen' ]
 	then
 		ldlt_cholmod='NO'
@@ -132,7 +121,6 @@ cmake \
 	\
 	-D extra_cxx_flags="$extra_cxx_flags" \
 	-D cmake_libdir="$cmake_libdir" \
-	-D bool_sparsity="$bool_sparsity" \
 	-D ldlt_cholmod="$ldlt_cholmod" \
 	..
 # ---------------------------------------------------------------------------
