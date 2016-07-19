@@ -25,9 +25,9 @@ cmake_verbose_makefile='NO'
 # &&
 #
 # &head cmake_build_type&&
-# Use either 'DEBUG' or 'RELEASE' for the type of this build:
+# Use either 'debug' or 'release' for the type of this build:
 # &codep
-cmake_build_type='DEBUG'
+cmake_build_type='debug'
 # &&
 #
 # &head Prefixes&&
@@ -70,6 +70,17 @@ echo_eval() {
 	echo $*
 	eval $*
 }
+# ----------------------------------------------------------------------------
+if [ "$0" != "bin/run_cmake.sh" ]
+then
+	echo "bin/run_cmake.sh: must be executed from its parent directory"
+	exit 1
+fi
+if [ "$cmake_build_type" != 'debug' ] && [ "$cmake_build_type" != 'release' ]
+then
+	echo "bin/run_cmake.sh: cmake_build_type is not 'debug' or 'release'"
+	exit 1
+fi
 while [ "$1" != '' ]
 do
 	if [ "$1" == '--help' ]
@@ -91,7 +102,7 @@ EOF
 		ldlt_cholmod='NO'
 	elif [ "$1" == '--release' ]
 	then
-		cmake_build_type='RELEASE'
+		cmake_build_type='release'
 	else
 		echo "'$1' is an invalid option"
 		bin/run_cmake.sh --help
@@ -100,10 +111,23 @@ EOF
 	shift
 done
 # ---------------------------------------------------------------------------
-if [ ! -e build ]
+if [ -e "$cppad_prefix.$cmake_build_type" ]
 then
-	echo_eval mkdir build
+	if [ -e "$cppad_prefix" ]
+	then
+		echo_eval rm "$cppad_prefix"
+	fi
+	echo_eval ln -s $cppad_prefix.$cmake_build_type $cppad_prefix
 fi
+if [ ! -e "build.$cmake_build_type" ]
+then
+	echo_eval mkdir "build.$cmake_build_type"
+fi
+if [ -e build ]
+then
+	echo_eval rm build
+fi
+echo_eval ln -s build.$cmake_build_type build
 echo_eval cd build
 if [ -e CMakeCache.txt ]
 then

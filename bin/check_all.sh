@@ -45,12 +45,12 @@ if [ "$input" == 'r' ]
 then
 	echo_eval bin/run_cmake.sh --release
 	sed \
-		-e "s|^cmake_build_type=.*|cmake_build_type='RELEASE'|" \
+		-e "s|^cmake_build_type=.*|cmake_build_type='release'|" \
 		-i bin/check_install.sh
 else
 	echo_eval bin/run_cmake.sh
 	sed \
-		-e "s|^cmake_build_type=.*|cmake_build_type='DEBUG'|" \
+		-e "s|^cmake_build_type=.*|cmake_build_type='debug'|" \
 		-i bin/check_install.sh
 fi
 #
@@ -65,7 +65,7 @@ if [ "$input" == 'r' ]
 then
 	bin/run_cmake.sh --release
 	sed \
-		-e "s|^cmake_build_type=.*|cmake_build_type='DEBUG'|" \
+		-e "s|^cmake_build_type=.*|cmake_build_type='debug'|" \
 		-i bin/check_install.sh
 fi
 #
