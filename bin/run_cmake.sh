@@ -18,16 +18,16 @@
 #
 # &section bin/run_cmake.sh: User Configuration Options&&
 #
-# &head cmake_verbose_makefile&&
+# &head verbose_makefile&&
 # Use 'NO' for normal and 'YES' for verbose make output:
 # &codep
-cmake_verbose_makefile='NO'
+verbose_makefile='NO'
 # &&
 #
-# &head cmake_build_type&&
+# &head build_type&&
 # Use either 'debug' or 'release' for the type of this build:
 # &codep
-cmake_build_type='debug'
+build_type='debug'
 # &&
 #
 # &head Prefixes&&
@@ -76,9 +76,9 @@ then
 	echo "bin/run_cmake.sh: must be executed from its parent directory"
 	exit 1
 fi
-if [ "$cmake_build_type" != 'debug' ] && [ "$cmake_build_type" != 'release' ]
+if [ "$build_type" != 'debug' ] && [ "$build_type" != 'release' ]
 then
-	echo "bin/run_cmake.sh: cmake_build_type is not 'debug' or 'release'"
+	echo "bin/run_cmake.sh: build_type is not 'debug' or 'release'"
 	exit 1
 fi
 while [ "$1" != '' ]
@@ -96,13 +96,13 @@ EOF
 	fi
 	if [ "$1" == '--verbose' ]
 	then
-		cmake_verbose_makefile='1'
+		verbose_makefile='1'
 	elif [ "$1" == '--ldlt_eigen' ]
 	then
 		ldlt_cholmod='NO'
 	elif [ "$1" == '--release' ]
 	then
-		cmake_build_type='release'
+		build_type='release'
 	else
 		echo "'$1' is an invalid option"
 		bin/run_cmake.sh --help
@@ -111,23 +111,23 @@ EOF
 	shift
 done
 # ---------------------------------------------------------------------------
-if [ -e "$cppad_prefix.$cmake_build_type" ]
+if [ -e "$cppad_prefix.$build_type" ]
 then
 	if [ -e "$cppad_prefix" ]
 	then
 		echo_eval rm "$cppad_prefix"
 	fi
-	echo_eval ln -s $cppad_prefix.$cmake_build_type $cppad_prefix
+	echo_eval ln -s $cppad_prefix.$build_type $cppad_prefix
 fi
-if [ ! -e "build.$cmake_build_type" ]
+if [ ! -e "build.$build_type" ]
 then
-	echo_eval mkdir "build.$cmake_build_type"
+	echo_eval mkdir "build.$build_type"
 fi
 if [ -e build ]
 then
 	echo_eval rm build
 fi
-echo_eval ln -s build.$cmake_build_type build
+echo_eval ln -s build.$build_type build
 echo_eval cd build
 if [ -e CMakeCache.txt ]
 then
@@ -135,8 +135,8 @@ then
 fi
 cmake \
 	-Wno-dev \
-	-D CMAKE_VERBOSE_MAKEFILE=$cmake_verbose_makefile \
-	-D CMAKE_BUILD_TYPE=$cmake_build_type \
+	-D CMAKE_VERBOSE_MAKEFILE=$verbose_makefile \
+	-D CMAKE_BUILD_TYPE=$build_type \
 	\
 	-D cppad_prefix="$cppad_prefix" \
 	-D ipopt_prefix="$ipopt_prefix" \

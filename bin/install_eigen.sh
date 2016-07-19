@@ -22,10 +22,10 @@ then
 fi
 if [ "$1" == 'debug' ]
 then
-	build_type='Debug'
+	build_type='debug'
 elif [ "$1" == 'release' ]
 then
-	build_type='Release'
+	build_type='release'
 else
 	echo 'bin/install_eigen.sh: build_type'
 	echo 'where build_type is debug or release'

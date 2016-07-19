@@ -149,7 +149,7 @@ $cref/ipopt/install_unix/Special Requirements/Ipopt/$$, and
 $cref/suitesparse/install_unix/Special Requirements/SuiteSparse/$$.
 Compiling debug versus release
 for the installs above and for the
-$cref/cmake_build_type/run_cmake.sh/cmake_build_type/$$
+$cref/build_type/run_cmake.sh/build_type/$$
 made a difference of 40.0 seconds versus 5.5 seconds
 for the average of 20 values of $code capture_xam$$
 $cref/optimize_fixed_seconds/capture_xam.cpp/Output/optimize_fixed_seconds/$$.
@@ -412,7 +412,7 @@ This fixed the remaining warnings when building a release version.
 
 $head 04-17$$
 Fix some errors and warnings when
-$cref/cmake_build_type/run_cmake.sh/cmake_build_type/$$ was
+$cref/build_type/run_cmake.sh/build_type/$$ was
 $code RELEASE$$.
 
 

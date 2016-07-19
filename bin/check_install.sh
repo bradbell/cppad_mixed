@@ -49,11 +49,11 @@ eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
 example_file='example/user/no_random_xam.cpp'
 # &&
 #
-# &head cmake_build_type&&
-# This is either DEBUG or RELEASE, depending on if the install version
+# &head build_type&&
+# This is either debug or release, depending on if the install version
 # of &code cppad_mixed&& is a debug or release version.
 # &codep
-cmake_build_type='DEBUG'
+build_type='debug'
 # &&
 #
 # &head Create Temporary&&
@@ -119,14 +119,14 @@ suitesparse_libs='
 # different directory and treated like system files because
 # they otherwise generate lots of warnings.
 # &codep
-if [ "$cmake_build_type" == 'DEBUG' ]
+if [ "$build_type" == 'debug' ]
 then
 	flags='-g -O0 -std=c++11 -Wall'
-elif [ "$cmake_build_type" == 'RELEASE' ]
+elif [ "$build_type" == 'release' ]
 then
 	flags='-O3 -DNDEBUG -std=c++11 -Wall'
 else
-	echo 'check_install.sh: cmake_build_type not DEBUG or RELEASE'
+	echo 'check_install.sh: build_type not debug or release'
 	exit 1
 fi
 g++ example.cpp \
