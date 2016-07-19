@@ -121,8 +121,7 @@ void fix_con_jac_use_set(
 	// -----------------------------------------------------------------------
 	typedef CppAD::vector< std::set<size_t> > set_sparsity;
 	size_t  m = fun.Range();
-	size_t  n = fun.Domain();
-	assert( fixed_vec.size() == n );
+	assert( fixed_vec.size() == fun.Domain() );
 	// -----------------------------------------------------------------------
 	// compute Jacobian sparsity
 	// use reverse mode because m should be smaller than n
