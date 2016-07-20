@@ -88,15 +88,15 @@ This ADFun object can be used for the
 $cref/sparse Jacobian call/sparse_jac_info/Sparse Jacobian Call/f/$$.
 
 $head fix_like_hes_$$
-If the return value for
-$cref fix_likelihood$$ is empty,
-$code fix_like_hes_$$ is not modified.
-Otherwise, the input value of
+The input value of
 $codei%
 	CppAD::mixed::sparse_hes_info fix_like_hes_
 %$$
-does not matter.
-Upon return $code fix_like_hes_$$ contains
+must be empty.
+If the return value for
+$cref fix_likelihood$$ is empty,
+$code fix_like_hes_$$ is not modified.
+Upon return, $code fix_like_hes_$$ contains
 $cref sparse_hes_info$$ for the
 lower triangle of a Hessian corresponding to
 $latex g_{\theta,\theta}) ( \theta )$$ see
@@ -182,7 +182,7 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 		fix_like_jac_.work
 	);
 	// ------------------------------------------------------------------------
-	// fix_like_hes_.row, fix_like_hes_.col, fix_like_hes_.work
+	// fix_like_hes_
 	// ------------------------------------------------------------------------
 	// no need to recalculate forward sparsity pattern.
 	//
@@ -194,8 +194,9 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	pattern = fix_like_fun_.RevSparseHes(n_fixed_, s);
 
 	// determine row and column indices in lower triangle of Hessian
-	fix_like_hes_.row.clear();
-	fix_like_hes_.col.clear();
+	assert( fix_like_hes_.row.size() == 0 );
+	assert( fix_like_hes_.col.size() == 0 );
+	assert( fix_like_hes_.val.size() == 0 );
 	for(size_t i = 0; i < n_fixed_; i++)
 	{	for(itr = pattern[i].begin(); itr != pattern[i].end(); itr++)
 		{	size_t j = *itr;
@@ -207,16 +208,19 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 		}
 	}
 	size_t K = fix_like_hes_.row.size();
+	fix_like_hes_.val.resize(K);
 
 	// compute the work vector for reuse during Hessian sparsity calculations
-	d_vector weight( fix_like_fun_.Range() ), hes(K);
+	d_vector weight( fix_like_fun_.Range() );
+	for(size_t i = 0; i < weight.size(); i++)
+		weight[i] = 1.0;
 	fix_like_fun_.SparseHessian(
-		fixed_vec       ,
-		weight          ,
-		pattern         ,
+		fixed_vec          ,
+		weight             ,
+		pattern            ,
 		fix_like_hes_.row  ,
 		fix_like_hes_.col  ,
-		hes             ,
+		fix_like_hes_.val  ,
 		fix_like_hes_.work
 	);
 
