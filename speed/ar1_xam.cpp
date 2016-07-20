@@ -18,6 +18,7 @@ $spell
 	ipopt
 	cppad
 	CppAD
+	alloc
 $$
 
 $section A First Order Auto-Regressive Example and Speed Test$$
@@ -27,6 +28,7 @@ $codei%build/speed/ar1_xam \
 	%trace_optimize_fixed% \
 	%ipopt_solve% \
 	%bool_sparsity% \
+	%hold_memory% \
 	%random_seed% \
 	%number_times%
 %$$
@@ -70,6 +72,13 @@ $head bool_sparsity$$
 This is either $code true$$ or $code false$$.
 If it is true, boolean sparsity patterns are used for this computation,
 otherwise set sparsity patterns are used.
+
+$head hold_memory$$
+The CppAD memory allocator has a hold memory option will be set by
+$codei%
+	CppAD::thread_alloc::hold_memory(%hold_memory%);
+%$$
+where $icode hold_memory$$ is either $code true$$ or $code false$$.
 
 $subhead random_seed$$
 This is a non-negative integer equal to the
@@ -247,6 +256,7 @@ int main(int argc, const char* argv[])
 		"trace_optimize_fixed",
 		"ipopt_solve",
 		"bool_sparsity",
+		"hold_memory",
 		"random_seed",
 		"number_times"
 	};
@@ -262,12 +272,16 @@ int main(int argc, const char* argv[])
 	}
 	//
 	// get command line arguments
-	assert( n_arg == 5 );
+	assert( n_arg == 6 );
 	bool   trace_optimize_fixed   = string( argv[1] ) == "true";
 	bool   ipopt_solve            = string( argv[2] ) == "true";
 	bool   bool_sparsity          = string( argv[3] ) == "true";
-	size_t random_seed            = std::atoi( argv[4] );
-	size_t number_times           = std::atoi( argv[5] );
+	bool   hold_memory            = string( argv[4] ) == "true";
+	size_t random_seed            = std::atoi( argv[5] );
+	size_t number_times           = std::atoi( argv[6] );
+	//
+	// hold memory setting
+	CppAD::thread_alloc::hold_memory(hold_memory);
 	//
 	// print the command line arugments with labels for each value
 	for(size_t i = 0; i < n_arg; i++)
@@ -438,6 +452,7 @@ int main(int argc, const char* argv[])
 	else
 		label_print("ar1_xam_ok", "false");
 	//
+	CppAD::thread_alloc::hold_memory(false);
 	CppAD::mixed::free_gsl_rng();
 	if( ok )
 		return 0;

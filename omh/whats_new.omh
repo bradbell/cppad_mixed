@@ -41,6 +41,12 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 07-20$$
+Add the $icode hold_memory$$ parameter to
+$cref/capture_xam.cpp/capture_xam.cpp/hold_memory/$$ and
+$cref/ar1_xam.cpp/ar1_xam.cpp/hold_memory/$$.
+
+
 $head 07-18$$
 Add the $icode bool_sparsity$$ parameter to the following:
 $cref/initialize/initialize/bool_sparsity/$$,

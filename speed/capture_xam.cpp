@@ -25,6 +25,7 @@ $spell
 	covariate
 	ipopt
 	gsl_rng
+	alloc
 $$
 
 $section A Capture Example and Speed Test$$
@@ -43,6 +44,7 @@ $codei%build/speed/capture_xam  \
 	%random_constraint% \
 	%ipopt_solve% \
 	%bool_sparsity% \
+	%hold_memory% \
 	%trace_optimize_fixed%
 %$$
 
@@ -185,6 +187,13 @@ $head bool_sparsity$$
 This is either $code true$$ or $code false$$.
 If it is true, boolean sparsity patterns are used for this computation,
 otherwise set sparsity patterns are used.
+
+$head hold_memory$$
+The CppAD memory allocator has a hold memory option will be set by
+$codei%
+	CppAD::thread_alloc::hold_memory(%hold_memory%);
+%$$
+where $icode hold_memory$$ is either $code true$$ or $code false$$.
 
 $subhead trace_optimize_fixed$$
 This is either $code true$$ or $code false$$.
@@ -778,6 +787,7 @@ int main(int argc, const char *argv[])
 		"random_constraint",
 		"ipopt_solve",
 		"bool_sparsity",
+		"hold_memory",
 		"trace_optimize_fixed"
 	};
 	size_t n_arg = sizeof(arg_name)/sizeof(arg_name[0]);
@@ -792,7 +802,7 @@ int main(int argc, const char *argv[])
 	}
 	//
 	// get command line arguments
-	assert( n_arg == 13 );
+	assert( n_arg == 14 );
 	size_t random_seed            = std::atoi( argv[1] );
 	size_t number_fixed_samples   = std::atoi( argv[2] );
 	size_t number_locations       = std::atoi( argv[3] );
@@ -806,12 +816,17 @@ int main(int argc, const char *argv[])
 	string random_constraint_str    = argv[10];
 	string ipopt_solve_str          = argv[11];
 	string bool_sparsity_str        = argv[12];
-	string trace_optimize_fixed_str = argv[13];
+	string hold_memory_str          = argv[13];
+	string trace_optimize_fixed_str = argv[14];
 	bool quasi_fixed          =  quasi_fixed_str == "true";
 	bool random_constraint    =  random_constraint_str == "true";
 	bool ipopt_solve          =  ipopt_solve_str == "true";
 	bool bool_sparsity        =  bool_sparsity_str == "true";
+	bool hold_memory          =  hold_memory_str == "true";
 	bool trace_optimize_fixed =  trace_optimize_fixed_str == "true";
+	//
+	// hold memory setting
+	CppAD::thread_alloc::hold_memory(hold_memory);
 	//
 	// print the command line arugments with labels for each value
 	for(size_t i = 0; i < n_arg; i++)
@@ -827,6 +842,7 @@ int main(int argc, const char *argv[])
 	assert( random_constraint || random_constraint_str=="false" );
 	assert( ipopt_solve || ipopt_solve_str=="false" );
 	assert( bool_sparsity || bool_sparsity_str =="false" );
+	assert( hold_memory || hold_memory_str =="false" );
 	assert( trace_optimize_fixed || trace_optimize_fixed_str=="false" );
 	//
 	// Get actual seed (different when random_seed is zero).
@@ -1047,6 +1063,8 @@ int main(int argc, const char *argv[])
 	else
 		label_print("capture_xam_ok", "false");
 	//
+	// make sure CppAD::thread_alloc is no longer holding memory
+	CppAD::thread_alloc::hold_memory(false);
 	// free memory allocated by new_gsl_rng
 	CppAD::mixed::free_gsl_rng();
 	if( ok )

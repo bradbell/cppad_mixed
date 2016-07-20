@@ -2367,7 +2367,8 @@ $head mixed_object_$$
 The factor in this member variables is updated using the call
 $codei%
 	mixed_object_.update_factor(%fixed_vec%, random_cur_)
-%$$.
+%$$
+see $cref update_factor$$ for side effects.
 
 $end
 */
