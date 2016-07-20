@@ -359,14 +359,6 @@ and assumed to not change.
 The size of the $code val$$ vectors is set by the constructor,
 but element values may change.
 
-$subhead fix_like_hes_info_$$
-Sparse matrix information for the Hessian of the
-fixed likelihood.
-
-$subhead fix_con_hes_info_$$
-Sparse matrix information for the Hessian of the
-fixed constraints.
-
 $subhead ran_con_jac_info_$$
 Sparse matrix information for the Jacobian of the
 random constraints.
@@ -524,38 +516,40 @@ mixed_object_      ( mixed_object    )
 		d_vector weight( 1 + fix_likelihood_nabs_ );
 		for(size_t i = 0; i < weight.size(); i++)
 			weight[i] = 1.0;
+		sparse_hes_info& fix_like_hes_info( mixed_object_.fix_like_hes_ );
 		mixed_object.fix_like_hes(
 			fixed_in,
 			weight,
-			fix_like_hes_info_.row,
-			fix_like_hes_info_.col,
-			fix_like_hes_info_.val
+			fix_like_hes_info.row,
+			fix_like_hes_info.col,
+			fix_like_hes_info.val
 		);
 		// row and column indices for contribution from constraint
 		weight.resize( n_fix_con_ );
 		for(size_t i = 0; i < weight.size(); i++)
 			weight[i] = 1.0;
+		sparse_hes_info& fix_con_hes_info( mixed_object_.fix_con_hes_ );
 		mixed_object.fix_con_hes(
 			fixed_in,
 			weight,
-			fix_con_hes_info_.row,
-			fix_con_hes_info_.col,
-			fix_con_hes_info_.val
+			fix_con_hes_info.row,
+			fix_con_hes_info.col,
+			fix_con_hes_info.val
 		);
 		//
 		// merge to form sparsity for Lagrangian
 		ran_objcon_hes_2_lag_.resize( ran_objcon_hes_info_.row.size() );
-		fix_like_hes_2_lag_.resize( fix_like_hes_info_.row.size() );
-		fix_con_hes_2_lag_.resize( fix_con_hes_info_.row.size() );
+		fix_like_hes_2_lag_.resize( fix_like_hes_info.row.size() );
+		fix_con_hes_2_lag_.resize( fix_con_hes_info.row.size() );
 		merge_sparse(
 			ran_objcon_hes_info_.row      ,
 			ran_objcon_hes_info_.col      ,
 			//
-			fix_like_hes_info_.row        ,
-			fix_like_hes_info_.col        ,
+			fix_like_hes_info.row         ,
+			fix_like_hes_info.col         ,
 			//
-			fix_con_hes_info_.row         ,
-			fix_con_hes_info_.col         ,
+			fix_con_hes_info.row          ,
+			fix_con_hes_info.col          ,
 			//
 			lag_hes_row_                  ,
 			lag_hes_col_                  ,
@@ -568,10 +562,10 @@ mixed_object_      ( mixed_object    )
 		for(size_t k = 0; k < ran_objcon_hes_info_.row.size(); k++)
 			assert( ran_objcon_hes_2_lag_[k] < lag_hes_row_.size() );
 		//
-		for(size_t k = 0; k < fix_like_hes_info_.row.size(); k++)
+		for(size_t k = 0; k < fix_like_hes_info.row.size(); k++)
 			assert( fix_like_hes_2_lag_[k] < lag_hes_row_.size() );
 		//
-		for(size_t k = 0; k < fix_con_hes_info_.row.size(); k++)
+		for(size_t k = 0; k < fix_con_hes_info.row.size(); k++)
 			assert( fix_con_hes_2_lag_[k] < lag_hes_row_.size() );
 # endif
 		// -------------------------------------------------------------------
@@ -1575,33 +1569,35 @@ void ipopt_fixed::try_eval_h(
 	w_fix_likelihood_tmp_[0] = obj_factor;
 	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
 		w_fix_likelihood_tmp_[1 + j] = lambda[2 * j + 1] - lambda[2 * j];
+	sparse_hes_info& fix_like_hes_info( mixed_object_.fix_like_hes_ );
 	mixed_object_.fix_like_hes(
 		fixed_tmp_,
 		w_fix_likelihood_tmp_,
-		fix_like_hes_info_.row,
-		fix_like_hes_info_.col,
-		fix_like_hes_info_.val
+		fix_like_hes_info.row,
+		fix_like_hes_info.col,
+		fix_like_hes_info.val
 	);
-	for(size_t k = 0; k < fix_like_hes_info_.row.size(); k++)
+	for(size_t k = 0; k < fix_like_hes_info.row.size(); k++)
 	{	size_t index = fix_like_hes_2_lag_[k];
 		assert( index < nnz_h_lag_ );
-		values[index] += Number( fix_like_hes_info_.val[k] );
+		values[index] += Number( fix_like_hes_info.val[k] );
 	}
 	//
 	// Hessian of Lagrangian of fixed constraints
 	for(size_t j = 0; j < n_fix_con_; j++)
 		w_fix_con_tmp_[j] = lambda[2 * fix_likelihood_nabs_ + j];
+	sparse_hes_info& fix_con_hes_info( mixed_object_.fix_con_hes_ );
 	mixed_object_.fix_con_hes(
 		fixed_tmp_,
 		w_fix_con_tmp_,
-		fix_con_hes_info_.row,
-		fix_con_hes_info_.col,
-		fix_con_hes_info_.val
+		fix_con_hes_info.row,
+		fix_con_hes_info.col,
+		fix_con_hes_info.val
 	);
-	for(size_t k = 0; k < fix_con_hes_info_.row.size(); k++)
+	for(size_t k = 0; k < fix_con_hes_info.row.size(); k++)
 	{	size_t index = fix_con_hes_2_lag_[k];
 		assert( index < nnz_h_lag_ );
-		values[index] += Number( fix_con_hes_info_.val[k] );
+		values[index] += Number( fix_con_hes_info.val[k] );
 	}
 	//
 	return;

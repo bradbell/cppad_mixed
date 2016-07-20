@@ -110,10 +110,6 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		size_t nnz_jac_g_;   // number non-zeros in Jacobian of constraints
 		size_t nnz_h_lag_;   // number non-zeros in Hessian of Lagragian
 		//
-		// fixed likelihood jacobian and hessian
-		CppAD::mixed::sparse_mat_info fix_like_hes_info_;
-		// fixed constraint jacobian and hessian
-		CppAD::mixed::sparse_mat_info fix_con_hes_info_;
 		// random constraint jacobian
 		CppAD::mixed::sparse_mat_info ran_con_jac_info_;
 		//

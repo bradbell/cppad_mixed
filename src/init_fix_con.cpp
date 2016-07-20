@@ -92,7 +92,7 @@ The input value of
 $codei%
 	CppAD::mixed::sparse_hes_info fix_con_hes_
 %$$
-does not matter.
+must be empty.
 If $icode quasi_fixed$$ is false,
 upon return $code fix_con_hes_$$ contains
 $cref sparse_hes_info$$ for the
@@ -214,6 +214,7 @@ void fix_con_hes_use_set(
 {	hes_info.work.clear();
 	assert( hes_info.row.size() == 0 );
 	assert( hes_info.col.size() == 0 );
+	assert( hes_info.val.size() == 0 );
 	// -----------------------------------------------------------------------
 	typedef CppAD::vector< std::set<size_t> > set_sparsity;
 	size_t  m = fun.Range();
@@ -245,9 +246,10 @@ void fix_con_hes_use_set(
 			}
 		}
 	}
+	hes_info.val.resize( hes_info.row.size() );
 	// -----------------------------------------------------------------------
 	// compute work for reuse during future calls to SparseHessian
-	CppAD::vector<double> weight(m), not_used( hes_info.row.size() );
+	CppAD::vector<double> weight(m);
 	for(size_t i = 0; i < m; i++)
 		weight[i] = 1.0;
 	fun.SparseHessian(
@@ -256,7 +258,7 @@ void fix_con_hes_use_set(
 		pattern         ,
 		hes_info.row    ,
 		hes_info.col    ,
-		not_used        ,
+		hes_info.val    ,
 		hes_info.work
 	);
 	// -----------------------------------------------------------------------
@@ -272,6 +274,7 @@ void fix_con_hes_use_bool(
 {	hes_info.work.clear();
 	assert( hes_info.row.size() == 0 );
 	assert( hes_info.col.size() == 0 );
+	assert( hes_info.val.size() == 0 );
 	// -----------------------------------------------------------------------
 	typedef CppAD::vectorBool bool_sparsity;
 	size_t  m = fun.Range();
@@ -303,9 +306,10 @@ void fix_con_hes_use_bool(
 			}
 		}
 	}
+	hes_info.val.resize( hes_info.row.size() );
 	// -----------------------------------------------------------------------
 	// compute work for reuse during future calls to SparseHessian
-	CppAD::vector<double> weight(m), not_used( hes_info.row.size() );
+	CppAD::vector<double> weight(m);
 	for(size_t i = 0; i < m; i++)
 		weight[i] = 1.0;
 	fun.SparseHessian(
@@ -314,7 +318,7 @@ void fix_con_hes_use_bool(
 		pattern         ,
 		hes_info.row    ,
 		hes_info.col    ,
-		not_used        ,
+		hes_info.val    ,
 		hes_info.work
 	);
 	// -----------------------------------------------------------------------
