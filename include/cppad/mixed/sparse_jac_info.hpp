@@ -54,6 +54,14 @@ After initialization it should contain the column indices
 corresponding to possibly non-zero elements of the Jacobian
 and has the same size as $icode%jac_info%.row%$$.
 
+$head val$$
+The field $icode%jac_info%.val%$$ has prototype
+$codei%
+	CppAD::vector<double> %jac_info%.val
+%$$
+It has size zero when it is constructed.
+After initialization it should be that same size as $icode%jac_info%.row%$$.
+
 $head direction$$
 The field $icode%jac_info%.direction%$$ has prototype
 $codei%
@@ -81,7 +89,7 @@ $codei%
 		%not_used%,
 		%jac_info%.row,
 		%jac_info%.col,
-		%jac%,
+		%jac_info%.val,
 		%jac_info%.work
 	)
 %$$
@@ -89,13 +97,13 @@ $codei%
 $subhead f$$
 The function $icode f$$ has prototype
 $codei%
-	CppAD::ADFun<%Base%> %f%
+	CppAD::ADFun<double> %f%
 %$$
 
 $subhead x$$
 The argument $icode x%$$ has prototype
 $codei%
-	const CppAD::vector<%Base%>& %x%
+	const CppAD::vector<double>& %x%
 %$$
 and its size is $icode%f%.Domain()%$$.
 It is the location where the Jacobian is being evaluated.
@@ -103,7 +111,7 @@ It is the location where the Jacobian is being evaluated.
 $subhead w$$
 The argument $icode w%$$ has prototype
 $codei%
-	const CppAD::vector<%Base%>& %w%
+	const CppAD::vector<double>& %w%
 %$$
 and its size is $icode%f%.Range()%$$.
 It is the weighting for the components of the Jacobian that is
@@ -118,14 +126,8 @@ $codei%
 %$$
 It does not matter which and it is not used.
 
-$subhead jac$$
-This argument has prototype
-$icode%
-	CppAD::vector<%Base%>& %jac%
-%$$
-Its input size must be $icode%jac_info%.row.size()%$$
-and the value of its elements does not matter.
-Upon return $icode%jac%[%k%]%$$ is the Jacobian at row index
+$subhead jac_info.val$$
+Upon return $icode%jac_info%.val[%k%]%$$ is the Jacobian at row index
 $icode%jac_info%.row[%k%]%$$ and column index
 $icode%jac_info%.col[%k%]%$$.
 
@@ -137,6 +139,7 @@ namespace CppAD { namespace mixed {
 		enum Direction { Forward , Reverse } direction;
 		CppAD::vector<size_t>                row;
 		CppAD::vector<size_t>                col;
+		CppAD::vector<double>                val;
 		CppAD::sparse_jacobian_work          work;
 	};
 } }

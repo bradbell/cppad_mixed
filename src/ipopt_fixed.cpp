@@ -359,14 +359,6 @@ and assumed to not change.
 The size of the $code val$$ vectors is set by the constructor,
 but element values may change.
 
-$subhead fix_like_jac_info_$$
-Sparse matrix information for the Jacobian of the
-fixed likelihood.
-
-$subhead fix_con_jac_info_$$
-Sparse matrix information for the Jacobian of the
-fixed constraints.
-
 $subhead fix_like_hes_info_$$
 Sparse matrix information for the Hessian of the
 fixed likelihood.
@@ -461,19 +453,21 @@ mixed_object_      ( mixed_object    )
 	else
 		fix_likelihood_vec_tmp_.resize( fix_likelihood_nabs_ + 1 );
 	// -----------------------------------------------------------------------
-	// set fix_like_jac_info_
+	// set mixed_object.fix_like_jac_
+	sparse_jac_info& fix_like_jac( mixed_object_.fix_like_jac_ );
 	mixed_object.fix_like_jac(
 		fixed_in,
-		fix_like_jac_info_.row,
-		fix_like_jac_info_.col,
-		fix_like_jac_info_.val
+		fix_like_jac.row,
+		fix_like_jac.col,
+		fix_like_jac.val
 	);
-	// set fix_con_jac_info_
+	// set mixed_object.fix_con_jac_
+	sparse_jac_info& fix_con_jac( mixed_object_.fix_con_jac_ );
 	mixed_object.fix_con_jac(
 		fixed_in,
-		fix_con_jac_info_.row,
-		fix_con_jac_info_.col,
-		fix_con_jac_info_.val
+		fix_con_jac.row,
+		fix_con_jac.col,
+		fix_con_jac.val
 	);
 	if( n_ran_con_ > 0 )
 	{	assert( n_random_ > 0 );
@@ -487,8 +481,8 @@ mixed_object_      ( mixed_object    )
 	// set nnz_jac_g_
 	// -----------------------------------------------------------------------
 	nnz_jac_g_ = 0;
-	for(size_t k = 0; k < fix_like_jac_info_.row.size(); k++)
-	{	if( fix_like_jac_info_.row[k] != 0 )
+	for(size_t k = 0; k < fix_like_jac.row.size(); k++)
+	{	if( fix_like_jac.row[k] != 0 )
 		{	 // this is an absolute value term
 			nnz_jac_g_ += 2;
 		}
@@ -496,7 +490,7 @@ mixed_object_      ( mixed_object    )
 	// derivative w.r.t auxillary variables
 	nnz_jac_g_ += 2 * fix_likelihood_nabs_;
 	// derivative of the fixed constraints
-	nnz_jac_g_ += fix_con_jac_info_.row.size();
+	nnz_jac_g_ += fix_con_jac.row.size();
 	// derivative of the random constraints
 	nnz_jac_g_ += ran_con_jac_info_.row.size();
 	// -----------------------------------------------------------------------
@@ -1037,11 +1031,12 @@ void ipopt_fixed::try_eval_grad_f(
 	//
 	// Jacobian of fixed part of likelihood
 	// (2DO: do not revaluate when eval_jac_g has same x)
+	sparse_jac_info& fix_like_jac( mixed_object_.fix_like_jac_ );
 	mixed_object_.fix_like_jac(
 		fixed_tmp_,
-		fix_like_jac_info_.row,
-		fix_like_jac_info_.col,
-		fix_like_jac_info_.val
+		fix_like_jac.row,
+		fix_like_jac.col,
+		fix_like_jac.val
 	);
 
 	//
@@ -1056,11 +1051,11 @@ void ipopt_fixed::try_eval_grad_f(
 		grad_f[n_fixed_ + j] = Number( 1.0 );
 	}
 	// fixed likelihood part of grad_f
-	for(size_t k = 0; k < fix_like_jac_info_.row.size(); k++)
-	{	if( fix_like_jac_info_.row[k] == 0 )
-		{	size_t j = fix_like_jac_info_.col[k];
+	for(size_t k = 0; k < fix_like_jac.row.size(); k++)
+	{	if( fix_like_jac.row[k] == 0 )
+		{	size_t j = fix_like_jac.col[k];
 			assert( j < size_t(n) );
-			grad_f[j] += Number( fix_like_jac_info_.val[k] );
+			grad_f[j] += Number( fix_like_jac.val[k] );
 		}
 	}
 	//
@@ -1285,17 +1280,19 @@ void ipopt_fixed::try_eval_jac_g(
 	assert( size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
 	assert( size_t(nele_jac) == nnz_jac_g_ );
 	//
+	sparse_jac_info& fix_like_jac( mixed_object_.fix_like_jac_ );
+	sparse_jac_info& fix_con_jac( mixed_object_.fix_con_jac_ );
 	if( values == NULL )
 	{	// just return row and column indices for l1 constraints
 		size_t ell = 0;
-		for(size_t k = 0; k < fix_like_jac_info_.row.size(); k++)
-		{	if( fix_like_jac_info_.row[k] != 0 )
+		for(size_t k = 0; k < fix_like_jac.row.size(); k++)
+		{	if( fix_like_jac.row[k] != 0 )
 			{	assert( ell + 1 < nnz_jac_g_ );
-				iRow[ell] = Index( 2 * fix_like_jac_info_.row[k] - 2 );
-				jCol[ell] = Index( fix_like_jac_info_.col[k] );
+				iRow[ell] = Index( 2 * fix_like_jac.row[k] - 2 );
+				jCol[ell] = Index( fix_like_jac.col[k] );
 				ell++;
-				iRow[ell] = Index( 2 * fix_like_jac_info_.row[k] - 1 );
-				jCol[ell] = Index( fix_like_jac_info_.col[k] );
+				iRow[ell] = Index( 2 * fix_like_jac.row[k] - 1 );
+				jCol[ell] = Index( fix_like_jac.col[k] );
 				ell++;
 			}
 		}
@@ -1311,10 +1308,10 @@ void ipopt_fixed::try_eval_jac_g(
 		}
 		// fixed constraints
 		size_t offset = 2 * fix_likelihood_nabs_;
-		for(size_t k = 0; k < fix_con_jac_info_.row.size(); k++)
+		for(size_t k = 0; k < fix_con_jac.row.size(); k++)
 		{	assert( ell < nnz_jac_g_ );
-			iRow[ell] = Index( offset + fix_con_jac_info_.row[k] );
-			jCol[ell] = Index( fix_con_jac_info_.col[k] );
+			iRow[ell] = Index( offset + fix_con_jac.row[k] );
+			jCol[ell] = Index( fix_con_jac.col[k] );
 			ell++;
 		}
 		// random constraints
@@ -1341,17 +1338,17 @@ void ipopt_fixed::try_eval_jac_g(
 	// (2DO: do not revaluate when eval_grad_f had same x)
 	mixed_object_.fix_like_jac(
 		fixed_tmp_,
-		fix_like_jac_info_.row,
-		fix_like_jac_info_.col,
-		fix_like_jac_info_.val
+		fix_like_jac.row,
+		fix_like_jac.col,
+		fix_like_jac.val
 	);
 	size_t ell = 0;
-	for(size_t k = 0; k < fix_like_jac_info_.row.size(); k++)
-	{	if( fix_like_jac_info_.row[k] != 0 )
+	for(size_t k = 0; k < fix_like_jac.row.size(); k++)
+	{	if( fix_like_jac.row[k] != 0 )
 		{	assert( ell + 1 < nnz_jac_g_ );
-			values[ell] = Number( - fix_like_jac_info_.val[k] );
+			values[ell] = Number( - fix_like_jac.val[k] );
 			ell++;
-			values[ell] = Number( + fix_like_jac_info_.val[k] );
+			values[ell] = Number( + fix_like_jac.val[k] );
 			ell++;
 		}
 	}
@@ -1364,13 +1361,13 @@ void ipopt_fixed::try_eval_jac_g(
 	// Jacobian of fixed constraints
 	mixed_object_.fix_con_jac(
 		fixed_tmp_,
-		fix_con_jac_info_.row,
-		fix_con_jac_info_.col,
-		fix_con_jac_info_.val
+		fix_con_jac.row,
+		fix_con_jac.col,
+		fix_con_jac.val
 	);
-	for(size_t k = 0; k < fix_con_jac_info_.row.size(); k++)
+	for(size_t k = 0; k < fix_con_jac.row.size(); k++)
 	{	assert( ell < nnz_jac_g_ );
-		values[ell++] = Number( fix_con_jac_info_.val[k] );
+		values[ell++] = Number( fix_con_jac.val[k] );
 	}
 	//
 	// Jacobian of random constraints

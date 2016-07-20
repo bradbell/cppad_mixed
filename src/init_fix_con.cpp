@@ -78,9 +78,8 @@ The input value of
 $codei%
 	CppAD::mixed::sparse_jac_info fix_con_jac_
 %$$
-does not matter.
-If $icode quasi_fixed$$ is false,
-upon return $code fix_con_jac_$$ contains
+must be empty.
+Upon return, $code fix_con_jac_$$ contains
 $cref sparse_jac_info$$ for the
 Jacobian of the $cref/constraints/fix_constraint/$$.
 
@@ -118,6 +117,7 @@ void fix_con_jac_use_set(
 {	jac_info.work.clear();
 	assert( jac_info.row.size() == 0 );
 	assert( jac_info.col.size() == 0 );
+	assert( jac_info.val.size() == 0 );
 	// -----------------------------------------------------------------------
 	typedef CppAD::vector< std::set<size_t> > set_sparsity;
 	size_t  m = fun.Range();
@@ -139,17 +139,17 @@ void fix_con_jac_use_set(
 			jac_info.col.push_back(j);
 		}
 	}
+	jac_info.val.resize( jac_info.row.size() );
 	jac_info.direction = CppAD::mixed::sparse_jac_info::Reverse;
 	// -----------------------------------------------------------------------
 	// compute the work vector for reuse during future calls to
 	// SparseJacobianReverse
-	CppAD::vector<double> not_used( jac_info.row.size() );
 	fun.SparseJacobianReverse(
 		fixed_vec,
 		pattern,
 		jac_info.row,
 		jac_info.col,
-		not_used,
+		jac_info.val,
 		jac_info.work
 	);
 	return;
@@ -164,6 +164,7 @@ void fix_con_jac_use_bool(
 {	jac_info.work.clear();
 	assert( jac_info.row.size() == 0 );
 	assert( jac_info.col.size() == 0 );
+	assert( jac_info.val.size() == 0 );
 	// -----------------------------------------------------------------------
 	typedef CppAD::vectorBool bool_sparsity;
 	size_t  m = fun.Range();
@@ -188,17 +189,17 @@ void fix_con_jac_use_bool(
 			}
 		}
 	}
+	jac_info.val.resize( jac_info.row.size() );
 	jac_info.direction = CppAD::mixed::sparse_jac_info::Reverse;
 	// -----------------------------------------------------------------------
 	// compute the work vector for reuse during future calls to
 	// SparseJacobianReverse
-	CppAD::vector<double> not_used( jac_info.row.size() );
 	fun.SparseJacobianReverse(
 		fixed_vec,
 		pattern,
 		jac_info.row,
 		jac_info.col,
-		not_used,
+		jac_info.val,
 		jac_info.work
 	);
 	return;
@@ -354,7 +355,6 @@ void cppad_mixed::init_fix_con(
 # ifdef NDEBUG
 	fix_con_fun_.optimize();
 # endif
-
 	// ------------------------------------------------------------------------
 	// fix_con_jac_
 	// ------------------------------------------------------------------------

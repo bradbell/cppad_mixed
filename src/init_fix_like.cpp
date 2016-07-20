@@ -69,19 +69,18 @@ corresponding to the function
 $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 
 $head fix_like_jac_$$
-If the return value for
-$cref fix_likelihood$$ is empty,
-$code fix_like_jac_$$ is not modified.
-Otherwise, the input value of
+The input value of
 $codei%
 	CppAD::mixed::sparse_jac_info fix_like_jac_
 %$$
-does not matter.
-If $icode quasi_fixed$$ is false,
-upon return $code fix_like_jac_$$ contains
+must be empty.
+If the return value for
+$cref fix_likelihood$$ is empty,
+$code fix_like_jac_$$ is not modified.
+Upon return, $code fix_like_jac_$$ contains
 $cref sparse_jac_info$$ for the
 Jacobian corresponding to
-$latex g_\theta) ( \theta )$$ see
+$latex g_\theta ( \theta )$$ see
 $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 
 $subhead fix_like_fun_$$
@@ -147,7 +146,7 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 # endif
 
 	// ------------------------------------------------------------------------
-	// fix_like_jac_.row, fix_like_jac_.col, fix_like_jac_.work
+	// fix_like_jac_
 	// ------------------------------------------------------------------------
 	// compute the sparsity pattern for the Jacobian
 	typedef CppAD::vector< std::set<size_t> > sparsity_pattern;
@@ -157,8 +156,9 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	sparsity_pattern pattern = fix_like_fun_.ForSparseJac(n_fixed_, r);
 
 	// convert sparsity to row and column index form
-	fix_like_jac_.row.clear();
-	fix_like_jac_.col.clear();
+	assert( fix_like_jac_.row.size() == 0 );
+	assert( fix_like_jac_.col.size() == 0 );
+	assert( fix_like_jac_.val.size() == 0 );
 	std::set<size_t>::iterator itr;
 	for(size_t i = 0; i < fix_like_fun_.Range(); i++)
 	{	for(itr = pattern[i].begin(); itr != pattern[i].end(); itr++)
@@ -167,18 +167,18 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 			fix_like_jac_.col.push_back(j);
 		}
 	}
+	fix_like_jac_.val.resize( fix_like_jac_.row.size() );
 
 	// direction for this sparse Jacobian
 	fix_like_jac_.direction = CppAD::mixed::sparse_jac_info::Forward;
 
 	// compute the work vector for reuse during Jacobian sparsity calculations
-	d_vector jac( fix_like_jac_.row.size() );
 	fix_like_fun_.SparseJacobianForward(
 		fixed_vec       ,
 		pattern         ,
 		fix_like_jac_.row  ,
 		fix_like_jac_.col  ,
-		jac             ,
+		fix_like_jac_.val  ,
 		fix_like_jac_.work
 	);
 	// ------------------------------------------------------------------------
