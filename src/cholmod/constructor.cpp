@@ -91,6 +91,16 @@ work_one_  (CPPAD_NULL)      ,
 work_two_  (CPPAD_NULL)
 {	assert( CPPAD_NULL == NULL );
 	cholmod_start(&common_);
+
+	// Both simplical and supernodal have been tested.
+	// common_.supernodal = CHOLMOD_SIMPLICIAL;
+	// common_.supernodal = CHOLMOD_AUTO;
+	// common_.supernodal = CHOLMOD_SUPERNODAL;
+	common_.supernodal = CHOLMOD_SIMPLICIAL;
+
+	// is factorization LLT or LDLT
+	common_.final_ll = CHOLMOD_FALSE;
+
 }
 
 /*
@@ -130,10 +140,10 @@ ldlt_cholmod::~ldlt_cholmod(void)
 	cholmod_finish(&common_);
 
 	// always do simplicial factorization
-	common_.supernodal = CHOLMOD_SIMPLICIAL;
+	assert( common_.supernodal == CHOLMOD_SIMPLICIAL );
 
 	// do LDL' factorization and leave in LDL' form
-	common_.final_ll = CHOLMOD_FALSE;
+	assert( common_.final_ll == CHOLMOD_FALSE );
 
 	// check nothing left allocated
 	assert( common_.malloc_count == 0 );
