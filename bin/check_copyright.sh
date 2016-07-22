@@ -15,7 +15,7 @@ then
 	exit 1
 fi
 # -----------------------------------------------------------------------------
-list=`bin/ls_files.sh | sed -e '/^\.gitignore/d'`
+list=`bin/ls_files.sh | sed -e '/^\.gitignore/d' -e '/\/sparseinv\.[ch]pp$/d'`
 for file in $list
 do
 	text='Copyright (C) 2014-.. University of Washington'
@@ -28,6 +28,7 @@ do
 done
 #
 list=`git status | sed -n \
+		-e '/\/sparseinv\.[ch]pp$/d' \
         -e '/^[#\t ]*deleted:/p' \
         -e '/^[#\t ]*modified:/p' \
         -e '/^[#\t ]*both modified:/p' \

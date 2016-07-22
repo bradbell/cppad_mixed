@@ -72,6 +72,7 @@ $childtable%src/cholmod/constructor.cpp
 	%src/cholmod/logdet.cpp
 	%src/cholmod/solve_H.cpp
 	%src/cholmod/sim_cov.cpp
+	%src/cholmod/inv.cpp
 	%example/private/ldlt_cholmod_xam.cpp
 	%example/private/cholmod_solve_xam.cpp
 	%example/private/cholmod_solve2_a.cpp
@@ -123,6 +124,12 @@ public:
 	bool update(const sparse_mat_info& hes_info);
 	// log determinant
 	double logdet(size_t& negative) const;
+	// compute a subset of the inverse
+	void inv(
+		const CppAD::vector<size_t>& row      ,
+		const CppAD::vector<size_t>& col      ,
+		CppAD::vector<double>&       val
+	);
 	// solve linear equations
 	void solve_H(
 		const CppAD::vector<size_t>& row      ,
