@@ -48,7 +48,7 @@ derived from the $code cppad_mixed$$ base class.
 $head ldlt_ran_hes_$$
 It is assumed that the member variable
 $codei%
-	CPPAD_MIXED_LDLT ldlt_ran_hes_
+	CPPAD_MIXED_LDLT_CLASS ldlt_ran_hes_
 %$$
 was updated using $cref update_factor$$ for the specified values of the
 fixed and random effects.

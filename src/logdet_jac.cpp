@@ -107,6 +107,52 @@ It returns true, if the test passes, and false otherwise.
 
 $end
 */
+# if CPPAD_MIXED_LDLT_CHOLMOD
+// ----------------------------------------------------------------------------
+void cppad_mixed::logdet_jac(
+	const d_vector& fixed_vec  ,
+	const d_vector& random_vec ,
+	d_vector&       logdet_fix ,
+	d_vector&       logdet_ran )
+{	assert( init_ran_hes_done_ );
+	//
+	assert( fixed_vec.size() == n_fixed_ );
+	assert( random_vec.size() == n_random_ );
+	assert( logdet_fix.size() == n_fixed_ );
+	assert( logdet_ran.size() == n_random_ );
+	//
+	// compute the inverse where Hessian is possibly non-zero
+	CppAD::mixed::sparse_mat_info weight_info;
+	size_t K = ran_hes_.row.size();
+	weight_info.row.resize(K);
+	weight_info.col.resize(K);
+	weight_info.val.resize(K);
+	for(size_t k = 0; k < K; k++)
+	{	size_t r = ran_hes_.row[k];
+		size_t c = ran_hes_.col[k];
+		assert( n_fixed_ <= r && r < n_fixed_ + n_random_ );
+		assert( n_fixed_ <= c && c < n_fixed_ + n_random_ );
+		weight_info.row[k] = r - n_fixed_;
+		weight_info.col[k] = c - n_fixed_;
+	}
+	ldlt_ran_hes_.inv(
+			weight_info.row,
+			weight_info.col,
+			weight_info.val
+	);
+	for(size_t k = 0; k < K; k++)
+	{	if( weight_info.row[k] != weight_info.col[k] )
+			weight_info.val[k] *= 2.0;
+	}
+	d_vector dw(n_fixed_ + n_random_);
+	dw = ran_hes_fun_.Reverse(1, weight_info.val);
+	//
+	// split out fixed and random parts of the derivative
+	unpack(logdet_fix, logdet_ran, dw);
+	//
+	return;
+}
+# else
 // ----------------------------------------------------------------------------
 void cppad_mixed::logdet_jac(
 	const d_vector& fixed_vec  ,
@@ -217,4 +263,4 @@ void cppad_mixed::logdet_jac(
 	//
 	return;
 }
-
+# endif

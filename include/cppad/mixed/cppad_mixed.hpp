@@ -454,7 +454,7 @@ $cref/random likelihood
 /$$
 ; i.e.  $latex f_{u,u} ( \theta , u )$$.
 $srccode%cpp% */
-	CPPAD_MIXED_LDLT ldlt_ran_hes_;
+	CPPAD_MIXED_LDLT_CLASS ldlt_ran_hes_;
 /* %$$
 
 $head hes_cross_$$

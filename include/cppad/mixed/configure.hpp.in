@@ -41,7 +41,12 @@ If the C++11 $code nullptr$$ token is available,
 use it for the null pointer.
 Otherwise, use the value $code 0$$.
 
-$head CPPAD_MIXED_LDLT$$
+$head CPPAD_MIXED_LDLT_CHOLMOD$$
+If $cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$ is $code YES$$,
+this symbol is defined as $code 1$$.
+Otherwise it is defined as $code 0$$.
+
+$head CPPAD_MIXED_LDLT_CLASS$$
 If $cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$ is $code YES$$,
 this symbol is defined as
 $codep
@@ -64,9 +69,11 @@ $end
 # endif
 
 # if @ldlt_cholmod_01@
-# define CPPAD_MIXED_LDLT CppAD::mixed::ldlt_cholmod
+# define CPPAD_MIXED_LDLT_CHOLMOD 1
+# define CPPAD_MIXED_LDLT_CLASS   CppAD::mixed::ldlt_cholmod
 # else
-# define CPPAD_MIXED_LDLT CppAD::mixed::ldlt_eigen
+# define CPPAD_MIXED_LDLT_CHOLMOD 0
+# define CPPAD_MIXED_LDLT_CLASS    CppAD::mixed::ldlt_eigen
 # endif
 
 

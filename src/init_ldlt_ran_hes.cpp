@@ -47,7 +47,7 @@ $latex ( \theta , u )$$.
 $head ldlt_ran_hes_$$
 The member variable
 $codei%
-	CPPAD_MIXED_LDLT ldlt_ran_hes_
+	CPPAD_MIXED_LDLT_CLASS ldlt_ran_hes_
 %$$
 must not been previously initialized
 $codei%

@@ -73,7 +73,7 @@ of the fixed and random effects.
 $head ldlt_ran_hes_$$
 On input, the member variable
 $codei%
-	CPPAD_MIXED_LDLT ldlt_ran_hes_
+	CPPAD_MIXED_LDLT_CLASS ldlt_ran_hes_
 %$$
 has been
 $cref/initialized/ldlt_eigen_init/$$

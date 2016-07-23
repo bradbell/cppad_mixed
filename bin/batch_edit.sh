@@ -21,13 +21,7 @@ no_change_files='
 rename_cmd='s|private/box_newton_xam.cpp|user/box_newton_xam.cpp|'
 #
 cat << EOF > junk.sed
-s|cmake_verbose_makefile|verbose_makefile|g
-s|cmake_build_type|build_type|g
-s|'DEBUG'|'debug'|g
-s|'Debug'|'debug'|g
-s|'RELEASE'|'release'|g
-s|'Release'|'release'|g
-s|DEBUG or RELEASE|debug or release|g
+s|CPPAD_MIXED_LDLT\\([^_]\\)|CPPAD_MIXED_LDLT_CLASS\\1|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

@@ -463,7 +463,7 @@ void cppad_mixed::try_sample_fixed(
 	}
 	//
 	// LDLT factorization of info_mat
-	CPPAD_MIXED_LDLT ldlt_info_mat(nI);
+	CPPAD_MIXED_LDLT_CLASS ldlt_info_mat(nI);
 	ldlt_info_mat.init( info_mat_info );
 	bool ok = ldlt_info_mat.update( info_mat_info );
 	if( ! ok )
