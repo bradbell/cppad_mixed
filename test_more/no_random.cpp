@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$section Test ipopt_fixed::check_derivative$$.
+$section Test With No Random Effects$$.
 
 $head Model$$
 $latex \[
@@ -80,14 +80,10 @@ namespace {
 			}
 			return vec;
 		}
-	public:
-		// ------------------------------------------------------------------
-		// User defined virtual functions
-		// ------------------------------------------------------------------
 	};
 }
 
-bool check_grad(void)
+bool no_random(void)
 {
 	bool   ok = true;
 	double inf = std::numeric_limits<double>::infinity();

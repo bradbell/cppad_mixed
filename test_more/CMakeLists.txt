@@ -20,7 +20,6 @@ LINK_DIRECTORIES(
 ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
 	abs_fix_con.cpp
 	binomial.cpp
-	check_derivative.cpp
 	delta_ran_obj.cpp
 	der_var_hes.cpp
 	fixed_lag.cpp
@@ -28,6 +27,7 @@ ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
 	max_iter_neg.cpp
 	n_mixture.cpp
 	no_fix_likelihood.cpp
+	no_random.cpp
 	no_random_info.cpp
 	ran_likelihood_hes.cpp
 	ran_likelihood_jac.cpp

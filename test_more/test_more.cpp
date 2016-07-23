@@ -15,13 +15,14 @@ see http://www.gnu.org/licenses/agpl.txt
 // cppad_mixed subdirectory
 extern bool abs_fix_con(void);
 extern bool binomial(void);
-extern bool check_grad(void);
 extern bool delta_ran_obj(void);
 extern bool der_var_hes(void);
 extern bool fixed_lag(void);
+extern bool ldlt_cholmod(void);
 extern bool max_iter_neg(void);
 extern bool n_mixture(void);
 extern bool no_fix_likelihood(void);
+extern bool no_random(void);
 extern bool no_random_info(void);
 extern bool ran_likelihood_hes(void);
 extern bool ran_likelihood_jac(void);
@@ -68,13 +69,14 @@ int main(void)
 	// This comment expected by bin/test_one.sh
 	RUN(abs_fix_con);
 	RUN(binomial);
-	RUN(check_grad);
 	RUN(delta_ran_obj);
 	RUN(der_var_hes);
 	RUN(fixed_lag);
+	RUN(ldlt_cholmod);
 	RUN(max_iter_neg);
 	RUN(n_mixture);
 	RUN(no_fix_likelihood);
+	RUN(no_random);
 	RUN(no_random_info);
 	RUN(ran_likelihood_hes);
 	RUN(ran_likelihood_jac);
