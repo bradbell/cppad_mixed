@@ -23,7 +23,7 @@ $$
 $head Under Construction$$
 
 $head Syntax$$
-$icode%ldlt_obj%.inv(%row%, %col%, %val%)%$$
+$icode%ldlt_obj%.inv(%row_in%, %col_in%, %val_out%)%$$
 
 $head Prototype$$
 $srcfile%src/cholmod/inv.cpp
@@ -46,22 +46,22 @@ $codei%
 In addition, it must have a previous call to
 $cref ldlt_cholmod_update$$.
 
-$head row$$
+$head row_in$$
 This vector contains the row indices for the components of the
 inverse that we are computing.
 
-$head col$$
+$head col_in$$
 This vector contains the column indices for the components of the
-inverse that we are computing. It must have the same size as $icode row$$.
+inverse that we are computing. It must have the same size as $icode row_in$$.
 
-$head val$$
-This matrix must have the same size as $icode row$$.
+$head val_out$$
+This matrix must have the same size as $icode row_in$$.
 The input values of its elements do not matter.
 Upon return, it
 contains the values for the components of the inverse that we are computing.
 To be specific, for $icode%k% = 0 , %...%, %K%-1%$$,
-$icode%val%[%k%]%$$
-is $icode%row%[%k%]%$$, $icode%col%[%k%]%$$ component of the inverse.
+$icode%val_out%[%k%]%$$
+is $icode%row_in%[%k%]%$$, $icode%col_in%[%k%]%$$ component of the inverse.
 
 $end
 ------------------------------------------------------------------------------
@@ -75,16 +75,16 @@ namespace CppAD { namespace mixed {
 
 // BEGIN_PROTOTYPE
 void ldlt_cholmod::inv(
-	const CppAD::vector<size_t>& row    ,
-	const CppAD::vector<size_t>& col    ,
-	CppAD::vector<double>&       val    )
+	const CppAD::vector<size_t>& row_in    ,
+	const CppAD::vector<size_t>& col_in    ,
+	CppAD::vector<double>&       val_out   )
 // END_PROTOTYPE
 {	using CppAD::vector;
 	//
 	// 2DO: move some of this work to the init routine.
 	//
-	assert( col.size() == row.size() );
-	assert( val.size() == row.size() );
+	assert( col_in.size() == row_in.size() );
+	assert( val_out.size() == row_in.size() );
 	//
 	assert( factor_->n        == nrow_ );
 	assert( factor_->minor    == nrow_ );
@@ -111,11 +111,11 @@ void ldlt_cholmod::inv(
 # endif
 	//
 	// determine column major order for matrix with rows and columns permuted
-	size_t K = row.size();
+	size_t K = row_in.size();
 	vector<size_t> key(K), ind(K);
 	for(size_t k = 0; k < K; k++)
-	{	size_t i = static_cast<size_t>( L_perm[ row[k] ] );
-		size_t j = static_cast<size_t>( L_perm[ col[k] ] );
+	{	size_t i = static_cast<size_t>( L_perm[ row_in[k] ] );
+		size_t j = static_cast<size_t>( L_perm[ col_in[k] ] );
 		key[k]   = i + j * nrow_;
 	}
 	CppAD::index_sort(key, ind);
@@ -148,18 +148,18 @@ void ldlt_cholmod::inv(
 		assert( d[j] != 0.0 );
 	}
 	//
-	// convert row, col to cholmod sparsity pattern
+	// convert row_in, col_in to cholmod sparsity pattern
 	vector<ptrdiff_t> Zp(nrow_+1), Zi(K);
 	size_t k = 0;
 	Zp[0]    = k;
 	for(size_t j = 0; j < nrow_; j++)
 	{	bool more = k < K;
 		while( more )
-		{	size_t c = static_cast<size_t>( L_perm[ col[ ind[k] ] ] );
+		{	size_t c = static_cast<size_t>( L_perm[ col_in[ ind[k] ] ] );
 			assert( c >= j );
 			more = c == j;
 			if( more )
-			{	Zi[k] = static_cast<size_t>( L_perm[ row[ ind[k] ] ] );
+			{	Zi[k] = static_cast<size_t>( L_perm[ row_in[ ind[k] ] ] );
 				k++;
 				more = k < K ;
 			}
@@ -193,7 +193,7 @@ void ldlt_cholmod::inv(
 	//
 	// return the values
 	for(size_t k = 0; k < K; k++)
-		val[ ind[k] ] = Zx[k];
+		val_out[ ind[k] ] = Zx[k];
 	//
 	return;
 }
