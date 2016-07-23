@@ -80,6 +80,7 @@ void ldlt_cholmod::inv(
 	CppAD::vector<double>&       val_out   )
 // END_PROTOTYPE
 {	using CppAD::vector;
+	double nan = std::numeric_limits<double>::quiet_NaN();
 	//
 	// 2DO: move some of this work to the init routine.
 	//
@@ -146,6 +147,8 @@ void ldlt_cholmod::inv(
 	for(size_t j = 0; j < nrow_; j++)
 	{	d[j] = Lx[ Lp[j] ];
 		assert( d[j] != 0.0 );
+		// this value is not used
+		Lx[ Lp[j] ] = nan;
 	}
 	//
 	// convert row_in, col_in to cholmod sparsity pattern
