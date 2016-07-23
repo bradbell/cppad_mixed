@@ -15,7 +15,6 @@ ADD_LIBRARY(cppad_mixed
 	cholmod/logdet.cpp
 	cholmod/solve_H.cpp
 	cholmod/sim_cov.cpp
-	cholmod/sparseinv.cpp
 	cholmod/update.cpp
 	derived_ctor.cpp
 	eigen/ldlt_eigen.cpp

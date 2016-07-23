@@ -80,7 +80,7 @@ void ldlt_cholmod::inv(
 	CppAD::vector<double>&       val_out   )
 // END_PROTOTYPE
 {	using CppAD::vector;
-	double nan = std::numeric_limits<double>::quiet_NaN();
+	typedef int Integer;
 	//
 	// 2DO: move some of this work to the init routine.
 	//
@@ -111,39 +111,19 @@ void ldlt_cholmod::inv(
 	}
 # endif
 	//
-	// number of entries in use in factor
-	size_t nnz  = static_cast<size_t>( L_p[nrow_] );
-	//
 	// number of rows and columns in the factor
-	ptrdiff_t n  = static_cast<ptrdiff_t>(nrow_);
-	//
-	// convert L_p from int to ptrdiff_t
-	vector<ptrdiff_t> Lp(nrow_ + 1);
-	for(size_t j = 0; j <= nrow_; j++)
-		Lp[j] = static_cast<ptrdiff_t>( L_p[j] );
-	//
-	// convert L_i from int to ptrdiff_t
-	vector<ptrdiff_t> Li(nnz);
-	for(size_t k = 0; k < nnz; k++)
-		Li[k] = static_cast<ptrdiff_t>( L_i[k] );
-	//
-	// remove diagonal from L_x
-	vector<double> Lx(nnz);
-	for(size_t k = 0; k < nnz; k++)
-		Lx[k] = L_x[k];
+	Integer n  = static_cast<Integer>(nrow_);
 	//
 	// extract the diagonal of the factor
 	vector<double> d(nrow_);
 	for(size_t j = 0; j < nrow_; j++)
-	{	d[j] = Lx[ Lp[j] ];
+	{	d[j] = L_x[ L_p[j] ];
 		assert( d[j] != 0.0 );
-		// this value is not used
-		Lx[ Lp[j] ] = nan;
 	}
 	//
 	// number of requested indices and indices in L
 	size_t K_in    = row_in.size();
-	size_t K_L     = static_cast<size_t>( Lp[nrow_] );
+	size_t K_L     = static_cast<size_t>( L_p[nrow_] );
 	size_t K_total = K_in + 2 * K_L;
 	//
 	// permuted version of requested indices
@@ -155,8 +135,8 @@ void ldlt_cholmod::inv(
 	//
 	// indices that are in L and L'
 	for(size_t j = 0; j < nrow_; j++)
-	{	for(ptrdiff_t k = Lp[j]; k < Lp[j+1]; k++)
-		{	size_t i = static_cast<size_t>( Li[k] );
+	{	for(Integer k = L_p[j]; k < L_p[j+1]; k++)
+		{	size_t i = static_cast<size_t>( L_i[k] );
 			// L
 			row[K_in + 2 * k] = i;
 			col[K_in + 2 * k] = j;
@@ -173,7 +153,7 @@ void ldlt_cholmod::inv(
 	CppAD::index_sort(key, ind);
 	//
 	// put sparsity pattern in Zp, Zi
-	vector<ptrdiff_t> Zp(nrow_+1), Zi;
+	vector<Integer> Zp(nrow_+1), Zi;
 	vector<size_t> z_index(K_in);
 	size_t k = 0;
 	Zp[0]    = Zi.size();
@@ -209,18 +189,18 @@ void ldlt_cholmod::inv(
 	//
 	// work space
 	vector<double> z(nrow_);
-	vector<ptrdiff_t> Zdiagp(nrow_), Lmunch(nrow_);
+	vector<Integer> Zdiagp(nrow_), Lmunch(nrow_);
 	//
 	// compute the subset of the inverse of the permuted matrix
 	sparseinv(
 		n,
-		Lp.data(),
-		Li.data(),
-		Lx.data(),
+		L_p,
+		L_i,
+		L_x,
 		d.data(),
-		Lp.data(),
-		Li.data(),
-		Lx.data(),
+		L_p,
+		L_i,
+		L_x,
 		Zp.data(),
 		Zi.data(),
 		Zx.data(),
