@@ -1,5 +1,8 @@
-#ifndef _SPARSEINV_H_
-#define _SPARSEINV_H_
+# ifndef CPPAD_MIXED_SPARSEINV_HPP
+# define CPPAD_MIXED_SPARSEINV_HPP
+
+// Copyright 2011, Timothy A. Davis, http://www.suitesparse.com
+
 #include <stddef.h>
 #ifdef MATLAB_MEX_FILE
 #include "mex.h"
@@ -35,4 +38,4 @@ Int sparseinv       /* returns 1 if OK, 0 if failure */
     Int *Lmunch     /* size n */
 ) ;
 
-#endif
+# endif

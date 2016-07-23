@@ -157,27 +157,47 @@ bool ldlt_cholmod_xam(void)
 	// check its value
 	ok &= std::fabs( logdet_H / std::log(36.0) - 1.0 ) <= eps;
 
-	// test solve
-	CppAD::vector<size_t> row(3);
+	// test solve_H
+	CppAD::vector<size_t> row_in(3);
 	CppAD::vector<double> val_in(3), val_out(3);
 	for(size_t j = 0; j < ncol; j++)
 	{	// solve for the j-th column of the inverse matrix
 		for(size_t k = 0; k < 3; k++)
-		{	row[k] = k;
-			if( row[k] == j )
+		{	row_in[k] = k;
+			if( row_in[k] == j )
 				val_in[k] = 1.0;
 			else
 				val_in[k] = 0.0;
 		}
-		ldlt_obj.solve_H(row, val_in, val_out);
+		ldlt_obj.solve_H(row_in, val_in, val_out);
 		//
-		for(size_t k = 0; k < row.size(); k++)
-		{	size_t i       = row[k];
+		for(size_t k = 0; k < row_in.size(); k++)
+		{	size_t i       = row_in[k];
 			double check_i = H_inv[ i * nrow + j ];
 			ok &= std::fabs( val_out[k] - check_i ) <= eps;
 		}
 	}
 
+	// test inv
+	size_t K = 9;
+	CppAD::vector<size_t> row(K), col(K);
+	CppAD::vector<double> val(K);
+	{	size_t k = 0;
+		// use row major ordering to test sorting
+		for(size_t i = 0; i < nrow; i++)
+		{	for(size_t j = 0; j < nrow; j++)
+			{	row[k] = i;
+				col[k] = j;
+				k++;
+			}
+		}
+	}
+	ldlt_obj.inv(row, col, val);
+	for(size_t k = 0; k < K; k++)
+	{	double check = H_inv[ row[k] * nrow + col[k] ];
+		ok          &= std::fabs( val[k] - check ) <= eps;
+	}
+	//
 	// test sim_cov
 	CppAD::vector<double> w(3), v(3), c(3);
 	for(size_t i = 0; i < 3; i++)

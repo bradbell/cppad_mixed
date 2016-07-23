@@ -146,7 +146,6 @@ void ldlt_cholmod::inv(
 	for(size_t j = 0; j < nrow_; j++)
 	{	d[j] = Lx[ Lp[j] ];
 		assert( d[j] != 0.0 );
-		Lx[ Lp[j] ] = 0.0;
 	}
 	//
 	// convert row, col to cholmod sparsity pattern
@@ -162,8 +161,8 @@ void ldlt_cholmod::inv(
 			if( more )
 			{	Zi[k] = static_cast<size_t>( L_perm[ row[ ind[k] ] ] );
 				k++;
+				more = k < K ;
 			}
-			more = k < K;
 		}
 		Zp[j+1] = k;
 	}
@@ -192,14 +191,9 @@ void ldlt_cholmod::inv(
 		Lmunch.data()
 	);
 	//
-	// compute the inverse permutation
-	vector<size_t> inv_perm(nrow_);
-	for(size_t k = 0; k < nrow_; k++)
-		inv_perm[ L_perm[k] ] = k;
-	//
 	// return the values
 	for(size_t k = 0; k < K; k++)
-		val[ ind[k] ] = Zx[ inv_perm[k] ];
+		val[ ind[k] ] = Zx[k];
 	//
 	return;
 }
