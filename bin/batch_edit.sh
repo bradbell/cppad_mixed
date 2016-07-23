@@ -21,7 +21,7 @@ no_change_files='
 rename_cmd='s|private/box_newton_xam.cpp|user/box_newton_xam.cpp|'
 #
 cat << EOF > junk.sed
-s|CPPAD_MIXED_LDLT\\([^_]\\)|CPPAD_MIXED_LDLT_CLASS\\1|
+s|info2cholmod_order_|H_&|g
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

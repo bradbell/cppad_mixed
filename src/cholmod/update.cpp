@@ -115,7 +115,7 @@ bool ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& H_info )
 	int*    H_i = (int *)    sym_matrix_->i;
 # endif
 	for(size_t k = 0; k < H_info.row.size(); k++)
-	{	size_t ell = info2cholmod_order_[k];
+	{	size_t ell = H_info2cholmod_order_[k];
 		H_x[ell]   = H_info.val[k];
 # ifndef NDEBUG
 		assert( size_t( H_i[ell] ) == H_info.row[k] );

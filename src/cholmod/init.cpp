@@ -196,13 +196,13 @@ void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& H_info )
 	// done with triplet
 	cholmod_free_triplet(&triplet, &common_ );
 
-	// set info2cholmod_order_
+	// set H_info2cholmod_order_
 	int*    H_p = (int *)    sym_matrix_->p;
 	int*    H_i = (int *)    sym_matrix_->i;
 	assert( size_t( H_p[nrow_] ) == H_info.row.size() );
 	nzmax = H_info.row.size();
 	CppAD::vector<size_t> key(nzmax);
-	info2cholmod_order_.resize(nzmax);
+	H_info2cholmod_order_.resize(nzmax);
 	size_t k = 0;
 	ncol     = nrow_;
 	for(size_t j = 0; j < ncol; j++)
@@ -218,10 +218,10 @@ void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& H_info )
 		}
 	}
 	assert( k == nzmax );
-	CppAD::index_sort(key, info2cholmod_order_);
+	CppAD::index_sort(key, H_info2cholmod_order_);
 # ifndef NDEBUG
 	for(size_t k = 0; k < nzmax; k++)
-		assert( size_t(H_i[ info2cholmod_order_[k] ]) == H_info.row[k] );
+		assert( size_t(H_i[ H_info2cholmod_order_[k] ]) == H_info.row[k] );
 # endif
 }
 
