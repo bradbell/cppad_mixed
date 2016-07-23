@@ -111,16 +111,6 @@ void ldlt_cholmod::inv(
 	}
 # endif
 	//
-	// determine column major order for matrix with rows and columns permuted
-	size_t K = row_in.size();
-	vector<size_t> key(K), ind(K);
-	for(size_t k = 0; k < K; k++)
-	{	size_t i = static_cast<size_t>( L_perm[ row_in[k] ] );
-		size_t j = static_cast<size_t>( L_perm[ col_in[k] ] );
-		key[k]   = i + j * nrow_;
-	}
-	CppAD::index_sort(key, ind);
-	//
 	// number of entries in use in factor
 	size_t nnz  = static_cast<size_t>( L_p[nrow_] );
 	//
@@ -151,26 +141,71 @@ void ldlt_cholmod::inv(
 		Lx[ Lp[j] ] = nan;
 	}
 	//
-	// convert row_in, col_in to cholmod sparsity pattern
-	vector<ptrdiff_t> Zp(nrow_+1), Zi(K);
-	size_t k = 0;
-	Zp[0]    = k;
+	// number of requested indices and indices in L
+	size_t K_in    = row_in.size();
+	size_t K_L     = static_cast<size_t>( Lp[nrow_] );
+	size_t K_total = K_in + 2 * K_L;
+	//
+	// permuted version of requested indices
+	vector<size_t> row(K_total), col(K_total);
+	for(size_t k = 0; k < K_in; k++)
+	{	row[k] = static_cast<size_t>( L_perm[ row_in[k] ] );
+		col[k] = static_cast<size_t>( L_perm[ col_in[k] ] );
+	}
+	//
+	// indices that are in L and L'
 	for(size_t j = 0; j < nrow_; j++)
-	{	bool more = k < K;
+	{	for(ptrdiff_t k = Lp[j]; k < Lp[j+1]; k++)
+		{	size_t i = static_cast<size_t>( Li[k] );
+			// L
+			row[K_in + 2 * k] = i;
+			col[K_in + 2 * k] = j;
+			// L'
+			row[K_in + 2 * k + 1] = j;
+			col[K_in + 2 * k + 1] = i;
+		}
+	}
+	//
+	// column major order
+	vector<size_t> key(K_total), ind(K_total);
+	for(size_t k = 0; k < K_total; k++)
+		key[k] = row[k] + col[k] * nrow_;
+	CppAD::index_sort(key, ind);
+	//
+	// put sparsity pattern in Zp, Zi
+	vector<ptrdiff_t> Zp(nrow_+1), Zi;
+	vector<size_t> z_index(K_in);
+	size_t k = 0;
+	Zp[0]    = Zi.size();
+	for(size_t j = 0; j < nrow_; j++)
+	{	bool more = k < K_total;
 		while( more )
-		{	size_t c = static_cast<size_t>( L_perm[ col_in[ ind[k] ] ] );
+		{	size_t r = row[ ind[k] ];
+			size_t c = col[ ind[k] ];
 			assert( c >= j );
 			more = c == j;
 			if( more )
-			{	Zi[k] = static_cast<size_t>( L_perm[ row_in[ ind[k] ] ] );
+			{	Zi.push_back(r);
+				if( ind[k] < K_in )
+					z_index[ ind[k] ] = Zi.size() - 1;
 				k++;
-				more = k < K ;
+				bool duplicate = k < K_total;
+				while( duplicate )
+				{	duplicate = (row[ind[k]] == r) & (col[ind[k]] == c);
+					if( duplicate )
+					{	if( ind[k] < K_in )
+							z_index[ ind[k] ] = Zi.size() - 1;
+						k++;
+						duplicate = k < K_total;
+					}
+				}
+				more = k < K_total ;
 			}
 		}
-		Zp[j+1] = k;
+		Zp[j+1] = Zi.size();
 	}
 	// place where inverse is returned
-	vector<double> Zx(K);
+	vector<double> Zx( Zi.size() );
 	//
 	// work space
 	vector<double> z(nrow_);
@@ -195,8 +230,8 @@ void ldlt_cholmod::inv(
 	);
 	//
 	// return the values
-	for(size_t k = 0; k < K; k++)
-		val_out[ ind[k] ] = Zx[k];
+	for(size_t k = 0; k < K_in; k++)
+		val_out[k] = Zx[ z_index[k] ];
 	//
 	return;
 }

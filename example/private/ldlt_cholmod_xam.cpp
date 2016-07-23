@@ -180,13 +180,14 @@ bool ldlt_cholmod_xam(void)
 	}
 
 	// test inv
-	{	size_t K = 9;
+	{	size_t K = 6;
 		CppAD::vector<size_t> row_in(K), col_in(K);
 		CppAD::vector<double> val_out(K);
 		{	size_t k = 0;
 			// use row major ordering to test sorting
 			for(size_t i = 0; i < nrow; i++)
-			{	for(size_t j = 0; j < nrow; j++)
+			{	// only request lower triangle
+				for(size_t j = 0; j <= i; j++)
 				{	row_in[k] = i;
 					col_in[k] = j;
 					k++;

@@ -171,28 +171,52 @@ bool ldlt_cholmod(void)
 	ok &= std::fabs( logdet_H / (2.0 * std::log(36.0)) - 1.0 ) <= eps;
 
 	// test solve
-	CppAD::vector<size_t> row(3);
-	CppAD::vector<double> val_in(3), val_out(3);
-	for(size_t j = 0; j < ncol; j++)
-	{	// solve for the j-th column of the inverse matrix
-		for(size_t k = 0; k < 3; k++)
-		{	if( j < 3 )
-				row[k] = k;
-			else
-				row[k] = k + 3;
-			if( row[k] == j )
-				val_in[k] = 1.0;
-			else
-				val_in[k] = 0.0;
-		}
-		ldlt_obj.solve_H(row, val_in, val_out);
-		//
-		for(size_t k = 0; k < row.size(); k++)
-		{	size_t i       = row[k];
-			double check_i = H_inv[ i * nrow + j ];
-			ok &= std::fabs( val_out[k] / check_i - 1.0 ) <= eps;
+	{
+		CppAD::vector<size_t> row(3);
+		CppAD::vector<double> val_in(3), val_out(3);
+		for(size_t j = 0; j < ncol; j++)
+		{	// solve for the j-th column of the inverse matrix
+			for(size_t k = 0; k < 3; k++)
+			{	if( j < 3 )
+					row[k] = k;
+				else
+					row[k] = k + 3;
+				if( row[k] == j )
+					val_in[k] = 1.0;
+				else
+					val_in[k] = 0.0;
+			}
+			ldlt_obj.solve_H(row, val_in, val_out);
+			//
+			for(size_t k = 0; k < row.size(); k++)
+			{	size_t i       = row[k];
+				double check_i = H_inv[ i * nrow + j ];
+				ok &= std::fabs( val_out[k] / check_i - 1.0 ) <= eps;
+			}
 		}
 	}
+	// test inv on subblock
+	{
+		size_t K = 9;
+		CppAD::vector<size_t> row_in(K), col_in(K);
+		CppAD::vector<double> val_out(K);
+		{	size_t k = 0;
+			// use row major ordering to test sorting
+			for(size_t i = 0; i < 3; i++)
+			{	for(size_t j = 0; j < 3; j++)
+				{	row_in[k] = 3 + i;
+					col_in[k] = 3 + j;
+					k++;
+				}
+			}
+		}
+		ldlt_obj.inv(row_in, col_in, val_out);
+		for(size_t k = 0; k < K; k++)
+		{	double check = H_inv[ row_in[k] * nrow + col_in[k] ];
+			ok          &= std::fabs( val_out[k] - check ) <= eps;
+		}
+	}
+
 	return ok;
 }
 // END C++
