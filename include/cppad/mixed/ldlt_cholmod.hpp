@@ -101,12 +101,20 @@ private:
 	const size_t          nrow_;   // number of rows in sym_matrix_
 	CppAD::vector<size_t> key_;    // temporary sorting keys
 	CppAD::vector<size_t> index_;  // temporary sorting indices
+	//
 	// mapping from sparse_mat_info to cholmod_sparse order
 	CppAD::vector<size_t> H_info2cholmod_order_;
 	//
 	cholmod_common    common_;
 	cholmod_sparse*   sym_matrix_; // The symmetric matrix we are factoring
 	cholmod_factor*   factor_;     // lower triangular LDL' factor
+	//
+	// information used by inv and computed during first call to inv
+	CppAD::vector<size_t> H_info2sparseinv_order_;
+	CppAD::vector<int>    sparseinv_p_, sparseinv_i_;
+	//
+	//
+	// work space for solving equations
 	cholmod_dense*    rhs_;        // right hand side of equation
 	cholmod_sparse*   rhs_set_;    // sparsity pattern for rhs
 	cholmod_dense*    sol_;        // solution of equaiton

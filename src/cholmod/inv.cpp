@@ -125,66 +125,73 @@ void ldlt_cholmod::inv(
 	size_t K_in    = row_in.size();
 	size_t K_L     = static_cast<size_t>( L_p[nrow_] );
 	size_t K_total = K_in + 2 * K_L;
-	//
-	// permuted version of requested indices
-	vector<size_t> row(K_total), col(K_total);
-	for(size_t k = 0; k < K_in; k++)
-	{	row[k] = static_cast<size_t>( L_perm[ row_in[k] ] );
-		col[k] = static_cast<size_t>( L_perm[ col_in[k] ] );
-	}
-	//
-	// indices that are in L and L'
-	for(size_t j = 0; j < nrow_; j++)
-	{	for(Integer k = L_p[j]; k < L_p[j+1]; k++)
-		{	size_t i = static_cast<size_t>( L_i[k] );
-			// L
-			row[K_in + 2 * k] = i;
-			col[K_in + 2 * k] = j;
-			// L'
-			row[K_in + 2 * k + 1] = j;
-			col[K_in + 2 * k + 1] = i;
+	// --------------------------------------------------------------------
+	if( H_info2sparseinv_order_.size() == 0 )
+	{
+		//
+		// permuted version of requested indices
+		vector<size_t> row(K_total), col(K_total);
+		for(size_t k = 0; k < K_in; k++)
+		{	row[k] = static_cast<size_t>( L_perm[ row_in[k] ] );
+			col[k] = static_cast<size_t>( L_perm[ col_in[k] ] );
 		}
-	}
-	//
-	// column major order
-	vector<size_t> key(K_total), ind(K_total);
-	for(size_t k = 0; k < K_total; k++)
-		key[k] = row[k] + col[k] * nrow_;
-	CppAD::index_sort(key, ind);
-	//
-	// put sparsity pattern in Zp, Zi
-	vector<Integer> sparseinv_p_(nrow_+1), sparseinv_i_;
-	vector<size_t> sparseinv2factor_order_(K_in);
-	size_t k = 0;
-	sparseinv_p_[0]    = sparseinv_i_.size();
-	for(size_t j = 0; j < nrow_; j++)
-	{	bool more = k < K_total;
-		while( more )
-		{	size_t r = row[ ind[k] ];
-			size_t c = col[ ind[k] ];
-			assert( c >= j );
-			more = c == j;
-			if( more )
-			{	sparseinv_i_.push_back(r);
-				if( ind[k] < K_in )
-					sparseinv2factor_order_[ ind[k] ] = sparseinv_i_.size()-1;
-				k++;
-				bool duplicate = k < K_total;
-				while( duplicate )
-				{	duplicate = (row[ind[k]] == r) & (col[ind[k]] == c);
-					if( duplicate )
-					{	if( ind[k] < K_in )
-							sparseinv2factor_order_[ ind[k] ] =
-								sparseinv_i_.size()-1;
-						k++;
-						duplicate = k < K_total;
-					}
-				}
-				more = k < K_total ;
+		//
+		// indices that are in L and L'
+		for(size_t j = 0; j < nrow_; j++)
+		{	for(Integer k = L_p[j]; k < L_p[j+1]; k++)
+			{	size_t i = static_cast<size_t>( L_i[k] );
+				// L
+				row[K_in + 2 * k] = i;
+				col[K_in + 2 * k] = j;
+				// L'
+				row[K_in + 2 * k + 1] = j;
+				col[K_in + 2 * k + 1] = i;
 			}
 		}
-		sparseinv_p_[j+1] = sparseinv_i_.size();
+		//
+		// column major order
+		vector<size_t> key(K_total), ind(K_total);
+		for(size_t k = 0; k < K_total; k++)
+			key[k] = row[k] + col[k] * nrow_;
+		CppAD::index_sort(key, ind);
+		//
+		// put sparsity pattern as requred by sparseinv
+		sparseinv_p_.resize(nrow_+1);
+		sparseinv_i_.resize(0);
+		// index conversize from sparse_mat_info to sparseinv format
+		H_info2sparseinv_order_.resize(K_in);
+		size_t k = 0;
+		sparseinv_p_[0]    = sparseinv_i_.size();
+		for(size_t j = 0; j < nrow_; j++)
+		{	bool more = k < K_total;
+			while( more )
+			{	size_t r = row[ ind[k] ];
+				size_t c = col[ ind[k] ];
+				assert( c >= j );
+				more = c == j;
+				if( more )
+				{	sparseinv_i_.push_back(r);
+					if( ind[k] < K_in )
+						H_info2sparseinv_order_[ ind[k] ] = sparseinv_i_.size()-1;
+					k++;
+					bool duplicate = k < K_total;
+					while( duplicate )
+					{	duplicate = (row[ind[k]] == r) & (col[ind[k]] == c);
+						if( duplicate )
+						{	if( ind[k] < K_in )
+								H_info2sparseinv_order_[ ind[k] ] =
+									sparseinv_i_.size()-1;
+							k++;
+							duplicate = k < K_total;
+						}
+					}
+					more = k < K_total ;
+				}
+			}
+			sparseinv_p_[j+1] = sparseinv_i_.size();
+		}
 	}
+	// ------------------------------------------------------------------------
 	// place where inverse is returned
 	vector<double> Zx( sparseinv_i_.size() );
 	//
@@ -212,7 +219,7 @@ void ldlt_cholmod::inv(
 	//
 	// return the values
 	for(size_t k = 0; k < K_in; k++)
-		val_out[k] = Zx[ sparseinv2factor_order_[k] ];
+		val_out[k] = Zx[ H_info2sparseinv_order_[k] ];
 	//
 	return;
 }
