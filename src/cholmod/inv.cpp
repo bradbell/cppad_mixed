@@ -153,10 +153,10 @@ void ldlt_cholmod::inv(
 	CppAD::index_sort(key, ind);
 	//
 	// put sparsity pattern in Zp, Zi
-	vector<Integer> Zp(nrow_+1), Zi;
-	vector<size_t> z_index(K_in);
+	vector<Integer> sparseinv_p_(nrow_+1), sparseinv_i_;
+	vector<size_t> sparseinv2factor_order_(K_in);
 	size_t k = 0;
-	Zp[0]    = Zi.size();
+	sparseinv_p_[0]    = sparseinv_i_.size();
 	for(size_t j = 0; j < nrow_; j++)
 	{	bool more = k < K_total;
 		while( more )
@@ -165,16 +165,17 @@ void ldlt_cholmod::inv(
 			assert( c >= j );
 			more = c == j;
 			if( more )
-			{	Zi.push_back(r);
+			{	sparseinv_i_.push_back(r);
 				if( ind[k] < K_in )
-					z_index[ ind[k] ] = Zi.size() - 1;
+					sparseinv2factor_order_[ ind[k] ] = sparseinv_i_.size()-1;
 				k++;
 				bool duplicate = k < K_total;
 				while( duplicate )
 				{	duplicate = (row[ind[k]] == r) & (col[ind[k]] == c);
 					if( duplicate )
 					{	if( ind[k] < K_in )
-							z_index[ ind[k] ] = Zi.size() - 1;
+							sparseinv2factor_order_[ ind[k] ] =
+								sparseinv_i_.size()-1;
 						k++;
 						duplicate = k < K_total;
 					}
@@ -182,10 +183,10 @@ void ldlt_cholmod::inv(
 				more = k < K_total ;
 			}
 		}
-		Zp[j+1] = Zi.size();
+		sparseinv_p_[j+1] = sparseinv_i_.size();
 	}
 	// place where inverse is returned
-	vector<double> Zx( Zi.size() );
+	vector<double> Zx( sparseinv_i_.size() );
 	//
 	// work space
 	vector<double> z(nrow_);
@@ -201,8 +202,8 @@ void ldlt_cholmod::inv(
 		L_p,
 		L_i,
 		L_x,
-		Zp.data(),
-		Zi.data(),
+		sparseinv_p_.data(),
+		sparseinv_i_.data(),
 		Zx.data(),
 		z.data(),
 		Zdiagp.data(),
@@ -211,7 +212,7 @@ void ldlt_cholmod::inv(
 	//
 	// return the values
 	for(size_t k = 0; k < K_in; k++)
-		val_out[k] = Zx[ z_index[k] ];
+		val_out[k] = Zx[ sparseinv2factor_order_[k] ];
 	//
 	return;
 }
