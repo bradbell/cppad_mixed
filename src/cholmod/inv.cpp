@@ -18,6 +18,8 @@ $spell
 	CppAD
 	const
 	cholmod
+	sparseinv
+	nrow
 $$
 
 $head Under Construction$$
@@ -49,10 +51,14 @@ $cref ldlt_cholmod_update$$.
 $head row_in$$
 This vector contains the row indices for the components of the
 inverse that we are computing.
+It is assumed that these indices are the same for every call to
+$code inv$$.
 
 $head col_in$$
 This vector contains the column indices for the components of the
 inverse that we are computing. It must have the same size as $icode row_in$$.
+It is assumed that these indices are the same for every call to
+$code inv$$.
 
 $head val_out$$
 This matrix must have the same size as $icode row_in$$.
@@ -62,6 +68,59 @@ contains the values for the components of the inverse that we are computing.
 To be specific, for $icode%k% = 0 , %...%, %K%-1%$$,
 $icode%val_out%[%k%]%$$
 is $icode%row_in%[%k%]%$$, $icode%col_in%[%k%]%$$ component of the inverse.
+
+$head Member variables$$
+The first time this routine is called, the following member variable
+as set to their permanent values:
+
+$subhead sparseinv_p_$$
+This member variable has the prototype
+$codei%
+	CppAD::vector<size_t> sparseinv_p_
+%$$
+Its initial size is zero.
+After the first call to $code inv$$, it had size $code nrow_+1$$.
+For $icode%j% = 0, %...%, nrow_%$$,
+$codei%sparseinv_p_[%j%]%$$ is where the row indices for the $th j$$
+column start.
+
+$subhead sparseinv_i_$$
+This member variable has the prototype
+$codei%
+	CppAD::vector<size_t> sparseinv_i_
+%$$
+Its initial size is zero.
+After the first call to $code inv$$, it had size
+$codei
+	sparseinv_p_[nrow_]
+%$$
+For each column index $icode j$$, and for
+$codei
+	%k% = sparseinv_p_[%j%] , %...%, sparseinv_p[%j%+1]-1
+%$$
+$codei%sparseinv_i_[%k%]%$$ is the index of the next entry in the $th j$$
+column of the sparse matrix.
+Note that for each column, the corresponding row indices are in order; i.e.
+sorted.
+This sparse matrix includes all the indices in
+$icode row_in$$, $icode col_in$$,
+all the indices in the factorization $code factor_$$,
+and the transpose of the indices in $code factor_$$.
+
+$subhead out2sparseinv_order_$$
+This member variable has the prototype
+$codei%
+	CppAD::vector<size_t> out2sparseinv_order_
+%$$
+Its initial size is zero.
+After the first call to $code inv$$,
+it has the same size as $icode val_out$$.
+It is a mapping
+from the indices in $icode val_out$$ to the corresponding index in
+the $code sparseinv_i$$ structures.
+Note that all the indices in
+$icode row_in$$ and $icode col_in$$ also appear in the representation
+$code sparseinv_p_$$, $code sparseinv_i_$$.
 
 $end
 ------------------------------------------------------------------------------
@@ -80,9 +139,6 @@ void ldlt_cholmod::inv(
 	CppAD::vector<double>&       val_out   )
 // END_PROTOTYPE
 {	using CppAD::vector;
-	typedef int Integer;
-	//
-	// 2DO: move some of this work to the init routine.
 	//
 	assert( col_in.size() == row_in.size() );
 	assert( val_out.size() == row_in.size() );
@@ -112,7 +168,7 @@ void ldlt_cholmod::inv(
 # endif
 	//
 	// number of rows and columns in the factor
-	Integer n  = static_cast<Integer>(nrow_);
+	int n  = static_cast<int>(nrow_);
 	//
 	// extract the diagonal of the factor
 	vector<double> d(nrow_);
@@ -126,9 +182,8 @@ void ldlt_cholmod::inv(
 	size_t K_L     = static_cast<size_t>( L_p[nrow_] );
 	size_t K_total = K_in + 2 * K_L;
 	// --------------------------------------------------------------------
-	if( H_info2sparseinv_order_.size() == 0 )
+	if( out2sparseinv_order_.size() == 0 )
 	{
-		//
 		// permuted version of requested indices
 		vector<size_t> row(K_total), col(K_total);
 		for(size_t k = 0; k < K_in; k++)
@@ -138,7 +193,7 @@ void ldlt_cholmod::inv(
 		//
 		// indices that are in L and L'
 		for(size_t j = 0; j < nrow_; j++)
-		{	for(Integer k = L_p[j]; k < L_p[j+1]; k++)
+		{	for(int k = L_p[j]; k < L_p[j+1]; k++)
 			{	size_t i = static_cast<size_t>( L_i[k] );
 				// L
 				row[K_in + 2 * k] = i;
@@ -159,7 +214,7 @@ void ldlt_cholmod::inv(
 		sparseinv_p_.resize(nrow_+1);
 		sparseinv_i_.resize(0);
 		// index conversize from sparse_mat_info to sparseinv format
-		H_info2sparseinv_order_.resize(K_in);
+		out2sparseinv_order_.resize(K_in);
 		size_t k = 0;
 		sparseinv_p_[0]    = sparseinv_i_.size();
 		for(size_t j = 0; j < nrow_; j++)
@@ -172,14 +227,14 @@ void ldlt_cholmod::inv(
 				if( more )
 				{	sparseinv_i_.push_back(r);
 					if( ind[k] < K_in )
-						H_info2sparseinv_order_[ ind[k] ] = sparseinv_i_.size()-1;
+						out2sparseinv_order_[ ind[k] ] = sparseinv_i_.size()-1;
 					k++;
 					bool duplicate = k < K_total;
 					while( duplicate )
 					{	duplicate = (row[ind[k]] == r) & (col[ind[k]] == c);
 						if( duplicate )
 						{	if( ind[k] < K_in )
-								H_info2sparseinv_order_[ ind[k] ] =
+								out2sparseinv_order_[ ind[k] ] =
 									sparseinv_i_.size()-1;
 							k++;
 							duplicate = k < K_total;
@@ -197,7 +252,7 @@ void ldlt_cholmod::inv(
 	//
 	// work space
 	vector<double> z(nrow_);
-	vector<Integer> Zdiagp(nrow_), Lmunch(nrow_);
+	vector<int> Zdiagp(nrow_), Lmunch(nrow_);
 	//
 	// compute the subset of the inverse of the permuted matrix
 	sparseinv(
@@ -219,7 +274,7 @@ void ldlt_cholmod::inv(
 	//
 	// return the values
 	for(size_t k = 0; k < K_in; k++)
-		val_out[k] = Zx[ H_info2sparseinv_order_[k] ];
+		val_out[k] = Zx[ out2sparseinv_order_[k] ];
 	//
 	return;
 }
