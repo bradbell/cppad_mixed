@@ -25,12 +25,12 @@ $section A First Order Auto-Regressive Example and Speed Test$$
 
 $head Syntax$$
 $codei%build/speed/ar1_xam \
+	%random_seed% \
+	%number_times% \
 	%trace_optimize_fixed% \
 	%ipopt_solve% \
 	%bool_sparsity% \
-	%hold_memory% \
-	%random_seed% \
-	%number_times%
+	%hold_memory%
 %$$
 
 $head Problem$$
@@ -52,6 +52,17 @@ $latex u_t - u_{t-1} \sim \B{N}( 0 , \theta_0^2 )$$.
 
 
 $head Input$$
+
+$subhead random_seed$$
+This is a non-negative integer equal to the
+seed for the random number generator,
+to be specific,
+$cref/s_in/manage_gsl_rng/new_gsl_rng/s_in/$$ used during the call to
+$code new_gsl_rng$$.
+
+$subhead number_times$$
+This is a positive integer specifying the number of time points.
+This is also the number of random effects and number of data values.
 
 $subhead trace_optimize_fixed$$
 This is either $code true$$ or $code false$$.
@@ -79,17 +90,6 @@ $codei%
 	CppAD::thread_alloc::hold_memory(%hold_memory%);
 %$$
 where $icode hold_memory$$ is either $code true$$ or $code false$$.
-
-$subhead random_seed$$
-This is a non-negative integer equal to the
-seed for the random number generator,
-to be specific,
-$cref/s_in/manage_gsl_rng/new_gsl_rng/s_in/$$ used during the call to
-$code new_gsl_rng$$.
-
-$subhead number_times$$
-This is a positive integer specifying the number of time points.
-This is also the number of random effects and number of data values.
 
 $head Output$$
 
@@ -253,12 +253,12 @@ int main(int argc, const char* argv[])
 	double inf = std::numeric_limits<double>::infinity();
 	//
 	const char* arg_name[] = {
+		"random_seed",
+		"number_times",
 		"trace_optimize_fixed",
 		"ipopt_solve",
 		"bool_sparsity",
-		"hold_memory",
-		"random_seed",
-		"number_times"
+		"hold_memory"
 	};
 	size_t n_arg = sizeof(arg_name) / sizeof(arg_name[0]);
 	//
@@ -273,12 +273,12 @@ int main(int argc, const char* argv[])
 	//
 	// get command line arguments
 	assert( n_arg == 6 );
-	bool   trace_optimize_fixed   = string( argv[1] ) == "true";
-	bool   ipopt_solve            = string( argv[2] ) == "true";
-	bool   bool_sparsity          = string( argv[3] ) == "true";
-	bool   hold_memory            = string( argv[4] ) == "true";
-	size_t random_seed            = std::atoi( argv[5] );
-	size_t number_times           = std::atoi( argv[6] );
+	size_t random_seed            = std::atoi( argv[1] );
+	size_t number_times           = std::atoi( argv[2] );
+	bool   trace_optimize_fixed   = string( argv[3] ) == "true";
+	bool   ipopt_solve            = string( argv[4] ) == "true";
+	bool   bool_sparsity          = string( argv[5] ) == "true";
+	bool   hold_memory            = string( argv[6] ) == "true";
 	//
 	// hold memory setting
 	CppAD::thread_alloc::hold_memory(hold_memory);

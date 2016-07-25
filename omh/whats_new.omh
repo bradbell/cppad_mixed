@@ -42,6 +42,7 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh%$$
 
 $head 07-25$$
+$list number$$
 Computing the derivative of the log of the determinant term in the
 $cref/Laplace approximation
 	/theory
@@ -55,6 +56,10 @@ $cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$ method for computing
 this inverse uses a special inverse subset algorithm; see
 $cref/method/ldlt_cholmod_inv/Method/$$.
 The $cref/method/ldlt_eigen_inv/Method/$$ has not been changed.
+$lnext
+Make order the same for command line arguments that have the same name in
+$cref ar1_xam.cpp$$ and $cref capture_xam.cpp$$.
+$lend
 
 $head 07-20$$
 Add the $icode hold_memory$$ parameter to

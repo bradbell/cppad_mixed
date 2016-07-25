@@ -42,10 +42,10 @@ $codei%build/speed/capture_xam  \
 	%std_logit_probability% \
 	%quasi_fixed% \
 	%random_constraint% \
+	%trace_optimize_fixed% \
 	%ipopt_solve% \
 	%bool_sparsity% \
-	%hold_memory% \
-	%trace_optimize_fixed%
+	%hold_memory%
 %$$
 
 $head Reference$$
@@ -176,6 +176,14 @@ $latex \[
 \] $$
 
 
+$subhead trace_optimize_fixed$$
+This is either $code true$$ or $code false$$.
+If it is true, a $icode%print_level% = 5%$$
+$cref/trace/ipopt_trace/$$ of the fixed effects optimization
+is included in the program output.
+Otherwise the ipopt $icode print_level$$ is zero and
+no such trace is printed.
+
 $subhead ipopt_solve$$
 This is either $code true$$ or $code false$$.
 If it is true, the $code CppAD::ipopt::solve$$
@@ -194,14 +202,6 @@ $codei%
 	CppAD::thread_alloc::hold_memory(%hold_memory%);
 %$$
 where $icode hold_memory$$ is either $code true$$ or $code false$$.
-
-$subhead trace_optimize_fixed$$
-This is either $code true$$ or $code false$$.
-If it is true, a $icode%print_level% = 5%$$
-$cref/trace/ipopt_trace/$$ of the fixed effects optimization
-is included in the program output.
-Otherwise the ipopt $icode print_level$$ is zero and
-no such trace is printed.
 
 $head Output$$
 
@@ -785,10 +785,10 @@ int main(int argc, const char *argv[])
 		"std_logit_probability",
 		"quasi_fixed",
 		"random_constraint",
+		"trace_optimize_fixed",
 		"ipopt_solve",
 		"bool_sparsity",
-		"hold_memory",
-		"trace_optimize_fixed"
+		"hold_memory"
 	};
 	size_t n_arg = sizeof(arg_name)/sizeof(arg_name[0]);
 	//
@@ -814,16 +814,16 @@ int main(int argc, const char *argv[])
 	//
 	string quasi_fixed_str          = argv[9];
 	string random_constraint_str    = argv[10];
-	string ipopt_solve_str          = argv[11];
-	string bool_sparsity_str        = argv[12];
-	string hold_memory_str          = argv[13];
-	string trace_optimize_fixed_str = argv[14];
+	string trace_optimize_fixed_str = argv[11];
+	string ipopt_solve_str          = argv[12];
+	string bool_sparsity_str        = argv[13];
+	string hold_memory_str          = argv[14];
 	bool quasi_fixed          =  quasi_fixed_str == "true";
 	bool random_constraint    =  random_constraint_str == "true";
+	bool trace_optimize_fixed =  trace_optimize_fixed_str == "true";
 	bool ipopt_solve          =  ipopt_solve_str == "true";
 	bool bool_sparsity        =  bool_sparsity_str == "true";
 	bool hold_memory          =  hold_memory_str == "true";
-	bool trace_optimize_fixed =  trace_optimize_fixed_str == "true";
 	//
 	// hold memory setting
 	CppAD::thread_alloc::hold_memory(hold_memory);
@@ -840,10 +840,10 @@ int main(int argc, const char *argv[])
 	assert( std_logit_probability > 0.0 );
 	assert( quasi_fixed || quasi_fixed_str=="false" );
 	assert( random_constraint || random_constraint_str=="false" );
+	assert( trace_optimize_fixed || trace_optimize_fixed_str=="false" );
 	assert( ipopt_solve || ipopt_solve_str=="false" );
 	assert( bool_sparsity || bool_sparsity_str =="false" );
 	assert( hold_memory || hold_memory_str =="false" );
-	assert( trace_optimize_fixed || trace_optimize_fixed_str=="false" );
 	//
 	// Get actual seed (different when random_seed is zero).
 	size_t actual_seed     = CppAD::mixed::new_gsl_rng( random_seed );
