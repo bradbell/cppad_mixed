@@ -41,6 +41,21 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 07-25$$
+Computing the derivative of the log of the determinant term in the
+$cref/Laplace approximation
+	/theory
+	/Objective
+	/Laplace Approximation, h(theta, u)
+/$$
+uses the inverse of the Hessian w.r.t. the random effects
+(where the Hessian is possibly non-zero).
+The
+$cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$ method for computing
+this inverse uses a special inverse subset algorithm; see
+$cref/method/ldlt_cholmod_inv/Method/$$.
+The $cref/method/ldlt_eigen_inv/Method/$$ has not been changed.
+
 $head 07-20$$
 Add the $icode hold_memory$$ parameter to
 $cref/capture_xam.cpp/capture_xam.cpp/hold_memory/$$ and

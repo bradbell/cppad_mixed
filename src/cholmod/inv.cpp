@@ -20,6 +20,7 @@ $spell
 	cholmod
 	sparseinv
 	nrow
+	suitesparse
 $$
 
 $head Under Construction$$
@@ -68,6 +69,14 @@ contains the values for the components of the inverse that we are computing.
 To be specific, for $icode%k% = 0 , %...%, %K%-1%$$,
 $icode%val_out%[%k%]%$$
 is $icode%row_in%[%k%]%$$, $icode%col_in%[%k%]%$$ component of the inverse.
+
+$head Method$$
+This routine uses the
+$cref/suitesparse/install_unix/Special Requirements/SuiteSparse/$$ routine
+$codei%
+	MATLAB_Tools/sparseinv/sparseinv.c
+%$$
+to solve for the requested components of the inverse.
 
 $head Member variables$$
 The first time this routine is called, the following member variable

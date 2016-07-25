@@ -71,6 +71,7 @@ using the operations in this class.
 
 
 $childtable%src/eigen/ldlt_eigen.cpp
+	%src/eigen/ldlt_inv.cpp
 	%example/private/ldlt_eigen_xam.cpp
 %$$
 
@@ -104,6 +105,12 @@ public:
 	bool update(const CppAD::mixed::sparse_mat_info& hes_info);
 	// logdet
 	double logdet(size_t& negative) const;
+	// compute a subset of the inverse
+	void inv(
+		const CppAD::vector<size_t>& row      ,
+		const CppAD::vector<size_t>& col      ,
+		CppAD::vector<double>&       val
+	);
 	// solve
 	void solve_H(
 		const CppAD::vector<size_t>& row     ,

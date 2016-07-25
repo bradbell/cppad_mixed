@@ -19,6 +19,7 @@ ADD_LIBRARY(cppad_mixed
 	derived_ctor.cpp
 	eigen/ldlt_eigen.cpp
 	eigen/information_mat.cpp
+	eigen/ldlt_inv.cpp
 	eigen/newton_step.cpp
 	eigen/sample_fixed.cpp
 	sample_random.cpp

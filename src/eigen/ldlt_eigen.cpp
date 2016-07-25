@@ -405,7 +405,7 @@ void ldlt_eigen::solve_H(
 	int previous_row = -1;
 # endif
 	size_t k = 0;
-	typedef typename eigen_sparse::InnerIterator column_itr;
+	typedef eigen_sparse::InnerIterator column_itr;
 	for(column_itr itr(x, 0); itr; ++itr)
 	{	assert( size_t( itr.row() ) < n_row_ );
 		assert( previous_row < itr.row() );
