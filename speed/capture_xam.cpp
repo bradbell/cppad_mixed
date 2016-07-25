@@ -45,7 +45,8 @@ $codei%build/speed/capture_xam  \
 	%trace_optimize_fixed% \
 	%ipopt_solve% \
 	%bool_sparsity% \
-	%hold_memory%
+	%hold_memory% \
+	%derivative_test%
 %$$
 
 $head Reference$$
@@ -202,6 +203,12 @@ $codei%
 	CppAD::thread_alloc::hold_memory(%hold_memory%);
 %$$
 where $icode hold_memory$$ is either $code true$$ or $code false$$.
+
+$head derivative_test$$
+This is either $code true$$ or $code false$$.
+If it is true, the derivatives of functions used in the optimization
+of the fixed effects are checked for correctness.
+(This requires extra time).
 
 $head Output$$
 
@@ -788,7 +795,8 @@ int main(int argc, const char *argv[])
 		"trace_optimize_fixed",
 		"ipopt_solve",
 		"bool_sparsity",
-		"hold_memory"
+		"hold_memory",
+		"derivative_test"
 	};
 	size_t n_arg = sizeof(arg_name)/sizeof(arg_name[0]);
 	//
@@ -802,7 +810,7 @@ int main(int argc, const char *argv[])
 	}
 	//
 	// get command line arguments
-	assert( n_arg == 14 );
+	assert( n_arg == 15 );
 	size_t random_seed            = std::atoi( argv[1] );
 	size_t number_random          = std::atoi( argv[2] );
 	size_t number_fixed_samples   = std::atoi( argv[3] );
@@ -818,12 +826,14 @@ int main(int argc, const char *argv[])
 	string ipopt_solve_str          = argv[12];
 	string bool_sparsity_str        = argv[13];
 	string hold_memory_str          = argv[14];
+	string derivative_test_str      = argv[15];
 	bool quasi_fixed          =  quasi_fixed_str == "true";
 	bool random_constraint    =  random_constraint_str == "true";
 	bool trace_optimize_fixed =  trace_optimize_fixed_str == "true";
 	bool ipopt_solve          =  ipopt_solve_str == "true";
 	bool bool_sparsity        =  bool_sparsity_str == "true";
 	bool hold_memory          =  hold_memory_str == "true";
+	bool derivative_test      =  derivative_test_str == "true";
 	//
 	// hold memory setting
 	CppAD::thread_alloc::hold_memory(hold_memory);
@@ -932,12 +942,10 @@ int main(int argc, const char *argv[])
 	//
 	// ipopt options for optimizing the random effects
 	string random_ipopt_options =
+		"Integer print_level               0\n"
 		"String  sb                        yes\n"
 		"String  derivative_test           none\n"
-		"String  derivative_test_print_all no\n"
 		"Numeric tol                       1e-8\n"
-		"Integer max_iter                  40\n"
-		"Integer print_level               0\n"
 	;
 	if( ipopt_solve ) random_ipopt_options +=
 		"String evaluation_method         ipopt_solve\n";
@@ -945,16 +953,18 @@ int main(int argc, const char *argv[])
 	// ipopt options for optimizing the fixd effects
 	string fixed_ipopt_options =
 		"String  sb                        yes\n"
-		"String  derivative_test           none\n"
-		"String  derivative_test_print_all no\n"
 		"Numeric tol                       1e-8\n"
-		"Integer max_iter                  40\n"
 	;
 	if( trace_optimize_fixed )
-		fixed_ipopt_options += "Integer print_level               5\n";
+		fixed_ipopt_options += "Integer print_level         5\n";
 	else
-		fixed_ipopt_options += "Integer print_level               0\n";
-	;
+		fixed_ipopt_options += "Integer print_level         0\n";
+	//
+	if( derivative_test )
+		fixed_ipopt_options += "String derivative_test      first-order\n";
+	else
+		fixed_ipopt_options += "String derivative_test      none\n";
+	//
 	double inf = std::numeric_limits<double>::infinity();
 	vector<double> u_lower(n_random), u_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)

@@ -30,7 +30,8 @@ $codei%build/speed/ar1_xam \
 	%trace_optimize_fixed% \
 	%ipopt_solve% \
 	%bool_sparsity% \
-	%hold_memory%
+	%hold_memory% \
+	%derivative_test%
 %$$
 
 $head Problem$$
@@ -90,6 +91,13 @@ $codei%
 	CppAD::thread_alloc::hold_memory(%hold_memory%);
 %$$
 where $icode hold_memory$$ is either $code true$$ or $code false$$.
+
+$head derivative_test$$
+This is either $code true$$ or $code false$$.
+If it is true, the derivatives of functions used in the optimization
+of the fixed effects are checked for correctness.
+(This requires extra time).
+
 
 $head Output$$
 
@@ -258,7 +266,8 @@ int main(int argc, const char* argv[])
 		"trace_optimize_fixed",
 		"ipopt_solve",
 		"bool_sparsity",
-		"hold_memory"
+		"hold_memory",
+		"derivative_test"
 	};
 	size_t n_arg = sizeof(arg_name) / sizeof(arg_name[0]);
 	//
@@ -272,13 +281,14 @@ int main(int argc, const char* argv[])
 	}
 	//
 	// get command line arguments
-	assert( n_arg == 6 );
+	assert( n_arg == 7 );
 	size_t random_seed            = std::atoi( argv[1] );
 	size_t number_random          = std::atoi( argv[2] );
 	bool   trace_optimize_fixed   = string( argv[3] ) == "true";
 	bool   ipopt_solve            = string( argv[4] ) == "true";
 	bool   bool_sparsity          = string( argv[5] ) == "true";
 	bool   hold_memory            = string( argv[6] ) == "true";
+	bool   derivative_test        = string( argv[7] ) == "true";
 	//
 	// hold memory setting
 	CppAD::thread_alloc::hold_memory(hold_memory);
@@ -349,13 +359,17 @@ int main(int argc, const char* argv[])
 		"String  evaluation_method         ipopt_solve\n";
 	string fixed_ipopt_options =
 		"String  sb                        yes\n"
-		"String  derivative_test           none\n"
 		"Numeric tol                       1e-7\n"
 	;
 	if( trace_optimize_fixed )
-		fixed_ipopt_options += "Integer print_level               5\n";
+		fixed_ipopt_options += "Integer print_level         5\n";
 	else
-		fixed_ipopt_options += "Integer print_level               0\n";
+		fixed_ipopt_options += "Integer print_level         0\n";
+	//
+	if( derivative_test )
+		fixed_ipopt_options += "String derivative_test      first-order\n";
+	else
+		fixed_ipopt_options += "String derivative_test      none\n";
 	//
 	vector<double> random_lower(n_random), random_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)
