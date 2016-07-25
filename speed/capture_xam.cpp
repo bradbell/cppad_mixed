@@ -33,9 +33,9 @@ $section A Capture Example and Speed Test$$
 $head Syntax$$
 $codei%build/speed/capture_xam  \
 	%random_seed% \
+	%number_random%  \
 	%number_fixed_samples% \
 	%number_locations% \
-	%number_times%  \
 	%max_population% \
 	%mean_population% \
 	%mean_logit_probability% \
@@ -65,6 +65,12 @@ to be specific,
 $cref/s_in/manage_gsl_rng/new_gsl_rng/s_in/$$ used during the call to
 $code new_gsl_rng$$.
 
+$subhead number_random$$
+This is a positive integer equal to the number of random effects.
+This is also equal to the
+number of times at which the measurements are made and is denoted by
+$latex T$$ below.
+
 $subhead number_fixed_samples$$
 This is a positive integer equal to the number of samples simulated
 from the posterior distribution for the fixed effects using
@@ -80,12 +86,6 @@ number of locations at which the measurements are made; i.e.
 $latex R$$ in the reference.
 Increasing this value increases the amount for each function evaluation,
 but does not change the number of fixed or random effects.
-
-$subhead number_times$$
-This is a positive integer equal to the
-number of times at which the measurements are made; i.e.,
-$latex T$$ in the reference.
-This is also equal to the number of random effects in the model.
 
 $subhead max_population$$
 This is a positive integer equal to the
@@ -319,7 +319,7 @@ $latex R$$     $cnext
 	number of sampling locations; i.e., $icode number_locations$$.
 $rnext
 $latex T$$     $cnext
-	number of sampling times; i.e., $icode number_times$$.
+	number of sampling times; i.e., $icode number_random$$.
 $rnext
 $latex K$$     $cnext
 	maximum population in truncation of infinite summation; i.e.,
@@ -776,9 +776,9 @@ int main(int argc, const char *argv[])
 	//
 	const char* arg_name[] = {
 		"random_seed",
+		"number_random",
 		"number_fixed_samples",
 		"number_locations",
-		"number_times",
 		"max_population",
 		"mean_population",
 		"mean_logit_probability",
@@ -804,9 +804,9 @@ int main(int argc, const char *argv[])
 	// get command line arguments
 	assert( n_arg == 14 );
 	size_t random_seed            = std::atoi( argv[1] );
-	size_t number_fixed_samples   = std::atoi( argv[2] );
-	size_t number_locations       = std::atoi( argv[3] );
-	size_t number_times           = std::atoi( argv[4] );
+	size_t number_random          = std::atoi( argv[2] );
+	size_t number_fixed_samples   = std::atoi( argv[3] );
+	size_t number_locations       = std::atoi( argv[4] );
 	size_t max_population         = std::atoi( argv[5] );
 	double mean_population        = std::atof( argv[6] );
 	double mean_logit_probability = std::atof( argv[7] );
@@ -834,7 +834,7 @@ int main(int argc, const char *argv[])
 	//
 	assert( number_fixed_samples > 0 );
 	assert( number_locations > 0 );
-	assert( number_times > 0 );
+	assert( number_random > 0 );
 	assert( max_population > 0.0 );
 	assert( mean_population > 0.0 );
 	assert( std_logit_probability > 0.0 );
@@ -851,10 +851,10 @@ int main(int argc, const char *argv[])
 	//
 	// number of fixed and random effects
 	size_t n_fixed  = 3;
-	size_t n_random = number_times;
+	size_t n_random = number_random;
 	//
 	// number of random effects
-	size_t T = number_times;
+	size_t T = number_random;
 	size_t R = number_locations;
 	size_t K = max_population;
 	//

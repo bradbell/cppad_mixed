@@ -26,7 +26,7 @@ $section A First Order Auto-Regressive Example and Speed Test$$
 $head Syntax$$
 $codei%build/speed/ar1_xam \
 	%random_seed% \
-	%number_times% \
+	%number_random% \
 	%trace_optimize_fixed% \
 	%ipopt_solve% \
 	%bool_sparsity% \
@@ -60,9 +60,9 @@ to be specific,
 $cref/s_in/manage_gsl_rng/new_gsl_rng/s_in/$$ used during the call to
 $code new_gsl_rng$$.
 
-$subhead number_times$$
-This is a positive integer specifying the number of time points.
-This is also the number of random effects and number of data values.
+$subhead number_random$$
+This is a positive integer specifying the number of random effects.
+This is also the number of time points and number of data values.
 
 $subhead trace_optimize_fixed$$
 This is either $code true$$ or $code false$$.
@@ -254,7 +254,7 @@ int main(int argc, const char* argv[])
 	//
 	const char* arg_name[] = {
 		"random_seed",
-		"number_times",
+		"number_random",
 		"trace_optimize_fixed",
 		"ipopt_solve",
 		"bool_sparsity",
@@ -274,7 +274,7 @@ int main(int argc, const char* argv[])
 	// get command line arguments
 	assert( n_arg == 6 );
 	size_t random_seed            = std::atoi( argv[1] );
-	size_t number_times           = std::atoi( argv[2] );
+	size_t number_random          = std::atoi( argv[2] );
 	bool   trace_optimize_fixed   = string( argv[3] ) == "true";
 	bool   ipopt_solve            = string( argv[4] ) == "true";
 	bool   bool_sparsity          = string( argv[5] ) == "true";
@@ -291,8 +291,8 @@ int main(int argc, const char* argv[])
 	size_t actual_seed = CppAD::mixed::new_gsl_rng(random_seed);
 	label_print("actual_seed", actual_seed);
 	//
-	size_t n_data   = number_times;
-	size_t n_random = number_times;
+	size_t n_data   = number_random;
+	size_t n_random = number_random;
 	size_t n_fixed  = 1;
 	vector<double>
 		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);

@@ -18,7 +18,7 @@ LINK_DIRECTORIES(
 # -----------------------------------------------------------------------------
 # BEGIN ar1_xam arguments
 SET(random_seed                  0)
-SET(number_times               100)
+SET(number_random              100)
 SET(trace_optimize_fixed     false)
 SET(ipopt_solve              false)
 SET(bool_sparsity            false)
@@ -27,7 +27,7 @@ SET(hold_memory              false)
 ADD_CUSTOM_TARGET(speed_ar1_xam
 	ar1_xam
 		${random_seed}
-		${number_times}
+		${number_random}
 		${trace_optimize_fixed}
 		${ipopt_solve}
 		${bool_sparsity}
@@ -37,9 +37,9 @@ ADD_CUSTOM_TARGET(speed_ar1_xam
 # -----------------------------------------------------------------------------
 # BEGIN capture_xam arguments
 SET(random_seed                0)
+SET(number_random             30)
 SET(number_fixed_samples    1000)
 SET(number_locations          50)
-SET(number_times              30)
 SET(max_population            25)
 SET(mean_population          5.0)
 SET(mean_logit_probability  -0.5)
@@ -54,9 +54,9 @@ SET(hold_memory              true)
 ADD_CUSTOM_TARGET(speed_capture_xam
 	capture_xam
 		${random_seed}
+		${number_random}
 		${number_fixed_samples}
 		${number_locations}
-		${number_times}
 		${max_population}
 		${mean_population}
 		${mean_logit_probability}

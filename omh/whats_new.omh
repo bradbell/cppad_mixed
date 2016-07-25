@@ -59,6 +59,8 @@ The $cref/method/ldlt_eigen_inv/Method/$$ has not been changed.
 $lnext
 Make order the same for command line arguments that have the same name in
 $cref ar1_xam.cpp$$ and $cref capture_xam.cpp$$.
+In addition change the argument $icode number_times$$ to
+$icode number_random$$ (in both programs).
 $lend
 
 $head 07-20$$
