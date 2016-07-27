@@ -29,6 +29,10 @@ verbose_makefile='NO'
 # &codep
 build_type='debug'
 # &&
+# Note that &code run_cmake.sh&& looks for a &icode%cppad_prefix%.debug%&&
+# and &icode%cppad_prefix%.release%&& and uses them if they are present.
+# Also note that it builds cppad_mixed in &code build.debug&& or
+# &code build.release&& depending on &icode build_type&&.
 #
 # &head Prefixes&&
 # Prefixes where the required packages are installed:

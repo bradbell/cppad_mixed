@@ -44,6 +44,10 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 07-27$$
+Mention having both debug and release versions of build on same file
+system; see $cref/build_type/run_cmake.sh/build_type/$$.
+
 $head 07-26$$
 Change the fixed effects optimization default value for the Ipopt
 $cref/obj_scaling_factor
