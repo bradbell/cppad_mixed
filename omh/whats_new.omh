@@ -37,6 +37,7 @@ $spell
 	ar1
 	obj
 	sqrt
+	ls
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
@@ -56,6 +57,8 @@ $codei%
 %$$
 This avoids scaling problems in $cref ar1_xam.cpp$$
 with there is a large number of random effects (10,000 or more).
+To be specific, the number of backtracking line search steps
+$cref/ls/ipopt_trace/ls/$$ is much smaller.
 
 
 $head 07-25$$
