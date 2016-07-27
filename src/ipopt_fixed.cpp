@@ -1891,7 +1891,7 @@ $end
 			average += check / double(n_fixed_);
 		}
 	}
-	ok &= average <= 3. * tol;
+	ok &= average <= 5. * tol;
 
 	// Check the partial of the Lagrangian w.r.t auxillary variables
 	average = 0.0;

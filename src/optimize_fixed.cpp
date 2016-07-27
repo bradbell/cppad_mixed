@@ -21,6 +21,8 @@ $spell
 	std
 	inf
 	iter
+	obj
+	sqrt
 $$
 
 $section Optimize Fixed Effects$$
@@ -101,6 +103,16 @@ it may be that $icode%solution%.fixed_opt != %fixed_in%$$
 If $icode%max_iter% == -1%$$ in the options,
 $icode%solution%.fixed_opt == %fixed_in%$$
 (this is the only difference between $code -1$$ and $code 0$$).
+
+$subhead obj_scaling_factor$$
+The default value for $icode obj_scaling_factor$$ is
+$codei%
+	%obj_scaling_factor% = 1.0 / \R{sqrt}(%n_fixed% + %n_random%)
+%$$
+where $icode n_fixed$$ and $icode n_random$$ are the number of
+fixed and random effects respectively.
+This is because the gradient of the objective tends to scale
+with the square root of the number of parameters.
 
 $head random_ipopt_options$$
 This argument has prototype
@@ -296,6 +308,11 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		app->Options()->SetIntegerValue(
 			"limited_memory_max_history", 30);
 	}
+	// default value for objective function scaling
+	double obj_scaling_factor = 1.0 / std::sqrt( n_random_ + n_fixed_ );
+	app->Options()->SetNumericValue(
+		"obj_scaling_factor", obj_scaling_factor
+	);
 	// get the initial value for maximum number of iterations
 	std::string tag    = "max_iter";
 	std::string prefix = "";

@@ -35,11 +35,28 @@ $spell
 	config
 	src/cholmod/sim_cov.cpp
 	ar1
+	obj
+	sqrt
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
+
+$head 07-26$$
+Change the fixed effects optimization default value for the Ipopt
+$cref/obj_scaling_factor
+	/optimize_fixed
+	/fixed_ipopt_options
+	/obj_scaling_factor
+/$$ from $code 1.0$$ to
+$codei%
+	%obj_scaling_factor% = 1.0 / sqrt( %n_fixed% + %n_random% )
+
+%$$
+This avoids scaling problems in $cref ar1_xam.cpp$$
+with there is a large number of random effects (10,000 or more).
+
 
 $head 07-25$$
 $list number$$

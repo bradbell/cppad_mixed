@@ -236,8 +236,8 @@ bool zero_random_two(void)
 
 	// Note that no constraints are active, (not even the l1 terms)
 	// so the partials should be zero.
-	ok &= CppAD::abs( F_0 ) <= 2.0 * tol;
-	ok &= CppAD::abs( F_1 ) <= 2.0 * tol;
+	ok &= CppAD::abs( F_0 ) <= 5.0 * tol;
+	ok &= CppAD::abs( F_1 ) <= 5.0 * tol;
 
 	// Compute the optimal random effects
 	vector<double> random_out = mixed_object.optimize_random(
@@ -245,7 +245,7 @@ bool zero_random_two(void)
 	);
 	// partial of p(u | theta) w.r.t u_i is equal to u_i
 	for(size_t i = 0; i < n_random; i++)
-		ok &= CppAD::abs( random_out[i] ) <= 2.0 * tol;
+		ok &= CppAD::abs( random_out[i] ) <= 5.0 * tol;
 
 	return ok;
 }
