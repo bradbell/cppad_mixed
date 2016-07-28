@@ -46,6 +46,8 @@ $childtable%omh/whats_new_15.omh%$$
 
 $head 07-28$$
 $list number$$
+Improve the organization of the $cref user$$ API example section.
+$lnext
 Add the $icode start_near_solution$$ argument to
 $cref ar1_xam.cpp$$ and $cref capture_xam.cpp$$.
 $lnext
@@ -105,16 +107,16 @@ $lend
 
 $head 07-20$$
 Add the $icode hold_memory$$ parameter to
-$cref/capture_xam.cpp/capture_xam.cpp/hold_memory/$$ and
-$cref/ar1_xam.cpp/ar1_xam.cpp/hold_memory/$$.
+$cref/capture_xam.cpp/capture_xam.cpp/Input/hold_memory/$$ and
+$cref/ar1_xam.cpp/ar1_xam.cpp/Input/hold_memory/$$.
 
 
 $head 07-18$$
 Add the $icode bool_sparsity$$ parameter to the following:
 $cref/initialize/initialize/bool_sparsity/$$,
 $cref/information_mat/information_mat/bool_sparsity/$$,
-$cref/capture_xam.cpp/capture_xam.cpp/bool_sparsity/$$,
-$cref/ar1_xam.cpp/ar1_xam.cpp/bool_sparsity/$$.
+$cref/capture_xam.cpp/capture_xam.cpp/Input/bool_sparsity/$$,
+$cref/ar1_xam.cpp/ar1_xam.cpp/Input/bool_sparsity/$$.
 In addition, remove $icode bool_sparsity$$ from the $cref run_cmake.sh$$
 configuration script.
 This puts the choose between boolean and set sparsity patterns

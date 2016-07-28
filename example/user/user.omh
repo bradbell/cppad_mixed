@@ -20,13 +20,13 @@ $comment
 These user examples are not for a particular public member function.
 (The ones for a particular function are children of that function.)
 $$
-$children%example/user/abs_density_xam.cpp
+$children%speed/ar1_xam.cpp
+	%speed/capture_xam.cpp
+	%example/user/abs_density_xam.cpp
 	%example/user/no_random_xam.cpp
 	%example/user/ran_constraint_xam.cpp
 	%example/user/lasso_xam.cpp
 	%example/user/data_mismatch_xam.cpp
-	%speed/ar1_xam.cpp
-	%speed/capture_xam.cpp
 %$$
 
 $head User Defined Functions$$
@@ -45,17 +45,23 @@ $table
 $rref optimize_random_xam.cpp$$
 $rref optimize_fixed_xam.cpp$$
 $rref information_mat_xam.cpp$$
+$rref sample_random_xam.cpp$$
+$rref sample_fixed_xam.cpp$$
+$tend
+
+$head Example Programs$$
+$table
+$rref ar1_xam.cpp$$
+$rref capture_xam.cpp$$
 $tend
 
 $head Other Examples$$
 $table
 $rref abs_density_xam.cpp$$
-$rref ar1_xam.cpp$$
 $rref no_random_xam.cpp$$
 $rref ran_constraint_xam.cpp$$
 $rref lasso_xam.cpp$$
 $rref data_mismatch_xam.cpp$$
-$rref capture_xam.cpp$$
 $rref manage_gsl_rng_xam.cpp$$
 $tend
 

@@ -91,25 +91,25 @@ routine is used for optimizing the random effects,
 otherwise $code CppAD::mixed::ipopt_random$$ is used; see
 $cref/evaluation_method/optimize_random/options/evaluation_method/$$.
 
-$head bool_sparsity$$
+$subhead bool_sparsity$$
 This is either $code true$$ or $code false$$.
 If it is true, boolean sparsity patterns are used for this computation,
 otherwise set sparsity patterns are used.
 
-$head hold_memory$$
+$subhead hold_memory$$
 The CppAD memory allocator has a hold memory option will be set by
 $codei%
 	CppAD::thread_alloc::hold_memory(%hold_memory%);
 %$$
 where $icode hold_memory$$ is either $code true$$ or $code false$$.
 
-$head derivative_test$$
+$subhead derivative_test$$
 This is either $code true$$ or $code false$$.
 If it is true, the derivatives of functions used in the optimization
 of the fixed effects are checked for correctness.
 (This requires extra time).
 
-$head start_near_solution$$
+$subhead start_near_solution$$
 This is either $code true$$ or $code false$$.
 If it is true, the initial point for the optimization
 is the value of the fixed effects used to simulate the data.
