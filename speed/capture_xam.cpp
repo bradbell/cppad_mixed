@@ -46,7 +46,8 @@ $codei%build/speed/capture_xam  \
 	%ipopt_solve% \
 	%bool_sparsity% \
 	%hold_memory% \
-	%derivative_test%
+	%derivative_test% \
+	%start_near_solution%
 %$$
 
 $head Reference$$
@@ -209,6 +210,12 @@ This is either $code true$$ or $code false$$.
 If it is true, the derivatives of functions used in the optimization
 of the fixed effects are checked for correctness.
 (This requires extra time).
+
+$head start_near_solution$$
+This is either $code true$$ or $code false$$.
+If it is true, the initial point for the optimization
+is the value of the fixed effects used to simulate the data.
+Otherwise, the initial point is significantly different from this value.
 
 $head Output$$
 
@@ -796,7 +803,8 @@ int main(int argc, const char *argv[])
 		"ipopt_solve",
 		"bool_sparsity",
 		"hold_memory",
-		"derivative_test"
+		"derivative_test",
+		"start_near_solution"
 	};
 	size_t n_arg = sizeof(arg_name)/sizeof(arg_name[0]);
 	//
@@ -810,7 +818,7 @@ int main(int argc, const char *argv[])
 	}
 	//
 	// get command line arguments
-	assert( n_arg == 15 );
+	assert( n_arg == 16 );
 	size_t random_seed            = std::atoi( argv[1] );
 	size_t number_random          = std::atoi( argv[2] );
 	size_t number_fixed_samples   = std::atoi( argv[3] );
@@ -827,6 +835,7 @@ int main(int argc, const char *argv[])
 	string bool_sparsity_str        = argv[13];
 	string hold_memory_str          = argv[14];
 	string derivative_test_str      = argv[15];
+	string start_near_solution_str  = argv[16];
 	bool quasi_fixed          =  quasi_fixed_str == "true";
 	bool random_constraint    =  random_constraint_str == "true";
 	bool trace_optimize_fixed =  trace_optimize_fixed_str == "true";
@@ -834,6 +843,7 @@ int main(int argc, const char *argv[])
 	bool bool_sparsity        =  bool_sparsity_str == "true";
 	bool hold_memory          =  hold_memory_str == "true";
 	bool derivative_test      =  derivative_test_str == "true";
+	bool start_near_solution  =  start_near_solution_str == "true";
 	//
 	// hold memory setting
 	CppAD::thread_alloc::hold_memory(hold_memory);
@@ -854,6 +864,8 @@ int main(int argc, const char *argv[])
 	assert( ipopt_solve || ipopt_solve_str=="false" );
 	assert( bool_sparsity || bool_sparsity_str =="false" );
 	assert( hold_memory || hold_memory_str =="false" );
+	assert( derivative_test || derivative_test_str =="false" );
+	assert( start_near_solution || start_near_solution_str =="false" );
 	//
 	// Get actual seed (different when random_seed is zero).
 	size_t actual_seed     = CppAD::mixed::new_gsl_rng( random_seed );
@@ -896,6 +908,12 @@ int main(int argc, const char *argv[])
 	theta_lower[2] = std_logit_probability / 10.;
 	theta_in[2]    = std_logit_probability / 2.0;
 	theta_upper[2] = std_logit_probability * 10.;
+
+	// check if we are starting at the simulation values
+	if( start_near_solution )
+	{	for(size_t j = 0; j < n_fixed; j++)
+			theta_in[j] = theta_sim[j];
+	}
 
 	// random constraints
 	CppAD::mixed::sparse_mat_info A_info;

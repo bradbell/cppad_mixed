@@ -31,7 +31,8 @@ $codei%build/speed/ar1_xam \
 	%ipopt_solve% \
 	%bool_sparsity% \
 	%hold_memory% \
-	%derivative_test%
+	%derivative_test% \
+	%start_near_solution%
 %$$
 
 $head Problem$$
@@ -97,6 +98,12 @@ This is either $code true$$ or $code false$$.
 If it is true, the derivatives of functions used in the optimization
 of the fixed effects are checked for correctness.
 (This requires extra time).
+
+$head start_near_solution$$
+This is either $code true$$ or $code false$$.
+If it is true, the initial point for the optimization
+is the value of the fixed effects used to simulate the data.
+Otherwise, the initial point is significantly different from this value.
 
 
 $head Output$$
@@ -267,7 +274,8 @@ int main(int argc, const char* argv[])
 		"ipopt_solve",
 		"bool_sparsity",
 		"hold_memory",
-		"derivative_test"
+		"derivative_test",
+		"start_near_solution"
 	};
 	size_t n_arg = sizeof(arg_name) / sizeof(arg_name[0]);
 	//
@@ -281,7 +289,7 @@ int main(int argc, const char* argv[])
 	}
 	//
 	// get command line arguments
-	assert( n_arg == 7 );
+	assert( n_arg == 8 );
 	size_t random_seed            = std::atoi( argv[1] );
 	size_t number_random          = std::atoi( argv[2] );
 	bool   trace_optimize_fixed   = string( argv[3] ) == "true";
@@ -289,6 +297,7 @@ int main(int argc, const char* argv[])
 	bool   bool_sparsity          = string( argv[5] ) == "true";
 	bool   hold_memory            = string( argv[6] ) == "true";
 	bool   derivative_test        = string( argv[7] ) == "true";
+	bool   start_near_solution    = string( argv[8] ) == "true";
 	//
 	// hold memory setting
 	CppAD::thread_alloc::hold_memory(hold_memory);
@@ -304,9 +313,6 @@ int main(int argc, const char* argv[])
 	size_t n_data   = number_random;
 	size_t n_random = number_random;
 	size_t n_fixed  = 1;
-	vector<double>
-		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
-	fixed_lower[0] = 1e-5; fixed_in[0] = 2.0; fixed_upper[0] = inf;
 	//
 	// explicit constriants
 	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
@@ -321,7 +327,13 @@ int main(int argc, const char* argv[])
 		y[i]        += gsl_ran_gaussian(rng, sigma_y);
 		random_in[i] = 0.0;
 	}
-
+	//
+	vector<double>
+		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
+	fixed_lower[0] = 1e-5; fixed_in[0] = 2.0; fixed_upper[0] = inf;
+	if( start_near_solution )
+		fixed_in[0] = theta_sim[0];
+	//
 	// object that is derived from cppad_mixed
 	bool quasi_fixed = true;
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix

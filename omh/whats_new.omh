@@ -44,17 +44,28 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 07-28$$
+$list number$$
+Add the $icode start_near_solution$$ argument to
+$cref ar1_xam.cpp$$ and $cref capture_xam.cpp$$.
+$lnext
+Change the default for
+$cref/accept_after_max_steps
+	/optimize_fixed
+	/fixed_ipopt_options
+	/accept_after_max_steps
+/$$
+to $code 2$$ and the default for $icode obj_scaling_factor$$
+back to $code 1$$.
+$lend
+
 $head 07-27$$
 Mention having both debug and release versions of build on same file
 system; see $cref/build_type/run_cmake.sh/build_type/$$.
 
 $head 07-26$$
 Change the fixed effects optimization default value for the Ipopt
-$cref/obj_scaling_factor
-	/optimize_fixed
-	/fixed_ipopt_options
-	/obj_scaling_factor
-/$$ from $code 1.0$$ to
+$icode obj_scaling_factor$$ from $code 1.0$$ to
 $codei%
 	%obj_scaling_factor% = 1.0 / sqrt( %n_fixed% + %n_random% )
 

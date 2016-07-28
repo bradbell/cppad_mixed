@@ -24,6 +24,7 @@ SET(ipopt_solve              false)
 SET(bool_sparsity            false)
 SET(hold_memory              false)
 SET(derivative_test          false)
+SET(start_near_solution      false)
 # END ar1_xam arguments
 ADD_CUSTOM_TARGET(speed_ar1_xam
 	ar1_xam
@@ -34,6 +35,7 @@ ADD_CUSTOM_TARGET(speed_ar1_xam
 		${bool_sparsity}
 		${hold_memory}
 		${derivative_test}
+		${start_near_solution}
 	DEPENDS ar1_xam
 )
 # -----------------------------------------------------------------------------
@@ -53,6 +55,7 @@ SET(ipopt_solve              true)
 SET(bool_sparsity            true)
 SET(hold_memory              true)
 SET(derivative_test          true)
+SET(start_near_solution      true)
 # END capture_xam arguments
 ADD_CUSTOM_TARGET(speed_capture_xam
 	capture_xam
@@ -71,6 +74,7 @@ ADD_CUSTOM_TARGET(speed_capture_xam
 		${bool_sparsity}
 		${hold_memory}
 		${derivative_test}
+		${start_near_solution}
 	DEPENDS capture_xam
 )
 # -----------------------------------------------------------------------------
