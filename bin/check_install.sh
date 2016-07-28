@@ -53,7 +53,7 @@ example_file='example/user/no_random_xam.cpp'
 # This is either debug or release, depending on if the install version
 # of &code cppad_mixed&& is a debug or release version.
 # &codep
-build_type='debug'
+build_type='release'
 # &&
 #
 # &head Create Temporary&&
