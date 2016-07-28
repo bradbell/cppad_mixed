@@ -63,7 +63,6 @@ bin/check_install.sh
 #
 if [ "$input" == 'r' ]
 then
-	bin/run_cmake.sh --release
 	sed \
 		-e "s|^build_type=.*|build_type='debug'|" \
 		-i bin/check_install.sh

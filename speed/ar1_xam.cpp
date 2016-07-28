@@ -27,6 +27,7 @@ $head Syntax$$
 $codei%build/speed/ar1_xam \
 	%random_seed% \
 	%number_random% \
+	%quasi_fixed% \
 	%trace_optimize_fixed% \
 	%ipopt_solve% \
 	%bool_sparsity% \
@@ -65,6 +66,15 @@ $code new_gsl_rng$$.
 $subhead number_random$$
 This is a positive integer specifying the number of random effects.
 This is also the number of time points and number of data values.
+
+$subhead quasi_fixed$$
+This is either $code true$$ or $code false$$ and is the value of
+$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ in the
+$code cppad_mixed$$ derived class constructor.
+The amount of memory used by the
+$cref/mixed_derived/derived_ctor/mixed_derived/$$ object,
+after the information matrix is computed,
+will be similar to after the initialization when $icode quasi_fixed$$ is false.
 
 $subhead trace_optimize_fixed$$
 This is either $code true$$ or $code false$$.
@@ -270,6 +280,7 @@ int main(int argc, const char* argv[])
 	const char* arg_name[] = {
 		"random_seed",
 		"number_random",
+		"quasi_fixed",
 		"trace_optimize_fixed",
 		"ipopt_solve",
 		"bool_sparsity",
@@ -289,15 +300,16 @@ int main(int argc, const char* argv[])
 	}
 	//
 	// get command line arguments
-	assert( n_arg == 8 );
+	assert( n_arg == 9 );
 	size_t random_seed            = std::atoi( argv[1] );
 	size_t number_random          = std::atoi( argv[2] );
-	bool   trace_optimize_fixed   = string( argv[3] ) == "true";
-	bool   ipopt_solve            = string( argv[4] ) == "true";
-	bool   bool_sparsity          = string( argv[5] ) == "true";
-	bool   hold_memory            = string( argv[6] ) == "true";
-	bool   derivative_test        = string( argv[7] ) == "true";
-	bool   start_near_solution    = string( argv[8] ) == "true";
+	bool   quasi_fixed            = string( argv[3] ) == "true";
+	bool   trace_optimize_fixed   = string( argv[4] ) == "true";
+	bool   ipopt_solve            = string( argv[5] ) == "true";
+	bool   bool_sparsity          = string( argv[6] ) == "true";
+	bool   hold_memory            = string( argv[7] ) == "true";
+	bool   derivative_test        = string( argv[8] ) == "true";
+	bool   start_near_solution    = string( argv[9] ) == "true";
 	//
 	// hold memory setting
 	CppAD::thread_alloc::hold_memory(hold_memory);
@@ -335,7 +347,6 @@ int main(int argc, const char* argv[])
 		fixed_in[0] = theta_sim[0];
 	//
 	// object that is derived from cppad_mixed
-	bool quasi_fixed = true;
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
 	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, A_info, y);
 

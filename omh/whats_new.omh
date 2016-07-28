@@ -49,6 +49,10 @@ $list number$$
 Add the $icode start_near_solution$$ argument to
 $cref ar1_xam.cpp$$ and $cref capture_xam.cpp$$.
 $lnext
+Add the $icode quasi_fixed$$ argument to $cref ar1_xam.cpp$$
+and change its position in $cref capture_xam.cpp$$
+(so it has same relative location as in $code ar1_xam.cpp$$).
+$lnext
 Change the default for
 $cref/accept_after_max_steps
 	/optimize_fixed

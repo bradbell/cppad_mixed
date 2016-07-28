@@ -65,11 +65,27 @@ This argument has prototype
 $codei%
 	bool %quasi_fixed%
 %$$
-If it is true, a quasi-Newton method is used to
-$cref/optimize the fixed effects/optimize_fixed/$$.
-Otherwise a full Newton method is used.
-The full Newton method requires much more memory for computation
-of second derivatives of the Laplace approximation.
+Currently, true is the recommended value for this parameter
+(expected to be faster and use less memory).
+If $icode quasi_fixed$$ is true,
+the a quasi-Newton approximation for the Hessian of the total objective
+$cref/L(theta)/theory/Objective/Total Objective, L(theta)/$$
+is used during the optimization of the fixed effects.
+Otherwise, the Hessian of the total objective is computed using the
+approximate random objective
+$cref/H(beta, theta, u)
+	/theory
+	/Approximate Random Objective, H(beta, theta, u)
+/$$.
+If $icode quasi_fixed$$ is true,
+some initialization is skipped during $cref initialize$$ is skipped.
+This initialization is needed, and hence done during
+the computation of the $cref/information matrix/information_mat/$$.
+If $icode quasi_fixed$$ is true,
+the amount of memory used by the
+$cref/mixed_derived/derived_ctor/mixed_derived/$$ object
+after the information matrix is computed
+is similar after then initialization when $icode quasi_fixed$$ is false.
 
 $head A_info$$
 This argument has prototype

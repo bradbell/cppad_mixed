@@ -40,8 +40,8 @@ $codei%build/speed/capture_xam  \
 	%mean_population% \
 	%mean_logit_probability% \
 	%std_logit_probability% \
-	%quasi_fixed% \
 	%random_constraint% \
+	%quasi_fixed% \
 	%trace_optimize_fixed% \
 	%ipopt_solve% \
 	%bool_sparsity% \
@@ -123,29 +123,6 @@ standard deviation of the logit of the capture probability
 used to simulate data values.
 The is also equal to the standard deviation of the random effects.
 
-$subhead quasi_fixed$$
-This is either $code true$$ or $code false$$.
-If $icode quasi_fixed$$ is true,
-it is also true in the $code cppad_mixed$$
-$cref/derived class constructor/derived_ctor/quasi_fixed/$$.
-In this case, the a quasi-Newton approximation for the Hessian
-of the total objective
-$cref/L(theta)/theory/Objective/Total Objective, L(theta)/$$.
-Otherwise, the Hessian of the total objective is computed using the
-approximate random objective
-$cref/H(beta, theta, u)
-	/theory
-	/Approximate Random Objective, H(beta, theta, u)
-/$$.
-If $icode quasi_fixed$$ is true,
-some initialization is skipped during $cref initialize$$,
-and is done during the computation of the
-$cref/information matrix/information_mat/$$.
-In this case, the amount of memory used by the
-$cref/mixed_derived/derived_ctor/mixed_derived/$$ object
-after the information matrix is computed
-is similar after then initialization when $icode quasi_fixed$$ is false.
-
 $subhead random_constraint$$
 This is either $code true$$ or $code false$$.
 If it is $code false$$, there is no
@@ -177,6 +154,15 @@ $latex \[
 	A = [ 1 , \cdots , 1 ] \in \B{R}^{1 \times T}
 \] $$
 
+
+$subhead quasi_fixed$$
+This is either $code true$$ or $code false$$ and is the value of
+$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ in the
+$code cppad_mixed$$ derived class constructor.
+The amount of memory used by the
+$cref/mixed_derived/derived_ctor/mixed_derived/$$ object,
+after the information matrix is computed,
+will be similar to after the initialization when $icode quasi_fixed$$ is false.
 
 $subhead trace_optimize_fixed$$
 This is either $code true$$ or $code false$$.
@@ -797,8 +783,8 @@ int main(int argc, const char *argv[])
 		"mean_population",
 		"mean_logit_probability",
 		"std_logit_probability",
-		"quasi_fixed",
 		"random_constraint",
+		"quasi_fixed",
 		"trace_optimize_fixed",
 		"ipopt_solve",
 		"bool_sparsity",
@@ -828,16 +814,16 @@ int main(int argc, const char *argv[])
 	double mean_logit_probability = std::atof( argv[7] );
 	double std_logit_probability  = std::atof( argv[8] );
 	//
-	string quasi_fixed_str          = argv[9];
-	string random_constraint_str    = argv[10];
+	string random_constraint_str    = argv[9];
+	string quasi_fixed_str          = argv[10];
 	string trace_optimize_fixed_str = argv[11];
 	string ipopt_solve_str          = argv[12];
 	string bool_sparsity_str        = argv[13];
 	string hold_memory_str          = argv[14];
 	string derivative_test_str      = argv[15];
 	string start_near_solution_str  = argv[16];
-	bool quasi_fixed          =  quasi_fixed_str == "true";
 	bool random_constraint    =  random_constraint_str == "true";
+	bool quasi_fixed          =  quasi_fixed_str == "true";
 	bool trace_optimize_fixed =  trace_optimize_fixed_str == "true";
 	bool ipopt_solve          =  ipopt_solve_str == "true";
 	bool bool_sparsity        =  bool_sparsity_str == "true";
@@ -858,8 +844,8 @@ int main(int argc, const char *argv[])
 	assert( max_population > 0.0 );
 	assert( mean_population > 0.0 );
 	assert( std_logit_probability > 0.0 );
-	assert( quasi_fixed || quasi_fixed_str=="false" );
 	assert( random_constraint || random_constraint_str=="false" );
+	assert( quasi_fixed || quasi_fixed_str=="false" );
 	assert( trace_optimize_fixed || trace_optimize_fixed_str=="false" );
 	assert( ipopt_solve || ipopt_solve_str=="false" );
 	assert( bool_sparsity || bool_sparsity_str =="false" );
