@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # $Id$
 # ----------------------------------------------------------------------------
-# Test methods needed for AD Atomic Cholesky Factorzation 
+# Test methods needed for AD Atomic Cholesky Factorzation
 # ----------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
 #           Copyright (C) 2014-16 University of Washington
@@ -41,6 +41,8 @@ int main()
 	typedef Eigen::SparseMatrix<double>                sparse_matrix;
 	typedef Eigen::SparseMatrix< CppAD::AD<double> >   ad_sparse_matrix;
 	//
+	double eps = 100. * std::numeric_limits<double>::epsilon();
+	//
 	// Initialize erorr flag
 	bool ok = true;
 	//
@@ -63,7 +65,7 @@ int main()
 		}
 	}
 	//
-	// Step 2: set Alow to a double version of aAlow 
+	// Step 2: set Alow to a double version of aAlow
 	sparse_matrix Alow(nc, nc);
 	Alow.reserve(nnz);
 	for(size_t j = 0; j < nc; j++)
@@ -82,24 +84,18 @@ int main()
 	sparse_matrix L   = ldlt.matrixL();
 	Eigen::VectorXd D = ldlt.vectorD();
 	// -----------------------------------------------------------------------
-	// Test: check that A is equal to  P' * L * D * L' * P 
-	sparse_matrix prod = L * D.asDiagonal() * L.transpose();
+	// Test: check that A is equal to  P' * L * D * L' * P
+	sparse_matrix LDLT   = L * D.asDiagonal() * L.transpose();
+	sparse_matrix PTLDLT = P.transpose() * LDLT;
+	sparse_matrix prod   = PTLDLT * P.transpose();
 	//
-	// Cannot seem to get this operation to work with sparse matrices
-	// prod  = P.transpose() * prod * P;
-	// For now, convert to dense matrices where it does work
 	dense_matrix temp = prod;
-	temp = P.transpose() * temp * P;
-	std::cout << "P'*L*D*L'*P =\n" << temp << std::endl;
-	//
-	// Test for A
-	dense_matrix B = Alow;
-	dense_matrix A = B + B.transpose();
-	for(size_t j = 0; j < nc; j++)
-		A(j, j) = A(j, j) / 2.0;
-	dense_matrix check(3,3);
-	check << 2, 0, 1, 0, 1, 0, 1, 0, 2;
-	ok = check == A;
+	dense_matrix A(3,3);
+	A << 2, 0, 1, 0, 1, 0, 1, 0, 2;
+	for(size_t i = 0; i < nc; i++)
+	{	for(size_t j = 0; j < nc; j++)
+			ok &= std::fabs( A(i, j) - temp(i, j) ) < eps;
+	}
 	// -----------------------------------------------------------------------
 	//
 	if( ok )
