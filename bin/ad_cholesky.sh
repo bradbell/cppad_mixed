@@ -59,6 +59,33 @@ namespace {
 		L                  =  ldlt_obj.matrixL() * D2.asDiagonal();
 		return true;
 	}
+
+	// convert ad_sparse_matrix -> sparse_matrix
+	sparse_matrix amat2dmat(const ad_sparse_matrix& amat)
+	{	size_t nr = size_t( amat.rows() );
+		size_t nc = size_t( amat.cols() );
+		//
+		// determine number of non-zeros in the columns of amat
+		Eigen::VectorXi nnz(nc);
+		for(size_t j = 0; j < nc; j++)
+		{	nnz[j] = 0;
+			for(ad_sparse_matrix::InnerIterator itr(amat, j); itr; ++itr)
+			{	nnz[j]++;
+			}
+		}
+		// set dmat to a double version of amat
+		sparse_matrix dmat(nr, nc);
+		dmat.reserve(nnz);
+		for(size_t j = 0; j < nc; j++)
+		{	for(ad_sparse_matrix::InnerIterator itr(amat, j); itr; ++itr)
+			{	CppAD::AD<double> av = itr.value();
+				av                   = Var2Par( av );
+				double            v  = Value( av );
+				dmat.insert( itr.row(), itr.col() ) = v;
+			}
+		}
+		return dmat;
+	}
 }
 
 int main()
@@ -78,30 +105,10 @@ int main()
 	aAlow.insert(2,0) = 1.0;
 	aAlow.insert(2,2) = 2.0;
 	//
-	// Step 1: determine number of non-zeros in the columns of aAlow
-	Eigen::VectorXi nnz(nc);
-	for(size_t j = 0; j < nc; j++)
-	{	nnz[j] = 0;
-		for(ad_sparse_matrix::InnerIterator itr(aAlow, j); itr; ++itr)
-		{	nnz[j]++;
-			assert( itr.row() >= itr.col() );
-		}
-	}
+	// Step 1: Convert Alow from AD to double
+	sparse_matrix Alow = amat2dmat(aAlow);
 	//
-	// Step 2: set Alow to a double version of aAlow
-	sparse_matrix Alow(nc, nc);
-	Alow.reserve(nnz);
-	for(size_t j = 0; j < nc; j++)
-	{	nnz[j] = 0;
-		for(ad_sparse_matrix::InnerIterator itr(aAlow, j); itr; ++itr)
-		{	CppAD::AD<double> av = itr.value();
-			av                   = Var2Par( av );
-			double            v  = Value( av );
-			Alow.insert( itr.row(), itr.col() ) = v;
-		}
-	}
-	//
-	// Step 3: Compute the factor L and permutation P for this Alow
+	// Step 2: Compute the factor L and permutation P for this Alow
 	sparse_matrix L;
 	perm_matrix   P;
 	ok &= factor(Alow, L, P);
