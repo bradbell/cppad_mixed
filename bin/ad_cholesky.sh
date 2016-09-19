@@ -32,14 +32,31 @@ cat << EOF > ad_cholesky.cpp
 # include <cppad/cppad.hpp>
 # include <iostream>
 
-
-int main()
-{	typedef Eigen::Matrix<
+namespace {
+	// define some types of matrices
+	typedef Eigen::Matrix<
 		double, Eigen::Dynamic, Eigen::Dynamic>        dense_matrix;
 	typedef Eigen::PermutationMatrix<
 		Eigen::Dynamic, Eigen::Dynamic>                perm_matrix;
 	typedef Eigen::SparseMatrix<double>                sparse_matrix;
 	typedef Eigen::SparseMatrix< CppAD::AD<double> >   ad_sparse_matrix;
+
+	// Object used for Cholesky factorization:
+	void factor(const sparse_matrix& Alow, sparse_matrix& L, perm_matrix& P)
+	{	static Eigen::SimplicialLDLT<sparse_matrix> ldlt_obj;
+		static bool first = true;
+		if( first )
+			ldlt_obj.analyzePattern( Alow );
+		ldlt_obj.factorize( Alow );
+		Eigen::VectorXd D2 = sqrt( ldlt_obj.vectorD().array() ).matrix();
+		P                  = ldlt_obj.permutationP();
+		L                  =  ldlt_obj.matrixL() * D2.asDiagonal();
+		return;
+	}
+}
+
+int main()
+{
 	//
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 	//
@@ -78,16 +95,15 @@ int main()
 		}
 	}
 	//
-	// Step 3: compute factorization
-	Eigen::SimplicialLDLT<sparse_matrix> ldlt( Alow );
-	perm_matrix P     = ldlt.permutationP();
-	sparse_matrix L   = ldlt.matrixL();
-	Eigen::VectorXd D = ldlt.vectorD();
+	// Step 3: Compute the factor L and permutation P for this Alow
+	sparse_matrix L;
+	perm_matrix   P;
+	factor(Alow, L, P);
 	// -----------------------------------------------------------------------
-	// Test: check that A is equal to  P' * L * D * L' * P
-	sparse_matrix LDLT   = L * D.asDiagonal() * L.transpose();
-	sparse_matrix PTLDLT = P.transpose() * LDLT;
-	sparse_matrix prod   = PTLDLT * P.transpose();
+	// Test: check that A is equal to  P' * L * L' * P
+	sparse_matrix LLT   = L * L.transpose();
+	sparse_matrix PTLLT = P.transpose() * LLT;
+	sparse_matrix prod   = PTLLT * P.transpose();
 	//
 	dense_matrix temp = prod;
 	dense_matrix A(3,3);
@@ -106,8 +122,8 @@ EOF
 set -v
 # ----------------------------------------------------------------------------
 g++ \
-	-I$HOME/prefix/eigen/include \
-	-I$HOME/prefix/cppad/include \
+	-I$HOME/prefix/cppad_mixed/include \
+	-I$HOME/prefix/cppad_mixed/eigen/include \
 	ad_cholesky.cpp -o ad_cholesky
 set +v
 if ./ad_cholesky
