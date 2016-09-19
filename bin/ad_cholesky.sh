@@ -42,16 +42,22 @@ namespace {
 	typedef Eigen::SparseMatrix< CppAD::AD<double> >   ad_sparse_matrix;
 
 	// Object used for Cholesky factorization:
-	void factor(const sparse_matrix& Alow, sparse_matrix& L, perm_matrix& P)
+	bool factor(const sparse_matrix& Alow, sparse_matrix& L, perm_matrix& P)
 	{	static Eigen::SimplicialLDLT<sparse_matrix> ldlt_obj;
 		static bool first = true;
 		if( first )
+		{	first = false;
 			ldlt_obj.analyzePattern( Alow );
+			if( ldlt_obj.info() != Eigen::Success )
+				return false;
+		}
 		ldlt_obj.factorize( Alow );
+		if( ldlt_obj.info() != Eigen::Success )
+			return false;
 		Eigen::VectorXd D2 = sqrt( ldlt_obj.vectorD().array() ).matrix();
 		P                  = ldlt_obj.permutationP();
 		L                  =  ldlt_obj.matrixL() * D2.asDiagonal();
-		return;
+		return true;
 	}
 }
 
@@ -98,7 +104,7 @@ int main()
 	// Step 3: Compute the factor L and permutation P for this Alow
 	sparse_matrix L;
 	perm_matrix   P;
-	factor(Alow, L, P);
+	ok &= factor(Alow, L, P);
 	// -----------------------------------------------------------------------
 	// Test: check that A is equal to  P' * L * L' * P
 	sparse_matrix LLT   = L * L.transpose();
