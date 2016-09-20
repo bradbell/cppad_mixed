@@ -48,16 +48,6 @@ namespace {
 	// Object used for Cholesky factorization:
 	static Eigen::SimplicialLDLT<sparse_matrix> ldlt_obj;
 
-	bool factor(const sparse_matrix& Alow, sparse_matrix& L, perm_matrix& P)
-	{	ldlt_obj.factorize( Alow );
-		if( ldlt_obj.info() != Eigen::Success )
-			return false;
-		Eigen::VectorXd D2 = sqrt( ldlt_obj.vectorD().array() ).matrix();
-		P                  = ldlt_obj.permutationP();
-		L                  =  ldlt_obj.matrixL() * D2.asDiagonal();
-		return true;
-	}
-
 	// convert ad_sparse_matrix -> sparse_matrix
 	sparse_matrix amat2dmat(const ad_sparse_matrix& amat)
 	{	size_t nr = size_t( amat.rows() );
@@ -83,6 +73,16 @@ namespace {
 			}
 		}
 		return dmat;
+	}
+
+	bool factor(const sparse_matrix& Alow, sparse_matrix& L, perm_matrix& P)
+	{	ldlt_obj.factorize( Alow );
+		if( ldlt_obj.info() != Eigen::Success )
+			return false;
+		Eigen::VectorXd D2 = sqrt( ldlt_obj.vectorD().array() ).matrix();
+		P                  = ldlt_obj.permutationP();
+		L                  =  ldlt_obj.matrixL() * D2.asDiagonal();
+		return true;
 	}
 
 	// set the sparsity pattern corresponding to a matrix
