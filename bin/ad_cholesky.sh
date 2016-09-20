@@ -30,6 +30,7 @@ cat << EOF > ad_cholesky.cpp
 # include <Eigen/SparseCore>
 # include <Eigen/SparseCholesky>
 # include <cppad/cppad.hpp>
+# include <cppad/mixed/sparse_mat_info.hpp>
 # include <iostream>
 
 namespace {
@@ -41,17 +42,14 @@ namespace {
 	typedef Eigen::SparseMatrix<double>                sparse_matrix;
 	typedef Eigen::SparseMatrix< CppAD::AD<double> >   ad_sparse_matrix;
 
+	// Sparsity pattern for Alow and L in column major order
+	CppAD::mixed::sparse_mat_info Alow_pattern, L_pattern;
+
 	// Object used for Cholesky factorization:
+	static Eigen::SimplicialLDLT<sparse_matrix> ldlt_obj;
+
 	bool factor(const sparse_matrix& Alow, sparse_matrix& L, perm_matrix& P)
-	{	static Eigen::SimplicialLDLT<sparse_matrix> ldlt_obj;
-		static bool first = true;
-		if( first )
-		{	first = false;
-			ldlt_obj.analyzePattern( Alow );
-			if( ldlt_obj.info() != Eigen::Success )
-				return false;
-		}
-		ldlt_obj.factorize( Alow );
+	{	ldlt_obj.factorize( Alow );
 		if( ldlt_obj.info() != Eigen::Success )
 			return false;
 		Eigen::VectorXd D2 = sqrt( ldlt_obj.vectorD().array() ).matrix();
@@ -86,6 +84,26 @@ namespace {
 		}
 		return dmat;
 	}
+
+	// set the sparsity pattern corresponding to a matrix
+	void set_pattern(
+		const sparse_matrix&            mat     ,
+		CppAD::mixed::sparse_mat_info&  pattern )
+	{	size_t nc = mat.cols();
+		assert( pattern.row.size() == 0 );
+		assert( pattern.col.size() == 0 );
+		for(size_t j = 0; j < nc; j++)
+		{	int previous = mat.rows();
+			for(sparse_matrix::InnerIterator itr(mat, j); itr; ++itr)
+			{	assert( itr.row() >= 0  && itr.row() < mat.rows());
+				assert( size_t(itr.col()) == j );
+				pattern.row.push_back( size_t( itr.row() ) );
+				pattern.col.push_back(j);
+				assert( previous == mat.rows() || previous < itr.row() );
+				previous = itr.row();
+			}
+		}
+	}
 }
 
 int main()
@@ -108,10 +126,33 @@ int main()
 	// Step 1: Convert Alow from AD to double
 	sparse_matrix Alow = amat2dmat(aAlow);
 	//
-	// Step 2: Compute the factor L and permutation P for this Alow
+	// Step 2: analyze the sparsity pattern
+	ldlt_obj.analyzePattern( Alow );
+	//
+	// Step 3: Compute the factor L and permutation P for this Alow
 	sparse_matrix L;
 	perm_matrix   P;
 	ok &= factor(Alow, L, P);
+	//
+	// Step 4: Set the sparsity pattern corresponding to Alow and L
+	set_pattern(Alow, Alow_pattern);
+	set_pattern(L,    L_pattern);
+	// -----------------------------------------------------------------------
+	// Test sparsity pattern for Alow is in column major order
+	ok &= Alow_pattern.row.size() == 4;
+	ok &= Alow_pattern.col.size() == 4;
+	//
+	ok &= Alow_pattern.row[0]     == 0;
+	ok &= Alow_pattern.col[0]     == 0;
+	//
+	ok &= Alow_pattern.row[1]     == 2;
+	ok &= Alow_pattern.col[1]     == 0;
+	//
+	ok &= Alow_pattern.row[2]     == 1;
+	ok &= Alow_pattern.col[2]     == 1;
+	//
+	ok &= Alow_pattern.row[3]     == 2;
+	ok &= Alow_pattern.col[3]     == 2;
 	// -----------------------------------------------------------------------
 	// Test: check that A is equal to  P' * L * L' * P
 	sparse_matrix LLT   = L * L.transpose();
