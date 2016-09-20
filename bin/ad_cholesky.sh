@@ -49,16 +49,16 @@ namespace {
 	// -----------------------------------------------------------------
 
 	// Number of non-zeros in each column of Alow (set once)
-	Eigen::VectorXi Alow_nnz;
+	Eigen::VectorXi Alow_nnz_;
 
 	// Object used for Cholesky factorization (analyzePattern once)
-	static Eigen::SimplicialLDLT<sparse_matrix> ldlt_obj;
+	static Eigen::SimplicialLDLT<sparse_matrix> ldlt_obj_;
 
 	// Number of non-zeros in each column of L (set once)
-	Eigen::VectorXi L_nnz;
+	Eigen::VectorXi L_nnz_;
 
 	// Sparsity pattern for Alow and L in column major order (set once)
-	CppAD::mixed::sparse_mat_info Alow_pattern, L_pattern;
+	CppAD::mixed::sparse_mat_info Alow_pattern_, L_pattern_;
 
 	// -----------------------------------------------------------------
 	// functions
@@ -101,12 +101,12 @@ namespace {
 	}
 
 	bool factor(const sparse_matrix& Alow, sparse_matrix& L, perm_matrix& P)
-	{	ldlt_obj.factorize( Alow );
-		if( ldlt_obj.info() != Eigen::Success )
+	{	ldlt_obj_.factorize( Alow );
+		if( ldlt_obj_.info() != Eigen::Success )
 			return false;
-		Eigen::VectorXd D2 = sqrt( ldlt_obj.vectorD().array() ).matrix();
-		P                  = ldlt_obj.permutationP();
-		L                  =  ldlt_obj.matrixL() * D2.asDiagonal();
+		Eigen::VectorXd D2 = sqrt( ldlt_obj_.vectorD().array() ).matrix();
+		P                  = ldlt_obj_.permutationP();
+		L                  =  ldlt_obj_.matrixL() * D2.asDiagonal();
 		return true;
 	}
 
@@ -148,42 +148,42 @@ int main()
 	aAlow.insert(2,0) = 1.0;
 	aAlow.insert(2,2) = 2.0;
 	//
-	// Step 1: Set Alow_nnz
-	Alow_nnz = get_nnz(aAlow);
+	// Step 1: Set Alow_nnz_
+	Alow_nnz_ = get_nnz(aAlow);
 	//
 	// Step 2: Convert Alow from AD to double
-	sparse_matrix Alow = amat2dmat(aAlow, Alow_nnz);
+	sparse_matrix Alow = amat2dmat(aAlow, Alow_nnz_);
 	//
 	// Step 3: analyze the sparsity pattern
-	ldlt_obj.analyzePattern( Alow );
+	ldlt_obj_.analyzePattern( Alow );
 	//
 	// Step 4: Compute the factor L and permutation P for this Alow
 	sparse_matrix L;
 	perm_matrix   P;
 	ok &= factor(Alow, L, P);
 	//
-	// Step 5: Set L_nnz
-	L_nnz = get_nnz(L);
+	// Step 5: Set L_nnz_
+	L_nnz_ = get_nnz(L);
 	//
 	// Step 6: Set the sparsity pattern corresponding to Alow and L
-	Alow_pattern = get_pattern(Alow);
-	L_pattern    = get_pattern(L);
+	Alow_pattern_ = get_pattern(Alow);
+	L_pattern_    = get_pattern(L);
 	// -----------------------------------------------------------------------
 	// Test sparsity pattern for Alow is in column major order
-	ok &= Alow_pattern.row.size() == 4;
-	ok &= Alow_pattern.col.size() == 4;
+	ok &= Alow_pattern_.row.size() == 4;
+	ok &= Alow_pattern_.col.size() == 4;
 	//
-	ok &= Alow_pattern.row[0]     == 0;
-	ok &= Alow_pattern.col[0]     == 0;
+	ok &= Alow_pattern_.row[0]     == 0;
+	ok &= Alow_pattern_.col[0]     == 0;
 	//
-	ok &= Alow_pattern.row[1]     == 2;
-	ok &= Alow_pattern.col[1]     == 0;
+	ok &= Alow_pattern_.row[1]     == 2;
+	ok &= Alow_pattern_.col[1]     == 0;
 	//
-	ok &= Alow_pattern.row[2]     == 1;
-	ok &= Alow_pattern.col[2]     == 1;
+	ok &= Alow_pattern_.row[2]     == 1;
+	ok &= Alow_pattern_.col[2]     == 1;
 	//
-	ok &= Alow_pattern.row[3]     == 2;
-	ok &= Alow_pattern.col[3]     == 2;
+	ok &= Alow_pattern_.row[3]     == 2;
+	ok &= Alow_pattern_.col[3]     == 2;
 	// -----------------------------------------------------------------------
 	// Test: check that A is equal to  P' * L * L' * P
 	sparse_matrix LLT   = L * L.transpose();
