@@ -34,7 +34,9 @@ cat << EOF > ad_cholesky.cpp
 # include <iostream>
 
 namespace {
+	// -----------------------------------------------------------------
 	// define some types of matrices
+	// -----------------------------------------------------------------
 	typedef Eigen::Matrix<
 		double, Eigen::Dynamic, Eigen::Dynamic>        dense_matrix;
 	typedef Eigen::PermutationMatrix<
@@ -42,26 +44,49 @@ namespace {
 	typedef Eigen::SparseMatrix<double>                sparse_matrix;
 	typedef Eigen::SparseMatrix< CppAD::AD<double> >   ad_sparse_matrix;
 
-	// Sparsity pattern for Alow and L in column major order
-	CppAD::mixed::sparse_mat_info Alow_pattern, L_pattern;
+	// -----------------------------------------------------------------
+	// data (in order that it is initialized)
+	// -----------------------------------------------------------------
 
-	// Object used for Cholesky factorization:
+	// Number of non-zeros in each column of Alow (set once)
+	Eigen::VectorXi Alow_nnz;
+
+	// Object used for Cholesky factorization (analyzePattern once)
 	static Eigen::SimplicialLDLT<sparse_matrix> ldlt_obj;
 
-	// convert ad_sparse_matrix -> sparse_matrix
-	sparse_matrix amat2dmat(const ad_sparse_matrix& amat)
-	{	size_t nr = size_t( amat.rows() );
-		size_t nc = size_t( amat.cols() );
-		//
-		// determine number of non-zeros in the columns of amat
+	// Number of non-zeros in each column of L (set once)
+	Eigen::VectorXi L_nnz;
+
+	// Sparsity pattern for Alow and L in column major order (set once)
+	CppAD::mixed::sparse_mat_info Alow_pattern, L_pattern;
+
+	// -----------------------------------------------------------------
+	// functions
+	// -----------------------------------------------------------------
+
+	// get the number of non-zeros corresponding to a matrix
+	template <class Eigen_sparse_matrix_type>
+	Eigen::VectorXi get_nnz(const Eigen_sparse_matrix_type& mat)
+	{	typedef typename Eigen_sparse_matrix_type::InnerIterator iterator;
+		size_t nc = size_t( mat.cols() );
 		Eigen::VectorXi nnz(nc);
 		for(size_t j = 0; j < nc; j++)
 		{	nnz[j] = 0;
-			for(ad_sparse_matrix::InnerIterator itr(amat, j); itr; ++itr)
+			for(iterator itr(mat, j); itr; ++itr)
 			{	nnz[j]++;
 			}
 		}
-		// set dmat to a double version of amat
+		return nnz;
+	}
+
+	// convert ad_sparse_matrix -> sparse_matrix
+	sparse_matrix amat2dmat(
+		const ad_sparse_matrix& amat  ,
+		const Eigen::VectorXi&  nnz   )
+	{	size_t nr = size_t( amat.rows() );
+		size_t nc = size_t( amat.cols() );
+		assert( size_t( nnz.size() ) == nc );
+		//
 		sparse_matrix dmat(nr, nc);
 		dmat.reserve(nnz);
 		for(size_t j = 0; j < nc; j++)
@@ -85,11 +110,10 @@ namespace {
 		return true;
 	}
 
-	// set the sparsity pattern corresponding to a matrix
-	void set_pattern(
-		const sparse_matrix&            mat     ,
-		CppAD::mixed::sparse_mat_info&  pattern )
+	// get the sparsity pattern corresponding to a matrix
+	CppAD::mixed::sparse_mat_info get_pattern(const sparse_matrix& mat)
 	{	size_t nc = mat.cols();
+		CppAD::mixed::sparse_mat_info pattern;
 		assert( pattern.row.size() == 0 );
 		assert( pattern.col.size() == 0 );
 		for(size_t j = 0; j < nc; j++)
@@ -103,6 +127,7 @@ namespace {
 				previous = itr.row();
 			}
 		}
+		return pattern;
 	}
 }
 
@@ -117,26 +142,32 @@ int main()
 	// AD version of lower triangle of the symmetric positive difinite matrix
 	// A = [ 2, 0, 1; 0, 1, 0; 1. 0, 2 ];
 	size_t nc = 3;
-	ad_sparse_matrix aAlow(nc,nc);
+	ad_sparse_matrix aAlow(nc, nc);
 	aAlow.insert(0,0) = 2.0;
 	aAlow.insert(1,1) = 1.0;
 	aAlow.insert(2,0) = 1.0;
 	aAlow.insert(2,2) = 2.0;
 	//
-	// Step 1: Convert Alow from AD to double
-	sparse_matrix Alow = amat2dmat(aAlow);
+	// Step 1: Set Alow_nnz
+	Alow_nnz = get_nnz(aAlow);
 	//
-	// Step 2: analyze the sparsity pattern
+	// Step 2: Convert Alow from AD to double
+	sparse_matrix Alow = amat2dmat(aAlow, Alow_nnz);
+	//
+	// Step 3: analyze the sparsity pattern
 	ldlt_obj.analyzePattern( Alow );
 	//
-	// Step 3: Compute the factor L and permutation P for this Alow
+	// Step 4: Compute the factor L and permutation P for this Alow
 	sparse_matrix L;
 	perm_matrix   P;
 	ok &= factor(Alow, L, P);
 	//
-	// Step 4: Set the sparsity pattern corresponding to Alow and L
-	set_pattern(Alow, Alow_pattern);
-	set_pattern(L,    L_pattern);
+	// Step 5: Set L_nnz
+	L_nnz = get_nnz(L);
+	//
+	// Step 6: Set the sparsity pattern corresponding to Alow and L
+	Alow_pattern = get_pattern(Alow);
+	L_pattern    = get_pattern(L);
 	// -----------------------------------------------------------------------
 	// Test sparsity pattern for Alow is in column major order
 	ok &= Alow_pattern.row.size() == 4;
