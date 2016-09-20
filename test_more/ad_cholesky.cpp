@@ -1,32 +1,13 @@
-#! /bin/bash -e
-# $Id$
-# ----------------------------------------------------------------------------
-# Test methods needed for AD Atomic Cholesky Factorzation
-# ----------------------------------------------------------------------------
-# cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-16 University of Washington
-#              (Bradley M. Bell bradbell@uw.edu)
-#
-# This program is distributed under the terms of the
-#	     GNU Affero General Public License version 3.0 or later
-# see http://www.gnu.org/licenses/agpl.txt
-# ---------------------------------------------------------------------------
-if [ "$0" != "bin/ad_cholesky.sh" ]
-then
-	echo "bin/ad_cholesky.sh: must be executed from its parent directory"
-	exit 1
-fi
-# -----------------------------------------------------------------------------
-set -v
-if [ ! -e build/ad_cholesky ]
-then
-	mkdir -p build/ad_cholesky
-fi
-cd build/ad_cholesky
-# ---------------------------------------------------------------------------
-set +v
-echo 'create build/ad_choleksy/ad_cholesky.cpp'
-cat << EOF > ad_cholesky.cpp
+// $Id:$
+/* --------------------------------------------------------------------------
+cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
+          Copyright (C) 2014-16 University of Washington
+             (Bradley M. Bell bradbell@uw.edu)
+
+This program is distributed under the terms of the
+	     GNU Affero General Public License version 3.0 or later
+see http://www.gnu.org/licenses/agpl.txt
+-------------------------------------------------------------------------- */
 # include <Eigen/SparseCore>
 # include <Eigen/SparseCholesky>
 # include <cppad/cppad.hpp>
@@ -131,7 +112,7 @@ namespace {
 	}
 }
 
-int main()
+bool ad_cholesky(void)
 {
 	//
 	double eps = 100. * std::numeric_limits<double>::epsilon();
@@ -198,24 +179,5 @@ int main()
 			ok &= std::fabs( A(i, j) - temp(i, j) ) < eps;
 	}
 	// -----------------------------------------------------------------------
-	//
-	if( ok )
-		return 0;
-	return 1;
+	return ok;
 }
-EOF
-set -v
-# ----------------------------------------------------------------------------
-g++ \
-	-I$HOME/prefix/cppad_mixed/include \
-	-I$HOME/prefix/cppad_mixed/eigen/include \
-	ad_cholesky.cpp -o ad_cholesky
-set +v
-if ./ad_cholesky
-then
-	echo 'ad_cholesky: OK'
-else
-	echo 'ad_choleksy: Error'
-fi
-# ----------------------------------------------------------------------------
-exit 0
