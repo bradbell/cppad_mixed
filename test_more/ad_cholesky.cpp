@@ -38,8 +38,14 @@ namespace {
 	// Number of non-zeros in each column of L (set once)
 	Eigen::VectorXi L_nnz_;
 
-	// Sparsity pattern for Alow and L in column major order (set once)
+	// Sparsity pattern for Alow, L in column major order (set once)
 	CppAD::mixed::sparse_mat_info Alow_pattern_, L_pattern_;
+
+	// Value of the permutation (set once)
+	perm_matrix P_;
+
+	// Forward and reverse values for Alow and L
+	CppAD::vector<sparse_matrix> f_Alow_, f_L_;
 
 	// -----------------------------------------------------------------
 	// functions
@@ -81,13 +87,15 @@ namespace {
 		return dmat;
 	}
 
+	// use values of elements in Alow to compute new values for L and P
+	// (Note that its is expected that P will not change)
 	bool factor(const sparse_matrix& Alow, sparse_matrix& L, perm_matrix& P)
 	{	ldlt_obj_.factorize( Alow );
 		if( ldlt_obj_.info() != Eigen::Success )
 			return false;
 		Eigen::VectorXd D2 = sqrt( ldlt_obj_.vectorD().array() ).matrix();
-		P                  = ldlt_obj_.permutationP();
 		L                  =  ldlt_obj_.matrixL() * D2.asDiagonal();
+		P                  = ldlt_obj_.permutationP();
 		return true;
 	}
 
@@ -109,6 +117,111 @@ namespace {
 			}
 		}
 		return pattern;
+	}
+
+	// CppAD forward mode for this operation
+	// (Only order zero implemented so far)
+	bool forward(
+		// lowest order Taylor coefficient we are evaluating
+		size_t                          p ,
+		// highest order Taylor coefficient we are evaluating
+		size_t                          q ,
+		// which components of x are variables
+		const CppAD::vector<bool>&      vx ,
+		// which components of y are variables
+		CppAD::vector<bool>&            vy ,
+		// tx [ j * (q+1) + k ] is x_j^k
+		const CppAD::vector<double>&    tx ,
+		// ty [ i * (q+1) + k ] is y_i^k
+		CppAD::vector<double>&          ty )
+	{	typedef typename sparse_matrix::InnerIterator iterator;
+		assert( p <= q );
+		assert( q == 0 );
+		//
+		size_t n_order = q + 1;
+		size_t nx      = Alow_pattern_.row.size();
+		size_t ny      = L_pattern_.row.size();
+		size_t nc      = Alow_nnz_.size();
+		assert( vx.size() == 0 || nx == vx.size() );
+		assert( vx.size() == 0 || ny == vy.size() );
+		assert( nx * n_order == tx.size() );
+		assert( ny * n_order == ty.size() );
+		// -------------------------------------------------------------------
+		// make sure f_Alow_ and f_L_ are large enough
+		assert( f_Alow_.size() == f_L_.size() );
+		if( f_Alow_.size() < n_order )
+		{	f_Alow_.resize(n_order);
+			f_L_.resize(n_order);
+			//
+			for(size_t k = 0; k < n_order; k++)
+			{	f_Alow_[k].setZero();
+				f_L_[k].setZero();
+				//
+				f_Alow_[k].resize(nc, nc);
+				f_L_[k].resize(nc, nc);
+				//
+				f_Alow_[k].reserve(Alow_nnz_);
+				f_L_[k].reserve(L_nnz_);
+				//
+				// indices for possibly non-zero elements in Alow
+				for(size_t ell = 0; ell < Alow_pattern_.row.size(); ell++)
+				{	size_t i = Alow_pattern_.row[ell];
+					size_t j = Alow_pattern_.col[ell];
+					f_Alow_[k].insert(i, j) = 0.;
+				}
+				//
+				// indices for possibly non-zero elements in L
+				for(size_t ell = 0; ell < L_pattern_.row.size(); ell++)
+				{	size_t i = L_pattern_.row[ell];
+					size_t j = L_pattern_.col[ell];
+					f_L_[k].insert(i, j) = 0.;
+				}
+			}
+		}
+		// -------------------------------------------------------------------
+		// unpack tx into f_Alow_
+		for(size_t k = 0; k < n_order; k++)
+		{	size_t index = 0;
+			// unpack Alow values for this order
+			for(size_t j = 0; j < nc; j++)
+			{	for(iterator itr(f_Alow_[k], j); itr; ++itr)
+				{	itr.valueRef() = tx[ index * n_order + k ];
+					index++;
+				}
+			}
+		}
+		// -------------------------------------------------------------------
+		// result value for order k
+		ldlt_obj_.factorize( f_Alow_[0] );
+		if( ldlt_obj_.info() != Eigen::Success )
+			return false;
+		Eigen::VectorXd D2 = sqrt( ldlt_obj_.vectorD().array() ).matrix();
+		f_L_[0]            =  ldlt_obj_.matrixL() * D2.asDiagonal();
+		assert( P_.indices() == ldlt_obj_.permutationP().indices() );
+		// -------------------------------------------------------------------
+		// pack f_L_ into ty
+		// -------------------------------------------------------------------
+		for(size_t k = 0; k < n_order; k++)
+		{	size_t index = 0;
+			for(size_t j = 0; j < nc; j++)
+			{	for(iterator itr(f_L_[k], j); itr; ++itr)
+					ty[ index * n_order + k ] = itr.value();
+			}
+		}
+		// -------------------------------------------------------------------
+		// check if we are computing vy
+		if( vx.size() == 0 )
+			return true;
+		// -------------------------------------------------------------------
+		// This is a very dumb algorithm that over estimates which elements
+		// of L are variables. 2DO: create a much better estimate
+		bool var = false;
+		for(size_t j = 0; j < nx; j++)
+			var |= vx[j];
+		for(size_t i = 0; i < ny; i++)
+			vy[i] = var;
+		//
+		return true;
 	}
 }
 
@@ -149,6 +262,9 @@ bool ad_cholesky(void)
 	// Step 6: Set the sparsity pattern corresponding to Alow and L
 	Alow_pattern_ = get_pattern(Alow);
 	L_pattern_    = get_pattern(L);
+	//
+	// Setp 7: Set the permutation (which should not change)
+	P_            = P;
 	// -----------------------------------------------------------------------
 	// Test sparsity pattern for Alow is in column major order
 	ok &= Alow_pattern_.row.size() == 4;
