@@ -18,13 +18,15 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 // -----------------------------------------------------------------
 // define some types of matrices
 // -----------------------------------------------------------------
-typedef Eigen::Matrix<
-	double, Eigen::Dynamic, Eigen::Dynamic>        dense_matrix;
 typedef Eigen::PermutationMatrix<
-	Eigen::Dynamic, Eigen::Dynamic>                perm_matrix;
-typedef Eigen::SparseMatrix<double>                sparse_matrix;
-typedef Eigen::SparseMatrix< CppAD::AD<double> >   ad_sparse_matrix;
-
+	Eigen::Dynamic, Eigen::Dynamic>                     perm_matrix;
+typedef Eigen::Matrix<
+	double, Eigen::Dynamic, Eigen::Dynamic>             dense_matrix;
+typedef Eigen::Matrix<
+	CppAD::AD<double>, Eigen::Dynamic, Eigen::Dynamic>  ad_dense_matrix;
+//
+typedef Eigen::SparseMatrix<double>                     sparse_matrix;
+typedef Eigen::SparseMatrix< CppAD::AD<double> >        ad_sparse_matrix;
 // -----------------------------------------------------------------
 // convert sparse_matrix -> ad_sparse_matrix
 // -----------------------------------------------------------------
@@ -159,27 +161,13 @@ public:
 			f_L_.resize(n_order);
 			//
 			for(size_t k = 0; k < n_order; k++)
-			{	f_Alow_[k].setZero();
-				f_L_[k].setZero();
-				//
-				f_Alow_[k].resize(nc, nc);
-				f_L_[k].resize(nc, nc);
-				//
+			{	f_Alow_[k].resize(nc, nc);
 				f_Alow_[k].reserve(Alow_nnz_);
-				f_L_[k].reserve(L_nnz_);
-				//
 				// indices for possibly non-zero elements in Alow
 				for(size_t ell = 0; ell < Alow_pattern_.row.size(); ell++)
 				{	size_t i = Alow_pattern_.row[ell];
 					size_t j = Alow_pattern_.col[ell];
-					f_Alow_[k].insert(i, j) = 0.;
-				}
-				//
-				// indices for possibly non-zero elements in L
-				for(size_t ell = 0; ell < L_pattern_.row.size(); ell++)
-				{	size_t i = L_pattern_.row[ell];
-					size_t j = L_pattern_.col[ell];
-					f_L_[k].insert(i, j) = 0.;
+					f_Alow_[k].insert(i, j) = 1.;
 				}
 			}
 		}
@@ -212,7 +200,9 @@ public:
 		{	size_t index = 0;
 			for(size_t j = 0; j < nc; j++)
 			{	for(iterator itr(f_L_[k], j); itr; ++itr)
-					ty[ index * n_order + k ] = itr.value();
+				{	ty[ index * n_order + k ] = itr.value();
+					++index;
+				}
 			}
 		}
 		// -------------------------------------------------------------------
@@ -282,13 +272,14 @@ public:
 		(*this)(ax, ay);
 		// -------------------------------------------------------------------
 		// unpack ay into aL
-		index = 0;
 		aL.resize(nc, nc);
+		index = 0;
 		for(size_t ell = 0; ell < ny; ell++)
 		{	size_t i = L_pattern_.row[ell];
 			size_t j = L_pattern_.col[ell];
 			aL.insert(i, j) = ay[ index++ ];
 		}
+		assert( index == ny );
 		return;
 	}
 }; // END_ATOMIC_AD_CHOLESKY
@@ -305,8 +296,8 @@ bool ad_cholesky(void)
 	size_t nc = 3;
 	sparse_matrix Alow(nc, nc);
 	Alow.insert(0,0) = 2.0;
-	Alow.insert(1,1) = 1.0;
 	Alow.insert(2,0) = 1.0;
+	Alow.insert(1,1) = 1.0;
 	Alow.insert(2,2) = 2.0;
 	//
 	// object that computes the choleksy factor of a matrix
@@ -334,16 +325,17 @@ bool ad_cholesky(void)
 	ok &= cholesky.Alow_pattern_.col[3]     == 2;
 	// -----------------------------------------------------------------------
 	// Test: check that A is equal to  P' * L * L' * P
-	sparse_matrix LLT   = cholesky.L_ * cholesky.L_.transpose();
-	sparse_matrix PTLLT = cholesky.P_.transpose() * LLT;
-	sparse_matrix prod   = PTLLT * cholesky.P_.transpose();
+	ad_sparse_matrix LLT   = aLow * aLow.transpose();
+	ad_sparse_matrix PTLLT = cholesky.P_.transpose() * LLT;
+	ad_sparse_matrix prod   = PTLLT * cholesky.P_.transpose();
 	//
-	dense_matrix temp = prod;
+	ad_dense_matrix temp = prod;
 	dense_matrix A(3,3);
 	A << 2, 0, 1, 0, 1, 0, 1, 0, 2;
 	for(size_t i = 0; i < nc; i++)
 	{	for(size_t j = 0; j < nc; j++)
-			ok &= std::fabs( A(i, j) - temp(i, j) ) < eps;
+		{	ok &= std::fabs( A(i, j) - Value( temp(i, j) ) ) < eps;
+		}
 	}
 	// -----------------------------------------------------------------------
 	ok &= cholesky.ok_;
