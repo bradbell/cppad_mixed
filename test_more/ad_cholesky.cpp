@@ -25,6 +25,27 @@ typedef Eigen::PermutationMatrix<
 typedef Eigen::SparseMatrix<double>                sparse_matrix;
 typedef Eigen::SparseMatrix< CppAD::AD<double> >   ad_sparse_matrix;
 
+// -----------------------------------------------------------------
+// convert sparse_matrix -> ad_sparse_matrix
+// -----------------------------------------------------------------
+ad_sparse_matrix mat2admat(
+	const sparse_matrix&    mat   ,
+	const Eigen::VectorXi&  nnz   )
+{	size_t nr = size_t( mat.rows() );
+	size_t nc = size_t( mat.cols() );
+	assert( size_t( nnz.size() ) == nc );
+	//
+	ad_sparse_matrix amat(nr, nc);
+	amat.reserve(nnz);
+	for(size_t j = 0; j < nc; j++)
+	{	for(sparse_matrix::InnerIterator itr(mat, j); itr; ++itr)
+		{	CppAD::AD<double> av = itr.value();
+			amat.insert( itr.row(), itr.col() ) = av;
+		}
+	}
+	return amat;
+}
+// -----------------------------------------------------------------
 class atomic_ad_cholesky : public CppAD::atomic_base<double> {
 public:
 	// -----------------------------------------------------------------
@@ -69,27 +90,6 @@ public:
 			}
 		}
 		return nnz;
-	}
-	// -----------------------------------------------------------------
-	// convert ad_sparse_matrix -> sparse_matrix
-	sparse_matrix amat2dmat(
-		const ad_sparse_matrix& amat  ,
-		const Eigen::VectorXi&  nnz   )
-	{	size_t nr = size_t( amat.rows() );
-		size_t nc = size_t( amat.cols() );
-		assert( size_t( nnz.size() ) == nc );
-		//
-		sparse_matrix dmat(nr, nc);
-		dmat.reserve(nnz);
-		for(size_t j = 0; j < nc; j++)
-		{	for(ad_sparse_matrix::InnerIterator itr(amat, j); itr; ++itr)
-			{	CppAD::AD<double> av = itr.value();
-				av                   = Var2Par( av );
-				double            v  = Value( av );
-				dmat.insert( itr.row(), itr.col() ) = v;
-			}
-		}
-		return dmat;
 	}
 	// -----------------------------------------------------------------
 	// use values of elements in Alow to compute new values for L and P
@@ -199,7 +199,9 @@ public:
 		// result value for order k
 		ldlt_obj_.factorize( f_Alow_[0] );
 		if( ldlt_obj_.info() != Eigen::Success )
+		{	ok_ = false;
 			return false;
+		}
 		Eigen::VectorXd D2 = sqrt( ldlt_obj_.vectorD().array() ).matrix();
 		f_L_[0]            =  ldlt_obj_.matrixL() * D2.asDiagonal();
 		assert( P_.indices() == ldlt_obj_.permutationP().indices() );
@@ -251,6 +253,44 @@ public:
 		L_nnz_      = get_nnz(L_);
 		L_pattern_  = get_pattern(L_);
 	}
+	// -----------------------------------------------------------------
+	// user AD version of atomic Cholesky factorization
+	void ad(
+		const ad_sparse_matrix& aAlow  ,
+		ad_sparse_matrix&       aL     )
+	{	// -----------------------------------------------------------
+		// packed version of Alow
+		size_t nc = Alow_nnz_.size();
+		size_t nx = Alow_pattern_.row.size();
+		assert( nc == size_t( aAlow.rows() ) );
+		assert( nc == size_t( aAlow.cols() ) );
+		CppAD::vector< CppAD::AD<double> > ax( nx );
+		size_t index = 0;
+		for(size_t j = 0; j < nc; j++)
+		{	for(ad_sparse_matrix::InnerIterator itr(aAlow, j); itr; ++itr)
+			{	assert( Alow_pattern_.row[index] == size_t( itr.row() ) );
+				assert( Alow_pattern_.col[index] == size_t( itr.col() ) );
+				ax[ index ] = itr.value();
+				++index;
+			}
+		}
+		assert( index == nx );
+		// -------------------------------------------------------------------
+		// make call to packed vector verison of the atomic function
+		size_t ny = L_pattern_.row.size();
+		CppAD::vector< CppAD::AD<double> > ay( ny );
+		(*this)(ax, ay);
+		// -------------------------------------------------------------------
+		// unpack ay into aL
+		index = 0;
+		aL.resize(nc, nc);
+		for(size_t ell = 0; ell < ny; ell++)
+		{	size_t i = L_pattern_.row[ell];
+			size_t j = L_pattern_.col[ell];
+			aL.insert(i, j) = ay[ index++ ];
+		}
+		return;
+	}
 }; // END_ATOMIC_AD_CHOLESKY
 
 } // END_EMPTY_NAMESPACE
@@ -271,7 +311,11 @@ bool ad_cholesky(void)
 	//
 	// object that computes the choleksy factor of a matrix
 	atomic_ad_cholesky cholesky( Alow );
-	ok &= cholesky.ok_;
+	//
+	// compute the Choleksy factorization
+	ad_sparse_matrix aAlow, aLow;
+	aAlow = mat2admat( Alow , cholesky.Alow_nnz_ );
+	cholesky.ad(aAlow, aLow);
 	// -----------------------------------------------------------------------
 	// Test sparsity pattern for Alow is in column major order
 	ok &= cholesky.Alow_pattern_.row.size() == 4;
@@ -302,5 +346,6 @@ bool ad_cholesky(void)
 			ok &= std::fabs( A(i, j) - temp(i, j) ) < eps;
 	}
 	// -----------------------------------------------------------------------
+	ok &= cholesky.ok_;
 	return ok;
 }
