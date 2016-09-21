@@ -48,6 +48,26 @@ ad_sparse_matrix mat2admat(
 	return amat;
 }
 // -----------------------------------------------------------------
+// convert adsparse_matrix -> sparse_matrix
+// -----------------------------------------------------------------
+sparse_matrix admat2mat(
+	const ad_sparse_matrix& amat   ,
+	const Eigen::VectorXi&  nnz   )
+{	size_t nr = size_t( amat.rows() );
+	size_t nc = size_t( amat.cols() );
+	assert( size_t( nnz.size() ) == nc );
+	//
+	sparse_matrix mat(nr, nc);
+	mat.reserve(nnz);
+	for(size_t j = 0; j < nc; j++)
+	{	for(ad_sparse_matrix::InnerIterator itr(amat, j); itr; ++itr)
+		{	CppAD::AD<double> av = itr.value();
+			mat.insert( itr.row(), itr.col() ) = Value( av );
+		}
+	}
+	return mat;
+}
+// -----------------------------------------------------------------
 class atomic_ad_cholesky : public CppAD::atomic_base<double> {
 public:
 	// -----------------------------------------------------------------
@@ -325,16 +345,17 @@ bool ad_cholesky(void)
 	ok &= cholesky.Alow_pattern_.col[3]     == 2;
 	// -----------------------------------------------------------------------
 	// Test: check that A is equal to  P' * L * L' * P
-	ad_sparse_matrix LLT   = aLow * aLow.transpose();
-	ad_sparse_matrix PTLLT = cholesky.P_.transpose() * LLT;
-	ad_sparse_matrix prod   = PTLLT * cholesky.P_.transpose();
+	sparse_matrix L     = admat2mat( aLow , cholesky.L_nnz_ );
+	sparse_matrix LLT   = L * L.transpose();
+	sparse_matrix PTLLT = cholesky.P_.transpose() * LLT;
+	sparse_matrix prod  = PTLLT * cholesky.P_.transpose();
 	//
-	ad_dense_matrix temp = prod;
+	dense_matrix temp = prod;
 	dense_matrix A(3,3);
 	A << 2, 0, 1, 0, 1, 0, 1, 0, 2;
 	for(size_t i = 0; i < nc; i++)
 	{	for(size_t j = 0; j < nc; j++)
-		{	ok &= std::fabs( A(i, j) - Value( temp(i, j) ) ) < eps;
+		{	ok &= std::fabs( A(i, j) - temp(i, j) ) < eps;
 		}
 	}
 	// -----------------------------------------------------------------------
