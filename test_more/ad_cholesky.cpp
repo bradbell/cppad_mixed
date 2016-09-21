@@ -30,32 +30,31 @@ public:
 	// -----------------------------------------------------------------
 	// data (in order that it is initialized)
 	// -----------------------------------------------------------------
-	// Number of non-zeros in each column of Alow (set once)
-	Eigen::VectorXi Alow_nnz_;
+	// OK flag
+	bool ok_;
+	//
+	// Number of non-zeros and sparsity pattern for Alow (set by constructor)
+	Eigen::VectorXi               Alow_nnz_;
+	CppAD::mixed::sparse_mat_info Alow_pattern_;
 
-	// Object used for Cholesky factorization (analyzePattern once)
+	// Object used for Cholesky factorization
+	// (analyzePattern by constructor only)
 	Eigen::SimplicialLDLT<sparse_matrix> ldlt_obj_;
 
-	// Number of non-zeros in each column of L (set once)
-	Eigen::VectorXi L_nnz_;
-
-	// Sparsity pattern for Alow, L in column major order (set once)
-	CppAD::mixed::sparse_mat_info Alow_pattern_, L_pattern_;
-
-	// Value of the permutation (set once)
+	// Value of the permutation matrix (set by constructor)
 	perm_matrix P_;
+
+	// Value of the Cholesky factor (corresponding to constructor call)
+	sparse_matrix L_;
+
+	// Number of non-zeros and sparsity pattern for L (set by constructor)
+	Eigen::VectorXi               L_nnz_;
+	CppAD::mixed::sparse_mat_info L_pattern_;
 
 	// Forward and reverse values for Alow and L
 	CppAD::vector<sparse_matrix> f_Alow_, f_L_;
 	// -----------------------------------------------------------------
 	// functions
-	// -----------------------------------------------------------------
-	// constructor
-	atomic_ad_cholesky(void) : CppAD::atomic_base<double> (
-		"atomic_ad_cholesky",
-		CppAD::atomic_base<double>::set_sparsity_enum
-	)
-	{ }
 	// -----------------------------------------------------------------
 	// get the number of non-zeros corresponding to a matrix
 	template <class Eigen_sparse_matrix_type>
@@ -229,6 +228,29 @@ public:
 		//
 		return true;
 	}
+	// -----------------------------------------------------------------
+	// constructor
+	atomic_ad_cholesky(const sparse_matrix& Alow )
+	: CppAD::atomic_base<double> (
+		"atomic_ad_cholesky",
+		CppAD::atomic_base<double>::set_sparsity_enum
+	)
+	{	ok_ = true;
+		//
+		// Step 1: Set Alow_nnz_ and Alow_pattern_
+		Alow_nnz_     = get_nnz(Alow);
+		Alow_pattern_ = get_pattern(Alow);
+		//
+		// Step 2: analyze the sparsity pattern
+		ldlt_obj_.analyzePattern( Alow );
+		//
+		// Step 3: Compute the factor L and permutation P for this Alow
+		ok_ &= factor(Alow, L_, P_);
+		//
+		// Step 4: Set L_nnz_ and L_pattern_
+		L_nnz_      = get_nnz(L_);
+		L_pattern_  = get_pattern(L_);
+	}
 }; // END_ATOMIC_AD_CHOLESKY
 
 } // END_EMPTY_NAMESPACE
@@ -236,43 +258,20 @@ public:
 bool ad_cholesky(void)
 {	bool ok = true;
 	//
-	// object that computes the choleksy factor of a matrix
-	atomic_ad_cholesky cholesky;
-	//
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 	//
 	// AD version of lower triangle of the symmetric positive difinite matrix
 	// A = [ 2, 0, 1; 0, 1, 0; 1. 0, 2 ];
 	size_t nc = 3;
-	ad_sparse_matrix aAlow(nc, nc);
-	aAlow.insert(0,0) = 2.0;
-	aAlow.insert(1,1) = 1.0;
-	aAlow.insert(2,0) = 1.0;
-	aAlow.insert(2,2) = 2.0;
+	sparse_matrix Alow(nc, nc);
+	Alow.insert(0,0) = 2.0;
+	Alow.insert(1,1) = 1.0;
+	Alow.insert(2,0) = 1.0;
+	Alow.insert(2,2) = 2.0;
 	//
-	// Step 1: Set Alow_nnz_
-	cholesky.Alow_nnz_ = cholesky.get_nnz(aAlow);
-	//
-	// Step 2: Convert Alow from AD to double
-	sparse_matrix Alow = cholesky.amat2dmat(aAlow, cholesky.Alow_nnz_);
-	//
-	// Step 3: analyze the sparsity pattern
-	cholesky.ldlt_obj_.analyzePattern( Alow );
-	//
-	// Step 4: Compute the factor L and permutation P for this Alow
-	sparse_matrix L;
-	perm_matrix   P;
-	ok &= cholesky.factor(Alow, L, P);
-	//
-	// Step 5: Set L_nnz_
-	cholesky.L_nnz_ = cholesky.get_nnz(L);
-	//
-	// Step 6: Set the sparsity pattern corresponding to Alow and L
-	cholesky.Alow_pattern_ = cholesky.get_pattern(Alow);
-	cholesky.L_pattern_    = cholesky.get_pattern(L);
-	//
-	// Setp 7: Set the permutation (which should not change)
-	cholesky.P_            = P;
+	// object that computes the choleksy factor of a matrix
+	atomic_ad_cholesky cholesky( Alow );
+	ok &= cholesky.ok_;
 	// -----------------------------------------------------------------------
 	// Test sparsity pattern for Alow is in column major order
 	ok &= cholesky.Alow_pattern_.row.size() == 4;
@@ -291,9 +290,9 @@ bool ad_cholesky(void)
 	ok &= cholesky.Alow_pattern_.col[3]     == 2;
 	// -----------------------------------------------------------------------
 	// Test: check that A is equal to  P' * L * L' * P
-	sparse_matrix LLT   = L * L.transpose();
-	sparse_matrix PTLLT = P.transpose() * LLT;
-	sparse_matrix prod   = PTLLT * P.transpose();
+	sparse_matrix LLT   = cholesky.L_ * cholesky.L_.transpose();
+	sparse_matrix PTLLT = cholesky.P_.transpose() * LLT;
+	sparse_matrix prod   = PTLLT * cholesky.P_.transpose();
 	//
 	dense_matrix temp = prod;
 	dense_matrix A(3,3);
