@@ -306,53 +306,92 @@ public:
 
 } // END_EMPTY_NAMESPACE
 
+/*
+$begin ad_cholesky.cpp$$
+
+$section Sparse Atomic AD Cholesky Factorization: Example and Test$$
+
+$head Problem$$
+We are given the function $latex A : \B{R}^3 \rightarrow \B{R}^{3 \times 3}$$
+defined by
+$latex \[
+	A(x) = \left( \begin{array}{ccc}
+		x_0 & 0    & x_1 \\
+		0   & x_1  & 0   \\
+		x_1 & 0    & x_2
+	\end{array} \right)
+\] $$
+The leading princial minors of this matrix are
+$latex x_0$$,
+$latex x_0 x_1$$,
+$latex x_0 x_1 x_2 - x_1 x_1 x_1$$,
+If all these minors are positive, the matrix $latex A(x)$$ is
+positive definite.
+
+$end
+*/
+
 bool ad_cholesky(void)
-{	bool ok = true;
-	//
+{	using CppAD::AD;
+	bool ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 	//
-	// AD version of lower triangle of the symmetric positive difinite matrix
-	// A = [ 2, 0, 1; 0, 1, 0; 1. 0, 2 ];
+	// create ad_cholesky object
 	size_t nc = 3;
-	sparse_matrix Alow(nc, nc);
-	Alow.insert(0,0) = 2.0;
-	Alow.insert(2,0) = 1.0;
-	Alow.insert(1,1) = 1.0;
-	Alow.insert(2,2) = 2.0;
+	sparse_matrix Blow(nc, nc);
+	Blow.insert(0,0) = 1.0;
+	Blow.insert(2,0) = 1.0;
+	Blow.insert(1,1) = 1.0;
+	Blow.insert(2,2) = 2.0;
+	atomic_ad_cholesky cholesky( Blow );
 	//
-	// object that computes the choleksy factor of a matrix
-	atomic_ad_cholesky cholesky( Alow );
+	// Independent variables
+	size_t nx = 3;
+	CppAD::vector< AD<double> > ax(nx);
+	ax[0] = 2.0;
+	ax[1] = 1.0;
+	ax[2] = 3.0;
+	CppAD::Independent( ax );
 	//
-	// compute the Choleksy factorization
-	ad_sparse_matrix aAlow, aLow;
-	aAlow = mat2admat( Alow , cholesky.Alow_nnz_ );
-	cholesky.ad(aAlow, aLow);
-	// -----------------------------------------------------------------------
-	// Test sparsity pattern for Alow is in column major order
-	ok &= cholesky.Alow_pattern_.row.size() == 4;
-	ok &= cholesky.Alow_pattern_.col.size() == 4;
+	// Lower triangle of symmetric matrix with same sparsity pattern as B
+	ad_sparse_matrix aAlow(nc, nc);
+	aAlow.insert(0,0) = ax[0];
+	aAlow.insert(2,0) = ax[1];
+	aAlow.insert(1,1) = ax[1];
+	aAlow.insert(2,2) = ax[2];
 	//
-	ok &= cholesky.Alow_pattern_.row[0]     == 0;
-	ok &= cholesky.Alow_pattern_.col[0]     == 0;
+	// compute the Choleksy factorization of A
+	ad_sparse_matrix aL;
+	cholesky.ad(aAlow, aL);
 	//
-	ok &= cholesky.Alow_pattern_.row[1]     == 2;
-	ok &= cholesky.Alow_pattern_.col[1]     == 0;
+	// diagonal of L
+	Eigen::Matrix< AD<double> , Eigen::Dynamic , 1 > D = aL.diagonal();
 	//
-	ok &= cholesky.Alow_pattern_.row[2]     == 1;
-	ok &= cholesky.Alow_pattern_.col[2]     == 1;
+	// product of diagonal elements of L
+	AD<double> p = 1.0;
+	for(size_t j = 0; j < nc; j++)
+		p *= D[j];
 	//
-	ok &= cholesky.Alow_pattern_.row[3]     == 2;
-	ok &= cholesky.Alow_pattern_.col[3]     == 2;
-	// -----------------------------------------------------------------------
-	// Test: check that A is equal to  P' * L * L' * P
-	sparse_matrix L     = admat2mat( aLow , cholesky.L_nnz_ );
+	// determinant of A
+	CppAD::vector< AD<double> > ay(1);
+	ay[0] = p * p;
+	//
+	// f(x) = det[ A(x) ]
+	CppAD::ADFun<double> f(ax, ay);
+	//
+	// Check the determinant
+	AD<double> acheck = ax[0] * ax[1] * ax[2] - ax[1] * ax[1] * ax[1];
+	ok &= CppAD::abs( acheck - ay[0] ) < eps;
+	//
+	// Check that A is equal to  P' * L * L' * P
+	sparse_matrix L     = admat2mat( aL , cholesky.L_nnz_ );
 	sparse_matrix LLT   = L * L.transpose();
 	sparse_matrix PTLLT = cholesky.P_.transpose() * LLT;
 	sparse_matrix prod  = PTLLT * cholesky.P_.transpose();
 	//
 	dense_matrix temp = prod;
 	dense_matrix A(3,3);
-	A << 2, 0, 1, 0, 1, 0, 1, 0, 2;
+	A << 2, 0, 1, 0, 1, 0, 1, 0, 3;
 	for(size_t i = 0; i < nc; i++)
 	{	for(size_t j = 0; j < nc; j++)
 		{	ok &= std::fabs( A(i, j) - temp(i, j) ) < eps;
