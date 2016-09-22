@@ -29,26 +29,6 @@ typedef Eigen::Matrix<double, Dynamic, Dynamic>           dense_d_matrix;
 typedef Eigen::SparseMatrix<double>                       sparse_d_matrix;
 typedef Eigen::SparseMatrix< AD<double> >                 sparse_ad_matrix;
 // -----------------------------------------------------------------
-// convert sparse_ad_matrix -> sparse_d_matrix
-// -----------------------------------------------------------------
-sparse_d_matrix admat2mat(
-	const sparse_ad_matrix& amat   ,
-	const s_vector&         nnz   )
-{	size_t nr = size_t( amat.rows() );
-	size_t nc = size_t( amat.cols() );
-	assert( size_t( nnz.size() ) == nc );
-	//
-	sparse_d_matrix mat(nr, nc);
-	mat.reserve(nnz);
-	for(size_t j = 0; j < nc; j++)
-	{	for(sparse_ad_matrix::InnerIterator itr(amat, j); itr; ++itr)
-		{	AD<double> av = itr.value();
-			mat.insert( itr.row(), itr.col() ) = Value( av );
-		}
-	}
-	return mat;
-}
-// -----------------------------------------------------------------
 class atomic_ad_cholesky : public CppAD::atomic_base<double> {
 public:
 	// -----------------------------------------------------------------
@@ -318,7 +298,7 @@ $end
 bool ad_cholesky(void)
 {	bool ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
-	//
+	// --------------------------------------------------------------------
 	// create ad_cholesky object
 	size_t nc = 3;
 	sparse_d_matrix Blow(nc, nc);
@@ -327,11 +307,13 @@ bool ad_cholesky(void)
 	Blow.insert(1,1) = 1.0;
 	Blow.insert(2,2) = 2.0;
 	atomic_ad_cholesky cholesky( Blow );
+	// ----------------------------------------------------------------------
+	// Create function object corresponding to f(x)
 	//
 	// Independent variables
 	size_t nx = 3;
 	ad_vector ax(nx);
-	ax[0] = 2.0;
+	ax[0] = 1.0;
 	ax[1] = 1.0;
 	ax[2] = 3.0;
 	CppAD::Independent( ax );
@@ -361,26 +343,18 @@ bool ad_cholesky(void)
 	//
 	// f(x) = det[ A(x) ]
 	CppAD::ADFun<double> f(ax, ay);
-	//
-	// Check the determinant
-	AD<double> acheck = ax[0] * ax[1] * ax[2] - ax[1] * ax[1] * ax[1];
-	ok &= CppAD::abs( acheck - ay[0] ) < eps;
-	//
-	// Check that A is equal to  P' * L * L' * P
-	sparse_d_matrix L     = admat2mat( aL , cholesky.L_nnz_ );
-	sparse_d_matrix LLT   = L * L.transpose();
-	sparse_d_matrix PTLLT = cholesky.P_.transpose() * LLT;
-	sparse_d_matrix prod  = PTLLT * cholesky.P_.transpose();
-	//
-	dense_d_matrix temp = prod;
-	dense_d_matrix A(3,3);
-	A << 2, 0, 1, 0, 1, 0, 1, 0, 3;
-	for(size_t i = 0; i < nc; i++)
-	{	for(size_t j = 0; j < nc; j++)
-		{	ok &= std::fabs( A(i, j) - temp(i, j) ) < eps;
-		}
-	}
+	// ----------------------------------------------------------------------
+	// Test zero order forward mode
+	d_vector x(nx), y(1);
+	x[0] = 1.0;
+	x[1] = 0.5;
+	x[2] = 2.0;
+	y    = f.Forward(0, x);
+	double check = x[0] * x[1] * x[2] - x[1] * x[1] * x[1];
+	ok          &= CppAD::NearEqual(y[0], check, eps, eps );
 	// -----------------------------------------------------------------------
+	// check for any errors during use of cholesky
 	ok &= cholesky.ok_;
+	// -----------------------------------------------------------------------
 	return ok;
 }
