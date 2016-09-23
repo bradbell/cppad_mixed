@@ -48,7 +48,7 @@ then
 else
 	libdir='lib'
 fi
-export PKG_CONFIG_PATH=$ipopt_prefix/$libdir/pkgconfig
+export PKG_CONFIG_PATH=$ipopt_prefix.$build_type/$libdir/pkgconfig
 # --------------------------------------------------------------------------
 if [ ! -e build.$build_type/external ]
 then
@@ -89,8 +89,8 @@ cd build
 cat << EOF > config.sh
 ../configure \\
 	$build_type_flag \\
-	--prefix=$ipopt_prefix \\
-	--libdir=$ipopt_prefix/$libdir \\
+	--prefix=$ipopt_prefix.$build_type \\
+	--libdir=$ipopt_prefix.$build_type/$libdir \\
 	--with-blas-lib="-lblas" \\
 	--with-lapack-lib="-llapack" \\
 	coin_skip_warn_cxxflags=yes

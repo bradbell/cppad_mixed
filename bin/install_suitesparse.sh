@@ -20,13 +20,13 @@ then
 	echo "$program: must be executed from its parent directory"
 	exit 1
 fi
-if [ "$1" != 'debug' ] && [ "$1" != 'release' ]
+build_type="$1"
+if [ "$build_type" != 'debug' ] && [ "$build_type" != 'release' ]
 then
 	echo 'bin/install_suitesparse.sh: build_type'
 	echo 'where build_type is debug or release'
 	exit 1
 fi
-build_type="$1"
 # --------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
@@ -37,11 +37,11 @@ echo_eval() {
 tarball='SuiteSparse-4.4.3.tar.gz'
 web_page='http://faculty.cse.tamu.edu/davis/SuiteSparse'
 # --------------------------------------------------------------------------
-if [ ! -e build/external ]
+if [ ! -e build.$build_type/external ]
 then
-	mkdir -p build/external
+	mkdir -p build.$build_type/external
 fi
-echo_eval cd build/external
+echo_eval cd build.$build_type/external
 # -----------------------------------------------------------------------------
 if [ ! -e $tarball ]
 then
@@ -54,10 +54,11 @@ fi
 echo_eval tar -xzf $tarball
 cd SuiteSparse
 # -----------------------------------------------------------------------------
-sed \
-	-e "s|/usr/local/|$suitesparse_prefix/|" \
-	-e 's|-lopenblas|-lblas|' \
-	-i.bak SuiteSparse_config/SuiteSparse_config.mk
+sed -e \
+"s|^\( *INSTALL_INCLUDE *\)=.*|\1= $suitesparse_prefix.$build_type/include|" \
+-e "s|^\( *INSTALL_LIB *\)=.*|\1= $suitesparse_prefix.$build_type/lib|" \
+-e 's|^\( *BLAS *\)=.*|\1= -lblas|' \
+-i.bak SuiteSparse_config/SuiteSparse_config.mk
 #
 if [ "$build_type" == 'debug' ]
 then

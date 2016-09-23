@@ -64,12 +64,12 @@ echo_eval cd build
 # --------------------------------------------------------------------------
 echo_eval cmake \
 	-Wno-dev \
-	-DCMAKE_INSTALL_PREFIX=$eigen_prefix \
+	-DCMAKE_INSTALL_PREFIX=$eigen_prefix.$build_type \
 	-DCMAKE_BUILD_TYPE=$build_type \
 	..
 echo_eval make install
 # --------------------------------------------------------------------------
-include_dir="$eigen_prefix/include"
+include_dir="$eigen_prefix.$build_type/include"
 if [ ! -h $include_dir/Eigen ]
 then
 	echo_eval ln -s $include_dir/eigen3/Eigen $include_dir/Eigen
