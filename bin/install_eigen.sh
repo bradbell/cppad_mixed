@@ -20,13 +20,9 @@ then
 	echo 'bin/install_eigen.sh: must be executed from its parent directory'
 	exit 1
 fi
-if [ "$1" == 'debug' ]
+build_type="$1"
+if [ "$build_type" != 'debug' ] && [ "$build_type" != 'release' ]
 then
-	build_type='debug'
-elif [ "$1" == 'release' ]
-then
-	build_type='release'
-else
 	echo 'bin/install_eigen.sh: build_type'
 	echo 'where build_type is debug or release'
 	exit 1
@@ -58,8 +54,8 @@ then
 fi
 #
 echo_eval tar -xzf eigen-$version.tar.gz
-git_name=`ls | grep eigen-eigen`
-echo_eval mv $git_name eigen-$version
+tar_name=`ls | grep eigen-eigen`
+echo_eval mv $tar_name eigen-$version
 # --------------------------------------------------------------------------
 echo_eval cd eigen-$version
 #

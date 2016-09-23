@@ -19,12 +19,13 @@ then
 	echo 'bin/install_ipopt.sh: must be executed from its parent directory'
 	exit 1
 fi
-if [ "$1" == 'debug' ]
+build_type="$1"
+if [ "$build_type" == 'debug' ]
 then
-	build_type='--enable-debug'
-elif [ "$1" == 'release' ]
+	build_type_flag='--enable-debug'
+elif [ "$build_type" == 'release' ]
 then
-	build_type=''
+	build_type_flag=''
 else
 	echo 'bin/install_ipopt.sh: build_type'
 	echo 'where build_type is debug or release'
@@ -37,7 +38,7 @@ echo_eval() {
 	eval $*
 }
 # --------------------------------------------------------------------------
-version="Ipopt-3.11.9"
+version="Ipopt-3.12.6"
 third_party="Mumps Metis"
 web_page="http://www.coin-or.org/download/source/Ipopt"
 # --------------------------------------------------------------------------
@@ -49,11 +50,11 @@ else
 fi
 export PKG_CONFIG_PATH=$ipopt_prefix/$libdir/pkgconfig
 # --------------------------------------------------------------------------
-if [ ! -e build/external ]
+if [ ! -e build.$build_type/external ]
 then
-	mkdir -p build/external
+	mkdir -p build.$build_type/external
 fi
-cd build/external
+cd build.$build_type/external
 # --------------------------------------------------------------------------
 if [ ! -e $version.tgz ]
 then
@@ -87,7 +88,7 @@ cd build
 # https://github.com/JuliaOpt/Ipopt.jl/issues/13
 cat << EOF > config.sh
 ../configure \\
-	$build_type \\
+	$build_type_flag \\
 	--prefix=$ipopt_prefix \\
 	--libdir=$ipopt_prefix/$libdir \\
 	--with-blas-lib="-lblas" \\
