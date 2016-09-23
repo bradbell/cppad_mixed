@@ -44,6 +44,17 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 09-23$$
+Improve
+$cref%bin/install_eigen.sh%install_unix%Special Requirements%eigen%$$,
+$cref%bin/install_ipopt.sh%install_unix%Special Requirements%Ipopt%$$,
+and
+$cref%
+bin/install_suitesparse.sh%install_unix%Special Requirements%SuiteSparse%$$,
+so they better ensure that debug and release versions got into proper
+directories.
+
+
 $head 07-28$$
 $list number$$
 Improve the organization of the $cref user$$ API example section.
