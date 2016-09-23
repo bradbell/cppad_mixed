@@ -10,7 +10,7 @@
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
 # BEGIN USER_SETTINGS
-# Prefix below which eigen will be installed. Use a special sub-directory so
+# Prefix below which eigen will be installed. Use a special sub-directory
 # because warnings are supressed for the directory where eigen is installed.
 eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
 # END USER_SETTINGS
@@ -38,14 +38,14 @@ echo_eval() {
 	eval $*
 }
 # ---------------------------------------------------------------------------
-version='3.2.7'
+version='3.2.9'
 web_page='https://bitbucket.org/eigen/eigen/get'
 # --------------------------------------------------------------------------
-if [ ! -e build/external ]
+if [ ! -e build.$build_type/external ]
 then
-	mkdir -p build/external
+	mkdir -p build.$build_type/external
 fi
-cd build/external
+cd build.$build_type/external
 # --------------------------------------------------------------------------
 if [ ! -e eigen-$version.tar.gz ]
 then
@@ -62,10 +62,6 @@ git_name=`ls | grep eigen-eigen`
 echo_eval mv $git_name eigen-$version
 # --------------------------------------------------------------------------
 echo_eval cd eigen-$version
-#
-echo 'patch eigen source code'
-sed -e 's|Scalar l_ii = 0|Scalar l_ii = Scalar(0)|' \
-	-i.old Eigen/src/SparseCore/TriangularSolver.h
 #
 echo_eval mkdir build
 echo_eval cd build
