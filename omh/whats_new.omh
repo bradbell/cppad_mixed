@@ -44,6 +44,10 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 09-24$$
+Create $cref sparse_low_tri_sol$$
+(plan to use this with a sparse atomic Cholesky AD operation).
+
 $head 09-23$$
 Improve
 $cref%bin/install_eigen.sh%install_unix%Special Requirements%eigen%$$,
