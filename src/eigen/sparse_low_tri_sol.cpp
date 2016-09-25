@@ -55,8 +55,18 @@ and test of $code sparse_low_tri_sol$$.
 $end
 */
 # include <cppad/mixed/sparse_low_tri_sol.hpp>
+# include <iostream>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+
+/*
+template <class sparse_type>
+void print(const std::string& label, const sparse_type& mat)
+{	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> m = mat;
+	std::cout << label << "=\n" << m << "\n";
+}
+*/
+
 
 // BEGIN PROTOTYPE
 Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_low_tri_sol(
