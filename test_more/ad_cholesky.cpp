@@ -117,7 +117,7 @@ CppAD::mixed::sparse_mat_info get_pattern(const sparse_d_matrix& mat)
 }
 // ======================================================================
 class atomic_ad_cholesky : public CppAD::atomic_base<double> {
-public:
+private:
 	// -----------------------------------------------------------------
 	// data (in order that it is initialized)
 	// -----------------------------------------------------------------
@@ -141,8 +141,13 @@ public:
 
 	// Forward and reverse values for Alow and L (set by forward)
 	CppAD::vector<sparse_d_matrix> f_Alow_, f_L_;
+public:
 	// -----------------------------------------------------------------
 	// normal member functions
+	// -----------------------------------------------------------------
+	// status flag
+	bool ok(void)
+	{	return ok_; }
 	// -----------------------------------------------------------------
 	// constructor
 	atomic_ad_cholesky(const sparse_d_matrix& Alow )
@@ -211,6 +216,7 @@ public:
 		assert( index == ny );
 		return;
 	}
+private:
 	// -----------------------------------------------------------------
 	// virtual member functions
 	// ------------------------------------------------------------------
@@ -500,7 +506,7 @@ bool ad_cholesky(void)
 	// std::cout << "d1w = " << d1w << "\n";
 	// -----------------------------------------------------------------------
 	// check for any errors during use of cholesky
-	ok &= cholesky.ok_;
+	ok &= cholesky.ok();
 	// -----------------------------------------------------------------------
 	return ok;
 }
