@@ -80,7 +80,7 @@ sparse_d_matrix symmetric2lower(const sparse_d_matrix& symmetric)
 	}
 	return result;
 }
-// -----------------------------------------------------------------
+// ======================================================================
 class atomic_ad_cholesky : public CppAD::atomic_base<double> {
 public:
 	// -----------------------------------------------------------------
@@ -100,17 +100,14 @@ public:
 	// Value of the permutation matrix (set by constructor)
 	perm_matrix P_;
 
-	// Value of the Cholesky factor (corresponding to constructor call)
-	sparse_d_matrix L_;
-
 	// Number of non-zeros and sparsity pattern for L (set by constructor)
 	s_vector                      L_nnz_;
 	CppAD::mixed::sparse_mat_info L_pattern_;
 
-	// Forward and reverse values for Alow and L
+	// Forward and reverse values for Alow and L (set by forward)
 	CppAD::vector<sparse_d_matrix> f_Alow_, f_L_;
 	// -----------------------------------------------------------------
-	// functions
+	// normal member functions
 	// -----------------------------------------------------------------
 	// get the number of non-zeros corresponding to a matrix
 	template <class Eigen_sparse_matrix_type>
@@ -161,9 +158,74 @@ public:
 		}
 		return pattern;
 	}
+	// -----------------------------------------------------------------
+	// constructor
+	atomic_ad_cholesky(const sparse_d_matrix& Alow )
+	: CppAD::atomic_base<double> (
+		"atomic_ad_cholesky",
+		CppAD::atomic_base<double>::set_sparsity_enum
+	)
+	{	ok_ = true;
+		//
+		// Step 1: Set Alow_nnz_ and Alow_pattern_
+		Alow_nnz_     = get_nnz(Alow);
+		Alow_pattern_ = get_pattern(Alow);
+		//
+		// Step 2: analyze the sparsity pattern
+		ldlt_obj_.analyzePattern( Alow );
+		//
+		// Step 3: Compute the factor L for this Alow
+		// and the permutation P_ for all Alow used with this object
+		sparse_d_matrix L;
+		ok_ &= factor(Alow, L, P_);
+		//
+		// Step 4: Set L_nnz_ and L_pattern_
+		L_nnz_      = get_nnz(L);
+		L_pattern_  = get_pattern(L);
+	}
+	// -----------------------------------------------------------------
+	// user AD version of atomic Cholesky factorization
+	void ad(
+		const sparse_ad_matrix& aAlow  ,
+		sparse_ad_matrix&       aL     )
+	{	// -----------------------------------------------------------
+		// packed version of Alow
+		size_t nc = Alow_nnz_.size();
+		size_t nx = Alow_pattern_.row.size();
+		assert( nc == size_t( aAlow.rows() ) );
+		assert( nc == size_t( aAlow.cols() ) );
+		ad_vector ax( nx );
+		size_t index = 0;
+		for(size_t j = 0; j < nc; j++)
+		{	for(sparse_ad_matrix::InnerIterator itr(aAlow, j); itr; ++itr)
+			{	assert( Alow_pattern_.row[index] == size_t( itr.row() ) );
+				assert( Alow_pattern_.col[index] == size_t( itr.col() ) );
+				ax[ index ] = itr.value();
+				++index;
+			}
+		}
+		assert( index == nx );
+		// -------------------------------------------------------------------
+		// make call to packed vector verison of the atomic function
+		size_t ny = L_pattern_.row.size();
+		ad_vector ay( ny );
+		(*this)(ax, ay);
+		// -------------------------------------------------------------------
+		// unpack ay into aL
+		aL.resize(nc, nc);
+		index = 0;
+		for(size_t ell = 0; ell < ny; ell++)
+		{	size_t i = L_pattern_.row[ell];
+			size_t j = L_pattern_.col[ell];
+			aL.insert(i, j) = ay[ index++ ];
+		}
+		assert( index == ny );
+		return;
+	}
+	// -----------------------------------------------------------------
+	// virtual member functions
 	// ------------------------------------------------------------------
 	// CppAD forward mode for this operation
-	// (Only order zero implemented so far)
 	virtual bool forward(
 		// lowest order Taylor coefficient we are evaluating
 		size_t                          p ,
@@ -315,68 +377,6 @@ public:
 			vy[i] = var;
 		//
 		return true;
-	}
-	// -----------------------------------------------------------------
-	// constructor
-	atomic_ad_cholesky(const sparse_d_matrix& Alow )
-	: CppAD::atomic_base<double> (
-		"atomic_ad_cholesky",
-		CppAD::atomic_base<double>::set_sparsity_enum
-	)
-	{	ok_ = true;
-		//
-		// Step 1: Set Alow_nnz_ and Alow_pattern_
-		Alow_nnz_     = get_nnz(Alow);
-		Alow_pattern_ = get_pattern(Alow);
-		//
-		// Step 2: analyze the sparsity pattern
-		ldlt_obj_.analyzePattern( Alow );
-		//
-		// Step 3: Compute the factor L and permutation P for this Alow
-		ok_ &= factor(Alow, L_, P_);
-		//
-		// Step 4: Set L_nnz_ and L_pattern_
-		L_nnz_      = get_nnz(L_);
-		L_pattern_  = get_pattern(L_);
-	}
-	// -----------------------------------------------------------------
-	// user AD version of atomic Cholesky factorization
-	void ad(
-		const sparse_ad_matrix& aAlow  ,
-		sparse_ad_matrix&       aL     )
-	{	// -----------------------------------------------------------
-		// packed version of Alow
-		size_t nc = Alow_nnz_.size();
-		size_t nx = Alow_pattern_.row.size();
-		assert( nc == size_t( aAlow.rows() ) );
-		assert( nc == size_t( aAlow.cols() ) );
-		ad_vector ax( nx );
-		size_t index = 0;
-		for(size_t j = 0; j < nc; j++)
-		{	for(sparse_ad_matrix::InnerIterator itr(aAlow, j); itr; ++itr)
-			{	assert( Alow_pattern_.row[index] == size_t( itr.row() ) );
-				assert( Alow_pattern_.col[index] == size_t( itr.col() ) );
-				ax[ index ] = itr.value();
-				++index;
-			}
-		}
-		assert( index == nx );
-		// -------------------------------------------------------------------
-		// make call to packed vector verison of the atomic function
-		size_t ny = L_pattern_.row.size();
-		ad_vector ay( ny );
-		(*this)(ax, ay);
-		// -------------------------------------------------------------------
-		// unpack ay into aL
-		aL.resize(nc, nc);
-		index = 0;
-		for(size_t ell = 0; ell < ny; ell++)
-		{	size_t i = L_pattern_.row[ell];
-			size_t j = L_pattern_.col[ell];
-			aL.insert(i, j) = ay[ index++ ];
-		}
-		assert( index == ny );
-		return;
 	}
 }; // END_ATOMIC_AD_CHOLESKY
 
