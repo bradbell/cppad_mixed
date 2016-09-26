@@ -470,22 +470,45 @@ bool ad_cholesky(void)
 	// -----------------------------------------------------------------------
 	// Test first order forward
 	d_vector x1(nx), y1(ny);
+	//
+	// partial w.r.t. x[0]
 	x1[0]  = 1.0;
 	x1[1]  = 0.0;
 	x1[2]  = 0.0;
 	y1     = f.Forward(1, x1);
-	check  = x[1] * x[2];
-	ok    &= CppAD::NearEqual(y1[0], check, eps, eps);
+	double f_x0 = x[1] * x[2];
+	ok        &= CppAD::NearEqual(y1[0], f_x0, eps, eps);
+	//
+	// partial w.r.t. x[2]
 	x1[0]  = 0.0;
-	x1[1]  = 1.0;
-	y1     = f.Forward(1, x1);
-	check  = x[0] * x[2] - 3.0 * x[1] * x[1];
-	ok    &= CppAD::NearEqual(y1[0], check, eps, eps);
-	x1[1]  = 0.0;
 	x1[2]  = 1.0;
 	y1     = f.Forward(1, x1);
-	check  = x[0] * x[1];
-	ok    &= CppAD::NearEqual(y1[0], check, eps, eps);
+	double f_x2 = x[0] * x[1];
+	ok        &= CppAD::NearEqual(y1[0], f_x2, eps, eps);
+	//
+	// partial w.r.t. x[1]
+	x1[2]  = 0.0;
+	x1[1]  = 1.0;
+	y1     = f.Forward(1, x1);
+	double f_x1 = x[0] * x[2] - 3.0 * x[1] * x[1];
+	ok    &= CppAD::NearEqual(y1[0], f_x1, eps, eps);
+	// -----------------------------------------------------------------------
+	// Test second order forward
+	d_vector x2(nx), y2(ny);
+	//
+	// second partial w.r.t x[1]
+	x2[0]  = 0.0;
+	x2[1]  = 0.0;
+	x2[2]  = 0.0;
+	y2     = f.Forward(2, x2);
+	double f_x11  = - 6.0 * x[1] / 2.0;
+	ok   &= CppAD::NearEqual(y2[0], f_x11, eps, eps);
+	// -----------------------------------------------------------------------
+	// Test first order reverse
+	// d_vector w(ny), d1w(nx);
+	// w[0] = 1.0;
+	// d1w  = f.Reverse(1, w);
+	// std::cout << "d1w = " << d1w << "\n";
 	// -----------------------------------------------------------------------
 	// check for any errors during use of cholesky
 	ok &= cholesky.ok_;
