@@ -80,6 +80,41 @@ sparse_d_matrix symmetric2lower(const sparse_d_matrix& symmetric)
 	}
 	return result;
 }
+// -----------------------------------------------------------------
+// get the number of non-zeros corresponding to a matrix
+template <class Eigen_sparse_matrix_type>
+s_vector get_nnz(const Eigen_sparse_matrix_type& mat)
+{	typedef typename Eigen_sparse_matrix_type::InnerIterator iterator;
+	size_t nc = size_t( mat.cols() );
+	s_vector nnz(nc);
+	for(size_t j = 0; j < nc; j++)
+	{	nnz[j] = 0;
+		for(iterator itr(mat, j); itr; ++itr)
+		{	nnz[j]++;
+		}
+	}
+	return nnz;
+}
+// ------------------------------------------------------------------
+// get the sparsity pattern corresponding to a matrix
+CppAD::mixed::sparse_mat_info get_pattern(const sparse_d_matrix& mat)
+{	size_t nc = mat.cols();
+	CppAD::mixed::sparse_mat_info pattern;
+	assert( pattern.row.size() == 0 );
+	assert( pattern.col.size() == 0 );
+	for(size_t j = 0; j < nc; j++)
+	{	int previous = mat.rows();
+		for(sparse_d_matrix::InnerIterator itr(mat, j); itr; ++itr)
+		{	assert( itr.row() >= 0  && itr.row() < mat.rows());
+			assert( size_t(itr.col()) == j );
+			pattern.row.push_back( size_t( itr.row() ) );
+			pattern.col.push_back(j);
+			assert( previous == mat.rows() || previous < itr.row() );
+			previous = itr.row();
+		}
+	}
+	return pattern;
+}
 // ======================================================================
 class atomic_ad_cholesky : public CppAD::atomic_base<double> {
 public:
@@ -109,56 +144,6 @@ public:
 	// -----------------------------------------------------------------
 	// normal member functions
 	// -----------------------------------------------------------------
-	// get the number of non-zeros corresponding to a matrix
-	template <class Eigen_sparse_matrix_type>
-	s_vector get_nnz(const Eigen_sparse_matrix_type& mat)
-	{	typedef typename Eigen_sparse_matrix_type::InnerIterator iterator;
-		size_t nc = size_t( mat.cols() );
-		s_vector nnz(nc);
-		for(size_t j = 0; j < nc; j++)
-		{	nnz[j] = 0;
-			for(iterator itr(mat, j); itr; ++itr)
-			{	nnz[j]++;
-			}
-		}
-		return nnz;
-	}
-	// -----------------------------------------------------------------
-	// use values of elements in Alow to compute new values for L and P
-	// (Note that its is expected that P will not change)
-	bool factor(
-		const sparse_d_matrix& Alow ,
-		sparse_d_matrix&       L    ,
-		perm_matrix&           P    )
-	{	ldlt_obj_.factorize( Alow );
-		if( ldlt_obj_.info() != Eigen::Success )
-			return false;
-		Eigen::VectorXd D2 = sqrt( ldlt_obj_.vectorD().array() ).matrix();
-		L                  =  ldlt_obj_.matrixL() * D2.asDiagonal();
-		P                  = ldlt_obj_.permutationP();
-		return true;
-	}
-	// ------------------------------------------------------------------
-	// get the sparsity pattern corresponding to a matrix
-	CppAD::mixed::sparse_mat_info get_pattern(const sparse_d_matrix& mat)
-	{	size_t nc = mat.cols();
-		CppAD::mixed::sparse_mat_info pattern;
-		assert( pattern.row.size() == 0 );
-		assert( pattern.col.size() == 0 );
-		for(size_t j = 0; j < nc; j++)
-		{	int previous = mat.rows();
-			for(sparse_d_matrix::InnerIterator itr(mat, j); itr; ++itr)
-			{	assert( itr.row() >= 0  && itr.row() < mat.rows());
-				assert( size_t(itr.col()) == j );
-				pattern.row.push_back( size_t( itr.row() ) );
-				pattern.col.push_back(j);
-				assert( previous == mat.rows() || previous < itr.row() );
-				previous = itr.row();
-			}
-		}
-		return pattern;
-	}
-	// -----------------------------------------------------------------
 	// constructor
 	atomic_ad_cholesky(const sparse_d_matrix& Alow )
 	: CppAD::atomic_base<double> (
@@ -174,14 +159,18 @@ public:
 		// Step 2: analyze the sparsity pattern
 		ldlt_obj_.analyzePattern( Alow );
 		//
-		// Step 3: Compute the factor L for this Alow
-		// and the permutation P_ for all Alow used with this object
-		sparse_d_matrix L;
-		ok_ &= factor(Alow, L, P_);
+		// Step 3: Compute the Cholesky factor for this Alow
+		// and the permutation all Alow (used with this object).
+		ldlt_obj_.factorize( Alow );
+		ok_ &= ldlt_obj_.info() == Eigen::Success;
 		//
-		// Step 4: Set L_nnz_ and L_pattern_
-		L_nnz_      = get_nnz(L);
-		L_pattern_  = get_pattern(L);
+		// Step 4: Retrieve the permutation P_;
+		P_   = ldlt_obj_.permutationP();
+		//
+		// Step 5: Set L_nnz_ and L_pattern_
+		sparse_d_matrix L  =  ldlt_obj_.matrixL();
+		L_nnz_             = get_nnz(L);
+		L_pattern_         = get_pattern(L);
 	}
 	// -----------------------------------------------------------------
 	// user AD version of atomic Cholesky factorization

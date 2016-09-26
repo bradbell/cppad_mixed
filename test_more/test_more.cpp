@@ -67,8 +67,6 @@ namespace {
 // main program that runs all the tests
 int main(void)
 {
-	RUN(ad_cholesky);
-# if 0
 	// This comment expected by bin/test_one.sh
 	RUN(abs_fix_con);
 	RUN(ad_cholesky);
@@ -90,7 +88,6 @@ int main(void)
 	RUN(zero_random_one);
 	RUN(zero_random_two);
 	// This comment also expected by bin/test_one.sh
-# endif
 
 	// summary report
 	int return_flag;
