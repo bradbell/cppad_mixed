@@ -41,7 +41,7 @@ sparse_d_matrix sparse_ad2d(const sparse_ad_matrix& amat)
 	}
 	return result;
 }
-void print(const std::string& label, const sparse_d_matrix& mat)
+void print_mat(const std::string& label, const sparse_d_matrix& mat)
 {	Eigen::Matrix<double, Dynamic, Dynamic> m = mat;
 	std::cout << label << "=\n" << m << "\n";
 }
@@ -496,8 +496,10 @@ private:
 		sparse_d_matrix M0 = CppAD::mixed::sparse_up_tri_sol(
 			L0.transpose(), tmp1.transpose()
 		);
-		// remove L0, \bar{Alow}_0 += P^T * M0 * P
-		r_Alow[0] += mat2lower( ptmp(P_, M0) );
+		// remove L0, \bar{Alow}_0 += 2.0 * low[ P^T * M0 * P ]
+		tmp1       = 2.0 * ptmp(P_, M0);
+		scale_diagonal(0.5, tmp1);
+		r_Alow[0] += mat2lower( tmp1 );
 		// ------------------------------------------------------------------
 		// pack r_Alow into px
 		for(size_t k = 0; k < n_order; k++)
@@ -542,14 +544,14 @@ defined by
 $latex \[
 	A(x) = \left( \begin{array}{ccc}
 		x_0 & 0    & x_1 \\
-		0   & x_1  & 0   \\
-		x_1 & 0    & x_2
+		0   & x_1  & x_1 \\
+		0   & x_1  & x_2
 	\end{array} \right)
 \] $$
 The leading princial minors of this matrix are
 $latex x_0$$,
 $latex x_0 x_1$$,
-$latex x_0 x_1 x_2 - x_1 x_1 x_1 )$$,
+$latex x_0 ( x_1 x_2 - x_1 x_1 )$$,
 If all these minors are positive, the matrix $latex A(x)$$ is
 positive definite.
 
@@ -571,8 +573,8 @@ bool ad_cholesky(void)
 	size_t nc = 3;
 	sparse_d_matrix Blow(nc, nc);
 	Blow.insert(0,0) = x[0];
-	Blow.insert(2,0) = x[1];
 	Blow.insert(1,1) = x[1];
+	Blow.insert(2,1) = x[1];
 	Blow.insert(2,2) = x[2];
 	atomic_ad_cholesky cholesky( Blow );
 	//
@@ -589,8 +591,8 @@ bool ad_cholesky(void)
 	// Lower triangle of symmetric matrix with same sparsity pattern as B
 	sparse_ad_matrix aAlow(nc, nc);
 	aAlow.insert(0,0) = ax[0];
-	aAlow.insert(2,0) = ax[1];
 	aAlow.insert(1,1) = ax[1];
+	aAlow.insert(2,1) = ax[1];
 	aAlow.insert(2,2) = ax[2];
 	//
 	// compute the Choleksy factorization of A
@@ -614,7 +616,7 @@ bool ad_cholesky(void)
 	// ----------------------------------------------------------------------
 	// Test zero order forward
 	y    = f.Forward(0, x);
-	double check = x[0] * x[1] * x[2] - x[1] * x[1] * x[1];
+	double check = x[0] * ( x[1] * x[2] - x[1] * x[1] );
 	ok          &= CppAD::NearEqual(y[0], check, eps, eps );
 	// -----------------------------------------------------------------------
 	// Test first order forward
@@ -625,7 +627,7 @@ bool ad_cholesky(void)
 	x1[1]  = 0.0;
 	x1[2]  = 0.0;
 	y1     = f.Forward(1, x1);
-	double f_x0 = x[1] * x[2];
+	double f_x0 = x[1] * x[2] - x[1] * x[1];
 	ok        &= CppAD::NearEqual(y1[0], f_x0, eps, eps);
 	//
 	// partial w.r.t. x[2]
@@ -639,7 +641,7 @@ bool ad_cholesky(void)
 	x1[2]  = 0.0;
 	x1[1]  = 1.0;
 	y1     = f.Forward(1, x1);
-	double f_x1 = x[0] * x[2] - 3.0 * x[1] * x[1];
+	double f_x1 = x[0] * ( x[2] - 2.0 * x[1] );
 	ok    &= CppAD::NearEqual(y1[0], f_x1, eps, eps);
 	// -----------------------------------------------------------------------
 	// Test second order forward
@@ -650,7 +652,7 @@ bool ad_cholesky(void)
 	x2[1]  = 0.0;
 	x2[2]  = 0.0;
 	y2     = f.Forward(2, x2);
-	double f_x11  = - 6.0 * x[1] / 2.0;
+	double f_x11  = - 2.0 * x[0] / 2.0;
 	ok   &= CppAD::NearEqual(y2[0], f_x11, eps, eps);
 	// -----------------------------------------------------------------------
 	// Test first order reverse
@@ -658,8 +660,7 @@ bool ad_cholesky(void)
 	w[0] = 1.0;
 	d1w  = f.Reverse(1, w);
 	ok  &= CppAD::NearEqual(d1w[0], f_x0, eps, eps);
-	// not yet working
-	// ok  &= CppAD::NearEqual(d1w[1], f_x1, eps, eps);
+	ok  &= CppAD::NearEqual(d1w[1], f_x1, eps, eps);
 	ok  &= CppAD::NearEqual(d1w[2], f_x2, eps, eps);
 	// -----------------------------------------------------------------------
 	// check for any errors during use of cholesky
