@@ -13,6 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/sparse_mat_info.hpp>
 # include <cppad/mixed/sparse_low_tri_sol.hpp>
+# include <cppad/mixed/sparse_up_tri_sol.hpp>
 # include <iostream>
 
 namespace { // BEGIN_EMPTY_NAMESPACE
@@ -67,11 +68,11 @@ sparse_d_matrix lower2symmetric(const sparse_d_matrix& lower)
 	}
 	return result;
 }
-sparse_d_matrix symmetric2lower(const sparse_d_matrix& symmetric)
-{	assert( symmetric.rows() == symmetric.cols() );
-	sparse_d_matrix result( symmetric.rows(), symmetric.rows() );
-	for(int k = 0; k < symmetric.outerSize(); ++k)
-	{	for(sparse_d_matrix::InnerIterator itr(symmetric, k); itr; ++itr)
+sparse_d_matrix mat2lower(const sparse_d_matrix& mat)
+{	assert( mat.rows() == mat.cols() );
+	sparse_d_matrix result( mat.rows(), mat.rows() );
+	for(int k = 0; k < mat.outerSize(); ++k)
+	{	for(sparse_d_matrix::InnerIterator itr(mat, k); itr; ++itr)
 		{	int i = itr.row();
 			int j = itr.col();
 			if( j <= i )
@@ -115,6 +116,17 @@ CppAD::mixed::sparse_mat_info get_pattern(const sparse_d_matrix& mat)
 	}
 	return pattern;
 }
+// ------------------------------------------------------------------
+// P * M * P^T
+sparse_d_matrix pmpt(const perm_matrix& P, const sparse_d_matrix& M)
+{	sparse_d_matrix tmp = P * M;
+	return tmp * P.transpose();
+}
+// P^T * M * P
+sparse_d_matrix ptmp(const perm_matrix& P, const sparse_d_matrix& M)
+{	sparse_d_matrix tmp = P.transpose() * M;
+	return tmp * P;
+}
 // ======================================================================
 class atomic_ad_cholesky : public CppAD::atomic_base<double> {
 private:
@@ -139,8 +151,9 @@ private:
 	s_vector                      L_nnz_;
 	CppAD::mixed::sparse_mat_info L_pattern_;
 
-	// Forward and reverse values for Alow and L (set by forward)
+	// Forward and values for Alow and L (set by forward)
 	CppAD::vector<sparse_d_matrix> f_Alow_, f_L_;
+
 public:
 	// -----------------------------------------------------------------
 	// normal member functions
@@ -296,14 +309,13 @@ private:
 			sparse_d_matrix A_k = lower2symmetric(f_Alow_[k]);
 			//
 			// initialize sum as E_k =  P * A_k * P.transpose()
-			sparse_d_matrix tmp1  = P_ * A_k;
-			sparse_d_matrix f_sum = tmp1 * P_.transpose();
+			sparse_d_matrix f_sum  = pmpt(P_, A_k);
 			//
 			// compute E_k - B_k
 			for(size_t ell = 1; ell < k; ell++)
 				f_sum -= f_L_[ell] * f_L_[k-ell].transpose();
 			// compute L_0^{-1} * (E_k - B_k)
-			tmp1 = CppAD::mixed::sparse_low_tri_sol(L0, f_sum);
+			sparse_d_matrix tmp1 = CppAD::mixed::sparse_low_tri_sol(L0, f_sum);
 			//
 			// compute L_0^{-1} * (E_k - B_k) * L_0^{-T}
 			sparse_d_matrix tmp2 = CppAD::mixed::sparse_low_tri_sol(
@@ -315,7 +327,7 @@ private:
 			//
 			// low[ L_0^{-1} * (E_k - B_k) * L_0^{-T} ]
 			// L_k = L_0 * low[  L_0^{-1} * (E_k - B_k) * L_0^{-T} ]
-			f_L_[k] = L0 * symmetric2lower(tmp2);
+			f_L_[k] = L0 * mat2lower(tmp2);
 		}
 		// -------------------------------------------------------------------
 		// pack f_L_ into ty
@@ -357,6 +369,161 @@ private:
 			var |= vx[j];
 		for(size_t i = 0; i < ny; i++)
 			vy[i] = var;
+		//
+		return true;
+	}
+	// ------------------------------------------------------------------
+	// reverse mode routine called by CppAD
+	virtual bool reverse(
+		// highest order Taylor coefficient that we are computing derivative of
+		size_t                     q ,
+		// forward mode Taylor coefficients for x variables
+		const CppAD::vector<double>&     tx ,
+		// forward mode Taylor coefficients for y variables
+		const CppAD::vector<double>&     ty ,
+		// upon return, derivative of G[ F[ {x_j^k} ] ] w.r.t {x_j^k}
+		CppAD::vector<double>&           px ,
+		// derivative of G[ {y_i^k} ] w.r.t. {y_i^k}
+		const CppAD::vector<double>&     py
+	)
+	{	typedef typename sparse_d_matrix::InnerIterator iterator;
+		size_t n_order = q + 1;
+		size_t nx      = Alow_pattern_.row.size();
+		size_t ny      = L_pattern_.row.size();
+		size_t nc      = Alow_nnz_.size();
+		//
+		assert( nx * n_order == tx.size() );
+		assert( ny * n_order == ty.size() );
+		assert( px.size()    == tx.size() );
+		assert( py.size()    == ty.size() );
+		//
+		assert( f_Alow_.size() == f_L_.size() );
+		assert( f_Alow_.size() >= n_order );
+		// -------------------------------------------------------------------
+		// declare r_Alow, r_L
+		CppAD::vector<sparse_d_matrix> r_Alow(n_order), r_L(n_order);
+		// -------------------------------------------------------------------
+		// unpack tx into f_Alow_
+		assert( Alow_pattern_.row.size() == nx );
+		for(size_t k = 0; k < n_order; k++)
+		{	// unpack Alow_ for this order
+			f_Alow_[k].resize(nc, nc);
+			f_Alow_[k].reserve(Alow_nnz_);
+			for(size_t index = 0; index < nx; index++)
+			{	size_t i = Alow_pattern_.row[index];
+				size_t j = Alow_pattern_.col[index];
+				f_Alow_[k].insert(i, j) = tx [ index * n_order + k ];
+			}
+		}
+		// -------------------------------------------------------------------
+		// for orders less than p, unpack ty into f_L_
+		assert( L_pattern_.row.size() == ny );
+		for(size_t k = 0; k < n_order; k++)
+		{	// unpack f_L_ values for this order
+			f_L_[k].setZero();
+			f_L_[k].reserve(L_nnz_);
+			for(size_t index = 0; index < ny; index++)
+			{	size_t i = L_pattern_.row[index];
+				size_t j = L_pattern_.col[index];
+				f_L_[k].insert(i, j) = ty[ index * n_order + k];
+			}
+		}
+		// -------------------------------------------------------------------
+		// unpack py into r_L
+		assert( L_pattern_.row.size() == ny );
+		for(size_t k = 0; k < n_order; k++)
+		{	r_L[k].resize(nc, nc);
+			r_L[k].reserve(L_nnz_);
+			for(size_t ell = 0; ell < ny; ell++)
+			{	size_t i = L_pattern_.row[ell];
+				size_t j = L_pattern_.col[ell];
+				r_L[k].insert(i, j) = py[ ell * n_order + k];
+			}
+		}
+		// -------------------------------------------------------------------
+		// initialize r_Alow as zero
+		for(size_t k = 0; k < n_order; k++)
+			r_Alow[k].resize(nc, nc);
+		// -------------------------------------------------------------------
+		// Cholesky factorization
+		Eigen::SparseMatrix<double, Eigen::RowMajor> L0 = f_L_[0];
+		//
+		// start at highest order and go down
+		for(size_t k1 = n_order; k1 > 1; k1--)
+		{	size_t k = k1 - 1;
+			// L_0^T * bar{L}_k
+			sparse_d_matrix tmp1 = L0.transpose() * r_L[k];
+			//
+			// low[ L_0^T * bar{L}_k ]
+			scale_diagonal(0.5, tmp1);
+			sparse_d_matrix tmp2 = mat2lower(tmp1);
+			//
+			// L_0^{-T} * low[ L_0^T * bar{L}_k ]
+			tmp1 = CppAD::mixed::sparse_up_tri_sol(L0.transpose(), tmp2);
+			//
+			// L_0^{-T} * low[ L_0^T * bar{L}_k ]^T * L_0^{-1}
+			sparse_d_matrix Mk = CppAD::mixed::sparse_up_tri_sol(
+				L0.transpose(), tmp1.transpose()
+			).transpose();
+			//
+			// remove Lk, \bar{Alow}_k += P^T * M0 * P
+			sparse_d_matrix barB_k = lower2symmetric(Mk);
+			r_Alow[k]             += mat2lower( ptmp(P_, barB_k) );
+			// compute barB_k
+			barB_k                 = -1.0 * barB_k;
+			//
+			// remove C_k using
+			// 2 * lower[ bar{B}_k L_k ]
+			r_L[0] += 2.0 * mat2lower( barB_k * f_L_[k] );
+			//
+			// remove B_k
+			for(size_t ell = 1; ell < k; ell++)
+			{	// bar{L}_ell = 2 * lower( bar{B}_k * L_{k-ell} )
+				r_L[ell] += 2.0 * mat2lower( barB_k * f_L_[k-ell] );
+			}
+		}
+		// L_0^T * bar{L}_0
+		sparse_d_matrix tmp1 = L0.transpose() * r_L[0];
+		//
+		// low[ L_0^T * bar{L}_0 ]
+		scale_diagonal(0.5, tmp1);
+		sparse_d_matrix tmp2 = mat2lower( tmp1 );
+		//
+		// L_0^{-T} low[ L_0^T * bar{L}_0 ]
+		tmp1 = CppAD::mixed::sparse_up_tri_sol(L0.transpose(), tmp2);
+		//
+		// M_0 = L_0^{-T} low[ L_0^T * bar{L}_0 ]^T L_0^{-1}
+		sparse_d_matrix M0 = CppAD::mixed::sparse_up_tri_sol(
+			L0.transpose(), tmp1.transpose()
+		);
+		// remove L0, \bar{Alow}_0 += P^T * M0 * P
+		r_Alow[0] += mat2lower( ptmp(P_, M0) );
+		// ------------------------------------------------------------------
+		// pack r_Alow into px
+		for(size_t k = 0; k < n_order; k++)
+		{	size_t index = 0;
+			// repacking is harder because some of the computed terms
+			// may be zero and not appear in r_Alow[k]
+			for(size_t j = 0; j < nc; j++)
+			{	// initialize this column as zero
+				for(size_t ell = 0; ell < Alow_nnz_[j]; ell++)
+					px[ (index + ell) * n_order + k ] = 0.0;
+
+				// fill in the non-zero entries
+				size_t ell = 0;
+				for(iterator itr(r_Alow[k], j); itr; ++itr)
+				{	size_t i = Alow_pattern_.row[index + ell];
+					while( i < size_t( itr.row() ) )
+					{	++ell;
+						i = Alow_pattern_.row[index + ell];
+					}
+					assert( i == size_t( itr.row() ) );
+					assert( Alow_pattern_.col[index + ell] == j );
+					px[ (index + ell) * n_order + k ] = itr.value();
+				}
+				index += Alow_nnz_[j];
+			}
+		}
 		//
 		return true;
 	}
@@ -487,10 +654,13 @@ bool ad_cholesky(void)
 	ok   &= CppAD::NearEqual(y2[0], f_x11, eps, eps);
 	// -----------------------------------------------------------------------
 	// Test first order reverse
-	// d_vector w(ny), d1w(nx);
-	// w[0] = 1.0;
-	// d1w  = f.Reverse(1, w);
-	// std::cout << "d1w = " << d1w << "\n";
+	d_vector w(ny), d1w(nx);
+	w[0] = 1.0;
+	d1w  = f.Reverse(1, w);
+	ok  &= CppAD::NearEqual(d1w[0], f_x0, eps, eps);
+	// not yet working
+	// ok  &= CppAD::NearEqual(d1w[1], f_x1, eps, eps);
+	ok  &= CppAD::NearEqual(d1w[2], f_x2, eps, eps);
 	// -----------------------------------------------------------------------
 	// check for any errors during use of cholesky
 	ok &= cholesky.ok();
