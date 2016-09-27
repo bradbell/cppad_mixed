@@ -235,7 +235,6 @@ private:
 		// ty [ i * (q+1) + k ] is y_i^k
 		CppAD::vector<double>&          ty )
 	{	typedef typename sparse_d_matrix::InnerIterator iterator;
-		double nan = std::numeric_limits<double>::quiet_NaN();
 		//
 		assert( p <= q );
 		//
@@ -253,30 +252,18 @@ private:
 		if( f_Alow_.size() < n_order )
 		{	f_Alow_.resize(n_order);
 			f_L_.resize(n_order);
-			//
-			for(size_t k = 0; k < n_order; k++)
-			{	f_Alow_[k].resize(nc, nc);
-				f_Alow_[k].reserve(Alow_nnz_);
-				// indices for possibly non-zero elements in Alow
-				for(size_t ell = 0; ell < Alow_pattern_.row.size(); ell++)
-				{	size_t i = Alow_pattern_.row[ell];
-					size_t j = Alow_pattern_.col[ell];
-					f_Alow_[k].insert(i, j) = nan;
-				}
-			}
 		}
 		// -------------------------------------------------------------------
 		// unpack tx into f_Alow_
 		for(size_t k = 0; k < n_order; k++)
-		{	size_t index = 0;
-			// unpack Alow values for this order
-			for(size_t j = 0; j < nc; j++)
-			{	for(iterator itr(f_Alow_[k], j); itr; ++itr)
-				{	itr.valueRef() = tx[ index * n_order + k ];
-					index++;
-				}
+		{	// unpack Alow values for this order
+			f_Alow_[k].resize(nc, nc);
+			f_Alow_[k].reserve(Alow_nnz_);
+			for(size_t ell = 0; ell < Alow_pattern_.row.size(); ell++)
+			{	size_t i = Alow_pattern_.row[ell];
+				size_t j = Alow_pattern_.col[ell];
+				f_Alow_[k].insert(i, j) = tx[ ell * n_order + k ];
 			}
-			assert( index == nx );
 		}
 		// -------------------------------------------------------------------
 		// for orders less than p, unpack ty into f_L_
