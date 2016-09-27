@@ -23,6 +23,7 @@ ADD_LIBRARY(cppad_mixed
 	eigen/newton_step.cpp
 	eigen/sample_fixed.cpp
 	eigen/sparse_low_tri_sol.cpp
+	eigen/sparse_up_tri_sol.cpp
 	sample_random.cpp
 	eigen/undetermined.cpp
 	fix_con_eval.cpp

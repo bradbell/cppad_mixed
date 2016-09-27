@@ -43,6 +43,7 @@ $children%include/cppad/mixed/a2_double.hpp
 	%include/cppad/mixed/triple2eigen.hpp
 	%src/eigen/undetermined.cpp
 	%src/eigen/sparse_low_tri_sol.cpp
+	%src/eigen/sparse_up_tri_sol.cpp
 %$$
 
 $head Public$$

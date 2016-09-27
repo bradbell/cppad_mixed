@@ -9,28 +9,28 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin sparse_low_tri_sol$$
+$begin sparse_up_tri_sol$$
 $spell
 	CppAD
-	tri
 	cols
+	tri
 $$
 
-$section Solve a Sparse Lower Triangular Linear System$$
+$section Solve a Sparse Upper Triangular Linear System$$
 
 $head Syntax$$
-$icode%result% = CppAD::mixed::sparse_low_tri_sol(%left%, %right%)%$$.
+$icode%result% = CppAD::mixed::sparse_up_tri_sol(%left%, %right%)%$$.
 
 $head Prototype$$
-$srcfile%src/eigen/sparse_low_tri_sol.cpp
+$srcfile%src/eigen/sparse_up_tri_sol.cpp
 	%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1
 %$$
 
 $head left$$
-This must be a square invertible lower triangular matrix; i.e.,
+This must be a square invertible upper triangular matrix; i.e.,
 $icode%left%.rows() == %left%.cols()%$$ and
 for each $icode%left%(%i%, %j%)%$$ in this sparse matrix,
-$icode%i% >= %j%$$.
+$icode%i% <= %j%$$.
 
 $head right$$
 The number of rows in this matrix must equal the number of columns in
@@ -46,15 +46,15 @@ $codei%
 %$$
 where $code *$$ is matrix multiplication.
 
-$children%example/private/sparse_low_tri_sol_xam.cpp
+$children%example/private/sparse_up_tri_sol_xam.cpp
 %$$
 $head Example$$
-The file $cref sparse_low_tri_sol_xam.cpp$$ is an example
-and test of $code sparse_low_tri_sol$$.
+The file $cref sparse_up_tri_sol_xam.cpp$$ is an example
+and test of $code sparse_up_tri_sol$$.
 
 $end
 */
-# include <cppad/mixed/sparse_low_tri_sol.hpp>
+# include <cppad/mixed/sparse_up_tri_sol.hpp>
 # include <iostream>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
@@ -69,7 +69,7 @@ void print(const std::string& label, const sparse_type& mat)
 
 
 // BEGIN PROTOTYPE
-Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_low_tri_sol(
+Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_up_tri_sol(
 	const Eigen::SparseMatrix<double, Eigen::RowMajor>&  left  ,
 	const Eigen::SparseMatrix<double, Eigen::ColMajor>&  right )
 // END PROTOTYPE
@@ -92,7 +92,7 @@ Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_low_tri_sol(
 	// One column of the result as a singly linked list with no
 	// memory allocation when adding and removing elements.
 	// initialize it as zero
-	int res_first = nr; // null pointer value
+	int res_first = -1; // null pointer value
 	Eigen::Matrix<double, Dynamic, 1> res_value(nr);
 	Eigen::Matrix<int, Dynamic, 1>    res_next(nr);
 	res_value.setZero();
@@ -110,71 +110,72 @@ Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_low_tri_sol(
 		//
 		// -----------------------------------------------------------------
 		// convert this column of the right hand side to a singly linked list
-		rhs_first = nr;   // null pointer
+		// (invert the order so that rows are in decending order)
+		rhs_first = -1;   // null pointer
 		if( right_itr )
 		{	assert( right_itr.col() == j );
 			//
 			int i        = right_itr.row();
 			rhs_value[i] = right_itr.value();
-			rhs_first    = i;
+			rhs_next[i]  = -1; // null pointer
 			while( ++right_itr )
 			{	assert( right_itr.col() == j );
 				//
-				rhs_next[i]  = right_itr.row();
-				i            = right_itr.row();
+				rhs_next[ right_itr.row() ]  = i;
+				i                            = right_itr.row();
 				rhs_value[i] = right_itr.value();
 			}
-			rhs_next[i] = nr; // null pointer
+			rhs_first = i;
 		}
 		// -----------------------------------------------------------------
 		//
-		// initialize row index for right hand side that is greater than
+		// initialize row index for right hand side that is less than
 		// or equal the current row being solved
-		int rhs_ge = rhs_first;
+		int rhs_le = rhs_first;
 		//
 		// initialize pointer to previous non-zero entry in result
-		int res_previous = nr; // null pointer
+		int res_previous = -1; // null pointer
 		//
 		// for each row in the left matrix
-		for(int i = rhs_first; i < nr; ++i)
-		{	// advance to next right hand side index greater than or equal i
-			while( rhs_ge < i )
-				rhs_ge = rhs_next[ rhs_ge ];
+		for(int i = rhs_first; i >= 0; --i)
+		{	// advance to next right hand side index less than or equal i
+			while( rhs_le > i )
+				rhs_le = rhs_next[ rhs_le ];
 			//
 			// initialize summation for (i, j) entry of the result
-			if( rhs_ge == i )
+			if( rhs_le == i )
 			{	// --------------------------------------------------------
 				// this means we have a non-zero result at index i
-				if( res_previous == nr )
+				if( res_previous == -1 )
 					res_first = i;
 				else
 					res_next[res_previous] = i;
 				//
 				res_value[i] = rhs_value[i];
-				res_next[i]  = nr;
+				res_next[i]  = -1;
 				res_previous = i;
 				// --------------------------------------------------------
 			}
 			//
 			// row rhs_first must have a non-zero result
-			assert( res_previous != nr );
+			assert( res_previous != -1 );
 			//
 			// for each entry in the i-th row of left matrix
 			double left_ii = 0.0;
 			for(row_itr left_itr(left, i); left_itr; ++left_itr)
 			{	// (i, k) index in left matrix
 				int k = left_itr.col();
-				// check that left is lower triangular
-				assert( i >= k );
+				// check that left is upper triangular
+				assert( i <= k );
 				//
-				if( i > k )
-				{	if (res_value[k] != 0.0 )
+				if( i < k )
+				{	if(  res_value[k] != 0.0 )
 					{	// ----------------------------------------------------
 						// this means that we have a non-zero result at index i
 						res_value[i] -= left_itr.value() * res_value[k];
 						if( res_previous != i )
 						{	res_next[res_previous] = i;
-							res_next[i]            = nr;
+							res_next[i]            = -1;
 							res_previous           = i;
 						}
 						// ----------------------------------------------------
@@ -193,12 +194,12 @@ Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_low_tri_sol(
 		}
 		// restrore the res_value vector to all zeros
 		int i = res_first;
-		while( i < nr )
+		while( i >= 0 )
 		{	res_value[i] = 0.0;
 			i            = res_next[i];
 		}
-		// restor the res list to empty
-		res_first = nr;
+		// restore the res list to empty
+		res_first = -1;
 	}
 	return result;
 }
