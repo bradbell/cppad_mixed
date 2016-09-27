@@ -543,9 +543,9 @@ We are given the function $latex A : \B{R}^3 \rightarrow \B{R}^{3 \times 3}$$
 defined by
 $latex \[
 	A(x) = \left( \begin{array}{ccc}
-		x_0 & 0    & x_1 \\
-		0   & x_1  & x_1 \\
-		0   & x_1  & x_2
+		x_0 & 0    & x_1  \\
+		0   & x_1  & 0   \\
+		x_1 & 0    & x_2
 	\end{array} \right)
 \] $$
 The leading princial minors of this matrix are
@@ -573,8 +573,8 @@ bool ad_cholesky(void)
 	size_t nc = 3;
 	sparse_d_matrix Blow(nc, nc);
 	Blow.insert(0,0) = x[0];
+	Blow.insert(2,0) = x[1];
 	Blow.insert(1,1) = x[1];
-	Blow.insert(2,1) = x[1];
 	Blow.insert(2,2) = x[2];
 	atomic_ad_cholesky cholesky( Blow );
 	//
@@ -591,8 +591,8 @@ bool ad_cholesky(void)
 	// Lower triangle of symmetric matrix with same sparsity pattern as B
 	sparse_ad_matrix aAlow(nc, nc);
 	aAlow.insert(0,0) = ax[0];
+	aAlow.insert(2,0) = ax[1];
 	aAlow.insert(1,1) = ax[1];
-	aAlow.insert(2,1) = ax[1];
 	aAlow.insert(2,2) = ax[2];
 	//
 	// compute the Choleksy factorization of A
@@ -616,7 +616,7 @@ bool ad_cholesky(void)
 	// ----------------------------------------------------------------------
 	// Test zero order forward
 	y    = f.Forward(0, x);
-	double check = x[0] * ( x[1] * x[2] - x[1] * x[1] );
+	double check = x[0] * x[1] * x[2] - x[1] * x[1] * x[1];
 	ok          &= CppAD::NearEqual(y[0], check, eps, eps );
 	// -----------------------------------------------------------------------
 	// Test first order forward
@@ -627,7 +627,7 @@ bool ad_cholesky(void)
 	x1[1]  = 0.0;
 	x1[2]  = 0.0;
 	y1     = f.Forward(1, x1);
-	double f_x0 = x[1] * x[2] - x[1] * x[1];
+	double f_x0 = x[1] * x[2];
 	ok        &= CppAD::NearEqual(y1[0], f_x0, eps, eps);
 	//
 	// partial w.r.t. x[2]
@@ -641,7 +641,7 @@ bool ad_cholesky(void)
 	x1[2]  = 0.0;
 	x1[1]  = 1.0;
 	y1     = f.Forward(1, x1);
-	double f_x1 = x[0] * ( x[2] - 2.0 * x[1] );
+	double f_x1 = x[0] *  x[2] - 3.0 * x[1] * x[1];
 	ok    &= CppAD::NearEqual(y1[0], f_x1, eps, eps);
 	// -----------------------------------------------------------------------
 	// Test second order forward
@@ -652,8 +652,8 @@ bool ad_cholesky(void)
 	x2[1]  = 0.0;
 	x2[2]  = 0.0;
 	y2     = f.Forward(2, x2);
-	double f_x11  = - 2.0 * x[0] / 2.0;
-	ok   &= CppAD::NearEqual(y2[0], f_x11, eps, eps);
+	double f_x11  = - 6.0 * x[1];
+	ok   &= CppAD::NearEqual(y2[0], f_x11 / 2.0, eps, eps);
 	// -----------------------------------------------------------------------
 	// Test first order reverse
 	d_vector w(ny), d1w(nx);
