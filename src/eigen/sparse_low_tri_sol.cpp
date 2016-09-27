@@ -89,47 +89,114 @@ Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_low_tri_sol(
 	// initialize result matrix as empty
 	Eigen::SparseMatrix<double, ColMajor> result(nr, nc);
 	//
-	// one column of the result as a dense vector
-	Eigen::Matrix<double, Dynamic, 1> res(nr);
+	// One column of the result as a singly linked list with no
+	// memory allocation when adding and removing elements.
+	// initialize it as zero
+	int res_first = nr; // null pointer value
+	Eigen::Matrix<double, Dynamic, 1> res_value(nr);
+	Eigen::Matrix<int, Dynamic, 1>    res_next(nr);
+	res_value.setZero();
+	//
+	// One column of the right hand side as a singly linked list
+	// with no memory allocation when adding and removing elements.
+	int rhs_first;
+	Eigen::Matrix<double, Dynamic, 1> rhs_value(nr);
+	Eigen::Matrix<int, Dynamic, 1>    rhs_next(nr);
 	//
 	// for each column in the right matrix
 	for(int j = 0; j < right.cols(); ++j)
-	{ // iterator for non-zero entries in j-th column of right matrix
+	{	// iterator for non-zero entries in j-th column of right hand side
 		col_itr right_itr(right, j);
 		//
-		// for each row in the left matrix
-		for(int i = 0; i < nr; i++)
-		{	//
-			// initialize summation for (i, j) entry of the result
-			res[i] = 0.0;
+		// -----------------------------------------------------------------
+		// convert this column of the right hand side to a singly linked list
+		rhs_first = nr;   // null pointer
+		if( right_itr )
+		{	assert( right_itr.col() == j );
 			//
-			// check if right matrix has an (i, j) entry
-			if( right_itr )
-			{	if( right_itr.row() == i )
-				{	res[i] = right_itr.value();
-					++right_itr;
-				}
+			int i        = right_itr.row();
+			rhs_value[i] = right_itr.value();
+			rhs_first    = i;
+			while( ++right_itr )
+			{	assert( right_itr.col() == j );
+				//
+				rhs_next[i]  = right_itr.row();
+				i            = right_itr.row();
+				rhs_value[i] = right_itr.value();
 			}
+			rhs_next[i] = nr; // null pointer
+		}
+		// -----------------------------------------------------------------
+		//
+		// initialize row index for right hand side that is greater than
+		// or equal the current row being solved
+		int rhs_ge = rhs_first;
+		//
+		// initialize pointer to previous non-zero entry in result
+		int res_previous = nr; // null pointer
+		//
+		// for each row in the left matrix
+		for(int i = rhs_first; i < nr; i++)
+		{	// advance to next right hand side index greater than or equal i
+			while( rhs_ge < i )
+				rhs_ge = rhs_next[ rhs_ge ];
+			//
+			// initialize summation for (i, j) entry of the result
+			if( rhs_ge == i )
+			{	// --------------------------------------------------------
+				// this means we have a non-zero result at index i
+				if( res_previous == nr )
+					res_first = i;
+				else
+					res_next[res_previous] = i;
+				//
+				res_value[i] = rhs_value[i];
+				res_next[i]  = nr;
+				res_previous = i;
+				// --------------------------------------------------------
+			}
+			//
+			// row rhs_first must have a non-zero result
+			assert( res_previous != nr );
 			//
 			// for each entry in the i-th row of left matrix
 			double left_ii = 0.0;
 			for(row_itr left_itr(left, i); left_itr; ++left_itr)
-			{	int k = left_itr.col();
+			{	// (i, k) index in left matrix
+				int k = left_itr.col();
 				// check that left is lower triangular
 				assert( i >= k );
-				if( k < i )
-					res[i]   -= left_itr.value() * res[k];
+				//
+				if( (k < i) & (res_value[k] != 0.0) )
+				{	// ------------------------------------------------------
+					// this means that we have a non-zero result at index i
+					res_value[i] -= left_itr.value() * res_value[k];
+					if( res_previous != i )
+					{	res_next[res_previous] = i;
+						res_next[i]            = nr;
+						res_previous           = i;
+					}
+					// ------------------------------------------------------
+				}
 				else
 					left_ii = left_itr.value();
 			}
 			assert( left_ii != 0.0 );
-			// For an AD type we would need something more complicated
-			// to check if the result might have been non-zero
-			if( ! ( res[i] == 0.0 ) ) // check that works for nan
-			{	res[i] /= left_ii;
-				result.insert(i, j) = res[i];
+			//
+			// check if we have a non-zero entry to divide
+			if( res_previous == i )
+			{	res_value[i] /= left_ii;
+				result.insert(i, j) = res_value[i];
 			}
 		}
+		// restrore the res_value vector to all zeros
+		int i = res_first;
+		while( i < nr )
+		{	res_value[i] = 0.0;
+			i            = res_next[i];
+		}
+		// restor the res list to empty
+		res_first = nr;
 	}
 	return result;
 }
