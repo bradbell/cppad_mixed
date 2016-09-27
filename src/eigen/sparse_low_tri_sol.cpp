@@ -90,7 +90,7 @@ Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_low_tri_sol(
 	Eigen::SparseMatrix<double, ColMajor> result(nr, nc);
 	//
 	// one column of the result as a dense vector
-	Eigen::Matrix<double, Dynamic, 1> column(nr);
+	Eigen::Matrix<double, Dynamic, 1> res(nr);
 	//
 	// for each column in the right matrix
 	for(int j = 0; j < right.cols(); ++j)
@@ -101,12 +101,12 @@ Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_low_tri_sol(
 		for(int i = 0; i < nr; i++)
 		{	//
 			// initialize summation for (i, j) entry of the result
-			column[i]   = 0.0;
+			res[i] = 0.0;
 			//
 			// check if right matrix has an (i, j) entry
 			if( right_itr )
 			{	if( right_itr.row() == i )
-				{	column[i]   = right_itr.value();
+				{	res[i] = right_itr.value();
 					++right_itr;
 				}
 			}
@@ -118,16 +118,16 @@ Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_low_tri_sol(
 				// check that left is lower triangular
 				assert( i >= k );
 				if( k < i )
-					column[i]   -= left_itr.value() * column[k];
+					res[i]   -= left_itr.value() * res[k];
 				else
 					left_ii = left_itr.value();
 			}
 			assert( left_ii != 0.0 );
 			// For an AD type we would need something more complicated
 			// to check if the result might have been non-zero
-			if( ! ( column[i] == 0.0 ) ) // check that works for nan
-			{	column[i] /= left_ii;
-				result.insert(i, j) = column[i];
+			if( ! ( res[i] == 0.0 ) ) // check that works for nan
+			{	res[i] /= left_ii;
+				result.insert(i, j) = res[i];
 			}
 		}
 	}
