@@ -30,7 +30,7 @@ $head left$$
 This must be a square invertible lower triangular matrix; i.e.,
 $icode%left%.rows() == %left%.cols()%$$ and
 for each $icode%left%(%i%, %j%)%$$ in this sparse matrix,
-$icode%j% <= %i%$$.
+$icode%i% >= %j%$$.
 
 $head right$$
 The number of rows in this matrix must equal the number of columns in
@@ -112,21 +112,21 @@ Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_low_tri_sol(
 			}
 			//
 			// for each entry in the i-th row of left matrix
-			double left_ij = 0.0;
+			double left_ii = 0.0;
 			for(row_itr left_itr(left, i); left_itr; ++left_itr)
 			{	int k = left_itr.col();
 				// check that left is lower triangular
-				assert( k <= i );
+				assert( i >= k );
 				if( k < i )
 					column[i]   -= left_itr.value() * column[k];
 				else
-					left_ij = left_itr.value();
+					left_ii = left_itr.value();
 			}
-			assert( left_ij != 0.0 );
+			assert( left_ii != 0.0 );
 			// For an AD type we would need something more complicated
 			// to check if the result might have been non-zero
 			if( ! ( column[i] == 0.0 ) ) // check that works for nan
-			{	column[i] /= left_ij;
+			{	column[i] /= left_ii;
 				result.insert(i, j) = column[i];
 			}
 		}
