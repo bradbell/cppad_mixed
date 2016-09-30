@@ -10,7 +10,9 @@
 # see http://www.gnu.org/licenses/agpl.txt
 # --------------------------------------------------------------------------
 # BEGIN USER_SETTINGS
-# prefix below which suitesparse will be installed
+# Prefix below which suitesparse will be installed.
+# If this directory ends with /cppad_mixed, separate directories are used
+# for the debug and release versions.
 suitesparse_prefix="$HOME/prefix/cppad_mixed"
 # END USER_SETTINGS
 # --------------------------------------------------------------------------
@@ -36,12 +38,18 @@ echo_eval() {
 # -----------------------------------------------------------------------------
 tarball='SuiteSparse-4.4.3.tar.gz'
 web_page='http://faculty.cse.tamu.edu/davis/SuiteSparse'
+libdir=`bin/libdir.sh`
 # --------------------------------------------------------------------------
-if [ ! -e build.$build_type/external ]
+if echo "$suitesparse_prefix" | grep '/cppad_mixed$' > /dev/null
 then
-	mkdir -p build.$build_type/external
+	bin/build_type.sh install_suitesparse $suitesparse_prefix $build_type
 fi
-echo_eval cd build.$build_type/external
+# --------------------------------------------------------------------------
+if [ ! -e build/external ]
+then
+	mkdir -p build/external
+fi
+echo_eval cd build/external
 # -----------------------------------------------------------------------------
 if [ ! -e $tarball ]
 then
@@ -55,8 +63,8 @@ echo_eval tar -xzf $tarball
 cd SuiteSparse
 # -----------------------------------------------------------------------------
 sed -e \
-"s|^\( *INSTALL_INCLUDE *\)=.*|\1= $suitesparse_prefix.$build_type/include|" \
--e "s|^\( *INSTALL_LIB *\)=.*|\1= $suitesparse_prefix.$build_type/lib|" \
+"s|^\( *INSTALL_INCLUDE *\)=.*|\1= $suitesparse_prefix/include|" \
+-e "s|^\( *INSTALL_LIB *\)=.*|\1= $suitesparse_prefix/$libdir|" \
 -e 's|^\( *BLAS *\)=.*|\1= -lblas|' \
 -i.bak SuiteSparse_config/SuiteSparse_config.mk
 #

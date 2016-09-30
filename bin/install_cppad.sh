@@ -10,8 +10,12 @@
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
 # BEGIN USER_SETTINGS
-# prefix below which cppad will be installed
+#
+# Prefix below which cppad will be installed.
+# If this directory ends with /cppad_mixed, separate directories are used
+# for the debug and release versions.
 cppad_prefix="$HOME/prefix/cppad_mixed"
+#
 # extra c++ flags used during compliation
 extra_cxx_flags='-std=c++11 -Wall'
 # ----------------------------------------------------------------------------
@@ -24,6 +28,13 @@ then
 	echo 'bin/install_cppad.sh: must be executed from its parent directory'
 	exit 1
 fi
+build_type="$1"
+if [ "$build_type" != 'debug' ] && [ "$build_type" != 'release' ]
+then
+	echo 'bin/install_cppad.sh: build_type'
+	echo 'where build_type is debug or release'
+	exit 1
+fi
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
@@ -32,8 +43,13 @@ echo_eval() {
 }
 # --------------------------------------------------------------------------
 web_page='https://github.com/coin-or/CppAD.git'
-hash_key='942d0b2e323f900bef7d0c854dc2881f40792d32'
-version='20160418'
+hash_key='96c804b50258c73501bb0ae7460038223c426edb'
+version='20160929'
+# --------------------------------------------------------------------------
+if echo "$cppad_prefix" | grep '/cppad_mixed$' > /dev/null
+then
+	bin/build_type.sh install_cppad $cppad_prefix $build_type
+fi
 # --------------------------------------------------------------------------
 if [ ! -e build/external ]
 then

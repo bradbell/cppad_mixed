@@ -75,8 +75,17 @@ Note that the development headers are required; e.g.,
 on Fedora or Red-Hat one needs to install $code gsl-devel$$.
 
 $head Special Requirements$$
-The following packages are required by cppad_mixed
-and may not have standard system installs:
+The packages listed below are required by cppad_mixed
+and may not have standard system installs
+($code libdir.sh$$ is a file and $icode build_type$$ is a
+command line argument).
+
+$subhead libdir.sh$$
+The script $code bin/libdir.sh$$ determines what directory,
+below the prefix directories, is use for libraries by the install
+programs discussed below. The following is the default value
+for this script
+$srcfile%bin/libdir.sh%4%$$
 
 $subhead build_type$$
 The command line argument $icode build_type$$ below must be either
@@ -118,7 +127,7 @@ C++ algorithmic differentiation package.
 The commands
 $codei%
 	cd cppad_mixed-20160728
-	bin/install_cppad.sh
+	bin/install_cppad.sh %build_type%
 %$$
 can be used to install this package.
 If necessary, first adjust the setting
@@ -156,10 +165,15 @@ you should change so they correspond to your machine.
 
 $subhead Cmake Command$$
 After changing $code bin/run_cmake.sh$$ to work for your system,
-execute the following command:
+execute either of the following command:
 $codep
 	bin/run_cmake.sh
 $$
+which gives the $icode build_type$$ in this file, while
+$codep
+	bin/run_cmake.sh --release
+$$
+yields a release build type.
 It is possible that, when running the $code bin/run_cmake.sh$$ command,
 you will get the message $code package 'ipopt' not found$$.
 In this case, you need to execute the following command
@@ -167,12 +181,8 @@ $codei%
 	export PKG_CONFIG_PATH="@PKG_CONFIG_PATH:%ipopt_prefix%/%libdir%/pkgconfig"
 %$$
 where $icode ipopt_prefix$$ is the prefix for the Ipopt install and
-$icode libdir$$ is $code lib$$ or $code lib64$$ depending on which directory
-exists.
-In the default case this would be
-$codei%
-export PKG_CONFIG_PATH="@PKG_CONFIG_PATH:@HOME/prefix/cppad_mixed/lib64/pkgconfig"
-%$$
+$cref/libdir/install_unix/Special Requirements/libdir.sh/$$
+is discussed above.
 
 $subhead Test$$
 The following commands are optional and will

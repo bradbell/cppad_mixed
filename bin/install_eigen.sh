@@ -10,9 +10,12 @@
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
 # BEGIN USER_SETTINGS
-# Prefix below which eigen will be installed. Use a special sub-directory
-# because warnings are supressed for the directory where eigen is installed.
-eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
+#
+# Prefix below which eigen will be installed. Note that eigen_prefix/eigen
+# is actually used so we can suppress warnings for the eigen include files.
+# If eigen_prefix ends with /cppad_mixed, separate directories are used
+# for the debug and release versions.
+eigen_prefix="$HOME/prefix/cppad_mixed"
 # END USER_SETTINGS
 # ---------------------------------------------------------------------------
 if [ $0 != 'bin/install_eigen.sh' ]
@@ -37,11 +40,16 @@ echo_eval() {
 version='3.2.9'
 web_page='https://bitbucket.org/eigen/eigen/get'
 # --------------------------------------------------------------------------
-if [ ! -e build.$build_type/external ]
+if echo "$eigen_prefix" | grep '/cppad_mixed$' > /dev/null
 then
-	mkdir -p build.$build_type/external
+	bin/build_type.sh install_eigen $eigen_prefix $build_type
 fi
-cd build.$build_type/external
+# --------------------------------------------------------------------------
+if [ ! -e build/external ]
+then
+	mkdir -p build/external
+fi
+cd build/external
 # --------------------------------------------------------------------------
 if [ ! -e eigen-$version.tar.gz ]
 then
@@ -64,12 +72,12 @@ echo_eval cd build
 # --------------------------------------------------------------------------
 echo_eval cmake \
 	-Wno-dev \
-	-DCMAKE_INSTALL_PREFIX=$eigen_prefix.$build_type \
+	-DCMAKE_INSTALL_PREFIX=$eigen_prefix/eigen \
 	-DCMAKE_BUILD_TYPE=$build_type \
 	..
 echo_eval make install
 # --------------------------------------------------------------------------
-include_dir="$eigen_prefix.$build_type/include"
+include_dir="$eigen_prefix/eigen/include"
 if [ ! -h $include_dir/Eigen ]
 then
 	echo_eval ln -s $include_dir/eigen3/Eigen $include_dir/Eigen

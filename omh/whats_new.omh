@@ -38,11 +38,27 @@ $spell
 	obj
 	sqrt
 	ls
+	libdir
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
+
+$head 09-30$$
+$list number$$
+Use one value for $icode libdir$$ for all the install scripts;
+see $cref/libdir.sh/install_unix/Special Requirements/libdir.sh/$$.
+$lnext
+Use a link to switch the build and install directories between
+the debug and release versions (when the install prefix ends with
+$code cppad_mixed$$).
+This enables one to build into the actual prefix
+(without $code debug$$ or $code release$$ at the end)
+by not ending the prefix with $code cppad_mixed$$.
+$lnext
+Advance to cppad-20160929.
+$lend
 
 $head 09-27$$
 Add $cref sparse_up_tri_sol$$

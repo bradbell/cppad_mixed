@@ -14,6 +14,7 @@
 # &spell
 #	cmake makefile cxx std dismod libdir lcppad cholmod xam cpp
 #	usr eigen ipopt cppad bools suitesparse devel hpp ldlt bool
+#	libdir
 # &&
 #
 # &section bin/run_cmake.sh: User Configuration Options&&
@@ -29,13 +30,16 @@ verbose_makefile='NO'
 # &codep
 build_type='debug'
 # &&
-# Note that &code run_cmake.sh&& looks for a &icode%cppad_prefix%.debug%&&
-# and &icode%cppad_prefix%.release%&& and uses them if they are present.
-# Note that it builds cppad_mixed in &code build.debug&& or
-# &code build.release&& depending on &icode build_type&&.
-# Also note that it uses a soft link from
-# &icode cppad_prefix&&  and &code build&& to the corresponding debug
-# and release directories.
+# Note that if &icode cppad_prefix&& ends in &code cppad_mixed&&,
+# &code run_cmake.sh&& will use a link from the prefix to
+# &icode%cppad_prefix%.debug%&& or
+# &icode%cppad_prefix%.release%&&
+# depending on the choice &icode build_type&&.
+# Also note that you can override the default setting (&code debug&&)
+# using the command
+# &codep
+#	bin/run_cmake.sh --release
+# &&
 #
 # &head Prefixes&&
 # Prefixes where the required packages are installed:
@@ -117,24 +121,16 @@ EOF
 	fi
 	shift
 done
-# ---------------------------------------------------------------------------
-if [ -e "$cppad_prefix.$build_type" ]
+# --------------------------------------------------------------------------
+if echo "$cppad_prefix" | grep '/cppad_mixed$' > /dev/null
 then
-	if [ -e "$cppad_prefix" ]
-	then
-		echo_eval rm "$cppad_prefix"
-	fi
-	echo_eval ln -s $cppad_prefix.$build_type $cppad_prefix
+	bin/build_type.sh run_cmake $cppad_prefix $build_type
 fi
-if [ ! -e "build.$build_type" ]
+# --------------------------------------------------------------------------
+if [ ! -e build ]
 then
-	echo_eval mkdir "build.$build_type"
+	echo_eval mkdir build
 fi
-if [ -e build ]
-then
-	echo_eval rm build
-fi
-echo_eval ln -s build.$build_type build
 echo_eval cd build
 if [ -e CMakeCache.txt ]
 then

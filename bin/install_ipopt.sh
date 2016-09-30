@@ -10,7 +10,10 @@
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
 # BEGIN USER_SETTINGS
-# prefix below which ipopt will be installed
+#
+# Prefix below which ipopt will be installed.
+# If this directory ends with /cppad_mixed, separate directories are used
+# for the debug and release versions.
 ipopt_prefix="$HOME/prefix/cppad_mixed"
 # END USER_SETTINGS
 # ---------------------------------------------------------------------------
@@ -41,20 +44,19 @@ echo_eval() {
 version="Ipopt-3.12.6"
 third_party="Mumps Metis"
 web_page="http://www.coin-or.org/download/source/Ipopt"
+libdir=`bin/libdir.sh`
 # --------------------------------------------------------------------------
-if [ -e /usr/lib64 ]
+if echo "$ipopt_prefix" | grep '/cppad_mixed$' > /dev/null
 then
-	libdir='lib64'
-else
-	libdir='lib'
+	bin/build_type.sh install_ipopt $ipopt_prefix $build_type
 fi
-export PKG_CONFIG_PATH=$ipopt_prefix.$build_type/$libdir/pkgconfig
+export PKG_CONFIG_PATH=$ipopt_prefix/$libdir/pkgconfig
 # --------------------------------------------------------------------------
-if [ ! -e build.$build_type/external ]
+if [ ! -e build/external ]
 then
-	mkdir -p build.$build_type/external
+	mkdir -p build/external
 fi
-cd build.$build_type/external
+cd build/external
 # --------------------------------------------------------------------------
 if [ ! -e $version.tgz ]
 then
@@ -89,8 +91,8 @@ cd build
 cat << EOF > config.sh
 ../configure \\
 	$build_type_flag \\
-	--prefix=$ipopt_prefix.$build_type \\
-	--libdir=$ipopt_prefix.$build_type/$libdir \\
+	--prefix=$ipopt_prefix \\
+	--libdir=$ipopt_prefix/$libdir \\
 	--with-blas-lib="-lblas" \\
 	--with-lapack-lib="-llapack" \\
 	coin_skip_warn_cxxflags=yes
