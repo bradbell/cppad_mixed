@@ -38,7 +38,12 @@ then
 	exit 1
 fi
 build_type="$1"
-prefix='$HOME/prefix/cppad_mixed'
+prefix="$HOME/prefix/cppad_mixed"
+# --------------------------------------------------------------------------
+if echo "$prefix" | grep '/cppad_mixed$' > /dev/null
+then
+	bin/build_type.sh example_install.sh $prefix $build_type
+fi
 # -----------------------------------------------------------------------------
 if which apt-get >& /dev/null
 then
@@ -99,22 +104,18 @@ do
 	# eval below converts $HOME in $prefix to its value for current user
 	case $pkg in
 		eigen)
-		pkg_prefix="$prefix/eigen"
 		eval file="$prefix/eigen/include/Eigen/Core"
 		;;
 
 		ipopt)
-		pkg_prefix="$prefix"
 		eval file="$prefix/include/coin/IpIpoptApplication.hpp"
 		;;
 
 		suitesparse)
-		pkg_prefix="$prefix"
 		eval file="$prefix/include/cholmod.h"
 		;;
 
 		cppad)
-		pkg_prefix="$prefix"
 		eval file="$prefix/include/cppad/cppad.hpp"
 		;;
 
@@ -134,9 +135,6 @@ do
 	fi
 	if [ "$skip" == 'no' ] || [ "$skip" == 'n' ]
 	then
-		echo "$pkg_prefix"
-		sed -e "s|^${pkg}_prefix=.*|${pkg}_prefix=\"$pkg_prefix\"|" \
-			-i bin/install_eigen.sh
 		bin/install_$pkg.sh $build_type
 	fi
 done
