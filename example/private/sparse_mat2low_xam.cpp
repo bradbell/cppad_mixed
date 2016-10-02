@@ -29,9 +29,7 @@ $$
 $end
 */
 // BEGIN C++
-# include <cmath>
 # include <cstddef>
-# include <limits>
 # include <cppad/mixed/sparse_mat2low.hpp>
 
 bool sparse_mat2low_xam(void)

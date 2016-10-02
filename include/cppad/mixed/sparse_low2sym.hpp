@@ -31,7 +31,7 @@ This routine is an implementation detail and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head lower$$
-This argument has prototype
+The argument has prototype
 $code%
 	const Eigen::SparseMatrix<%Scalar%, %Options%, %Index%>& %lower%
 %$$

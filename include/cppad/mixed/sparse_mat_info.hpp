@@ -68,7 +68,7 @@ $codei%
 	size_t %size%
 %$$
 All of the vectors,
-$code row$$, $code col$$, and $code val$$,
+$icode row$$, $icode col$$, and $icode val$$,
 are modified to have the specified size.
 
 $head Notation$$

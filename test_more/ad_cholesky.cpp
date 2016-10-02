@@ -17,6 +17,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/sparse_scale_diag.hpp>
 # include <cppad/mixed/sparse_low2sym.hpp>
 # include <cppad/mixed/sparse_mat2low.hpp>
+# include <cppad/mixed/sparse_eigen2info.hpp>
 # include <iostream>
 
 namespace { // BEGIN_EMPTY_NAMESPACE
@@ -65,26 +66,6 @@ s_vector get_nnz(const Eigen_sparse_matrix_type& mat)
 		}
 	}
 	return nnz;
-}
-// ------------------------------------------------------------------
-// get the sparsity pattern corresponding to a matrix
-CppAD::mixed::sparse_mat_info get_pattern(const sparse_d_matrix& mat)
-{	size_t nc = mat.cols();
-	CppAD::mixed::sparse_mat_info pattern;
-	assert( pattern.row.size() == 0 );
-	assert( pattern.col.size() == 0 );
-	for(size_t j = 0; j < nc; j++)
-	{	int previous = mat.rows();
-		for(sparse_d_matrix::InnerIterator itr(mat, j); itr; ++itr)
-		{	assert( itr.row() >= 0  && itr.row() < mat.rows());
-			assert( size_t(itr.col()) == j );
-			pattern.row.push_back( size_t( itr.row() ) );
-			pattern.col.push_back(j);
-			assert( previous == mat.rows() || previous < itr.row() );
-			previous = itr.row();
-		}
-	}
-	return pattern;
 }
 // ------------------------------------------------------------------
 // P * M * P^T
@@ -142,7 +123,7 @@ public:
 		//
 		// Step 1: Set Alow_nnz_ and Alow_pattern_
 		Alow_nnz_     = get_nnz(Alow);
-		Alow_pattern_ = get_pattern(Alow);
+		Alow_pattern_ = CppAD::mixed::sparse_eigen2info(Alow);
 		//
 		// Step 2: analyze the sparsity pattern
 		ldlt_obj_.analyzePattern( Alow );
@@ -158,7 +139,7 @@ public:
 		// Step 5: Set L_nnz_ and L_pattern_
 		sparse_d_matrix L  =  ldlt_obj_.matrixL();
 		L_nnz_             = get_nnz(L);
-		L_pattern_         = get_pattern(L);
+		L_pattern_         = CppAD::mixed::sparse_eigen2info(L);
 	}
 	// -----------------------------------------------------------------
 	// user AD version of atomic Cholesky factorization

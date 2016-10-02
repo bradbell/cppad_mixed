@@ -30,7 +30,7 @@ This routine is an implementation detail and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head matrix$$
-This argument has prototype
+The argument has prototype
 $code%
 	const Eigen::SparseMatrix<%Scalar%, %Options%, %Index%>& %matrix%
 %$$
@@ -56,8 +56,8 @@ The return value has prototype
 $codei%
 	Eigen::SparseMatrix<%Scalar%, %Options%, %Index%> %lower%
 %$$
-and is the lower trangle of $icode martrix$$; i.e.,
-it has the lower triangl as $icode matrix$$ and it has no entries
+and is the lower triangle of $icode matrix$$; i.e.,
+it has the same lower triangle as $icode matrix$$ and it has no entries
 above the diagonal.
 
 $children%example/private/sparse_mat2low_xam.cpp
