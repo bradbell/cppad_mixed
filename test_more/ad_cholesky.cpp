@@ -15,6 +15,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/sparse_low_tri_sol.hpp>
 # include <cppad/mixed/sparse_up_tri_sol.hpp>
 # include <cppad/mixed/sparse_scale_diag.hpp>
+# include <cppad/mixed/sparse_low2sym.hpp>
 # include <iostream>
 
 namespace { // BEGIN_EMPTY_NAMESPACE
@@ -47,21 +48,6 @@ void print_mat(const std::string& label, const sparse_d_matrix& mat)
 	std::cout << label << "=\n" << m << "\n";
 }
 */
-sparse_d_matrix lower2symmetric(const sparse_d_matrix& lower)
-{	assert( lower.rows() == lower.cols() );
-	sparse_d_matrix result( lower.rows(), lower.rows() );
-	for(int k = 0; k < lower.outerSize(); ++k)
-	{	for(sparse_d_matrix::InnerIterator itr(lower, k); itr; ++itr)
-		{	int i = itr.row();
-			int j = itr.col();
-			assert( j <= i );
-			result.insert(i, j) = itr.value();
-			if( i != j )
-				result.insert(j, i) = itr.value();
-		}
-	}
-	return result;
-}
 sparse_d_matrix mat2lower(const sparse_d_matrix& mat)
 {	assert( mat.rows() == mat.cols() );
 	sparse_d_matrix result( mat.rows(), mat.rows() );
@@ -300,7 +286,7 @@ private:
 		// compute result for orders greater than or equal 1 and p.
 		for(size_t k = std::max(p, size_t(1)); k < n_order; k++)
 		{	// convert Alow to A_k
-			sparse_d_matrix A_k = lower2symmetric(f_Alow_[k]);
+			sparse_d_matrix A_k = CppAD::mixed::sparse_low2sym(f_Alow_[k]);
 			//
 			// initialize sum as E_k =  P * A_k * P.transpose()
 			sparse_d_matrix f_sum  = pmpt(P_, A_k);
@@ -461,7 +447,7 @@ private:
 			).transpose();
 			//
 			// remove Lk, \bar{Alow}_k += P^T * M0 * P
-			sparse_d_matrix barB_k = lower2symmetric(Mk);
+			sparse_d_matrix barB_k = CppAD::mixed::sparse_low2sym(Mk);
 			r_Alow[k]             += mat2lower( ptmp(P_, barB_k) );
 			// compute barB_k
 			barB_k                 = -1.0 * barB_k;

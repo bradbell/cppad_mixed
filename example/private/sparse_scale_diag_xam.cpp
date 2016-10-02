@@ -46,11 +46,11 @@ bool sparse_scale_diag_xam(void)
 	double eps = 10. * std::numeric_limits<double>::epsilon();
 	typedef Eigen::SparseMatrix<double> sparse_matrix;
 	//
-	size_t nr = 3;
+	int nr = 3;
 	sparse_matrix matrix(nr, nr);
-	size_t count = 0;
-	for(size_t i = 0; i < nr; i++)
-	{	for(size_t j = 0; j <= i; j++)
+	int count = 0;
+	for(int i = 0; i < nr; i++)
+	{	for(int j = 0; j <= i; j++)
 			matrix.insert(i, j) = double( ++count );
 	}
 	int scale = 3;
@@ -58,14 +58,14 @@ bool sparse_scale_diag_xam(void)
 	//
 	// Check that the diagonal has been scaled by there and that the
 	// matrx is lower triangular
-	for(size_t j = 0; j < nr; j++)
-	{	for(sparse_matrix::InnerIterator itr(matrix, j); itr; ++itr)
+	for(int k = 0; k < nr; k++)
+	{	for(sparse_matrix::InnerIterator itr(matrix, k); itr; ++itr)
 		{	int i = itr.row();
 			int j = itr.col();
 			ok   &= j <= i;
 			if( i == j )
-			{	size_t original_value = (i + 1) * (i + 2) / 2;
-				size_t new_value      = scale * original_value;
+			{	int original_value = (i + 1) * (i + 2) / 2;
+				int new_value      = scale * original_value;
 				ok &= std::fabs( itr.value() - new_value ) < eps;
 			}
 		}

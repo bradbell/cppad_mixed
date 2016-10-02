@@ -51,12 +51,12 @@ $codei%
 %$$.
 
 $subhead Options$$
-The options for this sparse matrix are arbitrary
-(and hence not specified).
+The options for this sparse matrix are arbitrary; i.e.,
+has no restrictions.
 
 $subhead Index$$
-The index type fro this sparse matrix are arbitrary
-(and hence not specified).
+The index type fro this sparse matrix are arbitrary; i.e.,
+has no restrictions.
 
 $children%example/private/sparse_scale_diag_xam.cpp
 %$$

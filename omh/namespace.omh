@@ -45,6 +45,7 @@ $children%include/cppad/mixed/a2_double.hpp
 	%src/eigen/sparse_low_tri_sol.cpp
 	%src/eigen/sparse_up_tri_sol.cpp
 	%include/cppad/mixed/sparse_scale_diag.hpp
+	%include/cppad/mixed/sparse_low2sym.hpp
 %$$
 
 $head Public$$
@@ -73,6 +74,7 @@ $rref undetermined$$
 $rref sparse_low_tri_sol$$
 $rref sparse_up_tri_sol$$
 $rref sparse_scale_diag$$
+$rref sparse_low2sym$$
 $tend
 
 $end
