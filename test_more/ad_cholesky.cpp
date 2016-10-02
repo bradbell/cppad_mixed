@@ -54,9 +54,8 @@ void print_mat(const std::string& label, const sparse_d_matrix& mat)
 */
 // -----------------------------------------------------------------
 // get the number of non-zeros corresponding to a matrix
-template <class Eigen_sparse_matrix_type>
-s_vector get_nnz(const Eigen_sparse_matrix_type& mat)
-{	typedef typename Eigen_sparse_matrix_type::InnerIterator iterator;
+s_vector get_nnz(const sparse_d_matrix& mat)
+{	typedef sparse_d_matrix::InnerIterator iterator;
 	size_t nc = size_t( mat.cols() );
 	s_vector nnz(nc);
 	for(size_t j = 0; j < nc; j++)
