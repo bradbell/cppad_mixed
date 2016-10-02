@@ -26,6 +26,10 @@ $srcfile%src/eigen/sparse_up_tri_sol.cpp
 	%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1
 %$$
 
+$head Private$$
+This function is an implementation detail and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
 $head left$$
 This must be a square invertible upper triangular matrix; i.e.,
 $icode%left%.rows() == %left%.cols()%$$ and

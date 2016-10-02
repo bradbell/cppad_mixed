@@ -192,6 +192,11 @@ $codei%CppAD::mixed::ipopt_fixed %ipopt_object%(
 	%mixed_object%
 )%$$
 
+$head Private$$
+This class,
+and all of its members, are implementation details and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
 $head References$$
 The values of the arguments are stored by reference and hence
 the arguments must not be deleted while $icode ipopt_object$$

@@ -70,6 +70,7 @@ $rref sparse_jac_info$$
 $rref triple2eigen$$
 $rref undetermined$$
 $rref sparse_low_tri_sol$$
+$rref sparse_up_tri_sol$$
 $tend
 
 $end
