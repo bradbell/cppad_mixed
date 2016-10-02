@@ -14,6 +14,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/sparse_mat_info.hpp>
 # include <cppad/mixed/sparse_low_tri_sol.hpp>
 # include <cppad/mixed/sparse_up_tri_sol.hpp>
+# include <cppad/mixed/sparse_scale_diag.hpp>
 # include <iostream>
 
 namespace { // BEGIN_EMPTY_NAMESPACE
@@ -46,13 +47,6 @@ void print_mat(const std::string& label, const sparse_d_matrix& mat)
 	std::cout << label << "=\n" << m << "\n";
 }
 */
-void scale_diagonal(double scale, sparse_d_matrix& mat)
-{	for(int k = 0; k < mat.outerSize(); ++k)
-	{	for(sparse_d_matrix::InnerIterator itr(mat, k); itr; ++itr)
-			if( itr.row() == itr.col() )
-				itr.valueRef() = itr.value() * scale;
-	}
-}
 sparse_d_matrix lower2symmetric(const sparse_d_matrix& lower)
 {	assert( lower.rows() == lower.cols() );
 	sparse_d_matrix result( lower.rows(), lower.rows() );
@@ -323,7 +317,7 @@ private:
 			).transpose();
 			//
 			// divide the diagonal by 2
-			scale_diagonal(0.5, tmp2);
+			CppAD::mixed::sparse_scale_diag(0.5, tmp2);
 			//
 			// low[ L_0^{-1} * (E_k - B_k) * L_0^{-T} ]
 			// L_k = L_0 * low[  L_0^{-1} * (E_k - B_k) * L_0^{-T} ]
@@ -455,7 +449,7 @@ private:
 			sparse_d_matrix tmp1 = L0.transpose() * r_L[k];
 			//
 			// low[ L_0^T * bar{L}_k ]
-			scale_diagonal(0.5, tmp1);
+			CppAD::mixed::sparse_scale_diag(0.5, tmp1);
 			sparse_d_matrix tmp2 = mat2lower(tmp1);
 			//
 			// L_0^{-T} * low[ L_0^T * bar{L}_k ]
@@ -486,7 +480,7 @@ private:
 		sparse_d_matrix tmp1 = L0.transpose() * r_L[0];
 		//
 		// low[ L_0^T * bar{L}_0 ]
-		scale_diagonal(0.5, tmp1);
+		CppAD::mixed::sparse_scale_diag(0.5, tmp1);
 		sparse_d_matrix tmp2 = mat2lower( tmp1 );
 		//
 		// L_0^{-T} low[ L_0^T * bar{L}_0 ]
@@ -498,7 +492,7 @@ private:
 		);
 		// remove L0, \bar{Alow}_0 += 2.0 * low[ P^T * M0 * P ]
 		tmp1       = 2.0 * ptmp(P_, M0);
-		scale_diagonal(0.5, tmp1);
+		CppAD::mixed::sparse_scale_diag(0.5, tmp1);
 		r_Alow[0] += mat2lower( tmp1 );
 		// ------------------------------------------------------------------
 		// pack r_Alow into px

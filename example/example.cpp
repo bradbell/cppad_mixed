@@ -68,6 +68,7 @@ extern bool ran_obj_jac_xam(void);
 extern bool sample_fixed_xam(void);
 extern bool sample_random_xam(void);
 extern bool sparse_low_tri_sol_xam(void);
+extern bool sparse_scale_diag_xam(void);
 extern bool sparse_up_tri_sol_xam(void);
 extern bool update_factor_xam(void);
 extern bool undetermined_xam(void);
@@ -146,6 +147,7 @@ int main(void)
 	RUN(sample_fixed_xam);
 	RUN(sample_random_xam);
 	RUN(sparse_low_tri_sol_xam);
+	RUN(sparse_scale_diag_xam);
 	RUN(sparse_up_tri_sol_xam);
 	RUN(undetermined_xam);
 	RUN(update_factor_xam);
