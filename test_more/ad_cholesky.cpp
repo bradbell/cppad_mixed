@@ -16,15 +16,18 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/sparse_up_tri_sol.hpp>
 # include <cppad/mixed/sparse_scale_diag.hpp>
 # include <cppad/mixed/sparse_low2sym.hpp>
+# include <cppad/mixed/sparse_mat2low.hpp>
 # include <iostream>
 
 namespace { // BEGIN_EMPTY_NAMESPACE
 // -----------------------------------------------------------------
-// define AD, Dynamic, some vector and matrix types
+// define AD, Dynamic, sparse_mat2low, some vector and matrix types
 // -----------------------------------------------------------------
 using CppAD::AD;
 using Eigen::Dynamic;
 using Eigen::ColMajor;
+using CppAD::mixed::sparse_mat2low;
+//
 typedef CppAD::vector<size_t>                             s_vector;
 typedef CppAD::vector<double>                             d_vector;
 typedef CppAD::vector< AD<double> >                       ad_vector;
@@ -48,19 +51,6 @@ void print_mat(const std::string& label, const sparse_d_matrix& mat)
 	std::cout << label << "=\n" << m << "\n";
 }
 */
-sparse_d_matrix mat2lower(const sparse_d_matrix& mat)
-{	assert( mat.rows() == mat.cols() );
-	sparse_d_matrix result( mat.rows(), mat.rows() );
-	for(int k = 0; k < mat.outerSize(); ++k)
-	{	for(sparse_d_matrix::InnerIterator itr(mat, k); itr; ++itr)
-		{	int i = itr.row();
-			int j = itr.col();
-			if( j <= i )
-				result.insert(i, j) = itr.value();
-		}
-	}
-	return result;
-}
 // -----------------------------------------------------------------
 // get the number of non-zeros corresponding to a matrix
 template <class Eigen_sparse_matrix_type>
@@ -307,7 +297,7 @@ private:
 			//
 			// low[ L_0^{-1} * (E_k - B_k) * L_0^{-T} ]
 			// L_k = L_0 * low[  L_0^{-1} * (E_k - B_k) * L_0^{-T} ]
-			f_L_[k] = L0 * mat2lower(tmp2);
+			f_L_[k] = L0 * sparse_mat2low(tmp2);
 		}
 		// -------------------------------------------------------------------
 		// pack f_L_ into ty
@@ -436,7 +426,7 @@ private:
 			//
 			// low[ L_0^T * bar{L}_k ]
 			CppAD::mixed::sparse_scale_diag(0.5, tmp1);
-			sparse_d_matrix tmp2 = mat2lower(tmp1);
+			sparse_d_matrix tmp2 = sparse_mat2low(tmp1);
 			//
 			// L_0^{-T} * low[ L_0^T * bar{L}_k ]
 			tmp1 = CppAD::mixed::sparse_up_tri_sol(L0.transpose(), tmp2);
@@ -448,18 +438,20 @@ private:
 			//
 			// remove Lk, \bar{Alow}_k += P^T * M0 * P
 			sparse_d_matrix barB_k = CppAD::mixed::sparse_low2sym(Mk);
-			r_Alow[k]             += mat2lower( ptmp(P_, barB_k) );
+			r_Alow[k]             += sparse_mat2low( ptmp(P_, barB_k) );
 			// compute barB_k
 			barB_k                 = -1.0 * barB_k;
 			//
 			// remove C_k using
 			// 2 * lower[ bar{B}_k L_k ]
-			r_L[0] += 2.0 * mat2lower( barB_k * f_L_[k] );
+			tmp1    = barB_k * f_L_[k];
+			r_L[0] += 2.0 * sparse_mat2low( tmp1 );
 			//
 			// remove B_k
 			for(size_t ell = 1; ell < k; ell++)
 			{	// bar{L}_ell = 2 * lower( bar{B}_k * L_{k-ell} )
-				r_L[ell] += 2.0 * mat2lower( barB_k * f_L_[k-ell] );
+				tmp1      = barB_k * f_L_[k-ell];
+				r_L[ell] += 2.0 * sparse_mat2low( tmp1 );
 			}
 		}
 		// L_0^T * bar{L}_0
@@ -467,7 +459,7 @@ private:
 		//
 		// low[ L_0^T * bar{L}_0 ]
 		CppAD::mixed::sparse_scale_diag(0.5, tmp1);
-		sparse_d_matrix tmp2 = mat2lower( tmp1 );
+		sparse_d_matrix tmp2 = sparse_mat2low( tmp1 );
 		//
 		// L_0^{-T} low[ L_0^T * bar{L}_0 ]
 		tmp1 = CppAD::mixed::sparse_up_tri_sol(L0.transpose(), tmp2);
@@ -479,7 +471,7 @@ private:
 		// remove L0, \bar{Alow}_0 += 2.0 * low[ P^T * M0 * P ]
 		tmp1       = 2.0 * ptmp(P_, M0);
 		CppAD::mixed::sparse_scale_diag(0.5, tmp1);
-		r_Alow[0] += mat2lower( tmp1 );
+		r_Alow[0] += sparse_mat2low( tmp1 );
 		// ------------------------------------------------------------------
 		// pack r_Alow into px
 		for(size_t k = 0; k < n_order; k++)

@@ -28,6 +28,10 @@ $head Purpose$$
 Each of the diagonal elements of $icode matrix$$ is replaced by
 $icode scale$$ times its original value.
 
+$head Private$$
+This routine is an implementation detail and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
 $head scale$$
 This argument has prototype
 $codei%

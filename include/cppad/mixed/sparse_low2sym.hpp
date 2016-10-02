@@ -26,12 +26,16 @@ $section Convert an Eigen Lower Triangular Matrix To a Symmetric Matrix$$
 $head Syntax$$
 $icode%symmetric% = %CppAD::mixed::sparse_low2sym(%lower%)%$$
 
+$head Private$$
+This routine is an implementation detail and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
 $head lower$$
 This argument has prototype
 $code%
 	const Eigen::SparseMatrix<%Scalar%, %Options%, %Index%>& %lower%
 %$$
-with the same number of rows as columns; i.e.
+and has the same number of rows as columns; i.e.
 $codei%
 	%lower%.rows() == %lower.cols()
 %$$

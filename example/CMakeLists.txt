@@ -43,6 +43,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	private/ran_objcon_hes_xam.cpp
 	private/sparse_low_tri_sol_xam.cpp
 	private/sparse_low2sym_xam.cpp
+	private/sparse_mat2low_xam.cpp
 	private/sparse_scale_diag_xam.cpp
 	private/sparse_up_tri_sol_xam.cpp
 	private/undetermined_xam.cpp
