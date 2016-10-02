@@ -102,8 +102,6 @@ private:
 	s_vector                      L_nnz_;
 	CppAD::mixed::sparse_mat_info L_pattern_;
 
-	// Forward and values for Alow and L (set by forward)
-	CppAD::vector<sparse_d_matrix> f_Alow_, f_L_;
 
 public:
 	// -----------------------------------------------------------------
@@ -211,60 +209,56 @@ private:
 		assert( nx * n_order == tx.size() );
 		assert( ny * n_order == ty.size() );
 		// -------------------------------------------------------------------
-		// make sure f_Alow_ and f_L_ are large enough
-		assert( f_Alow_.size() == f_L_.size() );
-		if( f_Alow_.size() < n_order )
-		{	f_Alow_.resize(n_order);
-			f_L_.resize(n_order);
-		}
+		// f_Alow and f_L
+		CppAD::vector<sparse_d_matrix> f_Alow(n_order), f_L(n_order);
 		// -------------------------------------------------------------------
-		// unpack tx into f_Alow_
+		// unpack tx into f_Alow
 		for(size_t k = 0; k < n_order; k++)
 		{	// unpack Alow values for this order
-			f_Alow_[k].resize(nc, nc);
-			f_Alow_[k].reserve(Alow_nnz_);
+			f_Alow[k].resize(nc, nc);
+			f_Alow[k].reserve(Alow_nnz_);
 			for(size_t ell = 0; ell < Alow_pattern_.row.size(); ell++)
 			{	size_t i = Alow_pattern_.row[ell];
 				size_t j = Alow_pattern_.col[ell];
-				f_Alow_[k].insert(i, j) = tx[ ell * n_order + k ];
+				f_Alow[k].insert(i, j) = tx[ ell * n_order + k ];
 			}
 		}
 		// -------------------------------------------------------------------
-		// for orders less than p, unpack ty into f_L_
+		// for orders less than p, unpack ty into f_L
 		for(size_t k = 0; k < p; k++)
-		{	// unpack f_L_ values for this order
+		{	// unpack f_L values for this order
 			assert( L_pattern_.row.size() == ny );
-			f_L_[k].resize(nc, nc);
-			f_L_[k].reserve(L_nnz_);
+			f_L[k].resize(nc, nc);
+			f_L[k].reserve(L_nnz_);
 			for(size_t index = 0; index < ny; index++)
 			{	size_t i = L_pattern_.row[index];
 				size_t j = L_pattern_.col[index];
-				f_L_[k].insert(i, j) = ty[ index * n_order + k];
+				f_L[k].insert(i, j) = ty[ index * n_order + k];
 			}
 		}
 		if( p == 0 )
 		{	// compute result for zero order
-			ldlt_obj_.factorize( f_Alow_[0] );
+			ldlt_obj_.factorize( f_Alow[0] );
 			if( ldlt_obj_.info() != Eigen::Success )
 			{	ok_ = false;
 				return false;
 			}
 			Eigen::VectorXd D2 = sqrt( ldlt_obj_.vectorD().array() ).matrix();
-			f_L_[0]            =  ldlt_obj_.matrixL() * D2.asDiagonal();
+			f_L[0]            =  ldlt_obj_.matrixL() * D2.asDiagonal();
 			assert( P_.indices() == ldlt_obj_.permutationP().indices() );
 		}
-		Eigen::SparseMatrix<double, Eigen::RowMajor> L0 = f_L_[0];
+		Eigen::SparseMatrix<double, Eigen::RowMajor> L0 = f_L[0];
 		// compute result for orders greater than or equal 1 and p.
 		for(size_t k = std::max(p, size_t(1)); k < n_order; k++)
 		{	// convert Alow to A_k
-			sparse_d_matrix A_k = CppAD::mixed::sparse_low2sym(f_Alow_[k]);
+			sparse_d_matrix A_k = CppAD::mixed::sparse_low2sym(f_Alow[k]);
 			//
 			// initialize sum as E_k =  P * A_k * P.transpose()
 			sparse_d_matrix f_sum  = pmpt(P_, A_k);
 			//
 			// compute E_k - B_k
 			for(size_t ell = 1; ell < k; ell++)
-				f_sum -= f_L_[ell] * f_L_[k-ell].transpose();
+				f_sum -= f_L[ell] * f_L[k-ell].transpose();
 			// compute L_0^{-1} * (E_k - B_k)
 			sparse_d_matrix tmp1 = CppAD::mixed::sparse_low_tri_sol(L0, f_sum);
 			//
@@ -278,15 +272,15 @@ private:
 			//
 			// low[ L_0^{-1} * (E_k - B_k) * L_0^{-T} ]
 			// L_k = L_0 * low[  L_0^{-1} * (E_k - B_k) * L_0^{-T} ]
-			f_L_[k] = L0 * sparse_mat2low(tmp2);
+			f_L[k] = L0 * sparse_mat2low(tmp2);
 		}
 		// -------------------------------------------------------------------
-		// pack f_L_ into ty
+		// pack f_L into ty
 		// -------------------------------------------------------------------
 		for(size_t k = p; k < n_order; k++)
 		{	size_t index = 0;
 			// repacking is harder because some of the computed terms
-			// may be zero and may not appear in f_L_[k];
+			// may be zero and may not appear in f_L[k];
 			for(size_t j = 0; j < nc; j++)
 			{	//
 				// initialize this column as zero
@@ -295,7 +289,7 @@ private:
 				//
 				// fill in non-zero entries
 				size_t ell = 0;
-				for(iterator itr(f_L_[k], j); itr; ++itr)
+				for(iterator itr(f_L[k], j); itr; ++itr)
 				{	size_t i    = L_pattern_.row[index + ell];
 					while( i < size_t(itr.row()) )
 					{	++ell;
@@ -348,35 +342,34 @@ private:
 		assert( px.size()    == tx.size() );
 		assert( py.size()    == ty.size() );
 		//
-		assert( f_Alow_.size() == f_L_.size() );
-		assert( f_Alow_.size() >= n_order );
 		// -------------------------------------------------------------------
-		// declare r_Alow, r_L
+		// declare f_Alow, f_L, r_Alow, r_L
+		CppAD::vector<sparse_d_matrix> f_Alow(n_order), f_L(n_order);
 		CppAD::vector<sparse_d_matrix> r_Alow(n_order), r_L(n_order);
 		// -------------------------------------------------------------------
-		// unpack tx into f_Alow_
+		// unpack tx into f_Alow
 		assert( Alow_pattern_.row.size() == nx );
 		for(size_t k = 0; k < n_order; k++)
 		{	// unpack Alow_ for this order
-			f_Alow_[k].resize(nc, nc);
-			f_Alow_[k].reserve(Alow_nnz_);
+			f_Alow[k].resize(nc, nc);
+			f_Alow[k].reserve(Alow_nnz_);
 			for(size_t index = 0; index < nx; index++)
 			{	size_t i = Alow_pattern_.row[index];
 				size_t j = Alow_pattern_.col[index];
-				f_Alow_[k].insert(i, j) = tx [ index * n_order + k ];
+				f_Alow[k].insert(i, j) = tx [ index * n_order + k ];
 			}
 		}
 		// -------------------------------------------------------------------
-		// for orders less than p, unpack ty into f_L_
+		// for orders less than p, unpack ty into f_L
 		assert( L_pattern_.row.size() == ny );
 		for(size_t k = 0; k < n_order; k++)
-		{	// unpack f_L_ values for this order
-			f_L_[k].setZero();
-			f_L_[k].reserve(L_nnz_);
+		{	// unpack f_L values for this order
+			f_L[k].resize(nc, nc);
+			f_L[k].reserve(L_nnz_);
 			for(size_t index = 0; index < ny; index++)
 			{	size_t i = L_pattern_.row[index];
 				size_t j = L_pattern_.col[index];
-				f_L_[k].insert(i, j) = ty[ index * n_order + k];
+				f_L[k].insert(i, j) = ty[ index * n_order + k];
 			}
 		}
 		// -------------------------------------------------------------------
@@ -397,7 +390,7 @@ private:
 			r_Alow[k].resize(nc, nc);
 		// -------------------------------------------------------------------
 		// Cholesky factorization
-		Eigen::SparseMatrix<double, Eigen::RowMajor> L0 = f_L_[0];
+		Eigen::SparseMatrix<double, Eigen::RowMajor> L0 = f_L[0];
 		//
 		// start at highest order and go down
 		for(size_t k1 = n_order; k1 > 1; k1--)
@@ -425,13 +418,13 @@ private:
 			//
 			// remove C_k using
 			// 2 * lower[ bar{B}_k L_k ]
-			tmp1    = barB_k * f_L_[k];
+			tmp1    = barB_k * f_L[k];
 			r_L[0] += 2.0 * sparse_mat2low( tmp1 );
 			//
 			// remove B_k
 			for(size_t ell = 1; ell < k; ell++)
 			{	// bar{L}_ell = 2 * lower( bar{B}_k * L_{k-ell} )
-				tmp1      = barB_k * f_L_[k-ell];
+				tmp1      = barB_k * f_L[k-ell];
 				r_L[ell] += 2.0 * sparse_mat2low( tmp1 );
 			}
 		}
