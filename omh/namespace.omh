@@ -48,6 +48,7 @@ $children%include/cppad/mixed/a2_double.hpp
 	%include/cppad/mixed/sparse_low2sym.hpp
 	%include/cppad/mixed/sparse_mat2low.hpp
 	%include/cppad/mixed/sparse_eigen2info.hpp
+	%include/cppad/mixed/sparse_info2eigen.hpp
 %$$
 
 $head Public$$
@@ -79,6 +80,7 @@ $rref sparse_scale_diag$$
 $rref sparse_low2sym$$
 $rref sparse_mat2low$$
 $rref sparse_eigen2info$$
+$rref sparse_info2eigen$$
 $tend
 
 $end

@@ -18,6 +18,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/sparse_low2sym.hpp>
 # include <cppad/mixed/sparse_mat2low.hpp>
 # include <cppad/mixed/sparse_eigen2info.hpp>
+# include <cppad/mixed/sparse_info2eigen.hpp>
 # include <iostream>
 
 namespace { // BEGIN_EMPTY_NAMESPACE
@@ -213,27 +214,17 @@ private:
 		// -------------------------------------------------------------------
 		// unpack tx into f_Alow
 		for(size_t k = 0; k < n_order; k++)
-		{	// unpack Alow values for this order
-			f_Alow[k].resize(nc, nc);
-			f_Alow[k].reserve(Alow_nnz_);
-			for(size_t ell = 0; ell < Alow_pattern_.row.size(); ell++)
-			{	size_t i = Alow_pattern_.row[ell];
-				size_t j = Alow_pattern_.col[ell];
-				f_Alow[k].insert(i, j) = tx[ ell * n_order + k ];
-			}
+		{	for(size_t ell = 0; ell < nx; ell++)
+				Alow_pattern_.val[ell] = tx[ ell * n_order + k ];
+			CppAD::mixed::sparse_info2eigen(f_Alow[k], Alow_pattern_, nc, nc);
 		}
 		// -------------------------------------------------------------------
 		// for orders less than p, unpack ty into f_L
 		for(size_t k = 0; k < p; k++)
 		{	// unpack f_L values for this order
-			assert( L_pattern_.row.size() == ny );
-			f_L[k].resize(nc, nc);
-			f_L[k].reserve(L_nnz_);
-			for(size_t index = 0; index < ny; index++)
-			{	size_t i = L_pattern_.row[index];
-				size_t j = L_pattern_.col[index];
-				f_L[k].insert(i, j) = ty[ index * n_order + k];
-			}
+			for(size_t ell = 0; ell < ny; ell++)
+				L_pattern_.val[ell] = ty[ ell * n_order + k];
+			CppAD::mixed::sparse_info2eigen(f_L[k], L_pattern_, nc, nc);
 		}
 		if( p == 0 )
 		{	// compute result for zero order
@@ -347,41 +338,25 @@ private:
 		CppAD::vector<sparse_d_matrix> r_Alow(n_order), r_L(n_order);
 		// -------------------------------------------------------------------
 		// unpack tx into f_Alow
-		assert( Alow_pattern_.row.size() == nx );
 		for(size_t k = 0; k < n_order; k++)
-		{	// unpack Alow_ for this order
-			f_Alow[k].resize(nc, nc);
-			f_Alow[k].reserve(Alow_nnz_);
-			for(size_t index = 0; index < nx; index++)
-			{	size_t i = Alow_pattern_.row[index];
-				size_t j = Alow_pattern_.col[index];
-				f_Alow[k].insert(i, j) = tx [ index * n_order + k ];
-			}
+		{	for(size_t ell = 0; ell < nx; ell++)
+				Alow_pattern_.val[ell] = tx[ ell * n_order + k ];
+			CppAD::mixed::sparse_info2eigen(f_Alow[k], Alow_pattern_, nc, nc);
 		}
 		// -------------------------------------------------------------------
-		// for orders less than p, unpack ty into f_L
-		assert( L_pattern_.row.size() == ny );
+		// unpack ty into f_L
 		for(size_t k = 0; k < n_order; k++)
 		{	// unpack f_L values for this order
-			f_L[k].resize(nc, nc);
-			f_L[k].reserve(L_nnz_);
-			for(size_t index = 0; index < ny; index++)
-			{	size_t i = L_pattern_.row[index];
-				size_t j = L_pattern_.col[index];
-				f_L[k].insert(i, j) = ty[ index * n_order + k];
-			}
+			for(size_t ell = 0; ell < ny; ell++)
+				L_pattern_.val[ell] = ty[ ell * n_order + k];
+			CppAD::mixed::sparse_info2eigen(f_L[k], L_pattern_, nc, nc);
 		}
 		// -------------------------------------------------------------------
 		// unpack py into r_L
-		assert( L_pattern_.row.size() == ny );
 		for(size_t k = 0; k < n_order; k++)
-		{	r_L[k].resize(nc, nc);
-			r_L[k].reserve(L_nnz_);
-			for(size_t ell = 0; ell < ny; ell++)
-			{	size_t i = L_pattern_.row[ell];
-				size_t j = L_pattern_.col[ell];
-				r_L[k].insert(i, j) = py[ ell * n_order + k];
-			}
+		{	for(size_t ell = 0; ell < ny; ell++)
+				L_pattern_.val[ell] = py[ ell * n_order + k];
+			CppAD::mixed::sparse_info2eigen(r_L[k], L_pattern_, nc, nc);
 		}
 		// -------------------------------------------------------------------
 		// initialize r_Alow as zero
