@@ -121,7 +121,8 @@ public:
 		//
 		// Step 1: Set Alow_nnz_ and Alow_pattern_
 		Alow_nnz_     = get_nnz(Alow);
-		Alow_pattern_ = CppAD::mixed::sparse_eigen2info(Alow);
+		assert( Alow_pattern_.row.size() == 0 );
+		CppAD::mixed::sparse_eigen2info(Alow, Alow_pattern_);
 		//
 		// Step 2: analyze the sparsity pattern
 		ldlt_obj_.analyzePattern( Alow );
@@ -137,7 +138,8 @@ public:
 		// Step 5: Set L_nnz_ and L_pattern_
 		sparse_d_matrix L  =  ldlt_obj_.matrixL();
 		L_nnz_             = get_nnz(L);
-		L_pattern_         = CppAD::mixed::sparse_eigen2info(L);
+		assert( L_pattern_.row.size() == 0 );
+		CppAD::mixed::sparse_eigen2info(L, L_pattern_);
 	}
 	// -----------------------------------------------------------------
 	// user AD version of atomic Cholesky factorization
@@ -196,8 +198,7 @@ private:
 		const CppAD::vector<double>&    tx ,
 		// ty [ i * (q+1) + k ] is y_i^k
 		CppAD::vector<double>&          ty )
-	{	typedef typename sparse_d_matrix::InnerIterator iterator;
-		//
+	{	//
 		assert( p <= q );
 		//
 		size_t n_order = q + 1;
@@ -268,29 +269,9 @@ private:
 		// pack f_L into ty
 		// -------------------------------------------------------------------
 		for(size_t k = p; k < n_order; k++)
-		{	size_t index = 0;
-			// repacking is harder because some of the computed terms
-			// may be zero and may not appear in f_L[k];
-			for(size_t j = 0; j < nc; j++)
-			{	//
-				// initialize this column as zero
-				for(size_t ell = 0; ell < L_nnz_[j]; ell++)
-					ty[ (index + ell) * n_order + k ] = 0.0;
-				//
-				// fill in non-zero entries
-				size_t ell = 0;
-				for(iterator itr(f_L[k], j); itr; ++itr)
-				{	size_t i    = L_pattern_.row[index + ell];
-					while( i < size_t(itr.row()) )
-					{	++ell;
-						i = L_pattern_.row[index + ell];
-					}
-					assert( i == size_t( itr.row() ) );
-					assert( L_pattern_.col[index + ell] == j );
-					ty[ (index + ell) * n_order + k ] = itr.value();
-				}
-				index += L_nnz_[j];
-			}
+		{	CppAD::mixed::sparse_eigen2info(f_L[k], L_pattern_);
+			for(size_t ell = 0; ell < ny; ell++)
+				ty[ ell * n_order + k ] = L_pattern_.val[ell];
 		}
 		// -------------------------------------------------------------------
 		// check if we are computing vy
@@ -321,7 +302,7 @@ private:
 		// derivative of G[ {y_i^k} ] w.r.t. {y_i^k}
 		const CppAD::vector<double>&     py
 	)
-	{	typedef typename sparse_d_matrix::InnerIterator iterator;
+	{	//
 		size_t n_order = q + 1;
 		size_t nx      = Alow_pattern_.row.size();
 		size_t ny      = L_pattern_.row.size();
@@ -423,28 +404,9 @@ private:
 		// ------------------------------------------------------------------
 		// pack r_Alow into px
 		for(size_t k = 0; k < n_order; k++)
-		{	size_t index = 0;
-			// repacking is harder because some of the computed terms
-			// may be zero and not appear in r_Alow[k]
-			for(size_t j = 0; j < nc; j++)
-			{	// initialize this column as zero
-				for(size_t ell = 0; ell < Alow_nnz_[j]; ell++)
-					px[ (index + ell) * n_order + k ] = 0.0;
-
-				// fill in the non-zero entries
-				size_t ell = 0;
-				for(iterator itr(r_Alow[k], j); itr; ++itr)
-				{	size_t i = Alow_pattern_.row[index + ell];
-					while( i < size_t( itr.row() ) )
-					{	++ell;
-						i = Alow_pattern_.row[index + ell];
-					}
-					assert( i == size_t( itr.row() ) );
-					assert( Alow_pattern_.col[index + ell] == j );
-					px[ (index + ell) * n_order + k ] = itr.value();
-				}
-				index += Alow_nnz_[j];
-			}
+		{	CppAD::mixed::sparse_eigen2info(r_Alow[k], Alow_pattern_);
+			for(size_t ell = 0; ell < nx; ell++)
+				px[ ell * n_order + k ] = Alow_pattern_.val[ell];
 		}
 		//
 		return true;

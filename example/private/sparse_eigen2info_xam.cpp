@@ -34,24 +34,25 @@ $end
 
 bool sparse_eigen2info_xam(void)
 {	bool ok = true;
-	typedef Eigen::SparseMatrix<double, Eigen::RowMajor, int> sparse_matrix;
+	typedef Eigen::SparseMatrix<double, Eigen::ColMajor, int> sparse_matrix;
 	//
 	int nr = 3;
+	int nc = nr;
 	sparse_matrix matrix(nr, nr);
 	size_t count = 0;
-	for(int i = 0; i < nr; i++)
-	{	for(int j = 0; j <= i; j++)
+	for(int j = 0; j < nc; j++)
+	{	for(int i = j; i < nr; i++)
 		{	matrix.insert(i, j) = double(count);
 			++count;
 		}
 	}
-	CppAD::mixed::sparse_mat_info info =
-		CppAD::mixed::sparse_eigen2info(matrix);
+	CppAD::mixed::sparse_mat_info info; // empty matrix
+	CppAD::mixed::sparse_eigen2info(matrix, info);
 	//
 	// check the result values
 	count = 0;
-	for(size_t i = 0; i < size_t(nr); i++)
-	{	for(size_t j = 0; j <= i; j++)
+	for(size_t j = 0; j < size_t(nc); j++)
+	{	for(size_t i = j; i < size_t(nr); i++)
 		{	ok &= info.row[count] == i;
 			ok &= info.col[count] == j;
 			ok &= info.val[count] == double(count);
