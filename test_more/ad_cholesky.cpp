@@ -53,20 +53,6 @@ void print_mat(const std::string& label, const sparse_d_matrix& mat)
 	std::cout << label << "=\n" << m << "\n";
 }
 */
-// -----------------------------------------------------------------
-// get the number of non-zeros corresponding to a matrix
-s_vector get_nnz(const sparse_d_matrix& mat)
-{	typedef sparse_d_matrix::InnerIterator iterator;
-	size_t nc = size_t( mat.cols() );
-	s_vector nnz(nc);
-	for(size_t j = 0; j < nc; j++)
-	{	nnz[j] = 0;
-		for(iterator itr(mat, j); itr; ++itr)
-		{	nnz[j]++;
-		}
-	}
-	return nnz;
-}
 // ------------------------------------------------------------------
 // P * M * P^T
 sparse_d_matrix pmpt(const perm_matrix& P, const sparse_d_matrix& M)
@@ -87,8 +73,11 @@ private:
 	// OK flag
 	bool ok_;
 	//
-	// Number of non-zeros and sparsity pattern for Alow (set by constructor)
-	s_vector                      Alow_nnz_;
+	// number of columns and rows in the square matrices Alow and L
+	size_t nc_;
+	//
+	// Sparsity pattern for Alow and the temporary vector Alow_pattern_.val
+	// (set by constructor)
 	CppAD::mixed::sparse_mat_info Alow_pattern_;
 
 	// Object used for Cholesky factorization
@@ -98,8 +87,8 @@ private:
 	// Value of the permutation matrix (set by constructor)
 	perm_matrix P_;
 
-	// Number of non-zeros and sparsity pattern for L (set by constructor)
-	s_vector                      L_nnz_;
+	// Sparsity pattern for L and the temporary vector L_pattern_.val
+	// (set by constructor)
 	CppAD::mixed::sparse_mat_info L_pattern_;
 
 
@@ -117,15 +106,22 @@ public:
 		"atomic_ad_cholesky",
 		CppAD::atomic_base<double>::set_sparsity_enum
 	)
-	{	ok_ = true;
+	{	assert( Alow.rows() == Alow.cols() );
+		// initialize ok flag
+		ok_ = true;
 		//
-		// Step 1: Set Alow_nnz_ and Alow_pattern_
-		Alow_nnz_     = get_nnz(Alow);
+		// set number of colums (and rows) in the matrices Alow and L
+		nc_ = size_t( Alow.cols() );
+		//
+		// Step 1: Set Alow_pattern_
 		assert( Alow_pattern_.row.size() == 0 );
 		CppAD::mixed::sparse_eigen2info(Alow, Alow_pattern_);
+		// Alow_pattern_.row and Alow_pattern_.col do not change
+		// Alow_pattern_.val.size() does not change
 		//
 		// Step 2: analyze the sparsity pattern
 		ldlt_obj_.analyzePattern( Alow );
+		// This is the only call to ldlt_obj_.analyzePattern
 		//
 		// Step 3: Compute the Cholesky factor for this Alow
 		// and the permutation all Alow (used with this object).
@@ -135,26 +131,26 @@ public:
 		// Step 4: Retrieve the permutation P_;
 		P_   = ldlt_obj_.permutationP();
 		//
-		// Step 5: Set L_nnz_ and L_pattern_
+		// Step 5: Set L_pattern_
 		sparse_d_matrix L  =  ldlt_obj_.matrixL();
-		L_nnz_             = get_nnz(L);
 		assert( L_pattern_.row.size() == 0 );
 		CppAD::mixed::sparse_eigen2info(L, L_pattern_);
+		// L_pattern_.row and L_pattern_.col do not change
+		// L_pattern_.val.size() does not change
 	}
 	// -----------------------------------------------------------------
 	// user AD version of atomic Cholesky factorization
 	void ad(
 		const sparse_ad_matrix& aAlow  ,
 		sparse_ad_matrix&       aL     )
-	{	// -----------------------------------------------------------
+	{	assert( nc_ == size_t( aAlow.rows() ) );
+		assert( nc_ == size_t( aAlow.cols() ) );
+		// -----------------------------------------------------------
 		// packed version of Alow
-		size_t nc = Alow_nnz_.size();
 		size_t nx = Alow_pattern_.row.size();
-		assert( nc == size_t( aAlow.rows() ) );
-		assert( nc == size_t( aAlow.cols() ) );
 		ad_vector ax( nx );
 		size_t index = 0;
-		for(size_t j = 0; j < nc; j++)
+		for(size_t j = 0; j < nc_; j++)
 		{	for(sparse_ad_matrix::InnerIterator itr(aAlow, j); itr; ++itr)
 			{	assert( Alow_pattern_.row[index] == size_t( itr.row() ) );
 				assert( Alow_pattern_.col[index] == size_t( itr.col() ) );
@@ -170,7 +166,7 @@ public:
 		(*this)(ax, ay);
 		// -------------------------------------------------------------------
 		// unpack ay into aL
-		aL.resize(nc, nc);
+		aL.resize(nc_, nc_);
 		index = 0;
 		for(size_t ell = 0; ell < ny; ell++)
 		{	size_t i = L_pattern_.row[ell];
@@ -204,7 +200,6 @@ private:
 		size_t n_order = q + 1;
 		size_t nx      = Alow_pattern_.row.size();
 		size_t ny      = L_pattern_.row.size();
-		size_t nc      = Alow_nnz_.size();
 		assert( vx.size() == 0 || nx == vx.size() );
 		assert( vx.size() == 0 || ny == vy.size() );
 		assert( nx * n_order == tx.size() );
@@ -217,7 +212,7 @@ private:
 		for(size_t k = 0; k < n_order; k++)
 		{	for(size_t ell = 0; ell < nx; ell++)
 				Alow_pattern_.val[ell] = tx[ ell * n_order + k ];
-			CppAD::mixed::sparse_info2eigen(f_Alow[k], Alow_pattern_, nc, nc);
+			CppAD::mixed::sparse_info2eigen(f_Alow[k], Alow_pattern_, nc_, nc_);
 		}
 		// -------------------------------------------------------------------
 		// for orders less than p, unpack ty into f_L
@@ -225,7 +220,7 @@ private:
 		{	// unpack f_L values for this order
 			for(size_t ell = 0; ell < ny; ell++)
 				L_pattern_.val[ell] = ty[ ell * n_order + k];
-			CppAD::mixed::sparse_info2eigen(f_L[k], L_pattern_, nc, nc);
+			CppAD::mixed::sparse_info2eigen(f_L[k], L_pattern_, nc_, nc_);
 		}
 		if( p == 0 )
 		{	// compute result for zero order
@@ -306,7 +301,6 @@ private:
 		size_t n_order = q + 1;
 		size_t nx      = Alow_pattern_.row.size();
 		size_t ny      = L_pattern_.row.size();
-		size_t nc      = Alow_nnz_.size();
 		//
 		assert( nx * n_order == tx.size() );
 		assert( ny * n_order == ty.size() );
@@ -322,7 +316,7 @@ private:
 		for(size_t k = 0; k < n_order; k++)
 		{	for(size_t ell = 0; ell < nx; ell++)
 				Alow_pattern_.val[ell] = tx[ ell * n_order + k ];
-			CppAD::mixed::sparse_info2eigen(f_Alow[k], Alow_pattern_, nc, nc);
+			CppAD::mixed::sparse_info2eigen(f_Alow[k], Alow_pattern_, nc_, nc_);
 		}
 		// -------------------------------------------------------------------
 		// unpack ty into f_L
@@ -330,19 +324,19 @@ private:
 		{	// unpack f_L values for this order
 			for(size_t ell = 0; ell < ny; ell++)
 				L_pattern_.val[ell] = ty[ ell * n_order + k];
-			CppAD::mixed::sparse_info2eigen(f_L[k], L_pattern_, nc, nc);
+			CppAD::mixed::sparse_info2eigen(f_L[k], L_pattern_, nc_, nc_);
 		}
 		// -------------------------------------------------------------------
 		// unpack py into r_L
 		for(size_t k = 0; k < n_order; k++)
 		{	for(size_t ell = 0; ell < ny; ell++)
 				L_pattern_.val[ell] = py[ ell * n_order + k];
-			CppAD::mixed::sparse_info2eigen(r_L[k], L_pattern_, nc, nc);
+			CppAD::mixed::sparse_info2eigen(r_L[k], L_pattern_, nc_, nc_);
 		}
 		// -------------------------------------------------------------------
 		// initialize r_Alow as zero
 		for(size_t k = 0; k < n_order; k++)
-			r_Alow[k].resize(nc, nc);
+			r_Alow[k].resize(nc_, nc_);
 		// -------------------------------------------------------------------
 		// Cholesky factorization
 		Eigen::SparseMatrix<double, Eigen::RowMajor> L0 = f_L[0];
