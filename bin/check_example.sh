@@ -2,7 +2,7 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-15 University of Washington
+#           Copyright (C) 2014-16 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -31,7 +31,7 @@ do
 	fi
 	if [ "$ext" == 'cpp' ] && [ "$name" != 'example.cpp' ]
 	then
-		name=`echo $file | sed -e 's|.*/\([^.]*\)\.cpp$|\1|'`
+		name=`echo $file | sed -e 's|.*/\([^.]*\)\.cpp$|\1_xam|'`
 		if ! grep "RUN($name)" example/example.cpp > /dev/null
 		then
 			echo "RUN($name) is not in example/example.cpp"
