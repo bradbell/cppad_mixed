@@ -126,7 +126,7 @@ $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$.
 
 $children%
-	example/user/optimize_random_xam.cpp
+	example/user/optimize_random.cpp
 %$$
 $head Example$$
 The file $cref optimize_random_xam.cpp$$ contains an example

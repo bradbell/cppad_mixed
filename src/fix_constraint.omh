@@ -66,7 +66,7 @@ i.e., $icode%vec%.size() == 0%$$.
 In the case where there are no constraints of this form.
 
 $children%
-	example/user/fix_constraint_xam.cpp
+	example/user/fix_constraint.cpp
 %$$
 $head Example$$
 The file $cref fix_constraint_xam.cpp$$ contains an example

@@ -106,7 +106,7 @@ The results in $icode jac_info$$ are in
 $cref/column major order/sparse_mat_info/Notation/Column Major Order/$$.
 
 $children%
-	example/private/ran_con_jac_xam.cpp
+	example/private/ran_con_jac.cpp
 %$$
 
 $head Example$$

@@ -62,7 +62,7 @@ $subhead Index$$
 The index type fro this sparse matrix are arbitrary; i.e.,
 has no restrictions.
 
-$children%example/private/sparse_scale_diag_xam.cpp
+$children%example/private/sparse_scale_diag.cpp
 %$$
 $head Example$$
 The file $cref sparse_scale_diag_xam.cpp$$ is an example

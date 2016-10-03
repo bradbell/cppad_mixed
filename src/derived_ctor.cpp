@@ -115,7 +115,7 @@ or
 $cref/warning/public/User Defined Functions/warning/$$.
 
 $children%
-	example/user/derived_ctor_xam.cpp
+	example/user/derived_ctor.cpp
 %$$
 $head Example$$
 The file $cref derived_ctor_xam.cpp$$ contains an example and test

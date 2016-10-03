@@ -97,7 +97,7 @@ $codei%
 %$$
 
 $children%
-	example/private/hes_cross_xam.cpp
+	example/private/hes_cross.cpp
 %$$
 $head Example$$
 The file $cref hes_cross_xam.cpp$$ contains an example

@@ -73,10 +73,10 @@ $childtable%src/cholmod/constructor.cpp
 	%src/cholmod/solve_H.cpp
 	%src/cholmod/sim_cov.cpp
 	%src/cholmod/inv.cpp
-	%example/private/ldlt_cholmod_xam.cpp
-	%example/private/cholmod_solve_xam.cpp
-	%example/private/cholmod_solve2_a_xam.cpp
-	%example/private/cholmod_solve2_sim_xam.cpp
+	%example/private/ldlt_cholmod.cpp
+	%example/private/cholmod_solve.cpp
+	%example/private/cholmod_solve2_a.cpp
+	%example/private/cholmod_solve2_sim.cpp
 %$$
 
 $end

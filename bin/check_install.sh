@@ -46,7 +46,7 @@ eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
 # This is the user example that we will compile using
 # the installed version of &code cppad_mixed&&:
 # &codep
-example_file='example/user/no_random_xam.cpp'
+example_file='example/user/no_random.cpp'
 # &&
 #
 # &head build_type&&

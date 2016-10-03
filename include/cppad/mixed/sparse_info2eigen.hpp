@@ -68,7 +68,7 @@ $icode%
 %$$
 and is the number of columns in the matrix.
 
-$children%example/private/sparse_info2eigen_xam.cpp
+$children%example/private/sparse_info2eigen.cpp
 %$$
 $head Example$$
 The file $cref sparse_info2eigen_xam.cpp$$ is an example

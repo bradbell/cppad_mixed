@@ -87,7 +87,7 @@ for the fixed effects.
 $lend
 
 $children%
-	example/user/fix_likelihood_xam.cpp
+	example/user/fix_likelihood.cpp
 %$$
 $head Example$$
 The file $cref fix_likelihood_xam.cpp$$ contains an example and test

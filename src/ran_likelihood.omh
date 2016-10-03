@@ -97,7 +97,7 @@ $cref/y/cppad_mixed/Notation/Data, y, z/$$ is empty.
 In this case there random effects vector should also be empty.
 
 $children%
-	example/user/ran_likelihood_xam.cpp
+	example/user/ran_likelihood.cpp
 %$$
 $head Example$$
 The file $cref ran_likelihood_xam.cpp$$ contains an example

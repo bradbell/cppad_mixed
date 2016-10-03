@@ -50,7 +50,7 @@ $codei%
 %$$
 where $code *$$ is matrix multiplication.
 
-$children%example/private/sparse_up_tri_sol_xam.cpp
+$children%example/private/sparse_up_tri_sol.cpp
 %$$
 $head Example$$
 The file $cref sparse_up_tri_sol_xam.cpp$$ is an example

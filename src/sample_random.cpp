@@ -135,7 +135,7 @@ $latex \[
 This normal distribution is truncated to be within the limits
 $icode random_lower$$, $icode random_upper$$.
 
-$children%example/user/sample_random_xam.cpp
+$children%example/user/sample_random.cpp
 %$$
 $head Example$$
 The file $cref sample_random_xam.cpp$$ is an example

@@ -99,7 +99,7 @@ for the $cref fix_likelihood$$ are not include in this Hessian
 because they do not have a derivative (let alone Hessian) at zero.
 
 $children%
-	example/user/information_mat_xam.cpp
+	example/user/information_mat.cpp
 %$$
 
 $head Example$$

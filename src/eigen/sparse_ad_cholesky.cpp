@@ -145,7 +145,7 @@ $icode%
 and $latex A$$ is the symmetric positive definite matrix
 with lower triangle equal to $icode aAlow$$.
 
-$children%example/private/sparse_ad_cholesky_ad_xam.cpp
+$children%example/private/sparse_ad_cholesky_ad.cpp
 %$$
 $head Example$$
 The file $cref sparse_ad_cholesky_ad_xam.cpp$$ is an example

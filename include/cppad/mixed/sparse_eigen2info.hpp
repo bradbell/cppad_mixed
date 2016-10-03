@@ -66,7 +66,7 @@ to $icode matrix$$.
 Any elements that appear in $icode info$$, but not in $icode matrix$$,
 have value zero in the return value of $icode info$$.
 
-$children%example/private/sparse_eigen2info_xam.cpp
+$children%example/private/sparse_eigen2info.cpp
 %$$
 $head Example$$
 The file $cref sparse_eigen2info_xam.cpp$$ is an example

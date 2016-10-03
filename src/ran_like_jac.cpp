@@ -69,7 +69,7 @@ $codei%
 It contains the Jacobian $latex f_u ( \theta , u )$$.
 
 $children%
-	example/private/ran_like_jac_xam.cpp
+	example/private/ran_like_jac.cpp
 %$$
 $head Example$$
 The file $cref ran_like_jac_xam.cpp$$ contains an example

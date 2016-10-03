@@ -125,7 +125,7 @@ $codei%
 and it is the rank of the matrix to tolerance
 $cref/tol/undetermined/tol/$$.
 
-$children%example/private/undetermined_xam.cpp
+$children%example/private/undetermined.cpp
 %$$
 
 $head Example$$

@@ -99,7 +99,7 @@ the routine $cref ran_like_jac$$ checks that the derivatives agree
 with the AD derivatives.
 
 $children%
-	example/user/ran_likelihood_jac_xam.cpp
+	example/user/ran_likelihood_jac.cpp
 %$$
 $head Example$$
 The file $cref ran_likelihood_jac_xam.cpp$$ contains an example

@@ -146,7 +146,7 @@ Upon return, it contains the value of the Hessian elements
 that are possibly non-zero (and will have the same size as $icode row_out$$).
 
 $children%
-	example/private/ran_objcon_hes_xam.cpp
+	example/private/ran_objcon_hes.cpp
 %$$
 $head Example$$
 The file $cref ran_objcon_hes_xam.cpp$$ contains an example

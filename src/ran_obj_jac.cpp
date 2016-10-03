@@ -79,7 +79,7 @@ Upon return, it contains the value of the derivative w.r.t
 the fixed effects; i.e. $latex r_\theta ( \theta )$$.
 
 $children%
-	example/private/ran_obj_jac_xam.cpp
+	example/private/ran_obj_jac.cpp
 %$$
 $head Example$$
 The file $cref ran_obj_jac_xam.cpp$$ contains an example

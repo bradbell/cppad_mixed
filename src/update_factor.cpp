@@ -84,7 +84,7 @@ corresponding to the specified values for the fixed
 and random effects.
 
 $children%
-	example/private/update_factor_xam.cpp
+	example/private/update_factor.cpp
 %$$
 $head Example$$
 The file $cref update_factor_xam.cpp$$ contains an example

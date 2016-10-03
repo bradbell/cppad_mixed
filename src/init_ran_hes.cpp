@@ -145,7 +145,7 @@ $latex \[
 \]$$
 in the same order as the $icode a1_val_out$$ above.
 
-$contents%example/private/ran_hes_fun_xam.cpp
+$contents%example/private/ran_hes_fun.cpp
 %$$
 
 $end

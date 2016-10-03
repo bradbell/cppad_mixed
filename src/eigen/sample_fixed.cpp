@@ -200,7 +200,7 @@ $subhead Implicit Covariance$$
 The inverse of the implicit information matrix
 is called the implicit covariance.
 
-$children%example/user/sample_fixed_xam.cpp
+$children%example/user/sample_fixed.cpp
 	%src/eigen/sample_conditional.cpp
 %$$
 $head Example$$

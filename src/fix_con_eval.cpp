@@ -53,7 +53,7 @@ corresponding to the fixed effects; see
 $cref/vec/fix_constraint/vec/$$.
 
 $children%
-	example/private/fix_con_eval_xam.cpp
+	example/private/fix_con_eval.cpp
 %$$
 $head Example$$
 The file $cref fix_con_eval_xam.cpp$$ contains an example

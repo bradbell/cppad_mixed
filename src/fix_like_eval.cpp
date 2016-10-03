@@ -65,7 +65,7 @@ $icode%vec%[0] + CppAD::abs(%vec%[1]) + %...% CppAD::abs(%vec%[%s%-1])
 where $icode%s% = %vec%.size()%$$.
 
 $children%
-	example/private/fix_like_eval_xam.cpp
+	example/private/fix_like_eval.cpp
 %$$
 $head Example$$
 The file $cref fix_like_eval_xam.cpp$$ contains an example

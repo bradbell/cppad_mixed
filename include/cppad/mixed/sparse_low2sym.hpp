@@ -65,7 +65,7 @@ and it is a symmetric matrix; i.e.,
 the entries above the diagonal have been set using the corresponding
 entry below the diagonal.
 
-$children%example/private/sparse_low2sym_xam.cpp
+$children%example/private/sparse_low2sym.cpp
 %$$
 $head Example$$
 The file $cref sparse_low2sym_xam.cpp$$ is an example

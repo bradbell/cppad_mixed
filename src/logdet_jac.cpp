@@ -98,7 +98,7 @@ Upon return, it contains the value of the derivative w.r.t
 the random effects.
 
 $children%
-	example/private/logdet_jac_xam.cpp
+	example/private/logdet_jac.cpp
 %$$
 $head Example$$
 The file $cref logdet_jac_xam.cpp$$ contains an example

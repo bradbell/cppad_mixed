@@ -91,7 +91,7 @@ $codei%
 and is the value of the Laplace approximation.
 
 $children%
-	example/private/ran_obj_eval_xam.cpp
+	example/private/ran_obj_eval.cpp
 %$$
 $head Example$$
 The file $cref ran_obj_eval_xam.cpp$$ contains an example

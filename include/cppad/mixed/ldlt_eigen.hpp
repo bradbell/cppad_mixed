@@ -72,7 +72,7 @@ using the operations in this class.
 
 $childtable%src/eigen/ldlt_eigen.cpp
 	%src/eigen/ldlt_inv.cpp
-	%example/private/ldlt_eigen_xam.cpp
+	%example/private/ldlt_eigen.cpp
 %$$
 
 $end

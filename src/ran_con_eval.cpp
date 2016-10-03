@@ -68,7 +68,7 @@ $cref/random constraint Function
 /$$.
 
 $children%
-	example/private/ran_con_eval_xam.cpp
+	example/private/ran_con_eval.cpp
 %$$
 $head Example$$
 The file $cref ran_con_eval_xam.cpp$$ contains an example

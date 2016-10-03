@@ -86,7 +86,7 @@ Upon return, it contains the value of the Jacobian elements
 that are possibly non-zero (and will have the same size as $icode row_out$$).
 
 $children%
-	example/private/fix_like_jac_xam.cpp
+	example/private/fix_like_jac.cpp
 %$$
 $head Example$$
 The file $cref fix_like_jac_xam.cpp$$ contains an example

@@ -60,7 +60,7 @@ and is the lower triangle of $icode matrix$$; i.e.,
 it has the same lower triangle as $icode matrix$$ and it has no entries
 above the diagonal.
 
-$children%example/private/sparse_mat2low_xam.cpp
+$children%example/private/sparse_mat2low.cpp
 %$$
 $head Example$$
 The file $cref sparse_mat2low_xam.cpp$$ is an example

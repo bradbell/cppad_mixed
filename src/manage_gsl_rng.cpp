@@ -81,7 +81,7 @@ $codei%
 
 
 $children%
-	example/user/manage_gsl_rng_xam.cpp
+	example/user/manage_gsl_rng.cpp
 %$$
 $head Example$$
 The file $cref manage_gsl_rng_xam.cpp$$ contains an example and test of
