@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-15 University of Washington
+          Copyright (C) 2014-16 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -41,6 +41,6 @@ L(x, \lambda, z_L, z_U )
 - ( x_1 - 2 )^2  + \lambda ( x_0^2 + x_1 - 1) + z_L (- x_0 - 1) + z_U (x_0 - 1)
 \] $$
 
-$childtable%example/ipopt_xam_run.cpp%$$
+$childtable%example/ipopt_run.cpp%$$
 
 $end

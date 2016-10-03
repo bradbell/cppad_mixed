@@ -869,10 +869,10 @@ void ipopt_xam_nlp::finalize_solution(
 /* %$$
 $end
 -------------------------------------------------------------------------------
-$begin ipopt_xam_run$$
+$begin ipopt_run_xam$$
 $spell
 	CppAD
-	ipopt_xam_run
+	ipopt_run_xam
 	bool
 	eval
 	const
@@ -885,7 +885,7 @@ $$
 $section Ipopt: Example and Test$$
 
 $head Syntax$$
-$icode%ok% = ipopt_xam_run()%$$
+$icode%ok% = ipopt_run_xam()%$$
 
 $head ok$$
 This return value is true, if the test passes,
@@ -893,7 +893,7 @@ and false otherwise.
 
 $head Source$$
 $srccode%cpp% */
-bool ipopt_xam_run(void)
+bool ipopt_run_xam(void)
 {	bool ok = true;
 	using Ipopt::SmartPtr;
 

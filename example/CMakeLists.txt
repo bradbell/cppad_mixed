@@ -23,7 +23,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	private/cholmod_solve2_sim.cpp
 	private/ldlt_cholmod.cpp
 	private/ldlt_eigen.cpp
-	ipopt_xam_run.cpp
+	ipopt_run.cpp
 	private/eigen.cpp
 	private/fix_con_eval.cpp
 	private/fix_con_hes.cpp
