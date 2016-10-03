@@ -85,7 +85,7 @@ $children%
 	example/private/fix_con_jac.cpp
 %$$
 $head Example$$
-The file $cref fix_con_jac_xam.cpp$$ contains an example
+The file $cref fix_con_jac.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 

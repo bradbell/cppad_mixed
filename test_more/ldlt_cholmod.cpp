@@ -70,7 +70,7 @@ $$
 
 $head init$$
 See the following under
-$cref/Source Code/ldlt_cholmod_xam.cpp/Source Code/$$ below:
+$cref/Source Code/ldlt_cholmod.cpp/Source Code/$$ below:
 $codep
 	ldlt_obj.init(H_info);
 $$

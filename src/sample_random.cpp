@@ -138,7 +138,7 @@ $icode random_lower$$, $icode random_upper$$.
 $children%example/user/sample_random.cpp
 %$$
 $head Example$$
-The file $cref sample_random_xam.cpp$$ is an example
+The file $cref sample_random.cpp$$ is an example
 and test of $code sample_random$$.
 $end
 -----------------------------------------------------------------------------

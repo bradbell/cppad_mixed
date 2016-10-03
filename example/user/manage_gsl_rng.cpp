@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin manage_gsl_rng_xam.cpp$$
+$begin manage_gsl_rng.cpp$$
 $spell
 	CppAD
 	gsl

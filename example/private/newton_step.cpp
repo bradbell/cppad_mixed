@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin newton_step_xam.cpp$$
+$begin newton_step.cpp$$
 $spell
 	CppAD
 	cppad

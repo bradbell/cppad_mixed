@@ -124,7 +124,7 @@ $children%
 	example/user/ran_likelihood_hes.cpp
 %$$
 $head Example$$
-The file $cref ran_likelihood_hes_xam.cpp$$ contains an example
+The file $cref ran_likelihood_hes.cpp$$ contains an example
 of defining this virtual function.
 
 

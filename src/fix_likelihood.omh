@@ -90,7 +90,7 @@ $children%
 	example/user/fix_likelihood.cpp
 %$$
 $head Example$$
-The file $cref fix_likelihood_xam.cpp$$ contains an example and test
+The file $cref fix_likelihood.cpp$$ contains an example and test
 of defining this virtual function.
 It returns true, if the test passes, and false otherwise.
 

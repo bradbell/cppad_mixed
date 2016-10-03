@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin ran_likelihood_jac_xam.cpp$$
+$begin ran_likelihood_jac.cpp$$
 $spell
 	CppAD
 	cppad

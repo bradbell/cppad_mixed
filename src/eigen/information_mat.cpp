@@ -103,7 +103,7 @@ $children%
 %$$
 
 $head Example$$
-The file $cref information_mat_xam.cpp$$ contains an example and
+The file $cref information_mat.cpp$$ contains an example and
 test of this routine. It returns true for success and false for failure.
 
 $end

@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin logdet_jac_xam.cpp$$
+$begin logdet_jac.cpp$$
 $spell
 	jac
 	CppAD

@@ -82,7 +82,7 @@ $children%
 	example/private/ran_obj_jac.cpp
 %$$
 $head Example$$
-The file $cref ran_obj_jac_xam.cpp$$ contains an example
+The file $cref ran_obj_jac.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 

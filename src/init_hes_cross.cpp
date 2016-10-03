@@ -100,7 +100,7 @@ $children%
 	example/private/hes_cross.cpp
 %$$
 $head Example$$
-The file $cref hes_cross_xam.cpp$$ contains an example
+The file $cref hes_cross.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 

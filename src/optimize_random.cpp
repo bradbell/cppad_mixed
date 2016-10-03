@@ -129,7 +129,7 @@ $children%
 	example/user/optimize_random.cpp
 %$$
 $head Example$$
-The file $cref optimize_random_xam.cpp$$ contains an example
+The file $cref optimize_random.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 

@@ -66,7 +66,7 @@ $codei%
 %$$
 
 $head Example$$
-The file $cref/ldlt_cholmod_xam.cpp/ldlt_cholmod_xam.cpp/constructor/$$ contains an
+The file $cref/ldlt_cholmod.cpp/ldlt_cholmod.cpp/constructor/$$ contains an
 example and test that uses this constructor.
 
 $end

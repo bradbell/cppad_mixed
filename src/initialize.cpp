@@ -182,7 +182,7 @@ allocated by $code CppAD::thread_alloc$$ and still in use
 when $code initialization$$ is completed.
 
 $head Example$$
-The file $cref derived_ctor_xam.cpp$$ contains an example
+The file $cref derived_ctor.cpp$$ contains an example
 of using $code initialize$$.
 
 $end

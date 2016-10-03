@@ -235,7 +235,7 @@ $children%example/user/optimize_fixed.cpp
 	%omh/ipopt_trace.omh
 %$$
 $head Example$$
-The file $cref optimize_fixed_xam.cpp$$ contains an example
+The file $cref optimize_fixed.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 

@@ -90,7 +90,7 @@ $codei%
 
 
 $head Example$$
-The file $cref/ldlt_cholmod_xam.cpp/ldlt_cholmod_xam.cpp/solve_H/$$ contains an
+The file $cref/ldlt_cholmod.cpp/ldlt_cholmod.cpp/solve_H/$$ contains an
 example and test that uses this function.
 
 $end

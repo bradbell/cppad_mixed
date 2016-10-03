@@ -84,7 +84,7 @@ $children%
 	example/user/manage_gsl_rng.cpp
 %$$
 $head Example$$
-The file $cref manage_gsl_rng_xam.cpp$$ contains an example and test of
+The file $cref manage_gsl_rng.cpp$$ contains an example and test of
 $code manage_gsl_rng$$.  It returns $code true$$, if the test passes,
 and $code false$$ otherwise.
 

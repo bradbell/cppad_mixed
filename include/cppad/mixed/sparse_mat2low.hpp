@@ -63,7 +63,7 @@ above the diagonal.
 $children%example/private/sparse_mat2low.cpp
 %$$
 $head Example$$
-The file $cref sparse_mat2low_xam.cpp$$ is an example
+The file $cref sparse_mat2low.cpp$$ is an example
 and test of $code sparse_mat2low$$.
 
 $end

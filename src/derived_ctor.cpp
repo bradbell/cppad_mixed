@@ -118,7 +118,7 @@ $children%
 	example/user/derived_ctor.cpp
 %$$
 $head Example$$
-The file $cref derived_ctor_xam.cpp$$ contains an example and test
+The file $cref derived_ctor.cpp$$ contains an example and test
 that uses this derived class.
 It returns true for success and false for failure.
 

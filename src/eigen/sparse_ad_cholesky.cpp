@@ -148,7 +148,7 @@ with lower triangle equal to $icode aAlow$$.
 $children%example/private/sparse_ad_cholesky_ad.cpp
 %$$
 $head Example$$
-The file $cref sparse_ad_cholesky_ad_xam.cpp$$ is an example
+The file $cref sparse_ad_cholesky_ad.cpp$$ is an example
 and test using this operation.
 
 $end

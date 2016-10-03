@@ -68,7 +68,7 @@ entry below the diagonal.
 $children%example/private/sparse_low2sym.cpp
 %$$
 $head Example$$
-The file $cref sparse_low2sym_xam.cpp$$ is an example
+The file $cref sparse_low2sym.cpp$$ is an example
 and test of $code sparse_low2sym$$.
 
 $end

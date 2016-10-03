@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin ldlt_eigen_xam.cpp$$
+$begin ldlt_eigen.cpp$$
 $spell
 	nrow
 	init
@@ -67,7 +67,7 @@ $$
 
 $head init$$
 See the following under
-$cref/Source Code/ldlt_eigen_xam.cpp/Source Code/$$ below:
+$cref/Source Code/ldlt_eigen.cpp/Source Code/$$ below:
 $codep
 	ldlt_obj.init(H_info);
 $$

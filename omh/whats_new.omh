@@ -361,7 +361,7 @@ may be much too large or much too small).
 $lnext
 There was a bug in $cref ldlt_cholmod_solve_H$$ where an unnecessary
 condition was check and failed. The example
-$cref cholmod_solve2_a_xam.cpp$$ has been change to demonstrate that
+$cref cholmod_solve2_a.cpp$$ has been change to demonstrate that
 only a subset of the right hand side values matter.
 $lnext
 There was an error in the
@@ -445,7 +445,7 @@ their upper or lower limits active (or equal); see
 $cref/fixed effects subset/sample_conditional/Theory/Fixed Effects Subset/$$.
 With this change the $cref information_mat$$ only needs to be
 positive definite on a subset of the fixed effects.
-The example $cref sample_fixed_xam.cpp$$ demonstrates this fact.
+The example $cref sample_fixed.cpp$$ demonstrates this fact.
 $lnext
 Change $cref sample_random$$ to use the
 $cref/sparse observed information/theory/Sparse Observed Information/$$ method.
@@ -481,7 +481,7 @@ $lend
 
 
 $head 04-29$$
-Add an $cref cholmod_solve2_sim_xam.cpp$$, an example that shows
+Add an $cref cholmod_solve2_sim.cpp$$, an example that shows
 how to use Cholmod to efficiently sample a distribution that
 has covariance equal to the inverse of a sparse positive definite matrix.
 
@@ -579,7 +579,7 @@ The user defined virtual routines
 $cref/fatal_error/public/User Defined Functions/fatal_error/$$
 and
 $cref/warning/public/User Defined Functions/warning/$$
-have new examples in $cref derived_ctor_xam.cpp$$.
+have new examples in $cref derived_ctor.cpp$$.
 All the other user defined virtual routines examples
 have been simplified.
 To be specific, each has its own specific example.
@@ -616,7 +616,7 @@ Add the option for a user defined $cref ran_likelihood_hes$$ function.
 
 $head 03-28$$
 $list number$$
-Add the $cref ran_likelihood_xam.cpp$$ example.
+Add the $cref ran_likelihood.cpp$$ example.
 $lnext
 Add the option for a user defined $cref ran_likelihood_jac$$ function.
 $lend
@@ -694,13 +694,13 @@ $lend
 
 
 $head 01-15$$
-Add a $cref/Lasso/lasso_xam.cpp/$$ example.
+Add a $cref/Lasso/lasso.cpp/$$ example.
 
 $head 01-14$$
 $list number$$
 First version that actually works with
 $cref/random constraints/cppad_mixed/Problem/Random Constraints/$$.
-For example, see $cref ran_constraint_xam.cpp$$.
+For example, see $cref ran_constraint.cpp$$.
 $lnext
 Fix a bug when combining absolute value terms
 with $cref fix_constraint$$.
@@ -713,7 +713,7 @@ $lend
 $head 01-13$$
 Add test of absolute value terms in the
 $cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
-$cref abs_density_xam.cpp$$,
+$cref abs_density.cpp$$,
 and fix a bug demonstrated by the test.
 
 $head 01-10$$

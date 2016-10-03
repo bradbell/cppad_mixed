@@ -60,7 +60,7 @@ If the matrix is singular, $icode logdet$$ is
 minus infinity.
 
 $head Example$$
-The file $cref/ldlt_cholmod_xam.cpp/ldlt_cholmod_xam.cpp/logdet/$$ contains an
+The file $cref/ldlt_cholmod.cpp/ldlt_cholmod.cpp/logdet/$$ contains an
 example and test that uses this function.
 
 $end

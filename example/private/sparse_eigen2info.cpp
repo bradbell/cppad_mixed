@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin sparse_eigen2info_xam.cpp$$
+$begin sparse_eigen2info.cpp$$
 $spell
 	tri
 	cppad

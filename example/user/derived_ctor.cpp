@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin derived_ctor_xam.cpp$$
+$begin derived_ctor.cpp$$
 $spell
 	CppAD
 	cppad

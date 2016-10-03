@@ -69,7 +69,7 @@ $children%
 	example/user/fix_constraint.cpp
 %$$
 $head Example$$
-The file $cref fix_constraint_xam.cpp$$ contains an example
+The file $cref fix_constraint.cpp$$ contains an example
 using constraints.
 It returns true, if the test passes, and false otherwise.
 

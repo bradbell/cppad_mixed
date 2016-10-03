@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin sample_random_xam.cpp$$
+$begin sample_random.cpp$$
 $spell
 	CppAD
 	cppad

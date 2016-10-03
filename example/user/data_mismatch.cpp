@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin data_mismatch_xam.cpp$$
+$begin data_mismatch.cpp$$
 $spell
 	CppAD
 	cppad

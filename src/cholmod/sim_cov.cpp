@@ -100,7 +100,7 @@ Otherwise it is false and the output values in $icode v$$
 are the same as their input values.
 
 $head Example$$
-The file $cref/ldlt_cholmod_xam.cpp/ldlt_cholmod_xam.cpp/sim_cov/$$ contains an
+The file $cref/ldlt_cholmod.cpp/ldlt_cholmod.cpp/sim_cov/$$ contains an
 example and test that uses this function.
 
 $end

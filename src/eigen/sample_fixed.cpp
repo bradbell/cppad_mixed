@@ -204,7 +204,7 @@ $children%example/user/sample_fixed.cpp
 	%src/eigen/sample_conditional.cpp
 %$$
 $head Example$$
-The file $cref sample_fixed_xam.cpp$$ is an example
+The file $cref sample_fixed.cpp$$ is an example
 and test of $code sample_fixed$$.
 
 $head Other Method$$

@@ -53,7 +53,7 @@ where $code *$$ is matrix multiplication.
 $children%example/private/sparse_up_tri_sol.cpp
 %$$
 $head Example$$
-The file $cref sparse_up_tri_sol_xam.cpp$$ is an example
+The file $cref sparse_up_tri_sol.cpp$$ is an example
 and test of $code sparse_up_tri_sol$$.
 
 $end

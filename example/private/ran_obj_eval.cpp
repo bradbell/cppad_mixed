@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin ran_obj_eval_xam.cpp$$
+$begin ran_obj_eval.cpp$$
 $spell
 	CppAD
 	ran_obj

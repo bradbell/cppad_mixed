@@ -11,7 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/sparse_ad_cholesky.hpp>
 
 /*
-$begin sparse_ad_cholesky_ad_xam.cpp$$
+$begin sparse_ad_cholesky_ad.cpp$$
 $spell
 	Cholesky
 $$

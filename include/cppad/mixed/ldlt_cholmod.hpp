@@ -57,7 +57,7 @@ is a permutation matrix.
 
 
 $head Example$$
-The file $cref ldlt_cholmod_xam.cpp$$ contains an example and test
+The file $cref ldlt_cholmod.cpp$$ contains an example and test
 using the operations in this class.
 
 $head Preprocessor Symbols$$

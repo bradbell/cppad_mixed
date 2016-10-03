@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin optimize_fixed_xam.cpp$$
+$begin optimize_fixed.cpp$$
 $spell
 	CppAD
 	cppad

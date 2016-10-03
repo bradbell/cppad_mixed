@@ -129,7 +129,7 @@ $children%example/private/undetermined.cpp
 %$$
 
 $head Example$$
-The file $cref undetermined_xam.cpp$$ is an example
+The file $cref undetermined.cpp$$ is an example
 and test of $code undetermined$$.
 
 $head 2DO$$

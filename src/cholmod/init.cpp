@@ -92,7 +92,7 @@ are non-zero is not specified
 (expected to be set for each $cref ldlt_cholmod_solve_H$$ usage).
 
 $head Example$$
-The file $cref/ldlt_cholmod_xam.cpp/ldlt_cholmod_xam.cpp/init/$$ contains an
+The file $cref/ldlt_cholmod.cpp/ldlt_cholmod.cpp/init/$$ contains an
 example and test that uses this function.
 
 $end

@@ -92,7 +92,7 @@ If it is true, the matrix was factored.
 Otherwise, the matrix is singular.
 
 $head Example$$
-The file $cref/ldlt_cholmod_xam.cpp/ldlt_cholmod_xam.cpp/update/$$ contains an
+The file $cref/ldlt_cholmod.cpp/ldlt_cholmod.cpp/update/$$ contains an
 example and test that uses this function.
 
 $end

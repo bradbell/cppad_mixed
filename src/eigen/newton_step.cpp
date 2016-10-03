@@ -155,7 +155,7 @@ $latex \[
 $children%example/private/newton_step.cpp
 %$$
 $head Example$$
-The file $cref newton_step_xam.cpp$$ is an example
+The file $cref newton_step.cpp$$ is an example
 and test of $code newton_step$$.
 
 

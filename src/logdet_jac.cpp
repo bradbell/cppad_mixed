@@ -101,7 +101,7 @@ $children%
 	example/private/logdet_jac.cpp
 %$$
 $head Example$$
-The file $cref logdet_jac_xam.cpp$$ contains an example
+The file $cref logdet_jac.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 

@@ -71,7 +71,7 @@ $children%
 	example/private/ran_con_eval.cpp
 %$$
 $head Example$$
-The file $cref ran_con_eval_xam.cpp$$ contains an example
+The file $cref ran_con_eval.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 

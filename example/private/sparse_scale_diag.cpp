@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin sparse_scale_diag_xam.cpp$$
+$begin sparse_scale_diag.cpp$$
 $spell
 	tri
 	cppad

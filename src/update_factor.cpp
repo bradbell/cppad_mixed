@@ -87,7 +87,7 @@ $children%
 	example/private/update_factor.cpp
 %$$
 $head Example$$
-The file $cref update_factor_xam.cpp$$ contains an example
+The file $cref update_factor.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 

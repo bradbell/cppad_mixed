@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin fix_like_eval_xam.cpp$$
+$begin fix_like_eval.cpp$$
 $spell
 	CppAD
 	cppad

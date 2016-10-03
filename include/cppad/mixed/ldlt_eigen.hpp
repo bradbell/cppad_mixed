@@ -66,7 +66,7 @@ $codei%
 %$$
 
 $head Example$$
-The file $cref ldlt_eigen_xam.cpp$$ contains an example and test
+The file $cref ldlt_eigen.cpp$$ contains an example and test
 using the operations in this class.
 
 

@@ -68,7 +68,7 @@ $children%
 	example/private/fix_like_eval.cpp
 %$$
 $head Example$$
-The file $cref fix_like_eval_xam.cpp$$ contains an example
+The file $cref fix_like_eval.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 

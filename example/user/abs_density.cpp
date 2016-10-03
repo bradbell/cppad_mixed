@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin abs_density_xam.cpp$$
+$begin abs_density.cpp$$
 $spell
 	CppAD
 	cppad

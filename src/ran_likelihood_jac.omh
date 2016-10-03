@@ -102,7 +102,7 @@ $children%
 	example/user/ran_likelihood_jac.cpp
 %$$
 $head Example$$
-The file $cref ran_likelihood_jac_xam.cpp$$ contains an example
+The file $cref ran_likelihood_jac.cpp$$ contains an example
 of defining this virtual function.
 
 

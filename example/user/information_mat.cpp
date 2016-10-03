@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin information_mat_xam.cpp$$
+$begin information_mat.cpp$$
 $spell
 	CppAD
 	cppad

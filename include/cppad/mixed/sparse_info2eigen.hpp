@@ -71,7 +71,7 @@ and is the number of columns in the matrix.
 $children%example/private/sparse_info2eigen.cpp
 %$$
 $head Example$$
-The file $cref sparse_info2eigen_xam.cpp$$ is an example
+The file $cref sparse_info2eigen.cpp$$ is an example
 and test of $code sparse_info2eigen$$.
 
 $end

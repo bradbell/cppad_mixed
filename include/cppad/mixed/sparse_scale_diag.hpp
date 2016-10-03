@@ -65,7 +65,7 @@ has no restrictions.
 $children%example/private/sparse_scale_diag.cpp
 %$$
 $head Example$$
-The file $cref sparse_scale_diag_xam.cpp$$ is an example
+The file $cref sparse_scale_diag.cpp$$ is an example
 and test of $code sparse_scale_diag$$.
 
 $end

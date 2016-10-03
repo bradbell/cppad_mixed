@@ -219,7 +219,7 @@ $latex \[
 \] $$
 
 $head Example$$
-The file $cref sample_fixed_xam.cpp$$ is an example
+The file $cref sample_fixed.cpp$$ is an example
 and test of $code sample_conditional$$ was used before it was
 $cref/replaced/sample_conditional/Replaced/$$.
 

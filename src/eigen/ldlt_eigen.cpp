@@ -101,7 +101,7 @@ and
 $cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
 
 $head Example$$
-The file $cref/ldlt_eigen_xam.cpp/ldlt_eigen_xam.cpp/init/$$ contains an
+The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/init/$$ contains an
 example and test that uses this function.
 
 $end
@@ -198,7 +198,7 @@ If it is true, the matrix was factored.
 Otherwise, the matrix is singular.
 
 $head Example$$
-The file $cref/ldlt_eigen_xam.cpp/ldlt_eigen_xam.cpp/update/$$ contains an
+The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/update/$$ contains an
 example and test that uses this function.
 
 
@@ -274,7 +274,7 @@ If the matrix is singular, $icode logdet$$ is
 minus infinity.
 
 $head Example$$
-The file $cref/ldlt_eigen_xam.cpp/ldlt_eigen_xam.cpp/logdet/$$ contains an
+The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/logdet/$$ contains an
 example and test that uses this function.
 
 $end
@@ -511,7 +511,7 @@ Otherwise it is false and the output values in $icode v$$
 are the same as their input values.
 
 $head Example$$
-The file $cref/ldlt_eigen_xam.cpp/ldlt_eigen_xam.cpp/sim_cov/$$ contains an
+The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/sim_cov/$$ contains an
 example and test that uses this function.
 
 $end
