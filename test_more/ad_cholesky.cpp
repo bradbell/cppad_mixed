@@ -22,22 +22,6 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <iostream>
 
 namespace { // BEGIN_EMPTY_NAMESPACE
-// -----------------------------------------------------------------
-// define AD, Dynamic, sparse_mat2low, some vector and matrix types
-// -----------------------------------------------------------------
-using CppAD::AD;
-using Eigen::Dynamic;
-using Eigen::ColMajor;
-using CppAD::mixed::sparse_mat2low;
-//
-typedef CppAD::vector<size_t>                             s_vector;
-typedef CppAD::vector<double>                             d_vector;
-typedef CppAD::vector< AD<double> >                       ad_vector;
-//
-typedef Eigen::PermutationMatrix<Dynamic, Dynamic>        perm_matrix;
-typedef Eigen::Matrix<double, Dynamic, Dynamic>           dense_d_matrix;
-typedef Eigen::SparseMatrix<double, ColMajor>             sparse_d_matrix;
-typedef Eigen::SparseMatrix< AD<double>, ColMajor >       sparse_ad_matrix;
 //
 /*
 sparse_d_matrix sparse_ad2d(const sparse_ad_matrix& amat)
@@ -54,16 +38,23 @@ void print_mat(const std::string& label, const sparse_d_matrix& mat)
 }
 */
 // ======================================================================
-class atomic_ad_cholesky : public CppAD::atomic_base<double> {
+class sparse_ad_cholesky : public CppAD::atomic_base<double> {
+public:
+	// -----------------------------------------------------------------
+	typedef Eigen::
+	SparseMatrix<double, Eigen::ColMajor>              sparse_d_matrix;
+	typedef Eigen::
+	SparseMatrix< CppAD::AD<double>, Eigen::ColMajor > sparse_ad_matrix;
 private:
 	// -----------------------------------------------------------------
 	// data (in order that it is initialized)
 	// -----------------------------------------------------------------
-	// OK flag
-	bool ok_;
 	//
 	// number of columns and rows in the square matrices Alow and L
-	size_t nc_;
+	const size_t nc_;
+	//
+	// OK flag
+	bool ok_;
 	//
 	// Sparsity pattern for Alow and the temporary vector Alow_pattern_.val
 	// (set by constructor)
@@ -74,7 +65,7 @@ private:
 	Eigen::SimplicialLDLT<sparse_d_matrix> ldlt_obj_;
 
 	// Value of the permutation matrix (set by constructor)
-	perm_matrix P_;
+	Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic> P_;
 
 	// Sparsity pattern for L and the temporary vector L_pattern_.val
 	// (set by constructor)
@@ -90,17 +81,15 @@ public:
 	{	return ok_; }
 	// -----------------------------------------------------------------
 	// constructor
-	atomic_ad_cholesky(const sparse_d_matrix& Alow )
+	sparse_ad_cholesky(const sparse_d_matrix& Alow )
 	: CppAD::atomic_base<double> (
-		"atomic_ad_cholesky",
+		"sparse_ad_cholesky",
 		CppAD::atomic_base<double>::set_sparsity_enum
-	)
+	),
+	nc_( size_t( Alow.cols() ) )
 	{	assert( Alow.rows() == Alow.cols() );
 		// initialize ok flag
 		ok_ = true;
-		//
-		// set number of colums (and rows) in the matrices Alow and L
-		nc_ = size_t( Alow.cols() );
 		//
 		// Step 1: Set Alow_pattern_
 		assert( Alow_pattern_.row.size() == 0 );
@@ -137,7 +126,7 @@ public:
 		// -----------------------------------------------------------
 		// packed version of Alow
 		size_t nx = Alow_pattern_.row.size();
-		ad_vector ax( nx );
+		CppAD::vector< CppAD::AD<double> > ax( nx );
 		size_t index = 0;
 		for(size_t j = 0; j < nc_; j++)
 		{	for(sparse_ad_matrix::InnerIterator itr(aAlow, j); itr; ++itr)
@@ -151,7 +140,7 @@ public:
 		// -------------------------------------------------------------------
 		// make call to packed vector verison of the atomic function
 		size_t ny = L_pattern_.row.size();
-		ad_vector ay( ny );
+		CppAD::vector< CppAD::AD<double> > ay( ny );
 		(*this)(ax, ay);
 		// -------------------------------------------------------------------
 		// unpack ay into aL
@@ -249,7 +238,7 @@ private:
 			//
 			// low[ L_0^{-1} * (E_k - B_k) * L_0^{-T} ]
 			// L_k = L_0 * low[  L_0^{-1} * (E_k - B_k) * L_0^{-T} ]
-			f_L[k] = L0 * sparse_mat2low(tmp2);
+			f_L[k] = L0 * CppAD::mixed::sparse_mat2low(tmp2);
 		}
 		// -------------------------------------------------------------------
 		// pack f_L into ty
@@ -340,7 +329,7 @@ private:
 			//
 			// low[ L_0^T * bar{L}_k ]
 			CppAD::mixed::sparse_scale_diag(0.5, tmp1);
-			sparse_d_matrix tmp2 = sparse_mat2low(tmp1);
+			sparse_d_matrix tmp2 = CppAD::mixed::sparse_mat2low(tmp1);
 			//
 			// L_0^{-T} * low[ L_0^T * bar{L}_k ]
 			tmp1 = CppAD::mixed::sparse_up_tri_sol(L0.transpose(), tmp2);
@@ -361,13 +350,13 @@ private:
 			// remove C_k using
 			// 2 * lower[ bar{B}_k L_k ]
 			tmp1    = barB_k * f_L[k];
-			r_L[0] += 2.0 * sparse_mat2low( tmp1 );
+			r_L[0] += 2.0 * CppAD::mixed::sparse_mat2low( tmp1 );
 			//
 			// remove B_k
 			for(size_t ell = 1; ell < k; ell++)
 			{	// bar{L}_ell = 2 * lower( bar{B}_k * L_{k-ell} )
 				tmp1      = barB_k * f_L[k-ell];
-				r_L[ell] += 2.0 * sparse_mat2low( tmp1 );
+				r_L[ell] += 2.0 * CppAD::mixed::sparse_mat2low( tmp1 );
 			}
 		}
 		// L_0^T * bar{L}_0
@@ -375,7 +364,7 @@ private:
 		//
 		// low[ L_0^T * bar{L}_0 ]
 		CppAD::mixed::sparse_scale_diag(0.5, tmp1);
-		sparse_d_matrix tmp2 = sparse_mat2low( tmp1 );
+		sparse_d_matrix tmp2 = CppAD::mixed::sparse_mat2low( tmp1 );
 		//
 		// L_0^{-T} low[ L_0^T * bar{L}_0 ]
 		tmp1 = CppAD::mixed::sparse_up_tri_sol(L0.transpose(), tmp2);
@@ -388,7 +377,7 @@ private:
 		tmp1 = P_.transpose() * M0;
 		tmp2 = tmp1 * P_;
 		CppAD::mixed::sparse_scale_diag(0.5, tmp2);
-		r_Alow[0] += 2.0 * sparse_mat2low( tmp2 );
+		r_Alow[0] += 2.0 * CppAD::mixed::sparse_mat2low( tmp2 );
 		// ------------------------------------------------------------------
 		// pack r_Alow into px
 		for(size_t k = 0; k < n_order; k++)
@@ -429,7 +418,11 @@ $end
 */
 
 bool ad_cholesky(void)
-{	bool ok = true;
+{	using CppAD::AD;
+	typedef CppAD::vector<double>         d_vector;
+	typedef CppAD::vector< AD<double> >   ad_vector;
+	//
+	bool ok     = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 	// --------------------------------------------------------------------
 	size_t nx = 3;
@@ -441,12 +434,12 @@ bool ad_cholesky(void)
 	// --------------------------------------------------------------------
 	// create ad_cholesky object
 	size_t nc = 3;
-	sparse_d_matrix Blow(nc, nc);
+	sparse_ad_cholesky::sparse_d_matrix Blow(nc, nc);
 	Blow.insert(0,0) = x[0];
 	Blow.insert(2,0) = x[1];
 	Blow.insert(1,1) = x[1];
 	Blow.insert(2,2) = x[2];
-	atomic_ad_cholesky cholesky( Blow );
+	sparse_ad_cholesky cholesky( Blow );
 	//
 	// ----------------------------------------------------------------------
 	// Create function object corresponding to f(x)
@@ -459,18 +452,18 @@ bool ad_cholesky(void)
 	CppAD::Independent( ax );
 	//
 	// Lower triangle of symmetric matrix with same sparsity pattern as B
-	sparse_ad_matrix aAlow(nc, nc);
+	sparse_ad_cholesky::sparse_ad_matrix aAlow(nc, nc);
 	aAlow.insert(0,0) = ax[0];
 	aAlow.insert(2,0) = ax[1];
 	aAlow.insert(1,1) = ax[1];
 	aAlow.insert(2,2) = ax[2];
 	//
 	// compute the Choleksy factorization of A
-	sparse_ad_matrix aL;
+	sparse_ad_cholesky::sparse_ad_matrix aL;
 	cholesky.ad(aAlow, aL);
 	//
 	// diagonal of L
-	Eigen::Matrix< AD<double> , Dynamic , 1 > D = aL.diagonal();
+	Eigen::Matrix< AD<double> , Eigen::Dynamic , 1 > D = aL.diagonal();
 	//
 	// product of diagonal elements of L
 	AD<double> p = 1.0;
