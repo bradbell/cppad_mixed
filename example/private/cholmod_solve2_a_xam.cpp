@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin cholmod_solve2_a.cpp$$
+$begin cholmod_solve2_a_xam.cpp$$
 $spell
 	Cholmod
 	Cholesky
@@ -74,7 +74,7 @@ and only these entries are assured to appear in $code Xset$$
 
 $head Source Code$$
 $code
-$srcfile%example/private/cholmod_solve2_a.cpp%5%// BEGIN C++%// END C++%1%$$
+$srcfile%example/private/cholmod_solve2_a_xam.cpp%5%// BEGIN C++%// END C++%1%$$
 $$
 
 $end
@@ -100,7 +100,7 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 	}
 }
 
-bool cholmod_solve2_a(void)
+bool cholmod_solve2_a_xam(void)
 {	bool ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 

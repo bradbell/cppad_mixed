@@ -361,7 +361,7 @@ may be much too large or much too small).
 $lnext
 There was a bug in $cref ldlt_cholmod_solve_H$$ where an unnecessary
 condition was check and failed. The example
-$cref cholmod_solve2_a.cpp$$ has been change to demonstrate that
+$cref cholmod_solve2_a_xam.cpp$$ has been change to demonstrate that
 only a subset of the right hand side values matter.
 $lnext
 There was an error in the
@@ -481,7 +481,7 @@ $lend
 
 
 $head 04-29$$
-Add an $cref cholmod_solve2_sim.cpp$$, an example that shows
+Add an $cref cholmod_solve2_sim_xam.cpp$$, an example that shows
 how to use Cholmod to efficiently sample a distribution that
 has covariance equal to the inverse of a sparse positive definite matrix.
 

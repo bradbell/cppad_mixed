@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin cholmod_solve2_sim.cpp$$
+$begin cholmod_solve2_sim_xam.cpp$$
 $spell
 	Cholmod
 	Cholesky
@@ -88,7 +88,7 @@ $latex \[
 
 $head Source Code$$
 $code
-$srcfile%example/private/cholmod_solve2_sim.cpp%5%// BEGIN C++%// END C++%1%$$
+$srcfile%example/private/cholmod_solve2_sim_xam.cpp%5%// BEGIN C++%// END C++%1%$$
 $$
 
 $end
@@ -114,7 +114,7 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 	}
 }
 
-bool cholmod_solve2_sim(void)
+bool cholmod_solve2_sim_xam(void)
 {	bool ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 

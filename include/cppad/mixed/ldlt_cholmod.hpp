@@ -75,8 +75,8 @@ $childtable%src/cholmod/constructor.cpp
 	%src/cholmod/inv.cpp
 	%example/private/ldlt_cholmod_xam.cpp
 	%example/private/cholmod_solve_xam.cpp
-	%example/private/cholmod_solve2_a.cpp
-	%example/private/cholmod_solve2_sim.cpp
+	%example/private/cholmod_solve2_a_xam.cpp
+	%example/private/cholmod_solve2_sim_xam.cpp
 %$$
 
 $end
