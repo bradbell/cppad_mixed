@@ -41,6 +41,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	private/ran_obj_eval_xam.cpp
 	private/ran_obj_jac_xam.cpp
 	private/ran_objcon_hes_xam.cpp
+	private/sparse_ad_cholesky_ad_xam.cpp
 	private/sparse_eigen2info_xam.cpp
 	private/sparse_info2eigen_xam.cpp
 	private/sparse_low_tri_sol_xam.cpp

@@ -14,7 +14,6 @@ see http://www.gnu.org/licenses/agpl.txt
 
 // cppad_mixed subdirectory
 extern bool abs_fix_con(void);
-extern bool ad_cholesky(void);
 extern bool binomial(void);
 extern bool delta_ran_obj(void);
 extern bool der_var_hes(void);
@@ -69,7 +68,6 @@ int main(void)
 {
 	// This comment expected by bin/test_one.sh
 	RUN(abs_fix_con);
-	RUN(ad_cholesky);
 	RUN(binomial);
 	RUN(delta_ran_obj);
 	RUN(der_var_hes);

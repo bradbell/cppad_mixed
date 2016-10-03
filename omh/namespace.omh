@@ -49,6 +49,7 @@ $children%include/cppad/mixed/a2_double.hpp
 	%include/cppad/mixed/sparse_mat2low.hpp
 	%include/cppad/mixed/sparse_eigen2info.hpp
 	%include/cppad/mixed/sparse_info2eigen.hpp
+	%include/cppad/mixed/sparse_ad_cholesky.hpp
 %$$
 
 $head Public$$
@@ -81,6 +82,7 @@ $rref sparse_low2sym$$
 $rref sparse_mat2low$$
 $rref sparse_eigen2info$$
 $rref sparse_info2eigen$$
+$rref sparse_ad_cholesky$$
 $tend
 
 $end

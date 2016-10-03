@@ -22,6 +22,7 @@ ADD_LIBRARY(cppad_mixed
 	eigen/ldlt_inv.cpp
 	eigen/newton_step.cpp
 	eigen/sample_fixed.cpp
+	eigen/sparse_ad_cholesky.cpp
 	eigen/sparse_low_tri_sol.cpp
 	eigen/sparse_up_tri_sol.cpp
 	sample_random.cpp
