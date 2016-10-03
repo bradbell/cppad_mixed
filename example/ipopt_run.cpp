@@ -10,7 +10,7 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 
 /*
-$begin ipopt_xam_nlp$$
+$begin ipopt_nlp_xam$$
 $spell
 	CppAD
 	Ipopt
@@ -30,18 +30,18 @@ namespace {
 	typedef Ipopt::Index   Index;
 	typedef Ipopt::TNLP::IndexStyleEnum IndexStyleEnum;
 	//
-	// ipopt_xam_nlp
-	class ipopt_xam_nlp : public Ipopt::TNLP
+	// ipopt_nlp_xam
+	class ipopt_nlp_xam : public Ipopt::TNLP
 	{
 	public:
 		// did finalize_solution agree that the solution had converged
 		bool finalize_solution_ok_;
 		//
 		// default constructor
-		ipopt_xam_nlp(void);
+		ipopt_nlp_xam(void);
 		//
 		// default destructor
-		virtual ~ipopt_xam_nlp(void);
+		virtual ~ipopt_nlp_xam(void);
 		//
 		virtual bool get_nlp_info(
 			Index&          n            ,
@@ -135,15 +135,15 @@ $end
 $begin ipopt_xam_ctor$$
 $spell
 	CppAD
-	ipopt_xam_nlp
+	ipopt_nlp_xam
 $$
 
 $section Ipopt Example: Constructor and Destructor$$
 
 $srccode%cpp% */
-ipopt_xam_nlp::ipopt_xam_nlp(void)
+ipopt_nlp_xam::ipopt_nlp_xam(void)
 { }
-ipopt_xam_nlp::~ipopt_xam_nlp(void)
+ipopt_nlp_xam::~ipopt_nlp_xam(void)
 { }
 /* %$$
 $end
@@ -191,7 +191,7 @@ it was not feasible
 
 $head Source$$
 $srccode%cpp% */
-bool ipopt_xam_nlp::get_nlp_info(
+bool ipopt_nlp_xam::get_nlp_info(
 	Index&          n            ,  // out
 	Index&          m            ,  // out
 	Index&          nnz_jac_g    ,  // out
@@ -211,7 +211,7 @@ $end
 $begin ipopt_xam_get_bounds_info$$
 $spell
 	CppAD
-	ipopt_xam_nlp
+	ipopt_nlp_xam
 	bool
 $$
 
@@ -245,7 +245,7 @@ it was not feasible
 
 $head Source$$
 $srccode%cpp% */
-bool ipopt_xam_nlp::get_bounds_info(
+bool ipopt_nlp_xam::get_bounds_info(
 		Index       n        ,   // in
 		Number*     x_l      ,   // out
 		Number*     x_u      ,   // out
@@ -274,7 +274,7 @@ $begin ipopt_xam_get_starting_point$$
 $spell
 	CppAD
 	init
-	ipopt_xam_nlp
+	ipopt_nlp_xam
 	bool
 $$
 
@@ -326,7 +326,7 @@ it was not feasible
 
 $head Source$$
 $srccode%cpp% */
-bool ipopt_xam_nlp::get_starting_point(
+bool ipopt_nlp_xam::get_starting_point(
 	Index           n            ,  // in
 	bool            init_x       ,  // in
 	Number*         x            ,  // out
@@ -353,7 +353,7 @@ $end
 $begin ipopt_xam_eval_f$$
 $spell
 	CppAD
-	ipopt_xam_nlp
+	ipopt_nlp_xam
 	bool
 	eval
 	obj
@@ -386,7 +386,7 @@ it was not feasible
 
 $head Source$$
 $srccode%cpp% */
-bool ipopt_xam_nlp::eval_f(
+bool ipopt_nlp_xam::eval_f(
 	Index           n         ,  // in
 	const Number*   x         ,  // in
 	bool            new_x     ,  // in
@@ -403,7 +403,7 @@ $end
 $begin ipopt_xam_eval_grad_f$$
 $spell
 	CppAD
-	ipopt_xam_nlp
+	ipopt_nlp_xam
 	bool
 	eval
 	const
@@ -436,7 +436,7 @@ it was not feasible
 
 $head Source$$
 $srccode%cpp% */
-bool ipopt_xam_nlp::eval_grad_f(
+bool ipopt_nlp_xam::eval_grad_f(
 	Index           n         ,  // in
 	const Number*   x         ,  // in
 	bool            new_x     ,  // in
@@ -453,7 +453,7 @@ $end
 $begin ipopt_xam_eval_g$$
 $spell
 	CppAD
-	ipopt_xam_nlp
+	ipopt_nlp_xam
 	bool
 	const
 	eval
@@ -488,7 +488,7 @@ it was not feasible
 
 $head Source$$
 $srccode%cpp% */
-bool ipopt_xam_nlp::eval_g(
+bool ipopt_nlp_xam::eval_g(
 	Index           n        ,  // in
 	const Number*   x        ,  // in
 	bool            new_x    ,  // in
@@ -510,7 +510,7 @@ $end
 $begin ipopt_xam_eval_jac_g$$
 $spell
 	CppAD
-	ipopt_xam_nlp
+	ipopt_nlp_xam
 	bool
 	eval
 	const
@@ -571,7 +571,7 @@ it was not feasible
 
 $head Source$$
 $srccode%cpp% */
-bool ipopt_xam_nlp::eval_jac_g(
+bool ipopt_nlp_xam::eval_jac_g(
 	Index           n        ,  // in
 	const Number*   x        ,  // in
 	bool            new_x    ,  // in
@@ -606,7 +606,7 @@ $end
 $begin ipopt_xam_eval_h$$
 $spell
 	CppAD
-	ipopt_xam_nlp
+	ipopt_nlp_xam
 	bool
 	eval
 	const
@@ -686,7 +686,7 @@ it was not feasible
 
 $head Source$$
 $srccode%cpp% */
-bool ipopt_xam_nlp::eval_h(
+bool ipopt_nlp_xam::eval_h(
 	Index         n              ,  // in
 	const Number* x              ,  // in
 	bool          new_x          ,  // in
@@ -724,7 +724,7 @@ $end
 $begin ipopt_xam_finalize_solution$$
 $spell
 	CppAD
-	ipopt_xam_nlp
+	ipopt_nlp_xam
 	bool
 	eval
 	const
@@ -826,7 +826,7 @@ the NLP; see also option check_derivatives_for_naninf.
 
 $head Source$$
 $srccode%cpp% */
-void ipopt_xam_nlp::finalize_solution(
+void ipopt_nlp_xam::finalize_solution(
 	Ipopt::SolverReturn               status    ,  // in
 	Index                             n         ,  // in
 	const Number*                     x         ,  // in
@@ -898,7 +898,7 @@ bool ipopt_run_xam(void)
 	using Ipopt::SmartPtr;
 
 	// Create an instance of the example problem
-	SmartPtr<ipopt_xam_nlp> xam_nlp = new ipopt_xam_nlp;
+	SmartPtr<ipopt_nlp_xam> xam_nlp = new ipopt_nlp_xam;
 
 	// Create an instance of an IpoptApplication
 	SmartPtr<Ipopt::IpoptApplication> app = IpoptApplicationFactory();
