@@ -70,7 +70,7 @@ cd build/tmp
 # The following command gets the example name,
 # which is the example file minus the &code .cpp&& at the end:
 # &codep
-example_name=`echo $example_file | sed -e 's|.*/||' -e 's|\.cpp||'`
+example_name=`echo $example_file | sed -e 's|.*/||' -e 's|\.cpp|_xam|'`
 # &&
 #
 # &head main&&
