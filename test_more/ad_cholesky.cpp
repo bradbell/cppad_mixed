@@ -53,17 +53,6 @@ void print_mat(const std::string& label, const sparse_d_matrix& mat)
 	std::cout << label << "=\n" << m << "\n";
 }
 */
-// ------------------------------------------------------------------
-// P * M * P^T
-sparse_d_matrix pmpt(const perm_matrix& P, const sparse_d_matrix& M)
-{	sparse_d_matrix tmp = P * M;
-	return tmp * P.transpose();
-}
-// P^T * M * P
-sparse_d_matrix ptmp(const perm_matrix& P, const sparse_d_matrix& M)
-{	sparse_d_matrix tmp = P.transpose() * M;
-	return tmp * P;
-}
 // ======================================================================
 class atomic_ad_cholesky : public CppAD::atomic_base<double> {
 private:
@@ -239,14 +228,16 @@ private:
 		{	// convert Alow to A_k
 			sparse_d_matrix A_k = CppAD::mixed::sparse_low2sym(f_Alow[k]);
 			//
-			// initialize sum as E_k =  P * A_k * P.transpose()
-			sparse_d_matrix f_sum  = pmpt(P_, A_k);
+			// initialize sum as E_k =  P * A_k * P^T
+			sparse_d_matrix tmp1  = P_ * A_k;
+			sparse_d_matrix f_sum = tmp1 * P_.transpose();
 			//
 			// compute E_k - B_k
 			for(size_t ell = 1; ell < k; ell++)
 				f_sum -= f_L[ell] * f_L[k-ell].transpose();
+			//
 			// compute L_0^{-1} * (E_k - B_k)
-			sparse_d_matrix tmp1 = CppAD::mixed::sparse_low_tri_sol(L0, f_sum);
+			tmp1 = CppAD::mixed::sparse_low_tri_sol(L0, f_sum);
 			//
 			// compute L_0^{-1} * (E_k - B_k) * L_0^{-T}
 			sparse_d_matrix tmp2 = CppAD::mixed::sparse_low_tri_sol(
@@ -361,9 +352,11 @@ private:
 			//
 			// remove Lk, \bar{Alow}_k += P^T * M0 * P
 			sparse_d_matrix barB_k = CppAD::mixed::sparse_low2sym(Mk);
-			r_Alow[k]             += sparse_mat2low( ptmp(P_, barB_k) );
+			tmp1                   = P_.transpose() * barB_k;
+			r_Alow[k]             += tmp1 * P_;
+			//
 			// compute barB_k
-			barB_k                 = -1.0 * barB_k;
+			barB_k   = - barB_k;
 			//
 			// remove C_k using
 			// 2 * lower[ bar{B}_k L_k ]
@@ -392,9 +385,10 @@ private:
 			L0.transpose(), tmp1.transpose()
 		);
 		// remove L0, \bar{Alow}_0 += 2.0 * low[ P^T * M0 * P ]
-		tmp1       = 2.0 * ptmp(P_, M0);
-		CppAD::mixed::sparse_scale_diag(0.5, tmp1);
-		r_Alow[0] += sparse_mat2low( tmp1 );
+		tmp1 = P_.transpose() * M0;
+		tmp2 = tmp1 * P_;
+		CppAD::mixed::sparse_scale_diag(0.5, tmp2);
+		r_Alow[0] += 2.0 * sparse_mat2low( tmp2 );
 		// ------------------------------------------------------------------
 		// pack r_Alow into px
 		for(size_t k = 0; k < n_order; k++)
