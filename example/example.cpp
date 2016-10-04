@@ -68,6 +68,7 @@ extern bool ran_obj_jac_xam(void);
 extern bool sample_fixed_xam(void);
 extern bool sample_random_xam(void);
 extern bool sparse_ad_cholesky_ad_xam(void);
+extern bool sparse_ad_cholesky_eq_xam(void);
 extern bool sparse_ad_cholesky_p_xam(void);
 extern bool sparse_eigen2info_xam(void);
 extern bool sparse_info2eigen_xam(void);
@@ -153,6 +154,7 @@ int main(void)
 	RUN(sample_fixed_xam);
 	RUN(sample_random_xam);
 	RUN(sparse_ad_cholesky_ad_xam);
+	RUN(sparse_ad_cholesky_eq_xam);
 	RUN(sparse_ad_cholesky_p_xam);
 	RUN(sparse_eigen2info_xam);
 	RUN(sparse_info2eigen_xam);
