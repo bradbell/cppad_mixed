@@ -83,8 +83,10 @@ bool sparse_ad_cholesky_ad_xam(void)
 	aAlow.insert(2,2) = ax[2];
 	//
 	// compute the Choleksy factorization of A
-	Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> aL(nc, nc);
+	Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> aL;
 	cholesky.ad(aAlow, aL);
+	ok &= size_t(aL.rows()) == nc;
+	ok &= size_t(aL.cols()) == nc;
 	//
 	// diagonal of L
 	Eigen::Matrix< AD<double> , Eigen::Dynamic , 1 > D = aL.diagonal();

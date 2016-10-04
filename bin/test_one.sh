@@ -58,7 +58,7 @@ then
 fi
 #
 file_name="$1"
-test_name=`echo $file_name | sed -e 's|.*/||' -e 's|\.cpp$||'`
+test_name=`echo $file_name | sed -e 's|.*/||' -e 's|\.cpp$|_xam|'`
 # ---------------------------------------------------------------------------
 cat << EOF > test_one.$$
 /This comment expected by bin\\/test_one.sh/b start_run

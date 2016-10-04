@@ -31,6 +31,7 @@ $spell
 	Alow
 	const
 	Eigen
+	Cholesky
 $$
 
 $section Sparse AD Cholesky Constructor$$
@@ -50,7 +51,8 @@ $codei%
 	const Eigen::SparseMatrix<double, Eigen::ColMajor>& %Alow%
 %$$
 and is the lower triangle of a positive definite matrix.
-Only positive definite matrices with the same sparsity pattern
+Only positive definite matrices
+$cref/A/sparse_ad_cholesky/Notation/A/$$ with the same sparsity pattern
 can be factored using the $icode cholesky$$ object; i.e.,
 square matrices with the same column size and
 same set of possibly non-zero entries.
@@ -95,6 +97,46 @@ nc_( size_t( Alow.cols() ) )
 	// L_pattern_.val.size() does not change
 }
 /*
+$begin sparse_ad_cholesky_p$$
+$spell
+	Cholesky
+	CppAD
+$$
+
+$section Using Sparse AD Cholesky Permutation P$$
+
+$head Syntax$$
+$icode%P% = %cholesky%.permutation()%$$
+
+$head Prototype$$
+$srcfile%src/eigen/sparse_ad_cholesky.cpp
+	%4%// BEGIN PERMUTATION PROTOTYPE%// END PERMUTATION PROTOTYPE%1%$$
+
+$head Public / Private$$
+This is a public member function of the class $code sparse_ad_cholesky$$.
+On the other hand, this class,
+and all of its members, are implementation details and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
+$head P$$
+The return value is the permutation matrix
+$cref/P/sparse_ad_cholesky/Notation/P/$$.
+The permutation corresponding to $icode cholesky$$ does not change.
+
+$children%example/private/sparse_ad_cholesky_p.cpp
+%$$
+$head Example$$
+The file $cref sparse_ad_cholesky_p.cpp$$ is an example
+and test using this operation.
+
+$end
+*/
+// BEGIN PERMUTATION PROTOTYPE
+const Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic>&
+sparse_ad_cholesky::permutation(void)
+// END PERMUTATION PROTOTYPE
+{	return P_; }
+/*
 ------------------------------------------------------------------------------
 $begin sparse_ad_cholesy_ad$$
 $spell
@@ -105,7 +147,7 @@ $spell
 	Eigen
 $$
 
-$section Using Sparse AD Cholesky Operation$$
+$section Using Sparse AD Cholesky Factor L$$
 
 $head Syntax$$
 $icode%cholesky%.ad(%aAlow%, %aL%)%$$
@@ -121,7 +163,8 @@ This matrix has prototype
 $codei%
 	const Eigen::SparseMatrix< CppAD::AD<double>, Eigen::ColMajor>& %aAlow%
 %$$
-and is the lower triangle of a positive definite matrix.
+and is the lower triangle of a positive definite matrix
+$cref/A/sparse_ad_cholesky/Notation/A/$$.
 It must have the same sparsity pattern as
 $cref/Alow/sparse_ad_cholesky_ctor/Alow/$$ in the $icode cholesky$$
 constructor.
@@ -132,18 +175,9 @@ $codei%
 	Eigen::SparseMatrix< CppAD::AD<double>, Eigen::ColMajor>& %aL%
 %$$
 The input value of its elements does not matter.
-Upon return, it is a lower triangular matrix such that
-$latex \[
-	P \cdot A \cdot P^\R{T} = L \cdot L^\R{T}
-\]$$
-where $latex L$$ is the lower triangular matrix corresponding to
-$icode aL$$,
-$latex P$$ is the permutation matrix corresponding to
-$icode%
-	%P% = %cholesky%.permutation()
-%$$
-and $latex A$$ is the symmetric positive definite matrix
-with lower triangle equal to $icode aAlow$$.
+Upon return, it is a lower triangular matrix
+$cref/L/sparse_ad_cholesky/Notation/L/$$ corresponding to the matrix $latex A$$
+specified by $icode aAlow$$.
 
 $children%example/private/sparse_ad_cholesky_ad.cpp
 %$$
@@ -158,7 +192,7 @@ void sparse_ad_cholesky::ad(
 	sparse_ad_matrix&       aL     )
 {	assert( nc_ == size_t( aAlow.rows() ) );
 	assert( nc_ == size_t( aAlow.cols() ) );
-	// -----------------------------------------------------------
+	// -------------------------------------------------------------------
 	// packed version of Alow
 	size_t nx = Alow_pattern_.row.size();
 	CppAD::vector< CppAD::AD<double> > ax( nx );

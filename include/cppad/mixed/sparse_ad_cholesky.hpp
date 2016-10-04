@@ -19,6 +19,29 @@ $$
 
 $section Sparse Cholesky Factorization as an Atomic CppAD Operation$$
 
+$head Purpose$$
+Given a symmetric positive definite matrix $latex A \in \B{R}^{n \times n}$$,
+this routine computes a permutation matrix $latex P \in \B{R}^{n \times n}$$
+and a lower triangular matrix $latex L \in \B{R}^{n \times n}$$
+such that
+$latex \[
+	P A P^\R{T} = L L^\R{T}
+\] $$
+The permutation matrix is chosen to be fill reducing; i.e.,
+to make $latex L$$ sparse.
+
+$head Notation$$
+
+$subhead A$$
+We use $latex A$$ to refer to the symmetric positive definite
+matrix.
+
+$subhead P$$
+We use $latex P$$ to refer to the permutation matrix.
+
+$subhead L$$
+We use $latex L$$ to refer to the lower triangular matrix.
+
 $head Private$$
 This class is an implementation detail and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
@@ -99,8 +122,7 @@ public:
 	//
 	// Permutation matrix for this factorization
 	const Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic>&
-	permutation(void)
-	{	return P_; }
+	permutation(void);
 	//
 	// AD version of atomic Cholesky factorization
 	void ad(
