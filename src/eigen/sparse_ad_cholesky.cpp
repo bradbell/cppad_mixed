@@ -321,14 +321,60 @@ bool sparse_ad_cholesky::forward(
 	if( vx.size() == 0 )
 		return true;
 	// -------------------------------------------------------------------
-	// This is a very dumb algorithm that over estimates which elements
-	// of L are variables. 2DO: create a much better estimate
-	bool var = false;
-	for(size_t j = 0; j < nx; j++)
-		var |= vx[j];
-	for(size_t i = 0; i < ny; i++)
-		vy[i] = var;
+	// Determine which components of L are variables.
+	// Note that B_{i,j} = sum_k L_{i,k} * L_{j,k}
+	// where B = P * A * P^T and note that
 	//
+	// initialize all the components of L as parameters
+	for(size_t m = 0; m < ny; m++)
+		vy[m] = false;
+	//
+	// a vector of integers corresponding to the permutation
+	Eigen::Matrix<size_t, Eigen::Dynamic, 1> p_indices(nc_);
+	for(size_t i = 0; i < nc_; i++)
+		p_indices[i] = i;
+	p_indices = P_ * p_indices;
+	//
+	// for each variable in Alow
+	for(size_t ell = 0; ell < nx; ell++) if( vx[ell] )
+	{	size_t i = Alow_pattern_.row[ell];
+		size_t j = Alow_pattern_.col[ell];;
+		assert( j <= i );
+		// corresponding index in B
+		i = p_indices[i];
+		j = p_indices[j];
+		//
+		// If there is a k s.t. L_{i,k} and L_{j,k} are both in the sparsity
+		// pattern for L, mark L{i,k} and L_{j,k} as variables.
+		size_t m = 0;
+		for(size_t k = 0; k < nc_; k++)
+		{	// initialize as no entry in row i and column k
+			size_t m_i = ny + 1;
+			// initialize as no entry in row j and column k
+			size_t m_j = ny + 1;
+			//
+			// L_pattern_ is in column major order,
+			// loop through the elements in column k
+			while( m < ny && L_pattern_.col[m] == k )
+			{	if( L_pattern_.row[m] == i )
+				{	// found an entry in row i
+					m_i = m;
+				}
+				if( L_pattern_.row[m] == j )
+				{	// found an entry in row j
+					m_j = m;
+				}
+				++m;
+			}
+			// check if there was a non-zero L_{i,k} and L_{j,k}
+			if( m_i < ny && m_j < ny )
+			{	// L_{i,j} is a variable
+				vy[m_i] = true;
+				// L_{j,k} is a variable
+				vy[m_j] = true;
+			}
+		}
+	}
 	return true;
 }
 // ------------------------------------------------------------------

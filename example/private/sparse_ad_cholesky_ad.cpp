@@ -31,7 +31,7 @@ $latex \[
 The leading principal minors of this matrix are
 $latex x_0$$,
 $latex x_0 x_1$$,
-$latex x_0 ( x_1 x_2 - x_1 x_1 )$$,
+$latex x_0 x_1 x_2 - x_1 x_1 x_1$$,
 If all these minors are positive, the matrix $latex A(x)$$ is
 positive definite.
 

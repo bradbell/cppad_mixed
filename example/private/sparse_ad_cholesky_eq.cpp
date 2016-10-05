@@ -33,7 +33,6 @@ bool sparse_ad_cholesky_eq_xam(void)
 	using Eigen::Upper;
 	typedef Eigen::SparseMatrix< AD<double>, ColMajor>     sparse_ad_matrix;
 	typedef Eigen::Matrix< AD<double>, Eigen::Dynamic, 1>  dense_ad_vector;
-	typedef Eigen::TriangularView<sparse_ad_matrix, Lower> tri_view;
 	//
 	bool ok        = true;
 	AD<double> eps = 100. * std::numeric_limits<double>::epsilon();
