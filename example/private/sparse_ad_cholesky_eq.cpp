@@ -31,7 +31,6 @@ bool sparse_ad_cholesky_eq_xam(void)
 	using Eigen::ColMajor;
 	using Eigen::Lower;
 	using Eigen::Upper;
-	typedef Eigen::SparseMatrix< AD<double>, ColMajor>     sparse_ad_matrix;
 	typedef Eigen::Matrix< AD<double>, Eigen::Dynamic, 1>  dense_ad_vector;
 	//
 	bool ok        = true;

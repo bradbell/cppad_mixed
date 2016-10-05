@@ -150,7 +150,7 @@ $$
 $section Using Sparse AD Cholesky Factor L$$
 
 $head Syntax$$
-$icode%cholesky%.ad(%aAlow%, %aL%)%$$
+$icode%cholesky%.ad(%ad_Alow%, %ad_L%)%$$
 
 $head Public / Private$$
 This is a public member function of the class $code sparse_ad_cholesky$$.
@@ -161,7 +161,7 @@ $cref/CppAD::mixed/namespace/Private/$$ user API.
 $head aALow$$
 This matrix has prototype
 $codei%
-	const Eigen::SparseMatrix< CppAD::AD<double>, Eigen::ColMajor>& %aAlow%
+	const Eigen::SparseMatrix< CppAD::AD<double>, Eigen::ColMajor>& %ad_Alow%
 %$$
 and is the lower triangle of a positive definite matrix
 $cref/A/sparse_ad_cholesky/Notation/A/$$.
@@ -169,15 +169,15 @@ It must have the same sparsity pattern as
 $cref/Alow/sparse_ad_cholesky_ctor/Alow/$$ in the $icode cholesky$$
 constructor.
 
-$head aL$$
+$head ad_L$$
 This matrix has prototype
 $codei%
-	Eigen::SparseMatrix< CppAD::AD<double>, Eigen::ColMajor>& %aL%
+	Eigen::SparseMatrix< CppAD::AD<double>, Eigen::ColMajor>& %ad_L%
 %$$
 The input value of its elements does not matter.
 Upon return, it is a lower triangular matrix
 $cref/L/sparse_ad_cholesky/Notation/L/$$ corresponding to the matrix $latex A$$
-specified by $icode aAlow$$.
+specified by $icode ad_Alow$$.
 
 $children%example/private/sparse_ad_cholesky_ad.cpp
 %$$
@@ -188,17 +188,17 @@ and test using this operation.
 $end
 */
 void sparse_ad_cholesky::ad(
-	const sparse_ad_matrix& aAlow  ,
-	sparse_ad_matrix&       aL     )
-{	assert( nc_ == size_t( aAlow.rows() ) );
-	assert( nc_ == size_t( aAlow.cols() ) );
+	const sparse_ad_matrix& ad_Alow  ,
+	sparse_ad_matrix&       ad_L     )
+{	assert( nc_ == size_t( ad_Alow.rows() ) );
+	assert( nc_ == size_t( ad_Alow.cols() ) );
 	// -------------------------------------------------------------------
 	// packed version of Alow
 	size_t nx = Alow_pattern_.row.size();
 	CppAD::vector< CppAD::AD<double> > ax( nx );
 	size_t index = 0;
 	for(size_t j = 0; j < nc_; j++)
-	{	for(sparse_ad_matrix::InnerIterator itr(aAlow, j); itr; ++itr)
+	{	for(sparse_ad_matrix::InnerIterator itr(ad_Alow, j); itr; ++itr)
 		{	assert( Alow_pattern_.row[index] == size_t( itr.row() ) );
 			assert( Alow_pattern_.col[index] == size_t( itr.col() ) );
 			ax[ index ] = itr.value();
@@ -212,13 +212,13 @@ void sparse_ad_cholesky::ad(
 	CppAD::vector< CppAD::AD<double> > ay( ny );
 	(*this)(ax, ay);
 	// -------------------------------------------------------------------
-	// unpack ay into aL
-	aL.resize(nc_, nc_);
+	// unpack ay into ad_L
+	ad_L.resize(nc_, nc_);
 	index = 0;
 	for(size_t ell = 0; ell < ny; ell++)
 	{	size_t i = L_pattern_.row[ell];
 		size_t j = L_pattern_.col[ell];
-		aL.insert(i, j) = ay[ index++ ];
+		ad_L.insert(i, j) = ay[ index++ ];
 	}
 	assert( index == ny );
 	return;

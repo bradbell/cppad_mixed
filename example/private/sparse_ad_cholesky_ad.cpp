@@ -76,29 +76,29 @@ bool sparse_ad_cholesky_ad_xam(void)
 	CppAD::Independent( ax );
 	//
 	// Lower triangle of symmetric matrix with same sparsity pattern as B
-	Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> aAlow(nc, nc);
-	aAlow.insert(0,0) = ax[0];
-	aAlow.insert(2,0) = ax[1];
-	aAlow.insert(1,1) = ax[1];
-	aAlow.insert(2,2) = ax[2];
+	Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> ad_Alow(nc, nc);
+	ad_Alow.insert(0,0) = ax[0];
+	ad_Alow.insert(2,0) = ax[1];
+	ad_Alow.insert(1,1) = ax[1];
+	ad_Alow.insert(2,2) = ax[2];
 	//
 	// compute the Choleksy factorization of A
-	Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> aL;
-	cholesky.ad(aAlow, aL);
-	ok &= size_t(aL.rows()) == nc;
-	ok &= size_t(aL.cols()) == nc;
+	Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> ad_L;
+	cholesky.ad(ad_Alow, ad_L);
+	ok &= size_t(ad_L.rows()) == nc;
+	ok &= size_t(ad_L.cols()) == nc;
 	//
 	// diagonal of L
-	Eigen::Matrix< AD<double> , Eigen::Dynamic , 1 > D = aL.diagonal();
+	Eigen::Matrix< AD<double> , Eigen::Dynamic , 1 > ad_D = ad_L.diagonal();
 	//
 	// product of diagonal elements of L
-	AD<double> p = 1.0;
+	AD<double> ad_p = 1.0;
 	for(size_t j = 0; j < nc; j++)
-		p *= D[j];
+		ad_p *= ad_D[j];
 	//
 	// calculate the determinant of A using the Cholesky factorization
 	ad_vector ay(ny);
-	ay[0] = p * p;
+	ay[0] = ad_p * ad_p;
 	//
 	// f(x) = det[ A(x) ]
 	CppAD::ADFun<double> f(ax, ay);

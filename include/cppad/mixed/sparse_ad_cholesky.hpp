@@ -127,8 +127,8 @@ public:
 	//
 	// AD version of atomic Cholesky factorization
 	void ad(
-		const sparse_ad_matrix& aAlow  ,
-		sparse_ad_matrix&       aL
+		const sparse_ad_matrix& ad_Alow  ,
+		sparse_ad_matrix&       ad_L
 	);
 // END PUBLIC MEMBER FUNCTIONS
 // -----------------------------------------------------------------
