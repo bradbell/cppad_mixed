@@ -66,49 +66,55 @@ sparse_ad_cholesky::sparse_ad_cholesky(const sparse_d_matrix& Alow)
 ),
 nc_( size_t( Alow.cols() ) )
 {	assert( Alow.rows() == Alow.cols() );
-	//
-	// initialize ok flag as true
+	// ----------------------------------------------------------------------
+	// initialize ok_ as true
 	// 2DO: change this to an error message similar to ipopt_fixed class
 	ok_ = true;
-	//
+	// ----------------------------------------------------------------------
 	// Set Alow_pattern_
 	assert( Alow_pattern_.row.size() == 0 );
 	CppAD::mixed::sparse_eigen2info(Alow, Alow_pattern_);
 	// Alow_pattern_.row and Alow_pattern_.col do not change
 	// Alow_pattern_.val.size() does not change
-	//
+	// ----------------------------------------------------------------------
 	// analyze the Alow sparsity pattern using ldlt_obj_
 	ldlt_obj_.analyzePattern( Alow );
 	// This is the only call to ldlt_obj_.analyzePattern
-	//
+	// ----------------------------------------------------------------------
 	// Compute the Cholesky factor for this Alow
 	// and the permutation all Alow that are used with this object.
 	ldlt_obj_.factorize( Alow );
 	ok_ &= ldlt_obj_.info() == Eigen::Success;
-	//
+	// ----------------------------------------------------------------------
 	// Retrieve the permutation P_;
 	P_   = ldlt_obj_.permutationP();
-	//
+	// ----------------------------------------------------------------------
 	// Set L_pattern_
 	sparse_d_matrix L  =  ldlt_obj_.matrixL();
 	assert( L_pattern_.row.size() == 0 );
 	CppAD::mixed::sparse_eigen2info(L, L_pattern_);
 	// L_pattern_.row and L_pattern_.col do not change
 	// L_pattern_.val.size() does not change
-	//
-	// Indices that sort Alow_pattern_ in row major order
+	// ----------------------------------------------------------------------
+	// a vector of integers corresponding to the permutation
+	Eigen::Matrix<size_t, Eigen::Dynamic, 1> p_indices(nc_);
+	for(size_t i = 0; i < nc_; i++)
+		p_indices[i] = i;
+	p_indices = P_ * p_indices;
+	// ----------------------------------------------------------------------
+	// Indices that sort lower triangle of P * A * P^T in column major order
 	size_t nx = Alow_pattern_.row.size();
-	Alow_row_major_.resize(nx);
+	Alow_permuted_.resize(nx);
 	CppAD::vector<size_t> keys( nx );
 	for(size_t ia = 0; ia < nx; ia++)
-	{	size_t i = Alow_pattern_.row[ia];
-		size_t j = Alow_pattern_.col[ia];
-		assert( i < nc_ );
-		assert( j < nc_ );
-		keys[ia] = i * nc_ + j;
+	{	size_t i = p_indices[ Alow_pattern_.row[ia] ];
+		size_t j = p_indices[ Alow_pattern_.col[ia] ];
+		if( j > i )
+			std::swap(i, j);
+		keys[ia] = j * nc_ + i;
 	}
-	CppAD::index_sort(keys, Alow_row_major_);
-	//
+	CppAD::index_sort(keys, Alow_permuted_);
+	// ----------------------------------------------------------------------
 	// Indices that sort L_pattern_ in row major order
 	size_t ny = L_pattern_.row.size();
 	L_row_major_.resize(ny);
@@ -149,8 +155,6 @@ The return value is the permutation matrix
 $cref/P/sparse_ad_cholesky/Notation/P/$$.
 The permutation corresponding to $icode cholesky$$ does not change.
 
-$children%example/private/sparse_ad_cholesky_p.cpp
-%$$
 $head Example$$
 The file $cref sparse_ad_cholesky_p.cpp$$ is an example
 and test using this operation.
@@ -205,8 +209,6 @@ Upon return, it is a lower triangular matrix
 $cref/L/sparse_ad_cholesky/Notation/L/$$ corresponding to the matrix $latex A$$
 specified by $icode ad_Alow$$.
 
-$children%example/private/sparse_ad_cholesky_ad.cpp
-%$$
 $head Example$$
 The file $cref sparse_ad_cholesky_ad.cpp$$ is an example
 and test using this operation.
@@ -345,58 +347,99 @@ bool sparse_ad_cholesky::forward(
 	if( vx.size() == 0 )
 		return true;
 	// -------------------------------------------------------------------
-	// Determine which components of L are variables.
-	// Note that B_{i,j} = sum_k L_{i,k} * L_{j,k}
-	// where B = P * A * P^T and note that
-	//
-	// initialize all the components of L as parameters
-	for(size_t m = 0; m < ny; m++)
-		vy[m] = false;
-	//
 	// a vector of integers corresponding to the permutation
 	Eigen::Matrix<size_t, Eigen::Dynamic, 1> p_indices(nc_);
 	for(size_t i = 0; i < nc_; i++)
 		p_indices[i] = i;
 	p_indices = P_ * p_indices;
+	// -------------------------------------------------------------------
+	// Determine which components of L are variables.
+	// Note that B_{i,j} = sum_k L_{i,k} * L_{j,k}
+	// where B = P * A * P^T and note that
 	//
-	// for each variable in Alow
-	for(size_t ia = 0; ia < nx; ia++) if( vx[ia] )
-	{	size_t i = Alow_pattern_.row[ia];
-		size_t j = Alow_pattern_.col[ia];;
-		assert( j <= i );
-		// corresponding index in B
-		i = p_indices[i];
-		j = p_indices[j];
+	// Determine which elemements of L are variables in column major order
+	size_t ia  = 0; // index into Alow_permuted in column major order
+	size_t cj  = 0; // index into L_pattern_ in column major order
+	size_t rj  = 0; // index into L_pattern_ in row major order
+	for(size_t j = 0; j < nc_; j++)
+	{	// advance rj to the beginning of j-th row
+		while( L_pattern_.row[ L_row_major_[rj] ] < j )
+			++rj;
 		//
-		// If there is a k s.t. L_{i,k} and L_{j,k} are both in the sparsity
-		// pattern for L, mark L{i,k} and L_{j,k} as variables.
-		size_t m = 0;
-		for(size_t k = 0; k < nc_; k++)
-		{	// initialize as no entry in row i and column k
-			size_t m_i = ny + 1;
-			// initialize as no entry in row j and column k
-			size_t m_j = ny + 1;
+		// first element in column j must be L(j,j)
+		assert( L_pattern_.row[cj] == j );
+		assert( L_pattern_.col[cj] == j );
+		size_t Ljj = cj;
+		//
+		// There must be an element in row j
+		assert( L_pattern_.row[ L_row_major_[rj] ] == j );
+		//
+		size_t ri = rj;
+		while( cj < ny && L_pattern_.col[cj] == j )
+		{	// next row index in this column of L
+			size_t i = L_pattern_.row[cj];
 			//
-			// L_pattern_ is in column major order,
-			// loop through the elements in column k
-			while( m < ny && L_pattern_.col[m] == k )
-			{	if( L_pattern_.row[m] == i )
-				{	// found an entry in row i
-					m_i = m;
-				}
-				if( L_pattern_.row[m] == j )
-				{	// found an entry in row j
-					m_j = m;
-				}
-				++m;
+			// There must be an element in row i
+			while(
+				L_pattern_.col[ L_row_major_[ri] ] <= j &&
+				L_pattern_.row[ L_row_major_[ri] ] < i  )
+				++ri;
+			// Determine if L(i,j) is a variable using the equation
+			// B(i,j) = L(i,0)*L(j,0) + ... + L(i,j)*L(j,j).
+			// where B = P * A * P^T
+			// Note that L(i,k) has been determined for k < j.
+			bool var = false;
+			//
+			// Check if element B(i,j) is a variable
+			size_t r;
+			size_t c;
+			bool flag = true;
+			while( flag )
+			{	r = p_indices[ Alow_pattern_.row[ Alow_permuted_[ia] ] ];
+				c = p_indices[ Alow_pattern_.col[ Alow_permuted_[ia] ] ];
+				if( c > r )
+					std::swap(r, c);
+				flag = c < j || (c == j && r < i);
+				if( flag )
+					++ia;
 			}
-			// check if there was a non-zero L_{i,k} and L_{j,k}
-			if( m_i < ny && m_j < ny )
-			{	// L_{i,j} is a variable
-				vy[m_i] = true;
-				// L_{j,k} is a variable
-				vy[m_j] = true;
+			if( c == j && r == i && vx[ Alow_permuted_[ia] ] )
+				var = true;
+			//
+			size_t ck = 0; // index for column major access to L
+			for(size_t k = 0; k <= j; k++)
+			{	// check if L(i,k) * L(j,k) is a variable
+				//
+				// L(nc, nc) is last element in both row and column major
+				// order so now worry about going off the end of the array
+				while(
+					L_pattern_.row[ L_row_major_[ri] ] <= i &&
+					L_pattern_.col[ L_row_major_[ri] ] < k  )
+					++ri;
+				bool found_ik =
+					L_pattern_.row[ L_row_major_[ri] ] == i &&
+					L_pattern_.col[ L_row_major_[ri] ] == k;
+				//
+				while( L_pattern_.col[ck] <= k && L_pattern_.row[ck] <  i )
+					++ck;
+				bool found_jk =
+					L_pattern_.col[ck] == k && L_pattern_.row[ck] == i;
+				//
+				if( found_ik && found_jk )
+				{	if( k == j )
+					{	if( i > j )
+						{	assert( cj > Ljj );
+							var |= vy[Ljj];
+						}
+					}
+					else
+					{	assert( L_row_major_[ri] < cj );
+						assert( ck < cj );
+						var |= vy[ L_row_major_[ri] ] || vy[ck];
+					}
+				}
 			}
+			vy[cj++] = var;
 		}
 	}
 	return true;

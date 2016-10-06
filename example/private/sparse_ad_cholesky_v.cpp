@@ -29,7 +29,7 @@ $latex \[
 	\end{array} \right)
 \] $$
 
-$head Perputation$$
+$head Permutation$$
 The fill reducing permutation
 $cref/P/sparse_ad_cholesky/Notation/P/$$
 transposes indices zero and one; i.e.

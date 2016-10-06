@@ -59,7 +59,10 @@ $srcfile%include/cppad/mixed/sparse_ad_cholesky.hpp
 	%4%// BEGIN MEMBER VARIABLES%// END MEMBER VARIABLES%1%$$
 
 $childtable%src/eigen/sparse_ad_cholesky.cpp
+	%example/private/sparse_ad_cholesky_ad.cpp
+	%example/private/sparse_ad_cholesky_p.cpp
 	%example/private/sparse_ad_cholesky_eq.cpp
+	%example/private/sparse_ad_cholesky_v.cpp
 %$$
 
 $end
@@ -110,9 +113,9 @@ private:
 	// (set by constructor).
 	CppAD::mixed::sparse_mat_info L_pattern_;
 	//
-	// Indices that access Alow_pattern_ in row major order
-	// (set by constructor).
-	CppAD::vector<size_t> Alow_row_major_;
+	// Indices that access lower traingle of B = P * A * P^T
+	// in column major order (set by constructor).
+	CppAD::vector<size_t> Alow_permuted_;
 	//
 	// Indices that access L_pattern_ in row major order
 	// (set by constructor).

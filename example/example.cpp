@@ -157,7 +157,7 @@ int main(void)
 	RUN(sparse_ad_cholesky_ad_xam);
 	RUN(sparse_ad_cholesky_eq_xam);
 	RUN(sparse_ad_cholesky_p_xam);
-	// RUN(sparse_ad_cholesky_v_xam) this test does not yet work
+	RUN(sparse_ad_cholesky_v_xam);
 	RUN(sparse_eigen2info_xam);
 	RUN(sparse_info2eigen_xam);
 	RUN(sparse_low_tri_sol_xam);
