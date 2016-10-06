@@ -45,6 +45,11 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 10-06$$
+A class that performs sparse Cholesky factorization
+as a CppAD atomic operation has been added; see
+$cref sparse_ad_cholesky$$.
+
 $head 09-30$$
 $list number$$
 Use one value for $icode libdir$$ for all the install scripts;

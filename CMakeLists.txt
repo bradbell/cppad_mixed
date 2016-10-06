@@ -106,7 +106,7 @@ ENDMACRO( optional_definition )
 # ----------------------------------------------------------------------------
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 PROJECT(cppad_mixed)
-SET(cppad_mixed_version "20160728" )
+SET(cppad_mixed_version "20161006" )
 INCLUDE_DIRECTORIES( ${cppad_mixed_SOURCE_DIR}/include )
 INCLUDE(CheckCXXSourceRuns)
 # ============================================================================

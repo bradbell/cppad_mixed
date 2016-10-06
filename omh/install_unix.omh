@@ -37,10 +37,10 @@ $children%bin/example_install.sh
 %$$
 
 $head Download$$
-Download the tarball $href%cppad_mixed-20160728.tgz%$$
+Download the tarball $href%cppad_mixed-20161006.tgz%$$
 and then extract it using the command
 $codei%
-	tar -xzf cppad_mixed-20160728.tgz
+	tar -xzf cppad_mixed-20161006.tgz
 %$$
 
 $head System Requirements$$
@@ -96,7 +96,7 @@ The $href%http://eigen.tuxfamily.org%eigen%$$
 linear algebra package.
 The commands
 $codei%
-	cd cppad_mixed-20160728
+	cd cppad_mixed-20161006
 	bin/install_eigen.sh %build_type%
 %$$
 can be used to install this package.
@@ -111,7 +111,7 @@ The $href%https://projects.coin-or.org/Ipopt%Ipopt%$$
 optimization package.
 The commands
 $codei%
-	cd cppad_mixed-20160728
+	cd cppad_mixed-20161006
 	bin/install_ipopt.sh %build_type%
 %$$
 can be used to install this package.
@@ -126,7 +126,7 @@ The $href%http://faculty.cse.tamu.edu/davis/SuiteSparse%suitesparse%$$
 sparse matrix package.
 The commands
 $codei%
-	cd cppad_mixed-20160728
+	cd cppad_mixed-20161006
 	bin/install_suitesparse.sh %build_type%
 %$$
 can be used to install this package.
@@ -142,7 +142,7 @@ The $href%http://www.coin-or.org/CppAD/%cppad%$$
 C++ algorithmic differentiation package.
 The commands
 $codei%
-	cd cppad_mixed-20160728
+	cd cppad_mixed-20161006
 	bin/install_cppad.sh %build_type%
 %$$
 can be used to install this package.
