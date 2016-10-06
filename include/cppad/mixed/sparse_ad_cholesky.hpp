@@ -109,6 +109,14 @@ private:
 	// Sparsity pattern for L and the temporary vector L_pattern_.val
 	// (set by constructor).
 	CppAD::mixed::sparse_mat_info L_pattern_;
+	//
+	// Indices that access Alow_pattern_ in row major order
+	// (set by constructor).
+	CppAD::vector<size_t> Alow_row_major_;
+	//
+	// Indices that access L_pattern_ in row major order
+	// (set by constructor).
+	CppAD::vector<size_t> L_row_major_;
 // END MEMBER VARIABLES
 // -----------------------------------------------------------------
 // BEGIN PUBLIC MEMBER FUNCTIONS

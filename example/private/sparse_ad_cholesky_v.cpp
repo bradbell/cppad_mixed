@@ -11,7 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/sparse_ad_cholesky.hpp>
 
 /*
-$begin sparse_ad_cholesky_ad.cpp$$
+$begin sparse_ad_cholesky_v.cpp$$
 $spell
 	Cholesky
 $$
@@ -61,7 +61,7 @@ This can be verified by checking
 $latex P * A(x) * P^\R{T} = L * L^\R{T}$$.
 
 $head Source$$
-$srcfile%example/private/sparse_ad_cholesky_ad.cpp
+$srcfile%example/private/sparse_ad_cholesky_v.cpp
 	%4%// BEGIN C++%// END C++%1%$$
 $end
 */

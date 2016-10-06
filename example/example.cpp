@@ -70,6 +70,7 @@ extern bool sample_random_xam(void);
 extern bool sparse_ad_cholesky_ad_xam(void);
 extern bool sparse_ad_cholesky_eq_xam(void);
 extern bool sparse_ad_cholesky_p_xam(void);
+extern bool sparse_ad_cholesky_v_xam(void);
 extern bool sparse_eigen2info_xam(void);
 extern bool sparse_info2eigen_xam(void);
 extern bool sparse_low_tri_sol_xam(void);
@@ -156,6 +157,7 @@ int main(void)
 	RUN(sparse_ad_cholesky_ad_xam);
 	RUN(sparse_ad_cholesky_eq_xam);
 	RUN(sparse_ad_cholesky_p_xam);
+	// RUN(sparse_ad_cholesky_v_xam) this test does not yet work
 	RUN(sparse_eigen2info_xam);
 	RUN(sparse_info2eigen_xam);
 	RUN(sparse_low_tri_sol_xam);
