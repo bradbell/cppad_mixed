@@ -29,13 +29,13 @@ $$
 $section Checkpoint Newton Step and Log Determinant Calculation$$
 
 $head Syntax$$
-$codei%CppAD::mixed::newton_step %newton_atom%()
+$codei%CppAD::mixed::newton_step %newton_checkpoint%()
 %$$
-$icode%newton_atom%.initialize(%bool_sparsity%, %a1_adfun%, %theta%, %u%)
+$icode%newton_checkpoint%.initialize(%bool_sparsity%, %a1_adfun%, %theta%, %u%)
 %$$
-$icode%sv% = newton_atom%.size_var()
+$icode%sv% = newton_checkpoint%.size_var()
 %$$
-$icode%newton_atom%.eval(%a1_theta_u_v%, %a1_logdet_step%)
+$icode%newton_checkpoint%.eval(%a1_theta_u_v%, %a1_logdet_step%)
 %$$
 
 $head Private$$
@@ -49,7 +49,7 @@ and a log-determinant calculation.
 $head Constructor$$
 The sparse Hessian checkpoint object constructor
 $codei%
-	newton_step %newton_atom%()
+	newton_step %newton_checkpoint%()
 %$$
 creates a $code CppAD::checkpoint<double>$$ object for evaluating
 the log of the determinant
@@ -62,14 +62,14 @@ $latex \[
 \] $$
 
 $head Destructor$$
-The object $icode newton_atom$$ must still exist (not be destructed)
+The object $icode newton_checkpoint$$ must still exist (not be destructed)
 for as long as any $code CppAD::ADFun$$ objects use its atomic operation.
 
 $head initialize$$
-The $icode newton_atom$$ object must be initialized,
+The $icode newton_checkpoint$$ object must be initialized,
 before any calls to its $code eval$$ routine, using the syntax
 $codei%
-	newton_atom.initialize(%bool_sparsity%, %a1_adfun%, %theta%, %u%)
+	newton_checkpoint.initialize(%bool_sparsity%, %a1_adfun%, %theta%, %u%)
 %$$
 
 $head bool_sparsity$$

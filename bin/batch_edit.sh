@@ -21,7 +21,7 @@ no_change_files='
 rename_cmd='s|private/box_newton_xam.cpp|user/box_newton_xam.cpp|'
 #
 cat << EOF > junk.sed
-s|info2cholmod_order_|H_&|g
+s|newton_atom|newton_checkpoint|g
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

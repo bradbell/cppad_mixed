@@ -143,8 +143,8 @@ $rnext
 $code hes_cross_.row.size()$$ $cnext
 	$cref/hes_cross_/private/hes_cross_/$$
 $rnext
-$code newton_atom_.size_var()$$ $cnext
-	$cref/newton_atom_/private/newton_atom_/$$
+$code newton_checkpoint_.size_var()$$ $cnext
+	$cref/newton_checkpoint_/private/newton_checkpoint_/$$
 $rnext
 $code ran_objcon_fun_.size_var()$$ $cnext
 	$cref/ran_objcon_fun_/private/ran_objcon_fun_/$$
@@ -249,12 +249,12 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 
 		if( ! quasi_fixed_ )
 		{
-			// newton_atom_
-			assert( ! init_newton_atom_done_ );
-			newton_atom_.initialize(
+			// newton_checkpoint_
+			assert( ! init_newton_checkpoint_done_ );
+			newton_checkpoint_.initialize(
 				bool_sparsity, ran_like_a1fun_, fixed_vec, random_vec
 			);
-			init_newton_atom_done_ = true;
+			init_newton_checkpoint_done_ = true;
 
 			// ran_objcon_fun_
 			assert( ! init_ran_objcon_done_ );
@@ -299,7 +299,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 	size_map["ran_hes_.row.size()"]        = ran_hes_.row.size();
 	size_map["ran_hes_fun_.size_var()"]    = ran_hes_fun_.size_var();
 	size_map["hes_cross_.row.size()"]      = hes_cross_.row.size();
-	size_map["newton_atom_.size_var()"]    = newton_atom_.size_var();
+	size_map["newton_checkpoint_.size_var()"]    = newton_checkpoint_.size_var();
 	size_map["ran_objcon_fun_.size_var()"] = ran_objcon_fun_.size_var();
 	size_map["ran_objcon_hes_.row.size()"] = ran_objcon_hes_.row.size();
 	size_map["fix_like_fun_.size_var()"]   = fix_like_fun_.size_var();

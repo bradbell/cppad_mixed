@@ -64,15 +64,15 @@ bool newton_step_xam(void)
 	for(size_t j = 0; j < n_random; j++)
 		u[j] = 0.0;
 	//
-	CppAD::mixed::newton_step newton_atom;
+	CppAD::mixed::newton_step newton_checkpoint;
 	bool bool_sparsity = true;
-	newton_atom.initialize(bool_sparsity, a1_adfun, theta, u);
+	newton_checkpoint.initialize(bool_sparsity, a1_adfun, theta, u);
 	//
 	vector<a1_double> a1_theta_u_v(n_fixed + 2 * n_random);
 	for(size_t j = 0; j < n_fixed + 2 * n_random; j++)
 		a1_theta_u_v[j] = double(j);
 	vector<a1_double> a1_logdet_step(1 + n_random);
-	newton_atom.eval(a1_theta_u_v, a1_logdet_step);
+	newton_checkpoint.eval(a1_theta_u_v, a1_logdet_step);
 	//
 	// check log of determinant
 	double logdet = Value( a1_logdet_step[0] );

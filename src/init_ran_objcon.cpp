@@ -88,7 +88,7 @@ void cppad_mixed::init_ran_objcon(
 	const d_vector& random_vec )
 {	assert( init_ran_like_done_ );
 	assert( init_ran_con_done_ );
-	assert( init_newton_atom_done_ );
+	assert( init_newton_checkpoint_done_ );
 	assert( ! init_ran_objcon_done_ );
 	assert( A_info_.row.size() == A_info_.col.size() );
 	assert( A_info_.row.size() == A_info_.val.size() );
@@ -126,7 +126,7 @@ void cppad_mixed::init_ran_objcon(
 		theta_u_v[n_fixed_ + n_random_ + j] = grad[j];
 	}
 	a1d_vector logdet_step(1 + n_random_);
-	newton_atom_.eval(theta_u_v, logdet_step);
+	newton_checkpoint_.eval(theta_u_v, logdet_step);
 	//
 	// U(beta, theta, u)
 	a1d_vector U(n_random_);
@@ -147,7 +147,7 @@ void cppad_mixed::init_ran_objcon(
 	{	theta_U_v[n_fixed_ + j]             = U[j];
 		theta_U_v[n_fixed_ + n_random_ + j] = grad[j];
 	}
-	newton_atom_.eval(theta_U_v, logdet_step);
+	newton_checkpoint_.eval(theta_U_v, logdet_step);
 	//
 	// W(beta, theta, u)
 	a1d_vector W(n_random_);
@@ -163,7 +163,7 @@ void cppad_mixed::init_ran_objcon(
 	{	beta_W_v[n_fixed_ + j]             = W[j];
 		beta_W_v[n_fixed_ + n_random_ + j] = 0.0;
 	}
-	newton_atom_.eval(beta_W_v, logdet_step);
+	newton_checkpoint_.eval(beta_W_v, logdet_step);
 	//
 	// Evaluate the random likelihood using (beta, U)
 	a1d_vector beta_U(n_fixed_ + n_random_);

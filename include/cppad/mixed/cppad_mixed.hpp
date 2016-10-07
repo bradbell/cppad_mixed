@@ -387,7 +387,7 @@ $srccode%cpp% */
 	bool                init_ldlt_ran_hes_done_;
 	bool                init_hes_cross_done_;
 	// only called when n_random_ > 0 and quasi_fixed_ is false
-	bool                init_newton_atom_done_;
+	bool                init_newton_checkpoint_done_;
 	bool                init_ran_objcon_done_;
 	bool                init_ran_objcon_hes_done_;
 	// called in all cases
@@ -472,16 +472,16 @@ $srccode%cpp% */
 	friend bool ::hes_cross_xam(void);
 /* %$$
 
-$head newton_atom_$$
+$head newton_checkpoint_$$
 If $icode%n_random_% > 0%$$, quasi_fixed_ is false, and
-$code init_newton_atom_done_$$,
+$code init_newton_checkpoint_done_$$,
 this is a CppAD atomic function that computes one Newton Step in the
 solution of the equation $latex f_u ( \theta, u) = 0$$ as well
 as the log of the determinant of $latex f_{uu} ( \theta , u )$$;
 see $cref/initialize newton_step/newton_step/initialize/$$.
 $srccode%cpp% */
 	// computation of the Hessian as an atomic operation
-	CppAD::mixed::newton_step   newton_atom_;
+	CppAD::mixed::newton_step   newton_checkpoint_;
 /* %$$
 $comment ------------------------------------------------------------------- $$
 
