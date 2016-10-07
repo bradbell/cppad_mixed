@@ -207,7 +207,7 @@ class newton_step {
 	typedef CppAD::AD<double>             a1_double;
 	typedef CppAD::vector<a1_double>      a1d_vector;
 private:
-	CppAD::checkpoint<double>*            atom_fun_;
+	CppAD::checkpoint<double>*            checkpoint_fun_;
 public:
 	newton_step(void);
 	~newton_step(void);

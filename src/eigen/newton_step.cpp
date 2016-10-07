@@ -450,12 +450,12 @@ void newton_step_algo::operator()(
 // -------------------------------------------------------------------------
 // newton_step ctor
 newton_step::newton_step(void)
-: atom_fun_(CPPAD_MIXED_NULL_PTR)
+: checkpoint_fun_(CPPAD_MIXED_NULL_PTR)
 { }
 // newton_step destructor
 newton_step::~newton_step(void)
-{	if( atom_fun_ != CPPAD_MIXED_NULL_PTR )
-		delete atom_fun_;
+{	if( checkpoint_fun_ != CPPAD_MIXED_NULL_PTR )
+		delete checkpoint_fun_;
 }
 // initialize
 void newton_step::initialize(
@@ -463,13 +463,13 @@ void newton_step::initialize(
 	CppAD::ADFun<a1_double>&          a1_adfun      ,
 	const CppAD::vector<double>&      theta         ,
 	const CppAD::vector<double>&      u             )
-{	assert( atom_fun_ == CPPAD_MIXED_NULL_PTR );
+{	assert( checkpoint_fun_ == CPPAD_MIXED_NULL_PTR );
 	//
 	size_t n_fixed  = theta.size();
 	size_t n_random = u.size();
 	// algo
 	newton_step_algo algo(bool_sparsity, a1_adfun, theta, u);
-	// atom_fun_
+	// checkpoint_fun_
 	a1d_vector a1_theta_u_v(n_fixed + 2 * n_random);
 	for(size_t j = 0; j < n_fixed; j++)
 		a1_theta_u_v[j] = theta[j];
@@ -482,23 +482,23 @@ void newton_step::initialize(
 	a1d_vector a1_logdet_step(1 + n_random);
 	CppAD::atomic_base<double>::option_enum sparsity =
 		CppAD::atomic_base<double>::pack_sparsity_enum;
-	atom_fun_ = new CppAD::checkpoint<double>(
+	checkpoint_fun_ = new CppAD::checkpoint<double>(
 		name, algo, a1_theta_u_v, a1_logdet_step, sparsity
 	);
-	assert( atom_fun_ != CPPAD_MIXED_NULL_PTR );
+	assert( checkpoint_fun_ != CPPAD_MIXED_NULL_PTR );
 }
 // size_var
 size_t newton_step::size_var(void)
-{	if( atom_fun_ ==  CPPAD_MIXED_NULL_PTR )
+{	if( checkpoint_fun_ ==  CPPAD_MIXED_NULL_PTR )
 		return 0;
-	return atom_fun_->size_var();
+	return checkpoint_fun_->size_var();
 }
 // eval
 void newton_step::eval(
 	const a1d_vector& a1_theta_u_v  ,
 	a1d_vector&       a1_logdet_step )
-{	assert( atom_fun_ != CPPAD_MIXED_NULL_PTR );
-	(*atom_fun_)(a1_theta_u_v, a1_logdet_step);
+{	assert( checkpoint_fun_ != CPPAD_MIXED_NULL_PTR );
+	(*checkpoint_fun_)(a1_theta_u_v, a1_logdet_step);
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE
