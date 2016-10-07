@@ -36,7 +36,7 @@ $children%include/cppad/mixed/a2_double.hpp
 	%include/cppad/mixed/ldlt_cholmod.hpp
 	%include/cppad/mixed/ldlt_eigen.hpp
 	%src/manage_gsl_rng.cpp
-	%src/eigen/newton_step.cpp
+	%include/cppad/mixed/newton_step.hpp
 	%include/cppad/mixed/sparse_hes_info.hpp
 	%include/cppad/mixed/sparse_jac_info.hpp
 	%include/cppad/mixed/sparse_mat_info.hpp

@@ -89,7 +89,7 @@ $codei%
 %$$
 
 $subhead x$$
-The argument $icode x%$$ has prototype
+The argument $icode x$$ has prototype
 $codei%
 	const CppAD::vector<double>& %x%
 %$$
@@ -97,7 +97,7 @@ and its size is $icode%f%.Domain()%$$.
 It is the location where the Hessian is being evaluated.
 
 $subhead w$$
-The argument $icode w%$$ has prototype
+The argument $icode w$$ has prototype
 $codei%
 	const CppAD::vector<double>& %w%
 %$$

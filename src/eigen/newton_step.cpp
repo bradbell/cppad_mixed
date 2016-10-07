@@ -8,160 +8,6 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-/*
-$begin newton_step$$
-$spell
-	CppAD
-	cppad
-	logdet
-	adfun
-	sv
-	var
-	eval
-	CppAD
-	checkpointing
-	const
-	bool
-$$
-
-$section Checkpoint Newton Step and Log Determinant Calculation$$
-
-$head Syntax$$
-$codei%CppAD::mixed::newton_step %newton_atom%()
-%$$
-$icode%newton_atom%.initialize(%bool_sparsity%, %a1_adfun%, %theta%, %u%)
-%$$
-$icode%sv% = newton_atom%.size_var()
-%$$
-$icode%newton_atom%.eval(%a1_theta_u_v%, %a1_logdet_step%)
-%$$
-
-$head Private$$
-This class is an implementation detail and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
-
-$head Purpose$$
-This stores the operation sequence corresponding to the mappings
-
-$head Constructor$$
-The sparse Hessian checkpoint object constructor
-$codei%
-	newton_step %newton_atom%()
-%$$
-creates a $code CppAD::checkpoint<double>$$ object for evaluating
-the log of the determinant
-$latex \[
-( \theta , u ) \rightarrow \log \det [ f_{uu} ( \theta , u )  ]
-\] $$
-and the Newton step
-$latex \[
-( \theta , u , v ) \rightarrow f_{uu} ( \theta , u )^{-1} v
-\] $$
-
-$head Destructor$$
-The object $icode newton_atom$$ must still exist (not be destructed)
-for as long as any $code CppAD::ADFun$$ objects use its atomic operation.
-
-$head initialize$$
-The $icode newton_atom$$ object must be initialized,
-before any calls to its $code eval$$ routine, using the syntax
-$codei%
-	newton_atom.initialize(%bool_sparsity%, %a1_adfun%, %theta%, %u%)
-%$$
-
-$head bool_sparsity$$
-This argument has prototype
-$codei%
-	bool %bool_sparsity%
-%$$
-If it is true, boolean sparsity patterns are used for this computation,
-otherwise set sparsity patterns are used.
-
-$subhead a1_adfun$$
-This $code initialize$$ argument has prototype
-$codei%
-	CppAD::ADFun< CppAD::AD<double> > %a1_adfun%
-%$$
-This is a recording of the function $latex f(theta, u)$$
-for which we are checkpointing the Newton step and log determinant for.
-The routine $cref/pack(theta, u)/pack/$$ is used to
-convert the pair of vectors into the argument vector for $icode a1_adfun$$.
-
-$subhead theta$$
-This $code initialize$$ argument has prototype
-$codei%
-	const CppAD::vector<double>& %theta%
-%$$
-It is a value for $latex \theta$$
-at which we can evaluate the Newton step and
-log determinant.
-
-$subhead u$$
-This $code initialize$$ argument has prototype
-$codei%
-	const CppAD::vector<double>& %u%
-%$$
-It is a value for $latex u$$
-at which we can evaluate the Newton step and
-log determinant.
-
-$head size_var$$
-The return value for this member function has prototype
-$codei%
-	size_t %sv%
-%$$
-It is the number of variables in the tape used to represent the
-CppAD checkpoint function.
-If the  $code initialize$$ member function has not yet been called,
-the return value is $icode%sv% = 0%$$.
-
-$head eval$$
-The $code initialize$$ member function must be called before
-the $code eval$$ member function is used.
-
-$subhead a1_theta_u_v$$
-This $code eval$$ argument has prototype
-$codei%
-	const CppAD::vector< CppAD::AD<double> >& %a1_theta_u_v%
-%$$
-It is a point at which we are evaluating the Newton step
-and log determinant.
-This vector has size $icode%theta%.size() + 2 * %u%.size()%$$
-and the order of its elements are $latex \theta$$, followed by $latex u$$
-followed by $latex v$$.
-
-$subhead a1_logdet_step$$
-This $code eval$$ argument has prototype
-$codei%
-	CppAD::vector< CppAD::AD<double> >& %a1_logdet_step%
-%$$
-It size is $codei%1 + %u%.size()%$$.
-The input value of its elements does not matter.
-Upon return,
-$codei%
-	%a1_logdet_step%[0] =%$$ $latex \log \det [ f_{uu} ( \theta , u )  ]$$
-$pre
-$$
-and for $icode%j% = 1 ,%...%, %m%%$$,
-$codei%
-	%a1_logdet_step%[j] =%$$ $latex s_{j-1}$$
-$pre
-$$
-where $latex s$$ is the Newton step; i.e.,
-$latex \[
-	s = f_{uu} ( \theta , u )^{-1} v
-\] $$
-
-$children%example/private/newton_step.cpp
-%$$
-$head Example$$
-The file $cref newton_step.cpp$$ is an example
-and test of $code newton_step$$.
-
-
-$end
-----------------------------------------------------------------------------
-*/
 # include <Eigen/Sparse>
 # include <cppad/mixed/newton_step.hpp>
 # include <cppad/mixed/configure.hpp>
@@ -321,19 +167,109 @@ void random_hes_use_bool(
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
+/*
+$begin newton_step_algo_ctor$$
+$spell
+	CppAD
+	checkpointing
+	algo
+	bool
+	adfun
+	const
+	hes
+$$
+
+$section Newton Step Algorithm Passed to CppAD's Checkpointing$$
+
+$head Syntax$$
+$codei%CppAD::mixed::newton_step_algo %algo%(
+	%bool_sparsity%, %a1_adfun%, %theta%, %u%
+)%$$
+
+$head Prototype$$
+$srcfile%src/eigen/newton_step.cpp%
+	%4%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
+
+$head Arguments$$
+The arguments to this function have the same meaning as in
+$code newton_step$$; see
+$cref/bool_sparsity/newton_step/bool_sparsity/$$,
+$cref/a1_adfun/newton_step/a1_adfun/$$,
+$cref/theta/newton_step/theta/$$, and
+$cref/u/newton_step/u/$$.
+
+$head n_fixed_$$
+This member variable has prototype
+$codei%
+	const size_t %n_fixed_%
+%$$
+and is the number of fixed effects; i.e., the size of $icode theta$$.
+
+$head n_random_$$
+This member variable has prototype
+$codei%
+	const size_t n_random_
+%$$
+and is the number of random effects; i.e., the size of $icode u$$.
+
+$head a1_adfun_$$
+This member variable has prototype
+$codei%
+	CppAD::ADFun<a1_double>&          a1_adfun_
+%$$
+and is a reference to the $icode a1_adfun$$ argument.
+
+$head hes_info_$$
+This member variable has prototype
+$codei%
+	sparse_hes_info   hes_info_;
+%$$
+see $cref sparse_hes_info$$.
+It is set so that a subsequent call of the form
+$codei%
+	%a1_adfun_%.SparseHessian(
+		%a1_theta_u%,
+		%a1_w%,
+		%not_used%,
+		hes_info_.row,
+		hes_info_.col,
+		%a1_val_out%,
+		hes_info_.work
+	)
+%$$
+will compute the Hessian $latex f_{uu} ( \theta , u )$$.
+Here the vectors $icode a1_theta_u$$, $icode a1_w$$, and
+$icode a1_val_out$$ have prototype
+$codei
+	CppAD::vector< CppAD::AD<double> > %a1_theta_u%, %a1_w%, %a1_val_out%
+%$$
+The vector $icode a1_theta_u$$ specifies $latex ( \theta , u )$$,
+$icode a1_w$$ has length one and its element has the value one,
+$icode a1_val_out$$ is the value of the Hessian at the row and column
+indices corresponding to $code hes_info_$$.
+
+$subhead Remark$$
+The vector
+$cref/hes_info_.val/sparse_hes_info/Sparse Hessian Call/hes_info.val/$$
+is not used because the call to $code SparseHessian$$
+uses $code CppAD::AD<double>$$ and not $code double$$ values.
+
+$end
+*/
 // -------------------------------------------------------------------------
-// newton_step_alog ctor
+// BEGIN PROTOTYPE
 newton_step_algo::newton_step_algo(
 	bool                          bool_sparsity ,
 	CppAD::ADFun<a1_double>&      a1_adfun      ,
 	const CppAD::vector<double>&  theta         ,
 	const CppAD::vector<double>&  u             )
+// END PROTOTYPE
 :
 n_fixed_ ( theta.size() ) ,
 n_random_( u.size()     ) ,
 a1_adfun_( a1_adfun     )
-{	assert( row_.size() == 0 );
-	assert( col_.size() == 0 );
+{	assert( hes_info_.row.size() == 0 );
+	assert( hes_info_.col.size() == 0 );
 	assert( a1_adfun.Domain() == n_fixed_ + n_random_ );
 	assert( a1_adfun.Range()  == 1 );
 	//
@@ -352,21 +288,22 @@ a1_adfun_( a1_adfun     )
 		n_random_,
 		a1_theta_u,
 		a1_adfun_,
-		row_,
-		col_,
-		work_
+		hes_info_.row,
+		hes_info_.col,
+		hes_info_.work
 	);
 	else random_hes_use_set(
 		n_fixed_,
 		n_random_,
 		a1_theta_u,
 		a1_adfun_,
-		row_,
-		col_,
-		work_
+		hes_info_.row,
+		hes_info_.col,
+		hes_info_.work
 	);
+	assert( hes_info_.val.size() == 0 );
 }
-//
+// -------------------------------------------------------------------------
 // operator()
 void newton_step_algo::operator()(
 	const a1d_vector& a1_theta_u_v    ,
@@ -379,20 +316,20 @@ void newton_step_algo::operator()(
 	for(size_t j = 0; j < n_fixed_ + n_random_; j++)
 		a1_theta_u[j] = a1_theta_u_v[j];
 
-	// sparsity pattern not needed once we have work_
+	// sparsity pattern not needed once we have hes_info_.work
 	CppAD::vectorBool not_used;
 
 	// compute the sparse Hessian
-	a1d_vector a1_w(1), a1_val_out( row_.size() );
+	a1d_vector a1_w(1), a1_val_out( hes_info_.row.size() );
 	a1_w[0] = 1.0;
 	a1_adfun_.SparseHessian(
 		a1_theta_u,
 		a1_w,
 		not_used,
-		row_,
-		col_,
+		hes_info_.row,
+		hes_info_.col,
 		a1_val_out,
-		work_
+		hes_info_.work
 	);
 
 	// declare eigen matrix types
@@ -402,12 +339,12 @@ void newton_step_algo::operator()(
 
 	// create a lower triangular eigen sparse matrix representation of Hessian
 	a1_eigen_sparse hessian(n_random_, n_random_);
-	size_t K = row_.size();
+	size_t K = hes_info_.row.size();
 	for(size_t k = 0; k < K; k++)
-	{	assert( n_fixed_ <= col_[k]  );
-		assert( col_[k]  <= row_[k] );
-		size_t i = row_[k] - n_fixed_;
-		size_t j = col_[k] - n_fixed_;
+	{	assert( n_fixed_ <= hes_info_.col[k]  );
+		assert( hes_info_.col[k]  <= hes_info_.row[k] );
+		size_t i = hes_info_.row[k] - n_fixed_;
+		size_t j = hes_info_.col[k] - n_fixed_;
 		hessian.insert(i, j) = a1_val_out[k];
 	}
 
