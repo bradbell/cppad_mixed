@@ -179,7 +179,7 @@ $spell
 	hes
 $$
 
-$section Newton Step Algorithm Passed to CppAD's Checkpointing$$
+$section Newton Step Algorithm Constructor$$
 
 $head Syntax$$
 $codei%CppAD::mixed::newton_step_algo %algo%(
@@ -187,16 +187,39 @@ $codei%CppAD::mixed::newton_step_algo %algo%(
 )%$$
 
 $head Prototype$$
-$srcfile%src/eigen/newton_step.cpp%
+$srcfile%src/eigen/newton_step.cpp
 	%4%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
 
-$head Arguments$$
-The arguments to this function have the same meaning as in
-$code newton_step$$; see
-$cref/bool_sparsity/newton_step/bool_sparsity/$$,
-$cref/a1_adfun/newton_step/a1_adfun/$$,
-$cref/theta/newton_step/theta/$$, and
-$cref/u/newton_step/u/$$.
+$head Private$$
+This class is an implementation detail and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
+$head algo$$
+This is the Newton step algorithm object that is constructed
+by this operation.
+
+$head bool_sparsity$$
+If this is true, use boolean patterns
+(otherwise use set sparsity patterns)
+when computing the sparsity
+for the Hessian w.r.t the random effects of the
+$cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$;
+i.e. $latex f_{uu} ( \theta , u )$$.
+
+$head a1_adfun$$
+This is a recording of the function $latex f( \theta , u)$$
+for which we are checkpointing the Newton step and log determinant for.
+The routine $cref/pack(theta, u)/pack/$$ is used to
+convert the pair of vectors into the argument vector for $icode a1_adfun$$.
+
+$head theta$$
+This is a value for $latex \theta$$
+at which we can evaluate the Newton step and log determinant.
+
+$head u$$
+This is a value for $latex u$$
+at which we can evaluate the Newton step and log determinant.
+
 
 $head n_fixed_$$
 This member variable has prototype
@@ -303,11 +326,63 @@ a1_adfun_( a1_adfun     )
 	);
 	assert( hes_info_.val.size() == 0 );
 }
-// -------------------------------------------------------------------------
-// operator()
+/*
+------------------------------------------------------------------------------
+$begin newton_step_algo$$
+$spell
+	algo
+	logdet
+	CppAD
+$$
+
+$section Newton Step Algorithm Evaluation$$
+
+$head Syntax$$
+$icode%algo%(%a1_theta_u_v%, %a1_logdet_step%)%$$
+
+$head Prototype$$
+$srcfile%src/eigen/newton_step.cpp
+	%4%// BEGIN PROTOTYPE%// END PROTOTYPE%3%$$
+
+$head Private$$
+This class is an implementation detail and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
+$head algo$$
+This is a Newton step object; see
+$cref/algo/newton_step_algo_ctor/algo/$$.
+
+$head a1_theta_u_v$$
+This is a point at which we are evaluating the Newton step
+and log determinant.
+This vector has size $code n_fixed_ + 2 * n_random_$$.
+and the order of its elements are $latex \theta$$, followed by $latex u$$
+followed by $latex v$$.
+
+$head a1_logdet_step$$
+This vector has  size $code 1 + n_random_$$.
+The input value of its elements does not matter.
+Upon return,
+$codei%
+	%a1_logdet_step%[0]
+%$$
+is the log of the determinant of $latex f_{uu} ( \theta , u )$$.
+For $icode%j% = 1 ,%...%, n_random_%$$,
+$codei%
+	%a1_logdet_step%[%j%]
+%$$
+is the $latex s_{j-1}$$ where $latex s$$ is the Newton step; i.e.,
+$latex \[
+	s = f_{uu} ( \theta , u )^{-1} v
+\] $$
+
+$end
+*/
+// BEGIN PROTOTYPE
 void newton_step_algo::operator()(
 	const a1d_vector& a1_theta_u_v    ,
 	a1d_vector&       a1_logdet_step  )
+// END PROTOTYPE
 {	assert( a1_theta_u_v.size() == n_fixed_ + 2 * n_random_ );
 	assert( a1_logdet_step.size() == 1 + n_random_ );
 
