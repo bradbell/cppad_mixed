@@ -46,7 +46,7 @@ bool sparse_ad_chol_eq_xam(void)
 	CppAD::mixed::sparse_ad_cholesky cholesky;
 	cholesky.initialize( ad_Blow );
 	//
-	// Permutation matgrix kcorresponding to this cholesky
+	// Permutation matrix corresponding to this cholesky
 	const Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic>& P =
 		cholesky.permutation();
 	//
@@ -73,10 +73,11 @@ bool sparse_ad_chol_eq_xam(void)
 	// solve the equation: A * x  = b
 	//        P * A * P^T * P * x = P * b
 	//            L * L^T * P * x = P * b
-	dense_ad_vector tmp1 = P * b;
-	dense_ad_vector tmp2 = L.triangularView<Lower>().solve(tmp1);
-	dense_ad_vector tmp3 = U.triangularView<Upper>().solve(tmp2);
-	dense_ad_vector x    = P.transpose() * tmp3;
+	dense_ad_vector x, tmp;
+	tmp = P * b;
+	tmp = L.triangularView<Lower>().solve(tmp);
+	tmp = U.triangularView<Upper>().solve(tmp);
+	x   = P.transpose() * tmp;
 	//
 	// dense version of matrix  A
 	Eigen::Matrix< AD<double>, 3, 3> A = Alow;
