@@ -175,6 +175,8 @@ $end
 # include <cppad/mixed/sparse_hes_info.hpp>
 # include <cppad/mixed/sparse_ad_cholesky.hpp>
 
+# define CPPAD_MIXED_USE_SPARSE_AD_CHOLESKY 1
+
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 
@@ -192,6 +194,8 @@ private:
 		// information for computing f_uu (theta , u)
 		// (hes_info.val is not used and has size zero)
 		sparse_hes_info                   hes_info_;
+		// reference to sparse Cholesky factorization in newton step object
+		sparse_ad_cholesky&               cholesky_;
 public:
 	// constructor for algorithm that is checkpointed
 	newton_step_algo(
@@ -216,7 +220,9 @@ private:
 	// checkpoint version of the newton step algorithm
 	CppAD::checkpoint<double>*            checkpoint_fun_;
 	//
-	// sparse Cholesky factorization as an atomic AD operation
+	// Sparse Cholesky factorization as an atomic AD operation.
+	// Stored here becasue newton_step_algo object does not persist
+	// for the lenght of time that cholesky_ call backs are used by CppAD.
 	sparse_ad_cholesky                    cholesky_;
 public:
 	// constuctor

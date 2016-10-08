@@ -37,7 +37,7 @@ $$
 $section Initialize Sparse AD Cholesky Factorization$$
 
 $head Syntax$$
-$icode%cholesky(%ad_Alow%)%$$
+$icode%cholesky%(%ad_Alow%)%$$
 
 $head Public / Private$$
 This is a public member function of the class $code sparse_ad_cholesky$$.

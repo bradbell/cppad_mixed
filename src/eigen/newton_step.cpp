@@ -178,13 +178,15 @@ $spell
 	const
 	hes
 	cholesky
+	Hlow
+	Eigen
 $$
 
 $section Newton Step Algorithm Constructor$$
 
 $head Syntax$$
 $codei%CppAD::mixed::newton_step_algo %algo%(
-	%bool_sparsity%, %a1_adfun%, %theta%, %u%. %cholesky%
+	%bool_sparsity%, %a1_adfun%, %theta%, %u%, %cholesky%
 )%$$
 
 $head Prototype$$
@@ -226,7 +228,17 @@ This argument has prototype
 $codei%
 	CppAD::mixed::sparse_ad_cholesky& %cholesky%
 %$$
-It is not yet used (under construction).
+The member $code cholesky_$$
+is set to be a reference to $icode cholesky$$.
+In addition,
+$codei%
+	%cholesky%.initialize( %a1_Hlow% )
+%$$
+is called where $icode a1_Hlow$$ has prototype
+$codei%
+	Eigen::SparseMatrix< CppAD::AD<double>, Eigen::ColMajor>& %a1_Hlow%
+%$$
+and is the lower triangle of the Hessian $latex f_{uu} ( \theta , u )$$.
 
 $head n_fixed_$$
 This member variable has prototype
@@ -298,7 +310,8 @@ newton_step_algo::newton_step_algo(
 :
 n_fixed_ ( theta.size() ) ,
 n_random_( u.size()     ) ,
-a1_adfun_( a1_adfun     )
+a1_adfun_( a1_adfun     ) ,
+cholesky_( cholesky     )
 {	assert( hes_info_.row.size() == 0 );
 	assert( hes_info_.col.size() == 0 );
 	assert( a1_adfun.Domain() == n_fixed_ + n_random_ );
@@ -332,6 +345,37 @@ a1_adfun_( a1_adfun     )
 		hes_info_.col,
 		hes_info_.work
 	);
+# if CPPAD_MIXED_USE_SPARSE_CHOLESKY
+	// sparsity pattern not needed once we have hes_info_.work
+	CppAD::vectorBool not_used;
+	//
+	// compute the sparse Hessian
+	a1d_vector a1_w(1), a1_val_out( hes_info_.row.size() );
+	a1_w[0] = 1.0;
+	a1_adfun_.SparseHessian(
+		a1_theta_u,
+		a1_w,
+		not_used,
+		hes_info_.row,
+		hes_info_.col,
+		a1_val_out,
+		hes_info_.work
+	);
+	// set a1_hessian to lower triangular sparse matrix representation of
+	// f_uu (theta, u)
+	typedef Eigen::SparseMatrix<a1_double, Eigen::ColMajor> a1_eigen_sparse;
+	a1_eigen_sparse a1_hessian(n_random_, n_random_);
+	size_t K = hes_info_.row.size();
+	for(size_t k = 0; k < K; k++)
+	{	assert( n_fixed_ <= hes_info_.col[k]  );
+		assert( hes_info_.col[k]  <= hes_info_.row[k] );
+		size_t i = hes_info_.row[k] - n_fixed_;
+		size_t j = hes_info_.col[k] - n_fixed_;
+		a1_hessian.insert(i, j) = a1_val_out[k];
+	}
+	// initialize cholesky_
+	cholesky_.initialize( a1_hessian );
+# endif
 	assert( hes_info_.val.size() == 0 );
 }
 /*
@@ -417,33 +461,36 @@ void newton_step_algo::operator()(
 
 	// declare eigen matrix types
 	using Eigen::Dynamic;
-	typedef Eigen::Matrix<a1_double, Dynamic, Dynamic> dense_matrix;
-	typedef Eigen::SparseMatrix<a1_double>             a1_eigen_sparse;
+	typedef Eigen::Matrix<a1_double, Eigen::Dynamic, 1>     a1_eigen_vector;
+	typedef Eigen::SparseMatrix<a1_double, Eigen::ColMajor> a1_eigen_sparse;
 
-	// create a lower triangular eigen sparse matrix representation of Hessian
-	a1_eigen_sparse hessian(n_random_, n_random_);
+	// set a1_hessian to lower triangular eigen sparse matrix representation of
+	// f_uu (theta, u)
+	a1_eigen_sparse a1_hessian(n_random_, n_random_);
 	size_t K = hes_info_.row.size();
 	for(size_t k = 0; k < K; k++)
 	{	assert( n_fixed_ <= hes_info_.col[k]  );
 		assert( hes_info_.col[k]  <= hes_info_.row[k] );
 		size_t i = hes_info_.row[k] - n_fixed_;
 		size_t j = hes_info_.col[k] - n_fixed_;
-		hessian.insert(i, j) = a1_val_out[k];
+		a1_hessian.insert(i, j) = a1_val_out[k];
 	}
+
+	// set rhs to an eigen vector representation of v
+	a1_eigen_vector rhs(n_random_);
+	for(size_t j = 0; j < n_random_; j++)
+		rhs(j) = a1_theta_u_v[n_fixed_ + n_random_ + j];
 
 	// compute an LDL^T Cholesky factorization of f_{u,u}(theta, u)
 	Eigen::SimplicialLDLT<a1_eigen_sparse, Eigen::Lower> chol;
-	chol.analyzePattern(hessian);
-	chol.factorize(hessian);
+	chol.analyzePattern(a1_hessian);
+	chol.factorize(a1_hessian);
 
 	// solve the equation f_{u,u} ( theta, u ) * step = v
-	dense_matrix rhs(n_random_, 1), step(n_random_, 1);
-	for(size_t j = 0; j < n_random_; j++)
-		rhs(j) = a1_theta_u_v[n_fixed_ + n_random_ + j];
-	step = chol.solve(rhs);
+	a1_eigen_vector step = chol.solve(rhs);
 
 	// compute the logdet( f_{u,u} (theta, u ) )
-	dense_matrix diag = chol.vectorD();
+	a1_eigen_vector diag = chol.vectorD();
 	a1_double logdet = a1_double(0.0);
 	for(size_t j = 0; j < n_random_; j++)
 		logdet += log( diag(j) );
