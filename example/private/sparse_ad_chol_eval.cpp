@@ -11,7 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/sparse_ad_cholesky.hpp>
 
 /*
-$begin sparse_ad_cholesky_ad.cpp$$
+$begin sparse_ad_chol_eval.cpp$$
 $spell
 	Cholesky
 $$
@@ -36,12 +36,12 @@ If all these minors are positive, the matrix $latex A(x)$$ is
 positive definite.
 
 $head Source$$
-$srcfile%example/private/sparse_ad_cholesky_ad.cpp
+$srcfile%example/private/sparse_ad_chol_eval.cpp
 	%4%// BEGIN C++%// END C++%1%$$
 $end
 */
 // BEGIN C++
-bool sparse_ad_cholesky_ad_xam(void)
+bool sparse_ad_chol_eval_xam(void)
 {	using CppAD::AD;
 	typedef CppAD::vector<double>         d_vector;
 	typedef CppAD::vector< AD<double> >   ad_vector;

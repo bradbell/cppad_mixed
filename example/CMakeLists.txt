@@ -41,10 +41,10 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	private/ran_obj_eval.cpp
 	private/ran_obj_jac.cpp
 	private/ran_objcon_hes.cpp
-	private/sparse_ad_cholesky_ad.cpp
-	private/sparse_ad_cholesky_eq.cpp
-	private/sparse_ad_cholesky_p.cpp
-	private/sparse_ad_cholesky_v.cpp
+	private/sparse_ad_chol_eval.cpp
+	private/sparse_ad_chol_eq.cpp
+	private/sparse_ad_chol_perm.cpp
+	private/sparse_ad_chol_var.cpp
 	private/sparse_eigen2info.cpp
 	private/sparse_info2eigen.cpp
 	private/sparse_low_tri_sol.cpp

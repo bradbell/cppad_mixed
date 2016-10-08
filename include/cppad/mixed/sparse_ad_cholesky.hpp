@@ -62,10 +62,10 @@ $srcfile%include/cppad/mixed/sparse_ad_cholesky.hpp
 	%4%// BEGIN MEMBER VARIABLES%// END MEMBER VARIABLES%1%$$
 
 $childtable%src/eigen/sparse_ad_cholesky.cpp
-	%example/private/sparse_ad_cholesky_ad.cpp
-	%example/private/sparse_ad_cholesky_p.cpp
-	%example/private/sparse_ad_cholesky_eq.cpp
-	%example/private/sparse_ad_cholesky_v.cpp
+	%example/private/sparse_ad_chol_eval.cpp
+	%example/private/sparse_ad_chol_perm.cpp
+	%example/private/sparse_ad_chol_eq.cpp
+	%example/private/sparse_ad_chol_var.cpp
 %$$
 
 $end

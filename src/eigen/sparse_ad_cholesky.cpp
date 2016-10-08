@@ -185,7 +185,7 @@ $cref/P/sparse_ad_cholesky/Notation/P/$$.
 The permutation corresponding to $icode cholesky$$ does not change.
 
 $head Example$$
-The file $cref sparse_ad_cholesky_p.cpp$$ is an example
+The file $cref sparse_ad_chol_perm.cpp$$ is an example
 and test using this operation.
 
 $end
@@ -240,7 +240,7 @@ $cref/L/sparse_ad_cholesky/Notation/L/$$ corresponding to the matrix $latex A$$
 specified by $icode ad_Alow$$.
 
 $head Example$$
-The file $cref sparse_ad_cholesky_ad.cpp$$ is an example
+The file $cref sparse_ad_chol_eval.cpp$$ is an example
 and test using this operation.
 
 $end

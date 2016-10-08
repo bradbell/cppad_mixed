@@ -11,27 +11,21 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/sparse_ad_cholesky.hpp>
 
 /*
-$begin sparse_ad_cholesky_eq.cpp$$
+$begin sparse_ad_chol_perm.cpp$$
 $spell
 	Cholesky
 $$
 
-$section Using Sparse AD Cholesky To Solve Equations: Example and Test$$
-
-$tabsize 4$$
+$section Sparse AD Cholesky Permutation: Example and Test$$
 
 $head Source$$
-$srcfile%example/private/sparse_ad_cholesky_eq.cpp
+$srcfile%example/private/sparse_ad_chol_perm.cpp
 	%4%// BEGIN C++%// END C++%1%$$
 $end
 */
 // BEGIN C++
-bool sparse_ad_cholesky_eq_xam(void)
+bool sparse_ad_chol_perm_xam(void)
 {	using CppAD::AD;
-	using Eigen::ColMajor;
-	using Eigen::Lower;
-	using Eigen::Upper;
-	typedef Eigen::Matrix< AD<double>, Eigen::Dynamic, 1>  dense_ad_vector;
 	//
 	bool ok        = true;
 	AD<double> eps = 100. * std::numeric_limits<double>::epsilon();
@@ -60,36 +54,24 @@ bool sparse_ad_cholesky_eq_xam(void)
 	// compute the Choleksy factorization of A
 	Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> L;
 	cholesky.eval(Alow, L);
-	Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> U = L.transpose();
 	ok &= L.rows() == nc;
 	ok &= L.cols() == nc;
 	//
-	// right hand side for equation
-	dense_ad_vector b(3);
-	b[0] = 1.0;
-	b[1] = 2.0;
-	b[2] = 3.0;
+	// compute P^T * L * L^T * P
+	Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> tmp1, tmp2;
+	tmp1 = P.transpose() * L;
+	tmp2 = tmp1 * L.transpose();
+	tmp1 = tmp2 * P;
 	//
-	// solve the equation: A * x  = b
-	//        P * A * P^T * P * x = P * b
-	//            L * L^T * P * x = P * b
-	dense_ad_vector tmp1 = P * b;
-	dense_ad_vector tmp2 = L.triangularView<Lower>().solve(tmp1);
-	dense_ad_vector tmp3 = U.triangularView<Upper>().solve(tmp2);
-	dense_ad_vector x    = P.transpose() * tmp3;
-	//
-	// dense version of matrix  A
-	Eigen::Matrix< AD<double>, 3, 3> A = Alow;
+	// check that A = P^T * L * L^T * P
+	Eigen::Matrix< AD<double>, 3, 3> A( Alow ), prod( tmp1 );
 	for(size_t i = 0; i < 3; i++)
-	{	for(size_t j = i+1; j < 3; j++)
-		{	A(i, j) = A(j, i);
+	{	for(size_t j = 0; j < 3; j++)
+		{	if( j > i )
+				A(i, j) = A(j, i);
+			ok &= CppAD::NearEqual( A(i, j), prod(i, j), eps, eps );
 		}
 	}
-	//
-	// compter A * x with b
-	dense_ad_vector check = A * x;
-	for(size_t i = 0; i < 3; i++)
-		ok &= CppAD::NearEqual(check[i], b[i], eps, eps);
 	// -----------------------------------------------------------------------
 	return ok;
 }
