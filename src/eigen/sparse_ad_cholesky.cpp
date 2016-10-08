@@ -440,38 +440,50 @@ bool sparse_ad_cholesky::forward(
 				var = true;
 			}
 			//
-			size_t ck = 0; // index for column major access to L
+			size_t rik = ri; // initialize index for next element in row i
+			size_t rjk = rj; // initialize index for next element in row j
 			for(size_t k = 0; k <= j; k++)
 			{	// check if L(i,k) * L(j,k) is a variable
 				//
 				// L(nc, nc) is last element in both row and column major
 				// order so now worry about going off the end of the array
+				assert( L_pattern_.row[ L_row_major_[rik] ] >= i );
+				assert( L_pattern_.row[ L_row_major_[rjk] ] >= j );
+				//
 				while(
-					L_pattern_.row[ L_row_major_[ri] ] <= i &&
-					L_pattern_.col[ L_row_major_[ri] ] < k  )
-					++ri;
+					L_pattern_.row[ L_row_major_[rik] ] == i &&
+					L_pattern_.col[ L_row_major_[rik] ] < k  )
+					++rik;
 				// found L(i,k)
 				bool found_ik =
-					L_pattern_.row[ L_row_major_[ri] ] == i &&
-					L_pattern_.col[ L_row_major_[ri] ] == k;
+					L_pattern_.row[ L_row_major_[rik] ] == i &&
+					L_pattern_.col[ L_row_major_[rik] ] == k;
 				//
-				while( L_pattern_.col[ck] <= k && L_pattern_.row[ck] <  i )
-					++ck;
+				while(
+					L_pattern_.row[ L_row_major_[rjk] ] == j &&
+					L_pattern_.col[ L_row_major_[rjk] ] < k  )
+					++rjk;
 				// found L(j,k)
 				bool found_jk =
-					L_pattern_.col[ck] == k && L_pattern_.row[ck] == i;
+					L_pattern_.row[ L_row_major_[rjk] ] == j &&
+					L_pattern_.col[ L_row_major_[rjk] ] == k;
 				//
 				if( found_ik && found_jk )
 				{	if( k == j )
 					{	if( i > j )
-						{	assert( cj > Ljj );
+						{	// L(i,j) * L(i,j)
+							assert( Ljj < cj );
 							var |= vy[Ljj];
 						}
+						// L(j,j) * L(j,j) is alread taken care of
 					}
 					else
-					{	assert( L_row_major_[ri] < cj );
-						assert( ck < cj );
-						var |= vy[ L_row_major_[ri] ] || vy[ck];
+					{	// L(i,k) * L(j,k)
+						assert( L_row_major_[rik] < cj );
+						assert( L_row_major_[rjk] < cj );
+						//
+						var |= vy[ L_row_major_[rik] ];
+						var |= vy[ L_row_major_[rjk] ];
 					}
 				}
 			}
