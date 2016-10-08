@@ -137,7 +137,7 @@ public:
 	permutation(void);
 	//
 	// AD version of atomic Cholesky factorization
-	void ad(
+	void eval(
 		const sparse_ad_matrix& ad_Alow  ,
 		sparse_ad_matrix&       ad_L
 	);

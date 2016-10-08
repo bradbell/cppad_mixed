@@ -52,7 +52,7 @@ bool sparse_ad_cholesky_p_xam(void)
 	//
 	// compute the Choleksy factorization of A
 	Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> L;
-	cholesky.ad(Alow, L);
+	cholesky.eval(Alow, L);
 	ok &= L.rows() == nc;
 	ok &= L.cols() == nc;
 	//

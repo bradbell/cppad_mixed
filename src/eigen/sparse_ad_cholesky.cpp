@@ -175,12 +175,13 @@ $spell
 	CppAD
 	const
 	Eigen
+	eval
 $$
 
 $section Using Sparse AD Cholesky Factor L$$
 
 $head Syntax$$
-$icode%cholesky%.ad(%ad_Alow%, %ad_L%)%$$
+$icode%cholesky%.eval(%ad_Alow%, %ad_L%)%$$
 
 $head Public / Private$$
 This is a public member function of the class $code sparse_ad_cholesky$$.
@@ -215,7 +216,7 @@ and test using this operation.
 
 $end
 */
-void sparse_ad_cholesky::ad(
+void sparse_ad_cholesky::eval(
 	const sparse_ad_matrix& ad_Alow  ,
 	sparse_ad_matrix&       ad_L     )
 {	assert( nc_ == size_t( ad_Alow.rows() ) );
