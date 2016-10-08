@@ -177,13 +177,14 @@ $spell
 	adfun
 	const
 	hes
+	cholesky
 $$
 
 $section Newton Step Algorithm Constructor$$
 
 $head Syntax$$
 $codei%CppAD::mixed::newton_step_algo %algo%(
-	%bool_sparsity%, %a1_adfun%, %theta%, %u%
+	%bool_sparsity%, %a1_adfun%, %theta%, %u%. %cholesky%
 )%$$
 
 $head Prototype$$
@@ -220,6 +221,12 @@ $head u$$
 This is a value for $latex u$$
 at which we can evaluate the Newton step and log determinant.
 
+$head cholesky$$
+This argument has prototype
+$codei%
+	CppAD::mixed::sparse_ad_cholesky& %cholesky%
+%$$
+It is not yet used (under construction).
 
 $head n_fixed_$$
 This member variable has prototype
@@ -285,7 +292,8 @@ newton_step_algo::newton_step_algo(
 	bool                          bool_sparsity ,
 	CppAD::ADFun<a1_double>&      a1_adfun      ,
 	const CppAD::vector<double>&  theta         ,
-	const CppAD::vector<double>&  u             )
+	const CppAD::vector<double>&  u             ,
+	sparse_ad_cholesky&           cholesky      )
 // END PROTOTYPE
 :
 n_fixed_ ( theta.size() ) ,
@@ -567,7 +575,7 @@ void newton_step::initialize(
 	size_t n_fixed  = theta.size();
 	size_t n_random = u.size();
 	// algo
-	newton_step_algo algo(bool_sparsity, a1_adfun, theta, u);
+	newton_step_algo algo(bool_sparsity, a1_adfun, theta, u, cholesky_);
 	// checkpoint_fun_
 	a1d_vector a1_theta_u_v(n_fixed + 2 * n_random);
 	for(size_t j = 0; j < n_fixed; j++)

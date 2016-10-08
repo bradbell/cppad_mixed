@@ -173,6 +173,7 @@ $end
 
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/sparse_hes_info.hpp>
+# include <cppad/mixed/sparse_ad_cholesky.hpp>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
@@ -197,7 +198,8 @@ public:
 		bool                              bool_sparsity ,
 		CppAD::ADFun<a1_double>&          a1_adfun      ,
 		const CppAD::vector<double>&      theta         ,
-		const CppAD::vector<double>&      u
+		const CppAD::vector<double>&      u             ,
+		sparse_ad_cholesky&               cholesky
 	);
 	// evaluates algorithm that is checkpointed
 	void operator()(
@@ -211,8 +213,11 @@ class newton_step {
 	typedef CppAD::AD<double>             a1_double;
 	typedef CppAD::vector<a1_double>      a1d_vector;
 private:
-	// checkpoint version of the algorithm
+	// checkpoint version of the newton step algorithm
 	CppAD::checkpoint<double>*            checkpoint_fun_;
+	//
+	// sparse Cholesky factorization as an atomic AD operation
+	sparse_ad_cholesky                    cholesky_;
 public:
 	// constuctor
 	newton_step(void);
