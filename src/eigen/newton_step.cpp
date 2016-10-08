@@ -447,7 +447,41 @@ void newton_step_algo::operator()(
 
 	return;
 }
-// -------------------------------------------------------------------------
+/*
+-------------------------------------------------------------------------------
+$begin newton_step_ctor$$
+$spell
+	CppAD
+	eval
+$$
+
+$section Newton Step Checkpoint Function Constructor$$
+
+$head Syntax$$
+$codei%CppAD::mixed::newton_step %newton_checkpoint%()
+%$$
+
+$head Private$$
+This class is an implementation detail and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
+$head newton_checkpoint$$
+This is the CppAD checkpoint function object that is constructed
+by this operation.
+
+$head checkpoint_fun_$$
+This member variable has prototype
+$codei%
+	CppAD::checkpoint<double>*  checkpoint_fun_;
+%$$
+It is set to $code null$$ by the constructor.
+This ensures that
+$cref/initialize/newton_step/initialize/$$
+is called before
+$cref/eval/newton_step/eval/$$ is used.
+
+$end
+*/
 // newton_step ctor
 newton_step::newton_step(void)
 : checkpoint_fun_(CPPAD_MIXED_NULL_PTR)
@@ -457,12 +491,77 @@ newton_step::~newton_step(void)
 {	if( checkpoint_fun_ != CPPAD_MIXED_NULL_PTR )
 		delete checkpoint_fun_;
 }
-// initialize
+/*
+-------------------------------------------------------------------------------
+$begin newton_step_initialize$$
+$spell
+	bool
+	adfun
+	CppAD
+	checkpoint
+	checkpointing
+$$
+
+$section Initialize the Newton Step Checkpoint Function$$
+
+$head Syntax$$
+$icode%newton_checkpoint%.initialize(%bool_sparsity%, %a1_adfun%, %theta%, %u%)
+%$$
+
+$head Prototype$$
+$srcfile%src/eigen/newton_step.cpp
+	%4%// BEGIN PROTOTYPE%// END PROTOTYPE%5%$$
+
+$head Private$$
+This class is an implementation detail and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
+$head newton_checkpoint$$
+This is a Newton step object; see
+$cref/newton_checkpoint/newton_step_ctor/newton_checkpoint/$$.
+
+$head bool_sparsity$$
+If this is true, use boolean patterns
+(otherwise use set sparsity patterns)
+when computing the sparsity
+for the Hessian w.r.t the random effects of the
+$cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$;
+i.e. $latex f_{uu} ( \theta , u )$$.
+
+$head a1_adfun$$
+This is a recording of the function $latex f( \theta , u)$$
+for which we are checkpointing the Newton step and log determinant for.
+The routine $cref/pack(theta, u)/pack/$$ is used to
+convert the pair of vectors into the argument vector for $icode a1_adfun$$.
+
+$head theta$$
+This is a value for $latex \theta$$
+at which we can evaluate the Newton step and log determinant.
+
+$head u$$
+This is a value for $latex u$$
+at which we can evaluate the Newton step and log determinant.
+
+$head checkpoint_fun_$$
+This member variable has prototype
+$codei%
+	CppAD::checkpoint<double>*  checkpoint_fun_;
+%$$
+It must be $code null$$ when this function is called.
+Upon return,
+it will point to a CppAD checkpoint function that is used
+to evaluate the Newton step; see $cref newton_step_eval$$.
+
+
+$end
+*/
+// BEGIN PROTOTYPE
 void newton_step::initialize(
 	bool                              bool_sparsity ,
 	CppAD::ADFun<a1_double>&          a1_adfun      ,
 	const CppAD::vector<double>&      theta         ,
 	const CppAD::vector<double>&      u             )
+// END PROTOTYPE
 {	assert( checkpoint_fun_ == CPPAD_MIXED_NULL_PTR );
 	//
 	size_t n_fixed  = theta.size();
@@ -487,16 +586,88 @@ void newton_step::initialize(
 	);
 	assert( checkpoint_fun_ != CPPAD_MIXED_NULL_PTR );
 }
-// size_var
+/*
+-----------------------------------------------------------------------------
+$begin newton_step_size_var$$
+$spell
+	CppAD
+$$
+
+$section Number of Variables in Checkpoint Function$$
+
+$head Private$$
+This class is an implementation detail and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
+$srccode%cpp% */
 size_t newton_step::size_var(void)
 {	if( checkpoint_fun_ ==  CPPAD_MIXED_NULL_PTR )
 		return 0;
 	return checkpoint_fun_->size_var();
 }
-// eval
+/* %$$
+$end
+-------------------------------------------------------------------------------
+$begin newton_step_eval$$
+$spell
+	eval
+	logdet
+	CppAD
+$$
+
+$section Using the Newton Step Checkpoint Function$$
+
+$head Syntax$$
+$icode%newton_checkpoint%.eval(%a1_theta_u_v%, %a1_logdet_step%)
+%$$
+
+$head Prototype$$
+$srcfile%src/eigen/newton_step.cpp
+	%4%// BEGIN PROTOTYPE%// END PROTOTYPE%7%$$
+
+$head Private$$
+This class is an implementation detail and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
+$head Restriction$$
+The $cref newton_step_initialize$$ routine must be called
+before this routine be used.
+
+$head newton_checkpoint$$
+This is a Newton step object; see
+$cref/newton_checkpoint/newton_step_ctor/newton_checkpoint/$$.
+
+$head a1_theta_u_v$$
+This is a point at which we are evaluating the Newton step
+and log determinant.
+This vector has size $icode%n_fixed% + 2 * %n_random%$$
+and the order of its elements are $latex \theta$$, followed by $latex u$$
+followed by $latex v$$.
+
+$head a1_logdet_step$$
+This vector has  size $codei%1 + %n_random%$$.
+The input value of its elements does not matter.
+Upon return,
+$codei%
+	%a1_logdet_step%[0]
+%$$
+is the log of the determinant of $latex f_{uu} ( \theta , u )$$.
+For $icode%j% = 1 ,%...%, n_random_%$$,
+$codei%
+	%a1_logdet_step%[%j%]
+%$$
+is the $latex s_{j-1}$$ where $latex s$$ is the Newton step; i.e.,
+$latex \[
+	s = f_{uu} ( \theta , u )^{-1} v
+\] $$
+
+$end
+*/
+// BEGIN PROTOTYPE
 void newton_step::eval(
 	const a1d_vector& a1_theta_u_v  ,
 	a1d_vector&       a1_logdet_step )
+// END PROTOTYPE
 {	assert( checkpoint_fun_ != CPPAD_MIXED_NULL_PTR );
 	(*checkpoint_fun_)(a1_theta_u_v, a1_logdet_step);
 }

@@ -63,7 +63,7 @@ $latex \[
 
 $head Destructor$$
 The object $icode newton_checkpoint$$ must still exist (not be destructed)
-for as long as any $code CppAD::ADFun$$ objects use its atomic operation.
+for as long as any $code CppAD::ADFun$$ objects use its checkpoint operation.
 
 $head initialize$$
 The $icode newton_checkpoint$$ object must be initialized,
@@ -177,6 +177,7 @@ $end
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 
+// class used to evalute algorithm that is checkpointed
 class newton_step_algo {
 	typedef CppAD::AD<double>            a1_double;
 	typedef CppAD::vector<a1_double>     a1d_vector;
@@ -191,33 +192,42 @@ private:
 		// (hes_info.val is not used and has size zero)
 		sparse_hes_info                   hes_info_;
 public:
+	// constructor for algorithm that is checkpointed
 	newton_step_algo(
 		bool                              bool_sparsity ,
 		CppAD::ADFun<a1_double>&          a1_adfun      ,
 		const CppAD::vector<double>&      theta         ,
 		const CppAD::vector<double>&      u
 	);
+	// evaluates algorithm that is checkpointed
 	void operator()(
 		const a1d_vector& a1_theta_u_v   ,
 		a1d_vector&       a1_logdet_step
 	);
 };
 
+// calss used to hold the checkpoint version of the algorithm
 class newton_step {
 	typedef CppAD::AD<double>             a1_double;
 	typedef CppAD::vector<a1_double>      a1d_vector;
 private:
+	// checkpoint version of the algorithm
 	CppAD::checkpoint<double>*            checkpoint_fun_;
 public:
+	// constuctor
 	newton_step(void);
+	// destructor
 	~newton_step(void);
+	// setup the checkpoint function
 	void initialize(
 		bool                              bool_sparsity ,
 		CppAD::ADFun<a1_double>&          a1_adfun      ,
 		const CppAD::vector<double>&      fixed_vec     ,
 		const CppAD::vector<double>&      random_vec
 	);
+	// size of the checkpoint function
 	size_t size_var(void);
+	// use the checkpoint function
 	void eval(const a1d_vector& a1_theta_u_v, a1d_vector& a1_logdet_step);
 };
 
