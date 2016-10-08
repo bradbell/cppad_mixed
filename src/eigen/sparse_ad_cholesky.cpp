@@ -384,40 +384,42 @@ bool sparse_ad_cholesky::forward(
 	p_indices = P_ * p_indices;
 	// -------------------------------------------------------------------
 	// Determine which components of L are variables.
-	// Note that B_{i,j} = sum_k L_{i,k} * L_{j,k}
-	// where B = P * A * P^T and note that
 	//
 	// Determine which elemements of L are variables in column major order
-	size_t ia  = 0; // index into Alow_permuted in column major order
-	size_t cj  = 0; // index into L_pattern_ in column major order
-	size_t rj  = 0; // index into L_pattern_ in row major order
+	size_t ib  = 0; // Blow index in column major order
+	size_t cj  = 0; // L index in column major order
+	size_t rj  = 0; // L index in row major order
 	for(size_t j = 0; j < nc_; j++)
-	{	// advance rj to the beginning of j-th row
+	{	// Determine which elements of column j of L are variables using
+		// B_{i,j} = sum_k L_{i,k} * L_{j,k}
+		// where B = P * A * P^T and note that
+		//
+		// advance rj to the beginning of j-th row of L
 		while( L_pattern_.row[ L_row_major_[rj] ] < j )
 			++rj;
 		//
-		// first element in column j must be L(j,j)
+		// first element in column j of L must be L(j,j)
 		assert( L_pattern_.row[cj] == j );
 		assert( L_pattern_.col[cj] == j );
 		size_t Ljj = cj;
 		//
-		// There must be an element in row j
+		// There must be an element in row j of L
 		assert( L_pattern_.row[ L_row_major_[rj] ] == j );
 		//
-		size_t ri = rj;
+		size_t ri = rj; // initialize ri to the beginning of row j
 		while( cj < ny && L_pattern_.col[cj] == j )
-		{	// next row index in this column of L
+		{	// This row index in L
 			size_t i = L_pattern_.row[cj];
 			//
-			// There must be an element in row i
+			// Advance to beginning of row in in L
 			while(
 				L_pattern_.col[ L_row_major_[ri] ] <= j &&
 				L_pattern_.row[ L_row_major_[ri] ] < i  )
 				++ri;
-			// Determine if L(i,j) is a variable using the equation
+			//
+			// Determine of L(i,j) is a variable using
 			// B(i,j) = L(i,0)*L(j,0) + ... + L(i,j)*L(j,j).
 			// where B = P * A * P^T
-			// Note that L(i,k) has been determined for k < j.
 			bool var = false;
 			//
 			// Check if element B(i,j) is a variable
@@ -425,16 +427,18 @@ bool sparse_ad_cholesky::forward(
 			size_t c;
 			bool flag = true;
 			while( flag )
-			{	r = p_indices[ Alow_pattern_.row[ Alow_permuted_[ia] ] ];
-				c = p_indices[ Alow_pattern_.col[ Alow_permuted_[ia] ] ];
+			{	r = p_indices[ Alow_pattern_.row[ Alow_permuted_[ib] ] ];
+				c = p_indices[ Alow_pattern_.col[ Alow_permuted_[ib] ] ];
 				if( c > r )
 					std::swap(r, c);
 				flag = c < j || (c == j && r < i);
 				if( flag )
-					++ia;
+					++ib;
 			}
-			if( c == j && r == i && vx[ Alow_permuted_[ia] ] )
+			if( c == j && r == i && vx[ Alow_permuted_[ib] ] )
+			{	// Element B(i,j) is a variable
 				var = true;
+			}
 			//
 			size_t ck = 0; // index for column major access to L
 			for(size_t k = 0; k <= j; k++)
@@ -446,12 +450,14 @@ bool sparse_ad_cholesky::forward(
 					L_pattern_.row[ L_row_major_[ri] ] <= i &&
 					L_pattern_.col[ L_row_major_[ri] ] < k  )
 					++ri;
+				// found L(i,k)
 				bool found_ik =
 					L_pattern_.row[ L_row_major_[ri] ] == i &&
 					L_pattern_.col[ L_row_major_[ri] ] == k;
 				//
 				while( L_pattern_.col[ck] <= k && L_pattern_.row[ck] <  i )
 					++ck;
+				// found L(j,k)
 				bool found_jk =
 					L_pattern_.col[ck] == k && L_pattern_.row[ck] == i;
 				//
