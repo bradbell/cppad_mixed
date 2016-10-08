@@ -19,6 +19,9 @@ $$
 
 $section Sparse Cholesky Factorization as an Atomic CppAD Operation$$
 
+$head Syntax$$
+$codei%CppAD::mixed::sparse_ad_cholesky %cholesky%$$
+
 $head Purpose$$
 Given a symmetric positive definite matrix $latex A \in \B{R}^{n \times n}$$,
 this routine computes a permutation matrix $latex P \in \B{R}^{n \times n}$$
@@ -92,33 +95,34 @@ private:
 // BEGIN MEMBER VARIABLES
 private:
 	// number of columns and rows in the square matrices Alow and L
-	const size_t nc_;
+	// (set by initialize)
+	size_t nc_;
 	//
-	// OK flag is initialized as true by constructor and set to false if an
+	// OK flag is initialized as true to false if an
 	// error occurs.
 	bool ok_;
 	//
 	// Sparsity pattern for Alow and the temporary vector Alow_pattern_.val
-	// (set by constructor).
+	// (set by initialize).
 	CppAD::mixed::sparse_mat_info Alow_pattern_;
 
 	// Object used for Cholesky factorization
-	// (analyzePattern is only called by constructor).
+	// (analyzePattern is only called by initialize).
 	Eigen::SimplicialLDLT<sparse_d_matrix> ldlt_obj_;
 
-	// Value of the permutation matrix (set by constructor).
+	// Value of the permutation matrix (set by initialize).
 	Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic> P_;
 
 	// Sparsity pattern for L and the temporary vector L_pattern_.val
-	// (set by constructor).
+	// (set by initialize).
 	CppAD::mixed::sparse_mat_info L_pattern_;
 	//
 	// Indices that access lower traingle of B = P * A * P^T
-	// in column major order (set by constructor).
+	// in column major order (set by initialize).
 	CppAD::vector<size_t> Alow_permuted_;
 	//
 	// Indices that access L_pattern_ in row major order
-	// (set by constructor).
+	// (set by initialize).
 	CppAD::vector<size_t> L_row_major_;
 // END MEMBER VARIABLES
 // -----------------------------------------------------------------
@@ -129,8 +133,15 @@ public:
 	bool ok(void)
 	{	return ok_; }
 	//
-	// constructor
-	sparse_ad_cholesky(const sparse_d_matrix& Alow );
+	// default constructor
+	sparse_ad_cholesky(void) : CppAD::atomic_base<double>(
+		"sparse_ad_cholesky",
+		CppAD::atomic_base<double>::set_sparsity_enum
+	)
+	{ }
+	//
+	// initialize
+	void initialize(const sparse_ad_matrix& Alow );
 	//
 	// Permutation matrix for this factorization
 	const Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic>&

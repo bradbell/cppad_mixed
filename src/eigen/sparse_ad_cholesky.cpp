@@ -24,7 +24,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // Public member functions
 // ============================================================================
 /*
-$begin sparse_ad_cholesky_ctor$$
+$begin sparse_ad_cholesky_initialize$$
 $spell
 	cholesky cholesky
 	CppAD
@@ -34,10 +34,10 @@ $spell
 	Cholesky
 $$
 
-$section Sparse AD Cholesky Constructor$$
+$section Initialize Sparse AD Cholesky Factorization$$
 
 $head Syntax$$
-$codei%CppAD::mixed::sparse_ad_cholesky cholesky(%Alow%)%$$
+$icode%cholesky(%ad_Alow%)%$$
 
 $head Public / Private$$
 This is a public member function of the class $code sparse_ad_cholesky$$.
@@ -45,10 +45,19 @@ On the other hand, this class,
 and all of its members, are implementation details and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head Alow$$
+$head cholesky$$
+This is object has prototype
+$codei%
+	sparse_ad_cholesky %cholesky%
+%$$
+and was created with the default constructor.
+The $code initialize$$ routine should be called once
+for each $icode cholesky$$ object.
+
+$head ad_Alow$$
 This matrix has prototype
 $codei%
-	const Eigen::SparseMatrix<double, Eigen::ColMajor>& %Alow%
+	const Eigen::SparseMatrix< CppAD::AD<double>, Eigen::ColMajor>& %ad_Alow%
 %$$
 and is the lower triangle of a positive definite matrix.
 Only positive definite matrices
@@ -57,15 +66,27 @@ can be factored using the $icode cholesky$$ object; i.e.,
 square matrices with the same column size and
 same set of possibly non-zero entries.
 
+$head Restriction$$
+The $code CppAD::AD<double>$$ tape cannot be recording when this
+function is called and hence all such AD objects are parameters
+(not variables).
+
 $end
 */
-sparse_ad_cholesky::sparse_ad_cholesky(const sparse_d_matrix& Alow)
-: CppAD::atomic_base<double> (
-	"sparse_ad_cholesky",
-	CppAD::atomic_base<double>::set_sparsity_enum
-),
-nc_( size_t( Alow.cols() ) )
-{	assert( Alow.rows() == Alow.cols() );
+void sparse_ad_cholesky::initialize(const sparse_ad_matrix& ad_Alow)
+{	assert( ad_Alow.rows() == ad_Alow.cols() );
+	// ---------------------------------------------------------------------
+	// number of rows and columns in Alow and  L
+	nc_ = ad_Alow.rows();
+	// ----------------------------------------------------------------------
+	// double version of Alow
+	sparse_d_matrix Alow(nc_, nc_);
+	for(size_t j = 0; j < nc_; j++)
+	{	for(sparse_ad_matrix::InnerIterator itr(ad_Alow, j); itr; ++itr)
+		{	assert( Parameter( itr.value() ) );
+			Alow.insert( itr.row(), itr.col() ) = Value( itr.value() );
+		}
+	}
 	// ----------------------------------------------------------------------
 	// initialize ok_ as true
 	// 2DO: change this to an error message similar to ipopt_fixed class
@@ -150,6 +171,14 @@ On the other hand, this class,
 and all of its members, are implementation details and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
+$head cholesky$$
+This is object has prototype
+$codei%
+	sparse_ad_cholesky %cholesky%
+%$$
+The $cref/initialize/sparse_ad_cholesky_initialize/$$ routine must be called
+before using $code permutation$$ for a $icode cholesky$$ object.
+
 $head P$$
 The return value is the permutation matrix
 $cref/P/sparse_ad_cholesky/Notation/P/$$.
@@ -197,8 +226,8 @@ $codei%
 and is the lower triangle of a positive definite matrix
 $cref/A/sparse_ad_cholesky/Notation/A/$$.
 It must have the same sparsity pattern as
-$cref/Alow/sparse_ad_cholesky_ctor/Alow/$$ in the $icode cholesky$$
-constructor.
+$cref/ad_Alow/sparse_ad_cholesky_initialize/ad_Alow/$$ in the $icode cholesky$$
+initialization.
 
 $head ad_L$$
 This matrix has prototype

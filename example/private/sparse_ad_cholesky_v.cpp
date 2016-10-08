@@ -85,12 +85,13 @@ bool sparse_ad_cholesky_v_xam(void)
 	// --------------------------------------------------------------------
 	// create sparse_ad_cholesky object
 	size_t nc = 3;
-	Eigen::SparseMatrix<double, Eigen::ColMajor> Blow(nc, nc);
-	Blow.insert(0,0) = 2.0;
-	Blow.insert(2,0) = 1.0;
-	Blow.insert(1,1) = 0.2;
-	Blow.insert(2,2) = 3.0;
-	CppAD::mixed::sparse_ad_cholesky cholesky( Blow );
+	Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> ad_Blow(nc, nc);
+	ad_Blow.insert(0,0) = 2.0;
+	ad_Blow.insert(2,0) = 1.0;
+	ad_Blow.insert(1,1) = 0.2;
+	ad_Blow.insert(2,2) = 3.0;
+	CppAD::mixed::sparse_ad_cholesky cholesky;
+	cholesky.initialize( ad_Blow );
 	// ----------------------------------------------------------------------
 	for(size_t k = 0; k < nx; k++)
 	{	// Create function object corresponding to f(x)

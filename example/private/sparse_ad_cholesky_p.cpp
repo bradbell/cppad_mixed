@@ -32,12 +32,13 @@ bool sparse_ad_cholesky_p_xam(void)
 	// --------------------------------------------------------------------
 	// create sparse_ad_cholesky object
 	int nc = 3;
-	Eigen::SparseMatrix<double, Eigen::ColMajor> Blow(nc, nc);
-	Blow.insert(0,0) = 1.0; //     [ 1.0   0.0    0.5 ]
-	Blow.insert(2,0) = 0.5; // B = [ 0.0   0.5    0.0 ]
-	Blow.insert(1,1) = 0.5; //     [ 0.5   0.0    2.0 ]
-	Blow.insert(2,2) = 2.0;
-	CppAD::mixed::sparse_ad_cholesky cholesky( Blow );
+	Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> ad_Blow(nc, nc);
+	ad_Blow.insert(0,0) = 1.0; //     [ 1.0   0.0    0.5 ]
+	ad_Blow.insert(2,0) = 0.5; // B = [ 0.0   0.5    0.0 ]
+	ad_Blow.insert(1,1) = 0.5; //     [ 0.5   0.0    2.0 ]
+	ad_Blow.insert(2,2) = 2.0;
+	CppAD::mixed::sparse_ad_cholesky cholesky;
+	cholesky.initialize( ad_Blow );
 	//
 	// Permutation matgrix kcorresponding to this cholesky
 	const Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic>& P =

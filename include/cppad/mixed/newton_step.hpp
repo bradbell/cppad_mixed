@@ -206,7 +206,7 @@ public:
 	);
 };
 
-// calss used to hold the checkpoint version of the algorithm
+// class used to hold the checkpoint version of the algorithm
 class newton_step {
 	typedef CppAD::AD<double>             a1_double;
 	typedef CppAD::vector<a1_double>      a1d_vector;

@@ -21,9 +21,10 @@ no_change_files='
 rename_cmd='s|private/box_newton_xam.cpp|user/box_newton_xam.cpp|'
 #
 cat << EOF > junk.sed
-s|void ad(|void eval(|
-s|\\.ad(|.eval(|g
-s|::ad(|::eval(|g
+s|<double, Eigen::ColMajor> Blow|< AD<double>, Eigen::ColMajor> ad_Blow|
+s|Blow\\.insert(|ad_Blow.insert(|
+s|sparse_ad_cholesky cholesky( Blow );|sparse_ad_cholesky cholesky;\\
+	cholesky.initialize( ad_Blow );|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]
