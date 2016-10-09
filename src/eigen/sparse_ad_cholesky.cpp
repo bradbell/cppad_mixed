@@ -820,8 +820,47 @@ bool sparse_ad_cholesky::reverse(
 	return true;
 }
 // ---------------------------------------------------------------------------
+// vectorBool forward Jacobian sparsity pattern for S = f'(x) * R
+bool sparse_ad_cholesky::for_sparse_jac(
+	// number of columns in the matrix R
+	size_t                        q         ,
+	// sparsity pattern for R
+	const CppAD::vectorBool&      r         ,
+	// sparsity pattern for S
+	CppAD::vectorBool&            s         ,
+	// parameters in argument to atomic function
+	const CppAD::vector<double>&  not_used  )
+{	// make sure we have boolean version of sparsity for f'(x)
+	if( jac_sparsity_bool_.n_set() == 0 )
+		set_jac_sparsity(jac_sparsity_bool_);
+	//
+	// number of elements in domain and range of f(x)
+	size_t nx = Alow_pattern_.row.size();
+	size_t ny = L_pattern_.row.size();
+	//
+	assert( r.size() == nx * q );
+	assert( s.size() == ny * q );
+	//
+	// compute sparsity pattern for S = f'(x) * R
+	for(size_t i = 0; i < ny; i++)
+	{	for(size_t j = 0; j < q; j++)
+		{	// initialize sparsity pattern for S(i,j)
+			bool s_ij = false;
+			//
+			// S(i, j) = sum_k J(i, k) R(k, j) where J = f'(x)
+			for(size_t k = 0; k < nx; k++)
+			{	bool J_ik = jac_sparsity_bool_.is_element(i, k);
+				bool R_kj = r[ k * q + j ];
+				s_ij     |= (J_ik & R_kj);
+			}
+			// set sparsity pattern for S(i, j)
+			s[ i * q + j ] = s_ij;
+		}
+	}
+	return true;
+}
+// ---------------------------------------------------------------------------
 // vectorBool reverse Jacobian sparsity pattern for S = R * f'(x)
-// where f(x) is mapping from Alow to L
 bool sparse_ad_cholesky::rev_sparse_jac(
 	// number of rows in the matrix R
 	size_t                        q         ,

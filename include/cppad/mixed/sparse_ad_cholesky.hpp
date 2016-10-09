@@ -203,8 +203,19 @@ private:
 		const CppAD::vector<double>&     py
 	);
 	// ------------------------------------------------------------------
+	// vectorBool forward Jacobian sparsity pattern for S = f'(x) * R
+	virtual bool for_sparse_jac(
+		// number of columns in the matrix R
+		size_t                        q         ,
+		// sparsity pattern for R
+		const CppAD::vectorBool&      r         ,
+		// sparsity pattern for S
+		CppAD::vectorBool&            s         ,
+		// parameters in argument to atomic function
+		const CppAD::vector<double>&  not_used
+	);
+	// ------------------------------------------------------------------
 	// vectorBool reverse Jacobian sparsity pattern for S = R * f'(x)
-	// where f(x) is mapping from Alow to L
 	virtual bool rev_sparse_jac(
 		// number of rows in the matrix R
 		size_t                        q         ,

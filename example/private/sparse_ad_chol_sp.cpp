@@ -66,6 +66,30 @@ $srcfile%example/private/sparse_ad_chol_sp.cpp
 $end
 */
 // BEGIN C++
+namespace {
+	bool check_sparsity(size_t nx, size_t ny, const CppAD::vector<bool>& s)
+	{	bool ok = true;
+		//
+		// check sparsity for derivative of L_0 (x) = sqrt( x_1 )
+		for(size_t j = 0; j < nx; j++)
+			ok &= s[ 0 * nx + j ] == (j == 1);
+		//
+		// check sparsity for derivative of L_1 (x) = sqrt( x_0 )
+		for(size_t j = 0; j < nx; j++)
+			ok &= s[ 1 * nx + j ] == (j == 0);
+		//
+		// check sparsity for derivative of L_2 (x) = x_2 / sqrt(x_0)
+		for(size_t j = 0; j < nx; j++)
+			ok &= s[ 2 * nx + j ] == (j == 0 || j == 2);
+		//
+		// check for derivative of L_3 (x) = sqrt[ x_3 - x_2^2 / sqrt(x_0) ]
+		for(size_t j = 0; j < nx; j++)
+			ok &= s[ 3 * nx + j ] == (j == 0 || j == 2 || j == 3 );
+		//
+		return ok;
+	}
+
+}
 bool sparse_ad_chol_sp_xam(void)
 {	using CppAD::AD;
 	typedef CppAD::vector<double>                             d_vector;
@@ -123,23 +147,7 @@ bool sparse_ad_chol_sp_xam(void)
 	}
 	// compute the sparsity mattern for S(x) = R * L'(x) = L'(x)
 	CppAD::vector<bool> s = L_fun.RevSparseJac(q, r);
-	//
-	// check sparsity for derivative of L_0 (x) = sqrt( x_1 )
-	for(size_t j = 0; j < nx; j++)
-		ok &= s[ 0 * nx + j ] == (j == 1);
-	//
-	// check sparsity for derivative of L_1 (x) = sqrt( x_0 )
-	for(size_t j = 0; j < nx; j++)
-		ok &= s[ 1 * nx + j ] == (j == 0);
-	//
-	// check sparsity for derivative of L_2 (x) = x_2 / sqrt(x_0)
-	for(size_t j = 0; j < nx; j++)
-		ok &= s[ 2 * nx + j ] == (j == 0 || j == 2);
-	//
-	// check for derivative of L_3 (x) = sqrt[ x_3 - x_2^2 / sqrt(x_0) ]
-	for(size_t j = 0; j < nx; j++)
-		ok &= s[ 3 * nx + j ] == (j == 0 || j == 2 || j == 3 );
-	//
+	ok &= check_sparsity(nx, ny, s);
 	// -----------------------------------------------------------------------
 	return ok;
 }
