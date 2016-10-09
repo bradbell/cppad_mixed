@@ -279,6 +279,205 @@ void sparse_ad_cholesky::eval(
 	}
 	return;
 }
+/*
+==============================================================================
+private functions
+==============================================================================
+
+$begin set_jac_sparsity$$
+$spell
+	Jacobian
+	jac
+	cholesky
+	CppAD
+	Alow
+$$
+
+$section Set the Jacobian Sparsity Pattern$$
+
+$head Syntax$$
+$codei%set_jac_sparsity(%jac_sparsity%)%$$
+
+$head Private$$
+This is a private member function of the class $code sparse_ad_cholesky$$.
+In addition, this class,
+and all of its members, are implementation details and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
+$head jac_sparsity$$
+This argument has one of the following prototypes
+$codei%
+	CppAD::sparse_list& %jac_sparsity%
+	CppAD::sparse_pack& %jac_sparsity%
+%$$
+Its input value does not matter.
+Upon return it contains the jacobian sparsity pattern for the mapping from
+the lower triangle of the symmetric matrix
+$cref/Alow/sparse_ad_cholesky_eval/ad_Alow/$$ to the Cholesky factor
+$cref/L/sparse_ad_cholesky_eval/ad_L/$$.
+
+$subhead n_set$$
+The number of sets $icode%jac_sparsity%.n_set()%$$ is equal
+to the number of elements in the Cholesky factor $latex L$$.
+
+$subhead end$$
+The end for each set $icode%jac_sparsity%.end()%$$ is equal
+to the number of elements in the lower triangle of the symmetric
+matrix $latex A$$. The elements of the set are greater than or equal zero
+and less than the end value.
+
+$subhead elements$$
+If $icode j$$ is an element of set $icode i$$,
+then the $th i$$ element of $latex L$$ depends on the
+$th j$$ element of the lower triangle of $latex A$$
+(using column major ordering).
+
+
+$end
+*/
+template <class Sparsity>
+void sparse_ad_cholesky::set_jac_sparsity(Sparsity& jac_sparsity)
+{
+	// -------------------------------------------------------------------
+	// Initialize Jacobian sparsity pattern for L as empty
+	size_t nx = Alow_pattern_.row.size();
+	size_t ny = L_pattern_.row.size();
+	jac_sparsity.resize(ny, nx);
+	//
+	// a vector of integers corresponding to the permutation
+	Eigen::Matrix<size_t, Eigen::Dynamic, 1> p_indices(nc_);
+	for(size_t i = 0; i < nc_; i++)
+		p_indices[i] = i;
+	p_indices = P_ * p_indices;
+	//
+	// Determine sparsity pattern for L
+	size_t ib  = 0; // Blow index in column major order
+	size_t cij = 0; // index of L(i,j) in column major order
+	size_t rj  = 0; // index of row L(j,:) in row major order
+	for(size_t j = 0; j < nc_; j++)
+	{	// Determine sparsity pattern for j-th column of L
+		//
+		// advance rj to the beginning of j-th row of L
+		while( L_pattern_.row[ L_row_major_[rj] ] < j )
+			++rj;
+		//
+		// first element in column j of L must be L(j,j)
+		assert( L_pattern_.row[cij] == j );
+		assert( L_pattern_.col[cij] == j );
+		size_t cjj = cij; // save L(j,j) column major index
+		//
+		// There must be an element in row j of L
+		assert( L_pattern_.row[ L_row_major_[rj] ] == j );
+		//
+		size_t ri = rj; // initialize ri to the beginning of row j
+		while( cij < ny && L_pattern_.col[cij] == j )
+		{	// The row index in L corresponding to cij
+			size_t i = L_pattern_.row[cij];
+			//
+			// Advance ri to beginning of row i in L
+			while(
+				L_pattern_.col[ L_row_major_[ri] ] <= j &&
+				L_pattern_.row[ L_row_major_[ri] ] < i  )
+				++ri;
+			//
+			// Determine sparsity pattern for L(i,j) using
+			// B(i,j) = L(i,0) * L(j,0) + ... + L(i,j) * L(j,j).
+			// where B = P * A * P^T
+			//
+			// Check for element B(i,j)
+			size_t r, c;
+			bool flag = true;
+			while( flag )
+			{	// advance ib to next element
+				r = p_indices[ Alow_pattern_.row[ Alow_permuted_[ib] ] ];
+				c = p_indices[ Alow_pattern_.col[ Alow_permuted_[ib] ] ];
+				if( c > r )
+					std::swap(r, c);
+				flag = c < j || (c == j && r < i);
+				if( flag )
+					++ib;
+			}
+			// check if next element in B is B(i,j)
+			if( r == i && c == j )
+			{	// L(i,j) depends on element of Alow that corresponds to B(i,j)
+				jac_sparsity.add_element(cij, Alow_permuted_[ib] );
+			}
+			//
+			size_t rik = ri; // initialize index for next element in row i
+			size_t rjk = rj; // initialize index for next element in row j
+			for(size_t k = 0; k <= j; k++)
+			{	// check if L(i,k) * L(j,k) is a variable
+				//
+				// L(nc, nc) is last element in both row and column major
+				// order so now worry about going off the end of the array
+				assert( L_pattern_.row[ L_row_major_[rik] ] >= i );
+				assert( L_pattern_.row[ L_row_major_[rjk] ] >= j );
+				//
+				while(
+					L_pattern_.row[ L_row_major_[rik] ] == i &&
+					L_pattern_.col[ L_row_major_[rik] ] < k  )
+					++rik;
+				// found L(i,k)
+				bool found_ik =
+					L_pattern_.row[ L_row_major_[rik] ] == i &&
+					L_pattern_.col[ L_row_major_[rik] ] == k;
+				//
+				while(
+					L_pattern_.row[ L_row_major_[rjk] ] == j &&
+					L_pattern_.col[ L_row_major_[rjk] ] < k  )
+					++rjk;
+				// found L(j,k)
+				bool found_jk =
+					L_pattern_.row[ L_row_major_[rjk] ] == j &&
+					L_pattern_.col[ L_row_major_[rjk] ] == k;
+				//
+				if( found_ik && found_jk )
+				{	// both L(i,k) and L(j,k) can be non-zero
+					if( k == j )
+					{	if( i > j )
+						{	// L(i,j) * L(j,j)
+							assert( cjj < cij );
+							// set cij = set cij union set cjj
+							jac_sparsity.binary_union(
+								cij,
+								cij,
+								cjj,
+								jac_sparsity
+							);
+						}
+						else
+						{	// L(j,j) * L(j,j) case is determining cjj
+							assert( cjj == cij );
+						}
+					}
+					else
+					{	// L(i,k) * L(j,k)
+						assert( L_row_major_[rik] < cij );
+						assert( L_row_major_[rjk] < cij );
+						//
+						// set cij = set cij union set L_row_major_[rik]
+						jac_sparsity.binary_union(
+							cij,
+							cij,
+							L_row_major_[rik],
+							jac_sparsity
+						);
+						// set cij = set cij union set L_row_major_[rjk]
+						jac_sparsity.binary_union(
+							cij,
+							cij,
+							L_row_major_[rjk],
+							jac_sparsity
+						);
+					}
+				}
+			}
+			// Done with sparsity for L(i,j)
+			cij++;
+		}
+	}
+	return;
+}
 // ===========================================================================
 // These virtual functions are specified by the CppAD::atomic_base requirements
 // ===========================================================================
@@ -620,6 +819,48 @@ bool sparse_ad_cholesky::reverse(
 	//
 	return true;
 }
+// ---------------------------------------------------------------------------
+// vectorBool reverse Jacobian sparsity pattern for S = R * f'(x)
+// where f(x) is mapping from Alow to L
+bool sparse_ad_cholesky::rev_sparse_jac(
+	// number of rows in the matrix R
+	size_t                        q         ,
+	// sparsity pattern for R^T
+	const CppAD::vectorBool&      rt        ,
+	// sparsity pattern for S^T
+	CppAD::vectorBool&            st        ,
+	// parameters in argument to atomic function
+	const CppAD::vector<double>&  not_used  )
+{	// make sure we have boolean version of sparsity for f'(x)
+	if( jac_sparsity_bool_.n_set() == 0 )
+		set_jac_sparsity(jac_sparsity_bool_);
+	//
+	// number of elements in domain and range of f(x)
+	size_t nx = Alow_pattern_.row.size();
+	size_t ny = L_pattern_.row.size();
+	//
+	assert( rt.size() == ny * q );
+	assert( st.size() == nx * q );
+	//
+	// compute sparsity pattern for S^T = f'(x)^T * R^T
+	for(size_t i = 0; i < q; i++)
+	{	for(size_t j = 0; j < nx; j++)
+		{	// initialize sparsity pattern for S(i,j)
+			bool s_ij = false;
+			//
+			// S(i, j) = sum_k R(i, k) J(k, j) where J = f'(x)
+			for(size_t k = 0; k < ny; k++)
+			{	bool R_ik = rt[ k * q + i ];
+				bool J_kj = jac_sparsity_bool_.is_element(k, j);
+				s_ij     |= (R_ik & J_kj);
+			}
+			// set sparsity pattern for S^T(j, i)
+			st[ j * q + i ] = s_ij;
+		}
+	}
+	return true;
+}
+
 
 } } // END_CPPAD_MIXED_NAMESPASE
 

@@ -44,6 +44,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	private/sparse_ad_chol_eval.cpp
 	private/sparse_ad_chol_eq.cpp
 	private/sparse_ad_chol_perm.cpp
+	private/sparse_ad_chol_sp.cpp
 	private/sparse_ad_chol_var.cpp
 	private/sparse_eigen2info.cpp
 	private/sparse_info2eigen.cpp

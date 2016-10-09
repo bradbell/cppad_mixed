@@ -70,6 +70,7 @@ extern bool sample_random_xam(void);
 extern bool sparse_ad_chol_eval_xam(void);
 extern bool sparse_ad_chol_eq_xam(void);
 extern bool sparse_ad_chol_perm_xam(void);
+extern bool sparse_ad_chol_sp_xam(void);
 extern bool sparse_ad_chol_var_xam(void);
 extern bool sparse_eigen2info_xam(void);
 extern bool sparse_info2eigen_xam(void);
@@ -157,6 +158,7 @@ int main(void)
 	RUN(sparse_ad_chol_eval_xam);
 	RUN(sparse_ad_chol_eq_xam);
 	RUN(sparse_ad_chol_perm_xam);
+	RUN(sparse_ad_chol_sp_xam);
 	RUN(sparse_ad_chol_var_xam);
 	RUN(sparse_eigen2info_xam);
 	RUN(sparse_info2eigen_xam);

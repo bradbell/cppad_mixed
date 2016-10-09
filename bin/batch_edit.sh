@@ -12,19 +12,19 @@
 new_directories='
 '
 rename_files='
+	example/private/sparse_ad_cholesky_ad.cpp
+	example/private/sparse_ad_cholesky_eq.cpp
+	example/private/sparse_ad_cholesky_p.cpp
+	example/private/sparse_ad_cholesky_v.cpp
 '
 spell_files='
 '
 no_change_files='
 '
 #
-rename_cmd='s|private/box_newton_xam.cpp|user/box_newton_xam.cpp|'
+rename_cmd='s|sparse_ad_cholesky|sparse_ad_chol|'
 #
 cat << EOF > junk.sed
-s|<double, Eigen::ColMajor> Blow|< AD<double>, Eigen::ColMajor> ad_Blow|
-s|Blow\\.insert(|ad_Blow.insert(|
-s|sparse_ad_cholesky cholesky( Blow );|sparse_ad_cholesky cholesky;\\
-	cholesky.initialize( ad_Blow );|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

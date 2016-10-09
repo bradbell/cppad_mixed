@@ -66,6 +66,7 @@ $childtable%src/eigen/sparse_ad_cholesky.cpp
 	%example/private/sparse_ad_chol_perm.cpp
 	%example/private/sparse_ad_chol_eq.cpp
 	%example/private/sparse_ad_chol_var.cpp
+	%example/private/sparse_ad_chol_sp.cpp
 %$$
 
 $end
@@ -124,6 +125,13 @@ private:
 	// Indices that access L_pattern_ in row major order
 	// (set by initialize).
 	CppAD::vector<size_t> L_row_major_;
+	//
+	// Jacobian sparsity patterns as a sparse_list and sparse_pack.
+	// These types are CppAD internal representations for vectors of sets
+	// and vectors of bools. Thier use is not part of the CppAD API (yes),
+	// but they are more efficient, so we use them here.
+	CppAD::sparse_list jac_sparsity_set_;
+	CppAD::sparse_pack jac_sparsity_bool_;
 // END MEMBER VARIABLES
 // -----------------------------------------------------------------
 // BEGIN PUBLIC MEMBER FUNCTIONS
@@ -136,7 +144,7 @@ public:
 	// default constructor
 	sparse_ad_cholesky(void) : CppAD::atomic_base<double>(
 		"sparse_ad_cholesky",
-		CppAD::atomic_base<double>::set_sparsity_enum
+		CppAD::atomic_base<double>::pack_sparsity_enum
 	)
 	{ }
 	//
@@ -153,9 +161,17 @@ public:
 		sparse_ad_matrix&       ad_L
 	);
 // END PUBLIC MEMBER FUNCTIONS
-// -----------------------------------------------------------------
-// private virtual functions
+// =======================================================================
 private:
+	// -------------------------------------------------------------------
+	// private functions only used by this class
+	// -------------------------------------------------------------------
+	// compute the Jacobian sparsity patten for map Alow -> L
+	template <class Sparsity>
+	void set_jac_sparsity(Sparsity& jac_sparsity);
+	//
+	// ------------------------------------------------------------------
+	// private virtual functions called and specified by CppAD
 	// ------------------------------------------------------------------
 	// CppAD forward mode for this operation (called by CppAD)
 	virtual bool forward(
@@ -185,6 +201,19 @@ private:
 		CppAD::vector<double>&           px ,
 		// derivative of G[ {y_i^k} ] w.r.t. {y_i^k}
 		const CppAD::vector<double>&     py
+	);
+	// ------------------------------------------------------------------
+	// vectorBool reverse Jacobian sparsity pattern for S = R * f'(x)
+	// where f(x) is mapping from Alow to L
+	virtual bool rev_sparse_jac(
+		// number of rows in the matrix R
+		size_t                        q         ,
+		// sparsity pattern for R^T
+		const CppAD::vectorBool&      rt        ,
+		// sparsity pattern for S^T
+		CppAD::vectorBool&            st        ,
+		// parameters in argument to atomic function
+		const CppAD::vector<double>&  not_used
 	);
 }; // END_SPARSE_AD_CHOLESKY
 
