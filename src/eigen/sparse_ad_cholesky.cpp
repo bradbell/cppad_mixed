@@ -197,7 +197,7 @@ sparse_ad_cholesky::permutation(void)
 {	return P_; }
 /*
 ------------------------------------------------------------------------------
-$begin sparse_ad_cholesy_ad$$
+$begin sparse_ad_cholesky_eval$$
 $spell
 	Cholesky
 	Alow
@@ -218,7 +218,7 @@ On the other hand, this class,
 and all of its members, are implementation details and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head aALow$$
+$head ad_Alow$$
 This matrix has prototype
 $codei%
 	const Eigen::SparseMatrix< CppAD::AD<double>, Eigen::ColMajor>& %ad_Alow%
@@ -390,9 +390,7 @@ bool sparse_ad_cholesky::forward(
 	size_t cij = 0; // index of L(i,j) in column major order
 	size_t rj  = 0; // index of row L(j,:) in row major order
 	for(size_t j = 0; j < nc_; j++)
-	{	// Determine which elements of column j of L are variables using
-		// B_{i,j} = sum_k L_{i,k} * L_{j,k}
-		// where B = P * A * P^T and note that
+	{	// Determine which elements of j-th column of L are variables
 		//
 		// advance rj to the beginning of j-th row of L
 		while( L_pattern_.row[ L_row_major_[rj] ] < j )
@@ -411,7 +409,7 @@ bool sparse_ad_cholesky::forward(
 		{	// The row index in L corresponding to cij
 			size_t i = L_pattern_.row[cij];
 			//
-			// Advance ri beginning of row i in L
+			// Advance ri to beginning of row i in L
 			while(
 				L_pattern_.col[ L_row_major_[ri] ] <= j &&
 				L_pattern_.row[ L_row_major_[ri] ] < i  )
@@ -492,6 +490,7 @@ bool sparse_ad_cholesky::forward(
 					}
 				}
 			}
+			// set variable value for L(i,j)
 			vy[cij++] = var;
 		}
 	}
