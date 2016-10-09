@@ -226,6 +226,26 @@ private:
 		// parameters in argument to atomic function
 		const CppAD::vector<double>&  not_used
 	);
+	// ------------------------------------------------------------------
+	// vectorBool reverse Hessian sparsity for V(x) = (g o f)^(2) (x) * R
+	virtual bool rev_sparse_hes(
+		// variable flag for x arguments
+		const vector<bool>&                   vx       ,
+		// sparsity pattern for scalar valued S(x) = g'[ f(x) ]
+		const vector<bool>&                   s        ,
+		// sparsity pattern for T(x) = (g o f)' (x) = S(x) * f'(x)
+		vector<bool>&                         t        ,
+		// number of columns in the matrix R
+		size_t                                q        ,
+		// sparsity pattern for the matrix R
+		const CppAD::vectorBool&              r        ,
+		// sparsity pattern for U(x) = g^(2)[ f(x) ] f'(x) R
+		const CppAD::vectorBool&              u        ,
+		// sparsity pattern for V(x) = (g o f)^(2) (x) * R
+		CppAD::vectorBool&                    v        ,
+		// parameters in argument to atomic function
+		const vector<double>&                 not_used
+	);
 }; // END_SPARSE_AD_CHOLESKY
 
 } } // END_CPPAD_MIXED_NAMESPACE

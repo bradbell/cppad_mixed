@@ -899,7 +899,54 @@ bool sparse_ad_cholesky::rev_sparse_jac(
 	}
 	return true;
 }
-
+// ----------------------------------------------------------------------------
+// vectorBool reverse Hessian sparsity for V(x) = (g o f)^(2) (x) * R
+bool sparse_ad_cholesky::rev_sparse_hes(
+	// variable flag for x arguments
+	const vector<bool>&                   vx       ,
+	// sparsity pattern for scalar valued S(x) = g'[ f(x) ]
+	const vector<bool>&                   s        ,
+	// sparsity pattern for T(x) = (g o f)' (x) = S(x) * f'(x)
+	vector<bool>&                         t        ,
+	// number of columns in the matrix R
+	size_t                                q        ,
+	// sparsity pattern for the matrix R
+	const CppAD::vectorBool&              r        ,
+	// sparsity pattern for U(x) = g^(2)[ f(x) ] f'(x) R
+	const CppAD::vectorBool&              u        ,
+	// sparsity pattern for V(x) = (g o f)^(2) (x) * R
+	CppAD::vectorBool&                    v        ,
+	// parameters in argument to atomic function
+	const vector<double>&                 not_used )
+{	// make sure we have boolean version of sparsity for f'(x)
+	if( jac_sparsity_bool_.n_set() == 0 )
+		set_jac_sparsity(jac_sparsity_bool_);
+	//
+	// number of elements in domain and range of f(x)
+	size_t nx = Alow_pattern_.row.size();
+	size_t ny = L_pattern_.row.size();
+	//
+	assert( vx.size() == nx );
+	assert( s.size()  == ny );
+	assert( t.size()  == nx );
+	assert( r.size()  == nx * q );
+	assert( u.size()  == ny * q );
+	assert( v.size()  == nx * q );
+	assert( jac_sparsity_bool_.n_set() == ny );
+	assert( jac_sparsity_bool_.end()   == nx );
+	//
+	// compute atomic sparsity pattern for T(x) = S(x) * f'(x)
+	for(size_t j = 0; j < nx; j++)
+	{	// T(j) = sum_k S(i) * J(i, j)
+		bool t_j = false;
+		for(size_t k = 0; k < ny; k++)
+			t_j |= ( s[k] & jac_sparsity_bool_.is_element(k, j) );
+		t[j] = t_j;
+	}
+	//
+	// not yet finished
+	return false;
+}
 
 } } // END_CPPAD_MIXED_NAMESPASE
 
