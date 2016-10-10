@@ -991,7 +991,8 @@ bool sparse_ad_cholesky::reverse(
 		).transpose();
 		//
 		// remove Lk, \bar{Alow}_k += P^T * M0 * P
-		sparse_d_matrix barB_k = CppAD::mixed::sparse_low2sym(Mk);
+		sparse_d_matrix Mkt    = Mk.transpose();
+		sparse_d_matrix barB_k = 0.5 * (Mk + Mkt);
 		tmp1                   = P_.transpose() * barB_k;
 		r_Alow[k]             += tmp1 * P_;
 		//
