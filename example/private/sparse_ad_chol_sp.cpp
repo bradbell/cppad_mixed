@@ -67,7 +67,7 @@ $end
 */
 // BEGIN C++
 namespace {
-	bool check_sparsity(size_t nx, size_t ny, const CppAD::vector<bool>& s)
+	bool check_jac(size_t nx, const CppAD::vector<bool>& s)
 	{	bool ok = true;
 		//
 		// check sparsity for derivative of L_0 (x) = sqrt( x_1 )
@@ -88,7 +88,59 @@ namespace {
 		//
 		return ok;
 	}
+	bool check_hes(size_t nx, size_t k, const CppAD::vector<bool>& h)
+	{	bool ok = true;
+		switch(k)
+		{	case 0:
+			// check sparsity for Hessian of L_0 (x) = sqrt( x_1 )
+			for(size_t i = 0; i < nx; i++)
+			{	for(size_t j = 0; j < nx; j++)
+				{	bool check = (i == 1) && (j == 1);
+					ok &= h[ i * nx + j] == check;
+				}
+			}
+			break;
 
+			case 1:
+			// check sparsity for Hessian of L_1 (x) = sqrt( x_0 )
+			for(size_t i = 0; i < nx; i++)
+			{	for(size_t j = 0; j < nx; j++)
+				{	bool check = (i == 0) && (j == 0);
+					ok &= h[ i * nx + j] == check;
+				}
+			}
+			break;
+
+			case 2:
+			// check sparsity for Hessian of L_2 (x) = x_2 / sqrt(x_0)
+			for(size_t i = 0; i < nx; i++)
+			{	for(size_t j = 0; j < nx; j++)
+				{	bool check = (i == 0) && (j == 0);
+					check     |= (i == 2) && (j == 0);
+					check     |= (i == 0) && (j == 2);
+					//
+					ok &= h[ i * nx + j] == check;
+				}
+			}
+			break;
+
+			case 3:
+			// check sparsity for Hessian of
+			// L_3 (x) = sqrt[ x_3 - x_2^2 / sqrt(x_0) ]
+			for(size_t i = 0; i < nx; i++)
+			{	for(size_t j = 0; j < nx; j++)
+				{	bool check = (i != 1) && (j != 1);
+					//
+					ok &= h[ i * nx + j] == check;
+				}
+			}
+			break;
+
+			default:
+			assert(false);
+		}
+		return ok;
+	}
 }
 bool sparse_ad_chol_sp_xam(void)
 {	using CppAD::AD;
@@ -138,6 +190,8 @@ bool sparse_ad_chol_sp_xam(void)
 	ok &= L_fun.Domain() == nx;
 	ok &= L_fun.Range()  == ny;
 	// ----------------------------------------------------------------------
+	// Check rev_sparse_jac
+	//
 	// set R to the identity matrix
 	size_t q = ny;
 	CppAD::vector<bool> r(q * ny);
@@ -145,10 +199,33 @@ bool sparse_ad_chol_sp_xam(void)
 	{	for(size_t j = 0; j < ny; j++)
 			r[i * ny + j ] = (i == j);
 	}
-	// compute the sparsity mattern for S(x) = R * L'(x) = L'(x)
+	// compute the sparsity pattern for S(x) = R * L'(x) = L'(x)
 	CppAD::vector<bool> s = L_fun.RevSparseJac(q, r);
-	ok &= check_sparsity(nx, ny, s);
+	ok &= check_jac(nx, s);
+	// ----------------------------------------------------------------------
+	// Check for_sparse_jac
+	//
+	// set R to the identity matrix
+	q = nx;
+	r.resize(nx * q);
+	for(size_t i = 0; i < nx; i++)
+	{	for(size_t j = 0; j < q; j++)
+			r[i * q + j ] = (i == j);
+	}
+	// compute the sparsity pattern for S(x) = L'(x) * R = L'(x)
+	s = L_fun.ForSparseJac(q, r);
+	ok &= check_jac(nx, s);
 	// -----------------------------------------------------------------------
+	s.resize(ny);
+	for(size_t i = 0; i < nx; i++)
+	{	// set s
+		for(size_t j = 0; j < ny; j++)
+			s[j] = (i == j);
+		// compute sparsity pattern for Hessian of s * L(x)
+		CppAD::vector<bool> h = L_fun.RevSparseHes(q, s);
+		//
+		ok &= check_hes(nx, i, h);
+	}
 	return ok;
 }
 // END C++

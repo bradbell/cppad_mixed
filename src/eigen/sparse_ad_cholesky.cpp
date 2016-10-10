@@ -682,6 +682,7 @@ void sparse_ad_cholesky::set_hes_sparsity(
 								// partial L(i,k) w.r.t Alow[ia] is non-zero
 								// partial L(j,k) w.r.t Alow[ja] is non-zero
 								hes_sparsity.add_element(ia, ja);
+								hes_sparsity.add_element(ja, ia);
 							}
 						}
 					}
@@ -1202,7 +1203,7 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 	{	for(size_t k = 0; k < q; k++)
 			v[ j * q + k ] = sfppR[ j * q + k ] | fptu[ j * q + k ];
 	}
-	return false;
+	return true;
 }
 
 } } // END_CPPAD_MIXED_NAMESPASE
