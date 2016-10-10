@@ -126,11 +126,9 @@ private:
 	// (set by initialize).
 	CppAD::vector<size_t> L_row_major_;
 	//
-	// Jacobian sparsity patterns as a sparse_list and sparse_pack.
-	// These types are CppAD internal representations for vectors of sets
-	// and vectors of bools. Thier use is not part of the CppAD API (yes),
-	// but they are more efficient, so we use them here.
-	CppAD::sparse_list jac_sparsity_set_;
+	// Jacobian sparsity as a sparse_pack.  This is CppAD internal
+	// representations for vectors of of bools.  Its use is not part of the
+	// CppAD API (yet), but it is more efficient, so we use it here.
 	CppAD::sparse_pack jac_sparsity_bool_;
 // END MEMBER VARIABLES
 // -----------------------------------------------------------------

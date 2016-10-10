@@ -597,7 +597,6 @@ void sparse_ad_cholesky::set_hes_sparsity(
 		// first element in column j of L must be L(j,j)
 		assert( L_pattern_.row[cij] == j );
 		assert( L_pattern_.col[cij] == j );
-		size_t cjj = cij; // save L(j,j) column major index
 		//
 		// There must be an element in row j of L
 		assert( L_pattern_.row[ L_row_major_[rj] ] == j );
@@ -1157,14 +1156,52 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 	//
 	// compute atomic sparsity pattern for T(x) = S(x) * f'(x)
 	for(size_t j = 0; j < nx; j++)
-	{	// T(j) = sum_k S(i) * J(i, j)
+	{	// T(j) = sum_k S(i) * f'(x)
 		bool t_j = false;
 		for(size_t k = 0; k < ny; k++)
 			t_j |= ( s[k] & jac_sparsity_bool_.is_element(k, j) );
 		t[j] = t_j;
 	}
+	/*
+	V(x) = f'(x)^T * g''(y) * f'(x) * R  +  sum_i S_i(x) * f_i''(x) * R
+	     = f'(x)^T U(x) + \sum_i S_i (x) * f_i''(x) * R
+	*/
+	// compute sparsity for f'(x)^T * U(x)
+	CppAD::vectorBool fptu( nx * q );
+	for(size_t j = 0; j < nx; j++)
+	{	for(size_t k = 0; k < q; k++)
+		{	bool fptu_jk = false;
+			for(size_t i = 0; i < ny; i++)
+			{	bool fp_ij = jac_sparsity_bool_.is_element(i, j);
+				bool u_ik  = u[ i * q + k ];
+				fptu_jk   |= (fp_ij & u_ik);
+			}
+			fptu[ j * q + k ] = fptu_jk;
+		}
+	}
 	//
-	// not yet finished
+	// compute the sparsity for sum_i S_i(x) * f_i''(x)
+	CppAD::sparse_pack hes_sparsity_bool;
+	set_hes_sparsity(s, jac_sparsity_bool_, hes_sparsity_bool);
+	//
+	// compute sparsity for sum_i S_i (x) * f_i''(x) * R
+	CppAD::vectorBool sfppR( nx * q );
+	for(size_t j = 0; j < nx; j++)
+	{	for(size_t k = 0; k < q; k++)
+		{	bool sfppR_jk = false;
+			for(size_t i = 0; i < nx; i++)
+			{	bool sfpp_ji = hes_sparsity_bool.is_element(j, i);
+				bool r_ik    = r[ i * q + k ];
+				sfppR_jk    |= (sfpp_ji & r_ik);
+			}
+			sfppR[ j * q + k ] = sfppR_jk;
+		}
+	}
+	// compute sparsity for V(x)
+	for(size_t j = 0; j < nx; j++)
+	{	for(size_t k = 0; k < q; k++)
+			v[ j * q + k ] = sfppR[ j * q + k ] | fptu[ j * q + k ];
+	}
 	return false;
 }
 
