@@ -364,7 +364,6 @@ void sparse_ad_cholesky::set_jac_sparsity(Sparsity& jac_sparsity)
 		// first element in column j of L must be L(j,j)
 		assert( L_pattern_.row[cij] == j );
 		assert( L_pattern_.col[cij] == j );
-		size_t cjj = cij; // save L(j,j) column major index
 		//
 		// There must be an element in row j of L
 		assert( L_pattern_.row[ L_row_major_[rj] ] == j );
@@ -433,40 +432,42 @@ void sparse_ad_cholesky::set_jac_sparsity(Sparsity& jac_sparsity)
 				//
 				if( found_ik && found_jk )
 				{	// both L(i,k) and L(j,k) can be non-zero
+					size_t cik = L_row_major_[rik];
+					size_t cjk = L_row_major_[rjk];
 					if( k == j )
 					{	if( i > j )
 						{	// L(i,j) * L(j,j)
-							assert( cjj < cij );
-							// set cij = set cij union set cjj
+							assert( cjk < cij );
+							// set cij = set cij union set cjk
 							jac_sparsity.binary_union(
 								cij,
 								cij,
-								cjj,
+								cjk,
 								jac_sparsity
 							);
 						}
 						else
-						{	// L(j,j) * L(j,j) case is determining cjj
-							assert( cjj == cij );
+						{	// L(j,j) * L(j,j) case is determining cjk
+							assert( cjk == cij );
 						}
 					}
 					else
 					{	// L(i,k) * L(j,k)
-						assert( L_row_major_[rik] < cij );
-						assert( L_row_major_[rjk] < cij );
+						assert( cik < cij );
+						assert( cjk < cij );
 						//
-						// set cij = set cij union set L_row_major_[rik]
+						// set cij = set cij union set cik
 						jac_sparsity.binary_union(
 							cij,
 							cij,
-							L_row_major_[rik],
+							cik,
 							jac_sparsity
 						);
-						// set cij = set cij union set L_row_major_[rjk]
+						// set cij = set cij union set cjk
 						jac_sparsity.binary_union(
 							cij,
 							cij,
-							L_row_major_[rjk],
+							cjk,
 							jac_sparsity
 						);
 					}
@@ -598,7 +599,6 @@ bool sparse_ad_cholesky::forward(
 		// first element in column j of L must be L(j,j)
 		assert( L_pattern_.row[cij] == j );
 		assert( L_pattern_.col[cij] == j );
-		size_t cjj = cij; // save L(j,j) column major index
 		//
 		// There must be an element in row j of L
 		assert( L_pattern_.row[ L_row_major_[rj] ] == j );
@@ -634,7 +634,7 @@ bool sparse_ad_cholesky::forward(
 			}
 			// check if next element in B is B(i,j) and it is a variable
 			if( c == j && r == i && vx[ Alow_permuted_[ib] ] )
-			{	// Element B(i,j) is a variable
+			{	// Element L(i,j) depends on B(i,j) which is a variable
 				var = true;
 			}
 			//
@@ -668,24 +668,29 @@ bool sparse_ad_cholesky::forward(
 				//
 				if( found_ik && found_jk )
 				{	// both L(i,k) and L(j,k) can be non-zero
+					size_t cik = L_row_major_[rik];
+					size_t cjk = L_row_major_[rjk];
 					if( k == j )
 					{	if( i > j )
 						{	// L(i,j) * L(j,j)
-							assert( cjj < cij );
-							var |= vy[cjj];
+							// Element L(i,j) depends on L(j,j)
+							assert( cjk < cij );
+							var |= vy[cjk];
 						}
 						else
-						{	// L(j,j) * L(j,j) case is determining cjj
-							assert( cjj == cij );
+						{	// L(j,j) * L(j,j) case is determining cjk
+							assert( cjk == cij );
 						}
 					}
 					else
 					{	// L(i,k) * L(j,k)
-						assert( L_row_major_[rik] < cij );
-						assert( L_row_major_[rjk] < cij );
+						assert( cik < cij );
+						assert( cjk < cij );
 						//
-						var |= vy[ L_row_major_[rik] ];
-						var |= vy[ L_row_major_[rjk] ];
+						// L(i,j) depends on L(i,k)
+						var |= vy[ cik ];
+						// L(i,j) depends on L(j,k)
+						var |= vy[ cjk ];
 					}
 				}
 			}
