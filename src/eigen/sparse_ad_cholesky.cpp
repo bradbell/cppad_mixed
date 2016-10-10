@@ -479,6 +479,221 @@ void sparse_ad_cholesky::set_jac_sparsity(Sparsity& jac_sparsity)
 	}
 	return;
 }
+/*
+-----------------------------------------------------------------------------
+$begin set_hes_sparsity$$
+$spell
+	Jacobian
+	jac
+	cholesky
+	CppAD
+	Alow
+	const
+	bool
+	nx
+	hes
+$$
+
+$section Set the Hessian Sparsity Pattern$$
+
+$head Syntax$$
+$codei%set_hes_sparsity(%s%, %hes_sparsity%)%$$
+
+$head Purpose$$
+Compute the sparsity pattern for $latex S(x) L(x)$$ where
+$latex S(x)$$ is a row vector valued function and
+$latex L(x)$$ is the mapping from the lower triangle of
+$cref/A/sparse_ad_cholesky/Notation/A/$$ to the Cholesky factor
+$cref/L/sparse_ad_cholesky/Notation/L/$$.
+
+$head Private$$
+This is a private member function of the class $code sparse_ad_cholesky$$.
+In addition, this class,
+and all of its members, are implementation details and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
+$head s$$
+This argument has prototype
+$codei%
+	const CppAD::vector<bool>& %s%
+%$$
+and its size is the number of elements in
+$cref/L/sparse_ad_cholesky/Notation/L/$$ ($icode ny$$).
+It is the sparsity pattern for $latex S(x)$$.
+
+$head jac_sparsity$$
+This argument has one of the following prototypes
+$codei%
+	CppAD::sparse_list& %jac_sparsity%
+	CppAD::sparse_pack& %jac_sparsity%
+%$$
+It is the Jacobian sparsity pattern for $latex L(x)$$ and is
+effectively const.
+
+$head hes_sparsity$$
+This argument has the same type as $icode jac_sparsity$$.
+Its input value does not matter.
+Upon return it contains the Hessian sparsity pattern for
+$latex S(x) L(x)$$.
+
+$subhead n_set$$
+The number of sets $icode%hes_sparsity%.n_set()%$$ is equal
+to the number of elements in the lower triangle of
+$cref/A/sparse_ad_cholesky/Notation/A/$$ ($icode nx$$).
+
+$subhead end$$
+The end for each set $icode%hes_sparsity%.end()%$$ is equal
+to the number of elements in the lower triangle of the symmetric
+matrix $latex A$$ ($icode nx$$).
+The elements of the set are greater than or equal zero
+and less than the end value.
+
+$subhead elements$$
+If $icode j$$ is an element of set $icode i$$,
+the $latex (i,j)$$ element of the Hessian
+$latex \[
+	\sum_k S_k (x) L_k^{(2)} (x)
+\]$$
+may be non-zero.
+
+$end
+*/
+template <class Sparsity>
+void sparse_ad_cholesky::set_hes_sparsity(
+	const CppAD::vector<bool>& s            ,
+	Sparsity&                  jac_sparsity ,
+	Sparsity&                  hes_sparsity )
+{
+	// -------------------------------------------------------------------
+	// Initialize Jacobian sparsity pattern for L as empty
+	size_t nx = Alow_pattern_.row.size();
+	size_t ny = L_pattern_.row.size();
+	//
+	// Initialize Hessian sparsity as empty
+	assert( s.size() == ny );
+	hes_sparsity.resize(nx, nx);
+	//
+	// a vector of integers corresponding to the permutation
+	Eigen::Matrix<size_t, Eigen::Dynamic, 1> p_indices(nc_);
+	for(size_t i = 0; i < nc_; i++)
+		p_indices[i] = i;
+	p_indices = P_ * p_indices;
+	//
+	// Determine Hessian sparsity pattern for \sum_k S_k(x) * L_k (x)
+	size_t cij = 0; // index of L(i,j) in column major order
+	size_t rj  = 0; // index of row L(j,:) in row major order
+	//
+	// used to hold sets of integers corresponding to L(i,k) and L(j,k);
+	CppAD::vector<size_t> set_ik, set_jk;
+	//
+	// for each column of L
+	for(size_t j = 0; j < nc_; j++)
+	{	// Determine sparsity pattern for j-th column of L
+		//
+		// advance rj to the beginning of j-th row of L
+		while( L_pattern_.row[ L_row_major_[rj] ] < j )
+			++rj;
+		//
+		// first element in column j of L must be L(j,j)
+		assert( L_pattern_.row[cij] == j );
+		assert( L_pattern_.col[cij] == j );
+		size_t cjj = cij; // save L(j,j) column major index
+		//
+		// There must be an element in row j of L
+		assert( L_pattern_.row[ L_row_major_[rj] ] == j );
+		//
+		size_t ri = rj; // initialize ri to the beginning of row j
+		//
+		// For each element L(i,j) that is included in S(x)
+		while( cij < ny && L_pattern_.col[cij] == j )
+		{	if(  ! s[ cij ] )
+			{	// element L(i,j) is not included in S(x)
+				++cij;
+			}
+			else
+			{	// element L(i,j) is inclued in S(x)
+				//
+				// The row index for element of L corresponding to cij
+				size_t i = L_pattern_.row[cij];
+				//
+				// Advance ri to beginning of row i in L
+				while(
+					L_pattern_.col[ L_row_major_[ri] ] <= j &&
+					L_pattern_.row[ L_row_major_[ri] ] < i  )
+					++ri;
+				//
+				// Determine sparsity pattern for L(i,j) using
+				// B(i,j) = L(i,0) * L(j,0) + ... + L(i,j) * L(j,j).
+				// where B = P * A * P^T
+				//
+				size_t rik = ri; // initialize index for next element in row i
+				size_t rjk = rj; // initialize index for next element in row j
+				for(size_t k = 0; k <= j; k++)
+				{	// check if L(i,k) * L(j,k) is possibly non-zero
+					//
+					// L(nc, nc) is last element in both row and column major
+					// order so now worry about going off the end of the array
+					assert( L_pattern_.row[ L_row_major_[rik] ] >= i );
+					assert( L_pattern_.row[ L_row_major_[rjk] ] >= j );
+					//
+					while(
+						L_pattern_.row[ L_row_major_[rik] ] == i &&
+						L_pattern_.col[ L_row_major_[rik] ] < k  )
+						++rik;
+					// found L(i,k)
+					bool found_ik =
+						L_pattern_.row[ L_row_major_[rik] ] == i &&
+						L_pattern_.col[ L_row_major_[rik] ] == k;
+					//
+					while(
+						L_pattern_.row[ L_row_major_[rjk] ] == j &&
+						L_pattern_.col[ L_row_major_[rjk] ] < k  )
+						++rjk;
+					// found L(j,k)
+					bool found_jk =
+						L_pattern_.row[ L_row_major_[rjk] ] == j &&
+						L_pattern_.col[ L_row_major_[rjk] ] == k;
+					//
+					if( found_ik && found_jk )
+					{	// both L(i,k) and L(j,k) can be non-zero
+						size_t cik = L_row_major_[rik];
+						size_t cjk = L_row_major_[rjk];
+						//
+						// set of elements corresponding to L(i,k)
+						set_ik.resize(0);
+						jac_sparsity.begin(cik);
+						size_t element = jac_sparsity.next_element();
+						while( element != jac_sparsity.end() )
+						{	set_ik.push_back(element);
+							element = jac_sparsity.next_element();
+						}
+						// set of elements corresponding to L(j,k)
+						set_jk.resize(0);
+						jac_sparsity.begin(cjk);
+						element = jac_sparsity.next_element();
+						while( element != jac_sparsity.end() )
+						{	set_jk.push_back(element);
+							element = jac_sparsity.next_element();
+						}
+						// for each pair of elements
+						for(size_t ik = 0; ik < set_ik.size(); ik++)
+						{	for(size_t jk = 0; jk < set_jk.size(); jk++)
+							{	size_t ia = set_ik[ik];
+								size_t ja = set_jk[jk];
+								// partial L(i,k) w.r.t Alow[ia] is non-zero
+								// partial L(j,k) w.r.t Alow[ja] is non-zero
+								hes_sparsity.add_element(ia, ja);
+							}
+						}
+					}
+				}
+				// end of processing L(i,j)
+				++cij;
+			}
+		}
+	}
+	return;
+}
 // ===========================================================================
 // These virtual functions are specified by the CppAD::atomic_base requirements
 // ===========================================================================
