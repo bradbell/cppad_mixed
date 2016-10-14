@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 $begin install_unix$$
 $dollar @$$
 $spell
+	metis
 	cholmod
 	Cholesky
 	cppad
@@ -136,6 +137,9 @@ $code
 $srcfile%bin/install_suitesparse.sh
 	%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
 $$
+Note that the proper value for
+$icode ipopt_prefix$$ and $icode metis_version$$ are printed
+at the end of the Ipopt install.
 
 $subhead CppAD$$
 The $href%http://www.coin-or.org/CppAD/%cppad%$$

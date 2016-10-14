@@ -100,6 +100,15 @@ EOF
 echo_eval cat config.sh
 echo_eval sh config.sh
 echo_eval make install | tee make.log
+# ----------------------------------------------------------------------------
+# print ipopt_prefix and metis_version
+get_metis='../ThirdParty/Metis/get.Metis'
+web_page='http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/OLD'
+wget_cmd=`grep "$web_page" $get_metis`
+metis_version=`echo $wget_cmd | sed -e 's|.*/||' -e 's|\.tar\.gz||'`
+#
+echo "ipopt_prefix=$ipopt_prefix"
+echo "metis_version=$metis_version"
 # -----------------------------------------------------------------------------
 echo 'bin/install_ipopt.sh: OK'
 exit 0

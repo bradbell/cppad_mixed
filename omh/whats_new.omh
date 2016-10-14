@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 
 $begin whats_new$$
 $spell
+	metis
 	gsl
 	suitesparse
 	Cholesky
@@ -46,10 +47,18 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh%$$
 
 $head 10-14$$
+$list number$$
 The way the
 $cref/install/install_unix/$$ searches for libraries,
 and reports missing libraries,
 has been improved.
+$lnext
+Improve the $cref/suitesparse/install_unix/Special Requirements/SuiteSparse/$$
+so that it automatically includes the $code metis$$ package.
+Note that the proper value for $icode metis_version$$,
+in the suitesparse install,
+is printed at the end of the ipopt install.
+$lend
 
 $head 10-06$$
 A class that performs sparse Cholesky factorization

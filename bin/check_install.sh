@@ -136,8 +136,8 @@ g++ example.cpp \
 	-L $cppad_mixed_prefix/lib64 -lcppad_mixed \
 	-L $cppad_mixed_prefix/lib \
 	$gsl_libs \
-	$ipopt_libs \
 	$suitesparse_libs \
+	$ipopt_libs \
 	-o example
 # &&
 #

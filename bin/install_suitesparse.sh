@@ -14,6 +14,10 @@
 # If this directory ends with /cppad_mixed, separate directories are used
 # for the debug and release versions.
 suitesparse_prefix="$HOME/prefix/cppad_mixed"
+#
+# Must be same as values printed at end of bin/install_ipopt.sh output.
+ipopt_prefix="$HOME/prefix/dismod_at"
+metis_version='metis-4.0.3'
 # END USER_SETTINGS
 # --------------------------------------------------------------------------
 program='bin/install_suitesparse.sh'
@@ -62,10 +66,28 @@ fi
 echo_eval tar -xzf $tarball
 cd SuiteSparse
 # -----------------------------------------------------------------------------
+metis_web_page='http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/OLD'
+if [ ! -e "$metis_version.tar.gz" ]
+then
+	echo_eval wget "$metis_web_page/$metis_version.tar.gz"
+fi
+if [ -e "$metis_version" ]
+then
+	echo_eval rm -r "$metis_version"
+fi
+echo_eval tar -xzf "$metis_version.tar.gz"
+if [ ! -e $metis_version ]
+then
+	echo 'install_suitesparse.sh: cannot get metis source'
+	exit 1
+fi
+# -----------------------------------------------------------------------------
 sed -e \
 "s|^\( *INSTALL_INCLUDE *\)=.*|\1= $suitesparse_prefix/include|" \
 -e "s|^\( *INSTALL_LIB *\)=.*|\1= $suitesparse_prefix/$libdir|" \
 -e 's|^\( *BLAS *\)=.*|\1= -lblas|' \
+-e "s|^\( *METIS_PATH *\)=.*|\1= ../../$metis_version|" \
+-e "s|^\( *METIS *\)=.*|\1= $ipopt_prefix/$libdir/libcoinmetis.a|" \
 -i.bak SuiteSparse_config/SuiteSparse_config.mk
 #
 if [ "$build_type" == 'debug' ]
