@@ -27,8 +27,8 @@ cat << EOF
 
 usage: bin/test_one.sh option
 If option is checkout, a git checkout is run on the files
-example/example.cpp and test_more/test_more.cpp.
-Otherwise option is a file name within the example or test_more directory
+	example/example.cpp, test_more/test_more.cpp.
+Otherwise option is a file name under the example or test_more directory
 and the corresponding test is run.
 
 EOF
@@ -42,23 +42,37 @@ then
 	echo 'test_one.sh: OK'
 	exit 0
 fi
+file_name="$1"
 # ---------------------------------------------------------------------------
-dir=''
-for d in example test_more
+find_path=''
+find_dir=''
+for dir in example test_more
 do
-	if [ -e "$d/$1" ]
+	echo_eval find $dir -name "$file_name"
+	find_out=`find $dir -name "$file_name"`
+	if [ "$find_out" != '' ]
 	then
-		dir="$d"
+		if [ "$find_path" != '' ]
+		then
+			echo "$find_path"
+			echo "$find_out"
+			echo 'file appears multiple places'
+		fi
+		find_dir="$dir"
+		find_path="$find_out"
 	fi
 done
-if [ "$dir" == '' ]
+if [ "$find_path" == '' ]
 then
-	echo "test_one.sh: cannot find example/$1 or test_more/$1"
+	echo "test_one.sh: cannot find $file_name in example or test_more"
 	exit 1
 fi
 #
-file_name="$1"
-test_name=`echo $file_name | sed -e 's|.*/||' -e 's|\.cpp$|_xam|'`
+test_name=`echo $file_name | sed -e 's|.*/||' -e 's|\.cpp$||'`
+if [ "$find_dir" == 'example' ]
+then
+	test_name=`echo $file_name | sed -e 's|.*/||' -e 's|\.cpp$|_xam|'`
+fi
 # ---------------------------------------------------------------------------
 cat << EOF > test_one.$$
 /This comment expected by bin\\/test_one.sh/b start_run
