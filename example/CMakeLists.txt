@@ -9,12 +9,6 @@
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
 # Build C++ Examples / Tests
-#
-LINK_DIRECTORIES(
-	${gsl_LIBRARY_DIRS}
-	${ipopt_LIBRARY_DIRS}
-	${suitesparse_LIBRARY_DIRS}
-)
 # -----------------------------------------------------------------------------
 ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	example.cpp
@@ -79,8 +73,8 @@ SET_TARGET_PROPERTIES(
 )
 TARGET_LINK_LIBRARIES(example
 	cppad_mixed
-	${gsl_LIBRARIES}
-	${ipopt_LIBRARIES}
-	${suitesparse_LIBRARIES}
+	${gsl_library_path_list}
+	${suitesparse_library_path_list}
+	${ipopt_library_path_list}
 )
 ADD_CUSTOM_TARGET(check_example example DEPENDS example )

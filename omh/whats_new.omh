@@ -45,6 +45,12 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 10-14$$
+The way the
+$cref/install/install_unix/$$ searches for libraries,
+and reports missing libraries,
+has been improved.
+
 $head 10-06$$
 A class that performs sparse Cholesky factorization
 as a CppAD atomic operation has been added; see

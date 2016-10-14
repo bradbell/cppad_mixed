@@ -10,12 +10,6 @@
 # ---------------------------------------------------------------------------
 # Build C++ Examples / Tests
 #
-LINK_DIRECTORIES(
-	${gsl_LIBRARY_DIRS}
-	${ipopt_LIBRARY_DIRS}
-	${suitesparse_LIBRARY_DIRS}
-)
-#
 # Program cpp, not installed, and depends on following source files
 ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
 	abs_fix_con.cpp
@@ -44,8 +38,8 @@ SET_TARGET_PROPERTIES(
 )
 TARGET_LINK_LIBRARIES(test_more
 	cppad_mixed
-	${gsl_LIBRARIES}
-	${ipopt_LIBRARIES}
-	${suitesparse_LIBRARIES}
+	${gsl_library_path_list}
+	${suitesparse_library_path_list}
+	${ipopt_library_path_list}
 )
 ADD_CUSTOM_TARGET(check_test_more test_more DEPENDS test_more )

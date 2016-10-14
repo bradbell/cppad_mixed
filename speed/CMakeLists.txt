@@ -10,12 +10,6 @@
 # ---------------------------------------------------------------------------
 # speed test
 # ---------------------------------------------------------------------------
-LINK_DIRECTORIES(
-	${gsl_LIBRARY_DIRS}
-	${ipopt_LIBRARY_DIRS}
-	${suitesparse_LIBRARY_DIRS}
-)
-# -----------------------------------------------------------------------------
 # BEGIN ar1_xam arguments
 SET(random_seed                  0)
 SET(number_random              100)
@@ -90,9 +84,9 @@ FOREACH( program_name capture_xam ar1_xam )
 	TARGET_LINK_LIBRARIES(
 		${program_name}
 		cppad_mixed
-		${gsl_LIBRARIES}
-		${ipopt_LIBRARIES}
-		${suitesparse_LIBRARIES}
+		${gsl_library_path_list}
+		${suitesparse_library_path_list}
+		${ipopt_library_path_list}
 	)
 	ADD_DEPENDENCIES(
 		speed_${program_name} cppad_mixed
