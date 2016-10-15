@@ -137,7 +137,7 @@ ENDMACRO( set_library_path )
 # ============================================================================
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 PROJECT(cppad_mixed)
-SET(cppad_mixed_version "20161014" )
+SET(cppad_mixed_version "20161015" )
 INCLUDE_DIRECTORIES( ${cppad_mixed_SOURCE_DIR}/include )
 INCLUDE(CheckCXXSourceRuns)
 MESSAGE(STATUS "BEGIN:")
