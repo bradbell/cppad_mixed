@@ -54,11 +54,10 @@ namespace {
 		mixed_derived(
 			size_t n_fixed                    ,
 			size_t n_random                   ,
-			const  sparse_mat_info& A_info    ,
 			const vector<double>& y           )
 			:
 			// quasi_fixed = false
-			cppad_mixed(n_fixed, n_random, false, A_info) ,
+			cppad_mixed(n_fixed, n_random, false) ,
 			y_(y)
 		{ }
 		// implementation of ran_likelihood
@@ -112,8 +111,8 @@ bool ran_hes_fun_xam(void)
 
 	// object that is derived from cppad_mixed
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
-	mixed_derived mixed_object(n_fixed, n_random, A_info, data);
-	mixed_object.initialize(theta, u);
+	mixed_derived mixed_object(n_fixed, n_random, data);
+	mixed_object.initialize(theta, u, A_info);
 
 	// number of non-zeros in Hessian w.r.t random effects
 	ok &= mixed_object.ran_hes_.row.size() == n_random;

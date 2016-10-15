@@ -22,7 +22,7 @@ $section User Defined Class Derived From cppad_mixed$$
 
 $head Syntax$$
 $icode%mixed_derived% %mixed_object%(
-	%n_fixed%, %n_random%, %quasi_fixed%, %A_info%, %...%
+	%n_fixed%, %n_random%, %quasi_fixed%, %...%
 )%$$
 
 $head See Also$$
@@ -35,7 +35,7 @@ $codei%
 %$$
 The derived class constructor must call its base class constructor as follows:
 $codei%
-	cppad_mixed(%n_fixed%, %n_random%, %quasi_fixed%, %A_info%)
+	cppad_mixed(%n_fixed%, %n_random%, %quasi_fixed%)
 %$$
 
 $head mixed_object$$
@@ -86,21 +86,6 @@ the amount of memory used by the
 $cref/mixed_derived/derived_ctor/mixed_derived/$$ object
 after the information matrix is computed
 is similar after then initialization when $icode quasi_fixed$$ is false.
-
-$head A_info$$
-This argument has prototype
-$codei%
-	const CppAD::mixed::sparse_mat_info& %A_info%
-%$$
-It is a
-$cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
-representation of the
-$cref/random constraint matrix
-	/cppad_mixed
-	/Notation
-	/Random Constraint Matrix, A
-/$$
-$latex A$$.
 
 $head ...$$
 Other arguments to the derived class constructor
@@ -158,13 +143,11 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 cppad_mixed::cppad_mixed(
 	size_t                                  n_fixed   ,
 	size_t                                  n_random  ,
-	bool                                  quasi_fixed ,
-	const CppAD::mixed::sparse_mat_info&  A_info      )
+	bool                                  quasi_fixed )
 :
 n_fixed_(n_fixed)               ,
 n_random_(n_random)             ,
 quasi_fixed_(quasi_fixed)       ,
-A_info_(A_info)                 ,
 init_ran_con_done_(false)       ,
 init_ran_like_done_(false)      ,
 init_ran_hes_done_(false)       ,

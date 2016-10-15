@@ -184,8 +184,7 @@ $srccode%cpp% */
 	cppad_mixed(
 		size_t                                  n_fixed   ,
 		size_t                                  n_random  ,
-		bool                                  quasi_fixed ,
-		const CppAD::mixed::sparse_mat_info&  A_info
+		bool                                  quasi_fixed
 	);
 /* %$$
 
@@ -198,9 +197,10 @@ $head initialize$$
 $cref initialize$$, $title initialize$$
 $srccode%cpp% */
 	std::map<std::string, size_t> initialize(
-		const d_vector&   fixed_vec            ,
-		const d_vector&   random_vec           ,
-		bool              bool_sparsity = true
+		const d_vector&                       fixed_vec             ,
+		const d_vector&                       random_vec            ,
+		const CppAD::mixed::sparse_mat_info&  A_info                ,
+		bool                                  bool_sparsity = true
 	);
 /* %$$
 $head optimize_random$$
@@ -372,8 +372,10 @@ $srccode%cpp% */
 $head A_info_$$
 contains the random constraint matrix
 $srccode%cpp% */
-	const CppAD::mixed::sparse_mat_info A_info_;
+	CppAD::mixed::sparse_mat_info A_info_;
 /* %$$
+This member variable is set during the initialize routine (only)
+and before any of the other initialize function get called.
 
 $head initialize_done_$$
 The following flag is false after construction and true after
@@ -702,9 +704,10 @@ $subhead try_initialize$$
 Called by public $cref/initialize/public/initialize/$$
 $srccode%cpp% */
 	std::map<std::string, size_t> try_initialize(
-		const d_vector&     fixed_vec     ,
-		const d_vector&     random_vec    ,
-		bool                bool_sparsity
+		const d_vector&                      fixed_vec      ,
+		const d_vector&                      random_vec     ,
+		const CppAD::mixed::sparse_mat_info& A_info         ,
+		bool                                 bool_sparsity
 	);
 /* %$$
 $subhead try_optimize_random$$

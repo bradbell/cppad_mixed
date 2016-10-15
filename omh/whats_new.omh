@@ -46,6 +46,18 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 10-15$$
+$bold API Change:$$
+The
+$cref/random constraint matrix
+    /cppad_mixed
+    /Notation
+    /Random Constraint Matrix, A
+/$$
+$icode A_info$$, is now specified in
+$cref/initialize/initialize/A_info/$$ instead
+$cref derived_ctor$$.
+
 $head 10-14$$
 $list number$$
 The way the
@@ -655,7 +667,7 @@ $head 02-06$$
 $list number$$
 Change the random constraint matrix $icode A_info$$
 to be an argument to the
-$cref/derived class constructor/derived_ctor/A_info/$$
+$cref/derived class constructor/initialize/A_info/$$
 instead of an argument to the
 $cref initialize$$ routine.
 $lnext

@@ -67,11 +67,10 @@ public:
 		size_t K,
 		size_t I,
 		size_t T,
-		vector<size_t>&  y,
-		const sparse_mat_info& A_info
+		vector<size_t>&  y
 	) :
 		// n_fixed = 2, n_random = 0, quasi_fixed = false
-		cppad_mixed(2, 0, false, A_info),
+		cppad_mixed(2, 0, false),
 		K_(K)   ,
 		I_(I)   ,
 		T_(T)   ,
@@ -165,13 +164,13 @@ bool n_mixture(void)
 	CppAD::mixed::sparse_mat_info A_info;
 
 	// create derived object
-	mixed_derived mixed_object(K, I, T, y, A_info);
+	mixed_derived mixed_object(K, I, T, y);
 
 	// initialize point to start optimization at
 	vector<double> theta_in( n_fixed ), u_in(0);
 	for(size_t j = 0; j < n_fixed; j++)
 		theta_in[j] = theta_sim[j];
-	mixed_object.initialize(theta_in, u_in);
+	mixed_object.initialize(theta_in, u_in, A_info);
 
 	// lower and upper limits
 	vector<double> fix_constraint_lower, fix_constraint_upper;

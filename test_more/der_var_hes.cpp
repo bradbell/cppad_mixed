@@ -149,12 +149,11 @@ namespace {
 		mixed_derived(
 			size_t n_fixed      ,
 			size_t n_random     ,
-			const  sparse_mat_info& A_info    ,
 			double y            ,
 			double sigma_u      ,
 			double sigma_y      ) :
 			// quasi_fixed = false
-			cppad_mixed(n_fixed, n_random, false, A_info) ,
+			cppad_mixed(n_fixed, n_random, false) ,
 			y_(y) , sigma_u_(sigma_u), sigma_y_(sigma_y)
 		{	assert( n_fixed == 1 );
 			assert( n_random == 1 );
@@ -268,9 +267,9 @@ bool der_var_hes(void)
 	// object that is derived from cppad_mixed
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
 	mixed_derived mixed_object(
-		n_fixed, n_random, A_info, y, sigma_u, sigma_y
+		n_fixed, n_random, y, sigma_u, sigma_y
 	);
-	mixed_object.initialize(fixed_vec, random_vec);
+	mixed_object.initialize(fixed_vec, random_vec, A_info);
 	//
 	// lower and upper limits for random effects
 	vector<double> random_lower(n_random), random_upper(n_random);

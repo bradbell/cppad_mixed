@@ -104,9 +104,8 @@ namespace {
 			size_t n_fixed                    ,
 			size_t n_random                   ,
 			bool   quasi_fixed                ,
-			const  sparse_mat_info& A_info    ,
 			const vector<double>& y           ) :
-			cppad_mixed(n_fixed, n_random, quasi_fixed, A_info) ,
+			cppad_mixed(n_fixed, n_random, quasi_fixed) ,
 			n_fixed_(n_fixed)     ,
 			n_random_(n_random)   ,
 			y_(y)
@@ -196,8 +195,8 @@ bool optimize_fixed_xam(void)
 	// object that is derived from cppad_mixed
 	bool quasi_fixed = true;
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
-	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, A_info, data);
-	mixed_object.initialize(fixed_in, random_in);
+	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, data);
+	mixed_object.initialize(fixed_in, random_in, A_info);
 
 	// optimize the fixed effects using quasi-Newton method
 	std::string fixed_ipopt_options =

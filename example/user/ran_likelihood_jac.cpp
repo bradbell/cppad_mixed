@@ -50,10 +50,9 @@ namespace {
 			size_t n_fixed                    ,
 			size_t n_random                   ,
 			bool   quasi_fixed                ,
-			const  sparse_mat_info& A_info    ,
 			const vector<double>& y           )
 			:
-			cppad_mixed(n_fixed, n_random, quasi_fixed, A_info) ,
+			cppad_mixed(n_fixed, n_random, quasi_fixed) ,
 			y_(y)
 		{ }
 		// ------------------------------------------------------------------
@@ -134,8 +133,8 @@ bool ran_likelihood_jac_xam(void)
 	// object that is derived from cppad_mixed
 	bool quasi_fixed = true;
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
-	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, A_info, data);
-	mixed_object.initialize(fixed_vec, random_vec);
+	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, data);
+	mixed_object.initialize(fixed_vec, random_vec, A_info);
 
 	// record Evaluation of a1_double version of random likelihood
 	CppAD::Independent(a2_random);

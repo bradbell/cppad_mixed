@@ -48,10 +48,9 @@ namespace {
 			size_t n_fixed                    ,
 			size_t n_random                   ,
 			bool   quasi_fixed                ,
-			const  sparse_mat_info& A_info    ,
 			const vector<double>& y           )
 			:
-			cppad_mixed(n_fixed, n_random, quasi_fixed, A_info) ,
+			cppad_mixed(n_fixed, n_random, quasi_fixed) ,
 			y_(y)
 		{ }
 		// implementation of ran_likelihood
@@ -96,8 +95,8 @@ bool optimize_random_xam(void)
 	// object that is derived from cppad_mixed
 	bool quasi_fixed = true;
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
-	mixed_derived mixed_object(n_data, n_data, quasi_fixed, A_info, data);
-	mixed_object.initialize(fixed_vec, random_in);
+	mixed_derived mixed_object(n_data, n_data, quasi_fixed, data);
+	mixed_object.initialize(fixed_vec, random_in, A_info);
 
 	// lower and upper limits for random effects
 	double inf = std::numeric_limits<double>::infinity();

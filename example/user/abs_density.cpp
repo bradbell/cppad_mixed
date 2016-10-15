@@ -73,10 +73,9 @@ namespace {
 			size_t n_fixed                    ,
 			size_t n_random                   ,
 			bool   quasi_fixed                ,
-			const  sparse_mat_info& A_info    ,
 			double sigma                      ,
 			const vector<double>& z           ) :
-			cppad_mixed(n_fixed, n_random, quasi_fixed, A_info) ,
+			cppad_mixed(n_fixed, n_random, quasi_fixed) ,
 			n_fixed_(n_fixed)                           ,
 			sigma_(sigma)                               ,
 			z_(z)
@@ -139,9 +138,9 @@ bool abs_density_xam(void)
 	bool quasi_fixed = false;
 	double sigma     = 1.0;
 	mixed_derived mixed_object(
-		n_fixed, n_random, quasi_fixed, A_info, sigma, z
+		n_fixed, n_random, quasi_fixed, sigma, z
 	);
-	mixed_object.initialize(fixed_in, random_in);
+	mixed_object.initialize(fixed_in, random_in, A_info);
 
 	// optimize the fixed effects using quasi-Newton method
 	std::string fixed_ipopt_options =

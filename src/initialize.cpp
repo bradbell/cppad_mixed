@@ -78,6 +78,24 @@ $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$ at which certain $code CppAD::ADFun$$
 objects are recorded.
 
+$head A_info$$
+This argument has prototype
+$codei%
+	const CppAD::mixed::sparse_mat_info& %A_info%
+%$$
+It is a
+$cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
+representation of the
+$cref/random constraint matrix
+	/cppad_mixed
+	/Notation
+	/Random Constraint Matrix, A
+/$$
+$latex A$$.
+If $icode%random_vec%.size()%$$ is zero, this must be the empty matrix.
+The member variable $icode A_info_$$ is set equal to $icode A_info$$
+before any other routines are called by this routine.
+
 $head bool_sparsity$$
 This optional argument has prototype
 $codei%
@@ -193,6 +211,7 @@ $end
 std::map<std::string, size_t> cppad_mixed::try_initialize(
 	const d_vector&                      fixed_vec     ,
 	const d_vector&                      random_vec    ,
+	const CppAD::mixed::sparse_mat_info& A_info        ,
 	bool                                 bool_sparsity )
 {	if( initialize_done_ )
 	{	fatal_error("cppad_mixed::initialize was called twice");
@@ -203,6 +222,10 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 	if( random_vec.size() != n_random_ )
 	{	fatal_error("cppad_mixed::initialize random_vec has wrong size");
 	}
+	//
+	// set A_info_ before calling any other routine
+	A_info_ = A_info;
+	//
 	size_t thread           = CppAD::thread_alloc::thread_num();
 	size_t num_bytes_before = CppAD::thread_alloc::inuse(thread);
 	//
@@ -313,13 +336,14 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 }
 // ---------------------------------------------------------------------------
 std::map<std::string, size_t> cppad_mixed::initialize(
-	const d_vector&    fixed_vec     ,
-	const d_vector&    random_vec    ,
-	bool               bool_sparsity )
+	const d_vector&                       fixed_vec      ,
+	const d_vector&                       random_vec     ,
+	const CppAD::mixed::sparse_mat_info&  A_info         ,
+	bool                                  bool_sparsity  )
 {	std::map<std::string, size_t> ret;
 # if 1
 	try
-	{	ret = try_initialize(fixed_vec, random_vec, bool_sparsity);
+	{	ret = try_initialize(fixed_vec, random_vec, A_info, bool_sparsity);
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	std::string error_message = e.message("initialize");
@@ -328,7 +352,7 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	}
 # else
 	// If you are debugging asserts, change the '# if 1' to '# if 0' above
-	ret = try_initialize(fixed_vec, random_vec);
+	ret = try_initialize(fixed_vec, random_vec, A_info, bool_sparsity);
 # endif
 	return ret;
 }

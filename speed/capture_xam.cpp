@@ -599,13 +599,12 @@ public:
 		size_t                  T           ,
 		size_t                  K           ,
 		bool                    quasi_fixed ,
-		const  sparse_mat_info& A_info     ,
 		vector<size_t>&         y           ,
 		vector<double>&         fixed_in    ,
 		vector<double>&         random_in   )
 		:
 		// n_fixed = 3, n_random = T
-		cppad_mixed(3, T, quasi_fixed, A_info) ,
+		cppad_mixed(3, T, quasi_fixed) ,
 		R_(R)            ,
 		T_(T)            ,
 		K_(K)            ,
@@ -919,13 +918,13 @@ int main(int argc, const char *argv[])
 	//
 	// create derived object
 	mixed_derived mixed_object(
-		R, T, K, quasi_fixed, A_info, y, theta_in, u_in
+		R, T, K, quasi_fixed, y, theta_in, u_in
 	);
 	//
 	// start timing of initialize
 	double start_seconds = CppAD::elapsed_seconds();
 	std::map<string, size_t> size_map =
-		mixed_object.initialize(theta_in, u_in, bool_sparsity);
+		mixed_object.initialize(theta_in, u_in, A_info, bool_sparsity);
 	// end timing of initialize
 	double end_seconds = CppAD::elapsed_seconds();
 	//

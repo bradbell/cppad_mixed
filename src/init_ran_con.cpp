@@ -42,7 +42,7 @@ $codei%
 does not matter.
 Upon return it is the number of random constraints; i.e.,
 the number of rows in the matrix
-$cref/A_info/derived_ctor/A_info/$$.
+$cref/A_info/initialize/A_info/$$.
 
 $end
 */
