@@ -125,11 +125,17 @@ void cppad_mixed::update_factor(
 	// update the LDLT factor
 	bool ok = ldlt_ran_hes_.update(hes_info);
 	if( ! ok )
-	{	CppAD::mixed::exception e(
+	{
+# if CPPAD_MIXED_THROW_EXCEPTION
+		CppAD::mixed::exception e(
 			"cppad_mixed::update_factor",
 			"Hessian w.r.t. random effects is singular"
 		);
 		throw(e);
+# else
+		// convert exception to an assert (for use in a debugger)
+		assert(false);
+# endif
 	}
 	return;
 }

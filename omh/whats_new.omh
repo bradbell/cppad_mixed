@@ -46,6 +46,12 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 10-16$$
+Add the
+$cref/throw_exception/run_cmake.sh/throw_exception/$$ flag
+to the cppad_mixed configuration.
+
+
 $head 10-15$$
 $bold API Change:$$
 The

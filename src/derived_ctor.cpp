@@ -130,10 +130,11 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 		brief   += "msg = ";
 		brief   += msg;
 		//
+# if CPPAD_MIXED_THROW_EXCEPTION
 		CppAD::mixed::exception e(thrower, brief);
 		throw(e);
-		//
-		// should not return
+# endif
+		// convert exception to an assert (for use in a debugger)
 		assert(false);
      }
 

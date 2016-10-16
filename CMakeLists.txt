@@ -167,6 +167,9 @@ required_definition( cmake_libdir STRING
 required_definition(ldlt_cholmod BOOL
 	"use cholmod LDLT factorization where possible (instead of eigen)"
 )
+required_definition(throw_exception BOOL
+	"should cppad_mixed catch exceptions and map them to fatal_error messages"
+)
 # ----------------------------------------------------------------------------
 MESSAGE(STATUS "END:")
 # ----------------------------------------------------------------------------

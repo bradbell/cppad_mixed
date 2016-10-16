@@ -124,10 +124,19 @@ double cppad_mixed::ran_obj_eval(
 	// compute the logdet( f_{u,u}(theta, u )
 	size_t negative;
 	double logdet = ldlt_ran_hes_.logdet(negative);
-	if( negative != 0 ) throw CppAD::mixed::exception(
-		"ran_obj_eval",
-		"The Hessian w.r.t. random effects is not positive definite."
-	);
+	if( negative != 0 )
+	{
+# if CPPAD_MIXED_THROW_EXCEPTION
+		throw CppAD::mixed::exception(
+			"ran_obj_eval",
+			"The Hessian w.r.t. random effects is not positive definite."
+		);
+# else
+		// convert exception to an assert (for use in a debugger)
+		assert(false);
+# endif
+	}
+
 
 	// constant term
 	double pi   = CppAD::atan(1.0) * 4.0;

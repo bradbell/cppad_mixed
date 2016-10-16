@@ -21,6 +21,7 @@ $spell
 	cholmod
 	Cholesky
 	Bool
+	cppad
 $$
 
 $section Preprocessor Configuration Symbols in configure.hpp$$
@@ -36,10 +37,13 @@ $codei%
 	"%yyyymmdd%"
 %$$
 
-$head CPPAD_MIXED_NULL_PTR$$
-If the C++11 $code nullptr$$ token is available,
-use it for the null pointer.
-Otherwise, use the value $code 0$$.
+$head CPPAD_MIXED_THROW_EXCEPTIONS$$
+If this symbol is $code 1$$,
+$code cppad_mixed$$ will throw exceptions and map them to calls to
+$cref/fatal_error/public/User Defined Functions/fatal_error/$$.
+If this symbol is value $code 0$$, the exception will be converted to
+asserts.  This can be useful when running a program (that uses cppad_mixed)
+in a debugger.
 
 $head CPPAD_MIXED_LDLT_CHOLMOD$$
 If $cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$ is $code YES$$,
@@ -57,24 +61,29 @@ $codep
 	CppAD::mixed::ldlt_eigen
 $$
 
+$head CPPAD_MIXED_NULL_PTR$$
+If the C++11 $code nullptr$$ token is available,
+this is the null pointer.
+Otherwise, it is the value $code 0$$.
+
 $end
 */
 
 # define CPPAD_MIXED_VERSION         "@cppad_mixed_version@"
+# define CPPAD_MIXED_THROW_EXCEPTION @throw_exception_01@
+# define CPPAD_MIXED_LDLT_CHOLMOD    @ldlt_cholmod_01@
+
+# if @ldlt_cholmod_01@
+# define CPPAD_MIXED_LDLT_CLASS   CppAD::mixed::ldlt_cholmod
+# else
+# define CPPAD_MIXED_LDLT_CLASS    CppAD::mixed::ldlt_eigen
+# endif
+
 
 # if @cppad_mixed_has_nullptr_01@
 # define CPPAD_MIXED_NULL_PTR  nullptr
 # else
 # define CPPAD_MIXED_NULL_PTR  0
 # endif
-
-# if @ldlt_cholmod_01@
-# define CPPAD_MIXED_LDLT_CHOLMOD 1
-# define CPPAD_MIXED_LDLT_CLASS   CppAD::mixed::ldlt_cholmod
-# else
-# define CPPAD_MIXED_LDLT_CHOLMOD 0
-# define CPPAD_MIXED_LDLT_CLASS    CppAD::mixed::ldlt_eigen
-# endif
-
 
 # endif

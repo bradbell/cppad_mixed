@@ -341,7 +341,6 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	const CppAD::mixed::sparse_mat_info&  A_info         ,
 	bool                                  bool_sparsity  )
 {	std::map<std::string, size_t> ret;
-# if 1
 	try
 	{	ret = try_initialize(fixed_vec, random_vec, A_info, bool_sparsity);
 	}
@@ -350,9 +349,5 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 		fatal_error(error_message);
 		assert(false);
 	}
-# else
-	// If you are debugging asserts, change the '# if 1' to '# if 0' above
-	ret = try_initialize(fixed_vec, random_vec, A_info, bool_sparsity);
-# endif
 	return ret;
 }
