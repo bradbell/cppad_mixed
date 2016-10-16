@@ -69,13 +69,14 @@ cmake_libdir='lib64'
 ldlt_cholmod='YES'
 # &&
 #
-# &head throw_exception&&
-# If YES, &code cppad_mixed&& will throw exceptions and use
+# &head log_fatal_error&&
+# If YES, &code cppad_mixed&& will use
 # &cref/fatal_error/public/User Defined Functions/fatal_error/&&
-# to report its error messages. If NO, exceptions will be converted to asserts
+# to report its fatal error messages.
+# If NO, fatal errors will be converted to asserts
 # (which is useful when running a program in a debugger).
 # &codep
-throw_exception='YES'
+log_fatal_error='YES'
 # &&
 #
 # &head IHME Cluster Settings&&
@@ -110,7 +111,7 @@ usage: bin/run_cmake.sh \\
 	[--help] \\
 	[--verbose] \\
 	[--ldlt_eigen] \\
-	[--no_throw]   \\
+	[--no_log]   \\
 	[--release]
 EOF
 		exit 0
@@ -121,9 +122,9 @@ EOF
 	elif [ "$1" == '--ldlt_eigen' ]
 	then
 		ldlt_cholmod='NO'
-	elif [ "$1" == '--no_throw' ]
+	elif [ "$1" == '--no_log' ]
 	then
-		throw_exception='NO'
+		log_fatal_error='NO'
 	elif [ "$1" == '--release' ]
 	then
 		build_type='release'
@@ -162,7 +163,7 @@ cmake \
 	-D extra_cxx_flags="$extra_cxx_flags" \
 	-D cmake_libdir="$cmake_libdir" \
 	-D ldlt_cholmod="$ldlt_cholmod" \
-	-D throw_exception="$throw_exception" \
+	-D log_fatal_error="$log_fatal_error" \
 	..
 # ---------------------------------------------------------------------------
 echo 'run_cmake.sh: OK'

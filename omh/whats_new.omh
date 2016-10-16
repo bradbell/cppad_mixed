@@ -48,7 +48,7 @@ $childtable%omh/whats_new_15.omh%$$
 
 $head 10-16$$
 Add the
-$cref/throw_exception/run_cmake.sh/throw_exception/$$ flag
+$cref/log_fatal_error/run_cmake.sh/log_fatal_error/$$ flag
 to the cppad_mixed configuration.
 
 

@@ -126,13 +126,13 @@ double cppad_mixed::ran_obj_eval(
 	double logdet = ldlt_ran_hes_.logdet(negative);
 	if( negative != 0 )
 	{
-# if CPPAD_MIXED_THROW_EXCEPTION
+# if CPPAD_MIXED_LOG_FATAL_ERROR
 		throw CppAD::mixed::exception(
 			"ran_obj_eval",
 			"The Hessian w.r.t. random effects is not positive definite."
 		);
 # else
-		// convert exception to an assert (for use in a debugger)
+		// convert fatal error to an assert (for use in a debugger)
 		assert(false);
 # endif
 	}
