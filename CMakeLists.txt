@@ -131,9 +131,9 @@ MACRO( set_library_path_list
 		MESSAGE(STATUS "${lib} path = ${library_path}")
 		SET( ${library_path_list} "${${library_path_list}};${library_path}" )
 		UNSET( library_path CACHE )
-	ENDFOREACH( library )
+	ENDFOREACH( lib )
 	# MESSAGE(STATUS "${library_path_list}=${${library_path_list}}"  )
-ENDMACRO( set_library_path )
+ENDMACRO( set_library_path_list )
 # ============================================================================
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 PROJECT(cppad_mixed)

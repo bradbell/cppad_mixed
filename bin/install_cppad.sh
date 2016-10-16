@@ -18,9 +18,7 @@ cppad_prefix="$HOME/prefix/cppad_mixed"
 #
 # extra c++ flags used during compliation
 extra_cxx_flags='-std=c++11 -Wall'
-# ----------------------------------------------------------------------------
-# setings for IHME cluster
-# extra_cxx_flags='-Wall'
+#
 # END USER_SETTINGS
 # ---------------------------------------------------------------------------
 if [ $0 != 'bin/install_cppad.sh' ]

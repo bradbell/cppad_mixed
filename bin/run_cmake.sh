@@ -79,11 +79,6 @@ ldlt_cholmod='YES'
 log_fatal_error='YES'
 # &&
 #
-# &head IHME Cluster Settings&&
-# Here are some example changes that are used for the IHME cluster
-# &codep
-# extra_cxx_flags='-Wall'
-# &&
 # &end
 # ============================================================================
 # bash function that echos and executes a command
