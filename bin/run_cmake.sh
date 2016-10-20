@@ -75,6 +75,8 @@ ldlt_cholmod='YES'
 # to report its fatal error messages.
 # If NO, fatal errors will be converted to asserts
 # (which is useful when running a program in a debugger).
+# In addition, &cref/warnings/public/User Defined Functions/warning/&&
+# where the context in the debugger is helpful, are also converted to asserts.
 # &codep
 log_fatal_error='YES'
 # &&
