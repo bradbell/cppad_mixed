@@ -175,9 +175,6 @@ $end
 # include <cppad/mixed/sparse_hes_info.hpp>
 # include <cppad/mixed/sparse_ad_cholesky.hpp>
 
-// This value 1 (true) is not yet working
-# define CPPAD_MIXED_USE_SPARSE_AD_CHOLESKY 0
-
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 

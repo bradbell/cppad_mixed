@@ -40,11 +40,18 @@ $spell
 	sqrt
 	ls
 	libdir
+	Taylor
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
+
+$head 10-24$$
+Fix a bug in the $cref sparse_ad_cholesky$$ class forward mode.
+To be specific, ignore higher order Taylor coefficients that do
+not appear in the sparsity patter for the zero order coefficient
+(they are no effects).
 
 $head 10-18$$
 Fix a bug in implementation of the
