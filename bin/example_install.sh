@@ -39,6 +39,13 @@ then
 fi
 build_type="$1"
 prefix="$HOME/prefix/cppad_mixed"
+for ext in log err
+do
+	if [ -e 'example_install.log' ]
+	then
+		echo_eval rm "example_install.$ext"
+	fi
+done
 # --------------------------------------------------------------------------
 if echo "$prefix" | grep '/cppad_mixed$' > /dev/null
 then
@@ -125,17 +132,19 @@ do
 		;;
 	esac
 	#
-	skip='no'
+	response='no'
 	if [ -e "$file" ]
 	then
-		while [ "$skip" != 'y' ] && [ "$skip" != 'n' ]
+		while [ "$response" != 'r' ] && [ "$response" != 'u' ]
 		do
-			read -p "Use existing $pkg install [y/n] ?" skip
+			read -p "replace / use existing $pkg install [r/u] ?" response
 		done
 	fi
-	if [ "$skip" == 'no' ] || [ "$skip" == 'n' ]
+	p='example_install'
+	if [ "$response" == 'r' ]
 	then
-		bin/install_$pkg.sh $build_type
+		echo "bin/install_$pkg.sh $build_type 1>> $p.log 2>> $p.err"
+		bin/install_$pkg.sh $build_type 1>> $p.log 2>> $p.err
 	fi
 done
 # ----------------------------------------------------------------------------
@@ -173,18 +182,23 @@ then
 fi
 # ----------------------------------------------------------------------------
 #
+p='example_install'
 if [ "$build_type" == 'debug' ]
 then
-	bin/run_cmake.sh
+	echo "bin/run_cmake.sh 1>> $p.log 2>> $p.err"
+	bin/run_cmake.sh 1>> $p.log 2>> $p.err
 else
 	bin/run_cmake.sh --release
 fi
 cd build
-make check
-make speed
-make install
+for cmd in check speed install
+do
+	echo "make $cmd 1>> $p.log 2>> $p.err"
+	make $cmd 1>> ../$p.log 2>> ../$p.err
+done
 cd ..
-bin/check_install.sh
+echo "bin/check_install.sh 1>> $p.log 2>> $p.err"
+bin/check_install.sh 1>> $p.log 2>> $p.err
 # ----------------------------------------------------------------------------
 echo 'bin/example_install.sh: OK'
 exit 0

@@ -216,14 +216,17 @@ bool sparse_ad_chol_sp_xam(void)
 	s = L_fun.ForSparseJac(q, r);
 	ok &= check_jac(nx, s);
 	// -----------------------------------------------------------------------
+	// Check rev_sparse_hes
 	s.resize(ny);
 	for(size_t i = 0; i < nx; i++)
 	{	// set s
 		for(size_t j = 0; j < ny; j++)
 			s[j] = (i == j);
+		//
 		// compute sparsity pattern for Hessian of s * L(x)
 		CppAD::vector<bool> h = L_fun.RevSparseHes(q, s);
 		//
+		// check sparsity for this component function
 		ok &= check_hes(nx, i, h);
 	}
 	return ok;

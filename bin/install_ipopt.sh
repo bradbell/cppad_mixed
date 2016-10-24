@@ -46,18 +46,21 @@ third_party="Mumps Metis"
 web_page="http://www.coin-or.org/download/source/Ipopt"
 libdir=`bin/libdir.sh`
 # --------------------------------------------------------------------------
+# set links for this build_type
 if echo "$ipopt_prefix" | grep '/cppad_mixed$' > /dev/null
 then
 	bin/build_type.sh install_ipopt $ipopt_prefix $build_type
 fi
 export PKG_CONFIG_PATH=$ipopt_prefix/$libdir/pkgconfig
 # --------------------------------------------------------------------------
+# change into external directory
 if [ ! -e build/external ]
 then
 	mkdir -p build/external
 fi
 cd build/external
 # --------------------------------------------------------------------------
+# get this version of ipopt
 if [ ! -e $version.tgz ]
 then
 	echo_eval wget $web_page/$version.tgz
@@ -68,6 +71,7 @@ then
 fi
 echo_eval tar -xzf $version.tgz
 # --------------------------------------------------------------------------
+# change into ipopt directory and get third party software
 echo_eval cd $version
 if [ -e ThirdParty/HSL ]
 then
@@ -81,6 +85,7 @@ do
 	echo_eval cd ../..
 done
 # ----------------------------------------------------------------------------
+# build ipopt
 if [ ! -e build ]
 then
 	echo_eval mkdir build
@@ -91,6 +96,8 @@ cd build
 cat << EOF > config.sh
 ../configure \\
 	$build_type_flag \\
+	--enable-shared \\
+	--enable-static \\
 	--prefix=$ipopt_prefix \\
 	--libdir=$ipopt_prefix/$libdir \\
 	--with-blas-lib="-lblas" \\
@@ -99,7 +106,7 @@ cat << EOF > config.sh
 EOF
 echo_eval cat config.sh
 echo_eval sh config.sh
-echo_eval make install | tee make.log
+echo_eval make install
 # ----------------------------------------------------------------------------
 # print ipopt_prefix and metis_version
 get_metis='../ThirdParty/Metis/get.Metis'

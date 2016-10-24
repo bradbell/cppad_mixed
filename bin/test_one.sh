@@ -87,8 +87,8 @@ b done
 s|\$|\\n# endif|
 : done
 EOF
-echo_eval git checkout $dir/$dir.cpp
-echo_eval sed -f test_one.$$ -i $dir/$dir.cpp
+echo_eval git checkout $find_dir/$find_dir.cpp
+echo_eval sed -f test_one.$$ -i $find_dir/$find_dir.cpp
 echo_eval rm test_one.$$
 # ---------------------------------------------------------------------------
 echo_eval cd build
