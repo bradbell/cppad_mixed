@@ -824,9 +824,7 @@ bool sparse_ad_cholesky::forward(
 			size_t i = L_pattern_.row[cij];
 			//
 			// Advance ri to beginning of row i in L
-			while(
-				L_pattern_.col[ L_row_major_[ri] ] <= j &&
-				L_pattern_.row[ L_row_major_[ri] ] < i  )
+			while( L_pattern_.row[ L_row_major_[ri] ] < i  )
 				++ri;
 			//
 			// Determine of L(i,j) is a variable using
