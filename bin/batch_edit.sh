@@ -21,42 +21,8 @@ no_change_files='
 rename_cmd='s|sparse_ad_cholesky|sparse_ad_chol|'
 #
 cat << EOF > junk.sed
-/^\\t*mixed_derived(\$/! b mixed_object_on_multiple_lines
-# define derived class constructor in defined here
-: loop
-N
-/cppad_mixed(/! b loop
-s|\\n\\t*const *sparse_mat_info& *A_info *,||
-s| *,\\n\\t*const *sparse_mat_info& *A_info||
-s|,\\n\\t*CppAD::mixed::sparse_mat_info& *A_info *||
-s|cppad_mixed(\\([^,]*,[^,]*,[^,]*\\), *A_info *)|cppad_mixed(\\1)|
-s|cppad_mixed(1, 0, false, A_info)|cppad_mixed(1, 0, false)|
-b done
-# ---------------------------------------------------------------------------
-: mixed_object_on_multiple_lines
-/^\\t*mixed_derived *mixed_object( *\$/! b normal
-N
-N
-s|mixed_object(\\([^,]*,[^,]*\\), *A_info *\\([),]\\)|mixed_object(\\1\\2|
-s|mixed_object(\\([^,]*,[^,]*,[^,]*\\), *A_info *\([),]\\)|mixed_object(\\1\\2|
-s|mixed_object(\\([^,]*,[^,]*,[^,]*,[^,]*\\), *A_info *\([),]\\)|mixed_object(\\1\\2|
-b done
-# ----------------------------------------------------------------------------
-: normal
-s|/derived_ctor/A_info/|/initialize/A_info/|
-s|n_random, quasi_fixed, A_info|n_random, quasi_fixed|
-#
-s|initialize(fixed_in, random_in)|initialize(fixed_in, random_in, A_info)|
-s|initialize(theta_in, u_in)|initialize(theta_in, u_in, A_info)|
-s|initialize(fixed_vec, random_vec)|initialize(fixed_vec, random_vec, A_info)|
-s|initialize(fixed_vec, random_in)|initialize(fixed_vec, random_in, A_info)|
-s|initialize(theta, u)|initialize(theta, u, A_info)|
-#
-s|mixed_object(\\([^,]*,[^,]*\\), *A_info *\\([),]\\)|mixed_object(\\1\\2|
-s|mixed_object(\\([^,]*,[^,]*,[^,]*\\), *A_info *\([),]\\)|mixed_object(\\1\\2|
-s|mixed_object(\\([^,]*,[^,]*,[^,]*,[^,]*\\), *A_info *\([),]\\)|mixed_object(\\1\\2|
-s|^\\(\\t*n_fixed *, *n_random *,\\) *A_info *,|\\1|
-: done
+s|use_sparse_ad_cholesky|use_atomic_cholesky|g
+s|USE_SPARSE_AD_CHOLESKY |USE_ATOMIC_CHOLESKY    |g
 # ----------------------------------------------------------------------------
 EOF
 # -----------------------------------------------------------------------------

@@ -38,7 +38,7 @@ $codei%
 %$$
 
 $head CPPAD_MIXED_USE_SPARSE_AD_CHOLESKY$$
-If $cref/use_sparse_ad_cholesky/run_cmake.sh/use_sparse_ad_cholesky/$$
+If $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$
 is $code YES$$, this symbol is defined as $code 1$$.
 Otherwise it is defined as $code 0$$.
 
@@ -72,7 +72,7 @@ $end
 */
 
 # define CPPAD_MIXED_VERSION                "@cppad_mixed_version@"
-# define CPPAD_MIXED_USE_SPARSE_AD_CHOLESKY @use_sparse_ad_cholesky_01@
+# define CPPAD_MIXED_USE_ATOMIC_CHOLESKY    @use_atomic_cholesky_01@
 # define CPPAD_MIXED_LOG_FATAL_ERROR        @log_fatal_error_01@
 # define CPPAD_MIXED_LDLT_CHOLMOD           @ldlt_cholmod_01@
 

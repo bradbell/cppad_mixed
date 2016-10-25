@@ -11,27 +11,29 @@
 # ---------------------------------------------------------------------------
 if [ "$0" != "bin/check_all.sh" ]
 then
-	echo 'bin/check_all.sh [d|r]'
-	echo 'must be executed from its parent directory'
+	echo 'bin/check_all.sh must be executed from its parent directory'
 	exit 1
 fi
+# ---------------------------------------------------------------------------
+if [ "$1" != 'd' ]  &&
+   [ "$1" != 'r' ]  &&
+   [ "$1" != 'da' ] &&
+   [ "$1" != 'ra' ]
+then
+	echo 'bin/check_all.sh [d|r|da|ra]'
+	echo 'd  = debug'
+	echo 'da = debug with atomic_cholesky'
+	echo 'r  = release'
+	echo 'ra = release with atomic_cholesky'
+	exit 1
+fi
+option="$1"
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
 	echo $*
 	eval $*
 }
-# -----------------------------------------------------------------------------
-input="$1"
-while [ "$input" != 'd' ]  &&
-      [ "$input" != 'r' ]  &&
-      [ "$input" != 'da' ] &&
-      [ "$input" != 'ra' ]
-do
-	msg='debug [d], release [r], debug & atomic_chol [da]'
-	msg="$msg, release & atomic_chol [ra] ?"
-	read -p "$msg" input
-done
 # -----------------------------------------------------------------------------
 list=`ls bin/check_*.sh`
 for script in $list
@@ -43,22 +45,22 @@ do
 	fi
 done
 # ----------------------------------------------------------------------------
-if [ "$input" == 'd' ]
+if [ "$option" == 'd' ]
 then
 	build_type='debug'
 	bin/run_cmake.sh
-elif [ "$input" == 'da' ]
+elif [ "$option" == 'da' ]
 then
 	build_type='debug'
-	bin/run_cmake.sh --use_sparse_ad_cholesky
-elif [ "$input" == 'r' ]
+	bin/run_cmake.sh --use_atomic_cholesky
+elif [ "$option" == 'r' ]
 then
 	build_type='release'
 	bin/run_cmake.sh --release
-elif [ "$input" == 'ra' ]
+elif [ "$option" == 'ra' ]
 then
 	build_type='release'
-	bin/run_cmake.sh --release --use_sparse_ad_cholesky
+	bin/run_cmake.sh --release --use_atomic_cholesky
 else
 	echo 'error in check_all.sh script'
 	exit 1

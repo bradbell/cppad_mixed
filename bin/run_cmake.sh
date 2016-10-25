@@ -81,7 +81,7 @@ ldlt_cholmod='YES'
 log_fatal_error='YES'
 # &&
 #
-# &head use_sparse_ad_cholesky&&
+# &head use_atomic_cholesky&&
 # If YES, &code cppad_mixed&& will use
 # the &cref sparse_ad_cholesky&& atomic AD operation when computing the
 # &cref newton_step&&. Otherwise, an LDLT factorization using
@@ -89,7 +89,7 @@ log_fatal_error='YES'
 # (Note that the &code cholmod&& LDLT factorization cannot
 # be use with and AD scalar type.)
 # &codep
-use_sparse_ad_cholesky='NO'
+use_atomic_cholesky='NO'
 # &&
 #
 # &end
@@ -120,7 +120,7 @@ usage: bin/run_cmake.sh \\
 	[--verbose] \\
 	[--ldlt_eigen] \\
 	[--no_log]   \\
-	[--use_sparse_ad_cholesky] \\
+	[--use_atomic_cholesky] \\
 	[--release]
 EOF
 		exit 0
@@ -134,9 +134,9 @@ EOF
 	elif [ "$1" == '--no_log' ]
 	then
 		log_fatal_error='NO'
-	elif [ "$1" == '--use_sparse_ad_cholesky' ]
+	elif [ "$1" == '--use_atomic_cholesky' ]
 	then
-		use_sparse_ad_cholesky='YES'
+		use_atomic_cholesky='YES'
 	elif [ "$1" == '--release' ]
 	then
 		build_type='release'
@@ -176,7 +176,7 @@ cmake \
 	-D cmake_libdir="$cmake_libdir" \
 	-D ldlt_cholmod="$ldlt_cholmod" \
 	-D log_fatal_error="$log_fatal_error" \
-	-D use_sparse_ad_cholesky="$use_sparse_ad_cholesky" \
+	-D use_atomic_cholesky="$use_atomic_cholesky" \
 	..
 # ---------------------------------------------------------------------------
 echo 'run_cmake.sh: OK'
