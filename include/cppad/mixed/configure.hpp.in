@@ -37,7 +37,7 @@ $codei%
 	"%yyyymmdd%"
 %$$
 
-$head CPPAD_MIXED_USE_SPARSE_AD_CHOLESKY$$
+$head CPPAD_MIXED_USE_ATOMIC_CHOLESKY$$
 If $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$
 is $code YES$$, this symbol is defined as $code 1$$.
 Otherwise it is defined as $code 0$$.

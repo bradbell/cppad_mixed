@@ -345,7 +345,7 @@ cholesky_( cholesky     )
 		hes_info_.col,
 		hes_info_.work
 	);
-# if CPPAD_MIXED_USE_SPARSE_AD_CHOLESKY
+# if CPPAD_MIXED_USE_ATOMIC_CHOLESKY
 	// sparsity pattern not needed once we have hes_info_.work
 	CppAD::vectorBool not_used;
 	//
@@ -483,7 +483,7 @@ void newton_step_algo::operator()(
 	// compute the newt step and the log determinant
 	a1_eigen_vector step;
 	a1_double       logdet = 0.0;
-# if CPPAD_MIXED_USE_SPARSE_AD_CHOLESKY
+# if CPPAD_MIXED_USE_ATOMIC_CHOLESKY
 	// Permutation matrix corresponding to this sparse_ad_cholesky
 	const Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic>& P =
 		cholesky_.permutation();
