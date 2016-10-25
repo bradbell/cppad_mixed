@@ -487,7 +487,7 @@ void cppad_mixed::try_sample_fixed(
 		for(size_t k = 0; k < nI; k++)
 			w[k] = gsl_ran_gaussian(CppAD::mixed::get_gsl_rng(), 1.0);
 		//
-		// set v to cholesky fastor of info_mat^{-1} times w
+		// set v to cholesky factor of info_mat^{-1} times w
 		d_vector v(nI);
 		bool ok = ldlt_info_mat.sim_cov(w, v);
 		if( ! ok )

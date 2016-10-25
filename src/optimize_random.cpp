@@ -56,7 +56,7 @@ This is the $cref ipopt_options$$ for optimizing the random effects
 with the following qualifications:
 
 $subhead evaluation_method$$
-There is an addition $cref/String/ipopt_options/String/$$ option with
+There is an additional $cref/String/ipopt_options/String/$$ option with
 $icode%name%=evaluation_method%$$
 and $icode value$$ is either $code ipopt_random$$  or $code ipopt_solve$$.
 The $code ipopt_random$$ choice uses

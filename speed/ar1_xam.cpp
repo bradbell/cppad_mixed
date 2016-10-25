@@ -24,7 +24,7 @@ $$
 $section A First Order Auto-Regressive Example and Speed Test$$
 
 $head Syntax$$
-$codei%build/speed/ar1_xam \
+$codei%./ar1_xam \
 	%random_seed% \
 	%number_random% \
 	%quasi_fixed% \
