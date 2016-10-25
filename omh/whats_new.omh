@@ -55,6 +55,13 @@ $lnext
 Fix another bug in $cref sparse_ad_cholesky$$. To be specific,
 when search for the beginning of a row, do not check that at column index
 is less than an element known to be in the row before you get to the row.
+$lnext
+Fix a problem with, and improve, $cref example_install.sh$$
+(the problem was introduced on 2016-10-24).
+$lnext
+Fix a problem with
+$cref/install_suitesparse.sh/install_unix/Special Requirements/SuiteSparse/$$
+(introduced on 2016-10-24).
 $lend
 
 $head 10-24$$

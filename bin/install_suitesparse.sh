@@ -16,7 +16,7 @@
 suitesparse_prefix="$HOME/prefix/cppad_mixed"
 #
 # Must be same as values printed at end of bin/install_ipopt.sh output.
-ipopt_prefix="$HOME/prefix/dismod_at"
+ipopt_prefix="$HOME/prefix/cppad_mixed"
 metis_version='metis-4.0.3'
 # END USER_SETTINGS
 # --------------------------------------------------------------------------

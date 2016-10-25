@@ -31,6 +31,13 @@ then
 	echo 'bin/example_install.sh: must be executed from its parent directory'
 	exit 1
 fi
+# -----------------------------------------------------------------------------
+# bash function that echos and executes a command
+echo_eval() {
+	echo $*
+	eval $*
+}
+# --------------------------------------------------------------------------
 if [ "$1" != 'debug' ] && [ "$1" != 'release' ]
 then
 	echo 'bin/example_install.sh: build_type'
@@ -38,15 +45,16 @@ then
 	exit 1
 fi
 build_type="$1"
-prefix="$HOME/prefix/cppad_mixed"
+# --------------------------------------------------------------------------
 for ext in log err
 do
-	if [ -e 'example_install.log' ]
+	if [ -e "example_install.$ext" ]
 	then
 		echo_eval rm "example_install.$ext"
 	fi
 done
 # --------------------------------------------------------------------------
+prefix="$HOME/prefix/cppad_mixed"
 if echo "$prefix" | grep '/cppad_mixed$' > /dev/null
 then
 	bin/build_type.sh example_install.sh $prefix $build_type
@@ -55,27 +63,25 @@ fi
 if which apt-get >& /dev/null
 then
 	system_type='debian'
+	system_list='apt list --installed'
 	system_install='sudo apt-get install -y'
 elif which dnf >& /dev/null
 then
 	system_type='red_hat'
+	system_list='dnf list installed'
 	system_install='sudo dnf install -y'
 elif which yum >& /dev/null
 then
 	system_type='red_hat'
+	system_list='yum list installed'
 	system_install='sudo yum install -y'
 else
 	echo 'Cannot find the system pakcage manager'
 	exit 1
 fi
-# -----------------------------------------------------------------------------
-# bash function that echos and executes a command
-echo_eval() {
-	echo $*
-	eval $*
-}
 # --------------------------------------------------------------------------
 # system external installs
+$system_list | sed -e 's|  *| |g' > example_install.tmp
 if [ "$system_type" == 'debian' ]
 then
 	list='
@@ -102,8 +108,15 @@ else
 fi
 for package in $list
 do
-	echo_eval $system_install $package
+	if grep $package example_install.tmp > /dev/null
+	then
+		version=`grep $package example_install.tmp`
+		echo "using $version"
+	else
+		echo_eval $system_install $package
+	fi
 done
+rm example_install.tmp
 # ----------------------------------------------------------------------------
 # local external installs
 for pkg in eigen ipopt suitesparse cppad
@@ -132,13 +145,15 @@ do
 		;;
 	esac
 	#
-	response='no'
+	response='none'
 	if [ -e "$file" ]
 	then
 		while [ "$response" != 'r' ] && [ "$response" != 'u' ]
 		do
 			read -p "replace / use existing $pkg install [r/u] ?" response
 		done
+	else
+		response='r'
 	fi
 	p='example_install'
 	if [ "$response" == 'r' ]
@@ -181,15 +196,15 @@ then
 	exit 1
 fi
 # ----------------------------------------------------------------------------
-#
 p='example_install'
-if [ "$build_type" == 'debug' ]
+cmd='bin/run_cmake.sh'
+if [ "$build_type" == 'release' ]
 then
-	echo "bin/run_cmake.sh 1>> $p.log 2>> $p.err"
-	bin/run_cmake.sh 1>> $p.log 2>> $p.err
-else
-	bin/run_cmake.sh --release
+	cmd='bin/run_cmake.sh --release'
 fi
+echo "$cmd 1>> $p.log 2>> $p.err"
+$cmd 1>> $p.log 2>> $p.err
+#
 cd build
 for cmd in check speed install
 do
@@ -197,8 +212,13 @@ do
 	make $cmd 1>> ../$p.log 2>> ../$p.err
 done
 cd ..
+#
+sed -i bin/check_install.sh \
+	-e "s|^build_type=.*|build_type='$build_type'|"
 echo "bin/check_install.sh 1>> $p.log 2>> $p.err"
 bin/check_install.sh 1>> $p.log 2>> $p.err
+sed -i bin/check_install.sh \
+	-e "s|^build_type=.*|build_type='debug'|"
 # ----------------------------------------------------------------------------
 echo 'bin/example_install.sh: OK'
 exit 0
