@@ -18,8 +18,9 @@ file_list=`bin/ls_files.sh | sed -n -e '/\.cpp$/p'`
 define_list='
 	CPPAD_MIXED_VERSION
 	CPPAD_MIXED_HAS_SUITESPARSE
-	CPPAD_MIXED_NULL_PTR
 	CPPAD_MIXED_LDLT
+	CPPAD_MIXED_NULL_PTR
+	CPPAD_MIXED_USE_SPARSE_AD_CHOLESKY
 '
 for file in $file_list
 do
@@ -36,7 +37,8 @@ do
 	then
 		present='yes'
 	fi
-	# This case should generate an error during testing
+	# This case is better tested during complilation because the configure.hpp
+	# include may be in file this is included by this file.
 	# if [ "$required" == 'yes' ] && [ "$present" == 'no' ]
 	# then
 	#	echo "missing: # include <cppad/mixed/configure.hpp>"

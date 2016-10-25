@@ -12,9 +12,6 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/newton_step.hpp>
 # include <cppad/mixed/configure.hpp>
 
-// This value 1 (true) is not yet working
-# define CPPAD_MIXED_USE_SPARSE_AD_CHOLESKY 1
-
 namespace { // BEGIN_EMPTY_NAMESPACE
 // --------------------------------------------------------------------------
 // random_hes_use_set

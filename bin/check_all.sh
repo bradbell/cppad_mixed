@@ -23,9 +23,13 @@ echo_eval() {
 }
 # -----------------------------------------------------------------------------
 input="$1"
-while [ "$input" != 'd' ] &&  [ "$input" != 'r' ]
+while [ "$input" != 'd' ]  &&
+      [ "$input" != 'r' ]  &&
+      [ "$input" != 'da' ] &&
+      [ "$input" != 'ra' ]
 do
-	msg='Debug [d], Release [r] ?'
+	msg='debug [d], release [r], debug & atomic_chol [da]'
+	msg="$msg, release & atomic_chol [ra] ?"
 	read -p "$msg" input
 done
 # -----------------------------------------------------------------------------
@@ -39,20 +43,31 @@ do
 	fi
 done
 # ----------------------------------------------------------------------------
+if [ "$input" == 'd' ]
+then
+	build_type='debug'
+	bin/run_cmake.sh
+elif [ "$input" == 'da' ]
+then
+	build_type='debug'
+	bin/run_cmake.sh --use_sparse_ad_cholesky
+elif [ "$input" == 'r' ]
+then
+	build_type='release'
+	bin/run_cmake.sh --release
+elif [ "$input" == 'ra' ]
+then
+	build_type='release'
+	bin/run_cmake.sh --release --use_sparse_ad_cholesky
+else
+	echo 'error in check_all.sh script'
+	exit 1
+fi
+# ----------------------------------------------------------------------------
 bin/run_omhelp.sh xml
 #
-if [ "$input" == 'r' ]
-then
-	echo_eval bin/run_cmake.sh --release
-	sed \
-		-e "s|^build_type=.*|build_type='release'|" \
-		-i bin/check_install.sh
-else
-	echo_eval bin/run_cmake.sh
-	sed \
-		-e "s|^build_type=.*|build_type='debug'|" \
-		-i bin/check_install.sh
-fi
+sed -i bin/check_install.sh \
+	-e "s|^build_type=.*|build_type='$build_type'|"
 #
 cd build
 make check
@@ -61,11 +76,10 @@ make install
 cd ..
 bin/check_install.sh
 #
-if [ "$input" == 'r' ]
+if [ "$build_type" == 'release' ]
 then
-	sed \
-		-e "s|^build_type=.*|build_type='debug'|" \
-		-i bin/check_install.sh
+	sed -i bin/check_install.sh \
+		-e "s|^build_type=.*|build_type='debug'|"
 fi
 #
 echo 'check_all.sh: OK'

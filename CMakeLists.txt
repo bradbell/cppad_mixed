@@ -19,7 +19,9 @@
 #                        -D suitesparse_prefix=value \
 # required variables:    -D extra_cxx_flags=value \
 #                        -D cmake_libdir=value \
-#                        -D ldlt_cholmod=value
+#                        -D ldlt_cholmod=value \
+#                        -D log_fatal_error=value \
+#                        -D use_sparse_ad_cholesky=value
 # ============================================================================
 # Macro definitions
 # ============================================================================
@@ -169,6 +171,9 @@ required_definition(ldlt_cholmod BOOL
 )
 required_definition(log_fatal_error BOOL
 	"should cppad_mixed use fatal_error or generate asserts"
+)
+required_definition(use_sparse_ad_cholesky BOOL
+	"should cppad_mixed use the sparse_ad_cholesky atomic operation"
 )
 # ----------------------------------------------------------------------------
 MESSAGE(STATUS "END:")

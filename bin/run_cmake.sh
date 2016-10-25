@@ -14,7 +14,7 @@
 # &spell
 #	cmake makefile cxx std dismod libdir lcppad cholmod xam cpp
 #	usr eigen ipopt cppad bools suitesparse devel hpp ldlt bool
-#	libdir
+#	libdir cholesky
 # &&
 #
 # &section bin/run_cmake.sh: User Configuration Options&&
@@ -81,6 +81,17 @@ ldlt_cholmod='YES'
 log_fatal_error='YES'
 # &&
 #
+# &head use_sparse_ad_cholesky&&
+# If YES, &code cppad_mixed&& will use
+# the &cref sparse_ad_cholesky&& atomic AD operation when computing the
+# &cref newton_step&&. Otherwise, an LDLT factorization using
+# &code eigen&& , with &code AD<double>&& as the scalar type, is used.
+# (Note that the &code cholmod&& LDLT factorization cannot
+# be use with and AD scalar type.)
+# &codep
+use_sparse_ad_cholesky='NO'
+# &&
+#
 # &end
 # ============================================================================
 # bash function that echos and executes a command
@@ -109,6 +120,7 @@ usage: bin/run_cmake.sh \\
 	[--verbose] \\
 	[--ldlt_eigen] \\
 	[--no_log]   \\
+	[--use_sparse_ad_cholesky] \\
 	[--release]
 EOF
 		exit 0
@@ -122,6 +134,9 @@ EOF
 	elif [ "$1" == '--no_log' ]
 	then
 		log_fatal_error='NO'
+	elif [ "$1" == '--use_sparse_ad_cholesky' ]
+	then
+		use_sparse_ad_cholesky='YES'
 	elif [ "$1" == '--release' ]
 	then
 		build_type='release'
@@ -161,6 +176,7 @@ cmake \
 	-D cmake_libdir="$cmake_libdir" \
 	-D ldlt_cholmod="$ldlt_cholmod" \
 	-D log_fatal_error="$log_fatal_error" \
+	-D use_sparse_ad_cholesky="$use_sparse_ad_cholesky" \
 	..
 # ---------------------------------------------------------------------------
 echo 'run_cmake.sh: OK'
