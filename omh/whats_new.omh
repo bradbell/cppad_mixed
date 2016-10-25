@@ -47,6 +47,11 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 10-25$$
+Fix another bug in $cref sparse_ad_cholesky$$. To be specific,
+when search for the beginning of a row, do not check that at column index
+is less than an element known to be in the row before you get to the row.
+
 $head 10-24$$
 Fix a bug in the $cref sparse_ad_cholesky$$ class forward mode.
 To be specific, ignore higher order Taylor coefficients that do

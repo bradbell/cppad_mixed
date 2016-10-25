@@ -374,10 +374,10 @@ void sparse_ad_cholesky::set_jac_sparsity(Sparsity& jac_sparsity)
 			size_t i = L_pattern_.row[cij];
 			//
 			// Advance ri to beginning of row i in L
-			while(
-				L_pattern_.col[ L_row_major_[ri] ] <= j &&
-				L_pattern_.row[ L_row_major_[ri] ] < i  )
+			while( L_pattern_.row[ L_row_major_[ri] ] < i  )
 				++ri;
+			// beginning of row i must be at or before cij
+			assert( L_pattern_.col[ L_row_major_[ri] ] <= j );
 			//
 			// Determine sparsity pattern for L(i,j) using
 			// B(i,j) = L(i,0) * L(j,0) + ... + L(i,j) * L(j,j).
@@ -616,10 +616,10 @@ void sparse_ad_cholesky::set_hes_sparsity(
 				size_t i = L_pattern_.row[cij];
 				//
 				// Advance ri to beginning of row i in L
-				while(
-					L_pattern_.col[ L_row_major_[ri] ] <= j &&
-					L_pattern_.row[ L_row_major_[ri] ] < i  )
+				while( L_pattern_.row[ L_row_major_[ri] ] < i  )
 					++ri;
+				// beginning of row i must be at or before cij
+				assert( L_pattern_.col[ L_row_major_[ri] ] <= j );
 				//
 				// Determine sparsity pattern for L(i,j) using
 				// B(i,j) = L(i,0) * L(j,0) + ... + L(i,j) * L(j,j).
@@ -826,6 +826,8 @@ bool sparse_ad_cholesky::forward(
 			// Advance ri to beginning of row i in L
 			while( L_pattern_.row[ L_row_major_[ri] ] < i  )
 				++ri;
+			// beginning of row i must be at or before cij
+			assert( L_pattern_.col[ L_row_major_[ri] ] <= j );
 			//
 			// Determine of L(i,j) is a variable using
 			// B(i,j) = L(i,0) * L(j,0) + ... + L(i,j) * L(j,j).
