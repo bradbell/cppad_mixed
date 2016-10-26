@@ -50,6 +50,7 @@ $children%include/cppad/mixed/a2_double.hpp
 	%include/cppad/mixed/sparse_eigen2info.hpp
 	%include/cppad/mixed/sparse_info2eigen.hpp
 	%include/cppad/mixed/sparse_ad_cholesky.hpp
+	%include/cppad/mixed/sparse_print.hpp
 %$$
 
 $head Public$$
