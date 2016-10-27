@@ -939,6 +939,9 @@ void ipopt_fixed::try_eval_f(
 		for(size_t j = 0; j < fix_likelihood_nabs_; j++)
 			obj_value += x[n_fixed_ + j];
 	}
+	if( CppAD::isnan(obj_value) ) throw CppAD::mixed::exception(
+		"try_eval_f", "objective function is nan"
+	);
 	return;
 }
 /*
@@ -1057,6 +1060,11 @@ void ipopt_fixed::try_eval_grad_f(
 			grad_f[j] += Number( fix_like_jac_info.val[k] );
 		}
 	}
+	for(size_t j = 0; j < size_t(n); j++)
+	{	if( CppAD::isnan( grad_f[j] ) ) throw CppAD::mixed::exception(
+			"try_eval_grad_f", "objective gradient has a nan"
+		);
+	}
 	//
 	return;
 }
@@ -1170,6 +1178,11 @@ void ipopt_fixed::try_eval_g(
 	for(size_t j = 0; j < n_ran_con_; j++)
 	{	assert( 2 * fix_likelihood_nabs_ + n_fix_con_ + j < size_t(m) );
 		g[2 * fix_likelihood_nabs_ + n_fix_con_ + j] = A_uhat_tmp_[j];
+	}
+	for(size_t k = 0; k < size_t(m); k++)
+	{	if( CppAD::isnan( g[k] ) ) throw CppAD::mixed::exception(
+			"try_eval_g", "constaint function has a nan"
+		);
 	}
 	return;
 }
@@ -1379,6 +1392,12 @@ void ipopt_fixed::try_eval_jac_g(
 		}
 	}
 	assert( ell == nnz_jac_g_ );
+	//
+	for(size_t ell = 0; ell < nnz_jac_g_; ell++)
+	{	if( CppAD::isnan( values[ell] ) ) throw CppAD::mixed::exception(
+			"try_eval_jac_g", "constraint Jacobian has a nan"
+		);
+	}
 	return;
 }
 /*
@@ -1604,6 +1623,14 @@ void ipopt_fixed::try_eval_h(
 		assert( index < nnz_h_lag_ );
 		values[index] += Number( fix_con_hes_info.val[k] );
 	}
+	//
+	for(size_t ell = 0; ell < nnz_h_lag_; ell++)
+	{	if( CppAD::isnan( values[ell] ) ) throw CppAD::mixed::exception(
+			"try_eval_h", "Hessian of Lagragian has a nan"
+		);
+	}
+
+	assert( size_t(nele_hess) == nnz_h_lag_ );
 	//
 	return;
 }
