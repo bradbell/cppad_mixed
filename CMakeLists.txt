@@ -21,7 +21,8 @@
 #                        -D cmake_libdir=value \
 #                        -D ldlt_cholmod=value \
 #                        -D log_fatal_error=value \
-#                        -D use_atomic_cholesky=value
+#                        -D use_atomic_cholesky=value \
+#                        -D optimize_operation_sequence=value
 # ============================================================================
 # Macro definitions
 # ============================================================================
@@ -174,6 +175,9 @@ required_definition(log_fatal_error BOOL
 )
 required_definition(use_atomic_cholesky BOOL
 	"should cppad_mixed use the sparse_ad_cholesky atomic operation"
+)
+required_definition(optimize_cppad_function BOOL
+	"should AD operation sequences be optimized (false is for debug purposes)"
 )
 # ----------------------------------------------------------------------------
 MESSAGE(STATUS "END:")

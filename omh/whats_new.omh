@@ -47,6 +47,10 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 10-27$$
+Add the $cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$
+option to the $code cmake$$ command line.
+
 $head 10-25$$
 $list number$$
 Add the $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$

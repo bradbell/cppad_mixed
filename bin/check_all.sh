@@ -56,11 +56,11 @@ then
 elif [ "$option" == 'r' ]
 then
 	build_type='release'
-	bin/run_cmake.sh --release
+	bin/run_cmake.sh --release --optimize_cppad_function
 elif [ "$option" == 'ra' ]
 then
 	build_type='release'
-	bin/run_cmake.sh --release --use_atomic_cholesky
+	bin/run_cmake.sh --release --use_atomic_cholesky --optimize_cppad_function
 else
 	echo 'error in check_all.sh script'
 	exit 1

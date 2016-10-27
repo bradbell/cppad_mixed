@@ -37,6 +37,11 @@ $codei%
 	"%yyyymmdd%"
 %$$
 
+$head CPPAD_MIXED_OPTIMIZE_AD_FUNCTION$$
+If $cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$
+is $code YES$$, this symbol is defined as $code 1$$.
+Otherwise it is defined as $code 0$$.
+
 $head CPPAD_MIXED_USE_ATOMIC_CHOLESKY$$
 If $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$
 is $code YES$$, this symbol is defined as $code 1$$.
@@ -71,22 +76,24 @@ Otherwise, it is the value $code 0$$.
 $end
 */
 
-# define CPPAD_MIXED_VERSION                "@cppad_mixed_version@"
-# define CPPAD_MIXED_USE_ATOMIC_CHOLESKY    @use_atomic_cholesky_01@
-# define CPPAD_MIXED_LOG_FATAL_ERROR        @log_fatal_error_01@
-# define CPPAD_MIXED_LDLT_CHOLMOD           @ldlt_cholmod_01@
+# define CPPAD_MIXED_VERSION                 "@cppad_mixed_version@"
+
+# define CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION @optimize_cppad_function_01@
+# define CPPAD_MIXED_USE_ATOMIC_CHOLESKY     @use_atomic_cholesky_01@
+# define CPPAD_MIXED_LOG_FATAL_ERROR         @log_fatal_error_01@
+# define CPPAD_MIXED_LDLT_CHOLMOD            @ldlt_cholmod_01@
 
 # if @ldlt_cholmod_01@
-# define CPPAD_MIXED_LDLT_CLASS   CppAD::mixed::ldlt_cholmod
+# define CPPAD_MIXED_LDLT_CLASS              CppAD::mixed::ldlt_cholmod
 # else
-# define CPPAD_MIXED_LDLT_CLASS    CppAD::mixed::ldlt_eigen
+# define CPPAD_MIXED_LDLT_CLASS              CppAD::mixed::ldlt_eigen
 # endif
 
 
 # if @cppad_mixed_has_nullptr_01@
-# define CPPAD_MIXED_NULL_PTR  nullptr
+# define CPPAD_MIXED_NULL_PTR                nullptr
 # else
-# define CPPAD_MIXED_NULL_PTR  0
+# define CPPAD_MIXED_NULL_PTR                0
 # endif
 
 # endif

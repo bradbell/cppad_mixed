@@ -190,7 +190,7 @@ void cppad_mixed::init_ran_objcon(
 	}
 	//
 	ran_objcon_fun_.Dependent(beta_theta_u, HB);
-# ifdef NDEBUG
+# if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
 	ran_objcon_fun_.optimize();
 # endif
 	//

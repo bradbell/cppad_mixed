@@ -114,7 +114,7 @@ void cppad_mixed::init_ran_like(
 	ran_like_a1fun_.Dependent(a2_both, a2_vec);
 
 	// optimize the recording
-# ifndef NDEBUG
+# if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
 	ran_like_a1fun_.optimize();
 # endif
 	// ------------------------------------------------------------------
@@ -141,7 +141,7 @@ void cppad_mixed::init_ran_like(
 	ran_like_fun_.Dependent(a1_both, a1_vec);
 
 	// optimize the recording
-# ifndef NDEBUG
+# if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
 	ran_like_fun_.optimize();
 # endif
 	// ------------------------------------------------------------------

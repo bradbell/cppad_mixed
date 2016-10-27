@@ -141,7 +141,7 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	fix_like_fun_.Dependent(a1_theta, a1_vec);
 
 	// optimize the recording
-# ifdef NDEBUG
+# if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
 	fix_like_fun_.optimize();
 # endif
 

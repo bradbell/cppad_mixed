@@ -92,6 +92,14 @@ log_fatal_error='YES'
 use_atomic_cholesky='NO'
 # &&
 #
+# &head optimize_cppad_function&&
+# If YES, the operation sequence for certain CppAD functions
+# will be optimized. This makes the code run faster but in some cases
+# it can make debugging more complicated.
+# &codep
+optimize_cppad_function='NO'
+# &&
+#
 # &end
 # ============================================================================
 # bash function that echos and executes a command
@@ -121,6 +129,7 @@ usage: bin/run_cmake.sh \\
 	[--ldlt_eigen] \\
 	[--no_log]   \\
 	[--use_atomic_cholesky] \\
+	[--optimize_cppad_function] \\
 	[--release]
 EOF
 		exit 0
@@ -137,6 +146,9 @@ EOF
 	elif [ "$1" == '--use_atomic_cholesky' ]
 	then
 		use_atomic_cholesky='YES'
+	elif [ "$1" == '--optimize_cppad_function' ]
+	then
+		optimize_cppad_function='YES'
 	elif [ "$1" == '--release' ]
 	then
 		build_type='release'
@@ -177,6 +189,7 @@ cmake \
 	-D ldlt_cholmod="$ldlt_cholmod" \
 	-D log_fatal_error="$log_fatal_error" \
 	-D use_atomic_cholesky="$use_atomic_cholesky" \
+	-D optimize_cppad_function="$optimize_cppad_function" \
 	..
 # ---------------------------------------------------------------------------
 echo 'run_cmake.sh: OK'
