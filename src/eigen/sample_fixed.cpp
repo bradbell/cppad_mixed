@@ -221,11 +221,12 @@ $end
 # include <Eigen/Core>
 # include <Eigen/LU>
 # include <Eigen/Cholesky>
+# include <gsl/gsl_randist.h>
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/manage_gsl_rng.hpp>
 # include <cppad/mixed/undetermined.hpp>
 # include <cppad/mixed/exception.hpp>
-# include <gsl/gsl_randist.h>
+# include <cppad/mixed/configure.hpp>
 
 # define DEBUG_PRINT 0
 

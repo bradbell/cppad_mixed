@@ -41,8 +41,8 @@ echo_eval() {
 }
 # --------------------------------------------------------------------------
 web_page='https://github.com/coin-or/CppAD.git'
-hash_key='96c804b50258c73501bb0ae7460038223c426edb'
-version='20160929'
+hash_key='ed1214ac0a32471f146509f498f11300adaed074'
+version='20161027'
 # --------------------------------------------------------------------------
 if echo "$cppad_prefix" | grep '/cppad_mixed$' > /dev/null
 then
@@ -63,10 +63,16 @@ pwd
 #
 echo_eval cd cppad-$version
 echo_eval git checkout --quiet $hash_key
-bin/version.sh set $version
+check=`bin/version.sh get`
+if [ "$version" != "$check" ]
+then
+	echo 'version number does not agree with hash_key'
+	exit 1
+fi
 if ! bin/version.sh check
 then
-	echo 'version has been changed to cppad-$version'
+	echo 'version in CMakeLists.txt does not agree with rest of source'
+	exit 1
 fi
 # -----------------------------------------------------------------------------
 #

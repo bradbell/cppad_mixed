@@ -81,6 +81,7 @@ $codei%
 $end
 */
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/configure.hpp>
 
 // ----------------------------------------------------------------------------
 void cppad_mixed::init_ran_objcon(

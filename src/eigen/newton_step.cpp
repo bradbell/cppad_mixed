@@ -664,8 +664,9 @@ void newton_step::initialize(
 	a1d_vector a1_logdet_step(1 + n_random);
 	CppAD::atomic_base<double>::option_enum sparsity =
 		CppAD::atomic_base<double>::pack_sparsity_enum;
+	bool optimize = bool( CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION );
 	checkpoint_fun_ = new CppAD::checkpoint<double>(
-		name, algo, a1_theta_u_v, a1_logdet_step, sparsity
+		name, algo, a1_theta_u_v, a1_logdet_step, sparsity, optimize
 	);
 	assert( checkpoint_fun_ != CPPAD_MIXED_NULL_PTR );
 }

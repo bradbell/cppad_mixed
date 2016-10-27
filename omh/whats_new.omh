@@ -48,8 +48,12 @@ $section Changes and Additions to cppad_mixed During 2016$$
 $childtable%omh/whats_new_15.omh%$$
 
 $head 10-27$$
+$list number$$
 Add the $cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$
 option to the $code cmake$$ command line.
+$lnext
+Advance to cppad-20161027.
+$lend
 
 $head 10-25$$
 $list number$$

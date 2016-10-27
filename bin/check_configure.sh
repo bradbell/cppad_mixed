@@ -21,35 +21,42 @@ define_list='
 	CPPAD_MIXED_LDLT
 	CPPAD_MIXED_NULL_PTR
 	CPPAD_MIXED_USE_ATOMIC_CHOLESKY
+	CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
 '
 for file in $file_list
 do
+	# remove comment blocks from file
+	sed -e '/\/\*/,/\*\//d' "$file" > temp.$$
+	#
 	required='no'
 	present='no'
 	for name in $define_list
 	do
-		if grep $name $file > /dev/null
+		if grep $name temp.$$ > /dev/null
 		then
 			required='yes'
 		fi
 	done
-	if grep '# *include *<cppad/mixed/configure.hpp>' $file > /dev/null
+	if grep '# *include *<cppad/mixed/configure.hpp>' temp.$$ > /dev/null
 	then
 		present='yes'
 	fi
-	# This case is better tested during complilation because the configure.hpp
-	# include may be in file this is included by this file.
-	# if [ "$required" == 'yes' ] && [ "$present" == 'no' ]
-	# then
-	#	echo "missing: # include <cppad/mixed/configure.hpp>"
-	#	echo "	$file"
-	#	exit 1
-	# fi
+	# Be over cautious and require a direct include in each file that uses
+	# the configure settings.
+	if [ "$required" == 'yes' ] && [ "$present" == 'no' ]
+	then
+		echo "missing: # include <cppad/mixed/configure.hpp>"
+		echo "	$file"
+		rm temp.$$
+		exit 1
+	fi
 	if [ "$required" == 'no' ] && [ "$present" == 'yes' ]
 	then
 		echo "unecessary: # include <cppad/mixed/configure.hpp>"
 		echo "	$file"
+		rm temp.$$
 		exit 1
 	fi
+	rm temp.$$
 done
 echo 'check_configure.sh: OK'
