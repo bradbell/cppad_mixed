@@ -21,10 +21,7 @@ no_change_files='
 rename_cmd='s|sparse_ad_cholesky|sparse_ad_chol|'
 #
 cat << EOF > junk.sed
-s|use_sparse_ad_cholesky|use_atomic_cholesky|g
-s|USE_SPARSE_AD_CHOLESKY |USE_ATOMIC_CHOLESKY    |g
-s|USE_SPARSE_AD_CHOLESKY|USE_ATOMIC_CHOLESKY|g
-# ----------------------------------------------------------------------------
+s|jac_sparsity_bool|jac_sparsity_pack|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

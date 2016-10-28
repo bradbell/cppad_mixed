@@ -1052,8 +1052,8 @@ bool sparse_ad_cholesky::for_sparse_jac(
 	// parameters in argument to atomic function
 	const CppAD::vector<double>&  not_used  )
 {	// make sure we have boolean version of sparsity for f'(x)
-	if( jac_sparsity_bool_.n_set() == 0 )
-		set_jac_sparsity(jac_sparsity_bool_);
+	if( jac_sparsity_pack_.n_set() == 0 )
+		set_jac_sparsity(jac_sparsity_pack_);
 	//
 	// number of elements in domain and range of f(x)
 	size_t nx = Alow_pattern_.row.size();
@@ -1070,7 +1070,7 @@ bool sparse_ad_cholesky::for_sparse_jac(
 			//
 			// S(i, j) = sum_k J(i, k) R(k, j) where J = f'(x)
 			for(size_t k = 0; k < nx; k++)
-			{	bool J_ik = jac_sparsity_bool_.is_element(i, k);
+			{	bool J_ik = jac_sparsity_pack_.is_element(i, k);
 				bool R_kj = r[ k * q + j ];
 				s_ij     |= (J_ik & R_kj);
 			}
@@ -1092,8 +1092,8 @@ bool sparse_ad_cholesky::rev_sparse_jac(
 	// parameters in argument to atomic function
 	const CppAD::vector<double>&  not_used  )
 {	// make sure we have boolean version of sparsity for f'(x)
-	if( jac_sparsity_bool_.n_set() == 0 )
-		set_jac_sparsity(jac_sparsity_bool_);
+	if( jac_sparsity_pack_.n_set() == 0 )
+		set_jac_sparsity(jac_sparsity_pack_);
 	//
 	// number of elements in domain and range of f(x)
 	size_t nx = Alow_pattern_.row.size();
@@ -1111,7 +1111,7 @@ bool sparse_ad_cholesky::rev_sparse_jac(
 			// S(i, j) = sum_k R(i, k) J(k, j) where J = f'(x)
 			for(size_t k = 0; k < ny; k++)
 			{	bool R_ik = rt[ k * q + i ];
-				bool J_kj = jac_sparsity_bool_.is_element(k, j);
+				bool J_kj = jac_sparsity_pack_.is_element(k, j);
 				s_ij     |= (R_ik & J_kj);
 			}
 			// set sparsity pattern for S^T(j, i)
@@ -1140,8 +1140,8 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 	// parameters in argument to atomic function
 	const vector<double>&                 not_used )
 {	// make sure we have boolean version of sparsity for f'(x)
-	if( jac_sparsity_bool_.n_set() == 0 )
-		set_jac_sparsity(jac_sparsity_bool_);
+	if( jac_sparsity_pack_.n_set() == 0 )
+		set_jac_sparsity(jac_sparsity_pack_);
 	//
 	// number of elements in domain and range of f(x)
 	size_t nx = Alow_pattern_.row.size();
@@ -1153,15 +1153,15 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 	assert( r.size()  == nx * q );
 	assert( u.size()  == ny * q );
 	assert( v.size()  == nx * q );
-	assert( jac_sparsity_bool_.n_set() == ny );
-	assert( jac_sparsity_bool_.end()   == nx );
+	assert( jac_sparsity_pack_.n_set() == ny );
+	assert( jac_sparsity_pack_.end()   == nx );
 	//
 	// compute atomic sparsity pattern for T(x) = S(x) * f'(x)
 	for(size_t j = 0; j < nx; j++)
 	{	// T(j) = sum_k S(i) * f'(x)
 		bool t_j = false;
 		for(size_t k = 0; k < ny; k++)
-			t_j |= ( s[k] & jac_sparsity_bool_.is_element(k, j) );
+			t_j |= ( s[k] & jac_sparsity_pack_.is_element(k, j) );
 		t[j] = t_j;
 	}
 	/*
@@ -1174,7 +1174,7 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 	{	for(size_t k = 0; k < q; k++)
 		{	bool fptu_jk = false;
 			for(size_t i = 0; i < ny; i++)
-			{	bool fp_ij = jac_sparsity_bool_.is_element(i, j);
+			{	bool fp_ij = jac_sparsity_pack_.is_element(i, j);
 				bool u_ik  = u[ i * q + k ];
 				fptu_jk   |= (fp_ij & u_ik);
 			}
@@ -1184,7 +1184,7 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 	//
 	// compute the sparsity for sum_i S_i(x) * f_i''(x)
 	CppAD::sparse_pack hes_sparsity_bool;
-	set_hes_sparsity(s, jac_sparsity_bool_, hes_sparsity_bool);
+	set_hes_sparsity(s, jac_sparsity_pack_, hes_sparsity_bool);
 	//
 	// compute sparsity for sum_i S_i (x) * f_i''(x) * R
 	CppAD::vectorBool sfppR( nx * q );
