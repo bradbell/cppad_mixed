@@ -51,6 +51,8 @@ $head 10-28$$
 Fix bug in $cref sparse_ad_cholesky$$; to be more specific,
 the inverse permutation $latex P^{-1}$$ was being used where the permutation
 $cref/P/sparse_ad_cholesky/Notation/P/$$ was required.
+This the first version with $code cppad_mixed$$ passes all its tests with
+$cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$ true.
 
 
 $head 10-27$$
