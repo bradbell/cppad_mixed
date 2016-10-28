@@ -30,6 +30,7 @@ extern bool ran_obj_tst(void);
 extern bool sample_fixed_1(void);
 extern bool sample_fixed_2(void);
 extern bool solution_check(void);
+extern bool sparse_ad_cholesky(void);
 extern bool zero_random_one(void);
 extern bool zero_random_two(void);
 
@@ -83,6 +84,7 @@ int main(void)
 	RUN(ran_obj_tst);
 	RUN(sample_fixed_2);
 	RUN(solution_check);
+	RUN(sparse_ad_cholesky);
 	RUN(zero_random_one);
 	RUN(zero_random_two);
 	// This comment also expected by bin/test_one.sh

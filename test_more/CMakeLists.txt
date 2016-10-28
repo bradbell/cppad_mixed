@@ -29,6 +29,7 @@ ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
 	sample_fixed_1.cpp
 	sample_fixed_2.cpp
 	solution_check.cpp
+	sparse_ad_cholesky.cpp
 	test_more.cpp
 	zero_random_one.cpp
 	zero_random_two.cpp

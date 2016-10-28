@@ -17,6 +17,7 @@ $spell
 	std
 	cout
 	const
+	CppAD
 $$
 
 $section Print and Eigen Sparse Matrix$$
@@ -24,8 +25,12 @@ $section Print and Eigen Sparse Matrix$$
 $head Syntax$$
 $codei%sparse_print(%label%, %mat%)%$$
 
+$head Private$$
+This routine is an implementation detail and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
 $head Scalar$$
-Is the type for a scalar in the matrix.
+It is the type for a scalar in the matrix.
 If $icode s$$ has type $icode Scalar$$,
 $codei%
 	std::cout << %s%
@@ -33,6 +38,10 @@ $codei%
 must print the value of $icode s$$ on standard output.
 
 $head label$$
+This argument has prototype
+$codei%
+	const std::string& %label%
+%$$
 Is a label printed before the matrix,
 If it is empty, no label is printed.
 
@@ -52,7 +61,8 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 template <class Scalar> void sparse_print(
 	const std::string&                                  label ,
 	const Eigen::SparseMatrix<Scalar, Eigen::ColMajor>& mat   )
-{	std::cout << label << ":\n";
+{	if( label != "" )
+		std::cout << label << ":\n";
 	typedef typename
 	Eigen::SparseMatrix<Scalar, Eigen::ColMajor>::InnerIterator iterator;
 	for(int j = 0; j < mat.outerSize(); j++)
@@ -73,7 +83,8 @@ template <class Scalar> void sparse_print(
 template <class Scalar> void sparse_print(
 	const std::string&                                  label ,
 	const Eigen::SparseMatrix<Scalar, Eigen::RowMajor>& mat   )
-{	std::cout << label << ":\n";
+{	if( label != "" )
+		std::cout << label << ":\n";
 	typedef typename
 	Eigen::SparseMatrix<Scalar, Eigen::RowMajor>::InnerIterator iterator;
 	for(int i = 0; i < mat.outerSize(); i++)
