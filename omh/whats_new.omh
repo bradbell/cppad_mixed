@@ -47,6 +47,12 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 10-28$$
+Fix bug in $cref sparse_ad_cholesky$$; to be more specific,
+the inverse permutation $latex P^{-1}$$ was being used where the permutation
+$cref/P/sparse_ad_cholesky/Notation/P/$$ was required.
+
+
 $head 10-27$$
 $list number$$
 Add the $cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$

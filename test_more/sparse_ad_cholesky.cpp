@@ -129,7 +129,6 @@ namespace {
 		// derivative of L_0 (x) = sqrt( x_0 )
 		for(size_t j = 0; j < nx; j++)
 			ok &= s[ 0 * nx + j ] == (j == 0);
-# if CPPAD_MIXED_TEST_SPARSITY
 		//
 		// derivative of L_1 (x) = x_1 / sqrt(x_0)
 		for(size_t j = 0; j < nx; j++)
@@ -151,10 +150,9 @@ namespace {
 		for(size_t j = 0; j < nx; j++)
 			ok &= s[ 5 * nx + j ] == ( j <= 3 );
 		//
-		// derivative of L_6 (x) = sqrt[ x_4 - x_2^2 / x_6  - c(x)^2 ]
+		// derivative of L_6 (x) = sqrt[ x_4 - x_5^2 / x_6  - c(x)^2 ]
 		for(size_t j = 0; j < nx; j++)
-			ok &= s[ 5 * nx + j ] == ( j <= 6);
-# endif
+			ok &= s[ 6 * nx + j ] == (j <= 6);
 		//
 		return ok;
 	}

@@ -8,6 +8,8 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
+# include <iostream>
+//
 # include <cppad/mixed/sparse_ad_cholesky.hpp>
 //
 # include <cppad/mixed/sparse_low_tri_sol.hpp>
@@ -17,7 +19,8 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/sparse_mat2low.hpp>
 # include <cppad/mixed/sparse_eigen2info.hpp>
 # include <cppad/mixed/sparse_info2eigen.hpp>
-# include <iostream>
+# include <cppad/mixed/sparsity_print.hpp>
+# include <cppad/mixed/sparse_print.hpp>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // ============================================================================
@@ -117,11 +120,10 @@ void sparse_ad_cholesky::initialize(const sparse_ad_matrix& ad_Alow)
 	// L_pattern_.row and L_pattern_.col do not change
 	// L_pattern_.val.size() does not change
 	// ----------------------------------------------------------------------
-	// a vector of integers corresponding to the permutation
+	// vector of integers corresponding to the permutation: i -> p_indices[i]
 	Eigen::Matrix<size_t, Eigen::Dynamic, 1> p_indices(nc_);
 	for(size_t i = 0; i < nc_; i++)
-		p_indices[i] = i;
-	p_indices = P_ * p_indices;
+		p_indices[i] = P_.indices()[i];
 	// ----------------------------------------------------------------------
 	// Indices that sort lower triangle of P * A * P^T in column major order
 	size_t nx = Alow_pattern_.row.size();
@@ -344,11 +346,10 @@ void sparse_ad_cholesky::set_jac_sparsity(Sparsity& jac_sparsity)
 	size_t ny = L_pattern_.row.size();
 	jac_sparsity.resize(ny, nx);
 	//
-	// a vector of integers corresponding to the permutation
+	// vector of integers corresponding to the permutation: i -> p_indices[i]
 	Eigen::Matrix<size_t, Eigen::Dynamic, 1> p_indices(nc_);
 	for(size_t i = 0; i < nc_; i++)
-		p_indices[i] = i;
-	p_indices = P_ * p_indices;
+		p_indices[i] = P_.indices()[i];
 	//
 	// Determine sparsity pattern for L
 	size_t ib  = 0; // Blow index in column major order
@@ -573,11 +574,10 @@ void sparse_ad_cholesky::set_hes_sparsity(
 	assert( s.size() == ny );
 	hes_sparsity.resize(nx, nx);
 	//
-	// a vector of integers corresponding to the permutation
+	// vector of integers corresponding to the permutation: i -> p_indices[i]
 	Eigen::Matrix<size_t, Eigen::Dynamic, 1> p_indices(nc_);
 	for(size_t i = 0; i < nc_; i++)
-		p_indices[i] = i;
-	p_indices = P_ * p_indices;
+		p_indices[i] = P_.indices()[i];
 	//
 	// Determine Hessian sparsity pattern for \sum_k S_k(x) * L_k (x)
 	size_t cij = 0; // index of L(i,j) in column major order
@@ -792,11 +792,10 @@ bool sparse_ad_cholesky::forward(
 	if( vx.size() == 0 )
 		return true;
 	// -------------------------------------------------------------------
-	// a vector of integers corresponding to the permutation
+	// vector of integers corresponding to the permutation: i -> p_indices[i]
 	Eigen::Matrix<size_t, Eigen::Dynamic, 1> p_indices(nc_);
 	for(size_t i = 0; i < nc_; i++)
-		p_indices[i] = i;
-	p_indices = P_ * p_indices;
+		p_indices[i] = P_.indices()[i];
 	// -------------------------------------------------------------------
 	// Determine which components of L are variables.
 	//
