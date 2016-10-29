@@ -1108,21 +1108,30 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 		}
 	}
 	//
-	// compute the sparsity for sum_i S_i(x) * f_i''(x)
+	// compute the sparsity for sum_l S_l(x) * f_l''(x)
 	CppAD::sparse_pack hes_sparsity_pack;
 	set_hes_sparsity(s, jac_sparsity_pack_, hes_sparsity_pack);
+	assert( hes_sparsity_pack.end() == nx );
 	//
-	// compute sparsity for sum_i S_i (x) * f_i''(x) * R
+	// compute sparsity for sum_l S_l (x) * f_l''(x) * R
 	CppAD::vectorBool sfppR( nx * q );
-	for(size_t j = 0; j < nx; j++)
-	{	for(size_t k = 0; k < q; k++)
-		{	bool sfppR_jk = false;
-			for(size_t i = 0; i < nx; i++)
-			{	bool sfpp_ji = hes_sparsity_pack.is_element(j, i);
-				bool r_ik    = r[ i * q + k ];
-				sfppR_jk    |= (sfpp_ji & r_ik);
+	for(size_t i = 0; i < nx; i++)
+	{	// initialize i-th row of sfppR to false
+		for(size_t j = 0; j < q; j++)
+			sfppR[ i * q + j ] = false;
+		//
+		hes_sparsity_pack.begin(i);
+		size_t k = hes_sparsity_pack.next_element();
+		while( k < nx )
+		{	// H(i, k) is non-zero where H = sum_l S_l (x) * f_l '' (x)
+			for(size_t j = 0; j < q; j++)
+			{	// check if R(k, j) is non-zero
+				bool sfppR_ij      = sfppR[ i * q + j];
+				bool r_kj          = r[ k * q + j ];
+				sfppR_ij          |= r_kj;
+				sfppR[ i * q + j ] = sfppR_ij;
 			}
-			sfppR[ j * q + k ] = sfppR_jk;
+			k = hes_sparsity_pack.next_element();
 		}
 	}
 	// compute sparsity for V(x)
