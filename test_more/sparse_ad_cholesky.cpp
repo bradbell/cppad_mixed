@@ -85,8 +85,8 @@ $srcfile%test_more/sparse_ad_cholesky.cpp
 $end
 */
 
-// not yet working
-# define CPPAD_MIXED_TEST_SPARSITY 0
+// include tests that are not yet working
+# define CPPAD_MIXED_INCLUDE_TEST_NOT_YET_WORKING 0
 
 // BEGIN C++
 namespace {
@@ -154,6 +154,63 @@ namespace {
 		for(size_t j = 0; j < nx; j++)
 			ok &= s[ 6 * nx + j ] == (j <= 6);
 		//
+		return ok;
+	}
+	bool check_hes(size_t nx, size_t k, const CppAD::vector<bool>& h)
+	{	bool ok = true;
+		switch(k)
+		{	case 0:
+			// L_0 (x) = sqrt( x_0 )
+			for(size_t i = 0; i < nx; i++)
+			{	for(size_t j = 0; j < nx; j++)
+				{	bool check = (i == 0) && (j == 0);
+					ok &= h[ i * nx + j] == check;
+				}
+			}
+			break;
+
+			case 1:
+			// L_1 (x) = x_1 / sqrt(x_0)
+			for(size_t i = 0; i < nx; i++)
+			{	for(size_t j = 0; j < nx; j++)
+				{	bool check = false;
+					check |= (i == 0 && j == 0);
+					check |= (i == 0 && j == 1) || (i == 1 && j == 0);
+					ok &= h[ i * nx + j] == check;
+				}
+			}
+			break;
+
+			case 2:
+			// L_2 (x) = sqrt(x_6)
+			for(size_t i = 0; i < nx; i++)
+			{	for(size_t j = 0; j < nx; j++)
+				{	bool check = false;
+					check |= (i == 6 && j == 6);
+					ok &= h[ i * nx + j] == check;
+				}
+			}
+			break;
+
+# if CPPAD_MIXED_INCLUDE_TEST_NOT_YET_WORKING
+			case 3:
+			// L_3 (x) = sqrt[ x_5 / sqrt(x_6) ]
+			for(size_t i = 0; i < nx; i++)
+			{	for(size_t j = 0; j < nx; j++)
+				{	bool check = false;
+					check |= (i == 5 || i == 6) && (j == 5 || j == 6);
+					ok &= h[ i * nx + j] == check;
+					std::cout << "i = " << i << ", j = " << j
+					<< ", h = " << h[ i * nx + j] << ", check = " << check
+					<< "\n";
+				}
+			}
+			break;
+# endif
+
+			default:
+			;
+		}
 		return ok;
 	}
 }
@@ -241,7 +298,20 @@ bool sparse_ad_cholesky(void)
 	// compute the sparsity pattern for S(x) = L'(x) * R = L'(x)
 	s = L_fun.ForSparseJac(q, r);
 	ok &= check_jac(nx, s);
-	// ----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// Check rev_sparse_hes
+	s.resize(ny);
+	for(size_t i = 0; i < ny; i++)
+	{	// set s
+		for(size_t j = 0; j < ny; j++)
+			s[j] = (i == j);
+		//
+		// compute sparsity pattern for Hessian of s * L(x)
+		CppAD::vector<bool> h = L_fun.RevSparseHes(q, s);
+		//
+		// check sparsity for this component function
+		ok &= check_hes(nx, i, h);
+	}
 	return ok;
 }
 // END C++

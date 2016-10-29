@@ -218,7 +218,7 @@ bool sparse_ad_chol_sp_xam(void)
 	// -----------------------------------------------------------------------
 	// Check rev_sparse_hes
 	s.resize(ny);
-	for(size_t i = 0; i < nx; i++)
+	for(size_t i = 0; i < ny; i++)
 	{	// set s
 		for(size_t j = 0; j < ny; j++)
 			s[j] = (i == j);

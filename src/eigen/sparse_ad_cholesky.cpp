@@ -378,6 +378,7 @@ void sparse_ad_cholesky::set_jac_sparsity(Sparsity& jac_sparsity)
 			while( L_pattern_.row[ L_row_major_[ri] ] < i  )
 				++ri;
 			// beginning of row i must be at or before cij
+			assert( L_pattern_.row[ L_row_major_[ri] ] == i );
 			assert( L_pattern_.col[ L_row_major_[ri] ] <= j );
 			//
 			// Determine sparsity pattern for L(i,j) using
@@ -579,14 +580,12 @@ void sparse_ad_cholesky::set_hes_sparsity(
 	for(size_t i = 0; i < nc_; i++)
 		p_indices[i] = P_.indices()[i];
 	//
-	// Determine Hessian sparsity pattern for \sum_k S_k(x) * L_k (x)
-	size_t cij = 0; // index of L(i,j) in column major order
-	size_t rj  = 0; // index of row L(j,:) in row major order
-	//
 	// used to hold sets of integers corresponding to L(i,k) and L(j,k);
 	CppAD::vector<size_t> set_ik, set_jk;
 	//
-	// for each column of L
+	// Determine Hessian sparsity pattern for \sum_k S_k(x) * L_k (x)
+	size_t cij = 0; // index of L(i,j) in column major order
+	size_t rj  = 0; // index of row L(j,:) in row major order
 	for(size_t j = 0; j < nc_; j++)
 	{	// Determine sparsity pattern for j-th column of L
 		//
@@ -619,6 +618,7 @@ void sparse_ad_cholesky::set_hes_sparsity(
 				while( L_pattern_.row[ L_row_major_[ri] ] < i  )
 					++ri;
 				// beginning of row i must be at or before cij
+				assert( L_pattern_.row[ L_row_major_[ri] ] == i );
 				assert( L_pattern_.col[ L_row_major_[ri] ] <= j );
 				//
 				// Determine sparsity pattern for L(i,j) using
@@ -826,6 +826,7 @@ bool sparse_ad_cholesky::forward(
 			while( L_pattern_.row[ L_row_major_[ri] ] < i  )
 				++ri;
 			// beginning of row i must be at or before cij
+			assert( L_pattern_.row[ L_row_major_[ri] ] == i );
 			assert( L_pattern_.col[ L_row_major_[ri] ] <= j );
 			//
 			// Determine of L(i,j) is a variable using
@@ -1182,8 +1183,8 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 	}
 	//
 	// compute the sparsity for sum_i S_i(x) * f_i''(x)
-	CppAD::sparse_pack hes_sparsity_bool;
-	set_hes_sparsity(s, jac_sparsity_pack_, hes_sparsity_bool);
+	CppAD::sparse_pack hes_sparsity_pack;
+	set_hes_sparsity(s, jac_sparsity_pack_, hes_sparsity_pack);
 	//
 	// compute sparsity for sum_i S_i (x) * f_i''(x) * R
 	CppAD::vectorBool sfppR( nx * q );
@@ -1191,7 +1192,7 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 	{	for(size_t k = 0; k < q; k++)
 		{	bool sfppR_jk = false;
 			for(size_t i = 0; i < nx; i++)
-			{	bool sfpp_ji = hes_sparsity_bool.is_element(j, i);
+			{	bool sfpp_ji = hes_sparsity_pack.is_element(j, i);
 				bool r_ik    = r[ i * q + k ];
 				sfppR_jk    |= (sfpp_ji & r_ik);
 			}
