@@ -138,7 +138,7 @@ namespace {
 		for(size_t j = 0; j < nx; j++)
 			ok &= s[ 2 * nx + j ] == (j == 6);
 		//
-		// derivative of L_3 (x) = sqrt[ x_5 / sqrt(x_6) ]
+		// derivative of L_3 (x) = x_5 / sqrt(x_6)
 		for(size_t j = 0; j < nx; j++)
 			ok &= s[ 3 * nx + j ] == (j == 5 || j == 6 );
 		//
@@ -192,24 +192,56 @@ namespace {
 			}
 			break;
 
-# if CPPAD_MIXED_INCLUDE_TEST_NOT_YET_WORKING
 			case 3:
-			// L_3 (x) = sqrt[ x_5 / sqrt(x_6) ]
+			// L_3 (x) = x_5 / sqrt(x_6)
 			for(size_t i = 0; i < nx; i++)
 			{	for(size_t j = 0; j < nx; j++)
 				{	bool check = false;
-					check |= (i == 5 || i == 6) && (j == 5 || j == 6);
+					check |= (i == 6 && j == 6);
+					check |= (i == 5 && j == 6);
+					check |= (j == 5 && i == 6);
 					ok &= h[ i * nx + j] == check;
-					std::cout << "i = " << i << ", j = " << j
-					<< ", h = " << h[ i * nx + j] << ", check = " << check
-					<< "\n";
 				}
 			}
 			break;
-# endif
+
+			case 4:
+			// L_4 (x) = sqrt[ x_2 - x_1^2 / x_0 ]
+			for(size_t i = 0; i < nx; i++)
+			{	for(size_t j = 0; j < nx; j++)
+				{	bool check = false;
+					check |= (i <= 2 && j <= 2);
+					ok &= h[ i * nx + j] == check;
+				}
+			}
+			break;
+
+			case 5:
+			// L_5 (x) = x_3 / sqrt[ x_2 - x_1^2 / x_0 ]
+			for(size_t i = 0; i < nx; i++)
+			{	for(size_t j = 0; j < nx; j++)
+				{	bool check = false;
+					check |= (i <= 2 && j <= 2);
+					check |= (i <= 2 && j == 3);
+					check |= (i == 3 && j <= 2);
+					ok &= h[ i * nx + j] == check;
+				}
+			}
+			break;
+
+			case 6:
+			// L_6 (x) = sqrt[ x_4 - x_5^2 / x_6  - c(x)^2 ]
+			for(size_t i = 0; i < nx; i++)
+			{	for(size_t j = 0; j < nx; j++)
+				{	bool check = false;
+					check |= (i <= 6 && j <= 6);
+					ok &= h[ i * nx + j] == check;
+				}
+			}
+			break;
 
 			default:
-			;
+			ok = false;
 		}
 		return ok;
 	}
