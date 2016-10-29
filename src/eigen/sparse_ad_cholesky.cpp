@@ -960,13 +960,12 @@ bool sparse_ad_cholesky::for_sparse_jac(
 	//
 	// compute sparsity pattern for S = f'(x) * R
 	assert( jac_sparsity_pack_.end() == nx );
-	CppAD::vector<bool> si(q);
 	for(size_t i = 0; i < ny; i++)
 	{	// S(i, j) = sum_k J(i, k) R(k, j) where J = f'(x)
 		//
 		// initialize S(i, j) as false for all j
 		for(size_t j = 0; j < q; j++)
-			si[j] = false;
+			s[ i * q + j ] = false;
 		//
 		// loop though elements of Jacobian in row i
 		jac_sparsity_pack_.begin(i);
@@ -975,14 +974,13 @@ bool sparse_ad_cholesky::for_sparse_jac(
 		{	// J(i, k) is non-zero.
 			for(size_t j = 0; j < q; j++)
 			{	// check if R(k, j) is non-zero
-				si[j] |= r[ k * q + j ];
+				bool s_ij      = s[ i * q + j ];
+				bool R_kj      = r[ k * q + j ];
+				s_ij          |= R_kj;
+				s[ i * q + j ] = s_ij;
 			}
 			k = jac_sparsity_pack_.next_element();
 		}
-		//
-		// place si in row i of the packed array s
-		for(size_t j = 0; j < q; j++)
-			s[ i * q + j ] = si[j];
 	}
 	return true;
 }
@@ -1009,19 +1007,27 @@ bool sparse_ad_cholesky::rev_sparse_jac(
 	assert( st.size() == nx * q );
 	//
 	// compute sparsity pattern for S^T = f'(x)^T * R^T
+	//
+	// initialize S(i, j) as false
 	for(size_t i = 0; i < q; i++)
 	{	for(size_t j = 0; j < nx; j++)
-		{	// initialize sparsity pattern for S(i,j)
-			bool s_ij = false;
-			//
-			// S(i, j) = sum_k R(i, k) J(k, j) where J = f'(x)
-			for(size_t k = 0; k < ny; k++)
-			{	bool R_ik = rt[ k * q + i ];
-				bool J_kj = jac_sparsity_pack_.is_element(k, j);
-				s_ij     |= (R_ik & J_kj);
+			st[ j * q + i ] = false;
+	}
+	// loop over the rows of the J = f'(x)
+	assert( jac_sparsity_pack_.end() == nx );
+	for(size_t k = 0; k < ny; k++)
+	{	jac_sparsity_pack_.begin(k);
+		size_t j = jac_sparsity_pack_.next_element();
+		while(j < nx )
+		{	// S(i, j) = sum_k R(i, k) J(k, j) and J(k, j) is non-zero
+			for(size_t i = 0; i < q; i++)
+			{	// check if R(i, k) is non-zero
+				bool s_ij      = st[ j * q + i ];
+				bool R_ik      = rt[ k * q + i ];
+				s_ij          |= R_ik;
+				st[ j * q + i] = s_ij;
 			}
-			// set sparsity pattern for S^T(j, i)
-			st[ j * q + i ] = s_ij;
+			j = jac_sparsity_pack_.next_element();
 		}
 	}
 	return true;
