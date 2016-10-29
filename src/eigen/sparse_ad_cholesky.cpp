@@ -352,7 +352,7 @@ void sparse_ad_cholesky::set_jac_sparsity(Sparsity& jac_sparsity)
 		p_indices[i] = P_.indices()[i];
 	//
 	// Determine sparsity pattern for L
-	size_t ib  = 0; // Blow index in column major order
+	size_t ib  = 0; // Blow (permuted Alow) index in column major order
 	size_t cij = 0; // index of L(i,j) in column major order
 	size_t rj  = 0; // index of row L(j,:) in row major order
 	for(size_t j = 0; j < nc_; j++)
@@ -397,6 +397,8 @@ void sparse_ad_cholesky::set_jac_sparsity(Sparsity& jac_sparsity)
 				flag = c < j || (c == j && r < i);
 				if( flag )
 					++ib;
+				// B(nc, nc) is last element and is non-zero, hence
+				assert( ib < nx );
 			}
 			// check if next element in B is B(i,j)
 			if( r == i && c == j )
