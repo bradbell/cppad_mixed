@@ -1070,11 +1070,17 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 	//
 	// compute atomic sparsity pattern for T(x) = S(x) * f'(x)
 	for(size_t j = 0; j < nx; j++)
-	{	// T(j) = sum_k S(i) * f'(x)
-		bool t_j = false;
-		for(size_t k = 0; k < ny; k++)
-			t_j |= ( s[k] & jac_sparsity_pack_.is_element(k, j) );
-		t[j] = t_j;
+		t[j] = false;
+	for(size_t k = 0; k < ny; k++)
+	{	if( s[k] )
+		{	jac_sparsity_pack_.begin(k);
+			size_t j = jac_sparsity_pack_.next_element();
+			while( j < nx )
+			{	// S(k) * J(k, j) is non-zero where J = f'(x)
+				t[j] = true;
+				j = jac_sparsity_pack_.next_element();
+			}
+		}
 	}
 	/*
 	V(x) = f'(x)^T * g''(y) * f'(x) * R  +  sum_i S_i(x) * f_i''(x) * R
@@ -1084,13 +1090,21 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 	CppAD::vectorBool fptu( nx * q );
 	for(size_t j = 0; j < nx; j++)
 	{	for(size_t k = 0; k < q; k++)
-		{	bool fptu_jk = false;
-			for(size_t i = 0; i < ny; i++)
-			{	bool fp_ij = jac_sparsity_pack_.is_element(i, j);
-				bool u_ik  = u[ i * q + k ];
-				fptu_jk   |= (fp_ij & u_ik);
+			fptu[ j * q + k ] = false;
+	}
+	for(size_t i = 0; i < ny; i++)
+	{	jac_sparsity_pack_.begin(i);
+		size_t j = jac_sparsity_pack_.next_element();
+		while( j < nx )
+		{	// J(i, j) is non-zero where J = f'(x)
+			for(size_t k = 0; k < q; k++)
+			{	// check if U(i,k) is non-zero
+				bool fptu_jk      = fptu[ j * q + k ];
+				bool u_ik         = u[ i * q + k ];
+				fptu_jk          |= u_ik;
+				fptu[ j * q + k ] = fptu_jk;
 			}
-			fptu[ j * q + k ] = fptu_jk;
+			j = jac_sparsity_pack_.next_element();
 		}
 	}
 	//
