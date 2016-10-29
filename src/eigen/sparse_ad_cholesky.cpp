@@ -959,20 +959,30 @@ bool sparse_ad_cholesky::for_sparse_jac(
 	assert( s.size() == ny * q );
 	//
 	// compute sparsity pattern for S = f'(x) * R
+	assert( jac_sparsity_pack_.end() == nx );
+	CppAD::vector<bool> si(q);
 	for(size_t i = 0; i < ny; i++)
-	{	for(size_t j = 0; j < q; j++)
-		{	// initialize sparsity pattern for S(i,j)
-			bool s_ij = false;
-			//
-			// S(i, j) = sum_k J(i, k) R(k, j) where J = f'(x)
-			for(size_t k = 0; k < nx; k++)
-			{	bool J_ik = jac_sparsity_pack_.is_element(i, k);
-				bool R_kj = r[ k * q + j ];
-				s_ij     |= (J_ik & R_kj);
+	{	// S(i, j) = sum_k J(i, k) R(k, j) where J = f'(x)
+		//
+		// initialize S(i, j) as false for all j
+		for(size_t j = 0; j < q; j++)
+			si[j] = false;
+		//
+		// loop though elements of Jacobian in row i
+		jac_sparsity_pack_.begin(i);
+		size_t k = jac_sparsity_pack_.next_element();
+		while( k < nx )
+		{	// J(i, k) is non-zero.
+			for(size_t j = 0; j < q; j++)
+			{	// check if R(k, j) is non-zero
+				si[j] |= r[ k * q + j ];
 			}
-			// set sparsity pattern for S(i, j)
-			s[ i * q + j ] = s_ij;
+			k = jac_sparsity_pack_.next_element();
 		}
+		//
+		// place si in row i of the packed array s
+		for(size_t j = 0; j < q; j++)
+			s[ i * q + j ] = si[j];
 	}
 	return true;
 }
