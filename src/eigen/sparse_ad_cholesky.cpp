@@ -788,129 +788,25 @@ bool sparse_ad_cholesky::forward(
 			ty[ ell * n_order + k ] = L_pattern_.val[ell];
 	}
 	// -------------------------------------------------------------------
-	// check if we are computing vy
+	// check if we are not computing vy
 	if( vx.size() == 0 )
 		return true;
+	assert( q == 0 && vy.size() == ny);
 	// -------------------------------------------------------------------
-	// vector of integers corresponding to the permutation: i -> p_indices[i]
-	Eigen::Matrix<size_t, Eigen::Dynamic, 1> p_indices(nc_);
-	for(size_t i = 0; i < nc_; i++)
-		p_indices[i] = P_.indices()[i];
-	// -------------------------------------------------------------------
-	// Determine which components of L are variables.
+	// compute vy
 	//
-	// Determine which elemements of L are variables in column major order
-	size_t ib  = 0; // Blow index in column major order
-	size_t cij = 0; // index of L(i,j) in column major order
-	size_t rj  = 0; // index of row L(j,:) in row major order
-	for(size_t j = 0; j < nc_; j++)
-	{	// Determine which elements of j-th column of L are variables
-		//
-		// advance rj to the beginning of j-th row of L
-		while( L_pattern_.row[ L_row_major_[rj] ] < j )
-			++rj;
-		//
-		// first element in column j of L must be L(j,j)
-		assert( L_pattern_.row[cij] == j );
-		assert( L_pattern_.col[cij] == j );
-		//
-		// There must be an element in row j of L
-		assert( L_pattern_.row[ L_row_major_[rj] ] == j );
-		//
-		size_t ri = rj; // initialize ri to the beginning of row j
-		while( cij < ny && L_pattern_.col[cij] == j )
-		{	// The row index in L corresponding to cij
-			size_t i = L_pattern_.row[cij];
-			//
-			// Advance ri to beginning of row i in L
-			while( L_pattern_.row[ L_row_major_[ri] ] < i  )
-				++ri;
-			// beginning of row i must be at or before cij
-			assert( L_pattern_.row[ L_row_major_[ri] ] == i );
-			assert( L_pattern_.col[ L_row_major_[ri] ] <= j );
-			//
-			// Determine of L(i,j) is a variable using
-			// B(i,j) = L(i,0) * L(j,0) + ... + L(i,j) * L(j,j).
-			// where B = P * A * P^T
-			bool var = false;
-			//
-			// Check if element B(i,j) is a variable
-			size_t r, c;
-			bool flag = true;
-			while( flag )
-			{	// advance ib to next element
-				r = p_indices[ Alow_pattern_.row[ Alow_permuted_[ib] ] ];
-				c = p_indices[ Alow_pattern_.col[ Alow_permuted_[ib] ] ];
-				if( c > r )
-					std::swap(r, c);
-				flag = c < j || (c == j && r < i);
-				if( flag )
-					++ib;
-			}
-			// check if next element in B is B(i,j) and it is a variable
-			if( c == j && r == i && vx[ Alow_permuted_[ib] ] )
-			{	// Element L(i,j) depends on B(i,j) which is a variable
-				var = true;
-			}
-			//
-			size_t rik = ri; // initialize index for next element in row i
-			size_t rjk = rj; // initialize index for next element in row j
-			for(size_t k = 0; k <= j; k++)
-			{	// check if L(i,k) * L(j,k) is a variable
-				//
-				// L(nc, nc) is last element in both row and column major
-				// order so now worry about going off the end of the array
-				assert( L_pattern_.row[ L_row_major_[rik] ] >= i );
-				assert( L_pattern_.row[ L_row_major_[rjk] ] >= j );
-				//
-				while(
-					L_pattern_.row[ L_row_major_[rik] ] == i &&
-					L_pattern_.col[ L_row_major_[rik] ] < k  )
-					++rik;
-				// found L(i,k)
-				bool found_ik =
-					L_pattern_.row[ L_row_major_[rik] ] == i &&
-					L_pattern_.col[ L_row_major_[rik] ] == k;
-				//
-				while(
-					L_pattern_.row[ L_row_major_[rjk] ] == j &&
-					L_pattern_.col[ L_row_major_[rjk] ] < k  )
-					++rjk;
-				// found L(j,k)
-				bool found_jk =
-					L_pattern_.row[ L_row_major_[rjk] ] == j &&
-					L_pattern_.col[ L_row_major_[rjk] ] == k;
-				//
-				if( found_ik && found_jk )
-				{	// both L(i,k) and L(j,k) can be non-zero
-					size_t cik = L_row_major_[rik];
-					size_t cjk = L_row_major_[rjk];
-					if( k == j )
-					{	if( i > j )
-						{	// L(i,j) * L(j,j)
-							// Element L(i,j) depends on L(j,j)
-							assert( cjk < cij );
-							var |= vy[cjk];
-						}
-						else
-						{	// L(j,j) * L(j,j) case is determining cjk
-							assert( cjk == cij );
-						}
-					}
-					else
-					{	// L(i,k) * L(j,k)
-						assert( cik < cij );
-						assert( cjk < cij );
-						//
-						// L(i,j) depends on L(i,k)
-						var |= vy[ cik ];
-						// L(i,j) depends on L(j,k)
-						var |= vy[ cjk ];
-					}
-				}
-			}
-			// set variable value for L(i,j)
-			vy[cij++] = var;
+	// make sure we have sparsity for f'(x)
+	if( jac_sparsity_pack_.n_set() == 0 )
+		set_jac_sparsity(jac_sparsity_pack_);
+	//
+	assert( jac_sparsity_pack_.end() == nx );
+	for(size_t i = 0; i < ny; i++)
+	{	vy[i] = false;
+		jac_sparsity_pack_.begin(i);
+		size_t j = jac_sparsity_pack_.next_element();
+		while( j < nx )
+		{	vy[i] |= vx[j];
+			j = jac_sparsity_pack_.next_element();
 		}
 	}
 	return true;
