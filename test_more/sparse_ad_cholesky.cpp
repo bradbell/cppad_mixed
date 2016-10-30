@@ -251,6 +251,7 @@ bool sparse_ad_cholesky(void)
 	typedef CppAD::vector<double>                             d_vector;
 	typedef CppAD::vector< AD<double> >                       ad_vector;
 	typedef Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> sparse_ad_matrix;
+	using Eigen::Dynamic;
 	//
 	bool ok     = true;
 	// --------------------------------------------------------------------
@@ -278,6 +279,17 @@ bool sparse_ad_cholesky(void)
 	ad_Blow.insert(3,3) = x[6];
 	CppAD::mixed::sparse_ad_cholesky cholesky;
 	cholesky.initialize( ad_Blow );
+	// ----------------------------------------------------------------------
+	// check that the permutation matrix P is as expected
+	Eigen::PermutationMatrix<Dynamic, Dynamic> P = cholesky.permutation();
+	Eigen::Matrix<size_t, Dynamic, 1>  indices(nc);
+	for(size_t i = 0; i < nc; i++)
+			indices[i] = i;
+	indices = P * indices;
+	ok &= indices[0] == 0;
+	ok &= indices[1] == 3;
+	ok &= indices[2] == 1;
+	ok &= indices[3] == 2;
 	// ----------------------------------------------------------------------
 	// create function object corresponding to L(x)
 	CppAD::Independent( ax );
