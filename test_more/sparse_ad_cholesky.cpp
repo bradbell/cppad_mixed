@@ -123,7 +123,7 @@ namespace {
 		//
 		return ok;
 	}
-	bool check_jac(size_t nx, const CppAD::vector<bool>& s)
+	bool check_jac_sparsity(size_t nx, const CppAD::vector<bool>& s)
 	{	bool ok = true;
 		//
 		// derivative of L_0 (x) = sqrt( x_0 )
@@ -156,7 +156,7 @@ namespace {
 		//
 		return ok;
 	}
-	bool check_hes(size_t nx, size_t k, const CppAD::vector<bool>& h)
+	bool check_hes_sparsity(size_t nx, size_t k, const CppAD::vector<bool>& h)
 	{	bool ok = true;
 		switch(k)
 		{	case 0:
@@ -316,7 +316,7 @@ bool sparse_ad_cholesky(void)
 	}
 	// compute the sparsity pattern for S(x) = R * L'(x) = L'(x)
 	CppAD::vector<bool> s = L_fun.RevSparseJac(q, r);
-	ok &= check_jac(nx, s);
+	ok &= check_jac_sparsity(nx, s);
 	// ----------------------------------------------------------------------
 	// Check for_sparse_jac
 	//
@@ -329,7 +329,7 @@ bool sparse_ad_cholesky(void)
 	}
 	// compute the sparsity pattern for S(x) = L'(x) * R = L'(x)
 	s = L_fun.ForSparseJac(q, r);
-	ok &= check_jac(nx, s);
+	ok &= check_jac_sparsity(nx, s);
 	// -----------------------------------------------------------------------
 	// Check rev_sparse_hes
 	s.resize(ny);
@@ -342,7 +342,7 @@ bool sparse_ad_cholesky(void)
 		CppAD::vector<bool> h = L_fun.RevSparseHes(q, s);
 		//
 		// check sparsity for this component function
-		ok &= check_hes(nx, i, h);
+		ok &= check_hes_sparsity(nx, i, h);
 	}
 	return ok;
 }

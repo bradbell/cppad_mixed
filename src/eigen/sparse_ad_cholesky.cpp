@@ -681,12 +681,17 @@ void sparse_ad_cholesky::set_hes_sparsity(
 						{	for(size_t jk = 0; jk < set_jk.size(); jk++)
 							{	size_t ia = set_ik[ik];
 								size_t ja = set_jk[jk];
-								// partial L(i,k) w.r.t Alow[ia] is non-zero
-								// partial L(j,k) w.r.t Alow[ja] is non-zero
+								// partial L(i,k) w.r.t Alow[ia] and
+								// partial L(j,k) w.r.t Alow[ja] are non-zero
 								hes_sparsity.add_element(ia, ja);
 								hes_sparsity.add_element(ja, ia);
 							}
 						}
+						// Note that the sets for L(i,k) and L(j,k) are both
+						// super sets of the set for L(k,k). Hence it is not
+						// necessary to include the non-linear dependence for
+						// division by L(j,j) when computing L(i,j), nor is
+						// for the square root when computing L(j,j).
 					}
 				}
 				// end of processing L(i,j)
