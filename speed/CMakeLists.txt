@@ -37,7 +37,7 @@ ADD_CUSTOM_TARGET(speed_ar1_xam
 # -----------------------------------------------------------------------------
 # BEGIN capture_xam arguments
 SET(random_seed                0)
-SET(number_random             30)
+SET(number_random             35)
 SET(number_fixed_samples    1000)
 SET(number_locations          50)
 SET(max_population            25)

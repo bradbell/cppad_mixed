@@ -36,10 +36,8 @@ $$
 $section Initialization After Constructor$$
 
 $head Syntax$$
-$icode%size_map% = %mixed_object%.initialize(%fixed_vec%, %random_vec%)
-%$$
 $icode%size_map% = %mixed_object%.initialize(
-	%fixed_vec%, %random_vec%, %bool_sparsity%
+	%fixed_vec%, %random_vec%, %A_info%, %bool_sparsity%
 )
 %$$
 
