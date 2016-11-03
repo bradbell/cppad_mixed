@@ -63,6 +63,7 @@ It is the $cref sparse_hes_info$$ for the Hessian with respect to the
 random effects (as a function of the fixed and random effects); i.e.
 $latex f_uu ( \theta , u)$$.
 The vector $icode%hes_info%.val%$$ is not used.
+Note that it is effectively $code const$$.
 
 $head theta$$
 This is a value for $latex \theta$$
@@ -123,31 +124,10 @@ and is a reference to the $icode a1_adfun$$ argument.
 $head hes_info_$$
 This member variable has prototype
 $codei%
-	sparse_hes_info   hes_info_;
+	sparse_hes_info&   hes_info_;
 %$$
-see $cref sparse_hes_info$$.
-It is set so that a subsequent call of the form
-$codei%
-	%a1_adfun_%.SparseHessian(
-		%a1_theta_u%,
-		%a1_w%,
-		%not_used%,
-		hes_info_.row,
-		hes_info_.col,
-		%a1_val_out%,
-		hes_info_.work
-	)
-%$$
-will compute the Hessian $latex f_{uu} ( \theta , u )$$.
-Here the vectors $icode a1_theta_u$$, $icode a1_w$$, and
-$icode a1_val_out$$ have prototype
-$codei
-	CppAD::vector< CppAD::AD<double> > %a1_theta_u%, %a1_w%, %a1_val_out%
-%$$
-The vector $icode a1_theta_u$$ specifies $latex ( \theta , u )$$,
-$icode a1_w$$ has length one and its element has the value one,
-$icode a1_val_out$$ is the value of the Hessian at the row and column
-indices corresponding to $code hes_info_$$.
+and is a reference to the $icode hes_info$$ argument.
+Note that it is effectively $code const$$.
 
 $subhead Remark$$
 The vector
@@ -161,7 +141,7 @@ $end
 // BEGIN PROTOTYPE
 newton_step_algo::newton_step_algo(
 	CppAD::ADFun<a1_double>&      a1_adfun      ,
-	const sparse_hes_info&        hes_info      ,
+	sparse_hes_info&              hes_info      ,
 	const CppAD::vector<double>&  theta         ,
 	const CppAD::vector<double>&  u             ,
 	sparse_ad_cholesky&           cholesky      )
@@ -174,6 +154,8 @@ hes_info_( hes_info     ) ,
 cholesky_( cholesky     )
 {	assert( a1_adfun.Domain() == n_fixed_ + n_random_ );
 	assert( a1_adfun.Range()  == 1 );
+	assert( hes_info.row.size() == hes_info.col.size() );
+	assert( hes_info.row.size() != 0 );
 	assert( hes_info.val.size() == 0 );
 	//
 # if CPPAD_MIXED_USE_ATOMIC_CHOLESKY
@@ -187,7 +169,7 @@ cholesky_( cholesky     )
 	for(size_t j = 0; j < n_random_; j++)
 		a1_theta_u[n_fixed_ + j] = u[j];
 	//
-	// sparsity pattern not needed once we have hes_info_.work
+	// sparsity pattern not needed because we have hes_info_.work
 	CppAD::vectorBool not_used;
 	//
 	// compute the sparse Hessian
@@ -485,7 +467,7 @@ $end
 // BEGIN PROTOTYPE
 void newton_step::initialize(
 	CppAD::ADFun<a1_double>&          a1_adfun      ,
-	const sparse_hes_info&            hes_info      ,
+	sparse_hes_info&                  hes_info      ,
 	const CppAD::vector<double>&      theta         ,
 	const CppAD::vector<double>&      u             )
 // END PROTOTYPE

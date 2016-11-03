@@ -190,14 +190,14 @@ private:
 		CppAD::ADFun<a1_double>&          a1_adfun_;
 		// information for computing f_uu (theta , u)
 		// (hes_info.val is not used and has size zero)
-		sparse_hes_info                   hes_info_;
+		sparse_hes_info&                  hes_info_;
 		// reference to sparse Cholesky factorization in newton step object
 		sparse_ad_cholesky&               cholesky_;
 public:
 	// constructor for algorithm that is checkpointed
 	newton_step_algo(
 		CppAD::ADFun<a1_double>&          a1_adfun      ,
-		const sparse_hes_info&            hes_info      ,
+		sparse_hes_info&                  hes_info      ,
 		const CppAD::vector<double>&      theta         ,
 		const CppAD::vector<double>&      u             ,
 		sparse_ad_cholesky&               cholesky
@@ -229,7 +229,7 @@ public:
 	// setup the checkpoint function
 	void initialize(
 		CppAD::ADFun<a1_double>&          a1_adfun      ,
-		const sparse_hes_info&            hes_info      ,
+		sparse_hes_info&                  hes_info      ,
 		const CppAD::vector<double>&      fixed_vec     ,
 		const CppAD::vector<double>&      random_vec
 	);
