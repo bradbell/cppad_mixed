@@ -12,159 +12,6 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/newton_step.hpp>
 # include <cppad/mixed/configure.hpp>
 
-namespace { // BEGIN_EMPTY_NAMESPACE
-// --------------------------------------------------------------------------
-// random_hes_use_set
-// --------------------------------------------------------------------------
-template <class Base>
-void random_hes_use_set(
-	size_t                             n_fixed  ,
-	size_t                             n_random ,
-	const CppAD::vector<Base>&         both     ,
-	CppAD::ADFun<Base>&                fun      ,
-	CppAD::vector<size_t>&             row      ,
-	CppAD::vector<size_t>&             col      ,
-	CppAD::sparse_hessian_work&        work     )
-{	work.clear();
-	assert( row.size() == 0 );
-	assert( col.size() == 0 );
-	assert( fun.Range() == 1 );
-	assert( both.size() == n_fixed + n_random );
-	// ----------------------------------------------------------------------
-	typedef CppAD::vector< std::set<size_t> > set_sparsity;
-	size_t n_both = n_fixed + n_random;
-	// ----------------------------------------------------------------------
-	// compute Jacobian sparsity corresponding to parital w.r.t. random effects
-	set_sparsity r(n_both);
-	for(size_t i = n_fixed; i < n_both; i++)
-		r[i].insert(i);
-	fun.ForSparseJac(n_both, r);
-	// ----------------------------------------------------------------------
-	// compute sparsity pattern corresponding to
-	// partial w.r.t. (theta, u) of partial w.r.t. u
-	bool transpose = true;
-	set_sparsity s(1), pattern;
-	assert( s[0].empty() );
-	s[0].insert(0);
-	pattern = fun.RevSparseHes(n_both, s, transpose);
-	// ----------------------------------------------------------------------
-	// Set the row and column indices
-	//
-	// subsample to just the random effects
-	std::set<size_t>::iterator itr;
-	for(size_t i = n_fixed; i < n_both; i++)
-	{	for(itr = pattern[i].begin(); itr != pattern[i].end(); itr++)
-		{	size_t j = *itr;
-			//
-			// partial w.r.t u[i] of partial w.r.t u[j]
-			assert( n_fixed <= j );
-			// only store lower triangle of symmetric Hessian
-			if( i >= j )
-			{	row.push_back(i);
-				col.push_back(j);
-			}
-		}
-	}
-	// ----------------------------------------------------------------------
-	// create a weighting vector
-	CppAD::vector<Base> w(1);
-	w[0] = 1.0;
-	//
-	// place where results go
-	CppAD::vector<Base> not_used(row.size());
-	//
-	// compute the work vector
-	fun.SparseHessian(
-		both,
-		w,
-		pattern,
-		row,
-		col,
-		not_used,
-		work
-	);
-	return;
-}
-// --------------------------------------------------------------------------
-// random_hes_use_bool
-// --------------------------------------------------------------------------
-template <class Base>
-void random_hes_use_bool(
-	size_t                             n_fixed  ,
-	size_t                             n_random ,
-	const CppAD::vector<Base>&         both     ,
-	CppAD::ADFun<Base>&                fun      ,
-	CppAD::vector<size_t>&             row      ,
-	CppAD::vector<size_t>&             col      ,
-	CppAD::sparse_hessian_work&        work     )
-{	work.clear();
-	assert( row.size() == 0 );
-	assert( col.size() == 0 );
-	assert( fun.Range() == 1 );
-	assert( both.size() == n_fixed + n_random );
-	// ----------------------------------------------------------------------
-	typedef CppAD::vectorBool bool_sparsity;
-	size_t n_both = n_fixed + n_random;
-	// ----------------------------------------------------------------------
-	// compute Jacobian sparsity corresponding to parital w.r.t. random effects
-	bool_sparsity r(n_both * n_random);
-	for(size_t i = 0; i < n_both; i++)
-	{	for(size_t j = 0; j < n_random; j++)
-			r[i * n_random + j] = (i >= n_fixed) & ((i - n_fixed) == j);
-	}
-	fun.ForSparseJac(n_random, r);
-	// ----------------------------------------------------------------------
-	// compute sparsity pattern corresponding to
-	// partial w.r.t. (theta, u) of partial w.r.t. u
-	bool transpose = true;
-	bool_sparsity s(1), pattern;
-	s[0] = true;
-	pattern = fun.RevSparseHes(n_random, s, transpose);
-	// ----------------------------------------------------------------------
-	// Set the row and column indices
-	//
-	// subsample to just the random effects
-	std::set<size_t>::iterator itr;
-	for(size_t i = n_fixed; i < n_both; i++)
-	{	for(size_t j = 0; j < n_random; j++)
-		{	if( pattern[ i * n_random + j ] & ( i >= j + n_fixed ) )
-			{	// partial w.r.t u[i] of partial w.r.t theta[j]
-				row.push_back(i);
-				col.push_back(j + n_fixed);
-			}
-		}
-	}
-	// ----------------------------------------------------------------------
-	// create a weighting vector
-	CppAD::vector<Base> w(1);
-	w[0] = 1.0;
-	//
-	// place where results go
-	CppAD::vector<Base> not_used(row.size());
-	//
-	// extend sparsity pattern to all the variables
-	bool_sparsity extended_pattern(n_both * n_both);
-	for(size_t i = 0; i < n_both; i++)
-	{	for(size_t j = 0; j < n_fixed; j++)
-			extended_pattern[ i * n_both + j ] = false;
-		for(size_t j = 0; j < n_random; j++)
-			extended_pattern[i*n_both + j + n_fixed] = pattern[i*n_random + j];
-	}
-	//
-	// compute the work vector
-	fun.SparseHessian(
-		both,
-		w,
-		extended_pattern,
-		row,
-		col,
-		not_used,
-		work
-	);
-	return;
-}
-} // END_EMPTY_NAMESPACE
-
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 /*
@@ -186,7 +33,7 @@ $section Newton Step Algorithm Constructor$$
 
 $head Syntax$$
 $codei%CppAD::mixed::newton_step_algo %algo%(
-	%bool_sparsity%, %a1_adfun%, %theta%, %u%, %cholesky%
+	%a1_adfun%, %hes_info%, %theta%, %u%, %cholesky%
 )%$$
 
 $head Prototype$$
@@ -201,27 +48,39 @@ $head algo$$
 This is the Newton step algorithm object that is constructed
 by this operation.
 
-$head bool_sparsity$$
-If this is true, use boolean patterns
-(otherwise use set sparsity patterns)
-when computing the sparsity
-for the Hessian w.r.t the random effects of the
-$cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$;
-i.e. $latex f_{uu} ( \theta , u )$$.
-
 $head a1_adfun$$
 This is a recording of the function $latex f( \theta , u)$$
 for which we are checkpointing the Newton step and log determinant for.
 The routine $cref/pack(theta, u)/pack/$$ is used to
 convert the pair of vectors into the argument vector for $icode a1_adfun$$.
 
+$head hes_info$$
+This argument has prototype
+$code%
+	const CppAD::mixed::sparse_hes_info& %hes_info%
+%$$
+It is the $cref sparse_hes_info$$ for the Hessian with respect to the
+random effects (as a function of the fixed and random effects); i.e.
+$latex f_uu ( \theta , u)$$.
+The vector $icode%hes_info%.val%$$ is not used.
+
 $head theta$$
 This is a value for $latex \theta$$
 at which we can evaluate the Newton step and log determinant.
+If $cref/CPPAD_MIXED_USE_ATOMIC_CHOLESKY
+	/configure.hpp
+	/CPPAD_MIXED_USE_ATOMIC_CHOLESKY
+/$$
+is $code 0$$, $icode theta$$ is not used.
 
 $head u$$
 This is a value for $latex u$$
 at which we can evaluate the Newton step and log determinant.
+If $cref/CPPAD_MIXED_USE_ATOMIC_CHOLESKY
+	/configure.hpp
+	/CPPAD_MIXED_USE_ATOMIC_CHOLESKY
+/$$
+is $code 0$$, $icode u$$ is not used.
 
 $head cholesky$$
 This argument has prototype
@@ -301,8 +160,8 @@ $end
 // -------------------------------------------------------------------------
 // BEGIN PROTOTYPE
 newton_step_algo::newton_step_algo(
-	bool                          bool_sparsity ,
 	CppAD::ADFun<a1_double>&      a1_adfun      ,
+	const sparse_hes_info&        hes_info      ,
 	const CppAD::vector<double>&  theta         ,
 	const CppAD::vector<double>&  u             ,
 	sparse_ad_cholesky&           cholesky      )
@@ -311,12 +170,13 @@ newton_step_algo::newton_step_algo(
 n_fixed_ ( theta.size() ) ,
 n_random_( u.size()     ) ,
 a1_adfun_( a1_adfun     ) ,
+hes_info_( hes_info     ) ,
 cholesky_( cholesky     )
-{	assert( hes_info_.row.size() == 0 );
-	assert( hes_info_.col.size() == 0 );
-	assert( a1_adfun.Domain() == n_fixed_ + n_random_ );
+{	assert( a1_adfun.Domain() == n_fixed_ + n_random_ );
 	assert( a1_adfun.Range()  == 1 );
+	assert( hes_info.val.size() == 0 );
 	//
+# if CPPAD_MIXED_USE_ATOMIC_CHOLESKY
 	// total number of variables
 	size_t n_both = n_fixed_ + n_random_;
 	//
@@ -327,25 +187,6 @@ cholesky_( cholesky     )
 	for(size_t j = 0; j < n_random_; j++)
 		a1_theta_u[n_fixed_ + j] = u[j];
 	//
-	if( bool_sparsity ) random_hes_use_bool(
-		n_fixed_,
-		n_random_,
-		a1_theta_u,
-		a1_adfun_,
-		hes_info_.row,
-		hes_info_.col,
-		hes_info_.work
-	);
-	else random_hes_use_set(
-		n_fixed_,
-		n_random_,
-		a1_theta_u,
-		a1_adfun_,
-		hes_info_.row,
-		hes_info_.col,
-		hes_info_.work
-	);
-# if CPPAD_MIXED_USE_ATOMIC_CHOLESKY
 	// sparsity pattern not needed once we have hes_info_.work
 	CppAD::vectorBool not_used;
 	//
@@ -376,7 +217,6 @@ cholesky_( cholesky     )
 	// initialize cholesky_
 	cholesky_.initialize( a1_hessian );
 # endif
-	assert( hes_info_.val.size() == 0 );
 }
 /*
 ------------------------------------------------------------------------------
@@ -583,12 +423,14 @@ $spell
 	CppAD
 	checkpoint
 	checkpointing
+	hes
+	const
 $$
 
 $section Initialize the Newton Step Checkpoint Function$$
 
 $head Syntax$$
-$icode%newton_checkpoint%.initialize(%bool_sparsity%, %a1_adfun%, %theta%, %u%)
+$icode%newton_checkpoint%.initialize(%a1_adfun%, %hes_info%, %theta%, %u%)
 %$$
 
 $head Prototype$$
@@ -603,19 +445,21 @@ $head newton_checkpoint$$
 This is a Newton step object; see
 $cref/newton_checkpoint/newton_step_ctor/newton_checkpoint/$$.
 
-$head bool_sparsity$$
-If this is true, use boolean patterns
-(otherwise use set sparsity patterns)
-when computing the sparsity
-for the Hessian w.r.t the random effects of the
-$cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$;
-i.e. $latex f_{uu} ( \theta , u )$$.
-
 $head a1_adfun$$
 This is a recording of the function $latex f( \theta , u)$$
 for which we are checkpointing the Newton step and log determinant for.
 The routine $cref/pack(theta, u)/pack/$$ is used to
 convert the pair of vectors into the argument vector for $icode a1_adfun$$.
+
+$head hes_info$$
+This argument has prototype
+$code%
+	const CppAD::mixed::sparse_hes_info& %hes_info%
+%$$
+It is the $cref sparse_hes_info$$ for the Hessian with respect to the
+random effects (as a function of the fixed and random effects); i.e.
+$latex f_uu ( \theta , u)$$.
+The vector $icode%hes_info%.val%$$ is not used.
 
 $head theta$$
 This is a value for $latex \theta$$
@@ -640,8 +484,8 @@ $end
 */
 // BEGIN PROTOTYPE
 void newton_step::initialize(
-	bool                              bool_sparsity ,
 	CppAD::ADFun<a1_double>&          a1_adfun      ,
+	const sparse_hes_info&            hes_info      ,
 	const CppAD::vector<double>&      theta         ,
 	const CppAD::vector<double>&      u             )
 // END PROTOTYPE
@@ -650,7 +494,7 @@ void newton_step::initialize(
 	size_t n_fixed  = theta.size();
 	size_t n_random = u.size();
 	// algo
-	newton_step_algo algo(bool_sparsity, a1_adfun, theta, u, cholesky_);
+	newton_step_algo algo( a1_adfun, hes_info, theta, u, cholesky_);
 	// checkpoint_fun_
 	a1d_vector a1_theta_u_v(n_fixed + 2 * n_random);
 	for(size_t j = 0; j < n_fixed; j++)

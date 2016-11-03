@@ -39,8 +39,8 @@ bool newton_step_xam(void)
 	using CppAD::vector;
 	typedef CppAD::AD<double>    a1_double;
 	typedef CppAD::AD<a1_double> a2_double;
-
-	// create a function f(theta, u)
+	//
+	// compute a1_ad_fun --------------------------------------------------
 	size_t n_fixed  = 2;
 	size_t n_random = 3;
 	size_t n_both   = n_fixed + n_random;
@@ -57,7 +57,36 @@ bool newton_step_xam(void)
 		a2_f[0]       += term * term;
 	}
 	CppAD::ADFun<a1_double> a1_adfun(a2_theta_u, a2_f);
+	/// compute hes_ran
 	//
+	// only requesting Hessian w.r.t. random effects
+	CppAD::mixed::sparse_hes_info hes_ran;
+	hes_ran.row.resize(n_random);
+	hes_ran.col.resize(n_random);
+	for(size_t j = 0; j < n_random; j++)
+	{	hes_ran.row[j] = n_fixed + j;
+		hes_ran.col[j] = n_fixed + j;
+	}
+	// need sparsity pattern for entire Hessian
+	vector< std::set<size_t> > pattern(n_both);
+	for(size_t j = 0; j < n_both; j++)
+		pattern[j].insert(j);
+	vector<a1_double> w(1), both(n_both), not_used(n_random);
+	w[0] = 1.0;
+	for(size_t j = 0; j < n_both; j++)
+		both[j] = 0.0;
+	//
+	// compute hes_ran.work
+	a1_adfun.SparseHessian(
+		both,
+		w,
+		pattern,
+		hes_ran.row,
+		hes_ran.col,
+		not_used,
+		hes_ran.work
+	);
+	// create newton_checkpoint ---------------------------------------------
 	vector<double> theta(n_fixed), u(n_random);
 	for(size_t j = 0; j < n_fixed; j++)
 		theta[j] = 0.0;
@@ -65,9 +94,9 @@ bool newton_step_xam(void)
 		u[j] = 0.0;
 	//
 	CppAD::mixed::newton_step newton_checkpoint;
-	bool bool_sparsity = true;
-	newton_checkpoint.initialize(bool_sparsity, a1_adfun, theta, u);
+	newton_checkpoint.initialize(a1_adfun, hes_ran, theta, u);
 	//
+	// use and test newton_checkpoint ---------------------------------------
 	vector<a1_double> a1_theta_u_v(n_fixed + 2 * n_random);
 	for(size_t j = 0; j < n_fixed + 2 * n_random; j++)
 		a1_theta_u_v[j] = double(j);

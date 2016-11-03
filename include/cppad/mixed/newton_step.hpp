@@ -24,6 +24,7 @@ $spell
 	checkpointing
 	const
 	bool
+	hes
 $$
 
 $section Checkpoint Newton Step and Log Determinant Calculation$$
@@ -31,7 +32,7 @@ $section Checkpoint Newton Step and Log Determinant Calculation$$
 $head Syntax$$
 $codei%CppAD::mixed::newton_step %newton_checkpoint%()
 %$$
-$icode%newton_checkpoint%.initialize(%bool_sparsity%, %a1_adfun%, %theta%, %u%)
+$icode%newton_checkpoint%.initialize(%a1_adfun%, %hes_info%, %theta%, %u%)
 %$$
 $icode%sv% = newton_checkpoint%.size_var()
 %$$
@@ -69,22 +70,10 @@ $head initialize$$
 The $icode newton_checkpoint$$ object must be initialized,
 before any calls to its $code eval$$ routine, using the syntax
 $codei%
-	newton_checkpoint.initialize(%bool_sparsity%, %a1_adfun%, %theta%, %u%)
+	newton_checkpoint.initialize(%a1_adfun%, %hes_info%,  %theta%, %u%)
 %$$
 
-$head bool_sparsity$$
-This argument has prototype
-$codei%
-	bool %bool_sparsity%
-%$$
-If this is true, use boolean patterns
-(otherwise use set sparsity patterns)
-when computing the sparsity
-for the Hessian w.r.t the random effects of the
-$cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$;
-i.e. $latex f_{uu} ( \theta , u )$$.
-
-$head a1_adfun$$
+$subhead a1_adfun$$
 This $code initialize$$ argument has prototype
 $codei%
 	CppAD::ADFun< CppAD::AD<double> > %a1_adfun%
@@ -93,6 +82,16 @@ This is a recording of the function $latex f( \theta , u)$$
 for which we are checkpointing the Newton step and log determinant for.
 The routine $cref/pack(theta, u)/pack/$$ is used to
 convert the pair of vectors into the argument vector for $icode a1_adfun$$.
+
+$subhead hes_info$$
+This $code initialize$$ argument has prototype
+$code%
+	const CppAD::mixed::sparse_hes_info& %hes_info%
+%$$
+It is the $cref sparse_hes_info$$ for the Hessian with respect to the
+random effects (as a function of the fixed and random effects); i.e.
+$latex f_uu ( \theta , u)$$.
+The vector $icode%hes_info%.val%$$ is not used.
 
 $head theta$$
 This $code initialize$$ argument has prototype
@@ -197,8 +196,8 @@ private:
 public:
 	// constructor for algorithm that is checkpointed
 	newton_step_algo(
-		bool                              bool_sparsity ,
 		CppAD::ADFun<a1_double>&          a1_adfun      ,
+		const sparse_hes_info&            hes_info      ,
 		const CppAD::vector<double>&      theta         ,
 		const CppAD::vector<double>&      u             ,
 		sparse_ad_cholesky&               cholesky
@@ -229,8 +228,8 @@ public:
 	~newton_step(void);
 	// setup the checkpoint function
 	void initialize(
-		bool                              bool_sparsity ,
 		CppAD::ADFun<a1_double>&          a1_adfun      ,
+		const sparse_hes_info&            hes_info      ,
 		const CppAD::vector<double>&      fixed_vec     ,
 		const CppAD::vector<double>&      random_vec
 	);

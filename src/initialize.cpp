@@ -273,7 +273,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 			// newton_checkpoint_
 			assert( ! init_newton_checkpoint_done_ );
 			newton_checkpoint_.initialize(
-				bool_sparsity, ran_like_a1fun_, fixed_vec, random_vec
+				ran_like_a1fun_, ran_hes_, fixed_vec, random_vec
 			);
 			init_newton_checkpoint_done_ = true;
 

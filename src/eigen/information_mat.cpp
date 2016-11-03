@@ -147,7 +147,7 @@ CppAD::mixed::sparse_mat_info cppad_mixed::try_information_mat(
 			// newton_checkpoint_
 			assert( ran_like_a1fun_.size_var() > 0  );
 			newton_checkpoint_.initialize(
-				bool_sparsity, ran_like_a1fun_, fixed_opt, random_opt
+				ran_like_a1fun_, ran_hes_, fixed_opt, random_opt
 			);
 			init_newton_checkpoint_done_ = true;;
 			//

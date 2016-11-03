@@ -92,4 +92,4 @@ echo_eval sed -f test_one.$$ -i $find_dir/$find_dir.cpp
 echo_eval rm test_one.$$
 # ---------------------------------------------------------------------------
 echo_eval cd build
-echo_eval make "check_$dir"
+echo_eval make "check_$find_dir"

@@ -41,7 +41,7 @@ $codei%
 %$$
 It has size zero when it is constructed.
 After initialization it should contain the row indices
-corresponding to possibly non-zero elements of the Hessian.
+for elements of the Hessian that get computed.
 
 $head col$$
 The field $icode%hes_info%.col%$$ has prototype
@@ -50,8 +50,8 @@ $codei%
 %$$
 It has size zero when it is constructed.
 After initialization it should contain the column indices
-corresponding to possibly non-zero elements of the Hessian
-and has the same size as $icode%hes_info%.row%$$.
+for elements of the Hessian that get computed.
+It must has the same size as $icode%hes_info%.row%$$.
 
 $head val$$
 The field $icode%hes_info%.val%$$ has prototype
@@ -60,6 +60,9 @@ $codei%
 %$$
 It has size zero when it is constructed.
 After initialization it should be that same size as $icode%hes_info%.row%$$.
+(In the special case where $icode hes_info$$ is used to compute
+Hessian values with type other than $code double$$,
+$icode%hes_info%.val%$$ can have size zero.)
 
 $head work$$
 The field $icode%hes_info%.work%$$ has prototype

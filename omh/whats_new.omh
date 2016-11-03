@@ -47,6 +47,15 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 11-02$$
+The sparsity pattern and other information related to the Hessian of the
+$cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$,
+$latex f_{uu} ( \theta , u )$$, was being computed twice, if
+$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ was false,
+or if $cref information_mat$$ was called.
+This has been fixed
+
+
 $head 10-30$$
 $list number$$
 The $cref/A_info/initialize/A_info/$$ argument was missing

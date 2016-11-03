@@ -42,7 +42,7 @@ $codei%
 %$$
 It has size zero when it is constructed.
 After initialization it should contain the row indices
-corresponding to possibly non-zero elements of the Jacobian.
+for the elements of the Jacobian that are computed.
 
 $head col$$
 The field $icode%jac_info%.col%$$ has prototype
@@ -51,8 +51,8 @@ $codei%
 %$$
 It has size zero when it is constructed.
 After initialization it should contain the column indices
-corresponding to possibly non-zero elements of the Jacobian
-and has the same size as $icode%jac_info%.row%$$.
+for the elements of the Jacobian that are computed.
+It must have the same size as $icode%jac_info%.row%$$.
 
 $head val$$
 The field $icode%jac_info%.val%$$ has prototype
@@ -61,6 +61,9 @@ $codei%
 %$$
 It has size zero when it is constructed.
 After initialization it should be that same size as $icode%jac_info%.row%$$.
+(In the special case where $icode jac_info$$ is used to compute
+Jacobian values with type other than $code double$$,
+$icode%jac_info%.val%$$ can have size zero.)
 
 $head direction$$
 The field $icode%jac_info%.direction%$$ has prototype
