@@ -22,6 +22,7 @@
 #                        -D ldlt_cholmod=value \
 #                        -D log_fatal_error=value \
 #                        -D use_atomic_cholesky=value \
+#                        -D checkpoint_newton_step=value \
 #                        -D optimize_operation_sequence=value
 # ============================================================================
 # Macro definitions
@@ -171,10 +172,13 @@ required_definition(ldlt_cholmod BOOL
 	"use cholmod LDLT factorization where possible (instead of eigen)"
 )
 required_definition(log_fatal_error BOOL
-	"should cppad_mixed use fatal_error or generate asserts"
+	"use fatal_error or replace it by an assert (for debugging)"
 )
 required_definition(use_atomic_cholesky BOOL
-	"should cppad_mixed use the sparse_ad_cholesky atomic operation"
+	"use the CppAD::mixed::sparse_ad_cholesky AD atomic operation"
+)
+required_definition(checkpoint_newton_step BOOL
+	"checkpoint the newton step (to reduce memory requirements)"
 )
 required_definition(optimize_cppad_function BOOL
 	"should AD operation sequences be optimized (false is for debug purposes)"

@@ -92,6 +92,15 @@ log_fatal_error='YES'
 use_atomic_cholesky='NO'
 # &&
 #
+# &head checkpoint_newton_step&&
+# If YES, &code cppad_mixed&& will checkpoint the
+# &cref newton_step&&. Otherwise, repeated applications of the Newton step
+# are recorded on the AD tape (which should require more memory but may be
+# faster).
+# &codep
+checkpoint_newton_step='NO'
+# &&
+#
 # &head optimize_cppad_function&&
 # If YES, the operation sequence for certain CppAD functions
 # will be optimized. This makes the code run faster but in some cases
@@ -129,6 +138,7 @@ usage: bin/run_cmake.sh \\
 	[--ldlt_eigen] \\
 	[--no_log]   \\
 	[--use_atomic_cholesky] \\
+	[--checkpoint_newton_step] \\
 	[--optimize_cppad_function] \\
 	[--release]
 EOF
@@ -146,6 +156,9 @@ EOF
 	elif [ "$1" == '--use_atomic_cholesky' ]
 	then
 		use_atomic_cholesky='YES'
+	elif [ "$1" == '--checkpoint_newton_step' ]
+	then
+		checkpoint_newton_step='YES'
 	elif [ "$1" == '--optimize_cppad_function' ]
 	then
 		optimize_cppad_function='YES'
@@ -189,6 +202,7 @@ cmake \
 	-D ldlt_cholmod="$ldlt_cholmod" \
 	-D log_fatal_error="$log_fatal_error" \
 	-D use_atomic_cholesky="$use_atomic_cholesky" \
+	-D checkpoint_newton_step="$checkpoint_newton_step" \
 	-D optimize_cppad_function="$optimize_cppad_function" \
 	..
 # ---------------------------------------------------------------------------

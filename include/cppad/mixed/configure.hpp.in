@@ -47,6 +47,11 @@ If $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$
 is $code YES$$, this symbol is defined as $code 1$$.
 Otherwise it is defined as $code 0$$.
 
+$head CPPAD_MIXED_CHECKPOINT_NEWTON_STEP$$
+If $cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$
+is $code YES$$, this symbol is defined as $code 1$$.
+Otherwise it is defined as $code 0$$.
+
 $head CPPAD_MIXED_LOG_FATAL_ERROR$$
 If $cref/log_fatal_error/run_cmake.sh/log_fatal_error/$$
 is $code YES$$, this symbol is defined as $code 1$$.
@@ -80,6 +85,7 @@ $end
 
 # define CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION @optimize_cppad_function_01@
 # define CPPAD_MIXED_USE_ATOMIC_CHOLESKY     @use_atomic_cholesky_01@
+# define CPPAD_MIXED_CHECKPOINT_NEWTON_STEP  @checkpoint_newton_step_01@
 # define CPPAD_MIXED_LOG_FATAL_ERROR         @log_fatal_error_01@
 # define CPPAD_MIXED_LDLT_CHOLMOD            @ldlt_cholmod_01@
 

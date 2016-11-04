@@ -41,11 +41,18 @@ $spell
 	ls
 	libdir
 	Taylor
+	checkpointed
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
+
+$head 11-04$$
+This the first version with $code cppad_mixed$$ with the
+$cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$ option.
+Previously, the Newton step was always checkpointed.
+
 
 $head 11-02$$
 The sparsity pattern and other information related to the Hessian of the

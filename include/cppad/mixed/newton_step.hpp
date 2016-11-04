@@ -21,22 +21,23 @@ $spell
 	var
 	eval
 	CppAD
-	checkpointing
 	const
 	bool
 	hes
+	Checkpoint
+	checkpointed
 $$
 
-$section Checkpoint Newton Step and Log Determinant Calculation$$
+$section Newton Step and Log Determinant Calculation$$
 
 $head Syntax$$
-$codei%CppAD::mixed::newton_step %newton_checkpoint%()
+$codei%CppAD::mixed::newton_step %newton_object%()
 %$$
-$icode%newton_checkpoint%.initialize(%a1_adfun%, %hes_info%, %theta%, %u%)
+$icode%newton_object%.initialize(%a1_adfun%, %hes_info%, %theta%, %u%)
 %$$
-$icode%sv% = newton_checkpoint%.size_var()
+$icode%sv% = newton_object%.size_var()
 %$$
-$icode%newton_checkpoint%.eval(%a1_theta_u_v%, %a1_logdet_step%)
+$icode%newton_object%.eval(%a1_theta_u_v%, %a1_logdet_step%)
 %$$
 
 $head Private$$
@@ -50,7 +51,7 @@ and a log-determinant calculation.
 $head Constructor$$
 The sparse Hessian checkpoint object constructor
 $codei%
-	newton_step %newton_checkpoint%()
+	newton_step %newton_object%()
 %$$
 creates a $code CppAD::checkpoint<double>$$ object for evaluating
 the log of the determinant
@@ -63,14 +64,14 @@ $latex \[
 \] $$
 
 $head Destructor$$
-The object $icode newton_checkpoint$$ must still exist (not be destructed)
-for as long as any $code CppAD::ADFun$$ objects use its checkpoint operation.
+The $icode newton_object$$ must still exist (not be destructed)
+for as long as any $code CppAD::ADFun$$ objects use its operations.
 
 $head initialize$$
-The $icode newton_checkpoint$$ object must be initialized,
+The $icode newton_object$$ must be initialized,
 before any calls to its $code eval$$ routine, using the syntax
 $codei%
-	newton_checkpoint.initialize(%a1_adfun%, %hes_info%,  %theta%, %u%)
+	newton_object.initialize(%a1_adfun%, %hes_info%,  %theta%, %u%)
 %$$
 
 $subhead a1_adfun$$
@@ -79,7 +80,7 @@ $codei%
 	CppAD::ADFun< CppAD::AD<double> > %a1_adfun%
 %$$
 This is a recording of the function $latex f( \theta , u)$$
-for which we are checkpointing the Newton step and log determinant for.
+for which we are evaluating the Newton step and log determinant for.
 The routine $cref/pack(theta, u)/pack/$$ is used to
 convert the pair of vectors into the argument vector for $icode a1_adfun$$.
 
@@ -157,6 +158,13 @@ where $latex s$$ is the Newton step; i.e.,
 $latex \[
 	s = f_{uu} ( \theta , u )^{-1} v
 \] $$
+
+$subhead Checkpoint$$
+If $cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$ is
+true, the operation of one Newton step is checkpointed; i.e.,
+only one Newton step is taped.
+Otherwise, each of the repeated Newton steps is recorded as part of the
+corresponding $code CppAD::AD<double>$$ operations.
 
 $head Example$$
 The file $cref newton_step.cpp$$ is an example

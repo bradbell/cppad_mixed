@@ -15,19 +15,49 @@ then
 	exit 1
 fi
 # ---------------------------------------------------------------------------
-if [ "$1" != 'd' ]  &&
-   [ "$1" != 'r' ]  &&
-   [ "$1" != 'da' ] &&
-   [ "$1" != 'ra' ]
+ok='yes'
+if [ "$1" != 'd' ]  && [ "$1" != 'r' ]
 then
-	echo 'bin/check_all.sh [d|r|da|ra]'
-	echo 'd  = debug'
-	echo 'da = debug with atomic_cholesky'
-	echo 'r  = release'
-	echo 'ra = release with atomic_cholesky'
+	ok='no'
+fi
+if [ "$2" != 'a' ]  && [ "$2" != 't' ]
+then
+	ok='no'
+fi
+if [ "$3" != 'c' ]  && [ "$3" != 'n' ]
+then
+	ok='no'
+fi
+if [ "$ok" != 'yes' ]
+then
+	echo 'bin/check_all.sh build_type cholesky newton_step'
+	echo 'build_type  = "d" (debug) or "r" (release)'
+	echo 'cholesky    = "a" (atomic) or "t" (taped)'
+	echo 'newton_step = 'c' (checkpointed) or 'n' (no checkpointing)'
 	exit 1
 fi
-option="$1"
+if [ "$1" == 'r' ]
+then
+	build_type='release'
+	release='--release'
+	optimize_cppad_function='--optimize_cppad_function'
+else
+	build_type='debug'
+	release=''
+	optimize_cppad_function=''
+fi
+if [ "$2" == 'a' ]
+then
+	use_atomic_cholesky='--use_atomic_cholesky'
+else
+	use_atomic_cholesky=''
+fi
+if [ "$3" == 'c' ]
+then
+	checkpoint_newton_step='--checkpoint_newton_step'
+else
+	checkpoint_newton_step=''
+fi
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
@@ -45,26 +75,11 @@ do
 	fi
 done
 # ----------------------------------------------------------------------------
-if [ "$option" == 'd' ]
-then
-	build_type='debug'
-	bin/run_cmake.sh
-elif [ "$option" == 'da' ]
-then
-	build_type='debug'
-	bin/run_cmake.sh --use_atomic_cholesky
-elif [ "$option" == 'r' ]
-then
-	build_type='release'
-	bin/run_cmake.sh --release --optimize_cppad_function
-elif [ "$option" == 'ra' ]
-then
-	build_type='release'
-	bin/run_cmake.sh --release --use_atomic_cholesky --optimize_cppad_function
-else
-	echo 'error in check_all.sh script'
-	exit 1
-fi
+bin/run_cmake.sh \
+	$release \
+	$use_atomic_cholesky \
+	$checkpoint_newton_step \
+	$optimize_cppad_function
 # ----------------------------------------------------------------------------
 bin/run_omhelp.sh xml
 #
