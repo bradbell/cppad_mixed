@@ -191,16 +191,16 @@ private:
 		// information for computing f_uu (theta , u)
 		// (hes_info.val is not used and has size zero)
 		sparse_hes_info&                  hes_info_;
-		// reference to sparse Cholesky factorization in newton step object
-		sparse_ad_cholesky&               cholesky_;
+		// Sparse Cholesky factorization as an atomic AD operation.
+		// It must live (not be destroyed) for as long as any tape that uses it.
+		sparse_ad_cholesky                cholesky_;
 public:
 	// constructor for algorithm that is checkpointed
 	newton_step_algo(
 		CppAD::ADFun<a1_double>&          a1_adfun      ,
 		sparse_hes_info&                  hes_info      ,
 		const CppAD::vector<double>&      theta         ,
-		const CppAD::vector<double>&      u             ,
-		sparse_ad_cholesky&               cholesky
+		const CppAD::vector<double>&      u
 	);
 	// evaluates algorithm that is checkpointed
 	void operator()(
@@ -214,13 +214,12 @@ class newton_step {
 	typedef CppAD::AD<double>             a1_double;
 	typedef CppAD::vector<a1_double>      a1d_vector;
 private:
+	// Algorithm corresponding to newton step is constructed
+	// during newton_step::initialize, so use pointer
+	newton_step_algo*                     algo_;
+	//
 	// checkpoint version of the newton step algorithm
 	CppAD::checkpoint<double>*            checkpoint_fun_;
-	//
-	// Sparse Cholesky factorization as an atomic AD operation.
-	// Stored here becasue newton_step_algo object does not persist
-	// for the lenght of time that cholesky_ call backs are used by CppAD.
-	sparse_ad_cholesky                    cholesky_;
 public:
 	// constuctor
 	newton_step(void);

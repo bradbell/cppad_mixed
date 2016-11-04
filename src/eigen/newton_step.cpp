@@ -24,7 +24,7 @@ $spell
 	adfun
 	const
 	hes
-	cholesky
+	cholesky cholesky
 	Hlow
 	Eigen
 $$
@@ -33,7 +33,7 @@ $section Newton Step Algorithm Constructor$$
 
 $head Syntax$$
 $codei%CppAD::mixed::newton_step_algo %algo%(
-	%a1_adfun%, %hes_info%, %theta%, %u%, %cholesky%
+	%a1_adfun%, %hes_info%, %theta%, %u%,
 )%$$
 
 $head Prototype$$
@@ -83,16 +83,13 @@ If $cref/CPPAD_MIXED_USE_ATOMIC_CHOLESKY
 /$$
 is $code 0$$, $icode u$$ is not used.
 
-$head cholesky$$
-This argument has prototype
+$head cholesky_$$
+This member variable has prototype
 $codei%
-	CppAD::mixed::sparse_ad_cholesky& %cholesky%
+	CppAD::mixed::sparse_ad_cholesky cholesky_
 %$$
-The member $code cholesky_$$
-is set to be a reference to $icode cholesky$$.
-In addition,
 $codei%
-	%cholesky%.initialize( %a1_Hlow% )
+	cholesky_.initialize( %a1_Hlow% )
 %$$
 is called where $icode a1_Hlow$$ has prototype
 $codei%
@@ -143,15 +140,13 @@ newton_step_algo::newton_step_algo(
 	CppAD::ADFun<a1_double>&      a1_adfun      ,
 	sparse_hes_info&              hes_info      ,
 	const CppAD::vector<double>&  theta         ,
-	const CppAD::vector<double>&  u             ,
-	sparse_ad_cholesky&           cholesky      )
+	const CppAD::vector<double>&  u             )
 // END PROTOTYPE
 :
 n_fixed_ ( theta.size() ) ,
 n_random_( u.size()     ) ,
 a1_adfun_( a1_adfun     ) ,
-hes_info_( hes_info     ) ,
-cholesky_( cholesky     )
+hes_info_( hes_info     )
 {	assert( a1_adfun.Domain() == n_fixed_ + n_random_ );
 	assert( a1_adfun.Range()  == 1 );
 	assert( hes_info.row.size() == hes_info.col.size() );
@@ -358,6 +353,7 @@ $begin newton_step_ctor$$
 $spell
 	CppAD
 	eval
+	algo
 $$
 
 $section Newton Step Checkpoint Function Constructor$$
@@ -374,6 +370,15 @@ $head newton_checkpoint$$
 This is the CppAD checkpoint function object that is constructed
 by this operation.
 
+$head algo_$$
+This member variable has prototype
+$codei%
+	CppAD::mixed::newton_step_algo* algo_;
+%$$
+It is set to $code null$$ by the constructor.
+It must constructed during the
+$cref/initialize/newton_step/initialize/$$ process.
+
 $head checkpoint_fun_$$
 This member variable has prototype
 $codei%
@@ -388,12 +393,15 @@ $cref/eval/newton_step/eval/$$ is used.
 $end
 */
 // newton_step ctor
-newton_step::newton_step(void)
-: checkpoint_fun_(CPPAD_MIXED_NULL_PTR)
+newton_step::newton_step(void) :
+algo_          (CPPAD_MIXED_NULL_PTR)   ,
+checkpoint_fun_(CPPAD_MIXED_NULL_PTR)
 { }
 // newton_step destructor
 newton_step::~newton_step(void)
-{	if( checkpoint_fun_ != CPPAD_MIXED_NULL_PTR )
+{	if( algo_ != CPPAD_MIXED_NULL_PTR )
+		delete algo_;
+	if( checkpoint_fun_ != CPPAD_MIXED_NULL_PTR )
 		delete checkpoint_fun_;
 }
 /*
@@ -471,12 +479,15 @@ void newton_step::initialize(
 	const CppAD::vector<double>&      theta         ,
 	const CppAD::vector<double>&      u             )
 // END PROTOTYPE
-{	assert( checkpoint_fun_ == CPPAD_MIXED_NULL_PTR );
+{	assert( algo_           == CPPAD_MIXED_NULL_PTR );
+	assert( checkpoint_fun_ == CPPAD_MIXED_NULL_PTR );
 	//
 	size_t n_fixed  = theta.size();
 	size_t n_random = u.size();
 	// algo
-	newton_step_algo algo( a1_adfun, hes_info, theta, u, cholesky_);
+	algo_ = new newton_step_algo( a1_adfun, hes_info, theta, u);
+	assert( algo_ != CPPAD_MIXED_NULL_PTR );
+	//
 	// checkpoint_fun_
 	a1d_vector a1_theta_u_v(n_fixed + 2 * n_random);
 	for(size_t j = 0; j < n_fixed; j++)
@@ -492,7 +503,7 @@ void newton_step::initialize(
 		CppAD::atomic_base<double>::pack_sparsity_enum;
 	bool optimize = bool( CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION );
 	checkpoint_fun_ = new CppAD::checkpoint<double>(
-		name, algo, a1_theta_u_v, a1_logdet_step, sparsity, optimize
+		name, *algo_, a1_theta_u_v, a1_logdet_step, sparsity, optimize
 	);
 	assert( checkpoint_fun_ != CPPAD_MIXED_NULL_PTR );
 }
