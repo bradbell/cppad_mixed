@@ -26,6 +26,8 @@ $spell
 	ipopt
 	gsl_rng
 	alloc
+	cholesky
+	ldlt_cholmod
 $$
 
 $section A Capture Example and Speed Test$$
@@ -204,6 +206,29 @@ is the value of the fixed effects used to simulate the data.
 Otherwise, the initial point is significantly different from this value.
 
 $head Output$$
+Each output name, value pair is written in as $icode%name% = %value%$$
+where the amount of spaces surrounding the equal sign is not specified.
+All of the pairs listed above are output.
+In addition, the following name value pairs are also output.
+
+$subhead cppad_mixed_version$$
+The $code cppad_mixed$$ version number.
+
+$subhead use_atomic_cholesky$$
+Is $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$
+zero (NO) or one (YES).
+
+$subhead check_point_newton_step$$
+Is $cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$
+zero (NO) or one (YES).
+
+$subhead ldlt_cholmod$$
+Is $cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$
+zero (NO) or one (YES).
+
+$subhead optimize_cppad_function$$
+Is $cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$
+zero (NO) or one (YES).
 
 $subhead actual_seed$$
 If $icode random_seed$$ is zero,
@@ -521,6 +546,7 @@ $end
 # include <cppad/utility/elapsed_seconds.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/manage_gsl_rng.hpp>
+# include <cppad/mixed/configure.hpp>
 
 namespace { // BEGIN_EMPTY_NAMESPACE
 
@@ -766,6 +792,15 @@ void label_print(const char* label, const double& value)
 	size_t n_digits = 3 + size_t( std::log10(value) + 1e-9 );
 	std::cout << " = " << std::setprecision(n_digits) << value << std::endl;
 }
+void bool_print(const char* label, bool value)
+{	std::cout << std::setw(35) << std::left << label;
+	if( value )
+		std::cout << " = true";
+	else
+		std::cout << " = false";
+	std::cout << std::endl;
+}
+
 } // END_EMPTY_NAMESPACE
 
 int main(int argc, const char *argv[])
@@ -851,6 +886,13 @@ int main(int argc, const char *argv[])
 	assert( hold_memory || hold_memory_str =="false" );
 	assert( derivative_test || derivative_test_str =="false" );
 	assert( start_near_solution || start_near_solution_str =="false" );
+	//
+	// configuration options
+	label_print("cppad_mixed_version",    CPPAD_MIXED_VERSION);
+	bool_print("use_atomic_cholesky",     CPPAD_MIXED_USE_ATOMIC_CHOLESKY);
+	bool_print("check_point_newton_step", CPPAD_MIXED_CHECKPOINT_NEWTON_STEP);
+	bool_print("ldlt_cholmod",            CPPAD_MIXED_LDLT_CHOLMOD);
+	bool_print("optimize_cppad_function", CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION);
 	//
 	// Get actual seed (different when random_seed is zero).
 	size_t actual_seed     = CppAD::mixed::new_gsl_rng( random_seed );

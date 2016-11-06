@@ -484,11 +484,14 @@ void newton_step::initialize(
 	//
 	size_t n_fixed  = theta.size();
 	size_t n_random = u.size();
-	// algo
+	//
+	// creatge algo
 	algo_ = new newton_step_algo( a1_adfun, hes_info, theta, u);
 	assert( algo_ != CPPAD_MIXED_NULL_PTR );
 	//
-	// checkpoint_fun_
+# if CPPAD_MIXED_CHECKPOINT_NEWTON_STEP
+	//  create checkpoint_fun_
+	//
 	a1d_vector a1_theta_u_v(n_fixed + 2 * n_random);
 	for(size_t j = 0; j < n_fixed; j++)
 		a1_theta_u_v[j] = theta[j];
@@ -506,6 +509,7 @@ void newton_step::initialize(
 		name, *algo_, a1_theta_u_v, a1_logdet_step, sparsity, optimize
 	);
 	assert( checkpoint_fun_ != CPPAD_MIXED_NULL_PTR );
+# endif
 }
 /*
 -----------------------------------------------------------------------------
@@ -589,8 +593,14 @@ void newton_step::eval(
 	const a1d_vector& a1_theta_u_v  ,
 	a1d_vector&       a1_logdet_step )
 // END PROTOTYPE
-{	assert( checkpoint_fun_ != CPPAD_MIXED_NULL_PTR );
+{	assert( algo_ != CPPAD_MIXED_NULL_PTR );
+	//
+# if CPPAD_MIXED_CHECKPOINT_NEWTON_STEP
+	assert( checkpoint_fun_ != CPPAD_MIXED_NULL_PTR );
 	(*checkpoint_fun_)(a1_theta_u_v, a1_logdet_step);
+# else
+	(*algo_)(a1_theta_u_v, a1_logdet_step);
+# endif
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE
