@@ -10,14 +10,12 @@
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
 version='20161104'
-hash_code='47f22afd7d2495b888404922ec3fd0eedb0f277e'
 if [ "$0" != "bin/paper.sh" ]
 then
 	echo "bin/paper.sh: must be executed from its parent directory"
 	exit 1
 fi
 # ---------------------------------------------------------------------------
-git checkout --quiet $hash_code
 check=`bin/version.sh get`
 if [ "$check" != "$version" ]
 then
@@ -27,7 +25,7 @@ fi
 # ---------------------------------------------------------------------------
 # ar1_xam commanmd line options
 random_seed='0'
-number_random='500'
+number_random='1000'
 quasi_fixed='false'
 trace_optimize_fixed='false'
 ipopt_solve='false'
@@ -48,14 +46,15 @@ do
 	do
 		a=`echo "$atomic" | tr A-Z a-z`
 		c=`echo "$checkpoint" | tr A-Z a-z`
+		file="ar1_xam_${a}_${c}.out"
 		use=''
-		if [ ! -e "build/speed/ar1_xam_${a}_${c}" ]
+		if [ ! -e "build.release/speed/$file" ]
 		then
 			use='n'
 		else
 			while [ "$use" != 'y' ] && [ "$use" != 'n' ]
 			do
-				read -p "use existing ar1_xam_${a}_${c} [y/n] ?" use
+				read -p "use existing $file [y/n] ?" use
 			done
 		fi
 		if [ "$use" == 'n' ]
@@ -78,30 +77,51 @@ do
 			fi
 			rm paper.tmp
 			#
-			cd build
+			cd build.release
 			make speed_ar1_xam
 			mv speed/ar1_xam speed/ar1_xam_${a}_${c}
-			cd ..
+			cd speed
+			echo "ar1_xam_${a}_${c} > build.release/speed/$file"
+			./ar1_xam_${a}_${c} > $file \
+				$random_seed \
+				$number_random \
+				$quasi_fixed \
+				$trace_optimize_fixed \
+				$ipopt_solve \
+				$bool_sparsity \
+				$hold_memory \
+				$derivative_test \
+				$start_near_solution
+			cd ../..
 		fi
-		#
-		cd build/speed
-		echo "ar1_xam_${a}_${c} > build/speed/ar1_xam_${a}_${c}.out"
-		./ar1_xam_${a}_${c} > ar1_xam_${a}_${c}.out \
-			$random_seed \
-			$number_random \
-			$quasi_fixed \
-			$trace_optimize_fixed \
-			$ipopt_solve \
-			$bool_sparsity \
-			$hold_memory \
-			$derivative_test \
-			$start_near_solution
-		cd ../..
 	done
 done
 # ---------------------------------------------------------------------------
 # restore bin/run_camke.sh and bin/check_install.sh
 git checkout bin/run_cmake.sh
 git checkout bin/check_install.sh
+# ---------------------------------------------------------------------------
+echo '      (atmoic, checkpoint)'
+echo 'name: (yes,yes) (yes,no) (no,yes) (no,no)'
+list='
+	initialize_bytes
+	initialize_seconds
+	optimize_fixed_seconds
+	information_mat_seconds
+'
+for name in $list
+do
+	line="$name"
+	for a in yes no
+	do
+		for c in yes no
+		do
+			file="build.release/speed/ar1_xam_${a}_${c}.out"
+			value=`sed < $file -n -e "/^$name *=/p" | sed  -e 's|.*= *||'`
+			line="$line $value"
+		done
+	done
+	echo "$line"
+done
 # ---------------------------------------------------------------------------
 echo 'compare.sh: OK'

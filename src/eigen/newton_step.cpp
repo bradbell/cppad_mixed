@@ -481,17 +481,16 @@ void newton_step::initialize(
 // END PROTOTYPE
 {	assert( algo_           == CPPAD_MIXED_NULL_PTR );
 	assert( checkpoint_fun_ == CPPAD_MIXED_NULL_PTR );
+	// create algo
 	//
-	size_t n_fixed  = theta.size();
-	size_t n_random = u.size();
-	//
-	// creatge algo
 	algo_ = new newton_step_algo( a1_adfun, hes_info, theta, u);
 	assert( algo_ != CPPAD_MIXED_NULL_PTR );
 	//
 # if CPPAD_MIXED_CHECKPOINT_NEWTON_STEP
 	//  create checkpoint_fun_
 	//
+	size_t n_fixed  = theta.size();
+	size_t n_random = u.size();
 	a1d_vector a1_theta_u_v(n_fixed + 2 * n_random);
 	for(size_t j = 0; j < n_fixed; j++)
 		a1_theta_u_v[j] = theta[j];
