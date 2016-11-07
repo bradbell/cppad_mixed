@@ -155,6 +155,8 @@ Is the amount of heap memory, in bytes,
 added to the derived class object
 during its $cref initialize$$ call.
 Note that more temporary memory may have been used during this call.
+In addition, only memory allocated using $code CppAD::thread_alloc$$ is
+included.
 
 $subhead initialize_seconds$$
 Is the number of seconds used by the derived class $cref initialize$$ call.

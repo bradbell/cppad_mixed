@@ -22,6 +22,7 @@ These user examples are not for a particular public member function.
 $$
 $children%speed/ar1_xam.cpp
 	%speed/capture_xam.cpp
+	%bin/compare.py
 	%example/user/abs_density.cpp
 	%example/user/no_random.cpp
 	%example/user/ran_constraint.cpp
@@ -53,6 +54,7 @@ $head Example Programs$$
 $table
 $rref ar1_xam.cpp$$
 $rref capture_xam.cpp$$
+$rref compare.py$$
 $tend
 
 $head Other Examples$$

@@ -9,6 +9,110 @@
 #	     GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
+# $begin compare.py$$ $newlinech #$$
+# $spell
+#	py
+#	cppad
+#	cholesky
+#	ar1_xam
+# $$
+# $section Compare Speed for Different Options$$
+#
+# $head Syntax$$
+# $codei%bin/compare.py %use_existing%$$
+#
+# $head Purpose$$
+# This program compares program memory and speed for different choices
+# of two of the $code cppad_mixed$$ configuration options.
+# To be specific the
+# $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$ and
+# $cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$ options.
+#
+# $head Program Files$$
+# The program files are compiled versions of $cref ar1_xam.cpp$$
+# and are named
+# $codei%
+#	build.release/speed/ar1_xam_%atomic%_%checkpoint%
+# %$$
+# for $icode atomic$$ equal to $code yes$$, $code no$$ and
+# for $icode checkpoint$$ equal to $code yes$$, $code no$$.
+# The value of $icode atomic$$ is
+# $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$ and
+# $icode checkpoint$$ is
+# $cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$ for
+# the corresponding results.
+#
+# $head Result Files$$
+# The results files are versions $cref ar1_xam.cpp$$ output and named
+# $codei%
+#	build.release/speed/ar1_xam_%atomic%_%checkpoint%.out
+# %$$
+# for $icode atomic$$ equal to $code yes$$, $code no$$ and
+# for $icode checkpoint$$ equal to $code yes$$, $code no$$.
+# The value of $icode atomic$$ is
+# $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$ and
+# $icode checkpoint$$ is
+# $cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$ for
+# the corresponding results.
+#
+# $head use_existing$$
+# This command line argument is either $code yes$$ or $code no$$.
+# If it is $code yes$$ then the existing result files are used to
+# create the summary report. Otherwise, all of the program files
+# and result files are recreated.
+#
+# $head Summary Report$$
+# The following is an example summary report:
+# $codei%
+# (atomic,checkpoint)         (yes,yes)    (yes,no)    (no,yes)     (no,no)
+# initialize_kilobytes       4584.84277  5726.60156  3794.27832  4826.60352
+# initialize_seconds           86.32590    38.13230     0.17443     0.08411
+# optimize_fixed_seconds      231.10520   202.26070     0.28559     0.16530
+# information_mat_seconds      29.74650    25.82490     0.00221     0.00170
+# %$$
+#
+# $head initialize_kilobytes$$
+# The values in this row are
+# $cref/initialize_bytes/ar1_xam.cpp/Output/initialize_bytes/$$ divided by 1024
+# for the case corresponding to each column.
+#
+# $head initialize_seconds$$
+# The values in this row are
+# $cref/initialize_seconds/ar1_xam.cpp/Output/initialize_seconds/$$
+# for the case corresponding to each column.
+#
+# $head optimize_fixed_seconds$$
+# The values in this row are
+# $cref/optimize_fixed_seconds/ar1_xam.cpp/Output/optimize_fixed_seconds/$$
+# for the case corresponding to each column.
+#
+# $head information_mat_seconds$$
+# The values in this row are
+# $cref/information_mat_seconds/ar1_xam.cpp/Output/information_mat_seconds/$$
+# for the case corresponding to each column.
+#
+# $head (yes,yes)$$
+# The values in this column correspond to
+# $icode%use_atomic_cholesky% = yes%$$ and
+# $icode%checkpoint% = yes%$$.
+#
+# $head (yes,no)$$
+# The values in this column correspond to
+# $icode%use_atomic_cholesky% = yes%$$ and
+# $icode%checkpoint% = no%$$.
+#
+# $head (no,yes)$$
+# The values in this column correspond to
+# $icode%use_atomic_cholesky% = no%$$ and
+# $icode%checkpoint% = yes%$$.
+#
+# $head (no,no)$$
+# The values in this column correspond to
+# $icode%use_atomic_cholesky% = no%$$ and
+# $icode%checkpoint% = no%$$.
+#
+# $end
+# ---------------------------------------------------------------------------
 import sys
 import os
 import subprocess
