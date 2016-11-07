@@ -36,20 +36,20 @@ $head Syntax$$
 $codei%build/speed/capture_xam  \
 	%random_seed% \
 	%number_random%  \
-	%number_fixed_samples% \
-	%number_locations% \
-	%max_population% \
-	%mean_population% \
-	%mean_logit_probability% \
-	%std_logit_probability% \
-	%random_constraint% \
 	%quasi_fixed% \
 	%trace_optimize_fixed% \
 	%ipopt_solve% \
 	%bool_sparsity% \
 	%hold_memory% \
 	%derivative_test% \
-	%start_near_solution%
+	%start_near_solution% \
+	%number_fixed_samples% \
+	%number_locations% \
+	%max_population% \
+	%mean_population% \
+	%mean_logit_probability% \
+	%std_logit_probability% \
+	%random_constraint%
 %$$
 
 $head Reference$$
@@ -74,6 +74,54 @@ This is a positive integer equal to the number of random effects.
 This is also equal to the
 number of times at which the measurements are made and is denoted by
 $latex T$$ below.
+
+$subhead quasi_fixed$$
+This is either $code true$$ or $code false$$ and is the value of
+$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ in the
+$code cppad_mixed$$ derived class constructor.
+The amount of memory used by the
+$cref/mixed_derived/derived_ctor/mixed_derived/$$ object,
+after the information matrix is computed,
+will be similar to after the initialization when $icode quasi_fixed$$ is false.
+
+$subhead trace_optimize_fixed$$
+This is either $code true$$ or $code false$$.
+If it is true, a $icode%print_level% = 5%$$
+$cref/trace/ipopt_trace/$$ of the fixed effects optimization
+is included in the program output.
+Otherwise the ipopt $icode print_level$$ is zero and
+no such trace is printed.
+
+$subhead ipopt_solve$$
+This is either $code true$$ or $code false$$.
+If it is true, the $code CppAD::ipopt::solve$$
+routine is used for optimizing the random effects,
+otherwise $code CppAD::mixed::ipopt_random$$ is used; see
+$cref/evaluation_method/optimize_random/options/evaluation_method/$$.
+
+$subhead bool_sparsity$$
+This is either $code true$$ or $code false$$.
+If it is true, boolean sparsity patterns are used for this computation,
+otherwise set sparsity patterns are used.
+
+$subhead hold_memory$$
+The CppAD memory allocator has a hold memory option will be set by
+$codei%
+	CppAD::thread_alloc::hold_memory(%hold_memory%);
+%$$
+where $icode hold_memory$$ is either $code true$$ or $code false$$.
+
+$subhead derivative_test$$
+This is either $code true$$ or $code false$$.
+If it is true, the derivatives of functions used in the optimization
+of the fixed effects are checked for correctness.
+(This requires extra time).
+
+$subhead start_near_solution$$
+This is either $code true$$ or $code false$$.
+If it is true, the initial point for the optimization
+is the value of the fixed effects used to simulate the data.
+Otherwise, the initial point is significantly different from this value.
 
 $subhead number_fixed_samples$$
 This is a positive integer equal to the number of samples simulated
@@ -156,54 +204,6 @@ $latex \[
 	A = [ 1 , \cdots , 1 ] \in \B{R}^{1 \times T}
 \] $$
 
-
-$subhead quasi_fixed$$
-This is either $code true$$ or $code false$$ and is the value of
-$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ in the
-$code cppad_mixed$$ derived class constructor.
-The amount of memory used by the
-$cref/mixed_derived/derived_ctor/mixed_derived/$$ object,
-after the information matrix is computed,
-will be similar to after the initialization when $icode quasi_fixed$$ is false.
-
-$subhead trace_optimize_fixed$$
-This is either $code true$$ or $code false$$.
-If it is true, a $icode%print_level% = 5%$$
-$cref/trace/ipopt_trace/$$ of the fixed effects optimization
-is included in the program output.
-Otherwise the ipopt $icode print_level$$ is zero and
-no such trace is printed.
-
-$subhead ipopt_solve$$
-This is either $code true$$ or $code false$$.
-If it is true, the $code CppAD::ipopt::solve$$
-routine is used for optimizing the random effects,
-otherwise $code CppAD::mixed::ipopt_random$$ is used; see
-$cref/evaluation_method/optimize_random/options/evaluation_method/$$.
-
-$subhead bool_sparsity$$
-This is either $code true$$ or $code false$$.
-If it is true, boolean sparsity patterns are used for this computation,
-otherwise set sparsity patterns are used.
-
-$subhead hold_memory$$
-The CppAD memory allocator has a hold memory option will be set by
-$codei%
-	CppAD::thread_alloc::hold_memory(%hold_memory%);
-%$$
-where $icode hold_memory$$ is either $code true$$ or $code false$$.
-
-$subhead derivative_test$$
-This is either $code true$$ or $code false$$.
-If it is true, the derivatives of functions used in the optimization
-of the fixed effects are checked for correctness.
-(This requires extra time).
-
-$subhead start_near_solution$$
-This is either $code true$$ or $code false$$.
-If it is true, the initial point for the optimization
-is the value of the fixed effects used to simulate the data.
-Otherwise, the initial point is significantly different from this value.
 
 $head Output$$
 Each output name, value pair is written in as $icode%name% = %value%$$
@@ -811,20 +811,20 @@ int main(int argc, const char *argv[])
 	const char* arg_name[] = {
 		"random_seed",
 		"number_random",
-		"number_fixed_samples",
-		"number_locations",
-		"max_population",
-		"mean_population",
-		"mean_logit_probability",
-		"std_logit_probability",
-		"random_constraint",
 		"quasi_fixed",
 		"trace_optimize_fixed",
 		"ipopt_solve",
 		"bool_sparsity",
 		"hold_memory",
 		"derivative_test",
-		"start_near_solution"
+		"start_near_solution",
+		"number_fixed_samples",
+		"number_locations",
+		"max_population",
+		"mean_population",
+		"mean_logit_probability",
+		"std_logit_probability",
+		"random_constraint"
 	};
 	size_t n_arg = sizeof(arg_name)/sizeof(arg_name[0]);
 	//
@@ -839,23 +839,25 @@ int main(int argc, const char *argv[])
 	//
 	// get command line arguments
 	assert( n_arg == 16 );
-	size_t random_seed            = std::atoi( argv[1] );
-	size_t number_random          = std::atoi( argv[2] );
-	size_t number_fixed_samples   = std::atoi( argv[3] );
-	size_t number_locations       = std::atoi( argv[4] );
-	size_t max_population         = std::atoi( argv[5] );
-	double mean_population        = std::atof( argv[6] );
-	double mean_logit_probability = std::atof( argv[7] );
-	double std_logit_probability  = std::atof( argv[8] );
+	size_t iarg = 1;
+	size_t random_seed              = std::atoi( argv[iarg++] );
+	size_t number_random            = std::atoi( argv[iarg++] );
+	string quasi_fixed_str          = argv[iarg++];
+	string trace_optimize_fixed_str = argv[iarg++];
+	string ipopt_solve_str          = argv[iarg++];
+	string bool_sparsity_str        = argv[iarg++];
+	string hold_memory_str          = argv[iarg++];
+	string derivative_test_str      = argv[iarg++];
+	string start_near_solution_str  = argv[iarg++];
 	//
-	string random_constraint_str    = argv[9];
-	string quasi_fixed_str          = argv[10];
-	string trace_optimize_fixed_str = argv[11];
-	string ipopt_solve_str          = argv[12];
-	string bool_sparsity_str        = argv[13];
-	string hold_memory_str          = argv[14];
-	string derivative_test_str      = argv[15];
-	string start_near_solution_str  = argv[16];
+	size_t number_fixed_samples   = std::atoi( argv[iarg++] );
+	size_t number_locations       = std::atoi( argv[iarg++] );
+	size_t max_population         = std::atoi( argv[iarg++] );
+	double mean_population        = std::atof( argv[iarg++] );
+	double mean_logit_probability = std::atof( argv[iarg++] );
+	double std_logit_probability  = std::atof( argv[iarg++] );
+	string random_constraint_str  = argv[iarg++];
+	//
 	bool random_constraint    =  random_constraint_str == "true";
 	bool quasi_fixed          =  quasi_fixed_str == "true";
 	bool trace_optimize_fixed =  trace_optimize_fixed_str == "true";
