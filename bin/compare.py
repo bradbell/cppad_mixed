@@ -28,6 +28,7 @@ elif sys.argv[1] == 'no' :
 else :
 	sys.exit(usage)
 # ---------------------------------------------------------------------------
+
 def system_cmd(echo, cmd, file_name) :
 	if file_name == None :
 		file_out = None
@@ -49,9 +50,9 @@ def system_cmd(echo, cmd, file_name) :
 	if file_out != None :
 		file_out.close()
 # ---------------------------------------------------------------------------
-def check_value(file, name, value) :
-	pattern = '^' + name + " *= *'" + value + "'"
-	cmd  = [ 'grep', pattern , 'bin/run_cmake.sh' ]
+def check_value(file_name, name, value) :
+	pattern = '^' + name + " *= *" + value
+	cmd  = [ 'grep', pattern , file_name ]
 	echo = False
 	system_cmd(echo, cmd, 'compare.tmp')
 # ---------------------------------------------------------------------------
@@ -74,8 +75,8 @@ cmd  = ['sed' , '-i', 'bin/run_cmake.sh' ]
 cmd += [ '-e', 's|^\\(build_type\\)=.*|\\1=\'release\'|' ]
 cmd += [ '-e', 's|^\\(optimize_cppad_function\\)=.*|\\1=\'yes\'|' ]
 system_cmd(echo, cmd, None)
-check_value('bin/run_cmake.sh', 'build_type', 'release')
-check_value('bin/run_cmake.sh', 'optimize_cppad_function', 'yes')
+check_value('bin/run_cmake.sh', 'build_type', "'release'")
+check_value('bin/run_cmake.sh', 'optimize_cppad_function', "'yes'")
 # ---------------------------------------------------------------------------
 for atomic in [ 'yes' , 'no' ] :
 	for check in [ 'yes' , 'no' ] :
@@ -94,8 +95,10 @@ for atomic in [ 'yes' , 'no' ] :
 			cmd += [ '-e', tmp ]
 			system_cmd(echo, cmd, None)
 			#
-			check_value('bin/run_cmake.sh', 'use_atomic_cholesky',    atomic)
-			check_value('bin/run_cmake.sh', 'checkpoint_newton_step', check)
+			value = "'" + atomic + "'"
+			check_value('bin/run_cmake.sh', 'use_atomic_cholesky',    value)
+			value = "'" + check + "'"
+			check_value('bin/run_cmake.sh', 'checkpoint_newton_step', value)
 			#
 			# execute run_cmake.sh
 			cmd = [ 'bin/run_cmake.sh' ]
@@ -133,6 +136,7 @@ system_cmd(echo, cmd, None)
 cmd = [ 'git', 'checkout', 'bin/check_install.sh' ]
 system_cmd(echo, cmd, None)
 # ---------------------------------------------------------------------------
+true_or_false = { 'yes':'true', 'no':'false' }
 list = [
 	'initialize_bytes',
 	'initialize_seconds',
@@ -154,6 +158,12 @@ for name in list :
 		for check in [ 'yes' , 'no' ] :
 			file_name  = 'build.release/speed/'
 			file_name +=  'ar1_xam_' + atomic + '_' + check + '.out'
+			#
+			value = true_or_false[atomic]
+			check_value(file_name, 'use_atomic_cholesky', value)
+			value = true_or_false[check]
+			check_value(file_name, 'checkpoint_newton_step', value)
+			#
 			cmd  = [ 'sed', file_name, '-n' ]
 			cmd += [ '-e', 's|,||g', '-e', '/^' + name + ' *=/p' ]
 			file_name   = 'compare.tmp'

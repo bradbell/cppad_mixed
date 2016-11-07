@@ -218,7 +218,7 @@ $subhead use_atomic_cholesky$$
 Is $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$
 zero (NO) or one (YES).
 
-$subhead check_point_newton_step$$
+$subhead checkpoint_newton_step$$
 Is $cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$
 zero (NO) or one (YES).
 
@@ -890,7 +890,7 @@ int main(int argc, const char *argv[])
 	// configuration options
 	label_print("cppad_mixed_version",    CPPAD_MIXED_VERSION);
 	bool_print("use_atomic_cholesky",     CPPAD_MIXED_USE_ATOMIC_CHOLESKY);
-	bool_print("check_point_newton_step", CPPAD_MIXED_CHECKPOINT_NEWTON_STEP);
+	bool_print("checkpoint_newton_step",  CPPAD_MIXED_CHECKPOINT_NEWTON_STEP);
 	bool_print("ldlt_cholmod",            CPPAD_MIXED_LDLT_CHOLMOD);
 	bool_print("optimize_cppad_function", CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION);
 	//
