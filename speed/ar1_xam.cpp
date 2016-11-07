@@ -56,7 +56,7 @@ and for $latex t = 1 , \ldots , T - 1$$,
 $latex u_t - u_{t-1} \sim \B{N}( 0 , \theta_0^2 )$$.
 
 
-$head Input$$
+$head Input Arguments$$
 
 $subhead random_seed$$
 This is a non-negative integer equal to the
@@ -178,7 +178,8 @@ $cref information_mat$$ that computes the observed information matrix.
 $subhead sample_fixed_seconds$$
 Is the number of seconds used by the call to
 $cref sample_fixed$$ that computes the
-$cref/number_sample_fixed/capture_xam.cpp/Input/number_fixed_samples/$$
+$cref/number_sample_fixed
+	/capture_xam.cpp/Input Arguments/number_fixed_samples/$$
 samples for the fixed effects.
 
 $subhead theta_0_estimate$$

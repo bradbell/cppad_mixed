@@ -48,6 +48,15 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 11-07$$
+$list number$$
+Add the $cref compare.py$$ program.
+$lnext
+Change order of $cref/input arguments/capture_xam.cpp/Input Arguments/$$
+to $code capture_xam$$ be more similar to
+$cref/ar1_xam/ar1_xam.cpp/Input Arguments/$$.
+$lend
+
 $head 11-04$$
 This the first version with $code cppad_mixed$$ with the
 $cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$ option.
@@ -69,7 +78,7 @@ The $cref/A_info/initialize/A_info/$$ argument was missing
 from the $code initialize$$ Syntax. This has been fixed.
 $lnext
 The value of
-$cref/number_random/capture_xam.cpp/Input/number_random/$$
+$cref/number_random/capture_xam.cpp/Input Arguments/number_random/$$
 was increased (from 30 to 35) to lessen the change of a random failure
 during the $code make speed$$ command; see
 $cref/test/install_unix/cppad_mixed/Test/$$.
@@ -252,16 +261,16 @@ $lend
 
 $head 07-20$$
 Add the $icode hold_memory$$ parameter to
-$cref/capture_xam.cpp/capture_xam.cpp/Input/hold_memory/$$ and
-$cref/ar1_xam.cpp/ar1_xam.cpp/Input/hold_memory/$$.
+$cref/capture_xam.cpp/capture_xam.cpp/Input Arguments/hold_memory/$$ and
+$cref/ar1_xam.cpp/ar1_xam.cpp/Input Arguments/hold_memory/$$.
 
 
 $head 07-18$$
 Add the $icode bool_sparsity$$ parameter to the following:
 $cref/initialize/initialize/bool_sparsity/$$,
 $cref/information_mat/information_mat/bool_sparsity/$$,
-$cref/capture_xam.cpp/capture_xam.cpp/Input/bool_sparsity/$$,
-$cref/ar1_xam.cpp/ar1_xam.cpp/Input/bool_sparsity/$$.
+$cref/capture_xam.cpp/capture_xam.cpp/Input Arguments/bool_sparsity/$$,
+$cref/ar1_xam.cpp/ar1_xam.cpp/Input Arguments/bool_sparsity/$$.
 In addition, remove $icode bool_sparsity$$ from the $cref run_cmake.sh$$
 configuration script.
 This puts the choose between boolean and set sparsity patterns
@@ -291,8 +300,8 @@ $cref/evaluation_method/optimize_random/options/evaluation_method/$$.
 The new method is now the default.
 An option was added so the speed tests could use the new or old method; see
 $icode ipopt_solve$$ in
-$cref/capture_xam/capture_xam.cpp/Input/ipopt_solve/$$ and
-$cref/ar1_xam/ar1_xam.cpp/Input/ipopt_solve/$$.
+$cref/capture_xam/capture_xam.cpp/Input Arguments/ipopt_solve/$$ and
+$cref/ar1_xam/ar1_xam.cpp/Input Arguments/ipopt_solve/$$.
 
 
 $head 07-12$$
@@ -794,7 +803,7 @@ $cref/random constraints
 $head 01-16$$
 $list number$$
 Include a
-$cref/random_constraint/capture_xam.cpp/Input/random_constraint/$$
+$cref/random_constraint/capture_xam.cpp/Input Arguments/random_constraint/$$
 in implementation and documentation of the $cref capture_xam.cpp$$ example.
 In addition, check that the result satisfies the constraint that
 the sum of the random effects is zero.
