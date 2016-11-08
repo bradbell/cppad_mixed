@@ -558,6 +558,19 @@ using std::exp;
 using std::log;
 using CppAD::mixed::sparse_mat_info;
 
+// Convert size_t to string adding commas every three digits
+std::string size_t2string(size_t value )
+{	std::string raw_string = CppAD::to_string(value);
+	std::string result = "";
+	size_t n_raw = raw_string.size();
+	for(size_t i = 0; i < n_raw; i++)
+	{	if( i != 0 && (n_raw - i) % 3 == 0 )
+			result += ",";
+		result += raw_string[i];
+	}
+	return result;
+}
+
 // simulate data, y
 void simulate(
 	bool                   random_constraint ,
@@ -979,14 +992,9 @@ int main(int argc, const char *argv[])
 	// (use commans to separate every three digits).
 	size_t num_bytes_before = size_map["num_bytes_before"];
 	size_t num_bytes_after  = size_map["num_bytes_after"];
-	string bytes_str = CppAD::to_string(num_bytes_after - num_bytes_before);
-	size_t n_char = bytes_str.size();
-	string initialize_bytes = "";
-	for(size_t i = 0; i < n_char; i++)
-	{	if( i != 0 && (n_char - i) % 3 == 0 )
-			initialize_bytes += ",";
-		initialize_bytes += bytes_str[i];
-	}
+	string initialize_bytes = size_t2string(
+		num_bytes_after - num_bytes_before
+	);
 	label_print("initialize_bytes", initialize_bytes);
 	label_print("initialize_seconds", end_seconds - start_seconds);
 	//
