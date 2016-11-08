@@ -65,13 +65,13 @@
 # a summary is printed for each program.
 # The following is an example summary for $code capture_xam$$:
 # $codei%
-# capture_xam                                 (atomic,checkpoint)
-#                                (yes,yes)    (yes,no)    (no,yes)     (no,no)
-# initialize_kilobytes           124316.73   201595.62    97201.79   201337.34
-# initialize_milliseconds          3080.00     4270.00     1620.00     3260.00
-# optimize_fixed_milliseconds      7800.00     6420.00     6100.00     4950.00
-# information_mat_milliseconds      357.00      449.00      324.00      270.00
 # compare.py: OK
+# capture_xam                                 (atomic,checkpoint)
+#                                  (no,no)    (no,yes)    (yes,no)   (yes,yes)
+# initialize_kilobytes           200869.35   124188.56   201127.63   124316.73
+# initialize_milliseconds          3200.00     1750.00     4340.00     2460.00
+# optimize_fixed_milliseconds      5370.00     6280.00     7860.00     9250.00
+# information_mat_milliseconds      248.00      354.00      251.00      362.00
 # %$$
 #
 # $subhead program$$
@@ -231,7 +231,7 @@ def run(program, atomic, checkpoint) :
 	#
 	# command line arguments
 	if program == 'ar1_xam' :
-		random_seed='0'
+		random_seed='1234'
 		number_random='1000'
 		quasi_fixed='false'
 		trace_optimize_fixed='false'
@@ -241,7 +241,7 @@ def run(program, atomic, checkpoint) :
 		derivative_test='false'
 		start_near_solution='false'
 	else :
-		random_seed='0'
+		random_seed='5678'
 		number_random='35'
 		quasi_fixed='false'
 		trace_optimize_fixed='false'
@@ -299,12 +299,12 @@ def summary(program) :
 		('optimize_fixed_seconds',   'optimize_fixed_milliseconds'),
 		('information_mat_seconds',  'information_mat_milliseconds')
 	]
-	line = '{:28}{:>35s}'.format(program, '(atomic,checkpoint)')
+	line = '{:28}{:>36s}'.format(program, '(atomic, checkpoint)')
 	print(line)
 	line = '{:28s}'.format('')
 	for atomic in [ 'no' , 'yes' ] :
 		for checkpoint in [ 'no' , 'yes' ] :
-			label = '(' + atomic + ',' + checkpoint + ')'
+			label = '(' + atomic + ', ' + checkpoint + ')'
 			line += ' {:>11s}'.format(label)
 	print(line)
 	for (name,label) in name_list :
@@ -366,5 +366,6 @@ else :
 	assert option == 'summary'
 	for program in [ 'ar1_xam', 'capture_xam' ] :
 		summary(program)
+		print('')
 # ---------------------------------------------------------------------------
 print('bin/compare.py ' + sys.argv[1] + ': OK')
