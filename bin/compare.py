@@ -19,41 +19,38 @@
 # $section Compare Speed for Different Options$$
 #
 # $head Syntax$$
-# $codei%bin/compare.py %use_existing%$$
+# $codei%bin/compare.py %program% %use_existing%$$
 #
 # $head Purpose$$
-# This program compares program memory and speed for different choices
-# of two of the $code cppad_mixed$$ configuration options.
-# To be specific the
-# $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$ and
-# $cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$ options.
+# This script compares memory size and speed of execution for the following
+# cases:
+# $icode program$$ equal to
+# $cref/ar1_xam/ar1_xam.cpp/$$,
+# $cref/capture_xam/capture_xam.cpp/$$,
+# $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$
+# equal to $code yes$$, $code no$$, and
+# $cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$
+# equal to $code yes$$, $code no$$.
 #
 # $head Program Files$$
-# The program files are compiled versions of $cref ar1_xam.cpp$$
-# and are named
+# The program files are compiled versions of
+# $cref ar1_xam.cpp$$ or $cref capture_xam.cpp$$ and are named
 # $codei%
-#	build.release/speed/ar1_xam_%atomic%_%checkpoint%
+#	build.release/speed/%program%_%atomic%_%checkpoint%
 # %$$
-# for $icode atomic$$ equal to $code yes$$, $code no$$ and
-# for $icode checkpoint$$ equal to $code yes$$, $code no$$.
-# The value of $icode atomic$$ is
-# $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$ and
-# $icode checkpoint$$ is
-# $cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$ for
-# the corresponding results.
+# for $icode program$$ equal to $code ar1_xam$$, $code capture_xam$$,
+# $icode atomic$$ equal to $code yes$$, $code no$$, and
+# $icode checkpoint$$ equal to $code yes$$, $code no$$.
 #
 # $head Result Files$$
-# The results files are versions $cref ar1_xam.cpp$$ output and named
+# The result files are the output corresponding to
+# $cref ar1_xam.cpp$$ or $cref capture_xam.cpp$$ and are named
 # $codei%
-#	build.release/speed/ar1_xam_%atomic%_%checkpoint%.out
+#	build.release/speed/%program%_%atomic%_%checkpoint%.out
 # %$$
-# for $icode atomic$$ equal to $code yes$$, $code no$$ and
-# for $icode checkpoint$$ equal to $code yes$$, $code no$$.
-# The value of $icode atomic$$ is
-# $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$ and
-# $icode checkpoint$$ is
-# $cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$ for
-# the corresponding results.
+# for $icode program$$ equal to $code ar1_xam$$, $code capture_xam$$,
+# $icode atomic$$ equal to $code yes$$, $code no$$, and
+# $icode checkpoint$$ equal to $code yes$$, $code no$$.
 #
 # $head use_existing$$
 # This command line argument is either $code yes$$ or $code no$$.
@@ -64,32 +61,38 @@
 # $head Summary Report$$
 # The following is an example summary report:
 # $codei%
-# (atomic,checkpoint)         (yes,yes)    (yes,no)    (no,yes)     (no,no)
-# initialize_kilobytes       4584.84277  5726.60156  3794.27832  4826.60352
-# initialize_seconds           86.32590    38.13230     0.17443     0.08411
-# optimize_fixed_seconds      231.10520   202.26070     0.28559     0.16530
-# information_mat_seconds      29.74650    25.82490     0.00221     0.00170
+# capture_xam                                 (atomic,checkpoint)
+#                                (yes,yes)    (yes,no)    (no,yes)     (no,no)
+# initialize_kilobytes           124316.73   201595.62    97201.79   201337.34
+# initialize_milliseconds          3080.00     4270.00     1620.00     3260.00
+# optimize_fixed_milliseconds      7800.00     6420.00     6100.00     4950.00
+# information_mat_milliseconds      357.00      449.00      324.00      270.00
+# compare.py: OK
 # %$$
+#
+# $head program$$
+# For this example case, the command line argument $icode program$$,
+# has the value $code capture_xam$$.
 #
 # $head initialize_kilobytes$$
 # The values in this row are
 # $cref/initialize_bytes/ar1_xam.cpp/Output/initialize_bytes/$$ divided by 1024
 # for the case corresponding to each column.
 #
-# $head initialize_seconds$$
+# $head initialize_milliseconds$$
 # The values in this row are
-# $cref/initialize_seconds/ar1_xam.cpp/Output/initialize_seconds/$$
+# $cref/initialize_seconds/ar1_xam.cpp/Output/initialize_seconds/$$ times 1000
 # for the case corresponding to each column.
 #
-# $head optimize_fixed_seconds$$
+# $head optimize_fixed_milliseconds$$
 # The values in this row are
 # $cref/optimize_fixed_seconds/ar1_xam.cpp/Output/optimize_fixed_seconds/$$
-# for the case corresponding to each column.
+# times 1000 for the case corresponding to each column.
 #
-# $head information_mat_seconds$$
+# $head information_mat_milliseconds$$
 # The values in this row are
 # $cref/information_mat_seconds/ar1_xam.cpp/Output/information_mat_seconds/$$
-# for the case corresponding to each column.
+# times 1000 for the case corresponding to each column.
 #
 # $head (yes,yes)$$
 # The values in this column correspond to
@@ -117,17 +120,22 @@ import sys
 import os
 import subprocess
 #
-usage  = '''usage: bin/compare.py use_existing
+usage  = '''usage: bin/compare.py program use_existing
+program: is either 'ar1_xam' or 'capture_xam'
 use_existing: use existing build.release/speed/*.out files, 'yes' or 'no'
 '''
-if len(sys.argv) != 2 :
+if len(sys.argv) != 3 :
 	sys.exit(usage)
 if sys.argv[0] != 'bin/compare.py' :
 	sys.exit(usage)
 #
-if sys.argv[1] == 'yes' :
+if sys.argv[1] != 'ar1_xam' and sys.argv[1] != 'capture_xam' :
+	sys.exit(usage)
+program = sys.argv[1]
+#
+if sys.argv[2] == 'yes' :
 	use_existing = True
-elif sys.argv[1] == 'no' :
+elif sys.argv[2] == 'no' :
 	use_existing = False
 else :
 	sys.exit(usage)
@@ -160,16 +168,34 @@ def check_value(file_name, name, value) :
 	echo = False
 	system_cmd(echo, cmd, 'compare.tmp')
 # ---------------------------------------------------------------------------
-# ar1_xam commanmd line options
-random_seed='0'
-number_random='1000'
-quasi_fixed='false'
-trace_optimize_fixed='false'
-ipopt_solve='false'
-bool_sparsity='false'
-hold_memory='false'
-derivative_test='false'
-start_near_solution='false'
+# commanmd line options that are the same for both ar1_xam and capture_xam
+if program == 'ar1_xam' :
+	random_seed='0'
+	number_random='1000'
+	quasi_fixed='false'
+	trace_optimize_fixed='false'
+	ipopt_solve='false'
+	bool_sparsity='false'
+	hold_memory='false'
+	derivative_test='false'
+	start_near_solution='false'
+else :
+	random_seed='0'
+	number_random='35'
+	quasi_fixed='false'
+	trace_optimize_fixed='true'
+	ipopt_solve='false'
+	bool_sparsity='false'
+	hold_memory='false'
+	derivative_test='false'
+	start_near_solution='false'
+	number_fixed_samples='1000'
+	number_locations='50'
+	max_population='25'
+	mean_population='5.0'
+	mean_logit_probability='-0.5'
+	std_logit_probability='0.5'
+	random_constraint='true'
 # ---------------------------------------------------------------------------
 # initialize run_cmake
 echo = False
@@ -182,21 +208,21 @@ system_cmd(echo, cmd, None)
 check_value('bin/run_cmake.sh', 'build_type', "'release'")
 check_value('bin/run_cmake.sh', 'optimize_cppad_function', "'yes'")
 # ---------------------------------------------------------------------------
-for atomic in [ 'yes' , 'no' ] :
-	for check in [ 'yes' , 'no' ] :
-		program    = 'ar1_xam_' + atomic + '_' + check
-		file_name  = 'build.release/speed/' + program + '.out'
+for atomic in [ 'no' , 'yes' ] :
+	for check in [ 'no' , 'yes' ] :
+		program_ac = program + '_' + atomic + '_' + check
+		file_name  = 'build.release/speed/' + program_ac + '.out'
 		use     = False
 		if os.path.isfile( file_name ) :
 			use = use_existing
 		if not use :
-			echo = True
 			# set run_cmake.sh for this value of atomic and check
 			cmd  = ['sed' , '-i', 'bin/run_cmake.sh' ]
 			tmp  = 's|^\\(use_atomic_cholesky\\)=.*|\\1=\'' + atomic + '\'|'
 			cmd += [ '-e', tmp ]
 			tmp  = 's|^\\(checkpoint_newton_step\\)=.*|\\1=\'' + check + '\'|'
 			cmd += [ '-e', tmp ]
+			echo = True
 			system_cmd(echo, cmd, None)
 			#
 			value = "'" + atomic + "'"
@@ -206,18 +232,22 @@ for atomic in [ 'yes' , 'no' ] :
 			#
 			# execute run_cmake.sh
 			cmd = [ 'bin/run_cmake.sh' ]
+			echo = True
 			system_cmd(echo, cmd, 'run_cmake.log')
 			#
-			# create build.release/speed/program
+			# create build.release/speed/program_ac
 			os.chdir('build.release/speed')
-			cmd = [ 'make', 'ar1_xam' ]
-			system_cmd(echo, cmd, 'make.log')
+			cmd = [ 'make', program ]
+			print('make ' + program + ' > make.log')
+			echo = False
+			system_cmd(echo, cmd, '../../make.log')
 			#
-			cmd = [ 'mv', 'ar1_xam', program ]
+			cmd = [ 'mv', program, program_ac ]
+			echo = True
 			system_cmd(echo, cmd, None)
 			#
 			# execute program
-			cmd = [ './' + program ,
+			cmd = [ './' + program_ac ,
 				random_seed ,
 				number_random ,
 				quasi_fixed   ,
@@ -228,7 +258,18 @@ for atomic in [ 'yes' , 'no' ] :
 				derivative_test ,
 				start_near_solution
 			]
-			file_name =  program + '.out'
+			if program == 'capture_xam' :
+				cmd += [
+					number_fixed_samples,
+					number_locations,
+					max_population,
+					mean_population,
+					mean_logit_probability,
+					std_logit_probability,
+					random_constraint
+				]
+			file_name =  program_ac + '.out'
+			echo      = True
 			system_cmd(echo, cmd, file_name)
 			#
 			os.chdir('../..')
@@ -242,26 +283,25 @@ system_cmd(echo, cmd, None)
 # ---------------------------------------------------------------------------
 true_or_false = { 'yes':'true', 'no':'false' }
 list = [
-	'initialize_bytes',
-	'initialize_seconds',
-	'optimize_fixed_seconds',
-	'information_mat_seconds'
+	('initialize_bytes',         'initialize_kilobytes'),
+	('initialize_seconds',       'initialize_milliseconds'),
+	('optimize_fixed_seconds',   'optimize_fixed_milliseconds'),
+	('information_mat_seconds',  'information_mat_milliseconds')
 ]
-line = '{:25s}'.format('(atomic,checkpoint)')
+line = '{:28}{:>35s}'.format(program, '(atomic,checkpoint)')
+print(line)
+line = '{:28s}'.format('')
 for atomic in [ 'yes' , 'no' ] :
 	for check in [ 'yes' , 'no' ] :
 		label = '(' + atomic + ',' + check + ')'
 		line += ' {:>11s}'.format(label)
 print(line)
-for name in list :
-	if name == 'initialize_bytes' :
-		line = '{:25s}'.format('initialize_kilobytes')
-	else :
-		line = '{:25s}'.format(name)
+for (name,label) in list :
+	line = '{:28s}'.format(label)
 	for atomic in [ 'yes' , 'no' ] :
 		for check in [ 'yes' , 'no' ] :
 			file_name  = 'build.release/speed/'
-			file_name +=  'ar1_xam_' + atomic + '_' + check + '.out'
+			file_name +=  program + '_' + atomic + '_' + check + '.out'
 			#
 			value = true_or_false[atomic]
 			check_value(file_name, 'use_atomic_cholesky', value)
@@ -279,7 +319,9 @@ for name in list :
 			value = eval(name)
 			if name == 'initialize_bytes' :
 				value = value / 1024.0
-			line += ' {:11.5f}'.format(value)
+			else :
+				value = value * 1000.0
+			line += ' {:11.2f}'.format(value)
 	print(line)
 cmd = [ 'rm' , 'compare.tmp' ]
 system_cmd(echo, cmd, None)

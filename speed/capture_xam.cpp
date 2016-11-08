@@ -1104,7 +1104,7 @@ int main(int argc, const char *argv[])
 	{	sample_std[j] = std::sqrt( sample_std[j] / number_fixed_samples );
 		// check if results results are reasonable
 		estimate_ratio[j] = ( theta_out[j] - theta_sim[j] ) / sample_std[j];
-		ok  &= std::fabs(estimate_ratio[j]) < 4.0;
+		ok  &= std::fabs(estimate_ratio[j]) < 5.0;
 	}
 	label_print("mean_population_estimate", theta_out[0]);
 	label_print("mean_logit_probability_estimate", theta_out[1]);
