@@ -35,6 +35,8 @@
 # $head option$$
 # This argument is one of the following:
 # $code build$$, $code run$$, $code summary$$.
+# You must complete a $code build$$ before choosing $code run$$ and
+# complete a $code run$$ before choosing $code summary$$.
 #
 # $head build$$
 # If $icode option$$ is $code build$$, the program files are compiled.
