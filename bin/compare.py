@@ -250,7 +250,7 @@ def run(program, atomic, checkpoint) :
 	if program == 'ar1_xam' :
 		random_seed='1234'
 		number_random='1000'
-		quasi_fixed='false'
+		quasi_fixed='true'
 		trace_optimize_fixed='false'
 		ipopt_solve='false'
 		bool_sparsity='false'
@@ -260,7 +260,7 @@ def run(program, atomic, checkpoint) :
 	else :
 		random_seed='5678'
 		number_random='35'
-		quasi_fixed='false'
+		quasi_fixed='true'
 		trace_optimize_fixed='false'
 		ipopt_solve='false'
 		bool_sparsity='false'
