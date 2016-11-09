@@ -67,37 +67,52 @@
 # a summary is printed for each program.
 # The following is an example summary for $code capture_xam$$:
 # $codei%
-# compare.py: OK
-# capture_xam                                 (atomic,checkpoint)
-#                                  (no,no)    (no,yes)    (yes,no)   (yes,yes)
-# initialize_kilobytes           200869.35   124188.56   201127.63   124316.73
-# initialize_milliseconds          3200.00     1750.00     4340.00     2460.00
-# optimize_fixed_milliseconds      5370.00     6280.00     7860.00     9250.00
-# information_mat_milliseconds      248.00      354.00      251.00      362.00
+# capture_xam                                 (atomic, checkpoint)
+#                                 (no, no)   (no, yes)   (yes, no)  (yes, yes)
+# initialize_kilobytes           200870.19   124189.40   201128.47   124317.58
+# initialize_milliseconds          3270.00     1740.00     4050.00     2510.00
+# optimize_fixed_milliseconds      5390.00     6060.00     8120.00     9680.00
+# information_mat_milliseconds      250.00      351.00      270.00      364.00
+# total_kilobytes                281869.35   205188.57   282127.63   205316.74
 # %$$
 #
 # $subhead program$$
 # For this summary, $icode program$$ has the value $code capture_xam$$.
 #
 # $subhead initialize_kilobytes$$
-# The values in this row are
-# $cref/initialize_bytes/ar1_xam.cpp/Output/initialize_bytes/$$ divided by 1024
+# The values in this row are $icode initialize_bytes$$ divided by 1024
+# for the program
+# $cref/ar1_xam/ar1_xam.cpp/Output/initialize_bytes/$$ or
+# $cref/capture_xam/capture_xam.cpp/Output/initialize_bytes/$$
 # for the case corresponding to each column.
 #
 # $subhead initialize_milliseconds$$
-# The values in this row are
-# $cref/initialize_seconds/ar1_xam.cpp/Output/initialize_seconds/$$ times 1000
+# The values in this row are $icode initialize_seconds$$ times 1000
+# for the program
+# $cref/ar1_xam/ar1_xam.cpp/Output/initialize_seconds/$$ or
+# $cref/capture_xam/capture_xam.cpp/Output/initialize_seconds/$$
 # for the case corresponding to each column.
 #
 # $subhead optimize_fixed_milliseconds$$
-# The values in this row are
-# $cref/optimize_fixed_seconds/ar1_xam.cpp/Output/optimize_fixed_seconds/$$
-# times 1000 for the case corresponding to each column.
+# The values in this row are $icode optimize_fixed_seconds$$ times 1000
+# for the program
+# $cref/ar1_xam/ar1_xam.cpp/Output/optimize_fixed_seconds/$$ or
+# $cref/capture_xam/capture_xam.cpp/Output/optimize_fixed_seconds/$$
+# for the case corresponding to each column.
 #
 # $subhead information_mat_milliseconds$$
-# The values in this row are
-# $cref/information_mat_seconds/ar1_xam.cpp/Output/information_mat_seconds/$$
-# times 1000 for the case corresponding to each column.
+# The values in this row are $icode information_mat_seconds$$ times 1000
+# for the program
+# $cref/ar1_xam/ar1_xam.cpp/Output/information_mat_seconds/$$ or
+# $cref/capture_xam/capture_xam.cpp/Output/information_mat_seconds/$$
+# for the case corresponding to each column.
+#
+# $subhead total_kilobytes$$
+# The values in this row are $icode total_bytes$$ divided by 1024
+# for the program
+# $cref/ar1_xam/ar1_xam.cpp/Output/total_bytes/$$ or
+# $cref/capture_xam/capture_xam.cpp/Output/total_bytes/$$
+# for the case corresponding to each column.
 #
 # $subhead (yes,yes)$$
 # The values in this column correspond to
@@ -299,7 +314,8 @@ def summary(program) :
 		('initialize_bytes',         'initialize_kilobytes'),
 		('initialize_seconds',       'initialize_milliseconds'),
 		('optimize_fixed_seconds',   'optimize_fixed_milliseconds'),
-		('information_mat_seconds',  'information_mat_milliseconds')
+		('information_mat_seconds',  'information_mat_milliseconds'),
+		('total_bytes',               'total_kilobytes')
 	]
 	line = '{:28}{:>36s}'.format(program, '(atomic, checkpoint)')
 	print(line)
@@ -332,7 +348,7 @@ def summary(program) :
 				file_data = file_ptr.read()
 				exec( file_data )
 				value = eval(name)
-				if name == 'initialize_bytes' :
+				if name in [ 'initialize_bytes', 'total_bytes' ] :
 					value = value / 1024.0
 				else :
 					value = value * 1000.0

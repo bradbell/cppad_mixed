@@ -268,6 +268,10 @@ $cref/number_sample_fixed
 	/capture_xam.cpp/Input Arguments/number_fixed_samples/$$
 samples for the fixed effects.
 
+$subhead total_bytes$$
+Is total amount of heap memory, in bytes, added during the program.
+Only memory allocated using $code CppAD::thread_alloc$$ is included.
+
 $subhead sum_random_effects$$
 Is the sum of the optimal random effects.
 
@@ -1088,6 +1092,10 @@ int main(int argc, const char *argv[])
 	);
 	end_seconds = CppAD::elapsed_seconds();
 	label_print("sample_fixed_seconds", end_seconds - start_seconds);
+	//
+	end_bytes          = CppAD::thread_alloc::inuse(thread);
+	string total_bytes = size_t2string(end_bytes - start_bytes);
+	label_print("total_bytes", total_bytes);
 	//
 	// sum of random effects
 	double sum_random_effects = 0.0;
