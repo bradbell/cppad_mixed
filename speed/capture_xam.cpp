@@ -239,9 +239,10 @@ so that you can reproduce results when $icode random_seed$$ is zero.
 
 $subhead initialize_bytes$$
 Is the amount of heap memory, in bytes,
-added to the derived class object
-during its $cref initialize$$ call.
+added to the program during its $cref initialize$$ call.
 Note that more temporary memory may have been used during this call.
+In addition, only memory allocated using $code CppAD::thread_alloc$$ is
+included.
 
 $subhead initialize_seconds$$
 Is the number of seconds used by the derived class $cref initialize$$ call.
@@ -982,19 +983,18 @@ int main(int argc, const char *argv[])
 	);
 	//
 	// start timing of initialize
-	double start_seconds = CppAD::elapsed_seconds();
-	std::map<string, size_t> size_map =
-		mixed_object.initialize(theta_in, u_in, A_info, bool_sparsity);
-	// end timing of initialize
+	size_t thread         = CppAD::thread_alloc::thread_num();
+	size_t start_bytes    = CppAD::thread_alloc::inuse(thread);
+	double start_seconds  = CppAD::elapsed_seconds();
+	//
+	mixed_object.initialize(theta_in, u_in, A_info, bool_sparsity);
+	//
 	double end_seconds = CppAD::elapsed_seconds();
+	size_t end_bytes   = CppAD::thread_alloc::inuse(thread);
 	//
 	// print amoumt of memory added to mixed_object during initialize
 	// (use commans to separate every three digits).
-	size_t num_bytes_before = size_map["num_bytes_before"];
-	size_t num_bytes_after  = size_map["num_bytes_after"];
-	string initialize_bytes = size_t2string(
-		num_bytes_after - num_bytes_before
-	);
+	string initialize_bytes = size_t2string(end_bytes - start_bytes);
 	label_print("initialize_bytes", initialize_bytes);
 	label_print("initialize_seconds", end_seconds - start_seconds);
 	//

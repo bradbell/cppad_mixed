@@ -49,8 +49,8 @@ SET(number_fixed_samples    1000)
 SET(number_locations          50)
 SET(max_population            25)
 SET(mean_population          5.0)
-SET(mean_logit_probability  -0.5)
-SET(std_logit_probability    0.5)
+SET(mean_logit_probability  -0.25)
+SET(std_logit_probability    0.25)
 SET(random_constraint        true)
 # END capture_xam arguments
 ADD_CUSTOM_TARGET(speed_capture_xam
