@@ -20,9 +20,9 @@
 # &section bin/run_cmake.sh: User Configuration Options&&
 #
 # &head verbose_makefile&&
-# Use 'NO' for normal and 'YES' for verbose make output:
+# Use 'no' for normal and 'yes' for verbose make output:
 # &codep
-verbose_makefile='NO'
+verbose_makefile='no'
 # &&
 #
 # &head build_type&&
@@ -66,7 +66,7 @@ cmake_libdir='lib64'
 # If YES, use &cref ldlt_cholmod&& LDLT factorization where possible.
 # Otherwise always use &cref ldlt_eigen&& for LDLT factorization.
 # &codep
-ldlt_cholmod='YES'
+ldlt_cholmod='yes'
 # &&
 #
 # &head log_fatal_error&&
@@ -78,7 +78,7 @@ ldlt_cholmod='YES'
 # In addition, &cref/warnings/public/User Defined Functions/warning/&&
 # where the context in the debugger is helpful, are also converted to asserts.
 # &codep
-log_fatal_error='YES'
+log_fatal_error='yes'
 # &&
 #
 # &head use_atomic_cholesky&&
@@ -89,7 +89,7 @@ log_fatal_error='YES'
 # (Note that the &code cholmod&& LDLT factorization cannot
 # be use with and AD scalar type.)
 # &codep
-use_atomic_cholesky='NO'
+use_atomic_cholesky='no'
 # &&
 #
 # &head checkpoint_newton_step&&
@@ -98,7 +98,7 @@ use_atomic_cholesky='NO'
 # are recorded on the AD tape (which should require more memory but may be
 # faster).
 # &codep
-checkpoint_newton_step='NO'
+checkpoint_newton_step='no'
 # &&
 #
 # &head optimize_cppad_function&&
@@ -106,7 +106,7 @@ checkpoint_newton_step='NO'
 # will be optimized. This makes the code run faster but in some cases
 # it can make debugging more complicated.
 # &codep
-optimize_cppad_function='NO'
+optimize_cppad_function='no'
 # &&
 #
 # &end
@@ -149,19 +149,19 @@ EOF
 		verbose_makefile='1'
 	elif [ "$1" == '--ldlt_eigen' ]
 	then
-		ldlt_cholmod='NO'
+		ldlt_cholmod='no'
 	elif [ "$1" == '--no_log' ]
 	then
-		log_fatal_error='NO'
+		log_fatal_error='no'
 	elif [ "$1" == '--use_atomic_cholesky' ]
 	then
-		use_atomic_cholesky='YES'
+		use_atomic_cholesky='yes'
 	elif [ "$1" == '--checkpoint_newton_step' ]
 	then
-		checkpoint_newton_step='YES'
+		checkpoint_newton_step='yes'
 	elif [ "$1" == '--optimize_cppad_function' ]
 	then
-		optimize_cppad_function='YES'
+		optimize_cppad_function='yes'
 	elif [ "$1" == '--release' ]
 	then
 		build_type='release'
