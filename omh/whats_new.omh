@@ -48,6 +48,14 @@ $section Changes and Additions to cppad_mixed During 2016$$
 
 $childtable%omh/whats_new_15.omh%$$
 
+$head 11-09$$
+The values $code true$$ and $code false$$ in the $code ar1_xam$$
+$cref/input arguments/ar1_xam.cpp/Input Arguments/$$ and
+$cref/output/ar1_xam.cpp/Output/$$ were changed to
+$code yes$$ and $code no$$ respectively.
+This was also done for the $cref/capture_xam/capture_xam.cpp/$$ program.
+
+
 $head 11-07$$
 $list number$$
 Add the $cref compare.py$$ program.

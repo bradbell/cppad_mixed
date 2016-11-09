@@ -13,13 +13,13 @@
 # BEGIN ar1_xam arguments
 SET(random_seed                  0)
 SET(number_random              100)
-SET(quasi_fixed              false)
-SET(trace_optimize_fixed     false)
-SET(ipopt_solve              false)
-SET(bool_sparsity            false)
-SET(hold_memory              false)
-SET(derivative_test          false)
-SET(start_near_solution      false)
+SET(quasi_fixed                 no)
+SET(trace_optimize_fixed        no)
+SET(ipopt_solve                 no)
+SET(bool_sparsity               no)
+SET(hold_memory                 no)
+SET(derivative_test             no)
+SET(start_near_solution         no)
 # END ar1_xam arguments
 ADD_CUSTOM_TARGET(speed_ar1_xam
 	ar1_xam
@@ -38,20 +38,20 @@ ADD_CUSTOM_TARGET(speed_ar1_xam
 # BEGIN capture_xam arguments
 SET(random_seed                0)
 SET(number_random             35)
-SET(quasi_fixed              true)
-SET(trace_optimize_fixed     true)
-SET(ipopt_solve              true)
-SET(bool_sparsity            true)
-SET(hold_memory              true)
-SET(derivative_test          true)
-SET(start_near_solution      true)
-SET(number_fixed_samples    1000)
-SET(number_locations          50)
-SET(max_population            25)
-SET(mean_population          5.0)
+SET(quasi_fixed               yes)
+SET(trace_optimize_fixed      yes)
+SET(ipopt_solve               yes)
+SET(bool_sparsity             yes)
+SET(hold_memory               yes)
+SET(derivative_test           yes)
+SET(start_near_solution       yes)
+SET(number_fixed_samples     1000)
+SET(number_locations           50)
+SET(max_population             25)
+SET(mean_population           5.0)
 SET(mean_logit_probability  -0.25)
 SET(std_logit_probability    0.25)
-SET(random_constraint        true)
+SET(random_constraint         yes)
 # END capture_xam arguments
 ADD_CUSTOM_TARGET(speed_capture_xam
 	capture_xam

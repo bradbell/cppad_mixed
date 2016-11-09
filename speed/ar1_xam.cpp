@@ -12,6 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 $begin ar1_xam.cpp$$
 $escape $$
 $spell
+	cmake
 	bool
 	ar1_xam
 	gsl_rng
@@ -70,32 +71,32 @@ This is a positive integer specifying the number of random effects.
 This is also the number of time points and number of data values.
 
 $subhead quasi_fixed$$
-This is either $code true$$ or $code false$$ and is the value of
+This is either $code yes$$ or $code no$$ and is the value of
 $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ in the
 $code cppad_mixed$$ derived class constructor.
 The amount of memory used by the
 $cref/mixed_derived/derived_ctor/mixed_derived/$$ object,
 after the information matrix is computed,
-will be similar to after the initialization when $icode quasi_fixed$$ is false.
+will be similar to after the initialization when $icode quasi_fixed$$ is no.
 
 $subhead trace_optimize_fixed$$
-This is either $code true$$ or $code false$$.
-If it is true, a $icode%print_level% = 5%$$
+This is either $code yes$$ or $code no$$.
+If it is yes, a $icode%print_level% = 5%$$
 $cref/trace/ipopt_trace/$$ of the fixed effects optimization
 is included in the program output.
 Otherwise the ipopt $icode print_level$$ is zero and
 no such trace is printed.
 
 $subhead ipopt_solve$$
-This is either $code true$$ or $code false$$.
-If it is true, the $code CppAD::ipopt::solve$$
+This is either $code yes$$ or $code no$$.
+If it is yes, the $code CppAD::ipopt::solve$$
 routine is used for optimizing the random effects,
 otherwise $code CppAD::mixed::ipopt_random$$ is used; see
 $cref/evaluation_method/optimize_random/options/evaluation_method/$$.
 
 $subhead bool_sparsity$$
-This is either $code true$$ or $code false$$.
-If it is true, boolean sparsity patterns are used for this computation,
+This is either $code yes$$ or $code no$$.
+If it is yes, boolean sparsity patterns are used for this computation,
 otherwise set sparsity patterns are used.
 
 $subhead hold_memory$$
@@ -103,17 +104,17 @@ The CppAD memory allocator has a hold memory option will be set by
 $codei%
 	CppAD::thread_alloc::hold_memory(%hold_memory%);
 %$$
-where $icode hold_memory$$ is either $code true$$ or $code false$$.
+where $icode hold_memory$$ is either $code yes$$ or $code no$$.
 
 $subhead derivative_test$$
-This is either $code true$$ or $code false$$.
-If it is true, the derivatives of functions used in the optimization
+This is either $code yes$$ or $code no$$.
+If it is yes, the derivatives of functions used in the optimization
 of the fixed effects are checked for correctness.
 (This requires extra time).
 
 $subhead start_near_solution$$
-This is either $code true$$ or $code false$$.
-If it is true, the initial point for the optimization
+This is either $code yes$$ or $code no$$.
+If it is yes, the initial point for the optimization
 is the value of the fixed effects used to simulate the data.
 Otherwise, the initial point is significantly different from this value.
 
@@ -128,20 +129,20 @@ $subhead cppad_mixed_version$$
 The $code cppad_mixed$$ version number.
 
 $subhead use_atomic_cholesky$$
-Is $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$
-zero (NO) or one (YES).
+is the $code bin/run_cmake.sh$$ configuration option
+$cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$.
 
 $subhead checkpoint_newton_step$$
-Is $cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$
-zero (NO) or one (YES).
+is the $code bin/run_cmake.sh$$ configuration option
+$cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$.
 
 $subhead ldlt_cholmod$$
-Is $cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$
-zero (NO) or one (YES).
+is the $code bin/run_cmake.sh$$ configuration option
+$cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$.
 
 $subhead optimize_cppad_function$$
-Is $cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$
-zero (NO) or one (YES).
+is the $code bin/run_cmake.sh$$ configuration option
+$cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$.
 
 $subhead actual_seed$$
 If $icode random_seed$$ is zero,
@@ -191,8 +192,8 @@ $cref/problem/ar1_xam.cpp/Problem/$$ definition.
 
 $subhead ar1_xam_ok$$
 If this program passes it's correctness test,
-$icode ar1_xam_ok$$ is true and the program return code is $code 0$$.
-Otherwise $icode ar1_xam_ok$$ it is false and the return code is $code 1$$.
+$icode ar1_xam_ok$$ is yes and the program return code is $code 0$$.
+Otherwise $icode ar1_xam_ok$$ it is no and the return code is $code 1$$.
 
 $head Example$$
 The $code cppad_mixed$$ automated testing system uses the following
@@ -304,9 +305,9 @@ namespace {
 	void bool_print(const char* label, bool value)
 	{	std::cout << std::setw(35) << std::left << label;
 		if( value )
-			std::cout << " = true";
+			std::cout << " = yes";
 		else
-			std::cout << " = false";
+			std::cout << " = no";
 		std::cout << std::endl;
 	}
 	std::string size_t2string(size_t value )
@@ -353,13 +354,13 @@ int main(int argc, const char* argv[])
 	assert( n_arg == 9 );
 	size_t random_seed            = std::atoi( argv[1] );
 	size_t number_random          = std::atoi( argv[2] );
-	bool   quasi_fixed            = string( argv[3] ) == "true";
-	bool   trace_optimize_fixed   = string( argv[4] ) == "true";
-	bool   ipopt_solve            = string( argv[5] ) == "true";
-	bool   bool_sparsity          = string( argv[6] ) == "true";
-	bool   hold_memory            = string( argv[7] ) == "true";
-	bool   derivative_test        = string( argv[8] ) == "true";
-	bool   start_near_solution    = string( argv[9] ) == "true";
+	bool   quasi_fixed            = string( argv[3] ) == "yes";
+	bool   trace_optimize_fixed   = string( argv[4] ) == "yes";
+	bool   ipopt_solve            = string( argv[5] ) == "yes";
+	bool   bool_sparsity          = string( argv[6] ) == "yes";
+	bool   hold_memory            = string( argv[7] ) == "yes";
+	bool   derivative_test        = string( argv[8] ) == "yes";
+	bool   start_near_solution    = string( argv[9] ) == "yes";
 	//
 	// hold memory setting
 	CppAD::thread_alloc::hold_memory(hold_memory);
@@ -541,9 +542,9 @@ int main(int argc, const char* argv[])
 	ok &= solution.ran_con_lag.size() == 0;
 	//
 	if( ok )
-		label_print("ar1_xam_ok", "true");
+		label_print("ar1_xam_ok", "yes");
 	else
-		label_print("ar1_xam_ok", "false");
+		label_print("ar1_xam_ok", "no");
 	//
 	CppAD::thread_alloc::hold_memory(false);
 	CppAD::mixed::free_gsl_rng();

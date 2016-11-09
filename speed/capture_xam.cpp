@@ -12,6 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 $begin capture_xam.cpp$$
 $escape $$
 $spell
+	cmake
 	bool
 	std
 	CppAD
@@ -76,32 +77,32 @@ number of times at which the measurements are made and is denoted by
 $latex T$$ below.
 
 $subhead quasi_fixed$$
-This is either $code true$$ or $code false$$ and is the value of
+This is either $code yes$$ or $code no$$ and is the value of
 $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ in the
 $code cppad_mixed$$ derived class constructor.
 The amount of memory used by the
 $cref/mixed_derived/derived_ctor/mixed_derived/$$ object,
 after the information matrix is computed,
-will be similar to after the initialization when $icode quasi_fixed$$ is false.
+will be similar to after the initialization when $icode quasi_fixed$$ is no.
 
 $subhead trace_optimize_fixed$$
-This is either $code true$$ or $code false$$.
-If it is true, a $icode%print_level% = 5%$$
+This is either $code yes$$ or $code no$$.
+If it is yes, a $icode%print_level% = 5%$$
 $cref/trace/ipopt_trace/$$ of the fixed effects optimization
 is included in the program output.
 Otherwise the ipopt $icode print_level$$ is zero and
 no such trace is printed.
 
 $subhead ipopt_solve$$
-This is either $code true$$ or $code false$$.
-If it is true, the $code CppAD::ipopt::solve$$
+This is either $code yes$$ or $code no$$.
+If it is yes, the $code CppAD::ipopt::solve$$
 routine is used for optimizing the random effects,
 otherwise $code CppAD::mixed::ipopt_random$$ is used; see
 $cref/evaluation_method/optimize_random/options/evaluation_method/$$.
 
 $subhead bool_sparsity$$
-This is either $code true$$ or $code false$$.
-If it is true, boolean sparsity patterns are used for this computation,
+This is either $code yes$$ or $code no$$.
+If it is yes, boolean sparsity patterns are used for this computation,
 otherwise set sparsity patterns are used.
 
 $subhead hold_memory$$
@@ -109,17 +110,17 @@ The CppAD memory allocator has a hold memory option will be set by
 $codei%
 	CppAD::thread_alloc::hold_memory(%hold_memory%);
 %$$
-where $icode hold_memory$$ is either $code true$$ or $code false$$.
+where $icode hold_memory$$ is either $code yes$$ or $code no$$.
 
 $subhead derivative_test$$
-This is either $code true$$ or $code false$$.
-If it is true, the derivatives of functions used in the optimization
+This is either $code yes$$ or $code no$$.
+If it is yes, the derivatives of functions used in the optimization
 of the fixed effects are checked for correctness.
 (This requires extra time).
 
 $subhead start_near_solution$$
-This is either $code true$$ or $code false$$.
-If it is true, the initial point for the optimization
+This is either $code yes$$ or $code no$$.
+If it is yes, the initial point for the optimization
 is the value of the fixed effects used to simulate the data.
 Otherwise, the initial point is significantly different from this value.
 
@@ -174,15 +175,15 @@ used to simulate data values.
 The is also equal to the standard deviation of the random effects.
 
 $subhead random_constraint$$
-This is either $code true$$ or $code false$$.
-If it is $code false$$, there is no
+This is either $code yes$$ or $code no$$.
+If it is $code no$$, there is no
 $cref/random constraint
 	/cppad_mixed
 	/Problem
 	/Random Constraints
 /$$
 for this example.
-If it is $code true$$,
+If it is $code yes$$,
 the random constraint is
 $latex \[
 	0 = \hat{u}_0 ( \theta ) + \cdots + \hat{u}_{T-1} ( \theta )
@@ -215,20 +216,20 @@ $subhead cppad_mixed_version$$
 The $code cppad_mixed$$ version number.
 
 $subhead use_atomic_cholesky$$
-Is $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$
-zero (NO) or one (YES).
+is the $code bin/run_cmake.sh$$ configuration option
+$cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$.
 
 $subhead checkpoint_newton_step$$
-Is $cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$
-zero (NO) or one (YES).
+is the $code bin/run_cmake.sh$$ configuration option
+$cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$.
 
 $subhead ldlt_cholmod$$
-Is $cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$
-zero (NO) or one (YES).
+is the $code bin/run_cmake.sh$$ configuration option
+$cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$.
 
 $subhead optimize_cppad_function$$
-Is $cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$
-zero (NO) or one (YES).
+is the $code bin/run_cmake.sh$$ configuration option
+$cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$.
 
 $subhead actual_seed$$
 If $icode random_seed$$ is zero,
@@ -318,9 +319,9 @@ $codei%( %std_probability_estimate% - %std_probability% ) /
 
 $subhead capture_xam_ok$$
 The following conditions are checked. If they are all true,
-$icode capture_xam_ok$$ is true. Otherwise it is false.
+$icode capture_xam_ok$$ is yes. Otherwise it is no.
 $list number$$
-$icode%sum_random_effects% < 1e-8 || (%random_constraint% == false)%$$
+$icode%sum_random_effects% < 1e-8 || (%random_constraint% == no)%$$
 $lnext
 $icode%mean_population_ratio% < 4.0%$$
 $lnext
@@ -328,7 +329,7 @@ $icode%mean_logit_probability_ratio% < 4.0%$$
 $lnext
 $icode%std_logit_probability_ratio% < 4.0%$$
 $lend
-If $icode capture_xam_ok$$ is true, the program return value is
+If $icode capture_xam_ok$$ is yes, the program return value is
 $code 0$$ (no error condition).
 Otherwise it is $code 1$$ (error condition).
 
@@ -816,9 +817,9 @@ void label_print(const char* label, const double& value)
 void bool_print(const char* label, bool value)
 {	std::cout << std::setw(35) << std::left << label;
 	if( value )
-		std::cout << " = true";
+		std::cout << " = yes";
 	else
-		std::cout << " = false";
+		std::cout << " = no";
 	std::cout << std::endl;
 }
 
@@ -879,14 +880,14 @@ int main(int argc, const char *argv[])
 	double std_logit_probability  = std::atof( argv[iarg++] );
 	string random_constraint_str  = argv[iarg++];
 	//
-	bool random_constraint    =  random_constraint_str == "true";
-	bool quasi_fixed          =  quasi_fixed_str == "true";
-	bool trace_optimize_fixed =  trace_optimize_fixed_str == "true";
-	bool ipopt_solve          =  ipopt_solve_str == "true";
-	bool bool_sparsity        =  bool_sparsity_str == "true";
-	bool hold_memory          =  hold_memory_str == "true";
-	bool derivative_test      =  derivative_test_str == "true";
-	bool start_near_solution  =  start_near_solution_str == "true";
+	bool random_constraint    =  random_constraint_str == "yes";
+	bool quasi_fixed          =  quasi_fixed_str == "yes";
+	bool trace_optimize_fixed =  trace_optimize_fixed_str == "yes";
+	bool ipopt_solve          =  ipopt_solve_str == "yes";
+	bool bool_sparsity        =  bool_sparsity_str == "yes";
+	bool hold_memory          =  hold_memory_str == "yes";
+	bool derivative_test      =  derivative_test_str == "yes";
+	bool start_near_solution  =  start_near_solution_str == "yes";
 	//
 	// hold memory setting
 	CppAD::thread_alloc::hold_memory(hold_memory);
@@ -901,14 +902,14 @@ int main(int argc, const char *argv[])
 	assert( max_population > 0.0 );
 	assert( mean_population > 0.0 );
 	assert( std_logit_probability > 0.0 );
-	assert( random_constraint || random_constraint_str=="false" );
-	assert( quasi_fixed || quasi_fixed_str=="false" );
-	assert( trace_optimize_fixed || trace_optimize_fixed_str=="false" );
-	assert( ipopt_solve || ipopt_solve_str=="false" );
-	assert( bool_sparsity || bool_sparsity_str =="false" );
-	assert( hold_memory || hold_memory_str =="false" );
-	assert( derivative_test || derivative_test_str =="false" );
-	assert( start_near_solution || start_near_solution_str =="false" );
+	assert( random_constraint || random_constraint_str=="no" );
+	assert( quasi_fixed || quasi_fixed_str=="no" );
+	assert( trace_optimize_fixed || trace_optimize_fixed_str=="no" );
+	assert( ipopt_solve || ipopt_solve_str=="no" );
+	assert( bool_sparsity || bool_sparsity_str =="no" );
+	assert( hold_memory || hold_memory_str =="no" );
+	assert( derivative_test || derivative_test_str =="no" );
+	assert( start_near_solution || start_near_solution_str =="no" );
 	//
 	// configuration options
 	label_print("cppad_mixed_version",    CPPAD_MIXED_VERSION);
@@ -1135,9 +1136,9 @@ int main(int argc, const char *argv[])
 	label_print("std_logit_probability_ratio", estimate_ratio[2]);
 	//
 	if( ok )
-		label_print("capture_xam_ok", "true");
+		label_print("capture_xam_ok", "yes");
 	else
-		label_print("capture_xam_ok", "false");
+		label_print("capture_xam_ok", "no");
 	//
 	// make sure CppAD::thread_alloc is no longer holding memory
 	CppAD::thread_alloc::hold_memory(false);

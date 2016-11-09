@@ -250,30 +250,30 @@ def run(program, atomic, checkpoint) :
 	if program == 'ar1_xam' :
 		random_seed='1234'
 		number_random='1000'
-		quasi_fixed='true'
-		trace_optimize_fixed='false'
-		ipopt_solve='false'
-		bool_sparsity='false'
-		hold_memory='false'
-		derivative_test='false'
-		start_near_solution='false'
+		quasi_fixed='yes'
+		trace_optimize_fixed='no'
+		ipopt_solve='no'
+		bool_sparsity='no'
+		hold_memory='no'
+		derivative_test='no'
+		start_near_solution='no'
 	else :
 		random_seed='5678'
 		number_random='35'
-		quasi_fixed='true'
-		trace_optimize_fixed='false'
-		ipopt_solve='false'
-		bool_sparsity='false'
-		hold_memory='false'
-		derivative_test='false'
-		start_near_solution='false'
+		quasi_fixed='yes'
+		trace_optimize_fixed='no'
+		ipopt_solve='no'
+		bool_sparsity='no'
+		hold_memory='no'
+		derivative_test='no'
+		start_near_solution='no'
 		number_fixed_samples='1000'
 		number_locations='50'
 		max_population='25'
 		mean_population='5.0'
 		mean_logit_probability='-0.25'
 		std_logit_probability='0.25'
-		random_constraint='true'
+		random_constraint='yes'
 	#
 	# execute program
 	cmd = [ './' + program_ac ,
@@ -309,7 +309,6 @@ def run(program, atomic, checkpoint) :
 	return
 # ---------------------------------------------------------------------------
 def summary(program) :
-	true_or_false = { 'yes':'true', 'no':'false' }
 	name_list     = [
 		('initialize_bytes',         'initialize_kilobytes'),
 		('initialize_seconds',       'initialize_milliseconds'),
@@ -332,11 +331,9 @@ def summary(program) :
 				program_ac    = program + '_' + atomic + '_' + checkpoint
 				file_name  = 'build.release/speed/' + program_ac + '.out'
 				#
-				check_value(file_name, 'optimize_cppad_function', 'true')
-				value = true_or_false[atomic]
-				check_value(file_name, 'use_atomic_cholesky', value)
-				value = true_or_false[checkpoint]
-				check_value(file_name, 'checkpoint_newton_step', value)
+				check_value(file_name, 'optimize_cppad_function', 'yes')
+				check_value(file_name, 'use_atomic_cholesky',      atomic)
+				check_value(file_name, 'checkpoint_newton_step',   checkpoint)
 				#
 				cmd  = [ 'sed', file_name, '-n' ]
 				cmd += [ '-e', 's|,||g', '-e', '/^' + name + ' *=/p' ]
