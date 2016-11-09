@@ -12,16 +12,17 @@
 new_directories='
 '
 rename_files='
+	bin/compare.py
 '
 spell_files='
 '
 no_change_files='
 '
 #
-rename_cmd='s|sparse_ad_cholesky|sparse_ad_chol|'
+rename_cmd='s|compare.py|speed_compare.py|'
 #
 cat << EOF > junk.sed
-s|jac_sparsity_bool|jac_sparsity_pack|
+s|compare.py|speed_compare.py|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

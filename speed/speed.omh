@@ -15,12 +15,12 @@ $section Example Programs That are Also Speed and Memory Tests$$
 $head Purpose$$
 These programs test speed and memory usage.
 They are also user examples that demonstrate many of the choices one can make.
-These choices take to form of command line input options
+These choices are command line input options
 and $cref run_cmake.sh$$ configuration options.
 
 $childtable%speed/ar1_xam.cpp
 	%speed/capture_xam.cpp
-	%bin/compare.py
+	%bin/speed_compare.py
 %$$
 
 

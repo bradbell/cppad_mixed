@@ -9,7 +9,7 @@
 #	     GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
-# $begin compare.py$$ $newlinech #$$
+# $begin speed_compare.py$$ $newlinech #$$
 # $spell
 #	py
 #	cppad
@@ -19,7 +19,7 @@
 # $section Compare Speed and Memory for Different Options$$
 #
 # $head Syntax$$
-# $codei%bin/compare.py %option%$$
+# $codei%bin/speed_compare.py %option%$$
 #
 # $head Purpose$$
 # This script compares speed of execution and memory size for the following
@@ -161,7 +161,7 @@ def system_cmd(echo, cmd, file_name) :
 	if flag != 0 :
 		if not echo :
 			print(command)
-		sys.exit('compare.py: command failed' )
+		sys.exit('speed_compare.py: command failed' )
 	if file_out != None :
 		file_out.close()
 	#
@@ -360,12 +360,12 @@ def summary(program) :
 	return
 # ---------------------------------------------------------------------------
 # main program
-usage  = '''usage: bin/compare.py option
+usage  = '''usage: bin/speed_compare.py option
 option: is either 'build', 'run', 'summary'
 '''
 if len(sys.argv) != 2 :
 	sys.exit(usage)
-if sys.argv[0] != 'bin/compare.py' :
+if sys.argv[0] != 'bin/speed_compare.py' :
 	sys.exit(usage)
 #
 if not sys.argv[1]  in [ 'build', 'run', 'summary' ] :
@@ -387,4 +387,4 @@ else :
 		summary(program)
 		print('')
 # ---------------------------------------------------------------------------
-print('bin/compare.py ' + sys.argv[1] + ': OK')
+print('bin/speed_compare.py ' + sys.argv[1] + ': OK')
