@@ -1,0 +1,27 @@
+$Id:$
+-----------------------------------------------------------------------------
+cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
+          Copyright (C) 2014-16 University of Washington
+             (Bradley M. Bell bradbell@uw.edu)
+
+This program is distributed under the terms of the
+	     GNU Affero General Public License version 3.0 or later
+see http://www.gnu.org/licenses/agpl.txt
+-----------------------------------------------------------------------------
+$begin speed$$
+
+$section Example Programs That are Also Speed and Memory Tests$$
+
+$head Purpose$$
+These programs test speed and memory usage.
+They are also user examples that demonstrate many of the choices one can make.
+These choices take to form of command line input options
+and $cref run_cmake.sh$$ configuration options.
+
+$childtable%speed/ar1_xam.cpp
+	%speed/capture_xam.cpp
+	%bin/compare.py
+%$$
+
+
+$end

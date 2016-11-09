@@ -20,9 +20,7 @@ $comment
 These user examples are not for a particular public member function.
 (The ones for a particular function are children of that function.)
 $$
-$children%speed/ar1_xam.cpp
-	%speed/capture_xam.cpp
-	%bin/compare.py
+$children%speed/speed.omh
 	%example/user/abs_density.cpp
 	%example/user/no_random.cpp
 	%example/user/ran_constraint.cpp
@@ -30,7 +28,7 @@ $children%speed/ar1_xam.cpp
 	%example/user/data_mismatch.cpp
 %$$
 
-$head User Defined Functions$$
+$head Functions Defined by User and Called by cppad_mixed$$
 $table
 $rref derived_ctor.cpp$$
 $rref ran_likelihood.cpp$$
@@ -41,7 +39,7 @@ $rref ran_likelihood_jac.cpp$$
 $rref ran_likelihood_hes.cpp$$
 $tend
 
-$head cppad_mixed Functions$$
+$head Functions Defined by cppad_mixed and Called by User$$
 $table
 $rref optimize_random.cpp$$
 $rref optimize_fixed.cpp$$
@@ -50,14 +48,14 @@ $rref sample_random.cpp$$
 $rref sample_fixed.cpp$$
 $tend
 
-$head Example Programs$$
+$head Programs That are Examples and Speed Tests$$
 $table
 $rref ar1_xam.cpp$$
 $rref capture_xam.cpp$$
 $rref compare.py$$
 $tend
 
-$head Other Examples$$
+$head Demonstrate Specific Features$$
 $table
 $rref abs_density.cpp$$
 $rref no_random.cpp$$

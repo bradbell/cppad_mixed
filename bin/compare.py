@@ -16,21 +16,25 @@
 #	cholesky
 #	ar1_xam
 # $$
-# $section Compare Speed for Different Options$$
+# $section Compare Speed and Memory for Different Options$$
 #
 # $head Syntax$$
 # $codei%bin/compare.py %option%$$
 #
 # $head Purpose$$
-# This script compares memory size and speed of execution for the following
+# This script compares speed of execution and memory size for the following
 # cases:
-# $icode program$$ equal to
-# $cref/ar1_xam/ar1_xam.cpp/$$,
-# $cref/capture_xam/capture_xam.cpp/$$,
-# $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$
-# equal to $code yes$$, $code no$$, and
-# $cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$
-# equal to $code yes$$, $code no$$.
+# $codei%
+#	%program%      %=% ar1_xam %or% capture_xam
+#	%atomic%       %=%      no %or%         yes
+#	%checkpoint%   %=%      no %or%         yes
+# %$$
+# Note that $code ar1_xam$$ refers to $cref ar1_xam.cpp$$,
+# $code capture_xam$$ refers to $cref capture_xam.cpp$$,
+# $icode atomic$$ refers to
+# $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$,
+# and $icode checkpoint$$ refers to
+# $cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$.
 #
 # $head option$$
 # This argument is one of the following:
@@ -69,10 +73,10 @@
 # $codei%
 # capture_xam                                 (atomic, checkpoint)
 #                                 (no, no)   (no, yes)   (yes, no)  (yes, yes)
-# initialize_kilobytes           200870.19   124189.40   201128.47   124317.58
-# initialize_milliseconds          3270.00     1740.00     4050.00     2510.00
-# optimize_fixed_milliseconds      5390.00     6060.00     8120.00     9680.00
-# information_mat_milliseconds      250.00      351.00      270.00      364.00
+# initialize_kilobytes            98740.49    98740.49    98740.49    98740.49
+# initialize_milliseconds           350.00      358.00      340.00      367.00
+# optimize_fixed_milliseconds      4100.00     3980.00     4050.00     4110.00
+# information_mat_milliseconds     3680.00     1700.00     4220.00     2530.00
 # total_kilobytes                281869.35   205188.57   282127.63   205316.74
 # %$$
 #
@@ -114,25 +118,25 @@
 # $cref/capture_xam/capture_xam.cpp/Output/total_bytes/$$
 # for the case corresponding to each column.
 #
-# $subhead (yes,yes)$$
+# $subhead (no, no)$$
 # The values in this column correspond to
-# $icode%use_atomic_cholesky% = yes%$$ and
-# $icode%checkpoint% = yes%$$.
-#
-# $subhead (yes,no)$$
-# The values in this column correspond to
-# $icode%use_atomic_cholesky% = yes%$$ and
+# $icode%use_atomic_cholesky% = no%$$ and
 # $icode%checkpoint% = no%$$.
 #
-# $subhead (no,yes)$$
+# $subhead (no, yes)$$
 # The values in this column correspond to
 # $icode%use_atomic_cholesky% = no%$$ and
 # $icode%checkpoint% = yes%$$.
 #
-# $subhead (no,no)$$
+# $subhead (yes, no)$$
 # The values in this column correspond to
-# $icode%use_atomic_cholesky% = no%$$ and
+# $icode%use_atomic_cholesky% = yes%$$ and
 # $icode%checkpoint% = no%$$.
+#
+# $subhead (yes, yes)$$
+# The values in this column correspond to
+# $icode%use_atomic_cholesky% = yes%$$ and
+# $icode%checkpoint% = yes%$$.
 #
 # $end
 # ---------------------------------------------------------------------------

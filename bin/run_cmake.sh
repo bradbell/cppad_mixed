@@ -63,17 +63,17 @@ cmake_libdir='lib64'
 # &&
 #
 # &head ldlt_cholmod&&
-# If YES, use &cref ldlt_cholmod&& LDLT factorization where possible.
+# If yes, use &cref ldlt_cholmod&& LDLT factorization where possible.
 # Otherwise always use &cref ldlt_eigen&& for LDLT factorization.
 # &codep
 ldlt_cholmod='yes'
 # &&
 #
 # &head log_fatal_error&&
-# If YES, &code cppad_mixed&& will use
+# If yes, &code cppad_mixed&& will use
 # &cref/fatal_error/public/User Defined Functions/fatal_error/&&
 # to report its fatal error messages.
-# If NO, fatal errors will be converted to asserts
+# If no, fatal errors will be converted to asserts
 # (which is useful when running a program in a debugger).
 # In addition, &cref/warnings/public/User Defined Functions/warning/&&
 # where the context in the debugger is helpful, are also converted to asserts.
@@ -82,7 +82,7 @@ log_fatal_error='yes'
 # &&
 #
 # &head use_atomic_cholesky&&
-# If YES, &code cppad_mixed&& will use
+# If yes, &code cppad_mixed&& will use
 # the &cref sparse_ad_cholesky&& atomic AD operation when computing the
 # &cref newton_step&&. Otherwise, an LDLT factorization using
 # &code eigen&& , with &code AD<double>&& as the scalar type, is used.
@@ -93,7 +93,7 @@ use_atomic_cholesky='no'
 # &&
 #
 # &head checkpoint_newton_step&&
-# If YES, &code cppad_mixed&& will checkpoint the
+# If yes, &code cppad_mixed&& will checkpoint the
 # &cref newton_step&&. Otherwise, repeated applications of the Newton step
 # are recorded on the AD tape (which should require more memory but may be
 # faster).
@@ -102,7 +102,7 @@ checkpoint_newton_step='no'
 # &&
 #
 # &head optimize_cppad_function&&
-# If YES, the operation sequence for certain CppAD functions
+# If yes, the operation sequence for certain CppAD functions
 # will be optimized. This makes the code run faster but in some cases
 # it can make debugging more complicated.
 # &codep
