@@ -77,7 +77,7 @@
 # initialize_milliseconds           350.00      358.00      340.00      367.00
 # optimize_fixed_milliseconds      4100.00     3980.00     4050.00     4110.00
 # information_mat_milliseconds     3680.00     1700.00     4220.00     2530.00
-# total_kilobytes                281869.35   205188.57   282127.63   205316.74
+# final_kilobytes                281869.35   205188.57   282127.63   205316.74
 # %$$
 #
 # $subhead program$$
@@ -111,11 +111,11 @@
 # $cref/capture_xam/capture_xam.cpp/Output/information_mat_seconds/$$
 # for the case corresponding to each column.
 #
-# $subhead total_kilobytes$$
-# The values in this row are $icode total_bytes$$ divided by 1024
+# $subhead final_kilobytes$$
+# The values in this row are $icode final_bytes$$ divided by 1024
 # for the program
-# $cref/ar1_xam/ar1_xam.cpp/Output/total_bytes/$$ or
-# $cref/capture_xam/capture_xam.cpp/Output/total_bytes/$$
+# $cref/ar1_xam/ar1_xam.cpp/Output/final_bytes/$$ or
+# $cref/capture_xam/capture_xam.cpp/Output/final_bytes/$$
 # for the case corresponding to each column.
 #
 # $subhead (no, no)$$
@@ -318,7 +318,7 @@ def summary(program) :
 		('initialize_seconds',       'initialize_milliseconds'),
 		('optimize_fixed_seconds',   'optimize_fixed_milliseconds'),
 		('information_mat_seconds',  'information_mat_milliseconds'),
-		('total_bytes',               'total_kilobytes')
+		('final_bytes',               'final_kilobytes')
 	]
 	line = '{:28}{:>36s}'.format(program, '(atomic, checkpoint)')
 	print(line)
@@ -349,7 +349,7 @@ def summary(program) :
 				file_data = file_ptr.read()
 				exec( file_data )
 				value = eval(name)
-				if name in [ 'initialize_bytes', 'total_bytes' ] :
+				if name in [ 'initialize_bytes', 'final_bytes' ] :
 					value = value / 1024.0
 				else :
 					value = value * 1000.0

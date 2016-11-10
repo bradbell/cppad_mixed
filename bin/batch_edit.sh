@@ -12,7 +12,6 @@
 new_directories='
 '
 rename_files='
-	bin/compare.py
 '
 spell_files='
 '
@@ -22,7 +21,8 @@ no_change_files='
 rename_cmd='s|compare.py|speed_compare.py|'
 #
 cat << EOF > junk.sed
-s|compare.py|speed_compare.py|
+s|total_kilobytes|final_kilobytes|g
+s|total_bytes|final_bytes|g
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]
