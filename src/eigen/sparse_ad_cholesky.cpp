@@ -662,19 +662,21 @@ void sparse_ad_cholesky::set_hes_sparsity(
 						//
 						// set of elements corresponding to L(i,k)
 						set_ik.resize(0);
-						jac_sparsity.begin(cik);
-						size_t element = jac_sparsity.next_element();
+						typename Sparsity::const_iterator
+							itr_i(jac_sparsity, cik);
+						size_t element = *itr_i;
 						while( element != jac_sparsity.end() )
 						{	set_ik.push_back(element);
-							element = jac_sparsity.next_element();
+							element = *(++itr_i);
 						}
 						// set of elements corresponding to L(j,k)
 						set_jk.resize(0);
-						jac_sparsity.begin(cjk);
-						element = jac_sparsity.next_element();
+						typename Sparsity::const_iterator
+							itr_j(jac_sparsity, cjk);
+						element = *itr_j;
 						while( element != jac_sparsity.end() )
 						{	set_jk.push_back(element);
-							element = jac_sparsity.next_element();
+							element = *(++itr_j);
 						}
 						// for each pair of elements
 						for(size_t ik = 0; ik < set_ik.size(); ik++)
@@ -809,11 +811,11 @@ bool sparse_ad_cholesky::forward(
 	assert( jac_sparsity_pack_.end() == nx );
 	for(size_t i = 0; i < ny; i++)
 	{	vy[i] = false;
-		jac_sparsity_pack_.begin(i);
-		size_t j = jac_sparsity_pack_.next_element();
+		sparse_pack::const_iterator itr(jac_sparsity_pack_, i);
+		size_t j = *itr;
 		while( j < nx )
 		{	vy[i] |= vx[j];
-			j = jac_sparsity_pack_.next_element();
+			j = *(++itr);
 		}
 	}
 	return true;
@@ -975,8 +977,8 @@ bool sparse_ad_cholesky::for_sparse_jac(
 			s[ i * q + j ] = false;
 		//
 		// loop though elements of Jacobian in row i
-		jac_sparsity_pack_.begin(i);
-		size_t k = jac_sparsity_pack_.next_element();
+		sparse_pack::const_iterator itr(jac_sparsity_pack_, i);
+		size_t k = *itr;
 		while( k < nx )
 		{	// J(i, k) is non-zero.
 			for(size_t j = 0; j < q; j++)
@@ -986,7 +988,7 @@ bool sparse_ad_cholesky::for_sparse_jac(
 				s_ij          |= R_kj;
 				s[ i * q + j ] = s_ij;
 			}
-			k = jac_sparsity_pack_.next_element();
+			k = *(++itr);
 		}
 	}
 	return true;
@@ -1023,8 +1025,8 @@ bool sparse_ad_cholesky::rev_sparse_jac(
 	// loop over the rows of the J = f'(x)
 	assert( jac_sparsity_pack_.end() == nx );
 	for(size_t k = 0; k < ny; k++)
-	{	jac_sparsity_pack_.begin(k);
-		size_t j = jac_sparsity_pack_.next_element();
+	{	sparse_pack::const_iterator itr(jac_sparsity_pack_, k);
+		size_t j = *itr;
 		while(j < nx )
 		{	// S(i, j) = sum_k R(i, k) J(k, j) and J(k, j) is non-zero
 			for(size_t i = 0; i < q; i++)
@@ -1034,7 +1036,7 @@ bool sparse_ad_cholesky::rev_sparse_jac(
 				s_ij          |= R_ik;
 				st[ j * q + i] = s_ij;
 			}
-			j = jac_sparsity_pack_.next_element();
+			j = *(++itr);
 		}
 	}
 	return true;
@@ -1080,12 +1082,12 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 		t[j] = false;
 	for(size_t k = 0; k < ny; k++)
 	{	if( s[k] )
-		{	jac_sparsity_pack_.begin(k);
-			size_t j = jac_sparsity_pack_.next_element();
+		{	CppAD::sparse_pack::const_iterator itr(jac_sparsity_pack_, k);
+			size_t j = *itr;
 			while( j < nx )
 			{	// S(k) * J(k, j) is non-zero where J = f'(x)
 				t[j] = true;
-				j = jac_sparsity_pack_.next_element();
+				j = *(++itr);
 			}
 		}
 	}
@@ -1100,8 +1102,8 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 			fptu[ j * q + k ] = false;
 	}
 	for(size_t i = 0; i < ny; i++)
-	{	jac_sparsity_pack_.begin(i);
-		size_t j = jac_sparsity_pack_.next_element();
+	{	CppAD::sparse_pack::const_iterator itr(jac_sparsity_pack_, i);
+		size_t j = *itr;
 		while( j < nx )
 		{	// J(i, j) is non-zero where J = f'(x)
 			for(size_t k = 0; k < q; k++)
@@ -1111,7 +1113,7 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 				fptu_jk          |= u_ik;
 				fptu[ j * q + k ] = fptu_jk;
 			}
-			j = jac_sparsity_pack_.next_element();
+			j = *(++itr);
 		}
 	}
 	//
@@ -1127,8 +1129,8 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 		for(size_t j = 0; j < q; j++)
 			sfppR[ i * q + j ] = false;
 		//
-		hes_sparsity_pack.begin(i);
-		size_t k = hes_sparsity_pack.next_element();
+		sparse_pack::const_iterator itr(hes_sparsity_pack, i);
+		size_t k = *itr;
 		while( k < nx )
 		{	// H(i, k) is non-zero where H = sum_l S_l (x) * f_l '' (x)
 			for(size_t j = 0; j < q; j++)
@@ -1138,7 +1140,7 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 				sfppR_ij          |= r_kj;
 				sfppR[ i * q + j ] = sfppR_ij;
 			}
-			k = hes_sparsity_pack.next_element();
+			k = *(++itr);
 		}
 	}
 	// compute sparsity for V(x)

@@ -61,15 +61,15 @@ void sparsity_print(
 	for(size_t i = 0; i < pattern.n_set(); i++)
 	{	bool first = true;
 			std::cout << "row " << i << ":";
-		pattern.begin(i);
-		size_t j = pattern.next_element();
+		sparse_pack::const_iterator itr(pattern, i);
+		size_t j = *itr;
 		while( j != pattern.end() )
 		{	assert( j < pattern.end() );
 			if( ! first )
 				std::cout << ",";
 			std::cout << " " << j;
 			first = false;
-			j     = pattern.next_element();
+			j     = *(++itr);
 		}
 		std::cout << "\n";
 	}
@@ -83,15 +83,15 @@ void sparsity_print(
 	for(size_t i = 0; i < pattern.n_set(); i++)
 	{	bool first = true;
 			std::cout << "row " << i << ":";
-		pattern.begin(i);
-		size_t j = pattern.next_element();
+		sparse_list::const_iterator itr(pattern, i);
+		size_t j = *itr;
 		while( j != pattern.end() )
 		{	assert( j < pattern.end() );
 			if( ! first )
 				std::cout << ",";
 			std::cout << " " << j;
 			first = false;
-			j     = pattern.next_element();
+			j     = *(++itr);
 		}
 		std::cout << "\n";
 	}
