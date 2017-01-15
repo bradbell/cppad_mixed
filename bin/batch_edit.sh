@@ -12,17 +12,17 @@
 new_directories='
 '
 rename_files='
+	omh/whats_new.omh
 '
 spell_files='
 '
 no_change_files='
 '
 #
-rename_cmd='s|compare.py|speed_compare.py|'
+rename_cmd='s|whats_new.omh|whats_new_16.omh|'
 #
 cat << EOF > junk.sed
-s|total_kilobytes|final_kilobytes|g
-s|total_bytes|final_bytes|g
+s|whats_new\$\\\$|whats_new_16\$\$|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

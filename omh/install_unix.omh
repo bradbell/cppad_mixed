@@ -159,7 +159,7 @@ $$
 $head cppad_mixed$$
 The steps above should only need to be executed once, not for
 each new version of $code cppad_mixed$$
-(unless the $cref whats_new$$ release notes say otherwise).
+(unless the $cref whats_new_16$$ release notes say otherwise).
 The steps below will need to be executed each time you install
 a new version of $code cppad_mixed$$:
 
