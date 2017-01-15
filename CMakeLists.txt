@@ -23,7 +23,7 @@
 #                        -D log_fatal_error=value \
 #                        -D use_atomic_cholesky=value \
 #                        -D checkpoint_newton_step=value \
-#                        -D optimize_operation_sequence=value
+#                        -D optimize_cppad_function=value
 # ============================================================================
 # Macro definitions
 # ============================================================================
