@@ -21,4 +21,10 @@ $childtable%
 	omh/whats_new_16.omh
 %$$
 
+$head 01-14$$
+Increase the $code trace-adaptive$$ field width
+for step size from 7 to 11 characters
+(so that exponential format fits in the field); see
+$cref/derivative_test/optimize_fixed/fixed_ipopt_options/derivative_test/$$.
+
 $end
