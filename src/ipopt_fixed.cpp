@@ -2011,10 +2011,6 @@ If upon return it  $code get_error_message()$$ is non-empty,
 a description of a function evaluation
 error that occurred during the derivative check.
 
-$head 2DO$$
-Add this
-to the cppad_mixed API (as an alternative to Ipopt's derivative checker).
-
 $end
 -------------------------------------------------------------------------------
 */
@@ -2197,7 +2193,7 @@ bool ipopt_fixed::adaptive_derivative_check(
 				std::cout << std::endl
 					<< std::right
 					<< std::setw(4)  << "j"
-					<< std::setw(7)  << "step"
+					<< std::setw(11) << "step"
 					<< std::setw(11) << "f"
 					<< std::setw(11) << "grad"
 					<< std::setw(11) << "apx"
@@ -2206,7 +2202,7 @@ bool ipopt_fixed::adaptive_derivative_check(
 			std::cout
 				<< std::setprecision(4)
 				<< std::setw(4)  << j
-				<< std::setw(7)  << best_step
+				<< std::setw(11) << best_step
 				<< std::setw(11) << obj_value
 				<< std::setw(11) << grad_f[j]
 				<< std::setw(11) << best_approx
@@ -2318,7 +2314,7 @@ bool ipopt_fixed::adaptive_derivative_check(
 						<< std::right
 						<< std::setw(4)  << "i"
 						<< std::setw(4)  << "j"
-						<< std::setw(7)  << "step"
+						<< std::setw(11) << "step"
 						<< std::setw(11) << "f"
 						<< std::setw(11) << "grad"
 						<< std::setw(11) << "apx"
@@ -2328,7 +2324,7 @@ bool ipopt_fixed::adaptive_derivative_check(
 					<< std::setprecision(4)
 					<< std::setw(4)  << i
 					<< std::setw(4)  << j
-					<< std::setw(7)  << best_step[i]
+					<< std::setw(11) << best_step[i]
 					<< std::setw(11) << con_value[i]
 					<< std::setw(11) << jac[i]
 					<< std::setw(11) << best_approx[i]
