@@ -196,7 +196,7 @@ bool ran_obj_jac_xam(void)
 	}
 	ok &= abs( r_fixed[0] / d_sum_0 - 1.0 )  < eps;
 	ok &= abs( r_fixed[1] / d_sum_1 - 1.0 )  < eps;
-	ok &= abs( r_fixed[1] / d_sum_2 - 1.0 )  < eps;
+	ok &= abs( r_fixed[2] / d_sum_2 - 1.0 )  < eps;
 
 	return ok;
 }

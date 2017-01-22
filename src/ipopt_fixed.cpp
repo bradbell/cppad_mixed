@@ -1864,10 +1864,10 @@ $end
 		n, x, new_x, m, nnz_jac_g_,
 		iRow.data(), jCol.data(), NULL
 	);
-	CppAD::vector<Number> values(nnz_jac_g_);
+	CppAD::vector<Number> jac_g(nnz_jac_g_);
 	eval_jac_g(
 		n, x, new_x, m, nnz_jac_g_,
-		iRow.data(), jCol.data(), values.data()
+		iRow.data(), jCol.data(), jac_g.data()
 	);
 
 	// Check the partial of the Lagrangian w.r.t fixed effects
@@ -1880,7 +1880,7 @@ $end
 		for(size_t k = 0; k < nnz_jac_g_; k++)
 		{	if( jCol[k] == Index(j) )
 			{	Index  i = iRow[k];
-				sum   += lambda[i] * values[k];
+				sum   += lambda[i] * jac_g[k];
 			}
 		}
 		// sum += z_U[j] - z_L[j]; does not work because
@@ -1932,7 +1932,7 @@ $end
 		for(size_t k = 0; k < nnz_jac_g_; k++)
 		{	if( jCol[k] == Index(j) )
 			{	Index  i = iRow[k];
-				sum   += lambda[i] * values[k];
+				sum   += lambda[i] * jac_g[k];
 			}
 		}
 		average += std::fabs(sum) / double(n_fixed_);

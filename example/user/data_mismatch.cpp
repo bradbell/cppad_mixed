@@ -161,7 +161,6 @@ namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::exp;
-	using CppAD::abs;
 	using CppAD::AD;
 	using CppAD::mixed::sparse_mat_info;
 	//
@@ -336,7 +335,7 @@ bool data_mismatch_xam(void)
 	double theta_in   = fixed_in[0];
 	double u_in       = random_in[0];
 	double L_theta_in = mixed_object.L_theta(theta_in, u_in);
-	ok &= abs( L_theta_in ) >= 1.0;
+	ok &= fabs( L_theta_in ) >= 1.0;
 	//
 	// optimize the fixed effects using quasi-Newton method
 	std::string fixed_ipopt_options =
@@ -379,11 +378,11 @@ bool data_mismatch_xam(void)
 	double theta_out   = fixed_out[0];
 	double u_out       = random_out[0];
 	double L_theta_out = mixed_object.L_theta(theta_out, u_out);
-	ok &= abs( L_theta_out ) <= 2e-8;
+	ok &= fabs( L_theta_out ) <= 2e-8;
 	//
 	// Now demonstrate that the solution is still close to the expected values
-	ok &= abs( theta_out / z - 1.0 ) <= 1e-2;
-	ok &= abs( u_out ) <= 1e-2;
+	ok &= fabs( theta_out / z - 1.0 ) <= 1e-2;
+	ok &= fabs( u_out ) <= 1e-2;
 	//
 	return ok;
 }
