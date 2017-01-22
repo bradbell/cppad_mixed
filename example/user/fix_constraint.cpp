@@ -207,7 +207,7 @@ bool fix_constraint_xam(void)
 	double sum = 0.0;
 	for(size_t i = 0; i < n_fixed; i++)
 		sum += fixed_out[i] * fixed_out[i];
-	ok &= CppAD::abs( sum / 2.0 - 1.0 ) <= tol;
+	ok &= fabs( sum / 2.0 - 1.0 ) <= tol;
 
 	// compute lagranges multiplier by averaging
 	sum = 0.0;
@@ -218,7 +218,7 @@ bool fix_constraint_xam(void)
 	// check partials of Lagragian w.r.t fixed effects
 	for(size_t i = 0; i < n_fixed; i++)
 	{	double err	= data[i] - fixed_out[i] + lambda * fixed_out[i];
-		ok         &= CppAD::abs(err) < tol;
+		ok         &= fabs(err) < tol;
 	}
 	return ok;
 }

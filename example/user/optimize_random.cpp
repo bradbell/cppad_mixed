@@ -120,7 +120,7 @@ bool optimize_random_xam(void)
 	for(size_t i = 0; i < n_data; i++)
 	{	// debugging print out
 		// std::cout << random_out[i] / data[i] - 1.0 << std::endl;
-		ok &= CppAD::abs(random_out[i] / data[i] - 1.0) < 1e-10;
+		ok &= fabs(random_out[i] / data[i] - 1.0) < 1e-10;
 	}
 
 	return ok;

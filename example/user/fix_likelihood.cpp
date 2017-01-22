@@ -117,7 +117,7 @@ bool fix_likelihood_xam(void)
 		double res    = (data[i] - mu);
 		sum          += (std::log(2 * pi) + res * res) / 2.0;
 	}
-	ok &= abs( a1_vec[0] / a1_double(sum) - a1_double(1.0) ) < eps;
+	ok &= fabs( a1_vec[0] / a1_double(sum) - a1_double(1.0) ) < eps;
 
 	return ok;
 }

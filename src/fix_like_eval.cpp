@@ -19,6 +19,7 @@ $spell
 	vec
 	const
 	Cpp
+	fabs
 $$
 
 $section Evaluate Fixed Likelihood$$
@@ -60,7 +61,7 @@ To be specific;
 $pre
 	$$
 $latex g( \theta ) = $$
-$icode%vec%[0] + CppAD::abs(%vec%[1]) + %...% CppAD::abs(%vec%[%s%-1])
+$icode%vec%[0] + fabs(%vec%[1]) + %...% fabs(%vec%[%s%-1])
 %$$
 where $icode%s% = %vec%.size()%$$.
 

@@ -134,11 +134,11 @@ bool fixed_lag(void)
 	for(size_t j = 0; j < n_fixed; j++)
 	{
 		if( j == 0 )
-		{	ok &= CppAD::abs( fixed_out[j] - fixed_lower[j] ) <= tol;
+		{	ok &= fabs( fixed_out[j] - fixed_lower[j] ) <= tol;
 			ok &= fixed_lag[j] < 0.0;
 		}
 		else
-		{	ok &= CppAD::abs( fixed_out[j] - z[j] ) <= tol;
+		{	ok &= fabs( fixed_out[j] - z[j] ) <= tol;
 			ok &= fixed_lag[j] == 0.0;
 		}
 	}

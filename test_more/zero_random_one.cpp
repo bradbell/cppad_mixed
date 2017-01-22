@@ -227,7 +227,7 @@ bool zero_random_one(void)
 
 	// Note that no constraints are active, (not even the l1 terms)
 	// so the partials should be zero.
-	ok &= CppAD::abs( F_theta ) <= 2.0 * tol;
+	ok &= fabs( F_theta ) <= 2.0 * tol;
 
 	// Compute the optimal random effects
 	vector<double> random_out = mixed_object.optimize_random(
@@ -237,8 +237,8 @@ bool zero_random_one(void)
 
 	// partial of p(u | theta) w.r.t u
 	double p_u = (theta + u - data[0]) / (sigma_y * sigma_y);
-	ok &= CppAD::abs( u )   <= 2.0 * tol;
-	ok &= CppAD::abs( p_u ) <= 2.0 * tol;
+	ok &= fabs( u )   <= 2.0 * tol;
+	ok &= fabs( p_u ) <= 2.0 * tol;
 
 	return ok;
 }

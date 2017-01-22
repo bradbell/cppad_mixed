@@ -165,7 +165,7 @@ bool abs_density_xam(void)
 	vector<double> fixed_out = solution.fixed_opt;
 
 	for(size_t j = 0; j < n_fixed; j++)
-		ok &= CppAD::abs( fixed_out[j] - CppAD::log( z[j] ) ) <= tol;
+		ok &= fabs( fixed_out[j] - CppAD::log( z[j] ) ) <= tol;
 
 	return ok;
 }

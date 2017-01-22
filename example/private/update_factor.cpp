@@ -128,7 +128,7 @@ bool update_factor_xam(void)
 		mixed_object.ldlt_ran_hes_.solve_H(row, val_b, val_x);
 		//
 		double check = theta[j] * theta[j];
-		ok      &= abs( check / val_x[0] - 1.0) <= eps;
+		ok      &= fabs( check / val_x[0] - 1.0) <= eps;
 	}
 	return ok;
 }

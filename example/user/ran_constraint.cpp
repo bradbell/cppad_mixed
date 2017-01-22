@@ -219,7 +219,7 @@ bool ran_constraint_xam(void)
 	// empty matrix (no constraints)
 	CppAD::mixed::sparse_mat_info A_info;
 	double sum = sum_random_effects(n_random, A_info);
-	ok        &= CppAD::abs(sum) > 0.5;
+	ok        &= fabs(sum) > 0.5;
 
 	// constrain sum of random effects to be zero
 	A_info.resize(n_random);
@@ -229,7 +229,7 @@ bool ran_constraint_xam(void)
 		A_info.val[k] = 1.0;
 	}
 	sum = sum_random_effects(n_random, A_info);
-	ok &= CppAD::abs(sum) < 2.0 * tol;
+	ok &= fabs(sum) < 2.0 * tol;
 
 	return ok;
 }

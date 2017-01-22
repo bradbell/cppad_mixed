@@ -135,7 +135,7 @@ bool solution_check(void)
 	//
 	for(size_t j = 0; j < n_fixed; j++)
 	{	double prod = (fixed_out[j] - fixed_lower[j]) * (fixed_out[j] - z[j]);
-		ok &= CppAD::abs( prod ) <= tol;
+		ok &= fabs( prod ) <= tol;
 		ok &= fixed_lag[j] == 0.0;
 	}
 	return ok;

@@ -192,7 +192,7 @@ bool ran_objcon_hes_xam(void)
 			{	non_zero++;
 				for(size_t k = 0; k < K; k++)
 				{	if( row[k] == i && col[k] == j )
-					{	ok &= abs( val[k] / hes[i*n_fixed+j] - 1.0 ) <= eps;
+					{	ok &= fabs( val[k] / hes[i*n_fixed+j] - 1.0 ) <= eps;
 						check_count++;
 					}
 				}

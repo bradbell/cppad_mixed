@@ -17,7 +17,6 @@ namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::exp;
-	using CppAD::abs;
 	using CppAD::AD;
 	using CppAD::mixed::sparse_mat_info;
 	//
@@ -154,7 +153,7 @@ bool delta_ran_obj(void)
 		//
 		double check = (r_plus - r_minus) / (4.0 * eps);
 		//
-		ok &= CppAD::abs( check / r_fixed[j] - 1.0) <= eps;
+		ok &= fabs( check / r_fixed[j] - 1.0) <= eps;
 	}
 	return ok;
 }

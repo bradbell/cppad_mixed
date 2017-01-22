@@ -78,7 +78,7 @@ bool test_one(void)
 	CppAD::ADFun<double>(A_vec, log_det);
 
 	// check function value
-	ok &= abs( exp(log_det[0]) / 36. - 1.0 ) < eps;
+	ok &= fabs( exp(log_det[0]) / 36. - 1.0 ) < eps;
 
 	// initialize dense column vector as zero
 	real_dense_matrix b(n, 1);
@@ -91,7 +91,7 @@ bool test_one(void)
 		real_dense_matrix x = chol.solve(b);
 		b(j) = 0.0;
 		for(size_t i = 0; i < n; i++)
-			ok &= CppAD::abs( x(i) / A_inv[i*n + j] - 1.0 ) <= eps;
+			ok &= fabs( x(i) / A_inv[i*n + j] - 1.0 ) <= eps;
 	}
 	return ok;
 }

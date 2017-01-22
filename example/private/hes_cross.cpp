@@ -146,7 +146,7 @@ bool hes_cross_xam(void)
 		//
 		double sigma3 = fixed_vec[i] * fixed_vec[i] * fixed_vec[i];
 		double check  = 2.0 * (data[i] - random_vec[i])  / sigma3;
-		ok              &= abs( val_out[k] / check - 1.0) <= eps;
+		ok              &= fabs( val_out[k] / check - 1.0) <= eps;
 	}
 	for(size_t k = 1; k < n_random; k++)
 	{	ok &= col[k-1] <= col[k];

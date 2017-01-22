@@ -144,7 +144,7 @@ bool ran_con_eval_xam(void)
 	for(size_t i = 0; i < n_random; i++)
 		check += random_vec[i];
 
-	ok &= abs( Au[0] / check - 1.0 ) <= eps;
+	ok &= fabs( Au[0] / check - 1.0 ) <= eps;
 
 	return ok;
 }

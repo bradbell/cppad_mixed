@@ -140,7 +140,7 @@ bool abs_fix_con(void)
 	{	double check = CppAD::log( z[j] );
 		if( j == 0 )
 			check = CppAD::log( z[j] ) / 2.0;
-		ok &= CppAD::abs( fixed_out[j] - check ) <= tol;
+		ok &= fabs( fixed_out[j] - check ) <= tol;
 	}
 
 	return ok;

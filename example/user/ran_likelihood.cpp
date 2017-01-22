@@ -129,7 +129,7 @@ bool ran_likelihood_xam(void)
 		double res    = (data[i] - mu) / sigma;
 		sum          += (std::log(2 * pi * sigma * sigma) + res * res) / 2.0;
 	}
-	ok &= abs( a2_vec[0] / a2_double(sum) - a2_double(1.0) ) < eps;
+	ok &= fabs( a2_vec[0] / a2_double(sum) - a2_double(1.0) ) < eps;
 
 	return ok;
 }

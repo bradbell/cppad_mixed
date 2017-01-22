@@ -130,14 +130,14 @@ bool ran_obj_tst(void)
 		check       += CppAD::log(sqrt_2pi * sigma);
 		check       += res * res / 2.0;
 	}
-	ok &= CppAD::abs( r / check - 1.0 ) <= eps;
+	ok &= fabs( r / check - 1.0 ) <= eps;
 
 	// check jacobian of random part of objective
 	vector<double> r_fixed(n_fixed);
 	mixed_object.ran_obj_jac(fixed_vec, uhat, r_fixed);
 	//
-	ok &= CppAD::abs( r_fixed[0] - 0.0 ) <= eps;
-	ok &= CppAD::abs( r_fixed[1] - 0.0 ) <= eps;
+	ok &= fabs( r_fixed[0] - 0.0 ) <= eps;
+	ok &= fabs( r_fixed[1] - 0.0 ) <= eps;
 
 	return ok;
 }

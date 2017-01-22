@@ -149,7 +149,7 @@ bool fix_con_eval_xam(void)
 	for(size_t j = 0; j < n_fixed; j++)
 		check += fixed_vec[j] * fixed_vec[j];
 	check /= 2.0;
-	ok &= CppAD::abs( c[0] / check - 1.0 ) <= eps;
+	ok &= fabs( c[0] / check - 1.0 ) <= eps;
 
 	return ok;
 }

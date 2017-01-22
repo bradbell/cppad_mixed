@@ -169,7 +169,7 @@ bool ran_obj_eval_xam(void)
 	{	double res    = (data[i] - mu) / delta;
 		sum          += CppAD::log(sqrt_2pi * delta) + res*res / 2.0;
 	}
-	ok &= abs( h / sum - 1.0 ) < eps;
+	ok &= fabs( h / sum - 1.0 ) < eps;
 
 	return ok;
 }

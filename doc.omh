@@ -15,6 +15,7 @@ $spell
 	cppad
 	CppAD
 	vec
+	fabs
 $$
 $comment BEGIN: settings used by all section ---------------------------- $$
 $escape $$
@@ -158,7 +159,7 @@ the corresponding negative log-density is given by
 $pre
 	$$
 $latex - \log [ \B{p} (x) ] = $$
-$icode%vec%[0] + CppAD::abs(%vec%[1]) + %...% CppAD::abs(%vec%[%s%-1])
+$icode%vec%[0] + fabs(%vec%[1]) + %...% fabs(%vec%[%s%-1])
 %$$
 where $icode%s% = %vec%.size()%$$.
 

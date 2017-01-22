@@ -12,17 +12,19 @@
 new_directories='
 '
 rename_files='
-	omh/whats_new.omh
 '
 spell_files='
 '
 no_change_files='
+	bin/capture_xam.py
 '
 #
 rename_cmd='s|whats_new.omh|whats_new_16.omh|'
 #
 cat << EOF > junk.sed
-s|whats_new\$\\\$|whats_new_16\$\$|
+/using CppAD::abs/d
+s|CppAD::abs(|fabs(|g
+s|\\([^a-zA-Z_]\\)abs(|\\1fabs(|g
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

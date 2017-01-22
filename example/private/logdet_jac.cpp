@@ -129,7 +129,7 @@ bool logdet_jac_xam(void)
 		ok    &= logdet_ran[i] == 0.0;
 	for(size_t i = 0; i < n_data; i++)
 	{	double check   = - 2.0  / fixed_vec[i];
-		ok            &= abs( logdet_fix[i] / check - 1.0) <= eps;
+		ok            &= fabs( logdet_fix[i] / check - 1.0) <= eps;
 	}
 
 	return ok;

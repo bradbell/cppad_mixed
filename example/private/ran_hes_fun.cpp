@@ -136,7 +136,7 @@ bool ran_hes_fun_xam(void)
 		//
 		double sigma  = fixed_vec[i];
 		double check  = 1.0 / (sigma * sigma);
-		ok              &= abs( val_out[k] / check - 1.0) <= eps;
+		ok              &= fabs( val_out[k] / check - 1.0) <= eps;
 	}
 	for(size_t k = 1; k < n_random; k++)
 	{	ok &= col[k-1] <= col[k];

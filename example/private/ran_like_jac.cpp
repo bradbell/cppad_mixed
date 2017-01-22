@@ -126,7 +126,7 @@ bool ran_like_jac_xam(void)
 		//
 		// std::cout << "jac[i] = " << jac[i];
 		// std::cout << ", check = " << check << std::endl;
-		ok              &= abs( jac[i] / check - 1.0) <= eps;
+		ok              &= fabs( jac[i] / check - 1.0) <= eps;
 	}
 
 	return ok;

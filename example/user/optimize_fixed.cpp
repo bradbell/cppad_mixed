@@ -254,8 +254,8 @@ bool optimize_fixed_xam(void)
 
 	// Note that no constraints are active, (not even the l1 terms)
 	// so the partials should be zero.
-	ok &= CppAD::abs( F_0 ) <= tol;
-	ok &= CppAD::abs( F_1 ) <= tol;
+	ok &= fabs( F_0 ) <= tol;
+	ok &= fabs( F_1 ) <= tol;
 	//
 	return ok;
 }

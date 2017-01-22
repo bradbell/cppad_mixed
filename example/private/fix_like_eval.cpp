@@ -140,7 +140,7 @@ bool fix_like_eval_xam(void)
 
 	// check smooth part
 	double check = CppAD::log(2.0);
-	ok &= CppAD::abs( vec[0] / check - 1.0 ) <= eps;
+	ok &= fabs( vec[0] / check - 1.0 ) <= eps;
 
 	// check number of absolute values
 	ok &= vec.size() == n_fixed + 1;
@@ -149,7 +149,7 @@ bool fix_like_eval_xam(void)
 	for(size_t j = 0; j < n_fixed; j++)
 	{	// note that the true value is not equal to 1.0 so can deivide by check
 		check = sqrt_2 * ( fixed_vec[j] - 1.0 );
-		ok &= CppAD::abs( vec[1 + j] / check - 1.0 ) <= eps;
+		ok &= fabs( vec[1 + j] / check - 1.0 ) <= eps;
 	}
 
 	return ok;
