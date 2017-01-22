@@ -70,7 +70,7 @@ During the restoration phase,
 this is the value of the dual infeasibility for the restoration phase problem.
 
 $head lg(mu)$$
-$latex \log_10$$ of the value of the barrier parameter $latex \mu$$.
+$latex \log_{10}$$ of the value of the barrier parameter $latex \mu$$.
 
 $head ||d||$$
 The infinity norm (max) of the primal step
@@ -81,7 +81,7 @@ this value includes the values of additional variables that
 capture the violation in $latex c(x) = 0$$.
 
 $head lg(rg)$$
-$latex \log_10$$ of the value of the regularization term for the Hessian
+$latex \log_{10}$$ of the value of the regularization term for the Hessian
 of the Lagrangian in the augmented system.
 A dash (-) indicates that no regularization was done.
 
