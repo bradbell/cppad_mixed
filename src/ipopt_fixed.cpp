@@ -1187,10 +1187,11 @@ void ipopt_fixed::try_eval_g(
 	{	assert( 2 * fix_likelihood_nabs_ + n_fix_con_ + j < size_t(m) );
 		g[2 * fix_likelihood_nabs_ + n_fix_con_ + j] = A_uhat_tmp_[j];
 	}
-	for(size_t k = 0; k < size_t(m); k++)
-	{	if( CppAD::isnan( g[k] ) ) throw CppAD::mixed::exception(
+	for(size_t i = 0; i < size_t(m); i++)
+	{	if( CppAD::isnan( g[i] ) ) throw CppAD::mixed::exception(
 			"try_eval_g", "constaint function has a nan"
 		);
+		g[i] *= scale_g_[i];
 	}
 	return;
 }
@@ -1343,8 +1344,15 @@ void ipopt_fixed::try_eval_jac_g(
 			ell++;
 		}
 		assert( ell == nnz_jac_g_ );
+		//
+		// jac_g_row_
+		if( jac_g_row_.size() == 0 )
+			jac_g_row_.resize( size_t(nnz_jac_g_) );
+		for(ell = 0; ell < jac_g_row_.size(); ell++)
+			jac_g_row_[ell] = size_t( iRow[ell] );
 		return;
 	}
+	assert( jac_g_row_.size() == size_t(nnz_jac_g_) );
 	//
 	// fixed effects
 	for(size_t j = 0; j < n_fixed_; j++)
@@ -1405,6 +1413,8 @@ void ipopt_fixed::try_eval_jac_g(
 	{	if( CppAD::isnan( values[ell] ) ) throw CppAD::mixed::exception(
 			"try_eval_jac_g", "constraint Jacobian has a nan"
 		);
+		size_t i = jac_g_row_[ell];
+		values[ell] *= scale_g_[i];
 	}
 	return;
 }
@@ -1600,7 +1610,9 @@ void ipopt_fixed::try_eval_h(
 	// Hessian of Lagrangian of weighted fixed likelihood
 	w_fix_likelihood_tmp_[0] = scale_f_ * obj_factor;
 	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
-		w_fix_likelihood_tmp_[1 + j] = lambda[2 * j + 1] - lambda[2 * j];
+	{	w_fix_likelihood_tmp_[1 + j] = scale_g_[2*j + 1] * lambda[2*j + 1]
+		                             - scale_g_[2*j]     * lambda[2*j];
+	}
 	sparse_hes_info& fix_like_hes_info( mixed_object_.fix_like_hes_ );
 	mixed_object_.fix_like_hes(
 		fixed_tmp_,
@@ -1617,7 +1629,9 @@ void ipopt_fixed::try_eval_h(
 	//
 	// Hessian of Lagrangian of fixed constraints
 	for(size_t j = 0; j < n_fix_con_; j++)
-		w_fix_con_tmp_[j] = lambda[2 * fix_likelihood_nabs_ + j];
+	{	size_t ell        = 2 * fix_likelihood_nabs_ + j;
+		w_fix_con_tmp_[j] = scale_g_[ell] * lambda[ell];
+	}
 	sparse_hes_info& fix_con_hes_info( mixed_object_.fix_con_hes_ );
 	mixed_object_.fix_con_hes(
 		fixed_tmp_,
@@ -1637,9 +1651,7 @@ void ipopt_fixed::try_eval_h(
 			"try_eval_h", "Hessian of Lagragian has a nan"
 		);
 	}
-
 	assert( size_t(nele_hess) == nnz_h_lag_ );
-	//
 	return;
 }
 /*
