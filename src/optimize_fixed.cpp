@@ -415,28 +415,30 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		mixed_object
 	);
 	assert( fixed_nlp->get_error_message() == "" );
-
-	// check derivative calculation
 	assert( ok );
+
+	// calculate max_grad_f, max_jac_g
+	//(check derivative calculation ?)
+	double relative_tol = std::numeric_limits<double>::infinity();
+	bool   trace        = false;
 	if( adaptive_check != "none" )
-	{	bool trace  = false;
-		if( adaptive_check == "trace-adaptive" )
+	{	if( adaptive_check == "trace-adaptive" )
 			trace = true;
 		else
 		{	assert( adaptive_check == "adaptive" );
 		}
-		double relative_tol  = 1e-3;
-		ok = fixed_nlp->adaptive_derivative_check(
-			trace, relative_tol
-		);
-		if( fixed_nlp->get_error_message() != "" )
-		{	std::string msg = "optimize_fixed: ";
-			msg            += fixed_nlp->get_error_message();
-			fatal_error(msg);
-		}
-		if( ! ok )
-		{	warning("optimize_fixed: adaptive derivative test failed");
-		}
+		relative_tol  = 1e-3;
+	}
+	ok = fixed_nlp->adaptive_derivative_check(
+		trace, relative_tol
+	);
+	if( fixed_nlp->get_error_message() != "" )
+	{	std::string msg = "optimize_fixed: ";
+		msg            += fixed_nlp->get_error_message();
+		fatal_error(msg);
+	}
+	if( ! ok )
+	{	warning("optimize_fixed: adaptive derivative test failed");
 	}
 	//
 	// Set values used for minus and plus infinity

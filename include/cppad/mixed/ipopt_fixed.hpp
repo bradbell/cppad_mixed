@@ -123,6 +123,12 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		s_vector fix_like_hes_2_lag_; // fix_like_hes_row_ -> lag_hes_row_
 		s_vector fix_con_hes_2_lag_; // fix_con_hes_row -> lag_hes_row
 		// ---------------------------------------------------------------
+		// initialized during constructor to be one and modified during
+		// adaptive_derivative_check
+		double   scale_f_; // scale factor (multiplies) components of f(x)
+		d_vector scale_g_; // scale fastor for components of g(x)
+		bool     adaptive_done_;  // false after constructor
+		// ---------------------------------------------------------------
 		// temporaries (size set by constructor only)
 		d_vector        fixed_tmp_;         // size n_fixed_
 		d_vector        c_vec_tmp_;         // size n_fix_con_

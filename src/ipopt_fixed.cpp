@@ -580,6 +580,12 @@ mixed_object_      ( mixed_object    )
 		assert( nnz_h_lag_ == lag_hes_col_.size() );
 	}
 	// -----------------------------------------------------------------------
+	size_t m = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
+	adaptive_done_  = false; // changed by adaptive_derivative_check
+	scale_f_        = 1.0;   // changed by adaptive_derivative_check
+	scale_g_.resize(m);
+	for(size_t i = 0; i < m; i++)
+		scale_g_[i] = 1.0;   // changed by adaptive_derivative_check
 }
 /* $$
 ------------------------------------------------------------------------------
