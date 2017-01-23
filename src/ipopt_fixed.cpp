@@ -948,6 +948,7 @@ void ipopt_fixed::try_eval_f(
 	if( CppAD::isnan(obj_value) ) throw CppAD::mixed::exception(
 		"try_eval_f", "objective function is nan"
 	);
+	obj_value *= scale_f_;
 	return;
 }
 /*
@@ -1070,6 +1071,7 @@ void ipopt_fixed::try_eval_grad_f(
 	{	if( CppAD::isnan( grad_f[j] ) ) throw CppAD::mixed::exception(
 			"try_eval_grad_f", "objective gradient has a nan"
 		);
+		grad_f[j] *= scale_f_;
 	}
 	//
 	return;
@@ -1575,7 +1577,7 @@ void ipopt_fixed::try_eval_h(
 		if( new_x )
 			new_random(fixed_tmp_);
 		// compute Hessian of random part of objective w.r.t. fixed effects
-		w_ran_objcon_tmp_[0] = obj_factor;
+		w_ran_objcon_tmp_[0] = scale_f_ * obj_factor;
 		// include random constraints in this Hessian calculation
 		size_t offset = 2 * fix_likelihood_nabs_ + n_fix_con_;
 		for(size_t i = 0; i < n_ran_con_; i++)
@@ -1596,7 +1598,7 @@ void ipopt_fixed::try_eval_h(
 	}
 	//
 	// Hessian of Lagrangian of weighted fixed likelihood
-	w_fix_likelihood_tmp_[0] = obj_factor;
+	w_fix_likelihood_tmp_[0] = scale_f_ * obj_factor;
 	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
 		w_fix_likelihood_tmp_[1 + j] = lambda[2 * j + 1] - lambda[2 * j];
 	sparse_hes_info& fix_like_hes_info( mixed_object_.fix_like_hes_ );
