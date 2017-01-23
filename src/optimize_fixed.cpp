@@ -125,7 +125,7 @@ $codei%
 %$$
 It has size $cref/n_fixed/derived_ctor/n_fixed/$$ and
 specifies the lower limits for the
-$fixed_effects/cppad_mixed/Fixed Effects, theta/$$.
+$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$.
 Note that minus infinity is used for no lower limit.
 
 $head fixed_upper$$
@@ -134,7 +134,7 @@ $codei%
 	const CppAD::vector<double>& %fixed_upper%
 %$$
 It has size $icode n_fixed$$ and specifies the upper limits for the
-$fixed_effects/cppad_mixed/Fixed Effects, theta/$$.
+$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$.
 Note that plus infinity is used for no upper limit.
 
 $head fix_constraint_lower$$
