@@ -1790,7 +1790,7 @@ $end
 	// short name for fixed effects tolerance
 	double tol = fixed_tolerance_;
 	//
-	// check that x is within its limits and set solution_.fixed_opt
+	// check that x is within its limits
 	for(size_t j = 0; j < n_fixed_; j++)
 	{	ok &= check_in_limits(
 			fixed_lower_[j], x[j], fixed_upper_[j], 2.0 * tol
@@ -1825,7 +1825,7 @@ $end
 	c_vec_tmp_ = mixed_object_.fix_con_eval(fixed_opt);
 	assert( c_vec_tmp_.size() == n_fix_con_ );
 
-	// check explicit constraints and  set solution_.fix_con_lag
+	// check explicit constraints and set solution_.fix_con_lag
 	assert( solution_.fix_con_lag.size() == 0 );
 	solution_.fix_con_lag.resize(n_fix_con_);
 	offset     = 2 * fix_likelihood_nabs_;
