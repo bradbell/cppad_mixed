@@ -1997,12 +1997,17 @@ the square root of machine epsilon times the absolute value of $latex f(x)$$.
 Each component passes the tolerance test if it does so
 for one of the relative steps.
 
+$subhead infinity$$
+If $icode trace$$ is false and $icode relative_tol$$ is equal to
+$code std::numeric_limits<double>::infinity()$$,
+the finite difference approximations for the derivatives are not calculated.
+
 $head ok$$
 The return value has prototype
 $codei%
 	bool %ok%
 %$$
-If it is true,
+If it is true, no function evaluation error occurred and
 all the differences between the finite difference approximation
 and the evaluated derivative are within the relative tolerance
 (for one of the relative steps).
@@ -2013,9 +2018,39 @@ $head error_message_$$
 Use $code clear_error_message()$$ to set this to the empty
 string before calling $code adaptive_derivative_check$$.
 (Note that it is empty after the $code ipopt_fixed$$ constructor is called.)
-If upon return it  $code get_error_message()$$ is non-empty,
+If upon return, $code get_error_message()$$ is non-empty,
 a description of a function evaluation
-error that occurred during the derivative check.
+error that occurred during this routine.
+
+$head scale_f_$$
+This member variable has prototype
+$codei%
+	double& scale_f_
+%$$
+and its input value does not matter.
+If $icode ok$$ is true, upon return $icode scale_f_$$
+is a scale factor of $latex f(x)$$; i.e., multiplier for f.
+
+$head scale_g_$$
+This member variable has prototype
+$codei%
+	d_vector& scale_g_
+%$$
+and its input size is zero.
+If $icode ok$$ is true, upon return $icode scale_g_$$
+has size equal to range for $latex g(x)$$; i.e., $icode m$$.
+For each $latex i$$, $icode%scale_g_%[%i%]%$$ is scale factor for
+$latex g_i (x)$$.
+
+$head adaptive_done_$$
+This member variable has prototype
+$codei%
+	bool adaptive_done_
+%$$
+It's value upon call must be $code false$$.
+If $icode ok$$ is true,
+the value of $code adaptive_done_$$ upon return will be $code true$$.
+
 
 $end
 -------------------------------------------------------------------------------
@@ -2024,11 +2059,13 @@ bool ipopt_fixed::adaptive_derivative_check(
 	bool trace, double relative_tol
 )
 {	assert( error_message_ == "" );
+	assert( adaptive_done_ == false );
 	//
 	using std::fabs;
 	size_t n        = n_fixed_ + fix_likelihood_nabs_;
 	size_t m        = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
 	double root_eps = std::sqrt( std::numeric_limits<double>::epsilon() );
+	double infinity = std::numeric_limits<double>::infinity();
 
 	// start starting point
 	d_vector x_start(n);
@@ -2047,6 +2084,69 @@ bool ipopt_fixed::adaptive_derivative_check(
 	);
 	assert( ok );
 
+	// ------------------------------------------------------------------------
+	// eval_grad_f
+	d_vector grad_f(n);
+	Number* x     = x_start.data();
+	bool    new_x = true;
+	ok = eval_grad_f( Index(n), x, new_x, grad_f.data() );
+	if( ! ok )
+	{	assert( error_message_ != "" );
+		return false;
+	}
+	// ------------------------------------------------------------------------
+	// eval_jac_g
+	//
+	// get iRow and jCol for eval_jac_g
+	CppAD::vector<Index> iRow(nnz_jac_g_), jCol(nnz_jac_g_);
+	new_x          = false;
+	Index nele_jac = Index( nnz_jac_g_ );
+	ok = eval_jac_g(
+		Index(n), x, new_x, Index(m), nele_jac, iRow.data(), jCol.data(), NULL
+	);
+	if( ! ok )
+	{	assert( error_message_ != "" );
+		return false;
+	}
+	// eval_jac_g
+	d_vector jac_g(nnz_jac_g_);
+	new_x           = false;
+	nele_jac        = Index( nnz_jac_g_ );
+	Number* values  = jac_g.data();
+	ok = eval_jac_g(Index(n), x, new_x, Index(m), nele_jac, NULL, NULL, values);
+	if( ! ok )
+	{	assert( error_message_ != "" );
+		return false;
+	}
+	// ------------------------------------------------------------------------
+	double scale_max = 2.0;
+	double scale_min = 1.0 / scale_max;
+	//
+	// scale_f
+	double scale_f = scale_max;
+	for(size_t j = 0; j < n_fixed_; j++)
+		scale_f = std::min( scale_f, 1.0 / std::fabs( grad_f[j] ) );
+	scale_f = std::max( scale_min, scale_f );
+	//
+	// scale_g
+	d_vector scale_g(m);
+	for(size_t i = 0; i < m; i++)
+		scale_g[i] = scale_max;
+	for(size_t k = 0; k < nnz_jac_g_; k++)
+	{	size_t i = iRow[k];
+		scale_g[i] = std::min( scale_g[i], 1.0 / std::fabs( jac_g[k] ) );
+	}
+	for(size_t i = 0; i < m; i++)
+		scale_g[i] = std::max( scale_min, scale_g[i] );
+	//
+	// check if there is no need to compute finite differences
+	if( (! trace) && relative_tol == infinity )
+	{	scale_f_       = scale_f;
+		scale_g_       = scale_g;
+		adaptive_done_ = true;
+		return true;
+	}
+	// ------------------------------------------------------------------------
 	// get lower and upper bounds
 	d_vector x_lower(n), x_upper(n), g_lower(m), g_upper(m);
 	ok = get_bounds_info(
@@ -2058,38 +2158,6 @@ bool ipopt_fixed::adaptive_derivative_check(
 		g_upper.data()
 	);
 	assert( ok );
-
-	// eval_grad_f
-	d_vector grad_f(n);
-	Number* x     = x_start.data();
-	bool    new_x = true;
-	ok = eval_grad_f( Index(n), x, new_x, grad_f.data() );
-	if( ! ok )
-	{	assert( error_message_ != "" );
-		return false;
-	}
-
-	// get iRow and jCol for eval_jac_g
-	CppAD::vector<Index> iRow(nnz_jac_g_), jCol(nnz_jac_g_);
-	new_x            = false;
-	Index   nele_jac = Index( nnz_jac_g_ );
-	ok = eval_jac_g(
-		Index(n), x, new_x, Index(m), nele_jac, iRow.data(), jCol.data(), NULL
-	);
-	if( ! ok )
-	{	assert( error_message_ != "" );
-		return false;
-	}
-	// eval_jac_g
-	d_vector jac_g(nnz_jac_g_);
-	new_x            = false;
-	nele_jac         = Index( nnz_jac_g_ );
-	Number* values   = jac_g.data();
-	ok = eval_jac_g(Index(n), x, new_x, Index(m), nele_jac, NULL, NULL, values);
-	if( ! ok )
-	{	assert( error_message_ != "" );
-		return false;
-	}
 
 	// eval_f
 	double obj_value;
@@ -2126,9 +2194,9 @@ bool ipopt_fixed::adaptive_derivative_check(
 	size_t line_count = 0;
 	for(size_t j = 0; j < n; j++) if( x_lower[j] < x_upper[j] )
 	{	double abs_obj         = fabs(obj_value);
-		double best_err        = std::numeric_limits<double>::infinity();
-		double best_step       = std::numeric_limits<double>::infinity();
-		double best_approx     = std::numeric_limits<double>::infinity();
+		double best_err        = infinity;
+		double best_step       = infinity;
+		double best_approx     = infinity;
 		//
 		// loop over relative step sizes
 		size_t i_try           = 0;
@@ -2228,12 +2296,12 @@ bool ipopt_fixed::adaptive_derivative_check(
 		CppAD::vector<bool> found(m);
 		for(size_t i = 0; i < m; i++)
 		{	abs_con[i]      = fabs(con_value[i]);
-			best_err[i]     = std::numeric_limits<double>::infinity();
-			best_step[i]    = std::numeric_limits<double>::infinity();
-			best_approx[i]  = std::numeric_limits<double>::infinity();
+			best_err[i]     = infinity;
+			best_step[i]    = infinity;
+			best_approx[i]  = infinity;
 			found[i]        = false;
 		}
-		double max_best_err  = std::numeric_limits<double>::infinity();
+		double max_best_err  = infinity;
 		//
 		// loop over relative step sizes
 		size_t i_try           = 0;
@@ -2343,6 +2411,9 @@ bool ipopt_fixed::adaptive_derivative_check(
 		// ok
 		ok &= ok && max_best_err <= relative_tol;
 	}
+	scale_f_       = scale_f;
+	scale_g_       = scale_g;
+	adaptive_done_ = true;
 	return ok;
 }
 /*$
