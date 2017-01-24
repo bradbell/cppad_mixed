@@ -14,6 +14,7 @@ $spell
 	cppad
 	std
 	fabs
+	nlp
 $$
 
 $section Changes and Additions to cppad_mixed During 2017$$
@@ -22,6 +23,18 @@ $childtable%
 	omh/whats_new_15.omh%
 	omh/whats_new_16.omh
 %$$
+
+$head 01-24$$
+The fixed effects
+objective and constraint functions are now scaled so that
+the maximum absolute norm of the gradient of each of these functions is one;
+see $cref/
+	nlp_scaling_method/
+	optimize_fixed/
+	fixed_ipopt_options/
+	nlp_scaling_method
+/$$.
+
 
 $head 01-22$$
 Some of the tests were using the integer function $code std::abs$$ by mistake.

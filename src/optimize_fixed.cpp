@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin optimize_fixed$$
 $spell
+	nlp
 	CppAD
 	cppad
 	ipopt
@@ -110,6 +111,16 @@ The default value for $icode accept_after_max_steps$$ is $code 2$$.
 This is the maximum number of backtracking steps to take before
 accepting a line search point; see
 $cref/ls/ipopt_trace/ls/$$ is the ipopt tracing documentation.
+
+$subhead nlp_scaling_method$$
+When optimizing the fixed effects,
+the objective function and the constraint functions so that
+the maximum absolute component of the gradient of each of these functions
+is one. There is a maximum and minimum scaling factor
+(currently $code 1e+8$$ and $code 1e-8$$) that may change in future releases.
+This is similar to, but not the same as, the Ipopt gradient based scaling.
+When optimizing the fixed effects,
+the Ipopt option $icode nlp_scaling_method$$ is set to $code none$$.
 
 $head random_ipopt_options$$
 This argument has prototype
@@ -302,6 +313,8 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	{	// special defaults settings
 		app->Options()->SetStringValue(
 			"hessian_approximation", "limited-memory");
+		app->Options()->SetStringValue(
+			"nlp_scaling_method", "none");
 		app->Options()->SetIntegerValue(
 			"limited_memory_max_history", 30);
 	}
@@ -353,6 +366,11 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 				{	adaptive_check = tok_3;
 					tok_3 = "none";
 				}
+			}
+			if( tok_2 == "nlp_scaling_method" )
+			{	std::string msg = "optimize_fixed: fixed_ipopt_options: ";
+				msg += " nlp_scaling_method cannot be specified";
+				fatal_error(msg);
 			}
 			app->Options()->SetStringValue(tok_2.c_str(), tok_3.c_str());
 			if( quasi_fixed_ )
