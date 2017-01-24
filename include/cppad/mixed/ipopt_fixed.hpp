@@ -138,8 +138,9 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// (empty vector after constructor).
 		s_vector jac_g_row_;
 		//
-		// false after constructor, ture if adaptive_derivative_check is ok
-		bool adaptive_done_;
+		// false after constructor, set true at beginning of
+		// adaptive_derivative_check
+		bool adaptive_called_;
 		// ---------------------------------------------------------------
 		// temporaries (size set by constructor only)
 		d_vector        fixed_tmp_;         // size n_fixed_

@@ -581,7 +581,7 @@ mixed_object_      ( mixed_object    )
 	}
 	// -----------------------------------------------------------------------
 	size_t m = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
-	adaptive_done_  = false; // changed by adaptive_derivative_check
+	adaptive_called_  = false; // changed by adaptive_derivative_check
 	scale_f_        = 1.0;   // changed by adaptive_derivative_check
 	scale_g_.resize(m);
 	for(size_t i = 0; i < m; i++)
@@ -703,7 +703,8 @@ bool ipopt_fixed::get_bounds_info(
 /* %$$
 $end
 */
-{
+{	assert( adaptive_called_ );
+	//
 	assert( n > 0 );
 	assert( size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
 	assert( m >= 0 );
@@ -735,8 +736,9 @@ $end
 	//
 	// fixed constraints
 	for(size_t j = 0; j < n_fix_con_; j++)
-	{	g_l[2 * fix_likelihood_nabs_ + j] = fix_constraint_lower_[j];
-		g_u[2 * fix_likelihood_nabs_ + j] = fix_constraint_upper_[j];
+	{	size_t i = 2 * fix_likelihood_nabs_ + j;
+		g_l[i] = scale_g_[i] * fix_constraint_lower_[j];
+		g_u[i] = scale_g_[i] * fix_constraint_upper_[j];
 	}
 	//
 	// random constraints
@@ -1591,7 +1593,7 @@ void ipopt_fixed::try_eval_h(
 		// include random constraints in this Hessian calculation
 		size_t offset = 2 * fix_likelihood_nabs_ + n_fix_con_;
 		for(size_t i = 0; i < n_ran_con_; i++)
-			w_ran_objcon_tmp_[i+1] = lambda[offset + i];
+			w_ran_objcon_tmp_[i+1] = scale_g_[offset + i] * lambda[offset + i];
 		mixed_object_.ran_objcon_hes(
 			fixed_tmp_,
 			random_cur_,
@@ -2056,14 +2058,14 @@ has size equal to range for $latex g(x)$$; i.e., $icode m$$.
 For each $latex i$$, $icode%scale_g_%[%i%]%$$ is scale factor for
 $latex g_i (x)$$.
 
-$head adaptive_done_$$
+$head adaptive_called_$$
 This member variable has prototype
 $codei%
-	bool adaptive_done_
+	bool adaptive_called_
 %$$
 It's value upon call must be $code false$$.
-If $icode ok$$ is true,
-the value of $code adaptive_done_$$ upon return will be $code true$$.
+It is set to true at the beginning of $code adaptive_derivative_check$$,
+before any other $code ipopt_fixed$$ routine is called.
 
 
 $end
@@ -2073,7 +2075,8 @@ bool ipopt_fixed::adaptive_derivative_check(
 	bool trace, double relative_tol
 )
 {	assert( error_message_ == "" );
-	assert( adaptive_done_ == false );
+	assert( adaptive_called_ == false );
+	adaptive_called_ = true;
 	//
 	using std::fabs;
 	size_t n        = n_fixed_ + fix_likelihood_nabs_;
@@ -2133,7 +2136,7 @@ bool ipopt_fixed::adaptive_derivative_check(
 		return false;
 	}
 	// ------------------------------------------------------------------------
-	double scale_max = 2.0;
+	double scale_max = 10.0;
 	double scale_min = 1.0 / scale_max;
 	//
 	// scale_f
@@ -2157,7 +2160,6 @@ bool ipopt_fixed::adaptive_derivative_check(
 	if( (! trace) && relative_tol == infinity )
 	{	scale_f_       = scale_f;
 		scale_g_       = scale_g;
-		adaptive_done_ = true;
 		return true;
 	}
 	// ------------------------------------------------------------------------
@@ -2427,7 +2429,6 @@ bool ipopt_fixed::adaptive_derivative_check(
 	}
 	scale_f_       = scale_f;
 	scale_g_       = scale_g;
-	adaptive_done_ = true;
 	return ok;
 }
 /*$
