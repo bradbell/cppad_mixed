@@ -28,7 +28,9 @@ $latex \[
 \begin{array}{rcl}
 	q( \theta, s )
 	& = &
-	\theta_0 s + \theta_1 \sin ( 2 \pi s  ) + \theta_2 \cos ( 2 \pi s )
+	\theta_0 (s / N)
+	+ \theta_1 \sin ( 2 \pi s  )
+	+ \theta_2 \cos ( 2 \pi s )
 	\\
 	z_i & = & q( \theta , t_i ) + e_i
 	\\
@@ -125,7 +127,7 @@ namespace {
 
 			// Data terms p(z|theta)
 			for(size_t i = 0; i < N; i++)
-			{	a1_double q_i   = fixed_vec[0] * t_[i];
+			{	a1_double q_i   = fixed_vec[0] * t_[i] / double(N);
 			    q_i        += fixed_vec[1] * sin( 2.0 * pi * t_[i] );
 			    q_i        += fixed_vec[2] * cos( 2.0 * pi * t_[i] );
 				a1_double res   = z_[i] - q_i;
@@ -182,7 +184,7 @@ bool lasso_xam(void)
 	{	t[i] = double(i) / double(n_data - 1) - 0.5;
 		//
 		// simulation theta_0 = 0, theta_1 = 1, theta_2 = 0
-		double q_i = 0.0 * t[i];
+		double q_i = 0.0 * t[i] / double(n_data);
 		q_i       += 1.0 * sin(2.0 * pi *t[i]);
 		q_i       += 0.0 * cos(2.0 * pi *t[i]);
 		double e_i = gsl_ran_gaussian(rng, sigma);
@@ -222,10 +224,10 @@ bool lasso_xam(void)
 	// coefficients that should be zero
 	ok &= fabs( fixed_out[0] ) <= 1e-9;
 	ok &= fabs( fixed_out[2] ) <= 1e-9;
+	//
 	// non-zero coefficient has shrunk (due to prior)
 	ok &= fixed_out[1] < 1.0;
 	ok &= 0.75 < fixed_out[1];
-
 	//
 	CppAD::mixed::free_gsl_rng();
 	return ok;
