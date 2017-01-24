@@ -222,8 +222,8 @@ bool lasso_xam(void)
 	vector<double> fixed_out = solution.fixed_opt;
 	//
 	// coefficients that should be zero
-	ok &= fabs( fixed_out[0] ) <= 1e-9;
-	ok &= fabs( fixed_out[2] ) <= 1e-9;
+	ok &= fabs( fixed_out[0] ) <= 1e-8;
+	ok &= fabs( fixed_out[2] ) <= 1e-8;
 	//
 	// non-zero coefficient has shrunk (due to prior)
 	ok &= fixed_out[1] < 1.0;

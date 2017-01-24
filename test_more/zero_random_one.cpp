@@ -166,7 +166,7 @@ bool zero_random_one(void)
 	size_t n_data   = 2;
 	vector<double>
 		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
-	fixed_lower[0] = - inf; fixed_in[0] = 0.05;  fixed_upper[0] = inf;
+	fixed_lower[0] = - inf; fixed_in[0] = 0.5;  fixed_upper[0] = inf;
 	//
 	// explicit constriants (in addition to l1 terms)
 	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
