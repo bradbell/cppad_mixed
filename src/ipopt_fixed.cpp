@@ -582,7 +582,7 @@ mixed_object_      ( mixed_object    )
 	// -----------------------------------------------------------------------
 	size_t m = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
 	adaptive_called_  = false; // changed by adaptive_derivative_check
-	scale_f_        = 1.0;   // changed by adaptive_derivative_check
+	scale_f_          = 1.0;   // changed by adaptive_derivative_check
 	scale_g_.resize(m);
 	for(size_t i = 0; i < m; i++)
 		scale_g_[i] = 1.0;   // changed by adaptive_derivative_check
@@ -738,7 +738,10 @@ $end
 	for(size_t j = 0; j < n_fix_con_; j++)
 	{	size_t i = 2 * fix_likelihood_nabs_ + j;
 		g_l[i] = scale_g_[i] * fix_constraint_lower_[j];
-		g_u[i] = scale_g_[i] * fix_constraint_upper_[j];
+		if( fix_constraint_lower_[j] == fix_constraint_upper_[j] )
+			g_u[i] = g_l[i];
+		else
+			g_u[i] = scale_g_[i] * fix_constraint_upper_[j];
 	}
 	//
 	// random constraints
@@ -1049,7 +1052,6 @@ void ipopt_fixed::try_eval_grad_f(
 		fix_like_jac_info.col,
 		fix_like_jac_info.val
 	);
-
 	//
 	// random objective part of grad_f
 	for(size_t j = 0; j < n_fixed_; j++)
@@ -2144,6 +2146,12 @@ bool ipopt_fixed::adaptive_derivative_check(
 	for(size_t j = 0; j < n_fixed_; j++)
 		scale_f = std::min( scale_f, 1.0 / std::fabs( grad_f[j] ) );
 	scale_f = std::max( scale_min, scale_f );
+	// auxillary variables not included in scaling because they
+	// already have scale 1 partials
+# ifndef NDEBUG
+	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
+		assert( grad_f[n_fixed_ + j] == 1.0 );
+# endif
 	//
 	// scale_g
 	d_vector scale_g(m);
@@ -2155,6 +2163,9 @@ bool ipopt_fixed::adaptive_derivative_check(
 	}
 	for(size_t i = 0; i < m; i++)
 		scale_g[i] = std::max( scale_min, scale_g[i] );
+	//
+	// std::cout << "scale_f = " << scale_f << "\n";
+	// std::cout << "scale_g = " << scale_g << "\n";
 	//
 	// check if there is no need to compute finite differences
 	if( (! trace) && relative_tol == infinity )
