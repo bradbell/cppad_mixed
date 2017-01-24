@@ -153,6 +153,27 @@ namespace {
 		//
 		// ------------------------------------------------------------------
 	};
+	// derivative of objective
+	vector<double> objective_fixed(
+		const vector<double>& data   ,
+		const vector<double>& theta  )
+	{	vector<double> dF(2);
+		//
+		// compute partials of F
+		double sum   = 0.0;
+		double sumsq = 0.0;
+		for(size_t i = 0; i < data.size(); i++)
+		{	sum   += theta[0] - data[i];
+			sumsq += (theta[0] - data[i]) * (theta[0] - data[i]);
+		}
+		double den = 1.0 + theta[1] * theta[1];
+		dF[0] = (theta[0] - 4.0) + sum / den;
+		dF[1] = theta[1] - 4.0;
+		dF[1] += double(data.size()) * theta[1] / den;
+		dF[1] -= sumsq * theta[1]  / (den * den);
+		//
+		return dF;
+	}
 }
 
 bool ran_likelihood_jac(void)
@@ -219,28 +240,19 @@ bool ran_likelihood_jac(void)
 		random_in
 	);
 	vector<double> fixed_out = solution.fixed_opt;
-	//
-	// results of optimization
-	double theta_0 = fixed_out[0];
-	double theta_1 = fixed_out[1];
 
-	// compute partials of F
-	double sum   = 0.0;
-	double sumsq = 0.0;
-	for(size_t i = 0; i < n_data; i++)
-	{	sum   += theta_0 - data[i];
-		sumsq += (theta_0 - data[i]) * (theta_0 - data[i]);
-	}
-	double den = 1.0 + theta_1 * theta_1;
-	double F_0 = (theta_0 - 4.0) + sum / den;
-	double F_1 = theta_1 - 4.0;
-	F_1       += double(n_data) * theta_1 / den;
-	F_1       -= sumsq * theta_1  / (den * den);
+	// deriative of objective at fixed_in and fixed_out
+	vector<double> dF_in  = objective_fixed(data, fixed_in);
+	vector<double> dF_out = objective_fixed(data, fixed_out);
+
+	// scaling for objective
+	double scale = std::max( std::fabs( dF_in[0] ), std::fabs( dF_in[1] ) );
+	scale = 1.0 / scale;
 
 	// Note that no constraints are active, (not even the l1 terms)
 	// so the partials should be zero.
-	ok &= fabs( F_0 ) <= tol;
-	ok &= fabs( F_1 ) <= tol;
+	ok &= fabs( scale * dF_out[0] ) <= tol;
+	ok &= fabs( scale * dF_out[1] ) <= tol;
 
 	return ok;
 }

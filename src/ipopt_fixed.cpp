@@ -2138,7 +2138,8 @@ bool ipopt_fixed::adaptive_derivative_check(
 		return false;
 	}
 	// ------------------------------------------------------------------------
-	double scale_max = 10.0;
+	// double scale_max = 1.0;
+	double scale_max = 1e+2;
 	double scale_min = 1.0 / scale_max;
 	//
 	// scale_f

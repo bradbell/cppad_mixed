@@ -152,6 +152,26 @@ namespace {
 		//
 		// ------------------------------------------------------------------
 	};
+	// derivative of objective
+	vector<double> objective_fixed(
+		const vector<double>& data   ,
+		const vector<double>& theta  )
+	{	vector<double> dF(2);
+		//
+		// compute partials of F
+		double sum   = 0.0;
+		double sumsq = 0.0;
+		for(size_t i = 0; i < data.size(); i++)
+		{	sum   += theta[0] - data[i];
+			sumsq += (theta[0] - data[i]) * (theta[0] - data[i]);
+		}
+		dF[0]  = (theta[0] - 1.0) + sum / (theta[1] * theta[1]);
+		dF[1]  = theta[1] - 1.0;
+		dF[1] += double(data.size()) / theta[1];
+		dF[1] -= sumsq  / (theta[1] * theta[1] * theta[1]);
+		//
+		return dF;
+	}
 }
 
 bool zero_random_two(void)
@@ -216,27 +236,19 @@ bool zero_random_two(void)
 		random_in
 	);
 	vector<double> fixed_out = solution.fixed_opt;
-	//
-	// results of optimization
-	double theta_0 = fixed_out[0];
-	double theta_1 = fixed_out[1];
 
-	// compute partials of F
-	double sum   = 0.0;
-	double sumsq = 0.0;
-	for(size_t i = 0; i < n_data; i++)
-	{	sum   += theta_0 - data[i];
-		sumsq += (theta_0 - data[i]) * (theta_0 - data[i]);
-	}
-	double F_0 = (theta_0 - 1.0) + sum / (theta_1 * theta_1);
-	double F_1 = theta_1 - 1.0;
-	F_1       += double(n_data) / theta_1;
-	F_1       -= sumsq  / (theta_1 * theta_1 * theta_1);
+	// deriative of objective at fixed_in and fixed_out
+	vector<double> dF_in  = objective_fixed(data, fixed_in);
+	vector<double> dF_out = objective_fixed(data, fixed_out);
+
+	// scaling for objective
+	double scale = std::max( std::fabs( dF_in[0] ), std::fabs( dF_in[1] ) );
+	scale = 1.0 / scale;
 
 	// Note that no constraints are active, (not even the l1 terms)
 	// so the partials should be zero.
-	ok &= fabs( F_0 ) <= 5.0 * tol;
-	ok &= fabs( F_1 ) <= 5.0 * tol;
+	ok &= fabs( scale * dF_out[0] ) <= tol;
+	ok &= fabs( scale * dF_out[1] ) <= tol;
 
 	// Compute the optimal random effects
 	vector<double> random_out = mixed_object.optimize_random(
