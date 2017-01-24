@@ -1839,9 +1839,10 @@ $end
 
 		// check constraints corresponding to l1 terms
 		for(size_t j = 0; j < fix_likelihood_nabs_; j++)
-		{	double check = double( x[n_fixed_ + j] );
-			ok &= check - fix_likelihood_vec_tmp_[j + 1] + 1e2 * tol >= 0;
-			ok &= check + fix_likelihood_vec_tmp_[j + 1] + 1e2 * tol >= 0;
+		{	double var  = double( x[n_fixed_ + j] );
+			double diff = var - fix_likelihood_vec_tmp_[j + 1];
+			ok &= scale_g_[2 * j]     * diff + 1e2 * tol >= 0;
+			ok &= scale_g_[2 * j + 1] * diff + 1e2 * tol >= 0;
 		}
 	}
 	//
