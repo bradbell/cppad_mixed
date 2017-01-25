@@ -29,6 +29,7 @@ extern bool ran_likelihood_jac(void);
 extern bool ran_obj_tst(void);
 extern bool sample_fixed_1(void);
 extern bool sample_fixed_2(void);
+extern bool scale(void);
 extern bool solution_check(void);
 extern bool sparse_ad_cholesky(void);
 extern bool zero_random_one(void);
@@ -83,6 +84,7 @@ int main(void)
 	RUN(ran_likelihood_jac);
 	RUN(ran_obj_tst);
 	RUN(sample_fixed_2);
+	RUN(scale);
 	RUN(solution_check);
 	RUN(sparse_ad_cholesky);
 	RUN(zero_random_one);

@@ -28,6 +28,7 @@ ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
 	ran_obj_tst.cpp
 	sample_fixed_1.cpp
 	sample_fixed_2.cpp
+	scale.cpp
 	solution_check.cpp
 	sparse_ad_cholesky.cpp
 	test_more.cpp
