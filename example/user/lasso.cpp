@@ -230,6 +230,9 @@ bool lasso_xam(void)
 	ok &= fixed_out[1] < 1.0;
 	ok &= 0.75 < fixed_out[1];
 	//
+	if( ! ok )
+		std::cout << "\nfixed_out = " << fixed_out << "\n";
+	//
 	CppAD::mixed::free_gsl_rng();
 	return ok;
 }
