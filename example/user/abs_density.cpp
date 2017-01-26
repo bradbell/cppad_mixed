@@ -149,6 +149,7 @@ bool abs_density_xam(void)
 		"String  derivative_test           second-order\n"
 		"String  derivative_test_print_all yes\n"
 		"Numeric tol                       1e-8\n"
+		"Integer max_iter                  15\n"
 	;
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_ipopt_options,

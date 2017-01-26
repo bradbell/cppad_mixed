@@ -176,6 +176,7 @@ bool fix_constraint_xam(void)
 		"String  derivative_test           second-order\n"
 		"String  derivative_test_print_all yes\n"
 		"Numeric tol                       1e-8\n"
+		"Integer max_iter                  15\n"
 	;
 	// random_ipopt_options is non-empty, so using ipopt for random effects
 	std::string random_ipopt_options =

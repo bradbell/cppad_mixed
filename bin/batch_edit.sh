@@ -22,9 +22,14 @@ no_change_files='
 rename_cmd='s|whats_new.omh|whats_new_16.omh|'
 #
 cat << EOF > junk.sed
-/using CppAD::abs/d
-s|CppAD::abs(|fabs(|g
-s|\\([^a-zA-Z_]\\)abs(|\\1fabs(|g
+/fixed_ipopt_options *=/! b done
+: loop
+N
+/;/! b loop
+/max_iter/ b done
+s|\\n\\t;|\\n\\t\\t"Integer max_iter                  15\\\\n"&|
+#
+: done
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

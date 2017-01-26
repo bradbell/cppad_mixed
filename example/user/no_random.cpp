@@ -149,6 +149,7 @@ bool no_random_xam(void)
 		"String  derivative_test           first-order\n"
 		"String  derivative_test_print_all yes\n"
 		"Numeric tol                       1e-8\n"
+		"Integer max_iter                  15\n"
 	;
 	std::string random_ipopt_options =
 		"Integer print_level 0\n"

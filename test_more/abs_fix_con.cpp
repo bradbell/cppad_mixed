@@ -121,6 +121,7 @@ bool abs_fix_con(void)
 		"String  sb                        yes\n"
 		"String  derivative_test           second-order\n"
 		"Numeric tol                       1e-8\n"
+		"Integer max_iter                  15\n"
 	;
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_ipopt_options,

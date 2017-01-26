@@ -102,7 +102,7 @@ bool binomial(void)
 	size_t random_seed = CppAD::mixed::new_gsl_rng(0);
 
 	// simulation parameters
-	size_t N = 20;
+	size_t N = 30;
 	size_t I = 10 * 1000;
 	vector<double> theta_sim(n_fixed);
 	theta_sim[0] =   0.25;      // constant term in covariate model
@@ -137,7 +137,7 @@ bool binomial(void)
 		"String  derivative_test           second-order\n"
 		"String  derivative_test_print_all yes\n"
 		"Numeric tol                       1e-5\n"
-		"Integer max_iter                  100\n"
+		"Integer max_iter                  10\n"
 	;
 	std::string random_ipopt_options =
 		"Integer print_level 0\n"

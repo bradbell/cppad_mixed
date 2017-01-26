@@ -343,6 +343,7 @@ bool data_mismatch_xam(void)
 		"String  sb                        yes\n"
 		"String  derivative_test           adaptive\n"
 		"Numeric tol                       1e-8\n"
+		"Integer max_iter                  15\n"
 	;
 	std::string random_ipopt_options =
 		"Integer print_level               0\n"
