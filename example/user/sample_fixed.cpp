@@ -215,7 +215,7 @@ bool sample_fixed_xam(void)
 	information_info = mixed_object.information_mat(solution, random_opt);
 	//
 	// sample from the posterior for fixed effects
-	size_t n_sample = 10000;
+	size_t n_sample = 20000;
 	CppAD::vector<double> sample( n_sample * n_fixed );
 	mixed_object.sample_fixed(
 		sample,

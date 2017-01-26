@@ -15,6 +15,7 @@ $spell
 	std
 	fabs
 	nlp
+	Ipopt
 $$
 
 $section Changes and Additions to cppad_mixed During 2017$$
@@ -23,6 +24,12 @@ $childtable%
 	omh/whats_new_15.omh%
 	omh/whats_new_16.omh
 %$$
+
+$head 01-26$$
+Change the objective and constraint function scaling so that it is
+done by Ipopt using it's user-scaling option.
+This fixes the $cref ipopt_trace$$ so that it prints the original
+objective (instead of the scaled object which depends on the starting point).
 
 $head 01-24$$
 The fixed effects

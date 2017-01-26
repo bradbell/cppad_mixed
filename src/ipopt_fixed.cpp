@@ -11,9 +11,12 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/ipopt_fixed.hpp>
 # include <cppad/mixed/exception.hpp>
 
-// Note that this flag also appears in optimize_fixed.cpp
-// (bin/test_one.sh data_missmatch.cpp fails when this is 0).
-# define HIDE_FIXED_NLP_SCALING 1
+
+// This flag also appears in optimize_fixed.cpp. If it is true (1),
+// Ipopt does the scaling and nlp_scaling_method is user-scaling.
+// If it is false (0), the scaling is done by ipopt_fixed and
+// nlp_scaling_method is none.
+# define CPPAD_MIXED_IPOPT_USER_SCALING 1
 
 namespace {
 
@@ -739,15 +742,15 @@ $end
 	// fixed constraints
 	for(size_t j = 0; j < n_fix_con_; j++)
 	{	size_t i = 2 * fix_likelihood_nabs_ + j;
-# if HIDE_FIXED_NLP_SCALING
+# if CPPAD_MIXED_IPOPT_USER_SCALING == 1
+		g_l[i] = fix_constraint_lower_[j];
+		g_u[i] = fix_constraint_upper_[j];
+# else
 		g_l[i] = scale_g_[i] * fix_constraint_lower_[j];
 		if( fix_constraint_lower_[j] == fix_constraint_upper_[j] )
 			g_u[i] = g_l[i];
 		else
 			g_u[i] = scale_g_[i] * fix_constraint_upper_[j];
-# else
-		g_l[i] = fix_constraint_lower_[j];
-		g_u[i] = fix_constraint_upper_[j];
 # endif
 	}
 	//
@@ -960,7 +963,7 @@ void ipopt_fixed::try_eval_f(
 	if( CppAD::isnan(obj_value) ) throw CppAD::mixed::exception(
 		"try_eval_f", "objective function is nan"
 	);
-# if HIDE_FIXED_NLP_SCALING
+# if CPPAD_MIXED_IPOPT_USER_SCALING == 0
 	obj_value *= scale_f_;
 # endif
 	return;
@@ -1084,7 +1087,7 @@ void ipopt_fixed::try_eval_grad_f(
 	{	if( CppAD::isnan( grad_f[j] ) ) throw CppAD::mixed::exception(
 			"try_eval_grad_f", "objective gradient has a nan"
 		);
-# if HIDE_FIXED_NLP_SCALING
+# if CPPAD_MIXED_IPOPT_USER_SCALING == 0
 		grad_f[j] *= scale_f_;
 # endif
 	}
@@ -1206,7 +1209,7 @@ void ipopt_fixed::try_eval_g(
 	{	if( CppAD::isnan( g[i] ) ) throw CppAD::mixed::exception(
 			"try_eval_g", "constaint function has a nan"
 		);
-# if HIDE_FIXED_NLP_SCALING
+# if CPPAD_MIXED_IPOPT_USER_SCALING == 0
 		g[i] *= scale_g_[i];
 # endif
 	}
@@ -1430,7 +1433,7 @@ void ipopt_fixed::try_eval_jac_g(
 	{	if( CppAD::isnan( values[ell] ) ) throw CppAD::mixed::exception(
 			"try_eval_jac_g", "constraint Jacobian has a nan"
 		);
-# if HIDE_FIXED_NLP_SCALING
+# if CPPAD_MIXED_IPOPT_USER_SCALING == 0
 		size_t i = jac_g_row_[ell];
 		values[ell] *= scale_g_[i];
 # endif
@@ -1606,19 +1609,19 @@ void ipopt_fixed::try_eval_h(
 		if( new_x )
 			new_random(fixed_tmp_);
 		// compute Hessian of random part of objective w.r.t. fixed effects
-# if HIDE_FIXED_NLP_SCALING
-		w_ran_objcon_tmp_[0] = scale_f_ * obj_factor;
-# else
+# if CPPAD_MIXED_IPOPT_USER_SCALING == 1
 		w_ran_objcon_tmp_[0] = obj_factor;
+# else
+		w_ran_objcon_tmp_[0] = scale_f_ * obj_factor;
 # endif
 		// include random constraints in this Hessian calculation
 		size_t offset = 2 * fix_likelihood_nabs_ + n_fix_con_;
-# if HIDE_FIXED_NLP_SCALING
-		for(size_t i = 0; i < n_ran_con_; i++)
-			w_ran_objcon_tmp_[i+1] = scale_g_[offset + i] * lambda[offset + i];
-# else
+# if CPPAD_MIXED_IPOPT_USER_SCALING == 1
 		for(size_t i = 0; i < n_ran_con_; i++)
 			w_ran_objcon_tmp_[i+1] = lambda[offset + i];
+# else
+		for(size_t i = 0; i < n_ran_con_; i++)
+			w_ran_objcon_tmp_[i+1] = scale_g_[offset + i] * lambda[offset + i];
 # endif
 		mixed_object_.ran_objcon_hes(
 			fixed_tmp_,
@@ -1636,16 +1639,18 @@ void ipopt_fixed::try_eval_h(
 	}
 	//
 	// Hessian of Lagrangian of weighted fixed likelihood
-# if HIDE_FIXED_NLP_SCALING
+# if CPPAD_MIXED_IPOPT_USER_SCALING == 1
+	w_fix_likelihood_tmp_[0] = obj_factor;
+# else
 	w_fix_likelihood_tmp_[0] = scale_f_ * obj_factor;
 # endif
 	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
 	{
-# if HIDE_FIXED_NLP_SCALING
+# if CPPAD_MIXED_IPOPT_USER_SCALING == 1
+		w_fix_likelihood_tmp_[1 + j] = lambda[2*j + 1] - lambda[2*j];
+# else
 		w_fix_likelihood_tmp_[1 + j] = scale_g_[2*j + 1] * lambda[2*j + 1]
 		                             - scale_g_[2*j]     * lambda[2*j];
-# else
-		w_fix_likelihood_tmp_[1 + j] = lambda[2*j + 1] - lambda[2*j];
 # endif
 	}
 	sparse_hes_info& fix_like_hes_info( mixed_object_.fix_like_hes_ );
@@ -1665,10 +1670,10 @@ void ipopt_fixed::try_eval_h(
 	// Hessian of Lagrangian of fixed constraints
 	for(size_t j = 0; j < n_fix_con_; j++)
 	{	size_t ell        = 2 * fix_likelihood_nabs_ + j;
-# if HIDE_FIXED_NLP_SCALING
-		w_fix_con_tmp_[j] = scale_g_[ell] * lambda[ell];
-# else
+# if CPPAD_MIXED_IPOPT_USER_SCALING == 1
 		w_fix_con_tmp_[j] = lambda[ell];
+# else
+		w_fix_con_tmp_[j] = scale_g_[ell] * lambda[ell];
 # endif
 	}
 	sparse_hes_info& fix_con_hes_info( mixed_object_.fix_con_hes_ );
@@ -1876,17 +1881,9 @@ $end
 		for(size_t j = 0; j < fix_likelihood_nabs_; j++)
 		{	double var  = double( x[n_fixed_ + j] );
 			double diff = var - fix_likelihood_vec_tmp_[j + 1];
-# if HIDE_FIXED_NLP_SCALING
-			ok &= scale_g_[2 * j] * diff + 1e2 * tol >= 0;
-# else
-			ok &= diff + 1e2 * tol >= 0;
-# endif
-			diff = var + fix_likelihood_vec_tmp_[j + 1];
-# if HIDE_FIXED_NLP_SCALING
-			ok &= scale_g_[2 * j] * diff + 1e2 * tol >= 0;
-# else
-			ok &= diff + 1e2 * tol >= 0;
-# endif
+			ok         &= scale_g_[2 * j] * diff + 1e2 * tol >= 0;
+			diff        = var + fix_likelihood_vec_tmp_[j + 1];
+			ok         &= scale_g_[2 * j] * diff + 1e2 * tol >= 0;
 		}
 	}
 	//
@@ -1925,6 +1922,10 @@ $end
 	CppAD::vector<Number> grad_f(n);
 	bool new_x = true;
 	eval_grad_f(n, x, new_x, grad_f.data() );
+# if CPPAD_MIXED_IPOPT_USER_SCALING == 1
+	for(int i = 0; i < n; i++)
+		grad_f[i] *= scale_f_;
+# endif
 
 	// Evaluate gradient of g w.r.t x
 	CppAD::vector<Index> iRow(nnz_jac_g_), jCol(nnz_jac_g_);
@@ -1938,6 +1939,12 @@ $end
 		n, x, new_x, m, nnz_jac_g_,
 		iRow.data(), jCol.data(), jac_g.data()
 	);
+# if CPPAD_MIXED_IPOPT_USER_SCALING == 1
+	for(size_t k = 0; k < nnz_jac_g_; k++)
+	{	Index i = iRow[k];
+		jac_g[k] *= scale_g_[i];
+	}
+# endif
 
 	// Check the partial of the Lagrangian w.r.t fixed effects
 	// and set solution_.fixed_lag
@@ -2217,8 +2224,7 @@ bool ipopt_fixed::adaptive_derivative_check(
 		return false;
 	}
 	// ------------------------------------------------------------------------
-	// double scale_max = 1.0;
-	double scale_max = 1e+8;
+	double scale_max = 1e+14;
 	double scale_min = 1.0 / scale_max;
 	//
 	// scale_f
