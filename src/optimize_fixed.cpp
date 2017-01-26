@@ -263,6 +263,10 @@ $end
 # include <cppad/mixed/ipopt_fixed.hpp>
 # include <cppad/mixed/exception.hpp>
 
+// Note that this flag also appears in ipopt_fixed.cpp
+//(bin/test_one.sh data_mismatch.cpp fails when this is 0).
+# define HIDE_FIXED_NLP_SCALING 1
+
 CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	const std::string& fixed_ipopt_options           ,
 	const std::string& random_ipopt_options    ,
@@ -313,8 +317,13 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	{	// special defaults settings
 		app->Options()->SetStringValue(
 			"hessian_approximation", "limited-memory");
+# if HIDE_FIXED_NLP_SCALING
 		app->Options()->SetStringValue(
 			"nlp_scaling_method", "none");
+# else
+		app->Options()->SetStringValue(
+			"nlp_scaling_method", "user-scaling");
+# endif
 		app->Options()->SetIntegerValue(
 			"limited_memory_max_history", 30);
 	}

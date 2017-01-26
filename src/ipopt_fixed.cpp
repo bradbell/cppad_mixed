@@ -11,6 +11,10 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/ipopt_fixed.hpp>
 # include <cppad/mixed/exception.hpp>
 
+// Note that this flag also appears in optimize_fixed.cpp
+// (bin/test_one.sh data_missmatch.cpp fails when this is 0).
+# define HIDE_FIXED_NLP_SCALING 1
+
 namespace {
 
 	// merge two (row, col) sparsity patterns into one
@@ -372,6 +376,9 @@ $subhead ran_objcon_hes_info_$$
 If $code n_random_ > 0$$, sparse matrix information for the Hessian of the
 random objective and constraints.
 
+$head adaptive_called_$$
+This member variable is set to false.
+
 $head Prototype$$
 $srccode%cpp% */
 ipopt_fixed::ipopt_fixed(
@@ -580,12 +587,7 @@ mixed_object_      ( mixed_object    )
 		assert( nnz_h_lag_ == lag_hes_col_.size() );
 	}
 	// -----------------------------------------------------------------------
-	size_t m = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
 	adaptive_called_  = false; // changed by adaptive_derivative_check
-	scale_f_          = 1.0;   // changed by adaptive_derivative_check
-	scale_g_.resize(m);
-	for(size_t i = 0; i < m; i++)
-		scale_g_[i] = 1.0;   // changed by adaptive_derivative_check
 }
 /* $$
 ------------------------------------------------------------------------------
@@ -737,11 +739,16 @@ $end
 	// fixed constraints
 	for(size_t j = 0; j < n_fix_con_; j++)
 	{	size_t i = 2 * fix_likelihood_nabs_ + j;
+# if HIDE_FIXED_NLP_SCALING
 		g_l[i] = scale_g_[i] * fix_constraint_lower_[j];
 		if( fix_constraint_lower_[j] == fix_constraint_upper_[j] )
 			g_u[i] = g_l[i];
 		else
 			g_u[i] = scale_g_[i] * fix_constraint_upper_[j];
+# else
+		g_l[i] = fix_constraint_lower_[j];
+		g_u[i] = fix_constraint_upper_[j];
+# endif
 	}
 	//
 	// random constraints
@@ -953,7 +960,9 @@ void ipopt_fixed::try_eval_f(
 	if( CppAD::isnan(obj_value) ) throw CppAD::mixed::exception(
 		"try_eval_f", "objective function is nan"
 	);
+# if HIDE_FIXED_NLP_SCALING
 	obj_value *= scale_f_;
+# endif
 	return;
 }
 /*
@@ -1075,7 +1084,9 @@ void ipopt_fixed::try_eval_grad_f(
 	{	if( CppAD::isnan( grad_f[j] ) ) throw CppAD::mixed::exception(
 			"try_eval_grad_f", "objective gradient has a nan"
 		);
+# if HIDE_FIXED_NLP_SCALING
 		grad_f[j] *= scale_f_;
+# endif
 	}
 	//
 	return;
@@ -1195,7 +1206,9 @@ void ipopt_fixed::try_eval_g(
 	{	if( CppAD::isnan( g[i] ) ) throw CppAD::mixed::exception(
 			"try_eval_g", "constaint function has a nan"
 		);
+# if HIDE_FIXED_NLP_SCALING
 		g[i] *= scale_g_[i];
+# endif
 	}
 	return;
 }
@@ -1417,8 +1430,10 @@ void ipopt_fixed::try_eval_jac_g(
 	{	if( CppAD::isnan( values[ell] ) ) throw CppAD::mixed::exception(
 			"try_eval_jac_g", "constraint Jacobian has a nan"
 		);
+# if HIDE_FIXED_NLP_SCALING
 		size_t i = jac_g_row_[ell];
 		values[ell] *= scale_g_[i];
+# endif
 	}
 	return;
 }
@@ -1591,11 +1606,20 @@ void ipopt_fixed::try_eval_h(
 		if( new_x )
 			new_random(fixed_tmp_);
 		// compute Hessian of random part of objective w.r.t. fixed effects
+# if HIDE_FIXED_NLP_SCALING
 		w_ran_objcon_tmp_[0] = scale_f_ * obj_factor;
+# else
+		w_ran_objcon_tmp_[0] = obj_factor;
+# endif
 		// include random constraints in this Hessian calculation
 		size_t offset = 2 * fix_likelihood_nabs_ + n_fix_con_;
+# if HIDE_FIXED_NLP_SCALING
 		for(size_t i = 0; i < n_ran_con_; i++)
 			w_ran_objcon_tmp_[i+1] = scale_g_[offset + i] * lambda[offset + i];
+# else
+		for(size_t i = 0; i < n_ran_con_; i++)
+			w_ran_objcon_tmp_[i+1] = lambda[offset + i];
+# endif
 		mixed_object_.ran_objcon_hes(
 			fixed_tmp_,
 			random_cur_,
@@ -1612,10 +1636,17 @@ void ipopt_fixed::try_eval_h(
 	}
 	//
 	// Hessian of Lagrangian of weighted fixed likelihood
+# if HIDE_FIXED_NLP_SCALING
 	w_fix_likelihood_tmp_[0] = scale_f_ * obj_factor;
+# endif
 	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
-	{	w_fix_likelihood_tmp_[1 + j] = scale_g_[2*j + 1] * lambda[2*j + 1]
+	{
+# if HIDE_FIXED_NLP_SCALING
+		w_fix_likelihood_tmp_[1 + j] = scale_g_[2*j + 1] * lambda[2*j + 1]
 		                             - scale_g_[2*j]     * lambda[2*j];
+# else
+		w_fix_likelihood_tmp_[1 + j] = lambda[2*j + 1] - lambda[2*j];
+# endif
 	}
 	sparse_hes_info& fix_like_hes_info( mixed_object_.fix_like_hes_ );
 	mixed_object_.fix_like_hes(
@@ -1634,7 +1665,11 @@ void ipopt_fixed::try_eval_h(
 	// Hessian of Lagrangian of fixed constraints
 	for(size_t j = 0; j < n_fix_con_; j++)
 	{	size_t ell        = 2 * fix_likelihood_nabs_ + j;
+# if HIDE_FIXED_NLP_SCALING
 		w_fix_con_tmp_[j] = scale_g_[ell] * lambda[ell];
+# else
+		w_fix_con_tmp_[j] = lambda[ell];
+# endif
 	}
 	sparse_hes_info& fix_con_hes_info( mixed_object_.fix_con_hes_ );
 	mixed_object_.fix_con_hes(
@@ -1841,8 +1876,17 @@ $end
 		for(size_t j = 0; j < fix_likelihood_nabs_; j++)
 		{	double var  = double( x[n_fixed_ + j] );
 			double diff = var - fix_likelihood_vec_tmp_[j + 1];
-			ok &= scale_g_[2 * j]     * diff + 1e2 * tol >= 0;
-			ok &= scale_g_[2 * j + 1] * diff + 1e2 * tol >= 0;
+# if HIDE_FIXED_NLP_SCALING
+			ok &= scale_g_[2 * j] * diff + 1e2 * tol >= 0;
+# else
+			ok &= diff + 1e2 * tol >= 0;
+# endif
+			diff = var + fix_likelihood_vec_tmp_[j + 1];
+# if HIDE_FIXED_NLP_SCALING
+			ok &= scale_g_[2 * j] * diff + 1e2 * tol >= 0;
+# else
+			ok &= diff + 1e2 * tol >= 0;
+# endif
 		}
 	}
 	//
@@ -1967,6 +2011,32 @@ $end
 	// set member variable finalize_solution_ok_
 	finalize_solution_ok_ = ok;
 }
+// ---------------------------------------------------------------------------
+bool ipopt_fixed::get_scaling_parameters(
+	Number&            obj_scaling    ,
+	bool&              use_x_scaling  ,
+	Index              n              ,
+	Number*            x_scaling      ,
+	bool&              use_g_scaling  ,
+	Index              m              ,
+	Number*            g_scaling      )
+{
+	assert( n > 0 );
+	assert( size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
+	assert( m >= 0 );
+	assert( size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
+	//
+	obj_scaling   = Number(scale_f_);
+	use_x_scaling = false;
+	for(int j = 0; j < n; j++)
+		x_scaling[j] = Number(1.0);
+	//
+	use_g_scaling = true;
+	for(int i = 0; i < m; i++)
+		g_scaling[i] = Number( scale_g_[i] );
+	//
+	return true;
+}
 /*
 -------------------------------------------------------------------------------
 $begin ipopt_fixed_adaptive_derivative_check$$
@@ -2041,6 +2111,15 @@ If upon return, $code get_error_message()$$ is non-empty,
 a description of a function evaluation
 error that occurred during this routine.
 
+$head adaptive_called_$$
+This member variable has prototype
+$codei%
+	bool adaptive_called_
+%$$
+It's value upon call must be $code false$$.
+It is set to true at the beginning of $code adaptive_derivative_check$$,
+before any other $code ipopt_fixed$$ routine is called.
+
 $head scale_f_$$
 This member variable has prototype
 $codei%
@@ -2061,15 +2140,6 @@ has size equal to range for $latex g(x)$$; i.e., $icode m$$.
 For each $latex i$$, $icode%scale_g_%[%i%]%$$ is scale factor for
 $latex g_i (x)$$.
 
-$head adaptive_called_$$
-This member variable has prototype
-$codei%
-	bool adaptive_called_
-%$$
-It's value upon call must be $code false$$.
-It is set to true at the beginning of $code adaptive_derivative_check$$,
-before any other $code ipopt_fixed$$ routine is called.
-
 
 $end
 -------------------------------------------------------------------------------
@@ -2086,7 +2156,15 @@ bool ipopt_fixed::adaptive_derivative_check(
 	size_t m        = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
 	double root_eps = std::sqrt( std::numeric_limits<double>::epsilon() );
 	double infinity = std::numeric_limits<double>::infinity();
-
+	// -----------------------------------------------------------------------
+	// set scaling to identity mapping during this routine
+	// (will be set to final value at end)
+	assert( scale_g_.size() == 0 );
+	scale_f_ = 1.0;
+	scale_g_.resize(m);
+	for(size_t i = 0; i < m; i++)
+		scale_g_[i] = 1.0;
+	// -----------------------------------------------------------------------
 	// start starting point
 	d_vector x_start(n);
 	bool init_x = true, init_z = false, init_lambda = false;

@@ -123,24 +123,19 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		s_vector fix_like_hes_2_lag_; // fix_like_hes_row_ -> lag_hes_row_
 		s_vector fix_con_hes_2_lag_; // fix_con_hes_row -> lag_hes_row
 		// ---------------------------------------------------------------
-		// initialized during constructor and modified during
+		// This variable is set false by constructor, true at beginning of
 		// adaptive_derivative_check
+		bool adaptive_called_;
+		// The rest of these variables only set by adaptive_derivative_check
 		//
 		// scale factor (multiplies) components of f(x)
-		// (set to one by constructor).
 		double scale_f_;
 		//
 		// scale factor for components of g(x)
-		// (set to one by constructor).
 		d_vector scale_g_;
 		//
-		// maps jac_g sparsity index to row index
-		// (empty vector after constructor).
+		// maps jac_g sparsity index to row index in g'(x).
 		s_vector jac_g_row_;
-		//
-		// false after constructor, set true at beginning of
-		// adaptive_derivative_check
-		bool adaptive_called_;
 		// ---------------------------------------------------------------
 		// temporaries (size set by constructor only)
 		d_vector        fixed_tmp_;         // size n_fixed_
@@ -339,23 +334,15 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			const Ipopt::IpoptData*           ip_data   ,
 			Ipopt::IpoptCalculatedQuantities* ip_cq
 		);
-		virtual bool intermediate_callback(
-			Ipopt::AlgorithmMode mode                  ,
-			Index iter                                 ,
-			Number obj_value                           ,
-			Number inf_pr                              ,
-			Number inf_du                              ,
-			Number mu                                  ,
-			Number d_norm                              ,
-			Number regularization_size                 ,
-			Number alpha_du                            ,
-			Number alpha_pr                            ,
-			Index ls_trials                            ,
-			const Ipopt::IpoptData* ip_data            ,
-			Ipopt::IpoptCalculatedQuantities* ip_cq    )
-		{	bool ok = error_message_ == "";
-			return ok;
-		}
+		virtual bool get_scaling_parameters(
+			Number&            obj_scaling    ,
+			bool&              use_x_scaling  ,
+			Index              n              ,
+			Number*            x_scaling      ,
+			bool&              use_g_scaling  ,
+			Index              m              ,
+			Number*            g_scaling
+		);
 		// -----------------------------------------------------------------
 		bool adaptive_derivative_check(bool trace, double relative_tol);
 	};
