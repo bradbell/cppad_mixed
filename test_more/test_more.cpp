@@ -83,6 +83,7 @@ int main(void)
 	RUN(ran_likelihood_hes);
 	RUN(ran_likelihood_jac);
 	RUN(ran_obj_tst);
+	RUN(sample_fixed_1);
 	RUN(sample_fixed_2);
 	RUN(scale);
 	RUN(solution_check);

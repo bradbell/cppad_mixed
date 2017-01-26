@@ -102,6 +102,9 @@ namespace {
 		// ran_likelihood
 		// ------------------------------------------------------------------
 		// fix_constraint
+		vector<a1_double> fix_constraint(
+			const vector<a1_double>& fixed_vec  )
+		{	return implement_fix_constraint(fixed_vec); }
 		vector<double> fix_constraint(
 			const vector<double>& fixed_vec  )
 		{	return implement_fix_constraint(fixed_vec); }
@@ -162,7 +165,7 @@ bool sample_fixed_1(void)
 		"String  derivative_test           first-order\n"
 		"String  derivative_test_print_all yes\n"
 		"Numeric tol                       1e-8\n"
-		"Integer max_iter                  50\n"
+		"Integer max_iter                  15\n"
 	;
 	std::string random_ipopt_options =
 		"Integer print_level     0\n"
@@ -336,6 +339,7 @@ bool sample_fixed_1(void)
 		std::cout << "\nrandom_seed = " << random_seed << "\n";
 	}
 	//
+	CppAD::mixed::free_gsl_rng();
 	return ok;
 }
 // END C++
