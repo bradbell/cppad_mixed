@@ -31,12 +31,12 @@ $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head matrix$$
 The argument has prototype
-$code%
+$codei%
 	const Eigen::SparseMatrix<%Scalar%, %Options%, %Index%>& %matrix%
 %$$
 and has the same number of rows as columns; i.e.
 $codei%
-	%matrix%.rows() == %matrix.cols()
+	%matrix%.rows() == %matrix%.cols()
 %$$
 
 $subhead Scalar$$
