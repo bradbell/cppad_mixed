@@ -309,8 +309,8 @@ $cref/CppAD::mixed/namespace/Private/$$ user API.
 $head jac_sparsity$$
 This argument has one of the following prototypes
 $codei%
-	CppAD::sparse_list& %jac_sparsity%
-	CppAD::sparse_pack& %jac_sparsity%
+	CppAD::local::sparse_list& %jac_sparsity%
+	CppAD::local::sparse_pack& %jac_sparsity%
 %$$
 Its input value does not matter.
 Upon return it contains the jacobian sparsity pattern for the mapping from
@@ -528,8 +528,8 @@ It is the sparsity pattern for $latex S(x)$$.
 $head jac_sparsity$$
 This argument has one of the following prototypes
 $codei%
-	CppAD::sparse_list& %jac_sparsity%
-	CppAD::sparse_pack& %jac_sparsity%
+	CppAD::local::sparse_list& %jac_sparsity%
+	CppAD::local::sparse_pack& %jac_sparsity%
 %$$
 It is the Jacobian sparsity pattern for $latex L(x)$$ and is
 effectively const.
@@ -811,7 +811,7 @@ bool sparse_ad_cholesky::forward(
 	assert( jac_sparsity_pack_.end() == nx );
 	for(size_t i = 0; i < ny; i++)
 	{	vy[i] = false;
-		sparse_pack::const_iterator itr(jac_sparsity_pack_, i);
+		CppAD::local::sparse_pack::const_iterator itr(jac_sparsity_pack_, i);
 		size_t j = *itr;
 		while( j < nx )
 		{	vy[i] |= vx[j];
@@ -977,7 +977,7 @@ bool sparse_ad_cholesky::for_sparse_jac(
 			s[ i * q + j ] = false;
 		//
 		// loop though elements of Jacobian in row i
-		sparse_pack::const_iterator itr(jac_sparsity_pack_, i);
+		CppAD::local::sparse_pack::const_iterator itr(jac_sparsity_pack_, i);
 		size_t k = *itr;
 		while( k < nx )
 		{	// J(i, k) is non-zero.
@@ -1025,7 +1025,7 @@ bool sparse_ad_cholesky::rev_sparse_jac(
 	// loop over the rows of the J = f'(x)
 	assert( jac_sparsity_pack_.end() == nx );
 	for(size_t k = 0; k < ny; k++)
-	{	sparse_pack::const_iterator itr(jac_sparsity_pack_, k);
+	{	CppAD::local::sparse_pack::const_iterator itr(jac_sparsity_pack_, k);
 		size_t j = *itr;
 		while(j < nx )
 		{	// S(i, j) = sum_k R(i, k) J(k, j) and J(k, j) is non-zero
@@ -1082,7 +1082,7 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 		t[j] = false;
 	for(size_t k = 0; k < ny; k++)
 	{	if( s[k] )
-		{	CppAD::sparse_pack::const_iterator itr(jac_sparsity_pack_, k);
+		{	CppAD::local::sparse_pack::const_iterator itr(jac_sparsity_pack_, k);
 			size_t j = *itr;
 			while( j < nx )
 			{	// S(k) * J(k, j) is non-zero where J = f'(x)
@@ -1102,7 +1102,7 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 			fptu[ j * q + k ] = false;
 	}
 	for(size_t i = 0; i < ny; i++)
-	{	CppAD::sparse_pack::const_iterator itr(jac_sparsity_pack_, i);
+	{	CppAD::local::sparse_pack::const_iterator itr(jac_sparsity_pack_, i);
 		size_t j = *itr;
 		while( j < nx )
 		{	// J(i, j) is non-zero where J = f'(x)
@@ -1118,7 +1118,7 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 	}
 	//
 	// compute the sparsity for sum_l S_l(x) * f_l''(x)
-	CppAD::sparse_pack hes_sparsity_pack;
+	CppAD::local::sparse_pack hes_sparsity_pack;
 	set_hes_sparsity(s, jac_sparsity_pack_, hes_sparsity_pack);
 	assert( hes_sparsity_pack.end() == nx );
 	//
@@ -1129,7 +1129,7 @@ bool sparse_ad_cholesky::rev_sparse_hes(
 		for(size_t j = 0; j < q; j++)
 			sfppR[ i * q + j ] = false;
 		//
-		sparse_pack::const_iterator itr(hes_sparsity_pack, i);
+		CppAD::local::sparse_pack::const_iterator itr(hes_sparsity_pack, i);
 		size_t k = *itr;
 		while( k < nx )
 		{	// H(i, k) is non-zero where H = sum_l S_l (x) * f_l '' (x)

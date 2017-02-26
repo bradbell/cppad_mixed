@@ -41,8 +41,8 @@ echo_eval() {
 }
 # --------------------------------------------------------------------------
 web_page='https://github.com/coin-or/CppAD.git'
-hash_key='cd5824ab1b676cbd261cf924e31313177319abc2'
-version='20161113'
+hash_key='8c8a107cda142a48d92e00d8249b8ced812ea772'
+version='20170226'
 # --------------------------------------------------------------------------
 if echo "$cppad_prefix" | grep '/cppad_mixed$' > /dev/null
 then

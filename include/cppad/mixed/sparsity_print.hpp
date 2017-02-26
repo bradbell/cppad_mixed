@@ -40,8 +40,8 @@ If it is empty, no label is printed.
 $head pattern$$
 Is the sparsity pattern which must have one of the following prototypes:
 $codei%
-		CppAD::sparse_pack& %pattern%
-		CppAD::sparse_list& %pattern%
+		CppAD::local::sparse_pack& %pattern%
+		CppAD::local::sparse_list& %pattern%
 %$$
 Note these are effectively $code const$$, but are not declared
 so that the corresponding iterator can be used.
@@ -55,13 +55,13 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 void sparsity_print(
 	const std::string&  label     ,
-	CppAD::sparse_pack& pattern   )
+	CppAD::local::sparse_pack& pattern   )
 {	if( label != "" )
 		std::cout << label << ":\n";
 	for(size_t i = 0; i < pattern.n_set(); i++)
 	{	bool first = true;
 			std::cout << "row " << i << ":";
-		sparse_pack::const_iterator itr(pattern, i);
+		CppAD::local::sparse_pack::const_iterator itr(pattern, i);
 		size_t j = *itr;
 		while( j != pattern.end() )
 		{	assert( j < pattern.end() );
@@ -77,13 +77,13 @@ void sparsity_print(
 
 void sparsity_print(
 	const std::string&  label     ,
-	CppAD::sparse_list& pattern   )
+	CppAD::local::sparse_list& pattern   )
 {	if( label != "" )
 		std::cout << label << ":\n";
 	for(size_t i = 0; i < pattern.n_set(); i++)
 	{	bool first = true;
 			std::cout << "row " << i << ":";
-		sparse_list::const_iterator itr(pattern, i);
+		CppAD::local::sparse_list::const_iterator itr(pattern, i);
 		size_t j = *itr;
 		while( j != pattern.end() )
 		{	assert( j < pattern.end() );

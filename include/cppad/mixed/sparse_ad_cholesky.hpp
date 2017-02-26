@@ -129,7 +129,7 @@ private:
 	// Jacobian sparsity as a sparse_pack.  This is CppAD internal
 	// representations for vectors of of bools.  Its use is not part of the
 	// CppAD API (yet), but it is more efficient, so we use it here.
-	CppAD::sparse_pack jac_sparsity_pack_;
+	CppAD::local::sparse_pack jac_sparsity_pack_;
 // END MEMBER VARIABLES
 // -----------------------------------------------------------------
 // BEGIN PUBLIC MEMBER FUNCTIONS

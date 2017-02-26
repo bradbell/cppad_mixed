@@ -16,20 +16,17 @@ rename_files='
 spell_files='
 '
 no_change_files='
-	bin/capture_xam.py
 '
 #
 rename_cmd='s|whats_new.omh|whats_new_16.omh|'
 #
 cat << EOF > junk.sed
-/fixed_ipopt_options *=/! b done
-: loop
-N
-/;/! b loop
-/max_iter/ b done
-s|\\n\\t;|\\n\\t\\t"Integer max_iter                  15\\\\n"&|
+s|CppAD::sparse_pack|CppAD::local::sparse_pack|g
+s|\\tsparse_pack|\\tCppAD::local::sparse_pack|g
 #
-: done
+s|CppAD::sparse_list|CppAD::local::sparse_list|g
+s|\\tsparse_list|\\tCppAD::local::sparse_list|g
+#
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]
