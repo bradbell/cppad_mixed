@@ -25,6 +25,23 @@ $childtable%
 	omh/whats_new_16.omh
 %$$
 
+$head 03-01$$
+$list number$$
+The $code solution check failed$$ warning was being output
+because the check was not properly accounting for the scaling.
+This has been fixed.
+$lnext
+The scaling has be fixed to
+correctly account for the constraints corresponding to absolute
+value terms in the
+$cref/negative log-density/cppad_mixed/Negative Log-Density Vector/$$.
+$lnext
+Document the fact that an
+$cref/nlp_scaling_method/
+optimize_fixed/fixed_ipopt_options/nlp_scaling_method/$$
+cannot be specified for the fixed effects.
+$lend
+
 $head 01-26$$
 Change the objective and constraint function scaling so that it is
 done by Ipopt using it's user-scaling option.

@@ -12,12 +12,6 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/exception.hpp>
 
 
-// This flag also appears in optimize_fixed.cpp. If it is true (1),
-// Ipopt does the scaling and nlp_scaling_method is user-scaling.
-// If it is false (0), the scaling is done by ipopt_fixed and
-// nlp_scaling_method is none.
-# define CPPAD_MIXED_IPOPT_USER_SCALING 1
-
 namespace {
 
 	// merge two (row, col) sparsity patterns into one
@@ -742,16 +736,15 @@ $end
 	// fixed constraints
 	for(size_t j = 0; j < n_fix_con_; j++)
 	{	size_t i = 2 * fix_likelihood_nabs_ + j;
-# if CPPAD_MIXED_IPOPT_USER_SCALING == 1
+		//
 		g_l[i] = fix_constraint_lower_[j];
 		g_u[i] = fix_constraint_upper_[j];
-# else
+		/* scaling
 		g_l[i] = scale_g_[i] * fix_constraint_lower_[j];
+		g_u[i] = scale_g_[i] * fix_constraint_upper_[j];
 		if( fix_constraint_lower_[j] == fix_constraint_upper_[j] )
 			g_u[i] = g_l[i];
-		else
-			g_u[i] = scale_g_[i] * fix_constraint_upper_[j];
-# endif
+		*/
 	}
 	//
 	// random constraints
@@ -963,9 +956,8 @@ void ipopt_fixed::try_eval_f(
 	if( CppAD::isnan(obj_value) ) throw CppAD::mixed::exception(
 		"try_eval_f", "objective function is nan"
 	);
-# if CPPAD_MIXED_IPOPT_USER_SCALING == 0
-	obj_value *= scale_f_;
-# endif
+	// scaling
+	// obj_value *= scale_f_;
 	return;
 }
 /*
@@ -1087,9 +1079,8 @@ void ipopt_fixed::try_eval_grad_f(
 	{	if( CppAD::isnan( grad_f[j] ) ) throw CppAD::mixed::exception(
 			"try_eval_grad_f", "objective gradient has a nan"
 		);
-# if CPPAD_MIXED_IPOPT_USER_SCALING == 0
-		grad_f[j] *= scale_f_;
-# endif
+		// scaling
+		// grad_f[j] *= scale_f_;
 	}
 	//
 	return;
@@ -1209,9 +1200,8 @@ void ipopt_fixed::try_eval_g(
 	{	if( CppAD::isnan( g[i] ) ) throw CppAD::mixed::exception(
 			"try_eval_g", "constaint function has a nan"
 		);
-# if CPPAD_MIXED_IPOPT_USER_SCALING == 0
-		g[i] *= scale_g_[i];
-# endif
+		// scaling
+		// g[i] *= scale_g_[i];
 	}
 	return;
 }
@@ -1433,10 +1423,9 @@ void ipopt_fixed::try_eval_jac_g(
 	{	if( CppAD::isnan( values[ell] ) ) throw CppAD::mixed::exception(
 			"try_eval_jac_g", "constraint Jacobian has a nan"
 		);
-# if CPPAD_MIXED_IPOPT_USER_SCALING == 0
-		size_t i = jac_g_row_[ell];
-		values[ell] *= scale_g_[i];
-# endif
+		// scaling
+		// size_t i = jac_g_row_[ell];
+		// values[ell] *= scale_g_[i];
 	}
 	return;
 }
@@ -1609,20 +1598,16 @@ void ipopt_fixed::try_eval_h(
 		if( new_x )
 			new_random(fixed_tmp_);
 		// compute Hessian of random part of objective w.r.t. fixed effects
-# if CPPAD_MIXED_IPOPT_USER_SCALING == 1
 		w_ran_objcon_tmp_[0] = obj_factor;
-# else
-		w_ran_objcon_tmp_[0] = scale_f_ * obj_factor;
-# endif
+		// w_ran_objcon_tmp_[0] = scale_f_ * obj_factor;
+		//
 		// include random constraints in this Hessian calculation
 		size_t offset = 2 * fix_likelihood_nabs_ + n_fix_con_;
-# if CPPAD_MIXED_IPOPT_USER_SCALING == 1
 		for(size_t i = 0; i < n_ran_con_; i++)
-			w_ran_objcon_tmp_[i+1] = lambda[offset + i];
-# else
-		for(size_t i = 0; i < n_ran_con_; i++)
-			w_ran_objcon_tmp_[i+1] = scale_g_[offset + i] * lambda[offset + i];
-# endif
+		{	w_ran_objcon_tmp_[i+1] = lambda[offset + i];
+			// w_ran_objcon_tmp_[i+1] = scale_g_[offset+i] * lambda[offset+i];
+		}
+		//
 		mixed_object_.ran_objcon_hes(
 			fixed_tmp_,
 			random_cur_,
@@ -1639,19 +1624,16 @@ void ipopt_fixed::try_eval_h(
 	}
 	//
 	// Hessian of Lagrangian of weighted fixed likelihood
-# if CPPAD_MIXED_IPOPT_USER_SCALING == 1
 	w_fix_likelihood_tmp_[0] = obj_factor;
-# else
-	w_fix_likelihood_tmp_[0] = scale_f_ * obj_factor;
-# endif
+	// w_fix_likelihood_tmp_[0] = scale_f_ * obj_factor;
+	//
 	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
 	{
-# if CPPAD_MIXED_IPOPT_USER_SCALING == 1
 		w_fix_likelihood_tmp_[1 + j] = lambda[2*j + 1] - lambda[2*j];
-# else
+		/* scaling
 		w_fix_likelihood_tmp_[1 + j] = scale_g_[2*j + 1] * lambda[2*j + 1]
 		                             - scale_g_[2*j]     * lambda[2*j];
-# endif
+		*/
 	}
 	sparse_hes_info& fix_like_hes_info( mixed_object_.fix_like_hes_ );
 	mixed_object_.fix_like_hes(
@@ -1670,11 +1652,8 @@ void ipopt_fixed::try_eval_h(
 	// Hessian of Lagrangian of fixed constraints
 	for(size_t j = 0; j < n_fix_con_; j++)
 	{	size_t ell        = 2 * fix_likelihood_nabs_ + j;
-# if CPPAD_MIXED_IPOPT_USER_SCALING == 1
 		w_fix_con_tmp_[j] = lambda[ell];
-# else
-		w_fix_con_tmp_[j] = scale_g_[ell] * lambda[ell];
-# endif
+		// w_fix_con_tmp_[j] = scale_g_[ell] * lambda[ell];
 	}
 	sparse_hes_info& fix_con_hes_info( mixed_object_.fix_con_hes_ );
 	mixed_object_.fix_con_hes(
@@ -1897,7 +1876,10 @@ $end
 	offset     = 2 * fix_likelihood_nabs_;
 	double inf = std::numeric_limits<double>::infinity();
 	for(size_t j = 0; j < n_fix_con_; j++)
-	{	ok &= check_in_limits(
+	{	// It seems from testing that Ipopt is insuring the constraint to
+		// be within tol, but it seems to Brad is should be within
+		// scale_g_[offset +j] * tol.
+		ok &= check_in_limits(
 			fix_constraint_lower_[j], c_vec_tmp_[j], fix_constraint_upper_[j],
 			2.0 * tol
 		);
@@ -1922,10 +1904,6 @@ $end
 	CppAD::vector<Number> grad_f(n);
 	bool new_x = true;
 	eval_grad_f(n, x, new_x, grad_f.data() );
-# if CPPAD_MIXED_IPOPT_USER_SCALING == 1
-	for(int i = 0; i < n; i++)
-		grad_f[i] *= scale_f_;
-# endif
 
 	// Evaluate gradient of g w.r.t x
 	CppAD::vector<Index> iRow(nnz_jac_g_), jCol(nnz_jac_g_);
@@ -1939,12 +1917,6 @@ $end
 		n, x, new_x, m, nnz_jac_g_,
 		iRow.data(), jCol.data(), jac_g.data()
 	);
-# if CPPAD_MIXED_IPOPT_USER_SCALING == 1
-	for(size_t k = 0; k < nnz_jac_g_; k++)
-	{	Index i = iRow[k];
-		jac_g[k] *= scale_g_[i];
-	}
-# endif
 
 	// Check the partial of the Lagrangian w.r.t fixed effects
 	// and set solution_.fixed_lag
@@ -1999,7 +1971,7 @@ $end
 			average += check / double(n_fixed_);
 		}
 	}
-	ok &= average <= 5. * tol;
+	ok &= average * scale_f_ <= 5. * tol;
 
 	// Check the partial of the Lagrangian w.r.t auxillary variables
 	average = 0.0;
@@ -2013,7 +1985,7 @@ $end
 		}
 		average += std::fabs(sum) / double(n_fixed_);
 	}
-	ok &= average <= tol;
+	ok &= average * scale_f_ <= tol;
 
 	// set member variable finalize_solution_ok_
 	finalize_solution_ok_ = ok;
@@ -2034,6 +2006,7 @@ bool ipopt_fixed::get_scaling_parameters(
 	assert( size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
 	//
 	obj_scaling   = Number(scale_f_);
+	//
 	use_x_scaling = false;
 	for(int j = 0; j < n; j++)
 		x_scaling[j] = Number(1.0);
@@ -2164,8 +2137,8 @@ bool ipopt_fixed::adaptive_derivative_check(
 	double root_eps = std::sqrt( std::numeric_limits<double>::epsilon() );
 	double infinity = std::numeric_limits<double>::infinity();
 	// -----------------------------------------------------------------------
-	// set scaling to identity mapping during this routine
-	// (will be set to final value at end)
+	// Scaling is identity mapping during this routine
+	// (set to final value just before returning)
 	assert( scale_g_.size() == 0 );
 	scale_f_ = 1.0;
 	scale_g_.resize(m);
@@ -2227,31 +2200,45 @@ bool ipopt_fixed::adaptive_derivative_check(
 	double scale_max = 1e+14;
 	double scale_min = 1.0 / scale_max;
 	//
-	// scale_f
-	double scale_f = scale_max;
+	// max_jac_g
+	d_vector max_jac_g(m);
+	for(size_t i = 0; i < m; i++)
+		max_jac_g[i] = scale_min;
+	for(size_t k = 0; k < nnz_jac_g_; k++)
+	{	size_t i = iRow[k];
+		max_jac_g[i] = std::max( max_jac_g[i], std::fabs( jac_g[k] ) );
+	}
+	//
+	// max_grad_f
+	double max_grad_f = scale_min;
+	// fixed effect terms
 	for(size_t j = 0; j < n_fixed_; j++)
-		scale_f = std::min( scale_f, 1.0 / std::fabs( grad_f[j] ) );
-	scale_f = std::max( scale_min, scale_f );
-	// auxillary variables not included in scaling because they
-	// already have scale 1 partials
+		max_grad_f = std::max( max_grad_f, std::fabs( grad_f[j] ) );
+	// skip axuillary variable terms (gradients are one)
 # ifndef NDEBUG
 	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
 		assert( grad_f[n_fixed_ + j] == 1.0 );
 # endif
+	// include absolute value terms in objective scaling
+	for(size_t i = 0; i < fix_likelihood_nabs_; i++)
+	{	assert( max_jac_g[2*i] == max_jac_g[2*i+1] );
+		max_grad_f = std::max( max_grad_f, std::fabs( max_jac_g[2*i] ) );
+	}
+	//
+	// scale_f
+	double scale_f = std::max( scale_min, 1.0 / max_grad_f);
 	//
 	// scale_g
 	d_vector scale_g(m);
 	for(size_t i = 0; i < m; i++)
-		scale_g[i] = scale_max;
-	for(size_t k = 0; k < nnz_jac_g_; k++)
-	{	size_t i = iRow[k];
-		scale_g[i] = std::min( scale_g[i], 1.0 / std::fabs( jac_g[k] ) );
+	{	if( i < 2 * fix_likelihood_nabs_ )
+			scale_g[i] = scale_f;
+		else
+			scale_g[i] = std::max( scale_min, 1.0 / max_jac_g[i] );
 	}
-	for(size_t i = 0; i < m; i++)
-		scale_g[i] = std::max( scale_min, scale_g[i] );
 	//
-	// std::cout << "scale_f = " << scale_f << "\n";
-	// std::cout << "scale_g = " << scale_g << "\n";
+	// std::cout << "\nscale_f = " << scale_f;
+	// std::cout << "\nscale_g = " << scale_g << "\n";
 	//
 	// check if there is no need to compute finite differences
 	if( (! trace) && relative_tol == infinity )

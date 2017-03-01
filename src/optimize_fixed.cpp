@@ -114,13 +114,10 @@ $cref/ls/ipopt_trace/ls/$$ is the ipopt tracing documentation.
 
 $subhead nlp_scaling_method$$
 When optimizing the fixed effects,
-the objective function and the constraint functions so that
-the maximum absolute component of the gradient of each of these functions
-is one. There is a maximum and minimum scaling factor
-(currently $code 1e+8$$ and $code 1e-8$$) that may change in future releases.
-This is similar to, but not the same as, the Ipopt gradient based scaling.
-When optimizing the fixed effects,
-the Ipopt option $icode nlp_scaling_method$$ is set to $code none$$.
+the objective and the constraint functions are automatically scaled
+by $code cppad_mixed$$.
+It is an error for the user to specify this option in
+$icode fixed_ipopt_options$$.
 
 $head random_ipopt_options$$
 This argument has prototype
@@ -263,12 +260,6 @@ $end
 # include <cppad/mixed/ipopt_fixed.hpp>
 # include <cppad/mixed/exception.hpp>
 
-// This flag also appears in ipopt_fixed.cpp. If it is true (1),
-// Ipopt does the scaling and nlp_scaling_method is user-scaling.
-// If it is false (0), the scaling is done by ipopt_fixed and
-// nlp_scaling_method is none.
-# define CPPAD_MIXED_IPOPT_USER_SCALING 1
-
 CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	const std::string& fixed_ipopt_options           ,
 	const std::string& random_ipopt_options    ,
@@ -315,17 +306,11 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	// Create an instance of an IpoptApplication
 	SmartPtr<Ipopt::IpoptApplication> app = IpoptApplicationFactory();
 	//
+	app->Options()->SetStringValue("nlp_scaling_method", "user-scaling");
 	if( quasi_fixed_ )
 	{	// special defaults settings
 		app->Options()->SetStringValue(
 			"hessian_approximation", "limited-memory");
-# if CPPAD_MIXED_IPOPT_USER_SCALING == 1
-		app->Options()->SetStringValue(
-			"nlp_scaling_method", "user-scaling");
-# else
-		app->Options()->SetStringValue(
-			"nlp_scaling_method", "none");
-# endif
 		app->Options()->SetIntegerValue(
 			"limited_memory_max_history", 30);
 	}

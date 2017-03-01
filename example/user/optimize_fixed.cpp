@@ -266,8 +266,8 @@ bool optimize_fixed_xam(void)
 
 	// Note that no constraints are active, (not even the l1 terms)
 	// so the partials should be zero.
-	ok &= fabs( scale * dF_out[0] ) <= tol;
-	ok &= fabs( scale * dF_out[1] ) <= tol;
+	ok &= fabs( scale * dF_out[0] ) <= 5. * tol;
+	ok &= fabs( scale * dF_out[1] ) <= 5. * tol;
 
 	return ok;
 }

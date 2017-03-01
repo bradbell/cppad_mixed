@@ -52,8 +52,8 @@ namespace {
 				{	sum_var  += fixed_vec[k];
 					sum_data += z_[k];
 				}
-				a1_double res = 1e+8 * (sum_var - sum_data);
-				vec[0] += res * res / 2.0;
+				a1_double res = sum_var - sum_data;
+				vec[0] += 1e+12 * res * res / 2.0;
 			}
 			return vec;
 		}
@@ -64,7 +64,7 @@ bool scale(void)
 {
 	bool   ok = true;
 	double inf = std::numeric_limits<double>::infinity();
-	double tol = 1e-8;
+	double tol = 1e-10;
 	//
 	// data
 	size_t n_fixed  = 5;
@@ -101,7 +101,7 @@ bool scale(void)
 		"String  sb                        yes\n"
 		"String  derivative_test           first-order\n"
 		"String  derivative_test_print_all yes\n"
-		"Numeric tol                       1e-8\n"
+		"Numeric tol                       1e-10\n"
 		"Integer max_iter                  20\n"
 	;
 	std::string random_ipopt_options =
@@ -130,7 +130,7 @@ bool scale(void)
 	//
 	for(size_t j = 0; j < n_fixed; j++)
 	{	double err = fabs( fixed_out[j] / z[j] - 1.0 );
-		ok &= err <= tol;
+		ok &= err <= 5. * tol;
 	}
 
 	return ok;
