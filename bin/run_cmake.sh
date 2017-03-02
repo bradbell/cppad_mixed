@@ -200,7 +200,7 @@ cmake \
 	-D eigen_prefix="$eigen_prefix" \
 	-D suitesparse_prefix="$suitesparse_prefix" \
 	\
-	-D cppad_cxx_flags="$extra_cxx_flags" \
+	-D cppad_cxx_flags="$cppad_cxx_flags" \
 	-D cmake_libdir="$cmake_libdir" \
 	-D ldlt_cholmod="$ldlt_cholmod" \
 	-D log_fatal_error="$log_fatal_error" \

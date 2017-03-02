@@ -156,6 +156,10 @@ IF( ${var} )
 ENDIF( ${var} )
 ENDFOREACH( var )
 # ----------------------------------------------------------------------------
+IF( NOT ${extra_cxx_flags} STREQUAL ""  )
+	MESSAGE(FATAL_ERROR "extra_cxx_flags has been changed to cppad_cxx_flags")
+ENDIF( NOT ${extra_cxx_flags} STREQUAL ""  )
+# ----------------------------------------------------------------------------
 # get package prefixes
 get_prefix(cppad)
 get_prefix(eigen)
