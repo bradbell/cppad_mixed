@@ -9,18 +9,6 @@
 #	     GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
-# BEGIN USER_SETTINGS
-#
-# Prefix below which cppad will be installed.
-# If this directory ends with /cppad_mixed, separate directories are used
-# for the debug and release versions.
-cppad_prefix="$HOME/prefix/cppad_mixed"
-#
-# extra c++ flags used during compliation
-extra_cxx_flags='-std=c++11 -Wall'
-#
-# END USER_SETTINGS
-# ---------------------------------------------------------------------------
 if [ $0 != 'bin/install_cppad.sh' ]
 then
 	echo 'bin/install_cppad.sh: must be executed from its parent directory'
@@ -43,6 +31,14 @@ echo_eval() {
 web_page='https://github.com/coin-or/CppAD.git'
 hash_key='8c8a107cda142a48d92e00d8249b8ced812ea772'
 version='20170226'
+# --------------------------------------------------------------------------
+# cppad_prefix
+cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
+eval $cmd
+#
+# cppad_cxx_flags
+cmd=`grep '^cppad_cxx_flags=' bin/run_cmake.sh`
+eval $cmd
 # --------------------------------------------------------------------------
 if echo "$cppad_prefix" | grep '/cppad_mixed$' > /dev/null
 then
@@ -96,8 +92,8 @@ fi
 cmake_args="-D CMAKE_VERBOSE_MAKEFILE=0"
 cmake_args="$cmake_args -D cppad_prefix=$cppad_prefix"
 cmake_args="$cmake_args -D cmake_install_libdirs=$libdirs"
-echo "cmake $cmake_args -D cppad_cxx_flags='$extra_cxx_flags' .."
-cmake $cmake_args -D cppad_cxx_flags="$extra_cxx_flags" ..
+echo "cmake $cmake_args -D cppad_cxx_flags='$cppad_cxx_flags' .."
+cmake $cmake_args -D cppad_cxx_flags="$cppad_cxx_flags" ..
 #
 echo_eval make install
 # -----------------------------------------------------------------------------

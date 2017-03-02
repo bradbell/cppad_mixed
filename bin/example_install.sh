@@ -46,6 +46,10 @@ then
 fi
 build_type="$1"
 # --------------------------------------------------------------------------
+# ipopt_prefix
+cmd=`grep '^ipopt_prefix=' bin/run_cmake.sh`
+eval $cmd
+# --------------------------------------------------------------------------
 for ext in log err
 do
 	if [ -e "example_install.$ext" ]
@@ -165,35 +169,13 @@ done
 # ----------------------------------------------------------------------------
 # cppad_mixed
 # ----------------------------------------------------------------------------
-list=`echo $PKG_CONFIG_PATH | sed -e 's|:| |g'`
-found='no'    # have not yet found ipopt.pc
-for dir in $list
-do
-	echo $dir
-	if [ -e $dir/ipopt.pc ]
-	then
-		found='yes'
-	fi
-done
-if [ $found == 'no' ]
+dir=`find -L $ipopt_prefix -name 'ipopt.pc' | sed -e 's|/ipopt.pc||'`
+if [ "$dir" == '' ]
 then
-	echo 'Cannot find ipopt.pc in the PKG_CONFIG_PATH directorys'
-	cmd=`grep 'ipopt_prefix='  bin/install_ipopt.sh`
-	eval $cmd
-	dir=`find $ipopt_prefix -name 'ipopt.pc' | head -1 | sed -e 's|/ipopt.pc||'`
-	if [ "$dir" != '' ]
-	then
-		echo "Execute the following comamnd:"
-		if [ "$PKG_CONFIG_PATH" == '' ]
-		then
-			echo "export PKG_CONFIG_PATH=\"$dir\""
-		else
-			echo "export PKG_CONFIG_PATH=\"\$PKG_CONFIG_PATH:$dir\""
-		fi
-	else
-		echo 'Perhaps bin/install_ipopt.sh failed ?'
-	fi
+	echo "Cannot find ipopt.pc in $ipopt_prefix directory"
 	exit 1
+else
+	export PKG_CONFIG_PATH="$dir"
 fi
 # ----------------------------------------------------------------------------
 p='example_install'

@@ -49,11 +49,14 @@ eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
 ipopt_prefix="$HOME/prefix/cppad_mixed"
 suitesparse_prefix="$HOME/prefix/cppad_mixed"
 # &&
+# Note that the Eigen package is installed in a special prefix
+# so that we can suppress warnings coming from its include files
+# (without suppressing warnings from other include files).
 #
-# &head extra_cxx_flags&&
-# Extra C++ flags used during compilation:
+# &head cppad_cxx_flags&&
+# Extra C++ flags used to configure CppAD:
 # &codep
-extra_cxx_flags='-std=c++11 -Wall'
+cppad_cxx_flags='-std=c++11 -Wall'
 # &&
 #
 # &head cmake_libdir&&
@@ -197,7 +200,7 @@ cmake \
 	-D eigen_prefix="$eigen_prefix" \
 	-D suitesparse_prefix="$suitesparse_prefix" \
 	\
-	-D extra_cxx_flags="$extra_cxx_flags" \
+	-D cppad_cxx_flags="$extra_cxx_flags" \
 	-D cmake_libdir="$cmake_libdir" \
 	-D ldlt_cholmod="$ldlt_cholmod" \
 	-D log_fatal_error="$log_fatal_error" \

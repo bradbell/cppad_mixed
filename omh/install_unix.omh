@@ -80,6 +80,14 @@ The packages listed below are required by cppad_mixed
 and may not have standard system installs
 ($code libdir.sh$$ is a file and $icode build_type$$ is a
 command line argument).
+The $codei%install_%package%$$ scripts below should be run
+in the order that they appear.
+
+$subhead run_cmake.sh$$
+The settings in $cref%bin/run_cmake.sh%run_cmake.sh%$$ are used by the
+scripts that install the special requirements. You must first change
+these settings to the appropriate values for your system before
+running these scripts.
 
 $subhead libdir.sh$$
 The script $code bin/libdir.sh$$ determines what directory,
@@ -101,11 +109,6 @@ $codei%
 	bin/install_eigen.sh %build_type%
 %$$
 can be used to install this package.
-If necessary, first adjust the setting
-of the following variables in that script.
-$code
-$srcfile%bin/install_eigen.sh%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
-$$
 
 $subhead Ipopt$$
 The $href%https://projects.coin-or.org/Ipopt%Ipopt%$$
@@ -116,11 +119,6 @@ $codei%
 	bin/install_ipopt.sh %build_type%
 %$$
 can be used to install this package.
-If necessary, first adjust the setting
-of the following variables in that script.
-$code
-$srcfile%bin/install_ipopt.sh%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
-$$
 
 $subhead SuiteSparse$$
 The $href%http://faculty.cse.tamu.edu/davis/SuiteSparse%suitesparse%$$
@@ -131,15 +129,6 @@ $codei%
 	bin/install_suitesparse.sh %build_type%
 %$$
 can be used to install this package.
-If necessary, first adjust the setting
-of the following variables in that script.
-$code
-$srcfile%bin/install_suitesparse.sh
-	%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
-$$
-Note that the proper value for
-$icode ipopt_prefix$$ and $icode metis_version$$ are printed
-at the end of the Ipopt install.
 
 $subhead CppAD$$
 The $href%http://www.coin-or.org/CppAD/%cppad%$$
@@ -150,11 +139,6 @@ $codei%
 	bin/install_cppad.sh %build_type%
 %$$
 can be used to install this package.
-If necessary, first adjust the setting
-of the following variables in that script.
-$code
-$srcfile%bin/install_cppad.sh%5%# BEGIN USER_SETTINGS%# END USER_SETTINGS%$$
-$$
 
 $head cppad_mixed$$
 The steps above should only need to be executed once, not for

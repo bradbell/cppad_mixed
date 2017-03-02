@@ -9,14 +9,6 @@
 #	     GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
-# BEGIN USER_SETTINGS
-#
-# Prefix below which ipopt will be installed.
-# If this directory ends with /cppad_mixed, separate directories are used
-# for the debug and release versions.
-ipopt_prefix="$HOME/prefix/cppad_mixed"
-# END USER_SETTINGS
-# ---------------------------------------------------------------------------
 if [ $0 != 'bin/install_ipopt.sh' ]
 then
 	echo 'bin/install_ipopt.sh: must be executed from its parent directory'
@@ -45,6 +37,10 @@ version="Ipopt-3.12.6"
 third_party="Mumps Metis"
 web_page="http://www.coin-or.org/download/source/Ipopt"
 libdir=`bin/libdir.sh`
+# --------------------------------------------------------------------------
+# ipopt_prefix
+cmd=`grep '^ipopt_prefix=' bin/run_cmake.sh`
+eval $cmd
 # --------------------------------------------------------------------------
 # set links for this build_type
 if echo "$ipopt_prefix" | grep '/cppad_mixed$' > /dev/null
@@ -107,15 +103,6 @@ EOF
 echo_eval cat config.sh
 echo_eval sh config.sh
 echo_eval make install
-# ----------------------------------------------------------------------------
-# print ipopt_prefix and metis_version
-get_metis='../ThirdParty/Metis/get.Metis'
-web_page='http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/OLD'
-wget_cmd=`grep "$web_page" $get_metis`
-metis_version=`echo $wget_cmd | sed -e 's|.*/||' -e 's|\.tar\.gz||'`
-#
-echo "ipopt_prefix=$ipopt_prefix"
-echo "metis_version=$metis_version"
 # -----------------------------------------------------------------------------
 echo 'bin/install_ipopt.sh: OK'
 exit 0

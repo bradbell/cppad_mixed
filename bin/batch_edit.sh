@@ -21,12 +21,7 @@ no_change_files='
 rename_cmd='s|whats_new.omh|whats_new_16.omh|'
 #
 cat << EOF > junk.sed
-s|CppAD::sparse_pack|CppAD::local::sparse_pack|g
-s|\\tsparse_pack|\\tCppAD::local::sparse_pack|g
-#
-s|CppAD::sparse_list|CppAD::local::sparse_list|g
-s|\\tsparse_list|\\tCppAD::local::sparse_list|g
-#
+s|extra_cxx_flags|cppad_cxx_flags|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

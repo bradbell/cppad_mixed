@@ -14,11 +14,6 @@ then
 	echo 'bin/install_omhelp.sh: must be executed from its parent directory'
 	exit 1
 fi
-if ! which apt-get
-then
-	echo 'bin/install_omhelp.sh: is not yet supported for this system'
-	exit 1
-fi
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
@@ -33,18 +28,22 @@ omhelp_c_flags='-Wall'
 # END USER_SETTINGS
 # ----------------------------------------------------------------------------
 omhelp_web_page='https://github.com/bradbell/omhelp/archive/'
-omhelp_version='20160419'
+omhelp_version='20170118'
 highlight_web_page='ftp://ftp.gnu.org/gnu/src-highlite/'
 highlight_version='3.1.8'
 # -----------------------------------------------------------------------------
 # system external installs
-list='
-	libboost-regex-dev
-'
-for package in $list
-do
-	echo_eval sudo apt-get install -y $package
-done
+if which apt-get > /dev/null
+then
+	echo_eval sudo apt-get install -y libboost-regex-dev
+elif which dnf > /dev/null
+then
+	echo_eval sudo dnf install -y boost-devel
+else
+	echo 'bin/install_omhelp.sh not yet supported on this system because'
+	echo 'cannot find apt-get or dnf'
+	exit 1
+fi
 # -----------------------------------------------------------------------------
 if [ ! -e build/external ]
 then
@@ -71,6 +70,7 @@ echo_eval cd build
 #
 echo_eval ../configure --prefix=$omhelp_prefix --with-doxygen
 echo_eval make install
+echo_eval cd ../..
 # ---------------------------------------------------------------------------
 # omhelp install
 dir="omhelp-$omhelp_version"

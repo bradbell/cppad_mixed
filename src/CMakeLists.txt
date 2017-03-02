@@ -59,7 +59,7 @@ ADD_LIBRARY(cppad_mixed
 	update_factor.cpp
 )
 SET_TARGET_PROPERTIES(cppad_mixed
-	PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
+	PROPERTIES COMPILE_FLAGS "${cppad_cxx_flags}"
 )
 INSTALL(
 	TARGETS cppad_mixed

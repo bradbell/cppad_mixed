@@ -79,7 +79,7 @@ FOREACH( program_name capture_xam ar1_xam )
 		${program_name} EXCLUDE_FROM_ALL "${program_name}.cpp"
 	)
 	SET_TARGET_PROPERTIES(
-		${progam_name} PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
+		${progam_name} PROPERTIES COMPILE_FLAGS "${cppad_cxx_flags}"
 	)
 	TARGET_LINK_LIBRARIES(
 		${program_name}

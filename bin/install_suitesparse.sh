@@ -9,17 +9,6 @@
 #	     GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # --------------------------------------------------------------------------
-# BEGIN USER_SETTINGS
-# Prefix below which suitesparse will be installed.
-# If this directory ends with /cppad_mixed, separate directories are used
-# for the debug and release versions.
-suitesparse_prefix="$HOME/prefix/cppad_mixed"
-#
-# Must be same as values printed at end of bin/install_ipopt.sh output.
-ipopt_prefix="$HOME/prefix/cppad_mixed"
-metis_version='metis-4.0.3'
-# END USER_SETTINGS
-# --------------------------------------------------------------------------
 program='bin/install_suitesparse.sh'
 if [ $0 != "$program" ]
 then
@@ -44,6 +33,32 @@ tarball='SuiteSparse-4.4.3.tar.gz'
 web_page='http://faculty.cse.tamu.edu/davis/SuiteSparse'
 libdir=`bin/libdir.sh`
 # --------------------------------------------------------------------------
+# suitesparse_prefix
+cmd=`grep '^suitesparse_prefix=' bin/run_cmake.sh`
+eval $cmd
+#
+# ipopt_prefix
+cmd=`grep '^ipopt_prefix=' bin/run_cmake.sh`
+eval $cmd
+#
+# ipopt_version
+cmd=`grep '^version=' bin/install_ipopt.sh | sed -e 's|version|ipopt_version|'`
+eval $cmd
+#
+# metis_web_page
+metis_web_page='http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/OLD'
+#
+# metis_version
+get_metis="build/external/$ipopt_version/ThirdParty/Metis/get.Metis"
+if [ ! -e "$get_metis" ]
+then
+	echo "$get_metis does not exists"
+	echo "must execute bin/install_ipopt.sh before bin/install_suitesparse.sh"
+	exit 1
+fi
+metis_version=`grep "$metis_web_page" $get_metis | \
+	sed -e 's|.*/||' -e 's|\.tar\.gz||'`
+# --------------------------------------------------------------------------
 if echo "$suitesparse_prefix" | grep '/cppad_mixed$' > /dev/null
 then
 	bin/build_type.sh install_suitesparse $suitesparse_prefix $build_type
@@ -66,7 +81,6 @@ fi
 echo_eval tar -xzf $tarball
 cd SuiteSparse
 # -----------------------------------------------------------------------------
-metis_web_page='http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/OLD'
 if [ ! -e "$metis_version.tar.gz" ]
 then
 	echo_eval wget "$metis_web_page/$metis_version.tar.gz"
