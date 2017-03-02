@@ -35,9 +35,11 @@ web_page='https://bitbucket.org/eigen/eigen/get'
 cmd=`grep '^eigen_prefix=' bin/run_cmake.sh`
 eval $cmd
 # --------------------------------------------------------------------------
-if echo "$eigen_prefix" | grep '/cppad_mixed$' > /dev/null
+cppad_mixed_dir=`echo $eigen_prefix | sed -e 's|/cppad_mixed/.*|/cppad_mixed|'`
+if echo "$cppad_mixed_dir" | grep '/cppad_mixed$' > /dev/null
 then
-	bin/build_type.sh install_eigen $eigen_prefix $build_type
+	echo "$cppad_mixed_dir"
+	bin/build_type.sh install_eigen $cppad_mixed_dir $build_type
 fi
 # --------------------------------------------------------------------------
 if [ ! -e build/external ]
