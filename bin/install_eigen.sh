@@ -38,7 +38,6 @@ eval $cmd
 cppad_mixed_dir=`echo $eigen_prefix | sed -e 's|/cppad_mixed/.*|/cppad_mixed|'`
 if echo "$cppad_mixed_dir" | grep '/cppad_mixed$' > /dev/null
 then
-	echo "$cppad_mixed_dir"
 	bin/build_type.sh install_eigen $cppad_mixed_dir $build_type
 fi
 # --------------------------------------------------------------------------
