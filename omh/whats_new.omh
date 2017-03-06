@@ -29,10 +29,16 @@ $childtable%
 	omh/whats_new_16.omh
 %$$
 
+
 $head 03-06$$
+$list number$$
 Advance to $code cppad-20170306$$. This fixes a bug in the sparsity pattern
 efficiency and in the optimization of
 conditional expressions in $code CppAD::ADFun<%Base%>%$$ objects.
+$lnext
+Add the $cref/existing/example_install.sh/existing/$$ argument
+to the example install script.
+$lend
 
 $head 03-02$$
 $list number$$

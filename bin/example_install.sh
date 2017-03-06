@@ -16,10 +16,17 @@
 # &section An Example Installation&&
 #
 # &head Syntax&&
-# &codei%bin/example_install.sh %build_type%&&
+# &codei%bin/example_install.sh %build_type% %existing%&&
 #
 # &head build_type&&
-# is either $code debug$$ or $code release$$.
+# is either &code debug&& or &code release&&.
+#
+# &head existing&&
+# is either &code replace&& or &code use&&.
+# If it is replace, pre-existing installs
+# will be replaced (takes more time).
+# If it is use, pre-existing installs
+# will be used (takes less time).
 #
 # &srcfile%bin/example_install.sh
 #	%0%# BEGIN BASH%# END BASH%1%&&
@@ -38,13 +45,24 @@ echo_eval() {
 	eval $*
 }
 # --------------------------------------------------------------------------
+ok='true'
 if [ "$1" != 'debug' ] && [ "$1" != 'release' ]
 then
-	echo 'bin/example_install.sh: build_type'
+	ok='false'
+fi
+if [ "$2" != 'replace' ] && [ "$2" != 'use' ]
+then
+	ok='false'
+fi
+if [ "$ok" != 'true' ]
+then
+	echo 'bin/example_install.sh: build_type existing'
 	echo 'where build_type is debug or release'
+	echo 'and existing is replace or use'
 	exit 1
 fi
 build_type="$1"
+existing="$2"
 # --------------------------------------------------------------------------
 # ipopt_prefix
 cmd=`grep '^ipopt_prefix=' bin/run_cmake.sh`
@@ -149,18 +167,19 @@ do
 		;;
 	esac
 	#
-	response='none'
+	install='true'
 	if [ -e "$file" ]
 	then
-		while [ "$response" != 'r' ] && [ "$response" != 'u' ]
-		do
-			read -p "replace / use existing $pkg install [r/u] ?" response
-		done
-	else
-		response='r'
+		if [ "$existing" == 'replace' ]
+		then
+			echo "replacing existing $pkg install"
+		else
+			install='false'
+			echo "using existing $pkg install"
+		fi
 	fi
 	p='example_install'
-	if [ "$response" == 'r' ]
+	if [ "$install" == 'true' ]
 	then
 		echo "bin/install_$pkg.sh $build_type 1>> $p.log 2>> $p.err"
 		bin/install_$pkg.sh $build_type 1>> $p.log 2>> $p.err
