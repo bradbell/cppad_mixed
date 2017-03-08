@@ -20,6 +20,7 @@ $spell
 	cmake
 	omhelp
 	CppAD
+	bool
 $$
 
 $section Changes and Additions to cppad_mixed During 2017$$
@@ -29,6 +30,12 @@ $childtable%
 	omh/whats_new_16.omh
 %$$
 
+$head 03-08$$
+Move the arguments
+$cref/bool_sparsity/derived_ctor/bool_sparsity/$$ and
+$cref/A_info/derived_ctor/A_info/$$ from $cref initialize$$
+to the base class constructor
+$cref/cppad_mixed/derived_ctor/cppad_mixed/$$.
 
 $head 03-06$$
 $list number$$

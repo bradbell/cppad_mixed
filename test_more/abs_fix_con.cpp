@@ -33,9 +33,13 @@ namespace {
 			size_t n_fixed                    ,
 			size_t n_random                   ,
 			bool   quasi_fixed                ,
+			bool   bool_sparsity              ,
+			const sparse_mat_info&  A_info    ,
 			double sigma                      ,
 			const vector<double>& z           ) :
-			cppad_mixed(n_fixed, n_random, quasi_fixed) ,
+			cppad_mixed(
+				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
+			),
 			n_fixed_(n_fixed)                           ,
 			sigma_(sigma)                               ,
 			z_(z)
@@ -108,10 +112,11 @@ bool abs_fix_con(void)
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
 	//
 	// object that is derived from cppad_mixed
-	bool quasi_fixed = false;
-	double sigma     = 1.0;
+	bool quasi_fixed   = false;
+	bool bool_sparsity = false;
+	double sigma       = 1.0;
 	mixed_derived mixed_object(
-			n_fixed, n_random, quasi_fixed, sigma, z
+			n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, sigma, z
 	);
 	mixed_object.initialize(fixed_in, random_in, A_info);
 

@@ -79,12 +79,16 @@ namespace {
 	public:
 		// constructor
 		mixed_derived(
-			size_t n_fixed                    ,
-			size_t n_random                   ,
-			bool   quasi_fixed                ,
-			const vector<double>& y           ) :
-			cppad_mixed(n_fixed, n_random, quasi_fixed) ,
-			n_fixed_(n_fixed)                                      ,
+			size_t                   n_fixed        ,
+			size_t                   n_random       ,
+			bool                     quasi_fixed    ,
+			bool                     bool_sparsity  ,
+			const  sparse_mat_info&  A_info         ,
+			const vector<double>&    y              ) :
+			cppad_mixed(
+				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
+			),
+			n_fixed_(n_fixed),
 			y_(y)
 		{}
 		// implementation of ran_likelihood
@@ -164,9 +168,12 @@ bool fix_constraint_xam(void)
 	}
 
 	// object that is derived from cppad_mixed
-	bool quasi_fixed = false;
+	bool quasi_fixed   = false;
+	bool bool_sparsity = false;
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
-	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed, data);
+	mixed_derived mixed_object(
+		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
+	);
 	mixed_object.initialize(fixed_in, random_in, A_info);
 
 	// optimize the fixed effects using full Newton method

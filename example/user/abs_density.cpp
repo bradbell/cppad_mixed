@@ -70,14 +70,18 @@ namespace {
 	public:
 		// constructor
 		mixed_derived(
-			size_t n_fixed                    ,
-			size_t n_random                   ,
-			bool   quasi_fixed                ,
-			double sigma                      ,
-			const vector<double>& z           ) :
-			cppad_mixed(n_fixed, n_random, quasi_fixed) ,
-			n_fixed_(n_fixed)                           ,
-			sigma_(sigma)                               ,
+			size_t                 n_fixed       ,
+			size_t                 n_random      ,
+			bool                   quasi_fixed   ,
+			bool                   bool_sparsity ,
+			const sparse_mat_info& A_info        ,
+			double                 sigma         ,
+			const vector<double>&  z             ) :
+			cppad_mixed(
+				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
+			),
+			n_fixed_(n_fixed)  ,
+			sigma_(sigma)      ,
 			z_(z)
 		{	assert(z.size() == n_fixed); }
 		// implementation of fix_likelihood as p(z|theta) * p(theta)
@@ -125,7 +129,6 @@ bool abs_density_xam(void)
 	vector<double> random_in(0);
 	vector<double> random_lower(n_random), random_upper(n_random);
 	std::string random_ipopt_options = "";
-	CppAD::mixed::sparse_mat_info A_info; // empty matrix
 	//
 	// no constriants
 	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
@@ -135,10 +138,12 @@ bool abs_density_xam(void)
 		z[i] = double(i+3);
 
 	// object that is derived from cppad_mixed
-	bool quasi_fixed = false;
-	double sigma     = 1.0;
+	bool quasi_fixed   = false;
+	bool bool_sparsity = true;
+	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	double sigma       = 1.0;
 	mixed_derived mixed_object(
-		n_fixed, n_random, quasi_fixed, sigma, z
+		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, sigma, z
 	);
 	mixed_object.initialize(fixed_in, random_in, A_info);
 

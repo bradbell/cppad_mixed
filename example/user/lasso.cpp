@@ -95,18 +95,22 @@ namespace {
 	public:
 		// constructor
 		mixed_derived(
-			size_t n_fixed                    ,
-			size_t n_random                   ,
-			bool   quasi_fixed                ,
-			double sigma                      ,
-			double delta                      ,
-			const vector<double>& t           ,
-			const vector<double>& z           ) :
-			cppad_mixed(n_fixed, n_random, quasi_fixed) ,
-			n_fixed_(n_fixed)                           ,
-			sigma_(sigma)                               ,
-			delta_(delta)                               ,
-			t_(t)                                       ,
+			size_t                 n_fixed        ,
+			size_t                 n_random       ,
+			bool                   quasi_fixed    ,
+			bool                   bool_sparsity  ,
+			const sparse_mat_info& A_info         ,
+			double                 sigma          ,
+			double                 delta          ,
+			const vector<double>&  t              ,
+			const vector<double>&  z              ) :
+			cppad_mixed(
+				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
+			)                   ,
+			n_fixed_(n_fixed)   ,
+			sigma_(sigma)       ,
+			delta_(delta)       ,
+			t_(t)               ,
 			z_(z)
 		{	assert(n_fixed == 3);
 			assert( t.size() == z.size() );
@@ -171,7 +175,6 @@ bool lasso_xam(void)
 	vector<double> random_in(0);
 	vector<double> random_lower(n_random), random_upper(n_random);
 	std::string random_ipopt_options = "";
-	CppAD::mixed::sparse_mat_info A_info; // empty matrix
 	//
 	// no constriants
 	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
@@ -192,10 +195,13 @@ bool lasso_xam(void)
 	}
 
 	// object that is derived from cppad_mixed
-	bool quasi_fixed = false;
+	bool quasi_fixed   = false;
+	bool bool_sparsity = false;
+	CppAD::mixed::sparse_mat_info A_info; // empty matrix
 	double delta     = 0.002;
 	mixed_derived mixed_object(
-		n_fixed, n_random, quasi_fixed, sigma, delta, t, z
+		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info,
+		sigma, delta, t, z
 	);
 	mixed_object.initialize(fixed_in, random_in, A_info);
 

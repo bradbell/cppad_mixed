@@ -86,12 +86,15 @@ namespace {
 	public:
 		// constructor
 		mixed_derived(
-			size_t n_fixed                    ,
-			size_t n_random                   ,
-			const vector<double>& y           )
-			:
-			// quasi_fixed = false
-			cppad_mixed(n_fixed, n_random, false) ,
+			size_t                               n_fixed       ,
+			size_t                               n_random      ,
+			bool                                 quasi_fixed   ,
+			bool                                 bool_sparsity ,
+			const CppAD::mixed::sparse_mat_info& A_info        ,
+			const vector<double>&                y             ) :
+			cppad_mixed(
+				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
+			),
 			y_(y)
 		{	assert( n_fixed == 2);
 		}
@@ -161,8 +164,12 @@ bool ran_con_jac_xam(void)
 		A_info.val[j] = 1.0;
 	}
 
-	// object that is derived from cppad_mixed
-	mixed_derived mixed_object(n_fixed, n_random, data);
+	// mixed_object
+	bool quasi_fixed   = false;
+	bool bool_sparsity = true;
+	mixed_derived mixed_object(
+		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
+	);
 	mixed_object.initialize(fixed_vec, random_vec, A_info);
 
 	// optimize the random effects

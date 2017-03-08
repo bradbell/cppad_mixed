@@ -188,9 +188,11 @@ $head constructor$$
 $cref derived_ctor$$, $title derived_ctor$$.
 $srccode%cpp% */
 	cppad_mixed(
-		size_t                                  n_fixed   ,
-		size_t                                  n_random  ,
-		bool                                  quasi_fixed
+		size_t                                n_fixed       ,
+		size_t                                n_random      ,
+		bool                                  quasi_fixed   ,
+		bool                                  bool_sparsity ,
+		const CppAD::mixed::sparse_mat_info&  A_info
 	);
 /* %$$
 
@@ -373,6 +375,12 @@ Are we using a quasi-Newton method (or full Newton method)
 when $cref/optimizing fixed effects/optimize_fixed/$$.
 $srccode%cpp% */
 	const bool quasi_fixed_;
+/* %$$
+$head bool_sparsity_$$
+f true, use boolean sparsity patterns where possible.
+Otherwise, use set sparsity patterns.
+$srccode%cpp% */
+	const bool bool_sparsity_;
 /* %$$
 
 $head A_info_$$

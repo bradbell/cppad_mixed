@@ -46,11 +46,15 @@ namespace {
 		//
 		// constructor
 		mixed_derived(
-			size_t n_fixed                    ,
-			size_t n_random                   ,
-			bool   quasi_fixed    )
+			size_t                 n_fixed        ,
+			size_t                 n_random       ,
+			bool                   quasi_fixed    ,
+			bool                   bool_sparsity  ,
+			const sparse_mat_info& A_info         )
 			:
-			cppad_mixed(n_fixed, n_random, quasi_fixed)
+			cppad_mixed(
+				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
+			)
 		{ }
 		// example changing fatal error handler
 		virtual void fatal_error(const std::string& error_message)
@@ -68,15 +72,18 @@ namespace {
 bool derived_ctor_xam(void)
 {
 	//
-	size_t n_fixed   = 1;
-	size_t n_random  = 0;
-	bool quasi_fixed = true;
+	size_t n_fixed     = 1;
+	size_t n_random    = 0;
+	bool quasi_fixed   = true;
+	bool bool_sparsity = true;
+	sparse_mat_info A_info; // empty matrix
 	//
-	CppAD::mixed::sparse_mat_info A_info;
 	vector<double> fixed_vec(n_fixed), random_vec(n_random);
 	fixed_vec[0] = 0.0;
 	//
-	mixed_derived mixed_object(n_fixed, n_random, quasi_fixed);
+	mixed_derived mixed_object(
+		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
+	);
 	mixed_object.initialize(fixed_vec, random_vec, A_info);
 	//
 	bool ok = false;

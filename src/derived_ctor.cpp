@@ -16,13 +16,14 @@ $spell
 	cppad
 	dismod
 	const
+	vec
 $$
 
 $section User Defined Class Derived From cppad_mixed$$
 
 $head Syntax$$
 $icode%mixed_derived% %mixed_object%(
-	%n_fixed%, %n_random%, %quasi_fixed%, %...%
+	%n_fixed%, %n_random%, %quasi_fixed%, %bool_sparsity%, %A_info%, %...%
 )%$$
 
 $head See Also$$
@@ -33,13 +34,17 @@ This is the name of the class derived in the following fashion:
 $codei%
 	class %mixed_derived% : public cppad_mixed {
 %$$
-The derived class constructor must call its base class constructor as follows:
-$codei%
-	cppad_mixed(%n_fixed%, %n_random%, %quasi_fixed%)
-%$$
 
 $head mixed_object$$
 This is the derived class object that is constructed by the syntax above.
+
+$head cppad_mixed$$
+The derived class constructor must call its base class constructor as follows:
+$codei%
+	cppad_mixed(
+		%n_fixed%, %n_random%, %quasi_fixed%, %bool_sparsity%, %A_info%
+	)
+%$$
 
 $head n_fixed$$
 This argument has prototype
@@ -87,9 +92,42 @@ $cref/mixed_derived/derived_ctor/mixed_derived/$$ object
 after the information matrix is computed
 is similar after then initialization when $icode quasi_fixed$$ is false.
 
+$head bool_sparsity$$
+This argument has prototype
+$codei%
+	bool %bool_sparsity%
+%$$
+If it is true, where possible
+boolean sparsity patterns are used for this computation,
+otherwise set sparsity patterns are used.
+This should only affect to amount of time and memory used for the
+computations.
+If this argument is not present, the type of sparsity patterns
+is not specified.
+
+$head A_info$$
+This argument has prototype
+$codei%
+	const CppAD::mixed::sparse_mat_info& %A_info%
+%$$
+It is a
+$cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
+representation of the
+$cref/random constraint matrix
+	/cppad_mixed
+	/Notation
+	/Random Constraint Matrix, A
+/$$
+$latex A$$.
+If $icode%random_vec%.size()%$$ is zero, this must be the empty matrix.
+The member variable $icode A_info_$$ is set equal to $icode A_info$$
+before any other routines are called by this routine.
+
 $head ...$$
 Other arguments to the derived class constructor
 (that are not used by the base class constructor).
+The other arguments need not appear at the end of the derived
+class constructor (as in the syntax above).
 
 $head CppAD ErrorHandler$$
 If a CppAD error occurs, its
@@ -142,13 +180,17 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 
 // base class constructor
 cppad_mixed::cppad_mixed(
-	size_t                                  n_fixed   ,
-	size_t                                  n_random  ,
-	bool                                  quasi_fixed )
+	size_t                                n_fixed       ,
+	size_t                                n_random      ,
+	bool                                  quasi_fixed   ,
+	bool                                  bool_sparsity ,
+	const CppAD::mixed::sparse_mat_info&  A_info        )
 :
 n_fixed_(n_fixed)               ,
 n_random_(n_random)             ,
 quasi_fixed_(quasi_fixed)       ,
+bool_sparsity_(bool_sparsity)   ,
+A_info_(A_info)                 ,
 init_ran_con_done_(false)       ,
 init_ran_like_done_(false)      ,
 init_ran_hes_done_(false)       ,

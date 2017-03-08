@@ -63,11 +63,15 @@ namespace {
 	public:
 		// constructor
 		mixed_derived(
-			size_t n_fixed                    ,
-			size_t n_random                   ,
-			bool   quasi_fixed                ,
-			const vector<double>& y           ) :
-			cppad_mixed(n_fixed, n_random, quasi_fixed) ,
+			size_t                 n_fixed       ,
+			size_t                 n_random      ,
+			bool                   quasi_fixed   ,
+			bool                   bool_sparsity ,
+			const sparse_mat_info& A_info        ,
+			const vector<double>& y              ) :
+			cppad_mixed(
+				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
+			)                     ,
 			n_fixed_(n_fixed)     ,
 			n_random_(n_random)   ,
 			y_(y)
@@ -131,7 +135,7 @@ namespace {
 	};
 	// ----------------------------------------------------------------------
 	double sum_random_effects(
-		size_t n_random, const CppAD::mixed::sparse_mat_info& A_info
+		size_t n_random, const sparse_mat_info& A_info
 	)
 	{
 		double inf = std::numeric_limits<double>::infinity();
@@ -153,9 +157,10 @@ namespace {
 		}
 
 		// object that is derived from cppad_mixed
-		bool quasi_fixed = false;
+		bool quasi_fixed   = false;
+		bool bool_sparsity = false;
 		mixed_derived mixed_object(
-			n_fixed, n_random, quasi_fixed, data
+			n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
 		);
 		mixed_object.initialize(fixed_in, random_in, A_info);
 

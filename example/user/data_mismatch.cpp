@@ -174,16 +174,19 @@ namespace {
 	public:
 		// constructor
 		mixed_derived(
-			size_t n_fixed      ,
-			size_t n_random     ,
-			bool   quasi_fixed  ,
-			double y            ,
-			double z            ,
-			double sigma_u      ,
-			double sigma_y      ,
-			double sigma_z      ) :
-			cppad_mixed(n_fixed, n_random, quasi_fixed) ,
-			y_(y), z_(z)                               ,
+			size_t                 n_fixed       ,
+			size_t                 n_random      ,
+			bool                   quasi_fixed   ,
+			bool                   bool_sparsity ,
+			const sparse_mat_info& A_info        ,
+			double                 y             ,
+			double                 z             ,
+			double                 sigma_u       ,
+			double                 sigma_y       ,
+			double                 sigma_z       ) :
+			cppad_mixed(
+				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
+			), y_(y), z_(z),
 			sigma_u_(sigma_u), sigma_y_(sigma_y), sigma_z_(sigma_z )
 		{	assert( n_fixed == 1 );
 			assert( n_random == 1 );
@@ -321,12 +324,14 @@ bool data_mismatch_xam(void)
 	// no constriants
 	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
 	//
-	CppAD::mixed::sparse_mat_info A_info; // empty matrix
 	//
 	// object that is derived from cppad_mixed
-	bool quasi_fixed = false;
+	bool quasi_fixed   = false;
+	bool bool_sparsity = false;
+	sparse_mat_info A_info; // empty matrix
 	mixed_derived mixed_object(
-	n_fixed, n_random, quasi_fixed, y, z, sigma_u, sigma_y, sigma_z
+		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info,
+		y, z, sigma_u, sigma_y, sigma_z
 
 	);
 	mixed_object.initialize(fixed_in, random_in, A_info);

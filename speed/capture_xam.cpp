@@ -643,16 +643,19 @@ private:
 public:
 	// constructor
 	mixed_derived(
-		size_t                  R           ,
-		size_t                  T           ,
-		size_t                  K           ,
-		bool                    quasi_fixed ,
-		vector<size_t>&         y           ,
-		vector<double>&         fixed_in    ,
-		vector<double>&         random_in   )
-		:
+		size_t                  R             ,
+		size_t                  T             ,
+		size_t                  K             ,
+		bool                    quasi_fixed   ,
+		bool                    bool_sparsity ,
+		const sparse_mat_info&  A_info        ,
+		vector<size_t>&         y             ,
+		vector<double>&         fixed_in      ,
+		vector<double>&         random_in     ) :
 		// n_fixed = 3, n_random = T
-		cppad_mixed(3, T, quasi_fixed) ,
+		cppad_mixed(
+			3, T, quasi_fixed, bool_sparsity, A_info
+		)                ,
 		R_(R)            ,
 		T_(T)            ,
 		K_(K)            ,
@@ -984,7 +987,7 @@ int main(int argc, const char *argv[])
 	//
 	// create derived object
 	mixed_derived mixed_object(
-		R, T, K, quasi_fixed, y, theta_in, u_in
+		R, T, K, quasi_fixed, bool_sparsity, A_info, y, theta_in, u_in
 	);
 	//
 	// start timing of initialize
