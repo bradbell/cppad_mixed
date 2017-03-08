@@ -140,7 +140,7 @@ bool ran_con_eval_xam(void)
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
 	);
-	mixed_object.initialize(fixed_vec, random_vec, A_info);
+	mixed_object.initialize(fixed_vec, random_vec);
 
 	// evaluate the random constraint A * u
 	CppAD::vector<double> Au(1);

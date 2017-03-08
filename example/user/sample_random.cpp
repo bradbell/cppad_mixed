@@ -133,7 +133,7 @@ bool sample_random_xam(void)
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
 	);
-	mixed_object.initialize(fixed_vec, random_in, A_info);
+	mixed_object.initialize(fixed_vec, random_in);
 
 	std::string random_ipopt_options =
 		"Integer print_level     0\n"

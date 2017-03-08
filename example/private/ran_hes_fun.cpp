@@ -119,7 +119,7 @@ bool ran_hes_fun_xam(void)
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
 	);
-	mixed_object.initialize(theta, u, A_info);
+	mixed_object.initialize(theta, u);
 
 	// number of non-zeros in Hessian w.r.t random effects
 	ok &= mixed_object.ran_hes_.row.size() == n_random;

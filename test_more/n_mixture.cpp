@@ -171,7 +171,7 @@ bool n_mixture(void)
 	vector<double> theta_in( n_fixed ), u_in(0);
 	for(size_t j = 0; j < n_fixed; j++)
 		theta_in[j] = theta_sim[j];
-	mixed_object.initialize(theta_in, u_in, A_info);
+	mixed_object.initialize(theta_in, u_in);
 
 	// lower and upper limits
 	vector<double> fix_constraint_lower, fix_constraint_upper;

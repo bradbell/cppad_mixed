@@ -205,10 +205,8 @@ $head initialize$$
 $cref initialize$$, $title initialize$$
 $srccode%cpp% */
 	std::map<std::string, size_t> initialize(
-		const d_vector&                       fixed_vec             ,
-		const d_vector&                       random_vec            ,
-		const CppAD::mixed::sparse_mat_info&  A_info                ,
-		bool                                  bool_sparsity = true
+		const d_vector&  fixed_vec   ,
+		const d_vector&  random_vec
 	);
 /* %$$
 $head optimize_random$$
@@ -718,10 +716,8 @@ $subhead try_initialize$$
 Called by public $cref/initialize/public/initialize/$$
 $srccode%cpp% */
 	std::map<std::string, size_t> try_initialize(
-		const d_vector&                      fixed_vec      ,
-		const d_vector&                      random_vec     ,
-		const CppAD::mixed::sparse_mat_info& A_info         ,
-		bool                                 bool_sparsity
+		const d_vector&  fixed_vec  ,
+		const d_vector&  random_vec
 	);
 /* %$$
 $subhead try_optimize_random$$

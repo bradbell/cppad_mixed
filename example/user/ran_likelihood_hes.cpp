@@ -153,7 +153,7 @@ bool ran_likelihood_hes_xam(void)
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
 	);
-	mixed_object.initialize(fixed_vec, random_vec, A_info);
+	mixed_object.initialize(fixed_vec, random_vec);
 
 	// record Evaluation random likelihood
 	CppAD::Independent(a2_random);

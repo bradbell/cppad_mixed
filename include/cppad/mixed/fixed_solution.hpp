@@ -99,7 +99,7 @@ $codei%
 It has size zero when constructed
 and when set its size is the number of random constraints; i.e.,
 the number of rows
-in the matrix $cref/A_info/initialize/A_info/$$.
+in the matrix $cref/A_info/derived_ctor/A_info/$$.
 If $icode%solution%.ran_con_lag[%i%]%$$
 is greater than zero (less than zero), it is
 the Lagrange multiplier for the upper (lower) bound

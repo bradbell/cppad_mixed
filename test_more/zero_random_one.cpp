@@ -184,7 +184,7 @@ bool zero_random_one(void)
 	mixed_derived mixed_object(
 		n_fixed, n_random, A_info, sigma_u, sigma_y, data
 	);
-	mixed_object.initialize(fixed_in, random_in, A_info);
+	mixed_object.initialize(fixed_in, random_in);
 
 	// optimize the fixed effects
 	std::string fixed_ipopt_options =

@@ -995,7 +995,7 @@ int main(int argc, const char *argv[])
 	size_t start_bytes    = CppAD::thread_alloc::inuse(thread);
 	double start_seconds  = CppAD::elapsed_seconds();
 	//
-	mixed_object.initialize(theta_in, u_in, A_info, bool_sparsity);
+	mixed_object.initialize(theta_in, u_in);
 	//
 	double end_seconds = CppAD::elapsed_seconds();
 	size_t end_bytes   = CppAD::thread_alloc::inuse(thread);

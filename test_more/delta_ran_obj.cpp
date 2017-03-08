@@ -103,7 +103,7 @@ bool delta_ran_obj(void)
 	mixed_derived mixed_object(
 			n_fixed, n_random, A_info, y, sigma_u, sigma_y
 	);
-	mixed_object.initialize(fixed_vec, random_vec, A_info);
+	mixed_object.initialize(fixed_vec, random_vec);
 
 	// lower and upper limits for random effects
 	vector<double> random_lower(n_random), random_upper(n_random);

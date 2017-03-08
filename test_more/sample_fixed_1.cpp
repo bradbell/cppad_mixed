@@ -161,7 +161,7 @@ bool sample_fixed_1(void)
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
 	);
-	mixed_object.initialize(fixed_in, random_in, A_info);
+	mixed_object.initialize(fixed_in, random_in);
 
 	// options for optimization
 	std::string fixed_ipopt_options =

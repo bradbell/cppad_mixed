@@ -118,7 +118,7 @@ bool ran_like_jac_xam(void)
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
 	);
-	mixed_object.initialize(theta, u, A_info);
+	mixed_object.initialize(theta, u);
 
 	// compute Jacobian with respect to random effects
 	vector<a1_double> jac =

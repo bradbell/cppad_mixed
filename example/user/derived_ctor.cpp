@@ -84,7 +84,7 @@ bool derived_ctor_xam(void)
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
 	);
-	mixed_object.initialize(fixed_vec, random_vec, A_info);
+	mixed_object.initialize(fixed_vec, random_vec);
 	//
 	bool ok = false;
 	try

@@ -110,7 +110,7 @@ bool fix_likelihood_xam(void)
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
 	);
-	mixed_object.initialize(fixed_vec, random_vec, A_info);
+	mixed_object.initialize(fixed_vec, random_vec);
 
 	// Evaluate fix_likelihood
 	vector<a1_double> a1_vec(1);

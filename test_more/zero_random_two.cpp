@@ -203,7 +203,7 @@ bool zero_random_two(void)
 	// object that is derived from cppad_mixed
 	CppAD::mixed::sparse_mat_info A_info; // empty matrix
 	mixed_derived mixed_object(n_fixed, n_random, A_info, data);
-	mixed_object.initialize(fixed_in, random_in, A_info);
+	mixed_object.initialize(fixed_in, random_in);
 
 	// optimize the fixed effects
 	std::string fixed_ipopt_options =

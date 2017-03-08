@@ -208,7 +208,7 @@ bool ran_likelihood_jac(void)
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
 	);
-	mixed_object.initialize(fixed_in, random_in, A_info);
+	mixed_object.initialize(fixed_in, random_in);
 
 	// optimize the fixed effects using quasi-Newton method
 	// If the derivatives are correct, the optimzation converges in 11

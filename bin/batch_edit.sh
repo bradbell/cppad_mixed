@@ -21,7 +21,10 @@ no_change_files='
 rename_cmd='s|whats_new.omh|whats_new_16.omh|'
 #
 cat << EOF > junk.sed
-s|extra_cxx_flags|cppad_cxx_flags|
+s|initialize(\\([a-z_]*\\), \\([a-z_]*\\), A_info)|initialize(\\1, \\2)|
+s|initialize(\\([a-z_]*\\), \\([a-z_]*\\), A_info, bool_sparsity)|initialize(\\1, \\2)|
+s|/initialize/A_info/|/derived_ctor/A_info/|
+s|/initialize/bool_sparsity/|/derived_ctor/bool_sparsity/|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

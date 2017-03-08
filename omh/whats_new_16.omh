@@ -80,7 +80,7 @@ This has been fixed
 
 $head 10-30$$
 $list number$$
-The $cref/A_info/initialize/A_info/$$ argument was missing
+The $cref/A_info/derived_ctor/A_info/$$ argument was missing
 from the $code initialize$$ Syntax. This has been fixed.
 $lnext
 The value of
@@ -148,8 +148,10 @@ $cref/random constraint matrix
     /Random Constraint Matrix, A
 /$$
 $icode A_info$$, is now specified in
-$cref/initialize/initialize/A_info/$$ instead
+$cref/initialize/derived_ctor/A_info/$$ instead
 $cref derived_ctor$$.
+This was undone on
+$cref/2017-03-08/whats_new/03-08/$$.
 
 $head 10-14$$
 $list number$$
@@ -273,7 +275,7 @@ $cref/ar1_xam.cpp/ar1_xam.cpp/Input Arguments/hold_memory/$$.
 
 $head 07-18$$
 Add the $icode bool_sparsity$$ parameter to the following:
-$cref/initialize/initialize/bool_sparsity/$$,
+$cref/initialize/derived_ctor/bool_sparsity/$$,
 $cref/information_mat/information_mat/bool_sparsity/$$,
 $cref/capture_xam.cpp/capture_xam.cpp/Input Arguments/bool_sparsity/$$,
 $cref/ar1_xam.cpp/ar1_xam.cpp/Input Arguments/bool_sparsity/$$.
@@ -760,9 +762,12 @@ $head 02-06$$
 $list number$$
 Change the random constraint matrix $icode A_info$$
 to be an argument to the
-$cref/derived class constructor/initialize/A_info/$$
+$cref/derived class constructor/derived_ctor/A_info/$$
 instead of an argument to the
 $cref initialize$$ routine.
+This was undone on
+$cref/2016-10-15/whats_new_16/10-15/$$ and redone on
+$cref/2017-03-08/whats_new/03-08/$$.
 $lnext
 Simplify the random constraint matrix source code.
 $lnext

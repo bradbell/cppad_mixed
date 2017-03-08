@@ -334,7 +334,7 @@ bool data_mismatch_xam(void)
 		y, z, sigma_u, sigma_y, sigma_z
 
 	);
-	mixed_object.initialize(fixed_in, random_in, A_info);
+	mixed_object.initialize(fixed_in, random_in);
 	//
 	// compute the derivative of the objective at the starting point
 	double theta_in   = fixed_in[0];

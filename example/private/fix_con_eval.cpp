@@ -148,7 +148,7 @@ bool fix_con_eval_xam(void)
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
 	);
-	mixed_object.initialize(fixed_vec, random_vec, A_info);
+	mixed_object.initialize(fixed_vec, random_vec);
 
 	// compute the constraint function and check result
 	CppAD::vector<double> c = mixed_object.fix_con_eval(fixed_vec);

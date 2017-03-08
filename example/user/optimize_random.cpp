@@ -102,7 +102,7 @@ bool optimize_random_xam(void)
 	mixed_derived mixed_object(
 		n_data, n_data, quasi_fixed, bool_sparsity, A_info, data
 	);
-	mixed_object.initialize(fixed_vec, random_in, A_info);
+	mixed_object.initialize(fixed_vec, random_in);
 
 	// lower and upper limits for random effects
 	double inf = std::numeric_limits<double>::infinity();

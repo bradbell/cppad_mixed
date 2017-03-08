@@ -221,7 +221,7 @@ bool ran_likelihood_hes(void)
 		mixed_derived mixed_object(
 			n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
 		);
-		mixed_object.initialize(fixed_in, random_in, A_info);
+		mixed_object.initialize(fixed_in, random_in);
 		CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 			fixed_ipopt_options,
 			random_ipopt_options,

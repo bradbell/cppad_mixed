@@ -136,7 +136,7 @@ bool ran_obj_jac_xam(void)
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
 	);
-	mixed_object.initialize(fixed_vec, random_vec, A_info);
+	mixed_object.initialize(fixed_vec, random_vec);
 
 	// lower and upper limits for random effects
 	double inf = std::numeric_limits<double>::infinity();
