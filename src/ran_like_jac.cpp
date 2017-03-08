@@ -79,8 +79,8 @@ It returns true, if the test passes, and false otherwise.
 $end
 */
 CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_jac(
-	const a1d_vector&        fixed_vec   ,
-	const a1d_vector&        random_vec  )
+	const a1_vector&         fixed_vec   ,
+	const a1_vector&         random_vec  )
 {	assert( init_ran_like_done_ );
 
 	// number of fixed and random effects
@@ -89,7 +89,7 @@ CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_jac(
 
 	// -----------------------------------------------------------------------
 	// check if there is a user defined version of the Jacobian
-	a1d_vector jac_ran = ran_likelihood_jac(fixed_vec, random_vec);
+	a1_vector jac_ran = ran_likelihood_jac(fixed_vec, random_vec);
 	if( jac_ran.size() != 0 )
 	{	if( jac_ran.size() != n_random_ )
 		{	std::string error_message =
@@ -102,8 +102,8 @@ CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_jac(
 	// -----------------------------------------------------------------------
 	// must compute jac_ran using ran_like_a1fun_ and AD
 
-	// create an a1d_vector containing (theta, u)
-	a1d_vector both_vec( n_fixed_ + n_random_ );
+	// create an a1_vector containing (theta, u)
+	a1_vector both_vec( n_fixed_ + n_random_ );
 	pack(fixed_vec, random_vec, both_vec);
 
 	// zero order forward mode
@@ -111,7 +111,7 @@ CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_jac(
 
 	// first order reverse f_{theta,u}^{(1) ( theta , u )
 	assert( ran_like_a1fun_.Range() == 1);
-	a1d_vector a1_w(1), jac_both(n_fixed_ + n_random_);
+	a1_vector a1_w(1), jac_both(n_fixed_ + n_random_);
 	a1_w[0] = 1.0;
 	jac_both = ran_like_a1fun_.Reverse(1, a1_w);
 
@@ -191,12 +191,12 @@ void cppad_mixed::ran_like_jac_check(
 	const d_vector&        random_vec      )
 {
 	// evaluate ran_likelihood_jac
-	a1d_vector a1_fixed(n_fixed_), a1_random(n_random_);
+	a1_vector a1_fixed(n_fixed_), a1_random(n_random_);
 	for(size_t i = 0; i < n_fixed_; i++)
 		a1_fixed[i] = fixed_vec[i];
 	for(size_t i = 0; i < n_random_; i++)
 		a1_random[i] = random_vec[i];
-	a1d_vector jac = ran_likelihood_jac(a1_fixed, a1_random);
+	a1_vector jac = ran_likelihood_jac(a1_fixed, a1_random);
 	if( jac.size() == 0 )
 		return;
 	//

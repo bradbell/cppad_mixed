@@ -188,7 +188,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // class used to evalute algorithm that is checkpointed
 class newton_step_algo {
 	typedef CppAD::AD<double>            a1_double;
-	typedef CppAD::vector<a1_double>     a1d_vector;
+	typedef CppAD::vector<a1_double>     a1_vector;
 private:
 		// number of fixed effects
 		const size_t                      n_fixed_;
@@ -212,15 +212,15 @@ public:
 	);
 	// evaluates algorithm that is checkpointed
 	void operator()(
-		const a1d_vector& a1_theta_u_v   ,
-		a1d_vector&       a1_logdet_step
+		const a1_vector& a1_theta_u_v   ,
+		a1_vector&        a1_logdet_step
 	);
 };
 
 // class used to hold the checkpoint version of the algorithm
 class newton_step {
 	typedef CppAD::AD<double>             a1_double;
-	typedef CppAD::vector<a1_double>      a1d_vector;
+	typedef CppAD::vector<a1_double>      a1_vector;
 private:
 	// Algorithm corresponding to newton step is constructed
 	// during newton_step::initialize, so use pointer
@@ -243,7 +243,7 @@ public:
 	// size of the checkpoint function
 	size_t size_var(void);
 	// use the checkpoint function
-	void eval(const a1d_vector& a1_theta_u_v, a1d_vector& a1_logdet_step);
+	void eval(const a1_vector& a1_theta_u_v, a1_vector& a1_logdet_step);
 };
 
 

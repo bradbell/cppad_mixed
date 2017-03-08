@@ -121,8 +121,8 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	// ------------------------------------------------------------------------
 	// fix_like_fun_
 	// ------------------------------------------------------------------------
-	// convert to an a1d_vector
-	a1d_vector a1_theta(n_fixed_);
+	// convert to an a1_vector
+	a1_vector a1_theta(n_fixed_);
 	for(size_t j = 0; j < n_fixed_; j++)
 		a1_theta[j] = fixed_vec[j];
 
@@ -130,7 +130,7 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	Independent(a1_theta);
 
 	// compute fix_likelihood
-	a1d_vector a1_vec = fix_likelihood(a1_theta);
+	a1_vector a1_vec = fix_likelihood(a1_theta);
 	if( a1_vec.size() == 0 )
 	{	CppAD::AD<double>::abort_recording();
 		init_fix_like_done_ = true;

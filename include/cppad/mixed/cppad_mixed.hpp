@@ -95,11 +95,11 @@ $srccode%cpp% */
 /* %$$
 
 $head Vector Types$$
-$mindex d_vector a1d_vector a2d_vector$$
+$mindex d_vector a1_vector a2_vector$$
 $srccode%cpp% */
 	typedef CppAD::vector<double>      d_vector;
-	typedef CppAD::vector<a1_double>   a1d_vector;
-	typedef CppAD::vector<a2_double>   a2d_vector;
+	typedef CppAD::vector<a1_double>   a1_vector;
+	typedef CppAD::vector<a2_double>   a2_vector;
 /* %$$
 $head User Defined Functions$$
 The following are $code cppad_mixed$$ pure virtual functions.
@@ -109,32 +109,32 @@ the user's derived class:
 $subhead ran_likelihood$$
 This function is necessary if there are random effects in the model.
 $srccode%cpp% */
-	virtual a2d_vector ran_likelihood(
-		const a2d_vector& fixed_vec  ,
-		const a2d_vector& random_vec )
-	{	return a2d_vector(0); }
+	virtual a2_vector ran_likelihood(
+		const a2_vector& fixed_vec  ,
+		const a2_vector& random_vec )
+	{	return a2_vector(0); }
 /* %$$
 See $cref ran_likelihood$$.
 
 $subhead ran_likelihood_jac$$
 This function is only used to increase speed and reduce memory use.
 $srccode%cpp% */
-	virtual a1d_vector ran_likelihood_jac(
-		const a1d_vector&          fixed_vec  ,
-		const a1d_vector&          random_vec )
-	{	return a1d_vector(0); }
+	virtual a1_vector ran_likelihood_jac(
+		const a1_vector&           fixed_vec  ,
+		const a1_vector&           random_vec )
+	{	return a1_vector(0); }
 /* %$$
 See $cref ran_likelihood_jac$$.
 
 $subhead ran_likelihood_hes$$
 This function is only used to increase speed and reduce memory use.
 $srccode%cpp% */
-	virtual a1d_vector ran_likelihood_hes(
-		const a1d_vector&            fixed_vec  ,
-		const a1d_vector&            random_vec ,
+	virtual a1_vector ran_likelihood_hes(
+		const a1_vector&             fixed_vec  ,
+		const a1_vector&             random_vec ,
 		const CppAD::vector<size_t>& row        ,
 		const CppAD::vector<size_t>& col        )
-	{	return a1d_vector(0); }
+	{	return a1_vector(0); }
 /* %$$
 See $cref ran_likelihood_hes$$.
 
@@ -142,9 +142,9 @@ $subhead fix_likelihood$$
 This function should be used if there is a prior on the fixed effects,
 or there is data that does not depend on the random effects.
 $srccode%cpp% */
-	virtual a1d_vector fix_likelihood(
-		const a1d_vector& fixed_vec )
-	{	return a1d_vector(0); }
+	virtual a1_vector fix_likelihood(
+		const a1_vector& fixed_vec )
+	{	return a1_vector(0); }
 /* %$$
 See $cref fix_likelihood$$.
 
@@ -152,9 +152,9 @@ $subhead fix_constraint$$
 This function is used to define constraints
 that only depend on the fixed effects.
 $srccode%cpp% */
-	virtual a1d_vector fix_constraint(
-		const a1d_vector& fixed_vec )
-	{	return a1d_vector(0); }
+	virtual a1_vector fix_constraint(
+		const a1_vector& fixed_vec )
+	{	return a1_vector(0); }
 /* %$$
 See $cref fix_constraint$$.
 
@@ -884,9 +884,9 @@ $srccode%cpp% */
 $subhead ran_like_jac$$
 See $cref ran_like_jac$$
 $srccode%cpp% */
-	a1d_vector ran_like_jac(
-		const a1d_vector&       fixed_vec   ,
-		const a1d_vector&       random_vec
+	a1_vector ran_like_jac(
+		const a1_vector&        fixed_vec   ,
+		const a1_vector&        random_vec
 	);
 	friend bool ::ran_like_jac_xam(void);
 /* %$$

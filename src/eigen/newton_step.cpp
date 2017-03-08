@@ -157,8 +157,8 @@ hes_info_( hes_info     )
 	// total number of variables
 	size_t n_both = n_fixed_ + n_random_;
 	//
-	//	create an a1d_vector containing (theta, u)
-	a1d_vector a1_theta_u(n_both);
+	//	create an a1_vector containing (theta, u)
+	a1_vector a1_theta_u(n_both);
 	for(size_t j = 0; j < n_fixed_; j++)
 		a1_theta_u[j] = theta[j];
 	for(size_t j = 0; j < n_random_; j++)
@@ -168,7 +168,7 @@ hes_info_( hes_info     )
 	CppAD::vectorBool not_used;
 	//
 	// compute the sparse Hessian
-	a1d_vector a1_w(1), a1_val_out( hes_info_.row.size() );
+	a1_vector a1_w(1), a1_val_out( hes_info_.row.size() );
 	a1_w[0] = 1.0;
 	a1_adfun_.SparseHessian(
 		a1_theta_u,
@@ -249,14 +249,14 @@ $end
 */
 // BEGIN PROTOTYPE
 void newton_step_algo::operator()(
-	const a1d_vector& a1_theta_u_v    ,
-	a1d_vector&       a1_logdet_step  )
+	const a1_vector& a1_theta_u_v    ,
+	a1_vector&        a1_logdet_step  )
 // END PROTOTYPE
 {	assert( a1_theta_u_v.size() == n_fixed_ + 2 * n_random_ );
 	assert( a1_logdet_step.size() == 1 + n_random_ );
 
 	// extract theta_u subvector
-	a1d_vector a1_theta_u(n_fixed_ + n_random_);
+	a1_vector a1_theta_u(n_fixed_ + n_random_);
 	for(size_t j = 0; j < n_fixed_ + n_random_; j++)
 		a1_theta_u[j] = a1_theta_u_v[j];
 
@@ -264,7 +264,7 @@ void newton_step_algo::operator()(
 	CppAD::vectorBool not_used;
 
 	// compute the sparse Hessian
-	a1d_vector a1_w(1), a1_val_out( hes_info_.row.size() );
+	a1_vector a1_w(1), a1_val_out( hes_info_.row.size() );
 	a1_w[0] = 1.0;
 	a1_adfun_.SparseHessian(
 		a1_theta_u,
@@ -491,7 +491,7 @@ void newton_step::initialize(
 	//
 	size_t n_fixed  = theta.size();
 	size_t n_random = u.size();
-	a1d_vector a1_theta_u_v(n_fixed + 2 * n_random);
+	a1_vector a1_theta_u_v(n_fixed + 2 * n_random);
 	for(size_t j = 0; j < n_fixed; j++)
 		a1_theta_u_v[j] = theta[j];
 	for(size_t j = 0; j < n_random; j++)
@@ -500,7 +500,7 @@ void newton_step::initialize(
 		a1_theta_u_v[n_fixed + n_random + j] = 1.0;
 	}
 	const char* name = "cppad_mixed newton_step";
-	a1d_vector a1_logdet_step(1 + n_random);
+	a1_vector a1_logdet_step(1 + n_random);
 	CppAD::atomic_base<double>::option_enum sparsity =
 		CppAD::atomic_base<double>::pack_sparsity_enum;
 	bool optimize = bool( CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION );
@@ -589,8 +589,8 @@ $end
 */
 // BEGIN PROTOTYPE
 void newton_step::eval(
-	const a1d_vector& a1_theta_u_v  ,
-	a1d_vector&       a1_logdet_step )
+	const a1_vector& a1_theta_u_v  ,
+	a1_vector&        a1_logdet_step )
 // END PROTOTYPE
 {	assert( algo_ != CPPAD_MIXED_NULL_PTR );
 	//

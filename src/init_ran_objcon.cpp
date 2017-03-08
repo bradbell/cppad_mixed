@@ -98,39 +98,39 @@ void cppad_mixed::init_ran_objcon(
 	double pi   = CppAD::atan(1.0) * 4.0;
 	double constant_term = CppAD::log(2.0 * pi) * double(n_random_) / 2.0;
 	//
-	a1d_vector f(1), HB(1 + n_ran_con_);
+	a1_vector f(1), HB(1 + n_ran_con_);
 	//
-	//	create an a1d_vector containing (beta, theta, u)
-	a1d_vector beta_theta_u( 2 * n_fixed_ + n_random_ );
+	//	create an a1_vector containing (beta, theta, u)
+	a1_vector beta_theta_u( 2 * n_fixed_ + n_random_ );
 	pack(fixed_vec, fixed_vec, random_vec, beta_theta_u);
 	//
 	// start recording a1_double operations
 	CppAD::Independent( beta_theta_u );
 	//
 	// split back out to beta, theta, u
-	a1d_vector beta(n_fixed_), theta(n_fixed_), u(n_random_);
+	a1_vector beta(n_fixed_), theta(n_fixed_), u(n_random_);
 	unpack(beta, theta, u, beta_theta_u);
 	// -----------------------------------------------------------------------
 	// First Newton Step
 	//------------------------------------------------------------------------
 	// evaluate gradient f_u (beta , u )
-	a1d_vector grad(n_random_);
+	a1_vector grad(n_random_);
 	grad = ran_like_jac(beta, u);
 	//
 	// Evaluate the log determinant of f_{u,u} ( theta , u)
 	// and Newton step s = f_{u,u} ( theta , u) f_u (beta, u)
-	a1d_vector theta_u_v(n_fixed_ + 2 * n_random_ );
+	a1_vector theta_u_v(n_fixed_ + 2 * n_random_ );
 	for(size_t j = 0; j < n_fixed_; j++)
 		theta_u_v[j] = theta[j];
 	for(size_t j = 0; j < n_random_; j++)
 	{	theta_u_v[n_fixed_ + j]             = u[j];
 		theta_u_v[n_fixed_ + n_random_ + j] = grad[j];
 	}
-	a1d_vector logdet_step(1 + n_random_);
+	a1_vector logdet_step(1 + n_random_);
 	newton_checkpoint_.eval(theta_u_v, logdet_step);
 	//
 	// U(beta, theta, u)
-	a1d_vector U(n_random_);
+	a1_vector U(n_random_);
 	for(size_t j = 0; j < n_random_; j++)
 		U[j] = u[j] - logdet_step[1 + j];
 	// -----------------------------------------------------------------------
@@ -141,7 +141,7 @@ void cppad_mixed::init_ran_objcon(
 	//
 	// Evaluate the log determinant and second newton step
 	// s = f_{u,u} ( theta , u) f_u (beta, U)
-	a1d_vector theta_U_v(n_fixed_ + 2 * n_random_ );
+	a1_vector theta_U_v(n_fixed_ + 2 * n_random_ );
 	for(size_t j = 0; j < n_fixed_; j++)
 		theta_U_v[j] = theta[j];
 	for(size_t j = 0; j < n_random_; j++)
@@ -151,13 +151,13 @@ void cppad_mixed::init_ran_objcon(
 	newton_checkpoint_.eval(theta_U_v, logdet_step);
 	//
 	// W(beta, theta, u)
-	a1d_vector W(n_random_);
+	a1_vector W(n_random_);
 	for(size_t j = 0; j < n_random_; j++)
 		W[j] = U[j] - logdet_step[1 + j];
 	// -----------------------------------------------------------------------
 	//
 	// Evaluate the log determinant using (beta, W)
-	a1d_vector beta_W_v(n_fixed_ + 2 * n_random_ );
+	a1_vector beta_W_v(n_fixed_ + 2 * n_random_ );
 	for(size_t j = 0; j < n_fixed_; j++)
 		beta_W_v[j] = beta[j];
 	for(size_t j = 0; j < n_random_; j++)
@@ -167,7 +167,7 @@ void cppad_mixed::init_ran_objcon(
 	newton_checkpoint_.eval(beta_W_v, logdet_step);
 	//
 	// Evaluate the random likelihood using (beta, U)
-	a1d_vector beta_U(n_fixed_ + n_random_);
+	a1_vector beta_U(n_fixed_ + n_random_);
 	pack(beta, U, beta_U);
 	f     = ran_like_a1fun_.Forward(0, beta_U);
 	//

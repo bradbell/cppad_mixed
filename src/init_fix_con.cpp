@@ -336,8 +336,8 @@ void cppad_mixed::init_fix_con(
 	// ------------------------------------------------------------------------
 	// fix_con_fun_
 	// ------------------------------------------------------------------------
-	// convert to an a1d_vector
-	a1d_vector a1_theta(n_fixed_);
+	// convert to an a1_vector
+	a1_vector a1_theta(n_fixed_);
 	for(size_t j = 0; j < n_fixed_; j++)
 		a1_theta[j] = fixed_vec[j];
 
@@ -345,7 +345,7 @@ void cppad_mixed::init_fix_con(
 	Independent(a1_theta);
 
 	// compute constraint
-	a1d_vector a1_vec = fix_constraint(a1_theta);
+	a1_vector a1_vec = fix_constraint(a1_theta);
 	if( a1_vec.size() == 0 )
 	{	CppAD::AD<double>::abort_recording();
 		init_fix_con_done_ = true;

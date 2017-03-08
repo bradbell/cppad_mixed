@@ -87,7 +87,7 @@ namespace {
 		//
 		virtual vector<a1_double> fix_likelihood(
 			const vector<a1_double>& fixed_vec  )
-		{	a1d_vector vec(1);
+		{	a1_vector vec(1);
 			vec[0] = 0.0;
 			return vec;
 		}

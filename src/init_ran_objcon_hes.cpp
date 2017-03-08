@@ -246,7 +246,7 @@ void cppad_mixed::init_ran_objcon_hes(
 	// total number of variables in H
 	size_t n_total = 2 * n_fixed_ + n_random_;
 
-	//	create an a1d_vector containing (theta, theta , u)
+	//	create an a1_vector containing (theta, theta , u)
 	d_vector beta_theta_u(n_total);
 	pack(fixed_vec, fixed_vec, random_vec, beta_theta_u);
 

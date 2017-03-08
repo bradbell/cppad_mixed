@@ -145,7 +145,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// same as cppad_mixed::d_vector
 		typedef CppAD::vector<double>              Dvector;
 
-		// same as cppad_mixed::a1d_vector
+		// same as cppad_mixed::a1_vector
 		typedef CppAD::vector< CppAD::AD<double> > ADvector;
 	private:
 		const size_t     n_fixed_;

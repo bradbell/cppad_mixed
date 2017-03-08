@@ -31,12 +31,18 @@ $childtable%
 %$$
 
 $head 03-08$$
+$list number$$
 $bold API Change:$$
 Move the arguments
 $cref/bool_sparsity/derived_ctor/bool_sparsity/$$ and
 $cref/A_info/derived_ctor/A_info/$$ from $cref initialize$$
 to the base class constructor
 $cref/cppad_mixed/derived_ctor/cppad_mixed/$$.
+$lnext
+$bold API Change:$$
+Change $code a1d_vector$$ and $code a2d_vector$$ to
+$code a1_vector$$ and $code a2_vector$$ respectively.
+$lend
 
 $head 03-06$$
 $list number$$
