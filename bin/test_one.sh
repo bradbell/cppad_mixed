@@ -79,7 +79,7 @@ do
 		cd ..
 	fi
 done
-echo_eval rm test_one.1
+rm test_one.1
 if [ "$found" == '' ]
 then
 	echo "test_one.sh: cannot find $file_name in example or test_more"

@@ -36,19 +36,21 @@ $end
 # include <Eigen/Dense>
 
 namespace {
-	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_mat_info;
 	//
+	using CppAD::mixed::sparse_mat_info;
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
-
+	using CppAD::mixed::d_vector;
+	using CppAD::mixed::a1_vector;
+	using CppAD::mixed::a2_vector;
+	//
 	class mixed_derived : public cppad_mixed {
 	private:
 		const size_t          n_fixed_;
 		const size_t          n_random_;
-		const vector<double>& y_;
+		const d_vector&       y_;
 	// ----------------------------------------------------------------------
 	public:
 		// constructor
@@ -58,7 +60,7 @@ namespace {
 			bool                   quasi_fixed   ,
 			bool                   bool_sparsity ,
 			const sparse_mat_info& A_info        ,
-			const vector<double>& y              ) :
+			const d_vector&       y              ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
 			)                     ,
@@ -71,12 +73,12 @@ namespace {
 	// ----------------------------------------------------------------------
 		// implementation of ran_likelihood
 		// Note that theta[2] is not used
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& theta  ,
-			const vector<a2_double>& u      )
+		virtual a2_vector ran_likelihood(
+			const a2_vector&         theta  ,
+			const a2_vector&         u      )
 		{	assert( theta.size() == n_fixed_ );
 			assert( u.size() == y_.size() );
-			vector<a2_double> vec(1);
+			a2_vector vec(1);
 
 			// initialize part of log-density that is always smooth
 			vec[0] = a2_double(0.0);
@@ -101,10 +103,10 @@ namespace {
 			return vec;
 		}
 		// implementation of fix_likelihood
-		virtual vector<a1_double> fix_likelihood(
-			const vector<a1_double>& fixed_vec  )
+		virtual a1_vector fix_likelihood(
+			const a1_vector&         fixed_vec  )
 		{	assert( fixed_vec.size() == n_fixed_ );
-			vector<a1_double> vec(1);
+			a1_vector vec(1);
 
 			// initialize part of log-density that is smooth
 			vec[0] = a1_double(0.0);
@@ -139,7 +141,7 @@ bool sample_fixed_xam(void)
 	size_t n_data   = 10;
 	size_t n_fixed  = 3;
 	size_t n_random = n_data;
-	vector<double>
+	d_vector
 		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
 	fixed_lower[0] = - inf; fixed_in[0] = 2.0; fixed_upper[0] = inf;
 	fixed_lower[1] = .01;   fixed_in[1] = 0.5; fixed_upper[1] = inf;
@@ -148,9 +150,9 @@ bool sample_fixed_xam(void)
 	fixed_lower[2] = 1.0;   fixed_in[2] = 1.0; fixed_upper[2] = 1.0;
 	//
 	// explicit constriants (in addition to l1 terms)
-	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
+	d_vector fix_constraint_lower(0), fix_constraint_upper(0);
 	//
-	vector<double> data(n_data), random_in(n_random);
+	d_vector data(n_data), random_in(n_random);
 	for(size_t i = 0; i < n_data; i++)
 	{	data[i]       = double(i + 1);
 		random_in[i] = 0.0;
@@ -180,7 +182,7 @@ bool sample_fixed_xam(void)
 		"String  derivative_test           second-order\n"
 		"Numeric tol                       1e-8\n"
 	;
-	vector<double> random_lower(n_random), random_upper(n_random);
+	d_vector random_lower(n_random), random_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
@@ -209,7 +211,7 @@ bool sample_fixed_xam(void)
 	ok &= solution.ran_con_lag.size() == 0.0;
 	//
 	// corresponding optimal random effects
-	vector<double> random_opt = mixed_object.optimize_random(
+	d_vector random_opt = mixed_object.optimize_random(
 		random_ipopt_options,
 		solution.fixed_opt,
 		random_lower,
@@ -223,7 +225,7 @@ bool sample_fixed_xam(void)
 	//
 	// sample from the posterior for fixed effects
 	size_t n_sample = 20000;
-	CppAD::vector<double> sample( n_sample * n_fixed );
+	d_vector sample( n_sample * n_fixed );
 	mixed_object.sample_fixed(
 		sample,
 		information_info,
