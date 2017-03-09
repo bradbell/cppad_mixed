@@ -158,14 +158,16 @@ $end
 # include <cppad/mixed/cppad_mixed.hpp>
 
 namespace {
-	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::exp;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_mat_info;
 	//
+	using CppAD::mixed::sparse_mat_info;
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
+	using CppAD::mixed::d_vector;
+	using CppAD::mixed::a1_vector;
+	using CppAD::mixed::a2_vector;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -192,12 +194,12 @@ namespace {
 			assert( n_random == 1 );
 		}
 		// implementation of fix_likelihood as p(z|theta) * p(theta)
-		virtual vector<a1_double> fix_likelihood(
-			const vector<a1_double>& fixed_vec  )
+		virtual a1_vector fix_likelihood(
+			const a1_vector&         fixed_vec  )
 		{	a1_double theta = fixed_vec[0];
 
 			// initialize log-density
-			vector<a1_double> vec(1);
+			a1_vector vec(1);
 			vec[0] = a1_double(0.0);
 
 			// compute this factor once
@@ -215,14 +217,14 @@ namespace {
 		}
 		// ------------------------------------------------------------------
 		// implementation of ran_likelihood as p(y|theta, u) * p(u|theta)
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& fixed_vec  ,
-			const vector<a2_double>& random_vec )
+		virtual a2_vector ran_likelihood(
+			const a2_vector&         fixed_vec  ,
+			const a2_vector&         random_vec )
 		{	a2_double theta = fixed_vec[0];
 			a2_double u     = random_vec[0];
 
 			// initialize log-density
-			vector<a2_double> vec(1);
+			a2_vector vec(1);
 			vec[0] = a2_double(0.0);
 
 			// compute this factors once
@@ -314,15 +316,15 @@ bool data_mismatch_xam(void)
 	double sigma_u  = 0.1;
 	double sigma_y  = 0.1 * y;
 	double sigma_z  = 0.1 * z;
-	vector<double> fixed_in(n_fixed), random_in(n_random);
-	vector<double> fixed_lower(n_fixed), fixed_upper(n_fixed);
+	d_vector fixed_in(n_fixed), random_in(n_random);
+	d_vector fixed_lower(n_fixed), fixed_upper(n_fixed);
 	fixed_lower[0] = -inf;
 	fixed_in[0]    = z;
 	fixed_upper[0] = + inf;
 	random_in[0]   = 0.0;
 	//
 	// no constriants
-	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
+	d_vector fix_constraint_lower(0), fix_constraint_upper(0);
 	//
 	//
 	// object that is derived from cppad_mixed
@@ -357,7 +359,7 @@ bool data_mismatch_xam(void)
 		"Numeric tol                       1e-8\n"
 	;
 	//
-	vector<double> random_lower(n_random), random_upper(n_random);
+	d_vector random_lower(n_random), random_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
@@ -374,9 +376,9 @@ bool data_mismatch_xam(void)
 		random_upper,
 		random_in
 	);
-	vector<double> fixed_out = solution.fixed_opt;
+	d_vector fixed_out = solution.fixed_opt;
 	//
-	vector<double> random_out = mixed_object.optimize_random(
+	d_vector random_out = mixed_object.optimize_random(
 		random_ipopt_options, fixed_out, random_lower, random_upper, random_in
 	);
 	//
