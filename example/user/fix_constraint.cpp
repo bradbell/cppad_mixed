@@ -64,18 +64,20 @@ $end
 # include <cppad/mixed/cppad_mixed.hpp>
 
 namespace {
-	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_mat_info;
 	//
+	using CppAD::mixed::sparse_mat_info;
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
-
+	using CppAD::mixed::d_vector;
+	using CppAD::mixed::a1_vector;
+	using CppAD::mixed::a2_vector;
+	//
 	class mixed_derived : public cppad_mixed {
 	private:
 		size_t                n_fixed_;
-		const vector<double>& y_;
+		const d_vector&       y_;
 	public:
 		// constructor
 		mixed_derived(
@@ -84,7 +86,7 @@ namespace {
 			bool                     quasi_fixed    ,
 			bool                     bool_sparsity  ,
 			const  sparse_mat_info&  A_info         ,
-			const vector<double>&    y              ) :
+			const d_vector&          y              ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
 			),
@@ -92,12 +94,12 @@ namespace {
 			y_(y)
 		{}
 		// implementation of ran_likelihood
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& theta  ,
-			const vector<a2_double>& u      )
+		virtual a2_vector ran_likelihood(
+			const a2_vector&         theta  ,
+			const a2_vector&         u      )
 		{	assert( u.size() == y_.size() );
 			assert( theta.size() == y_.size() );
-			vector<a2_double> vec(1);
+			a2_vector vec(1);
 
 			// initialize part of log-density that is always smooth
 			vec[0] = a2_double(0.0);
@@ -125,9 +127,9 @@ namespace {
 		// ------------------------------------------------------------------
 		// ran_likelihood
 		// fix_constraint
-		virtual vector<a1_double> fix_constraint(
-			const vector<a1_double>& fixed_vec  )
-		{	vector<a1_double> ret_val(1);
+		virtual a1_vector fix_constraint(
+			const a1_vector&         fixed_vec  )
+		{	a1_vector ret_val(1);
 			//
 			ret_val[0] = 0.0;
 			for(size_t i = 0; i < fixed_vec.size(); i++)
@@ -148,7 +150,7 @@ bool fix_constraint_xam(void)
 	size_t n_data   = 3;
 	size_t n_fixed  = n_data;
 	size_t n_random = n_data;
-	vector<double>
+	d_vector
 		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
 	for(size_t i = 0; i < n_fixed; i++)
 	{	fixed_lower[i] = - inf;
@@ -157,11 +159,11 @@ bool fix_constraint_xam(void)
 	}
 	//
 	// explicit constriants (in addition to l1 terms)
-	vector<double> fix_constraint_lower(1), fix_constraint_upper(1);
+	d_vector fix_constraint_lower(1), fix_constraint_upper(1);
 	fix_constraint_lower[0] = 1.0;
 	fix_constraint_upper[0] = 1.0;
 	//
-	vector<double> data(n_data), random_in(n_random);
+	d_vector data(n_data), random_in(n_random);
 	for(size_t i = 0; i < n_data; i++)
 	{	data[i]       = double(i + 1);
 		random_in[i] = 0.0;
@@ -192,7 +194,7 @@ bool fix_constraint_xam(void)
 		"String  derivative_test second-order\n"
 	;
 	// lower and upper limits for random effects
-	vector<double> random_lower(n_random), random_upper(n_random);
+	d_vector random_lower(n_random), random_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
@@ -209,7 +211,7 @@ bool fix_constraint_xam(void)
 		random_upper,
 		random_in
 	);
-	vector<double> fixed_out = solution.fixed_opt;
+	d_vector fixed_out = solution.fixed_opt;
 	//
 	// check constraint
 	double sum = 0.0;
