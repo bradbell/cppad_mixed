@@ -77,21 +77,21 @@ $end
 # include <gsl/gsl_randist.h>
 
 namespace {
-	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_mat_info;
 	//
+	using CppAD::mixed::sparse_mat_info;
 	using CppAD::mixed::a1_double;
-	using CppAD::mixed::a2_double;
-
+	using CppAD::mixed::d_vector;
+	using CppAD::mixed::a1_vector;
+	//
 	class mixed_derived : public cppad_mixed {
 	private:
 		size_t                n_fixed_;
 		double                sigma_;
 		double                delta_;
-		const vector<double>& t_;
-		const vector<double>& z_;
+		const d_vector&       t_;
+		const d_vector&       z_;
 	public:
 		// constructor
 		mixed_derived(
@@ -102,8 +102,8 @@ namespace {
 			const sparse_mat_info& A_info         ,
 			double                 sigma          ,
 			double                 delta          ,
-			const vector<double>&  t              ,
-			const vector<double>&  z              ) :
+			const d_vector&        t              ,
+			const d_vector&        z              ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
 			)                   ,
@@ -116,12 +116,12 @@ namespace {
 			assert( t.size() == z.size() );
 		}
 		// implementation of fix_likelihood as p(z|theta) * p(theta)
-		virtual vector<a1_double> fix_likelihood(
-			const vector<a1_double>& fixed_vec  )
+		virtual a1_vector fix_likelihood(
+			const a1_vector&         fixed_vec  )
 		{	size_t N = t_.size();
 
 			// initialize log-density
-			vector<a1_double> vec(1 + n_fixed_);
+			a1_vector vec(1 + n_fixed_);
 			vec[0] = a1_double(0.0);
 
 			// compute this factors once
@@ -162,7 +162,7 @@ bool lasso_xam(void)
 
 	// fixed effects
 	size_t n_fixed  = 3;
-	vector<double>
+	d_vector
 		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
 	for(size_t j = 0; j < n_fixed; j++)
 	{	fixed_lower[j] = - inf;
@@ -172,17 +172,17 @@ bool lasso_xam(void)
 	//
 	// no random effects
 	size_t n_random = 0;
-	vector<double> random_in(0);
-	vector<double> random_lower(n_random), random_upper(n_random);
+	d_vector random_in(0);
+	d_vector random_lower(n_random), random_upper(n_random);
 	std::string random_ipopt_options = "";
 	//
 	// no constriants
-	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
+	d_vector fix_constraint_lower(0), fix_constraint_upper(0);
 	//
 	size_t n_data = 100;
 	double sigma  = 0.1;
 	double pi     = 4.0 * std::atan(1.0);
-	vector<double> z(n_data), t(n_data);
+	d_vector z(n_data), t(n_data);
 	for(size_t i = 0; i < n_data; i++)
 	{	t[i] = double(i) / double(n_data - 1) - 0.5;
 		//
@@ -226,7 +226,7 @@ bool lasso_xam(void)
 		random_upper,
 		random_in
 	);
-	vector<double> fixed_out = solution.fixed_opt;
+	d_vector fixed_out = solution.fixed_opt;
 	//
 	// coefficients that should be zero
 	ok &= fabs( fixed_out[0] ) <= 5e-8;
