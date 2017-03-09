@@ -34,14 +34,15 @@ namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_mat_info;
 	//
-	using CppAD::mixed::a1_double;
+	using CppAD::mixed::sparse_mat_info;
 	using CppAD::mixed::a2_double;
-
+	using CppAD::mixed::d_vector;
+	using CppAD::mixed::a2_vector;
+	//
 	class mixed_derived : public cppad_mixed {
 	private:
-		const vector<double>& y_;
+		const d_vector&       y_;
 	public:
 		// constructor
 		mixed_derived(
@@ -50,17 +51,17 @@ namespace {
 			bool                   quasi_fixed   ,
 			bool                   bool_sparsity ,
 			const sparse_mat_info& A_info        ,
-			const vector<double>& y              ) :
+			const d_vector&       y              ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
 			),
 			y_(y)
 		{ }
 		// implementation of ran_likelihood
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& theta  ,
-			const vector<a2_double>& u      )
-		{	vector<a2_double> vec(1);
+		virtual a2_vector ran_likelihood(
+			const a2_vector&         theta  ,
+			const a2_vector&         u      )
+		{	a2_vector vec(1);
 
 			// initialize part of log-density that is always smooth
 			vec[0] = a2_double(0.0);
@@ -87,7 +88,7 @@ bool optimize_random_xam(void)
 	bool   ok = true;
 
 	size_t n_data = 10;
-	vector<double> data(n_data), fixed_vec(n_data), random_in(n_data);
+	d_vector data(n_data), fixed_vec(n_data), random_in(n_data);
 
 	for(size_t i = 0; i < n_data; i++)
 	{	data[i]      = double(i + 1);
@@ -106,7 +107,7 @@ bool optimize_random_xam(void)
 
 	// lower and upper limits for random effects
 	double inf = std::numeric_limits<double>::infinity();
-	vector<double> random_lower(n_data), random_upper(n_data);
+	d_vector random_lower(n_data), random_upper(n_data);
 	for(size_t i = 0; i < n_data; i++)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
@@ -118,7 +119,7 @@ bool optimize_random_xam(void)
 	ipopt_options += "Integer print_level 0\n";
 	ipopt_options += "String  sb          yes\n";
 	ipopt_options += "String  derivative_test second-order\n";
-	vector<double> random_out = mixed_object.optimize_random(
+	d_vector random_out = mixed_object.optimize_random(
 		ipopt_options, fixed_vec, random_lower, random_upper, random_in
 	);
 
