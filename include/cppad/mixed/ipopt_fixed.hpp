@@ -71,10 +71,6 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 	class ipopt_fixed : public Ipopt::TNLP
 	{
 	private:
-		// cppad_mixed types used by this class
-		typedef cppad_mixed::d_vector     d_vector;
-		typedef CppAD::vector<size_t>     s_vector;
-		//
 		// Ipopt types used by this class
 		typedef Ipopt::Number               Number;
 		typedef Ipopt::Index                Index;

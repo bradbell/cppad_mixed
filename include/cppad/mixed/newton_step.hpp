@@ -181,14 +181,13 @@ $end
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/sparse_hes_info.hpp>
 # include <cppad/mixed/sparse_ad_cholesky.hpp>
+# include <cppad/mixed/typedef.hpp>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 
 // class used to evalute algorithm that is checkpointed
 class newton_step_algo {
-	typedef CppAD::AD<double>            a1_double;
-	typedef CppAD::vector<a1_double>     a1_vector;
 private:
 		// number of fixed effects
 		const size_t                      n_fixed_;
@@ -219,8 +218,6 @@ public:
 
 // class used to hold the checkpoint version of the algorithm
 class newton_step {
-	typedef CppAD::AD<double>             a1_double;
-	typedef CppAD::vector<a1_double>      a1_vector;
 private:
 	// Algorithm corresponding to newton step is constructed
 	// during newton_step::initialize, so use pointer
