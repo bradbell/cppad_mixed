@@ -36,7 +36,6 @@ namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_mat_info;
 	//
 	using CppAD::mixed::sparse_mat_info;
 	using CppAD::mixed::a1_double;
@@ -140,7 +139,7 @@ bool ran_likelihood_jac_xam(void)
 	// object that is derived from cppad_mixed
 	bool quasi_fixed   = true;
 	bool bool_sparsity = true;
-	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	sparse_mat_info A_info; // empty matrix
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
 	);

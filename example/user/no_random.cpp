@@ -143,7 +143,7 @@ bool no_random_xam(void)
 	// (test full netwon method to make sure it works with no random effects).
 	bool quasi_fixed   = false;
 	bool bool_sparsity = false;
-	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	sparse_mat_info A_info; // empty matrix
 	mixed_derived mixed_object(
 			n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, z
 	);

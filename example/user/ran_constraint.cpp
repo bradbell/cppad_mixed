@@ -224,7 +224,7 @@ bool ran_constraint_xam(void)
 	size_t n_random = 10;
 
 	// empty matrix (no constraints)
-	CppAD::mixed::sparse_mat_info A_info;
+	sparse_mat_info A_info;
 	double sum = sum_random_effects(n_random, A_info);
 	ok        &= fabs(sum) > 0.5;
 

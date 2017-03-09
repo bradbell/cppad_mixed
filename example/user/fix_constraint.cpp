@@ -172,7 +172,7 @@ bool fix_constraint_xam(void)
 	// object that is derived from cppad_mixed
 	bool quasi_fixed   = false;
 	bool bool_sparsity = false;
-	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	sparse_mat_info A_info; // empty matrix
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
 	);

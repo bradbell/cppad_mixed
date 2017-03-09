@@ -229,7 +229,7 @@ bool information_mat_xam(void)
 	// object that is derived from cppad_mixed
 	bool quasi_fixed   = false;
 	bool bool_sparsity = false;
-	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	sparse_mat_info A_info; // empty matrix
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
 	);
@@ -276,7 +276,7 @@ bool information_mat_xam(void)
 		random_in
 	);
 	// compute corresponding information matrix
-	CppAD::mixed::sparse_mat_info
+	sparse_mat_info
 	information_info = mixed_object.information_mat(solution, random_opt);
 	//
 	// there are three non-zero entries in the lower triangle
