@@ -32,17 +32,19 @@ $end
 
 
 namespace {
-	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_mat_info;
 	//
+	using CppAD::mixed::sparse_mat_info;
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
-
+	using CppAD::mixed::d_vector;
+	using CppAD::mixed::a1_vector;
+	using CppAD::mixed::a2_vector;
+	//
 	class mixed_derived : public cppad_mixed {
 	private:
-		const vector<double>& y_;
+		const d_vector&       y_;
 	public:
 		// constructor
 		mixed_derived(
@@ -51,17 +53,17 @@ namespace {
 			bool                   quasi_fixed   ,
 			bool                   bool_sparsity ,
 			const sparse_mat_info& A_info        ,
-			const vector<double>& y              ) :
+			const d_vector&       y              ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
 			),
 			y_(y)
 		{ }
 		// implementation of ran_likelihood
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& theta  ,
-			const vector<a2_double>& u      )
-		{	vector<a2_double> vec(1);
+		virtual a2_vector ran_likelihood(
+			const a2_vector&         theta  ,
+			const a2_vector&         u      )
+		{	a2_vector vec(1);
 
 			// compute this factor once
 			a2_double sqrt_2pi = a2_double(
@@ -90,17 +92,14 @@ bool ran_likelihood_xam(void)
 	bool   ok  = true;
 	double pi  = 4.0 * std::atan(1.0);
 	double eps = 100. * std::numeric_limits<double>::epsilon();
-
-	typedef cppad_mixed::a1_double a1_double;
-	typedef cppad_mixed::a2_double a2_double;
-
+	//
 	size_t n_data   = 10;
 	size_t n_fixed  = n_data;
 	size_t n_random = n_data;
-	vector<double>    data(n_data);
-	vector<double>    fixed_vec(n_fixed), random_vec(n_random);
-	vector<a1_double> a1_fixed(n_fixed), a1_random(n_random);
-	vector<a2_double> a2_fixed(n_fixed), a2_random(n_random);
+	d_vector  data(n_data);
+	d_vector  fixed_vec(n_fixed), random_vec(n_random);
+	a1_vector a1_fixed(n_fixed), a1_random(n_random);
+	a2_vector a2_fixed(n_fixed), a2_random(n_random);
 
 	for(size_t i = 0; i < n_data; i++)
 	{	data[i]       = double(i + 1);
@@ -124,7 +123,7 @@ bool ran_likelihood_xam(void)
 	mixed_object.initialize(fixed_vec, random_vec);
 
 	// Evaluate random likelihood
-	vector<a2_double> a2_vec(1);
+	a2_vector a2_vec(1);
 	a2_vec = mixed_object.ran_likelihood(a2_fixed, a2_random);
 
 	// check the random likelihood
