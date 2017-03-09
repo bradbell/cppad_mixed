@@ -22,6 +22,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/ldlt_cholmod.hpp>
 # include <cppad/mixed/ldlt_eigen.hpp>
 # include <cppad/mixed/fixed_solution.hpp>
+# include <cppad/mixed/typedef.hpp>
 
 // private examples
 extern bool fix_con_eval_xam(void);
@@ -88,19 +89,14 @@ They are part of the user API and can be used by a derived class object
 $cref/mixed_object/derived_ctor/mixed_object/$$.
 
 $head AD Types$$
-$index a_double$$
 $srccode%cpp% */
-	typedef CppAD::AD<double>          a1_double;
-	typedef CppAD::AD<a1_double>       a2_double;
+	typedef CppAD::mixed::a1_double    a1_double;
+	typedef CppAD::mixed::a2_double    a2_double;
+	typedef CppAD::mixed::d_vector     d_vector;
+	typedef CppAD::mixed::a1_vector    a1_vector;
+	typedef CppAD::mixed::a2_vector    a2_vector;
 /* %$$
 
-$head Vector Types$$
-$mindex d_vector a1_vector a2_vector$$
-$srccode%cpp% */
-	typedef CppAD::vector<double>      d_vector;
-	typedef CppAD::vector<a1_double>   a1_vector;
-	typedef CppAD::vector<a2_double>   a2_vector;
-/* %$$
 $head User Defined Functions$$
 The following are $code cppad_mixed$$ pure virtual functions.
 Each one has a default definition that may be replaced by

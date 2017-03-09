@@ -28,7 +28,7 @@ they are $code cppad_mixed$$ preprocessor symbols and hence
 not in the $code CppAD::mixed$$ namespace.
 These are $bold not$$ part of the user API.
 
-$children%include/cppad/mixed/a2_double.hpp
+$children%include/cppad/mixed/typedef.hpp
 	%include/cppad/mixed/configure.hpp.in
 	%include/cppad/mixed/exception.hpp
 	%include/cppad/mixed/fixed_solution.hpp
