@@ -114,7 +114,6 @@ bool ran_likelihood_jac_xam(void)
 {
 	bool   ok  = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
-	typedef cppad_mixed::a1_double a1_double;
 
 	size_t n_data   = 10;
 	size_t n_fixed  = n_data;
