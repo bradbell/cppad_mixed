@@ -39,16 +39,17 @@ namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_mat_info;
 	//
-	using CppAD::mixed::a1_double;
+	using CppAD::mixed::sparse_mat_info;
 	using CppAD::mixed::a2_double;
+	using CppAD::mixed::d_vector;
+	using CppAD::mixed::a2_vector;
 
 	class mixed_derived : public cppad_mixed {
 	private:
 		const size_t          n_fixed_;
 		const size_t          n_random_;
-		const vector<double>& y_;
+		const d_vector&       y_;
 	// ----------------------------------------------------------------------
 	public:
 		// constructor
@@ -58,7 +59,7 @@ namespace {
 			bool                   quasi_fixed   ,
 			bool                   bool_sparsity ,
 			const sparse_mat_info& A_info        ,
-			const vector<double>& y              ) :
+			const d_vector&       y              ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
 			)                     ,
@@ -70,12 +71,12 @@ namespace {
 		}
 	// ----------------------------------------------------------------------
 		// implementation of ran_likelihood
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& theta  ,
-			const vector<a2_double>& u      )
+		virtual a2_vector ran_likelihood(
+			const a2_vector&         theta  ,
+			const a2_vector&         u      )
 		{	assert( theta.size() == n_fixed_ );
 			assert( u.size() == y_.size() );
-			vector<a2_double> vec(1);
+			a2_vector vec(1);
 
 			// initialize part of log-density that is always smooth
 			vec[0] = a2_double(0.0);
@@ -117,12 +118,12 @@ bool sample_random_xam(void)
 	size_t n_fixed  = 2;
 	size_t n_random = n_data;
 	//
-	vector<double> data(n_data), random_in(n_random);
+	d_vector data(n_data), random_in(n_random);
 	for(size_t i = 0; i < n_data; i++)
 	{	data[i]       = double(i + 1);
 		random_in[i]    = 0.0;
 	}
-	vector<double> fixed_vec(n_fixed);
+	d_vector fixed_vec(n_fixed);
 	for(size_t i = 0; i < n_fixed; i++)
 		fixed_vec[i] = double(i + 1);
 
@@ -141,21 +142,21 @@ bool sample_random_xam(void)
 		"String  derivative_test second-order\n"
 		"Numeric tol             1e-8\n"
 	;
-	vector<double> random_lower(n_random), random_upper(n_random);
+	d_vector random_lower(n_random), random_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
 	}
 	//
 	// compute the optimal random effects
-	vector<double> random_opt = mixed_object.optimize_random(
+	d_vector random_opt = mixed_object.optimize_random(
 		random_ipopt_options, fixed_vec, random_lower, random_upper, random_in
 	);
 	//
 	// sample from the posterior for random effects given fixed effects
 	// and compute the  sample covariance matrix
 	size_t n_sample = 10000;
-	vector<double> sample(n_sample * n_random);
+	d_vector sample(n_sample * n_random);
 	mixed_object.sample_random(
 		sample,
 		random_ipopt_options,
@@ -164,12 +165,12 @@ bool sample_random_xam(void)
 		random_upper,
 		random_in
 	);
-	vector<double> sample_cov(n_random * n_random);
+	d_vector sample_cov(n_random * n_random);
 	for(size_t i = 0; i < n_random; i++)
 		for(size_t j = 0; j < n_random; j++)
 			sample_cov[i * n_random + j] = 0;
 	for(size_t i_sample = 0; i_sample < n_sample; i_sample++)
-	{	vector<double> diff(n_random);
+	{	d_vector diff(n_random);
 		for(size_t j = 0; j < n_random; j++)
 			diff[j] = sample[i_sample * n_random + j] - random_opt[j];
 		for(size_t i = 0; i < n_random; i++)
