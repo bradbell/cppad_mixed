@@ -21,6 +21,7 @@ $spell
 	omhelp
 	CppAD
 	bool
+	namespace
 $$
 
 $section Changes and Additions to cppad_mixed During 2017$$
@@ -29,6 +30,11 @@ $childtable%
 	omh/whats_new_15.omh%
 	omh/whats_new_16.omh
 %$$
+
+$head 03-09$$
+Move some type definitions from the $code cppad_mixed$$ class
+to the $code CppAD::mixed$$ namespace; see
+$cref cppad_mixed_typedef$$.
 
 $head 03-08$$
 $list number$$
