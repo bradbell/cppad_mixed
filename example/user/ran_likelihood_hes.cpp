@@ -32,17 +32,19 @@ $end
 
 
 namespace {
-	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_mat_info;
 	//
+	using CppAD::mixed::sparse_mat_info;
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
-
+	using CppAD::mixed::d_vector;
+	using CppAD::mixed::a1_vector;
+	using CppAD::mixed::a2_vector;
+	//
 	class mixed_derived : public cppad_mixed {
 	private:
-		const vector<double>& y_;
+		const d_vector&       y_;
 	public:
 		// constructor
 		mixed_derived(
@@ -51,7 +53,7 @@ namespace {
 			bool                   quasi_fixed   ,
 			bool                   bool_sparsity ,
 			const sparse_mat_info& A_info        ,
-			const vector<double>& y              ) :
+			const d_vector&       y              ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
 			),
@@ -59,10 +61,10 @@ namespace {
 		{ }
 		// ------------------------------------------------------------------
 		// implementation of ran_likelihood
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& theta  ,
-			const vector<a2_double>& u      )
-		{	vector<a2_double> vec(1);
+		virtual a2_vector ran_likelihood(
+			const a2_vector&         theta  ,
+			const a2_vector&         u      )
+		{	a2_vector vec(1);
 
 			// compute this factor once
 			// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
@@ -85,16 +87,16 @@ namespace {
 		}
 		// ------------------------------------------------------------------
 		// ran_likelihood_hes
-		vector<a1_double> ran_likelihood_hes(
-			const vector<a1_double>& theta  ,
-			const vector<a1_double>& u      ,
+		a1_vector ran_likelihood_hes(
+			const a1_vector&         theta  ,
+			const a1_vector&         u      ,
 			const vector<size_t>&    row    ,
 			const vector<size_t>&    col    )
 		{	size_t K = row.size();
 			assert( col.size() == K );
 
 			// return value
-			vector<a1_double> val(K);
+			a1_vector val(K);
 
 			// for each component of the return value
 			for(size_t k = 0; k < K; k++)
@@ -129,10 +131,10 @@ bool ran_likelihood_hes_xam(void)
 	size_t n_data   = 10;
 	size_t n_fixed  = n_data;
 	size_t n_random = n_data;
-	vector<double>    data(n_data);
-	vector<double>    fixed_vec(n_fixed), random_vec(n_random);
-	vector<a1_double> a1_fixed(n_fixed), a1_random(n_random);
-	vector<a2_double> a2_fixed(n_fixed), a2_random(n_random);
+	d_vector    data(n_data);
+	d_vector    fixed_vec(n_fixed), random_vec(n_random);
+	a1_vector a1_fixed(n_fixed), a1_random(n_random);
+	a2_vector a2_fixed(n_fixed), a2_random(n_random);
 
 	for(size_t i = 0; i < n_data; i++)
 	{	data[i]       = double(i + 1);
@@ -157,13 +159,13 @@ bool ran_likelihood_hes_xam(void)
 
 	// record Evaluation random likelihood
 	CppAD::Independent(a2_random);
-	vector<a2_double> a2_vec(1);
+	a2_vector a2_vec(1);
 	a2_vec = mixed_object.ran_likelihood(a2_fixed, a2_random);
 	CppAD::ADFun<a1_double> a1_f(a2_random, a2_vec);
 
 	// sparsity pattern of Hessian for this function
 	vector<size_t>    row(n_data), col(n_data);
-	vector<a1_double> val(n_data);
+	a1_vector val(n_data);
 	for(size_t i = 0; i < n_data; i++)
 	{	row[i] = i;
 		col[i] = i;
@@ -173,7 +175,7 @@ bool ran_likelihood_hes_xam(void)
 	val = mixed_object.ran_likelihood_hes(a1_fixed, a1_random, row, col);
 
 	// Compute the Hessian using AD
-	vector<a1_double> w(1), check(n_random * n_random);
+	a1_vector w(1), check(n_random * n_random);
 	w[0]  = 1.0;
 	check = a1_f.Hessian(a1_random, w);
 
