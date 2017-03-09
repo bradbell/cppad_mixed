@@ -55,18 +55,18 @@ $end
 # include <cppad/mixed/cppad_mixed.hpp>
 
 namespace {
-	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_mat_info;
 	//
+	using CppAD::mixed::sparse_mat_info;
 	using CppAD::mixed::a1_double;
-	using CppAD::mixed::a2_double;
-
+	using CppAD::mixed::d_vector;
+	using CppAD::mixed::a1_vector;
+	//
 	class mixed_derived : public cppad_mixed {
 	private:
 		size_t                n_fixed_;
-		const vector<double>& z_;
+		const d_vector&       z_;
 	public:
 		// constructor
 		mixed_derived(
@@ -75,7 +75,7 @@ namespace {
 			bool                   quasi_fixed    ,
 			bool                   bool_sparsity  ,
 			const sparse_mat_info& A_info         ,
-			const vector<double>&  z              ) :
+			const d_vector&        z              ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
 			)                    ,
@@ -83,11 +83,11 @@ namespace {
 			z_(z)
 		{	assert(z.size() == n_fixed); }
 		// implementation of fix_likelihood as p(z|theta) * p(theta)
-		virtual vector<a1_double> fix_likelihood(
-			const vector<a1_double>& fixed_vec  )
+		virtual a1_vector fix_likelihood(
+			const a1_vector&         fixed_vec  )
 		{
 			// initialize log-density
-			vector<a1_double> vec(1);
+			a1_vector vec(1);
 			vec[0] = a1_double(0.0);
 
 			// compute this factors once
@@ -120,7 +120,7 @@ bool no_random_xam(void)
 
 	// fixed effects
 	size_t n_fixed  = 3;
-	vector<double>
+	d_vector
 		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
 	for(size_t j = 0; j < n_fixed; j++)
 	{	fixed_lower[j] = - inf;
@@ -130,12 +130,12 @@ bool no_random_xam(void)
 	//
 	// no random effects
 	size_t n_random = 0;
-	vector<double> random_in(0);
+	d_vector random_in(0);
 	//
 	// no constriants
-	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
+	d_vector fix_constraint_lower(0), fix_constraint_upper(0);
 	//
-	vector<double> z(n_fixed);
+	d_vector z(n_fixed);
 	for(size_t i = 0; i < n_fixed; i++)
 		z[i] = double(i+1);
 
@@ -163,7 +163,7 @@ bool no_random_xam(void)
 		"String  sb          yes\n"
 		"String  derivative_test second-order\n"
 	;
-	vector<double> random_lower(n_random), random_upper(n_random);
+	d_vector random_lower(n_random), random_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
@@ -180,7 +180,7 @@ bool no_random_xam(void)
 		random_upper,
 		random_in
 	);
-	vector<double> fixed_out = solution.fixed_opt;
+	d_vector fixed_out = solution.fixed_opt;
 	//
 	for(size_t j = 0; j < n_fixed; j++)
 		ok &= fabs( fixed_out[j] - z[j] / 2.0 ) <= tol;
