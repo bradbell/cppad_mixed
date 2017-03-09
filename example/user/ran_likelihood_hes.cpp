@@ -38,6 +38,7 @@ namespace {
 	using CppAD::mixed::sparse_mat_info;
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
+	using CppAD::mixed::s_vector;
 	using CppAD::mixed::d_vector;
 	using CppAD::mixed::a1_vector;
 	using CppAD::mixed::a2_vector;
@@ -90,8 +91,8 @@ namespace {
 		a1_vector ran_likelihood_hes(
 			const a1_vector&         theta  ,
 			const a1_vector&         u      ,
-			const vector<size_t>&    row    ,
-			const vector<size_t>&    col    )
+			const s_vector&          row    ,
+			const s_vector&          col    )
 		{	size_t K = row.size();
 			assert( col.size() == K );
 
@@ -164,7 +165,7 @@ bool ran_likelihood_hes_xam(void)
 	CppAD::ADFun<a1_double> a1_f(a2_random, a2_vec);
 
 	// sparsity pattern of Hessian for this function
-	vector<size_t>    row(n_data), col(n_data);
+	s_vector row(n_data), col(n_data);
 	a1_vector val(n_data);
 	for(size_t i = 0; i < n_data; i++)
 	{	row[i] = i;

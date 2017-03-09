@@ -44,52 +44,47 @@ then
 fi
 file_name="$1"
 # ---------------------------------------------------------------------------
-find_path=''
-find_dir=''
-for dir in example test_more
-do
-	echo_eval find $dir -name "$file_name"
-	find_out=`find $dir -name "$file_name"`
-	if [ "$find_out" != '' ]
-	then
-		if [ "$find_path" != '' ]
-		then
-			echo "$find_path"
-			echo "$find_out"
-			echo 'file appears multiple places'
-		fi
-		find_dir="$dir"
-		find_path="$find_out"
-	fi
-done
-if [ "$find_path" == '' ]
-then
-	echo "test_one.sh: cannot find $file_name in example or test_more"
-	exit 1
-fi
-#
-test_name=`echo $file_name | sed -e 's|.*/||' -e 's|\.cpp$||'`
-if [ "$find_dir" == 'example' ]
-then
-	test_name=`echo $file_name | sed -e 's|.*/||' -e 's|\.cpp$|_xam|'`
-fi
-# ---------------------------------------------------------------------------
-cat << EOF > test_one.$$
+cat << EOF > test_one.1
 /This comment expected by bin\\/test_one.sh/b start_run
 /This comment also expected by bin\\/test_one.sh/b end_run
 b done
 #
 : start_run
-s|^|\\tRUN($test_name);\\n# if 0\\n|
+s|^|\\tRUN();\\n# if 0\\n|
 b done
 #
 : end_run
 s|\$|\\n# endif|
 : done
 EOF
-echo_eval git checkout $find_dir/$find_dir.cpp
-echo_eval sed -f test_one.$$ -i $find_dir/$find_dir.cpp
-echo_eval rm test_one.$$
 # ---------------------------------------------------------------------------
-echo_eval cd build
-echo_eval make "check_$find_dir"
+found='no'
+for find_dir in example test_more
+do
+	find_path=`find $find_dir -name "$file_name"`
+	if [ "$find_path" != '' ]
+	then
+		found='yes'
+		test_name=`echo $file_name | sed -e 's|.*/||' -e 's|\.cpp$||'`
+		if [ "$find_dir" == 'example' ]
+		then
+			test_name=`echo $file_name | sed -e 's|.*/||' -e 's|\.cpp$|_xam|'`
+		fi
+		sed test_one.1 -e "s|RUN()|RUN($test_name)|" > test_one.2
+		git checkout $find_dir/$find_dir.cpp
+		echo_eval sed -f test_one.2 -i $find_dir/$find_dir.cpp
+		rm test_one.2
+		echo_eval cd build
+		echo_eval make "check_$find_dir"
+		cd ..
+	fi
+done
+echo_eval rm test_one.1
+if [ "$found" == '' ]
+then
+	echo "test_one.sh: cannot find $file_name in example or test_more"
+	exit 1
+fi
+# ---------------------------------------------------------------------------
+echo 'bin/test_one.sh: OK'
+exit 0
