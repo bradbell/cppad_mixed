@@ -32,17 +32,15 @@ $end
 
 
 namespace {
-	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_mat_info;
 	//
-	using CppAD::mixed::a1_double;
-	using CppAD::mixed::a2_double;
-
+	using CppAD::mixed::sparse_mat_info;
+	using CppAD::mixed::d_vector;
+	//
 	class mixed_derived : public cppad_mixed {
 	public:
-		vector<std::string> warning_message_;
+		CppAD::vector<std::string> warning_message_;
 		//
 		// constructor
 		mixed_derived(
@@ -78,7 +76,7 @@ bool derived_ctor_xam(void)
 	bool bool_sparsity = true;
 	sparse_mat_info A_info; // empty matrix
 	//
-	vector<double> fixed_vec(n_fixed), random_vec(n_random);
+	d_vector fixed_vec(n_fixed), random_vec(n_random);
 	fixed_vec[0] = 0.0;
 	//
 	mixed_derived mixed_object(
