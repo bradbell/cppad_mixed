@@ -32,17 +32,17 @@ $end
 
 
 namespace {
-	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_mat_info;
 	//
+	using CppAD::mixed::sparse_mat_info;
 	using CppAD::mixed::a1_double;
-	using CppAD::mixed::a2_double;
-
+	using CppAD::mixed::d_vector;
+	using CppAD::mixed::a1_vector;
+	//
 	class mixed_derived : public cppad_mixed {
 	private:
-		const vector<double>& z_;
+		const d_vector&       z_;
 	public:
 		// constructor
 		mixed_derived(
@@ -51,16 +51,16 @@ namespace {
 			bool                   quasi_fixed   ,
 			bool                   bool_sparsity ,
 			const sparse_mat_info& A_info        ,
-			const vector<double>&  z             ) :
+			const d_vector&        z             ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
 			),
 			z_(z)
 		{ }
 		// implementation of fix_likelihood
-		virtual vector<a1_double> fix_likelihood(
-			const vector<a1_double>& theta  )
-		{	vector<a1_double> vec(1);
+		virtual a1_vector fix_likelihood(
+			const a1_vector&         theta  )
+		{	a1_vector vec(1);
 
 			// compute this factor once
 			double sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
@@ -92,9 +92,9 @@ bool fix_likelihood_xam(void)
 	size_t n_data   = 10;
 	size_t n_fixed  = n_data;
 	size_t n_random = 0;
-	vector<double>    data(n_data);
-	vector<double>    fixed_vec(n_fixed), random_vec(n_random);
-	vector<a1_double> a1_fixed(n_fixed);
+	d_vector    data(n_data);
+	d_vector    fixed_vec(n_fixed), random_vec(n_random);
+	a1_vector a1_fixed(n_fixed);
 
 	for(size_t i = 0; i < n_data; i++)
 	{	data[i]       = double(i + 1);
@@ -113,7 +113,7 @@ bool fix_likelihood_xam(void)
 	mixed_object.initialize(fixed_vec, random_vec);
 
 	// Evaluate fix_likelihood
-	vector<a1_double> a1_vec(1);
+	a1_vector a1_vec(1);
 	a1_vec = mixed_object.fix_likelihood(a1_fixed);
 
 	// check the random likelihood
