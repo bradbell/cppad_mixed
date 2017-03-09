@@ -142,10 +142,10 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 	// (not in empty namespace so can be friend of cppad_mixed class)
 	class optimize_random_ipopt {
 	public:
-		// same as cppad_mixed::d_vector
+		// same as CppAD::mixed::d_vector
 		typedef CppAD::vector<double>              Dvector;
 
-		// same as cppad_mixed::a1_vector
+		// same as CppAD::mixed::a1_vector
 		typedef CppAD::vector< CppAD::AD<double> > ADvector;
 	private:
 		const size_t     n_fixed_;

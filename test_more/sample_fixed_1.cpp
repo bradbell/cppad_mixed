@@ -24,8 +24,8 @@ namespace {
 	using CppAD::AD;
 	using CppAD::mixed::sparse_mat_info;
 	//
-	typedef AD<double>    a1_double;
-	typedef AD<a1_double> a2_double;
+	using CppAD::mixed::a1_double;
+	using CppAD::mixed::a2_double;
 	typedef Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > double_mat;
 	//
 	// Used for debugging

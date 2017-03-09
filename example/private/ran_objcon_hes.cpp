@@ -57,8 +57,8 @@ namespace {
 	using CppAD::AD;
 	using CppAD::mixed::sparse_mat_info;
 	//
-	typedef AD<double>    a1_double;
-	typedef AD<a1_double> a2_double;
+	using CppAD::mixed::a1_double;
+	using CppAD::mixed::a2_double;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -170,7 +170,7 @@ bool ran_objcon_hes_xam(void)
 	// For this case the Laplace approximation is exactly equal the integral
 	// p(y | theta ) = integral of p(y | theta , u) p(u | theta) du
 	// record the function L(theta) = p(y | theta)
-	typedef AD<double> a1_double;
+	using CppAD::mixed::a1_double;
 	vector<a1_double> a1_fixed_vec(n_fixed), a1_L(1);
 	a1_fixed_vec[0]  = fixed_vec[0];
 	a1_fixed_vec[1]  = fixed_vec[1];

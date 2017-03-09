@@ -9,6 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/sparse_ad_cholesky.hpp>
+# include <cppad/mixed/typedef.hpp>
 
 /*
 $begin sparse_ad_chol_var.cpp$$
@@ -68,8 +69,8 @@ $end
 // BEGIN C++
 bool sparse_ad_chol_var_xam(void)
 {	using CppAD::AD;
-	typedef CppAD::vector<double>                             d_vector;
-	typedef CppAD::vector< AD<double> >                       ad_vector;
+	using CppAD::mixed::d_vector;
+	using CppAD::mixed::a1_vector;
 	typedef Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> sparse_ad_matrix;
 	//
 	bool ok     = true;
@@ -77,7 +78,7 @@ bool sparse_ad_chol_var_xam(void)
 	size_t nx = 4;
 	size_t ny = 4;
 	d_vector x(nx), y(ny);
-	ad_vector ax(nx);
+	a1_vector ax(nx);
 	ax[0] = x[0] = 2.0;
 	ax[1] = x[1] = 1.0;
 	ax[2] = x[2] = 0.5;
@@ -98,7 +99,7 @@ bool sparse_ad_chol_var_xam(void)
 		CppAD::Independent( ax );
 		//
 		// vector with only k-th component a variable
-		ad_vector ac(nx);
+		a1_vector ac(nx);
 		for(size_t j = 0; j < nx; j++)
 		{	if( j == k )
 				ac[j] = ax[j];

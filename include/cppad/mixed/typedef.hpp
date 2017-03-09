@@ -20,9 +20,17 @@ $spell
 	Namespace
 	typedef
 	rcv
+	cppad.hpp
 $$
 
 $section Types Defined in the CppAD Mixed Namespace$$
+
+$head Syntax$$
+$codei%# include <cppad/mixed/typedef.hpp>
+%$$
+Note that this is not necessary if you include
+$code cppad/mixed/cppad_mixed.hpp$$.
+
 
 $head Scalar Types$$
 

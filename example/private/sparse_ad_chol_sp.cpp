@@ -9,6 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/sparse_ad_cholesky.hpp>
+# include <cppad/mixed/typedef.hpp>
 
 /*
 $begin sparse_ad_chol_sp.cpp$$
@@ -144,7 +145,7 @@ namespace {
 }
 bool sparse_ad_chol_sp_xam(void)
 {	using CppAD::AD;
-	typedef CppAD::vector<double>                             d_vector;
+	using CppAD::mixed::d_vector;
 	typedef CppAD::vector< AD<double> >                       ad_vector;
 	typedef Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> sparse_ad_matrix;
 	//
