@@ -29,8 +29,8 @@ echo_eval() {
 }
 # --------------------------------------------------------------------------
 web_page='https://github.com/coin-or/CppAD.git'
-hash_key='c459e0546618468a07adb73aaf50655d7c62e3ed'
-version='20170306'
+hash_key='3c93ecbd204908bd3b5e9cdb5c90824218a49356'
+version='20170310'
 # --------------------------------------------------------------------------
 # cppad_prefix
 cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`

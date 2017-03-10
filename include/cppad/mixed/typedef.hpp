@@ -14,11 +14,12 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/cppad.hpp>
 
 /*
-$begin cppad_mixed_typedef$$
+$begin typedef$$
 $spell
 	CppAD
 	Namespace
 	typedef
+	rc
 	rcv
 	cppad.hpp
 $$
@@ -84,13 +85,24 @@ namespace CppAD { namespace mixed {
 } }
 /* %$$
 
-$head Sparse Matrices$$
+$head Sparse Types$$
+
+$subhead sparse_rc$$
+Sparsity patterns using index vector of type $code s_vector$$:
+$srccode%cpp% */
+namespace CppAD { namespace mixed {
+	typedef CppAD::sparse_rc<s_vector> sparse_rc;
+} }
+/* %$$
+
+$subhead sparse_rcv$$
 Sparse matrices using index vector of type $code s_vector$$
 and value vectors of type $code d_vector$$:
 $srccode%cpp% */
 namespace CppAD { namespace mixed {
 	typedef CppAD::sparse_rcv<s_vector, d_vector> sparse_rcv;
 } }
+
 /* %$$
 $end
 */

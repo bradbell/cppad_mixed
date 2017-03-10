@@ -22,6 +22,7 @@ $spell
 	CppAD
 	bool
 	namespace
+	rc
 $$
 
 $section Changes and Additions to cppad_mixed During 2017$$
@@ -31,10 +32,14 @@ $childtable%
 	omh/whats_new_16.omh
 %$$
 
+$head 03-10$$
+Advance to $code cppad-20170310$$
+(has a $cref/sparse_rc/typedef/Sparse Types/sparse_rc/$$ sizing constructor).
+
 $head 03-09$$
 Move some type definitions from the $code cppad_mixed$$ class
 to the $code CppAD::mixed$$ namespace; see
-$cref cppad_mixed_typedef$$.
+$cref typedef$$.
 
 $head 03-08$$
 $list number$$
