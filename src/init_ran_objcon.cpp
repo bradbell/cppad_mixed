@@ -11,6 +11,8 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin init_ran_objcon$$
 $spell
+	rcv
+	nr
 	objcon
 	CppAD
 	init
@@ -74,7 +76,7 @@ $cref/B(beta, theta, u)
 $latex B( \beta , \theta , u )$$. Thus
 $codei%
 	ran_objcon_fun_.Domain() == n_fixed_ + n_fixed_ + n_random_
-	ran_objcon_fun_.Range()  == 1 + n_ran_con_
+	ran_objcon_fun_.Range()  == 1 + A_rcv_.nr()
 %$$
 
 
@@ -88,17 +90,17 @@ void cppad_mixed::init_ran_objcon(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec )
 {	assert( init_ran_like_done_ );
-	assert( init_ran_con_done_ );
 	assert( init_newton_checkpoint_done_ );
 	assert( ! init_ran_objcon_done_ );
-	assert( A_rcv_.row().size() == A_rcv_.col().size() );
-	assert( A_rcv_.row().size() == A_rcv_.val().size() );
+	assert( A_rcv_.nnz() == A_rcv_.row().size() );
+	assert( A_rcv_.nnz() == A_rcv_.col().size() );
+	assert( A_rcv_.nnz() == A_rcv_.val().size() );
 	//
 	// constant term
 	double pi   = CppAD::atan(1.0) * 4.0;
 	double constant_term = CppAD::log(2.0 * pi) * double(n_random_) / 2.0;
 	//
-	a1_vector f(1), HB(1 + n_ran_con_);
+	a1_vector f(1), HB(1 + A_rcv_.nr());
 	//
 	//	create an a1_vector containing (beta, theta, u)
 	a1_vector beta_theta_u( 2 * n_fixed_ + n_random_ );
@@ -174,11 +176,11 @@ void cppad_mixed::init_ran_objcon(
 	// now the random part of the Laplace objective
 	HB[0] = logdet_step[0] / 2.0 + f[0] - constant_term;
 	//
-	if( n_ran_con_ > 0 )
+	if( A_rcv_.nr() > 0 )
 	{
 		// multiply the matrix A times the vector W and put result in
 		// HB (with an index offset of 1)
-		for(size_t i = 0; i < n_ran_con_; i++)
+		for(size_t i = 0; i < A_rcv_.nr(); i++)
 			HB[1 + i] = a1_double(0.0);
 
 		size_t K = A_rcv_.row().size();

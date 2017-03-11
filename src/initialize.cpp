@@ -12,6 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin initialize$$
 $spell
+	nr
 	bool
 	ldlt
 	objcon
@@ -109,8 +110,8 @@ $rnext
 $code A_rcv_.nnz()$$  $cnext
 	$cref/A_rcv_/private/A_rcv_/$$
 $rnext
-$code n_ran_con_$$  $cnext
-	$cref/n_ran_con_/private/n_ran_con_/$$
+$code A_rcv_.nr()$$  $cnext
+	$cref/A_rcv_/private/A_rcv_/$$
 $rnext
 $code ran_like_fun_.size_var()$$  $cnext
 	$cref/ran_like_fun_/private/ran_like_fun_/$$
@@ -204,16 +205,9 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 			msg += "\nbut ran_likelihood returns a non-empty vector";
 			fatal_error(msg);
 		}
-		// in this case, number of random constraints is zero (must be set)
-		n_ran_con_ = 0;
 	}
 	else
 	{
-		// n_ran_con_
-		assert( ! init_ran_con_done_ );
-		init_ran_con();
-		assert( init_ran_con_done_ );
-
 		// ran_like_
 		assert( ! init_ran_like_done_ );
 		init_ran_like(fixed_vec, random_vec);
@@ -280,7 +274,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 	size_map["n_random_"]                  = n_random_;
 	size_map["quasi_fixed_"]               = quasi_fixed_;
 	size_map["A_rcv_.nnz()"]               = A_rcv_.nnz();
-	size_map["n_ran_con_"]                 = n_ran_con_;
+	size_map["A_rcv_.nr()"]                = A_rcv_.nr();
 	size_map["ran_like_fun_.size_var()"]   = ran_like_fun_.size_var();
 	size_map["ran_like_a1fun_.size_var()"] = ran_like_a1fun_.size_var();
 	size_map["ran_hes_.row.size()"]        = ran_hes_.row.size();

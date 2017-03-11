@@ -12,6 +12,8 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin ran_objcon_hes$$
 $spell
+	rcv
+	nr
 	objcon
 	CppAD
 	ran_obj
@@ -100,7 +102,7 @@ $latex \[
 	w_i B^{i-1}_{\beta, \beta} ( \beta , \theta , u )
 \] $$
 The size of $icode weight$$ is
-$cref/n_ran_con_/init_ran_con/n_ran_con_/$$ plus one.
+$cref/A_rcv.nr()/derived_ctor/A_rcv/$$ plus one.
 
 $head row_out$$
 This argument has prototype
@@ -169,7 +171,7 @@ void cppad_mixed::ran_objcon_hes(
 {	assert( init_ran_objcon_hes_done_ );
 	assert( n_fixed_  == fixed_vec.size() );
 	assert( n_random_ == random_vec.size() );
-	assert( n_ran_con_ + 1 == weight.size() );
+	assert( A_rcv_.nr() + 1 == weight.size() );
 
 	// size of outputs
 	size_t n_nonzero = ran_objcon_hes_.row.size();

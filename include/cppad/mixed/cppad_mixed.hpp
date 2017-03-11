@@ -331,7 +331,6 @@ $childtable%include/cppad/mixed/pack.hpp
 	%include/cppad/mixed/unpack.hpp
 
 	%src/init_ran_hes.cpp
-	%src/init_ran_con.cpp
 	%src/init_ran_objcon.cpp
 	%src/init_ldlt_ran_hes.cpp
 	%src/init_fix_con.cpp
@@ -415,14 +414,6 @@ Used to map CppAD error messages to
 $cref/fatal_error/public/User Defined Functions/fatal_error/$$.
 $srccode%cpp% */
 	CppAD::ErrorHandler cppad_error_handler_;
-/* %$$
-
-$head n_ran_con_$$
-If $code init_ran_con_done_$$,
-$cref/n_ran_con_/init_ran_con/n_ran_con_/$$
-is the number of random constraints
-$srccode%cpp% */
-	size_t n_ran_con_;
 /* %$$
 
 $head ran_like_fun_$$
@@ -677,12 +668,6 @@ $srccode%cpp% */
 		const d_vector& fixed_vec     ,
 		const d_vector& random_vec
 	);
-/* %$$
-
-$subhead init_ran_con$$
-See $cref init_ran_con$$.
-$srccode%cpp% */
-	void init_ran_con(void);
 /* %$$
 
 $subhead init_ran_like$$

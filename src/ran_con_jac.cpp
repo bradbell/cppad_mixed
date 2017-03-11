@@ -164,7 +164,7 @@ void cppad_mixed::ran_con_jac(
 	// 2DO: figure out how to make this a sparse calculation.
 	// The problem is propagating the sparsity though Choleksy inverse.
 	CppAD::vector<size_t> row_solve(n_random_);
-	d_vector val_b(n_random_), val_x(n_random_), Au_theta_j(n_ran_con_);
+	d_vector val_b(n_random_), val_x(n_random_), Au_theta_j(A_rcv_.nr());
 	for(size_t i = 0; i < n_random_; i++)
 	{	row_solve[i] = i;
 	}
@@ -197,7 +197,7 @@ void cppad_mixed::ran_con_jac(
 		ldlt_ran_hes_.solve_H(row_solve, val_b, val_x);
 		//
 		// multipliy A times j-th column of uhat_theta
-		for(size_t i = 0; i < n_ran_con_; i++)
+		for(size_t i = 0; i < A_rcv_.nr(); i++)
 			Au_theta_j[i] = 0.0;
 		size_t M = A_rcv_.row().size();
 		for(size_t m = 0; m < M; m++)
@@ -206,7 +206,7 @@ void cppad_mixed::ran_con_jac(
 			double v = A_rcv_.val()[m];
 			Au_theta_j[r] += v * val_x[c];
 		}
-		for(size_t i = 0; i < n_ran_con_; i++)
+		for(size_t i = 0; i < A_rcv_.nr(); i++)
 		{	// 2DO: convert this from dense to a true sparsity pattern
 			if( L == 0 )
 			{	// compute sparsity

@@ -167,9 +167,9 @@ CppAD::mixed::sparse_mat_info cppad_mixed::try_information_mat(
 		// ------------------------------------------------------------------
 		// Lower triangle of Hessian w.r.t. fixed effects
 		// for random part of objective,no constraints
-		d_vector w_ran(n_ran_con_ + 1);
+		d_vector w_ran(A_rcv_.nr() + 1);
 		w_ran[0] = 1.0;
-		for(size_t j = 1; j <=n_ran_con_; j++)
+		for(size_t j = 1; j <=A_rcv_.nr(); j++)
 			w_ran[j] = 0.0;
 		//
 		CppAD::mixed::sparse_mat_info ran_info;

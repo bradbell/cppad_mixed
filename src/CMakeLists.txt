@@ -39,7 +39,6 @@ ADD_LIBRARY(cppad_mixed
 	init_fix_like.cpp
 	init_hes_cross.cpp
 	initialize.cpp
-	init_ran_con.cpp
 	init_ran_hes.cpp
 	init_ran_like.cpp
 	init_ran_objcon.cpp

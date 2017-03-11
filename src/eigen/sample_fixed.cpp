@@ -272,7 +272,7 @@ void cppad_mixed::try_sample_fixed(
 	assert( solution.fixed_opt.size() == n_fixed_ );
 	assert( solution.fixed_lag.size() == n_fixed_ );
 	assert( solution.fix_con_lag.size() == n_fix_con );
-	assert( solution.ran_con_lag.size() == n_ran_con_ );
+	assert( solution.ran_con_lag.size() == A_rcv_.nr() );
 	// random_opt
 	assert( random_opt.size() == n_random_ );
 	//
@@ -313,7 +313,7 @@ void cppad_mixed::try_sample_fixed(
 			fix_active_index[i] = n_fix_active++;
 	}
 	// random constraints are always active
-	size_t n_ran_active = n_ran_con_;
+	size_t n_ran_active = A_rcv_.nr();
 	//
 	// matrix with all the active constraints
 	// (not counting bound constraints)
