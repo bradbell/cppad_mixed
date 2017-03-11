@@ -562,7 +562,7 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 using CppAD::vector;
 using std::exp;
 using std::log;
-using CppAD::mixed::sparse_mat_info;
+using CppAD::mixed::sparse_rcv;
 
 // Convert size_t to string adding commas every three digits
 std::string size_t2string(size_t value )
@@ -648,7 +648,7 @@ public:
 		size_t                  K             ,
 		bool                    quasi_fixed   ,
 		bool                    bool_sparsity ,
-		const sparse_mat_info&  A_info        ,
+		const sparse_rcv&       A_info        ,
 		vector<size_t>&         y             ,
 		vector<double>&         fixed_in      ,
 		vector<double>&         random_in     ) :
@@ -970,15 +970,15 @@ int main(int argc, const char *argv[])
 	}
 
 	// random constraints
-	CppAD::mixed::sparse_mat_info A_info;
+	CppAD::mixed::sparse_rc A_pattern;
 	if( random_constraint )
-	{	A_info.resize(T);
+	{	A_pattern.resize(1, T, T);
 		for(size_t t = 0; t < T; t++)
-		{	A_info.row[t] = 0;
-			A_info.col[t] = t;
-			A_info.val[t] = 1.0;
-		}
+			A_pattern.set(t, 0, t);
 	}
+	sparse_rcv A_info( A_pattern );
+	for(size_t t = 0; t < A_info.nc(); t++)
+		A_info.set(t, 1.0);
 
 	// initialize random effects to start optimization at
 	vector<double>  u_in(T);

@@ -65,7 +65,7 @@ namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_mat_info;
+	using CppAD::mixed::sparse_rcv;
 	//
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
@@ -83,7 +83,7 @@ namespace {
 		mixed_derived(
 			size_t n_fixed                    ,
 			size_t n_random                   ,
-			const CppAD::mixed::sparse_mat_info& A_info,
+			const CppAD::mixed::sparse_rcv&      A_info,
 			double sigma_u                    ,
 			double sigma_y                    ,
 			const vector<double>& y           ) :
@@ -180,7 +180,7 @@ bool zero_random_one(void)
 	random_in[0] = 0.1;
 
 	// object that is derived from cppad_mixed
-	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	CppAD::mixed::sparse_rcv A_info; // empty matrix
 	mixed_derived mixed_object(
 		n_fixed, n_random, A_info, sigma_u, sigma_y, data
 	);

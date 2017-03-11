@@ -199,11 +199,11 @@ void cppad_mixed::ran_con_jac(
 		// multipliy A times j-th column of uhat_theta
 		for(size_t i = 0; i < n_ran_con_; i++)
 			Au_theta_j[i] = 0.0;
-		size_t M = A_info_.row.size();
+		size_t M = A_info_.row().size();
 		for(size_t m = 0; m < M; m++)
-		{	size_t r = A_info_.row[m];
-			size_t c = A_info_.col[m];
-			double v = A_info_.val[m];
+		{	size_t r = A_info_.row()[m];
+			size_t c = A_info_.col()[m];
+			double v = A_info_.val()[m];
 			Au_theta_j[r] += v * val_x[c];
 		}
 		for(size_t i = 0; i < n_ran_con_; i++)

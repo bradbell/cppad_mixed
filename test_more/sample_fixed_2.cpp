@@ -18,7 +18,7 @@ namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_mat_info;
+	using CppAD::mixed::sparse_rcv;
 	//
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
@@ -36,7 +36,7 @@ namespace {
 			size_t n_random                   ,
 			bool   quasi_fixed                ,
 			bool   bool_sparsity              ,
-			const CppAD::mixed::sparse_mat_info& A_info,
+			const CppAD::mixed::sparse_rcv&      A_info,
 			const vector<double>& y           ) :
 			cppad_mixed(n_fixed, n_random, quasi_fixed, bool_sparsity, A_info),
 			n_fixed_(n_fixed)     ,
@@ -137,7 +137,7 @@ bool sample_fixed_2(void)
 	// object that is derived from cppad_mixed
 	bool quasi_fixed = true;
 	bool bool_sparsity = false;
-	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	CppAD::mixed::sparse_rcv A_info; // empty matrix
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
 	);

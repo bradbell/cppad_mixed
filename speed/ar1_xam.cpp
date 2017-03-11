@@ -227,7 +227,7 @@ namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_mat_info;
+	using CppAD::mixed::sparse_rcv;
 	//
 	typedef AD<double>    a1_double;
 	typedef AD<a1_double> a2_double;
@@ -248,7 +248,7 @@ namespace {
 			size_t                 n_random      ,
 			bool                   quasi_fixed   ,
 			bool                   bool_sparsity ,
-			const sparse_mat_info& A_info        ,
+			const sparse_rcv&      A_info        ,
 			const vector<double>& y              ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
@@ -409,7 +409,7 @@ int main(int argc, const char* argv[])
 		fixed_in[0] = theta_sim[0];
 	//
 	// object that is derived from cppad_mixed
-	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	CppAD::mixed::sparse_rcv A_info; // empty matrix
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, y
 	);

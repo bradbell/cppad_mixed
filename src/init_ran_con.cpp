@@ -52,19 +52,19 @@ void cppad_mixed::init_ran_con(void)
 {	assert( ! init_ran_con_done_ );
 
 	// number of possibly non-zero entries
-	size_t K = A_info_.row.size();
+	size_t K = A_info_.row().size();
 	//
 	assert( n_random_ > 0 );
-	assert( A_info_.col.size() == K );
-	assert( A_info_.val.size() == K );
+	assert( A_info_.col().size() == K );
+	assert( A_info_.val().size() == K );
 
 	// determine maximum row and column index
 	size_t max_row_p1 = 0;
 	size_t max_col_p1 = 0;
 	for(size_t k = 0; k < K; k++)
-	{	assert( A_info_.val[k] != 0.0 );
-		max_row_p1 = std::max(max_row_p1, A_info_.row[k] + 1);
-		max_col_p1 = std::max(max_col_p1,    A_info_.col[k] + 1);
+	{	assert( A_info_.val()[k] != 0.0 );
+		max_row_p1 = std::max(max_row_p1, A_info_.row()[k] + 1);
+		max_col_p1 = std::max(max_col_p1,    A_info_.col()[k] + 1);
 	}
 	assert( max_col_p1 <= n_random_ );
 

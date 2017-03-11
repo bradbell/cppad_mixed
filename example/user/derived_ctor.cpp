@@ -35,7 +35,7 @@ namespace {
 	using CppAD::log;
 	using CppAD::AD;
 	//
-	using CppAD::mixed::sparse_mat_info;
+	using CppAD::mixed::sparse_rcv;
 	using CppAD::mixed::d_vector;
 	//
 	class mixed_derived : public cppad_mixed {
@@ -48,7 +48,7 @@ namespace {
 			size_t                 n_random       ,
 			bool                   quasi_fixed    ,
 			bool                   bool_sparsity  ,
-			const sparse_mat_info& A_info         )
+			const sparse_rcv&      A_info          )
 			:
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
@@ -74,7 +74,7 @@ bool derived_ctor_xam(void)
 	size_t n_random    = 0;
 	bool quasi_fixed   = true;
 	bool bool_sparsity = true;
-	sparse_mat_info A_info; // empty matrix
+	sparse_rcv A_info; // empty matrix
 	//
 	d_vector fixed_vec(n_fixed), random_vec(n_random);
 	fixed_vec[0] = 0.0;

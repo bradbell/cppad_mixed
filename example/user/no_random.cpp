@@ -58,7 +58,7 @@ namespace {
 	using CppAD::log;
 	using CppAD::AD;
 	//
-	using CppAD::mixed::sparse_mat_info;
+	using CppAD::mixed::sparse_rcv;
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::d_vector;
 	using CppAD::mixed::a1_vector;
@@ -74,7 +74,7 @@ namespace {
 			size_t                 n_random       ,
 			bool                   quasi_fixed    ,
 			bool                   bool_sparsity  ,
-			const sparse_mat_info& A_info         ,
+			const sparse_rcv&      A_info         ,
 			const d_vector&        z              ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
@@ -143,7 +143,7 @@ bool no_random_xam(void)
 	// (test full netwon method to make sure it works with no random effects).
 	bool quasi_fixed   = false;
 	bool bool_sparsity = false;
-	sparse_mat_info A_info; // empty matrix
+	sparse_rcv A_info; // empty matrix
 	mixed_derived mixed_object(
 			n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, z
 	);

@@ -49,7 +49,7 @@ namespace {
 	using CppAD::log;
 	using CppAD::AD;
 	//
-	using CppAD::mixed::sparse_mat_info;
+	using CppAD::mixed::sparse_rcv;
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
 	using CppAD::mixed::d_vector;
@@ -69,7 +69,7 @@ namespace {
 			size_t                 n_random      ,
 			bool                   quasi_fixed   ,
 			bool                   bool_sparsity ,
-			const sparse_mat_info& A_info        ,
+			const sparse_rcv&      A_info        ,
 			const d_vector&       y              ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
@@ -137,7 +137,7 @@ namespace {
 	};
 	// ----------------------------------------------------------------------
 	double sum_random_effects(
-		size_t n_random, const sparse_mat_info& A_info
+		size_t n_random, const sparse_rcv&      A_info
 	)
 	{
 		double inf = std::numeric_limits<double>::infinity();
@@ -224,17 +224,17 @@ bool ran_constraint_xam(void)
 	size_t n_random = 10;
 
 	// empty matrix (no constraints)
-	sparse_mat_info A_info;
-	double sum = sum_random_effects(n_random, A_info);
+	sparse_rcv A_empty;
+	double sum = sum_random_effects(n_random, A_empty);
 	ok        &= fabs(sum) > 0.5;
 
 	// constrain sum of random effects to be zero
-	A_info.resize(n_random);
+	CppAD::mixed::sparse_rc A_pattern(1, n_random, n_random);
 	for(size_t k = 0; k < n_random; k++)
-	{	A_info.row[k] = 0;
-		A_info.col[k] = k;
-		A_info.val[k] = 1.0;
-	}
+		A_pattern.set(k, 0, k);
+	sparse_rcv A_info(A_pattern);
+	for(size_t k = 0; k < n_random; k++)
+		A_info.set(k, 1.0);
 	sum = sum_random_effects(n_random, A_info);
 	ok &= fabs(sum) < 2.0 * tol;
 

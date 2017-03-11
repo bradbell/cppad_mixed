@@ -88,13 +88,17 @@ These $code cppad_mixed$$ class declarations are $code public$$.
 They are part of the user API and can be used by a derived class object
 $cref/mixed_object/derived_ctor/mixed_object/$$.
 
-$head AD Types$$
+$head Cppad Mixed Types$$
+The following Cppad Mixed types are extended into the
+$code cppad_mixed$$ class:
 $srccode%cpp% */
 	typedef CppAD::mixed::a1_double    a1_double;
 	typedef CppAD::mixed::a2_double    a2_double;
 	typedef CppAD::mixed::d_vector     d_vector;
 	typedef CppAD::mixed::a1_vector    a1_vector;
 	typedef CppAD::mixed::a2_vector    a2_vector;
+	typedef CppAD::mixed::sparse_rc    sparse_rc;
+	typedef CppAD::mixed::sparse_rcv   sparse_rcv;
 /* %$$
 
 $head User Defined Functions$$
@@ -184,11 +188,11 @@ $head constructor$$
 $cref derived_ctor$$, $title derived_ctor$$.
 $srccode%cpp% */
 	cppad_mixed(
-		size_t                                n_fixed       ,
-		size_t                                n_random      ,
-		bool                                  quasi_fixed   ,
-		bool                                  bool_sparsity ,
-		const CppAD::mixed::sparse_mat_info&  A_info
+		size_t               n_fixed       ,
+		size_t               n_random      ,
+		bool                 quasi_fixed   ,
+		bool                 bool_sparsity ,
+		const sparse_rcv&    A_info
 	);
 /* %$$
 
@@ -380,10 +384,8 @@ $srccode%cpp% */
 $head A_info_$$
 contains the random constraint matrix
 $srccode%cpp% */
-	CppAD::mixed::sparse_mat_info A_info_;
+	const sparse_rcv A_info_;
 /* %$$
-This member variable is set during the initialize routine (only)
-and before any of the other initialize function get called.
 
 $head initialize_done_$$
 The following flag is false after construction and true after

@@ -31,8 +31,7 @@ to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
 $head a1_double$$
-The type $icode a1_double$$ below is one of the
-see $cref/AD Types/public/AD Types/$$.
+see $cref/a1_double/typedef/Scalar Types/a1_double/$$.
 
 $head Virtual Function$$
 The following virtual function may be implemented in the derived class:

@@ -43,7 +43,7 @@ namespace {
 			size_t n_random                   ,
 			bool   quasi_fixed                ,
 			bool   bool_sparsity              ,
-			const CppAD::mixed::sparse_mat_info& A_info,
+			const CppAD::mixed::sparse_rcv&      A_info ,
 			const vector<double>& y           ) :
 			cppad_mixed(n_fixed, n_random, quasi_fixed, bool_sparsity, A_info),
 			n_fixed_(n_fixed)                                      ,
@@ -147,13 +147,12 @@ bool sample_fixed_1(void)
 	}
 	// constraint the sum of the first two random effect estimates to zero
 	// (this results in a constraint on the first fixed effect)
-	CppAD::mixed::sparse_mat_info A_info;
-	A_info.resize(2);
-	for(size_t k = 0; k < A_info.row.size(); k++)
-	{	A_info.row[k] = 0;
-		A_info.col[k] = k;
-		A_info.val[k] = 1.0;
-	}
+	CppAD::mixed::sparse_rc A_pattern(1, n_random, 2);
+	for(size_t k = 0; k < A_pattern.nnz(); k++)
+		A_pattern.set(k, 0, k);
+	CppAD::mixed::sparse_rcv A_info(A_pattern);
+	for(size_t k = 0; k < A_info.nnz(); k++)
+		A_info.set(k, 1.0);
 
 	// object that is derived from cppad_mixed
 	bool quasi_fixed = true;

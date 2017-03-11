@@ -17,6 +17,7 @@ $spell
 	dismod
 	const
 	vec
+	rcv
 $$
 
 $section User Defined Class Derived From cppad_mixed$$
@@ -108,7 +109,7 @@ is not specified.
 $head A_info$$
 This argument has prototype
 $codei%
-	const CppAD::mixed::sparse_mat_info& %A_info%
+	const CppAD::mixed::sparse_rcv& %A_info%
 %$$
 It is a
 $cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
@@ -184,7 +185,7 @@ cppad_mixed::cppad_mixed(
 	size_t                                n_random      ,
 	bool                                  quasi_fixed   ,
 	bool                                  bool_sparsity ,
-	const CppAD::mixed::sparse_mat_info&  A_info        )
+	const CppAD::mixed::sparse_rcv&       A_info         )
 :
 n_fixed_(n_fixed)               ,
 n_random_(n_random)             ,

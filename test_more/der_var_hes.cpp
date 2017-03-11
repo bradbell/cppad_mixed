@@ -134,7 +134,7 @@ namespace {
 	using CppAD::log;
 	using CppAD::exp;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_mat_info;
+	using CppAD::mixed::sparse_rcv;
 	//
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
@@ -148,7 +148,7 @@ namespace {
 		mixed_derived(
 			size_t n_fixed      ,
 			size_t n_random     ,
-			const CppAD::mixed::sparse_mat_info& A_info,
+			const CppAD::mixed::sparse_rcv&      A_info,
 			double y            ,
 			double sigma_u      ,
 			double sigma_y      ) :
@@ -265,7 +265,7 @@ bool der_var_hes(void)
 	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
 	//
 	// object that is derived from cppad_mixed
-	CppAD::mixed::sparse_mat_info A_info; // empty matrix
+	CppAD::mixed::sparse_rcv A_info; // empty matrix
 	mixed_derived mixed_object(
 		n_fixed, n_random, A_info, y, sigma_u, sigma_y
 	);

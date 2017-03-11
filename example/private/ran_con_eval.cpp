@@ -68,7 +68,7 @@ namespace {
 			size_t                               n_random      ,
 			bool                                 quasi_fixed   ,
 			bool                                 bool_sparsity ,
-			const CppAD::mixed::sparse_mat_info& A_info        ,
+			const CppAD::mixed::sparse_rcv&      A_info         ,
 			const vector<double>&                y             ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
@@ -126,13 +126,13 @@ bool ran_con_eval_xam(void)
 	}
 
 	// constraint matrix will sum all the random effects
-	CppAD::mixed::sparse_mat_info A_info; // empty matrix
-	A_info.resize(n_random);
+	// nr = 1, nc = n_random, nnz = n_random
+	CppAD::mixed::sparse_rc A_pattern(1, n_random, n_random);
 	for(size_t j = 0; j < n_random; j++)
-	{	A_info.row[j] = 0;
-		A_info.col[j] = j;
-		A_info.val[j] = 1.0;
-	}
+		A_pattern.set(j, 0, j);
+	CppAD::mixed::sparse_rcv A_info(A_pattern);
+	for(size_t j = 0; j < n_random; j++)
+		A_info.set(j, 1.0);
 
 	// mixed_object
 	bool quasi_fixed   = false;
