@@ -34,7 +34,7 @@ $childtable%
 %$$
 
 $head 03-11$$
-Change $cref/A_info/derived_ctor/A_info/$$ from type
+Change $cref/A_rcv/derived_ctor/A_rcv/$$ from type
 $cref sparse_mat_info$$ to
 $cref/sparse_rcv/typedef/Sparse Types/sparse_rcv/$$.
 
@@ -52,7 +52,7 @@ $list number$$
 $bold API Change:$$
 Move the arguments
 $cref/bool_sparsity/derived_ctor/bool_sparsity/$$ and
-$cref/A_info/derived_ctor/A_info/$$ from $cref initialize$$
+$cref/A_rcv/derived_ctor/A_rcv/$$ from $cref initialize$$
 to the base class constructor
 $cref/cppad_mixed/derived_ctor/cppad_mixed/$$.
 $lnext

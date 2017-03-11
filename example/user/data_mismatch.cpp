@@ -180,14 +180,14 @@ namespace {
 			size_t                 n_random      ,
 			bool                   quasi_fixed   ,
 			bool                   bool_sparsity ,
-			const sparse_rcv&      A_info        ,
+			const sparse_rcv&      A_rcv         ,
 			double                 y             ,
 			double                 z             ,
 			double                 sigma_u       ,
 			double                 sigma_y       ,
 			double                 sigma_z       ) :
 			cppad_mixed(
-				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
+				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
 			), y_(y), z_(z),
 			sigma_u_(sigma_u), sigma_y_(sigma_y), sigma_z_(sigma_z )
 		{	assert( n_fixed == 1 );
@@ -330,9 +330,9 @@ bool data_mismatch_xam(void)
 	// object that is derived from cppad_mixed
 	bool quasi_fixed   = false;
 	bool bool_sparsity = false;
-	sparse_rcv A_info; // empty matrix
+	sparse_rcv A_rcv; // empty matrix
 	mixed_derived mixed_object(
-		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info,
+		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv,
 		y, z, sigma_u, sigma_y, sigma_z
 
 	);

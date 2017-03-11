@@ -74,10 +74,10 @@ namespace {
 			size_t                 n_random       ,
 			bool                   quasi_fixed    ,
 			bool                   bool_sparsity  ,
-			const sparse_rcv&      A_info         ,
+			const sparse_rcv&      A_rcv          ,
 			const d_vector&        z              ) :
 			cppad_mixed(
-				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
+				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
 			)                    ,
 			n_fixed_(n_fixed)    ,
 			z_(z)
@@ -143,9 +143,9 @@ bool no_random_xam(void)
 	// (test full netwon method to make sure it works with no random effects).
 	bool quasi_fixed   = false;
 	bool bool_sparsity = false;
-	sparse_rcv A_info; // empty matrix
+	sparse_rcv A_rcv; // empty matrix
 	mixed_derived mixed_object(
-			n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, z
+			n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, z
 	);
 	mixed_object.initialize(fixed_in, random_in);
 

@@ -21,22 +21,8 @@ no_change_files='
 rename_cmd='s|whats_new.omh|whats_new_16.omh|'
 #
 cat << EOF > junk.sed
-s|using CppAD::mixed::sparse_mat_info;|using CppAD::mixed::sparse_rcv;|
-s|sparse_mat_info& %A_info%|sparse_rcv\\& %A_info%|
-s|\\tsparse_mat_info *A_info *,|\\tconst sparse_rcv A_info ,|
-#
-s|sparse_mat_info&\\( *\\)A_info\\( *\\),|sparse_rcv\\&\\1     A_info\\2,|
-#
-s|sparse_mat_info&\\( *\\)A_info|sparse_rcv\\&\\1     A_info |
-s|sparse_mat_info A_info;|sparse_rcv A_info;|
-#
-s|A_info_.row|A_info_.row()|g
-s|A_info_.col|A_info_.col()|g
-s|A_info_.val|A_info_.val()|g
-#
-s|A_info.row|A_info.row()|g
-s|A_info.col|A_info.col()|g
-s|A_info.val|A_info.val()|g
+s|A_info \\( *\\),|A_rcv  \\1,|g
+s|A_info|A_rcv|g
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

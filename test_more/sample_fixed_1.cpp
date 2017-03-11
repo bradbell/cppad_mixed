@@ -43,9 +43,9 @@ namespace {
 			size_t n_random                   ,
 			bool   quasi_fixed                ,
 			bool   bool_sparsity              ,
-			const CppAD::mixed::sparse_rcv&      A_info ,
+			const CppAD::mixed::sparse_rcv&      A_rcv  ,
 			const vector<double>& y           ) :
-			cppad_mixed(n_fixed, n_random, quasi_fixed, bool_sparsity, A_info),
+			cppad_mixed(n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv),
 			n_fixed_(n_fixed)                                      ,
 			y_(y)
 		{	assert( n_fixed      == y_.size() );
@@ -150,15 +150,15 @@ bool sample_fixed_1(void)
 	CppAD::mixed::sparse_rc A_pattern(1, n_random, 2);
 	for(size_t k = 0; k < A_pattern.nnz(); k++)
 		A_pattern.set(k, 0, k);
-	CppAD::mixed::sparse_rcv A_info(A_pattern);
-	for(size_t k = 0; k < A_info.nnz(); k++)
-		A_info.set(k, 1.0);
+	CppAD::mixed::sparse_rcv A_rcv(A_pattern);
+	for(size_t k = 0; k < A_rcv.nnz(); k++)
+		A_rcv.set(k, 1.0);
 
 	// object that is derived from cppad_mixed
 	bool quasi_fixed = true;
 	bool bool_sparsity = false;
 	mixed_derived mixed_object(
-		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
+		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, data
 	);
 	mixed_object.initialize(fixed_in, random_in);
 
@@ -306,7 +306,7 @@ bool sample_fixed_1(void)
 	// the active fix_constraint
 	for(size_t j = 0; j < n_fixed; j++)
 		E(1, j) = 2.0 * solution.fixed_opt[j];
-	// the A_info constraints are alwasy active and has one one constraint
+	// the A_rcv constraints are alwasy active and has one one constraint
 	for(size_t k = 0; k < ran_con_jac_info.row.size(); k++)
 	{	size_t r = ran_con_jac_info.row[k];
 		size_t c = ran_con_jac_info.col[k];

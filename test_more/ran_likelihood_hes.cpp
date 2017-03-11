@@ -50,9 +50,9 @@ namespace {
 			size_t n_random                   ,
 			bool   quasi_fixed                ,
 			bool   bool_sparsity              ,
-			const CppAD::mixed::sparse_rcv&      A_info,
+			const CppAD::mixed::sparse_rcv&      A_rcv,
 			const vector<double>& y           ) :
-			cppad_mixed(n_fixed, n_random, quasi_fixed, bool_sparsity, A_info) ,
+			cppad_mixed(n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv) ,
 			n_fixed_(n_fixed)     ,
 			n_random_(n_random)   ,
 			y_(y)
@@ -189,7 +189,7 @@ bool ran_likelihood_hes(void)
 	bool bool_sparsity = true;
 
 	// random constraint matrix
-	CppAD::mixed::sparse_rcv A_info; // empty matrix
+	CppAD::mixed::sparse_rcv A_rcv; // empty matrix
 
 	// optimize the fixed effects using quasi-Newton method
 	// If the derivatives are correct, the optimzation converges in 6
@@ -219,7 +219,7 @@ bool ran_likelihood_hes(void)
 
 		// object that is derived from cppad_mixed
 		mixed_derived mixed_object(
-			n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
+			n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, data
 		);
 		mixed_object.initialize(fixed_in, random_in);
 		CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(

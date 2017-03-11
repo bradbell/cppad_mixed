@@ -90,10 +90,10 @@ namespace {
 			size_t                               n_random      ,
 			bool                                 quasi_fixed   ,
 			bool                                 bool_sparsity ,
-			const CppAD::mixed::sparse_rcv&      A_info         ,
+			const CppAD::mixed::sparse_rcv&      A_rcv          ,
 			const vector<double>&                y             ) :
 			cppad_mixed(
-				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
+				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
 			),
 			y_(y)
 		{	assert( n_fixed == 2);
@@ -160,15 +160,15 @@ bool ran_con_jac_xam(void)
 	CppAD::mixed::sparse_rc A_pattern(1, n_random, n_random);
 	for(size_t j = 0; j < n_random; j++)
 		A_pattern.set(j, 0, j);
-	CppAD::mixed::sparse_rcv A_info(A_pattern);
+	CppAD::mixed::sparse_rcv A_rcv(A_pattern);
 	for(size_t j = 0; j < n_random; j++)
-		A_info.set(j, 1.0);
+		A_rcv.set(j, 1.0);
 
 	// mixed_object
 	bool quasi_fixed   = false;
 	bool bool_sparsity = true;
 	mixed_derived mixed_object(
-		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
+		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, data
 	);
 	mixed_object.initialize(fixed_vec, random_vec);
 

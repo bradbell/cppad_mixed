@@ -84,16 +84,16 @@ void cppad_mixed::ran_con_eval(
 	d_vector&       Au         )
 {	assert( random_vec.size() == n_random_ );
 	assert( Au.size() == n_ran_con_ );
-	assert( A_info_.row().size() == A_info_.col().size() );
-	assert( A_info_.row().size() == A_info_.val().size() );
-	size_t K = A_info_.row().size();
+	assert( A_rcv_.row().size() == A_rcv_.col().size() );
+	assert( A_rcv_.row().size() == A_rcv_.val().size() );
+	size_t K = A_rcv_.row().size();
 	//
 	for(size_t i = 0; i < n_ran_con_; i++)
 		Au[i] = 0.0;
 	for(size_t k = 0; k < K; k++)
-	{	size_t i = A_info_.row()[k];
-		size_t j = A_info_.col()[k];
-		double v = A_info_.val()[k];
+	{	size_t i = A_rcv_.row()[k];
+		size_t j = A_rcv_.col()[k];
+		double v = A_rcv_.val()[k];
 		Au[i] += v * random_vec[j];
 	}
 	return;

@@ -52,10 +52,10 @@ public:
 	mixed_derived(
 		size_t N                      ,
 		vector<size_t>&  y            ,
-		const CppAD::mixed::sparse_rcv&      A_info
+		const CppAD::mixed::sparse_rcv&      A_rcv
 	) :
 		// n_fixed=1, n_random=0, quasi_fixed=false, bool_sparsity=true
-		cppad_mixed(1, 0, false, true, A_info) ,
+		cppad_mixed(1, 0, false, true, A_rcv) ,
 		N_(N)                                  ,
 		y_(y)
 	{	logfac_.resize(N+1);
@@ -112,10 +112,10 @@ bool binomial(void)
 	vector<size_t> y(I);
 	simulate(N, I, theta_sim, y);
 
-	CppAD::mixed::sparse_rcv A_info; // empty matrix
+	CppAD::mixed::sparse_rcv A_rcv; // empty matrix
 
 	// create derived object
-	mixed_derived mixed_object(N, y, A_info);
+	mixed_derived mixed_object(N, y, A_rcv);
 
 	// initialize point to start optimization at
 	vector<double> theta_in( n_fixed ), u_in(0);

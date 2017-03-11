@@ -31,6 +31,8 @@ $spell
 	alloc
 	jac
 	Jacobian
+	rcv
+	nnz
 $$
 
 $section Initialization After Constructor$$
@@ -104,8 +106,8 @@ $rnext
 $code quasi_fixed_$$  $cnext
 	$cref/quasi_fixed_/private/quasi_fixed_/$$
 $rnext
-$code A_info_.row().size()$$  $cnext
-	$cref/A_info_/private/A_info_/$$
+$code A_rcv_.nnz()$$  $cnext
+	$cref/A_rcv_/private/A_rcv_/$$
 $rnext
 $code n_ran_con_$$  $cnext
 	$cref/n_ran_con_/private/n_ran_con_/$$
@@ -277,7 +279,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 	size_map["n_fixed_"]                   = n_fixed_;
 	size_map["n_random_"]                  = n_random_;
 	size_map["quasi_fixed_"]               = quasi_fixed_;
-	size_map["A_info_.row().size()"]         = A_info_.row().size();
+	size_map["A_rcv_.nnz()"]               = A_rcv_.nnz();
 	size_map["n_ran_con_"]                 = n_ran_con_;
 	size_map["ran_like_fun_.size_var()"]   = ran_like_fun_.size_var();
 	size_map["ran_like_a1fun_.size_var()"] = ran_like_a1fun_.size_var();

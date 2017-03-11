@@ -64,14 +64,14 @@ private:
 public:
 	// constructor
 	mixed_derived(
-		const CppAD::mixed::sparse_rcv&      A_info,
+		const CppAD::mixed::sparse_rcv&      A_rcv,
 		size_t K,
 		size_t I,
 		size_t T,
 		vector<size_t>&  y
 	) :
 		// n_fixed=2, n_random=0, quasi_fixed=false, bool_sparsity=true
-		cppad_mixed(2, 0, false, true, A_info),
+		cppad_mixed(2, 0, false, true, A_rcv),
 		K_(K)   ,
 		I_(I)   ,
 		T_(T)   ,
@@ -162,10 +162,10 @@ bool n_mixture(void)
 	size_t K      = size_t( lambda + 5.0 * sigma) + 1;
 
 	// empty matrix
-	CppAD::mixed::sparse_rcv A_info;
+	CppAD::mixed::sparse_rcv A_rcv;
 
 	// create derived object
-	mixed_derived mixed_object(A_info, K, I, T, y);
+	mixed_derived mixed_object(A_rcv, K, I, T, y);
 
 	// initialize point to start optimization at
 	vector<double> theta_in( n_fixed ), u_in(0);

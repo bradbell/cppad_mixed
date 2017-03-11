@@ -648,13 +648,13 @@ public:
 		size_t                  K             ,
 		bool                    quasi_fixed   ,
 		bool                    bool_sparsity ,
-		const sparse_rcv&       A_info        ,
+		const sparse_rcv&       A_rcv         ,
 		vector<size_t>&         y             ,
 		vector<double>&         fixed_in      ,
 		vector<double>&         random_in     ) :
 		// n_fixed = 3, n_random = T
 		cppad_mixed(
-			3, T, quasi_fixed, bool_sparsity, A_info
+			3, T, quasi_fixed, bool_sparsity, A_rcv
 		)                ,
 		R_(R)            ,
 		T_(T)            ,
@@ -976,9 +976,9 @@ int main(int argc, const char *argv[])
 		for(size_t t = 0; t < T; t++)
 			A_pattern.set(t, 0, t);
 	}
-	sparse_rcv A_info( A_pattern );
-	for(size_t t = 0; t < A_info.nc(); t++)
-		A_info.set(t, 1.0);
+	sparse_rcv A_rcv( A_pattern );
+	for(size_t t = 0; t < A_rcv.nc(); t++)
+		A_rcv.set(t, 1.0);
 
 	// initialize random effects to start optimization at
 	vector<double>  u_in(T);
@@ -987,7 +987,7 @@ int main(int argc, const char *argv[])
 	//
 	// create derived object
 	mixed_derived mixed_object(
-		R, T, K, quasi_fixed, bool_sparsity, A_info, y, theta_in, u_in
+		R, T, K, quasi_fixed, bool_sparsity, A_rcv, y, theta_in, u_in
 	);
 	//
 	// start timing of initialize

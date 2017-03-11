@@ -69,10 +69,10 @@ namespace {
 			size_t                 n_random      ,
 			bool                   quasi_fixed   ,
 			bool                   bool_sparsity ,
-			const sparse_rcv&      A_info        ,
+			const sparse_rcv&      A_rcv         ,
 			const d_vector&       y              ) :
 			cppad_mixed(
-				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
+				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
 			)                     ,
 			n_fixed_(n_fixed)     ,
 			n_random_(n_random)   ,
@@ -137,7 +137,7 @@ namespace {
 	};
 	// ----------------------------------------------------------------------
 	double sum_random_effects(
-		size_t n_random, const sparse_rcv&      A_info
+		size_t n_random, const sparse_rcv&      A_rcv
 	)
 	{
 		double inf = std::numeric_limits<double>::infinity();
@@ -162,7 +162,7 @@ namespace {
 		bool quasi_fixed   = false;
 		bool bool_sparsity = false;
 		mixed_derived mixed_object(
-			n_fixed, n_random, quasi_fixed, bool_sparsity, A_info, data
+			n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, data
 		);
 		mixed_object.initialize(fixed_in, random_in);
 
@@ -232,10 +232,10 @@ bool ran_constraint_xam(void)
 	CppAD::mixed::sparse_rc A_pattern(1, n_random, n_random);
 	for(size_t k = 0; k < n_random; k++)
 		A_pattern.set(k, 0, k);
-	sparse_rcv A_info(A_pattern);
+	sparse_rcv A_rcv(A_pattern);
 	for(size_t k = 0; k < n_random; k++)
-		A_info.set(k, 1.0);
-	sum = sum_random_effects(n_random, A_info);
+		A_rcv.set(k, 1.0);
+	sum = sum_random_effects(n_random, A_rcv);
 	ok &= fabs(sum) < 2.0 * tol;
 
 	return ok;

@@ -24,7 +24,7 @@ $section User Defined Class Derived From cppad_mixed$$
 
 $head Syntax$$
 $icode%mixed_derived% %mixed_object%(
-	%n_fixed%, %n_random%, %quasi_fixed%, %bool_sparsity%, %A_info%, %...%
+	%n_fixed%, %n_random%, %quasi_fixed%, %bool_sparsity%, %A_rcv%, %...%
 )%$$
 
 $head See Also$$
@@ -43,7 +43,7 @@ $head cppad_mixed$$
 The derived class constructor must call its base class constructor as follows:
 $codei%
 	cppad_mixed(
-		%n_fixed%, %n_random%, %quasi_fixed%, %bool_sparsity%, %A_info%
+		%n_fixed%, %n_random%, %quasi_fixed%, %bool_sparsity%, %A_rcv%
 	)
 %$$
 
@@ -106,10 +106,10 @@ computations.
 If this argument is not present, the type of sparsity patterns
 is not specified.
 
-$head A_info$$
+$head A_rcv$$
 This argument has prototype
 $codei%
-	const CppAD::mixed::sparse_rcv& %A_info%
+	const CppAD::mixed::sparse_rcv& %A_rcv%
 %$$
 It is a
 $cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
@@ -121,7 +121,7 @@ $cref/random constraint matrix
 /$$
 $latex A$$.
 If $icode%random_vec%.size()%$$ is zero, this must be the empty matrix.
-The member variable $icode A_info_$$ is set equal to $icode A_info$$
+The member variable $icode A_rcv_$$ is set equal to $icode A_rcv$$
 before any other routines are called by this routine.
 
 $head ...$$
@@ -185,13 +185,13 @@ cppad_mixed::cppad_mixed(
 	size_t                                n_random      ,
 	bool                                  quasi_fixed   ,
 	bool                                  bool_sparsity ,
-	const CppAD::mixed::sparse_rcv&       A_info         )
+	const CppAD::mixed::sparse_rcv&       A_rcv         )
 :
 n_fixed_(n_fixed)               ,
 n_random_(n_random)             ,
 quasi_fixed_(quasi_fixed)       ,
 bool_sparsity_(bool_sparsity)   ,
-A_info_(A_info)                 ,
+A_rcv_(A_rcv)                 ,
 init_ran_con_done_(false)       ,
 init_ran_like_done_(false)      ,
 init_ran_hes_done_(false)       ,

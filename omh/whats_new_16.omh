@@ -42,6 +42,7 @@ $spell
 	libdir
 	Taylor
 	checkpointed
+	rcv
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
@@ -80,7 +81,7 @@ This has been fixed
 
 $head 10-30$$
 $list number$$
-The $cref/A_info/derived_ctor/A_info/$$ argument was missing
+The $cref/A_rcv/derived_ctor/A_rcv/$$ argument was missing
 from the $code initialize$$ Syntax. This has been fixed.
 $lnext
 The value of
@@ -147,8 +148,8 @@ $cref/random constraint matrix
     /Notation
     /Random Constraint Matrix, A
 /$$
-$icode A_info$$, is now specified in
-$cref/initialize/derived_ctor/A_info/$$ instead
+$icode A_rcv$$, is now specified in
+$cref/initialize/derived_ctor/A_rcv/$$ instead
 $cref derived_ctor$$.
 This was undone on
 $cref/2017-03-08/whats_new/03-08/$$.
@@ -760,9 +761,9 @@ in increasing order (and was not specified as such).
 
 $head 02-06$$
 $list number$$
-Change the random constraint matrix $icode A_info$$
+Change the random constraint matrix $icode A_rcv$$
 to be an argument to the
-$cref/derived class constructor/derived_ctor/A_info/$$
+$cref/derived class constructor/derived_ctor/A_rcv/$$
 instead of an argument to the
 $cref initialize$$ routine.
 This was undone on

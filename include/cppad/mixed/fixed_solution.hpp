@@ -16,6 +16,7 @@ $begin fixed_solution$$
 $spell
 	CppAD
 	vec
+	rcv
 $$
 
 $section Optimal Solution Returned by optimize_fixed$$
@@ -99,7 +100,7 @@ $codei%
 It has size zero when constructed
 and when set its size is the number of random constraints; i.e.,
 the number of rows
-in the matrix $cref/A_info/derived_ctor/A_info/$$.
+in the matrix $cref/A_rcv/derived_ctor/A_rcv/$$.
 If $icode%solution%.ran_con_lag[%i%]%$$
 is greater than zero (less than zero), it is
 the Lagrange multiplier for the upper (lower) bound

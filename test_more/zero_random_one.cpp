@@ -83,12 +83,12 @@ namespace {
 		mixed_derived(
 			size_t n_fixed                    ,
 			size_t n_random                   ,
-			const CppAD::mixed::sparse_rcv&      A_info,
+			const CppAD::mixed::sparse_rcv&      A_rcv,
 			double sigma_u                    ,
 			double sigma_y                    ,
 			const vector<double>& y           ) :
 			// quasi_fixed = false, bool_sparsity = true
-			cppad_mixed(n_fixed, n_random, false, true, A_info) ,
+			cppad_mixed(n_fixed, n_random, false, true, A_rcv) ,
 			n_fixed_(n_fixed)                          ,
 			n_random_(n_random)                        ,
 			sigma_u_(sigma_u)                          ,
@@ -180,9 +180,9 @@ bool zero_random_one(void)
 	random_in[0] = 0.1;
 
 	// object that is derived from cppad_mixed
-	CppAD::mixed::sparse_rcv A_info; // empty matrix
+	CppAD::mixed::sparse_rcv A_rcv; // empty matrix
 	mixed_derived mixed_object(
-		n_fixed, n_random, A_info, sigma_u, sigma_y, data
+		n_fixed, n_random, A_rcv, sigma_u, sigma_y, data
 	);
 	mixed_object.initialize(fixed_in, random_in);
 

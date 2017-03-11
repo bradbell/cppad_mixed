@@ -99,13 +99,13 @@ namespace {
 			size_t                 n_random       ,
 			bool                   quasi_fixed    ,
 			bool                   bool_sparsity  ,
-			const sparse_rcv&      A_info         ,
+			const sparse_rcv&      A_rcv          ,
 			double                 sigma          ,
 			double                 delta          ,
 			const d_vector&        t              ,
 			const d_vector&        z              ) :
 			cppad_mixed(
-				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
+				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
 			)                   ,
 			n_fixed_(n_fixed)   ,
 			sigma_(sigma)       ,
@@ -197,10 +197,10 @@ bool lasso_xam(void)
 	// object that is derived from cppad_mixed
 	bool quasi_fixed   = false;
 	bool bool_sparsity = false;
-	sparse_rcv A_info; // empty matrix
+	sparse_rcv A_rcv; // empty matrix
 	double delta     = 0.002;
 	mixed_derived mixed_object(
-		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info,
+		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv,
 		sigma, delta, t, z
 	);
 	mixed_object.initialize(fixed_in, random_in);

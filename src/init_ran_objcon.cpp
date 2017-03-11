@@ -91,8 +91,8 @@ void cppad_mixed::init_ran_objcon(
 	assert( init_ran_con_done_ );
 	assert( init_newton_checkpoint_done_ );
 	assert( ! init_ran_objcon_done_ );
-	assert( A_info_.row().size() == A_info_.col().size() );
-	assert( A_info_.row().size() == A_info_.val().size() );
+	assert( A_rcv_.row().size() == A_rcv_.col().size() );
+	assert( A_rcv_.row().size() == A_rcv_.val().size() );
 	//
 	// constant term
 	double pi   = CppAD::atan(1.0) * 4.0;
@@ -181,11 +181,11 @@ void cppad_mixed::init_ran_objcon(
 		for(size_t i = 0; i < n_ran_con_; i++)
 			HB[1 + i] = a1_double(0.0);
 
-		size_t K = A_info_.row().size();
+		size_t K = A_rcv_.row().size();
 		for(size_t k = 0; k < K; k++)
-		{	size_t i = A_info_.row()[k];
-			size_t j = A_info_.col()[k];
-			double v = A_info_.val()[k];
+		{	size_t i = A_rcv_.row()[k];
+			size_t j = A_rcv_.col()[k];
+			double v = A_rcv_.val()[k];
 			HB[1 + i]  += a1_double(v) * W[j];
 		}
 	}

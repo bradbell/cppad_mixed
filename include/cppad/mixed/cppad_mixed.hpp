@@ -192,7 +192,7 @@ $srccode%cpp% */
 		size_t               n_random      ,
 		bool                 quasi_fixed   ,
 		bool                 bool_sparsity ,
-		const sparse_rcv&    A_info
+		const sparse_rcv&    A_rcv
 	);
 /* %$$
 
@@ -291,6 +291,7 @@ private:
 ------------------------------------------------------------------------------
 $begin private$$
 $spell
+	rcv
 	ldlt_eigen
 	objcon
 	eigen
@@ -381,10 +382,10 @@ $srccode%cpp% */
 	const bool bool_sparsity_;
 /* %$$
 
-$head A_info_$$
+$head A_rcv_$$
 contains the random constraint matrix
 $srccode%cpp% */
-	const sparse_rcv A_info_;
+	const sparse_rcv A_rcv_;
 /* %$$
 
 $head initialize_done_$$

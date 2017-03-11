@@ -48,10 +48,10 @@ namespace {
 			size_t                 n_random       ,
 			bool                   quasi_fixed    ,
 			bool                   bool_sparsity  ,
-			const sparse_rcv&      A_info          )
+			const sparse_rcv&      A_rcv          )
 			:
 			cppad_mixed(
-				n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
+				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
 			)
 		{ }
 		// example changing fatal error handler
@@ -74,13 +74,13 @@ bool derived_ctor_xam(void)
 	size_t n_random    = 0;
 	bool quasi_fixed   = true;
 	bool bool_sparsity = true;
-	sparse_rcv A_info; // empty matrix
+	sparse_rcv A_rcv; // empty matrix
 	//
 	d_vector fixed_vec(n_fixed), random_vec(n_random);
 	fixed_vec[0] = 0.0;
 	//
 	mixed_derived mixed_object(
-		n_fixed, n_random, quasi_fixed, bool_sparsity, A_info
+		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
 	);
 	mixed_object.initialize(fixed_vec, random_vec);
 	//
