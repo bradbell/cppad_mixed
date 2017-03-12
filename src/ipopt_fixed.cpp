@@ -155,6 +155,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 ------------------------------------------------------------------------------
 $begin ipopt_fixed_ctor$$
 $spell
+	rcv
 	uhat
 	tmp
 	objcon
@@ -365,7 +366,7 @@ and assumed to not change.
 The size of the $code val$$ vectors is set by the constructor,
 but element values may change.
 
-$subhead ran_con_jac_info_$$
+$subhead ran_con_jac_rcv_$$
 Sparse matrix information for the Jacobian of the
 random constraints.
 
@@ -476,7 +477,7 @@ mixed_object_      ( mixed_object    )
 		// just to determine the sparsity pattern. Note that the values
 		// in ran_jac_info.val are not specified.
 		mixed_object_.update_factor(fixed_in, random_in);
-		mixed_object.ran_con_jac(fixed_in, random_in, ran_con_jac_info_);
+		mixed_object.ran_con_jac(fixed_in, random_in, ran_con_jac_rcv_);
 	}
 	// -----------------------------------------------------------------------
 	// set nnz_jac_g_
@@ -493,7 +494,7 @@ mixed_object_      ( mixed_object    )
 	// derivative of the fixed constraints
 	nnz_jac_g_ += fix_con_jac_info.row.size();
 	// derivative of the random constraints
-	nnz_jac_g_ += ran_con_jac_info_.row.size();
+	nnz_jac_g_ += ran_con_jac_rcv_.nnz();
 	// -----------------------------------------------------------------------
 	// set lag_hes_row_, lag_hes_col_
 	// ran_objcon_hes_2_lag_, fix_like_hes_2_lag_
@@ -1347,10 +1348,10 @@ void ipopt_fixed::try_eval_jac_g(
 		}
 		// random constraints
 		offset = 2 * fix_likelihood_nabs_ + n_fix_con_;
-		for(size_t k = 0; k < ran_con_jac_info_.row.size(); k++)
+		for(size_t k = 0; k < ran_con_jac_rcv_.nnz(); k++)
 		{	assert( ell < nnz_jac_g_ );
-			iRow[ell] = Index( offset + ran_con_jac_info_.row[k] );
-			jCol[ell] = Index( ran_con_jac_info_.col[k] );
+			iRow[ell] = Index( offset + ran_con_jac_rcv_.row()[k] );
+			jCol[ell] = Index( ran_con_jac_rcv_.col()[k] );
 			ell++;
 		}
 		assert( ell == nnz_jac_g_ );
@@ -1411,10 +1412,10 @@ void ipopt_fixed::try_eval_jac_g(
 	// Jacobian of random constraints
 	if( n_ran_con_ > 0 )
 	{	assert( n_random_ > 0 );
-		mixed_object_.ran_con_jac(fixed_tmp_, random_cur_, ran_con_jac_info_);
-		for(size_t k = 0; k < ran_con_jac_info_.row.size(); k++)
+		mixed_object_.ran_con_jac(fixed_tmp_, random_cur_, ran_con_jac_rcv_);
+		for(size_t k = 0; k < ran_con_jac_rcv_.nnz(); k++)
 		{	assert( ell < nnz_jac_g_ );
-			values[ell++] = Number( ran_con_jac_info_.val[k] );
+			values[ell++] = Number( ran_con_jac_rcv_.val()[k] );
 		}
 	}
 	assert( ell == nnz_jac_g_ );

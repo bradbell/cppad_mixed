@@ -107,7 +107,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		size_t nnz_h_lag_;   // number non-zeros in Hessian of Lagragian
 		//
 		// random constraint jacobian
-		CppAD::mixed::sparse_mat_info ran_con_jac_info_;
+		CppAD::mixed::sparse_rcv ran_con_jac_rcv_;
 		//
 		// hessian of random objective and constraints
 		// (only defined when n_random_ > 0)

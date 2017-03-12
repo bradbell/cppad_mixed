@@ -859,7 +859,7 @@ $srccode%cpp% */
 	void ran_con_jac(
 		const d_vector&                fixed_vec  ,
 		const d_vector&                random_vec ,
-		CppAD::mixed::sparse_mat_info& jac_info
+		sparse_rcv&                    jac_info
 	);
 	friend bool ::ran_con_jac_xam(void);
 	friend bool ::sample_fixed_1(void);

@@ -17,13 +17,16 @@ $spell
 	cppad
 	const
 	CppAD
+	rcv
+	rc
+	nnz
 $$
 
 $section Jacobian of the Random Constraint Function$$
 
 $head Syntax$$
 $icode%mixed_object%.ran_con_jac(
-	%fixed_vec%, %random_vec%, %jac_info%
+	%fixed_vec%, %random_vec%, %jac_rcv%
 )%$$
 
 $head Private$$
@@ -58,29 +61,26 @@ $cref/optimal random effects
 /$$
 $latex \hat{u} ( \theta )$$.
 
-$head jac_info$$
+$head jac_rcv$$
 This argument has prototype
 $codei%
-	const CppAD::mixed::sparse_mat_info& %jac_info%
+	sparse_rcv& %jac_rcv%
 %$$
-The input size of the vectors in $icode jac_info$$
-is either zero, or the vectors are the same as the return value
-for a previous call to $code ran_con_jac$$.
+see $cref/sparse_rcv/typedef/Sparse Types/sparse_rcv/$$.
 
 $subhead Sparsity Pattern$$
-In the case where the input size of the vectors in $icode jac_info$$
-is zero, only the
-$cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$ is computed.
-Upon return, the size of $icode%jac_info%.val%$$ is equal to the
-size of $icode%jac_info%.row%$$, but the elements of
-$icode%jac_info%.val%$$ are not specified.
+In the case where the input value of $icode jac_rcv$$ is empty
+(all its sizes are zero)
+only the $cref/sparse_rc/typedef/Sparse Types/sparse_rc/$$
+sparsity pattern in $icode jac_rcv$$ computes.
+To be specific, upon return $icode%jac_rcv%.val()%$$ has size
+equal to the number of non-zero elements in the sparsity pattern,
+but the value of the elements is not specified.
 
 $subhead Sparse Matrix$$
-If the input size of the vectors in $icode jac_info$$
-are non-zero,
-upon return $icode jac_info$$ is a
-$cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
-representation of the Jacobian of the
+In the case where the input value of $icode jac_rcv$$ is non-empty
+upon return $icode jac_rcv$$ is a sparse matrix representation
+of the Jacobian of the
 $cref/random constraint function
 	/cppad_mixed
 	/Notation
@@ -102,8 +102,12 @@ $cref/derivative of optimal random effects
 /$$.
 
 $subhead Column Major Order$$
-The results in $icode jac_info$$ are in
-$cref/column major order/sparse_mat_info/Notation/Column Major Order/$$.
+The results in $icode jac_rcv$$ are in column major order; i.e.,
+upon return
+$codei%
+	%jac_rcv%.col_major[%k%] = %k%
+%$$
+for $icode%k% = 0, %...%, %jac_rcv%.nnz()-1%$$.
 
 $children%
 	example/private/ran_con_jac.cpp
@@ -121,14 +125,28 @@ $end
 void cppad_mixed::ran_con_jac(
 	const d_vector&                fixed_vec  ,
 	const d_vector&                random_vec ,
-	CppAD::mixed::sparse_mat_info& jac_info   )
+	sparse_rcv&                    jac_rcv    )
 {	assert( fixed_vec.size()  == n_fixed_ );
 	assert( random_vec.size() == n_random_ );
+	assert( A_rcv_.nr() != 0 ); // could just return here in this case
 	//
-	size_t L = jac_info.row.size();
-	assert( jac_info.col.size() == L );
-	assert( jac_info.val.size() == L );
-
+	bool empty =  jac_rcv.nr()==0 && jac_rcv.nc()==0 && jac_rcv.nnz()==0;
+	// 2DO: convert jac_rcv from a dense matrix to a truely sparse matrix
+	if( empty )
+	{	size_t nr  = A_rcv_.nr();
+		size_t nc  = n_fixed_;
+		size_t nnz = nr * nc;
+		sparse_rc pattern(nr, nc, nnz);
+		for(size_t j = 0; j < nc; j++)
+		{	for(size_t i = 0; i < nr; i++)
+				pattern.set(j * nr + i, i, j);
+		}
+		//
+		jac_rcv = sparse_rcv(pattern);
+		//
+		return;
+	}
+	//
 	// packed version of fixed and random effects
 	d_vector both(n_fixed_ + n_random_);
 	pack(fixed_vec, random_vec, both);
@@ -207,20 +225,11 @@ void cppad_mixed::ran_con_jac(
 			Au_theta_j[r] += v * val_x[c];
 		}
 		for(size_t i = 0; i < A_rcv_.nr(); i++)
-		{	// 2DO: convert this from dense to a true sparsity pattern
-			if( L == 0 )
-			{	// compute sparsity
-				jac_info.row.push_back(i);
-				jac_info.col.push_back(j);
-				jac_info.val.push_back(0.0);
-			}
-			else
-			{	// compute values
-				assert( jac_info.row[ell] == i );
-				assert( jac_info.col[ell] == j );
-				jac_info.val[ell] = Au_theta_j[i];
-				ell++;
-			}
+		{	// computed values
+			assert( jac_rcv.row()[ell] == i );
+			assert( jac_rcv.col()[ell] == j );
+			jac_rcv.set(ell, Au_theta_j[i]);
+			++ell;
 		}
 	}
 	return;

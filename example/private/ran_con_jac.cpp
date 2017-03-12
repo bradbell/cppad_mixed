@@ -186,25 +186,25 @@ bool ran_con_jac_xam(void)
 	mixed_object.update_factor(fixed_vec, uhat);
 
 	// compute sparstiy pattern for jacobian of random constraints
-	CppAD::mixed::sparse_mat_info jac_info;
-	mixed_object.ran_con_jac(fixed_vec, uhat, jac_info);
+	CppAD::mixed::sparse_rcv jac_rcv;
+	mixed_object.ran_con_jac(fixed_vec, uhat, jac_rcv);
 
 	// check number of possibly non_zero elements.
-	ok &= jac_info.row.size() == 2;
+	ok &= jac_rcv.nnz() == 2;
 	//
 	// partial w.r.t. theta_0
-	ok &= jac_info.row[0] == 0;
-	ok &= jac_info.col[0] == 0;
+	ok &= jac_rcv.row()[0] == 0;
+	ok &= jac_rcv.col()[0] == 0;
 	//
 	// partial w.r.t. theta_1
-	ok &= jac_info.row[1] == 0;
-	ok &= jac_info.col[1] == 1;
+	ok &= jac_rcv.row()[1] == 0;
+	ok &= jac_rcv.col()[1] == 1;
 
 	// Now compute the sparse Jacobian values
-	mixed_object.ran_con_jac(fixed_vec, uhat, jac_info);
+	mixed_object.ran_con_jac(fixed_vec, uhat, jac_rcv);
 	//
-	double jac_0 = jac_info.val[0];
-	double jac_1 = jac_info.val[1];
+	double jac_0 = jac_rcv.val()[0];
+	double jac_1 = jac_rcv.val()[1];
 
 	// check results
 	double check_0 = 0.0;

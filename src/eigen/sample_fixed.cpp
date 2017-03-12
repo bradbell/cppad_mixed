@@ -353,21 +353,21 @@ void cppad_mixed::try_sample_fixed(
 	}
 	// put random constraints in E
 	// (right hand side e for random constraints is zero)
-	CppAD::mixed::sparse_mat_info ran_con_info;
+	sparse_rcv ran_con_rcv;
 	if( n_ran_active > 0 )
 	{	assert( con_row == n_fix_active );
 		//
 		// jacobian of the random constraints
 		// sparsity pattern
-		ran_con_jac(fixed_opt, random_opt, ran_con_info);
+		ran_con_jac(fixed_opt, random_opt, ran_con_rcv);
 		// values
-		ran_con_jac(fixed_opt, random_opt, ran_con_info);
+		ran_con_jac(fixed_opt, random_opt, ran_con_rcv);
 		//
-		size_t K = ran_con_info.row.size();
+		size_t K = ran_con_rcv.nnz();
 		for(size_t k = 0; k < K; k++)
-		{	size_t r       = ran_con_info.row[k];
-			size_t c       = ran_con_info.col[k];
-			double v       = ran_con_info.val[k];
+		{	size_t r       = ran_con_rcv.row()[k];
+			size_t c       = ran_con_rcv.col()[k];
+			double v       = ran_con_rcv.val()[k];
 			bool in_subset = fixed2subset[c] != n_fixed_;
 			if( in_subset )
 			{	size_t j  = fixed2subset[c];

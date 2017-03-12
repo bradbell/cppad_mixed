@@ -285,18 +285,18 @@ bool sample_fixed_1(void)
 	}
 	//
 	// Jacobian of random effects at solution
-	CppAD::mixed::sparse_mat_info ran_con_jac_info;
+	sparse_rcv ran_con_jac_rcv;
 	// sparsity pattern
 	mixed_object.ran_con_jac(
 		solution.fixed_opt,
 		random_opt,
-		ran_con_jac_info
+		ran_con_jac_rcv
 	);
 	// value of jacobian
 	mixed_object.ran_con_jac(
 		solution.fixed_opt,
 		random_opt,
-		ran_con_jac_info
+		ran_con_jac_rcv
 	);
 	//
 	// Derivatives of active constraints
@@ -307,10 +307,10 @@ bool sample_fixed_1(void)
 	for(size_t j = 0; j < n_fixed; j++)
 		E(1, j) = 2.0 * solution.fixed_opt[j];
 	// the A_rcv constraints are alwasy active and has one one constraint
-	for(size_t k = 0; k < ran_con_jac_info.row.size(); k++)
-	{	size_t r = ran_con_jac_info.row[k];
-		size_t c = ran_con_jac_info.col[k];
-		double v = ran_con_jac_info.val[k];
+	for(size_t k = 0; k < ran_con_jac_rcv.nnz(); k++)
+	{	size_t r = ran_con_jac_rcv.row()[k];
+		size_t c = ran_con_jac_rcv.col()[k];
+		double v = ran_con_jac_rcv.val()[k];
 		ok &= r == 0;
 		E(2, c) = v;
 	}
