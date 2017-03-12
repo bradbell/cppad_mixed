@@ -558,12 +558,16 @@ $end
 # include <cppad/mixed/configure.hpp>
 
 namespace { // BEGIN_EMPTY_NAMESPACE
-
-using CppAD::vector;
+//
 using std::exp;
 using std::log;
+//
 using CppAD::mixed::sparse_rcv;
-
+using CppAD::mixed::a2_double;
+using CppAD::mixed::s_vector;
+using CppAD::mixed::d_vector;
+using CppAD::mixed::a2_vector;
+//
 // Convert size_t to string adding commas every three digits
 std::string size_t2string(size_t value )
 {	std::string raw_string = CppAD::to_string(value);
@@ -582,8 +586,8 @@ void simulate(
 	bool                   random_constraint ,
 	size_t                 R                 ,
 	size_t                 T                 ,
-	const vector<double>&  theta             ,
-	vector<size_t>&        y                 )
+	const d_vector&        theta             ,
+	s_vector&              y                 )
 {	assert( theta.size() == 3 );
 	assert( y.size() == R * T );
 	//
@@ -591,13 +595,13 @@ void simulate(
 	gsl_rng* rng = CppAD::mixed::get_gsl_rng();
 	//
 	// simulate population sizes
-	vector<double> N(R);
+	d_vector N(R);
 	double mu =  theta[0];
 	for(size_t i = 0; i < R; i++)
 		N[i] = gsl_ran_poisson(rng, mu );
 	//
 	// simulate random effects
-	vector<double> u(T);
+	d_vector u(T);
 	double sigma = theta[2];
 	double sum   = 0.0;
 	for(size_t t = 0; t < T; t++)
@@ -633,12 +637,12 @@ private:
 	const size_t          R_; // number of locations
 	const size_t          T_; // number of times
 	size_t                K_; // max used when summing over population size
-	const vector<size_t>& y_; // reference to data values
+	const s_vector&       y_; // reference to data values
 	// -----------------------------------------------------------------
 	// set by constructor and then effectively const
-	vector<size_t>  M_;       // max number of captures at each location
-	vector<double>  logfac_;  // logfac_[k] = log( k! )
-	vector<double>  log_pik_; // used by implement_ran_likelihood
+	s_vector        M_;       // max number of captures at each location
+	d_vector        logfac_;  // logfac_[k] = log( k! )
+	d_vector        log_pik_; // used by implement_ran_likelihood
 // ------------------------------------------------------------------------
 public:
 	// constructor
@@ -649,9 +653,9 @@ public:
 		bool                    quasi_fixed   ,
 		bool                    bool_sparsity ,
 		const sparse_rcv&       A_rcv         ,
-		vector<size_t>&         y             ,
-		vector<double>&         fixed_in      ,
-		vector<double>&         random_in     ) :
+		s_vector&               y             ,
+		d_vector&               fixed_in      ,
+		d_vector&               random_in     ) :
 		// n_fixed = 3, n_random = T
 		cppad_mixed(
 			3, T, quasi_fixed, bool_sparsity, A_rcv
@@ -685,13 +689,14 @@ public:
 			log_pik_[ell] = 0.0;
 		implement_ran_likelihood(fixed_in, random_in, log_pik_);
 	}
-	// implementaion of ran_likelihood
-	template <class a2_double>
-	vector<a2_double> implement_ran_likelihood(
-		const vector<a2_double>&  theta   ,
-		const vector<a2_double>&  u       ,
-		vector<a2_double>&        log_pik )
-	{	typedef a2_double Float;
+	// implementaion of ran_likelihood, used with Float = double and a2_double
+	template <class Float>
+	CppAD::vector<Float> implement_ran_likelihood(
+		const CppAD::vector<Float>&  theta   ,
+		const CppAD::vector<Float>&  u       ,
+		CppAD::vector<Float>&        log_pik )
+	{	using CppAD::vector;
+		//
 		assert( log_pik.size() == R_* K_ );
 		vector<Float> vec(1);
 		//
@@ -790,10 +795,10 @@ public:
 	}
 // ------------------------------------------------------------------------
 public:
-	virtual vector<a2_double> ran_likelihood(
-		const vector<a2_double>& fixed_vec  ,
-		const vector<a2_double>& random_vec )
-	{	vector<a2_double> log_pik(R_ * K_), vec(1);
+	virtual a2_vector ran_likelihood(
+		const a2_vector& fixed_vec  ,
+		const a2_vector& random_vec )
+	{	a2_vector log_pik(R_ * K_), vec(1);
 		for(size_t ell = 0; ell < R_ * K_; ell++)
 			log_pik[ell] = a2_double(log_pik_[ell]);
 		vec = implement_ran_likelihood(fixed_vec, random_vec, log_pik);
@@ -934,19 +939,18 @@ int main(int argc, const char *argv[])
 	size_t R = number_locations;
 	size_t K = max_population;
 	//
-	vector<double> theta_sim(n_fixed);
+	d_vector theta_sim(n_fixed);
 	theta_sim[0] = mean_population;
 	theta_sim[1] = mean_logit_probability;
 	theta_sim[2] = std_logit_probability;
 	//
 	// simulate y
-	vector<size_t> y(R * T);
+	s_vector y(R * T);
 	simulate(random_constraint, R, T, theta_sim, y);
 
 	// lower and upper limits
-	vector<double> fix_constraint_lower, fix_constraint_upper;
-	vector<double>
-		theta_lower(n_fixed), theta_in(n_fixed), theta_upper(n_fixed);
+	d_vector fix_constraint_lower, fix_constraint_upper;
+	d_vector theta_lower(n_fixed), theta_in(n_fixed), theta_upper(n_fixed);
 	//
 	// theta[0] is estimate of mean_population
 	theta_lower[0] = 0.0;
@@ -981,7 +985,7 @@ int main(int argc, const char *argv[])
 		A_rcv.set(t, 1.0);
 
 	// initialize random effects to start optimization at
-	vector<double>  u_in(T);
+	d_vector u_in(T);
 	for(size_t t = 0; t < T; t++)
 		u_in[t] = 0.0;
 	//
@@ -1033,7 +1037,7 @@ int main(int argc, const char *argv[])
 		fixed_ipopt_options += "String derivative_test      none\n";
 	//
 	double inf = std::numeric_limits<double>::infinity();
-	vector<double> u_lower(n_random), u_upper(n_random);
+	d_vector u_lower(n_random), u_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)
 	{	u_lower[i] = -inf;
 		u_upper[i] = +inf;
@@ -1061,11 +1065,11 @@ int main(int argc, const char *argv[])
 	label_print("optimize_fixed_seconds", end_seconds - start_seconds);
 	//
 	// estimate of fixed effects
-	vector<double> theta_out = solution.fixed_opt;
+	d_vector theta_out = solution.fixed_opt;
 	//
 	// estimate of random effects
 	start_seconds = CppAD::elapsed_seconds();
-	vector<double> u_out     = mixed_object.optimize_random(
+	d_vector u_out     = mixed_object.optimize_random(
 		random_ipopt_options,
 		theta_out,
 		u_lower,
@@ -1085,7 +1089,7 @@ int main(int argc, const char *argv[])
 	//
 	// sample approximate posteroior for fixed effects
 	start_seconds = CppAD::elapsed_seconds();
-	vector<double> sample( number_fixed_samples * n_fixed );
+	d_vector sample( number_fixed_samples * n_fixed );
 	mixed_object.sample_fixed(
 		sample,
 		information_rcv,
@@ -1111,7 +1115,7 @@ int main(int argc, const char *argv[])
 	//
 	// compute the sample standard deviations
 	// and ratio of error divided by sample standard deviation
-	vector<double> sample_std(n_fixed), estimate_ratio(n_fixed);
+	d_vector sample_std(n_fixed), estimate_ratio(n_fixed);
 	for(size_t j = 0; j < n_fixed; j++)
 		sample_std[j] = 0.0;
 	for(size_t i = 0; i < number_fixed_samples; i++)

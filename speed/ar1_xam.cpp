@@ -224,13 +224,14 @@ $end
 namespace {
 	using std::cout;
 	using std::string;
-	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
 	//
 	using CppAD::mixed::sparse_rcv;
-	typedef AD<double>    a1_double;
-	typedef AD<a1_double> a2_double;
+	using CppAD::mixed::a1_double;
+	using CppAD::mixed::a2_double;
+	using CppAD::mixed::d_vector;
+	using CppAD::mixed::a2_vector;
 	//
 	// The constant sigma_y
 	const double sigma_y = 0.1;
@@ -239,7 +240,7 @@ namespace {
 	private:
 		const size_t          n_fixed_;
 		const size_t          n_random_;
-		const vector<double>& y_;
+		const d_vector&       y_;
 	// ----------------------------------------------------------------------
 	public:
 		// constructor
@@ -249,7 +250,7 @@ namespace {
 			bool                   quasi_fixed   ,
 			bool                   bool_sparsity ,
 			const sparse_rcv&      A_rcv         ,
-			const vector<double>& y              ) :
+			const d_vector&        y             ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
 			)                     ,
@@ -262,12 +263,12 @@ namespace {
 		// -------------------------------------------------------------------
 		// implementation of ran_likelihood
 		// Note that theta[2] is not used
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& theta  ,
-			const vector<a2_double>& u      )
+		virtual a2_vector ran_likelihood(
+			const a2_vector& theta  ,
+			const a2_vector& u      )
 		{	assert( theta.size() == n_fixed_ );
 			assert( u.size() == y_.size() );
-			vector<a2_double> vec(1);
+			a2_vector vec(1);
 			//
 			// initialize summation
 			vec[0] = a2_double(0.0);
@@ -389,12 +390,12 @@ int main(int argc, const char* argv[])
 	size_t n_fixed  = 1;
 	//
 	// explicit constriants
-	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
+	d_vector fix_constraint_lower(0), fix_constraint_upper(0);
 	//
 	//
 	// difference
 	gsl_rng* rng = CppAD::mixed::get_gsl_rng();
-	vector<double> y(n_data), random_in(n_random), theta_sim(n_fixed);
+	d_vector y(n_data), random_in(n_random), theta_sim(n_fixed);
 	theta_sim[0] = 1.0;
 	for(size_t i = 0; i < n_data; i++)
 	{	y[i]         = double(i + 1) * theta_sim[0];
@@ -402,7 +403,7 @@ int main(int argc, const char* argv[])
 		random_in[i] = 0.0;
 	}
 	//
-	vector<double>
+	d_vector
 		fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
 	fixed_lower[0] = 1e-5; fixed_in[0] = 2.0; fixed_upper[0] = inf;
 	if( start_near_solution )
@@ -453,7 +454,7 @@ int main(int argc, const char* argv[])
 	else
 		fixed_ipopt_options += "String derivative_test      none\n";
 	//
-	vector<double> random_lower(n_random), random_upper(n_random);
+	d_vector random_lower(n_random), random_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
@@ -478,11 +479,11 @@ int main(int argc, const char* argv[])
 	label_print("optimize_fixed_seconds", end_seconds - start_seconds);
 	//
 	// estimate of fixed effects
-	vector<double> theta_out = solution.fixed_opt;
+	d_vector theta_out = solution.fixed_opt;
 	//
 	// estimate of random effects
 	start_seconds = CppAD::elapsed_seconds();
-	vector<double> u_out     = mixed_object.optimize_random(
+	d_vector u_out     = mixed_object.optimize_random(
 		random_ipopt_options,
 		theta_out,
 		random_lower,
@@ -503,7 +504,7 @@ int main(int argc, const char* argv[])
 	//
 	// sample approximate posteroior for fixed effects
 	size_t number_fixed_samples = 1000;
-	vector<double> sample( number_fixed_samples * n_fixed );
+	d_vector sample( number_fixed_samples * n_fixed );
 	start_seconds = CppAD::elapsed_seconds();
 	mixed_object.sample_fixed(
 		sample,
@@ -522,7 +523,7 @@ int main(int argc, const char* argv[])
 	//
 	// compute the sample standard deviations
 	// and ratio of error divided by sample standard deviation
-	vector<double> sample_std(n_fixed), estimate_ratio(n_fixed);
+	d_vector sample_std(n_fixed), estimate_ratio(n_fixed);
 	for(size_t j = 0; j < n_fixed; j++)
 		sample_std[j] = 0.0;
 	for(size_t i = 0; i < number_fixed_samples; i++)
