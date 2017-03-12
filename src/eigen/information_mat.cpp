@@ -114,7 +114,7 @@ $end
 # include <cppad/mixed/triple2eigen.hpp>
 # include <cppad/mixed/exception.hpp>
 
-CppAD::mixed::sparse_mat_info cppad_mixed::try_information_mat(
+CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 	const CppAD::mixed::fixed_solution&  solution             ,
 	const d_vector&                      random_opt           ,
 	bool                                 bool_sparsity        )
@@ -211,42 +211,44 @@ CppAD::mixed::sparse_mat_info cppad_mixed::try_information_mat(
 	// -----------------------------------------------------------------------
 	// Hessian of total objective (observed information matrix)
 	eigen_sparse total_hes = ran_hes + fix_hes;
-	CppAD::mixed::sparse_mat_info total_info;
+	//
+	// convert from eigen sparse matrix to sparse_rcv
+	size_t nr  = total_hes.rows();
+	size_t nc  = total_hes.cols();
+	size_t nnz = total_hes.nonZeros();
+	sparse_rc pattern(nr, nc, nnz);
+	d_vector val(nnz);
+	size_t k = 0;
 	for(size_t j = 0; j < n_fixed_; j++)
 	{	for(sparse_itr itr(total_hes, j); itr; ++itr)
 		{	assert( size_t( itr.col() ) == j );
 			size_t i = itr.row();
-			double v = itr.value();
-			total_info.row.push_back( i );
-			total_info.col.push_back( j );
-			total_info.val.push_back( v );
+			pattern.set(k, i, j);
+			val[k] = itr.value();
+			++k;
 		}
 	}
-	return total_info;
+	assert( k == nnz );
+	sparse_rcv total_rcv(pattern);
+	for(size_t k = 0;  k < nnz; k++)
+		total_rcv.set(k, val[k]);
+	//
+	return total_rcv;
 }
 // ---------------------------------------------------------------------------
 CppAD::mixed::sparse_rcv cppad_mixed::information_mat(
 	const CppAD::mixed::fixed_solution&  solution             ,
 	const d_vector&                      random_opt           ,
 	bool                                 bool_sparsity        )
-{	CppAD::mixed::sparse_mat_info ret_info;
+{	sparse_rcv result;
 	try
-	{	ret_info = try_information_mat(solution, random_opt, bool_sparsity);
+	{	result = try_information_mat(solution, random_opt, bool_sparsity);
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	std::string error_message = e.message("information_mat");
 		fatal_error(error_message);
 		assert(false);
 	}
-	size_t nr  = n_fixed_;
-	size_t nc  = n_fixed_;
-	size_t nnz = ret_info.row.size();
-	sparse_rc pattern(nr, nc, nnz);
-	for(size_t k = 0; k < nnz; k++)
-		pattern.set(k, ret_info.row[k], ret_info.col[k]);
-	sparse_rcv ret_rcv(pattern);
-	for(size_t k = 0; k < nnz; k++)
-		ret_rcv.set(k, ret_info.val[k]);
 	//
-	return ret_rcv;
+	return result;
 }

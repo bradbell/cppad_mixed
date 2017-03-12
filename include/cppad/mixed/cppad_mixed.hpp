@@ -734,7 +734,7 @@ $srccode%cpp% */
 $subhead try_information_mat$$
 Called by public $cref/information_mat/public/information_mat/$$
 $srccode%cpp% */
-	CppAD::mixed::sparse_mat_info try_information_mat(
+	CppAD::mixed::sparse_rcv try_information_mat(
 		const CppAD::mixed::fixed_solution&  solution      ,
 		const d_vector&                      random_opt    ,
 		bool                                 bool_sparsity
