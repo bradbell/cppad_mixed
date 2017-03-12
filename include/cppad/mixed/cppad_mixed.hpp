@@ -239,7 +239,7 @@ $srccode%cpp% */
 $head information_mat$$
 $cref information_mat$$, $title information_mat$$.
 $srccode%cpp% */
-	CppAD::mixed::sparse_mat_info information_mat(
+	CppAD::mixed::sparse_rcv information_mat(
 		const CppAD::mixed::fixed_solution&  solution             ,
 		const d_vector&                      random_opt           ,
 		bool                                 bool_sparsity = true
@@ -250,7 +250,7 @@ $cref sample_fixed$$, $title sample_fixed$$.
 $srccode%cpp% */
 	void sample_fixed(
 		d_vector&                            sample               ,
-		const CppAD::mixed::sparse_mat_info& information_info     ,
+		const sparse_rcv&                    information_rcv      ,
 		const CppAD::mixed::fixed_solution&  solution             ,
 		const d_vector&                      fixed_lower          ,
 		const d_vector&                      fixed_upper          ,
@@ -745,7 +745,7 @@ Called by public $cref/sample_fixed/public/sample_fixed/$$
 $srccode%cpp% */
 	void try_sample_fixed(
 		d_vector&                            sample               ,
-		const CppAD::mixed::sparse_mat_info& information_info     ,
+		const sparse_rcv&                    information_rcv      ,
 		const CppAD::mixed::fixed_solution&  solution             ,
 		const d_vector&                      fixed_lower          ,
 		const d_vector&                      fixed_upper          ,

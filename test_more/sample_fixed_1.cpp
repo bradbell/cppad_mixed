@@ -14,7 +14,6 @@ $section Sample From Fixed Effects Posterior: Example and Test$$
 // BEGIN C++
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
-# include <cppad/mixed/sparse_mat_info.hpp>
 # include <cppad/mixed/manage_gsl_rng.hpp>
 # include <Eigen/Dense>
 
@@ -22,10 +21,11 @@ namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_mat_info;
 	//
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
+	using CppAD::mixed::sparse_rcv;
+	//
 	typedef Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > double_mat;
 	//
 	// Used for debugging
@@ -249,15 +249,15 @@ bool sample_fixed_1(void)
 	);
 	//
 	// compute corresponding information matrix
-	CppAD::mixed::sparse_mat_info
-	information_info = mixed_object.information_mat(solution, random_opt);
+	sparse_rcv
+	information_rcv = mixed_object.information_mat(solution, random_opt);
 	//
 	// sample from the posterior for fixed effects
 	size_t n_sample = 10000;
 	CppAD::vector<double> sample( n_sample * n_fixed );
 	mixed_object.sample_fixed(
 		sample,
-		information_info,
+		information_rcv,
 		solution,
 		fixed_lower,
 		fixed_upper,
@@ -276,12 +276,12 @@ bool sample_fixed_1(void)
 	//
 	// unconstrained information matrix
 	double_mat info_mat = double_mat::Zero(n_fixed, n_fixed);
-	size_t K = information_info.row.size();
+	size_t K = information_rcv.nnz();
 	for(size_t k = 0; k < K; k++)
-	{	size_t i = information_info.row[k];
-		size_t j = information_info.col[k];
-		info_mat(i, j) = information_info.val[k];
-		info_mat(j, i) = information_info.val[k];
+	{	size_t i = information_rcv.row()[k];
+		size_t j = information_rcv.col()[k];
+		info_mat(i, j) = information_rcv.val()[k];
+		info_mat(j, i) = information_rcv.val()[k];
 	}
 	//
 	// Jacobian of random effects at solution

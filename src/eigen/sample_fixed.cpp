@@ -18,6 +18,7 @@ $spell
 	cppad
 	const
 	gsl_rng
+	rcv
 $$
 
 $section Sample Posterior for Fixed Effects$$
@@ -25,7 +26,7 @@ $section Sample Posterior for Fixed Effects$$
 $head Syntax$$
 $icode%mixed_object%.sample_fixed(
 	%sample%,
-	%information_info%,
+	%information_rcv%,
 	%solution%,
 	%fixed_lower%,
 	%fixed_upper%,
@@ -77,19 +78,19 @@ These samples are independent for different $latex i$$,
 and for fixed $latex i$$, they have the
 $cref/implicit covariance/sample_fixed/Theory/Implicit Covariance/$$.
 
-$head information_info$$
+$head information_rcv$$
 This is a sparse matrix representation for the
 lower triangle of the observed information matrix corresponding to
 $icode solution$$; i.e., the matrix returned by
 $codei%
-%information_info% = %mixed_object%.information_mat(
+%information_rcv% = %mixed_object%.information_mat(
 	%solution%, %random_options%, %random_lower%, %random_upper%, %random_in%
 )%$$
 
 $head solution$$
 is the $cref/solution/optimize_fixed/solution/$$
 for a the call to $cref optimize_fixed$$ corresponding to
-$icode information_info$$.
+$icode information_rcv$$.
 
 $head fixed_lower$$
 is the same as
@@ -153,7 +154,7 @@ $latex \[
 	H^{-1}
 \]$$
 Here $latex H$$ is the Hessian corresponding to
-the observed information matrix $icode information_info$$.
+the observed information matrix $icode information_rcv$$.
 
 $subhead Approximate Constraint Equations$$
 Let $latex n$$ be the number of fixed effects in $latex \theta$$,
@@ -251,7 +252,7 @@ namespace {
 // -------------------------------------------------------------------------
 void cppad_mixed::try_sample_fixed(
 	CppAD::vector<double>&                 sample               ,
-	const CppAD::mixed::sparse_mat_info&   information_info     ,
+	const sparse_rcv&                      information_rcv      ,
 	const CppAD::mixed::fixed_solution&    solution             ,
 	const CppAD::vector<double>&           fixed_lower          ,
 	const CppAD::vector<double>&           fixed_upper          ,
@@ -265,9 +266,6 @@ void cppad_mixed::try_sample_fixed(
 	// sample
 	assert( sample.size() > 0 );
 	assert( sample.size() % n_fixed_ == 0 );
-	// information_info
-	assert( information_info.row.size() == information_info.col.size() );
-	assert( information_info.row.size() == information_info.val.size() );
 	// solution
 	assert( solution.fixed_opt.size() == n_fixed_ );
 	assert( solution.fixed_lag.size() == n_fixed_ );
@@ -401,12 +399,12 @@ void cppad_mixed::try_sample_fixed(
 	double_mat H_II = double_mat::Zero(nI, nI);
 	double_mat H_ID = double_mat::Zero(nI, nD);
 	double_mat H_DD = double_mat::Zero(nD, nD);
-	for(size_t k = 0; k < information_info.row.size(); k++)
-	{	// note only lower triangle is stored in information_info
+	for(size_t k = 0; k < information_rcv.nnz(); k++)
+	{	// note only lower triangle is stored in information_rcv
 		// but we must fill both lower and upper triangle for eigen inverse
-		size_t r = information_info.row[k];
-		size_t c = information_info.col[k];
-		double v = information_info.val[k];
+		size_t r = information_rcv.row()[k];
+		size_t c = information_rcv.col()[k];
+		double v = information_rcv.val()[k];
 		//
 		bool in_subset = fixed2subset[r] != n_fixed_;
 		in_subset     &= fixed2subset[c] != n_fixed_;
@@ -535,7 +533,7 @@ void cppad_mixed::try_sample_fixed(
 // BEGIN PROTOTYPE
 void cppad_mixed::sample_fixed(
 	CppAD::vector<double>&                 sample               ,
-	const CppAD::mixed::sparse_mat_info&   information_info     ,
+	const sparse_rcv&                      information_rcv      ,
 	const CppAD::mixed::fixed_solution&    solution             ,
 	const CppAD::vector<double>&           fixed_lower          ,
 	const CppAD::vector<double>&           fixed_upper          ,
@@ -544,7 +542,7 @@ void cppad_mixed::sample_fixed(
 {	try
 	{	try_sample_fixed(
 			sample            ,
-			information_info  ,
+			information_rcv   ,
 			solution          ,
 			fixed_lower       ,
 			fixed_upper       ,

@@ -14,15 +14,16 @@ $spell
 	bool
 	CppAD
 	cppad
+	rcv
 $$
 
 $section Compute the Observed Information For Fixed Effects$$
 
 $head Syntax$$
-$icode%information_info% = %mixed_object%.information_mat(
+$icode%information_rcv% = %mixed_object%.information_mat(
 	%solution%, %random_opt%
 )%$$
-$icode%information_info% = %mixed_object%.information_mat(
+$icode%information_rcv% = %mixed_object%.information_mat(
 	%solution%, %random_opt%, %bool_sparsity%
 )%$$
 
@@ -84,15 +85,15 @@ If this argument is not present, the type of sparsity patterns
 is not specified.
 No sparsity patterns are computed when $icode quasi_fixed$$ is false.
 
-$head information_info$$
+$head information_rcv$$
 The return value has prototype
 $codei%
-	CppAD::mixed::sparse_mat_info %information_info%
+	CppAD::mixed::sparse_rcv %information_rcv%
 %$$
+see $cref/sparse_rcv/typedef/Sparse Types/sparse_rcv/$$.
 This is a sparse matrix representation for the
-lower triangle of the observed information matrix.
-This matrix is symmetric and hence determined by its
-lower triangle.
+lower triangle of the observed information matrix,
+which is symmetric and hence determined by its lower triangle.
 Absolute value terms in the
 $cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
 for the $cref fix_likelihood$$ are not include in this Hessian
@@ -224,18 +225,28 @@ CppAD::mixed::sparse_mat_info cppad_mixed::try_information_mat(
 	return total_info;
 }
 // ---------------------------------------------------------------------------
-CppAD::mixed::sparse_mat_info cppad_mixed::information_mat(
+CppAD::mixed::sparse_rcv cppad_mixed::information_mat(
 	const CppAD::mixed::fixed_solution&  solution             ,
 	const d_vector&                      random_opt           ,
 	bool                                 bool_sparsity        )
-{	CppAD::mixed::sparse_mat_info ret;
+{	CppAD::mixed::sparse_mat_info ret_info;
 	try
-	{	ret = try_information_mat(solution, random_opt, bool_sparsity);
+	{	ret_info = try_information_mat(solution, random_opt, bool_sparsity);
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	std::string error_message = e.message("information_mat");
 		fatal_error(error_message);
 		assert(false);
 	}
-	return ret;
+	size_t nr  = n_fixed_;
+	size_t nc  = n_fixed_;
+	size_t nnz = ret_info.row.size();
+	sparse_rc pattern(nr, nc, nnz);
+	for(size_t k = 0; k < nnz; k++)
+		pattern.set(k, ret_info.row[k], ret_info.col[k]);
+	sparse_rcv ret_rcv(pattern);
+	for(size_t k = 0; k < nnz; k++)
+		ret_rcv.set(k, ret_info.val[k]);
+	//
+	return ret_rcv;
 }

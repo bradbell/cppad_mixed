@@ -227,8 +227,8 @@ namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_rcv;
 	//
+	using CppAD::mixed::sparse_rcv;
 	typedef AD<double>    a1_double;
 	typedef AD<a1_double> a2_double;
 	//
@@ -494,8 +494,8 @@ int main(int argc, const char* argv[])
 	//
 	// information matrix
 	start_seconds = CppAD::elapsed_seconds();
-	CppAD::mixed::sparse_mat_info
-	information_info = mixed_object.information_mat(
+	sparse_rcv
+	information_rcv = mixed_object.information_mat(
 		solution, u_out, bool_sparsity
 	);
 	end_seconds = CppAD::elapsed_seconds();
@@ -507,7 +507,7 @@ int main(int argc, const char* argv[])
 	start_seconds = CppAD::elapsed_seconds();
 	mixed_object.sample_fixed(
 		sample,
-		information_info,
+		information_rcv,
 		solution,
 		fixed_lower,
 		fixed_upper,

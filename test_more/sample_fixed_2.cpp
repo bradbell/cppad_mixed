@@ -18,11 +18,11 @@ namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_rcv;
 	//
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
-
+	using CppAD::mixed::sparse_rcv;
+	//
 	class mixed_derived : public cppad_mixed {
 	private:
 		const size_t          n_fixed_;
@@ -196,19 +196,19 @@ bool sample_fixed_2(void)
 	);
 	//
 	// compute corresponding information matrix
-	CppAD::mixed::sparse_mat_info
-	information_info = mixed_object.information_mat(solution, random_opt);
+	sparse_rcv
+	information_rcv = mixed_object.information_mat(solution, random_opt);
 	//
 	// Note all entries in information matrix are non-zero
 	size_t K = ( (n_fixed + 1) * n_fixed ) / 2;
-	ok &= K == information_info.row.size();
+	ok &= K == information_rcv.nnz();
 	//
 	// sample from the posterior for fixed effects
 	size_t n_sample = 10000;
 	CppAD::vector<double> sample( n_sample * n_fixed );
 	mixed_object.sample_fixed(
 		sample,
-		information_info,
+		information_rcv,
 		solution,
 		fixed_lower,
 		fixed_upper,
@@ -229,10 +229,10 @@ bool sample_fixed_2(void)
 	//
 	matrix info_mat = matrix::Zero(n_fixed, n_fixed);
 	for(size_t k = 0; k < K; k++)
-	{	size_t i = information_info.row[k];
-		size_t j = information_info.col[k];
-		info_mat(i, j) = information_info.val[k];
-		info_mat(j, i) = information_info.val[k];
+	{	size_t i = information_rcv.row()[k];
+		size_t j = information_rcv.col()[k];
+		info_mat(i, j) = information_rcv.val()[k];
+		info_mat(j, i) = information_rcv.val()[k];
 	}
 	matrix cov_mat = info_mat.inverse();
 	//

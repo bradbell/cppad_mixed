@@ -1077,8 +1077,7 @@ int main(int argc, const char *argv[])
 	//
 	// information matrix
 	start_seconds = CppAD::elapsed_seconds();
-	CppAD::mixed::sparse_mat_info
-	information_info = mixed_object.information_mat(
+	sparse_rcv information_rcv = mixed_object.information_mat(
 		solution, u_out, bool_sparsity
 	);
 	end_seconds = CppAD::elapsed_seconds();
@@ -1089,7 +1088,7 @@ int main(int argc, const char *argv[])
 	vector<double> sample( number_fixed_samples * n_fixed );
 	mixed_object.sample_fixed(
 		sample,
-		information_info,
+		information_rcv,
 		solution,
 		theta_lower,
 		theta_upper,

@@ -115,6 +115,7 @@ namespace {
 	using CppAD::mixed::sparse_rcv;
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
+	using CppAD::mixed::s_vector;
 	using CppAD::mixed::d_vector;
 	using CppAD::mixed::a1_vector;
 	using CppAD::mixed::a2_vector;
@@ -276,11 +277,11 @@ bool information_mat_xam(void)
 		random_in
 	);
 	// compute corresponding information matrix
-	CppAD::mixed::sparse_mat_info
-	information_info = mixed_object.information_mat(solution, random_opt);
+	sparse_rcv
+	information_rcv = mixed_object.information_mat(solution, random_opt);
 	//
 	// there are three non-zero entries in the lower triangle
-	ok  &= information_info.row.size() == 3;
+	ok  &= information_rcv.nnz() == 3;
 	//
 	// theta
 	const d_vector& theta( solution.fixed_opt );
@@ -303,34 +304,34 @@ bool information_mat_xam(void)
 	}
 	//
 	// check Hessian values
+	const s_vector& row( information_rcv.row() );
+	const s_vector& col( information_rcv.col() );
+	const d_vector& val( information_rcv.val() );
 	for(size_t k = 0; k < 3; k++)
-	{	if( information_info.row[k] == 0 )
+	{	if( row[k] == 0 )
 		{	// only returning lower triangle
-			ok &= information_info.col[k] == 0;
+			ok &= col[k] == 0;
 			// value of second partial w.r.t. theta_0, theta_0
-			double val   = information_info.val[k];
 			double check = 1.0 + n_data / var;
-			ok &= CppAD::NearEqual(val, check, eps, eps);
+			ok &= CppAD::NearEqual(val[k], check, eps, eps);
 		}
-		else if( information_info.col[k] == 0 )
+		else if( col[k] == 0 )
 		{	// only other choice for row
-			ok &= information_info.row[k] == 1;
+			ok &= row[k] == 1;
 			// value of second partial w.r.t. theta_0, theta_1
-			double val   = information_info.val[k];
 			double check = 2.0 * theta[1] * sum / var_sq;
-			ok &= CppAD::NearEqual(val, check, eps, eps);
+			ok &= CppAD::NearEqual(val[k], check, eps, eps);
 		}
 		else
 		{	// only case that is left
-			ok &= information_info.row[k] == 1;
-			ok &= information_info.col[k] == 1;
+			ok &= row[k] == 1;
+			ok &= col[k] == 1;
 			// value of second partial w.r.t. theta_1, theta_1
-			double val   = information_info.val[k];
 			double check = 1.0 + n_data / var;
 			check       -= 2.0 * n_data * theta_1_sq / var_sq;
 			check       -= sum_sq / var_sq;
 			check       += 4.0 * theta_1_sq * sum_sq / var_cube;
-			ok &= CppAD::NearEqual(val, check, eps, eps);
+			ok &= CppAD::NearEqual(val[k], check, eps, eps);
 		}
 	}
 	return ok;

@@ -33,9 +33,15 @@ $childtable%
 	omh/whats_new_16.omh
 %$$
 
+$head 03-12$$
+Change $cref/information_rcv/information_mat/information_rcv/$$
+from type $cref sparse_mat_info$$ to
+$cref/sparse_rcv/typedef/Sparse Types/sparse_rcv/$$.
+
+
 $head 03-11$$
-Change $cref/A_rcv/derived_ctor/A_rcv/$$ from type
-$cref sparse_mat_info$$ to
+Change $cref/A_rcv/derived_ctor/A_rcv/$$
+from type $cref sparse_mat_info$$ to
 $cref/sparse_rcv/typedef/Sparse Types/sparse_rcv/$$.
 
 $head 03-10$$

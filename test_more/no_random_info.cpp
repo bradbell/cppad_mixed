@@ -153,18 +153,21 @@ bool no_random_info(void)
 		random_in
 	);
 	// compute corresponding information matrix
-	CppAD::mixed::sparse_mat_info
-	information_info = mixed_object.information_mat(solution, random_opt);
+	sparse_rcv
+	information_rcv = mixed_object.information_mat(solution, random_opt);
 	//
 	// The infromation matrix is diagonal
-	ok  &= information_info.row.size() == n_fixed;
+	ok  &= information_rcv.nnz() == n_fixed;
 	//
 	// check Hessian values
+	const CppAD::mixed::s_vector& row( information_rcv.row() );
+	const CppAD::mixed::s_vector& col( information_rcv.col() );
+	const CppAD::mixed::d_vector& val( information_rcv.val() );
 	for(size_t i = 0; i < n_fixed; i++)
-	{	ok &= information_info.row[i] == i;
-		ok &= information_info.col[i] == i;
+	{	ok &= row[i] == i;
+		ok &= col[i] == i;
 		double check = 1.0 / double( (i + 1) * (i + 1) );
-		ok &= CppAD::NearEqual( information_info.val[i], check, eps, eps);
+		ok &= CppAD::NearEqual( val[i], check, eps, eps);
 	}
 	//
 	// make sure can sample from fixed effects
@@ -172,7 +175,7 @@ bool no_random_info(void)
 	vector<double> sample(n_fixed * sample_size);
 	mixed_object.sample_fixed(
 		sample,
-		information_info,
+		information_rcv,
 		solution,
 		fixed_lower,
 		fixed_upper,
