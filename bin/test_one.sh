@@ -80,7 +80,7 @@ do
 	fi
 done
 rm test_one.1
-if [ "$found" == '' ]
+if [ "$found" == 'no' ]
 then
 	echo "test_one.sh: cannot find $file_name in example or test_more"
 	exit 1
