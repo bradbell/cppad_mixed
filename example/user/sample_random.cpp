@@ -31,7 +31,6 @@ $end
 // BEGIN C++
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
-# include <cppad/mixed/sparse_mat_info.hpp>
 # include <cppad/mixed/manage_gsl_rng.hpp>
 # include <Eigen/Dense>
 

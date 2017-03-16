@@ -106,7 +106,6 @@ $end
 // BEGIN C++
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
-# include <cppad/mixed/sparse_mat_info.hpp>
 
 namespace {
 	using CppAD::log;

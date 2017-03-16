@@ -34,13 +34,18 @@ $childtable%
 %$$
 
 $head 03-12$$
-Change $cref/information_rcv/information_mat/information_rcv/$$
+$bold API:$$
+change $cref/information_rcv/information_mat/information_rcv/$$
 from type $cref sparse_mat_info$$ to
 $cref/sparse_rcv/typedef/Sparse Types/sparse_rcv/$$.
+This removes the last use of $code sparse_mat_info$$ from the
+$cref public$$ part of $code cppad_mixed$$.
+The intention here is to remove the $cref private$$ use slowly over time.
 
 
 $head 03-11$$
-Change $cref/A_rcv/derived_ctor/A_rcv/$$
+$bold API$$
+change $cref/A_rcv/derived_ctor/A_rcv/$$
 from type $cref sparse_mat_info$$ to
 $cref/sparse_rcv/typedef/Sparse Types/sparse_rcv/$$.
 
@@ -55,14 +60,14 @@ $cref typedef$$.
 
 $head 03-08$$
 $list number$$
-$bold API Change:$$
+$bold API:$$
 Move the arguments
 $cref/bool_sparsity/derived_ctor/bool_sparsity/$$ and
 $cref/A_rcv/derived_ctor/A_rcv/$$ from $cref initialize$$
 to the base class constructor
 $cref/cppad_mixed/derived_ctor/cppad_mixed/$$.
 $lnext
-$bold API Change:$$
+$bold API:$$
 Change $code a1d_vector$$ and $code a2d_vector$$ to
 $code a1_vector$$ and $code a2_vector$$ respectively.
 $lend
