@@ -225,7 +225,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 
 		// hes_cross_
 		assert( ! init_hes_cross_done_ );
-		init_hes_cross(bool_sparsity_, fixed_vec, random_vec);
+		init_hes_cross(fixed_vec, random_vec);
 		assert( init_hes_cross_done_ );
 
 		if( ! quasi_fixed_ )

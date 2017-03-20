@@ -28,7 +28,7 @@ $section Cross Terms of Sparse Hessian w.r.t Fixed and Random Effects$$
 
 $head Syntax$$
 $icode%mixed_object%.init_hes_cross(
-	%bool_sparsity%, %fixed_vec%, %random_vec%
+	%fixed_vec%, %random_vec%
 )%$$
 
 $head Private$$
@@ -38,14 +38,6 @@ $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
-
-$head bool_sparsity$$
-This argument has prototype
-$codei%
-	bool %bool_sparsity%
-%$$
-If it is true, boolean sparsity patterns are used for this computation,
-otherwise set sparsity patterns are used.
 
 $head fixed_vec$$
 This argument has prototype
@@ -273,7 +265,6 @@ void cross_hes_use_bool(
 
 
 void cppad_mixed::init_hes_cross(
-	bool            use_bool_sparsity ,
 	const d_vector& fixed_vec         ,
 	const d_vector& random_vec        )
 {
@@ -288,7 +279,7 @@ void cppad_mixed::init_hes_cross(
 	d_vector both(n_both);
 	pack(fixed_vec, random_vec, both);
 
-	if( use_bool_sparsity ) cross_hes_use_bool(
+	if( bool_sparsity_ ) cross_hes_use_bool(
 		n_fixed_,
 		n_random_,
 		both,
