@@ -81,7 +81,7 @@ ldlt_cholmod='yes'
 # In addition, &cref/warnings/public/User Defined Functions/warning/&&
 # where the context in the debugger is helpful, are also converted to asserts.
 # &codep
-log_fatal_error='yes'
+log_fatal_error='no'
 # &&
 #
 # &head use_atomic_cholesky&&

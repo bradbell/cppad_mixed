@@ -150,36 +150,36 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	// fix_like_jac_
 	// ------------------------------------------------------------------------
 	// compute the sparsity pattern for the Jacobian
-	typedef CppAD::vector< std::set<size_t> > sparsity_pattern;
-	sparsity_pattern r(n_fixed_);
-	for(size_t j = 0; j < n_fixed_; j++)
-		r[j].insert(j);
-	sparsity_pattern pattern = fix_like_fun_.ForSparseJac(n_fixed_, r);
+	sparse_rc pattern_in(n_fixed_, n_fixed_, n_fixed_);
+	for(size_t k = 0; k < n_fixed_; k++)
+		pattern_in.set(k, k, k);
+	bool      transpose     = false;
+	bool      dependency    = false;
+	bool      internal_bool = bool_sparsity_;
+	sparse_rc jac_pattern;
+	fix_like_fun_.for_jac_sparsity(
+		pattern_in, transpose, dependency, internal_bool, jac_pattern
+	);
 
-	// convert sparsity to row and column index form
-	assert( fix_like_jac_.row.size() == 0 );
-	assert( fix_like_jac_.col.size() == 0 );
-	assert( fix_like_jac_.val.size() == 0 );
-	std::set<size_t>::iterator itr;
-	for(size_t i = 0; i < fix_like_fun_.Range(); i++)
-	{	for(itr = pattern[i].begin(); itr != pattern[i].end(); itr++)
-		{	size_t j = *itr;
-			fix_like_jac_.row.push_back(i);
-			fix_like_jac_.col.push_back(j);
-		}
-	}
-	fix_like_jac_.val.resize( fix_like_jac_.row.size() );
+	// compute entire Jacobian
+	fix_like_jac_.subset = sparse_rcv( jac_pattern );
 
-	// direction for this sparse Jacobian
-	fix_like_jac_.direction = CppAD::mixed::sparse_jac_info::Forward;
+	// use forward mode for this sparse Jacobian
+	fix_like_jac_.forward = true;
+
+	// use clear to make it cleart that work is being computed
+	// (should already be empty).
+	fix_like_jac_.work.clear();
 
 	// compute the work vector for reuse during Jacobian sparsity calculations
-	fix_like_fun_.SparseJacobianForward(
-		fixed_vec       ,
-		pattern         ,
-		fix_like_jac_.row  ,
-		fix_like_jac_.col  ,
-		fix_like_jac_.val  ,
+	size_t group_max = 1;
+	std::string coloring = "cppad";
+	fix_like_fun_.sparse_jac_for(
+		group_max            ,
+		fixed_vec            ,
+		fix_like_jac_.subset ,
+		jac_pattern          ,
+		coloring             ,
 		fix_like_jac_.work
 	);
 	// ------------------------------------------------------------------------
@@ -188,45 +188,52 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	// no need to recalculate forward sparsity pattern.
 	//
 	// sparsity pattern for the Hessian
-	sparsity_pattern s(1);
-	for(size_t i = 0; i < fix_like_fun_.Range(); i++ )
-		s[0].insert(i);
-	pattern.clear();
-	pattern = fix_like_fun_.RevSparseHes(n_fixed_, s);
-
-	// determine row and column indices in lower triangle of Hessian
-	assert( fix_like_hes_.row.size() == 0 );
-	assert( fix_like_hes_.col.size() == 0 );
-	assert( fix_like_hes_.val.size() == 0 );
-	for(size_t i = 0; i < n_fixed_; i++)
-	{	for(itr = pattern[i].begin(); itr != pattern[i].end(); itr++)
-		{	size_t j = *itr;
-			// only compute lower triangular part
-			if( i >= j )
-			{	fix_like_hes_.row.push_back(i);
-				fix_like_hes_.col.push_back(j);
-			}
-		}
+	size_t m = fix_like_fun_.Range();
+	CppAD::vector<bool> select_range(m);
+	for(size_t i = 0; i < m; i++)
+		select_range[i] = false;
+	select_range[0] = true;
+	sparse_rc hes_pattern;
+	fix_like_fun_.rev_hes_sparsity(
+		select_range, transpose, internal_bool, hes_pattern
+	);
+	//
+	// sparsity pattern corresponding to lower traingle of Hessian
+	size_t nnz = 0;
+	for(size_t k = 0; k < hes_pattern.nnz(); k++)
+	{	if( hes_pattern.row()[k] >= hes_pattern.col()[k] )
+			++nnz;
 	}
-	size_t K = fix_like_hes_.row.size();
-	fix_like_hes_.val.resize(K);
+	assert( hes_pattern.nr() == n_fixed_ );
+	assert( hes_pattern.nc() == n_fixed_ );
+	sparse_rc lower_pattern(n_fixed_, n_fixed_, nnz);
+	size_t ell = 0;
+	for(size_t k = 0; k < hes_pattern.nnz(); k++)
+	{	size_t r = hes_pattern.row()[k];
+		size_t c = hes_pattern.col()[k];
+		if( r >= c )
+			lower_pattern.set(ell++, r, c);
+	}
+	assert( nnz == ell );
+	//
+	// only compute the lower traingle of the Hessian
+	fix_like_hes_.subset = sparse_rcv( lower_pattern );
 
 	// compute the work vector for reuse during Hessian sparsity calculations
-	d_vector weight( fix_like_fun_.Range() );
-	for(size_t i = 0; i < weight.size(); i++)
-		weight[i] = 1.0;
-	fix_like_fun_.SparseHessian(
-		fixed_vec          ,
-		weight             ,
-		pattern            ,
-		fix_like_hes_.row  ,
-		fix_like_hes_.col  ,
-		fix_like_hes_.val  ,
+	d_vector weight(m);
+	for(size_t i = 0; i < m; i++)
+		weight[i] = 0.0;
+	weight[0] = 1.0;
+	coloring  = "cppad.symmetric";
+	fix_like_fun_.sparse_hes(
+		fixed_vec            ,
+		weight               ,
+		fix_like_hes_.subset ,
+		hes_pattern          ,
+		coloring             ,
 		fix_like_hes_.work
 	);
-
+	//
 	init_fix_like_done_ = true;
 	return;
 }
-
-

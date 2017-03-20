@@ -143,7 +143,6 @@ a single forward sweep.
 This uses separate memory for each direction (more memory),
 but my be significantly faster.
 
-
 $subhead x$$
 The argument $icode x$$ has prototype
 $codei%
@@ -151,15 +150,6 @@ $codei%
 %$$
 and its size is $icode%f%.Domain()%$$.
 It is the location where the Jacobian is being evaluated.
-
-$subhead w$$
-The argument $icode w$$ has prototype
-$codei%
-	const CppAD::vector<double>& %w%
-%$$
-and its size is $icode%f%.Range()%$$.
-It is the weighting for the components of the Jacobian that is
-being computed.
 
 $subhead not_used_pattern$$
 This argument has the following prototype
@@ -181,8 +171,9 @@ $end
 
 namespace CppAD { namespace mixed {
 	struct sparse_jac_rcv {
-		sparse_rcv                 subset;
-		CppAD::sparse_hessian_work work;
+		bool                   forward;
+		sparse_rcv             subset;
+		CppAD::sparse_jac_work work;
 	};
 } }
 

@@ -125,43 +125,46 @@ void cppad_mixed::fix_like_hes(
 	CppAD::vector<size_t>& col_out     ,
 	d_vector&              val_out     )
 {	assert( init_fix_like_done_ );
-	assert( row_out.size() == col_out.size() );
-	assert( row_out.size() == val_out.size() );
 	//
-	if( fix_like_hes_.row.size() == 0 )
-	{	assert( fix_like_hes_.col.size() == 0 );
+	size_t nnz = fix_like_hes_.subset.nnz();
+	if( nnz == 0 )
+	{	// sparse Hessian has no entries
 		assert( row_out.size() == 0 );
 		assert( col_out.size() == 0 );
 		assert( val_out.size() == 0 );
 		return;
 	}
 	if( row_out.size() == 0 )
-	{	row_out = fix_like_hes_.row;
-		col_out = fix_like_hes_.col;
-		val_out.resize( row_out.size() );
+	{	assert( col_out.size() == 0 );
+		row_out = fix_like_hes_.subset.row();
+		col_out = fix_like_hes_.subset.col();
+		val_out.resize(nnz);
 	}
 # ifndef NDEBUG
 	else
-	{	size_t n_nonzero = fix_like_hes_.row.size();
-		assert( row_out.size() == n_nonzero );
-		for(size_t k = 0; k < n_nonzero; k++)
-		{	assert( row_out[k] == fix_like_hes_.row[k] );
-			assert( col_out[k] == fix_like_hes_.col[k] );
+	{	for(size_t k = 0; k < nnz; k++)
+		{	assert( row_out[k] == fix_like_hes_.subset.row()[k] );
+			assert( col_out[k] == fix_like_hes_.subset.col()[k] );
 		}
 	}
 # endif
-
-	CppAD::vector< std::set<size_t> > not_used;
-	fix_like_fun_.SparseHessian(
-		fixed_vec       ,
-		weight          ,
-		not_used        ,
-		row_out         ,
-		col_out         ,
-		val_out         ,
+	assert( row_out.size() == nnz );
+	assert( row_out.size() == nnz );
+	assert( val_out.size() == nnz );
+	//
+	sparse_rc   not_used_pattern;
+	std::string not_used_coloring;
+	fix_like_fun_.sparse_hes(
+		fixed_vec            ,
+		weight               ,
+		fix_like_hes_.subset ,
+		not_used_pattern     ,
+		not_used_coloring    ,
 		fix_like_hes_.work
 	);
-
+	for(size_t k = 0; k < nnz; k++)
+		val_out[k] = fix_like_hes_.subset.val()[k];
+	//
 	return;
 }
 

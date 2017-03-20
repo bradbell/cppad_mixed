@@ -532,7 +532,7 @@ $cref/fix_like_jac_/init_fix_like/fix_like_jac_/$$
 contains information for the Jacobian of the
 $cref/fixed likelihood/theory/Fixed Likelihood, g(theta)/$$.
 $srccode%cpp% */
-	CppAD::mixed::sparse_jac_info fix_like_jac_;
+	CppAD::mixed::sparse_jac_rcv fix_like_jac_;
 /* %$$
 
 $subhead fix_like_hes_$$
@@ -540,7 +540,7 @@ $cref/fix_like_hes_/init_fix_like/fix_like_hes_/$$
 contains information for the Hessian of the
 $cref/fixed likelihood/theory/Fixed Likelihood, g(theta)/$$.
 $srccode%cpp% */
-	CppAD::mixed::sparse_hes_info fix_like_hes_;
+	CppAD::mixed::sparse_hes_rcv fix_like_hes_;
 /* %$$
 $comment ------------------------------------------------------------------- $$
 

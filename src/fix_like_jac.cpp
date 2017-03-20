@@ -103,48 +103,47 @@ void cppad_mixed::fix_like_jac(
 	CppAD::vector<size_t>& col_out     ,
 	d_vector&              val_out     )
 {	assert( init_fix_like_done_ );
-	assert( row_out.size() == col_out.size() );
-	assert( row_out.size() == val_out.size() );
 	//
-	if( fix_like_jac_.row.size() == 0 )
-	{	// sparse Jacobian has no rows
-		assert( fix_like_jac_.col.size() == 0 );
+	size_t nnz = fix_like_jac_.subset.nnz();
+	if( nnz == 0 )
+	{	// sparse Jacobian has no entries
 		assert( row_out.size() == 0 );
 		assert( col_out.size() == 0 );
 		assert( val_out.size() == 0 );
-		val_out.resize(0);
 		return;
 	}
 	if( row_out.size() == 0 )
-	{	row_out = fix_like_jac_.row;
-		col_out = fix_like_jac_.col;
-		val_out.resize( row_out.size() );
+	{	assert( col_out.size() == 0 );
+		row_out = fix_like_jac_.subset.row();
+		col_out = fix_like_jac_.subset.col();
+		val_out.resize(nnz);
 	}
 # ifndef NDEBUG
 	else
-	{	size_t n_nonzero = fix_like_jac_.row.size();
-		assert( row_out.size() == n_nonzero );
-		for(size_t k = 0; k < n_nonzero; k++)
-		{	assert( row_out[k] == fix_like_jac_.row[k] );
-			assert( col_out[k] == fix_like_jac_.col[k] );
+	{	for(size_t k = 0; k < nnz; k++)
+		{	assert( row_out[k] == fix_like_jac_.subset.row()[k] );
+			assert( col_out[k] == fix_like_jac_.subset.col()[k] );
 		}
 	}
 # endif
-	// just checking to see if example/devel/model/fit_model_xam is this case
-	assert( row_out.size() != 0 );
-
-	assert(fix_like_jac_.direction == CppAD::mixed::sparse_jac_info::Forward);
-	CppAD::vector< std::set<size_t> > not_used;
-	fix_like_fun_.SparseJacobianForward(
-		fixed_vec       ,
-		not_used        ,
-		row_out         ,
-		col_out         ,
-		val_out         ,
+	assert( row_out.size() == nnz );
+	assert( row_out.size() == nnz );
+	assert( val_out.size() == nnz );
+	//
+	assert(fix_like_jac_.forward == true);
+	size_t      group_max           = 1;
+	sparse_rc   not_used_pattern;
+	std::string not_used_coloring;
+	fix_like_fun_.sparse_jac_for(
+		group_max            ,
+		fixed_vec            ,
+		fix_like_jac_.subset ,
+		not_used_pattern     ,
+		not_used_coloring    ,
 		fix_like_jac_.work
 	);
-
+	for(size_t k = 0; k < nnz; k++)
+		val_out[k] = fix_like_jac_.subset.val()[k];
+	//
 	return;
 }
-
-

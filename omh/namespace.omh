@@ -59,6 +59,7 @@ $children%include/cppad/mixed/typedef.hpp
 $head Public$$
 These declarations are part the of the $code cppad_mixed$$ user API.
 $table
+$rref typedef$$
 $rref manage_gsl_rng$$
 $rref sparse_mat_info$$
 $tend

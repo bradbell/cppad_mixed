@@ -145,9 +145,8 @@ bool fix_like_hes_xam(void)
 
 	// compute prior hessian
 	CppAD::vector<size_t> row, col;
-	CppAD::vector<double> val, weight(n_fixed);
-	for(size_t j = 0; j < n_fixed; j++)
-		weight[j] = 1.0;
+	CppAD::vector<double> val, weight(1);
+	weight[0] = 1.0;
 	mixed_object.fix_like_hes(fixed_vec, weight, row, col, val);
 
 	// initialize which variables have been found so far

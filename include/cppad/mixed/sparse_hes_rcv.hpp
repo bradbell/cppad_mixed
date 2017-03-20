@@ -143,8 +143,8 @@ $end
 
 namespace CppAD { namespace mixed {
 	struct sparse_hes_rcv {
-		sparse_rcv                 subset;
-		CppAD::sparse_hessian_work work;
+		sparse_rcv             subset;
+		CppAD::sparse_hes_work work;
 	};
 } }
 
