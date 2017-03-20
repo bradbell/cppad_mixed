@@ -179,6 +179,7 @@ $end
 */
 
 # include <cppad/cppad.hpp>
+# include <cppad/mixed/sparse_hes_rcv.hpp>
 # include <cppad/mixed/sparse_hes_info.hpp>
 # include <cppad/mixed/sparse_ad_cholesky.hpp>
 # include <cppad/mixed/typedef.hpp>
