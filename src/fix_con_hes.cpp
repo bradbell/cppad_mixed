@@ -125,46 +125,45 @@ void cppad_mixed::fix_con_hes(
 		"cppad_mixed::initialize was not called before constraint_hes";
 		fatal_error(error_message);
 	}
-	if( fix_con_hes_.row.size() == 0 )
-	{	// Sparse Hessian has no rows
+	size_t nnz = fix_con_hes_.subset.nnz();
+	if( nnz == 0 )
+	{	// Sparse Hessian has no entries
 		assert( row_out.size() == 0 );
 		assert( col_out.size() == 0 );
-		assert( fix_con_hes_.row.size() == 0 );
-		assert( fix_con_hes_.col.size() == 0 );
-		val_out.resize(0);
+		assert( val_out.size() == 0 );
 		return;
 	}
-
-	assert( row_out.size() == col_out.size() );
-	assert( row_out.size() == val_out.size() );
 	if( row_out.size() == 0 )
-	{	row_out = fix_con_hes_.row;
-		col_out = fix_con_hes_.col;
-		val_out.resize( row_out.size() );
+	{	assert( col_out.size() == 0 );
+		row_out = fix_con_hes_.subset.row();
+		col_out = fix_con_hes_.subset.col();
+		val_out.resize(nnz);
 	}
 # ifndef NDEBUG
 	else
-	{	size_t n_nonzero = fix_con_hes_.row.size();
-		assert( row_out.size() == n_nonzero );
-		for(size_t k = 0; k < n_nonzero; k++)
-		{	assert( row_out[k] == fix_con_hes_.row[k] );
-			assert( col_out[k] == fix_con_hes_.col[k] );
+	{	for(size_t k = 0; k < nnz; k++)
+		{	assert( row_out[k] == fix_con_hes_.subset.row()[k] );
+			assert( col_out[k] == fix_con_hes_.subset.col()[k] );
 		}
 	}
 # endif
-	assert( row_out.size() != 0 );
-
-	CppAD::vector< std::set<size_t> > not_used;
-	fix_con_fun_.SparseHessian(
-		fixed_vec       ,
-		weight          ,
-		not_used        ,
-		row_out         ,
-		col_out         ,
-		val_out         ,
+	assert( row_out.size() == nnz );
+	assert( col_out.size() == nnz );
+	assert( val_out.size() == nnz );
+	//
+	sparse_rc   not_used_pattern;
+	std::string not_used_coloring;
+	fix_con_fun_.sparse_hes(
+		fixed_vec            ,
+		weight               ,
+		fix_con_hes_.subset  ,
+		not_used_pattern     ,
+		not_used_coloring    ,
 		fix_con_hes_.work
 	);
-
+	for(size_t k = 0; k < nnz; k++)
+		val_out[k] = fix_con_hes_.subset.val()[k];
+	//
 	return;
 }
 

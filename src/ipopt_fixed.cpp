@@ -466,12 +466,14 @@ mixed_object_      ( mixed_object    )
 		fix_like_jac_val
 	);
 	// set mixed_object.fix_con_jac_
-	sparse_jac_info& fix_con_jac_info( mixed_object_.fix_con_jac_ );
+	s_vector fix_con_jac_row = mixed_object_.fix_con_jac_.subset.row();
+	s_vector fix_con_jac_col = mixed_object_.fix_con_jac_.subset.col();
+	d_vector fix_con_jac_val = mixed_object_.fix_con_jac_.subset.val();
 	mixed_object.fix_con_jac(
 		fixed_in,
-		fix_con_jac_info.row,
-		fix_con_jac_info.col,
-		fix_con_jac_info.val
+		fix_con_jac_row,
+		fix_con_jac_col,
+		fix_con_jac_val
 	);
 	if( n_ran_con_ > 0 )
 	{	assert( n_random_ > 0 );
@@ -494,7 +496,7 @@ mixed_object_      ( mixed_object    )
 	// derivative w.r.t auxillary variables
 	nnz_jac_g_ += 2 * fix_likelihood_nabs_;
 	// derivative of the fixed constraints
-	nnz_jac_g_ += fix_con_jac_info.row.size();
+	nnz_jac_g_ += fix_con_jac_row.size();
 	// derivative of the random constraints
 	nnz_jac_g_ += ran_con_jac_rcv_.nnz();
 	// -----------------------------------------------------------------------
@@ -542,19 +544,21 @@ mixed_object_      ( mixed_object    )
 		weight.resize( n_fix_con_ );
 		for(size_t i = 0; i < weight.size(); i++)
 			weight[i] = 1.0;
-		sparse_hes_info& fix_con_hes_info( mixed_object_.fix_con_hes_ );
+		s_vector fix_con_hes_row = mixed_object_.fix_con_hes_.subset.row();
+		s_vector fix_con_hes_col = mixed_object_.fix_con_hes_.subset.col();
+		d_vector fix_con_hes_val = mixed_object_.fix_con_hes_.subset.val();
 		mixed_object.fix_con_hes(
 			fixed_in,
 			weight,
-			fix_con_hes_info.row,
-			fix_con_hes_info.col,
-			fix_con_hes_info.val
+			fix_con_hes_row,
+			fix_con_hes_col,
+			fix_con_hes_val
 		);
 		//
 		// merge to form sparsity for Lagrangian
 		ran_objcon_hes_2_lag_.resize( ran_objcon_hes_info_.row.size() );
 		fix_like_hes_2_lag_.resize( fix_like_hes_row.size() );
-		fix_con_hes_2_lag_.resize( fix_con_hes_info.row.size() );
+		fix_con_hes_2_lag_.resize( fix_con_hes_row.size() );
 		merge_sparse(
 			ran_objcon_hes_info_.row      ,
 			ran_objcon_hes_info_.col      ,
@@ -562,8 +566,8 @@ mixed_object_      ( mixed_object    )
 			fix_like_hes_row         ,
 			fix_like_hes_col         ,
 			//
-			fix_con_hes_info.row          ,
-			fix_con_hes_info.col          ,
+			fix_con_hes_row          ,
+			fix_con_hes_col          ,
 			//
 			lag_hes_row_                  ,
 			lag_hes_col_                  ,
@@ -579,7 +583,7 @@ mixed_object_      ( mixed_object    )
 		for(size_t k = 0; k < fix_like_hes_row.size(); k++)
 			assert( fix_like_hes_2_lag_[k] < lag_hes_row_.size() );
 		//
-		for(size_t k = 0; k < fix_con_hes_info.row.size(); k++)
+		for(size_t k = 0; k < fix_con_hes_row.size(); k++)
 			assert( fix_con_hes_2_lag_[k] < lag_hes_row_.size() );
 # endif
 		// -------------------------------------------------------------------
@@ -1321,7 +1325,9 @@ void ipopt_fixed::try_eval_jac_g(
 	s_vector fix_like_jac_row = mixed_object_.fix_like_jac_.subset.row();
 	s_vector fix_like_jac_col = mixed_object_.fix_like_jac_.subset.col();
 	d_vector fix_like_jac_val = mixed_object_.fix_like_jac_.subset.val();
-	sparse_jac_info& fix_con_jac_info( mixed_object_.fix_con_jac_ );
+	s_vector fix_con_jac_row = mixed_object_.fix_con_jac_.subset.row();
+	s_vector fix_con_jac_col = mixed_object_.fix_con_jac_.subset.col();
+	d_vector fix_con_jac_val = mixed_object_.fix_con_jac_.subset.val();
 	if( values == NULL )
 	{	// just return row and column indices for l1 constraints
 		size_t ell = 0;
@@ -1348,10 +1354,10 @@ void ipopt_fixed::try_eval_jac_g(
 		}
 		// fixed constraints
 		size_t offset = 2 * fix_likelihood_nabs_;
-		for(size_t k = 0; k < fix_con_jac_info.row.size(); k++)
+		for(size_t k = 0; k < fix_con_jac_row.size(); k++)
 		{	assert( ell < nnz_jac_g_ );
-			iRow[ell] = Index( offset + fix_con_jac_info.row[k] );
-			jCol[ell] = Index( fix_con_jac_info.col[k] );
+			iRow[ell] = Index( offset + fix_con_jac_row[k] );
+			jCol[ell] = Index( fix_con_jac_col[k] );
 			ell++;
 		}
 		// random constraints
@@ -1408,13 +1414,13 @@ void ipopt_fixed::try_eval_jac_g(
 	// Jacobian of fixed constraints
 	mixed_object_.fix_con_jac(
 		fixed_tmp_,
-		fix_con_jac_info.row,
-		fix_con_jac_info.col,
-		fix_con_jac_info.val
+		fix_con_jac_row,
+		fix_con_jac_col,
+		fix_con_jac_val
 	);
-	for(size_t k = 0; k < fix_con_jac_info.row.size(); k++)
+	for(size_t k = 0; k < fix_con_jac_row.size(); k++)
 	{	assert( ell < nnz_jac_g_ );
-		values[ell++] = Number( fix_con_jac_info.val[k] );
+		values[ell++] = Number( fix_con_jac_val[k] );
 	}
 	//
 	// Jacobian of random constraints
@@ -1666,18 +1672,20 @@ void ipopt_fixed::try_eval_h(
 		w_fix_con_tmp_[j] = lambda[ell];
 		// w_fix_con_tmp_[j] = scale_g_[ell] * lambda[ell];
 	}
-	sparse_hes_info& fix_con_hes_info( mixed_object_.fix_con_hes_ );
+	s_vector fix_con_hes_row = mixed_object_.fix_con_hes_.subset.row();
+	s_vector fix_con_hes_col = mixed_object_.fix_con_hes_.subset.col();
+	d_vector fix_con_hes_val = mixed_object_.fix_con_hes_.subset.val();
 	mixed_object_.fix_con_hes(
 		fixed_tmp_,
 		w_fix_con_tmp_,
-		fix_con_hes_info.row,
-		fix_con_hes_info.col,
-		fix_con_hes_info.val
+		fix_con_hes_row,
+		fix_con_hes_col,
+		fix_con_hes_val
 	);
-	for(size_t k = 0; k < fix_con_hes_info.row.size(); k++)
+	for(size_t k = 0; k < fix_con_hes_row.size(); k++)
 	{	size_t index = fix_con_hes_2_lag_[k];
 		assert( index < nnz_h_lag_ );
-		values[index] += Number( fix_con_hes_info.val[k] );
+		values[index] += Number( fix_con_hes_val[k] );
 	}
 	//
 	for(size_t ell = 0; ell < nnz_h_lag_; ell++)

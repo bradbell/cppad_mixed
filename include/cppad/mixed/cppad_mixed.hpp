@@ -559,7 +559,7 @@ $cref/fix_con_jac_/init_fix_con/fix_con_jac_/$$
 contains information for the Jacobian of the
 constraint function $latex c ( \theta )$$.
 $srccode%cpp% */
-	CppAD::mixed::sparse_jac_info fix_con_jac_;
+	CppAD::mixed::sparse_jac_rcv fix_con_jac_;
 /* %$$
 
 $subhead fix_con_hes_$$
@@ -570,7 +570,7 @@ $cref/constraints/fix_constraint/$$ function $latex c( \theta )$$.
 The corresponding ADFun object is
 $cref/fix_con_fun_/init_fix_con/fix_con_fun_/$$.
 $srccode%cpp% */
-	CppAD::mixed::sparse_hes_info fix_con_hes_;
+	CppAD::mixed::sparse_hes_rcv fix_con_hes_;
 /* %$$
 $comment ------------------------------------------------------------------- $$
 $head Template Member Functions$$

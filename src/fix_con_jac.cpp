@@ -105,56 +105,45 @@ void cppad_mixed::fix_con_jac(
 		"fix_con_jac: initialize was not called before constraint_jac";
 		fatal_error(error_message);
 	}
-	if( fix_con_jac_.row.size() == 0 )
-	{	// sparse Jacobian has no rows
+	size_t nnz = fix_con_jac_.subset.nnz();
+	if( nnz == 0 )
+	{	// sparse Jacobian has no entries
 		assert( row_out.size() == 0 );
 		assert( col_out.size() == 0 );
-		assert( fix_con_jac_.row.size() == 0 );
-		assert( fix_con_jac_.col.size() == 0 );
-		val_out.resize(0);
+		assert( val_out.size() == 0 );
 		return;
 	}
-
-	assert( row_out.size() == col_out.size() );
-	assert( row_out.size() == val_out.size() );
 	if( row_out.size() == 0 )
-	{	row_out = fix_con_jac_.row;
-		col_out = fix_con_jac_.col;
-		val_out.resize( row_out.size() );
+	{	assert( col_out.size() == 0 );
+		row_out = fix_con_jac_.subset.row();
+		col_out = fix_con_jac_.subset.col();
+		val_out.resize( nnz );
 	}
 # ifndef NDEBUG
 	else
-	{	size_t n_nonzero = fix_con_jac_.row.size();
-		assert( row_out.size() == n_nonzero );
-		for(size_t k = 0; k < n_nonzero; k++)
-		{	assert( row_out[k] == fix_con_jac_.row[k] );
-			assert( col_out[k] == fix_con_jac_.col[k] );
+	{	for(size_t k = 0; k < nnz; k++)
+		{	assert( row_out[k] == fix_con_jac_.subset.row()[k] );
+			assert( col_out[k] == fix_con_jac_.subset.col()[k] );
 		}
 	}
 # endif
-	assert( row_out.size() != 0 );
-
-	CppAD::vector< std::set<size_t> > not_used;
-	if( fix_con_jac_.direction == CppAD::mixed::sparse_jac_info::Forward )
-	{	fix_con_fun_.SparseJacobianForward(
-			fixed_vec       ,
-			not_used        ,
-			row_out         ,
-			col_out         ,
-			val_out         ,
-			fix_con_jac_.work
-		);
-	}
-	else
-	{	fix_con_fun_.SparseJacobianReverse(
-			fixed_vec       ,
-			not_used        ,
-			row_out         ,
-			col_out         ,
-			val_out         ,
-			fix_con_jac_.work
-		);
-	}
+	assert( row_out.size() == nnz );
+	assert( col_out.size() == nnz );
+	assert( val_out.size() == nnz );
+	//
+	sparse_rc   not_used_pattern;
+	std::string not_used_coloring;
+	assert( fix_con_jac_.forward == false );
+	fix_con_fun_.sparse_jac_rev(
+		fixed_vec            ,
+		fix_con_jac_.subset  ,
+		not_used_pattern     ,
+		not_used_coloring    ,
+		fix_con_jac_.work
+	);
+	for(size_t k = 0; k < nnz; k++)
+		val_out[k] = fix_con_jac_.subset.val()[k];
+	//
 	return;
 }
 

@@ -149,7 +149,7 @@ void cppad_mixed::fix_like_hes(
 	}
 # endif
 	assert( row_out.size() == nnz );
-	assert( row_out.size() == nnz );
+	assert( col_out.size() == nnz );
 	assert( val_out.size() == nnz );
 	//
 	sparse_rc   not_used_pattern;

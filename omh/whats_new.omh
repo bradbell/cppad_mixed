@@ -35,10 +35,14 @@ $childtable%
 %$$
 
 $head 03-20$$
+$list number$$
 $bold API:$$
 remove $icode bool_sparsity$$ from $cref information_mat$$
 (use the corresponding $cref/derived_ctor/derived_ctor/bool_sparsity/$$
 argument in its place).
+$lnext
+Advance to $code cppad-20170320$$.
+$lend
 
 $head 03-12$$
 $bold API:$$

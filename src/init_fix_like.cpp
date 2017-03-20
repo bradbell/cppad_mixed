@@ -167,11 +167,11 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	// use forward mode for this sparse Jacobian
 	fix_like_jac_.forward = true;
 
-	// use clear to make it cleart that work is being computed
+	// use clear to make it clear that work is being computed
 	// (should already be empty).
 	fix_like_jac_.work.clear();
 
-	// compute the work vector for reuse during Jacobian sparsity calculations
+	// compute the work vector for reuse during sparse Jacobian calculations
 	size_t group_max = 1;
 	std::string coloring = "cppad";
 	fix_like_fun_.sparse_jac_for(
@@ -219,11 +219,11 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	// only compute the lower traingle of the Hessian
 	fix_like_hes_.subset = sparse_rcv( lower_pattern );
 
-	// compute the work vector for reuse during Hessian sparsity calculations
+	// compute the work vector for reuse during sparse Hessian calculations
+	// (value of weight vector does not affect work, but avoid warnings)
 	d_vector weight(m);
 	for(size_t i = 0; i < m; i++)
-		weight[i] = 0.0;
-	weight[0] = 1.0;
+		weight[i] = 1.0;
 	coloring  = "cppad.symmetric";
 	fix_like_fun_.sparse_hes(
 		fixed_vec            ,

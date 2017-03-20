@@ -127,7 +127,7 @@ void cppad_mixed::fix_like_jac(
 	}
 # endif
 	assert( row_out.size() == nnz );
-	assert( row_out.size() == nnz );
+	assert( col_out.size() == nnz );
 	assert( val_out.size() == nnz );
 	//
 	assert(fix_like_jac_.forward == true);

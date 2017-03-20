@@ -99,226 +99,6 @@ $cref/sparse Hessian call/sparse_hes_info/Sparse Hessian Call/f/$$.
 $end
 */
 
-namespace { // BEGIN_EMPTY_NAMESPACE
-// --------------------------------------------------------------------------
-// fix_con_jac_use_set
-// --------------------------------------------------------------------------
-void fix_con_jac_use_set(
-	const CppAD::vector<double>&       fixed_vec ,
-	CppAD::ADFun<double>&              fun       ,
-	CppAD::mixed::sparse_jac_info&     jac_info  )
-{	jac_info.work.clear();
-	assert( jac_info.row.size() == 0 );
-	assert( jac_info.col.size() == 0 );
-	assert( jac_info.val.size() == 0 );
-	// -----------------------------------------------------------------------
-	typedef CppAD::vector< std::set<size_t> > set_sparsity;
-	size_t  m = fun.Range();
-	assert( fixed_vec.size() == fun.Domain() );
-	// -----------------------------------------------------------------------
-	// compute Jacobian sparsity
-	// use reverse mode because m should be smaller than n
-	set_sparsity r(m);
-	for(size_t i = 0; i < m; i++)
-		r[i].insert(i);
-	set_sparsity pattern = fun.RevSparseJac(m, r);
-	// -----------------------------------------------------------------------
-	// Set row, column indices and direction
-	std::set<size_t>::iterator itr;
-	for(size_t i = 0; i < m; i++)
-	{	for(itr = pattern[i].begin(); itr != pattern[i].end(); itr++)
-		{	size_t j = *itr;
-			jac_info.row.push_back(i);
-			jac_info.col.push_back(j);
-		}
-	}
-	jac_info.val.resize( jac_info.row.size() );
-	jac_info.direction = CppAD::mixed::sparse_jac_info::Reverse;
-	// -----------------------------------------------------------------------
-	// compute the work vector for reuse during future calls to
-	// SparseJacobianReverse
-	fun.SparseJacobianReverse(
-		fixed_vec,
-		pattern,
-		jac_info.row,
-		jac_info.col,
-		jac_info.val,
-		jac_info.work
-	);
-	return;
-}
-// --------------------------------------------------------------------------
-// fix_con_jac_use_bool
-// --------------------------------------------------------------------------
-void fix_con_jac_use_bool(
-	const CppAD::vector<double>&       fixed_vec ,
-	CppAD::ADFun<double>&              fun       ,
-	CppAD::mixed::sparse_jac_info&     jac_info  )
-{	jac_info.work.clear();
-	assert( jac_info.row.size() == 0 );
-	assert( jac_info.col.size() == 0 );
-	assert( jac_info.val.size() == 0 );
-	// -----------------------------------------------------------------------
-	typedef CppAD::vectorBool bool_sparsity;
-	size_t  m = fun.Range();
-	size_t  n = fun.Domain();
-	assert( fixed_vec.size() == n );
-	// -----------------------------------------------------------------------
-	// compute Jacobian sparsity
-	// use reverse mode because m should be smaller than n
-	bool_sparsity r(m * m);
-	for(size_t i = 0; i < m; i++)
-	{	for(size_t j = 0; j < m; j++)
-			r[i * m + j] = (i == j);
-	}
-	bool_sparsity pattern = fun.RevSparseJac(m, r);
-	// -----------------------------------------------------------------------
-	// Set row, column indices and direction
-	for(size_t i = 0; i < m; i++)
-	{	for(size_t j = 0; j < n; j++)
-		{	if( pattern[ i * n + j ] )
-			{	jac_info.row.push_back(i);
-				jac_info.col.push_back(j);
-			}
-		}
-	}
-	jac_info.val.resize( jac_info.row.size() );
-	jac_info.direction = CppAD::mixed::sparse_jac_info::Reverse;
-	// -----------------------------------------------------------------------
-	// compute the work vector for reuse during future calls to
-	// SparseJacobianReverse
-	fun.SparseJacobianReverse(
-		fixed_vec,
-		pattern,
-		jac_info.row,
-		jac_info.col,
-		jac_info.val,
-		jac_info.work
-	);
-	return;
-}
-// --------------------------------------------------------------------------
-// fix_con_hes_use_set
-// --------------------------------------------------------------------------
-void fix_con_hes_use_set(
-	const CppAD::vector<double>&       fixed_vec ,
-	CppAD::ADFun<double>&              fun       ,
-	CppAD::mixed::sparse_hes_info&     hes_info  )
-{	hes_info.work.clear();
-	assert( hes_info.row.size() == 0 );
-	assert( hes_info.col.size() == 0 );
-	assert( hes_info.val.size() == 0 );
-	// -----------------------------------------------------------------------
-	typedef CppAD::vector< std::set<size_t> > set_sparsity;
-	size_t  m = fun.Range();
-	size_t  n = fun.Domain();
-	assert( fixed_vec.size() == n );
-	// -----------------------------------------------------------------------
-	// comptue Jacobian sparsity
-	set_sparsity r(n);
-	for(size_t i = 0; i < n; i++)
-		r[i].insert(i);
-	fun.ForSparseJac(n, r);
-	// -----------------------------------------------------------------------
-	// compute Hessian sparsity using all range components
-	bool transpose = true;
-	set_sparsity s(1), pattern;
-	for(size_t i = 0; i < m; i++)
-		s[0].insert(i);
-	pattern = fun.RevSparseHes(n, s, transpose);
-	// -----------------------------------------------------------------------
-	// Set row, column indices
-	std::set<size_t>::iterator itr;
-	for(size_t i = 0; i < n; i++)
-	{	for(itr = pattern[i].begin(); itr != pattern[i].end(); itr++)
-		{	size_t j = *itr;
-			// only compute lower traingle
-			if( j <= i )
-			{	hes_info.row.push_back(i);
-				hes_info.col.push_back(j);
-			}
-		}
-	}
-	hes_info.val.resize( hes_info.row.size() );
-	// -----------------------------------------------------------------------
-	// compute work for reuse during future calls to SparseHessian
-	CppAD::vector<double> weight(m);
-	for(size_t i = 0; i < m; i++)
-		weight[i] = 1.0;
-	fun.SparseHessian(
-		fixed_vec       ,
-		weight          ,
-		pattern         ,
-		hes_info.row    ,
-		hes_info.col    ,
-		hes_info.val    ,
-		hes_info.work
-	);
-	// -----------------------------------------------------------------------
-	return;
-}
-// --------------------------------------------------------------------------
-// fix_con_hes_use_bool
-// --------------------------------------------------------------------------
-void fix_con_hes_use_bool(
-	const CppAD::vector<double>&       fixed_vec ,
-	CppAD::ADFun<double>&              fun       ,
-	CppAD::mixed::sparse_hes_info&     hes_info  )
-{	hes_info.work.clear();
-	assert( hes_info.row.size() == 0 );
-	assert( hes_info.col.size() == 0 );
-	assert( hes_info.val.size() == 0 );
-	// -----------------------------------------------------------------------
-	typedef CppAD::vectorBool bool_sparsity;
-	size_t  m = fun.Range();
-	size_t  n = fun.Domain();
-	assert( fixed_vec.size() == n );
-	// -----------------------------------------------------------------------
-	// comptue Jacobian sparsity
-	bool_sparsity r(n * n);
-	for(size_t i = 0; i < n; i++)
-	{	for(size_t j = 0; j < n; j++)
-			r[ i * n + j ] = (i == j);
-	}
-	fun.ForSparseJac(n, r);
-	// -----------------------------------------------------------------------
-	// compute Hessian sparsity using all range components
-	bool transpose = true;
-	bool_sparsity s(m), pattern;
-	for(size_t j = 0; j < m; j++)
-		s[j] = true;
-	pattern = fun.RevSparseHes(n, s, transpose);
-	// -----------------------------------------------------------------------
-	// Set row, column indices
-	for(size_t i = 0; i < n; i++)
-	{	// only compute lower traingle
-		for(size_t j = 0; j <= i; j++)
-		{	if( pattern[i * n + j] )
-			{	hes_info.row.push_back(i);
-				hes_info.col.push_back(j);
-			}
-		}
-	}
-	hes_info.val.resize( hes_info.row.size() );
-	// -----------------------------------------------------------------------
-	// compute work for reuse during future calls to SparseHessian
-	CppAD::vector<double> weight(m);
-	for(size_t i = 0; i < m; i++)
-		weight[i] = 1.0;
-	fun.SparseHessian(
-		fixed_vec       ,
-		weight          ,
-		pattern         ,
-		hes_info.row    ,
-		hes_info.col    ,
-		hes_info.val    ,
-		hes_info.work
-	);
-	// -----------------------------------------------------------------------
-	return;
-}
-} // END_EMPTY_NAMESPACE
-
 void cppad_mixed::init_fix_con(const d_vector& fixed_vec )
 {	assert( fixed_vec.size() == n_fixed_ );
 	assert( ! init_fix_con_done_ );
@@ -353,34 +133,90 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec )
 	// ------------------------------------------------------------------------
 	// fix_con_jac_
 	// ------------------------------------------------------------------------
-	if( bool_sparsity_ ) fix_con_jac_use_bool(
-		fixed_vec,
-		fix_con_fun_,
-		fix_con_jac_
+	// compute the sparsity pattern for the Jacobian
+	sparse_rc pattern_in(n_fixed_, n_fixed_, n_fixed_);
+	for(size_t k = 0; k < n_fixed_; k++)
+		pattern_in.set(k, k, k);
+	bool      transpose     = false;
+	bool      dependency    = false;
+	bool      internal_bool = bool_sparsity_;
+	sparse_rc jac_pattern;
+	fix_con_fun_.for_jac_sparsity(
+		pattern_in, transpose, dependency, internal_bool, jac_pattern
 	);
-	else fix_con_jac_use_set(
-		fixed_vec,
-		fix_con_fun_,
-		fix_con_jac_
+
+	// compute entire Jacobian
+	fix_con_jac_.subset = sparse_rcv( jac_pattern );
+
+	// use reversed mode for this sparse Jacobian
+	// fix_con_jac_.Range() should be less thant fix_con_jac_.Domain()
+	fix_con_jac_.forward = false;
+
+	// use clear to make it clear that work is being computed
+	// (should already be empty).
+	fix_con_jac_.work.clear();
+
+	// compute the work vector for reuse during sparse Jacobian calculations
+	std::string coloring = "cppad";
+	fix_con_fun_.sparse_jac_rev(
+		fixed_vec            ,
+		fix_con_jac_.subset  ,
+		jac_pattern          ,
+		coloring             ,
+		fix_con_jac_.work
 	);
-	if( quasi_fixed_ )
-	{	init_fix_con_done_ = true;
-		return;
-	}
 	// ------------------------------------------------------------------------
 	// fix_con_hes_
 	// ------------------------------------------------------------------------
-	if( bool_sparsity_ ) fix_con_hes_use_bool(
-		fixed_vec,
-		fix_con_fun_,
-		fix_con_hes_
+	// no need to recalculate forward sparsity pattern.
+	//
+	// sparsity pattern for the Hessian
+	size_t m = fix_con_fun_.Range();
+	CppAD::vector<bool> select_range(m);
+	for(size_t i = 0; i < m; i++)
+		select_range[i] = false;
+	select_range[0] = true;
+	sparse_rc hes_pattern;
+	fix_con_fun_.rev_hes_sparsity(
+		select_range, transpose, internal_bool, hes_pattern
 	);
-	else fix_con_hes_use_set(
-		fixed_vec,
-		fix_con_fun_,
-		fix_con_hes_
+	//
+	// sparsity pattern corresponding to lower traingle of Hessian
+	size_t nnz = 0;
+	for(size_t k = 0; k < hes_pattern.nnz(); k++)
+	{	if( hes_pattern.row()[k] >= hes_pattern.col()[k] )
+			++nnz;
+	}
+	assert( hes_pattern.nr() == n_fixed_ );
+	assert( hes_pattern.nc() == n_fixed_ );
+	sparse_rc lower_pattern(n_fixed_, n_fixed_, nnz);
+	size_t ell = 0;
+	for(size_t k = 0; k < hes_pattern.nnz(); k++)
+	{	size_t r = hes_pattern.row()[k];
+		size_t c = hes_pattern.col()[k];
+		if( r >= c )
+			lower_pattern.set(ell++, r, c);
+	}
+	assert( nnz == ell );
+	//
+	// only compute the lower traingle of the Hessian
+	fix_con_hes_.subset = sparse_rcv( lower_pattern );
+
+	// compute the work vector for reuse during Hessian sparsity calculations
+	// (value of weight vector does not affect work, but avoid warnings)
+	d_vector weight(m);
+	for(size_t i = 0; i < m; i++)
+		weight[i] = 1.0;
+	coloring  = "cppad.symmetric";
+	fix_con_fun_.sparse_hes(
+		fixed_vec            ,
+		weight               ,
+		fix_con_hes_.subset  ,
+		hes_pattern          ,
+		coloring             ,
+		fix_con_hes_.work
 	);
-	// ------------------------------------------------------------------------
+	//
 	init_fix_con_done_ = true;
 	return;
 }
