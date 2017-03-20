@@ -215,7 +215,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 
 		// ran_hes_
 		assert( ! init_ran_hes_done_ );
-		init_ran_hes(bool_sparsity_, fixed_vec, random_vec);
+		init_ran_hes(fixed_vec, random_vec);
 		assert( init_ran_hes_done_ );
 
 		// ldlt_ran_hes_
