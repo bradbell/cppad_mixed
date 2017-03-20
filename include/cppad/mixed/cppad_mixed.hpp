@@ -619,7 +619,6 @@ $subhead init_fix_con$$
 See $cref init_fix_con$$.
 $srccode%cpp% */
 	void init_fix_con(
-		bool            bool_sparsity ,
 		const d_vector& fixed_vec
 	);
 /* %$$

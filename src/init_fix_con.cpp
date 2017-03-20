@@ -30,7 +30,7 @@ $$
 $section Initialize Constraints as Function of Fixed Effects$$
 
 $head Syntax$$
-$icode%mixed_object%.init_fix_con(%bool_sparsity%, %fixed_vec%)%$$
+$icode%mixed_object%.init_fix_con(%fixed_vec%)%$$
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
@@ -39,14 +39,6 @@ $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
-
-$head bool_sparsity$$
-This argument has prototype
-$codei%
-	bool %bool_sparsity%
-%$$
-If it is true, boolean sparsity patterns are used for this computation,
-otherwise set sparsity patterns are used.
 
 $head fixed_vec$$
 This argument has prototype
@@ -327,9 +319,7 @@ void fix_con_hes_use_bool(
 }
 } // END_EMPTY_NAMESPACE
 
-void cppad_mixed::init_fix_con(
-	bool            bool_sparsity ,
-	const d_vector& fixed_vec     )
+void cppad_mixed::init_fix_con(const d_vector& fixed_vec )
 {	assert( fixed_vec.size() == n_fixed_ );
 	assert( ! init_fix_con_done_ );
 
@@ -363,7 +353,7 @@ void cppad_mixed::init_fix_con(
 	// ------------------------------------------------------------------------
 	// fix_con_jac_
 	// ------------------------------------------------------------------------
-	if( bool_sparsity ) fix_con_jac_use_bool(
+	if( bool_sparsity_ ) fix_con_jac_use_bool(
 		fixed_vec,
 		fix_con_fun_,
 		fix_con_jac_
@@ -380,7 +370,7 @@ void cppad_mixed::init_fix_con(
 	// ------------------------------------------------------------------------
 	// fix_con_hes_
 	// ------------------------------------------------------------------------
-	if( bool_sparsity ) fix_con_hes_use_bool(
+	if( bool_sparsity_ ) fix_con_hes_use_bool(
 		fixed_vec,
 		fix_con_fun_,
 		fix_con_hes_

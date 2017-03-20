@@ -261,7 +261,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 
 	// fix_con_fun_
 	assert( ! init_fix_con_done_ );
-	init_fix_con(bool_sparsity_, fixed_vec);
+	init_fix_con(fixed_vec);
 	assert( init_fix_con_done_ );
 
 	// initialize_done_
