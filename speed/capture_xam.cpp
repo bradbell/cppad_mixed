@@ -1082,7 +1082,7 @@ int main(int argc, const char *argv[])
 	// information matrix
 	start_seconds = CppAD::elapsed_seconds();
 	sparse_rcv information_rcv = mixed_object.information_mat(
-		solution, u_out, bool_sparsity
+		solution, u_out
 	);
 	end_seconds = CppAD::elapsed_seconds();
 	label_print("information_mat_seconds", end_seconds - start_seconds);

@@ -11,7 +11,6 @@ see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
 $begin information_mat$$
 $spell
-	bool
 	CppAD
 	cppad
 	rcv
@@ -24,7 +23,7 @@ $icode%information_rcv% = %mixed_object%.information_mat(
 	%solution%, %random_opt%
 )%$$
 $icode%information_rcv% = %mixed_object%.information_mat(
-	%solution%, %random_opt%, %bool_sparsity%
+	%solution%, %random_opt%
 )%$$
 
 $head Purpose$$
@@ -74,17 +73,6 @@ $icode random_upper$$, and
 $icode random_in$$, are the same
 as in the call to $code optimize_fixed$$ that corresponds to $icode solution$$.
 
-$head bool_sparsity$$
-This optional argument has prototype
-$codei%
-	bool %bool_sparsity%
-%$$
-If it is true, boolean sparsity patterns are used for this computation,
-otherwise set sparsity patterns are used.
-If this argument is not present, the type of sparsity patterns
-is not specified.
-No sparsity patterns are computed when $icode quasi_fixed$$ is false.
-
 $head information_rcv$$
 The return value has prototype
 $codei%
@@ -116,8 +104,7 @@ $end
 
 CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 	const CppAD::mixed::fixed_solution&  solution             ,
-	const d_vector&                      random_opt           ,
-	bool                                 bool_sparsity        )
+	const d_vector&                      random_opt           )
 {	using Eigen::Dynamic;
 	typedef Eigen::SparseMatrix<double, Eigen::ColMajor>      eigen_sparse;
 	typedef eigen_sparse::InnerIterator                       sparse_itr;
@@ -159,7 +146,7 @@ CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 			//
 			// ran_objcon_hes_
 			assert( ! init_ran_objcon_hes_done_ );
-			init_ran_objcon_hes(bool_sparsity, fixed_opt, random_opt);
+			init_ran_objcon_hes(bool_sparsity_, fixed_opt, random_opt);
 			assert( init_ran_objcon_hes_done_ );
 		}
 		assert( init_newton_checkpoint_done_ );
@@ -238,11 +225,10 @@ CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 // ---------------------------------------------------------------------------
 CppAD::mixed::sparse_rcv cppad_mixed::information_mat(
 	const CppAD::mixed::fixed_solution&  solution             ,
-	const d_vector&                      random_opt           ,
-	bool                                 bool_sparsity        )
+	const d_vector&                      random_opt           )
 {	sparse_rcv result;
 	try
-	{	result = try_information_mat(solution, random_opt, bool_sparsity);
+	{	result = try_information_mat(solution, random_opt);
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	std::string error_message = e.message("information_mat");

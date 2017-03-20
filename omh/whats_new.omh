@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 
 $begin whats_new$$
 $spell
+	ctor
 	rcv
 	cppad
 	std
@@ -32,6 +33,12 @@ $childtable%
 	omh/whats_new_15.omh%
 	omh/whats_new_16.omh
 %$$
+
+$head 03-20$$
+$bold API:$$
+remove $icode bool_sparsity$$ from $cref information_mat$$
+(use the corresponding $cref/derived_ctor/derived_ctor/bool_sparsity/$$
+argument in its place).
 
 $head 03-12$$
 $bold API:$$
