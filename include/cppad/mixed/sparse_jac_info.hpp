@@ -111,15 +111,6 @@ $codei%
 and its size is $icode%f%.Domain()%$$.
 It is the location where the Jacobian is being evaluated.
 
-$subhead w$$
-The argument $icode w%$$ has prototype
-$codei%
-	const CppAD::vector<double>& %w%
-%$$
-and its size is $icode%f%.Range()%$$.
-It is the weighting for the components of the Jacobian that is
-being computed.
-
 $subhead not_used$$
 This argument has one of the following prototypes
 $codei%
