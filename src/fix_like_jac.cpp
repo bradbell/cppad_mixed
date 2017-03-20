@@ -130,12 +130,10 @@ void cppad_mixed::fix_like_jac(
 	assert( col_out.size() == nnz );
 	assert( val_out.size() == nnz );
 	//
-	assert(fix_like_jac_.forward == true);
-	size_t      group_max           = 1;
+	assert(fix_like_jac_.forward == false);
 	sparse_rc   not_used_pattern;
 	std::string not_used_coloring;
-	fix_like_fun_.sparse_jac_for(
-		group_max            ,
+	fix_like_fun_.sparse_jac_rev(
 		fixed_vec            ,
 		fix_like_jac_.subset ,
 		not_used_pattern     ,
