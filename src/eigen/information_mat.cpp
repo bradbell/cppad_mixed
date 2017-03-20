@@ -146,7 +146,7 @@ CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 			//
 			// ran_objcon_hes_
 			assert( ! init_ran_objcon_hes_done_ );
-			init_ran_objcon_hes(bool_sparsity_, fixed_opt, random_opt);
+			init_ran_objcon_hes(fixed_opt, random_opt);
 			assert( init_ran_objcon_hes_done_ );
 		}
 		assert( init_newton_checkpoint_done_ );

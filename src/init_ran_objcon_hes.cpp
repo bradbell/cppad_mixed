@@ -29,7 +29,7 @@ $section Initialize Hessian of Approximate Random Objective$$
 
 $head Syntax$$
 $icode%mixed_object%.init_ran_objcon_hes(
-	%bool_sparsity%, %fixed_vec%, %random_vec%
+	%fixed_vec%, %random_vec%
 )%$$
 
 $head Private$$
@@ -39,14 +39,6 @@ $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
-
-$head bool_sparsity$$
-This argument has prototype
-$codei%
-	bool %bool_sparsity%
-%$$
-If it is true, boolean sparsity patterns are used for this computation,
-otherwise set sparsity patterns are used.
 
 $head fixed_vec$$
 This argument has prototype
@@ -237,7 +229,6 @@ void ran_objcon_hes_use_bool(
 } // END_EMPTY_NAMESPACE
 
 void cppad_mixed::init_ran_objcon_hes(
-	bool            bool_sparsity ,
 	const d_vector& fixed_vec     ,
 	const d_vector& random_vec    )
 {	assert( ! init_ran_objcon_hes_done_ );
@@ -250,7 +241,7 @@ void cppad_mixed::init_ran_objcon_hes(
 	d_vector beta_theta_u(n_total);
 	pack(fixed_vec, fixed_vec, random_vec, beta_theta_u);
 
-	if( bool_sparsity ) ran_objcon_hes_use_bool(
+	if( bool_sparsity_ ) ran_objcon_hes_use_bool(
 		n_fixed_,
 		n_random_,
 		beta_theta_u,
