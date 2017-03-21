@@ -40,7 +40,6 @@ $children%include/cppad/mixed/typedef.hpp
 	%include/cppad/mixed/sparse_hes_rcv.hpp
 	%include/cppad/mixed/sparse_hes_info.hpp
 	%include/cppad/mixed/sparse_jac_rcv.hpp
-	%include/cppad/mixed/sparse_jac_info.hpp
 	%include/cppad/mixed/sparse_mat_info.hpp
 	%include/cppad/mixed/triple2eigen.hpp
 	%src/eigen/undetermined.cpp
@@ -77,7 +76,8 @@ $rref ipopt_fixed$$
 $rref newton_step$$
 $rref fixed_solution$$
 $rref sparse_hes_info$$
-$rref sparse_jac_info$$
+$rref sparse_hes_rcv$$
+$rref sparse_jac_rcv$$
 $rref triple2eigen$$
 $rref undetermined$$
 $rref sparse_low_tri_sol$$

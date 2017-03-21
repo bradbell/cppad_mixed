@@ -14,6 +14,8 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin init_fix_con$$
 $spell
+	rcv
+	Jacobians
 	CppAD
 	init
 	cppad
@@ -69,32 +71,34 @@ $cref fix_constraint$$ $latex c( \theta )$$.
 $head fix_con_jac_$$
 The input value of
 $codei%
-	CppAD::mixed::sparse_jac_info fix_con_jac_
+	CppAD::mixed::sparse_jac_rcv fix_con_jac_
 %$$
 must be empty.
-Upon return, $code fix_con_jac_$$ contains
-$cref sparse_jac_info$$ for the
+Upon return, $code fix_con_jac_$$ contains the
+$cref sparse_jac_rcv$$ structure for the
 Jacobian of the $cref/constraints/fix_constraint/$$.
 
 $subhead fix_con_fun_$$
-This ADFun object can be used for the
-$cref/sparse jacobian call/sparse_jac_info/Sparse Jacobian Call/f/$$.
+This ADFun object can be used, with $code fix_con_jac_$$,
+for computing sparse Jacobians; see
+$cref/f/sparse_jac_rcv/Computing Sparse Jacobians/f/$$.
 
 $head fix_con_hes_$$
 The input value of
 $codei%
-	CppAD::mixed::sparse_hes_info fix_con_hes_
+	CppAD::mixed::sparse_hes_rcv fix_con_hes_
 %$$
 must be empty.
 If $icode quasi_fixed$$ is false,
 upon return $code fix_con_hes_$$ contains
-$cref sparse_hes_info$$ for the
+$cref sparse_hes_rcv$$ for the
 lower triangle of a weighted Hessian for the
 $cref/constraints/fix_constraint/$$.
 
 $subhead fix_con_fun_$$
-This ADFun object can be used for the
-$cref/sparse Hessian call/sparse_hes_info/Sparse Hessian Call/f/$$.
+This ADFun object can be used, with $code fix_con_hes_$$,
+for computing sparse Hessians; see
+$cref/f/sparse_hes_rcv/Computing Sparse Hessians/f/$$.
 
 $end
 */

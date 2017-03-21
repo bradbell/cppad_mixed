@@ -99,7 +99,7 @@ for $icode%k% = 0 , %...%, %nnz%-1%$$,
 $icode%val%[%k%]%$$ is the value of $latex J_{i,j} (x)$$
 where $icode%i% = %row%[%k%]%$$ and $icode%j% = %col[%k%]%$$.
 
-$head Forward Mode$$
+$subhead Forward Mode$$
 If $icode%jac_rcv%.forward%$$ is true,
 $codei%
 	%f%.sparse_jac_for(
@@ -113,7 +113,7 @@ $codei%
 %$$
 computes the Jacobian values.
 
-$head Reverse Mode$$
+$subhead Reverse Mode$$
 If $icode%jac_rcv%.forward%$$ is false,
 $codei%
 	%f%.sparse_jac_for(

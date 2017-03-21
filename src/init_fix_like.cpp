@@ -14,6 +14,8 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin init_fix_like$$
 $spell
+	rcv
+	Jacobians
 	CppAD
 	init
 	cppad
@@ -72,33 +74,34 @@ $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 $head fix_like_jac_$$
 The input value of
 $codei%
-	CppAD::mixed::sparse_jac_info fix_like_jac_
+	CppAD::mixed::sparse_jac_rcv fix_like_jac_
 %$$
 must be empty.
 If the return value for
 $cref fix_likelihood$$ is empty,
 $code fix_like_jac_$$ is not modified.
-Upon return, $code fix_like_jac_$$ contains
-$cref sparse_jac_info$$ for the
+Upon return, $code fix_like_jac_$$ contains the
+$cref sparse_jac_rcv$$ structure for the
 Jacobian corresponding to
 $latex g_\theta ( \theta )$$ see
 $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 
 $subhead fix_like_fun_$$
-This ADFun object can be used for the
-$cref/sparse Jacobian call/sparse_jac_info/Sparse Jacobian Call/f/$$.
+This ADFun object can be used, with $code fix_like_jac_$$,
+for computing sparse Jacobians; see
+$cref/f/sparse_jac_rcv/Computing Sparse Jacobians/f/$$.
 
 $head fix_like_hes_$$
 The input value of
 $codei%
-	CppAD::mixed::sparse_hes_info fix_like_hes_
+	CppAD::mixed::sparse_hes_rcv fix_like_hes_
 %$$
 must be empty.
 If the return value for
 $cref fix_likelihood$$ is empty,
 $code fix_like_hes_$$ is not modified.
 Upon return, $code fix_like_hes_$$ contains
-$cref sparse_hes_info$$ for the
+$cref sparse_hes_rcv$$ for the
 lower triangle of a Hessian corresponding to
 $latex g_{\theta,\theta}) ( \theta )$$ see
 $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
@@ -107,8 +110,9 @@ this is not used by $cref optimize_fixed$$, but it may be used by
 $cref information_mat$$.
 
 $subhead fix_like_fun_$$
-This ADFun object can be used for the
-$cref/sparse Hessian call/sparse_hes_info/Sparse Hessian Call/f/$$.
+This ADFun object can be used, with $code fix_like_hes_$$,
+for computing sparse Hessians; see
+$cref/f/sparse_hes_rcv/Computing Sparse Hessians/f/$$.
 
 $end
 */

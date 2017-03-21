@@ -17,7 +17,6 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/sparse_hes_rcv.hpp>
 # include <cppad/mixed/sparse_hes_info.hpp>
 # include <cppad/mixed/sparse_jac_rcv.hpp>
-# include <cppad/mixed/sparse_jac_info.hpp>
 # include <cppad/mixed/ldlt_eigen.hpp>
 # include <cppad/mixed/sparse_mat_info.hpp>
 # include <cppad/mixed/configure.hpp>
