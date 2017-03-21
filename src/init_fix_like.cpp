@@ -223,7 +223,7 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	// only compute the lower traingle of the Hessian
 	fix_like_hes_.subset = sparse_rcv( lower_pattern );
 
-	// compute the work vector for reuse during sparse Hessian calculations
+	// compute work for reuse during sparse Hessian calculations
 	// (value of weight vector does not affect work, but avoid warnings)
 	d_vector weight(m);
 	for(size_t i = 0; i < m; i++)

@@ -512,7 +512,7 @@ $cref/random objective
 	/Random Objective, r(theta)
 /$$
 $srccode%cpp% */
-	CppAD::mixed::sparse_hes_info ran_objcon_hes_;
+	CppAD::mixed::sparse_hes_rcv ran_objcon_hes_;
 /* %$$
 $comment ------------------------------------------------------------------- $$
 

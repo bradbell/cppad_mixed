@@ -282,7 +282,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 	size_map["hes_cross_.row.size()"]      = hes_cross_.row.size();
 	size_map["newton_checkpoint_.size_var()"] = newton_checkpoint_.size_var();
 	size_map["ran_objcon_fun_.size_var()"] = ran_objcon_fun_.size_var();
-	size_map["ran_objcon_hes_.row.size()"] = ran_objcon_hes_.row.size();
+	size_map["ran_objcon_hes_.subset.nnz()"] = ran_objcon_hes_.subset.nnz();
 	size_map["fix_like_fun_.size_var()"]   = fix_like_fun_.size_var();
 	size_map["fix_like_jac_.subset.nnz()"] = fix_like_jac_.subset.nnz();
 	size_map["fix_like_hes_.subset.nnz()"] = fix_like_hes_.subset.nnz();

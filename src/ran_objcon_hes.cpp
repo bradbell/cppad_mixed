@@ -169,59 +169,54 @@ void cppad_mixed::ran_objcon_hes(
 	CppAD::vector<size_t>&   col_out     ,
 	d_vector&                val_out     )
 {	assert( init_ran_objcon_hes_done_ );
+	//
 	assert( n_fixed_  == fixed_vec.size() );
 	assert( n_random_ == random_vec.size() );
 	assert( A_rcv_.nr() + 1 == weight.size() );
-
-	// size of outputs
-	size_t n_nonzero = ran_objcon_hes_.row.size();
-	if( n_nonzero == 0 )
-	{	// special case where Hessian is zero.
+	//
+	size_t nnz = ran_objcon_hes_.subset.nnz();
+	if( nnz == 0 )
+	{	// sparse Hessian has no entries
 		assert( row_out.size() == 0 );
 		assert( col_out.size() == 0 );
 		assert( val_out.size() == 0 );
 		return;
 	}
-	// check recording
-	assert( ran_objcon_hes_.col.size() == n_nonzero );
-
-	// make sure outputs have proper dimension
-	assert( row_out.size() == col_out.size() );
-	assert( row_out.size() == val_out.size() );
-
 	// check if this is first call
 	if( row_out.size() == 0 )
-	{	row_out.resize(n_nonzero);
-		col_out.resize(n_nonzero);
-		val_out.resize(n_nonzero);
-		for(size_t k = 0; k < n_nonzero; k++)
-		{	row_out[k] = ran_objcon_hes_.row[k];
-			col_out[k] = ran_objcon_hes_.col[k];
+	{	assert( col_out.size() == 0 );
+		row_out = ran_objcon_hes_.subset.row();
+		col_out = ran_objcon_hes_.subset.col();
+		val_out.resize(nnz);
+	}
+# ifndef NDEBUG
+	else
+	{	for(size_t k = 0; k < nnz; k++)
+		{	assert( row_out[k] == ran_objcon_hes_.subset.row()[k] );
+			assert( col_out[k] == ran_objcon_hes_.subset.col()[k] );
 		}
 	}
-
+# endif
+	assert( row_out.size() == nnz );
+	assert( col_out.size() == nnz );
+	assert( val_out.size() == nnz );
+	//
 	// create a d_vector containing (beta, theta, u)
 	d_vector beta_theta_u( 2 * n_fixed_ + n_random_ );
 	pack(fixed_vec, fixed_vec, random_vec, beta_theta_u);
-
-	// First call to SparseHessian is during init_ran_objcon_hes
-	CppAD::vector< std::set<size_t> > not_used(0);
-
-	// compute the sparse Hessian
-	ran_objcon_fun_.SparseHessian(
-		beta_theta_u,
-		weight,
-		not_used,
-		ran_objcon_hes_.row,
-		ran_objcon_hes_.col,
-		val_out,
+	//
+	sparse_rc   not_used_pattern;
+	std::string not_used_coloring;
+	ran_objcon_fun_.sparse_hes(
+		beta_theta_u           ,
+		weight                 ,
+		ran_objcon_hes_.subset ,
+		not_used_pattern       ,
+		not_used_coloring      ,
 		ran_objcon_hes_.work
 	);
-
-# ifndef NDEBUG
-	for(size_t k = 0; k < n_nonzero; k++)
-	{	assert( row_out[k] == ran_objcon_hes_.row[k] );
-		assert( col_out[k] == ran_objcon_hes_.col[k] );
-	}
-# endif
+	for(size_t k = 0; k < nnz; k++)
+		val_out[k] = ran_objcon_hes_.subset.val()[k];
+	//
+	return;
 }

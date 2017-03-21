@@ -160,7 +160,7 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec )
 	// (should already be empty).
 	fix_con_jac_.work.clear();
 
-	// compute the work vector for reuse during sparse Jacobian calculations
+	// compute work for reuse during sparse Jacobian calculations
 	std::string coloring = "cppad";
 	fix_con_fun_.sparse_jac_rev(
 		fixed_vec            ,
