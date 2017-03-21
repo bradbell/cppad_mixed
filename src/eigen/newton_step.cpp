@@ -145,15 +145,14 @@ newton_step_algo::newton_step_algo(
 :
 n_fixed_ ( theta.size() ) ,
 n_random_( u.size()     ) ,
-a1_adfun_( a1_adfun     ) ,
-hes_info_( hes_info     )
-{	assert( a1_adfun.Domain() == n_fixed_ + n_random_ );
-	assert( a1_adfun.Range()  == 1 );
+a1_adfun_( a1_adfun     )
+{	size_t m = a1_adfun_.Range();
+	//
+	assert( m == 1 );
+	assert( a1_adfun.Domain() == n_fixed_ + n_random_ );
 	assert( hes_info.row.size() == hes_info.col.size() );
 	assert( hes_info.row.size() != 0 );
 	assert( hes_info.val.size() == 0 );
-	//
-# if CPPAD_MIXED_USE_ATOMIC_CHOLESKY
 	// total number of variables
 	size_t n_both = n_fixed_ + n_random_;
 	//
@@ -164,32 +163,94 @@ hes_info_( hes_info     )
 	for(size_t j = 0; j < n_random_; j++)
 		a1_theta_u[n_fixed_ + j] = u[j];
 	//
-	// sparsity pattern not needed because we have hes_info_.work
-	CppAD::vectorBool not_used;
+	// =======================================================================
+	// Temporay kludge to initialize a1_hes_rcv_. Should be able to remove
+	// once this logic is used to initialize hes_rcv.
+	// -----------------------------------------------------------------------
+	// forward Jacobian sparsity corresponding to partial w.r.t
+	// just the random effects
+	sparse_rc pattern_in(n_both, n_random_, n_random_);
+	for(size_t k = 0; k < n_random_; k++)
+		pattern_in.set(k, n_fixed_ + k, k);
+	bool      transpose     = false;
+	bool      dependency    = false;
+	bool      internal_bool = false; // bool_sparsity_ not available
+	sparse_rc jac_pattern;
+	a1_adfun_.for_jac_sparsity(
+		pattern_in, transpose, dependency, internal_bool, jac_pattern
+	);
+	// reverse sparstiy for partial w.r.t. (theta, u) of partial w.r.t u
+	CppAD::vector<bool> select_range(m);
+	select_range[0] = true;
+	sparse_rc hes_pattern;
+	a1_adfun_.rev_hes_sparsity(
+		select_range, transpose, internal_bool, hes_pattern
+	);
+	// count number of entire in partial w.r.t u of partial w.r.t u
+	// and number in lower triangle
+	size_t n_uu  = 0;
+	size_t n_low = 0;
+	for(size_t k = 0; k < hes_pattern.nnz(); k++)
+	{	size_t r = hes_pattern.row()[k];
+		if( r >= n_fixed_ )
+		{	++n_uu;
+			size_t c = hes_pattern.col()[k] + n_fixed_;
+			if( r >= c )
+				++n_low;
+		}
+	}
 	//
-	// compute the sparse Hessian
-	a1_vector a1_w(1), a1_val_out( hes_info_.row.size() );
+	// extended version of sparsity of patrial w.r.t u of partial w.r.t. u
+	sparse_rc hes_extend(n_both, n_both, n_uu);
+	// subset of sparstiy pattern that we are calculating
+	sparse_rc hes_lower(n_both, n_both, n_low);
+	// column major ordering
+	s_vector col_major = hes_pattern.col_major();
+	size_t k_uu  = 0;
+	size_t k_low = 0;
+	for(size_t k = 0; k < hes_pattern.nnz(); k++)
+	{	size_t ell = col_major[k];
+		size_t r   = hes_pattern.row()[ell];
+		if( r >= n_fixed_ )
+		{	size_t c   = hes_pattern.col()[ell] + n_fixed_;
+			hes_extend.set(k_uu++, r, c);
+			if( r >= c )
+				hes_lower.set(k_low++, r, c);
+		}
+	}
+	assert( k_uu == n_uu );
+	assert( k_low == n_low );
+	a1_hes_rcv_ = CppAD::sparse_rcv<s_vector, a1_vector>( hes_lower );
+	//
+	// compute the sparse Hessian and initialize work
+	a1_vector a1_w(m);
 	a1_w[0] = 1.0;
-	a1_adfun_.SparseHessian(
+	std::string coloring = "cppad.symmetric";
+	a1_adfun_.sparse_hes(
 		a1_theta_u,
 		a1_w,
-		not_used,
-		hes_info_.row,
-		hes_info_.col,
-		a1_val_out,
-		hes_info_.work
+		a1_hes_rcv_,
+		hes_extend,
+		coloring,
+		a1_hes_work_
 	);
+	// =======================================================================
+# if CPPAD_MIXED_USE_ATOMIC_CHOLESKY
 	// set a1_hessian to lower triangular sparse matrix representation of
 	// f_uu (theta, u)
 	typedef Eigen::SparseMatrix<a1_double, Eigen::ColMajor> a1_eigen_sparse;
 	a1_eigen_sparse a1_hessian(n_random_, n_random_);
-	size_t K = hes_info_.row.size();
-	for(size_t k = 0; k < K; k++)
-	{	assert( n_fixed_ <= hes_info_.col[k]  );
-		assert( hes_info_.col[k]  <= hes_info_.row[k] );
-		size_t i = hes_info_.row[k] - n_fixed_;
-		size_t j = hes_info_.col[k] - n_fixed_;
-		a1_hessian.insert(i, j) = a1_val_out[k];
+	for(size_t k = 0; k < a1_hes_rcv_.nnz(); k++)
+	{	size_t r = a1_hes_rcv_.row()[k];
+		size_t c = a1_hes_rcv_.col()[k];
+		//
+		assert( n_fixed_ <= r );
+		assert( n_fixed_ <= c );
+		assert( c <= r );
+		//
+		size_t i = r - n_fixed_;
+		size_t j = c - n_fixed_;
+		a1_hessian.insert(i, j) = a1_hes_rcv_.val()[k];
 	}
 	// initialize cholesky_
 	cholesky_.initialize( a1_hessian );
@@ -264,16 +325,17 @@ void newton_step_algo::operator()(
 	CppAD::vectorBool not_used;
 
 	// compute the sparse Hessian
-	a1_vector a1_w(1), a1_val_out( hes_info_.row.size() );
+	a1_vector a1_w(1);
 	a1_w[0] = 1.0;
-	a1_adfun_.SparseHessian(
+	sparse_rc   not_used_pattern;
+	std::string not_used_coloring;
+	a1_adfun_.sparse_hes(
 		a1_theta_u,
 		a1_w,
-		not_used,
-		hes_info_.row,
-		hes_info_.col,
-		a1_val_out,
-		hes_info_.work
+		a1_hes_rcv_,
+		not_used_pattern,
+		not_used_coloring,
+		a1_hes_work_
 	);
 
 	// declare eigen matrix types
@@ -283,13 +345,17 @@ void newton_step_algo::operator()(
 	// set a1_hessian to lower triangular eigen sparse matrix representation of
 	// f_uu (theta, u)
 	a1_eigen_sparse a1_hessian(n_random_, n_random_);
-	size_t K = hes_info_.row.size();
-	for(size_t k = 0; k < K; k++)
-	{	assert( n_fixed_ <= hes_info_.col[k]  );
-		assert( hes_info_.col[k]  <= hes_info_.row[k] );
-		size_t i = hes_info_.row[k] - n_fixed_;
-		size_t j = hes_info_.col[k] - n_fixed_;
-		a1_hessian.insert(i, j) = a1_val_out[k];
+	for(size_t k = 0; k < a1_hes_rcv_.nnz(); k++)
+	{	size_t r = a1_hes_rcv_.row()[k];
+		size_t c = a1_hes_rcv_.col()[k];
+		//
+		assert( n_fixed_ <= r );
+		assert( n_fixed_ <= c );
+		assert( c <= r );
+		//
+		size_t i = r - n_fixed_;
+		size_t j = c - n_fixed_;
+		a1_hessian.insert(i, j) = a1_hes_rcv_.val()[k];
 	}
 
 	// set rhs to an eigen vector representation of v
@@ -297,7 +363,7 @@ void newton_step_algo::operator()(
 	for(size_t j = 0; j < n_random_; j++)
 		rhs(j) = a1_theta_u_v[n_fixed_ + n_random_ + j];
 
-	// compute the newt step and the log determinant
+	// compute the newton step and the log determinant
 	a1_eigen_vector step;
 	a1_double       logdet = 0.0;
 # if CPPAD_MIXED_USE_ATOMIC_CHOLESKY
