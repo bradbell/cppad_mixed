@@ -93,13 +93,14 @@ $head Cppad Mixed Types$$
 The following Cppad Mixed types are extended into the
 $code cppad_mixed$$ class:
 $srccode%cpp% */
-	typedef CppAD::mixed::a1_double    a1_double;
-	typedef CppAD::mixed::a2_double    a2_double;
-	typedef CppAD::mixed::d_vector     d_vector;
-	typedef CppAD::mixed::a1_vector    a1_vector;
-	typedef CppAD::mixed::a2_vector    a2_vector;
-	typedef CppAD::mixed::sparse_rc    sparse_rc;
-	typedef CppAD::mixed::sparse_rcv   sparse_rcv;
+	typedef CppAD::mixed::a1_double      a1_double;
+	typedef CppAD::mixed::a2_double      a2_double;
+	typedef CppAD::mixed::d_vector       d_vector;
+	typedef CppAD::mixed::a1_vector      a1_vector;
+	typedef CppAD::mixed::a2_vector      a2_vector;
+	typedef CppAD::mixed::sparse_rc      sparse_rc;
+	typedef CppAD::mixed::sparse_rcv     sparse_rcv;
+	typedef CppAD::mixed::a1_sparse_rcv  a1_sparse_rcv;
 /* %$$
 
 $head User Defined Functions$$

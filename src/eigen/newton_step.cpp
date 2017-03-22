@@ -232,7 +232,7 @@ a1_adfun_( a1_adfun     )
 		a1_hes_rcv_,
 		hes_extend,
 		coloring,
-		a1_hes_work_
+		hes_work_
 	);
 	// =======================================================================
 # if CPPAD_MIXED_USE_ATOMIC_CHOLESKY
@@ -335,7 +335,7 @@ void newton_step_algo::operator()(
 		a1_hes_rcv_,
 		not_used_pattern,
 		not_used_coloring,
-		a1_hes_work_
+		hes_work_
 	);
 
 	// declare eigen matrix types

@@ -104,6 +104,15 @@ namespace CppAD { namespace mixed {
 } }
 
 /* %$$
+$subhead a1_sparse_rcv$$
+Sparse matrices using index vector of type $code s_vector$$
+and value vectors of type $code a1_vector$$:
+$srccode%cpp% */
+namespace CppAD { namespace mixed {
+	typedef CppAD::sparse_rcv<s_vector, a1_vector> a1_sparse_rcv;
+} }
+
+/* %$$
 $end
 */
 
