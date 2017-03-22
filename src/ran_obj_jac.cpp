@@ -118,16 +118,15 @@ void cppad_mixed::ran_obj_jac(
 	//
 	// Compute the Hessian cross terms f_{u,theta} ( theta , u )
 	// 2DO: another ran_like_fun_.Forward(0, both) is done by SparseHessian
-	CppAD::vector< std::set<size_t> > not_used;
-	size_t K = hes_cross_.row.size();
-	CppAD::vector<double> val_out(K);
-	ran_like_fun_.SparseHessian(
+	std::string not_used_coloring;
+	sparse_rc   not_used_pattern;
+	size_t K = hes_cross_.subset.nnz();
+	ran_like_fun_.sparse_hes(
 		both,
 		w,
-		not_used,
-		hes_cross_.row,
-		hes_cross_.col,
-		val_out,
+		hes_cross_.subset,
+		not_used_pattern,
+		not_used_coloring,
 		hes_cross_.work
 	);
 
@@ -137,9 +136,9 @@ void cppad_mixed::ran_obj_jac(
 	size_t row = n_random_;
 	size_t col = n_fixed_;
 	if( k < K )
-	{	assert( hes_cross_.row[k] >= n_fixed_ );
-		row = hes_cross_.row[k] - n_fixed_;
-		col = hes_cross_.col[k];
+	{	assert( hes_cross_.subset.row()[k] >= n_fixed_ );
+		row = hes_cross_.subset.row()[k] - n_fixed_;
+		col = hes_cross_.subset.col()[k];
 		assert( row < n_random_ );
 		assert( col < n_fixed_ );
 	}
@@ -170,16 +169,16 @@ void cppad_mixed::ran_obj_jac(
 			}
 			if( col == j )
 			{	row_solve.push_back(row);
-				val_b.push_back( - val_out[k] );
+				val_b.push_back( - hes_cross_.subset.val()[k] );
 				found[row] = true;
 				assert( i == row );
 				i++;
 			}
 			k++;
 			if( k < K )
-			{	assert( hes_cross_.row[k] >= n_fixed_ );
-				row = hes_cross_.row[k] - n_fixed_;
-				col = hes_cross_.col[k];
+			{	assert( hes_cross_.subset.row()[k] >= n_fixed_ );
+				row = hes_cross_.subset.row()[k] - n_fixed_;
+				col = hes_cross_.subset.col()[k];
 				assert( row < n_random_ );
 				assert( col < n_fixed_ );
 			}

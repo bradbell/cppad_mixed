@@ -152,33 +152,33 @@ void cppad_mixed::ran_con_jac(
 	pack(fixed_vec, random_vec, both);
 
 	// Compute the Hessian cross terms f_{u,theta} ( theta , u )
-	CppAD::vector< std::set<size_t> > not_used;
-	size_t K = hes_cross_.row.size();
-	d_vector val_out(K), w(1);
+	sparse_rc  not_used_pattern;
+	std::string not_used_coloring;
+	size_t K = hes_cross_.subset.nnz();
+	d_vector w(1);
 	w[0] = 1.0;
-	ran_like_fun_.SparseHessian(
+	ran_like_fun_.sparse_hes(
 		both,
 		w,
-		not_used,
-		hes_cross_.row,
-		hes_cross_.col,
-		val_out,
+		hes_cross_.subset,
+		not_used_pattern,
+		not_used_coloring,
 		hes_cross_.work
 	);
-
+	//
 	// Use the column major order specification for
 	// (hes_cross_.row, hes_cross_.col)
 	size_t k = 0;
 	size_t row = n_random_;
 	size_t col = n_fixed_;
 	if( k < K )
-	{	assert( hes_cross_.row[k] >= n_fixed_ );
-		row = hes_cross_.row[k] - n_fixed_;
-		col = hes_cross_.col[k];
+	{	assert( hes_cross_.subset.row()[k] >= n_fixed_ );
+		row = hes_cross_.subset.row()[k] - n_fixed_;
+		col = hes_cross_.subset.col()[k];
 		assert( row < n_random_ );
 		assert( col < n_fixed_ );
 	}
-
+	//
 	// 2DO: figure out how to make this a sparse calculation.
 	// The problem is propagating the sparsity though Choleksy inverse.
 	CppAD::vector<size_t> row_solve(n_random_);
@@ -194,13 +194,13 @@ void cppad_mixed::ran_con_jac(
 			val_b[i]     = 0.0;
 		while( col <= j )
 		{	assert( col == j );
-			val_b[row] = -val_out[k];
+			val_b[row] = -hes_cross_.subset.val()[k];
 			//
 			k++;
 			if( k < K )
-			{	assert( hes_cross_.row[k] >= n_fixed_ );
-				row = hes_cross_.row[k] - n_fixed_;
-				col = hes_cross_.col[k];
+			{	assert( hes_cross_.subset.row()[k] >= n_fixed_ );
+				row = hes_cross_.subset.row()[k] - n_fixed_;
+				col = hes_cross_.subset.col()[k];
 				assert( row < n_random_ );
 				assert( col < n_fixed_ );
 			}

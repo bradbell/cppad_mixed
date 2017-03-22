@@ -15,7 +15,6 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/newton_step.hpp>
 # include <cppad/mixed/sparse_hes_rcv.hpp>
-# include <cppad/mixed/sparse_hes_info.hpp>
 # include <cppad/mixed/sparse_jac_rcv.hpp>
 # include <cppad/mixed/ldlt_eigen.hpp>
 # include <cppad/mixed/sparse_mat_info.hpp>
@@ -480,7 +479,7 @@ $cref/random likelihood
 /$$
 ; i.e.  $latex f_{u,\theta} ( \theta , u )$$.
 $srccode%cpp% */
-	CppAD::mixed::sparse_hes_info hes_cross_;
+	CppAD::mixed::sparse_hes_rcv hes_cross_;
 	//
 	friend bool ::hes_cross_xam(void);
 /* %$$

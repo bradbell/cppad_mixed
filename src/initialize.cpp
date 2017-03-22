@@ -279,7 +279,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 	size_map["ran_like_a1fun_.size_var()"] = ran_like_a1fun_.size_var();
 	size_map["ran_hes_rcv_.nnz()"]         = ran_hes_rcv_.nnz();
 	size_map["ran_hes_fun_.size_var()"]    = ran_hes_fun_.size_var();
-	size_map["hes_cross_.row.size()"]      = hes_cross_.row.size();
+	size_map["hes_cross_.subset.nnz()"]    = hes_cross_.subset.nnz();
 	size_map["newton_checkpoint_.size_var()"] = newton_checkpoint_.size_var();
 	size_map["ran_objcon_fun_.size_var()"] = ran_objcon_fun_.size_var();
 	size_map["ran_objcon_hes_.subset.nnz()"] = ran_objcon_hes_.subset.nnz();

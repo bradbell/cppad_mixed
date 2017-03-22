@@ -122,27 +122,27 @@ bool hes_cross_xam(void)
 	mixed_object.initialize(theta, u);
 
 	// number of non-zeros in Hessian cross terms
-	ok &= mixed_object.hes_cross_.row.size() == n_random;
-	ok &= mixed_object.hes_cross_.col.size() == n_random;
+	ok &= mixed_object.hes_cross_.subset.nnz() == n_random;
 
 	// compute Hessian cross terms
-	vector<double> w(1), val_out(n_random), both(n_fixed + n_random);
+	vector<double> w(1), both(n_fixed + n_random);
 	w[0] = 1.0;
-	CppAD::vector< std::set<size_t> > not_used;
+	std::string              not_used_coloring;
+	CppAD::mixed::sparse_rc  not_used_pattern;
 	mixed_object.pack(fixed_vec, random_vec, both);
-	mixed_object.ran_like_fun_.SparseHessian(
+	mixed_object.ran_like_fun_.sparse_hes(
 		both,
 		w,
-		not_used,
-		mixed_object.hes_cross_.row,
-		mixed_object.hes_cross_.col,
-		val_out,
+		mixed_object.hes_cross_.subset,
+		not_used_pattern,
+		not_used_coloring,
 		mixed_object.hes_cross_.work
 	);
-
-	CppAD::vector<size_t>& row(mixed_object.hes_cross_.row);
-	CppAD::vector<size_t>& col(mixed_object.hes_cross_.col);
-
+	//
+	const CppAD::mixed::s_vector& row(mixed_object.hes_cross_.subset.row());
+	const CppAD::mixed::s_vector& col(mixed_object.hes_cross_.subset.col());
+	const CppAD::mixed::d_vector& val(mixed_object.hes_cross_.subset.val());
+	//
 	// check Hessian
 	for(size_t k = 0; k < n_random; k++)
 	{	ok     &= row[k] >= n_fixed;
@@ -153,7 +153,7 @@ bool hes_cross_xam(void)
 		//
 		double sigma3 = fixed_vec[i] * fixed_vec[i] * fixed_vec[i];
 		double check  = 2.0 * (data[i] - random_vec[i])  / sigma3;
-		ok              &= fabs( val_out[k] / check - 1.0) <= eps;
+		ok              &= fabs( val[k] / check - 1.0) <= eps;
 	}
 	for(size_t k = 1; k < n_random; k++)
 	{	ok &= col[k-1] <= col[k];
