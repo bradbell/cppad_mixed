@@ -134,8 +134,8 @@ CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 			//
 			// newton_checkpoint_
 			assert( ran_like_a1fun_.size_var() > 0  );
-			newton_checkpoint_.initialize(
-				ran_like_a1fun_, ran_hes_rcv_, fixed_opt, random_opt
+			newton_checkpoint_.initialize(ran_like_a1fun_,
+				ran_hes_rcv_, ran_hes_work_, fixed_opt, random_opt
 			);
 			init_newton_checkpoint_done_ = true;;
 			//

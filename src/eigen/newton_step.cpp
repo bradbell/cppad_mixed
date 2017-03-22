@@ -34,7 +34,7 @@ $section Newton Step Algorithm Constructor$$
 
 $head Syntax$$
 $codei%CppAD::mixed::newton_step_algo %algo%(
-	%a1_adfun%, %hes_rcv%, %theta%, %u%,
+	%a1_adfun%, %hes_rcv%, %hes_work%, %theta%, %u%,
 )%$$
 
 $head Prototype$$
@@ -65,6 +65,26 @@ $cref/sparse_rcv/typedef/Sparse Types/sparse_rcv/$$
 information for the Hessian with respect to the
 random effects (as a function of the fixed and random effects); i.e.
 $latex f_uu ( \theta , u)$$.
+
+$head hes_work$$
+This argument has prototype
+$code%
+	const CppAD::sparse_hes_work& %hes_work%
+%$$
+It contains the necessary information so that the call
+$codei%
+	a1_adfun.sparse_hes(
+		%a1_x%,
+		%a1_w%
+		a1_hes_rcv,
+		%not_used_pattern%,
+		%not_used_coloring%,
+		hes_work
+	)
+%$$
+can be used the compute the sparse Hessian.
+Here $icode a1_hes_rcv$$ is the same as $icode hes_rcv$$, except
+that its value vector has type $code a1_vector$$ instead of $code d_vector$$.
 
 $head theta$$
 This is a value for $latex \theta$$
@@ -133,13 +153,15 @@ $end
 newton_step_algo::newton_step_algo(
 	CppAD::ADFun<a1_double>&      a1_adfun      ,
 	const sparse_rcv&             hes_rcv       ,
+	const CppAD::sparse_hes_work& hes_work      ,
 	const CppAD::vector<double>&  theta         ,
 	const CppAD::vector<double>&  u             )
 // END PROTOTYPE
 :
 n_fixed_ ( theta.size() ) ,
 n_random_( u.size()     ) ,
-a1_adfun_( a1_adfun     )
+a1_adfun_( a1_adfun     ) ,
+hes_work_( hes_work     )
 {	size_t m = a1_adfun_.Range();
 	//
 	assert( m == 1 );
@@ -154,77 +176,11 @@ a1_adfun_( a1_adfun     )
 	for(size_t j = 0; j < n_random_; j++)
 		a1_theta_u[n_fixed_ + j] = u[j];
 	//
-	// =======================================================================
-	// Temporay kludge to initialize a1_hes_rcv_. Should be able to remove
-	// once this logic is used to initialize hes_rcv.
-	// -----------------------------------------------------------------------
-	// forward Jacobian sparsity corresponding to partial w.r.t
-	// just the random effects
-	sparse_rc pattern_in(n_both, n_random_, n_random_);
-	for(size_t k = 0; k < n_random_; k++)
-		pattern_in.set(k, n_fixed_ + k, k);
-	bool      transpose     = false;
-	bool      dependency    = false;
-	bool      internal_bool = false; // bool_sparsity_ not available
-	sparse_rc jac_pattern;
-	a1_adfun_.for_jac_sparsity(
-		pattern_in, transpose, dependency, internal_bool, jac_pattern
-	);
-	// reverse sparstiy for partial w.r.t. (theta, u) of partial w.r.t u
-	CppAD::vector<bool> select_range(m);
-	select_range[0] = true;
-	sparse_rc hes_pattern;
-	a1_adfun_.rev_hes_sparsity(
-		select_range, transpose, internal_bool, hes_pattern
-	);
-	// count number of entire in partial w.r.t u of partial w.r.t u
-	// and number in lower triangle
-	size_t n_uu  = 0;
-	size_t n_low = 0;
-	for(size_t k = 0; k < hes_pattern.nnz(); k++)
-	{	size_t r = hes_pattern.row()[k];
-		if( r >= n_fixed_ )
-		{	++n_uu;
-			size_t c = hes_pattern.col()[k] + n_fixed_;
-			if( r >= c )
-				++n_low;
-		}
-	}
-	//
-	// extended version of sparsity of patrial w.r.t u of partial w.r.t. u
-	sparse_rc hes_extend(n_both, n_both, n_uu);
-	// subset of sparstiy pattern that we are calculating
-	sparse_rc hes_lower(n_both, n_both, n_low);
-	// column major ordering
-	s_vector col_major = hes_pattern.col_major();
-	size_t k_uu  = 0;
-	size_t k_low = 0;
-	for(size_t k = 0; k < hes_pattern.nnz(); k++)
-	{	size_t ell = col_major[k];
-		size_t r   = hes_pattern.row()[ell];
-		if( r >= n_fixed_ )
-		{	size_t c   = hes_pattern.col()[ell] + n_fixed_;
-			hes_extend.set(k_uu++, r, c);
-			if( r >= c )
-				hes_lower.set(k_low++, r, c);
-		}
-	}
-	assert( k_uu == n_uu );
-	assert( k_low == n_low );
-	a1_hes_rcv_ = CppAD::sparse_rcv<s_vector, a1_vector>( hes_lower );
-	//
-	// compute the sparse Hessian and initialize work
-	a1_vector a1_w(m);
-	a1_w[0] = 1.0;
-	std::string coloring = "cppad.symmetric";
-	a1_adfun_.sparse_hes(
-		a1_theta_u,
-		a1_w,
-		a1_hes_rcv_,
-		hes_extend,
-		coloring,
-		hes_work_
-	);
+	// set a1_hes_rcv_
+	sparse_rc pattern(hes_rcv.nr(), hes_rcv.nc(), hes_rcv.nnz());
+	for(size_t k = 0; k < hes_rcv.nnz(); k++)
+		pattern.set(k, hes_rcv.row()[k], hes_rcv.col()[k]);
+	a1_hes_rcv_ = a1_sparse_rcv( pattern );
 	// =======================================================================
 # if CPPAD_MIXED_USE_ATOMIC_CHOLESKY
 	// set a1_hessian to lower triangular sparse matrix representation of
@@ -479,8 +435,9 @@ $$
 $section Initialize the Newton Step Checkpoint Function$$
 
 $head Syntax$$
-$icode%newton_checkpoint%.initialize(%a1_adfun%, %hes_rcv%, %theta%, %u%)
-%$$
+$icode%newton_checkpoint%.initialize(
+	%a1_adfun%, %hes_rcv%, %hes_work%, %theta%, %u%
+)%$$
 
 $head Prototype$$
 $srcfile%src/eigen/newton_step.cpp
@@ -511,6 +468,26 @@ information for the Hessian with respect to the
 random effects (as a function of the fixed and random effects); i.e.
 $latex f_uu ( \theta , u)$$.
 
+$head hes_work$$
+This argument has prototype
+$code%
+	const CppAD::sparse_hes_work& %hes_work%
+%$$
+It contains the necessary information so that the call
+$codei%
+	a1_adfun.sparse_hes(
+		%a1_x%,
+		%a1_w%
+		a1_hes_rcv,
+		%not_used_pattern%,
+		%not_used_coloring%,
+		hes_work
+	)
+%$$
+can be used the compute the sparse Hessian.
+Here $icode a1_hes_rcv$$ is the same as $icode hes_rcv$$, except
+that its value vector has type $code a1_vector$$ instead of $code d_vector$$.
+
 $head theta$$
 This is a value for $latex \theta$$
 at which we can evaluate the Newton step and log determinant.
@@ -536,6 +513,7 @@ $end
 void newton_step::initialize(
 	CppAD::ADFun<a1_double>&          a1_adfun      ,
 	const sparse_rcv&                 hes_rcv       ,
+	const CppAD::sparse_hes_work      hes_work      ,
 	const CppAD::vector<double>&      theta         ,
 	const CppAD::vector<double>&      u             )
 // END PROTOTYPE
@@ -543,7 +521,7 @@ void newton_step::initialize(
 	assert( checkpoint_fun_ == CPPAD_MIXED_NULL_PTR );
 	// create algo
 	//
-	algo_ = new newton_step_algo( a1_adfun, hes_rcv, theta, u);
+	algo_ = new newton_step_algo( a1_adfun, hes_rcv, hes_work, theta, u);
 	assert( algo_ != CPPAD_MIXED_NULL_PTR );
 	//
 # if CPPAD_MIXED_CHECKPOINT_NEWTON_STEP

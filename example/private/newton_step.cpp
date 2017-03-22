@@ -92,7 +92,7 @@ bool newton_step_xam(void)
 		u[j] = 0.0;
 	//
 	CppAD::mixed::newton_step newton_checkpoint;
-	newton_checkpoint.initialize(a1_adfun, hes_ran, theta, u);
+	newton_checkpoint.initialize(a1_adfun, hes_ran, hes_ran_work, theta, u);
 	//
 	// use and test newton_checkpoint ---------------------------------------
 	vector<a1_double> a1_theta_u_v(n_fixed + 2 * n_random);

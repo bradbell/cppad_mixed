@@ -208,6 +208,7 @@ public:
 	newton_step_algo(
 		CppAD::ADFun<a1_double>&          a1_adfun      ,
 		const sparse_rcv&                 hes_rcv       ,
+		const CppAD::sparse_hes_work&     hes_work      ,
 		const CppAD::vector<double>&      theta         ,
 		const CppAD::vector<double>&      u
 	);
@@ -236,6 +237,7 @@ public:
 	void initialize(
 		CppAD::ADFun<a1_double>&          a1_adfun      ,
 		const sparse_rcv&                 hes_rcv       ,
+		const CppAD::sparse_hes_work      hes_work      ,
 		const CppAD::vector<double>&      fixed_vec     ,
 		const CppAD::vector<double>&      random_vec
 	);
