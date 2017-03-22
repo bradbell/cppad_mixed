@@ -98,10 +98,6 @@ void cppad_mixed::ran_obj_jac(
 	assert( random_vec.size() == n_random_ );
 	assert( r_fixed.size() == n_fixed_ );
 
-	// number of non-zeros in Hessian
-	size_t K = ran_hes_.row.size();
-	assert( K == ran_hes_.col.size() );
-
 	//
 	// Compute derivative of logdet of f_{u,u} ( theta , u )
 	d_vector logdet_fix(n_fixed_), logdet_ran(n_random_);
@@ -123,7 +119,7 @@ void cppad_mixed::ran_obj_jac(
 	// Compute the Hessian cross terms f_{u,theta} ( theta , u )
 	// 2DO: another ran_like_fun_.Forward(0, both) is done by SparseHessian
 	CppAD::vector< std::set<size_t> > not_used;
-	K = hes_cross_.row.size();
+	size_t K = hes_cross_.row.size();
 	CppAD::vector<double> val_out(K);
 	ran_like_fun_.SparseHessian(
 		both,

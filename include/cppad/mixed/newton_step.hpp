@@ -13,6 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin newton_step$$
 $spell
+	rcv
 	CppAD
 	cppad
 	logdet
@@ -33,7 +34,7 @@ $section Newton Step and Log Determinant Calculation$$
 $head Syntax$$
 $codei%CppAD::mixed::newton_step %newton_object%()
 %$$
-$icode%newton_object%.initialize(%a1_adfun%, %hes_info%, %theta%, %u%)
+$icode%newton_object%.initialize(%a1_adfun%, %hes_rcv%, %theta%, %u%)
 %$$
 $icode%sv% = newton_object%.size_var()
 %$$
@@ -71,7 +72,7 @@ $head initialize$$
 The $icode newton_object$$ must be initialized,
 before any calls to its $code eval$$ routine, using the syntax
 $codei%
-	newton_object.initialize(%a1_adfun%, %hes_info%,  %theta%, %u%)
+	newton_object.initialize(%a1_adfun%, %hes_rcv%,  %theta%, %u%)
 %$$
 
 $subhead a1_adfun$$
@@ -84,15 +85,16 @@ for which we are evaluating the Newton step and log determinant for.
 The routine $cref/pack(theta, u)/pack/$$ is used to
 convert the pair of vectors into the argument vector for $icode a1_adfun$$.
 
-$subhead hes_info$$
+$subhead hes_rcv$$
 This $code initialize$$ argument has prototype
 $code%
-	const CppAD::mixed::sparse_hes_info& %hes_info%
+	const CppAD::mixed::sparse_rcv& %hes_rcv%
 %$$
-It is the $cref sparse_hes_info$$ for the Hessian with respect to the
+It is the
+$cref/sparse_rcv/typedef/Sparse Types/sparse_rcv/$$
+information for the Hessian with respect to the
 random effects (as a function of the fixed and random effects); i.e.
 $latex f_uu ( \theta , u)$$.
-The vector $icode%hes_info%.val%$$ is not used.
 
 $head theta$$
 This $code initialize$$ argument has prototype
@@ -180,7 +182,6 @@ $end
 
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/sparse_hes_rcv.hpp>
-# include <cppad/mixed/sparse_hes_info.hpp>
 # include <cppad/mixed/sparse_ad_cholesky.hpp>
 # include <cppad/mixed/typedef.hpp>
 
@@ -206,7 +207,7 @@ public:
 	// constructor for algorithm that is checkpointed
 	newton_step_algo(
 		CppAD::ADFun<a1_double>&          a1_adfun      ,
-		sparse_hes_info&                  hes_info      ,
+		const sparse_rcv&                 hes_rcv       ,
 		const CppAD::vector<double>&      theta         ,
 		const CppAD::vector<double>&      u
 	);
@@ -234,7 +235,7 @@ public:
 	// setup the checkpoint function
 	void initialize(
 		CppAD::ADFun<a1_double>&          a1_adfun      ,
-		sparse_hes_info&                  hes_info      ,
+		const sparse_rcv&                 hes_rcv       ,
 		const CppAD::vector<double>&      fixed_vec     ,
 		const CppAD::vector<double>&      random_vec
 	);

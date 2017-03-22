@@ -17,6 +17,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 $begin newton_step_algo_ctor$$
 $spell
+	rcv
 	CppAD
 	checkpointing
 	algo
@@ -33,7 +34,7 @@ $section Newton Step Algorithm Constructor$$
 
 $head Syntax$$
 $codei%CppAD::mixed::newton_step_algo %algo%(
-	%a1_adfun%, %hes_info%, %theta%, %u%,
+	%a1_adfun%, %hes_rcv%, %theta%, %u%,
 )%$$
 
 $head Prototype$$
@@ -54,16 +55,16 @@ for which we are checkpointing the Newton step and log determinant for.
 The routine $cref/pack(theta, u)/pack/$$ is used to
 convert the pair of vectors into the argument vector for $icode a1_adfun$$.
 
-$head hes_info$$
+$head hes_rcv$$
 This argument has prototype
 $code%
-	const CppAD::mixed::sparse_hes_info& %hes_info%
+	const CppAD::mixed::sparse_rcv& %hes_rcv%
 %$$
-It is the $cref sparse_hes_info$$ for the Hessian with respect to the
+It is the
+$cref/sparse_rcv/typedef/Sparse Types/sparse_rcv/$$
+information for the Hessian with respect to the
 random effects (as a function of the fixed and random effects); i.e.
 $latex f_uu ( \theta , u)$$.
-The vector $icode%hes_info%.val%$$ is not used.
-Note that it is effectively $code const$$.
 
 $head theta$$
 This is a value for $latex \theta$$
@@ -118,19 +119,12 @@ $codei%
 %$$
 and is a reference to the $icode a1_adfun$$ argument.
 
-$head hes_info_$$
+$head a1_hes_rcv_$$
 This member variable has prototype
 $codei%
-	sparse_hes_info&   hes_info_;
+	a1_sparse_rcv_&   a1_hes_rcv_
 %$$
-and is a reference to the $icode hes_info$$ argument.
-Note that it is effectively $code const$$.
-
-$subhead Remark$$
-The vector
-$cref/hes_info_.val/sparse_hes_info/Sparse Hessian Call/hes_info.val/$$
-is not used because the call to $code SparseHessian$$
-uses $code CppAD::AD<double>$$ and not $code double$$ values.
+(2DO: Need to set it and remove temporary kludge.)
 
 $end
 */
@@ -138,7 +132,7 @@ $end
 // BEGIN PROTOTYPE
 newton_step_algo::newton_step_algo(
 	CppAD::ADFun<a1_double>&      a1_adfun      ,
-	sparse_hes_info&              hes_info      ,
+	const sparse_rcv&             hes_rcv       ,
 	const CppAD::vector<double>&  theta         ,
 	const CppAD::vector<double>&  u             )
 // END PROTOTYPE
@@ -150,9 +144,6 @@ a1_adfun_( a1_adfun     )
 	//
 	assert( m == 1 );
 	assert( a1_adfun.Domain() == n_fixed_ + n_random_ );
-	assert( hes_info.row.size() == hes_info.col.size() );
-	assert( hes_info.row.size() != 0 );
-	assert( hes_info.val.size() == 0 );
 	// total number of variables
 	size_t n_both = n_fixed_ + n_random_;
 	//
@@ -260,6 +251,7 @@ a1_adfun_( a1_adfun     )
 ------------------------------------------------------------------------------
 $begin newton_step_algo$$
 $spell
+	rcv
 	algo
 	logdet
 	CppAD
@@ -321,7 +313,7 @@ void newton_step_algo::operator()(
 	for(size_t j = 0; j < n_fixed_ + n_random_; j++)
 		a1_theta_u[j] = a1_theta_u_v[j];
 
-	// sparsity pattern not needed once we have hes_info_.work
+	// sparsity pattern not needed once we have hes_work_
 	CppAD::vectorBool not_used;
 
 	// compute the sparse Hessian
@@ -474,6 +466,7 @@ newton_step::~newton_step(void)
 -------------------------------------------------------------------------------
 $begin newton_step_initialize$$
 $spell
+	rcv
 	bool
 	adfun
 	CppAD
@@ -486,7 +479,7 @@ $$
 $section Initialize the Newton Step Checkpoint Function$$
 
 $head Syntax$$
-$icode%newton_checkpoint%.initialize(%a1_adfun%, %hes_info%, %theta%, %u%)
+$icode%newton_checkpoint%.initialize(%a1_adfun%, %hes_rcv%, %theta%, %u%)
 %$$
 
 $head Prototype$$
@@ -507,15 +500,16 @@ for which we are checkpointing the Newton step and log determinant for.
 The routine $cref/pack(theta, u)/pack/$$ is used to
 convert the pair of vectors into the argument vector for $icode a1_adfun$$.
 
-$head hes_info$$
+$head hes_rcv$$
 This argument has prototype
 $code%
-	const CppAD::mixed::sparse_hes_info& %hes_info%
+	const CppAD::mixed::sparse_rcv& %hes_rcv%
 %$$
-It is the $cref sparse_hes_info$$ for the Hessian with respect to the
+It is the
+$cref/sparse_rcv/typedef/Sparse Types/sparse_rcv/$$
+information for the Hessian with respect to the
 random effects (as a function of the fixed and random effects); i.e.
 $latex f_uu ( \theta , u)$$.
-The vector $icode%hes_info%.val%$$ is not used.
 
 $head theta$$
 This is a value for $latex \theta$$
@@ -541,7 +535,7 @@ $end
 // BEGIN PROTOTYPE
 void newton_step::initialize(
 	CppAD::ADFun<a1_double>&          a1_adfun      ,
-	sparse_hes_info&                  hes_info      ,
+	const sparse_rcv&                 hes_rcv       ,
 	const CppAD::vector<double>&      theta         ,
 	const CppAD::vector<double>&      u             )
 // END PROTOTYPE
@@ -549,7 +543,7 @@ void newton_step::initialize(
 	assert( checkpoint_fun_ == CPPAD_MIXED_NULL_PTR );
 	// create algo
 	//
-	algo_ = new newton_step_algo( a1_adfun, hes_info, theta, u);
+	algo_ = new newton_step_algo( a1_adfun, hes_rcv, theta, u);
 	assert( algo_ != CPPAD_MIXED_NULL_PTR );
 	//
 # if CPPAD_MIXED_CHECKPOINT_NEWTON_STEP

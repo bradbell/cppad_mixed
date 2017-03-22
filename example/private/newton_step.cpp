@@ -57,34 +57,32 @@ bool newton_step_xam(void)
 		a2_f[0]       += term * term;
 	}
 	CppAD::ADFun<a1_double> a1_adfun(a2_theta_u, a2_f);
-	/// compute hes_ran
+	/// compute has_ran and a1_hes_ran
 	//
-	// only requesting Hessian w.r.t. random effects
-	CppAD::mixed::sparse_hes_info hes_ran;
-	hes_ran.row.resize(n_random);
-	hes_ran.col.resize(n_random);
-	for(size_t j = 0; j < n_random; j++)
-	{	hes_ran.row[j] = n_fixed + j;
-		hes_ran.col[j] = n_fixed + j;
-	}
-	// need sparsity pattern for entire Hessian
-	vector< std::set<size_t> > pattern(n_both);
-	for(size_t j = 0; j < n_both; j++)
-		pattern[j].insert(j);
-	vector<a1_double> w(1), both(n_both), not_used(n_random);
-	w[0] = 1.0;
-	for(size_t j = 0; j < n_both; j++)
-		both[j] = 0.0;
+	// Only requesting Hessian w.r.t. random effects so the pattern
+	// w.r.t to fixed effects does not matter.
+	CppAD::mixed::sparse_rc pattern(n_both, n_both, n_random);
+	for(size_t k = 0; k < n_random; k++)
+		pattern.set(k, n_fixed + k, n_fixed + k);
 	//
-	// compute hes_ran.work
-	a1_adfun.SparseHessian(
-		both,
-		w,
+	// structure that holds result of calculation
+	CppAD::mixed::sparse_rcv    hes_ran( pattern );
+	CppAD::mixed::a1_sparse_rcv a1_hes_ran( pattern );
+	//
+	// compute hes_ran_work
+	CppAD::sparse_hes_work hes_ran_work;
+	CppAD::mixed::a1_vector a1_w(1), a1_both(n_both);
+	a1_w[0] = 1.0;
+	for(size_t j = 0; j < n_both; j++)
+		a1_both[j] = 0.0;
+	std::string coloring = "cppad.symmetric";
+	a1_adfun.sparse_hes(
+		a1_both,
+		a1_w,
+		a1_hes_ran,
 		pattern,
-		hes_ran.row,
-		hes_ran.col,
-		not_used,
-		hes_ran.work
+		coloring,
+		hes_ran_work
 	);
 	// create newton_checkpoint ---------------------------------------------
 	vector<double> theta(n_fixed), u(n_random);

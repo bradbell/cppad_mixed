@@ -122,13 +122,13 @@ void cppad_mixed::logdet_jac(
 	//
 	// compute the inverse where Hessian is possibly non-zero
 	CppAD::mixed::sparse_mat_info weight_info;
-	size_t K = ran_hes_.row.size();
+	size_t K = ran_hes_rcv_.nnz();
 	weight_info.row.resize(K);
 	weight_info.col.resize(K);
 	weight_info.val.resize(K);
 	for(size_t k = 0; k < K; k++)
-	{	size_t r = ran_hes_.row[k];
-		size_t c = ran_hes_.col[k];
+	{	size_t r = ran_hes_rcv_.row()[k];
+		size_t c = ran_hes_rcv_.col()[k];
 		assert( n_fixed_ <= r && r < n_fixed_ + n_random_ );
 		assert( n_fixed_ <= c && c < n_fixed_ + n_random_ );
 		weight_info.row[k] = r - n_fixed_;

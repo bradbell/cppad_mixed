@@ -64,6 +64,7 @@ public:
 /*
 $begin public$$
 $spell
+	rcv
 	jac
 	ldlt_eigen
 	std
@@ -95,6 +96,7 @@ $code cppad_mixed$$ class:
 $srccode%cpp% */
 	typedef CppAD::mixed::a1_double      a1_double;
 	typedef CppAD::mixed::a2_double      a2_double;
+	typedef CppAD::mixed::s_vector       s_vector;
 	typedef CppAD::mixed::d_vector       d_vector;
 	typedef CppAD::mixed::a1_vector      a1_vector;
 	typedef CppAD::mixed::a2_vector      a2_vector;
@@ -433,8 +435,10 @@ with these ADFun objects:
 
 $head ran_hes_fun_$$
 If $icode%n_random_% > 0%$$ and $code init_ran_hes_done_$$,
-$cref/ran_hes_/init_ran_hes/ran_hes_/$$ contains
-information for the Hessian of the
+$cref/ran_hes_rcv_/init_ran_hes/ran_hes_rcv_/$$ ,
+$cref/a1_ran_hes_rcv_/init_ran_hes/a1_ran_hes_rcv_/$$ ,
+$cref/ran_hes_work_/init_ran_hes/ran_hes_work_/$$ ,
+contain information for the Hessian of the
 $cref/random likelihood
 	/theory
 	/Random Likelihood, f(theta, u)
@@ -442,7 +446,11 @@ $cref/random likelihood
 with respect to the random effects; i.e.
 $latex f_{u,u} ( \theta , u )$$.
 $srccode%cpp% */
-	CppAD::mixed::sparse_hes_info ran_hes_;
+	// sparse_hes_info for both d_vector and a1_vector value vectors
+	CppAD::mixed::a1_sparse_rcv   a1_ran_hes_rcv_;
+	CppAD::mixed::sparse_rcv      ran_hes_rcv_;
+	CppAD::sparse_hes_work        ran_hes_work_;
+	//
 	// recording of sparse Hessian calculation
 	CppAD::ADFun<double>        ran_hes_fun_;
 	//

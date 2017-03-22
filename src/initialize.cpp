@@ -233,7 +233,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 			// newton_checkpoint_
 			assert( ! init_newton_checkpoint_done_ );
 			newton_checkpoint_.initialize(
-				ran_like_a1fun_, ran_hes_, fixed_vec, random_vec
+				ran_like_a1fun_, ran_hes_rcv_, fixed_vec, random_vec
 			);
 			init_newton_checkpoint_done_ = true;
 
@@ -277,7 +277,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 	size_map["A_rcv_.nr()"]                = A_rcv_.nr();
 	size_map["ran_like_fun_.size_var()"]   = ran_like_fun_.size_var();
 	size_map["ran_like_a1fun_.size_var()"] = ran_like_a1fun_.size_var();
-	size_map["ran_hes_.row.size()"]        = ran_hes_.row.size();
+	size_map["ran_hes_rcv_.nnz()"]         = ran_hes_rcv_.nnz();
 	size_map["ran_hes_fun_.size_var()"]    = ran_hes_fun_.size_var();
 	size_map["hes_cross_.row.size()"]      = hes_cross_.row.size();
 	size_map["newton_checkpoint_.size_var()"] = newton_checkpoint_.size_var();

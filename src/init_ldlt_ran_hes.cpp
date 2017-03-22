@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin init_ldlt_ran_hes$$
 $spell
+	rcv
 	ldlt_ran_hes
 	init
 	cppad
@@ -32,10 +33,10 @@ We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
-$head ran_hes_$$
+$head ran_hes_rcv_$$
 The member variable
 $code%
-	CppAD::mixed::sparse_hes_info ran_hes_
+	CppAD::mixed::sparse_rcv ran_hes_rcv_
 %$$
 is assumed to contain the sparsity information for the
 Hessian of the random likelihood with respect to the random effects
@@ -64,7 +65,7 @@ see $cref ldlt_eigen_init$$.
 This sparsity information is relative to just the random effects;
 i.e., the row and column indices are relative to the vector $latex u )$$.
 For each row and column indices in $icode hes_info$$,
-the corresponding row and column index in $code ran_hes_$$ is
+the corresponding row and column index in $code ran_hes_rcv_$$ is
 $code n_fixed_$$ greater.
 
 
@@ -74,15 +75,14 @@ $end
 
 void cppad_mixed::init_ldlt_ran_hes(void)
 {	assert( ! init_ldlt_ran_hes_done_ );
-	assert( ran_hes_.row.size() == ran_hes_.col.size() );
 	//
 	CppAD::mixed::sparse_mat_info hes_info;
-	size_t K = ran_hes_.row.size();
+	size_t K = ran_hes_rcv_.nnz();
 	hes_info.row.resize(K);
 	hes_info.col.resize(K);
 	for(size_t k = 0; k < K; k++)
-	{	size_t r = ran_hes_.row[k];
-		size_t c = ran_hes_.col[k];
+	{	size_t r = ran_hes_rcv_.row()[k];
+		size_t c = ran_hes_rcv_.col()[k];
 		assert( n_fixed_ <= r && r < n_fixed_ + n_random_ );
 		assert( n_fixed_ <= c && c < n_fixed_ + n_random_ );
 		hes_info.row[k] = r - n_fixed_;

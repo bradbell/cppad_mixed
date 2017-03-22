@@ -13,6 +13,8 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin init_ran_hes$$
 $spell
+	rcv
+	nnz
 	CppAD
 	init
 	cppad
@@ -64,14 +66,14 @@ It specifies the value of the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$ at which the initialization is done.
 
-$head ran_hes_$$
+$head ran_hes_rcv_$$
 The input value of the member variable
 $codei%
-	CppAD::mixed::sparse_hes_info ran_hes_
+	CppAD::mixed::sparse_rcv ran_hes_rcv_
 %$$
 does not matter.
 Upon return it contains the
-$cref sparse_hes_info$$
+$cref/sparse_rcv/typedef/Sparse Types/sparse_rcv/$$ information
 for the lower triangle of the Hessian
 $latex \[
 	f_{u,u} ( \theta , u )
@@ -80,48 +82,101 @@ see $cref/f(theta, u)/
 	theory/
 	Random Likelihood, f(theta, u)
 /$$
-
-$subhead ran_like_fun_, ran_like_a1fun_$$
-Either $code ran_like_fun_$$ or $code ran_like_a1fun_$$
-can be used for the ADFun object in the
-$cref/sparse Hessian Call/sparse_hes_info/Sparse Hessian Call/f/$$.
-
-$list number$$
 The matrix is symmetric and hence can be recovered from
 its lower triangle.
-$lnext
-These indices are relative to both the fixed and random effects
-with the fixed effects coming first.
-$lnext
-You can replace the $code a1_double$$ vectors by $code double$$ vectors,
-and replace $code ran_like_a1fun_$$ by $code ran_like_fun_$$,
-and get the results in $code double$$ instead of $code a1_double$$.
-$lend
+
+$head a1_ran_hes_rcv_$$
+The input value of the member variable
+$codei%
+	CppAD::mixed::a1_sparse_rcv a1_ran_hes_rcv_
+%$$
+does not matter.
+Upon return it contains the
+$cref/a1_sparse_rcv/typedef/Sparse Types/a1_sparse_rcv/$$ information
+for the lower triangle of the Hessian
+$latex \[
+	f_{u,u} ( \theta , u )
+\]$$
+see $cref/f(theta, u)/
+	theory/
+	Random Likelihood, f(theta, u)
+/$$
+We use $icode nnz$$ to denote
+$codei%
+	a1_ran_hes_rcv_.nnz() == ran_hes_rcv_.nnz()
+%$$
+For $icode%k% = 0 , %...%, %nnz%-1%$$,
+$codei%
+	a1_ran_hes_rcv_.row()[%k%] == ran_hes_rcv_.row()[%k%]
+	a1_ran_hes_rcv_.col()[%k%] == ran_hes_rcv_.col()[%k%]
+%$$
+
+$head ran_hes_work_$$
+The input value of the member variable
+$codei%
+	CppAD::sparse_hes_work ran_hes_work_
+%$$
+does not matter (it should be empty).
+Upon return, it contains the necessary information for the
+calls to $code sparse_hes$$ specified below.
+
+
+$head ran_like_fun_$$
+Upon return, the following call can be used to compute the
+lower triangle of the Hessian $latex f_{u,u} ( \theta , u )$$
+as a $code d_vector$$:
+$codei%
+	ran_like_fun_.sparse_hes(
+		%x%,
+		%w%
+		ran_hes_rcv_,
+		%not_used_pattern%,
+		%not_used_coloring%,
+		ran_hes_word_
+	)
+%$$
+where the values of $icode not_used_pattern$$ and $icode not_used_coloring$$
+do not matter.
+
+$head ran_like_a1fun_$$
+Upon return, the following call can be used to compute the
+lower triangle of the Hessian $latex f_{u,u} ( \theta , u )$$
+as a $code a1_vector$$:
+$codei%
+	ran_like_a1fun_.sparse_hes(
+		%x%,
+		%w%
+		a1_ran_hes_rcv_,
+		%not_used_pattern%,
+		%not_used_coloring%,
+		ran_hes_work_
+	)
+%$$
+where the values of $icode not_used_pattern$$ and $icode not_used_coloring$$
+do not matter.
 
 $head Random Effects Index$$
+The indices in $code ran_hes_rcv_$$ and $code a1_ran_hes_rcv$$
+are relative to both the fixed and random effects with the fixed effects
+coming first.
 To get the indices relative to just the random effects, subtract
-$code n_fixed_$$; i.e.,
+$code n_fixed_$$; e.g, the value
 $codei%
-	ran_hes_.row[%k%] - n_fixed_
-	ran_hes_.col[%k%] - n_fixed_
+	ran_hes_rcv_.val()[%k%]
 %$$
-are between zero and the $code n_random_$$ and
-are the row and column indices for the Hessian element
-that corresponds to the $th k$$ component of
-$icode a1_val_out$$ in the call to $code SparseHessian$$.
-
-$head Lower Triangle$$
-The result are only for the lower triangle of the Hessian; i.e.,
+corresponds the second partial with respect to the following
+two random effect indices:
 $codei%
-	ran_hes_.row[%k%] >= ran_hes_.col[%k%]
+	ran_hes_rcv_.row()[%k%] - n_fixed_
+	ran_hes_rcv_.col()[%k%] - n_fixed_
 %$$
 
 $head Order$$
 The results are in column major order; i.e.,
 $codei%
-	ran_hes_.col[%k%] <= ran_hes_.col[%k+1%]
-	if( ran_hes_.col[%k%] == ran_hes_.col[%k+1%] )
-		ran_hes_.row[%k%] < ran_hes_.row[%k+1%]
+	ran_hes_rcv_.col()[%k%] <= ran_hes_rcv_.col()[%k+1%]
+	if( ran_hes_rcv_.col()[%k%] == ran_hes_rcv_.col()[%k+1%] )
+		ran_hes_rcv_.row()[%k%] < ran_hes_rcv_.row()[%k+1%]
 %$$
 
 $head ran_hes_fun_$$
@@ -135,7 +190,8 @@ the lower triangle of the sparse Hessian
 $latex \[
 	f_{u,u} ( \theta , u )
 \]$$
-in the same order as the $icode a1_val_out$$ above.
+in the same order as the elements of
+$code ran_hes_rcv_$$ (and $code a1_hes_rcv_$$).
 
 $contents%example/private/ran_hes_fun.cpp
 %$$
@@ -143,206 +199,103 @@ $contents%example/private/ran_hes_fun.cpp
 $end
 */
 
-
-namespace { // BEGIN_EMPTY_NAMESPACE
-// --------------------------------------------------------------------------
-// ran_hes_use_set
-// --------------------------------------------------------------------------
-void ran_hes_use_set(
-	size_t                             n_fixed  ,
-	size_t                             n_random ,
-	const CppAD::vector<double>&       both     ,
-	CppAD::ADFun<double>&              fun      ,
-	CppAD::mixed::sparse_hes_info&     hes_info )
-{	hes_info.work.clear();
-	assert( hes_info.row.size() == 0 );
-	assert( hes_info.col.size() == 0 );
-	assert( fun.Range() == 1 );
-	assert( both.size() == n_fixed + n_random );
-	// ----------------------------------------------------------------------
-	typedef CppAD::vector< std::set<size_t> > set_sparsity;
-	size_t n_both = n_fixed + n_random;
-	// ----------------------------------------------------------------------
-	// compute Jacobian sparsity corresponding to parital w.r.t. random effects
-	set_sparsity r(n_both);
-	for(size_t i = n_fixed; i < n_both; i++)
-		r[i].insert(i);
-	fun.ForSparseJac(n_both, r);
-	// ----------------------------------------------------------------------
-	// compute sparsity pattern corresponding to
-	// partial w.r.t. (theta, u) of partial w.r.t. u
-	bool transpose = true;
-	set_sparsity s(1), pattern;
-	assert( s[0].empty() );
-	s[0].insert(0);
-	pattern = fun.RevSparseHes(n_both, s, transpose);
-	// ----------------------------------------------------------------------
-	// Set the row and column indices
-	//
-	// subsample to just the random effects
-	CppAD::vector<size_t> row, col, key;
-	std::set<size_t>::iterator itr;
-	for(size_t i = n_fixed; i < n_both; i++)
-	{	for(itr = pattern[i].begin(); itr != pattern[i].end(); itr++)
-		{	size_t j = *itr;
-			//
-			// partial w.r.t u[i] of partial w.r.t u[j]
-			assert( n_fixed <= j );
-			// only store lower triangle of symmetric Hessian
-			if( i >= j )
-			{	row.push_back(i);
-				col.push_back(j);
-				key.push_back( i + j * n_both );
-			}
-		}
-	}
-	// ----------------------------------------------------------------------
-	// set hes_info in colum major order
-	size_t K = row.size();
-	CppAD::vector<size_t> ind(K);
-	CppAD::index_sort(key, ind);
-	hes_info.row.resize(K);
-	hes_info.col.resize(K);
-	for(size_t k = 0; k < row.size(); k++)
-	{	hes_info.row[k] = row[ ind[k] ];
-		hes_info.col[k] = col[ ind[k] ];
-	}
-	// ----------------------------------------------------------------------
-	// Compute work for reuse during future calls to SparseHessian
-	CppAD::vector<double> w(1);
-	w[0] = 1.0;
-	CppAD::vector<double> not_used(K);
-	fun.SparseHessian(
-		both,
-		w,
-		pattern,
-		hes_info.row,
-		hes_info.col,
-		not_used,
-		hes_info.work
-	);
-	return;
-}
-// --------------------------------------------------------------------------
-// ran_hes_use_bool
-// --------------------------------------------------------------------------
-void ran_hes_use_bool(
-	size_t                             n_fixed  ,
-	size_t                             n_random ,
-	const CppAD::vector<double>&       both     ,
-	CppAD::ADFun<double>&              fun      ,
-	CppAD::mixed::sparse_hes_info&     hes_info )
-{	hes_info.work.clear();
-	assert( hes_info.row.size() == 0 );
-	assert( hes_info.col.size() == 0 );
-	assert( fun.Range() == 1 );
-	assert( both.size() == n_fixed + n_random );
-	// ----------------------------------------------------------------------
-	typedef CppAD::vectorBool bool_sparsity;
-	size_t n_both = n_fixed + n_random;
-	// ----------------------------------------------------------------------
-	// compute Jacobian sparsity corresponding to parital w.r.t. random effects
-	bool_sparsity r(n_both * n_random);
-	for(size_t i = 0; i < n_both; i++)
-	{	for(size_t j = 0; j < n_random; j++)
-			r[i * n_random + j] = (i >= n_fixed) & ((i - n_fixed) == j);
-	}
-	fun.ForSparseJac(n_random, r);
-	// ----------------------------------------------------------------------
-	// compute sparsity pattern corresponding to
-	// partial w.r.t. (theta, u) of partial w.r.t. theta
-	bool transpose = true;
-	bool_sparsity s(1), pattern;
-	s[0] = true;
-	pattern = fun.RevSparseHes(n_random, s, transpose);
-	// ----------------------------------------------------------------------
-	// Set the row and column indices
-	//
-	// subsample to just the random effects
-	CppAD::vector<size_t> row, col, key;
-	for(size_t i = n_fixed; i < n_both; i++)
-	{	for(size_t j = 0; j < n_random; j++)
-		{	if( pattern[ i * n_random + j ] & ( i >= j + n_fixed ) )
-			{	// partial w.r.t u[i] of partial w.r.t theta[j]
-				row.push_back(i);
-				col.push_back(j + n_fixed);
-				key.push_back( i + j * n_both );
-			}
-		}
-	}
-	// ----------------------------------------------------------------------
-	// set hes_info in colum major order
-	size_t K = row.size();
-	CppAD::vector<size_t> ind(K);
-	CppAD::index_sort(key, ind);
-	hes_info.row.resize(K);
-	hes_info.col.resize(K);
-	for(size_t k = 0; k < row.size(); k++)
-	{	hes_info.row[k] = row[ ind[k] ];
-		hes_info.col[k] = col[ ind[k] ];
-	}
-	// ----------------------------------------------------------------------
-	// Compute work for reuse during future calls to SparseHessian
-	CppAD::vector<double> w(1);
-	w[0] = 1.0;
-	CppAD::vector<double> not_used(K);
-	//
-	// extend sparsity pattern to all the variables
-	bool_sparsity extended_pattern(n_both * n_both);
-	for(size_t i = 0; i < n_both; i++)
-	{	for(size_t j = 0; j < n_fixed; j++)
-			extended_pattern[ i * n_both + j ] = false;
-		for(size_t j = 0; j < n_random; j++)
-			extended_pattern[i * n_both + j + n_fixed ] =
-				pattern[ i * n_random + j ];
-	}
-	fun.SparseHessian(
-		both,
-		w,
-		extended_pattern,
-		hes_info.row,
-		hes_info.col,
-		not_used,
-		hes_info.work
-	);
-	return;
-}
-} // END_EMPTY_NAMESPACE
-
-
 void cppad_mixed::init_ran_hes(
 	const d_vector& fixed_vec     ,
 	const d_vector& random_vec    )
 {	assert( ! init_ran_hes_done_ );
+	//
 	assert( fixed_vec.size() == n_fixed_ );
 	assert( random_vec.size() == n_random_ );
-
+	assert( ran_like_fun_.Domain() == n_fixed_ + n_random_ );
+	//
+	size_t m = ran_like_fun_.Range();
+	assert( m == 1 );
+	//
 	// total number of variables
-	size_t n_total = n_fixed_ + n_random_;
-
+	size_t n_both = n_fixed_ + n_random_;
+	//
+	// -----------------------------------------------------------------------
+	// forward Jacobian sparsity corresponding to partial w.r.t
+	// just the random effects
+	sparse_rc pattern_in(n_both, n_random_, n_random_);
+	for(size_t k = 0; k < n_random_; k++)
+		pattern_in.set(k, n_fixed_ + k, k);
+	bool      transpose     = false;
+	bool      dependency    = false;
+	bool      internal_bool = bool_sparsity_;
+	sparse_rc jac_pattern;
+	ran_like_fun_.for_jac_sparsity(
+		pattern_in, transpose, dependency, internal_bool, jac_pattern
+	);
+	// -----------------------------------------------------------------------
+	// reverse sparstiy for partial w.r.t. (theta, u) of partial w.r.t u
+	CppAD::vector<bool> select_range(m);
+	select_range[0] = true;
+	sparse_rc hes_pattern;
+	ran_like_fun_.rev_hes_sparsity(
+		select_range, transpose, internal_bool, hes_pattern
+	);
+	// -----------------------------------------------------------------------
+	// count number of entires in entire partial w.r.t u of partial w.r.t u
+	// and number in lower triangle
+	size_t n_uu  = 0;
+	size_t n_low = 0;
+	for(size_t k = 0; k < hes_pattern.nnz(); k++)
+	{	size_t r = hes_pattern.row()[k];
+		if( r >= n_fixed_ )
+		{	++n_uu;
+			size_t c = hes_pattern.col()[k] + n_fixed_;
+			if( r >= c )
+				++n_low;
+		}
+	}
+	// -----------------------------------------------------------------------
+	// extended version of sparsity of patrial w.r.t u of partial w.r.t. u
+	// and subset of sparstiy pattern that we are calculating
+	sparse_rc hes_extend(n_both, n_both, n_uu);
+	sparse_rc hes_lower(n_both, n_both, n_low);
+	// column major ordering
+	s_vector col_major = hes_pattern.col_major();
+	size_t k_uu  = 0;
+	size_t k_low = 0;
+	for(size_t k = 0; k < hes_pattern.nnz(); k++)
+	{	size_t ell = col_major[k];
+		size_t r   = hes_pattern.row()[ell];
+		if( r >= n_fixed_ )
+		{	size_t c   = hes_pattern.col()[ell] + n_fixed_;
+			hes_extend.set(k_uu++, r, c);
+			if( r >= c )
+				hes_lower.set(k_low++, r, c);
+		}
+	}
+	assert( k_uu == n_uu );
+	assert( k_low == n_low );
+	// -----------------------------------------------------------------------
 	// create a d_vector containing (theta, u)
-	d_vector both(n_total);
+	d_vector both(n_both);
 	pack(fixed_vec, random_vec, both);
-
-	if( bool_sparsity_ ) ran_hes_use_bool(
-		n_fixed_,
-		n_random_,
+	// -----------------------------------------------------------------------
+	// structures used for calculating subset with d_vector a1_vector results
+	ran_hes_rcv_    = sparse_rcv( hes_lower );
+	a1_ran_hes_rcv_ = a1_sparse_rcv( hes_lower );
+	//
+	// initialize the work vector used for both d_vector and a1_vector results
+	d_vector w(m);
+	w[0] = 1.0;
+	std::string coloring = "cppad.symmetric";
+	ran_like_fun_.sparse_hes(
 		both,
-		ran_like_fun_,
-		ran_hes_
+		w,
+		ran_hes_rcv_,
+		hes_extend,
+		coloring,
+		ran_hes_work_
 	);
-	else ran_hes_use_set(
-		n_fixed_,
-		n_random_,
-		both,
-		ran_like_fun_,
-		ran_hes_
-	);
-
+	// -----------------------------------------------------------------------
 	// Declare the independent and dependent variables for taping calculation
 	// of Hessian of the random likelihood w.r.t. the random effects
-	a1_vector a1_both(n_total);
-	for(size_t i = 0; i < n_total; i++)
+	a1_vector a1_both(n_both);
+	for(size_t i = 0; i < n_both; i++)
 		a1_both[i] = both[i];
 	CppAD::Independent(a1_both);
 
@@ -352,13 +305,13 @@ void cppad_mixed::init_ran_hes(
 
 	// Evaluate ran_likelihood_hes. Its row indices are relative
 	// to just the random effects, not both fixed and random effects.
-	size_t K = ran_hes_.row.size();
+	size_t K = a1_ran_hes_rcv_.nnz();
 	CppAD::vector<size_t> row(K), col(K);
 	for(size_t k = 0; k < K; k++)
-	{	assert( ran_hes_.row[k] >= n_fixed_ );
-		assert( ran_hes_.col[k] >= n_fixed_ );
-		row[k] = ran_hes_.row[k] - n_fixed_;
-		col[k] = ran_hes_.col[k] - n_fixed_;
+	{	assert( a1_ran_hes_rcv_.row()[k] >= n_fixed_ );
+		assert( a1_ran_hes_rcv_.col()[k] >= n_fixed_ );
+		row[k] = a1_ran_hes_rcv_.row()[k] - n_fixed_;
+		col[k] = a1_ran_hes_rcv_.col()[k] - n_fixed_;
 	}
 	a1_vector a1_val_out = ran_likelihood_hes(
 		a1_fixed, a1_random, row, col
@@ -370,15 +323,15 @@ void cppad_mixed::init_ran_hes(
 		a1_vector a1_w(1);
 		a1_w[0] = 1.0;
 		a1_val_out.resize(K);
-		ran_like_a1fun_.SparseHessian(
+		ran_like_a1fun_.sparse_hes(
 			a1_both,
 			a1_w,
-			not_used,
-			ran_hes_.row,
-			ran_hes_.col,
-			a1_val_out,
-			ran_hes_.work
+			a1_ran_hes_rcv_,
+			hes_extend,
+			coloring,
+			ran_hes_work_
 		);
+		a1_val_out = a1_ran_hes_rcv_.val();
 	}
 	ran_hes_fun_.Dependent(a1_both, a1_val_out);
 	//
@@ -388,6 +341,7 @@ void cppad_mixed::init_ran_hes(
 /*
 $begin init_ran_hes_check$$
 $spell
+	rcv
 	cppad
 	const
 	CppAD
@@ -436,14 +390,16 @@ $codei%
 must contain a recording of the random likelihood function; see
 $cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$.
 
-$head ran_hes_$$
-The member variable
+$head ran_hes_rcv_, ran_hes_work_$$
+The member variables
 $codei%
-	CppAD::mixed::sparse_hes_info ran_hes_
+	CppAD::mixed::sparse_rcv  ran_hes_rcv_
+	CppAD::sparse_hes_work    ran_hes_work_
 %$$
 must contain the information for evaluating the random effects
 Hessian using $code ran_like_fun_$$; see
-$cref/ran_hes_/init_ran_hes/ran_hes_/$$.
+$cref/ran_hes_rcv_/init_ran_hes/ran_hes_rcv_/$$,
+$cref/ran_hes_work_/init_ran_hes/ran_hes_work_/$$.
 
 $head ran_likelihood_hes$$
 If the return value from $cref ran_likelihood_hes$$ is non-empty,
@@ -470,13 +426,13 @@ void cppad_mixed::init_ran_hes_check(
 
 	// row indices in ran_likelihood_hes are relative
 	// to just the random effects, not both fixed and random effects.
-	size_t K = ran_hes_.row.size();
+	size_t K = ran_hes_rcv_.nnz();
 	CppAD::vector<size_t> row(K), col(K);
 	for(size_t k = 0; k < K; k++)
-	{	assert( ran_hes_.row[k] >= n_fixed_ );
-		assert( ran_hes_.col[k] >= n_fixed_ );
-		row[k] = ran_hes_.row[k] - n_fixed_;
-		col[k] = ran_hes_.col[k] - n_fixed_;
+	{	assert( ran_hes_rcv_.row()[k] >= n_fixed_ );
+		assert( ran_hes_rcv_.col()[k] >= n_fixed_ );
+		row[k] = ran_hes_rcv_.row()[k] - n_fixed_;
+		col[k] = ran_hes_rcv_.col()[k] - n_fixed_;
 	}
 	a1_vector a1_val_out = ran_likelihood_hes(
 		a1_fixed, a1_random, row, col
@@ -496,25 +452,23 @@ void cppad_mixed::init_ran_hes_check(
 	// sparsity pattern is not used
 	CppAD::vector< std::set<size_t> > not_used(0);
 	//
-	// return vector
-	d_vector val_out(K);
-	//
 	// compute the sparse Hessian
-	ran_like_fun_.SparseHessian(
+	sparse_rc   not_used_pattern;
+	std::string not_used_coloring;
+	ran_like_fun_.sparse_hes(
 		both,
 		w,
-		not_used,
-		ran_hes_.row,
-		ran_hes_.col,
-		val_out,
-		ran_hes_.work
+		ran_hes_rcv_,
+		not_used_pattern,
+		not_used_coloring,
+		ran_hes_work_
 	);
 	//
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 	bool ok = true;
 	for(size_t k = 0; k < K; k++)
 	{	ok &= CppAD::NearEqual(
-			Value(Var2Par(a1_val_out[k])), val_out[k], eps, eps
+			Value(Var2Par(a1_val_out[k])), ran_hes_rcv_.val()[k], eps, eps
 		);
 	}
 	if( ! ok )

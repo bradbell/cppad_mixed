@@ -103,12 +103,12 @@ void cppad_mixed::update_factor(
 	//
 	// set the sparsity pattern corresponding the Hessian
 	CppAD::mixed::sparse_mat_info hes_info;
-	size_t K = ran_hes_.row.size();
+	size_t K = ran_hes_rcv_.nnz();
 	hes_info.row.resize(K);
 	hes_info.col.resize(K);
 	for(size_t k = 0; k < K; k++)
-	{	size_t r = ran_hes_.row[k];
-		size_t c = ran_hes_.col[k];
+	{	size_t r = ran_hes_rcv_.row()[k];
+		size_t c = ran_hes_rcv_.col()[k];
 		assert( n_fixed_ <= r && r < n_fixed_ + n_random_ );
 		assert( n_fixed_ <= c && c < n_fixed_ + n_random_ );
 		hes_info.row[k] = r - n_fixed_;

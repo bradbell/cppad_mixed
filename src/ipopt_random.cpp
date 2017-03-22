@@ -95,7 +95,7 @@ fixed_vec_           ( fixed_vec )                        ,
 random_lower_        ( random_lower )                     ,
 random_upper_        ( random_upper )                     ,
 random_in_           ( random_in )                        ,
-nnz_h_lag_           ( mixed_object.ran_hes_.row.size() ) ,
+nnz_h_lag_           ( mixed_object.ran_hes_rcv_.nnz() )  ,
 mixed_object_        ( mixed_object    )
 {	// -----------------------------------------------------------------------
 	// set nlp_lower_bound_inf_, nlp_upper_bound_inf_
@@ -727,8 +727,8 @@ $end
 		eval_f(n, x, new_x, obj_value);
 	}
 	//
-	s_vector& row = mixed_object_.ran_hes_.row;
-	s_vector& col = mixed_object_.ran_hes_.col;
+	const s_vector& row( mixed_object_.ran_hes_rcv_.row() );
+	const s_vector& col( mixed_object_.ran_hes_rcv_.col() );
 	assert( row.size() == nnz_h_lag_ );
 	assert( col.size() == nnz_h_lag_ );
 	//
