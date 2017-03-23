@@ -9,6 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/configure.hpp>
 
 /*
 $begin init_ran_hes$$
@@ -334,6 +335,11 @@ void cppad_mixed::init_ran_hes(
 		a1_val_out = a1_ran_hes_rcv_.val();
 	}
 	ran_hes_fun_.Dependent(a1_both, a1_val_out);
+
+	// optimize the recording
+# if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
+	ran_hes_fun_.optimize();
+# endif
 	//
 	init_ran_hes_done_ = true;
 }
