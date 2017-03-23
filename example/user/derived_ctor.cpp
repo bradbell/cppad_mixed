@@ -82,7 +82,10 @@ bool derived_ctor_xam(void)
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
 	);
-	mixed_object.initialize(fixed_vec, random_vec);
+	// One normaly does not store the return value of initialize
+	// (size_map is included here to show how it can be displayed).
+	std::map<std::string, size_t> size_map;
+	size_map = mixed_object.initialize(fixed_vec, random_vec);
 	//
 	bool ok = false;
 	try
@@ -101,6 +104,11 @@ bool derived_ctor_xam(void)
 		ok &= mixed_object.warning_message_[0] == "first warning";
 		ok &= mixed_object.warning_message_[1] == "second warning";
 	}
+	// The following code can be used to display size_map
+	// std::map<std::string, size_t>::iterator itr;
+	// for(itr = size_map.begin(); itr != size_map.end(); itr++)
+	//	std::cout << itr->first << " = " << itr->second << "\n";
+	//
 	return ok;
 }
 // END C++

@@ -12,6 +12,9 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin initialize$$
 $spell
+	iterator
+	itr
+	cout
 	nr
 	bool
 	ldlt
@@ -90,84 +93,13 @@ $codei%
 	std::map<std::string, size_t> %size_map%
 %$$
 It represent the size of certain aspects of the problem.
-For each of $code cppad_mixed$$ member variables listed below
+The actual fields in $icode size_map$$ are not specified,
+but they can be inspected. For example,
 $codei%
-	%size_map%[%expression%]
+	std::map<std::string, size_t>::iterator itr;
+	for(itr = %size_map%.begin(); itr != %size_map%.end(); itr++)
+		std::cout << itr->first << " = " itr->second << "\n";
 %$$
-where expression is one of the following:
-$table
-$icode expression$$ $cnext Link
-$rnext
-$code n_fixed_$$  $cnext
-	$cref/n_fixed_/private/n_fixed_/$$
-$rnext
-$code n_random_$$  $cnext
-	$cref/n_random_/private/n_random_/$$
-$rnext
-$code quasi_fixed_$$  $cnext
-	$cref/quasi_fixed_/private/quasi_fixed_/$$
-$rnext
-$code A_rcv_.nnz()$$  $cnext
-	$cref/A_rcv_/private/A_rcv_/$$
-$rnext
-$code A_rcv_.nr()$$  $cnext
-	$cref/A_rcv_/private/A_rcv_/$$
-$rnext
-$code ran_like_fun_.size_var()$$  $cnext
-	$cref/ran_like_fun_/private/ran_like_fun_/$$
-$rnext
-$code ran_like_a1fun_.size_var()$$  $cnext
-	$cref/ran_like_fun_/private/ran_like_fun_/$$
-$rnext
-$code ran_hes_.row()$$  $cnext
-	$cref/ran_hes_fun_/private/ran_hes_fun_/$$
-$rnext
-$code ran_hes_fun_.size_var()$$  $cnext
-	$cref/ran_hes_fun_/private/ran_hes_fun_/$$
-$rnext
-$code 2DO$$ $cnext
-	$cref/ldlt_ran_hes_/private/ldlt_ran_hes_/$$
-$rnext
-$code hes_cross_.row.size()$$ $cnext
-	$cref/hes_cross_/private/hes_cross_/$$
-$rnext
-$code newton_checkpoint_.size_var()$$ $cnext
-	$cref/newton_checkpoint_/private/newton_checkpoint_/$$
-$rnext
-$code ran_objcon_fun_.size_var()$$ $cnext
-	$cref/ran_objcon_fun_/private/ran_objcon_fun_/$$
-$rnext
-$code ran_objcon_hes_.row.size()$$ $cnext
-	$cref/ran_objcon_hes_/private/ran_objcon_fun_/ran_objcon_hes_/$$
-$rnext
-$code fix_like_fun.size_var()$$ $cnext
-	$cref/fix_like_fun_/private/fix_like_fun_/$$
-$rnext
-$code fix_like_jac_.row.size()$$ $cnext
-	$cref/fix_like_jac_/private/fix_like_fun_/fix_like_jac_/$$
-$rnext
-$code fix_like_hes_.row.size()$$ $cnext
-	$cref/fix_like_hes_/private/fix_like_fun_/fix_like_hes_/$$
-$rnext
-$code fix_con_fun.size_var()$$ $cnext
-	$cref/fix_con_fun_/private/fix_con_fun_/$$
-$rnext
-$code fix_con_jac_.row.size()$$ $cnext
-	$cref/fix_con_jac_/private/fix_con_fun_/fix_con_jac_/$$
-$rnext
-$code fix_con_hes_.row.size()$$ $cnext
-	$cref/fix_con_hes_/private/fix_con_fun_/fix_con_hes_/$$
-$tend
-
-$subhead num_bytes_before$$
-$icode%size_map%["num_bytes_before"]%$$ is the number of bytes
-allocated by $code CppAD::thread_alloc$$ and still in use
-when $code initialize$$ starts.
-
-$subhead num_bytes_after$$
-$icode%size_map%["num_bytes_after"]%$$ is the number of bytes
-allocated by $code CppAD::thread_alloc$$ and still in use
-when $code initialization$$ is completed.
 
 $head Example$$
 The file $cref derived_ctor.cpp$$ contains an example

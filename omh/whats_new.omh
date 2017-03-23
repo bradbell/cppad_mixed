@@ -34,6 +34,11 @@ $childtable%
 	omh/whats_new_16.omh
 %$$
 
+$head 03-23$$
+$bold API:$$
+The actual fields in the $code initialize$$ return value are no longer
+specified; see $cref/size_map/initialize/size_map/$$.
+
 $head 03-20$$
 $list number$$
 $bold API:$$
