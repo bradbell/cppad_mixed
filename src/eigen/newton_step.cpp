@@ -162,10 +162,9 @@ n_fixed_ ( theta.size() ) ,
 n_random_( u.size()     ) ,
 a1_adfun_( a1_adfun     ) ,
 hes_work_( hes_work     )
-{	size_t m = a1_adfun_.Range();
-	//
-	assert( m == 1 );
+{	assert( a1_adfun_.Range() == 1 );
 	assert( a1_adfun.Domain() == n_fixed_ + n_random_ );
+	//
 	// total number of variables
 	size_t n_both = n_fixed_ + n_random_;
 	//
