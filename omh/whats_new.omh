@@ -34,6 +34,17 @@ $childtable%
 	omh/whats_new_16.omh
 %$$
 
+$head 03-25$$
+Advance to $code cppad-20170320$$.
+This gave a significant improvement in
+$icode optimize_fixed_seconds$$ for $cref ar1_xam.cpp$$
+and both
+$icode optimize_fixed_seconds$$, $icode initialize_bytes$$,
+for $cref capture_xam.cpp$$.
+This was due to a change in the way CppAD computes sparse Hessians
+(see the heading 03-25 on the CppAD whats new page for 2017).
+
+
 $head 03-23$$
 $bold API:$$
 The actual fields in the $code initialize$$ return value are no longer
