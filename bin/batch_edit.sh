@@ -21,8 +21,7 @@ no_change_files='
 rename_cmd='s|whats_new.omh|whats_new_16.omh|'
 #
 cat << EOF > junk.sed
-s|A_info \\( *\\),|A_rcv  \\1,|g
-s|A_info|A_rcv|g
+s|\\.optimize();|.optimize("no_conditional_skip");|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

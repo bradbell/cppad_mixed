@@ -34,6 +34,11 @@ $childtable%
 	omh/whats_new_16.omh
 %$$
 
+$head 03-27$$
+Add $code no_conditional_skip$$ option to CppAD function optimization
+when $cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$
+is $code yes$$.
+
 $head 03-25$$
 Advance to $code cppad-20170320$$.
 This gave a significant improvement in
