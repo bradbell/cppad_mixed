@@ -338,7 +338,8 @@ void cppad_mixed::init_ran_hes(
 
 	// optimize the recording
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
-	ran_hes_fun_.optimize("no_conditional_skip");
+	// 2DO: get this to work with dismod_at
+	// ran_hes_fun_.optimize();
 # endif
 	//
 	init_ran_hes_done_ = true;

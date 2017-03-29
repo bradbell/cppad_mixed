@@ -116,7 +116,7 @@ void cppad_mixed::init_ran_like(
 
 	// optimize the recording
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
-	ran_like_a1fun_.optimize("no_conditional_skip");
+	ran_like_a1fun_.optimize();
 # endif
 	// ------------------------------------------------------------------
 	// record ran_like_fun_
@@ -143,7 +143,7 @@ void cppad_mixed::init_ran_like(
 
 	// optimize the recording
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
-	ran_like_fun_.optimize("no_conditional_skip");
+	ran_like_fun_.optimize();
 # endif
 	// ------------------------------------------------------------------
 	init_ran_like_done_ = true;
