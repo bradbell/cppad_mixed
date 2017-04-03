@@ -128,19 +128,15 @@ $codei%
 can be used to install this package.
 
 $head cppad_mixed$$
-The steps above should only need to be executed once, not for
-each new version of $code cppad_mixed$$
-(unless the $cref whats_new_16$$ release notes say otherwise).
+The steps above need to be executed once,
+for each $cref/build_type/run_cmake.sh/build_type/$$ that you will used.
+They do not need to be executed each new version of $code cppad_mixed$$
+unless the $cref whats_new$$ release notes say otherwise.
 The steps below will need to be executed each time you install
 a new version of $code cppad_mixed$$:
 
-$subhead Setup$$
-The file $cref%bin/run_cmake.sh%run_cmake.sh%$$ has setting that
-you should change so they correspond to your machine.
-
 $subhead Cmake Command$$
-After changing $code bin/run_cmake.sh$$ to work for your system,
-execute either of the following command:
+After installing the requirements above, execute the command:
 $codep
 	bin/run_cmake.sh
 $$

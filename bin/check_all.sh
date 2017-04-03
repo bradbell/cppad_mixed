@@ -36,28 +36,6 @@ then
 	echo 'newton_step = 'c' (checkpointed) or 'n' (no checkpointing)'
 	exit 1
 fi
-if [ "$1" == 'r' ]
-then
-	build_type='release'
-	release='--release'
-	optimize_cppad_function='--optimize_cppad_function'
-else
-	build_type='debug'
-	release=''
-	optimize_cppad_function=''
-fi
-if [ "$2" == 'a' ]
-then
-	use_atomic_cholesky='--use_atomic_cholesky'
-else
-	use_atomic_cholesky=''
-fi
-if [ "$3" == 'c' ]
-then
-	checkpoint_newton_step='--checkpoint_newton_step'
-else
-	checkpoint_newton_step=''
-fi
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
@@ -71,20 +49,41 @@ do
 	if [ "$script" != 'bin/check_all.sh' ] \
 	&& [ "$script" != 'bin/check_install.sh' ]
 	then
-		$script
+		echo_eval $script
 	fi
 done
-# ----------------------------------------------------------------------------
-bin/run_cmake.sh \
-	$release \
-	$use_atomic_cholesky \
-	$checkpoint_newton_step \
-	$optimize_cppad_function
-# ----------------------------------------------------------------------------
-bin/run_omhelp.sh xml
 #
-sed -i bin/check_install.sh \
-	-e "s|^build_type=.*|build_type='$build_type'|"
+echo_eval bin/run_omhelp.sh xml
+# -----------------------------------------------------------------------------
+echo_eval cp bin/run_cmake.sh bin/run_cmake.bak
+if [ "$1" == 'r' ]
+then
+	sed -i bin/run_cmake.sh \
+		-e "s|^build_type=.*|build_type='release'|" \
+		-e "s|^optimize_cppad_function=.*|optimize_cppad_function='yes'|"
+else
+	sed -i bin/run_cmake.sh \
+		-e "s|^build_type=.*|build_type='debug'|" \
+		-e "s|^optimize_cppad_function=.*|optimize_cppad_function='no'|"
+fi
+if [ "$2" == 'a' ]
+then
+	sed -i bin/run_cmake.sh \
+		-e "s|^use_atomic_cholesky=.*|use_atomic_cholesky='yes'|"
+else
+	sed -i bin/run_cmake.sh \
+		-e "s|^use_atomic_cholesky=.*|use_atomic_cholesky='no'|"
+fi
+if [ "$2" == 'c' ]
+then
+	sed -i bin/run_cmake.sh \
+		-e "s|^checkpoint_newton_step=.*|checkpoint_newton_step='yes'|"
+else
+	sed -i bin/run_cmake.sh \
+		-e "s|^checkpoint_newton_step=.*|checkpoint_newton_step='no'|"
+fi
+#
+bin/run_cmake.sh
 #
 cd build
 make check
@@ -92,11 +91,6 @@ make speed
 make install
 cd ..
 bin/check_install.sh
-#
-if [ "$build_type" == 'release' ]
-then
-	sed -i bin/check_install.sh \
-		-e "s|^build_type=.*|build_type='debug'|"
-fi
-#
+# -----------------------------------------------------------------------------
+echo_eval mv bin/run_cmake.bak bin/run_cmake.sh
 echo 'check_all.sh: OK'

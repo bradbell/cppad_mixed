@@ -41,8 +41,11 @@ Advanced to $code cppad-20170402$$.
 This fixes a bug in the CppAD optimizer.
 $lnext
 Simplify the install procedure by using
-$cref/build_type/run_cmake.sh/build_type/$$ in $code run_cmake.sh$$
-to set the build type for all the installs.
+$cref/build_type/run_cmake.sh/build_type/$$ and
+$cref/prefix/run_cmake.sh/Prefixes/$$ values in $code run_cmake.sh$$
+during the other installs.
+The $cref install_unix$$ procedure has been modified to reflect
+this change.
 $lend
 
 $head 03-27$$

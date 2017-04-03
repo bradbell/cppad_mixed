@@ -20,26 +20,37 @@ fi
 #	suitesparse cppad eigen xam cpp mkdir tmp cp sed isystem lcppad lgsl
 #	lblas fi bool std cout endl ipopt conig eval config
 #	lcholmod lamd lcamd lcolamd lccolamd lsuitesparseconfig
-#	cmake elif gsl
+#	cmake gsl cmd cmd grep libdir pkgconfig
 # &&
 #
 # &section Example and Test Using the Installed Version of cppad_mixed&&
 #
-# &head Purpose&&
-# This file ( &code bin/check_install.sh&& ) is only meant as an example
-# and will need to modify the steps for your particular system.
-#
-# &head cppad_mixed_prefix&&
-# This is the &cref/prefix/run_cmake.sh/Prefixes/&&
-# where &code cppad_mixed&& was installed:
+# &head build_type&&
+# Get the &cref/build_type/run_cmake.sh/build_type/&& used during the install:
 # &codep
-cppad_mixed_prefix="$HOME/prefix/cppad_mixed"
+cmd=`grep '^build_type=' bin/run_cmake.sh`
+eval $cmd
 # &&
 #
-# &head eigen_prefix&&
-# This is the prefix where &code eigen&& was installed:
+# &head Prefixes&&
+# Get the &cref/prefixes/run_cmake.sh/Prefixes/&& used during the install:
 # &codep
-eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
+cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
+eval $cmd
+cmd=`grep '^eigen_prefix=' bin/run_cmake.sh`
+eval $cmd
+cmd=`grep '^ipopt_prefix=' bin/run_cmake.sh`
+eval $cmd
+cmd=`grep '^suitesparse_prefix=' bin/run_cmake.sh`
+eval $cmd
+# &&
+#
+# &head cmake_libdir&&
+# Get the &cref/cmake_libdir/run_cmake.sh/cmake_libdir/&&
+# used during the install:
+# &codep
+cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
+eval $cmd
 # &&
 #
 # &head example_file&&
@@ -49,17 +60,21 @@ eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
 example_file='example/user/no_random.cpp'
 # &&
 #
-# &head build_type&&
-# This is either debug or release, depending on if the install version
-# of &code cppad_mixed&& is a debug or release version.
+# &head PKG_CONFIG_PATH&&
+# Set the path used by $code pkg-config$$:
 # &codep
-build_type='debug'
+if [ "$PKG_CONFIG_PATH" == '' ]
+then
+export PKG_CONFIG_PATH="$ipopt_prefix/$cmake_libdir/pkgconfig"
+else
+export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$ipopt_prefix/$cmake_libdir/pkgconfig"
+fi
 # &&
 #
 # &head Create Temporary&&
 # The following commands create a temporary directory,
 # copy the example file into it,
-# and make it the current working directory:
+# and make it the working directory:
 # &codep
 mkdir -p build/tmp
 cp $example_file build/tmp/example.cpp
@@ -67,15 +82,15 @@ cd build/tmp
 # &&
 #
 # &head example_name&&
-# The following command gets the example name,
-# which is the example file minus the &code .cpp&& at the end:
+# The following command gets the example name, which is the example file
+# with the &code .cpp&& at the end replaced by &code _xam&&:
 # &codep
 example_name=`echo $example_file | sed -e 's|.*/||' -e 's|\.cpp|_xam|'`
 # &&
 #
 # &head main&&
 # The following command creates a main program
-# (in the file &code example.cpp&&) that runs the example
+# (in the &code example.cpp&& file) that runs the example
 # and reports the result of its return &code bool&& value:
 # &codep
 cat << EOF >> example.cpp
@@ -122,19 +137,15 @@ suitesparse_libs='
 if [ "$build_type" == 'debug' ]
 then
 	flags='-g -O0 -std=c++11 -Wall'
-elif [ "$build_type" == 'release' ]
-then
-	flags='-O3 -DNDEBUG -std=c++11 -Wall'
 else
-	echo 'check_install.sh: build_type not debug or release'
-	exit 1
+	flags='-O3 -DNDEBUG -std=c++11 -Wall'
 fi
 g++ example.cpp \
 	$flags \
-	-I $cppad_mixed_prefix/include \
+	-I $cppad_prefix/include \
 	-isystem $eigen_prefix/include \
-	-L $cppad_mixed_prefix/lib64 -lcppad_mixed \
-	-L $cppad_mixed_prefix/lib \
+	-L $cppad_prefix/$cmake_libdir -lcppad_mixed \
+	-L $suitesparse_prefix/$cmake_libdir \
 	$gsl_libs \
 	$suitesparse_libs \
 	$ipopt_libs \
