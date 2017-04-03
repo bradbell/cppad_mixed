@@ -860,7 +860,8 @@ int main(int argc, const char *argv[])
 	//
 	if( size_t(argc) != 1 + n_arg )
 	{	// print usage error message
-		std::cerr << "usage: " << argv[0];
+		std::cerr << "expected " << n_arg << " arguments and found "
+		<< argc - 1 << "\nusage: " << argv[0];
 		for(size_t i = 0; i < n_arg; i++)
 			std::cerr << " \\ \n\t" << arg_name[i];
 		std::cerr << "\n";

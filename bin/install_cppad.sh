@@ -22,8 +22,8 @@ echo_eval() {
 }
 # --------------------------------------------------------------------------
 web_page='https://github.com/coin-or/CppAD.git'
-hash_key='e86c4c7b0c0102b62e3d3b42bfc2d1b8b2063e9a'
-version='20170325'
+hash_key='79e5af795b2a46d8be76153c87c487c63ef6eb42'
+version='20170402'
 # --------------------------------------------------------------------------
 # build_type
 cmd=`grep '^build_type=' bin/run_cmake.sh`

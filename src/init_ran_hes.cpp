@@ -338,8 +338,7 @@ void cppad_mixed::init_ran_hes(
 
 	// optimize the recording
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
-	// 2DO: get this to work with dismod_at
-	// ran_hes_fun_.optimize();
+	ran_hes_fun_.optimize();
 # endif
 	//
 	init_ran_hes_done_ = true;

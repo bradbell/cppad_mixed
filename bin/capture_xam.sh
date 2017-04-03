@@ -9,7 +9,7 @@
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
 random_seed='12345'
-number_random='10000'
+number_random='35'
 quasi_fixed='yes'
 trace_optimize_fixed='no'
 ipopt_solve='yes'
@@ -17,15 +17,22 @@ bool_sparsity='no'
 hold_memory='no'
 derivative_test='no'
 start_near_solution='no'
+number_fixed_samples='1000'
+number_locations='50'
+max_population='25.0'
+mean_population='5.0'
+mean_logit_probability='-0.25'
+std_logit_probability='0.25'
+random_constraint='yes'
 # ---------------------------------------------------------------------------
-if [ "$0" != "bin/ar1_xam.sh" ]
+if [ "$0" != "bin/capture_xam.sh" ]
 then
-	echo 'bin/ar1_xam.sh: must be executed from its parent directory'
+	echo 'bin/capture_xam.sh: must be executed from its parent directory'
 	exit 1
 fi
 if [ ! -e 'build/speed' ]
 then
-	echo 'ar1_xam.sh: must first run bin/run_cmake.sh'
+	echo 'capture_xam.sh: must first run bin/run_cmake.sh'
 	exit
 fi
 # -----------------------------------------------------------------------------
@@ -36,9 +43,9 @@ echo_eval() {
 }
 # ----------------------------------------------------------------------------
 echo_eval cd build/speed
-echo_eval make ar1_xam
+echo_eval make capture_xam
 cat << EOF
-./ar1_xam \
+./capture_xam \
 $random_seed \
 $number_random \
 $quasi_fixed \
@@ -47,9 +54,16 @@ $ipopt_solve \
 $bool_sparsity \
 $hold_memory \
 $derivative_test \
-$start_near_solution
+$start_near_solution \
+$number_fixed_samples \
+$number_locations \
+$max_population \
+$mean_population \
+$mean_logit_probability \
+$std_logit_probability \
+$random_constraint
 EOF
-./ar1_xam \
+./capture_xam \
 	$random_seed \
 	$number_random \
 	$quasi_fixed \
@@ -58,7 +72,14 @@ EOF
 	$bool_sparsity \
 	$hold_memory \
 	$derivative_test \
-	$start_near_solution
+	$start_near_solution \
+	$number_fixed_samples \
+	$number_locations \
+	$max_population \
+	$mean_population \
+	$mean_logit_probability \
+	$std_logit_probability \
+	$random_constraint
 # ----------------------------------------------------------------------------
-echo 'ar1_xam.sh: OK'
+echo 'capture_xam.sh: OK'
 exit 0
