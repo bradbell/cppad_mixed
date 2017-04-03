@@ -25,6 +25,7 @@ $spell
 	bool
 	namespace
 	rc
+	optimizer
 $$
 
 $section Changes and Additions to cppad_mixed During 2017$$
@@ -33,6 +34,16 @@ $childtable%
 	omh/whats_new_15.omh%
 	omh/whats_new_16.omh
 %$$
+
+$head 04-02$$
+$list number$$
+Advanced to $code cppad-20170402$$.
+This fixes a bug in the CppAD optimizer.
+$lnext
+Simplify the install procedure by using
+$cref/build_type/run_cmake.sh/build_type/$$ in $code run_cmake.sh$$
+to set the build type for all the installs.
+$lend
 
 $head 03-27$$
 Add $code no_conditional_skip$$ option to CppAD function optimization

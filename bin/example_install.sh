@@ -16,10 +16,7 @@
 # &section An Example Installation&&
 #
 # &head Syntax&&
-# &codei%bin/example_install.sh %build_type% %existing%&&
-#
-# &head build_type&&
-# is either &code debug&& or &code release&&.
+# &codei%bin/example_install.sh %existing%&&
 #
 # &head existing&&
 # is either &code replace&& or &code use&&.
@@ -45,25 +42,22 @@ echo_eval() {
 	eval $*
 }
 # --------------------------------------------------------------------------
-ok='true'
-if [ "$1" != 'debug' ] && [ "$1" != 'release' ]
+if [ "$1" != 'replace' ] && [ "$1" != 'use' ]
 then
-	ok='false'
-fi
-if [ "$2" != 'replace' ] && [ "$2" != 'use' ]
-then
-	ok='false'
-fi
-if [ "$ok" != 'true' ]
-then
-	echo 'bin/example_install.sh: build_type existing'
-	echo 'where build_type is debug or release'
-	echo 'and existing is replace or use'
+	echo 'bin/example_install.sh: existing'
+	echo 'where existing is replace or use'
 	exit 1
 fi
-build_type="$1"
 existing="$2"
-# --------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# build_type
+cmd=`grep '^build_type=' bin/run_cmake.sh`
+eval $cmd
+#
+# cppad_prefix
+cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
+eval $cmd
+#
 # ipopt_prefix
 cmd=`grep '^ipopt_prefix=' bin/run_cmake.sh`
 eval $cmd
@@ -76,10 +70,9 @@ do
 	fi
 done
 # --------------------------------------------------------------------------
-prefix="$HOME/prefix/cppad_mixed"
-if echo "$prefix" | grep '/cppad_mixed$' > /dev/null
+if echo "$cppad_prefix" | grep '/cppad_mixed$' > /dev/null
 then
-	bin/build_type.sh example_install.sh $prefix $build_type
+	bin/build_type.sh example_install.sh $cppad_prefix $build_type
 fi
 # -----------------------------------------------------------------------------
 if which apt-get >& /dev/null
@@ -146,19 +139,19 @@ do
 	# eval below converts $HOME in $prefix to its value for current user
 	case $pkg in
 		eigen)
-		eval file="$prefix/eigen/include/Eigen/Core"
+		eval file="$cppad_prefix/eigen/include/Eigen/Core"
 		;;
 
 		ipopt)
-		eval file="$prefix/include/coin/IpIpoptApplication.hpp"
+		eval file="$cppad_prefix/include/coin/IpIpoptApplication.hpp"
 		;;
 
 		suitesparse)
-		eval file="$prefix/include/cholmod.h"
+		eval file="$cppad_prefix/include/cholmod.h"
 		;;
 
 		cppad)
-		eval file="$prefix/include/cppad/cppad.hpp"
+		eval file="$cppad_prefix/include/cppad/cppad.hpp"
 		;;
 
 		*)
@@ -199,10 +192,6 @@ fi
 # ----------------------------------------------------------------------------
 p='example_install'
 cmd='bin/run_cmake.sh'
-if [ "$build_type" == 'release' ]
-then
-	cmd='bin/run_cmake.sh --release'
-fi
 echo "$cmd 1>> $p.log 2>> $p.err"
 $cmd 1>> $p.log 2>> $p.err
 #
@@ -213,13 +202,6 @@ do
 	make $cmd 1>> ../$p.log 2>> ../$p.err
 done
 cd ..
-#
-sed -i bin/check_install.sh \
-	-e "s|^build_type=.*|build_type='$build_type'|"
-echo "bin/check_install.sh 1>> $p.log 2>> $p.err"
-bin/check_install.sh 1>> $p.log 2>> $p.err
-sed -i bin/check_install.sh \
-	-e "s|^build_type=.*|build_type='debug'|"
 # ----------------------------------------------------------------------------
 echo 'bin/example_install.sh: OK'
 exit 0

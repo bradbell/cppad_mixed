@@ -14,13 +14,6 @@ then
 	echo 'bin/install_cppad.sh: must be executed from its parent directory'
 	exit 1
 fi
-build_type="$1"
-if [ "$build_type" != 'debug' ] && [ "$build_type" != 'release' ]
-then
-	echo 'bin/install_cppad.sh: build_type'
-	echo 'where build_type is debug or release'
-	exit 1
-fi
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
@@ -32,12 +25,24 @@ web_page='https://github.com/coin-or/CppAD.git'
 hash_key='e86c4c7b0c0102b62e3d3b42bfc2d1b8b2063e9a'
 version='20170325'
 # --------------------------------------------------------------------------
+# build_type
+cmd=`grep '^build_type=' bin/run_cmake.sh`
+eval $cmd
+#
 # cppad_prefix
 cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
 eval $cmd
 #
+# ipopt_prefix
+cmd=`grep '^ipopt_prefix=' bin/run_cmake.sh`
+eval $cmd
+#
 # cppad_cxx_flags
 cmd=`grep '^cppad_cxx_flags=' bin/run_cmake.sh`
+eval $cmd
+#
+# cmake_libdir
+cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
 eval $cmd
 # --------------------------------------------------------------------------
 if echo "$cppad_prefix" | grep '/cppad_mixed$' > /dev/null
@@ -81,17 +86,11 @@ if [ -e CMakeCache.txt ]
 then
 	rm CMakeCache.txt
 fi
-# -----------------------------------------------------------------------------
-if [ -e /usr/lib64 ]
-then
-	libdirs="'lib64;lib'"
-else
-	libdirs="'lib;lib64'"
-fi
 #
 cmake_args="-D CMAKE_VERBOSE_MAKEFILE=0"
 cmake_args="$cmake_args -D cppad_prefix=$cppad_prefix"
-cmake_args="$cmake_args -D cmake_install_libdirs=$libdirs"
+cmake_args="$cmake_args -D ipopt_prefix=$ipopt_prefix"
+cmake_args="$cmake_args -D cmake_install_libdirs=$cmake_libdir"
 echo "cmake $cmake_args -D cppad_cxx_flags='$cppad_cxx_flags' .."
 cmake $cmake_args -D cppad_cxx_flags="$cppad_cxx_flags" ..
 #

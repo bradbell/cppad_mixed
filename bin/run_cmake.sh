@@ -107,7 +107,9 @@ checkpoint_newton_step='no'
 # &head optimize_cppad_function&&
 # If yes, the operation sequence for certain CppAD functions
 # will be optimized. This makes the code run faster but in some cases
-# it can make debugging more complicated.
+# it can make debugging more complicated. It is suggested that you use
+# &code no&& when &icode build_type&& is &code debug&& and &code yes&&
+# when &icode build_type&& is &code release&&.
 # &codep
 optimize_cppad_function='no'
 # &&
@@ -180,6 +182,7 @@ if echo "$cppad_prefix" | grep '/cppad_mixed$' > /dev/null
 then
 	bin/build_type.sh run_cmake $cppad_prefix $build_type
 fi
+export PKG_CONFIG_PATH=$ipopt_prefix/$cmake_libdir/pkgconfig
 # --------------------------------------------------------------------------
 if [ ! -e build ]
 then

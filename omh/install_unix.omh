@@ -38,10 +38,10 @@ $children%bin/example_install.sh
 %$$
 
 $head Download$$
-Download the tarball $href%cppad_mixed-20170329.tgz%$$
+Download the tarball $href%cppad_mixed-20170327.tgz%$$
 and then extract it using the command
 $codei%
-	tar -xzf cppad_mixed-20170329.tgz
+	tar -xzf cppad_mixed-20170327.tgz
 %$$
 
 $head System Requirements$$
@@ -77,9 +77,7 @@ on Fedora or Red-Hat one needs to install $code gsl-devel$$.
 
 $head Special Requirements$$
 The packages listed below are required by cppad_mixed
-and may not have standard system installs
-($code libdir.sh$$ is a file and $icode build_type$$ is a
-command line argument).
+and may not have standard system installs.
 The $codei%install_%package%$$ scripts below should be run
 in the order that they appear.
 
@@ -89,24 +87,13 @@ scripts that install the special requirements. You must first change
 these settings to the appropriate values for your system before
 running these scripts.
 
-$subhead libdir.sh$$
-The script $code bin/libdir.sh$$ determines what directory,
-below the prefix directories, is use for libraries by the install
-programs discussed below. The following is the default value
-for this script
-$srcfile%bin/libdir.sh%4%$$
-
-$subhead build_type$$
-The command line argument $icode build_type$$ below must be either
-$code debug$$ or $code release$$.
-
 $subhead eigen$$
 The $href%http://eigen.tuxfamily.org%eigen%$$
 linear algebra package.
 The commands
 $codei%
-	cd cppad_mixed-20170329
-	bin/install_eigen.sh %build_type%
+	cd cppad_mixed-20170327
+	bin/install_eigen.sh
 %$$
 can be used to install this package.
 
@@ -115,8 +102,8 @@ The $href%https://projects.coin-or.org/Ipopt%Ipopt%$$
 optimization package.
 The commands
 $codei%
-	cd cppad_mixed-20170329
-	bin/install_ipopt.sh %build_type%
+	cd cppad_mixed-20170327
+	bin/install_ipopt.sh
 %$$
 can be used to install this package.
 
@@ -125,8 +112,8 @@ The $href%http://faculty.cse.tamu.edu/davis/SuiteSparse%suitesparse%$$
 sparse matrix package.
 The commands
 $codei%
-	cd cppad_mixed-20170329
-	bin/install_suitesparse.sh %build_type%
+	cd cppad_mixed-20170327
+	bin/install_suitesparse.sh
 %$$
 can be used to install this package.
 
@@ -135,8 +122,8 @@ The $href%http://www.coin-or.org/CppAD/%cppad%$$
 C++ algorithmic differentiation package.
 The commands
 $codei%
-	cd cppad_mixed-20170329
-	bin/install_cppad.sh %build_type%
+	cd cppad_mixed-20170327
+	bin/install_cppad.sh
 %$$
 can be used to install this package.
 
@@ -157,20 +144,6 @@ execute either of the following command:
 $codep
 	bin/run_cmake.sh
 $$
-which gives the $icode build_type$$ in this file, while
-$codep
-	bin/run_cmake.sh --release
-$$
-yields a release build type.
-It is possible that, when running the $code bin/run_cmake.sh$$ command,
-you will get the message $code package 'ipopt' not found$$.
-In this case, you need to execute the following command
-$codei%
-	export PKG_CONFIG_PATH="@PKG_CONFIG_PATH:%ipopt_prefix%/%libdir%/pkgconfig"
-%$$
-where $icode ipopt_prefix$$ is the prefix for the Ipopt install and
-$cref/libdir/install_unix/Special Requirements/libdir.sh/$$
-is discussed above.
 
 $subhead Test$$
 The following commands are optional and will
@@ -201,13 +174,14 @@ $cref/installed/install_unix/cppad_mixed/Install/$$ version of
 $code cppad_mixed$$.
 
 $subhead Using cppad_mixed$$
-The file $cref capture_xam.cpp$$ contains an examples and speed test
+The files
+$cref ar1_xam.cpp$$ and $cref capture_xam.cpp$$
+contain examples and speed tests
 of $code cppad_mixed$$.
-This example runs when one executes the commands
+These examples run when one executes the commands
 $codep
 	cd build
 	make speed
 $$
-
 
 $end

@@ -177,7 +177,7 @@ $cref sparse_ad_cholesky$$.
 $head 09-30$$
 $list number$$
 Use one value for $icode libdir$$ for all the install scripts;
-see $cref/libdir.sh/install_unix/Special Requirements/libdir.sh/$$.
+see $cref/cmake_libdir/run_cmake.sh/cmake_libdir/$$.
 $lnext
 Use a link to switch the build and install directories between
 the debug and release versions (when the install prefix ends with

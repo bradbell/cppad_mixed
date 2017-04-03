@@ -14,13 +14,6 @@ then
 	echo 'bin/install_eigen.sh: must be executed from its parent directory'
 	exit 1
 fi
-build_type="$1"
-if [ "$build_type" != 'debug' ] && [ "$build_type" != 'release' ]
-then
-	echo 'bin/install_eigen.sh: build_type'
-	echo 'where build_type is debug or release'
-	exit 1
-fi
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
@@ -31,6 +24,10 @@ echo_eval() {
 version='3.2.9'
 web_page='https://bitbucket.org/eigen/eigen/get'
 # --------------------------------------------------------------------------
+# build_type
+cmd=`grep '^build_type=' bin/run_cmake.sh`
+eval $cmd
+#
 # eigen_prefix
 cmd=`grep '^eigen_prefix=' bin/run_cmake.sh`
 eval $cmd

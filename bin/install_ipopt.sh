@@ -14,18 +14,6 @@ then
 	echo 'bin/install_ipopt.sh: must be executed from its parent directory'
 	exit 1
 fi
-build_type="$1"
-if [ "$build_type" == 'debug' ]
-then
-	build_type_flag='--enable-debug'
-elif [ "$build_type" == 'release' ]
-then
-	build_type_flag=''
-else
-	echo 'bin/install_ipopt.sh: build_type'
-	echo 'where build_type is debug or release'
-	exit 1
-fi
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
@@ -36,10 +24,17 @@ echo_eval() {
 version="Ipopt-3.12.6"
 third_party="Mumps Metis"
 web_page="http://www.coin-or.org/download/source/Ipopt"
-libdir=`bin/libdir.sh`
 # --------------------------------------------------------------------------
+# build_type
+cmd=`grep '^build_type=' bin/run_cmake.sh`
+eval $cmd
+#
 # ipopt_prefix
 cmd=`grep '^ipopt_prefix=' bin/run_cmake.sh`
+eval $cmd
+#
+# cmake_libdir
+cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
 eval $cmd
 # --------------------------------------------------------------------------
 # set links for this build_type
@@ -47,7 +42,7 @@ if echo "$ipopt_prefix" | grep '/cppad_mixed$' > /dev/null
 then
 	bin/build_type.sh install_ipopt $ipopt_prefix $build_type
 fi
-export PKG_CONFIG_PATH=$ipopt_prefix/$libdir/pkgconfig
+export PKG_CONFIG_PATH=$ipopt_prefix/$cmake_libdir/pkgconfig
 # --------------------------------------------------------------------------
 # change into external directory
 if [ ! -e build/external ]
@@ -95,7 +90,7 @@ cat << EOF > config.sh
 	--enable-shared \\
 	--enable-static \\
 	--prefix=$ipopt_prefix \\
-	--libdir=$ipopt_prefix/$libdir \\
+	--libdir=$ipopt_prefix/$cmake_libdir \\
 	--with-blas-lib="-lblas" \\
 	--with-lapack-lib="-llapack" \\
 	coin_skip_warn_cxxflags=yes

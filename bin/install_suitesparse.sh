@@ -15,13 +15,6 @@ then
 	echo "$program: must be executed from its parent directory"
 	exit 1
 fi
-build_type="$1"
-if [ "$build_type" != 'debug' ] && [ "$build_type" != 'release' ]
-then
-	echo 'bin/install_suitesparse.sh: build_type'
-	echo 'where build_type is debug or release'
-	exit 1
-fi
 # --------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
@@ -31,16 +24,27 @@ echo_eval() {
 # -----------------------------------------------------------------------------
 tarball='SuiteSparse-4.4.3.tar.gz'
 web_page='http://faculty.cse.tamu.edu/davis/SuiteSparse'
-libdir=`bin/libdir.sh`
-# --------------------------------------------------------------------------
-# suitesparse_prefix
-cmd=`grep '^suitesparse_prefix=' bin/run_cmake.sh`
+# ---------------------------------------------------------------------------
+# build_type
+cmd=`grep '^build_type=' bin/run_cmake.sh`
 eval $cmd
 #
 # ipopt_prefix
 cmd=`grep '^ipopt_prefix=' bin/run_cmake.sh`
 eval $cmd
 #
+# suitesparse_prefix
+cmd=`grep '^suitesparse_prefix=' bin/run_cmake.sh`
+eval $cmd
+#
+# cppad_cxx_flags
+cmd=`grep '^cppad_cxx_flags=' bin/run_cmake.sh`
+eval $cmd
+#
+# cmake_libdir
+cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
+eval $cmd
+# --------------------------------------------------------------------------
 # ipopt_version
 cmd=`grep '^version=' bin/install_ipopt.sh | sed -e 's|version|ipopt_version|'`
 eval $cmd
@@ -98,10 +102,10 @@ fi
 # -----------------------------------------------------------------------------
 sed -e \
 "s|^\( *INSTALL_INCLUDE *\)=.*|\1= $suitesparse_prefix/include|" \
--e "s|^\( *INSTALL_LIB *\)=.*|\1= $suitesparse_prefix/$libdir|" \
+-e "s|^\( *INSTALL_LIB *\)=.*|\1= $suitesparse_prefix/$cmake_libdir|" \
 -e 's|^\( *BLAS *\)=.*|\1= -lblas|' \
 -e "s|^\( *METIS_PATH *\)=.*|\1= ../../$metis_version|" \
--e "s|^\( *METIS *\)=.*|\1= $ipopt_prefix/$libdir/libcoinmetis.a|" \
+-e "s|^\( *METIS *\)=.*|\1= $ipopt_prefix/$cmake_libdir/libcoinmetis.a|" \
 -i.bak SuiteSparse_config/SuiteSparse_config.mk
 #
 if [ "$build_type" == 'debug' ]
