@@ -132,7 +132,7 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec )
 
 	// optimize the recording
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
-	fix_con_.optimize("no_conditional_skip");
+	fix_con_fun_.optimize("no_conditional_skip");
 # endif
 	// ------------------------------------------------------------------------
 	// fix_con_jac_

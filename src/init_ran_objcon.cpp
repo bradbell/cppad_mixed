@@ -194,7 +194,7 @@ void cppad_mixed::init_ran_objcon(
 	//
 	ran_objcon_fun_.Dependent(beta_theta_u, HB);
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
-	ran_objcon_.optimize("no_conditional_skip");
+	ran_objcon_fun_.optimize("no_conditional_skip");
 # endif
 	//
 	init_ran_objcon_done_ = true;
