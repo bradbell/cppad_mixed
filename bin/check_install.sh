@@ -71,6 +71,17 @@ export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$ipopt_prefix/$cmake_libdir/pkgconfig"
 fi
 # &&
 #
+# &head LD_LIBRARY_PATH&&
+# Set the path used to load shared libraries:
+# &codep
+if [ "$LD_LIBRARY_PATH" == '' ]
+then
+export LD_LIBRARY_PATH="$ipopt_prefix/$cmake_libdir"
+else
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$ipopt_prefix/$cmake_libdir"
+fi
+# &&
+#
 # &head Create Temporary&&
 # The following commands create a temporary directory,
 # copy the example file into it,

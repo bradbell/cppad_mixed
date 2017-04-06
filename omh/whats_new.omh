@@ -35,6 +35,10 @@ $childtable%
 	omh/whats_new_16.omh
 %$$
 
+$head 04-06$$
+Add $cref/LD_LIBRARY_PATH/check_install.sh/LD_LIBRARY_PATH/$$ to
+the $code bin/check_install.sh$$ example.
+
 $head 04-02$$
 $list number$$
 Advanced to $code cppad-20170402$$.
