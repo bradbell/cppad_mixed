@@ -34,14 +34,17 @@ namespace {
 	class ipopt_nlp_xam : public Ipopt::TNLP
 	{
 	public:
-		// did finalize_solution agree that the solution had converged
+		// factor in the objective function
+		const double beta_;
+		//
+		// did check of solution pass
 		bool finalize_solution_ok_;
 		//
 		// final solution
 		std::vector<double> final_solution_;
 		//
 		// default constructor
-		ipopt_nlp_xam(void);
+		ipopt_nlp_xam(double beta);
 		//
 		// default destructor
 		virtual ~ipopt_nlp_xam(void);
@@ -144,7 +147,7 @@ $$
 $section Ipopt Example: Constructor and Destructor$$
 
 $srccode%cpp% */
-ipopt_nlp_xam::ipopt_nlp_xam(void)
+ipopt_nlp_xam::ipopt_nlp_xam(double beta) : beta_(beta)
 { }
 ipopt_nlp_xam::~ipopt_nlp_xam(void)
 { }
@@ -397,7 +400,8 @@ bool ipopt_nlp_xam::eval_f(
 	Number&         obj_value )  // out
 {
 	assert( n == 2 );
-	obj_value = (x[0] - 2.0) * (x[0] - 2.0) + (x[1] - 3.0) * (x[1] - 3.0);
+	obj_value  = beta_ * (x[0] - 2.0) * (x[0] - 2.0);
+	obj_value += beta_ * (x[1] - 3.0) * (x[1] - 3.0);
 
 	return true;
 }
@@ -447,8 +451,8 @@ bool ipopt_nlp_xam::eval_grad_f(
 	Number*         grad_f    )  // out
 {
 	assert( n == 2 );
-	grad_f[0] = 2.0 * (x[0] - 2.0);
-	grad_f[1] = 2.0 * (x[1] - 3.0);
+	grad_f[0] = 2.0 * beta_ * (x[0] - 2.0);
+	grad_f[1] = 2.0 * beta_ * (x[1] - 3.0);
 	return true;
 }
 /* %$$
@@ -715,8 +719,8 @@ bool ipopt_nlp_xam::eval_h(
 	assert( n == 2 );
 	assert( m == 1 );
 	//
-	values[0] = 2.0 * obj_factor;
-	values[1] = 2.0 * obj_factor;
+	values[0] = 2.0 * beta_ * obj_factor;
+	values[1] = 2.0 * beta_ * obj_factor;
 	//
 	return true;
 }
@@ -862,10 +866,14 @@ void ipopt_nlp_xam::finalize_solution(
 	ok &= fabs( x[0] + x[1] - 2.0 ) <= 10. * tol;
 
 	// Check the partial of the Lagrangian w.r.t x[0]
-	ok &= fabs( 2.0*(x[0] - 2.0) + lambda[0] - z_L[0] + z_U[0] ) <= 10. * tol;
+	ok &= fabs(
+		2.0 * beta_ * (x[0] - 2.0) + lambda[0] - z_L[0] + z_U[0]
+	) <= 10. * tol;
 
 	// Check the partial of the Lagrangian w.r.t x[1]
-	ok &= fabs( 2.0*(x[1] - 3.0) + lambda[0] - z_L[1] + z_U[1] ) <= 10. * tol;
+	ok &= fabs(
+		2.0 * beta_ * (x[1] - 3.0) + lambda[0] - z_L[1] + z_U[1]
+	) <= 10. * tol;
 
 	// set member variable finalize_solution_ok_
 	finalize_solution_ok_ = ok;
@@ -907,8 +915,11 @@ bool ipopt_run_xam(void)
 	double tol = 1e-8;
 	using Ipopt::SmartPtr;
 
+	// Factor in definition of objective function
+	double beta = 3.0;
+
 	// Create an instance of the example problem
-	SmartPtr<ipopt_nlp_xam> xam_nlp = new ipopt_nlp_xam;
+	SmartPtr<ipopt_nlp_xam> xam_nlp = new ipopt_nlp_xam(beta);
 
 	// Create an instance of an IpoptApplication
 	SmartPtr<Ipopt::IpoptApplication> app = IpoptApplicationFactory();
