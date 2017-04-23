@@ -20,26 +20,64 @@ $section Example Use of Ipopt$$
 $head Problem$$
 $latex \[
 \begin{array}{ll}
-	\R{minimize} & - ( x_1 - 2 )^2 \; \R{w.r.t} \; x \in \B{R}^2
+	\R{minimize} & (x_0 - 2)^2 + (x_1 - 4)^2 \; \R{w.r.t} \; x \in \B{R}^2
 	\\
-	\R{subject\; to} &  0 = x_0^2 + x_1 - 1
+	\R{subject\; to} &  0 = x_0 + x_1 - 2
 	\\
-	& -1 \leq x_0 \leq 1
+	& 0 \leq x_0 \leq 2
+	\\
+	& 0 \leq x_1 \leq 3
 \end{array}
 \]$$
 
 $head Lagrangian$$
 For $latex x \in \B{R}^2$$,
-$latex -1 \leq x_0 \leq 1$$,
 $latex \lambda \in \B{R}$$,
-$latex z_L \in \B{R}_+$$,
-$latex z_U \in \B{R}_+$$,
+$latex L \in \B{R}_+^2$$,
+$latex U \in \B{R}_+^2$$,
 the Lagrangian is
 $latex \[
-L(x, \lambda, z_L, z_U )
-=
-- ( x_1 - 2 )^2  + \lambda ( x_0^2 + x_1 - 1) + z_L (- x_0 - 1) + z_U (x_0 - 1)
+( x_0 - 2 )^2 + ( x_1 - 3 )^2
++
+\lambda_0 ( x_0 + x_1 - 2 )
++
+U_0 ( x_0 - 2 ) - L_0 x_0
++
+U_1 ( x_0 - 3 ) - L_1 x_1
 \] $$
+
+$head Stationary Conditions$$
+$latex \[
+\begin{array}{rcl}
+0 & = & 2 ( x_0 - 2 ) + \lambda_0 - L_0 + U_0
+\\
+0 & = & 2 ( x_1 - 3 ) + \lambda_0 - L_1 + U_1
+\\
+0 & = & x_0 + x_1 - 2
+\end{array}
+\] $$
+
+$head Solution$$
+If we assume the lower and upper constraints are no active at the solution
+we get
+$latex L = 0$$,
+$latex U = 0$$,
+$latex \lambda_0 = 2 (2 - x_0 )$$,
+$latex x_1 = 2 - x_0$$,
+$latex \[
+\begin{array}{rcl}
+0 & = & 2 ( 2 - x_0 - 3 ) + 2 ( 2 - x_0 )
+\\
+0 & = &  2 - x_0 - 3 + 2 - x_0
+\\
+x_0 & = & 0.5
+\end{array}
+\] $$
+The corresponding solution is
+$latex x_0 = 0.5$$, $latex x_1 = 1.5$$, and $latex \lambda_0 = 3.0$$.
+Note that the upper and lower constraints are not active,
+so this is the solution (with $latex L = 0$$, $latex U = 0$$).
+
 
 $childtable%example/ipopt_run.cpp%$$
 

@@ -25,6 +25,9 @@ fi
 #
 # &section Example and Test Using the Installed Version of cppad_mixed&&
 #
+# &head Syntax&&
+# &code bin/check_install.sh&&
+#
 # &head build_type&&
 # Get the &cref/build_type/run_cmake.sh/build_type/&& used during the install:
 # &codep
@@ -68,6 +71,17 @@ then
 export PKG_CONFIG_PATH="$ipopt_prefix/$cmake_libdir/pkgconfig"
 else
 export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$ipopt_prefix/$cmake_libdir/pkgconfig"
+fi
+# &&
+#
+# &head LD_LIBRARY_PATH&&
+# Set the path used to load shared libraries
+# &codep
+if [ "$LD_LIBRARY_PATH" == '' ]
+then
+export LD_LIBRARY_PATH="$ipopt_prefix/$cmake_libdir"
+else
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$ipopt_prefix/$cmake_libdir"
 fi
 # &&
 #

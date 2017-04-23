@@ -37,6 +37,9 @@ namespace {
 		// did finalize_solution agree that the solution had converged
 		bool finalize_solution_ok_;
 		//
+		// final solution
+		std::vector<double> final_solution_;
+		//
 		// default constructor
 		ipopt_nlp_xam(void);
 		//
@@ -254,11 +257,12 @@ bool ipopt_nlp_xam::get_bounds_info(
 		Number*     g_u      )   // out
 {
 	assert( n == 2 );
-	x_l[0] = -1.0;
-	x_u[0] = 1.0;
 	//
-	x_l[1] = -1.0e19; // default -infinity
-	x_u[1] = 1.0e19;  // default +infinity
+	x_l[0] = 0.0;
+	x_u[0] = 2.0;
+	//
+	x_l[1] = 0.0;
+	x_u[1] = 3.0;
 	//
 	assert( m == 1 );
 	//
@@ -339,8 +343,8 @@ bool ipopt_nlp_xam::get_starting_point(
 {
 	assert( n == 2 );
 	assert( init_x == true );
-	x[0] = 0.5;
-	x[1] = 1.5;
+	x[0] = 1.0;
+	x[1] = 1.0;
 	assert( init_z == false );
 	assert( m == 1 );
 	assert( init_lambda == false );
@@ -393,7 +397,7 @@ bool ipopt_nlp_xam::eval_f(
 	Number&         obj_value )  // out
 {
 	assert( n == 2 );
-	obj_value = - (x[1] - 2.0) * (x[1] - 2.0);
+	obj_value = (x[0] - 2.0) * (x[0] - 2.0) + (x[1] - 3.0) * (x[1] - 3.0);
 
 	return true;
 }
@@ -443,8 +447,8 @@ bool ipopt_nlp_xam::eval_grad_f(
 	Number*         grad_f    )  // out
 {
 	assert( n == 2 );
-	grad_f[0] = 0.0;
-	grad_f[1] = - 2.0 * (x[1] - 2.0);
+	grad_f[0] = 2.0 * (x[0] - 2.0);
+	grad_f[1] = 2.0 * (x[1] - 3.0);
 	return true;
 }
 /* %$$
@@ -496,11 +500,9 @@ bool ipopt_nlp_xam::eval_g(
 	Number*         g        )  // out
 {
 	assert( n == 2 );
-	//
-	//
 	assert( m = 1 );
 	//
-	g[0] = - (x[0] * x[0] + x[1] - 1.0);
+	g[0] = x[0] + x[1] - 2.0;
 	//
 	return true;
 }
@@ -595,8 +597,8 @@ bool ipopt_nlp_xam::eval_jac_g(
 	assert( n == 2 );
 	assert( m == 1 );
 	//
-	values[0] = - 2.0 * x[0];
-	values[1] = - 1.0;
+	values[0] = 1.0;
+	values[1] = 1.0;
 	//
 	return true;
 }
@@ -713,8 +715,8 @@ bool ipopt_nlp_xam::eval_h(
 	assert( n == 2 );
 	assert( m == 1 );
 	//
-	values[0] = - 2.0 * lambda[0];
-	values[1] = - 2.0 * obj_factor;
+	values[0] = 2.0 * obj_factor;
+	values[1] = 2.0 * obj_factor;
 	//
 	return true;
 }
@@ -839,6 +841,7 @@ void ipopt_nlp_xam::finalize_solution(
 	const Ipopt::IpoptData*           ip_data   ,  // in
 	Ipopt::IpoptCalculatedQuantities* ip_cq     )  // in
 {	bool ok = true;
+	using std::fabs;
 
 	// default tolerance
 	double tol = 1e-08;
@@ -848,23 +851,29 @@ void ipopt_nlp_xam::finalize_solution(
 	ok &= m == 1;
 
 	// check that x is feasible
-	ok &= (-1.0 <= x[0]) && (x[0] <= +1.0);
+	ok &= (0.0 <= x[0]) && (x[0] <= +2.0);
+	ok &= (0.0 <= x[1]) && (x[1] <= +3.0);
 
 	// check that the bound multipliers are feasible
 	ok &= (0.0 <= z_L[0]) && (0.0 <= z_L[1]);
 	ok &= (0.0 <= z_U[0]) && (0.0 <= z_U[1]);
 
 	// check that the constraint on g(x) is satisfied
-	ok &= std::fabs( x[0] * x[0] + x[1] - 1.0 ) <= 10. * tol;
+	ok &= fabs( x[0] + x[1] - 2.0 ) <= 10. * tol;
 
 	// Check the partial of the Lagrangian w.r.t x[0]
-	ok &= std::fabs(- lambda[0] * 2.0 * x[0] - z_L[0] + z_U[0] ) <= 10. * tol;
+	ok &= fabs( 2.0*(x[0] - 2.0) + lambda[0] - z_L[0] + z_U[0] ) <= 10. * tol;
 
 	// Check the partial of the Lagrangian w.r.t x[1]
-	ok &= std::fabs( 2.0 * (x[1] - 2.0) + lambda[0]) <= 10. * tol;
+	ok &= fabs( 2.0*(x[1] - 3.0) + lambda[0] - z_L[1] + z_U[1] ) <= 10. * tol;
 
 	// set member variable finalize_solution_ok_
 	finalize_solution_ok_ = ok;
+
+	// set member variable final_solution_
+	final_solution_.resize(n);
+	for(Index j = 0; j < n; j++)
+		final_solution_[j] = x[j];
 }
 /* %$$
 $end
@@ -894,7 +903,8 @@ and false otherwise.
 $head Source$$
 $srccode%cpp% */
 bool ipopt_run_xam(void)
-{	bool ok = true;
+{	bool ok    = true;
+	double tol = 1e-8;
 	using Ipopt::SmartPtr;
 
 	// Create an instance of the example problem
@@ -904,8 +914,9 @@ bool ipopt_run_xam(void)
 	SmartPtr<Ipopt::IpoptApplication> app = IpoptApplicationFactory();
 
 	// Turn off all Ipopt printed output
-	app->Options()->SetIntegerValue("print_level", 0);
+	app->Options()->SetIntegerValue("print_level", 5);
 	app->Options()->SetStringValue("sb", "yes");
+	app->Options()->SetStringValue("derivative_test", "second-order");
 
 	// variable to hold status values returned by app
 	Ipopt::ApplicationReturnStatus status;
@@ -918,6 +929,12 @@ bool ipopt_run_xam(void)
 	status = app->OptimizeTNLP(xam_nlp);
 	ok    &= status == Ipopt::Solve_Succeeded;
 	ok    &= xam_nlp->finalize_solution_ok_;
+
+	// check the solution
+	const std::vector<double>& x(xam_nlp->final_solution_);
+	ok    &= x.size() == 2;
+	ok    &= fabs( x[0] - 0.5 ) <= 10. * tol;
+	ok    &= fabs( x[1] - 1.5 ) <= 10. * tol;
 
 	return ok;
 }
