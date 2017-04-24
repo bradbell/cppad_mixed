@@ -90,6 +90,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		const d_vector& fixed_upper_;         // fixed effects upper limit
 		const d_vector& fix_constraint_lower_;// constraint lower limits
 		const d_vector& fix_constraint_upper_;// constraint upper limit
+		const d_vector& fixed_scale_;         // fixed effects scalling value
 		const d_vector& fixed_in_;            // fixed effects initial value
 		//
 		const d_vector& random_lower_;    // lower limit for random effects
@@ -237,16 +238,17 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// constructor
 		ipopt_fixed(
 			const std::string&        random_ipopt_options ,
-			const double&   fixed_tolerance      ,
-			const d_vector& fixed_lower          ,
-			const d_vector& fixed_upper          ,
-			const d_vector& fix_constraint_lower ,
-			const d_vector& fix_constraint_upper ,
-			const d_vector& fixed_in             ,
-			const d_vector& random_lower         ,
-			const d_vector& random_upper         ,
-			const d_vector& random_in            ,
-			cppad_mixed&    mixed_object
+			const double&             fixed_tolerance      ,
+			const d_vector&           fixed_lower          ,
+			const d_vector&           fixed_upper          ,
+			const d_vector&           fix_constraint_lower ,
+			const d_vector&           fix_constraint_upper ,
+			const d_vector&           fixed_scale          ,
+			const d_vector&           fixed_in             ,
+			const d_vector&           random_lower         ,
+			const d_vector&           random_upper         ,
+			const d_vector&           random_in            ,
+			cppad_mixed&              mixed_object
 		);
 		//
 		virtual bool get_nlp_info(
@@ -340,9 +342,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			Number*            g_scaling
 		);
 		// -----------------------------------------------------------------
-		bool adaptive_derivative_check(
-			const d_vector& fixed_scale, bool trace, double relative_tol
-		);
+		bool adaptive_derivative_check( bool trace, double relative_tol);
 	};
 } } // END_CPPAD_MIXED_NAMESPACE
 

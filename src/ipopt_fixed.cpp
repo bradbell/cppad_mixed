@@ -188,6 +188,7 @@ $codei%CppAD::mixed::ipopt_fixed %ipopt_object%(
 	%fixed_upper%,
 	%fix_constraint_lower%,
 	%fix_constraint_upper%,
+	%fixed_scale%,
 	%fixed_in%,
 	%random_lower%,
 	%random_upper%,
@@ -255,6 +256,15 @@ $code%
 	std::numeric_limits<double>::infinity()
 %$$
 is used for plus infinity; i.e., no upper limit.
+
+$head fixed_scale$$
+specifies the value of the
+$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
+vector $latex \theta$$ used for scaling the optimization problem.
+It must hold for each $icode j$$ that
+$codei%
+	%fixed_lower%[%j%] <= %fixed_scale%[%j%] <= %fixed_upper%[%j%]
+%$$
 
 $head fixed_in$$
 This vector has length equal to $icode n_fixed_$$ and
@@ -393,29 +403,31 @@ ipopt_fixed::ipopt_fixed(
 	const d_vector&     fixed_upper                  ,
 	const d_vector&     fix_constraint_lower         ,
 	const d_vector&     fix_constraint_upper         ,
+	const d_vector&     fixed_scale                  ,
 	const d_vector&     fixed_in                     ,
 	const d_vector&     random_lower                 ,
 	const d_vector&     random_upper                 ,
 	const d_vector&     random_in                    ,
-	cppad_mixed&        mixed_object       ) :
+	cppad_mixed&        mixed_object                 ) :
 /* %$$
 $end
 */
-random_ipopt_options_  ( random_ipopt_options )                   ,
-fixed_tolerance_   ( fixed_tolerance  )                           ,
-n_fixed_           ( fixed_in.size()  )                           ,
-n_random_          ( random_in.size() )                           ,
-n_fix_con_         ( fix_constraint_lower.size() )                ,
-n_ran_con_         ( mixed_object.A_rcv_.nr() )                   ,
-fixed_lower_       ( fixed_lower      )                           ,
-fixed_upper_       ( fixed_upper      )                           ,
-fix_constraint_lower_  ( fix_constraint_lower )                   ,
-fix_constraint_upper_  ( fix_constraint_upper )                   ,
-fixed_in_          ( fixed_in         )                           ,
-random_lower_      ( random_lower     )                           ,
-random_upper_      ( random_upper     )                           ,
-random_in_         ( random_in        )                           ,
-mixed_object_      ( mixed_object    )
+random_ipopt_options_  ( random_ipopt_options )          ,
+fixed_tolerance_       ( fixed_tolerance )               ,
+n_fixed_               ( fixed_in.size() )               ,
+n_random_              ( random_in.size() )              ,
+n_fix_con_             ( fix_constraint_lower.size() )   ,
+n_ran_con_             ( mixed_object.A_rcv_.nr() )      ,
+fixed_lower_           ( fixed_lower )                   ,
+fixed_upper_           ( fixed_upper )                   ,
+fix_constraint_lower_  ( fix_constraint_lower )          ,
+fix_constraint_upper_  ( fix_constraint_upper )          ,
+fixed_scale_           ( fixed_in )                      ,
+fixed_in_              ( fixed_in )                      ,
+random_lower_          ( random_lower )                  ,
+random_upper_          ( random_upper )                  ,
+random_in_             ( random_in )                     ,
+mixed_object_          ( mixed_object )
 {
 	double inf           = std::numeric_limits<double>::infinity();
 	//
@@ -2070,14 +2082,7 @@ $$
 $section Adaptive Step Size check of eval_grad_f and eval_jac_g$$
 
 $head Syntax$$
-$icode%ok% = adaptive_derivative_check(
-	%fixed_scale%, %trace%, %relative_tol%
-)%$$
-
-$head fixed_scale$$
-This vector has length $icode n_fixed_$$ and
-specifies the point where the scale factors are computed
-and derivative check is performed.
+$icode%ok% = adaptive_derivative_check(%trace%, %relative_tol%)%$$
 
 $head trace$$
 If true, a trace of this computation is printed on standard output.
@@ -2154,9 +2159,7 @@ $latex g_i (x)$$.
 
 $head Prototype$$
 $srccode%cpp% */
-bool ipopt_fixed::adaptive_derivative_check(
-	const d_vector& fixed_scale, bool trace, double relative_tol
-)
+bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
 /* %$$
 $end
 */
@@ -2184,14 +2187,14 @@ $end
 	//
 	// fixed likelihood at the fixed effects scaling vector
 	if( fix_likelihood_vec_tmp_.size() == 0 )
-		assert( mixed_object_.fix_like_eval(fixed_scale).size() == 0 );
+		assert( mixed_object_.fix_like_eval(fixed_scale_).size() == 0 );
 	else
-	{	fix_likelihood_vec_tmp_ = mixed_object_.fix_like_eval(fixed_scale);
+	{	fix_likelihood_vec_tmp_ = mixed_object_.fix_like_eval(fixed_scale_);
 		assert( fix_likelihood_vec_tmp_.size() == 1 + fix_likelihood_nabs_ );
 	}
 	// use scaling values for fixed effects
 	for(size_t j = 0; j < n_fixed_; j++)
-		x_scale[j] = fixed_scale[j];
+		x_scale[j] = fixed_scale_[j];
 	//
 	// set auxillary variables to corresponding minimum feasible value
 	for(size_t j = 0; j < fix_likelihood_nabs_; j++)

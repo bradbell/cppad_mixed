@@ -176,7 +176,6 @@ $codei%
 	%fixed_lower%[%j%] <= %fixed_in%[%j%] <= %fixed_upper%[%j%]
 %$$
 
-
 $head random_lower$$
 This argument has prototype
 $codei%
@@ -428,6 +427,7 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		fix_constraint_lower,
 		fix_constraint_upper,
 		fixed_in,
+		fixed_in,
 		random_lower,
 		random_upper,
 		random_in,
@@ -449,9 +449,7 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		relative_tol  = 1e-3;
 	}
 	// 2DO: pass fixed_scale to this rountine and use it instead of fixed_in
-	ok = fixed_nlp->adaptive_derivative_check(
-		fixed_in, trace, relative_tol
-	);
+	ok = fixed_nlp->adaptive_derivative_check(trace, relative_tol);
 	if( fixed_nlp->get_error_message() != "" )
 	{	std::string msg = "optimize_fixed: ";
 		msg            += fixed_nlp->get_error_message();
