@@ -38,6 +38,7 @@ $icode%mixed_object%.optimize_fixed(
 	%fixed_upper%,
 	%fix_constraint_lower%,
 	%fix_constraint_upper%,
+	%fixed_scale%,
 	%fixed_in%,
 	%random_lower%,
 	%random_upper%,
@@ -162,6 +163,25 @@ $codei%
 it specifies the upper limits for the
 $cref/fixed constraints/fix_constraint/$$.
 Note that plus infinity is used for no upper limit.
+
+$head fixed_scale$$
+This argument has prototype
+$codei%
+	const CppAD::vector<double>& %fixed_scale%
+%$$
+The automatic scaling for the fixed effect optimization is
+done using this point and the convergence will be relative
+to the derivative values at this point.
+It must hold for each $icode j$$ that
+$codei%
+	%fixed_lower%[%j%] <= %fixed_scale%[%j%] <= %fixed_upper%[%j%]
+%$$
+Note that you can continue an optimization with the same scaling
+by setting
+$codei%
+	%fixed_in% = %solution%.fixed_opt
+%$$
+and the re-running the optimization.
 
 $head fixed_in$$
 This argument has prototype

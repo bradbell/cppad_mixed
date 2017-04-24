@@ -35,6 +35,12 @@ $childtable%
 	omh/whats_new_16.omh
 %$$
 
+$head 04-24$$
+Add $cref/fixed_scale/optimize_fixed/fixed_scale/$$ for specifying the
+scale for the fixed effects optimization.
+Change the $cref optimize_fixed.cpp$$ example to use $icode fixed_scale$$
+to continue an optimization from where it left off.
+
 $head 04-23$$
 $list number$$
 Improve the $cref/ipopt example/ipopt_xam/$$ by returning and checking
