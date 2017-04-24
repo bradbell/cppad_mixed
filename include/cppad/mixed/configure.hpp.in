@@ -81,6 +81,8 @@ Otherwise, it is the value $code 0$$.
 $end
 */
 
+# define CPPAD_MIXED_HIDE_SCALING            1
+
 # define CPPAD_MIXED_VERSION                 "@cppad_mixed_version@"
 
 # define CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION @optimize_cppad_function_01@

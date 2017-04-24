@@ -10,6 +10,7 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/ipopt_fixed.hpp>
 # include <cppad/mixed/exception.hpp>
+# include <cppad/mixed/configure.hpp>
 
 
 namespace {
@@ -748,12 +749,12 @@ $end
 		//
 		g_l[i] = fix_constraint_lower_[j];
 		g_u[i] = fix_constraint_upper_[j];
-		/* scaling
+# if CPPAD_MIXED_HIDE_SCALING
 		g_l[i] = scale_g_[i] * fix_constraint_lower_[j];
 		g_u[i] = scale_g_[i] * fix_constraint_upper_[j];
 		if( fix_constraint_lower_[j] == fix_constraint_upper_[j] )
 			g_u[i] = g_l[i];
-		*/
+# endif
 	}
 	//
 	// random constraints
@@ -965,8 +966,9 @@ void ipopt_fixed::try_eval_f(
 	if( CppAD::isnan(obj_value) ) throw CppAD::mixed::exception(
 		"try_eval_f", "objective function is nan"
 	);
-	// scaling
-	// obj_value *= scale_f_;
+# if CPPAD_MIXED_HIDE_SCALING
+	obj_value *= scale_f_;
+# endif
 	return;
 }
 /*
@@ -1090,8 +1092,9 @@ void ipopt_fixed::try_eval_grad_f(
 	{	if( CppAD::isnan( grad_f[j] ) ) throw CppAD::mixed::exception(
 			"try_eval_grad_f", "objective gradient has a nan"
 		);
-		// scaling
-		// grad_f[j] *= scale_f_;
+# if CPPAD_MIXED_HIDE_SCALING
+		grad_f[j] *= scale_f_;
+# endif
 	}
 	//
 	return;
@@ -1211,8 +1214,9 @@ void ipopt_fixed::try_eval_g(
 	{	if( CppAD::isnan( g[i] ) ) throw CppAD::mixed::exception(
 			"try_eval_g", "constaint function has a nan"
 		);
-		// scaling
-		// g[i] *= scale_g_[i];
+# if CPPAD_MIXED_HIDE_SCALING
+		g[i] *= scale_g_[i];
+# endif
 	}
 	return;
 }
@@ -1438,9 +1442,10 @@ void ipopt_fixed::try_eval_jac_g(
 	{	if( CppAD::isnan( values[ell] ) ) throw CppAD::mixed::exception(
 			"try_eval_jac_g", "constraint Jacobian has a nan"
 		);
-		// scaling
-		// size_t i = jac_g_row_[ell];
-		// values[ell] *= scale_g_[i];
+# if CPPAD_MIXED_HIDE_SCALING
+		size_t i     = jac_g_row_[ell];
+		values[ell] *= scale_g_[i];
+# endif
 	}
 	return;
 }
@@ -1614,13 +1619,17 @@ void ipopt_fixed::try_eval_h(
 			new_random(fixed_tmp_);
 		// compute Hessian of random part of objective w.r.t. fixed effects
 		w_ran_objcon_tmp_[0] = obj_factor;
-		// w_ran_objcon_tmp_[0] = scale_f_ * obj_factor;
+# if CPPAD_MIXED_HIDE_SCALING
+		w_ran_objcon_tmp_[0] = scale_f_ * obj_factor;
+# endif
 		//
 		// include random constraints in this Hessian calculation
 		size_t offset = 2 * fix_likelihood_nabs_ + n_fix_con_;
 		for(size_t i = 0; i < n_ran_con_; i++)
 		{	w_ran_objcon_tmp_[i+1] = lambda[offset + i];
-			// w_ran_objcon_tmp_[i+1] = scale_g_[offset+i] * lambda[offset+i];
+# if CPPAD_MIXED_HIDE_SCALING
+			w_ran_objcon_tmp_[i+1] = scale_g_[offset+i] * lambda[offset+i];
+# endif
 		}
 		//
 		mixed_object_.ran_objcon_hes(
@@ -1640,15 +1649,17 @@ void ipopt_fixed::try_eval_h(
 	//
 	// Hessian of Lagrangian of weighted fixed likelihood
 	w_fix_likelihood_tmp_[0] = obj_factor;
-	// w_fix_likelihood_tmp_[0] = scale_f_ * obj_factor;
+# if CPPAD_MIXED_HIDE_SCALING
+	w_fix_likelihood_tmp_[0] = scale_f_ * obj_factor;
+# endif
 	//
 	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
 	{
 		w_fix_likelihood_tmp_[1 + j] = lambda[2*j + 1] - lambda[2*j];
-		/* scaling
+# if CPPAD_MIXED_HIDE_SCALING
 		w_fix_likelihood_tmp_[1 + j] = scale_g_[2*j + 1] * lambda[2*j + 1]
 		                             - scale_g_[2*j]     * lambda[2*j];
-		*/
+# endif
 	}
 	s_vector fix_like_hes_row = mixed_object_.fix_like_hes_.subset.row();
 	s_vector fix_like_hes_col = mixed_object_.fix_like_hes_.subset.col();
@@ -1670,7 +1681,9 @@ void ipopt_fixed::try_eval_h(
 	for(size_t j = 0; j < n_fix_con_; j++)
 	{	size_t ell        = 2 * fix_likelihood_nabs_ + j;
 		w_fix_con_tmp_[j] = lambda[ell];
-		// w_fix_con_tmp_[j] = scale_g_[ell] * lambda[ell];
+# if CPPAD_MIXED_HIDE_SCALING
+		w_fix_con_tmp_[j] = scale_g_[ell] * lambda[ell];
+# endif
 	}
 	s_vector fix_con_hes_row = mixed_object_.fix_con_hes_.subset.row();
 	s_vector fix_con_hes_col = mixed_object_.fix_con_hes_.subset.col();
@@ -2019,6 +2032,10 @@ bool ipopt_fixed::get_scaling_parameters(
 	Index              m              ,
 	Number*            g_scaling      )
 {
+# if CPPAD_MIXED_HIDE_SCALING
+	assert( false );
+	return false;
+# else
 	assert( n > 0 );
 	assert( size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
 	assert( m >= 0 );
@@ -2035,6 +2052,7 @@ bool ipopt_fixed::get_scaling_parameters(
 		g_scaling[i] = Number( scale_g_[i] );
 	//
 	return true;
+# endif
 }
 /*
 -------------------------------------------------------------------------------
@@ -2246,6 +2264,7 @@ bool ipopt_fixed::adaptive_derivative_check(
 	//
 	// scale_f
 	double scale_f = std::max( scale_min, 1.0 / max_grad_f);
+	scale_f        = std::min( scale_max, scale_f);
 	//
 	// scale_g
 	d_vector scale_g(m);
@@ -2253,7 +2272,9 @@ bool ipopt_fixed::adaptive_derivative_check(
 	{	if( i < 2 * fix_likelihood_nabs_ )
 			scale_g[i] = scale_f;
 		else
-			scale_g[i] = std::max( scale_min, 1.0 / max_jac_g[i] );
+		{	scale_g[i] = std::max( scale_min, 1.0 / max_jac_g[i] );
+			scale_g[i] = std::min( scale_max, scale_g[i] );
+		}
 	}
 	//
 	// std::cout << "\nscale_f = " << scale_f;
