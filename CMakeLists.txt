@@ -23,7 +23,8 @@
 #                        -D log_fatal_error=value \
 #                        -D use_atomic_cholesky=value \
 #                        -D checkpoint_newton_step=value \
-#                        -D optimize_cppad_function=value
+#                        -D optimize_cppad_function=value \
+#                        -D show_ipopt_scaling=value
 # ============================================================================
 # Macro definitions
 # ============================================================================
@@ -186,6 +187,9 @@ required_definition(checkpoint_newton_step BOOL
 )
 required_definition(optimize_cppad_function BOOL
 	"should AD operation sequences be optimized (false is for debug purposes)"
+)
+required_definition(show_ipopt_scaling BOOL
+	"should cppad_mixed show it's re-scaling to ipopt"
 )
 # ----------------------------------------------------------------------------
 MESSAGE(STATUS "END:")
