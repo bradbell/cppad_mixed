@@ -73,7 +73,7 @@ bool solution_check(void)
 {
 	bool   ok = true;
 	double inf = std::numeric_limits<double>::infinity();
-	double tol = 1e-8;
+	double tol = 1e-10;
 
 	// fixed effects
 	size_t n_fixed  = 3;
