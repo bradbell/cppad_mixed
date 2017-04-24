@@ -307,7 +307,7 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	// Create an instance of an IpoptApplication
 	SmartPtr<Ipopt::IpoptApplication> app = IpoptApplicationFactory();
 	//
-# if CPPAD_MIXED_HIDE_SCALING
+# if CPPAD_MIXED_HIDE_IPOPT_SCALING
 	app->Options()->SetStringValue("nlp_scaling_method", "none");
 # else
 	app->Options()->SetStringValue("nlp_scaling_method", "user-scaling");

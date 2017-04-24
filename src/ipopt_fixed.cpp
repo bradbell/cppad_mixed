@@ -749,7 +749,7 @@ $end
 		//
 		g_l[i] = fix_constraint_lower_[j];
 		g_u[i] = fix_constraint_upper_[j];
-# if CPPAD_MIXED_HIDE_SCALING
+# if CPPAD_MIXED_HIDE_IPOPT_SCALING
 		g_l[i] = scale_g_[i] * fix_constraint_lower_[j];
 		g_u[i] = scale_g_[i] * fix_constraint_upper_[j];
 		if( fix_constraint_lower_[j] == fix_constraint_upper_[j] )
@@ -966,7 +966,7 @@ void ipopt_fixed::try_eval_f(
 	if( CppAD::isnan(obj_value) ) throw CppAD::mixed::exception(
 		"try_eval_f", "objective function is nan"
 	);
-# if CPPAD_MIXED_HIDE_SCALING
+# if CPPAD_MIXED_HIDE_IPOPT_SCALING
 	obj_value *= scale_f_;
 # endif
 	return;
@@ -1092,7 +1092,7 @@ void ipopt_fixed::try_eval_grad_f(
 	{	if( CppAD::isnan( grad_f[j] ) ) throw CppAD::mixed::exception(
 			"try_eval_grad_f", "objective gradient has a nan"
 		);
-# if CPPAD_MIXED_HIDE_SCALING
+# if CPPAD_MIXED_HIDE_IPOPT_SCALING
 		grad_f[j] *= scale_f_;
 # endif
 	}
@@ -1214,7 +1214,7 @@ void ipopt_fixed::try_eval_g(
 	{	if( CppAD::isnan( g[i] ) ) throw CppAD::mixed::exception(
 			"try_eval_g", "constaint function has a nan"
 		);
-# if CPPAD_MIXED_HIDE_SCALING
+# if CPPAD_MIXED_HIDE_IPOPT_SCALING
 		g[i] *= scale_g_[i];
 # endif
 	}
@@ -1442,7 +1442,7 @@ void ipopt_fixed::try_eval_jac_g(
 	{	if( CppAD::isnan( values[ell] ) ) throw CppAD::mixed::exception(
 			"try_eval_jac_g", "constraint Jacobian has a nan"
 		);
-# if CPPAD_MIXED_HIDE_SCALING
+# if CPPAD_MIXED_HIDE_IPOPT_SCALING
 		size_t i     = jac_g_row_[ell];
 		values[ell] *= scale_g_[i];
 # endif
@@ -1619,7 +1619,7 @@ void ipopt_fixed::try_eval_h(
 			new_random(fixed_tmp_);
 		// compute Hessian of random part of objective w.r.t. fixed effects
 		w_ran_objcon_tmp_[0] = obj_factor;
-# if CPPAD_MIXED_HIDE_SCALING
+# if CPPAD_MIXED_HIDE_IPOPT_SCALING
 		w_ran_objcon_tmp_[0] = scale_f_ * obj_factor;
 # endif
 		//
@@ -1627,7 +1627,7 @@ void ipopt_fixed::try_eval_h(
 		size_t offset = 2 * fix_likelihood_nabs_ + n_fix_con_;
 		for(size_t i = 0; i < n_ran_con_; i++)
 		{	w_ran_objcon_tmp_[i+1] = lambda[offset + i];
-# if CPPAD_MIXED_HIDE_SCALING
+# if CPPAD_MIXED_HIDE_IPOPT_SCALING
 			w_ran_objcon_tmp_[i+1] = scale_g_[offset+i] * lambda[offset+i];
 # endif
 		}
@@ -1649,14 +1649,14 @@ void ipopt_fixed::try_eval_h(
 	//
 	// Hessian of Lagrangian of weighted fixed likelihood
 	w_fix_likelihood_tmp_[0] = obj_factor;
-# if CPPAD_MIXED_HIDE_SCALING
+# if CPPAD_MIXED_HIDE_IPOPT_SCALING
 	w_fix_likelihood_tmp_[0] = scale_f_ * obj_factor;
 # endif
 	//
 	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
 	{
 		w_fix_likelihood_tmp_[1 + j] = lambda[2*j + 1] - lambda[2*j];
-# if CPPAD_MIXED_HIDE_SCALING
+# if CPPAD_MIXED_HIDE_IPOPT_SCALING
 		w_fix_likelihood_tmp_[1 + j] = scale_g_[2*j + 1] * lambda[2*j + 1]
 		                             - scale_g_[2*j]     * lambda[2*j];
 # endif
@@ -1681,7 +1681,7 @@ void ipopt_fixed::try_eval_h(
 	for(size_t j = 0; j < n_fix_con_; j++)
 	{	size_t ell        = 2 * fix_likelihood_nabs_ + j;
 		w_fix_con_tmp_[j] = lambda[ell];
-# if CPPAD_MIXED_HIDE_SCALING
+# if CPPAD_MIXED_HIDE_IPOPT_SCALING
 		w_fix_con_tmp_[j] = scale_g_[ell] * lambda[ell];
 # endif
 	}
@@ -2032,7 +2032,7 @@ bool ipopt_fixed::get_scaling_parameters(
 	Index              m              ,
 	Number*            g_scaling      )
 {
-# if CPPAD_MIXED_HIDE_SCALING
+# if CPPAD_MIXED_HIDE_IPOPT_SCALING
 	assert( false );
 	return false;
 # else
