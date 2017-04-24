@@ -114,14 +114,15 @@ checkpoint_newton_step='no'
 optimize_cppad_function='no'
 # &&
 #
-# &head show_ipopt_scaling&&
-# If yes, the re-scaling done by &code cppad_mixed&& is shown to ipopt
-# (and  its user-scaling option is used). If it is no, the scaling is hidden
-# from ipopt. This changes the function and derivative values
-# printed during the &cref ipopt_trace&&. On the other hand, it seems
+# &head hide_ipopt_scaling&&
+# If yes, the re-scaling done by &code cppad_mixed&& is hidden from ipopt.
+# This changes the function and derivative values
+# printed during the &cref ipopt_trace&&.  On the other hand, it seems
 # that hiding the scaling from Ipopt yields better convergence detection.
+# If &icode hide_ipopt_scaling&& is &code no&&,
+# the ipopt &code user-scaling&& option is used (ipopt is shown the scaling).
 # &codep
-show_ipopt_scaling='no'
+hide_ipopt_scaling='yes'
 # &&
 #
 # &end
@@ -180,7 +181,7 @@ EOF
 		optimize_cppad_function='yes'
 	elif [ "$1" == '--show_ipopt_scaling' ]
 	then
-		show_ipopt_scaling='yes'
+		hide_ipopt_scaling='no'
 	elif [ "$1" == '--release' ]
 	then
 		build_type='release'
@@ -224,7 +225,7 @@ cmake \
 	-D use_atomic_cholesky="$use_atomic_cholesky" \
 	-D checkpoint_newton_step="$checkpoint_newton_step" \
 	-D optimize_cppad_function="$optimize_cppad_function" \
-	-D show_ipopt_scaling="$show_ipopt_scaling" \
+	-D hide_ipopt_scaling="$hide_ipopt_scaling" \
 	..
 # ---------------------------------------------------------------------------
 echo 'run_cmake.sh: OK'

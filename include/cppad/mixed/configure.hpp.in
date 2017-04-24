@@ -39,9 +39,9 @@ $codei%
 %$$
 
 $head CPPAD_MIXED_HIDE_IPOPT_SCALING$$
-If $cref/show_ipopt_scaling/run_cmake.sh/show_ipopt_scaling/$$
-is $code YES$$, this symbol is defined as $code 0$$.
-Otherwise it is defined as $code 1$$.
+If $cref/hide_ipopt_scaling/run_cmake.sh/hide_ipopt_scaling/$$
+is $code YES$$, this symbol is defined as $code 1$$.
+Otherwise it is defined as $code 0$$.
 
 $head CPPAD_MIXED_OPTIMIZE_AD_FUNCTION$$
 If $cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$
@@ -90,17 +90,12 @@ $end
 
 # define CPPAD_MIXED_VERSION                 "@cppad_mixed_version@"
 
+# define CPPAD_MIXED_HIDE_IPOPT_SCALING      @hide_ipopt_scaling_01@
 # define CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION @optimize_cppad_function_01@
 # define CPPAD_MIXED_USE_ATOMIC_CHOLESKY     @use_atomic_cholesky_01@
 # define CPPAD_MIXED_CHECKPOINT_NEWTON_STEP  @checkpoint_newton_step_01@
 # define CPPAD_MIXED_LOG_FATAL_ERROR         @log_fatal_error_01@
 # define CPPAD_MIXED_LDLT_CHOLMOD            @ldlt_cholmod_01@
-
-# if @show_ipopt_scaling_01@
-# define CPPAD_MIXED_HIDE_IPOPT_SCALING      0
-# else
-# define CPPAD_MIXED_HIDE_IPOPT_SCALING      1
-# endif
 
 # if @ldlt_cholmod_01@
 # define CPPAD_MIXED_LDLT_CLASS              CppAD::mixed::ldlt_cholmod

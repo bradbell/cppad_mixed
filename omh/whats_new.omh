@@ -45,7 +45,7 @@ setting $cref/LD_LIBRARY_PATH/check_install.sh/LD_LIBRARY_PATH/$$
 in the $code bin/check_install.sh$$ example.
 $lnext
 Add the
-$cref/show_ipopt_scaling/run_cmake.sh/show_ipopt_scaling/$$ option
+$cref/hide_ipopt_scaling/run_cmake.sh/hide_ipopt_scaling/$$ option
 to the install configuration script $code bin/run_cmake.sh$$.
 $lend
 
