@@ -338,7 +338,7 @@ void cppad_mixed::init_ran_hes(
 
 	// optimize the recording
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
-	ran_hes_fun_.optimize();
+	ran_hes_fun_.optimize("no_conditional_skip");
 # endif
 	//
 	init_ran_hes_done_ = true;

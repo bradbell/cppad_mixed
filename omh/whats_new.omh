@@ -49,6 +49,10 @@ $cref/show_ipopt_scaling/run_cmake.sh/show_ipopt_scaling/$$ option
 to the install configuration script $code bin/run_cmake.sh$$.
 $lend
 
+$head 04-06$$
+Add $cref/LD_LIBRARY_PATH/check_install.sh/LD_LIBRARY_PATH/$$ to
+the $code bin/check_install.sh$$ example.
+
 $head 04-02$$
 $list number$$
 Advanced to $code cppad-20170402$$.

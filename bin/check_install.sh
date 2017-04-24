@@ -75,7 +75,7 @@ fi
 # &&
 #
 # &head LD_LIBRARY_PATH&&
-# Set the path used to load shared libraries
+# Set the path used to load shared libraries:
 # &codep
 if [ "$LD_LIBRARY_PATH" == '' ]
 then
