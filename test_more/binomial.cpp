@@ -146,6 +146,7 @@ bool binomial(void)
 		"String  derivative_test second-order\n"
 	;
 	vector<double> u_lower(0), u_upper(0);
+	vector<double> theta_scale = theta_in;
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_ipopt_options,
 		random_ipopt_options,
@@ -153,6 +154,7 @@ bool binomial(void)
 		theta_upper,
 		fix_constraint_lower,
 		fix_constraint_upper,
+		theta_scale,
 		theta_in,
 		u_lower,
 		u_upper,

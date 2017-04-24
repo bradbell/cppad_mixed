@@ -1048,6 +1048,7 @@ int main(int argc, const char *argv[])
 	start_seconds = CppAD::elapsed_seconds();
 	if( trace_optimize_fixed )
 		std::cout << endl;
+	d_vector theta_scale = theta_in;
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_ipopt_options,
 		random_ipopt_options,
@@ -1055,6 +1056,7 @@ int main(int argc, const char *argv[])
 		theta_upper,
 		fix_constraint_lower,
 		fix_constraint_upper,
+		theta_scale,
 		theta_in,
 		u_lower,
 		u_upper,

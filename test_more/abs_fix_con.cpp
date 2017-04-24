@@ -128,6 +128,7 @@ bool abs_fix_con(void)
 		"Numeric tol                       1e-8\n"
 		"Integer max_iter                  15\n"
 	;
+	vector<double> fixed_scale = fixed_in;
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_ipopt_options,
 		random_ipopt_options,
@@ -135,6 +136,7 @@ bool abs_fix_con(void)
 		fixed_upper,
 		fixed_constraint_lower,
 		fixed_constraint_upper,
+		fixed_scale,
 		fixed_in,
 		random_lower,
 		random_upper,

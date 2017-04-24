@@ -143,6 +143,7 @@ bool no_random(void)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
 	}
+	vector<double> fixed_scale = fixed_in;
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_ipopt_options,
 		random_ipopt_options,
@@ -150,6 +151,7 @@ bool no_random(void)
 		fixed_upper,
 		fix_constraint_lower,
 		fix_constraint_upper,
+		fixed_scale,
 		fixed_in,
 		random_lower,
 		random_upper,

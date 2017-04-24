@@ -262,15 +262,16 @@ $end
 
 CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	const std::string& fixed_ipopt_options           ,
-	const std::string& random_ipopt_options    ,
-	const d_vector&    fixed_lower       ,
-	const d_vector&    fixed_upper       ,
-	const d_vector&    fix_constraint_lower  ,
-	const d_vector&    fix_constraint_upper  ,
-	const d_vector&    fixed_in          ,
-	const d_vector&    random_lower      ,
-	const d_vector&    random_upper      ,
-	const d_vector&    random_in         )
+	const std::string& random_ipopt_options          ,
+	const d_vector&    fixed_lower                   ,
+	const d_vector&    fixed_upper                   ,
+	const d_vector&    fix_constraint_lower          ,
+	const d_vector&    fix_constraint_upper          ,
+	const d_vector&    fixed_scale                   ,
+	const d_vector&    fixed_in                      ,
+	const d_vector&    random_lower                  ,
+	const d_vector&    random_upper                  ,
+	const d_vector&    random_in                     )
 {	bool ok = true;
 	using Ipopt::SmartPtr;
 	//
@@ -426,7 +427,7 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		fixed_upper,
 		fix_constraint_lower,
 		fix_constraint_upper,
-		fixed_in,
+		fixed_scale,
 		fixed_in,
 		random_lower,
 		random_upper,
@@ -519,16 +520,17 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 }
 // ---------------------------------------------------------------------------
 CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
-	const std::string& fixed_ipopt_options           ,
+	const std::string& fixed_ipopt_options     ,
 	const std::string& random_ipopt_options    ,
-	const d_vector&    fixed_lower       ,
-	const d_vector&    fixed_upper       ,
-	const d_vector&    fix_constraint_lower  ,
-	const d_vector&    fix_constraint_upper  ,
-	const d_vector&    fixed_in          ,
-	const d_vector&    random_lower      ,
-	const d_vector&    random_upper      ,
-	const d_vector&    random_in         )
+	const d_vector&    fixed_lower             ,
+	const d_vector&    fixed_upper             ,
+	const d_vector&    fix_constraint_lower    ,
+	const d_vector&    fix_constraint_upper    ,
+	const d_vector&    fixed_scale             ,
+	const d_vector&    fixed_in                ,
+	const d_vector&    random_lower            ,
+	const d_vector&    random_upper            ,
+	const d_vector&    random_in               )
 {	CppAD::mixed::fixed_solution ret;
 	try
 	{	ret = try_optimize_fixed(
@@ -538,6 +540,7 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 			fixed_upper             ,
 			fix_constraint_lower    ,
 			fix_constraint_upper    ,
+			fixed_scale             ,
 			fixed_in                ,
 			random_lower            ,
 			random_upper            ,

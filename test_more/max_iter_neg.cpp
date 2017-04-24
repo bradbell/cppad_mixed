@@ -145,6 +145,7 @@ bool max_iter_neg(void)
 		"String  sb          yes\n"
 		"String  derivative_test second-order\n"
 	;
+	vector<double> fixed_scale = fixed_in;
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_ipopt_options,
 		random_ipopt_options,
@@ -152,6 +153,7 @@ bool max_iter_neg(void)
 		fixed_upper,
 		fix_constraint_lower,
 		fix_constraint_upper,
+		fixed_scale,
 		fixed_in,
 		random_lower,
 		random_upper,

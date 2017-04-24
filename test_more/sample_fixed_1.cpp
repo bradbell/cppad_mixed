@@ -184,6 +184,7 @@ bool sample_fixed_1(void)
 		random_upper[i] = +inf;
 	}
 	// optimize fixed effects
+	vector<double> fixed_scale = fixed_in;
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_ipopt_options,
 		random_ipopt_options,
@@ -191,6 +192,7 @@ bool sample_fixed_1(void)
 		fixed_upper,
 		fix_constraint_lower,
 		fix_constraint_upper,
+		fixed_scale,
 		fixed_in,
 		random_lower,
 		random_upper,
@@ -215,6 +217,7 @@ bool sample_fixed_1(void)
 		fixed_upper,
 		fix_constraint_lower,
 		fix_constraint_upper,
+		fixed_scale,
 		fixed_in,
 		random_lower,
 		random_upper,
