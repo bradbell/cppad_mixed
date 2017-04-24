@@ -187,7 +187,7 @@ bool sample_fixed_xam(void)
 		random_upper[i] = +inf;
 	}
 	// optimize fixed effects
-	CppAD::vector<double> fixed_scale = fixed_in;
+	d_vector fixed_scale = fixed_in;
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_ipopt_options,
 		random_ipopt_options,

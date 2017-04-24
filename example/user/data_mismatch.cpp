@@ -364,7 +364,7 @@ bool data_mismatch_xam(void)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
 	}
-	CppAD::vector<double> fixed_scale = fixed_in;
+	d_vector fixed_scale = fixed_in;
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_ipopt_options,
 		random_ipopt_options,

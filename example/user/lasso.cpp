@@ -214,7 +214,7 @@ bool lasso_xam(void)
 		"Numeric tol                       1e-8\n"
 		"Integer max_iter                  15\n"
 	;
-	CppAD::vector<double> fixed_scale = fixed_in;
+	d_vector fixed_scale = fixed_in;
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
 		fixed_ipopt_options,
 		random_ipopt_options,
