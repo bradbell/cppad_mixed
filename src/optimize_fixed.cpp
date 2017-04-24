@@ -448,8 +448,9 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		}
 		relative_tol  = 1e-3;
 	}
+	// 2DO: pass fixed_scale to this rountine and use it instead of fixed_in
 	ok = fixed_nlp->adaptive_derivative_check(
-		trace, relative_tol
+		fixed_in, trace, relative_tol
 	);
 	if( fixed_nlp->get_error_message() != "" )
 	{	std::string msg = "optimize_fixed: ";

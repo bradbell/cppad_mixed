@@ -246,7 +246,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			const d_vector& random_lower         ,
 			const d_vector& random_upper         ,
 			const d_vector& random_in            ,
-			cppad_mixed&   mixed_object
+			cppad_mixed&    mixed_object
 		);
 		//
 		virtual bool get_nlp_info(
@@ -340,7 +340,9 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			Number*            g_scaling
 		);
 		// -----------------------------------------------------------------
-		bool adaptive_derivative_check(bool trace, double relative_tol);
+		bool adaptive_derivative_check(
+			const d_vector& fixed_scale, bool trace, double relative_tol
+		);
 	};
 } } // END_CPPAD_MIXED_NAMESPACE
 

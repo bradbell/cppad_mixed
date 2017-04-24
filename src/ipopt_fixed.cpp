@@ -221,6 +221,7 @@ $codei%
 %$$
 
 $head fixed_lower$$
+This vector has length equal to $icode n_fixed_$$ and
 specifies the lower limits for the
 $fixed_effects/cppad_mixed/Fixed Effects, theta/$$.
 Note that
@@ -230,6 +231,7 @@ $code%
 is used for minus infinity; i.e., no lower limit.
 
 $head fixed_upper$$
+This vector has length equal to $icode n_fixed_$$ and
 specifies the upper limits for the fixed effects.
 Note that
 $code%
@@ -255,6 +257,7 @@ $code%
 is used for plus infinity; i.e., no upper limit.
 
 $head fixed_in$$
+This vector has length equal to $icode n_fixed_$$ and
 specifies the initial value (during optimization) for the fixed effects.
 It must hold for each $icode j$$ that
 $codei%
@@ -262,12 +265,15 @@ $codei%
 %$$
 
 $head random_lower$$
+This vector has length equal to $icode n_random_$$ and
 specifies the lower limit for the random effects (during optimization).
 
 $head random_upper$$
+This vector has length equal to $icode n_random_$$ and
 specifies the upper limit for the random effects (during optimization).
 
 $head random_in$$
+This vector has length equal to $icode n_random_$$ and
 specifies the initial value (for initial optimization) of the random effects.
 
 $head mixed_object$$
@@ -841,7 +847,7 @@ bool ipopt_fixed::get_starting_point(
 /* %$$
 $end
 */
-{
+{	assert( adaptive_called_ == true );
 	assert( init_x == true );
 	assert( init_z == false );
 	assert( init_lambda == false );
@@ -850,13 +856,6 @@ $end
 	assert( m >= 0 );
 	assert( size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
 
-	// fixed likelihood at the initial fixed effects vector
-	if( fix_likelihood_vec_tmp_.size() == 0 )
-		assert( mixed_object_.fix_like_eval(fixed_in_).size() == 0 );
-	else
-	{	fix_likelihood_vec_tmp_ = mixed_object_.fix_like_eval(fixed_in_);
-		assert( fix_likelihood_vec_tmp_.size() == 1 + fix_likelihood_nabs_ );
-	}
 	// use input values for fixed effects
 	for(size_t j = 0; j < n_fixed_; j++)
 		x[j] = fixed_in_[j];
@@ -2071,7 +2070,14 @@ $$
 $section Adaptive Step Size check of eval_grad_f and eval_jac_g$$
 
 $head Syntax$$
-$icode%ok% = adaptive_derivative_check(%trace%, %relative_tol%)%$$
+$icode%ok% = adaptive_derivative_check(
+	%fixed_scale%, %trace%, %relative_tol%
+)%$$
+
+$head fixed_scale$$
+This vector has length $icode n_fixed_$$ and
+specifies the point where the scale factors are computed
+and derivative check is performed.
 
 $head trace$$
 If true, a trace of this computation is printed on standard output.
@@ -2149,7 +2155,7 @@ $latex g_i (x)$$.
 $head Prototype$$
 $srccode%cpp% */
 bool ipopt_fixed::adaptive_derivative_check(
-	bool trace, double relative_tol
+	const d_vector& fixed_scale, bool trace, double relative_tol
 )
 /* %$$
 $end
@@ -2172,29 +2178,29 @@ $end
 	for(size_t i = 0; i < m; i++)
 		scale_g_[i] = 1.0;
 	// -----------------------------------------------------------------------
-	// start starting point
-	d_vector x_start(n);
-	bool init_x = true, init_z = false, init_lambda = false;
-	double *z_L = CPPAD_NULL, *z_U = CPPAD_NULL, *lambda = CPPAD_NULL;
-	bool ok = get_starting_point(
-		Index(n),
-		init_x,
-		x_start.data(),
-		init_z,
-		z_L,
-		z_U,
-		m,
-		init_lambda,
-		lambda
-	);
-	assert( ok );
-
+	// x_scale and x
+	d_vector x_scale(n);
+	Number*  x = x_scale.data();
+	//
+	// fixed likelihood at the fixed effects scaling vector
+	if( fix_likelihood_vec_tmp_.size() == 0 )
+		assert( mixed_object_.fix_like_eval(fixed_scale).size() == 0 );
+	else
+	{	fix_likelihood_vec_tmp_ = mixed_object_.fix_like_eval(fixed_scale);
+		assert( fix_likelihood_vec_tmp_.size() == 1 + fix_likelihood_nabs_ );
+	}
+	// use scaling values for fixed effects
+	for(size_t j = 0; j < n_fixed_; j++)
+		x_scale[j] = fixed_scale[j];
+	//
+	// set auxillary variables to corresponding minimum feasible value
+	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
+		x_scale[n_fixed_ + j] = std::fabs( fix_likelihood_vec_tmp_[1 + j] );
 	// ------------------------------------------------------------------------
 	// eval_grad_f
 	d_vector grad_f(n);
-	Number* x     = x_start.data();
-	bool    new_x = true;
-	ok = eval_grad_f( Index(n), x, new_x, grad_f.data() );
+	bool new_x    = true;
+	bool ok       = eval_grad_f( Index(n), x, new_x, grad_f.data() );
 	if( ! ok )
 	{	assert( error_message_ != "" );
 		return false;
@@ -2292,7 +2298,7 @@ $end
 	// eval_f
 	double obj_value;
 	new_x = false;
-	ok = eval_f(Index(n), x_start.data(), new_x, obj_value);
+	ok = eval_f(Index(n), x, new_x, obj_value);
 	if( ! ok )
 	{	assert( error_message_ != "" );
 		return false;
@@ -2301,7 +2307,7 @@ $end
 	// eval_g
 	d_vector con_value(m);
 	new_x = false;
-	ok = eval_g(Index(n), x_start.data(), new_x, Index(m), con_value.data() );
+	ok = eval_g(Index(n), x, new_x, Index(m), con_value.data() );
 	if( ! ok )
 	{	assert( error_message_ != "" );
 		return false;
@@ -2318,7 +2324,7 @@ $end
 	double log_diff = (log_max_rel - log_min_rel) / double(n_try - 1);
 
 	// initialize x_step
-	d_vector x_step(x_start);
+	d_vector x_step(x_scale);
 	//
 	// check grad_f
 	size_t line_count = 0;
@@ -2337,13 +2343,13 @@ $end
 			double step = relative_step * ( x_upper[j] - x_lower[j] );
 			if( x_upper[j] == nlp_upper_bound_inf_ ||
 				x_lower[j] == nlp_lower_bound_inf_  )
-			{	step = relative_step * fabs( x_start[j] );
+			{	step = relative_step * fabs( x_scale[j] );
 				step = std::max( step, relative_step );
 			}
 
 			// x_plus, obj_plus
 			double obj_plus;
-			double x_plus = std::min(x_start[j] + step, x_upper[j]);
+			double x_plus = std::min(x_scale[j] + step, x_upper[j]);
 			x_step[j]     = x_plus;
 			new_x         = true;
 			ok = eval_f(Index(n), x_step.data(), new_x, obj_plus);
@@ -2355,7 +2361,7 @@ $end
 
 			// x_minus, obj_minus
 			double obj_minus;
-			double x_minus = std::max(x_start[j] - step, x_lower[j]);
+			double x_minus = std::max(x_scale[j] - step, x_lower[j]);
 			x_step[j]      = x_minus;
 			new_x          = true;
 			eval_f(Index(n), x_step.data(), new_x, obj_minus);
@@ -2367,7 +2373,7 @@ $end
 			abs_obj = std::max(abs_obj, fabs(obj_minus) );
 
 			// restore j-th component of x_step
-			x_step[j]      = x_start[j];
+			x_step[j]      = x_scale[j];
 
 			// finite difference approximation for derivative
 			double approx = (obj_plus - obj_minus) / (x_plus - x_minus);
@@ -2442,13 +2448,13 @@ $end
 			double step = relative_step * ( x_upper[j] - x_lower[j] );
 			if( x_upper[j] == nlp_upper_bound_inf_ ||
 				x_lower[j] == nlp_lower_bound_inf_  )
-			{	step = relative_step * fabs( x_start[j] );
+			{	step = relative_step * fabs( x_scale[j] );
 				step = std::max( step, relative_step );
 			}
 
 			// x_plus, con_plus
 			d_vector con_plus(m);
-			double x_plus = std::min(x_start[j] + step, x_upper[j]);
+			double x_plus = std::min(x_scale[j] + step, x_upper[j]);
 			x_step[j]     = x_plus;
 			new_x         = true;
 			ok = eval_g(
@@ -2460,7 +2466,7 @@ $end
 			}
 			// x_minus con_minus
 			d_vector con_minus(m);
-			double x_minus = std::max(x_start[j] - step, x_lower[j]);
+			double x_minus = std::max(x_scale[j] - step, x_lower[j]);
 			x_step[j]      = x_minus;
 			new_x          = true;
 			ok = eval_g(
@@ -2471,7 +2477,7 @@ $end
 				return false;
 			}
 			// restore j-th component of x_step
-			x_step[j]      = x_start[j];
+			x_step[j]      = x_scale[j];
 
 			// 2DO: this loop in k is inefficent (could sort by jCol)
 			max_best_err = 0.0;
