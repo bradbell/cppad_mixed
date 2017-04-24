@@ -2074,11 +2074,7 @@ $head Syntax$$
 $icode%ok% = adaptive_derivative_check(%trace%, %relative_tol%)%$$
 
 $head trace$$
-This argument has prototype
-$codei%
-	bool %trace%
-%$$
-If it is true, a trace of this computation is printed on standard output.
+If true, a trace of this computation is printed on standard output.
 
 $head relative_step$$
 For an unspecified set of relative step sizes between
@@ -2091,11 +2087,7 @@ the step is the maximum of the relative step
 and the relative step times the absolute component of $icode x$$.
 
 $head relative_tol$$
-This argument has prototype
-$codei%
-	double %relative_tol%
-%$$
-and is the relative tolerance for the difference between a finite difference
+This is the relative tolerance for the difference between a finite difference
 approximation and the evaluated derivative.
 The absolute tolerance is the relative tolerance times the
 sum of the absolute value of the gradient plus
@@ -2109,10 +2101,6 @@ $code std::numeric_limits<double>::infinity()$$,
 the finite difference approximations for the derivatives are not calculated.
 
 $head ok$$
-The return value has prototype
-$codei%
-	bool %ok%
-%$$
 If it is true, no function evaluation error occurred and
 all the differences between the finite difference approximation
 and the evaluated derivative are within the relative tolerance
@@ -2158,12 +2146,14 @@ For each $latex i$$, $icode%scale_g_%[%i%]%$$ is scale factor for
 $latex g_i (x)$$.
 
 
-$end
--------------------------------------------------------------------------------
-*/
+$head Prototype$$
+$srccode%cpp% */
 bool ipopt_fixed::adaptive_derivative_check(
 	bool trace, double relative_tol
 )
+/* %$$
+$end
+*/
 {	assert( error_message_ == "" );
 	assert( adaptive_called_ == false );
 	adaptive_called_ = true;
@@ -2614,9 +2604,12 @@ $codei%
 %$$
 see $cref update_factor$$ for side effects.
 
+$head Prototype$$
+$srccode%cpp% */
+void ipopt_fixed::new_random(const d_vector& fixed_vec)
+/* %$$
 $end
 */
-void ipopt_fixed::new_random(const d_vector& fixed_vec)
 {	assert( n_random_ > 0 );
 	// compute the optimal random effects corresponding to fixed effects
 	random_cur_ = mixed_object_.try_optimize_random(

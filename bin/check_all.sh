@@ -82,6 +82,10 @@ else
 	sed -i bin/run_cmake.sh \
 		-e "s|^checkpoint_newton_step=.*|checkpoint_newton_step='no'|"
 fi
+if diff bin/run_cmake.sh bin/run_cmake.bak > /dev/null
+then
+	echo_eval rm bin/run_cmake.bak
+fi
 #
 bin/run_cmake.sh
 #
@@ -92,5 +96,8 @@ make install
 cd ..
 bin/check_install.sh
 # -----------------------------------------------------------------------------
-echo_eval mv bin/run_cmake.bak bin/run_cmake.sh
+if [ -e bin/run_cmake.bak ]
+then
+	echo_eval mv bin/run_cmake.bak bin/run_cmake.sh
+fi
 echo 'check_all.sh: OK'

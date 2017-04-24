@@ -925,7 +925,7 @@ bool ipopt_run_xam(void)
 	SmartPtr<Ipopt::IpoptApplication> app = IpoptApplicationFactory();
 
 	// Turn off all Ipopt printed output
-	app->Options()->SetIntegerValue("print_level", 5);
+	app->Options()->SetIntegerValue("print_level", 0);
 	app->Options()->SetStringValue("sb", "yes");
 	app->Options()->SetStringValue("derivative_test", "second-order");
 
