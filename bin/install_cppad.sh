@@ -25,6 +25,8 @@ web_page='https://github.com/coin-or/CppAD.git'
 hash_key='79e5af795b2a46d8be76153c87c487c63ef6eb42'
 version='20170402'
 # --------------------------------------------------------------------------
+# Get user configuration options from run_cmake.sh
+#
 # build_type
 cmd=`grep '^build_type=' bin/run_cmake.sh`
 eval $cmd

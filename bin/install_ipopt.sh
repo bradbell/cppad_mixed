@@ -25,6 +25,8 @@ version="Ipopt-3.12.6"
 third_party="Mumps Metis"
 web_page="http://www.coin-or.org/download/source/Ipopt"
 # --------------------------------------------------------------------------
+# Get user configuration options from run_cmake.sh
+#
 # build_type
 cmd=`grep '^build_type=' bin/run_cmake.sh`
 eval $cmd

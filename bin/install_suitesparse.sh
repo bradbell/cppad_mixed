@@ -25,6 +25,8 @@ echo_eval() {
 tarball='SuiteSparse-4.4.3.tar.gz'
 web_page='http://faculty.cse.tamu.edu/davis/SuiteSparse'
 # ---------------------------------------------------------------------------
+# Get user configuration options from run_cmake.sh
+#
 # build_type
 cmd=`grep '^build_type=' bin/run_cmake.sh`
 eval $cmd

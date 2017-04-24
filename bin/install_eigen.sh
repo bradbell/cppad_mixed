@@ -24,6 +24,8 @@ echo_eval() {
 version='3.2.9'
 web_page='https://bitbucket.org/eigen/eigen/get'
 # --------------------------------------------------------------------------
+# Get user configuration options from run_cmake.sh
+#
 # build_type
 cmd=`grep '^build_type=' bin/run_cmake.sh`
 eval $cmd
