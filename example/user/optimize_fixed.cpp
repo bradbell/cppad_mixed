@@ -234,7 +234,6 @@ bool optimize_fixed_xam(void)
 		"String  sb                        yes\n"
 		"String  derivative_test           adaptive\n"
 		"String  derivative_test_print_all yes\n"
-		"Numeric tol                       1e-8\n"
 		"Integer max_iter                  15\n"
 	;
 	std::string random_ipopt_options =
@@ -250,10 +249,11 @@ bool optimize_fixed_xam(void)
 		random_upper[i] = +inf;
 	}
 	// ------------------------------------------------------------------
-	// use ipopt for random effects optimization
+	// optimize with tolerance 1e-3
+	std::string temp_string = fixed_ipopt_options + "Numeric tol 1e-3\n";
 	d_vector fixed_scale = fixed_in;
 	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
-		fixed_ipopt_options,
+		temp_string,
 		random_ipopt_options,
 		fixed_lower,
 		fixed_upper,
@@ -266,13 +266,34 @@ bool optimize_fixed_xam(void)
 		random_in
 	);
 	d_vector fixed_out = solution.fixed_opt;
+	// ------------------------------------------------------------------
+	// continue optimization, from previous, with new tolerance of 1e-8
+	temp_string = fixed_ipopt_options + "Numeric tol 1e-8\n";
+	fixed_in    = fixed_out;
+	solution    = mixed_object.optimize_fixed(
+		temp_string,
+		random_ipopt_options,
+		fixed_lower,
+		fixed_upper,
+		fix_constraint_lower,
+		fix_constraint_upper,
+		fixed_scale,
+		fixed_in,
+		random_lower,
+		random_upper,
+		random_in
+	);
+	fixed_out = solution.fixed_opt;
+	// ------------------------------------------------------------------
 
 	// deriative of objective at fixed_in and fixed_out
-	d_vector dF_in  = objective_fixed(data, fixed_in);
-	d_vector dF_out = objective_fixed(data, fixed_out);
+	d_vector dF_scale = objective_fixed(data, fixed_scale);
+	d_vector dF_out   = objective_fixed(data, fixed_out);
 
 	// scaling for objective
-	double scale = std::max( std::fabs( dF_in[0] ), std::fabs( dF_in[1] ) );
+	double scale = std::max(
+		std::fabs( dF_scale[0] ), std::fabs( dF_scale[1] )
+	);
 	scale = 1.0 / scale;
 
 	// Note that no constraints are active, (not even the l1 terms)
