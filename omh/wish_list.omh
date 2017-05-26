@@ -20,6 +20,15 @@ $$
 
 $section CppAD Mixed Wish List$$
 
+$head Random Constraints$$
+Include the lagrange multipliers for the
+$cref/random constraints
+	/cppad_mixed
+	/Notation
+	/Random Constraint Matrix, A
+/$$
+in the $cref optimize_fixed$$ and $cref sample_fixed$$ interfaces.
+
 $head Newton Step$$
 Speed up the newton Step by making an
 atomic operation that solves equations
