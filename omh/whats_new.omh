@@ -26,6 +26,8 @@ $spell
 	namespace
 	rc
 	optimizer
+	obj_tst
+	hpp
 $$
 
 $section Changes and Additions to cppad_mixed During 2017$$
@@ -34,6 +36,15 @@ $childtable%
 	omh/whats_new_15.omh%
 	omh/whats_new_16.omh
 %$$
+
+$head 08-01$$
+The clang-802.0.42 compiler complained that
+routine $code ran_obj_tst$$ was not defined in the statement
+$srccode%cpp%
+	friend bool ::ran_obj_tst(void);
+%$$
+in the file $code include/cppad/mixed/cppad_mixed.hpp$$.
+This has been fixed.
 
 $head 04-24$$
 Add $cref/fixed_scale/optimize_fixed/fixed_scale/$$ for specifying the

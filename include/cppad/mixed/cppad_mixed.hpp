@@ -46,6 +46,7 @@ extern bool update_factor_xam(void);
 extern bool der_var_hes(void);
 extern bool delta_ran_obj(void);
 extern bool sample_fixed_1(void);
+extern bool ran_obj_tst(void);
 
 
 namespace CppAD { namespace mixed {
