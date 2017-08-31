@@ -37,6 +37,13 @@ $childtable%
 	omh/whats_new_16.omh
 %$$
 
+$head 08-30$$
+Advance to cppad-20170830. This fixes a problem with the cmake command;
+to be specific,
+$codei%
+	Policy CMP0046 is not set: Error on non-existent dependency
+%$$
+
 $head 08-01$$
 The clang-802.0.42 compiler complained that
 routine $code ran_obj_tst$$ was not defined in the statement
