@@ -53,6 +53,22 @@ suitesparse_prefix="$HOME/prefix/cppad_mixed"
 # so that we can suppress warnings coming from its include files
 # (without suppressing warnings from other include files).
 #
+# &subhead Debug and Release&&
+# If all the prefixes are the same and end in &code /cppad_mixed&&,
+# except for the Eigen prefix which has an extra sub-directory at the end,
+# &code bin/run_cmake.sh&& can be used to switch between a debug and release
+# version of &code cppad_mixed&&
+# (depending on &cref/build_type/run_cmake.sh/build_type/&&).
+# The debug version will have an extra &code .debug&& and the release version
+# will have an extra &code .release&& at the end of the prefix.
+# In addition, a soft link will be used to map the prefix to either
+# the debug or release version.
+# Note that the same technique will be used to map the &code build&&
+# directory to the debug or release version.
+# Also note that if you are using both a debug and release, both versions
+# of the  &cref/special requirements/install_unix/Special Requirements/&&
+# will need to be installed.
+#
 # &head cppad_cxx_flags&&
 # Extra C++ flags used to configure CppAD:
 # &codep

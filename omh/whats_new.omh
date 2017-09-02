@@ -37,6 +37,11 @@ $childtable%
 	omh/whats_new_16.omh
 %$$
 
+$head 09-02$$
+Instructions were added for building both
+$cref/debug and release/run_cmake.sh/Prefixes/Debug and Release/$$
+version of $code cppad_mixed$$.
+
 $head 08-30$$
 Advance to cppad-20170830. This fixes a problem with the cmake command;
 to be specific,
