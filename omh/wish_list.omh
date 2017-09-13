@@ -11,39 +11,17 @@ see http://www.gnu.org/licenses/agpl.txt
 $begin wish_list$$
 $spell
 	CppAD
-	Cholmod
-	eigen
-	optimizer
 	cppad
-	Cholesky
+	Kedem
 $$
 
 $section CppAD Mixed Wish List$$
 
-$head Random Constraints$$
-Include the lagrange multipliers for the
-$cref/random constraints
-	/cppad_mixed
-	/Notation
-	/Random Constraint Matrix, A
-/$$
-in the $cref optimize_fixed$$ and $cref sample_fixed$$ interfaces.
+$head Aborting Optimization$$
+It would be helpful to return the fixed and random effects
+that correspond to the last attempted function evaluation when
+the optimization aborts.
 
-$head Newton Step$$
-Speed up the newton Step by making an
-atomic operation that solves equations
-and computes the log-determinant for symmetric matrices
-(using cholmod).
-
-$head sparse_mat_info$$
-Use $cref sparse_mat_info$$ instead of
-$icode row$$, $icode col$$, $icode val$$ triples
-in syntax for following routines:
-$cref fix_con_hes$$,
-$cref fix_con_jac$$,
-$cref fix_like_hes$$,
-$cref fix_like_jac$$,
-$cref ran_objcon_hes$$.
 
 $head Second Order Method$$
 The second order method,
@@ -54,9 +32,33 @@ $cref/W(beta, theta, u)
 	/Approximate Optimal Random Effects
 	/Second Order, W(beta, theta, u)
 /$$.
-It might be more efficient (both in memory and speed)
-to uses a second order version of the implicit function theory
-derivatives or something similar to how ADOLC does it..
+It might be an improvement to use the two partial Newton step method.
+Perhaps a reverse over a forward Kedem method would be better.
+See
+$italic
+Newton step methods for AD of an Objective defined using implicit functions
+$$
+.
+
+
+$head Random Constraints$$
+Include the lagrange multipliers for the
+$cref/random constraints
+	/cppad_mixed
+	/Notation
+	/Random Constraint Matrix, A
+/$$
+in the $cref optimize_fixed$$ and $cref sample_fixed$$ interfaces.
+
+$head sparse_mat_info$$
+Use $cref sparse_mat_info$$ instead of
+$icode row$$, $icode col$$, $icode val$$ triples
+in syntax for following routines:
+$cref fix_con_hes$$,
+$cref fix_con_jac$$,
+$cref fix_like_hes$$,
+$cref fix_like_jac$$,
+$cref ran_objcon_hes$$.
 
 $head Windows Install$$
 Make and test a set of Windows install instructions for $code cppad_mixed$$.
