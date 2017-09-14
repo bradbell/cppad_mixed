@@ -24,9 +24,9 @@ $section Optimal Solution Returned by optimize_fixed$$
 $head Syntax$$
 $codei%CppAD::mixed::fixed_solution %solution%$$
 
-$head Private$$
-This structure is an implementation detail and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+$head Public$$
+This structure is part of the
+$cref/CppAD::mixed/namespace/Public/$$ user API.
 
 $head Convention$$
 If a Lagrange multiplier is zero, the correspond constraint

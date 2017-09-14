@@ -61,8 +61,8 @@ $table
 $rref typedef$$
 $rref manage_gsl_rng$$
 $rref sparse_mat_info$$
+$rref fixed_solution$$
 $tend
-
 
 $head Private$$
 These declarations are implementation details and not part of the
@@ -74,7 +74,6 @@ $rref ldlt_eigen$$
 $rref ldlt_cholmod$$
 $rref ipopt_fixed$$
 $rref newton_step$$
-$rref fixed_solution$$
 $rref sparse_hes_info$$
 $rref sparse_hes_rcv$$
 $rref sparse_jac_rcv$$
