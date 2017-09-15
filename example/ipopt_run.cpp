@@ -26,9 +26,12 @@ $srccode%cpp% */
 # include <cassert>
 namespace {
 	// Ipopt types used by this file
-	typedef Ipopt::Number  Number;
-	typedef Ipopt::Index   Index;
-	typedef Ipopt::TNLP::IndexStyleEnum IndexStyleEnum;
+	typedef Ipopt::Number                      Number;
+	typedef Ipopt::Index                       Index;
+	typedef Ipopt::TNLP::IndexStyleEnum        IndexStyleEnum;
+	typedef Ipopt::AlgorithmMode               AlgorithmMode;
+	typedef Ipopt::IpoptData                   IpoptData;
+	typedef Ipopt::IpoptCalculatedQuantities   IpoptCalculatedQuantities;
 	//
 	// ipopt_nlp_xam
 	class ipopt_nlp_xam : public Ipopt::TNLP
@@ -130,8 +133,21 @@ namespace {
 			const Ipopt::IpoptData*           ip_data   ,
 			Ipopt::IpoptCalculatedQuantities* ip_cq
 		);
-
-
+		virtual bool intermediate_callback(
+			AlgorithmMode               mode,
+			Index                       iter,
+			Number                      obj_value,
+			Number                      inf_pr,
+			Number                      inf_du,
+			Number                      mu,
+			Number                      d_norm,
+			Number                      regularization_size,
+			Number                      alpha_du,
+			Number                      alpha_pr,
+			Index                       ls_trials,
+			const IpoptData*            ip_data,
+			IpoptCalculatedQuantities*  ip_cq
+		);
 	};
 }
 /* %$$
@@ -882,6 +898,103 @@ void ipopt_nlp_xam::finalize_solution(
 	final_solution_.resize(n);
 	for(Index j = 0; j < n; j++)
 		final_solution_[j] = x[j];
+}
+/* %$$
+$end
+-------------------------------------------------------------------------------
+$begin ipopt_xam_intermediate_callback$$
+$spell
+	Ipopt
+	iter
+	obj
+	inf
+	pr
+	du
+	ls
+	ip_cq
+	lg
+	rg
+	optimizer
+	mu
+	enum
+$$
+
+$section Ipopt Example: Optimization Progress Report$$
+
+$head Syntax$$
+$icode%ok% = intermediate_callback(
+	%mode%,
+	%iter%,
+	%obj_value%,
+	%inf_pr%,
+	%inf_du%,
+	%mu%,
+	%d_norm%,
+	%regularization_size%,
+	%alpha_du%,
+	%alpha_pr%,
+	%ls_trials%,
+	%ip_data%,
+	%ip_cq%
+)%$$
+
+$head mode$$
+This is an $code enum$$ value and equal to
+$code RegularMode$$ or $code RestorationPhaseMode$$.
+
+$head iter$$
+See ipopt trace $cref/iter/ipopt_trace/iter/$$.
+
+$head obj_value$$
+See ipopt trace $cref/objective/ipopt_trace/objective/$$.
+
+$head inf_pr$$
+See ipopt trace $cref/inf_pr/ipopt_trace/inf_pr/$$.
+
+$head inf_du$$
+See ipopt trace $cref/inf_du/ipopt_trace/inf_du/$$.
+
+$head mu$$
+See ipopt trace $cref/lg(mu)/ipopt_trace/lg(mu)/$$.
+
+$head d_norm$$
+See ipopt trace $cref/||d||/ipopt_trace/||d||/$$.
+
+$head regularization_size$$
+See ipopt trace $cref/lg(rg)/ipopt_trace/lg(rg)/$$.
+
+$head alpha_du$$
+See ipopt trace $cref/alpha_du/ipopt_trace/alpha_du/$$.
+
+$head alpha_pr$$
+See ipopt trace $cref/alpha_pr/ipopt_trace/alpha_pr/$$.
+
+$head ls_trials$$
+See ipopt trace $cref/ls/ipopt_trace/ls/$$.
+
+$head ok$$
+If set to false, the optimizer will terminate
+$code USER_REQUESTED_STOP$$ as the finalize_solution
+$cref/status/ipopt_xam_finalize_solution/status/$$.
+
+$head Source$$
+$srccode%cpp% */
+bool ipopt_nlp_xam::intermediate_callback(
+	AlgorithmMode               mode                 ,   // in
+	Index                       iter                 ,   // in
+	Number                      obj_value            ,   // in
+	Number                      inf_pr               ,   // in
+	Number                      inf_du               ,   // in
+	Number                      mu                   ,   // in
+	Number                      d_norm               ,   // in
+	Number                      regularization_size  ,   // in
+	Number                      alpha_du             ,   // in
+	Number                      alpha_pr             ,   // in
+	Index                       ls_trials            ,   // in
+	const IpoptData*            ip_data              ,   // in
+	IpoptCalculatedQuantities*  ip_cq                )   // in
+{
+	return true;
 }
 /* %$$
 $end
