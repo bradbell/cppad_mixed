@@ -72,7 +72,6 @@ $end
 */
 # include <string>
 
-// include configure to get CPPAD_MIXED_THROW_EXCEPTION
 # include <cppad/mixed/configure.hpp>
 # ifndef CPPAD_MIXED_LOG_FATAL_ERROR
 log_fatal_error_did_not_get_defined_by_including_configure_hpp
