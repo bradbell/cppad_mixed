@@ -37,6 +37,10 @@ $childtable%
 	omh/whats_new_16.omh
 %$$
 
+$head 09-15$$
+An $cref/intermediate_callback/ipopt_xam_intermediate_callback/$$
+function was added to the Ipopt example.
+
 $head 09-14$$
 The $code fixed_solution$$ structure was changed to be
 $cref/public/fixed_solution/Public/$$.

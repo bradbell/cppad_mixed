@@ -973,7 +973,7 @@ $head ls_trials$$
 See ipopt trace $cref/ls/ipopt_trace/ls/$$.
 
 $head ok$$
-If set to false, the optimizer will terminate
+If set to false, the optimizer will terminate with
 $code USER_REQUESTED_STOP$$ as the finalize_solution
 $cref/status/ipopt_xam_finalize_solution/status/$$.
 
