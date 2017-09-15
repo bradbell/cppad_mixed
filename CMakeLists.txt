@@ -20,7 +20,7 @@
 # required variables:    -D cppad_cxx_flags=value \
 #                        -D cmake_libdir=value \
 #                        -D ldlt_cholmod=value \
-#                        -D log_fatal_error=value \
+#                        -D call_fatal_error=value \
 #                        -D use_atomic_cholesky=value \
 #                        -D checkpoint_newton_step=value \
 #                        -D optimize_cppad_function=value \
@@ -176,7 +176,7 @@ required_definition( cmake_libdir STRING
 required_definition(ldlt_cholmod BOOL
 	"use cholmod LDLT factorization where possible (instead of eigen)"
 )
-required_definition(log_fatal_error BOOL
+required_definition(call_fatal_error BOOL
 	"use fatal_error or replace it by an assert (for debugging)"
 )
 required_definition(use_atomic_cholesky BOOL

@@ -88,7 +88,7 @@ cmake_libdir='lib64'
 ldlt_cholmod='yes'
 # &&
 #
-# &head log_fatal_error&&
+# &head call_fatal_error&&
 # If yes, &code cppad_mixed&& will use
 # &cref/fatal_error/public/User Defined Functions/fatal_error/&&
 # to report its fatal error messages.
@@ -97,7 +97,7 @@ ldlt_cholmod='yes'
 # In addition, &cref/warnings/public/User Defined Functions/warning/&&
 # where the context in the debugger is helpful, are also converted to asserts.
 # &codep
-log_fatal_error='no'
+call_fatal_error='no'
 # &&
 #
 # &head use_atomic_cholesky&&
@@ -185,7 +185,7 @@ EOF
 		ldlt_cholmod='no'
 	elif [ "$1" == '--no_log' ]
 	then
-		log_fatal_error='no'
+		call_fatal_error='no'
 	elif [ "$1" == '--use_atomic_cholesky' ]
 	then
 		use_atomic_cholesky='yes'
@@ -237,7 +237,7 @@ cmake \
 	-D cppad_cxx_flags="$cppad_cxx_flags" \
 	-D cmake_libdir="$cmake_libdir" \
 	-D ldlt_cholmod="$ldlt_cholmod" \
-	-D log_fatal_error="$log_fatal_error" \
+	-D call_fatal_error="$call_fatal_error" \
 	-D use_atomic_cholesky="$use_atomic_cholesky" \
 	-D checkpoint_newton_step="$checkpoint_newton_step" \
 	-D optimize_cppad_function="$optimize_cppad_function" \

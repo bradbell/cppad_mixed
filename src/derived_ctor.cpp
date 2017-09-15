@@ -169,7 +169,7 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 		brief   += "msg = ";
 		brief   += msg;
 		//
-# if CPPAD_MIXED_LOG_FATAL_ERROR
+# if CPPAD_MIXED_CALL_FATAL_ERROR
 		CppAD::mixed::exception e(thrower, brief);
 		throw(e);
 # endif

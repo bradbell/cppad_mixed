@@ -38,8 +38,13 @@ $childtable%
 %$$
 
 $head 09-15$$
+$list number$$
+The $code cmake.sh$$ configuration flag $code log_fatal_error$$ was changed to
+$cref/call_fatal_error/run_cmake.sh/call_fatal_error/$$.
+$lnext
 An $cref/intermediate_callback/ipopt_xam_intermediate_callback/$$
 function was added to the Ipopt example.
+$lend
 
 $head 09-14$$
 The $code fixed_solution$$ structure was changed to be

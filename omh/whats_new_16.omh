@@ -133,11 +133,11 @@ not appear in the sparsity patter for the zero order coefficient
 
 $head 10-18$$
 Fix a bug in implementation of the
-$cref/log_fatal_error/run_cmake.sh/log_fatal_error/$$ option.
+$cref/call_fatal_error/run_cmake.sh/call_fatal_error/$$ option.
 
 $head 10-16$$
 Add the
-$cref/log_fatal_error/run_cmake.sh/log_fatal_error/$$ option
+$cref/call_fatal_error/run_cmake.sh/call_fatal_error/$$ option
 to the cppad_mixed configuration.
 
 

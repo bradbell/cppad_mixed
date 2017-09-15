@@ -23,7 +23,7 @@ $$
 $section CppAD Mixed Exceptions$$
 
 $head Syntax$$
-$codei%CPPAD_MIXED_LOG_FATAL_ERROR
+$codei%CPPAD_MIXED_CALL_FATAL_ERROR
 %$$
 $codei%CppAD::mixed exception(%thrower%, %brief%) %e%
 %$$
@@ -34,9 +34,9 @@ $head Private$$
 This class is an implementation detail and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
-$head CPPAD_MIXED_LOG_FATAL_ERROR$$
+$head CPPAD_MIXED_CALL_FATAL_ERROR$$
 This preprocessor symbol is defined when you include this file;
-see $cref/log_fatal_error/run_cmake.sh/log_fatal_error/$$
+see $cref/call_fatal_error/run_cmake.sh/call_fatal_error/$$
 
 $head thrower$$
 This argument has prototype
@@ -73,8 +73,8 @@ $end
 # include <string>
 
 # include <cppad/mixed/configure.hpp>
-# ifndef CPPAD_MIXED_LOG_FATAL_ERROR
-log_fatal_error_did_not_get_defined_by_including_configure_hpp
+# ifndef CPPAD_MIXED_CALL_FATAL_ERROR
+call_fatal_error_did_not_get_defined_by_including_configure_hpp
 # endif
 
 namespace CppAD { namespace mixed {

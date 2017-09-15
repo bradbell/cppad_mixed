@@ -21,11 +21,10 @@ no_change_files='
 rename_cmd='s|whats_new.omh|whats_new_16.omh|'
 #
 cat << EOF > junk.sed
-s/CppAD::vector<double> fixed_scale = fixed_in;/d_vector fixed_scale = fixed_in;/
-s/CppAD::vector<double> theta_scale = theta_in;/d_vector theta_scale = theta_in;/
-#
-s/vector<double> fixed_scale = fixed_in;/d_vector fixed_scale = fixed_in;/
-s/vector<double> theta_scale = theta_in;/d_vector theta_scale = theta_in;/
+s|LOG_FATAL_ERROR  |CALL_FATAL_ERROR |g
+s|LOG_FATAL_ERROR|CALL_FATAL_ERROR|g
+s|log_fatal_error  |call_fatal_error |g
+s|log_fatal_error|call_fatal_error|g
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]
