@@ -58,6 +58,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL
 	user/lasso.cpp
 	user/manage_gsl_rng.cpp
 	user/no_random.cpp
+	user/opt_ran_nan.cpp
 	user/optimize_fixed.cpp
 	user/optimize_random.cpp
 	user/ran_constraint.cpp

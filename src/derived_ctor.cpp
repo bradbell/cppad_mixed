@@ -169,12 +169,8 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 		brief   += "msg = ";
 		brief   += msg;
 		//
-# if CPPAD_MIXED_CALL_FATAL_ERROR
 		CppAD::mixed::exception e(thrower, brief);
 		throw(e);
-# endif
-		// convert fatal error to an assert (for use in a debugger)
-		assert(false);
      }
 
 } // END_EMPTY_NAMESPACE

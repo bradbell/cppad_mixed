@@ -52,6 +52,7 @@ extern bool logdet_jac_xam(void);
 extern bool manage_gsl_rng_xam(void);
 extern bool newton_step_xam(void);
 extern bool no_random_xam(void);
+extern bool opt_ran_nan_xam(void);
 extern bool optimize_fixed_xam(void);
 extern bool optimize_random_xam(void);
 extern bool ran_con_eval_xam(void);
@@ -140,6 +141,7 @@ int main(void)
 	RUN(manage_gsl_rng_xam);
 	RUN(newton_step_xam);
 	RUN(no_random_xam);
+	RUN(opt_ran_nan_xam);
 	RUN(optimize_fixed_xam);
 	RUN(optimize_random_xam);
 	RUN(ran_con_eval_xam);

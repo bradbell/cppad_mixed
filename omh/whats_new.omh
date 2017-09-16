@@ -37,6 +37,11 @@ $childtable%
 	omh/whats_new_16.omh
 %$$
 
+$head 09-16$$
+The optimization of the random effects, $cref optimize_random$$,
+has been changed to back up when it detects a $code nan$$ in the function
+evaluation. This is similar to how $cref optimize_fixed$$ works.
+
 $head 09-15$$
 $list number$$
 The $code cmake.sh$$ configuration flag $code log_fatal_error$$ was changed to

@@ -26,6 +26,7 @@ $children%speed/speed.omh
 	%example/user/ran_constraint.cpp
 	%example/user/lasso.cpp
 	%example/user/data_mismatch.cpp
+	%example/user/opt_ran_nan.cpp
 %$$
 
 $head Functions Defined by User and Called by cppad_mixed$$
@@ -63,6 +64,7 @@ $rref ran_constraint.cpp$$
 $rref lasso.cpp$$
 $rref data_mismatch.cpp$$
 $rref manage_gsl_rng.cpp$$
+$rref opt_ran_nan.cpp$$
 $tend
 
 $end

@@ -367,7 +367,7 @@ $end
 	assert( mixed_object_.ran_like_fun_.Domain() == n_fixed_ + n_random_ );
 	assert( mixed_object_.ran_like_fun_.Range()  == 1 );
 	//
-	if( new_x )
+	if( new_x ) try
 	{	// random effects as a vector
 		d_vector random_vec(n_random_);
 		for(size_t j = 0; j < n_random_; j++)
@@ -383,8 +383,12 @@ $end
 		// store for re-use
 		objective_current_ = vec[0];
 	}
-	obj_value = objective_current_;
+	catch(const CppAD::mixed::exception& e)
+	{	error_message_ = e.message("eval_f");
+		return false;
+	}
 	//
+	obj_value = objective_current_;
 	return true;
 }
 /*
