@@ -20,7 +20,6 @@
 # required variables:    -D cppad_cxx_flags=value \
 #                        -D cmake_libdir=value \
 #                        -D ldlt_cholmod=value \
-#                        -D call_fatal_error=value \
 #                        -D use_atomic_cholesky=value \
 #                        -D checkpoint_newton_step=value \
 #                        -D optimize_cppad_function=value \
@@ -157,9 +156,13 @@ IF( ${var} )
 ENDIF( ${var} )
 ENDFOREACH( var )
 # ----------------------------------------------------------------------------
-IF( NOT ${extra_cxx_flags} STREQUAL ""  )
+IF( extra_cxx_flags )
 	MESSAGE(FATAL_ERROR "extra_cxx_flags has been changed to cppad_cxx_flags")
-ENDIF( NOT ${extra_cxx_flags} STREQUAL ""  )
+ENDIF( extra_cxx_flags )
+# ----------------------------------------------------------------------------
+IF( log_fatal_error  )
+	MESSAGE(FATAL_ERROR "log_fatal_error has been removed")
+ENDIF( log_fatal_error  )
 # ----------------------------------------------------------------------------
 # get package prefixes
 get_prefix(cppad)
@@ -175,9 +178,6 @@ required_definition( cmake_libdir STRING
 )
 required_definition(ldlt_cholmod BOOL
 	"use cholmod LDLT factorization where possible (instead of eigen)"
-)
-required_definition(call_fatal_error BOOL
-	"use fatal_error or replace it by an assert (for debugging)"
 )
 required_definition(use_atomic_cholesky BOOL
 	"use the CppAD::mixed::sparse_ad_cholesky AD atomic operation"

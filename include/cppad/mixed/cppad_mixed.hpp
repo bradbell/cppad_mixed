@@ -167,9 +167,6 @@ This routine displays an error message and then exits the program.
 Its default definition below can be replaced by a user definition.
 Note that if $code NDEBUG$$ is not defined, this generates an assert,
 otherwise it exits.
-If $cref/call_fatal_error/run_cmake.sh/call_fatal_error/$$ is YES,
-and $code NDEBUG$$ is not defined, a assert will be generated where
-the error is detected instead of here.
 $srccode%cpp% */
 	virtual void fatal_error(const std::string& error_message)
 	{	std::cerr << "cppad_mixed error: " << error_message << std::endl;
