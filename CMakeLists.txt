@@ -156,13 +156,13 @@ IF( ${var} )
 ENDIF( ${var} )
 ENDFOREACH( var )
 # ----------------------------------------------------------------------------
-IF( extra_cxx_flags )
+IF( NOT "${extra_cxx_flags}" STREQUAL "" )
 	MESSAGE(FATAL_ERROR "extra_cxx_flags has been changed to cppad_cxx_flags")
-ENDIF( extra_cxx_flags )
+ENDIF( NOT "${extra_cxx_flags}" STREQUAL "" )
 # ----------------------------------------------------------------------------
-IF( log_fatal_error  )
+IF( NOT "${log_fatal_error}" STREQUAL ""  )
 	MESSAGE(FATAL_ERROR "log_fatal_error has been removed")
-ENDIF( log_fatal_error  )
+ENDIF( NOT "${log_fatal_error}" STREQUAL ""  )
 # ----------------------------------------------------------------------------
 # get package prefixes
 get_prefix(cppad)
