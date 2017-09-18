@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
 
-$begin whats_new$$
+$begin whats_new_17$$
 $spell
 	ctor
 	rcv
@@ -34,8 +34,8 @@ $$
 $section Changes and Additions to cppad_mixed During 2017$$
 
 $childtable%
-	omh/whats_new_15.omh%
-	omh/whats_new_16.omh
+	omh/whats_new/15.omh%
+	omh/whats_new/16.omh
 %$$
 
 $head 09-18$$

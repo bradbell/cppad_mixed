@@ -151,7 +151,7 @@ $icode A_rcv$$, is now specified in
 $cref/initialize/derived_ctor/A_rcv/$$ instead
 $cref derived_ctor$$.
 This was undone on
-$cref/2017-03-08/whats_new/03-08/$$.
+$cref/2017-03-08/whats_new_17/03-08/$$.
 
 $head 10-14$$
 $list number$$
@@ -770,7 +770,7 @@ instead of an argument to the
 $cref initialize$$ routine.
 This was undone on
 $cref/2016-10-15/whats_new_16/10-15/$$ and redone on
-$cref/2017-03-08/whats_new/03-08/$$.
+$cref/2017-03-08/whats_new_17/03-08/$$.
 $lnext
 Simplify the random constraint matrix source code.
 $lnext

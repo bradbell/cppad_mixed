@@ -168,7 +168,7 @@ $childtable%omh/install_unix.omh
 	%omh/base_class.omh
 	%omh/namespace.omh
 	%example/user/user.omh
-	%omh/whats_new.omh
+	%omh/whats_new/17.omh
 	%omh/wish_list.omh
 	%omh/math_notation.omh
 %$$
