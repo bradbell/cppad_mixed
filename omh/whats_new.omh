@@ -28,6 +28,7 @@ $spell
 	optimizer
 	obj_tst
 	hpp
+	messaging
 $$
 
 $section Changes and Additions to cppad_mixed During 2017$$
@@ -36,6 +37,12 @@ $childtable%
 	omh/whats_new_15.omh%
 	omh/whats_new_16.omh
 %$$
+
+$head 09-18$$
+If during $cref optimize_random$$ an $code nan$$ occurs in the random
+objective, the corresponding source code is re-run with the random
+effects corresponding to the last such occurrence.
+This often provides more useful error messaging.
 
 $head 09-16$$
 The optimization of the random effects, $cref optimize_random$$,

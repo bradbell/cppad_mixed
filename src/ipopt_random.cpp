@@ -385,6 +385,9 @@ $end
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	error_message_ = e.message("eval_f");
+		error_random_.resize(n_random_);
+		for(size_t j = 0; j < n_random_; j++)
+			error_random_[j] = x[j];
 		return false;
 	}
 	//

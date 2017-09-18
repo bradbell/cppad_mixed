@@ -102,13 +102,20 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// Otherwise, this was the last error detected.
 		std::string error_message_;
 		// ------------------------------------------------------------------
+		// if error_message_ is non-empty, this is the
+		// most recent random effects that failed in eval_f
+		d_vector error_random_;
+		// ------------------------------------------------------------------
 		// final solution returned by optimization
 		d_vector random_opt_;
-		// ------------------------------------------------------------------
 	public:
 		//  get the current ipopt_random error message
 		std::string get_error_message(void) const
 		{	return error_message_; }
+		//
+		//  get the random effects corresponding to the error message
+		double get_error_random(size_t j) const
+		{	return error_random_[j]; }
 		//
 		//  clear the current ipopt_random error message
 		void clear_error_message(void)
