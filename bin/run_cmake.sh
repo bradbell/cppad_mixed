@@ -50,12 +50,12 @@ suitesparse_prefix="$HOME/prefix/cppad_mixed"
 #
 # &subhead Debug and Release&&
 # If &icode cppad_prefix&& ends in &code cppad_mixed&&,
-# all the prefixes must be the,
+# all the prefixes must be the same,
 # except for the Eigen prefix which has an extra sub-directory at the end.
 # In this case,
-# &code bin/run_cmake.sh&& can be used to switch between a debug and release
+# &code bin/run_cmake.sh&& will switch between a debug and release
 # version of &code cppad_mixed&&
-# (depending on &cref/build_type/run_cmake.sh/build_type/&&).
+# depending on &cref/build_type/run_cmake.sh/build_type/&&.
 # The debug version will have an extra &code .debug&& and the release version
 # will have an extra &code .release&& at the end of the prefix.
 # In addition, a soft link will be used to map the prefix to either
