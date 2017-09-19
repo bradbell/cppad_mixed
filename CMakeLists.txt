@@ -161,7 +161,7 @@ IF( NOT "${extra_cxx_flags}" STREQUAL "" )
 ENDIF( NOT "${extra_cxx_flags}" STREQUAL "" )
 # ----------------------------------------------------------------------------
 IF( NOT "${log_fatal_error}" STREQUAL ""  )
-	MESSAGE(FATAL_ERROR "log_fatal_error has been removed")
+	MESSAGE(FATAL_ERROR "log_fatal_error has been removed from cmake command")
 ENDIF( NOT "${log_fatal_error}" STREQUAL ""  )
 # ----------------------------------------------------------------------------
 # get package prefixes

@@ -35,11 +35,6 @@ build_type='debug'
 # &icode%cppad_prefix%.debug%&& or
 # &icode%cppad_prefix%.release%&&
 # depending on the choice &icode build_type&&.
-# Also note that you can override the default setting (&code debug&&)
-# using the command
-# &codep
-#	bin/run_cmake.sh --release
-# &&
 #
 # &head Prefixes&&
 # Prefixes where the required packages are installed:
@@ -54,8 +49,10 @@ suitesparse_prefix="$HOME/prefix/cppad_mixed"
 # (without suppressing warnings from other include files).
 #
 # &subhead Debug and Release&&
-# If all the prefixes are the same and end in &code /cppad_mixed&&,
-# except for the Eigen prefix which has an extra sub-directory at the end,
+# If &icode cppad_prefix&& ends in &code cppad_mixed&&,
+# all the prefixes must be the,
+# except for the Eigen prefix which has an extra sub-directory at the end.
+# In this case,
 # &code bin/run_cmake.sh&& can be used to switch between a debug and release
 # version of &code cppad_mixed&&
 # (depending on &cref/build_type/run_cmake.sh/build_type/&&).
