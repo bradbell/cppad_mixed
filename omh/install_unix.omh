@@ -60,6 +60,14 @@ a program that installs other programs.
 $subhead pkg-config$$
 The $href%http://www.freedesktop.org/wiki/Software/pkg-config/%pkg-config%$$
 program must be installed.
+After $code gsl$$ and $code ipopt$$ are installed
+(see below), the following commands should work:
+$codep%
+	pkg-config gsl     --libs
+	pkg-config ipopt   --libs
+%$$
+If one of them fails, a corresponding directory is missing
+from the $code PKG_CONFIG_PATH$$ environment variable.
 
 $subhead wget$$
 The $href%https://www.gnu.org/software/wget/%wget%$$
