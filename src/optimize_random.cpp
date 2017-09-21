@@ -285,6 +285,7 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 		new CppAD::mixed::ipopt_random(
 			fixed_vec, random_lower, random_upper, random_in, mixed_object
 		);
+		// error message is empty directory after constructor
 		assert( random_nlp->get_error_message() == "" );
 		//
 		// variable to hold status values returned by app
@@ -299,10 +300,10 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 		status = app->OptimizeTNLP(random_nlp);
 		//
 		// Check if random_nlp could not evaluate one of its functions.
-		// This error reporting only happens when optimize_random is called,
-		// otherwise some higher level try and catch block fields the error.
 		if(	random_nlp->get_error_message() != "" )
-		{	typedef CppAD::AD< CppAD::AD<double> > a2_double;
+		{	mixed_object.warning( random_nlp->get_error_message() );
+			//
+			typedef CppAD::AD< CppAD::AD<double> > a2_double;
 			typedef CppAD::vector<a2_double>       a2_vector;
 			//
 			size_t n_fixed  = fixed_vec.size();

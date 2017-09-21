@@ -454,11 +454,11 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		random_in,
 		mixed_object
 	);
+	// error message is empty directly after constructor
 	assert( fixed_nlp->get_error_message() == "" );
 	assert( ok );
 
-	// calculate max_grad_f, max_jac_g
-	//(check derivative calculation ?)
+	// check derivative calculation ?
 	double relative_tol = std::numeric_limits<double>::infinity();
 	bool   trace        = false;
 	if( adaptive_check != "none" )
@@ -469,7 +469,8 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		}
 		relative_tol  = 1e-3;
 	}
-	// 2DO: pass fixed_scale to this rountine and use it instead of fixed_in
+	// if trace is false and relative_tol is infinity, no derivative check
+	// is done but some internal scaling information is still calculated.
 	ok = fixed_nlp->adaptive_derivative_check(trace, relative_tol);
 	if( fixed_nlp->get_error_message() != "" )
 	{	std::string msg = "optimize_fixed: ";
