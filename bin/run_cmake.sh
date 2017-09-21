@@ -157,7 +157,8 @@ usage: bin/run_cmake.sh \\
 	[--checkpoint_newton_step] \\
 	[--optimize_cppad_function] \\
 	[--show_ipopt_scaling] \\
-	[--release]
+	[--release] \\
+	[--dismod_at_prefix]
 EOF
 		exit 0
 	fi
@@ -182,6 +183,12 @@ EOF
 	elif [ "$1" == '--release' ]
 	then
 		build_type='release'
+	elif [ "$1" == '--dismod_at_prefix' ]
+	then
+		cppad_prefix="$HOME/prefix/dismod_at"
+		eigen_prefix="$HOME/prefix/dismod_at/eigen"
+		ipopt_prefix="$HOME/prefix/dismod_at"
+		suitesparse_prefix="$HOME/prefix/dismod_at"
 	else
 		echo "'$1' is an invalid option"
 		bin/run_cmake.sh --help
@@ -191,6 +198,10 @@ EOF
 done
 # --------------------------------------------------------------------------
 if echo "$cppad_prefix" | grep '/cppad_mixed$' > /dev/null
+then
+	bin/build_type.sh run_cmake $cppad_prefix $build_type
+fi
+if echo "$cppad_prefix" | grep '/dismod_at$' > /dev/null
 then
 	bin/build_type.sh run_cmake $cppad_prefix $build_type
 fi

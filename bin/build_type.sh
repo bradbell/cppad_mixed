@@ -16,9 +16,9 @@ bin/build_type.sh program_name install_prefix build_type
 sets up soft links for the following directories:
 	install_prefix -> install_prefix.build_type
 	build          -> build.built_type
-program_name: is the program name for error reporting.
-install_prefix: This directory must end with /cppad_mixed
-build_type: This must be either debug or release
+program_name:    is the program name for error reporting.
+install_prefix:  this directory must end with /cppad_mixed or /dismod_at
+build_type:      this must be either debug or release
 EOF
 	exit 1
 fi
@@ -38,8 +38,10 @@ then
 	exit 1
 fi
 dollar='$'
-total_prefix=`echo $install_prefix |
-	sed -e "s|/cppad_mixed$dollar|/cppad_mixed.$build_type|"`
+total_prefix=`echo $install_prefix | sed \
+	-e "s|/cppad_mixed$dollar|/cppad_mixed.$build_type|" \
+	-e "s|/dismod_at$dollar|/dismod_at.$build_type|" `
+echo "$total_prefix"
 if [ "$total_prefix" == "$install_prefix" ]
 then
 	echo "$program_name: install prefix does not end in /cppad_mixed"
