@@ -2620,8 +2620,10 @@ void ipopt_fixed::new_random(const d_vector& fixed_vec)
 $end
 */
 {	assert( n_random_ > 0 );
-	// compute the optimal random effects corresponding to fixed effects
-	random_cur_ = mixed_object_.try_optimize_random(
+	// Compute the optimal random effects corresponding to fixed effects.
+	// Use optimize_random, instead of try_optimize_random, so that thows
+	// are caught at the fixed effects, not random effects, level.
+	random_cur_ = mixed_object_.optimize_random(
 		random_ipopt_options_,
 		fixed_vec,
 		random_lower_,
