@@ -38,6 +38,11 @@ $childtable%
 	omh/whats_new/16.omh
 %$$
 
+$head 09-21$$
+If optimizing the fixed effects, trap errors in optimizing random effects
+at the fixed effects level, so do not terminate but rather cut back and
+try a smaller fixed effects step size.
+
 $head 09-18$$
 If during $cref optimize_random$$ an $code nan$$ occurs in the random
 objective, the corresponding source code is re-run with the random
