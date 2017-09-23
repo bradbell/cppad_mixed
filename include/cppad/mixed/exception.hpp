@@ -23,16 +23,15 @@ $$
 $section CppAD Mixed Exceptions$$
 
 $head Syntax$$
-$codei%CPPAD_MIXED_CALL_FATAL_ERROR
-%$$
 $codei%CppAD::mixed exception(%thrower%, %brief%) %e%
 %$$
 $icode%description% = %e%.message(%catcher%)
 %$$
 
-$head Private$$
-This class is an implementation detail and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+$head Public$$
+This class is part of the
+$cref/CppAD::mixed/namespace/Public/$$ user API.
+It can be used to throw exceptions that may be caught by $code cppad_mixed$$.
 
 $head thrower$$
 This argument has prototype

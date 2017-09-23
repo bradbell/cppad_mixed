@@ -62,6 +62,7 @@ $rref typedef$$
 $rref manage_gsl_rng$$
 $rref sparse_mat_info$$
 $rref fixed_solution$$
+$rref exception$$
 $tend
 
 $head Private$$
@@ -69,7 +70,6 @@ These declarations are implementation details and not part of the
 $code CppAD::mixed$$ user API
 (and may change with time).
 $table
-$rref exception$$
 $rref ldlt_eigen$$
 $rref ldlt_cholmod$$
 $rref ipopt_fixed$$

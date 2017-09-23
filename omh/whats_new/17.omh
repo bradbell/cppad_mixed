@@ -39,7 +39,12 @@ $childtable%
 %$$
 
 $head 09-23$$
+$list number$$
 Improve error handling and messaging.
+$lnext
+Make the exception class
+$cref/public/exception/Public/$$.
+$lend
 
 $head 09-21$$
 If optimizing the fixed effects, trap errors in optimizing random effects
