@@ -931,7 +931,7 @@ $end
 	{	try_eval_f(n, x, new_x, obj_value);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	error_message_ = e.message("ipopt_fixed");
+	{	error_message_ = e.message("ipopt_fixed::eval_f");
 		return false;
 	}
 	return true;
@@ -975,7 +975,7 @@ void ipopt_fixed::try_eval_f(
 			obj_value += x[n_fixed_ + j];
 	}
 	if( CppAD::isnan(obj_value) ) throw CppAD::mixed::exception(
-		"eval_f", "objective is nan"
+		"", "objective is nan"
 	);
 # if CPPAD_MIXED_HIDE_IPOPT_SCALING
 	obj_value *= scale_f_;
@@ -1035,7 +1035,7 @@ $end
 	{	try_eval_grad_f(n, x, new_x, grad_f);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	error_message_ = e.message("ipopt_fixed");
+	{	error_message_ = e.message("ipopt_fixed::eval_g");
 		return false;
 	}
 	return true;
@@ -1101,7 +1101,7 @@ void ipopt_fixed::try_eval_grad_f(
 	}
 	for(size_t j = 0; j < size_t(n); j++)
 	{	if( CppAD::isnan( grad_f[j] ) ) throw CppAD::mixed::exception(
-			"eval_grad_f", "gradient has a nan"
+			"", "gradient has a nan"
 		);
 # if CPPAD_MIXED_HIDE_IPOPT_SCALING
 		grad_f[j] *= scale_f_;
@@ -1166,7 +1166,7 @@ $end
 	{	try_eval_g(n, x, new_x, m, g);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	error_message_ = e.message("eval_g");
+	{	error_message_ = e.message("ipopt_fixed::eval_g");
 		return false;
 	}
 	return true;
@@ -1223,7 +1223,7 @@ void ipopt_fixed::try_eval_g(
 	}
 	for(size_t i = 0; i < size_t(m); i++)
 	{	if( CppAD::isnan( g[i] ) ) throw CppAD::mixed::exception(
-			"try_eval_g", "constaint function has a nan"
+			"", "constaint function has a nan"
 		);
 # if CPPAD_MIXED_HIDE_IPOPT_SCALING
 		g[i] *= scale_g_[i];
@@ -1316,7 +1316,7 @@ $end
 	{	try_eval_jac_g(n, x, new_x, m, nele_jac, iRow, jCol, values);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	error_message_ = e.message("eval_jac_g");
+	{	error_message_ = e.message("ipopt_fixed::eval_jac_g");
 		return false;
 	}
 	return true;
@@ -1451,7 +1451,7 @@ void ipopt_fixed::try_eval_jac_g(
 	//
 	for(size_t ell = 0; ell < nnz_jac_g_; ell++)
 	{	if( CppAD::isnan( values[ell] ) ) throw CppAD::mixed::exception(
-			"try_eval_jac_g", "constraint Jacobian has a nan"
+			"", "constraint Jacobian has a nan"
 		);
 # if CPPAD_MIXED_HIDE_IPOPT_SCALING
 		size_t i     = jac_g_row_[ell];
@@ -1582,7 +1582,7 @@ $end
 		);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	error_message_ = e.message("eval_h");
+	{	error_message_ = e.message("ipopt_fixed::eval_h");
 		return false;
 	}
 	return true;
@@ -1714,7 +1714,7 @@ void ipopt_fixed::try_eval_h(
 	//
 	for(size_t ell = 0; ell < nnz_h_lag_; ell++)
 	{	if( CppAD::isnan( values[ell] ) ) throw CppAD::mixed::exception(
-			"try_eval_h", "Hessian of Lagragian has a nan"
+			"", "Hessian of Lagragian has a nan"
 		);
 	}
 	assert( size_t(nele_hess) == nnz_h_lag_ );

@@ -368,7 +368,7 @@ $end
 	{	try_eval_f(n, x, new_x, obj_value);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	error_message_ = e.message("ipopt_random");
+	{	error_message_ = e.message("ipopt_random::eval_f");
 		for(size_t j = 0; j < n_random_; j++)
 			error_random_[j] = x[j];
 		return false;
@@ -398,7 +398,7 @@ void ipopt_random::try_eval_f(
 		d_vector vec = mixed_object_.ran_like_fun_.Forward(0, both_vec);
 		assert( vec.size() == 1 );
 		if( CppAD::hasnan( vec ) ) throw CppAD::mixed::exception(
-			"eval_f", "result has a nan"
+			"", "objective has a nan"
 		);
 		// store for re-use
 		objective_current_ = vec[0];
@@ -458,7 +458,7 @@ $end
 	{	try_eval_grad_f(n, x, new_x, grad_f);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	error_message_ = e.message("ipopt_random");
+	{	error_message_ = e.message("ipopt_random::eval_grad_f");
 		for(size_t j = 0; j < n_random_; j++)
 			error_random_[j] = x[j];
 		return false;
@@ -485,7 +485,7 @@ void ipopt_random::try_eval_grad_f(
 	w[0] = 1.0;
 	d_vector dw = mixed_object_.ran_like_fun_.Reverse(1, w);
 	if( CppAD::hasnan( dw ) ) throw CppAD::mixed::exception(
-		"eval_grad_f", "result has nan"
+		"", "gradient has nan"
 	);
 	//
 	// return gradient w.r.t random effects
@@ -631,12 +631,30 @@ bool ipopt_random::eval_jac_g(
 /* %$$
 $end
 */
+{	try
+	{	try_eval_jac_g(n, x, new_x, m, nele_jac, iRow, jCol, values);
+	}
+	catch(const CppAD::mixed::exception& e)
+	{	error_message_ = e.message("ipopt_random::eval_jac_g");
+		return false;
+	}
+	return true;
+}
+void ipopt_random::try_eval_jac_g(
+	Index           n        ,  // in
+	const Number*   x        ,  // in
+	bool            new_x    ,  // in
+	Index           m        ,  // in
+	Index           nele_jac ,  // in
+	Index*          iRow     ,  // out
+	Index*          jCol     ,  // out
+	Number*         values   )  // out
 {	assert( size_t(n) == n_random_ );
 	assert( m == 0 );
 	assert( nele_jac == 0 );
 	if( values == NULL )
 	{	assert( ! new_x );
-		return true;
+		return;
 	}
 	//
 	if( new_x )
@@ -645,8 +663,7 @@ $end
 		Number obj_value;
 		eval_f(n, x, new_x, obj_value);
 	}
-	//
-	return true;
+	return;
 }
 /*
 -------------------------------------------------------------------------------
@@ -754,6 +771,39 @@ bool ipopt_random::eval_h(
 /* %$$
 $end
 */
+{	try
+	{	try_eval_h(
+			n,
+			x,
+			new_x,
+			obj_factor,
+			m,
+			lambda,
+			new_lambda,
+			nele_hess,
+			iRow,
+			jCol,
+			values
+		);
+	}
+	catch(const CppAD::mixed::exception& e)
+	{	error_message_ = e.message("ipopt_random::eval_h");
+		return false;
+	}
+	return true;
+}
+void ipopt_random::try_eval_h(
+	Index         n              ,  // in
+	const Number* x              ,  // in
+	bool          new_x          ,  // in
+	Number        obj_factor     ,  // in
+	Index         m              ,  // in
+	const Number* lambda         ,  // in
+	bool          new_lambda     ,  // in
+	Index         nele_hess      ,  // in
+	Index*        iRow           ,  // out
+	Index*        jCol           ,  // out
+	Number*       values         )  // out
 {	assert( size_t(n) == n_random_ );
 	assert( m == 0 );
 	assert( size_t(nele_hess) == nnz_h_lag_ );
@@ -780,7 +830,7 @@ $end
 			jCol[k] = static_cast<Index>( col[k] - n_fixed_ );
 		}
 		assert( ! new_x );
-		return true;
+		return;
 	}
 	//
 	// random effects as a vector
@@ -796,14 +846,14 @@ $end
 	{	// set zero order Taylor coefficient in ran_like_fun_.
 		d_vector vec = mixed_object_.ran_like_fun_.Forward(0, both_vec);
 		if( CppAD::hasnan( vec ) ) throw CppAD::mixed::exception(
-			"ipopt_random::eval_h", "result has a nan"
+			"", "Hessian has a nan"
 		);
 	}
 	//
 	// computes the Hessian of objecive w.r.t random effects  f_uu (theta, u)
 	d_vector val = mixed_object_.ran_hes_fun_.Forward(0, both_vec);
 	if( CppAD::hasnan( val ) ) throw CppAD::mixed::exception(
-		"ipopt_random::eval_h", "result has a nan"
+		"", "Hessian has a nan"
 	);
 	assert( val.size() == nnz_h_lag_ );
 	//
@@ -811,7 +861,7 @@ $end
 	for(size_t k = 0; k < nnz_h_lag_; k++)
 		values[k] = obj_factor * static_cast<Number>( val[k] );
 	//
-	return true;
+	return;
 }
 /*
 -------------------------------------------------------------------------------
