@@ -9,6 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/exception.hpp>
 
 /*
 $begin fix_like_eval$$
@@ -84,7 +85,12 @@ CppAD::vector<double> cppad_mixed::fix_like_eval(const d_vector& fixed_vec)
 		return CppAD::vector<double>(0);
 	}
 	assert( fix_like_fun_.Domain() == n_fixed_ );
-	return fix_like_fun_.Forward(0, fixed_vec);
+	//
+	d_vector ret = fix_like_fun_.Forward(0, fixed_vec);
+	if( CppAD::hasnan( ret ) ) throw CppAD::mixed::exception(
+		"fix_like_eval", "resut has a nan"
+	);
+	return ret;
 }
 
 

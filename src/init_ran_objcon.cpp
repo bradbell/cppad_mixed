@@ -83,6 +83,7 @@ $codei%
 $end
 */
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/exception.hpp>
 # include <cppad/mixed/configure.hpp>
 
 // ----------------------------------------------------------------------------
@@ -172,6 +173,9 @@ void cppad_mixed::init_ran_objcon(
 	a1_vector beta_U(n_fixed_ + n_random_);
 	pack(beta, U, beta_U);
 	f     = ran_like_a1fun_.Forward(0, beta_U);
+	if( CppAD::hasnan(f) ) throw CppAD::mixed::exception(
+		"init_ran_objcon", "result has a nan"
+	);
 	//
 	// now the random part of the Laplace objective
 	HB[0] = logdet_step[0] / 2.0 + f[0] - constant_term;

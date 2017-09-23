@@ -9,6 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/exception.hpp>
 /*
 $begin logdet_jac$$
 $spell
@@ -147,6 +148,9 @@ void cppad_mixed::logdet_jac(
 	}
 	d_vector dw(n_fixed_ + n_random_);
 	dw = ran_hes_fun_.Reverse(1, weight_info.val);
+	if( CppAD::hasnan( dw ) ) throw CppAD::mixed::exception(
+		"logdet_jac", "result has a nan"
+	);
 	//
 	// split out fixed and random parts of the derivative
 	unpack(logdet_fix, logdet_ran, dw);

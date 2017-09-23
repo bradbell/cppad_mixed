@@ -9,6 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/exception.hpp>
 # include <cppad/mixed/configure.hpp>
 
 /*
@@ -137,7 +138,10 @@ void cppad_mixed::init_ran_like(
 			"init_ran_like: ran_likelihood does not have size zero or one.";
 		fatal_error(error_message);
 	}
-
+	//
+	if( CppAD::hasnan( a1_vec ) ) throw CppAD::mixed::exception(
+		"init_ran_like", "result has a nan"
+	);
 	// save the recording
 	ran_like_fun_.Dependent(a1_both, a1_vec);
 

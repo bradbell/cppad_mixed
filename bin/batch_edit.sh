@@ -21,10 +21,7 @@ no_change_files='
 rename_cmd='s|whats_new.omh|whats_new_16.omh|'
 #
 cat << EOF > junk.sed
-s|LOG_FATAL_ERROR  |CALL_FATAL_ERROR |g
-s|LOG_FATAL_ERROR|CALL_FATAL_ERROR|g
-s|log_fatal_error  |call_fatal_error |g
-s|log_fatal_error|call_fatal_error|g
+s|\\(\\t*[a-zA-Z0-9_]*\\)\\.Dependent(.*\$|&\\n\\1.check_for_nan(false);|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

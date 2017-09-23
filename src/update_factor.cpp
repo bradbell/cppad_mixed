@@ -121,6 +121,9 @@ void cppad_mixed::update_factor(
 	//
 	// set the value vector in the sparse matrix information
 	hes_info.val = ran_hes_fun_.Forward(0, both);
+	if( CppAD::hasnan( hes_info.val ) ) throw CppAD::mixed::exception(
+		"update_factor", "result has nan"
+	);
 	//
 	// update the LDLT factor
 	bool ok = ldlt_ran_hes_.update(hes_info);
@@ -128,8 +131,7 @@ void cppad_mixed::update_factor(
 	{
 # if CPPAD_MIXED_LOG_FATAL_ERREOR
 		CppAD::mixed::exception e(
-			"cppad_mixed::update_factor",
-			"Hessian w.r.t. random effects is singular"
+			"update_factor", "Hessian w.r.t. random effects is singular"
 		);
 		throw(e);
 # else

@@ -9,6 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/exception.hpp>
 /*
 $begin ran_like_jac$$
 $spell
@@ -114,7 +115,9 @@ CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_jac(
 	a1_vector a1_w(1), jac_both(n_fixed_ + n_random_);
 	a1_w[0] = 1.0;
 	jac_both = ran_like_a1fun_.Reverse(1, a1_w);
-
+	if( CppAD::hasnan( jac_both ) ) throw CppAD::mixed::exception(
+		"ran_like_jac", "result has a nan"
+	);
 	// extract u part of the Jacobian
 	jac_ran.resize(n_random_);
 	for(size_t j = 0; j < n_random_; j++)
@@ -211,6 +214,9 @@ void cppad_mixed::ran_like_jac_check(
 	d_vector w(1), jac_both(n_fixed_ + n_random_);
 	w[0] = 1.0;
 	jac_both = ran_like_fun_.Reverse(1, w);
+	if( CppAD::hasnan( jac_both ) ) CppAD::mixed::exception(
+		"ran_like_jac_check", "result has a nan"
+	);
 	//
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 	bool ok = true;

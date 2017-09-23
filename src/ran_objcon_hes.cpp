@@ -9,6 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/exception.hpp>
 /*
 $begin ran_objcon_hes$$
 $spell
@@ -217,6 +218,9 @@ void cppad_mixed::ran_objcon_hes(
 	);
 	for(size_t k = 0; k < nnz; k++)
 		val_out[k] = ran_objcon_hes_.subset.val()[k];
+	if( CppAD::hasnan( val_out ) ) CppAD::mixed::exception(
+		"ran_objcon_hes", "result has a nan"
+	);
 	//
 	return;
 }

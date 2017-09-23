@@ -9,6 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/exception.hpp>
 
 /*
 $begin fix_con_jac$$
@@ -144,6 +145,9 @@ void cppad_mixed::fix_con_jac(
 	for(size_t k = 0; k < nnz; k++)
 		val_out[k] = fix_con_jac_.subset.val()[k];
 	//
+	if( CppAD::hasnan( val_out ) ) throw CppAD::mixed::exception(
+		"fix_con_jac", "result has a nan"
+	);
 	return;
 }
 

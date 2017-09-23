@@ -379,6 +379,9 @@ $end
 		//
 		// compute the log-density vector
 		d_vector vec = mixed_object_.ran_like_fun_.Forward(0, both_vec);
+		if( CppAD::hasnan( vec ) ) throw CppAD::mixed::exception(
+			"ipopt_random::eval_f", "result has a nan"
+		);
 		//
 		// store for re-use
 		objective_current_ = vec[0];
@@ -455,6 +458,9 @@ $end
 	d_vector w(1);
 	w[0] = 1.0;
 	d_vector dw = mixed_object_.ran_like_fun_.Reverse(1, w);
+	if( CppAD::hasnan( dw ) ) throw CppAD::mixed::exception(
+		"eval_grad_f", "result has nan"
+	);
 	//
 	// return gradient w.r.t random effects
 	for(size_t j = 0; j < n_random_; j++)
@@ -764,10 +770,16 @@ $end
 	if( new_x )
 	{	// set zero order Taylor coefficient in ran_like_fun_.
 		d_vector vec = mixed_object_.ran_like_fun_.Forward(0, both_vec);
+		if( CppAD::hasnan( vec ) ) throw CppAD::mixed::exception(
+			"ipopt_random::eval_h", "result has a nan"
+		);
 	}
 	//
 	// computes the Hessian of objecive w.r.t random effects  f_uu (theta, u)
 	d_vector val = mixed_object_.ran_hes_fun_.Forward(0, both_vec);
+	if( CppAD::hasnan( val ) ) throw CppAD::mixed::exception(
+		"ipopt_random::eval_h", "result has a nan"
+	);
 	assert( val.size() == nnz_h_lag_ );
 	//
 	// return the values

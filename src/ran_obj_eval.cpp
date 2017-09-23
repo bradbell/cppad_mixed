@@ -133,6 +133,9 @@ double cppad_mixed::ran_obj_eval(
 	// f(theta , u)
 	d_vector vec = ran_like_fun_.Forward(0, both);
 	assert( vec.size() == 1);
+	if( CppAD::hasnan( vec ) ) throw CppAD::mixed::exception(
+		"ran_obj_eval", "result has nan"
+	);
 
 	// h(theta, u)
 	double h = logdet / 2.0 + vec[0] - constant_term;

@@ -9,6 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/exception.hpp>
 /*
 $begin ran_obj_jac$$
 $spell
@@ -113,6 +114,9 @@ void cppad_mixed::ran_obj_jac(
 	w[0] = 1.0;
 	ran_like_fun_.Forward(0, both);
 	f_both = ran_like_fun_.Reverse(1, w);
+	if( CppAD::hasnan( f_both ) ) CppAD::mixed::exception(
+		"ran_obj_jac", "result has a nan"
+	);
 	d_vector f_fixed(n_fixed_), f_random(n_random_);
 	unpack(f_fixed, f_random, f_both);
 	//
@@ -129,7 +133,9 @@ void cppad_mixed::ran_obj_jac(
 		not_used_coloring,
 		hes_cross_.work
 	);
-
+	if( CppAD::hasnan( hes_cross_.subset.val() ) ) CppAD::mixed::exception(
+		"ran_obj_jac", "result has a nan"
+	);
 	// Use the column major order specification for
 	// (hes_cross_.row, hes_cross_.col)
 	size_t k = 0;

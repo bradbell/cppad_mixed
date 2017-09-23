@@ -9,6 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/exception.hpp>
 
 /*
 $begin fix_like_hes$$
@@ -165,6 +166,10 @@ void cppad_mixed::fix_like_hes(
 	for(size_t k = 0; k < nnz; k++)
 		val_out[k] = fix_like_hes_.subset.val()[k];
 	//
+	//
+	if( CppAD::hasnan( val_out ) ) throw CppAD::mixed::exception(
+		"fix_like_hes", "result has a nan"
+	);
 	return;
 }
 

@@ -121,6 +121,7 @@ It returns true, if the test passes, and false otherwise.
 $end
 */
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/exception.hpp>
 
 void cppad_mixed::ran_con_jac(
 	const d_vector&                fixed_vec  ,
@@ -164,6 +165,9 @@ void cppad_mixed::ran_con_jac(
 		not_used_pattern,
 		not_used_coloring,
 		hes_cross_.work
+	);
+	if( CppAD::hasnan( hes_cross_.subset.val() ) ) CppAD::mixed::exception(
+		"ran_con_jac", "result has a nan"
 	);
 	//
 	// Use the column major order specification for
