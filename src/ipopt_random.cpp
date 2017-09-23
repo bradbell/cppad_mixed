@@ -367,7 +367,7 @@ $end
 	assert( mixed_object_.ran_like_fun_.Domain() == n_fixed_ + n_random_ );
 	assert( mixed_object_.ran_like_fun_.Range()  == 1 );
 	//
-	if( new_x ) try
+	if( new_x )
 	{	// random effects as a vector
 		d_vector random_vec(n_random_);
 		for(size_t j = 0; j < n_random_; j++)
@@ -379,19 +379,15 @@ $end
 		//
 		// compute the log-density vector
 		d_vector vec = mixed_object_.ran_like_fun_.Forward(0, both_vec);
-		if( CppAD::hasnan( vec ) ) throw CppAD::mixed::exception(
-			"ipopt_random::eval_f", "result has a nan"
-		);
-		//
+		assert( vec.size() == 1 );
+		if( CppAD::hasnan( vec ) )
+		{	error_message_= "ipopt_random::eval_f result has a nan";
+			error_random_ = random_vec;
+			//
+			return false;
+		}
 		// store for re-use
 		objective_current_ = vec[0];
-	}
-	catch(const CppAD::mixed::exception& e)
-	{	error_message_ = e.message("eval_f");
-		error_random_.resize(n_random_);
-		for(size_t j = 0; j < n_random_; j++)
-			error_random_[j] = x[j];
-		return false;
 	}
 	//
 	obj_value = objective_current_;

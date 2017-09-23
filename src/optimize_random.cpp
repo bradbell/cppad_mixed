@@ -318,11 +318,21 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 				a2_theta[i] = a2_double( fixed_vec[i] );
 			for(size_t i = 0; i < n_random; i++)
 				a2_u[i] = a2_double( random_nlp->get_error_random(i) );
-			mixed_object.ran_likelihood(a2_theta, a2_u);
+			try {
+				mixed_object.ran_likelihood(a2_theta, a2_u);
+			}
+			catch(const CppAD::mixed::exception& e)
+			{	std::string error_message = e.message("optimize_random");
+				mixed_object.warning(error_message);
+			}
 		}
 		//
 		if( status != Ipopt::Solve_Succeeded )
-			mixed_object.warning("optimize_random: ipopt failed to converge");
+		{	if( status == Ipopt::Maximum_Iterations_Exceeded )
+				mixed_object.warning("optimize_random: max_iter reached");
+			else
+				mixed_object.fatal_error("optimize_random: fatal error");
+		}
 		//
 		return random_nlp->random_opt();
 	}
