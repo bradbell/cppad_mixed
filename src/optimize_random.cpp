@@ -13,6 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/ipopt_random.hpp>
 # include <cppad/mixed/exception.hpp>
+# include <cppad/mixed/ipopt_app_status.hpp>
 /*
 $begin optimize_random$$
 $spell
@@ -328,10 +329,12 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 		}
 		//
 		if( status != Ipopt::Solve_Succeeded )
-		{	if( status == Ipopt::Maximum_Iterations_Exceeded )
-				mixed_object.warning("optimize_random: max_iter reached");
+		{	std::string message = "optimize_random: ";
+			message += CppAD::mixed::ipopt_app_status(status);
+			if( status == Ipopt::Maximum_Iterations_Exceeded )
+				mixed_object.warning(message);
 			else
-				mixed_object.fatal_error("optimize_random: fatal error");
+				mixed_object.fatal_error(message);
 		}
 		//
 		return random_nlp->random_opt();

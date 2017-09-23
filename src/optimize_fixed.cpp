@@ -279,6 +279,7 @@ $end
 # include <cppad/mixed/ipopt_fixed.hpp>
 # include <cppad/mixed/exception.hpp>
 # include <cppad/mixed/configure.hpp>
+# include <cppad/mixed/ipopt_app_status.hpp>
 
 CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	const std::string& fixed_ipopt_options           ,
@@ -493,7 +494,12 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	status = app->Initialize();
 	ok    &= status == Ipopt::Solve_Succeeded;
 	if( ! ok )
-	{	fatal_error("optimize_fixed: initalization failed");
+	{	std::string message = "optimize_fixed: ";
+		message += CppAD::mixed::ipopt_app_status(status);
+		if( status == Ipopt::Maximum_Iterations_Exceeded )
+			warning(message);
+		else
+			fatal_error(message);
 	}
 	//
 	// solve the problem

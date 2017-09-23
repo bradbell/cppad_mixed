@@ -32,6 +32,7 @@ $children%include/cppad/mixed/typedef.hpp
 	%include/cppad/mixed/configure.hpp.in
 	%include/cppad/mixed/exception.hpp
 	%include/cppad/mixed/fixed_solution.hpp
+	%src/ipopt_app_status.cpp
 	%include/cppad/mixed/ipopt_fixed.hpp
 	%include/cppad/mixed/ldlt_cholmod.hpp
 	%include/cppad/mixed/ldlt_eigen.hpp
