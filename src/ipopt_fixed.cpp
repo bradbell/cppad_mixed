@@ -931,7 +931,7 @@ $end
 	{	try_eval_f(n, x, new_x, obj_value);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	error_message_ = e.message("eval_f");
+	{	error_message_ = e.message("ipopt_fixed");
 		return false;
 	}
 	return true;
@@ -975,7 +975,7 @@ void ipopt_fixed::try_eval_f(
 			obj_value += x[n_fixed_ + j];
 	}
 	if( CppAD::isnan(obj_value) ) throw CppAD::mixed::exception(
-		"try_eval_f", "objective function is nan"
+		"eval_f", "objective is nan"
 	);
 # if CPPAD_MIXED_HIDE_IPOPT_SCALING
 	obj_value *= scale_f_;
@@ -1035,7 +1035,7 @@ $end
 	{	try_eval_grad_f(n, x, new_x, grad_f);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	error_message_ = e.message("grad_f");
+	{	error_message_ = e.message("ipopt_fixed");
 		return false;
 	}
 	return true;
@@ -1101,7 +1101,7 @@ void ipopt_fixed::try_eval_grad_f(
 	}
 	for(size_t j = 0; j < size_t(n); j++)
 	{	if( CppAD::isnan( grad_f[j] ) ) throw CppAD::mixed::exception(
-			"try_eval_grad_f", "objective gradient has a nan"
+			"eval_grad_f", "gradient has a nan"
 		);
 # if CPPAD_MIXED_HIDE_IPOPT_SCALING
 		grad_f[j] *= scale_f_;

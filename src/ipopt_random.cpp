@@ -96,7 +96,8 @@ random_lower_        ( random_lower )                     ,
 random_upper_        ( random_upper )                     ,
 random_in_           ( random_in )                        ,
 nnz_h_lag_           ( mixed_object.ran_hes_rcv_.nnz() )  ,
-mixed_object_        ( mixed_object    )
+mixed_object_        ( mixed_object    )                  ,
+error_random_        ( n_random_ )
 {	// -----------------------------------------------------------------------
 	// set nlp_lower_bound_inf_, nlp_upper_bound_inf_
 	double inf           = std::numeric_limits<double>::infinity();
@@ -363,6 +364,22 @@ bool ipopt_random::eval_f(
 /* %$$
 $end
 */
+{	try
+	{	try_eval_f(n, x, new_x, obj_value);
+	}
+	catch(const CppAD::mixed::exception& e)
+	{	error_message_ = e.message("ipopt_random");
+		for(size_t j = 0; j < n_random_; j++)
+			error_random_[j] = x[j];
+		return false;
+	}
+	return true;
+}
+void ipopt_random::try_eval_f(
+	Index           n         ,  // in
+	const Number*   x         ,  // in
+	bool            new_x     ,  // in
+	Number&         obj_value )  // out
 {	assert( size_t(n) == n_random_ );
 	assert( mixed_object_.ran_like_fun_.Domain() == n_fixed_ + n_random_ );
 	assert( mixed_object_.ran_like_fun_.Range()  == 1 );
@@ -380,18 +397,15 @@ $end
 		// compute the log-density vector
 		d_vector vec = mixed_object_.ran_like_fun_.Forward(0, both_vec);
 		assert( vec.size() == 1 );
-		if( CppAD::hasnan( vec ) )
-		{	error_message_= "ipopt_random::eval_f result has a nan";
-			error_random_ = random_vec;
-			//
-			return false;
-		}
+		if( CppAD::hasnan( vec ) ) throw CppAD::mixed::exception(
+			"eval_f", "result has a nan"
+		);
 		// store for re-use
 		objective_current_ = vec[0];
 	}
 	//
 	obj_value = objective_current_;
-	return true;
+	return;
 }
 /*
 -------------------------------------------------------------------------------
@@ -440,6 +454,22 @@ bool ipopt_random::eval_grad_f(
 /* %$$
 $end
 */
+{	try
+	{	try_eval_grad_f(n, x, new_x, grad_f);
+	}
+	catch(const CppAD::mixed::exception& e)
+	{	error_message_ = e.message("ipopt_random");
+		for(size_t j = 0; j < n_random_; j++)
+			error_random_[j] = x[j];
+		return false;
+	}
+	return true;
+}
+void ipopt_random::try_eval_grad_f(
+	Index           n         ,  // in
+	const Number*   x         ,  // in
+	bool            new_x     ,  // in
+	Number*         grad_f    )  // out
 {	assert( size_t(n) == n_random_ );
 	assert( mixed_object_.ran_like_fun_.Domain() == n_fixed_ + n_random_ );
 	assert( mixed_object_.ran_like_fun_.Range()  == 1 );
@@ -461,8 +491,7 @@ $end
 	// return gradient w.r.t random effects
 	for(size_t j = 0; j < n_random_; j++)
 		grad_f[j] = dw[ n_fixed_ + j ];
-	//
-	return true;
+	return;
 }
 /*
 -------------------------------------------------------------------------------

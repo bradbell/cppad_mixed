@@ -100,6 +100,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// ------------------------------------------------------------------
 		// If empty, no error has been detected by the ipopt_random class
 		// Otherwise, this was the last error detected.
+		// Initialize by constructor to have size n_random_.
 		std::string error_message_;
 		// ------------------------------------------------------------------
 		// if error_message_ is non-empty, this is the
@@ -108,6 +109,51 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// ------------------------------------------------------------------
 		// final solution returned by optimization
 		d_vector random_opt_;
+		// ------------------------------------------------------------------
+		// Public versions wrap these functions in a try / catch block.
+		// If an eval fails, it sets this message and returns false.
+		void try_eval_f(
+			Index           n        ,
+			const Number*   x        ,
+			bool            new_x    ,
+			Number&         obj_value
+		);
+		void try_eval_grad_f(
+			Index           n        ,
+			const Number*   x        ,
+			bool            new_x    ,
+			Number*         grad_f
+		);
+		void try_eval_g(
+			Index           n        ,
+			const Number*   x        ,
+			bool            new_x    ,
+			Index           m        ,
+			Number*         g
+		);
+		void try_eval_jac_g(
+			Index           n        ,
+			const Number*   x        ,
+			bool            new_x    ,
+			Index           m        ,
+			Index           nele_jac ,
+			Index*          iRow     ,
+			Index*          jCol     ,
+			Number*         values
+		);
+		void try_eval_h(
+			Index         n              ,
+			const Number* x              ,
+			bool          new_x          ,
+			Number        obj_factor     ,
+			Index         m              ,
+			const Number* lambda         ,
+			bool          new_lambda     ,
+			Index         nele_hess      ,
+			Index*        iRow           ,
+			Index*        jCol           ,
+			Number*       values
+		);
 	public:
 		//  get the current ipopt_random error message
 		std::string get_error_message(void) const
