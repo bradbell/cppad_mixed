@@ -335,6 +335,7 @@ void cppad_mixed::init_ran_hes(
 		a1_val_out = a1_ran_hes_rcv_.val();
 	}
 	ran_hes_fun_.Dependent(a1_both, a1_val_out);
+	ran_hes_fun_.check_for_nan(false);
 
 	// optimize the recording
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION

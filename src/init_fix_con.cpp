@@ -129,6 +129,7 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec )
 
 	// save the recording
 	fix_con_fun_.Dependent(a1_theta, a1_vec);
+	fix_con_fun_.check_for_nan(false);
 
 	// optimize the recording
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION

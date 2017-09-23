@@ -114,6 +114,7 @@ void cppad_mixed::init_ran_like(
 
 	// save the recording
 	ran_like_a1fun_.Dependent(a2_both, a2_vec);
+	ran_like_a1fun_.check_for_nan(false);
 
 	// optimize the recording
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
@@ -144,6 +145,7 @@ void cppad_mixed::init_ran_like(
 	);
 	// save the recording
 	ran_like_fun_.Dependent(a1_both, a1_vec);
+	ran_like_fun_.check_for_nan(false);
 
 	// optimize the recording
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION

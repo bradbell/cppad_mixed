@@ -180,9 +180,6 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			ADvector both_vec(n_fixed_ + n_random_);
 			mixed_object_.pack(fixed_vec_, random_vec, both_vec);
 			ADvector vec = mixed_object_.ran_like_a1fun_.Forward(0, both_vec);
-			if( CppAD::hasnan( vec ) ) throw CppAD::mixed::exception(
-				"optimize_random_ipopt", "result has a nan"
-			);
 			assert( vec.size() == 1 );
 			//
 			// return negative log-likelihood
