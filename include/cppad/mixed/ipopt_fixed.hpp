@@ -163,6 +163,10 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// Otherwise, this was the last error detected.
 		std::string error_message_;
 		// ------------------------------------------------------------------
+		// if error_message_ is non-empty, this is the most recent
+		// fixed effects that threw a CppAD::mixed::exception
+		d_vector error_fixed_;
+		// ------------------------------------------------------------------
 		// Public versions wrap these functions in a try / catch block.
 		// If an eval fails, it sets this message and returns false.
 		void try_eval_f(
@@ -211,6 +215,10 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		//  get and clear the current ipopt_fixed error message
 		std::string get_error_message(void) const
 		{	return error_message_; }
+		//
+		// get the fixed effects corresponding to theh error message
+		double get_error_fixed(size_t j) const
+		{	return error_fixed_[j]; }
 		//
 		void clear_error_message(void)
 		{	error_message_ = ""; }

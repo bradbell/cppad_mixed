@@ -427,7 +427,8 @@ fixed_in_              ( fixed_in )                      ,
 random_lower_          ( random_lower )                  ,
 random_upper_          ( random_upper )                  ,
 random_in_             ( random_in )                     ,
-mixed_object_          ( mixed_object )
+mixed_object_          ( mixed_object )                  ,
+error_fixed_           ( n_fixed_ )
 {
 	double inf           = std::numeric_limits<double>::infinity();
 	//
@@ -932,6 +933,8 @@ $end
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	error_message_ = e.message("ipopt_fixed::eval_f");
+		for(size_t j = 0; j < n_fixed_; j++)
+			error_fixed_[j] = x[j];
 		return false;
 	}
 	return true;
@@ -1036,6 +1039,8 @@ $end
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	error_message_ = e.message("ipopt_fixed::eval_g");
+		for(size_t j = 0; j < n_fixed_; j++)
+			error_fixed_[j] = x[j];
 		return false;
 	}
 	return true;
@@ -1167,6 +1172,8 @@ $end
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	error_message_ = e.message("ipopt_fixed::eval_g");
+		for(size_t j = 0; j < n_fixed_; j++)
+			error_fixed_[j] = x[j];
 		return false;
 	}
 	return true;
@@ -1317,6 +1324,8 @@ $end
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	error_message_ = e.message("ipopt_fixed::eval_jac_g");
+		for(size_t j = 0; j < n_fixed_; j++)
+			error_fixed_[j] = x[j];
 		return false;
 	}
 	return true;
@@ -1583,6 +1592,8 @@ $end
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	error_message_ = e.message("ipopt_fixed::eval_h");
+		for(size_t j = 0; j < n_fixed_; j++)
+			error_fixed_[j] = x[j];
 		return false;
 	}
 	return true;

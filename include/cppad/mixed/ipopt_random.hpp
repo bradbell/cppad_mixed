@@ -103,8 +103,8 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// Initialize by constructor to have size n_random_.
 		std::string error_message_;
 		// ------------------------------------------------------------------
-		// if error_message_ is non-empty, this is the
-		// most recent random effects that failed in eval_f
+		// if error_message_ is non-empty, this is the most recent
+		// random effects that resulted in a CppAD::mixed::exception
 		d_vector error_random_;
 		// ------------------------------------------------------------------
 		// final solution returned by optimization

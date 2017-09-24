@@ -636,6 +636,8 @@ $end
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	error_message_ = e.message("ipopt_random::eval_jac_g");
+		for(size_t j = 0; j < n_random_; j++)
+			error_random_[j] = x[j];
 		return false;
 	}
 	return true;
@@ -788,6 +790,8 @@ $end
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	error_message_ = e.message("ipopt_random::eval_h");
+		for(size_t j = 0; j < n_random_; j++)
+			error_random_[j] = x[j];
 		return false;
 	}
 	return true;

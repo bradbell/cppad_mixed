@@ -507,11 +507,28 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	//
 	// check if fixed_nlp could not evaluate one of its functions
 	if(	fixed_nlp->get_error_message() != "" )
+	{	// report the error message as a warning
 		warning( fixed_nlp->get_error_message() );
 # ifndef NDEBUG
-	if( status == Ipopt::User_Requested_Stop )
-		assert( fixed_nlp->get_error_message() != "" );
+		if( status == Ipopt::User_Requested_Stop )
+			assert( fixed_nlp->get_error_message() != "" );
 # endif
+		// ---------------------------------------------------------------
+		// perhaps the following will generate a more useful error message.
+		a1_vector a1_theta(n_fixed_);
+		for(size_t j = 0; j < n_fixed_; j++)
+			a1_theta[j] = a1_double( fixed_nlp->get_error_fixed(j) );
+		try {
+			fix_constraint(a1_theta);
+			fix_likelihood(a1_theta);
+		}
+		catch(const CppAD::mixed::exception& e)
+		{	std::string error_message = e.message("optimize_fixed");
+			warning(error_message);
+		}
+		// ---------------------------------------------------------------
+	}
+
 	//
 	if( fixed_max_iter <= 0 )
 	{	// special case where we are not trying to solve
