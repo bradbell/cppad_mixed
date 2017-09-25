@@ -282,6 +282,7 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 		set_options(app, options, not_used);
 		//
 		// object that is used to evalute objective and its derivatives
+		// (note that one does not need to delete an ipopt smart pointer)
 		Ipopt::SmartPtr<CppAD::mixed::ipopt_random> random_nlp =
 		new CppAD::mixed::ipopt_random(
 			fixed_vec, random_lower, random_upper, random_in, mixed_object
@@ -330,7 +331,14 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 		{	std::string message = "optimize_random: ";
 			message += CppAD::mixed::ipopt_app_status(status);
 			if( status == Ipopt::Maximum_Iterations_Exceeded )
+			{	// In this case, we wish to see how far we got.
 				mixed_object.warning(message);
+			}
+			else if( status == Ipopt::Invalid_Number_Detected )
+			{	// Ipopt may move to a point where the objective can be
+				// evaluated, but the Hessian can't be evaluated.
+				mixed_object.warning(message);
+			}
 			else
 				mixed_object.fatal_error(message);
 		}
