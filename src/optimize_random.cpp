@@ -339,8 +339,7 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 				// evaluated, but the Hessian can't be evaluated.
 				mixed_object.warning(message);
 			}
-			else
-				mixed_object.fatal_error(message);
+			else throw CppAD::mixed::exception("use_ipopt_random", message);
 		}
 		//
 		return random_nlp->random_opt();

@@ -46,6 +46,11 @@ Make the exception class
 $cref/public/exception/Public/$$.
 $lend
 
+$head 09-30$$
+There was a mistake in the logic for recovering from
+random effect optimization failures during optimization of the fixed effects.
+This has been fixed.
+
 $head 09-21$$
 If optimizing the fixed effects, trap errors in optimizing random effects
 at the fixed effects level, so do not terminate but rather cut back and

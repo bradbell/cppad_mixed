@@ -23,6 +23,7 @@ ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
 	no_fix_likelihood.cpp
 	no_random.cpp
 	no_random_info.cpp
+	opt_ran_fail.cpp
 	ran_likelihood_hes.cpp
 	ran_likelihood_jac.cpp
 	ran_obj_tst.cpp

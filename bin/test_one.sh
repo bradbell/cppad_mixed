@@ -75,7 +75,14 @@ do
 		echo_eval sed -f test_one.2 -i $find_dir/$find_dir.cpp
 		rm test_one.2
 		echo_eval cd build
-		echo_eval make "check_$find_dir"
+		echo "make check_$find_dir"
+		if ! make "check_$find_dir"
+		then
+			rm ../test_one.1
+			echo "cd build; make check_$find_dir failed"
+			echo 'bin/test_one.sh: Error'
+			exit 1
+		fi
 		cd ..
 	fi
 done

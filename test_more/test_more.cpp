@@ -24,6 +24,7 @@ extern bool n_mixture(void);
 extern bool no_fix_likelihood(void);
 extern bool no_random(void);
 extern bool no_random_info(void);
+extern bool opt_ran_fail(void);
 extern bool ran_likelihood_hes(void);
 extern bool ran_likelihood_jac(void);
 extern bool ran_obj_tst(void);
@@ -80,6 +81,7 @@ int main(void)
 	RUN(no_fix_likelihood);
 	RUN(no_random);
 	RUN(no_random_info);
+	RUN(opt_ran_fail);
 	RUN(ran_likelihood_hes);
 	RUN(ran_likelihood_jac);
 	RUN(ran_obj_tst);
