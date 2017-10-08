@@ -44,36 +44,34 @@ then
 fi
 file_name="$1"
 # ---------------------------------------------------------------------------
-cat << EOF > test_one.1
-/This comment expected by bin\\/test_one.sh/b start_run
-/This comment also expected by bin\\/test_one.sh/b end_run
-b done
-#
-: start_run
-s|^|\\tRUN();\\n# if 0\\n|
-b done
-#
-: end_run
-s|\$|\\n# endif|
-: done
-EOF
-# ---------------------------------------------------------------------------
 found='no'
 for find_dir in example test_more
 do
 	find_path=`find $find_dir -name "$file_name"`
 	if [ "$find_path" != '' ]
 	then
-		found='yes'
 		test_name=`echo $file_name | sed -e 's|.*/||' -e 's|\.cpp$||'`
 		if [ "$find_dir" == 'example' ]
 		then
-			test_name=`echo $file_name | sed -e 's|.*/||' -e 's|\.cpp$|_xam|'`
+			test_name="${test_name}_xam"
 		fi
-		sed test_one.1 -e "s|RUN()|RUN($test_name)|" > test_one.2
+		found='yes'
+cat << EOF > test_one.1
+/This comment expected by bin\\/test_one.sh/b start_run
+/This comment also expected by bin\\/test_one.sh/b end_run
+b done
+#
+: start_run
+s|^|\\tRUN($test_name);\\n# if 0\\n|
+b done
+#
+: end_run
+s|\$|\\n# endif|
+: done
+EOF
 		git checkout $find_dir/$find_dir.cpp
-		echo_eval sed -f test_one.2 -i $find_dir/$find_dir.cpp
-		rm test_one.2
+		echo_eval sed -f test_one.1 -i $find_dir/$find_dir.cpp
+		rm test_one.1
 		echo_eval cd build
 		echo "make check_$find_dir"
 		if ! make "check_$find_dir"
@@ -86,7 +84,6 @@ do
 		cd ..
 	fi
 done
-rm test_one.1
 if [ "$found" == 'no' ]
 then
 	echo "test_one.sh: cannot find $file_name in example or test_more"
