@@ -11,6 +11,38 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
 
+/*
+f(theta, u)     = [ ( e^u theta - z )^2  + u^2 ] / 2
+
+f_u             = (e^u theta - z) e^u theta + u
+
+f_u,theta       = (e^u theta - z) e^u + (e^u)^2 theta
+
+f_u,theta,theta = 2 (e^u)^2
+
+f_u,u           = (e^u theta - z) e^u theta + (e^u theta)^2 + 1
+                = 2 (e^u theta)^2 - z e^u theta + 1
+
+f_u,u,theta     = 4 (e^u theta) e^u - z e^u
+
+f_u,u,u         = 4 (e^u theta) e^u theta - z e^u theta
+
+
+The Laplace approximation for the random part of the objective is
+h(theta, u) = log[2(e^u theta)^2 - z e^u theta + 1] + f(theta, u) + constant
+
+The optimal uhat(theta) satisfies:
+	f_u[theta, uhat(theta)] = 0
+Its derivative can be found by solving for uhat_theta(theta) in the following:
+	0 = f_u,u[theta, uhat(theta)] uhat_theta(theta)
+	  + f_u,theta[theta, uhat(theta)]
+Its second derivative can be found by solving for uhat_theta,theta(theta) in
+	0 = f_u,u[theta, uhat(theta)] uhat_theta,theta(theta)
+	  + f_u,u,u[theta, uhat(theta)] [u_theta(theta)]^2
+      + 2 f_u,u,theta[theta, uhat(theta)] uhat_theta(theta)
+	  + f_u,theta,theta[theta, uhat(theta]
+*/
+
 namespace {
 	using CppAD::vector;
 	using CppAD::log;
@@ -19,10 +51,26 @@ namespace {
 	//
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
+	//
+	template <class scalar>
+	scalar neg_loglike(
+		const scalar& theta ,
+		const scalar& u     ,
+		const scalar& z     )
+	{	//
+		// p(z|theta)
+		scalar res = (z - exp(u) * theta );
+		scalar sum = res * res / scalar(2.0);
+		//
+		// p(u|theta)
+		sum += u * u / scalar(2.0);
+		//
+		return sum;
+	}
 
 	class mixed_derived : public cppad_mixed {
 	private:
-		const vector<double>& y_;
+		const double z_;
 	public:
 		// constructor
 		mixed_derived(
@@ -31,75 +79,73 @@ namespace {
 			bool                                 quasi_fixed   ,
 			bool                                 bool_sparsity ,
 			const CppAD::mixed::sparse_rcv&      A_rcv         ,
-			const vector<double>&                y             ) :
+			double                               z             ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
 			),
-			y_(y)
-		{	assert( n_fixed == 2);
-		}
+			z_(z)
+		{ }
 		// implementation of ran_likelihood
 		virtual vector<a2_double> ran_likelihood(
 			const vector<a2_double>& theta  ,
 			const vector<a2_double>& u      )
-		{	vector<a2_double> vec(1);
-
-			// initialize part of log-density that is always smooth
-			vec[0] = a2_double(0.0);
-
-			// pi
-			a2_double sqrt_2pi = a2_double(
-				 CppAD::sqrt(8.0 * CppAD::atan(1.0)
-			));
-
-			for(size_t i = 0; i < y_.size(); i++)
-			{	a2_double mu     = u[i] + theta[0];
-				a2_double sigma  = theta[1];
-				a2_double res    = (y_[i] - mu) / sigma;
-
-				// p(y_i | u, theta)
-				vec[0] += log(sqrt_2pi * sigma) + res*res / a2_double(2.0);
-
-				// p(u_i | theta)
-				vec[0] += log(sqrt_2pi) + u[i] * u[i] / a2_double(2.0);
-			}
-			return vec;
+		{	vector<a2_double> result(1);
+			result[0] =  neg_loglike(theta[0], u[0], a2_double(z_));
+			return result;
 		}
 	public:
 		//
 	};
-}
+	// -----------------------------------------------------------------------
+	// function used to check results
+	void derivative(
+		const double&  theta,
+		const double&  u               ,
+		const double&  z               ,
+		double&        f_u             ,
+		double&        f_u_theta       ,
+		double&        f_u_theta_theta ,
+		double&        f_u_u           ,
+		double&        f_u_u_theta     ,
+		double&        f_u_u_u         )
+	{	double eu       = exp(u);
+		double eutheta  = eu * theta;
+		//
+		f_u             = ( eutheta - z ) * eutheta + u;
+		f_u_theta       = ( eutheta - z ) * eu + eu * eutheta;
+		f_u_theta_theta = 2.0 * eu;
+		f_u_u           = 2.0 * eutheta * eutheta - z * eutheta + 1;
+		f_u_u_theta     = 4.0 * eutheta * eu - z * eu;
+		f_u_u_u         = 4.0 * eutheta * eu * theta - z * eutheta;
+		//
+		return;
+	};
+};
 
 bool ran_objcon_hes(void)
-{
-	bool   ok = true;
-	double eps = 100. * std::numeric_limits<double>::epsilon();
-	double sqrt_2pi = CppAD::sqrt(8.0 * CppAD::atan(1.0) );
-
-	size_t n_data   = 10;
-	size_t n_fixed  = 2;
-	size_t n_random = n_data;
-	vector<double> data(n_data), fixed_vec(n_fixed), random_vec(n_random);
-	vector<double> beta(n_fixed), theta(n_fixed), uhat(n_random);
-
-	fixed_vec[0] = 2.0;
-	fixed_vec[1] = 0.5;
-	for(size_t i = 0; i < n_data; i++)
-	{	data[i]       = double(i + 1);
-		random_vec[i] = i / double(n_data);
-	}
+{	using std::fabs;
+	bool   ok    = true;
+	double inf   = std::numeric_limits<double>::infinity();
+	double eps99 = std::numeric_limits<double>::epsilon() * 99.0;
 
 	// object that is derived from cppad_mixed
+	size_t n_fixed     = 1;
+	size_t n_random    = 1;
 	bool quasi_fixed   = false;
 	bool bool_sparsity = true;
 	CppAD::mixed::sparse_rcv A_rcv; // empty matrix
+	double z           = 1.0;
 	mixed_derived mixed_object(
-		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, data
+		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, z
 	);
+
+	// initialize
+	vector<double> fixed_vec(1), random_vec(1);
+	fixed_vec[0]  = 0.5;
+	random_vec[0] = 0.0;
 	mixed_object.initialize(fixed_vec, random_vec);
 
 	// lower and upper limits for random effects
-	double inf = std::numeric_limits<double>::infinity();
 	vector<double> random_lower(n_random), random_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)
 	{	random_lower[i] = -inf;
@@ -108,67 +154,68 @@ bool ran_objcon_hes(void)
 
 	// optimize the random effects
 	std::string options;
-	options += "Integer print_level 0\n";
-	options += "String  sb          yes\n";
+	options += "Integer print_level     0\n";
+	options += "String  sb              yes\n";
 	options += "String  derivative_test second-order\n";
-	uhat = mixed_object.optimize_random(
+	options += "Numeric tol             1e-11\n";
+	vector<double> random_opt = mixed_object.optimize_random(
 		options, fixed_vec, random_lower, random_upper, random_vec
 	);
 
-	// compute Hessian of random part of Laplace approximation
-	vector<double> weight(1); // no random constraints
-	weight[0] = 1.0;
-	vector<size_t> row, col;
-	vector<double> val;
-	mixed_object.ran_objcon_hes(fixed_vec, uhat, weight, row, col, val);
+	// compute derivatives of the random likeilhood at (theta, uhat)
+	double theta  = fixed_vec[0];
+	double uhat   = random_opt[0];
+	double f_u, f_u_theta, f_u_theta_theta, f_u_u, f_u_u_theta, f_u_u_u;
+	derivative(
+		// inputs
+		theta           ,
+		uhat            ,
+		z               ,
+		// oututs
+		f_u             ,
+		f_u_theta       ,
+		f_u_theta_theta ,
+		f_u_u           ,
+		f_u_u_theta     ,
+		f_u_u_u
+	);
+	// check optimality
+	ok &= fabs( f_u ) < 1e-10;
 
-	// check size of result vectors
-	size_t K = row.size();
-	ok &= col.size() == K;
-	ok &= val.size() == K;
+	// record y = f(x) where x = (theta,u)
+	vector<a1_double> ax(2), ay(1);
+	ax[0] = theta;
+	ax[1] = uhat;
+	CppAD::Independent(ax);
+	ay[0] = neg_loglike(ax[0], ax[1], a1_double(z));
+	CppAD::ADFun<double> f(ax, ay);
 
-	// For this case the Laplace approximation is exactly equal the integral
-	// p(y | theta ) = integral of p(y | theta , u) p(u | theta) du
-	// record the function L(theta) = p(y | theta)
-	using CppAD::mixed::a1_double;
-	vector<a1_double> a1_fixed_vec(n_fixed), a1_L(1);
-	a1_fixed_vec[0]  = fixed_vec[0];
-	a1_fixed_vec[1]  = fixed_vec[1];
-	CppAD::Independent(a1_fixed_vec);
-	a1_double mu     = a1_fixed_vec[0];
-	a1_double sigma  = a1_fixed_vec[1];
-	a1_double delta  = CppAD::sqrt( sigma * sigma + 1.0 );
-	a1_L[0] = 0.0;
-	for(size_t i = 0; i < n_data; i++)
-	{	a1_double res  = (data[i] - mu) / delta;
-		a1_L[0]       += log(sqrt_2pi * delta) + res*res / 2.0;
-	}
-	CppAD::ADFun<double> f(a1_fixed_vec, a1_L);
+	// check f_u
+	vector<double> x1(2), y1(1);
+	x1[0] = 0.0;
+	x1[1] = 1.0;
+	y1    = f.Forward(1, x1);
+	ok   &= fabs( f_u - y1[0] ) < eps99;
 
-	// compute Hessian of L
-	vector<double> hes = f.Hessian(fixed_vec, 0);
+	// check f_u_theta and f_u_u
+	vector<double> w(1), dw(4);
+	w[0] = 1.0;
+	dw    = f.Reverse(2, w);
+	ok   &= fabs( dw[0 * 2 + 1] - f_u_theta ) < eps99;
+	ok   &= fabs( dw[1 * 2 + 1] - f_u_u ) < eps99;
 
-	// check results
-	ok &= hes.size() == 4;
-	size_t check_count = 0;
-	size_t non_zero    = 0;
-	for(size_t i = 0; i < 2; i++)
-	{	for(size_t j = 0; j <= i; j++)
-		{	// only check lower triangle non-zero values
-			if( hes[ i * 2 + j ] != 0.0 )
-			{	non_zero++;
-				for(size_t k = 0; k < K; k++)
-				{	if( row[k] == i && col[k] == j )
-					{	ok &= fabs( val[k] / hes[i*n_fixed+j] - 1.0 ) <= eps;
-						check_count++;
-					}
-				}
-			}
-		}
-	}
-	// should be only two non
-	ok &= check_count == non_zero;
-	ok &= K == non_zero;
+	// recompute f_u_u
+	vector<double> x2(2), y2(1);
+	x2[0] = 0.0;
+	x2[1] = 0.0;
+	y2    = f.Forward(2, x2);
+	ok   &= fabs( f_u_u / 2.0 - y2[0] ) < eps99;
+
+	// check f_u_u_theta
+	dw.resize(6);
+	dw    = f.Reverse(3, w);
+	ok   &= fabs( dw[ 0 * 3 + 2 ] - f_u_u_theta / 2.0 ) < eps99;
+	ok   &= fabs( dw[ 1 * 3 + 2 ] - f_u_u_u / 2.0 ) < eps99;
 
 	return ok;
 }

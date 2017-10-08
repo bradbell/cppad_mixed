@@ -54,7 +54,8 @@ file_name="$1"
 found='no'
 for find_dir in example test_more
 do
-	find_path=`find $find_dir -name "$file_name" | sed -e "s|$find_dir/||"`
+	find_path=`find $find_dir -name "$file_name" | \
+		 sed -e '/\/new\//d' -e "s|$find_dir/||"`
 	if [ "$find_path" != '' ]
 	then
 		test_name=`echo $file_name | sed -e 's|.*/||' -e 's|\.cpp$||'`
