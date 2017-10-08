@@ -180,6 +180,8 @@ hes_work_( hes_work     )
 	for(size_t k = 0; k < hes_rcv.nnz(); k++)
 		pattern.set(k, hes_rcv.row()[k], hes_rcv.col()[k]);
 	a1_hes_rcv_ = a1_sparse_rcv( pattern );
+	for(size_t k = 0; k < hes_rcv.nnz(); k++)
+		a1_hes_rcv_.set(k, hes_rcv.val()[k] );
 	// =======================================================================
 # if CPPAD_MIXED_USE_ATOMIC_CHOLESKY
 	// set a1_hessian to lower triangular sparse matrix representation of

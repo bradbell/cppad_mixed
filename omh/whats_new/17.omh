@@ -29,6 +29,7 @@ $spell
 	obj_tst
 	hpp
 	messaging
+	cholesky
 $$
 
 $section Changes and Additions to cppad_mixed During 2017$$
@@ -37,6 +38,13 @@ $childtable%
 	omh/whats_new/15.omh%
 	omh/whats_new/16.omh
 %$$
+
+$head 10-07$$
+Fix a bug in the Newton step
+$cref/initialize/newton_step/initialize/$$ routine.
+This bug was probably introduced on the master branch on 2017-03-22
+and only affected the case where
+$cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$ was $code yes$$.
 
 $head 09-30$$
 There was a mistake in the logic for recovering from
