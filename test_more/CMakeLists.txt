@@ -10,8 +10,8 @@
 # ---------------------------------------------------------------------------
 # Build C++ Examples / Tests
 #
-# Program cpp, not installed, and depends on following source files
-ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
+# bin/test_one.sh expects test_more.cpp on next line, last line to be just ')'
+ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL test_more.cpp
 	abs_fix_con.cpp
 	binomial.cpp
 	delta_ran_obj.cpp
@@ -32,7 +32,6 @@ ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL
 	scale.cpp
 	solution_check.cpp
 	sparse_ad_cholesky.cpp
-	test_more.cpp
 	zero_random_one.cpp
 	zero_random_two.cpp
 )
