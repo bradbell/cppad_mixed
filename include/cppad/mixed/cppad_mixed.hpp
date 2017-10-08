@@ -922,6 +922,7 @@ $srccode%cpp% */
 		d_vector&               val_out
 	);
 	friend bool ::ran_objcon_hes_xam(void);
+	friend bool ::ran_objcon_hes(void);
 /* %$$
 
 $subhead update_factor$$

@@ -28,6 +28,7 @@ extern bool opt_ran_fail(void);
 extern bool ran_likelihood_hes(void);
 extern bool ran_likelihood_jac(void);
 extern bool ran_obj_tst(void);
+extern bool ran_objcon_hes(void);
 extern bool sample_fixed_1(void);
 extern bool sample_fixed_2(void);
 extern bool scale(void);
@@ -85,6 +86,7 @@ int main(void)
 	RUN(ran_likelihood_hes);
 	RUN(ran_likelihood_jac);
 	RUN(ran_obj_tst);
+	RUN(ran_objcon_hes);
 	RUN(sample_fixed_1);
 	RUN(sample_fixed_2);
 	RUN(scale);
