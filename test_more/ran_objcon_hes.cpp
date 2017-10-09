@@ -16,17 +16,8 @@ f(theta, u)     = [ ( e^u theta - z )^2  + u^2 ] / 2
 
 f_u             = (e^u theta - z) e^u theta + u
 
-f_u_theta       = (e^u theta - z) e^u + (e^u)^2 theta
-
-f_u_theta_theta = 2 (e^u)^2
-
 f_u_u           = (e^u theta - z) e^u theta + (e^u theta)^2 + 1
                 = 2 (e^u theta)^2 - z e^u theta + 1
-
-f_u_u_theta     = 4 (e^u theta) e^u - z e^u
-
-f_u_u_u         = 4 (e^u theta) e^u theta - z e^u theta
-
 
 The Laplace approximation for the random part of the objective is
 h(theta, u) = log[ f_u_u(theta, uhat) ] / 2 + f(theta, u) + constant
@@ -99,20 +90,12 @@ namespace {
 		const double&  u               ,
 		const double&  z               ,
 		double&        f_u             ,
-		double&        f_u_theta       ,
-		double&        f_u_theta_theta ,
-		double&        f_u_u           ,
-		double&        f_u_u_theta     ,
-		double&        f_u_u_u         )
+		double&        f_u_u           )
 	{	double eu       = exp(u);
 		double eutheta  = eu * theta;
 		//
 		f_u             = ( eutheta - z ) * eutheta + u;
-		f_u_theta       = ( eutheta - z ) * eu + eu * eutheta;
-		f_u_theta_theta = 2.0 * eu;
 		f_u_u           = 2.0 * eutheta * eutheta - z * eutheta + 1.0;
-		f_u_u_theta     = 4.0 * eutheta * eu - z * eu;
-		f_u_u_u         = 4.0 * eutheta * eu * theta - z * eutheta;
 		//
 		return;
 	}
@@ -191,19 +174,15 @@ bool ran_objcon_hes(void)
 	// compute derivatives of the random likeilhood at (theta, uhat)
 	double theta  = fixed_vec[0];
 	double uhat   = random_opt[0];
-	double f_u, f_u_theta, f_u_theta_theta, f_u_u, f_u_u_theta, f_u_u_u;
+	double f_u, f_u_u;
 	derivative(
 		// inputs
 		theta           ,
 		uhat            ,
 		z               ,
-		// oututs
+		// outputs
 		f_u             ,
-		f_u_theta       ,
-		f_u_theta_theta ,
-		f_u_u           ,
-		f_u_u_theta     ,
-		f_u_u_u
+		f_u_u
 	);
 	// check optimality
 	ok &= fabs( f_u ) < 1e-10;
@@ -223,25 +202,12 @@ bool ran_objcon_hes(void)
 	y1    = f.Forward(1, x1);
 	ok   &= fabs( f_u - y1[0] ) < eps99;
 
-	// check f_u_theta and f_u_u
-	vector<double> w(1), dw(4);
-	w[0] = 1.0;
-	dw    = f.Reverse(2, w);
-	ok   &= fabs( dw[0 * 2 + 1] - f_u_theta ) < eps99;
-	ok   &= fabs( dw[1 * 2 + 1] - f_u_u ) < eps99;
-
 	// recompute f_u_u
 	vector<double> x2(2), y2(1);
 	x2[0] = 0.0;
 	x2[1] = 0.0;
 	y2    = f.Forward(2, x2);
 	ok   &= fabs( f_u_u / 2.0 - y2[0] ) < eps99;
-
-	// check f_u_u_theta
-	dw.resize(6);
-	dw    = f.Reverse(3, w);
-	ok   &= fabs( dw[ 0 * 3 + 2 ] - f_u_u_theta / 2.0 ) < eps99;
-	ok   &= fabs( dw[ 1 * 3 + 2 ] - f_u_u_u / 2.0 ) < eps99;
 
 	// define reduced objective r(theta) = h[theta , u_2(theta) ]
 	vector<a1_double> atheta(1), ar(1);
@@ -254,12 +220,13 @@ bool ran_objcon_hes(void)
 	CppAD::ADFun<double> r(atheta, ar);
 	//
 	// compute hessian both ways
-	vector<double> th(1), hes(1);
-	th[0] = theta;
-	hes   = r.Hessian(th, 0);
+	vector<double> weight(1), th(1), hes(1);
+	th[0]     = theta;
+	hes       = r.Hessian(th, 0);
+	weight[0] = 1.0;
 	vector<size_t> row, col;
 	vector<double> val;
-	mixed_object.ran_objcon_hes(fixed_vec, random_opt, w, row, col, val);
+	mixed_object.ran_objcon_hes(fixed_vec, random_opt, weight, row, col, val);
 	ok &= fabs( val[0] - hes[0] ) < eps99;
 	//
 	return ok;
