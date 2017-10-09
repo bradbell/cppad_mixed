@@ -122,8 +122,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 	if( random_ini.size() != n_random_ )
 	{	fatal_error("cppad_mixed::initialize random_vec has wrong size");
 	}
-	//
-	// conver fixed_ini -> fixed_vec and random_ini -> random_vec
+	// convert fixed_ini -> fixed_vec and random_ini -> random_vec
 	//
 	// Eigen will short curcit operations when values are zero. This can
 	// result in a different operation sequence. Create versions of the
