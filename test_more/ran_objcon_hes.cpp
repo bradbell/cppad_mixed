@@ -16,31 +16,28 @@ f(theta, u)     = [ ( e^u theta - z )^2  + u^2 ] / 2
 
 f_u             = (e^u theta - z) e^u theta + u
 
-f_u,theta       = (e^u theta - z) e^u + (e^u)^2 theta
+f_u_theta       = (e^u theta - z) e^u + (e^u)^2 theta
 
-f_u,theta,theta = 2 (e^u)^2
+f_u_theta_theta = 2 (e^u)^2
 
-f_u,u           = (e^u theta - z) e^u theta + (e^u theta)^2 + 1
+f_u_u           = (e^u theta - z) e^u theta + (e^u theta)^2 + 1
                 = 2 (e^u theta)^2 - z e^u theta + 1
 
-f_u,u,theta     = 4 (e^u theta) e^u - z e^u
+f_u_u_theta     = 4 (e^u theta) e^u - z e^u
 
-f_u,u,u         = 4 (e^u theta) e^u theta - z e^u theta
+f_u_u_u         = 4 (e^u theta) e^u theta - z e^u theta
 
 
 The Laplace approximation for the random part of the objective is
-h(theta, u) = log[2(e^u theta)^2 - z e^u theta + 1] + f(theta, u) + constant
+h(theta, u) = log[ f_u_u(theta, uhat) ] / 2 + f(theta, u) + constant
 
 The optimal uhat(theta) satisfies:
 	f_u[theta, uhat(theta)] = 0
-Its derivative can be found by solving for uhat_theta(theta) in the following:
-	0 = f_u,u[theta, uhat(theta)] uhat_theta(theta)
-	  + f_u,theta[theta, uhat(theta)]
-Its second derivative can be found by solving for uhat_theta,theta(theta) in
-	0 = f_u,u[theta, uhat(theta)] uhat_theta,theta(theta)
-	  + f_u,u,u[theta, uhat(theta)] [u_theta(theta)]^2
-      + 2 f_u,u,theta[theta, uhat(theta)] uhat_theta(theta)
-	  + f_u,theta,theta[theta, uhat(theta]
+
+We define
+u_0(theta) = uhat
+u_1(theta) = u_0(theta)-f_u[theta, u_0(theta)]/f_u_u [theta, u_0(theta)]
+u_2(theta) = u_1(theta)-f_u[theta, u_1(theta)]/f_u_u [theta, u_1(theta)]
 */
 
 namespace {
@@ -51,7 +48,6 @@ namespace {
 	//
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
-	//
 	template <class scalar>
 	scalar neg_loglike(
 		const scalar& theta ,
@@ -114,12 +110,42 @@ namespace {
 		f_u             = ( eutheta - z ) * eutheta + u;
 		f_u_theta       = ( eutheta - z ) * eu + eu * eutheta;
 		f_u_theta_theta = 2.0 * eu;
-		f_u_u           = 2.0 * eutheta * eutheta - z * eutheta + 1;
+		f_u_u           = 2.0 * eutheta * eutheta - z * eutheta + 1.0;
 		f_u_u_theta     = 4.0 * eutheta * eu - z * eu;
 		f_u_u_u         = 4.0 * eutheta * eu * theta - z * eutheta;
 		//
 		return;
-	};
+	}
+	// -----------------------------------------------------------------------
+	template <class scalar>
+	scalar u_2( const scalar& theta , const scalar& uhat  , const scalar& z)
+	{
+		scalar eu       = exp(uhat);
+		scalar eutheta  = eu * theta;
+		//
+		scalar f_u       = ( eutheta - z ) * eutheta + uhat;
+		scalar f_u_u     = 2.0 * eutheta * eutheta - z * eutheta + 1.0;
+		scalar u_1       = uhat - f_u / f_u_u;
+		//
+		eu               = exp(u_1);
+		eutheta          = eu * theta;
+		f_u              = ( eutheta - z ) * eutheta + u_1;
+		f_u_u            = 2.0 * eutheta * eutheta - z * eutheta + 1.0;
+		scalar result    = u_1 - f_u / f_u_u;
+		//
+		return result;
+	}
+	// -----------------------------------------------------------------------
+	template <class scalar>
+	scalar h(const scalar& theta, const scalar& uhat, const scalar& z)
+	{
+		scalar f        = neg_loglike(theta, uhat, z);
+		scalar eu       = exp(uhat);
+		scalar eutheta  = eu * theta;
+		scalar f_u_u    = 2.0 * eutheta * eutheta - z * eutheta + 1.0;
+		scalar result   = log( f_u_u ) / 2.0 + f;
+		return result;
+	}
 };
 
 bool ran_objcon_hes(void)
@@ -134,7 +160,7 @@ bool ran_objcon_hes(void)
 	bool quasi_fixed   = false;
 	bool bool_sparsity = true;
 	CppAD::mixed::sparse_rcv A_rcv; // empty matrix
-	double z           = 1.0;
+	double z           = 0.1;
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, z
 	);
@@ -217,5 +243,24 @@ bool ran_objcon_hes(void)
 	ok   &= fabs( dw[ 0 * 3 + 2 ] - f_u_u_theta / 2.0 ) < eps99;
 	ok   &= fabs( dw[ 1 * 3 + 2 ] - f_u_u_u / 2.0 ) < eps99;
 
+	// define reduced objective r(theta) = h[theta , u_2(theta) ]
+	vector<a1_double> atheta(1), ar(1);
+	atheta[0] = theta;
+	CppAD::Independent(atheta);
+	a1_double au     = uhat;
+	a1_double az     = z;
+	a1_double au_2   = u_2(atheta[0], au, az);
+	ar[0]            = h(atheta[0], au_2, az);
+	CppAD::ADFun<double> r(atheta, ar);
+	//
+	// compute hessian both ways
+	vector<double> th(1), hes(1);
+	th[0] = theta;
+	hes   = r.Hessian(th, 0);
+	vector<size_t> row, col;
+	vector<double> val;
+	mixed_object.ran_objcon_hes(fixed_vec, random_opt, w, row, col, val);
+	ok &= fabs( val[0] - hes[0] ) < eps99;
+	//
 	return ok;
 }
