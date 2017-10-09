@@ -141,16 +141,16 @@ bool ran_objcon_hes(void)
 	size_t n_fixed     = 1;
 	size_t n_random    = 1;
 	bool quasi_fixed   = false;
-	bool bool_sparsity = true;
+	bool bool_sparsity = false;
 	CppAD::mixed::sparse_rcv A_rcv; // empty matrix
-	double z           = 0.1;
+	double z           = 2.0;
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, z
 	);
 
 	// initialize
 	vector<double> fixed_vec(1), random_vec(1);
-	fixed_vec[0]  = 0.5;
+	fixed_vec[0]  = z;
 	random_vec[0] = 0.0;
 	mixed_object.initialize(fixed_vec, random_vec);
 
