@@ -111,17 +111,36 @@ $end
 # include <cppad/mixed/exception.hpp>
 // ---------------------------------------------------------------------------
 std::map<std::string, size_t> cppad_mixed::try_initialize(
-	const d_vector&                      fixed_vec     ,
-	const d_vector&                      random_vec    )
+	const d_vector&                      fixed_ini     ,
+	const d_vector&                      random_ini    )
 {	if( initialize_done_ )
 	{	fatal_error("cppad_mixed::initialize was called twice");
 	}
-	if( fixed_vec.size() != n_fixed_ )
+	if( fixed_ini.size() != n_fixed_ )
 	{	fatal_error("cppad_mixed::initialize fixed_vec has wrong size");
 	}
-	if( random_vec.size() != n_random_ )
+	if( random_ini.size() != n_random_ )
 	{	fatal_error("cppad_mixed::initialize random_vec has wrong size");
 	}
+	//
+	// conver fixed_ini -> fixed_vec and random_ini -> random_vec
+	//
+	// Eigen will short curcit operations when values are zero. This can
+	// result in a different operation sequence. Create versions of the
+	// input vectors with no zeros in them.
+	double tiny = std::numeric_limits<double>::min();
+	assert( tiny > 0.0 );
+	d_vector fixed_vec  = fixed_ini;
+	d_vector random_vec = random_ini;
+	for(size_t i = 0; i < n_fixed_; i++)
+	{	if( fixed_vec[i] == 0.0 )
+			fixed_vec[i] = tiny;
+	}
+	for(size_t i = 0; i < n_random_; i++)
+	{	if( random_vec[i] == 0.0 )
+			random_vec[i] = tiny;
+	}
+	// ------------------------------------------------------------------------
 	//
 	size_t thread           = CppAD::thread_alloc::thread_num();
 	size_t num_bytes_before = CppAD::thread_alloc::inuse(thread);

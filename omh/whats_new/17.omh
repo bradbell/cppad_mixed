@@ -30,6 +30,7 @@ $spell
 	hpp
 	messaging
 	cholesky
+	Eigen
 $$
 
 $section Changes and Additions to cppad_mixed During 2017$$
@@ -38,6 +39,17 @@ $childtable%
 	omh/whats_new/15.omh%
 	omh/whats_new/16.omh
 %$$
+
+$head 10-09$$
+The $cref data_mismatch.cpp$$ example was failing when
+$cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$ was $code yes$$.
+This was because
+the Eigen package was short circuiting operations when values were zero.
+This caused the CppAD operation sequence to be incorrect for non-zero values
+of the independent variables.
+The $cref initialize$$ routine has been changed to perturb zero values
+to avoid this problem. This is not a bullet proof solution because
+zero may result from calculations.
 
 $head 10-07$$
 Fix a bug in the Newton step
