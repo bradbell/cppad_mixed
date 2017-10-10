@@ -129,8 +129,8 @@ CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 		// that are only used for the Hessian calculation; see initilaize.cpp
 		if( ! init_newton_checkpoint_done_ )
 		{	assert( quasi_fixed_ );
-			assert( ! init_ran_objcon_done_ );
-			assert( ! init_ran_objcon_hes_done_ );
+			assert( ! init_laplace_obj_done_ );
+			assert( ! init_laplace_obj_hes_done_ );
 			//
 			// newton_checkpoint_
 			assert( ran_like_a1fun_.size_var() > 0  );
@@ -139,19 +139,19 @@ CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 			);
 			init_newton_checkpoint_done_ = true;;
 			//
-			// ran_objcon_fun_
-			assert( ! init_ran_objcon_done_ );
+			// laplace_obj_fun_
+			assert( ! init_laplace_obj_done_ );
 			init_ran_objcon(fixed_opt, random_opt);
-			assert( init_ran_objcon_done_ );
+			assert( init_laplace_obj_done_ );
 			//
-			// ran_objcon_hes_
-			assert( ! init_ran_objcon_hes_done_ );
-			init_ran_objcon_hes(fixed_opt, random_opt);
-			assert( init_ran_objcon_hes_done_ );
+			// laplace_obj_hes_
+			assert( ! init_laplace_obj_hes_done_ );
+			init_laplace_obj_hes(fixed_opt, random_opt);
+			assert( init_laplace_obj_hes_done_ );
 		}
 		assert( init_newton_checkpoint_done_ );
-		assert( init_ran_objcon_done_ );
-		assert( init_ran_objcon_hes_done_ );
+		assert( init_laplace_obj_done_ );
+		assert( init_laplace_obj_hes_done_ );
 		// ------------------------------------------------------------------
 		// Lower triangle of Hessian w.r.t. fixed effects
 		// for random part of objective,no constraints
@@ -161,7 +161,7 @@ CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 			w_ran[j] = 0.0;
 		//
 		CppAD::mixed::sparse_mat_info ran_info;
-		ran_objcon_hes(
+		laplace_obj_hes(
 		fixed_opt, random_opt, w_ran, ran_info.row, ran_info.col, ran_info.val
 		);
 		ran_hes = CppAD::mixed::triple2eigen(

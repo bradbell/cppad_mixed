@@ -24,7 +24,7 @@ $spell
 	Cpp
 $$
 
-$section Second Order Representation of Random Objective and Constraints$$
+$section Second Order Representation of Laplace Objective and Constraints$$
 
 $head Syntax$$
 $icode%mixed_object%.init_ran_objcon(%fixed_vec%, %random_vec%)%$$
@@ -55,17 +55,17 @@ It specifies the value of the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$ at which the initialization is done.
 
-$head ran_objcon_fun_$$
+$head laplace_obj_fun_$$
 The input value of the member variable
 $codei%
-	CppAD::ADFun<double> ran_objcon_fun_
+	CppAD::ADFun<double> laplace_obj_fun_
 %$$
 does not matter.
 Upon return it contains a second order accurate recording of the
-approximate random objective; see
+approximate Laplace objective; see
 $cref/H(beta, theta, u)
 	/theory
-	/Approximate Random Objective, H(beta, theta, u)
+	/Approximate Laplace Objective, H(beta, theta, u)
 /$$
 $latex H( \beta , \theta , u )$$,
 followed by the approximate random constraint function; see
@@ -75,8 +75,8 @@ $cref/B(beta, theta, u)
 /$$
 $latex B( \beta , \theta , u )$$. Thus
 $codei%
-	ran_objcon_fun_.Domain() == n_fixed_ + n_fixed_ + n_random_
-	ran_objcon_fun_.Range()  == 1 + A_rcv_.nr()
+	laplace_obj_fun_.Domain() == n_fixed_ + n_fixed_ + n_random_
+	laplace_obj_fun_.Range()  == 1 + A_rcv_.nr()
 %$$
 
 
@@ -92,7 +92,7 @@ void cppad_mixed::init_ran_objcon(
 	const d_vector& random_vec )
 {	assert( init_ran_like_done_ );
 	assert( init_newton_checkpoint_done_ );
-	assert( ! init_ran_objcon_done_ );
+	assert( ! init_laplace_obj_done_ );
 	assert( A_rcv_.nnz() == A_rcv_.row().size() );
 	assert( A_rcv_.nnz() == A_rcv_.col().size() );
 	assert( A_rcv_.nnz() == A_rcv_.val().size() );
@@ -196,12 +196,12 @@ void cppad_mixed::init_ran_objcon(
 		}
 	}
 	//
-	ran_objcon_fun_.Dependent(beta_theta_u, HB);
-	ran_objcon_fun_.check_for_nan(false);
+	laplace_obj_fun_.Dependent(beta_theta_u, HB);
+	laplace_obj_fun_.check_for_nan(false);
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
-	ran_objcon_fun_.optimize("no_conditional_skip");
+	laplace_obj_fun_.optimize("no_conditional_skip");
 # endif
 	//
-	init_ran_objcon_done_ = true;
+	init_laplace_obj_done_ = true;
 	return;
 }

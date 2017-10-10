@@ -71,7 +71,7 @@ $cref fix_con_hes$$,
 $cref fix_con_jac$$,
 $cref fix_like_hes$$,
 $cref fix_like_jac$$,
-$cref ran_objcon_hes$$.
+$cref laplace_obj_hes$$.
 
 $head Windows Install$$
 Make and test a set of Windows install instructions for $code cppad_mixed$$.

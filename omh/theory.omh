@@ -86,7 +86,7 @@ h( \theta, u )
 \] $$
 where $latex n$$ is the number of random effects.
 
-$subhead Random Objective, r(theta)$$
+$subhead Laplace Objective, r(theta)$$
 We refer to
 $latex \[
 	r( \theta )
@@ -97,7 +97,7 @@ $latex \[
 		\B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) \; \B{d} u
 	\right]
 \] $$
-as the random objective.
+as the Laplace objective.
 This corresponds to equation (4) in the
 $cref/reference/theory/Reference/$$.
 
@@ -140,7 +140,7 @@ $latex \[
 	A \; \hat{u}_\theta ( \theta )
 \]$$
 
-$head Derivative of Random Objective$$
+$head Derivative of Laplace Objective$$
 The derivative of the random part of the objective is given by
 $latex \[
 r_\theta ( \theta )
@@ -218,7 +218,7 @@ $latex \[
 	\hat{u}^i_{\theta , \theta} ( \theta )
 \] $$
 
-$head Approximate Random Objective, H(beta, theta, u)$$
+$head Approximate Laplace Objective, H(beta, theta, u)$$
 Given these facts we define
 $latex \[
 H( \beta , \theta , u)
@@ -245,8 +245,8 @@ $latex \[
 	B( \beta , \theta , u) = A \; W( \beta , \theta , u )
 \] $$
 
-$head Hessian of Random Objective$$
-Note that the Hessian of the random objective
+$head Hessian of Laplace Objective$$
+Note that the Hessian of the Laplace objective
 $latex r_{\theta,\theta} ( \theta ) $$ is required when
 $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false.
 In this case, the representation

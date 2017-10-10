@@ -26,7 +26,7 @@ $spell
 	cholesky
 $$
 
-$section Derivative of Random Objective$$
+$section Derivative of Laplace Objective$$
 
 $head Syntax$$
 $icode%mixed_object%.ran_obj_jac(%fixed_vec%, %random_vec%, %r_fixed%)%$$
@@ -36,9 +36,9 @@ This $code cppad_mixed$$ member function is $cref private$$.
 
 $head Purpose$$
 This routine computes the
-$cref/derivative of the random objective
+$cref/derivative of the Laplace objective
 	/theory/
-	Derivative of Random Objective
+	Derivative of Laplace Objective
 /$$.
 
 $head mixed_object$$

@@ -288,8 +288,8 @@ $code initialize$$ and $code information_mat$$ to
 $cref/derived_ctor/derived_ctor/bool_sparsity/$$.
 
 $head 07-14$$
-A new method for computing the Hessian of the random objective
-$cref/Hessian of the random objective/theory/Hessian of Random Objective/$$
+A new method for computing the Hessian of the Laplace objective
+$cref/Hessian of the Laplace objective/theory/Hessian of Laplace Objective/$$
 was implemented.
 To be specific, two partial Newton steps
 (instead of two full Newton steps) are used in the

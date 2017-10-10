@@ -187,15 +187,15 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 			);
 			init_newton_checkpoint_done_ = true;
 
-			// ran_objcon_fun_
-			assert( ! init_ran_objcon_done_ );
+			// laplace_obj_fun_
+			assert( ! init_laplace_obj_done_ );
 			init_ran_objcon(fixed_vec, random_vec);
-			assert( init_ran_objcon_done_ );
+			assert( init_laplace_obj_done_ );
 
-			// ran_objcon_hes_
-			assert( ! init_ran_objcon_hes_done_ );
-			init_ran_objcon_hes(fixed_vec, random_vec);
-			assert( init_ran_objcon_hes_done_ );
+			// laplace_obj_hes_
+			assert( ! init_laplace_obj_hes_done_ );
+			init_laplace_obj_hes(fixed_vec, random_vec);
+			assert( init_laplace_obj_hes_done_ );
 		}
 		// check ran_likelihood_jac
 		ran_like_jac_check(fixed_vec, random_vec);
@@ -231,8 +231,8 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 	size_map["ran_hes_fun_.size_var()"]    = ran_hes_fun_.size_var();
 	size_map["hes_cross_.subset.nnz()"]    = hes_cross_.subset.nnz();
 	size_map["newton_checkpoint_.size_var()"] = newton_checkpoint_.size_var();
-	size_map["ran_objcon_fun_.size_var()"] = ran_objcon_fun_.size_var();
-	size_map["ran_objcon_hes_.subset.nnz()"] = ran_objcon_hes_.subset.nnz();
+	size_map["laplace_obj_fun_.size_var()"] = laplace_obj_fun_.size_var();
+	size_map["laplace_obj_hes_.subset.nnz()"] = laplace_obj_hes_.subset.nnz();
 	size_map["fix_like_fun_.size_var()"]   = fix_like_fun_.size_var();
 	size_map["fix_like_jac_.subset.nnz()"] = fix_like_jac_.subset.nnz();
 	size_map["fix_like_hes_.subset.nnz()"] = fix_like_hes_.subset.nnz();

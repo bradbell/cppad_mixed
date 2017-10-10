@@ -10,7 +10,7 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 
 /*
-$begin init_ran_objcon_hes$$
+$begin init_laplace_obj_hes$$
 $spell
 	objcon
 	CppAD
@@ -25,10 +25,10 @@ $spell
 	bool
 $$
 
-$section Initialize Hessian of Approximate Random Objective$$
+$section Initialize Hessian of Approximate Laplace Objective$$
 
 $head Syntax$$
-$icode%mixed_object%.init_ran_objcon_hes(
+$icode%mixed_object%.init_laplace_obj_hes(
 	%fixed_vec%, %random_vec%
 )%$$
 
@@ -58,10 +58,10 @@ It specifies the initial value for the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ optimization.
 
 
-$head ran_objcon_hes_$$
+$head laplace_obj_hes_$$
 The input value of the member variable
 $codei%
-	CppAD::mixed::sparse_hes_info ran_objcon_hes_
+	CppAD::mixed::sparse_hes_info laplace_obj_hes_
 %$$
 does not matter.
 Upon return it contains the
@@ -75,12 +75,12 @@ $latex \[
 see
 $cref/H(beta, theta, u)
 	/theory
-	/Approximate Random Objective, H(beta, theta, u)
+	/Approximate Laplace Objective, H(beta, theta, u)
 /$$.
 Note that the matrix is symmetric and hence can be recovered from
 its lower triangle.
 
-$subhead ran_objcon_fun_$$
+$subhead laplace_obj_fun_$$
 This ADFun object should be used in the
 $cref/sparse Hessian Call/sparse_hes_info/Sparse Hessian Call/f/$$.
 
@@ -88,11 +88,11 @@ $end
 */
 # include <cppad/mixed/cppad_mixed.hpp>
 
-void cppad_mixed::init_ran_objcon_hes(
+void cppad_mixed::init_laplace_obj_hes(
 	const d_vector& fixed_vec     ,
 	const d_vector& random_vec    )
-{	assert( ! init_ran_objcon_hes_done_ );
-	assert( init_ran_objcon_done_ );
+{	assert( ! init_laplace_obj_hes_done_ );
+	assert( init_laplace_obj_done_ );
 
 	// total number of variables in H
 	size_t n_total = 2 * n_fixed_ + n_random_;
@@ -109,19 +109,19 @@ void cppad_mixed::init_ran_objcon_hes(
 	bool      dependency    = false;
 	bool      internal_bool = bool_sparsity_;
 	sparse_rc jac_pattern;
-	ran_objcon_fun_.for_jac_sparsity(
+	laplace_obj_fun_.for_jac_sparsity(
 		pattern_in, transpose, dependency, internal_bool, jac_pattern
 	);
 
 	// compute sparsity pattern corresponding to partial w.r.t (beta, theta, u)
 	// of partial w.r.t beta of H(beta, theta, u)
-	size_t m = ran_objcon_fun_.Range();
+	size_t m = laplace_obj_fun_.Range();
 	CppAD::vector<bool> select_range(m);
 	for(size_t i = 0; i < m; i++)
 		select_range[i] = false;
 	select_range[0] = true;
 	sparse_rc hes_pattern;
-	ran_objcon_fun_.rev_hes_sparsity(
+	laplace_obj_fun_.rev_hes_sparsity(
 		select_range, transpose, internal_bool, hes_pattern
 	);
 	assert( hes_pattern.nr() == n_total );
@@ -149,7 +149,7 @@ void cppad_mixed::init_ran_objcon_hes(
 	assert( nnz == ell );
 	//
 	// only compute the lower triangle of H_beta_beta ( beta, theta, u)
-	ran_objcon_hes_.subset = sparse_rcv( beta_beta_pattern );
+	laplace_obj_hes_.subset = sparse_rcv( beta_beta_pattern );
 	//
 	// compute work for reuse during sparse Hessian calculations
 	// (value of weight vecgttor does not affectg work, but avoid wanrings)
@@ -157,14 +157,14 @@ void cppad_mixed::init_ran_objcon_hes(
 	for(size_t i = 0; i < m; i++)
 		weight[i] = 1.0;
 	std::string coloring  = "cppad.symmetric";
-	ran_objcon_fun_.sparse_hes(
+	laplace_obj_fun_.sparse_hes(
 		beta_theta_u           ,
 		weight                 ,
-		ran_objcon_hes_.subset ,
+		laplace_obj_hes_.subset ,
 		extend_pattern         ,
 		coloring               ,
-		ran_objcon_hes_.work
+		laplace_obj_hes_.work
 	);
 	//
-	init_ran_objcon_hes_done_ = true;
+	init_laplace_obj_hes_done_ = true;
 }

@@ -65,10 +65,10 @@ is used for the Laplace approximation function.
 $head H$$
 The notation $cref/H(beta, theta, u)
 	/theory
-	/Approximate Random Objective, H(beta, theta, u)
+	/Approximate Laplace Objective, H(beta, theta, u)
 /$$
 ( $latex H( \beta , \theta , u )$$ )
-is used for the second order random objective.
+is used for the second order Laplace objective.
 
 $head p$$
 The notations
@@ -83,9 +83,9 @@ $cref/p(y | theta, u)/cppad_mixed/Notation/Fixed Prior Density, p(theta)/$$.
 
 $head r$$
 The notation
-$cref/r(theta)/theory/Objective/Random Objective, r(theta)/$$
+$cref/r(theta)/theory/Objective/Laplace Objective, r(theta)/$$
 ( $latex r( \theta )$$ )
-is used for the random objective function.
+is used for the Laplace objective function.
 
 $head L$$
 The notation

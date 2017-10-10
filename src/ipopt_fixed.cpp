@@ -329,7 +329,7 @@ size $code n_fixed_$$
 $subhead w_fix_con_tmp_$$
 size $code n_fix_con_$$
 
-$subhead w_ran_objcon_tmp_$$
+$subhead w_laplace_obj_tmp_$$
 size $code n_ran_con_ + 1$$.
 
 $subhead w_fix_likelihood_tmp_$$
@@ -368,7 +368,7 @@ $subhead lag_hes_col_$$
 Ipopt column indices for the sparse representation of the Hessian
 of the Lagrangian (for any Lagrange multiplier values).
 
-$subhead ran_objcon_hes_2_lag_$$
+$subhead laplace_obj_hes_2_lag_$$
 Mapping from random object plus constraint Hessian sparse indices
 to ipopt Hessian sparse indices.
 
@@ -387,9 +387,9 @@ $subhead ran_con_jac_rcv_$$
 Sparse matrix information for the Jacobian of the
 random constraints.
 
-$subhead ran_objcon_hes_info_$$
+$subhead laplace_obj_hes_info_$$
 If $code n_random_ > 0$$, sparse matrix information for the Hessian of the
-random objective and constraints.
+Laplace objective and constraints.
 
 $head adaptive_called_$$
 This member variable is set to false.
@@ -468,7 +468,7 @@ error_fixed_           ( n_fixed_ )
 	A_uhat_tmp_.resize( n_ran_con_ );
 	H_beta_tmp_.resize( n_fixed_ );
 	w_fix_con_tmp_.resize( n_fix_con_ );
-	w_ran_objcon_tmp_.resize( n_ran_con_ + 1 );
+	w_laplace_obj_tmp_.resize( n_ran_con_ + 1 );
 	w_fix_likelihood_tmp_.resize( fix_likelihood_nabs_ + 1 );
 	if( fix_likelihood_vec.size() == 0 )
 		assert( fix_likelihood_vec_tmp_.size() == 0 );
@@ -521,7 +521,7 @@ error_fixed_           ( n_fixed_ )
 	nnz_jac_g_ += ran_con_jac_rcv_.nnz();
 	// -----------------------------------------------------------------------
 	// set lag_hes_row_, lag_hes_col_
-	// ran_objcon_hes_2_lag_, fix_like_hes_2_lag_
+	// laplace_obj_hes_2_lag_, fix_like_hes_2_lag_
 	// -----------------------------------------------------------------------
 	if( mixed_object_.quasi_fixed_ )
 	{	// Using quasi-Newton method
@@ -534,16 +534,16 @@ error_fixed_           ( n_fixed_ )
 		// random part of objective
 		if( n_random_ > 0 )
 		{
-			w_ran_objcon_tmp_[0] = 1.0;
+			w_laplace_obj_tmp_[0] = 1.0;
 			for(size_t i = 0; i < n_ran_con_; i++)
-				w_ran_objcon_tmp_[i+1] = 1.0;
-			 mixed_object.ran_objcon_hes(
+				w_laplace_obj_tmp_[i+1] = 1.0;
+			 mixed_object.laplace_obj_hes(
 				fixed_in,
 				random_in,
-				w_ran_objcon_tmp_,
-				ran_objcon_hes_info_.row,
-				ran_objcon_hes_info_.col,
-				ran_objcon_hes_info_.val
+				w_laplace_obj_tmp_,
+				laplace_obj_hes_info_.row,
+				laplace_obj_hes_info_.col,
+				laplace_obj_hes_info_.val
 			);
 		}
 		// row and column indices for contribution from prior
@@ -576,12 +576,12 @@ error_fixed_           ( n_fixed_ )
 		);
 		//
 		// merge to form sparsity for Lagrangian
-		ran_objcon_hes_2_lag_.resize( ran_objcon_hes_info_.row.size() );
+		laplace_obj_hes_2_lag_.resize( laplace_obj_hes_info_.row.size() );
 		fix_like_hes_2_lag_.resize( fix_like_hes_row.size() );
 		fix_con_hes_2_lag_.resize( fix_con_hes_row.size() );
 		merge_sparse(
-			ran_objcon_hes_info_.row      ,
-			ran_objcon_hes_info_.col      ,
+			laplace_obj_hes_info_.row      ,
+			laplace_obj_hes_info_.col      ,
 			//
 			fix_like_hes_row         ,
 			fix_like_hes_col         ,
@@ -592,13 +592,13 @@ error_fixed_           ( n_fixed_ )
 			lag_hes_row_                  ,
 			lag_hes_col_                  ,
 			//
-			ran_objcon_hes_2_lag_         ,
+			laplace_obj_hes_2_lag_         ,
 			fix_like_hes_2_lag_           ,
 			fix_con_hes_2_lag_
 		);
 # ifndef NDEBUG
-		for(size_t k = 0; k < ran_objcon_hes_info_.row.size(); k++)
-			assert( ran_objcon_hes_2_lag_[k] < lag_hes_row_.size() );
+		for(size_t k = 0; k < laplace_obj_hes_info_.row.size(); k++)
+			assert( laplace_obj_hes_2_lag_[k] < lag_hes_row_.size() );
 		//
 		for(size_t k = 0; k < fix_like_hes_row.size(); k++)
 			assert( fix_like_hes_2_lag_[k] < lag_hes_row_.size() );
@@ -1086,7 +1086,7 @@ void ipopt_fixed::try_eval_grad_f(
 		fix_like_jac_val
 	);
 	//
-	// random objective part of grad_f
+	// Laplace objective part of grad_f
 	for(size_t j = 0; j < n_fixed_; j++)
 	{	assert( j < size_t(n) );
 		grad_f[j] = Number( H_beta_tmp_[j] );
@@ -1640,32 +1640,32 @@ void ipopt_fixed::try_eval_h(
 		if( new_x )
 			new_random(fixed_tmp_);
 		// compute Hessian of random part of objective w.r.t. fixed effects
-		w_ran_objcon_tmp_[0] = obj_factor;
+		w_laplace_obj_tmp_[0] = obj_factor;
 # if CPPAD_MIXED_HIDE_IPOPT_SCALING
-		w_ran_objcon_tmp_[0] = scale_f_ * obj_factor;
+		w_laplace_obj_tmp_[0] = scale_f_ * obj_factor;
 # endif
 		//
 		// include random constraints in this Hessian calculation
 		size_t offset = 2 * fix_likelihood_nabs_ + n_fix_con_;
 		for(size_t i = 0; i < n_ran_con_; i++)
-		{	w_ran_objcon_tmp_[i+1] = lambda[offset + i];
+		{	w_laplace_obj_tmp_[i+1] = lambda[offset + i];
 # if CPPAD_MIXED_HIDE_IPOPT_SCALING
-			w_ran_objcon_tmp_[i+1] = scale_g_[offset+i] * lambda[offset+i];
+			w_laplace_obj_tmp_[i+1] = scale_g_[offset+i] * lambda[offset+i];
 # endif
 		}
 		//
-		mixed_object_.ran_objcon_hes(
+		mixed_object_.laplace_obj_hes(
 			fixed_tmp_,
 			random_cur_,
-			w_ran_objcon_tmp_,
-			ran_objcon_hes_info_.row,
-			ran_objcon_hes_info_.col,
-			ran_objcon_hes_info_.val
+			w_laplace_obj_tmp_,
+			laplace_obj_hes_info_.row,
+			laplace_obj_hes_info_.col,
+			laplace_obj_hes_info_.val
 		);
-		for(size_t k = 0; k < ran_objcon_hes_info_.row.size(); k++)
-		{	size_t index = ran_objcon_hes_2_lag_[k];
+		for(size_t k = 0; k < laplace_obj_hes_info_.row.size(); k++)
+		{	size_t index = laplace_obj_hes_2_lag_[k];
 			assert( index < nnz_h_lag_ );
-			values[index] += Number( ran_objcon_hes_info_.val[k] );
+			values[index] += Number( laplace_obj_hes_info_.val[k] );
 		}
 	}
 	//

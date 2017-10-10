@@ -39,7 +39,7 @@ extern bool ran_con_jac_xam(void);
 extern bool ran_like_jac_xam(void);
 extern bool ran_obj_eval_xam(void);
 extern bool ran_obj_jac_xam(void);
-extern bool ran_objcon_hes_xam(void);
+extern bool laplace_obj_hes_xam(void);
 extern bool update_factor_xam(void);
 
 //  tests
@@ -332,12 +332,12 @@ $childtable%include/cppad/mixed/pack.hpp
 	%include/cppad/mixed/unpack.hpp
 
 	%src/init_ran_hes.cpp
-	%src/init_ran_objcon.cpp
+	%src/init_laplace_obj.cpp
 	%src/init_ldlt_ran_hes.cpp
 	%src/init_fix_con.cpp
 	%src/init_fix_like.cpp
 	%src/init_hes_cross.cpp
-	%src/init_ran_objcon_hes.cpp
+	%src/init_laplace_obj_hes.cpp
 	%src/init_ran_like.cpp
 
 	%src/fix_con_eval.cpp
@@ -352,7 +352,7 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/ran_con_jac.cpp
 	%src/ran_obj_eval.cpp
 	%src/ran_obj_jac.cpp
-	%src/ran_objcon_hes.cpp
+	%src/laplace_obj_hes.cpp
 	%src/update_factor.cpp
 %$$
 $comment -------------------------------------------------------------------
@@ -401,8 +401,8 @@ $srccode%cpp% */
 	bool                init_hes_cross_done_;
 	// only called when n_random_ > 0 and quasi_fixed_ is false
 	bool                init_newton_checkpoint_done_;
-	bool                init_ran_objcon_done_;
-	bool                init_ran_objcon_hes_done_;
+	bool                init_laplace_obj_done_;
+	bool                init_laplace_obj_hes_done_;
 	// called in all cases
 	bool                init_fix_like_done_;
 	bool                init_fix_con_done_;
@@ -496,30 +496,30 @@ $srccode%cpp% */
 /* %$$
 $comment ------------------------------------------------------------------- $$
 
-$head ran_objcon_fun_$$
+$head laplace_obj_fun_$$
 If $icode%n_random_% > 0%$$, quasi_fixed_ is false, and
-$code init_ran_objcon_done_$$,
+$code init_laplace_obj_done_$$,
 this is a recording of the second order approximation for the
 random part of the Laplace approximation, $latex H( \beta , \theta , u)$$;
-see $cref/ran_objcon_fun_/init_ran_objcon/ran_objcon_fun_/$$.
+see $cref/laplace_obj_fun_/init_ran_objcon/laplace_obj_fun_/$$.
 $srccode%cpp% */
-	CppAD::ADFun<double>        ran_objcon_fun_;   // for computing H_beta_beta
+	CppAD::ADFun<double>        laplace_obj_fun_;   // for computing H_beta_beta
 /* %$$
 The following objects hold information for computing derivatives
 with this ADFun object:
 
-$subhead ran_objcon_hes_$$
+$subhead laplace_obj_hes_$$
 If $icode%n_random_% > 0%$$, quasi_fixed_ is false, and
-$code init_ran_objcon_hes_done_$$,
-$cref/ran_objcon_hes_/init_ran_objcon_hes/ran_objcon_hes_/$$ contains
+$code init_laplace_obj_hes_done_$$,
+$cref/laplace_obj_hes_/init_laplace_obj_hes/laplace_obj_hes_/$$ contains
 information for the Hessian of the
-$cref/random objective
+$cref/Laplace objective
 	/theory
 	/Objective
-	/Random Objective, r(theta)
+	/Laplace Objective, r(theta)
 /$$
 $srccode%cpp% */
-	CppAD::mixed::sparse_hes_rcv ran_objcon_hes_;
+	CppAD::mixed::sparse_hes_rcv laplace_obj_hes_;
 /* %$$
 $comment ------------------------------------------------------------------- $$
 
@@ -664,10 +664,10 @@ $srccode%cpp% */
 	);
 /* %$$
 
-$subhead init_ran_objcon_hes$$
-See $cref init_ran_objcon_hes$$.
+$subhead init_laplace_obj_hes$$
+See $cref init_laplace_obj_hes$$.
 $srccode%cpp% */
-	void init_ran_objcon_hes(
+	void init_laplace_obj_hes(
 		const d_vector& fixed_vec     ,
 		const d_vector& random_vec
 	);
@@ -910,10 +910,10 @@ $srccode%cpp% */
 	friend bool ::delta_ran_obj(void);
 /* %$$
 
-$subhead ran_objcon_hes$$
-See $cref ran_objcon_hes$$
+$subhead laplace_obj_hes$$
+See $cref laplace_obj_hes$$
 $srccode%cpp% */
-	void ran_objcon_hes(
+	void laplace_obj_hes(
 		const d_vector&         fixed_vec   ,
 		const d_vector&         random_vec  ,
 		const d_vector&         weight      ,
@@ -921,8 +921,8 @@ $srccode%cpp% */
 		CppAD::vector<size_t>&  col_out     ,
 		d_vector&               val_out
 	);
-	friend bool ::ran_objcon_hes_xam(void);
-	friend bool ::ran_objcon_hes(void);
+	friend bool ::laplace_obj_hes_xam(void);
+	friend bool ::laplace_obj_hes(void);
 /* %$$
 
 $subhead update_factor$$

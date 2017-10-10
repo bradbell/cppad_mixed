@@ -41,8 +41,8 @@ ADD_LIBRARY(cppad_mixed
 	initialize.cpp
 	init_ran_hes.cpp
 	init_ran_like.cpp
-	init_ran_objcon.cpp
-	init_ran_objcon_hes.cpp
+	init_laplace_obj.cpp
+	init_laplace_obj_hes.cpp
 	ipopt_app_status.cpp
 	ipopt_fixed.cpp
 	ipopt_random.cpp
@@ -53,7 +53,7 @@ ADD_LIBRARY(cppad_mixed
 	ran_con_eval.cpp
 	ran_con_jac.cpp
 	ran_like_jac.cpp
-	ran_objcon_hes.cpp
+	laplace_obj_hes.cpp
 	ran_obj_eval.cpp
 	ran_obj_jac.cpp
 	update_factor.cpp

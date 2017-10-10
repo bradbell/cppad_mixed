@@ -27,7 +27,7 @@ $spell
 	cholesky
 $$
 
-$section Evaluate Laplace Approximation and Random Objective$$
+$section Evaluate Laplace Approximation and Laplace Objective$$
 
 $head Syntax$$
 $icode%h% = %mixed_object%.ran_obj_eval(%fixed_vec%, %random_vec%)%$$
@@ -43,7 +43,7 @@ $cref/h(theta, u)
 	/Laplace Approximation, h(theta, u)
 /$$.
 Note that if the random effects are optimal,
-then the Laplace approximation is equal to the random objective.
+then the Laplace approximation is equal to the Laplace objective.
 
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
@@ -75,7 +75,7 @@ $codei%
 It specifies the value of the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$ at which $latex h( \theta , u)$$ is evaluated.
-Note that the Laplace approximation is equal to the random objective when
+Note that the Laplace approximation is equal to the Laplace objective when
 $latex u$$ is the
 $cref/optimal random effects
 	/theory

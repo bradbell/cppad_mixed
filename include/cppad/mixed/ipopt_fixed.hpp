@@ -110,13 +110,13 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// random constraint jacobian
 		CppAD::mixed::sparse_rcv ran_con_jac_rcv_;
 		//
-		// hessian of random objective and constraints
+		// hessian of Laplace objective and constraints
 		// (only defined when n_random_ > 0)
-		CppAD::mixed::sparse_mat_info ran_objcon_hes_info_;
+		CppAD::mixed::sparse_mat_info laplace_obj_hes_info_;
 		//
 		s_vector lag_hes_row_;   // row indices for Hessian of Lagrangian
 		s_vector lag_hes_col_;   // column indices for Hessian of Lagrangian
-		s_vector ran_objcon_hes_2_lag_; // ran_objcon_hes_row_ -> lag_hes_row_
+		s_vector laplace_obj_hes_2_lag_; // laplace_obj_hes_row_ -> lag_hes_row_
 		s_vector fix_like_hes_2_lag_; // fix_like_hes_row_ -> lag_hes_row_
 		s_vector fix_con_hes_2_lag_; // fix_con_hes_row -> lag_hes_row
 		// ---------------------------------------------------------------
@@ -140,7 +140,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		d_vector        A_uhat_tmp_;        // size n_ran_con_
 		d_vector        H_beta_tmp_;        // size n_fixed_
 		d_vector        w_fix_con_tmp_;     // size n_fix_con_
-		d_vector        w_ran_objcon_tmp_;  // size n_ran_con_ + 1
+		d_vector        w_laplace_obj_tmp_;  // size n_ran_con_ + 1
 
 		// this vector has size fix_likelihood_nabs_ + 1
 		d_vector        w_fix_likelihood_tmp_;

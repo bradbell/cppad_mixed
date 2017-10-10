@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin ran_objcon_hes.cpp$$
+$begin laplace_obj_hes.cpp$$
 $spell
 	objcon
 	CppAD
@@ -22,7 +22,7 @@ $spell
 	xam
 $$
 
-$section ran_objcon_hes: Example and Test$$
+$section laplace_obj_hes: Example and Test$$
 
 $head Private$$
 This example is not part of the
@@ -41,7 +41,7 @@ $latex \[
 \] $$
 
 $code
-$srcfile%example/private/ran_objcon_hes.cpp
+$srcfile%example/private/laplace_obj_hes.cpp
 	%0%// BEGIN C++%// END C++%1%$$
 $$
 
@@ -110,7 +110,7 @@ namespace {
 	};
 }
 
-bool ran_objcon_hes_xam(void)
+bool laplace_obj_hes_xam(void)
 {
 	bool   ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
@@ -160,7 +160,7 @@ bool ran_objcon_hes_xam(void)
 	weight[0] = 1.0;
 	vector<size_t> row, col;
 	vector<double> val;
-	mixed_object.ran_objcon_hes(fixed_vec, uhat, weight, row, col, val);
+	mixed_object.laplace_obj_hes(fixed_vec, uhat, weight, row, col, val);
 
 	// check size of result vectors
 	size_t K = row.size();

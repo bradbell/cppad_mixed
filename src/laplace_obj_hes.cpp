@@ -11,7 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/exception.hpp>
 /*
-$begin ran_objcon_hes$$
+$begin laplace_obj_hes$$
 $spell
 	rcv
 	nr
@@ -27,10 +27,10 @@ $spell
 	xam
 $$
 
-$section Hessian of Random Objective and Random Constraints$$
+$section Hessian of Laplace Objective and Random Constraints$$
 
 $head Syntax$$
-$icode%mixed_object%.ran_objcon_hes(
+$icode%mixed_object%.laplace_obj_hes(
 	%fixed_vec%, %random_vec%, %weight%, %row_out%, %col_out%, %val_out%
 )%$$
 
@@ -56,7 +56,7 @@ $cref/random constraint matrix
 see
 $cref/H(beta, theta, u)
 	/theory
-	/Approximate Random Objective, H(beta, theta, u)
+	/Approximate Laplace Objective, H(beta, theta, u)
 /$$
 and
 $cref/B(beta, theta, u)
@@ -112,7 +112,7 @@ $codei%
 %$$
 If the input size of this array is non-zero,
 the entire vector must be the same
-as for a previous call to $code ran_objcon_hes$$.
+as for a previous call to $code laplace_obj_hes$$.
 If it's input size is zero,
 upon return it contains the row indices for the Hessian elements
 that are possibly non-zero;
@@ -128,7 +128,7 @@ $codei%
 %$$
 If the input size of this array is non-zero,
 the entire vector must be the same as for
-a previous call to $code ran_objcon_hes$$.
+a previous call to $code laplace_obj_hes$$.
 If it's input size is zero,
 upon return it contains the column indices for the Hessian elements
 that are possibly non-zero (and will have the same size as $icode row_out$$).
@@ -144,15 +144,15 @@ $codei%
 	CppAD::vector<double>& %val_out%
 %$$
 If the input size of this array is non-zero, it must have the same size
-as for a previous call to $code ran_objcon_hes$$.
+as for a previous call to $code laplace_obj_hes$$.
 Upon return, it contains the value of the Hessian elements
 that are possibly non-zero (and will have the same size as $icode row_out$$).
 
 $children%
-	example/private/ran_objcon_hes.cpp
+	example/private/laplace_obj_hes.cpp
 %$$
 $head Example$$
-The file $cref ran_objcon_hes.cpp$$ contains an example
+The file $cref laplace_obj_hes.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
@@ -161,21 +161,21 @@ $end
 
 
 // ----------------------------------------------------------------------------
-// ran_objcon_hes
-void cppad_mixed::ran_objcon_hes(
+// laplace_obj_hes
+void cppad_mixed::laplace_obj_hes(
 	const d_vector&          fixed_vec   ,
 	const d_vector&          random_vec  ,
 	const d_vector&          weight      ,
 	CppAD::vector<size_t>&   row_out     ,
 	CppAD::vector<size_t>&   col_out     ,
 	d_vector&                val_out     )
-{	assert( init_ran_objcon_hes_done_ );
+{	assert( init_laplace_obj_hes_done_ );
 	//
 	assert( n_fixed_  == fixed_vec.size() );
 	assert( n_random_ == random_vec.size() );
 	assert( A_rcv_.nr() + 1 == weight.size() );
 	//
-	size_t nnz = ran_objcon_hes_.subset.nnz();
+	size_t nnz = laplace_obj_hes_.subset.nnz();
 	if( nnz == 0 )
 	{	// sparse Hessian has no entries
 		assert( row_out.size() == 0 );
@@ -186,15 +186,15 @@ void cppad_mixed::ran_objcon_hes(
 	// check if this is first call
 	if( row_out.size() == 0 )
 	{	assert( col_out.size() == 0 );
-		row_out = ran_objcon_hes_.subset.row();
-		col_out = ran_objcon_hes_.subset.col();
+		row_out = laplace_obj_hes_.subset.row();
+		col_out = laplace_obj_hes_.subset.col();
 		val_out.resize(nnz);
 	}
 # ifndef NDEBUG
 	else
 	{	for(size_t k = 0; k < nnz; k++)
-		{	assert( row_out[k] == ran_objcon_hes_.subset.row()[k] );
-			assert( col_out[k] == ran_objcon_hes_.subset.col()[k] );
+		{	assert( row_out[k] == laplace_obj_hes_.subset.row()[k] );
+			assert( col_out[k] == laplace_obj_hes_.subset.col()[k] );
 		}
 	}
 # endif
@@ -208,18 +208,18 @@ void cppad_mixed::ran_objcon_hes(
 	//
 	sparse_rc   not_used_pattern;
 	std::string not_used_coloring;
-	ran_objcon_fun_.sparse_hes(
+	laplace_obj_fun_.sparse_hes(
 		beta_theta_u           ,
 		weight                 ,
-		ran_objcon_hes_.subset ,
+		laplace_obj_hes_.subset ,
 		not_used_pattern       ,
 		not_used_coloring      ,
-		ran_objcon_hes_.work
+		laplace_obj_hes_.work
 	);
 	for(size_t k = 0; k < nnz; k++)
-		val_out[k] = ran_objcon_hes_.subset.val()[k];
+		val_out[k] = laplace_obj_hes_.subset.val()[k];
 	if( CppAD::hasnan( val_out ) ) CppAD::mixed::exception(
-		"ran_objcon_hes", "result has a nan"
+		"laplace_obj_hes", "result has a nan"
 	);
 	//
 	return;

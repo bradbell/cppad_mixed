@@ -78,10 +78,10 @@ the a quasi-Newton approximation for the Hessian of the total objective
 $cref/L(theta)/theory/Objective/Total Objective, L(theta)/$$
 is used during the optimization of the fixed effects.
 Otherwise, the Hessian of the total objective is computed using the
-approximate random objective
+approximate Laplace objective
 $cref/H(beta, theta, u)
 	/theory
-	/Approximate Random Objective, H(beta, theta, u)
+	/Approximate Laplace Objective, H(beta, theta, u)
 /$$.
 If $icode quasi_fixed$$ is true,
 some initialization is skipped during $cref initialize$$ is skipped.
@@ -193,8 +193,8 @@ init_ran_hes_done_(false)       ,
 init_ldlt_ran_hes_done_(false)  ,
 init_hes_cross_done_(false)     ,
 init_newton_checkpoint_done_(false)   ,
-init_ran_objcon_done_(false)    ,
-init_ran_objcon_hes_done_(false),
+init_laplace_obj_done_(false)    ,
+init_laplace_obj_hes_done_(false),
 init_fix_like_done_(false)      ,
 init_fix_con_done_(false)       ,
 initialize_done_(false)         ,

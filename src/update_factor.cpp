@@ -56,7 +56,7 @@ $codei%
 %$$
 and is the value of fixed effects $latex u$$.
 If this factorization is used for computing derivatives of the
-$cref/random objective/theory/Objective/Random Objective, r(theta)/$$,
+$cref/Laplace objective/theory/Objective/Laplace Objective, r(theta)/$$,
 this should be the
 $cref/optimal random effects/theory/Optimal Random Effects, u^(theta)/$$.
 

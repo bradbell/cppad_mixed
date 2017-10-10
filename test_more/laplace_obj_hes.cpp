@@ -131,7 +131,7 @@ namespace {
 	}
 };
 
-bool ran_objcon_hes(void)
+bool laplace_obj_hes(void)
 {	using std::fabs;
 	bool   ok    = true;
 	double inf   = std::numeric_limits<double>::infinity();
@@ -226,7 +226,7 @@ bool ran_objcon_hes(void)
 	weight[0] = 1.0;
 	vector<size_t> row, col;
 	vector<double> val;
-	mixed_object.ran_objcon_hes(fixed_vec, random_opt, weight, row, col, val);
+	mixed_object.laplace_obj_hes(fixed_vec, random_opt, weight, row, col, val);
 	ok &= fabs( val[0] - hes[0] ) < eps99;
 	//
 	return ok;
