@@ -24,10 +24,12 @@ then
 	echo 'bin/ar1_xam.sh: must be executed from its parent directory'
 	exit 1
 fi
-if [ ! -e 'build/speed' ]
+if [ ! -e 'build/speed/ar1_xam' ]
 then
-	echo 'ar1_xam.sh: must first run bin/run_cmake.sh'
-	exit
+	echo 'ar1_xam.sh: must first run:'
+	echo '	bin/run_cmake.sh'
+	echo '	cd build; make ar1_xam; cd ..'
+	exit 1
 fi
 #
 if [ "$1" != 'normal' ] && [ "$1" != 'callgrind' ] && [ "$1" != 'massif' ]
@@ -44,7 +46,6 @@ echo_eval() {
 }
 # ----------------------------------------------------------------------------
 echo_eval cd build/speed
-echo_eval make ar1_xam
 arguments="
 $random_seed
 $number_random
