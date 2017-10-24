@@ -10,10 +10,10 @@
 # ---------------------------------------------------------------------------
 # Parameters described in ar1_xam in documentation.
 random_seed='12345'
-number_random='1000'
+number_random='2000'
 quasi_fixed='yes'
 trace_optimize_fixed='no'
-ipopt_solve='yes'
+ipopt_solve='no'
 bool_sparsity='no'
 hold_memory='no'
 derivative_test='no'
