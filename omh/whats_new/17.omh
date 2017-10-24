@@ -31,6 +31,7 @@ $spell
 	messaging
 	cholesky
 	Eigen
+	ar
 $$
 
 $section Changes and Additions to cppad_mixed During 2017$$
@@ -39,6 +40,10 @@ $childtable%
 	omh/whats_new/15.omh%
 	omh/whats_new/16.omh
 %$$
+
+$head 10-24$$
+Add comments about
+$cref/profiling/run_cmake.sh/Profiling/$$.
 
 $head 10-09$$
 The $cref data_mismatch.cpp$$ example was failing when

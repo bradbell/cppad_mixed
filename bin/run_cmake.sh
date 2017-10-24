@@ -15,6 +15,7 @@
 #	cmake makefile cxx std dismod libdir lcppad cholmod xam cpp
 #	usr eigen ipopt cppad bools suitesparse devel hpp ldlt bool
 #	libdir cholesky
+#	ar
 # &&
 #
 # &section bin/run_cmake.sh: User Configuration Options&&
@@ -125,6 +126,15 @@ optimize_cppad_function='no'
 # &codep
 hide_ipopt_scaling='yes'
 # &&
+#
+# &head Profiling&&
+# If you wish the profile the execution speed, set &icode build_type&& to
+# &code release&& and include the &code -g&& flag in
+# &icode cppad_cxx_flags&&.
+# Then re-rum &code bin/install_cppad.sh&&,
+# &code bin/run_cmake.sh&& and
+# &code make ar1_xam&&.
+# Then use the script &code bin/ar1_xam.sh&&.
 #
 # &end
 # ============================================================================
