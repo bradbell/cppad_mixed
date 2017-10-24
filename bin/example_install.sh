@@ -115,7 +115,7 @@ else
 		wget
 		blas-devel
 		lapack-devel
-		pkgconfig
+		pkg-config
 		gcc-c++
 		gcc-gfortran
 		gsl-devel

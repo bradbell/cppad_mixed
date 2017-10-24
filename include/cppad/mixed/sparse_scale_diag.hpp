@@ -82,7 +82,7 @@ namespace CppAD { namespace mixed {
 		for(index k = 0; k < matrix.outerSize(); ++k)
 		{	for(iterator itr(matrix, k); itr; ++itr)
 			{	if( itr.row() == itr.col() )
-					itr.valueRef() = itr.value() * scale;
+					itr.valueRef() = itr.value() * factor;
 			}
 		}
 	}
