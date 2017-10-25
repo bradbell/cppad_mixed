@@ -12,10 +12,10 @@
 # $OMhelpKeyCharacter=&
 # &begin run_cmake.sh&& &newlinech #&&
 # &spell
-#	cmake makefile cxx std dismod libdir lcppad cholmod xam cpp
+#	cmake makefile cxx std dismod libdir lcppad cholmod cpp
 #	usr eigen ipopt cppad bools suitesparse devel hpp ldlt bool
 #	libdir cholesky
-#	ar
+#	ar1_xam callgrind
 # &&
 #
 # &section bin/run_cmake.sh: User Configuration Options&&
@@ -128,13 +128,15 @@ hide_ipopt_scaling='yes'
 # &&
 #
 # &head Profiling&&
-# If you wish the profile the execution speed, set &icode build_type&& to
-# &code release&& and include the &code -g&& flag in
-# &icode cppad_cxx_flags&&.
-# Then re-rum &code bin/install_cppad.sh&&,
-# &code bin/run_cmake.sh&& and
-# &code make ar1_xam&&.
-# Then use the script &code bin/ar1_xam.sh&&.
+# If you wish to profile the execution speed using &code callgrind&&,
+# set &icode build_type&& to &code release&&, include the &code -g&& flag
+# in &icode cppad_cxx_flags&&. Then run
+# &codep
+#	bin/install_cppad.sh
+#	bin/run_cmake.sh
+#	cd build; make ar1_xam; cd ..
+#	bin/ar1_xam.sh callgrind
+# &&
 #
 # &end
 # ============================================================================
