@@ -32,7 +32,6 @@ ADD_CUSTOM_TARGET(speed_ar1_xam
 	DEPENDS ar1_xam
 )
 # -----------------------------------------------------------------------------
-# BEGIN capture_xam arguments
 SET(random_seed                0)
 SET(number_random             35)
 SET(quasi_fixed               yes)
@@ -49,7 +48,6 @@ SET(mean_population           5.0)
 SET(mean_logit_probability  -0.25)
 SET(std_logit_probability    0.25)
 SET(random_constraint         yes)
-# END capture_xam arguments
 ADD_CUSTOM_TARGET(speed_capture_xam
 	capture_xam
 		${random_seed}

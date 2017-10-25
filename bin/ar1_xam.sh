@@ -78,6 +78,7 @@ echo_eval() {
 }
 # ----------------------------------------------------------------------------
 echo_eval cd build/speed
+echo_eval make capture_xam
 arguments="
 $random_seed
 $number_random

@@ -333,19 +333,10 @@ If $icode capture_xam_ok$$ is yes, the program return value is
 $code 0$$ (no error condition).
 Otherwise it is $code 1$$ (error condition).
 
+$children%bin/capture_xam.sh
+%$$
 $head Example$$
-The $code cppad_mixed$$ automated testing system uses the following
-values for the arguments to $code capture_xam$$:
-$code
-$verbatim%speed/CMakeLists.txt
-	%0%# BEGIN capture_xam arguments%# END capture_xam arguments%0%$$
-$$
-You can run $code build/speed/capture$$ with these setting by executing
-the command
-$codep
-	cd build
-	make speed
-$$
+The file $cref capture_xam.sh$$ is an example using this program.
 
 $head Notation$$
 $table
