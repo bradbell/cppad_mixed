@@ -32,6 +32,7 @@ $spell
 	cholesky
 	Eigen
 	ar
+	hes
 $$
 
 $section Changes and Additions to cppad_mixed During 2017$$
@@ -42,8 +43,13 @@ $childtable%
 %$$
 
 $head 10-24$$
+$list number$$
 Add comments about
 $cref/testing speed and memory/run_cmake.sh/Testing Speed and Memory/$$.
+$lnext
+Add the $cref/for_hes_sparsity/run_cmake.sh/for_hes_sparsity/$$ argument
+to the configuration script.
+$lend
 
 $head 10-09$$
 The $cref data_mismatch.cpp$$ example was failing when

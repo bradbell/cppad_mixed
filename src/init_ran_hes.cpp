@@ -214,6 +214,22 @@ void cppad_mixed::init_ran_hes(
 	//
 	// total number of variables
 	size_t n_both = n_fixed_ + n_random_;
+# if CPPAD_MIXED_FOR_HES_SPARSITY
+	// forward sparstiy for partial w.r.t. u of partial w.r.t u
+	CppAD::vector<bool> select_domain(n_both), select_range(m);
+	for(size_t i = 0; i < n_fixed_; i++)
+		select_domain[i] = false;
+	for(size_t i = 0; i < n_random_; i++)
+		select_domain[n_fixed_ + i] = true;
+	for(size_t i = 0; i < m; i++)
+		select_range[i] = true;
+	bool internal_bool = bool_sparsity_;
+	sparse_rc hes_pattern;
+	ran_like_fun_.for_hes_sparsity(
+		select_domain, select_range, internal_bool, hes_pattern
+	);
+	size_t hessian_column_offset = 0;
+# else
 	//
 	// -----------------------------------------------------------------------
 	// forward Jacobian sparsity corresponding to partial w.r.t
@@ -236,6 +252,8 @@ void cppad_mixed::init_ran_hes(
 	ran_like_fun_.rev_hes_sparsity(
 		select_range, transpose, internal_bool, hes_pattern
 	);
+	size_t hessian_column_offset = n_fixed_;
+# endif
 	// -----------------------------------------------------------------------
 	// count number of entires in entire partial w.r.t u of partial w.r.t u
 	// and number in lower triangle
@@ -245,9 +263,10 @@ void cppad_mixed::init_ran_hes(
 	{	size_t r = hes_pattern.row()[k];
 		if( r >= n_fixed_ )
 		{	++n_uu;
-			size_t c = hes_pattern.col()[k] + n_fixed_;
+			size_t c = hes_pattern.col()[k] + hessian_column_offset;
 			if( r >= c )
-				++n_low;
+			{	++n_low;
+			}
 		}
 	}
 	// -----------------------------------------------------------------------
@@ -263,7 +282,7 @@ void cppad_mixed::init_ran_hes(
 	{	size_t ell = col_major[k];
 		size_t r   = hes_pattern.row()[ell];
 		if( r >= n_fixed_ )
-		{	size_t c   = hes_pattern.col()[ell] + n_fixed_;
+		{	size_t c   = hes_pattern.col()[ell] + hessian_column_offset;
 			hes_extend.set(k_uu++, r, c);
 			if( r >= c )
 				hes_lower.set(k_low++, r, c);

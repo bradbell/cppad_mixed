@@ -12,10 +12,30 @@
 # $OMhelpKeyCharacter=&
 # &begin run_cmake.sh&& &newlinech #&&
 # &spell
-#	cmake makefile cxx std dismod libdir lcppad cholmod cpp
-#	usr eigen ipopt cppad bools suitesparse devel hpp ldlt bool
-#	libdir cholesky
-#	ar1_xam callgrind
+#	cmake
+#	makefile
+#	cxx
+#	std
+#	dismod
+#	libdir
+#	lcppad
+#	cholmod
+#	cpp
+#	usr
+#	eigen
+#	ipopt
+#	cppad
+#	bools
+#	suitesparse
+#	devel
+#	hpp
+#	ldlt
+#	bool
+#	libdir
+#	cholesky
+#	ar1_xam
+#	callgrind
+#	hes
 # &&
 #
 # &section bin/run_cmake.sh: User Configuration Options&&
@@ -127,6 +147,13 @@ optimize_cppad_function='no'
 hide_ipopt_scaling='yes'
 # &&
 #
+# &head for_hes_sparsity&&
+# If yes, user &code for_hes_sparsity&& to compute sparsity w.r.t. random
+# effects (otherwise use &code rev_hes_sparsity&&).
+# &codep
+for_hes_sparsity='yes'
+# &&
+#
 # &head Testing Speed and Memory&&
 # If you wish to test the speed or memory used by &code cppad_mixed&&,
 # set &icode build_type&& to &code release&&, include the &code -g&& flag
@@ -173,6 +200,7 @@ usage: bin/run_cmake.sh \\
 	[--checkpoint_newton_step] \\
 	[--optimize_cppad_function] \\
 	[--show_ipopt_scaling] \\
+	[--rev_hes_sparsity] \\
 	[--release] \\
 	[--dismod_at_prefix]
 EOF
@@ -196,6 +224,9 @@ EOF
 	elif [ "$1" == '--show_ipopt_scaling' ]
 	then
 		hide_ipopt_scaling='no'
+	elif [ "$1" == '--rev_hes_sparsity' ]
+	then
+		for_hes_sparsity='no'
 	elif [ "$1" == '--release' ]
 	then
 		build_type='release'
@@ -249,6 +280,7 @@ cmake \
 	-D checkpoint_newton_step="$checkpoint_newton_step" \
 	-D optimize_cppad_function="$optimize_cppad_function" \
 	-D hide_ipopt_scaling="$hide_ipopt_scaling" \
+	-D for_hes_sparsity="$for_hes_sparsity" \
 	..
 # ---------------------------------------------------------------------------
 echo 'run_cmake.sh: OK'

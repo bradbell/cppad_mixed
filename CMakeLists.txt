@@ -23,7 +23,8 @@
 #                        -D use_atomic_cholesky=value \
 #                        -D checkpoint_newton_step=value \
 #                        -D optimize_cppad_function=value \
-#                        -D hide_ipopt_scaling=value
+#                        -D hide_ipopt_scaling=value \
+#                        -D for_hes_sparsity=value
 # ============================================================================
 # Macro definitions
 # ============================================================================
@@ -190,6 +191,9 @@ required_definition(optimize_cppad_function BOOL
 )
 required_definition(hide_ipopt_scaling BOOL
 	"should cppad_mixed hide it's re-scaling from ipopt"
+)
+required_definition(for_hes_sparsity BOOL
+	"use forward (reverse) method for computing Hessian w.r.t. random effects"
 )
 # ----------------------------------------------------------------------------
 MESSAGE(STATUS "END:")
