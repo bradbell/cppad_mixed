@@ -61,7 +61,7 @@ N-Mixture Models for Estimating Population Size
 from Spatially Replicated Counts.
 $$
 
-$head Input Arguments$$
+$head Command Arguments$$
 
 $subhead random_seed$$
 This is a non-negative integer equal to the
@@ -266,7 +266,7 @@ $subhead sample_fixed_seconds$$
 Is the number of seconds used by the call to
 $cref sample_fixed$$ that computes the
 $cref/number_sample_fixed
-	/capture_xam.cpp/Input Arguments/number_fixed_samples/$$
+	/capture_xam.cpp/Command Arguments/number_fixed_samples/$$
 samples for the fixed effects.
 
 $subhead final_bytes$$
@@ -278,19 +278,19 @@ Is the sum of the optimal random effects.
 
 $subhead mean_population_estimate$$
 Is the estimate for the
-$cref/mean_population/capture_xam.cpp/Input Arguments/mean_population/$$
+$cref/mean_population/capture_xam.cpp/Command Arguments/mean_population/$$
 computed by $cref optimize_fixed$$.
 
 $subhead mean_logit_probability_estimate$$
 Is the optimal estimate for the
 $cref/mean_logit_probability
-	/capture_xam.cpp/Input Arguments/mean_logit_probability/$$
+	/capture_xam.cpp/Command Arguments/mean_logit_probability/$$
 (computed by $cref optimize_fixed$$).
 
 $subhead std_logit_probability_estimate$$
 Is the optimal estimate for the
 $cref/std_logit_probability
-	/capture_xam.cpp/Input Arguments/std_logit_probability/$$.
+	/capture_xam.cpp/Command Arguments/std_logit_probability/$$.
 
 $subhead mean_population_std$$
 Is the sample standard deviation of $icode mean_population_estimate$$

@@ -57,7 +57,7 @@ and for $latex t = 1 , \ldots , T - 1$$,
 $latex u_t - u_{t-1} \sim \B{N}( 0 , \theta_0^2 )$$.
 
 
-$head Input Arguments$$
+$head Command Arguments$$
 
 $subhead random_seed$$
 This is a non-negative integer equal to the
@@ -179,7 +179,7 @@ $subhead sample_fixed_seconds$$
 Is the number of seconds used by the call to
 $cref sample_fixed$$ that computes the
 $cref/number_sample_fixed
-	/capture_xam.cpp/Input Arguments/number_fixed_samples/$$
+	/capture_xam.cpp/Command Arguments/number_fixed_samples/$$
 samples for the fixed effects.
 
 $subhead final_bytes$$
@@ -195,13 +195,10 @@ If this program passes it's correctness test,
 $icode ar1_xam_ok$$ is yes and the program return code is $code 0$$.
 Otherwise $icode ar1_xam_ok$$ it is no and the return code is $code 1$$.
 
+$children%bin/ar1_xam.sh
+%$$
 $head Example$$
-The $code cppad_mixed$$ automated testing system uses the following
-values for the arguments to $code ar1_xam$$:
-$code
-$verbatim%speed/CMakeLists.txt
-	%0%# BEGIN ar1_xam arguments%# END ar1_xam arguments%0%$$
-$$
+The file $cref ar1_xam.sh$$ is an example using this program.
 
 $head Source Code$$
 $code

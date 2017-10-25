@@ -8,8 +8,40 @@
 #	     GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
-# Parameters described in ar1_xam in documentation.
-random_seed='12345'
+# $OMhelpKeyCharacter=&
+# &begin ar1_xam.sh&& &newlinech #&&
+# &spell
+#	ar1_xam
+#	callgrind
+#	valgrind
+# &&
+#
+# &section Example Using ar1_xam&&
+#
+# &head Syntax&&
+# &codei%bin/ar1_xam.sh %test2run%&&
+#
+# &head test2run&&
+# This argument must be one of the following:
+#
+# &subhead normal&&
+# This test will just run &cref/ar1_xam/ar1_xam.cpp/&&.
+#
+# &subhead callgrind&&
+# This test will run &code ar1_xam&& with
+# &code valgrind --tool=callgrind&&. This tool does execution profiling.
+#
+# &subhead massif&&
+# This test will run &code ar1_xam&& with
+# &code valgrind --tool=massif&&. This tool does memory profiling.
+#
+# &subhead Source Code&&
+# &srcfile%bin/ar1_xam.sh%0%# BEGIN SH%# END SH%1%&&
+#
+# &end
+# ----------------------------------------------------------------------------
+# BEGIN SH
+random_seed='0'
 number_random='10000'
 quasi_fixed='yes'
 trace_optimize_fixed='no'
@@ -37,7 +69,7 @@ then
 	echo 'usage: bin/ar1_xam.sh (normal|callgrind|massif)'
 	exit 1
 fi
-test_to_run="$1"
+test2run="$1"
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
@@ -59,11 +91,11 @@ $start_near_solution
 "
 arguments=`echo $arguments | sed -e 's|\n| |'`
 #
-if [ "$test_to_run" == 'normal' ]
+if [ "$test2run" == 'normal' ]
 then
 	echo_eval ./ar1_xam $arguments
 fi
-if [ "$test_to_run" == 'callgrind' ]
+if [ "$test2run" == 'callgrind' ]
 then
 	echo_eval valgrind \
 		--tool=callgrind \
@@ -71,7 +103,7 @@ then
 		./ar1_xam $arguments
 	echo "view with: kcachegrind build/speed/callgrind.out.$$"
 fi
-if [ "$test_to_run" == 'massif' ]
+if [ "$test2run" == 'massif' ]
 then
 	echo_eval valgrind \
 		--tool=massif \
@@ -83,3 +115,4 @@ fi
 # ----------------------------------------------------------------------------
 echo 'ar1_xam.sh: OK'
 exit 0
+# END SH

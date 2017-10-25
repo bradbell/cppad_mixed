@@ -12,11 +12,6 @@
 new_directories='
 '
 rename_files='
-src/init_ran_objcon.cpp
-src/init_ran_objcon_hes.cpp
-src/ran_objcon_hes.cpp
-test_more/ran_objcon_hes.cpp
-example/private/ran_objcon_hes.cpp
 '
 spell_files='
 '
@@ -26,10 +21,8 @@ no_change_files='
 rename_cmd='s|ran_objcon|laplace_obj|'
 #
 cat << EOF > junk.sed
-s|ran_objcon_|laplace_obj_|g
-s|ran_objcon\\.|laplace_obj.|g
-s|Random Objective|Laplace Objective|g
-s|random objective|Laplace objective|g
+s|head Input Arguments|head Command Arguments|
+s|/Input Arguments/|/Command Arguments/|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

@@ -1,4 +1,3 @@
-# $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
 #           Copyright (C) 2014-16 University of Washington
@@ -10,7 +9,6 @@
 # ---------------------------------------------------------------------------
 # speed test
 # ---------------------------------------------------------------------------
-# BEGIN ar1_xam arguments
 SET(random_seed                  0)
 SET(number_random              100)
 SET(quasi_fixed                 no)
@@ -20,7 +18,6 @@ SET(bool_sparsity               no)
 SET(hold_memory                 no)
 SET(derivative_test             no)
 SET(start_near_solution         no)
-# END ar1_xam arguments
 ADD_CUSTOM_TARGET(speed_ar1_xam
 	ar1_xam
 		${random_seed}
