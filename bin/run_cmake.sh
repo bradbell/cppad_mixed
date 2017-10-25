@@ -127,16 +127,20 @@ optimize_cppad_function='no'
 hide_ipopt_scaling='yes'
 # &&
 #
-# &head Profiling&&
-# If you wish to profile the execution speed using &code callgrind&&,
+# &head Testing Speed and Memory&&
+# If you wish to test the speed or memory used by &code cppad_mixed&&,
 # set &icode build_type&& to &code release&&, include the &code -g&& flag
-# in &icode cppad_cxx_flags&&. Then run
-# &codep
+# in &icode cppad_cxx_flags&&. Then execute the following commands:
+# &codei%
 #	bin/install_cppad.sh
 #	bin/run_cmake.sh
-#	cd build; make ar1_xam; cd ..
-#	bin/ar1_xam.sh callgrind
-# &&
+#	cd build; make %program%; cd ..
+#	bin/%program%.sh %test2run%
+# %&&
+# where &icode program&& is
+# &cref/ar1_xam/ar1_xam.cpp/&& or &cref/capture_xam/ar1_xam.cpp/&&
+# and &icode test2run&& is
+# &code normal&&, &code callgrind&&, or &code massif&&.
 #
 # &end
 # ============================================================================

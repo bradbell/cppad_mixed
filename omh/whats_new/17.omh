@@ -43,7 +43,7 @@ $childtable%
 
 $head 10-24$$
 Add comments about
-$cref/profiling/run_cmake.sh/Profiling/$$.
+$cref/testing speed and memory/run_cmake.sh/Testing Speed and Memory/$$.
 
 $head 10-09$$
 The $cref data_mismatch.cpp$$ example was failing when
