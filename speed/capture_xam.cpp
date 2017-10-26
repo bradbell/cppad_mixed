@@ -1107,9 +1107,8 @@ int main(int argc, const char *argv[])
 		ok &= std::fabs( sum_random_effects ) < 1e-8;
 	label_print("sum_random_effects", sum_random_effects);
 	//
-	// compute the sample standard deviations
-	// and ratio of error divided by sample standard deviation
-	d_vector sample_std(n_fixed), estimate_ratio(n_fixed);
+	// sample_std
+	d_vector sample_std(n_fixed);
 	for(size_t j = 0; j < n_fixed; j++)
 		sample_std[j] = 0.0;
 	for(size_t i = 0; i < number_fixed_samples; i++)
@@ -1118,20 +1117,23 @@ int main(int argc, const char *argv[])
 			sample_std[j] += diff * diff;
 		}
 	}
+	// estimate_ratio
+	d_vector estimate_ratio(n_fixed);
 	for(size_t j = 0; j < n_fixed; j++)
 	{	sample_std[j] = std::sqrt( sample_std[j] / number_fixed_samples );
 		// check if results results are reasonable
 		estimate_ratio[j] = ( theta_out[j] - theta_sim[j] ) / sample_std[j];
 		ok  &= std::fabs(estimate_ratio[j]) < 5.0;
 	}
+	// estimates
 	label_print("mean_population_estimate", theta_out[0]);
 	label_print("mean_logit_probability_estimate", theta_out[1]);
 	label_print("std_logit_probability_estimate", theta_out[2]);
-	//
+	// simulation sample standard deviations
 	label_print("mean_population_std", sample_std[0]);
 	label_print("mean_logit_probability_std", sample_std[1]);
 	label_print("std_logit_probability_std", sample_std[2]);
-	//
+	// rations, error conditon is ratio >= 5.0
 	label_print("mean_population_ratio", estimate_ratio[0]);
 	label_print("mean_logit_probability_ratio", estimate_ratio[1]);
 	label_print("std_logit_probability_ratio", estimate_ratio[2]);
