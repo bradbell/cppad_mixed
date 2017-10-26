@@ -86,32 +86,6 @@ see $cref/f(theta, u)/
 The matrix is symmetric and hence can be recovered from
 its lower triangle.
 
-$head a1_ran_hes_rcv_$$
-The input value of the member variable
-$codei%
-	CppAD::mixed::a1_sparse_rcv a1_ran_hes_rcv_
-%$$
-does not matter.
-Upon return it contains the
-$cref/a1_sparse_rcv/typedef/Sparse Types/a1_sparse_rcv/$$ information
-for the lower triangle of the Hessian
-$latex \[
-	f_{u,u} ( \theta , u )
-\]$$
-see $cref/f(theta, u)/
-	theory/
-	Random Likelihood, f(theta, u)
-/$$
-We use $icode nnz$$ to denote
-$codei%
-	a1_ran_hes_rcv_.nnz() == ran_hes_rcv_.nnz()
-%$$
-For $icode%k% = 0 , %...%, %nnz%-1%$$,
-$codei%
-	a1_ran_hes_rcv_.row()[%k%] == ran_hes_rcv_.row()[%k%]
-	a1_ran_hes_rcv_.col()[%k%] == ran_hes_rcv_.col()[%k%]
-%$$
-
 $head ran_hes_work_$$
 The input value of the member variable
 $codei%
@@ -133,23 +107,6 @@ $codei%
 		ran_hes_rcv_,
 		%not_used_pattern%,
 		%not_used_coloring%,
-		ran_hes_word_
-	)
-%$$
-where the values of $icode not_used_pattern$$ and $icode not_used_coloring$$
-do not matter.
-
-$head ran_like_a1fun_$$
-Upon return, the following call can be used to compute the
-lower triangle of the Hessian $latex f_{u,u} ( \theta , u )$$
-as a $code a1_vector$$:
-$codei%
-	ran_like_a1fun_.sparse_hes(
-		%x%,
-		%w%
-		a1_ran_hes_rcv_,
-		%not_used_pattern%,
-		%not_used_coloring%,
 		ran_hes_work_
 	)
 %$$
@@ -157,7 +114,7 @@ where the values of $icode not_used_pattern$$ and $icode not_used_coloring$$
 do not matter.
 
 $head Random Effects Index$$
-The indices in $code ran_hes_rcv_$$ and $code a1_ran_hes_rcv$$
+The indices in $code ran_hes_rcv_$$
 are relative to both the fixed and random effects with the fixed effects
 coming first.
 To get the indices relative to just the random effects, subtract
@@ -295,9 +252,11 @@ void cppad_mixed::init_ran_hes(
 	d_vector both(n_both);
 	pack(fixed_vec, random_vec, both);
 	// -----------------------------------------------------------------------
-	// structures used for calculating subset with d_vector a1_vector results
-	ran_hes_rcv_    = sparse_rcv( hes_lower );
-	a1_ran_hes_rcv_ = a1_sparse_rcv( hes_lower );
+	// structure used for calculating subset with d_vector results
+	ran_hes_rcv_  = sparse_rcv( hes_lower );
+	//
+	// structure used for calculating subset with a1d_vector results
+	CppAD::mixed::a1_sparse_rcv a1_ran_hes_rcv = a1_sparse_rcv( hes_lower );
 	//
 	// initialize the work vector used for both d_vector and a1_vector results
 	d_vector w(m);
@@ -325,13 +284,13 @@ void cppad_mixed::init_ran_hes(
 
 	// Evaluate ran_likelihood_hes. Its row indices are relative
 	// to just the random effects, not both fixed and random effects.
-	size_t K = a1_ran_hes_rcv_.nnz();
+	size_t K = a1_ran_hes_rcv.nnz();
 	CppAD::vector<size_t> row(K), col(K);
 	for(size_t k = 0; k < K; k++)
-	{	assert( a1_ran_hes_rcv_.row()[k] >= n_fixed_ );
-		assert( a1_ran_hes_rcv_.col()[k] >= n_fixed_ );
-		row[k] = a1_ran_hes_rcv_.row()[k] - n_fixed_;
-		col[k] = a1_ran_hes_rcv_.col()[k] - n_fixed_;
+	{	assert( a1_ran_hes_rcv.row()[k] >= n_fixed_ );
+		assert( a1_ran_hes_rcv.col()[k] >= n_fixed_ );
+		row[k] = a1_ran_hes_rcv.row()[k] - n_fixed_;
+		col[k] = a1_ran_hes_rcv.col()[k] - n_fixed_;
 	}
 	a1_vector a1_val_out = ran_likelihood_hes(
 		a1_fixed, a1_random, row, col
@@ -345,12 +304,12 @@ void cppad_mixed::init_ran_hes(
 		ran_like_a1fun_.sparse_hes(
 			a1_both,
 			a1_w,
-			a1_ran_hes_rcv_,
+			a1_ran_hes_rcv,
 			hes_extend,
 			coloring,
 			ran_hes_work_
 		);
-		a1_val_out = a1_ran_hes_rcv_.val();
+		a1_val_out = a1_ran_hes_rcv.val();
 	}
 	ran_hes_fun_.Dependent(a1_both, a1_val_out);
 	ran_hes_fun_.check_for_nan(false);
