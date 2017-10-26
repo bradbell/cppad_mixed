@@ -339,7 +339,6 @@ void cppad_mixed::init_ran_hes(
 	if( a1_val_out.size() == 0 )
 	{	// The user has not defined ran_likelihood_hes, so use AD to calcuate
 		// the Hessian of the randome likelihood w.r.t the random effects.
-		CppAD::vector< std::set<size_t> > not_used(0);
 		a1_vector a1_w(1);
 		a1_w[0] = 1.0;
 		a1_val_out.resize(K);
