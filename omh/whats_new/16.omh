@@ -44,6 +44,7 @@ $spell
 	Taylor
 	checkpointed
 	rcv
+	py
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
@@ -58,7 +59,8 @@ This was also done for the $cref/capture_xam/capture_xam.cpp/$$ program.
 
 $head 11-07$$
 $list number$$
-Add the $cref speed_compare.py$$ program.
+Add the $code bin/speed_compare.py$$ program
+(which has since been moved to $code bin/speed_old.py$$).
 $lnext
 Change order of $cref/input arguments/capture_xam.cpp/Command Arguments/$$
 to $code capture_xam$$ be more similar to

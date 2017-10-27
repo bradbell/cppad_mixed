@@ -20,7 +20,6 @@ and $cref run_cmake.sh$$ configuration options.
 
 $childtable%speed/ar1_xam.cpp
 	%speed/capture_xam.cpp
-	%bin/speed_compare.py
 %$$
 
 

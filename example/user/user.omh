@@ -53,7 +53,6 @@ $head Programs That are Examples and Speed Tests$$
 $table
 $rref ar1_xam.cpp$$
 $rref capture_xam.cpp$$
-$rref speed_compare.py$$
 $tend
 
 $head Demonstrate Specific Features$$
