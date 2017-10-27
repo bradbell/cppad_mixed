@@ -1016,7 +1016,7 @@ int main(int argc, const char *argv[])
 	string fixed_ipopt_options =
 		"String  sb                        yes\n"
 		"Numeric tol                       1e-8\n"
-		"Integer max_iter                  30\n"
+		"Integer max_iter                  40\n"
 	;
 	if( trace_optimize_fixed )
 		fixed_ipopt_options += "Integer print_level         5\n";
