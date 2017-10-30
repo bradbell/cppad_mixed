@@ -91,7 +91,7 @@ The value of
 $cref/number_random/capture_xam.cpp/Command Arguments/number_random/$$
 was increased (from 30 to 35) to lessen the change of a random failure
 during the $code make speed$$ command; see
-$cref/test/install_unix/cppad_mixed/Test/$$.
+$cref/speed/install_unix/cppad_mixed/Speed/$$.
 $lend
 
 $head 10-28$$

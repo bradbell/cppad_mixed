@@ -149,18 +149,26 @@ $codep
 	bin/run_cmake.sh
 $$
 
-$subhead Test$$
+$subhead Check$$
 The following commands are optional and will
-build and run the examples, correctness tests, and speed tests:
+build and run the examples and correctness tests:
 $codep
 	cd build
 	make check
 	make speed
 $$
 
+$subhead Speed$$
+The following commands are optional and will
+build and run the speed tests:
+$codep
+	cd build
+	make speed
+$$
+
 $subhead Install$$
-The following command will,
-build the cppad_mixed library and include files:
+The following command will
+install the cppad_mixed library and include files:
 $codep
 	cd build
 	make install

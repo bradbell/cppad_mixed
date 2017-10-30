@@ -42,6 +42,10 @@ $childtable%
 	omh/whats_new/16.omh
 %$$
 
+$head 10-27$$
+Reduce the chance of a random failure in $cref capture_xam.cpp$$
+during the $cref/speed/install_unix/cppad_mixed/Speed/$$ tests.
+
 $head 10-24$$
 $list number$$
 Add comments about
