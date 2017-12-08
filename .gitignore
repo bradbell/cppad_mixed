@@ -1,24 +1,28 @@
 # temporary file used to make commits
-git_commit.sh
+/git_commit.sh
 #
 # cmake configuration file that is put in source directory
-include/cppad/mixed/configure.hpp
+/include/cppad/mixed/configure.hpp
 #
-# directory with builds take place
-build
-# a previous release build
-build.release
-# a previous debug build
-build.debug
+# Directory with builds take place. Note that /build is a link, hence
+# it looks to git like a file instead of a directory.
+/build
+/bug/build/
+#
+# a previous release build that /build can point to
+/build.release/
+#
+# a previous debug build that /build can point to
+/build.debug/
 #
 # directory where documentation is built
-doc
+/doc/
 # compressed version of documentation directory
-doc.tgz
+/doc.tgz
 #
 # directories that are used for stashing files
-new
-new.*
+/new/
+/new.*/
 #
 # vim swap files
 *.swp
