@@ -17,8 +17,6 @@
 #
 # directory where documentation is built
 /doc/
-# compressed version of documentation directory
-/doc.tgz
 #
 # directories that are used for stashing files
 /new/
