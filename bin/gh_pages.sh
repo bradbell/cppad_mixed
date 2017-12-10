@@ -27,14 +27,14 @@ then
 	echo 'gh_pages.sh: can only be executed on master branch'
 	exit 1
 fi
-list=`git status -s | sed -e '/^ M gh_pages.sh/d'`
+list=`git status -s | sed -e '/^ M bin\/gh_pages.sh/d'`
 if [ "$list" != '' ]
 then
 	echo "$list"
 	echo 'gh_pages.sh: must first commit or delete these changes'
 	exit 1
 fi
-if ! git show git-pages:.nojekyll
+if ! git show gh-pages:.nojekyll
 then
 	echo 'gh_pages.sh: gh-pages branch does not have an empty .nojekyll file'
 	exit 1
@@ -50,7 +50,7 @@ fi
 # move gh_pages.sh to a safe place
 echo_eval cp bin/gh_pages.sh build/tmp/gh_pages.sh
 # revert to master current version
-echo_eval checkout bin/gh_pages.sh
+echo_eval git checkout bin/gh_pages.sh
 # check if gh_pages.sh changed
 if diff bin/gh_pages.sh
 then
@@ -64,12 +64,18 @@ bin/run_omhelp.sh
 # move doc directory to a safe place
 if [ -e build/tmp/doc ]
 then
-	echo rm -r build/tmp/doc
+	echo_eval rm -r build/tmp/doc
 fi
 echo_eval mv doc build/tmp/doc
 # -----------------------------------------------------------------------------
 # checkout gh-pages branch
 git checkout gh-pages
+#
+# code for first version of doc directory
+if [ ! -e doc ]
+then
+	echo_eval mkdir doc
+fi
 #
 # determine which files to remove
 list=`ls -a doc`
@@ -94,12 +100,12 @@ do
 done
 # -----------------------------------------------------------------------------
 echo 'Use the following command to commit changes to gh-pages branch:'
-echo "	git commit -m 'update gh-pages to cppad_mixed-$version"
+echo "	git commit -m 'update gh-pages to cppad_mixed-$version'"
 if [ "$gh_pages_ok" == 'no' ]
 then
 	echo 'Use the following command to restore the bin/gh_pages.sh file'
 	echo '	git checkout master'
-	echo '	cp build/tmp/gp_pages.sh bin/gh_pages.sh'
+	echo '	cp build/tmp/gh_pages.sh bin/gh_pages.sh'
 fi
 # -----------------------------------------------------------------------------
 echo 'bin/gh_pages.sh: OK'
