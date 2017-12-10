@@ -1,0 +1,212 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Scales the Diagonal of an Eigen Sparse Matrix</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Scales the Diagonal of an Eigen Sparse Matrix">
+<meta name="keywords" id="keywords" content=" scales the diagonal eigen sparse matrix syntax purpose private scale scalar options index example ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_sparse_scale_diag_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="sparse_up_tri_sol.cpp.htm" target="_top">Prev</a>
+</td><td><a href="sparse_scale_diag.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>sparse_scale_diag</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>sparse_scale_diag-&gt;</option>
+<option>sparse_scale_diag.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Purpose</option>
+<option>Private</option>
+<option>scale</option>
+<option>matrix</option>
+<option>---..Scalar</option>
+<option>---..Options</option>
+<option>---..Index</option>
+<option>Example</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Scales the Diagonal of an Eigen Sparse Matrix</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><font color="blue"><span style='white-space: nowrap'>CppAD::mixed::sparse_scale_diag(</span></font><i><font color="black"><span style='white-space: nowrap'>scale</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>matrix</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
+<br>
+Each of the diagonal elements of 
+<code><i><font color="black"><span style='white-space: nowrap'>matrix</span></font></i></code>
+ is replaced by
+
+<code><i><font color="black"><span style='white-space: nowrap'>scale</span></font></i></code>
+ times its original value.
+
+<br>
+<br>
+<b><big><a name="Private" id="Private">Private</a></big></b>
+<br>
+This routine is an implementation detail and not part of the
+<a href="namespace.htm#Private" target="_top"><span style='white-space: nowrap'>CppAD::mixed</span></a>
+ user API.
+
+<br>
+<br>
+<b><big><a name="scale" id="scale">scale</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>Float</span></font></i><font color="blue"><span style='white-space: nowrap'>&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>scale</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+where the type 
+<code><i><font color="black"><span style='white-space: nowrap'>Float</span></font></i></code>
+ can be converted to the scalar
+type for the matrix.
+
+<br>
+<br>
+<b><big><a name="matrix" id="matrix">matrix</a></big></b>
+<br>
+This argument has prototype
+<code><font color="blue">%
+	Eigen::SparseMatrix&lt;%Scalar%, %Options%, %Index%&gt;&amp; %matrix%
+%</font></code>
+This is the sparse matrix for which we are scaling the diagonal elements.
+The sparsity pattern for the matrix is not modified.
+
+<br>
+<br>
+<b><a name="matrix.Scalar" id="matrix.Scalar">Scalar</a></b>
+<br>
+This type must support the conversion
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_cast&lt;</span></font><i><font color="black"><span style='white-space: nowrap'>Scalar</span></font></i><font color="blue"><span style='white-space: nowrap'>&gt;(</span></font><i><font color="black"><span style='white-space: nowrap'>scale</span></font></i><font color="blue"><span style='white-space: nowrap'>)<br>
+</span></font></code>
+.
+
+<br>
+<br>
+<b><a name="matrix.Options" id="matrix.Options">Options</a></b>
+<br>
+The options for this sparse matrix are arbitrary; i.e.,
+has no restrictions.
+
+<br>
+<br>
+<b><a name="matrix.Index" id="matrix.Index">Index</a></b>
+<br>
+The index type fro this sparse matrix are arbitrary; i.e.,
+has no restrictions.
+
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="sparse_scale_diag.cpp.htm" target="_top"><span style='white-space: nowrap'>sparse_scale_diag.cpp</span></a>
+ is an example
+and test of <code><font color="blue">sparse_scale_diag</font></code>.
+
+
+<hr>Input File: include/cppad/mixed/sparse_scale_diag.hpp
+
+</body>
+</html>

@@ -1,0 +1,525 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Sample Posterior for Fixed Effects Using Conditional Covariance</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Sample Posterior for Fixed Effects Using Conditional Covariance">
+<meta name="keywords" id="keywords" content=" sample posterior fixed effects using conditional covariance syntax replaced prototype public purpose manage_gsl_rng mixed_object information_info solution fixed_lower fixed_upper random_opt theory notation subset unconstrained constraint equations example ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_sample_conditional_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="sample_fixed.cpp.htm" target="_top">Prev</a>
+</td><td><a href="sample_random.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>base_class</option>
+<option>public</option>
+<option>sample_fixed</option>
+<option>sample_conditional</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down4(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>base_class-&gt;</option>
+<option>public</option>
+<option>private</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>public-&gt;</option>
+<option>derived_ctor</option>
+<option>ran_likelihood</option>
+<option>fix_likelihood</option>
+<option>fix_constraint</option>
+<option>initialize</option>
+<option>optimize_random</option>
+<option>optimize_fixed</option>
+<option>information_mat</option>
+<option>sample_fixed</option>
+<option>sample_random</option>
+<option>ran_likelihood_jac</option>
+<option>ran_likelihood_hes</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>sample_fixed-&gt;</option>
+<option>sample_fixed.cpp</option>
+<option>sample_conditional</option>
+</select>
+</td>
+<td>sample_conditional</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Replaced</option>
+<option>Prototype</option>
+<option>Public</option>
+<option>Purpose</option>
+<option>manage_gsl_rng</option>
+<option>mixed_object</option>
+<option>sample</option>
+<option>information_info</option>
+<option>solution</option>
+<option>fixed_lower</option>
+<option>fixed_upper</option>
+<option>random_opt</option>
+<option>Theory</option>
+<option>---..Notation</option>
+<option>---..Fixed Effects Subset</option>
+<option>---..Unconstrained Subset Covariance</option>
+<option>---..Constraint Equations</option>
+<option>---..Conditional Covariance</option>
+<option>Example</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Sample Posterior for Fixed Effects Using Conditional Covariance</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.sample_conditional(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>sample</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>information_info</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_opt</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="Replaced" id="Replaced">Replaced</a></big></b>
+<br>
+This routine uses the
+<a href="sample_conditional.htm#Theory.Conditional Covariance" target="_top"><span style='white-space: nowrap'>conditional&nbsp;covariance</span></a>
+
+to sample the fixed effects.
+This required inverting the <a href="information_mat.htm" target="_top"><span style='white-space: nowrap'>information_mat</span></a>
+.
+It has been replaced by using the
+<a href="sample_fixed.htm#Theory.Implicit Covariance" target="_top"><span style='white-space: nowrap'>implicit&nbsp;covariance</span></a>
+
+because the implicit covariance has a better chance of being invertible
+(than the observed information matrix).
+
+<br>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre><tt>
+<font color="#009900">void</font> cppad_mixed<font color="#990000">::</font><b><font color="#000000">sample_conditional</font></b><font color="#990000">(</font>
+     CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;&amp;</font>                 sample               <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>sparse_mat_info<font color="#990000">&amp;</font>   information_info     <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>fixed_solution<font color="#990000">&amp;</font>    solution             <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;&amp;</font>           fixed_lower          <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;&amp;</font>           fixed_upper          <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;&amp;</font>           random_opt           <font color="#990000">)</font></tt></pre>
+<br>
+<b><big><a name="Public" id="Public">Public</a></big></b>
+<br>
+This <code><font color="blue">cppad_mixed</font></code> member function is <a href="public.htm" target="_top"><span style='white-space: nowrap'>public</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
+<br>
+This routine draw samples from
+the asymptotic posterior distribution for the
+optimal fixed effects (given the model and the data).
+
+<br>
+<br>
+<b><big><a name="manage_gsl_rng" id="manage_gsl_rng">manage_gsl_rng</a></big></b>
+<br>
+It is assumed that
+<a href="manage_gsl_rng.htm#get_gsl_rng" target="_top"><span style='white-space: nowrap'>get_gsl_rng</span></a>
+ will return
+a pointer to a GSL random number generator.
+
+
+<br>
+<br>
+<b><big><a name="mixed_object" id="mixed_object">mixed_object</a></big></b>
+<br>
+We use <a href="derived_ctor.htm#mixed_object" target="_top"><span style='white-space: nowrap'>mixed_object</span></a>
+
+to denote an object of a class that is
+derived from the <code><font color="blue">cppad_mixed</font></code> base class.
+
+<br>
+<br>
+<b><big><a name="sample" id="sample">sample</a></big></b>
+<br>
+The size 
+<code><i><font color="black"><span style='white-space: nowrap'>sample</span></font></i><font color="blue"><span style='white-space: nowrap'>.size()</span></font></code>
+ is a multiple of
+<a href="derived_ctor.htm#n_fixed" target="_top"><span style='white-space: nowrap'>n_fixed</span></a>
+.
+The input value of its elements does not matter.
+We define
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_sample</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>sample_size</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;/&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+Upon return,
+for 
+<code><font color="blue"><span style='white-space: nowrap'>i</span></font><i><font color="black"><span style='white-space: nowrap'>&nbsp;=&nbsp;0&nbsp;,&nbsp;</span></font></i><font color="blue"><span style='white-space: nowrap'>...</span></font><i><font color="black"><span style='white-space: nowrap'>,&nbsp;</span></font></i><font color="blue"><span style='white-space: nowrap'>n_sample</span></font><i><font color="black"><span style='white-space: nowrap'>-1</span></font></i></code>
+,
+
+<code><font color="blue"><span style='white-space: nowrap'>j</span></font><i><font color="black"><span style='white-space: nowrap'>&nbsp;=&nbsp;0&nbsp;,&nbsp;</span></font></i><font color="blue"><span style='white-space: nowrap'>...</span></font><i><font color="black"><span style='white-space: nowrap'>,&nbsp;</span></font></i><font color="blue"><span style='white-space: nowrap'>n_fixed</span></font><i><font color="black"><span style='white-space: nowrap'>-1</span></font></i></code>
+,
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>sample</span></font></i><font color="blue"><span style='white-space: nowrap'>[&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;*&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;+&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;]<br>
+</span></font></code>
+is the <code><i>j</i></code>-th component of the <code><i>i</i></code>-th sample of the
+optimal fixed effects <small>@(@
+\hat{\theta}
+@)@</small>.
+These samples are independent for different <small>@(@
+i
+@)@</small>,
+and for fixed <small>@(@
+i
+@)@</small>, they have the
+<a href="sample_conditional.htm#Theory.Conditional Covariance" target="_top"><span style='white-space: nowrap'>conditional&nbsp;covariance</span></a>
+
+<small>@(@
+D
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="information_info" id="information_info">information_info</a></big></b>
+<br>
+This is a sparse matrix representation for the
+lower triangle of the observed information matrix corresponding to
+
+<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i></code>
+; i.e., the matrix returned by
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+</span></font><i><font color="black"><span style='white-space: nowrap'>information_info</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.information_mat(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_options</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_in</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="solution" id="solution">solution</a></big></b>
+<br>
+is the <a href="optimize_fixed.htm#solution" target="_top"><span style='white-space: nowrap'>solution</span></a>
+
+for a the call to <a href="optimize_fixed.htm" target="_top"><span style='white-space: nowrap'>optimize_fixed</span></a>
+ corresponding to
+
+<code><i><font color="black"><span style='white-space: nowrap'>information_info</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="fixed_lower" id="fixed_lower">fixed_lower</a></big></b>
+<br>
+is the same as
+<a href="optimize_fixed.htm#fixed_lower" target="_top"><span style='white-space: nowrap'>fixed_lower</span></a>
+
+in the call to <code><font color="blue">optimize_fixed</font></code> that corresponds to 
+<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="fixed_upper" id="fixed_upper">fixed_upper</a></big></b>
+<br>
+is the same as
+<a href="optimize_fixed.htm#fixed_upper" target="_top"><span style='white-space: nowrap'>fixed_upper</span></a>
+
+in the call to <code><font color="blue">optimize_fixed</font></code> that corresponds to 
+<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="random_opt" id="random_opt">random_opt</a></big></b>
+<br>
+is the optimal random effects corresponding to the solution; i.e.
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_opt</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.optimize_random(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_options</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_opt,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_in</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
+</span></font></code>
+
+<code><i><font color="black"><span style='white-space: nowrap'>random_options</span></font></i></code>
+,
+
+<code><i><font color="black"><span style='white-space: nowrap'>random_lower</span></font></i></code>
+,
+
+<code><i><font color="black"><span style='white-space: nowrap'>random_upper</span></font></i></code>
+, and
+
+<code><i><font color="black"><span style='white-space: nowrap'>random_in</span></font></i></code>
+, are the same
+as in the call to <code><font color="blue">optimize_fixed</font></code> that corresponds to 
+<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="Theory" id="Theory">Theory</a></big></b>
+
+
+<br>
+<br>
+<b><a name="Theory.Notation" id="Theory.Notation">Notation</a></b>
+<br>
+Given two random vectors <small>@(@
+u
+@)@</small> and <small>@(@
+v
+@)@</small>,
+we use the notation <small>@(@
+\B{C}( u , v )
+@)@</small>
+for the corresponding covariance matrix;
+i.e.,
+<small>@[@
+
+	\B{C}( u , v )
+	=
+	\B{E} \left( [ u - \B{E} (u) ] [ v - \B{E} (v) ]^\R{T} \right)
+
+@]@</small>
+
+<br>
+<br>
+<b><a name="Theory.Fixed Effects Subset" id="Theory.Fixed Effects Subset">Fixed Effects Subset</a></b>
+<br>
+We use <small>@(@
+\alpha
+@)@</small> for the vector of fixed effects that do not have
+their upper or lower bound active (or equal); i.e., if 
+<code><i><font color="black"><span style='white-space: nowrap'>j</span></font></i></code>
+ is such that
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_lag[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;==&nbsp;0.0&nbsp;&amp;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+</span></font></code>
+then <small>@(@
+\theta_j
+@)@</small> is one of the components in <small>@(@
+\alpha
+@)@</small>.
+Note that each value of <small>@(@
+\alpha
+@)@</small> has a corresponding value for
+<small>@(@
+\theta
+@)@</small> where the active bounds are used for the components
+not in <small>@(@
+\alpha
+@)@</small>.
+
+<br>
+<br>
+<b><a name="Theory.Unconstrained Subset Covariance" id="Theory.Unconstrained Subset Covariance">Unconstrained Subset Covariance</a></b>
+<br>
+Note that the bound constraints do not apply to the subset of fixed effects
+represented by <small>@(@
+\alpha
+@)@</small>.
+We use <small>@(@
+\tilde{L} ( \alpha )
+@)@</small> to denote the
+<a href="theory.htm#Objective.Total Objective, L(theta)" target="_top"><span style='white-space: nowrap'>total&nbsp;objective</span></a>
+
+as a function of <small>@(@
+\alpha
+@)@</small> and
+where the absolute values terms in <a href="fix_likelihood.htm" target="_top"><span style='white-space: nowrap'>fix_likelihood</span></a>
+ are excluded.
+We use <small>@(@
+\tilde{\alpha}
+@)@</small> for the unconstrained optimal estimate
+of the subset of fixed effects and
+approximate its auto-covariance by
+<small>@[@
+
+	\B{C} ( \tilde{\alpha} , \tilde{\alpha} )
+	=
+	H^{-1}
+
+@]@</small>
+Here <small>@(@
+H
+@)@</small> is the Hessian corresponding to 
+<code><i><font color="black"><span style='white-space: nowrap'>information_info</span></font></i></code>
+.
+Note that 
+<code><i><font color="black"><span style='white-space: nowrap'>information_info</span></font></i></code>
+ is the observed information matrix
+corresponding to all the fixed effects <small>@(@
+\theta
+@)@</small>.
+
+<br>
+<br>
+<b><a name="Theory.Constraint Equations" id="Theory.Constraint Equations">Constraint Equations</a></b>
+<br>
+Let <small>@(@
+n
+@)@</small> be the number of fixed effects in <small>@(@
+\alpha
+@)@</small>,
+<small>@(@
+m
+@)@</small> the number of active constraints (not counting bounds),
+and the equations <small>@(@
+e( \alpha ) = b
+@)@</small> be those active constraints.
+Here <small>@(@
+e : \B{R}^n \rightarrow \B{R}^m
+@)@</small> and <small>@(@
+b \in \B{R}^m
+@)@</small>
+and the inequality constraints have been converted to equalities at the
+active bounds (excluding the bounds on the fixed effects).
+Define the random variable the approximation for <small>@(@
+e( \alpha )
+@)@</small> by
+<small>@[@
+
+\tilde{e} ( \alpha ) =
+e \left( \hat{\alpha} \right) + e^{(1)} \left( \hat{\alpha} \right)
+	\left( \alpha - \hat{\alpha} \right)
+
+@]@</small>
+where <small>@(@
+\hat{\alpha}
+@)@</small> is the subset of the optional estimate
+for the fixed effects 
+<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_opt</span></font></code>
+.
+
+<br>
+<br>
+<b><a name="Theory.Conditional Covariance" id="Theory.Conditional Covariance">Conditional Covariance</a></b>
+<br>
+We approximate the distribution for
+<small>@(@
+\tilde{\alpha}
+@)@</small> normal,
+and the distribution for <small>@(@
+\hat{\alpha}
+@)@</small>
+as the conditional distribution of <small>@(@
+\tilde{\alpha}
+@)@</small> given
+the value of <small>@(@
+\tilde{e} ( \tilde{\alpha} )
+@)@</small>; i.e.,
+<small>@[@
+
+	\B{C} \left( \hat{\alpha} \W{,} \hat{\alpha} \right)
+	=
+	\B{C} \left( \tilde{\alpha} \W{,} \tilde{\alpha} \right)
+	-
+	\B{C} \left( \tilde{\alpha} \W{,} \tilde{e} \right)
+	\B{C} \left( \tilde{e}  \W{,} \tilde{e} \right)^{-1}
+	\B{C} \left( \tilde{e}  \W{,} \tilde{\alpha} \right)
+
+@]@</small>
+Using the notation
+<small>@(@
+D = \B{C} \left( \hat{\alpha} \W{,} \hat{\alpha} \right)
+@)@</small>,
+<small>@(@
+C = \B{C} \left( \tilde{\alpha} \W{,} \tilde{\alpha} \right)
+@)@</small>,
+<small>@(@
+E = e^{(1)} \left( \hat{\alpha} \right)
+@)@</small>,
+we have
+<small>@[@
+
+	D = C - C E^\R{T} \left( E C E^\R{T} \right)^{-1}  E C
+
+@]@</small>
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="sample_fixed.cpp.htm" target="_top"><span style='white-space: nowrap'>sample_fixed.cpp</span></a>
+ is an example
+and test of <code><font color="blue">sample_conditional</font></code> was used before it was
+<a href="sample_conditional.htm#Replaced" target="_top"><span style='white-space: nowrap'>replaced</span></a>
+.
+
+
+<hr>Input File: src/eigen/sample_conditional.cpp
+
+</body>
+</html>

@@ -1,0 +1,281 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Example and Test Using the Installed Version of cppad_mixed</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Example and Test Using the Installed Version of cppad_mixed">
+<meta name="keywords" id="keywords" content=" example test using the installed version cppad_mixed syntax build_type prefixes cmake_libdir example_file pkg_config_path ld_library_path create temporary example_name main gsl_libs ipopt_libs suitesparse_libs compile link run ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_check_install.sh_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="run_cmake.sh.htm" target="_top">Prev</a>
+</td><td><a href="theory.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>install_unix</option>
+<option>check_install.sh</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>install_unix-&gt;</option>
+<option>example_install.sh</option>
+<option>run_cmake.sh</option>
+<option>check_install.sh</option>
+</select>
+</td>
+<td>check_install.sh</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>build_type</option>
+<option>Prefixes</option>
+<option>cmake_libdir</option>
+<option>example_file</option>
+<option>PKG_CONFIG_PATH</option>
+<option>LD_LIBRARY_PATH</option>
+<option>Create Temporary</option>
+<option>example_name</option>
+<option>main</option>
+<option>gsl_libs</option>
+<option>ipopt_libs</option>
+<option>suitesparse_libs</option>
+<option>Compile and Link</option>
+<option>Run Example</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@ 
+
+
+<center><b><big><big>Example and Test Using the Installed Version of cppad_mixed</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<code><font color="blue"><br>
+bin/check_install.sh</font></code>
+
+<br>
+<br>
+<b><big><a name="build_type" id="build_type">build_type</a></big></b>
+<br>
+Get the <a href="run_cmake.sh.htm#build_type" target="_top"><span style='white-space: nowrap'>build_type</span></a>
+ used during the install:
+<code><font color='blue'><pre style='display:inline'> 
+cmd=`grep '^build_type=' bin/run_cmake.sh`
+eval $cmd
+</pre></font></code>
+<br>
+<b><big><a name="Prefixes" id="Prefixes">Prefixes</a></big></b>
+<br>
+Get the <a href="run_cmake.sh.htm#Prefixes" target="_top"><span style='white-space: nowrap'>prefixes</span></a>
+ used during the install:
+<code><font color='blue'><pre style='display:inline'> 
+cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
+eval $cmd
+cmd=`grep '^eigen_prefix=' bin/run_cmake.sh`
+eval $cmd
+cmd=`grep '^ipopt_prefix=' bin/run_cmake.sh`
+eval $cmd
+cmd=`grep '^suitesparse_prefix=' bin/run_cmake.sh`
+eval $cmd
+</pre></font></code>
+<br>
+<b><big><a name="cmake_libdir" id="cmake_libdir">cmake_libdir</a></big></b>
+<br>
+Get the <a href="run_cmake.sh.htm#cmake_libdir" target="_top"><span style='white-space: nowrap'>cmake_libdir</span></a>
+
+used during the install:
+<code><font color='blue'><pre style='display:inline'> 
+cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
+eval $cmd
+</pre></font></code>
+<br>
+<b><big><a name="example_file" id="example_file">example_file</a></big></b>
+<br>
+This is the user example that we will compile using
+the installed version of <code><font color="blue">cppad_mixed</font></code>:
+<code><font color='blue'><pre style='display:inline'> 
+example_file='example/user/no_random.cpp'
+</pre></font></code>
+<br>
+<b><big><a name="PKG_CONFIG_PATH" id="PKG_CONFIG_PATH">PKG_CONFIG_PATH</a></big></b>
+<br>
+Set the path used by $code pkg-config$$:
+<code><font color='blue'><pre style='display:inline'> 
+if [ &quot;$PKG_CONFIG_PATH&quot; == '' ]
+then
+export PKG_CONFIG_PATH=&quot;$ipopt_prefix/$cmake_libdir/pkgconfig&quot;
+else
+export PKG_CONFIG_PATH=&quot;$PKG_CONFIG_PATH:$ipopt_prefix/$cmake_libdir/pkgconfig&quot;
+fi
+</pre></font></code>
+<br>
+<b><big><a name="LD_LIBRARY_PATH" id="LD_LIBRARY_PATH">LD_LIBRARY_PATH</a></big></b>
+<br>
+Set the path used to load shared libraries:
+<code><font color='blue'><pre style='display:inline'> 
+if [ &quot;$LD_LIBRARY_PATH&quot; == '' ]
+then
+export LD_LIBRARY_PATH=&quot;$ipopt_prefix/$cmake_libdir&quot;
+else
+export LD_LIBRARY_PATH=&quot;$LD_LIBRARY_PATH:$ipopt_prefix/$cmake_libdir&quot;
+fi
+</pre></font></code>
+<br>
+<b><big><a name="Create Temporary" id="Create Temporary">Create Temporary</a></big></b>
+<br>
+The following commands create a temporary directory,
+copy the example file into it,
+and make it the working directory:
+<code><font color='blue'><pre style='display:inline'> 
+mkdir -p build/tmp
+cp $example_file build/tmp/example.cpp
+cd build/tmp
+</pre></font></code>
+<br>
+<b><big><a name="example_name" id="example_name">example_name</a></big></b>
+<br>
+The following command gets the example name, which is the example file
+with the <code><font color="blue">.cpp</font></code> at the end replaced by <code><font color="blue">_xam</font></code>:
+<code><font color='blue'><pre style='display:inline'> 
+example_name=`echo $example_file | sed -e 's|.*/||' -e 's|\.cpp|_xam|'`
+</pre></font></code>
+<br>
+<b><big><a name="main" id="main">main</a></big></b>
+<br>
+The following command creates a main program
+(in the <code><font color="blue">example.cpp</font></code> file) that runs the example
+and reports the result of its return <code><font color="blue">bool</font></code> value:
+<code><font color='blue'><pre style='display:inline'> 
+cat &lt;&lt; EOF &gt;&gt; example.cpp
+int main(void)
+{    if( ! $example_name() )
+     {    std::cout &lt;&lt; &quot;$example_name: Error&quot; &lt;&lt; std::endl;
+          std::exit(1);
+     }
+     std::cout &lt;&lt; &quot;$example_name: OK&quot; &lt;&lt; std::endl;
+     exit(0);
+}
+EOF
+</pre></font></code>
+<br>
+<b><big><a name="gsl_libs" id="gsl_libs">gsl_libs</a></big></b>
+<br>
+The following command determines the library link flags necessary
+to link <code><font color="blue">ipopt</font></code> on this system:
+<code><font color='blue'><pre style='display:inline'> 
+gsl_libs=`pkg-config --libs gsl`
+</pre></font></code>
+<br>
+<b><big><a name="ipopt_libs" id="ipopt_libs">ipopt_libs</a></big></b>
+<br>
+The following command determines the library link flags necessary
+to link <code><font color="blue">ipopt</font></code> on this system:
+<code><font color='blue'><pre style='display:inline'> 
+ipopt_libs=`pkg-config --libs ipopt`
+</pre></font></code>
+<br>
+<b><big><a name="suitesparse_libs" id="suitesparse_libs">suitesparse_libs</a></big></b>
+<br>
+The following command sets the library link flags necessary
+to link <code><font color="blue">SuiteSparse</font></code> on this system:
+<code><font color='blue'><pre style='display:inline'> 
+suitesparse_libs='
+     -lcholmod -lamd -lcamd -lcolamd -lccolamd -lsuitesparseconfig
+'
+</pre></font></code>
+<br>
+<b><big><a name="Compile and Link" id="Compile and Link">Compile and Link</a></big></b>
+<br>
+The command below compiles and links the example program.
+Note that the <code><font color="blue">eigen</font></code> include files have installed in a
+different directory and treated like system files because
+they otherwise generate lots of warnings.
+<code><font color='blue'><pre style='display:inline'> 
+if [ &quot;$build_type&quot; == 'debug' ]
+then
+     flags='-g -O0 -std=c++11 -Wall'
+else
+     flags='-O3 -DNDEBUG -std=c++11 -Wall'
+fi
+g++ example.cpp \
+     $flags \
+     -I $cppad_prefix/include \
+     -isystem $eigen_prefix/include \
+     -L $cppad_prefix/$cmake_libdir -lcppad_mixed \
+     -L $suitesparse_prefix/$cmake_libdir \
+     $gsl_libs \
+     $suitesparse_libs \
+     $ipopt_libs \
+     -o example
+</pre></font></code>
+<br>
+<b><big><a name="Run Example" id="Run Example">Run Example</a></big></b>
+<br>
+The following commands run the example:
+<code><font color='blue'><pre style='display:inline'> 
+if ! ./example
+then
+     echo 'check_install.sh: Error'
+     exit 1
+fi
+echo 'check_install.sh: OK'
+exit 0
+</pre></font></code>
+
+<hr>Input File: bin/check_install.sh
+
+</body>
+</html>

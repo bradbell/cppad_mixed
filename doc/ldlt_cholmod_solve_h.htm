@@ -1,0 +1,278 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Solve Linear Equations Using Factor</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Solve Linear Equations Using Factor">
+<meta name="keywords" id="keywords" content=" solve linear equations using factor syntax private purpose ldlt_obj row val_in val_out example ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_ldlt_cholmod_solve_h_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="ldlt_cholmod_logdet.htm" target="_top">Prev</a>
+</td><td><a href="ldlt_cholmod_sim_cov.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_cholmod_solve_H</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>ldlt_cholmod-&gt;</option>
+<option>ldlt_cholmod_ctor</option>
+<option>ldlt_cholmod_dtor</option>
+<option>ldlt_cholmod_init</option>
+<option>ldlt_cholmod_update</option>
+<option>ldlt_cholmod_logdet</option>
+<option>ldlt_cholmod_solve_H</option>
+<option>ldlt_cholmod_sim_cov</option>
+<option>ldlt_cholmod_inv</option>
+<option>ldlt_cholmod.cpp</option>
+<option>cholmod_solve_xam</option>
+<option>cholmod_solve2_a.cpp</option>
+<option>cholmod_solve2_sim.cpp</option>
+</select>
+</td>
+<td>ldlt_cholmod_solve_H</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Private</option>
+<option>Purpose</option>
+<option>ldlt_obj</option>
+<option>row</option>
+<option>val_in</option>
+<option>val_out</option>
+<option>Example</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Solve Linear Equations Using Factor</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i><font color="blue"><span style='white-space: nowrap'>.solve_H(</span></font><i><font color="black"><span style='white-space: nowrap'>row</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>val_in</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>val_out</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="Private" id="Private">Private</a></big></b>
+<br>
+The <a href="ldlt_cholmod.htm" target="_top"><span style='white-space: nowrap'>ldlt_cholmod</span></a>
+ class is an
+<a href="ldlt_cholmod.htm#Private" target="_top"><span style='white-space: nowrap'>implementation&nbsp;detail</span></a>
+ and not part of the
+<a href="namespace.htm#Private" target="_top"><span style='white-space: nowrap'>CppAD::mixed</span></a>
+ user API.
+
+<br>
+<br>
+<b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
+<br>
+This function solves the linear equation
+<small>@(@
+H x = b
+@)@</small> where <small>@(@
+H
+@)@</small> is the symmetric matrix
+that has been factored,
+<small>@(@
+b
+@)@</small> is a known column vector,
+and <small>@(@
+x
+@)@</small> is unknown.
+
+<br>
+<br>
+<b><big><a name="ldlt_obj" id="ldlt_obj">ldlt_obj</a></big></b>
+<br>
+This object has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::mixed::ldlt_cholmod&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+In addition, it must have a previous call to
+<a href="ldlt_cholmod_update.htm" target="_top"><span style='white-space: nowrap'>ldlt_cholmod_update</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="row" id="row">row</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;size_t&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>row</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It contains all of the rows of column vector <small>@(@
+b
+@)@</small> that are
+non-zero and the rows of the column vector 
+<code><i><font color="black"><span style='white-space: nowrap'>x</span></font></i></code>
+
+that are desired.
+These values are in strictly increasing order; i.e.,
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>row</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>row</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>+1]<br>
+</span></font></code>
+It follows that 
+<code><i><font color="black"><span style='white-space: nowrap'>row</span></font></i><font color="blue"><span style='white-space: nowrap'>.size()</span></font></code>
+ is less than or equal
+<a href="ldlt_cholmod_ctor.htm#nrow_" target="_top"><span style='white-space: nowrap'>nrow_</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="val_in" id="val_in">val_in</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>val_in</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+and it has the same size as 
+<code><i><font color="black"><span style='white-space: nowrap'>row</span></font></i></code>
+.
+It specifies the values in the column vector <small>@(@
+b
+@)@</small>
+for each of the corresponding rows; i.e.,
+for 
+<code><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;0&nbsp;,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>...</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>row</span></font></i><font color="blue"><span style='white-space: nowrap'>.size()-1</span></font></code>
+,
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>b</span></font></i><font color="blue"><span style='white-space: nowrap'>[&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>row</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;]&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>val_in</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+</span></font></code>
+.
+
+<br>
+<br>
+<b><big><a name="val_out" id="val_out">val_out</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>val_out</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+and it has the same size as 
+<code><i><font color="black"><span style='white-space: nowrap'>row</span></font></i></code>
+.
+On input, the value of its elements do not matter.
+Upon return, it contains the values in the column vector <small>@(@
+b
+@)@</small>
+for each of the corresponding rows; i.e.,
+for 
+<code><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;0&nbsp;,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>...</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>row</span></font></i><font color="blue"><span style='white-space: nowrap'>.size()-1</span></font></code>
+,
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>x</span></font></i><font color="blue"><span style='white-space: nowrap'>[&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>row</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;]&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>val_out</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+</span></font></code>
+.
+
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="ldlt_cholmod.cpp.htm#solve_H" target="_top"><span style='white-space: nowrap'>ldlt_cholmod.cpp</span></a>
+ contains an
+example and test that uses this function.
+
+
+<hr>Input File: src/cholmod/solve_H.cpp
+
+</body>
+</html>

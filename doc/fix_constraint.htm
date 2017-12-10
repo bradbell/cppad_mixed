@@ -1,0 +1,211 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>User Defined Fixed Effects Constraint Function</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="User Defined Fixed Effects Constraint Function">
+<meta name="keywords" id="keywords" content=" user defined fixed effects constraint function syntax public mixed_object a1_double virtual fixed_vec vec default example ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_fix_constraint_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="fix_likelihood.cpp.htm" target="_top">Prev</a>
+</td><td><a href="fix_constraint.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>base_class</option>
+<option>public</option>
+<option>fix_constraint</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>base_class-&gt;</option>
+<option>public</option>
+<option>private</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>public-&gt;</option>
+<option>derived_ctor</option>
+<option>ran_likelihood</option>
+<option>fix_likelihood</option>
+<option>fix_constraint</option>
+<option>initialize</option>
+<option>optimize_random</option>
+<option>optimize_fixed</option>
+<option>information_mat</option>
+<option>sample_fixed</option>
+<option>sample_random</option>
+<option>ran_likelihood_jac</option>
+<option>ran_likelihood_hes</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>fix_constraint-&gt;</option>
+<option>fix_constraint.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Public</option>
+<option>mixed_object</option>
+<option>a1_double</option>
+<option>Virtual Function</option>
+<option>fixed_vec</option>
+<option>vec</option>
+<option>---..Default</option>
+<option>Example</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>User Defined Fixed Effects Constraint Function</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>vec</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.fix_constraint(</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="Public" id="Public">Public</a></big></b>
+<br>
+This <code><font color="blue">cppad_mixed</font></code> member function is <a href="public.htm" target="_top"><span style='white-space: nowrap'>public</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="mixed_object" id="mixed_object">mixed_object</a></big></b>
+<br>
+We use <a href="derived_ctor.htm#mixed_object" target="_top"><span style='white-space: nowrap'>mixed_object</span></a>
+
+to denote an object of a class that is
+derived from the <code><font color="blue">cppad_mixed</font></code> base class.
+
+<br>
+<br>
+<b><big><a name="a1_double" id="a1_double">a1_double</a></big></b>
+<br>
+see <a href="typedef.htm#Scalar Types.a1_double" target="_top"><span style='white-space: nowrap'>a1_double</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="Virtual Function" id="Virtual Function">Virtual Function</a></big></b>
+<br>
+The following virtual function may be implemented in the derived class:
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virtual&nbsp;CppAD::vector&lt;a1_double&gt;&nbsp;fix_constraint(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;a1_double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
+</span></font></code>
+<br>
+<b><big><a name="fixed_vec" id="fixed_vec">fixed_vec</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;a1_double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It contains a value for the
+<a href="cppad_mixed.htm#Notation.Fixed Effects, theta" target="_top"><span style='white-space: nowrap'>fixed&nbsp;effects</span></a>
+ vector.
+
+<br>
+<br>
+<b><big><a name="vec" id="vec">vec</a></big></b>
+<br>
+This result has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;</span></font><i><font color="black"><span style='white-space: nowrap'>a1_double</span></font></i><font color="blue"><span style='white-space: nowrap'>&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It is the value of the
+<a href="cppad_mixed.htm#Problem.Fixed Constraints, c" target="_top"><span style='white-space: nowrap'>constraint&nbsp;function</span></a>
+
+<small>@(@
+c( \theta)
+@)@</small>
+
+<br>
+<br>
+<b><a name="vec.Default" id="vec.Default">Default</a></b>
+<br>
+The base class definition (default) for <code><font color="blue">fix_constraint</font></code>
+returns an empty vector;
+i.e., 
+<code><i><font color="black"><span style='white-space: nowrap'>vec</span></font></i><font color="blue"><span style='white-space: nowrap'>.size()&nbsp;==&nbsp;0</span></font></code>
+.
+In the case where there are no constraints of this form.
+
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="fix_constraint.cpp.htm" target="_top"><span style='white-space: nowrap'>fix_constraint.cpp</span></a>
+ contains an example
+using constraints.
+It returns true, if the test passes, and false otherwise.
+
+
+<hr>Input File: src/fix_constraint.omh
+
+</body>
+</html>

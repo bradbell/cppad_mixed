@@ -1,0 +1,404 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Express An Undetermined Linear System As Dependent and Independent Variables</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Express An Undetermined Linear System As Dependent and Independent Variables">
+<meta name="keywords" id="keywords" content=" express undetermined linear system dependent independent variables syntax prototype private purpose nr nc b tol d i c e rank example 2do ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_undetermined_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="triple2eigen.htm" target="_top">Prev</a>
+</td><td><a href="undetermined.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>undetermined</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>undetermined-&gt;</option>
+<option>undetermined.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Prototype</option>
+<option>Private</option>
+<option>Purpose</option>
+<option>A</option>
+<option>---..nr</option>
+<option>---..nc</option>
+<option>b</option>
+<option>tol</option>
+<option>D</option>
+<option>I</option>
+<option>C</option>
+<option>e</option>
+<option>rank</option>
+<option>Example</option>
+<option>2DO</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Express An Undetermined Linear System As Dependent and Independent Variables</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>rank</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;CppAD::mixed::undetermined(</span></font><i><font color="black"><span style='white-space: nowrap'>A</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>b</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>tol</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>D</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>I</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>C</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>e</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre><tt>
+<font color="#008080">size_t</font> <b><font color="#000000">undetermined</font></b><font color="#990000">(</font>
+     <b><font color="#0000FF">const</font></b> Eigen<font color="#990000">::</font>Matrix<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">,</font> Eigen<font color="#990000">::</font>Dynamic<font color="#990000">,</font> Eigen<font color="#990000">::</font>Dynamic<font color="#990000">&gt;&amp;</font> A     <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> Eigen<font color="#990000">::</font>Matrix<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">,</font> Eigen<font color="#990000">::</font>Dynamic<font color="#990000">,</font> <font color="#993399">1</font><font color="#990000">&gt;&amp;</font>              b     <font color="#990000">,</font>
+     <font color="#009900">double</font>                                                       tol   <font color="#990000">,</font>
+     Eigen<font color="#990000">::</font>Matrix<font color="#990000">&lt;</font>size_t<font color="#990000">,</font> Eigen<font color="#990000">::</font>Dynamic<font color="#990000">,</font> <font color="#993399">1</font><font color="#990000">&gt;&amp;</font>                    D     <font color="#990000">,</font>
+     Eigen<font color="#990000">::</font>Matrix<font color="#990000">&lt;</font>size_t<font color="#990000">,</font> Eigen<font color="#990000">::</font>Dynamic<font color="#990000">,</font> <font color="#993399">1</font><font color="#990000">&gt;&amp;</font>                    I     <font color="#990000">,</font>
+     Eigen<font color="#990000">::</font>Matrix<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">,</font> Eigen<font color="#990000">::</font>Dynamic<font color="#990000">,</font> Eigen<font color="#990000">::</font>Dynamic<font color="#990000">&gt;&amp;</font>       C     <font color="#990000">,</font>
+     Eigen<font color="#990000">::</font>Matrix<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">,</font> Eigen<font color="#990000">::</font>Dynamic<font color="#990000">,</font> <font color="#993399">1</font><font color="#990000">&gt;&amp;</font>                    e     <font color="#990000">)</font></tt></pre>
+<br>
+<b><big><a name="Private" id="Private">Private</a></big></b>
+<br>
+This function is an implementation detail and not part of the
+<a href="namespace.htm#Private" target="_top"><span style='white-space: nowrap'>CppAD::mixed</span></a>
+ user API.
+
+<br>
+<br>
+<b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
+<br>
+We are give a matrix <small>@(@
+A \in \B{R}^{m \times n}
+@)@</small>
+and a vector <small>@(@
+b \in \B{R}^m
+@)@</small>,
+where <small>@(@
+m < n
+@)@</small> and <small>@(@
+A
+@)@</small> has rank <small>@(@
+m
+@)@</small>.
+Furthermore, we are interested in the linear constraint equation
+<small>@[@
+
+	A x = b
+
+@]@</small>
+A matrix <small>@(@
+C \in \B{R}^{m \times (n - m)}
+@)@</small>
+and a vector <small>@(@
+e \in \B{R}^m
+@)@</small>,
+such that the constraint is equivalent to
+<small>@[@
+
+	x_D = C x_I + e
+
+@]@</small>
+where <small>@(@
+D
+@)@</small> is a subset, of size <small>@(@
+m
+@)@</small>,
+of the column indices and <small>@(@
+I
+@)@</small> is the complementary subset of the
+column indices.
+Note that one can use this equation to
+solve for the dependent  variables <small>@(@
+x_D
+@)@</small>
+as a function of independent variables <small>@(@
+x_I
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="A" id="A">A</a></big></b>
+<br>
+It is assumed that the rank of
+<small>@(@
+A
+@)@</small> is equal to 
+<code><i><font color="black"><span style='white-space: nowrap'>A</span></font></i><font color="blue"><span style='white-space: nowrap'>.rows()</span></font></code>
+.
+
+<br>
+<br>
+<b><a name="A.nr" id="A.nr">nr</a></b>
+<br>
+We use the notation 
+<code><i><font color="black"><span style='white-space: nowrap'>nr</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>A</span></font></i><font color="blue"><span style='white-space: nowrap'>.rows()</span></font></code>
+; i.e.,
+the number of rows in 
+<code><i><font color="black"><span style='white-space: nowrap'>A</span></font></i></code>
+.
+It is ok if 
+<code><i><font color="black"><span style='white-space: nowrap'>nr</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;==&nbsp;0</span></font></code>
+ no constraints in which case
+
+<code><i><font color="black"><span style='white-space: nowrap'>D</span></font></i></code>
+ is empty.
+
+<br>
+<br>
+<b><a name="A.nc" id="A.nc">nc</a></b>
+<br>
+We use the notation 
+<code><i><font color="black"><span style='white-space: nowrap'>nc</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>A</span></font></i><font color="blue"><span style='white-space: nowrap'>.cols()</span></font></code>
+; i.e.,
+the number of columns in 
+<code><i><font color="black"><span style='white-space: nowrap'>A</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="b" id="b">b</a></big></b>
+<br>
+It is assumed that 
+<code><i><font color="black"><span style='white-space: nowrap'>b</span></font></i><font color="blue"><span style='white-space: nowrap'>.rows()&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nr</span></font></i></code>
+
+(note that 
+<code><i><font color="black"><span style='white-space: nowrap'>b</span></font></i><font color="blue"><span style='white-space: nowrap'>.cols()&nbsp;==&nbsp;1</span></font></code>
+).
+
+<br>
+<br>
+<b><big><a name="tol" id="tol">tol</a></big></b>
+<br>
+This is the tolerance, relative to one,
+used for detecting a rank deficient matrix.
+To be specific, 
+<code><i><font color="black"><span style='white-space: nowrap'>tol</span></font></i></code>
+ times the maximum value in a row
+is considered a zero element for that row.
+
+<br>
+<br>
+<b><big><a name="D" id="D">D</a></big></b>
+<br>
+It is assumed that 
+<code><i><font color="black"><span style='white-space: nowrap'>D</span></font></i><font color="blue"><span style='white-space: nowrap'>.rows()&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nr</span></font></i></code>
+
+(note that 
+<code><i><font color="black"><span style='white-space: nowrap'>D</span></font></i><font color="blue"><span style='white-space: nowrap'>.cols()&nbsp;==&nbsp;1</span></font></code>
+).
+The input value of its elements does not matter.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>rank</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nr</span></font></i></code>
+,
+upon return the vector <small>@(@
+x_D
+@)@</small> is
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>x</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>D</span></font></i><font color="blue"><span style='white-space: nowrap'>[0]]&nbsp;,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>x</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>D</span></font></i><font color="blue"><span style='white-space: nowrap'>[1]]&nbsp;,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>...</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>x</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>D</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>nr</span></font></i><font color="blue"><span style='white-space: nowrap'>-1]]&nbsp;)^T<br>
+</span></font></code>
+<br>
+<b><big><a name="I" id="I">I</a></big></b>
+<br>
+It is assumed that 
+<code><i><font color="black"><span style='white-space: nowrap'>I</span></font></i><font color="blue"><span style='white-space: nowrap'>.rows()&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nc</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;-&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nr</span></font></i></code>
+
+(note that 
+<code><i><font color="black"><span style='white-space: nowrap'>I</span></font></i><font color="blue"><span style='white-space: nowrap'>.cols()&nbsp;==&nbsp;1</span></font></code>
+).
+The input value of its elements does not matter.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>rank</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nr</span></font></i></code>
+,
+upon return the vector <small>@(@
+x_I
+@)@</small> is
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>x</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>I</span></font></i><font color="blue"><span style='white-space: nowrap'>[0]]&nbsp;,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>x</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>I</span></font></i><font color="blue"><span style='white-space: nowrap'>[1]]&nbsp;,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>...</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>x</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>I</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>nr</span></font></i><font color="blue"><span style='white-space: nowrap'>-</span></font><i><font color="black"><span style='white-space: nowrap'>nc</span></font></i><font color="blue"><span style='white-space: nowrap'>-1]]&nbsp;)^T<br>
+</span></font></code>
+Furthermore the union of the sets corresponding
+to <small>@(@
+D
+@)@</small> and <small>@(@
+I
+@)@</small> is 
+<code><font color="blue"><span style='white-space: nowrap'>{&nbsp;0&nbsp;,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>...</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nc</span></font></i><font color="blue"><span style='white-space: nowrap'>-1&nbsp;}</span></font></code>
+.
+It follows that the sets do not intersect and none of the elements are
+repeated in the vectors 
+<code><i><font color="black"><span style='white-space: nowrap'>D</span></font></i></code>
+ or 
+<code><i><font color="black"><span style='white-space: nowrap'>I</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="C" id="C">C</a></big></b>
+<br>
+It is assumed that 
+<code><i><font color="black"><span style='white-space: nowrap'>C</span></font></i><font color="blue"><span style='white-space: nowrap'>.rows()&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nr</span></font></i></code>
+ and
+
+<code><i><font color="black"><span style='white-space: nowrap'>C</span></font></i><font color="blue"><span style='white-space: nowrap'>.cols()&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nc</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;-&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nr</span></font></i></code>
+.
+The input value of its elements does not matter.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>rank</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nr</span></font></i></code>
+,
+upon return it is the matrix <small>@(@
+C
+@)@</small> in <small>@(@
+x_D = C x_I + e
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="e" id="e">e</a></big></b>
+<br>
+It is assumed that 
+<code><i><font color="black"><span style='white-space: nowrap'>e</span></font></i><font color="blue"><span style='white-space: nowrap'>.rows()&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nr</span></font></i></code>
+
+(note that 
+<code><i><font color="black"><span style='white-space: nowrap'>e</span></font></i><font color="blue"><span style='white-space: nowrap'>.cols()&nbsp;==&nbsp;1</span></font></code>
+).
+The input value of its elements does not matter.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>rank</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nr</span></font></i></code>
+,
+upon return it is the vector <small>@(@
+e
+@)@</small> in <small>@(@
+x_D = C x_I + e
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="rank" id="rank">rank</a></big></b>
+<br>
+The return value has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>rank</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+and it is the rank of the matrix to tolerance
+<a href="undetermined.htm#tol" target="_top"><span style='white-space: nowrap'>tol</span></a>
+.
+
+
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="undetermined.cpp.htm" target="_top"><span style='white-space: nowrap'>undetermined.cpp</span></a>
+ is an example
+and test of <code><font color="blue">undetermined</font></code>.
+
+<br>
+<br>
+<b><big><a name="2DO" id="2DO">2DO</a></big></b>
+<br>
+This routine uses dense matrices, perhaps it would be useful
+to convert this (and <a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
+) to all sparse matrices.
+
+
+<hr>Input File: src/eigen/undetermined.cpp
+
+</body>
+</html>

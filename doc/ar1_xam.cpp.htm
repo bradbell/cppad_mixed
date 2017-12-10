@@ -1,0 +1,820 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>A First Order Auto-Regressive Example and Speed Test</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="A First Order Auto-Regressive Example and Speed Test">
+<meta name="keywords" id="keywords" content=" first order auto-regressive example speed test syntax problem data p( y_t | u  theta ) command arguments random_seed number_random quasi_fixed trace_optimize_fixed ipopt_solve bool_sparsity hold_memory derivative_test start_near_solution output cppad_mixed_version use_atomic_cholesky checkpoint_newton_step ldlt_cholmod optimize_cppad_function actual_seed initialize_bytes initialize_seconds optimize_fixed_seconds optimize_random_seconds information_mat_seconds sample_fixed_seconds final_bytes theta_0_estimate ar1_xam_ok source code ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_ar1_xam.cpp_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="speed.htm" target="_top">Prev</a>
+</td><td><a href="ar1_xam.sh.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>user</option>
+<option>speed</option>
+<option>ar1_xam.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>user-&gt;</option>
+<option>speed</option>
+<option>abs_density.cpp</option>
+<option>no_random.cpp</option>
+<option>ran_constraint.cpp</option>
+<option>lasso.cpp</option>
+<option>data_mismatch.cpp</option>
+<option>opt_ran_nan.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>speed-&gt;</option>
+<option>ar1_xam.cpp</option>
+<option>capture_xam.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>ar1_xam.cpp-&gt;</option>
+<option>ar1_xam.sh</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Problem</option>
+<option>---..Data</option>
+<option>---..p( y_t | u , theta )</option>
+<option>---..p( u | theta )</option>
+<option>Command Arguments</option>
+<option>---..random_seed</option>
+<option>---..number_random</option>
+<option>---..quasi_fixed</option>
+<option>---..trace_optimize_fixed</option>
+<option>---..ipopt_solve</option>
+<option>---..bool_sparsity</option>
+<option>---..hold_memory</option>
+<option>---..derivative_test</option>
+<option>---..start_near_solution</option>
+<option>Output</option>
+<option>---..cppad_mixed_version</option>
+<option>---..use_atomic_cholesky</option>
+<option>---..checkpoint_newton_step</option>
+<option>---..ldlt_cholmod</option>
+<option>---..optimize_cppad_function</option>
+<option>---..actual_seed</option>
+<option>---..initialize_bytes</option>
+<option>---..initialize_seconds</option>
+<option>---..optimize_fixed_seconds</option>
+<option>---..optimize_random_seconds</option>
+<option>---..information_mat_seconds</option>
+<option>---..sample_fixed_seconds</option>
+<option>---..final_bytes</option>
+<option>---..theta_0_estimate</option>
+<option>---..ar1_xam_ok</option>
+<option>Example</option>
+<option>Source Code</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>A First Order Auto-Regressive Example and Speed Test</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><font color="blue"><span style='white-space: nowrap'>./ar1_xam&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_seed</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>number_random</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>trace_optimize_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ipopt_solve</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>bool_sparsity</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>hold_memory</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>derivative_test</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>start_near_solution</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+<br>
+<b><big><a name="Problem" id="Problem">Problem</a></big></b>
+
+
+<br>
+<br>
+<b><a name="Problem.Data" id="Problem.Data">Data</a></b>
+<br>
+For <small>@(@
+t = 0 , \ldots , T - 1
+@)@</small>,
+<small>@(@
+y_t = (1 + t) + e_t
+@)@</small>,
+where <small>@(@
+e_t \sim \B{N}( 0, \sigma_y^2 )
+@)@</small>.
+
+
+<br>
+<br>
+<b><a name="Problem.p( y_t | u , theta )" id="Problem.p( y_t | u , theta )">p( y_t | u , theta )</a></b>
+<br>
+For <small>@(@
+t = 0 , \ldots , T - 1
+@)@</small>,
+<small>@(@
+y_t \sim \B{N}( u_t , \sigma_y^2 )
+@)@</small>.
+
+<br>
+<br>
+<b><a name="Problem.p( u | theta )" id="Problem.p( u | theta )">p( u | theta )</a></b>
+<br>
+For <small>@(@
+t = 0
+@)@</small>, <small>@(@
+u_t \sim \B{N}( 0 , \theta_0^2 )
+@)@</small>,
+and for <small>@(@
+t = 1 , \ldots , T - 1
+@)@</small>,
+<small>@(@
+u_t - u_{t-1} \sim \B{N}( 0 , \theta_0^2 )
+@)@</small>.
+
+
+<br>
+<br>
+<b><big><a name="Command Arguments" id="Command Arguments">Command Arguments</a></big></b>
+
+
+<br>
+<br>
+<b><a name="Command Arguments.random_seed" id="Command Arguments.random_seed">random_seed</a></b>
+<br>
+This is a non-negative integer equal to the
+seed for the random number generator,
+to be specific,
+<a href="manage_gsl_rng.htm#new_gsl_rng.s_in" target="_top"><span style='white-space: nowrap'>s_in</span></a>
+ used during the call to
+<code><font color="blue">new_gsl_rng</font></code>.
+
+<br>
+<br>
+<b><a name="Command Arguments.number_random" id="Command Arguments.number_random">number_random</a></b>
+<br>
+This is a positive integer specifying the number of random effects.
+This is also the number of time points and number of data values.
+
+<br>
+<br>
+<b><a name="Command Arguments.quasi_fixed" id="Command Arguments.quasi_fixed">quasi_fixed</a></b>
+<br>
+This is either <code><font color="blue">yes</font></code> or <code><font color="blue">no</font></code> and is the value of
+<a href="derived_ctor.htm#quasi_fixed" target="_top"><span style='white-space: nowrap'>quasi_fixed</span></a>
+ in the
+<code><font color="blue">cppad_mixed</font></code> derived class constructor.
+The amount of memory used by the
+<a href="derived_ctor.htm#mixed_derived" target="_top"><span style='white-space: nowrap'>mixed_derived</span></a>
+ object,
+after the information matrix is computed,
+will be similar to after the initialization when 
+<code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
+ is no.
+
+<br>
+<br>
+<b><a name="Command Arguments.trace_optimize_fixed" id="Command Arguments.trace_optimize_fixed">trace_optimize_fixed</a></b>
+<br>
+This is either <code><font color="blue">yes</font></code> or <code><font color="blue">no</font></code>.
+If it is yes, a 
+<code><i><font color="black"><span style='white-space: nowrap'>print_level</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;5</span></font></code>
+
+<a href="ipopt_trace.htm" target="_top"><span style='white-space: nowrap'>trace</span></a>
+ of the fixed effects optimization
+is included in the program output.
+Otherwise the ipopt 
+<code><i><font color="black"><span style='white-space: nowrap'>print_level</span></font></i></code>
+ is zero and
+no such trace is printed.
+
+<br>
+<br>
+<b><a name="Command Arguments.ipopt_solve" id="Command Arguments.ipopt_solve">ipopt_solve</a></b>
+<br>
+This is either <code><font color="blue">yes</font></code> or <code><font color="blue">no</font></code>.
+If it is yes, the <code><font color="blue">CppAD::ipopt::solve</font></code>
+routine is used for optimizing the random effects,
+otherwise <code><font color="blue">CppAD::mixed::ipopt_random</font></code> is used; see
+<a href="optimize_random.htm#options.evaluation_method" target="_top"><span style='white-space: nowrap'>evaluation_method</span></a>
+.
+
+<br>
+<br>
+<b><a name="Command Arguments.bool_sparsity" id="Command Arguments.bool_sparsity">bool_sparsity</a></b>
+<br>
+This is either <code><font color="blue">yes</font></code> or <code><font color="blue">no</font></code>.
+If it is yes, boolean sparsity patterns are used for this computation,
+otherwise set sparsity patterns are used.
+
+<br>
+<br>
+<b><a name="Command Arguments.hold_memory" id="Command Arguments.hold_memory">hold_memory</a></b>
+<br>
+The CppAD memory allocator has a hold memory option will be set by
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::thread_alloc::hold_memory(</span></font><i><font color="black"><span style='white-space: nowrap'>hold_memory</span></font></i><font color="blue"><span style='white-space: nowrap'>);<br>
+</span></font></code>
+where 
+<code><i><font color="black"><span style='white-space: nowrap'>hold_memory</span></font></i></code>
+ is either <code><font color="blue">yes</font></code> or <code><font color="blue">no</font></code>.
+
+<br>
+<br>
+<b><a name="Command Arguments.derivative_test" id="Command Arguments.derivative_test">derivative_test</a></b>
+<br>
+This is either <code><font color="blue">yes</font></code> or <code><font color="blue">no</font></code>.
+If it is yes, the derivatives of functions used in the optimization
+of the fixed effects are checked for correctness.
+(This requires extra time).
+
+<br>
+<br>
+<b><a name="Command Arguments.start_near_solution" id="Command Arguments.start_near_solution">start_near_solution</a></b>
+<br>
+This is either <code><font color="blue">yes</font></code> or <code><font color="blue">no</font></code>.
+If it is yes, the initial point for the optimization
+is the value of the fixed effects used to simulate the data.
+Otherwise, the initial point is significantly different from this value.
+
+
+<br>
+<br>
+<b><big><a name="Output" id="Output">Output</a></big></b>
+<br>
+Each output name, value pair is written in as 
+<code><i><font color="black"><span style='white-space: nowrap'>name</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>value</span></font></i></code>
+
+where the amount of spaces surrounding the equal sign is not specified.
+All of the pairs listed above are output.
+In addition, the following name value pairs are also output.
+
+<br>
+<br>
+<b><a name="Output.cppad_mixed_version" id="Output.cppad_mixed_version">cppad_mixed_version</a></b>
+<br>
+The <code><font color="blue">cppad_mixed</font></code> version number.
+
+<br>
+<br>
+<b><a name="Output.use_atomic_cholesky" id="Output.use_atomic_cholesky">use_atomic_cholesky</a></b>
+<br>
+is the <code><font color="blue">bin/run_cmake.sh</font></code> configuration option
+<a href="run_cmake.sh.htm#use_atomic_cholesky" target="_top"><span style='white-space: nowrap'>use_atomic_cholesky</span></a>
+.
+
+<br>
+<br>
+<b><a name="Output.checkpoint_newton_step" id="Output.checkpoint_newton_step">checkpoint_newton_step</a></b>
+<br>
+is the <code><font color="blue">bin/run_cmake.sh</font></code> configuration option
+<a href="run_cmake.sh.htm#checkpoint_newton_step" target="_top"><span style='white-space: nowrap'>checkpoint_newton_step</span></a>
+.
+
+<br>
+<br>
+<b><a name="Output.ldlt_cholmod" id="Output.ldlt_cholmod">ldlt_cholmod</a></b>
+<br>
+is the <code><font color="blue">bin/run_cmake.sh</font></code> configuration option
+<a href="run_cmake.sh.htm#ldlt_cholmod" target="_top"><span style='white-space: nowrap'>ldlt_cholmod</span></a>
+.
+
+<br>
+<br>
+<b><a name="Output.optimize_cppad_function" id="Output.optimize_cppad_function">optimize_cppad_function</a></b>
+<br>
+is the <code><font color="blue">bin/run_cmake.sh</font></code> configuration option
+<a href="run_cmake.sh.htm#optimize_cppad_function" target="_top"><span style='white-space: nowrap'>optimize_cppad_function</span></a>
+.
+
+<br>
+<br>
+<b><a name="Output.actual_seed" id="Output.actual_seed">actual_seed</a></b>
+<br>
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>random_seed</span></font></i></code>
+ is zero,
+the system clock, instead of 
+<code><i><font color="black"><span style='white-space: nowrap'>random_seed</span></font></i></code>
+,
+is used to seed the random number generator.
+The actual random seed 
+<code><i><font color="black"><span style='white-space: nowrap'>actual_seed</span></font></i></code>
+ is printed
+so that you can reproduce results when 
+<code><i><font color="black"><span style='white-space: nowrap'>random_seed</span></font></i></code>
+ is zero.
+
+<br>
+<br>
+<b><a name="Output.initialize_bytes" id="Output.initialize_bytes">initialize_bytes</a></b>
+<br>
+Is the amount of heap memory, in bytes,
+added to the program during its <a href="initialize.htm" target="_top"><span style='white-space: nowrap'>initialize</span></a>
+ call.
+Note that more temporary memory may have been used during this call.
+In addition, only memory allocated using <code><font color="blue">CppAD::thread_alloc</font></code> is
+included.
+
+<br>
+<br>
+<b><a name="Output.initialize_seconds" id="Output.initialize_seconds">initialize_seconds</a></b>
+<br>
+Is the number of seconds used by the derived class <a href="initialize.htm" target="_top"><span style='white-space: nowrap'>initialize</span></a>
+ call.
+
+<br>
+<br>
+<b><a name="Output.optimize_fixed_seconds" id="Output.optimize_fixed_seconds">optimize_fixed_seconds</a></b>
+<br>
+Is the number of seconds used by the call to
+<a href="optimize_fixed.htm" target="_top"><span style='white-space: nowrap'>optimize_fixed</span></a>
+ that is used to compute the
+optimal fixed effects.
+
+<br>
+<br>
+<b><a name="Output.optimize_random_seconds" id="Output.optimize_random_seconds">optimize_random_seconds</a></b>
+<br>
+Is the number of seconds used by a single call to
+<a href="optimize_random.htm" target="_top"><span style='white-space: nowrap'>optimize_random</span></a>
+ that is used to compute the
+optimal random effects.
+
+<br>
+<br>
+<b><a name="Output.information_mat_seconds" id="Output.information_mat_seconds">information_mat_seconds</a></b>
+<br>
+Is the number of seconds used by the call to
+<a href="information_mat.htm" target="_top"><span style='white-space: nowrap'>information_mat</span></a>
+ that computes the observed information matrix.
+
+<br>
+<br>
+<b><a name="Output.sample_fixed_seconds" id="Output.sample_fixed_seconds">sample_fixed_seconds</a></b>
+<br>
+Is the number of seconds used by the call to
+<a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
+ that computes the
+<a href="capture_xam.cpp.htm#Command Arguments.number_fixed_samples" target="_top"><span style='white-space: nowrap'>number_sample_fixed</span></a>
+
+samples for the fixed effects.
+
+<br>
+<br>
+<b><a name="Output.final_bytes" id="Output.final_bytes">final_bytes</a></b>
+<br>
+Is final amount of heap memory, in bytes, added and retained by the program.
+Only memory allocated using <code><font color="blue">CppAD::thread_alloc</font></code> is included.
+
+<br>
+<br>
+<b><a name="Output.theta_0_estimate" id="Output.theta_0_estimate">theta_0_estimate</a></b>
+<br>
+Is the optimal estimate for <small>@(@
+\theta_0
+@)@</small>; see the
+<a href="ar1_xam.cpp.htm#Problem" target="_top"><span style='white-space: nowrap'>problem</span></a>
+ definition.
+
+<br>
+<br>
+<b><a name="Output.ar1_xam_ok" id="Output.ar1_xam_ok">ar1_xam_ok</a></b>
+<br>
+If this program passes it's correctness test,
+
+<code><i><font color="black"><span style='white-space: nowrap'>ar1_xam_ok</span></font></i></code>
+ is yes and the program return code is <code><font color="blue">0</font></code>.
+Otherwise 
+<code><i><font color="black"><span style='white-space: nowrap'>ar1_xam_ok</span></font></i></code>
+ it is no and the return code is <code><font color="blue">1</font></code>.
+
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="ar1_xam.sh.htm" target="_top"><span style='white-space: nowrap'>ar1_xam.sh</span></a>
+ is an example using this program.
+
+<br>
+<br>
+<b><big><a name="Source Code" id="Source Code">Source Code</a></big></b>
+
+<code><font color="blue">
+<pre><tt>
+<b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;cppad/cppad.hpp&gt;</font>
+<b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;gsl/gsl_randist.h&gt;</font>
+<b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;Eigen/Dense&gt;</font>
+<b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;cppad/mixed/cppad_mixed.hpp&gt;</font>
+<b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;cppad/mixed/sparse_mat_info.hpp&gt;</font>
+<b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;cppad/mixed/manage_gsl_rng.hpp&gt;</font>
+<b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;cppad/mixed/configure.hpp&gt;</font>
+
+<b><font color="#0000FF">namespace</font></b> <font color="#FF0000">{</font>
+     <b><font color="#0000FF">using</font></b> std<font color="#990000">::</font>cout<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> std<font color="#990000">::</font>string<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>log<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>AD<font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>sparse_rcv<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>a1_double<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>a2_double<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>d_vector<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>a2_vector<font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// The constant sigma_y</font></i>
+     <b><font color="#0000FF">const</font></b> <font color="#009900">double</font> sigma_y <font color="#990000">=</font> <font color="#993399">0.1</font><font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <b><font color="#0000FF">class</font></b> <font color="#008080">mixed_derived</font> <font color="#990000">:</font> <b><font color="#0000FF">public</font></b> cppad_mixed <font color="#FF0000">{</font>
+     <b><font color="#0000FF">private</font></b><font color="#990000">:</font>
+          <b><font color="#0000FF">const</font></b> <font color="#008080">size_t</font>          n_fixed_<font color="#990000">;</font>
+          <b><font color="#0000FF">const</font></b> <font color="#008080">size_t</font>          n_random_<font color="#990000">;</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>       y_<font color="#990000">;</font>
+     <i><font color="#9A1900">// ----------------------------------------------------------------------</font></i>
+     <b><font color="#0000FF">public</font></b><font color="#990000">:</font>
+          <i><font color="#9A1900">// constructor</font></i>
+          <b><font color="#000000">mixed_derived</font></b><font color="#990000">(</font>
+               <font color="#008080">size_t</font>                 n_fixed       <font color="#990000">,</font>
+               <font color="#008080">size_t</font>                 n_random      <font color="#990000">,</font>
+               <font color="#009900">bool</font>                   quasi_fixed   <font color="#990000">,</font>
+               <font color="#009900">bool</font>                   bool_sparsity <font color="#990000">,</font>
+               <b><font color="#0000FF">const</font></b> sparse_rcv<font color="#990000">&amp;</font>      A_rcv         <font color="#990000">,</font>
+               <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>        y             <font color="#990000">)</font> <font color="#990000">:</font>
+               <b><font color="#000000">cppad_mixed</font></b><font color="#990000">(</font>
+                    n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv
+               <font color="#990000">)</font>                     <font color="#990000">,</font>
+               <b><font color="#000000">n_fixed_</font></b><font color="#990000">(</font>n_fixed<font color="#990000">)</font>     <font color="#990000">,</font>
+               <b><font color="#000000">n_random_</font></b><font color="#990000">(</font>n_random<font color="#990000">)</font>   <font color="#990000">,</font>
+               <b><font color="#000000">y_</font></b><font color="#990000">(</font>y<font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <b><font color="#000000">assert</font></b><font color="#990000">(</font> n_fixed <font color="#990000">==</font> <font color="#993399">1</font><font color="#990000">);</font>
+               <b><font color="#000000">assert</font></b><font color="#990000">(</font> y_<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">==</font> n_random_ <font color="#990000">);</font>
+          <font color="#FF0000">}</font>
+          <i><font color="#9A1900">// -------------------------------------------------------------------</font></i>
+          <i><font color="#9A1900">// implementation of ran_likelihood</font></i>
+          <i><font color="#9A1900">// Note that theta[2] is not used</font></i>
+          <b><font color="#0000FF">virtual</font></b> <font color="#008080">a2_vector</font> <b><font color="#000000">ran_likelihood</font></b><font color="#990000">(</font>
+               <b><font color="#0000FF">const</font></b> a2_vector<font color="#990000">&amp;</font> theta  <font color="#990000">,</font>
+               <b><font color="#0000FF">const</font></b> a2_vector<font color="#990000">&amp;</font> u      <font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <b><font color="#000000">assert</font></b><font color="#990000">(</font> theta<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">==</font> n_fixed_ <font color="#990000">);</font>
+               <b><font color="#000000">assert</font></b><font color="#990000">(</font> u<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">==</font> y_<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">);</font>
+               <font color="#008080">a2_vector</font> <b><font color="#000000">vec</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">);</font>
+               <i><font color="#9A1900">//</font></i>
+               <i><font color="#9A1900">// initialize summation</font></i>
+               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <b><font color="#000000">a2_double</font></b><font color="#990000">(</font><font color="#993399">0.0</font><font color="#990000">);</font>
+               <i><font color="#9A1900">//</font></i>
+               <i><font color="#9A1900">// sqrt_2pi = CppAD::sqrt(8.0 * CppAD::atan(1.0) );</font></i>
+               <i><font color="#9A1900">//</font></i>
+               <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> n_random_<font color="#990000">;</font> i<font color="#990000">++)</font>
+               <font color="#FF0000">{</font>    <font color="#008080">a2_double</font> sigma  <font color="#990000">=</font> <b><font color="#000000">a2_double</font></b><font color="#990000">(</font>sigma_y<font color="#990000">);</font>
+                    <font color="#008080">a2_double</font> res    <font color="#990000">=</font> <font color="#990000">(</font>y_<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">-</font> u<font color="#990000">[</font>i<font color="#990000">])</font> <font color="#990000">/</font> sigma<font color="#990000">;</font>
+                    <i><font color="#9A1900">//</font></i>
+                    <i><font color="#9A1900">// p(y_i | u, theta)</font></i>
+                    vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">+=</font> res <font color="#990000">*</font> res <font color="#990000">/</font> <b><font color="#000000">a2_double</font></b><font color="#990000">(</font><font color="#993399">2.0</font><font color="#990000">);</font>
+                    <i><font color="#9A1900">// following term does not depend on fixed or random effects</font></i>
+                    <i><font color="#9A1900">// vec[0] += log(sqrt_2pi);</font></i>
+                    <i><font color="#9A1900">//</font></i>
+                    <i><font color="#9A1900">// p(u_i | theta)</font></i>
+                    sigma <font color="#990000">=</font> theta<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
+                    <b><font color="#0000FF">if</font></b><font color="#990000">(</font> i <font color="#990000">==</font> <font color="#993399">0</font> <font color="#990000">)</font>
+                         res <font color="#990000">=</font> u<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">/</font> sigma<font color="#990000">;</font>
+                    <b><font color="#0000FF">else</font></b>
+                         res <font color="#990000">=</font> <font color="#990000">(</font> u<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">-</font> u<font color="#990000">[</font>i<font color="#990000">-</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">)</font> <font color="#990000">/</font> sigma<font color="#990000">;</font>
+                    vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">+=</font> <b><font color="#000000">log</font></b><font color="#990000">(</font>sigma<font color="#990000">)</font> <font color="#990000">+</font> res <font color="#990000">*</font> res <font color="#990000">/</font> <b><font color="#000000">a2_double</font></b><font color="#990000">(</font><font color="#993399">2.0</font><font color="#990000">);</font>
+                    <i><font color="#9A1900">// following term does not depend on fixed or random effects</font></i>
+                    <i><font color="#9A1900">// vec[0] += log(sqrt_2pi);</font></i>
+               <font color="#FF0000">}</font>
+               <b><font color="#0000FF">return</font></b> vec<font color="#990000">;</font>
+          <font color="#FF0000">}</font>
+     <font color="#FF0000">}</font><font color="#990000">;</font>
+     <b><font color="#0000FF">template</font></b> <font color="#990000">&lt;</font><b><font color="#0000FF">class</font></b> <font color="#008080">Value</font><font color="#990000">&gt;</font>
+     <font color="#009900">void</font> <b><font color="#000000">label_print</font></b><font color="#990000">(</font><b><font color="#0000FF">const</font></b> <font color="#009900">char</font><font color="#990000">*</font> label<font color="#990000">,</font> <b><font color="#0000FF">const</font></b> Value<font color="#990000">&amp;</font> value<font color="#990000">)</font>
+     <font color="#FF0000">{</font>    cout <font color="#990000">&lt;&lt;</font> std<font color="#990000">::</font><b><font color="#000000">setw</font></b><font color="#990000">(</font><font color="#993399">35</font><font color="#990000">)</font> <font color="#990000">&lt;&lt;</font> std<font color="#990000">::</font>left <font color="#990000">&lt;&lt;</font> label<font color="#990000">;</font>
+          cout <font color="#990000">&lt;&lt;</font> <font color="#FF0000">" = "</font> <font color="#990000">&lt;&lt;</font> value <font color="#990000">&lt;&lt;</font> std<font color="#990000">::</font>endl<font color="#990000">;</font>
+     <font color="#FF0000">}</font>
+     <font color="#009900">void</font> <b><font color="#000000">label_print</font></b><font color="#990000">(</font><b><font color="#0000FF">const</font></b> <font color="#009900">char</font><font color="#990000">*</font> label<font color="#990000">,</font> <b><font color="#0000FF">const</font></b> <font color="#009900">double</font><font color="#990000">&amp;</font> value<font color="#990000">)</font>
+     <font color="#FF0000">{</font>    cout <font color="#990000">&lt;&lt;</font> std<font color="#990000">::</font><b><font color="#000000">setw</font></b><font color="#990000">(</font><font color="#993399">35</font><font color="#990000">)</font> <font color="#990000">&lt;&lt;</font> std<font color="#990000">::</font>left <font color="#990000">&lt;&lt;</font> label<font color="#990000">;</font>
+          <font color="#008080">size_t</font> n_digits <font color="#990000">=</font> <font color="#993399">5</font> <font color="#990000">+</font> <b><font color="#000000">size_t</font></b><font color="#990000">(</font> std<font color="#990000">::</font><b><font color="#000000">log10</font></b><font color="#990000">(</font>value<font color="#990000">)</font> <font color="#990000">+</font> <font color="#993399">1e-9</font> <font color="#990000">);</font>
+          cout <font color="#990000">&lt;&lt;</font> <font color="#FF0000">" = "</font> <font color="#990000">&lt;&lt;</font> std<font color="#990000">::</font><b><font color="#000000">setprecision</font></b><font color="#990000">(</font>n_digits<font color="#990000">)</font> <font color="#990000">&lt;&lt;</font> value <font color="#990000">&lt;&lt;</font> std<font color="#990000">::</font>endl<font color="#990000">;</font>
+     <font color="#FF0000">}</font>
+     <font color="#009900">void</font> <b><font color="#000000">bool_print</font></b><font color="#990000">(</font><b><font color="#0000FF">const</font></b> <font color="#009900">char</font><font color="#990000">*</font> label<font color="#990000">,</font> <font color="#009900">bool</font> value<font color="#990000">)</font>
+     <font color="#FF0000">{</font>    std<font color="#990000">::</font>cout <font color="#990000">&lt;&lt;</font> std<font color="#990000">::</font><b><font color="#000000">setw</font></b><font color="#990000">(</font><font color="#993399">35</font><font color="#990000">)</font> <font color="#990000">&lt;&lt;</font> std<font color="#990000">::</font>left <font color="#990000">&lt;&lt;</font> label<font color="#990000">;</font>
+          <b><font color="#0000FF">if</font></b><font color="#990000">(</font> value <font color="#990000">)</font>
+               std<font color="#990000">::</font>cout <font color="#990000">&lt;&lt;</font> <font color="#FF0000">" = yes"</font><font color="#990000">;</font>
+          <b><font color="#0000FF">else</font></b>
+               std<font color="#990000">::</font>cout <font color="#990000">&lt;&lt;</font> <font color="#FF0000">" = no"</font><font color="#990000">;</font>
+          std<font color="#990000">::</font>cout <font color="#990000">&lt;&lt;</font> std<font color="#990000">::</font>endl<font color="#990000">;</font>
+     <font color="#FF0000">}</font>
+     std<font color="#990000">::</font><font color="#008080">string</font> <b><font color="#000000">size_t2string</font></b><font color="#990000">(</font><font color="#008080">size_t</font> value <font color="#990000">)</font>
+     <font color="#FF0000">{</font>    std<font color="#990000">::</font><font color="#008080">string</font> raw_string <font color="#990000">=</font> CppAD<font color="#990000">::</font><b><font color="#000000">to_string</font></b><font color="#990000">(</font>value<font color="#990000">);</font>
+          std<font color="#990000">::</font><font color="#008080">string</font> result <font color="#990000">=</font> <font color="#FF0000">""</font><font color="#990000">;</font>
+          <font color="#008080">size_t</font> n_raw <font color="#990000">=</font> raw_string<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">();</font>
+          <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> n_raw<font color="#990000">;</font> i<font color="#990000">++)</font>
+          <font color="#FF0000">{</font>    <b><font color="#0000FF">if</font></b><font color="#990000">(</font> i <font color="#990000">!=</font> <font color="#993399">0</font> <font color="#990000">&amp;&amp;</font> <font color="#990000">(</font>n_raw <font color="#990000">-</font> i<font color="#990000">)</font> <font color="#990000">%</font> <font color="#993399">3</font> <font color="#990000">==</font> <font color="#993399">0</font> <font color="#990000">)</font>
+                    result <font color="#990000">+=</font> <font color="#FF0000">","</font><font color="#990000">;</font>
+               result <font color="#990000">+=</font> raw_string<font color="#990000">[</font>i<font color="#990000">];</font>
+          <font color="#FF0000">}</font>
+          <b><font color="#0000FF">return</font></b> result<font color="#990000">;</font>
+     <font color="#FF0000">}</font>
+<font color="#FF0000">}</font>
+
+<font color="#009900">int</font> <b><font color="#000000">main</font></b><font color="#990000">(</font><font color="#009900">int</font> argc<font color="#990000">,</font> <b><font color="#0000FF">const</font></b> <font color="#009900">char</font><font color="#990000">*</font> argv<font color="#990000">[])</font>
+<font color="#FF0000">{</font>
+     <font color="#009900">bool</font>   ok <font color="#990000">=</font> <b><font color="#0000FF">true</font></b><font color="#990000">;</font>
+     <font color="#009900">double</font> inf <font color="#990000">=</font> std<font color="#990000">::</font>numeric_limits<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;::</font><b><font color="#000000">infinity</font></b><font color="#990000">();</font>
+     <i><font color="#9A1900">//</font></i>
+     <b><font color="#0000FF">const</font></b> <font color="#009900">char</font><font color="#990000">*</font> arg_name<font color="#990000">[]</font> <font color="#990000">=</font> <font color="#FF0000">{</font>
+          <font color="#FF0000">"random_seed"</font><font color="#990000">,</font>
+          <font color="#FF0000">"number_random"</font><font color="#990000">,</font>
+          <font color="#FF0000">"quasi_fixed"</font><font color="#990000">,</font>
+          <font color="#FF0000">"trace_optimize_fixed"</font><font color="#990000">,</font>
+          <font color="#FF0000">"ipopt_solve"</font><font color="#990000">,</font>
+          <font color="#FF0000">"bool_sparsity"</font><font color="#990000">,</font>
+          <font color="#FF0000">"hold_memory"</font><font color="#990000">,</font>
+          <font color="#FF0000">"derivative_test"</font><font color="#990000">,</font>
+          <font color="#FF0000">"start_near_solution"</font>
+     <font color="#FF0000">}</font><font color="#990000">;</font>
+     <font color="#008080">size_t</font> n_arg <font color="#990000">=</font> <b><font color="#0000FF">sizeof</font></b><font color="#990000">(</font>arg_name<font color="#990000">)</font> <font color="#990000">/</font> <b><font color="#0000FF">sizeof</font></b><font color="#990000">(</font>arg_name<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]);</font>
+     <i><font color="#9A1900">//</font></i>
+     <b><font color="#0000FF">if</font></b><font color="#990000">(</font> <b><font color="#000000">size_t</font></b><font color="#990000">(</font>argc<font color="#990000">)</font> <font color="#990000">!=</font> <font color="#993399">1</font> <font color="#990000">+</font> n_arg <font color="#990000">)</font>
+     <font color="#FF0000">{</font>    <i><font color="#9A1900">// print usage error message</font></i>
+          std<font color="#990000">::</font>cerr <font color="#990000">&lt;&lt;</font> <font color="#FF0000">"expected "</font> <font color="#990000">&lt;&lt;</font> n_arg <font color="#990000">&lt;&lt;</font> <font color="#FF0000">" arguments and found "</font>
+          <font color="#990000">&lt;&lt;</font> argc <font color="#990000">-</font> <font color="#993399">1</font> <font color="#990000">&lt;&lt;</font> <font color="#FF0000">"</font><font color="#CC33CC">\n</font><font color="#FF0000">usage: "</font> <font color="#990000">&lt;&lt;</font> argv<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
+          <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> n_arg<font color="#990000">;</font> i<font color="#990000">++)</font>
+               std<font color="#990000">::</font>cerr <font color="#990000">&lt;&lt;</font> <font color="#FF0000">" </font><font color="#CC33CC">\\</font><font color="#FF0000"> </font><font color="#CC33CC">\n\t</font><font color="#FF0000">"</font> <font color="#990000">&lt;&lt;</font> arg_name<font color="#990000">[</font>i<font color="#990000">];</font>
+          std<font color="#990000">::</font>cerr <font color="#990000">&lt;&lt;</font> <font color="#FF0000">"</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font><font color="#990000">;</font>
+          std<font color="#990000">::</font><b><font color="#000000">exit</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">);</font>
+     <font color="#FF0000">}</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// get command line arguments</font></i>
+     <b><font color="#000000">assert</font></b><font color="#990000">(</font> n_arg <font color="#990000">==</font> <font color="#993399">9</font> <font color="#990000">);</font>
+     <font color="#008080">size_t</font> random_seed            <font color="#990000">=</font> std<font color="#990000">::</font><b><font color="#000000">atoi</font></b><font color="#990000">(</font> argv<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">);</font>
+     <font color="#008080">size_t</font> number_random          <font color="#990000">=</font> std<font color="#990000">::</font><b><font color="#000000">atoi</font></b><font color="#990000">(</font> argv<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font> <font color="#990000">);</font>
+     <font color="#009900">bool</font>   quasi_fixed            <font color="#990000">=</font> <b><font color="#000000">string</font></b><font color="#990000">(</font> argv<font color="#990000">[</font><font color="#993399">3</font><font color="#990000">]</font> <font color="#990000">)</font> <font color="#990000">==</font> <font color="#FF0000">"yes"</font><font color="#990000">;</font>
+     <font color="#009900">bool</font>   trace_optimize_fixed   <font color="#990000">=</font> <b><font color="#000000">string</font></b><font color="#990000">(</font> argv<font color="#990000">[</font><font color="#993399">4</font><font color="#990000">]</font> <font color="#990000">)</font> <font color="#990000">==</font> <font color="#FF0000">"yes"</font><font color="#990000">;</font>
+     <font color="#009900">bool</font>   ipopt_solve            <font color="#990000">=</font> <b><font color="#000000">string</font></b><font color="#990000">(</font> argv<font color="#990000">[</font><font color="#993399">5</font><font color="#990000">]</font> <font color="#990000">)</font> <font color="#990000">==</font> <font color="#FF0000">"yes"</font><font color="#990000">;</font>
+     <font color="#009900">bool</font>   bool_sparsity          <font color="#990000">=</font> <b><font color="#000000">string</font></b><font color="#990000">(</font> argv<font color="#990000">[</font><font color="#993399">6</font><font color="#990000">]</font> <font color="#990000">)</font> <font color="#990000">==</font> <font color="#FF0000">"yes"</font><font color="#990000">;</font>
+     <font color="#009900">bool</font>   hold_memory            <font color="#990000">=</font> <b><font color="#000000">string</font></b><font color="#990000">(</font> argv<font color="#990000">[</font><font color="#993399">7</font><font color="#990000">]</font> <font color="#990000">)</font> <font color="#990000">==</font> <font color="#FF0000">"yes"</font><font color="#990000">;</font>
+     <font color="#009900">bool</font>   derivative_test        <font color="#990000">=</font> <b><font color="#000000">string</font></b><font color="#990000">(</font> argv<font color="#990000">[</font><font color="#993399">8</font><font color="#990000">]</font> <font color="#990000">)</font> <font color="#990000">==</font> <font color="#FF0000">"yes"</font><font color="#990000">;</font>
+     <font color="#009900">bool</font>   start_near_solution    <font color="#990000">=</font> <b><font color="#000000">string</font></b><font color="#990000">(</font> argv<font color="#990000">[</font><font color="#993399">9</font><font color="#990000">]</font> <font color="#990000">)</font> <font color="#990000">==</font> <font color="#FF0000">"yes"</font><font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// hold memory setting</font></i>
+     CppAD<font color="#990000">::</font>thread_alloc<font color="#990000">::</font><b><font color="#000000">hold_memory</font></b><font color="#990000">(</font>hold_memory<font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// print the command line arugments with labels for each value</font></i>
+     <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> n_arg<font color="#990000">;</font> i<font color="#990000">++)</font>
+          <b><font color="#000000">label_print</font></b><font color="#990000">(</font>arg_name<font color="#990000">[</font>i<font color="#990000">],</font> argv<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">+</font>i<font color="#990000">]);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// configuration options</font></i>
+     <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"cppad_mixed_version"</font><font color="#990000">,</font>    CPPAD_MIXED_VERSION<font color="#990000">);</font>
+     <b><font color="#000000">bool_print</font></b><font color="#990000">(</font><font color="#FF0000">"use_atomic_cholesky"</font><font color="#990000">,</font>     CPPAD_MIXED_USE_ATOMIC_CHOLESKY<font color="#990000">);</font>
+     <b><font color="#000000">bool_print</font></b><font color="#990000">(</font><font color="#FF0000">"checkpoint_newton_step"</font><font color="#990000">,</font>  CPPAD_MIXED_CHECKPOINT_NEWTON_STEP<font color="#990000">);</font>
+     <b><font color="#000000">bool_print</font></b><font color="#990000">(</font><font color="#FF0000">"ldlt_cholmod"</font><font color="#990000">,</font>            CPPAD_MIXED_LDLT_CHOLMOD<font color="#990000">);</font>
+     <b><font color="#000000">bool_print</font></b><font color="#990000">(</font><font color="#FF0000">"optimize_cppad_function"</font><font color="#990000">,</font> CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION<font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// initialize gsl random number generator</font></i>
+     <font color="#008080">size_t</font> actual_seed <font color="#990000">=</font> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><b><font color="#000000">new_gsl_rng</font></b><font color="#990000">(</font>random_seed<font color="#990000">);</font>
+     <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"actual_seed"</font><font color="#990000">,</font> actual_seed<font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <font color="#008080">size_t</font> n_data   <font color="#990000">=</font> number_random<font color="#990000">;</font>
+     <font color="#008080">size_t</font> n_random <font color="#990000">=</font> number_random<font color="#990000">;</font>
+     <font color="#008080">size_t</font> n_fixed  <font color="#990000">=</font> <font color="#993399">1</font><font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// explicit constriants</font></i>
+     <font color="#008080">d_vector</font> <b><font color="#000000">fix_constraint_lower</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">),</font> <b><font color="#000000">fix_constraint_upper</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// difference</font></i>
+     gsl_rng<font color="#990000">*</font> rng <font color="#990000">=</font> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><b><font color="#000000">get_gsl_rng</font></b><font color="#990000">();</font>
+     <font color="#008080">d_vector</font> <b><font color="#000000">y</font></b><font color="#990000">(</font>n_data<font color="#990000">),</font> <b><font color="#000000">random_in</font></b><font color="#990000">(</font>n_random<font color="#990000">),</font> <b><font color="#000000">theta_sim</font></b><font color="#990000">(</font>n_fixed<font color="#990000">);</font>
+     theta_sim<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
+     <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> n_data<font color="#990000">;</font> i<font color="#990000">++)</font>
+     <font color="#FF0000">{</font>    y<font color="#990000">[</font>i<font color="#990000">]</font>         <font color="#990000">=</font> <font color="#009900">double</font><font color="#990000">(</font>i <font color="#990000">+</font> <font color="#993399">1</font><font color="#990000">)</font> <font color="#990000">*</font> theta_sim<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
+          y<font color="#990000">[</font>i<font color="#990000">]</font>        <font color="#990000">+=</font> <b><font color="#000000">gsl_ran_gaussian</font></b><font color="#990000">(</font>rng<font color="#990000">,</font> sigma_y<font color="#990000">);</font>
+          random_in<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
+     <font color="#FF0000">}</font>
+     <i><font color="#9A1900">//</font></i>
+     d_vector
+          <b><font color="#000000">fixed_lower</font></b><font color="#990000">(</font>n_fixed<font color="#990000">),</font> <b><font color="#000000">fixed_in</font></b><font color="#990000">(</font>n_fixed<font color="#990000">),</font> <b><font color="#000000">fixed_upper</font></b><font color="#990000">(</font>n_fixed<font color="#990000">);</font>
+     fixed_lower<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">1e-5</font><font color="#990000">;</font> fixed_in<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">2.0</font><font color="#990000">;</font> fixed_upper<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> inf<font color="#990000">;</font>
+     <b><font color="#0000FF">if</font></b><font color="#990000">(</font> start_near_solution <font color="#990000">)</font>
+          fixed_in<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> theta_sim<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// object that is derived from cppad_mixed</font></i>
+     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">sparse_rcv</font> A_rcv<font color="#990000">;</font> <i><font color="#9A1900">// empty matrix</font></i>
+     <font color="#008080">mixed_derived</font> <b><font color="#000000">mixed_object</font></b><font color="#990000">(</font>
+          n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv<font color="#990000">,</font> y
+     <font color="#990000">);</font>
+     <i><font color="#9A1900">// initialization</font></i>
+     <font color="#008080">size_t</font> thread         <font color="#990000">=</font> CppAD<font color="#990000">::</font>thread_alloc<font color="#990000">::</font><b><font color="#000000">thread_num</font></b><font color="#990000">();</font>
+     <font color="#008080">size_t</font> start_bytes    <font color="#990000">=</font> CppAD<font color="#990000">::</font>thread_alloc<font color="#990000">::</font><b><font color="#000000">inuse</font></b><font color="#990000">(</font>thread<font color="#990000">);</font>
+     <font color="#009900">double</font> start_seconds  <font color="#990000">=</font> CppAD<font color="#990000">::</font><b><font color="#000000">elapsed_seconds</font></b><font color="#990000">();</font>
+     <i><font color="#9A1900">//</font></i>
+     mixed_object<font color="#990000">.</font><b><font color="#000000">initialize</font></b><font color="#990000">(</font>fixed_in<font color="#990000">,</font> random_in<font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <font color="#009900">double</font> end_seconds <font color="#990000">=</font> CppAD<font color="#990000">::</font><b><font color="#000000">elapsed_seconds</font></b><font color="#990000">();</font>
+     <font color="#008080">size_t</font> end_bytes   <font color="#990000">=</font> CppAD<font color="#990000">::</font>thread_alloc<font color="#990000">::</font><b><font color="#000000">inuse</font></b><font color="#990000">(</font>thread<font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// print amoumt of memory added to mixed_object during initialize</font></i>
+     <i><font color="#9A1900">// (use commans to separate every three digits).</font></i>
+     <font color="#008080">string</font> initialize_bytes <font color="#990000">=</font> <b><font color="#000000">size_t2string</font></b><font color="#990000">(</font>end_bytes <font color="#990000">-</font> start_bytes<font color="#990000">);</font>
+     <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"initialize_bytes"</font><font color="#990000">,</font> initialize_bytes<font color="#990000">);</font>
+     <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"initialize_seconds"</font><font color="#990000">,</font> end_seconds <font color="#990000">-</font> start_seconds<font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// optimize the fixed effects using quasi-Newton method</font></i>
+     <font color="#008080">string</font> random_ipopt_options <font color="#990000">=</font>
+          <font color="#FF0000">"Integer print_level               0</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
+          <font color="#FF0000">"String  sb                        yes</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
+          <font color="#FF0000">"String  derivative_test           none</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
+          <font color="#FF0000">"Numeric tol                       1e-7</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
+     <font color="#990000">;</font>
+     <b><font color="#0000FF">if</font></b><font color="#990000">(</font> ipopt_solve <font color="#990000">)</font> random_ipopt_options <font color="#990000">+=</font>
+          <font color="#FF0000">"String  evaluation_method         ipopt_solve</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font><font color="#990000">;</font>
+     <font color="#008080">string</font> fixed_ipopt_options <font color="#990000">=</font>
+          <font color="#FF0000">"String  sb                        yes</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
+          <font color="#FF0000">"Numeric tol                       1e-7</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
+          <font color="#FF0000">"Integer max_iter                  15</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
+     <font color="#990000">;</font>
+     <b><font color="#0000FF">if</font></b><font color="#990000">(</font> trace_optimize_fixed <font color="#990000">)</font>
+          fixed_ipopt_options <font color="#990000">+=</font> <font color="#FF0000">"Integer print_level         5</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font><font color="#990000">;</font>
+     <b><font color="#0000FF">else</font></b>
+          fixed_ipopt_options <font color="#990000">+=</font> <font color="#FF0000">"Integer print_level         0</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font><font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <b><font color="#0000FF">if</font></b><font color="#990000">(</font> derivative_test <font color="#990000">)</font>
+          fixed_ipopt_options <font color="#990000">+=</font> <font color="#FF0000">"String derivative_test      first-order</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font><font color="#990000">;</font>
+     <b><font color="#0000FF">else</font></b>
+          fixed_ipopt_options <font color="#990000">+=</font> <font color="#FF0000">"String derivative_test      none</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font><font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <font color="#008080">d_vector</font> <b><font color="#000000">random_lower</font></b><font color="#990000">(</font>n_random<font color="#990000">),</font> <b><font color="#000000">random_upper</font></b><font color="#990000">(</font>n_random<font color="#990000">);</font>
+     <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> n_random<font color="#990000">;</font> i<font color="#990000">++)</font>
+     <font color="#FF0000">{</font>    random_lower<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> <font color="#990000">-</font>inf<font color="#990000">;</font>
+          random_upper<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> <font color="#990000">+</font>inf<font color="#990000">;</font>
+     <font color="#FF0000">}</font>
+     <i><font color="#9A1900">// optimize fixed effects</font></i>
+     start_seconds <font color="#990000">=</font> CppAD<font color="#990000">::</font><b><font color="#000000">elapsed_seconds</font></b><font color="#990000">();</font>
+     <font color="#008080">d_vector</font> fixed_scale <font color="#990000">=</font> fixed_in<font color="#990000">;</font>
+     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">fixed_solution</font> solution <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">optimize_fixed</font></b><font color="#990000">(</font>
+          fixed_ipopt_options<font color="#990000">,</font>
+          random_ipopt_options<font color="#990000">,</font>
+          fixed_lower<font color="#990000">,</font>
+          fixed_upper<font color="#990000">,</font>
+          fix_constraint_lower<font color="#990000">,</font>
+          fix_constraint_upper<font color="#990000">,</font>
+          fixed_scale<font color="#990000">,</font>
+          fixed_in<font color="#990000">,</font>
+          random_lower<font color="#990000">,</font>
+          random_upper<font color="#990000">,</font>
+          random_in
+     <font color="#990000">);</font>
+     end_seconds <font color="#990000">=</font> CppAD<font color="#990000">::</font><b><font color="#000000">elapsed_seconds</font></b><font color="#990000">();</font>
+     <b><font color="#0000FF">if</font></b><font color="#990000">(</font> trace_optimize_fixed <font color="#990000">)</font>
+          std<font color="#990000">::</font>cout <font color="#990000">&lt;&lt;</font> std<font color="#990000">::</font>endl<font color="#990000">;</font>
+     <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"optimize_fixed_seconds"</font><font color="#990000">,</font> end_seconds <font color="#990000">-</font> start_seconds<font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// estimate of fixed effects</font></i>
+     <font color="#008080">d_vector</font> theta_out <font color="#990000">=</font> solution<font color="#990000">.</font>fixed_opt<font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// estimate of random effects</font></i>
+     start_seconds <font color="#990000">=</font> CppAD<font color="#990000">::</font><b><font color="#000000">elapsed_seconds</font></b><font color="#990000">();</font>
+     <font color="#008080">d_vector</font> u_out     <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">optimize_random</font></b><font color="#990000">(</font>
+          random_ipopt_options<font color="#990000">,</font>
+          theta_out<font color="#990000">,</font>
+          random_lower<font color="#990000">,</font>
+          random_upper<font color="#990000">,</font>
+          random_in
+     <font color="#990000">);</font>
+     end_seconds <font color="#990000">=</font> CppAD<font color="#990000">::</font><b><font color="#000000">elapsed_seconds</font></b><font color="#990000">();</font>
+     <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"optimize_random_seconds"</font><font color="#990000">,</font> end_seconds <font color="#990000">-</font> start_seconds<font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// information matrix</font></i>
+     start_seconds <font color="#990000">=</font> CppAD<font color="#990000">::</font><b><font color="#000000">elapsed_seconds</font></b><font color="#990000">();</font>
+     sparse_rcv
+     information_rcv <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">information_mat</font></b><font color="#990000">(</font>solution<font color="#990000">,</font> u_out<font color="#990000">);</font>
+     end_seconds <font color="#990000">=</font> CppAD<font color="#990000">::</font><b><font color="#000000">elapsed_seconds</font></b><font color="#990000">();</font>
+     <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"information_mat_seconds"</font><font color="#990000">,</font> end_seconds <font color="#990000">-</font> start_seconds<font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// sample approximate posteroior for fixed effects</font></i>
+     <font color="#008080">size_t</font> number_fixed_samples <font color="#990000">=</font> <font color="#993399">1000</font><font color="#990000">;</font>
+     <font color="#008080">d_vector</font> <b><font color="#000000">sample</font></b><font color="#990000">(</font> number_fixed_samples <font color="#990000">*</font> n_fixed <font color="#990000">);</font>
+     start_seconds <font color="#990000">=</font> CppAD<font color="#990000">::</font><b><font color="#000000">elapsed_seconds</font></b><font color="#990000">();</font>
+     mixed_object<font color="#990000">.</font><b><font color="#000000">sample_fixed</font></b><font color="#990000">(</font>
+          sample<font color="#990000">,</font>
+          information_rcv<font color="#990000">,</font>
+          solution<font color="#990000">,</font>
+          fixed_lower<font color="#990000">,</font>
+          fixed_upper<font color="#990000">,</font>
+          u_out
+     <font color="#990000">);</font>
+     end_seconds <font color="#990000">=</font> CppAD<font color="#990000">::</font><b><font color="#000000">elapsed_seconds</font></b><font color="#990000">();</font>
+     <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"sample_fixed_seconds"</font><font color="#990000">,</font> end_seconds <font color="#990000">-</font> start_seconds<font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     end_bytes          <font color="#990000">=</font> CppAD<font color="#990000">::</font>thread_alloc<font color="#990000">::</font><b><font color="#000000">inuse</font></b><font color="#990000">(</font>thread<font color="#990000">);</font>
+     <font color="#008080">string</font> final_bytes <font color="#990000">=</font> <b><font color="#000000">size_t2string</font></b><font color="#990000">(</font>end_bytes <font color="#990000">-</font> start_bytes<font color="#990000">);</font>
+     <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"final_bytes"</font><font color="#990000">,</font> final_bytes<font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// compute the sample standard deviations</font></i>
+     <i><font color="#9A1900">// and ratio of error divided by sample standard deviation</font></i>
+     <font color="#008080">d_vector</font> <b><font color="#000000">sample_std</font></b><font color="#990000">(</font>n_fixed<font color="#990000">),</font> <b><font color="#000000">estimate_ratio</font></b><font color="#990000">(</font>n_fixed<font color="#990000">);</font>
+     <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;</font> n_fixed<font color="#990000">;</font> j<font color="#990000">++)</font>
+          sample_std<font color="#990000">[</font>j<font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
+     <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> number_fixed_samples<font color="#990000">;</font> i<font color="#990000">++)</font>
+     <font color="#FF0000">{</font>    <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;</font> n_fixed<font color="#990000">;</font> j<font color="#990000">++)</font>
+          <font color="#FF0000">{</font>    <font color="#009900">double</font> diff    <font color="#990000">=</font> sample<font color="#990000">[</font>i <font color="#990000">*</font> n_fixed <font color="#990000">+</font> j<font color="#990000">]</font> <font color="#990000">-</font> theta_out<font color="#990000">[</font>j<font color="#990000">];</font>
+               sample_std<font color="#990000">[</font>j<font color="#990000">]</font> <font color="#990000">+=</font> diff <font color="#990000">*</font> diff<font color="#990000">;</font>
+          <font color="#FF0000">}</font>
+     <font color="#FF0000">}</font>
+     <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;</font> n_fixed<font color="#990000">;</font> j<font color="#990000">++)</font>
+     <font color="#FF0000">{</font>    sample_std<font color="#990000">[</font>j<font color="#990000">]</font> <font color="#990000">=</font> std<font color="#990000">::</font><b><font color="#000000">sqrt</font></b><font color="#990000">(</font> sample_std<font color="#990000">[</font>j<font color="#990000">]</font> <font color="#990000">/</font> number_fixed_samples <font color="#990000">);</font>
+          <i><font color="#9A1900">// check if results results are reasonable</font></i>
+          estimate_ratio<font color="#990000">[</font>j<font color="#990000">]</font> <font color="#990000">=</font> <font color="#990000">(</font> theta_out<font color="#990000">[</font>j<font color="#990000">]</font> <font color="#990000">-</font> theta_sim<font color="#990000">[</font>j<font color="#990000">]</font> <font color="#990000">)</font> <font color="#990000">/</font> sample_std<font color="#990000">[</font>j<font color="#990000">];</font>
+          ok  <font color="#990000">&amp;=</font> std<font color="#990000">::</font><b><font color="#000000">fabs</font></b><font color="#990000">(</font>estimate_ratio<font color="#990000">[</font>j<font color="#990000">])</font> <font color="#990000">&lt;</font> <font color="#993399">4.0</font><font color="#990000">;</font>
+     <font color="#FF0000">}</font>
+     <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"theta_0_estimate"</font><font color="#990000">,</font> theta_out<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">);</font>
+     <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"theta_0_std"</font><font color="#990000">,</font>      sample_std<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">);</font>
+     <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"theta_0_ratio"</font><font color="#990000">,</font>    estimate_ratio<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// Check that only the lower limit on theta[1] is active.</font></i>
+     ok <font color="#990000">&amp;=</font> solution<font color="#990000">.</font>fixed_lag<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">==</font> n_fixed<font color="#990000">;</font>
+     ok <font color="#990000">&amp;=</font> solution<font color="#990000">.</font>fixed_lag<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">==</font> <font color="#993399">0.0</font><font color="#990000">;</font>
+     ok <font color="#990000">&amp;=</font> solution<font color="#990000">.</font>fix_con_lag<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">==</font> <font color="#993399">0</font><font color="#990000">;</font>
+     ok <font color="#990000">&amp;=</font> solution<font color="#990000">.</font>ran_con_lag<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">==</font> <font color="#993399">0</font><font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <b><font color="#0000FF">if</font></b><font color="#990000">(</font> ok <font color="#990000">)</font>
+          <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"ar1_xam_ok"</font><font color="#990000">,</font> <font color="#FF0000">"yes"</font><font color="#990000">);</font>
+     <b><font color="#0000FF">else</font></b>
+          <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"ar1_xam_ok"</font><font color="#990000">,</font> <font color="#FF0000">"no"</font><font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     CppAD<font color="#990000">::</font>thread_alloc<font color="#990000">::</font><b><font color="#000000">hold_memory</font></b><font color="#990000">(</font><b><font color="#0000FF">false</font></b><font color="#990000">);</font>
+     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><b><font color="#000000">free_gsl_rng</font></b><font color="#990000">();</font>
+     <b><font color="#0000FF">if</font></b><font color="#990000">(</font> ok <font color="#990000">)</font>
+          <b><font color="#0000FF">return</font></b> <font color="#993399">0</font><font color="#990000">;</font>
+     <b><font color="#0000FF">return</font></b> <font color="#993399">1</font><font color="#990000">;</font>
+<font color="#FF0000">}</font></tt></pre>
+</font></code>
+<hr>Input File: speed/ar1_xam.cpp
+
+</body>
+</html>

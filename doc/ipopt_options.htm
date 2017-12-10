@@ -1,0 +1,197 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>An Ipopt Options Argument</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="An Ipopt Options Argument">
+<meta name="keywords" id="keywords" content=" ipopt options argument prototype format string integer numeric ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_ipopt_options_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="optimize_fixed.cpp.htm" target="_top">Prev</a>
+</td><td><a href="ipopt_trace.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>base_class</option>
+<option>public</option>
+<option>optimize_fixed</option>
+<option>ipopt_options</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down4(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>base_class-&gt;</option>
+<option>public</option>
+<option>private</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>public-&gt;</option>
+<option>derived_ctor</option>
+<option>ran_likelihood</option>
+<option>fix_likelihood</option>
+<option>fix_constraint</option>
+<option>initialize</option>
+<option>optimize_random</option>
+<option>optimize_fixed</option>
+<option>information_mat</option>
+<option>sample_fixed</option>
+<option>sample_random</option>
+<option>ran_likelihood_jac</option>
+<option>ran_likelihood_hes</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>optimize_fixed-&gt;</option>
+<option>optimize_fixed.cpp</option>
+<option>ipopt_options</option>
+<option>ipopt_trace</option>
+</select>
+</td>
+<td>ipopt_options</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Prototype</option>
+<option>Format</option>
+<option>String</option>
+<option>Integer</option>
+<option>Numeric</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>An Ipopt Options Argument</big></big></b></center>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+<br>
+An Ipopt options argument 
+<code><i><font color="black"><span style='white-space: nowrap'>options</span></font></i></code>
+ has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;std::string&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>options</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It contains a list of
+<a href="http://www.coin-or.org/Ipopt/documentation/" target="_top"><span style='white-space: nowrap'>Ipopt</span></a>
+ options.
+
+<br>
+<br>
+<b><big><a name="Format" id="Format">Format</a></big></b>
+<br>
+Each option corresponds to a line in 
+<code><i><font color="black"><span style='white-space: nowrap'>options</span></font></i></code>
+ and
+is terminated by the <code><font color="blue">'\n'</font></code> character.
+This includes the last line; i.e., the last character in 
+<code><i><font color="black"><span style='white-space: nowrap'>options</span></font></i></code>
+
+is a <code><font color="blue">'\n'</font></code>.
+Each line
+consists of three non-empty tokens separated by one or more spaces.
+
+<br>
+<br>
+<b><big><a name="String" id="String">String</a></big></b>
+<br>
+You can set any Ipopt string option using a line with the following syntax:
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>name</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>value</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+Here 
+<code><i><font color="black"><span style='white-space: nowrap'>name</span></font></i></code>
+ is any valid Ipopt string option
+and 
+<code><i><font color="black"><span style='white-space: nowrap'>value</span></font></i></code>
+ is its setting.
+
+<br>
+<br>
+<b><big><a name="Integer" id="Integer">Integer</a></big></b>
+<br>
+You can set any Ipopt integer option using a line with the following syntax:
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Integer&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>name</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>value</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+Here 
+<code><i><font color="black"><span style='white-space: nowrap'>name</span></font></i></code>
+ is any valid Ipopt integer option
+and 
+<code><i><font color="black"><span style='white-space: nowrap'>value</span></font></i></code>
+ is its setting.
+
+<br>
+<br>
+<b><big><a name="Numeric" id="Numeric">Numeric</a></big></b>
+<br>
+You can set any Ipopt numeric option using a line with the following syntax:
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Numeric&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>name</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>value</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+Here 
+<code><i><font color="black"><span style='white-space: nowrap'>name</span></font></i></code>
+ is any valid Ipopt numeric option
+and 
+<code><i><font color="black"><span style='white-space: nowrap'>value</span></font></i></code>
+ is its setting.
+
+
+<hr>Input File: omh/ipopt_options.omh
+
+</body>
+</html>

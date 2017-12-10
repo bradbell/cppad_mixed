@@ -1,0 +1,317 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>User Defined Class Derived From cppad_mixed</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="User Defined Class Derived From cppad_mixed">
+<meta name="keywords" id="keywords" content=" user defined class derived from cppad_mixed syntax see also mixed_derived mixed_object n_fixed n_random quasi_fixed bool_sparsity a_rcv ... cppad errorhandler example ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_derived_ctor_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="public.htm" target="_top">Prev</a>
+</td><td><a href="derived_ctor.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>base_class</option>
+<option>public</option>
+<option>derived_ctor</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>base_class-&gt;</option>
+<option>public</option>
+<option>private</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>public-&gt;</option>
+<option>derived_ctor</option>
+<option>ran_likelihood</option>
+<option>fix_likelihood</option>
+<option>fix_constraint</option>
+<option>initialize</option>
+<option>optimize_random</option>
+<option>optimize_fixed</option>
+<option>information_mat</option>
+<option>sample_fixed</option>
+<option>sample_random</option>
+<option>ran_likelihood_jac</option>
+<option>ran_likelihood_hes</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>derived_ctor-&gt;</option>
+<option>derived_ctor.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>See Also</option>
+<option>mixed_derived</option>
+<option>mixed_object</option>
+<option>cppad_mixed</option>
+<option>n_fixed</option>
+<option>n_random</option>
+<option>quasi_fixed</option>
+<option>bool_sparsity</option>
+<option>A_rcv</option>
+<option>---....</option>
+<option>CppAD ErrorHandler</option>
+<option>Example</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>User Defined Class Derived From cppad_mixed</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>mixed_derived</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>bool_sparsity</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>A_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>...</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="See Also" id="See Also">See Also</a></big></b>
+
+<br>
+<a href="initialize.htm" target="_top"><span style='white-space: nowrap'>initialize</span></a>
+
+
+<br>
+<br>
+<b><big><a name="mixed_derived" id="mixed_derived">mixed_derived</a></big></b>
+<br>
+This is the name of the class derived in the following fashion:
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mixed_derived</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;:&nbsp;public&nbsp;cppad_mixed&nbsp;{<br>
+</span></font></code>
+<br>
+<b><big><a name="mixed_object" id="mixed_object">mixed_object</a></big></b>
+<br>
+This is the derived class object that is constructed by the syntax above.
+
+<br>
+<br>
+<b><big><a name="cppad_mixed" id="cppad_mixed">cppad_mixed</a></big></b>
+<br>
+The derived class constructor must call its base class constructor as follows:
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cppad_mixed(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>bool_sparsity</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>A_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
+</span></font></code>
+<br>
+<b><big><a name="n_fixed" id="n_fixed">n_fixed</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+and is the number of
+<a href="cppad_mixed.htm#Notation.Fixed Effects, theta" target="_top"><span style='white-space: nowrap'>fixed&nbsp;effects</span></a>
+ in the model.
+
+<br>
+<br>
+<b><big><a name="n_random" id="n_random">n_random</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+and is the number of
+<a href="cppad_mixed.htm#Notation.Random Effects, u" target="_top"><span style='white-space: nowrap'>random&nbsp;effects</span></a>
+ in the model.
+In the case where there are
+<a href="cppad_mixed.htm#Problem.No Random Effects" target="_top"><span style='white-space: nowrap'>no&nbsp;random&nbsp;effects</span></a>
+,
+
+<code><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;0</span></font></code>
+.
+
+<br>
+<br>
+<b><big><a name="quasi_fixed" id="quasi_fixed">quasi_fixed</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+Currently, true is the recommended value for this parameter
+(expected to be faster and use less memory).
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
+ is true,
+the a quasi-Newton approximation for the Hessian of the total objective
+<a href="theory.htm#Objective.Total Objective, L(theta)" target="_top"><span style='white-space: nowrap'>L(theta)</span></a>
+
+is used during the optimization of the fixed effects.
+Otherwise, the Hessian of the total objective is computed using the
+approximate Laplace objective
+<a href="theory.htm#Approximate Laplace Objective, H(beta, theta, u)" target="_top"><span style='white-space: nowrap'>H(beta,&nbsp;theta,&nbsp;u)</span></a>
+.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
+ is true,
+some initialization is skipped during <a href="initialize.htm" target="_top"><span style='white-space: nowrap'>initialize</span></a>
+ is skipped.
+This initialization is needed, and hence done during
+the computation of the <a href="information_mat.htm" target="_top"><span style='white-space: nowrap'>information&nbsp;matrix</span></a>
+.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
+ is true,
+the amount of memory used by the
+<a href="derived_ctor.htm#mixed_derived" target="_top"><span style='white-space: nowrap'>mixed_derived</span></a>
+ object
+after the information matrix is computed
+is similar after then initialization when 
+<code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
+ is false.
+
+<br>
+<br>
+<b><big><a name="bool_sparsity" id="bool_sparsity">bool_sparsity</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>bool_sparsity</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+If it is true, where possible
+boolean sparsity patterns are used for this computation,
+otherwise set sparsity patterns are used.
+This should only affect to amount of time and memory used for the
+computations.
+If this argument is not present, the type of sparsity patterns
+is not specified.
+
+<br>
+<br>
+<b><big><a name="A_rcv" id="A_rcv">A_rcv</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::mixed::sparse_rcv&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>A_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It is a
+<a href="sparse_mat_info.htm#Notation.Sparse Matrix" target="_top"><span style='white-space: nowrap'>sparse&nbsp;matrix</span></a>
+
+representation of the
+<a href="cppad_mixed.htm#Notation.Random Constraint Matrix, A" target="_top"><span style='white-space: nowrap'>random&nbsp;constraint&nbsp;matrix</span></a>
+
+<small>@(@
+A
+@)@</small>.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>.size()</span></font></code>
+ is zero, this must be the empty matrix.
+The member variable 
+<code><i><font color="black"><span style='white-space: nowrap'>A_rcv_</span></font></i></code>
+ is set equal to 
+<code><i><font color="black"><span style='white-space: nowrap'>A_rcv</span></font></i></code>
+
+before any other routines are called by this routine.
+
+<br>
+<br>
+<b><big><a name="..." id="...">...</a></big></b>
+<br>
+Other arguments to the derived class constructor
+(that are not used by the base class constructor).
+The other arguments need not appear at the end of the derived
+class constructor (as in the syntax above).
+
+<br>
+<br>
+<b><big><a name="CppAD ErrorHandler" id="CppAD ErrorHandler">CppAD ErrorHandler</a></big></b>
+<br>
+If a CppAD error occurs, its
+<a href="http://www.coin-or.org/CppAD/Doc/errorhandler.htm" target="_top"><span style='white-space: nowrap'>ErrorHandler</span></a>
+
+is used to map it to either a
+<a href="public.htm#User Defined Functions.fatal_error" target="_top"><span style='white-space: nowrap'>fatal_error</span></a>
+
+or
+<a href="public.htm#User Defined Functions.warning" target="_top"><span style='white-space: nowrap'>warning</span></a>
+.
+
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="derived_ctor.cpp.htm" target="_top"><span style='white-space: nowrap'>derived_ctor.cpp</span></a>
+ contains an example and test
+that uses this derived class.
+It returns true for success and false for failure.
+
+
+<hr>Input File: src/derived_ctor.cpp
+
+</body>
+</html>

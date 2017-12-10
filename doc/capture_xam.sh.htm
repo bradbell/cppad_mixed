@@ -1,0 +1,243 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Example Using capture_xam</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Example Using capture_xam">
+<meta name="keywords" id="keywords" content=" example using capture_xam syntax test2run normal callgrind massif source code ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_capture_xam.sh_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="capture_xam.cpp.htm" target="_top">Prev</a>
+</td><td><a href="abs_density.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>user</option>
+<option>speed</option>
+<option>capture_xam.cpp</option>
+<option>capture_xam.sh</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down4(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>user-&gt;</option>
+<option>speed</option>
+<option>abs_density.cpp</option>
+<option>no_random.cpp</option>
+<option>ran_constraint.cpp</option>
+<option>lasso.cpp</option>
+<option>data_mismatch.cpp</option>
+<option>opt_ran_nan.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>speed-&gt;</option>
+<option>ar1_xam.cpp</option>
+<option>capture_xam.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>capture_xam.cpp-&gt;</option>
+<option>capture_xam.sh</option>
+</select>
+</td>
+<td>capture_xam.sh</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>test2run</option>
+<option>---..normal</option>
+<option>---..callgrind</option>
+<option>---..massif</option>
+<option>---..Source Code</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Example Using capture_xam</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><font color="blue"><span style='white-space: nowrap'>bin/capture_xam.sh&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>test2run</span></font></i></code>
+
+
+<br>
+<br>
+<b><big><a name="test2run" id="test2run">test2run</a></big></b>
+<br>
+This argument must be one of the following:
+
+<br>
+<br>
+<b><a name="test2run.normal" id="test2run.normal">normal</a></b>
+<br>
+This test will just run <a href="capture_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>capture_xam</span></a>
+.
+
+<br>
+<br>
+<b><a name="test2run.callgrind" id="test2run.callgrind">callgrind</a></b>
+<br>
+This test will run <code><font color="blue">capture_xam</font></code> with
+<code><font color="blue">valgrind --tool=callgrind</font></code>. This tool does execution profiling.
+
+<br>
+<br>
+<b><a name="test2run.massif" id="test2run.massif">massif</a></b>
+<br>
+This test will run <code><font color="blue">capture_xam</font></code> with
+<code><font color="blue">valgrind --tool=massif</font></code>. This tool does memory profiling.
+
+<br>
+<br>
+<b><a name="test2run.Source Code" id="test2run.Source Code">Source Code</a></b>
+
+<pre><tt>
+<font color="#009900">random_seed</font><font color="#990000">=</font><font color="#FF0000">'0'</font>
+<font color="#009900">number_random</font><font color="#990000">=</font><font color="#FF0000">'45'</font>
+<font color="#009900">quasi_fixed</font><font color="#990000">=</font><font color="#FF0000">'yes'</font>
+<font color="#009900">trace_optimize_fixed</font><font color="#990000">=</font><font color="#FF0000">'no'</font>
+<font color="#009900">ipopt_solve</font><font color="#990000">=</font><font color="#FF0000">'no'</font>
+<font color="#009900">bool_sparsity</font><font color="#990000">=</font><font color="#FF0000">'no'</font>
+<font color="#009900">hold_memory</font><font color="#990000">=</font><font color="#FF0000">'no'</font>
+<font color="#009900">derivative_test</font><font color="#990000">=</font><font color="#FF0000">'no'</font>
+<font color="#009900">start_near_solution</font><font color="#990000">=</font><font color="#FF0000">'no'</font>
+<font color="#009900">number_fixed_samples</font><font color="#990000">=</font><font color="#FF0000">'1000'</font>
+<font color="#009900">number_locations</font><font color="#990000">=</font><font color="#FF0000">'30'</font>
+<font color="#009900">max_population</font><font color="#990000">=</font><font color="#FF0000">'20.0'</font>
+<font color="#009900">mean_population</font><font color="#990000">=</font><font color="#FF0000">'5.0'</font>
+<font color="#009900">mean_logit_probability</font><font color="#990000">=</font><font color="#FF0000">'-0.25'</font>
+<font color="#009900">std_logit_probability</font><font color="#990000">=</font><font color="#FF0000">'0.25'</font>
+<font color="#009900">random_constraint</font><font color="#990000">=</font><font color="#FF0000">'yes'</font>
+<i><font color="#9A1900"># ---------------------------------------------------------------------------</font></i>
+<b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$0"</font> <font color="#990000">!=</font> <font color="#FF0000">"bin/capture_xam.sh"</font> <font color="#990000">]</font>
+<b><font color="#0000FF">then</font></b>
+     echo <font color="#FF0000">'bin/capture_xam.sh: must be executed from its parent directory'</font>
+     <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
+<b><font color="#0000FF">fi</font></b>
+<b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#990000">!</font> -e <font color="#FF0000">'build/speed/capture_xam'</font> <font color="#990000">]</font>
+<b><font color="#0000FF">then</font></b>
+     echo <font color="#FF0000">'capture_xam.sh: must first run:'</font>
+     echo <font color="#FF0000">'    bin/run_cmake.sh'</font>
+     echo <font color="#FF0000">'    cd build; make capture_xam; cd ..'</font>
+     <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
+<b><font color="#0000FF">fi</font></b>
+<i><font color="#9A1900">#</font></i>
+<b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$1"</font> <font color="#990000">!=</font> <font color="#FF0000">'normal'</font> <font color="#990000">]</font> <font color="#990000">&amp;&amp;</font> <font color="#990000">[</font> <font color="#FF0000">"$1"</font> <font color="#990000">!=</font> <font color="#FF0000">'callgrind'</font> <font color="#990000">]</font> <font color="#990000">&amp;&amp;</font> <font color="#990000">[</font> <font color="#FF0000">"$1"</font> <font color="#990000">!=</font> <font color="#FF0000">'massif'</font> <font color="#990000">]</font>
+<b><font color="#0000FF">then</font></b>
+     echo <font color="#FF0000">'usage: bin/capture_xam.sh (normal|callgrind|massif)'</font>
+     <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
+<b><font color="#0000FF">fi</font></b>
+<font color="#009900">test2run</font><font color="#990000">=</font><font color="#FF0000">"$1"</font>
+<i><font color="#9A1900"># -----------------------------------------------------------------------------</font></i>
+<i><font color="#9A1900"># bash function that echos and executes a command</font></i>
+<b><font color="#000000">echo_eval()</font></b> {
+     echo <font color="#009900">$*</font>
+     <b><font color="#0000FF">eval</font></b> <font color="#009900">$*</font>
+}
+<i><font color="#9A1900"># ----------------------------------------------------------------------------</font></i>
+echo_eval cd build/speed
+echo_eval make capture_xam
+<font color="#009900">arguments</font><font color="#990000">=</font><font color="#FF0000">"</font>
+<font color="#FF0000">$random_seed</font>
+<font color="#FF0000">$number_random</font>
+<font color="#FF0000">$quasi_fixed</font>
+<font color="#FF0000">$trace_optimize_fixed</font>
+<font color="#FF0000">$ipopt_solve</font>
+<font color="#FF0000">$bool_sparsity</font>
+<font color="#FF0000">$hold_memory</font>
+<font color="#FF0000">$derivative_test</font>
+<font color="#FF0000">$start_near_solution</font>
+<font color="#FF0000">$number_fixed_samples</font>
+<font color="#FF0000">$number_locations</font>
+<font color="#FF0000">$max_population</font>
+<font color="#FF0000">$mean_population</font>
+<font color="#FF0000">$mean_logit_probability</font>
+<font color="#FF0000">$std_logit_probability</font>
+<font color="#FF0000">$random_constraint</font>
+<font color="#FF0000">"</font>
+<font color="#009900">arguments</font><font color="#990000">=</font>`echo <font color="#009900">$arguments</font> <font color="#990000">|</font> sed -e <font color="#FF0000">'s|</font><font color="#CC33CC">\n</font><font color="#FF0000">| |'</font>`
+<i><font color="#9A1900">#</font></i>
+<b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$test2run"</font> <font color="#990000">==</font> <font color="#FF0000">'normal'</font> <font color="#990000">]</font>
+<b><font color="#0000FF">then</font></b>
+     echo_eval <font color="#990000">.</font>/capture_xam <font color="#009900">$arguments</font>
+<b><font color="#0000FF">fi</font></b>
+<b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$test2run"</font> <font color="#990000">==</font> <font color="#FF0000">'callgrind'</font> <font color="#990000">]</font>
+<b><font color="#0000FF">then</font></b>
+     echo_eval valgrind <font color="#990000">\</font>
+          --tool<font color="#990000">=</font>callgrind <font color="#990000">\</font>
+          --callgrind-out-file<font color="#990000">=</font>callgrind<font color="#990000">.</font>out<font color="#990000">.</font><font color="#009900">$$</font> <font color="#990000">\</font>
+          <font color="#990000">.</font>/capture_xam <font color="#009900">$arguments</font>
+     echo <font color="#FF0000">"view with: kcachegrind build/speed/callgrind.out.$$"</font>
+<b><font color="#0000FF">fi</font></b>
+<b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$test2run"</font> <font color="#990000">==</font> <font color="#FF0000">'massif'</font> <font color="#990000">]</font>
+<b><font color="#0000FF">then</font></b>
+     echo_eval valgrind <font color="#990000">\</font>
+          --tool<font color="#990000">=</font>massif <font color="#990000">\</font>
+          --massif-out-file<font color="#990000">=</font>massif<font color="#990000">.</font>out<font color="#990000">.</font><font color="#009900">$$</font> <font color="#990000">\</font>
+          <font color="#990000">.</font>/capture_xam <font color="#009900">$arguments</font>
+     echo_eval ms_print massif<font color="#990000">.</font>out<font color="#990000">.</font><font color="#009900">$$</font> <font color="#990000">&gt;</font> massif<font color="#990000">.</font>out
+     echo <font color="#FF0000">"resutls are in build/speed/massif.out"</font>
+<b><font color="#0000FF">fi</font></b>
+<i><font color="#9A1900"># ----------------------------------------------------------------------------</font></i>
+echo <font color="#FF0000">'capture_xam.sh: OK'</font>
+<b><font color="#0000FF">exit</font></b> <font color="#993399">0</font></tt></pre>
+
+<hr>Input File: bin/capture_xam.sh
+
+</body>
+</html>

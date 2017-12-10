@@ -1,0 +1,262 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Example Use of Ipopt</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Example Use of Ipopt">
+<meta name="keywords" id="keywords" content=" example use ipopt problem lagrangian stationary conditions solution ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_ipopt_xam_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="ipopt_fixed_new_random.htm" target="_top">Prev</a>
+</td><td><a href="ipopt_nlp_xam.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>ipopt_fixed</option>
+<option>ipopt_xam</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>ipopt_fixed-&gt;</option>
+<option>ipopt_fixed_ctor</option>
+<option>ipopt_fixed_get_nlp_info</option>
+<option>ipopt_fixed_get_bounds_info</option>
+<option>ipopt_fixed_get_starting_point</option>
+<option>ipopt_fixed_eval_f</option>
+<option>ipopt_fixed_eval_grad_f</option>
+<option>ipopt_fixed_eval_g</option>
+<option>ipopt_fixed_eval_jac_g</option>
+<option>ipopt_fixed_eval_h</option>
+<option>ipopt_fixed_finalize_solution</option>
+<option>ipopt_fixed_adaptive_derivative_check</option>
+<option>ipopt_fixed_new_random</option>
+<option>ipopt_xam</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>ipopt_xam-&gt;</option>
+<option>ipopt_nlp_xam</option>
+<option>ipopt_xam_ctor</option>
+<option>ipopt_xam_get_nlp_info</option>
+<option>ipopt_xam_get_bounds_info</option>
+<option>ipopt_xam_get_starting_point</option>
+<option>ipopt_xam_eval_f</option>
+<option>ipopt_xam_eval_grad_f</option>
+<option>ipopt_xam_eval_g</option>
+<option>ipopt_xam_eval_jac_g</option>
+<option>ipopt_xam_eval_h</option>
+<option>ipopt_xam_finalize_solution</option>
+<option>ipopt_xam_intermediate_callback</option>
+<option>ipopt_run_xam</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Problem</option>
+<option>Lagrangian</option>
+<option>Stationary Conditions</option>
+<option>Solution</option>
+<option>Contents</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Example Use of Ipopt</big></big></b></center>
+<br>
+<b><big><a name="Problem" id="Problem">Problem</a></big></b>
+
+<br>
+<small>@[@
+
+\begin{array}{ll}
+	\R{minimize}
+	& \beta (x_0 - 2)^2 + \beta (x_1 - 4)^2 \; \R{w.r.t} \; x \in \B{R}^2
+	\\
+	\R{subject\; to} &  0 = x_0 + x_1 - 2
+	\\
+	& 0 \leq x_0 \leq 2
+	\\
+	& 0 \leq x_1 \leq 3
+\end{array}
+
+@]@</small><br>
+<b><big><a name="Lagrangian" id="Lagrangian">Lagrangian</a></big></b>
+<br>
+For <small>@(@
+x \in \B{R}^2
+@)@</small>,
+<small>@(@
+\lambda \in \B{R}
+@)@</small>,
+<small>@(@
+L \in \B{R}_+^2
+@)@</small>,
+<small>@(@
+U \in \B{R}_+^2
+@)@</small>,
+the Lagrangian is
+<small>@[@
+
+\beta ( x_0 - 2 )^2 + \beta ( x_1 - 3 )^2
++
+\lambda_0 ( x_0 + x_1 - 2 )
++
+U_0 ( x_0 - 2 ) - L_0 x_0
++
+U_1 ( x_0 - 3 ) - L_1 x_1
+
+@]@</small>
+
+<br>
+<br>
+<b><big><a name="Stationary Conditions" id="Stationary Conditions">Stationary Conditions</a></big></b>
+
+<br>
+<small>@[@
+
+\begin{array}{rcl}
+0 & = & 2 \beta ( x_0 - 2 ) + \lambda_0 - L_0 + U_0
+\\
+0 & = & 2 \beta ( x_1 - 3 ) + \lambda_0 - L_1 + U_1
+\\
+0 & = & x_0 + x_1 - 2
+\end{array}
+
+@]@</small><br>
+<b><big><a name="Solution" id="Solution">Solution</a></big></b>
+<br>
+If we assume the lower and upper constraints are no active at the solution
+we get
+<small>@(@
+L = 0
+@)@</small>,
+<small>@(@
+U = 0
+@)@</small>,
+<small>@(@
+\lambda_0 = 2 \beta (2 - x_0 )
+@)@</small>,
+<small>@(@
+x_1 = 2 - x_0
+@)@</small>,
+<small>@[@
+
+\begin{array}{rcl}
+0 & = & 2 \beta ( 2 - x_0 - 3 ) + 2 \beta ( 2 - x_0 )
+\\
+0 & = &  2 - x_0 - 3 + 2 - x_0
+\\
+x_0 & = & 0.5
+\end{array}
+
+@]@</small>
+The corresponding solution is
+<small>@(@
+x_0 = 0.5
+@)@</small>, <small>@(@
+x_1 = 1.5
+@)@</small>, and <small>@(@
+\lambda_0 = 3.0
+@)@</small>.
+Note that the upper and lower constraints are not active,
+so this is the solution (with <small>@(@
+L = 0
+@)@</small>, <small>@(@
+U = 0
+@)@</small>).
+
+
+<br>
+<br>
+<b><big><a name="Contents" id="Contents">Contents</a></big></b>
+<br>
+<table>
+<tr><td><a href="ipopt_nlp_xam.htm" target="_top">ipopt_nlp_xam</a></td><td>Ipopt&nbsp;Example:&nbsp;Declare&nbsp;Non-linear&nbsp;Program&nbsp;Problem&nbsp;Class</td></tr><tr><td><a href="ipopt_xam_ctor.htm" target="_top">ipopt_xam_ctor</a></td><td>Ipopt&nbsp;Example:&nbsp;Constructor&nbsp;and&nbsp;Destructor</td></tr><tr><td><a href="ipopt_xam_get_nlp_info.htm" target="_top">ipopt_xam_get_nlp_info</a></td><td>Return&nbsp;Information&nbsp;About&nbsp;Problem&nbsp;Sizes</td></tr><tr><td><a href="ipopt_xam_get_bounds_info.htm" target="_top">ipopt_xam_get_bounds_info</a></td><td>Return&nbsp;Optimization&nbsp;Bounds</td></tr><tr><td><a href="ipopt_xam_get_starting_point.htm" target="_top">ipopt_xam_get_starting_point</a></td><td>Return&nbsp;Initial&nbsp;Values&nbsp;Where&nbsp;Optimization&nbsp;is&nbsp;Started</td></tr><tr><td><a href="ipopt_xam_eval_f.htm" target="_top">ipopt_xam_eval_f</a></td><td>Compute&nbsp;Value&nbsp;of&nbsp;Objective</td></tr><tr><td><a href="ipopt_xam_eval_grad_f.htm" target="_top">ipopt_xam_eval_grad_f</a></td><td>Compute&nbsp;Gradient&nbsp;of&nbsp;the&nbsp;Objective</td></tr><tr><td><a href="ipopt_xam_eval_g.htm" target="_top">ipopt_xam_eval_g</a></td><td>Compute&nbsp;Value&nbsp;of&nbsp;Constraint&nbsp;Functions</td></tr><tr><td><a href="ipopt_xam_eval_jac_g.htm" target="_top">ipopt_xam_eval_jac_g</a></td><td>Compute&nbsp;Jacobian&nbsp;of&nbsp;Constraint&nbsp;Functions</td></tr><tr><td><a href="ipopt_xam_eval_h.htm" target="_top">ipopt_xam_eval_h</a></td><td>Compute&nbsp;the&nbsp;Hessian&nbsp;of&nbsp;the&nbsp;Lagrangian</td></tr><tr><td><a href="ipopt_xam_finalize_solution.htm" target="_top">ipopt_xam_finalize_solution</a></td><td>Get&nbsp;Solution&nbsp;Results</td></tr><tr><td><a href="ipopt_xam_intermediate_callback.htm" target="_top">ipopt_xam_intermediate_callback</a></td><td>Ipopt&nbsp;Example:&nbsp;Optimization&nbsp;Progress&nbsp;Report</td></tr><tr><td><a href="ipopt_run_xam.htm" target="_top">ipopt_run_xam</a></td><td>Ipopt:&nbsp;Example&nbsp;and&nbsp;Test</td></tr></table>
+<hr>Input File: example/ipopt_xam.omh
+
+</body>
+</html>

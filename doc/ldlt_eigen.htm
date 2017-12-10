@@ -1,0 +1,218 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>An Eigen LDLT Factor Class</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="An Eigen LDLT Factor Class">
+<meta name="keywords" id="keywords" content=" eigen ldlt factor class see also private factorization h l d p eigen_sparse eigen_ldlt_eigen example ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_ldlt_eigen_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="cholmod_solve2_sim.cpp.htm" target="_top">Prev</a>
+</td><td><a href="ldlt_eigen_ctor.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>ldlt_eigen</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>ldlt_eigen-&gt;</option>
+<option>ldlt_eigen_ctor</option>
+<option>ldlt_eigen_init</option>
+<option>ldlt_eigen_update</option>
+<option>ldlt_eigen_logdet</option>
+<option>ldlt_eigen_solve_H</option>
+<option>ldlt_eigen_sim_cov</option>
+<option>ldlt_eigen_inv</option>
+<option>ldlt_eigen.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>See Also</option>
+<option>Private</option>
+<option>Factorization</option>
+<option>---..H</option>
+<option>---..L</option>
+<option>---..D</option>
+<option>---..P</option>
+<option>eigen_sparse</option>
+<option>eigen_ldlt_eigen</option>
+<option>Example</option>
+<option>Contents</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>An Eigen LDLT Factor Class</big></big></b></center>
+<br>
+<b><big><a name="See Also" id="See Also">See Also</a></big></b>
+
+<br>
+<a href="ldlt_cholmod.htm" target="_top"><span style='white-space: nowrap'>ldlt_cholmod</span></a>
+
+
+<br>
+<br>
+<b><big><a name="Private" id="Private">Private</a></big></b>
+<br>
+This class is an implementation detail and not part of the
+<a href="namespace.htm#Private" target="_top"><span style='white-space: nowrap'>CppAD::mixed</span></a>
+ user API.
+
+<br>
+<br>
+<b><big><a name="Factorization" id="Factorization">Factorization</a></big></b>
+<br>
+The factorization is
+<small>@[@
+
+	L D L^\R{T} = P H P^{T}
+
+@]@</small>
+where
+
+<br>
+<br>
+<b><a name="Factorization.H" id="Factorization.H">H</a></b>
+<br>
+is the matrix corresponding the current
+<a href="ldlt_cholmod_update.htm" target="_top"><span style='white-space: nowrap'>update</span></a>
+.
+
+<br>
+<br>
+<b><a name="Factorization.L" id="Factorization.L">L</a></b>
+<br>
+is a lower triangular matrix with ones on the diagonal,
+
+<br>
+<br>
+<b><a name="Factorization.D" id="Factorization.D">D</a></b>
+<br>
+is a diagonal matrix.
+
+<br>
+<br>
+<b><a name="Factorization.P" id="Factorization.P">P</a></b>
+<br>
+is a permutation matrix.
+
+<br>
+<br>
+<b><big><a name="eigen_sparse" id="eigen_sparse">eigen_sparse</a></big></b>
+<br>
+The type <code><font color="blue">CppAD::mixed::ldlt_eigen::eigen_sparse</font></code> is defined by
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;typedef&nbsp;Eigen::SparseMatrix&lt;double,&nbsp;Eigen::ColMajor&gt;&nbsp;&nbsp;eigen_sparse;<br>
+</span></font></code>
+<br>
+<b><big><a name="eigen_ldlt_eigen" id="eigen_ldlt_eigen">eigen_ldlt_eigen</a></big></b>
+<br>
+The type <code><font color="blue">CppAD::mixed::ldlt_eigen::eigen_ldlt_eigen</font></code> is defined by
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;typedef&nbsp;Eigen::SimplicialLDLT&lt;eigen_sparse,&nbsp;Eigen::Lower&gt;&nbsp;eigen_ldlt;<br>
+</span></font></code>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="ldlt_eigen.cpp.htm" target="_top"><span style='white-space: nowrap'>ldlt_eigen.cpp</span></a>
+ contains an example and test
+using the operations in this class.
+
+
+<br>
+<br>
+<b><big><a name="Contents" id="Contents">Contents</a></big></b>
+<br>
+<table>
+<tr><td><a href="ldlt_eigen_ctor.htm" target="_top">ldlt_eigen_ctor</a></td><td>Eigen&nbsp;LDLT&nbsp;Constructor</td></tr><tr><td><a href="ldlt_eigen_init.htm" target="_top">ldlt_eigen_init</a></td><td>Initialize&nbsp;LDLT&nbsp;Factor&nbsp;for&nbsp;a&nbsp;Specific&nbsp;Sparsity&nbsp;Pattern</td></tr><tr><td><a href="ldlt_eigen_update.htm" target="_top">ldlt_eigen_update</a></td><td>Update&nbsp;Factorization&nbsp;Using&nbsp;new&nbsp;Matrix&nbsp;Values</td></tr><tr><td><a href="ldlt_eigen_logdet.htm" target="_top">ldlt_eigen_logdet</a></td><td>Compute&nbsp;Log&nbsp;Determinant&nbsp;for&nbsp;Current&nbsp;LDLT&nbsp;Factor</td></tr><tr><td><a href="ldlt_eigen_solve_h.htm" target="_top">ldlt_eigen_solve_H</a></td><td>Solve&nbsp;Linear&nbsp;Equations&nbsp;Using&nbsp;LDLT&nbsp;Factor</td></tr><tr><td><a href="ldlt_eigen_sim_cov.htm" target="_top">ldlt_eigen_sim_cov</a></td><td>Simulations&nbsp;with&nbsp;Covariance&nbsp;Corresponding&nbsp;to&nbsp;Factored&nbsp;Matrix</td></tr><tr><td><a href="ldlt_eigen_inv.htm" target="_top">ldlt_eigen_inv</a></td><td>Compute&nbsp;a&nbsp;Subset&nbsp;of&nbsp;the&nbsp;Inverse&nbsp;of&nbsp;Factored&nbsp;Matrix</td></tr><tr><td><a href="ldlt_eigen.cpp.htm" target="_top">ldlt_eigen.cpp</a></td><td>Example&nbsp;Using&nbsp;Eigen&nbsp;LDLT&nbsp;Factorization</td></tr></table>
+<hr>Input File: include/cppad/mixed/ldlt_eigen.hpp
+
+</body>
+</html>

@@ -1,0 +1,235 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>The CppAD::mixed Namespace Declarations</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="The CppAD::mixed Namespace Declarations">
+<meta name="keywords" id="keywords" content=" the cppad::mixed namespace declarations configure.hpp public private ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_namespace_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="update_factor.cpp.htm" target="_top">Prev</a>
+</td><td><a href="typedef.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>configure.hpp</option>
+<option>Public</option>
+<option>Private</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>The CppAD::mixed Namespace Declarations</big></big></b></center>
+The declarations in the subsections below
+are in the <code><font color="blue">CppAD::mixed</font></code> namespace.
+
+<br>
+<br>
+<b><big><a name="configure.hpp" id="configure.hpp">configure.hpp</a></big></b>
+<br>
+The <a href="configure.hpp.htm" target="_top"><span style='white-space: nowrap'>configure.hpp</span></a>
+ declarations are an exception because
+they are <code><font color="blue">cppad_mixed</font></code> preprocessor symbols and hence
+not in the <code><font color="blue">CppAD::mixed</font></code> namespace.
+These are <b>not</b> part of the user API.
+
+
+
+<br>
+<br>
+<b><big><a name="Public" id="Public">Public</a></big></b>
+<br>
+These declarations are part the of the <code><font color="blue">cppad_mixed</font></code> user API.
+<table><tr><td align='left'  valign='top'>
+
+<a href="typedef.htm" target="_top">typedef</a></td><td>
+Types Defined in the CppAD Mixed Namespace</td></tr>
+<tr><td>
+
+<a href="manage_gsl_rng.htm" target="_top">manage_gsl_rng</a></td><td>
+Set, Get, And Free A GSL Random Number Generator</td></tr>
+<tr><td>
+
+<a href="sparse_mat_info.htm" target="_top">sparse_mat_info</a></td><td>
+Sparse Matrix Information</td></tr>
+<tr><td>
+
+<a href="fixed_solution.htm" target="_top">fixed_solution</a></td><td>
+Optimal Solution Returned by optimize_fixed</td></tr>
+<tr><td>
+
+<a href="exception.htm" target="_top">exception</a></td><td>
+CppAD Mixed Exceptions</td></tr>
+<tr><td>
+
+</td></tr>
+</table>
+<br>
+<b><big><a name="Private" id="Private">Private</a></big></b>
+<br>
+These declarations are implementation details and not part of the
+<code><font color="blue">CppAD::mixed</font></code> user API
+(and may change with time).
+<table><tr><td align='left'  valign='top'>
+
+<a href="ldlt_eigen.htm" target="_top">ldlt_eigen</a></td><td>
+An Eigen LDLT Factor Class</td></tr>
+<tr><td>
+
+<a href="ldlt_cholmod.htm" target="_top">ldlt_cholmod</a></td><td>
+A Cholmod Cholesky Factor Class</td></tr>
+<tr><td>
+
+<a href="ipopt_fixed.htm" target="_top">ipopt_fixed</a></td><td>
+Ipopt NLP Class Used to Optimize Fixed Effects</td></tr>
+<tr><td>
+
+<a href="newton_step.htm" target="_top">newton_step</a></td><td>
+Newton Step and Log Determinant Calculation</td></tr>
+<tr><td>
+
+<a href="sparse_hes_info.htm" target="_top">sparse_hes_info</a></td><td>
+Sparse Hessian Information</td></tr>
+<tr><td>
+
+<a href="sparse_hes_rcv.htm" target="_top">sparse_hes_rcv</a></td><td>
+Sparse Hessian Computation Structure</td></tr>
+<tr><td>
+
+<a href="sparse_jac_rcv.htm" target="_top">sparse_jac_rcv</a></td><td>
+Sparse Jacobian Computation Structure</td></tr>
+<tr><td>
+
+<a href="triple2eigen.htm" target="_top">triple2eigen</a></td><td>
+Convert Row, Column, Value Triple to an Eigen Sparse Matrix</td></tr>
+<tr><td>
+
+<a href="undetermined.htm" target="_top">undetermined</a></td><td>
+Express An Undetermined Linear System As Dependent and Independent Variables</td></tr>
+<tr><td>
+
+<a href="sparse_low_tri_sol.htm" target="_top">sparse_low_tri_sol</a></td><td>
+Solve a Sparse Lower Triangular Linear System</td></tr>
+<tr><td>
+
+<a href="sparse_up_tri_sol.htm" target="_top">sparse_up_tri_sol</a></td><td>
+Solve a Sparse Upper Triangular Linear System</td></tr>
+<tr><td>
+
+<a href="sparse_scale_diag.htm" target="_top">sparse_scale_diag</a></td><td>
+Scales the Diagonal of an Eigen Sparse Matrix</td></tr>
+<tr><td>
+
+<a href="sparse_low2sym.htm" target="_top">sparse_low2sym</a></td><td>
+Convert an Eigen Lower Triangular Matrix To a Symmetric Matrix</td></tr>
+<tr><td>
+
+<a href="sparse_mat2low.htm" target="_top">sparse_mat2low</a></td><td>
+Extract the Lower Triangular From an Eigen Symmetric Matrix</td></tr>
+<tr><td>
+
+<a href="sparse_eigen2info.htm" target="_top">sparse_eigen2info</a></td><td>
+Convert An Eigen Sparse Matrix to a sparse_mat_info Representation</td></tr>
+<tr><td>
+
+<a href="sparse_info2eigen.htm" target="_top">sparse_info2eigen</a></td><td>
+Convert a sparse_mat_info Representation to An Eigen Sparse Matrix</td></tr>
+<tr><td>
+
+<a href="sparse_ad_cholesky.htm" target="_top">sparse_ad_cholesky</a></td><td>
+Sparse Cholesky Factorization as an Atomic CppAD Operation</td></tr>
+<tr><td>
+
+</td></tr>
+</table>
+
+<hr>Input File: omh/namespace.omh
+
+</body>
+</html>

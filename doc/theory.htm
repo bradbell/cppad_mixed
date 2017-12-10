@@ -1,0 +1,602 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Laplace Approximation for Mixed Effects Models</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Laplace Approximation for Mixed Effects Models">
+<meta name="keywords" id="keywords" content=" laplace approximation mixed effects models reference total likelihood random f(theta u) assumption fixed g(theta) optimal u^(theta) objective h(theta r(theta) l(theta) derivative constraints approximate first order u(beta theta second w(beta h(beta constraint function b(beta hessian sparse observed information ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_theory_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="check_install.sh.htm" target="_top">Prev</a>
+</td><td><a href="base_class.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>theory</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>theory</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Reference</option>
+<option>Total Likelihood</option>
+<option>Random Likelihood, f(theta, u)</option>
+<option>---..Assumption</option>
+<option>Fixed Likelihood, g(theta)</option>
+<option>Optimal Random Effects, u^(theta)</option>
+<option>Objective</option>
+<option>---..Laplace Approximation, h(theta, u)</option>
+<option>---..Laplace Objective, r(theta)</option>
+<option>---..Total Objective, L(theta)</option>
+<option>Derivative of Optimal Random Effects</option>
+<option>Derivative of Random Constraints</option>
+<option>Derivative of Laplace Objective</option>
+<option>Approximate Optimal Random Effects</option>
+<option>---..First Order, U(beta, theta, u)</option>
+<option>---..Second Order, W(beta, theta, u)</option>
+<option>Approximate Laplace Objective, H(beta, theta, u)</option>
+<option>Approximate Random Constraint Function, B(beta, theta, u)</option>
+<option>Hessian of Laplace Objective</option>
+<option>Hessian of Random Constraints</option>
+<option>Sparse Observed Information</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<small>@(@
+\newcommand{\dtheta}[1]{ \frac{\R{d}}{\R{d} \theta_{ #1}} }
+@)@</small><center><b><big><big>Laplace Approximation for Mixed Effects Models</big></big></b></center>
+<br>
+<b><big><a name="Reference" id="Reference">Reference</a></big></b>
+<br>
+TMB: Automatic Differentiation and Laplace Approximation,
+Kasper Kristensen, Anders Nielsen, Casper W. Berg, Hans Skaug, Bradley M. Bell,
+Journal of Statistical Software 70, 1-21 April 2016.
+
+<br>
+<br>
+<b><big><a name="Total Likelihood" id="Total Likelihood">Total Likelihood</a></big></b>
+<br>
+The reference above defines <small>@(@
+f( \theta, u)
+@)@</small>
+to be the negative log-likelihood of the
+<small>@(@
+z
+@)@</small>, <small>@(@
+y
+@)@</small>, <small>@(@
+u
+@)@</small> and <small>@(@
+\theta
+@)@</small>; i.e.,
+<small>@[@
+
+- \log [  \;
+	\B{p} ( y |  \theta, u ) \B{p} ( u | \theta )  \;
+	\B{p} ( z | \theta )\B{p} ( \theta ) \;
+]
+
+@]@</small>
+
+
+<br>
+<br>
+<b><big><a name="Random Likelihood, f(theta, u)" id="Random Likelihood, f(theta, u)">Random Likelihood, f(theta, u)</a></big></b>
+<br>
+We use <small>@(@
+f( \theta , u )
+@)@</small> for the part of the likelihood
+that depends on the random effects <small>@(@
+u
+@)@</small>;
+<small>@[@
+
+	f( \theta, u ) = - \log [ \B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) ]
+
+@]@</small>
+
+<br>
+<br>
+<b><a name="Random Likelihood, f(theta, u).Assumption" id="Random Likelihood, f(theta, u).Assumption">Assumption</a></b>
+<br>
+The function <small>@(@
+f(\theta, u)
+@)@</small> is assumed to be smooth.
+Furthermore, there are no constraints on the value of <small>@(@
+u
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="Fixed Likelihood, g(theta)" id="Fixed Likelihood, g(theta)">Fixed Likelihood, g(theta)</a></big></b>
+<br>
+We use <small>@(@
+g( \theta )
+@)@</small> for the part of the likelihood
+that only depends on the fixed effects <small>@(@
+\theta
+@)@</small>;
+<small>@[@
+
+	g( \theta ) = - \log [ \B{p} ( z | \theta ) \B{p} ( \theta ) ]
+
+@]@</small>
+The function <small>@(@
+g( \theta )
+@)@</small> may not be smooth, to be specific, it
+can have absolute values in it (corresponding to the Laplace densities).
+Furthermore, there may be  constraints on the value of <small>@(@
+\theta
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="Optimal Random Effects, u^(theta)" id="Optimal Random Effects, u^(theta)">Optimal Random Effects, u^(theta)</a></big></b>
+<br>
+Given the fixed effects <small>@(@
+\theta
+@)@</small>,
+we use <small>@(@
+\hat{u} ( \theta )
+@)@</small> to denote
+the random effects that maximize the random likelihood; i.e.,
+<small>@[@
+
+	\hat{u} ( \theta ) = \R{argmin} \; f( \theta, u ) \; \R{w.r.t.} \; u
+
+@]@</small>
+Note that this definition agrees with the other definition for
+<a href="cppad_mixed.htm#Notation.Optimal Random Effects, u^(theta)" target="_top"><span style='white-space: nowrap'>u^(theta)</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="Objective" id="Objective">Objective</a></big></b>
+
+
+<br>
+<br>
+<b><a name="Objective.Laplace Approximation, h(theta, u)" id="Objective.Laplace Approximation, h(theta, u)">Laplace Approximation, h(theta, u)</a></b>
+<br>
+Using the notation above,
+the Laplace approximation as a function of both
+the fixed and random effects is
+<small>@[@
+
+h( \theta, u )
+=
++ \frac{1}{2} \log \det f_{u,u} ( \theta, u )
++ f( \theta, u )
+- \frac{n}{2} \log ( 2 \pi )
+
+@]@</small>
+where <small>@(@
+n
+@)@</small> is the number of random effects.
+
+<br>
+<br>
+<b><a name="Objective.Laplace Objective, r(theta)" id="Objective.Laplace Objective, r(theta)">Laplace Objective, r(theta)</a></b>
+<br>
+We refer to
+<small>@[@
+
+	r( \theta )
+	=
+	h[ \theta , \hat{u} ( \theta ) ]
+	\approx
+	- \log \left[ \int_{-\infty}^{+\infty}
+		\B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) \; \B{d} u
+	\right]
+
+@]@</small>
+as the Laplace objective.
+This corresponds to equation (4) in the
+<a href="theory.htm#Reference" target="_top"><span style='white-space: nowrap'>reference</span></a>
+.
+
+<br>
+<br>
+<b><a name="Objective.Total Objective, L(theta)" id="Objective.Total Objective, L(theta)">Total Objective, L(theta)</a></b>
+<br>
+The total objective, as a function of the fixed effects, is
+<small>@[@
+
+L ( \theta )
+=
+r( \theta ) + g( \theta )
+
+@]@</small>
+
+<br>
+<br>
+<b><big><a name="Derivative of Optimal Random Effects" id="Derivative of Optimal Random Effects">Derivative of Optimal Random Effects</a></big></b>
+<br>
+Because <small>@(@
+f(\theta, u)
+@)@</small> is smooth,
+and <small>@(@
+\hat{u} ( \theta )
+@)@</small> is optimal w.r.t <small>@(@
+u
+@)@</small>,
+we obtain
+<small>@[@
+
+	f_u [ \theta , \hat{u} ( \theta ) ] = 0
+
+@]@</small>
+From this equation,
+and the implicit function theorem,
+it follows that
+<small>@[@
+
+\hat{u}_\theta ( \theta )
+=
+- f_{u,u} \left[ \theta , \hat{u} ( \theta ) \right]^{-1}
+	f_{u,\theta} \left[ \theta , \hat{u} ( \theta )  \right]
+
+@]@</small>
+
+<br>
+<br>
+<b><big><a name="Derivative of Random Constraints" id="Derivative of Random Constraints">Derivative of Random Constraints</a></big></b>
+<br>
+The derivative of the
+<a href="cppad_mixed.htm#Notation.Random Constraint Function, A*u^(theta)" target="_top"><span style='white-space: nowrap'>random&nbsp;constraint&nbsp;function</span></a>
+
+is given by
+<small>@[@
+
+	\partial_\theta [ A \; \hat{u} ( \theta ) ]
+	=
+	A \; \hat{u}_\theta ( \theta )
+
+@]@</small>
+
+<br>
+<br>
+<b><big><a name="Derivative of Laplace Objective" id="Derivative of Laplace Objective">Derivative of Laplace Objective</a></big></b>
+<br>
+The derivative of the random part of the objective is given by
+<small>@[@
+
+r_\theta ( \theta )
+=
+h_\theta [ \theta , \hat{u} ( \theta ) ]
++
+h_u [ \theta , \hat{u} ( \theta ) ] \hat{u}_\theta ( \theta )
+
+@]@</small>
+Thus the derivative of <small>@(@
+r ( \theta )
+@)@</small> can be computed
+using the derivative of <small>@(@
+\hat{u} ( \theta )
+@)@</small>
+and the partials of <small>@(@
+h( \theta , u )
+@)@</small>.
+Let <small>@(@
+\partial_k
+@)@</small> denote the partial with respect to the <code><i>k</i></code>-th
+component of the combined vector <small>@(@
+( \theta , u )
+@)@</small>.
+<small>@[@
+
+\partial_k [ h( \theta , u ) ]
+=
+\partial_k [ f( \theta , u ) ]
++
+\frac{1}{2} \sum_{i=0}^{n-1} \sum_{j=0}^{n-1}
+	f_{u,u} ( \theta , u )_{i,j}^{-1}
+	\partial_k [ f_{u,u} ( \theta , u)_{i,j} ]
+
+@]@</small>
+where <small>@(@
+n
+@)@</small> is the number of random effects.
+Note that <small>@(@
+f_{u,u} ( \theta , u )
+@)@</small>
+is often sparse and only non-zero
+components need be included in the summation.
+This is discussed in more detail near equation (8) in the
+<a href="theory.htm#Reference" target="_top"><span style='white-space: nowrap'>reference</span></a>
+.
+We also note that if <small>@(@
+k
+@)@</small> corresponds to a component of <small>@(@
+u
+@)@</small> then
+<small>@[@
+
+	\partial_k ( f[ \theta , \hat{u} ( \theta ) ] ) = 0
+
+@]@</small>
+
+<br>
+<br>
+<b><big><a name="Approximate Optimal Random Effects" id="Approximate Optimal Random Effects">Approximate Optimal Random Effects</a></big></b>
+
+
+<br>
+<br>
+<b><a name="Approximate Optimal Random Effects.First Order, U(beta, theta, u)" id="Approximate Optimal Random Effects.First Order, U(beta, theta, u)">First Order, U(beta, theta, u)</a></b>
+<br>
+We define  the function
+<small>@[@
+
+U ( \beta , \theta , u )
+=
+u - f_{u,u} ( \theta , u )^{-1} f_u ( \beta , u  )
+
+@]@</small>
+It follows that
+<small>@[@
+
+	U \left[ \theta , \theta , \hat{u} ( \theta ) \right] = \hat{u} ( \theta )
+
+@]@</small>
+<small>@[@
+
+	U_{\beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+	=
+	\hat{u}_\theta ( \theta )
+
+@]@</small>
+
+<br>
+<br>
+<b><a name="Approximate Optimal Random Effects.Second Order, W(beta, theta, u)" id="Approximate Optimal Random Effects.Second Order, W(beta, theta, u)">Second Order, W(beta, theta, u)</a></b>
+<br>
+We define  the function
+<small>@[@
+
+W ( \beta , \theta , u )
+=
+U( \beta , \theta , u )
+-
+f_{u,u} ( \theta , u )^{-1} f_u [ \beta , U( \beta , \theta , u)  ]
+
+@]@</small>
+It follows that
+<small>@[@
+
+	W \left[ \theta , \theta , \hat{u} ( \theta ) \right] = \hat{u} ( \theta )
+
+@]@</small>
+<small>@[@
+
+	W_{\beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+	=
+	\hat{u}_\theta ( \theta )
+
+@]@</small>
+and for random effects indices <small>@(@
+i
+@)@</small>,
+<small>@[@
+
+	W^i_{\beta \beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+	=
+	\hat{u}^i_{\theta , \theta} ( \theta )
+
+@]@</small>
+
+<br>
+<br>
+<b><big><a name="Approximate Laplace Objective, H(beta, theta, u)" id="Approximate Laplace Objective, H(beta, theta, u)">Approximate Laplace Objective, H(beta, theta, u)</a></big></b>
+<br>
+Given these facts we define
+<small>@[@
+
+H( \beta , \theta , u)
+=
++ \frac{1}{2} \log \det f_{u,u} [ \beta, W( \beta , \theta , u) ]
++ f[ \beta, U( \beta , \theta , u) ]
+- \frac{n}{2} \log ( 2 \pi )
+
+@]@</small>
+It follow that
+<small>@[@
+
+r_{\theta,\theta} ( \theta )
+=
+H_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
+
+@]@</small>
+
+<br>
+<br>
+<b><big><a name="Approximate Random Constraint Function, B(beta, theta, u)" id="Approximate Random Constraint Function, B(beta, theta, u)">Approximate Random Constraint Function, B(beta, theta, u)</a></big></b>
+<br>
+We also define the approximation
+<a href="cppad_mixed.htm#Notation.Random Constraint Function, A*u^(theta)" target="_top"><span style='white-space: nowrap'>random&nbsp;constraint&nbsp;function</span></a>
+
+<small>@[@
+
+	B( \beta , \theta , u) = A \; W( \beta , \theta , u )
+
+@]@</small>
+
+<br>
+<br>
+<b><big><a name="Hessian of Laplace Objective" id="Hessian of Laplace Objective">Hessian of Laplace Objective</a></big></b>
+<br>
+Note that the Hessian of the Laplace objective
+<small>@(@
+r_{\theta,\theta} ( \theta )
+@)@</small> is required when
+<a href="derived_ctor.htm#quasi_fixed" target="_top"><span style='white-space: nowrap'>quasi_fixed</span></a>
+ is false.
+In this case, the representation
+<small>@[@
+
+r_{\theta,\theta} ( \theta )
+=
+H_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
+
+@]@</small>
+is used to compute this Hessian.
+
+<br>
+<br>
+<b><big><a name="Hessian of Random Constraints" id="Hessian of Random Constraints">Hessian of Random Constraints</a></big></b>
+<br>
+In the case where
+<a href="derived_ctor.htm#quasi_fixed" target="_top"><span style='white-space: nowrap'>quasi_fixed</span></a>
+ is false
+we need to compute second derivatives of the random constraint function.
+We use <small>@(@
+A^i
+@)@</small> ( <small>@(@
+B^i
+@)@</small>) to denote one of the
+rows of the random constraint matrix
+( approximate random constraint function ).
+The Hessian of the random constraints can be computed using the formula
+<small>@[@
+
+	\partial_\theta \partial_\theta [ A^i \; \hat{u} ( \theta ) ]
+	=
+	B^i_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
+
+@]@</small>
+
+<br>
+<br>
+<b><big><a name="Sparse Observed Information" id="Sparse Observed Information">Sparse Observed Information</a></big></b>
+<br>
+Suppose that <small>@(@
+H
+@)@</small> is a sparse positive definite Hessian of
+a likelihood at the maximum likelihood estimate for its unknown parameters.
+The corresponding asymptotic covariance for posterior distribution
+of the parameters is normal with covariance <small>@(@
+H^{-1}
+@)@</small>.
+A vector <small>@(@
+v
+@)@</small> with this covariance can be simulated as
+<small>@[@
+
+	v = R w
+
+@]@</small>
+where <small>@(@
+R
+@)@</small> is defined by <small>@(@
+H^{-1} = R R^\R{T}
+@)@</small> and
+<small>@(@
+w
+@)@</small> is a normal with mean zero and the identity covariance.
+Suppose we have a sparse factorization of the form
+<small>@[@
+
+	L D L^\R{T} = P H P^\R{T}
+
+@]@</small>
+where <small>@(@
+L
+@)@</small> is lower triangular, <small>@(@
+D
+@)@</small> is diagonal,
+and <small>@(@
+P
+@)@</small> is a permutation matrix.
+It follows that
+<small>@[@
+
+	H = P^\R{T} L D L^\R{T} P
+
+@]@</small>
+<small>@[@
+
+	H^{-1} = P^\R{T} L^{-\R{T}} D^{-1} L^{-1} P
+
+@]@</small>
+<small>@[@
+
+	R = P^\R{T} L^{-\R{T}} D^{-1/2}
+
+@]@</small>
+<small>@[@
+
+	v = P^\R{T} L^{-\R{T}} D^{-1/2} w
+
+@]@</small>
+If <small>@(@
+w
+@)@</small> is simulated as a normal random vector
+with  mean zero and identity covariance,
+and <small>@(@
+v
+@)@</small> is computed using this formula,
+the mean of <small>@(@
+v
+@)@</small> is zero and its covariance is given by
+<small>@[@
+
+	\B{E}[ v v^\R{T} ] = H^{-1}
+
+@]@</small>
+
+
+<hr>Input File: omh/theory.omh
+
+</body>
+</html>

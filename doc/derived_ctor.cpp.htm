@@ -1,0 +1,196 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>mixed_cppad Derived Class: Example and Test</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="mixed_cppad Derived Class: Example and Test">
+<meta name="keywords" id="keywords" content=" mixed_cppad derived class: example test ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_derived_ctor.cpp_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="derived_ctor.htm" target="_top">Prev</a>
+</td><td><a href="ran_likelihood.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>base_class</option>
+<option>public</option>
+<option>derived_ctor</option>
+<option>derived_ctor.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down4(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>base_class-&gt;</option>
+<option>public</option>
+<option>private</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>public-&gt;</option>
+<option>derived_ctor</option>
+<option>ran_likelihood</option>
+<option>fix_likelihood</option>
+<option>fix_constraint</option>
+<option>initialize</option>
+<option>optimize_random</option>
+<option>optimize_fixed</option>
+<option>information_mat</option>
+<option>sample_fixed</option>
+<option>sample_random</option>
+<option>ran_likelihood_jac</option>
+<option>ran_likelihood_hes</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>derived_ctor-&gt;</option>
+<option>derived_ctor.cpp</option>
+</select>
+</td>
+<td>derived_ctor.cpp</td>
+<td>Headings</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>mixed_cppad Derived Class: Example and Test</big></big></b></center>
+<code><font color="blue"><pre><tt><b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;cppad/cppad.hpp&gt;</font>
+<b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;cppad/mixed/cppad_mixed.hpp&gt;</font>
+
+
+<b><font color="#0000FF">namespace</font></b> <font color="#FF0000">{</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>log<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>AD<font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>sparse_rcv<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>d_vector<font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <b><font color="#0000FF">class</font></b> <font color="#008080">mixed_derived</font> <font color="#990000">:</font> <b><font color="#0000FF">public</font></b> cppad_mixed <font color="#FF0000">{</font>
+     <b><font color="#0000FF">public</font></b><font color="#990000">:</font>
+          CppAD<font color="#990000">::</font><font color="#008080">vector&lt;std::string&gt;</font> warning_message_<font color="#990000">;</font>
+          <i><font color="#9A1900">//</font></i>
+          <i><font color="#9A1900">// constructor</font></i>
+          <b><font color="#000000">mixed_derived</font></b><font color="#990000">(</font>
+               <font color="#008080">size_t</font>                 n_fixed        <font color="#990000">,</font>
+               <font color="#008080">size_t</font>                 n_random       <font color="#990000">,</font>
+               <font color="#009900">bool</font>                   quasi_fixed    <font color="#990000">,</font>
+               <font color="#009900">bool</font>                   bool_sparsity  <font color="#990000">,</font>
+               <b><font color="#0000FF">const</font></b> sparse_rcv<font color="#990000">&amp;</font>      A_rcv          <font color="#990000">)</font>
+               <font color="#990000">:</font>
+               <b><font color="#000000">cppad_mixed</font></b><font color="#990000">(</font>
+                    n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv
+               <font color="#990000">)</font>
+          <font color="#FF0000">{</font> <font color="#FF0000">}</font>
+          <i><font color="#9A1900">// example changing fatal error handler</font></i>
+          <b><font color="#0000FF">virtual</font></b> <font color="#009900">void</font> <b><font color="#000000">fatal_error</font></b><font color="#990000">(</font><b><font color="#0000FF">const</font></b> std<font color="#990000">::</font>string<font color="#990000">&amp;</font> error_message<font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <i><font color="#9A1900">// throw a std:string</font></i>
+               <b><font color="#0000FF">throw</font></b> error_message<font color="#990000">;</font>
+          <font color="#FF0000">}</font>
+          <i><font color="#9A1900">//</font></i>
+          <i><font color="#9A1900">// example changing warning handler</font></i>
+          <b><font color="#0000FF">virtual</font></b> <font color="#009900">void</font> <b><font color="#000000">warning</font></b><font color="#990000">(</font><b><font color="#0000FF">const</font></b> std<font color="#990000">::</font>string<font color="#990000">&amp;</font> warning_message<font color="#990000">)</font>
+          <font color="#FF0000">{</font>    warning_message_<font color="#990000">.</font><b><font color="#000000">push_back</font></b><font color="#990000">(</font> warning_message <font color="#990000">);</font>
+          <font color="#FF0000">}</font>
+     <font color="#FF0000">}</font><font color="#990000">;</font>
+<font color="#FF0000">}</font>
+
+<font color="#009900">bool</font> <b><font color="#000000">derived_ctor_xam</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">)</font>
+<font color="#FF0000">{</font>
+     <i><font color="#9A1900">//</font></i>
+     <font color="#008080">size_t</font> n_fixed     <font color="#990000">=</font> <font color="#993399">1</font><font color="#990000">;</font>
+     <font color="#008080">size_t</font> n_random    <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font>
+     <font color="#009900">bool</font> quasi_fixed   <font color="#990000">=</font> <b><font color="#0000FF">true</font></b><font color="#990000">;</font>
+     <font color="#009900">bool</font> bool_sparsity <font color="#990000">=</font> <b><font color="#0000FF">true</font></b><font color="#990000">;</font>
+     <font color="#008080">sparse_rcv</font> A_rcv<font color="#990000">;</font> <i><font color="#9A1900">// empty matrix</font></i>
+     <i><font color="#9A1900">//</font></i>
+     <font color="#008080">d_vector</font> <b><font color="#000000">fixed_vec</font></b><font color="#990000">(</font>n_fixed<font color="#990000">),</font> <b><font color="#000000">random_vec</font></b><font color="#990000">(</font>n_random<font color="#990000">);</font>
+     fixed_vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <font color="#008080">mixed_derived</font> <b><font color="#000000">mixed_object</font></b><font color="#990000">(</font>
+          n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv
+     <font color="#990000">);</font>
+     <i><font color="#9A1900">// One normaly does not store the return value of initialize</font></i>
+     <i><font color="#9A1900">// (size_map is included here to show how it can be displayed).</font></i>
+     std<font color="#990000">::</font><font color="#008080">map&lt;std::string, size_t&gt;</font> size_map<font color="#990000">;</font>
+     size_map <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">initialize</font></b><font color="#990000">(</font>fixed_vec<font color="#990000">,</font> random_vec<font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <font color="#009900">bool</font> ok <font color="#990000">=</font> <b><font color="#0000FF">false</font></b><font color="#990000">;</font>
+     <b><font color="#0000FF">try</font></b>
+     <font color="#FF0000">{</font>    <i><font color="#9A1900">// warnings</font></i>
+          mixed_object<font color="#990000">.</font><b><font color="#000000">warning</font></b><font color="#990000">(</font><font color="#FF0000">"first warning"</font><font color="#990000">);</font>
+          mixed_object<font color="#990000">.</font><b><font color="#000000">warning</font></b><font color="#990000">(</font><font color="#FF0000">"second warning"</font><font color="#990000">);</font>
+
+          <i><font color="#9A1900">// fatal error</font></i>
+          mixed_object<font color="#990000">.</font><b><font color="#000000">fatal_error</font></b><font color="#990000">(</font><font color="#FF0000">"only fatal error"</font><font color="#990000">);</font>
+     <font color="#FF0000">}</font>
+     <b><font color="#0000FF">catch</font></b> <font color="#990000">(</font> std<font color="#990000">::</font><font color="#008080">string</font> error_message<font color="#990000">)</font>
+     <font color="#FF0000">{</font>    ok  <font color="#990000">=</font> <b><font color="#0000FF">true</font></b><font color="#990000">;</font>
+          ok <font color="#990000">&amp;=</font> error_message <font color="#990000">==</font> <font color="#FF0000">"only fatal error"</font><font color="#990000">;</font>
+          <i><font color="#9A1900">//</font></i>
+          ok <font color="#990000">&amp;=</font> mixed_object<font color="#990000">.</font>warning_message_<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">==</font> <font color="#993399">2</font><font color="#990000">;</font>
+          ok <font color="#990000">&amp;=</font> mixed_object<font color="#990000">.</font>warning_message_<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">==</font> <font color="#FF0000">"first warning"</font><font color="#990000">;</font>
+          ok <font color="#990000">&amp;=</font> mixed_object<font color="#990000">.</font>warning_message_<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">==</font> <font color="#FF0000">"second warning"</font><font color="#990000">;</font>
+     <font color="#FF0000">}</font>
+     <i><font color="#9A1900">// The following code can be used to display size_map</font></i>
+     <i><font color="#9A1900">// std::map&lt;std::string, size_t&gt;::iterator itr;</font></i>
+     <i><font color="#9A1900">// for(itr = size_map.begin(); itr != size_map.end(); itr++)</font></i>
+     <i><font color="#9A1900">//   std::cout &lt;&lt; itr-&gt;first &lt;&lt; " = " &lt;&lt; itr-&gt;second &lt;&lt; "\n";</font></i>
+     <i><font color="#9A1900">//</font></i>
+     <b><font color="#0000FF">return</font></b> ok<font color="#990000">;</font>
+<font color="#FF0000">}</font></tt></pre>
+</font></code>
+<hr>Input File: example/user/derived_ctor.cpp
+
+</body>
+</html>

@@ -1,0 +1,208 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Evaluate the Random Constraint Function</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Evaluate the Random Constraint Function">
+<meta name="keywords" id="keywords" content=" evaluate the random constraint function syntax private mixed_object random_vec au example ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_ran_con_eval_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="ran_like_jac_check.htm" target="_top">Prev</a>
+</td><td><a href="ran_con_eval.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>base_class</option>
+<option>private</option>
+<option>ran_con_eval</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>base_class-&gt;</option>
+<option>public</option>
+<option>private</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>private-&gt;</option>
+<option>pack</option>
+<option>unpack</option>
+<option>init_ran_hes</option>
+<option>init_ran_hes_check</option>
+<option>init_ran_objcon</option>
+<option>init_ldlt_ran_hes</option>
+<option>init_fix_con</option>
+<option>init_fix_like</option>
+<option>init_hes_cross</option>
+<option>init_laplace_obj_hes</option>
+<option>init_ran_like</option>
+<option>fix_con_eval</option>
+<option>fix_con_hes</option>
+<option>fix_con_jac</option>
+<option>fix_like_eval</option>
+<option>fix_like_hes</option>
+<option>fix_like_jac</option>
+<option>logdet_jac</option>
+<option>ran_like_jac</option>
+<option>ran_like_jac_check</option>
+<option>ran_con_eval</option>
+<option>ran_con_jac</option>
+<option>ran_obj_eval</option>
+<option>ran_obj_jac</option>
+<option>laplace_obj_hes</option>
+<option>update_factor</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>ran_con_eval-&gt;</option>
+<option>ran_con_eval.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Private</option>
+<option>mixed_object</option>
+<option>random_vec</option>
+<option>Au</option>
+<option>Example</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Evaluate the Random Constraint Function</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.ran_con_eval(</span></font><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>Au</span></font></i><font color="blue"><span style='white-space: nowrap'>)<br>
+</span></font></code>
+<br>
+<b><big><a name="Private" id="Private">Private</a></big></b>
+<br>
+This <code><font color="blue">cppad_mixed</font></code> member function is <a href="private.htm" target="_top"><span style='white-space: nowrap'>private</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="mixed_object" id="mixed_object">mixed_object</a></big></b>
+<br>
+We use <a href="derived_ctor.htm#mixed_object" target="_top"><span style='white-space: nowrap'>mixed_object</span></a>
+
+to denote an object of a class that is
+derived from the <code><font color="blue">cppad_mixed</font></code> base class.
+
+<br>
+<br>
+<b><big><a name="random_vec" id="random_vec">random_vec</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It specifies the value of the
+<a href="cppad_mixed.htm#Notation.Random Effects, u" target="_top"><span style='white-space: nowrap'>random&nbsp;effects</span></a>
+
+vector <small>@(@
+u
+@)@</small> at which 
+<code><i><font color="black"><span style='white-space: nowrap'>A</span></font></i><font color="blue"><span style='white-space: nowrap'>*</span></font><i><font color="black"><span style='white-space: nowrap'>u</span></font></i></code>
+ is evaluated.
+
+<br>
+<br>
+<b><big><a name="Au" id="Au">Au</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;double&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>Au</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+Its size must be equal to the number of rows in the
+<a href="cppad_mixed.htm#Notation.Random Constraint Matrix, A" target="_top"><span style='white-space: nowrap'>random&nbsp;constraint&nbsp;matrix</span></a>
+.
+The input value of its elements does not matter.
+Upon return, it contains the product 
+<code><i><font color="black"><span style='white-space: nowrap'>A</span></font></i><font color="blue"><span style='white-space: nowrap'>*</span></font><i><font color="black"><span style='white-space: nowrap'>u</span></font></i></code>
+.
+If the argument 
+<code><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i></code>
+ is the
+<a href="theory.htm#Optimal Random Effects, u^(theta)" target="_top"><span style='white-space: nowrap'>optimal&nbsp;random&nbsp;effects</span></a>
+
+
+<code><i><font color="black"><span style='white-space: nowrap'>Au</span></font></i></code>
+ is the value of the
+<a href="cppad_mixed.htm#Notation.Random Constraint Function, A*u^(theta)" target="_top"><span style='white-space: nowrap'>random&nbsp;constraint&nbsp;Function</span></a>
+.
+
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="ran_con_eval.cpp.htm" target="_top"><span style='white-space: nowrap'>ran_con_eval.cpp</span></a>
+ contains an example
+and test of this procedure.
+It returns true, if the test passes, and false otherwise.
+
+
+<hr>Input File: src/ran_con_eval.cpp
+
+</body>
+</html>

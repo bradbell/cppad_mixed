@@ -1,0 +1,352 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Example Using Cholmod LDLT Factorization</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Example Using Cholmod LDLT Factorization">
+<meta name="keywords" id="keywords" content=" example using cholmod ldlt factorization problem description constructor init update logdet solve_h sim_cov source code ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_ldlt_cholmod.cpp_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="ldlt_cholmod_inv.htm" target="_top">Prev</a>
+</td><td><a href="cholmod_solve_xam.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_cholmod.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>ldlt_cholmod-&gt;</option>
+<option>ldlt_cholmod_ctor</option>
+<option>ldlt_cholmod_dtor</option>
+<option>ldlt_cholmod_init</option>
+<option>ldlt_cholmod_update</option>
+<option>ldlt_cholmod_logdet</option>
+<option>ldlt_cholmod_solve_H</option>
+<option>ldlt_cholmod_sim_cov</option>
+<option>ldlt_cholmod_inv</option>
+<option>ldlt_cholmod.cpp</option>
+<option>cholmod_solve_xam</option>
+<option>cholmod_solve2_a.cpp</option>
+<option>cholmod_solve2_sim.cpp</option>
+</select>
+</td>
+<td>ldlt_cholmod.cpp</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Problem Description</option>
+<option>constructor</option>
+<option>init</option>
+<option>update</option>
+<option>logdet</option>
+<option>solve_H</option>
+<option>sim_cov</option>
+<option>Source Code</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Example Using Cholmod LDLT Factorization</big></big></b></center>
+<br>
+<b><big><a name="Problem Description" id="Problem Description">Problem Description</a></big></b>
+<br>
+We define the lower triangular matrix
+<small>@[@
+
+	L =
+	\left( \begin{array}{ccc}
+		1 & 0 & 0 \\
+		1 & 2 & 0 \\
+		1 & 2 & 3
+	\end{array} \right)
+	\W{,}
+	L^\R{T} =
+	\left( \begin{array}{ccc}
+		1 & 1 & 1 \\
+		0 & 2 & 2 \\
+		0 & 0 & 3
+	\end{array} \right)
+
+@]@</small>
+and the positive definite matrix
+<small>@[@
+
+	H = L L^\R{T} =
+	\left( \begin{array}{ccc}
+		1 & 1 & 1 \\
+		1 & 5 & 5 \\
+		1 & 5 & 14
+	\end{array} \right)
+
+@]@</small>
+The inverse of <small>@(@
+H
+@)@</small> is given by
+<small>@[@
+
+	H^{-1} = L^\R{-T} L^{-1} =
+	\frac{1}{36}
+	\left( \begin{array}{ccc}
+		45  & -9  & 0  \\
+		-9  & 13  & -4 \\
+		0   & -4  & 4
+	\end{array} \right)
+
+@]@</small>
+which can be checked by multiplying by <small>@(@
+H H^{-1}
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="constructor" id="constructor">constructor</a></big></b>
+<br>
+See the following code below:
+<code><font color='blue'><pre style='display:inline'> 
+     CppAD::mixed::ldlt_cholmod ldlt_obj(nrow);
+</pre></font></code>
+<br>
+<b><big><a name="init" id="init">init</a></big></b>
+<br>
+See the following under
+<a href="ldlt_cholmod.cpp.htm#Source Code" target="_top"><span style='white-space: nowrap'>Source&nbsp;Code</span></a>
+ below:
+<code><font color='blue'><pre style='display:inline'> 
+     ldlt_obj.init(H_info);
+</pre></font></code>
+<br>
+<b><big><a name="update" id="update">update</a></big></b>
+<br>
+See the following under Source Code below:
+<code><font color='blue'><pre style='display:inline'> 
+     ldlt_obj.update(H_info);
+</pre></font></code>
+<br>
+<b><big><a name="logdet" id="logdet">logdet</a></big></b>
+<br>
+See the following under Source Code below:
+<code><font color='blue'><pre style='display:inline'> 
+     logdet_H = ldlt_obj.logdet(negative);
+</pre></font></code>
+<br>
+<b><big><a name="solve_H" id="solve_H">solve_H</a></big></b>
+<br>
+See the following under Source Code below:
+<code><font color='blue'><pre style='display:inline'> 
+     ldlt_obj.solve_H(row, val_in, val_out);
+</pre></font></code>
+<br>
+<b><big><a name="sim_cov" id="sim_cov">sim_cov</a></big></b>
+<br>
+See the following under Source Code below:
+<code><font color='blue'><pre style='display:inline'> 
+     ok &amp;= ldlt_obj.sim_cov(w, v)
+</pre></font></code>
+<br>
+<b><big><a name="Source Code" id="Source Code">Source Code</a></big></b>
+
+<code><font color="blue">
+<pre><tt>     
+<b><font color="#000080">     # include</font></b> <font color="#FF0000">&lt;cppad/mixed/ldlt_cholmod.hpp&gt;</font>
+<b><font color="#000080">     # include</font></b> <font color="#FF0000">&lt;limits&gt;</font>
+<b><font color="#000080">     # include</font></b> <font color="#FF0000">&lt;cmath&gt;</font>
+<b><font color="#000080">     # include</font></b> <font color="#FF0000">&lt;cassert&gt;</font>
+     
+     <font color="#009900">bool</font> <b><font color="#000000">ldlt_cholmod_xam</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">)</font>
+     <font color="#FF0000">{</font>    <font color="#009900">bool</font> ok    <font color="#990000">=</font> <b><font color="#0000FF">true</font></b><font color="#990000">;</font>
+          <font color="#009900">double</font> eps <font color="#990000">=</font> <font color="#993399">100</font><font color="#990000">.</font> <font color="#990000">*</font> std<font color="#990000">::</font>numeric_limits<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;::</font><b><font color="#000000">epsilon</font></b><font color="#990000">();</font>
+     
+          <font color="#009900">double</font> H_inv<font color="#990000">[]</font> <font color="#990000">=</font> <font color="#FF0000">{</font>
+               <font color="#993399">45.0</font><font color="#990000">,</font>  <font color="#990000">-</font><font color="#993399">9.0</font><font color="#990000">,</font>  <font color="#993399">0.0</font><font color="#990000">,</font>
+               <font color="#990000">-</font><font color="#993399">9.0</font><font color="#990000">,</font>  <font color="#993399">13.0</font><font color="#990000">,</font> <font color="#990000">-</font><font color="#993399">4.0</font><font color="#990000">,</font>
+               <font color="#993399">0.0</font><font color="#990000">,</font>   <font color="#990000">-</font><font color="#993399">4.0</font><font color="#990000">,</font>  <font color="#993399">4.0</font>
+          <font color="#FF0000">}</font><font color="#990000">;</font>
+          <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> <b><font color="#0000FF">sizeof</font></b><font color="#990000">(</font>H_inv<font color="#990000">)/</font><b><font color="#0000FF">sizeof</font></b><font color="#990000">(</font>H_inv<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]);</font> i<font color="#990000">++)</font>
+               H_inv<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">/=</font> <font color="#993399">36</font><font color="#990000">.;</font>
+     
+          <i><font color="#9A1900">// create cholmod object</font></i>
+          <font color="#008080">size_t</font> nrow <font color="#990000">=</font> <font color="#993399">3</font><font color="#990000">;</font>    <i><font color="#9A1900">// number of rows in H</font></i>
+          <font color="#008080">size_t</font> ncol <font color="#990000">=</font> nrow<font color="#990000">;</font> <i><font color="#9A1900">// number of columns in H</font></i>
+          CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">ldlt_cholmod</font> <b><font color="#000000">ldlt_obj</font></b><font color="#990000">(</font>nrow<font color="#990000">);</font>
+          <b><font color="#000000">assert</font></b><font color="#990000">(</font> nrow <font color="#990000">*</font> ncol <font color="#990000">==</font> <b><font color="#0000FF">sizeof</font></b><font color="#990000">(</font>H_inv<font color="#990000">)</font> <font color="#990000">/</font> <b><font color="#0000FF">sizeof</font></b><font color="#990000">(</font>H_inv<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">])</font> <font color="#990000">);</font>
+     
+          <i><font color="#9A1900">// create a sparse matrix representation of the lower triangular of H</font></i>
+          CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">sparse_mat_info</font> H_info<font color="#990000">;</font>
+          H_info<font color="#990000">.</font><b><font color="#000000">resize</font></b><font color="#990000">(</font><font color="#993399">6</font><font color="#990000">);</font>
+          <i><font color="#9A1900">// H_0,0  = 1.0</font></i>
+          H_info<font color="#990000">.</font>row<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> H_info<font color="#990000">.</font>col<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> H_info<font color="#990000">.</font>val<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
+          <i><font color="#9A1900">// H_1,0  = 1.0</font></i>
+          H_info<font color="#990000">.</font>row<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">1</font><font color="#990000">;</font> H_info<font color="#990000">.</font>col<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> H_info<font color="#990000">.</font>val<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
+          <i><font color="#9A1900">// H_2,0  = 1.0</font></i>
+          H_info<font color="#990000">.</font>row<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">2</font><font color="#990000">;</font> H_info<font color="#990000">.</font>col<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> H_info<font color="#990000">.</font>val<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
+          <i><font color="#9A1900">// H_1,1  = 5.0</font></i>
+          H_info<font color="#990000">.</font>row<font color="#990000">[</font><font color="#993399">3</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">1</font><font color="#990000">;</font> H_info<font color="#990000">.</font>col<font color="#990000">[</font><font color="#993399">3</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">1</font><font color="#990000">;</font> H_info<font color="#990000">.</font>val<font color="#990000">[</font><font color="#993399">3</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">5.0</font><font color="#990000">;</font>
+          <i><font color="#9A1900">// H_2,1  = 5.0</font></i>
+          H_info<font color="#990000">.</font>row<font color="#990000">[</font><font color="#993399">4</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">2</font><font color="#990000">;</font> H_info<font color="#990000">.</font>col<font color="#990000">[</font><font color="#993399">4</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">1</font><font color="#990000">;</font> H_info<font color="#990000">.</font>val<font color="#990000">[</font><font color="#993399">4</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">5.0</font><font color="#990000">;</font>
+          <i><font color="#9A1900">// H_2,2  = 14.0</font></i>
+          H_info<font color="#990000">.</font>row<font color="#990000">[</font><font color="#993399">5</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">2</font><font color="#990000">;</font> H_info<font color="#990000">.</font>col<font color="#990000">[</font><font color="#993399">5</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">2</font><font color="#990000">;</font> H_info<font color="#990000">.</font>val<font color="#990000">[</font><font color="#993399">5</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">14.0</font><font color="#990000">;</font>
+          <i><font color="#9A1900">//</font></i>
+          <i><font color="#9A1900">// initialize the matrix using only the sparsity pattern</font></i>
+          ldlt_obj<font color="#990000">.</font><b><font color="#000000">init</font></b><font color="#990000">(</font>H_info<font color="#990000">);</font>
+     
+          <i><font color="#9A1900">// factor the matrix using the values</font></i>
+          ldlt_obj<font color="#990000">.</font><b><font color="#000000">update</font></b><font color="#990000">(</font>H_info<font color="#990000">);</font>
+     
+          <i><font color="#9A1900">// compute log of determinant of H</font></i>
+          <font color="#008080">size_t</font> negative<font color="#990000">;</font>
+          <font color="#009900">double</font> logdet_H <font color="#990000">=</font> ldlt_obj<font color="#990000">.</font><b><font color="#000000">logdet</font></b><font color="#990000">(</font>negative<font color="#990000">);</font>
+          ok <font color="#990000">&amp;=</font> negative <font color="#990000">==</font> <font color="#993399">0</font><font color="#990000">;</font>
+     
+          <i><font color="#9A1900">// check its value</font></i>
+          ok <font color="#990000">&amp;=</font> std<font color="#990000">::</font><b><font color="#000000">fabs</font></b><font color="#990000">(</font> logdet_H <font color="#990000">/</font> std<font color="#990000">::</font><b><font color="#000000">log</font></b><font color="#990000">(</font><font color="#993399">36.0</font><font color="#990000">)</font> <font color="#990000">-</font> <font color="#993399">1.0</font> <font color="#990000">)</font> <font color="#990000">&lt;=</font> eps<font color="#990000">;</font>
+     
+          <i><font color="#9A1900">// test solve_H</font></i>
+          <font color="#FF0000">{</font>    CppAD<font color="#990000">::</font><font color="#008080">vector&lt;size_t&gt;</font> <b><font color="#000000">row</font></b><font color="#990000">(</font><font color="#993399">3</font><font color="#990000">);</font>
+               CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font> <b><font color="#000000">val_in</font></b><font color="#990000">(</font><font color="#993399">3</font><font color="#990000">),</font> <b><font color="#000000">val_out</font></b><font color="#990000">(</font><font color="#993399">3</font><font color="#990000">);</font>
+               <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;</font> ncol<font color="#990000">;</font> j<font color="#990000">++)</font>
+               <font color="#FF0000">{</font>    <i><font color="#9A1900">// solve for the j-th column of the inverse matrix</font></i>
+                    <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> k <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> k <font color="#990000">&lt;</font> <font color="#993399">3</font><font color="#990000">;</font> k<font color="#990000">++)</font>
+                    <font color="#FF0000">{</font>    row<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">=</font> k<font color="#990000">;</font>
+                         <b><font color="#0000FF">if</font></b><font color="#990000">(</font> row<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">==</font> j <font color="#990000">)</font>
+                              val_in<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
+                         <b><font color="#0000FF">else</font></b>
+                              val_in<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
+                    <font color="#FF0000">}</font>
+                    ldlt_obj<font color="#990000">.</font><b><font color="#000000">solve_H</font></b><font color="#990000">(</font>row<font color="#990000">,</font> val_in<font color="#990000">,</font> val_out<font color="#990000">);</font>
+                    <i><font color="#9A1900">//</font></i>
+                    <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> k <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> k <font color="#990000">&lt;</font> row<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">();</font> k<font color="#990000">++)</font>
+                    <font color="#FF0000">{</font>    <font color="#008080">size_t</font> i       <font color="#990000">=</font> row<font color="#990000">[</font>k<font color="#990000">];</font>
+                         <font color="#009900">double</font> check_i <font color="#990000">=</font> H_inv<font color="#990000">[</font> i <font color="#990000">*</font> nrow <font color="#990000">+</font> j <font color="#990000">];</font>
+                         ok <font color="#990000">&amp;=</font> std<font color="#990000">::</font><b><font color="#000000">fabs</font></b><font color="#990000">(</font> val_out<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">-</font> check_i <font color="#990000">)</font> <font color="#990000">&lt;=</font> eps<font color="#990000">;</font>
+                    <font color="#FF0000">}</font>
+               <font color="#FF0000">}</font>
+          <font color="#FF0000">}</font>
+     
+          <i><font color="#9A1900">// test inv</font></i>
+          <font color="#FF0000">{</font>    <font color="#008080">size_t</font> K <font color="#990000">=</font> <font color="#993399">6</font><font color="#990000">;</font>
+               CppAD<font color="#990000">::</font><font color="#008080">vector&lt;size_t&gt;</font> <b><font color="#000000">row_in</font></b><font color="#990000">(</font>K<font color="#990000">),</font> <b><font color="#000000">col_in</font></b><font color="#990000">(</font>K<font color="#990000">);</font>
+               CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font> <b><font color="#000000">val_out</font></b><font color="#990000">(</font>K<font color="#990000">);</font>
+               <font color="#FF0000">{</font>    <font color="#008080">size_t</font> k <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font>
+                    <i><font color="#9A1900">// use row major ordering to test sorting</font></i>
+                    <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> nrow<font color="#990000">;</font> i<font color="#990000">++)</font>
+                    <font color="#FF0000">{</font>    <i><font color="#9A1900">// only request lower triangle</font></i>
+                         <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;=</font> i<font color="#990000">;</font> j<font color="#990000">++)</font>
+                         <font color="#FF0000">{</font>    row_in<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">=</font> i<font color="#990000">;</font>
+                              col_in<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">=</font> j<font color="#990000">;</font>
+                              k<font color="#990000">++;</font>
+                         <font color="#FF0000">}</font>
+                    <font color="#FF0000">}</font>
+               <font color="#FF0000">}</font>
+               ldlt_obj<font color="#990000">.</font><b><font color="#000000">inv</font></b><font color="#990000">(</font>row_in<font color="#990000">,</font> col_in<font color="#990000">,</font> val_out<font color="#990000">);</font>
+               <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> k <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> k <font color="#990000">&lt;</font> K<font color="#990000">;</font> k<font color="#990000">++)</font>
+               <font color="#FF0000">{</font>    <font color="#009900">double</font> check <font color="#990000">=</font> H_inv<font color="#990000">[</font> row_in<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">*</font> nrow <font color="#990000">+</font> col_in<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">];</font>
+                    ok          <font color="#990000">&amp;=</font> std<font color="#990000">::</font><b><font color="#000000">fabs</font></b><font color="#990000">(</font> val_out<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">-</font> check <font color="#990000">)</font> <font color="#990000">&lt;=</font> eps<font color="#990000">;</font>
+               <font color="#FF0000">}</font>
+          <font color="#FF0000">}</font>
+          <i><font color="#9A1900">//</font></i>
+          <i><font color="#9A1900">// test sim_cov</font></i>
+          CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font> <b><font color="#000000">w</font></b><font color="#990000">(</font><font color="#993399">3</font><font color="#990000">),</font> <b><font color="#000000">v</font></b><font color="#990000">(</font><font color="#993399">3</font><font color="#990000">),</font> <b><font color="#000000">c</font></b><font color="#990000">(</font><font color="#993399">3</font><font color="#990000">);</font>
+          <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> <font color="#993399">3</font><font color="#990000">;</font> i<font color="#990000">++)</font>
+               w<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> <font color="#009900">double</font><font color="#990000">(</font> <font color="#993399">2</font> <font color="#990000">*</font> i <font color="#990000">+</font> <font color="#993399">1</font><font color="#990000">);</font>
+          ok <font color="#990000">&amp;=</font> ldlt_obj<font color="#990000">.</font><b><font color="#000000">sim_cov</font></b><font color="#990000">(</font>w<font color="#990000">,</font> v<font color="#990000">);</font>
+          <i><font color="#9A1900">// solve w = L^{T} c</font></i>
+          c<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font> <font color="#990000">=</font> w<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font> <font color="#990000">/</font> <font color="#993399">3.0</font><font color="#990000">;</font>
+          c<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">=</font> <font color="#990000">(</font> w<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">-</font> <font color="#993399">2</font> <font color="#990000">*</font> c<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font> <font color="#990000">)</font> <font color="#990000">/</font> <font color="#993399">2.0</font><font color="#990000">;</font>
+          c<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <font color="#990000">(</font> w<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">-</font> <font color="#993399">1.0</font> <font color="#990000">*</font> c<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">-</font> <font color="#993399">1.0</font> <font color="#990000">*</font> c<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font> <font color="#990000">)</font> <font color="#990000">/</font> <font color="#993399">1.0</font><font color="#990000">;</font>
+          <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> <font color="#993399">3</font><font color="#990000">;</font> i<font color="#990000">++)</font>
+               ok  <font color="#990000">&amp;=</font> std<font color="#990000">::</font><b><font color="#000000">fabs</font></b><font color="#990000">(</font> v<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">-</font> c<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">)</font> <font color="#990000">&lt;=</font> eps<font color="#990000">;</font>
+     
+          <b><font color="#0000FF">return</font></b> ok<font color="#990000">;</font>
+     <font color="#FF0000">}</font></tt></pre>
+</font></code>
+<hr>Input File: example/private/ldlt_cholmod.cpp
+
+</body>
+</html>

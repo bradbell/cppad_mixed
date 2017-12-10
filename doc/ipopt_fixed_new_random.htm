@@ -1,0 +1,240 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Compute New Random Effects and Update Factor</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Compute New Random Effects and Update Factor">
+<meta name="keywords" id="keywords" content=" compute new random effects update factor syntax ipopt_fixed n_random_ random_ipopt_options_ random_lower_ random_upper_ random_in_ fixed_vec random_cur_ mixed_object_ prototype ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_ipopt_fixed_new_random_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="ipopt_fixed_adaptive_derivative_check.htm" target="_top">Prev</a>
+</td><td><a href="ipopt_xam.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>ipopt_fixed</option>
+<option>ipopt_fixed_new_random</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>ipopt_fixed-&gt;</option>
+<option>ipopt_fixed_ctor</option>
+<option>ipopt_fixed_get_nlp_info</option>
+<option>ipopt_fixed_get_bounds_info</option>
+<option>ipopt_fixed_get_starting_point</option>
+<option>ipopt_fixed_eval_f</option>
+<option>ipopt_fixed_eval_grad_f</option>
+<option>ipopt_fixed_eval_g</option>
+<option>ipopt_fixed_eval_jac_g</option>
+<option>ipopt_fixed_eval_h</option>
+<option>ipopt_fixed_finalize_solution</option>
+<option>ipopt_fixed_adaptive_derivative_check</option>
+<option>ipopt_fixed_new_random</option>
+<option>ipopt_xam</option>
+</select>
+</td>
+<td>ipopt_fixed_new_random</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>ipopt_fixed</option>
+<option>n_random_</option>
+<option>random_ipopt_options_</option>
+<option>random_lower_</option>
+<option>random_upper_</option>
+<option>random_in_</option>
+<option>fixed_vec</option>
+<option>random_cur_</option>
+<option>mixed_object_</option>
+<option>Prototype</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Compute New Random Effects and Update Factor</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><font color="blue"><span style='white-space: nowrap'>new_random(</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="ipopt_fixed" id="ipopt_fixed">ipopt_fixed</a></big></b>
+<br>
+This is a private member function of the <a href="ipopt_fixed.htm" target="_top"><span style='white-space: nowrap'>ipopt_fixed</span></a>
+ class.
+
+<br>
+<br>
+<b><big><a name="n_random_" id="n_random_">n_random_</a></big></b>
+<br>
+Is assumed that this member variable is greater than zero.
+
+<br>
+<br>
+<b><big><a name="random_ipopt_options_" id="random_ipopt_options_">random_ipopt_options_</a></big></b>
+<br>
+This member variable contains
+the value of the
+<a href="ipopt_fixed_ctor.htm#random_ipopt_options" target="_top"><span style='white-space: nowrap'>random_ipopt_options</span></a>
+
+in the <code><font color="blue">ipopt_fixed</font></code> constructor.
+
+<br>
+<br>
+<b><big><a name="random_lower_" id="random_lower_">random_lower_</a></big></b>
+<br>
+This member variable contains
+the value of the <a href="ipopt_fixed_ctor.htm#random_lower" target="_top"><span style='white-space: nowrap'>random_lower</span></a>
+
+in the <code><font color="blue">ipopt_fixed</font></code> constructor.
+
+<br>
+<br>
+<b><big><a name="random_upper_" id="random_upper_">random_upper_</a></big></b>
+<br>
+This member variable contains
+the value of the <a href="ipopt_fixed_ctor.htm#random_upper" target="_top"><span style='white-space: nowrap'>random_upper</span></a>
+
+in the <code><font color="blue">ipopt_fixed</font></code> constructor.
+
+<br>
+<br>
+<b><big><a name="random_in_" id="random_in_">random_in_</a></big></b>
+<br>
+This member variable contains
+the value of the <a href="ipopt_fixed_ctor.htm#random_in" target="_top"><span style='white-space: nowrap'>random_in</span></a>
+
+in the <code><font color="blue">ipopt_fixed</font></code> constructor.
+
+<br>
+<br>
+<b><big><a name="fixed_vec" id="fixed_vec">fixed_vec</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;d_vector&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+it is the value of the fixed effects that we are computing the random
+effects and updated factor for.
+
+<br>
+<br>
+<b><big><a name="random_cur_" id="random_cur_">random_cur_</a></big></b>
+<br>
+This member variable contain is set the optimal random effects
+corresponding to 
+<code><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="mixed_object_" id="mixed_object_">mixed_object_</a></big></b>
+<br>
+The factor in this member variables is updated using the call
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mixed_object_.update_factor(</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;random_cur_)<br>
+</span></font></code>
+see <a href="update_factor.htm" target="_top"><span style='white-space: nowrap'>update_factor</span></a>
+ for side effects.
+
+<br>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre style='display:inline'><tt>
+<font color="#009900">void</font> ipopt_fixed<font color="#990000">::</font><b><font color="#000000">new_random</font></b><font color="#990000">(</font><b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font> fixed_vec<font color="#990000">)</font>
+</tt></pre>
+
+<hr>Input File: src/ipopt_fixed.cpp
+
+</body>
+</html>

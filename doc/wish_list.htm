@@ -1,0 +1,176 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>CppAD Mixed Wish List</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="CppAD Mixed Wish List">
+<meta name="keywords" id="keywords" content=" cppad mixed wish list student's t aborting optimization second order method random constraints sparse_mat_info windows install ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_wish_list_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="whats_new_16.htm" target="_top">Prev</a>
+</td><td><a href="math_notation.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>wish_list</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>wish_list</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Student's T</option>
+<option>Aborting Optimization</option>
+<option>Second Order Method</option>
+<option>Random Constraints</option>
+<option>sparse_mat_info</option>
+<option>Windows Install</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>CppAD Mixed Wish List</big></big></b></center>
+<br>
+<b><big><a name="Student's T" id="Student's T">Student's T</a></big></b>
+<br>
+There is a problem using the absolute value terms in the
+<a href="cppad_mixed.htm#Negative Log-Density Vector" target="_top"><span style='white-space: nowrap'>negative&nbsp;log-density&nbsp;vector</span></a>
+
+to obtain robust fitting of data and outlier detection.
+To be specific, each such data point results in an extra auxiliary variable
+in the optimization problem.
+If there is lots of data, this makes the optimization problem very large.
+<a href="https://amath.washington.edu/people/aleksandr-aravkin" target="_top"><span style='white-space: nowrap'>Sasha</span></a>
+
+suggested using Student's t-distribution which would yield robust fitting
+and outlier detection, and does not suffer from this problem.
+Even better is the fact that it can be used with data that depends
+on the random effects (because it is smooth).
+
+
+<br>
+<br>
+<b><big><a name="Aborting Optimization" id="Aborting Optimization">Aborting Optimization</a></big></b>
+<br>
+It would be helpful to return the fixed and random effects
+that correspond to the last attempted function evaluations that fail;
+i.e., that result in <code><font color="blue">nan</font></code>.
+
+<br>
+<br>
+<b><big><a name="Second Order Method" id="Second Order Method">Second Order Method</a></big></b>
+<br>
+The second order method,
+when <a href="derived_ctor.htm#quasi_fixed" target="_top"><span style='white-space: nowrap'>quasi_fixed</span></a>
+ is false,
+uses the second order approximate optimal random effects
+<a href="theory.htm#Approximate Optimal Random Effects.Second Order, W(beta, theta, u)" target="_top"><span style='white-space: nowrap'>W(beta,&nbsp;theta,&nbsp;u)</span></a>
+.
+It might be an improvement to use the two partial Newton step method.
+Perhaps a reverse over a forward Kedem method would be better.
+See
+<i>
+Newton step methods for AD of an Objective defined using implicit functions
+</i>
+.
+
+
+<br>
+<br>
+<b><big><a name="Random Constraints" id="Random Constraints">Random Constraints</a></big></b>
+<br>
+Include the lagrange multipliers for the
+<a href="cppad_mixed.htm#Notation.Random Constraint Matrix, A" target="_top"><span style='white-space: nowrap'>random&nbsp;constraints</span></a>
+
+in the <a href="optimize_fixed.htm" target="_top"><span style='white-space: nowrap'>optimize_fixed</span></a>
+ and <a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
+ interfaces.
+
+<br>
+<br>
+<b><big><a name="sparse_mat_info" id="sparse_mat_info">sparse_mat_info</a></big></b>
+<br>
+Use <a href="sparse_mat_info.htm" target="_top"><span style='white-space: nowrap'>sparse_mat_info</span></a>
+ instead of
+
+<code><i><font color="black"><span style='white-space: nowrap'>row</span></font></i></code>
+, 
+<code><i><font color="black"><span style='white-space: nowrap'>col</span></font></i></code>
+, 
+<code><i><font color="black"><span style='white-space: nowrap'>val</span></font></i></code>
+ triples
+in syntax for following routines:
+<a href="fix_con_hes.htm" target="_top"><span style='white-space: nowrap'>fix_con_hes</span></a>
+,
+<a href="fix_con_jac.htm" target="_top"><span style='white-space: nowrap'>fix_con_jac</span></a>
+,
+<a href="fix_like_hes.htm" target="_top"><span style='white-space: nowrap'>fix_like_hes</span></a>
+,
+<a href="fix_like_jac.htm" target="_top"><span style='white-space: nowrap'>fix_like_jac</span></a>
+,
+<a href="laplace_obj_hes.htm" target="_top"><span style='white-space: nowrap'>laplace_obj_hes</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="Windows Install" id="Windows Install">Windows Install</a></big></b>
+<br>
+Make and test a set of Windows install instructions for <code><font color="blue">cppad_mixed</font></code>.
+
+
+<hr>Input File: omh/wish_list.omh
+
+</body>
+</html>

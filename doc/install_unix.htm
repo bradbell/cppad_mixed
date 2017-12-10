@@ -1,0 +1,352 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Installing cppad_mixed in Unix</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Installing cppad_mixed in Unix">
+<meta name="keywords" id="keywords" content=" installing cppad_mixed unix download system requirements c++ compiler cmake pkg-config wget fortran gsl special run_cmake.sh eigen ipopt suitesparse cppad command check speed install example installation linking using ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_install_unix_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="_contents.htm" target="_top">Prev</a>
+</td><td><a href="example_install.sh.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>install_unix</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>install_unix-&gt;</option>
+<option>example_install.sh</option>
+<option>run_cmake.sh</option>
+<option>check_install.sh</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Download</option>
+<option>System Requirements</option>
+<option>---..C++ Compiler</option>
+<option>---..cmake</option>
+<option>---..pkg-config</option>
+<option>---..wget</option>
+<option>---..Fortran Compiler</option>
+<option>---..gsl</option>
+<option>Special Requirements</option>
+<option>---..run_cmake.sh</option>
+<option>---..eigen</option>
+<option>---..Ipopt</option>
+<option>---..SuiteSparse</option>
+<option>---..CppAD</option>
+<option>cppad_mixed</option>
+<option>---..Cmake Command</option>
+<option>---..Check</option>
+<option>---..Speed</option>
+<option>---..Install</option>
+<option>Example</option>
+<option>---..Installation</option>
+<option>---..Linking</option>
+<option>---..Using cppad_mixed</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Installing cppad_mixed in Unix</big></big></b></center>
+<br>
+<b><big><a name="Download" id="Download">Download</a></big></b>
+<br>
+Download the tarball <a href="cppad_mixed-20171210.tgz" target="_top"><span style='white-space: nowrap'>cppad_mixed-20171210.tgz</span></a>
+
+and then extract it using the command
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tar&nbsp;-xzf&nbsp;cppad_mixed-20171210.tgz<br>
+</span></font></code>
+<br>
+<b><big><a name="System Requirements" id="System Requirements">System Requirements</a></big></b>
+<br>
+The following programs are required by cppad_mixed
+and should have standard system installs:
+
+<br>
+<br>
+<b><a name="System Requirements.C++ Compiler" id="System Requirements.C++ Compiler">C++ Compiler</a></b>
+<br>
+The <code><font color="blue">cppad_mixed</font></code> program can be compiled by any C++98 compliant compiler;
+e.g., <code><font color="blue">g++</font></code>.
+(Note that a C++11 compiler would be better.)
+
+<br>
+<br>
+<b><a name="System Requirements.cmake" id="System Requirements.cmake">cmake</a></b>
+
+<br>
+<a href="http://www.cmake.org/" target="_top"><span style='white-space: nowrap'>cmake</span></a>
+,
+a program that installs other programs.
+
+<br>
+<br>
+<b><a name="System Requirements.pkg-config" id="System Requirements.pkg-config">pkg-config</a></b>
+<br>
+The <a href="http://www.freedesktop.org/wiki/Software/pkg-config/" target="_top"><span style='white-space: nowrap'>pkg-config</span></a>
+
+program must be installed.
+After <code><font color="blue">gsl</font></code> and <code><font color="blue">ipopt</font></code> are installed
+(see below), the following commands should work:
+<code><font color='blue'><pre style='display:inline'> 
+     pkg-config gsl     --libs
+     pkg-config ipopt   --libs
+</pre></font></code>
+If one of them fails, a corresponding directory is missing
+from the <code><font color="blue">PKG_CONFIG_PATH</font></code> environment variable.
+
+<br>
+<br>
+<b><a name="System Requirements.wget" id="System Requirements.wget">wget</a></b>
+<br>
+The <a href="https://www.gnu.org/software/wget/" target="_top"><span style='white-space: nowrap'>wget</span></a>
+
+program must be installed.
+
+<br>
+<br>
+<b><a name="System Requirements.Fortran Compiler" id="System Requirements.Fortran Compiler">Fortran Compiler</a></b>
+<br>
+A fortran compiler is required by <code><font color="blue">ipopt</font></code> which in turn
+is required by <code><font color="blue">cppad_mixed</font></code>.
+
+<br>
+<br>
+<b><a name="System Requirements.gsl" id="System Requirements.gsl">gsl</a></b>
+
+<br>
+<a href="http://gnuwin32.sourceforge.net/packages/gsl.htm" target="_top"><span style='white-space: nowrap'>gsl</span></a>
+,
+the gnu scientific library.
+Note that the development headers are required; e.g.,
+on Fedora or Red-Hat one needs to install <code><font color="blue">gsl-devel</font></code>.
+
+<br>
+<br>
+<b><big><a name="Special Requirements" id="Special Requirements">Special Requirements</a></big></b>
+<br>
+The packages listed below are required by cppad_mixed
+and may not have standard system installs.
+The 
+<code><font color="blue"><span style='white-space: nowrap'>install_</span></font><i><font color="black"><span style='white-space: nowrap'>package</span></font></i></code>
+ scripts below should be run
+in the order that they appear.
+
+<br>
+<br>
+<b><a name="Special Requirements.run_cmake.sh" id="Special Requirements.run_cmake.sh">run_cmake.sh</a></b>
+<br>
+The settings in <a href="run_cmake.sh.htm" target="_top"><span style='white-space: nowrap'>bin/run_cmake.sh</span></a>
+ are used by the
+scripts that install the special requirements. You must first change
+these settings to the appropriate values for your system before
+running these scripts.
+
+<br>
+<br>
+<b><a name="Special Requirements.eigen" id="Special Requirements.eigen">eigen</a></b>
+<br>
+The <a href="http://eigen.tuxfamily.org" target="_top"><span style='white-space: nowrap'>eigen</span></a>
+
+linear algebra package.
+The commands
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cd&nbsp;cppad_mixed-20171210<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin/install_eigen.sh<br>
+</span></font></code>
+can be used to install this package.
+
+<br>
+<br>
+<b><a name="Special Requirements.Ipopt" id="Special Requirements.Ipopt">Ipopt</a></b>
+<br>
+The <a href="https://projects.coin-or.org/Ipopt" target="_top"><span style='white-space: nowrap'>Ipopt</span></a>
+
+optimization package.
+The commands
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cd&nbsp;cppad_mixed-20171210<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin/install_ipopt.sh<br>
+</span></font></code>
+can be used to install this package.
+
+<br>
+<br>
+<b><a name="Special Requirements.SuiteSparse" id="Special Requirements.SuiteSparse">SuiteSparse</a></b>
+<br>
+The <a href="http://faculty.cse.tamu.edu/davis/SuiteSparse" target="_top"><span style='white-space: nowrap'>suitesparse</span></a>
+
+sparse matrix package.
+The commands
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cd&nbsp;cppad_mixed-20171210<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin/install_suitesparse.sh<br>
+</span></font></code>
+can be used to install this package.
+
+<br>
+<br>
+<b><a name="Special Requirements.CppAD" id="Special Requirements.CppAD">CppAD</a></b>
+<br>
+The <a href="http://www.coin-or.org/CppAD/" target="_top"><span style='white-space: nowrap'>cppad</span></a>
+
+C++ algorithmic differentiation package.
+The commands
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cd&nbsp;cppad_mixed-20171210<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin/install_cppad.sh<br>
+</span></font></code>
+can be used to install this package.
+
+<br>
+<br>
+<b><big><a name="cppad_mixed" id="cppad_mixed">cppad_mixed</a></big></b>
+<br>
+The steps above need to be executed once,
+for each <a href="run_cmake.sh.htm#build_type" target="_top"><span style='white-space: nowrap'>build_type</span></a>
+ that you will used.
+They do not need to be executed each new version of <code><font color="blue">cppad_mixed</font></code>
+unless the <a href="whats_new_17.htm" target="_top"><span style='white-space: nowrap'>whats_new_17</span></a>
+ release notes say otherwise.
+The steps below will need to be executed each time you install
+a new version of <code><font color="blue">cppad_mixed</font></code>:
+
+<br>
+<br>
+<b><a name="cppad_mixed.Cmake Command" id="cppad_mixed.Cmake Command">Cmake Command</a></b>
+<br>
+After installing the requirements above, execute the command:
+<code><font color='blue'><pre style='display:inline'> 
+     bin/run_cmake.sh
+</pre></font></code>
+<br>
+<b><a name="cppad_mixed.Check" id="cppad_mixed.Check">Check</a></b>
+<br>
+The following commands are optional and will
+build and run the examples and correctness tests:
+<code><font color='blue'><pre style='display:inline'> 
+     cd build
+     make check
+     make speed
+</pre></font></code>
+<br>
+<b><a name="cppad_mixed.Speed" id="cppad_mixed.Speed">Speed</a></b>
+<br>
+The following commands are optional and will
+build and run the speed tests:
+<code><font color='blue'><pre style='display:inline'> 
+     cd build
+     make speed
+</pre></font></code>
+<br>
+<b><a name="cppad_mixed.Install" id="cppad_mixed.Install">Install</a></b>
+<br>
+The following command will
+install the cppad_mixed library and include files:
+<code><font color='blue'><pre style='display:inline'> 
+     cd build
+     make install
+</pre></font></code>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+
+
+<br>
+<br>
+<b><a name="Example.Installation" id="Example.Installation">Installation</a></b>
+<br>
+The file <a href="example_install.sh.htm" target="_top"><span style='white-space: nowrap'>example_install.sh</span></a>
+ contains an example installation.
+
+<br>
+<br>
+<b><a name="Example.Linking" id="Example.Linking">Linking</a></b>
+<br>
+The file <a href="check_install.sh.htm" target="_top"><span style='white-space: nowrap'>check_install.sh</span></a>
+ is an example of compiling, linking
+and running using an
+<a href="install_unix.htm#cppad_mixed.Install" target="_top"><span style='white-space: nowrap'>installed</span></a>
+ version of
+<code><font color="blue">cppad_mixed</font></code>.
+
+<br>
+<br>
+<b><a name="Example.Using cppad_mixed" id="Example.Using cppad_mixed">Using cppad_mixed</a></b>
+<br>
+The files
+<a href="ar1_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>ar1_xam.cpp</span></a>
+ and <a href="capture_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>capture_xam.cpp</span></a>
+
+contain examples and speed tests
+of <code><font color="blue">cppad_mixed</font></code>.
+These examples run when one executes the commands
+<code><font color='blue'><pre style='display:inline'> 
+     cd build
+     make speed
+</pre></font></code>
+
+<hr>Input File: omh/install_unix.omh
+
+</body>
+</html>

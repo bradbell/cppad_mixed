@@ -1,0 +1,263 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Optimal Solution Returned by optimize_fixed</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Optimal Solution Returned by optimize_fixed">
+<meta name="keywords" id="keywords" content=" optimal solution returned optimize_fixed syntax public convention fixed_opt fixed_lag bounds fix_con_lag ran_con_lag ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_fixed_solution_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="exception.htm" target="_top">Prev</a>
+</td><td><a href="ipopt_app_status.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>fixed_solution</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>fixed_solution</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Public</option>
+<option>Convention</option>
+<option>fixed_opt</option>
+<option>fixed_lag</option>
+<option>---..Bounds</option>
+<option>fix_con_lag</option>
+<option>---..Bounds</option>
+<option>ran_con_lag</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Optimal Solution Returned by optimize_fixed</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><font color="blue"><span style='white-space: nowrap'>CppAD::mixed::fixed_solution&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i></code>
+
+
+<br>
+<br>
+<b><big><a name="Public" id="Public">Public</a></big></b>
+<br>
+This structure is part of the
+<a href="namespace.htm#Public" target="_top"><span style='white-space: nowrap'>CppAD::mixed</span></a>
+ user API.
+
+<br>
+<br>
+<b><big><a name="Convention" id="Convention">Convention</a></big></b>
+<br>
+If a Lagrange multiplier is zero, the correspond constraint
+is not active at the optimal solution.
+
+<br>
+<br>
+<b><big><a name="fixed_opt" id="fixed_opt">fixed_opt</a></big></b>
+<br>
+This field has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;double&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_opt<br>
+</span></font></code>
+It has size zero when constructed
+and when set its size is <a href="derived_ctor.htm#n_fixed" target="_top"><span style='white-space: nowrap'>n_fixed</span></a>
+.
+It is the final value (optimal value found) for the fixed effects.
+
+<br>
+<br>
+<b><big><a name="fixed_lag" id="fixed_lag">fixed_lag</a></big></b>
+<br>
+This field has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;double&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_lag<br>
+</span></font></code>
+It has size zero when constructed
+and when set its size is <a href="derived_ctor.htm#n_fixed" target="_top"><span style='white-space: nowrap'>n_fixed</span></a>
+.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_lag[</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
+
+is greater than zero (less than zero), it is
+the Lagrange multiplier for the upper (lower) bound
+for the <code><i>i</i></code>-th component of the fixed effects.
+
+<br>
+<br>
+<b><a name="fixed_lag.Bounds" id="fixed_lag.Bounds">Bounds</a></b>
+<br>
+The size of the fixed effects upper and lower limits
+<a href="optimize_fixed.htm#fixed_upper" target="_top"><span style='white-space: nowrap'>fixed_upper</span></a>
+ and
+<a href="optimize_fixed.htm#fixed_lower" target="_top"><span style='white-space: nowrap'>fixed_lower</span></a>
+ are
+used to determine the scale for the values of the fixed constraint function.
+If for the <code><i>i</i></code>-th component function,
+one of the limits is infinite and the other is zero,
+this scale cannot be determined and the values of
+
+<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fix_[</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
+ may not properly indicate
+if the constraint is active.
+In addition, you may get a warning about the solution check failing.
+
+<br>
+<br>
+<b><big><a name="fix_con_lag" id="fix_con_lag">fix_con_lag</a></big></b>
+<br>
+This field has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;double&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fix_con_lag<br>
+</span></font></code>
+It has size zero when constructed
+and when set its size is the number of fixed constraints; i.e., the size of
+the vector <a href="fix_constraint.htm#vec" target="_top"><span style='white-space: nowrap'>vec</span></a>
+ returned by
+the <code><font color="blue">fix_constraint</font></code> function.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fix_con_lag[</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
+
+is greater than zero (less than zero), it is
+the Lagrange multiplier for the upper (lower) bound
+for the <code><i>i</i></code>-th component of the fixed constraint function.
+
+<br>
+<br>
+<b><a name="fix_con_lag.Bounds" id="fix_con_lag.Bounds">Bounds</a></b>
+<br>
+The size of the fixed constraints upper and lower limits
+<a href="optimize_fixed.htm#fix_constraint_upper" target="_top"><span style='white-space: nowrap'>fix_constraint_upper</span></a>
+ and
+<a href="optimize_fixed.htm#fix_constraint_lower" target="_top"><span style='white-space: nowrap'>fix_constraint_lower</span></a>
+ are
+used to determine the scale for the values of the fixed constraint function.
+If for the <code><i>i</i></code>-th component function,
+one of the limits is infinite and the other is zero,
+this scale cannot be determined and the values of
+
+<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fix_con_lag[</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
+ may not properly indicate
+if the constraint is active.
+In addition, you may get a warning about the solution check failing.
+
+
+<br>
+<br>
+<b><big><a name="ran_con_lag" id="ran_con_lag">ran_con_lag</a></big></b>
+<br>
+This field has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;double&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.ran_con_lag<br>
+</span></font></code>
+It has size zero when constructed
+and when set its size is the number of random constraints; i.e.,
+the number of rows
+in the matrix <a href="derived_ctor.htm#A_rcv" target="_top"><span style='white-space: nowrap'>A_rcv</span></a>
+.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.ran_con_lag[</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
+
+is greater than zero (less than zero), it is
+the Lagrange multiplier for the upper (lower) bound
+for the <code><i>i</i></code>-th row of the random constraint matrix <small>@(@
+A
+@)@</small>.
+
+
+<hr>Input File: include/cppad/mixed/fixed_solution.hpp
+
+</body>
+</html>

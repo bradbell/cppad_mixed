@@ -1,0 +1,502 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Random Effects Variance May Cause Data Mismatch</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Random Effects Variance May Cause Data Mismatch">
+<meta name="keywords" id="keywords" content=" random effects variance may cause data mismatch model theory derivatives objective ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_data_mismatch.cpp_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="lasso.cpp.htm" target="_top">Prev</a>
+</td><td><a href="opt_ran_nan.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>user</option>
+<option>data_mismatch.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>user-&gt;</option>
+<option>speed</option>
+<option>abs_density.cpp</option>
+<option>no_random.cpp</option>
+<option>ran_constraint.cpp</option>
+<option>lasso.cpp</option>
+<option>data_mismatch.cpp</option>
+<option>opt_ran_nan.cpp</option>
+</select>
+</td>
+<td>data_mismatch.cpp</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Model</option>
+<option>Mismatch</option>
+<option>Theory</option>
+<option>Derivatives</option>
+<option>Objective</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Random Effects Variance May Cause Data Mismatch</big></big></b></center>
+<br>
+<b><big><a name="Model" id="Model">Model</a></big></b>
+
+<br>
+<small>@[@
+
+	\B{p}( z | \theta ) \sim \B{N} ( \theta , \sigma_z^2 )
+
+@]@</small><small>@[@
+
+	\B{p}( y | \theta ) \sim \B{N} [ \exp( u ) \theta , \sigma_y^2 ]
+
+@]@</small><small>@[@
+
+	\B{p}( u | \theta ) \sim \B{N} ( 0 , \sigma_u^2 )
+
+@]@</small>The fixed likelihood
+<a href="theory.htm#Fixed Likelihood, g(theta)" target="_top"><span style='white-space: nowrap'>g(theta)</span></a>
+
+is
+<small>@[@
+
+g( \theta ) = \frac{1}{2} \left[
+	\log ( 2 \pi \sigma_z^2 ) + ( z - \theta )^2
+\right]
+
+@]@</small>
+The random likelihood
+<a href="theory.htm#Random Likelihood, f(theta, u)" target="_top"><span style='white-space: nowrap'>f(theta,&nbsp;u)</span></a>
+
+is
+<small>@[@
+
+f(\theta , u ) = \frac{1}{2} \left[
+	\log ( 2 \pi \sigma_u^2 ) + u^2 / \sigma_u^2
+	+
+	\log ( 2 \pi \sigma_y^2 ) + [ y - \exp(u) \theta ]^2 / \sigma_y^2
+\right]
+
+@]@</small>
+
+<br>
+<br>
+<b><big><a name="Mismatch" id="Mismatch">Mismatch</a></big></b>
+<br>
+In the case where <small>@(@
+y = z
+@)@</small>, one might expect the solution
+<small>@(@
+\theta = z
+@)@</small> and <small>@(@
+u = 0
+@)@</small> because
+all the data residuals are zero, <small>@(@
+\B{p}(u | \theta )
+@)@</small>
+is maximal, and there is no prior for <small>@(@
+\theta
+@)@</small>.
+This example demonstrates that <small>@(@
+\theta = z
+@)@</small> and <small>@(@
+u = 0
+@)@</small>
+may not be optimal for the this case.
+To be specific it shows that the derivative of
+<a href="theory.htm#Objective.Total Objective, L(theta)" target="_top"><span style='white-space: nowrap'>L(theta)</span></a>
+
+may be non-zero.
+
+<br>
+<br>
+<b><big><a name="Theory" id="Theory">Theory</a></big></b>
+<br>
+See the <a href="theory.htm" target="_top">Laplace Approximation for Mixed Effects Models</a> section for the
+theory behind the calculations below:
+
+<br>
+<br>
+<b><big><a name="Derivatives" id="Derivatives">Derivatives</a></big></b>
+
+<br>
+<small>@[@
+
+\begin{array}{rcl}
+g_\theta ( \theta )
+& = &
+( \theta - z ) \sigma_z^{-2}
+\\
+f_\theta ( \theta , u )
+& = &
+[ \exp(u) \theta - y ] \exp(u) \sigma_y^{-2}
+\\
+f_u ( \theta , u )
+& = &
+u / \sigma_u^2 + [ \exp(u) \theta - y ] \exp(u) \theta \sigma_y^{-2}
+\\
+f_{u,u} ( \theta , u )
+& = &
+\sigma_u^{-2}
++
+[ 2 \exp(u) \theta - y ] \exp(u) \theta \sigma_y^{-2}
+\\
+f_{u,\theta} ( \theta , u )
+& = &
+[ 2 \exp(u) \theta - y ] \exp(u) \sigma_y^{-2}
+\\
+\hat{u}_\theta ( \theta )
+& = &
+- f_{u,\theta} [ \theta , \hat{u} ( \theta ) ]
+/
+f_{u,u} [ \theta , \hat{u} ( \theta ) ]
+\\
+f_{u,u,u} ( \theta , u )
+& = &
+[ 4 \exp(u) \theta - y ] \exp(u) \theta \sigma_y^{-2}
+\\
+f_{u,u,\theta} ( \theta , u )
+& = &
+[ 4 \exp(u) \theta - y ] \exp(u) \sigma_y^{-2}
+\end{array}
+
+@]@</small><br>
+<b><big><a name="Objective" id="Objective">Objective</a></big></b>
+
+<br>
+<small>@[@
+
+\begin{array}{rcl}
+h( \theta , u )
+& = &
+\frac{1}{2} \log f_{u,u} ( \theta , u )
++
+f( \theta , u )
+-
+\log( 2 \pi )
+\\
+h_\theta ( \theta , u )
+& = &
+\frac{1}{2} f_{u,u,\theta} ( \theta , u ) / f_{u,u} ( \theta , u )
++
+f_\theta ( \theta , u )
+\\
+h_u ( \theta , u )
+& = &
+\frac{1}{2} f_{u,u,u} ( \theta , u ) / f_{u,u} ( \theta , u )
++
+f_u ( \theta , u )
+\\
+L( \theta )
+& = &
+h [ \theta , \hat{u} ( \theta ) ] + g ( \theta )
+\\
+L_\theta ( \theta )
+& = &
+h_\theta [ \theta , \hat{u} ( \theta ) ]
++
+h_u [ \theta , \hat{u} ( \theta ) ] \hat{u}_\theta ( \theta )
++
+g_\theta ( \theta )
+\end{array}
+
+@]@</small><code><font color="blue"><pre><tt><b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;cppad/cppad.hpp&gt;</font>
+<b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;cppad/mixed/cppad_mixed.hpp&gt;</font>
+
+<b><font color="#0000FF">namespace</font></b> <font color="#FF0000">{</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>log<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>exp<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>AD<font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>sparse_rcv<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>a1_double<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>a2_double<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>d_vector<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>a1_vector<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>a2_vector<font color="#990000">;</font>
+
+     <b><font color="#0000FF">class</font></b> <font color="#008080">mixed_derived</font> <font color="#990000">:</font> <b><font color="#0000FF">public</font></b> cppad_mixed <font color="#FF0000">{</font>
+     <b><font color="#0000FF">private</font></b><font color="#990000">:</font>
+          <b><font color="#0000FF">const</font></b> <font color="#009900">double</font> y_<font color="#990000">,</font> z_<font color="#990000">;</font>
+          <b><font color="#0000FF">const</font></b> <font color="#009900">double</font> sigma_u_<font color="#990000">,</font> sigma_y_<font color="#990000">,</font> sigma_z_<font color="#990000">;</font>
+     <b><font color="#0000FF">public</font></b><font color="#990000">:</font>
+          <i><font color="#9A1900">// constructor</font></i>
+          <b><font color="#000000">mixed_derived</font></b><font color="#990000">(</font>
+               <font color="#008080">size_t</font>                 n_fixed       <font color="#990000">,</font>
+               <font color="#008080">size_t</font>                 n_random      <font color="#990000">,</font>
+               <font color="#009900">bool</font>                   quasi_fixed   <font color="#990000">,</font>
+               <font color="#009900">bool</font>                   bool_sparsity <font color="#990000">,</font>
+               <b><font color="#0000FF">const</font></b> sparse_rcv<font color="#990000">&amp;</font>      A_rcv         <font color="#990000">,</font>
+               <font color="#009900">double</font>                 y             <font color="#990000">,</font>
+               <font color="#009900">double</font>                 z             <font color="#990000">,</font>
+               <font color="#009900">double</font>                 sigma_u       <font color="#990000">,</font>
+               <font color="#009900">double</font>                 sigma_y       <font color="#990000">,</font>
+               <font color="#009900">double</font>                 sigma_z       <font color="#990000">)</font> <font color="#990000">:</font>
+               <b><font color="#000000">cppad_mixed</font></b><font color="#990000">(</font>
+                    n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv
+               <font color="#990000">),</font> <b><font color="#000000">y_</font></b><font color="#990000">(</font>y<font color="#990000">),</font> <b><font color="#000000">z_</font></b><font color="#990000">(</font>z<font color="#990000">),</font>
+               <b><font color="#000000">sigma_u_</font></b><font color="#990000">(</font>sigma_u<font color="#990000">),</font> <b><font color="#000000">sigma_y_</font></b><font color="#990000">(</font>sigma_y<font color="#990000">),</font> <b><font color="#000000">sigma_z_</font></b><font color="#990000">(</font>sigma_z <font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <b><font color="#000000">assert</font></b><font color="#990000">(</font> n_fixed <font color="#990000">==</font> <font color="#993399">1</font> <font color="#990000">);</font>
+               <b><font color="#000000">assert</font></b><font color="#990000">(</font> n_random <font color="#990000">==</font> <font color="#993399">1</font> <font color="#990000">);</font>
+          <font color="#FF0000">}</font>
+          <i><font color="#9A1900">// implementation of fix_likelihood as p(z|theta) * p(theta)</font></i>
+          <b><font color="#0000FF">virtual</font></b> <font color="#008080">a1_vector</font> <b><font color="#000000">fix_likelihood</font></b><font color="#990000">(</font>
+               <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>         fixed_vec  <font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <font color="#008080">a1_double</font> theta <font color="#990000">=</font> fixed_vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
+
+               <i><font color="#9A1900">// initialize log-density</font></i>
+               <font color="#008080">a1_vector</font> <b><font color="#000000">vec</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">);</font>
+               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <b><font color="#000000">a1_double</font></b><font color="#990000">(</font><font color="#993399">0.0</font><font color="#990000">);</font>
+
+               <i><font color="#9A1900">// compute this factor once</font></i>
+               <i><font color="#9A1900">// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );</font></i>
+
+               <i><font color="#9A1900">// Data term p(z|theta)</font></i>
+               <font color="#008080">a1_double</font> res  <font color="#990000">=</font> <font color="#990000">(</font>z_ <font color="#990000">-</font> theta<font color="#990000">)</font> <font color="#990000">/</font> sigma_z_<font color="#990000">;</font>
+               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>    <font color="#990000">+=</font> res <font color="#990000">*</font> res <font color="#990000">/</font> <b><font color="#000000">a1_double</font></b><font color="#990000">(</font><font color="#993399">2.0</font><font color="#990000">);</font>
+               <i><font color="#9A1900">// the following term does not depend on fixed effects</font></i>
+               <i><font color="#9A1900">// vec[0]    += log(sqrt_2pi * sigma_z_ );</font></i>
+
+               <i><font color="#9A1900">// prior term p(theta)</font></i>
+
+               <b><font color="#0000FF">return</font></b> vec<font color="#990000">;</font>
+          <font color="#FF0000">}</font>
+          <i><font color="#9A1900">// ------------------------------------------------------------------</font></i>
+          <i><font color="#9A1900">// implementation of ran_likelihood as p(y|theta, u) * p(u|theta)</font></i>
+          <b><font color="#0000FF">virtual</font></b> <font color="#008080">a2_vector</font> <b><font color="#000000">ran_likelihood</font></b><font color="#990000">(</font>
+               <b><font color="#0000FF">const</font></b> a2_vector<font color="#990000">&amp;</font>         fixed_vec  <font color="#990000">,</font>
+               <b><font color="#0000FF">const</font></b> a2_vector<font color="#990000">&amp;</font>         random_vec <font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <font color="#008080">a2_double</font> theta <font color="#990000">=</font> fixed_vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
+               <font color="#008080">a2_double</font> u     <font color="#990000">=</font> random_vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
+
+               <i><font color="#9A1900">// initialize log-density</font></i>
+               <font color="#008080">a2_vector</font> <b><font color="#000000">vec</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">);</font>
+               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <b><font color="#000000">a2_double</font></b><font color="#990000">(</font><font color="#993399">0.0</font><font color="#990000">);</font>
+
+               <i><font color="#9A1900">// compute this factors once</font></i>
+               <i><font color="#9A1900">// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );</font></i>
+
+               <i><font color="#9A1900">// Data term p(y|theta,u)</font></i>
+               <font color="#008080">a2_double</font> res  <font color="#990000">=</font> <font color="#990000">(</font>y_ <font color="#990000">-</font> <b><font color="#000000">exp</font></b><font color="#990000">(</font>u<font color="#990000">)</font> <font color="#990000">*</font> theta<font color="#990000">)</font> <font color="#990000">/</font> sigma_y_<font color="#990000">;</font>
+               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>    <font color="#990000">+=</font> res <font color="#990000">*</font> res <font color="#990000">/</font> <b><font color="#000000">a2_double</font></b><font color="#990000">(</font><font color="#993399">2.0</font><font color="#990000">);</font>
+               <i><font color="#9A1900">// the following term does not depend on fixed or random effects</font></i>
+               <i><font color="#9A1900">// vec[0]    += log(sqrt_2pi * sigma_y_ );</font></i>
+
+               <i><font color="#9A1900">// prior term p(u|theta)</font></i>
+               res        <font color="#990000">=</font> u <font color="#990000">/</font> sigma_u_<font color="#990000">;</font>
+               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>    <font color="#990000">+=</font> res <font color="#990000">*</font> res <font color="#990000">/</font> <b><font color="#000000">a2_double</font></b><font color="#990000">(</font><font color="#993399">2.0</font><font color="#990000">);</font>
+               <i><font color="#9A1900">// the following term does not depend on fixed or random effects</font></i>
+               <i><font color="#9A1900">// vec[0]    += log(sqrt_2pi * sigma_u_ );</font></i>
+
+               <b><font color="#0000FF">return</font></b> vec<font color="#990000">;</font>
+          <font color="#FF0000">}</font>
+          <i><font color="#9A1900">// ==================================================================</font></i>
+          <i><font color="#9A1900">// Routines used to check that objective derivative is zero at solution</font></i>
+          <font color="#009900">double</font> <b><font color="#000000">g_theta</font></b><font color="#990000">(</font><font color="#009900">double</font> theta<font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <b><font color="#0000FF">return</font></b> <font color="#990000">(</font>theta <font color="#990000">-</font> z_<font color="#990000">)</font> <font color="#990000">/</font> <font color="#990000">(</font>sigma_z_ <font color="#990000">*</font> sigma_z_<font color="#990000">);</font> <font color="#FF0000">}</font>
+          <font color="#009900">double</font> <b><font color="#000000">f_theta</font></b><font color="#990000">(</font><font color="#009900">double</font> theta<font color="#990000">,</font> <font color="#009900">double</font> u<font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <font color="#009900">double</font> ret <font color="#990000">=</font> <font color="#990000">(</font><b><font color="#000000">exp</font></b><font color="#990000">(</font>u<font color="#990000">)</font> <font color="#990000">*</font> theta <font color="#990000">-</font> y_<font color="#990000">)</font> <font color="#990000">*</font> <b><font color="#000000">exp</font></b><font color="#990000">(</font>u<font color="#990000">);</font>
+               ret        <font color="#990000">=</font> ret <font color="#990000">/</font> <font color="#990000">(</font>sigma_y_ <font color="#990000">*</font> sigma_y_<font color="#990000">);</font>
+               <b><font color="#0000FF">return</font></b> ret<font color="#990000">;</font>
+          <font color="#FF0000">}</font>
+          <font color="#009900">double</font> <b><font color="#000000">f_u</font></b><font color="#990000">(</font><font color="#009900">double</font> theta<font color="#990000">,</font> <font color="#009900">double</font> u<font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <font color="#009900">double</font> term <font color="#990000">=</font> <b><font color="#000000">exp</font></b><font color="#990000">(</font>u<font color="#990000">)</font> <font color="#990000">*</font> theta<font color="#990000">;</font>
+               <font color="#009900">double</font> ret  <font color="#990000">=</font> u <font color="#990000">/</font> <font color="#990000">(</font>sigma_u_ <font color="#990000">*</font> sigma_u_<font color="#990000">);</font>
+               ret        <font color="#990000">+=</font> <font color="#990000">(</font>term <font color="#990000">-</font> y_<font color="#990000">)</font> <font color="#990000">*</font> term <font color="#990000">/</font> <font color="#990000">(</font>sigma_y_ <font color="#990000">*</font> sigma_y_<font color="#990000">);</font>
+               <b><font color="#0000FF">return</font></b> ret<font color="#990000">;</font>
+          <font color="#FF0000">}</font>
+          <font color="#009900">double</font> <b><font color="#000000">f_uu</font></b><font color="#990000">(</font><font color="#009900">double</font> theta<font color="#990000">,</font> <font color="#009900">double</font> u<font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <font color="#009900">double</font> term <font color="#990000">=</font> <b><font color="#000000">exp</font></b><font color="#990000">(</font>u<font color="#990000">)</font> <font color="#990000">*</font> theta<font color="#990000">;</font>
+               <font color="#009900">double</font> ret  <font color="#990000">=</font> <font color="#993399">1.0</font> <font color="#990000">/</font> <font color="#990000">(</font>sigma_u_ <font color="#990000">*</font> sigma_u_<font color="#990000">);</font>
+               ret        <font color="#990000">+=</font> <font color="#990000">(</font><font color="#993399">2.0</font> <font color="#990000">*</font> term <font color="#990000">-</font> y_<font color="#990000">)</font> <font color="#990000">*</font> term <font color="#990000">/</font> <font color="#990000">(</font>sigma_y_ <font color="#990000">*</font> sigma_y_<font color="#990000">);</font>
+               <b><font color="#0000FF">return</font></b> ret<font color="#990000">;</font>
+          <font color="#FF0000">}</font>
+          <font color="#009900">double</font> <b><font color="#000000">f_utheta</font></b><font color="#990000">(</font><font color="#009900">double</font> theta<font color="#990000">,</font> <font color="#009900">double</font> u<font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <font color="#009900">double</font> ret <font color="#990000">=</font> <font color="#990000">(</font><font color="#993399">2.0</font> <font color="#990000">*</font> <b><font color="#000000">exp</font></b><font color="#990000">(</font>u<font color="#990000">)</font> <font color="#990000">*</font> theta <font color="#990000">-</font> y_<font color="#990000">)</font> <font color="#990000">*</font> <b><font color="#000000">exp</font></b><font color="#990000">(</font>u<font color="#990000">);</font>
+               ret        <font color="#990000">=</font> ret <font color="#990000">/</font> <font color="#990000">(</font>sigma_y_ <font color="#990000">*</font> sigma_y_<font color="#990000">);</font>
+               <b><font color="#0000FF">return</font></b> ret<font color="#990000">;</font>
+          <font color="#FF0000">}</font>
+          <font color="#009900">double</font> <b><font color="#000000">uhat_theta</font></b><font color="#990000">(</font><font color="#009900">double</font> theta<font color="#990000">,</font> <font color="#009900">double</font> uhat<font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <font color="#009900">double</font> ret <font color="#990000">=</font> <font color="#990000">-</font> <b><font color="#000000">f_utheta</font></b><font color="#990000">(</font>theta<font color="#990000">,</font> uhat<font color="#990000">)</font> <font color="#990000">/</font> <b><font color="#000000">f_uu</font></b><font color="#990000">(</font>theta<font color="#990000">,</font> uhat<font color="#990000">);</font>
+               <b><font color="#0000FF">return</font></b> ret<font color="#990000">;</font>
+          <font color="#FF0000">}</font>
+          <font color="#009900">double</font> <b><font color="#000000">f_uuu</font></b><font color="#990000">(</font><font color="#009900">double</font> theta<font color="#990000">,</font> <font color="#009900">double</font> u<font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <font color="#009900">double</font> term <font color="#990000">=</font> <b><font color="#000000">exp</font></b><font color="#990000">(</font>u<font color="#990000">)</font> <font color="#990000">*</font> theta<font color="#990000">;</font>
+               <font color="#009900">double</font> ret  <font color="#990000">=</font> <font color="#990000">(</font><font color="#993399">4.0</font> <font color="#990000">*</font> term <font color="#990000">-</font> y_<font color="#990000">)</font> <font color="#990000">*</font> term <font color="#990000">/</font> <font color="#990000">(</font>sigma_y_ <font color="#990000">*</font> sigma_y_<font color="#990000">);</font>
+               <b><font color="#0000FF">return</font></b> ret<font color="#990000">;</font>
+          <font color="#FF0000">}</font>
+          <font color="#009900">double</font> <b><font color="#000000">f_uutheta</font></b><font color="#990000">(</font><font color="#009900">double</font> theta<font color="#990000">,</font> <font color="#009900">double</font> u<font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <font color="#009900">double</font> ret <font color="#990000">=</font> <font color="#990000">(</font><font color="#993399">4.0</font> <font color="#990000">*</font> <b><font color="#000000">exp</font></b><font color="#990000">(</font>u<font color="#990000">)</font> <font color="#990000">*</font> theta <font color="#990000">-</font> y_<font color="#990000">)</font> <font color="#990000">*</font> <b><font color="#000000">exp</font></b><font color="#990000">(</font>u<font color="#990000">);</font>
+               ret        <font color="#990000">=</font> ret <font color="#990000">/</font> <font color="#990000">(</font>sigma_y_ <font color="#990000">*</font> sigma_y_<font color="#990000">);</font>
+               <b><font color="#0000FF">return</font></b> ret<font color="#990000">;</font>
+          <font color="#FF0000">}</font>
+          <font color="#009900">double</font> <b><font color="#000000">h_theta</font></b><font color="#990000">(</font><font color="#009900">double</font> theta<font color="#990000">,</font> <font color="#009900">double</font> u<font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <font color="#009900">double</font> ret <font color="#990000">=</font> <font color="#993399">0.5</font> <font color="#990000">*</font> <b><font color="#000000">f_uutheta</font></b><font color="#990000">(</font>theta<font color="#990000">,</font> u<font color="#990000">)</font> <font color="#990000">/</font> <b><font color="#000000">f_uu</font></b><font color="#990000">(</font>theta<font color="#990000">,</font> u<font color="#990000">);</font>
+               ret       <font color="#990000">+=</font> <b><font color="#000000">f_theta</font></b><font color="#990000">(</font>theta<font color="#990000">,</font> u<font color="#990000">);</font>
+               <b><font color="#0000FF">return</font></b> ret<font color="#990000">;</font>
+          <font color="#FF0000">}</font>
+          <font color="#009900">double</font> <b><font color="#000000">h_u</font></b><font color="#990000">(</font><font color="#009900">double</font> theta<font color="#990000">,</font> <font color="#009900">double</font> u<font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <font color="#009900">double</font> ret <font color="#990000">=</font> <font color="#993399">0.5</font> <font color="#990000">*</font> <b><font color="#000000">f_uuu</font></b><font color="#990000">(</font>theta<font color="#990000">,</font> u<font color="#990000">)</font> <font color="#990000">/</font> <b><font color="#000000">f_uu</font></b><font color="#990000">(</font>theta<font color="#990000">,</font> u<font color="#990000">);</font>
+               ret       <font color="#990000">+=</font> <b><font color="#000000">f_u</font></b><font color="#990000">(</font>theta<font color="#990000">,</font> u<font color="#990000">);</font>
+               <b><font color="#0000FF">return</font></b> ret<font color="#990000">;</font>
+          <font color="#FF0000">}</font>
+          <font color="#009900">double</font> <b><font color="#000000">L_theta</font></b><font color="#990000">(</font><font color="#009900">double</font> theta <font color="#990000">,</font> <font color="#009900">double</font> uhat<font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <font color="#009900">double</font> ret <font color="#990000">=</font> <b><font color="#000000">h_theta</font></b><font color="#990000">(</font>theta<font color="#990000">,</font> uhat<font color="#990000">);</font>
+               ret       <font color="#990000">+=</font> <b><font color="#000000">h_u</font></b><font color="#990000">(</font>theta<font color="#990000">,</font> uhat<font color="#990000">)</font> <font color="#990000">*</font> <b><font color="#000000">uhat_theta</font></b><font color="#990000">(</font>theta<font color="#990000">,</font> uhat<font color="#990000">);</font>
+               ret       <font color="#990000">+=</font> <b><font color="#000000">g_theta</font></b><font color="#990000">(</font>theta<font color="#990000">);</font>
+               <b><font color="#0000FF">return</font></b> ret<font color="#990000">;</font>
+          <font color="#FF0000">}</font>
+     <font color="#FF0000">}</font><font color="#990000">;</font>
+
+<font color="#FF0000">}</font>
+
+<font color="#009900">bool</font> <b><font color="#000000">data_mismatch_xam</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">)</font>
+<font color="#FF0000">{</font>
+     <font color="#009900">bool</font>   ok <font color="#990000">=</font> <b><font color="#0000FF">true</font></b><font color="#990000">;</font>
+     <font color="#009900">double</font> inf <font color="#990000">=</font> std<font color="#990000">::</font>numeric_limits<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;::</font><b><font color="#000000">infinity</font></b><font color="#990000">();</font>
+
+     <font color="#008080">size_t</font> n_fixed  <font color="#990000">=</font> <font color="#993399">1</font><font color="#990000">;</font>
+     <font color="#008080">size_t</font> n_random <font color="#990000">=</font> <font color="#993399">1</font><font color="#990000">;</font>
+     <font color="#009900">double</font> z        <font color="#990000">=</font> <font color="#993399">0.05</font><font color="#990000">;</font>
+     <font color="#009900">double</font> y        <font color="#990000">=</font> z<font color="#990000">;</font>
+     <font color="#009900">double</font> sigma_u  <font color="#990000">=</font> <font color="#993399">0.1</font><font color="#990000">;</font>
+     <font color="#009900">double</font> sigma_y  <font color="#990000">=</font> <font color="#993399">0.1</font> <font color="#990000">*</font> y<font color="#990000">;</font>
+     <font color="#009900">double</font> sigma_z  <font color="#990000">=</font> <font color="#993399">0.1</font> <font color="#990000">*</font> z<font color="#990000">;</font>
+     <font color="#008080">d_vector</font> <b><font color="#000000">fixed_in</font></b><font color="#990000">(</font>n_fixed<font color="#990000">),</font> <b><font color="#000000">random_in</font></b><font color="#990000">(</font>n_random<font color="#990000">);</font>
+     <font color="#008080">d_vector</font> <b><font color="#000000">fixed_lower</font></b><font color="#990000">(</font>n_fixed<font color="#990000">),</font> <b><font color="#000000">fixed_upper</font></b><font color="#990000">(</font>n_fixed<font color="#990000">);</font>
+     fixed_lower<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <font color="#990000">-</font>inf<font color="#990000">;</font>
+     fixed_in<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>    <font color="#990000">=</font> z<font color="#990000">;</font>
+     fixed_upper<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <font color="#990000">+</font> inf<font color="#990000">;</font>
+     random_in<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>   <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// no constriants</font></i>
+     <font color="#008080">d_vector</font> <b><font color="#000000">fix_constraint_lower</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">),</font> <b><font color="#000000">fix_constraint_upper</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// object that is derived from cppad_mixed</font></i>
+     <font color="#009900">bool</font> quasi_fixed   <font color="#990000">=</font> <b><font color="#0000FF">false</font></b><font color="#990000">;</font>
+     <font color="#009900">bool</font> bool_sparsity <font color="#990000">=</font> <b><font color="#0000FF">false</font></b><font color="#990000">;</font>
+     <font color="#008080">sparse_rcv</font> A_rcv<font color="#990000">;</font> <i><font color="#9A1900">// empty matrix</font></i>
+     <font color="#008080">mixed_derived</font> <b><font color="#000000">mixed_object</font></b><font color="#990000">(</font>
+          n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv<font color="#990000">,</font>
+          y<font color="#990000">,</font> z<font color="#990000">,</font> sigma_u<font color="#990000">,</font> sigma_y<font color="#990000">,</font> sigma_z
+
+     <font color="#990000">);</font>
+     mixed_object<font color="#990000">.</font><b><font color="#000000">initialize</font></b><font color="#990000">(</font>fixed_in<font color="#990000">,</font> random_in<font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// compute the derivative of the objective at the starting point</font></i>
+     <font color="#009900">double</font> theta_in   <font color="#990000">=</font> fixed_in<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
+     <font color="#009900">double</font> u_in       <font color="#990000">=</font> random_in<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
+     <font color="#009900">double</font> L_theta_in <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">L_theta</font></b><font color="#990000">(</font>theta_in<font color="#990000">,</font> u_in<font color="#990000">);</font>
+     ok <font color="#990000">&amp;=</font> <b><font color="#000000">fabs</font></b><font color="#990000">(</font> L_theta_in <font color="#990000">)</font> <font color="#990000">&gt;=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// optimize the fixed effects using quasi-Newton method</font></i>
+     std<font color="#990000">::</font><font color="#008080">string</font> fixed_ipopt_options <font color="#990000">=</font>
+          <font color="#FF0000">"Integer print_level               0</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
+          <font color="#FF0000">"String  sb                        yes</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
+          <font color="#FF0000">"String  derivative_test           adaptive</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
+          <font color="#FF0000">"Numeric tol                       1e-8</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
+          <font color="#FF0000">"Integer max_iter                  15</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
+     <font color="#990000">;</font>
+     std<font color="#990000">::</font><font color="#008080">string</font> random_ipopt_options <font color="#990000">=</font>
+          <font color="#FF0000">"Integer print_level               0</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
+          <font color="#FF0000">"String  sb                        yes</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
+          <font color="#FF0000">"String  derivative_test           second-order</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
+          <font color="#FF0000">"Numeric tol                       1e-8</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
+     <font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <font color="#008080">d_vector</font> <b><font color="#000000">random_lower</font></b><font color="#990000">(</font>n_random<font color="#990000">),</font> <b><font color="#000000">random_upper</font></b><font color="#990000">(</font>n_random<font color="#990000">);</font>
+     <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> n_random<font color="#990000">;</font> i<font color="#990000">++)</font>
+     <font color="#FF0000">{</font>    random_lower<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> <font color="#990000">-</font>inf<font color="#990000">;</font>
+          random_upper<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> <font color="#990000">+</font>inf<font color="#990000">;</font>
+     <font color="#FF0000">}</font>
+     <font color="#008080">d_vector</font> fixed_scale <font color="#990000">=</font> fixed_in<font color="#990000">;</font>
+     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">fixed_solution</font> solution <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">optimize_fixed</font></b><font color="#990000">(</font>
+          fixed_ipopt_options<font color="#990000">,</font>
+          random_ipopt_options<font color="#990000">,</font>
+          fixed_lower<font color="#990000">,</font>
+          fixed_upper<font color="#990000">,</font>
+          fix_constraint_lower<font color="#990000">,</font>
+          fix_constraint_upper<font color="#990000">,</font>
+          fixed_scale<font color="#990000">,</font>
+          fixed_in<font color="#990000">,</font>
+          random_lower<font color="#990000">,</font>
+          random_upper<font color="#990000">,</font>
+          random_in
+     <font color="#990000">);</font>
+     <font color="#008080">d_vector</font> fixed_out <font color="#990000">=</font> solution<font color="#990000">.</font>fixed_opt<font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <font color="#008080">d_vector</font> random_out <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">optimize_random</font></b><font color="#990000">(</font>
+          random_ipopt_options<font color="#990000">,</font> fixed_out<font color="#990000">,</font> random_lower<font color="#990000">,</font> random_upper<font color="#990000">,</font> random_in
+     <font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// compute the derivative of the objective at the final point</font></i>
+     <font color="#009900">double</font> theta_out   <font color="#990000">=</font> fixed_out<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
+     <font color="#009900">double</font> u_out       <font color="#990000">=</font> random_out<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
+     <font color="#009900">double</font> L_theta_out <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">L_theta</font></b><font color="#990000">(</font>theta_out<font color="#990000">,</font> u_out<font color="#990000">);</font>
+     ok <font color="#990000">&amp;=</font> <b><font color="#000000">fabs</font></b><font color="#990000">(</font> L_theta_out <font color="#990000">)</font> <font color="#990000">&lt;=</font> <font color="#993399">2e-8</font><font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// Now demonstrate that the solution is still close to the expected values</font></i>
+     ok <font color="#990000">&amp;=</font> <b><font color="#000000">fabs</font></b><font color="#990000">(</font> theta_out <font color="#990000">/</font> z <font color="#990000">-</font> <font color="#993399">1.0</font> <font color="#990000">)</font> <font color="#990000">&lt;=</font> <font color="#993399">1e-2</font><font color="#990000">;</font>
+     ok <font color="#990000">&amp;=</font> <b><font color="#000000">fabs</font></b><font color="#990000">(</font> u_out <font color="#990000">)</font> <font color="#990000">&lt;=</font> <font color="#993399">1e-2</font><font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <b><font color="#0000FF">return</font></b> ok<font color="#990000">;</font>
+<font color="#FF0000">}</font></tt></pre>
+</font></code>
+<hr>Input File: example/user/data_mismatch.cpp
+
+</body>
+</html>

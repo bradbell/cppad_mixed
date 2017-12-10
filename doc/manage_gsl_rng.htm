@@ -1,0 +1,234 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Set, Get, And Free A GSL Random Number Generator</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Set, Get, And Free A GSL Random Number Generator">
+<meta name="keywords" id="keywords" content=" set get free gsl random number generator syntax public purpose new_gsl_rng s_in s_out get_gsl_rng rng free_gsl_rng example ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_manage_gsl_rng_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="ldlt_eigen.cpp.htm" target="_top">Prev</a>
+</td><td><a href="manage_gsl_rng.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>manage_gsl_rng</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>manage_gsl_rng-&gt;</option>
+<option>manage_gsl_rng.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Public</option>
+<option>Purpose</option>
+<option>new_gsl_rng</option>
+<option>---..s_in</option>
+<option>---..s_out</option>
+<option>get_gsl_rng</option>
+<option>---..rng</option>
+<option>free_gsl_rng</option>
+<option>Example</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Set, Get, And Free A GSL Random Number Generator</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>s_out</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;CppAD::mixed::new_gsl_rng(</span></font><i><font color="black"><span style='white-space: nowrap'>s_in</span></font></i><font color="blue"><span style='white-space: nowrap'>)<br>
+</span></font></code>
+
+<code><i><font color="black"><span style='white-space: nowrap'>rng</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;CppAD::mixed::get_gsl_rng()<br>
+</span></font></code>
+
+<code><font color="blue"><span style='white-space: nowrap'>CppAD::mixed::free_gsl_rng()<br>
+</span></font></code>
+<br>
+<b><big><a name="Public" id="Public">Public</a></big></b>
+<br>
+This function is part of the
+<a href="namespace.htm#Public" target="_top"><span style='white-space: nowrap'>CppAD::mixed</span></a>
+ user API.
+
+<br>
+<br>
+<b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
+<br>
+Create and use a GSL random number generator.
+
+<br>
+<br>
+<b><big><a name="new_gsl_rng" id="new_gsl_rng">new_gsl_rng</a></big></b>
+<br>
+This routine creates a new GSL random number generator.
+If a previous random number generator was created, it must
+be freed using <code><font color="blue">free_gsl_rng</font></code> before <code><font color="blue">new_gsl_rng</font></code>
+can be called again.
+
+<br>
+<br>
+<b><a name="new_gsl_rng.s_in" id="new_gsl_rng.s_in">s_in</a></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>s_in</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>s_in</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;!=&nbsp;0</span></font></code>
+,
+it is used as a seed for the random number generator.
+Otherwise the actual seed is the number of seconds returned by
+<code><font color="blue">std::time</font></code> plus the number of previous calls to <code><font color="blue">set_gsl_rng</font></code>.
+(Adding the number of calls prevents the same
+seed from being used by calls that are close together in time.)
+
+<br>
+<br>
+<b><a name="new_gsl_rng.s_out" id="new_gsl_rng.s_out">s_out</a></b>
+<br>
+This return value prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>s_out</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+and is the actual seed that was used to initialize the random number generator.
+
+<br>
+<br>
+<b><big><a name="get_gsl_rng" id="get_gsl_rng">get_gsl_rng</a></big></b>
+<br>
+If we are between a call to
+<code><font color="blue">new_gsl_rng</font></code> and <code><font color="blue">free_gsl_rng</font></code>,
+this routine retrieves a pointer to the current
+GSL random number generator.
+Otherwise it returns the null pointer.
+
+<br>
+<br>
+<b><a name="get_gsl_rng.rng" id="get_gsl_rng.rng">rng</a></b>
+<br>
+The return value 
+<code><i><font color="black"><span style='white-space: nowrap'>rng</span></font></i></code>
+ has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gsl_rng*&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>rng</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+<br>
+<b><big><a name="free_gsl_rng" id="free_gsl_rng">free_gsl_rng</a></big></b>
+<br>
+Once you are done with a generator created by <code><font color="blue">new_gsl_rng</font></code>,
+you should free the corresponding memory using
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gsl_rng_free()<br>
+</span></font></code>
+.
+
+
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="manage_gsl_rng.cpp.htm" target="_top"><span style='white-space: nowrap'>manage_gsl_rng.cpp</span></a>
+ contains an example and test of
+<code><font color="blue">manage_gsl_rng</font></code>.  It returns <code><font color="blue">true</font></code>, if the test passes,
+and <code><font color="blue">false</font></code> otherwise.
+
+
+<hr>Input File: src/manage_gsl_rng.cpp
+
+</body>
+</html>

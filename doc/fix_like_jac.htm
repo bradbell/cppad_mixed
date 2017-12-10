@@ -1,0 +1,252 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Jacobian of Fixed Likelihood</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Jacobian of Fixed Likelihood">
+<meta name="keywords" id="keywords" content=" jacobian fixed likelihood syntax private mixed_object fix_likelihood fixed_vec row_out col_out val_out example ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_fix_like_jac_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="fix_like_hes.cpp.htm" target="_top">Prev</a>
+</td><td><a href="fix_like_jac.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>base_class</option>
+<option>private</option>
+<option>fix_like_jac</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>base_class-&gt;</option>
+<option>public</option>
+<option>private</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>private-&gt;</option>
+<option>pack</option>
+<option>unpack</option>
+<option>init_ran_hes</option>
+<option>init_ran_hes_check</option>
+<option>init_ran_objcon</option>
+<option>init_ldlt_ran_hes</option>
+<option>init_fix_con</option>
+<option>init_fix_like</option>
+<option>init_hes_cross</option>
+<option>init_laplace_obj_hes</option>
+<option>init_ran_like</option>
+<option>fix_con_eval</option>
+<option>fix_con_hes</option>
+<option>fix_con_jac</option>
+<option>fix_like_eval</option>
+<option>fix_like_hes</option>
+<option>fix_like_jac</option>
+<option>logdet_jac</option>
+<option>ran_like_jac</option>
+<option>ran_like_jac_check</option>
+<option>ran_con_eval</option>
+<option>ran_con_jac</option>
+<option>ran_obj_eval</option>
+<option>ran_obj_jac</option>
+<option>laplace_obj_hes</option>
+<option>update_factor</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>fix_like_jac-&gt;</option>
+<option>fix_like_jac.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Private</option>
+<option>mixed_object</option>
+<option>fix_likelihood</option>
+<option>fixed_vec</option>
+<option>row_out</option>
+<option>col_out</option>
+<option>val_out</option>
+<option>Example</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Jacobian of Fixed Likelihood</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.fix_like_jac(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>row_out</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>col_out</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>val_out</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="Private" id="Private">Private</a></big></b>
+<br>
+This <code><font color="blue">cppad_mixed</font></code> member function is <a href="private.htm" target="_top"><span style='white-space: nowrap'>private</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="mixed_object" id="mixed_object">mixed_object</a></big></b>
+<br>
+We use <a href="derived_ctor.htm#mixed_object" target="_top"><span style='white-space: nowrap'>mixed_object</span></a>
+
+to denote an object of a class that is
+derived from the <code><font color="blue">cppad_mixed</font></code> base class.
+
+<br>
+<br>
+<b><big><a name="fix_likelihood" id="fix_likelihood">fix_likelihood</a></big></b>
+<br>
+In the special case where <a href="fix_likelihood.htm" target="_top"><span style='white-space: nowrap'>fix_likelihood</span></a>
+ returns the empty vector,
+vectors 
+<code><i><font color="black"><span style='white-space: nowrap'>row_out</span></font></i></code>
+, 
+<code><i><font color="black"><span style='white-space: nowrap'>col_out</span></font></i></code>
+, and 
+<code><i><font color="black"><span style='white-space: nowrap'>val_out</span></font></i></code>
+ are empty.
+
+<br>
+<br>
+<b><big><a name="fixed_vec" id="fixed_vec">fixed_vec</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It specifies the value of the
+<a href="cppad_mixed.htm#Notation.Fixed Effects, theta" target="_top"><span style='white-space: nowrap'>fixed&nbsp;effects</span></a>
+
+vector <small>@(@
+\theta
+@)@</small> at which <small>@(@
+g_\theta ( \theta )
+@)@</small> is evaluated.
+
+<br>
+<br>
+<b><big><a name="row_out" id="row_out">row_out</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;size_t&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>row_out</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+If the input size of this array is non-zero,
+the entire vector must be the same
+as for a previous call to <code><font color="blue">fix_like_jac</font></code>.
+If it's input size is zero,
+upon return it contains the row indices for the Jacobian elements
+that are possibly non-zero.
+
+<br>
+<br>
+<b><big><a name="col_out" id="col_out">col_out</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;size_t&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>col_out</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+If the input size of this array is non-zero,
+the entire vector must be the same as for
+a previous call to <code><font color="blue">fix_like_jac</font></code>.
+If it's input size is zero,
+upon return it contains the column indices for the Jacobian elements
+that are possibly non-zero (and will have the same size as 
+<code><i><font color="black"><span style='white-space: nowrap'>row_out</span></font></i></code>
+).
+
+<br>
+<br>
+<b><big><a name="val_out" id="val_out">val_out</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>val_out</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+If the input size of this array is non-zero, it must have the same size
+as for a previous call to <code><font color="blue">fix_like_jac</font></code>.
+Upon return, it contains the value of the Jacobian elements
+that are possibly non-zero (and will have the same size as 
+<code><i><font color="black"><span style='white-space: nowrap'>row_out</span></font></i></code>
+).
+
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="fix_like_jac.cpp.htm" target="_top"><span style='white-space: nowrap'>fix_like_jac.cpp</span></a>
+ contains an example
+and test of this procedure.
+It returns true, if the test passes, and false otherwise.
+
+
+<hr>Input File: src/fix_like_jac.cpp
+
+</body>
+</html>

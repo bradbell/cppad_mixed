@@ -1,0 +1,344 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>cppad_mixed: Public Declarations</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="cppad_mixed: Public Declarations">
+<meta name="keywords" id="keywords" content=" cppad_mixed: public declarations cppad mixed types user defined functions ran_likelihood ran_likelihood_jac ran_likelihood_hes fix_likelihood fix_constraint fatal_error warning constructor destructor initialize optimize_random optimize_fixed information_mat sample_fixed sample_random ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_public_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="base_class.htm" target="_top">Prev</a>
+</td><td><a href="derived_ctor.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>base_class</option>
+<option>public</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>base_class-&gt;</option>
+<option>public</option>
+<option>private</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>public-&gt;</option>
+<option>derived_ctor</option>
+<option>ran_likelihood</option>
+<option>fix_likelihood</option>
+<option>fix_constraint</option>
+<option>initialize</option>
+<option>optimize_random</option>
+<option>optimize_fixed</option>
+<option>information_mat</option>
+<option>sample_fixed</option>
+<option>sample_random</option>
+<option>ran_likelihood_jac</option>
+<option>ran_likelihood_hes</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Cppad Mixed Types</option>
+<option>User Defined Functions</option>
+<option>---..ran_likelihood</option>
+<option>---..ran_likelihood_jac</option>
+<option>---..ran_likelihood_hes</option>
+<option>---..fix_likelihood</option>
+<option>---..fix_constraint</option>
+<option>---..fatal_error</option>
+<option>---..warning</option>
+<option>constructor</option>
+<option>destructor</option>
+<option>initialize</option>
+<option>optimize_random</option>
+<option>optimize_fixed</option>
+<option>information_mat</option>
+<option>sample_fixed</option>
+<option>sample_random</option>
+<option>Contents</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>cppad_mixed: Public Declarations</big></big></b></center>
+These <code><font color="blue">cppad_mixed</font></code> class declarations are <code><font color="blue">public</font></code>.
+They are part of the user API and can be used by a derived class object
+<a href="derived_ctor.htm#mixed_object" target="_top"><span style='white-space: nowrap'>mixed_object</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="Cppad Mixed Types" id="Cppad Mixed Types">Cppad Mixed Types</a></big></b>
+<br>
+The following Cppad Mixed types are extended into the
+<code><font color="blue">cppad_mixed</font></code> class:
+<pre><tt>     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">a1_double</font>      a1_double<font color="#990000">;</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">a2_double</font>      a2_double<font color="#990000">;</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">s_vector</font>       s_vector<font color="#990000">;</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">d_vector</font>       d_vector<font color="#990000">;</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">a1_vector</font>      a1_vector<font color="#990000">;</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">a2_vector</font>      a2_vector<font color="#990000">;</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">sparse_rc</font>      sparse_rc<font color="#990000">;</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">sparse_rcv</font>     sparse_rcv<font color="#990000">;</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">a1_sparse_rcv</font>  a1_sparse_rcv<font color="#990000">;</font></tt></pre>
+<br>
+<b><big><a name="User Defined Functions" id="User Defined Functions">User Defined Functions</a></big></b>
+<br>
+The following are <code><font color="blue">cppad_mixed</font></code> pure virtual functions.
+Each one has a default definition that may be replaced by
+the user's derived class:
+
+<br>
+<br>
+<b><a name="User Defined Functions.ran_likelihood" id="User Defined Functions.ran_likelihood">ran_likelihood</a></b>
+<br>
+This function is necessary if there are random effects in the model.
+<pre><tt>     <b><font color="#0000FF">virtual</font></b> <font color="#008080">a2_vector</font> <b><font color="#000000">ran_likelihood</font></b><font color="#990000">(</font>
+          <b><font color="#0000FF">const</font></b> a2_vector<font color="#990000">&amp;</font> fixed_vec  <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> a2_vector<font color="#990000">&amp;</font> random_vec <font color="#990000">)</font>
+     <font color="#FF0000">{</font>    <b><font color="#0000FF">return</font></b> <b><font color="#000000">a2_vector</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">);</font> <font color="#FF0000">}</font></tt></pre>
+See <a href="ran_likelihood.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood</span></a>
+.
+
+<br>
+<br>
+<b><a name="User Defined Functions.ran_likelihood_jac" id="User Defined Functions.ran_likelihood_jac">ran_likelihood_jac</a></b>
+<br>
+This function is only used to increase speed and reduce memory use.
+<pre><tt>     <b><font color="#0000FF">virtual</font></b> <font color="#008080">a1_vector</font> <b><font color="#000000">ran_likelihood_jac</font></b><font color="#990000">(</font>
+          <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>           fixed_vec  <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>           random_vec <font color="#990000">)</font>
+     <font color="#FF0000">{</font>    <b><font color="#0000FF">return</font></b> <b><font color="#000000">a1_vector</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">);</font> <font color="#FF0000">}</font></tt></pre>
+See <a href="ran_likelihood_jac.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_jac</span></a>
+.
+
+<br>
+<br>
+<b><a name="User Defined Functions.ran_likelihood_hes" id="User Defined Functions.ran_likelihood_hes">ran_likelihood_hes</a></b>
+<br>
+This function is only used to increase speed and reduce memory use.
+<pre><tt>     <b><font color="#0000FF">virtual</font></b> <font color="#008080">a1_vector</font> <b><font color="#000000">ran_likelihood_hes</font></b><font color="#990000">(</font>
+          <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>             fixed_vec  <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>             random_vec <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font>size_t<font color="#990000">&gt;&amp;</font> row        <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font>size_t<font color="#990000">&gt;&amp;</font> col        <font color="#990000">)</font>
+     <font color="#FF0000">{</font>    <b><font color="#0000FF">return</font></b> <b><font color="#000000">a1_vector</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">);</font> <font color="#FF0000">}</font></tt></pre>
+See <a href="ran_likelihood_hes.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_hes</span></a>
+.
+
+<br>
+<br>
+<b><a name="User Defined Functions.fix_likelihood" id="User Defined Functions.fix_likelihood">fix_likelihood</a></b>
+<br>
+This function should be used if there is a prior on the fixed effects,
+or there is data that does not depend on the random effects.
+<pre style='display:inline'><tt>
+     <b><font color="#0000FF">virtual</font></b> <font color="#008080">a1_vector</font> <b><font color="#000000">fix_likelihood</font></b><font color="#990000">(</font>
+          <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font> fixed_vec <font color="#990000">)</font>
+     <font color="#FF0000">{</font>    <b><font color="#0000FF">return</font></b> <b><font color="#000000">a1_vector</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">);</font> <font color="#FF0000">}</font>
+</tt></pre>
+See <a href="fix_likelihood.htm" target="_top"><span style='white-space: nowrap'>fix_likelihood</span></a>
+.
+
+<br>
+<br>
+<b><a name="User Defined Functions.fix_constraint" id="User Defined Functions.fix_constraint">fix_constraint</a></b>
+<br>
+This function is used to define constraints
+that only depend on the fixed effects.
+<pre style='display:inline'><tt>
+     <b><font color="#0000FF">virtual</font></b> <font color="#008080">a1_vector</font> <b><font color="#000000">fix_constraint</font></b><font color="#990000">(</font>
+          <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font> fixed_vec <font color="#990000">)</font>
+     <font color="#FF0000">{</font>    <b><font color="#0000FF">return</font></b> <b><font color="#000000">a1_vector</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">);</font> <font color="#FF0000">}</font>
+</tt></pre>
+See <a href="fix_constraint.htm" target="_top"><span style='white-space: nowrap'>fix_constraint</span></a>
+.
+
+<br>
+<br>
+<b><a name="User Defined Functions.fatal_error" id="User Defined Functions.fatal_error">fatal_error</a></b>
+<br>
+This routine displays an error message and then exits the program.
+Its default definition below can be replaced by a user definition.
+Note that if <code><font color="blue">NDEBUG</font></code> is not defined, this generates an assert,
+otherwise it exits.
+<pre><tt>     <b><font color="#0000FF">virtual</font></b> <font color="#009900">void</font> <b><font color="#000000">fatal_error</font></b><font color="#990000">(</font><b><font color="#0000FF">const</font></b> std<font color="#990000">::</font>string<font color="#990000">&amp;</font> error_message<font color="#990000">)</font>
+     <font color="#FF0000">{</font>    std<font color="#990000">::</font>cerr <font color="#990000">&lt;&lt;</font> <font color="#FF0000">"cppad_mixed error: "</font> <font color="#990000">&lt;&lt;</font> error_message <font color="#990000">&lt;&lt;</font> std<font color="#990000">::</font>endl<font color="#990000">;</font>
+          <b><font color="#000000">assert</font></b><font color="#990000">(</font><b><font color="#0000FF">false</font></b><font color="#990000">);</font>
+          <b><font color="#000000">exit</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">);</font>
+     <font color="#FF0000">}</font>
+</tt></pre>
+<b><a name="User Defined Functions.warning" id="User Defined Functions.warning">warning</a></b>
+<br>
+This routine displays a warning message and then returns.
+Its default definition below can be replaced by a user definition.
+<pre style='display:inline'><tt>
+     <b><font color="#0000FF">virtual</font></b> <font color="#009900">void</font> <b><font color="#000000">warning</font></b><font color="#990000">(</font><b><font color="#0000FF">const</font></b> std<font color="#990000">::</font>string<font color="#990000">&amp;</font> warning_message<font color="#990000">)</font>
+     <font color="#FF0000">{</font>    std<font color="#990000">::</font>cerr <font color="#990000">&lt;&lt;</font> <font color="#FF0000">"cppad_mixed warning: "</font> <font color="#990000">&lt;&lt;</font> warning_message <font color="#990000">&lt;&lt;</font> std<font color="#990000">::</font>endl<font color="#990000">;</font>
+     <font color="#FF0000">}</font>
+</tt></pre>
+<br>
+<b><big><a name="constructor" id="constructor">constructor</a></big></b>
+
+<br>
+<a href="derived_ctor.htm" target="_top"><span style='white-space: nowrap'>derived_ctor</span></a>
+, User Defined Class Derived From cppad_mixed.
+<pre><tt>     <b><font color="#000000">cppad_mixed</font></b><font color="#990000">(</font>
+          <font color="#008080">size_t</font>               n_fixed       <font color="#990000">,</font>
+          <font color="#008080">size_t</font>               n_random      <font color="#990000">,</font>
+          <font color="#009900">bool</font>                 quasi_fixed   <font color="#990000">,</font>
+          <font color="#009900">bool</font>                 bool_sparsity <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> sparse_rcv<font color="#990000">&amp;</font>    A_rcv
+     <font color="#990000">);</font></tt></pre>
+<br>
+<b><big><a name="destructor" id="destructor">destructor</a></big></b>
+
+<pre style='display:inline'><tt>
+     <font color="#990000">~</font><b><font color="#000000">cppad_mixed</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">);</font>
+</tt></pre>
+<br>
+<b><big><a name="initialize" id="initialize">initialize</a></big></b>
+
+<br>
+<a href="initialize.htm" target="_top"><span style='white-space: nowrap'>initialize</span></a>
+, Initialization After Constructor
+<pre><tt>     std<font color="#990000">::</font><font color="#008080">map&lt;std::string, size_t&gt;</font> <b><font color="#000000">initialize</font></b><font color="#990000">(</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>  fixed_vec   <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>  random_vec
+     <font color="#990000">);</font></tt></pre>
+<br>
+<b><big><a name="optimize_random" id="optimize_random">optimize_random</a></big></b>
+
+<br>
+<a href="optimize_random.htm" target="_top"><span style='white-space: nowrap'>optimize_random</span></a>
+, Optimize Random Effects.
+<pre><tt>     <font color="#008080">d_vector</font> <b><font color="#000000">optimize_random</font></b><font color="#990000">(</font>
+          <b><font color="#0000FF">const</font></b> std<font color="#990000">::</font>string<font color="#990000">&amp;</font> options      <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>    fixed_vec    <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>    random_lower <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>    random_upper <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>    random_in
+     <font color="#990000">);</font></tt></pre>
+<br>
+<b><big><a name="optimize_fixed" id="optimize_fixed">optimize_fixed</a></big></b>
+
+<br>
+<a href="optimize_fixed.htm" target="_top"><span style='white-space: nowrap'>optimize_fixed</span></a>
+, Optimize Fixed Effects.
+<pre><tt>     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">fixed_solution</font> <b><font color="#000000">optimize_fixed</font></b><font color="#990000">(</font>
+          <b><font color="#0000FF">const</font></b> std<font color="#990000">::</font>string<font color="#990000">&amp;</font> fixed_ipopt_options   <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> std<font color="#990000">::</font>string<font color="#990000">&amp;</font> random_ipopt_options  <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>    fixed_lower           <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>    fixed_upper           <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>    fix_constraint_lower  <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>    fix_constraint_upper  <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>    fixed_scale           <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>    fixed_in              <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>    random_lower          <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>    random_upper          <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>    random_in
+     <font color="#990000">);</font></tt></pre>
+<br>
+<b><big><a name="information_mat" id="information_mat">information_mat</a></big></b>
+
+<br>
+<a href="information_mat.htm" target="_top"><span style='white-space: nowrap'>information_mat</span></a>
+, Compute the Observed Information For Fixed Effects.
+<pre><tt>     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">sparse_rcv</font> <b><font color="#000000">information_mat</font></b><font color="#990000">(</font>
+          <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>fixed_solution<font color="#990000">&amp;</font>  solution             <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>                      random_opt
+     <font color="#990000">);</font></tt></pre>
+<br>
+<b><big><a name="sample_fixed" id="sample_fixed">sample_fixed</a></big></b>
+
+<br>
+<a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
+, Sample Posterior for Fixed Effects.
+<pre><tt>     <font color="#009900">void</font> <b><font color="#000000">sample_fixed</font></b><font color="#990000">(</font>
+          d_vector<font color="#990000">&amp;</font>                            sample               <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> sparse_rcv<font color="#990000">&amp;</font>                    information_rcv      <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>fixed_solution<font color="#990000">&amp;</font>  solution             <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>                      fixed_lower          <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>                      fixed_upper          <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>                      random_opt
+     <font color="#990000">);</font></tt></pre>
+<br>
+<b><big><a name="sample_random" id="sample_random">sample_random</a></big></b>
+
+<br>
+<a href="sample_random.htm" target="_top"><span style='white-space: nowrap'>sample_random</span></a>
+, Simulation the Posterior Distribution for Random Effects.
+<pre><tt>     <font color="#009900">void</font> <b><font color="#000000">sample_random</font></b><font color="#990000">(</font>
+          d_vector<font color="#990000">&amp;</font>            sample               <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> std<font color="#990000">::</font>string<font color="#990000">&amp;</font>   random_ipopt_options <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>      fixed_vec            <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>      random_lower         <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>      random_upper         <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>      random_in
+     <font color="#990000">);</font></tt></pre>
+<br>
+<b><big><a name="Contents" id="Contents">Contents</a></big></b>
+<br>
+<table>
+<tr><td><a href="derived_ctor.htm" target="_top">derived_ctor</a></td><td>User&nbsp;Defined&nbsp;Class&nbsp;Derived&nbsp;From&nbsp;cppad_mixed</td></tr><tr><td><a href="ran_likelihood.htm" target="_top">ran_likelihood</a></td><td>User&nbsp;Defined&nbsp;Random&nbsp;Likelihood&nbsp;Function</td></tr><tr><td><a href="fix_likelihood.htm" target="_top">fix_likelihood</a></td><td>User&nbsp;Defined&nbsp;Fixed&nbsp;Likelihood&nbsp;Function</td></tr><tr><td><a href="fix_constraint.htm" target="_top">fix_constraint</a></td><td>User&nbsp;Defined&nbsp;Fixed&nbsp;Effects&nbsp;Constraint&nbsp;Function</td></tr><tr><td><a href="initialize.htm" target="_top">initialize</a></td><td>Initialization&nbsp;After&nbsp;Constructor</td></tr><tr><td><a href="optimize_random.htm" target="_top">optimize_random</a></td><td>Optimize&nbsp;Random&nbsp;Effects</td></tr><tr><td><a href="optimize_fixed.htm" target="_top">optimize_fixed</a></td><td>Optimize&nbsp;Fixed&nbsp;Effects</td></tr><tr><td><a href="information_mat.htm" target="_top">information_mat</a></td><td>Compute&nbsp;the&nbsp;Observed&nbsp;Information&nbsp;For&nbsp;Fixed&nbsp;Effects</td></tr><tr><td><a href="sample_fixed.htm" target="_top">sample_fixed</a></td><td>Sample&nbsp;Posterior&nbsp;for&nbsp;Fixed&nbsp;Effects</td></tr><tr><td><a href="sample_random.htm" target="_top">sample_random</a></td><td>Simulation&nbsp;the&nbsp;Posterior&nbsp;Distribution&nbsp;for&nbsp;Random&nbsp;Effects</td></tr><tr><td><a href="ran_likelihood_jac.htm" target="_top">ran_likelihood_jac</a></td><td>User&nbsp;Define&nbsp;Jacobian&nbsp;With&nbsp;Respect&nbsp;to&nbsp;Random&nbsp;Effects</td></tr><tr><td><a href="ran_likelihood_hes.htm" target="_top">ran_likelihood_hes</a></td><td>User&nbsp;Define&nbsp;Hessian&nbsp;With&nbsp;Respect&nbsp;to&nbsp;Random&nbsp;Effects</td></tr></table>
+<hr>Input File: include/cppad/mixed/cppad_mixed.hpp
+
+</body>
+</html>

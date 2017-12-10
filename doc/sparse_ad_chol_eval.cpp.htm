@@ -1,0 +1,286 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Sparse AD Cholesky Factorization: Example and Test</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Sparse AD Cholesky Factorization: Example and Test">
+<meta name="keywords" id="keywords" content=" sparse ad cholesky factorization: example test problem source ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_sparse_ad_chol_eval.cpp_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="set_hes_sparsity.htm" target="_top">Prev</a>
+</td><td><a href="sparse_ad_chol_perm.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_ad_chol_eval.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>sparse_ad_cholesky-&gt;</option>
+<option>sparse_ad_cholesky_initialize</option>
+<option>sparse_ad_cholesky_p</option>
+<option>sparse_ad_cholesky_eval</option>
+<option>set_jac_sparsity</option>
+<option>set_hes_sparsity</option>
+<option>sparse_ad_chol_eval.cpp</option>
+<option>sparse_ad_chol_perm.cpp</option>
+<option>sparse_ad_chol_eq.cpp</option>
+<option>sparse_ad_chol_var.cpp</option>
+<option>sparse_ad_chol_sp.cpp</option>
+</select>
+</td>
+<td>sparse_ad_chol_eval.cpp</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Problem</option>
+<option>Source</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Sparse AD Cholesky Factorization: Example and Test</big></big></b></center>
+<br>
+<b><big><a name="Problem" id="Problem">Problem</a></big></b>
+<br>
+We are given the function <small>@(@
+A : \B{R}^3 \rightarrow \B{R}^{3 \times 3}
+@)@</small>
+defined by
+<small>@[@
+
+	A(x) = \left( \begin{array}{ccc}
+		x_0 & 0    & x_1  \\
+		0   & x_1  & 0   \\
+		x_1 & 0    & x_2
+	\end{array} \right)
+
+@]@</small>
+The leading principal minors of this matrix are
+<small>@(@
+x_0
+@)@</small>,
+<small>@(@
+x_0 x_1
+@)@</small>,
+<small>@(@
+x_0 x_1 x_2 - x_1 x_1 x_1
+@)@</small>,
+If all these minors are positive, the matrix <small>@(@
+A(x)
+@)@</small> is
+positive definite.
+
+<br>
+<br>
+<b><big><a name="Source" id="Source">Source</a></big></b>
+
+<pre><tt>    
+    <font color="#009900">bool</font> <b><font color="#000000">sparse_ad_chol_eval_xam</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">)</font>
+    <font color="#FF0000">{</font>     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>AD<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>d_vector<font color="#990000">;</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">vector&lt; AD&lt;double&gt; &gt;</font>   ad_vector<font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <font color="#009900">bool</font> ok     <font color="#990000">=</font> <b><font color="#0000FF">true</font></b><font color="#990000">;</font>
+     <font color="#009900">double</font> eps <font color="#990000">=</font> <font color="#993399">100</font><font color="#990000">.</font> <font color="#990000">*</font> std<font color="#990000">::</font>numeric_limits<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;::</font><b><font color="#000000">epsilon</font></b><font color="#990000">();</font>
+     <i><font color="#9A1900">// --------------------------------------------------------------------</font></i>
+     <font color="#008080">size_t</font> nx <font color="#990000">=</font> <font color="#993399">3</font><font color="#990000">;</font>
+     <font color="#008080">size_t</font> ny <font color="#990000">=</font> <font color="#993399">1</font><font color="#990000">;</font>
+     <font color="#008080">d_vector</font> <b><font color="#000000">x</font></b><font color="#990000">(</font>nx<font color="#990000">),</font> <b><font color="#000000">y</font></b><font color="#990000">(</font>ny<font color="#990000">);</font>
+     x<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
+     x<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">0.5</font><font color="#990000">;</font>
+     x<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">2.0</font><font color="#990000">;</font>
+     <i><font color="#9A1900">// --------------------------------------------------------------------</font></i>
+     <i><font color="#9A1900">// create sparse_ad_cholesky object</font></i>
+     <font color="#008080">size_t</font> nc <font color="#990000">=</font> <font color="#993399">3</font><font color="#990000">;</font>
+     Eigen<font color="#990000">::</font><font color="#008080">SparseMatrix&lt; AD&lt;double&gt;, Eigen::ColMajor&gt;</font> <b><font color="#000000">ad_Blow</font></b><font color="#990000">(</font>nc<font color="#990000">,</font> nc<font color="#990000">);</font>
+     ad_Blow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">,</font><font color="#993399">0</font><font color="#990000">)</font> <font color="#990000">=</font> x<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
+     ad_Blow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">2</font><font color="#990000">,</font><font color="#993399">0</font><font color="#990000">)</font> <font color="#990000">=</font> x<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">];</font>
+     ad_Blow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">,</font><font color="#993399">1</font><font color="#990000">)</font> <font color="#990000">=</font> x<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">];</font>
+     ad_Blow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">2</font><font color="#990000">,</font><font color="#993399">2</font><font color="#990000">)</font> <font color="#990000">=</font> x<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">];</font>
+     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">sparse_ad_cholesky</font> cholesky<font color="#990000">;</font>
+     cholesky<font color="#990000">.</font><b><font color="#000000">initialize</font></b><font color="#990000">(</font> ad_Blow <font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// ----------------------------------------------------------------------</font></i>
+     <i><font color="#9A1900">// Create function object corresponding to f(x)</font></i>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// Independent variables</font></i>
+     <font color="#008080">ad_vector</font> <b><font color="#000000">ax</font></b><font color="#990000">(</font>nx<font color="#990000">);</font>
+     ax<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> x<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
+     ax<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">=</font> x<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">];</font>
+     ax<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font> <font color="#990000">=</font> x<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">];</font>
+     CppAD<font color="#990000">::</font><b><font color="#000000">Independent</font></b><font color="#990000">(</font> ax <font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// Lower triangle of symmetric matrix with same sparsity pattern as B</font></i>
+     Eigen<font color="#990000">::</font><font color="#008080">SparseMatrix&lt; AD&lt;double&gt;, Eigen::ColMajor&gt;</font> <b><font color="#000000">ad_Alow</font></b><font color="#990000">(</font>nc<font color="#990000">,</font> nc<font color="#990000">);</font>
+     ad_Alow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">,</font><font color="#993399">0</font><font color="#990000">)</font> <font color="#990000">=</font> ax<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
+     ad_Alow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">2</font><font color="#990000">,</font><font color="#993399">0</font><font color="#990000">)</font> <font color="#990000">=</font> ax<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">];</font>
+     ad_Alow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">,</font><font color="#993399">1</font><font color="#990000">)</font> <font color="#990000">=</font> ax<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">];</font>
+     ad_Alow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">2</font><font color="#990000">,</font><font color="#993399">2</font><font color="#990000">)</font> <font color="#990000">=</font> ax<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">];</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// compute the Choleksy factorization of A</font></i>
+     Eigen<font color="#990000">::</font><font color="#008080">SparseMatrix&lt; AD&lt;double&gt;, Eigen::ColMajor&gt;</font> ad_L<font color="#990000">;</font>
+     cholesky<font color="#990000">.</font><b><font color="#000000">eval</font></b><font color="#990000">(</font>ad_Alow<font color="#990000">,</font> ad_L<font color="#990000">);</font>
+     ok <font color="#990000">&amp;=</font> <b><font color="#000000">size_t</font></b><font color="#990000">(</font>ad_L<font color="#990000">.</font><b><font color="#000000">rows</font></b><font color="#990000">())</font> <font color="#990000">==</font> nc<font color="#990000">;</font>
+     ok <font color="#990000">&amp;=</font> <b><font color="#000000">size_t</font></b><font color="#990000">(</font>ad_L<font color="#990000">.</font><b><font color="#000000">cols</font></b><font color="#990000">())</font> <font color="#990000">==</font> nc<font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// diagonal of L</font></i>
+     Eigen<font color="#990000">::</font><font color="#008080">Matrix&lt; AD&lt;double&gt; , Eigen::Dynamic , 1 &gt;</font> ad_D <font color="#990000">=</font> ad_L<font color="#990000">.</font><b><font color="#000000">diagonal</font></b><font color="#990000">();</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// product of diagonal elements of L</font></i>
+     <font color="#008080">AD&lt;double&gt;</font> ad_p <font color="#990000">=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
+     <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;</font> nc<font color="#990000">;</font> j<font color="#990000">++)</font>
+          ad_p <font color="#990000">*=</font> ad_D<font color="#990000">[</font>j<font color="#990000">];</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// calculate the determinant of A using the Cholesky factorization</font></i>
+     <font color="#008080">ad_vector</font> <b><font color="#000000">ay</font></b><font color="#990000">(</font>ny<font color="#990000">);</font>
+     ay<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> ad_p <font color="#990000">*</font> ad_p<font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// f(x) = det[ A(x) ]</font></i>
+     CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;double&gt;</font> <b><font color="#000000">f</font></b><font color="#990000">(</font>ax<font color="#990000">,</font> ay<font color="#990000">);</font>
+     <i><font color="#9A1900">// ----------------------------------------------------------------------</font></i>
+     <i><font color="#9A1900">// Test zero order forward</font></i>
+     y    <font color="#990000">=</font> f<font color="#990000">.</font><b><font color="#000000">Forward</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">,</font> x<font color="#990000">);</font>
+     <font color="#009900">double</font> check <font color="#990000">=</font> x<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">*</font> x<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">*</font> x<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font> <font color="#990000">-</font> x<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">*</font> x<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">*</font> x<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">];</font>
+     ok          <font color="#990000">&amp;=</font> CppAD<font color="#990000">::</font><b><font color="#000000">NearEqual</font></b><font color="#990000">(</font>y<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">],</font> check<font color="#990000">,</font> eps<font color="#990000">,</font> eps <font color="#990000">);</font>
+     <i><font color="#9A1900">// -----------------------------------------------------------------------</font></i>
+     <i><font color="#9A1900">// Test first order forward</font></i>
+     <font color="#008080">d_vector</font> <b><font color="#000000">x1</font></b><font color="#990000">(</font>nx<font color="#990000">),</font> <b><font color="#000000">y1</font></b><font color="#990000">(</font>ny<font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// partial w.r.t. x[0]</font></i>
+     x1<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
+     x1<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
+     x1<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
+     y1     <font color="#990000">=</font> f<font color="#990000">.</font><b><font color="#000000">Forward</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">,</font> x1<font color="#990000">);</font>
+     <font color="#009900">double</font> f_x0 <font color="#990000">=</font> x<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">*</font> x<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">];</font>
+     ok        <font color="#990000">&amp;=</font> CppAD<font color="#990000">::</font><b><font color="#000000">NearEqual</font></b><font color="#990000">(</font>y1<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">],</font> f_x0<font color="#990000">,</font> eps<font color="#990000">,</font> eps<font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// partial w.r.t. x[2]</font></i>
+     x1<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
+     x1<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
+     y1     <font color="#990000">=</font> f<font color="#990000">.</font><b><font color="#000000">Forward</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">,</font> x1<font color="#990000">);</font>
+     <font color="#009900">double</font> f_x2 <font color="#990000">=</font> x<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">*</font> x<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">];</font>
+     ok        <font color="#990000">&amp;=</font> CppAD<font color="#990000">::</font><b><font color="#000000">NearEqual</font></b><font color="#990000">(</font>y1<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">],</font> f_x2<font color="#990000">,</font> eps<font color="#990000">,</font> eps<font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// partial w.r.t. x[1]</font></i>
+     x1<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
+     x1<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
+     y1     <font color="#990000">=</font> f<font color="#990000">.</font><b><font color="#000000">Forward</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">,</font> x1<font color="#990000">);</font>
+     <font color="#009900">double</font> f_x1 <font color="#990000">=</font> x<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">*</font>  x<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font> <font color="#990000">-</font> <font color="#993399">3.0</font> <font color="#990000">*</font> x<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">*</font> x<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">];</font>
+     ok    <font color="#990000">&amp;=</font> CppAD<font color="#990000">::</font><b><font color="#000000">NearEqual</font></b><font color="#990000">(</font>y1<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">],</font> f_x1<font color="#990000">,</font> eps<font color="#990000">,</font> eps<font color="#990000">);</font>
+     <i><font color="#9A1900">// -----------------------------------------------------------------------</font></i>
+     <i><font color="#9A1900">// Test second order forward</font></i>
+     <font color="#008080">d_vector</font> <b><font color="#000000">x2</font></b><font color="#990000">(</font>nx<font color="#990000">),</font> <b><font color="#000000">y2</font></b><font color="#990000">(</font>ny<font color="#990000">);</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// second partial w.r.t x[1]</font></i>
+     x2<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
+     x2<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
+     x2<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
+     y2     <font color="#990000">=</font> f<font color="#990000">.</font><b><font color="#000000">Forward</font></b><font color="#990000">(</font><font color="#993399">2</font><font color="#990000">,</font> x2<font color="#990000">);</font>
+     <font color="#009900">double</font> f_x11  <font color="#990000">=</font> <font color="#990000">-</font> <font color="#993399">6.0</font> <font color="#990000">*</font> x<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">];</font>
+     ok   <font color="#990000">&amp;=</font> CppAD<font color="#990000">::</font><b><font color="#000000">NearEqual</font></b><font color="#990000">(</font>y2<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">],</font> f_x11 <font color="#990000">/</font> <font color="#993399">2.0</font><font color="#990000">,</font> eps<font color="#990000">,</font> eps<font color="#990000">);</font>
+     <i><font color="#9A1900">// -----------------------------------------------------------------------</font></i>
+     <i><font color="#9A1900">// Test first order reverse</font></i>
+     <font color="#008080">d_vector</font> <b><font color="#000000">w</font></b><font color="#990000">(</font>ny<font color="#990000">),</font> <b><font color="#000000">d1w</font></b><font color="#990000">(</font>nx<font color="#990000">);</font>
+     w<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
+     d1w  <font color="#990000">=</font> f<font color="#990000">.</font><b><font color="#000000">Reverse</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">,</font> w<font color="#990000">);</font>
+     ok  <font color="#990000">&amp;=</font> CppAD<font color="#990000">::</font><b><font color="#000000">NearEqual</font></b><font color="#990000">(</font>d1w<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">],</font> f_x0<font color="#990000">,</font> eps<font color="#990000">,</font> eps<font color="#990000">);</font>
+     ok  <font color="#990000">&amp;=</font> CppAD<font color="#990000">::</font><b><font color="#000000">NearEqual</font></b><font color="#990000">(</font>d1w<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">],</font> f_x1<font color="#990000">,</font> eps<font color="#990000">,</font> eps<font color="#990000">);</font>
+     ok  <font color="#990000">&amp;=</font> CppAD<font color="#990000">::</font><b><font color="#000000">NearEqual</font></b><font color="#990000">(</font>d1w<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">],</font> f_x2<font color="#990000">,</font> eps<font color="#990000">,</font> eps<font color="#990000">);</font>
+     <i><font color="#9A1900">// -----------------------------------------------------------------------</font></i>
+     <i><font color="#9A1900">// check for any errors during use of cholesky</font></i>
+     ok <font color="#990000">&amp;=</font> cholesky<font color="#990000">.</font><b><font color="#000000">ok</font></b><font color="#990000">();</font>
+     <i><font color="#9A1900">// -----------------------------------------------------------------------</font></i>
+     <b><font color="#0000FF">return</font></b> ok<font color="#990000">;</font>
+    <font color="#FF0000">}</font></tt></pre>
+
+<hr>Input File: example/private/sparse_ad_chol_eval.cpp
+
+</body>
+</html>

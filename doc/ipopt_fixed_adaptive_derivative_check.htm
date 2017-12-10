@@ -1,0 +1,290 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Adaptive Step Size check of eval_grad_f and eval_jac_g</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Adaptive Step Size check of eval_grad_f and eval_jac_g">
+<meta name="keywords" id="keywords" content=" adaptive step size check eval_grad_f eval_jac_g syntax trace relative_step relative_tol infinity ok error_message_ adaptive_called_ scale_f_ scale_g_ prototype ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_ipopt_fixed_adaptive_derivative_check_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="ipopt_fixed_finalize_solution.htm" target="_top">Prev</a>
+</td><td><a href="ipopt_fixed_new_random.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>ipopt_fixed</option>
+<option>ipopt_fixed_adaptive_derivative_check</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>ipopt_fixed-&gt;</option>
+<option>ipopt_fixed_ctor</option>
+<option>ipopt_fixed_get_nlp_info</option>
+<option>ipopt_fixed_get_bounds_info</option>
+<option>ipopt_fixed_get_starting_point</option>
+<option>ipopt_fixed_eval_f</option>
+<option>ipopt_fixed_eval_grad_f</option>
+<option>ipopt_fixed_eval_g</option>
+<option>ipopt_fixed_eval_jac_g</option>
+<option>ipopt_fixed_eval_h</option>
+<option>ipopt_fixed_finalize_solution</option>
+<option>ipopt_fixed_adaptive_derivative_check</option>
+<option>ipopt_fixed_new_random</option>
+<option>ipopt_xam</option>
+</select>
+</td>
+<td>ipopt_fixed_adaptive_derivative_check</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>trace</option>
+<option>relative_step</option>
+<option>relative_tol</option>
+<option>---..infinity</option>
+<option>ok</option>
+<option>error_message_</option>
+<option>adaptive_called_</option>
+<option>scale_f_</option>
+<option>scale_g_</option>
+<option>Prototype</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Adaptive Step Size check of eval_grad_f and eval_jac_g</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>ok</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;adaptive_derivative_check(</span></font><i><font color="black"><span style='white-space: nowrap'>trace</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>relative_tol</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="trace" id="trace">trace</a></big></b>
+<br>
+If true, a trace of this computation is printed on standard output.
+
+<br>
+<br>
+<b><big><a name="relative_step" id="relative_step">relative_step</a></big></b>
+<br>
+For an unspecified set of relative step sizes between
+<code><font color="blue">1e-3</font></code> and <code><font color="blue">1e-10</font></code>:
+If the upper and lower bounds are finite,
+the step is relative to the upper minus the lower bound
+(for each component of 
+<code><i><font color="black"><span style='white-space: nowrap'>x</span></font></i></code>
+).
+If the upper or lower bound is infinite,
+the step is the maximum of the relative step
+and the relative step times the absolute component of 
+<code><i><font color="black"><span style='white-space: nowrap'>x</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="relative_tol" id="relative_tol">relative_tol</a></big></b>
+<br>
+This is the relative tolerance for the difference between a finite difference
+approximation and the evaluated derivative.
+The absolute tolerance is the relative tolerance times the
+sum of the absolute value of the gradient plus
+the square root of machine epsilon times the absolute value of <small>@(@
+f(x)
+@)@</small>.
+Each component passes the tolerance test if it does so
+for one of the relative steps.
+
+<br>
+<br>
+<b><a name="relative_tol.infinity" id="relative_tol.infinity">infinity</a></b>
+<br>
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>trace</span></font></i></code>
+ is false and 
+<code><i><font color="black"><span style='white-space: nowrap'>relative_tol</span></font></i></code>
+ is equal to
+<code><font color="blue">std::numeric_limits&lt;double&gt;::infinity()</font></code>,
+the finite difference approximations for the derivatives are not calculated.
+
+<br>
+<br>
+<b><big><a name="ok" id="ok">ok</a></big></b>
+<br>
+If it is true, no function evaluation error occurred and
+all the differences between the finite difference approximation
+and the evaluated derivative are within the relative tolerance
+(for one of the relative steps).
+Otherwise,
+at least one of the differences is not within the specified tolerance.
+
+<br>
+<br>
+<b><big><a name="error_message_" id="error_message_">error_message_</a></big></b>
+<br>
+Use <code><font color="blue">clear_error_message()</font></code> to set this to the empty
+string before calling <code><font color="blue">adaptive_derivative_check</font></code>.
+(Note that it is empty after the <code><font color="blue">ipopt_fixed</font></code> constructor is called.)
+If upon return, <code><font color="blue">get_error_message()</font></code> is non-empty,
+a description of a function evaluation
+error that occurred during this routine.
+
+<br>
+<br>
+<b><big><a name="adaptive_called_" id="adaptive_called_">adaptive_called_</a></big></b>
+<br>
+This member variable has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;adaptive_called_<br>
+</span></font></code>
+It's value upon call must be <code><font color="blue">false</font></code>.
+It is set to true at the beginning of <code><font color="blue">adaptive_derivative_check</font></code>,
+before any other <code><font color="blue">ipopt_fixed</font></code> routine is called.
+
+<br>
+<br>
+<b><big><a name="scale_f_" id="scale_f_">scale_f_</a></big></b>
+<br>
+This member variable has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double&amp;&nbsp;scale_f_<br>
+</span></font></code>
+and its input value does not matter.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>ok</span></font></i></code>
+ is true, upon return 
+<code><i><font color="black"><span style='white-space: nowrap'>scale_f_</span></font></i></code>
+
+is a scale factor of <small>@(@
+f(x)
+@)@</small>; i.e., multiplier for f.
+
+<br>
+<br>
+<b><big><a name="scale_g_" id="scale_g_">scale_g_</a></big></b>
+<br>
+This member variable has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_vector&amp;&nbsp;scale_g_<br>
+</span></font></code>
+and its input size is zero.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>ok</span></font></i></code>
+ is true, upon return 
+<code><i><font color="black"><span style='white-space: nowrap'>scale_g_</span></font></i></code>
+
+has size equal to range for <small>@(@
+g(x)
+@)@</small>; i.e., 
+<code><i><font color="black"><span style='white-space: nowrap'>m</span></font></i></code>
+.
+For each <small>@(@
+i
+@)@</small>, 
+<code><i><font color="black"><span style='white-space: nowrap'>scale_g_</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
+ is scale factor for
+<small>@(@
+g_i (x)
+@)@</small>.
+
+
+<br>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre style='display:inline'><tt>
+<font color="#009900">bool</font> ipopt_fixed<font color="#990000">::</font><b><font color="#000000">adaptive_derivative_check</font></b><font color="#990000">(</font><font color="#009900">bool</font> trace<font color="#990000">,</font> <font color="#009900">double</font> relative_tol<font color="#990000">)</font>
+</tt></pre>
+
+<hr>Input File: src/ipopt_fixed.cpp
+
+</body>
+</html>

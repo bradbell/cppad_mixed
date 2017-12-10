@@ -1,0 +1,338 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Sparse Matrix Information</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Sparse Matrix Information">
+<meta name="keywords" id="keywords" content=" sparse matrix information syntax public purpose row k col val resize notation sparsity pattern empty column major order lower triangular ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_sparse_mat_info_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="sparse_jac_rcv.htm" target="_top">Prev</a>
+</td><td><a href="triple2eigen.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>sparse_mat_info</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>sparse_mat_info</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Public</option>
+<option>Purpose</option>
+<option>row</option>
+<option>---..K</option>
+<option>col</option>
+<option>val</option>
+<option>resize</option>
+<option>Notation</option>
+<option>---..Sparsity Pattern</option>
+<option>---..Sparse Matrix</option>
+<option>---..Empty Matrix</option>
+<option>---..Column Major Order</option>
+<option>---..Row Major Order</option>
+<option>---..Lower Triangular</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Sparse Matrix Information</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><font color="blue"><span style='white-space: nowrap'>CppAD::mixed::sparse_mat_info&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info<br>
+</span></font></i></code>
+
+<code><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.resize(</span></font><i><font color="black"><span style='white-space: nowrap'>size</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="Public" id="Public">Public</a></big></b>
+<br>
+This structure it is part of the
+<a href="namespace.htm#Public" target="_top"><span style='white-space: nowrap'>CppAD::mixed</span></a>
+ user API.
+
+<br>
+<br>
+<b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
+<br>
+This structure holds information about a sparse matrix.
+
+<br>
+<br>
+<b><big><a name="row" id="row">row</a></big></b>
+<br>
+The field 
+<code><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.row</span></font></code>
+ has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;size_t&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.row<br>
+</span></font></code>
+It has size zero when it is constructed.
+After initialization it should contain the row indices
+corresponding to possibly non-zero elements of the matrix.
+
+<br>
+<br>
+<b><a name="row.K" id="row.K">K</a></b>
+<br>
+We use 
+<code><i><font color="black"><span style='white-space: nowrap'>K</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.row.size()</span></font></code>
+ below.
+
+<br>
+<br>
+<b><big><a name="col" id="col">col</a></big></b>
+<br>
+The field 
+<code><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.col</span></font></code>
+ has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;size_t&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.col<br>
+</span></font></code>
+It has size zero when it is constructed.
+After initialization it should have the same size as 
+<code><i><font color="black"><span style='white-space: nowrap'>row</span></font></i></code>
+
+and contain the column indices
+corresponding to possibly non-zero elements of the matrix.
+
+<br>
+<br>
+<b><big><a name="val" id="val">val</a></big></b>
+<br>
+The field 
+<code><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.val</span></font></code>
+ has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;double&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.val<br>
+</span></font></code>
+It has size zero when it is constructed.
+After initialization it should either have size zero,
+or the same size as 
+<code><i><font color="black"><span style='white-space: nowrap'>row</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="resize" id="resize">resize</a></big></b>
+<br>
+The <code><font color="blue">resize</font></code> argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>size</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+All of the vectors,
+
+<code><i><font color="black"><span style='white-space: nowrap'>row</span></font></i></code>
+, 
+<code><i><font color="black"><span style='white-space: nowrap'>col</span></font></i></code>
+, and 
+<code><i><font color="black"><span style='white-space: nowrap'>val</span></font></i></code>
+,
+are modified to have the specified size.
+
+<br>
+<br>
+<b><big><a name="Notation" id="Notation">Notation</a></big></b>
+
+
+<br>
+<br>
+<b><a name="Notation.Sparsity Pattern" id="Notation.Sparsity Pattern">Sparsity Pattern</a></b>
+<br>
+We say that 
+<code><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i></code>
+ is a sparsity pattern if,
+for 
+<code><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;0&nbsp;,&nbsp;...&nbsp;,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>K</span></font></i><font color="blue"><span style='white-space: nowrap'>-1</span></font></code>
+,
+the element with index
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.row[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>],&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.col[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>])<br>
+</span></font></code>
+is possibly non-zero and the size or elements of
+
+<code><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.val</span></font></code>
+ are not specified.
+
+<br>
+<br>
+<b><a name="Notation.Sparse Matrix" id="Notation.Sparse Matrix">Sparse Matrix</a></b>
+<br>
+We say that 
+<code><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i></code>
+ is a sparse matrix if,
+for 
+<code><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;0&nbsp;,&nbsp;...&nbsp;,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>K</span></font></i><font color="blue"><span style='white-space: nowrap'>-1</span></font></code>
+,
+the element with index
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.row[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>],&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.col[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>])<br>
+</span></font></code>
+is possibly non-zero and has value 
+<code><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.val[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
+.
+
+<br>
+<br>
+<b><a name="Notation.Empty Matrix" id="Notation.Empty Matrix">Empty Matrix</a></b>
+<br>
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>K</span></font></i></code>
+ is zero (
+<code><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.row.size()</span></font></code>
+ is zero),
+we say that 
+<code><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i></code>
+ is the empty matrix.
+
+<br>
+<br>
+<b><a name="Notation.Column Major Order" id="Notation.Column Major Order">Column Major Order</a></b>
+<br>
+If for 
+<code><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;0&nbsp;,&nbsp;...&nbsp;,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>K</span></font></i><font color="blue"><span style='white-space: nowrap'>-1</span></font></code>
+,
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.col[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.col[</span></font><i><font color="black"><span style='white-space: nowrap'>k+1</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.col[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.col[</span></font><i><font color="black"><span style='white-space: nowrap'>k+1</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.row[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.row[</span></font><i><font color="black"><span style='white-space: nowrap'>k+1</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+</span></font></code>
+we say that 
+<code><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i></code>
+ is in column major order.
+
+<br>
+<br>
+<b><a name="Notation.Row Major Order" id="Notation.Row Major Order">Row Major Order</a></b>
+<br>
+If for 
+<code><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;0&nbsp;,&nbsp;...&nbsp;,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>K</span></font></i><font color="blue"><span style='white-space: nowrap'>-1</span></font></code>
+,
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.row[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.row[</span></font><i><font color="black"><span style='white-space: nowrap'>k+1</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.row[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.row[</span></font><i><font color="black"><span style='white-space: nowrap'>k+1</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.col[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.col[</span></font><i><font color="black"><span style='white-space: nowrap'>k+1</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+</span></font></code>
+we say that 
+<code><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i></code>
+ is in row major order.
+
+<br>
+<br>
+<b><a name="Notation.Lower Triangular" id="Notation.Lower Triangular">Lower Triangular</a></b>
+<br>
+If for 
+<code><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;0&nbsp;,&nbsp;...&nbsp;,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>K</span></font></i><font color="blue"><span style='white-space: nowrap'>-1</span></font></code>
+,
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.row[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&gt;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.col[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+</span></font></code>
+we say that 
+<code><i><font color="black"><span style='white-space: nowrap'>mat_info</span></font></i></code>
+ is lower triangular.
+
+
+<hr>Input File: include/cppad/mixed/sparse_mat_info.hpp
+
+</body>
+</html>

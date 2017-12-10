@@ -1,0 +1,205 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Initialize Cholesky Factor of Hessian of Random Likelihood</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Initialize Cholesky Factor of Hessian of Random Likelihood">
+<meta name="keywords" id="keywords" content=" initialize cholesky factor hessian random likelihood syntax private mixed_object ran_hes_rcv_ ldlt_ran_hes_ ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_init_ldlt_ran_hes_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="init_ran_objcon.htm" target="_top">Prev</a>
+</td><td><a href="init_fix_con.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>base_class</option>
+<option>private</option>
+<option>init_ldlt_ran_hes</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>base_class-&gt;</option>
+<option>public</option>
+<option>private</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>private-&gt;</option>
+<option>pack</option>
+<option>unpack</option>
+<option>init_ran_hes</option>
+<option>init_ran_hes_check</option>
+<option>init_ran_objcon</option>
+<option>init_ldlt_ran_hes</option>
+<option>init_fix_con</option>
+<option>init_fix_like</option>
+<option>init_hes_cross</option>
+<option>init_laplace_obj_hes</option>
+<option>init_ran_like</option>
+<option>fix_con_eval</option>
+<option>fix_con_hes</option>
+<option>fix_con_jac</option>
+<option>fix_like_eval</option>
+<option>fix_like_hes</option>
+<option>fix_like_jac</option>
+<option>logdet_jac</option>
+<option>ran_like_jac</option>
+<option>ran_like_jac_check</option>
+<option>ran_con_eval</option>
+<option>ran_con_jac</option>
+<option>ran_obj_eval</option>
+<option>ran_obj_jac</option>
+<option>laplace_obj_hes</option>
+<option>update_factor</option>
+</select>
+</td>
+<td>init_ldlt_ran_hes</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Private</option>
+<option>mixed_object</option>
+<option>ran_hes_rcv_</option>
+<option>ldlt_ran_hes_</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Initialize Cholesky Factor of Hessian of Random Likelihood</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.init_ldlt_ran_hes()</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="Private" id="Private">Private</a></big></b>
+<br>
+This <code><font color="blue">cppad_mixed</font></code> member function is <a href="private.htm" target="_top"><span style='white-space: nowrap'>private</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="mixed_object" id="mixed_object">mixed_object</a></big></b>
+<br>
+We use <a href="derived_ctor.htm#mixed_object" target="_top"><span style='white-space: nowrap'>mixed_object</span></a>
+
+to denote an object of a class that is
+derived from the <code><font color="blue">cppad_mixed</font></code> base class.
+
+<br>
+<br>
+<b><big><a name="ran_hes_rcv_" id="ran_hes_rcv_">ran_hes_rcv_</a></big></b>
+<br>
+The member variable
+<code><font color="blue">%
+	CppAD::mixed::sparse_rcv ran_hes_rcv_
+%</font></code>
+is assumed to contain the sparsity information for the
+Hessian of the random likelihood with respect to the random effects
+<small>@(@
+f_{u,u} ( \theta , u )
+@)@</small>.
+This sparsity information is relative to both the fixed and random effects;
+i.e., the row and column indices are relative to the vector
+<small>@(@
+( \theta , u )
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="ldlt_ran_hes_" id="ldlt_ran_hes_">ldlt_ran_hes_</a></big></b>
+<br>
+The member variable
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CPPAD_MIXED_LDLT_CLASS&nbsp;ldlt_ran_hes_<br>
+</span></font></code>
+must not been previously initialized
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;ldlt_ran_hes_<br>
+</span></font></code>
+Upon return, the function
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ldlt_ran_hes_.init(</span></font><i><font color="black"><span style='white-space: nowrap'>hes_info</span></font></i><font color="blue"><span style='white-space: nowrap'>)<br>
+</span></font></code>
+has been called with 
+<code><i><font color="black"><span style='white-space: nowrap'>hes_info</span></font></i></code>
+
+equal to the sparsity pattern for the
+Hessian of the random likelihood with respect to the random effects;
+see <a href="ldlt_eigen_init.htm" target="_top"><span style='white-space: nowrap'>ldlt_eigen_init</span></a>
+.
+This sparsity information is relative to just the random effects;
+i.e., the row and column indices are relative to the vector <small>@(@
+u )
+@)@</small>.
+For each row and column indices in 
+<code><i><font color="black"><span style='white-space: nowrap'>hes_info</span></font></i></code>
+,
+the corresponding row and column index in <code><font color="blue">ran_hes_rcv_</font></code> is
+<code><font color="blue">n_fixed_</font></code> greater.
+
+
+
+<hr>Input File: src/init_ldlt_ran_hes.cpp
+
+</body>
+</html>

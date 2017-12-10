@@ -1,0 +1,347 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Simulation the Posterior Distribution for Random Effects</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Simulation the Posterior Distribution for Random Effects">
+<meta name="keywords" id="keywords" content=" simulation the posterior distribution random effects syntax see also prototype public purpose manage_gsl_rng mixed_object sample random_ipopt_options fixed_vec random_lower random_upper random_in covariance example ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_sample_random_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="sample_conditional.htm" target="_top">Prev</a>
+</td><td><a href="sample_random.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>base_class</option>
+<option>public</option>
+<option>sample_random</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>base_class-&gt;</option>
+<option>public</option>
+<option>private</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>public-&gt;</option>
+<option>derived_ctor</option>
+<option>ran_likelihood</option>
+<option>fix_likelihood</option>
+<option>fix_constraint</option>
+<option>initialize</option>
+<option>optimize_random</option>
+<option>optimize_fixed</option>
+<option>information_mat</option>
+<option>sample_fixed</option>
+<option>sample_random</option>
+<option>ran_likelihood_jac</option>
+<option>ran_likelihood_hes</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>sample_random-&gt;</option>
+<option>sample_random.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>See Also</option>
+<option>Prototype</option>
+<option>Public</option>
+<option>Purpose</option>
+<option>manage_gsl_rng</option>
+<option>mixed_object</option>
+<option>sample</option>
+<option>random_ipopt_options</option>
+<option>fixed_vec</option>
+<option>random_lower</option>
+<option>random_upper</option>
+<option>random_in</option>
+<option>Covariance</option>
+<option>Example</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Simulation the Posterior Distribution for Random Effects</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.sample_random(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>sample</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_box_options</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_ipopt_options</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_in</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="See Also" id="See Also">See Also</a></big></b>
+
+<br>
+<a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
+
+
+<br>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre><tt>
+<font color="#009900">void</font> cppad_mixed<font color="#990000">::</font><b><font color="#000000">sample_random</font></b><font color="#990000">(</font>
+     d_vector<font color="#990000">&amp;</font>          sample               <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> std<font color="#990000">::</font>string<font color="#990000">&amp;</font> random_ipopt_options <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>    fixed_vec            <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>    random_lower         <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>    random_upper         <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>    random_in            <font color="#990000">)</font></tt></pre>
+<br>
+<b><big><a name="Public" id="Public">Public</a></big></b>
+<br>
+This <code><font color="blue">cppad_mixed</font></code> member function is <a href="public.htm" target="_top"><span style='white-space: nowrap'>public</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
+<br>
+This routine draws samples from
+the asymptotic posterior distribution for the
+optimal random effects given the model, the data, and the fixed effects; see
+<a href="theory.htm#Sparse Observed Information" target="_top"><span style='white-space: nowrap'>sparse&nbsp;observed&nbsp;information</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="manage_gsl_rng" id="manage_gsl_rng">manage_gsl_rng</a></big></b>
+<br>
+It is assumed that
+<a href="manage_gsl_rng.htm#get_gsl_rng" target="_top"><span style='white-space: nowrap'>get_gsl_rng</span></a>
+ will return
+a pointer to a GSL random number generator.
+
+<br>
+<br>
+<b><big><a name="mixed_object" id="mixed_object">mixed_object</a></big></b>
+<br>
+We use <a href="derived_ctor.htm#mixed_object" target="_top"><span style='white-space: nowrap'>mixed_object</span></a>
+
+to denote an object of a class that is
+derived from the <code><font color="blue">cppad_mixed</font></code> base class.
+
+<br>
+<br>
+<b><big><a name="sample" id="sample">sample</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>sample</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+and its size is a multiple of
+<a href="derived_ctor.htm#n_random" target="_top"><span style='white-space: nowrap'>n_random</span></a>
+.
+The input value of its elements does not matter.
+We define
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_sample</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>sample_size</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;/&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+Upon return,
+for 
+<code><font color="blue"><span style='white-space: nowrap'>i</span></font><i><font color="black"><span style='white-space: nowrap'>&nbsp;=&nbsp;0&nbsp;,&nbsp;</span></font></i><font color="blue"><span style='white-space: nowrap'>...</span></font><i><font color="black"><span style='white-space: nowrap'>,&nbsp;</span></font></i><font color="blue"><span style='white-space: nowrap'>n_sample</span></font><i><font color="black"><span style='white-space: nowrap'>-1</span></font></i></code>
+,
+
+<code><font color="blue"><span style='white-space: nowrap'>j</span></font><i><font color="black"><span style='white-space: nowrap'>&nbsp;=&nbsp;0&nbsp;,&nbsp;</span></font></i><font color="blue"><span style='white-space: nowrap'>...</span></font><i><font color="black"><span style='white-space: nowrap'>,&nbsp;</span></font></i><font color="blue"><span style='white-space: nowrap'>n_random</span></font><i><font color="black"><span style='white-space: nowrap'>-1</span></font></i></code>
+,
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>sample</span></font></i><font color="blue"><span style='white-space: nowrap'>[&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;*&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;+&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;]<br>
+</span></font></code>
+is the <code><i>j</i></code>-th component of the <code><i>i</i></code>-th sample of the
+optimal random effects <small>@(@
+\hat{u}(\theta)
+@)@</small>.
+These samples are independent for different <small>@(@
+i
+@)@</small>,
+and for fixed <small>@(@
+i
+@)@</small>, they have the
+<a href="sample_random.htm#Covariance" target="_top"><span style='white-space: nowrap'>covariance</span></a>
+ defined below.
+
+<br>
+<br>
+<b><big><a name="random_ipopt_options" id="random_ipopt_options">random_ipopt_options</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;std::string&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_ipopt_options</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+and is the <a href="ipopt_options.htm" target="_top"><span style='white-space: nowrap'>ipopt_options</span></a>
+ for optimizing the random effects.
+
+<br>
+<br>
+<b><big><a name="fixed_vec" id="fixed_vec">fixed_vec</a></big></b>
+<br>
+This argument specifies the value of the
+<a href="cppad_mixed.htm#Notation.Fixed Effects, theta" target="_top"><span style='white-space: nowrap'>fixed&nbsp;effects</span></a>
+
+vector <small>@(@
+\theta
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="random_lower" id="random_lower">random_lower</a></big></b>
+<br>
+This argument must have size equal to
+<a href="derived_ctor.htm#n_random" target="_top"><span style='white-space: nowrap'>n_random</span></a>
+ and
+specifies the lower limits for the optimization of the
+<a href="cppad_mixed.htm#Notation.Random Effects, u" target="_top"><span style='white-space: nowrap'>random&nbsp;effects</span></a>
+
+vector <small>@(@
+u
+@)@</small>.
+The value minus infinity can be used to specify no lower limit.
+
+<br>
+<br>
+<b><big><a name="random_upper" id="random_upper">random_upper</a></big></b>
+<br>
+This argument must have size equal to
+<a href="derived_ctor.htm#n_random" target="_top"><span style='white-space: nowrap'>n_random</span></a>
+ and
+specifies the upper limits for the optimization of the random effect.
+The value plus infinity can be used to specify no lower limit.
+
+<br>
+<br>
+<b><big><a name="random_in" id="random_in">random_in</a></big></b>
+<br>
+This argument must have size equal to
+<a href="derived_ctor.htm#n_random" target="_top"><span style='white-space: nowrap'>n_random</span></a>
+ and
+specifies the initial value used for the optimization of the
+<a href="cppad_mixed.htm#Notation.Random Effects, u" target="_top"><span style='white-space: nowrap'>random&nbsp;effects</span></a>
+
+vector <small>@(@
+u
+@)@</small>.
+It must hold that
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_in</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+</span></font></code>
+for each valid index 
+<code><i><font color="black"><span style='white-space: nowrap'>i</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="Covariance" id="Covariance">Covariance</a></big></b>
+<br>
+Each sample of 
+<code><i><font color="black"><span style='white-space: nowrap'>sample_fixed</span></font></i></code>
+ is an independent normal
+from the asymptotic distribution for the random effects.
+The mean for distribution is the
+<a href="theory.htm#Optimal Random Effects, u^(theta)" target="_top"><span style='white-space: nowrap'>optimal&nbsp;random&nbsp;effects</span></a>
+
+<small>@(@
+\hat{u} ( \theta )
+@)@</small>.
+The variance for each call is the inverse of the observed information
+matrix; i.e.
+<small>@[@
+
+	f_{uu} [ \theta , \hat{u} ( \theta ) ] ^{-1}
+
+@]@</small>
+This normal distribution is truncated to be within the limits
+
+<code><i><font color="black"><span style='white-space: nowrap'>random_lower</span></font></i></code>
+, 
+<code><i><font color="black"><span style='white-space: nowrap'>random_upper</span></font></i></code>
+.
+
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="sample_random.cpp.htm" target="_top"><span style='white-space: nowrap'>sample_random.cpp</span></a>
+ is an example
+and test of <code><font color="blue">sample_random</font></code>.
+
+<hr>Input File: src/sample_random.cpp
+
+</body>
+</html>

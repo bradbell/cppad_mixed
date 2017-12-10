@@ -1,0 +1,283 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Example Using cholmod_solve With a Non-positive Matrix</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Example Using cholmod_solve With a Non-positive Matrix">
+<meta name="keywords" id="keywords" content=" example using cholmod_solve with non-positive matrix problem description source code ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_cholmod_solve_xam_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="ldlt_cholmod.cpp.htm" target="_top">Prev</a>
+</td><td><a href="cholmod_solve2_a.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>ldlt_cholmod</option>
+<option>cholmod_solve_xam</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>ldlt_cholmod-&gt;</option>
+<option>ldlt_cholmod_ctor</option>
+<option>ldlt_cholmod_dtor</option>
+<option>ldlt_cholmod_init</option>
+<option>ldlt_cholmod_update</option>
+<option>ldlt_cholmod_logdet</option>
+<option>ldlt_cholmod_solve_H</option>
+<option>ldlt_cholmod_sim_cov</option>
+<option>ldlt_cholmod_inv</option>
+<option>ldlt_cholmod.cpp</option>
+<option>cholmod_solve_xam</option>
+<option>cholmod_solve2_a.cpp</option>
+<option>cholmod_solve2_sim.cpp</option>
+</select>
+</td>
+<td>cholmod_solve_xam</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Problem Description</option>
+<option>Source Code</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Example Using cholmod_solve With a Non-positive Matrix</big></big></b></center>
+<br>
+<b><big><a name="Problem Description" id="Problem Description">Problem Description</a></big></b>
+<br>
+Solve for <small>@(@
+x
+@)@</small> in the equation <small>@(@
+H x = b
+@)@</small> where <small>@(@
+H
+@)@</small>
+is defined below and <small>@(@
+b
+@)@</small> is a column of the identity matrix.
+Hence the solution <small>@(@
+x
+@)@</small> is the corresponding column of
+<small>@(@
+H^{-1}
+@)@</small> which for this case is equal to <small>@(@
+H
+@)@</small>.
+<small>@[@
+
+	H = \left( \begin{array}{cc}
+		1 & 0 \\
+		0 & -1
+	\end{array} \right)
+
+@]@</small>
+
+<br>
+<br>
+<b><big><a name="Source Code" id="Source Code">Source Code</a></big></b>
+
+<pre><tt>
+<b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;cholmod.h&gt;</font>
+<b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;limits&gt;</font>
+<b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;cmath&gt;</font>
+<b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;cassert&gt;</font>
+
+<b><font color="#000080"># define</font></b> CHOLMOD_TRUE                  <font color="#993399">1</font>
+<b><font color="#000080"># define</font></b> CHOLMOD_FALSE                 <font color="#993399">0</font>
+<b><font color="#000080"># define</font></b> CHOLMOD_STYPE_LOWER_TRIANGLE <font color="#990000">-</font><font color="#993399">1</font>
+
+
+<b><font color="#0000FF">namespace</font></b> <font color="#FF0000">{</font> <i><font color="#9A1900">// BEGIN_EMPTY_NAMESPACE</font></i>
+     <font color="#009900">void</font> <b><font color="#000000">add_T_entry</font></b><font color="#990000">(</font><font color="#008080">cholmod_triplet</font> <font color="#990000">*</font>T<font color="#990000">,</font> <font color="#009900">int</font> r<font color="#990000">,</font> <font color="#009900">int</font> c<font color="#990000">,</font> <font color="#009900">double</font> x<font color="#990000">)</font>
+     <font color="#FF0000">{</font>    <font color="#008080">size_t</font> k           <font color="#990000">=</font> T<font color="#990000">-&gt;</font>nnz<font color="#990000">;</font>
+          <font color="#990000">((</font><font color="#009900">int</font><font color="#990000">*)</font>T<font color="#990000">-&gt;</font>i<font color="#990000">)[</font>k<font color="#990000">]</font>    <font color="#990000">=</font> r<font color="#990000">;</font>
+          <font color="#990000">((</font><font color="#009900">int</font><font color="#990000">*)</font>T<font color="#990000">-&gt;</font>j<font color="#990000">)[</font>k<font color="#990000">]</font>    <font color="#990000">=</font> c<font color="#990000">;</font>
+          <font color="#990000">((</font><font color="#009900">double</font><font color="#990000">*)</font>T<font color="#990000">-&gt;</font>x<font color="#990000">)[</font>k<font color="#990000">]</font> <font color="#990000">=</font> x<font color="#990000">;</font>
+          T<font color="#990000">-&gt;</font>nnz<font color="#990000">++;</font>
+     <font color="#FF0000">}</font>
+<font color="#FF0000">}</font>
+
+<font color="#009900">bool</font> <b><font color="#000000">cholmod_solve_xam</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">)</font>
+<font color="#FF0000">{</font>    <font color="#009900">bool</font> ok    <font color="#990000">=</font> <b><font color="#0000FF">true</font></b><font color="#990000">;</font>
+     <font color="#009900">double</font> eps <font color="#990000">=</font> <font color="#993399">10</font><font color="#990000">.</font> <font color="#990000">*</font> std<font color="#990000">::</font>numeric_limits<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;::</font><b><font color="#000000">epsilon</font></b><font color="#990000">();</font>
+
+     <i><font color="#9A1900">// Elements for the the matrix H</font></i>
+     <font color="#008080">size_t</font> nrow <font color="#990000">=</font> <font color="#993399">2</font><font color="#990000">;</font>
+     <font color="#009900">double</font> H_data<font color="#990000">[]</font> <font color="#990000">=</font> <font color="#FF0000">{</font>
+           <font color="#993399">1.0</font><font color="#990000">,</font>   <font color="#993399">0.0</font><font color="#990000">,</font>
+           <font color="#993399">0.0</font><font color="#990000">,</font>  <font color="#990000">-</font><font color="#993399">1.0</font>
+     <font color="#FF0000">}</font><font color="#990000">;</font>
+
+     <i><font color="#9A1900">// initialize common</font></i>
+     <font color="#008080">cholmod_common</font> com<font color="#990000">;</font>
+     <b><font color="#000000">cholmod_start</font></b><font color="#990000">(&amp;</font>com<font color="#990000">);</font>
+
+     <i><font color="#9A1900">// always do simplicial factorization</font></i>
+     com<font color="#990000">.</font>supernodal <font color="#990000">=</font> CHOLMOD_SIMPLICIAL<font color="#990000">;</font>
+
+     <i><font color="#9A1900">// do LDL' factorization and leave in LDL' form</font></i>
+     com<font color="#990000">.</font>final_ll <font color="#990000">=</font> CHOLMOD_FALSE<font color="#990000">;</font>
+
+     <i><font color="#9A1900">// allocate triplet</font></i>
+     <font color="#008080">size_t</font> ncol <font color="#990000">=</font> nrow<font color="#990000">;</font>
+     <font color="#008080">size_t</font> nzmax <font color="#990000">=</font> nrow <font color="#990000">*</font> ncol<font color="#990000">;</font>
+     <font color="#009900">int</font>    T_stype <font color="#990000">=</font> CHOLMOD_STYPE_LOWER_TRIANGLE<font color="#990000">;</font>
+     <font color="#009900">int</font>    T_xtype <font color="#990000">=</font> CHOLMOD_REAL<font color="#990000">;</font>
+     <font color="#008080">cholmod_triplet</font> <font color="#990000">*</font>T <font color="#990000">=</font>
+          <b><font color="#000000">cholmod_allocate_triplet</font></b><font color="#990000">(</font>nrow<font color="#990000">,</font> ncol<font color="#990000">,</font> nzmax<font color="#990000">,</font> T_stype<font color="#990000">,</font> T_xtype<font color="#990000">,</font> <font color="#990000">&amp;</font>com<font color="#990000">);</font>
+     ok <font color="#990000">&amp;=</font> T<font color="#990000">-&gt;</font>nnz <font color="#990000">==</font>  <font color="#993399">0</font><font color="#990000">;</font>
+
+     <i><font color="#9A1900">// triplet entries corresponding to lower triangle of H</font></i>
+     <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> nrow<font color="#990000">;</font> i<font color="#990000">++)</font>
+     <font color="#FF0000">{</font>    <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;=</font> i<font color="#990000">;</font> j<font color="#990000">++)</font>
+               <b><font color="#000000">add_T_entry</font></b><font color="#990000">(</font>T<font color="#990000">,</font> i<font color="#990000">,</font> j<font color="#990000">,</font> H_data<font color="#990000">[</font>i <font color="#990000">*</font> ncol <font color="#990000">+</font> j<font color="#990000">]</font> <font color="#990000">);</font>
+     <font color="#FF0000">}</font>
+     ok <font color="#990000">&amp;=</font> T<font color="#990000">-&gt;</font>nnz <font color="#990000">==</font> <font color="#993399">3</font><font color="#990000">;</font>
+
+     <i><font color="#9A1900">// convert triplet to sparse representation of H</font></i>
+     cholmod_sparse<font color="#990000">*</font> H <font color="#990000">=</font> <b><font color="#000000">cholmod_triplet_to_sparse</font></b><font color="#990000">(</font>T<font color="#990000">,</font> <font color="#993399">0</font><font color="#990000">,</font> <font color="#990000">&amp;</font>com<font color="#990000">);</font>
+
+     <i><font color="#9A1900">// factor the matrix</font></i>
+     <font color="#008080">cholmod_factor</font> <font color="#990000">*</font>L <font color="#990000">=</font> <b><font color="#000000">cholmod_analyze</font></b><font color="#990000">(</font>H<font color="#990000">,</font> <font color="#990000">&amp;</font>com<font color="#990000">);</font>
+<b><font color="#000080"># ifndef</font></b> NDEBUG
+     <font color="#009900">int</font> flag <font color="#990000">=</font>
+<b><font color="#000080"># endif</font></b>
+     <b><font color="#000000">cholmod_factorize</font></b><font color="#990000">(</font>H<font color="#990000">,</font> L<font color="#990000">,</font> <font color="#990000">&amp;</font>com<font color="#990000">);</font>
+
+     <i><font color="#9A1900">// check properties of factor</font></i>
+     <b><font color="#000000">assert</font></b><font color="#990000">(</font> flag     <font color="#990000">==</font> CHOLMOD_TRUE <font color="#990000">);</font>  <i><font color="#9A1900">// return flag OK</font></i>
+     <b><font color="#000000">assert</font></b><font color="#990000">(</font> L<font color="#990000">-&gt;</font>n     <font color="#990000">==</font> nrow <font color="#990000">);</font>          <i><font color="#9A1900">// number of rows and coluns</font></i>
+     <b><font color="#000000">assert</font></b><font color="#990000">(</font> L<font color="#990000">-&gt;</font>minor <font color="#990000">==</font> nrow <font color="#990000">);</font>          <i><font color="#9A1900">// successful factorization</font></i>
+     <b><font color="#000000">assert</font></b><font color="#990000">(</font> L<font color="#990000">-&gt;</font>is_ll <font color="#990000">==</font> CHOLMOD_FALSE <font color="#990000">);</font> <i><font color="#9A1900">// factorization is LDL'</font></i>
+     <b><font color="#000000">assert</font></b><font color="#990000">(</font> com<font color="#990000">.</font>status <font color="#990000">==</font> CHOLMOD_OK  <font color="#990000">);</font> <i><font color="#9A1900">// no problem with factorization</font></i>
+
+     <i><font color="#9A1900">// initialize right hand side vector</font></i>
+     <font color="#008080">cholmod_dense</font> <font color="#990000">*</font>B <font color="#990000">=</font> <b><font color="#000000">cholmod_zeros</font></b><font color="#990000">(</font>nrow<font color="#990000">,</font> <font color="#993399">1</font><font color="#990000">,</font> T_xtype<font color="#990000">,</font> <font color="#990000">&amp;</font>com<font color="#990000">);</font>
+     <font color="#009900">double</font><font color="#990000">*</font> B_x <font color="#990000">=</font> <font color="#990000">(</font><font color="#009900">double</font> <font color="#990000">*)</font> B<font color="#990000">-&gt;</font>x<font color="#990000">;</font>
+
+     <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;</font> ncol<font color="#990000">;</font> j<font color="#990000">++)</font>
+     <font color="#FF0000">{</font>    <i><font color="#9A1900">// solve equation with B corresponding to j-th column of identity</font></i>
+          B_x<font color="#990000">[</font>j<font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
+          <font color="#009900">int</font> sys <font color="#990000">=</font> CHOLMOD_A<font color="#990000">;</font>
+          <font color="#008080">cholmod_dense</font> <font color="#990000">*</font>X <font color="#990000">=</font> <b><font color="#000000">cholmod_solve</font></b><font color="#990000">(</font>sys<font color="#990000">,</font> L<font color="#990000">,</font> B<font color="#990000">,</font> <font color="#990000">&amp;</font>com<font color="#990000">);</font>
+          <font color="#009900">double</font><font color="#990000">*</font> X_x <font color="#990000">=</font> <font color="#990000">(</font><font color="#009900">double</font> <font color="#990000">*)</font> X<font color="#990000">-&gt;</font>x<font color="#990000">;</font>
+
+          <i><font color="#9A1900">// restore B</font></i>
+          B_x<font color="#990000">[</font>j<font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
+
+          <i><font color="#9A1900">// check solution</font></i>
+          <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> nrow<font color="#990000">;</font> i<font color="#990000">++)</font>
+          <font color="#FF0000">{</font>    <i><font color="#9A1900">// inv(H) = H</font></i>
+               <font color="#009900">double</font> check <font color="#990000">=</font> H_data<font color="#990000">[</font> i <font color="#990000">*</font> ncol <font color="#990000">+</font> j<font color="#990000">];</font>
+               <b><font color="#0000FF">if</font></b><font color="#990000">(</font> check <font color="#990000">==</font> <font color="#993399">0.0</font> <font color="#990000">)</font>
+                    ok <font color="#990000">&amp;=</font> X_x<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">==</font> <font color="#993399">0.0</font><font color="#990000">;</font>
+               <b><font color="#0000FF">else</font></b>
+                    ok <font color="#990000">&amp;=</font> std<font color="#990000">::</font><b><font color="#000000">fabs</font></b><font color="#990000">(</font> X_x<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">/</font> check <font color="#990000">-</font> <font color="#993399">1.0</font> <font color="#990000">)</font> <font color="#990000">&lt;=</font> eps<font color="#990000">;</font>
+          <font color="#FF0000">}</font>
+
+          <i><font color="#9A1900">// done with this X</font></i>
+          <b><font color="#000000">cholmod_free_dense</font></b><font color="#990000">(&amp;</font>X<font color="#990000">,</font> <font color="#990000">&amp;</font>com<font color="#990000">);</font>
+     <font color="#FF0000">}</font>
+
+     <i><font color="#9A1900">// free memory</font></i>
+     <b><font color="#000000">cholmod_free_triplet</font></b><font color="#990000">(&amp;</font>T<font color="#990000">,</font>    <font color="#990000">&amp;</font>com<font color="#990000">);</font>
+     <b><font color="#000000">cholmod_free_sparse</font></b><font color="#990000">(</font> <font color="#990000">&amp;</font>H<font color="#990000">,</font>    <font color="#990000">&amp;</font>com<font color="#990000">);</font>
+     <b><font color="#000000">cholmod_free_factor</font></b><font color="#990000">(</font> <font color="#990000">&amp;</font>L<font color="#990000">,</font>    <font color="#990000">&amp;</font>com<font color="#990000">);</font>
+     <b><font color="#000000">cholmod_free_dense</font></b><font color="#990000">(</font>  <font color="#990000">&amp;</font>B<font color="#990000">,</font>    <font color="#990000">&amp;</font>com<font color="#990000">);</font>
+
+     <i><font color="#9A1900">// finish up</font></i>
+     <b><font color="#000000">cholmod_finish</font></b><font color="#990000">(&amp;</font>com<font color="#990000">);</font>
+
+     <i><font color="#9A1900">// check count of malloc'ed - free'd</font></i>
+     ok <font color="#990000">&amp;=</font> com<font color="#990000">.</font>malloc_count <font color="#990000">==</font> <font color="#993399">0</font><font color="#990000">;</font>
+
+     <b><font color="#0000FF">return</font></b> ok<font color="#990000">;</font>
+<font color="#FF0000">}</font></tt></pre>
+
+<hr>Input File: example/private/cholmod_solve.cpp
+
+</body>
+</html>

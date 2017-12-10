@@ -1,0 +1,343 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Compute a Subset of the Inverse of Factored Matrix</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Compute a Subset of the Inverse of Factored Matrix">
+<meta name="keywords" id="keywords" content=" compute subset the inverse factored matrix under construction syntax prototype private purpose ldlt_obj row_in col_in val_out method member variables sparseinv_p_ sparseinv_i_ out2sparseinv_order_ ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_ldlt_cholmod_inv_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="ldlt_cholmod_sim_cov.htm" target="_top">Prev</a>
+</td><td><a href="ldlt_cholmod.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_cholmod_inv</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>ldlt_cholmod-&gt;</option>
+<option>ldlt_cholmod_ctor</option>
+<option>ldlt_cholmod_dtor</option>
+<option>ldlt_cholmod_init</option>
+<option>ldlt_cholmod_update</option>
+<option>ldlt_cholmod_logdet</option>
+<option>ldlt_cholmod_solve_H</option>
+<option>ldlt_cholmod_sim_cov</option>
+<option>ldlt_cholmod_inv</option>
+<option>ldlt_cholmod.cpp</option>
+<option>cholmod_solve_xam</option>
+<option>cholmod_solve2_a.cpp</option>
+<option>cholmod_solve2_sim.cpp</option>
+</select>
+</td>
+<td>ldlt_cholmod_inv</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Under Construction</option>
+<option>Syntax</option>
+<option>Prototype</option>
+<option>Private</option>
+<option>Purpose</option>
+<option>ldlt_obj</option>
+<option>row_in</option>
+<option>col_in</option>
+<option>val_out</option>
+<option>Method</option>
+<option>Member variables</option>
+<option>---..sparseinv_p_</option>
+<option>---..sparseinv_i_</option>
+<option>---..out2sparseinv_order_</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+<center><b><big><big>Compute a Subset of the Inverse of Factored Matrix</big></big></b></center>
+<br>
+<b><big><a name="Under Construction" id="Under Construction">Under Construction</a></big></b>
+
+
+<br>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i><font color="blue"><span style='white-space: nowrap'>.inv(</span></font><i><font color="black"><span style='white-space: nowrap'>row_in</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>col_in</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>val_out</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre><tt>
+<font color="#009900">void</font> ldlt_cholmod<font color="#990000">::</font><b><font color="#000000">inv</font></b><font color="#990000">(</font>
+     <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font>size_t<font color="#990000">&gt;&amp;</font> row_in    <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font>size_t<font color="#990000">&gt;&amp;</font> col_in    <font color="#990000">,</font>
+     CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;&amp;</font>       val_out   <font color="#990000">)</font></tt></pre>
+<br>
+<b><big><a name="Private" id="Private">Private</a></big></b>
+<br>
+The <a href="ldlt_cholmod.htm" target="_top"><span style='white-space: nowrap'>ldlt_cholmod</span></a>
+ class is an
+<a href="ldlt_cholmod.htm#Private" target="_top"><span style='white-space: nowrap'>implementation&nbsp;detail</span></a>
+ and not part of the
+<a href="namespace.htm#Private" target="_top"><span style='white-space: nowrap'>CppAD::mixed</span></a>
+ user API.
+
+<br>
+<br>
+<b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
+<br>
+This function solves for a subset of the inverse of the
+sparse symmetric matrix that has been factored.
+
+<br>
+<br>
+<b><big><a name="ldlt_obj" id="ldlt_obj">ldlt_obj</a></big></b>
+<br>
+This object has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::mixed::ldlt_cholmod&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+In addition, it must have a previous call to
+<a href="ldlt_cholmod_update.htm" target="_top"><span style='white-space: nowrap'>ldlt_cholmod_update</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="row_in" id="row_in">row_in</a></big></b>
+<br>
+This vector contains the row indices for the components of the
+inverse that we are computing.
+It is assumed that these indices are the same for every call to
+<code><font color="blue">inv</font></code>.
+
+<br>
+<br>
+<b><big><a name="col_in" id="col_in">col_in</a></big></b>
+<br>
+This vector contains the column indices for the components of the
+inverse that we are computing. It must have the same size as 
+<code><i><font color="black"><span style='white-space: nowrap'>row_in</span></font></i></code>
+.
+It is assumed that these indices are the same for every call to
+<code><font color="blue">inv</font></code>.
+
+<br>
+<br>
+<b><big><a name="val_out" id="val_out">val_out</a></big></b>
+<br>
+This matrix must have the same size as 
+<code><i><font color="black"><span style='white-space: nowrap'>row_in</span></font></i></code>
+.
+The input values of its elements do not matter.
+Upon return, it
+contains the values for the components of the inverse that we are computing.
+To be specific, for 
+<code><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;0&nbsp;,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>...</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>K</span></font></i><font color="blue"><span style='white-space: nowrap'>-1</span></font></code>
+,
+
+<code><i><font color="black"><span style='white-space: nowrap'>val_out</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
+
+is 
+<code><i><font color="black"><span style='white-space: nowrap'>row_in</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
+, 
+<code><i><font color="black"><span style='white-space: nowrap'>col_in</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
+ component of the inverse.
+
+<br>
+<br>
+<b><big><a name="Method" id="Method">Method</a></big></b>
+<br>
+This routine uses the
+<a href="install_unix.htm#Special Requirements.SuiteSparse" target="_top"><span style='white-space: nowrap'>suitesparse</span></a>
+ routine
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MATLAB_Tools/sparseinv/sparseinv.c<br>
+</span></font></code>
+to solve for the requested components of the inverse.
+
+<br>
+<br>
+<b><big><a name="Member variables" id="Member variables">Member variables</a></big></b>
+<br>
+The first time this routine is called, the following member variable
+as set to their permanent values:
+
+<br>
+<br>
+<b><a name="Member variables.sparseinv_p_" id="Member variables.sparseinv_p_">sparseinv_p_</a></b>
+<br>
+This member variable has the prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;size_t&gt;&nbsp;sparseinv_p_<br>
+</span></font></code>
+Its initial size is zero.
+After the first call to <code><font color="blue">inv</font></code>, it had size <code><font color="blue">nrow_+1</font></code>.
+For 
+<code><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;0,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>...</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;nrow_</span></font></code>
+,
+
+<code><font color="blue"><span style='white-space: nowrap'>sparseinv_p_[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
+ is where the row indices for the <code><i>j</i></code>-th
+column start.
+
+<br>
+<br>
+<b><a name="Member variables.sparseinv_i_" id="Member variables.sparseinv_i_">sparseinv_i_</a></b>
+<br>
+This member variable has the prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;size_t&gt;&nbsp;sparseinv_i_<br>
+</span></font></code>
+Its initial size is zero.
+After the first call to <code><font color="blue">inv</font></code>, it had size
+
+<code><font color="blue"><span style='white-space: nowrap'>&nbsp;&nbsp;&nbsp;sparseinv_p_[nrow_]<br>
+%</span></font></code>
+
+For each column index 
+<code><i><font color="black"><span style='white-space: nowrap'>j</span></font></i></code>
+, and for
+
+<code><font color="blue"><span style='white-space: nowrap'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%k%&nbsp;=&nbsp;sparseinv_p_[%j%]&nbsp;,&nbsp;%...%,&nbsp;sparseinv_p[%j%+1]-1<br>
+%</span></font></code>
+
+
+<code><font color="blue"><span style='white-space: nowrap'>sparseinv_i_[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
+ is the index of the next entry in the <code><i>j</i></code>-th
+column of the sparse matrix.
+Note that for each column, the corresponding row indices are in order; i.e.
+sorted.
+This sparse matrix includes all the indices in
+
+<code><i><font color="black"><span style='white-space: nowrap'>row_in</span></font></i></code>
+, 
+<code><i><font color="black"><span style='white-space: nowrap'>col_in</span></font></i></code>
+,
+all the indices in the factorization <code><font color="blue">factor_</font></code>,
+and the transpose of the indices in <code><font color="blue">factor_</font></code>.
+
+<br>
+<br>
+<b><a name="Member variables.out2sparseinv_order_" id="Member variables.out2sparseinv_order_">out2sparseinv_order_</a></b>
+<br>
+This member variable has the prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;size_t&gt;&nbsp;out2sparseinv_order_<br>
+</span></font></code>
+Its initial size is zero.
+After the first call to <code><font color="blue">inv</font></code>,
+it has the same size as 
+<code><i><font color="black"><span style='white-space: nowrap'>val_out</span></font></i></code>
+.
+It is a mapping
+from the indices in 
+<code><i><font color="black"><span style='white-space: nowrap'>val_out</span></font></i></code>
+ to the corresponding index in
+the <code><font color="blue">sparseinv_i</font></code> structures.
+Note that all the indices in
+
+<code><i><font color="black"><span style='white-space: nowrap'>row_in</span></font></i></code>
+ and 
+<code><i><font color="black"><span style='white-space: nowrap'>col_in</span></font></i></code>
+ also appear in the representation
+<code><font color="blue">sparseinv_p_</font></code>, <code><font color="blue">sparseinv_i_</font></code>.
+
+
+<hr>Input File: src/cholmod/inv.cpp
+
+</body>
+</html>

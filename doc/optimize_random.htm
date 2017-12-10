@@ -1,0 +1,305 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Optimize Random Effects</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Optimize Random Effects">
+<meta name="keywords" id="keywords" content=" optimize random effects syntax public purpose mixed_object options evaluation_method fixed_vec random_lower random_upper random_in random_out example ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_optimize_random_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="initialize.htm" target="_top">Prev</a>
+</td><td><a href="optimize_random.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>base_class</option>
+<option>public</option>
+<option>optimize_random</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>base_class-&gt;</option>
+<option>public</option>
+<option>private</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>public-&gt;</option>
+<option>derived_ctor</option>
+<option>ran_likelihood</option>
+<option>fix_likelihood</option>
+<option>fix_constraint</option>
+<option>initialize</option>
+<option>optimize_random</option>
+<option>optimize_fixed</option>
+<option>information_mat</option>
+<option>sample_fixed</option>
+<option>sample_random</option>
+<option>ran_likelihood_jac</option>
+<option>ran_likelihood_hes</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>optimize_random-&gt;</option>
+<option>optimize_random.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Public</option>
+<option>Purpose</option>
+<option>mixed_object</option>
+<option>options</option>
+<option>---..evaluation_method</option>
+<option>fixed_vec</option>
+<option>random_lower</option>
+<option>random_upper</option>
+<option>random_in</option>
+<option>random_out</option>
+<option>Example</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Optimize Random Effects</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>random_out</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=</span></font></code>
+
+
+<code><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.optimize_random(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>options</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_in</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="Public" id="Public">Public</a></big></b>
+<br>
+This <code><font color="blue">cppad_mixed</font></code> member function is <a href="public.htm" target="_top"><span style='white-space: nowrap'>public</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
+<br>
+This routine maximizes the
+<a href="ran_likelihood.htm" target="_top"><span style='white-space: nowrap'>random&nbsp;likelihood</span></a>
+
+corresponding to the object 
+<code><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="mixed_object" id="mixed_object">mixed_object</a></big></b>
+<br>
+We use <a href="derived_ctor.htm#mixed_object" target="_top"><span style='white-space: nowrap'>mixed_object</span></a>
+
+to denote an object of a class that is
+derived from the <code><font color="blue">cppad_mixed</font></code> base class.
+
+<br>
+<br>
+<b><big><a name="options" id="options">options</a></big></b>
+<br>
+This argument  has the prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;std::string&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>options</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+This is the <a href="ipopt_options.htm" target="_top"><span style='white-space: nowrap'>ipopt_options</span></a>
+ for optimizing the random effects
+with the following qualifications:
+
+<br>
+<br>
+<b><a name="options.evaluation_method" id="options.evaluation_method">evaluation_method</a></b>
+<br>
+There is an additional <a href="ipopt_options.htm#String" target="_top"><span style='white-space: nowrap'>String</span></a>
+ option with
+
+<code><i><font color="black"><span style='white-space: nowrap'>name</span></font></i><font color="blue"><span style='white-space: nowrap'>=evaluation_method</span></font></code>
+
+and 
+<code><i><font color="black"><span style='white-space: nowrap'>value</span></font></i></code>
+ is either <code><font color="blue">ipopt_random</font></code>  or <code><font color="blue">ipopt_solve</font></code>.
+The <code><font color="blue">ipopt_random</font></code> choice uses
+<code><font color="blue">CppAD::mixed::ipopt_random</font></code> for optimizing random effects.
+This special purpose class
+is expected to eventually be the faster choice.
+This is the default choice; i.e., <code><font color="blue">ipopt_random</font></code> will be used
+if this option is not present.
+The <code><font color="blue">ipopt_solve</font></code> choice uses
+<code><font color="blue">CppAD::ipopt::solve</font></code> for optimizing random effects.
+Currently this is sometimes faster and so this choice is still included
+(but may be removed in the future).
+
+<br>
+<br>
+<b><big><a name="fixed_vec" id="fixed_vec">fixed_vec</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It specifies the value of the
+<a href="cppad_mixed.htm#Notation.Fixed Effects, theta" target="_top"><span style='white-space: nowrap'>fixed&nbsp;effects</span></a>
+
+vector <small>@(@
+\theta
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="random_lower" id="random_lower">random_lower</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_lower</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It must have size equal to
+<a href="derived_ctor.htm#n_random" target="_top"><span style='white-space: nowrap'>n_random</span></a>
+ and
+specifies the lower limits for the optimization of the
+<a href="cppad_mixed.htm#Notation.Random Effects, u" target="_top"><span style='white-space: nowrap'>random&nbsp;effects</span></a>
+
+vector <small>@(@
+u
+@)@</small>.
+The value minus infinity can be used to specify no lower limit.
+
+<br>
+<br>
+<b><big><a name="random_upper" id="random_upper">random_upper</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_upper</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It must have size equal to
+<a href="derived_ctor.htm#n_random" target="_top"><span style='white-space: nowrap'>n_random</span></a>
+ and
+specifies the upper limits for the optimization of the random effect.
+The value plus infinity can be used to specify no lower limit.
+
+<br>
+<br>
+<b><big><a name="random_in" id="random_in">random_in</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_in</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It must have size equal to
+<a href="derived_ctor.htm#n_random" target="_top"><span style='white-space: nowrap'>n_random</span></a>
+ and
+specifies the initial value used for the optimization of the
+<a href="cppad_mixed.htm#Notation.Random Effects, u" target="_top"><span style='white-space: nowrap'>random&nbsp;effects</span></a>
+ vector <small>@(@
+u
+@)@</small>.
+It must hold that
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_in</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+</span></font></code>
+for each valid index 
+<code><i><font color="black"><span style='white-space: nowrap'>i</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="random_out" id="random_out">random_out</a></big></b>
+<br>
+The return value  has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;double&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_out</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It is the final value (obtained by optimization) of the
+<a href="cppad_mixed.htm#Notation.Random Effects, u" target="_top"><span style='white-space: nowrap'>random&nbsp;effects</span></a>
+
+vector <small>@(@
+u
+@)@</small>.
+
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="optimize_random.cpp.htm" target="_top"><span style='white-space: nowrap'>optimize_random.cpp</span></a>
+ contains an example
+and test of this procedure.
+It returns true, if the test passes, and false otherwise.
+
+
+<hr>Input File: src/optimize_random.cpp
+
+</body>
+</html>

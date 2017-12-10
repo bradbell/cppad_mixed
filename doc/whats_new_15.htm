@@ -1,0 +1,223 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Changes and Additions to cppad_mixed During 2015</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2015">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2015 12-25 12-24 12-16 12-14 12-13 12-10 ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_whats_new_15_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="whats_new_17.htm" target="_top">Prev</a>
+</td><td><a href="whats_new_16.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>whats_new_17</option>
+<option>whats_new_15</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>whats_new_17-&gt;</option>
+<option>whats_new_15</option>
+<option>whats_new_16</option>
+</select>
+</td>
+<td>whats_new_15</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>12-25</option>
+<option>12-24</option>
+<option>12-16</option>
+<option>12-14</option>
+<option>12-13</option>
+<option>12-10</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Changes and Additions to cppad_mixed During 2015</big></big></b></center>
+<br>
+<b><big><a name="12-25" id="12-25">12-25</a></big></b>
+
+<ol type="1"><li>
+Only use subscripts for derivative notation; i.e., remove the
+superscripts (1) and (2) from derivatives. This enables us
+(in the future) to use superscripts for indices and subscripts for derivatives.
+</li><li>
+
+Change <small>@(@
+z^L, z^U
+@)@</small> to <small>@(@
+z_L , z_U
+@)@</small> in
+<a href="ipopt_xam.htm" target="_top"><span style='white-space: nowrap'>ipopt_xam</span></a>
+ (because the corresponding variables are
+
+<code><i><font color="black"><span style='white-space: nowrap'>z_L</span></font></i></code>
+ and 
+<code><i><font color="black"><span style='white-space: nowrap'>z_U</span></font></i></code>
+); see
+<a href="ipopt_fixed_finalize_solution.htm#z_L" target="_top"><span style='white-space: nowrap'>finalize_solution</span></a>
+.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="12-24" id="12-24">12-24</a></big></b>
+
+<ol type="1"><li>
+There was a bug in the <a href="ipopt_fixed_eval_g.htm" target="_top"><span style='white-space: nowrap'>ipopt_fixed_eval_g</span></a>
+ routine.
+It was not caching the value of <small>@(@
+\hat{u}( \theta )
+@)@</small>
+each time that <small>@(@
+\theta
+@)@</small> changed.
+This has been fixed.
+</li><li>
+
+Change remarks about
+<a href="theory.htm#Approximate Optimal Random Effects.Second Order, W(beta, theta, u)" target="_top"><span style='white-space: nowrap'>W(beta,&nbsp;theta,&nbsp;u)</span></a>
+
+to mention that the following has been proven
+<small>@[@
+
+	W^i_{\beta \beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+	=
+	\hat{u}^i_{\theta , \theta} ( \theta )
+
+@]@</small>
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="12-16" id="12-16">12-16</a></big></b>
+<br>
+Overhaul the set of values and documentation for the
+<a href="initialize.htm#size_map" target="_top"><span style='white-space: nowrap'>size_map</span></a>
+ memory diagnostic.
+
+<br>
+<br>
+<b><big><a name="12-14" id="12-14">12-14</a></big></b>
+
+<ol type="1"><li>
+Provide a default definition for
+<a href="ran_likelihood.htm#vec.Default" target="_top"><span style='white-space: nowrap'>ran_likelihood</span></a>
+,
+<a href="fix_likelihood.htm#vec.Default" target="_top"><span style='white-space: nowrap'>fix_likelihood</span></a>
+,
+<a href="fix_constraint.htm#vec.Default" target="_top"><span style='white-space: nowrap'>fix_constraint</span></a>
+,
+<a href="public.htm#User Defined Functions.fatal_error" target="_top"><span style='white-space: nowrap'>fatal_error</span></a>
+, and
+<a href="public.htm#User Defined Functions.warning" target="_top"><span style='white-space: nowrap'>warning</span></a>
+.
+</li><li>
+
+Change section titles for these sections
+to highlight that they are user defined;
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="12-13" id="12-13">12-13</a></big></b>
+<br>
+Change
+<code><font color="blue">constraint</font></code> to <a href="fix_constraint.htm" target="_top"><span style='white-space: nowrap'>fix_constraint</span></a>
+,
+<code><font color="blue">ran_likelihood</font></code> to <a href="ran_likelihood.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood</span></a>
+, and
+<code><font color="blue">fix_likelihood</font></code> to <a href="fix_likelihood.htm" target="_top"><span style='white-space: nowrap'>fix_likelihood</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="12-10" id="12-10">12-10</a></big></b>
+
+<ol type="1"><li>
+First version of <code><font color="blue">cppad_mixed</font></code> as a package separate from
+the <a href="http://moby.ihme.washington.edu/bradbell/dismod_at" target="_top"><span style='white-space: nowrap'>dismod_at</span></a>
+
+package.
+</li><li>
+
+Use the
+<a href="http://www.coin-or.org/CppAD/Doc/addon.htm" target="_top"><span style='white-space: nowrap'>CppAD&nbsp;addon</span></a>
+
+conventions for the install of <code><font color="blue">cppad_mixed</font></code>.
+</li><li>
+
+Put <code><font color="blue">cppad_mixed</font></code> class in the global namespace,
+(objects are in the <code><font color="blue">CppAD::mixed</font></code> namespace).
+</li><li>
+
+Modify file names and documentation because everything now refers to
+the <code><font color="blue">cppad_mixed</font></code> package.
+</li></ol>
+
+
+
+
+<hr>Input File: omh/whats_new/15.omh
+
+</body>
+</html>

@@ -1,0 +1,229 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Initialization After Constructor</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Initialization After Constructor">
+<meta name="keywords" id="keywords" content=" initialization after constructor syntax public purpose mixed_object fixed_vec random_vec ran_likelihood_jac ran_likelihood_hes size_map example ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_initialize_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="fix_constraint.cpp.htm" target="_top">Prev</a>
+</td><td><a href="optimize_random.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>base_class</option>
+<option>public</option>
+<option>initialize</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>base_class-&gt;</option>
+<option>public</option>
+<option>private</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>public-&gt;</option>
+<option>derived_ctor</option>
+<option>ran_likelihood</option>
+<option>fix_likelihood</option>
+<option>fix_constraint</option>
+<option>initialize</option>
+<option>optimize_random</option>
+<option>optimize_fixed</option>
+<option>information_mat</option>
+<option>sample_fixed</option>
+<option>sample_random</option>
+<option>ran_likelihood_jac</option>
+<option>ran_likelihood_hes</option>
+</select>
+</td>
+<td>initialize</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Public</option>
+<option>Purpose</option>
+<option>mixed_object</option>
+<option>fixed_vec</option>
+<option>random_vec</option>
+<option>ran_likelihood_jac</option>
+<option>ran_likelihood_hes</option>
+<option>size_map</option>
+<option>Example</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Initialization After Constructor</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>size_map</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.initialize(</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="Public" id="Public">Public</a></big></b>
+<br>
+This <code><font color="blue">cppad_mixed</font></code> member function is <a href="public.htm" target="_top"><span style='white-space: nowrap'>public</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
+<br>
+Some of the <code><font color="blue">cppad_mixed</font></code> initialization requires calling the
+derived class version of the
+<a href="ran_likelihood.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood</span></a>
+ function.
+Hence this initialization cannot be done until
+after the <a href="derived_ctor.htm" target="_top"><span style='white-space: nowrap'>derived&nbsp;constructor</span></a>
+ completes.
+
+<br>
+<br>
+<b><big><a name="mixed_object" id="mixed_object">mixed_object</a></big></b>
+<br>
+We use <a href="derived_ctor.htm#mixed_object" target="_top"><span style='white-space: nowrap'>mixed_object</span></a>
+
+to denote an object of a class that is
+derived from the <code><font color="blue">cppad_mixed</font></code> base class.
+
+<br>
+<br>
+<b><big><a name="fixed_vec" id="fixed_vec">fixed_vec</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It specifies the value of the
+<a href="cppad_mixed.htm#Notation.Fixed Effects, theta" target="_top"><span style='white-space: nowrap'>fixed&nbsp;effects</span></a>
+
+vector <small>@(@
+\theta
+@)@</small> at which certain <code><font color="blue">CppAD::ADFun</font></code>
+objects are recorded.
+
+<br>
+<br>
+<b><big><a name="random_vec" id="random_vec">random_vec</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It specifies the value of the
+<a href="cppad_mixed.htm#Notation.Random Effects, u" target="_top"><span style='white-space: nowrap'>random&nbsp;effects</span></a>
+
+vector <small>@(@
+u
+@)@</small> at which certain <code><font color="blue">CppAD::ADFun</font></code>
+objects are recorded.
+
+<br>
+<br>
+<b><big><a name="ran_likelihood_jac" id="ran_likelihood_jac">ran_likelihood_jac</a></big></b>
+<br>
+If <a href="ran_likelihood_jac.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_jac</span></a>
+ returns a non-empty vector,
+a check is done to make sure the derivative computations are correct.
+
+<br>
+<br>
+<b><big><a name="ran_likelihood_hes" id="ran_likelihood_hes">ran_likelihood_hes</a></big></b>
+<br>
+If <a href="ran_likelihood_hes.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_hes</span></a>
+ returns a non-empty vector,
+a check is done to make sure the derivative computations are correct.
+
+<br>
+<br>
+<b><big><a name="size_map" id="size_map">size_map</a></big></b>
+<br>
+The return value has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::map&lt;std::string,&nbsp;size_t&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>size_map</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It represent the size of certain aspects of the problem.
+The actual fields in 
+<code><i><font color="black"><span style='white-space: nowrap'>size_map</span></font></i></code>
+ are not specified,
+but they can be inspected. For example,
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::map&lt;std::string,&nbsp;size_t&gt;::iterator&nbsp;itr;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(itr&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>size_map</span></font></i><font color="blue"><span style='white-space: nowrap'>.begin();&nbsp;itr&nbsp;!=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>size_map</span></font></i><font color="blue"><span style='white-space: nowrap'>.end();&nbsp;itr++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;itr-&gt;first&nbsp;&lt;&lt;&nbsp;&quot;&nbsp;=&nbsp;&quot;&nbsp;itr-&gt;second&nbsp;&lt;&lt;&nbsp;&quot;\n&quot;;<br>
+</span></font></code>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="derived_ctor.cpp.htm" target="_top"><span style='white-space: nowrap'>derived_ctor.cpp</span></a>
+ contains an example
+of using <code><font color="blue">initialize</font></code>.
+
+
+<hr>Input File: src/initialize.cpp
+
+</body>
+</html>

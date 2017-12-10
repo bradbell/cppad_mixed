@@ -1,0 +1,266 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Description of Ipopt Tracing Output</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Description of Ipopt Tracing Output">
+<meta name="keywords" id="keywords" content=" description ipopt tracing output iter objective inf_pr inf_du lg(mu) ||d|| lg(rg) alpha_du alpha_pr ls reference ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_ipopt_trace_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="ipopt_options.htm" target="_top">Prev</a>
+</td><td><a href="information_mat.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>base_class</option>
+<option>public</option>
+<option>optimize_fixed</option>
+<option>ipopt_trace</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down4(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>base_class-&gt;</option>
+<option>public</option>
+<option>private</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>public-&gt;</option>
+<option>derived_ctor</option>
+<option>ran_likelihood</option>
+<option>fix_likelihood</option>
+<option>fix_constraint</option>
+<option>initialize</option>
+<option>optimize_random</option>
+<option>optimize_fixed</option>
+<option>information_mat</option>
+<option>sample_fixed</option>
+<option>sample_random</option>
+<option>ran_likelihood_jac</option>
+<option>ran_likelihood_hes</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>optimize_fixed-&gt;</option>
+<option>optimize_fixed.cpp</option>
+<option>ipopt_options</option>
+<option>ipopt_trace</option>
+</select>
+</td>
+<td>ipopt_trace</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>iter</option>
+<option>objective</option>
+<option>inf_pr</option>
+<option>inf_du</option>
+<option>lg(mu)</option>
+<option>||d||</option>
+<option>lg(rg)</option>
+<option>alpha_du</option>
+<option>alpha_pr</option>
+<option>ls</option>
+<option>Reference</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Description of Ipopt Tracing Output</big></big></b></center>
+The following is a description of the output for each iteration
+when its 
+<code><i><font color="black"><span style='white-space: nowrap'>print_level</span></font></i></code>
+ option is <code><font color="blue">5</font></code>:
+
+<br>
+<br>
+<b><big><a name="iter" id="iter">iter</a></big></b>
+<br>
+The current iteration count.
+This includes regular iterations and iterations during the restoration phase.
+If the algorithm is in the restoration phase,
+the letter r will be appended to the iteration number.
+
+<br>
+<br>
+<b><big><a name="objective" id="objective">objective</a></big></b>
+<br>
+The unscaled objective value at the current point.
+During the restoration phase, this value remains the unscaled objective
+value for the original problem.
+
+<br>
+<br>
+<b><big><a name="inf_pr" id="inf_pr">inf_pr</a></big></b>
+<br>
+The unscaled constraint violation at the current point.
+This quantity is the infinity-norm (max) of the (unscaled) constraint
+violation for <small>@(@
+g(x)
+@)@</small> in the Ipopt documentation.
+During the restoration phase, this value remains the constraint
+violation of the original problem at the current point.
+The option <code><font color="blue">inf_pr_output</font></code> can be used to switch to the printing of
+a different quantity.
+
+<br>
+<br>
+<b><big><a name="inf_du" id="inf_du">inf_du</a></big></b>
+<br>
+The scaled dual infeasibility at the current point.
+This quantity measure the infinity-norm (max) of the
+internal dual infeasibility, i.e, the derivative of the lagragian
+with respect to the primal variables
+<small>@[@
+
+	\nabla f(x) \nabla c(x) \lambda - z
+
+@]@</small>
+where <small>@(@
+z
+@)@</small> are the lagrange multipliers for the box constraints and
+<small>@(@
+c(x)
+@)@</small> are the nonlinear equality constraints
+(inequality constraints are reformulated using slack variables
+and problem scaling).
+During the restoration phase,
+this is the value of the dual infeasibility for the restoration phase problem.
+
+<br>
+<br>
+<b><big><a name="lg(mu)" id="lg(mu)">lg(mu)</a></big></b>
+
+<br>
+<small>@(@
+\log_{10}
+@)@</small>of the value of the barrier parameter <small>@(@
+\mu
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="||d||" id="||d||">||d||</a></big></b>
+<br>
+The infinity norm (max) of the primal step
+(for the original variables <small>@(@
+x
+@)@</small> and the internal slack
+variables <small>@(@
+s
+@)@</small>).
+During the restoration phase,
+this value includes the values of additional variables that
+capture the violation in <small>@(@
+c(x) = 0
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="lg(rg)" id="lg(rg)">lg(rg)</a></big></b>
+
+<br>
+<small>@(@
+\log_{10}
+@)@</small>of the value of the regularization term for the Hessian
+of the Lagrangian in the augmented system.
+A dash (-) indicates that no regularization was done.
+
+<br>
+<br>
+<b><big><a name="alpha_du" id="alpha_du">alpha_du</a></big></b>
+<br>
+The step size for the dual variables for the box constraints in the
+equality constrained formulation; i.e., <small>@(@
+z
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="alpha_pr" id="alpha_pr">alpha_pr</a></big></b>
+<br>
+The step size for the primal variables
+<small>@(@
+x
+@)@</small> and <small>@(@
+\lambda
+@)@</small> in the equality constrained formulation.
+The number is usually followed by a character for additional diagnostic
+information regarding the step acceptance criterion.
+
+<br>
+<br>
+<b><big><a name="ls" id="ls">ls</a></big></b>
+<br>
+The number of backtracking line search steps
+(does not include second-order correction steps).
+
+<br>
+<br>
+<b><big><a name="Reference" id="Reference">Reference</a></big></b>
+<br>
+A. Wachter and L. T. Biegler.,
+On the implementation of a primal-dual interior point
+filter line search algorithm for large-scale nonlinear programming.
+Mathematical Programming, 106(1):25-57, 2006.
+
+
+<hr>Input File: omh/ipopt_trace.omh
+
+</body>
+</html>

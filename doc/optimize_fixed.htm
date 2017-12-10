@@ -1,0 +1,548 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Optimize Fixed Effects</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Optimize Fixed Effects">
+<meta name="keywords" id="keywords" content=" optimize fixed effects syntax public purpose inf mixed_object fixed_ipopt_options derivative_test hessian_approximation limited_memory_max_history max_iter accept_after_max_steps nlp_scaling_method random_ipopt_options fixed_lower fixed_upper fix_constraint_lower fix_constraint_upper fixed_scale fixed_in random_lower random_upper random_in solution laplace approximation example ipopt_fixed ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_optimize_fixed_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="optimize_random.cpp.htm" target="_top">Prev</a>
+</td><td><a href="optimize_fixed.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>base_class</option>
+<option>public</option>
+<option>optimize_fixed</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>base_class-&gt;</option>
+<option>public</option>
+<option>private</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>public-&gt;</option>
+<option>derived_ctor</option>
+<option>ran_likelihood</option>
+<option>fix_likelihood</option>
+<option>fix_constraint</option>
+<option>initialize</option>
+<option>optimize_random</option>
+<option>optimize_fixed</option>
+<option>information_mat</option>
+<option>sample_fixed</option>
+<option>sample_random</option>
+<option>ran_likelihood_jac</option>
+<option>ran_likelihood_hes</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>optimize_fixed-&gt;</option>
+<option>optimize_fixed.cpp</option>
+<option>ipopt_options</option>
+<option>ipopt_trace</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Public</option>
+<option>Purpose</option>
+<option>inf</option>
+<option>mixed_object</option>
+<option>fixed_ipopt_options</option>
+<option>---..derivative_test</option>
+<option>---..hessian_approximation</option>
+<option>---..limited_memory_max_history</option>
+<option>---..max_iter</option>
+<option>---..accept_after_max_steps</option>
+<option>---..nlp_scaling_method</option>
+<option>random_ipopt_options</option>
+<option>fixed_lower</option>
+<option>fixed_upper</option>
+<option>fix_constraint_lower</option>
+<option>fix_constraint_upper</option>
+<option>fixed_scale</option>
+<option>fixed_in</option>
+<option>random_lower</option>
+<option>random_upper</option>
+<option>random_in</option>
+<option>solution</option>
+<option>Laplace Approximation</option>
+<option>Example</option>
+<option>ipopt_fixed</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Optimize Fixed Effects</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=</span></font></code>
+
+
+<code><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.optimize_fixed(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_ipopt_options</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_ipopt_options</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fix_constraint_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fix_constraint_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_scale</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_in</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_in</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="Public" id="Public">Public</a></big></b>
+<br>
+This <code><font color="blue">cppad_mixed</font></code> member function is <a href="public.htm" target="_top"><span style='white-space: nowrap'>public</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
+<br>
+This routine maximizes the total objective
+<a href="theory.htm#Objective.Total Objective, L(theta)" target="_top"><span style='white-space: nowrap'>L(theta)</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="inf" id="inf">inf</a></big></b>
+<br>
+The value <code><font color="blue">inf</font></code> below refers to
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::numeric_limits&lt;double&gt;::infinity()<br>
+</span></font></code>
+<br>
+<b><big><a name="mixed_object" id="mixed_object">mixed_object</a></big></b>
+<br>
+We use <a href="derived_ctor.htm#mixed_object" target="_top"><span style='white-space: nowrap'>mixed_object</span></a>
+
+to denote an object of a class that is
+derived from the <code><font color="blue">cppad_mixed</font></code> base class.
+
+<br>
+<br>
+<b><big><a name="fixed_ipopt_options" id="fixed_ipopt_options">fixed_ipopt_options</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;std::string&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_ipopt_options</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+and is the <a href="ipopt_options.htm" target="_top"><span style='white-space: nowrap'>ipopt_options</span></a>
+ for optimizing the fixed effects
+with the following qualifications:
+
+<br>
+<br>
+<b><a name="fixed_ipopt_options.derivative_test" id="fixed_ipopt_options.derivative_test">derivative_test</a></b>
+<br>
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>derivative_test</span></font></i></code>
+ is <code><font color="blue">none</font></code>,
+no derivative testing is done.
+If it is <code><font color="blue">first-order</font></code>,
+only first order derivatives are tested.
+If it is <code><font color="blue">second-order</font></code> (<code><font color="blue">only-second-order</font></code>)
+second derivatives (and first derivatives) are tested.
+In these two cases 
+<code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
+ must be <code><font color="blue">false</font></code>.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>derivative_test</span></font></i></code>
+ is <code><font color="blue">adaptive</font></code>,
+a special <code><font color="blue">cppad_mixed</font></code> adaptive step size method is
+used to test first order derivatives.
+If it is <code><font color="blue">trace-adaptive</font></code>,
+the adaptive step size results are traced on standard output.
+
+<br>
+<br>
+<b><a name="fixed_ipopt_options.hessian_approximation" id="fixed_ipopt_options.hessian_approximation">hessian_approximation</a></b>
+<br>
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
+ is true,
+
+<code><i><font color="black"><span style='white-space: nowrap'>hessian_approximation</span></font></i></code>
+ will be set to <code><font color="blue">limit-memory</font></code>.
+If it is also set in 
+<code><i><font color="black"><span style='white-space: nowrap'>fixed_ipopt_options</span></font></i></code>
+, it must have this value.
+
+<br>
+<br>
+<b><a name="fixed_ipopt_options.limited_memory_max_history" id="fixed_ipopt_options.limited_memory_max_history">limited_memory_max_history</a></b>
+<br>
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
+ is true,
+
+<code><i><font color="black"><span style='white-space: nowrap'>limited_memory_max_history</span></font></i></code>
+ will be set to an unspecified value and
+cannot be cannot be set in 
+<code><i><font color="black"><span style='white-space: nowrap'>fixed_ipopt_options</span></font></i></code>
+.
+
+<br>
+<br>
+<b><a name="fixed_ipopt_options.max_iter" id="fixed_ipopt_options.max_iter">max_iter</a></b>
+<br>
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>max_iter</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;&lt;=&nbsp;0</span></font></code>
+ in 
+<code><i><font color="black"><span style='white-space: nowrap'>fixed_ipopt_options</span></font></i></code>
+,
+Ipopt is run with 
+<code><i><font color="black"><span style='white-space: nowrap'>max_iter</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;0</span></font></code>
+ and the return status
+<code><font color="blue">Ipopt::Maximum_Iterations_Exceeded</font></code> is consider normal; i.e.,
+does not generate a warning or error message.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>max_iter</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;==&nbsp;0</span></font></code>
+ in the options,
+it may be that 
+<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_opt&nbsp;!=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_in</span></font></i></code>
+
+(Ipopt moves non-equality constraints to the interior of the constraint).
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>max_iter</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;==&nbsp;-1</span></font></code>
+ in the options,
+
+<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_opt&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_in</span></font></i></code>
+
+(this is the only difference between <code><font color="blue">-1</font></code> and <code><font color="blue">0</font></code>).
+
+<br>
+<br>
+<b><a name="fixed_ipopt_options.accept_after_max_steps" id="fixed_ipopt_options.accept_after_max_steps">accept_after_max_steps</a></b>
+<br>
+The default value for 
+<code><i><font color="black"><span style='white-space: nowrap'>accept_after_max_steps</span></font></i></code>
+ is <code><font color="blue">2</font></code>.
+This is the maximum number of backtracking steps to take before
+accepting a line search point; see
+<a href="ipopt_trace.htm#ls" target="_top"><span style='white-space: nowrap'>ls</span></a>
+ is the ipopt tracing documentation.
+
+<br>
+<br>
+<b><a name="fixed_ipopt_options.nlp_scaling_method" id="fixed_ipopt_options.nlp_scaling_method">nlp_scaling_method</a></b>
+<br>
+When optimizing the fixed effects,
+the objective and the constraint functions are automatically scaled
+by <code><font color="blue">cppad_mixed</font></code>.
+It is an error for the user to specify this option in
+
+<code><i><font color="black"><span style='white-space: nowrap'>fixed_ipopt_options</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="random_ipopt_options" id="random_ipopt_options">random_ipopt_options</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;std::string&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_ipopt_options</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+and is the <a href="ipopt_options.htm" target="_top"><span style='white-space: nowrap'>ipopt_options</span></a>
+ for optimizing the random effects.
+
+<br>
+<br>
+<b><big><a name="fixed_lower" id="fixed_lower">fixed_lower</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_lower</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It has size <a href="derived_ctor.htm#n_fixed" target="_top"><span style='white-space: nowrap'>n_fixed</span></a>
+ and
+specifies the lower limits for the
+<a href="cppad_mixed.htm#Notation.Fixed Effects, theta" target="_top"><span style='white-space: nowrap'>fixed&nbsp;effects</span></a>
+.
+Note that minus infinity is used for no lower limit.
+
+<br>
+<br>
+<b><big><a name="fixed_upper" id="fixed_upper">fixed_upper</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_upper</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It has size 
+<code><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i></code>
+ and specifies the upper limits for the
+<a href="cppad_mixed.htm#Notation.Fixed Effects, theta" target="_top"><span style='white-space: nowrap'>fixed&nbsp;effects</span></a>
+.
+Note that plus infinity is used for no upper limit.
+
+<br>
+<br>
+<b><big><a name="fix_constraint_lower" id="fix_constraint_lower">fix_constraint_lower</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fix_constraint_lower</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+it has size 
+<code><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i></code>
+ and specifies the lower limits for the
+<a href="fix_constraint.htm" target="_top"><span style='white-space: nowrap'>fixed&nbsp;constraints</span></a>
+.
+Note that minus infinity is used for no lower limit.
+
+<br>
+<br>
+<b><big><a name="fix_constraint_upper" id="fix_constraint_upper">fix_constraint_upper</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fix_constraint_upper</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+it specifies the upper limits for the
+<a href="fix_constraint.htm" target="_top"><span style='white-space: nowrap'>fixed&nbsp;constraints</span></a>
+.
+Note that plus infinity is used for no upper limit.
+
+<br>
+<br>
+<b><big><a name="fixed_scale" id="fixed_scale">fixed_scale</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_scale</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+The automatic scaling for the fixed effect optimization is
+done using this point and the convergence will be relative
+to the derivative values at this point.
+It must hold for each 
+<code><i><font color="black"><span style='white-space: nowrap'>j</span></font></i></code>
+ that
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_scale</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+</span></font></code>
+Note that you can continue an optimization with the same scaling
+by setting
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_in</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_opt<br>
+</span></font></code>
+and the re-running the optimization.
+
+<br>
+<br>
+<b><big><a name="fixed_in" id="fixed_in">fixed_in</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_in</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It specifies the initial value for the
+<a href="cppad_mixed.htm#Notation.Fixed Effects, theta" target="_top"><span style='white-space: nowrap'>fixed&nbsp;effects</span></a>
+
+vector <small>@(@
+\theta
+@)@</small> during the optimization process.
+It must hold for each 
+<code><i><font color="black"><span style='white-space: nowrap'>j</span></font></i></code>
+ that
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_in</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+</span></font></code>
+<br>
+<b><big><a name="random_lower" id="random_lower">random_lower</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_lower</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It must have size equal to
+<a href="derived_ctor.htm#n_random" target="_top"><span style='white-space: nowrap'>n_random</span></a>
+ and
+specifies the lower limits for the optimization of the
+<a href="cppad_mixed.htm#Notation.Random Effects, u" target="_top"><span style='white-space: nowrap'>random&nbsp;effects</span></a>
+
+vector <small>@(@
+u
+@)@</small>.
+This may be useful to keep the random effects
+out of regions of numerical instability.
+On the other hand, the calculation of the
+<a href="theory.htm#Derivative of Optimal Random Effects" target="_top"><span style='white-space: nowrap'>derivative&nbsp;of&nbsp;optimal&nbsp;random&nbsp;effects</span></a>
+
+<small>@(@
+\hat{u}_\theta ( \theta )
+@)@</small> will not be correct when these constraints
+are active (and this could have adverse effects on the optimization).
+The value minus infinity can be used to specify no lower limit.
+
+<br>
+<br>
+<b><big><a name="random_upper" id="random_upper">random_upper</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_upper</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It must have size equal to
+<a href="derived_ctor.htm#n_random" target="_top"><span style='white-space: nowrap'>n_random</span></a>
+ and
+specifies the upper limits for the optimization of the random effect.
+The value plus infinity can be used to specify no lower limit.
+
+<br>
+<br>
+<b><big><a name="random_in" id="random_in">random_in</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_in</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It must have size equal to
+<a href="derived_ctor.htm#n_random" target="_top"><span style='white-space: nowrap'>n_random</span></a>
+ and
+specifies the initial value used for the optimization of the
+<a href="cppad_mixed.htm#Notation.Random Effects, u" target="_top"><span style='white-space: nowrap'>random&nbsp;effects</span></a>
+ vector <small>@(@
+u
+@)@</small>.
+It must hold that
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_in</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+</span></font></code>
+for each valid index 
+<code><i><font color="black"><span style='white-space: nowrap'>i</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="solution" id="solution">solution</a></big></b>
+<br>
+The return value has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::mixed::fixed_solution&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It is the solution (obtained by optimization) of the
+fixed effects vector and its Lagrange multipliers; see
+<a href="fixed_solution.htm" target="_top"><span style='white-space: nowrap'>fixed_solution</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="Laplace Approximation" id="Laplace Approximation">Laplace Approximation</a></big></b>
+<br>
+The <a href="theory.htm" target="_top"><span style='white-space: nowrap'>theory</span></a>
+ for the
+Laplace approximation optimization only includes the case where
+the <a href="ran_likelihood.htm" target="_top"><span style='white-space: nowrap'>random&nbsp;likelihood</span></a>
+ is smooth.
+
+
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="optimize_fixed.cpp.htm" target="_top"><span style='white-space: nowrap'>optimize_fixed.cpp</span></a>
+ contains an example
+and test of this procedure.
+It returns true, if the test passes, and false otherwise.
+
+<br>
+<br>
+<b><big><a name="ipopt_fixed" id="ipopt_fixed">ipopt_fixed</a></big></b>
+<br>
+The  class <a href="ipopt_fixed.htm" target="_top"><span style='white-space: nowrap'>ipopt_fixed</span></a>
+ is used by <code><font color="blue">optimize_fixed</font></code>
+to optimize the fixed effects.
+It's specifications are not part of the <a href="cppad_mixed.htm" target="_top"><span style='white-space: nowrap'>cppad_mixed</span></a>
+ public interface.
+
+
+<hr>Input File: src/optimize_fixed.cpp
+
+</body>
+</html>

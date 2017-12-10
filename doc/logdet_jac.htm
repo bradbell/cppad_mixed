@@ -1,0 +1,259 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Jacobian of Log Determinant of Hessian w.r.t. Random Effects</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Jacobian of Log Determinant of Hessian w.r.t. Random Effects">
+<meta name="keywords" id="keywords" content=" jacobian log determinant hessian w.r.t. random effects syntax private purpose mixed_object ldlt_ran_hes_ fixed_vec random_vec logdet_fix logdet_ran example ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_logdet_jac_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="fix_like_jac.cpp.htm" target="_top">Prev</a>
+</td><td><a href="logdet_jac.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>base_class</option>
+<option>private</option>
+<option>logdet_jac</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>base_class-&gt;</option>
+<option>public</option>
+<option>private</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>private-&gt;</option>
+<option>pack</option>
+<option>unpack</option>
+<option>init_ran_hes</option>
+<option>init_ran_hes_check</option>
+<option>init_ran_objcon</option>
+<option>init_ldlt_ran_hes</option>
+<option>init_fix_con</option>
+<option>init_fix_like</option>
+<option>init_hes_cross</option>
+<option>init_laplace_obj_hes</option>
+<option>init_ran_like</option>
+<option>fix_con_eval</option>
+<option>fix_con_hes</option>
+<option>fix_con_jac</option>
+<option>fix_like_eval</option>
+<option>fix_like_hes</option>
+<option>fix_like_jac</option>
+<option>logdet_jac</option>
+<option>ran_like_jac</option>
+<option>ran_like_jac_check</option>
+<option>ran_con_eval</option>
+<option>ran_con_jac</option>
+<option>ran_obj_eval</option>
+<option>ran_obj_jac</option>
+<option>laplace_obj_hes</option>
+<option>update_factor</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>logdet_jac-&gt;</option>
+<option>logdet_jac.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Private</option>
+<option>Purpose</option>
+<option>mixed_object</option>
+<option>ldlt_ran_hes_</option>
+<option>fixed_vec</option>
+<option>random_vec</option>
+<option>logdet_fix</option>
+<option>logdet_ran</option>
+<option>Example</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Jacobian of Log Determinant of Hessian w.r.t. Random Effects</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.logdet_jac(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>logdet_fix</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>logdet_ran</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="Private" id="Private">Private</a></big></b>
+<br>
+This <code><font color="blue">cppad_mixed</font></code> member function is <a href="private.htm" target="_top"><span style='white-space: nowrap'>private</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
+<br>
+This routine computes the Jacobian of the log determinant
+of the Hessian of the random likelihood
+<a href="theory.htm#Random Likelihood, f(theta, u)" target="_top"><span style='white-space: nowrap'>f(theta,&nbsp;u)</span></a>
+
+with respect to the random effects vector <small>@(@
+u
+@)@</small>.
+To be specific, it computes both
+<small>@[@
+
+	\partial_\theta \log \det [ f_{u,u} ( \theta, u ) ]
+	\; \R{and} \;
+	\partial_u \log \det [ f_{u,u} ( \theta, u ) ]
+
+@]@</small>
+
+<br>
+<br>
+<b><big><a name="mixed_object" id="mixed_object">mixed_object</a></big></b>
+<br>
+We use <a href="derived_ctor.htm#mixed_object" target="_top"><span style='white-space: nowrap'>mixed_object</span></a>
+
+to denote an object of a class that is
+derived from the <code><font color="blue">cppad_mixed</font></code> base class.
+
+<br>
+<br>
+<b><big><a name="ldlt_ran_hes_" id="ldlt_ran_hes_">ldlt_ran_hes_</a></big></b>
+<br>
+It is assumed that the member variable
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CPPAD_MIXED_LDLT&nbsp;ldlt_ran_hes_<br>
+</span></font></code>
+was updated using <a href="update_factor.htm" target="_top"><span style='white-space: nowrap'>update_factor</span></a>
+ for the specified values of the
+fixed and random effects.
+
+<br>
+<br>
+<b><big><a name="fixed_vec" id="fixed_vec">fixed_vec</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+and is the value of fixed effects <small>@(@
+\theta
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="random_vec" id="random_vec">random_vec</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+and is the value of fixed effects <small>@(@
+u
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="logdet_fix" id="logdet_fix">logdet_fix</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>logdet_fix</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+Its input size must be equal to <code><font color="blue">n_fixed_</font></code>.
+Upon return, it contains the value of the derivative w.r.t
+the fixed effects.
+
+<code><font color="blue"><span style='white-space: nowrap'>ran_hes_.col[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;-&nbsp;n_fixed_</span></font></code>
+ of the Hessian.
+
+<br>
+<br>
+<b><big><a name="logdet_ran" id="logdet_ran">logdet_ran</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>logdet_ran</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+Its input size must be equal to <code><font color="blue">n_random_</font></code>.
+Upon return, it contains the value of the derivative w.r.t
+the random effects.
+
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="logdet_jac.cpp.htm" target="_top"><span style='white-space: nowrap'>logdet_jac.cpp</span></a>
+ contains an example
+and test of this procedure.
+It returns true, if the test passes, and false otherwise.
+
+
+<hr>Input File: src/logdet_jac.cpp
+
+</body>
+</html>

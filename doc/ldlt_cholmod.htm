@@ -1,0 +1,225 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>A Cholmod Cholesky Factor Class</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="A Cholmod Cholesky Factor Class">
+<meta name="keywords" id="keywords" content=" cholmod cholesky factor class see also private purpose factorization h l d p example preprocessor symbols ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_ldlt_cholmod_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="ipopt_run_xam.htm" target="_top">Prev</a>
+</td><td><a href="ldlt_cholmod_ctor.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>ldlt_cholmod</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>ldlt_cholmod-&gt;</option>
+<option>ldlt_cholmod_ctor</option>
+<option>ldlt_cholmod_dtor</option>
+<option>ldlt_cholmod_init</option>
+<option>ldlt_cholmod_update</option>
+<option>ldlt_cholmod_logdet</option>
+<option>ldlt_cholmod_solve_H</option>
+<option>ldlt_cholmod_sim_cov</option>
+<option>ldlt_cholmod_inv</option>
+<option>ldlt_cholmod.cpp</option>
+<option>cholmod_solve_xam</option>
+<option>cholmod_solve2_a.cpp</option>
+<option>cholmod_solve2_sim.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>See Also</option>
+<option>Private</option>
+<option>Purpose</option>
+<option>Factorization</option>
+<option>---..H</option>
+<option>---..L</option>
+<option>---..D</option>
+<option>---..P</option>
+<option>Example</option>
+<option>Preprocessor Symbols</option>
+<option>Contents</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>A Cholmod Cholesky Factor Class</big></big></b></center>
+<br>
+<b><big><a name="See Also" id="See Also">See Also</a></big></b>
+
+<br>
+<a href="ldlt_eigen.htm" target="_top"><span style='white-space: nowrap'>ldlt_eigen</span></a>
+
+
+<br>
+<br>
+<b><big><a name="Private" id="Private">Private</a></big></b>
+<br>
+This class is an implementation detail and not part of the
+<a href="namespace.htm#Private" target="_top"><span style='white-space: nowrap'>CppAD::mixed</span></a>
+ user API.
+
+<br>
+<br>
+<b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
+<br>
+This class has utilities that work with a <code><font color="blue">cholmod</font></code> LDLT factor,
+<code><font color="blue">cholmod</font></code> is part of the
+<a href="install_unix.htm#Special Requirements.SuiteSparse" target="_top"><span style='white-space: nowrap'>SuiteSparse</span></a>
+ package.
+
+<br>
+<br>
+<b><big><a name="Factorization" id="Factorization">Factorization</a></big></b>
+<br>
+The factorization is
+<small>@[@
+
+	L D L^\R{T} = P H P^{T}
+
+@]@</small>
+where
+
+<br>
+<br>
+<b><a name="Factorization.H" id="Factorization.H">H</a></b>
+<br>
+is the matrix corresponding the current
+<a href="ldlt_cholmod_update.htm" target="_top"><span style='white-space: nowrap'>update</span></a>
+.
+
+<br>
+<br>
+<b><a name="Factorization.L" id="Factorization.L">L</a></b>
+<br>
+is a lower triangular matrix with ones on the diagonal,
+
+<br>
+<br>
+<b><a name="Factorization.D" id="Factorization.D">D</a></b>
+<br>
+is a diagonal matrix.
+
+<br>
+<br>
+<b><a name="Factorization.P" id="Factorization.P">P</a></b>
+<br>
+is a permutation matrix.
+
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="ldlt_cholmod.cpp.htm" target="_top"><span style='white-space: nowrap'>ldlt_cholmod.cpp</span></a>
+ contains an example and test
+using the operations in this class.
+
+<br>
+<br>
+<b><big><a name="Preprocessor Symbols" id="Preprocessor Symbols">Preprocessor Symbols</a></big></b>
+<br>
+The following extra 
+<code><font color="blue"><span style='white-space: nowrap'>CHOLMOD_</span></font><i><font color="black"><span style='white-space: nowrap'>*</span></font></i></code>
+ symbols are defined
+<pre><tt><b><font color="#000080">    # define</font></b> CHOLMOD_TRUE                  <font color="#993399">1</font>
+<b><font color="#000080">    # define</font></b> CHOLMOD_FALSE                 <font color="#993399">0</font>
+<b><font color="#000080">    # define</font></b> CHOLMOD_STYPE_NOT_SYMMETRIC   <font color="#993399">0</font>
+<b><font color="#000080">    # define</font></b> CHOLMOD_STYPE_LOWER_TRIANGLE <font color="#990000">-</font><font color="#993399">1</font></tt></pre>
+<br>
+<b><big><a name="Contents" id="Contents">Contents</a></big></b>
+<br>
+<table>
+<tr><td><a href="ldlt_cholmod_ctor.htm" target="_top">ldlt_cholmod_ctor</a></td><td>Cholmod&nbsp;LDLT&nbsp;Constructor</td></tr><tr><td><a href="ldlt_cholmod_dtor.htm" target="_top">ldlt_cholmod_dtor</a></td><td>Cholmod&nbsp;Destructor</td></tr><tr><td><a href="ldlt_cholmod_init.htm" target="_top">ldlt_cholmod_init</a></td><td>Initialize&nbsp;Factor&nbsp;for&nbsp;a&nbsp;Specific&nbsp;Sparsity&nbsp;Pattern</td></tr><tr><td><a href="ldlt_cholmod_update.htm" target="_top">ldlt_cholmod_update</a></td><td>Update&nbsp;Factorization&nbsp;Using&nbsp;new&nbsp;Matrix&nbsp;Values</td></tr><tr><td><a href="ldlt_cholmod_logdet.htm" target="_top">ldlt_cholmod_logdet</a></td><td>Compute&nbsp;Log&nbsp;Determinant&nbsp;for&nbsp;Current&nbsp;Factor</td></tr><tr><td><a href="ldlt_cholmod_solve_h.htm" target="_top">ldlt_cholmod_solve_H</a></td><td>Solve&nbsp;Linear&nbsp;Equations&nbsp;Using&nbsp;Factor</td></tr><tr><td><a href="ldlt_cholmod_sim_cov.htm" target="_top">ldlt_cholmod_sim_cov</a></td><td>Simulations&nbsp;with&nbsp;Covariance&nbsp;Corresponding&nbsp;to&nbsp;Factored&nbsp;Matrix</td></tr><tr><td><a href="ldlt_cholmod_inv.htm" target="_top">ldlt_cholmod_inv</a></td><td>Compute&nbsp;a&nbsp;Subset&nbsp;of&nbsp;the&nbsp;Inverse&nbsp;of&nbsp;Factored&nbsp;Matrix</td></tr><tr><td><a href="ldlt_cholmod.cpp.htm" target="_top">ldlt_cholmod.cpp</a></td><td>Example&nbsp;Using&nbsp;Cholmod&nbsp;LDLT&nbsp;Factorization</td></tr><tr><td><a href="cholmod_solve_xam.htm" target="_top">cholmod_solve_xam</a></td><td>Example&nbsp;Using&nbsp;cholmod_solve&nbsp;With&nbsp;a&nbsp;Non-positive&nbsp;Matrix</td></tr><tr><td><a href="cholmod_solve2_a.cpp.htm" target="_top">cholmod_solve2_a.cpp</a></td><td>Example&nbsp;Using&nbsp;cholmod_solve2&nbsp;Cholesky&nbsp;Factorization</td></tr><tr><td><a href="cholmod_solve2_sim.cpp.htm" target="_top">cholmod_solve2_sim.cpp</a></td><td>Cholmod&nbsp;Posterior&nbsp;Simulations&nbsp;Using&nbsp;Sparse&nbsp;Hessian&nbsp;of&nbsp;Likelihood</td></tr></table>
+<hr>Input File: include/cppad/mixed/ldlt_cholmod.hpp
+
+</body>
+</html>

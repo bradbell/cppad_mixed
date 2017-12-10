@@ -1,0 +1,357 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Sparse Jacobian Computation Structure</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Sparse Jacobian Computation Structure">
+<meta name="keywords" id="keywords" content=" sparse jacobian computation structure syntax private purpose subset nnz row col val forward work computing jacobians mode reverse f group_max x not_used_pattern not_used_coloring ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_sparse_jac_rcv_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="sparse_hes_info.htm" target="_top">Prev</a>
+</td><td><a href="sparse_mat_info.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>sparse_jac_rcv</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>sparse_jac_rcv</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Private</option>
+<option>Purpose</option>
+<option>subset</option>
+<option>---..nnz</option>
+<option>---..row</option>
+<option>---..col</option>
+<option>---..val</option>
+<option>forward</option>
+<option>work</option>
+<option>Computing Sparse Jacobians</option>
+<option>---..Forward Mode</option>
+<option>---..Reverse Mode</option>
+<option>---..f</option>
+<option>---..group_max</option>
+<option>---..x</option>
+<option>---..not_used_pattern</option>
+<option>---..not_used_coloring</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Sparse Jacobian Computation Structure</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><font color="blue"><span style='white-space: nowrap'>CppAD::mixed::sparse_jac_rcv&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac_rcv</span></font></i></code>
+
+
+<br>
+<br>
+<b><big><a name="Private" id="Private">Private</a></big></b>
+<br>
+This structure is an implementation detail and not part of the
+<a href="namespace.htm#Private" target="_top"><span style='white-space: nowrap'>CppAD::mixed</span></a>
+ user API.
+
+<br>
+<br>
+<b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
+<br>
+This structure holds information about a specific Jacobian
+<small>@[@
+
+	J(x) = f^{(1)} (x)
+
+@]@</small>
+
+<br>
+<br>
+<b><big><a name="subset" id="subset">subset</a></big></b>
+<br>
+The field 
+<code><i><font color="black"><span style='white-space: nowrap'>jac_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.subset</span></font></code>
+ has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::mixed::sparse_rcv&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.subset<br>
+</span></font></code>
+It is empty zero when it is constructed; i.e.,
+all of its sizes are zero.
+After initialization it corresponds to the subset of the Jacobian
+that is computed.
+
+<br>
+<br>
+<b><a name="subset.nnz" id="subset.nnz">nnz</a></b>
+<br>
+We use the notation
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nnz</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.subset.nnz()<br>
+</span></font></code>
+<br>
+<b><a name="subset.row" id="subset.row">row</a></b>
+<br>
+We use the notation
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>row</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.subset.row()<br>
+</span></font></code>
+<br>
+<b><a name="subset.col" id="subset.col">col</a></b>
+<br>
+We use the notation
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>col</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.subset.col()<br>
+</span></font></code>
+<br>
+<b><a name="subset.val" id="subset.val">val</a></b>
+<br>
+We use the notation
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>val</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.subset.val()<br>
+</span></font></code>
+<br>
+<b><big><a name="forward" id="forward">forward</a></big></b>
+<br>
+The field 
+<code><i><font color="black"><span style='white-space: nowrap'>jac_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.forward</span></font></code>
+ has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.forward</span></font><i><font color="black"><span style='white-space: nowrap'><br>
+</span></font></i></code>
+<br>
+<b><big><a name="work" id="work">work</a></big></b>
+<br>
+The field 
+<code><i><font color="black"><span style='white-space: nowrap'>jac_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.work</span></font></code>
+ has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::sparse_jac_work&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.work<br>
+</span></font></code>
+It has no information when it is constructed; i.e., it is empty.
+After initialization it should contain the CppAD cached information
+for the call to <code><font color="blue">sparse_jac_for</font></code> or <code><font color="blue">sparse_jac_rev</font></code>
+specified below.
+
+<br>
+<br>
+<b><big><a name="Computing Sparse Jacobians" id="Computing Sparse Jacobians">Computing Sparse Jacobians</a></big></b>
+<br>
+Upon return (from <code><font color="blue">sparse_jac_for</font></code> or <code><font color="blue">sparse_jac_rev</font></code>),
+for 
+<code><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;0&nbsp;,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>...</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nnz</span></font></i><font color="blue"><span style='white-space: nowrap'>-1</span></font></code>
+,
+
+<code><i><font color="black"><span style='white-space: nowrap'>val</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
+ is the value of <small>@(@
+J_{i,j} (x)
+@)@</small>
+where 
+<code><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>row</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
+ and 
+<code><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>col[</span></font></i><font color="blue"><span style='white-space: nowrap'>k</span></font><i><font color="black"><span style='white-space: nowrap'>]</span></font></i></code>
+.
+
+<br>
+<br>
+<b><a name="Computing Sparse Jacobians.Forward Mode" id="Computing Sparse Jacobians.Forward Mode">Forward Mode</a></b>
+<br>
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>jac_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.forward</span></font></code>
+ is true,
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>f</span></font></i><font color="blue"><span style='white-space: nowrap'>.sparse_jac_for(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>group_max</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>x</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.subset,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>not_used_pattern</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>not_used_coloring</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.work<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
+</span></font></code>
+computes the Jacobian values.
+
+<br>
+<br>
+<b><a name="Computing Sparse Jacobians.Reverse Mode" id="Computing Sparse Jacobians.Reverse Mode">Reverse Mode</a></b>
+<br>
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>jac_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.forward</span></font></code>
+ is false,
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>f</span></font></i><font color="blue"><span style='white-space: nowrap'>.sparse_jac_for(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>x</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.subset,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>not_used_pattern</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>not_used_coloring</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.work<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
+</span></font></code>
+computes the Jacobian values.
+
+<br>
+<br>
+<b><a name="Computing Sparse Jacobians.f" id="Computing Sparse Jacobians.f">f</a></b>
+<br>
+The function 
+<code><i><font color="black"><span style='white-space: nowrap'>f</span></font></i></code>
+ has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::ADFun&lt;double&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>f</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+<br>
+<b><a name="Computing Sparse Jacobians.group_max" id="Computing Sparse Jacobians.group_max">group_max</a></b>
+<br>
+The parameter 
+<code><i><font color="black"><span style='white-space: nowrap'>group_max</span></font></i></code>
+ has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>group_max</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+and must be greater than zero.
+It specifies the maximum number of directions to group during
+a single forward sweep.
+This uses separate memory for each direction (more memory),
+but my be significantly faster.
+
+<br>
+<br>
+<b><a name="Computing Sparse Jacobians.x" id="Computing Sparse Jacobians.x">x</a></b>
+<br>
+The argument 
+<code><i><font color="black"><span style='white-space: nowrap'>x</span></font></i></code>
+ has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>x</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+and its size is 
+<code><i><font color="black"><span style='white-space: nowrap'>f</span></font></i><font color="blue"><span style='white-space: nowrap'>.Domain()</span></font></code>
+.
+It is the location where the Jacobian is being evaluated.
+
+<br>
+<br>
+<b><a name="Computing Sparse Jacobians.not_used_pattern" id="Computing Sparse Jacobians.not_used_pattern">not_used_pattern</a></b>
+<br>
+This argument has the following prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::mixed::sparse_rc&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>not_used_pattern</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It is not used and hence its value does not matter.
+
+<br>
+<br>
+<b><a name="Computing Sparse Jacobians.not_used_coloring" id="Computing Sparse Jacobians.not_used_coloring">not_used_coloring</a></b>
+<br>
+This argument has the following prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;std::string&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>not_used_coloring</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It is not used and hence its value does not matter.
+
+
+<hr>Input File: include/cppad/mixed/sparse_jac_rcv.hpp
+
+</body>
+</html>

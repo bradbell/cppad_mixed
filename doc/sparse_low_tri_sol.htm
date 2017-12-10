@@ -1,0 +1,200 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Solve a Sparse Lower Triangular Linear System</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Solve a Sparse Lower Triangular Linear System">
+<meta name="keywords" id="keywords" content=" solve sparse lower triangular linear system syntax prototype private left right result example ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_sparse_low_tri_sol_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="undetermined.cpp.htm" target="_top">Prev</a>
+</td><td><a href="sparse_low_tri_sol.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>sparse_low_tri_sol</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>sparse_low_tri_sol-&gt;</option>
+<option>sparse_low_tri_sol.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Prototype</option>
+<option>Private</option>
+<option>left</option>
+<option>right</option>
+<option>result</option>
+<option>Example</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Solve a Sparse Lower Triangular Linear System</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>result</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;CppAD::mixed::sparse_low_tri_sol(</span></font><i><font color="black"><span style='white-space: nowrap'>left</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>right</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
+.
+
+<br>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre><tt>
+Eigen<font color="#990000">::</font><font color="#008080">SparseMatrix&lt;double, Eigen::ColMajor&gt;</font> <b><font color="#000000">sparse_low_tri_sol</font></b><font color="#990000">(</font>
+     <b><font color="#0000FF">const</font></b> Eigen<font color="#990000">::</font>SparseMatrix<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">,</font> Eigen<font color="#990000">::</font>RowMajor<font color="#990000">&gt;&amp;</font>  left  <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> Eigen<font color="#990000">::</font>SparseMatrix<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">,</font> Eigen<font color="#990000">::</font>ColMajor<font color="#990000">&gt;&amp;</font>  right <font color="#990000">)</font></tt></pre>
+<br>
+<b><big><a name="Private" id="Private">Private</a></big></b>
+<br>
+This function is an implementation detail and not part of the
+<a href="namespace.htm#Private" target="_top"><span style='white-space: nowrap'>CppAD::mixed</span></a>
+ user API.
+
+<br>
+<br>
+<b><big><a name="left" id="left">left</a></big></b>
+<br>
+This must be a square invertible lower triangular matrix; i.e.,
+
+<code><i><font color="black"><span style='white-space: nowrap'>left</span></font></i><font color="blue"><span style='white-space: nowrap'>.rows()&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>left</span></font></i><font color="blue"><span style='white-space: nowrap'>.cols()</span></font></code>
+ and
+for each 
+<code><i><font color="black"><span style='white-space: nowrap'>left</span></font></i><font color="blue"><span style='white-space: nowrap'>(</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
+ in this sparse matrix,
+
+<code><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;&gt;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="right" id="right">right</a></big></b>
+<br>
+The number of rows in this matrix must equal the number of columns in
+
+<code><i><font color="black"><span style='white-space: nowrap'>left</span></font></i></code>
+; i.e.,
+
+<code><i><font color="black"><span style='white-space: nowrap'>right</span></font></i><font color="blue"><span style='white-space: nowrap'>.rows()&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>left</span></font></i><font color="blue"><span style='white-space: nowrap'>.cols()</span></font></code>
+.
+
+<br>
+<br>
+<b><big><a name="result" id="result">result</a></big></b>
+<br>
+This result has the same number of rows as 
+<code><i><font color="black"><span style='white-space: nowrap'>left</span></font></i></code>
+,
+the same number of columns as 
+<code><i><font color="black"><span style='white-space: nowrap'>right</span></font></i></code>
+,
+and satisfies the equation
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>left</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;*&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>result</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>right</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+where <code><font color="blue">*</font></code> is matrix multiplication.
+
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="sparse_low_tri_sol.cpp.htm" target="_top"><span style='white-space: nowrap'>sparse_low_tri_sol.cpp</span></a>
+ is an example
+and test of <code><font color="blue">sparse_low_tri_sol</font></code>.
+
+
+<hr>Input File: src/eigen/sparse_low_tri_sol.cpp
+
+</body>
+</html>

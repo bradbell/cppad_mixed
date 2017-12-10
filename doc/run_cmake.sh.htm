@@ -1,0 +1,286 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>bin/run_cmake.sh: User Configuration Options</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="bin/run_cmake.sh: User Configuration Options">
+<meta name="keywords" id="keywords" content=" bin/run_cmake.sh: user configuration options verbose_makefile build_type prefixes debug release cppad_cxx_flags cmake_libdir ldlt_cholmod use_atomic_cholesky checkpoint_newton_step optimize_cppad_function hide_ipopt_scaling for_hes_sparsity testing speed memory ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_run_cmake.sh_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="example_install.sh.htm" target="_top">Prev</a>
+</td><td><a href="check_install.sh.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>install_unix</option>
+<option>run_cmake.sh</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>install_unix-&gt;</option>
+<option>example_install.sh</option>
+<option>run_cmake.sh</option>
+<option>check_install.sh</option>
+</select>
+</td>
+<td>run_cmake.sh</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>verbose_makefile</option>
+<option>build_type</option>
+<option>Prefixes</option>
+<option>---..Debug and Release</option>
+<option>cppad_cxx_flags</option>
+<option>cmake_libdir</option>
+<option>ldlt_cholmod</option>
+<option>use_atomic_cholesky</option>
+<option>checkpoint_newton_step</option>
+<option>optimize_cppad_function</option>
+<option>hide_ipopt_scaling</option>
+<option>for_hes_sparsity</option>
+<option>Testing Speed and Memory</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>bin/run_cmake.sh: User Configuration Options</big></big></b></center>
+<br>
+<b><big><a name="verbose_makefile" id="verbose_makefile">verbose_makefile</a></big></b>
+<br>
+Use 'no' for normal and 'yes' for verbose make output:
+<code><font color='blue'><pre style='display:inline'> 
+verbose_makefile='no'
+</pre></font></code>
+<br>
+<b><big><a name="build_type" id="build_type">build_type</a></big></b>
+<br>
+Use either 'debug' or 'release' for the type of this build:
+<code><font color='blue'><pre style='display:inline'> 
+build_type='debug'
+</pre></font></code>
+Note that if 
+<code><i><font color="black"><span style='white-space: nowrap'>cppad_prefix</span></font></i></code>
+ ends in <code><font color="blue">cppad_mixed</font></code>,
+<code><font color="blue">run_cmake.sh</font></code> will use a link from the prefix to
+
+<code><i><font color="black"><span style='white-space: nowrap'>cppad_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.debug</span></font></code>
+ or
+
+<code><i><font color="black"><span style='white-space: nowrap'>cppad_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.release</span></font></code>
+
+depending on the choice 
+<code><i><font color="black"><span style='white-space: nowrap'>build_type</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="Prefixes" id="Prefixes">Prefixes</a></big></b>
+<br>
+Prefixes where the required packages are installed:
+<code><font color='blue'><pre style='display:inline'> 
+cppad_prefix=&quot;$HOME/prefix/cppad_mixed&quot;
+eigen_prefix=&quot;$HOME/prefix/cppad_mixed/eigen&quot;
+ipopt_prefix=&quot;$HOME/prefix/cppad_mixed&quot;
+suitesparse_prefix=&quot;$HOME/prefix/cppad_mixed&quot;
+</pre></font></code>
+Note that the Eigen package is installed in a special prefix
+so that we can suppress warnings coming from its include files
+(without suppressing warnings from other include files).
+
+<br>
+<br>
+<b><a name="Prefixes.Debug and Release" id="Prefixes.Debug and Release">Debug and Release</a></b>
+<br>
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>cppad_prefix</span></font></i></code>
+ ends in <code><font color="blue">cppad_mixed</font></code>,
+all the prefixes must be the same,
+except for the Eigen prefix which has an extra sub-directory at the end.
+In this case,
+<code><font color="blue">bin/run_cmake.sh</font></code> will switch between a debug and release
+version of <code><font color="blue">cppad_mixed</font></code>
+depending on <a href="run_cmake.sh.htm#build_type" target="_top"><span style='white-space: nowrap'>build_type</span></a>
+.
+The debug version will have an extra <code><font color="blue">.debug</font></code> and the release version
+will have an extra <code><font color="blue">.release</font></code> at the end of the prefix.
+In addition, a soft link will be used to map the prefix to either
+the debug or release version.
+Note that the same technique will be used to map the <code><font color="blue">build</font></code>
+directory to the debug or release version.
+Also note that if you are using both a debug and release, both versions
+of the  <a href="install_unix.htm#Special Requirements" target="_top"><span style='white-space: nowrap'>special&nbsp;requirements</span></a>
+
+will need to be installed.
+
+<br>
+<br>
+<b><big><a name="cppad_cxx_flags" id="cppad_cxx_flags">cppad_cxx_flags</a></big></b>
+<br>
+Extra C++ flags used to configure CppAD:
+<code><font color='blue'><pre style='display:inline'> 
+cppad_cxx_flags='-std=c++11 -Wall'
+</pre></font></code>
+<br>
+<b><big><a name="cmake_libdir" id="cmake_libdir">cmake_libdir</a></big></b>
+<br>
+Sub-directory of each prefix where libraries are installed.
+<code><font color='blue'><pre style='display:inline'> 
+cmake_libdir='lib64'
+</pre></font></code>
+<br>
+<b><big><a name="ldlt_cholmod" id="ldlt_cholmod">ldlt_cholmod</a></big></b>
+<br>
+If yes, use <a href="ldlt_cholmod.htm" target="_top"><span style='white-space: nowrap'>ldlt_cholmod</span></a>
+ LDLT factorization where possible.
+Otherwise always use <a href="ldlt_eigen.htm" target="_top"><span style='white-space: nowrap'>ldlt_eigen</span></a>
+ for LDLT factorization.
+<code><font color='blue'><pre style='display:inline'> 
+ldlt_cholmod='yes'
+</pre></font></code>
+<br>
+<b><big><a name="use_atomic_cholesky" id="use_atomic_cholesky">use_atomic_cholesky</a></big></b>
+<br>
+If yes, <code><font color="blue">cppad_mixed</font></code> will use
+the <a href="sparse_ad_cholesky.htm" target="_top"><span style='white-space: nowrap'>sparse_ad_cholesky</span></a>
+ atomic AD operation when computing the
+<a href="newton_step.htm" target="_top"><span style='white-space: nowrap'>newton_step</span></a>
+. Otherwise, an LDLT factorization using
+<code><font color="blue">eigen</font></code> , with <code><font color="blue">AD&lt;double&gt;</font></code> as the scalar type, is used.
+(Note that the <code><font color="blue">cholmod</font></code> LDLT factorization cannot
+be use with and AD scalar type.)
+<code><font color='blue'><pre style='display:inline'> 
+use_atomic_cholesky='no'
+</pre></font></code>
+<br>
+<b><big><a name="checkpoint_newton_step" id="checkpoint_newton_step">checkpoint_newton_step</a></big></b>
+<br>
+If yes, <code><font color="blue">cppad_mixed</font></code> will checkpoint the
+<a href="newton_step.htm" target="_top"><span style='white-space: nowrap'>newton_step</span></a>
+. Otherwise, repeated applications of the Newton step
+are recorded on the AD tape (which should require more memory but may be
+faster).
+<code><font color='blue'><pre style='display:inline'> 
+checkpoint_newton_step='no'
+</pre></font></code>
+<br>
+<b><big><a name="optimize_cppad_function" id="optimize_cppad_function">optimize_cppad_function</a></big></b>
+<br>
+If yes, the operation sequence for certain CppAD functions
+will be optimized. This makes the code run faster but in some cases
+it can make debugging more complicated. It is suggested that you use
+<code><font color="blue">no</font></code> when 
+<code><i><font color="black"><span style='white-space: nowrap'>build_type</span></font></i></code>
+ is <code><font color="blue">debug</font></code> and <code><font color="blue">yes</font></code>
+when 
+<code><i><font color="black"><span style='white-space: nowrap'>build_type</span></font></i></code>
+ is <code><font color="blue">release</font></code>.
+<code><font color='blue'><pre style='display:inline'> 
+optimize_cppad_function='no'
+</pre></font></code>
+<br>
+<b><big><a name="hide_ipopt_scaling" id="hide_ipopt_scaling">hide_ipopt_scaling</a></big></b>
+<br>
+If yes, the re-scaling done by <code><font color="blue">cppad_mixed</font></code> is hidden from ipopt.
+This changes the function and derivative values
+printed during the <a href="ipopt_trace.htm" target="_top"><span style='white-space: nowrap'>ipopt_trace</span></a>
+.  On the other hand, it seems
+that hiding the scaling from Ipopt yields better convergence detection.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>hide_ipopt_scaling</span></font></i></code>
+ is <code><font color="blue">no</font></code>,
+the ipopt <code><font color="blue">user-scaling</font></code> option is used (ipopt is shown the scaling).
+<code><font color='blue'><pre style='display:inline'> 
+hide_ipopt_scaling='yes'
+</pre></font></code>
+<br>
+<b><big><a name="for_hes_sparsity" id="for_hes_sparsity">for_hes_sparsity</a></big></b>
+<br>
+If yes, user <code><font color="blue">for_hes_sparsity</font></code> to compute sparsity w.r.t. random
+effects (otherwise use <code><font color="blue">rev_hes_sparsity</font></code>).
+<code><font color='blue'><pre style='display:inline'> 
+for_hes_sparsity='yes'
+</pre></font></code>
+<br>
+<b><big><a name="Testing Speed and Memory" id="Testing Speed and Memory">Testing Speed and Memory</a></big></b>
+<br>
+If you wish to test the speed or memory used by <code><font color="blue">cppad_mixed</font></code>,
+set 
+<code><i><font color="black"><span style='white-space: nowrap'>build_type</span></font></i></code>
+ to <code><font color="blue">release</font></code>, include the <code><font color="blue">-g</font></code> flag
+in 
+<code><i><font color="black"><span style='white-space: nowrap'>cppad_cxx_flags</span></font></i></code>
+. Then execute the following commands:
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin/install_cppad.sh<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin/run_cmake.sh<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cd&nbsp;build;&nbsp;make&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>program</span></font></i><font color="blue"><span style='white-space: nowrap'>;&nbsp;cd&nbsp;..<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin/</span></font><i><font color="black"><span style='white-space: nowrap'>program</span></font></i><font color="blue"><span style='white-space: nowrap'>.sh&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>test2run</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+where 
+<code><i><font color="black"><span style='white-space: nowrap'>program</span></font></i></code>
+ is
+<a href="ar1_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>ar1_xam</span></a>
+ or <a href="ar1_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>capture_xam</span></a>
+
+and 
+<code><i><font color="black"><span style='white-space: nowrap'>test2run</span></font></i></code>
+ is
+<code><font color="blue">normal</font></code>, <code><font color="blue">callgrind</font></code>, or <code><font color="blue">massif</font></code>.
+
+
+<hr>Input File: bin/run_cmake.sh
+
+</body>
+</html>

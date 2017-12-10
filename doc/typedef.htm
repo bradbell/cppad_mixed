@@ -1,0 +1,232 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Types Defined in the CppAD Mixed Namespace</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Types Defined in the CppAD Mixed Namespace">
+<meta name="keywords" id="keywords" content=" types defined the cppad mixed namespace syntax scalar a1_double a2_double vector s_vector d_vector a1_vector a2_vector sparse sparse_rc sparse_rcv a1_sparse_rcv ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_typedef_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="namespace.htm" target="_top">Prev</a>
+</td><td><a href="configure.hpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>typedef</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_ad_cholesky</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+</select>
+</td>
+<td>typedef</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Scalar Types</option>
+<option>---..a1_double</option>
+<option>---..a2_double</option>
+<option>Vector Types</option>
+<option>---..s_vector</option>
+<option>---..d_vector</option>
+<option>---..a1_vector</option>
+<option>---..a2_vector</option>
+<option>Sparse Types</option>
+<option>---..sparse_rc</option>
+<option>---..sparse_rcv</option>
+<option>---..a1_sparse_rcv</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Types Defined in the CppAD Mixed Namespace</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><font color="blue"><span style='white-space: nowrap'>#&nbsp;include&nbsp;&lt;cppad/mixed/typedef.hpp&gt;<br>
+</span></font></code>
+Note that this is not necessary if you include
+<code><font color="blue">cppad/mixed/cppad_mixed.hpp</font></code>.
+
+
+<br>
+<br>
+<b><big><a name="Scalar Types" id="Scalar Types">Scalar Types</a></big></b>
+
+
+<br>
+<br>
+<b><a name="Scalar Types.a1_double" id="Scalar Types.a1_double">a1_double</a></b>
+<br>
+Scalar with one level of AD:
+<pre style='display:inline'><tt>
+<b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">AD&lt;double&gt;</font> a1_double<font color="#990000">;</font>
+<font color="#FF0000">}</font> <font color="#FF0000">}</font>
+</tt></pre>
+<br>
+<b><a name="Scalar Types.a2_double" id="Scalar Types.a2_double">a2_double</a></b>
+<br>
+Scalar with two levels of AD:
+<pre style='display:inline'><tt>
+<b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">AD&lt;a1_double&gt;</font> a2_double<font color="#990000">;</font>
+<font color="#FF0000">}</font> <font color="#FF0000">}</font>
+</tt></pre>
+<br>
+<b><big><a name="Vector Types" id="Vector Types">Vector Types</a></big></b>
+
+
+<br>
+<br>
+<b><a name="Vector Types.s_vector" id="Vector Types.s_vector">s_vector</a></b>
+<br>
+Vectors with elements of type <code><font color="blue">size_t</font></code>:
+<pre style='display:inline'><tt>
+<b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">vector&lt;size_t&gt;</font> s_vector<font color="#990000">;</font>
+<font color="#FF0000">}</font> <font color="#FF0000">}</font>
+</tt></pre>
+<br>
+<b><a name="Vector Types.d_vector" id="Vector Types.d_vector">d_vector</a></b>
+<br>
+Vectors with elements of type <code><font color="blue">double</font></code>:
+<pre style='display:inline'><tt>
+<b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font> d_vector<font color="#990000">;</font>
+<font color="#FF0000">}</font> <font color="#FF0000">}</font>
+</tt></pre>
+<br>
+<b><a name="Vector Types.a1_vector" id="Vector Types.a1_vector">a1_vector</a></b>
+<br>
+Vectors with elements of that have one level of AD:
+<pre style='display:inline'><tt>
+<b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">vector&lt;a1_double&gt;</font> a1_vector<font color="#990000">;</font>
+<font color="#FF0000">}</font> <font color="#FF0000">}</font>
+</tt></pre>
+<br>
+<b><a name="Vector Types.a2_vector" id="Vector Types.a2_vector">a2_vector</a></b>
+<br>
+Vectors with elements of that have two levels of AD:
+<pre style='display:inline'><tt>
+<b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">vector&lt;a2_double&gt;</font> a2_vector<font color="#990000">;</font>
+<font color="#FF0000">}</font> <font color="#FF0000">}</font>
+</tt></pre>
+<br>
+<b><big><a name="Sparse Types" id="Sparse Types">Sparse Types</a></big></b>
+
+
+<br>
+<br>
+<b><a name="Sparse Types.sparse_rc" id="Sparse Types.sparse_rc">sparse_rc</a></b>
+<br>
+Sparsity patterns using index vector of type <code><font color="blue">s_vector</font></code>:
+<pre style='display:inline'><tt>
+<b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">sparse_rc&lt;s_vector&gt;</font> sparse_rc<font color="#990000">;</font>
+<font color="#FF0000">}</font> <font color="#FF0000">}</font>
+</tt></pre>
+<br>
+<b><a name="Sparse Types.sparse_rcv" id="Sparse Types.sparse_rcv">sparse_rcv</a></b>
+<br>
+Sparse matrices using index vector of type <code><font color="blue">s_vector</font></code>
+and value vectors of type <code><font color="blue">d_vector</font></code>:
+<pre><tt><b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">sparse_rcv&lt;s_vector, d_vector&gt;</font> sparse_rcv<font color="#990000">;</font>
+<font color="#FF0000">}</font> <font color="#FF0000">}</font>
+</tt></pre>
+<b><a name="Sparse Types.a1_sparse_rcv" id="Sparse Types.a1_sparse_rcv">a1_sparse_rcv</a></b>
+<br>
+Sparse matrices using index vector of type <code><font color="blue">s_vector</font></code>
+and value vectors of type <code><font color="blue">a1_vector</font></code>:
+<pre><tt><b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">sparse_rcv&lt;s_vector, a1_vector&gt;</font> a1_sparse_rcv<font color="#990000">;</font>
+<font color="#FF0000">}</font> <font color="#FF0000">}</font>
+</tt></pre>
+
+<hr>Input File: include/cppad/mixed/typedef.hpp
+
+</body>
+</html>

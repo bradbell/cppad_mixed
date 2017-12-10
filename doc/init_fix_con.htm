@@ -1,0 +1,255 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Initialize Constraints as Function of Fixed Effects</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Initialize Constraints as Function of Fixed Effects">
+<meta name="keywords" id="keywords" content=" initialize constraints function fixed effects syntax private mixed_object fixed_vec init_fix_con_done_ fix_con_fun_ fix_con_jac_ fix_con_hes_ ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_init_fix_con_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="init_ldlt_ran_hes.htm" target="_top">Prev</a>
+</td><td><a href="init_fix_like.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>base_class</option>
+<option>private</option>
+<option>init_fix_con</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>base_class-&gt;</option>
+<option>public</option>
+<option>private</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>private-&gt;</option>
+<option>pack</option>
+<option>unpack</option>
+<option>init_ran_hes</option>
+<option>init_ran_hes_check</option>
+<option>init_ran_objcon</option>
+<option>init_ldlt_ran_hes</option>
+<option>init_fix_con</option>
+<option>init_fix_like</option>
+<option>init_hes_cross</option>
+<option>init_laplace_obj_hes</option>
+<option>init_ran_like</option>
+<option>fix_con_eval</option>
+<option>fix_con_hes</option>
+<option>fix_con_jac</option>
+<option>fix_like_eval</option>
+<option>fix_like_hes</option>
+<option>fix_like_jac</option>
+<option>logdet_jac</option>
+<option>ran_like_jac</option>
+<option>ran_like_jac_check</option>
+<option>ran_con_eval</option>
+<option>ran_con_jac</option>
+<option>ran_obj_eval</option>
+<option>ran_obj_jac</option>
+<option>laplace_obj_hes</option>
+<option>update_factor</option>
+</select>
+</td>
+<td>init_fix_con</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Private</option>
+<option>mixed_object</option>
+<option>fixed_vec</option>
+<option>init_fix_con_done_</option>
+<option>fix_con_fun_</option>
+<option>fix_con_jac_</option>
+<option>---..fix_con_fun_</option>
+<option>fix_con_hes_</option>
+<option>---..fix_con_fun_</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Initialize Constraints as Function of Fixed Effects</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.init_fix_con(</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="Private" id="Private">Private</a></big></b>
+<br>
+This <code><font color="blue">cppad_mixed</font></code> member function is <a href="private.htm" target="_top"><span style='white-space: nowrap'>private</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="mixed_object" id="mixed_object">mixed_object</a></big></b>
+<br>
+We use <a href="derived_ctor.htm#mixed_object" target="_top"><span style='white-space: nowrap'>mixed_object</span></a>
+
+to denote an object of a class that is
+derived from the <code><font color="blue">cppad_mixed</font></code> base class.
+
+<br>
+<br>
+<b><big><a name="fixed_vec" id="fixed_vec">fixed_vec</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It specifies the value of the
+<a href="cppad_mixed.htm#Notation.Fixed Effects, theta" target="_top"><span style='white-space: nowrap'>fixed&nbsp;effects</span></a>
+
+vector <small>@(@
+\theta
+@)@</small> at which the initialization is done.
+
+<br>
+<br>
+<b><big><a name="init_fix_con_done_" id="init_fix_con_done_">init_fix_con_done_</a></big></b>
+<br>
+When this function is called, this member variable must be false.
+Upon return it is true.
+
+<br>
+<br>
+<b><big><a name="fix_con_fun_" id="fix_con_fun_">fix_con_fun_</a></big></b>
+<br>
+On input, the member variable
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::ADFun&lt;double&gt;&nbsp;fix_con_fun_<br>
+</span></font></code>
+must be empty; i.e., <code><font color="blue">fix_con_fun_.size_var() == 0</font></code>.
+If the return value for
+<a href="fix_constraint.htm" target="_top"><span style='white-space: nowrap'>fix_constraint</span></a>
+ is empty,
+<code><font color="blue">fix_con_fun_</font></code> is not modified.
+Otherwise,
+upon return it contains the corresponding recording for the
+<a href="fix_constraint.htm" target="_top"><span style='white-space: nowrap'>fix_constraint</span></a>
+ <small>@(@
+c( \theta )
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="fix_con_jac_" id="fix_con_jac_">fix_con_jac_</a></big></b>
+<br>
+The input value of
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::mixed::sparse_jac_rcv&nbsp;fix_con_jac_<br>
+</span></font></code>
+must be empty.
+Upon return, <code><font color="blue">fix_con_jac_</font></code> contains the
+<a href="sparse_jac_rcv.htm" target="_top"><span style='white-space: nowrap'>sparse_jac_rcv</span></a>
+ structure for the
+Jacobian of the <a href="fix_constraint.htm" target="_top"><span style='white-space: nowrap'>constraints</span></a>
+.
+
+<br>
+<br>
+<b><a name="fix_con_jac_.fix_con_fun_" id="fix_con_jac_.fix_con_fun_">fix_con_fun_</a></b>
+<br>
+This ADFun object can be used, with <code><font color="blue">fix_con_jac_</font></code>,
+for computing sparse Jacobians; see
+<a href="sparse_jac_rcv.htm#Computing Sparse Jacobians.f" target="_top"><span style='white-space: nowrap'>f</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="fix_con_hes_" id="fix_con_hes_">fix_con_hes_</a></big></b>
+<br>
+The input value of
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::mixed::sparse_hes_rcv&nbsp;fix_con_hes_<br>
+</span></font></code>
+must be empty.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
+ is false,
+upon return <code><font color="blue">fix_con_hes_</font></code> contains
+<a href="sparse_hes_rcv.htm" target="_top"><span style='white-space: nowrap'>sparse_hes_rcv</span></a>
+ for the
+lower triangle of a weighted Hessian for the
+<a href="fix_constraint.htm" target="_top"><span style='white-space: nowrap'>constraints</span></a>
+.
+
+<br>
+<br>
+<b><a name="fix_con_hes_.fix_con_fun_" id="fix_con_hes_.fix_con_fun_">fix_con_fun_</a></b>
+<br>
+This ADFun object can be used, with <code><font color="blue">fix_con_hes_</font></code>,
+for computing sparse Hessians; see
+<a href="sparse_hes_rcv.htm#Computing Sparse Hessians.f" target="_top"><span style='white-space: nowrap'>f</span></a>
+.
+
+
+<hr>Input File: src/init_fix_con.cpp
+
+</body>
+</html>

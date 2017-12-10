@@ -1,0 +1,375 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>C++ Laplace Approximation of Mixed Effects Models:
+cppad_mixed-20171210</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="C++ Laplace Approximation of Mixed Effects Models:
+cppad_mixed-20171210">
+<meta name="keywords" id="keywords" content=" c++ laplace approximation mixed effects models: cppad_mixed-20171210 license source code repository notation fixed theta random u data y z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood no constraints c negative log-density vector ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_cppad_mixed_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td>Prev</td><td><a href="_contents.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>License</option>
+<option>Source Code Repository</option>
+<option>Notation</option>
+<option>---..Fixed Effects, theta</option>
+<option>---..Random Effects, u</option>
+<option>---..Data, y, z</option>
+<option>---..Fixed Prior Density, p(theta)</option>
+<option>---..Fixed Data Density, p(z|theta)</option>
+<option>---..Random Prior Density, p(u|theta)</option>
+<option>---..Random Data Density, p(y|theta,u)</option>
+<option>---..Fixed Constraint Function, c(theta)</option>
+<option>---..Optimal Random Effects, u^(theta)</option>
+<option>---..Random Constraint Matrix, A</option>
+<option>---..Random Constraint Function, A*u^(theta)</option>
+<option>Problem</option>
+<option>---..Maximum Likelihood</option>
+<option>---..No Random Effects</option>
+<option>---..Fixed Constraints, c</option>
+<option>---..Random Constraints</option>
+<option>Negative Log-Density Vector</option>
+<option>Contents</option>
+</select>
+</td>
+</tr></table><br>
+<small>@(@
+\newcommand{\R}[1]{ {\rm #1} }
+	\newcommand{\B}[1]{ {\bf #1} }
+	\newcommand{\W}[1]{ \; #1 \; }
+@)@</small><center><b><big><big>C++ Laplace Approximation of Mixed Effects Models:
+cppad_mixed-20171210</big></big></b></center>
+<table><tr><td align='left'  valign='top'>
+</td><td align='left'  valign='top'>
+One section per page <code><span style='white-space: nowrap'>&nbsp;&nbsp;</span></code> </td><td align='left'  valign='top'>
+
+	All sections in one page
+</td></tr><tr><td align='left'  valign='top'>
+
+MathJax <code><span style='white-space: nowrap'>&nbsp;&nbsp;</span></code> </td><td align='left'  valign='top'>
+
+	<a href="cppad_mixed.htm" target="_top"><span style='white-space: nowrap'>cppad_mixed.htm</span></a>
+
+	<code><span style='white-space: nowrap'>&nbsp;&nbsp;</span></code> </td><td align='left'  valign='top'>
+
+	<a href="_printable.htm" target="_top"><span style='white-space: nowrap'>_printable.htm</span></a>
+
+</td></tr><tr><td align='left'  valign='top'>
+
+MathML <code><span style='white-space: nowrap'>&nbsp;&nbsp;</span></code> </td><td align='left'  valign='top'>
+
+	<a href="cppad_mixed.xml" target="_top"><span style='white-space: nowrap'>cppad_mixed.xml</span></a>
+ <code><span style='white-space: nowrap'>&nbsp;&nbsp;</span></code> </td><td align='left'  valign='top'>
+
+	<a href="_printable.xml" target="_top"><span style='white-space: nowrap'>_printable.xml</span></a>
+
+</td></tr>
+</table>
+<br>
+<b><big><a name="License" id="License">License</a></big></b>
+
+<br>
+<a href="http://www.gnu.org/licenses/agpl.txt" target="_top"><span style='white-space: nowrap'>GNU&nbsp;Affero&nbsp;General&nbsp;Public&nbsp;License&nbsp;version&nbsp;3.0&nbsp;or&nbsp;later</span></a>
+
+
+<br>
+<br>
+<b><big><a name="Source Code Repository" id="Source Code Repository">Source Code Repository</a></big></b>
+
+<br>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><span style='white-space: nowrap'>https://github.com/bradbell/cppad_mixed</span></a>
+
+
+<br>
+<br>
+<b><big><a name="Notation" id="Notation">Notation</a></big></b>
+<br>
+The densities below are
+known functions of <small>@(@
+y
+@)@</small>, <small>@(@
+z
+@)@</small>, <small>@(@
+\theta
+@)@</small>, and <small>@(@
+u
+@)@</small>:
+
+<br>
+<br>
+<b><a name="Notation.Fixed Effects, theta" id="Notation.Fixed Effects, theta">Fixed Effects, theta</a></b>
+<br>
+For each <code><font color="blue">cppad_mixed</font></code> object,
+there is a vector of fixed effects 
+<code><i><font color="black"><span style='white-space: nowrap'>theta</span></font></i></code>
+.
+The number of the fixed effects, and their order is constant
+(for each <code><font color="blue">cppad_mixed</font></code> object).
+We sometimes use <small>@(@
+\theta
+@)@</small> to denote the vector of fixed effects.
+
+<br>
+<br>
+<b><a name="Notation.Random Effects, u" id="Notation.Random Effects, u">Random Effects, u</a></b>
+<br>
+For each <code><font color="blue">cppad_mixed</font></code> object, there is a vector of random effects
+
+<code><i><font color="black"><span style='white-space: nowrap'>u</span></font></i></code>
+.
+The number of the random effects, and their order is constant
+(for each <code><font color="blue">cppad_mixed</font></code> object).
+
+<br>
+<br>
+<b><a name="Notation.Data, y, z" id="Notation.Data, y, z">Data, y, z</a></b>
+<br>
+We use <small>@(@
+y
+@)@</small>, (<small>@(@
+z
+@)@</small>) to denote the set of data points that are
+dependent on (independent of) the random effects.
+
+<br>
+<br>
+<b><a name="Notation.Fixed Prior Density, p(theta)" id="Notation.Fixed Prior Density, p(theta)">Fixed Prior Density, p(theta)</a></b>
+<br>
+The fixed effects prior density
+is denoted by <small>@(@
+\B{p}( \theta )
+@)@</small>.
+
+<br>
+<br>
+<b><a name="Notation.Fixed Data Density, p(z|theta)" id="Notation.Fixed Data Density, p(z|theta)">Fixed Data Density, p(z|theta)</a></b>
+<br>
+The data density, that does not depend on the random effects,
+is denoted by <small>@(@
+\B{p}( z | \theta )
+@)@</small>.
+
+<br>
+<br>
+<b><a name="Notation.Random Prior Density, p(u|theta)" id="Notation.Random Prior Density, p(u|theta)">Random Prior Density, p(u|theta)</a></b>
+<br>
+The random effects prior density, given the fixed effects,
+is denoted by <small>@(@
+\B{p}( u | \theta)
+@)@</small>.
+
+<br>
+<br>
+<b><a name="Notation.Random Data Density, p(y|theta,u)" id="Notation.Random Data Density, p(y|theta,u)">Random Data Density, p(y|theta,u)</a></b>
+<br>
+The density for the data, given both the fixed and random effects,
+is denoted by <small>@(@
+\B{p}( y | \theta, u)
+@)@</small>.
+
+<br>
+<br>
+<b><a name="Notation.Fixed Constraint Function, c(theta)" id="Notation.Fixed Constraint Function, c(theta)">Fixed Constraint Function, c(theta)</a></b>
+<br>
+The fixed effects constraint function, denoted by <small>@(@
+c( \theta )
+@)@</small>,
+is a smooth function of the fixed effects,
+
+<br>
+<br>
+<b><a name="Notation.Optimal Random Effects, u^(theta)" id="Notation.Optimal Random Effects, u^(theta)">Optimal Random Effects, u^(theta)</a></b>
+<br>
+Given a value for the fixed effects <small>@(@
+\theta
+@)@</small>,
+the corresponding optimal random effects are defined by
+<small>@[@
+
+\hat{u} ( \theta )
+=
+\R{argmax}  \; \B{p} ( y | \theta , u) \; \B{p} ( u | \theta )
+
+@]@</small>
+Note that this definition agrees with the other definition for
+<a href="theory.htm#Optimal Random Effects, u^(theta)" target="_top"><span style='white-space: nowrap'>u^(theta)</span></a>
+.
+
+<br>
+<br>
+<b><a name="Notation.Random Constraint Matrix, A" id="Notation.Random Constraint Matrix, A">Random Constraint Matrix, A</a></b>
+<br>
+The random constraint matrix is denoted by <small>@(@
+A
+@)@</small>.
+It has row dimension equal to the number of constraints
+and column dimension equal to the number of random effects.
+
+<br>
+<br>
+<b><a name="Notation.Random Constraint Function, A*u^(theta)" id="Notation.Random Constraint Function, A*u^(theta)">Random Constraint Function, A*u^(theta)</a></b>
+<br>
+We refer to <small>@(@
+A \; \hat{u} ( \theta )
+@)@</small>
+as the random constraint function.
+
+
+
+<br>
+<br>
+<b><big><a name="Problem" id="Problem">Problem</a></big></b>
+
+
+<br>
+<br>
+<b><a name="Problem.Maximum Likelihood" id="Problem.Maximum Likelihood">Maximum Likelihood</a></b>
+<br>
+We are given the problem of
+estimating the fixed effects by maximizing the likelihood with
+respect to <small>@(@
+\theta
+@)@</small>; i.e.,
+<small>@[@
+
+\B{p}( y , z , \theta )
+=
+\B{p} ( \theta ) \B{p} ( z | \theta ) \int_{-\infty}^{+\infty}
+		\B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) \; \B{d} u
+
+@]@</small>
+
+<br>
+<br>
+<b><a name="Problem.No Random Effects" id="Problem.No Random Effects">No Random Effects</a></b>
+<br>
+In the case where there are not random effects, the vector <small>@(@
+u
+@)@</small>
+is empty and the optimal fixed effects maximize
+<small>@[@
+
+\B{p} ( \theta ) \B{p} ( z | \theta )
+
+@]@</small>
+
+<br>
+<br>
+<b><a name="Problem.Fixed Constraints, c" id="Problem.Fixed Constraints, c">Fixed Constraints, c</a></b>
+<br>
+The fixed effects have constraints of the form
+<small>@[@
+
+	c_L \leq c(\theta) \leq c_U
+
+@]@</small>
+where and <small>@(@
+c_L
+@)@</small>, <small>@(@
+c_U
+@)@</small> are vectors in the range of <small>@(@
+c(x)
+@)@</small>.
+In the case where there are no constraints on the fixed effects,
+the range space is the empty vector.
+
+<br>
+<br>
+<b><a name="Problem.Random Constraints" id="Problem.Random Constraints">Random Constraints</a></b>
+<br>
+The random constraints are defined by the equation
+<small>@[@
+
+	0 = A \; \hat{u} ( \theta )
+
+@]@</small>
+
+<br>
+<br>
+<b><big><a name="Negative Log-Density Vector" id="Negative Log-Density Vector">Negative Log-Density Vector</a></big></b>
+<br>
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>vec</span></font></i></code>
+ is a density vector corresponding to <small>@(@
+\B{p}(x)
+@)@</small>,
+the corresponding negative log-density is given by
+<code><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></code>
+<small>@(@
+- \log [ \B{p} (x) ] =
+@)@</small>
+
+<code><i><font color="black"><span style='white-space: nowrap'>vec</span></font></i><font color="blue"><span style='white-space: nowrap'>[0]&nbsp;+&nbsp;fabs(</span></font><i><font color="black"><span style='white-space: nowrap'>vec</span></font></i><font color="blue"><span style='white-space: nowrap'>[1])&nbsp;+&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>...</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;fabs(</span></font><i><font color="black"><span style='white-space: nowrap'>vec</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>s</span></font></i><font color="blue"><span style='white-space: nowrap'>-1])<br>
+</span></font></code>
+where 
+<code><i><font color="black"><span style='white-space: nowrap'>s</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>vec</span></font></i><font color="blue"><span style='white-space: nowrap'>.size()</span></font></code>
+.
+
+<br>
+<br>
+<b><big><a name="Contents" id="Contents">Contents</a></big></b>
+<br>
+<table>
+<tr><td><a href="_contents.htm" target="_top">_contents</a></td><td>Table&nbsp;of&nbsp;Contents</td></tr><tr><td><a href="install_unix.htm" target="_top">install_unix</a></td><td>Installing&nbsp;cppad_mixed&nbsp;in&nbsp;Unix</td></tr><tr><td><a href="theory.htm" target="_top">theory</a></td><td>Laplace&nbsp;Approximation&nbsp;for&nbsp;Mixed&nbsp;Effects&nbsp;Models</td></tr><tr><td><a href="base_class.htm" target="_top">base_class</a></td><td>The&nbsp;cppad_mixed&nbsp;Base&nbsp;Class</td></tr><tr><td><a href="namespace.htm" target="_top">namespace</a></td><td>The&nbsp;CppAD::mixed&nbsp;Namespace&nbsp;Declarations</td></tr><tr><td><a href="user.htm" target="_top">user</a></td><td>User&nbsp;API&nbsp;Examples</td></tr><tr><td><a href="whats_new_17.htm" target="_top">whats_new_17</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2017</td></tr><tr><td><a href="wish_list.htm" target="_top">wish_list</a></td><td>CppAD&nbsp;Mixed&nbsp;Wish&nbsp;List</td></tr><tr><td><a href="math_notation.htm" target="_top">math_notation</a></td><td>Mathematical&nbsp;Notation</td></tr><tr><td><a href="_reference.htm" target="_top">_reference</a></td><td>Alphabetic&nbsp;Listing&nbsp;of&nbsp;Cross&nbsp;Reference&nbsp;Tags</td></tr><tr><td><a href="_index.htm" target="_top">_index</a></td><td>Keyword&nbsp;Index</td></tr><tr><td><a href="_search.htm" target="_top">_search</a></td><td>Search&nbsp;This&nbsp;Web&nbsp;Site</td></tr><tr><td><a href="_external.htm" target="_top">_external</a></td><td>External&nbsp;Internet&nbsp;References</td></tr></table>
+<hr>Input File: doc.omh
+
+</body>
+</html>

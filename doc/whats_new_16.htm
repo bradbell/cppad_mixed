@@ -1,0 +1,1622 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Changes and Additions to cppad_mixed During 2016</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2016">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2016 11-09 11-07 11-04 11-02 10-30 10-28 10-27 10-25 10-24 10-18 10-16 10-15 10-14 10-06 09-30 09-27 09-24 09-23 07-28 07-27 07-26 07-25 07-20 07-18 07-14 07-13 07-12 07-10 07-09 06-24 06-22 06-19 06-18 06-17 06-13 06-12 06-11 06-07 06-06 06-05 06-04 06-03 optimize_random optimize_fixed sample_random 05-15 05-11 05-08 05-06 05-04 05-03 04-29 04-27 04-23 04-19 04-18 04-17 04-16 04-10 04-15 04-09 04-08 04-07 04-06 04-05 04-03 04-02 04-01 03-29 03-28 03-09 02-26 02-06 01-26 01-25 01-22 01-21 01-19 01-16 01-15 01-14 01-13 01-10 01-09 01-05 01-04 01-01 ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_whats_new_16_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="whats_new_15.htm" target="_top">Prev</a>
+</td><td><a href="wish_list.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>whats_new_17</option>
+<option>whats_new_16</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>whats_new_17-&gt;</option>
+<option>whats_new_15</option>
+<option>whats_new_16</option>
+</select>
+</td>
+<td>whats_new_16</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>11-09</option>
+<option>11-07</option>
+<option>11-04</option>
+<option>11-02</option>
+<option>10-30</option>
+<option>10-28</option>
+<option>10-27</option>
+<option>10-25</option>
+<option>10-24</option>
+<option>10-18</option>
+<option>10-16</option>
+<option>10-15</option>
+<option>10-14</option>
+<option>10-06</option>
+<option>09-30</option>
+<option>09-27</option>
+<option>09-24</option>
+<option>09-23</option>
+<option>07-28</option>
+<option>07-27</option>
+<option>07-26</option>
+<option>07-25</option>
+<option>07-20</option>
+<option>07-18</option>
+<option>07-14</option>
+<option>07-13</option>
+<option>07-12</option>
+<option>07-10</option>
+<option>07-09</option>
+<option>06-24</option>
+<option>06-22</option>
+<option>06-19</option>
+<option>06-18</option>
+<option>06-17</option>
+<option>06-13</option>
+<option>06-12</option>
+<option>06-11</option>
+<option>06-07</option>
+<option>06-06</option>
+<option>06-05</option>
+<option>06-04</option>
+<option>06-03</option>
+<option>06-03.optimize_random</option>
+<option>06-03.optimize_fixed</option>
+<option>06-03.sample_random</option>
+<option>05-15</option>
+<option>05-11</option>
+<option>05-08</option>
+<option>05-06</option>
+<option>05-04</option>
+<option>05-03</option>
+<option>04-29</option>
+<option>04-27</option>
+<option>04-23</option>
+<option>04-19</option>
+<option>04-18</option>
+<option>04-17</option>
+<option>04-16</option>
+<option>04-10</option>
+<option>04-15</option>
+<option>04-09</option>
+<option>04-08</option>
+<option>04-07</option>
+<option>04-06</option>
+<option>04-05</option>
+<option>04-03</option>
+<option>04-02</option>
+<option>04-01</option>
+<option>03-29</option>
+<option>03-28</option>
+<option>03-09</option>
+<option>02-26</option>
+<option>02-06</option>
+<option>01-26</option>
+<option>01-25</option>
+<option>01-22</option>
+<option>01-21</option>
+<option>01-19</option>
+<option>01-16</option>
+<option>01-15</option>
+<option>01-14</option>
+<option>01-13</option>
+<option>01-10</option>
+<option>01-09</option>
+<option>01-05</option>
+<option>01-04</option>
+<option>01-01</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Changes and Additions to cppad_mixed During 2016</big></big></b></center>
+<br>
+<b><big><a name="11-09" id="11-09">11-09</a></big></b>
+<br>
+The values <code><font color="blue">true</font></code> and <code><font color="blue">false</font></code> in the <code><font color="blue">ar1_xam</font></code>
+<a href="ar1_xam.cpp.htm#Command Arguments" target="_top"><span style='white-space: nowrap'>input&nbsp;arguments</span></a>
+ and
+<a href="ar1_xam.cpp.htm#Output" target="_top"><span style='white-space: nowrap'>output</span></a>
+ were changed to
+<code><font color="blue">yes</font></code> and <code><font color="blue">no</font></code> respectively.
+This was also done for the <a href="capture_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>capture_xam</span></a>
+ program.
+
+
+<br>
+<br>
+<b><big><a name="11-07" id="11-07">11-07</a></big></b>
+
+<ol type="1"><li>
+Add the <code><font color="blue">bin/speed_compare.py</font></code> program
+(which has since been moved to <code><font color="blue">bin/speed_old.py</font></code>).
+</li><li>
+
+Change order of <a href="capture_xam.cpp.htm#Command Arguments" target="_top"><span style='white-space: nowrap'>input&nbsp;arguments</span></a>
+
+to <code><font color="blue">capture_xam</font></code> be more similar to
+<a href="ar1_xam.cpp.htm#Command Arguments" target="_top"><span style='white-space: nowrap'>ar1_xam</span></a>
+.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="11-04" id="11-04">11-04</a></big></b>
+<br>
+This the first version with <code><font color="blue">cppad_mixed</font></code> with the
+<a href="run_cmake.sh.htm#checkpoint_newton_step" target="_top"><span style='white-space: nowrap'>checkpoint_newton_step</span></a>
+ option.
+Previously, the Newton step was always checkpointed.
+
+
+<br>
+<br>
+<b><big><a name="11-02" id="11-02">11-02</a></big></b>
+<br>
+The sparsity pattern and other information related to the Hessian of the
+<a href="theory.htm#Random Likelihood, f(theta, u)" target="_top"><span style='white-space: nowrap'>random&nbsp;likelihood</span></a>
+,
+<small>@(@
+f_{uu} ( \theta , u )
+@)@</small>, was being computed twice, if
+<a href="derived_ctor.htm#quasi_fixed" target="_top"><span style='white-space: nowrap'>quasi_fixed</span></a>
+ was false,
+or if <a href="information_mat.htm" target="_top"><span style='white-space: nowrap'>information_mat</span></a>
+ was called.
+This has been fixed
+
+
+<br>
+<br>
+<b><big><a name="10-30" id="10-30">10-30</a></big></b>
+
+<ol type="1"><li>
+The <a href="derived_ctor.htm#A_rcv" target="_top"><span style='white-space: nowrap'>A_rcv</span></a>
+ argument was missing
+from the <code><font color="blue">initialize</font></code> Syntax. This has been fixed.
+</li><li>
+
+The value of
+<a href="capture_xam.cpp.htm#Command Arguments.number_random" target="_top"><span style='white-space: nowrap'>number_random</span></a>
+
+was increased (from 30 to 35) to lessen the change of a random failure
+during the <code><font color="blue">make speed</font></code> command; see
+<a href="install_unix.htm#cppad_mixed.Speed" target="_top"><span style='white-space: nowrap'>speed</span></a>
+.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="10-28" id="10-28">10-28</a></big></b>
+<br>
+Fix bug in <a href="sparse_ad_cholesky.htm" target="_top"><span style='white-space: nowrap'>sparse_ad_cholesky</span></a>
+; to be more specific,
+the inverse permutation <small>@(@
+P^{-1}
+@)@</small> was being used where the permutation
+<a href="sparse_ad_cholesky.htm#Notation.P" target="_top"><span style='white-space: nowrap'>P</span></a>
+ was required.
+This the first version with <code><font color="blue">cppad_mixed</font></code> passes all its tests with
+<a href="run_cmake.sh.htm#use_atomic_cholesky" target="_top"><span style='white-space: nowrap'>use_atomic_cholesky</span></a>
+ true.
+
+
+<br>
+<br>
+<b><big><a name="10-27" id="10-27">10-27</a></big></b>
+
+<ol type="1"><li>
+Add the <a href="run_cmake.sh.htm#optimize_cppad_function" target="_top"><span style='white-space: nowrap'>optimize_cppad_function</span></a>
+
+option to the <code><font color="blue">cmake</font></code> command line.
+</li><li>
+
+Advance to cppad-20161027.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="10-25" id="10-25">10-25</a></big></b>
+
+<ol type="1"><li>
+Add the <a href="run_cmake.sh.htm#use_atomic_cholesky" target="_top"><span style='white-space: nowrap'>use_atomic_cholesky</span></a>
+
+option to the <code><font color="blue">cmake</font></code> command line.
+</li><li>
+
+Fix another bug in <a href="sparse_ad_cholesky.htm" target="_top"><span style='white-space: nowrap'>sparse_ad_cholesky</span></a>
+. To be specific,
+when search for the beginning of a row, do not check that at column index
+is less than an element known to be in the row before you get to the row.
+</li><li>
+
+Fix a problem with, and improve, <a href="example_install.sh.htm" target="_top"><span style='white-space: nowrap'>example_install.sh</span></a>
+
+(the problem was introduced on 2016-10-24).
+</li><li>
+
+Fix a problem with
+<a href="install_unix.htm#Special Requirements.SuiteSparse" target="_top"><span style='white-space: nowrap'>install_suitesparse.sh</span></a>
+
+(introduced on 2016-10-24).
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="10-24" id="10-24">10-24</a></big></b>
+<br>
+Fix a bug in the <a href="sparse_ad_cholesky.htm" target="_top"><span style='white-space: nowrap'>sparse_ad_cholesky</span></a>
+ class forward mode.
+To be specific, ignore higher order Taylor coefficients that do
+not appear in the sparsity patter for the zero order coefficient
+(they are no effects).
+
+<br>
+<br>
+<b><big><a name="10-18" id="10-18">10-18</a></big></b>
+<br>
+Fix a bug in implementation of the <a href="run_cmake.sh.htm" target="_top"><span style='white-space: nowrap'>run_cmake.sh</span></a>
+
+<code><font color="blue">log_fatal_error</font></code> option (which has since been removed).
+
+<br>
+<br>
+<b><big><a name="10-16" id="10-16">10-16</a></big></b>
+<br>
+Add the
+<code><font color="blue">log_fatal_error</font></code> option to the cppad_mixed configuration.
+
+<br>
+<br>
+<b><big><a name="10-15" id="10-15">10-15</a></big></b>
+
+<b><br>
+API Change:</b>
+The
+<a href="cppad_mixed.htm#Notation.Random Constraint Matrix, A" target="_top"><span style='white-space: nowrap'>random&nbsp;constraint&nbsp;matrix</span></a>
+
+
+<code><i><font color="black"><span style='white-space: nowrap'>A_rcv</span></font></i></code>
+, is now specified in
+<a href="derived_ctor.htm#A_rcv" target="_top"><span style='white-space: nowrap'>initialize</span></a>
+ instead
+<a href="derived_ctor.htm" target="_top"><span style='white-space: nowrap'>derived_ctor</span></a>
+.
+This was undone on
+<a href="whats_new_17.htm#03-08" target="_top"><span style='white-space: nowrap'>2017-03-08</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="10-14" id="10-14">10-14</a></big></b>
+
+<ol type="1"><li>
+The way the
+<a href="install_unix.htm" target="_top"><span style='white-space: nowrap'>install</span></a>
+ searches for libraries,
+and reports missing libraries,
+has been improved.
+</li><li>
+
+Improve the <a href="install_unix.htm#Special Requirements.SuiteSparse" target="_top"><span style='white-space: nowrap'>suitesparse</span></a>
+
+so that it automatically includes the <code><font color="blue">metis</font></code> package.
+Note that the proper value for 
+<code><i><font color="black"><span style='white-space: nowrap'>metis_version</span></font></i></code>
+,
+in the suitesparse install,
+is printed at the end of the ipopt install.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="10-06" id="10-06">10-06</a></big></b>
+<br>
+A class that performs sparse Cholesky factorization
+as a CppAD atomic operation has been added; see
+<a href="sparse_ad_cholesky.htm" target="_top"><span style='white-space: nowrap'>sparse_ad_cholesky</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="09-30" id="09-30">09-30</a></big></b>
+
+<ol type="1"><li>
+Use one value for 
+<code><i><font color="black"><span style='white-space: nowrap'>libdir</span></font></i></code>
+ for all the install scripts;
+see <a href="run_cmake.sh.htm#cmake_libdir" target="_top"><span style='white-space: nowrap'>cmake_libdir</span></a>
+.
+</li><li>
+
+Use a link to switch the build and install directories between
+the debug and release versions (when the install prefix ends with
+<code><font color="blue">cppad_mixed</font></code>).
+This enables one to build into the actual prefix
+(without <code><font color="blue">debug</font></code> or <code><font color="blue">release</font></code> at the end)
+by not ending the prefix with <code><font color="blue">cppad_mixed</font></code>.
+</li><li>
+
+Advance to cppad-20160929.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="09-27" id="09-27">09-27</a></big></b>
+<br>
+Add <a href="sparse_up_tri_sol.htm" target="_top"><span style='white-space: nowrap'>sparse_up_tri_sol</span></a>
+
+(plan to use this with a sparse atomic Cholesky AD operation).
+
+<br>
+<br>
+<b><big><a name="09-24" id="09-24">09-24</a></big></b>
+<br>
+Create <a href="sparse_low_tri_sol.htm" target="_top"><span style='white-space: nowrap'>sparse_low_tri_sol</span></a>
+
+(plan to use this with a sparse atomic Cholesky AD operation).
+
+<br>
+<br>
+<b><big><a name="09-23" id="09-23">09-23</a></big></b>
+<br>
+Improve
+<a href="install_unix.htm#Special Requirements.eigen" target="_top"><span style='white-space: nowrap'>bin/install_eigen.sh</span></a>
+,
+<a href="install_unix.htm#Special Requirements.Ipopt" target="_top"><span style='white-space: nowrap'>bin/install_ipopt.sh</span></a>
+,
+and
+<a href="install_unix.htm#Special Requirements.SuiteSparse" target="_top"><span style='white-space: nowrap'>bin/install_suitesparse.sh</span></a>
+,
+so they better ensure that debug and release versions got into proper
+directories.
+
+
+<br>
+<br>
+<b><big><a name="07-28" id="07-28">07-28</a></big></b>
+
+<ol type="1"><li>
+Improve the organization of the <a href="user.htm" target="_top"><span style='white-space: nowrap'>user</span></a>
+ API example section.
+</li><li>
+
+Add the 
+<code><i><font color="black"><span style='white-space: nowrap'>start_near_solution</span></font></i></code>
+ argument to
+<a href="ar1_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>ar1_xam.cpp</span></a>
+ and <a href="capture_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>capture_xam.cpp</span></a>
+.
+</li><li>
+
+Add the 
+<code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
+ argument to <a href="ar1_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>ar1_xam.cpp</span></a>
+
+and change its position in <a href="capture_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>capture_xam.cpp</span></a>
+
+(so it has same relative location as in <code><font color="blue">ar1_xam.cpp</font></code>).
+</li><li>
+
+Change the default for
+<a href="optimize_fixed.htm#fixed_ipopt_options.accept_after_max_steps" target="_top"><span style='white-space: nowrap'>accept_after_max_steps</span></a>
+
+to <code><font color="blue">2</font></code> and the default for 
+<code><i><font color="black"><span style='white-space: nowrap'>obj_scaling_factor</span></font></i></code>
+
+back to <code><font color="blue">1</font></code>.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="07-27" id="07-27">07-27</a></big></b>
+<br>
+Mention having both debug and release versions of build on same file
+system; see <a href="run_cmake.sh.htm#build_type" target="_top"><span style='white-space: nowrap'>build_type</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="07-26" id="07-26">07-26</a></big></b>
+<br>
+Change the fixed effects optimization default value for the Ipopt
+
+<code><i><font color="black"><span style='white-space: nowrap'>obj_scaling_factor</span></font></i></code>
+ from <code><font color="blue">1.0</font></code> to
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>obj_scaling_factor</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;1.0&nbsp;/&nbsp;sqrt(&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;+&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;)<br>
+<br>
+</span></font></code>
+This avoids scaling problems in <a href="ar1_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>ar1_xam.cpp</span></a>
+
+with there is a large number of random effects (10,000 or more).
+To be specific, the number of backtracking line search steps
+<a href="ipopt_trace.htm#ls" target="_top"><span style='white-space: nowrap'>ls</span></a>
+ is much smaller.
+
+
+<br>
+<br>
+<b><big><a name="07-25" id="07-25">07-25</a></big></b>
+
+<ol type="1"><li>
+Computing the derivative of the log of the determinant term in the
+<a href="theory.htm#Objective.Laplace Approximation, h(theta, u)" target="_top"><span style='white-space: nowrap'>Laplace&nbsp;approximation</span></a>
+
+uses the inverse of the Hessian w.r.t. the random effects
+(where the Hessian is possibly non-zero).
+The
+<a href="run_cmake.sh.htm#ldlt_cholmod" target="_top"><span style='white-space: nowrap'>ldlt_cholmod</span></a>
+ method for computing
+this inverse uses a special inverse subset algorithm; see
+<a href="ldlt_cholmod_inv.htm#Method" target="_top"><span style='white-space: nowrap'>method</span></a>
+.
+The <a href="ldlt_eigen_inv.htm#Method" target="_top"><span style='white-space: nowrap'>method</span></a>
+ has not been changed.
+</li><li>
+
+Make order the same for command line arguments that have the same name in
+<a href="ar1_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>ar1_xam.cpp</span></a>
+ and <a href="capture_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>capture_xam.cpp</span></a>
+.
+Change the argument 
+<code><i><font color="black"><span style='white-space: nowrap'>number_times</span></font></i></code>
+ to
+
+<code><i><font color="black"><span style='white-space: nowrap'>number_random</span></font></i></code>
+ (in both programs).
+In addition, the 
+<code><i><font color="black"><span style='white-space: nowrap'>derivative_test</span></font></i></code>
+ argument was added to both programs.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="07-20" id="07-20">07-20</a></big></b>
+<br>
+Add the 
+<code><i><font color="black"><span style='white-space: nowrap'>hold_memory</span></font></i></code>
+ parameter to
+<a href="capture_xam.cpp.htm#Command Arguments.hold_memory" target="_top"><span style='white-space: nowrap'>capture_xam.cpp</span></a>
+ and
+<a href="ar1_xam.cpp.htm#Command Arguments.hold_memory" target="_top"><span style='white-space: nowrap'>ar1_xam.cpp</span></a>
+.
+
+
+<br>
+<br>
+<b><big><a name="07-18" id="07-18">07-18</a></big></b>
+<br>
+Add the 
+<code><i><font color="black"><span style='white-space: nowrap'>bool_sparsity</span></font></i></code>
+ parameter to the following:
+<a href="initialize.htm" target="_top"><span style='white-space: nowrap'>initialize</span></a>
+,
+<a href="information_mat.htm" target="_top"><span style='white-space: nowrap'>information_mat</span></a>
+,
+<a href="capture_xam.cpp.htm#Command Arguments.bool_sparsity" target="_top"><span style='white-space: nowrap'>capture_xam.cpp</span></a>
+,
+<a href="ar1_xam.cpp.htm#Command Arguments.bool_sparsity" target="_top"><span style='white-space: nowrap'>ar1_xam.cpp</span></a>
+.
+In addition, remove 
+<code><i><font color="black"><span style='white-space: nowrap'>bool_sparsity</span></font></i></code>
+ from the <a href="run_cmake.sh.htm" target="_top"><span style='white-space: nowrap'>run_cmake.sh</span></a>
+
+configuration script.
+This puts the choose between boolean and set sparsity patterns
+during run-time, instead of during the <a href="install_unix.htm" target="_top"><span style='white-space: nowrap'>install</span></a>
+ process.
+The 
+<code><i><font color="black"><span style='white-space: nowrap'>bool_sparsity</span></font></i></code>
+ parameter has since been moved for
+<code><font color="blue">initialize</font></code> and <code><font color="blue">information_mat</font></code> to
+<a href="derived_ctor.htm#bool_sparsity" target="_top"><span style='white-space: nowrap'>derived_ctor</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="07-14" id="07-14">07-14</a></big></b>
+<br>
+A new method for computing the Hessian of the Laplace objective
+<a href="theory.htm#Hessian of Laplace Objective" target="_top"><span style='white-space: nowrap'>Hessian&nbsp;of&nbsp;the&nbsp;Laplace&nbsp;objective</span></a>
+
+was implemented.
+To be specific, two partial Newton steps
+(instead of two full Newton steps) are used in the
+<a href="theory.htm#Approximate Optimal Random Effects.Second Order, W(beta, theta, u)" target="_top"><span style='white-space: nowrap'>second&nbsp;order</span></a>
+
+approximation for the optimal random effects
+<small>@(@
+W( \beta , \theta , u )
+@)@</small>.
+This should speed up the computation of the
+<a href="information_mat.htm" target="_top"><span style='white-space: nowrap'>information&nbsp;matrix</span></a>
+.
+It should also speed up <a href="optimize_fixed.htm" target="_top"><span style='white-space: nowrap'>optimize_fixed</span></a>
+ when
+<a href="derived_ctor.htm#quasi_fixed" target="_top"><span style='white-space: nowrap'>quasi_fixed</span></a>
+ is false.
+
+<br>
+<br>
+<b><big><a name="07-13" id="07-13">07-13</a></big></b>
+<br>
+A new method for optimizing the random effects has been included; see
+<a href="optimize_random.htm#options.evaluation_method" target="_top"><span style='white-space: nowrap'>evaluation_method</span></a>
+.
+The new method is now the default.
+An option was added so the speed tests could use the new or old method; see
+
+<code><i><font color="black"><span style='white-space: nowrap'>ipopt_solve</span></font></i></code>
+ in
+<a href="capture_xam.cpp.htm#Command Arguments.ipopt_solve" target="_top"><span style='white-space: nowrap'>capture_xam</span></a>
+ and
+<a href="ar1_xam.cpp.htm#Command Arguments.ipopt_solve" target="_top"><span style='white-space: nowrap'>ar1_xam</span></a>
+.
+
+
+<br>
+<br>
+<b><big><a name="07-12" id="07-12">07-12</a></big></b>
+
+<ol type="1"><li>
+Improve the error messages when
+<a href="install_unix.htm#System Requirements.pkg-config" target="_top"><span style='white-space: nowrap'>pkg-config</span></a>
+
+cannot find the configuration information
+for <a href="install_unix.htm#System Requirements.gsl" target="_top"><span style='white-space: nowrap'>gsl</span></a>
+
+or <a href="install_unix.htm#Special Requirements.Ipopt" target="_top"><span style='white-space: nowrap'>ipopt</span></a>
+.
+</li><li>
+
+Fix a compile error (on some systems)
+in the file <code><font color="blue">src/cholmod/sim_cov.cpp</font></code>.
+</li><li>
+
+Improve discussion of Ipopt callback 
+<code><i><font color="black"><span style='white-space: nowrap'>ok</span></font></i></code>
+ flag; e.g., see
+<a href="ipopt_xam_eval_f.htm#ok" target="_top"><span style='white-space: nowrap'>ok</span></a>
+.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="07-10" id="07-10">07-10</a></big></b>
+
+<ol type="1"><li>
+Improve <a href="example_install.sh.htm" target="_top"><span style='white-space: nowrap'>example_install.sh</span></a>
+.
+To be specific, give the user the option to use existing installs.
+</li><li>
+
+Add more input and output options to <a href="ar1_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>ar1_xam.cpp</span></a>
+.
+</li><li>
+
+Reduce that chance of random test failure using the
+<a href="capture_xam.cpp.htm#Example" target="_top"><span style='white-space: nowrap'>example</span></a>
+ settings
+for <code><font color="blue">capture_xam.cpp</font></code>.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="07-09" id="07-09">07-09</a></big></b>
+<br>
+Change the <code><font color="blue">auto_regressive_xam.cpp</font></code> example to the
+<a href="ar1_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>ar1_xam.cpp</span></a>
+ example and speed test.
+
+<br>
+<br>
+<b><big><a name="06-24" id="06-24">06-24</a></big></b>
+
+<ol type="1"><li>
+There was a problem with how
+<a href="install_unix.htm#System Requirements.gsl" target="_top"><span style='white-space: nowrap'>gsl</span></a>
+
+was linked on some systems.
+This has been fixed.
+</li><li>
+
+The script <code><font color="blue">bin/debian_install</font></code> has been moved to
+<a href="example_install.sh.htm" target="_top"><span style='white-space: nowrap'>bin/example_install.sh</span></a>
+
+and it should work for both Debian and Red Hat systems.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="06-22" id="06-22">06-22</a></big></b>
+
+<ol type="1"><li>
+Add the <code><font color="blue">auto_regressive_xam.cpp</font></code> example.
+</li><li>
+
+Create the scripts <code><font color="blue">bin/debian_install.sh</font></code> for an easy install on Debian
+systems. There are some 2DO items in this install that need to be
+fixed so they work on all systems.
+</li><li>
+
+Create the script <code><font color="blue">bin/install_omhelp</font></code> an easy install of omhelp
+for Debian systems. This is needed to do <code><font color="blue">cppad_mixed</font></code> development.
+</li></ol>
+
+
+
+<br>
+<br>
+<b><big><a name="06-19" id="06-19">06-19</a></big></b>
+
+<ol type="1"><li>
+If during a call to <a href="optimize_fixed.htm" target="_top"><span style='white-space: nowrap'>optimize_fixed</span></a>
+ a
+<a href="derived_ctor.htm#CppAD ErrorHandler" target="_top"><span style='white-space: nowrap'>CppAD&nbsp;error</span></a>
+ occurs,
+it no longer aborts the optimization.
+</li><li>
+
+Add the 
+<code><i><font color="black"><span style='white-space: nowrap'>build_type</span></font></i></code>
+ choice
+(debug or release) to the install script for
+<a href="install_unix.htm#Special Requirements.eigen" target="_top"><span style='white-space: nowrap'>eigen</span></a>
+,
+<a href="install_unix.htm#Special Requirements.Ipopt" target="_top"><span style='white-space: nowrap'>ipopt</span></a>
+, and
+<a href="install_unix.htm#Special Requirements.SuiteSparse" target="_top"><span style='white-space: nowrap'>suitesparse</span></a>
+.
+Compiling debug versus release
+for the installs above and for the
+<a href="run_cmake.sh.htm#build_type" target="_top"><span style='white-space: nowrap'>build_type</span></a>
+
+made a difference of 40.0 seconds versus 5.5 seconds
+for the average of 20 values of <code><font color="blue">capture_xam</font></code>
+<a href="capture_xam.cpp.htm#Output.optimize_fixed_seconds" target="_top"><span style='white-space: nowrap'>optimize_fixed_seconds</span></a>
+.
+</li></ol>
+
+
+
+<br>
+<br>
+<b><big><a name="06-18" id="06-18">06-18</a></big></b>
+<br>
+If during a call to <a href="optimize_fixed.htm" target="_top"><span style='white-space: nowrap'>optimize_fixed</span></a>
+,
+the Hessian of the
+<a href="theory.htm#Random Likelihood, f(theta, u)" target="_top"><span style='white-space: nowrap'>random&nbsp;likelihood</span></a>
+
+<small>@(@
+f_{uu} ( \theta , u )
+@)@</small> may not be positive definite.
+This case used to aborted the optimization with a
+<a href="public.htm#User Defined Functions.fatal_error" target="_top"><span style='white-space: nowrap'>fatal_error</span></a>
+.
+Now a
+<a href="public.htm#User Defined Functions.warning" target="_top"><span style='white-space: nowrap'>warning</span></a>
+
+is used to report this condition and the
+<a href="optimize_fixed.htm#solution" target="_top"><span style='white-space: nowrap'>solution</span></a>
+ is returned with
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_opt<br>
+</span></font></code>
+equal to the fixed effects for this warning.
+
+
+
+<br>
+<br>
+<b><big><a name="06-17" id="06-17">06-17</a></big></b>
+
+<ol type="1"><li>
+Continue to improve <a href="capture_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>capture_xam.cpp</span></a>
+ example / speed test.
+</li><li>
+
+Drop the <code><font color="blue">a1_double</font></code> version of the user defined
+<a href="ran_likelihood.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood</span></a>
+ function.
+Also drop the corresponding template functions from the
+<a href="user.htm" target="_top"><span style='white-space: nowrap'>user</span></a>
+ examples.
+</li></ol>
+
+
+
+<br>
+<br>
+<b><big><a name="06-13" id="06-13">06-13</a></big></b>
+
+<ol type="1"><li>
+There was a bug in
+<a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
+ that generated the assert
+<code><font color="blue">
+	 Assertion `H_info.col[k] == j' failed.
+</font></code>
+The problem was that <code><font color="blue">H_info</font></code> was not in
+<a href="sparse_mat_info.htm#Notation.Column Major Order" target="_top"><span style='white-space: nowrap'>column&nbsp;manor&nbsp;order</span></a>
+.
+This has been fixed.
+</li><li>
+
+Continue to improve <a href="capture_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>capture_xam.cpp</span></a>
+ example / speed test.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="06-12" id="06-12">06-12</a></big></b>
+
+<ol type="1"><li>
+Remove the option,
+to use <code><font color="blue">box_newton</font></code> to optimize the random effects
+(added on <a href="whats_new_16.htm#06-03" target="_top"><span style='white-space: nowrap'>06-03</span></a>
+).
+It turns out this had some problems and did not yield the hoped for
+improvements in speed.
+</li><li>
+
+Add comment about fact that constant terms in
+<a href="fix_likelihood.htm#vec.constant" target="_top"><span style='white-space: nowrap'>fix_likelihood</span></a>
+ and
+<a href="ran_likelihood.htm#vec.constant" target="_top"><span style='white-space: nowrap'>ran_likelihood</span></a>
+
+do not affect the result.
+In addition, change the <a href="user.htm" target="_top"><span style='white-space: nowrap'>user</span></a>
+ examples to demonstrate this fact.
+</li><li>
+
+Continue to improve <a href="capture_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>capture_xam.cpp</span></a>
+ example / speed test.
+</li></ol>
+
+
+
+<br>
+<br>
+<b><big><a name="06-11" id="06-11">06-11</a></big></b>
+<br>
+Improve the <a href="capture_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>capture_xam.cpp</span></a>
+ example:
+<ol type="1"><li>
+Make the  correspondence to its
+<a href="capture_xam.cpp.htm#Reference" target="_top"><span style='white-space: nowrap'>reference</span></a>
+ clearer.
+</li><li>
+
+Add lots of command line arguments for optional settings; see
+<a href="capture_xam.cpp.htm#Syntax" target="_top"><span style='white-space: nowrap'>syntax</span></a>
+.
+</li><li>
+
+Add a normalization factor to avoid floating point overflow during
+evaluation of its <a href="ran_likelihood.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood</span></a>
+.
+</li></ol>
+
+
+
+<br>
+<br>
+<b><big><a name="06-07" id="06-07">06-07</a></big></b>
+
+<ol type="1"><li>
+When <code><font color="blue">box_newton</font></code> fails, change message from
+<a href="public.htm#User Defined Functions.fatal_error" target="_top"><span style='white-space: nowrap'>fatal_error</span></a>
+ to
+<a href="public.htm#User Defined Functions.warning" target="_top"><span style='white-space: nowrap'>warning</span></a>
+.
+</li><li>
+
+Change the <code><font color="blue">box_newton</font></code> convergence
+<code><font color="blue">tolerance</font></code> to be in terms of the
+Newton step (instead of projected gradient).
+</li></ol>
+
+
+
+<br>
+<br>
+<b><big><a name="06-06" id="06-06">06-06</a></big></b>
+<br>
+Fix an minor error in <code><font color="blue">box_newton</font></code> line search termination criteria
+(did not affect any test results).
+
+<br>
+<br>
+<b><big><a name="06-05" id="06-05">06-05</a></big></b>
+
+<ol type="1"><li>
+Make <code><font color="blue">box_newton</font></code> more robust by doing line search in a
+scaled negative projected gradient direction.
+(Step size of one in negative projected gradient direction
+may be much too large or much too small).
+</li><li>
+
+There was a bug in <a href="ldlt_cholmod_solve_h.htm" target="_top"><span style='white-space: nowrap'>ldlt_cholmod_solve_H</span></a>
+ where an unnecessary
+condition was check and failed. The example
+<a href="cholmod_solve2_a.cpp.htm" target="_top"><span style='white-space: nowrap'>cholmod_solve2_a.cpp</span></a>
+ has been change to demonstrate that
+only a subset of the right hand side values matter.
+</li><li>
+
+There was an error in the
+<a href="ldlt_eigen_logdet.htm" target="_top"><span style='white-space: nowrap'>ldlt_eigen_logdet</span></a>
+ function in the special case where the
+determinant was zero. This has been fixed.
+</li></ol>
+
+
+
+<br>
+<br>
+<b><big><a name="06-04" id="06-04">06-04</a></big></b>
+<br>
+Redirect CppAD error messages through
+<a href="public.htm#User Defined Functions.fatal_error" target="_top"><span style='white-space: nowrap'>fatal_error</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="06-03" id="06-03">06-03</a></big></b>
+<br>
+Add the option to use
+<code><font color="blue">box_newton</font></code>
+to optimize the random effects.
+This changed the user API for the functions listed below
+(but has since been remove and the API has been changed back):
+
+<br>
+<br>
+<b><a name="06-03.optimize_random" id="06-03.optimize_random">optimize_random</a></b>
+<br>
+The 
+<code><i><font color="black"><span style='white-space: nowrap'>options</span></font></i></code>
+ argument determines
+if <code><font color="blue">ipopt</font></code> or <code><font color="blue">box_newton</font></code> is used.
+
+<br>
+<br>
+<b><a name="06-03.optimize_fixed" id="06-03.optimize_fixed">optimize_fixed</a></b>
+<br>
+The 
+<code><i><font color="black"><span style='white-space: nowrap'>random_options</span></font></i></code>
+ have been split into
+
+<code><i><font color="black"><span style='white-space: nowrap'>random_box_options/</span></font></i></code>
+ and
+
+<code><i><font color="black"><span style='white-space: nowrap'>random_ipopt_options</span></font></i></code>
+.
+
+<br>
+<br>
+<b><a name="06-03.sample_random" id="06-03.sample_random">sample_random</a></b>
+<br>
+The 
+<code><i><font color="black"><span style='white-space: nowrap'>random_options</span></font></i></code>
+ have been split into
+
+<code><i><font color="black"><span style='white-space: nowrap'>random_box_options/</span></font></i></code>
+ and
+
+<code><i><font color="black"><span style='white-space: nowrap'>random_ipopt_options</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="05-15" id="05-15">05-15</a></big></b>
+
+<ol type="1"><li>
+The <a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
+ routine now uses an LDLT factorization of the
+<a href="sample_fixed.htm#Theory.Implicit Information" target="_top"><span style='white-space: nowrap'>implicit&nbsp;information</span></a>
+
+instead of the implicit covariance.
+This is more efficient.
+</li><li>
+
+Provide results from when matrix is invertible,
+but not <a href="sample_fixed.htm#Positive Definite" target="_top"><span style='white-space: nowrap'>positive&nbsp;definite</span></a>
+.
+This is intended to help determine which variables are
+not determined by the model plus data.
+</li><li>
+
+Remove <code><font color="blue">sample_fixed</font></code> wish list item.
+</li><li>
+
+Add the <code><font color="blue">adaptive</font></code> and <code><font color="blue">trace-adaptive</font></code> choices to the
+<a href="optimize_fixed.htm#fixed_ipopt_options.derivative_test" target="_top"><span style='white-space: nowrap'>derivative_test</span></a>
+
+fixed effects options.
+Note that this gives the user direct control over doing this test
+(which can be time intensive for large problems).
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="05-11" id="05-11">05-11</a></big></b>
+
+<ol type="1"><li>
+In <a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
+,
+<a href="sample_conditional.htm#Replaced" target="_top"><span style='white-space: nowrap'>Replace</span></a>
+ the
+<a href="sample_conditional.htm#Theory.Conditional Covariance" target="_top"><span style='white-space: nowrap'>conditional&nbsp;covariance</span></a>
+
+method by the
+<a href="sample_fixed.htm#Theory.Implicit Covariance" target="_top"><span style='white-space: nowrap'>implicit&nbsp;covariance</span></a>
+
+method.
+</li><li>
+
+Return a warning when the
+observed implicit covariance is not positive definite.
+In addition, simulate samples from a modified covariance so user
+can look for variables that vary a lot and are undetermined.
+This method is suspect. It would be better to do this in information
+matrix space;
+see the <code><font color="blue">sample_fixed</font></code> wish list item.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="05-08" id="05-08">05-08</a></big></b>
+
+<ol type="1"><li>
+Improve <a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
+ by removing fixed effects that have
+their upper or lower limits active (or equal); see
+<a href="sample_conditional.htm#Theory.Fixed Effects Subset" target="_top"><span style='white-space: nowrap'>fixed&nbsp;effects&nbsp;subset</span></a>
+.
+With this change the <a href="information_mat.htm" target="_top"><span style='white-space: nowrap'>information_mat</span></a>
+ only needs to be
+positive definite on a subset of the fixed effects.
+The example <a href="sample_fixed.cpp.htm" target="_top"><span style='white-space: nowrap'>sample_fixed.cpp</span></a>
+ demonstrates this fact.
+</li><li>
+
+Change <a href="sample_random.htm" target="_top"><span style='white-space: nowrap'>sample_random</span></a>
+ to use the
+<a href="theory.htm#Sparse Observed Information" target="_top"><span style='white-space: nowrap'>sparse&nbsp;observed&nbsp;information</span></a>
+ method.
+This reduces the memory and time for computing these samples.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="05-06" id="05-06">05-06</a></big></b>
+<br>
+Fix a bug in the <a href="information_mat.htm" target="_top"><span style='white-space: nowrap'>information_mat</span></a>
+ and <a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
+
+when the number of random effects
+<a href="derived_ctor.htm#n_random" target="_top"><span style='white-space: nowrap'>n_random</span></a>
+ was zero.
+
+<br>
+<br>
+<b><big><a name="05-04" id="05-04">05-04</a></big></b>
+<br>
+Make some improvements to the solution check and its corresponding
+warning message.
+
+<br>
+<br>
+<b><big><a name="05-03" id="05-03">05-03</a></big></b>
+
+<ol type="1"><li>
+Change <code><font color="blue">cholmod</font></code> class to <a href="ldlt_cholmod.htm" target="_top"><span style='white-space: nowrap'>ldlt_cholmod</span></a>
+ class
+and <code><font color="blue">choleig</font></code> class to <a href="ldlt_eigen.htm" target="_top"><span style='white-space: nowrap'>ldlt_eigen</span></a>
+ class.
+</li><li>
+
+Change <code><font color="blue">cholmod_cholesky</font></code> to
+<a href="run_cmake.sh.htm#ldlt_cholmod" target="_top"><span style='white-space: nowrap'>ldlt_cholmod</span></a>
+ in <code><font color="blue">run_cmake.sh</font></code>.
+</li><li>
+
+There was a problem choosing <code><font color="blue">ldlt_cholmod</font></code> to be <code><font color="blue">NO</font></code>.
+This has been fixed by changing the <a href="ldlt_eigen_solve_h.htm" target="_top"><span style='white-space: nowrap'>ldlt_eigen_solve_H</span></a>
+
+function to work the same as the <a href="ldlt_cholmod_solve_h.htm" target="_top"><span style='white-space: nowrap'>ldlt_cholmod_solve_H</span></a>
+ function.
+</li><li>
+
+Add more detection, and reporting as a
+<a href="public.htm#User Defined Functions.fatal_error" target="_top"><span style='white-space: nowrap'>fatal_error</span></a>
+,
+when the Hessian w.r.t. the random effects
+<small>@(@
+f_{uu} ( \theta , u)
+@)@</small> is not positive definite.
+</li></ol>
+
+
+
+<br>
+<br>
+<b><big><a name="04-29" id="04-29">04-29</a></big></b>
+<br>
+Add an <a href="cholmod_solve2_sim.cpp.htm" target="_top"><span style='white-space: nowrap'>cholmod_solve2_sim.cpp</span></a>
+, an example that shows
+how to use Cholmod to efficiently sample a distribution that
+has covariance equal to the inverse of a sparse positive definite matrix.
+
+<br>
+<br>
+<b><big><a name="04-27" id="04-27">04-27</a></big></b>
+
+<ol type="1"><li>
+Add more discussion about the connection between the Lagrange multipliers
+and the fixed effects bounds in the
+<a href="fixed_solution.htm#fixed_lag.Bounds" target="_top"><span style='white-space: nowrap'>fixed_solution</span></a>
+ section.
+</li><li>
+
+Relax the tolerance used by <code><font color="blue">cppad_mixed</font></code>
+when checking if a fixed effect
+<a href="fixed_solution.htm#fixed_lag.Bounds" target="_top"><span style='white-space: nowrap'>bound</span></a>
+
+or a fixed constraint
+<a href="fixed_solution.htm#fix_con_lag.Bounds" target="_top"><span style='white-space: nowrap'>bound</span></a>
+
+is active. This should give better detection.
+</li></ol>
+
+
+
+
+<br>
+<br>
+<b><big><a name="04-23" id="04-23">04-23</a></big></b>
+<br>
+There was bug whereby the <a href="optimize_fixed.htm#solution" target="_top"><span style='white-space: nowrap'>solution</span></a>
+
+returned by <code><font color="blue">optimize_fixed</font></code> would have non-zero values for
+<a href="fixed_solution.htm#fixed_lag" target="_top"><span style='white-space: nowrap'>fixed_lag</span></a>
+ that should have been zero.
+This has been fixed.
+
+<br>
+<br>
+<b><big><a name="04-19" id="04-19">04-19</a></big></b>
+<br>
+Add <a href="sample_random.htm" target="_top"><span style='white-space: nowrap'>sample_random</span></a>
+ for sampling the posterior of the random
+effects given the fixed effects.
+
+<br>
+<br>
+<b><big><a name="04-18" id="04-18">04-18</a></big></b>
+<br>
+Advance to newer version of CppAD; (must rerun <code><font color="blue">bin/install_cppad.sh</font></code>).
+This fixed the remaining warnings when building a release version.
+
+<br>
+<br>
+<b><big><a name="04-17" id="04-17">04-17</a></big></b>
+<br>
+Fix some errors and warnings when
+<a href="run_cmake.sh.htm#build_type" target="_top"><span style='white-space: nowrap'>build_type</span></a>
+ was
+<code><font color="blue">RELEASE</font></code>.
+
+
+<br>
+<br>
+<b><big><a name="04-16" id="04-16">04-16</a></big></b>
+
+<ol type="1"><li>
+The routine <a href="ipopt_fixed_adaptive_derivative_check.htm" target="_top"><span style='white-space: nowrap'>ipopt_fixed_adaptive_derivative_check</span></a>
+ now checks
+<a href="ipopt_fixed_eval_jac_g.htm" target="_top"><span style='white-space: nowrap'>ipopt_fixed_eval_jac_g</span></a>
+ in addition to
+<a href="ipopt_fixed_eval_grad_f.htm" target="_top"><span style='white-space: nowrap'>ipopt_fixed_eval_grad_f</span></a>
+.
+</li><li>
+
+Fix a bug in the computation of the derivative of the random constraints
+<a href="ran_con_jac.htm" target="_top"><span style='white-space: nowrap'>ran_con_jac</span></a>
+.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="04-10" id="04-10">04-10</a></big></b>
+
+<ol type="1"><li>
+If the gradient check <a href="ipopt_fixed_adaptive_derivative_check.htm" target="_top"><span style='white-space: nowrap'>ipopt_fixed_adaptive_derivative_check</span></a>
+ fails,
+it now results in warning instead of a fatal error.
+</li><li>
+
+Check the Hessian of the
+<a href="theory.htm#Random Likelihood, f(theta, u)" target="_top"><span style='white-space: nowrap'>random&nbsp;likelihood</span></a>
+
+<small>@(@
+f_uu ( \theta , u)
+@)@</small> is positive definite.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="04-15" id="04-15">04-15</a></big></b>
+<br>
+Fix <a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
+ so that it now works properly
+when some of the components of <a href="fix_constraint.htm" target="_top"><span style='white-space: nowrap'>fix_constraint</span></a>
+ are active.
+
+<br>
+<br>
+<b><big><a name="04-09" id="04-09">04-09</a></big></b>
+<br>
+Improve documentation of
+<a href="optimize_fixed.htm#fixed_ipopt_options" target="_top"><span style='white-space: nowrap'>fixed_ipopt_options</span></a>
+
+and add the special case of
+<a href="optimize_fixed.htm#fixed_ipopt_options.max_iter" target="_top"><span style='white-space: nowrap'>max_iter</span></a>
+
+equal to <code><font color="blue">-1</font></code>.
+
+
+<br>
+<br>
+<b><big><a name="04-08" id="04-08">04-08</a></big></b>
+
+<ol type="1"><li>
+Changed <a href="ipopt_fixed_adaptive_derivative_check.htm" target="_top"><span style='white-space: nowrap'>ipopt_fixed_adaptive_derivative_check</span></a>
+ to handle case where
+the function at both central difference points is zero,
+and the derivatives is also zero.
+</li><li>
+
+Test (and fix) <a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
+ for a case where one of the fixed effects
+was at its upper or lower limit.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="04-07" id="04-07">04-07</a></big></b>
+
+<ol type="1"><li>
+The new routine <a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
+ samples from the posterior
+distribution for the estimate of the fixed effects.
+</li><li>
+
+Changed <a href="ipopt_fixed_adaptive_derivative_check.htm" target="_top"><span style='white-space: nowrap'>ipopt_fixed_adaptive_derivative_check</span></a>
+ to down to step size
+<code><font color="blue">1e-9</font></code> (used to just go to <code><font color="blue">1e-7</font></code>.
+In addition, in error report changed <code><font color="blue">step=</font></code> to <code><font color="blue">best_step=</font></code>.
+</li></ol>
+
+
+
+<br>
+<br>
+<b><big><a name="04-06" id="04-06">04-06</a></big></b>
+<br>
+The user defined virtual routines
+<a href="public.htm#User Defined Functions.fatal_error" target="_top"><span style='white-space: nowrap'>fatal_error</span></a>
+
+and
+<a href="public.htm#User Defined Functions.warning" target="_top"><span style='white-space: nowrap'>warning</span></a>
+
+have new examples in <a href="derived_ctor.cpp.htm" target="_top"><span style='white-space: nowrap'>derived_ctor.cpp</span></a>
+.
+All the other user defined virtual routines examples
+have been simplified.
+To be specific, each has its own specific example.
+In addition, the <a href="user.htm" target="_top"><span style='white-space: nowrap'>user</span></a>
+ examples have been split in
+the user defined routines, <code><font color="blue">cppad_mixed</font></code> defined routines,
+and other examples.
+
+<br>
+<br>
+<b><big><a name="04-05" id="04-05">04-05</a></big></b>
+<br>
+The new routine <a href="information_mat.htm" target="_top"><span style='white-space: nowrap'>information_mat</span></a>
+ computes
+the observed information matrix.
+
+<br>
+<br>
+<b><big><a name="04-03" id="04-03">04-03</a></big></b>
+<br>
+There was an error (introduced on 04-02 )
+in the new <a href="optimize_fixed.htm#Syntax" target="_top"><span style='white-space: nowrap'>syntax</span></a>
+
+for <code><font color="blue">optimize_fixed</font></code>. This has been fixed.
+
+<br>
+<br>
+<b><big><a name="04-02" id="04-02">04-02</a></big></b>
+<br>
+Add a brief description for each of the
+<a href="public.htm#User Defined Functions" target="_top"><span style='white-space: nowrap'>user&nbsp;defined&nbsp;functions</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="04-01" id="04-01">04-01</a></big></b>
+
+<b><br>
+API Change:</b>
+The <a href="optimize_fixed.htm" target="_top"><span style='white-space: nowrap'>optimize_fixed</span></a>
+ routine now returns the optimal Lagrange
+multipliers (as well as the optimal fixed effects). If 
+<code><i><font color="black"><span style='white-space: nowrap'>fixed_out</span></font></i></code>
+
+was the return value for the previous version of <code><font color="blue">optimize_fixed</font></code>,
+and 
+<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i></code>
+ is the current return value,
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_out</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_opt<br>
+</span></font></code>
+.
+This shows how to convert old <code><font color="blue">optimize_fixed</font></code> calls to the new form.
+
+<br>
+<br>
+<b><big><a name="03-29" id="03-29">03-29</a></big></b>
+<br>
+Add the option for a user defined <a href="ran_likelihood_hes.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_hes</span></a>
+ function.
+
+<br>
+<br>
+<b><big><a name="03-28" id="03-28">03-28</a></big></b>
+
+<ol type="1"><li>
+Add the <a href="ran_likelihood.cpp.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood.cpp</span></a>
+ example.
+</li><li>
+
+Add the option for a user defined <a href="ran_likelihood_jac.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_jac</span></a>
+ function.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="03-09" id="03-09">03-09</a></big></b>
+<br>
+The summary of memory usage has been changed; see
+<a href="initialize.htm#size_map" target="_top"><span style='white-space: nowrap'>size_map</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="02-26" id="02-26">02-26</a></big></b>
+<br>
+Fix a bug in the use of <a href="ldlt_cholmod_solve_h.htm" target="_top"><span style='white-space: nowrap'>ldlt_cholmod_solve_H</span></a>
+.
+to be specific, accessing past the end of the
+<a href="ldlt_cholmod_solve_h.htm#row" target="_top"><span style='white-space: nowrap'>row</span></a>
+ vector, in addition it must be
+in increasing order (and was not specified as such).
+
+<br>
+<br>
+<b><big><a name="02-06" id="02-06">02-06</a></big></b>
+
+<ol type="1"><li>
+Change the random constraint matrix 
+<code><i><font color="black"><span style='white-space: nowrap'>A_rcv</span></font></i></code>
+
+to be an argument to the
+<a href="derived_ctor.htm#A_rcv" target="_top"><span style='white-space: nowrap'>derived&nbsp;class&nbsp;constructor</span></a>
+
+instead of an argument to the
+<a href="initialize.htm" target="_top"><span style='white-space: nowrap'>initialize</span></a>
+ routine.
+This was undone on
+<a href="whats_new_16.htm#10-15" target="_top"><span style='white-space: nowrap'>2016-10-15</span></a>
+ and redone on
+<a href="whats_new_17.htm#03-08" target="_top"><span style='white-space: nowrap'>2017-03-08</span></a>
+.
+</li><li>
+
+Simplify the random constraint matrix source code.
+</li><li>
+
+Make more efficient use of
+the <code><font color="blue">cholmod</font></code> Cholesky factorization package.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="01-26" id="01-26">01-26</a></big></b>
+<br>
+Remove the old <a href="ldlt_cholmod.htm" target="_top"><span style='white-space: nowrap'>ldlt_cholmod</span></a>
+ wish list its (completed) and add a
+<a href="wish_list.htm#Second Order Method" target="_top"><span style='white-space: nowrap'>second&nbsp;order&nbsp;method</span></a>
+ item.
+
+<br>
+<br>
+<b><big><a name="01-25" id="01-25">01-25</a></big></b>
+
+<ol type="1"><li>
+Make <a href="install_unix.htm#Special Requirements.SuiteSparse" target="_top"><span style='white-space: nowrap'>SuiteSparse</span></a>
+
+a required package.
+</li><li>
+
+Change the <a href="run_cmake.sh.htm" target="_top"><span style='white-space: nowrap'>run_cmake.sh</span></a>
+ argument
+<code><font color="blue">set_sparsity</font></code> to <code><font color="blue">bool_sparsity</font></code>
+(so that the default value is <code><font color="blue">YES</font></code>).
+</li><li>
+
+Add the option to use <code><font color="blue">cholmod</font></code> for sparse Cholesky factorization;
+see <a href="run_cmake.sh.htm#ldlt_cholmod" target="_top"><span style='white-space: nowrap'>ldlt_cholmod</span></a>
+.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="01-22" id="01-22">01-22</a></big></b>
+<br>
+It is no longer necessary to link a separate <code><font color="blue">cppad_mixed_eigen</font></code>
+library. In addition, the new example <a href="check_install.sh.htm" target="_top"><span style='white-space: nowrap'>check_install.sh</span></a>
+
+demonstrates compiling, linking and running a program using
+<code><font color="blue">cppad_mixed</font></code>.
+
+<br>
+<br>
+<b><big><a name="01-21" id="01-21">01-21</a></big></b>
+<br>
+Change default directory where <code><font color="blue">bin/install_eigen.sh</font></code> places
+the Eigen package (because warnings are suppressed for this directory).
+
+<br>
+<br>
+<b><big><a name="01-19" id="01-19">01-19</a></big></b>
+<br>
+Fix a bug (found by <code><font color="blue">valgrind</font></code>) in the setting of the upper bound
+<a href="ipopt_fixed_get_bounds_info.htm#g_u" target="_top"><span style='white-space: nowrap'>g_u</span></a>
+ for the
+<a href="cppad_mixed.htm#Problem.Random Constraints" target="_top"><span style='white-space: nowrap'>random&nbsp;constraints</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="01-16" id="01-16">01-16</a></big></b>
+
+<ol type="1"><li>
+Include a
+<a href="capture_xam.cpp.htm#Command Arguments.random_constraint" target="_top"><span style='white-space: nowrap'>random_constraint</span></a>
+
+in implementation and documentation of the <a href="capture_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>capture_xam.cpp</span></a>
+ example.
+In addition, check that the result satisfies the constraint that
+the sum of the random effects is zero.
+</li><li>
+
+Start a <a href="wish_list.htm" target="_top"><span style='white-space: nowrap'>wish_list</span></a>
+.
+</li></ol>
+
+
+
+<br>
+<br>
+<b><big><a name="01-15" id="01-15">01-15</a></big></b>
+<br>
+Add a <a href="lasso.cpp.htm" target="_top"><span style='white-space: nowrap'>Lasso</span></a>
+ example.
+
+<br>
+<br>
+<b><big><a name="01-14" id="01-14">01-14</a></big></b>
+
+<ol type="1"><li>
+First version that actually works with
+<a href="cppad_mixed.htm#Problem.Random Constraints" target="_top"><span style='white-space: nowrap'>random&nbsp;constraints</span></a>
+.
+For example, see <a href="ran_constraint.cpp.htm" target="_top"><span style='white-space: nowrap'>ran_constraint.cpp</span></a>
+.
+</li><li>
+
+Fix a bug when combining absolute value terms
+with <a href="fix_constraint.htm" target="_top"><span style='white-space: nowrap'>fix_constraint</span></a>
+.
+In change the default <a href="public.htm#User Defined Functions.warning" target="_top"><span style='white-space: nowrap'>warning</span></a>
+
+so that it does not abort (<code><font color="blue">assert(false)</font></code>).
+Furthermore, change the tolerance in one of the solution tests
+to avoid a warning (when convergence has been achieved).
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="01-13" id="01-13">01-13</a></big></b>
+<br>
+Add test of absolute value terms in the
+<a href="cppad_mixed.htm#Negative Log-Density Vector" target="_top"><span style='white-space: nowrap'>negative&nbsp;log-density&nbsp;vector</span></a>
+
+<a href="abs_density.cpp.htm" target="_top"><span style='white-space: nowrap'>abs_density.cpp</span></a>
+,
+and fix a bug demonstrated by the test.
+
+<br>
+<br>
+<b><big><a name="01-10" id="01-10">01-10</a></big></b>
+<br>
+Go back to using column vectors when solving linear equations
+(in case matrix results would be dense and require a lot of memory).
+
+<br>
+<br>
+<b><big><a name="01-09" id="01-09">01-09</a></big></b>
+
+<ol type="1"><li>
+The <a href="ldlt_eigen.htm" target="_top"><span style='white-space: nowrap'>Cholesky&nbsp;factorization</span></a>
+ of the Hessian
+with respect to the random effects has been changed from a static
+variable to the private member variable
+<a href="private.htm#ldlt_ran_hes_" target="_top"><span style='white-space: nowrap'>ldlt_ran_hes_</span></a>
+.
+This has many advantages; e.g.,
+it allows for multiple <a href="derived_ctor.htm" target="_top"><span style='white-space: nowrap'>derived_ctor</span></a>
+ objects.
+</li><li>
+
+Remove the need for the
+<code><font color="blue">-Wno-shadow</font></code> and <code><font color="blue">-Wno-deprecated-declarations</font></code> options
+when compiling Eigen files by using the CMake system option
+for the
+<a href="http://eigen.tuxfamily.org" target="_top"><span style='white-space: nowrap'>Eigen</span></a>
+ include directories.
+This should work on more systems.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="01-05" id="01-05">01-05</a></big></b>
+<br>
+Improve the efficiency of the evaluation of the
+<a href="optimize_fixed.htm" target="_top"><span style='white-space: nowrap'>optimize_fixed</span></a>
+ objective function.
+To be specific, <a href="update_factor.htm" target="_top"><span style='white-space: nowrap'>update</span></a>
+ the Cholesky
+factor of <small>@(@
+f_{u,u} [ \theta , \hat{u} ( \theta ) ]
+@)@</small>
+when there is a change in the fixed effects vector <small>@(@
+\theta
+@)@</small>.
+In addition, use matrices, instead of just column vectors,
+when back solving (to simplify code and allow sparse solver
+to obtain more efficiency).
+
+<br>
+<br>
+<b><big><a name="01-04" id="01-04">01-04</a></big></b>
+<br>
+Regroup information in <a href="theory.htm" target="_top"><span style='white-space: nowrap'>theory</span></a>
+ section of documentation so that
+<a href="theory.htm#Approximate Optimal Random Effects" target="_top"><span style='white-space: nowrap'>approximating&nbsp;optimal&nbsp;random&nbsp;effects</span></a>
+ is a separate section.
+
+<br>
+<br>
+<b><big><a name="01-01" id="01-01">01-01</a></big></b>
+
+<ol type="1"><li>
+Advance to newer version of CppAD; (must rerun <code><font color="blue">bin/install_cppad.sh</font></code>).
+</li><li>
+
+Change package name in copyright message from <code><font color="blue">dismod_at</font></code> to
+<code><font color="blue">cppad_mixed</font></code>.
+This should have been done when <code><font color="blue">cppad_mixed</font></code> was extracted
+from <code><font color="blue">dismod_at</font></code>.
+</li></ol>
+
+
+
+<hr>Input File: omh/whats_new/16.omh
+
+</body>
+</html>

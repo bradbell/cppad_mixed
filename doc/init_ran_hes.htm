@@ -1,0 +1,317 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+>
+</script>
+<head>
+<title>Initialize Hessian of Random Likelihood w.r.t Random Effects</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Initialize Hessian of Random Likelihood w.r.t Random Effects">
+<meta name="keywords" id="keywords" content=" initialize hessian random likelihood w.r.t effects syntax private mixed_object fixed_vec random_vec ran_hes_rcv_ ran_hes_work_ ran_like_fun_ index order ran_hes_fun_ ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_init_ran_hes_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="unpack.htm" target="_top">Prev</a>
+</td><td><a href="ran_hes_fun.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>base_class</option>
+<option>private</option>
+<option>init_ran_hes</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_17</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>base_class-&gt;</option>
+<option>public</option>
+<option>private</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>private-&gt;</option>
+<option>pack</option>
+<option>unpack</option>
+<option>init_ran_hes</option>
+<option>init_ran_hes_check</option>
+<option>init_ran_objcon</option>
+<option>init_ldlt_ran_hes</option>
+<option>init_fix_con</option>
+<option>init_fix_like</option>
+<option>init_hes_cross</option>
+<option>init_laplace_obj_hes</option>
+<option>init_ran_like</option>
+<option>fix_con_eval</option>
+<option>fix_con_hes</option>
+<option>fix_con_jac</option>
+<option>fix_like_eval</option>
+<option>fix_like_hes</option>
+<option>fix_like_jac</option>
+<option>logdet_jac</option>
+<option>ran_like_jac</option>
+<option>ran_like_jac_check</option>
+<option>ran_con_eval</option>
+<option>ran_con_jac</option>
+<option>ran_obj_eval</option>
+<option>ran_obj_jac</option>
+<option>laplace_obj_hes</option>
+<option>update_factor</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>init_ran_hes-&gt;</option>
+<option>ran_hes_fun.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Private</option>
+<option>mixed_object</option>
+<option>fixed_vec</option>
+<option>random_vec</option>
+<option>ran_hes_rcv_</option>
+<option>ran_hes_work_</option>
+<option>ran_like_fun_</option>
+<option>Random Effects Index</option>
+<option>Order</option>
+<option>ran_hes_fun_</option>
+<option>Contents</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Initialize Hessian of Random Likelihood w.r.t Random Effects</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.init_ran_hes(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="Private" id="Private">Private</a></big></b>
+<br>
+This <code><font color="blue">cppad_mixed</font></code> member function is <a href="private.htm" target="_top"><span style='white-space: nowrap'>private</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="mixed_object" id="mixed_object">mixed_object</a></big></b>
+<br>
+We use <a href="derived_ctor.htm#mixed_object" target="_top"><span style='white-space: nowrap'>mixed_object</span></a>
+
+to denote an object of a class that is
+derived from the <code><font color="blue">cppad_mixed</font></code> base class.
+
+<br>
+<br>
+<b><big><a name="fixed_vec" id="fixed_vec">fixed_vec</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It specifies the value of the
+<a href="cppad_mixed.htm#Notation.Fixed Effects, theta" target="_top"><span style='white-space: nowrap'>fixed&nbsp;effects</span></a>
+
+vector <small>@(@
+\theta
+@)@</small> at which the initialization is done.
+
+<br>
+<br>
+<b><big><a name="random_vec" id="random_vec">random_vec</a></big></b>
+<br>
+This argument has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It specifies the value of the
+<a href="cppad_mixed.htm#Notation.Random Effects, u" target="_top"><span style='white-space: nowrap'>random&nbsp;effects</span></a>
+
+vector <small>@(@
+u
+@)@</small> at which the initialization is done.
+
+<br>
+<br>
+<b><big><a name="ran_hes_rcv_" id="ran_hes_rcv_">ran_hes_rcv_</a></big></b>
+<br>
+The input value of the member variable
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::mixed::sparse_rcv&nbsp;ran_hes_rcv_<br>
+</span></font></code>
+does not matter.
+Upon return it contains the
+<a href="typedef.htm#Sparse Types.sparse_rcv" target="_top"><span style='white-space: nowrap'>sparse_rcv</span></a>
+ information
+for the lower triangle of the Hessian
+<small>@[@
+
+	f_{u,u} ( \theta , u )
+
+@]@</small>
+see <a href="theory.htm#Random Likelihood, f(theta, u)" target="_top"><span style='white-space: nowrap'>f(theta,&nbsp;u)</span></a>
+
+The matrix is symmetric and hence can be recovered from
+its lower triangle.
+
+<br>
+<br>
+<b><big><a name="ran_hes_work_" id="ran_hes_work_">ran_hes_work_</a></big></b>
+<br>
+The input value of the member variable
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::sparse_hes_work&nbsp;ran_hes_work_<br>
+</span></font></code>
+does not matter (it should be empty).
+Upon return, it contains the necessary information for the
+calls to <code><font color="blue">sparse_hes</font></code> specified below.
+
+
+<br>
+<br>
+<b><big><a name="ran_like_fun_" id="ran_like_fun_">ran_like_fun_</a></big></b>
+<br>
+Upon return, the following call can be used to compute the
+lower triangle of the Hessian <small>@(@
+f_{u,u} ( \theta , u )
+@)@</small>
+as a <code><font color="blue">d_vector</font></code>:
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ran_like_fun_.sparse_hes(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>x</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>w</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ran_hes_rcv_,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>not_used_pattern</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>not_used_coloring</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ran_hes_work_<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
+</span></font></code>
+where the values of 
+<code><i><font color="black"><span style='white-space: nowrap'>not_used_pattern</span></font></i></code>
+ and 
+<code><i><font color="black"><span style='white-space: nowrap'>not_used_coloring</span></font></i></code>
+
+do not matter.
+
+<br>
+<br>
+<b><big><a name="Random Effects Index" id="Random Effects Index">Random Effects Index</a></big></b>
+<br>
+The indices in <code><font color="blue">ran_hes_rcv_</font></code>
+are relative to both the fixed and random effects with the fixed effects
+coming first.
+To get the indices relative to just the random effects, subtract
+<code><font color="blue">n_fixed_</font></code>; e.g, the value
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ran_hes_rcv_.val()[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+</span></font></code>
+corresponds the second partial with respect to the following
+two random effect indices:
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ran_hes_rcv_.row()[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;-&nbsp;n_fixed_<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ran_hes_rcv_.col()[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;-&nbsp;n_fixed_<br>
+</span></font></code>
+<br>
+<b><big><a name="Order" id="Order">Order</a></big></b>
+<br>
+The results are in column major order; i.e.,
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ran_hes_rcv_.col()[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;ran_hes_rcv_.col()[</span></font><i><font color="black"><span style='white-space: nowrap'>k+1</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(&nbsp;ran_hes_rcv_.col()[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;==&nbsp;ran_hes_rcv_.col()[</span></font><i><font color="black"><span style='white-space: nowrap'>k+1</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ran_hes_rcv_.row()[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;&nbsp;ran_hes_rcv_.row()[</span></font><i><font color="black"><span style='white-space: nowrap'>k+1</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+</span></font></code>
+<br>
+<b><big><a name="ran_hes_fun_" id="ran_hes_fun_">ran_hes_fun_</a></big></b>
+<br>
+The input value of the member variables
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::ADFun&lt;double&gt;&nbsp;ran_hes_fun_<br>
+</span></font></code>
+does not matter.
+Upon return its zero order forward mode computes
+the lower triangle of the sparse Hessian
+<small>@[@
+
+	f_{u,u} ( \theta , u )
+
+@]@</small>
+in the same order as the elements of
+<code><font color="blue">ran_hes_rcv_</font></code> (and <code><font color="blue">a1_hes_rcv_</font></code>).
+
+<br>
+<br>
+<b><big><a name="Contents" id="Contents">Contents</a></big></b>
+<br>
+<div><a href="ran_hes_fun.cpp.htm" target="_top">ran_hes_fun_:&nbsp;Example&nbsp;and&nbsp;Test</a><br>
+</div>
+<hr>Input File: src/init_ran_hes.cpp
+
+</body>
+</html>
