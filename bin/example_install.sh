@@ -101,6 +101,7 @@ if [ "$system_type" == 'debian' ]
 then
 	list='
 		cmake
+		git
 		wget
 		libblas-dev
 		liblapack-dev
@@ -112,10 +113,11 @@ then
 else
 	list='
 		cmake
+		git
 		wget
 		blas-devel
 		lapack-devel
-		pkg-config
+		pkgconf
 		gcc-c++
 		gcc-gfortran
 		gsl-devel
@@ -123,9 +125,9 @@ else
 fi
 for package in $list
 do
-	if grep $package example_install.tmp > /dev/null
+	if grep "^$package[^a-zA-Z_]" example_install.tmp > /dev/null
 	then
-		version=`grep $package example_install.tmp`
+		version=`grep "^$package[^a-zA-Z_]" example_install.tmp | head -1`
 		echo "using $version"
 	else
 		echo_eval $system_install $package
