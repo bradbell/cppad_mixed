@@ -4,7 +4,7 @@
 # cmake configuration file that is put in source directory
 /include/cppad/mixed/configure.hpp
 #
-# Directory with builds take place. Note that /build is a link, hence
+# Directory where builds take place. Note that /build is a link, hence
 # it looks to git like a file instead of a directory.
 /build
 /bug/build/
