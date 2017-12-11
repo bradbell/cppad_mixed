@@ -147,7 +147,7 @@ $subhead Download$$
 After installing the requirements above,
 use the following command to get the current version of cppad_mixed:
 $codei%
-	git checkout https://github.com/bradbell/cppad_mixed.git cppad_mixed.git
+	git clone https://github.com/bradbell/cppad_mixed.git cppad_mixed.git
 	cd cppad_mixed.git
 %$$
 You can determine the $icode git_hash$$ and version number
