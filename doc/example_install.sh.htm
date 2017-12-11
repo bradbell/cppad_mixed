@@ -173,6 +173,7 @@ will be used (takes less time).
 <b><font color="#0000FF">then</font></b>
      <font color="#009900">list</font><font color="#990000">=</font><font color="#FF0000">'</font>
 <font color="#FF0000">          cmake</font>
+<font color="#FF0000">          git</font>
 <font color="#FF0000">          wget</font>
 <font color="#FF0000">          libblas-dev</font>
 <font color="#FF0000">          liblapack-dev</font>
@@ -184,10 +185,11 @@ will be used (takes less time).
 <b><font color="#0000FF">else</font></b>
      <font color="#009900">list</font><font color="#990000">=</font><font color="#FF0000">'</font>
 <font color="#FF0000">          cmake</font>
+<font color="#FF0000">          git</font>
 <font color="#FF0000">          wget</font>
 <font color="#FF0000">          blas-devel</font>
 <font color="#FF0000">          lapack-devel</font>
-<font color="#FF0000">          pkg-config</font>
+<font color="#FF0000">          pkgconf</font>
 <font color="#FF0000">          gcc-c++</font>
 <font color="#FF0000">          gcc-gfortran</font>
 <font color="#FF0000">          gsl-devel</font>
@@ -195,9 +197,9 @@ will be used (takes less time).
 <b><font color="#0000FF">fi</font></b>
 <b><font color="#0000FF">for</font></b> package <b><font color="#0000FF">in</font></b> <font color="#009900">$list</font>
 <b><font color="#0000FF">do</font></b>
-     <b><font color="#0000FF">if</font></b> grep <font color="#009900">$package</font> example_install<font color="#990000">.</font>tmp <font color="#990000">&gt;</font> /dev/null
+     <b><font color="#0000FF">if</font></b> grep <font color="#FF0000">"^$package[^a-zA-Z_]"</font> example_install<font color="#990000">.</font>tmp <font color="#990000">&gt;</font> /dev/null
      <b><font color="#0000FF">then</font></b>
-          <font color="#009900">version</font><font color="#990000">=</font>`grep <font color="#009900">$package</font> example_install<font color="#990000">.</font>tmp`
+          <font color="#009900">version</font><font color="#990000">=</font>`grep <font color="#FF0000">"^$package[^a-zA-Z_]"</font> example_install<font color="#990000">.</font>tmp <font color="#990000">|</font> head -<font color="#993399">1</font>`
           echo <font color="#FF0000">"using $version"</font>
      <b><font color="#0000FF">else</font></b>
           echo_eval <font color="#009900">$system_install</font> <font color="#009900">$package</font>
