@@ -71,17 +71,11 @@ echo_eval mv doc build/tmp/doc
 # checkout gh-pages branch
 git checkout gh-pages
 #
-# code for first version of doc directory
-if [ ! -e doc ]
-then
-	echo_eval mkdir doc
-fi
-#
 # determine which files to remove
 list=`ls -a doc`
 for file in $list
 do
-	if [ ! -e build/tmp/$file ]
+	if [ ! -e build/tmp/doc/$file ]
 	then
 		echo_eval git rm doc/$file
 	fi
