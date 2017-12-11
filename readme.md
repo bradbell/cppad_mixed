@@ -12,5 +12,5 @@ see http://www.gnu.org/licenses/agpl.txt
 cppad\_mixed: C++ Laplace Approximation of Mixed Effects Models
 
 # Documentation
-http://bradbell.github.io/cppad_mixed/doc/index.html
+https://bradbell.github.io/cppad_mixed/doc/index.html
 

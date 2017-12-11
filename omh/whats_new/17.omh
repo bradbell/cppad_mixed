@@ -49,7 +49,7 @@ $list number$$
 Move documentation from IHME to github; see
 $pre
 $$
-$href%http://bradbell.github.io/cppad_mixed/doc/index.html%$$.
+$href%https://bradbell.github.io/cppad_mixed/doc/index.html%$$.
 $lnext
 The $cref/git/install_unix/System Requirements/git/$$ program
 was added to the system requirements.
