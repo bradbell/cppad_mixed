@@ -11,10 +11,11 @@ see http://www.gnu.org/licenses/agpl.txt
 $begin install_unix$$
 $dollar @$$
 $spell
+	grep
+	https://github.com/bradbell/cppad_mixed.git
 	metis
 	cholmod
 	Cholesky
-	cppad
 	tarball
 	xzf
 	tgz
@@ -37,13 +38,6 @@ $children%bin/example_install.sh
 	%bin/check_install.sh
 %$$
 
-$head Download$$
-Download the tarball $href%cppad_mixed-20171210.tgz%$$
-and then extract it using the command
-$codei%
-	tar -xzf cppad_mixed-20171210.tgz
-%$$
-
 $head System Requirements$$
 The following programs are required by cppad_mixed
 and should have standard system installs:
@@ -53,9 +47,15 @@ The $code cppad_mixed$$ program can be compiled by any C++98 compliant compiler;
 e.g., $code g++$$.
 (Note that a C++11 compiler would be better.)
 
+$subhead git$$
+The $href%https://git-scm.com/%git%$$ program,
+a source code version control system,
+must be installed.
+
 $subhead cmake$$
-$href%http://www.cmake.org/%cmake%$$,
-a program that installs other programs.
+The $href%http://www.cmake.org/%cmake%$$ program,
+which installs other programs,
+must be installed.
 
 $subhead pkg-config$$
 The $href%http://www.freedesktop.org/wiki/Software/pkg-config/%pkg-config%$$
@@ -143,13 +143,35 @@ unless the $cref whats_new_17$$ release notes say otherwise.
 The steps below will need to be executed each time you install
 a new version of $code cppad_mixed$$:
 
+$subhead Download$$
+After installing the requirements above,
+use the following command to get the current version of cppad_mixed:
+$codei%
+	git checkout https://github.com/bradbell/cppad_mixed.git cppad_mixed.git
+	cd cppad_mixed.git
+%$$
+You can determine the $icode git_hash$$ and version number
+corresponding to this checkout of the master branch using the commands:
+$codei%
+	git show-ref | grep 'refs/heads/master'
+	bin/version.sh get
+%$$
+You can checkout an old version corresponding to a specific $icode git_hash$$,
+and check its version number, using the commands:
+$codei%
+	git checkout -q %git_hash%
+	bin/version.sh get
+%$$
+
 $subhead Cmake Command$$
-After installing the requirements above, execute the command:
+Starting in the $code cppad_mixed.git$$ directory:
+The following command will configure $code cppad_mixed$$:
 $codep
 	bin/run_cmake.sh
 $$
 
 $subhead Check$$
+Starting in the $code cppad_mixed.git$$ directory:
 The following commands are optional and will
 build and run the examples and correctness tests:
 $codep
@@ -159,6 +181,7 @@ $codep
 $$
 
 $subhead Speed$$
+Starting in the $code cppad_mixed.git$$ directory:
 The following commands are optional and will
 build and run the speed tests:
 $codep
@@ -167,6 +190,7 @@ $codep
 $$
 
 $subhead Install$$
+Starting in the $code cppad_mixed.git$$ directory:
 The following command will
 install the cppad_mixed library and include files:
 $codep
