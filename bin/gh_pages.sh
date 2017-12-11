@@ -52,7 +52,7 @@ echo_eval cp bin/gh_pages.sh build/tmp/gh_pages.sh
 # revert to master current version
 echo_eval git checkout bin/gh_pages.sh
 # check if gh_pages.sh changed
-if diff bin/gh_pages.sh
+if diff bin/gh_pages.sh build/tmp/gh_pages.sh > /dev/null
 then
 	gh_pages_ok='yes'
 else
@@ -92,9 +92,15 @@ do
 	cp build/tmp/doc/$file doc/$file
 	git add doc/$file
 done
-# -----------------------------------------------------------------------------
-echo 'Use the following command to commit changes to gh-pages branch:'
-echo "	git commit -m 'update gh-pages to cppad_mixed-$version'"
+# ----------------------------------------------------------------------------
+list=`git status --porcelain`
+if [ "$list" == '' ]
+then
+	echo 'No changes to doc in gh-pages branch'
+else
+	echo 'Use the following command to commit changes to gh-pages branch:'
+	echo "	git commit -m 'update gh-pages to cppad_mixed-$version'"
+fi
 if [ "$gh_pages_ok" == 'no' ]
 then
 	echo 'Use the following command to restore the bin/gh_pages.sh file'
