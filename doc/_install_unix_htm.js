@@ -25,9 +25,9 @@ var list_down0 = [
 'check_install.sh.htm'
 ];
 var list_current0 = [
-'install_unix.htm#Download',
 'install_unix.htm#System Requirements',
 'install_unix.htm#System Requirements.C++ Compiler',
+'install_unix.htm#System Requirements.git',
 'install_unix.htm#System Requirements.cmake',
 'install_unix.htm#System Requirements.pkg-config',
 'install_unix.htm#System Requirements.wget',
@@ -40,6 +40,7 @@ var list_current0 = [
 'install_unix.htm#Special Requirements.SuiteSparse',
 'install_unix.htm#Special Requirements.CppAD',
 'install_unix.htm#cppad_mixed',
+'install_unix.htm#cppad_mixed.Download',
 'install_unix.htm#cppad_mixed.Cmake Command',
 'install_unix.htm#cppad_mixed.Check',
 'install_unix.htm#cppad_mixed.Speed',

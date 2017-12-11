@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Installing cppad_mixed in Unix</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Installing cppad_mixed in Unix">
-<meta name="keywords" id="keywords" content=" installing cppad_mixed unix download system requirements c++ compiler cmake pkg-config wget fortran gsl special run_cmake.sh eigen ipopt suitesparse cppad command check speed install example installation linking using ">
+<meta name="keywords" id="keywords" content=" installing cppad_mixed unix system requirements c++ compiler git cmake pkg-config wget fortran gsl special run_cmake.sh eigen ipopt suitesparse cppad download command check speed install example installation linking using ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -74,9 +74,9 @@ A:active { color : purple }
 <td>
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
-<option>Download</option>
 <option>System Requirements</option>
 <option>---..C++ Compiler</option>
+<option>---..git</option>
 <option>---..cmake</option>
 <option>---..pkg-config</option>
 <option>---..wget</option>
@@ -89,6 +89,7 @@ A:active { color : purple }
 <option>---..SuiteSparse</option>
 <option>---..CppAD</option>
 <option>cppad_mixed</option>
+<option>---..Download</option>
 <option>---..Cmake Command</option>
 <option>---..Check</option>
 <option>---..Speed</option>
@@ -103,16 +104,6 @@ A:active { color : purple }
 @(@\newcommand{\R}[1]{ {\rm #1} }
 \newcommand{\B}[1]{ {\bf #1} }
 \newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Installing cppad_mixed in Unix</big></big></b></center>
-<br>
-<b><big><a name="Download" id="Download">Download</a></big></b>
-<br>
-Download the tarball <a href="cppad_mixed-20171210.tgz" target="_top"><span style='white-space: nowrap'>cppad_mixed-20171210.tgz</span></a>
-
-and then extract it using the command
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tar&nbsp;-xzf&nbsp;cppad_mixed-20171210.tgz<br>
-</span></font></code>
 <br>
 <b><big><a name="System Requirements" id="System Requirements">System Requirements</a></big></b>
 <br>
@@ -129,12 +120,21 @@ e.g., <code><font color="blue">g++</font></code>.
 
 <br>
 <br>
-<b><a name="System Requirements.cmake" id="System Requirements.cmake">cmake</a></b>
+<b><a name="System Requirements.git" id="System Requirements.git">git</a></b>
+<br>
+The <a href="https://git-scm.com/" target="_top"><span style='white-space: nowrap'>git</span></a>
+ program,
+a source code version control system,
+must be installed.
 
 <br>
-<a href="http://www.cmake.org/" target="_top"><span style='white-space: nowrap'>cmake</span></a>
-,
-a program that installs other programs.
+<br>
+<b><a name="System Requirements.cmake" id="System Requirements.cmake">cmake</a></b>
+<br>
+The <a href="http://www.cmake.org/" target="_top"><span style='white-space: nowrap'>cmake</span></a>
+ program,
+which installs other programs,
+must be installed.
 
 <br>
 <br>
@@ -209,7 +209,7 @@ linear algebra package.
 The commands
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cd&nbsp;cppad_mixed-20171210<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cd&nbsp;cppad_mixed-20171211<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin/install_eigen.sh<br>
 </span></font></code>
 can be used to install this package.
@@ -224,7 +224,7 @@ optimization package.
 The commands
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cd&nbsp;cppad_mixed-20171210<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cd&nbsp;cppad_mixed-20171211<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin/install_ipopt.sh<br>
 </span></font></code>
 can be used to install this package.
@@ -239,7 +239,7 @@ sparse matrix package.
 The commands
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cd&nbsp;cppad_mixed-20171210<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cd&nbsp;cppad_mixed-20171211<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin/install_suitesparse.sh<br>
 </span></font></code>
 can be used to install this package.
@@ -254,7 +254,7 @@ C++ algorithmic differentiation package.
 The commands
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cd&nbsp;cppad_mixed-20171210<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cd&nbsp;cppad_mixed-20171211<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin/install_cppad.sh<br>
 </span></font></code>
 can be used to install this package.
@@ -274,15 +274,45 @@ a new version of <code><font color="blue">cppad_mixed</font></code>:
 
 <br>
 <br>
+<b><a name="cppad_mixed.Download" id="cppad_mixed.Download">Download</a></b>
+<br>
+After installing the requirements above,
+use the following command to get the current version of cppad_mixed:
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;git&nbsp;checkout&nbsp;https://github.com/bradbell/cppad_mixed.git&nbsp;cppad_mixed.git<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cd&nbsp;cppad_mixed.git<br>
+</span></font></code>
+You can determine the 
+<code><i><font color="black"><span style='white-space: nowrap'>git_hash</span></font></i></code>
+ and version number
+corresponding to this checkout of the master branch using the commands:
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;git&nbsp;show-ref&nbsp;|&nbsp;grep&nbsp;'refs/heads/master'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin/version.sh&nbsp;get<br>
+</span></font></code>
+You can checkout an old version corresponding to a specific 
+<code><i><font color="black"><span style='white-space: nowrap'>git_hash</span></font></i></code>
+,
+and check its version number, using the commands:
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;git&nbsp;checkout&nbsp;-q&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>git_hash</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin/version.sh&nbsp;get<br>
+</span></font></code>
+<br>
 <b><a name="cppad_mixed.Cmake Command" id="cppad_mixed.Cmake Command">Cmake Command</a></b>
 <br>
-After installing the requirements above, execute the command:
+Starting in the <code><font color="blue">cppad_mixed.git</font></code> directory:
+The following command will configure <code><font color="blue">cppad_mixed</font></code>:
 <code><font color='blue'><pre style='display:inline'> 
      bin/run_cmake.sh
 </pre></font></code>
 <br>
 <b><a name="cppad_mixed.Check" id="cppad_mixed.Check">Check</a></b>
 <br>
+Starting in the <code><font color="blue">cppad_mixed.git</font></code> directory:
 The following commands are optional and will
 build and run the examples and correctness tests:
 <code><font color='blue'><pre style='display:inline'> 
@@ -293,6 +323,7 @@ build and run the examples and correctness tests:
 <br>
 <b><a name="cppad_mixed.Speed" id="cppad_mixed.Speed">Speed</a></b>
 <br>
+Starting in the <code><font color="blue">cppad_mixed.git</font></code> directory:
 The following commands are optional and will
 build and run the speed tests:
 <code><font color='blue'><pre style='display:inline'> 
@@ -302,6 +333,7 @@ build and run the speed tests:
 <br>
 <b><a name="cppad_mixed.Install" id="cppad_mixed.Install">Install</a></b>
 <br>
+Starting in the <code><font color="blue">cppad_mixed.git</font></code> directory:
 The following command will
 install the cppad_mixed library and include files:
 <code><font color='blue'><pre style='display:inline'> 
