@@ -3,8 +3,8 @@
 // ------------------------------------------------------------ 
 Keyword = 
 [
-'cppad_mixed  C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20171211  ',' license source code repository notation fixed theta random data z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood constraints negative log-density vector ',
-'install_unix  Installing cppad_mixed in Unix  ',' system requirements c++ compiler git cmake pkg-config wget fortran gsl special run_cmake.sh eigen ipopt suitesparse download command check speed example installation linking using ',
+'cppad_mixed  C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20171212  ',' license source code repository notation fixed theta random data z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood constraints negative log-density vector ',
+'install_unix  Installing cppad_mixed in Unix  ',' system requirements c++ compiler git cmake pkg-config wget fortran gsl download special run_cmake.sh eigen ipopt suitesparse command check speed example installation linking using ',
 'example_install.sh  An Example Installation  ',' syntax existing ',
 'run_cmake.sh  bin/run_cmake.sh: User Configuration Options  ',' verbose_makefile build_type prefixes debug release cppad_cxx_flags cmake_libdir ldlt_cholmod use_atomic_cholesky checkpoint_newton_step optimize_cppad_function hide_ipopt_scaling for_hes_sparsity testing speed memory ',
 'check_install.sh  Example and Test Using the Installed Version of cppad_mixed  ',' syntax build_type prefixes cmake_libdir example_file pkg_config_path ld_library_path create temporary example_name main gsl_libs ipopt_libs suitesparse_libs compile link run ',
