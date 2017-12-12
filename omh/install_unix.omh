@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -83,67 +83,7 @@ the gnu scientific library.
 Note that the development headers are required; e.g.,
 on Fedora or Red-Hat one needs to install $code gsl-devel$$.
 
-$head Special Requirements$$
-The packages listed below are required by cppad_mixed
-and may not have standard system installs.
-The $codei%install_%package%$$ scripts below should be run
-in the order that they appear.
-
-$subhead run_cmake.sh$$
-The settings in $cref%bin/run_cmake.sh%run_cmake.sh%$$ are used by the
-scripts that install the special requirements. You must first change
-these settings to the appropriate values for your system before
-running these scripts.
-
-$subhead eigen$$
-The $href%http://eigen.tuxfamily.org%eigen%$$
-linear algebra package.
-The commands
-$codei%
-	cd cppad_mixed-20171211
-	bin/install_eigen.sh
-%$$
-can be used to install this package.
-
-$subhead Ipopt$$
-The $href%https://projects.coin-or.org/Ipopt%Ipopt%$$
-optimization package.
-The commands
-$codei%
-	cd cppad_mixed-20171211
-	bin/install_ipopt.sh
-%$$
-can be used to install this package.
-
-$subhead SuiteSparse$$
-The $href%http://faculty.cse.tamu.edu/davis/SuiteSparse%suitesparse%$$
-sparse matrix package.
-The commands
-$codei%
-	cd cppad_mixed-20171211
-	bin/install_suitesparse.sh
-%$$
-can be used to install this package.
-
-$subhead CppAD$$
-The $href%http://www.coin-or.org/CppAD/%cppad%$$
-C++ algorithmic differentiation package.
-The commands
-$codei%
-	cd cppad_mixed-20171211
-	bin/install_cppad.sh
-%$$
-can be used to install this package.
-
-$head cppad_mixed$$
-The steps above need to be executed once,
-for each $cref/build_type/run_cmake.sh/build_type/$$ that you will used.
-They do not need to be executed each new version of $code cppad_mixed$$
-unless the $cref whats_new_17$$ release notes say otherwise.
-The steps below will need to be executed each time you install
-a new version of $code cppad_mixed$$:
-
-$subhead Download$$
+$head Download$$
 After installing the requirements above,
 use the following command to get the current version of cppad_mixed:
 $codei%
@@ -162,6 +102,67 @@ $codei%
 	git checkout -q %git_hash%
 	bin/version.sh get
 %$$
+
+$head Special Requirements$$
+The packages listed below are required by cppad_mixed
+and may not have standard system installs.
+The $codei%install_%package%$$ scripts below should be run
+in the order that they appear.
+
+$subhead run_cmake.sh$$
+The settings in
+$cref%cppad_mixed.git/bin/run_cmake.sh%run_cmake.sh%$$ are used by the
+scripts that install the special requirements. You must first change
+these settings to the appropriate values for your system before
+running these scripts.
+
+$subhead eigen$$
+The $href%http://eigen.tuxfamily.org%eigen%$$
+linear algebra package.
+Starting in the $code cppad_mixed.git$$ directory,
+the command
+$codei%
+	bin/install_eigen.sh
+%$$
+can be used to install this package.
+
+$subhead Ipopt$$
+The $href%https://projects.coin-or.org/Ipopt%Ipopt%$$
+optimization package.
+Starting in the $code cppad_mixed.git$$ directory,
+the command
+$codei%
+	bin/install_ipopt.sh
+%$$
+can be used to install this package.
+
+$subhead SuiteSparse$$
+The $href%http://faculty.cse.tamu.edu/davis/SuiteSparse%suitesparse%$$
+sparse matrix package.
+Starting in the $code cppad_mixed.git$$ directory,
+the command
+$codei%
+	bin/install_suitesparse.sh
+%$$
+can be used to install this package.
+
+$subhead CppAD$$
+The $href%http://www.coin-or.org/CppAD/%cppad%$$
+C++ algorithmic differentiation package.
+Starting in the $code cppad_mixed.git$$ directory,
+the command
+$codei%
+	bin/install_cppad.sh
+%$$
+can be used to install this package.
+
+$head cppad_mixed$$
+The steps above need to be executed once,
+for each $cref/build_type/run_cmake.sh/build_type/$$ that you will used.
+They do not need to be executed each new version of $code cppad_mixed$$
+unless the $cref whats_new_17$$ release notes say otherwise.
+The steps below will need to be executed each time you install
+a new version of $code cppad_mixed$$:
 
 $subhead Cmake Command$$
 Starting in the $code cppad_mixed.git$$ directory:
