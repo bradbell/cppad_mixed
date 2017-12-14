@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-16 University of Washington
+#           Copyright (C) 2014-17 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -53,7 +53,7 @@ do
 	fi
 done
 #
-echo_eval bin/run_omhelp.sh xml
+echo_eval run_omhelp.sh -xml doc
 # -----------------------------------------------------------------------------
 echo_eval cp bin/run_cmake.sh bin/run_cmake.bak
 if [ "$1" == 'r' ]
