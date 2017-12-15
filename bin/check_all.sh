@@ -43,6 +43,7 @@ echo_eval() {
 	eval $*
 }
 # -----------------------------------------------------------------------------
+# run bin/check_*.sh
 list=`ls bin/check_*.sh`
 for script in $list
 do
@@ -53,6 +54,10 @@ do
 	fi
 done
 #
+# check version number
+bin/version.sh check
+#
+# check latex in omhelp
 echo_eval run_omhelp.sh -xml doc
 # -----------------------------------------------------------------------------
 echo_eval cp bin/run_cmake.sh bin/run_cmake.bak
