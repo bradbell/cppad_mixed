@@ -1,6 +1,6 @@
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-16 University of Washington
+#           Copyright (C) 2014-17 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -45,7 +45,7 @@ SET(number_fixed_samples     1000)
 SET(number_locations           30)
 SET(max_population             20)
 SET(mean_population           5.0)
-SET(mean_logit_probability  -0.25)
+SET(mean_logit_probability  -0.50)
 SET(std_logit_probability    0.25)
 SET(random_constraint         yes)
 ADD_CUSTOM_TARGET(speed_capture_xam

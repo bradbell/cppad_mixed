@@ -1,7 +1,7 @@
 #! /bin/bash -e
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-16 University of Washington
+#           Copyright (C) 2014-17 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -55,7 +55,7 @@ number_fixed_samples='1000'
 number_locations='30'
 max_population='20.0'
 mean_population='5.0'
-mean_logit_probability='-0.25'
+mean_logit_probability='-0.50'
 std_logit_probability='0.25'
 random_constraint='yes'
 # ---------------------------------------------------------------------------

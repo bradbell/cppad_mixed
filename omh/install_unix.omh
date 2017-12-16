@@ -178,7 +178,6 @@ build and run the examples and correctness tests:
 $codep
 	cd build
 	make check
-	make speed
 $$
 
 $subhead Speed$$

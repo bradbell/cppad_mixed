@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -323,11 +323,11 @@ $icode capture_xam_ok$$ is yes. Otherwise it is no.
 $list number$$
 $icode%sum_random_effects% < 1e-8 || (%random_constraint% == no)%$$
 $lnext
-$icode%mean_population_ratio% < 4.0%$$
+$icode%mean_population_ratio% < 5.0%$$
 $lnext
-$icode%mean_logit_probability_ratio% < 4.0%$$
+$icode%mean_logit_probability_ratio% < 5.0%$$
 $lnext
-$icode%std_logit_probability_ratio% < 4.0%$$
+$icode%std_logit_probability_ratio% < 5.0%$$
 $lend
 If $icode capture_xam_ok$$ is yes, the program return value is
 $code 0$$ (no error condition).
