@@ -37,6 +37,8 @@ $spell
 	github
 	logit
 	xam
+	subgraphs
+	Jacobian
 $$
 
 $section Changes and Additions to cppad_mixed During 2017$$
@@ -48,6 +50,15 @@ $childtable%
 
 $head 12-16$$
 $list number$$
+The sparsity pattern for the
+$cref/random Hessian/init_ran_hes/$$ was changed from using CppAD's
+Hessian sparsity patterns to using CppAD's
+subgraphs of the Jacobian of the gradient of the
+$cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$.
+This changed the $code ar1_xam$$
+$cref/initialize_seconds/ar1_xam.cpp/Output/initialize_seconds/$$
+from 2.5 to 1.0 (on one test system).
+$lnext
 Change the
 $cref/mean_logit_probability
 	/capture_xam.cpp

@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -171,46 +171,39 @@ void cppad_mixed::init_ran_hes(
 	//
 	// total number of variables
 	size_t n_both = n_fixed_ + n_random_;
-# if CPPAD_MIXED_FOR_HES_SPARSITY
-	// forward sparstiy for partial w.r.t. u of partial w.r.t u
-	CppAD::vector<bool> select_domain(n_both), select_range(m);
-	for(size_t i = 0; i < n_fixed_; i++)
-		select_domain[i] = false;
-	for(size_t i = 0; i < n_random_; i++)
-		select_domain[n_fixed_ + i] = true;
-	for(size_t i = 0; i < m; i++)
-		select_range[i] = true;
-	bool internal_bool = bool_sparsity_;
-	sparse_rc hes_pattern;
-	ran_like_fun_.for_hes_sparsity(
-		select_domain, select_range, internal_bool, hes_pattern
-	);
-	size_t hessian_column_offset = 0;
-# else
 	//
-	// -----------------------------------------------------------------------
-	// forward Jacobian sparsity corresponding to partial w.r.t
-	// just the random effects
-	sparse_rc pattern_in(n_both, n_random_, n_random_);
-	for(size_t k = 0; k < n_random_; k++)
-		pattern_in.set(k, n_fixed_ + k, k);
-	bool      transpose     = false;
-	bool      dependency    = false;
-	bool      internal_bool = bool_sparsity_;
-	sparse_rc jac_pattern;
-	ran_like_fun_.for_jac_sparsity(
-		pattern_in, transpose, dependency, internal_bool, jac_pattern
-	);
-	// -----------------------------------------------------------------------
-	// reverse sparstiy for partial w.r.t. (theta, u) of partial w.r.t u
-	CppAD::vector<bool> select_range(m);
-	select_range[0] = true;
+	// a1_both = (fixed_vec, random_vec)
+	a1_vector a1_both(n_both);
+	pack(fixed_vec, random_vec, a1_both);
+	//
+	// a1_w = [ 1.0 ]
+	a1_vector a1_w(1);
+	a1_w[0]  = 1.0;
+	//
+	// Record gradient of random likelihood
+	CppAD::Independent(a1_both);
+	ran_like_a1fun_.Forward(0, a1_both);
+	a1_vector grad = ran_like_a1fun_.Reverse(1, a1_w);
+	CppAD::ADFun<double> g;
+	g.Dependent(a1_both, grad);
+	//
+	// determine the sparsity pattern for the Hessian using the
+	// Jacobian of the gradient. We are only interested in Hessian w.r.t
+	// random effects, not both.
+	CppAD::vector<bool> select_domain(n_both), select_range(n_both);
+	for(size_t i = 0; i < n_fixed_; i++)
+	{	select_domain[i] = false;
+		select_range[i]  = false;
+	}
+	for(size_t i = 0; i < n_random_; i++)
+	{	select_domain[n_fixed_ + i] = true;
+		select_range[n_fixed_ + i]  = true;
+	}
 	sparse_rc hes_pattern;
-	ran_like_fun_.rev_hes_sparsity(
-		select_range, transpose, internal_bool, hes_pattern
-	);
-	size_t hessian_column_offset = n_fixed_;
-# endif
+	bool transpose = false;
+	g.subgraph_sparsity(select_domain, select_range, transpose, hes_pattern);
+	assert(hes_pattern.nr() == n_both);
+	assert(hes_pattern.nc() == n_both);
 	// -----------------------------------------------------------------------
 	// count number of entires in entire partial w.r.t u of partial w.r.t u
 	// and number in lower triangle
@@ -218,34 +211,28 @@ void cppad_mixed::init_ran_hes(
 	size_t n_low = 0;
 	for(size_t k = 0; k < hes_pattern.nnz(); k++)
 	{	size_t r = hes_pattern.row()[k];
-		if( r >= n_fixed_ )
-		{	++n_uu;
-			size_t c = hes_pattern.col()[k] + hessian_column_offset;
-			if( r >= c )
-			{	++n_low;
-			}
+		size_t c = hes_pattern.col()[k];
+
+		// select_domain and select_range should make this true
+		assert( r >= n_fixed_ && c >= n_fixed_ );
+		++n_uu;
+		if( r >= c )
+		{	++n_low;
 		}
 	}
 	// -----------------------------------------------------------------------
-	// extended version of sparsity of patrial w.r.t u of partial w.r.t. u
-	// and subset of sparstiy pattern that we are calculating
-	sparse_rc hes_extend(n_both, n_both, n_uu);
+	// subset of sparstiy pattern that we are calculating
+	// in column major order
 	sparse_rc hes_lower(n_both, n_both, n_low);
-	// column major ordering
 	s_vector col_major = hes_pattern.col_major();
-	size_t k_uu  = 0;
 	size_t k_low = 0;
 	for(size_t k = 0; k < hes_pattern.nnz(); k++)
 	{	size_t ell = col_major[k];
 		size_t r   = hes_pattern.row()[ell];
-		if( r >= n_fixed_ )
-		{	size_t c   = hes_pattern.col()[ell] + hessian_column_offset;
-			hes_extend.set(k_uu++, r, c);
-			if( r >= c )
-				hes_lower.set(k_low++, r, c);
-		}
+		size_t c   = hes_pattern.col()[ell];
+		if( r >= c )
+			hes_lower.set(k_low++, r, c);
 	}
-	assert( k_uu == n_uu );
 	assert( k_low == n_low );
 	// -----------------------------------------------------------------------
 	// create a d_vector containing (theta, u)
@@ -266,16 +253,13 @@ void cppad_mixed::init_ran_hes(
 		both,
 		w,
 		ran_hes_rcv_,
-		hes_extend,
+		hes_pattern,
 		coloring,
 		ran_hes_work_
 	);
 	// -----------------------------------------------------------------------
 	// Declare the independent and dependent variables for taping calculation
 	// of Hessian of the random likelihood w.r.t. the random effects
-	a1_vector a1_both(n_both);
-	for(size_t i = 0; i < n_both; i++)
-		a1_both[i] = both[i];
 	CppAD::Independent(a1_both);
 
 	// unpack the independent variables into a1_fixed and a1_random
@@ -298,14 +282,12 @@ void cppad_mixed::init_ran_hes(
 	if( a1_val_out.size() == 0 )
 	{	// The user has not defined ran_likelihood_hes, so use AD to calcuate
 		// the Hessian of the randome likelihood w.r.t the random effects.
-		a1_vector a1_w(1);
-		a1_w[0] = 1.0;
 		a1_val_out.resize(K);
 		ran_like_a1fun_.sparse_hes(
 			a1_both,
 			a1_w,
 			a1_ran_hes_rcv,
-			hes_extend,
+			hes_pattern,
 			coloring,
 			ran_hes_work_
 		);
