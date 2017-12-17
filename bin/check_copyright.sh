@@ -15,7 +15,8 @@ then
 	exit 1
 fi
 # -----------------------------------------------------------------------------
-list=`bin/ls_files.sh | sed -e '/^\.gitignore/d' -e '/\/sparseinv\.[ch]pp$/d'`
+list=`bin/ls_files.sh | sed \
+	-e '/^\.gitignore/d' -e '/\/sparseinv\.[ch]pp$/d' -e '/^bin\/version.sh/d'`
 for file in $list
 do
 	text='Copyright (C) 2014-.. University of Washington'
@@ -39,7 +40,9 @@ list=`git status | sed -n \
 ok='yes'
 for file in $list
 do
-	if [ -e "$file" ] && [ "$file" != '.gitignore' ]
+	if [ -e "$file" ] \
+	&& [ "$file" != '.gitignore' ] \
+	&& [ "$file" != 'bin/version.sh' ]
 	then
 		text='Copyright (C) 2014-17 University of Washington'
 		if ! grep "$text" $file > /dev/null

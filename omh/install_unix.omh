@@ -24,7 +24,6 @@ $spell
 	gsl-devel
 	eigen
 	CppAD
-	libdir
 	pkgconfig
 	cmake
 	suitesparse
