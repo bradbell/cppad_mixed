@@ -41,6 +41,11 @@ then
 	echo "version.sh $*"
 	echo 'usage: version.sh (get|date|copy|check)'
 	echo '       version.sh set version'
+	echo 'get:   returns date in CMakeLists.txt'
+	echo 'set:   sets version in CMakeLists.txt'
+	echo 'date:  sets version in CMakeLists.txt to current date'
+	echo 'copy:  copies version in CMakeLists.txt to other files'
+	echo 'check: checks that version number has been copied'
 	exit 1
 fi
 cmd="$1"

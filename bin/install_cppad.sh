@@ -22,8 +22,8 @@ echo_eval() {
 }
 # --------------------------------------------------------------------------
 web_page='https://github.com/coin-or/CppAD.git'
-hash_key='f470f0c17b36f7352a064aa2ae340ea8db3e1348'
-version='20171023'
+hash_key='0caa6e29fb2473ae10d6c961d78879fe4ad2937e'
+version='20171215'
 # --------------------------------------------------------------------------
 # Get user configuration options from run_cmake.sh
 #
@@ -46,15 +46,6 @@ eval $cmd
 # cmake_libdir
 cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
 eval $cmd
-# --------------------------------------------------------------------------
-if [ "$USER" == 'bradbell' ] && [ -d $HOME/repo/cppad.git ]
-then
-	webpage="$HOME/repo/cppad.git"
-	hash_key='master'
-	pushd $webpage
-	version=`bin/version.sh get`
-	popd
-fi
 # --------------------------------------------------------------------------
 if echo "$cppad_prefix" | grep '/cppad_mixed$' > /dev/null
 then
