@@ -186,6 +186,9 @@ void cppad_mixed::init_ran_hes(
 	a1_vector grad = ran_like_a1fun_.Reverse(1, a1_w);
 	CppAD::ADFun<double> g;
 	g.Dependent(a1_both, grad);
+# if CPPAD_MIXED_OPTIMIZE_AD_FUNCTION
+	g.optimize()
+# endif
 	//
 	// determine the sparsity pattern for the Hessian using the
 	// Jacobian of the gradient. We are only interested in Hessian w.r.t
@@ -207,7 +210,6 @@ void cppad_mixed::init_ran_hes(
 	// -----------------------------------------------------------------------
 	// count number of entires in entire partial w.r.t u of partial w.r.t u
 	// and number in lower triangle
-	size_t n_uu  = 0;
 	size_t n_low = 0;
 	for(size_t k = 0; k < hes_pattern.nnz(); k++)
 	{	size_t r = hes_pattern.row()[k];
@@ -215,7 +217,6 @@ void cppad_mixed::init_ran_hes(
 
 		// select_domain and select_range should make this true
 		assert( r >= n_fixed_ && c >= n_fixed_ );
-		++n_uu;
 		if( r >= c )
 		{	++n_low;
 		}

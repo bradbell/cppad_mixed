@@ -33,7 +33,7 @@ then
 fi
 # -----------------------------------------------------------------------------
 git reset --hard
-bin/run_cmake.sh --release
+bin/run_cmake.sh --optimize_cppad_function --release
 # -----------------------------------------------------------------------------
 # set random seed to 123 so same for old and new
 for program in ar1_xam capture_xam
@@ -95,4 +95,3 @@ echo 'build/ar1_xam.old,     build/ar1_xam.new'
 echo 'build/capture_xam.old, build/capture_xam.new'
 echo 'speed_new.sh: OK'
 exit 0
-
