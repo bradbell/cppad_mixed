@@ -50,6 +50,8 @@ $childtable%
 
 $head 12-16$$
 $list number$$
+Advance to $code cppad-20171215$$.
+$lnext
 The sparsity pattern for the
 $cref/random Hessian/init_ran_hes/$$ was changed from using CppAD's
 Hessian sparsity patterns to using CppAD's
