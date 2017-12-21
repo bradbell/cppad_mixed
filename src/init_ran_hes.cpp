@@ -44,6 +44,14 @@ $icode%mixed_object%.init_ran_hes(
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
 
+$head Assumptions$$
+The member variable
+$cref/init_ran_like_done_/init_ran_like/init_ran_like_done_/$$ is true.
+
+$head init_ran_hes_done_$$
+The input value of this member variable must be false.
+Upon return it is true.
+
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
@@ -161,16 +169,14 @@ void cppad_mixed::init_ran_hes(
 	const d_vector& fixed_vec     ,
 	const d_vector& random_vec    )
 {	assert( ! init_ran_hes_done_ );
+	assert( init_ran_like_done_ );
 	//
+	size_t m      = 1;
+	size_t n_both = n_fixed_ + n_random_;
 	assert( fixed_vec.size() == n_fixed_ );
 	assert( random_vec.size() == n_random_ );
-	assert( ran_like_fun_.Domain() == n_fixed_ + n_random_ );
-	//
-	size_t m = ran_like_fun_.Range();
-	assert( m == 1 );
-	//
-	// total number of variables
-	size_t n_both = n_fixed_ + n_random_;
+	assert( ran_like_fun_.Domain() == n_both );
+	assert( ran_like_fun_.Range()  == m );
 	//
 	// a1_both = (fixed_vec, random_vec)
 	a1_vector a1_both(n_both);

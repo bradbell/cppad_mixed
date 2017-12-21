@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -28,22 +28,18 @@ $icode%mixed_object%.init_ldlt_ran_hes()%$$
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
 
+$head Assumptions$$
+The member variable
+$cref/init_ran_hes_done_/init_ran_hes/init_ran_hes_done_/$$ is true.
+
+$head init_ldlt_ran_hes_done_$$
+The input value of this member variable must be false.
+Upon return it is true.
+
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
-
-$head ran_hes_rcv_$$
-The member variable
-$code%
-	CppAD::mixed::sparse_rcv ran_hes_rcv_
-%$$
-is assumed to contain the sparsity information for the
-Hessian of the random likelihood with respect to the random effects
-$latex f_{u,u} ( \theta , u )$$.
-This sparsity information is relative to both the fixed and random effects;
-i.e., the row and column indices are relative to the vector
-$latex ( \theta , u )$$.
 
 $head ldlt_ran_hes_$$
 The member variable
@@ -75,6 +71,7 @@ $end
 
 void cppad_mixed::init_ldlt_ran_hes(void)
 {	assert( ! init_ldlt_ran_hes_done_ );
+	assert( init_ran_hes_done_ );
 	//
 	CppAD::mixed::sparse_mat_info hes_info;
 	size_t K = ran_hes_rcv_.nnz();
