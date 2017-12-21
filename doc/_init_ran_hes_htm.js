@@ -59,6 +59,8 @@ var list_down0 = [
 var list_current0 = [
 'init_ran_hes.htm#Syntax',
 'init_ran_hes.htm#Private',
+'init_ran_hes.htm#Assumptions',
+'init_ran_hes.htm#init_ran_hes_done_',
 'init_ran_hes.htm#mixed_object',
 'init_ran_hes.htm#fixed_vec',
 'init_ran_hes.htm#random_vec',

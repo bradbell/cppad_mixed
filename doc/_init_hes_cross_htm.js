@@ -59,6 +59,8 @@ var list_down0 = [
 var list_current0 = [
 'init_hes_cross.htm#Syntax',
 'init_hes_cross.htm#Private',
+'init_hes_cross.htm#Assumptions',
+'init_hes_cross.htm#init_hes_cross_done_',
 'init_hes_cross.htm#mixed_object',
 'init_hes_cross.htm#fixed_vec',
 'init_hes_cross.htm#random_vec',

@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Initialize Cholesky Factor of Hessian of Random Likelihood</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Initialize Cholesky Factor of Hessian of Random Likelihood">
-<meta name="keywords" id="keywords" content=" initialize cholesky factor hessian random likelihood syntax private mixed_object ran_hes_rcv_ ldlt_ran_hes_ ">
+<meta name="keywords" id="keywords" content=" initialize cholesky factor hessian random likelihood syntax private assumptions init_ldlt_ran_hes_done_ mixed_object ldlt_ran_hes_ ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -109,8 +109,9 @@ A:active { color : purple }
 <option>Headings-&gt;</option>
 <option>Syntax</option>
 <option>Private</option>
+<option>Assumptions</option>
+<option>init_ldlt_ran_hes_done_</option>
 <option>mixed_object</option>
-<option>ran_hes_rcv_</option>
 <option>ldlt_ran_hes_</option>
 </select>
 </td>
@@ -135,31 +136,27 @@ This <code><font color="blue">cppad_mixed</font></code> member function is <a hr
 
 <br>
 <br>
+<b><big><a name="Assumptions" id="Assumptions">Assumptions</a></big></b>
+<br>
+The member variable
+<a href="init_ran_hes.htm#init_ran_hes_done_" target="_top"><span style='white-space: nowrap'>init_ran_hes_done_</span></a>
+ is true.
+
+<br>
+<br>
+<b><big><a name="init_ldlt_ran_hes_done_" id="init_ldlt_ran_hes_done_">init_ldlt_ran_hes_done_</a></big></b>
+<br>
+The input value of this member variable must be false.
+Upon return it is true.
+
+<br>
+<br>
 <b><big><a name="mixed_object" id="mixed_object">mixed_object</a></big></b>
 <br>
 We use <a href="derived_ctor.htm#mixed_object" target="_top"><span style='white-space: nowrap'>mixed_object</span></a>
 
 to denote an object of a class that is
 derived from the <code><font color="blue">cppad_mixed</font></code> base class.
-
-<br>
-<br>
-<b><big><a name="ran_hes_rcv_" id="ran_hes_rcv_">ran_hes_rcv_</a></big></b>
-<br>
-The member variable
-<code><font color="blue">%
-	CppAD::mixed::sparse_rcv ran_hes_rcv_
-%</font></code>
-is assumed to contain the sparsity information for the
-Hessian of the random likelihood with respect to the random effects
-<small>@(@
-f_{u,u} ( \theta , u )
-@)@</small>.
-This sparsity information is relative to both the fixed and random effects;
-i.e., the row and column indices are relative to the vector
-<small>@(@
-( \theta , u )
-@)@</small>.
 
 <br>
 <br>

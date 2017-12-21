@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Initialize Hessian of Random Likelihood w.r.t Random Effects</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Initialize Hessian of Random Likelihood w.r.t Random Effects">
-<meta name="keywords" id="keywords" content=" initialize hessian random likelihood w.r.t effects syntax private mixed_object fixed_vec random_vec ran_hes_rcv_ ran_hes_work_ ran_like_fun_ index order ran_hes_fun_ ">
+<meta name="keywords" id="keywords" content=" initialize hessian random likelihood w.r.t effects syntax private assumptions init_ran_hes_done_ mixed_object fixed_vec random_vec ran_hes_rcv_ ran_hes_work_ ran_like_fun_ index order ran_hes_fun_ ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -114,6 +114,8 @@ A:active { color : purple }
 <option>Headings-&gt;</option>
 <option>Syntax</option>
 <option>Private</option>
+<option>Assumptions</option>
+<option>init_ran_hes_done_</option>
 <option>mixed_object</option>
 <option>fixed_vec</option>
 <option>random_vec</option>
@@ -149,6 +151,21 @@ A:active { color : purple }
 <br>
 This <code><font color="blue">cppad_mixed</font></code> member function is <a href="private.htm" target="_top"><span style='white-space: nowrap'>private</span></a>
 .
+
+<br>
+<br>
+<b><big><a name="Assumptions" id="Assumptions">Assumptions</a></big></b>
+<br>
+The member variable
+<a href="init_ran_like.htm#init_ran_like_done_" target="_top"><span style='white-space: nowrap'>init_ran_like_done_</span></a>
+ is true.
+
+<br>
+<br>
+<b><big><a name="init_ran_hes_done_" id="init_ran_hes_done_">init_ran_hes_done_</a></big></b>
+<br>
+The input value of this member variable must be false.
+Upon return it is true.
 
 <br>
 <br>

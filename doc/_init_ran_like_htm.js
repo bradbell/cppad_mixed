@@ -56,6 +56,7 @@ var list_down1 = [
 var list_current0 = [
 'init_ran_like.htm#Syntax',
 'init_ran_like.htm#Private',
+'init_ran_like.htm#init_ran_like_done_',
 'init_ran_like.htm#mixed_object',
 'init_ran_like.htm#fixed_vec',
 'init_ran_like.htm#random_vec',
