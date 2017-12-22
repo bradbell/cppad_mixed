@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-16 University of Washington
+#           Copyright (C) 2014-17 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -25,6 +25,7 @@
 # If it is use, pre-existing installs
 # will be used (takes less time).
 #
+# &head Source&&
 # &srcfile%bin/example_install.sh
 #	%0%# BEGIN BASH%# END BASH%1%&&
 # &end
@@ -50,18 +51,19 @@ then
 fi
 existing="$2"
 # ---------------------------------------------------------------------------
-# build_type
+# set build_type to value in run_cmake.sh
 cmd=`grep '^build_type=' bin/run_cmake.sh`
 eval $cmd
 #
-# cppad_prefix
+# set cppad_prefix to value in run_cmake.sh
 cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
 eval $cmd
 #
-# ipopt_prefix
+# set ipopt_prefix to value in run_cmake.sh
 cmd=`grep '^ipopt_prefix=' bin/run_cmake.sh`
 eval $cmd
 # --------------------------------------------------------------------------
+# remove old version of example_install.log and example_install.err
 for ext in log err
 do
 	if [ -e "example_install.$ext" ]
@@ -70,11 +72,13 @@ do
 	fi
 done
 # --------------------------------------------------------------------------
+# set build link to build.debug or build.release depending on build_type
 if echo "$cppad_prefix" | grep '/cppad_mixed$' > /dev/null
 then
 	bin/build_type.sh example_install.sh $cppad_prefix $build_type
 fi
 # -----------------------------------------------------------------------------
+# set system_type, system_list, and system_install
 if which apt-get >& /dev/null
 then
 	system_type='debian'
@@ -95,7 +99,7 @@ else
 	exit 1
 fi
 # --------------------------------------------------------------------------
-# system external installs
+# system external installs for normal system requirements
 $system_list | sed -e 's|  *| |g' > example_install.tmp
 if [ "$system_type" == 'debian' ]
 then
@@ -135,7 +139,7 @@ do
 done
 rm example_install.tmp
 # ----------------------------------------------------------------------------
-# local external installs
+# local external installs for special requirements
 for pkg in eigen ipopt suitesparse cppad
 do
 	# eval below converts $HOME in $prefix to its value for current user
@@ -183,25 +187,29 @@ done
 # ----------------------------------------------------------------------------
 # cppad_mixed
 # ----------------------------------------------------------------------------
+# Check we can find ipopt.pc, echo PKG_CONFIG_PATH to help user set this value
 dir=`find -L $ipopt_prefix -name 'ipopt.pc' | sed -e 's|/ipopt.pc||'`
 if [ "$dir" == '' ]
 then
 	echo "Cannot find ipopt.pc in $ipopt_prefix directory"
 	exit 1
 else
-	export PKG_CONFIG_PATH="$dir"
+	echo_eval export PKG_CONFIG_PATH="$dir"
 fi
-# ----------------------------------------------------------------------------
-p='example_install'
-cmd='bin/run_cmake.sh'
-echo "$cmd 1>> $p.log 2>> $p.err"
-$cmd 1>> $p.log 2>> $p.err
+echo_eval export PYTHONPATH=''
 #
-cd build
+# bin/run_cmake.sh
+echo "bin/run_cmake.sh 1>> example_install.log 2>> example_install.err"
+bin/run_cmake.sh 1>> ../example_install.log 2>> ../example_install.err
+#
+# change into build directory
+echo_eval cd build
+#
+# make check, speed, and install
 for cmd in check speed install
 do
-	echo "make $cmd 1>> $p.log 2>> $p.err"
-	make $cmd 1>> ../$p.log 2>> ../$p.err
+	echo "make $cmd 1>> example_install.log 2>> example_install.err"
+	make $cmd 1>> ../example_install.log 2>> ../example_install.err
 done
 cd ..
 # ----------------------------------------------------------------------------
