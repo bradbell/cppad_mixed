@@ -48,6 +48,9 @@ $childtable%
 	omh/whats_new/16.omh
 %$$
 
+$head 12-22$$
+Improve comments in $cref example_install.sh$$.
+
 $head 12-16$$
 $list number$$
 Advance to $code cppad-20171215$$.
