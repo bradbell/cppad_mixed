@@ -49,6 +49,7 @@ var list_current0 = [
 'initialize.htm#ran_likelihood_jac',
 'initialize.htm#ran_likelihood_hes',
 'initialize.htm#size_map',
+'initialize.htm#init_newton_checkpoint_done_',
 'initialize.htm#Example'
 ];
 function choose_across0(item)

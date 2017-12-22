@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Initialization After Constructor</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Initialization After Constructor">
-<meta name="keywords" id="keywords" content=" initialization after constructor syntax public purpose mixed_object fixed_vec random_vec ran_likelihood_jac ran_likelihood_hes size_map example ">
+<meta name="keywords" id="keywords" content=" initialization after constructor syntax public purpose mixed_object fixed_vec random_vec ran_likelihood_jac ran_likelihood_hes size_map init_newton_checkpoint_done_ example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -102,6 +102,7 @@ A:active { color : purple }
 <option>ran_likelihood_jac</option>
 <option>ran_likelihood_hes</option>
 <option>size_map</option>
+<option>init_newton_checkpoint_done_</option>
 <option>Example</option>
 </select>
 </td>
@@ -215,6 +216,14 @@ but they can be inspected. For example,
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(itr&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>size_map</span></font></i><font color="blue"><span style='white-space: nowrap'>.begin();&nbsp;itr&nbsp;!=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>size_map</span></font></i><font color="blue"><span style='white-space: nowrap'>.end();&nbsp;itr++)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;itr-&gt;first&nbsp;&lt;&lt;&nbsp;&quot;&nbsp;=&nbsp;&quot;&nbsp;itr-&gt;second&nbsp;&lt;&lt;&nbsp;&quot;\n&quot;;<br>
 </span></font></code>
+<br>
+<b><big><a name="init_newton_checkpoint_done_" id="init_newton_checkpoint_done_">init_newton_checkpoint_done_</a></big></b>
+<br>
+The input value of this member variable must be false.
+If <code><font color="blue">quasi_fixed_</font></code> is true, its output value is false,
+otherwise its output value is true.
+
+<br>
 <br>
 <b><big><a name="Example" id="Example">Example</a></big></b>
 <br>

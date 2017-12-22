@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Initialize Hessian of Approximate Laplace Objective</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Initialize Hessian of Approximate Laplace Objective">
-<meta name="keywords" id="keywords" content=" initialize hessian approximate laplace objective syntax private mixed_object fixed_vec random_vec laplace_obj_hes_ laplace_obj_fun_ ">
+<meta name="keywords" id="keywords" content=" initialize hessian approximate laplace objective syntax private assumptions init_laplace_obj_hes_done_ mixed_object fixed_vec random_vec laplace_obj_hes_ laplace_obj_fun_ ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -78,8 +78,8 @@ A:active { color : purple }
 <option>pack</option>
 <option>unpack</option>
 <option>init_ran_hes</option>
-<option>init_ran_hes_check</option>
-<option>init_ran_objcon</option>
+<option>check_user_ran_hes</option>
+<option>init_laplace_obj</option>
 <option>init_ldlt_ran_hes</option>
 <option>init_fix_con</option>
 <option>init_fix_like</option>
@@ -94,7 +94,7 @@ A:active { color : purple }
 <option>fix_like_jac</option>
 <option>logdet_jac</option>
 <option>ran_like_jac</option>
-<option>ran_like_jac_check</option>
+<option>check_user_ran_jac</option>
 <option>ran_con_eval</option>
 <option>ran_con_jac</option>
 <option>ran_obj_eval</option>
@@ -109,6 +109,8 @@ A:active { color : purple }
 <option>Headings-&gt;</option>
 <option>Syntax</option>
 <option>Private</option>
+<option>Assumptions</option>
+<option>init_laplace_obj_hes_done_</option>
 <option>mixed_object</option>
 <option>fixed_vec</option>
 <option>random_vec</option>
@@ -136,6 +138,22 @@ A:active { color : purple }
 <br>
 This <code><font color="blue">cppad_mixed</font></code> member function is <a href="private.htm" target="_top"><span style='white-space: nowrap'>private</span></a>
 .
+
+<br>
+<br>
+<b><big><a name="Assumptions" id="Assumptions">Assumptions</a></big></b>
+<br>
+The member variable
+<a href="init_laplace_obj.htm#init_laplace_obj_done_" target="_top"><span style='white-space: nowrap'>init_laplace_obj_done_</span></a>
+
+is true.
+
+<br>
+<br>
+<b><big><a name="init_laplace_obj_hes_done_" id="init_laplace_obj_hes_done_">init_laplace_obj_hes_done_</a></big></b>
+<br>
+The input value of this member variable must be false.
+Upon return it is true.
 
 <br>
 <br>

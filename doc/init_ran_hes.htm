@@ -78,8 +78,8 @@ A:active { color : purple }
 <option>pack</option>
 <option>unpack</option>
 <option>init_ran_hes</option>
-<option>init_ran_hes_check</option>
-<option>init_ran_objcon</option>
+<option>check_user_ran_hes</option>
+<option>init_laplace_obj</option>
 <option>init_ldlt_ran_hes</option>
 <option>init_fix_con</option>
 <option>init_fix_like</option>
@@ -94,7 +94,7 @@ A:active { color : purple }
 <option>fix_like_jac</option>
 <option>logdet_jac</option>
 <option>ran_like_jac</option>
-<option>ran_like_jac_check</option>
+<option>check_user_ran_jac</option>
 <option>ran_con_eval</option>
 <option>ran_con_jac</option>
 <option>ran_obj_eval</option>
@@ -250,7 +250,13 @@ calls to <code><font color="blue">sparse_hes</font></code> specified below.
 <br>
 <b><big><a name="ran_like_fun_" id="ran_like_fun_">ran_like_fun_</a></big></b>
 <br>
-Upon return, the following call can be used to compute the
+If the return value from <a href="ran_likelihood_hes.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_hes</span></a>
+ is non-empty,
+and <code><font color="blue">NDEBUG</font></code> is not defined,
+<code><font color="blue">ran_likelihood_hes</font></code> is checked for correctness.
+If the return value from <a href="ran_likelihood_hes.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_hes</span></a>
+ is empty,
+upon return the following call can be used to compute the
 lower triangle of the Hessian <small>@(@
 f_{u,u} ( \theta , u )
 @)@</small>

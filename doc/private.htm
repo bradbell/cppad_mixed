@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>cppad_mixed: Private Declarations</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="cppad_mixed: Private Declarations">
-<meta name="keywords" id="keywords" content=" cppad_mixed: private declarations n_fixed_ n_random_ quasi_fixed_ bool_sparsity_ a_rcv_ initialize_done_ cppad_error_handler ran_like_fun_ ran_like_a1fun_ ran_hes_fun_ ldlt_ran_hes_ hes_cross_ newton_checkpoint_ laplace_obj_fun_ laplace_obj_hes_ fix_like_fun_ fix_like_jac_ fix_like_hes_ fix_con_fun_ fix_con_jac_ fix_con_hes_ template member functions pack unpack initialization init_ldlt_ran_hes init_fix_con init_fix_like init_hes_cross init_ran_hes init_ran_hes_check init_laplace_obj_hes init_ran_like init_ran_objcon try try_initialize try_optimize_random try_optimize_fixed try_information_mat try_sample_fixed sample_random other fix_con_eval fix_con_jac fix_con_hes fix_like_eval fix_like_jac fix_like_hes logdet_jac ran_con_eval ran_con_jac ran_like_jac ran_like_jac_check ran_obj_eval ran_obj_jac laplace_obj_hes update_factor ">
+<meta name="keywords" id="keywords" content=" cppad_mixed: private declarations n_fixed_ n_random_ quasi_fixed_ bool_sparsity_ a_rcv_ initialize_done_ cppad_error_handler ran_like_fun_ ran_like_a1fun_ ran_hes_fun_ ldlt_ran_hes_ hes_cross_ newton_checkpoint_ laplace_obj_fun_ laplace_obj_hes_ fix_like_fun_ fix_like_jac_ fix_like_hes_ fix_con_fun_ fix_con_jac_ fix_con_hes_ template member functions pack unpack initialization init_ldlt_ran_hes init_fix_con init_fix_like init_hes_cross init_ran_hes check_user_ran_hes init_laplace_obj_hes init_ran_like init_laplace_obj try try_initialize try_optimize_random try_optimize_fixed try_information_mat try_sample_fixed sample_random other fix_con_eval fix_con_jac fix_con_hes fix_like_eval fix_like_jac fix_like_hes logdet_jac ran_con_eval ran_con_jac ran_like_jac check_user_ran_jac ran_obj_eval ran_obj_jac laplace_obj_hes update_factor ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -77,8 +77,8 @@ A:active { color : purple }
 <option>pack</option>
 <option>unpack</option>
 <option>init_ran_hes</option>
-<option>init_ran_hes_check</option>
-<option>init_ran_objcon</option>
+<option>check_user_ran_hes</option>
+<option>init_laplace_obj</option>
 <option>init_ldlt_ran_hes</option>
 <option>init_fix_con</option>
 <option>init_fix_like</option>
@@ -93,7 +93,7 @@ A:active { color : purple }
 <option>fix_like_jac</option>
 <option>logdet_jac</option>
 <option>ran_like_jac</option>
-<option>ran_like_jac_check</option>
+<option>check_user_ran_jac</option>
 <option>ran_con_eval</option>
 <option>ran_con_jac</option>
 <option>ran_obj_eval</option>
@@ -135,10 +135,10 @@ A:active { color : purple }
 <option>---..init_fix_like</option>
 <option>---..init_hes_cross</option>
 <option>---..init_ran_hes</option>
-<option>---..init_ran_hes_check</option>
+<option>---..check_user_ran_hes</option>
 <option>---..init_laplace_obj_hes</option>
 <option>---..init_ran_like</option>
-<option>---..init_ran_objcon</option>
+<option>---..init_laplace_obj</option>
 <option>Try Member Functions</option>
 <option>---..try_initialize</option>
 <option>---..try_optimize_random</option>
@@ -157,7 +157,7 @@ A:active { color : purple }
 <option>---..ran_con_eval</option>
 <option>---..ran_con_jac</option>
 <option>---..ran_like_jac</option>
-<option>---..ran_like_jac_check</option>
+<option>---..check_user_ran_jac</option>
 <option>---..ran_obj_eval</option>
 <option>---..ran_obj_jac</option>
 <option>---..laplace_obj_hes</option>
@@ -180,7 +180,7 @@ can <b>not</b> be used by a derived class object
 <b><big><a name="Contents" id="Contents">Contents</a></big></b>
 <br>
 <table>
-<tr><td><a href="pack.htm" target="_top">pack</a></td><td>Pack&nbsp;Fixed&nbsp;Effect&nbsp;and&nbsp;Random&nbsp;Effects&nbsp;Into&nbsp;One&nbsp;Vector</td></tr><tr><td><a href="unpack.htm" target="_top">unpack</a></td><td>Pack&nbsp;Fixed&nbsp;Effect&nbsp;and&nbsp;Random&nbsp;Effects&nbsp;Into&nbsp;One&nbsp;Vector</td></tr><tr><td><a href="init_ran_hes.htm" target="_top">init_ran_hes</a></td><td>Initialize&nbsp;Hessian&nbsp;of&nbsp;Random&nbsp;Likelihood&nbsp;w.r.t&nbsp;Random&nbsp;Effects</td></tr><tr><td><a href="init_ran_hes_check.htm" target="_top">init_ran_hes_check</a></td><td>Check&nbsp;User&nbsp;Defined&nbsp;ran_likelihood_hes</td></tr><tr><td><a href="init_ran_objcon.htm" target="_top">init_ran_objcon</a></td><td>Second&nbsp;Order&nbsp;Representation&nbsp;of&nbsp;Laplace&nbsp;Objective&nbsp;and&nbsp;Constraints</td></tr><tr><td><a href="init_ldlt_ran_hes.htm" target="_top">init_ldlt_ran_hes</a></td><td>Initialize&nbsp;Cholesky&nbsp;Factor&nbsp;of&nbsp;Hessian&nbsp;of&nbsp;Random&nbsp;Likelihood</td></tr><tr><td><a href="init_fix_con.htm" target="_top">init_fix_con</a></td><td>Initialize&nbsp;Constraints&nbsp;as&nbsp;Function&nbsp;of&nbsp;Fixed&nbsp;Effects</td></tr><tr><td><a href="init_fix_like.htm" target="_top">init_fix_like</a></td><td>Initialize&nbsp;Fixed&nbsp;Likelihood</td></tr><tr><td><a href="init_hes_cross.htm" target="_top">init_hes_cross</a></td><td>Cross&nbsp;Terms&nbsp;of&nbsp;Sparse&nbsp;Hessian&nbsp;w.r.t&nbsp;Fixed&nbsp;and&nbsp;Random&nbsp;Effects</td></tr><tr><td><a href="init_laplace_obj_hes.htm" target="_top">init_laplace_obj_hes</a></td><td>Initialize&nbsp;Hessian&nbsp;of&nbsp;Approximate&nbsp;Laplace&nbsp;Objective</td></tr><tr><td><a href="init_ran_like.htm" target="_top">init_ran_like</a></td><td>Initialize&nbsp;Random&nbsp;Likelihood</td></tr><tr><td><a href="fix_con_eval.htm" target="_top">fix_con_eval</a></td><td>Evaluate&nbsp;Fixed&nbsp;Constraint&nbsp;Function</td></tr><tr><td><a href="fix_con_hes.htm" target="_top">fix_con_hes</a></td><td>Hessian&nbsp;of&nbsp;Fixed&nbsp;Constraints</td></tr><tr><td><a href="fix_con_jac.htm" target="_top">fix_con_jac</a></td><td>Jacobian&nbsp;of&nbsp;Fixed&nbsp;Constraint</td></tr><tr><td><a href="fix_like_eval.htm" target="_top">fix_like_eval</a></td><td>Evaluate&nbsp;Fixed&nbsp;Likelihood</td></tr><tr><td><a href="fix_like_hes.htm" target="_top">fix_like_hes</a></td><td>Hessian&nbsp;of&nbsp;Fixed&nbsp;Likelihood</td></tr><tr><td><a href="fix_like_jac.htm" target="_top">fix_like_jac</a></td><td>Jacobian&nbsp;of&nbsp;Fixed&nbsp;Likelihood</td></tr><tr><td><a href="logdet_jac.htm" target="_top">logdet_jac</a></td><td>Jacobian&nbsp;of&nbsp;Log&nbsp;Determinant&nbsp;of&nbsp;Hessian&nbsp;w.r.t.&nbsp;Random&nbsp;Effects</td></tr><tr><td><a href="ran_like_jac.htm" target="_top">ran_like_jac</a></td><td>Jacobian&nbsp;of&nbsp;Random&nbsp;Likelihood&nbsp;w.r.t.&nbsp;Random&nbsp;Effects</td></tr><tr><td><a href="ran_like_jac_check.htm" target="_top">ran_like_jac_check</a></td><td>Check&nbsp;User&nbsp;Defined&nbsp;ran_likelihood_jac</td></tr><tr><td><a href="ran_con_eval.htm" target="_top">ran_con_eval</a></td><td>Evaluate&nbsp;the&nbsp;Random&nbsp;Constraint&nbsp;Function</td></tr><tr><td><a href="ran_con_jac.htm" target="_top">ran_con_jac</a></td><td>Jacobian&nbsp;of&nbsp;the&nbsp;Random&nbsp;Constraint&nbsp;Function</td></tr><tr><td><a href="ran_obj_eval.htm" target="_top">ran_obj_eval</a></td><td>Evaluate&nbsp;Laplace&nbsp;Approximation&nbsp;and&nbsp;Laplace&nbsp;Objective</td></tr><tr><td><a href="ran_obj_jac.htm" target="_top">ran_obj_jac</a></td><td>Derivative&nbsp;of&nbsp;Laplace&nbsp;Objective</td></tr><tr><td><a href="laplace_obj_hes.htm" target="_top">laplace_obj_hes</a></td><td>Hessian&nbsp;of&nbsp;Laplace&nbsp;Objective&nbsp;and&nbsp;Random&nbsp;Constraints</td></tr><tr><td><a href="update_factor.htm" target="_top">update_factor</a></td><td>Update&nbsp;the&nbsp;Factorization&nbsp;of&nbsp;Hessian&nbsp;w.r.t.&nbsp;Random&nbsp;Effects</td></tr></table><br>
+<tr><td><a href="pack.htm" target="_top">pack</a></td><td>Pack&nbsp;Fixed&nbsp;Effect&nbsp;and&nbsp;Random&nbsp;Effects&nbsp;Into&nbsp;One&nbsp;Vector</td></tr><tr><td><a href="unpack.htm" target="_top">unpack</a></td><td>Pack&nbsp;Fixed&nbsp;Effect&nbsp;and&nbsp;Random&nbsp;Effects&nbsp;Into&nbsp;One&nbsp;Vector</td></tr><tr><td><a href="init_ran_hes.htm" target="_top">init_ran_hes</a></td><td>Initialize&nbsp;Hessian&nbsp;of&nbsp;Random&nbsp;Likelihood&nbsp;w.r.t&nbsp;Random&nbsp;Effects</td></tr><tr><td><a href="check_user_ran_hes.htm" target="_top">check_user_ran_hes</a></td><td>Check&nbsp;User&nbsp;Defined&nbsp;ran_likelihood_hes</td></tr><tr><td><a href="init_laplace_obj.htm" target="_top">init_laplace_obj</a></td><td>Second&nbsp;Order&nbsp;Representation&nbsp;of&nbsp;Laplace&nbsp;Objective&nbsp;and&nbsp;Constraints</td></tr><tr><td><a href="init_ldlt_ran_hes.htm" target="_top">init_ldlt_ran_hes</a></td><td>Initialize&nbsp;Cholesky&nbsp;Factor&nbsp;of&nbsp;Hessian&nbsp;of&nbsp;Random&nbsp;Likelihood</td></tr><tr><td><a href="init_fix_con.htm" target="_top">init_fix_con</a></td><td>Initialize&nbsp;Constraints&nbsp;as&nbsp;Function&nbsp;of&nbsp;Fixed&nbsp;Effects</td></tr><tr><td><a href="init_fix_like.htm" target="_top">init_fix_like</a></td><td>Initialize&nbsp;Fixed&nbsp;Likelihood</td></tr><tr><td><a href="init_hes_cross.htm" target="_top">init_hes_cross</a></td><td>Cross&nbsp;Terms&nbsp;of&nbsp;Sparse&nbsp;Hessian&nbsp;w.r.t&nbsp;Fixed&nbsp;and&nbsp;Random&nbsp;Effects</td></tr><tr><td><a href="init_laplace_obj_hes.htm" target="_top">init_laplace_obj_hes</a></td><td>Initialize&nbsp;Hessian&nbsp;of&nbsp;Approximate&nbsp;Laplace&nbsp;Objective</td></tr><tr><td><a href="init_ran_like.htm" target="_top">init_ran_like</a></td><td>Initialize&nbsp;Random&nbsp;Likelihood</td></tr><tr><td><a href="fix_con_eval.htm" target="_top">fix_con_eval</a></td><td>Evaluate&nbsp;Fixed&nbsp;Constraint&nbsp;Function</td></tr><tr><td><a href="fix_con_hes.htm" target="_top">fix_con_hes</a></td><td>Hessian&nbsp;of&nbsp;Fixed&nbsp;Constraints</td></tr><tr><td><a href="fix_con_jac.htm" target="_top">fix_con_jac</a></td><td>Jacobian&nbsp;of&nbsp;Fixed&nbsp;Constraint</td></tr><tr><td><a href="fix_like_eval.htm" target="_top">fix_like_eval</a></td><td>Evaluate&nbsp;Fixed&nbsp;Likelihood</td></tr><tr><td><a href="fix_like_hes.htm" target="_top">fix_like_hes</a></td><td>Hessian&nbsp;of&nbsp;Fixed&nbsp;Likelihood</td></tr><tr><td><a href="fix_like_jac.htm" target="_top">fix_like_jac</a></td><td>Jacobian&nbsp;of&nbsp;Fixed&nbsp;Likelihood</td></tr><tr><td><a href="logdet_jac.htm" target="_top">logdet_jac</a></td><td>Jacobian&nbsp;of&nbsp;Log&nbsp;Determinant&nbsp;of&nbsp;Hessian&nbsp;w.r.t.&nbsp;Random&nbsp;Effects</td></tr><tr><td><a href="ran_like_jac.htm" target="_top">ran_like_jac</a></td><td>Jacobian&nbsp;of&nbsp;Random&nbsp;Likelihood&nbsp;w.r.t.&nbsp;Random&nbsp;Effects</td></tr><tr><td><a href="check_user_ran_jac.htm" target="_top">check_user_ran_jac</a></td><td>Check&nbsp;User&nbsp;Defined&nbsp;ran_likelihood_jac</td></tr><tr><td><a href="ran_con_eval.htm" target="_top">ran_con_eval</a></td><td>Evaluate&nbsp;the&nbsp;Random&nbsp;Constraint&nbsp;Function</td></tr><tr><td><a href="ran_con_jac.htm" target="_top">ran_con_jac</a></td><td>Jacobian&nbsp;of&nbsp;the&nbsp;Random&nbsp;Constraint&nbsp;Function</td></tr><tr><td><a href="ran_obj_eval.htm" target="_top">ran_obj_eval</a></td><td>Evaluate&nbsp;Laplace&nbsp;Approximation&nbsp;and&nbsp;Laplace&nbsp;Objective</td></tr><tr><td><a href="ran_obj_jac.htm" target="_top">ran_obj_jac</a></td><td>Derivative&nbsp;of&nbsp;Laplace&nbsp;Objective</td></tr><tr><td><a href="laplace_obj_hes.htm" target="_top">laplace_obj_hes</a></td><td>Hessian&nbsp;of&nbsp;Laplace&nbsp;Objective&nbsp;and&nbsp;Random&nbsp;Constraints</td></tr><tr><td><a href="update_factor.htm" target="_top">update_factor</a></td><td>Update&nbsp;the&nbsp;Factorization&nbsp;of&nbsp;Hessian&nbsp;w.r.t.&nbsp;Random&nbsp;Effects</td></tr></table><br>
 <b><big><a name="n_fixed_" id="n_fixed_">n_fixed_</a></big></b>
 <br>
 The number of fixed effects is given by
@@ -363,7 +363,7 @@ this is a recording of the second order approximation for the
 random part of the Laplace approximation, <small>@(@
 H( \beta , \theta , u)
 @)@</small>;
-see <a href="init_ran_objcon.htm#laplace_obj_fun_" target="_top"><span style='white-space: nowrap'>laplace_obj_fun_</span></a>
+see <a href="init_laplace_obj.htm#laplace_obj_fun_" target="_top"><span style='white-space: nowrap'>laplace_obj_fun_</span></a>
 .
 <pre style='display:inline'><tt>
      CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;double&gt;</font>        laplace_obj_fun_<font color="#990000">;</font>   <i><font color="#9A1900">// for computing H_beta_beta</font></i>
@@ -565,11 +565,11 @@ See <a href="init_ran_hes.htm" target="_top"><span style='white-space: nowrap'>i
           <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font> random_vec
      <font color="#990000">);</font></tt></pre>
 <br>
-<b><a name="Initialization Member Functions.init_ran_hes_check" id="Initialization Member Functions.init_ran_hes_check">init_ran_hes_check</a></b>
+<b><a name="Initialization Member Functions.check_user_ran_hes" id="Initialization Member Functions.check_user_ran_hes">check_user_ran_hes</a></b>
 <br>
-See <a href="init_ran_hes_check.htm" target="_top"><span style='white-space: nowrap'>init_ran_hes_check</span></a>
+See <a href="check_user_ran_hes.htm" target="_top"><span style='white-space: nowrap'>check_user_ran_hes</span></a>
 .
-<pre><tt>     <font color="#009900">void</font> <b><font color="#000000">init_ran_hes_check</font></b><font color="#990000">(</font>
+<pre><tt>     <font color="#009900">void</font> <b><font color="#000000">check_user_ran_hes</font></b><font color="#990000">(</font>
           <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font> fixed_vec <font color="#990000">,</font>
           <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font> random_vec
      <font color="#990000">);</font></tt></pre>
@@ -592,11 +592,11 @@ See <a href="init_ran_like.htm" target="_top"><span style='white-space: nowrap'>
           <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font> random_vec
      <font color="#990000">);</font></tt></pre>
 <br>
-<b><a name="Initialization Member Functions.init_ran_objcon" id="Initialization Member Functions.init_ran_objcon">init_ran_objcon</a></b>
+<b><a name="Initialization Member Functions.init_laplace_obj" id="Initialization Member Functions.init_laplace_obj">init_laplace_obj</a></b>
 <br>
-See <a href="init_ran_objcon.htm" target="_top"><span style='white-space: nowrap'>init_ran_objcon</span></a>
+See <a href="init_laplace_obj.htm" target="_top"><span style='white-space: nowrap'>init_laplace_obj</span></a>
 .
-<pre><tt>     <font color="#009900">void</font> <b><font color="#000000">init_ran_objcon</font></b><font color="#990000">(</font>
+<pre><tt>     <font color="#009900">void</font> <b><font color="#000000">init_laplace_obj</font></b><font color="#990000">(</font>
           <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font> fixed_vec <font color="#990000">,</font>
           <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font> random_vec
      <font color="#990000">);</font></tt></pre>
@@ -812,11 +812,11 @@ See <a href="ran_like_jac.htm" target="_top"><span style='white-space: nowrap'>r
      <font color="#990000">);</font>
      <b><font color="#0000FF">friend</font></b> <font color="#009900">bool</font> <font color="#990000">::</font><b><font color="#000000">ran_like_jac_xam</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">);</font></tt></pre>
 <br>
-<b><a name="Other Member Functions.ran_like_jac_check" id="Other Member Functions.ran_like_jac_check">ran_like_jac_check</a></b>
+<b><a name="Other Member Functions.check_user_ran_jac" id="Other Member Functions.check_user_ran_jac">check_user_ran_jac</a></b>
 <br>
-See <a href="ran_like_jac_check.htm" target="_top"><span style='white-space: nowrap'>ran_like_jac_check</span></a>
+See <a href="check_user_ran_jac.htm" target="_top"><span style='white-space: nowrap'>check_user_ran_jac</span></a>
 
-<pre><tt>     <font color="#009900">void</font> <b><font color="#000000">ran_like_jac_check</font></b><font color="#990000">(</font>
+<pre><tt>     <font color="#009900">void</font> <b><font color="#000000">check_user_ran_jac</font></b><font color="#990000">(</font>
           <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>       fixed_vec     <font color="#990000">,</font>
           <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>       random_vec
      <font color="#990000">);</font></tt></pre>

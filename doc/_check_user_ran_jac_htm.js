@@ -9,7 +9,7 @@ var list_up0 = [
 'cppad_mixed.htm',
 'base_class.htm',
 'private.htm',
-'init_ran_objcon.htm'
+'check_user_ran_jac.htm'
 ];
 var list_down3 = [
 'install_unix.htm',
@@ -29,8 +29,8 @@ var list_down1 = [
 'pack.htm',
 'unpack.htm',
 'init_ran_hes.htm',
-'init_ran_hes_check.htm',
-'init_ran_objcon.htm',
+'check_user_ran_hes.htm',
+'init_laplace_obj.htm',
 'init_ldlt_ran_hes.htm',
 'init_fix_con.htm',
 'init_fix_like.htm',
@@ -45,7 +45,7 @@ var list_down1 = [
 'fix_like_jac.htm',
 'logdet_jac.htm',
 'ran_like_jac.htm',
-'ran_like_jac_check.htm',
+'check_user_ran_jac.htm',
 'ran_con_eval.htm',
 'ran_con_jac.htm',
 'ran_obj_eval.htm',
@@ -54,12 +54,13 @@ var list_down1 = [
 'update_factor.htm'
 ];
 var list_current0 = [
-'init_ran_objcon.htm#Syntax',
-'init_ran_objcon.htm#Private',
-'init_ran_objcon.htm#mixed_object',
-'init_ran_objcon.htm#fixed_vec',
-'init_ran_objcon.htm#random_vec',
-'init_ran_objcon.htm#laplace_obj_fun_'
+'check_user_ran_jac.htm#Syntax',
+'check_user_ran_jac.htm#Private',
+'check_user_ran_jac.htm#mixed_object',
+'check_user_ran_jac.htm#fixed_vec',
+'check_user_ran_jac.htm#random_vec',
+'check_user_ran_jac.htm#ran_like_fun_',
+'check_user_ran_jac.htm#ran_likelihood_jac'
 ];
 function choose_across0(item)
 {	var index          = item.selectedIndex;

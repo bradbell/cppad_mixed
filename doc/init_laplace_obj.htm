@@ -12,10 +12,10 @@ MathJax.Hub.Config({
 >
 </script>
 <head>
-<title>Check User Defined ran_likelihood_jac</title>
+<title>Second Order Representation of Laplace Objective and Constraints</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
-<meta name="description" id="description" content="Check User Defined ran_likelihood_jac">
-<meta name="keywords" id="keywords" content=" check user defined ran_likelihood_jac syntax private mixed_object fixed_vec random_vec ran_like_fun_ ">
+<meta name="description" id="description" content="Second Order Representation of Laplace Objective and Constraints">
+<meta name="keywords" id="keywords" content=" second order representation laplace objective constraints syntax private assumptions init_laplace_obj_done_ mixed_object fixed_vec random_vec laplace_obj_fun_ ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -23,7 +23,7 @@ A:link { color : blue }
 A:visited { color : purple }
 A:active { color : purple }
 </style>
-<script type='text/javascript' language='JavaScript' src='_ran_like_jac_check_htm.js'>
+<script type='text/javascript' language='JavaScript' src='_init_laplace_obj_htm.js'>
 </script>
 </head>
 <body>
@@ -31,8 +31,8 @@ A:active { color : purple }
 <td>
 <a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
 </td>
-<td><a href="ran_like_jac.cpp.htm" target="_top">Prev</a>
-</td><td><a href="ran_con_eval.htm" target="_top">Next</a>
+<td><a href="check_user_ran_hes.htm" target="_top">Prev</a>
+</td><td><a href="init_ldlt_ran_hes.htm" target="_top">Next</a>
 </td><td>
 <select onchange='choose_across0(this)'>
 <option>Index-&gt;</option>
@@ -49,7 +49,7 @@ A:active { color : purple }
 <option>cppad_mixed</option>
 <option>base_class</option>
 <option>private</option>
-<option>ran_like_jac_check</option>
+<option>init_laplace_obj</option>
 </select>
 </td>
 <td>
@@ -78,8 +78,8 @@ A:active { color : purple }
 <option>pack</option>
 <option>unpack</option>
 <option>init_ran_hes</option>
-<option>init_ran_hes_check</option>
-<option>init_ran_objcon</option>
+<option>check_user_ran_hes</option>
+<option>init_laplace_obj</option>
 <option>init_ldlt_ran_hes</option>
 <option>init_fix_con</option>
 <option>init_fix_like</option>
@@ -94,7 +94,7 @@ A:active { color : purple }
 <option>fix_like_jac</option>
 <option>logdet_jac</option>
 <option>ran_like_jac</option>
-<option>ran_like_jac_check</option>
+<option>check_user_ran_jac</option>
 <option>ran_con_eval</option>
 <option>ran_con_jac</option>
 <option>ran_obj_eval</option>
@@ -103,32 +103,30 @@ A:active { color : purple }
 <option>update_factor</option>
 </select>
 </td>
-<td>ran_like_jac_check</td>
+<td>init_laplace_obj</td>
 <td>
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
 <option>Syntax</option>
 <option>Private</option>
+<option>Assumptions</option>
+<option>init_laplace_obj_done_</option>
 <option>mixed_object</option>
 <option>fixed_vec</option>
 <option>random_vec</option>
-<option>ran_like_fun_</option>
-<option>ran_likelihood_jac</option>
+<option>laplace_obj_fun_</option>
 </select>
 </td>
 </tr></table><br>
 @(@\newcommand{\R}[1]{ {\rm #1} }
 \newcommand{\B}[1]{ {\bf #1} }
-\newcommand{\W}[1]{ \; #1 \; }@)@
-
-
-<center><b><big><big>Check User Defined ran_likelihood_jac</big></big></b></center>
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Second Order Representation of Laplace Objective and Constraints</big></big></b></center>
 <br>
 <b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
 
 <br>
 
-<code><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.ran_like_jac_check(</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
+<code><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.init_laplace_obj(</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
 
 
 <br>
@@ -137,6 +135,24 @@ A:active { color : purple }
 <br>
 This <code><font color="blue">cppad_mixed</font></code> member function is <a href="private.htm" target="_top"><span style='white-space: nowrap'>private</span></a>
 .
+
+<br>
+<br>
+<b><big><a name="Assumptions" id="Assumptions">Assumptions</a></big></b>
+<br>
+The member variables
+<a href="init_ran_like.htm#init_ran_like_done_" target="_top"><span style='white-space: nowrap'>init_ran_like_done_</span></a>
+ and
+<a href="initialize.htm#init_newton_checkpoint_done_" target="_top"><span style='white-space: nowrap'>init_newton_checkpoint_done_</span></a>
+
+are true.
+
+<br>
+<br>
+<b><big><a name="init_laplace_obj_done_" id="init_laplace_obj_done_">init_laplace_obj_done_</a></big></b>
+<br>
+The input value of this member variable must be false.
+Upon return it is true.
 
 <br>
 <br>
@@ -161,7 +177,7 @@ It specifies the value of the
 
 vector <small>@(@
 \theta
-@)@</small>.
+@)@</small> at which the initialization is done.
 
 <br>
 <br>
@@ -177,38 +193,38 @@ It specifies the value of the
 
 vector <small>@(@
 u
-@)@</small>.
+@)@</small> at which the initialization is done.
 
 <br>
 <br>
-<b><big><a name="ran_like_fun_" id="ran_like_fun_">ran_like_fun_</a></big></b>
+<b><big><a name="laplace_obj_fun_" id="laplace_obj_fun_">laplace_obj_fun_</a></big></b>
 <br>
-The member variable
+The input value of the member variable
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::ADFun&lt;double&gt;&nbsp;ran_like_fun_<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::ADFun&lt;double&gt;&nbsp;laplace_obj_fun_<br>
 </span></font></code>
-must contain a recording of the random likelihood function; see
-<a href="init_ran_like.htm#ran_like_fun_" target="_top"><span style='white-space: nowrap'>ran_like_fun_</span></a>
-.
+does not matter.
+Upon return it contains a second order accurate recording of the
+approximate Laplace objective; see
+<a href="theory.htm#Approximate Laplace Objective, H(beta, theta, u)" target="_top"><span style='white-space: nowrap'>H(beta,&nbsp;theta,&nbsp;u)</span></a>
 
-<br>
-<br>
-<b><big><a name="ran_likelihood_jac" id="ran_likelihood_jac">ran_likelihood_jac</a></big></b>
-<br>
-If the return value from <a href="ran_likelihood_jac.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_jac</span></a>
- is non-empty,
-it is checked for correctness.
-To be specific, the return vector is checked using
-<a href="private.htm#ran_like_fun_" target="_top"><span style='white-space: nowrap'>ran_like_fun_</span></a>
-.
-If the results do no agree,
-<a href="public.htm#User Defined Functions.fatal_error" target="_top"><span style='white-space: nowrap'>fatal_error</span></a>
- is called with
-an appropriate error message.
+<small>@(@
+H( \beta , \theta , u )
+@)@</small>,
+followed by the approximate random constraint function; see
+<a href="theory.htm#Approximate Random Constraint Function, B(beta, theta, u)" target="_top"><span style='white-space: nowrap'>B(beta,&nbsp;theta,&nbsp;u)</span></a>
 
+<small>@(@
+B( \beta , \theta , u )
+@)@</small>. Thus
 
-<hr>Input File: src/ran_like_jac.cpp
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;laplace_obj_fun_.Domain()&nbsp;==&nbsp;n_fixed_&nbsp;+&nbsp;n_fixed_&nbsp;+&nbsp;n_random_<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;laplace_obj_fun_.Range()&nbsp;&nbsp;==&nbsp;1&nbsp;+&nbsp;A_rcv_.nr()<br>
+</span></font></code>
+
+<hr>Input File: src/init_laplace_obj.cpp
 
 </body>
 </html>

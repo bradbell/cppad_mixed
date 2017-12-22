@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>An Example Installation</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="An Example Installation">
-<meta name="keywords" id="keywords" content=" example installation syntax existing ">
+<meta name="keywords" id="keywords" content=" example installation syntax existing source ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -78,6 +78,7 @@ A:active { color : purple }
 <option>Headings-&gt;</option>
 <option>Syntax</option>
 <option>existing</option>
+<option>Source</option>
 </select>
 </td>
 </tr></table><br>
@@ -102,7 +103,12 @@ will be replaced (takes more time).
 If it is use, pre-existing installs
 will be used (takes less time).
 
-<pre><tt><b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#009900">$0</font> <font color="#990000">!=</font> <font color="#FF0000">'bin/example_install.sh'</font> <font color="#990000">]</font>
+<br>
+<br>
+<b><big><a name="Source" id="Source">Source</a></big></b>
+
+<pre><tt>
+<b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#009900">$0</font> <font color="#990000">!=</font> <font color="#FF0000">'bin/example_install.sh'</font> <font color="#990000">]</font>
 <b><font color="#0000FF">then</font></b>
      echo <font color="#FF0000">'bin/example_install.sh: must be executed from its parent directory'</font>
      <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
@@ -122,18 +128,19 @@ will be used (takes less time).
 <b><font color="#0000FF">fi</font></b>
 <font color="#009900">existing</font><font color="#990000">=</font><font color="#FF0000">"$2"</font>
 <i><font color="#9A1900"># ---------------------------------------------------------------------------</font></i>
-<i><font color="#9A1900"># build_type</font></i>
+<i><font color="#9A1900"># set build_type to value in run_cmake.sh</font></i>
 <font color="#009900">cmd</font><font color="#990000">=</font>`grep <font color="#FF0000">'^build_type='</font> bin/run_cmake<font color="#990000">.</font>sh`
 <b><font color="#0000FF">eval</font></b> <font color="#009900">$cmd</font>
 <i><font color="#9A1900">#</font></i>
-<i><font color="#9A1900"># cppad_prefix</font></i>
+<i><font color="#9A1900"># set cppad_prefix to value in run_cmake.sh</font></i>
 <font color="#009900">cmd</font><font color="#990000">=</font>`grep <font color="#FF0000">'^cppad_prefix='</font> bin/run_cmake<font color="#990000">.</font>sh`
 <b><font color="#0000FF">eval</font></b> <font color="#009900">$cmd</font>
 <i><font color="#9A1900">#</font></i>
-<i><font color="#9A1900"># ipopt_prefix</font></i>
+<i><font color="#9A1900"># set ipopt_prefix to value in run_cmake.sh</font></i>
 <font color="#009900">cmd</font><font color="#990000">=</font>`grep <font color="#FF0000">'^ipopt_prefix='</font> bin/run_cmake<font color="#990000">.</font>sh`
 <b><font color="#0000FF">eval</font></b> <font color="#009900">$cmd</font>
 <i><font color="#9A1900"># --------------------------------------------------------------------------</font></i>
+<i><font color="#9A1900"># remove old version of example_install.log and example_install.err</font></i>
 <b><font color="#0000FF">for</font></b> ext <b><font color="#0000FF">in</font></b> log err
 <b><font color="#0000FF">do</font></b>
      <b><font color="#0000FF">if</font></b> <font color="#990000">[</font> -e <font color="#FF0000">"example_install.$ext"</font> <font color="#990000">]</font>
@@ -142,11 +149,13 @@ will be used (takes less time).
      <b><font color="#0000FF">fi</font></b>
 <b><font color="#0000FF">done</font></b>
 <i><font color="#9A1900"># --------------------------------------------------------------------------</font></i>
+<i><font color="#9A1900"># set build link to build.debug or build.release depending on build_type</font></i>
 <b><font color="#0000FF">if</font></b> echo <font color="#FF0000">"$cppad_prefix"</font> <font color="#990000">|</font> grep <font color="#FF0000">'/cppad_mixed$'</font> <font color="#990000">&gt;</font> /dev/null
 <b><font color="#0000FF">then</font></b>
      bin/build_type<font color="#990000">.</font>sh example_install<font color="#990000">.</font>sh <font color="#009900">$cppad_prefix</font> <font color="#009900">$build_type</font>
 <b><font color="#0000FF">fi</font></b>
 <i><font color="#9A1900"># -----------------------------------------------------------------------------</font></i>
+<i><font color="#9A1900"># set system_type, system_list, and system_install</font></i>
 <b><font color="#0000FF">if</font></b> which apt-get <font color="#990000">&gt;&amp;</font> /dev/null
 <b><font color="#0000FF">then</font></b>
      <font color="#009900">system_type</font><font color="#990000">=</font><font color="#FF0000">'debian'</font>
@@ -167,7 +176,7 @@ will be used (takes less time).
      <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
 <b><font color="#0000FF">fi</font></b>
 <i><font color="#9A1900"># --------------------------------------------------------------------------</font></i>
-<i><font color="#9A1900"># system external installs</font></i>
+<i><font color="#9A1900"># system external installs for normal system requirements</font></i>
 <font color="#009900">$system_list</font> <font color="#990000">|</font> sed -e <font color="#FF0000">'s|  *| |g'</font> <font color="#990000">&gt;</font> example_install<font color="#990000">.</font>tmp
 <b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$system_type"</font> <font color="#990000">==</font> <font color="#FF0000">'debian'</font> <font color="#990000">]</font>
 <b><font color="#0000FF">then</font></b>
@@ -207,7 +216,7 @@ will be used (takes less time).
 <b><font color="#0000FF">done</font></b>
 rm example_install<font color="#990000">.</font>tmp
 <i><font color="#9A1900"># ----------------------------------------------------------------------------</font></i>
-<i><font color="#9A1900"># local external installs</font></i>
+<i><font color="#9A1900"># local external installs for special requirements</font></i>
 <b><font color="#0000FF">for</font></b> pkg <b><font color="#0000FF">in</font></b> eigen ipopt suitesparse cppad
 <b><font color="#0000FF">do</font></b>
      <i><font color="#9A1900"># eval below converts $HOME in $prefix to its value for current user</font></i>
@@ -255,25 +264,29 @@ rm example_install<font color="#990000">.</font>tmp
 <i><font color="#9A1900"># ----------------------------------------------------------------------------</font></i>
 <i><font color="#9A1900"># cppad_mixed</font></i>
 <i><font color="#9A1900"># ----------------------------------------------------------------------------</font></i>
+<i><font color="#9A1900"># Check we can find ipopt.pc, echo PKG_CONFIG_PATH to help user set this value</font></i>
 <font color="#009900">dir</font><font color="#990000">=</font>`find -L <font color="#009900">$ipopt_prefix</font> -name <font color="#FF0000">'ipopt.pc'</font> <font color="#990000">|</font> sed -e <font color="#FF0000">'s|/ipopt.pc||'</font>`
 <b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$dir"</font> <font color="#990000">==</font> <font color="#FF0000">''</font> <font color="#990000">]</font>
 <b><font color="#0000FF">then</font></b>
      echo <font color="#FF0000">"Cannot find ipopt.pc in $ipopt_prefix directory"</font>
      <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
 <b><font color="#0000FF">else</font></b>
-     <b><font color="#0000FF">export</font></b> <font color="#009900">PKG_CONFIG_PATH</font><font color="#990000">=</font><font color="#FF0000">"$dir"</font>
+     echo_eval <b><font color="#0000FF">export</font></b> <font color="#009900">PKG_CONFIG_PATH</font><font color="#990000">=</font><font color="#FF0000">"$dir"</font>
 <b><font color="#0000FF">fi</font></b>
-<i><font color="#9A1900"># ----------------------------------------------------------------------------</font></i>
-<font color="#009900">p</font><font color="#990000">=</font><font color="#FF0000">'example_install'</font>
-<font color="#009900">cmd</font><font color="#990000">=</font><font color="#FF0000">'bin/run_cmake.sh'</font>
-echo <font color="#FF0000">"$cmd 1&gt;&gt; $p.log 2&gt;&gt; $p.err"</font>
-<font color="#009900">$cmd</font> <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> <font color="#009900">$p</font><font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> <font color="#009900">$p</font><font color="#990000">.</font>err
+echo_eval <b><font color="#0000FF">export</font></b> <font color="#009900">PYTHONPATH</font><font color="#990000">=</font><font color="#FF0000">''</font>
 <i><font color="#9A1900">#</font></i>
-cd build
+<i><font color="#9A1900"># bin/run_cmake.sh</font></i>
+echo <font color="#FF0000">"bin/run_cmake.sh 1&gt;&gt; example_install.log 2&gt;&gt; example_install.err"</font>
+bin/run_cmake<font color="#990000">.</font>sh <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> <font color="#990000">..</font>/example_install<font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> <font color="#990000">..</font>/example_install<font color="#990000">.</font>err
+<i><font color="#9A1900">#</font></i>
+<i><font color="#9A1900"># change into build directory</font></i>
+echo_eval cd build
+<i><font color="#9A1900">#</font></i>
+<i><font color="#9A1900"># make check, speed, and install</font></i>
 <b><font color="#0000FF">for</font></b> cmd <b><font color="#0000FF">in</font></b> check speed install
 <b><font color="#0000FF">do</font></b>
-     echo <font color="#FF0000">"make $cmd 1&gt;&gt; $p.log 2&gt;&gt; $p.err"</font>
-     make <font color="#009900">$cmd</font> <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> <font color="#990000">../</font><font color="#009900">$p</font><font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> <font color="#990000">../</font><font color="#009900">$p</font><font color="#990000">.</font>err
+     echo <font color="#FF0000">"make $cmd 1&gt;&gt; example_install.log 2&gt;&gt; example_install.err"</font>
+     make <font color="#009900">$cmd</font> <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> <font color="#990000">..</font>/example_install<font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> <font color="#990000">..</font>/example_install<font color="#990000">.</font>err
 <b><font color="#0000FF">done</font></b>
 cd <font color="#990000">..</font>
 <i><font color="#9A1900"># ----------------------------------------------------------------------------</font></i>

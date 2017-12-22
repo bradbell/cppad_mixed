@@ -27,7 +27,8 @@ var list_down1 = [
 ];
 var list_current0 = [
 'example_install.sh.htm#Syntax',
-'example_install.sh.htm#existing'
+'example_install.sh.htm#existing',
+'example_install.sh.htm#Source'
 ];
 function choose_across0(item)
 {	var index          = item.selectedIndex;
