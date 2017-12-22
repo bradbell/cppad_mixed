@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -36,6 +36,10 @@ $icode%mixed_object%.init_fix_like(%fixed_vec%)%$$
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
 
+$head init_fix_like_done_$$
+The input value of this member variable must be false.
+Upon return it is true.
+
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
@@ -49,10 +53,6 @@ $codei%
 It specifies the value of the
 $cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$ at which the initialization is done.
-
-$head init_fix_like_done_$$
-When this function is called, this member variable must be false.
-Upon return it is true.
 
 $head fix_like_fun_$$
 On input, the member variable
@@ -119,8 +119,9 @@ $end
 
 
 void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
-{	assert( fixed_vec.size() == n_fixed_ );
-	assert( ! init_fix_like_done_ );
+{	assert( ! init_fix_like_done_ );
+	//
+	assert( fixed_vec.size() == n_fixed_ );
 
 	// ------------------------------------------------------------------------
 	// fix_like_fun_
