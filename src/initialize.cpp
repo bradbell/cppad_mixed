@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -101,6 +101,11 @@ $codei%
 		std::cout << itr->first << " = " itr->second << "\n";
 %$$
 
+$head init_newton_checkpoint_done_$$
+The input value of this member variable must be false.
+If $code quasi_fixed_$$ is true, its output value is false,
+otherwise its output value is true.
+
 $head Example$$
 The file $cref derived_ctor.cpp$$ contains an example
 of using $code initialize$$.
@@ -178,10 +183,10 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 		init_hes_cross(fixed_vec, random_vec);
 		assert( init_hes_cross_done_ );
 
+		assert( ! init_newton_checkpoint_done_ );
 		if( ! quasi_fixed_ )
 		{
 			// newton_checkpoint_
-			assert( ! init_newton_checkpoint_done_ );
 			newton_checkpoint_.initialize(ran_like_a1fun_,
 				ran_hes_rcv_, ran_hes_work_, fixed_vec, random_vec
 			);

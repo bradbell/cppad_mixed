@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -34,6 +34,15 @@ $icode%mixed_object%.init_laplace_obj_hes(
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
+
+$head Assumptions$$
+The member variable
+$cref/init_laplace_obj_done_/init_ran_objcon/init_laplace_obj_done_/$$
+is true.
+
+$head init_laplace_obj_hes_done_$$
+The input value of this member variable must be false.
+Upon return it is true.
 
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
