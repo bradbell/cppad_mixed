@@ -653,10 +653,10 @@ $srccode%cpp% */
 	);
 /* %$$
 
-$subhead init_ran_hes_check$$
-See $cref init_ran_hes_check$$.
+$subhead check_user_ran_hes$$
+See $cref check_user_ran_hes$$.
 $srccode%cpp% */
-	void init_ran_hes_check(
+	void check_user_ran_hes(
 		const d_vector& fixed_vec ,
 		const d_vector& random_vec
 	);

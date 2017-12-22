@@ -204,9 +204,6 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 		}
 		// check ran_likelihood_jac
 		ran_like_jac_check(fixed_vec, random_vec);
-		//
-		// check ran_likelihood_hes
-		init_ran_hes_check(fixed_vec, random_vec);
 	}
 
 	// fix_like_fun_

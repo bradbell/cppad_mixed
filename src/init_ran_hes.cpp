@@ -105,7 +105,11 @@ calls to $code sparse_hes$$ specified below.
 
 
 $head ran_like_fun_$$
-Upon return, the following call can be used to compute the
+If the return value from $cref ran_likelihood_hes$$ is non-empty,
+and $code NDEBUG$$ is not defined,
+$code ran_likelihood_hes$$ is checked for correctness.
+If the return value from $cref ran_likelihood_hes$$ is empty,
+upon return the following call can be used to compute the
 lower triangle of the Hessian $latex f_{u,u} ( \theta , u )$$
 as a $code d_vector$$:
 $codei%
@@ -288,7 +292,7 @@ void cppad_mixed::init_ran_hes(
 	);
 	if( a1_val_out.size() == 0 )
 	{	// The user has not defined ran_likelihood_hes, so use AD to calcuate
-		// the Hessian of the randome likelihood w.r.t the random effects.
+		// the Hessian of the random likelihood w.r.t the random effects.
 		a1_val_out.resize(K);
 		ran_like_a1fun_.sparse_hes(
 			a1_both,
@@ -300,6 +304,9 @@ void cppad_mixed::init_ran_hes(
 		);
 		a1_val_out = a1_ran_hes_rcv.val();
 	}
+# ifndef NDEBUG
+	else	check_user_ran_hes(fixed_vec, random_vec);
+# endif
 	ran_hes_fun_.Dependent(a1_both, a1_val_out);
 	ran_hes_fun_.check_for_nan(false);
 
@@ -312,7 +319,7 @@ void cppad_mixed::init_ran_hes(
 }
 
 /*
-$begin init_ran_hes_check$$
+$begin check_user_ran_hes$$
 $spell
 	rcv
 	cppad
@@ -327,7 +334,7 @@ $$
 $section Check User Defined ran_likelihood_hes$$
 
 $head Syntax$$
-$icode%mixed_object%.init_ran_hes_check(%fixed_vec%, %random_vec%)%$$
+$icode%mixed_object%.check_user_ran_hes(%fixed_vec%, %random_vec%)%$$
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
@@ -375,8 +382,8 @@ $cref/ran_hes_rcv_/init_ran_hes/ran_hes_rcv_/$$,
 $cref/ran_hes_work_/init_ran_hes/ran_hes_work_/$$.
 
 $head ran_likelihood_hes$$
-If the return value from $cref ran_likelihood_hes$$ is non-empty,
-it is checked for correctness.
+The return value from $cref ran_likelihood_hes$$ must be non-empty
+and is checked for correctness.
 To be specific, the return vector is checked using
 $cref/ran_like_fun_/Private/ran_like_fun_/$$.
 If the results do no agree,
@@ -386,7 +393,7 @@ an appropriate error message.
 $end
 -----------------------------------------------------------------------------
 */
-void cppad_mixed::init_ran_hes_check(
+void cppad_mixed::check_user_ran_hes(
 	const d_vector&        fixed_vec       ,
 	const d_vector&        random_vec      )
 {
@@ -410,8 +417,7 @@ void cppad_mixed::init_ran_hes_check(
 	a1_vector a1_val_out = ran_likelihood_hes(
 		a1_fixed, a1_random, row, col
 	);
-	if( a1_val_out.size() == 0 )
-		return;
+	assert( a1_val_out.size() != 0 );
 	//
 	// same order as chose by cppad/mixed/pack.hpp
 	d_vector both( n_fixed_ + n_random_ );
