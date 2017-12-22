@@ -876,10 +876,10 @@ $srccode%cpp% */
 	friend bool ::ran_like_jac_xam(void);
 /* %$$
 
-$subhead ran_like_jac_check$$
-See $cref ran_like_jac_check$$
+$subhead check_user_ran_jac$$
+See $cref check_user_ran_jac$$
 $srccode%cpp% */
-	void ran_like_jac_check(
+	void check_user_ran_jac(
 		const d_vector&       fixed_vec     ,
 		const d_vector&       random_vec
 	);

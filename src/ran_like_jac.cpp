@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -127,7 +127,7 @@ CppAD::vector<cppad_mixed::a1_double> cppad_mixed::ran_like_jac(
 }
 
 /*
-$begin ran_like_jac_check$$
+$begin check_user_ran_jac$$
 $spell
 	Jacobian
 	jac
@@ -141,7 +141,7 @@ $$
 $section Check User Defined ran_likelihood_jac$$
 
 $head Syntax$$
-$icode%mixed_object%.ran_like_jac_check(%fixed_vec%, %random_vec%)%$$
+$icode%mixed_object%.check_user_ran_jac(%fixed_vec%, %random_vec%)%$$
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
@@ -189,7 +189,7 @@ an appropriate error message.
 $end
 -----------------------------------------------------------------------------
 */
-void cppad_mixed::ran_like_jac_check(
+void cppad_mixed::check_user_ran_jac(
 	const d_vector&        fixed_vec       ,
 	const d_vector&        random_vec      )
 {
@@ -215,7 +215,7 @@ void cppad_mixed::ran_like_jac_check(
 	w[0] = 1.0;
 	jac_both = ran_like_fun_.Reverse(1, w);
 	if( CppAD::hasnan( jac_both ) ) CppAD::mixed::exception(
-		"ran_like_jac_check", "result has a nan"
+		"check_user_ran_jac", "result has a nan"
 	);
 	//
 	double eps = 100. * std::numeric_limits<double>::epsilon();

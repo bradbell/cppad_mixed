@@ -21,7 +21,7 @@ no_change_files='
 rename_cmd='s|ran_objcon|laplace_obj|'
 #
 cat << EOF > junk.sed
-s|ran_objcon|laplace_obj|g
+s|ran_like_jac_check|check_user_ran_jac|g
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]
