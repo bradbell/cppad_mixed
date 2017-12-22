@@ -194,7 +194,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 
 			// laplace_obj_fun_
 			assert( ! init_laplace_obj_done_ );
-			init_ran_objcon(fixed_vec, random_vec);
+			init_laplace_obj(fixed_vec, random_vec);
 			assert( init_laplace_obj_done_ );
 
 			// laplace_obj_hes_

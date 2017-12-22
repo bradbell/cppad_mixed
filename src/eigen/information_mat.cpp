@@ -2,7 +2,7 @@
 /*
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -141,7 +141,7 @@ CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 			//
 			// laplace_obj_fun_
 			assert( ! init_laplace_obj_done_ );
-			init_ran_objcon(fixed_opt, random_opt);
+			init_laplace_obj(fixed_opt, random_opt);
 			assert( init_laplace_obj_done_ );
 			//
 			// laplace_obj_hes_

@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin init_ran_objcon$$
+$begin init_laplace_obj$$
 $spell
 	rcv
 	nr
@@ -27,7 +27,7 @@ $$
 $section Second Order Representation of Laplace Objective and Constraints$$
 
 $head Syntax$$
-$icode%mixed_object%.init_ran_objcon(%fixed_vec%, %random_vec%)%$$
+$icode%mixed_object%.init_laplace_obj(%fixed_vec%, %random_vec%)%$$
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
@@ -97,7 +97,7 @@ $end
 # include <cppad/mixed/configure.hpp>
 
 // ----------------------------------------------------------------------------
-void cppad_mixed::init_ran_objcon(
+void cppad_mixed::init_laplace_obj(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec )
 {	assert( ! init_laplace_obj_done_ );
@@ -185,7 +185,7 @@ void cppad_mixed::init_ran_objcon(
 	pack(beta, U, beta_U);
 	f     = ran_like_a1fun_.Forward(0, beta_U);
 	if( CppAD::hasnan(f) ) throw CppAD::mixed::exception(
-		"init_ran_objcon", "result has a nan"
+		"init_laplace_obj", "result has a nan"
 	);
 	//
 	// now the random part of the Laplace objective

@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -499,7 +499,7 @@ If $icode%n_random_% > 0%$$, quasi_fixed_ is false, and
 $code init_laplace_obj_done_$$,
 this is a recording of the second order approximation for the
 random part of the Laplace approximation, $latex H( \beta , \theta , u)$$;
-see $cref/laplace_obj_fun_/init_ran_objcon/laplace_obj_fun_/$$.
+see $cref/laplace_obj_fun_/init_laplace_obj/laplace_obj_fun_/$$.
 $srccode%cpp% */
 	CppAD::ADFun<double>        laplace_obj_fun_;   // for computing H_beta_beta
 /* %$$
@@ -680,10 +680,10 @@ $srccode%cpp% */
 	);
 /* %$$
 
-$subhead init_ran_objcon$$
-See $cref init_ran_objcon$$.
+$subhead init_laplace_obj$$
+See $cref init_laplace_obj$$.
 $srccode%cpp% */
-	void init_ran_objcon(
+	void init_laplace_obj(
 		const d_vector& fixed_vec ,
 		const d_vector& random_vec
 	);

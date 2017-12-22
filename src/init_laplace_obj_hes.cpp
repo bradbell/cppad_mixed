@@ -37,7 +37,7 @@ This $code cppad_mixed$$ member function is $cref private$$.
 
 $head Assumptions$$
 The member variable
-$cref/init_laplace_obj_done_/init_ran_objcon/init_laplace_obj_done_/$$
+$cref/init_laplace_obj_done_/init_laplace_obj/init_laplace_obj_done_/$$
 is true.
 
 $head init_laplace_obj_hes_done_$$
