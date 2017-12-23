@@ -1007,7 +1007,7 @@ int main(int argc, const char *argv[])
 		"Integer print_level               0\n"
 		"String  sb                        yes\n"
 		"String  derivative_test           none\n"
-		"Numeric tol                       1e-8\n"
+		"Numeric tol                       1e-9\n"
 	;
 	if( ipopt_solve ) random_ipopt_options +=
 		"String evaluation_method         ipopt_solve\n";
@@ -1015,7 +1015,7 @@ int main(int argc, const char *argv[])
 	// ipopt options for optimizing the fixd effects
 	string fixed_ipopt_options =
 		"String  sb                        yes\n"
-		"Numeric tol                       1e-8\n"
+		"Numeric tol                       1e-9\n"
 		"Integer max_iter                  40\n"
 	;
 	if( trace_optimize_fixed )
@@ -1133,7 +1133,7 @@ int main(int argc, const char *argv[])
 	label_print("mean_population_std", sample_std[0]);
 	label_print("mean_logit_probability_std", sample_std[1]);
 	label_print("std_logit_probability_std", sample_std[2]);
-	// rations, error conditon is ratio >= 5.0
+	// ratios, error conditon is ratio >= 5.0
 	label_print("mean_population_ratio", estimate_ratio[0]);
 	label_print("mean_logit_probability_ratio", estimate_ratio[1]);
 	label_print("std_logit_probability_ratio", estimate_ratio[2]);
