@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -58,6 +58,7 @@ extern bool optimize_random_xam(void);
 extern bool ran_con_eval_xam(void);
 extern bool ran_con_jac_xam(void);
 extern bool ran_constraint_xam(void);
+extern bool ran_jac_fun_xam(void);
 extern bool ran_hes_fun_xam(void);
 extern bool ran_like_jac_xam(void);
 extern bool ran_likelihood_xam(void);
@@ -147,6 +148,7 @@ int main(void)
 	RUN(ran_con_eval_xam);
 	RUN(ran_con_jac_xam);
 	RUN(ran_constraint_xam);
+	RUN(ran_jac_fun_xam);
 	RUN(ran_hes_fun_xam);
 	RUN(ran_like_jac_xam);
 	RUN(ran_likelihood_xam);

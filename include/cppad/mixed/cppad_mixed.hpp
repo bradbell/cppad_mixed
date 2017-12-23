@@ -444,6 +444,8 @@ with respect to the random effects; i.e.
 $latex f_u ( \theta , u )$$.
 $srccode%cpp% */
 	CppAD::ADFun<double>  ran_jac_fun_;
+	//
+	friend bool ::ran_jac_fun_xam(void);
 /* %$$
 
 $head ran_hes_fun_$$

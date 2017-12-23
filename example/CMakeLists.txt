@@ -1,7 +1,7 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-16 University of Washington
+#           Copyright (C) 2014-17 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -30,6 +30,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL example.cpp
 	private/newton_step.cpp
 	private/ran_con_eval.cpp
 	private/ran_con_jac.cpp
+	private/ran_jac_fun.cpp
 	private/ran_hes_fun.cpp
 	private/ran_like_jac.cpp
 	private/laplace_obj_hes.cpp
