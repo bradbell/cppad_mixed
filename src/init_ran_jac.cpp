@@ -120,7 +120,10 @@ void cppad_mixed::init_ran_jac(
 		a1_vector a1_w(1);
 		a1_w[0]  = 1.0;
 		ran_like_a1fun_.Forward(0, a1_both);
-		a1_jac = ran_like_a1fun_.Reverse(1, a1_w);
+		a1_vector a1_jac_both = ran_like_a1fun_.Reverse(1, a1_w);
+		a1_jac.resize(n_random_);
+		for(size_t j = 0; j < n_random_; ++j)
+			a1_jac[j] = a1_jac_both[n_fixed_ + j];
 	}
 	ran_jac_fun_.Dependent(a1_both, a1_jac);
 # if CPPAD_MIXED_OPTIMIZE_AD_FUNCTION
