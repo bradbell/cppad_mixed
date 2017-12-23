@@ -331,6 +331,7 @@ $cref/mixed_object/derived_ctor/mixed_object/$$.
 $childtable%include/cppad/mixed/pack.hpp
 	%include/cppad/mixed/unpack.hpp
 
+	%src/init_ran_jac.cpp
 	%src/init_ran_hes.cpp
 	%src/init_laplace_obj.cpp
 	%src/init_ldlt_ran_hes.cpp
@@ -396,6 +397,7 @@ $srccode%cpp% */
 	// only called when n_random_ > 0
 	bool                init_ran_con_done_;
 	bool                init_ran_like_done_;
+	bool                init_ran_jac_done_;
 	bool                init_ran_hes_done_;
 	bool                init_ldlt_ran_hes_done_;
 	bool                init_hes_cross_done_;
@@ -430,6 +432,19 @@ $srccode%cpp% */
 /* %$$
 The following objects hold information for computing derivatives
 with these ADFun objects:
+
+$head ran_jac_fun_$$
+If $icode%n_random_% > 0%$$ and $code init_ran_jac_done_$$,
+$code ran_jac_fun_$$ contains the Jacobian of the
+$cref/random likelihood
+	/theory
+	/Random Likelihood, f(theta, u)
+/$$
+with respect to the random effects; i.e.
+$latex f_u ( \theta , u )$$.
+$srccode%cpp% */
+	CppAD::ADFun<double>  ran_jac_fun_;
+/* %$$
 
 $head ran_hes_fun_$$
 If $icode%n_random_% > 0%$$ and $code init_ran_hes_done_$$,
@@ -639,6 +654,15 @@ $subhead init_hes_cross$$
 See $cref init_hes_cross$$.
 $srccode%cpp% */
 	void init_hes_cross(
+		const d_vector& fixed_vec     ,
+		const d_vector& random_vec
+	);
+/* %$$
+
+$subhead init_ran_jac$$
+See $cref init_ran_jac$$.
+$srccode%cpp% */
+	void init_ran_jac(
 		const d_vector& fixed_vec     ,
 		const d_vector& random_vec
 	);

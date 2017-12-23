@@ -444,16 +444,20 @@ void cppad_mixed::check_user_ran_hes(
 	);
 	//
 	double eps = 100. * std::numeric_limits<double>::epsilon();
-	bool ok = true;
+	bool ok    = a1_val_out.size() == K;
+	if( ! ok )
+	{	const std::string error_message = "init_ran_hes: "
+		"ran_likelihood_hes return value does not have proper size.";
+		fatal_error(error_message);
+	}
 	for(size_t k = 0; k < K; k++)
 	{	ok &= CppAD::NearEqual(
 			Value(Var2Par(a1_val_out[k])), ran_hes_rcv_.val()[k], eps, eps
 		);
 	}
 	if( ! ok )
-	{	const std::string error_message =
-		"init_ran_hes: a ran_likelihood_hes Hessian value "
-		"does not agree with AD value.";
+	{	const std::string error_message = "init_ran_hes: "
+		"a ran_likelihood_hes Hessian value does not agree with AD value.";
 		fatal_error(error_message);
 	}
 	return;

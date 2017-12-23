@@ -168,6 +168,11 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 		init_ran_like(fixed_vec, random_vec);
 		assert( init_ran_like_done_ );
 
+		// ran_jac_
+		assert( ! init_ran_jac_done_ );
+		init_ran_jac(fixed_vec, random_vec);
+		assert( init_ran_jac_done_ );
+
 		// ran_hes_
 		assert( ! init_ran_hes_done_ );
 		init_ran_hes(fixed_vec, random_vec);
@@ -202,10 +207,6 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 			init_laplace_obj_hes(fixed_vec, random_vec);
 			assert( init_laplace_obj_hes_done_ );
 		}
-# ifndef NDEBUG
-		// check ran_likelihood_jac
-		check_user_ran_jac(fixed_vec, random_vec);
-# endif
 	}
 
 	// fix_like_fun_
