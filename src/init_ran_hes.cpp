@@ -32,6 +32,7 @@ $spell
 	chol
 	dismod
 	bool
+	jac
 $$
 
 $section Initialize Hessian of Random Likelihood w.r.t Random Effects$$
@@ -45,8 +46,9 @@ $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
 
 $head Assumptions$$
-The member variable
-$cref/init_ran_like_done_/init_ran_like/init_ran_like_done_/$$ is true.
+The member variables
+$cref/init_ran_like_done_/init_ran_like/init_ran_like_done_/$$ and
+$cref/init_ran_jac_done_/init_ran_jac/init_ran_jac_done_/$$ are true.
 
 $head init_ran_hes_done_$$
 The input value of this member variable must be false.
@@ -174,6 +176,7 @@ void cppad_mixed::init_ran_hes(
 	const d_vector& random_vec    )
 {	assert( ! init_ran_hes_done_ );
 	assert( init_ran_like_done_ );
+	assert( init_ran_jac_done_ );
 	//
 	size_t m      = 1;
 	size_t n_both = n_fixed_ + n_random_;
@@ -190,40 +193,37 @@ void cppad_mixed::init_ran_hes(
 	a1_vector a1_w(1);
 	a1_w[0]  = 1.0;
 	//
-	// Record gradient of random likelihood
-	CppAD::Independent(a1_both);
-	ran_like_a1fun_.Forward(0, a1_both);
-	a1_vector grad = ran_like_a1fun_.Reverse(1, a1_w);
-	CppAD::ADFun<double> g;
-	g.Dependent(a1_both, grad);
-# if CPPAD_MIXED_OPTIMIZE_AD_FUNCTION
-	g.optimize()
-# endif
-	//
-	// determine the sparsity pattern for the Hessian using the
-	// Jacobian of the gradient. We are only interested in Hessian w.r.t
-	// random effects, not both.
-	CppAD::vector<bool> select_domain(n_both), select_range(n_both);
+	// determine the sparsity pattern for f_uu (theta , u). Note that
+	// ran_jac_fun_ computes f_u ( theta , u ).
+	CppAD::vector<bool> select_domain(n_both), select_range(n_random_);
 	for(size_t i = 0; i < n_fixed_; i++)
-	{	select_domain[i] = false;
-		select_range[i]  = false;
-	}
+		select_domain[i] = false;
 	for(size_t i = 0; i < n_random_; i++)
 	{	select_domain[n_fixed_ + i] = true;
-		select_range[n_fixed_ + i]  = true;
+		select_range[i]             = true;
 	}
 	sparse_rc hes_pattern;
 	bool transpose = false;
-	g.subgraph_sparsity(select_domain, select_range, transpose, hes_pattern);
-	assert(hes_pattern.nr() == n_both);
+	ran_jac_fun_.subgraph_sparsity(
+		select_domain, select_range, transpose, hes_pattern
+	);
+	assert(hes_pattern.nr() == n_random_);
 	assert(hes_pattern.nc() == n_both);
 	// -----------------------------------------------------------------------
-	// count number of entires in entire partial w.r.t u of partial w.r.t u
-	// and number in lower triangle
-	size_t n_low = 0;
-	for(size_t k = 0; k < hes_pattern.nnz(); k++)
-	{	size_t r = hes_pattern.row()[k];
+	// hes_pattern_both
+	size_t nnz = hes_pattern.nnz();
+	sparse_rc hes_pattern_both(n_both, n_both, nnz);
+	for(size_t k = 0; k < nnz; ++k)
+	{	size_t r = hes_pattern.row()[k] + n_fixed_;
 		size_t c = hes_pattern.col()[k];
+		hes_pattern_both.set(k, r, c);
+	}
+	// -----------------------------------------------------------------------
+	// count number of entires in lower triangle of Hessian
+	size_t n_low = 0;
+	for(size_t k = 0; k < nnz; k++)
+	{	size_t r = hes_pattern_both.row()[k];
+		size_t c = hes_pattern_both.col()[k];
 
 		// select_domain and select_range should make this true
 		assert( r >= n_fixed_ && c >= n_fixed_ );
@@ -235,12 +235,12 @@ void cppad_mixed::init_ran_hes(
 	// subset of sparstiy pattern that we are calculating
 	// in column major order
 	sparse_rc hes_lower(n_both, n_both, n_low);
-	s_vector col_major = hes_pattern.col_major();
+	s_vector col_major = hes_pattern_both.col_major();
 	size_t k_low = 0;
-	for(size_t k = 0; k < hes_pattern.nnz(); k++)
+	for(size_t k = 0; k < nnz; k++)
 	{	size_t ell = col_major[k];
-		size_t r   = hes_pattern.row()[ell];
-		size_t c   = hes_pattern.col()[ell];
+		size_t r   = hes_pattern_both.row()[ell];
+		size_t c   = hes_pattern_both.col()[ell];
 		if( r >= c )
 			hes_lower.set(k_low++, r, c);
 	}
@@ -264,7 +264,7 @@ void cppad_mixed::init_ran_hes(
 		both,
 		w,
 		ran_hes_rcv_,
-		hes_pattern,
+		hes_pattern_both,
 		coloring,
 		ran_hes_work_
 	);
@@ -298,7 +298,7 @@ void cppad_mixed::init_ran_hes(
 			a1_both,
 			a1_w,
 			a1_ran_hes_rcv,
-			hes_pattern,
+			hes_pattern_both,
 			coloring,
 			ran_hes_work_
 		);
