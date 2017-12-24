@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -60,30 +60,38 @@ namespace {
 			y_(y)
 		{ }
 		// implementation of ran_likelihood
-		virtual a2_vector ran_likelihood(
-			const a2_vector&         theta  ,
-			const a2_vector&         u      )
-		{	a2_vector vec(1);
+		template <typename Vector>
+		Vector template_ran_likelihood(
+			const Vector&         theta  ,
+			const Vector&         u      )
+		{	typedef typename Vector::value_type scalar;
+
+			Vector vec(1);
 
 			// compute this factor once
-			a2_double sqrt_2pi = a2_double(
+			scalar sqrt_2pi = scalar(
 				 CppAD::sqrt( 8.0 * CppAD::atan(1.0)
 			));
 
 			// initialize summation
-			vec[0] = a2_double(0.0);
+			vec[0] = scalar(0.0);
 
 			// for each data and random effect
 			for(size_t i = 0; i < y_.size(); i++)
-			{	a2_double mu     = u[i];
-				a2_double sigma  = theta[i];
-				a2_double res    = (y_[i] - mu) / sigma;
+			{	scalar mu     = u[i];
+				scalar sigma  = theta[i];
+				scalar res    = (y_[i] - mu) / sigma;
 
 				// This is a Gaussian term, so entire density is smooth
-				vec[0]  += log(sqrt_2pi * sigma) + res * res / a2_double(2.0);
+				vec[0]  += log(sqrt_2pi * sigma) + res * res / scalar(2.0);
 			}
 			return vec;
 		}
+		// a2_vector version of ran_likelihood
+		virtual a2_vector ran_likelihood(
+			const a2_vector& fixed_vec, const a2_vector& random_vec
+		)
+		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 	};
 }
 
