@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -194,20 +194,23 @@ namespace {
 			assert( n_random == 1 );
 		}
 		// implementation of fix_likelihood as p(z|theta) * p(theta)
-		virtual a1_vector fix_likelihood(
-			const a1_vector&         fixed_vec  )
-		{	a1_double theta = fixed_vec[0];
+		template <typename Vector>
+		Vector template_fix_likelihood(
+			const Vector&         fixed_vec  )
+		{	typedef typename Vector::value_type scalar;
+
+			scalar theta = fixed_vec[0];
 
 			// initialize log-density
-			a1_vector vec(1);
-			vec[0] = a1_double(0.0);
+			Vector vec(1);
+			vec[0] = scalar(0.0);
 
 			// compute this factor once
 			// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
 
 			// Data term p(z|theta)
-			a1_double res  = (z_ - theta) / sigma_z_;
-			vec[0]    += res * res / a1_double(2.0);
+			scalar res  = (z_ - theta) / sigma_z_;
+			vec[0]    += res * res / scalar(2.0);
 			// the following term does not depend on fixed effects
 			// vec[0]    += log(sqrt_2pi * sigma_z_ );
 
@@ -215,35 +218,46 @@ namespace {
 
 			return vec;
 		}
+		// a1_vector version of fix_likelihood
+		virtual a1_vector fix_likelihood(const a1_vector& fixed_vec)
+		{	return template_fix_likelihood( fixed_vec ); }
 		// ------------------------------------------------------------------
 		// implementation of ran_likelihood as p(y|theta, u) * p(u|theta)
-		virtual a2_vector ran_likelihood(
-			const a2_vector&         fixed_vec  ,
-			const a2_vector&         random_vec )
-		{	a2_double theta = fixed_vec[0];
-			a2_double u     = random_vec[0];
+		template <typename Vector>
+		Vector template_ran_likelihood(
+			const Vector&         fixed_vec  ,
+			const Vector&         random_vec )
+		{	typedef typename Vector::value_type scalar;
+
+			scalar theta = fixed_vec[0];
+			scalar u     = random_vec[0];
 
 			// initialize log-density
-			a2_vector vec(1);
-			vec[0] = a2_double(0.0);
+			Vector vec(1);
+			vec[0] = scalar(0.0);
 
 			// compute this factors once
 			// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
 
 			// Data term p(y|theta,u)
-			a2_double res  = (y_ - exp(u) * theta) / sigma_y_;
-			vec[0]    += res * res / a2_double(2.0);
+			scalar res  = (y_ - exp(u) * theta) / sigma_y_;
+			vec[0]    += res * res / scalar(2.0);
 			// the following term does not depend on fixed or random effects
 			// vec[0]    += log(sqrt_2pi * sigma_y_ );
 
 			// prior term p(u|theta)
 			res        = u / sigma_u_;
-			vec[0]    += res * res / a2_double(2.0);
+			vec[0]    += res * res / scalar(2.0);
 			// the following term does not depend on fixed or random effects
 			// vec[0]    += log(sqrt_2pi * sigma_u_ );
 
 			return vec;
 		}
+		// a2_vector version of ran_likelihood
+		virtual a2_vector ran_likelihood(
+			const a2_vector& fixed_vec, const a2_vector& random_vec
+		)
+		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 		// ==================================================================
 		// Routines used to check that objective derivative is zero at solution
 		double g_theta(double theta)

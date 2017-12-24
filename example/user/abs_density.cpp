@@ -110,10 +110,8 @@ namespace {
 			return vec;
 		}
 		// a1_vector version of fix_likelihood
-		virtual a1_vector fix_likelihood(
-			const a1_vector&         fixed_vec  )
-		{	return template_fix_likelihood( fixed_vec );
-		}
+		virtual a1_vector fix_likelihood(const a1_vector& fixed_vec)
+		{	return template_fix_likelihood( fixed_vec ); }
 	};
 }
 
