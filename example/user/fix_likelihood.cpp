@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -58,26 +58,32 @@ namespace {
 			z_(z)
 		{ }
 		// implementation of fix_likelihood
-		virtual a1_vector fix_likelihood(
-			const a1_vector&         theta  )
-		{	a1_vector vec(1);
+		template <typename Vector>
+		Vector template_fix_likelihood(
+			const Vector&         theta  )
+		{	typedef typename Vector::value_type scalar;
+
+			Vector vec(1);
 
 			// compute this factor once
 			double sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
 
 			// initialize summation
-			vec[0] = a1_double(0.0);
+			vec[0] = scalar(0.0);
 
 			// for each data and random effect
 			for(size_t i = 0; i < z_.size(); i++)
-			{	a1_double mu     = theta[i];
-				a1_double res    = (z_[i] - mu) / 1.0;
+			{	scalar mu     = theta[i];
+				scalar res    = (z_[i] - mu) / 1.0;
 
 				// This is a Gaussian term, so entire density is smooth
-				vec[0]  += log(sqrt_2pi) + res * res / a1_double(2.0);
+				vec[0]  += log(sqrt_2pi) + res * res / scalar(2.0);
 			}
 			return vec;
 		}
+		// a1_vector version of fix_likelihood
+		virtual a1_vector fix_likelihood(const a1_vector& fixed_vec)
+		{	return template_fix_likelihood( fixed_vec ); }
 	};
 }
 
