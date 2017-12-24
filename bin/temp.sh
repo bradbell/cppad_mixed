@@ -27,6 +27,7 @@ echo_eval() {
 # -----------------------------------------------------------------------------
 cat << EOF > junk.sed
 s|Copyright (C) 2014-1\\([4-6]\\)|Copyright (C) 2014-17|
+s|^\\t\\t\\(a1_vector ran_likelihood_hes(\\)|\\t\\tvirtual \\1|
 # ----------------------------------------------------------------------------
 /^\\t\\tvirtual a1_vector fix_likelihood(/! b two
 : one
@@ -92,6 +93,31 @@ s|\\n\\t\\t}|&\\
 \\t\\t{	return template_fix_constraint( fixed_vec ); }|
 # ----------------------------------------------------------------------------
 : six
+/^\\t\\tvirtual a1_vector ran_likelihood_hes(/! b eight
+: seven
+N
+/\\n\\t\\t}/! b seven
+s|\\t\\tvirtual a1_vector ran_likelihood_hes(|\\t\\ttemplate <typename Vector>\\
+\\t\\tVector template_ran_likelihood_hes(|
+#
+s|\\n\\t\\t{|&\\ttypedef typename Vector::value_type scalar;\\n\\n\\t\\t|
+s|const a1_vector\\&|const Vector\\&   |g
+s|a1_vector|Vector|g
+s|a1_double|scalar|g
+#
+s|\\n\\t\\t}|&\\
+\\t\\t// a1_vector version of ran_likelihood_hes\\
+\\t\\tvirtual a1_vector ran_likelihood_hes(\\
+\\t\\t	const a1_vector\\& theta ,\\
+\\t\\t	const a1_vector\\& u     ,\\
+\\t\\t	const s_vector\\&  row   ,\\
+\\t\\t	const s_vector\\&  col   )\\
+\\t\\t{	return template_ran_likelihood_hes( theta, u, row, col ); }\\
+\\t\\t// Delete this a2_vector version before commiting\\
+\\t\\tvirtual a2_vector ran_likelihood_hes(const a2_vector\\& theta, const a2_vector\\& u, const s_vector\\&  row, const s_vector\\&  col)\\
+\\t\\t{	return template_ran_likelihood_hes( theta, u, row, col ); }|
+# ----------------------------------------------------------------------------
+: eight
 EOF
 # -----------------------------------------------------------------------------
 git checkout $file

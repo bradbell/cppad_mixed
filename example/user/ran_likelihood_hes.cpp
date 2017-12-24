@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -62,64 +62,82 @@ namespace {
 		{ }
 		// ------------------------------------------------------------------
 		// implementation of ran_likelihood
-		virtual a2_vector ran_likelihood(
-			const a2_vector&         theta  ,
-			const a2_vector&         u      )
-		{	a2_vector vec(1);
+		template <typename Vector>
+		Vector template_ran_likelihood(
+			const Vector&         theta  ,
+			const Vector&         u      )
+		{	typedef typename Vector::value_type scalar;
+
+			Vector vec(1);
 
 			// compute this factor once
 			// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
 
 			// initialize summation
-			vec[0] = a2_double(0.0);
+			vec[0] = scalar(0.0);
 
 			// for each data and random effect
 			for(size_t i = 0; i < y_.size(); i++)
-			{	a2_double mu     = exp( u[i] );
-				a2_double sigma  = theta[i];
-				a2_double res    = (y_[i] - mu) / sigma;
+			{	scalar mu     = exp( u[i] );
+				scalar sigma  = theta[i];
+				scalar res    = (y_[i] - mu) / sigma;
 
 				// This is a Gaussian term, so entire density is smooth
-				vec[0]  += log(sigma) + res * res / a2_double(2.0);
+				vec[0]  += log(sigma) + res * res / scalar(2.0);
 				// following term does not depend on fixed or random effects
 				// vec[0]  += log(sqrt_2pi);
 			}
 			return vec;
 		}
+		// a2_vector version of ran_likelihood
+		virtual a2_vector ran_likelihood(
+			const a2_vector& fixed_vec, const a2_vector& random_vec
+		)
+		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 		// ------------------------------------------------------------------
 		// ran_likelihood_hes
-		a1_vector ran_likelihood_hes(
-			const a1_vector&         theta  ,
-			const a1_vector&         u      ,
+		template <typename Vector>
+		Vector template_ran_likelihood_hes(
+			const Vector&            theta  ,
+			const Vector&            u      ,
 			const s_vector&          row    ,
 			const s_vector&          col    )
-		{	size_t K = row.size();
+		{	typedef typename Vector::value_type scalar;
+
+			size_t K = row.size();
 			assert( col.size() == K );
 
 			// return value
-			a1_vector val(K);
+			Vector val(K);
 
 			// for each component of the return value
 			for(size_t k = 0; k < K; k++)
 			{	// initialize it as zero
-				val[k] = a1_double(0.0);
+				val[k] = scalar(0.0);
 
 				// for this function, only the diagonal elements are non-zero
 				if( row[k] == col[k] )
 				{	size_t i = row[k];
 					//
-					a1_double mu        = exp( u[i] );
-					a1_double sigma     = theta[i];
-					a1_double res       = (y_[i] - mu) / sigma;
-					a1_double res_ui    = - mu / sigma;
-					a1_double res_ui_ui = - mu / sigma;
-					a1_double sq_ui     = res * res_ui;
-					a1_double sq_ui_ui  = res_ui * res_ui + res * res_ui_ui;
+					scalar mu        = exp( u[i] );
+					scalar sigma     = theta[i];
+					scalar res       = (y_[i] - mu) / sigma;
+					scalar res_ui    = - mu / sigma;
+					scalar res_ui_ui = - mu / sigma;
+					scalar sq_ui     = res * res_ui;
+					scalar sq_ui_ui  = res_ui * res_ui + res * res_ui_ui;
 					val[k]              = sq_ui_ui;
 				}
 			}
 			return val;
 		}
+		// a1_vector version of ran_likelihood_hes
+		virtual a1_vector ran_likelihood_hes(
+			const a1_vector& theta ,
+			const a1_vector& u     ,
+			const s_vector&  row   ,
+			const s_vector&  col   )
+		{	return template_ran_likelihood_hes( theta, u, row, col ); }
 	};
 }
 
