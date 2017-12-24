@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -84,26 +84,35 @@ namespace {
 			sigma_(sigma)      ,
 			z_(z)
 		{	assert(z.size() == n_fixed); }
-		// implementation of fix_likelihood as p(z|theta) * p(theta)
-		virtual a1_vector fix_likelihood(
-			const a1_vector&         fixed_vec  )
-		{
+
+		// template version of fix_likelihood; i.e., p(z|theta) * p(theta)
+		template <typename Vector>
+		Vector template_fix_likelihood(
+			const Vector&         fixed_vec  )
+		{	// scalar
+			typedef typename Vector::value_type scalar;
+
 			// initialize log-density
-			a1_vector vec(1 + n_fixed_);
-			vec[0] = a1_double(0.0);
+			Vector vec(1 + n_fixed_);
+			vec[0] = scalar(0.0);
 
 			// compute this factors once
-			a1_double sqrt_2 = a1_double( CppAD::sqrt( 2.0 ) );
+			scalar sqrt_2 = scalar( CppAD::sqrt( 2.0 ) );
 
 			for(size_t j = 0; j < n_fixed_; j++)
 			{	// Data term
-				a1_double res   = z_[j] - CppAD::exp( fixed_vec[j] );
-				res        /= a1_double( sigma_ );
+				scalar res   = z_[j] - CppAD::exp( fixed_vec[j] );
+				res        /= scalar( sigma_ );
 				// the following term does not depend on fixed effects
 				// vec[0]     += log(sigma_ * sqrt_2);
 				vec[1 + j] += sqrt_2 * res;
 			}
 			return vec;
+		}
+		// a1_vector version of fix_likelihood
+		virtual a1_vector fix_likelihood(
+			const a1_vector&         fixed_vec  )
+		{	return template_fix_likelihood( fixed_vec );
 		}
 	};
 }
