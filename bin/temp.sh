@@ -43,7 +43,7 @@ s|\\n\\t\\t}|&\\
 \\t\\t// a1_vector version of fix_likelihood\\
 \\t\\tvirtual a1_vector fix_likelihood(const a1_vector\\& fixed_vec)\\
 \\t\\t{	return template_fix_likelihood( fixed_vec ); }\\
-\\t\\t// a2_vector version of fix_likelihood\\
+\\t\\t// Delete this a2_vector version before commiting\\
 \\t\\tvirtual a2_vector fix_likelihood(const a2_vector\\& fixed_vec)\\
 \\t\\t{	return template_fix_likelihood( fixed_vec ); }|
 # ----------------------------------------------------------------------------
@@ -65,7 +65,7 @@ s|\\n\\t\\t}|&\\
 \\t\\t	const a2_vector\\& fixed_vec, const a2_vector\\& random_vec\\
 \\t\\t)\\
 \\t\\t{	return template_ran_likelihood( fixed_vec, random_vec ); }\\
-\\t\\t// a3_vector version of ran_likelihood\\
+\\t\\t// Delete this a3_vector before commiting\\
 \\t\\tvirtual a3_vector ran_likelihood(\\
 \\t\\t	const a3_vector\\& fixed_vec, const a3_vector\\& random_vec\\
 \\t\\t)\\
@@ -87,7 +87,7 @@ s|\\n\\t\\t}|&\\
 \\t\\t// a1_vector version of fix_constraint\\
 \\t\\tvirtual a1_vector fix_constraint(const a1_vector\\& fixed_vec)\\
 \\t\\t{	return template_fix_constraint( fixed_vec ); }\\
-\\t\\t// a2_vector version of fix_constraint\\
+\\t\\t// Delete this a2_vector version before commiting\\
 \\t\\tvirtual a2_vector fix_constraint(const a2_vector\\& fixed_vec)\\
 \\t\\t{	return template_fix_constraint( fixed_vec ); }|
 # ----------------------------------------------------------------------------
