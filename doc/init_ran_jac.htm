@@ -12,10 +12,10 @@ MathJax.Hub.Config({
 >
 </script>
 <head>
-<title>Jacobian of Random Likelihood w.r.t. Random Effects</title>
+<title>Initialize Jacobian of Random Likelihood w.r.t. Random Effects</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
-<meta name="description" id="description" content="Jacobian of Random Likelihood w.r.t. Random Effects">
-<meta name="keywords" id="keywords" content=" jacobian random likelihood w.r.t. effects syntax private purpose mixed_object fixed_vec random_vec jac example ">
+<meta name="description" id="description" content="Initialize Jacobian of Random Likelihood w.r.t. Random Effects">
+<meta name="keywords" id="keywords" content=" initialize jacobian random likelihood w.r.t. effects syntax private assumptions init_ran_jac_done_ mixed_object fixed_vec random_vec ran_jac_fun_ ran_likelihood_jac ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -23,7 +23,7 @@ A:link { color : blue }
 A:visited { color : purple }
 A:active { color : purple }
 </style>
-<script type='text/javascript' language='JavaScript' src='_ran_like_jac_htm.js'>
+<script type='text/javascript' language='JavaScript' src='_init_ran_jac_htm.js'>
 </script>
 </head>
 <body>
@@ -31,8 +31,8 @@ A:active { color : purple }
 <td>
 <a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
 </td>
-<td><a href="logdet_jac.cpp.htm" target="_top">Prev</a>
-</td><td><a href="ran_like_jac.cpp.htm" target="_top">Next</a>
+<td><a href="unpack.htm" target="_top">Prev</a>
+</td><td><a href="check_user_ran_jac.htm" target="_top">Next</a>
 </td><td>
 <select onchange='choose_across0(this)'>
 <option>Index-&gt;</option>
@@ -49,7 +49,7 @@ A:active { color : purple }
 <option>cppad_mixed</option>
 <option>base_class</option>
 <option>private</option>
-<option>ran_like_jac</option>
+<option>init_ran_jac</option>
 </select>
 </td>
 <td>
@@ -104,35 +104,34 @@ A:active { color : purple }
 <option>update_factor</option>
 </select>
 </td>
-<td>
-<select onchange='choose_down0(this)'>
-<option>ran_like_jac-&gt;</option>
-<option>ran_like_jac.cpp</option>
-</select>
-</td>
+<td>init_ran_jac</td>
 <td>
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
 <option>Syntax</option>
 <option>Private</option>
-<option>Purpose</option>
+<option>Assumptions</option>
+<option>init_ran_jac_done_</option>
 <option>mixed_object</option>
 <option>fixed_vec</option>
 <option>random_vec</option>
-<option>jac</option>
-<option>Example</option>
+<option>ran_jac_fun_</option>
+<option>ran_likelihood_jac</option>
 </select>
 </td>
 </tr></table><br>
 @(@\newcommand{\R}[1]{ {\rm #1} }
 \newcommand{\B}[1]{ {\bf #1} }
-\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Jacobian of Random Likelihood w.r.t. Random Effects</big></big></b></center>
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Initialize Jacobian of Random Likelihood w.r.t. Random Effects</big></big></b></center>
 <br>
 <b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
 
 <br>
 
-<code><i><font color="black"><span style='white-space: nowrap'>jac</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.ran_like_jac(&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
+<code><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.init_ran_jac(</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
 
 
 <br>
@@ -144,19 +143,18 @@ This <code><font color="blue">cppad_mixed</font></code> member function is <a hr
 
 <br>
 <br>
-<b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
+<b><big><a name="Assumptions" id="Assumptions">Assumptions</a></big></b>
 <br>
-This routine computes the Jacobian of the random likelihood
-<a href="theory.htm#Random Likelihood, f(theta, u)" target="_top"><span style='white-space: nowrap'>f(theta,&nbsp;u)</span></a>
+The member variable
+<a href="init_ran_like.htm#init_ran_like_done_" target="_top"><span style='white-space: nowrap'>init_ran_like_done_</span></a>
+ is true.
 
-with respect to the random effects vector <small>@(@
-u
-@)@</small>; i.e.
-<small>@[@
-
-	f_u ( \theta, u )
-
-@]@</small>
+<br>
+<br>
+<b><big><a name="init_ran_jac_done_" id="init_ran_jac_done_">init_ran_jac_done_</a></big></b>
+<br>
+The input value of this member variable must be false.
+Upon return it is true.
 
 <br>
 <br>
@@ -201,29 +199,37 @@ u
 
 <br>
 <br>
-<b><big><a name="jac" id="jac">jac</a></big></b>
+<b><big><a name="ran_jac_fun_" id="ran_jac_fun_">ran_jac_fun_</a></big></b>
 <br>
-The return value has prototype
+The input value of the member variables
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;a1_double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::ADFun&lt;double&gt;&nbsp;ran_jac_fun_<br>
 </span></font></code>
-It contains the Jacobian <small>@(@
-f_u ( \theta , u )
-@)@</small>.
+does not matter.
+upon return <code><font color="blue">ran_jac_fun_</font></code> zero order forward mode computes
+the Jacobian of the random likelihood  with respect to the random effects;
+i.e.,
+<small>@[@
+
+	f_u ( \theta , u )
+
+@]@</small>.
+
+<br>
+<br>
+<b><big><a name="ran_likelihood_jac" id="ran_likelihood_jac">ran_likelihood_jac</a></big></b>
+<br>
+If the return value for <a href="ran_likelihood_jac.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_jac</span></a>
+ is non-empty,
+and <code><font color="blue">NDEBUG</font></code> is not defined,
+<a href="ran_likelihood_jac.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_jac</span></a>
+ is checked for correctness.
 
 
-<br>
-<br>
-<b><big><a name="Example" id="Example">Example</a></big></b>
-<br>
-The file <a href="ran_like_jac.cpp.htm" target="_top"><span style='white-space: nowrap'>ran_like_jac.cpp</span></a>
- contains an example
-and test of this procedure.
-It returns true, if the test passes, and false otherwise.
 ----------------------------------------------------------------------------
 
-<hr>Input File: src/ran_like_jac.cpp
+<hr>Input File: src/init_ran_jac.cpp
 
 </body>
 </html>

@@ -1522,7 +1522,7 @@ std<font color="#990000">::</font><font color="#008080">string</font> <b><font c
           <font color="#FF0000">"Integer print_level               0</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
           <font color="#FF0000">"String  sb                        yes</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
           <font color="#FF0000">"String  derivative_test           none</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
-          <font color="#FF0000">"Numeric tol                       1e-8</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
+          <font color="#FF0000">"Numeric tol                       1e-9</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
      <font color="#990000">;</font>
      <b><font color="#0000FF">if</font></b><font color="#990000">(</font> ipopt_solve <font color="#990000">)</font> random_ipopt_options <font color="#990000">+=</font>
           <font color="#FF0000">"String evaluation_method         ipopt_solve</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font><font color="#990000">;</font>
@@ -1530,7 +1530,7 @@ std<font color="#990000">::</font><font color="#008080">string</font> <b><font c
      <i><font color="#9A1900">// ipopt options for optimizing the fixd effects</font></i>
      <font color="#008080">string</font> fixed_ipopt_options <font color="#990000">=</font>
           <font color="#FF0000">"String  sb                        yes</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
-          <font color="#FF0000">"Numeric tol                       1e-8</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
+          <font color="#FF0000">"Numeric tol                       1e-9</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
           <font color="#FF0000">"Integer max_iter                  40</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font>
      <font color="#990000">;</font>
      <b><font color="#0000FF">if</font></b><font color="#990000">(</font> trace_optimize_fixed <font color="#990000">)</font>
@@ -1648,7 +1648,7 @@ std<font color="#990000">::</font><font color="#008080">string</font> <b><font c
      <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"mean_population_std"</font><font color="#990000">,</font> sample_std<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]);</font>
      <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"mean_logit_probability_std"</font><font color="#990000">,</font> sample_std<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]);</font>
      <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"std_logit_probability_std"</font><font color="#990000">,</font> sample_std<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]);</font>
-     <i><font color="#9A1900">// rations, error conditon is ratio &gt;= 5.0</font></i>
+     <i><font color="#9A1900">// ratios, error conditon is ratio &gt;= 5.0</font></i>
      <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"mean_population_ratio"</font><font color="#990000">,</font> estimate_ratio<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]);</font>
      <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"mean_logit_probability_ratio"</font><font color="#990000">,</font> estimate_ratio<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]);</font>
      <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"std_logit_probability_ratio"</font><font color="#990000">,</font> estimate_ratio<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]);</font>

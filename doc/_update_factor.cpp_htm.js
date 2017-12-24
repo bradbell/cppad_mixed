@@ -29,6 +29,8 @@ var list_down3 = [
 var list_down2 = [
 'pack.htm',
 'unpack.htm',
+'init_ran_jac.htm',
+'check_user_ran_jac.htm',
 'init_ran_hes.htm',
 'check_user_ran_hes.htm',
 'init_laplace_obj.htm',
@@ -46,7 +48,6 @@ var list_down2 = [
 'fix_like_jac.htm',
 'logdet_jac.htm',
 'ran_like_jac.htm',
-'check_user_ran_jac.htm',
 'ran_con_eval.htm',
 'ran_con_jac.htm',
 'ran_obj_eval.htm',

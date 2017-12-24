@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Initialize Fixed Likelihood</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Initialize Fixed Likelihood">
-<meta name="keywords" id="keywords" content=" initialize fixed likelihood syntax private mixed_object fixed_vec init_fix_like_done_ fix_like_fun_ fix_like_jac_ fix_like_hes_ ">
+<meta name="keywords" id="keywords" content=" initialize fixed likelihood syntax private init_fix_like_done_ mixed_object fixed_vec fix_like_fun_ fix_like_jac_ fix_like_hes_ ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -77,6 +77,8 @@ A:active { color : purple }
 <option>private-&gt;</option>
 <option>pack</option>
 <option>unpack</option>
+<option>init_ran_jac</option>
+<option>check_user_ran_jac</option>
 <option>init_ran_hes</option>
 <option>check_user_ran_hes</option>
 <option>init_laplace_obj</option>
@@ -94,7 +96,6 @@ A:active { color : purple }
 <option>fix_like_jac</option>
 <option>logdet_jac</option>
 <option>ran_like_jac</option>
-<option>check_user_ran_jac</option>
 <option>ran_con_eval</option>
 <option>ran_con_jac</option>
 <option>ran_obj_eval</option>
@@ -109,9 +110,9 @@ A:active { color : purple }
 <option>Headings-&gt;</option>
 <option>Syntax</option>
 <option>Private</option>
+<option>init_fix_like_done_</option>
 <option>mixed_object</option>
 <option>fixed_vec</option>
-<option>init_fix_like_done_</option>
 <option>fix_like_fun_</option>
 <option>fix_like_jac_</option>
 <option>---..fix_like_fun_</option>
@@ -143,6 +144,13 @@ This <code><font color="blue">cppad_mixed</font></code> member function is <a hr
 
 <br>
 <br>
+<b><big><a name="init_fix_like_done_" id="init_fix_like_done_">init_fix_like_done_</a></big></b>
+<br>
+The input value of this member variable must be false.
+Upon return it is true.
+
+<br>
+<br>
 <b><big><a name="mixed_object" id="mixed_object">mixed_object</a></big></b>
 <br>
 We use <a href="derived_ctor.htm#mixed_object" target="_top"><span style='white-space: nowrap'>mixed_object</span></a>
@@ -165,13 +173,6 @@ It specifies the value of the
 vector <small>@(@
 \theta
 @)@</small> at which the initialization is done.
-
-<br>
-<br>
-<b><big><a name="init_fix_like_done_" id="init_fix_like_done_">init_fix_like_done_</a></big></b>
-<br>
-When this function is called, this member variable must be false.
-Upon return it is true.
 
 <br>
 <br>

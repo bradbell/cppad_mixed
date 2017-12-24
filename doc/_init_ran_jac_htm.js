@@ -9,7 +9,7 @@ var list_up0 = [
 'cppad_mixed.htm',
 'base_class.htm',
 'private.htm',
-'logdet_jac.htm'
+'init_ran_jac.htm'
 ];
 var list_down3 = [
 'install_unix.htm',
@@ -54,20 +54,16 @@ var list_down1 = [
 'laplace_obj_hes.htm',
 'update_factor.htm'
 ];
-var list_down0 = [
-'logdet_jac.cpp.htm'
-];
 var list_current0 = [
-'logdet_jac.htm#Syntax',
-'logdet_jac.htm#Private',
-'logdet_jac.htm#Purpose',
-'logdet_jac.htm#mixed_object',
-'logdet_jac.htm#ldlt_ran_hes_',
-'logdet_jac.htm#fixed_vec',
-'logdet_jac.htm#random_vec',
-'logdet_jac.htm#logdet_fix',
-'logdet_jac.htm#logdet_ran',
-'logdet_jac.htm#Example'
+'init_ran_jac.htm#Syntax',
+'init_ran_jac.htm#Private',
+'init_ran_jac.htm#Assumptions',
+'init_ran_jac.htm#init_ran_jac_done_',
+'init_ran_jac.htm#mixed_object',
+'init_ran_jac.htm#fixed_vec',
+'init_ran_jac.htm#random_vec',
+'init_ran_jac.htm#ran_jac_fun_',
+'init_ran_jac.htm#ran_likelihood_jac'
 ];
 function choose_across0(item)
 {	var index          = item.selectedIndex;

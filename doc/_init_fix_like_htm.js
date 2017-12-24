@@ -28,6 +28,8 @@ var list_down2 = [
 var list_down1 = [
 'pack.htm',
 'unpack.htm',
+'init_ran_jac.htm',
+'check_user_ran_jac.htm',
 'init_ran_hes.htm',
 'check_user_ran_hes.htm',
 'init_laplace_obj.htm',
@@ -45,7 +47,6 @@ var list_down1 = [
 'fix_like_jac.htm',
 'logdet_jac.htm',
 'ran_like_jac.htm',
-'check_user_ran_jac.htm',
 'ran_con_eval.htm',
 'ran_con_jac.htm',
 'ran_obj_eval.htm',
@@ -56,9 +57,9 @@ var list_down1 = [
 var list_current0 = [
 'init_fix_like.htm#Syntax',
 'init_fix_like.htm#Private',
+'init_fix_like.htm#init_fix_like_done_',
 'init_fix_like.htm#mixed_object',
 'init_fix_like.htm#fixed_vec',
-'init_fix_like.htm#init_fix_like_done_',
 'init_fix_like.htm#fix_like_fun_',
 'init_fix_like.htm#fix_like_jac_',
 'init_fix_like.htm#fix_like_jac_.fix_like_fun_',
