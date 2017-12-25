@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -260,24 +260,27 @@ namespace {
 		// -------------------------------------------------------------------
 		// implementation of ran_likelihood
 		// Note that theta[2] is not used
-		virtual a2_vector ran_likelihood(
-			const a2_vector& theta  ,
-			const a2_vector& u      )
-		{	assert( theta.size() == n_fixed_ );
+		template <typename Vector>
+		Vector template_ran_likelihood(
+			const Vector& theta  ,
+			const Vector& u      )
+		{	typedef typename Vector::value_type scalar;
+
+			assert( theta.size() == n_fixed_ );
 			assert( u.size() == y_.size() );
-			a2_vector vec(1);
+			Vector vec(1);
 			//
 			// initialize summation
-			vec[0] = a2_double(0.0);
+			vec[0] = scalar(0.0);
 			//
 			// sqrt_2pi = CppAD::sqrt(8.0 * CppAD::atan(1.0) );
 			//
 			for(size_t i = 0; i < n_random_; i++)
-			{	a2_double sigma  = a2_double(sigma_y);
-				a2_double res    = (y_[i] - u[i]) / sigma;
+			{	scalar sigma  = scalar(sigma_y);
+				scalar res    = (y_[i] - u[i]) / sigma;
 				//
 				// p(y_i | u, theta)
-				vec[0] += res * res / a2_double(2.0);
+				vec[0] += res * res / scalar(2.0);
 				// following term does not depend on fixed or random effects
 				// vec[0] += log(sqrt_2pi);
 				//
@@ -287,12 +290,17 @@ namespace {
 					res = u[i] / sigma;
 				else
 					res = ( u[i] - u[i-1] ) / sigma;
-				vec[0] += log(sigma) + res * res / a2_double(2.0);
+				vec[0] += log(sigma) + res * res / scalar(2.0);
 				// following term does not depend on fixed or random effects
 				// vec[0] += log(sqrt_2pi);
 			}
 			return vec;
 		}
+		// a2_vector version of ran_likelihood
+		virtual a2_vector ran_likelihood(
+			const a2_vector& fixed_vec, const a2_vector& random_vec
+		)
+		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 	};
 	template <class Value>
 	void label_print(const char* label, const Value& value)
