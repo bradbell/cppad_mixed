@@ -1,4 +1,3 @@
-$Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
           Copyright (C) 2014-17 University of Washington
@@ -47,6 +46,11 @@ $childtable%
 	omh/whats_new/15.omh%
 	omh/whats_new/16.omh
 %$$
+
+$head 12-25$$
+Change an the $cref user$$ examples to use
+template implementations of the virtual $cref public$$
+functions.
 
 $head 12-22$$
 Improve comments in $cref example_install.sh$$.
