@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -161,31 +161,39 @@ namespace {
 	public:
 		// ------------------------------------------------------------------
 		// implementation of ran_likelihood as p(y|theta, u) * p(u|theta)
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& fixed_vec  ,
-			const vector<a2_double>& random_vec )
-		{	a2_double theta = fixed_vec[0];
-			a2_double u     = random_vec[0];
+		template <typename Vector>
+		Vector template_ran_likelihood(
+			const Vector& fixed_vec  ,
+			const Vector& random_vec )
+		{	typedef typename Vector::value_type scalar;
+
+			scalar theta = fixed_vec[0];
+			scalar u     = random_vec[0];
 
 			// initialize log-density
-			vector<a2_double> vec(1);
-			vec[0] = a2_double(0.0);
+			Vector vec(1);
+			vec[0] = scalar(0.0);
 
 			// compute this factors once
-			a2_double sqrt_2pi = a2_double(
+			scalar sqrt_2pi = scalar(
 				 CppAD::sqrt( 8.0 * CppAD::atan(1.0)
 			));
 
 			// Data term
-			a2_double res  = (y_ - exp(u) * theta) / sigma_y_;
-			vec[0]    += log(sqrt_2pi * sigma_y_ ) + res * res / a2_double(2.0);
+			scalar res  = (y_ - exp(u) * theta) / sigma_y_;
+			vec[0]    += log(sqrt_2pi * sigma_y_ ) + res * res / scalar(2.0);
 
 			// prior for u
 			res        = u / sigma_u_;
-			vec[0]    += log(sqrt_2pi * sigma_u_ ) + res * res / a2_double(2.0);
+			vec[0]    += log(sqrt_2pi * sigma_u_ ) + res * res / scalar(2.0);
 
 			return vec;
 		}
+		// a2_vector version of ran_likelihood
+		virtual a2_vector ran_likelihood(
+			const a2_vector& fixed_vec, const a2_vector& random_vec
+		)
+		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 		//
 		// ==================================================================
 		// Routines used to check that objective derivative
