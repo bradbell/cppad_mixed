@@ -24,6 +24,12 @@ echo_eval() {
 	echo $*
 	eval $*
 }
+cat << EOF > junk.sed
+s|vector<a1_double>|a1_vector|g
+s|vector<a2_double>|a2_vector|g
+EOF
+git checkout $file
+echo_eval sed -i $file -f junk.sed
 # -----------------------------------------------------------------------------
 cat << EOF > junk.sed
 s|Copyright (C) 2014-1\\([4-6]\\)|Copyright (C) 2014-17|
@@ -143,5 +149,4 @@ s|\\n\\t\\t}|&\\
 : ten
 EOF
 # -----------------------------------------------------------------------------
-git checkout $file
 echo_eval sed -i $file -f junk.sed
