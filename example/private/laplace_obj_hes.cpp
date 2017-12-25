@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -58,7 +58,9 @@ namespace {
 	using CppAD::mixed::sparse_rcv;
 	//
 	using CppAD::mixed::a1_double;
+	using CppAD::mixed::a1_vector;
 	using CppAD::mixed::a2_double;
+	using CppAD::mixed::a2_vector;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -79,32 +81,40 @@ namespace {
 		{	assert( n_fixed == 2);
 		}
 		// implementation of ran_likelihood
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& theta  ,
-			const vector<a2_double>& u      )
-		{	vector<a2_double> vec(1);
+		template <typename Vector>
+		Vector template_ran_likelihood(
+			const Vector& theta  ,
+			const Vector& u      )
+		{	typedef typename Vector::value_type scalar;
+
+			Vector vec(1);
 
 			// initialize part of log-density that is always smooth
-			vec[0] = a2_double(0.0);
+			vec[0] = scalar(0.0);
 
 			// pi
-			a2_double sqrt_2pi = a2_double(
+			scalar sqrt_2pi = scalar(
 				 CppAD::sqrt(8.0 * CppAD::atan(1.0)
 			));
 
 			for(size_t i = 0; i < y_.size(); i++)
-			{	a2_double mu     = u[i] + theta[0];
-				a2_double sigma  = theta[1];
-				a2_double res    = (y_[i] - mu) / sigma;
+			{	scalar mu     = u[i] + theta[0];
+				scalar sigma  = theta[1];
+				scalar res    = (y_[i] - mu) / sigma;
 
 				// p(y_i | u, theta)
-				vec[0] += log(sqrt_2pi * sigma) + res*res / a2_double(2.0);
+				vec[0] += log(sqrt_2pi * sigma) + res*res / scalar(2.0);
 
 				// p(u_i | theta)
-				vec[0] += log(sqrt_2pi) + u[i] * u[i] / a2_double(2.0);
+				vec[0] += log(sqrt_2pi) + u[i] * u[i] / scalar(2.0);
 			}
 			return vec;
 		}
+		// a2_vector version of ran_likelihood
+		virtual a2_vector ran_likelihood(
+			const a2_vector& fixed_vec, const a2_vector& random_vec
+		)
+		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 	public:
 		//
 	};
@@ -171,7 +181,8 @@ bool laplace_obj_hes_xam(void)
 	// p(y | theta ) = integral of p(y | theta , u) p(u | theta) du
 	// record the function L(theta) = p(y | theta)
 	using CppAD::mixed::a1_double;
-	vector<a1_double> a1_fixed_vec(n_fixed), a1_L(1);
+	using CppAD::mixed::a1_vector;
+	a1_vector a1_fixed_vec(n_fixed), a1_L(1);
 	a1_fixed_vec[0]  = fixed_vec[0];
 	a1_fixed_vec[1]  = fixed_vec[1];
 	CppAD::Independent(a1_fixed_vec);
