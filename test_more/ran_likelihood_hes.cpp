@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -63,96 +63,120 @@ namespace {
 	private:
 		// ------------------------------------------------------------------
 		// implementation of ran_likelihood
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& theta  ,
-			const vector<a2_double>& u      )
-		{	assert( theta.size() == n_fixed_ );
+		template <typename Vector>
+		Vector template_ran_likelihood(
+			const Vector& theta  ,
+			const Vector& u      )
+		{	typedef typename Vector::value_type scalar;
+
+			assert( theta.size() == n_fixed_ );
 			assert( u.size() == y_.size() );
-			vector<a2_double> vec(1);
+			Vector vec(1);
 
 			// initialize part of log-density that is always smooth
-			vec[0] = a2_double(0.0);
+			vec[0] = scalar(0.0);
 
 			// pi
-			a2_double sqrt_2pi = a2_double(
+			scalar sqrt_2pi = scalar(
 				 CppAD::sqrt(8.0 * CppAD::atan(1.0)
 			));
 
 			for(size_t i = 0; i < n_random_; i++)
-			{	a2_double mu     = exp( u[i] ) * theta[0];
-				a2_double sigma  = theta[1];
-				a2_double res    = (y_[i] - mu) / sigma;
+			{	scalar mu     = exp( u[i] ) * theta[0];
+				scalar sigma  = theta[1];
+				scalar res    = (y_[i] - mu) / sigma;
 
 				// p(y_i | u, theta)
-				vec[0] += log(sqrt_2pi * sigma) + res * res / a2_double(2.0);
+				vec[0] += log(sqrt_2pi * sigma) + res * res / scalar(2.0);
 
 				// p(u_i | theta)
-				vec[0] += log(sqrt_2pi) + u[i] * u[i] / a2_double(2.0);
+				vec[0] += log(sqrt_2pi) + u[i] * u[i] / scalar(2.0);
 			}
 			return vec;
 		}
+		// a2_vector version of ran_likelihood
+		virtual a2_vector ran_likelihood(
+			const a2_vector& fixed_vec, const a2_vector& random_vec
+		)
+		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 		// ------------------------------------------------------------------
 		// ran_likelihood_hes
-		vector<a1_double> ran_likelihood_hes(
-			const vector<a1_double>& theta  ,
-			const vector<a1_double>& u      ,
+		template <typename Vector>
+		Vector template_ran_likelihood_hes(
+			const Vector&    theta  ,
+			const Vector&    u      ,
 			const vector<size_t>&    row    ,
 			const vector<size_t>&    col    )
-		{	//
+		{	typedef typename Vector::value_type scalar;
+
+			//
 			if( default_ran_likelihood_hes_ )
-				return vector<a1_double>(0);
+				return Vector(0);
 			//
 			assert( col.size() == row.size() );
 
 			// return value
-			vector<a1_double> val(n_random_);
+			Vector val(n_random_);
 
 			// for each component of the return value
 			for(size_t k = 0; k < n_random_; k++)
 			{	// initialize it as zero
-				val[k] = a1_double(0.0);
+				val[k] = scalar(0.0);
 
 				// for this ran_likelihood only the diagonal is non-zero
 				if( row[k] == col[k] )
 				{	size_t i = row[k];
 					//
-					a1_double mu        = exp( u[i] ) * theta[0];
-					a1_double sigma     = theta[1];
-					a1_double res       = (y_[i] - mu) / sigma;
-					a1_double res_ui    = - mu / sigma;
-					a1_double res_ui_ui = - mu / sigma;
-					a1_double sq_ui     = res * res_ui;
-					a1_double sq_ui_ui  = res_ui * res_ui + res * res_ui_ui;
+					scalar mu        = exp( u[i] ) * theta[0];
+					scalar sigma     = theta[1];
+					scalar res       = (y_[i] - mu) / sigma;
+					scalar res_ui    = - mu / sigma;
+					scalar res_ui_ui = - mu / sigma;
+					scalar sq_ui     = res * res_ui;
+					scalar sq_ui_ui  = res_ui * res_ui + res * res_ui_ui;
 					val[k]              = sq_ui_ui + 1.0;
 				}
 			}
 			return val;
 		}
+		// a1_vector version of ran_likelihood_hes
+		virtual a1_vector ran_likelihood_hes(
+			const a1_vector& theta ,
+			const a1_vector& u     ,
+			const s_vector&  row   ,
+			const s_vector&  col   )
+		{	return template_ran_likelihood_hes( theta, u, row, col ); }
 		// ------------------------------------------------------------------
 		// implementation of fix_likelihood
-		virtual vector<a1_double> fix_likelihood(
-			const vector<a1_double>& fixed_vec  )
-		{	assert( fixed_vec.size() == n_fixed_ );
-			vector<a1_double> vec(1);
+		template <typename Vector>
+		Vector template_fix_likelihood(
+			const Vector& fixed_vec  )
+		{	typedef typename Vector::value_type scalar;
+
+			assert( fixed_vec.size() == n_fixed_ );
+			Vector vec(1);
 
 			// initialize part of log-density that is smooth
-			vec[0] = a1_double(0.0);
+			vec[0] = scalar(0.0);
 
 			// compute these factors once
-			a1_double sqrt_2pi = a1_double(
+			scalar sqrt_2pi = scalar(
 				 CppAD::sqrt( 8.0 * CppAD::atan(1.0)
 			));
 
 			for(size_t j = 0; j < n_fixed_; j++)
-			{	a1_double mu     = a1_double(4.0);
-				a1_double sigma  = a1_double(1.0);
-				a1_double res    = (fixed_vec[j] - mu) / sigma;
+			{	scalar mu     = scalar(4.0);
+				scalar sigma  = scalar(1.0);
+				scalar res    = (fixed_vec[j] - mu) / sigma;
 
 				// This is a Gaussian term, so entire density is smooth
-				vec[0]  += log(sqrt_2pi * sigma) + res * res / a1_double(2.0);
+				vec[0]  += log(sqrt_2pi * sigma) + res * res / scalar(2.0);
 			}
 			return vec;
 		}
+		// a1_vector version of fix_likelihood
+		virtual a1_vector fix_likelihood(const a1_vector& fixed_vec)
+		{	return template_fix_likelihood( fixed_vec ); }
 	// ----------------------------------------------------------------------
 	public:
 		// User defined virtual functions
