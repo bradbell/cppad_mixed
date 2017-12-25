@@ -92,12 +92,21 @@ then
 	echo_eval rm bin/run_cmake.bak
 fi
 #
-bin/run_cmake.sh
+echo 'bin/run_cmake.sh > cmake.log'
+bin/run_cmake.sh > cmake.log
 #
 cd build
-make check
-make speed
-make install
+echo 'make check > make.log'
+make check > ../make.log
+#
+echo 'make speed >> make.log'
+if ! make speed >> ../make.log
+then
+	echo 'check_all.sh: speed test failed correctness, perhaps OK'
+fi
+#
+echo 'make install >> make.log'
+make install >> ./make.log
 cd ..
 bin/check_install.sh
 # -----------------------------------------------------------------------------

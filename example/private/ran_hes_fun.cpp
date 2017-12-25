@@ -96,8 +96,7 @@ namespace {
 		template <typename Vector>
 		Vector template_fix_likelihood(
 			const Vector& fixed_vec  )
-		{	typedef typename Vector::value_type scalar;
-
+		{
 			Vector vec(1);
 			vec[0] = 0.0;
 			return vec;
