@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -43,18 +43,21 @@ namespace {
 			y_(y)
 		{ }
 		// implementation of ran_likelihood
-		virtual a2_vector ran_likelihood(
-			const a2_vector&         theta  ,
-			const a2_vector&         u      )
-		{	a2_vector vec(1);
+		template <typename Vector>
+		Vector template_ran_likelihood(
+			const Vector&         theta  ,
+			const Vector&         u      )
+		{	typedef typename Vector::value_type scalar;
+
+			Vector vec(1);
 
 			// sum of residual squared
-			vec[0]            = a2_double(0.0);
-			a2_double sum_sq  = a2_double(0.0);
+			vec[0]            = scalar(0.0);
+			scalar sum_sq  = scalar(0.0);
 			for(size_t i = 0; i < y_.size(); i++)
 			{	// data term
-				a2_double mu     = theta[i] + u[i];
-				a2_double res    = y_[i] - mu;
+				scalar mu     = theta[i] + u[i];
+				scalar res    = y_[i] - mu;
 
 				// p(y|theta,u)
 				vec[0] += res * res;
@@ -68,13 +71,18 @@ namespace {
 			}
 
 			// return nan when sum of squares is less than 1e-4
-			a2_double vec_0    = CppAD::numeric_limits<a2_double>::quiet_NaN();
-			a2_double a2_small = a2_double( small );
+			scalar vec_0    = CppAD::numeric_limits<scalar>::quiet_NaN();
+			scalar a2_small = scalar( small );
 			vec_0  = CppAD::CondExpGt(sum_sq, + a2_small, vec[0], vec_0);
 			vec[0] = vec_0;
 			//
 			return vec;
 		}
+		// a2_vector version of ran_likelihood
+		virtual a2_vector ran_likelihood(
+			const a2_vector& fixed_vec, const a2_vector& random_vec
+		)
+		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 		// we expect to get a warnings
 		virtual void warning(const std::string& warning_message)
 		{ }
