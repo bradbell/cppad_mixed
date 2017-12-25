@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -53,38 +53,46 @@ namespace {
 			assert( n_random / 2 == y_.size() );
 		}
 		// implementation of ran_likelihood
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& theta  ,
-			const vector<a2_double>& u      )
-		{	vector<a2_double> vec(1);
+		template <typename Vector>
+		Vector template_ran_likelihood(
+			const Vector& theta  ,
+			const Vector& u      )
+		{	typedef typename Vector::value_type scalar;
+
+			Vector vec(1);
 
 			// initialize part of log-density that is always smooth
-			vec[0] = a2_double(0.0);
+			vec[0] = scalar(0.0);
 
 			// pi
-			a2_double sqrt_2pi = a2_double(
+			scalar sqrt_2pi = scalar(
 				 CppAD::sqrt(8.0 * CppAD::atan(1.0)
 			));
 
 			size_t n_data = y_.size();
 			for(size_t i = 0; i < n_data; i++)
-			{	a2_double mu     = u[2*i] + u[2*i+1] + theta[i] + theta[0];
-				a2_double sigma  = a2_double(1.0);
-				a2_double res    = (y_[i] - mu) / sigma;
+			{	scalar mu     = u[2*i] + u[2*i+1] + theta[i] + theta[0];
+				scalar sigma  = scalar(1.0);
+				scalar res    = (y_[i] - mu) / sigma;
 
 				// p(y_i | u, theta)
-				vec[0] += log(sqrt_2pi * sigma) + res*res / a2_double(2.0);
+				vec[0] += log(sqrt_2pi * sigma) + res*res / scalar(2.0);
 
 				// p(u_i | theta)
-				vec[0] += log(sqrt_2pi) + u[2*i] * u[2*i] / a2_double(2.0);
-				vec[0] += log(sqrt_2pi) + u[2*i+1] * u[2*i+1] / a2_double(2.0);
+				vec[0] += log(sqrt_2pi) + u[2*i] * u[2*i] / scalar(2.0);
+				vec[0] += log(sqrt_2pi) + u[2*i+1] * u[2*i+1] / scalar(2.0);
 			}
 			return vec;
 		}
+		// a2_vector version of ran_likelihood
+		virtual a2_vector ran_likelihood(
+			const a2_vector& fixed_vec, const a2_vector& random_vec
+		)
+		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 		// ------------------------------------------------------------------
 		// fix_constraint
 		template <class Float>
-		vector<Float> implement_fix_constraint(
+		vector<Float> template_fix_constraint(
 			const vector<Float>& fixed_vec  )
 		{	vector<Float> ret_val(2);
 			//
@@ -104,12 +112,12 @@ namespace {
 		// ran_likelihood
 		// ------------------------------------------------------------------
 		// fix_constraint
-		vector<a1_double> fix_constraint(
-			const vector<a1_double>& fixed_vec  )
-		{	return implement_fix_constraint(fixed_vec); }
+		a1_vector fix_constraint(
+			const a1_vector& fixed_vec  )
+		{	return template_fix_constraint(fixed_vec); }
 		vector<double> fix_constraint(
 			const vector<double>& fixed_vec  )
-		{	return implement_fix_constraint(fixed_vec); }
+		{	return template_fix_constraint(fixed_vec); }
 		// ------------------------------------------------------------------
 	};
 }
