@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -42,7 +42,9 @@ namespace {
 	using CppAD::mixed::sparse_rcv;
 	//
 	using CppAD::mixed::a1_double;
+	using CppAD::mixed::a1_vector;
 	using CppAD::mixed::a2_double;
+	using CppAD::mixed::a2_vector;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -62,33 +64,46 @@ namespace {
 			y_(y)
 		{ }
 		// implementation of ran_likelihood
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& theta  ,
-			const vector<a2_double>& u      )
-		{	vector<a2_double> vec(1);
+		template <typename Vector>
+		Vector template_ran_likelihood(
+			const Vector& theta  ,
+			const Vector& u      )
+		{	typedef typename Vector::value_type scalar;
+
+			Vector vec(1);
 
 			// initialize part of log-density that is always smooth
-			vec[0] = a2_double(0.0);
+			vec[0] = scalar(0.0);
 
 			for(size_t i = 0; i < y_.size(); i++)
-			{	a2_double mu     = u[i];
-				a2_double sigma  = theta[i];
-				a2_double res    = (y_[i] - mu) / sigma;
+			{	scalar mu     = u[i];
+				scalar sigma  = theta[i];
+				scalar res    = (y_[i] - mu) / sigma;
 
 				// (do not need 2*pi inside of log)
-				vec[0]  += (log(sigma) + res*res) / a2_double(2.0);
+				vec[0]  += (log(sigma) + res*res) / scalar(2.0);
 			}
 			return vec;
 		}
+		// a2_vector version of ran_likelihood
+		virtual a2_vector ran_likelihood(
+			const a2_vector& fixed_vec, const a2_vector& random_vec
+		)
+		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 	public:
 		//
 		//
-		virtual vector<a1_double> fix_likelihood(
-			const vector<a1_double>& fixed_vec  )
-		{	a1_vector vec(1);
+		template <typename Vector>
+		Vector template_fix_likelihood(
+			const Vector& fixed_vec  )
+		{
+			Vector vec(1);
 			vec[0] = 0.0;
 			return vec;
 		}
+		// a1_vector version of fix_likelihood
+		virtual a1_vector fix_likelihood(const a1_vector& fixed_vec)
+		{	return template_fix_likelihood( fixed_vec ); }
 	};
 }
 
@@ -97,13 +112,14 @@ bool ran_like_jac_xam(void)
 	bool   ok = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 	using CppAD::mixed::a1_double;
+	using CppAD::mixed::a1_vector;
 
 	size_t n_data   = 10;
 	size_t n_fixed  = n_data;
 	size_t n_random = n_data;
 	vector<double> data(n_data);
 	vector<double> theta(n_fixed), u(n_random);
-	vector<a1_double> fixed_vec(n_fixed), random_vec(n_random);
+	a1_vector fixed_vec(n_fixed), random_vec(n_random);
 
 	for(size_t i = 0; i < n_data; i++)
 	{	data[i]      = double((i + 1) * (i + 1) );
@@ -121,7 +137,7 @@ bool ran_like_jac_xam(void)
 	mixed_object.initialize(theta, u);
 
 	// compute Jacobian with respect to random effects
-	vector<a1_double> jac =
+	a1_vector jac =
 		mixed_object.ran_like_jac(fixed_vec, random_vec);
 
 	// check the Jacobian
