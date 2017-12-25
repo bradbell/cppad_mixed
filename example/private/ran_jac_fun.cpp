@@ -62,33 +62,46 @@ namespace {
 			y_(y)
 		{ }
 		// implementation of ran_likelihood
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& theta  ,
-			const vector<a2_double>& u      )
-		{	vector<a2_double> vec(1);
+		template <typename Vector>
+		Vector template_ran_likelihood(
+			const Vector& theta  ,
+			const Vector& u      )
+		{	typedef typename Vector::value_type scalar;
+
+			Vector vec(1);
 
 			// initialize part of log-density that is always smooth
-			vec[0] = a2_double(0.0);
+			vec[0] = scalar(0.0);
 
 			for(size_t i = 0; i < y_.size(); i++)
-			{	a2_double mu     = u[i];
-				a2_double sigma  = theta[i];
-				a2_double res    = (y_[i] - mu) / sigma;
+			{	scalar mu     = u[i];
+				scalar sigma  = theta[i];
+				scalar res    = (y_[i] - mu) / sigma;
 
 				// (do not need 2*pi inside of log)
-				vec[0]  += (log(sigma) + res*res) / a2_double(2.0);
+				vec[0]  += (log(sigma) + res*res) / scalar(2.0);
 			}
 			return vec;
 		}
+		// a2_vector version of ran_likelihood
+		virtual a2_vector ran_likelihood(
+			const a2_vector& fixed_vec, const a2_vector& random_vec
+		)
+		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 	public:
 		//
 		//
-		virtual vector<a1_double> fix_likelihood(
-			const vector<a1_double>& fixed_vec  )
-		{	a1_vector vec(1);
+		template <typename Vector>
+		Vector template_fix_likelihood(
+			const Vector& fixed_vec  )
+		{
+			Vector vec(1);
 			vec[0] = 0.0;
 			return vec;
 		}
+		// a1_vector version of fix_likelihood
+		virtual a1_vector fix_likelihood(const a1_vector& fixed_vec)
+		{	return template_fix_likelihood( fixed_vec ); }
 	};
 }
 
