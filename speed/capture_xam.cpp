@@ -678,11 +678,11 @@ public:
 		log_pik_.resize(R_ * K_);
 		for(size_t ell = 0; ell < R_ * K_; ell++)
 			log_pik_[ell] = 0.0;
-		implement_ran_likelihood(fixed_in, random_in, log_pik_);
+		template_ran_likelihood(fixed_in, random_in, log_pik_);
 	}
 	// implementaion of ran_likelihood, used with Float = double and a2_double
 	template <class Float>
-	CppAD::vector<Float> implement_ran_likelihood(
+	CppAD::vector<Float> template_ran_likelihood(
 		const CppAD::vector<Float>&  theta   ,
 		const CppAD::vector<Float>&  u       ,
 		CppAD::vector<Float>&        log_pik )
@@ -792,7 +792,7 @@ public:
 	{	a2_vector log_pik(R_ * K_), vec(1);
 		for(size_t ell = 0; ell < R_ * K_; ell++)
 			log_pik[ell] = a2_double(log_pik_[ell]);
-		vec = implement_ran_likelihood(fixed_vec, random_vec, log_pik);
+		vec = template_ran_likelihood(fixed_vec, random_vec, log_pik);
 		// make sure result is finite
 # ifndef NDEBUG
 		double inf = std::numeric_limits<double>::infinity();
