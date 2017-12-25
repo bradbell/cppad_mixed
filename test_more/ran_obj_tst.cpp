@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -38,32 +38,40 @@ namespace {
 		{	assert( n_fixed == 2);
 		}
 		// implementation of ran_likelihood
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& theta  ,
-			const vector<a2_double>& u      )
-		{	vector<a2_double> vec(1);
+		template <typename Vector>
+		Vector template_ran_likelihood(
+			const Vector& theta  ,
+			const Vector& u      )
+		{	typedef typename Vector::value_type scalar;
+
+			Vector vec(1);
 
 			// initialize part of log-density that is always smooth
-			vec[0] = a2_double(0.0);
+			vec[0] = scalar(0.0);
 
 			// pi
-			a2_double sqrt_2pi = a2_double(
+			scalar sqrt_2pi = scalar(
 				 CppAD::sqrt(8.0 * CppAD::atan(1.0)
 			));
 
 			for(size_t i = 0; i < y_.size(); i++)
-			{	a2_double mu     = u[i];
-				a2_double sigma  = a2_double(0.5);
-				a2_double res    = (y_[i] - mu) / sigma;
+			{	scalar mu     = u[i];
+				scalar sigma  = scalar(0.5);
+				scalar res    = (y_[i] - mu) / sigma;
 
 				// p(y_i | u, theta)
-				vec[0] += CppAD::log(sqrt_2pi * sigma) + res*res / a2_double(2.0);
+				vec[0] += CppAD::log(sqrt_2pi * sigma) + res*res / scalar(2.0);
 
 				// p(u_i | theta)
-				vec[0] += CppAD::log(sqrt_2pi) + u[i] * u[i] / a2_double(2.0);
+				vec[0] += CppAD::log(sqrt_2pi) + u[i] * u[i] / scalar(2.0);
 			}
 			return vec;
 		}
+		// a2_vector version of ran_likelihood
+		virtual a2_vector ran_likelihood(
+			const a2_vector& fixed_vec, const a2_vector& random_vec
+		)
+		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 	public:
 		//
 	};
