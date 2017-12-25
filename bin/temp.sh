@@ -27,7 +27,7 @@ echo_eval() {
 cat << EOF > junk.sed
 s|vector<a1_double>|a1_vector|g
 s|vector<a2_double>|a2_vector|g
-s|^\\(\\t*using CppAD::mixed::a[12]\\)_double;|&\\n\\1_vector;|
+# s|^\\(\\t*using CppAD::mixed::a[12]\\)_double;|&\\n\\1_vector;|
 EOF
 git checkout $file
 echo_eval sed -i $file -f junk.sed
