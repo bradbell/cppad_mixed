@@ -35,6 +35,8 @@ cat << EOF > junk.sed
 s|Copyright (C) 2014-1\\([4-6]\\)|Copyright (C) 2014-17|
 s|^\\t\\t\\(a1_vector ran_likelihood_hes(\\)|\\t\\tvirtual \\1|
 s|^\\t\\t\\(a1_vector ran_likelihood_jac(\\)|\\t\\tvirtual \\1|
+s|implement_\\([a-z_]*\\)(|template_\\1(|
+s|implement_\\([a-z_]*\\)<a[12]_double>(|template_\\1(|
 # ----------------------------------------------------------------------------
 /^\\t\\tvirtual a1_vector fix_likelihood(/! b two
 : one
