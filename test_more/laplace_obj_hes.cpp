@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -39,6 +39,9 @@ namespace {
 	//
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
+	using CppAD::mixed::a1_vector;
+	using CppAD::mixed::a2_vector;
+	//
 	template <class scalar>
 	scalar neg_loglike(
 		const scalar& theta ,
@@ -73,13 +76,21 @@ namespace {
 			z_(z)
 		{ }
 		// implementation of ran_likelihood
-		virtual vector<a2_double> ran_likelihood(
-			const vector<a2_double>& theta  ,
-			const vector<a2_double>& u      )
-		{	vector<a2_double> result(1);
-			result[0] =  neg_loglike(theta[0], u[0], a2_double(z_));
+		template <typename Vector>
+		Vector template_ran_likelihood(
+			const Vector& theta  ,
+			const Vector& u      )
+		{	typedef typename Vector::value_type scalar;
+
+			Vector result(1);
+			result[0] =  neg_loglike(theta[0], u[0], scalar(z_));
 			return result;
 		}
+		// a2_vector version of ran_likelihood
+		virtual a2_vector ran_likelihood(
+			const a2_vector& fixed_vec, const a2_vector& random_vec
+		)
+		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 	public:
 		//
 	};
@@ -188,7 +199,7 @@ bool laplace_obj_hes(void)
 	ok &= fabs( f_u ) < 1e-10;
 
 	// record y = f(x) where x = (theta,u)
-	vector<a1_double> ax(2), ay(1);
+	a1_vector ax(2), ay(1);
 	ax[0] = theta;
 	ax[1] = uhat;
 	CppAD::Independent(ax);
@@ -210,7 +221,7 @@ bool laplace_obj_hes(void)
 	ok   &= fabs( f_u_u / 2.0 - y2[0] ) < eps99;
 
 	// define reduced objective r(theta) = h[theta , u_2(theta) ]
-	vector<a1_double> atheta(1), ar(1);
+	a1_vector atheta(1), ar(1);
 	atheta[0] = theta;
 	CppAD::Independent(atheta);
 	a1_double au     = uhat;
