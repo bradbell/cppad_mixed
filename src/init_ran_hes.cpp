@@ -234,7 +234,8 @@ void cppad_mixed::init_ran_hes(
 	// -----------------------------------------------------------------------
 	// subset of sparstiy pattern that we are calculating
 	// in column major order
-	sparse_rc hes_lower(n_both, n_both, n_low);
+	sparse_rc hes_low(n_random_, n_both, n_low);
+	sparse_rc hes_lower(n_both,  n_both, n_low);
 	s_vector col_major = hes_pattern_both.col_major();
 	size_t k_low = 0;
 	for(size_t k = 0; k < nnz; k++)
@@ -242,7 +243,11 @@ void cppad_mixed::init_ran_hes(
 		size_t r   = hes_pattern_both.row()[ell];
 		size_t c   = hes_pattern_both.col()[ell];
 		if( r >= c )
-			hes_lower.set(k_low++, r, c);
+		{	assert( n_fixed_ <= c );
+			hes_low.set(k_low, r - n_fixed_, c);
+			hes_lower.set(k_low, r, c);
+			++k_low;
+		}
 	}
 	assert( k_low == n_low );
 	// -----------------------------------------------------------------------
@@ -294,15 +299,9 @@ void cppad_mixed::init_ran_hes(
 	{	// The user has not defined ran_likelihood_hes, so use AD to calcuate
 		// the Hessian of the random likelihood w.r.t the random effects.
 		a1_val_out.resize(n_low);
-		ran_like_a1fun_.sparse_hes(
-			a1_both,
-			a1_w,
-			a1_ran_hes_rcv,
-			hes_pattern_both,
-			coloring,
-			ran_hes_work_
-		);
-		a1_val_out = a1_ran_hes_rcv.val();
+		a1_sparse_rcv a1_subset( hes_low );
+		ran_jac_a1fun_.subgraph_jac_rev(a1_both, a1_subset);
+		a1_val_out = a1_subset.val();
 	}
 # ifndef NDEBUG
 	else	check_user_ran_hes(fixed_vec, random_vec);
