@@ -279,9 +279,9 @@ void cppad_mixed::init_ran_hes(
 
 	// Evaluate ran_likelihood_hes. Its row indices are relative
 	// to just the random effects, not both fixed and random effects.
-	size_t K = a1_ran_hes_rcv.nnz();
-	CppAD::vector<size_t> row(K), col(K);
-	for(size_t k = 0; k < K; k++)
+	assert( n_low == a1_ran_hes_rcv.nnz() );
+	CppAD::vector<size_t> row(n_low), col(n_low);
+	for(size_t k = 0; k < n_low; k++)
 	{	assert( a1_ran_hes_rcv.row()[k] >= n_fixed_ );
 		assert( a1_ran_hes_rcv.col()[k] >= n_fixed_ );
 		row[k] = a1_ran_hes_rcv.row()[k] - n_fixed_;
@@ -293,7 +293,7 @@ void cppad_mixed::init_ran_hes(
 	if( a1_val_out.size() == 0 )
 	{	// The user has not defined ran_likelihood_hes, so use AD to calcuate
 		// the Hessian of the random likelihood w.r.t the random effects.
-		a1_val_out.resize(K);
+		a1_val_out.resize(n_low);
 		ran_like_a1fun_.sparse_hes(
 			a1_both,
 			a1_w,
