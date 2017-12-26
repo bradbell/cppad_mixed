@@ -429,15 +429,16 @@ $srccode%cpp% */
 /* %$$
 
 $head ran_like_fun_$$
-$index ran_like_a1fun_$$
 If $icode%n_random_% > 0%$$ and $code init_ran_like_done_$$,
-$cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$ and
-$cref/ran_like_a1fun_/init_ran_like/ran_like_a1fun_/$$ are
-recordings of the user's $cref ran_likelihood$$.
+$cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$,
+$cref/ran_like_a1fun_/init_ran_like/ran_like_a1fun_/$$, and
+$cref/ran_like_a1fun_/init_ran_like/ran_like_a2fun_/$$,
+are recordings of the user's $cref ran_likelihood$$.
 function.
 $srccode%cpp% */
 	CppAD::ADFun<double>      ran_like_fun_;
 	CppAD::ADFun<a1_double>   ran_like_a1fun_;
+	CppAD::ADFun<a2_double>   ran_like_a2fun_;
 /* %$$
 The following objects hold information for computing derivatives
 with these ADFun objects:

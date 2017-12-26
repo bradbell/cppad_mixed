@@ -76,7 +76,7 @@ s|\\n\\t\\t}|&\\
 \\t\\t	const a2_vector\\& fixed_vec, const a2_vector\\& random_vec\\
 \\t\\t)\\
 \\t\\t{	return template_ran_likelihood( fixed_vec, random_vec ); }\\
-\\t\\t// Delete this a3_vector before commiting\\
+\\t\\t// a3_vector version of ran_likelihood\\
 \\t\\tvirtual a3_vector ran_likelihood(\\
 \\t\\t	const a3_vector\\& fixed_vec, const a3_vector\\& random_vec\\
 \\t\\t)\\
