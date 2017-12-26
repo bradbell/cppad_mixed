@@ -187,32 +187,40 @@ This example is not part of the
           <font color="#FF0000">{</font>    <b><font color="#000000">assert</font></b><font color="#990000">(</font> n_fixed <font color="#990000">==</font> <font color="#993399">3</font><font color="#990000">);</font>
           <font color="#FF0000">}</font>
           <i><font color="#9A1900">// implementation of ran_likelihood</font></i>
-          <b><font color="#0000FF">virtual</font></b> <font color="#008080">vector&lt;a2_double&gt;</font> <b><font color="#000000">ran_likelihood</font></b><font color="#990000">(</font>
-               <b><font color="#0000FF">const</font></b> vector<font color="#990000">&lt;</font>a2_double<font color="#990000">&gt;&amp;</font> theta  <font color="#990000">,</font>
-               <b><font color="#0000FF">const</font></b> vector<font color="#990000">&lt;</font>a2_double<font color="#990000">&gt;&amp;</font> u      <font color="#990000">)</font>
-          <font color="#FF0000">{</font>    <font color="#008080">vector&lt;a2_double&gt;</font> <b><font color="#000000">vec</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">);</font>
+          <b><font color="#0000FF">template</font></b> <font color="#990000">&lt;</font><b><font color="#0000FF">typename</font></b> <font color="#008080">Vector</font><font color="#990000">&gt;</font>
+          <font color="#008080">Vector</font> <b><font color="#000000">template_ran_likelihood</font></b><font color="#990000">(</font>
+               <b><font color="#0000FF">const</font></b> Vector<font color="#990000">&amp;</font> theta  <font color="#990000">,</font>
+               <b><font color="#0000FF">const</font></b> Vector<font color="#990000">&amp;</font> u      <font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <b><font color="#0000FF">typedef</font></b> <b><font color="#0000FF">typename</font></b> <font color="#008080">Vector</font><font color="#990000">::</font><font color="#008080">value_type</font> scalar<font color="#990000">;</font>
+
+               <font color="#008080">Vector</font> <b><font color="#000000">vec</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">);</font>
 
                <i><font color="#9A1900">// initialize part of log-density that is always smooth</font></i>
-               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <b><font color="#000000">a2_double</font></b><font color="#990000">(</font><font color="#993399">0.0</font><font color="#990000">);</font>
+               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <b><font color="#000000">scalar</font></b><font color="#990000">(</font><font color="#993399">0.0</font><font color="#990000">);</font>
 
                <i><font color="#9A1900">// pi</font></i>
-               <font color="#008080">a2_double</font> sqrt_2pi <font color="#990000">=</font> <b><font color="#000000">a2_double</font></b><font color="#990000">(</font>
+               <font color="#008080">scalar</font> sqrt_2pi <font color="#990000">=</font> <b><font color="#000000">scalar</font></b><font color="#990000">(</font>
                      CppAD<font color="#990000">::</font><b><font color="#000000">sqrt</font></b><font color="#990000">(</font><font color="#993399">8.0</font> <font color="#990000">*</font> CppAD<font color="#990000">::</font><b><font color="#000000">atan</font></b><font color="#990000">(</font><font color="#993399">1.0</font><font color="#990000">)</font>
                <font color="#990000">));</font>
 
                <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> y_<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">();</font> i<font color="#990000">++)</font>
-               <font color="#FF0000">{</font>    <font color="#008080">a2_double</font> mu     <font color="#990000">=</font> theta<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">+</font> theta<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">*</font> u<font color="#990000">[</font>i<font color="#990000">];</font>
-                    <font color="#008080">a2_double</font> sigma  <font color="#990000">=</font> theta<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">];</font>
-                    <font color="#008080">a2_double</font> res    <font color="#990000">=</font> <font color="#990000">(</font>y_<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">-</font> mu<font color="#990000">)</font> <font color="#990000">/</font> sigma<font color="#990000">;</font>
+               <font color="#FF0000">{</font>    <font color="#008080">scalar</font> mu     <font color="#990000">=</font> theta<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">+</font> theta<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">*</font> u<font color="#990000">[</font>i<font color="#990000">];</font>
+                    <font color="#008080">scalar</font> sigma  <font color="#990000">=</font> theta<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">];</font>
+                    <font color="#008080">scalar</font> res    <font color="#990000">=</font> <font color="#990000">(</font>y_<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">-</font> mu<font color="#990000">)</font> <font color="#990000">/</font> sigma<font color="#990000">;</font>
 
                     <i><font color="#9A1900">// p(y_i | u, theta)</font></i>
-                    vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">+=</font> <b><font color="#000000">log</font></b><font color="#990000">(</font>sqrt_2pi <font color="#990000">*</font> sigma<font color="#990000">)</font> <font color="#990000">+</font> res<font color="#990000">*</font>res <font color="#990000">/</font> <b><font color="#000000">a2_double</font></b><font color="#990000">(</font><font color="#993399">2.0</font><font color="#990000">);</font>
+                    vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">+=</font> <b><font color="#000000">log</font></b><font color="#990000">(</font>sqrt_2pi <font color="#990000">*</font> sigma<font color="#990000">)</font> <font color="#990000">+</font> res<font color="#990000">*</font>res <font color="#990000">/</font> <b><font color="#000000">scalar</font></b><font color="#990000">(</font><font color="#993399">2.0</font><font color="#990000">);</font>
 
                     <i><font color="#9A1900">// p(u_i | theta)</font></i>
-                    vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">+=</font> <b><font color="#000000">log</font></b><font color="#990000">(</font>sqrt_2pi<font color="#990000">)</font> <font color="#990000">+</font> u<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">*</font> u<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">/</font> <b><font color="#000000">a2_double</font></b><font color="#990000">(</font><font color="#993399">2.0</font><font color="#990000">);</font>
+                    vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">+=</font> <b><font color="#000000">log</font></b><font color="#990000">(</font>sqrt_2pi<font color="#990000">)</font> <font color="#990000">+</font> u<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">*</font> u<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">/</font> <b><font color="#000000">scalar</font></b><font color="#990000">(</font><font color="#993399">2.0</font><font color="#990000">);</font>
                <font color="#FF0000">}</font>
                <b><font color="#0000FF">return</font></b> vec<font color="#990000">;</font>
           <font color="#FF0000">}</font>
+          <i><font color="#9A1900">// a2_vector version of ran_likelihood</font></i>
+          <b><font color="#0000FF">virtual</font></b> <font color="#008080">a2_vector</font> <b><font color="#000000">ran_likelihood</font></b><font color="#990000">(</font>
+               <b><font color="#0000FF">const</font></b> a2_vector<font color="#990000">&amp;</font> fixed_vec<font color="#990000">,</font> <b><font color="#0000FF">const</font></b> a2_vector<font color="#990000">&amp;</font> random_vec
+          <font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <b><font color="#0000FF">return</font></b> <b><font color="#000000">template_ran_likelihood</font></b><font color="#990000">(</font> fixed_vec<font color="#990000">,</font> random_vec <font color="#990000">);</font> <font color="#FF0000">}</font>
      <b><font color="#0000FF">public</font></b><font color="#990000">:</font>
           <i><font color="#9A1900">//</font></i>
      <font color="#FF0000">}</font><font color="#990000">;</font>

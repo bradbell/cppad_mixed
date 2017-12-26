@@ -50,18 +50,22 @@ var list_down1 = [
 ];
 var list_current0 = [
 'typedef.htm#Syntax',
+'typedef.htm#Begin Namespace',
 'typedef.htm#Scalar Types',
 'typedef.htm#Scalar Types.a1_double',
 'typedef.htm#Scalar Types.a2_double',
+'typedef.htm#Scalar Types.a3_double',
 'typedef.htm#Vector Types',
 'typedef.htm#Vector Types.s_vector',
 'typedef.htm#Vector Types.d_vector',
 'typedef.htm#Vector Types.a1_vector',
 'typedef.htm#Vector Types.a2_vector',
+'typedef.htm#Vector Types.a3_vector',
 'typedef.htm#Sparse Types',
 'typedef.htm#Sparse Types.sparse_rc',
 'typedef.htm#Sparse Types.sparse_rcv',
-'typedef.htm#Sparse Types.a1_sparse_rcv'
+'typedef.htm#Sparse Types.a1_sparse_rcv',
+'typedef.htm#End Namespace'
 ];
 function choose_across0(item)
 {	var index          = item.selectedIndex;

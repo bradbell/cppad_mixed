@@ -516,24 +516,27 @@ The file <a href="ar1_xam.sh.htm" target="_top"><span style='white-space: nowrap
           <i><font color="#9A1900">// -------------------------------------------------------------------</font></i>
           <i><font color="#9A1900">// implementation of ran_likelihood</font></i>
           <i><font color="#9A1900">// Note that theta[2] is not used</font></i>
-          <b><font color="#0000FF">virtual</font></b> <font color="#008080">a2_vector</font> <b><font color="#000000">ran_likelihood</font></b><font color="#990000">(</font>
-               <b><font color="#0000FF">const</font></b> a2_vector<font color="#990000">&amp;</font> theta  <font color="#990000">,</font>
-               <b><font color="#0000FF">const</font></b> a2_vector<font color="#990000">&amp;</font> u      <font color="#990000">)</font>
-          <font color="#FF0000">{</font>    <b><font color="#000000">assert</font></b><font color="#990000">(</font> theta<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">==</font> n_fixed_ <font color="#990000">);</font>
+          <b><font color="#0000FF">template</font></b> <font color="#990000">&lt;</font><b><font color="#0000FF">typename</font></b> <font color="#008080">Vector</font><font color="#990000">&gt;</font>
+          <font color="#008080">Vector</font> <b><font color="#000000">template_ran_likelihood</font></b><font color="#990000">(</font>
+               <b><font color="#0000FF">const</font></b> Vector<font color="#990000">&amp;</font> theta  <font color="#990000">,</font>
+               <b><font color="#0000FF">const</font></b> Vector<font color="#990000">&amp;</font> u      <font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <b><font color="#0000FF">typedef</font></b> <b><font color="#0000FF">typename</font></b> <font color="#008080">Vector</font><font color="#990000">::</font><font color="#008080">value_type</font> scalar<font color="#990000">;</font>
+
+               <b><font color="#000000">assert</font></b><font color="#990000">(</font> theta<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">==</font> n_fixed_ <font color="#990000">);</font>
                <b><font color="#000000">assert</font></b><font color="#990000">(</font> u<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">==</font> y_<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">);</font>
-               <font color="#008080">a2_vector</font> <b><font color="#000000">vec</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">);</font>
+               <font color="#008080">Vector</font> <b><font color="#000000">vec</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">);</font>
                <i><font color="#9A1900">//</font></i>
                <i><font color="#9A1900">// initialize summation</font></i>
-               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <b><font color="#000000">a2_double</font></b><font color="#990000">(</font><font color="#993399">0.0</font><font color="#990000">);</font>
+               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <b><font color="#000000">scalar</font></b><font color="#990000">(</font><font color="#993399">0.0</font><font color="#990000">);</font>
                <i><font color="#9A1900">//</font></i>
                <i><font color="#9A1900">// sqrt_2pi = CppAD::sqrt(8.0 * CppAD::atan(1.0) );</font></i>
                <i><font color="#9A1900">//</font></i>
                <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> n_random_<font color="#990000">;</font> i<font color="#990000">++)</font>
-               <font color="#FF0000">{</font>    <font color="#008080">a2_double</font> sigma  <font color="#990000">=</font> <b><font color="#000000">a2_double</font></b><font color="#990000">(</font>sigma_y<font color="#990000">);</font>
-                    <font color="#008080">a2_double</font> res    <font color="#990000">=</font> <font color="#990000">(</font>y_<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">-</font> u<font color="#990000">[</font>i<font color="#990000">])</font> <font color="#990000">/</font> sigma<font color="#990000">;</font>
+               <font color="#FF0000">{</font>    <font color="#008080">scalar</font> sigma  <font color="#990000">=</font> <b><font color="#000000">scalar</font></b><font color="#990000">(</font>sigma_y<font color="#990000">);</font>
+                    <font color="#008080">scalar</font> res    <font color="#990000">=</font> <font color="#990000">(</font>y_<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">-</font> u<font color="#990000">[</font>i<font color="#990000">])</font> <font color="#990000">/</font> sigma<font color="#990000">;</font>
                     <i><font color="#9A1900">//</font></i>
                     <i><font color="#9A1900">// p(y_i | u, theta)</font></i>
-                    vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">+=</font> res <font color="#990000">*</font> res <font color="#990000">/</font> <b><font color="#000000">a2_double</font></b><font color="#990000">(</font><font color="#993399">2.0</font><font color="#990000">);</font>
+                    vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">+=</font> res <font color="#990000">*</font> res <font color="#990000">/</font> <b><font color="#000000">scalar</font></b><font color="#990000">(</font><font color="#993399">2.0</font><font color="#990000">);</font>
                     <i><font color="#9A1900">// following term does not depend on fixed or random effects</font></i>
                     <i><font color="#9A1900">// vec[0] += log(sqrt_2pi);</font></i>
                     <i><font color="#9A1900">//</font></i>
@@ -543,12 +546,17 @@ The file <a href="ar1_xam.sh.htm" target="_top"><span style='white-space: nowrap
                          res <font color="#990000">=</font> u<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">/</font> sigma<font color="#990000">;</font>
                     <b><font color="#0000FF">else</font></b>
                          res <font color="#990000">=</font> <font color="#990000">(</font> u<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">-</font> u<font color="#990000">[</font>i<font color="#990000">-</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">)</font> <font color="#990000">/</font> sigma<font color="#990000">;</font>
-                    vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">+=</font> <b><font color="#000000">log</font></b><font color="#990000">(</font>sigma<font color="#990000">)</font> <font color="#990000">+</font> res <font color="#990000">*</font> res <font color="#990000">/</font> <b><font color="#000000">a2_double</font></b><font color="#990000">(</font><font color="#993399">2.0</font><font color="#990000">);</font>
+                    vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">+=</font> <b><font color="#000000">log</font></b><font color="#990000">(</font>sigma<font color="#990000">)</font> <font color="#990000">+</font> res <font color="#990000">*</font> res <font color="#990000">/</font> <b><font color="#000000">scalar</font></b><font color="#990000">(</font><font color="#993399">2.0</font><font color="#990000">);</font>
                     <i><font color="#9A1900">// following term does not depend on fixed or random effects</font></i>
                     <i><font color="#9A1900">// vec[0] += log(sqrt_2pi);</font></i>
                <font color="#FF0000">}</font>
                <b><font color="#0000FF">return</font></b> vec<font color="#990000">;</font>
           <font color="#FF0000">}</font>
+          <i><font color="#9A1900">// a2_vector version of ran_likelihood</font></i>
+          <b><font color="#0000FF">virtual</font></b> <font color="#008080">a2_vector</font> <b><font color="#000000">ran_likelihood</font></b><font color="#990000">(</font>
+               <b><font color="#0000FF">const</font></b> a2_vector<font color="#990000">&amp;</font> fixed_vec<font color="#990000">,</font> <b><font color="#0000FF">const</font></b> a2_vector<font color="#990000">&amp;</font> random_vec
+          <font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <b><font color="#0000FF">return</font></b> <b><font color="#000000">template_ran_likelihood</font></b><font color="#990000">(</font> fixed_vec<font color="#990000">,</font> random_vec <font color="#990000">);</font> <font color="#FF0000">}</font>
      <font color="#FF0000">}</font><font color="#990000">;</font>
      <b><font color="#0000FF">template</font></b> <font color="#990000">&lt;</font><b><font color="#0000FF">class</font></b> <font color="#008080">Value</font><font color="#990000">&gt;</font>
      <font color="#009900">void</font> <b><font color="#000000">label_print</font></b><font color="#990000">(</font><b><font color="#0000FF">const</font></b> <font color="#009900">char</font><font color="#990000">*</font> label<font color="#990000">,</font> <b><font color="#0000FF">const</font></b> Value<font color="#990000">&amp;</font> value<font color="#990000">)</font>

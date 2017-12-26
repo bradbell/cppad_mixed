@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Types Defined in the CppAD Mixed Namespace</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Types Defined in the CppAD Mixed Namespace">
-<meta name="keywords" id="keywords" content=" types defined the cppad mixed namespace syntax scalar a1_double a2_double vector s_vector d_vector a1_vector a2_vector sparse sparse_rc sparse_rcv a1_sparse_rcv ">
+<meta name="keywords" id="keywords" content=" types defined the cppad mixed namespace syntax begin scalar a1_double a2_double a3_double vector s_vector d_vector a1_vector a2_vector a3_vector sparse sparse_rc sparse_rcv a1_sparse_rcv end ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -100,18 +100,22 @@ A:active { color : purple }
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
 <option>Syntax</option>
+<option>Begin Namespace</option>
 <option>Scalar Types</option>
 <option>---..a1_double</option>
 <option>---..a2_double</option>
+<option>---..a3_double</option>
 <option>Vector Types</option>
 <option>---..s_vector</option>
 <option>---..d_vector</option>
 <option>---..a1_vector</option>
 <option>---..a2_vector</option>
+<option>---..a3_vector</option>
 <option>Sparse Types</option>
 <option>---..sparse_rc</option>
 <option>---..sparse_rcv</option>
 <option>---..a1_sparse_rcv</option>
+<option>End Namespace</option>
 </select>
 </td>
 </tr></table><br>
@@ -125,12 +129,15 @@ A:active { color : purple }
 
 <code><font color="blue"><span style='white-space: nowrap'>#&nbsp;include&nbsp;&lt;cppad/mixed/typedef.hpp&gt;<br>
 </span></font></code>
-Note that this is not necessary if you include
-<code><font color="blue">cppad/mixed/cppad_mixed.hpp</font></code>.
-
-
 <br>
+<b><big><a name="Begin Namespace" id="Begin Namespace">Begin Namespace</a></big></b>
 <br>
+All the definitions below are made inside the <code><font color="blue">CppAD::mixed</font></code> namespace;
+i.e.,
+<pre style='display:inline'><tt>
+<b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
+
+</tt></pre>
 <b><big><a name="Scalar Types" id="Scalar Types">Scalar Types</a></big></b>
 
 
@@ -140,18 +147,21 @@ Note that this is not necessary if you include
 <br>
 Scalar with one level of AD:
 <pre style='display:inline'><tt>
-<b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">AD&lt;double&gt;</font> a1_double<font color="#990000">;</font>
-<font color="#FF0000">}</font> <font color="#FF0000">}</font>
 </tt></pre>
 <br>
 <b><a name="Scalar Types.a2_double" id="Scalar Types.a2_double">a2_double</a></b>
 <br>
 Scalar with two levels of AD:
 <pre style='display:inline'><tt>
-<b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">AD&lt;a1_double&gt;</font> a2_double<font color="#990000">;</font>
-<font color="#FF0000">}</font> <font color="#FF0000">}</font>
+</tt></pre>
+<br>
+<b><a name="Scalar Types.a3_double" id="Scalar Types.a3_double">a3_double</a></b>
+<br>
+Scalar with two levels of AD:
+<pre style='display:inline'><tt>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">AD&lt;a2_double&gt;</font> a3_double<font color="#990000">;</font>
 </tt></pre>
 <br>
 <b><big><a name="Vector Types" id="Vector Types">Vector Types</a></big></b>
@@ -163,36 +173,35 @@ Scalar with two levels of AD:
 <br>
 Vectors with elements of type <code><font color="blue">size_t</font></code>:
 <pre style='display:inline'><tt>
-<b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">vector&lt;size_t&gt;</font> s_vector<font color="#990000">;</font>
-<font color="#FF0000">}</font> <font color="#FF0000">}</font>
 </tt></pre>
 <br>
 <b><a name="Vector Types.d_vector" id="Vector Types.d_vector">d_vector</a></b>
 <br>
 Vectors with elements of type <code><font color="blue">double</font></code>:
 <pre style='display:inline'><tt>
-<b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font> d_vector<font color="#990000">;</font>
-<font color="#FF0000">}</font> <font color="#FF0000">}</font>
 </tt></pre>
 <br>
 <b><a name="Vector Types.a1_vector" id="Vector Types.a1_vector">a1_vector</a></b>
 <br>
 Vectors with elements of that have one level of AD:
 <pre style='display:inline'><tt>
-<b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">vector&lt;a1_double&gt;</font> a1_vector<font color="#990000">;</font>
-<font color="#FF0000">}</font> <font color="#FF0000">}</font>
 </tt></pre>
 <br>
 <b><a name="Vector Types.a2_vector" id="Vector Types.a2_vector">a2_vector</a></b>
 <br>
 Vectors with elements of that have two levels of AD:
 <pre style='display:inline'><tt>
-<b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">vector&lt;a2_double&gt;</font> a2_vector<font color="#990000">;</font>
-<font color="#FF0000">}</font> <font color="#FF0000">}</font>
+</tt></pre>
+<br>
+<b><a name="Vector Types.a3_vector" id="Vector Types.a3_vector">a3_vector</a></b>
+<br>
+Vectors with elements of that have two levels of AD:
+<pre style='display:inline'><tt>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">vector&lt;a3_double&gt;</font> a3_vector<font color="#990000">;</font>
 </tt></pre>
 <br>
 <b><big><a name="Sparse Types" id="Sparse Types">Sparse Types</a></big></b>
@@ -204,25 +213,28 @@ Vectors with elements of that have two levels of AD:
 <br>
 Sparsity patterns using index vector of type <code><font color="blue">s_vector</font></code>:
 <pre style='display:inline'><tt>
-<b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">sparse_rc&lt;s_vector&gt;</font> sparse_rc<font color="#990000">;</font>
-<font color="#FF0000">}</font> <font color="#FF0000">}</font>
 </tt></pre>
 <br>
 <b><a name="Sparse Types.sparse_rcv" id="Sparse Types.sparse_rcv">sparse_rcv</a></b>
 <br>
 Sparse matrices using index vector of type <code><font color="blue">s_vector</font></code>
 and value vectors of type <code><font color="blue">d_vector</font></code>:
-<pre><tt><b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
+<pre style='display:inline'><tt>
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">sparse_rcv&lt;s_vector, d_vector&gt;</font> sparse_rcv<font color="#990000">;</font>
-<font color="#FF0000">}</font> <font color="#FF0000">}</font>
+
 </tt></pre>
 <b><a name="Sparse Types.a1_sparse_rcv" id="Sparse Types.a1_sparse_rcv">a1_sparse_rcv</a></b>
 <br>
 Sparse matrices using index vector of type <code><font color="blue">s_vector</font></code>
 and value vectors of type <code><font color="blue">a1_vector</font></code>:
-<pre><tt><b><font color="#0000FF">namespace</font></b> CppAD <font color="#FF0000">{</font> <b><font color="#0000FF">namespace</font></b> mixed <font color="#FF0000">{</font>
+<pre style='display:inline'><tt>
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">sparse_rcv&lt;s_vector, a1_vector&gt;</font> a1_sparse_rcv<font color="#990000">;</font>
+</tt></pre>
+<br>
+<b><big><a name="End Namespace" id="End Namespace">End Namespace</a></big></b>
+
+<pre style='display:inline'><tt>
 <font color="#FF0000">}</font> <font color="#FF0000">}</font>
 </tt></pre>
 
