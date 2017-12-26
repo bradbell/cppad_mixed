@@ -254,7 +254,7 @@ void cppad_mixed::init_ran_hes(
 	ran_hes_rcv_  = sparse_rcv( hes_lower );
 	//
 	// structure used for calculating subset with a1d_vector results
-	CppAD::mixed::a1_sparse_rcv a1_ran_hes_rcv = a1_sparse_rcv( hes_lower );
+	a1_sparse_rcv a1_ran_hes_rcv = a1_sparse_rcv( hes_lower );
 	//
 	// initialize the work vector used for both d_vector and a1_vector results
 	d_vector w(m);
