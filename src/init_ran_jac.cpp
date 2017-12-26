@@ -62,18 +62,19 @@ It specifies the value of the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$.
 
-$head ran_jac_fun_$$
-The input value of the member variables
+$head ran_jac_a1fun_$$
+The input value of the member variable
 $codei%
-	CppAD::ADFun<double> ran_jac_fun_
+	CppAD::ADFun<double> ran_jac_a1fun_
 %$$
 does not matter.
-upon return $code ran_jac_fun_$$ zero order forward mode computes
+upon return zero order forward mode for this function computes
 the Jacobian of the random likelihood  with respect to the random effects;
 i.e.,
 $latex \[
 	f_u ( \theta , u )
 \]$$.
+
 
 $head ran_likelihood_jac$$
 If the return value for $cref ran_likelihood_jac$$ is non-empty,
@@ -98,36 +99,36 @@ void cppad_mixed::init_ran_jac(
 	assert( ran_like_fun_.Domain() == n_both );
 	assert( ran_like_fun_.Range()  == m );
 	//
-	// a1_both = (fixed_vec, random_vec)
-	a1_vector a1_both(n_both);
-	pack(fixed_vec, random_vec, a1_both);
+	// a2_both = (fixed_vec, random_vec)
+	a2_vector a2_both(n_both);
+	pack(fixed_vec, random_vec, a2_both);
 	//
 	// Record gradient of random likelihood
-	CppAD::Independent(a1_both);
+	CppAD::Independent(a2_both);
 	//
 	// evaluate ran_likelihood_jac
-	a1_vector a1_fixed(n_fixed_), a1_random(n_random_);
-	unpack(a1_fixed, a1_random, a1_both);
-	a1_vector a1_jac = ran_likelihood_jac(a1_fixed, a1_random);
-	if( a1_jac.size() != 0 )
+	a2_vector a2_fixed(n_fixed_), a2_random(n_random_);
+	unpack(a2_fixed, a2_random, a2_both);
+	a2_vector a2_jac = ran_likelihood_jac(a2_fixed, a2_random);
+	if( a2_jac.size() != 0 )
 	{
 # ifndef NDEUG
 		check_user_ran_jac(fixed_vec, random_vec);
 # endif
 	}
 	else
-	{	// a1_w = [ 1.0 ]
-		a1_vector a1_w(1);
-		a1_w[0]  = 1.0;
-		ran_like_a1fun_.Forward(0, a1_both);
-		a1_vector a1_jac_both = ran_like_a1fun_.Reverse(1, a1_w);
-		a1_jac.resize(n_random_);
+	{	// a2_w = [ 1.0 ]
+		a2_vector a2_w(1);
+		a2_w[0]  = 1.0;
+		ran_like_a2fun_.Forward(0, a2_both);
+		a2_vector a2_jac_both = ran_like_a2fun_.Reverse(1, a2_w);
+		a2_jac.resize(n_random_);
 		for(size_t j = 0; j < n_random_; ++j)
-			a1_jac[j] = a1_jac_both[n_fixed_ + j];
+			a2_jac[j] = a2_jac_both[n_fixed_ + j];
 	}
-	ran_jac_fun_.Dependent(a1_both, a1_jac);
+	ran_jac_a1fun_.Dependent(a2_both, a2_jac);
 # if CPPAD_MIXED_OPTIMIZE_AD_FUNCTION
-	ran_jac_fun_.optimize()
+	ran_jac_a1fun_.optimize()
 # endif
 	//
 	init_ran_jac_done_ = true;
@@ -201,13 +202,13 @@ void cppad_mixed::check_user_ran_jac(
 	const d_vector&        random_vec      )
 {
 	// evaluate ran_likelihood_jac
-	a1_vector a1_fixed(n_fixed_), a1_random(n_random_);
+	a2_vector a2_fixed(n_fixed_), a2_random(n_random_);
 	for(size_t i = 0; i < n_fixed_; i++)
-		a1_fixed[i] = fixed_vec[i];
+		a2_fixed[i] = fixed_vec[i];
 	for(size_t i = 0; i < n_random_; i++)
-		a1_random[i] = random_vec[i];
-	a1_vector a1_jac = ran_likelihood_jac(a1_fixed, a1_random);
-	assert( a1_jac.size() != 0 );
+		a2_random[i] = random_vec[i];
+	a2_vector a2_jac = ran_likelihood_jac(a2_fixed, a2_random);
+	assert( a2_jac.size() != 0 );
 	//
 	// pack (fixed_vec, random_vec) into both_vec
 	// same order as chose by cppad/mixed/pack.hpp
@@ -225,16 +226,15 @@ void cppad_mixed::check_user_ran_jac(
 	);
 	//
 	double eps = 100. * std::numeric_limits<double>::epsilon();
-	bool ok    = a1_jac.size() == n_random_;
+	bool ok    = a2_jac.size() == n_random_;
 	if( ! ok )
 	{	const std::string error_message = "init_ran_jac: "
 		"ran_likelihood_jac return value size not number of random effects";
 		fatal_error(error_message);
 	}
 	for(size_t j = 0; j < n_random_; j++)
-	{	ok &= CppAD::NearEqual(
-			Value(Var2Par(a1_jac[j])), jac_both[n_fixed_ + j], eps, eps
-		);
+	{	double jac_j = Value( Value( a2_jac[j] ) );
+		ok &= CppAD::NearEqual(jac_j, jac_both[n_fixed_ + j], eps, eps);
 	}
 	if( ! ok )
 	{	const std::string error_message =

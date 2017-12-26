@@ -138,9 +138,9 @@ bool ran_jac_fun_xam(void)
 	mixed_object.initialize(theta, u);
 
 	// compute Jacobian with respect to random effects
-	vector<double> both(n_fixed + n_random);
-	mixed_object.pack(theta, u, both);
-	vector<double> jac = mixed_object.ran_jac_fun_.Forward(0, both);
+	vector<a1_double> a1_both(n_fixed + n_random);
+	mixed_object.pack(theta, u, a1_both);
+	vector<a1_double> a1_jac = mixed_object.ran_jac_a1fun_.Forward(0, a1_both);
 
 	// check the Jacobian
 	for(size_t i = 0; i < n_random; i++)
@@ -151,7 +151,7 @@ bool ran_jac_fun_xam(void)
 		//
 		// std::cout << "jac[i] = " << jac[i];
 		// std::cout << ", check = " << check << std::endl;
-		ok              &= fabs( jac[i] / check - 1.0) <= eps;
+		ok              &= fabs( Value( a1_jac[i] ) / check - 1.0) <= eps;
 	}
 
 	return ok;

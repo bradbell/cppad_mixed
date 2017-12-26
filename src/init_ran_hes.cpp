@@ -194,7 +194,7 @@ void cppad_mixed::init_ran_hes(
 	a1_w[0]  = 1.0;
 	//
 	// determine the sparsity pattern for f_uu (theta , u). Note that
-	// ran_jac_fun_ computes f_u ( theta , u ).
+	// ran_jac_a1fun_ computes f_u ( theta , u ).
 	CppAD::vector<bool> select_domain(n_both), select_range(n_random_);
 	for(size_t i = 0; i < n_fixed_; i++)
 		select_domain[i] = false;
@@ -204,7 +204,7 @@ void cppad_mixed::init_ran_hes(
 	}
 	sparse_rc hes_pattern;
 	bool transpose = false;
-	ran_jac_fun_.subgraph_sparsity(
+	ran_jac_a1fun_.subgraph_sparsity(
 		select_domain, select_range, transpose, hes_pattern
 	);
 	assert(hes_pattern.nr() == n_random_);

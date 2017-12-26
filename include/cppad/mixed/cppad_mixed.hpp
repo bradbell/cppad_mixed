@@ -132,10 +132,10 @@ See $cref ran_likelihood$$.
 $subhead ran_likelihood_jac$$
 This function is only used to increase speed and reduce memory use.
 $srccode%cpp% */
-	virtual a1_vector ran_likelihood_jac(
-		const a1_vector&           fixed_vec  ,
-		const a1_vector&           random_vec )
-	{	return a1_vector(0); }
+	virtual a2_vector ran_likelihood_jac(
+		const a2_vector&           fixed_vec  ,
+		const a2_vector&           random_vec )
+	{	return a2_vector(0); }
 /* %$$
 See $cref ran_likelihood_jac$$.
 
@@ -443,9 +443,9 @@ $srccode%cpp% */
 The following objects hold information for computing derivatives
 with these ADFun objects:
 
-$head ran_jac_fun_$$
+$head ran_jac_a1fun_$$
 If $icode%n_random_% > 0%$$ and $code init_ran_jac_done_$$,
-$code ran_jac_fun_$$ contains the Jacobian of the
+$code ran_jac_a1fun_$$ contains the Jacobian of the
 $cref/random likelihood
 	/theory
 	/Random Likelihood, f(theta, u)
@@ -453,7 +453,7 @@ $cref/random likelihood
 with respect to the random effects; i.e.
 $latex f_u ( \theta , u )$$.
 $srccode%cpp% */
-	CppAD::ADFun<double>  ran_jac_fun_;
+	CppAD::ADFun<a1_double>  ran_jac_a1fun_;
 	//
 	friend bool ::ran_jac_fun_xam(void);
 /* %$$
