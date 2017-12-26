@@ -553,11 +553,13 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 using std::exp;
 using std::log;
 //
-using CppAD::mixed::sparse_rcv;
 using CppAD::mixed::a2_double;
+using CppAD::mixed::a3_double;
 using CppAD::mixed::s_vector;
 using CppAD::mixed::d_vector;
 using CppAD::mixed::a2_vector;
+using CppAD::mixed::a3_vector;
+using CppAD::mixed::sparse_rcv;
 //
 // Convert size_t to string adding commas every three digits
 std::string size_t2string(size_t value )
@@ -786,6 +788,7 @@ public:
 	}
 // ------------------------------------------------------------------------
 public:
+	// a2_vector ran_likelihood
 	virtual a2_vector ran_likelihood(
 		const a2_vector& fixed_vec  ,
 		const a2_vector& random_vec )
@@ -799,6 +802,23 @@ public:
 # endif
 		assert( vec[0] < + a2_double(inf) );
 		assert( vec[0] > - a2_double(inf) );
+		//
+		return vec;
+	}
+	// a3_vector ran_likelihood
+	virtual a3_vector ran_likelihood(
+		const a3_vector& fixed_vec  ,
+		const a3_vector& random_vec )
+	{	a3_vector log_pik(R_ * K_), vec(1);
+		for(size_t ell = 0; ell < R_ * K_; ell++)
+			log_pik[ell] = a3_double(log_pik_[ell]);
+		vec = template_ran_likelihood(fixed_vec, random_vec, log_pik);
+		// make sure result is finite
+# ifndef NDEBUG
+		double inf = std::numeric_limits<double>::infinity();
+# endif
+		assert( vec[0] < + a3_double(inf) );
+		assert( vec[0] > - a3_double(inf) );
 		//
 		return vec;
 	}

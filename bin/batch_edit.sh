@@ -21,7 +21,18 @@ no_change_files='
 rename_cmd='s|ran_objcon|laplace_obj|'
 #
 cat << EOF > junk.sed
-s|ran_like_jac_check|check_user_ran_jac|g
+/^\\t*virtual a2_vector ran_likelihood(/! b skip
+: one
+N
+/}\$/! b one
+s|^\\(\\t*\\).*|&\\
+\\1// a3_vector version of ran_likelihood\\
+\\1virtual a3_vector ran_likelihood(\\
+\\1	const a3_vector\\& fixed_vec, const a3_vector\\& random_vec\\
+\\1)\\
+\\1{	return template_ran_likelihood( fixed_vec, random_vec ); }|
+#
+: skip
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]
