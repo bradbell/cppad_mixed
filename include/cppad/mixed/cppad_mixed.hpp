@@ -301,6 +301,7 @@ private:
 ------------------------------------------------------------------------------
 $begin private$$
 $spell
+	rc
 	rcv
 	ldlt_eigen
 	objcon
@@ -432,7 +433,7 @@ $head ran_like_fun_$$
 If $icode%n_random_% > 0%$$ and $code init_ran_like_done_$$,
 $cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$,
 $cref/ran_like_a1fun_/init_ran_like/ran_like_a1fun_/$$, and
-$cref/ran_like_a1fun_/init_ran_like/ran_like_a2fun_/$$,
+$cref/ran_like_a2fun_/init_ran_like/ran_like_a2fun_/$$,
 are recordings of the user's $cref ran_likelihood$$.
 function.
 $srccode%cpp% */
@@ -443,17 +444,21 @@ $srccode%cpp% */
 The following objects hold information for computing derivatives
 with these ADFun objects:
 
-$head ran_jac_a1fun_$$
+$head ran_jac_fun_$$
 If $icode%n_random_% > 0%$$ and $code init_ran_jac_done_$$,
-$code ran_jac_a1fun_$$ contains the Jacobian of the
+$cref/ran_jac_a1fun_/init_ran_jac/ran_jac_a1fun_/$$, and
+$cref/ran_jac2hes_rc_/init_ran_jac/ran_jac2hes_rc_/$$,
+contain the Jacobian of the
 $cref/random likelihood
 	/theory
 	/Random Likelihood, f(theta, u)
 /$$
 with respect to the random effects; i.e.
-$latex f_u ( \theta , u )$$.
+$latex f_u ( \theta , u )$$ and the sparsity for
+$latex f_{uu} ( u )$$ .
 $srccode%cpp% */
 	CppAD::ADFun<a1_double>  ran_jac_a1fun_;
+	sparse_rc                ran_jac2hes_rc_;
 	//
 	friend bool ::ran_jac_fun_xam(void);
 /* %$$

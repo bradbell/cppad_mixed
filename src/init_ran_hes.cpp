@@ -193,59 +193,35 @@ void cppad_mixed::init_ran_hes(
 	a1_vector a1_w(1);
 	a1_w[0]  = 1.0;
 	//
-	// determine the sparsity pattern for f_uu (theta , u). Note that
-	// ran_jac_a1fun_ computes f_u ( theta , u ).
-	CppAD::vector<bool> select_domain(n_both), select_range(n_random_);
-	for(size_t i = 0; i < n_fixed_; i++)
-		select_domain[i] = false;
-	for(size_t i = 0; i < n_random_; i++)
-	{	select_domain[n_fixed_ + i] = true;
-		select_range[i]             = true;
-	}
-	sparse_rc hes_pattern;
-	bool transpose = false;
-	ran_jac_a1fun_.subgraph_sparsity(
-		select_domain, select_range, transpose, hes_pattern
-	);
-	assert(hes_pattern.nr() == n_random_);
-	assert(hes_pattern.nc() == n_both);
-	// -----------------------------------------------------------------------
-	// hes_pattern_both
-	size_t nnz = hes_pattern.nnz();
-	sparse_rc hes_pattern_both(n_both, n_both, nnz);
-	for(size_t k = 0; k < nnz; ++k)
-	{	size_t r = hes_pattern.row()[k] + n_fixed_;
-		size_t c = hes_pattern.col()[k];
-		hes_pattern_both.set(k, r, c);
-	}
-	// -----------------------------------------------------------------------
-	// count number of entires in lower triangle of Hessian
+	// hes pattern relative to both fixed and random effects
+	// (also count number of entries in lower traingle)
+	size_t nnz   = ran_jac2hes_rc_.nnz();
 	size_t n_low = 0;
-	for(size_t k = 0; k < nnz; k++)
-	{	size_t r = hes_pattern_both.row()[k];
-		size_t c = hes_pattern_both.col()[k];
-
-		// select_domain and select_range should make this true
-		assert( r >= n_fixed_ && c >= n_fixed_ );
+	sparse_rc hes_pattern(n_both, n_both, nnz);
+	for(size_t k = 0; k < nnz; ++k)
+	{	size_t r = ran_jac2hes_rc_.row()[k];
+		size_t c = ran_jac2hes_rc_.col()[k];
+		assert( r < n_random_ );
+		r = r + n_fixed_;
+		hes_pattern.set(k, r, c);
 		if( r >= c )
-		{	++n_low;
-		}
+			++n_low;
 	}
-	// -----------------------------------------------------------------------
+	//
 	// subset of sparstiy pattern that we are calculating
 	// in column major order
 	sparse_rc hes_low(n_random_, n_both, n_low);
 	sparse_rc hes_lower(n_both,  n_both, n_low);
-	s_vector col_major = hes_pattern_both.col_major();
+	s_vector col_major = hes_pattern.col_major();
 	size_t k_low = 0;
 	for(size_t k = 0; k < nnz; k++)
 	{	size_t ell = col_major[k];
-		size_t r   = hes_pattern_both.row()[ell];
-		size_t c   = hes_pattern_both.col()[ell];
+		size_t r   = hes_pattern.row()[ell];
+		size_t c   = hes_pattern.col()[ell];
+		assert( r >= n_fixed_ );
 		if( r >= c )
-		{	assert( n_fixed_ <= c );
+		{	hes_lower.set(k_low, r, c);
 			hes_low.set(k_low, r - n_fixed_, c);
-			hes_lower.set(k_low, r, c);
 			++k_low;
 		}
 	}
@@ -269,7 +245,7 @@ void cppad_mixed::init_ran_hes(
 		both,
 		w,
 		ran_hes_rcv_,
-		hes_pattern_both,
+		hes_pattern,
 		coloring,
 		ran_hes_work_
 	);

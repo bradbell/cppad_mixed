@@ -21,6 +21,8 @@ $spell
 	const
 	Cpp
 	init
+	hes
+	rc
 $$
 
 $section Initialize Jacobian of Random Likelihood w.r.t. Random Effects$$
@@ -75,6 +77,17 @@ $latex \[
 	f_u ( \theta , u )
 \]$$.
 
+$head ran_jac2hes_rc_$$
+The input value of the member variable
+$codei%
+	CppAD::mixed::sparse_rc ran_jac2hes_rc_
+%$$
+does not matter.
+Upon return it contains the sparsity pattern for
+$latex f_{uu} ( \theta , u )$$ (not just lower triangle).
+The row indices are in the vector $latex u$$; i.e., just the random effects.
+The column indices are in the vector  $latex ( \theta , u )$$; i.e.,
+both fixed and random effects.
 
 $head ran_likelihood_jac$$
 If the return value for $cref ran_likelihood_jac$$ is non-empty,
@@ -98,6 +111,9 @@ void cppad_mixed::init_ran_jac(
 	assert( random_vec.size() == n_random_ );
 	assert( ran_like_fun_.Domain() == n_both );
 	assert( ran_like_fun_.Range()  == m );
+	// ------------------------------------------------------------------------
+	// ran_jac_a1fun_
+	// ------------------------------------------------------------------------
 	//
 	// a2_both = (fixed_vec, random_vec)
 	a2_vector a2_both(n_both);
@@ -130,7 +146,28 @@ void cppad_mixed::init_ran_jac(
 # if CPPAD_MIXED_OPTIMIZE_AD_FUNCTION
 	ran_jac_a1fun_.optimize()
 # endif
+	// ------------------------------------------------------------------------
+	// ran_jac2hes_rc_
+	// ------------------------------------------------------------------------
 	//
+	// ran_jac_a1fun_ computes f_u ( theta , u ), but we are only interested
+	// in the sparsity patter for f_uu ( theta, u ).
+	CppAD::vector<bool> select_domain(n_both), select_range(n_random_);
+	for(size_t i = 0; i < n_fixed_; i++)
+		select_domain[i] = false;             // false for fixed effects
+	for(size_t i = 0; i < n_random_; i++)
+	{	select_domain[n_fixed_ + i] = true;   // true for random effects
+		select_range[i]             = true;
+	}
+	sparse_rc hes_pattern;
+	bool transpose = false;
+	ran_jac_a1fun_.subgraph_sparsity(
+		select_domain, select_range, transpose, ran_jac2hes_rc_
+	);
+	assert(ran_jac2hes_rc_.nr() == n_random_);
+	assert(ran_jac2hes_rc_.nc() == n_both);
+	//
+	// ------------------------------------------------------------------------
 	init_ran_jac_done_ = true;
 }
 

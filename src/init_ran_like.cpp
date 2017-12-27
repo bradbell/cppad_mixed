@@ -152,7 +152,7 @@ void cppad_mixed::init_ran_like(
 	ran_like_a1fun_.Dependent(a2_both, a2_vec);
 	ran_like_a1fun_.check_for_nan(false);
 
-	// I think that re-optimizing will not help
+	// Brad thinks that re-optimizing will not help
 
 	// ------------------------------------------------------------------
 	// record ran_like_fun_
