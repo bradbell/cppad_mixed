@@ -118,7 +118,7 @@ void cppad_mixed::init_ran_jac(
 	}
 	else
 	{	// a2_w = [ 1.0 ]
-		a2_vector a2_w(1);
+		a2_vector a2_w(m);
 		a2_w[0]  = 1.0;
 		ran_like_a2fun_.Forward(0, a2_both);
 		a2_vector a2_jac_both = ran_like_a2fun_.Reverse(1, a2_w);

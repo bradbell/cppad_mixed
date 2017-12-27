@@ -97,7 +97,7 @@ $srccode%cpp% */
 	// scalar types
 	typedef CppAD::mixed::a1_double      a1_double;
 	typedef CppAD::mixed::a2_double      a2_double;
-	typedef CppAD::mixed::a2_double      a3_double;
+	typedef CppAD::mixed::a3_double      a3_double;
 	// vector types
 	typedef CppAD::mixed::s_vector       s_vector;
 	typedef CppAD::mixed::d_vector       d_vector;
@@ -250,7 +250,7 @@ $srccode%cpp% */
 $head information_mat$$
 $cref information_mat$$, $title information_mat$$.
 $srccode%cpp% */
-	CppAD::mixed::sparse_rcv information_mat(
+	sparse_rcv information_mat(
 		const CppAD::mixed::fixed_solution&  solution             ,
 		const d_vector&                      random_opt
 	);
@@ -471,7 +471,7 @@ with respect to the random effects; i.e.
 $latex f_{u,u} ( \theta , u )$$.
 $srccode%cpp% */
 	// sparse_hes_info for both d_vector and a1_vector value vectors
-	CppAD::mixed::sparse_rcv      ran_hes_rcv_;
+	sparse_rcv                    ran_hes_rcv_;
 	CppAD::sparse_hes_work        ran_hes_work_;
 	//
 	// recording of sparse Hessian calculation
@@ -772,7 +772,7 @@ $srccode%cpp% */
 $subhead try_information_mat$$
 Called by public $cref/information_mat/public/information_mat/$$
 $srccode%cpp% */
-	CppAD::mixed::sparse_rcv try_information_mat(
+	sparse_rcv try_information_mat(
 		const CppAD::mixed::fixed_solution&  solution      ,
 		const d_vector&                      random_opt
 	);
