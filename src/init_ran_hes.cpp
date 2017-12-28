@@ -96,36 +96,11 @@ see $cref/f(theta, u)/
 The matrix is symmetric and hence can be recovered from
 its lower triangle.
 
-$head ran_hes_work_$$
-The input value of the member variable
-$codei%
-	CppAD::sparse_hes_work ran_hes_work_
-%$$
-does not matter (it should be empty).
-Upon return, it contains the necessary information for the
-calls to $code sparse_hes$$ specified below.
-
 
 $head ran_like_fun_$$
 If the return value from $cref ran_likelihood_hes$$ is non-empty,
 and $code NDEBUG$$ is not defined,
 $code ran_likelihood_hes$$ is checked for correctness.
-If the return value from $cref ran_likelihood_hes$$ is empty,
-upon return the following call can be used to compute the
-lower triangle of the Hessian $latex f_{u,u} ( \theta , u )$$
-as a $code d_vector$$:
-$codei%
-	ran_like_fun_.sparse_hes(
-		%x%,
-		%w%
-		ran_hes_rcv_,
-		%not_used_pattern%,
-		%not_used_coloring%,
-		ran_hes_work_
-	)
-%$$
-where the values of $icode not_used_pattern$$ and $icode not_used_coloring$$
-do not matter.
 
 $head Random Effects Index$$
 The indices in $code ran_hes_rcv_$$
@@ -237,18 +212,6 @@ void cppad_mixed::init_ran_hes(
 	// structure used for calculating subset with a1d_vector results
 	a1_sparse_rcv a1_ran_hes_rcv = a1_sparse_rcv( hes_lower );
 	//
-	// initialize the work vector used for both d_vector and a1_vector results
-	d_vector w(m);
-	w[0] = 1.0;
-	std::string coloring = "cppad.symmetric";
-	ran_like_fun_.sparse_hes(
-		both,
-		w,
-		ran_hes_rcv_,
-		hes_pattern,
-		coloring,
-		ran_hes_work_
-	);
 	// -----------------------------------------------------------------------
 	// Declare the independent and dependent variables for taping calculation
 	// of Hessian of the random likelihood w.r.t. the random effects
@@ -345,16 +308,14 @@ $codei%
 must contain a recording of the random likelihood function; see
 $cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$.
 
-$head ran_hes_rcv_, ran_hes_work_$$
-The member variables
+$head ran_hes_rcv_$$
+The member variable
 $codei%
 	CppAD::mixed::sparse_rcv  ran_hes_rcv_
-	CppAD::sparse_hes_work    ran_hes_work_
 %$$
 must contain the information for evaluating the random effects
 Hessian using $code ran_like_fun_$$; see
-$cref/ran_hes_rcv_/init_ran_hes/ran_hes_rcv_/$$,
-$cref/ran_hes_work_/init_ran_hes/ran_hes_work_/$$.
+$cref/ran_hes_rcv_/init_ran_hes/ran_hes_rcv_/$$.
 
 $head ran_likelihood_hes$$
 The return value from $cref ran_likelihood_hes$$ must be non-empty
