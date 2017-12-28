@@ -383,40 +383,26 @@ void cppad_mixed::check_user_ran_hes(
 	// to just the random effects, not both fixed and random effects.
 	size_t K = ran_hes_rcv_.nnz();
 	CppAD::vector<size_t> row(K), col(K);
+	sparse_rc pattern(n_random_, n_fixed_ + n_random_, K);
 	for(size_t k = 0; k < K; k++)
 	{	assert( ran_hes_rcv_.row()[k] >= n_fixed_ );
 		assert( ran_hes_rcv_.col()[k] >= n_fixed_ );
 		row[k] = ran_hes_rcv_.row()[k] - n_fixed_;
 		col[k] = ran_hes_rcv_.col()[k] - n_fixed_;
+		//
+		pattern.set(k, row[k], col[k] + n_fixed_);
 	}
+	// user's version of Hessian
 	a1_vector a1_val_out = ran_likelihood_hes(
 		a1_fixed, a1_random, row, col
 	);
 	assert( a1_val_out.size() != 0 );
 	//
-	// same order as chose by cppad/mixed/pack.hpp
-	d_vector both( n_fixed_ + n_random_ );
-	pack(fixed_vec, random_vec, both);
-	//
-	// weighting vector
-	assert( ran_like_fun_.Range() == 1 );
-	d_vector w(1);
-	w[0] = 1.0;
-	//
-	// sparsity pattern is not used
-	CppAD::vector< std::set<size_t> > not_used(0);
-	//
-	// compute the sparse Hessian
-	sparse_rc   not_used_pattern;
-	std::string not_used_coloring;
-	ran_like_fun_.sparse_hes(
-		both,
-		w,
-		ran_hes_rcv_,
-		not_used_pattern,
-		not_used_coloring,
-		ran_hes_work_
-	);
+	// CppAD's version of Hessian
+	a1_sparse_rcv a1_subset(pattern);
+	a1_vector a1_both( n_fixed_ + n_random_ );
+	pack(fixed_vec, random_vec, a1_both);
+	ran_jac_a1fun_.subgraph_jac_rev(a1_both, a1_subset);
 	//
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 	bool ok    = a1_val_out.size() == K;
@@ -427,7 +413,7 @@ void cppad_mixed::check_user_ran_hes(
 	}
 	for(size_t k = 0; k < K; k++)
 	{	ok &= CppAD::NearEqual(
-			Value(Var2Par(a1_val_out[k])), ran_hes_rcv_.val()[k], eps, eps
+			Value(a1_val_out[k]), a1_subset.val()[k], eps, eps
 		);
 	}
 	if( ! ok )
