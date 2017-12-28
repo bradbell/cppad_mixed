@@ -35,7 +35,7 @@ $section Newton Step Algorithm Constructor$$
 
 $head Syntax$$
 $codei%CppAD::mixed::newton_step_algo %algo%(
-	%a1fun%, %jac_a1fun%, %hes_rcv%, %hes_work%, %theta%, %u%,
+	%a1fun%, %jac_a1fun%, %hes_rcv%, %theta%, %u%,
 )%$$
 
 $head Prototype$$
@@ -74,26 +74,6 @@ information for the lower triangle of the Hessian with respect to the
 random effects, as a function of the fixed and random effects; i.e.
 $latex f_uu ( \theta , u)$$.
 In addition, this matrix is in column major order.
-
-$head hes_work$$
-This argument has prototype
-$code%
-	const CppAD::sparse_hes_work& %hes_work%
-%$$
-It contains the necessary information so that the call
-$codei%
-	a1fun.sparse_hes(
-		%a1_x%,
-		%a1_w%
-		a1_hes_rcv,
-		%not_used_pattern%,
-		%not_used_coloring%,
-		hes_work
-	)
-%$$
-can be used the compute the sparse Hessian.
-Here $icode a1_hes_rcv$$ is the same as $icode hes_rcv$$, except
-that its value vector has type $code a1_vector$$ instead of $code d_vector$$.
 
 $head theta$$
 This is a value for $latex \theta$$
@@ -162,7 +142,6 @@ newton_step_algo::newton_step_algo(
 	CppAD::ADFun<a1_double>&      a1fun         ,
 	CppAD::ADFun<a1_double>&      jac_a1fun     ,
 	const sparse_rcv&             hes_rcv       ,
-	const CppAD::sparse_hes_work& hes_work      ,
 	const CppAD::vector<double>&  theta         ,
 	const CppAD::vector<double>&  u             )
 // END PROTOTYPE
@@ -170,8 +149,7 @@ newton_step_algo::newton_step_algo(
 n_fixed_  ( theta.size() ) ,
 n_random_ ( u.size()     ) ,
 a1fun_    ( a1fun        ) ,
-jac_a1fun_( jac_a1fun    ) ,
-hes_work_ ( hes_work     )
+jac_a1fun_( jac_a1fun    )
 {	assert( a1fun_.Range() == 1 );
 	assert( a1fun.Domain() == n_fixed_ + n_random_ );
 	//
@@ -284,9 +262,6 @@ void newton_step_algo::operator()(
 	a1_vector a1_theta_u(n_fixed_ + n_random_);
 	for(size_t j = 0; j < n_fixed_ + n_random_; j++)
 		a1_theta_u[j] = a1_theta_u_v[j];
-
-	// sparsity pattern not needed once we have hes_work_
-	CppAD::vectorBool not_used;
 
 	// compute the sparse Hessian
 	jac_a1fun_.subgraph_jac_rev(a1_theta_u, a1_jac2hes_rcv_);
@@ -442,7 +417,7 @@ $section Initialize the Newton Step Checkpoint Function$$
 
 $head Syntax$$
 $icode%newton_checkpoint%.initialize(
-	%a1fun%, %hes_rcv%, %hes_work%, %theta%, %u%
+	%a1fun%, %jac_a1fun%, %hes_rcv%, %theta%, %u%
 )%$$
 
 $head Prototype$$
@@ -481,26 +456,6 @@ information for the Hessian with respect to the
 random effects (as a function of the fixed and random effects); i.e.
 $latex f_uu ( \theta , u)$$.
 
-$head hes_work$$
-This argument has prototype
-$code%
-	const CppAD::sparse_hes_work& %hes_work%
-%$$
-It contains the necessary information so that the call
-$codei%
-	a1fun.sparse_hes(
-		%a1_x%,
-		%a1_w%
-		a1_hes_rcv,
-		%not_used_pattern%,
-		%not_used_coloring%,
-		hes_work
-	)
-%$$
-can be used the compute the sparse Hessian.
-Here $icode a1_hes_rcv$$ is the same as $icode hes_rcv$$, except
-that its value vector has type $code a1_vector$$ instead of $code d_vector$$.
-
 $head theta$$
 This is a value for $latex \theta$$
 at which we can evaluate the Newton step and log determinant.
@@ -527,7 +482,6 @@ void newton_step::initialize(
 	CppAD::ADFun<a1_double>&          a1fun         ,
 	CppAD::ADFun<a1_double>&          jac_a1fun     ,
 	const sparse_rcv&                 hes_rcv       ,
-	const CppAD::sparse_hes_work      hes_work      ,
 	const CppAD::vector<double>&      theta         ,
 	const CppAD::vector<double>&      u             )
 // END PROTOTYPE
@@ -536,7 +490,7 @@ void newton_step::initialize(
 	// create algo
 	//
 	algo_ = new newton_step_algo(
-		a1fun, jac_a1fun, hes_rcv, hes_work, theta, u
+		a1fun, jac_a1fun, hes_rcv, theta, u
 	);
 	assert( algo_ != CPPAD_MIXED_NULL_PTR );
 	//

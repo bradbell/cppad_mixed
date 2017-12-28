@@ -78,23 +78,7 @@ bool newton_step_xam(void)
 	//
 	// structure that holds result of calculation
 	CppAD::mixed::sparse_rcv    hes_ran( pattern );
-	CppAD::mixed::a1_sparse_rcv a1_hes_ran( pattern );
 	//
-	// compute hes_ran_work
-	CppAD::sparse_hes_work hes_ran_work;
-	CppAD::mixed::a1_vector a1_w(1), a1_both(n_both);
-	a1_w[0] = 1.0;
-	for(size_t j = 0; j < n_both; j++)
-		a1_both[j] = 0.0;
-	std::string coloring = "cppad.symmetric";
-	a1fun.sparse_hes(
-		a1_both,
-		a1_w,
-		a1_hes_ran,
-		pattern,
-		coloring,
-		hes_ran_work
-	);
 	// create newton_checkpoint ---------------------------------------------
 	vector<double> theta(n_fixed), u(n_random);
 	for(size_t j = 0; j < n_fixed; j++)
@@ -104,7 +88,7 @@ bool newton_step_xam(void)
 	//
 	CppAD::mixed::newton_step newton_checkpoint;
 	newton_checkpoint.initialize(
-		a1fun, jac_a1fun, hes_ran, hes_ran_work, theta, u
+		a1fun, jac_a1fun, hes_ran, theta, u
 	);
 	//
 	// use and test newton_checkpoint ---------------------------------------

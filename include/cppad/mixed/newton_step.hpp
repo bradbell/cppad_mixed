@@ -201,7 +201,6 @@ private:
 		CppAD::ADFun<a1_double>&          jac_a1fun_;
 		// information for computing f_uu (theta , u) using a1_double
 		a1_sparse_rcv                     a1_jac2hes_rcv_;
-		CppAD::sparse_hes_work            hes_work_;
 		// Sparse Cholesky factorization as an atomic AD operation.
 		// It must live (not be destroyed) for as long as any tape that uses it.
 		sparse_ad_cholesky                cholesky_;
@@ -211,7 +210,6 @@ public:
 		CppAD::ADFun<a1_double>&          a1fun         ,
 		CppAD::ADFun<a1_double>&          jac_a1fun     ,
 		const sparse_rcv&                 hes_rcv       ,
-		const CppAD::sparse_hes_work&     hes_work      ,
 		const CppAD::vector<double>&      theta         ,
 		const CppAD::vector<double>&      u
 	);
@@ -241,7 +239,6 @@ public:
 		CppAD::ADFun<a1_double>&          a1fun         ,
 		CppAD::ADFun<a1_double>&          jac_a1fun     ,
 		const sparse_rcv&                 hes_rcv       ,
-		const CppAD::sparse_hes_work      hes_work      ,
 		const CppAD::vector<double>&      fixed_vec     ,
 		const CppAD::vector<double>&      random_vec
 	);
