@@ -34,7 +34,7 @@ $section Newton Step Algorithm Constructor$$
 
 $head Syntax$$
 $codei%CppAD::mixed::newton_step_algo %algo%(
-	%a1_adfun%, %hes_rcv%, %hes_work%, %theta%, %u%,
+	%a1fun%, %hes_rcv%, %hes_work%, %theta%, %u%,
 )%$$
 
 $head Prototype$$
@@ -49,11 +49,11 @@ $head algo$$
 This is the Newton step algorithm object that is constructed
 by this operation.
 
-$head a1_adfun$$
+$head a1fun$$
 This is a recording of the function $latex f( \theta , u)$$
 for which we are checkpointing the Newton step and log determinant for.
 The routine $cref/pack(theta, u)/pack/$$ is used to
-convert the pair of vectors into the argument vector for $icode a1_adfun$$.
+convert the pair of vectors into the argument vector for $icode a1fun$$.
 
 $head hes_rcv$$
 This argument has prototype
@@ -74,7 +74,7 @@ $code%
 %$$
 It contains the necessary information so that the call
 $codei%
-	a1_adfun.sparse_hes(
+	a1fun.sparse_hes(
 		%a1_x%,
 		%a1_w%
 		a1_hes_rcv,
@@ -133,12 +133,12 @@ $codei%
 %$$
 and is the number of random effects; i.e., the size of $icode u$$.
 
-$head a1_adfun_$$
+$head a1fun_$$
 This member variable has prototype
 $codei%
-	CppAD::ADFun<a1_double>&          a1_adfun_
+	CppAD::ADFun<a1_double>&          a1fun_
 %$$
-and is a reference to the $icode a1_adfun$$ argument.
+and is a reference to the $icode a1fun$$ argument.
 
 $head a1_hes_rcv_$$
 This member variable has prototype
@@ -152,7 +152,7 @@ $end
 // -------------------------------------------------------------------------
 // BEGIN PROTOTYPE
 newton_step_algo::newton_step_algo(
-	CppAD::ADFun<a1_double>&      a1_adfun      ,
+	CppAD::ADFun<a1_double>&      a1fun         ,
 	const sparse_rcv&             hes_rcv       ,
 	const CppAD::sparse_hes_work& hes_work      ,
 	const CppAD::vector<double>&  theta         ,
@@ -161,10 +161,10 @@ newton_step_algo::newton_step_algo(
 :
 n_fixed_ ( theta.size() ) ,
 n_random_( u.size()     ) ,
-a1_adfun_( a1_adfun     ) ,
+a1fun_( a1fun        ) ,
 hes_work_( hes_work     )
-{	assert( a1_adfun_.Range() == 1 );
-	assert( a1_adfun.Domain() == n_fixed_ + n_random_ );
+{	assert( a1fun_.Range() == 1 );
+	assert( a1fun.Domain() == n_fixed_ + n_random_ );
 	//
 	// total number of variables
 	size_t n_both = n_fixed_ + n_random_;
@@ -279,7 +279,7 @@ void newton_step_algo::operator()(
 	a1_w[0] = 1.0;
 	sparse_rc   not_used_pattern;
 	std::string not_used_coloring;
-	a1_adfun_.sparse_hes(
+	a1fun_.sparse_hes(
 		a1_theta_u,
 		a1_w,
 		a1_hes_rcv_,
@@ -438,7 +438,7 @@ $section Initialize the Newton Step Checkpoint Function$$
 
 $head Syntax$$
 $icode%newton_checkpoint%.initialize(
-	%a1_adfun%, %hes_rcv%, %hes_work%, %theta%, %u%
+	%a1fun%, %hes_rcv%, %hes_work%, %theta%, %u%
 )%$$
 
 $head Prototype$$
@@ -453,11 +453,11 @@ $head newton_checkpoint$$
 This is a Newton step object; see
 $cref/newton_checkpoint/newton_step_ctor/newton_checkpoint/$$.
 
-$head a1_adfun$$
+$head a1fun$$
 This is a recording of the function $latex f( \theta , u)$$
 for which we are checkpointing the Newton step and log determinant for.
 The routine $cref/pack(theta, u)/pack/$$ is used to
-convert the pair of vectors into the argument vector for $icode a1_adfun$$.
+convert the pair of vectors into the argument vector for $icode a1fun$$.
 
 $head hes_rcv$$
 This argument has prototype
@@ -477,7 +477,7 @@ $code%
 %$$
 It contains the necessary information so that the call
 $codei%
-	a1_adfun.sparse_hes(
+	a1fun.sparse_hes(
 		%a1_x%,
 		%a1_w%
 		a1_hes_rcv,
@@ -513,7 +513,7 @@ $end
 */
 // BEGIN PROTOTYPE
 void newton_step::initialize(
-	CppAD::ADFun<a1_double>&          a1_adfun      ,
+	CppAD::ADFun<a1_double>&          a1fun         ,
 	const sparse_rcv&                 hes_rcv       ,
 	const CppAD::sparse_hes_work      hes_work      ,
 	const CppAD::vector<double>&      theta         ,
@@ -523,7 +523,7 @@ void newton_step::initialize(
 	assert( checkpoint_fun_ == CPPAD_MIXED_NULL_PTR );
 	// create algo
 	//
-	algo_ = new newton_step_algo( a1_adfun, hes_rcv, hes_work, theta, u);
+	algo_ = new newton_step_algo( a1fun, hes_rcv, hes_work, theta, u);
 	assert( algo_ != CPPAD_MIXED_NULL_PTR );
 	//
 # if CPPAD_MIXED_CHECKPOINT_NEWTON_STEP

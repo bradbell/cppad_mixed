@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -34,7 +34,7 @@ $section Newton Step and Log Determinant Calculation$$
 $head Syntax$$
 $codei%CppAD::mixed::newton_step %newton_object%()
 %$$
-$icode%newton_object%.initialize(%a1_adfun%, %hes_rcv%, %theta%, %u%)
+$icode%newton_object%.initialize(%a1fun%, %hes_rcv%, %theta%, %u%)
 %$$
 $icode%sv% = newton_object%.size_var()
 %$$
@@ -72,18 +72,18 @@ $head initialize$$
 The $icode newton_object$$ must be initialized,
 before any calls to its $code eval$$ routine, using the syntax
 $codei%
-	newton_object.initialize(%a1_adfun%, %hes_rcv%,  %theta%, %u%)
+	newton_object.initialize(%a1fun%, %hes_rcv%,  %theta%, %u%)
 %$$
 
-$subhead a1_adfun$$
+$subhead a1fun$$
 This $code initialize$$ argument has prototype
 $codei%
-	CppAD::ADFun< CppAD::AD<double> > %a1_adfun%
+	CppAD::ADFun< CppAD::AD<double> > %a1fun%
 %$$
 This is a recording of the function $latex f( \theta , u)$$
 for which we are evaluating the Newton step and log determinant for.
 The routine $cref/pack(theta, u)/pack/$$ is used to
-convert the pair of vectors into the argument vector for $icode a1_adfun$$.
+convert the pair of vectors into the argument vector for $icode a1fun$$.
 
 $subhead hes_rcv$$
 This $code initialize$$ argument has prototype
@@ -196,7 +196,7 @@ private:
 		// niumber of random effects
 		const size_t                      n_random_;
 		// random likelihood f(theta, u)
-		CppAD::ADFun<a1_double>&          a1_adfun_;
+		CppAD::ADFun<a1_double>&          a1fun_;
 		// information for computing f_uu (theta , u) using a1_double
 		CppAD::mixed::a1_sparse_rcv       a1_hes_rcv_;
 		CppAD::sparse_hes_work            hes_work_;
@@ -206,7 +206,7 @@ private:
 public:
 	// constructor for algorithm that is checkpointed
 	newton_step_algo(
-		CppAD::ADFun<a1_double>&          a1_adfun      ,
+		CppAD::ADFun<a1_double>&          a1fun         ,
 		const sparse_rcv&                 hes_rcv       ,
 		const CppAD::sparse_hes_work&     hes_work      ,
 		const CppAD::vector<double>&      theta         ,
@@ -235,7 +235,7 @@ public:
 	~newton_step(void);
 	// setup the checkpoint function
 	void initialize(
-		CppAD::ADFun<a1_double>&          a1_adfun      ,
+		CppAD::ADFun<a1_double>&          a1fun         ,
 		const sparse_rcv&                 hes_rcv       ,
 		const CppAD::sparse_hes_work      hes_work      ,
 		const CppAD::vector<double>&      fixed_vec     ,
