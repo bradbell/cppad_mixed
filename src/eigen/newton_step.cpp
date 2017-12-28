@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -62,9 +62,10 @@ $code%
 %$$
 It is the
 $cref/sparse_rcv/typedef/Sparse Types/sparse_rcv/$$
-information for the Hessian with respect to the
-random effects (as a function of the fixed and random effects); i.e.
+information for the lower triangle of the Hessian with respect to the
+random effects, as a function of the fixed and random effects; i.e.
 $latex f_uu ( \theta , u)$$.
+In addition, this matrix is in column major order.
 
 $head hes_work$$
 This argument has prototype
