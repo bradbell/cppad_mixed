@@ -192,7 +192,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 		if( ! quasi_fixed_ )
 		{
 			// newton_checkpoint_
-			newton_checkpoint_.initialize(ran_like_a1fun_,
+			newton_checkpoint_.initialize(ran_like_a1fun_, ran_jac_a1fun_,
 				ran_hes_rcv_, ran_hes_work_, fixed_vec, random_vec
 			);
 			init_newton_checkpoint_done_ = true;

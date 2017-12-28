@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -45,6 +45,7 @@ bool newton_step_xam(void)
 	size_t n_random = 3;
 	size_t n_both   = n_fixed + n_random;
 	//
+	// a1fun
 	vector<a2_double> a2_theta_u(n_both);
 	for(size_t j = 0; j < n_both; j++)
 		a2_theta_u[j] = a2_double(0.0);
@@ -56,7 +57,17 @@ bool newton_step_xam(void)
 		a2_double term = a2_theta_u[j];
 		a2_f[0]       += term * term;
 	}
-	CppAD::ADFun<a1_double> a1_adfun(a2_theta_u, a2_f);
+	CppAD::ADFun<a1_double> a1fun(a2_theta_u, a2_f);
+	//
+	// jac_a1fun
+	CppAD::Independent(a2_theta_u);
+	vector<a2_double> a2_jac(n_random);
+	for(size_t j = 0; j < n_random; ++j)
+	{	a2_double a2_uj = a2_theta_u[n_fixed + j];
+		a2_jac[j]       = a2_double(2.0) * a2_uj;
+	}
+	CppAD::ADFun<a1_double> jac_a1fun(a2_theta_u, a2_jac);
+
 	/// compute has_ran and a1_hes_ran
 	//
 	// Only requesting Hessian w.r.t. random effects so the pattern
@@ -76,7 +87,7 @@ bool newton_step_xam(void)
 	for(size_t j = 0; j < n_both; j++)
 		a1_both[j] = 0.0;
 	std::string coloring = "cppad.symmetric";
-	a1_adfun.sparse_hes(
+	a1fun.sparse_hes(
 		a1_both,
 		a1_w,
 		a1_hes_ran,
@@ -92,7 +103,9 @@ bool newton_step_xam(void)
 		u[j] = 0.0;
 	//
 	CppAD::mixed::newton_step newton_checkpoint;
-	newton_checkpoint.initialize(a1_adfun, hes_ran, hes_ran_work, theta, u);
+	newton_checkpoint.initialize(
+		a1fun, jac_a1fun, hes_ran, hes_ran_work, theta, u
+	);
 	//
 	// use and test newton_checkpoint ---------------------------------------
 	vector<a1_double> a1_theta_u_v(n_fixed + 2 * n_random);

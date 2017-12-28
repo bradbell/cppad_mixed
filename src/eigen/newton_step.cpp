@@ -28,13 +28,14 @@ $spell
 	cholesky cholesky
 	Hlow
 	Eigen
+	jac
 $$
 
 $section Newton Step Algorithm Constructor$$
 
 $head Syntax$$
 $codei%CppAD::mixed::newton_step_algo %algo%(
-	%a1fun%, %hes_rcv%, %hes_work%, %theta%, %u%,
+	%a1fun%, %jac_a1fun%, %hes_rcv%, %hes_work%, %theta%, %u%,
 )%$$
 
 $head Prototype$$
@@ -54,6 +55,13 @@ This is a recording of the function $latex f( \theta , u)$$
 for which we are checkpointing the Newton step and log determinant for.
 The routine $cref/pack(theta, u)/pack/$$ is used to
 convert the pair of vectors into the argument vector for $icode a1fun$$.
+A reference to $icode a1fun$$ is stored,
+so this object should exist as long as $icode algo$$ exists.
+
+$head jac_a1fun$$
+This is a recording of the Partial $latex f_u ( \theta , u)$$.
+A reference to $icode jac_a1fun$$ is stored,
+so this object should exist as long as $icode algo$$ exists.
 
 $head hes_rcv$$
 This argument has prototype
@@ -153,16 +161,18 @@ $end
 // BEGIN PROTOTYPE
 newton_step_algo::newton_step_algo(
 	CppAD::ADFun<a1_double>&      a1fun         ,
+	CppAD::ADFun<a1_double>&      jac_a1fun     ,
 	const sparse_rcv&             hes_rcv       ,
 	const CppAD::sparse_hes_work& hes_work      ,
 	const CppAD::vector<double>&  theta         ,
 	const CppAD::vector<double>&  u             )
 // END PROTOTYPE
 :
-n_fixed_ ( theta.size() ) ,
-n_random_( u.size()     ) ,
-a1fun_( a1fun        ) ,
-hes_work_( hes_work     )
+n_fixed_  ( theta.size() ) ,
+n_random_ ( u.size()     ) ,
+a1fun_    ( a1fun        ) ,
+jac_a1fun_( jac_a1fun    ) ,
+hes_work_ ( hes_work     )
 {	assert( a1fun_.Range() == 1 );
 	assert( a1fun.Domain() == n_fixed_ + n_random_ );
 	//
@@ -432,6 +442,7 @@ $spell
 	checkpointing
 	hes
 	const
+	jac
 $$
 
 $section Initialize the Newton Step Checkpoint Function$$
@@ -458,6 +469,13 @@ This is a recording of the function $latex f( \theta , u)$$
 for which we are checkpointing the Newton step and log determinant for.
 The routine $cref/pack(theta, u)/pack/$$ is used to
 convert the pair of vectors into the argument vector for $icode a1fun$$.
+A reference to $icode a1fun$$ is stored,
+so this object should exist as long as $icode newton_checkpoint$$ exists.
+
+$head jac_a1fun$$
+This is a recording of the Partial $latex f_u ( \theta , u)$$.
+A reference to $icode jac_a1fun$$ is stored,
+so this object should exist as long as $icode newton_checkpoint$$ exists.
 
 $head hes_rcv$$
 This argument has prototype
@@ -514,6 +532,7 @@ $end
 // BEGIN PROTOTYPE
 void newton_step::initialize(
 	CppAD::ADFun<a1_double>&          a1fun         ,
+	CppAD::ADFun<a1_double>&          jac_a1fun     ,
 	const sparse_rcv&                 hes_rcv       ,
 	const CppAD::sparse_hes_work      hes_work      ,
 	const CppAD::vector<double>&      theta         ,
@@ -523,7 +542,9 @@ void newton_step::initialize(
 	assert( checkpoint_fun_ == CPPAD_MIXED_NULL_PTR );
 	// create algo
 	//
-	algo_ = new newton_step_algo( a1fun, hes_rcv, hes_work, theta, u);
+	algo_ = new newton_step_algo(
+		a1fun, jac_a1fun, hes_rcv, hes_work, theta, u
+	);
 	assert( algo_ != CPPAD_MIXED_NULL_PTR );
 	//
 # if CPPAD_MIXED_CHECKPOINT_NEWTON_STEP

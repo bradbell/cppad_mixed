@@ -197,6 +197,8 @@ private:
 		const size_t                      n_random_;
 		// random likelihood f(theta, u)
 		CppAD::ADFun<a1_double>&          a1fun_;
+		// Jacobian of random likelihood f_u (theta, u)
+		CppAD::ADFun<a1_double>&          jac_a1fun_;
 		// information for computing f_uu (theta , u) using a1_double
 		CppAD::mixed::a1_sparse_rcv       a1_hes_rcv_;
 		CppAD::sparse_hes_work            hes_work_;
@@ -207,6 +209,7 @@ public:
 	// constructor for algorithm that is checkpointed
 	newton_step_algo(
 		CppAD::ADFun<a1_double>&          a1fun         ,
+		CppAD::ADFun<a1_double>&          jac_a1fun     ,
 		const sparse_rcv&                 hes_rcv       ,
 		const CppAD::sparse_hes_work&     hes_work      ,
 		const CppAD::vector<double>&      theta         ,
@@ -236,6 +239,7 @@ public:
 	// setup the checkpoint function
 	void initialize(
 		CppAD::ADFun<a1_double>&          a1fun         ,
+		CppAD::ADFun<a1_double>&          jac_a1fun     ,
 		const sparse_rcv&                 hes_rcv       ,
 		const CppAD::sparse_hes_work      hes_work      ,
 		const CppAD::vector<double>&      fixed_vec     ,
