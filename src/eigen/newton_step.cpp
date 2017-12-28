@@ -148,12 +148,11 @@ $codei%
 %$$
 and is a reference to the $icode a1fun$$ argument.
 
-$head a1_hes_rcv_$$
+$head a1_jac2hes_rcv_$$
 This member variable has prototype
 $codei%
-	a1_sparse_rcv_&   a1_hes_rcv_
+	a1_sparse_rcv_&   a1_jac2hes_rcv_
 %$$
-(2DO: Need to set it and remove temporary kludge.)
 
 $end
 */
@@ -186,30 +185,35 @@ hes_work_ ( hes_work     )
 	for(size_t j = 0; j < n_random_; j++)
 		a1_theta_u[n_fixed_ + j] = u[j];
 	//
-	// set a1_hes_rcv_
-	sparse_rc pattern(hes_rcv.nr(), hes_rcv.nc(), hes_rcv.nnz());
+	// set a1_jac2hes_rcv_
+	sparse_rc pattern(n_random_, n_fixed_ + n_random_, hes_rcv.nnz());
 	for(size_t k = 0; k < hes_rcv.nnz(); k++)
-		pattern.set(k, hes_rcv.row()[k], hes_rcv.col()[k]);
-	a1_hes_rcv_ = a1_sparse_rcv( pattern );
+	{	size_t r = hes_rcv.row()[k];
+		size_t c = hes_rcv.col()[k];
+		assert( n_fixed_ <= r );
+		assert( n_fixed_ <= c );
+		pattern.set(k, r - n_fixed_, c);
+	}
+	a1_jac2hes_rcv_ = a1_sparse_rcv( pattern );
 	for(size_t k = 0; k < hes_rcv.nnz(); k++)
-		a1_hes_rcv_.set(k, hes_rcv.val()[k] );
+		a1_jac2hes_rcv_.set(k, hes_rcv.val()[k] );
 	// =======================================================================
 # if CPPAD_MIXED_USE_ATOMIC_CHOLESKY
 	// set a1_hessian to lower triangular sparse matrix representation of
 	// f_uu (theta, u)
 	typedef Eigen::SparseMatrix<a1_double, Eigen::ColMajor> a1_eigen_sparse;
 	a1_eigen_sparse a1_hessian(n_random_, n_random_);
-	for(size_t k = 0; k < a1_hes_rcv_.nnz(); k++)
-	{	size_t r = a1_hes_rcv_.row()[k];
-		size_t c = a1_hes_rcv_.col()[k];
+	for(size_t k = 0; k < a1_jac2hes_rcv_.nnz(); k++)
+	{	size_t r = a1_jac2hes_rcv_.row()[k];
+		size_t c = a1_jac2hes_rcv_.col()[k];
 		//
-		assert( n_fixed_ <= r );
+		assert( r < n_random_ );
 		assert( n_fixed_ <= c );
-		assert( c <= r );
+		assert( c <= r + n_fixed_ );
 		//
-		size_t i = r - n_fixed_;
+		size_t i = r;
 		size_t j = c - n_fixed_;
-		a1_hessian.insert(i, j) = a1_hes_rcv_.val()[k];
+		a1_hessian.insert(i, j) = a1_jac2hes_rcv_.val()[k];
 	}
 	// initialize cholesky_
 	cholesky_.initialize( a1_hessian );
@@ -270,7 +274,7 @@ $end
 */
 // BEGIN PROTOTYPE
 void newton_step_algo::operator()(
-	const a1_vector& a1_theta_u_v    ,
+	const a1_vector&  a1_theta_u_v    ,
 	a1_vector&        a1_logdet_step  )
 // END PROTOTYPE
 {	assert( a1_theta_u_v.size() == n_fixed_ + 2 * n_random_ );
@@ -285,18 +289,7 @@ void newton_step_algo::operator()(
 	CppAD::vectorBool not_used;
 
 	// compute the sparse Hessian
-	a1_vector a1_w(1);
-	a1_w[0] = 1.0;
-	sparse_rc   not_used_pattern;
-	std::string not_used_coloring;
-	a1fun_.sparse_hes(
-		a1_theta_u,
-		a1_w,
-		a1_hes_rcv_,
-		not_used_pattern,
-		not_used_coloring,
-		hes_work_
-	);
+	jac_a1fun_.subgraph_jac_rev(a1_theta_u, a1_jac2hes_rcv_);
 
 	// declare eigen matrix types
 	typedef Eigen::Matrix<a1_double, Eigen::Dynamic, 1>     a1_eigen_vector;
@@ -305,17 +298,17 @@ void newton_step_algo::operator()(
 	// set a1_hessian to lower triangular eigen sparse matrix representation of
 	// f_uu (theta, u)
 	a1_eigen_sparse a1_hessian(n_random_, n_random_);
-	for(size_t k = 0; k < a1_hes_rcv_.nnz(); k++)
-	{	size_t r = a1_hes_rcv_.row()[k];
-		size_t c = a1_hes_rcv_.col()[k];
+	for(size_t k = 0; k < a1_jac2hes_rcv_.nnz(); k++)
+	{	size_t r = a1_jac2hes_rcv_.row()[k];
+		size_t c = a1_jac2hes_rcv_.col()[k];
 		//
-		assert( n_fixed_ <= r );
+		assert( r < n_random_ );
 		assert( n_fixed_ <= c );
-		assert( c <= r );
+		assert( c <= r + n_fixed_ );
 		//
-		size_t i = r - n_fixed_;
+		size_t i = r;
 		size_t j = c - n_fixed_;
-		a1_hessian.insert(i, j) = a1_hes_rcv_.val()[k];
+		a1_hessian.insert(i, j) = a1_jac2hes_rcv_.val()[k];
 	}
 
 	// set rhs to an eigen vector representation of v

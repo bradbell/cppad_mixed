@@ -200,7 +200,7 @@ private:
 		// Jacobian of random likelihood f_u (theta, u)
 		CppAD::ADFun<a1_double>&          jac_a1fun_;
 		// information for computing f_uu (theta , u) using a1_double
-		CppAD::mixed::a1_sparse_rcv       a1_hes_rcv_;
+		a1_sparse_rcv                     a1_jac2hes_rcv_;
 		CppAD::sparse_hes_work            hes_work_;
 		// Sparse Cholesky factorization as an atomic AD operation.
 		// It must live (not be destroyed) for as long as any tape that uses it.
