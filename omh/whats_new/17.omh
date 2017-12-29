@@ -38,6 +38,8 @@ $spell
 	xam
 	subgraphs
 	Jacobian
+	subgraph
+	jac
 $$
 
 $section Changes and Additions to cppad_mixed During 2017$$
@@ -46,6 +48,22 @@ $childtable%
 	omh/whats_new/15.omh%
 	omh/whats_new/16.omh
 %$$
+
+$head 12-28$$
+The method for computing the Hessian of the random likelihood
+with respect to the random effects; $latex f_{uu} ( \theta , u )$$
+was changed from using $code sparse_hes$$
+to using CppAD $code subgraph_jac_rev$$
+applied to the gradient of the random likelihood $latex f_u ( \theta , u )$$.
+This resulted in the following difference in the $cref ar1_xam.sh$$
+results with $icode%number_random%=50000%$$ $icode%random_seed%=123%$$:
+$center
+$table
+$icode change$$ $cnext $icode initialize_seconds$$ $rnext
+before $cnext 34.16              $rnext
+after  $cnext 0.82
+$tend
+$$
 
 $head 12-25$$
 Change an the $cref user$$ examples to use
