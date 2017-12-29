@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Initialize Hessian of Random Likelihood w.r.t Random Effects</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Initialize Hessian of Random Likelihood w.r.t Random Effects">
-<meta name="keywords" id="keywords" content=" initialize hessian random likelihood w.r.t effects syntax private assumptions init_ran_hes_done_ mixed_object fixed_vec random_vec ran_hes_rcv_ ran_hes_work_ ran_like_fun_ index order ran_hes_fun_ ">
+<meta name="keywords" id="keywords" content=" initialize hessian random likelihood w.r.t effects syntax private assumptions init_ran_hes_done_ mixed_object fixed_vec random_vec ran_hes_rcv_ ran_like_fun_ index order ran_hes_fun_ ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -121,7 +121,6 @@ A:active { color : purple }
 <option>fixed_vec</option>
 <option>random_vec</option>
 <option>ran_hes_rcv_</option>
-<option>ran_hes_work_</option>
 <option>ran_like_fun_</option>
 <option>Random Effects Index</option>
 <option>Order</option>
@@ -235,19 +234,6 @@ see <a href="theory.htm#Random Likelihood, f(theta, u)" target="_top"><span styl
 The matrix is symmetric and hence can be recovered from
 its lower triangle.
 
-<br>
-<br>
-<b><big><a name="ran_hes_work_" id="ran_hes_work_">ran_hes_work_</a></big></b>
-<br>
-The input value of the member variable
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::sparse_hes_work&nbsp;ran_hes_work_<br>
-</span></font></code>
-does not matter (it should be empty).
-Upon return, it contains the necessary information for the
-calls to <code><font color="blue">sparse_hes</font></code> specified below.
-
 
 <br>
 <br>
@@ -257,30 +243,6 @@ If the return value from <a href="ran_likelihood_hes.htm" target="_top"><span st
  is non-empty,
 and <code><font color="blue">NDEBUG</font></code> is not defined,
 <code><font color="blue">ran_likelihood_hes</font></code> is checked for correctness.
-If the return value from <a href="ran_likelihood_hes.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_hes</span></a>
- is empty,
-upon return the following call can be used to compute the
-lower triangle of the Hessian <small>@(@
-f_{u,u} ( \theta , u )
-@)@</small>
-as a <code><font color="blue">d_vector</font></code>:
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ran_like_fun_.sparse_hes(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>x</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>w</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ran_hes_rcv_,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>not_used_pattern</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>not_used_coloring</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ran_hes_work_<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
-</span></font></code>
-where the values of 
-<code><i><font color="black"><span style='white-space: nowrap'>not_used_pattern</span></font></i></code>
- and 
-<code><i><font color="black"><span style='white-space: nowrap'>not_used_coloring</span></font></i></code>
-
-do not matter.
 
 <br>
 <br>

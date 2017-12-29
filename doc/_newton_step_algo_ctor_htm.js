@@ -63,16 +63,16 @@ var list_current0 = [
 'newton_step_algo_ctor.htm#Prototype',
 'newton_step_algo_ctor.htm#Private',
 'newton_step_algo_ctor.htm#algo',
-'newton_step_algo_ctor.htm#a1_adfun',
+'newton_step_algo_ctor.htm#a1fun',
+'newton_step_algo_ctor.htm#jac_a1fun',
 'newton_step_algo_ctor.htm#hes_rcv',
-'newton_step_algo_ctor.htm#hes_work',
 'newton_step_algo_ctor.htm#theta',
 'newton_step_algo_ctor.htm#u',
 'newton_step_algo_ctor.htm#cholesky_',
 'newton_step_algo_ctor.htm#n_fixed_',
 'newton_step_algo_ctor.htm#n_random_',
-'newton_step_algo_ctor.htm#a1_adfun_',
-'newton_step_algo_ctor.htm#a1_hes_rcv_'
+'newton_step_algo_ctor.htm#a1fun_',
+'newton_step_algo_ctor.htm#a1_jac2hes_rcv_'
 ];
 function choose_across0(item)
 {	var index          = item.selectedIndex;

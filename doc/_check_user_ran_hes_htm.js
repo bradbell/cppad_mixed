@@ -61,7 +61,7 @@ var list_current0 = [
 'check_user_ran_hes.htm#fixed_vec',
 'check_user_ran_hes.htm#random_vec',
 'check_user_ran_hes.htm#ran_like_fun_',
-'check_user_ran_hes.htm#ran_hes_rcv_, ran_hes_work_',
+'check_user_ran_hes.htm#ran_hes_rcv_',
 'check_user_ran_hes.htm#ran_likelihood_hes'
 ];
 function choose_across0(item)

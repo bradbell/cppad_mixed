@@ -60,6 +60,7 @@ var list_down0 = [
 var list_current0 = [
 'ran_like_jac.htm#Syntax',
 'ran_like_jac.htm#Private',
+'ran_like_jac.htm#Assumptions',
 'ran_like_jac.htm#Purpose',
 'ran_like_jac.htm#mixed_object',
 'ran_like_jac.htm#fixed_vec',

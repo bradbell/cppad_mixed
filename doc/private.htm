@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>cppad_mixed: Private Declarations</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="cppad_mixed: Private Declarations">
-<meta name="keywords" id="keywords" content=" cppad_mixed: private declarations n_fixed_ n_random_ quasi_fixed_ bool_sparsity_ a_rcv_ initialize_done_ cppad_error_handler ran_like_fun_ ran_like_a1fun_ ran_jac_fun_ ran_hes_fun_ ldlt_ran_hes_ hes_cross_ newton_checkpoint_ laplace_obj_fun_ laplace_obj_hes_ fix_like_fun_ fix_like_jac_ fix_like_hes_ fix_con_fun_ fix_con_jac_ fix_con_hes_ template member functions pack unpack initialization init_ldlt_ran_hes init_fix_con init_fix_like init_hes_cross init_ran_jac init_ran_hes check_user_ran_hes init_laplace_obj_hes init_ran_like init_laplace_obj try try_initialize try_optimize_random try_optimize_fixed try_information_mat try_sample_fixed sample_random other fix_con_eval fix_con_jac fix_con_hes fix_like_eval fix_like_jac fix_like_hes logdet_jac ran_con_eval ran_con_jac ran_like_jac check_user_ran_jac ran_obj_eval ran_obj_jac laplace_obj_hes update_factor ">
+<meta name="keywords" id="keywords" content=" cppad_mixed: private declarations n_fixed_ n_random_ quasi_fixed_ bool_sparsity_ a_rcv_ initialize_done_ cppad_error_handler ran_like_fun_ ran_jac_fun_ ran_hes_fun_ ldlt_ran_hes_ hes_cross_ newton_checkpoint_ laplace_obj_fun_ laplace_obj_hes_ fix_like_fun_ fix_like_jac_ fix_like_hes_ fix_con_fun_ fix_con_jac_ fix_con_hes_ template member functions pack unpack initialization init_ldlt_ran_hes init_fix_con init_fix_like init_hes_cross init_ran_jac init_ran_hes check_user_ran_hes init_laplace_obj_hes init_ran_like init_laplace_obj try try_initialize try_optimize_random try_optimize_fixed try_information_mat try_sample_fixed sample_random other fix_con_eval fix_con_jac fix_con_hes fix_like_eval fix_like_jac fix_like_hes logdet_jac ran_con_eval ran_con_jac ran_like_jac check_user_ran_jac ran_obj_eval ran_obj_jac laplace_obj_hes update_factor ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -255,21 +255,23 @@ Used to map CppAD error messages to
 </tt></pre>
 <br>
 <b><big><a name="ran_like_fun_" id="ran_like_fun_">ran_like_fun_</a></big></b>
-
 <br>
 If 
 <code><i><font color="black"><span style='white-space: nowrap'>n_random_</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;&gt;&nbsp;0</span></font></code>
  and <code><font color="blue">init_ran_like_done_</font></code>,
 <a href="init_ran_like.htm#ran_like_fun_" target="_top"><span style='white-space: nowrap'>ran_like_fun_</span></a>
- and
+,
 <a href="init_ran_like.htm#ran_like_a1fun_" target="_top"><span style='white-space: nowrap'>ran_like_a1fun_</span></a>
- are
-recordings of the user's <a href="ran_likelihood.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood</span></a>
+, and
+<a href="init_ran_like.htm#ran_like_a2fun_" target="_top"><span style='white-space: nowrap'>ran_like_a2fun_</span></a>
+,
+are recordings of the user's <a href="ran_likelihood.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood</span></a>
 .
 function.
 <pre style='display:inline'><tt>
      CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;double&gt;</font>      ran_like_fun_<font color="#990000">;</font>
      CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;a1_double&gt;</font>   ran_like_a1fun_<font color="#990000">;</font>
+     CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;a2_double&gt;</font>   ran_like_a2fun_<font color="#990000">;</font>
 </tt></pre>
 The following objects hold information for computing derivatives
 with these ADFun objects:
@@ -281,18 +283,24 @@ with these ADFun objects:
 If 
 <code><i><font color="black"><span style='white-space: nowrap'>n_random_</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;&gt;&nbsp;0</span></font></code>
  and <code><font color="blue">init_ran_jac_done_</font></code>,
-<code><font color="blue">ran_jac_fun_</font></code> contains the Jacobian of the
+<a href="init_ran_jac.htm#ran_jac_a1fun_" target="_top"><span style='white-space: nowrap'>ran_jac_a1fun_</span></a>
+, and
+<a href="init_ran_jac.htm#ran_jac2hes_rc_" target="_top"><span style='white-space: nowrap'>ran_jac2hes_rc_</span></a>
+,
+contain the Jacobian of the
 <a href="theory.htm#Random Likelihood, f(theta, u)" target="_top"><span style='white-space: nowrap'>random&nbsp;likelihood</span></a>
 
 with respect to the random effects; i.e.
 <small>@(@
 f_u ( \theta , u )
-@)@</small>.
-<pre style='display:inline'><tt>
-     CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;double&gt;</font>  ran_jac_fun_<font color="#990000">;</font>
+@)@</small> and the sparsity for
+<small>@(@
+f_{uu} ( u )
+@)@</small> .
+<pre><tt>     CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;a1_double&gt;</font>  ran_jac_a1fun_<font color="#990000">;</font>
+     <font color="#008080">sparse_rc</font>                ran_jac2hes_rc_<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
-     <b><font color="#0000FF">friend</font></b> <font color="#009900">bool</font> <font color="#990000">::</font><b><font color="#000000">ran_jac_fun_xam</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">);</font>
-</tt></pre>
+     <b><font color="#0000FF">friend</font></b> <font color="#009900">bool</font> <font color="#990000">::</font><b><font color="#000000">ran_jac_fun_xam</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">);</font></tt></pre>
 <br>
 <b><big><a name="ran_hes_fun_" id="ran_hes_fun_">ran_hes_fun_</a></big></b>
 <br>
@@ -300,19 +308,16 @@ If
 <code><i><font color="black"><span style='white-space: nowrap'>n_random_</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;&gt;&nbsp;0</span></font></code>
  and <code><font color="blue">init_ran_hes_done_</font></code>,
 <a href="init_ran_hes.htm#ran_hes_rcv_" target="_top"><span style='white-space: nowrap'>ran_hes_rcv_</span></a>
- ,
-<a href="init_ran_hes.htm#ran_hes_work_" target="_top"><span style='white-space: nowrap'>ran_hes_work_</span></a>
- ,
-contain information for the Hessian of the
+
+contains information for the Hessian of the
 <a href="theory.htm#Random Likelihood, f(theta, u)" target="_top"><span style='white-space: nowrap'>random&nbsp;likelihood</span></a>
 
 with respect to the random effects; i.e.
 <small>@(@
 f_{u,u} ( \theta , u )
 @)@</small>.
-<pre><tt>     <i><font color="#9A1900">// sparse_hes_info for both d_vector and a1_vector value vectors</font></i>
-     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">sparse_rcv</font>      ran_hes_rcv_<font color="#990000">;</font>
-     CppAD<font color="#990000">::</font><font color="#008080">sparse_hes_work</font>        ran_hes_work_<font color="#990000">;</font>
+<pre><tt>     <i><font color="#9A1900">// sparse Hessian</font></i>
+     <font color="#008080">sparse_rcv</font>                    ran_hes_rcv_<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// recording of sparse Hessian calculation</font></i>
      CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;double&gt;</font>        ran_hes_fun_<font color="#990000">;</font>
@@ -695,7 +700,7 @@ Called by public <a href="public.htm#optimize_fixed" target="_top"><span style='
 <br>
 Called by public <a href="public.htm#information_mat" target="_top"><span style='white-space: nowrap'>information_mat</span></a>
 
-<pre><tt>     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">sparse_rcv</font> <b><font color="#000000">try_information_mat</font></b><font color="#990000">(</font>
+<pre><tt>     <font color="#008080">sparse_rcv</font> <b><font color="#000000">try_information_mat</font></b><font color="#990000">(</font>
           <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>fixed_solution<font color="#990000">&amp;</font>  solution      <font color="#990000">,</font>
           <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>                      random_opt
      <font color="#990000">);</font></tt></pre>

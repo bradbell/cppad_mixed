@@ -62,7 +62,8 @@ var list_current0 = [
 'init_ran_jac.htm#mixed_object',
 'init_ran_jac.htm#fixed_vec',
 'init_ran_jac.htm#random_vec',
-'init_ran_jac.htm#ran_jac_fun_',
+'init_ran_jac.htm#ran_jac_a1fun_',
+'init_ran_jac.htm#ran_jac2hes_rc_',
 'init_ran_jac.htm#ran_likelihood_jac'
 ];
 function choose_across0(item)

@@ -63,9 +63,9 @@ var list_current0 = [
 'newton_step_initialize.htm#Prototype',
 'newton_step_initialize.htm#Private',
 'newton_step_initialize.htm#newton_checkpoint',
-'newton_step_initialize.htm#a1_adfun',
+'newton_step_initialize.htm#a1fun',
+'newton_step_initialize.htm#jac_a1fun',
 'newton_step_initialize.htm#hes_rcv',
-'newton_step_initialize.htm#hes_work',
 'newton_step_initialize.htm#theta',
 'newton_step_initialize.htm#u',
 'newton_step_initialize.htm#checkpoint_fun_'

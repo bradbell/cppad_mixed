@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Newton Step Algorithm Constructor</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Newton Step Algorithm Constructor">
-<meta name="keywords" id="keywords" content=" newton step algorithm constructor syntax prototype private algo a1_adfun hes_rcv hes_work theta u cholesky_ n_fixed_ n_random_ a1_adfun_ a1_hes_rcv_ ">
+<meta name="keywords" id="keywords" content=" newton step algorithm constructor syntax prototype private algo a1fun jac_a1fun hes_rcv theta u cholesky_ n_fixed_ n_random_ a1fun_ a1_jac2hes_rcv_ ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -116,16 +116,16 @@ A:active { color : purple }
 <option>Prototype</option>
 <option>Private</option>
 <option>algo</option>
-<option>a1_adfun</option>
+<option>a1fun</option>
+<option>jac_a1fun</option>
 <option>hes_rcv</option>
-<option>hes_work</option>
 <option>theta</option>
 <option>u</option>
 <option>cholesky_</option>
 <option>n_fixed_</option>
 <option>n_random_</option>
-<option>a1_adfun_</option>
-<option>a1_hes_rcv_</option>
+<option>a1fun_</option>
+<option>a1_jac2hes_rcv_</option>
 </select>
 </td>
 </tr></table><br>
@@ -138,7 +138,7 @@ A:active { color : purple }
 <br>
 
 <code><font color="blue"><span style='white-space: nowrap'>CppAD::mixed::newton_step_algo&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>algo</span></font></i><font color="blue"><span style='white-space: nowrap'>(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>a1_adfun</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>hes_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>hes_work</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>theta</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>u</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>a1fun</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac_a1fun</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>hes_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>theta</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>u</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 )</span></font></code>
 
 
@@ -148,9 +148,9 @@ A:active { color : purple }
 
 <pre><tt>    
     newton_step_algo<font color="#990000">::</font><b><font color="#000000">newton_step_algo</font></b><font color="#990000">(</font>
-     CppAD<font color="#990000">::</font>ADFun<font color="#990000">&lt;</font>a1_double<font color="#990000">&gt;&amp;</font>      a1_adfun      <font color="#990000">,</font>
+     CppAD<font color="#990000">::</font>ADFun<font color="#990000">&lt;</font>a1_double<font color="#990000">&gt;&amp;</font>      a1fun         <font color="#990000">,</font>
+     CppAD<font color="#990000">::</font>ADFun<font color="#990000">&lt;</font>a1_double<font color="#990000">&gt;&amp;</font>      jac_a1fun     <font color="#990000">,</font>
      <b><font color="#0000FF">const</font></b> sparse_rcv<font color="#990000">&amp;</font>             hes_rcv       <font color="#990000">,</font>
-     <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>sparse_hes_work<font color="#990000">&amp;</font> hes_work      <font color="#990000">,</font>
      <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;&amp;</font>  theta         <font color="#990000">,</font>
      <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;&amp;</font>  u             <font color="#990000">)</font></tt></pre>
 <br>
@@ -169,7 +169,7 @@ by this operation.
 
 <br>
 <br>
-<b><big><a name="a1_adfun" id="a1_adfun">a1_adfun</a></big></b>
+<b><big><a name="a1fun" id="a1fun">a1fun</a></big></b>
 <br>
 This is a recording of the function <small>@(@
 f( \theta , u)
@@ -178,8 +178,28 @@ for which we are checkpointing the Newton step and log determinant for.
 The routine <a href="pack.htm" target="_top"><span style='white-space: nowrap'>pack(theta,&nbsp;u)</span></a>
  is used to
 convert the pair of vectors into the argument vector for 
-<code><i><font color="black"><span style='white-space: nowrap'>a1_adfun</span></font></i></code>
+<code><i><font color="black"><span style='white-space: nowrap'>a1fun</span></font></i></code>
 .
+A reference to 
+<code><i><font color="black"><span style='white-space: nowrap'>a1fun</span></font></i></code>
+ is stored,
+so this object should exist as long as 
+<code><i><font color="black"><span style='white-space: nowrap'>algo</span></font></i></code>
+ exists.
+
+<br>
+<br>
+<b><big><a name="jac_a1fun" id="jac_a1fun">jac_a1fun</a></big></b>
+<br>
+This is a recording of the Partial <small>@(@
+f_u ( \theta , u)
+@)@</small>.
+A reference to 
+<code><i><font color="black"><span style='white-space: nowrap'>jac_a1fun</span></font></i></code>
+ is stored,
+so this object should exist as long as 
+<code><i><font color="black"><span style='white-space: nowrap'>algo</span></font></i></code>
+ exists.
 
 <br>
 <br>
@@ -192,39 +212,12 @@ This argument has prototype
 It is the
 <a href="typedef.htm#Sparse Types.sparse_rcv" target="_top"><span style='white-space: nowrap'>sparse_rcv</span></a>
 
-information for the Hessian with respect to the
-random effects (as a function of the fixed and random effects); i.e.
+information for the lower triangle of the Hessian with respect to the
+random effects, as a function of the fixed and random effects; i.e.
 <small>@(@
 f_uu ( \theta , u)
 @)@</small>.
-
-<br>
-<br>
-<b><big><a name="hes_work" id="hes_work">hes_work</a></big></b>
-<br>
-This argument has prototype
-<code><font color="blue">%
-	const CppAD::sparse_hes_work&amp; %hes_work%
-%</font></code>
-It contains the necessary information so that the call
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a1_adfun.sparse_hes(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>a1_x</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>a1_w</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a1_hes_rcv,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>not_used_pattern</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>not_used_coloring</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hes_work<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
-</span></font></code>
-can be used the compute the sparse Hessian.
-Here 
-<code><i><font color="black"><span style='white-space: nowrap'>a1_hes_rcv</span></font></i></code>
- is the same as 
-<code><i><font color="black"><span style='white-space: nowrap'>hes_rcv</span></font></i></code>
-, except
-that its value vector has type <code><font color="blue">a1_vector</font></code> instead of <code><font color="blue">d_vector</font></code>.
+In addition, this matrix is in column major order.
 
 <br>
 <br>
@@ -306,28 +299,26 @@ and is the number of random effects; i.e., the size of
 
 <br>
 <br>
-<b><big><a name="a1_adfun_" id="a1_adfun_">a1_adfun_</a></big></b>
+<b><big><a name="a1fun_" id="a1fun_">a1fun_</a></big></b>
 <br>
 This member variable has prototype
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::ADFun&lt;a1_double&gt;&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a1_adfun_<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::ADFun&lt;a1_double&gt;&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a1fun_<br>
 </span></font></code>
 and is a reference to the 
-<code><i><font color="black"><span style='white-space: nowrap'>a1_adfun</span></font></i></code>
+<code><i><font color="black"><span style='white-space: nowrap'>a1fun</span></font></i></code>
  argument.
 
 <br>
 <br>
-<b><big><a name="a1_hes_rcv_" id="a1_hes_rcv_">a1_hes_rcv_</a></big></b>
+<b><big><a name="a1_jac2hes_rcv_" id="a1_jac2hes_rcv_">a1_jac2hes_rcv_</a></big></b>
 <br>
 This member variable has prototype
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a1_sparse_rcv_&amp;&nbsp;&nbsp;&nbsp;a1_hes_rcv_<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a1_sparse_rcv_&amp;&nbsp;&nbsp;&nbsp;a1_jac2hes_rcv_<br>
 </span></font></code>
-(2DO: Need to set it and remove temporary kludge.)
-
 
 <hr>Input File: src/eigen/newton_step.cpp
 

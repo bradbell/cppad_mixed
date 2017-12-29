@@ -155,6 +155,11 @@ A:active { color : purple }
                <b><font color="#0000FF">const</font></b> a2_vector<font color="#990000">&amp;</font> fixed_vec<font color="#990000">,</font> <b><font color="#0000FF">const</font></b> a2_vector<font color="#990000">&amp;</font> random_vec
           <font color="#990000">)</font>
           <font color="#FF0000">{</font>    <b><font color="#0000FF">return</font></b> <b><font color="#000000">template_ran_likelihood</font></b><font color="#990000">(</font> fixed_vec<font color="#990000">,</font> random_vec <font color="#990000">);</font> <font color="#FF0000">}</font>
+          <i><font color="#9A1900">// a3_vector version of ran_likelihood</font></i>
+          <b><font color="#0000FF">virtual</font></b> <font color="#008080">a3_vector</font> <b><font color="#000000">ran_likelihood</font></b><font color="#990000">(</font>
+               <b><font color="#0000FF">const</font></b> a3_vector<font color="#990000">&amp;</font> fixed_vec<font color="#990000">,</font> <b><font color="#0000FF">const</font></b> a3_vector<font color="#990000">&amp;</font> random_vec
+          <font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <b><font color="#0000FF">return</font></b> <b><font color="#000000">template_ran_likelihood</font></b><font color="#990000">(</font> fixed_vec<font color="#990000">,</font> random_vec <font color="#990000">);</font> <font color="#FF0000">}</font>
           <i><font color="#9A1900">// we expect to get a warnings</font></i>
           <b><font color="#0000FF">virtual</font></b> <font color="#009900">void</font> <b><font color="#000000">warning</font></b><font color="#990000">(</font><b><font color="#0000FF">const</font></b> std<font color="#990000">::</font>string<font color="#990000">&amp;</font> warning_message<font color="#990000">)</font>
           <font color="#FF0000">{</font> <font color="#FF0000">}</font>

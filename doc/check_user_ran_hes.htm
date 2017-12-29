@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Check User Defined ran_likelihood_hes</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Check User Defined ran_likelihood_hes">
-<meta name="keywords" id="keywords" content=" check user defined ran_likelihood_hes syntax private mixed_object fixed_vec random_vec ran_like_fun_ ran_hes_rcv_ ran_hes_work_ ">
+<meta name="keywords" id="keywords" content=" check user defined ran_likelihood_hes syntax private mixed_object fixed_vec random_vec ran_like_fun_ ran_hes_rcv_ ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -114,7 +114,7 @@ A:active { color : purple }
 <option>fixed_vec</option>
 <option>random_vec</option>
 <option>ran_like_fun_</option>
-<option>ran_hes_rcv_, ran_hes_work_</option>
+<option>ran_hes_rcv_</option>
 <option>ran_likelihood_hes</option>
 </select>
 </td>
@@ -193,19 +193,16 @@ must contain a recording of the random likelihood function; see
 
 <br>
 <br>
-<b><big><a name="ran_hes_rcv_, ran_hes_work_" id="ran_hes_rcv_, ran_hes_work_">ran_hes_rcv_, ran_hes_work_</a></big></b>
+<b><big><a name="ran_hes_rcv_" id="ran_hes_rcv_">ran_hes_rcv_</a></big></b>
 <br>
-The member variables
+The member variable
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::mixed::sparse_rcv&nbsp;&nbsp;ran_hes_rcv_<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::sparse_hes_work&nbsp;&nbsp;&nbsp;&nbsp;ran_hes_work_<br>
 </span></font></code>
 must contain the information for evaluating the random effects
 Hessian using <code><font color="blue">ran_like_fun_</font></code>; see
 <a href="init_ran_hes.htm#ran_hes_rcv_" target="_top"><span style='white-space: nowrap'>ran_hes_rcv_</span></a>
-,
-<a href="init_ran_hes.htm#ran_hes_work_" target="_top"><span style='white-space: nowrap'>ran_hes_work_</span></a>
 .
 
 <br>

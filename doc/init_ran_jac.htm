@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Initialize Jacobian of Random Likelihood w.r.t. Random Effects</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Initialize Jacobian of Random Likelihood w.r.t. Random Effects">
-<meta name="keywords" id="keywords" content=" initialize jacobian random likelihood w.r.t. effects syntax private assumptions init_ran_jac_done_ mixed_object fixed_vec random_vec ran_jac_fun_ ran_likelihood_jac ">
+<meta name="keywords" id="keywords" content=" initialize jacobian random likelihood w.r.t. effects syntax private assumptions init_ran_jac_done_ mixed_object fixed_vec random_vec ran_jac_a1fun_ ran_jac2hes_rc_ ran_likelihood_jac ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -115,7 +115,8 @@ A:active { color : purple }
 <option>mixed_object</option>
 <option>fixed_vec</option>
 <option>random_vec</option>
-<option>ran_jac_fun_</option>
+<option>ran_jac_a1fun_</option>
+<option>ran_jac2hes_rc_</option>
 <option>ran_likelihood_jac</option>
 </select>
 </td>
@@ -199,15 +200,15 @@ u
 
 <br>
 <br>
-<b><big><a name="ran_jac_fun_" id="ran_jac_fun_">ran_jac_fun_</a></big></b>
+<b><big><a name="ran_jac_a1fun_" id="ran_jac_a1fun_">ran_jac_a1fun_</a></big></b>
 <br>
-The input value of the member variables
+The input value of the member variable
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::ADFun&lt;double&gt;&nbsp;ran_jac_fun_<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::ADFun&lt;double&gt;&nbsp;ran_jac_a1fun_<br>
 </span></font></code>
 does not matter.
-upon return <code><font color="blue">ran_jac_fun_</font></code> zero order forward mode computes
+upon return zero order forward mode for this function computes
 the Jacobian of the random likelihood  with respect to the random effects;
 i.e.,
 <small>@[@
@@ -215,6 +216,28 @@ i.e.,
 	f_u ( \theta , u )
 
 @]@</small>.
+
+<br>
+<br>
+<b><big><a name="ran_jac2hes_rc_" id="ran_jac2hes_rc_">ran_jac2hes_rc_</a></big></b>
+<br>
+The input value of the member variable
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::mixed::sparse_rc&nbsp;ran_jac2hes_rc_<br>
+</span></font></code>
+does not matter.
+Upon return it contains the sparsity pattern for
+<small>@(@
+f_{uu} ( \theta , u )
+@)@</small> (not just lower triangle).
+The row indices are in the vector <small>@(@
+u
+@)@</small>; i.e., just the random effects.
+The column indices are in the vector  <small>@(@
+( \theta , u )
+@)@</small>; i.e.,
+both fixed and random effects.
 
 <br>
 <br>

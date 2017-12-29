@@ -64,7 +64,7 @@ var list_current0 = [
 'newton_step.htm#Constructor',
 'newton_step.htm#Destructor',
 'newton_step.htm#initialize',
-'newton_step.htm#initialize.a1_adfun',
+'newton_step.htm#initialize.a1fun',
 'newton_step.htm#initialize.hes_rcv',
 'newton_step.htm#theta',
 'newton_step.htm#u',

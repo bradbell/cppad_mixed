@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Newton Step and Log Determinant Calculation</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Newton Step and Log Determinant Calculation">
-<meta name="keywords" id="keywords" content=" newton step log determinant calculation syntax private purpose constructor destructor initialize a1_adfun hes_rcv theta u size_var eval a1_theta_u_v a1_logdet_step checkpoint example ">
+<meta name="keywords" id="keywords" content=" newton step log determinant calculation syntax private purpose constructor destructor initialize a1fun hes_rcv theta u size_var eval a1_theta_u_v a1_logdet_step checkpoint example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -116,7 +116,7 @@ A:active { color : purple }
 <option>Constructor</option>
 <option>Destructor</option>
 <option>initialize</option>
-<option>---..a1_adfun</option>
+<option>---..a1fun</option>
 <option>---..hes_rcv</option>
 <option>theta</option>
 <option>u</option>
@@ -141,7 +141,7 @@ A:active { color : purple }
 <code><font color="blue"><span style='white-space: nowrap'>CppAD::mixed::newton_step&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>newton_object</span></font></i><font color="blue"><span style='white-space: nowrap'>()<br>
 </span></font></code>
 
-<code><i><font color="black"><span style='white-space: nowrap'>newton_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.initialize(</span></font><i><font color="black"><span style='white-space: nowrap'>a1_adfun</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>hes_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>theta</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>u</span></font></i><font color="blue"><span style='white-space: nowrap'>)<br>
+<code><i><font color="black"><span style='white-space: nowrap'>newton_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.initialize(</span></font><i><font color="black"><span style='white-space: nowrap'>a1fun</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>hes_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>theta</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>u</span></font></i><font color="blue"><span style='white-space: nowrap'>)<br>
 </span></font></code>
 
 <code><i><font color="black"><span style='white-space: nowrap'>sv</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;newton_object</span></font><i><font color="black"><span style='white-space: nowrap'>.size_var()<br>
@@ -205,15 +205,15 @@ The
 before any calls to its <code><font color="blue">eval</font></code> routine, using the syntax
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;newton_object.initialize(</span></font><i><font color="black"><span style='white-space: nowrap'>a1_adfun</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>hes_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>theta</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>u</span></font></i><font color="blue"><span style='white-space: nowrap'>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;newton_object.initialize(</span></font><i><font color="black"><span style='white-space: nowrap'>a1fun</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>hes_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>theta</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>u</span></font></i><font color="blue"><span style='white-space: nowrap'>)<br>
 </span></font></code>
 <br>
-<b><a name="initialize.a1_adfun" id="initialize.a1_adfun">a1_adfun</a></b>
+<b><a name="initialize.a1fun" id="initialize.a1fun">a1fun</a></b>
 <br>
 This <code><font color="blue">initialize</font></code> argument has prototype
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::ADFun&lt;&nbsp;CppAD::AD&lt;double&gt;&nbsp;&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>a1_adfun</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::ADFun&lt;&nbsp;CppAD::AD&lt;double&gt;&nbsp;&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>a1fun</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 </span></font></code>
 This is a recording of the function <small>@(@
 f( \theta , u)
@@ -222,7 +222,7 @@ for which we are evaluating the Newton step and log determinant for.
 The routine <a href="pack.htm" target="_top"><span style='white-space: nowrap'>pack(theta,&nbsp;u)</span></a>
  is used to
 convert the pair of vectors into the argument vector for 
-<code><i><font color="black"><span style='white-space: nowrap'>a1_adfun</span></font></i></code>
+<code><i><font color="black"><span style='white-space: nowrap'>a1fun</span></font></i></code>
 .
 
 <br>
