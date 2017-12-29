@@ -213,6 +213,6 @@ do
 done
 cd ..
 # ----------------------------------------------------------------------------
-echo 'bin/example_install.sh: OK'
+echo 'example_install.sh: OK'
 exit 0
 # END BASH

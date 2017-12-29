@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-16 University of Washington
+#           Copyright (C) 2014-17 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -111,7 +111,7 @@ echo_eval cmake \
 	.. | tee cmake.log
 echo_eval make install
 # -----------------------------------------------------------------------------
-echo 'bin/install_omhelp.sh OK'
+echo 'install_omhelp.sh OK'
 if ! echo $PATH | grep $omhelp_prefix/bin > /dev/null
 then
 	echo "To use omhelp, add $omhelp_prefix/bin to your PATH"

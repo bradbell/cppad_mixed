@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-16 University of Washington
+#           Copyright (C) 2014-17 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -64,5 +64,6 @@ then
 	echo "Error: nothing should be between the two dashed lines above"
 	exit 1
 fi
+# -----------------------------------------------------------------------------
 echo 'check_srcfile.sh: OK'
 exit 0

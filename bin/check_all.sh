@@ -50,7 +50,7 @@ do
 	if [ "$script" != 'bin/check_all.sh' ] \
 	&& [ "$script" != 'bin/check_install.sh' ]
 	then
-		echo_eval $script
+		$script
 	fi
 done
 #
@@ -115,3 +115,4 @@ then
 	echo_eval mv bin/run_cmake.bak bin/run_cmake.sh
 fi
 echo 'check_all.sh: OK'
+exit 0

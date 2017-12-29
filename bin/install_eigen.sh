@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-16 University of Washington
+#           Copyright (C) 2014-17 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -78,5 +78,5 @@ then
 	echo_eval ln -s $include_dir/eigen3/Eigen $include_dir/Eigen
 fi
 # -----------------------------------------------------------------------------
-echo 'bin/install_eigen.sh: OK'
+echo 'install_eigen.sh: OK'
 exit 0

@@ -50,20 +50,25 @@ $childtable%
 %$$
 
 $head 12-28$$
+$list number$$
+$bold API change$$:
+The $cref ran_likelihood$$ function was changed from having
+$code a2_vector$$ to $code a3_vector$$ arguments and results.
+$lnext
+The $cref ran_likelihood_jac$$ function was changed from having
+$code a1_vector$$ to $code a2_vector$$ arguments and results.
+$lnext
 The method for computing the Hessian of the random likelihood
 with respect to the random effects; $latex f_{uu} ( \theta , u )$$
 was changed from using $code sparse_hes$$
 to using CppAD $code subgraph_jac_rev$$
 applied to the gradient of the random likelihood $latex f_u ( \theta , u )$$.
-This resulted in the following difference in the $cref ar1_xam.sh$$
-results with $icode%number_random%=50000%$$ $icode%random_seed%=123%$$:
-$center
-$table
-$icode change$$ $cnext $icode initialize_seconds$$ $rnext
-before $cnext 34.16              $rnext
-after  $cnext 0.82
-$tend
-$$
+This resulted in the following difference in the $cref ar1_xam.sh$$:
+before $icode%initialize_seconds%=34.16%$$,
+after $icode%initialize_seconds%=0.82%$$.
+The following settings in $code ar1_xam.sh$$ where modified for this test:
+$icode%number_random%=50000%$$ and $icode%random_seed%=123%$$.
+$lend
 
 $head 12-25$$
 Change an the $cref user$$ examples to use

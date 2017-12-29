@@ -66,4 +66,6 @@ then
 	echo 'bin/check_copyright.sh: Error corrected, run again'
 	exit 1
 fi
-echo 'bin/check_copyright.sh: OK'
+# -----------------------------------------------------------------------------
+echo 'check_copyright.sh: OK'
+exit 0

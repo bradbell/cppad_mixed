@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-16 University of Washington
+#           Copyright (C) 2014-17 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -101,5 +101,5 @@ echo_eval cat config.sh
 echo_eval sh config.sh
 echo_eval make install
 # -----------------------------------------------------------------------------
-echo 'bin/install_ipopt.sh: OK'
+echo 'install_ipopt.sh: OK'
 exit 0

@@ -2,7 +2,7 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-16 University of Washington
+#           Copyright (C) 2014-17 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -26,5 +26,7 @@ do
 		exit 1
 	fi
 done
-echo 'bin/check_if_0.sh: OK'
+# -----------------------------------------------------------------------------
+echo 'check_if_0.sh: OK'
+exit 0
 

@@ -85,5 +85,5 @@ git reset --hard
 echo 'bin/speed_branch.sh: results are in'
 echo "build/ar1_xam.master,     build/ar1_xam.$branch"
 echo "build/capture_xam.master, build/capture_xam.$branch"
-echo 'bin/speed_branch.sh: OK'
+echo 'speed_branch.sh: OK'
 exit 0
