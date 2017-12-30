@@ -1304,22 +1304,6 @@ std<font color="#990000">::</font><font color="#008080">string</font> <b><font c
 <i><font color="#9A1900">// ------------------------------------------------------------------------</font></i>
 <b><font color="#0000FF">public</font></b><font color="#990000">:</font>
      <i><font color="#9A1900">// a2_vector ran_likelihood</font></i>
-     <b><font color="#0000FF">virtual</font></b> <font color="#008080">a2_vector</font> <b><font color="#000000">ran_likelihood</font></b><font color="#990000">(</font>
-          <b><font color="#0000FF">const</font></b> a2_vector<font color="#990000">&amp;</font> fixed_vec  <font color="#990000">,</font>
-          <b><font color="#0000FF">const</font></b> a2_vector<font color="#990000">&amp;</font> random_vec <font color="#990000">)</font>
-     <font color="#FF0000">{</font>    <font color="#008080">a2_vector</font> <b><font color="#000000">log_pik</font></b><font color="#990000">(</font>R_ <font color="#990000">*</font> K_<font color="#990000">),</font> <b><font color="#000000">vec</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">);</font>
-          <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> ell <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> ell <font color="#990000">&lt;</font> R_ <font color="#990000">*</font> K_<font color="#990000">;</font> ell<font color="#990000">++)</font>
-               log_pik<font color="#990000">[</font>ell<font color="#990000">]</font> <font color="#990000">=</font> <b><font color="#000000">a2_double</font></b><font color="#990000">(</font>log_pik_<font color="#990000">[</font>ell<font color="#990000">]);</font>
-          vec <font color="#990000">=</font> <b><font color="#000000">template_ran_likelihood</font></b><font color="#990000">(</font>fixed_vec<font color="#990000">,</font> random_vec<font color="#990000">,</font> log_pik<font color="#990000">);</font>
-          <i><font color="#9A1900">// make sure result is finite</font></i>
-<b><font color="#000080"># ifndef</font></b> NDEBUG
-          <font color="#009900">double</font> inf <font color="#990000">=</font> std<font color="#990000">::</font>numeric_limits<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;::</font><b><font color="#000000">infinity</font></b><font color="#990000">();</font>
-<b><font color="#000080"># endif</font></b>
-          <b><font color="#000000">assert</font></b><font color="#990000">(</font> vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">&lt;</font> <font color="#990000">+</font> <b><font color="#000000">a2_double</font></b><font color="#990000">(</font>inf<font color="#990000">)</font> <font color="#990000">);</font>
-          <b><font color="#000000">assert</font></b><font color="#990000">(</font> vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">&gt;</font> <font color="#990000">-</font> <b><font color="#000000">a2_double</font></b><font color="#990000">(</font>inf<font color="#990000">)</font> <font color="#990000">);</font>
-          <i><font color="#9A1900">//</font></i>
-          <b><font color="#0000FF">return</font></b> vec<font color="#990000">;</font>
-     <font color="#FF0000">}</font>
      <i><font color="#9A1900">// a3_vector ran_likelihood</font></i>
      <b><font color="#0000FF">virtual</font></b> <font color="#008080">a3_vector</font> <b><font color="#000000">ran_likelihood</font></b><font color="#990000">(</font>
           <b><font color="#0000FF">const</font></b> a3_vector<font color="#990000">&amp;</font> fixed_vec  <font color="#990000">,</font>

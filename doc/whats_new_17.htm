@@ -125,7 +125,19 @@ A:active { color : purple }
 <table>
 <tr><td><a href="whats_new_15.htm" target="_top">whats_new_15</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2015</td></tr><tr><td><a href="whats_new_16.htm" target="_top">whats_new_16</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2016</td></tr></table><br>
 <b><big><a name="12-28" id="12-28">12-28</a></big></b>
-<br>
+
+<ol type="1"><li>
+<b>API change</b>:
+The <a href="ran_likelihood.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood</span></a>
+ function was changed from having
+<code><font color="blue">a2_vector</font></code> to <code><font color="blue">a3_vector</font></code> arguments and results.
+</li><li>
+
+The <a href="ran_likelihood_jac.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_jac</span></a>
+ function was changed from having
+<code><font color="blue">a1_vector</font></code> to <code><font color="blue">a2_vector</font></code> arguments and results.
+</li><li>
+
 The method for computing the Hessian of the random likelihood
 with respect to the random effects; <small>@(@
 f_{uu} ( \theta , u )
@@ -136,30 +148,25 @@ applied to the gradient of the random likelihood <small>@(@
 f_u ( \theta , u )
 @)@</small>.
 This resulted in the following difference in the <a href="ar1_xam.sh.htm" target="_top"><span style='white-space: nowrap'>ar1_xam.sh</span></a>
-
-results with 
-<code><i><font color="black"><span style='white-space: nowrap'>number_random</span></font></i><font color="blue"><span style='white-space: nowrap'>=50000</span></font></code>
- 
-<code><i><font color="black"><span style='white-space: nowrap'>random_seed</span></font></i><font color="blue"><span style='white-space: nowrap'>=123</span></font></code>
 :
-<center>
-<table><tr><td align='left'  valign='top'>
+before 
+<code><i><font color="black"><span style='white-space: nowrap'>initialize_seconds</span></font></i><font color="blue"><span style='white-space: nowrap'>=34.16</span></font></code>
+,
+after 
+<code><i><font color="black"><span style='white-space: nowrap'>initialize_seconds</span></font></i><font color="blue"><span style='white-space: nowrap'>=0.82</span></font></code>
+.
+The following settings in <code><font color="blue">ar1_xam.sh</font></code> where modified for this test:
+
+<code><i><font color="black"><span style='white-space: nowrap'>number_random</span></font></i><font color="blue"><span style='white-space: nowrap'>=50000</span></font></code>
+ and 
+<code><i><font color="black"><span style='white-space: nowrap'>random_seed</span></font></i><font color="blue"><span style='white-space: nowrap'>=123</span></font></code>
+.
+</li></ol>
 
 
-<code><i><font color="black"><span style='white-space: nowrap'>change</span></font></i></code>
- </td><td align='left'  valign='top'>
- 
-<code><i><font color="black"><span style='white-space: nowrap'>initialize_seconds</span></font></i></code>
- </td></tr><tr><td align='left'  valign='top'>
-
-before </td><td align='left'  valign='top'>
- 34.16              </td></tr><tr><td align='left'  valign='top'>
-
-after  </td><td align='left'  valign='top'>
- 0.82
-</td></tr>
-</table>
-</center><b><big><a name="12-25" id="12-25">12-25</a></big></b>
+<br>
+<br>
+<b><big><a name="12-25" id="12-25">12-25</a></big></b>
 <br>
 Change an the <a href="user.htm" target="_top"><span style='white-space: nowrap'>user</span></a>
  examples to use

@@ -43,6 +43,10 @@ var list_down2 = [
 var list_down1 = [
 'ran_likelihood_hes.cpp.htm'
 ];
+var list_current0 = [
+'ran_likelihood_hes.cpp.htm#Exponentiating Random Effects',
+'ran_likelihood_hes.cpp.htm#Motivation'
+];
 function choose_across0(item)
 {	var index          = item.selectedIndex;
 	item.selectedIndex = 0;

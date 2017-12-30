@@ -3,7 +3,7 @@
 // ------------------------------------------------------------ 
 Keyword = 
 [
-'cppad_mixed  C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20171228  ',' license source code repository notation fixed theta random data z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood constraints negative log-density vector ',
+'cppad_mixed  C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20171230  ',' license source code repository notation fixed theta random data z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood constraints negative log-density vector ',
 'install_unix  Installing cppad_mixed in Unix  ',' system requirements c++ compiler git cmake pkg-config wget fortran gsl download special run_cmake.sh eigen ipopt suitesparse command check speed example installation linking using ',
 'example_install.sh  An Example Installation  ',' syntax existing source ',
 'run_cmake.sh  bin/run_cmake.sh: User Configuration Options  ',' verbose_makefile build_type prefixes debug release cppad_cxx_flags cmake_libdir ldlt_cholmod use_atomic_cholesky checkpoint_newton_step optimize_cppad_function hide_ipopt_scaling for_hes_sparsity testing speed memory ',
@@ -37,7 +37,7 @@ Keyword =
 'ran_likelihood_jac  User Define Jacobian With Respect to Random Effects  ',' syntax see also purpose public mixed_object virtual function fixed_vec random_vec default derivative test example ',
 'ran_likelihood_jac.cpp  Random Likelihood Jacobian: Example and Test  ',' ',
 'ran_likelihood_hes  User Define Hessian With Respect to Random Effects  ',' syntax see also purpose public mixed_object virtual function fixed_vec random_vec row col val default example ',
-'ran_likelihood_hes.cpp  Random Likelihood Hessian: Example and Test  ',' ',
+'ran_likelihood_hes.cpp  Random Likelihood Hessian: Example and Test  ',' exponentiating effects motivation ',
 'pack  Pack Fixed Effect and Random Effects Into One Vector  ',' syntax private mixed_object float_unpack float_pack fixed_one fixed_two random_vec both_vec three_vec ',
 'unpack  Pack Fixed Effect and Random Effects Into One Vector  ',' syntax private mixed_object float_pack float_unpack fixed_one fixed_two random_vec both_vec three_vec ',
 'init_ran_jac  Initialize Jacobian of Random Likelihood w.r.t. Random Effects  ',' syntax private assumptions init_ran_jac_done_ mixed_object fixed_vec random_vec ran_jac_a1fun_ ran_jac2hes_rc_ ran_likelihood_jac ',
