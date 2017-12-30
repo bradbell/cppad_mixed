@@ -15,9 +15,31 @@ $spell
 	cppad
 	interp
 	xam
+	exponentiating
 $$
 
 $section Random Likelihood Hessian: Example and Test$$
+
+$head Exponentiating Random Effects$$
+For this example there is,
+on fixed effects $latex \theta_0$$ and  one data point $latex y_i$$ for each
+random effect $latex u_i$$.
+We use $latex e_i$$ to denote the measurement error for the $th i$$
+measurement.
+The simulated data is
+$latex \[
+	y_i = \theta_0 \exp [ u_i ] + e_i
+\] $$
+where $latex u_i \sim \B{N} ( 0 , \sigma_u )$$
+and $latex e_i \sim \B{N} ( 0 , \sigma_y )$$.
+
+$head Motivation$$
+Note that for this model,
+the Hessian with respect to the random effects is non-trivial and
+easy to calculate.
+Also not this is a good example of exponentiating
+random effects in the data model.
+
 
 $code
 $srcfile%example/user/ran_likelihood_hes.cpp
@@ -29,7 +51,8 @@ $end
 // BEGIN C++
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
-
+# include <cppad/mixed/manage_gsl_rng.hpp>
+# include <gsl/gsl_randist.h>
 
 namespace {
 	using CppAD::log;
@@ -42,7 +65,8 @@ namespace {
 	using CppAD::mixed::a1_vector;
 	using CppAD::mixed::a3_vector;
 	//
-	double random_effects_variance = 16.0;
+	double random_effects_std = 0.5;
+	double measurement_std    = 0.7;
 	//
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -80,13 +104,14 @@ namespace {
 			// for each data and random effect
 			for(size_t i = 0; i < y_.size(); i++)
 			{	scalar model  = theta[0]*exp( u[i] );
-				scalar res    = y_[i] - model;
 
-				// This is a Gaussian term, so entire density is smooth
-				vec[0]  += res * res / scalar(2.0);
+				// a Gaussian
+				scalar res = ( y_[i] - model ) / measurement_std;
+				vec[0]    += res * res / scalar(2.0);
 
 				// prior for random effects
-				vec[0]  += random_effects_variance * u[i] * u[i] / scalar(2.0);
+				res      = u[i] / random_effects_std;
+				vec[0]  += res * res / scalar(2.0);
 			}
 			return vec;
 		}
@@ -123,15 +148,16 @@ namespace {
 				size_t i = row[k];
 				//
 				scalar model     = theta[0]*exp( u[i] );
-				scalar res       = y_[i] - model;
+				scalar res       = (y_[i] - model) / measurement_std;
 				//
-				scalar res_ui    = - model;
-				scalar res_ui_ui = - model;
+				scalar res_ui    = - model / measurement_std;
+				scalar res_ui_ui = - model / measurement_std;
 				scalar sq_ui     = res * res_ui;
 				scalar sq_ui_ui  = res_ui * res_ui + res * res_ui_ui;
 				val[k]           = sq_ui_ui;
 				//
-				val[k]          += 16.0;
+				double var       = random_effects_std * random_effects_std;
+				val[k]          += 1.0 / var;
 			}
 			return val;
 		}
@@ -154,25 +180,26 @@ bool ran_likelihood_hes_xam(void)
 	bool   ok  = true;
 	double inf = std::numeric_limits<double>::infinity();
 	//
-	size_t n_fixed    = 1;
+	// size_t random_seed = CppAD::mixed::new_gsl_rng(0);
+	CppAD::mixed::new_gsl_rng(0);
+	gsl_rng* rng = CppAD::mixed::get_gsl_rng();
+	//
+	size_t n_fixed   = 1;
 	d_vector fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
 	fixed_lower[0]   = 0.0;
 	fixed_in[0]      = 5.0;
 	fixed_upper[0]   = 10.0;
 	//
-	size_t n_data    = 2;
+	size_t n_data    = 1000;
 	size_t n_random  = n_data;
 	d_vector data(n_data);
 	d_vector
 		random_lower(n_random), random_in(n_random), random_upper(n_random);
-	assert( n_data % 2 == 0 );
+	double true_fixed_0 = 2.0;
 	for(size_t i = 0; i < n_data; i++)
-	{	double u_i;
-		if( i % 2 == 0 )
-			u_i = + 1.0 / std::sqrt(random_effects_variance);
-		else
-			u_i = - 1.0 / std::sqrt(random_effects_variance);
-		data[i] = 2.0 * exp( u_i );
+	{	double u_i = gsl_ran_gaussian(rng, random_effects_std);
+		double e_i = gsl_ran_gaussian(rng, measurement_std);
+		data[i]    = true_fixed_0 * exp( u_i ) + e_i;
 		//
 		random_lower[i] = -inf;
 		random_in[i]    = 0.0;
@@ -197,7 +224,7 @@ bool ran_likelihood_hes_xam(void)
 		"Numeric tol                       1e-8\n"
 	;
 	std::string random_ipopt_options =
-		"Integer print_level     5\n"
+		"Integer print_level     0\n"
 		"String  sb              yes\n"
 		"String  derivative_test none\n"
 		"Numeric tol             1e-10\n"
@@ -221,15 +248,11 @@ bool ran_likelihood_hes_xam(void)
 		random_in
 	);
 	d_vector fixed_out = solution.fixed_opt;
-
-	d_vector random_out = mixed_object.optimize_random(
-		random_ipopt_options, fixed_out, random_lower, random_upper, random_in
-	);
-
-	ok &= CppAD::NearEqual(2.0, fixed_out[0], 1e-1, 1e-1);
+	//
+	ok &= CppAD::NearEqual(true_fixed_0, fixed_out[0], 1e-2, 1e-2);
 	ok &= mixed_object.ran_likelihood_hes_called();
-
-
+	//
+	CppAD::mixed::free_gsl_rng();
 	return ok;
 }
 // END C++
