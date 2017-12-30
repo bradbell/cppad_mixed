@@ -35,10 +35,14 @@ namespace {
 	using CppAD::log;
 	using CppAD::AD;
 	//
+	using CppAD::mixed::sparse_rc;
 	using CppAD::mixed::sparse_rcv;
+	//
 	using CppAD::mixed::d_vector;
 	using CppAD::mixed::a1_vector;
 	using CppAD::mixed::a3_vector;
+	//
+	double random_effects_variance = 16.0;
 	//
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -66,6 +70,7 @@ namespace {
 			const Vector&         theta  ,
 			const Vector&         u      )
 		{	typedef typename Vector::value_type scalar;
+			assert( theta.size() == 1 );
 
 			Vector vec(1);
 
@@ -74,14 +79,14 @@ namespace {
 
 			// for each data and random effect
 			for(size_t i = 0; i < y_.size(); i++)
-			{	scalar model  = theta[i]*exp( u[i] );
+			{	scalar model  = theta[0]*exp( u[i] );
 				scalar res    = y_[i] - model;
 
 				// This is a Gaussian term, so entire density is smooth
 				vec[0]  += res * res / scalar(2.0);
 
 				// prior for random effects
-				vec[0]  += u[i] * u[i] / scalar(2.0);
+				vec[0]  += random_effects_variance * u[i] * u[i] / scalar(2.0);
 			}
 			return vec;
 		}
@@ -110,13 +115,14 @@ namespace {
 			for(size_t k = 0; k < K; k++)
 			{	// initialize it as zero
 				val[k] = scalar(0.0);
+				assert( theta.size() == 1 );
 
 				// for this function, only the diagonal elements are non-zero
 				assert( row[k] == col[k] );
 				//
 				size_t i = row[k];
 				//
-				scalar model     = theta[i]*exp( u[i] );
+				scalar model     = theta[0]*exp( u[i] );
 				scalar res       = y_[i] - model;
 				//
 				scalar res_ui    = - model;
@@ -125,7 +131,7 @@ namespace {
 				scalar sq_ui_ui  = res_ui * res_ui + res * res_ui_ui;
 				val[k]           = sq_ui_ui;
 				//
-				val[k]          += 1.0;
+				val[k]          += 16.0;
 			}
 			return val;
 		}
@@ -148,33 +154,42 @@ bool ran_likelihood_hes_xam(void)
 	bool   ok  = true;
 	double inf = std::numeric_limits<double>::infinity();
 	//
-	size_t n_data   = 10;
-	size_t n_fixed  = n_data;
-	size_t n_random = n_data;
+	size_t n_fixed    = 1;
+	d_vector fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
+	fixed_lower[0]   = 0.0;
+	fixed_in[0]      = 5.0;
+	fixed_upper[0]   = 10.0;
+	//
+	size_t n_data    = 2;
+	size_t n_random  = n_data;
 	d_vector data(n_data);
-	d_vector fixed_lower(n_data), fixed_in(n_data), fixed_upper(n_data);
-	d_vector random_lower(n_data), random_in(n_data), random_upper(n_data);
+	d_vector
+		random_lower(n_random), random_in(n_random), random_upper(n_random);
+	assert( n_data % 2 == 0 );
 	for(size_t i = 0; i < n_data; i++)
-	{	data[i]       = double(i + 1);
+	{	double u_i;
+		if( i % 2 == 0 )
+			u_i = + 1.0 / std::sqrt(random_effects_variance);
+		else
+			u_i = - 1.0 / std::sqrt(random_effects_variance);
+		data[i] = 2.0 * exp( u_i );
 		//
-		fixed_lower[i] = random_lower[i] = -inf;
-		fixed_upper[i] = random_upper[i] = +inf;
-		fixed_in[i]    = data[i];
-		random_in[i]   = 0.0;
+		random_lower[i] = -inf;
+		random_in[i]    = 0.0;
+		random_upper[i] = +inf;
 	}
 	//
-	// object that is derived from cppad_mixed
 	bool quasi_fixed   = false;
 	bool bool_sparsity = true;
 	sparse_rcv A_rcv; // empty matrix
 	mixed_derived mixed_object(
-		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, data
+		n_fixed, n_data, quasi_fixed, bool_sparsity, A_rcv, data
 	);
 	mixed_object.initialize(fixed_in, random_in);
 
 	// optimize the fixed effects using quasi-Newton method
 	std::string fixed_ipopt_options =
-		"Integer print_level               5\n"
+		"Integer print_level               0\n"
 		"String  sb                        yes\n"
 		"String  derivative_test           adaptive\n"
 		"String  derivative_test_print_all yes\n"
@@ -184,14 +199,10 @@ bool ran_likelihood_hes_xam(void)
 	std::string random_ipopt_options =
 		"Integer print_level     5\n"
 		"String  sb              yes\n"
-		"String  derivative_test second-order\n"
+		"String  derivative_test none\n"
 		"Numeric tol             1e-10\n"
 	;
 	//
-	for(size_t i = 0; i < n_random; i++)
-	{	random_lower[i] = -inf;
-		random_upper[i] = +inf;
-	}
 	// ------------------------------------------------------------------
 	// optimize fixed effects
 	d_vector fixed_scale = fixed_in;
@@ -211,9 +222,11 @@ bool ran_likelihood_hes_xam(void)
 	);
 	d_vector fixed_out = solution.fixed_opt;
 
-	std::cout << "fixed_out = " << fixed_out << "\n";
-	for(size_t i = 0; i < n_data; i++)
-		ok &= CppAD::NearEqual( data[i], fixed_out[i], 1e-7, 1e-7);
+	d_vector random_out = mixed_object.optimize_random(
+		random_ipopt_options, fixed_out, random_lower, random_upper, random_in
+	);
+
+	ok &= CppAD::NearEqual(2.0, fixed_out[0], 1e-1, 1e-1);
 	ok &= mixed_object.ran_likelihood_hes_called();
 
 
