@@ -36,11 +36,8 @@ namespace {
 	using CppAD::AD;
 	//
 	using CppAD::mixed::sparse_rcv;
-	using CppAD::mixed::a1_double;
-	using CppAD::mixed::a2_double;
 	using CppAD::mixed::d_vector;
-	using CppAD::mixed::a1_vector;
-	using CppAD::mixed::a2_vector;
+	using CppAD::mixed::a3_vector;
 	//
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -87,11 +84,6 @@ namespace {
 			}
 			return vec;
 		}
-		// a2_vector version of ran_likelihood
-		virtual a2_vector ran_likelihood(
-			const a2_vector& fixed_vec, const a2_vector& random_vec
-		)
-		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 		// a3_vector version of ran_likelihood
 		virtual a3_vector ran_likelihood(
 			const a3_vector& fixed_vec, const a3_vector& random_vec
@@ -111,19 +103,16 @@ bool ran_likelihood_xam(void)
 	size_t n_random = n_data;
 	d_vector  data(n_data);
 	d_vector  fixed_vec(n_fixed), random_vec(n_random);
-	a1_vector a1_fixed(n_fixed), a1_random(n_random);
-	a2_vector a2_fixed(n_fixed), a2_random(n_random);
+	a3_vector a3_fixed(n_fixed), a3_random(n_random);
 
 	for(size_t i = 0; i < n_data; i++)
 	{	data[i]       = double(i + 1);
 		//
 		fixed_vec[i]  = 1.5;
-		a1_fixed[i]   = a1_double( fixed_vec[i] );
-		a2_fixed[i]   = a2_double( fixed_vec[i] );
+		a3_fixed[i]   = fixed_vec[i];
 		//
 		random_vec[i] = 0.0;
-		a1_random[i]  = a1_double( random_vec[i] );
-		a2_random[i]  = a2_double( random_vec[i] );
+		a3_random[i]  = random_vec[i];
 	}
 
 	// object that is derived from cppad_mixed
@@ -136,8 +125,8 @@ bool ran_likelihood_xam(void)
 	mixed_object.initialize(fixed_vec, random_vec);
 
 	// Evaluate random likelihood
-	a2_vector a2_vec(1);
-	a2_vec = mixed_object.ran_likelihood(a2_fixed, a2_random);
+	a3_vector a3_vec(1);
+	a3_vec = mixed_object.ran_likelihood(a3_fixed, a3_random);
 
 	// check the random likelihood
 	double sum = 0.0;
@@ -147,7 +136,8 @@ bool ran_likelihood_xam(void)
 		double res    = (data[i] - mu) / sigma;
 		sum          += (std::log(2 * pi * sigma * sigma) + res * res) / 2.0;
 	}
-	ok &= fabs( a2_vec[0] / a2_double(sum) - a2_double(1.0) ) < eps;
+	double check = Value( Value( Value( a3_vec[0] ) ) );
+	ok &= fabs( check / sum - 1.0 ) < eps;
 
 	return ok;
 }

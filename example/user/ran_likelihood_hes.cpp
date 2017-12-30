@@ -36,16 +36,14 @@ namespace {
 	using CppAD::AD;
 	//
 	using CppAD::mixed::sparse_rcv;
-	using CppAD::mixed::a1_double;
-	using CppAD::mixed::a2_double;
-	using CppAD::mixed::s_vector;
 	using CppAD::mixed::d_vector;
 	using CppAD::mixed::a1_vector;
-	using CppAD::mixed::a2_vector;
+	using CppAD::mixed::a3_vector;
 	//
 	class mixed_derived : public cppad_mixed {
 	private:
 		const d_vector&       y_;
+		bool                  ran_likelihood_hes_called_;
 	public:
 		// constructor
 		mixed_derived(
@@ -54,11 +52,12 @@ namespace {
 			bool                   quasi_fixed   ,
 			bool                   bool_sparsity ,
 			const sparse_rcv&      A_rcv         ,
-			const d_vector&       y              ) :
+			const d_vector&        y             ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
 			),
-			y_(y)
+			y_(y),
+			ran_likelihood_hes_called_(false)
 		{ }
 		// ------------------------------------------------------------------
 		// implementation of ran_likelihood
@@ -70,30 +69,22 @@ namespace {
 
 			Vector vec(1);
 
-			// compute this factor once
-			// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
-
 			// initialize summation
 			vec[0] = scalar(0.0);
 
 			// for each data and random effect
 			for(size_t i = 0; i < y_.size(); i++)
-			{	scalar mu     = exp( u[i] );
-				scalar sigma  = theta[i];
-				scalar res    = (y_[i] - mu) / sigma;
+			{	scalar model  = theta[i]*exp( u[i] );
+				scalar res    = y_[i] - model;
 
 				// This is a Gaussian term, so entire density is smooth
-				vec[0]  += log(sigma) + res * res / scalar(2.0);
-				// following term does not depend on fixed or random effects
-				// vec[0]  += log(sqrt_2pi);
+				vec[0]  += res * res / scalar(2.0);
+
+				// prior for random effects
+				vec[0]  += u[i] * u[i] / scalar(2.0);
 			}
 			return vec;
 		}
-		// a2_vector version of ran_likelihood
-		virtual a2_vector ran_likelihood(
-			const a2_vector& fixed_vec, const a2_vector& random_vec
-		)
-		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 		// a3_vector version of ran_likelihood
 		virtual a3_vector ran_likelihood(
 			const a3_vector& fixed_vec, const a3_vector& random_vec
@@ -121,18 +112,20 @@ namespace {
 				val[k] = scalar(0.0);
 
 				// for this function, only the diagonal elements are non-zero
-				if( row[k] == col[k] )
-				{	size_t i = row[k];
-					//
-					scalar mu        = exp( u[i] );
-					scalar sigma     = theta[i];
-					scalar res       = (y_[i] - mu) / sigma;
-					scalar res_ui    = - mu / sigma;
-					scalar res_ui_ui = - mu / sigma;
-					scalar sq_ui     = res * res_ui;
-					scalar sq_ui_ui  = res_ui * res_ui + res * res_ui_ui;
-					val[k]              = sq_ui_ui;
-				}
+				assert( row[k] == col[k] );
+				//
+				size_t i = row[k];
+				//
+				scalar model     = theta[i]*exp( u[i] );
+				scalar res       = y_[i] - model;
+				//
+				scalar res_ui    = - model;
+				scalar res_ui_ui = - model;
+				scalar sq_ui     = res * res_ui;
+				scalar sq_ui_ui  = res_ui * res_ui + res * res_ui_ui;
+				val[k]           = sq_ui_ui;
+				//
+				val[k]          += 1.0;
 			}
 			return val;
 		}
@@ -142,73 +135,88 @@ namespace {
 			const a1_vector& u     ,
 			const s_vector&  row   ,
 			const s_vector&  col   )
-		{	return template_ran_likelihood_hes( theta, u, row, col ); }
+		{	ran_likelihood_hes_called_ = true;
+			return template_ran_likelihood_hes( theta, u, row, col );
+		}
+		bool ran_likelihood_hes_called(void) const
+		{	return ran_likelihood_hes_called_; }
 	};
 }
 
 bool ran_likelihood_hes_xam(void)
 {
 	bool   ok  = true;
-	double eps = 100. * std::numeric_limits<double>::epsilon();
-
+	double inf = std::numeric_limits<double>::infinity();
+	//
 	size_t n_data   = 10;
 	size_t n_fixed  = n_data;
 	size_t n_random = n_data;
-	d_vector    data(n_data);
-	d_vector    fixed_vec(n_fixed), random_vec(n_random);
-	a1_vector a1_fixed(n_fixed), a1_random(n_random);
-	a2_vector a2_fixed(n_fixed), a2_random(n_random);
-
+	d_vector data(n_data);
+	d_vector fixed_lower(n_data), fixed_in(n_data), fixed_upper(n_data);
+	d_vector random_lower(n_data), random_in(n_data), random_upper(n_data);
 	for(size_t i = 0; i < n_data; i++)
 	{	data[i]       = double(i + 1);
 		//
-		fixed_vec[i]  = 1.5;
-		a1_fixed[i]   = fixed_vec[i];
-		a2_fixed[i]   = a1_fixed[i];
-		//
-		random_vec[i] = 0.0;
-		a1_random[i]  = random_vec[i];
-		a2_random[i]  = a1_random[i];
+		fixed_lower[i] = random_lower[i] = -inf;
+		fixed_upper[i] = random_upper[i] = +inf;
+		fixed_in[i]    = data[i];
+		random_in[i]   = 0.0;
 	}
-
+	//
 	// object that is derived from cppad_mixed
-	bool quasi_fixed   = true;
+	bool quasi_fixed   = false;
 	bool bool_sparsity = true;
 	sparse_rcv A_rcv; // empty matrix
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, data
 	);
-	mixed_object.initialize(fixed_vec, random_vec);
+	mixed_object.initialize(fixed_in, random_in);
 
-	// record Evaluation random likelihood
-	CppAD::Independent(a2_random);
-	a2_vector a2_vec(1);
-	a2_vec = mixed_object.ran_likelihood(a2_fixed, a2_random);
-	CppAD::ADFun<a1_double> a1_f(a2_random, a2_vec);
-
-	// sparsity pattern of Hessian for this function
-	s_vector row(n_data), col(n_data);
-	a1_vector val(n_data);
-	for(size_t i = 0; i < n_data; i++)
-	{	row[i] = i;
-		col[i] = i;
-	};
-
-	// Evaluate ran_likelihood_hes
-	val = mixed_object.ran_likelihood_hes(a1_fixed, a1_random, row, col);
-
-	// Compute the Hessian using AD
-	a1_vector w(1), check(n_random * n_random);
-	w[0]  = 1.0;
-	check = a1_f.Hessian(a1_random, w);
-
-	// check the Hessian values
-	// (when NDEBUG is not defined, cppad_mixed also does this check)
-	for(size_t i = 0; i < n_data; i++)
-	{	ok &= CppAD::NearEqual(
-			Value(val[i]), Value(check[i * n_random + i]), eps, eps
-		);
+	// optimize the fixed effects using quasi-Newton method
+	std::string fixed_ipopt_options =
+		"Integer print_level               5\n"
+		"String  sb                        yes\n"
+		"String  derivative_test           adaptive\n"
+		"String  derivative_test_print_all yes\n"
+		"Integer max_iter                  50\n"
+		"Numeric tol                       1e-8\n"
+	;
+	std::string random_ipopt_options =
+		"Integer print_level     5\n"
+		"String  sb              yes\n"
+		"String  derivative_test second-order\n"
+		"Numeric tol             1e-10\n"
+	;
+	//
+	for(size_t i = 0; i < n_random; i++)
+	{	random_lower[i] = -inf;
+		random_upper[i] = +inf;
 	}
+	// ------------------------------------------------------------------
+	// optimize fixed effects
+	d_vector fixed_scale = fixed_in;
+	d_vector fix_constraint_lower(0), fix_constraint_upper(0);
+	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
+		fixed_ipopt_options,
+		random_ipopt_options,
+		fixed_lower,
+		fixed_upper,
+		fix_constraint_lower,
+		fix_constraint_upper,
+		fixed_scale,
+		fixed_in,
+		random_lower,
+		random_upper,
+		random_in
+	);
+	d_vector fixed_out = solution.fixed_opt;
+
+	std::cout << "fixed_out = " << fixed_out << "\n";
+	for(size_t i = 0; i < n_data; i++)
+		ok &= CppAD::NearEqual( data[i], fixed_out[i], 1e-7, 1e-7);
+	ok &= mixed_object.ran_likelihood_hes_called();
+
+
 	return ok;
 }
 // END C++

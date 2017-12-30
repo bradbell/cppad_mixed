@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-17 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -306,20 +306,19 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 		{	// report the error message as a warning
 			mixed_object.warning( random_nlp->get_error_message() );
 			//
-			typedef CppAD::AD< CppAD::AD<double> > a2_double;
-			typedef CppAD::vector<a2_double>       a2_vector;
+			typedef CppAD::mixed::a3_vector   a3_vector;
 			//
 			size_t n_fixed  = fixed_vec.size();
 			size_t n_random = random_in.size();
 			//
 			// Perhaps ran_likelihood will generate a more useful error message
-			a2_vector a2_theta(n_fixed), a2_u(n_random);
+			a3_vector a3_theta(n_fixed), a3_u(n_random);
 			for(size_t i = 0; i < n_fixed; i++)
-				a2_theta[i] = a2_double( fixed_vec[i] );
+				a3_theta[i] = fixed_vec[i];
 			for(size_t i = 0; i < n_random; i++)
-				a2_u[i] = a2_double( random_nlp->get_error_random(i) );
+				a3_u[i] = random_nlp->get_error_random(i);
 			try {
-				mixed_object.ran_likelihood(a2_theta, a2_u);
+				mixed_object.ran_likelihood(a3_theta, a3_u);
 			}
 			catch(const CppAD::mixed::exception& e)
 			{	std::string error_message = e.message("optimize_random");

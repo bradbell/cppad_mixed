@@ -152,7 +152,7 @@ int main(void)
 	RUN(ran_hes_fun_xam);
 	RUN(ran_like_jac_xam);
 	RUN(ran_likelihood_xam);
-	RUN(ran_likelihood_hes_xam);
+	// RUN(ran_likelihood_hes_xam);
 	RUN(ran_likelihood_jac_xam);
 	RUN(laplace_obj_hes_xam);
 	RUN(ran_obj_eval_xam);

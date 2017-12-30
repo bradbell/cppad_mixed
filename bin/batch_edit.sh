@@ -25,12 +25,7 @@ cat << EOF > junk.sed
 : one
 N
 /}\$/! b one
-s|^\\(\\t*\\).*|&\\
-\\1// a3_vector version of ran_likelihood\\
-\\1virtual a3_vector ran_likelihood(\\
-\\1	const a3_vector\\& fixed_vec, const a3_vector\\& random_vec\\
-\\1)\\
-\\1{	return template_ran_likelihood( fixed_vec, random_vec ); }|
+d
 #
 : skip
 EOF

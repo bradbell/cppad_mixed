@@ -118,10 +118,6 @@ the user's derived class:
 $subhead ran_likelihood$$
 This function is necessary if there are random effects in the model.
 $srccode%cpp% */
-	virtual a2_vector ran_likelihood(
-		const a2_vector& fixed_vec  ,
-		const a2_vector& random_vec )
-	{	return a2_vector(0); }
 	virtual a3_vector ran_likelihood(
 		const a3_vector& fixed_vec  ,
 		const a3_vector& random_vec )

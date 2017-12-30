@@ -789,22 +789,6 @@ public:
 // ------------------------------------------------------------------------
 public:
 	// a2_vector ran_likelihood
-	virtual a2_vector ran_likelihood(
-		const a2_vector& fixed_vec  ,
-		const a2_vector& random_vec )
-	{	a2_vector log_pik(R_ * K_), vec(1);
-		for(size_t ell = 0; ell < R_ * K_; ell++)
-			log_pik[ell] = a2_double(log_pik_[ell]);
-		vec = template_ran_likelihood(fixed_vec, random_vec, log_pik);
-		// make sure result is finite
-# ifndef NDEBUG
-		double inf = std::numeric_limits<double>::infinity();
-# endif
-		assert( vec[0] < + a2_double(inf) );
-		assert( vec[0] > - a2_double(inf) );
-		//
-		return vec;
-	}
 	// a3_vector ran_likelihood
 	virtual a3_vector ran_likelihood(
 		const a3_vector& fixed_vec  ,
