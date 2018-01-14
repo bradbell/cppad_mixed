@@ -28,10 +28,18 @@ We use $latex e_i$$ to denote the measurement error for the $th i$$
 measurement.
 The simulated data is
 $latex \[
-	y_i = \theta_0 \exp [ u_i ] + e_i
+	y_i = \theta_0 \exp [ u_i ]
 \] $$
-where $latex u_i \sim \B{N} ( 0 , \sigma_u )$$
-and $latex e_i \sim \B{N} ( 0 , \sigma_y )$$.
+where $latex u_i \sim \B{N} ( 0 , \sigma_u )$$.
+The offset log of the data is
+$latex \[
+	\log( y_i + \eta )
+\] $$
+and the model for the offset log of the data is
+$latex \[
+	\log( \theta \exp[ u_i ] + \eta
+\]$$.
+
 
 $head Motivation$$
 Note that for this model,
@@ -51,8 +59,6 @@ $end
 // BEGIN C++
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
-# include <cppad/mixed/manage_gsl_rng.hpp>
-# include <gsl/gsl_randist.h>
 
 namespace {
 	using CppAD::log;
@@ -65,12 +71,13 @@ namespace {
 	using CppAD::mixed::a1_vector;
 	using CppAD::mixed::a3_vector;
 	//
-	double random_effects_std = 0.5;
-	double measurement_std    = 0.7;
+	double random_effects_std = 0.2;
+	double measurement_std    = 0.1;
 	//
 	class mixed_derived : public cppad_mixed {
 	private:
 		const d_vector&       y_;
+		double                eta_;
 		bool                  ran_likelihood_hes_called_;
 	public:
 		// constructor
@@ -80,11 +87,13 @@ namespace {
 			bool                   quasi_fixed   ,
 			bool                   bool_sparsity ,
 			const sparse_rcv&      A_rcv         ,
-			const d_vector&        y             ) :
+			const d_vector&        y             ,
+			double                 eta           ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
 			),
 			y_(y),
+			eta_(eta),
 			ran_likelihood_hes_called_(false)
 		{ }
 		// ------------------------------------------------------------------
@@ -103,10 +112,15 @@ namespace {
 
 			// for each data and random effect
 			for(size_t i = 0; i < y_.size(); i++)
-			{	scalar model  = theta[0]*exp( u[i] );
+			{
+				double log_y = log( y_[i] + eta_ );
+				double sigma = log( y_[i] + eta_ + measurement_std) - log_y;
+				//
+				scalar model     = theta[0]*exp( u[i] );
+				scalar log_model = log(model + eta_);
+				scalar res = ( log_y - log_model ) / sigma;
 
-				// a Gaussian
-				scalar res = ( y_[i] - model ) / measurement_std;
+				// data likelihood
 				vec[0]    += res * res / scalar(2.0);
 
 				// prior for random effects
@@ -147,17 +161,28 @@ namespace {
 				//
 				size_t i = row[k];
 				//
+				double log_y = log( y_[i] + eta_ );
+				double sigma = log( y_[i] + eta_ + measurement_std) - log_y;
+				//
 				scalar model     = theta[0]*exp( u[i] );
-				scalar res       = (y_[i] - model) / measurement_std;
+				scalar log_model = log(model + eta_);
+				scalar res       = (log_y - log_model) / sigma;
 				//
-				scalar res_ui    = - model / measurement_std;
-				scalar res_ui_ui = - model / measurement_std;
-				scalar sq_ui     = res * res_ui;
-				scalar sq_ui_ui  = res_ui * res_ui + res * res_ui_ui;
-				val[k]           = sq_ui_ui;
+				// model_ui          = model
+				scalar log_model_ui  = model / (model + eta_ );
+				scalar res_ui        = - log_model_ui / sigma;
+				scalar sq_ui         = res * res_ui;
 				//
-				double var       = random_effects_std * random_effects_std;
-				val[k]          += 1.0 / var;
+				// model_ui_ui          = model
+				scalar model_eta_sq     = (model + eta_) * (model + eta_);
+				scalar log_model_ui_ui  =
+					model / (model + eta_) - model * model / model_eta_sq;
+				scalar res_ui_ui        = - log_model_ui_ui / sigma;
+				scalar sq_ui_ui         = res_ui * res_ui + res * res_ui_ui;
+				//
+				val[k]      = sq_ui_ui;
+				double var  = random_effects_std * random_effects_std;
+				val[k]      += 1.0 / var;
 			}
 			return val;
 		}
@@ -180,26 +205,21 @@ bool ran_likelihood_hes_xam(void)
 	bool   ok  = true;
 	double inf = std::numeric_limits<double>::infinity();
 	//
-	// size_t random_seed = CppAD::mixed::new_gsl_rng(0);
-	CppAD::mixed::new_gsl_rng(0);
-	gsl_rng* rng = CppAD::mixed::get_gsl_rng();
-	//
 	size_t n_fixed   = 1;
 	d_vector fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
 	fixed_lower[0]   = 0.0;
 	fixed_in[0]      = 5.0;
 	fixed_upper[0]   = 10.0;
 	//
-	size_t n_data    = 1000;
+	double eta       = 0.;
+	size_t n_data    = 2;
 	size_t n_random  = n_data;
-	d_vector data(n_data);
+	d_vector y(n_data);
 	d_vector
 		random_lower(n_random), random_in(n_random), random_upper(n_random);
 	double true_fixed_0 = 2.0;
 	for(size_t i = 0; i < n_data; i++)
-	{	double u_i = gsl_ran_gaussian(rng, random_effects_std);
-		double e_i = gsl_ran_gaussian(rng, measurement_std);
-		data[i]    = true_fixed_0 * exp( u_i ) + e_i;
+	{	y[i]    = true_fixed_0;
 		//
 		random_lower[i] = -inf;
 		random_in[i]    = 0.0;
@@ -210,7 +230,7 @@ bool ran_likelihood_hes_xam(void)
 	bool bool_sparsity = true;
 	sparse_rcv A_rcv; // empty matrix
 	mixed_derived mixed_object(
-		n_fixed, n_data, quasi_fixed, bool_sparsity, A_rcv, data
+		n_fixed, n_data, quasi_fixed, bool_sparsity, A_rcv, y, eta
 	);
 	mixed_object.initialize(fixed_in, random_in);
 
@@ -249,10 +269,9 @@ bool ran_likelihood_hes_xam(void)
 	);
 	d_vector fixed_out = solution.fixed_opt;
 	//
-	ok &= CppAD::NearEqual(true_fixed_0, fixed_out[0], 1e-2, 1e-2);
+	ok &= CppAD::NearEqual(true_fixed_0, fixed_out[0], 1e-5, 1e-5);
 	ok &= mixed_object.ran_likelihood_hes_called();
 	//
-	CppAD::mixed::free_gsl_rng();
 	return ok;
 }
 // END C++
