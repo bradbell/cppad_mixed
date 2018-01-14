@@ -1,0 +1,30 @@
+-----------------------------------------------------------------------------
+cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
+          Copyright (C) 2014-18 University of Washington
+             (Bradley M. Bell bradbell@uw.edu)
+
+This program is distributed under the terms of the
+	     GNU Affero General Public License version 3.0 or later
+see http://www.gnu.org/licenses/agpl.txt
+-----------------------------------------------------------------------------
+
+$begin whats_new_18$$
+$spell
+	cppad
+$$
+
+$section Changes and Additions to cppad_mixed During 2018$$
+
+$comment Also change bin/copyright.sh when creating whats_new_19$$
+$childtable%
+	omh/whats_new/15.omh%
+	omh/whats_new/16.omh%
+	omh/whats_new/17.omh
+%$$
+
+$head 01-14$$
+Change the $cref ran_likelihood_hes.cpp$$ example to use the
+offset log normal distribution and eliminate the chance of random failure
+during its test.
+
+$end
