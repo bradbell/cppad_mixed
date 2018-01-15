@@ -2,7 +2,7 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-17 University of Washington
+#           Copyright (C) 2014-18 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -36,6 +36,7 @@
 #	ar1_xam
 #	callgrind
 #	hes
+#	Wshadow
 # &&
 #
 # &section bin/run_cmake.sh: User Configuration Options&&
@@ -88,9 +89,10 @@ suitesparse_prefix="$HOME/prefix/cppad_mixed"
 # will need to be installed.
 #
 # &head cppad_cxx_flags&&
-# Extra C++ flags used to configure CppAD:
+# Extra C++ flags used to configure CppAD
+# (currently working on fixing all the -Wshadow warnings):
 # &codep
-cppad_cxx_flags='-std=c++11 -Wall'
+cppad_cxx_flags='-std=c++11 -Wall -Wshadow'
 # &&
 #
 # &head cmake_libdir&&

@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -220,7 +220,7 @@ void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& H_info )
 	assert( k == nzmax );
 	CppAD::index_sort(key, H_info2cholmod_order_);
 # ifndef NDEBUG
-	for(size_t k = 0; k < nzmax; k++)
+	for(k = 0; k < nzmax; k++)
 		assert( size_t(H_i[ H_info2cholmod_order_[k] ]) == H_info.row[k] );
 # endif
 }

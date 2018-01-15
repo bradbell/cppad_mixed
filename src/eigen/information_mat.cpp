@@ -2,7 +2,7 @@
 /*
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -217,7 +217,7 @@ CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 	}
 	assert( k == nnz );
 	sparse_rcv total_rcv(pattern);
-	for(size_t k = 0;  k < nnz; k++)
+	for(k = 0;  k < nnz; k++)
 		total_rcv.set(k, val[k]);
 	//
 	return total_rcv;

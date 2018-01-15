@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-17 University of Washington
+#           Copyright (C) 2014-18 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -92,21 +92,16 @@ then
 	echo_eval rm bin/run_cmake.bak
 fi
 #
-echo 'bin/run_cmake.sh > cmake.log'
-bin/run_cmake.sh > cmake.log
+echo 'bin/run_cmake.sh 1> cmake.log 2> cmake.err'
+bin/run_cmake.sh 1> cmake.log 2> cmake.err
 #
 cd build
-echo 'make check > make.log'
-make check > ../make.log
 #
-echo 'make speed >> make.log'
-if ! make speed >> ../make.log
-then
-	echo 'check_all.sh: speed test failed correctness, perhaps OK'
-fi
-#
-echo 'make install >> make.log'
-make install >> ./make.log
+for target in check speed install
+do
+	echo "make $target 1> $target.log 2> $target.err"
+	make $target 1> ../$target.log 2> ../$target.err
+done
 cd ..
 bin/check_install.sh
 # -----------------------------------------------------------------------------
