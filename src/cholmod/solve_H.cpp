@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -128,7 +128,7 @@ void ldlt_cholmod::solve_H(
 		rhs_x[ row[k] ] = val_in[k];
 	//
 	rhs_set_p[0] = 0;
-	rhs_set_p[1] = static_cast<size_t>( row.size() );
+	rhs_set_p[1] = int( row.size() );
 	for(size_t k = 0; k < row.size(); k++)
 		rhs_set_i[k] = (int) row[k];
 

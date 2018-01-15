@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -85,7 +85,7 @@ as set to their permanent values:
 $subhead sparseinv_p_$$
 This member variable has the prototype
 $codei%
-	CppAD::vector<size_t> sparseinv_p_
+	CppAD::vector<int> sparseinv_p_
 %$$
 Its initial size is zero.
 After the first call to $code inv$$, it had size $code nrow_+1$$.
@@ -96,7 +96,7 @@ column start.
 $subhead sparseinv_i_$$
 This member variable has the prototype
 $codei%
-	CppAD::vector<size_t> sparseinv_i_
+	CppAD::vector<int> sparseinv_i_
 %$$
 Its initial size is zero.
 After the first call to $code inv$$, it had size
@@ -225,7 +225,7 @@ void ldlt_cholmod::inv(
 		// index conversize from sparse_mat_info to sparseinv format
 		out2sparseinv_order_.resize(K_in);
 		size_t k = 0;
-		sparseinv_p_[0]    = sparseinv_i_.size();
+		sparseinv_p_[0]    = int( sparseinv_i_.size() );
 		for(size_t j = 0; j < nrow_; j++)
 		{	bool more = k < K_total;
 			while( more )
@@ -234,7 +234,7 @@ void ldlt_cholmod::inv(
 				assert( c >= j );
 				more = c == j;
 				if( more )
-				{	sparseinv_i_.push_back(r);
+				{	sparseinv_i_.push_back( int(r) );
 					if( ind[k] < K_in )
 						out2sparseinv_order_[ ind[k] ] = sparseinv_i_.size()-1;
 					k++;
@@ -252,7 +252,7 @@ void ldlt_cholmod::inv(
 					more = k < K_total ;
 				}
 			}
-			sparseinv_p_[j+1] = sparseinv_i_.size();
+			sparseinv_p_[j+1] = int( sparseinv_i_.size() );
 		}
 	}
 	// ------------------------------------------------------------------------
