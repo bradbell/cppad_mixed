@@ -90,7 +90,6 @@ suitesparse_prefix="$HOME/prefix/cppad_mixed"
 #
 # &head cppad_cxx_flags&&
 # Extra C++ flags used to configure CppAD
-# (currently working on fixing all the -Wshadow warnings):
 # &codep
 cppad_cxx_flags='-std=c++11 -Wall -Wshadow'
 # &&
