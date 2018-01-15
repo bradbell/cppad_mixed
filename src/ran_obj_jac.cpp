@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -214,7 +214,7 @@ void cppad_mixed::ran_obj_jac(
 		// compute effect of uhat_{theta(j)} (theta) on the total derivative
 		for(size_t ell = 0; ell < row_solve.size(); ell++)
 		{	// random effect index
-			size_t i = row_solve[ell];
+			i = row_solve[ell];
 			// partial of optimal random effect for this (i, j)
 			double ui_thetaj = val_x[ell];
 			// partial of random part of objective w.r.t this random effect

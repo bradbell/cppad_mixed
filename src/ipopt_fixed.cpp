@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -1458,7 +1458,7 @@ void ipopt_fixed::try_eval_jac_g(
 	}
 	assert( ell == nnz_jac_g_ );
 	//
-	for(size_t ell = 0; ell < nnz_jac_g_; ell++)
+	for(ell = 0; ell < nnz_jac_g_; ell++)
 	{	if( CppAD::isnan( values[ell] ) ) throw CppAD::mixed::exception(
 			"", "constraint Jacobian has a nan"
 		);
