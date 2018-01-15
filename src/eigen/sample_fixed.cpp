@@ -2,7 +2,7 @@
 /*
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -313,21 +313,21 @@ void cppad_mixed::try_sample_fixed(
 	// random constraints are always active
 	size_t n_ran_active = A_rcv_.nr();
 	//
-	// matrix with all the active constraints
-	// (not counting bound constraints)
+	// This A is the matrix with all the active constraints.
+	// This includes fixed and random, but not bound, constraints.
 	size_t n_con_active = n_fix_active + n_ran_active;
-	double_mat E = double_mat::Zero(n_con_active, n_subset);
-	double_vec e = double_vec::Zero(n_con_active);
+	double_mat A = double_mat::Zero(n_con_active, n_subset);
+	double_vec b = double_vec::Zero(n_con_active);
 	size_t con_row = 0;
 	//
-	// put fixed constraints in E
+	// put fixed constraints in A
 	if( n_fix_con > 0 )
-	{	// value of fixed constraints
+	{	// righth and side for fixed constraints
 		d_vector vec  = fix_con_eval(fixed_opt);
 		size_t i_active = 0;
 		for(size_t r = 0; r < n_fix_con; r++)
 		{	if( solution.fix_con_lag[r] != 0.0 )
-				e[i_active++] = vec[r];
+				b[i_active++] = vec[r];
 		}
 		// jacobian of the fixed constraints
 		CppAD::mixed::sparse_mat_info fix_con_info;
@@ -346,13 +346,13 @@ void cppad_mixed::try_sample_fixed(
 			{	assert( fix_active_index[r] != n_fixed_ );
 				size_t i  = fix_active_index[r];
 				size_t j  = fixed2subset[c];
-				E(con_row + i, j) = v;
+				A(con_row + i, j) = v;
 			}
 		}
 		con_row += n_fix_active;
 	}
-	// put random constraints in E
-	// (right hand side e for random constraints is zero)
+	// put random constraints in A
+	// (right hand side b for random constraints is zero)
 	sparse_rcv ran_con_rcv;
 	if( n_ran_active > 0 )
 	{	assert( con_row == n_fix_active );
@@ -371,7 +371,7 @@ void cppad_mixed::try_sample_fixed(
 			bool in_subset = fixed2subset[c] != n_fixed_;
 			if( in_subset )
 			{	size_t j  = fixed2subset[c];
-				E(con_row + r, j) = v;
+				A(con_row + r, j) = v;
 			}
 		}
 	}
@@ -380,8 +380,8 @@ void cppad_mixed::try_sample_fixed(
 	size_t nI = n_subset - n_con_active;
 	size_vec   D(nD), I(nI);
 	double_mat C(nD, nI);
-	double_vec c(nD);
-	CppAD::mixed::undetermined(E, e, tol, D, I, C, c);
+	double_vec e(nD);
+	CppAD::mixed::undetermined(A, b, tol, D, I, C, e);
 	// -----------------------------------------------------------------------
 	// map from subset index to dependent and independent variable indices
 	CppAD::vector<size_t> subset2independent(n_subset);
@@ -488,7 +488,7 @@ void cppad_mixed::try_sample_fixed(
 		//
 		// set v to cholesky factor of info_mat^{-1} times w
 		d_vector v(nI);
-		bool ok = ldlt_info_mat.sim_cov(w, v);
+		ok = ldlt_info_mat.sim_cov(w, v);
 		if( ! ok )
 		{	std::string msg = "sample_fixed: implicit information matrix"
 				" is not positive definite";
