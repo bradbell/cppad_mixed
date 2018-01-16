@@ -100,7 +100,7 @@ bool newton_step_xam(void)
 	//
 	// check log of determinant
 	double logdet = Value( a1_logdet_step[0] );
-	double check  = log(2.0) * n_random;
+	double check  = log(2.0) * double(n_random);
 	ok           &= CppAD::NearEqual(logdet, check, eps, eps);
 	//
 	// check the Newton step

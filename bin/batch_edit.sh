@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-17 University of Washington
+#           Copyright (C) 2014-18 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -21,13 +21,7 @@ no_change_files='
 rename_cmd='s|ran_objcon|laplace_obj|'
 #
 cat << EOF > junk.sed
-/^\\t*virtual a2_vector ran_likelihood(/! b skip
-: one
-N
-/}\$/! b one
-d
-#
-: skip
+s|= *i */ *double(n_data);|= double(i) / double(n_data);|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]
