@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -36,7 +36,7 @@ void simulate(
 	// simulate population sizes
 	double p  = theta[0];
 	for(size_t i = 0; i < I; i++)
-		y[ i ] = gsl_ran_binomial(rng, p, N);
+		y[ i ] = gsl_ran_binomial(rng, p, (unsigned int)(N) );
 	return;
 }
 
@@ -77,7 +77,8 @@ public:
 		Float sumlog = Float(0.0);
 		Float term;
 		for(size_t i = 0; i < I; i++)
-		{	double yi = y_[i];
+		{	size_t yi = y_[i];
+			assert( N_ > yi );
 			// log (N choose yi)
 			sumlog += Float( logfac_[N_] - logfac_[yi] - logfac_[N_ - yi] );
 			// log ( p^yi )

@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 dismod_at: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -42,7 +42,7 @@ void simulate(
 	double p      = theta[0];
 	double lambda = theta[1];
 	for(size_t i = 0; i < I; i++)
-	{	size_t N = gsl_ran_poisson(rng, lambda);
+	{	unsigned int N = gsl_ran_poisson(rng, lambda);
 		for(size_t t = 0; t < T; t++)
 			y[ i * T + t ]   = gsl_ran_binomial(rng, p, N);
 	}
@@ -181,7 +181,7 @@ bool n_mixture(void)
 	theta_upper[0] = 1.0;
 	// limits on mean population size
 	theta_lower[1] = 0.0;
-	theta_upper[1] = K;
+	theta_upper[1] = double(K);
 
 	// optimize the fixed effects
 	std::string fixed_ipopt_options =

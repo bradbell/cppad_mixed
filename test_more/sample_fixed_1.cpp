@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -331,9 +331,9 @@ bool sample_fixed_1(void)
 	double_mat C = info_mat.inverse();
 	//
 	// conditional covaraince matrix
-	double_mat EC   = E * C;
-	double_mat ECET = EC * E.transpose();
-	double_mat D  = C - EC.transpose() * ECET.inverse() * EC;
+	double_mat EC   = double_mat( E * C );
+	double_mat ECET = double_mat( EC * E.transpose() );
+	double_mat D  = double_mat( C - EC.transpose() * ECET.inverse() * EC );
 	//
 	double max_cov = 0.0;
 	for(size_t i = 0; i < n_fixed; i++)

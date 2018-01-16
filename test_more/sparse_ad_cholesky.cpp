@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -270,7 +270,8 @@ bool sparse_ad_cholesky(void)
 	// --------------------------------------------------------------------
 	// create sparse_ad_cholesky object
 	size_t nc = 4;
-	sparse_ad_matrix ad_Blow(nc, nc);
+	sparse_ad_matrix ad_Blow;
+	ad_Blow.resize( int(nc), int(nc) );
 	ad_Blow.insert(0,0) = x[0];
 	ad_Blow.insert(1,0) = x[1];
 	ad_Blow.insert(1,1) = x[2];
@@ -294,7 +295,8 @@ bool sparse_ad_cholesky(void)
 	// ----------------------------------------------------------------------
 	// create function object corresponding to L(x)
 	CppAD::Independent( ax );
-	sparse_ad_matrix ad_Alow(nc, nc);
+	sparse_ad_matrix ad_Alow;
+	ad_Alow.resize( int(nc), int(nc) );
 	ad_Alow.insert(0,0) = ax[0];
 	ad_Alow.insert(1,0) = ax[1];
 	ad_Alow.insert(1,1) = ax[2];
