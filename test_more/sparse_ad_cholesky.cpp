@@ -310,7 +310,7 @@ bool sparse_ad_cholesky(void)
 	//
 	size_t iy = 0;
 	for(size_t j = 0; j < nc; j++)
-	{	for(sparse_ad_matrix::InnerIterator itr(ad_L, j); itr; ++itr)
+	{	for(sparse_ad_matrix::InnerIterator itr(ad_L, int(j)); itr; ++itr)
 			ay[iy++] = itr.value();
 	}
 	CppAD::ADFun<double> L_fun(ax, ay);

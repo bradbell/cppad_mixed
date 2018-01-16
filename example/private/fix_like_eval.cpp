@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -146,7 +146,7 @@ bool fix_like_eval_xam(void)
 	fixed_vec[1] = 0.5;
 	for(size_t i = 0; i < n_data; i++)
 	{	data[i]       = double(i + 1);
-		random_vec[i] = i / double(n_data);
+		random_vec[i] = double(i) / double(n_data);
 	}
 
 	// object that is derived from cppad_mixed

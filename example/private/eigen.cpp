@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -53,7 +53,8 @@ bool test_one(void)
 
 
 	// convert to an Eigen sparse matrix
-	real_sparse_matrix A(n, n);
+	real_sparse_matrix A;
+	A.resize(int(n), int(n));
 
 	// create Matrix
 	A.insert(0, 0) = A_vec[0];
@@ -125,7 +126,8 @@ bool test_two(void)
 	A_vec[5] = 5.0; // A(2, 2)
 
 	// Lower triangle of positive definate A
-	real_sparse_matrix A(n, n);
+	real_sparse_matrix A;
+	A.resize(int(n), int(n));
 	A.insert(0, 0) = 5.0;
 	A.insert(1, 0) = 4.0;
 	A.insert(1, 1) = 5.0;
@@ -141,8 +143,9 @@ bool test_two(void)
 	// check computation of the inverse of A
 	size_t count = 0;
 	for(size_t j = 0; j < n; j++)
-	{	real_sparse_matrix b(n, 1);
-		b.insert(j, 0) = 1.0;
+	{	real_sparse_matrix b;
+		b.resize( int(n), 1);
+		b.insert( int(j), 0) = 1.0;
 		real_sparse_matrix x = chol.solve(b);
 		for(int k = 0; k < x.outerSize(); ++k)
 		{	ok &= k == 0;
