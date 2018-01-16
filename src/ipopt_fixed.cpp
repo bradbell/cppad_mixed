@@ -671,10 +671,10 @@ bool ipopt_fixed::get_nlp_info(
 $end
 */
 {
-	n           = n_fixed_ + fix_likelihood_nabs_;
-	m           = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
-	nnz_jac_g   = nnz_jac_g_;
-	nnz_h_lag   = nnz_h_lag_;
+	n           = Index( n_fixed_ + fix_likelihood_nabs_ );
+	m           = Index( 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
+	nnz_jac_g   = Index( nnz_jac_g_ );
+	nnz_h_lag   = Index( nnz_h_lag_ );
 	index_style = C_STYLE;
 	//
 	return true;
@@ -1963,12 +1963,12 @@ $end
 	CppAD::vector<Index> iRow(nnz_jac_g_), jCol(nnz_jac_g_);
 	iRow.data();
 	eval_jac_g(
-		n, x, new_x, m, nnz_jac_g_,
+		n, x, new_x, m, Index(nnz_jac_g_),
 		iRow.data(), jCol.data(), NULL
 	);
 	CppAD::vector<Number> jac_g(nnz_jac_g_);
 	eval_jac_g(
-		n, x, new_x, m, nnz_jac_g_,
+		n, x, new_x, m, Index(nnz_jac_g_),
 		iRow.data(), jCol.data(), jac_g.data()
 	);
 
@@ -2351,7 +2351,8 @@ $end
 		// loop over relative step sizes
 		size_t i_try           = 0;
 		while( i_try < n_try && best_err > relative_tol )
-		{	double relative_step = std::exp(log_min_rel + log_diff * i_try);
+		{	double log_next      = log_min_rel + log_diff * double(i_try);
+			double relative_step = std::exp(log_next);
 			//
 			// step size
 			double step = relative_step * ( x_upper[j] - x_lower[j] );
@@ -2456,7 +2457,8 @@ $end
 		// loop over relative step sizes
 		size_t i_try           = 0;
 		while( i_try < n_try && max_best_err > relative_tol )
-		{	double relative_step = std::exp(log_min_rel + log_diff * i_try);
+		{	double log_next      = log_min_rel + log_diff * double(i_try);
+			double relative_step = std::exp(log_next);
 			//
 			// step size
 			double step = relative_step * ( x_upper[j] - x_lower[j] );

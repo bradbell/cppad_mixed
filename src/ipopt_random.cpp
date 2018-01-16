@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -158,10 +158,10 @@ bool ipopt_random::get_nlp_info(
 $end
 */
 {
-	n           = n_random_;
+	n           = Index(n_random_);
 	m           = 0;
 	nnz_jac_g   = 0;
-	nnz_h_lag   = nnz_h_lag_;
+	nnz_h_lag   = Index(nnz_h_lag_);
 	index_style = C_STYLE;
 	//
 	return true;
