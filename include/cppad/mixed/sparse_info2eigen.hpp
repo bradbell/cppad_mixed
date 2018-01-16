@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -108,12 +108,15 @@ namespace CppAD { namespace mixed {
 			assert( k == total_nnz );
 			//
 			// reserve space for the matrix
-			matrix.resize(nr, nc);
+			matrix.resize( int(nr), int(nc) );
 			matrix.reserve(nnz);
 			//
 			// set the values in the matrix
 			for(k = 0; k < total_nnz; k++)
-				matrix.insert( info.row[k], info.col[k] ) = info.val[k];
+			{	size_t r = info.row[k];
+				size_t c = info.col[k];
+				matrix.insert( int(r), int(c) ) = info.val[k];
+			}
 			//
 			return;
 		}

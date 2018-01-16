@@ -443,7 +443,7 @@ void cppad_mixed::try_sample_fixed(
 	}
 	double_mat info_mat = H_II;
 	if( nD > 0 )
-	{	double_mat H_ID_C   = H_ID * C;
+	{	double_mat H_ID_C   = double_mat( H_ID * C );
 		info_mat += H_ID_C.transpose() + H_ID_C + C.transpose() * H_DD * C;
 	}
 	//
@@ -500,7 +500,7 @@ void cppad_mixed::try_sample_fixed(
 		for(size_t i = 0; i < nI; i++)
 			alpha_I[i] = v[i];
 		// dependent variables
-		double_vec alpha_D = C * alpha_I;
+		double_vec alpha_D = double_vec( C * alpha_I );
 		//
 		// store in alpha
 		double_vec alpha(n_subset);

@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -83,9 +83,10 @@ void sparse_ad_cholesky::initialize(const sparse_ad_matrix& ad_Alow)
 	nc_ = ad_Alow.rows();
 	// ----------------------------------------------------------------------
 	// double version of Alow
-	sparse_d_matrix Alow(nc_, nc_);
+	sparse_d_matrix Alow;
+	Alow.resize( int(nc_), int(nc_) );
 	for(size_t j = 0; j < nc_; j++)
-	{	for(sparse_ad_matrix::InnerIterator itr(ad_Alow, j); itr; ++itr)
+	{	for(sparse_ad_matrix::InnerIterator itr(ad_Alow, int(j) ); itr; ++itr)
 		{	assert( Parameter( itr.value() ) );
 			Alow.insert( itr.row(), itr.col() ) = Value( itr.value() );
 		}
@@ -258,7 +259,7 @@ void sparse_ad_cholesky::eval(
 	CppAD::vector< CppAD::AD<double> > ax( nx );
 	size_t ia = 0;
 	for(size_t j = 0; j < nc_; j++)
-	{	for(sparse_ad_matrix::InnerIterator itr(ad_Alow, j); itr; ++itr)
+	{	for(sparse_ad_matrix::InnerIterator itr(ad_Alow, int(j) ); itr; ++itr)
 		{	assert( Alow_pattern_.row[ia] == size_t( itr.row() ) );
 			assert( Alow_pattern_.col[ia] == size_t( itr.col() ) );
 			ax[ ia ] = itr.value();
@@ -273,11 +274,11 @@ void sparse_ad_cholesky::eval(
 	(*this)(ax, ay);
 	// -------------------------------------------------------------------
 	// unpack ay into ad_L
-	ad_L.resize(nc_, nc_);
+	ad_L.resize( int(nc_), int(nc_) );
 	for(size_t ell = 0; ell < ny; ell++)
 	{	size_t i = L_pattern_.row[ell];
 		size_t j = L_pattern_.col[ell];
-		ad_L.insert(i, j) = ay[ell];
+		ad_L.insert( int(i) , int(j) ) = ay[ell];
 	}
 	return;
 }
@@ -872,7 +873,7 @@ bool sparse_ad_cholesky::reverse(
 	// -------------------------------------------------------------------
 	// initialize r_Alow as zero
 	for(size_t k = 0; k < n_order; k++)
-		r_Alow[k].resize(nc_, nc_);
+		r_Alow[k].resize( int(nc_) , int(nc_) );
 	// -------------------------------------------------------------------
 	// Cholesky factorization
 	Eigen::SparseMatrix<double, Eigen::RowMajor> L0 = f_L[0];

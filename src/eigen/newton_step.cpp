@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -272,7 +272,8 @@ void newton_step_algo::operator()(
 
 	// set a1_hessian to lower triangular eigen sparse matrix representation of
 	// f_uu (theta, u)
-	a1_eigen_sparse a1_hessian(n_random_, n_random_);
+	a1_eigen_sparse a1_hessian;
+	a1_hessian.resize( int(n_random_) , int(n_random_) );
 	for(size_t k = 0; k < a1_jac2hes_rcv_.nnz(); k++)
 	{	size_t r = a1_jac2hes_rcv_.row()[k];
 		size_t c = a1_jac2hes_rcv_.col()[k];
@@ -283,7 +284,7 @@ void newton_step_algo::operator()(
 		//
 		size_t i = r;
 		size_t j = c - n_fixed_;
-		a1_hessian.insert(i, j) = a1_jac2hes_rcv_.val()[k];
+		a1_hessian.insert( int(i), int(j) ) = a1_jac2hes_rcv_.val()[k];
 	}
 
 	// set rhs to an eigen vector representation of v
