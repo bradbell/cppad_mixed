@@ -119,8 +119,10 @@ CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 	//
 	// ----------------------------------------------------------------------
 	// compute Hessian w.r.t. fixed effect of random part of objective
-	eigen_sparse ran_hes(n_fixed_, n_fixed_);
-	if( n_random_ > 0 )
+	eigen_sparse ran_hes;
+	if( n_random_ == 0 )
+		ran_hes.resize( int(n_fixed_), int(n_fixed_) );
+	else
 	{	// ------------------------------------------------------------------
 		// update the cholesky factor for this fixed and random effect
 		update_factor(fixed_opt, random_opt);
@@ -164,7 +166,8 @@ CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 		laplace_obj_hes(
 		fixed_opt, random_opt, w_ran, ran_info.row, ran_info.col, ran_info.val
 		);
-		ran_hes = CppAD::mixed::triple2eigen(
+		CppAD::mixed::triple2eigen(
+			ran_hes       ,
 			n_fixed_      ,
 			n_fixed_      ,
 			ran_info.row  ,
@@ -174,9 +177,11 @@ CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 	}
 	// --------------------------------------------------------------------
 	// Lower triangle of Hessian of the fixed likelihood
-	eigen_sparse fix_hes(n_fixed_, n_fixed_);
+	eigen_sparse fix_hes;
 	size_t n_fix_like = 0;
-	if( fix_like_fun_.size_var() != 0 )
+	if( fix_like_fun_.size_var() == 0 )
+		fix_hes.resize( int(n_fixed_) , int(n_fixed_) );
+	else
 	{	n_fix_like = fix_like_fun_.Range();
 		d_vector w_fix(n_fix_like);
 		w_fix[0] = 1.0;
@@ -187,7 +192,8 @@ CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 		fix_like_hes(
 				fixed_opt, w_fix, fix_info.row, fix_info.col, fix_info.val
 		);
-		fix_hes = CppAD::mixed::triple2eigen(
+		CppAD::mixed::triple2eigen(
+			fix_hes       ,
 			n_fixed_      ,
 			n_fixed_      ,
 			fix_info.row  ,
@@ -207,7 +213,7 @@ CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 	d_vector val(nnz);
 	size_t k = 0;
 	for(size_t j = 0; j < n_fixed_; j++)
-	{	for(sparse_itr itr(total_hes, j); itr; ++itr)
+	{	for(sparse_itr itr(total_hes, int(j) ); itr; ++itr)
 		{	assert( size_t( itr.col() ) == j );
 			size_t i = itr.row();
 			pattern.set(k, i, j);

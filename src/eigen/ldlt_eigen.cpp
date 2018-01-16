@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -110,11 +110,13 @@ void ldlt_eigen::init( const CppAD::mixed::sparse_mat_info& H_info )
 {	assert( H_info.row.size() == H_info.col.size() );
 	CppAD::vector<double> not_used(0);
 	//
-	eigen_sparse hessian_pattern = CppAD::mixed::triple2eigen(
+	eigen_sparse hessian_pattern;
+	CppAD::mixed::triple2eigen(
+			hessian_pattern  ,
 			n_row_           ,
 			n_row_           ,
-			H_info.row        ,
-			H_info.col        ,
+			H_info.row       ,
+			H_info.col       ,
 			not_used
 	);
 	// analyze the pattern for an LDLT factorization of
@@ -208,11 +210,13 @@ bool ldlt_eigen::update(const CppAD::mixed::sparse_mat_info& H_info)
 {	assert( H_info.row.size() == H_info.col.size() );
 	assert( H_info.row.size() == H_info.val.size() );
 	//
-	eigen_sparse hessian = CppAD::mixed::triple2eigen(
+	eigen_sparse hessian;
+	CppAD::mixed::triple2eigen(
+		hessian     ,
 		n_row_      ,
 		n_row_      ,
-		H_info.row   ,
-		H_info.col   ,
+		H_info.row  ,
+		H_info.col  ,
 		H_info.val
 	);
 	// LDLT factorization of for specified values of the Hessian
@@ -390,10 +394,10 @@ void ldlt_eigen::solve_H(
 {	assert( row.size() == val_in.size() );
 	assert( row.size() == val_out.size() );
 	//
-	eigen_sparse b(n_row_, 1);
+	eigen_sparse b( int(n_row_), 1);
 	for(size_t k = 0; k < row.size(); k++)
 	{	assert( row[k] < n_row_ );
-		b.insert( row[k], 0 ) = val_in[k];
+		b.insert( int(row[k]), 0 ) = val_in[k];
 		val_out[k] = 0.0;
 	}
 	//

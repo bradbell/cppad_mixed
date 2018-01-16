@@ -3,7 +3,7 @@
 # define CPPAD_MIXED_TRIPLE2EIGEN_HPP
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -23,8 +23,8 @@ $$
 $section Convert Row, Column, Value Triple to an Eigen Sparse Matrix$$
 
 $head Syntax$$
-$icode%mat% = CppAD::mixed::triple2eigen(
-	%nr%, %nc%,  %row%, %col%, %val%
+$codei%CppAD::mixed::triple2eigen(
+	%mat%, %nr%, %nc%,  %row%, %col%, %val%
 )%$$
 
 $head Private$$
@@ -86,11 +86,14 @@ the element with index $codei%(%row%[%k%], %col%[%k%])%$$ has value
 $icode%val%[%k%]%$$.
 
 $head mat$$
-The return value has prototype
+This argument has prototype
 $codei%
-	Eigen::SparseMatrix<%Scalar%, Eigen::ColMajor> %mat%
+	Eigen::SparseMatrix<%Scalar%, Eigen::ColMajor>& %mat%
 %$$
 and is a sparse representation of the specified matrix.
+The input size and values in the matrix do not matter.
+Upon return it is a sparse matrix with the specified size
+and element values.
 
 $end
 -----------------------------------------------------------------------------
@@ -99,26 +102,26 @@ $end
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 template <class Scalar>
-Eigen::SparseMatrix<Scalar> triple2eigen(
-	size_t                       nr   ,
-	size_t                       nc   ,
-	const CppAD::vector<size_t>& row  ,
-	const CppAD::vector<size_t>& col  ,
-	const CppAD::vector<Scalar>& val  )
+void triple2eigen(
+	Eigen::SparseMatrix<Scalar>&  mat  ,
+	size_t                        nr   ,
+	size_t                        nc   ,
+	const CppAD::vector<size_t>&  row  ,
+	const CppAD::vector<size_t>&  col  ,
+	const CppAD::vector<Scalar>&  val  )
 {	assert( row.size() == col.size() );
 	assert( val.size() ==  0 || row.size() == val.size() );
 	//
-	Eigen::SparseMatrix<Scalar> ret(nr, nc);
+	mat.resize( int(nr), int(nc) );
 	if( val.size() == 0 )
 	{	for(size_t k = 0; k < row.size(); k++)
-			ret.insert( row[k], col[k] ) = Scalar(0.0);
+			mat.insert( int(row[k]), int(col[k]) ) = Scalar(0.0);
 	}
 	else
 	{	for(size_t k = 0; k < row.size(); k++)
-			ret.insert( row[k], col[k] ) = val[k];
+			mat.insert( int(row[k]), int(col[k]) ) = val[k];
 	}
-	//
-	return ret;
+	return;
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE
