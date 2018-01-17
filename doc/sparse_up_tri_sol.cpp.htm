@@ -60,7 +60,7 @@ A:active { color : purple }
 <option>base_class</option>
 <option>namespace</option>
 <option>user</option>
-<option>whats_new_17</option>
+<option>whats_new_18</option>
 <option>wish_list</option>
 <option>math_notation</option>
 </select>
@@ -147,23 +147,25 @@ This example solves the equation
 
      <i><font color="#9A1900">// left</font></i>
      <font color="#008080">size_t</font> nr <font color="#990000">=</font> <font color="#993399">3</font><font color="#990000">;</font>
-     <font color="#008080">sparse_by_row</font> <b><font color="#000000">left</font></b><font color="#990000">(</font>nr<font color="#990000">,</font> nr<font color="#990000">);</font>
+     <font color="#008080">sparse_by_row</font> left<font color="#990000">;</font>
+     left<font color="#990000">.</font><b><font color="#000000">resize</font></b><font color="#990000">(</font><font color="#009900">int</font><font color="#990000">(</font>nr<font color="#990000">),</font> <font color="#009900">int</font><font color="#990000">(</font>nr<font color="#990000">));</font>
      <font color="#008080">size_t</font> count <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> nr<font color="#990000">;</font> i<font color="#990000">++)</font>
      <font color="#FF0000">{</font>    <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> i<font color="#990000">;</font> j <font color="#990000">&lt;</font> nr <font color="#990000">;</font> j<font color="#990000">++)</font>
-               left<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font>i<font color="#990000">,</font> j<font color="#990000">)</font> <font color="#990000">=</font> <font color="#009900">double</font><font color="#990000">(</font> <font color="#990000">++</font>count <font color="#990000">);</font>
+               left<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#009900">int</font><font color="#990000">(</font>i<font color="#990000">),</font> <font color="#009900">int</font><font color="#990000">(</font>j<font color="#990000">))</font> <font color="#990000">=</font> <font color="#009900">double</font><font color="#990000">(</font> <font color="#990000">++</font>count <font color="#990000">);</font>
      <font color="#FF0000">}</font>
      <i><font color="#9A1900">// right</font></i>
      <font color="#008080">size_t</font> nc <font color="#990000">=</font> <font color="#993399">3</font><font color="#990000">;</font>
-     <font color="#008080">sparse_by_col</font> <b><font color="#000000">right</font></b><font color="#990000">(</font>nr<font color="#990000">,</font> nc<font color="#990000">);</font>
+     <font color="#008080">sparse_by_col</font> right<font color="#990000">;</font>
+     right<font color="#990000">.</font><b><font color="#000000">resize</font></b><font color="#990000">(</font><font color="#009900">int</font><font color="#990000">(</font>nr<font color="#990000">),</font> <font color="#009900">int</font><font color="#990000">(</font>nc<font color="#990000">));</font>
      right <font color="#990000">=</font> left<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
      <font color="#008080">sparse_by_col</font> result <font color="#990000">=</font> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><b><font color="#000000">sparse_up_tri_sol</font></b><font color="#990000">(</font>left<font color="#990000">,</font> right<font color="#990000">);</font>
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// check that the result is a upper triangular verison of identity matrix</font></i>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;</font> nc<font color="#990000">;</font> j<font color="#990000">++)</font>
-     <font color="#FF0000">{</font>    <font color="#008080">size_t</font> count <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font>
-          <b><font color="#0000FF">for</font></b><font color="#990000">(</font>sparse_by_col<font color="#990000">::</font><font color="#008080">InnerIterator</font> <b><font color="#000000">itr</font></b><font color="#990000">(</font>result<font color="#990000">,</font> j<font color="#990000">);</font> itr<font color="#990000">;</font> <font color="#990000">++</font>itr<font color="#990000">)</font>
+     <font color="#FF0000">{</font>    count <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font>
+          <b><font color="#0000FF">for</font></b><font color="#990000">(</font>sparse_by_col<font color="#990000">::</font><font color="#008080">InnerIterator</font> <b><font color="#000000">itr</font></b><font color="#990000">(</font>result<font color="#990000">,</font> <font color="#009900">int</font><font color="#990000">(</font>j<font color="#990000">));</font> itr<font color="#990000">;</font> <font color="#990000">++</font>itr<font color="#990000">)</font>
           <font color="#FF0000">{</font>    <font color="#990000">++</font>count<font color="#990000">;</font>
                <font color="#009900">double</font> check <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
                <b><font color="#0000FF">if</font></b><font color="#990000">(</font> itr<font color="#990000">.</font><b><font color="#000000">row</font></b><font color="#990000">()</font> <font color="#990000">==</font> itr<font color="#990000">.</font><b><font color="#000000">col</font></b><font color="#990000">()</font> <font color="#990000">)</font>

@@ -60,7 +60,7 @@ A:active { color : purple }
 <option>base_class</option>
 <option>namespace</option>
 <option>user</option>
-<option>whats_new_17</option>
+<option>whats_new_18</option>
 <option>wish_list</option>
 <option>math_notation</option>
 </select>
@@ -152,10 +152,10 @@ This example is not part of the
      ok   <font color="#990000">&amp;=</font> <b><font color="#000000">size_t</font></b><font color="#990000">(</font> matrix<font color="#990000">.</font><b><font color="#000000">cols</font></b><font color="#990000">()</font> <font color="#990000">)</font> <font color="#990000">==</font> nc<font color="#990000">;</font>
      count <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;</font> nc<font color="#990000">;</font> j<font color="#990000">++)</font>
-     <font color="#FF0000">{</font>    <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">iterator</font> <b><font color="#000000">itr</font></b><font color="#990000">(</font>matrix<font color="#990000">,</font> j<font color="#990000">);</font> itr<font color="#990000">;</font> <font color="#990000">++</font>itr<font color="#990000">)</font>
+     <font color="#FF0000">{</font>    <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">iterator</font> <b><font color="#000000">itr</font></b><font color="#990000">(</font>matrix<font color="#990000">,</font> <font color="#009900">int</font><font color="#990000">(</font>j<font color="#990000">));</font> itr<font color="#990000">;</font> <font color="#990000">++</font>itr<font color="#990000">)</font>
           <font color="#FF0000">{</font>    ok <font color="#990000">&amp;=</font> <b><font color="#000000">size_t</font></b><font color="#990000">(</font> itr<font color="#990000">.</font><b><font color="#000000">row</font></b><font color="#990000">()</font> <font color="#990000">)</font>   <font color="#990000">==</font> info<font color="#990000">.</font>row<font color="#990000">[</font>count<font color="#990000">];</font>
                ok <font color="#990000">&amp;=</font> <b><font color="#000000">size_t</font></b><font color="#990000">(</font> itr<font color="#990000">.</font><b><font color="#000000">col</font></b><font color="#990000">()</font> <font color="#990000">)</font>   <font color="#990000">==</font> info<font color="#990000">.</font>col<font color="#990000">[</font>count<font color="#990000">];</font>
-               ok <font color="#990000">&amp;=</font> <b><font color="#000000">size_t</font></b><font color="#990000">(</font> itr<font color="#990000">.</font><b><font color="#000000">value</font></b><font color="#990000">()</font> <font color="#990000">)</font> <font color="#990000">==</font> info<font color="#990000">.</font>val<font color="#990000">[</font>count<font color="#990000">];</font>
+               ok <font color="#990000">&amp;=</font> itr<font color="#990000">.</font><b><font color="#000000">value</font></b><font color="#990000">()</font>           <font color="#990000">==</font> info<font color="#990000">.</font>val<font color="#990000">[</font>count<font color="#990000">];</font>
                <font color="#990000">++</font>count<font color="#990000">;</font>
           <font color="#FF0000">}</font>
      <font color="#FF0000">}</font>

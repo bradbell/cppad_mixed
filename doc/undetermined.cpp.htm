@@ -60,7 +60,7 @@ A:active { color : purple }
 <option>base_class</option>
 <option>namespace</option>
 <option>user</option>
-<option>whats_new_17</option>
+<option>whats_new_18</option>
 <option>wish_list</option>
 <option>math_notation</option>
 </select>
@@ -177,7 +177,7 @@ This example is not part of the
           x<font color="#990000">[</font> D<font color="#990000">[</font>j<font color="#990000">]</font> <font color="#990000">]</font> <font color="#990000">=</font> xD<font color="#990000">[</font>j<font color="#990000">];</font>
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// check the original matrix equation</font></i>
-     <font color="#008080">double_vec</font> check_b <font color="#990000">=</font> A <font color="#990000">*</font> x<font color="#990000">;</font>
+     <font color="#008080">double_vec</font> check_b <font color="#990000">=</font> <b><font color="#000000">double_vec</font></b><font color="#990000">(</font>A <font color="#990000">*</font> x<font color="#990000">);</font>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> nr<font color="#990000">;</font> i<font color="#990000">++)</font>
           ok <font color="#990000">&amp;=</font> std<font color="#990000">::</font><b><font color="#000000">fabs</font></b><font color="#990000">(</font> b<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">-</font> check_b<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">)</font> <font color="#990000">&lt;</font> eps<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>

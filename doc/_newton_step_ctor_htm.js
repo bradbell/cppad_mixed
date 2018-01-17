@@ -17,7 +17,7 @@ var list_down3 = [
 'base_class.htm',
 'namespace.htm',
 'user.htm',
-'whats_new_17.htm',
+'whats_new_18.htm',
 'wish_list.htm',
 'math_notation.htm'
 ];

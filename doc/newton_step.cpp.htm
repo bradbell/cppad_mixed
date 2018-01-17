@@ -60,7 +60,7 @@ A:active { color : purple }
 <option>base_class</option>
 <option>namespace</option>
 <option>user</option>
-<option>whats_new_17</option>
+<option>whats_new_18</option>
 <option>wish_list</option>
 <option>math_notation</option>
 </select>
@@ -198,14 +198,14 @@ This example is not part of the
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// check log of determinant</font></i>
      <font color="#009900">double</font> logdet <font color="#990000">=</font> <b><font color="#000000">Value</font></b><font color="#990000">(</font> a1_logdet_step<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">);</font>
-     <font color="#009900">double</font> check  <font color="#990000">=</font> <b><font color="#000000">log</font></b><font color="#990000">(</font><font color="#993399">2.0</font><font color="#990000">)</font> <font color="#990000">*</font> n_random<font color="#990000">;</font>
+     <font color="#009900">double</font> check  <font color="#990000">=</font> <b><font color="#000000">log</font></b><font color="#990000">(</font><font color="#993399">2.0</font><font color="#990000">)</font> <font color="#990000">*</font> <font color="#009900">double</font><font color="#990000">(</font>n_random<font color="#990000">);</font>
      ok           <font color="#990000">&amp;=</font> CppAD<font color="#990000">::</font><b><font color="#000000">NearEqual</font></b><font color="#990000">(</font>logdet<font color="#990000">,</font> check<font color="#990000">,</font> eps<font color="#990000">,</font> eps<font color="#990000">);</font>
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// check the Newton step</font></i>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;</font> n_random<font color="#990000">;</font> j<font color="#990000">++)</font>
      <font color="#FF0000">{</font>    <font color="#009900">double</font> step  <font color="#990000">=</font> <b><font color="#000000">Value</font></b><font color="#990000">(</font> a1_logdet_step<font color="#990000">[</font><font color="#993399">1</font> <font color="#990000">+</font> j<font color="#990000">]</font> <font color="#990000">);</font>
           <font color="#009900">double</font> vj    <font color="#990000">=</font> <b><font color="#000000">Value</font></b><font color="#990000">(</font> a1_theta_u_v<font color="#990000">[</font>n_fixed <font color="#990000">+</font> n_random <font color="#990000">+</font> j<font color="#990000">]</font> <font color="#990000">);</font>
-          <font color="#009900">double</font> check <font color="#990000">=</font> vj <font color="#990000">/</font> <font color="#993399">2.0</font><font color="#990000">;</font>
+          check        <font color="#990000">=</font> vj <font color="#990000">/</font> <font color="#993399">2.0</font><font color="#990000">;</font>
           ok          <font color="#990000">&amp;=</font> CppAD<font color="#990000">::</font><b><font color="#000000">NearEqual</font></b><font color="#990000">(</font>step<font color="#990000">,</font> check<font color="#990000">,</font> eps<font color="#990000">,</font> eps<font color="#990000">);</font>
      <font color="#FF0000">}</font>
 

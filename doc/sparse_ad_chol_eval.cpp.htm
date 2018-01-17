@@ -60,7 +60,7 @@ A:active { color : purple }
 <option>base_class</option>
 <option>namespace</option>
 <option>user</option>
-<option>whats_new_17</option>
+<option>whats_new_18</option>
 <option>wish_list</option>
 <option>math_notation</option>
 </select>
@@ -179,7 +179,8 @@ positive definite.
      <i><font color="#9A1900">// --------------------------------------------------------------------</font></i>
      <i><font color="#9A1900">// create sparse_ad_cholesky object</font></i>
      <font color="#008080">size_t</font> nc <font color="#990000">=</font> <font color="#993399">3</font><font color="#990000">;</font>
-     Eigen<font color="#990000">::</font><font color="#008080">SparseMatrix&lt; AD&lt;double&gt;, Eigen::ColMajor&gt;</font> <b><font color="#000000">ad_Blow</font></b><font color="#990000">(</font>nc<font color="#990000">,</font> nc<font color="#990000">);</font>
+     Eigen<font color="#990000">::</font><font color="#008080">SparseMatrix&lt; AD&lt;double&gt;, Eigen::ColMajor&gt;</font> ad_Blow<font color="#990000">;</font>
+     ad_Blow<font color="#990000">.</font><b><font color="#000000">resize</font></b><font color="#990000">(</font><font color="#009900">int</font><font color="#990000">(</font>nc<font color="#990000">),</font> <font color="#009900">int</font><font color="#990000">(</font>nc<font color="#990000">));</font>
      ad_Blow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">,</font><font color="#993399">0</font><font color="#990000">)</font> <font color="#990000">=</font> x<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
      ad_Blow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">2</font><font color="#990000">,</font><font color="#993399">0</font><font color="#990000">)</font> <font color="#990000">=</font> x<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">];</font>
      ad_Blow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">,</font><font color="#993399">1</font><font color="#990000">)</font> <font color="#990000">=</font> x<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">];</font>
@@ -198,7 +199,8 @@ positive definite.
      CppAD<font color="#990000">::</font><b><font color="#000000">Independent</font></b><font color="#990000">(</font> ax <font color="#990000">);</font>
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// Lower triangle of symmetric matrix with same sparsity pattern as B</font></i>
-     Eigen<font color="#990000">::</font><font color="#008080">SparseMatrix&lt; AD&lt;double&gt;, Eigen::ColMajor&gt;</font> <b><font color="#000000">ad_Alow</font></b><font color="#990000">(</font>nc<font color="#990000">,</font> nc<font color="#990000">);</font>
+     Eigen<font color="#990000">::</font><font color="#008080">SparseMatrix&lt; AD&lt;double&gt;, Eigen::ColMajor&gt;</font> ad_Alow<font color="#990000">;</font>
+     ad_Alow<font color="#990000">.</font><b><font color="#000000">resize</font></b><font color="#990000">(</font><font color="#009900">int</font><font color="#990000">(</font>nc<font color="#990000">),</font> <font color="#009900">int</font><font color="#990000">(</font>nc<font color="#990000">));</font>
      ad_Alow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">,</font><font color="#993399">0</font><font color="#990000">)</font> <font color="#990000">=</font> ax<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
      ad_Alow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">2</font><font color="#990000">,</font><font color="#993399">0</font><font color="#990000">)</font> <font color="#990000">=</font> ax<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">];</font>
      ad_Alow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">,</font><font color="#993399">1</font><font color="#990000">)</font> <font color="#990000">=</font> ax<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">];</font>

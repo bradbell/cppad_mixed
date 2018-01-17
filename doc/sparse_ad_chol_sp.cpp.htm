@@ -60,7 +60,7 @@ A:active { color : purple }
 <option>base_class</option>
 <option>namespace</option>
 <option>user</option>
-<option>whats_new_17</option>
+<option>whats_new_18</option>
 <option>wish_list</option>
 <option>math_notation</option>
 </select>
@@ -287,7 +287,8 @@ P * A(x) * P^\R{T} = L * L^\R{T}
      <i><font color="#9A1900">// --------------------------------------------------------------------</font></i>
      <i><font color="#9A1900">// create sparse_ad_cholesky object</font></i>
      <font color="#008080">size_t</font> nc <font color="#990000">=</font> <font color="#993399">3</font><font color="#990000">;</font>
-     <font color="#008080">sparse_ad_matrix</font> <b><font color="#000000">ad_Blow</font></b><font color="#990000">(</font>nc<font color="#990000">,</font> nc<font color="#990000">);</font>
+     <font color="#008080">sparse_ad_matrix</font> ad_Blow<font color="#990000">;</font>
+     ad_Blow<font color="#990000">.</font><b><font color="#000000">resize</font></b><font color="#990000">(</font><font color="#009900">int</font><font color="#990000">(</font>nc<font color="#990000">),</font> <font color="#009900">int</font><font color="#990000">(</font>nc<font color="#990000">));</font>
      ad_Blow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">,</font><font color="#993399">0</font><font color="#990000">)</font> <font color="#990000">=</font> <font color="#993399">2.0</font><font color="#990000">;</font>
      ad_Blow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">,</font><font color="#993399">1</font><font color="#990000">)</font> <font color="#990000">=</font> <font color="#993399">0.2</font><font color="#990000">;</font>
      ad_Blow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">2</font><font color="#990000">,</font><font color="#993399">0</font><font color="#990000">)</font> <font color="#990000">=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
@@ -297,7 +298,8 @@ P * A(x) * P^\R{T} = L * L^\R{T}
      <i><font color="#9A1900">// ----------------------------------------------------------------------</font></i>
      <i><font color="#9A1900">// create function object corresponding to L(x)</font></i>
      CppAD<font color="#990000">::</font><b><font color="#000000">Independent</font></b><font color="#990000">(</font> ax <font color="#990000">);</font>
-     <font color="#008080">sparse_ad_matrix</font> <b><font color="#000000">ad_Alow</font></b><font color="#990000">(</font>nc<font color="#990000">,</font> nc<font color="#990000">);</font>
+     <font color="#008080">sparse_ad_matrix</font> ad_Alow<font color="#990000">;</font>
+     ad_Alow<font color="#990000">.</font><b><font color="#000000">resize</font></b><font color="#990000">(</font><font color="#009900">int</font><font color="#990000">(</font>nc<font color="#990000">),</font> <font color="#009900">int</font><font color="#990000">(</font>nc<font color="#990000">));</font>
      ad_Alow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">,</font><font color="#993399">0</font><font color="#990000">)</font> <font color="#990000">=</font> ax<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
      ad_Alow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">,</font><font color="#993399">1</font><font color="#990000">)</font> <font color="#990000">=</font> ax<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">];</font>
      ad_Alow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">2</font><font color="#990000">,</font><font color="#993399">0</font><font color="#990000">)</font> <font color="#990000">=</font> ax<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">];</font>
@@ -308,7 +310,7 @@ P * A(x) * P^\R{T} = L * L^\R{T}
      <i><font color="#9A1900">//</font></i>
      <font color="#008080">size_t</font> iy <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;</font> nc<font color="#990000">;</font> j<font color="#990000">++)</font>
-     <font color="#FF0000">{</font>    <b><font color="#0000FF">for</font></b><font color="#990000">(</font>sparse_ad_matrix<font color="#990000">::</font><font color="#008080">InnerIterator</font> <b><font color="#000000">itr</font></b><font color="#990000">(</font>ad_L<font color="#990000">,</font> j<font color="#990000">);</font> itr<font color="#990000">;</font> <font color="#990000">++</font>itr<font color="#990000">)</font>
+     <font color="#FF0000">{</font>    <b><font color="#0000FF">for</font></b><font color="#990000">(</font>sparse_ad_matrix<font color="#990000">::</font><font color="#008080">InnerIterator</font> <b><font color="#000000">itr</font></b><font color="#990000">(</font>ad_L<font color="#990000">,</font> <font color="#009900">int</font><font color="#990000">(</font>j<font color="#990000">));</font> itr<font color="#990000">;</font> <font color="#990000">++</font>itr<font color="#990000">)</font>
                ay<font color="#990000">[</font>iy<font color="#990000">++]</font> <font color="#990000">=</font> itr<font color="#990000">.</font><b><font color="#000000">value</font></b><font color="#990000">();</font>
      <font color="#FF0000">}</font>
      CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;double&gt;</font> <b><font color="#000000">L_fun</font></b><font color="#990000">(</font>ax<font color="#990000">,</font> ay<font color="#990000">);</font>

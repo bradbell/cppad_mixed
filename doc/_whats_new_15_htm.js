@@ -7,7 +7,7 @@ var list_across0 = [
 ];
 var list_up0 = [
 'cppad_mixed.htm',
-'whats_new_17.htm',
+'whats_new_18.htm',
 'whats_new_15.htm'
 ];
 var list_down2 = [
@@ -16,13 +16,14 @@ var list_down2 = [
 'base_class.htm',
 'namespace.htm',
 'user.htm',
-'whats_new_17.htm',
+'whats_new_18.htm',
 'wish_list.htm',
 'math_notation.htm'
 ];
 var list_down1 = [
-'whats_new_15.htm',
-'whats_new_16.htm'
+'whats_new_17.htm',
+'whats_new_16.htm',
+'whats_new_15.htm'
 ];
 var list_current0 = [
 'whats_new_15.htm#12-25',

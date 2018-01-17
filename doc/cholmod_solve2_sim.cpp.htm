@@ -60,7 +60,7 @@ A:active { color : purple }
 <option>base_class</option>
 <option>namespace</option>
 <option>user</option>
-<option>whats_new_17</option>
+<option>whats_new_18</option>
 <option>wish_list</option>
 <option>math_notation</option>
 </select>
@@ -325,9 +325,9 @@ It follows that, for this example
           <font color="#009900">int</font><font color="#990000">*</font> Bset_p <font color="#990000">=</font> <font color="#990000">(</font><font color="#009900">int</font> <font color="#990000">*)</font> Bset<font color="#990000">-&gt;</font>p<font color="#990000">;</font>
           <font color="#009900">int</font><font color="#990000">*</font> Bset_i <font color="#990000">=</font> <font color="#990000">(</font><font color="#009900">int</font> <font color="#990000">*)</font> Bset<font color="#990000">-&gt;</font>i<font color="#990000">;</font>
           Bset_p<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>   <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font>
-          Bset_p<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font>   <font color="#990000">=</font> nrow<font color="#990000">;</font>
+          Bset_p<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font>   <font color="#990000">=</font> <font color="#009900">int</font><font color="#990000">(</font>nrow<font color="#990000">);</font>
           <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> nrow<font color="#990000">;</font> i<font color="#990000">++)</font>
-               Bset_i<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> i<font color="#990000">;</font>
+               Bset_i<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> <font color="#009900">int</font><font color="#990000">(</font>i<font color="#990000">);</font>
      
           <i><font color="#9A1900">// set the vector B = w</font></i>
           <font color="#008080">cholmod_dense</font> <font color="#990000">*</font>B <font color="#990000">=</font> <b><font color="#000000">cholmod_zeros</font></b><font color="#990000">(</font>nrow<font color="#990000">,</font> <font color="#993399">1</font><font color="#990000">,</font> T_xtype<font color="#990000">,</font> <font color="#990000">&amp;</font>com<font color="#990000">);</font>

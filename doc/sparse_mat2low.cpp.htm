@@ -60,7 +60,7 @@ A:active { color : purple }
 <option>base_class</option>
 <option>namespace</option>
 <option>user</option>
-<option>whats_new_17</option>
+<option>whats_new_18</option>
 <option>wish_list</option>
 <option>math_notation</option>
 </select>
@@ -132,13 +132,14 @@ This example is not part of the
      <b><font color="#0000FF">typedef</font></b> Eigen<font color="#990000">::</font><font color="#008080">SparseMatrix&lt;size_t&gt;</font> sparse_matrix<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
      <font color="#008080">size_t</font> nr <font color="#990000">=</font> <font color="#993399">3</font><font color="#990000">;</font>
-     <font color="#008080">sparse_matrix</font> <b><font color="#000000">matrix</font></b><font color="#990000">(</font>nr<font color="#990000">,</font> nr<font color="#990000">);</font>
+     <font color="#008080">sparse_matrix</font> matrix<font color="#990000">;</font>
+     matrix<font color="#990000">.</font><b><font color="#000000">resize</font></b><font color="#990000">(</font><font color="#009900">int</font><font color="#990000">(</font>nr<font color="#990000">),</font> <font color="#009900">int</font><font color="#990000">(</font>nr<font color="#990000">));</font>
      Eigen<font color="#990000">::</font><font color="#008080">Matrix&lt;size_t, Eigen::Dynamic, Eigen::Dynamic&gt;</font> <b><font color="#000000">check</font></b><font color="#990000">(</font>nr<font color="#990000">,</font> nr<font color="#990000">);</font>
      <font color="#008080">size_t</font> count <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> nr<font color="#990000">;</font> i<font color="#990000">++)</font>
      <font color="#FF0000">{</font>    <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;</font> nr<font color="#990000">;</font> j<font color="#990000">++)</font>
-          <font color="#FF0000">{</font>    matrix<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font>i<font color="#990000">,</font> j<font color="#990000">)</font> <font color="#990000">=</font> count<font color="#990000">;</font>
-               <b><font color="#000000">check</font></b><font color="#990000">(</font>i<font color="#990000">,</font> j<font color="#990000">)</font>         <font color="#990000">=</font> count<font color="#990000">;</font>
+          <font color="#FF0000">{</font>    matrix<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#009900">int</font><font color="#990000">(</font>i<font color="#990000">),</font> <font color="#009900">int</font><font color="#990000">(</font>j<font color="#990000">))</font> <font color="#990000">=</font> count<font color="#990000">;</font>
+               <b><font color="#000000">check</font></b><font color="#990000">(</font>i<font color="#990000">,</font> j<font color="#990000">)</font>                   <font color="#990000">=</font> count<font color="#990000">;</font>
                <font color="#990000">++</font>count<font color="#990000">;</font>
           <font color="#FF0000">}</font>
      <font color="#FF0000">}</font>
@@ -147,7 +148,7 @@ This example is not part of the
      <i><font color="#9A1900">// check the result values</font></i>
      count <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> k <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> k <font color="#990000">&lt;</font> nr<font color="#990000">;</font> k<font color="#990000">++)</font>
-     <font color="#FF0000">{</font>    <b><font color="#0000FF">for</font></b><font color="#990000">(</font>sparse_matrix<font color="#990000">::</font><font color="#008080">InnerIterator</font> <b><font color="#000000">itr</font></b><font color="#990000">(</font>lower<font color="#990000">,</font> k<font color="#990000">);</font> itr<font color="#990000">;</font> <font color="#990000">++</font>itr<font color="#990000">)</font>
+     <font color="#FF0000">{</font>    <b><font color="#0000FF">for</font></b><font color="#990000">(</font>sparse_matrix<font color="#990000">::</font><font color="#008080">InnerIterator</font> <b><font color="#000000">itr</font></b><font color="#990000">(</font>lower<font color="#990000">,</font> <font color="#009900">int</font><font color="#990000">(</font>k<font color="#990000">));</font> itr<font color="#990000">;</font> <font color="#990000">++</font>itr<font color="#990000">)</font>
           <font color="#FF0000">{</font>    <font color="#009900">int</font> i <font color="#990000">=</font> itr<font color="#990000">.</font><b><font color="#000000">row</font></b><font color="#990000">();</font>
                <font color="#009900">int</font> j <font color="#990000">=</font> itr<font color="#990000">.</font><b><font color="#000000">col</font></b><font color="#990000">();</font>
                ok   <font color="#990000">&amp;=</font> itr<font color="#990000">.</font><b><font color="#000000">value</font></b><font color="#990000">()</font> <font color="#990000">==</font> <b><font color="#000000">check</font></b><font color="#990000">(</font>i<font color="#990000">,</font> j<font color="#990000">);</font>

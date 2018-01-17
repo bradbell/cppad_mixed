@@ -60,7 +60,7 @@ A:active { color : purple }
 <option>base_class</option>
 <option>namespace</option>
 <option>user</option>
-<option>whats_new_17</option>
+<option>whats_new_18</option>
 <option>wish_list</option>
 <option>math_notation</option>
 </select>
@@ -213,7 +213,7 @@ H
      <i><font color="#9A1900">// triplet entries corresponding to lower triangle of H</font></i>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> nrow<font color="#990000">;</font> i<font color="#990000">++)</font>
      <font color="#FF0000">{</font>    <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;=</font> i<font color="#990000">;</font> j<font color="#990000">++)</font>
-               <b><font color="#000000">add_T_entry</font></b><font color="#990000">(</font>T<font color="#990000">,</font> i<font color="#990000">,</font> j<font color="#990000">,</font> H_data<font color="#990000">[</font>i <font color="#990000">*</font> ncol <font color="#990000">+</font> j<font color="#990000">]</font> <font color="#990000">);</font>
+               <b><font color="#000000">add_T_entry</font></b><font color="#990000">(</font>T<font color="#990000">,</font> <font color="#009900">int</font><font color="#990000">(</font>i<font color="#990000">),</font> <font color="#009900">int</font><font color="#990000">(</font>j<font color="#990000">),</font> H_data<font color="#990000">[</font>i <font color="#990000">*</font> ncol <font color="#990000">+</font> j<font color="#990000">]</font> <font color="#990000">);</font>
      <font color="#FF0000">}</font>
      ok <font color="#990000">&amp;=</font> T<font color="#990000">-&gt;</font>nnz <font color="#990000">==</font> <font color="#993399">3</font><font color="#990000">;</font>
 

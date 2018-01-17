@@ -61,7 +61,7 @@ A:active { color : purple }
 <option>base_class</option>
 <option>namespace</option>
 <option>user</option>
-<option>whats_new_17</option>
+<option>whats_new_18</option>
 <option>wish_list</option>
 <option>math_notation</option>
 </select>
@@ -446,7 +446,7 @@ The second partial w.r.t <small>@(@
           <font color="#FF0000">{</font>    <i><font color="#9A1900">// only returning lower triangle</font></i>
                ok <font color="#990000">&amp;=</font> col<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">==</font> <font color="#993399">0</font><font color="#990000">;</font>
                <i><font color="#9A1900">// value of second partial w.r.t. theta_0, theta_0</font></i>
-               <font color="#009900">double</font> check <font color="#990000">=</font> <font color="#993399">1.0</font> <font color="#990000">+</font> n_data <font color="#990000">/</font> var<font color="#990000">;</font>
+               <font color="#009900">double</font> check <font color="#990000">=</font> <font color="#993399">1.0</font> <font color="#990000">+</font> <font color="#009900">double</font><font color="#990000">(</font>n_data<font color="#990000">)</font> <font color="#990000">/</font> var<font color="#990000">;</font>
                ok <font color="#990000">&amp;=</font> CppAD<font color="#990000">::</font><b><font color="#000000">NearEqual</font></b><font color="#990000">(</font>val<font color="#990000">[</font>k<font color="#990000">],</font> check<font color="#990000">,</font> eps<font color="#990000">,</font> eps<font color="#990000">);</font>
           <font color="#FF0000">}</font>
           <b><font color="#0000FF">else</font></b> <b><font color="#0000FF">if</font></b><font color="#990000">(</font> col<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">==</font> <font color="#993399">0</font> <font color="#990000">)</font>
@@ -461,8 +461,8 @@ The second partial w.r.t <small>@(@
                ok <font color="#990000">&amp;=</font> row<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">==</font> <font color="#993399">1</font><font color="#990000">;</font>
                ok <font color="#990000">&amp;=</font> col<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">==</font> <font color="#993399">1</font><font color="#990000">;</font>
                <i><font color="#9A1900">// value of second partial w.r.t. theta_1, theta_1</font></i>
-               <font color="#009900">double</font> check <font color="#990000">=</font> <font color="#993399">1.0</font> <font color="#990000">+</font> n_data <font color="#990000">/</font> var<font color="#990000">;</font>
-               check       <font color="#990000">-=</font> <font color="#993399">2.0</font> <font color="#990000">*</font> n_data <font color="#990000">*</font> theta_1_sq <font color="#990000">/</font> var_sq<font color="#990000">;</font>
+               <font color="#009900">double</font> check <font color="#990000">=</font> <font color="#993399">1.0</font> <font color="#990000">+</font> <font color="#009900">double</font><font color="#990000">(</font>n_data<font color="#990000">)</font> <font color="#990000">/</font> var<font color="#990000">;</font>
+               check       <font color="#990000">-=</font> <font color="#993399">2.0</font> <font color="#990000">*</font> <font color="#009900">double</font><font color="#990000">(</font>n_data<font color="#990000">)</font> <font color="#990000">*</font> theta_1_sq <font color="#990000">/</font> var_sq<font color="#990000">;</font>
                check       <font color="#990000">-=</font> sum_sq <font color="#990000">/</font> var_sq<font color="#990000">;</font>
                check       <font color="#990000">+=</font> <font color="#993399">4.0</font> <font color="#990000">*</font> theta_1_sq <font color="#990000">*</font> sum_sq <font color="#990000">/</font> var_cube<font color="#990000">;</font>
                ok <font color="#990000">&amp;=</font> CppAD<font color="#990000">::</font><b><font color="#000000">NearEqual</font></b><font color="#990000">(</font>val<font color="#990000">[</font>k<font color="#990000">],</font> check<font color="#990000">,</font> eps<font color="#990000">,</font> eps<font color="#990000">);</font>

@@ -60,7 +60,7 @@ A:active { color : purple }
 <option>base_class</option>
 <option>namespace</option>
 <option>user</option>
-<option>whats_new_17</option>
+<option>whats_new_18</option>
 <option>wish_list</option>
 <option>math_notation</option>
 </select>
@@ -211,7 +211,8 @@ P * A(x) * P^\R{T} = L * L^\R{T}
      <i><font color="#9A1900">// --------------------------------------------------------------------</font></i>
      <i><font color="#9A1900">// create sparse_ad_cholesky object</font></i>
      <font color="#008080">size_t</font> nc <font color="#990000">=</font> <font color="#993399">3</font><font color="#990000">;</font>
-     Eigen<font color="#990000">::</font><font color="#008080">SparseMatrix&lt; AD&lt;double&gt;, Eigen::ColMajor&gt;</font> <b><font color="#000000">ad_Blow</font></b><font color="#990000">(</font>nc<font color="#990000">,</font> nc<font color="#990000">);</font>
+     Eigen<font color="#990000">::</font><font color="#008080">SparseMatrix&lt; AD&lt;double&gt;, Eigen::ColMajor&gt;</font> ad_Blow<font color="#990000">;</font>
+     ad_Blow<font color="#990000">.</font><b><font color="#000000">resize</font></b><font color="#990000">(</font><font color="#009900">int</font><font color="#990000">(</font>nc<font color="#990000">),</font> <font color="#009900">int</font><font color="#990000">(</font>nc<font color="#990000">));</font>
      ad_Blow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">,</font><font color="#993399">0</font><font color="#990000">)</font> <font color="#990000">=</font> <font color="#993399">2.0</font><font color="#990000">;</font>
      ad_Blow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">2</font><font color="#990000">,</font><font color="#993399">0</font><font color="#990000">)</font> <font color="#990000">=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
      ad_Blow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">,</font><font color="#993399">1</font><font color="#990000">)</font> <font color="#990000">=</font> <font color="#993399">0.2</font><font color="#990000">;</font>
@@ -233,7 +234,8 @@ P * A(x) * P^\R{T} = L * L^\R{T}
           <font color="#FF0000">}</font>
           <i><font color="#9A1900">//</font></i>
           <i><font color="#9A1900">// Lower triangle of symmetric matrix with same sparsity pattern as B</font></i>
-          <font color="#008080">sparse_ad_matrix</font> <b><font color="#000000">Alow</font></b><font color="#990000">(</font>nc<font color="#990000">,</font> nc<font color="#990000">);</font>
+          <font color="#008080">sparse_ad_matrix</font> Alow<font color="#990000">;</font>
+          Alow<font color="#990000">.</font><b><font color="#000000">resize</font></b><font color="#990000">(</font><font color="#009900">int</font><font color="#990000">(</font>nc<font color="#990000">),</font> <font color="#009900">int</font><font color="#990000">(</font>nc<font color="#990000">));</font>
           Alow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">,</font><font color="#993399">0</font><font color="#990000">)</font> <font color="#990000">=</font> ac<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
           Alow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">,</font><font color="#993399">1</font><font color="#990000">)</font> <font color="#990000">=</font> ac<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">];</font>
           Alow<font color="#990000">.</font><b><font color="#000000">insert</font></b><font color="#990000">(</font><font color="#993399">2</font><font color="#990000">,</font><font color="#993399">0</font><font color="#990000">)</font> <font color="#990000">=</font> ac<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">];</font>
@@ -248,7 +250,7 @@ P * A(x) * P^\R{T} = L * L^\R{T}
           <i><font color="#9A1900">// check which elements of L are variables</font></i>
           <font color="#008080">size_t</font> count <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font>
           <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;</font> nc<font color="#990000">;</font> j<font color="#990000">++)</font>
-          <font color="#FF0000">{</font>    <b><font color="#0000FF">for</font></b><font color="#990000">(</font>sparse_ad_matrix<font color="#990000">::</font><font color="#008080">InnerIterator</font> <b><font color="#000000">itr</font></b><font color="#990000">(</font>L<font color="#990000">,</font> j<font color="#990000">);</font> itr<font color="#990000">;</font> <font color="#990000">++</font>itr<font color="#990000">)</font>
+          <font color="#FF0000">{</font>    <b><font color="#0000FF">for</font></b><font color="#990000">(</font>sparse_ad_matrix<font color="#990000">::</font><font color="#008080">InnerIterator</font> <b><font color="#000000">itr</font></b><font color="#990000">(</font>L<font color="#990000">,</font> <font color="#009900">int</font><font color="#990000">(</font>j<font color="#990000">));</font> itr<font color="#990000">;</font> <font color="#990000">++</font>itr<font color="#990000">)</font>
                <font color="#FF0000">{</font>    <font color="#990000">++</font>count<font color="#990000">;</font>
                     <font color="#008080">size_t</font> i <font color="#990000">=</font> <b><font color="#000000">size_t</font></b><font color="#990000">(</font> itr<font color="#990000">.</font><b><font color="#000000">row</font></b><font color="#990000">()</font> <font color="#990000">);</font>
                     <b><font color="#000000">assert</font></b><font color="#990000">(</font> <b><font color="#000000">size_t</font></b><font color="#990000">(</font>itr<font color="#990000">.</font><b><font color="#000000">col</font></b><font color="#990000">())</font> <font color="#990000">==</font> j <font color="#990000">);</font>
