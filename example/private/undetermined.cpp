@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -82,7 +82,7 @@ bool undetermined_xam(void)
 		x[ D[j] ] = xD[j];
 	//
 	// check the original matrix equation
-	double_vec check_b = A * x;
+	double_vec check_b = double_vec(A * x);
 	for(size_t i = 0; i < nr; i++)
 		ok &= std::fabs( b[i] - check_b[i] ) < eps;
 	//

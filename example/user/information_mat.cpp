@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -328,7 +328,7 @@ bool information_mat_xam(void)
 		{	// only returning lower triangle
 			ok &= col[k] == 0;
 			// value of second partial w.r.t. theta_0, theta_0
-			double check = 1.0 + n_data / var;
+			double check = 1.0 + double(n_data) / var;
 			ok &= CppAD::NearEqual(val[k], check, eps, eps);
 		}
 		else if( col[k] == 0 )
@@ -343,8 +343,8 @@ bool information_mat_xam(void)
 			ok &= row[k] == 1;
 			ok &= col[k] == 1;
 			// value of second partial w.r.t. theta_1, theta_1
-			double check = 1.0 + n_data / var;
-			check       -= 2.0 * n_data * theta_1_sq / var_sq;
+			double check = 1.0 + double(n_data) / var;
+			check       -= 2.0 * double(n_data) * theta_1_sq / var_sq;
 			check       -= sum_sq / var_sq;
 			check       += 4.0 * theta_1_sq * sum_sq / var_cube;
 			ok &= CppAD::NearEqual(val[k], check, eps, eps);

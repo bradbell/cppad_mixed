@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -37,13 +37,14 @@ bool sparse_mat2low_xam(void)
 	typedef Eigen::SparseMatrix<size_t> sparse_matrix;
 	//
 	size_t nr = 3;
-	sparse_matrix matrix(nr, nr);
+	sparse_matrix matrix;
+	matrix.resize(int(nr), int(nr));
 	Eigen::Matrix<size_t, Eigen::Dynamic, Eigen::Dynamic> check(nr, nr);
 	size_t count = 0;
 	for(size_t i = 0; i < nr; i++)
 	{	for(size_t j = 0; j < nr; j++)
-		{	matrix.insert(i, j) = count;
-			check(i, j)         = count;
+		{	matrix.insert(int(i), int(j)) = count;
+			check(i, j)                   = count;
 			++count;
 		}
 	}
@@ -52,7 +53,7 @@ bool sparse_mat2low_xam(void)
 	// check the result values
 	count = 0;
 	for(size_t k = 0; k < nr; k++)
-	{	for(sparse_matrix::InnerIterator itr(lower, k); itr; ++itr)
+	{	for(sparse_matrix::InnerIterator itr(lower, int(k)); itr; ++itr)
 		{	int i = itr.row();
 			int j = itr.col();
 			ok   &= itr.value() == check(i, j);
