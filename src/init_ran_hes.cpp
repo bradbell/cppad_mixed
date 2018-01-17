@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -153,12 +153,11 @@ void cppad_mixed::init_ran_hes(
 	assert( init_ran_like_done_ );
 	assert( init_ran_jac_done_ );
 	//
-	size_t m      = 1;
 	size_t n_both = n_fixed_ + n_random_;
 	assert( fixed_vec.size() == n_fixed_ );
 	assert( random_vec.size() == n_random_ );
 	assert( ran_like_fun_.Domain() == n_both );
-	assert( ran_like_fun_.Range()  == m );
+	assert( ran_like_fun_.Range()  == 1 );
 	//
 	// a1_both = (fixed_vec, random_vec)
 	a1_vector a1_both(n_both);

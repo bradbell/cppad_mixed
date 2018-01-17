@@ -60,37 +60,43 @@ bin/version.sh check
 # check latex in omhelp
 echo_eval run_omhelp.sh -xml doc
 # -----------------------------------------------------------------------------
-echo_eval cp bin/run_cmake.sh bin/run_cmake.bak
+if ! grep "build_type='debug'" bin/run_cmake.sh > /dev/null
+then
+	echo 'bin/check_all.sh: bin/run_cmake.sh build_type not debug'
+	exit 1
+fi
+if ! grep "optimize_cppad_function='no'" bin/run_cmake.sh > /dev/null
+then
+	echo 'bin/check_all.sh: bin/run_cmake.sh optimize_cppad_function not no'
+	exit 1
+fi
+if ! grep "use_atomic_cholesky='no'" bin/run_cmake.sh > /dev/null
+then
+	echo 'bin/check_all.sh: bin/run_cmake.sh use_atomic_cholesky not no'
+	exit 1
+fi
+if ! grep "checkpoint_newton_step='no'" bin/run_cmake.sh > /dev/null
+then
+	echo 'bin/check_all.sh: bin/run_cmake.sh checkpoint_newton_step not no'
+	exit 1
+fi
 if [ "$1" == 'r' ]
 then
 	sed -i bin/run_cmake.sh \
 		-e "s|^build_type=.*|build_type='release'|" \
 		-e "s|^optimize_cppad_function=.*|optimize_cppad_function='yes'|"
-else
-	sed -i bin/run_cmake.sh \
-		-e "s|^build_type=.*|build_type='debug'|" \
-		-e "s|^optimize_cppad_function=.*|optimize_cppad_function='no'|"
 fi
 if [ "$2" == 'a' ]
 then
 	sed -i bin/run_cmake.sh \
 		-e "s|^use_atomic_cholesky=.*|use_atomic_cholesky='yes'|"
-else
-	sed -i bin/run_cmake.sh \
-		-e "s|^use_atomic_cholesky=.*|use_atomic_cholesky='no'|"
 fi
-if [ "$2" == 'c' ]
+if [ "$3" == 'c' ]
 then
 	sed -i bin/run_cmake.sh \
 		-e "s|^checkpoint_newton_step=.*|checkpoint_newton_step='yes'|"
-else
-	sed -i bin/run_cmake.sh \
-		-e "s|^checkpoint_newton_step=.*|checkpoint_newton_step='no'|"
 fi
-if diff bin/run_cmake.sh bin/run_cmake.bak > /dev/null
-then
-	echo_eval rm bin/run_cmake.bak
-fi
+# -----------------------------------------------------------------------------
 #
 echo 'bin/run_cmake.sh 1> cmake.log 2> cmake.err'
 bin/run_cmake.sh 1> cmake.log 2> cmake.err
@@ -105,9 +111,23 @@ done
 cd ..
 bin/check_install.sh
 # -----------------------------------------------------------------------------
-if [ -e bin/run_cmake.bak ]
-then
-	echo_eval mv bin/run_cmake.bak bin/run_cmake.sh
-fi
+for target in cmake check speed install
+do
+	err=`cat $target.err`
+	if [ "$err" != '' ]
+	then
+		cat $target.err
+		echo "bin/run_check_all.sh: $target is not empty."
+		exit 1
+	fi
+	echo_eval rm $target.err
+done
+# -----------------------------------------------------------------------------
+sed -i bin/run_cmake.sh \
+	-e "s|^build_type=.*|build_type='debug'|" \
+	-e "s|^optimize_cppad_function=.*|optimize_cppad_function='no'|" \
+	-e "s|^use_atomic_cholesky=.*|use_atomic_cholesky='no'|" \
+	-e "s|^checkpoint_newton_step=.*|checkpoint_newton_step='no'|"
+# -----------------------------------------------------------------------------
 echo 'check_all.sh: OK'
 exit 0

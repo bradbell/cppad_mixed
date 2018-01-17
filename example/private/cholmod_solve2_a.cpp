@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -84,6 +84,7 @@ $end
 # include <limits>
 # include <cmath>
 # include <cassert>
+# include <cppad/utility/vector.hpp>
 
 # define CHOLMOD_TRUE                  1
 # define CHOLMOD_FALSE                 0
@@ -271,7 +272,7 @@ bool cholmod_solve2_a_xam(void)
 		size_t  ni      = size_t( Xset_p[1] );
 		//
 		// solution vector for this right hand side
-		double x[nrow];
+		CppAD::vector<double> x(nrow);
 		for(size_t i = 0; i < nrow; i++)
 			x[i] = 0.0;
 		for(size_t k = 0; k < ni; k++)
