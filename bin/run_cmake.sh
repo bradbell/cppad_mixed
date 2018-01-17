@@ -38,6 +38,7 @@
 #	hes
 #	Wshadow
 #	Wconversion
+#	Wpedantic
 # &&
 #
 # &section bin/run_cmake.sh: User Configuration Options&&
@@ -92,7 +93,7 @@ suitesparse_prefix="$HOME/prefix/cppad_mixed"
 # &head cppad_cxx_flags&&
 # Extra C++ flags used to configure CppAD
 # &codep
-cppad_cxx_flags='-std=c++11 -Wall -Wshadow -Wconversion'
+cppad_cxx_flags='-Wpedantic -std=c++11 -Wall -Wshadow -Wconversion'
 # &&
 #
 # &head cmake_libdir&&

@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -224,7 +224,7 @@ bool sample_fixed_xam(void)
 	for(size_t i = 0; i < n_fixed; i++)
 		ok &= solution.fixed_lag[i] == 0.0;
 	ok &= solution.fix_con_lag.size() == 0;
-	ok &= solution.ran_con_lag.size() == 0.0;
+	ok &= solution.ran_con_lag.size() == 0;
 	//
 	// corresponding optimal random effects
 	d_vector random_opt = mixed_object.optimize_random(
