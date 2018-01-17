@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -86,7 +86,8 @@ bool sparse_ad_chol_var_xam(void)
 	// --------------------------------------------------------------------
 	// create sparse_ad_cholesky object
 	size_t nc = 3;
-	Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> ad_Blow(nc, nc);
+	Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> ad_Blow;
+	ad_Blow.resize(int(nc), int(nc));
 	ad_Blow.insert(0,0) = 2.0;
 	ad_Blow.insert(2,0) = 1.0;
 	ad_Blow.insert(1,1) = 0.2;
@@ -108,7 +109,8 @@ bool sparse_ad_chol_var_xam(void)
 		}
 		//
 		// Lower triangle of symmetric matrix with same sparsity pattern as B
-		sparse_ad_matrix Alow(nc, nc);
+		sparse_ad_matrix Alow;
+		Alow.resize(int(nc), int(nc));
 		Alow.insert(0,0) = ac[0];
 		Alow.insert(1,1) = ac[1];
 		Alow.insert(2,0) = ac[2];
@@ -123,7 +125,7 @@ bool sparse_ad_chol_var_xam(void)
 		// check which elements of L are variables
 		size_t count = 0;
 		for(size_t j = 0; j < nc; j++)
-		{	for(sparse_ad_matrix::InnerIterator itr(L, j); itr; ++itr)
+		{	for(sparse_ad_matrix::InnerIterator itr(L, int(j)); itr; ++itr)
 			{	++count;
 				size_t i = size_t( itr.row() );
 				assert( size_t(itr.col()) == j );

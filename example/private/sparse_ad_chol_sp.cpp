@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -162,7 +162,8 @@ bool sparse_ad_chol_sp_xam(void)
 	// --------------------------------------------------------------------
 	// create sparse_ad_cholesky object
 	size_t nc = 3;
-	sparse_ad_matrix ad_Blow(nc, nc);
+	sparse_ad_matrix ad_Blow;
+	ad_Blow.resize(int(nc), int(nc));
 	ad_Blow.insert(0,0) = 2.0;
 	ad_Blow.insert(1,1) = 0.2;
 	ad_Blow.insert(2,0) = 1.0;
@@ -172,7 +173,8 @@ bool sparse_ad_chol_sp_xam(void)
 	// ----------------------------------------------------------------------
 	// create function object corresponding to L(x)
 	CppAD::Independent( ax );
-	sparse_ad_matrix ad_Alow(nc, nc);
+	sparse_ad_matrix ad_Alow;
+	ad_Alow.resize(int(nc), int(nc));
 	ad_Alow.insert(0,0) = ax[0];
 	ad_Alow.insert(1,1) = ax[1];
 	ad_Alow.insert(2,0) = ax[2];
@@ -183,7 +185,7 @@ bool sparse_ad_chol_sp_xam(void)
 	//
 	size_t iy = 0;
 	for(size_t j = 0; j < nc; j++)
-	{	for(sparse_ad_matrix::InnerIterator itr(ad_L, j); itr; ++itr)
+	{	for(sparse_ad_matrix::InnerIterator itr(ad_L, int(j)); itr; ++itr)
 			ay[iy++] = itr.value();
 	}
 	CppAD::ADFun<double> L_fun(ax, ay);

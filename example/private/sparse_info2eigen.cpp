@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -58,10 +58,10 @@ bool sparse_info2eigen_xam(void)
 	ok   &= size_t( matrix.cols() ) == nc;
 	count = 0;
 	for(size_t j = 0; j < nc; j++)
-	{	for(iterator itr(matrix, j); itr; ++itr)
+	{	for(iterator itr(matrix, int(j)); itr; ++itr)
 		{	ok &= size_t( itr.row() )   == info.row[count];
 			ok &= size_t( itr.col() )   == info.col[count];
-			ok &= size_t( itr.value() ) == info.val[count];
+			ok &= itr.value()           == info.val[count];
 			++count;
 		}
 	}

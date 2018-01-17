@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -59,7 +59,8 @@ bool sparse_ad_chol_eval_xam(void)
 	// --------------------------------------------------------------------
 	// create sparse_ad_cholesky object
 	size_t nc = 3;
-	Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> ad_Blow(nc, nc);
+	Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> ad_Blow;
+	ad_Blow.resize(int(nc), int(nc));
 	ad_Blow.insert(0,0) = x[0];
 	ad_Blow.insert(2,0) = x[1];
 	ad_Blow.insert(1,1) = x[1];
@@ -78,7 +79,8 @@ bool sparse_ad_chol_eval_xam(void)
 	CppAD::Independent( ax );
 	//
 	// Lower triangle of symmetric matrix with same sparsity pattern as B
-	Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> ad_Alow(nc, nc);
+	Eigen::SparseMatrix< AD<double>, Eigen::ColMajor> ad_Alow;
+	ad_Alow.resize(int(nc), int(nc));
 	ad_Alow.insert(0,0) = ax[0];
 	ad_Alow.insert(2,0) = ax[1];
 	ad_Alow.insert(1,1) = ax[1];
