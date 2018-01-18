@@ -220,6 +220,7 @@ and only these entries are assured to appear in <code><font color="blue">Xset</f
 <b><font color="#000080">     # include</font></b> <font color="#FF0000">&lt;limits&gt;</font>
 <b><font color="#000080">     # include</font></b> <font color="#FF0000">&lt;cmath&gt;</font>
 <b><font color="#000080">     # include</font></b> <font color="#FF0000">&lt;cassert&gt;</font>
+<b><font color="#000080">     # include</font></b> <font color="#FF0000">&lt;cppad/utility/vector.hpp&gt;</font>
      
 <b><font color="#000080">     # define</font></b> CHOLMOD_TRUE                  <font color="#993399">1</font>
 <b><font color="#000080">     # define</font></b> CHOLMOD_FALSE                 <font color="#993399">0</font>
@@ -407,7 +408,7 @@ and only these entries are assured to appear in <code><font color="blue">Xset</f
                <font color="#008080">size_t</font>  ni      <font color="#990000">=</font> <b><font color="#000000">size_t</font></b><font color="#990000">(</font> Xset_p<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">);</font>
                <i><font color="#9A1900">//</font></i>
                <i><font color="#9A1900">// solution vector for this right hand side</font></i>
-               <font color="#009900">double</font> x<font color="#990000">[</font>nrow<font color="#990000">];</font>
+               CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font> <b><font color="#000000">x</font></b><font color="#990000">(</font>nrow<font color="#990000">);</font>
                <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> nrow<font color="#990000">;</font> i<font color="#990000">++)</font>
                     x<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
                <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> k <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> k <font color="#990000">&lt;</font> ni<font color="#990000">;</font> k<font color="#990000">++)</font>
