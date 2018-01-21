@@ -78,20 +78,10 @@ In addition, this matrix is in column major order.
 $head theta$$
 This is a value for $latex \theta$$
 at which we can evaluate the Newton step and log determinant.
-If $cref/CPPAD_MIXED_USE_ATOMIC_CHOLESKY
-	/configure.hpp
-	/CPPAD_MIXED_USE_ATOMIC_CHOLESKY
-/$$
-is $code 0$$, $icode theta$$ is not used.
 
 $head u$$
 This is a value for $latex u$$
 at which we can evaluate the Newton step and log determinant.
-If $cref/CPPAD_MIXED_USE_ATOMIC_CHOLESKY
-	/configure.hpp
-	/CPPAD_MIXED_USE_ATOMIC_CHOLESKY
-/$$
-is $code 0$$, $icode u$$ is not used.
 
 $head cholesky_$$
 This member variable has prototype
@@ -175,27 +165,6 @@ jac_a1fun_( jac_a1fun    )
 	a1_jac2hes_rcv_ = a1_sparse_rcv( pattern );
 	for(size_t k = 0; k < hes_rcv.nnz(); k++)
 		a1_jac2hes_rcv_.set(k, hes_rcv.val()[k] );
-	// =======================================================================
-# if CPPAD_MIXED_USE_ATOMIC_CHOLESKY
-	// set a1_hessian to lower triangular sparse matrix representation of
-	// f_uu (theta, u)
-	typedef Eigen::SparseMatrix<a1_double, Eigen::ColMajor> a1_eigen_sparse;
-	a1_eigen_sparse a1_hessian(n_random_, n_random_);
-	for(size_t k = 0; k < a1_jac2hes_rcv_.nnz(); k++)
-	{	size_t r = a1_jac2hes_rcv_.row()[k];
-		size_t c = a1_jac2hes_rcv_.col()[k];
-		//
-		assert( r < n_random_ );
-		assert( n_fixed_ <= c );
-		assert( c <= r + n_fixed_ );
-		//
-		size_t i = r;
-		size_t j = c - n_fixed_;
-		a1_hessian.insert(i, j) = a1_jac2hes_rcv_.val()[k];
-	}
-	// initialize cholesky_
-	cholesky_.initialize( a1_hessian );
-# endif
 }
 /*
 ------------------------------------------------------------------------------
@@ -295,32 +264,7 @@ void newton_step_algo::operator()(
 	// compute the newton step and the log determinant
 	a1_eigen_vector step;
 	a1_double       logdet = 0.0;
-# if CPPAD_MIXED_USE_ATOMIC_CHOLESKY
-	// Permutation matrix corresponding to this sparse_ad_cholesky
-	const Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic>& P =
-		cholesky_.permutation();
 	//
-	// compute P^T * L * L^T * P = f_uu (theta, u) factorization
-	a1_eigen_sparse a1_L;
-	cholesky_.eval(a1_hessian, a1_L);
-	//
-	// compute logdet of f_uu (theta, u)
-	for(size_t j = 0; j < n_random_; j++)
-	{	a1_eigen_sparse::InnerIterator itr(a1_L, j);
-		// first entry in each column is the diagonal entry
-		assert( itr.row() == itr.col() );
-		logdet += log( itr.value() );
-	}
-	logdet *= 2.0;
-	//
-	// solve the equation f_uu (theta , u) * step = v
-	// P^T * L * L^T * P * step = v
-	a1_eigen_sparse a1_U = a1_L.transpose();
-	a1_eigen_vector tmp  = P * rhs;
-	tmp  = a1_L.triangularView<Eigen::Lower>().solve(tmp);
-	tmp  = a1_U.triangularView<Eigen::Upper>().solve(tmp);
-	step = P.transpose() * tmp;
-# else
 	// compute an L * D * L^T Cholesky factorization of f_{u,u}(theta, u)
 	Eigen::SimplicialLDLT<a1_eigen_sparse, Eigen::Lower> chol;
 	chol.analyzePattern(a1_hessian);
@@ -333,7 +277,6 @@ void newton_step_algo::operator()(
 	a1_eigen_vector diag = chol.vectorD();
 	for(size_t j = 0; j < n_random_; j++)
 		logdet += log( diag(j) );
-# endif
 
 	// pack resutls into return vector
 	a1_logdet_step[0] = logdet;

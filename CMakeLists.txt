@@ -20,7 +20,6 @@
 # required variables:    -D cppad_cxx_flags=value \
 #                        -D cmake_libdir=value \
 #                        -D ldlt_cholmod=value \
-#                        -D use_atomic_cholesky=value \
 #                        -D checkpoint_newton_step=value \
 #                        -D optimize_cppad_function=value \
 #                        -D hide_ipopt_scaling=value \
@@ -151,7 +150,7 @@ MESSAGE(STATUS "BEGIN:")
 MESSAGE(STATUS "CMAKE_VERBOSE_MAKEFILE = ${CMAKE_VERBOSE_MAKEFILE}")
 MESSAGE(STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 # ----------------------------------------------------------------------------
-FOREACH( var set_sparsity )
+FOREACH( var set_sparsity use_atomic_cholesky )
 IF( ${var} )
 	MESSAGE(FATAL_ERROR "${var} no longer used in cppad_mixed cmake command")
 ENDIF( ${var} )
@@ -179,9 +178,6 @@ required_definition( cmake_libdir STRING
 )
 required_definition(ldlt_cholmod BOOL
 	"use cholmod LDLT factorization where possible (instead of eigen)"
-)
-required_definition(use_atomic_cholesky BOOL
-	"use the CppAD::mixed::sparse_ad_cholesky AD atomic operation"
 )
 required_definition(checkpoint_newton_step BOOL
 	"checkpoint the newton step (to reduce memory requirements)"

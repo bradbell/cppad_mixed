@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -201,9 +201,6 @@ private:
 		CppAD::ADFun<a1_double>&          jac_a1fun_;
 		// information for computing f_uu (theta , u) using a1_double
 		a1_sparse_rcv                     a1_jac2hes_rcv_;
-		// Sparse Cholesky factorization as an atomic AD operation.
-		// It must live (not be destroyed) for as long as any tape that uses it.
-		sparse_ad_cholesky                cholesky_;
 public:
 	// constructor for algorithm that is checkpointed
 	newton_step_algo(

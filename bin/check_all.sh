@@ -20,19 +20,14 @@ if [ "$1" != 'd' ]  && [ "$1" != 'r' ]
 then
 	ok='no'
 fi
-if [ "$2" != 'a' ]  && [ "$2" != 't' ]
-then
-	ok='no'
-fi
-if [ "$3" != 'c' ]  && [ "$3" != 'n' ]
+if [ "$2" != 'c' ]  && [ "$2" != 'n' ]
 then
 	ok='no'
 fi
 if [ "$ok" != 'yes' ]
 then
-	echo 'bin/check_all.sh build_type cholesky newton_step'
+	echo 'bin/check_all.sh build_type newton_step'
 	echo 'build_type  = "d" (debug) or "r" (release)'
-	echo 'cholesky    = "a" (atomic) or "t" (taped)'
 	echo 'newton_step = 'c' (checkpointed) or 'n' (no checkpointing)'
 	exit 1
 fi
@@ -70,11 +65,6 @@ then
 	echo 'bin/check_all.sh: bin/run_cmake.sh optimize_cppad_function not no'
 	exit 1
 fi
-if ! grep "use_atomic_cholesky='no'" bin/run_cmake.sh > /dev/null
-then
-	echo 'bin/check_all.sh: bin/run_cmake.sh use_atomic_cholesky not no'
-	exit 1
-fi
 if ! grep "checkpoint_newton_step='no'" bin/run_cmake.sh > /dev/null
 then
 	echo 'bin/check_all.sh: bin/run_cmake.sh checkpoint_newton_step not no'
@@ -86,12 +76,7 @@ then
 		-e "s|^build_type=.*|build_type='release'|" \
 		-e "s|^optimize_cppad_function=.*|optimize_cppad_function='yes'|"
 fi
-if [ "$2" == 'a' ]
-then
-	sed -i bin/run_cmake.sh \
-		-e "s|^use_atomic_cholesky=.*|use_atomic_cholesky='yes'|"
-fi
-if [ "$3" == 'c' ]
+if [ "$2" == 'c' ]
 then
 	sed -i bin/run_cmake.sh \
 		-e "s|^checkpoint_newton_step=.*|checkpoint_newton_step='yes'|"
@@ -126,7 +111,6 @@ done
 sed -i bin/run_cmake.sh \
 	-e "s|^build_type=.*|build_type='debug'|" \
 	-e "s|^optimize_cppad_function=.*|optimize_cppad_function='no'|" \
-	-e "s|^use_atomic_cholesky=.*|use_atomic_cholesky='no'|" \
 	-e "s|^checkpoint_newton_step=.*|checkpoint_newton_step='no'|"
 # -----------------------------------------------------------------------------
 echo 'check_all.sh: OK'

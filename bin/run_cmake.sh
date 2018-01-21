@@ -109,17 +109,6 @@ cmake_libdir='lib64'
 ldlt_cholmod='yes'
 # &&
 #
-# &head use_atomic_cholesky&&
-# If yes, &code cppad_mixed&& will use
-# the &cref sparse_ad_cholesky&& atomic AD operation when computing the
-# &cref newton_step&&. Otherwise, an LDLT factorization using
-# &code eigen&& , with &code AD<double>&& as the scalar type, is used.
-# (Note that the &code cholmod&& LDLT factorization cannot
-# be use with and AD scalar type.)
-# &codep
-use_atomic_cholesky='no'
-# &&
-#
 # &head checkpoint_newton_step&&
 # If yes, &code cppad_mixed&& will checkpoint the
 # &cref newton_step&&. Otherwise, repeated applications of the Newton step
@@ -199,8 +188,6 @@ usage: bin/run_cmake.sh \\
 	[--help] \\
 	[--verbose] \\
 	[--ldlt_eigen] \\
-	[--use_atomic_cholesky] \\
-	[--checkpoint_newton_step] \\
 	[--optimize_cppad_function] \\
 	[--show_ipopt_scaling] \\
 	[--rev_hes_sparsity] \\
@@ -215,9 +202,6 @@ EOF
 	elif [ "$1" == '--ldlt_eigen' ]
 	then
 		ldlt_cholmod='no'
-	elif [ "$1" == '--use_atomic_cholesky' ]
-	then
-		use_atomic_cholesky='yes'
 	elif [ "$1" == '--checkpoint_newton_step' ]
 	then
 		checkpoint_newton_step='yes'
@@ -279,7 +263,6 @@ cmake \
 	-D cppad_cxx_flags="$cppad_cxx_flags" \
 	-D cmake_libdir="$cmake_libdir" \
 	-D ldlt_cholmod="$ldlt_cholmod" \
-	-D use_atomic_cholesky="$use_atomic_cholesky" \
 	-D checkpoint_newton_step="$checkpoint_newton_step" \
 	-D optimize_cppad_function="$optimize_cppad_function" \
 	-D hide_ipopt_scaling="$hide_ipopt_scaling" \

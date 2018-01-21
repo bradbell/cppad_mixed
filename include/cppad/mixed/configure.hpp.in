@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -54,11 +54,6 @@ If $cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$
 is $code yes$$, this symbol is defined as $code 1$$.
 Otherwise it is defined as $code 0$$.
 
-$head CPPAD_MIXED_USE_ATOMIC_CHOLESKY$$
-If $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$
-is $code yes$$, this symbol is defined as $code 1$$.
-Otherwise it is defined as $code 0$$.
-
 $head CPPAD_MIXED_CHECKPOINT_NEWTON_STEP$$
 If $cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$
 is $code yes$$, this symbol is defined as $code 1$$.
@@ -94,7 +89,6 @@ $end
 # define CPPAD_MIXED_FOR_HES_SPARSITY        @for_hes_sparsity_01@
 # define CPPAD_MIXED_HIDE_IPOPT_SCALING      @hide_ipopt_scaling_01@
 # define CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION @optimize_cppad_function_01@
-# define CPPAD_MIXED_USE_ATOMIC_CHOLESKY     @use_atomic_cholesky_01@
 # define CPPAD_MIXED_CHECKPOINT_NEWTON_STEP  @checkpoint_newton_step_01@
 # define CPPAD_MIXED_LDLT_CHOLMOD            @ldlt_cholmod_01@
 

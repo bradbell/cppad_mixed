@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-17 University of Washington
+#           Copyright (C) 2014-18 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -20,7 +20,6 @@ define_list='
 	CPPAD_MIXED_HAS_SUITESPARSE
 	CPPAD_MIXED_LDLT
 	CPPAD_MIXED_NULL_PTR
-	CPPAD_MIXED_USE_ATOMIC_CHOLESKY
 	CPPAD_MIXED_CHECKPOINT_NEWTON_STEP
 	CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
 	CPPAD_MIXED_HIDE_IPOPT_SCALING

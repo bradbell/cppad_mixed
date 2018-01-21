@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -127,10 +127,6 @@ In addition, the following name value pairs are also output.
 
 $subhead cppad_mixed_version$$
 The $code cppad_mixed$$ version number.
-
-$subhead use_atomic_cholesky$$
-is the $code bin/run_cmake.sh$$ configuration option
-$cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$.
 
 $subhead checkpoint_newton_step$$
 is the $code bin/run_cmake.sh$$ configuration option
@@ -383,7 +379,6 @@ int main(int argc, const char* argv[])
 	//
 	// configuration options
 	label_print("cppad_mixed_version",    CPPAD_MIXED_VERSION);
-	bool_print("use_atomic_cholesky",     CPPAD_MIXED_USE_ATOMIC_CHOLESKY);
 	bool_print("checkpoint_newton_step",  CPPAD_MIXED_CHECKPOINT_NEWTON_STEP);
 	bool_print("ldlt_cholmod",            CPPAD_MIXED_LDLT_CHOLMOD);
 	bool_print("optimize_cppad_function", CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION);

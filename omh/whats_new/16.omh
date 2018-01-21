@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -99,7 +99,7 @@ Fix bug in $cref sparse_ad_cholesky$$; to be more specific,
 the inverse permutation $latex P^{-1}$$ was being used where the permutation
 $cref/P/sparse_ad_cholesky/Notation/P/$$ was required.
 This the first version with $code cppad_mixed$$ passes all its tests with
-$cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$ true.
+$icode use_atomic_cholesky$$ true.
 
 
 $head 10-27$$
@@ -112,7 +112,7 @@ $lend
 
 $head 10-25$$
 $list number$$
-Add the $cref/use_atomic_cholesky/run_cmake.sh/use_atomic_cholesky/$$
+Add the $icode use_atomic_cholesky$$
 option to the $code cmake$$ command line.
 $lnext
 Fix another bug in $cref sparse_ad_cholesky$$. To be specific,
