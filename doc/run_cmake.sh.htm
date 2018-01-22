@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>bin/run_cmake.sh: User Configuration Options</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="bin/run_cmake.sh: User Configuration Options">
-<meta name="keywords" id="keywords" content=" bin/run_cmake.sh: user configuration options verbose_makefile build_type prefixes debug release cppad_cxx_flags cmake_libdir ldlt_cholmod checkpoint_newton_step optimize_cppad_function hide_ipopt_scaling for_hes_sparsity testing speed memory ">
+<meta name="keywords" id="keywords" content=" bin/run_cmake.sh: user configuration options verbose_makefile build_type cppad_prefix eigen_prefix other prefixes debug release cppad_cxx_flags cmake_libdir ldlt_cholmod checkpoint_newton_step optimize_cppad_function hide_ipopt_scaling for_hes_sparsity testing speed memory ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -78,8 +78,10 @@ A:active { color : purple }
 <option>Headings-&gt;</option>
 <option>verbose_makefile</option>
 <option>build_type</option>
-<option>Prefixes</option>
-<option>---..Debug and Release</option>
+<option>cppad_prefix</option>
+<option>eigen_prefix</option>
+<option>Other Prefixes</option>
+<option>Debug and Release</option>
 <option>cppad_cxx_flags</option>
 <option>cmake_libdir</option>
 <option>ldlt_cholmod</option>
@@ -108,57 +110,89 @@ Use either 'debug' or 'release' for the type of this build:
 <code><font color='blue'><pre style='display:inline'> 
 build_type='debug'
 </pre></font></code>
-Note that if 
+<br>
+<b><big><a name="cppad_prefix" id="cppad_prefix">cppad_prefix</a></big></b>
+<br>
+Prefix where cppad is installed and where
+cppad_mixed will be installed:
+<code><font color='blue'><pre style='display:inline'> 
+cppad_prefix=&quot;$HOME/prefix/cppad_mixed&quot;
+</pre></font></code>
+If 
 <code><i><font color="black"><span style='white-space: nowrap'>cppad_prefix</span></font></i></code>
- ends in <code><font color="blue">cppad_mixed</font></code>,
-<code><font color="blue">run_cmake.sh</font></code> will use a link from the prefix to
+ ends in <code><font color="blue">/cppad_mixed</font></code>,
+<code><font color="blue">run_cmake.sh</font></code> will use a soft link from this prefix to
 
 <code><i><font color="black"><span style='white-space: nowrap'>cppad_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.debug</span></font></code>
  or
 
 <code><i><font color="black"><span style='white-space: nowrap'>cppad_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.release</span></font></code>
 
-depending on the choice 
+depending on the choice for 
 <code><i><font color="black"><span style='white-space: nowrap'>build_type</span></font></i></code>
 .
 
 <br>
 <br>
-<b><big><a name="Prefixes" id="Prefixes">Prefixes</a></big></b>
+<b><big><a name="eigen_prefix" id="eigen_prefix">eigen_prefix</a></big></b>
 <br>
-Prefixes where the required packages are installed:
+Prefix where
+<a href="install_unix.htm#Special Requirements.eigen" target="_top"><span style='white-space: nowrap'>eigen</span></a>
+
+is installed:
 <code><font color='blue'><pre style='display:inline'> 
-cppad_prefix=&quot;$HOME/prefix/cppad_mixed&quot;
 eigen_prefix=&quot;$HOME/prefix/cppad_mixed/eigen&quot;
-ipopt_prefix=&quot;$HOME/prefix/cppad_mixed&quot;
-suitesparse_prefix=&quot;$HOME/prefix/cppad_mixed&quot;
 </pre></font></code>
-Note that the Eigen package is installed in a special prefix
-so that we can suppress warnings coming from its include files
-(without suppressing warnings from other include files).
+If this prefix ends in <code><font color="blue">/cppad_mixed/eigen</font></code>,
+<code><font color="blue">bin/install_eigen.sh</font></code> will use a soft link from this prefix to
+
+<code><i><font color="black"><span style='white-space: nowrap'>eigen_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.debug</span></font></code>
+ or
+
+<code><i><font color="black"><span style='white-space: nowrap'>eigen_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.release</span></font></code>
+
+depending on the choice for 
+<code><i><font color="black"><span style='white-space: nowrap'>build_type</span></font></i></code>
+.
 
 <br>
 <br>
-<b><a name="Prefixes.Debug and Release" id="Prefixes.Debug and Release">Debug and Release</a></b>
+<b><big><a name="Other Prefixes" id="Other Prefixes">Other Prefixes</a></big></b>
 <br>
-If 
-<code><i><font color="black"><span style='white-space: nowrap'>cppad_prefix</span></font></i></code>
- ends in <code><font color="blue">cppad_mixed</font></code>,
-all the prefixes must be the same,
-except for the Eigen prefix which has an extra sub-directory at the end.
-In this case,
-<code><font color="blue">bin/run_cmake.sh</font></code> will switch between a debug and release
-version of <code><font color="blue">cppad_mixed</font></code>
-depending on <a href="run_cmake.sh.htm#build_type" target="_top"><span style='white-space: nowrap'>build_type</span></a>
+Prefixes where the other
+<a href="install_unix.htm#Special Requirements" target="_top"><span style='white-space: nowrap'>special&nbsp;requirements</span></a>
+
+are installed:
+<code><font color='blue'><pre style='display:inline'> 
+ipopt_prefix=&quot;$HOME/prefix/cppad_mixed&quot;
+suitesparse_prefix=&quot;$HOME/prefix/cppad_mixed&quot;
+</pre></font></code>
+If these prefixes end in <code><font color="blue">/cppad_mixed</font></code>,
+<code><font color="blue">bin/install_ipopt.sh</font></code>,
+<code><font color="blue">bin/install_suitesparse.sh</font></code>,
+will use a soft link from the corresponding 
+<code><i><font color="black"><span style='white-space: nowrap'>prefix</span></font></i></code>
+ to
+
+<code><i><font color="black"><span style='white-space: nowrap'>prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.debug</span></font></code>
+ or
+
+<code><i><font color="black"><span style='white-space: nowrap'>prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.release</span></font></code>
+
+depending on the choice for 
+<code><i><font color="black"><span style='white-space: nowrap'>build_type</span></font></i></code>
 .
-The debug version will have an extra <code><font color="blue">.debug</font></code> and the release version
-will have an extra <code><font color="blue">.release</font></code> at the end of the prefix.
-In addition, a soft link will be used to map the prefix to either
-the debug or release version.
-Note that the same technique will be used to map the <code><font color="blue">build</font></code>
+
+<br>
+<br>
+<b><big><a name="Debug and Release" id="Debug and Release">Debug and Release</a></big></b>
+<br>
+If a soft link is used for the install,
+the same technique will be used to map the <code><font color="blue">build</font></code>
 directory to the debug or release version.
-Also note that if you are using both a debug and release, both versions
-of the  <a href="install_unix.htm#Special Requirements" target="_top"><span style='white-space: nowrap'>special&nbsp;requirements</span></a>
+If you are using both a debug and release versions of cppad_mixed,
+both versions of the
+<a href="install_unix.htm#Special Requirements" target="_top"><span style='white-space: nowrap'>special&nbsp;requirements</span></a>
 
 will need to be installed.
 

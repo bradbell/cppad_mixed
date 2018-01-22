@@ -28,8 +28,10 @@ var list_down1 = [
 var list_current0 = [
 'run_cmake.sh.htm#verbose_makefile',
 'run_cmake.sh.htm#build_type',
-'run_cmake.sh.htm#Prefixes',
-'run_cmake.sh.htm#Prefixes.Debug and Release',
+'run_cmake.sh.htm#cppad_prefix',
+'run_cmake.sh.htm#eigen_prefix',
+'run_cmake.sh.htm#Other Prefixes',
+'run_cmake.sh.htm#Debug and Release',
 'run_cmake.sh.htm#cppad_cxx_flags',
 'run_cmake.sh.htm#cmake_libdir',
 'run_cmake.sh.htm#ldlt_cholmod',
