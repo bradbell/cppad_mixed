@@ -54,40 +54,55 @@ verbose_makefile='no'
 # &codep
 build_type='debug'
 # &&
-# Note that if &icode cppad_prefix&& ends in &code cppad_mixed&&,
-# &code run_cmake.sh&& will use a link from the prefix to
-# &icode%cppad_prefix%.debug%&& or
-# &icode%cppad_prefix%.release%&&
-# depending on the choice &icode build_type&&.
 #
-# &head Prefixes&&
-# Prefixes where the required packages are installed:
+# &head cppad_prefix&&
+# Prefix where cppad is installed and where
+# cppad_mixed will be installed:
 # &codep
 cppad_prefix="$HOME/prefix/cppad_mixed"
+# &&
+# If &icode cppad_prefix&& ends in &code /cppad_mixed&&,
+# &code run_cmake.sh&& will use a soft link from this prefix to
+# &icode%cppad_prefix%.debug%&& or
+# &icode%cppad_prefix%.release%&&
+# depending on the choice for &icode build_type&&.
+#
+# &head eigen_prefix&&
+# Prefix where
+# &cref/eigen/install_unix/Special Requirements/eigen/&&
+# is installed:
+# &codep
 eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
+# &&
+# If this prefix ends in &code /cppad_mixed/eigen&&,
+# &code bin/install_eigen.sh&& will use a soft link from this prefix to
+# &icode%eigen_prefix%.debug%&& or
+# &icode%eigen_prefix%.release%&&
+# depending on the choice for &icode build_type&&.
+#
+# &head Other Prefixes&&
+# Prefixes where the other
+# &cref/special requirements/install_unix/Special Requirements/&&
+# are installed:
+# &codep
 ipopt_prefix="$HOME/prefix/cppad_mixed"
 suitesparse_prefix="$HOME/prefix/cppad_mixed"
 # &&
-# Note that the Eigen package is installed in a special prefix
-# so that we can suppress warnings coming from its include files
-# (without suppressing warnings from other include files).
+# If these prefixes end in &code /cppad_mixed&&,
+# &code bin/install_ipopt.sh&&,
+# &code bin/install_suitesparse.sh&&,
+# will use a soft link from the corresponding &icode prefix&& to
+# &icode%prefix%.debug%&& or
+# &icode%prefix%.release%&&
+# depending on the choice for &icode build_type&&.
 #
-# &subhead Debug and Release&&
-# If &icode cppad_prefix&& ends in &code cppad_mixed&&,
-# all the prefixes must be the same,
-# except for the Eigen prefix which has an extra sub-directory at the end.
-# In this case,
-# &code bin/run_cmake.sh&& will switch between a debug and release
-# version of &code cppad_mixed&&
-# depending on &cref/build_type/run_cmake.sh/build_type/&&.
-# The debug version will have an extra &code .debug&& and the release version
-# will have an extra &code .release&& at the end of the prefix.
-# In addition, a soft link will be used to map the prefix to either
-# the debug or release version.
-# Note that the same technique will be used to map the &code build&&
+# &head Debug and Release&&
+# If a soft link is used for the install,
+# the same technique will be used to map the &code build&&
 # directory to the debug or release version.
-# Also note that if you are using both a debug and release, both versions
-# of the  &cref/special requirements/install_unix/Special Requirements/&&
+# If you are using both a debug and release versions of cppad_mixed,
+# both versions of the
+# &cref/special requirements/install_unix/Special Requirements/&&
 # will need to be installed.
 #
 # &head cppad_cxx_flags&&

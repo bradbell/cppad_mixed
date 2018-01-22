@@ -29,6 +29,11 @@ $childtable%
 	omh/whats_new/15.omh
 %$$
 
+$head 01-22$$
+Improve the instructions for combining both
+$cref/debug and release/run_cmake.sh/Debug and Release/$$
+versions of cppad_mixed on the same system.
+
 $head 01-21$$
 Remove the $icode use_atomic_cholesky$$ option from the
 $cref/cmake/run_cmake.sh/$$ script.

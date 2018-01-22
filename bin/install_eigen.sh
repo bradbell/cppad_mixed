@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-17 University of Washington
+#           Copyright (C) 2014-18 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -34,7 +34,8 @@ eval $cmd
 cmd=`grep '^eigen_prefix=' bin/run_cmake.sh`
 eval $cmd
 # --------------------------------------------------------------------------
-cppad_mixed_dir=`echo $eigen_prefix | sed -e 's|/cppad_mixed/.*|/cppad_mixed|'`
+cppad_mixed_dir=`echo $eigen_prefix | \
+	 sed -e 's|/cppad_mixed/eigen$|/cppad_mixed|'`
 if echo "$cppad_mixed_dir" | grep '/cppad_mixed$' > /dev/null
 then
 	bin/build_type.sh install_eigen $cppad_mixed_dir $build_type

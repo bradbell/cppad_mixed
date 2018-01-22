@@ -190,7 +190,7 @@ value of $cref optimize_fixed$$ which is a public routine.
 
 $head 09-02$$
 Instructions were added for building both
-$cref/debug and release/run_cmake.sh/Prefixes/Debug and Release/$$
+$cref/debug and release/run_cmake.sh/Debug and Release/$$
 version of $code cppad_mixed$$.
 
 $head 08-30$$
@@ -240,7 +240,7 @@ This fixes a bug in the CppAD optimizer.
 $lnext
 Simplify the install procedure by using
 $cref/build_type/run_cmake.sh/build_type/$$ and
-$cref/prefix/run_cmake.sh/Prefixes/$$ values in $code run_cmake.sh$$
+$cref/prefix/run_cmake.sh/Other Prefixes/$$ values in $code run_cmake.sh$$
 during the other installs.
 The $cref install_unix$$ procedure has been modified to reflect
 this change.
