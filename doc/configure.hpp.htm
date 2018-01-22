@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Preprocessor Configuration Symbols in configure.hpp</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Preprocessor Configuration Symbols in configure.hpp">
-<meta name="keywords" id="keywords" content=" preprocessor configuration symbols configure.hpp private cppad_mixed_version cppad_mixed_for_hes_sparsity cppad_mixed_hide_ipopt_scaling cppad_mixed_optimize_ad_function cppad_mixed_use_atomic_cholesky cppad_mixed_checkpoint_newton_step cppad_mixed_ldlt_cholmod cppad_mixed_ldlt_class cppad_mixed_null_ptr ">
+<meta name="keywords" id="keywords" content=" preprocessor configuration symbols configure.hpp private cppad_mixed_version cppad_mixed_for_hes_sparsity cppad_mixed_hide_ipopt_scaling cppad_mixed_optimize_ad_function cppad_mixed_checkpoint_newton_step cppad_mixed_ldlt_cholmod cppad_mixed_ldlt_class cppad_mixed_null_ptr ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -90,9 +90,9 @@ A:active { color : purple }
 <option>sparse_mat2low</option>
 <option>sparse_eigen2info</option>
 <option>sparse_info2eigen</option>
-<option>sparse_ad_cholesky</option>
 <option>sparse_print</option>
 <option>sparsity_print</option>
+<option>sparse_ad_cholesky</option>
 </select>
 </td>
 <td>configure.hpp</td>
@@ -104,7 +104,6 @@ A:active { color : purple }
 <option>CPPAD_MIXED_FOR_HES_SPARSITY</option>
 <option>CPPAD_MIXED_HIDE_IPOPT_SCALING</option>
 <option>CPPAD_MIXED_OPTIMIZE_AD_FUNCTION</option>
-<option>CPPAD_MIXED_USE_ATOMIC_CHOLESKY</option>
 <option>CPPAD_MIXED_CHECKPOINT_NEWTON_STEP</option>
 <option>CPPAD_MIXED_LDLT_CHOLMOD</option>
 <option>CPPAD_MIXED_LDLT_CLASS</option>
@@ -154,15 +153,6 @@ Otherwise it is defined as <code><font color="blue">0</font></code>.
 <b><big><a name="CPPAD_MIXED_OPTIMIZE_AD_FUNCTION" id="CPPAD_MIXED_OPTIMIZE_AD_FUNCTION">CPPAD_MIXED_OPTIMIZE_AD_FUNCTION</a></big></b>
 <br>
 If <a href="run_cmake.sh.htm#optimize_cppad_function" target="_top"><span style='white-space: nowrap'>optimize_cppad_function</span></a>
-
-is <code><font color="blue">yes</font></code>, this symbol is defined as <code><font color="blue">1</font></code>.
-Otherwise it is defined as <code><font color="blue">0</font></code>.
-
-<br>
-<br>
-<b><big><a name="CPPAD_MIXED_USE_ATOMIC_CHOLESKY" id="CPPAD_MIXED_USE_ATOMIC_CHOLESKY">CPPAD_MIXED_USE_ATOMIC_CHOLESKY</a></big></b>
-<br>
-If <a href="run_cmake.sh.htm#use_atomic_cholesky" target="_top"><span style='white-space: nowrap'>use_atomic_cholesky</span></a>
 
 is <code><font color="blue">yes</font></code>, this symbol is defined as <code><font color="blue">1</font></code>.
 Otherwise it is defined as <code><font color="blue">0</font></code>.

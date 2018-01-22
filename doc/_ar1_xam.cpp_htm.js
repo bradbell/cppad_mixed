@@ -55,7 +55,6 @@ var list_current0 = [
 'ar1_xam.cpp.htm#Command Arguments.start_near_solution',
 'ar1_xam.cpp.htm#Output',
 'ar1_xam.cpp.htm#Output.cppad_mixed_version',
-'ar1_xam.cpp.htm#Output.use_atomic_cholesky',
 'ar1_xam.cpp.htm#Output.checkpoint_newton_step',
 'ar1_xam.cpp.htm#Output.ldlt_cholmod',
 'ar1_xam.cpp.htm#Output.optimize_cppad_function',

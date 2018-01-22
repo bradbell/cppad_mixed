@@ -33,7 +33,6 @@ var list_current0 = [
 'run_cmake.sh.htm#cppad_cxx_flags',
 'run_cmake.sh.htm#cmake_libdir',
 'run_cmake.sh.htm#ldlt_cholmod',
-'run_cmake.sh.htm#use_atomic_cholesky',
 'run_cmake.sh.htm#checkpoint_newton_step',
 'run_cmake.sh.htm#optimize_cppad_function',
 'run_cmake.sh.htm#hide_ipopt_scaling',

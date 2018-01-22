@@ -44,9 +44,9 @@ var list_down1 = [
 'sparse_mat2low.htm',
 'sparse_eigen2info.htm',
 'sparse_info2eigen.htm',
-'sparse_ad_cholesky.htm',
 'sparse_print.htm',
-'sparsity_print.htm'
+'sparsity_print.htm',
+'sparse_ad_cholesky.htm'
 ];
 var list_down0 = [
 'sparse_ad_cholesky_initialize.htm',
@@ -58,10 +58,12 @@ var list_down0 = [
 'sparse_ad_chol_perm.cpp.htm',
 'sparse_ad_chol_eq.cpp.htm',
 'sparse_ad_chol_var.cpp.htm',
-'sparse_ad_chol_sp.cpp.htm'
+'sparse_ad_chol_sp1.cpp.htm',
+'sparse_ad_chol_sp2.cpp.htm'
 ];
 var list_current0 = [
 'sparse_ad_cholesky.htm#Syntax',
+'sparse_ad_cholesky.htm#Not Used',
 'sparse_ad_cholesky.htm#Purpose',
 'sparse_ad_cholesky.htm#Notation',
 'sparse_ad_cholesky.htm#Notation.A',

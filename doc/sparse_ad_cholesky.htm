@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Sparse Cholesky Factorization as an Atomic CppAD Operation</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Sparse Cholesky Factorization as an Atomic CppAD Operation">
-<meta name="keywords" id="keywords" content=" sparse cholesky factorization atomic cppad operation syntax purpose notation p l private public member functions type declarations variables ">
+<meta name="keywords" id="keywords" content=" sparse cholesky factorization atomic cppad operation syntax not used purpose notation p l private public member functions type declarations variables ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -31,7 +31,7 @@ A:active { color : purple }
 <td>
 <a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
 </td>
-<td><a href="sparse_info2eigen.cpp.htm" target="_top">Prev</a>
+<td><a href="sparsity_print.htm" target="_top">Prev</a>
 </td><td><a href="sparse_ad_cholesky_initialize.htm" target="_top">Next</a>
 </td><td>
 <select onchange='choose_across0(this)'>
@@ -90,9 +90,9 @@ A:active { color : purple }
 <option>sparse_mat2low</option>
 <option>sparse_eigen2info</option>
 <option>sparse_info2eigen</option>
-<option>sparse_ad_cholesky</option>
 <option>sparse_print</option>
 <option>sparsity_print</option>
+<option>sparse_ad_cholesky</option>
 </select>
 </td>
 <td>
@@ -107,13 +107,15 @@ A:active { color : purple }
 <option>sparse_ad_chol_perm.cpp</option>
 <option>sparse_ad_chol_eq.cpp</option>
 <option>sparse_ad_chol_var.cpp</option>
-<option>sparse_ad_chol_sp.cpp</option>
+<option>sparse_ad_chol_sp1.cpp</option>
+<option>sparse_ad_chol_sp2.cpp</option>
 </select>
 </td>
 <td>
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
 <option>Syntax</option>
+<option>Not Used</option>
 <option>Purpose</option>
 <option>Notation</option>
 <option>---..A</option>
@@ -129,7 +131,10 @@ A:active { color : purple }
 </tr></table><br>
 @(@\newcommand{\R}[1]{ {\rm #1} }
 \newcommand{\B}[1]{ {\bf #1} }
-\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Sparse Cholesky Factorization as an Atomic CppAD Operation</big></big></b></center>
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Sparse Cholesky Factorization as an Atomic CppAD Operation</big></big></b></center>
 <br>
 <b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
 
@@ -137,6 +142,14 @@ A:active { color : purple }
 
 <code><font color="blue"><span style='white-space: nowrap'>CppAD::mixed::sparse_ad_cholesky&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>cholesky</span></font></i></code>
 
+
+<br>
+<br>
+<b><big><a name="Not Used" id="Not Used">Not Used</a></big></b>
+<br>
+The option for <code><font color="blue">cppad_mixed</font></code> to use this class was removed on 2017-01-21.
+Is implementation and examples have been stored in the
+<code><font color="blue">cholesky</font></code> directory for possible future research.
 
 <br>
 <br>
@@ -283,8 +296,8 @@ This class is an implementation detail and not part of the
 <b><big><a name="Contents" id="Contents">Contents</a></big></b>
 <br>
 <table>
-<tr><td><a href="sparse_ad_cholesky_initialize.htm" target="_top">sparse_ad_cholesky_initialize</a></td><td>Initialize&nbsp;Sparse&nbsp;AD&nbsp;Cholesky&nbsp;Factorization</td></tr><tr><td><a href="sparse_ad_cholesky_p.htm" target="_top">sparse_ad_cholesky_p</a></td><td>Using&nbsp;Sparse&nbsp;AD&nbsp;Cholesky&nbsp;Permutation&nbsp;P</td></tr><tr><td><a href="sparse_ad_cholesky_eval.htm" target="_top">sparse_ad_cholesky_eval</a></td><td>Using&nbsp;Sparse&nbsp;AD&nbsp;Cholesky&nbsp;Factor&nbsp;L</td></tr><tr><td><a href="set_jac_sparsity.htm" target="_top">set_jac_sparsity</a></td><td>Set&nbsp;the&nbsp;Jacobian&nbsp;Sparsity&nbsp;Pattern</td></tr><tr><td><a href="set_hes_sparsity.htm" target="_top">set_hes_sparsity</a></td><td>Set&nbsp;the&nbsp;Hessian&nbsp;Sparsity&nbsp;Pattern</td></tr><tr><td><a href="sparse_ad_chol_eval.cpp.htm" target="_top">sparse_ad_chol_eval.cpp</a></td><td>Sparse&nbsp;AD&nbsp;Cholesky&nbsp;Factorization:&nbsp;Example&nbsp;and&nbsp;Test</td></tr><tr><td><a href="sparse_ad_chol_perm.cpp.htm" target="_top">sparse_ad_chol_perm.cpp</a></td><td>Sparse&nbsp;AD&nbsp;Cholesky&nbsp;Permutation:&nbsp;Example&nbsp;and&nbsp;Test</td></tr><tr><td><a href="sparse_ad_chol_eq.cpp.htm" target="_top">sparse_ad_chol_eq.cpp</a></td><td>Using&nbsp;Sparse&nbsp;AD&nbsp;Cholesky&nbsp;To&nbsp;Solve&nbsp;Equations:&nbsp;Example&nbsp;and&nbsp;Test</td></tr><tr><td><a href="sparse_ad_chol_var.cpp.htm" target="_top">sparse_ad_chol_var.cpp</a></td><td>Sparse&nbsp;AD&nbsp;Cholesky&nbsp;Variable&nbsp;Calculation:&nbsp;Example&nbsp;and&nbsp;Test</td></tr><tr><td><a href="sparse_ad_chol_sp.cpp.htm" target="_top">sparse_ad_chol_sp.cpp</a></td><td>Sparse&nbsp;AD&nbsp;Cholesky&nbsp;Sparsity&nbsp;Calculation:&nbsp;Example&nbsp;and&nbsp;Test</td></tr></table>
-<hr>Input File: include/cppad/mixed/sparse_ad_cholesky.hpp
+<tr><td><a href="sparse_ad_cholesky_initialize.htm" target="_top">sparse_ad_cholesky_initialize</a></td><td>Initialize&nbsp;Sparse&nbsp;AD&nbsp;Cholesky&nbsp;Factorization</td></tr><tr><td><a href="sparse_ad_cholesky_p.htm" target="_top">sparse_ad_cholesky_p</a></td><td>Using&nbsp;Sparse&nbsp;AD&nbsp;Cholesky&nbsp;Permutation&nbsp;P</td></tr><tr><td><a href="sparse_ad_cholesky_eval.htm" target="_top">sparse_ad_cholesky_eval</a></td><td>Using&nbsp;Sparse&nbsp;AD&nbsp;Cholesky&nbsp;Factor&nbsp;L</td></tr><tr><td><a href="set_jac_sparsity.htm" target="_top">set_jac_sparsity</a></td><td>Set&nbsp;the&nbsp;Jacobian&nbsp;Sparsity&nbsp;Pattern</td></tr><tr><td><a href="set_hes_sparsity.htm" target="_top">set_hes_sparsity</a></td><td>Set&nbsp;the&nbsp;Hessian&nbsp;Sparsity&nbsp;Pattern</td></tr><tr><td><a href="sparse_ad_chol_eval.cpp.htm" target="_top">sparse_ad_chol_eval.cpp</a></td><td>Sparse&nbsp;AD&nbsp;Cholesky&nbsp;Factorization:&nbsp;Example&nbsp;and&nbsp;Test</td></tr><tr><td><a href="sparse_ad_chol_perm.cpp.htm" target="_top">sparse_ad_chol_perm.cpp</a></td><td>Sparse&nbsp;AD&nbsp;Cholesky&nbsp;Permutation:&nbsp;Example&nbsp;and&nbsp;Test</td></tr><tr><td><a href="sparse_ad_chol_eq.cpp.htm" target="_top">sparse_ad_chol_eq.cpp</a></td><td>Using&nbsp;Sparse&nbsp;AD&nbsp;Cholesky&nbsp;To&nbsp;Solve&nbsp;Equations:&nbsp;Example&nbsp;and&nbsp;Test</td></tr><tr><td><a href="sparse_ad_chol_var.cpp.htm" target="_top">sparse_ad_chol_var.cpp</a></td><td>Sparse&nbsp;AD&nbsp;Cholesky&nbsp;Variable&nbsp;Calculation:&nbsp;Example&nbsp;and&nbsp;Test</td></tr><tr><td><a href="sparse_ad_chol_sp1.cpp.htm" target="_top">sparse_ad_chol_sp1.cpp</a></td><td>Sparse&nbsp;AD&nbsp;Cholesky&nbsp;Sparsity&nbsp;Calculation:&nbsp;Example&nbsp;and&nbsp;Test</td></tr><tr><td><a href="sparse_ad_chol_sp2.cpp.htm" target="_top">sparse_ad_chol_sp2.cpp</a></td><td>Sparse&nbsp;AD&nbsp;Cholesky&nbsp;Sparsity&nbsp;Calculation:&nbsp;Example&nbsp;and&nbsp;Test</td></tr></table>
+<hr>Input File: cholesky/sparse_ad_cholesky.hpp
 
 </body>
 </html>

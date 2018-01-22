@@ -59,7 +59,6 @@ var list_current0 = [
 'capture_xam.cpp.htm#Command Arguments.random_constraint',
 'capture_xam.cpp.htm#Output',
 'capture_xam.cpp.htm#Output.cppad_mixed_version',
-'capture_xam.cpp.htm#Output.use_atomic_cholesky',
 'capture_xam.cpp.htm#Output.checkpoint_newton_step',
 'capture_xam.cpp.htm#Output.ldlt_cholmod',
 'capture_xam.cpp.htm#Output.optimize_cppad_function',

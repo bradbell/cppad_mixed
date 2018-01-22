@@ -8,8 +8,8 @@ var list_across0 = [
 var list_up0 = [
 'cppad_mixed.htm',
 'namespace.htm',
-'ipopt_fixed.htm',
-'ipopt_xam.htm'
+'sparse_ad_cholesky.htm',
+'sparse_ad_chol_sp1.cpp.htm'
 ];
 var list_down3 = [
 'install_unix.htm',
@@ -50,41 +50,23 @@ var list_down2 = [
 'sparse_ad_cholesky.htm'
 ];
 var list_down1 = [
-'ipopt_fixed_ctor.htm',
-'ipopt_fixed_get_nlp_info.htm',
-'ipopt_fixed_get_bounds_info.htm',
-'ipopt_fixed_get_starting_point.htm',
-'ipopt_fixed_eval_f.htm',
-'ipopt_fixed_eval_grad_f.htm',
-'ipopt_fixed_eval_g.htm',
-'ipopt_fixed_eval_jac_g.htm',
-'ipopt_fixed_eval_h.htm',
-'ipopt_fixed_finalize_solution.htm',
-'ipopt_fixed_adaptive_derivative_check.htm',
-'ipopt_fixed_new_random.htm',
-'ipopt_xam.htm'
-];
-var list_down0 = [
-'ipopt_nlp_xam.htm',
-'ipopt_xam_ctor.htm',
-'ipopt_xam_get_nlp_info.htm',
-'ipopt_xam_get_bounds_info.htm',
-'ipopt_xam_get_starting_point.htm',
-'ipopt_xam_eval_f.htm',
-'ipopt_xam_eval_grad_f.htm',
-'ipopt_xam_eval_g.htm',
-'ipopt_xam_eval_jac_g.htm',
-'ipopt_xam_eval_h.htm',
-'ipopt_xam_finalize_solution.htm',
-'ipopt_xam_intermediate_callback.htm',
-'ipopt_run_xam.htm'
+'sparse_ad_cholesky_initialize.htm',
+'sparse_ad_cholesky_p.htm',
+'sparse_ad_cholesky_eval.htm',
+'set_jac_sparsity.htm',
+'set_hes_sparsity.htm',
+'sparse_ad_chol_eval.cpp.htm',
+'sparse_ad_chol_perm.cpp.htm',
+'sparse_ad_chol_eq.cpp.htm',
+'sparse_ad_chol_var.cpp.htm',
+'sparse_ad_chol_sp1.cpp.htm',
+'sparse_ad_chol_sp2.cpp.htm'
 ];
 var list_current0 = [
-'ipopt_xam.htm#Problem',
-'ipopt_xam.htm#Lagrangian',
-'ipopt_xam.htm#Stationary Conditions',
-'ipopt_xam.htm#Solution',
-'ipopt_xam.htm#Contents'
+'sparse_ad_chol_sp1.cpp.htm#Problem',
+'sparse_ad_chol_sp1.cpp.htm#Permutation',
+'sparse_ad_chol_sp1.cpp.htm#Cholesky Factor',
+'sparse_ad_chol_sp1.cpp.htm#Source'
 ];
 function choose_across0(item)
 {	var index          = item.selectedIndex;

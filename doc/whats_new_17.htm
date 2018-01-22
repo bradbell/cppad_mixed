@@ -271,7 +271,8 @@ to the configuration script.
 <br>
 The <a href="data_mismatch.cpp.htm" target="_top"><span style='white-space: nowrap'>data_mismatch.cpp</span></a>
  example was failing when
-<a href="run_cmake.sh.htm#use_atomic_cholesky" target="_top"><span style='white-space: nowrap'>use_atomic_cholesky</span></a>
+
+<code><i><font color="black"><span style='white-space: nowrap'>use_atomic_cholesky</span></font></i></code>
  was <code><font color="blue">yes</font></code>.
 This was because
 the Eigen package was short circuiting operations when values were zero.
@@ -291,7 +292,8 @@ Fix a bug in the Newton step
  routine.
 This bug was probably introduced on the master branch on 2017-03-22
 and only affected the case where
-<a href="run_cmake.sh.htm#use_atomic_cholesky" target="_top"><span style='white-space: nowrap'>use_atomic_cholesky</span></a>
+
+<code><i><font color="black"><span style='white-space: nowrap'>use_atomic_cholesky</span></font></i></code>
  was <code><font color="blue">yes</font></code>.
 
 <br>

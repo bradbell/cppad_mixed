@@ -44,9 +44,9 @@ var list_down1 = [
 'sparse_mat2low.htm',
 'sparse_eigen2info.htm',
 'sparse_info2eigen.htm',
-'sparse_ad_cholesky.htm',
 'sparse_print.htm',
-'sparsity_print.htm'
+'sparsity_print.htm',
+'sparse_ad_cholesky.htm'
 ];
 var list_current0 = [
 'configure.hpp.htm#Private',
@@ -54,7 +54,6 @@ var list_current0 = [
 'configure.hpp.htm#CPPAD_MIXED_FOR_HES_SPARSITY',
 'configure.hpp.htm#CPPAD_MIXED_HIDE_IPOPT_SCALING',
 'configure.hpp.htm#CPPAD_MIXED_OPTIMIZE_AD_FUNCTION',
-'configure.hpp.htm#CPPAD_MIXED_USE_ATOMIC_CHOLESKY',
 'configure.hpp.htm#CPPAD_MIXED_CHECKPOINT_NEWTON_STEP',
 'configure.hpp.htm#CPPAD_MIXED_LDLT_CHOLMOD',
 'configure.hpp.htm#CPPAD_MIXED_LDLT_CLASS',
