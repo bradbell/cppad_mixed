@@ -82,30 +82,26 @@ then
 		-e "s|^checkpoint_newton_step=.*|checkpoint_newton_step='yes'|"
 fi
 # -----------------------------------------------------------------------------
-#
-echo 'bin/run_cmake.sh 1> cmake.log 2> cmake.err'
-bin/run_cmake.sh 1> cmake.log 2> cmake.err
+echo 'bin/run_cmake.sh >& cmake.log'
+bin/run_cmake.sh >& cmake.log
 #
 cd build
 #
 for target in check speed install
 do
-	echo "make $target 1> $target.log 2> $target.err"
-	make $target 1> ../$target.log 2> ../$target.err
+	echo "make $target >& $target.log"
+	make $target >& ../$target.log
 done
 cd ..
 bin/check_install.sh
 # -----------------------------------------------------------------------------
 for target in cmake check speed install
 do
-	err=`cat $target.err`
-	if [ "$err" != '' ]
+	if grep -i 'warningL:' $target.log
 	then
-		cat $target.err
-		echo "bin/run_check_all.sh: $target is not empty."
+		echo "bin/run_check_all.sh: $target.log is has warnings."
 		exit 1
 	fi
-	echo_eval rm $target.err
 done
 # -----------------------------------------------------------------------------
 sed -i bin/run_cmake.sh \
