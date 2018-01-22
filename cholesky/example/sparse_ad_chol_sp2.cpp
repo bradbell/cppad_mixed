@@ -8,11 +8,11 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad/mixed/sparse_ad_cholesky.hpp>
 # include <cppad/mixed/typedef.hpp>
+# include "../sparse_ad_cholesky.hpp"
 
 /*
-$begin sparse_ad_chol_sp.cpp$$
+$begin sparse_ad_chol_sp2.cpp$$
 $spell
 	Cholesky
 $$
@@ -39,7 +39,7 @@ The fill reducing permutation
 $cref/P/sparse_ad_cholesky/Notation/P/$$
 transposes indices zero and one; i.e.
 $latex \[
-	P= \left( \begin{array}{ccc}
+	P= \left( \begin{array}{cccc}
 		1   & 0    & 0  & 0  \\
 		0   & 0    & 0  & 1  \\
 		0   & 1    & 0  & 0  \\
@@ -76,12 +76,13 @@ L(x) = \left(
 x_1 / \sqrt{x_0} & 0                & \sqrt{x_2 - x_1^2/ x_0} & 0 \\
 0                & x_5 / \sqrt{x_6} & c(x) & \sqrt{x_4 - x_5^2 / x_6 - c(x)^2 }
 \end{array}
+\right)
 \] $$
 This can be verified by checking
 $latex P * A(x) * P^\R{T} = L * L^\R{T}$$.
 
 $head Source$$
-$srcfile%test_more/sparse_ad_cholesky.cpp
+$srcfile%cholesky/example/sparse_ad_chol_sp2.cpp
 	%4%// BEGIN C++%// END C++%1%$$
 $end
 */
@@ -247,7 +248,7 @@ namespace {
 		return ok;
 	}
 }
-bool sparse_ad_cholesky(void)
+bool sparse_ad_chol_sp2(void)
 {	using CppAD::AD;
 	using CppAD::mixed::d_vector;
 	typedef CppAD::vector< AD<double> >                       ad_vector;

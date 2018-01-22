@@ -8,11 +8,10 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad/mixed/sparse_ad_cholesky.hpp>
 # include <cppad/mixed/typedef.hpp>
-
+# include "../sparse_ad_cholesky.hpp"
 /*
-$begin sparse_ad_chol_sp.cpp$$
+$begin sparse_ad_chol_sp1.cpp$$
 $spell
 	Cholesky
 $$
@@ -62,7 +61,7 @@ This can be verified by checking
 $latex P * A(x) * P^\R{T} = L * L^\R{T}$$.
 
 $head Source$$
-$srcfile%example/private/sparse_ad_chol_sp.cpp
+$srcfile%cholesky/example/sparse_ad_chol_sp1.cpp
 	%4%// BEGIN C++%// END C++%1%$$
 $end
 */
@@ -143,7 +142,7 @@ namespace {
 		return ok;
 	}
 }
-bool sparse_ad_chol_sp_xam(void)
+bool sparse_ad_chol_sp1(void)
 {	using CppAD::AD;
 	using CppAD::mixed::d_vector;
 	typedef CppAD::vector< AD<double> >                       ad_vector;

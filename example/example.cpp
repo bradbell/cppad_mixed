@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -69,11 +69,6 @@ extern bool ran_obj_eval_xam(void);
 extern bool ran_obj_jac_xam(void);
 extern bool sample_fixed_xam(void);
 extern bool sample_random_xam(void);
-extern bool sparse_ad_chol_eval_xam(void);
-extern bool sparse_ad_chol_eq_xam(void);
-extern bool sparse_ad_chol_perm_xam(void);
-extern bool sparse_ad_chol_sp_xam(void);
-extern bool sparse_ad_chol_var_xam(void);
 extern bool sparse_eigen2info_xam(void);
 extern bool sparse_info2eigen_xam(void);
 extern bool sparse_low_tri_sol_xam(void);
@@ -159,11 +154,6 @@ int main(void)
 	RUN(ran_obj_jac_xam);
 	RUN(sample_fixed_xam);
 	RUN(sample_random_xam);
-	RUN(sparse_ad_chol_eval_xam);
-	RUN(sparse_ad_chol_eq_xam);
-	RUN(sparse_ad_chol_perm_xam);
-	RUN(sparse_ad_chol_sp_xam);
-	RUN(sparse_ad_chol_var_xam);
 	RUN(sparse_eigen2info_xam);
 	RUN(sparse_info2eigen_xam);
 	RUN(sparse_low_tri_sol_xam);

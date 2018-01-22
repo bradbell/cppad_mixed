@@ -249,6 +249,7 @@ CONFIGURE_FILE(
 # ----------------------------------------------------------------------------
 # subdirectories
 ADD_SUBDIRECTORY(src)
+ADD_SUBDIRECTORY(cholesky)
 ADD_SUBDIRECTORY(example)
 ADD_SUBDIRECTORY(test_more)
 ADD_SUBDIRECTORY(speed)
@@ -256,6 +257,7 @@ ADD_SUBDIRECTORY(speed)
 # tests
 ADD_CUSTOM_TARGET(check DEPENDS
 	cppad_mixed
+	check_cholesky
 	check_example
 	check_test_more
 )

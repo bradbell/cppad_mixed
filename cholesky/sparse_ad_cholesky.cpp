@@ -10,8 +10,6 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <iostream>
 //
-# include <cppad/mixed/sparse_ad_cholesky.hpp>
-//
 # include <cppad/mixed/sparse_low_tri_sol.hpp>
 # include <cppad/mixed/sparse_up_tri_sol.hpp>
 # include <cppad/mixed/sparse_scale_diag.hpp>
@@ -21,6 +19,8 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/sparse_info2eigen.hpp>
 # include <cppad/mixed/sparsity_print.hpp>
 # include <cppad/mixed/sparse_print.hpp>
+//
+# include "sparse_ad_cholesky.hpp"
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // ============================================================================
@@ -165,7 +165,7 @@ $head Syntax$$
 $icode%P% = %cholesky%.permutation()%$$
 
 $head Prototype$$
-$srcfile%src/eigen/sparse_ad_cholesky.cpp
+$srcfile%cholesky/sparse_ad_cholesky.cpp
 	%4%// BEGIN PERMUTATION PROTOTYPE%// END PERMUTATION PROTOTYPE%1%$$
 
 $head Public / Private$$

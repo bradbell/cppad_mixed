@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -15,12 +15,18 @@ $begin sparse_ad_cholesky$$
 $spell
 	CppAD
 	Cholesky
+	cppad
 $$
 
 $section Sparse Cholesky Factorization as an Atomic CppAD Operation$$
 
 $head Syntax$$
 $codei%CppAD::mixed::sparse_ad_cholesky %cholesky%$$
+
+$head Not Used$$
+The option for $code cppad_mixed$$ to use this class was removed on 2017-01-21.
+Is implementation and examples have been stored in the
+$code cholesky$$ directory for possible future research.
 
 $head Purpose$$
 Given a symmetric positive definite matrix $latex A \in \B{R}^{n \times n}$$,
@@ -50,23 +56,24 @@ This class is an implementation detail and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head Public Member Functions$$
-$srcfile%include/cppad/mixed/sparse_ad_cholesky.hpp
+$srcfile%cholesky/sparse_ad_cholesky.hpp
 	%4%// BEGIN PUBLIC MEMBER FUNCTIONS%// END PUBLIC MEMBER FUNCTIONS%1%$$
 
 $head Type Declarations$$
-$srcfile%include/cppad/mixed/sparse_ad_cholesky.hpp
+$srcfile%cholesky/sparse_ad_cholesky.hpp
 	%4%// BEGIN TYPE DECLARATIONS%// END TYPE DECLARATIONS%1%$$
 
 $head Member Variables$$
-$srcfile%include/cppad/mixed/sparse_ad_cholesky.hpp
+$srcfile%cholesky/sparse_ad_cholesky.hpp
 	%4%// BEGIN MEMBER VARIABLES%// END MEMBER VARIABLES%1%$$
 
-$childtable%src/eigen/sparse_ad_cholesky.cpp
-	%example/private/sparse_ad_chol_eval.cpp
-	%example/private/sparse_ad_chol_perm.cpp
-	%example/private/sparse_ad_chol_eq.cpp
-	%example/private/sparse_ad_chol_var.cpp
-	%example/private/sparse_ad_chol_sp.cpp
+$childtable%cholesky/sparse_ad_cholesky.cpp
+	%cholesky/example/sparse_ad_chol_eval.cpp
+	%cholesky/example/sparse_ad_chol_perm.cpp
+	%cholesky/example/sparse_ad_chol_eq.cpp
+	%cholesky/example/sparse_ad_chol_var.cpp
+	%cholesky/example/sparse_ad_chol_sp1.cpp
+	%cholesky/example/sparse_ad_chol_sp2.cpp
 %$$
 
 $end
