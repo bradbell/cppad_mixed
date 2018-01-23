@@ -22,11 +22,8 @@ new.*/
 # vim swap files
 *.swp
 #
-# log files (stdout for certain programs)
+# log files
 *.log
-#
-# error files (stderr for certain programs)
-*.err
 #
 # temporary file for many purposes
 junk
