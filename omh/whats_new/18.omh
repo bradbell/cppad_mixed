@@ -29,6 +29,11 @@ $childtable%
 	omh/whats_new/15.omh
 %$$
 
+$head 01-23$$
+The was a mistake in the removal of $icode use_atomic_cholesky$$;
+see 01-21 below.
+This has been fixed.
+
 $head 01-22$$
 Improve the instructions for combining both
 $cref/debug and release/run_cmake.sh/Debug and Release/$$

@@ -38,6 +38,16 @@ echo_eval() {
 	eval $*
 }
 # -----------------------------------------------------------------------------
+# cppad_prefix
+cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
+eval $cmd
+#
+installed_include_dir="$cppad_prefix/include/cppad/mixed"
+if [ -e "$installed_include_dir" ]
+then
+	echo_eval rm -rf $installed_include_dir
+fi
+# -----------------------------------------------------------------------------
 # run bin/check_*.sh
 list=`ls bin/check_*.sh`
 for script in $list
