@@ -265,6 +265,14 @@ It must hold for each $icode j$$ that
 $codei%
 	%fixed_lower%[%j%] <= %fixed_scale%[%j%] <= %fixed_upper%[%j%]
 %$$
+The derivative of the objective and constraints at this value for the
+fixed effects are used to scale the objective and constraint functions.
+Note that component for which
+$codei%
+	%fixed_lower%[%j%] == %fixed_upper%[%j%]
+%$$
+are excluded from this scaling.
+
 
 $head fixed_in$$
 This vector has length equal to $icode n_fixed_$$ and
@@ -2155,6 +2163,8 @@ $codei%
 and its input value does not matter.
 If $icode ok$$ is true, upon return $icode scale_f_$$
 is a scale factor of $latex f(x)$$; i.e., multiplier for f.
+Components of $latex x$$ for which the lower and upper limits are equal
+are not included in the scaling of $latex f(x)$$.
 
 $head scale_g_$$
 This member variable has prototype
@@ -2166,6 +2176,8 @@ If $icode ok$$ is true, upon return $icode scale_g_$$
 has size equal to range for $latex g(x)$$; i.e., $icode m$$.
 For each $latex i$$, $icode%scale_g_%[%i%]%$$ is scale factor for
 $latex g_i (x)$$.
+Components of $latex x$$ for which the lower and upper limits are equal
+are not included in the scaling of $latex f(x)$$.
 
 
 $head Prototype$$
@@ -2185,14 +2197,15 @@ $end
 	double infinity = std::numeric_limits<double>::infinity();
 	// -----------------------------------------------------------------------
 	// Scaling is identity mapping during this routine
-	// (set to final value just before returning)
+	// and set to to its final value just before returning.
 	assert( scale_g_.size() == 0 );
 	scale_f_ = 1.0;
 	scale_g_.resize(m);
 	for(size_t i = 0; i < m; i++)
 		scale_g_[i] = 1.0;
 	// -----------------------------------------------------------------------
-	// x_scale and x
+	// Set x_scale to fixed effects scaling values plus corresponding
+	// value of auxillary variables
 	d_vector x_scale(n);
 	Number*  x = x_scale.data();
 	//
@@ -2211,7 +2224,7 @@ $end
 	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
 		x_scale[n_fixed_ + j] = std::fabs( fix_likelihood_vec_tmp_[1 + j] );
 	// ------------------------------------------------------------------------
-	// eval_grad_f
+	// eval_grad_f at x_scale
 	d_vector grad_f(n);
 	bool new_x    = true;
 	bool ok       = eval_grad_f( Index(n), x, new_x, grad_f.data() );
@@ -2220,7 +2233,7 @@ $end
 		return false;
 	}
 	// ------------------------------------------------------------------------
-	// eval_jac_g
+	// eval_jac_g at x_scale
 	//
 	// get iRow and jCol for eval_jac_g
 	CppAD::vector<Index> iRow(nnz_jac_g_), jCol(nnz_jac_g_);
@@ -2244,6 +2257,19 @@ $end
 		return false;
 	}
 	// ------------------------------------------------------------------------
+	// set x_lower, x_upper, g_lower, g_upper
+	d_vector x_lower(n), x_upper(n), g_lower(m), g_upper(m);
+	ok = get_bounds_info(
+		Index(n),
+		x_lower.data(),
+		x_upper.data(),
+		Index(m),
+		g_lower.data(),
+		g_upper.data()
+	);
+	assert( ok );
+	// ------------------------------------------------------------------------
+	// compute scale_f and scale_g at x_scale
 	double scale_max = 1e+14;
 	double scale_min = 1.0 / scale_max;
 	//
@@ -2253,13 +2279,15 @@ $end
 		max_jac_g[i] = scale_min;
 	for(size_t k = 0; k < nnz_jac_g_; k++)
 	{	size_t i = iRow[k];
-		max_jac_g[i] = std::max( max_jac_g[i], std::fabs( jac_g[k] ) );
+		size_t j = jCol[k];
+		if( x_lower[j] < x_upper[j] )
+			max_jac_g[i] = std::max( max_jac_g[i], std::fabs( jac_g[k] ) );
 	}
 	//
 	// max_grad_f
 	double max_grad_f = scale_min;
 	// fixed effect terms
-	for(size_t j = 0; j < n_fixed_; j++)
+	for(size_t j = 0; j < n_fixed_; j++) if( x_lower[j] < x_upper[j] )
 		max_grad_f = std::max( max_grad_f, std::fabs( grad_f[j] ) );
 	// skip axuillary variable terms (gradients are one)
 # ifndef NDEBUG
@@ -2297,19 +2325,10 @@ $end
 		return true;
 	}
 	// ------------------------------------------------------------------------
-	// get lower and upper bounds
-	d_vector x_lower(n), x_upper(n), g_lower(m), g_upper(m);
-	ok = get_bounds_info(
-		Index(n),
-		x_lower.data(),
-		x_upper.data(),
-		Index(m),
-		g_lower.data(),
-		g_upper.data()
-	);
-	assert( ok );
-
-	// eval_f
+	// Test the derivatvie
+	// ------------------------------------------------------------------------
+	//
+	// set obj_value to eval_f at x_scale
 	double obj_value;
 	new_x = false;
 	ok = eval_f(Index(n), x, new_x, obj_value);
@@ -2317,8 +2336,8 @@ $end
 	{	assert( error_message_ != "" );
 		return false;
 	}
-
-	// eval_g
+	//
+	// set con_value to eval_g at x_scale
 	d_vector con_value(m);
 	new_x = false;
 	ok = eval_g(Index(n), x, new_x, Index(m), con_value.data() );
@@ -2326,7 +2345,6 @@ $end
 	{	assert( error_message_ != "" );
 		return false;
 	}
-
 	// log of maximum and minimum relative step to try
 	double log_max_rel = std::log(1e-3);
 	double log_min_rel = std::log(1e-10);

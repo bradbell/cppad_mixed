@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -176,6 +176,11 @@ It must hold for each $icode j$$ that
 $codei%
 	%fixed_lower%[%j%] <= %fixed_scale%[%j%] <= %fixed_upper%[%j%]
 %$$
+Components of the fixed effects for which
+$codei%
+	%fixed_lower%[%j%] == %fixed_upper%[%j%]
+%$$
+Are not included in this scaling.
 Note that you can continue an optimization with the same scaling
 by setting
 $codei%

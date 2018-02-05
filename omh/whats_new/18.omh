@@ -29,6 +29,17 @@ $childtable%
 	omh/whats_new/15.omh
 %$$
 
+$head 02-05$$
+$list number$$
+The scaling of the fixed effects optimization has been
+changed to not include components of the fixed effects for which
+the lower and upper limits are equal; see
+$cref/fixed_scale/optimize_fixed/fixed_scale/$$.
+$lnext
+Reduce the changes of a random failure (false negative result)
+during the testing of $cref lasso.cpp$$.
+$lend
+
 $head 01-23$$
 There was a mistake in the removal of $icode use_atomic_cholesky$$;
 see 01-21 below.  This has been fixed.

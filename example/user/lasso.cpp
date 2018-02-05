@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -131,20 +131,20 @@ namespace {
 
 			// Data terms p(z|theta)
 			for(size_t i = 0; i < N; i++)
-			{	a1_double q_i   = fixed_vec[0] * t_[i] / double(N);
-			    q_i        += fixed_vec[1] * sin( 2.0 * pi * t_[i] );
-			    q_i        += fixed_vec[2] * cos( 2.0 * pi * t_[i] );
-				a1_double res   = z_[i] - q_i;
-				res        /= a1_double( sigma_ );
-				vec[0]     += res * res / 2.0;
+			{	a1_double q_i   = 0.0;
+				q_i += fixed_vec[0] * t_[i] / double(N);
+			    q_i += fixed_vec[1] * sin( 2.0 * pi * t_[i] );
+			    q_i += fixed_vec[2] * cos( 2.0 * pi * t_[i] );
+				a1_double res  = ( z_[i] - q_i ) / sigma_;
+				vec[0] += res * res / 2.0;
 				// following term does not depend on the fixed effects
-				// vec[0]     += log(sigma_ * sqrt_2pi);
+				// vec[0] += log(sigma_ * sqrt_2pi);
 			}
 
 			// Prior terms p(theta)
 			for(size_t j = 0; j < n_fixed_; j++)
 			{	// following term does not depend on the fixed effects
-				// vec[0]    += log( delta_ * sqrt_2 );
+				// vec[0] += log( delta_ * sqrt_2 );
 				vec[1 + j] = sqrt_2 * fixed_vec[j] / delta_;
 			}
 			return vec;
@@ -179,7 +179,7 @@ bool lasso_xam(void)
 	// no constriants
 	d_vector fix_constraint_lower(0), fix_constraint_upper(0);
 	//
-	size_t n_data = 100;
+	size_t n_data = 50;
 	double sigma  = 0.1;
 	double pi     = 4.0 * std::atan(1.0);
 	d_vector z(n_data), t(n_data);
@@ -236,7 +236,7 @@ bool lasso_xam(void)
 	//
 	// non-zero coefficient has shrunk (due to prior)
 	ok &= fixed_out[1] < 1.0;
-	ok &= 0.75 < fixed_out[1];
+	ok &= 0.5 < fixed_out[1];
 	//
 	if( ! ok )
 		std::cout << "\nfixed_out = " << fixed_out << "\n";

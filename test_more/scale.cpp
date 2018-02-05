@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -48,7 +48,7 @@ namespace {
 			Vector vec(1);
 			vec[0] = scalar(0.0);
 
-			for(size_t j = 0; j < n_fixed_; j++)
+			for(size_t j = 0; j < n_fixed_ - 1; j++)
 			{	// case where partial w.r.t. theta_j does not exist
 				// when theta_j == z_j
 				scalar sum_var;
@@ -62,6 +62,9 @@ namespace {
 				scalar res = sum_var - sum_data;
 				vec[0] += 1e+12 * res * res / 2.0;
 			}
+			scalar res = z_[n_fixed_- 1] - fixed_vec[n_fixed_ - 1];
+			vec[0]    += 1e+20 * res * res / 2.0;
+			//
 			return vec;
 		}
 		// a1_vector version of fix_likelihood
@@ -91,6 +94,8 @@ bool scale(void)
 		fixed_in[j]    = 0.0;
 		fixed_upper[j] = inf;
 	}
+	fixed_lower[n_fixed - 1] = 0.0;
+	fixed_upper[n_fixed - 1] = 0.0;
 	//
 	// no random effects
 	size_t n_random = 0;
@@ -143,11 +148,13 @@ bool scale(void)
 	);
 	vector<double> fixed_out = solution.fixed_opt;
 	//
-	for(size_t j = 0; j < n_fixed; j++)
+	for(size_t j = 0; j < n_fixed - 1; j++)
 	{	double err = fabs( fixed_out[j] / z[j] - 1.0 );
 		ok &= err <= 5. * tol;
 	}
-
+	//
+	ok &= fixed_out[n_fixed - 1] == 0.0;
+	//
 	return ok;
 }
 // END C++
