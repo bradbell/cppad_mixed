@@ -301,6 +301,17 @@ It must hold for each
 <code><font color="blue"><span style='white-space: nowrap'><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_scale</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
 </span></font></code>
+The derivative of the objective and constraints at this value for the
+fixed effects are used to scale the objective and constraint functions.
+Note that component for which
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+</span></font></code>
+are excluded from this scaling.
+
+
+<br>
 <br>
 <b><big><a name="fixed_in" id="fixed_in">fixed_in</a></big></b>
 <br>

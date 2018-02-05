@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2018</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2018">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2018 01-23 01-22 01-21 01-15 01-14 ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2018 02-05 01-23 01-22 01-21 01-15 01-14 ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -75,6 +75,7 @@ A:active { color : purple }
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
 <option>Contents</option>
+<option>02-05</option>
 <option>01-23</option>
 <option>01-22</option>
 <option>01-21</option>
@@ -91,6 +92,24 @@ A:active { color : purple }
 <br>
 <table>
 <tr><td><a href="whats_new_17.htm" target="_top">whats_new_17</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2017</td></tr><tr><td><a href="whats_new_16.htm" target="_top">whats_new_16</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2016</td></tr><tr><td><a href="whats_new_15.htm" target="_top">whats_new_15</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2015</td></tr></table><br>
+<b><big><a name="02-05" id="02-05">02-05</a></big></b>
+
+<ol type="1"><li>
+The scaling of the fixed effects optimization has been
+changed to not include components of the fixed effects for which
+the lower and upper limits are equal; see
+<a href="optimize_fixed.htm#fixed_scale" target="_top"><span style='white-space: nowrap'>fixed_scale</span></a>
+.
+</li><li>
+
+Reduce the changes of a random failure (false negative result)
+during the testing of <a href="lasso.cpp.htm" target="_top"><span style='white-space: nowrap'>lasso.cpp</span></a>
+.
+</li></ol>
+
+
+<br>
+<br>
 <b><big><a name="01-23" id="01-23">01-23</a></big></b>
 <br>
 There was a mistake in the removal of 
