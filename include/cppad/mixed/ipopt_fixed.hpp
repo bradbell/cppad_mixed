@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -131,8 +131,8 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// scale factor for components of g(x)
 		d_vector scale_g_;
 		//
-		// maps jac_g sparsity index to row index in g'(x).
-		s_vector jac_g_row_;
+		// maps jac_g sparsity index to row and column index in g'(x).
+		s_vector jac_g_row_, jac_g_col_;
 		// ---------------------------------------------------------------
 		// temporaries (size set by constructor only)
 		d_vector        fixed_tmp_;         // size n_fixed_

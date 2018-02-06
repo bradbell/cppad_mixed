@@ -1402,11 +1402,6 @@ void ipopt_fixed::try_eval_jac_g(
 		}
 		assert( ell == nnz_jac_g_ );
 		//
-		// jac_g_row_
-		if( jac_g_row_.size() == 0 )
-			jac_g_row_.resize( size_t(nnz_jac_g_) );
-		for(ell = 0; ell < jac_g_row_.size(); ell++)
-			jac_g_row_[ell] = size_t( iRow[ell] );
 		return;
 	}
 	assert( jac_g_row_.size() == size_t(nnz_jac_g_) );
@@ -2158,7 +2153,7 @@ before any other $code ipopt_fixed$$ routine is called.
 $head scale_f_$$
 This member variable has prototype
 $codei%
-	double& scale_f_
+	double scale_f_
 %$$
 and its input value does not matter.
 If $icode ok$$ is true, upon return $icode scale_f_$$
@@ -2169,7 +2164,7 @@ are not included in the scaling of $latex f(x)$$.
 $head scale_g_$$
 This member variable has prototype
 $codei%
-	d_vector& scale_g_
+	d_vector scale_g_
 %$$
 and its input size is zero.
 If $icode ok$$ is true, upon return $icode scale_g_$$
@@ -2178,6 +2173,16 @@ For each $latex i$$, $icode%scale_g_%[%i%]%$$ is scale factor for
 $latex g_i (x)$$.
 Components of $latex x$$ for which the lower and upper limits are equal
 are not included in the scaling of $latex f(x)$$.
+
+$head jac_g_row_, jac_g_col_$$
+These member variables have prototype
+$codei%
+	s_vector jac_g_row_, jac_g_col_
+%$$
+This input size for these vectors must be zero.
+Upon return these vectors
+map return index for $code eval_jac_g$$ values vector
+to row and column index in $latex g'(x)$$.
 
 
 $head Prototype$$
@@ -2191,12 +2196,29 @@ $end
 	adaptive_called_ = true;
 	//
 	using std::fabs;
-	size_t n        = n_fixed_ + fix_likelihood_nabs_;
-	size_t m        = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
-	double root_eps = std::sqrt( std::numeric_limits<double>::epsilon() );
-	double infinity = std::numeric_limits<double>::infinity();
+	// ---------------------------------------------------------------------
+	// some constants
+	// ---------------------------------------------------------------------
+	// number of components in x
+	const size_t n  = n_fixed_ + fix_likelihood_nabs_;
+	// number of components if g
+	const size_t m  = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
+	// square root of maching epsilon
+	const double root_eps  = std::sqrt(std::numeric_limits<double>::epsilon());
+	// infinity
+	const double infinity  = std::numeric_limits<double>::infinity();
+	// maximum scaling factor
+	const double scale_max = 1e+14;
+	// minimum scaling factor
+	double scale_min       = 1.0 / scale_max;
+	// log of maximum relatives steps size in finite differences
+	double log_max_rel_step = std::log(1e-3);
+	// log of minimum relative steps size in finite differences
+	double log_min_rel_step = std::log(1e-10);
+	// number of finite difference steps to try
+	size_t n_try = 5;
 	// -----------------------------------------------------------------------
-	// Scaling is identity mapping during this routine
+	// Set scale_f_, scale_g_, to identity mapping during this routine
 	// and set to to its final value just before returning.
 	assert( scale_g_.size() == 0 );
 	scale_f_ = 1.0;
@@ -2204,8 +2226,7 @@ $end
 	for(size_t i = 0; i < m; i++)
 		scale_g_[i] = 1.0;
 	// -----------------------------------------------------------------------
-	// Set x_scale to fixed effects scaling values plus corresponding
-	// value of auxillary variables
+	// Set x = x_scale
 	d_vector x_scale(n);
 	Number*  x = x_scale.data();
 	//
@@ -2224,42 +2245,67 @@ $end
 	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
 		x_scale[n_fixed_ + j] = std::fabs( fix_likelihood_vec_tmp_[1 + j] );
 	// ------------------------------------------------------------------------
-	// eval_grad_f at x_scale
+	// Set new_x, grad_f
 	d_vector grad_f(n);
-	bool new_x    = true;
-	bool ok       = eval_grad_f( Index(n), x, new_x, grad_f.data() );
-	if( ! ok )
-	{	assert( error_message_ != "" );
-		return false;
+	{	bool new_x    = true;
+		bool ok       = eval_grad_f( Index(n), x, new_x, grad_f.data() );
+		if( ! ok )
+		{	assert( error_message_ != "" );
+			return false;
+		}
 	}
 	// ------------------------------------------------------------------------
-	// eval_jac_g at x_scale
-	//
-	// get iRow and jCol for eval_jac_g
-	CppAD::vector<Index> iRow(nnz_jac_g_), jCol(nnz_jac_g_);
-	new_x          = false;
-	Index nele_jac = Index( nnz_jac_g_ );
-	ok = eval_jac_g(
-		Index(n), x, new_x, Index(m), nele_jac, iRow.data(), jCol.data(), NULL
-	);
-	if( ! ok )
-	{	assert( error_message_ != "" );
-		return false;
-	}
-	// eval_jac_g
+	// Set jac_g, jac_g_row_, jac_g_col_
 	d_vector jac_g(nnz_jac_g_);
-	new_x           = false;
-	nele_jac        = Index( nnz_jac_g_ );
-	Number* values  = jac_g.data();
-	ok = eval_jac_g(Index(n), x, new_x, Index(m), nele_jac, NULL, NULL, values);
-	if( ! ok )
-	{	assert( error_message_ != "" );
-		return false;
+	{
+		// get iRow and jCol for eval_jac_g
+		CppAD::vector<Index> iRow(nnz_jac_g_), jCol(nnz_jac_g_);
+		bool new_x     = false;
+		Index nele_jac = Index( nnz_jac_g_ );
+		bool ok = eval_jac_g(
+			Index(n),
+			x,
+			new_x,
+			Index(m),
+			nele_jac,
+			iRow.data(),
+			jCol.data(),
+			NULL
+		);
+		if( ! ok )
+		{	assert( error_message_ != "" );
+			return false;
+		}
+		assert( jac_g_row_.size() == 0 && jac_g_col_.size() == 0 );
+		jac_g_row_.resize(nnz_jac_g_);
+		jac_g_col_.resize(nnz_jac_g_);
+		for(size_t k = 0; k < nnz_jac_g_; k++)
+		{	jac_g_row_[k] = size_t( iRow[k] );
+			jac_g_col_[k] = size_t( jCol[k] );
+		}
+		// eval_jac_g
+		new_x           = false;
+		nele_jac        = Index( nnz_jac_g_ );
+		Number* values  = jac_g.data();
+		ok = eval_jac_g(
+			Index(n),
+			x,
+			new_x,
+			Index(m),
+			nele_jac,
+			NULL,
+			NULL,
+			values
+		);
+		if( ! ok )
+		{	assert( error_message_ != "" );
+			return false;
+		}
 	}
 	// ------------------------------------------------------------------------
 	// set x_lower, x_upper, g_lower, g_upper
 	d_vector x_lower(n), x_upper(n), g_lower(m), g_upper(m);
-	ok = get_bounds_info(
+	bool ok = get_bounds_info(
 		Index(n),
 		x_lower.data(),
 		x_upper.data(),
@@ -2269,26 +2315,26 @@ $end
 	);
 	assert( ok );
 	// ------------------------------------------------------------------------
-	// compute scale_f and scale_g at x_scale
-	double scale_max = 1e+14;
-	double scale_min = 1.0 / scale_max;
-	//
-	// max_jac_g
+	// max_jac_g : maximum absolute partial for each component of g
 	d_vector max_jac_g(m);
 	for(size_t i = 0; i < m; i++)
 		max_jac_g[i] = scale_min;
 	for(size_t k = 0; k < nnz_jac_g_; k++)
-	{	size_t i = iRow[k];
-		size_t j = jCol[k];
+	{	size_t i = jac_g_row_[k];
+		size_t j = jac_g_col_[k];
 		if( x_lower[j] < x_upper[j] )
 			max_jac_g[i] = std::max( max_jac_g[i], std::fabs( jac_g[k] ) );
 	}
-	//
-	// max_grad_f
+	// -----------------------------------------------------------------------
+	// max_grad_f : maximum absolute partial for objective.
+	// Skip absolute value partials in f, which are one, but
+	// include the corresponding partials in g
 	double max_grad_f = scale_min;
+	//
 	// fixed effect terms
 	for(size_t j = 0; j < n_fixed_; j++) if( x_lower[j] < x_upper[j] )
 		max_grad_f = std::max( max_grad_f, std::fabs( grad_f[j] ) );
+	//
 	// skip axuillary variable terms (gradients are one)
 # ifndef NDEBUG
 	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
@@ -2299,11 +2345,11 @@ $end
 	{	assert( max_jac_g[2*i] == max_jac_g[2*i+1] );
 		max_grad_f = std::max( max_grad_f, std::fabs( max_jac_g[2*i] ) );
 	}
-	//
+	// -----------------------------------------------------------------------
 	// scale_f
 	double scale_f = std::max( scale_min, 1.0 / max_grad_f);
 	scale_f        = std::min( scale_max, scale_f);
-	//
+	// ----------------------------------------------------------------------
 	// scale_g
 	d_vector scale_g(m);
 	for(size_t i = 0; i < m; i++)
@@ -2314,50 +2360,45 @@ $end
 			scale_g[i] = std::min( scale_max, scale_g[i] );
 		}
 	}
-	//
-	// std::cout << "\nscale_f = " << scale_f;
-	// std::cout << "\nscale_g = " << scale_g << "\n";
-	//
-	// check if there is no need to compute finite differences
+	// ----------------------------------------------------------------------
+	// If no need to compute finite differences, set scaling and return
 	if( (! trace) && relative_tol == infinity )
-	{	scale_f_       = scale_f;
+	{
+		scale_f_       = scale_f;
 		scale_g_       = scale_g;
 		return true;
 	}
 	// ------------------------------------------------------------------------
 	// Test the derivatvie
 	// ------------------------------------------------------------------------
-	//
-	// set obj_value to eval_f at x_scale
+	// set obj_value = f(x)
 	double obj_value;
-	new_x = false;
-	ok = eval_f(Index(n), x, new_x, obj_value);
-	if( ! ok )
-	{	assert( error_message_ != "" );
-		return false;
+	{
+		bool new_x = false;
+		ok = eval_f(Index(n), x, new_x, obj_value);
+		if( ! ok )
+		{	assert( error_message_ != "" );
+			return false;
+		}
 	}
 	//
-	// set con_value to eval_g at x_scale
+	// set con_value = g(x)
 	d_vector con_value(m);
-	new_x = false;
-	ok = eval_g(Index(n), x, new_x, Index(m), con_value.data() );
-	if( ! ok )
-	{	assert( error_message_ != "" );
-		return false;
+	{
+		bool new_x = false;
+		ok = eval_g(Index(n), x, new_x, Index(m), con_value.data() );
+		if( ! ok )
+		{	assert( error_message_ != "" );
+			return false;
+		}
 	}
-	// log of maximum and minimum relative step to try
-	double log_max_rel = std::log(1e-3);
-	double log_min_rel = std::log(1e-10);
-	//
-	// number of relative steps to try
-	size_t n_try = 5;
 	//
 	// difference of log of relative step between trys
-	double log_diff = (log_max_rel - log_min_rel) / double(n_try - 1);
-
-	// initialize x_step
-	d_vector x_step(x_scale);
+	double log_diff = (log_max_rel_step - log_min_rel_step) / double(n_try-1);
 	//
+	// initialize x_step = x_scale
+	d_vector x_step(x_scale);
+	// ------------------------------------------------------------------------
 	// check grad_f
 	size_t line_count = 0;
 	for(size_t j = 0; j < n; j++) if( x_lower[j] < x_upper[j] )
@@ -2369,7 +2410,7 @@ $end
 		// loop over relative step sizes
 		size_t i_try           = 0;
 		while( i_try < n_try && best_err > relative_tol )
-		{	double log_next      = log_min_rel + log_diff * double(i_try);
+		{	double log_next      = log_min_rel_step + log_diff * double(i_try);
 			double relative_step = std::exp(log_next);
 			//
 			// step size
@@ -2384,7 +2425,7 @@ $end
 			double obj_plus;
 			double x_plus = std::min(x_scale[j] + step, x_upper[j]);
 			x_step[j]     = x_plus;
-			new_x         = true;
+			bool new_x    = true;
 			ok = eval_f(Index(n), x_step.data(), new_x, obj_plus);
 			if( ! ok )
 			{	assert( error_message_ != "" );
@@ -2457,7 +2498,7 @@ $end
 		// ok
 		ok &= ok && best_err <= relative_tol;
 	}
-	//
+	// ------------------------------------------------------------------------
 	// check jac_g
 	line_count = 0;
 	for(size_t j = 0; j < n; j++) if( x_lower[j] < x_upper[j] )
@@ -2475,7 +2516,7 @@ $end
 		// loop over relative step sizes
 		size_t i_try           = 0;
 		while( i_try < n_try && max_best_err > relative_tol )
-		{	double log_next      = log_min_rel + log_diff * double(i_try);
+		{	double log_next      = log_min_rel_step + log_diff * double(i_try);
 			double relative_step = std::exp(log_next);
 			//
 			// step size
@@ -2490,7 +2531,7 @@ $end
 			d_vector con_plus(m);
 			double x_plus = std::min(x_scale[j] + step, x_upper[j]);
 			x_step[j]     = x_plus;
-			new_x         = true;
+			bool new_x    = true;
 			ok = eval_g(
 				Index(n), x_step.data(), new_x, Index(m), con_plus.data()
 			);
@@ -2513,11 +2554,11 @@ $end
 			// restore j-th component of x_step
 			x_step[j]      = x_scale[j];
 
-			// 2DO: this loop in k is inefficent (could sort by jCol)
+			// 2DO: this loop in k is inefficent (could sort by jac_g_col_)
 			max_best_err = 0.0;
 			for(size_t i = 0; i < m; i++)
 			for(size_t k = 0; k < nnz_jac_g_; k++)
-			if( size_t( iRow[k]) == i && size_t( jCol[k] ) == j )
+			if( size_t( jac_g_row_[k]) == i && size_t( jac_g_col_[k] ) == j )
 			{	// found an entry for this (i, j) pair
 				found[i] = true;
 				jac[i]   = jac_g[k];
@@ -2581,6 +2622,7 @@ $end
 		// ok
 		ok &= ok && max_best_err <= relative_tol;
 	}
+	// Set scaling
 	scale_f_       = scale_f;
 	scale_g_       = scale_g;
 	return ok;
