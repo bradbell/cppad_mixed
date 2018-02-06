@@ -2393,6 +2393,33 @@ $end
 		}
 	}
 	//
+	// set hes_value = Hessian of obj_factor * f(x) + sum lambda_i * g_i (x)
+	d_vector hes_value( nnz_h_lag_ );
+	Number   obj_factor = 2.0;
+	d_vector lambda(m);
+	for(size_t i = 0; i < m; i++)
+		lambda[i] = double(i + 1 + m) / double(m);
+	if( mixed_object_.quasi_fixed_ == false )
+	{	bool new_x      = false;
+		bool new_lambda = true;
+		Index nele_hes  = Index(nnz_h_lag_);
+		Index*  iRow    = NULL;
+		Index*  jCol    = NULL;
+		ok = eval_h(
+			Index(n),
+			x,
+			new_x,
+			obj_factor,
+			Index(m),
+			lambda.data(),
+			new_lambda,
+			nele_hes,
+			iRow,
+			jCol,
+			hes_value.data()
+		);
+	}
+	//
 	// difference of log of relative step between trys
 	double log_diff = (log_max_rel_step - log_min_rel_step) / double(n_try-1);
 	//
