@@ -2203,8 +2203,6 @@ $end
 	const size_t n  = n_fixed_ + fix_likelihood_nabs_;
 	// number of components if g
 	const size_t m  = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
-	// square root of maching epsilon
-	const double root_eps  = std::sqrt(std::numeric_limits<double>::epsilon());
 	// infinity
 	const double infinity  = std::numeric_limits<double>::infinity();
 	// maximum scaling factor
@@ -2481,8 +2479,7 @@ $end
 
 			// relative difference
 			double diff           = grad_f[j] - approx;
-			double denominator    = fabs(grad_f[j]);
-			denominator          += root_eps * fabs(abs_obj);
+			double denominator    = fabs(grad_f[j]) + fabs(approx);
 			if( denominator == 0.0 )
 				denominator = 1.0;
 			double relative_err  = fabs(diff) / denominator;
@@ -2527,21 +2524,25 @@ $end
 	}
 	// ------------------------------------------------------------------------
 	// check jac_g
-	line_count = 0;
+	line_count              = 0;
+	double max_best_err_all = 0.0;
 	for(size_t j = 0; j < n; j++) if( x_lower[j] < x_upper[j] )
-	{	d_vector abs_con(m), best_err(m), best_step(m), best_approx(m), jac(m);
-		CppAD::vector<bool> found(m);
+	{	d_vector best_err(m), best_step(m), best_approx(m), jac(m);
 		for(size_t i = 0; i < m; i++)
-		{	abs_con[i]      = fabs(con_value[i]);
-			best_err[i]     = infinity;
+		{	best_err[i]     = infinity;
 			best_step[i]    = infinity;
 			best_approx[i]  = infinity;
-			found[i]        = false;
+			jac[i]          = 0.0;
 		}
-		double max_best_err  = infinity;
+		// value of this coluimn of the jacobian
+		for(size_t k = 0; k < nnz_jac_g_; k++) if( jac_g_col_[k] == j )
+		{	size_t i = jac_g_row_[k];
+			jac[i]   = jac_g[k];
+		}
 		//
 		// loop over relative step sizes
-		size_t i_try           = 0;
+		size_t i_try        = 0;
+		double max_best_err = infinity;
 		while( i_try < n_try && max_best_err > relative_tol )
 		{	double log_next      = log_min_rel_step + log_diff * double(i_try);
 			double relative_step = std::exp(log_next);
@@ -2578,29 +2579,22 @@ $end
 			{	assert( error_message_ != "" );
 				return false;
 			}
-			// restore j-th component of x_step
-			x_step[j]      = x_scale[j];
 
-			// 2DO: this loop in k is inefficent (could sort by jac_g_col_)
+			// actual step size
+			step = x_plus - x_minus;
+
+			// restore j-th component of x_step
+			x_step[j]  = x_scale[j];
+
 			max_best_err = 0.0;
 			for(size_t i = 0; i < m; i++)
-			for(size_t k = 0; k < nnz_jac_g_; k++)
-			if( size_t( jac_g_row_[k]) == i && size_t( jac_g_col_[k] ) == j )
-			{	// found an entry for this (i, j) pair
-				found[i] = true;
-				jac[i]   = jac_g[k];
-				//
-				// scale for i-th constraint
-				abs_con[i] = std::max(abs_con[i], fabs(con_plus[i]) );
-				abs_con[i] = std::max(abs_con[i], fabs(con_minus[i]) );
-
+			{
 				// finite difference approximation for derivative
-				double approx = (con_plus[i]-con_minus[i])/(x_plus-x_minus);
+				double approx = (con_plus[i] - con_minus[i])/ step;
 
 				// relative difference
 				double diff           = jac[i] - approx;
-				double denominator    = fabs(jac[i]);
-				denominator          += root_eps * fabs(abs_con[i]);
+				double denominator    = fabs(jac[i]) + fabs(approx);
 				if( denominator == 0.0 )
 					denominator = 1.0;
 				double relative_err  = fabs(diff) / denominator;
@@ -2617,7 +2611,8 @@ $end
 			// next try
 			++i_try;
 		}
-		for(size_t i = 0; i < m; i++) if( found[i] )
+		max_best_err_all = std::max(max_best_err_all, max_best_err);
+		for(size_t i = 0; i < m; i++)
 		{	// trace
 			bool trace_ij = trace || best_err[i] > relative_tol;
 			if( trace_ij )
@@ -2647,8 +2642,170 @@ $end
 		}
 		//
 		// ok
-		ok &= ok && max_best_err <= relative_tol;
+		ok &= ok && max_best_err_all <= relative_tol;
 	}
+/*
+	// ------------------------------------------------------------------------
+	// check hes_value
+	line_count       = 0;
+	max_best_err_all = 0.0;
+	for(size_t j2 = 0; j2 < n; j2++) if( x_lower[j2] < x_upper[j2] )
+	{
+		d_vector best_err(n), best_step(n), best_approx(n), hess(n);
+		for(size_t j1 = 0; j1 < n; j1++)
+		{	best_err[j1]    = infinity;
+			best_step[j1]   = infinity;
+			best_approx[j1] = infinity;
+			hess[j1]        = 0.0;
+		}
+		// value of this column of the hessian
+		for(size_t k = 0; k < nnz_h_lag_; k++)
+		if( lag_hes_col_[k] == j2 )
+		{	size_t j1 = lag_hes_row_[k];
+			hess[j1]  = hes_value[k];
+		}
+
+		//
+		// loop over relative step sizes
+		size_t i_try        = 0;
+		double max_best_err = infinity;
+		while( i_try < n_try && max_best_err > relative_tol )
+		{	double log_next      = log_min_rel_step + log_diff * double(i_try);
+			double relative_step = std::exp(log_next);
+			//
+			// step size
+			double step = relative_step * ( x_upper[j2] - x_lower[j2] );
+			if( x_upper[j2] == nlp_upper_bound_inf_ ||
+				x_lower[j2] == nlp_lower_bound_inf_  )
+			{	step = relative_step * fabs( x_scale[j2] );
+				step = std::max( step, relative_step );
+			}
+
+			// x_plus, grad_f_plus, jac_g_plus
+			d_vector grad_f_plus(n);
+			d_vector jac_g_plus(nnz_jac_g_);
+			double x_plus = std::min(x_scale[j2] + step, x_upper[j2]);
+			x_step[j2]    = x_plus;
+			bool new_x    = true;
+			Index* iRow   = NULL;
+			Index* jCol   = NULL;
+			ok  = eval_grad_f(
+				Index(n), x_step.data(), new_x, grad_f_plus.data()
+			);
+			Index nele_jac = Index( nnz_jac_g_ );
+			ok &= eval_jac_g(
+				Index(n),
+				x_step.data(),
+				new_x,
+				Index(m),
+				nele_jac,
+				iRow,
+				jCol,
+				jac_g_plus.data()
+			);
+			if( ! ok )
+			{	assert( error_message_ != "" );
+				return false;
+			}
+
+			// x_minus, grad_f_minus, jac_g_minus
+			d_vector grad_f_minus(n);
+			d_vector jac_g_minus(nnz_jac_g_);
+			double x_minus = std::min(x_scale[j2] - step, x_upper[j2]);
+			x_step[j2]    = x_minus;
+			new_x         = true;
+			ok  = eval_grad_f(
+				Index(n), x_step.data(), new_x, grad_f_minus.data()
+			);
+			ok &= eval_jac_g(
+				Index(n),
+				x_step.data(),
+				new_x,
+				Index(m),
+				nele_jac,
+				iRow,
+				jCol,
+				jac_g_minus.data()
+			);
+			if( ! ok )
+			{	assert( error_message_ != "" );
+				return false;
+			}
+
+			// actual step size
+			step = x_plus - x_minus;
+
+			// restore j-th component of x_step
+			x_step[j2] = x_scale[j2];
+
+			// Initailize j-th column of Hessian with f contribution
+			d_vector approx(n);
+			for(size_t j1 = 0; j1 < n; j1++)
+			{	double d2f =(grad_f_plus[j1] - grad_f_minus[j1]) / step;
+				approx[j1] = obj_factor * d2f;
+			}
+			// add in contribution for g
+			for(size_t k = 0; k < nnz_jac_g_; k++)
+			{	size_t i    = jac_g_row_[k];
+				size_t j1   = jac_g_col_[k];
+				double d2g   = (jac_g_plus[k] - jac_g_minus[k])/ step;
+				approx[j1] += lambda[i] * d2g;
+			}
+			//
+			max_best_err  = 0.0;
+			for(size_t j1 = 0; j1 < n; j1++)
+			{	// relative difference
+				double diff           = hess[j1] - approx[j1];
+				double denominator    = fabs(hess[j1]) + fabs(approx[j1]);
+				if( denominator == 0.0 )
+					denominator = 1.0;
+				double relative_err  = fabs(diff) / denominator;
+
+				// best
+				if( relative_err < best_err[j1] )
+				{	best_err[j1]    = relative_err;
+					best_step[j1]   = step;
+					best_approx[j1] = approx[j1];
+				}
+				max_best_err = std::max(max_best_err, best_err[j1]);
+			}
+			//
+			// next try
+			++i_try;
+		}
+		max_best_err_all = std::max(max_best_err_all, max_best_err);
+		for(size_t j1 = 0; j1 < n; j1++)
+		{	// trace
+			bool trace_j1 = trace || best_err[j1] > relative_tol;
+			if( trace_j1 )
+			{	if( line_count % 20 == 0 )
+					std::cout << std::endl
+						<< std::right
+						<< std::setw(4)  << "j1"
+						<< std::setw(4)  << "j2"
+						<< std::setw(11) << "step"
+						<< std::setw(11) << "hess"
+						<< std::setw(11) << "apx"
+						<< std::setw(11) << "err"
+						<< std::endl;
+				std::cout
+					<< std::setprecision(4)
+					<< std::setw(4)  << j1
+					<< std::setw(4)  << j2
+					<< std::setw(11) << best_step[j1]
+					<< std::setw(11) << hess[j1]
+					<< std::setw(11) << best_approx[j1]
+					<< std::setw(11) << best_err[j1]
+					<< std::endl;
+				line_count++;
+			}
+		}
+		//
+		// ok
+		ok &= ok && max_best_err_all <= relative_tol;
+	}
+*/
+	// -----------------------------------------------------------------------
 	// Set scaling
 	scale_f_       = scale_f;
 	scale_g_       = scale_g;
