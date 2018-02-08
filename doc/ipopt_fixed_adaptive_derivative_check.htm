@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Adaptive Step Size check of eval_grad_f and eval_jac_g</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Adaptive Step Size check of eval_grad_f and eval_jac_g">
-<meta name="keywords" id="keywords" content=" adaptive step size check eval_grad_f eval_jac_g syntax trace relative_step relative_tol infinity ok error_message_ adaptive_called_ scale_f_ scale_g_ prototype ">
+<meta name="keywords" id="keywords" content=" adaptive step size check eval_grad_f eval_jac_g syntax trace relative_step relative_tol infinity ok error_message_ adaptive_called_ scale_f_ scale_g_ jac_g_row_ jac_g_col_ prototype ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -128,6 +128,7 @@ A:active { color : purple }
 <option>adaptive_called_</option>
 <option>scale_f_</option>
 <option>scale_g_</option>
+<option>jac_g_row_, jac_g_col_</option>
 <option>Prototype</option>
 </select>
 </td>
@@ -173,12 +174,10 @@ and the relative step times the absolute component of
 This is the relative tolerance for the difference between a finite difference
 approximation and the evaluated derivative.
 The absolute tolerance is the relative tolerance times the
-sum of the absolute value of the gradient plus
-the square root of machine epsilon times the absolute value of <small>@(@
-f(x)
-@)@</small>.
-Each component passes the tolerance test if it does so
-for one of the relative steps.
+sum of sum of the absolute value of the gradient and the approximation.
+In the case of the Hessian, for each column the absolute value of
+the diagonal element for that column is added to the sum before multiplying
+by the relative tolerance.
 
 <br>
 <br>
@@ -234,7 +233,7 @@ before any other <code><font color="blue">ipopt_fixed</font></code> routine is c
 This member variable has prototype
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double&amp;&nbsp;scale_f_<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double&nbsp;scale_f_<br>
 </span></font></code>
 and its input value does not matter.
 If 
@@ -259,7 +258,7 @@ f(x)
 This member variable has prototype
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_vector&amp;&nbsp;scale_g_<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_vector&nbsp;scale_g_<br>
 </span></font></code>
 and its input size is zero.
 If 
@@ -285,6 +284,22 @@ x
 @)@</small> for which the lower and upper limits are equal
 are not included in the scaling of <small>@(@
 f(x)
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="jac_g_row_, jac_g_col_" id="jac_g_row_, jac_g_col_">jac_g_row_, jac_g_col_</a></big></b>
+<br>
+These member variables have prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s_vector&nbsp;jac_g_row_,&nbsp;jac_g_col_<br>
+</span></font></code>
+This input size for these vectors must be zero.
+Upon return these vectors
+map return index for <code><font color="blue">eval_jac_g</font></code> values vector
+to row and column index in <small>@(@
+g'(x)
 @)@</small>.
 
 

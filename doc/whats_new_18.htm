@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2018</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2018">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2018 02-05 01-23 01-22 01-21 01-15 01-14 ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2018 02-08 02-07 02-05 01-23 01-22 01-21 01-15 01-14 ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -75,6 +75,8 @@ A:active { color : purple }
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
 <option>Contents</option>
+<option>02-08</option>
+<option>02-07</option>
 <option>02-05</option>
 <option>01-23</option>
 <option>01-22</option>
@@ -92,6 +94,45 @@ A:active { color : purple }
 <br>
 <table>
 <tr><td><a href="whats_new_17.htm" target="_top">whats_new_17</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2017</td></tr><tr><td><a href="whats_new_16.htm" target="_top">whats_new_16</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2016</td></tr><tr><td><a href="whats_new_15.htm" target="_top">whats_new_15</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2015</td></tr></table><br>
+<b><big><a name="02-08" id="02-08">02-08</a></big></b>
+<br>
+There was a bug in computing the second derivative of the objective when the
+<a href="fix_likelihood.htm" target="_top"><span style='white-space: nowrap'>fix_likelihood</span></a>
+ had absolute value terms in its
+<a href="cppad_mixed.htm#Negative Log-Density Vector" target="_top"><span style='white-space: nowrap'>negative&nbsp;log-density&nbsp;vector</span></a>
+.
+This has been fixed.
+
+<br>
+<br>
+<b><big><a name="02-07" id="02-07">02-07</a></big></b>
+
+<ol type="1"><li>
+Change the <code><font color="blue">adaptive</font></code> and <code><font color="blue">trace-adaptive</font></code>
+<a href="optimize_fixed.htm#fixed_ipopt_options.derivative_test" target="_top"><span style='white-space: nowrap'>derivative_test</span></a>
+
+options so they check that components of the Jacobian, evaluated by
+<a href="ipopt_fixed_eval_jac_g.htm" target="_top"><span style='white-space: nowrap'>eval_jac_g</span></a>
+,
+that are not in the sparsity pattern, are zero.
+</li><li>
+
+Change adaptive derivative check to test Hessian evaluated by
+<a href="ipopt_fixed_eval_h.htm" target="_top"><span style='white-space: nowrap'>eval_h</span></a>
+,
+when <a href="derived_ctor.htm#quasi_fixed" target="_top"><span style='white-space: nowrap'>quasi_fixed</span></a>
+ is false.
+</li><li>
+
+Change the ipopt <code><font color="blue">eval_h</font></code> documentation to specify either
+upper or lower triangle; e.g., see
+<a href="ipopt_xam_eval_h.htm#iRow" target="_top"><span style='white-space: nowrap'>iRow</span></a>
+.
+</li></ol>
+
+
+<br>
+<br>
 <b><big><a name="02-05" id="02-05">02-05</a></big></b>
 
 <ol type="1"><li>

@@ -75,6 +75,7 @@ var list_current0 = [
 'ipopt_fixed_adaptive_derivative_check.htm#adaptive_called_',
 'ipopt_fixed_adaptive_derivative_check.htm#scale_f_',
 'ipopt_fixed_adaptive_derivative_check.htm#scale_g_',
+'ipopt_fixed_adaptive_derivative_check.htm#jac_g_row_, jac_g_col_',
 'ipopt_fixed_adaptive_derivative_check.htm#Prototype'
 ];
 function choose_across0(item)
