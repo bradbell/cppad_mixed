@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -685,14 +685,14 @@ $cref/nnz_h_lag/ipopt_xam_get_nlp_info/nnz_h_lag/$$.
 $head iRow$$
 If $icode values$$ is $code NULL$$,
 $icode iRow$$ has size $icode nele_hess$$ and is set to the
-row indices for the non-zero entries in the Hessian
-$latex L_{x,x} (x)$$.
+row indices for the non-zero entries in the
+lower (or upper) triangle of the Hessian $latex L_{x,x} (x)$$.
 
 $head jCol$$
 If $icode values$$ is $code NULL$$,
 $icode jCol$$ has size $icode nele_hess$$ and is set to the
-column indices for the non-zero entries in the Hessian
-$latex L_{x,x} (x)$$.
+column indices for the non-zero entries in the
+lower (or upper) triangle of the Hessian $latex L_{x,x} (x)$$.
 
 $head values$$
 If $icode values$$ is not $code NULL$$,

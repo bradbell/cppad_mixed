@@ -18,6 +18,10 @@ $spell
 	cxx
 	cmake
 	cholesky
+	Jacobian
+	eval
+	jac
+	ipopt
 $$
 
 $section Changes and Additions to cppad_mixed During 2018$$
@@ -30,10 +34,21 @@ $childtable%
 %$$
 
 $head 02-07$$
+$list number$$
 Change the $code adaptive$$ and $code trace-adaptive$$
 $cref/derivative_test/optimize_fixed/fixed_ipopt_options/derivative_test/$$
-options so they check that components of the constraint gradient,
+options so they check that components of the Jacobian, evaluated by
+$cref/eval_jac_g/ipopt_fixed_eval_jac_g/$$,
 that are not in the sparsity pattern, are zero.
+$lnext
+Change adaptive derivative check to test Hessian evaluated by
+$cref/eval_h/ipopt_fixed_eval_h/$$,
+when $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false.
+$lnext
+Change the ipopt $code eval_h$$ documentation to specify either
+upper or lower triangle; e.g., see
+$cref/iRow/ipopt_xam_eval_h/iRow/$$.
+$lend
 
 $head 02-05$$
 $list number$$

@@ -1540,14 +1540,14 @@ $cref/nnz_h_lag/ipopt_fixed_get_nlp_info/nnz_h_lag/$$.
 $head iRow$$
 If $icode values$$ is $code NULL$$,
 $icode iRow$$ has size $icode nele_hess$$ and is set to the
-row indices for the non-zero entries in the Hessian
-$latex L_{x,x} (x)$$.
+row indices for the non-zero entries in the
+lower triangle of the Hessian $latex L_{x,x} (x)$$.
 
 $head jCol$$
 If $icode values$$ is $code NULL$$,
 $icode jCol$$ has size $icode nele_hess$$ and is set to the
-column indices for the non-zero entries in the Hessian
-$latex L_{x,x} (x)$$.
+column indices for the non-zero entries in the
+lower triangle of the Hessian $latex L_{x,x} (x)$$.
 
 $head values$$
 If $icode values$$ is not $code NULL$$,
@@ -2644,12 +2644,13 @@ $end
 		// ok
 		ok &= ok && max_best_err_all <= relative_tol;
 	}
-/*
 	// ------------------------------------------------------------------------
 	// check hes_value
 	line_count       = 0;
 	max_best_err_all = 0.0;
-	for(size_t j2 = 0; j2 < n; j2++) if( x_lower[j2] < x_upper[j2] )
+	if( mixed_object_.quasi_fixed_ == false )
+	for(size_t j2 = 0; j2 < n; j2++)
+	if( x_lower[j2] < x_upper[j2] )
 	{
 		d_vector best_err(n), best_step(n), best_approx(n), hess(n);
 		for(size_t j1 = 0; j1 < n; j1++)
@@ -2752,8 +2753,9 @@ $end
 				approx[j1] += lambda[i] * d2g;
 			}
 			//
+			// only check the lower trinagle
 			max_best_err  = 0.0;
-			for(size_t j1 = 0; j1 < n; j1++)
+			for(size_t j1 = j2; j1 < n; j1++)
 			{	// relative difference
 				double diff           = hess[j1] - approx[j1];
 				double denominator    = fabs(hess[j1]) + fabs(approx[j1]);
@@ -2774,7 +2776,9 @@ $end
 			++i_try;
 		}
 		max_best_err_all = std::max(max_best_err_all, max_best_err);
-		for(size_t j1 = 0; j1 < n; j1++)
+		//
+		// only display the lower triangle
+		for(size_t j1 = j2; j1 < n; j1++)
 		{	// trace
 			bool trace_j1 = trace || best_err[j1] > relative_tol;
 			if( trace_j1 )
@@ -2804,7 +2808,6 @@ $end
 		// ok
 		ok &= ok && max_best_err_all <= relative_tol;
 	}
-*/
 	// -----------------------------------------------------------------------
 	// Set scaling
 	scale_f_       = scale_f;
