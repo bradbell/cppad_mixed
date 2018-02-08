@@ -21,7 +21,12 @@ no_change_files='
 rename_cmd='s|ran_objcon|laplace_obj|'
 #
 cat << EOF > junk.sed
-s|= *i */ *double(n_data);|= double(i) / double(n_data);|
+/fixed_ipopt_options *=/! b skip
+: loop
+N
+/;/! b loop
+s|\\(derivative_test *\\)second-order|\\1adaptive|
+: skip
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

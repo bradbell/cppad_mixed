@@ -2115,10 +2115,10 @@ $head relative_tol$$
 This is the relative tolerance for the difference between a finite difference
 approximation and the evaluated derivative.
 The absolute tolerance is the relative tolerance times the
-sum of the absolute value of the gradient plus
-the square root of machine epsilon times the absolute value of $latex f(x)$$.
-Each component passes the tolerance test if it does so
-for one of the relative steps.
+sum of sum of the absolute value of the gradient and the approximation.
+In the case of the Hessian, for each column the absolute value of
+the diagonal element for that column is added to the sum before multiplying
+by the relative tolerance.
 
 $subhead infinity$$
 If $icode trace$$ is false and $icode relative_tol$$ is equal to
@@ -2753,15 +2753,18 @@ $end
 				approx[j1] += lambda[i] * d2g;
 			}
 			//
+			// absolute value of element in this column and on diagonal
+			double abs_diag = fabs( hess[j2] );
+			//
 			// only check the lower trinagle
 			max_best_err  = 0.0;
 			for(size_t j1 = j2; j1 < n; j1++)
 			{	// relative difference
-				double diff           = hess[j1] - approx[j1];
-				double denominator    = fabs(hess[j1]) + fabs(approx[j1]);
-				if( denominator == 0.0 )
-					denominator = 1.0;
-				double relative_err  = fabs(diff) / denominator;
+				double diff  = hess[j1] - approx[j1];
+				double den   = abs_diag + fabs(hess[j1]) + fabs(approx[j1]);
+				if( den == 0.0 )
+					den = 1.0;
+				double relative_err  = fabs(diff) / den;
 
 				// best
 				if( relative_err < best_err[j1] )

@@ -136,7 +136,7 @@ bool binomial(void)
 	std::string fixed_ipopt_options =
 		"Integer print_level               0\n"
 		"String  sb                        yes\n"
-		"String  derivative_test           second-order\n"
+		"String  derivative_test           adaptive\n"
 		"String  derivative_test_print_all yes\n"
 		"Numeric tol                       1e-5\n"
 		"Integer max_iter                  10\n"

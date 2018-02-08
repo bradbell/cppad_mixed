@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -195,7 +195,7 @@ bool fix_constraint_xam(void)
 	std::string fixed_ipopt_options =
 		"Integer print_level               0\n"
 		"String  sb                        yes\n"
-		"String  derivative_test           second-order\n"
+		"String  derivative_test           adaptive\n"
 		"String  derivative_test_print_all yes\n"
 		"Numeric tol                       1e-8\n"
 		"Integer max_iter                  15\n"
