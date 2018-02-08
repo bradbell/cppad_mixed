@@ -29,6 +29,12 @@ $childtable%
 	omh/whats_new/15.omh
 %$$
 
+$head 02-07$$
+Change the $code adaptive$$ and $code trace-adaptive$$
+$cref/derivative_test/optimize_fixed/fixed_ipopt_options/derivative_test/$$
+options so they check that components of the constraint gradient,
+that are not in the sparsity pattern, are zero.
+
 $head 02-05$$
 $list number$$
 The scaling of the fixed effects optimization has been
