@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -197,8 +197,7 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 	size_t m = fix_like_fun_.Range();
 	CppAD::vector<bool> select_range(m);
 	for(size_t i = 0; i < m; i++)
-		select_range[i] = false;
-	select_range[0] = true;
+		select_range[i] = true;
 	sparse_rc hes_pattern;
 	fix_like_fun_.rev_hes_sparsity(
 		select_range, transpose, internal_bool, hes_pattern
