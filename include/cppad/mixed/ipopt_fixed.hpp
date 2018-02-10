@@ -64,6 +64,7 @@ $childtable%src/ipopt_fixed.cpp
 	%src/ipopt_fixed/eval_g.cpp
 	%src/ipopt_fixed/eval_jac_g.cpp
 	%src/ipopt_fixed/eval_h.cpp
+	%src/ipopt_fixed/finalize_solution.cpp
 	%example/ipopt_xam.omh
 %$$
 
