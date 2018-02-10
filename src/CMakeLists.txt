@@ -45,6 +45,7 @@ ADD_LIBRARY(cppad_mixed
 	init_laplace_obj_hes.cpp
 	ipopt_app_status.cpp
 	ipopt_fixed.cpp
+	ipopt_fixed/eval_g.cpp
 	ipopt_fixed/eval_grad_f.cpp
 	ipopt_fixed/eval_f.cpp
 	ipopt_fixed/get_starting_point.cpp
