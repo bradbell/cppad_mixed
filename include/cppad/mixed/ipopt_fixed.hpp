@@ -54,8 +54,7 @@ optimal solution information.
 $head Default Destructor$$
 The default destructor is defined by this include file.
 
-$childtable%src/ipopt_fixed.cpp
-	%src/ipopt_fixed/ctor.cpp
+$childtable%src/ipopt_fixed/ctor.cpp
 	%src/ipopt_fixed/get_nlp_info.cpp
 	%src/ipopt_fixed/get_bounds_info.cpp
 	%src/ipopt_fixed/get_starting_point.cpp
@@ -67,6 +66,7 @@ $childtable%src/ipopt_fixed.cpp
 	%src/ipopt_fixed/finalize_solution.cpp
 	%src/ipopt_fixed/get_scaling_parameters.cpp
 	%src/ipopt_fixed/adaptive_derivative_check.cpp
+	%src/ipopt_fixed/new_random.cpp
 	%example/ipopt_xam.omh
 %$$
 
