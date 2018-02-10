@@ -1,0 +1,343 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=default'
+>
+</script>
+<head>
+<title>Get Solution Results</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Get Solution Results">
+<meta name="keywords" id="keywords" content=" get solution results syntax solution_ n x z_l z_u m lambda obj_value ip_data ip_cq status success maxiter_exceeded cputime_exceeded stop_at_tiny_step stop_at_acceptable_point local_infeasibility user_requested_stop diverging_iterates restoration_failure error_in_step_computation invalid_number_detected prototype ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_ipopt_random_finalize_solution_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="ipopt_random_eval_h.htm" target="_top">Prev</a>
+</td><td><a href="ldlt_cholmod.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>ipopt_random</option>
+<option>ipopt_random_finalize_solution</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_18</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ipopt_random</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+<option>sparse_ad_cholesky</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>ipopt_random-&gt;</option>
+<option>ipopt_random_ctor</option>
+<option>ipopt_random_get_nlp_info</option>
+<option>ipopt_random_get_bounds_info</option>
+<option>ipopt_random_get_starting_point</option>
+<option>ipopt_random_eval_f</option>
+<option>ipopt_random_eval_grad_f</option>
+<option>ipopt_random_eval_g</option>
+<option>ipopt_random_eval_jac_g</option>
+<option>ipopt_random_eval_h</option>
+<option>ipopt_random_finalize_solution</option>
+</select>
+</td>
+<td>ipopt_random_finalize_solution</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>solution_</option>
+<option>n</option>
+<option>x</option>
+<option>z_L</option>
+<option>z_U</option>
+<option>m</option>
+<option>lambda</option>
+<option>obj_value</option>
+<option>ip_data</option>
+<option>ip_cq</option>
+<option>status</option>
+<option>---..SUCCESS</option>
+<option>---..MAXITER_EXCEEDED</option>
+<option>---..CPUTIME_EXCEEDED</option>
+<option>---..STOP_AT_TINY_STEP</option>
+<option>---..STOP_AT_ACCEPTABLE_POINT</option>
+<option>---..LOCAL_INFEASIBILITY</option>
+<option>---..USER_REQUESTED_STOP</option>
+<option>---..DIVERGING_ITERATES</option>
+<option>---..RESTORATION_FAILURE</option>
+<option>---..ERROR_IN_STEP_COMPUTATION</option>
+<option>---..INVALID_NUMBER_DETECTED</option>
+<option>Prototype</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Get Solution Results</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><font color="blue"><span style='white-space: nowrap'>finalize_solution(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>status</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>x</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>z_L</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>z_U</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>m</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>g</span></font></i><font color="blue"><span style='white-space: nowrap'>,</span></font></code>
+
+
+<code><i><font color="black"><span style='white-space: nowrap'>lambda</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>obj_value</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ip_data</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ip_cq</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="solution_" id="solution_">solution_</a></big></b>
+<br>
+This routine checks the solution values and sets the member variable
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::mixed&nbsp;fixed_solution&nbsp;solution_<br>
+</span></font></code>
+.
+
+<br>
+<br>
+<b><big><a name="n" id="n">n</a></big></b>
+<br>
+is the number of variables in the problem (dimension of x).
+
+<br>
+<br>
+<b><big><a name="x" id="x">x</a></big></b>
+<br>
+is the final value (best value found) for the primal variables
+(has size 
+<code><i><font color="black"><span style='white-space: nowrap'>n</span></font></i></code>
+).
+
+<br>
+<br>
+<b><big><a name="z_L" id="z_L">z_L</a></big></b>
+<br>
+is the final value for the 
+<code><i><font color="black"><span style='white-space: nowrap'>x</span></font></i></code>
+ lower bound constraint multipliers
+(has size 
+<code><i><font color="black"><span style='white-space: nowrap'>n</span></font></i></code>
+).
+
+<br>
+<br>
+<b><big><a name="z_U" id="z_U">z_U</a></big></b>
+<br>
+is the final value for the 
+<code><i><font color="black"><span style='white-space: nowrap'>x</span></font></i></code>
+ upper bound constraint multipliers
+(has size 
+<code><i><font color="black"><span style='white-space: nowrap'>n</span></font></i></code>
+).
+
+<br>
+<br>
+<b><big><a name="m" id="m">m</a></big></b>
+<br>
+is the number of constraints in the problem (dimension of g(x)).
+
+<br>
+<br>
+<b><big><a name="lambda" id="lambda">lambda</a></big></b>
+<br>
+is the final value for the g(x) constraint multipliers <small>@(@
+\lambda
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="obj_value" id="obj_value">obj_value</a></big></b>
+<br>
+is the value of the objective f(x) at the final 
+<code><i><font color="black"><span style='white-space: nowrap'>x</span></font></i></code>
+ value.
+
+<br>
+<br>
+<b><big><a name="ip_data" id="ip_data">ip_data</a></big></b>
+<br>
+Unspecified; i.e., not part of the Ipopt user API.
+
+<br>
+<br>
+<b><big><a name="ip_cq" id="ip_cq">ip_cq</a></big></b>
+<br>
+Unspecified; i.e., not part of the Ipopt user API.
+
+<br>
+<br>
+<b><big><a name="status" id="status">status</a></big></b>
+<br>
+These status values are in the <code><font color="blue">Ipopt</font></code> namespace; e.g.,
+<code><font color="blue">SUCCESS</font></code> is short for <code><font color="blue">Ipopt::SUCCESS</font></code>:
+
+<br>
+<br>
+<b><a name="status.SUCCESS" id="status.SUCCESS">SUCCESS</a></b>
+<br>
+Algorithm terminated successfully at a locally optimal point,
+satisfying the convergence tolerances (can be specified by options).
+
+<br>
+<br>
+<b><a name="status.MAXITER_EXCEEDED" id="status.MAXITER_EXCEEDED">MAXITER_EXCEEDED</a></b>
+<br>
+Maximum number of iterations exceeded (can be specified by an option).
+
+<br>
+<br>
+<b><a name="status.CPUTIME_EXCEEDED" id="status.CPUTIME_EXCEEDED">CPUTIME_EXCEEDED</a></b>
+<br>
+Maximum number of CPU seconds exceeded (can be specified by an option).
+
+<br>
+<br>
+<b><a name="status.STOP_AT_TINY_STEP" id="status.STOP_AT_TINY_STEP">STOP_AT_TINY_STEP</a></b>
+<br>
+Algorithm proceeds with very little progress.
+
+<br>
+<br>
+<b><a name="status.STOP_AT_ACCEPTABLE_POINT" id="status.STOP_AT_ACCEPTABLE_POINT">STOP_AT_ACCEPTABLE_POINT</a></b>
+<br>
+Algorithm stopped at a point that was converged, not to desired
+tolerances, but to acceptable tolerances (see the acceptable-... options).
+
+<br>
+<br>
+<b><a name="status.LOCAL_INFEASIBILITY" id="status.LOCAL_INFEASIBILITY">LOCAL_INFEASIBILITY</a></b>
+<br>
+Algorithm converged to a point of local infeasibility. Problem may be
+infeasible.
+
+<br>
+<br>
+<b><a name="status.USER_REQUESTED_STOP" id="status.USER_REQUESTED_STOP">USER_REQUESTED_STOP</a></b>
+<br>
+A user call-back function returned false, i.e.,
+the user code requested a premature termination of the optimization.
+
+<br>
+<br>
+<b><a name="status.DIVERGING_ITERATES" id="status.DIVERGING_ITERATES">DIVERGING_ITERATES</a></b>
+<br>
+It seems that the iterates diverge.
+
+<br>
+<br>
+<b><a name="status.RESTORATION_FAILURE" id="status.RESTORATION_FAILURE">RESTORATION_FAILURE</a></b>
+<br>
+Restoration phase failed, algorithm doesn't know how to proceed.
+
+<br>
+<br>
+<b><a name="status.ERROR_IN_STEP_COMPUTATION" id="status.ERROR_IN_STEP_COMPUTATION">ERROR_IN_STEP_COMPUTATION</a></b>
+<br>
+An unrecoverable error occurred while Ipopt tried to compute
+the search direction.
+
+<br>
+<br>
+<b><a name="status.INVALID_NUMBER_DETECTED" id="status.INVALID_NUMBER_DETECTED">INVALID_NUMBER_DETECTED</a></b>
+<br>
+Algorithm received an invalid number (such as NaN or Inf) from
+the NLP; see also option check_derivatives_for_naninf.
+
+<br>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre><tt><font color="#009900">void</font> ipopt_random<font color="#990000">::</font><b><font color="#000000">finalize_solution</font></b><font color="#990000">(</font>
+     Ipopt<font color="#990000">::</font><font color="#008080">SolverReturn</font>               status    <font color="#990000">,</font>  <i><font color="#9A1900">// in</font></i>
+     <font color="#008080">Index</font>                             n         <font color="#990000">,</font>  <i><font color="#9A1900">// in</font></i>
+     <b><font color="#0000FF">const</font></b> Number<font color="#990000">*</font>                     x         <font color="#990000">,</font>  <i><font color="#9A1900">// in</font></i>
+     <b><font color="#0000FF">const</font></b> Number<font color="#990000">*</font>                     z_L       <font color="#990000">,</font>  <i><font color="#9A1900">// in</font></i>
+     <b><font color="#0000FF">const</font></b> Number<font color="#990000">*</font>                     z_U       <font color="#990000">,</font>  <i><font color="#9A1900">// in</font></i>
+     <font color="#008080">Index</font>                             m         <font color="#990000">,</font>  <i><font color="#9A1900">// in</font></i>
+     <b><font color="#0000FF">const</font></b> Number<font color="#990000">*</font>                     g         <font color="#990000">,</font>  <i><font color="#9A1900">// in</font></i>
+     <b><font color="#0000FF">const</font></b> Number<font color="#990000">*</font>                     lambda    <font color="#990000">,</font>  <i><font color="#9A1900">// in</font></i>
+     <font color="#008080">Number</font>                            obj_value <font color="#990000">,</font>  <i><font color="#9A1900">// in</font></i>
+     <b><font color="#0000FF">const</font></b> Ipopt<font color="#990000">::</font>IpoptData<font color="#990000">*</font>           ip_data   <font color="#990000">,</font>  <i><font color="#9A1900">// in</font></i>
+     Ipopt<font color="#990000">::</font>IpoptCalculatedQuantities<font color="#990000">*</font> ip_cq     <font color="#990000">)</font>  <i><font color="#9A1900">// in</font></i></tt></pre>
+
+<hr>Input File: src/ipopt_random/finalize_solution.cpp
+
+</body>
+</html>

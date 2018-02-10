@@ -28,6 +28,7 @@ var list_down2 = [
 'fixed_solution.htm',
 'ipopt_app_status.htm',
 'ipopt_fixed.htm',
+'ipopt_random.htm',
 'ldlt_cholmod.htm',
 'ldlt_eigen.htm',
 'manage_gsl_rng.htm',
@@ -60,6 +61,7 @@ var list_down1 = [
 'ipopt_fixed_eval_jac_g.htm',
 'ipopt_fixed_eval_h.htm',
 'ipopt_fixed_finalize_solution.htm',
+'ipopt_fixed_get_scaling_parameters.htm',
 'ipopt_fixed_adaptive_derivative_check.htm',
 'ipopt_fixed_new_random.htm',
 'ipopt_xam.htm'

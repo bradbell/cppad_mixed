@@ -1,0 +1,286 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=default'
+>
+</script>
+<head>
+<title>Compute Jacobian of Constraint Functions</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Compute Jacobian of Constraint Functions">
+<meta name="keywords" id="keywords" content=" compute jacobian constraint functions syntax n x new_x m nele_jac irow jcol values ok mixed_object_.ran_like_fun_ prototype ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_ipopt_random_eval_jac_g_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="ipopt_random_eval_g.htm" target="_top">Prev</a>
+</td><td><a href="ipopt_random_eval_h.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>ipopt_random</option>
+<option>ipopt_random_eval_jac_g</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down3(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_18</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ipopt_random</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+<option>sparse_ad_cholesky</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>ipopt_random-&gt;</option>
+<option>ipopt_random_ctor</option>
+<option>ipopt_random_get_nlp_info</option>
+<option>ipopt_random_get_bounds_info</option>
+<option>ipopt_random_get_starting_point</option>
+<option>ipopt_random_eval_f</option>
+<option>ipopt_random_eval_grad_f</option>
+<option>ipopt_random_eval_g</option>
+<option>ipopt_random_eval_jac_g</option>
+<option>ipopt_random_eval_h</option>
+<option>ipopt_random_finalize_solution</option>
+</select>
+</td>
+<td>ipopt_random_eval_jac_g</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>n</option>
+<option>x</option>
+<option>new_x</option>
+<option>m</option>
+<option>nele_jac</option>
+<option>iRow</option>
+<option>jCol</option>
+<option>values</option>
+<option>ok</option>
+<option>mixed_object_.ran_like_fun_</option>
+<option>Prototype</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Compute Jacobian of Constraint Functions</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>ok</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;eval_jac_g(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>x</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>new_x</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>m</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nele_jac</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>iRow</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jCol</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>values</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="n" id="n">n</a></big></b>
+<br>
+is the number of variables in the problem (dimension of x).
+
+<br>
+<br>
+<b><big><a name="x" id="x">x</a></big></b>
+<br>
+is the value for the primal variables at which the Jacobian
+of the constraints <small>@(@
+\nabla g(x)
+@)@</small> is computed (has size 
+<code><i><font color="black"><span style='white-space: nowrap'>n</span></font></i></code>
+).
+
+<br>
+<br>
+<b><big><a name="new_x" id="new_x">new_x</a></big></b>
+<br>
+if true, no Ipopt evaluation method was previous called with the same
+value for 
+<code><i><font color="black"><span style='white-space: nowrap'>x</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="m" id="m">m</a></big></b>
+<br>
+is the number of constraints in the problem (dimension of g(x)).
+
+<br>
+<br>
+<b><big><a name="nele_jac" id="nele_jac">nele_jac</a></big></b>
+<br>
+is the number of non-zero elements in the Jacobian of 
+<code><i><font color="black"><span style='white-space: nowrap'>g(x)</span></font></i></code>
+; i.e.,
+the same as
+<a href="ipopt_random_get_nlp_info.htm#nnz_jac_g" target="_top"><span style='white-space: nowrap'>nnz_jac_g</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="iRow" id="iRow">iRow</a></big></b>
+<br>
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>values</span></font></i></code>
+ is <code><font color="blue">NULL</font></code>,
+
+<code><i><font color="black"><span style='white-space: nowrap'>iRow</span></font></i></code>
+ has size 
+<code><i><font color="black"><span style='white-space: nowrap'>nele_jac</span></font></i></code>
+ and is set to the
+row indices for the non-zero entries in the Jacobian of the constraints
+<small>@(@
+g_x (x)
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="jCol" id="jCol">jCol</a></big></b>
+<br>
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>values</span></font></i></code>
+ is <code><font color="blue">NULL</font></code>,
+
+<code><i><font color="black"><span style='white-space: nowrap'>jCol</span></font></i></code>
+ has size 
+<code><i><font color="black"><span style='white-space: nowrap'>nele_jac</span></font></i></code>
+ and is set to the
+column indices for the non-zero entries in the Jacobian of the constraints
+<small>@(@
+g_x (x)
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="values" id="values">values</a></big></b>
+<br>
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>values</span></font></i></code>
+ is not <code><font color="blue">NULL</font></code>,
+it has size 
+<code><i><font color="black"><span style='white-space: nowrap'>nele_jac</span></font></i></code>
+ and 
+<code><i><font color="black"><span style='white-space: nowrap'>values</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
+
+is set to the value of element of the Jacobian <small>@(@
+g_x (x)
+@)@</small>
+with row index 
+<code><i><font color="black"><span style='white-space: nowrap'>iRow</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
+
+and column index 
+<code><i><font color="black"><span style='white-space: nowrap'>jCol</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
+.
+
+<br>
+<br>
+<b><big><a name="ok" id="ok">ok</a></big></b>
+<br>
+if set to false, the optimization will treat this point like
+it was not feasible
+(the function could not be evaluated at this point).
+
+<br>
+<br>
+<b><big><a name="mixed_object_.ran_like_fun_" id="mixed_object_.ran_like_fun_">mixed_object_.ran_like_fun_</a></big></b>
+<br>
+if 
+<code><i><font color="black"><span style='white-space: nowrap'>new_x</span></font></i></code>
+ is true,
+after this call, the zero order Taylor coefficients in this function
+will corresponding to the value of 
+<code><i><font color="black"><span style='white-space: nowrap'>fixed_vec_</span></font></i></code>
+ and
+the random effects in 
+<code><i><font color="black"><span style='white-space: nowrap'>x</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre><tt><font color="#009900">bool</font> ipopt_random<font color="#990000">::</font><b><font color="#000000">eval_jac_g</font></b><font color="#990000">(</font>
+     <font color="#008080">Index</font>           n        <font color="#990000">,</font>  <i><font color="#9A1900">// in</font></i>
+     <b><font color="#0000FF">const</font></b> Number<font color="#990000">*</font>   x        <font color="#990000">,</font>  <i><font color="#9A1900">// in</font></i>
+     <font color="#009900">bool</font>            new_x    <font color="#990000">,</font>  <i><font color="#9A1900">// in</font></i>
+     <font color="#008080">Index</font>           m        <font color="#990000">,</font>  <i><font color="#9A1900">// in</font></i>
+     <font color="#008080">Index</font>           nele_jac <font color="#990000">,</font>  <i><font color="#9A1900">// in</font></i>
+     Index<font color="#990000">*</font>          iRow     <font color="#990000">,</font>  <i><font color="#9A1900">// out</font></i>
+     Index<font color="#990000">*</font>          jCol     <font color="#990000">,</font>  <i><font color="#9A1900">// out</font></i>
+     Number<font color="#990000">*</font>         values   <font color="#990000">)</font>  <i><font color="#9A1900">// out</font></i></tt></pre>
+
+<hr>Input File: src/ipopt_random/eval_jac_g.cpp
+
+</body>
+</html>

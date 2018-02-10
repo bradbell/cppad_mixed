@@ -28,6 +28,7 @@ var list_down2 = [
 'fixed_solution.htm',
 'ipopt_app_status.htm',
 'ipopt_fixed.htm',
+'ipopt_random.htm',
 'ldlt_cholmod.htm',
 'ldlt_eigen.htm',
 'manage_gsl_rng.htm',

@@ -1,0 +1,199 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=default'
+>
+</script>
+<head>
+<title>Ipopt NLP Class Used to Optimize Random Effects</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Ipopt NLP Class Used to Optimize Random Effects">
+<meta name="keywords" id="keywords" content=" ipopt nlp class used to optimize random effects syntax private get_error_message() clear_error_message() nlp_lower_bound_inf() nlp_upper_bound_inf() solution() default destructor ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_ipopt_random_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="ipopt_run_xam.htm" target="_top">Prev</a>
+</td><td><a href="ipopt_random_ctor.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>ipopt_random</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_18</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ipopt_random</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>newton_step</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+<option>sparse_ad_cholesky</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>ipopt_random-&gt;</option>
+<option>ipopt_random_ctor</option>
+<option>ipopt_random_get_nlp_info</option>
+<option>ipopt_random_get_bounds_info</option>
+<option>ipopt_random_get_starting_point</option>
+<option>ipopt_random_eval_f</option>
+<option>ipopt_random_eval_grad_f</option>
+<option>ipopt_random_eval_g</option>
+<option>ipopt_random_eval_jac_g</option>
+<option>ipopt_random_eval_h</option>
+<option>ipopt_random_finalize_solution</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Private</option>
+<option>get_error_message()</option>
+<option>clear_error_message()</option>
+<option>nlp_lower_bound_inf()</option>
+<option>nlp_upper_bound_inf()</option>
+<option>solution()</option>
+<option>Default Destructor</option>
+<option>Contents</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Ipopt NLP Class Used to Optimize Random Effects</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<code><font color="blue"><br>
+# include &lt;cppad/mixed/ipopt_random.hpp&gt;</font></code>
+
+<br>
+<br>
+<b><big><a name="Private" id="Private">Private</a></big></b>
+<br>
+This class is an implementation detail and not part of the
+<a href="namespace.htm#Private" target="_top"><span style='white-space: nowrap'>CppAD::mixed</span></a>
+ user API.
+
+<br>
+<br>
+<b><big><a name="get_error_message()" id="get_error_message()">get_error_message()</a></big></b>
+<br>
+This function returns a <code><font color="blue">std::string</font></code> value that
+corresponds to the most recent error message.
+If it is non-empty, there is no error.
+
+<br>
+<br>
+<b><big><a name="clear_error_message()" id="clear_error_message()">clear_error_message()</a></big></b>
+<br>
+This function sets the current error message to the empty string.
+
+<br>
+<br>
+<b><big><a name="nlp_lower_bound_inf()" id="nlp_lower_bound_inf()">nlp_lower_bound_inf()</a></big></b>
+<br>
+This member function returns the <code><font color="blue">double</font></code> value used
+for minus infinity as a lower bound.
+
+<br>
+<br>
+<b><big><a name="nlp_upper_bound_inf()" id="nlp_upper_bound_inf()">nlp_upper_bound_inf()</a></big></b>
+<br>
+This member function returns the <code><font color="blue">double</font></code> value used
+for plus infinity as an upper bound.
+
+<br>
+<br>
+<b><big><a name="solution()" id="solution()">solution()</a></big></b>
+<br>
+This member function returns a
+<a href="fixed_solution.htm" target="_top"><span style='white-space: nowrap'>fixed_solution</span></a>
+ object containing the
+optimal solution information.
+
+<br>
+<br>
+<b><big><a name="Default Destructor" id="Default Destructor">Default Destructor</a></big></b>
+<br>
+The default destructor is defined by this include file.
+
+
+<br>
+<br>
+<b><big><a name="Contents" id="Contents">Contents</a></big></b>
+<br>
+<table>
+<tr><td><a href="ipopt_random_ctor.htm" target="_top">ipopt_random_ctor</a></td><td>Ipopt&nbsp;Random&nbsp;Optimization&nbsp;Callback&nbsp;Constructor</td></tr><tr><td><a href="ipopt_random_get_nlp_info.htm" target="_top">ipopt_random_get_nlp_info</a></td><td>Return&nbsp;Information&nbsp;About&nbsp;Problem&nbsp;Sizes</td></tr><tr><td><a href="ipopt_random_get_bounds_info.htm" target="_top">ipopt_random_get_bounds_info</a></td><td>Return&nbsp;Optimization&nbsp;Bounds</td></tr><tr><td><a href="ipopt_random_get_starting_point.htm" target="_top">ipopt_random_get_starting_point</a></td><td>Return&nbsp;Initial&nbsp;Values&nbsp;Where&nbsp;Optimization&nbsp;is&nbsp;Started</td></tr><tr><td><a href="ipopt_random_eval_f.htm" target="_top">ipopt_random_eval_f</a></td><td>Compute&nbsp;Value&nbsp;of&nbsp;Objective</td></tr><tr><td><a href="ipopt_random_eval_grad_f.htm" target="_top">ipopt_random_eval_grad_f</a></td><td>Compute&nbsp;Gradient&nbsp;of&nbsp;the&nbsp;Objective</td></tr><tr><td><a href="ipopt_random_eval_g.htm" target="_top">ipopt_random_eval_g</a></td><td>Compute&nbsp;Value&nbsp;of&nbsp;Constraint&nbsp;Functions</td></tr><tr><td><a href="ipopt_random_eval_jac_g.htm" target="_top">ipopt_random_eval_jac_g</a></td><td>Compute&nbsp;Jacobian&nbsp;of&nbsp;Constraint&nbsp;Functions</td></tr><tr><td><a href="ipopt_random_eval_h.htm" target="_top">ipopt_random_eval_h</a></td><td>Compute&nbsp;the&nbsp;Hessian&nbsp;of&nbsp;the&nbsp;Lagrangian</td></tr><tr><td><a href="ipopt_random_finalize_solution.htm" target="_top">ipopt_random_finalize_solution</a></td><td>Get&nbsp;Solution&nbsp;Results</td></tr></table>
+<hr>Input File: include/cppad/mixed/ipopt_random.hpp
+
+</body>
+</html>
