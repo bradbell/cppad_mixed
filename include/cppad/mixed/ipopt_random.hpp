@@ -59,8 +59,7 @@ $head Default Destructor$$
 The default destructor is defined by this include file.
 
 
-$childtable%src/ipopt_random.cpp
-	%src/ipopt_random/ctor.cpp
+$childtable%src/ipopt_random/ctor.cpp
 	%src/ipopt_random/get_nlp_info.cpp
 	%src/ipopt_random/get_bounds_info.cpp
 	%src/ipopt_random/get_starting_point.cpp
@@ -69,6 +68,7 @@ $childtable%src/ipopt_random.cpp
 	%src/ipopt_random/eval_g.cpp
 	%src/ipopt_random/eval_jac_g.cpp
 	%src/ipopt_random/eval_h.cpp
+	%src/ipopt_random/finalize_solution.cpp
 %$$
 
 $end

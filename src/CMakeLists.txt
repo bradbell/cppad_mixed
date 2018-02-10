@@ -57,7 +57,7 @@ ADD_LIBRARY(cppad_mixed
 	ipopt_fixed/get_bounds_info.cpp
 	ipopt_fixed/get_nlp_info.cpp
 	ipopt_fixed/ctor.cpp
-	ipopt_random.cpp
+	ipopt_random/finalize_solution.cpp
 	ipopt_random/eval_h.cpp
 	ipopt_random/eval_jac_g.cpp
 	ipopt_random/eval_g.cpp
