@@ -60,6 +60,7 @@ $childtable%src/ipopt_fixed.cpp
 	%src/ipopt_fixed/get_bounds_info.cpp
 	%src/ipopt_fixed/get_starting_point.cpp
 	%src/ipopt_fixed/eval_f.cpp
+	%src/ipopt_fixed/eval_grad_f.cpp
 	%example/ipopt_xam.omh
 %$$
 
