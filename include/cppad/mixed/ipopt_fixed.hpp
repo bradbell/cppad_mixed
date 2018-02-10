@@ -55,6 +55,7 @@ $head Default Destructor$$
 The default destructor is defined by this include file.
 
 $childtable%src/ipopt_fixed.cpp
+	%src/ipopt_fixed/ctor.cpp
 	%example/ipopt_xam.omh
 %$$
 

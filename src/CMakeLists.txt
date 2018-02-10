@@ -45,6 +45,7 @@ ADD_LIBRARY(cppad_mixed
 	init_laplace_obj_hes.cpp
 	ipopt_app_status.cpp
 	ipopt_fixed.cpp
+	ipopt_fixed/ctor.cpp
 	ipopt_random.cpp
 	logdet_jac.cpp
 	manage_gsl_rng.cpp
