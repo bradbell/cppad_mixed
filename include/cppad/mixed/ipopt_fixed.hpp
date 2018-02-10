@@ -66,6 +66,7 @@ $childtable%src/ipopt_fixed.cpp
 	%src/ipopt_fixed/eval_h.cpp
 	%src/ipopt_fixed/finalize_solution.cpp
 	%src/ipopt_fixed/get_scaling_parameters.cpp
+	%src/ipopt_fixed/adaptive_derivative_check.cpp
 	%example/ipopt_xam.omh
 %$$
 
