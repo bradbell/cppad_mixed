@@ -58,6 +58,7 @@ $childtable%src/ipopt_fixed.cpp
 	%src/ipopt_fixed/ctor.cpp
 	%src/ipopt_fixed/get_nlp_info.cpp
 	%src/ipopt_fixed/get_bounds_info.cpp
+	%src/ipopt_fixed/get_starting_point.cpp
 	%example/ipopt_xam.omh
 %$$
 
