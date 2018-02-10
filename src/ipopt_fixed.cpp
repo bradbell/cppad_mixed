@@ -348,7 +348,19 @@ $end
 	// set member variable finalize_solution_ok_
 	finalize_solution_ok_ = ok;
 }
-// ---------------------------------------------------------------------------
+/*
+------------------------------------------------------------------------------
+$begin ipopt_fixed_get_scaling_parameters$$
+$spell
+	Ipopt
+$$
+
+$section Inform Ipopt of Scaling Parameters$$
+
+This is not documented.
+
+$end
+*/
 bool ipopt_fixed::get_scaling_parameters(
 	Number&            obj_scaling    ,
 	bool&              use_x_scaling  ,
