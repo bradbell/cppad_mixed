@@ -60,6 +60,7 @@ The default destructor is defined by this include file.
 
 
 $childtable%src/ipopt_random.cpp
+	%src/ipopt_random/ctor.cpp
 %$$
 
 $end

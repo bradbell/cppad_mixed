@@ -58,6 +58,7 @@ ADD_LIBRARY(cppad_mixed
 	ipopt_fixed/get_nlp_info.cpp
 	ipopt_fixed/ctor.cpp
 	ipopt_random.cpp
+	ipopt_random/ctor.cpp
 	logdet_jac.cpp
 	manage_gsl_rng.cpp
 	optimize_fixed.cpp
