@@ -58,6 +58,7 @@ ADD_LIBRARY(cppad_mixed
 	ipopt_fixed/get_nlp_info.cpp
 	ipopt_fixed/ctor.cpp
 	ipopt_random.cpp
+	ipopt_random/eval_f.cpp
 	ipopt_random/get_starting_point.cpp
 	ipopt_random/get_bounds_info.cpp
 	ipopt_random/get_nlp_info.cpp
