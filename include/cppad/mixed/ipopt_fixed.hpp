@@ -63,6 +63,7 @@ $childtable%src/ipopt_fixed.cpp
 	%src/ipopt_fixed/eval_grad_f.cpp
 	%src/ipopt_fixed/eval_g.cpp
 	%src/ipopt_fixed/eval_jac_g.cpp
+	%src/ipopt_fixed/eval_h.cpp
 	%example/ipopt_xam.omh
 %$$
 
