@@ -45,6 +45,7 @@ ADD_LIBRARY(cppad_mixed
 	init_laplace_obj_hes.cpp
 	ipopt_app_status.cpp
 	ipopt_fixed.cpp
+	ipopt_fixed/eval_f.cpp
 	ipopt_fixed/get_starting_point.cpp
 	ipopt_fixed/get_bounds_info.cpp
 	ipopt_fixed/get_nlp_info.cpp
