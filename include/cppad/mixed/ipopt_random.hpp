@@ -68,6 +68,7 @@ $childtable%src/ipopt_random.cpp
 	%src/ipopt_random/eval_grad_f.cpp
 	%src/ipopt_random/eval_g.cpp
 	%src/ipopt_random/eval_jac_g.cpp
+	%src/ipopt_random/eval_h.cpp
 %$$
 
 $end
