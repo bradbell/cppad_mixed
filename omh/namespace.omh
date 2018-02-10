@@ -34,6 +34,7 @@ $children%include/cppad/mixed/typedef.hpp
 	%include/cppad/mixed/fixed_solution.hpp
 	%src/ipopt_app_status.cpp
 	%include/cppad/mixed/ipopt_fixed.hpp
+	%include/cppad/mixed/ipopt_random.hpp
 	%include/cppad/mixed/ldlt_cholmod.hpp
 	%include/cppad/mixed/ldlt_eigen.hpp
 	%src/manage_gsl_rng.cpp
@@ -74,6 +75,7 @@ $table
 $rref ldlt_eigen$$
 $rref ldlt_cholmod$$
 $rref ipopt_fixed$$
+$rref ipopt_random$$
 $rref newton_step$$
 $rref sparse_hes_info$$
 $rref sparse_hes_rcv$$

@@ -18,6 +18,13 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 ------------------------------------------------------------------------------
 $begin ipopt_random_ctor$$
 $spell
+	Ipopt
+	CppAD
+	vec
+	cppad
+	nlp
+	inf
+	nnz
 $$
 
 $section Ipopt Random Optimization Callback Constructor$$
@@ -75,7 +82,7 @@ $subhead nlp_upper_bound_inf_$$
 set to a finite value that is used by Ipopt for plus infinity.
 
 $subhead nnz_h_lag_$$
-set to the number of non-zero entries in the Hessian of the Lagragian.
+set to the number of non-zero entries in the Hessian of the Lagrangian.
 This is the same as for the Hessian of the objective because there
 are no constraints (except for box constraints) in this problem.
 
@@ -117,6 +124,10 @@ error_random_        ( n_random_ )
 ------------------------------------------------------------------------------
 $begin ipopt_random_get_nlp_info$$
 $spell
+	nlp
+	nnz
+	jac
+	Jacobian
 $$
 
 $section Return Information About Problem Sizes$$
@@ -235,6 +246,8 @@ $end
 -------------------------------------------------------------------------------
 $begin ipopt_random_get_starting_point$$
 $spell
+	init
+	ipopt
 $$
 
 $section Return Initial Values Where Optimization is Started$$
@@ -317,6 +330,13 @@ $end
 -------------------------------------------------------------------------------
 $begin ipopt_random_eval_f$$
 $spell
+	eval
+	obj
+	Ipopt
+	Taylor
+	vec
+	eval
+	Ipopt
 $$
 
 $section Compute Value of Objective$$
@@ -411,6 +431,10 @@ void ipopt_random::try_eval_f(
 -------------------------------------------------------------------------------
 $begin ipopt_random_eval_grad_f$$
 $spell
+	eval
+	Ipopt
+	Taylor
+	vec
 $$
 
 $section Compute Gradient of the Objective$$
@@ -497,6 +521,10 @@ void ipopt_random::try_eval_grad_f(
 -------------------------------------------------------------------------------
 $begin ipopt_random_eval_g$$
 $spell
+	eval
+	Ipopt
+	Taylor
+	vec
 $$
 
 $section Compute Value of Constraint Functions$$
@@ -559,6 +587,14 @@ $end
 -------------------------------------------------------------------------------
 $begin ipopt_random_eval_jac_g$$
 $spell
+	Jacobian
+	eval
+	jac
+	nele
+	Ipopt
+	nnz
+	Taylor
+	vec
 $$
 
 $section Compute Jacobian of Constraint Functions$$
@@ -671,6 +707,16 @@ void ipopt_random::try_eval_jac_g(
 -------------------------------------------------------------------------------
 $begin ipopt_random_eval_h$$
 $spell
+	eval
+	obj
+	nele
+	hess
+	Ipopt
+	nnz
+	Teylor
+	vec
+	hes
+	Taylor
 $$
 
 $section Compute the Hessian of the Lagrangian$$
@@ -725,13 +771,13 @@ $head iRow$$
 If $icode values$$ is $code NULL$$,
 $icode iRow$$ has size $icode nele_hess$$ and is set to the
 row indices for the non-zero entries in the
-lower traingle of the Hessian $latex L_{x,x} (x)$$.
+lower triangle of the Hessian $latex L_{x,x} (x)$$.
 
 $head jCol$$
 If $icode values$$ is $code NULL$$,
 $icode jCol$$ has size $icode nele_hess$$ and is set to the
 column indices for the non-zero entries in the
-lower traingle of the Hessian $latex L_{x,x} (x)$$.
+lower triangle of the Hessian $latex L_{x,x} (x)$$.
 
 $head values$$
 If $icode values$$ is not $code NULL$$,
@@ -871,6 +917,17 @@ void ipopt_random::try_eval_h(
 -------------------------------------------------------------------------------
 $begin ipopt_random_finalize_solution$$
 $spell
+	obj
+	ip
+	cq
+	CppAD
+	solution solution
+	Ipopt
+	namespace
+	infeasibility
+	doesn't
+	Inf
+	naninf
 $$
 
 $section Get Solution Results$$
