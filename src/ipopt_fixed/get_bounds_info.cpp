@@ -7,7 +7,6 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad/mixed/configure.hpp>
 # include <cppad/mixed/ipopt_fixed.hpp>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
@@ -97,14 +96,10 @@ $end
 	for(size_t j = 0; j < n_fix_con_; j++)
 	{	size_t i = 2 * fix_likelihood_nabs_ + j;
 		//
-		g_l[i] = fix_constraint_lower_[j];
-		g_u[i] = fix_constraint_upper_[j];
-# if CPPAD_MIXED_HIDE_IPOPT_SCALING
 		g_l[i] = scale_g_[i] * fix_constraint_lower_[j];
 		g_u[i] = scale_g_[i] * fix_constraint_upper_[j];
 		if( fix_constraint_lower_[j] == fix_constraint_upper_[j] )
 			g_u[i] = g_l[i];
-# endif
 	}
 	//
 	// random constraints
