@@ -23,7 +23,7 @@ $spell
 	std
 $$
 
-$section Adaptive Step Size check of eval_grad_f and eval_jac_g$$
+$section Adaptive Step Size check of Derivative Calculations$$
 
 $head Syntax$$
 $icode%ok% = adaptive_derivative_check(%trace%, %relative_tol%)%$$
@@ -79,6 +79,15 @@ $codei%
 It's value upon call must be $code false$$.
 It is set to true at the beginning of $code adaptive_derivative_check$$,
 before any other $code ipopt_fixed$$ routine is called.
+
+$head fixed_scale_$$
+This member variable has prototype
+$codei%
+	d_vector fixed_scale_
+%$$
+and is size is equal to the number of fixed effects.
+It is used as the point where in the extended space $icode x$$
+where the scaling and derivative testing is done.
 
 $head scale_f_$$
 This member variable has prototype
