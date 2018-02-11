@@ -34,9 +34,14 @@ $childtable%
 %$$
 
 $head 02-10$$
+$list number$$
 The $code hide_ipopt_scaling$$ option was removed from the
 $cref/cmake command/run_cmake.sh/$$ and the scaling is always
 hidden from ipopt.
+$lnext
+Improve discussion of the $cref/fixed_scale/optimize_fixed/fixed_scale/$$
+argument to the $code optimize_fixed$$ function.
+$lend
 
 $head 02-08$$
 There was a bug in computing the second derivative of the objective when the

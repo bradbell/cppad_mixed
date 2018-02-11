@@ -169,24 +169,26 @@ This argument has prototype
 $codei%
 	const CppAD::vector<double>& %fixed_scale%
 %$$
-The automatic scaling for the fixed effect optimization is
-done using this point and the convergence will be relative
-to the derivative values at this point.
+The automatic scaling for the fixed effect objective and constraint functions
+is done using their derivatives at $icode fixed_scale$$.
+In addition, convergence is be relative to the these derivatives.
 It must hold for each $icode j$$ that
 $codei%
 	%fixed_lower%[%j%] <= %fixed_scale%[%j%] <= %fixed_upper%[%j%]
 %$$
-Components of the fixed effects for which
+Partial derivatives with respect to components for which
 $codei%
 	%fixed_lower%[%j%] == %fixed_upper%[%j%]
 %$$
-Are not included in this scaling.
+are not included in this scaling.
 Note that you can continue an optimization with the same scaling
 by setting
 $codei%
 	%fixed_in% = %solution%.fixed_opt
 %$$
 and the re-running the optimization.
+Also note that scaling the fixed effects is not done by $code cppad_mixed$$
+and should be done by the users program when it is useful.
 
 $head fixed_in$$
 This argument has prototype
