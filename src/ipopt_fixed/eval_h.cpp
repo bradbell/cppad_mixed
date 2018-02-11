@@ -7,7 +7,6 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad/mixed/configure.hpp>
 # include <cppad/mixed/exception.hpp>
 # include <cppad/mixed/ipopt_fixed.hpp>
 
@@ -118,13 +117,20 @@ bool ipopt_fixed::eval_h(
 $end
 */
 {	try
-	{	try_eval_h(
+	{	double obj_factor_scaled;
+		d_vector lambda_scaled(m);
+		if( values != NULL )
+		{	obj_factor_scaled = scale_f_ * obj_factor;
+			for(size_t i = 0; i < size_t(m); i++)
+				lambda_scaled[i] = scale_g_[i] * lambda[i];
+		}
+		try_eval_h(
 			n,
 			x,
 			new_x,
-			obj_factor,
+			obj_factor_scaled,
 			m,
-			lambda,
+			lambda_scaled.data(),
 			new_lambda,
 			nele_hess,
 			iRow,
@@ -183,17 +189,11 @@ void ipopt_fixed::try_eval_h(
 			new_random(fixed_tmp_);
 		// compute Hessian of random part of objective w.r.t. fixed effects
 		w_laplace_obj_tmp_[0] = obj_factor;
-# if CPPAD_MIXED_HIDE_IPOPT_SCALING
-		w_laplace_obj_tmp_[0] = scale_f_ * obj_factor;
-# endif
 		//
 		// include random constraints in this Hessian calculation
 		size_t offset = 2 * fix_likelihood_nabs_ + n_fix_con_;
 		for(size_t i = 0; i < n_ran_con_; i++)
 		{	w_laplace_obj_tmp_[i+1] = lambda[offset + i];
-# if CPPAD_MIXED_HIDE_IPOPT_SCALING
-			w_laplace_obj_tmp_[i+1] = scale_g_[offset+i] * lambda[offset+i];
-# endif
 		}
 		//
 		mixed_object_.laplace_obj_hes(
@@ -213,17 +213,10 @@ void ipopt_fixed::try_eval_h(
 	//
 	// Hessian of Lagrangian of weighted fixed likelihood
 	w_fix_likelihood_tmp_[0] = obj_factor;
-# if CPPAD_MIXED_HIDE_IPOPT_SCALING
-	w_fix_likelihood_tmp_[0] = scale_f_ * obj_factor;
-# endif
 	//
 	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
 	{
 		w_fix_likelihood_tmp_[1 + j] = lambda[2*j + 1] - lambda[2*j];
-# if CPPAD_MIXED_HIDE_IPOPT_SCALING
-		w_fix_likelihood_tmp_[1 + j] = scale_g_[2*j + 1] * lambda[2*j + 1]
-		                             - scale_g_[2*j]     * lambda[2*j];
-# endif
 	}
 	s_vector fix_like_hes_row = mixed_object_.fix_like_hes_.subset.row();
 	s_vector fix_like_hes_col = mixed_object_.fix_like_hes_.subset.col();
@@ -245,9 +238,6 @@ void ipopt_fixed::try_eval_h(
 	for(size_t j = 0; j < n_fix_con_; j++)
 	{	size_t ell        = 2 * fix_likelihood_nabs_ + j;
 		w_fix_con_tmp_[j] = lambda[ell];
-# if CPPAD_MIXED_HIDE_IPOPT_SCALING
-		w_fix_con_tmp_[j] = scale_g_[ell] * lambda[ell];
-# endif
 	}
 	s_vector fix_con_hes_row = mixed_object_.fix_con_hes_.subset.row();
 	s_vector fix_con_hes_col = mixed_object_.fix_con_hes_.subset.col();
