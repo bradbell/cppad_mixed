@@ -7,7 +7,6 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad/mixed/configure.hpp>
 # include <cppad/mixed/exception.hpp>
 # include <cppad/mixed/ipopt_fixed.hpp>
 
@@ -62,6 +61,8 @@ $end
 */
 {	try
 	{	try_eval_grad_f(n, x, new_x, grad_f);
+	for(size_t j = 0; j < size_t(n); j++)
+		grad_f[j] *= scale_f_;
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	error_message_ = e.message("ipopt_fixed::eval_g");
@@ -134,9 +135,6 @@ void ipopt_fixed::try_eval_grad_f(
 	{	if( CppAD::isnan( grad_f[j] ) ) throw CppAD::mixed::exception(
 			"", "gradient has a nan"
 		);
-# if CPPAD_MIXED_HIDE_IPOPT_SCALING
-		grad_f[j] *= scale_f_;
-# endif
 	}
 	//
 	return;
