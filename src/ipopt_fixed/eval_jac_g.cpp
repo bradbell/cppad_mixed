@@ -7,7 +7,6 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad/mixed/configure.hpp>
 # include <cppad/mixed/exception.hpp>
 # include <cppad/mixed/ipopt_fixed.hpp>
 
@@ -94,6 +93,12 @@ $end
 */
 {	try
 	{	try_eval_jac_g(n, x, new_x, m, nele_jac, iRow, jCol, values);
+		if( values != NULL )
+		{	for(size_t ell = 0; ell < nnz_jac_g_; ell++)
+			{	size_t i     = jac_g_row_[ell];
+				values[ell] *= scale_g_[i];
+			}
+		}
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	error_message_ = e.message("ipopt_fixed::eval_jac_g");
@@ -230,10 +235,6 @@ void ipopt_fixed::try_eval_jac_g(
 	{	if( CppAD::isnan( values[ell] ) ) throw CppAD::mixed::exception(
 			"", "constraint Jacobian has a nan"
 		);
-# if CPPAD_MIXED_HIDE_IPOPT_SCALING
-		size_t i     = jac_g_row_[ell];
-		values[ell] *= scale_g_[i];
-# endif
 	}
 	return;
 }
