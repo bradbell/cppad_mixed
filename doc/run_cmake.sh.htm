@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>bin/run_cmake.sh: User Configuration Options</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="bin/run_cmake.sh: User Configuration Options">
-<meta name="keywords" id="keywords" content=" bin/run_cmake.sh: user configuration options verbose_makefile build_type cppad_prefix eigen_prefix other prefixes debug release cppad_cxx_flags cmake_libdir ldlt_cholmod checkpoint_newton_step optimize_cppad_function hide_ipopt_scaling for_hes_sparsity testing speed memory ">
+<meta name="keywords" id="keywords" content=" bin/run_cmake.sh: user configuration options verbose_makefile build_type cppad_prefix eigen_prefix other prefixes debug release cppad_cxx_flags cmake_libdir ldlt_cholmod checkpoint_newton_step optimize_cppad_function for_hes_sparsity testing speed memory ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -87,7 +87,6 @@ A:active { color : purple }
 <option>ldlt_cholmod</option>
 <option>checkpoint_newton_step</option>
 <option>optimize_cppad_function</option>
-<option>hide_ipopt_scaling</option>
 <option>for_hes_sparsity</option>
 <option>Testing Speed and Memory</option>
 </select>
@@ -246,21 +245,6 @@ when
  is <code><font color="blue">release</font></code>.
 <code><font color='blue'><pre style='display:inline'> 
 optimize_cppad_function='no'
-</pre></font></code>
-<br>
-<b><big><a name="hide_ipopt_scaling" id="hide_ipopt_scaling">hide_ipopt_scaling</a></big></b>
-<br>
-If yes, the re-scaling done by <code><font color="blue">cppad_mixed</font></code> is hidden from ipopt.
-This changes the function and derivative values
-printed during the <a href="ipopt_trace.htm" target="_top"><span style='white-space: nowrap'>ipopt_trace</span></a>
-.  On the other hand, it seems
-that hiding the scaling from Ipopt yields better convergence detection.
-If 
-<code><i><font color="black"><span style='white-space: nowrap'>hide_ipopt_scaling</span></font></i></code>
- is <code><font color="blue">no</font></code>,
-the ipopt <code><font color="blue">user-scaling</font></code> option is used (ipopt is shown the scaling).
-<code><font color='blue'><pre style='display:inline'> 
-hide_ipopt_scaling='yes'
 </pre></font></code>
 <br>
 <b><big><a name="for_hes_sparsity" id="for_hes_sparsity">for_hes_sparsity</a></big></b>

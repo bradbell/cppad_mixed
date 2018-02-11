@@ -61,7 +61,6 @@ var list_down1 = [
 'ipopt_fixed_eval_jac_g.htm',
 'ipopt_fixed_eval_h.htm',
 'ipopt_fixed_finalize_solution.htm',
-'ipopt_fixed_get_scaling_parameters.htm',
 'ipopt_fixed_adaptive_derivative_check.htm',
 'ipopt_fixed_new_random.htm',
 'ipopt_xam.htm'
@@ -75,6 +74,7 @@ var list_current0 = [
 'ipopt_fixed_adaptive_derivative_check.htm#ok',
 'ipopt_fixed_adaptive_derivative_check.htm#error_message_',
 'ipopt_fixed_adaptive_derivative_check.htm#adaptive_called_',
+'ipopt_fixed_adaptive_derivative_check.htm#fixed_scale_',
 'ipopt_fixed_adaptive_derivative_check.htm#scale_f_',
 'ipopt_fixed_adaptive_derivative_check.htm#scale_g_',
 'ipopt_fixed_adaptive_derivative_check.htm#jac_g_row_, jac_g_col_',

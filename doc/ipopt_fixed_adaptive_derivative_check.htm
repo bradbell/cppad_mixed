@@ -12,10 +12,10 @@ MathJax.Hub.Config({
 >
 </script>
 <head>
-<title>Adaptive Step Size check of eval_grad_f and eval_jac_g</title>
+<title>Adaptive Step Size check of Derivative Calculations</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
-<meta name="description" id="description" content="Adaptive Step Size check of eval_grad_f and eval_jac_g">
-<meta name="keywords" id="keywords" content=" adaptive step size check eval_grad_f eval_jac_g syntax trace relative_step relative_tol infinity ok error_message_ adaptive_called_ scale_f_ scale_g_ jac_g_row_ jac_g_col_ prototype ">
+<meta name="description" id="description" content="Adaptive Step Size check of Derivative Calculations">
+<meta name="keywords" id="keywords" content=" adaptive step size check derivative calculations syntax trace relative_step relative_tol infinity ok error_message_ adaptive_called_ fixed_scale_ scale_f_ scale_g_ jac_g_row_ jac_g_col_ prototype ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -31,7 +31,7 @@ A:active { color : purple }
 <td>
 <a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
 </td>
-<td><a href="ipopt_fixed_get_scaling_parameters.htm" target="_top">Prev</a>
+<td><a href="ipopt_fixed_finalize_solution.htm" target="_top">Prev</a>
 </td><td><a href="ipopt_fixed_new_random.htm" target="_top">Next</a>
 </td><td>
 <select onchange='choose_across0(this)'>
@@ -110,7 +110,6 @@ A:active { color : purple }
 <option>ipopt_fixed_eval_jac_g</option>
 <option>ipopt_fixed_eval_h</option>
 <option>ipopt_fixed_finalize_solution</option>
-<option>ipopt_fixed_get_scaling_parameters</option>
 <option>ipopt_fixed_adaptive_derivative_check</option>
 <option>ipopt_fixed_new_random</option>
 <option>ipopt_xam</option>
@@ -128,6 +127,7 @@ A:active { color : purple }
 <option>ok</option>
 <option>error_message_</option>
 <option>adaptive_called_</option>
+<option>fixed_scale_</option>
 <option>scale_f_</option>
 <option>scale_g_</option>
 <option>jac_g_row_, jac_g_col_</option>
@@ -137,10 +137,7 @@ A:active { color : purple }
 </tr></table><br>
 @(@\newcommand{\R}[1]{ {\rm #1} }
 \newcommand{\B}[1]{ {\bf #1} }
-\newcommand{\W}[1]{ \; #1 \; }@)@
-
-
-<center><b><big><big>Adaptive Step Size check of eval_grad_f and eval_jac_g</big></big></b></center>
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Adaptive Step Size check of Derivative Calculations</big></big></b></center>
 <br>
 <b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
 
@@ -230,6 +227,21 @@ This member variable has prototype
 It's value upon call must be <code><font color="blue">false</font></code>.
 It is set to true at the beginning of <code><font color="blue">adaptive_derivative_check</font></code>,
 before any other <code><font color="blue">ipopt_fixed</font></code> routine is called.
+
+<br>
+<br>
+<b><big><a name="fixed_scale_" id="fixed_scale_">fixed_scale_</a></big></b>
+<br>
+This member variable has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_vector&nbsp;fixed_scale_<br>
+</span></font></code>
+and is size is equal to the number of fixed effects.
+It is used as the point where in the extended space 
+<code><i><font color="black"><span style='white-space: nowrap'>x</span></font></i></code>
+
+where the scaling and derivative testing is done.
 
 <br>
 <br>

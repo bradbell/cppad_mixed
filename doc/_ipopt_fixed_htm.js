@@ -60,7 +60,6 @@ var list_down0 = [
 'ipopt_fixed_eval_jac_g.htm',
 'ipopt_fixed_eval_h.htm',
 'ipopt_fixed_finalize_solution.htm',
-'ipopt_fixed_get_scaling_parameters.htm',
 'ipopt_fixed_adaptive_derivative_check.htm',
 'ipopt_fixed_new_random.htm',
 'ipopt_xam.htm'

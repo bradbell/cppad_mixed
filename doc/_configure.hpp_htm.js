@@ -53,7 +53,6 @@ var list_current0 = [
 'configure.hpp.htm#Private',
 'configure.hpp.htm#CPPAD_MIXED_VERSION',
 'configure.hpp.htm#CPPAD_MIXED_FOR_HES_SPARSITY',
-'configure.hpp.htm#CPPAD_MIXED_HIDE_IPOPT_SCALING',
 'configure.hpp.htm#CPPAD_MIXED_OPTIMIZE_AD_FUNCTION',
 'configure.hpp.htm#CPPAD_MIXED_CHECKPOINT_NEWTON_STEP',
 'configure.hpp.htm#CPPAD_MIXED_LDLT_CHOLMOD',
