@@ -7,7 +7,6 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad/mixed/configure.hpp>
 # include <cppad/mixed/exception.hpp>
 # include <cppad/mixed/ipopt_fixed.hpp>
 
@@ -62,6 +61,7 @@ $end
 */
 {	try
 	{	try_eval_f(n, x, new_x, obj_value);
+		obj_value *= scale_f_;
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	error_message_ = e.message("ipopt_fixed::eval_f");
@@ -112,9 +112,6 @@ void ipopt_fixed::try_eval_f(
 	if( CppAD::isnan(obj_value) ) throw CppAD::mixed::exception(
 		"", "objective is nan"
 	);
-# if CPPAD_MIXED_HIDE_IPOPT_SCALING
-	obj_value *= scale_f_;
-# endif
 	return;
 }
 } } // END_CPPAD_MIXED_NAMESPACE
