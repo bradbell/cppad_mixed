@@ -64,7 +64,6 @@ $childtable%src/ipopt_fixed/ctor.cpp
 	%src/ipopt_fixed/eval_jac_g.cpp
 	%src/ipopt_fixed/eval_h.cpp
 	%src/ipopt_fixed/finalize_solution.cpp
-	%src/ipopt_fixed/get_scaling_parameters.cpp
 	%src/ipopt_fixed/adaptive_derivative_check.cpp
 	%src/ipopt_fixed/new_random.cpp
 	%example/ipopt_xam.omh
@@ -351,15 +350,6 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			Number                            obj_value ,
 			const Ipopt::IpoptData*           ip_data   ,
 			Ipopt::IpoptCalculatedQuantities* ip_cq
-		);
-		virtual bool get_scaling_parameters(
-			Number&            obj_scaling    ,
-			bool&              use_x_scaling  ,
-			Index              n              ,
-			Number*            x_scaling      ,
-			bool&              use_g_scaling  ,
-			Index              m              ,
-			Number*            g_scaling
 		);
 		// -----------------------------------------------------------------
 		bool adaptive_derivative_check( bool trace, double relative_tol);

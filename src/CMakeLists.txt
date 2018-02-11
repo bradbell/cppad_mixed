@@ -46,7 +46,6 @@ ADD_LIBRARY(cppad_mixed
 	ipopt_app_status.cpp
 	ipopt_fixed/new_random.cpp
 	ipopt_fixed/adaptive_derivative_check.cpp
-	ipopt_fixed/get_scaling_parameters.cpp
 	ipopt_fixed/finalize_solution.cpp
 	ipopt_fixed/eval_h.cpp
 	ipopt_fixed/eval_jac_g.cpp
