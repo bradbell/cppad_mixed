@@ -22,7 +22,6 @@
 #                        -D ldlt_cholmod=value \
 #                        -D checkpoint_newton_step=value \
 #                        -D optimize_cppad_function=value \
-#                        -D hide_ipopt_scaling=value \
 #                        -D for_hes_sparsity=value
 # ============================================================================
 # Macro definitions
@@ -150,10 +149,10 @@ MESSAGE(STATUS "BEGIN:")
 MESSAGE(STATUS "CMAKE_VERBOSE_MAKEFILE = ${CMAKE_VERBOSE_MAKEFILE}")
 MESSAGE(STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 # ----------------------------------------------------------------------------
-FOREACH( var set_sparsity use_atomic_cholesky )
-IF( ${var} )
-	MESSAGE(FATAL_ERROR "${var} no longer used in cppad_mixed cmake command")
-ENDIF( ${var} )
+FOREACH( var set_sparsity use_atomic_cholesky hide_ipopt_scaling)
+	IF( DEFINED ${var})
+		MESSAGE(FATAL_ERROR "${var} cmake option is no longer used")
+	ENDIF( DEFINED ${var})
 ENDFOREACH( var )
 # ----------------------------------------------------------------------------
 IF( NOT "${extra_cxx_flags}" STREQUAL "" )
@@ -184,9 +183,6 @@ required_definition(checkpoint_newton_step BOOL
 )
 required_definition(optimize_cppad_function BOOL
 	"should AD operation sequences be optimized (false is for debug purposes)"
-)
-required_definition(hide_ipopt_scaling BOOL
-	"should cppad_mixed hide it's re-scaling from ipopt"
 )
 required_definition(for_hes_sparsity BOOL
 	"use forward (reverse) method for computing Hessian w.r.t. random effects"

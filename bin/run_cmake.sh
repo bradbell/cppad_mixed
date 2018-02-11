@@ -143,17 +143,6 @@ checkpoint_newton_step='no'
 optimize_cppad_function='no'
 # &&
 #
-# &head hide_ipopt_scaling&&
-# If yes, the re-scaling done by &code cppad_mixed&& is hidden from ipopt.
-# This changes the function and derivative values
-# printed during the &cref ipopt_trace&&.  On the other hand, it seems
-# that hiding the scaling from Ipopt yields better convergence detection.
-# If &icode hide_ipopt_scaling&& is &code no&&,
-# the ipopt &code user-scaling&& option is used (ipopt is shown the scaling).
-# &codep
-hide_ipopt_scaling='yes'
-# &&
-#
 # &head for_hes_sparsity&&
 # If yes, user &code for_hes_sparsity&& to compute sparsity w.r.t. random
 # effects (otherwise use &code rev_hes_sparsity&&).
@@ -204,7 +193,6 @@ usage: bin/run_cmake.sh \\
 	[--verbose] \\
 	[--ldlt_eigen] \\
 	[--optimize_cppad_function] \\
-	[--show_ipopt_scaling] \\
 	[--rev_hes_sparsity] \\
 	[--release] \\
 	[--dismod_at_prefix]
@@ -223,9 +211,6 @@ EOF
 	elif [ "$1" == '--optimize_cppad_function' ]
 	then
 		optimize_cppad_function='yes'
-	elif [ "$1" == '--show_ipopt_scaling' ]
-	then
-		hide_ipopt_scaling='no'
 	elif [ "$1" == '--rev_hes_sparsity' ]
 	then
 		for_hes_sparsity='no'
@@ -280,7 +265,6 @@ cmake \
 	-D ldlt_cholmod="$ldlt_cholmod" \
 	-D checkpoint_newton_step="$checkpoint_newton_step" \
 	-D optimize_cppad_function="$optimize_cppad_function" \
-	-D hide_ipopt_scaling="$hide_ipopt_scaling" \
 	-D for_hes_sparsity="$for_hes_sparsity" \
 	..
 # ---------------------------------------------------------------------------

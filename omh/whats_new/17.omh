@@ -225,8 +225,9 @@ setting $cref/LD_LIBRARY_PATH/check_install.sh/LD_LIBRARY_PATH/$$
 in the $code bin/check_install.sh$$ example.
 $lnext
 Add the
-$cref/hide_ipopt_scaling/run_cmake.sh/hide_ipopt_scaling/$$ option
-to the install configuration script $code bin/run_cmake.sh$$.
+$code hide_ipopt_scaling$$ option
+to the install configuration script $cref run_cmake.sh$$.
+(This option was removed on $cref/2018-02-10/whats_new_18/02-10/$$.)
 $lend
 
 $head 04-06$$
