@@ -7,7 +7,6 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# include <cppad/mixed/configure.hpp>
 # include <cppad/mixed/exception.hpp>
 # include <cppad/mixed/ipopt_fixed.hpp>
 
@@ -65,6 +64,8 @@ $end
 */
 {	try
 	{	try_eval_g(n, x, new_x, m, g);
+		for(size_t i = 0; i < size_t(m); i++)
+			g[i] *= scale_g_[i];
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	error_message_ = e.message("ipopt_fixed::eval_g");
@@ -128,9 +129,6 @@ void ipopt_fixed::try_eval_g(
 	{	if( CppAD::isnan( g[i] ) ) throw CppAD::mixed::exception(
 			"", "constaint function has a nan"
 		);
-# if CPPAD_MIXED_HIDE_IPOPT_SCALING
-		g[i] *= scale_g_[i];
-# endif
 	}
 	return;
 }
