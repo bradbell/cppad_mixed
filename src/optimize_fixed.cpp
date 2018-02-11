@@ -283,7 +283,6 @@ $end
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/ipopt_fixed.hpp>
 # include <cppad/mixed/exception.hpp>
-# include <cppad/mixed/configure.hpp>
 # include <cppad/mixed/ipopt_app_status.hpp>
 
 CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
@@ -333,11 +332,7 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	// Create an instance of an IpoptApplication
 	SmartPtr<Ipopt::IpoptApplication> app = IpoptApplicationFactory();
 	//
-# if CPPAD_MIXED_HIDE_IPOPT_SCALING
 	app->Options()->SetStringValue("nlp_scaling_method", "none");
-# else
-	app->Options()->SetStringValue("nlp_scaling_method", "user-scaling");
-# endif
 	if( quasi_fixed_ )
 	{	// special defaults settings
 		app->Options()->SetStringValue(
