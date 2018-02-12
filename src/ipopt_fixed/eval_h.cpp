@@ -124,6 +124,13 @@ $end
 			for(size_t i = 0; i < size_t(m); i++)
 				lambda_scaled[i] = scale_g_[i] * lambda[i];
 		}
+		else
+		{	// this case not necessary (avoids warnings)
+			double nan = std::numeric_limits<double>::quiet_NaN();
+			obj_factor_scaled = nan;
+			for(size_t i = 0; i < size_t(m); i++)
+				lambda_scaled[i] = nan;
+		}
 		try_eval_h(
 			n,
 			x,
