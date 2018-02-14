@@ -35,6 +35,10 @@ $childtable%
 	omh/whats_new/15.omh
 %$$
 
+$head 02-12$$
+Add more discussion of
+$cref/fixed_scale/optimize_fixed/fixed_scale/$$.
+
 $head 02-11$$
 Avoid warning: 'obj_factor_scaled' may be used uninitialized in eval_h
 on some systems.

@@ -169,9 +169,10 @@ This argument has prototype
 $codei%
 	const CppAD::vector<double>& %fixed_scale%
 %$$
-The automatic scaling for the fixed effect objective and constraint functions
-is done using their derivatives at $icode fixed_scale$$.
-In addition, convergence is be relative to the these derivatives.
+The fixed effect objective and constraint functions are multiplied by a
+scale factor so that their derivatives are near one at $icode fixed_scale$$.
+This makes the Ipopt tolerance be relative to the derivatives at
+$icode fixed_scale$$.
 It must hold for each $icode j$$ that
 $codei%
 	%fixed_lower%[%j%] <= %fixed_scale%[%j%] <= %fixed_upper%[%j%]
