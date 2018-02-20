@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2018</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2018">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2018 02-10 02-08 02-07 02-05 01-23 01-22 01-21 01-15 01-14 ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2018 02-20 02-12 02-11 02-10 02-08 02-07 02-05 01-23 01-22 01-21 01-15 01-14 ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -75,6 +75,9 @@ A:active { color : purple }
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
 <option>Contents</option>
+<option>02-20</option>
+<option>02-12</option>
+<option>02-11</option>
 <option>02-10</option>
 <option>02-08</option>
 <option>02-07</option>
@@ -95,12 +98,42 @@ A:active { color : purple }
 <br>
 <table>
 <tr><td><a href="whats_new_17.htm" target="_top">whats_new_17</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2017</td></tr><tr><td><a href="whats_new_16.htm" target="_top">whats_new_16</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2016</td></tr><tr><td><a href="whats_new_15.htm" target="_top">whats_new_15</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2015</td></tr></table><br>
-<b><big><a name="02-10" id="02-10">02-10</a></big></b>
+<b><big><a name="02-20" id="02-20">02-20</a></big></b>
 <br>
+Some function declarations for friends in <code><font color="blue">cppad_mixed.hpp</font></code>
+were missing. This has been fixed.
+
+<br>
+<br>
+<b><big><a name="02-12" id="02-12">02-12</a></big></b>
+<br>
+Add more discussion of
+<a href="optimize_fixed.htm#fixed_scale" target="_top"><span style='white-space: nowrap'>fixed_scale</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="02-11" id="02-11">02-11</a></big></b>
+<br>
+Avoid warning: 'obj_factor_scaled' may be used uninitialized in eval_h
+on some systems.
+
+<br>
+<br>
+<b><big><a name="02-10" id="02-10">02-10</a></big></b>
+
+<ol type="1"><li>
 The <code><font color="blue">hide_ipopt_scaling</font></code> option was removed from the
 <a href="run_cmake.sh.htm" target="_top"><span style='white-space: nowrap'>cmake&nbsp;command</span></a>
  and the scaling is always
 hidden from ipopt.
+</li><li>
+
+Improve discussion of the <a href="optimize_fixed.htm#fixed_scale" target="_top"><span style='white-space: nowrap'>fixed_scale</span></a>
+
+argument to the <code><font color="blue">optimize_fixed</font></code> function.
+</li></ol>
+
 
 <br>
 <br>

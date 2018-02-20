@@ -387,9 +387,14 @@ This argument has prototype
 <code><font color="blue"><span style='white-space: nowrap'><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_scale</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 </span></font></code>
-The automatic scaling for the fixed effect optimization is
-done using this point and the convergence will be relative
-to the derivative values at this point.
+The fixed effect objective and constraint functions are multiplied by a
+scale factor so that their derivatives are near one at 
+<code><i><font color="black"><span style='white-space: nowrap'>fixed_scale</span></font></i></code>
+.
+This makes the Ipopt tolerance be relative to the derivatives at
+
+<code><i><font color="black"><span style='white-space: nowrap'>fixed_scale</span></font></i></code>
+.
 It must hold for each 
 <code><i><font color="black"><span style='white-space: nowrap'>j</span></font></i></code>
  that
@@ -397,12 +402,12 @@ It must hold for each
 <code><font color="blue"><span style='white-space: nowrap'><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_scale</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
 </span></font></code>
-Components of the fixed effects for which
+Partial derivatives with respect to components for which
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
 </span></font></code>
-Are not included in this scaling.
+are not included in this scaling.
 Note that you can continue an optimization with the same scaling
 by setting
 
@@ -410,6 +415,8 @@ by setting
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_in</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_opt<br>
 </span></font></code>
 and the re-running the optimization.
+Also note that scaling the fixed effects is not done by <code><font color="blue">cppad_mixed</font></code>
+and should be done by the users program when it is useful.
 
 <br>
 <br>
