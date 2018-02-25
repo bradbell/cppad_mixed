@@ -10,7 +10,6 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
 $begin ar1_xam.cpp$$
-$escape $$
 $spell
 	cmake
 	bool

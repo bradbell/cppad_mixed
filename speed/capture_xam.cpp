@@ -10,7 +10,6 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
 $begin capture_xam.cpp$$
-$escape $$
 $spell
 	cmake
 	bool
