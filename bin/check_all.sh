@@ -48,9 +48,9 @@ then
 	echo_eval rm -rf $installed_include_dir
 fi
 # -----------------------------------------------------------------------------
-# run bin/check_*.sh
+# run bin/check_*.sh and ~bradbell/bin/check_copyright.sh
 list=`ls bin/check_*.sh`
-for script in $list
+for script in $list check_copyright.sh
 do
 	if [ "$script" != 'bin/check_all.sh' ] \
 	&& [ "$script" != 'bin/check_install.sh' ]
@@ -60,7 +60,7 @@ do
 done
 #
 # check version number
-bin/version.sh check
+version.sh check
 #
 # check latex in omhelp
 echo_eval run_omhelp.sh -xml doc

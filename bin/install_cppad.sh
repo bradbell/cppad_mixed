@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-17 University of Washington
+#           Copyright (C) 2014-18 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -66,15 +66,11 @@ pwd
 #
 echo_eval cd cppad-$version
 echo_eval git checkout --quiet $hash_key
-check=`bin/version.sh get`
+check=`grep '^SET(cppad_version' CMakeLists.txt | \
+	sed -e 's|^[^"]*"\([^"]*\).*|\1|'`
 if [ "$version" != "$check" ]
 then
 	echo 'version number does not agree with hash_key'
-	exit 1
-fi
-if ! bin/version.sh check
-then
-	echo 'version in CMakeLists.txt does not agree with rest of source'
 	exit 1
 fi
 # -----------------------------------------------------------------------------
