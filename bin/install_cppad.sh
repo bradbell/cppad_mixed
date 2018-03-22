@@ -70,7 +70,7 @@ check=`grep '^SET(cppad_version' CMakeLists.txt | \
 	sed -e 's|^[^"]*"\([^"]*\).*|\1|'`
 if [ "$version" != "$check" ]
 then
-	echo 'version number does not agree with hash_key'
+	echo 'install_cppad.sh: version number does not agree with hash_key'
 	exit 1
 fi
 # -----------------------------------------------------------------------------

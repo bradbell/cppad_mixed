@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -13,23 +13,26 @@ $spell
 	CppAD
 	cppad
 	Kedem
+	init
+	hes
+	rcv
 $$
 
 $section CppAD Mixed Wish List$$
 
-$head Student's T$$
-There is a problem using the absolute value terms in the
-$cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
-to obtain robust fitting of data and outlier detection.
-To be specific, each such data point results in an extra auxiliary variable
-in the optimization problem.
-If there is lots of data, this makes the optimization problem very large.
-$href%https://amath.washington.edu/people/aleksandr-aravkin%Sasha%$$
-suggested using Student's t-distribution which would yield robust fitting
-and outlier detection, and does not suffer from this problem.
-Even better is the fact that it can be used with data that depends
-on the random effects (because it is smooth).
+$head Sparse Matrix$$
+Move the calculation of $cref/fix_like_hes_/init_fix_like/fix_like_hes_/$$
+to a separate routine so it does not get calculated when
+$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is true.
+If $icode quasi_fixed$$ is true, $code fix_like_hes_$$
+would need to be initialized the first time
+$cref information_mat$$ is called.
 
+$head sparse_rcv$$
+Convert all the sparse matrix structures to use
+$code CppAD::sparse_rcv$$ instead of
+Use $cref sparse_mat_info$$ and
+$icode row$$, $icode col$$, $icode val$$ triples.
 
 $head Aborting Optimization$$
 It would be helpful to return the fixed and random effects
@@ -62,16 +65,6 @@ $cref/random constraints
 	/Random Constraint Matrix, A
 /$$
 in the $cref optimize_fixed$$ and $cref sample_fixed$$ interfaces.
-
-$head sparse_mat_info$$
-Use $cref sparse_mat_info$$ instead of
-$icode row$$, $icode col$$, $icode val$$ triples
-in syntax for following routines:
-$cref fix_con_hes$$,
-$cref fix_con_jac$$,
-$cref fix_like_hes$$,
-$cref fix_like_jac$$,
-$cref laplace_obj_hes$$.
 
 $head Windows Install$$
 Make and test a set of Windows install instructions for $code cppad_mixed$$.
