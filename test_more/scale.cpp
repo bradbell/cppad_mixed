@@ -115,12 +115,13 @@ bool scale(void)
 
 	// optimize the fixed effects using quasi-Newton method
 	std::string fixed_ipopt_options =
-		"Integer print_level               0\n"
-		"String  sb                        yes\n"
-		"String  derivative_test           first-order\n"
+		"Integer print_level                0\n"
+		"String  sb                         yes\n"
+		"String  derivative_test            first-order\n"
 		"String  derivative_test_print_all yes\n"
-		"Numeric tol                       1e-10\n"
-		"Integer max_iter                  20\n"
+		"Numeric tol                        1e-10\n"
+		"Integer max_iter                   20\n"
+		"Integer limited_memory_max_history 10\n"
 	;
 	std::string random_ipopt_options =
 		"Integer print_level 0\n"

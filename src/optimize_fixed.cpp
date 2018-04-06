@@ -90,11 +90,6 @@ If $icode quasi_fixed$$ is true,
 $icode hessian_approximation$$ will be set to $code limit-memory$$.
 If it is also set in $icode fixed_ipopt_options$$, it must have this value.
 
-$subhead limited_memory_max_history$$
-If $icode quasi_fixed$$ is true,
-$icode limited_memory_max_history$$ will be set to an unspecified value and
-cannot be cannot be set in $icode fixed_ipopt_options$$.
-
 $subhead max_iter$$
 If $icode%max_iter% <= 0%$$ in $icode fixed_ipopt_options$$,
 Ipopt is run with $icode%max_iter% = 0%$$ and the return status
@@ -340,8 +335,6 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	{	// special defaults settings
 		app->Options()->SetStringValue(
 			"hessian_approximation", "limited-memory");
-		app->Options()->SetIntegerValue(
-			"limited_memory_max_history", 30);
 	}
 	app->Options()->SetIntegerValue(
 		"accept_after_max_steps", 2

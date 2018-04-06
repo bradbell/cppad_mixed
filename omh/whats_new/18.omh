@@ -38,6 +38,12 @@ $childtable%
 	omh/whats_new/15.omh
 %$$
 
+$head 04-06$$
+The $code limited_memory_max_history$$ setting used to be forbidden as an
+$cref/fixed_ipopt_option/optimize_fixed/fixed_ipopt_options/$$ because
+it was chosen by $code cppad_mixed$$.
+This has been changed and now the user can choose this ipopt option.
+
 $head 03-22$$
 In the wish list,
 remove the Student's t item and change the
