@@ -384,25 +384,25 @@ to
 
 <br>
 <br>
-<b><a name="Constants.n_fixed_" id="Constants.n_fixed_">n_fixed_</a></b>
+<big><a name="Constants.n_fixed_" id="Constants.n_fixed_">n_fixed_</a></big>
 <br>
 is the number of fixed effects.
 
 <br>
 <br>
-<b><a name="Constants.n_random_" id="Constants.n_random_">n_random_</a></b>
+<big><a name="Constants.n_random_" id="Constants.n_random_">n_random_</a></big>
 <br>
 is the number of random effects.
 
 <br>
 <br>
-<b><a name="Constants.n_fix_con_" id="Constants.n_fix_con_">n_fix_con_</a></b>
+<big><a name="Constants.n_fix_con_" id="Constants.n_fix_con_">n_fix_con_</a></big>
 <br>
 is the number of fixed constraints.
 
 <br>
 <br>
-<b><a name="Constants.n_ran_con" id="Constants.n_ran_con">n_ran_con</a></b>
+<big><a name="Constants.n_ran_con" id="Constants.n_ran_con">n_ran_con</a></big>
 <br>
 is the number of random constraints.
 
@@ -415,49 +415,49 @@ They can be used as temporaries, but their sizes should not change.
 
 <br>
 <br>
-<b><a name="Temporaries.fixed_tmp_" id="Temporaries.fixed_tmp_">fixed_tmp_</a></b>
+<big><a name="Temporaries.fixed_tmp_" id="Temporaries.fixed_tmp_">fixed_tmp_</a></big>
 <br>
 size <code><font color="blue">n_fixed_</font></code>
 
 <br>
 <br>
-<b><a name="Temporaries.c_vec_tmp_" id="Temporaries.c_vec_tmp_">c_vec_tmp_</a></b>
+<big><a name="Temporaries.c_vec_tmp_" id="Temporaries.c_vec_tmp_">c_vec_tmp_</a></big>
 <br>
 size <code><font color="blue">n_fix_con_</font></code>
 
 <br>
 <br>
-<b><a name="Temporaries.A_uhat_tmp_" id="Temporaries.A_uhat_tmp_">A_uhat_tmp_</a></b>
+<big><a name="Temporaries.A_uhat_tmp_" id="Temporaries.A_uhat_tmp_">A_uhat_tmp_</a></big>
 <br>
 size <code><font color="blue">n_ran_con_</font></code>
 
 <br>
 <br>
-<b><a name="Temporaries.H_beta_tmp_" id="Temporaries.H_beta_tmp_">H_beta_tmp_</a></b>
+<big><a name="Temporaries.H_beta_tmp_" id="Temporaries.H_beta_tmp_">H_beta_tmp_</a></big>
 <br>
 size <code><font color="blue">n_fixed_</font></code>
 
 <br>
 <br>
-<b><a name="Temporaries.w_fix_con_tmp_" id="Temporaries.w_fix_con_tmp_">w_fix_con_tmp_</a></b>
+<big><a name="Temporaries.w_fix_con_tmp_" id="Temporaries.w_fix_con_tmp_">w_fix_con_tmp_</a></big>
 <br>
 size <code><font color="blue">n_fix_con_</font></code>
 
 <br>
 <br>
-<b><a name="Temporaries.w_laplace_obj_tmp_" id="Temporaries.w_laplace_obj_tmp_">w_laplace_obj_tmp_</a></b>
+<big><a name="Temporaries.w_laplace_obj_tmp_" id="Temporaries.w_laplace_obj_tmp_">w_laplace_obj_tmp_</a></big>
 <br>
 size <code><font color="blue">n_ran_con_ + 1</font></code>.
 
 <br>
 <br>
-<b><a name="Temporaries.w_fix_likelihood_tmp_" id="Temporaries.w_fix_likelihood_tmp_">w_fix_likelihood_tmp_</a></b>
+<big><a name="Temporaries.w_fix_likelihood_tmp_" id="Temporaries.w_fix_likelihood_tmp_">w_fix_likelihood_tmp_</a></big>
 <br>
 size <code><font color="blue">fix_likelihood_nabs_ + 1</font></code>
 
 <br>
 <br>
-<b><a name="Temporaries.fix_likelihood_vec_tmp_" id="Temporaries.fix_likelihood_vec_tmp_">fix_likelihood_vec_tmp_</a></b>
+<big><a name="Temporaries.fix_likelihood_vec_tmp_" id="Temporaries.fix_likelihood_vec_tmp_">fix_likelihood_vec_tmp_</a></big>
 <br>
 If <code><font color="blue">mixed_object_.fix_like_eval</font></code>
 returns a vector of size zero, this vector has size zero,
@@ -472,19 +472,19 @@ and should not be modified.
 
 <br>
 <br>
-<b><a name="Effectively Constant Member Variables.nlp_lower_bound_inf_" id="Effectively Constant Member Variables.nlp_lower_bound_inf_">nlp_lower_bound_inf_</a></b>
+<big><a name="Effectively Constant Member Variables.nlp_lower_bound_inf_" id="Effectively Constant Member Variables.nlp_lower_bound_inf_">nlp_lower_bound_inf_</a></big>
 <br>
 set to a finite value that is used by Ipopt for minus infinity.
 
 <br>
 <br>
-<b><a name="Effectively Constant Member Variables.nlp_upper_bound_inf_" id="Effectively Constant Member Variables.nlp_upper_bound_inf_">nlp_upper_bound_inf_</a></b>
+<big><a name="Effectively Constant Member Variables.nlp_upper_bound_inf_" id="Effectively Constant Member Variables.nlp_upper_bound_inf_">nlp_upper_bound_inf_</a></big>
 <br>
 set to a finite value that is used by Ipopt for plus infinity.
 
 <br>
 <br>
-<b><a name="Effectively Constant Member Variables.fix_likelihood_nabs_" id="Effectively Constant Member Variables.fix_likelihood_nabs_">fix_likelihood_nabs_</a></b>
+<big><a name="Effectively Constant Member Variables.fix_likelihood_nabs_" id="Effectively Constant Member Variables.fix_likelihood_nabs_">fix_likelihood_nabs_</a></big>
 <br>
 number of absolute value terms in the
 <a href="fix_likelihood.htm" target="_top"><span style='white-space: nowrap'>fix_likelihood</span></a>
@@ -492,40 +492,40 @@ number of absolute value terms in the
 
 <br>
 <br>
-<b><a name="Effectively Constant Member Variables.nnz_jac_g_" id="Effectively Constant Member Variables.nnz_jac_g_">nnz_jac_g_</a></b>
+<big><a name="Effectively Constant Member Variables.nnz_jac_g_" id="Effectively Constant Member Variables.nnz_jac_g_">nnz_jac_g_</a></big>
 <br>
 number of non-zeros in the Jacobian of the ipopt constraints.
 
 <br>
 <br>
-<b><a name="Effectively Constant Member Variables.nnz_h_lag_" id="Effectively Constant Member Variables.nnz_h_lag_">nnz_h_lag_</a></b>
+<big><a name="Effectively Constant Member Variables.nnz_h_lag_" id="Effectively Constant Member Variables.nnz_h_lag_">nnz_h_lag_</a></big>
 <br>
 number of non-zeros in the Hessian of the ipopt constraints.
 
 <br>
 <br>
-<b><a name="Effectively Constant Member Variables.lag_hes_row_" id="Effectively Constant Member Variables.lag_hes_row_">lag_hes_row_</a></b>
+<big><a name="Effectively Constant Member Variables.lag_hes_row_" id="Effectively Constant Member Variables.lag_hes_row_">lag_hes_row_</a></big>
 <br>
 Ipopt row indices for the sparse representation of the Hessian
 of the Lagrangian (for any Lagrange multiplier values).
 
 <br>
 <br>
-<b><a name="Effectively Constant Member Variables.lag_hes_col_" id="Effectively Constant Member Variables.lag_hes_col_">lag_hes_col_</a></b>
+<big><a name="Effectively Constant Member Variables.lag_hes_col_" id="Effectively Constant Member Variables.lag_hes_col_">lag_hes_col_</a></big>
 <br>
 Ipopt column indices for the sparse representation of the Hessian
 of the Lagrangian (for any Lagrange multiplier values).
 
 <br>
 <br>
-<b><a name="Effectively Constant Member Variables.laplace_obj_hes_2_lag_" id="Effectively Constant Member Variables.laplace_obj_hes_2_lag_">laplace_obj_hes_2_lag_</a></b>
+<big><a name="Effectively Constant Member Variables.laplace_obj_hes_2_lag_" id="Effectively Constant Member Variables.laplace_obj_hes_2_lag_">laplace_obj_hes_2_lag_</a></big>
 <br>
 Mapping from random object plus constraint Hessian sparse indices
 to ipopt Hessian sparse indices.
 
 <br>
 <br>
-<b><a name="Effectively Constant Member Variables.fix_like_hes_2_lag_" id="Effectively Constant Member Variables.fix_like_hes_2_lag_">fix_like_hes_2_lag_</a></b>
+<big><a name="Effectively Constant Member Variables.fix_like_hes_2_lag_" id="Effectively Constant Member Variables.fix_like_hes_2_lag_">fix_like_hes_2_lag_</a></big>
 <br>
 Mapping from fixed likelihood Hessian sparse indices
 to ipopt Hessian sparse indices.
@@ -543,14 +543,14 @@ but element values may change.
 
 <br>
 <br>
-<b><a name="Sparsity Information.ran_con_jac_rcv_" id="Sparsity Information.ran_con_jac_rcv_">ran_con_jac_rcv_</a></b>
+<big><a name="Sparsity Information.ran_con_jac_rcv_" id="Sparsity Information.ran_con_jac_rcv_">ran_con_jac_rcv_</a></big>
 <br>
 Sparse matrix information for the Jacobian of the
 random constraints.
 
 <br>
 <br>
-<b><a name="Sparsity Information.laplace_obj_hes_info_" id="Sparsity Information.laplace_obj_hes_info_">laplace_obj_hes_info_</a></b>
+<big><a name="Sparsity Information.laplace_obj_hes_info_" id="Sparsity Information.laplace_obj_hes_info_">laplace_obj_hes_info_</a></big>
 <br>
 If <code><font color="blue">n_random_ &gt; 0</font></code>, sparse matrix information for the Hessian of the
 Laplace objective and constraints.

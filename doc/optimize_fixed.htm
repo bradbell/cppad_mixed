@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Optimize Fixed Effects</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Optimize Fixed Effects">
-<meta name="keywords" id="keywords" content=" optimize fixed effects syntax public purpose inf mixed_object fixed_ipopt_options derivative_test hessian_approximation limited_memory_max_history max_iter accept_after_max_steps nlp_scaling_method random_ipopt_options fixed_lower fixed_upper fix_constraint_lower fix_constraint_upper fixed_scale fixed_in random_lower random_upper random_in solution laplace approximation example ipopt_fixed ">
+<meta name="keywords" id="keywords" content=" optimize fixed effects syntax public purpose inf mixed_object fixed_ipopt_options derivative_test hessian_approximation max_iter accept_after_max_steps nlp_scaling_method random_ipopt_options fixed_lower fixed_upper fix_constraint_lower fix_constraint_upper fixed_scale fixed_in random_lower random_upper random_in solution laplace approximation example ipopt_fixed ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -108,7 +108,6 @@ A:active { color : purple }
 <option>fixed_ipopt_options</option>
 <option>---..derivative_test</option>
 <option>---..hessian_approximation</option>
-<option>---..limited_memory_max_history</option>
 <option>---..max_iter</option>
 <option>---..accept_after_max_steps</option>
 <option>---..nlp_scaling_method</option>
@@ -202,7 +201,7 @@ with the following qualifications:
 
 <br>
 <br>
-<b><a name="fixed_ipopt_options.derivative_test" id="fixed_ipopt_options.derivative_test">derivative_test</a></b>
+<big><a name="fixed_ipopt_options.derivative_test" id="fixed_ipopt_options.derivative_test">derivative_test</a></big>
 <br>
 If 
 <code><i><font color="black"><span style='white-space: nowrap'>derivative_test</span></font></i></code>
@@ -225,7 +224,7 @@ the adaptive step size results are traced on standard output.
 
 <br>
 <br>
-<b><a name="fixed_ipopt_options.hessian_approximation" id="fixed_ipopt_options.hessian_approximation">hessian_approximation</a></b>
+<big><a name="fixed_ipopt_options.hessian_approximation" id="fixed_ipopt_options.hessian_approximation">hessian_approximation</a></big>
 <br>
 If 
 <code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
@@ -239,21 +238,7 @@ If it is also set in
 
 <br>
 <br>
-<b><a name="fixed_ipopt_options.limited_memory_max_history" id="fixed_ipopt_options.limited_memory_max_history">limited_memory_max_history</a></b>
-<br>
-If 
-<code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
- is true,
-
-<code><i><font color="black"><span style='white-space: nowrap'>limited_memory_max_history</span></font></i></code>
- will be set to an unspecified value and
-cannot be cannot be set in 
-<code><i><font color="black"><span style='white-space: nowrap'>fixed_ipopt_options</span></font></i></code>
-.
-
-<br>
-<br>
-<b><a name="fixed_ipopt_options.max_iter" id="fixed_ipopt_options.max_iter">max_iter</a></b>
+<big><a name="fixed_ipopt_options.max_iter" id="fixed_ipopt_options.max_iter">max_iter</a></big>
 <br>
 If 
 <code><i><font color="black"><span style='white-space: nowrap'>max_iter</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;&lt;=&nbsp;0</span></font></code>
@@ -282,7 +267,7 @@ If
 
 <br>
 <br>
-<b><a name="fixed_ipopt_options.accept_after_max_steps" id="fixed_ipopt_options.accept_after_max_steps">accept_after_max_steps</a></b>
+<big><a name="fixed_ipopt_options.accept_after_max_steps" id="fixed_ipopt_options.accept_after_max_steps">accept_after_max_steps</a></big>
 <br>
 The default value for 
 <code><i><font color="black"><span style='white-space: nowrap'>accept_after_max_steps</span></font></i></code>
@@ -294,7 +279,7 @@ accepting a line search point; see
 
 <br>
 <br>
-<b><a name="fixed_ipopt_options.nlp_scaling_method" id="fixed_ipopt_options.nlp_scaling_method">nlp_scaling_method</a></b>
+<big><a name="fixed_ipopt_options.nlp_scaling_method" id="fixed_ipopt_options.nlp_scaling_method">nlp_scaling_method</a></big>
 <br>
 When optimizing the fixed effects,
 the objective and the constraint functions are automatically scaled

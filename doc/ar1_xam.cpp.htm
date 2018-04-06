@@ -153,7 +153,7 @@ A:active { color : purple }
 
 <br>
 <br>
-<b><a name="Problem.Data" id="Problem.Data">Data</a></b>
+<big><a name="Problem.Data" id="Problem.Data">Data</a></big>
 <br>
 For <small>@(@
 t = 0 , \ldots , T - 1
@@ -168,7 +168,7 @@ e_t \sim \B{N}( 0, \sigma_y^2 )
 
 <br>
 <br>
-<b><a name="Problem.p( y_t | u , theta )" id="Problem.p( y_t | u , theta )">p( y_t | u , theta )</a></b>
+<big><a name="Problem.p( y_t | u , theta )" id="Problem.p( y_t | u , theta )">p( y_t | u , theta )</a></big>
 <br>
 For <small>@(@
 t = 0 , \ldots , T - 1
@@ -179,7 +179,7 @@ y_t \sim \B{N}( u_t , \sigma_y^2 )
 
 <br>
 <br>
-<b><a name="Problem.p( u | theta )" id="Problem.p( u | theta )">p( u | theta )</a></b>
+<big><a name="Problem.p( u | theta )" id="Problem.p( u | theta )">p( u | theta )</a></big>
 <br>
 For <small>@(@
 t = 0
@@ -201,7 +201,7 @@ u_t - u_{t-1} \sim \B{N}( 0 , \theta_0^2 )
 
 <br>
 <br>
-<b><a name="Command Arguments.random_seed" id="Command Arguments.random_seed">random_seed</a></b>
+<big><a name="Command Arguments.random_seed" id="Command Arguments.random_seed">random_seed</a></big>
 <br>
 This is a non-negative integer equal to the
 seed for the random number generator,
@@ -212,14 +212,14 @@ to be specific,
 
 <br>
 <br>
-<b><a name="Command Arguments.number_random" id="Command Arguments.number_random">number_random</a></b>
+<big><a name="Command Arguments.number_random" id="Command Arguments.number_random">number_random</a></big>
 <br>
 This is a positive integer specifying the number of random effects.
 This is also the number of time points and number of data values.
 
 <br>
 <br>
-<b><a name="Command Arguments.quasi_fixed" id="Command Arguments.quasi_fixed">quasi_fixed</a></b>
+<big><a name="Command Arguments.quasi_fixed" id="Command Arguments.quasi_fixed">quasi_fixed</a></big>
 <br>
 This is either <code><font color="blue">yes</font></code> or <code><font color="blue">no</font></code> and is the value of
 <a href="derived_ctor.htm#quasi_fixed" target="_top"><span style='white-space: nowrap'>quasi_fixed</span></a>
@@ -235,7 +235,7 @@ will be similar to after the initialization when
 
 <br>
 <br>
-<b><a name="Command Arguments.trace_optimize_fixed" id="Command Arguments.trace_optimize_fixed">trace_optimize_fixed</a></b>
+<big><a name="Command Arguments.trace_optimize_fixed" id="Command Arguments.trace_optimize_fixed">trace_optimize_fixed</a></big>
 <br>
 This is either <code><font color="blue">yes</font></code> or <code><font color="blue">no</font></code>.
 If it is yes, a 
@@ -251,7 +251,7 @@ no such trace is printed.
 
 <br>
 <br>
-<b><a name="Command Arguments.ipopt_solve" id="Command Arguments.ipopt_solve">ipopt_solve</a></b>
+<big><a name="Command Arguments.ipopt_solve" id="Command Arguments.ipopt_solve">ipopt_solve</a></big>
 <br>
 This is either <code><font color="blue">yes</font></code> or <code><font color="blue">no</font></code>.
 If it is yes, the <code><font color="blue">CppAD::ipopt::solve</font></code>
@@ -262,7 +262,7 @@ otherwise <code><font color="blue">CppAD::mixed::ipopt_random</font></code> is u
 
 <br>
 <br>
-<b><a name="Command Arguments.bool_sparsity" id="Command Arguments.bool_sparsity">bool_sparsity</a></b>
+<big><a name="Command Arguments.bool_sparsity" id="Command Arguments.bool_sparsity">bool_sparsity</a></big>
 <br>
 This is either <code><font color="blue">yes</font></code> or <code><font color="blue">no</font></code>.
 If it is yes, boolean sparsity patterns are used for this computation,
@@ -270,7 +270,7 @@ otherwise set sparsity patterns are used.
 
 <br>
 <br>
-<b><a name="Command Arguments.hold_memory" id="Command Arguments.hold_memory">hold_memory</a></b>
+<big><a name="Command Arguments.hold_memory" id="Command Arguments.hold_memory">hold_memory</a></big>
 <br>
 The CppAD memory allocator has a hold memory option will be set by
 
@@ -283,7 +283,7 @@ where
 
 <br>
 <br>
-<b><a name="Command Arguments.derivative_test" id="Command Arguments.derivative_test">derivative_test</a></b>
+<big><a name="Command Arguments.derivative_test" id="Command Arguments.derivative_test">derivative_test</a></big>
 <br>
 This is either <code><font color="blue">yes</font></code> or <code><font color="blue">no</font></code>.
 If it is yes, the derivatives of functions used in the optimization
@@ -292,7 +292,7 @@ of the fixed effects are checked for correctness.
 
 <br>
 <br>
-<b><a name="Command Arguments.start_near_solution" id="Command Arguments.start_near_solution">start_near_solution</a></b>
+<big><a name="Command Arguments.start_near_solution" id="Command Arguments.start_near_solution">start_near_solution</a></big>
 <br>
 This is either <code><font color="blue">yes</font></code> or <code><font color="blue">no</font></code>.
 If it is yes, the initial point for the optimization
@@ -313,13 +313,13 @@ In addition, the following name value pairs are also output.
 
 <br>
 <br>
-<b><a name="Output.cppad_mixed_version" id="Output.cppad_mixed_version">cppad_mixed_version</a></b>
+<big><a name="Output.cppad_mixed_version" id="Output.cppad_mixed_version">cppad_mixed_version</a></big>
 <br>
 The <code><font color="blue">cppad_mixed</font></code> version number.
 
 <br>
 <br>
-<b><a name="Output.checkpoint_newton_step" id="Output.checkpoint_newton_step">checkpoint_newton_step</a></b>
+<big><a name="Output.checkpoint_newton_step" id="Output.checkpoint_newton_step">checkpoint_newton_step</a></big>
 <br>
 is the <code><font color="blue">bin/run_cmake.sh</font></code> configuration option
 <a href="run_cmake.sh.htm#checkpoint_newton_step" target="_top"><span style='white-space: nowrap'>checkpoint_newton_step</span></a>
@@ -327,7 +327,7 @@ is the <code><font color="blue">bin/run_cmake.sh</font></code> configuration opt
 
 <br>
 <br>
-<b><a name="Output.ldlt_cholmod" id="Output.ldlt_cholmod">ldlt_cholmod</a></b>
+<big><a name="Output.ldlt_cholmod" id="Output.ldlt_cholmod">ldlt_cholmod</a></big>
 <br>
 is the <code><font color="blue">bin/run_cmake.sh</font></code> configuration option
 <a href="run_cmake.sh.htm#ldlt_cholmod" target="_top"><span style='white-space: nowrap'>ldlt_cholmod</span></a>
@@ -335,7 +335,7 @@ is the <code><font color="blue">bin/run_cmake.sh</font></code> configuration opt
 
 <br>
 <br>
-<b><a name="Output.optimize_cppad_function" id="Output.optimize_cppad_function">optimize_cppad_function</a></b>
+<big><a name="Output.optimize_cppad_function" id="Output.optimize_cppad_function">optimize_cppad_function</a></big>
 <br>
 is the <code><font color="blue">bin/run_cmake.sh</font></code> configuration option
 <a href="run_cmake.sh.htm#optimize_cppad_function" target="_top"><span style='white-space: nowrap'>optimize_cppad_function</span></a>
@@ -343,7 +343,7 @@ is the <code><font color="blue">bin/run_cmake.sh</font></code> configuration opt
 
 <br>
 <br>
-<b><a name="Output.actual_seed" id="Output.actual_seed">actual_seed</a></b>
+<big><a name="Output.actual_seed" id="Output.actual_seed">actual_seed</a></big>
 <br>
 If 
 <code><i><font color="black"><span style='white-space: nowrap'>random_seed</span></font></i></code>
@@ -361,7 +361,7 @@ so that you can reproduce results when
 
 <br>
 <br>
-<b><a name="Output.initialize_bytes" id="Output.initialize_bytes">initialize_bytes</a></b>
+<big><a name="Output.initialize_bytes" id="Output.initialize_bytes">initialize_bytes</a></big>
 <br>
 Is the amount of heap memory, in bytes,
 added to the program during its <a href="initialize.htm" target="_top"><span style='white-space: nowrap'>initialize</span></a>
@@ -372,14 +372,14 @@ included.
 
 <br>
 <br>
-<b><a name="Output.initialize_seconds" id="Output.initialize_seconds">initialize_seconds</a></b>
+<big><a name="Output.initialize_seconds" id="Output.initialize_seconds">initialize_seconds</a></big>
 <br>
 Is the number of seconds used by the derived class <a href="initialize.htm" target="_top"><span style='white-space: nowrap'>initialize</span></a>
  call.
 
 <br>
 <br>
-<b><a name="Output.optimize_fixed_seconds" id="Output.optimize_fixed_seconds">optimize_fixed_seconds</a></b>
+<big><a name="Output.optimize_fixed_seconds" id="Output.optimize_fixed_seconds">optimize_fixed_seconds</a></big>
 <br>
 Is the number of seconds used by the call to
 <a href="optimize_fixed.htm" target="_top"><span style='white-space: nowrap'>optimize_fixed</span></a>
@@ -388,7 +388,7 @@ optimal fixed effects.
 
 <br>
 <br>
-<b><a name="Output.optimize_random_seconds" id="Output.optimize_random_seconds">optimize_random_seconds</a></b>
+<big><a name="Output.optimize_random_seconds" id="Output.optimize_random_seconds">optimize_random_seconds</a></big>
 <br>
 Is the number of seconds used by a single call to
 <a href="optimize_random.htm" target="_top"><span style='white-space: nowrap'>optimize_random</span></a>
@@ -397,7 +397,7 @@ optimal random effects.
 
 <br>
 <br>
-<b><a name="Output.information_mat_seconds" id="Output.information_mat_seconds">information_mat_seconds</a></b>
+<big><a name="Output.information_mat_seconds" id="Output.information_mat_seconds">information_mat_seconds</a></big>
 <br>
 Is the number of seconds used by the call to
 <a href="information_mat.htm" target="_top"><span style='white-space: nowrap'>information_mat</span></a>
@@ -405,7 +405,7 @@ Is the number of seconds used by the call to
 
 <br>
 <br>
-<b><a name="Output.sample_fixed_seconds" id="Output.sample_fixed_seconds">sample_fixed_seconds</a></b>
+<big><a name="Output.sample_fixed_seconds" id="Output.sample_fixed_seconds">sample_fixed_seconds</a></big>
 <br>
 Is the number of seconds used by the call to
 <a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
@@ -416,14 +416,14 @@ samples for the fixed effects.
 
 <br>
 <br>
-<b><a name="Output.final_bytes" id="Output.final_bytes">final_bytes</a></b>
+<big><a name="Output.final_bytes" id="Output.final_bytes">final_bytes</a></big>
 <br>
 Is final amount of heap memory, in bytes, added and retained by the program.
 Only memory allocated using <code><font color="blue">CppAD::thread_alloc</font></code> is included.
 
 <br>
 <br>
-<b><a name="Output.theta_0_estimate" id="Output.theta_0_estimate">theta_0_estimate</a></b>
+<big><a name="Output.theta_0_estimate" id="Output.theta_0_estimate">theta_0_estimate</a></big>
 <br>
 Is the optimal estimate for <small>@(@
 \theta_0
@@ -433,7 +433,7 @@ Is the optimal estimate for <small>@(@
 
 <br>
 <br>
-<b><a name="Output.ar1_xam_ok" id="Output.ar1_xam_ok">ar1_xam_ok</a></b>
+<big><a name="Output.ar1_xam_ok" id="Output.ar1_xam_ok">ar1_xam_ok</a></big>
 <br>
 If this program passes it's correctness test,
 

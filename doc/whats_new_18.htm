@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2018</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2018">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2018 02-20 02-12 02-11 02-10 02-08 02-07 02-05 01-23 01-22 01-21 01-15 01-14 ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2018 04-06 03-22 03-10 02-20 02-12 02-11 02-10 02-08 02-07 02-05 01-23 01-22 01-21 01-15 01-14 ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -75,6 +75,9 @@ A:active { color : purple }
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
 <option>Contents</option>
+<option>04-06</option>
+<option>03-22</option>
+<option>03-10</option>
 <option>02-20</option>
 <option>02-12</option>
 <option>02-11</option>
@@ -98,6 +101,34 @@ A:active { color : purple }
 <br>
 <table>
 <tr><td><a href="whats_new_17.htm" target="_top">whats_new_17</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2017</td></tr><tr><td><a href="whats_new_16.htm" target="_top">whats_new_16</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2016</td></tr><tr><td><a href="whats_new_15.htm" target="_top">whats_new_15</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2015</td></tr></table><br>
+<b><big><a name="04-06" id="04-06">04-06</a></big></b>
+<br>
+The <code><font color="blue">limited_memory_max_history</font></code> setting used to be forbidden as an
+<a href="optimize_fixed.htm#fixed_ipopt_options" target="_top"><span style='white-space: nowrap'>fixed_ipopt_option</span></a>
+ because
+it was chosen by <code><font color="blue">cppad_mixed</font></code>.
+This has been changed and now the user can choose this ipopt option.
+
+<br>
+<br>
+<b><big><a name="03-22" id="03-22">03-22</a></big></b>
+<br>
+In the wish list,
+remove the Student's t item and change the
+<a href="wish_list.htm#Sparse Matrix" target="_top"><span style='white-space: nowrap'>sparse&nbsp;matrix</span></a>
+ item.
+
+<br>
+<br>
+<b><big><a name="03-10" id="03-10">03-10</a></big></b>
+<br>
+The install <a href="install_unix.htm#Download" target="_top"><span style='white-space: nowrap'>download</span></a>
+ procedure was changed
+to use the following command to determine the version number:
+<code><font color='blue'><pre style='display:inline'> 
+     grep '^SET(cppad_mixed_version' CMakeLists.txt
+</pre></font></code>
+<br>
 <b><big><a name="02-20" id="02-20">02-20</a></big></b>
 <br>
 Some function declarations for friends in <code><font color="blue">cppad_mixed.hpp</font></code>

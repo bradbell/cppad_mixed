@@ -53,7 +53,6 @@ var list_current0 = [
 'optimize_fixed.htm#fixed_ipopt_options',
 'optimize_fixed.htm#fixed_ipopt_options.derivative_test',
 'optimize_fixed.htm#fixed_ipopt_options.hessian_approximation',
-'optimize_fixed.htm#fixed_ipopt_options.limited_memory_max_history',
 'optimize_fixed.htm#fixed_ipopt_options.max_iter',
 'optimize_fixed.htm#fixed_ipopt_options.accept_after_max_steps',
 'optimize_fixed.htm#fixed_ipopt_options.nlp_scaling_method',

@@ -20,11 +20,11 @@ var list_down1 = [
 'math_notation.htm'
 ];
 var list_current0 = [
-'wish_list.htm#Student\'s T',
+'wish_list.htm#Sparse Matrix',
+'wish_list.htm#sparse_rcv',
 'wish_list.htm#Aborting Optimization',
 'wish_list.htm#Second Order Method',
 'wish_list.htm#Random Constraints',
-'wish_list.htm#sparse_mat_info',
 'wish_list.htm#Windows Install'
 ];
 function choose_across0(item)

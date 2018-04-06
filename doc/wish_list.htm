@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>CppAD Mixed Wish List</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="CppAD Mixed Wish List">
-<meta name="keywords" id="keywords" content=" cppad mixed wish list student's t aborting optimization second order method random constraints sparse_mat_info windows install ">
+<meta name="keywords" id="keywords" content=" cppad mixed wish list sparse matrix sparse_rcv aborting optimization second order method random constraints windows install ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -67,11 +67,11 @@ A:active { color : purple }
 <td>
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
-<option>Student's T</option>
+<option>Sparse Matrix</option>
+<option>sparse_rcv</option>
 <option>Aborting Optimization</option>
 <option>Second Order Method</option>
 <option>Random Constraints</option>
-<option>sparse_mat_info</option>
 <option>Windows Install</option>
 </select>
 </td>
@@ -83,22 +83,35 @@ A:active { color : purple }
 
 <center><b><big><big>CppAD Mixed Wish List</big></big></b></center>
 <br>
-<b><big><a name="Student's T" id="Student's T">Student's T</a></big></b>
+<b><big><a name="Sparse Matrix" id="Sparse Matrix">Sparse Matrix</a></big></b>
 <br>
-There is a problem using the absolute value terms in the
-<a href="cppad_mixed.htm#Negative Log-Density Vector" target="_top"><span style='white-space: nowrap'>negative&nbsp;log-density&nbsp;vector</span></a>
+Move the calculation of <a href="init_fix_like.htm#fix_like_hes_" target="_top"><span style='white-space: nowrap'>fix_like_hes_</span></a>
 
-to obtain robust fitting of data and outlier detection.
-To be specific, each such data point results in an extra auxiliary variable
-in the optimization problem.
-If there is lots of data, this makes the optimization problem very large.
-<a href="https://amath.washington.edu/people/aleksandr-aravkin" target="_top"><span style='white-space: nowrap'>Sasha</span></a>
+to a separate routine so it does not get calculated when
+<a href="derived_ctor.htm#quasi_fixed" target="_top"><span style='white-space: nowrap'>quasi_fixed</span></a>
+ is true.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
+ is true, <code><font color="blue">fix_like_hes_</font></code>
+would need to be initialized the first time
+<a href="information_mat.htm" target="_top"><span style='white-space: nowrap'>information_mat</span></a>
+ is called.
 
-suggested using Student's t-distribution which would yield robust fitting
-and outlier detection, and does not suffer from this problem.
-Even better is the fact that it can be used with data that depends
-on the random effects (because it is smooth).
+<br>
+<br>
+<b><big><a name="sparse_rcv" id="sparse_rcv">sparse_rcv</a></big></b>
+<br>
+Convert all the sparse matrix structures to use
+<code><font color="blue">CppAD::sparse_rcv</font></code> instead of
+Use <a href="sparse_mat_info.htm" target="_top"><span style='white-space: nowrap'>sparse_mat_info</span></a>
+ and
 
+<code><i><font color="black"><span style='white-space: nowrap'>row</span></font></i></code>
+, 
+<code><i><font color="black"><span style='white-space: nowrap'>col</span></font></i></code>
+, 
+<code><i><font color="black"><span style='white-space: nowrap'>val</span></font></i></code>
+ triples.
 
 <br>
 <br>
@@ -137,31 +150,6 @@ Include the lagrange multipliers for the
 in the <a href="optimize_fixed.htm" target="_top"><span style='white-space: nowrap'>optimize_fixed</span></a>
  and <a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
  interfaces.
-
-<br>
-<br>
-<b><big><a name="sparse_mat_info" id="sparse_mat_info">sparse_mat_info</a></big></b>
-<br>
-Use <a href="sparse_mat_info.htm" target="_top"><span style='white-space: nowrap'>sparse_mat_info</span></a>
- instead of
-
-<code><i><font color="black"><span style='white-space: nowrap'>row</span></font></i></code>
-, 
-<code><i><font color="black"><span style='white-space: nowrap'>col</span></font></i></code>
-, 
-<code><i><font color="black"><span style='white-space: nowrap'>val</span></font></i></code>
- triples
-in syntax for following routines:
-<a href="fix_con_hes.htm" target="_top"><span style='white-space: nowrap'>fix_con_hes</span></a>
-,
-<a href="fix_con_jac.htm" target="_top"><span style='white-space: nowrap'>fix_con_jac</span></a>
-,
-<a href="fix_like_hes.htm" target="_top"><span style='white-space: nowrap'>fix_like_hes</span></a>
-,
-<a href="fix_like_jac.htm" target="_top"><span style='white-space: nowrap'>fix_like_jac</span></a>
-,
-<a href="laplace_obj_hes.htm" target="_top"><span style='white-space: nowrap'>laplace_obj_hes</span></a>
-.
 
 <br>
 <br>

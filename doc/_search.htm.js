@@ -3,7 +3,7 @@
 // ------------------------------------------------------------ 
 Keyword = 
 [
-'cppad_mixed  C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20180220  ',' license source code repository notation fixed theta random data z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood constraints negative log-density vector ',
+'cppad_mixed  C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20180406  ',' license source code repository notation fixed theta random data z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood constraints negative log-density vector ',
 'install_unix  Installing cppad_mixed in Unix  ',' system requirements c++ compiler git cmake pkg-config wget fortran gsl download special run_cmake.sh eigen ipopt suitesparse command check speed example installation linking using ',
 'example_install.sh  An Example Installation  ',' syntax existing source ',
 'run_cmake.sh  bin/run_cmake.sh: User Configuration Options  ',' verbose_makefile build_type cppad_prefix eigen_prefix other prefixes debug release cppad_cxx_flags cmake_libdir ldlt_cholmod checkpoint_newton_step optimize_cppad_function for_hes_sparsity testing speed memory ',
@@ -23,7 +23,7 @@ Keyword =
 'initialize  Initialization After Constructor  ',' syntax public purpose mixed_object fixed_vec random_vec ran_likelihood_jac ran_likelihood_hes size_map init_newton_checkpoint_done_ example ',
 'optimize_random  Optimize Random Effects  ',' syntax public purpose mixed_object options evaluation_method fixed_vec random_lower random_upper random_in random_out example ',
 'optimize_random.cpp  Optimize Random Effects: Example and Test  ',' ',
-'optimize_fixed  Optimize Fixed Effects  ',' syntax public purpose inf mixed_object fixed_ipopt_options derivative_test hessian_approximation limited_memory_max_history max_iter accept_after_max_steps nlp_scaling_method random_ipopt_options fixed_lower fixed_upper fix_constraint_lower fix_constraint_upper fixed_scale fixed_in random_lower random_upper random_in solution laplace example ipopt_fixed ',
+'optimize_fixed  Optimize Fixed Effects  ',' syntax public purpose inf mixed_object fixed_ipopt_options derivative_test hessian_approximation max_iter accept_after_max_steps nlp_scaling_method random_ipopt_options fixed_lower fixed_upper fix_constraint_lower fix_constraint_upper fixed_scale fixed_in random_lower random_upper random_in solution laplace example ipopt_fixed ',
 'optimize_fixed.cpp  Optimize Fixed Effects: Example and Test  ',' model objective first order partials source code ',
 'ipopt_options  An Ipopt Options Argument  ',' prototype format string integer numeric ',
 'ipopt_trace  Description of Ipopt Tracing Output  ',' iter objective inf_pr inf_du lg(mu) ||d|| lg(rg) alpha_du alpha_pr ls reference ',
@@ -204,11 +204,11 @@ Keyword =
 'lasso.cpp  Lasso on Fixed Effects: Example and Test  ',' model ',
 'data_mismatch.cpp  Random Effects Variance May Cause Data Mismatch  ',' model theory derivatives objective ',
 'opt_ran_nan.cpp  Nan\'s During Optimization of Random Effects: Example and Test  ',' ',
-'whats_new_18  Changes and Additions to cppad_mixed During 2018  ',' 02-20 02-12 02-11 02-10 02-08 02-07 02-05 01-23 01-22 01-21 01-15 01-14 ',
+'whats_new_18  Changes and Additions to cppad_mixed During 2018  ',' 04-06 03-22 03-10 02-20 02-12 02-11 02-10 02-08 02-07 02-05 01-23 01-22 01-21 01-15 01-14 ',
 'whats_new_17  Changes and Additions to cppad_mixed During 2017  ',' 12-28 12-25 12-22 12-16 12-10 10-27 10-24 10-09 10-07 09-30 09-23 09-21 09-18 09-16 09-15 09-14 09-02 08-30 08-01 04-24 04-23 04-06 04-02 03-27 03-25 03-23 03-20 03-12 03-11 03-10 03-09 03-08 03-06 03-02 03-01 01-26 01-24 01-22 01-14 ',
 'whats_new_16  Changes and Additions to cppad_mixed During 2016  ',' 11-09 11-07 11-04 11-02 10-30 10-28 10-27 10-25 10-24 10-18 10-16 10-15 10-14 10-06 09-30 09-27 09-24 09-23 07-28 07-27 07-26 07-25 07-20 07-18 07-14 07-13 07-12 07-10 07-09 06-24 06-22 06-19 06-18 06-17 06-13 06-12 06-11 06-07 06-06 06-05 06-04 06-03 optimize_random optimize_fixed sample_random 05-15 05-11 05-08 05-06 05-04 05-03 04-29 04-27 04-23 04-19 04-18 04-17 04-16 04-10 04-15 04-09 04-08 04-07 04-06 04-05 04-03 04-02 04-01 03-29 03-28 03-09 02-26 02-06 01-26 01-25 01-22 01-21 01-19 01-16 01-15 01-14 01-13 01-10 01-09 01-05 01-04 01-01 ',
 'whats_new_15  Changes and Additions to cppad_mixed During 2015  ',' 12-25 12-24 12-16 12-14 12-13 12-10 ',
-'wish_list  CppAD Mixed Wish List  ',' student\'s aborting optimization second order method random constraints sparse_mat_info windows install ',
+'wish_list  CppAD Mixed Wish List  ',' sparse matrix sparse_rcv aborting optimization second order method random constraints windows install ',
 'math_notation  Mathematical Notation  ',' b c_l c_u f g p r u^(theta) w y z '
 ]
 

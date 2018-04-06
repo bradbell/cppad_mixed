@@ -152,7 +152,7 @@ the user's derived class:
 
 <br>
 <br>
-<b><a name="User Defined Functions.ran_likelihood" id="User Defined Functions.ran_likelihood">ran_likelihood</a></b>
+<big><a name="User Defined Functions.ran_likelihood" id="User Defined Functions.ran_likelihood">ran_likelihood</a></big>
 <br>
 This function is necessary if there are random effects in the model.
 <pre><tt>     <b><font color="#0000FF">virtual</font></b> <font color="#008080">a3_vector</font> <b><font color="#000000">ran_likelihood</font></b><font color="#990000">(</font>
@@ -164,7 +164,7 @@ See <a href="ran_likelihood.htm" target="_top"><span style='white-space: nowrap'
 
 <br>
 <br>
-<b><a name="User Defined Functions.ran_likelihood_jac" id="User Defined Functions.ran_likelihood_jac">ran_likelihood_jac</a></b>
+<big><a name="User Defined Functions.ran_likelihood_jac" id="User Defined Functions.ran_likelihood_jac">ran_likelihood_jac</a></big>
 <br>
 This function is only used to increase speed and reduce memory use.
 <pre><tt>     <b><font color="#0000FF">virtual</font></b> <font color="#008080">a2_vector</font> <b><font color="#000000">ran_likelihood_jac</font></b><font color="#990000">(</font>
@@ -176,7 +176,7 @@ See <a href="ran_likelihood_jac.htm" target="_top"><span style='white-space: now
 
 <br>
 <br>
-<b><a name="User Defined Functions.ran_likelihood_hes" id="User Defined Functions.ran_likelihood_hes">ran_likelihood_hes</a></b>
+<big><a name="User Defined Functions.ran_likelihood_hes" id="User Defined Functions.ran_likelihood_hes">ran_likelihood_hes</a></big>
 <br>
 This function is only used to increase speed and reduce memory use.
 <pre><tt>     <b><font color="#0000FF">virtual</font></b> <font color="#008080">a1_vector</font> <b><font color="#000000">ran_likelihood_hes</font></b><font color="#990000">(</font>
@@ -190,7 +190,7 @@ See <a href="ran_likelihood_hes.htm" target="_top"><span style='white-space: now
 
 <br>
 <br>
-<b><a name="User Defined Functions.fix_likelihood" id="User Defined Functions.fix_likelihood">fix_likelihood</a></b>
+<big><a name="User Defined Functions.fix_likelihood" id="User Defined Functions.fix_likelihood">fix_likelihood</a></big>
 <br>
 This function should be used if there is a prior on the fixed effects,
 or there is data that does not depend on the random effects.
@@ -204,7 +204,7 @@ See <a href="fix_likelihood.htm" target="_top"><span style='white-space: nowrap'
 
 <br>
 <br>
-<b><a name="User Defined Functions.fix_constraint" id="User Defined Functions.fix_constraint">fix_constraint</a></b>
+<big><a name="User Defined Functions.fix_constraint" id="User Defined Functions.fix_constraint">fix_constraint</a></big>
 <br>
 This function is used to define constraints
 that only depend on the fixed effects.
@@ -218,7 +218,7 @@ See <a href="fix_constraint.htm" target="_top"><span style='white-space: nowrap'
 
 <br>
 <br>
-<b><a name="User Defined Functions.fatal_error" id="User Defined Functions.fatal_error">fatal_error</a></b>
+<big><a name="User Defined Functions.fatal_error" id="User Defined Functions.fatal_error">fatal_error</a></big>
 <br>
 This routine displays an error message and then exits the program.
 Its default definition below can be replaced by a user definition.
@@ -230,7 +230,7 @@ otherwise it exits.
           <b><font color="#000000">exit</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">);</font>
      <font color="#FF0000">}</font>
 </tt></pre>
-<b><a name="User Defined Functions.warning" id="User Defined Functions.warning">warning</a></b>
+<big><a name="User Defined Functions.warning" id="User Defined Functions.warning">warning</a></big>
 <br>
 This routine displays a warning message and then returns.
 Its default definition below can be replaced by a user definition.

@@ -112,7 +112,7 @@ and should have standard system installs:
 
 <br>
 <br>
-<b><a name="System Requirements.C++ Compiler" id="System Requirements.C++ Compiler">C++ Compiler</a></b>
+<big><a name="System Requirements.C++ Compiler" id="System Requirements.C++ Compiler">C++ Compiler</a></big>
 <br>
 The <code><font color="blue">cppad_mixed</font></code> program can be compiled by any C++98 compliant compiler;
 e.g., <code><font color="blue">g++</font></code>.
@@ -120,7 +120,7 @@ e.g., <code><font color="blue">g++</font></code>.
 
 <br>
 <br>
-<b><a name="System Requirements.git" id="System Requirements.git">git</a></b>
+<big><a name="System Requirements.git" id="System Requirements.git">git</a></big>
 <br>
 The <a href="https://git-scm.com/" target="_top"><span style='white-space: nowrap'>git</span></a>
  program,
@@ -129,7 +129,7 @@ must be installed.
 
 <br>
 <br>
-<b><a name="System Requirements.cmake" id="System Requirements.cmake">cmake</a></b>
+<big><a name="System Requirements.cmake" id="System Requirements.cmake">cmake</a></big>
 <br>
 The <a href="http://www.cmake.org/" target="_top"><span style='white-space: nowrap'>cmake</span></a>
  program,
@@ -138,7 +138,7 @@ must be installed.
 
 <br>
 <br>
-<b><a name="System Requirements.pkg-config" id="System Requirements.pkg-config">pkg-config</a></b>
+<big><a name="System Requirements.pkg-config" id="System Requirements.pkg-config">pkg-config</a></big>
 <br>
 The <a href="http://www.freedesktop.org/wiki/Software/pkg-config/" target="_top"><span style='white-space: nowrap'>pkg-config</span></a>
 
@@ -154,7 +154,7 @@ from the <code><font color="blue">PKG_CONFIG_PATH</font></code> environment vari
 
 <br>
 <br>
-<b><a name="System Requirements.wget" id="System Requirements.wget">wget</a></b>
+<big><a name="System Requirements.wget" id="System Requirements.wget">wget</a></big>
 <br>
 The <a href="https://www.gnu.org/software/wget/" target="_top"><span style='white-space: nowrap'>wget</span></a>
 
@@ -162,14 +162,14 @@ program must be installed.
 
 <br>
 <br>
-<b><a name="System Requirements.Fortran Compiler" id="System Requirements.Fortran Compiler">Fortran Compiler</a></b>
+<big><a name="System Requirements.Fortran Compiler" id="System Requirements.Fortran Compiler">Fortran Compiler</a></big>
 <br>
 A fortran compiler is required by <code><font color="blue">ipopt</font></code> which in turn
 is required by <code><font color="blue">cppad_mixed</font></code>.
 
 <br>
 <br>
-<b><a name="System Requirements.gsl" id="System Requirements.gsl">gsl</a></b>
+<big><a name="System Requirements.gsl" id="System Requirements.gsl">gsl</a></big>
 
 <br>
 <a href="http://gnuwin32.sourceforge.net/packages/gsl.htm" target="_top"><span style='white-space: nowrap'>gsl</span></a>
@@ -196,7 +196,7 @@ corresponding to this checkout of the master branch using the commands:
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;git&nbsp;show-ref&nbsp;|&nbsp;grep&nbsp;'refs/heads/master'<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin/version.sh&nbsp;get<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grep&nbsp;'^SET(cppad_mixed_version'&nbsp;CMakeLists.txt<br>
 </span></font></code>
 You can checkout an old version corresponding to a specific 
 <code><i><font color="black"><span style='white-space: nowrap'>git_hash</span></font></i></code>
@@ -205,7 +205,7 @@ and check its version number, using the commands:
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;git&nbsp;checkout&nbsp;-q&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>git_hash</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin/version.sh&nbsp;get<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grep&nbsp;'^SET(cppad_mixed_version'&nbsp;CMakeLists.txt<br>
 </span></font></code>
 <br>
 <b><big><a name="Special Requirements" id="Special Requirements">Special Requirements</a></big></b>
@@ -219,7 +219,7 @@ in the order that they appear.
 
 <br>
 <br>
-<b><a name="Special Requirements.run_cmake.sh" id="Special Requirements.run_cmake.sh">run_cmake.sh</a></b>
+<big><a name="Special Requirements.run_cmake.sh" id="Special Requirements.run_cmake.sh">run_cmake.sh</a></big>
 <br>
 The settings in
 <a href="run_cmake.sh.htm" target="_top"><span style='white-space: nowrap'>bin/run_cmake.sh</span></a>
@@ -230,7 +230,7 @@ running these scripts.
 
 <br>
 <br>
-<b><a name="Special Requirements.eigen" id="Special Requirements.eigen">eigen</a></b>
+<big><a name="Special Requirements.eigen" id="Special Requirements.eigen">eigen</a></big>
 <br>
 The <a href="http://eigen.tuxfamily.org" target="_top"><span style='white-space: nowrap'>eigen</span></a>
 
@@ -245,7 +245,7 @@ can be used to install this package.
 
 <br>
 <br>
-<b><a name="Special Requirements.Ipopt" id="Special Requirements.Ipopt">Ipopt</a></b>
+<big><a name="Special Requirements.Ipopt" id="Special Requirements.Ipopt">Ipopt</a></big>
 <br>
 The <a href="https://projects.coin-or.org/Ipopt" target="_top"><span style='white-space: nowrap'>Ipopt</span></a>
 
@@ -260,7 +260,7 @@ can be used to install this package.
 
 <br>
 <br>
-<b><a name="Special Requirements.SuiteSparse" id="Special Requirements.SuiteSparse">SuiteSparse</a></b>
+<big><a name="Special Requirements.SuiteSparse" id="Special Requirements.SuiteSparse">SuiteSparse</a></big>
 <br>
 The <a href="http://faculty.cse.tamu.edu/davis/SuiteSparse" target="_top"><span style='white-space: nowrap'>suitesparse</span></a>
 
@@ -275,7 +275,7 @@ can be used to install this package.
 
 <br>
 <br>
-<b><a name="Special Requirements.CppAD" id="Special Requirements.CppAD">CppAD</a></b>
+<big><a name="Special Requirements.CppAD" id="Special Requirements.CppAD">CppAD</a></big>
 <br>
 The <a href="http://www.coin-or.org/CppAD/" target="_top"><span style='white-space: nowrap'>cppad</span></a>
 
@@ -303,7 +303,7 @@ a new version of <code><font color="blue">cppad_mixed</font></code>:
 
 <br>
 <br>
-<b><a name="cppad_mixed.Cmake Command" id="cppad_mixed.Cmake Command">Cmake Command</a></b>
+<big><a name="cppad_mixed.Cmake Command" id="cppad_mixed.Cmake Command">Cmake Command</a></big>
 <br>
 Starting in the <code><font color="blue">cppad_mixed.git</font></code> directory:
 The following command will configure <code><font color="blue">cppad_mixed</font></code>:
@@ -311,7 +311,7 @@ The following command will configure <code><font color="blue">cppad_mixed</font>
      bin/run_cmake.sh
 </pre></font></code>
 <br>
-<b><a name="cppad_mixed.Check" id="cppad_mixed.Check">Check</a></b>
+<big><a name="cppad_mixed.Check" id="cppad_mixed.Check">Check</a></big>
 <br>
 Starting in the <code><font color="blue">cppad_mixed.git</font></code> directory:
 The following commands are optional and will
@@ -321,7 +321,7 @@ build and run the examples and correctness tests:
      make check
 </pre></font></code>
 <br>
-<b><a name="cppad_mixed.Speed" id="cppad_mixed.Speed">Speed</a></b>
+<big><a name="cppad_mixed.Speed" id="cppad_mixed.Speed">Speed</a></big>
 <br>
 Starting in the <code><font color="blue">cppad_mixed.git</font></code> directory:
 The following commands are optional and will
@@ -331,7 +331,7 @@ build and run the speed tests:
      make speed
 </pre></font></code>
 <br>
-<b><a name="cppad_mixed.Install" id="cppad_mixed.Install">Install</a></b>
+<big><a name="cppad_mixed.Install" id="cppad_mixed.Install">Install</a></big>
 <br>
 Starting in the <code><font color="blue">cppad_mixed.git</font></code> directory:
 The following command will
@@ -346,14 +346,14 @@ install the cppad_mixed library and include files:
 
 <br>
 <br>
-<b><a name="Example.Installation" id="Example.Installation">Installation</a></b>
+<big><a name="Example.Installation" id="Example.Installation">Installation</a></big>
 <br>
 The file <a href="example_install.sh.htm" target="_top"><span style='white-space: nowrap'>example_install.sh</span></a>
  contains an example installation.
 
 <br>
 <br>
-<b><a name="Example.Linking" id="Example.Linking">Linking</a></b>
+<big><a name="Example.Linking" id="Example.Linking">Linking</a></big>
 <br>
 The file <a href="check_install.sh.htm" target="_top"><span style='white-space: nowrap'>check_install.sh</span></a>
  is an example of compiling, linking
@@ -364,7 +364,7 @@ and running using an
 
 <br>
 <br>
-<b><a name="Example.Using cppad_mixed" id="Example.Using cppad_mixed">Using cppad_mixed</a></b>
+<big><a name="Example.Using cppad_mixed" id="Example.Using cppad_mixed">Using cppad_mixed</a></big>
 <br>
 The files
 <a href="ar1_xam.cpp.htm" target="_top"><span style='white-space: nowrap'>ar1_xam.cpp</span></a>

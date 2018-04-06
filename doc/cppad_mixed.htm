@@ -13,11 +13,11 @@ MathJax.Hub.Config({
 </script>
 <head>
 <title>C++ Laplace Approximation of Mixed Effects Models:
-cppad_mixed-20180220</title>
+cppad_mixed-20180406</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="C++ Laplace Approximation of Mixed Effects Models:
-cppad_mixed-20180220">
-<meta name="keywords" id="keywords" content=" c++ laplace approximation mixed effects models: cppad_mixed-20180220 license source code repository notation fixed theta random u data y z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood no constraints c negative log-density vector ">
+cppad_mixed-20180406">
+<meta name="keywords" id="keywords" content=" c++ laplace approximation mixed effects models: cppad_mixed-20180406 license source code repository notation fixed theta random u data y z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood no constraints c negative log-density vector ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -95,7 +95,7 @@ A:active { color : purple }
 	\newcommand{\B}[1]{ {\bf #1} }
 	\newcommand{\W}[1]{ \; #1 \; }
 @)@</small><center><b><big><big>C++ Laplace Approximation of Mixed Effects Models:
-cppad_mixed-20180220</big></big></b></center>
+cppad_mixed-20180406</big></big></b></center>
 <table><tr><td align='left'  valign='top'>
 </td><td align='left'  valign='top'>
 One section per page <code><span style='white-space: nowrap'>&nbsp;&nbsp;</span></code> </td><td align='left'  valign='top'>
@@ -154,7 +154,7 @@ u
 
 <br>
 <br>
-<b><a name="Notation.Fixed Effects, theta" id="Notation.Fixed Effects, theta">Fixed Effects, theta</a></b>
+<big><a name="Notation.Fixed Effects, theta" id="Notation.Fixed Effects, theta">Fixed Effects, theta</a></big>
 <br>
 For each <code><font color="blue">cppad_mixed</font></code> object,
 there is a vector of fixed effects 
@@ -168,7 +168,7 @@ We sometimes use <small>@(@
 
 <br>
 <br>
-<b><a name="Notation.Random Effects, u" id="Notation.Random Effects, u">Random Effects, u</a></b>
+<big><a name="Notation.Random Effects, u" id="Notation.Random Effects, u">Random Effects, u</a></big>
 <br>
 For each <code><font color="blue">cppad_mixed</font></code> object, there is a vector of random effects
 
@@ -179,7 +179,7 @@ The number of the random effects, and their order is constant
 
 <br>
 <br>
-<b><a name="Notation.Data, y, z" id="Notation.Data, y, z">Data, y, z</a></b>
+<big><a name="Notation.Data, y, z" id="Notation.Data, y, z">Data, y, z</a></big>
 <br>
 We use <small>@(@
 y
@@ -190,7 +190,7 @@ dependent on (independent of) the random effects.
 
 <br>
 <br>
-<b><a name="Notation.Fixed Prior Density, p(theta)" id="Notation.Fixed Prior Density, p(theta)">Fixed Prior Density, p(theta)</a></b>
+<big><a name="Notation.Fixed Prior Density, p(theta)" id="Notation.Fixed Prior Density, p(theta)">Fixed Prior Density, p(theta)</a></big>
 <br>
 The fixed effects prior density
 is denoted by <small>@(@
@@ -199,7 +199,7 @@ is denoted by <small>@(@
 
 <br>
 <br>
-<b><a name="Notation.Fixed Data Density, p(z|theta)" id="Notation.Fixed Data Density, p(z|theta)">Fixed Data Density, p(z|theta)</a></b>
+<big><a name="Notation.Fixed Data Density, p(z|theta)" id="Notation.Fixed Data Density, p(z|theta)">Fixed Data Density, p(z|theta)</a></big>
 <br>
 The data density, that does not depend on the random effects,
 is denoted by <small>@(@
@@ -208,7 +208,7 @@ is denoted by <small>@(@
 
 <br>
 <br>
-<b><a name="Notation.Random Prior Density, p(u|theta)" id="Notation.Random Prior Density, p(u|theta)">Random Prior Density, p(u|theta)</a></b>
+<big><a name="Notation.Random Prior Density, p(u|theta)" id="Notation.Random Prior Density, p(u|theta)">Random Prior Density, p(u|theta)</a></big>
 <br>
 The random effects prior density, given the fixed effects,
 is denoted by <small>@(@
@@ -217,7 +217,7 @@ is denoted by <small>@(@
 
 <br>
 <br>
-<b><a name="Notation.Random Data Density, p(y|theta,u)" id="Notation.Random Data Density, p(y|theta,u)">Random Data Density, p(y|theta,u)</a></b>
+<big><a name="Notation.Random Data Density, p(y|theta,u)" id="Notation.Random Data Density, p(y|theta,u)">Random Data Density, p(y|theta,u)</a></big>
 <br>
 The density for the data, given both the fixed and random effects,
 is denoted by <small>@(@
@@ -226,7 +226,7 @@ is denoted by <small>@(@
 
 <br>
 <br>
-<b><a name="Notation.Fixed Constraint Function, c(theta)" id="Notation.Fixed Constraint Function, c(theta)">Fixed Constraint Function, c(theta)</a></b>
+<big><a name="Notation.Fixed Constraint Function, c(theta)" id="Notation.Fixed Constraint Function, c(theta)">Fixed Constraint Function, c(theta)</a></big>
 <br>
 The fixed effects constraint function, denoted by <small>@(@
 c( \theta )
@@ -235,7 +235,7 @@ is a smooth function of the fixed effects,
 
 <br>
 <br>
-<b><a name="Notation.Optimal Random Effects, u^(theta)" id="Notation.Optimal Random Effects, u^(theta)">Optimal Random Effects, u^(theta)</a></b>
+<big><a name="Notation.Optimal Random Effects, u^(theta)" id="Notation.Optimal Random Effects, u^(theta)">Optimal Random Effects, u^(theta)</a></big>
 <br>
 Given a value for the fixed effects <small>@(@
 \theta
@@ -254,7 +254,7 @@ Note that this definition agrees with the other definition for
 
 <br>
 <br>
-<b><a name="Notation.Random Constraint Matrix, A" id="Notation.Random Constraint Matrix, A">Random Constraint Matrix, A</a></b>
+<big><a name="Notation.Random Constraint Matrix, A" id="Notation.Random Constraint Matrix, A">Random Constraint Matrix, A</a></big>
 <br>
 The random constraint matrix is denoted by <small>@(@
 A
@@ -264,7 +264,7 @@ and column dimension equal to the number of random effects.
 
 <br>
 <br>
-<b><a name="Notation.Random Constraint Function, A*u^(theta)" id="Notation.Random Constraint Function, A*u^(theta)">Random Constraint Function, A*u^(theta)</a></b>
+<big><a name="Notation.Random Constraint Function, A*u^(theta)" id="Notation.Random Constraint Function, A*u^(theta)">Random Constraint Function, A*u^(theta)</a></big>
 <br>
 We refer to <small>@(@
 A \; \hat{u} ( \theta )
@@ -280,7 +280,7 @@ as the random constraint function.
 
 <br>
 <br>
-<b><a name="Problem.Maximum Likelihood" id="Problem.Maximum Likelihood">Maximum Likelihood</a></b>
+<big><a name="Problem.Maximum Likelihood" id="Problem.Maximum Likelihood">Maximum Likelihood</a></big>
 <br>
 We are given the problem of
 estimating the fixed effects by maximizing the likelihood with
@@ -298,7 +298,7 @@ respect to <small>@(@
 
 <br>
 <br>
-<b><a name="Problem.No Random Effects" id="Problem.No Random Effects">No Random Effects</a></b>
+<big><a name="Problem.No Random Effects" id="Problem.No Random Effects">No Random Effects</a></big>
 <br>
 In the case where there are not random effects, the vector <small>@(@
 u
@@ -312,7 +312,7 @@ is empty and the optimal fixed effects maximize
 
 <br>
 <br>
-<b><a name="Problem.Fixed Constraints, c" id="Problem.Fixed Constraints, c">Fixed Constraints, c</a></b>
+<big><a name="Problem.Fixed Constraints, c" id="Problem.Fixed Constraints, c">Fixed Constraints, c</a></big>
 <br>
 The fixed effects have constraints of the form
 <small>@[@
@@ -332,7 +332,7 @@ the range space is the empty vector.
 
 <br>
 <br>
-<b><a name="Problem.Random Constraints" id="Problem.Random Constraints">Random Constraints</a></b>
+<big><a name="Problem.Random Constraints" id="Problem.Random Constraints">Random Constraints</a></big>
 <br>
 The random constraints are defined by the equation
 <small>@[@
