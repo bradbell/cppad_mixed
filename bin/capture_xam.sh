@@ -1,7 +1,7 @@
 #! /bin/bash -e
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-17 University of Washington
+#           Copyright (C) 2014-18 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -59,14 +59,16 @@ mean_logit_probability='-0.50'
 std_logit_probability='0.25'
 random_constraint='yes'
 # ---------------------------------------------------------------------------
-if [ "$0" != "bin/capture_xam.sh" ]
+program='bin/capture_xam.sh'
+if [ "$0" != "$program" ]
 then
-	echo 'bin/capture_xam.sh: must be executed from its parent directory'
+	echo "$program: must be executed from its parent directory"
 	exit 1
 fi
-if [ ! -e 'build/speed/capture_xam' ]
+build_dir='build/speed'
+if [ ! -e "$build_dir/capture_xam" ]
 then
-	echo 'capture_xam.sh: must first run:'
+	echo "$program: must first run:"
 	echo '	bin/run_cmake.sh'
 	echo '	cd build; make capture_xam; cd ..'
 	exit 1
@@ -74,7 +76,7 @@ fi
 #
 if [ "$1" != 'normal' ] && [ "$1" != 'callgrind' ] && [ "$1" != 'massif' ]
 then
-	echo 'usage: bin/capture_xam.sh (normal|callgrind|massif)'
+	echo "usage: $program (normal|callgrind|massif)"
 	exit 1
 fi
 test2run="$1"
@@ -85,7 +87,7 @@ echo_eval() {
 	eval $*
 }
 # ----------------------------------------------------------------------------
-echo_eval cd build/speed
+echo_eval cd $build_dir
 echo_eval make capture_xam
 arguments="
 $random_seed

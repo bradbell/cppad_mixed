@@ -239,6 +239,7 @@ void cppad_mixed::init_ran_hes(
 		a1_val_out.resize(n_low);
 		a1_sparse_rcv a1_subset( hes_low );
 		ran_jac_a1fun_.subgraph_jac_rev(a1_both, a1_subset);
+		ran_jac_a1fun_.clear_subgraph();
 		a1_val_out = a1_subset.val();
 	}
 # ifndef NDEBUG
@@ -363,6 +364,7 @@ void cppad_mixed::check_user_ran_hes(
 	a1_vector a1_both( n_fixed_ + n_random_ );
 	pack(fixed_vec, random_vec, a1_both);
 	ran_jac_a1fun_.subgraph_jac_rev(a1_both, a1_subset);
+	ran_jac_a1fun_.clear_subgraph();
 	//
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 	bool ok    = a1_val_out.size() == K;

@@ -1,7 +1,7 @@
 #! /bin/bash -e
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-16 University of Washington
+#           Copyright (C) 2014-18 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -51,14 +51,16 @@ hold_memory='no'
 derivative_test='no'
 start_near_solution='no'
 # ---------------------------------------------------------------------------
-if [ "$0" != "bin/ar1_xam.sh" ]
+program='bin/ar1_xam.sh'
+if [ "$0" != "$program" ]
 then
-	echo 'bin/ar1_xam.sh: must be executed from its parent directory'
+	echo "$program: must be executed from its parent directory"
 	exit 1
 fi
-if [ ! -e 'build/speed/ar1_xam' ]
+build_dir='build/speed'
+if [ ! -e "$build_dir/ar1_xam" ]
 then
-	echo 'ar1_xam.sh: must first run:'
+	echo "$program: must first run:"
 	echo '	bin/run_cmake.sh'
 	echo '	cd build; make ar1_xam; cd ..'
 	exit 1
@@ -66,7 +68,7 @@ fi
 #
 if [ "$1" != 'normal' ] && [ "$1" != 'callgrind' ] && [ "$1" != 'massif' ]
 then
-	echo 'usage: bin/ar1_xam.sh (normal|callgrind|massif)'
+	echo "usage: $program (normal|callgrind|massif)"
 	exit 1
 fi
 test2run="$1"

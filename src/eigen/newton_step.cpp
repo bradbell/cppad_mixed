@@ -234,6 +234,7 @@ void newton_step_algo::operator()(
 
 	// compute the sparse Hessian
 	jac_a1fun_.subgraph_jac_rev(a1_theta_u, a1_jac2hes_rcv_);
+	jac_a1fun_.clear_subgraph();
 
 	// declare eigen matrix types
 	typedef Eigen::Matrix<a1_double, Eigen::Dynamic, 1>     a1_eigen_vector;
