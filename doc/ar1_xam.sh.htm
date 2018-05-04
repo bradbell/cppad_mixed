@@ -157,14 +157,16 @@ This test will run <code><font color="blue">ar1_xam</font></code> with
 <font color="#009900">derivative_test</font><font color="#990000">=</font><font color="#FF0000">'no'</font>
 <font color="#009900">start_near_solution</font><font color="#990000">=</font><font color="#FF0000">'no'</font>
 <i><font color="#9A1900"># ---------------------------------------------------------------------------</font></i>
-<b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$0"</font> <font color="#990000">!=</font> <font color="#FF0000">"bin/ar1_xam.sh"</font> <font color="#990000">]</font>
+<font color="#009900">program</font><font color="#990000">=</font><font color="#FF0000">'bin/ar1_xam.sh'</font>
+<b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$0"</font> <font color="#990000">!=</font> <font color="#FF0000">"$program"</font> <font color="#990000">]</font>
 <b><font color="#0000FF">then</font></b>
-     echo <font color="#FF0000">'bin/ar1_xam.sh: must be executed from its parent directory'</font>
+     echo <font color="#FF0000">"$program: must be executed from its parent directory"</font>
      <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
 <b><font color="#0000FF">fi</font></b>
-<b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#990000">!</font> -e <font color="#FF0000">'build/speed/ar1_xam'</font> <font color="#990000">]</font>
+<font color="#009900">build_dir</font><font color="#990000">=</font><font color="#FF0000">'build/speed'</font>
+<b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#990000">!</font> -e <font color="#FF0000">"$build_dir/ar1_xam"</font> <font color="#990000">]</font>
 <b><font color="#0000FF">then</font></b>
-     echo <font color="#FF0000">'ar1_xam.sh: must first run:'</font>
+     echo <font color="#FF0000">"$program: must first run:"</font>
      echo <font color="#FF0000">'    bin/run_cmake.sh'</font>
      echo <font color="#FF0000">'    cd build; make ar1_xam; cd ..'</font>
      <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
@@ -172,7 +174,7 @@ This test will run <code><font color="blue">ar1_xam</font></code> with
 <i><font color="#9A1900">#</font></i>
 <b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$1"</font> <font color="#990000">!=</font> <font color="#FF0000">'normal'</font> <font color="#990000">]</font> <font color="#990000">&amp;&amp;</font> <font color="#990000">[</font> <font color="#FF0000">"$1"</font> <font color="#990000">!=</font> <font color="#FF0000">'callgrind'</font> <font color="#990000">]</font> <font color="#990000">&amp;&amp;</font> <font color="#990000">[</font> <font color="#FF0000">"$1"</font> <font color="#990000">!=</font> <font color="#FF0000">'massif'</font> <font color="#990000">]</font>
 <b><font color="#0000FF">then</font></b>
-     echo <font color="#FF0000">'usage: bin/ar1_xam.sh (normal|callgrind|massif)'</font>
+     echo <font color="#FF0000">"usage: $program (normal|callgrind|massif)"</font>
      <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
 <b><font color="#0000FF">fi</font></b>
 <font color="#009900">test2run</font><font color="#990000">=</font><font color="#FF0000">"$1"</font>
