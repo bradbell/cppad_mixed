@@ -41,8 +41,8 @@ $childtable%
 $head 05-07$$
 Advance to using
 $cref/cppad-20180507/install_unix/Special Requirements/CppAD/$$.
-This should increase the speed of $code cppad_mixed$$,
-without increasing the amount of memory it uses.
+This should both increase the speed of $code cppad_mixed$$
+and reduce the amount of memory it uses.
 
 $head 05-03$$
 Advance to using
