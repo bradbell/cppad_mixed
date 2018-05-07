@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -120,7 +120,9 @@ void cppad_mixed::init_ran_jac(
 	pack(fixed_vec, random_vec, a2_both);
 	//
 	// Record gradient of random likelihood
-	CppAD::Independent(a2_both);
+	size_t abort_op_index = 0;
+	bool record_compare   = false;
+	CppAD::Independent(a2_both, abort_op_index, record_compare);
 	//
 	// evaluate ran_likelihood_jac
 	a2_vector a2_fixed(n_fixed_), a2_random(n_random_);

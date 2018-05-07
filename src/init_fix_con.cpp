@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -116,7 +116,9 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec )
 		a1_theta[j] = fixed_vec[j];
 
 	// start recording a1_double operations
-	Independent(a1_theta);
+	size_t abort_op_index = 0;
+	bool record_compare   = false;
+	CppAD::Independent(a1_theta, abort_op_index, record_compare);
 
 	// compute constraint
 	a1_vector a1_vec = fix_constraint(a1_theta);

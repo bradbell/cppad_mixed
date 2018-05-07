@@ -12,7 +12,7 @@
 # This scipt demonstrates that changing cppad-20171215 to cppad-20180503
 # uses less mmeory and does not affect speed.
 declare -A branch
-branch[one]='76c0d7'
+branch[one]='6894f1'
 branch[two]='master'
 # -----------------------------------------------------------------------------
 if [ "$0" != 'bin/speed_temp.sh' ]

@@ -214,7 +214,9 @@ void cppad_mixed::init_ran_hes(
 	// -----------------------------------------------------------------------
 	// Declare the independent and dependent variables for taping calculation
 	// of Hessian of the random likelihood w.r.t. the random effects
-	CppAD::Independent(a1_both);
+	size_t abort_op_index = 0;
+	bool record_compare   = false;
+	CppAD::Independent(a1_both, abort_op_index, record_compare);
 
 	// unpack the independent variables into a1_fixed and a1_random
 	a1_vector a1_fixed(n_fixed_), a1_random(n_random_);

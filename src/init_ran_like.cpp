@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -106,7 +106,9 @@ void cppad_mixed::init_ran_like(
 	pack(fixed_vec, random_vec, a3_both);
 
 	// start recording a3_double operations
-	Independent(a3_both);
+	size_t abort_op_index = 0;
+	bool record_compare   = false;
+	Independent(a3_both, abort_op_index, record_compare);
 
 	// extract the fixed and random effects
 	a3_vector a3_theta(n_fixed_), a3_u(n_random_);
@@ -141,7 +143,7 @@ void cppad_mixed::init_ran_like(
 	pack(fixed_vec, random_vec, a2_both);
 
 	// start recording a2_double operations
-	Independent(a2_both);
+	Independent(a2_both, abort_op_index, record_compare);
 
 	// compute ran_likelihood using a2_double operations
 	a2_vector a2_vec = ran_like_a2fun_.Forward(0, a2_both);
@@ -162,7 +164,7 @@ void cppad_mixed::init_ran_like(
 	pack(fixed_vec, random_vec, a1_both);
 
 	// start recording a1_double operations
-	Independent(a1_both);
+	Independent(a1_both, abort_op_index, record_compare);
 
 	// compute ran_likelihood using a1_double operations
 	a1_vector a1_vec = ran_like_a1fun_.Forward(0, a1_both);

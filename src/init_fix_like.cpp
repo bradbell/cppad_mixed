@@ -132,7 +132,9 @@ void cppad_mixed::init_fix_like(const d_vector& fixed_vec  )
 		a1_theta[j] = fixed_vec[j];
 
 	// start recording a1_double operations
-	Independent(a1_theta);
+	size_t abort_op_index = 0;
+	bool record_compare   = false;
+	CppAD::Independent(a1_theta, abort_op_index, record_compare);
 
 	// compute fix_likelihood
 	a1_vector a1_vec = fix_likelihood(a1_theta);
