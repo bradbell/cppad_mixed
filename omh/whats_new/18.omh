@@ -38,6 +38,12 @@ $childtable%
 	omh/whats_new/15.omh
 %$$
 
+$head 06-04$$
+Advance to using
+$cref/cppad-20180604/install_unix/Special Requirements/CppAD/$$.
+This will probably have no effect but might reduce the amount of memory
+$code cppad_mixed$$ uses.
+
 $head 05-21$$
 Advance to using
 $cref/cppad-20180521/install_unix/Special Requirements/CppAD/$$.
