@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-17 University of Washington
+#           Copyright (C) 2014-18 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -49,7 +49,7 @@ then
 	echo 'where existing is replace or use'
 	exit 1
 fi
-existing="$2"
+existing="$1"
 # ---------------------------------------------------------------------------
 # set build_type to value in run_cmake.sh
 cmd=`grep '^build_type=' bin/run_cmake.sh`
@@ -109,6 +109,7 @@ then
 		wget
 		libblas-dev
 		liblapack-dev
+		suitesparse-dev
 		pkg-config
 		g++
 		gfortran
@@ -121,6 +122,7 @@ else
 		wget
 		blas-devel
 		lapack-devel
+		suitesparse-devel
 		pkgconf
 		gcc-c++
 		gcc-gfortran
@@ -140,7 +142,7 @@ done
 rm example_install.tmp
 # ----------------------------------------------------------------------------
 # local external installs for special requirements
-for pkg in eigen ipopt suitesparse cppad
+for pkg in eigen ipopt cppad
 do
 	# eval below converts $HOME in $prefix to its value for current user
 	case $pkg in
@@ -150,10 +152,6 @@ do
 
 		ipopt)
 		eval file="$cppad_prefix/include/coin/IpIpoptApplication.hpp"
-		;;
-
-		suitesparse)
-		eval file="$cppad_prefix/include/cholmod.h"
 		;;
 
 		cppad)

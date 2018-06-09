@@ -13,6 +13,7 @@ $begin ldlt_cholmod_inv$$
 
 $section Compute a Subset of the Inverse of Factored Matrix$$
 $spell
+	suitesparse
 	ldlt_obj
 	inv
 	CppAD
@@ -72,7 +73,7 @@ is $icode%row_in%[%k%]%$$, $icode%col_in%[%k%]%$$ component of the inverse.
 
 $head Method$$
 This routine uses the
-$cref/suitesparse/install_unix/Special Requirements/SuiteSparse/$$ routine
+$cref/suitesparse/install_unix/System Requirements/suitesparse/$$ routine
 $codei%
 	MATLAB_Tools/sparseinv/sparseinv.c
 %$$

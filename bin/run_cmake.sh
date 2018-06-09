@@ -52,7 +52,7 @@ verbose_makefile='no'
 # &head build_type&&
 # Use either 'debug' or 'release' for the type of this build:
 # &codep
-build_type='debug'
+build_type='release'
 # &&
 #
 # &head cppad_prefix&&

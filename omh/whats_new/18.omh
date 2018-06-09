@@ -10,6 +10,7 @@ see http://www.gnu.org/licenses/agpl.txt
 
 $begin whats_new_18$$
 $spell
+	suitesparse
 	cppad
 	gcc
 	Wshadow
@@ -37,6 +38,18 @@ $childtable%
 	omh/whats_new/16.omh%
 	omh/whats_new/15.omh
 %$$
+
+$head 06-09$$
+$list number$$
+Change the $code suitesparse$$ library from a special requirement
+(using $code bin/install_suitesparse.sh$$) to a
+$cref/system requirement/install_unix/System Requirements/suitesparse/$$.
+$lnext
+The $code replace$$ option for the
+$cref/existing/example_install.sh/existing/$$ argument to
+$code bin/example_install.sh$$ was not working.
+This has been fixed.
+$lend
 
 $head 06-04$$
 Advance to using

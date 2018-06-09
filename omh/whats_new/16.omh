@@ -123,7 +123,7 @@ Fix a problem with, and improve, $cref example_install.sh$$
 (the problem was introduced on 2016-10-24).
 $lnext
 Fix a problem with
-$cref/install_suitesparse.sh/install_unix/Special Requirements/SuiteSparse/$$
+$code install_suitesparse.sh$$
 (introduced on 2016-10-24).
 $lend
 
@@ -162,7 +162,7 @@ $cref/install/install_unix/$$ searches for libraries,
 and reports missing libraries,
 has been improved.
 $lnext
-Improve the $cref/suitesparse/install_unix/Special Requirements/SuiteSparse/$$
+Improve the $cref/suitesparse/install_unix/System Requirements/suitesparse/$$
 so that it automatically includes the $code metis$$ package.
 Note that the proper value for $icode metis_version$$,
 in the suitesparse install,
@@ -202,8 +202,7 @@ Improve
 $cref%bin/install_eigen.sh%install_unix%Special Requirements%eigen%$$,
 $cref%bin/install_ipopt.sh%install_unix%Special Requirements%Ipopt%$$,
 and
-$cref%
-bin/install_suitesparse.sh%install_unix%Special Requirements%SuiteSparse%$$,
+$code install_suitesparse.sh$$
 so they better ensure that debug and release versions got into proper
 directories.
 
@@ -383,7 +382,7 @@ Add the $icode build_type$$ choice
 (debug or release) to the install script for
 $cref/eigen/install_unix/Special Requirements/eigen/$$,
 $cref/ipopt/install_unix/Special Requirements/Ipopt/$$, and
-$cref/suitesparse/install_unix/Special Requirements/SuiteSparse/$$.
+$cref/suitesparse/install_unix/System Requirements/suitesparse/$$.
 Compiling debug versus release
 for the installs above and for the
 $cref/build_type/run_cmake.sh/build_type/$$
@@ -786,7 +785,7 @@ $cref/second order method/wish_list/Second Order Method/$$ item.
 
 $head 01-25$$
 $list number$$
-Make $cref/SuiteSparse/install_unix/Special Requirements/SuiteSparse/$$
+Make $cref/suitesparse/install_unix/System Requirements/suitesparse/$$
 a required package.
 $lnext
 Change the $cref run_cmake.sh$$ argument

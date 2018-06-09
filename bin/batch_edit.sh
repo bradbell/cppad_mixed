@@ -14,19 +14,20 @@ new_directories='
 rename_files='
 '
 spell_files='
+	include/cppad/mixed/ldlt_cholmod.hpp
+	src/cholmod/inv.cpp
 '
 no_change_files='
 '
 #
 rename_cmd='s|ran_objcon|laplace_obj|'
 #
+spell_cmd='s|$spell$|&\n\tsuitesparse|'
+#
 cat << EOF > junk.sed
-/fixed_ipopt_options *=/! b skip
-: loop
-N
-/;/! b loop
-s|\\(derivative_test *\\)second-order|\\1adaptive|
-: skip
+s|[Ss]uite[Ss]parse/install_unix/Special Requirements/SuiteSparse|suitesparse/install_unix/System Requirements/suitesparse|
+s|$cref/install_suitesparse.sh/install_unix/Special Requirements/SuiteSparse/|$code install_suitesparse.sh|
+s|<cholmod.h>|<suitesparse/cholmod.h>|
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

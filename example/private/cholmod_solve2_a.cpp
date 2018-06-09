@@ -80,7 +80,7 @@ $$
 $end
 */
 // BEGIN C++
-# include <cholmod.h>
+# include <suitesparse/cholmod.h>
 # include <limits>
 # include <cmath>
 # include <cassert>
