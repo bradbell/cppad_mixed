@@ -36,15 +36,13 @@ eval $cmd
 # &&
 #
 # &head Prefixes&&
-# Get the &cref/prefixes/run_cmake.sh/Other Prefixes/&& used during the install:
+# Get the &cref/prefixes/run_cmake.sh/&& used during the install:
 # &codep
 cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
 eval $cmd
 cmd=`grep '^eigen_prefix=' bin/run_cmake.sh`
 eval $cmd
 cmd=`grep '^ipopt_prefix=' bin/run_cmake.sh`
-eval $cmd
-cmd=`grep '^suitesparse_prefix=' bin/run_cmake.sh`
 eval $cmd
 # &&
 #
@@ -159,7 +157,6 @@ g++ example.cpp \
 	-I $cppad_prefix/include \
 	-isystem $eigen_prefix/include \
 	-L $cppad_prefix/$cmake_libdir -lcppad_mixed \
-	-L $suitesparse_prefix/$cmake_libdir \
 	$gsl_libs \
 	$suitesparse_libs \
 	$ipopt_libs \

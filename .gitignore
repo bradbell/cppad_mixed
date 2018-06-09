@@ -1,3 +1,4 @@
+*.err
 # temporary file used to make commits
 /git_commit.sh
 #

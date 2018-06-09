@@ -241,7 +241,7 @@ This fixes a bug in the CppAD optimizer.
 $lnext
 Simplify the install procedure by using
 $cref/build_type/run_cmake.sh/build_type/$$ and
-$cref/prefix/run_cmake.sh/Other Prefixes/$$ values in $code run_cmake.sh$$
+prefix values in $cref run_cmake.sh$$
 during the other installs.
 The $cref install_unix$$ procedure has been modified to reflect
 this change.

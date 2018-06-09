@@ -16,7 +16,6 @@
 # prefixes:              -D cppad_prefix=value \
 #                        -D eigen_prefix=value \
 #                        -D ipopt_prefix=value \
-#                        -D suitesparse_prefix=value \
 # required variables:    -D cppad_cxx_flags=value \
 #                        -D cmake_libdir=value \
 #                        -D ldlt_cholmod=value \
@@ -167,7 +166,6 @@ ENDIF( NOT "${log_fatal_error}" STREQUAL ""  )
 get_prefix(cppad)
 get_prefix(eigen)
 get_prefix(ipopt)
-get_prefix(suitesparse)
 # ----------------------------------------------------------------------------
 required_definition( cppad_cxx_flags STRING
 	"extra flags used by C++ compiler (debug and release are automatic)"
@@ -208,10 +206,8 @@ ENDFOREACH(pkg)
 # set suitesparse_library_path_list
 #
 # no pkg-config for SuiteSparse so explicitly set corresponding values
-SET(suitesparse_LIBRARY_DIRS ${suitesparse_prefix}/lib )
-SET(suitesparse_LIBRARIES "cholmod;amd;camd;colamd;ccolamd;suitesparseconfig" )
-set_library_path_list( suitesparse_library_path_list
-	"${suitesparse_LIBRARY_DIRS}" "${suitesparse_LIBRARIES}"
+SET(suitesparse_library_path_list
+	"cholmod;amd;camd;colamd;ccolamd;suitesparseconfig"
 )
 # ----------------------------------------------------------------------------
 # cppad_mixed_has_nullptr_01

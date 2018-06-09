@@ -26,7 +26,6 @@
 #	ipopt
 #	cppad
 #	bools
-#	suitesparse
 #	devel
 #	hpp
 #	ldlt
@@ -52,7 +51,7 @@ verbose_makefile='no'
 # &head build_type&&
 # Use either 'debug' or 'release' for the type of this build:
 # &codep
-build_type='release'
+build_type='debug'
 # &&
 #
 # &head cppad_prefix&&
@@ -80,17 +79,15 @@ eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
 # &icode%eigen_prefix%.release%&&
 # depending on the choice for &icode build_type&&.
 #
-# &head Other Prefixes&&
-# Prefixes where the other
-# &cref/special requirements/install_unix/Special Requirements/&&
-# are installed:
+# &head ipopt_prefix&&
+# Prefixes where
+# &cref/ipopt/install_unix/Special Requirements/Ipopt/&&
+# is installed:
 # &codep
 ipopt_prefix="$HOME/prefix/cppad_mixed"
-suitesparse_prefix="$HOME/prefix/cppad_mixed"
 # &&
-# If these prefixes end in &code /cppad_mixed&&,
+# If this prefixes end in &code /cppad_mixed&&,
 # &code bin/install_ipopt.sh&&,
-# &code bin/install_suitesparse.sh&&,
 # will use a soft link from the corresponding &icode prefix&& to
 # &icode%prefix%.debug%&& or
 # &icode%prefix%.release%&&
@@ -222,7 +219,6 @@ EOF
 		cppad_prefix="$HOME/prefix/dismod_at"
 		eigen_prefix="$HOME/prefix/dismod_at/eigen"
 		ipopt_prefix="$HOME/prefix/dismod_at"
-		suitesparse_prefix="$HOME/prefix/dismod_at"
 	else
 		echo "'$1' is an invalid option"
 		bin/run_cmake.sh --help
@@ -258,7 +254,6 @@ cmake \
 	-D cppad_prefix="$cppad_prefix" \
 	-D ipopt_prefix="$ipopt_prefix" \
 	-D eigen_prefix="$eigen_prefix" \
-	-D suitesparse_prefix="$suitesparse_prefix" \
 	\
 	-D cppad_cxx_flags="$cppad_cxx_flags" \
 	-D cmake_libdir="$cmake_libdir" \
