@@ -126,7 +126,7 @@ will be used (takes less time).
      echo <font color="#FF0000">'where existing is replace or use'</font>
      <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
 <b><font color="#0000FF">fi</font></b>
-<font color="#009900">existing</font><font color="#990000">=</font><font color="#FF0000">"$2"</font>
+<font color="#009900">existing</font><font color="#990000">=</font><font color="#FF0000">"$1"</font>
 <i><font color="#9A1900"># ---------------------------------------------------------------------------</font></i>
 <i><font color="#9A1900"># set build_type to value in run_cmake.sh</font></i>
 <font color="#009900">cmd</font><font color="#990000">=</font>`grep <font color="#FF0000">'^build_type='</font> bin/run_cmake<font color="#990000">.</font>sh`
@@ -186,6 +186,7 @@ will be used (takes less time).
 <font color="#FF0000">          wget</font>
 <font color="#FF0000">          libblas-dev</font>
 <font color="#FF0000">          liblapack-dev</font>
+<font color="#FF0000">          suitesparse-dev</font>
 <font color="#FF0000">          pkg-config</font>
 <font color="#FF0000">          g++</font>
 <font color="#FF0000">          gfortran</font>
@@ -198,6 +199,7 @@ will be used (takes less time).
 <font color="#FF0000">          wget</font>
 <font color="#FF0000">          blas-devel</font>
 <font color="#FF0000">          lapack-devel</font>
+<font color="#FF0000">          suitesparse-devel</font>
 <font color="#FF0000">          pkgconf</font>
 <font color="#FF0000">          gcc-c++</font>
 <font color="#FF0000">          gcc-gfortran</font>
@@ -217,7 +219,7 @@ will be used (takes less time).
 rm example_install<font color="#990000">.</font>tmp
 <i><font color="#9A1900"># ----------------------------------------------------------------------------</font></i>
 <i><font color="#9A1900"># local external installs for special requirements</font></i>
-<b><font color="#0000FF">for</font></b> pkg <b><font color="#0000FF">in</font></b> eigen ipopt suitesparse cppad
+<b><font color="#0000FF">for</font></b> pkg <b><font color="#0000FF">in</font></b> eigen ipopt cppad
 <b><font color="#0000FF">do</font></b>
      <i><font color="#9A1900"># eval below converts $HOME in $prefix to its value for current user</font></i>
      <b><font color="#0000FF">case</font></b> <font color="#009900">$pkg</font> <b><font color="#0000FF">in</font></b>
@@ -227,10 +229,6 @@ rm example_install<font color="#990000">.</font>tmp
 
           ipopt<font color="#990000">)</font>
           <b><font color="#0000FF">eval</font></b> <font color="#009900">file</font><font color="#990000">=</font><font color="#FF0000">"$cppad_prefix/include/coin/IpIpoptApplication.hpp"</font>
-          <font color="#990000">;;</font>
-
-          suitesparse<font color="#990000">)</font>
-          <b><font color="#0000FF">eval</font></b> <font color="#009900">file</font><font color="#990000">=</font><font color="#FF0000">"$cppad_prefix/include/cholmod.h"</font>
           <font color="#990000">;;</font>
 
           cppad<font color="#990000">)</font>
