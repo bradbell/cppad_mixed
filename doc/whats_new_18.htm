@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2018</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2018">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2018 06-09 06-04 05-21 05-07 05-03 04-06 03-22 03-10 02-20 02-12 02-11 02-10 02-08 02-07 02-05 01-23 01-22 01-21 01-15 01-14 ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2018 06-14 06-09 06-04 05-21 05-07 05-03 04-06 03-22 03-10 02-20 02-12 02-11 02-10 02-08 02-07 02-05 01-23 01-22 01-21 01-15 01-14 ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -75,6 +75,7 @@ A:active { color : purple }
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
 <option>Contents</option>
+<option>06-14</option>
 <option>06-09</option>
 <option>06-04</option>
 <option>05-21</option>
@@ -106,6 +107,26 @@ A:active { color : purple }
 <br>
 <table>
 <tr><td><a href="whats_new_17.htm" target="_top">whats_new_17</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2017</td></tr><tr><td><a href="whats_new_16.htm" target="_top">whats_new_16</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2016</td></tr><tr><td><a href="whats_new_15.htm" target="_top">whats_new_15</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2015</td></tr></table><br>
+<b><big><a name="06-14" id="06-14">06-14</a></big></b>
+
+<ol type="1"><li>
+Some systems installs of
+<a href="install_unix.htm#System Requirements.suitesparse" target="_top"><span style='white-space: nowrap'>suitesparse</span></a>
+
+install <code><font color="blue">cholmod.h</font></code> in the systems include path instead of
+a <code><font color="blue">suitesparse</font></code> subdirector of the system include path.
+The install of <code><font color="blue">cppad_mixed</font></code> now automatically detects both these cases.
+</li><li>
+
+Advance to <code><font color="blue">cppad-20180613</font></code>.
+This should use less memory during the optimization of cppad functions; see
+<a href="run_cmake.sh.htm#optimize_cppad_function" target="_top"><span style='white-space: nowrap'>optimize_cppad_function</span></a>
+.
+</li></ol>
+
+
+<br>
+<br>
 <b><big><a name="06-09" id="06-09">06-09</a></big></b>
 
 <ol type="1"><li>

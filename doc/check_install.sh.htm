@@ -119,7 +119,7 @@ eval $cmd
 <br>
 <b><big><a name="Prefixes" id="Prefixes">Prefixes</a></big></b>
 <br>
-Get the <a href="run_cmake.sh.htm#Other Prefixes" target="_top"><span style='white-space: nowrap'>prefixes</span></a>
+Get the <a href="run_cmake.sh.htm" target="_top"><span style='white-space: nowrap'>prefixes</span></a>
  used during the install:
 <code><font color='blue'><pre style='display:inline'> 
 cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
@@ -127,8 +127,6 @@ eval $cmd
 cmd=`grep '^eigen_prefix=' bin/run_cmake.sh`
 eval $cmd
 cmd=`grep '^ipopt_prefix=' bin/run_cmake.sh`
-eval $cmd
-cmd=`grep '^suitesparse_prefix=' bin/run_cmake.sh`
 eval $cmd
 </pre></font></code>
 <br>
@@ -255,7 +253,6 @@ g++ example.cpp \
      -I $cppad_prefix/include \
      -isystem $eigen_prefix/include \
      -L $cppad_prefix/$cmake_libdir -lcppad_mixed \
-     -L $suitesparse_prefix/$cmake_libdir \
      $gsl_libs \
      $suitesparse_libs \
      $ipopt_libs \

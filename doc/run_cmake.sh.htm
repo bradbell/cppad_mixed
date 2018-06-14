@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>bin/run_cmake.sh: User Configuration Options</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="bin/run_cmake.sh: User Configuration Options">
-<meta name="keywords" id="keywords" content=" bin/run_cmake.sh: user configuration options verbose_makefile build_type cppad_prefix eigen_prefix other prefixes debug release cppad_cxx_flags cmake_libdir ldlt_cholmod checkpoint_newton_step optimize_cppad_function for_hes_sparsity testing speed memory ">
+<meta name="keywords" id="keywords" content=" bin/run_cmake.sh: user configuration options verbose_makefile build_type cppad_prefix eigen_prefix ipopt_prefix debug release cppad_cxx_flags cmake_libdir ldlt_cholmod checkpoint_newton_step optimize_cppad_function for_hes_sparsity testing speed memory ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -80,7 +80,7 @@ A:active { color : purple }
 <option>build_type</option>
 <option>cppad_prefix</option>
 <option>eigen_prefix</option>
-<option>Other Prefixes</option>
+<option>ipopt_prefix</option>
 <option>Debug and Release</option>
 <option>cppad_cxx_flags</option>
 <option>cmake_libdir</option>
@@ -107,7 +107,7 @@ verbose_makefile='no'
 <br>
 Use either 'debug' or 'release' for the type of this build:
 <code><font color='blue'><pre style='display:inline'> 
-build_type='release'
+build_type='debug'
 </pre></font></code>
 <br>
 <b><big><a name="cppad_prefix" id="cppad_prefix">cppad_prefix</a></big></b>
@@ -156,19 +156,17 @@ depending on the choice for
 
 <br>
 <br>
-<b><big><a name="Other Prefixes" id="Other Prefixes">Other Prefixes</a></big></b>
+<b><big><a name="ipopt_prefix" id="ipopt_prefix">ipopt_prefix</a></big></b>
 <br>
-Prefixes where the other
-<a href="install_unix.htm#Special Requirements" target="_top"><span style='white-space: nowrap'>special&nbsp;requirements</span></a>
+Prefixes where
+<a href="install_unix.htm#Special Requirements.Ipopt" target="_top"><span style='white-space: nowrap'>ipopt</span></a>
 
-are installed:
+is installed:
 <code><font color='blue'><pre style='display:inline'> 
 ipopt_prefix=&quot;$HOME/prefix/cppad_mixed&quot;
-suitesparse_prefix=&quot;$HOME/prefix/cppad_mixed&quot;
 </pre></font></code>
-If these prefixes end in <code><font color="blue">/cppad_mixed</font></code>,
+If this prefixes end in <code><font color="blue">/cppad_mixed</font></code>,
 <code><font color="blue">bin/install_ipopt.sh</font></code>,
-<code><font color="blue">bin/install_suitesparse.sh</font></code>,
 will use a soft link from the corresponding 
 <code><i><font color="black"><span style='white-space: nowrap'>prefix</span></font></i></code>
  to
