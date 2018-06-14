@@ -100,7 +100,7 @@ $end
 // ----------------------------------------------------------------------------
 
 
-# include <suitesparse/cholmod.h>
+# include <cppad/mixed/include_cholmod.hpp>
 # include <cppad/mixed/ldlt_cholmod.hpp>
 # include <cassert>
 

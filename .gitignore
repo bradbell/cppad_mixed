@@ -1,8 +1,9 @@
 # temporary file used to make commits
 /git_commit.sh
 #
-# cmake configuration file that is put in source directory
+# cmake configuration files that is put in source directory
 /include/cppad/mixed/configure.hpp
+/include/cppad/mixed/include_cholmod.hpp
 #
 # Directory where builds take place. Note that /build is a link, hence
 # it looks to git like a file instead of a directory.

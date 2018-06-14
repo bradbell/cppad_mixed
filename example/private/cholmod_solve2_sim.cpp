@@ -94,7 +94,7 @@ $$
 $end
 */
 // BEGIN C++
-# include <suitesparse/cholmod.h>
+# include <cppad/mixed/include_cholmod.hpp>
 # include <limits>
 # include <cmath>
 # include <cassert>

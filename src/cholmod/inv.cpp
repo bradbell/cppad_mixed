@@ -14,6 +14,7 @@ $begin ldlt_cholmod_inv$$
 $section Compute a Subset of the Inverse of Factored Matrix$$
 $spell
 	suitesparse
+	suitesparse
 	ldlt_obj
 	inv
 	CppAD

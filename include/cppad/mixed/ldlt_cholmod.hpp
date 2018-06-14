@@ -15,6 +15,7 @@ see http://www.gnu.org/licenses/agpl.txt
 $begin ldlt_cholmod$$
 $spell
 	suitesparse
+	suitesparse
 	Cholmod
 	CppAD
 	cholesky
@@ -84,7 +85,7 @@ $end
 ------------------------------------------------------------------------------
 */
 
-# include <suitesparse/cholmod.h>
+# include <cppad/mixed/include_cholmod.hpp>
 # include <cppad/mixed/sparse_mat_info.hpp>
 
 // BEGIN SYMBOLS

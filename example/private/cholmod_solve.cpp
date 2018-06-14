@@ -34,7 +34,7 @@ $srcfile%example/private/cholmod_solve.cpp%0%// BEGIN C++%// END C++%1%$$
 $end
 */
 // BEGIN C++
-# include <suitesparse/cholmod.h>
+# include <cppad/mixed/include_cholmod.hpp>
 # include <limits>
 # include <cmath>
 # include <cassert>
