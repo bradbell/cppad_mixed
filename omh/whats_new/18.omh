@@ -41,11 +41,17 @@ $childtable%
 %$$
 
 $head 06-14$$
+$list number$$
 Some systems installs of
 $cref/suitesparse/install_unix/System Requirements/suitesparse/$$
 install $code cholmod.h$$ in the systems include path instead of
 a $code suitesparse$$ subdirector of the system include path.
 The install of $code cppad_mixed$$ now automatically detects both these cases.
+$lnext
+Advance to $code cppad-20180613$$.
+This should use less memory during the optimization of cppad functions; see
+$cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$.
+$lend
 
 $head 06-09$$
 $list number$$

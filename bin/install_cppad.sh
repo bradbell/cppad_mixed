@@ -22,8 +22,8 @@ echo_eval() {
 }
 # --------------------------------------------------------------------------
 web_page='https://github.com/coin-or/CppAD.git'
-hash_key='8607e28855ded27b4738c172d6b24faa9e183cc4'
-version='20180604'
+hash_key='9835ff76a0b308f5c7b22bad8f684d0e80c4f0ea'
+version='20180613'
 # --------------------------------------------------------------------------
 # Get user configuration options from run_cmake.sh
 #

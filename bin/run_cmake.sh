@@ -189,7 +189,6 @@ usage: bin/run_cmake.sh \\
 	[--help] \\
 	[--verbose] \\
 	[--ldlt_eigen] \\
-	[--optimize_cppad_function] \\
 	[--rev_hes_sparsity] \\
 	[--release] \\
 	[--dismod_at_prefix]
@@ -205,15 +204,13 @@ EOF
 	elif [ "$1" == '--checkpoint_newton_step' ]
 	then
 		checkpoint_newton_step='yes'
-	elif [ "$1" == '--optimize_cppad_function' ]
-	then
-		optimize_cppad_function='yes'
 	elif [ "$1" == '--rev_hes_sparsity' ]
 	then
 		for_hes_sparsity='no'
 	elif [ "$1" == '--release' ]
 	then
 		build_type='release'
+		optimize_cppad_function='yes'
 	elif [ "$1" == '--dismod_at_prefix' ]
 	then
 		cppad_prefix="$HOME/prefix/dismod_at"
