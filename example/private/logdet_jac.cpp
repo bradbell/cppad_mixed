@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -94,20 +94,6 @@ namespace {
 			const a3_vector& fixed_vec, const a3_vector& random_vec
 		)
 		{	return template_ran_likelihood( fixed_vec, random_vec ); }
-	public:
-		//
-		//
-		template <typename Vector>
-		Vector template_fix_likelihood(
-			const Vector& fixed_vec  )
-		{
-			Vector vec(1);
-			vec[0] = 0.0;
-			return vec;
-		}
-		// a1_vector version of fix_likelihood
-		virtual a1_vector fix_likelihood(const a1_vector& fixed_vec)
-		{	return template_fix_likelihood( fixed_vec ); }
 	};
 }
 
