@@ -67,7 +67,7 @@ vector $latex u$$.
 $head ran_jac_a1fun_$$
 The input value of the member variable
 $codei%
-	CppAD::ADFun<double> ran_jac_a1fun_
+	CppAD::ADFun<a1_double> ran_jac_a1fun_
 %$$
 does not matter.
 upon return zero order forward mode for this function computes

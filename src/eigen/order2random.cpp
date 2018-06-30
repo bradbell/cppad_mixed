@@ -149,10 +149,10 @@ a1_vector order2random(
 	{	// The user has not defined ran_likelihood_hes, so use AD to calcuate
 		// the Hessian of the random likelihood w.r.t the random effects.
 		val_out.resize(n_low);
-		a1_sparse_rcv a1_subset( ran_hes_mix_rc );
-		jac_a1fun.subgraph_jac_rev(theta_u, a1_subset);
+		a1_sparse_rcv subset( ran_hes_mix_rc );
+		jac_a1fun.subgraph_jac_rev(theta_u, subset);
 		jac_a1fun.clear_subgraph();
-		val_out = a1_subset.val();
+		val_out = subset.val();
 	}
 	//
 	// a1_hessian

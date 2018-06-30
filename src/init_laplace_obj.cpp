@@ -92,7 +92,8 @@ $codei%
 
 $end
 */
-# include <cppad/mixed/cppad_mixed.hpp>
+# include <Eigen/Sparse>
+# include <cppad/mixed/order2random.hpp>
 # include <cppad/mixed/exception.hpp>
 # include <cppad/mixed/configure.hpp>
 
@@ -103,6 +104,10 @@ void cppad_mixed::init_laplace_obj(
 {	assert( ! init_laplace_obj_done_ );
 	assert( init_ran_like_done_ );
 	assert( init_newton_checkpoint_done_ );
+	//
+	// declare eigen matrix types
+	typedef Eigen::Matrix<a1_double, Eigen::Dynamic, 1>     a1_eigen_vector;
+	typedef Eigen::SparseMatrix<a1_double, Eigen::ColMajor> a1_eigen_sparse;
 	//
 	assert( A_rcv_.nnz() == A_rcv_.row().size() );
 	assert( A_rcv_.nnz() == A_rcv_.col().size() );
@@ -123,75 +128,88 @@ void cppad_mixed::init_laplace_obj(
 	bool record_compare   = false;
 	CppAD::Independent(beta_theta_u, abort_op_index, record_compare);
 	//
-	// split back out to beta, theta, u
+	// split out beta, theta, u
 	a1_vector beta(n_fixed_), theta(n_fixed_), u(n_random_);
-	unpack(beta, theta, u, beta_theta_u);
-	// -----------------------------------------------------------------------
-	// First Newton Step
-	//------------------------------------------------------------------------
-	// evaluate gradient f_u (beta , u )
-	a1_vector grad(n_random_);
-	grad = ran_like_jac(beta, u);
-	//
-	// Evaluate the log determinant of f_{u,u} ( theta , u)
-	// and Newton step s = f_{u,u} ( theta , u) f_u (beta, u)
-	a1_vector theta_u_v(n_fixed_ + 2 * n_random_ );
-	for(size_t j = 0; j < n_fixed_; j++)
-		theta_u_v[j] = theta[j];
-	for(size_t j = 0; j < n_random_; j++)
-	{	theta_u_v[n_fixed_ + j]             = u[j];
-		theta_u_v[n_fixed_ + n_random_ + j] = grad[j];
+	for(size_t j = 0; j < n_fixed_; ++j)
+	{	beta[j]    = beta_theta_u[j];
+		theta[j]   = beta_theta_u[j + n_fixed_];
 	}
-	a1_vector logdet_step(1 + n_random_);
-	newton_checkpoint_.eval(theta_u_v, logdet_step);
-	//
-	// U(beta, theta, u)
-	a1_vector U(n_random_);
-	for(size_t j = 0; j < n_random_; j++)
-		U[j] = u[j] - logdet_step[1 + j];
-	// -----------------------------------------------------------------------
-	// Second Newton step
-	//------------------------------------------------------------------------
-	// evaluate gradient f_u (beta , U )
-	grad = ran_like_jac(beta, U);
-	//
-	// Evaluate the log determinant and second newton step
-	// s = f_{u,u} ( theta , u) f_u (beta, U)
-	a1_vector theta_U_v(n_fixed_ + 2 * n_random_ );
-	for(size_t j = 0; j < n_fixed_; j++)
-		theta_U_v[j] = theta[j];
-	for(size_t j = 0; j < n_random_; j++)
-	{	theta_U_v[n_fixed_ + j]             = U[j];
-		theta_U_v[n_fixed_ + n_random_ + j] = grad[j];
-	}
-	newton_checkpoint_.eval(theta_U_v, logdet_step);
+	for(size_t j = 0; j < n_random_; ++j)
+		u[j]       = beta_theta_u[j + 2 * n_fixed_ ];
 	//
 	// W(beta, theta, u)
-	a1_vector W(n_random_);
+	const sparse_rc& ran_hes_rc( ran_hes_rcv_.pat() );
+	a1_vector W = CppAD::mixed::order2random(
+		*this,
+		n_fixed_,
+		n_random_,
+		ran_like_a1fun_,
+		ran_jac_a1fun_,
+		ran_hes_rc,
+		beta_theta_u
+	);
+	// -----------------------------------------------------------------------
+	// beta_W
+	a1_vector beta_W(n_fixed_ + n_random_);
+	for(size_t j = 0; j < n_fixed_; j++)
+		beta_W[j] = beta[j];
 	for(size_t j = 0; j < n_random_; j++)
-		W[j] = U[j] - logdet_step[1 + j];
+		beta_W[j + n_fixed_] = W[j];
+	// -----------------------------------------------------------------------
+	// Evaluate f_{uu} (beta , W).
+	//
+	// n_low, row, col, val_out
+	size_t n_low = ran_hes_rc.nnz();
+	CppAD::vector<size_t> row(n_low), col(n_low);
+	sparse_rc ran_hes_mix_rc(n_random_, n_fixed_ + n_random_, n_low);
+	for(size_t k = 0; k < n_low; k++)
+	{	assert( ran_hes_rc.row()[k] >= n_fixed_ );
+		assert( ran_hes_rc.col()[k] >= n_fixed_ );
+		//
+		// row and column relative to just random effect
+		row[k] = ran_hes_rc.row()[k] - n_fixed_;
+		col[k] = ran_hes_rc.col()[k] - n_fixed_;
+		//
+		// row relative to random effects, coluimn relative to both
+		ran_hes_mix_rc.set(k, row[k], col[k] + n_fixed_);
+	}
+	a1_vector val_out = ran_likelihood_hes(beta, W, row, col);
+	if( val_out.size() == 0 )
+	{	// The user has not defined ran_likelihood_hes, so use AD to calcuate
+		// the Hessian of the random likelihood w.r.t the random effects.
+		val_out.resize(n_low);
+		a1_sparse_rcv subset( ran_hes_mix_rc );
+		ran_jac_a1fun_.subgraph_jac_rev(beta_W, subset);
+		ran_jac_a1fun_.clear_subgraph();
+		val_out = subset.val();
+	}
+	//
+	// a1_hessian
+	a1_eigen_sparse hessian;
+	hessian.resize( int(n_random_) , int(n_random_) );
+	for(size_t k = 0; k < n_low; k++)
+		hessian.insert( int(row[k]), int(col[k]) ) = val_out[k];
+	//
+	// chol = L * D * L^T Cholesky factorization of f_{u,u} (beta, W)
+	Eigen::SimplicialLDLT<a1_eigen_sparse, Eigen::Lower> chol;
+	chol.analyzePattern(hessian);
+	chol.factorize(hessian);
 	// -----------------------------------------------------------------------
 	//
-	// Evaluate the log determinant using (beta, W)
-	a1_vector beta_W_v(n_fixed_ + 2 * n_random_ );
-	for(size_t j = 0; j < n_fixed_; j++)
-		beta_W_v[j] = beta[j];
-	for(size_t j = 0; j < n_random_; j++)
-	{	beta_W_v[n_fixed_ + j]             = W[j];
-		beta_W_v[n_fixed_ + n_random_ + j] = 0.0;
-	}
-	newton_checkpoint_.eval(beta_W_v, logdet_step);
+	// logdet [ f_{uu} ( beta , W ) ]
+	a1_double logdet     = 0.0;
+	a1_eigen_vector diag = chol.vectorD();
+	for(size_t j = 0; j < n_random_; ++j)
+		logdet += log( diag[j] );
 	//
-	// Evaluate the random likelihood using (beta, U)
-	a1_vector beta_U(n_fixed_ + n_random_);
-	pack(beta, U, beta_U);
-	f     = ran_like_a1fun_.Forward(0, beta_U);
+	// Evaluate the random likelihood using (beta, W)
+	f  = ran_like_a1fun_.Forward(0, beta_W);
 	if( CppAD::hasnan(f) ) throw CppAD::mixed::exception(
 		"init_laplace_obj", "result has a nan"
 	);
 	//
 	// now the random part of the Laplace objective
-	HB[0] = logdet_step[0] / 2.0 + f[0] - constant_term;
+	HB[0] = logdet / 2.0 + f[0] - constant_term;
 	//
 	if( A_rcv_.nr() > 0 )
 	{
