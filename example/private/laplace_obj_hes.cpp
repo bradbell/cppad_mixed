@@ -116,8 +116,6 @@ namespace {
 			const a3_vector& fixed_vec, const a3_vector& random_vec
 		)
 		{	return template_ran_likelihood( fixed_vec, random_vec ); }
-	public:
-		//
 	};
 }
 
