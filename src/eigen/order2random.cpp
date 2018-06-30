@@ -11,6 +11,12 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin order2random$$
 $spell
+	CppAD
+	jac
+	cppad
+	hes
+	Jacobian
+	rc
 $$
 
 $section Second Order Representation of Random Effects, W(beta, theta, u)$$
@@ -62,14 +68,14 @@ and random effects and hence are greater than or equal $icode n_fixed$$.
 
 $head beta_theta_u$$
 This vector has size $codei%2*%n_fixed% + %n_random%$$
-and specifies the value of $icode(%beta%, %theta%, %u%)%$$
-at which we are evaluating
+and specifies the value of $codei%(%beta%, %theta%, %u%)%$$
+at which we are evaluating the second order approximation
+for the optimal random effects
 $cref/W(beta, theta, u)
-	/theory/
-	Approximation Optimal Random Effects/
-	W(beta, theta, u)
-/%$$.
-
+	/theory
+	/Approximate Optimal Random Effects
+	/Second Order, W(beta, theta, u)
+/$$.
 $head W$$
 The return value is $icode%W%(%beta%, %theta%, %u%)%$$.
 
