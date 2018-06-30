@@ -103,7 +103,6 @@ void cppad_mixed::init_laplace_obj(
 	const d_vector& random_vec )
 {	assert( ! init_laplace_obj_done_ );
 	assert( init_ran_like_done_ );
-	assert( init_newton_checkpoint_done_ );
 	//
 	// declare eigen matrix types
 	typedef Eigen::Matrix<a1_double, Eigen::Dynamic, 1>     a1_eigen_vector;

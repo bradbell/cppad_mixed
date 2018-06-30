@@ -123,7 +123,7 @@ ldlt_cholmod='yes'
 #
 # &head checkpoint_newton_step&&
 # If yes, &code cppad_mixed&& will checkpoint the
-# &cref newton_step&&. Otherwise, repeated applications of the Newton step
+# newton_step. Otherwise, repeated applications of the Newton step
 # are recorded on the AD tape (which should require more memory but may be
 # faster).
 # &codep

@@ -38,7 +38,6 @@ $children%include/cppad/mixed/typedef.hpp
 	%include/cppad/mixed/ldlt_cholmod.hpp
 	%include/cppad/mixed/ldlt_eigen.hpp
 	%src/manage_gsl_rng.cpp
-	%include/cppad/mixed/newton_step.hpp
 	%include/cppad/mixed/sparse_hes_rcv.hpp
 	%include/cppad/mixed/sparse_hes_info.hpp
 	%include/cppad/mixed/sparse_jac_rcv.hpp
@@ -77,7 +76,6 @@ $rref ldlt_eigen$$
 $rref ldlt_cholmod$$
 $rref ipopt_fixed$$
 $rref ipopt_random$$
-$rref newton_step$$
 $rref sparse_hes_info$$
 $rref sparse_hes_rcv$$
 $rref sparse_jac_rcv$$

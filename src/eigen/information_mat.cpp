@@ -129,17 +129,9 @@ CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 		// ------------------------------------------------------------------
 		// If Quasi-Newton method was used, must initilaize routines
 		// that are only used for the Hessian calculation; see initilaize.cpp
-		if( ! init_newton_checkpoint_done_ )
+		if( ! init_laplace_obj_done_ )
 		{	assert( quasi_fixed_ );
-			assert( ! init_laplace_obj_done_ );
 			assert( ! init_laplace_obj_hes_done_ );
-			//
-			// newton_checkpoint_
-			assert( ran_like_a1fun_.size_var() > 0  );
-			newton_checkpoint_.initialize(ran_like_a1fun_, ran_jac_a1fun_,
-				ran_hes_rcv_, fixed_opt, random_opt
-			);
-			init_newton_checkpoint_done_ = true;;
 			//
 			// laplace_obj_fun_
 			assert( ! init_laplace_obj_done_ );
@@ -151,7 +143,6 @@ CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 			init_laplace_obj_hes(fixed_opt, random_opt);
 			assert( init_laplace_obj_hes_done_ );
 		}
-		assert( init_newton_checkpoint_done_ );
 		assert( init_laplace_obj_done_ );
 		assert( init_laplace_obj_hes_done_ );
 		// ------------------------------------------------------------------

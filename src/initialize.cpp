@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -190,15 +190,9 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 		init_hes_cross(fixed_vec, random_vec);
 		assert( init_hes_cross_done_ );
 
-		assert( ! init_newton_checkpoint_done_ );
+		assert( ! init_laplace_obj_done_ );
 		if( ! quasi_fixed_ )
 		{
-			// newton_checkpoint_
-			newton_checkpoint_.initialize(ran_like_a1fun_, ran_jac_a1fun_,
-				ran_hes_rcv_, fixed_vec, random_vec
-			);
-			init_newton_checkpoint_done_ = true;
-
 			// laplace_obj_fun_
 			assert( ! init_laplace_obj_done_ );
 			init_laplace_obj(fixed_vec, random_vec);
@@ -237,7 +231,6 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 	size_map["ran_hes_rcv_.nnz()"]         = ran_hes_rcv_.nnz();
 	size_map["ran_hes_fun_.size_var()"]    = ran_hes_fun_.size_var();
 	size_map["hes_cross_.subset.nnz()"]    = hes_cross_.subset.nnz();
-	size_map["newton_checkpoint_.size_var()"] = newton_checkpoint_.size_var();
 	size_map["laplace_obj_fun_.size_var()"] = laplace_obj_fun_.size_var();
 	size_map["laplace_obj_hes_.subset.nnz()"] = laplace_obj_hes_.subset.nnz();
 	size_map["fix_like_fun_.size_var()"]   = fix_like_fun_.size_var();

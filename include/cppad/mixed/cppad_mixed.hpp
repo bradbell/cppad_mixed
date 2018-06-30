@@ -13,7 +13,6 @@ see http://www.gnu.org/licenses/agpl.txt
 
 # include <map>
 # include <cppad/cppad.hpp>
-# include <cppad/mixed/newton_step.hpp>
 # include <cppad/mixed/sparse_hes_rcv.hpp>
 # include <cppad/mixed/sparse_jac_rcv.hpp>
 # include <cppad/mixed/ldlt_eigen.hpp>
@@ -519,17 +518,6 @@ $srccode%cpp% */
 	friend bool ::hes_cross_xam(void);
 /* %$$
 
-$head newton_checkpoint_$$
-If $icode%n_random_% > 0%$$, quasi_fixed_ is false, and
-$code init_newton_checkpoint_done_$$,
-this is a CppAD atomic function that computes one Newton Step in the
-solution of the equation $latex f_u ( \theta, u) = 0$$ as well
-as the log of the determinant of $latex f_{uu} ( \theta , u )$$;
-see $cref/initialize newton_step/newton_step/initialize/$$.
-$srccode%cpp% */
-	// computation of the Hessian as an atomic operation
-	CppAD::mixed::newton_step   newton_checkpoint_;
-/* %$$
 $comment ------------------------------------------------------------------- $$
 
 $head laplace_obj_fun_$$

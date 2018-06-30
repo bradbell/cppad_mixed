@@ -139,8 +139,7 @@ to avoid this problem. This is not a bullet proof solution because
 zero may result from calculations.
 
 $head 10-07$$
-Fix a bug in the Newton step
-$cref/initialize/newton_step/initialize/$$ routine.
+Fix a bug in the Newton step initialize routine.
 This bug was probably introduced on the master branch on 2017-03-22
 and only affected the case where
 $icode use_atomic_cholesky$$ was $code yes$$.
