@@ -79,11 +79,18 @@ $cref/W(beta, theta, u)
 $head W$$
 The return value is $icode%W%(%beta%, %theta%, %u%)%$$.
 
+$comment%
+	example/private/order2random.cpp
+%$$
+$head Example$$
+The file $code order2random.cpp$$ is an example and test of this
+routine.
+
 $end
 */
 
 # include <Eigen/Sparse>
-# include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/order2random.hpp>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
