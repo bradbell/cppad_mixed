@@ -456,13 +456,17 @@ $cref/random likelihood
 /$$
 with respect to the random effects; i.e.
 $latex f_u ( \theta , u )$$ and the sparsity for
-$latex f_{uu} ( u )$$ .
+$latex f_{uu} ( \theta, u )$$ .
 $srccode%cpp% */
 	CppAD::ADFun<a1_double>  ran_jac_a1fun_;
 	sparse_rc                ran_jac2hes_rc_;
 	//
 	friend bool ::ran_jac_fun_xam(void);
 /* %$$
+The row indices in $icode ran_jac2hes_rc_$$
+are for just the random effects $latex u$$,
+the column indices are for both fixed and random effects
+$latex ( \theta , u )$$.
 
 $head ran_hes_fun_$$
 If $icode%n_random_% > 0%$$ and $code init_ran_hes_done_$$,
@@ -483,6 +487,9 @@ $srccode%cpp% */
 	//
 	friend bool ::ran_hes_fun_xam(void);
 /* %$$
+The row and column indices in $icode ran_hes_rcv_$$
+are for both the fixed and random effects $latex ( \theta , u )$$
+and hence are all greater than or equal  $icode n_fixed$$.
 
 $head ldlt_ran_hes_$$
 If $icode%n_random_% > 0%$$ and $code init_ldlt_ran_hes_done_$$,
