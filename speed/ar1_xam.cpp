@@ -127,10 +127,6 @@ In addition, the following name value pairs are also output.
 $subhead cppad_mixed_version$$
 The $code cppad_mixed$$ version number.
 
-$subhead checkpoint_newton_step$$
-is the $code bin/run_cmake.sh$$ configuration option
-$cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$.
-
 $subhead ldlt_cholmod$$
 is the $code bin/run_cmake.sh$$ configuration option
 $cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$.
@@ -378,7 +374,6 @@ int main(int argc, const char* argv[])
 	//
 	// configuration options
 	label_print("cppad_mixed_version",    CPPAD_MIXED_VERSION);
-	bool_print("checkpoint_newton_step",  CPPAD_MIXED_CHECKPOINT_NEWTON_STEP);
 	bool_print("ldlt_cholmod",            CPPAD_MIXED_LDLT_CHOLMOD);
 	bool_print("optimize_cppad_function", CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION);
 	//

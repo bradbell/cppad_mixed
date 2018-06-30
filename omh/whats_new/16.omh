@@ -69,7 +69,7 @@ $lend
 
 $head 11-04$$
 This the first version with $code cppad_mixed$$ with the
-$cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$ option.
+checkpoint_newton_step option.
 Previously, the Newton step was always checkpointed.
 
 

@@ -121,15 +121,6 @@ cmake_libdir='lib64'
 ldlt_cholmod='yes'
 # &&
 #
-# &head checkpoint_newton_step&&
-# If yes, &code cppad_mixed&& will checkpoint the
-# newton_step. Otherwise, repeated applications of the Newton step
-# are recorded on the AD tape (which should require more memory but may be
-# faster).
-# &codep
-checkpoint_newton_step='no'
-# &&
-#
 # &head optimize_cppad_function&&
 # If yes, the operation sequence for certain CppAD functions
 # will be optimized. This makes the code run faster but in some cases
@@ -201,9 +192,6 @@ EOF
 	elif [ "$1" == '--ldlt_eigen' ]
 	then
 		ldlt_cholmod='no'
-	elif [ "$1" == '--checkpoint_newton_step' ]
-	then
-		checkpoint_newton_step='yes'
 	elif [ "$1" == '--rev_hes_sparsity' ]
 	then
 		for_hes_sparsity='no'
@@ -255,7 +243,6 @@ cmake \
 	-D cppad_cxx_flags="$cppad_cxx_flags" \
 	-D cmake_libdir="$cmake_libdir" \
 	-D ldlt_cholmod="$ldlt_cholmod" \
-	-D checkpoint_newton_step="$checkpoint_newton_step" \
 	-D optimize_cppad_function="$optimize_cppad_function" \
 	-D for_hes_sparsity="$for_hes_sparsity" \
 	..

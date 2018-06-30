@@ -19,7 +19,6 @@
 # required variables:    -D cppad_cxx_flags=value \
 #                        -D cmake_libdir=value \
 #                        -D ldlt_cholmod=value \
-#                        -D checkpoint_newton_step=value \
 #                        -D optimize_cppad_function=value \
 #                        -D for_hes_sparsity=value
 # ============================================================================
@@ -175,9 +174,6 @@ required_definition( cmake_libdir STRING
 )
 required_definition(ldlt_cholmod BOOL
 	"use cholmod LDLT factorization where possible (instead of eigen)"
-)
-required_definition(checkpoint_newton_step BOOL
-	"checkpoint the newton step (to reduce memory requirements)"
 )
 required_definition(optimize_cppad_function BOOL
 	"should AD operation sequences be optimized (false is for debug purposes)"

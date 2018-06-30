@@ -15,20 +15,10 @@ then
 	exit 1
 fi
 # ---------------------------------------------------------------------------
-ok='yes'
-if [ "$1" != 'd' ]  && [ "$1" != 'r' ]
+build_type="$1"
+if [ "$build_type" != 'debug' ]  && [ "$build_type" != 'release' ]
 then
-	ok='no'
-fi
-if [ "$2" != 'c' ]  && [ "$2" != 'n' ]
-then
-	ok='no'
-fi
-if [ "$ok" != 'yes' ]
-then
-	echo 'bin/check_all.sh build_type newton_step'
-	echo 'build_type  = "d" (debug) or "r" (release)'
-	echo 'newton_step = 'c' (checkpointed) or 'n' (no checkpointing)'
+	echo 'bin/check_all.sh (debug|release)'
 	exit 1
 fi
 # -----------------------------------------------------------------------------
@@ -75,21 +65,11 @@ then
 	echo 'bin/check_all.sh: bin/run_cmake.sh optimize_cppad_function not no'
 	exit 1
 fi
-if ! grep "checkpoint_newton_step='no'" bin/run_cmake.sh > /dev/null
-then
-	echo 'bin/check_all.sh: bin/run_cmake.sh checkpoint_newton_step not no'
-	exit 1
-fi
-if [ "$1" == 'r' ]
+if [ "$build_type" == 'release' ]
 then
 	sed -i bin/run_cmake.sh \
 		-e "s|^build_type=.*|build_type='release'|" \
 		-e "s|^optimize_cppad_function=.*|optimize_cppad_function='yes'|"
-fi
-if [ "$2" == 'c' ]
-then
-	sed -i bin/run_cmake.sh \
-		-e "s|^checkpoint_newton_step=.*|checkpoint_newton_step='yes'|"
 fi
 # -----------------------------------------------------------------------------
 echo 'bin/run_cmake.sh >& cmake.log'
@@ -116,8 +96,7 @@ done
 # -----------------------------------------------------------------------------
 sed -i bin/run_cmake.sh \
 	-e "s|^build_type=.*|build_type='debug'|" \
-	-e "s|^optimize_cppad_function=.*|optimize_cppad_function='no'|" \
-	-e "s|^checkpoint_newton_step=.*|checkpoint_newton_step='no'|"
+	-e "s|^optimize_cppad_function=.*|optimize_cppad_function='no'|"
 # -----------------------------------------------------------------------------
 echo 'check_all.sh: OK'
 exit 0

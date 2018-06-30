@@ -49,11 +49,6 @@ If $cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$
 is $code yes$$, this symbol is defined as $code 1$$.
 Otherwise it is defined as $code 0$$.
 
-$head CPPAD_MIXED_CHECKPOINT_NEWTON_STEP$$
-If $cref/checkpoint_newton_step/run_cmake.sh/checkpoint_newton_step/$$
-is $code yes$$, this symbol is defined as $code 1$$.
-Otherwise it is defined as $code 0$$.
-
 $head CPPAD_MIXED_LDLT_CHOLMOD$$
 If $cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$
 is $code yes$$, this symbol is defined as $code 1$$.
@@ -83,7 +78,6 @@ $end
 
 # define CPPAD_MIXED_FOR_HES_SPARSITY        @for_hes_sparsity_01@
 # define CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION @optimize_cppad_function_01@
-# define CPPAD_MIXED_CHECKPOINT_NEWTON_STEP  @checkpoint_newton_step_01@
 # define CPPAD_MIXED_LDLT_CHOLMOD            @ldlt_cholmod_01@
 
 # if @ldlt_cholmod_01@
