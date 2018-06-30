@@ -28,6 +28,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL example.cpp
 	private/ldlt_eigen.cpp
 	private/logdet_jac.cpp
 	private/newton_step.cpp
+	private/order2random.cpp
 	private/ran_con_eval.cpp
 	private/ran_con_jac.cpp
 	private/ran_jac_fun.cpp

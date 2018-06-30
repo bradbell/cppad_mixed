@@ -27,6 +27,7 @@ $icode%W% = CppAD::mixed::order2random(
 	%n_random%,
 	%a1fun%,
 	%jac_a1fun%,
+	%ran_hes_rc%,
 	%beta_theta_u%
 )%$$
 
@@ -79,11 +80,11 @@ $cref/W(beta, theta, u)
 $head W$$
 The return value is $icode%W%(%beta%, %theta%, %u%)%$$.
 
-$comment%
+$children%
 	example/private/order2random.cpp
 %$$
 $head Example$$
-The file $code order2random.cpp$$ is an example and test of this
+The file $cref order2random.cpp$$ is an example and test of this
 routine.
 
 $end
@@ -172,7 +173,7 @@ a1_vector order2random(
 	grad = jac_a1fun.Forward(0, beta_u);
 	//
 	// step = f_{u,u} (theta, u)^{-1} * grad
-	a1_eigen_vector step;
+	a1_eigen_vector step(n_random);
 	for(size_t j = 0; j < n_random; ++j)
 		step[j] = grad[j];
 	step = chol.solve(step);
