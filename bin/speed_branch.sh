@@ -2,7 +2,7 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-17 University of Washington
+#           Copyright (C) 2014-18 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -14,15 +14,23 @@ then
 	echo 'bin/speed_branch.sh must be run from its parent directory'
 	exit 1
 fi
-if [ "$1" == '' ] || [ "$2" != '' ]
+branch=`git branch | grep '^\*' | sed -e 's|^\* *||'`
+if [ "$branch" != 'master' ]
 then
-	echo 'usage: bin/speed_branch.sh branch_or_hash'
+	echo 'bin/speed_branch.sh must be run from master branch'
 	exit 1
 fi
-branch="$1"
-if [ "$branch" == 'master' ]
+if [ "$3" == '' ]
 then
-	echo 'speed_branch.sh: branch_or_hash cannot be master'
+	echo 'usage: bin/speed_branch.sh branch1 branch2 quasi_fixed'
+	exit 1
+fi
+branch1="$1"
+branch2="$2"
+quasi_fixed="$3"
+if [ "$quasi_fixed" != 'yes' ] && [ "$quasi_fixed" != 'no' ]
+then
+	echo 'speed_branch.sh: quasi_fixed is not yes or no'
 	exit 1
 fi
 # -----------------------------------------------------------------------------
@@ -35,13 +43,13 @@ echo_eval() {
 # set random seed to 123 so same for old and new
 for program in ar1_xam capture_xam
 do
-	diff=`git diff master $branch -- bin/$program`
+	diff=`git diff $branch1 $branch2 -- bin/$program`
 	if [ "$diff" != '' ]
 	then
 		echo "bin/speed_branch.sh: bin/$program.sh has changed"
 		exit 1
 	fi
-	for ext in master $branch
+	for ext in $branch1 $branch2
 	do
 		if [ -e "build/$program.$ext" ]
 		then
@@ -54,36 +62,34 @@ do
 	done
 done
 # -----------------------------------------------------------------------------
-# branch version of code
-git checkout $branch
-bin/run_cmake.sh --optimize_cppad_function --release
-for program in ar1_xam capture_xam
+for branch in $branch1 $branch2
 do
-	cd build; make $program; cd ..
-	cp build/speed/$program build/$branch.$program
-	#
-	sed -i bin/$program.sh -e 's|^random_seed=.*|random_seed=123|'
-	echo "bin/$program.sh normal > build/$program.$branch"
-	bin/$program.sh normal > build/$program.$branch
+	git checkout $branch
+	bin/run_cmake.sh --release
+	for program in ar1_xam capture_xam
+	do
+		cd build; make $program; cd ..
+		cp build/speed/$program build/$branch.$program
+		#
+		sed -i bin/$program.sh \
+			-e 's|^random_seed=.*|random_seed=123|' \
+			-e "s|^quasi_fixed=.*|quasi_fixed=$quasi_fixed|"
+		#
+		if [ "$program" == 'ar1_xam' ]
+		then
+			sed -i bin/$program.sh \
+				-e 's|^number_random=.*|number_random=90000|'
+		fi
+		#
+		echo "bin/$program.sh normal > build/$branch.$program.out"
+		bin/$program.sh normal > build/$branch.$program.out
+	done
+	git reset --hard
 done
-git reset --hard
-# -----------------------------------------------------------------------------
-# master version of code
 git checkout master
-bin/run_cmake.sh --optimize_cppad_function --release
-for program in ar1_xam capture_xam
-do
-	cd build; make $program; cd ..
-	cp build/speed/$program build/master.$program
-	#
-	sed -i bin/$program.sh -e 's|^random_seed=.*|random_seed=123|'
-	echo "bin/$program.sh normal > build/$program.master"
-	bin/$program.sh normal > build/$program.master
-done
-git reset --hard
 # -----------------------------------------------------------------------------
 echo 'bin/speed_branch.sh: results are in'
-echo "build/ar1_xam.master,     build/ar1_xam.$branch"
-echo "build/capture_xam.master, build/capture_xam.$branch"
+echo "build/ar1_xam.$branch1.out,     build/ar1_xam.$branch2.out"
+echo "build/capture_xam.$branch1.out, build/capture_xam.$branch2.out"
 echo 'speed_branch.sh: OK'
 exit 0
