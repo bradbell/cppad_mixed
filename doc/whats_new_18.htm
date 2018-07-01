@@ -111,13 +111,21 @@ A:active { color : purple }
 <table>
 <tr><td><a href="whats_new_17.htm" target="_top">whats_new_17</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2017</td></tr><tr><td><a href="whats_new_16.htm" target="_top">whats_new_16</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2016</td></tr><tr><td><a href="whats_new_15.htm" target="_top">whats_new_15</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2015</td></tr></table><br>
 <b><big><a name="06-30" id="06-30">06-30</a></big></b>
-<br>
+
+<ol type="1"><li>
 Implement the partial Newton step update in definition of
 the second order accurate approximation for the optimal random effects
 <a href="theory.htm#Approximate Optimal Random Effects.Second Order, W(beta, theta, u)" target="_top"><span style='white-space: nowrap'>W(beta,&nbsp;theta,&nbsp;u)</span></a>
 .
 This should lead to a large improvement when the Hessian of the
 random likelihood with respect to the random effects is sparse.
+</li><li>
+
+The <code><font color="blue">checkpoint_newton_step</font></code> setting in
+<a href="run_cmake.sh.htm" target="_top"><span style='white-space: nowrap'>run_cmake.sh</span></a>
+ has been removed.
+</li></ol>
+
 
 
 <br>
