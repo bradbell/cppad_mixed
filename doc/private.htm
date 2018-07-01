@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>cppad_mixed: Private Declarations</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="cppad_mixed: Private Declarations">
-<meta name="keywords" id="keywords" content=" cppad_mixed: private declarations n_fixed_ n_random_ quasi_fixed_ bool_sparsity_ a_rcv_ initialize_done_ cppad_error_handler ran_like_fun_ ran_jac_fun_ ran_hes_fun_ ldlt_ran_hes_ hes_cross_ newton_checkpoint_ laplace_obj_fun_ laplace_obj_hes_ fix_like_fun_ fix_like_jac_ fix_like_hes_ fix_con_fun_ fix_con_jac_ fix_con_hes_ template member functions pack unpack initialization init_ldlt_ran_hes init_fix_con init_fix_like init_hes_cross init_ran_jac init_ran_hes check_user_ran_hes init_laplace_obj_hes init_ran_like init_laplace_obj try try_initialize try_optimize_random try_optimize_fixed try_information_mat try_sample_fixed sample_random other fix_con_eval fix_con_jac fix_con_hes fix_like_eval fix_like_jac fix_like_hes logdet_jac ran_con_eval ran_con_jac ran_like_jac check_user_ran_jac ran_obj_eval ran_obj_jac laplace_obj_hes update_factor ">
+<meta name="keywords" id="keywords" content=" cppad_mixed: private declarations n_fixed_ n_random_ quasi_fixed_ bool_sparsity_ a_rcv_ initialize_done_ cppad_error_handler ran_like_fun_ ran_jac_fun_ ran_hes_fun_ ldlt_ran_hes_ hes_cross_ laplace_obj_fun_ laplace_obj_hes_ fix_like_fun_ fix_like_jac_ fix_like_hes_ fix_con_fun_ fix_con_jac_ fix_con_hes_ template member functions pack unpack initialization init_ldlt_ran_hes init_fix_con init_fix_like init_hes_cross init_ran_jac init_ran_hes check_user_ran_hes init_laplace_obj_hes init_ran_like init_laplace_obj try try_initialize try_optimize_random try_optimize_fixed try_information_mat try_sample_fixed sample_random other fix_con_eval fix_con_jac fix_con_hes fix_like_eval fix_like_jac fix_like_hes logdet_jac ran_con_eval ran_con_jac ran_like_jac check_user_ran_jac ran_obj_eval ran_obj_jac laplace_obj_hes update_factor ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -119,7 +119,6 @@ A:active { color : purple }
 <option>ran_hes_fun_</option>
 <option>ldlt_ran_hes_</option>
 <option>hes_cross_</option>
-<option>newton_checkpoint_</option>
 <option>laplace_obj_fun_</option>
 <option>---..laplace_obj_hes_</option>
 <option>fix_like_fun_</option>
@@ -295,12 +294,24 @@ with respect to the random effects; i.e.
 f_u ( \theta , u )
 @)@</small> and the sparsity for
 <small>@(@
-f_{uu} ( u )
+f_{uu} ( \theta, u )
 @)@</small> .
 <pre><tt>     CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;a1_double&gt;</font>  ran_jac_a1fun_<font color="#990000">;</font>
      <font color="#008080">sparse_rc</font>                ran_jac2hes_rc_<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
      <b><font color="#0000FF">friend</font></b> <font color="#009900">bool</font> <font color="#990000">::</font><b><font color="#000000">ran_jac_fun_xam</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">);</font></tt></pre>
+The row indices in 
+<code><i><font color="black"><span style='white-space: nowrap'>ran_jac2hes_rc_</span></font></i></code>
+
+are for just the random effects <small>@(@
+u
+@)@</small>,
+the column indices are for both fixed and random effects
+<small>@(@
+( \theta , u )
+@)@</small>.
+
+<br>
 <br>
 <b><big><a name="ran_hes_fun_" id="ran_hes_fun_">ran_hes_fun_</a></big></b>
 <br>
@@ -323,6 +334,17 @@ f_{u,u} ( \theta , u )
      CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;double&gt;</font>        ran_hes_fun_<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
      <b><font color="#0000FF">friend</font></b> <font color="#009900">bool</font> <font color="#990000">::</font><b><font color="#000000">ran_hes_fun_xam</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">);</font></tt></pre>
+The row and column indices in 
+<code><i><font color="black"><span style='white-space: nowrap'>ran_hes_rcv_</span></font></i></code>
+
+are for both the fixed and random effects <small>@(@
+( \theta , u )
+@)@</small>
+and hence are all greater than or equal  
+<code><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i></code>
+.
+
+<br>
 <br>
 <b><big><a name="ldlt_ran_hes_" id="ldlt_ran_hes_">ldlt_ran_hes_</a></big></b>
 <br>
@@ -358,26 +380,6 @@ f_{u,\theta} ( \theta , u )
      CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">sparse_hes_rcv</font> hes_cross_<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
      <b><font color="#0000FF">friend</font></b> <font color="#009900">bool</font> <font color="#990000">::</font><b><font color="#000000">hes_cross_xam</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">);</font>
-</tt></pre>
-<br>
-<b><big><a name="newton_checkpoint_" id="newton_checkpoint_">newton_checkpoint_</a></big></b>
-<br>
-If 
-<code><i><font color="black"><span style='white-space: nowrap'>n_random_</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;&gt;&nbsp;0</span></font></code>
-, quasi_fixed_ is false, and
-<code><font color="blue">init_newton_checkpoint_done_</font></code>,
-this is a CppAD atomic function that computes one Newton Step in the
-solution of the equation <small>@(@
-f_u ( \theta, u) = 0
-@)@</small> as well
-as the log of the determinant of <small>@(@
-f_{uu} ( \theta , u )
-@)@</small>;
-see <a href="newton_step.htm#initialize" target="_top"><span style='white-space: nowrap'>initialize&nbsp;newton_step</span></a>
-.
-<pre style='display:inline'><tt>
-     <i><font color="#9A1900">// computation of the Hessian as an atomic operation</font></i>
-     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">newton_step</font>   newton_checkpoint_<font color="#990000">;</font>
 </tt></pre>
 <br>
 <b><big><a name="laplace_obj_fun_" id="laplace_obj_fun_">laplace_obj_fun_</a></big></b>

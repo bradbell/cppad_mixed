@@ -1,0 +1,253 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=default'
+>
+</script>
+<head>
+<title>Second Order Representation of Random Effects, W(beta, theta, u)</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Second Order Representation of Random Effects, W(beta, theta, u)">
+<meta name="keywords" id="keywords" content=" second order representation random effects w(beta theta u) syntax prototype private mixed_object n_fixed n_random a1fun jac_a1fun ran_hes_rc beta_theta_u w example ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_order2random_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="triple2eigen.htm" target="_top">Prev</a>
+</td><td><a href="order2random.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>order2random</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down2(this)'>
+<option>cppad_mixed-&gt;</option>
+<option>install_unix</option>
+<option>theory</option>
+<option>base_class</option>
+<option>namespace</option>
+<option>user</option>
+<option>whats_new_18</option>
+<option>wish_list</option>
+<option>math_notation</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down1(this)'>
+<option>namespace-&gt;</option>
+<option>typedef</option>
+<option>configure.hpp</option>
+<option>exception</option>
+<option>fixed_solution</option>
+<option>ipopt_app_status</option>
+<option>ipopt_fixed</option>
+<option>ipopt_random</option>
+<option>ldlt_cholmod</option>
+<option>ldlt_eigen</option>
+<option>manage_gsl_rng</option>
+<option>sparse_hes_rcv</option>
+<option>sparse_hes_info</option>
+<option>sparse_jac_rcv</option>
+<option>sparse_mat_info</option>
+<option>triple2eigen</option>
+<option>order2random</option>
+<option>undetermined</option>
+<option>sparse_low_tri_sol</option>
+<option>sparse_up_tri_sol</option>
+<option>sparse_scale_diag</option>
+<option>sparse_low2sym</option>
+<option>sparse_mat2low</option>
+<option>sparse_eigen2info</option>
+<option>sparse_info2eigen</option>
+<option>sparse_print</option>
+<option>sparsity_print</option>
+<option>sparse_ad_cholesky</option>
+</select>
+</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>order2random-&gt;</option>
+<option>order2random.cpp</option>
+</select>
+</td>
+<td>
+<select onchange='choose_current0(this)'>
+<option>Headings-&gt;</option>
+<option>Syntax</option>
+<option>Prototype</option>
+<option>Private</option>
+<option>mixed_object</option>
+<option>n_fixed</option>
+<option>n_random</option>
+<option>a1fun</option>
+<option>jac_a1fun</option>
+<option>ran_hes_rc</option>
+<option>beta_theta_u</option>
+<option>W</option>
+<option>Example</option>
+</select>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Second Order Representation of Random Effects, W(beta, theta, u)</big></big></b></center>
+<br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>W</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;CppAD::mixed::order2random(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>a1fun</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac_a1fun</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ran_hes_rc</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>beta_theta_u</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre><tt>    
+    <font color="#008080">a1_vector</font> <b><font color="#000000">order2random</font></b><font color="#990000">(</font>
+     cppad_mixed<font color="#990000">&amp;</font>             mixed_object    <font color="#990000">,</font>
+     <font color="#008080">size_t</font>                   n_fixed         <font color="#990000">,</font>
+     <font color="#008080">size_t</font>                   n_random        <font color="#990000">,</font>
+     CppAD<font color="#990000">::</font>ADFun<font color="#990000">&lt;</font>a1_double<font color="#990000">&gt;&amp;</font> a1fun           <font color="#990000">,</font>
+     CppAD<font color="#990000">::</font>ADFun<font color="#990000">&lt;</font>a1_double<font color="#990000">&gt;&amp;</font> jac_a1fun       <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> sparse_rc<font color="#990000">&amp;</font>         ran_hes_rc      <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>         beta_theta_u    <font color="#990000">)</font></tt></pre>
+<br>
+<b><big><a name="Private" id="Private">Private</a></big></b>
+<br>
+This <code><font color="blue">cppad_mixed</font></code> member function is <a href="private.htm" target="_top"><span style='white-space: nowrap'>private</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="mixed_object" id="mixed_object">mixed_object</a></big></b>
+<br>
+is the cppad_mixed object for this problem.
+This object is only used to call
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.ran_likelihood_hes<br>
+</span></font></code>
+and see if the user has defined the hessian of the random likelihood.
+
+<br>
+<br>
+<b><big><a name="n_fixed" id="n_fixed">n_fixed</a></big></b>
+<br>
+number of fixed effects.
+
+<br>
+<br>
+<b><big><a name="n_random" id="n_random">n_random</a></big></b>
+<br>
+number of random effects
+
+<br>
+<br>
+<b><big><a name="a1fun" id="a1fun">a1fun</a></big></b>
+<br>
+This is the random likelihood
+<a href="theory.htm#Random Likelihood, f(theta, u)" target="_top"><span style='white-space: nowrap'>f(theta,&nbsp;u)</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="jac_a1fun" id="jac_a1fun">jac_a1fun</a></big></b>
+<br>
+This is the Jacobian of the random likelihood
+with respect to the random effects
+<small>@(@
+f_u ( \theta, u )
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="ran_hes_rc" id="ran_hes_rc">ran_hes_rc</a></big></b>
+<br>
+This is the sparsity pattern for the lower triangle of the Hessian w.r.t the
+random effect.
+The indices in 
+<code><i><font color="black"><span style='white-space: nowrap'>ran_hes_rc</span></font></i></code>
+ are with respect to both the fixed
+and random effects and hence are greater than or equal 
+<code><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i></code>
+.
+
+<br>
+<br>
+<b><big><a name="beta_theta_u" id="beta_theta_u">beta_theta_u</a></big></b>
+<br>
+This vector has size 
+<code><font color="blue"><span style='white-space: nowrap'>2*</span></font><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;+&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i></code>
+
+and specifies the value of 
+<code><font color="blue"><span style='white-space: nowrap'>(</span></font><i><font color="black"><span style='white-space: nowrap'>beta</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>theta</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>u</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
+
+at which we are evaluating the second order approximation
+for the optimal random effects
+<a href="theory.htm#Approximate Optimal Random Effects.Second Order, W(beta, theta, u)" target="_top"><span style='white-space: nowrap'>W(beta,&nbsp;theta,&nbsp;u)</span></a>
+.
+<br>
+<br>
+<b><big><a name="W" id="W">W</a></big></b>
+<br>
+The return value is 
+<code><i><font color="black"><span style='white-space: nowrap'>W</span></font></i><font color="blue"><span style='white-space: nowrap'>(</span></font><i><font color="black"><span style='white-space: nowrap'>beta</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>theta</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>u</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
+.
+
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="order2random.cpp.htm" target="_top"><span style='white-space: nowrap'>order2random.cpp</span></a>
+ is an example and test of this
+routine.
+
+
+<hr>Input File: src/eigen/order2random.cpp
+
+</body>
+</html>

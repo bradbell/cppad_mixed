@@ -8,10 +8,9 @@ var list_across0 = [
 var list_up0 = [
 'cppad_mixed.htm',
 'namespace.htm',
-'newton_step.htm',
-'newton_step.cpp.htm'
+'order2random.htm'
 ];
-var list_down3 = [
+var list_down2 = [
 'install_unix.htm',
 'theory.htm',
 'base_class.htm',
@@ -21,7 +20,7 @@ var list_down3 = [
 'wish_list.htm',
 'math_notation.htm'
 ];
-var list_down2 = [
+var list_down1 = [
 'typedef.htm',
 'configure.hpp.htm',
 'exception.htm',
@@ -32,12 +31,12 @@ var list_down2 = [
 'ldlt_cholmod.htm',
 'ldlt_eigen.htm',
 'manage_gsl_rng.htm',
-'newton_step.htm',
 'sparse_hes_rcv.htm',
 'sparse_hes_info.htm',
 'sparse_jac_rcv.htm',
 'sparse_mat_info.htm',
 'triple2eigen.htm',
+'order2random.htm',
 'undetermined.htm',
 'sparse_low_tri_sol.htm',
 'sparse_up_tri_sol.htm',
@@ -50,17 +49,22 @@ var list_down2 = [
 'sparsity_print.htm',
 'sparse_ad_cholesky.htm'
 ];
-var list_down1 = [
-'newton_step.cpp.htm',
-'newton_step_algo_ctor.htm',
-'newton_step_algo.htm',
-'newton_step_ctor.htm',
-'newton_step_initialize.htm',
-'newton_step_size_var.htm',
-'newton_step_eval.htm'
+var list_down0 = [
+'order2random.cpp.htm'
 ];
 var list_current0 = [
-'newton_step.cpp.htm#Private'
+'order2random.htm#Syntax',
+'order2random.htm#Prototype',
+'order2random.htm#Private',
+'order2random.htm#mixed_object',
+'order2random.htm#n_fixed',
+'order2random.htm#n_random',
+'order2random.htm#a1fun',
+'order2random.htm#jac_a1fun',
+'order2random.htm#ran_hes_rc',
+'order2random.htm#beta_theta_u',
+'order2random.htm#W',
+'order2random.htm#Example'
 ];
 function choose_across0(item)
 {	var index          = item.selectedIndex;
@@ -73,12 +77,6 @@ function choose_up0(item)
 	item.selectedIndex = 0;
 	if(index > 0)
 		document.location = list_up0[index-1];
-}
-function choose_down3(item)
-{	var index          = item.selectedIndex;
-	item.selectedIndex = 0;
-	if(index > 0)
-		document.location = list_down3[index-1];
 }
 function choose_down2(item)
 {	var index          = item.selectedIndex;

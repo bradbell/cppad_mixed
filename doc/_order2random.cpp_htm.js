@@ -8,8 +8,8 @@ var list_across0 = [
 var list_up0 = [
 'cppad_mixed.htm',
 'namespace.htm',
-'newton_step.htm',
-'newton_step_ctor.htm'
+'order2random.htm',
+'order2random.cpp.htm'
 ];
 var list_down3 = [
 'install_unix.htm',
@@ -32,12 +32,12 @@ var list_down2 = [
 'ldlt_cholmod.htm',
 'ldlt_eigen.htm',
 'manage_gsl_rng.htm',
-'newton_step.htm',
 'sparse_hes_rcv.htm',
 'sparse_hes_info.htm',
 'sparse_jac_rcv.htm',
 'sparse_mat_info.htm',
 'triple2eigen.htm',
+'order2random.htm',
 'undetermined.htm',
 'sparse_low_tri_sol.htm',
 'sparse_up_tri_sol.htm',
@@ -51,20 +51,10 @@ var list_down2 = [
 'sparse_ad_cholesky.htm'
 ];
 var list_down1 = [
-'newton_step.cpp.htm',
-'newton_step_algo_ctor.htm',
-'newton_step_algo.htm',
-'newton_step_ctor.htm',
-'newton_step_initialize.htm',
-'newton_step_size_var.htm',
-'newton_step_eval.htm'
+'order2random.cpp.htm'
 ];
 var list_current0 = [
-'newton_step_ctor.htm#Syntax',
-'newton_step_ctor.htm#Private',
-'newton_step_ctor.htm#newton_checkpoint',
-'newton_step_ctor.htm#algo_',
-'newton_step_ctor.htm#checkpoint_fun_'
+'order2random.cpp.htm#Private'
 ];
 function choose_across0(item)
 {	var index          = item.selectedIndex;

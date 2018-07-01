@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Preprocessor Configuration Symbols in configure.hpp</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Preprocessor Configuration Symbols in configure.hpp">
-<meta name="keywords" id="keywords" content=" preprocessor configuration symbols configure.hpp private cppad_mixed_version cppad_mixed_for_hes_sparsity cppad_mixed_optimize_ad_function cppad_mixed_checkpoint_newton_step cppad_mixed_ldlt_cholmod cppad_mixed_ldlt_class cppad_mixed_null_ptr ">
+<meta name="keywords" id="keywords" content=" preprocessor configuration symbols configure.hpp private cppad_mixed_version cppad_mixed_for_hes_sparsity cppad_mixed_optimize_ad_function cppad_mixed_ldlt_cholmod cppad_mixed_ldlt_class cppad_mixed_null_ptr ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -77,12 +77,12 @@ A:active { color : purple }
 <option>ldlt_cholmod</option>
 <option>ldlt_eigen</option>
 <option>manage_gsl_rng</option>
-<option>newton_step</option>
 <option>sparse_hes_rcv</option>
 <option>sparse_hes_info</option>
 <option>sparse_jac_rcv</option>
 <option>sparse_mat_info</option>
 <option>triple2eigen</option>
+<option>order2random</option>
 <option>undetermined</option>
 <option>sparse_low_tri_sol</option>
 <option>sparse_up_tri_sol</option>
@@ -104,7 +104,6 @@ A:active { color : purple }
 <option>CPPAD_MIXED_VERSION</option>
 <option>CPPAD_MIXED_FOR_HES_SPARSITY</option>
 <option>CPPAD_MIXED_OPTIMIZE_AD_FUNCTION</option>
-<option>CPPAD_MIXED_CHECKPOINT_NEWTON_STEP</option>
 <option>CPPAD_MIXED_LDLT_CHOLMOD</option>
 <option>CPPAD_MIXED_LDLT_CLASS</option>
 <option>CPPAD_MIXED_NULL_PTR</option>
@@ -144,15 +143,6 @@ Otherwise it is defined as <code><font color="blue">0</font></code>.
 <b><big><a name="CPPAD_MIXED_OPTIMIZE_AD_FUNCTION" id="CPPAD_MIXED_OPTIMIZE_AD_FUNCTION">CPPAD_MIXED_OPTIMIZE_AD_FUNCTION</a></big></b>
 <br>
 If <a href="run_cmake.sh.htm#optimize_cppad_function" target="_top"><span style='white-space: nowrap'>optimize_cppad_function</span></a>
-
-is <code><font color="blue">yes</font></code>, this symbol is defined as <code><font color="blue">1</font></code>.
-Otherwise it is defined as <code><font color="blue">0</font></code>.
-
-<br>
-<br>
-<b><big><a name="CPPAD_MIXED_CHECKPOINT_NEWTON_STEP" id="CPPAD_MIXED_CHECKPOINT_NEWTON_STEP">CPPAD_MIXED_CHECKPOINT_NEWTON_STEP</a></big></b>
-<br>
-If <a href="run_cmake.sh.htm#checkpoint_newton_step" target="_top"><span style='white-space: nowrap'>checkpoint_newton_step</span></a>
 
 is <code><font color="blue">yes</font></code>, this symbol is defined as <code><font color="blue">1</font></code>.
 Otherwise it is defined as <code><font color="blue">0</font></code>.

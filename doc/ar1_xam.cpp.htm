@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>A First Order Auto-Regressive Example and Speed Test</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="A First Order Auto-Regressive Example and Speed Test">
-<meta name="keywords" id="keywords" content=" first order auto-regressive example speed test syntax problem data p( y_t | u  theta ) command arguments random_seed number_random quasi_fixed trace_optimize_fixed ipopt_solve bool_sparsity hold_memory derivative_test start_near_solution output cppad_mixed_version checkpoint_newton_step ldlt_cholmod optimize_cppad_function actual_seed initialize_bytes initialize_seconds optimize_fixed_seconds optimize_random_seconds information_mat_seconds sample_fixed_seconds final_bytes theta_0_estimate ar1_xam_ok source code ">
+<meta name="keywords" id="keywords" content=" first order auto-regressive example speed test syntax problem data p( y_t | u  theta ) command arguments random_seed number_random quasi_fixed trace_optimize_fixed ipopt_solve bool_sparsity hold_memory derivative_test start_near_solution output cppad_mixed_version ldlt_cholmod optimize_cppad_function actual_seed initialize_bytes initialize_seconds optimize_fixed_seconds optimize_random_seconds information_mat_seconds sample_fixed_seconds final_bytes theta_0_estimate ar1_xam_ok source code ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -110,7 +110,6 @@ A:active { color : purple }
 <option>---..start_near_solution</option>
 <option>Output</option>
 <option>---..cppad_mixed_version</option>
-<option>---..checkpoint_newton_step</option>
 <option>---..ldlt_cholmod</option>
 <option>---..optimize_cppad_function</option>
 <option>---..actual_seed</option>
@@ -316,14 +315,6 @@ In addition, the following name value pairs are also output.
 <big><a name="Output.cppad_mixed_version" id="Output.cppad_mixed_version">cppad_mixed_version</a></big>
 <br>
 The <code><font color="blue">cppad_mixed</font></code> version number.
-
-<br>
-<br>
-<big><a name="Output.checkpoint_newton_step" id="Output.checkpoint_newton_step">checkpoint_newton_step</a></big>
-<br>
-is the <code><font color="blue">bin/run_cmake.sh</font></code> configuration option
-<a href="run_cmake.sh.htm#checkpoint_newton_step" target="_top"><span style='white-space: nowrap'>checkpoint_newton_step</span></a>
-.
 
 <br>
 <br>
@@ -630,7 +621,6 @@ The file <a href="ar1_xam.sh.htm" target="_top"><span style='white-space: nowrap
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// configuration options</font></i>
      <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"cppad_mixed_version"</font><font color="#990000">,</font>    CPPAD_MIXED_VERSION<font color="#990000">);</font>
-     <b><font color="#000000">bool_print</font></b><font color="#990000">(</font><font color="#FF0000">"checkpoint_newton_step"</font><font color="#990000">,</font>  CPPAD_MIXED_CHECKPOINT_NEWTON_STEP<font color="#990000">);</font>
      <b><font color="#000000">bool_print</font></b><font color="#990000">(</font><font color="#FF0000">"ldlt_cholmod"</font><font color="#990000">,</font>            CPPAD_MIXED_LDLT_CHOLMOD<font color="#990000">);</font>
      <b><font color="#000000">bool_print</font></b><font color="#990000">(</font><font color="#FF0000">"optimize_cppad_function"</font><font color="#990000">,</font> CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION<font color="#990000">);</font>
      <i><font color="#9A1900">//</font></i>

@@ -67,7 +67,6 @@ var list_current0 = [
 'private.htm#ran_hes_fun_',
 'private.htm#ldlt_ran_hes_',
 'private.htm#hes_cross_',
-'private.htm#newton_checkpoint_',
 'private.htm#laplace_obj_fun_',
 'private.htm#laplace_obj_fun_.laplace_obj_hes_',
 'private.htm#fix_like_fun_',

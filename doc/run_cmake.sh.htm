@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>bin/run_cmake.sh: User Configuration Options</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="bin/run_cmake.sh: User Configuration Options">
-<meta name="keywords" id="keywords" content=" bin/run_cmake.sh: user configuration options verbose_makefile build_type cppad_prefix eigen_prefix ipopt_prefix debug release cppad_cxx_flags cmake_libdir ldlt_cholmod checkpoint_newton_step optimize_cppad_function for_hes_sparsity testing speed memory ">
+<meta name="keywords" id="keywords" content=" bin/run_cmake.sh: user configuration options verbose_makefile build_type cppad_prefix eigen_prefix ipopt_prefix debug release cppad_cxx_flags cmake_libdir ldlt_cholmod optimize_cppad_function for_hes_sparsity testing speed memory ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -85,7 +85,6 @@ A:active { color : purple }
 <option>cppad_cxx_flags</option>
 <option>cmake_libdir</option>
 <option>ldlt_cholmod</option>
-<option>checkpoint_newton_step</option>
 <option>optimize_cppad_function</option>
 <option>for_hes_sparsity</option>
 <option>Testing Speed and Memory</option>
@@ -217,17 +216,6 @@ Otherwise always use <a href="ldlt_eigen.htm" target="_top"><span style='white-s
  for LDLT factorization.
 <code><font color='blue'><pre style='display:inline'> 
 ldlt_cholmod='yes'
-</pre></font></code>
-<br>
-<b><big><a name="checkpoint_newton_step" id="checkpoint_newton_step">checkpoint_newton_step</a></big></b>
-<br>
-If yes, <code><font color="blue">cppad_mixed</font></code> will checkpoint the
-<a href="newton_step.htm" target="_top"><span style='white-space: nowrap'>newton_step</span></a>
-. Otherwise, repeated applications of the Newton step
-are recorded on the AD tape (which should require more memory but may be
-faster).
-<code><font color='blue'><pre style='display:inline'> 
-checkpoint_newton_step='no'
 </pre></font></code>
 <br>
 <b><big><a name="optimize_cppad_function" id="optimize_cppad_function">optimize_cppad_function</a></big></b>
