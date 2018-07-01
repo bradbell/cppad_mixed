@@ -41,6 +41,7 @@ $childtable%
 %$$
 
 $head 06-30$$
+$list number$$
 Implement the partial Newton step update in definition of
 the second order accurate approximation for the optimal random effects
 $cref/W(beta, theta, u)
@@ -50,6 +51,10 @@ $cref/W(beta, theta, u)
 /$$.
 This should lead to a large improvement when the Hessian of the
 random likelihood with respect to the random effects is sparse.
+$lnext
+The $code checkpoint_newton_step$$ setting in
+$cref run_cmake.sh$$ has been removed.
+$lend
 
 
 $head 06-29$$

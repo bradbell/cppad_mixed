@@ -147,7 +147,12 @@ MESSAGE(STATUS "BEGIN:")
 MESSAGE(STATUS "CMAKE_VERBOSE_MAKEFILE = ${CMAKE_VERBOSE_MAKEFILE}")
 MESSAGE(STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 # ----------------------------------------------------------------------------
-FOREACH( var set_sparsity use_atomic_cholesky hide_ipopt_scaling)
+FOREACH( var
+	set_sparsity
+	use_atomic_cholesky
+	hide_ipopt_scaling
+	checkpoint_newton_step
+)
 	IF( DEFINED ${var})
 		MESSAGE(FATAL_ERROR "${var} cmake option is no longer used")
 	ENDIF( DEFINED ${var})
