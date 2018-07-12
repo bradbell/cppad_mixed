@@ -89,8 +89,9 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// ---------------------------------------------------------------
 		// member variables set during constructor
 		//
+		const bool         abort_on_eval_error_;
 		const std::string& random_ipopt_options_;
-		const double       fixed_tolerance_;  // ipopt relative tolerance
+		const double       fixed_tolerance_;       // ipopt relative tolerance
 		//
 		const size_t n_fixed_;            // number of fixed effects
 		const size_t n_random_;           // number of random effects
@@ -256,6 +257,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		//
 		// constructor
 		ipopt_fixed(
+			const bool&               abort_on_eval_error  ,
 			const std::string&        random_ipopt_options ,
 			const double&             fixed_tolerance      ,
 			const d_vector&           fixed_lower          ,

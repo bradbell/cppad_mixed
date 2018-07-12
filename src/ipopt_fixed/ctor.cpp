@@ -153,12 +153,15 @@ $spell
 	tol
 	nlp
 	inf
+	bool
+	optimizer
 $$
 
 $section Ipopt Fixed Optimization Callback Constructor and Destructor$$
 
 $head Syntax$$
 $codei%CppAD::mixed::ipopt_fixed %ipopt_object%(
+	%abort_on_eval_error%,
 	%random_ipopt_options%,
 	%fixed_tolerance%,
 	%fixed_lower%,
@@ -182,6 +185,15 @@ $head References$$
 The values of the arguments are stored by reference and hence
 the arguments must not be deleted while $icode ipopt_object$$
 is still being used.
+
+$head abort_on_eval_error$$
+This argument has prototype
+$codei%
+	const bool& %abort_on_eval_error%
+%$$
+If it is true, the fixed effects optimization will abort if an error
+occurs during the evaluation of one of fixed effects optimizer functions
+(otherwise it will try to backup).
 
 $head random_ipopt_options$$
 This argument has prototype
@@ -382,7 +394,8 @@ This member variable is set to false.
 $head Prototype$$
 $srccode%cpp% */
 ipopt_fixed::ipopt_fixed(
-	const std::string&        random_ipopt_options   ,
+	const bool&         abort_on_eval_error          ,
+	const std::string&  random_ipopt_options         ,
 	const double&       fixed_tolerance              ,
 	const d_vector&     fixed_lower                  ,
 	const d_vector&     fixed_upper                  ,
@@ -397,6 +410,7 @@ ipopt_fixed::ipopt_fixed(
 /* %$$
 $end
 */
+abort_on_eval_error_   ( abort_on_eval_error )           ,
 random_ipopt_options_  ( random_ipopt_options )          ,
 fixed_tolerance_       ( fixed_tolerance )               ,
 n_fixed_               ( fixed_in.size() )               ,

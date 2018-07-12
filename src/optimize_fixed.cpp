@@ -428,6 +428,10 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 			begin_1++;
 	}
 	// ----------------------------------------------------------------------
+	// when fixed_max_iter is -1 we want to know what is failing at the current
+	// values of the fixed effects, so abort right away instead of backing up
+	bool abort_on_eval_error = fixed_max_iter == -1;
+	// ----------------------------------------------------------------------
 	// get the tolerance setting for the fixed effects optimization
 	tag    = "tol";
 	prefix = "";
@@ -438,6 +442,7 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	// (note that  one does not need to delete an ipopt smart pointer)
 	SmartPtr<CppAD::mixed::ipopt_fixed> fixed_nlp =
 	new CppAD::mixed::ipopt_fixed(
+		abort_on_eval_error,
 		random_ipopt_options,
 		fixed_tolerance,
 		fixed_lower,

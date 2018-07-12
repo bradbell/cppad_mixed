@@ -62,16 +62,23 @@ bool ipopt_fixed::eval_g(
 /* %$$
 $end
 */
-{	try
+{	if( abort_on_eval_error_ )
 	{	try_eval_g(n, x, new_x, m, g);
 		for(size_t i = 0; i < size_t(m); i++)
 			g[i] *= scale_g_[i];
 	}
-	catch(const CppAD::mixed::exception& e)
-	{	error_message_ = e.message("ipopt_fixed::eval_g");
-		for(size_t j = 0; j < n_fixed_; j++)
-			error_fixed_[j] = x[j];
-		return false;
+	else
+	{	try
+		{	try_eval_g(n, x, new_x, m, g);
+			for(size_t i = 0; i < size_t(m); i++)
+				g[i] *= scale_g_[i];
+		}
+		catch(const CppAD::mixed::exception& e)
+		{	error_message_ = e.message("ipopt_fixed::eval_g");
+			for(size_t j = 0; j < n_fixed_; j++)
+				error_fixed_[j] = x[j];
+			return false;
+		}
 	}
 	return true;
 }

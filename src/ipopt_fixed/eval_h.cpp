@@ -116,22 +116,24 @@ bool ipopt_fixed::eval_h(
 /* %$$
 $end
 */
-{	try
-	{	double obj_factor_scaled;
-		d_vector lambda_scaled(m);
-		if( values != NULL )
-		{	obj_factor_scaled = scale_f_ * obj_factor;
-			for(size_t i = 0; i < size_t(m); i++)
-				lambda_scaled[i] = scale_g_[i] * lambda[i];
-		}
-		else
-		{	// this case not necessary (avoids warnings)
-			double nan = std::numeric_limits<double>::quiet_NaN();
-			obj_factor_scaled = nan;
-			for(size_t i = 0; i < size_t(m); i++)
-				lambda_scaled[i] = nan;
-		}
-		try_eval_h(
+{
+	double obj_factor_scaled;
+	d_vector lambda_scaled(m);
+	if( values != NULL )
+	{	obj_factor_scaled = scale_f_ * obj_factor;
+		for(size_t i = 0; i < size_t(m); i++)
+			lambda_scaled[i] = scale_g_[i] * lambda[i];
+	}
+	else
+	{	// this case not necessary (avoids warnings)
+		double nan = std::numeric_limits<double>::quiet_NaN();
+		obj_factor_scaled = nan;
+		for(size_t i = 0; i < size_t(m); i++)
+			lambda_scaled[i] = nan;
+	}
+	//
+	if( abort_on_eval_error_ )
+	{	try_eval_h(
 			n,
 			x,
 			new_x,
@@ -145,11 +147,28 @@ $end
 			values
 		);
 	}
-	catch(const CppAD::mixed::exception& e)
-	{	error_message_ = e.message("ipopt_fixed::eval_h");
-		for(size_t j = 0; j < n_fixed_; j++)
-			error_fixed_[j] = x[j];
-		return false;
+	else
+	{	try
+		{	try_eval_h(
+				n,
+				x,
+				new_x,
+				obj_factor_scaled,
+				m,
+				lambda_scaled.data(),
+				new_lambda,
+				nele_hess,
+				iRow,
+				jCol,
+				values
+			);
+		}
+		catch(const CppAD::mixed::exception& e)
+		{	error_message_ = e.message("ipopt_fixed::eval_h");
+			for(size_t j = 0; j < n_fixed_; j++)
+				error_fixed_[j] = x[j];
+			return false;
+		}
 	}
 	return true;
 }

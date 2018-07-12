@@ -59,16 +59,23 @@ bool ipopt_fixed::eval_grad_f(
 /* %$$
 $end
 */
-{	try
+{	if( abort_on_eval_error_ )
 	{	try_eval_grad_f(n, x, new_x, grad_f);
-	for(size_t j = 0; j < size_t(n); j++)
-		grad_f[j] *= scale_f_;
+		for(size_t j = 0; j < size_t(n); j++)
+			grad_f[j] *= scale_f_;
 	}
-	catch(const CppAD::mixed::exception& e)
-	{	error_message_ = e.message("ipopt_fixed::eval_g");
-		for(size_t j = 0; j < n_fixed_; j++)
-			error_fixed_[j] = x[j];
-		return false;
+	else
+	{	try
+		{	try_eval_grad_f(n, x, new_x, grad_f);
+			for(size_t j = 0; j < size_t(n); j++)
+				grad_f[j] *= scale_f_;
+		}
+		catch(const CppAD::mixed::exception& e)
+		{	error_message_ = e.message("ipopt_fixed::eval_g");
+			for(size_t j = 0; j < n_fixed_; j++)
+				error_fixed_[j] = x[j];
+			return false;
+		}
 	}
 	return true;
 }

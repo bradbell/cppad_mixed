@@ -91,7 +91,8 @@ bool ipopt_fixed::eval_jac_g(
 /* %$$
 $end
 */
-{	try
+{
+	if( abort_on_eval_error_ )
 	{	try_eval_jac_g(n, x, new_x, m, nele_jac, iRow, jCol, values);
 		if( values != NULL )
 		{	for(size_t ell = 0; ell < nnz_jac_g_; ell++)
@@ -100,11 +101,22 @@ $end
 			}
 		}
 	}
-	catch(const CppAD::mixed::exception& e)
-	{	error_message_ = e.message("ipopt_fixed::eval_jac_g");
-		for(size_t j = 0; j < n_fixed_; j++)
-			error_fixed_[j] = x[j];
-		return false;
+	else
+	{	try
+		{	try_eval_jac_g(n, x, new_x, m, nele_jac, iRow, jCol, values);
+			if( values != NULL )
+			{	for(size_t ell = 0; ell < nnz_jac_g_; ell++)
+				{	size_t i     = jac_g_row_[ell];
+					values[ell] *= scale_g_[i];
+				}
+			}
+		}
+		catch(const CppAD::mixed::exception& e)
+		{	error_message_ = e.message("ipopt_fixed::eval_jac_g");
+			for(size_t j = 0; j < n_fixed_; j++)
+				error_fixed_[j] = x[j];
+			return false;
+		}
 	}
 	return true;
 }

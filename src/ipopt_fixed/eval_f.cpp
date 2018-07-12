@@ -59,15 +59,21 @@ bool ipopt_fixed::eval_f(
 /* %$$
 $end
 */
-{	try
+{	if( abort_on_eval_error_ )
 	{	try_eval_f(n, x, new_x, obj_value);
 		obj_value *= scale_f_;
 	}
-	catch(const CppAD::mixed::exception& e)
-	{	error_message_ = e.message("ipopt_fixed::eval_f");
-		for(size_t j = 0; j < n_fixed_; j++)
-			error_fixed_[j] = x[j];
-		return false;
+	else
+	{	try
+		{	try_eval_f(n, x, new_x, obj_value);
+			obj_value *= scale_f_;
+		}
+		catch(const CppAD::mixed::exception& e)
+		{	error_message_ = e.message("ipopt_fixed::eval_f");
+			for(size_t j = 0; j < n_fixed_; j++)
+				error_fixed_[j] = x[j];
+			return false;
+		}
 	}
 	return true;
 }
