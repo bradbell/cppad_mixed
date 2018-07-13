@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>User Defined Class Derived From cppad_mixed</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="User Defined Class Derived From cppad_mixed">
-<meta name="keywords" id="keywords" content=" user defined class derived from cppad_mixed syntax see also mixed_derived mixed_object n_fixed n_random quasi_fixed bool_sparsity a_rcv ... cppad errorhandler example ">
+<meta name="keywords" id="keywords" content=" user defined class derived from cppad_mixed syntax see also mixed_derived mixed_object n_fixed n_random quasi_fixed true false bool_sparsity a_rcv ... cppad errorhandler example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -106,6 +106,8 @@ A:active { color : purple }
 <option>n_fixed</option>
 <option>n_random</option>
 <option>quasi_fixed</option>
+<option>---..true</option>
+<option>---..false</option>
 <option>bool_sparsity</option>
 <option>A_rcv</option>
 <option>---....</option>
@@ -200,37 +202,45 @@ This argument has prototype
 <code><font color="blue"><span style='white-space: nowrap'><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 </span></font></code>
-Currently, true is the recommended value for this parameter
-(expected to be faster and use less memory).
+<br>
+<big><a name="quasi_fixed.true" id="quasi_fixed.true">true</a></big>
+<br>
 If 
 <code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
  is true,
-the a quasi-Newton approximation for the Hessian of the total objective
+a quasi-Newton approximation for the Hessian of the total objective
 <a href="theory.htm#Objective.Total Objective, L(theta)" target="_top"><span style='white-space: nowrap'>L(theta)</span></a>
 
 is used during the optimization of the fixed effects.
-Otherwise, the Hessian of the total objective is computed using the
-approximate Laplace objective
-<a href="theory.htm#Approximate Laplace Objective, H(beta, theta, u)" target="_top"><span style='white-space: nowrap'>H(beta,&nbsp;theta,&nbsp;u)</span></a>
-.
+This is more robust when <a href="optimize_fixed.htm#fixed_in" target="_top"><span style='white-space: nowrap'>fixed_in</span></a>
+
+is far away from a reasonable value and might lead to the
+Hessian w.r.t. the random effects not being positive definite.
 If 
 <code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
  is true,
 some initialization is skipped during <a href="initialize.htm" target="_top"><span style='white-space: nowrap'>initialize</span></a>
- is skipped.
-This initialization is needed, and hence done during
-the computation of the <a href="information_mat.htm" target="_top"><span style='white-space: nowrap'>information&nbsp;matrix</span></a>
 .
+This initialization is needed, and hence computed if
+the and when the <a href="information_mat.htm" target="_top"><span style='white-space: nowrap'>information&nbsp;matrix</span></a>
+ is computed.
+
+<br>
+<br>
+<big><a name="quasi_fixed.false" id="quasi_fixed.false">false</a></big>
+<br>
 If 
 <code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
- is true,
-the amount of memory used by the
-<a href="derived_ctor.htm#mixed_derived" target="_top"><span style='white-space: nowrap'>mixed_derived</span></a>
- object
-after the information matrix is computed
-is similar after then initialization when 
-<code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
- is false.
+ is false,
+the Hessian of the total objective is computed using the
+approximate Laplace objective
+<a href="theory.htm#Approximate Laplace Objective, H(beta, theta, u)" target="_top"><span style='white-space: nowrap'>H(beta,&nbsp;theta,&nbsp;u)</span></a>
+.
+The extra routines for initializing the second order accurate
+approximation for the Laplace objective <code><font color="blue">init_laplace_obj</font></code>,
+and <code><font color="blue">init_laplace_obj_hes</font></code> are used to initialize the
+Hessian of the fixed effects objective.
+
 
 <br>
 <br>

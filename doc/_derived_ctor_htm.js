@@ -51,6 +51,8 @@ var list_current0 = [
 'derived_ctor.htm#n_fixed',
 'derived_ctor.htm#n_random',
 'derived_ctor.htm#quasi_fixed',
+'derived_ctor.htm#quasi_fixed.true',
+'derived_ctor.htm#quasi_fixed.false',
 'derived_ctor.htm#bool_sparsity',
 'derived_ctor.htm#A_rcv',
 'derived_ctor.htm#...',
