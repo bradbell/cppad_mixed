@@ -247,6 +247,9 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 	const d_vector&                       fixed_vec      ,
 	const d_vector&                       random_vec     )
 {	std::map<std::string, size_t> ret;
+# ifndef NDEBUG
+	ret = try_initialize(fixed_vec, random_vec);
+# else
 	try
 	{	ret = try_initialize(fixed_vec, random_vec);
 	}
@@ -255,5 +258,6 @@ std::map<std::string, size_t> cppad_mixed::initialize(
 		fatal_error(error_message);
 		assert(false);
 	}
+# endif
 	return ret;
 }
