@@ -69,6 +69,7 @@ var list_current0 = [
 'ipopt_fixed_ctor.htm#Syntax',
 'ipopt_fixed_ctor.htm#Private',
 'ipopt_fixed_ctor.htm#References',
+'ipopt_fixed_ctor.htm#abort_on_eval_error',
 'ipopt_fixed_ctor.htm#random_ipopt_options',
 'ipopt_fixed_ctor.htm#fixed_tolerance',
 'ipopt_fixed_ctor.htm#fixed_lower',

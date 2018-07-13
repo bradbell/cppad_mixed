@@ -241,15 +241,21 @@ If it is also set in
 <big><a name="fixed_ipopt_options.max_iter" id="fixed_ipopt_options.max_iter">max_iter</a></big>
 <br>
 If 
-<code><i><font color="black"><span style='white-space: nowrap'>max_iter</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;&lt;=&nbsp;0</span></font></code>
+<code><i><font color="black"><span style='white-space: nowrap'>max_iter</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;==&nbsp;-1</span></font></code>
  in 
 <code><i><font color="black"><span style='white-space: nowrap'>fixed_ipopt_options</span></font></i></code>
 ,
-Ipopt is run with 
+
+<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_opt&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_in</span></font></i></code>
+.
+In addition, Ipopt is run with 
 <code><i><font color="black"><span style='white-space: nowrap'>max_iter</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;0</span></font></code>
  and the return status
 <code><font color="blue">Ipopt::Maximum_Iterations_Exceeded</font></code> is consider normal; i.e.,
 does not generate a warning or error message.
+Furthermore, the fixed effects optimization will return immediately
+(not try to backup and recover) if an error occur during evaluation of
+the fixed effects objective, constraints, or their derivatives.
 If 
 <code><i><font color="black"><span style='white-space: nowrap'>max_iter</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;==&nbsp;0</span></font></code>
  in the options,
@@ -257,12 +263,6 @@ it may be that
 <code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_opt&nbsp;!=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_in</span></font></i></code>
 
 (Ipopt moves non-equality constraints to the interior of the constraint).
-If 
-<code><i><font color="black"><span style='white-space: nowrap'>max_iter</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;==&nbsp;-1</span></font></code>
- in the options,
-
-<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_opt&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_in</span></font></i></code>
-
 (this is the only difference between <code><font color="blue">-1</font></code> and <code><font color="blue">0</font></code>).
 
 <br>
