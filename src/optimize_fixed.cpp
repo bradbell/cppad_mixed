@@ -91,15 +91,17 @@ $icode hessian_approximation$$ will be set to $code limit-memory$$.
 If it is also set in $icode fixed_ipopt_options$$, it must have this value.
 
 $subhead max_iter$$
-If $icode%max_iter% <= 0%$$ in $icode fixed_ipopt_options$$,
-Ipopt is run with $icode%max_iter% = 0%$$ and the return status
+If $icode%max_iter% == -1%$$ in $icode fixed_ipopt_options$$,
+$icode%solution%.fixed_opt == %fixed_in%$$.
+In addition, Ipopt is run with $icode%max_iter% = 0%$$ and the return status
 $code Ipopt::Maximum_Iterations_Exceeded$$ is consider normal; i.e.,
 does not generate a warning or error message.
+Furthermore, the fixed effects optimization will return immediately
+(not try to backup and recover) if an error occur during evaluation of
+the fixed effects objective, constraints, or their derivatives.
 If $icode%max_iter% == 0%$$ in the options,
 it may be that $icode%solution%.fixed_opt != %fixed_in%$$
 (Ipopt moves non-equality constraints to the interior of the constraint).
-If $icode%max_iter% == -1%$$ in the options,
-$icode%solution%.fixed_opt == %fixed_in%$$
 (this is the only difference between $code -1$$ and $code 0$$).
 
 $subhead accept_after_max_steps$$
