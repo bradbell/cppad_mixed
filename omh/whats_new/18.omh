@@ -30,6 +30,7 @@ $spell
 	txt
 	cholmod
 	iter
+	runtime
 $$
 
 $section Changes and Additions to cppad_mixed During 2018$$
@@ -42,10 +43,20 @@ $childtable%
 %$$
 
 $head 07-12$$
+$list number$$
 The fixed effects optimization will not try to backup and recover when
 $cref/max_iter/optimize_fixed/fixed_ipopt_options/max_iter/$$ is minus
 one for the fixed effects.
-This will result in better error reporting about function evaluation errors.
+In addition, when running the debug (release) version, errors during
+$cref initialize$$ will result in an runtime error
+(call to $cref/fatal_error/public/User Defined Functions/fatal_error/$$).
+This will gives the user the choice to seem the source code where
+the error was detected when
+$cref/build_type/run_cmake.sh/build_type/$$ is $code debug$$.
+$lnext
+Improve documentation for
+$cref/quasi_fixed/derived_ctor/quasi_fixed/$$.
+$lend
 
 $head 06-30$$
 $list number$$

@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -18,6 +18,7 @@ $spell
 	const
 	vec
 	rcv
+	init_obj_hes
 $$
 
 $section User Defined Class Derived From cppad_mixed$$
@@ -71,27 +72,33 @@ This argument has prototype
 $codei%
 	bool %quasi_fixed%
 %$$
-Currently, true is the recommended value for this parameter
-(expected to be faster and use less memory).
+
+$subhead true$$
 If $icode quasi_fixed$$ is true,
-the a quasi-Newton approximation for the Hessian of the total objective
+a quasi-Newton approximation for the Hessian of the total objective
 $cref/L(theta)/theory/Objective/Total Objective, L(theta)/$$
 is used during the optimization of the fixed effects.
-Otherwise, the Hessian of the total objective is computed using the
+This is more robust when $cref/fixed_in/optimize_fixed/fixed_in/$$
+is far away from a reasonable value and might lead to the
+Hessian w.r.t. the random effects not being positive definite.
+If $icode quasi_fixed$$ is true,
+some initialization is skipped during $cref initialize$$.
+This initialization is needed, and hence computed if
+the and when the $cref/information matrix/information_mat/$$ is computed.
+
+$subhead false$$
+If $icode quasi_fixed$$ is false,
+the Hessian of the total objective is computed using the
 approximate Laplace objective
 $cref/H(beta, theta, u)
 	/theory
 	/Approximate Laplace Objective, H(beta, theta, u)
 /$$.
-If $icode quasi_fixed$$ is true,
-some initialization is skipped during $cref initialize$$ is skipped.
-This initialization is needed, and hence done during
-the computation of the $cref/information matrix/information_mat/$$.
-If $icode quasi_fixed$$ is true,
-the amount of memory used by the
-$cref/mixed_derived/derived_ctor/mixed_derived/$$ object
-after the information matrix is computed
-is similar after then initialization when $icode quasi_fixed$$ is false.
+The extra routines for initializing the second order accurate
+approximation for the Laplace objective $code init_laplace_obj$$,
+and $code init_laplace_obj_hes$$ are used to initialize the
+Hessian of the fixed effects objective.
+
 
 $head bool_sparsity$$
 This argument has prototype
