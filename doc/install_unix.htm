@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Installing cppad_mixed in Unix</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Installing cppad_mixed in Unix">
-<meta name="keywords" id="keywords" content=" installing cppad_mixed unix system requirements c++ compiler git cmake pkg-config wget fortran gsl suitesparse download special run_cmake.sh eigen ipopt cppad command check speed install example installation linking using ">
+<meta name="keywords" id="keywords" content=" installing cppad_mixed unix system requirements c++ compiler git cmake pkg-config wget fortran gsl suitesparse download paths pkg_config_path ld_library_path special run_cmake.sh eigen ipopt cppad command check speed install example installation linking using ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -84,6 +84,9 @@ A:active { color : purple }
 <option>---..gsl</option>
 <option>---..suitesparse</option>
 <option>Download</option>
+<option>Paths</option>
+<option>---..PKG_CONFIG_PATH</option>
+<option>---..LD_LIBRARY_PATH</option>
 <option>Special Requirements</option>
 <option>---..run_cmake.sh</option>
 <option>---..eigen</option>
@@ -217,6 +220,65 @@ and check its version number, using the commands:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;git&nbsp;checkout&nbsp;-q&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>git_hash</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grep&nbsp;'^SET(cppad_mixed_version'&nbsp;CMakeLists.txt<br>
 </span></font></code>
+<br>
+<b><big><a name="Paths" id="Paths">Paths</a></big></b>
+<br>
+This discussion is intended to help with the install of the
+special requirements below.
+
+<br>
+<br>
+<big><a name="Paths.PKG_CONFIG_PATH" id="Paths.PKG_CONFIG_PATH">PKG_CONFIG_PATH</a></big>
+<br>
+After <code><font color="blue">gsl</font></code> is installed
+the following command should work:
+<code><font color='blue'><pre style='display:inline'> 
+     pkg-config gsl     --libs
+</pre></font></code>
+If it fails, a corresponding directory is missing
+from the <code><font color="blue">PKG_CONFIG_PATH</font></code> environment variable.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>prefix</span></font></i></code>
+ is the prefix where <code><font color="blue">gsl</font></code> was installed,
+the command
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;find&nbsp;-L&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;-name&nbsp;gsl.pc&nbsp;2&gt;&nbsp;/dev/null<br>
+</span></font></code>
+should find the directory where <code><font color="blue">gsl.pc</font></code> is located.
+After <code><font color="blue">ipopt</font></code> is installed (see below),
+the following command should work:
+<code><font color='blue'><pre style='display:inline'> 
+     pkg-config ipopt --libs
+</pre></font></code>
+If it fails,
+the command
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;find&nbsp;-L&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ipopt_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;-name&nbsp;ipopt.pc&nbsp;2&gt;&nbsp;/dev/null<br>
+</span></font></code>
+should find the directory where <code><font color="blue">ipopt.pc</font></code> is located;
+see <a href="run_cmake.sh.htm#ipopt_prefix" target="_top"><span style='white-space: nowrap'>ipopt_prefix</span></a>
+.
+
+<br>
+<br>
+<big><a name="Paths.LD_LIBRARY_PATH" id="Paths.LD_LIBRARY_PATH">LD_LIBRARY_PATH</a></big>
+<br>
+After <code><font color="blue">ipopt</font></code> is installed,
+the directory where it's libraries are installed should be in your
+<code><font color="blue">LD_LIBRARY_PATH</font></code>.
+If you get an error finding loading the shared library corresponding
+to ipopt, use the following command to find it:
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;find&nbsp;-L&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ipopt_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;-name&nbsp;'libipopt.*'&nbsp;2&gt;&nbsp;/dev/null<br>
+</span></font></code>
+see <a href="run_cmake.sh.htm#ipopt_prefix" target="_top"><span style='white-space: nowrap'>ipopt_prefix</span></a>
+.
+
+
+<br>
 <br>
 <b><big><a name="Special Requirements" id="Special Requirements">Special Requirements</a></big></b>
 <br>
