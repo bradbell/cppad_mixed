@@ -31,6 +31,7 @@ $spell
 	cholmod
 	iter
 	runtime
+	eigen
 $$
 
 $section Changes and Additions to cppad_mixed During 2018$$
@@ -44,6 +45,10 @@ $childtable%
 
 $head 07-25$$
 $list number$$
+Add discussion of whey the default
+$cref/eigen_prefix/run_cmake.sh/eigen_prefix/$$ is different
+from the other prefixes.
+$lnext
 Change the name $code cppad_cxx_flags$$ to
 $cref/extra_cxx_flags/run_cmake.sh/extra_cxx_flags/$$.
 $lnext

@@ -74,10 +74,14 @@ cppad_prefix="$HOME/prefix/cppad_mixed"
 eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
 # &&
 # If this prefix ends in &code /cppad_mixed/eigen&&,
-# &code bin/install_eigen.sh&& will use a soft link from this prefix to
-# &icode%eigen_prefix%.debug%&& or
-# &icode%eigen_prefix%.release%&&
+# &code bin/install_eigen.sh&& will use a soft link from
+# &codei%../%eigen_prefix%&& to
+# &codei%../%eigen_prefix%.debug%&& or
+# &codei%../%eigen_prefix%.release%&&
 # depending on the choice for &icode build_type&&.
+# The default &icode eigen_prefix&& is different from the other prefixes
+# because compiler warning for this directory are suppress and we want
+# compiler warnings for the rest of the source code.
 #
 # &head ipopt_prefix&&
 # The prefix where
