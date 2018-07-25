@@ -80,17 +80,17 @@ eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
 # depending on the choice for &icode build_type&&.
 #
 # &head ipopt_prefix&&
-# Prefixes where
+# The prefix where
 # &cref/ipopt/install_unix/Special Requirements/Ipopt/&&
 # is installed:
 # &codep
 ipopt_prefix="$HOME/prefix/cppad_mixed"
 # &&
-# If this prefixes end in &code /cppad_mixed&&,
+# If this prefix end in &code /cppad_mixed&&,
 # &code bin/install_ipopt.sh&&,
-# will use a soft link from the corresponding &icode prefix&& to
-# &icode%prefix%.debug%&& or
-# &icode%prefix%.release%&&
+# will use a soft link from &icode ipopt_prefix&& to
+# &icode%ipopt_prefix%.debug%&& or
+# &icode%ipopt_prefix%.release%&&
 # depending on the choice for &icode build_type&&.
 #
 # &head Debug and Release&&
