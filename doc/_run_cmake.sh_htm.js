@@ -32,7 +32,7 @@ var list_current0 = [
 'run_cmake.sh.htm#eigen_prefix',
 'run_cmake.sh.htm#ipopt_prefix',
 'run_cmake.sh.htm#Debug and Release',
-'run_cmake.sh.htm#cppad_cxx_flags',
+'run_cmake.sh.htm#extra_cxx_flags',
 'run_cmake.sh.htm#cmake_libdir',
 'run_cmake.sh.htm#ldlt_cholmod',
 'run_cmake.sh.htm#optimize_cppad_function',
