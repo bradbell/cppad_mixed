@@ -16,7 +16,7 @@
 # prefixes:              -D cppad_prefix=value \
 #                        -D eigen_prefix=value \
 #                        -D ipopt_prefix=value \
-# required variables:    -D cppad_cxx_flags=value \
+# required variables:    -D extra_cxx_flags=value \
 #                        -D cmake_libdir=value \
 #                        -D ldlt_cholmod=value \
 #                        -D optimize_cppad_function=value \
@@ -158,9 +158,9 @@ FOREACH( var
 	ENDIF( DEFINED ${var})
 ENDFOREACH( var )
 # ----------------------------------------------------------------------------
-IF( NOT "${extra_cxx_flags}" STREQUAL "" )
-	MESSAGE(FATAL_ERROR "extra_cxx_flags has been changed to cppad_cxx_flags")
-ENDIF( NOT "${extra_cxx_flags}" STREQUAL "" )
+IF( NOT "${cppad_cxx_flags}" STREQUAL "" )
+	MESSAGE(FATAL_ERROR "cppad_cxx_flags has been changed to extra_cxx_flags")
+ENDIF( NOT "${cppad_cxx_flags}" STREQUAL "" )
 # ----------------------------------------------------------------------------
 IF( NOT "${log_fatal_error}" STREQUAL ""  )
 	MESSAGE(FATAL_ERROR "log_fatal_error has been removed from cmake command")
@@ -171,7 +171,7 @@ get_prefix(cppad)
 get_prefix(eigen)
 get_prefix(ipopt)
 # ----------------------------------------------------------------------------
-required_definition( cppad_cxx_flags STRING
+required_definition( extra_cxx_flags STRING
 	"extra flags used by C++ compiler (debug and release are automatic)"
 )
 required_definition( cmake_libdir STRING
@@ -240,11 +240,11 @@ int main(void)
 SET(CMAKE_REQUIRED_INCLUDES    "" )
 SET(CMAKE_REQUIRED_LIBRARIES   "" )
 SET(CMAKE_REQUIRED_DEFINITIONS "" )
-IF( cppad_cxx_flags )
-	SET(CMAKE_REQUIRED_FLAGS "${cppad_cxx_flags}")
-ElSE( cppad_cxx_flags )
+IF( extra_cxx_flags )
+	SET(CMAKE_REQUIRED_FLAGS "${extra_cxx_flags}")
+ElSE( extra_cxx_flags )
 	SET(CMAKE_REQUIRED_FLAGS "" )
-ENDIF( cppad_cxx_flags )
+ENDIF( extra_cxx_flags )
 CHECK_CXX_SOURCE_RUNS("${source}" cppad_mixed_has_nullptr_flag)
 IF( cppad_mixed_has_nullptr_flag )
 	SET(cppad_mixed_has_nullptr_01 1)

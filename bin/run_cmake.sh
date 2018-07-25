@@ -102,10 +102,10 @@ ipopt_prefix="$HOME/prefix/cppad_mixed"
 # &cref/special requirements/install_unix/Special Requirements/&&
 # will need to be installed.
 #
-# &head cppad_cxx_flags&&
-# Extra C++ flags used to configure CppAD
+# &head extra_cxx_flags&&
+# Extra C++ flags used to compile and test
 # &codep
-cppad_cxx_flags='-Wpedantic -std=c++11 -Wall -Wshadow -Wconversion'
+extra_cxx_flags='-Wpedantic -std=c++11 -Wall -Wshadow -Wconversion'
 # &&
 #
 # &head cmake_libdir&&
@@ -141,7 +141,7 @@ for_hes_sparsity='yes'
 # &head Testing Speed and Memory&&
 # If you wish to test the speed or memory used by &code cppad_mixed&&,
 # set &icode build_type&& to &code release&&, include the &code -g&& flag
-# in &icode cppad_cxx_flags&&. Then execute the following commands:
+# in &icode extra_cxx_flags&&. Then execute the following commands:
 # &codei%
 #	bin/install_cppad.sh
 #	bin/run_cmake.sh
@@ -240,7 +240,7 @@ cmake \
 	-D ipopt_prefix="$ipopt_prefix" \
 	-D eigen_prefix="$eigen_prefix" \
 	\
-	-D cppad_cxx_flags="$cppad_cxx_flags" \
+	-D extra_cxx_flags="$extra_cxx_flags" \
 	-D cmake_libdir="$cmake_libdir" \
 	-D ldlt_cholmod="$ldlt_cholmod" \
 	-D optimize_cppad_function="$optimize_cppad_function" \

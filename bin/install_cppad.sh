@@ -39,8 +39,8 @@ eval $cmd
 cmd=`grep '^ipopt_prefix=' bin/run_cmake.sh`
 eval $cmd
 #
-# cppad_cxx_flags
-cmd=`grep '^cppad_cxx_flags=' bin/run_cmake.sh`
+# extra_cxx_flags
+cmd=`grep '^extra_cxx_flags=' bin/run_cmake.sh`
 eval $cmd
 #
 # cmake_libdir
@@ -89,8 +89,8 @@ cmake_args="-D CMAKE_VERBOSE_MAKEFILE=0"
 cmake_args="$cmake_args -D cppad_prefix=$cppad_prefix"
 cmake_args="$cmake_args -D ipopt_prefix=$ipopt_prefix"
 cmake_args="$cmake_args -D cmake_install_libdirs=$cmake_libdir"
-echo "cmake $cmake_args -D cppad_cxx_flags='$cppad_cxx_flags' .."
-cmake $cmake_args -D cppad_cxx_flags="$cppad_cxx_flags" ..
+echo "cmake $cmake_args -D extra_cxx_flags='$extra_cxx_flags' .."
+cmake $cmake_args -D extra_cxx_flags="$extra_cxx_flags" ..
 #
 echo_eval make install
 # -----------------------------------------------------------------------------

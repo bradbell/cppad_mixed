@@ -66,7 +66,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL example.cpp
 )
 
 SET_TARGET_PROPERTIES(
-	example PROPERTIES COMPILE_FLAGS "${cppad_cxx_flags}"
+	example PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
 )
 TARGET_LINK_LIBRARIES(example
 	cppad_mixed

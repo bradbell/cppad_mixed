@@ -335,7 +335,7 @@ $cref/run_cmake.sh/install_unix/Special Requirements/run_cmake.sh/$$.
 $codei%bin/install_%package%.sh%$$ scripts.)
 $lnext
 The configuration variable $icode extra_cxx_flags$$
-has been changed to $cref/cppad_cxx_flags/run_cmake.sh/cppad_cxx_flags/$$.
+has been changed to $cref/extra_cxx_flags/run_cmake.sh/extra_cxx_flags/$$.
 $lnext
 Document the necessary install order for
 $cref/special requirements/install_unix/Special Requirements/$$.

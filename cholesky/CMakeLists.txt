@@ -22,7 +22,7 @@ ADD_EXECUTABLE(cholesky EXCLUDE_FROM_ALL cholesky.cpp
 	example/sparse_ad_chol_var.cpp
 )
 SET_TARGET_PROPERTIES(
-	cholesky PROPERTIES COMPILE_FLAGS "${cppad_cxx_flags}"
+	cholesky PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
 )
 TARGET_LINK_LIBRARIES(cholesky
 	cppad_mixed

@@ -1,6 +1,6 @@
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-17 University of Washington
+#           Copyright (C) 2014-18 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -74,7 +74,7 @@ FOREACH( program_name capture_xam ar1_xam )
 		${program_name} EXCLUDE_FROM_ALL "${program_name}.cpp"
 	)
 	SET_TARGET_PROPERTIES(
-		${progam_name} PROPERTIES COMPILE_FLAGS "${cppad_cxx_flags}"
+		${progam_name} PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
 	)
 	TARGET_LINK_LIBRARIES(
 		${program_name}

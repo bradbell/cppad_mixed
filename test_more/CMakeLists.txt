@@ -36,7 +36,7 @@ ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL test_more.cpp
 	zero_random_two.cpp
 )
 SET_TARGET_PROPERTIES(
-	test_more PROPERTIES COMPILE_FLAGS "${cppad_cxx_flags}"
+	test_more PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
 )
 TARGET_LINK_LIBRARIES(test_more
 	cppad_mixed

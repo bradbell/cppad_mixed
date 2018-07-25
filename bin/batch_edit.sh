@@ -14,8 +14,6 @@ new_directories='
 rename_files='
 '
 spell_files='
-	include/cppad/mixed/ldlt_cholmod.hpp
-	src/cholmod/inv.cpp
 '
 no_change_files='
 '
@@ -25,7 +23,7 @@ rename_cmd='s|ran_objcon|laplace_obj|'
 spell_cmd='s|$spell$|&\n\tsuitesparse|'
 #
 cat << EOF > junk.sed
-s|^# *include *<suitesparse/cholmod.h>|# include <cppad/mixed/include_cholmod.hpp>|
+s|cppad_cxx_flags|extra_cxx_flags|g
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]
