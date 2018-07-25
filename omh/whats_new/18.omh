@@ -42,6 +42,10 @@ $childtable%
 	omh/whats_new/15.omh
 %$$
 
+$head 07-25$$
+Improve discussion of the
+$cref/paths/install_unix/Paths/$$ needed during and after the install process.
+
 $head 07-12$$
 $list number$$
 The fixed effects optimization will not try to backup and recover when
