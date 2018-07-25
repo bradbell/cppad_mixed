@@ -43,8 +43,16 @@ $childtable%
 %$$
 
 $head 07-25$$
+$list number$$
 Improve discussion of the
 $cref/paths/install_unix/Paths/$$ needed during and after the install process.
+$lnext
+Improve detection
+(during the $cref/install/install_unix/$$)
+of when the default settings for
+$cref/cppad_cxx_flags/run_cmake.sh/cppad_cxx_flags/$$ do not work.
+$lend
+
 
 $head 07-12$$
 $list number$$

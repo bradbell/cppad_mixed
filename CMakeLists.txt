@@ -211,6 +211,24 @@ SET(suitesparse_library_path_list
 	"cholmod;amd;camd;colamd;ccolamd;suitesparseconfig"
 )
 # ----------------------------------------------------------------------------
+# check compiler flags
+#
+SET(CMAKE_REQUIRED_INCLUDES    "" )
+SET(CMAKE_REQUIRED_LIBRARIES   "" )
+SET(CMAKE_REQUIRED_DEFINITIONS "" )
+SET(CMAKE_REQUIRED_FLAGS       "" )
+IF( extra_cxx_flags )
+	SET(CMAKE_REQUIRED_FLAGS "${extra_cxx_flags}")
+	SET(source "
+	int main(void)
+	{	return 0; }"
+	)
+	CHECK_CXX_SOURCE_RUNS("${source}" extra_cxx_flags_ok)
+	IF( NOT extra_cxx_flags_ok )
+		MESSAGE(STATUS "Cannot compile a simple C++ program, extra_cxx_flags")
+	ENDIF( NOT extra_cxx_flags )
+ENDIF( extra_cxx_flags )
+# ----------------------------------------------------------------------------
 # cppad_mixed_has_nullptr_01
 #
 SET(source "
