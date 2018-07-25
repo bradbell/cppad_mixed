@@ -142,16 +142,24 @@ is installed:
 eigen_prefix=&quot;$HOME/prefix/cppad_mixed/eigen&quot;
 </pre></font></code>
 If this prefix ends in <code><font color="blue">/cppad_mixed/eigen</font></code>,
-<code><font color="blue">bin/install_eigen.sh</font></code> will use a soft link from this prefix to
+<code><font color="blue">bin/install_eigen.sh</font></code> will use a soft link from
 
-<code><i><font color="black"><span style='white-space: nowrap'>eigen_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.debug</span></font></code>
+<code><font color="blue"><span style='white-space: nowrap'>../</span></font><i><font color="black"><span style='white-space: nowrap'>eigen_prefix</span></font></i></code>
+ to
+
+<code><font color="blue"><span style='white-space: nowrap'>../</span></font><i><font color="black"><span style='white-space: nowrap'>eigen_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.debug</span></font></code>
  or
 
-<code><i><font color="black"><span style='white-space: nowrap'>eigen_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.release</span></font></code>
+<code><font color="blue"><span style='white-space: nowrap'>../</span></font><i><font color="black"><span style='white-space: nowrap'>eigen_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.release</span></font></code>
 
 depending on the choice for 
 <code><i><font color="black"><span style='white-space: nowrap'>build_type</span></font></i></code>
 .
+The default 
+<code><i><font color="black"><span style='white-space: nowrap'>eigen_prefix</span></font></i></code>
+ is different from the other prefixes
+because compiler warning for this directory are suppress and we want
+compiler warnings for the rest of the source code.
 
 <br>
 <br>
