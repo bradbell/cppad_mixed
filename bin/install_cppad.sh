@@ -22,8 +22,8 @@ echo_eval() {
 }
 # --------------------------------------------------------------------------
 web_page='https://github.com/coin-or/CppAD.git'
-hash_key='aaf5d8a5ad2894ec06ab56eebbc3fa19419ffb09'
-version='20180723'
+hash_key='2e1a66d90fc4d50f9681014fb67115500af63e64'
+version='20180730'
 # --------------------------------------------------------------------------
 # Get user configuration options from run_cmake.sh
 #
@@ -89,8 +89,8 @@ cmake_args="-D CMAKE_VERBOSE_MAKEFILE=0"
 cmake_args="$cmake_args -D cppad_prefix=$cppad_prefix"
 cmake_args="$cmake_args -D ipopt_prefix=$ipopt_prefix"
 cmake_args="$cmake_args -D cmake_install_libdirs=$cmake_libdir"
-echo "cmake $cmake_args -D extra_cxx_flags='$extra_cxx_flags' .."
-cmake $cmake_args -D extra_cxx_flags="$extra_cxx_flags" ..
+echo "cmake $cmake_args -D cppad_cxx_flags='$extra_cxx_flags' .."
+cmake $cmake_args -D cppad_cxx_flags="$extra_cxx_flags" ..
 #
 echo_eval make install
 # -----------------------------------------------------------------------------

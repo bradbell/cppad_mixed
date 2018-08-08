@@ -42,8 +42,8 @@
 # &end
 # ----------------------------------------------------------------------------
 # BEGIN SH
-random_seed='0'
-number_random='45'
+random_seed='1234'
+number_random='90'
 quasi_fixed='yes'
 trace_optimize_fixed='no'
 ipopt_solve='no'
