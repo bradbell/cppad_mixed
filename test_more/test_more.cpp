@@ -29,6 +29,7 @@ extern bool ran_likelihood_hes(void);
 extern bool ran_likelihood_jac(void);
 extern bool ran_obj_tst(void);
 extern bool laplace_obj_hes(void);
+extern bool laplace_obj_tst(void);
 extern bool sample_fixed_1(void);
 extern bool sample_fixed_2(void);
 extern bool scale(void);
@@ -86,6 +87,7 @@ int main(void)
 	RUN(ran_likelihood_jac);
 	RUN(ran_obj_tst);
 	RUN(laplace_obj_hes);
+	RUN(laplace_obj_tst);
 	RUN(sample_fixed_1);
 	RUN(sample_fixed_2);
 	RUN(scale);

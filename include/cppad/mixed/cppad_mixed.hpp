@@ -38,6 +38,7 @@ extern bool fix_like_eval_xam(void);
 extern bool fix_like_hes_xam(void);
 extern bool fix_like_jac_xam(void);
 extern bool hes_cross_xam(void);
+extern bool laplace_obj_tst(void);
 extern bool laplace_obj_hes(void);
 extern bool laplace_obj_hes_xam(void);
 extern bool logdet_jac_xam(void);
@@ -928,6 +929,7 @@ $srccode%cpp% */
 		const d_vector& random_vec
 	);
 	friend bool ::ran_obj_eval_xam(void);
+	friend bool ::laplace_obj_tst(void);
 /* %$$
 
 $subhead ran_obj_jac$$
