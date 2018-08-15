@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -130,7 +130,7 @@ bool no_random_info(void)
 		"String  derivative_test           first-order\n"
 		"String  derivative_test_print_all yes\n"
 		"Numeric tol                       1e-8\n"
-		"Integer max_iter                  25\n"
+		"Integer max_iter                  50\n"
 	;
 	std::string random_ipopt_options =
 		"Integer print_level     0\n"
