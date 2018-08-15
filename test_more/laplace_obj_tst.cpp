@@ -13,14 +13,14 @@ Test Laplace part of the the objective: function, gradient, and Hessian
 for a very simple case.
 
 $latex \[
-	\B{p}( y_0 | \theta , u ) \sim \B{N} ( u_0 + \theta_0 , 1 )
+	\B{p}( y_0 | \theta , u ) \sim \B{N} ( u_0 , \theta_0^2 )
 \] $$
 $latex \[
 	\B{p}( u_0 | \theta ) \sim \B{N} ( 0 , 1 )
 \] $$
 It follows that the Laplace approximation is exact and
 $latex \[
-	\B{p}( y_0 | \theta ) \sim \B{N} ( \theta_0 , 2 )
+	\B{p}( y_0 | \theta ) \sim \B{N} ( 0 , 1 + \theta_0^2 )
 \] $$
 
 */
@@ -65,21 +65,16 @@ namespace {
 			vec[0] = scalar(0.0);
 
 			// pi
-			scalar sqrt_2pi = scalar(
-				 CppAD::sqrt(8.0 * CppAD::atan(1.0)
-			));
+			scalar sqrt_2pi = scalar( CppAD::sqrt(8.0 * CppAD::atan(1.0)) );
 
-			for(size_t i = 0; i < y_.size(); i++)
-			{	scalar mu     = u[i] + theta[0];
-				scalar sigma  = scalar(1.0);
-				scalar res    = (y_[i] - mu) / sigma;
+			// p(y_0 | u, theta)
+			scalar sigma  = theta[0];
+			scalar res    = (y_[0] - u[0]) / sigma;
+			vec[0] += log(sqrt_2pi * sigma) + res * res / scalar(2.0);
 
-				// p(y_i | u, theta)
-				vec[0] += log(sqrt_2pi * sigma) + res*res / scalar(2.0);
+			// p(u_i | theta)
+			vec[0] += log(sqrt_2pi) + u[0] * u[0] / scalar(2.0);
 
-				// p(u_i | theta)
-				vec[0] += log(sqrt_2pi) + u[i] * u[i] / scalar(2.0);
-			}
 			return vec;
 		}
 		// a2_vector version of ran_likelihood
@@ -94,10 +89,9 @@ namespace {
 	Float objective(const Float& y0, const Float& theta0)
 	{
 		Float sqrt_2pi = CppAD::sqrt(8.0 * CppAD::atan(1.0) );
-		Float sigma    = 1.0;
-		Float delta    = CppAD::sqrt( sigma * sigma + 1.0 );
-		Float res      = (y0 - theta0) / delta;
-		Float sum      = CppAD::log(sqrt_2pi * delta) + res*res / 2.0;
+		Float delta    = CppAD::sqrt( 1.0 + theta0 * theta0 );
+		Float res      = y0 / delta;
+		Float sum      = CppAD::log(sqrt_2pi * delta) + res * res / 2.0;
 
 		return sum;
 	}
@@ -128,7 +122,9 @@ bool laplace_obj_tst(void)
 	mixed_object.initialize(theta, u);
 
 	// optimal random effects solve equation
-	uhat[0] = (y[0] - theta[0]) / 2.0;
+	// (uhat[0] - y[0]) / theta[0]^2 + uhat[0] = 0
+	// uhat[0] ( 1 + theta[0]^2 ) = y[0]
+	uhat[0] = y[0] / (1.0 + theta[0] * theta[0]);
 
 	// must factor f_{u,u} (theta, uhat)
 	mixed_object.update_factor(theta, uhat);
