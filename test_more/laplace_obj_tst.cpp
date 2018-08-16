@@ -121,6 +121,9 @@ bool laplace_obj_tst(void)
 	);
 	mixed_object.initialize(theta, u);
 
+	// change value of theta
+	theta[0] = 2.0;
+
 	// optimal random effects solve equation
 	// (uhat[0] - y[0]) / theta[0]^2 + uhat[0] = 0
 	// uhat[0] ( 1 + theta[0]^2 ) = y[0]
@@ -129,9 +132,6 @@ bool laplace_obj_tst(void)
 	// must factor f_{u,u} (theta, uhat)
 	mixed_object.update_factor(theta, uhat);
 
-	// compute random part of Laplace approximation using mixed_object
-	double r_val = mixed_object.ran_obj_eval(theta, uhat);
-
 	// tape laplace approximaiton for this case
 	vector< AD<double> > a_theta(1), a_obj(1);
 	a_theta[0] = theta[0];
@@ -139,29 +139,55 @@ bool laplace_obj_tst(void)
 	a_obj[0] = objective( AD<double>(y[0]), a_theta[0]);
 	CppAD::ADFun<double> r(a_theta, a_obj);
 
-	// check function value
+	// -----------------------------------------------------------------------
+	// r(theta) using objective
 	vector<double> check = r.Forward(0, theta);
-	ok &= fabs( r_val / check[0] - 1.0 ) < eps;
-
-	// check gradient value
-	vector<double> r_fixed(n_fixed), d_theta(1);
-	mixed_object.ran_obj_jac(theta, uhat, r_fixed);
-	d_theta[0] = 1.0;
-	check = r.Forward(1, d_theta);
-	ok &= fabs( r_fixed[0] / check[0] - 1.0 ) < eps;
-
-	// check hessian value
+	//
+	// r(theta) using ran_obj_eval
+	double ran_obj = mixed_object.ran_obj_eval(theta, uhat);
+	//
+	// r(theta) using laplace_obj_fun
+	vector<double> beta_theta_u(3);
+	beta_theta_u[0] = beta_theta_u[1] = theta[0];
+	beta_theta_u[2] = uhat[0];
+	vector<double> laplace_obj =
+		mixed_object.laplace_obj_fun_.Forward(0, beta_theta_u);
+	//
+	// check r(theta)
+	ok &= fabs( ran_obj / check[0] - 1.0 ) < eps;
+	ok &= fabs( laplace_obj[0] / check[0] - 1.0 ) < eps;
+	//
+	// -----------------------------------------------------------------------
+	// Jacobian using objective
+	check = r.Jacobian(theta);
+	//
+	// Jacobian using ran_obj_jac
+	vector<double> ran_jac(n_fixed), d_theta(1);
+	mixed_object.ran_obj_jac(theta, uhat, ran_jac);
+	//
+	// Jacobian using laplace_obj_fun
+	vector<double> laplace_jac =
+		mixed_object.laplace_obj_fun_.Jacobian(beta_theta_u);
+	//
+	// check Jacobina
+	ok &= fabs( ran_jac[0] / check[0] - 1.0 ) < eps;
+	ok &= fabs( laplace_jac[0] / check[0] - 1.0 ) < eps;
+	//
+	// -----------------------------------------------------------------------
+	// Hessian using objective
+	check = r.Hessian(theta, 0);
+	//
+	// Hessian using laplace_obj_fun
 	vector<size_t> row_out, col_out;
 	vector<double> val_out, weight(1);
 	weight[0] = 1.0;
 	mixed_object.laplace_obj_hes(
 		theta, uhat, weight, row_out, col_out, val_out
 	);
-	check = r.Hessian(theta, 0);
 	ok   &= val_out.size() == 1;
 	ok   &= check.size() == 1;
 	ok &= fabs( val_out[0] / check[0] - 1.0 ) < eps;
-
+	//
 	return ok;
 }
 // END C++
