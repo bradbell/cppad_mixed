@@ -28,12 +28,15 @@ $latex \[
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
 
+# define LAPLACE_OBJ_TST_PRINT 0
+
 namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
 	using CppAD::mixed::sparse_rcv;
 	using CppAD::mixed::d_vector;
+	using CppAD::mixed::a1_vector;
 	// -----------------------------------------------------------------------
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -190,7 +193,64 @@ bool laplace_obj_tst(void)
 	ok   &= val_out.size() == 1;
 	ok   &= check.size() == 1;
 	ok &= fabs( val_out[0] / check[0] - 1.0 ) < eps;
+	// -----------------------------------------------------------------------
+	// Test creating newton step version of objective with dynamic parameters
+	// -----------------------------------------------------------------------
+	// beta, theta_u
+	a1_vector a1_beta(1), a1_theta_u(2);
+	a1_beta[0]    = theta[0];
+	a1_theta_u[0] = theta[0];
+	a1_theta_u[1] = u[0];
 	//
+	// start recording operations with beta as independent variables
+	// and theta_u as dynamic parameters
+	size_t abort_op_index = 0;
+	bool   record_compare = true;
+	CppAD::Independent(a1_beta, abort_op_index, record_compare, a1_theta_u);
+	//
+	// Evaluate random likelihood f(beta, u)
+	a1_vector a1_beta_u(2);
+	a1_beta_u[0] = a1_beta[0];
+	a1_beta_u[1] = a1_theta_u[1];
+	a1_vector a1_f = mixed_object.ran_like_a1fun_.Forward(0, a1_beta_u);
+	//
+	// create function object corresponding to f(beta, u) with (theta, u)
+	// as dynamic parameters
+	CppAD::ADFun<double> F(a1_beta, a1_f);
+	//
+	// change value of the beta, theta and u
+	d_vector beta(1), theta_u(2);
+	theta_u[0] = theta[0] = beta[0] = theta[0] / 2.0;
+	theta_u[0] = beta[0];
+	theta_u[1] = u[0] - 0.5;
+	F.new_dynamic(theta_u);
+	//
+	// f(beta, u)
+	d_vector F_val     = F.Forward(0, beta);
+	d_vector check_val = mixed_object.ran_like_fun_.Forward(0, theta_u);
+	ok &= fabs( F_val[0] / check_val[0] - 1.0 ) < eps;
+	//
+	// f_beta (beta, u)
+	d_vector F_jac     = F.Jacobian(beta);
+	d_vector check_jac = mixed_object.ran_like_fun_.Jacobian(theta_u);
+	ok &= fabs( F_jac[0] / check_jac[0] - 1.0 ) < eps;
+	//
+	// f_beta_beta (beta, u)
+	d_vector F_hes     = F.Hessian(beta, 0);
+	d_vector check_hes = mixed_object.ran_like_fun_.Hessian(theta_u, 0);
+	ok &= fabs( F_hes[0] / check_hes[0] - 1.0 ) < eps;
+	//
+# if LAPLACE_OBJ_TST_PRINT
+	std::cout << "\n";
+	std::cout << "F_val = "     << F_val     << "\n";
+	std::cout << "check_val = " << check_val << "\n";
+	std::cout << "F_jac = "     << F_jac     << "\n";
+	std::cout << "check_jac = " << check_jac << "\n";
+	std::cout << "F_hes = "     << F_hes     << "\n";
+	std::cout << "check_hes = " << check_hes << "\n";
+# endif
+	//
+	// -----------------------------------------------------------------------
 	return ok;
 }
 // END C++
