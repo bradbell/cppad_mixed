@@ -194,9 +194,9 @@ bool laplace_obj_tst(void)
 	ok   &= val_out.size() == 1;
 	ok   &= check.size() == 1;
 	ok &= fabs( val_out[0] / check[0] - 1.0 ) < eps;
-	// -----------------------------------------------------------------------
+	// =======================================================================
 	// Test creating newton step version of objective with dynamic parameters
-	// -----------------------------------------------------------------------
+	// =======================================================================
 	// beta, theta_u, beta_theta_u
 	a1_vector a1_beta(1), a1_theta_u(2), a1_beta_theta_u(3);
 	a1_beta[0]         = theta[0];
@@ -205,43 +205,50 @@ bool laplace_obj_tst(void)
 	a1_beta_theta_u[0] = theta[0];
 	a1_beta_theta_u[1] = theta[0];
 	a1_beta_theta_u[2] = u[0];
-	//
-	// recording beta as independent variables, theta_u as dynamic parameters
+	// -----------------------------------------------------------------------
+	// F: recording beta as independent, theta_u as dynamic parameters
 	size_t abort_op_index = 0;
 	bool   record_compare = true;
 	CppAD::Independent(a1_beta, abort_op_index, record_compare, a1_theta_u);
 	//
-	// Evaluate random likelihood f(beta, u)
-	a1_vector a1_beta_u(2);
-	a1_beta_u[0] = a1_beta[0];
-	a1_beta_u[1] = a1_theta_u[1];
-	a1_vector a1_F = mixed_object.ran_like_a1fun_.Forward(0, a1_beta_u);
+	a1_vector W(1);
+	W[0] = a1_theta_u[1];
 	//
-	// Evaluate log det f_{uu} ( beta , u )
-	a1_vector a1_F_hes  = mixed_object.ran_like_a1fun_.Hessian(a1_beta_u, 0);
+	// Evaluate random likelihood f(beta, W)
+	a1_vector a1_beta_W(2);
+	a1_beta_W[0] = a1_beta[0];
+	a1_beta_W[1] = W[0];
+	a1_vector a1_F = mixed_object.ran_like_a1fun_.Forward(0, a1_beta_W);
+	//
+	// Evaluate log det f_{uu} ( beta , W )
+	a1_vector a1_F_hes  = mixed_object.ran_like_a1fun_.Hessian(a1_beta_W, 0);
 	ok                 &= a1_F_hes.size() == 4;
 	a1_double a1_logdet = log( a1_F_hes[3] );
 	//
 	// create function object corresponding to (logdet f_uu) / 2 + f
 	a1_F[0] += a1_logdet / 2.0;
 	CppAD::ADFun<double> F(a1_beta, a1_F);
-	//
-	// recording beta_theta_u as independent variables
+	// -----------------------------------------------------------------------
+	// G: recording beta_theta_u as independent variables
 	CppAD::Independent(a1_beta_theta_u);
 	//
-	// Evaluate random likelihood f(beta, u)
-	a1_beta_u[0] = a1_beta_theta_u[0];
-	a1_beta_u[1] = a1_beta_theta_u[2];
-	a1_vector a1_G = mixed_object.ran_like_a1fun_.Forward(0, a1_beta_u);
+	W[0] = a1_beta_theta_u[2];
 	//
-	// Evaluate log det f_{uu} (beta , u)
-	a1_vector a1_G_hes = mixed_object.ran_like_a1fun_.Hessian(a1_beta_u, 0);
+	// Evaluate random likelihood f(beta, W)
+	a1_beta_W[0] = a1_beta_theta_u[0];
+	a1_beta_W[1] = W[0];
+	a1_vector a1_G = mixed_object.ran_like_a1fun_.Forward(0, a1_beta_W);
+	//
+	// Evaluate log det f_{uu} (beta , W)
+	a1_vector a1_G_hes = mixed_object.ran_like_a1fun_.Hessian(a1_beta_W, 0);
 	ok                &= a1_G_hes.size() == 4;
 	a1_logdet          = log( a1_G_hes[3] );
 	//
 	// create function object corresponding to (logdet f_uu) / 2 + f
 	a1_G[0] += a1_logdet / 2.0;
 	CppAD::ADFun<double> G(a1_beta_theta_u, a1_G);
+	// -----------------------------------------------------------------------
+	// Compare computations using F and G
 	//
 	// change value of the beta, theta and u
 	d_vector beta(1), theta_u(2);
