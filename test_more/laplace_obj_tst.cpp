@@ -36,6 +36,7 @@ namespace {
 	using CppAD::AD;
 	using CppAD::mixed::sparse_rcv;
 	using CppAD::mixed::d_vector;
+	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a1_vector;
 	// -----------------------------------------------------------------------
 	class mixed_derived : public cppad_mixed {
@@ -139,10 +140,10 @@ bool laplace_obj_tst(void)
 	mixed_object.update_factor(theta, uhat);
 
 	// tape laplace approximaiton for this case
-	vector< AD<double> > a_theta(1), a_obj(1);
+	vector<a1_double> a_theta(1), a_obj(1);
 	a_theta[0] = theta[0];
 	CppAD::Independent( a_theta );
-	a_obj[0] = check_obj( AD<double>(y[0]), a_theta[0]);
+	a_obj[0] = check_obj( a1_double(y[0]), a_theta[0]);
 	CppAD::ADFun<double> r(a_theta, a_obj);
 
 	// -----------------------------------------------------------------------
@@ -216,7 +217,13 @@ bool laplace_obj_tst(void)
 	a1_beta_u[1] = a1_theta_u[1];
 	a1_vector a1_F = mixed_object.ran_like_a1fun_.Forward(0, a1_beta_u);
 	//
-	// create function object corresponding to f(beta, u)
+	// Evaluate log det f_{uu} ( beta , u )
+	a1_vector a1_F_hes  = mixed_object.ran_like_a1fun_.Hessian(a1_beta_u, 0);
+	ok                 &= a1_F_hes.size() == 4;
+	a1_double a1_logdet = log( a1_F_hes[3] );
+	//
+	// create function object corresponding to (logdet f_uu) / 2 + f
+	a1_F[0] += a1_logdet / 2.0;
 	CppAD::ADFun<double> F(a1_beta, a1_F);
 	//
 	// recording beta_theta_u as independent variables
@@ -227,7 +234,13 @@ bool laplace_obj_tst(void)
 	a1_beta_u[1] = a1_beta_theta_u[2];
 	a1_vector a1_G = mixed_object.ran_like_a1fun_.Forward(0, a1_beta_u);
 	//
-	// create function object corresponding to f(beta, u)
+	// Evaluate log det f_{uu} (beta , u)
+	a1_vector a1_G_hes = mixed_object.ran_like_a1fun_.Hessian(a1_beta_u, 0);
+	ok                &= a1_G_hes.size() == 4;
+	a1_logdet          = log( a1_G_hes[3] );
+	//
+	// create function object corresponding to (logdet f_uu) / 2 + f
+	a1_G[0] += a1_logdet / 2.0;
 	CppAD::ADFun<double> G(a1_beta_theta_u, a1_G);
 	//
 	// change value of the beta, theta and u
