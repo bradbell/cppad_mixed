@@ -33,10 +33,11 @@ namespace {
 	using CppAD::log;
 	using CppAD::AD;
 	using CppAD::mixed::sparse_rcv;
-	//
+	using CppAD::mixed::d_vector;
+	// -----------------------------------------------------------------------
 	class mixed_derived : public cppad_mixed {
 	private:
-		const vector<double>& y_;
+		const d_vector& y_;
 	public:
 		// constructor
 		mixed_derived(
@@ -45,7 +46,7 @@ namespace {
 			bool                                 quasi_fixed   ,
 			bool                                 bool_sparsity ,
 			const CppAD::mixed::sparse_rcv&      A_rcv         ,
-			const vector<double>&                y             ) :
+			const d_vector&                      y             ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
 			),
@@ -77,16 +78,15 @@ namespace {
 
 			return vec;
 		}
-		// a2_vector version of ran_likelihood
 		// a3_vector version of ran_likelihood
 		virtual a3_vector ran_likelihood(
 			const a3_vector& fixed_vec, const a3_vector& random_vec
 		)
 		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 	};
-
+	// -----------------------------------------------------------------------
 	template <class Float>
-	Float objective(const Float& y0, const Float& theta0)
+	Float check_obj(const Float& y0, const Float& theta0)
 	{
 		Float sqrt_2pi = CppAD::sqrt(8.0 * CppAD::atan(1.0) );
 		Float delta    = CppAD::sqrt( 1.0 + theta0 * theta0 );
@@ -95,6 +95,9 @@ namespace {
 
 		return sum;
 	}
+	// -----------------------------------------------------------------------
+	// special recording for debugging dynamic parameters
+
 }
 
 bool laplace_obj_tst(void)
@@ -105,8 +108,8 @@ bool laplace_obj_tst(void)
 	size_t n_data   = 1;
 	size_t n_fixed  = 1;
 	size_t n_random = n_data;
-	vector<double> y(n_data), theta(n_fixed), u(n_random);
-	vector<double> uhat(n_random);
+	d_vector y(n_data), theta(n_fixed), u(n_random);
+	d_vector uhat(n_random);
 
 	theta[0]  = 4.0;
 	y[0]      = 1.0;
@@ -136,21 +139,21 @@ bool laplace_obj_tst(void)
 	vector< AD<double> > a_theta(1), a_obj(1);
 	a_theta[0] = theta[0];
 	CppAD::Independent( a_theta );
-	a_obj[0] = objective( AD<double>(y[0]), a_theta[0]);
+	a_obj[0] = check_obj( AD<double>(y[0]), a_theta[0]);
 	CppAD::ADFun<double> r(a_theta, a_obj);
 
 	// -----------------------------------------------------------------------
-	// r(theta) using objective
-	vector<double> check = r.Forward(0, theta);
+	// r(theta) using check_obj
+	d_vector check = r.Forward(0, theta);
 	//
 	// r(theta) using ran_obj_eval
 	double ran_obj = mixed_object.ran_obj_eval(theta, uhat);
 	//
 	// r(theta) using laplace_obj_fun
-	vector<double> beta_theta_u(3);
+	d_vector beta_theta_u(3);
 	beta_theta_u[0] = beta_theta_u[1] = theta[0];
 	beta_theta_u[2] = uhat[0];
-	vector<double> laplace_obj =
+	d_vector laplace_obj =
 		mixed_object.laplace_obj_fun_.Forward(0, beta_theta_u);
 	//
 	// check r(theta)
@@ -158,15 +161,15 @@ bool laplace_obj_tst(void)
 	ok &= fabs( laplace_obj[0] / check[0] - 1.0 ) < eps;
 	//
 	// -----------------------------------------------------------------------
-	// Jacobian using objective
+	// Jacobian using check_obj
 	check = r.Jacobian(theta);
 	//
 	// Jacobian using ran_obj_jac
-	vector<double> ran_jac(n_fixed), d_theta(1);
+	d_vector ran_jac(n_fixed), d_theta(1);
 	mixed_object.ran_obj_jac(theta, uhat, ran_jac);
 	//
 	// Jacobian using laplace_obj_fun
-	vector<double> laplace_jac =
+	d_vector laplace_jac =
 		mixed_object.laplace_obj_fun_.Jacobian(beta_theta_u);
 	//
 	// check Jacobina
@@ -174,12 +177,12 @@ bool laplace_obj_tst(void)
 	ok &= fabs( laplace_jac[0] / check[0] - 1.0 ) < eps;
 	//
 	// -----------------------------------------------------------------------
-	// Hessian using objective
+	// Hessian using check_obj
 	check = r.Hessian(theta, 0);
 	//
 	// Hessian using laplace_obj_fun
 	vector<size_t> row_out, col_out;
-	vector<double> val_out, weight(1);
+	d_vector val_out, weight(1);
 	weight[0] = 1.0;
 	mixed_object.laplace_obj_hes(
 		theta, uhat, weight, row_out, col_out, val_out
