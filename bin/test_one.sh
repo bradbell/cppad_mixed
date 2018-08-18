@@ -2,7 +2,7 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-17 University of Washington
+#           Copyright (C) 2014-18 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -23,9 +23,7 @@ echo_eval() {
 # ---------------------------------------------------------------------------
 modify_list='
 	example/example.cpp
-	example/CMakeLists.txt
 	test_more/test_more.cpp
-	test_more/CMakeLists.txt
 '
 if [ "$1" == '' ]
 then
@@ -77,23 +75,9 @@ b done
 s|\$|\\n# endif|
 : done
 EOF
-cat << EOF > test_one.2
-/^ADD_EXECUTABLE/! b done
-: loop
-N
-/\\n)/! b loop
-s|\\n.*|\\
-	$find_path\\
-)|
-: done
-EOF
 		git checkout $find_dir/$find_dir.cpp
 		echo_eval sed -f test_one.1 -i $find_dir/$find_dir.cpp
 		rm test_one.1
-		#
-		git checkout $find_dir/CMakeLists.txt
-		echo_eval sed -f test_one.2 -i $find_dir/CMakeLists.txt
-		rm test_one.2
 		#
 		echo_eval cd build
 		echo "make check_$find_dir"

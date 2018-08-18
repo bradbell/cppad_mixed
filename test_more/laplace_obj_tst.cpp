@@ -30,8 +30,6 @@ $latex \[
 # include <cppad/mixed/order2random.hpp>
 
 
-# define LAPLACE_OBJ_TST_PRINT 0
-
 namespace {
 	using CppAD::vector;
 	using CppAD::log;
@@ -310,21 +308,7 @@ bool laplace_obj_tst(void)
 	d_vector G_hes = G.Hessian(beta_theta_u, 0);
 	// ok &= fabs( F_hes[0] / r_hes[0] - 1.0 ) < eps; // this check fails
 	ok &= fabs( G_hes[0] / r_hes[0] - 1.0 ) < eps;
-	//
-# if LAPLACE_OBJ_TST_PRINT
-	std::cout << "\n";
-	std::cout << "r_val = " << r_val << "\n";
-	std::cout << "F_val = " << F_val << "\n";
-	std::cout << "G_val = " << G_val << "\n";
-	//
-	std::cout << "r_jac = " << r_jac << "\n";
-	std::cout << "F_jac = " << F_jac << "\n";
-	std::cout << "G_jac = " << G_jac << "\n";
-	//
-	std::cout << "r_hes = " << r_hes << "\n";
-	std::cout << "F_hes = " << F_hes << "\n";
-	std::cout << "G_hes = " << G_hes << "\n";
-# endif
+	ok &= fabs( F_hes[0] / r_hes[0] - 1.0 ) < eps;
 	//
 	// -----------------------------------------------------------------------
 	return ok;
