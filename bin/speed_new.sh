@@ -2,7 +2,7 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-17 University of Washington
+#           Copyright (C) 2014-18 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -14,12 +14,35 @@ then
 	echo 'bin/speed_new.sh must be run from its parent directory'
 	exit 1
 fi
-if [ "$1" != 'normal' ] && [ "$1" != 'callgrind' ] && [ "$1" != 'massif' ]
-then
-	echo 'usage: bin/speed_new.sh (normal|callgrind|massif)'
-	exit 1
-fi
-test2run="$1"
+test2run='normal'
+quasi_fixed='yes'
+while [ "$1" != '' ]
+do
+	if [ "$1" == '--callgrind' ]
+	then
+		if [ "$test2run" == 'massif' ]
+		then
+			echo 'usage: speed_new.sh: cant specify both callgrind and massif'
+			exit 1
+		fi
+		test2run='callgrind'
+	elif [ "$1" == '--massif' ]
+	then
+		if [ "$test2run" == 'callgrind' ]
+		then
+			echo 'usage: speed_new.sh: cant specify both callgrind and massif'
+			exit 1
+		fi
+		test2run='massif'
+	elif [ "$1" == '--newton' ]
+	then
+		quasi_fixed='no'
+	else
+		echo 'usage: bin/speed_new.sh: [--callgrind] [--massif] [--newton]'
+		exit 1
+	fi
+	shift
+done
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
@@ -33,7 +56,7 @@ then
 fi
 # -----------------------------------------------------------------------------
 git reset --hard
-bin/run_cmake.sh --optimize_cppad_function --release
+bin/run_cmake.sh --release
 # -----------------------------------------------------------------------------
 # set random seed to 123 so same for old and new
 for program in ar1_xam capture_xam
@@ -45,7 +68,7 @@ do
 		exit 1
 	fi
 	git checkout bin/$program.sh
-	sed -i bin/$program.sh -e 's|^random_seed=.*|random_seed=123|'
+	sed -i bin/$program.sh -e "s|^quasi_fixed=.*|quasi_fixed=$quasi_fixed|"
 	for ext in old new
 	do
 		if [ -e "build/$program.$ext" ]
