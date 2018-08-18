@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -202,14 +202,21 @@ void cppad_mixed::laplace_obj_hes(
 	assert( col_out.size() == nnz );
 	assert( val_out.size() == nnz );
 	//
-	// create a d_vector containing (beta, theta, u)
-	d_vector beta_theta_u( 2 * n_fixed_ + n_random_ );
-	pack(fixed_vec, fixed_vec, random_vec, beta_theta_u);
+	// beta
+	const d_vector& beta(fixed_vec);
 	//
+	// theta_u
+	d_vector theta_u(n_fixed_ + n_random_);
+	pack(fixed_vec, random_vec, theta_u);
+	//
+	// set dynamic parameters in laplace_obj_fun_
+	laplace_obj_fun_.new_dynamic(theta_u);
+	//
+	// val_out
 	sparse_rc   not_used_pattern;
 	std::string not_used_coloring;
 	laplace_obj_fun_.sparse_hes(
-		beta_theta_u           ,
+		beta                   ,
 		weight                 ,
 		laplace_obj_hes_.subset ,
 		not_used_pattern       ,

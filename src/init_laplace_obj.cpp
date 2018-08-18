@@ -112,29 +112,29 @@ void cppad_mixed::init_laplace_obj(
 	assert( A_rcv_.nnz() == A_rcv_.col().size() );
 	assert( A_rcv_.nnz() == A_rcv_.val().size() );
 	//
-	// constant term
-	double pi   = CppAD::atan(1.0) * 4.0;
-	double constant_term = CppAD::log(2.0 * pi) * double(n_random_) / 2.0;
+	//	beta
+	a1_vector beta(n_fixed_);
+	for(size_t j = 0; j < n_fixed_; ++j)
+		beta[j] = fixed_vec[j];
 	//
-	a1_vector f(1), HB(1 + A_rcv_.nr());
-	//
-	//	create an a1_vector containing (beta, theta, u)
-	a1_vector beta_theta_u( 2 * n_fixed_ + n_random_ );
-	pack(fixed_vec, fixed_vec, random_vec, beta_theta_u);
+	// theta_u
+	a1_vector theta_u( n_fixed_ + n_random_ );
+	pack(fixed_vec, random_vec, theta_u);
 	//
 	// start recording a1_double operations
+	// beta:    independent variables
+	// theta_u: dynamic parameters
 	size_t abort_op_index = 0;
 	bool record_compare   = false;
-	CppAD::Independent(beta_theta_u, abort_op_index, record_compare);
+	CppAD::Independent(beta, abort_op_index, record_compare, theta_u);
 	//
-	// split out beta, theta, u
-	a1_vector beta(n_fixed_), theta(n_fixed_), u(n_random_);
-	for(size_t j = 0; j < n_fixed_; ++j)
-	{	beta[j]    = beta_theta_u[j];
-		theta[j]   = beta_theta_u[j + n_fixed_];
-	}
-	for(size_t j = 0; j < n_random_; ++j)
-		u[j]       = beta_theta_u[j + 2 * n_fixed_ ];
+	// theta, u
+	a1_vector theta(n_fixed_), u(n_random_);
+	unpack(theta, u, theta_u);
+	//
+	// beta_theta_u
+	a1_vector beta_theta_u(2 * n_fixed_ + n_random_);
+	pack(beta, theta, u, beta_theta_u);
 	//
 	// W(beta, theta, u)
 	const sparse_rc& ran_hes_rc( ran_hes_rcv_.pat() );
@@ -148,16 +148,13 @@ void cppad_mixed::init_laplace_obj(
 		beta_theta_u
 	);
 	// -----------------------------------------------------------------------
-	// beta_W
-	a1_vector beta_W(n_fixed_ + n_random_);
-	for(size_t j = 0; j < n_fixed_; j++)
-		beta_W[j] = beta[j];
-	for(size_t j = 0; j < n_random_; j++)
-		beta_W[j + n_fixed_] = W[j];
-	// -----------------------------------------------------------------------
 	// Evaluate f_{uu} (beta , W).
 	//
-	// n_low, row, col, val_out
+	// beta_W
+	a1_vector beta_W(n_fixed_ + n_random_);
+	pack(beta, W, beta_W);
+	//
+	// n_low, row, col
 	size_t n_low = ran_hes_rc.nnz();
 	CppAD::vector<size_t> row(n_low), col(n_low);
 	sparse_rc ran_hes_mix_rc(n_random_, n_fixed_ + n_random_, n_low);
@@ -172,6 +169,8 @@ void cppad_mixed::init_laplace_obj(
 		// row relative to random effects, coluimn relative to both
 		ran_hes_mix_rc.set(k, row[k], col[k] + n_fixed_);
 	}
+	//
+	// val_out
 	a1_vector val_out = ran_likelihood_hes(beta, W, row, col);
 	if( val_out.size() == 0 )
 	{	// The user has not defined ran_likelihood_hes, so use AD to calcuate
@@ -182,6 +181,7 @@ void cppad_mixed::init_laplace_obj(
 		ran_jac_a1fun_.clear_subgraph();
 		val_out = subset.val();
 	}
+	// -----------------------------------------------------------------------
 	//
 	// a1_hessian
 	a1_eigen_sparse hessian;
@@ -193,7 +193,6 @@ void cppad_mixed::init_laplace_obj(
 	Eigen::SimplicialLDLT<a1_eigen_sparse, Eigen::Lower> chol;
 	chol.analyzePattern(hessian);
 	chol.factorize(hessian);
-	// -----------------------------------------------------------------------
 	//
 	// logdet [ f_{uu} ( beta , W ) ]
 	a1_double logdet     = 0.0;
@@ -202,12 +201,18 @@ void cppad_mixed::init_laplace_obj(
 		logdet += log( diag[j] );
 	//
 	// Evaluate the random likelihood using (beta, W)
+	a1_vector f(1);
 	f  = ran_like_a1fun_.Forward(0, beta_W);
 	if( CppAD::hasnan(f) ) throw CppAD::mixed::exception(
 		"init_laplace_obj", "result has a nan"
 	);
 	//
+	// constant term
+	double pi   = CppAD::atan(1.0) * 4.0;
+	double constant_term = CppAD::log(2.0 * pi) * double(n_random_) / 2.0;
+	//
 	// now the random part of the Laplace objective
+	a1_vector HB(1 + A_rcv_.nr());
 	HB[0] = logdet / 2.0 + f[0] - constant_term;
 	//
 	if( A_rcv_.nr() > 0 )
@@ -226,7 +231,7 @@ void cppad_mixed::init_laplace_obj(
 		}
 	}
 	//
-	laplace_obj_fun_.Dependent(beta_theta_u, HB);
+	laplace_obj_fun_.Dependent(beta, HB);
 	laplace_obj_fun_.check_for_nan(false);
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
 	laplace_obj_fun_.optimize("no_conditional_skip");

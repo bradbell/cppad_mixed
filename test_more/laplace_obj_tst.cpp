@@ -155,11 +155,12 @@ bool laplace_obj_tst(void)
 	double ran_obj = mixed_object.ran_obj_eval(theta, uhat);
 	//
 	// r(theta) using laplace_obj_fun
-	d_vector beta_theta_u(3);
-	beta_theta_u[0] = beta_theta_u[1] = theta[0];
-	beta_theta_u[2] = uhat[0];
+	d_vector theta_u(2);
+	theta_u[0] = theta[0];
+	theta_u[1] = uhat[0];
+	mixed_object.laplace_obj_fun_.new_dynamic(theta_u);
 	d_vector laplace_obj =
-		mixed_object.laplace_obj_fun_.Forward(0, beta_theta_u);
+		mixed_object.laplace_obj_fun_.Forward(0, theta);
 	//
 	// check r(theta)
 	ok &= fabs( ran_obj / check[0] - 1.0 ) < eps;
@@ -175,7 +176,7 @@ bool laplace_obj_tst(void)
 	//
 	// Jacobian using laplace_obj_fun
 	d_vector laplace_jac =
-		mixed_object.laplace_obj_fun_.Jacobian(beta_theta_u);
+		mixed_object.laplace_obj_fun_.Jacobian(theta);
 	//
 	// check Jacobina
 	ok &= fabs( ran_jac[0] / check[0] - 1.0 ) < eps;
@@ -277,7 +278,7 @@ bool laplace_obj_tst(void)
 	// Compare computations using F and G
 	//
 	// change value of the beta, theta and u
-	d_vector beta(1), theta_u(2);
+	d_vector beta(1), beta_theta_u(3);
 	theta[0]        = theta[0] / 2.0;
 	uhat[0]         = y[0] / (1.0 + theta[0] * theta[0]);
 	beta[0]         = theta[0];

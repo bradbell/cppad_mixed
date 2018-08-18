@@ -44,11 +44,23 @@ $childtable%
 	omh/whats_new/15.omh
 %$$
 
-$head 08-14$$
-Advance to $code cppad-20810814$$.
+$head 08-18$$
+$list number$$
+Advance to $code cppad-20810818$$.
+$lnext
+Use Cppad dynamic parameters (new feature) to speed up the computation
+of the Hessian of the objective
+(when $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is true).
+Cppad needs to improve its optimization of dynamic parameter calculations.
+For example, the optimized tapes that compute the Hessian of
+$cref/H(beta, theta, u)
+	/theory/Approximate Laplace Objective, H(beta, theta, u)
+/$$
+are larger when $icode (theta, u)$$ are dynamic parameters
+than when they are variables.
+These tapes are about the same size before being optimized.
+$lend
 
-$head 08-13$$
-Advance to $code cppad-20810813$$.
 
 $head 08-09$$
 Advance to $code cppad-20810809$$.

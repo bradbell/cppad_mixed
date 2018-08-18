@@ -43,7 +43,7 @@
 # BEGIN SH
 random_seed='123'
 number_random='50000'
-quasi_fixed='yes'
+quasi_fixed='no'
 trace_optimize_fixed='no'
 ipopt_solve='no'
 bool_sparsity='no'
@@ -57,12 +57,11 @@ then
 	echo "$program: must be executed from its parent directory"
 	exit 1
 fi
-build_dir='build/speed'
-if [ ! -e "$build_dir/ar1_xam" ]
+speed_dir='build/speed'
+if [ ! -e "$speed_dir" ]
 then
 	echo "$program: must first run:"
 	echo '	bin/run_cmake.sh'
-	echo '	cd build; make ar1_xam; cd ..'
 	exit 1
 fi
 #
@@ -79,7 +78,7 @@ echo_eval() {
 	eval $*
 }
 # ----------------------------------------------------------------------------
-echo_eval cd build/speed
+echo_eval cd $speed_dir
 echo_eval make capture_xam
 arguments="
 $random_seed

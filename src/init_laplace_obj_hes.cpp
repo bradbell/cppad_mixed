@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -66,7 +66,6 @@ $codei%
 It specifies the initial value for the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ optimization.
 
-
 $head laplace_obj_hes_$$
 The input value of the member variable
 $codei%
@@ -102,16 +101,17 @@ void cppad_mixed::init_laplace_obj_hes(
 	const d_vector& random_vec    )
 {	assert( ! init_laplace_obj_hes_done_ );
 	assert( init_laplace_obj_done_ );
-
-	// total number of variables in H
-	size_t n_total = 2 * n_fixed_ + n_random_;
-
-	//	create an a1_vector containing (theta, theta , u)
-	d_vector beta_theta_u(n_total);
-	pack(fixed_vec, fixed_vec, random_vec, beta_theta_u);
-
-	// compute Jacobian sparsity for partials w.r.t. beta
-	sparse_rc pattern_in(n_total, n_fixed_, n_fixed_);
+	//
+	// beta
+	d_vector beta = fixed_vec;
+	//
+	// theta_u
+	d_vector theta_u(n_fixed_ + n_random_);
+	pack(fixed_vec, random_vec, theta_u);
+	//
+	// Compute Jacobian sparsity for partials w.r.t. beta.
+	// Note that theta and u are dynamic parameters in laplace_obj_fun_.
+	sparse_rc pattern_in(n_fixed_, n_fixed_, n_fixed_);
 	for(size_t k = 0; k < n_fixed_; k++)
 		pattern_in.set(k, k, k);
 	bool      transpose     = false;
@@ -122,8 +122,9 @@ void cppad_mixed::init_laplace_obj_hes(
 		pattern_in, transpose, dependency, internal_bool, jac_pattern
 	);
 
-	// compute sparsity pattern corresponding to partial w.r.t (beta, theta, u)
-	// of partial w.r.t beta of H(beta, theta, u)
+	// compute sparsity pattern corresponding to
+	// H_{beta,beta} (beta, theta, u)
+	// Note that theta and u are dynamic parameters in laplace_obj_fun_.
 	size_t m = laplace_obj_fun_.Range();
 	CppAD::vector<bool> select_range(m);
 	for(size_t i = 0; i < m; i++)
@@ -133,30 +134,29 @@ void cppad_mixed::init_laplace_obj_hes(
 	laplace_obj_fun_.rev_hes_sparsity(
 		select_range, transpose, internal_bool, hes_pattern
 	);
-	assert( hes_pattern.nr() == n_total );
+	assert( hes_pattern.nr() == n_fixed_ );
 	assert( hes_pattern.nc() == n_fixed_ );
 	//
-	// sparsity pattern corresponding to lower traingle of
-	// partial w.r.t. beta of partial w.r.t. beta of H(beta, theta, u)
+	// beta_beta_pattern
+	// sparsity pattern for lower traingle of H_{beta,beta} (beta, theta, u)
 	size_t nnz = 0;
 	for(size_t k = 0; k < hes_pattern.nnz(); k++)
 	{	size_t r = hes_pattern.row()[k];
 		size_t c = hes_pattern.col()[k];
-		if( n_fixed_ > r && r >= c )
+		if( r >= c )
 			++nnz;
 	}
-	sparse_rc beta_beta_pattern(n_total, n_total, nnz);
-	sparse_rc extend_pattern(n_total, n_total, hes_pattern.nnz());
+	sparse_rc beta_beta_pattern(n_fixed_, n_fixed_, nnz);
 	size_t ell = 0;
 	for(size_t k = 0; k < hes_pattern.nnz(); k++)
 	{	size_t r = hes_pattern.row()[k];
 		size_t c = hes_pattern.col()[k];
-		extend_pattern.set(k, r, c);
-		if( n_fixed_ > r && r >= c )
+		if( r >= c )
 			beta_beta_pattern.set(ell++, r, c);
 	}
 	assert( nnz == ell );
 	//
+	// laplace_obj_hes_.subset
 	// only compute the lower triangle of H_beta_beta ( beta, theta, u)
 	laplace_obj_hes_.subset = sparse_rcv( beta_beta_pattern );
 	//
@@ -167,10 +167,10 @@ void cppad_mixed::init_laplace_obj_hes(
 		weight[i] = 1.0;
 	std::string coloring  = "cppad.symmetric";
 	laplace_obj_fun_.sparse_hes(
-		beta_theta_u           ,
+		beta                   ,
 		weight                 ,
 		laplace_obj_hes_.subset ,
-		extend_pattern         ,
+		beta_beta_pattern      ,
 		coloring               ,
 		laplace_obj_hes_.work
 	);
