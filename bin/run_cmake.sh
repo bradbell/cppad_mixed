@@ -186,6 +186,7 @@ usage: bin/run_cmake.sh \\
 	[--ldlt_eigen] \\
 	[--rev_hes_sparsity] \\
 	[--release] \\
+	[--optimize_cppad_function] \\
 	[--dismod_at_prefix]
 EOF
 		exit 0
@@ -202,6 +203,8 @@ EOF
 	elif [ "$1" == '--release' ]
 	then
 		build_type='release'
+	elif [ "$1" == '--optimize_cppad_function' ]
+	then
 		optimize_cppad_function='yes'
 	elif [ "$1" == '--dismod_at_prefix' ]
 	then

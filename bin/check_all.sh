@@ -67,13 +67,12 @@ then
 fi
 if [ "$build_type" == 'release' ]
 then
-	sed -i bin/run_cmake.sh \
-		-e "s|^build_type=.*|build_type='release'|" \
-		-e "s|^optimize_cppad_function=.*|optimize_cppad_function='yes'|"
+	echo 'bin/run_cmake.sh --release --optimize_cppad_function >& cmake.log'
+	bin/run_cmake.sh --release --optimize_cppad_function >& cmake.log
+else
+	echo 'bin/run_cmake.sh >& cmake.log'
+	bin/run_cmake.sh >& cmake.log
 fi
-# -----------------------------------------------------------------------------
-echo 'bin/run_cmake.sh >& cmake.log'
-bin/run_cmake.sh >& cmake.log
 #
 cd build
 #
@@ -93,10 +92,6 @@ do
 		exit 1
 	fi
 done
-# -----------------------------------------------------------------------------
-sed -i bin/run_cmake.sh \
-	-e "s|^build_type=.*|build_type='debug'|" \
-	-e "s|^optimize_cppad_function=.*|optimize_cppad_function='no'|"
 # -----------------------------------------------------------------------------
 echo 'check_all.sh: OK'
 exit 0
