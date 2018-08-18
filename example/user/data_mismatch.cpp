@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -261,29 +261,33 @@ namespace {
 		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 		// ==================================================================
 		// Routines used to check that objective derivative is zero at solution
+		// g(thata)    = (theta - z)^2           / (2.0 * sigma_z * sigma_z)
+		// f(theta, u) = ( exp(u) * theta - y)^2 / (2.0 * sigma_y * sigma_y )
+		//             + u^2  / (2.0 * sigma_u * sigma_u);
 		double g_theta(double theta)
 		{	return (theta - z_) / (sigma_z_ * sigma_z_); }
+		//
 		double f_theta(double theta, double u)
-		{	double ret = (exp(u) * theta - y_) * exp(u);
-			ret        = ret / (sigma_y_ * sigma_y_);
-			return ret;
+		{	double num_theta    = 2.0 * (exp(u) * theta - y_) * exp(u);
+			double ratio_theta  = num_theta / (2.0 * sigma_y_ * sigma_y_);
+			return ratio_theta;
 		}
 		double f_u(double theta, double u)
-		{	double term = exp(u) * theta;
-			double ret  = u / (sigma_u_ * sigma_u_);
-			ret        += (term - y_) * term / (sigma_y_ * sigma_y_);
-			return ret;
+		{	double num_u    = 2.0 * (exp(u) * theta - y_) * exp(u) * theta;
+			double ratio_u  = num_u / (2.0 * sigma_y_ * sigma_y_);
+			return ratio_u + u / (sigma_u_ * sigma_u_);
 		}
 		double f_uu(double theta, double u)
-		{	double term = exp(u) * theta;
-			double ret  = 1.0 / (sigma_u_ * sigma_u_);
-			ret        += (2.0 * term - y_) * term / (sigma_y_ * sigma_y_);
-			return ret;
+		{	double term     = exp(u) * theta;
+			double num_uu   = 2.0 * (term * term + (term - y_) * term);
+			double ratio_uu = num_uu / (2.0 * sigma_y_ * sigma_y_);
+			return ratio_uu + 1.0 / (sigma_u_ * sigma_u_);
 		}
 		double f_utheta(double theta, double u)
-		{	double ret = (2.0 * exp(u) * theta - y_) * exp(u);
-			ret        = ret / (sigma_y_ * sigma_y_);
-			return ret;
+		{	double num_utheta    = 2.0 * (exp(u) * theta - y_) * exp(u);
+			num_utheta          += 2.0 * exp(u) * exp(u) * theta;
+			double ratio_utheta  = num_utheta / (2.0 * sigma_y_ * sigma_y_);
+			return ratio_utheta;
 		}
 		double uhat_theta(double theta, double uhat)
 		{	double ret = - f_utheta(theta, uhat) / f_uu(theta, uhat);
@@ -291,13 +295,21 @@ namespace {
 		}
 		double f_uuu(double theta, double u)
 		{	double term = exp(u) * theta;
-			double ret  = (4.0 * term - y_) * term / (sigma_y_ * sigma_y_);
-			return ret;
+			// term_u = term
+			// num_uu = 2.0 * term * (2.0 * term  - y)
+			//        = 4.0 * term^2 - 2.0 * term * y
+			double num_uuu  = 8.0 * term * term  - 2.0 * term * y_;
+			double ratio_uuu = num_uuu / (2.0 * sigma_y_ * sigma_y_);
+			return ratio_uuu;
 		}
 		double f_uutheta(double theta, double u)
-		{	double ret = (4.0 * exp(u) * theta - y_) * exp(u);
-			ret        = ret / (sigma_y_ * sigma_y_);
-			return ret;
+		{	double term = exp(u) * theta;
+			// term_theta = exp(u)
+			// num_uu = 2.0 * term * (2.0 * term  - y)
+			//        = 4.0 * term^2 - 2.0 * term * y
+			double num_uutheta = 8.0 * term * exp(u) - 2.0 * y_ * exp(u);
+			double ratio_uutheta = num_uutheta / (2.0 * sigma_y_ * sigma_y_);
+			return ratio_uutheta;
 		}
 		double h_theta(double theta, double u)
 		{	double ret = 0.5 * f_uutheta(theta, u) / f_uu(theta, u);
@@ -357,7 +369,9 @@ bool data_mismatch_xam(void)
 	double theta_in   = fixed_in[0];
 	double u_in       = random_in[0];
 	double L_theta_in = mixed_object.L_theta(theta_in, u_in);
-	ok &= fabs( L_theta_in ) >= 1.0;
+	//
+	// derivative corresponding to theta = z = y is greater than 1
+	ok &= fabs( L_theta_in ) > 1.0;
 	//
 	// optimize the fixed effects using quasi-Newton method
 	std::string fixed_ipopt_options =
@@ -403,7 +417,9 @@ bool data_mismatch_xam(void)
 	double theta_out   = fixed_out[0];
 	double u_out       = random_out[0];
 	double L_theta_out = mixed_object.L_theta(theta_out, u_out);
-	ok &= fabs( L_theta_out ) <= 2e-8;
+	//
+	// derivative corresponding to solution is less that 1e-7
+	ok &= fabs( L_theta_out ) <= 1e-7;
 	//
 	// Now demonstrate that the solution is still close to the expected values
 	ok &= fabs( theta_out / z - 1.0 ) <= 1e-2;
