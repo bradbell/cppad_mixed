@@ -28,14 +28,15 @@ echo_eval() {
 	eval $*
 }
 # -----------------------------------------------------------------------------
-# cppad_prefix
-cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
-eval $cmd
-#
-installed_include_dir="$cppad_prefix/include/cppad/mixed"
-if [ -e "$installed_include_dir" ]
+if ! grep "build_type='debug'" bin/run_cmake.sh > /dev/null
 then
-	echo_eval rm -rf $installed_include_dir
+	echo 'bin/check_all.sh: bin/run_cmake.sh build_type not debug'
+	exit 1
+fi
+if ! grep "optimize_cppad_function='no'" bin/run_cmake.sh > /dev/null
+then
+	echo 'bin/check_all.sh: bin/run_cmake.sh optimize_cppad_function not no'
+	exit 1
 fi
 # -----------------------------------------------------------------------------
 # run bin/check_*.sh and ~bradbell/bin/check_copyright.sh
@@ -55,16 +56,16 @@ version.sh check
 # check latex in omhelp
 echo_eval run_omhelp.sh -xml doc
 # -----------------------------------------------------------------------------
-if ! grep "build_type='debug'" bin/run_cmake.sh > /dev/null
+# cppad_prefix
+cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
+eval $cmd
+#
+installed_include_dir="$cppad_prefix/include/cppad/mixed"
+if [ -e "$installed_include_dir" ]
 then
-	echo 'bin/check_all.sh: bin/run_cmake.sh build_type not debug'
-	exit 1
+	echo_eval rm -rf $installed_include_dir
 fi
-if ! grep "optimize_cppad_function='no'" bin/run_cmake.sh > /dev/null
-then
-	echo 'bin/check_all.sh: bin/run_cmake.sh optimize_cppad_function not no'
-	exit 1
-fi
+# -----------------------------------------------------------------------------
 if [ "$build_type" == 'release' ]
 then
 	echo 'bin/run_cmake.sh --release --optimize_cppad_function >& cmake.log'
@@ -82,7 +83,27 @@ do
 	make $target >& ../$target.log
 done
 cd ..
-bin/check_install.sh
+# -----------------------------------------------------------------------------
+check_install_failed='no'
+if [ "$build_type" == 'release' ]
+then
+	sed -i bin/run_cmake.sh -e "s|^build_type=.*|build_type='release'|"
+	if ! bin/check_install.sh
+	then
+		check_install_failed='yes'
+	fi
+	sed -i bin/run_cmake.sh -e "s|^build_type=.*|build_type='debug'|"
+else
+	if ! bin/check_install.sh
+	then
+		check_install_failed='yes'
+	fi
+fi
+if [ "$check_install_failed" == 'yes' ]
+then
+	echo 'bin/check_all.sh: Error'
+	exit 1
+fi
 # -----------------------------------------------------------------------------
 for target in cmake check speed install
 do
