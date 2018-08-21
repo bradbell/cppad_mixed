@@ -149,7 +149,7 @@ This test will run <code><font color="blue">capture_xam</font></code> with
 <pre><tt>
 <font color="#009900">random_seed</font><font color="#990000">=</font><font color="#FF0000">'1234'</font>
 <font color="#009900">number_random</font><font color="#990000">=</font><font color="#FF0000">'90'</font>
-<font color="#009900">quasi_fixed</font><font color="#990000">=</font><font color="#FF0000">'yes'</font>
+<font color="#009900">quasi_fixed</font><font color="#990000">=</font><font color="#FF0000">'no'</font>
 <font color="#009900">trace_optimize_fixed</font><font color="#990000">=</font><font color="#FF0000">'no'</font>
 <font color="#009900">ipopt_solve</font><font color="#990000">=</font><font color="#FF0000">'no'</font>
 <font color="#009900">bool_sparsity</font><font color="#990000">=</font><font color="#FF0000">'no'</font>
@@ -170,12 +170,11 @@ This test will run <code><font color="blue">capture_xam</font></code> with
      echo <font color="#FF0000">"$program: must be executed from its parent directory"</font>
      <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
 <b><font color="#0000FF">fi</font></b>
-<font color="#009900">build_dir</font><font color="#990000">=</font><font color="#FF0000">'build/speed'</font>
-<b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#990000">!</font> -e <font color="#FF0000">"$build_dir/capture_xam"</font> <font color="#990000">]</font>
+<font color="#009900">speed_dir</font><font color="#990000">=</font><font color="#FF0000">'build/speed'</font>
+<b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#990000">!</font> -e <font color="#FF0000">"$speed_dir"</font> <font color="#990000">]</font>
 <b><font color="#0000FF">then</font></b>
      echo <font color="#FF0000">"$program: must first run:"</font>
      echo <font color="#FF0000">'    bin/run_cmake.sh'</font>
-     echo <font color="#FF0000">'    cd build; make capture_xam; cd ..'</font>
      <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
 <b><font color="#0000FF">fi</font></b>
 <i><font color="#9A1900">#</font></i>
@@ -192,7 +191,7 @@ This test will run <code><font color="blue">capture_xam</font></code> with
      <b><font color="#0000FF">eval</font></b> <font color="#009900">$*</font>
 }
 <i><font color="#9A1900"># ----------------------------------------------------------------------------</font></i>
-echo_eval cd <font color="#009900">$build_dir</font>
+echo_eval cd <font color="#009900">$speed_dir</font>
 echo_eval make capture_xam
 <font color="#009900">arguments</font><font color="#990000">=</font><font color="#FF0000">"</font>
 <font color="#FF0000">$random_seed</font>
