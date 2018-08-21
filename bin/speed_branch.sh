@@ -40,15 +40,9 @@ echo_eval() {
 	eval $*
 }
 # -----------------------------------------------------------------------------
-# set random seed to 123 so same for old and new
+# erase old version of programs
 for program in ar1_xam capture_xam
 do
-	diff=`git diff $branch1 $branch2 -- bin/$program`
-	if [ "$diff" != '' ]
-	then
-		echo "bin/speed_branch.sh: bin/$program.sh has changed"
-		exit 1
-	fi
 	for ext in $branch1 $branch2
 	do
 		if [ -e "build/$program.$ext" ]
@@ -64,22 +58,69 @@ done
 # -----------------------------------------------------------------------------
 for branch in $branch1 $branch2
 do
+	edit_failed='no'
+	#
+	# start with a clean copy of branch source
 	git checkout $branch
-	bin/run_cmake.sh --release
+	#
+	# setup to build optimized versions
+	sed -i bin/run_cmake.sh \
+		-e "s|^build_type=.*|build_type='release'|" \
+		-e "s|^optimize_cppad_function=.*|optimize_cppad_function='yes'|"
+	if ! grep "^build_type='release'" bin/run_cmake.sh > /dev/null
+	then
+		edit_failed='build_type'
+	fi
+	if ! grep "^optimize_cppad_function='yes'" bin/run_cmake.sh > /dev/null
+	then
+		edit_failed='optimize_cppad_function'
+	fi
+	#
+	bin/run_cmake.sh
+	#
+	# for each test
 	for program in ar1_xam capture_xam
 	do
-		cd build; make $program; cd ..
-		cp build/speed/$program build/$branch.$program
-		#
+		# -------------------------------------------------------------------
+		# changes to source code
 		sed -i bin/$program.sh \
 			-e 's|^random_seed=.*|random_seed=123|' \
 			-e "s|^quasi_fixed=.*|quasi_fixed=$quasi_fixed|"
+		if ! grep "^random_seed=123" bin/$program.sh > /dev/null
+		then
+			edit_failed='random_seed'
+		fi
+		if ! grep "^quasi_fixed=$quasi_fixed" bin/$program.sh > /dev/null
+		then
+			edit_failed='quasi_fixed'
+		fi
 		#
 		if [ "$program" == 'ar1_xam' ]
 		then
 			sed -i bin/$program.sh \
 				-e 's|^number_random=.*|number_random=90000|'
+			if ! grep "^number_random=90000" bin/$program.sh > /dev/null
+			then
+				edit_failed='random_number'
+			fi
+			#
+			sed -i speed/$program.cpp \
+				-e 's|\(std::fabs(estimate_ratio\[j\])\) *<.*|\1 < 10.0;|'
+			if ! grep "std::fabs(estimate_ratio\[j\]) < 10.0" \
+				speed/$program.cpp > /dev/null
+			then
+				edit_failed='estimate_ratio'
+			fi
 		fi
+		if [ "$edit_failed" != 'no' ]
+		then
+			echo "bin/speed_branch.sh: edit failed: $edit_failed"
+			exit 1
+		fi
+		# -------------------------------------------------------------------
+		#
+		cd build; make $program; cd ..
+		cp build/speed/$program build/$branch.$program
 		#
 		echo "bin/$program.sh normal > build/$branch.$program.out"
 		bin/$program.sh normal > build/$branch.$program.out
