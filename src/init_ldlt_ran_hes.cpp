@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin init_ldlt_ran_hes$$
 $spell
+	rc
 	rcv
 	ldlt_ran_hes
 	init
@@ -52,15 +53,15 @@ $codei%
 %$$
 Upon return, the function
 $codei%
-	ldlt_ran_hes_.init(%hes_info%)
+	ldlt_ran_hes_.init(%hes_rc%)
 %$$
-has been called with $icode hes_info$$
+has been called with $icode hes_rc$$
 equal to the sparsity pattern for the
 Hessian of the random likelihood with respect to the random effects;
 see $cref ldlt_eigen_init$$.
 This sparsity information is relative to just the random effects;
 i.e., the row and column indices are relative to the vector $latex u )$$.
-For each row and column indices in $icode hes_info$$,
+For each row and column indices in $icode hes_rc$$,
 the corresponding row and column index in $code ran_hes_rcv_$$ is
 $code n_fixed_$$ greater.
 
@@ -73,19 +74,19 @@ void cppad_mixed::init_ldlt_ran_hes(void)
 {	assert( ! init_ldlt_ran_hes_done_ );
 	assert( init_ran_hes_done_ );
 	//
-	CppAD::mixed::sparse_mat_info hes_info;
-	size_t K = ran_hes_rcv_.nnz();
-	hes_info.row.resize(K);
-	hes_info.col.resize(K);
-	for(size_t k = 0; k < K; k++)
+	// Hessian sparsity pattern corresponding to just random effects
+	size_t nnz = ran_hes_rcv_.nnz();
+	CppAD::mixed::sparse_rc hes_rc(n_random_, n_random_, nnz);
+	for(size_t k = 0; k < nnz; k++)
 	{	size_t r = ran_hes_rcv_.row()[k];
 		size_t c = ran_hes_rcv_.col()[k];
-		assert( n_fixed_ <= r && r < n_fixed_ + n_random_ );
-		assert( n_fixed_ <= c && c < n_fixed_ + n_random_ );
-		hes_info.row[k] = r - n_fixed_;
-		hes_info.col[k] = c - n_fixed_;
+		assert( n_fixed_ <= r );
+		assert( n_fixed_ <= c );
+		hes_rc.set(k, r - n_fixed_, c - n_fixed_ );
 	}
-	ldlt_ran_hes_.init(hes_info);
+	//
+	// initialize ldlt_ran_hes_
+	ldlt_ran_hes_.init(hes_rc);
 	//
 	init_ldlt_ran_hes_done_ = true;
 	return;

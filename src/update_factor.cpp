@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -101,32 +101,35 @@ void cppad_mixed::update_factor(
 	assert( fixed_vec.size() == n_fixed_ );
 	assert( random_vec.size() == n_random_ );
 	//
-	// set the sparsity pattern corresponding the Hessian
-	CppAD::mixed::sparse_mat_info hes_info;
-	size_t K = ran_hes_rcv_.nnz();
-	hes_info.row.resize(K);
-	hes_info.col.resize(K);
-	for(size_t k = 0; k < K; k++)
-	{	size_t r = ran_hes_rcv_.row()[k];
-		size_t c = ran_hes_rcv_.col()[k];
-		assert( n_fixed_ <= r && r < n_fixed_ + n_random_ );
-		assert( n_fixed_ <= c && c < n_fixed_ + n_random_ );
-		hes_info.row[k] = r - n_fixed_;
-		hes_info.col[k] = c - n_fixed_;
-	}
-	//
 	// pack fixed and random effects into one vector
 	d_vector both(n_fixed_ + n_random_);
 	pack(fixed_vec, random_vec, both);
 	//
 	// set the value vector in the sparse matrix information
-	hes_info.val = ran_hes_fun_.Forward(0, both);
-	if( CppAD::hasnan( hes_info.val ) ) throw CppAD::mixed::exception(
+	d_vector hes_val = ran_hes_fun_.Forward(0, both);
+	if( CppAD::hasnan( hes_val ) ) throw CppAD::mixed::exception(
 		"update_factor", "result has nan"
 	);
+	assert( hes_val.size() == ran_hes_rcv_.nnz() );
+	//
+	// Hessian sparsity pattern corresponding to just random effects
+	size_t nnz = ran_hes_rcv_.nnz();
+	CppAD::mixed::sparse_rc hes_rc(n_random_, n_random_, nnz);
+	for(size_t k = 0; k < nnz; k++)
+	{	size_t r = ran_hes_rcv_.row()[k];
+		size_t c = ran_hes_rcv_.col()[k];
+		assert( n_fixed_ <= r );
+		assert( n_fixed_ <= c );
+		hes_rc.set(k, r - n_fixed_, c - n_fixed_ );
+	}
+	//
+	// Hessian
+	CppAD::mixed::d_sparse_rcv hes_rcv( hes_rc );
+	for(size_t k = 0; k < nnz; ++k)
+		hes_rcv.set(k, hes_val[k]);
 	//
 	// update the LDLT factor
-	bool ok = ldlt_ran_hes_.update(hes_info);
+	bool ok = ldlt_ran_hes_.update(hes_rcv);
 	if( ! ok )
 	{
 # if CPPAD_MIXED_LOG_FATAL_ERREOR
@@ -141,4 +144,3 @@ void cppad_mixed::update_factor(
 	}
 	return;
 }
-

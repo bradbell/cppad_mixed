@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin ldlt_cholmod_update$$
 $spell
+	rcv
 	bool
 	sym
 	ldlt
@@ -26,7 +27,7 @@ $$
 $section Update Factorization Using new Matrix Values$$
 
 $head Syntax$$
-$icode%ok% = %ldlt_obj%.update(%H_info%)%$$
+$icode%ok% = %ldlt_obj%.update(%H_rcv%)%$$
 
 
 $head Private$$
@@ -46,16 +47,16 @@ $codei%
 In addition, it must have a previous call to
 $cref ldlt_cholmod_init$$.
 
-$head H_info$$
+$head H_rcv$$
 This argument has prototype
 $codei%
-	const CppAD::mixed::sparse_mat_info& %H_info%
+	const CppAD::mixed::d_sparse_rcv& %H_rcv%
 %$$
 It contains new values for the
 $cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
 we are computing the LDLT factor of.
 The $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$
-must be the same as in $cref/ldlt_cholmod_init/ldlt_cholmod_init/H_info/$$.
+must be the same as in $cref/ldlt_cholmod_init/ldlt_cholmod_init/H_rc/$$.
 Hence, in particular, it must be in
 $cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
 and
@@ -67,9 +68,9 @@ $codei%
 	cholmod_sparse* sym_matrix_
 %$$
 has been $cref/initialized/ldlt_cholmod_init/sym_matrix_/$$
-using the sparsity pattern as is in $icode H_info$$.
+using the sparsity pattern as is in $icode H_rcv$$.
 Upon return, values in $code sym_matrix_$$ have been set to the
-corresponding values in the vector $icode%H_info%.val%$$.
+corresponding values in the vector $icode%H_rcv%.val()%$$.
 
 $head factor_$$
 On input, the member variable
@@ -106,7 +107,7 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-bool ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& H_info )
+bool ldlt_cholmod::update(const CppAD::mixed::d_sparse_rcv& H_rcv)
 {
 	// set the values in sym_matrix_
 	double* H_x = (double *) sym_matrix_->x;
@@ -114,12 +115,12 @@ bool ldlt_cholmod::update( const CppAD::mixed::sparse_mat_info& H_info )
 	int*    H_p = (int *)    sym_matrix_->p;
 	int*    H_i = (int *)    sym_matrix_->i;
 # endif
-	for(size_t k = 0; k < H_info.row.size(); k++)
+	for(size_t k = 0; k < H_rcv.nnz(); k++)
 	{	size_t ell = H_info2cholmod_order_[k];
-		H_x[ell]   = H_info.val[k];
+		H_x[ell]   = H_rcv.val()[k];
 # ifndef NDEBUG
-		assert( size_t( H_i[ell] ) == H_info.row[k] );
-		size_t j = H_info.col[k];
+		assert( size_t( H_i[ell] ) == H_rcv.row()[k] );
+		size_t j = H_rcv.col()[k];
 		assert( size_t(H_p[j]) <= ell && ell < size_t(H_p[j+1]) );
 # endif
 	}

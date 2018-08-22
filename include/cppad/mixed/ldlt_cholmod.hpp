@@ -86,7 +86,7 @@ $end
 */
 
 # include <cppad/mixed/include_cholmod.hpp>
-# include <cppad/mixed/sparse_mat_info.hpp>
+# include <cppad/mixed/typedef.hpp>
 
 // BEGIN SYMBOLS
 # define CHOLMOD_TRUE                  1
@@ -129,9 +129,9 @@ public:
 	// destructor
 	~ldlt_cholmod(void);
 	// initialize
-	void init(const sparse_mat_info& hes_info);
+	void init(const sparse_rc& hes_rc);
 	// factorize
-	bool update(const sparse_mat_info& hes_info);
+	bool update(const d_sparse_rcv& hes_rcv);
 	// log determinant
 	double logdet(size_t& negative) const;
 	// compute a subset of the inverse

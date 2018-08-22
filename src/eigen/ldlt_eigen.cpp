@@ -61,6 +61,7 @@ ldlt_eigen::~ldlt_eigen(void)
 ------------------------------------------------------------------------------
 $begin ldlt_eigen_init$$
 $spell
+	rc
 	xam
 	ldlt_eigen
 	ldlt_obj
@@ -73,7 +74,7 @@ $$
 $section Initialize LDLT Factor for a Specific Sparsity Pattern$$
 
 $head Syntax$$
-$icode%ldlt_obj%.init(%H_info%)
+$icode%ldlt_obj%.init(%H_rc%)
 %$$
 
 $head Private$$
@@ -87,10 +88,10 @@ $codei%
 	CppAD::mixed::ldlt_eigen %ldlt_obj%
 %$$
 
-$head H_info$$
+$head H_rc$$
 This argument had prototype
 $codei%
-	const CppAD::mixed::sparse_mat_info& %H_info%
+	const CppAD::mixed::sparse_rc& %H_rc%
 %$$
 It is a
 $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$ for the
@@ -106,17 +107,16 @@ example and test that uses this function.
 
 $end
 */
-void ldlt_eigen::init( const CppAD::mixed::sparse_mat_info& H_info )
-{	assert( H_info.row.size() == H_info.col.size() );
-	CppAD::vector<double> not_used(0);
+void ldlt_eigen::init(const sparse_rc& H_rc)
+{	CppAD::vector<double> not_used(0);
 	//
 	eigen_sparse hessian_pattern;
 	CppAD::mixed::triple2eigen(
 			hessian_pattern  ,
 			n_row_           ,
 			n_row_           ,
-			H_info.row       ,
-			H_info.col       ,
+			H_rc.row()       ,
+			H_rc.col()       ,
 			not_used
 	);
 	// analyze the pattern for an LDLT factorization of
@@ -127,6 +127,7 @@ void ldlt_eigen::init( const CppAD::mixed::sparse_mat_info& H_info )
 ------------------------------------------------------------------------------
 $begin ldlt_eigen_update$$
 $spell
+	rcv
 	ldlt_eigen
 	xam
 	const
@@ -143,7 +144,7 @@ $$
 $section Update Factorization Using new Matrix Values$$
 
 $head Syntax$$
-$icode%ok% = %ldlt_obj%.update(%H_info%)%$$
+$icode%ok% = %ldlt_obj%.update(%H_rcv%)%$$
 
 $head Private$$
 The $cref ldlt_eigen$$ class is an
@@ -162,16 +163,16 @@ $codei%
 In addition, it must have a previous call to
 $cref ldlt_eigen_init$$.
 
-$head H_info$$
+$head H_rcv$$
 This argument has prototype
 $codei%
-	const CppAD::mixed::sparse_mat_info& %H_info%
+	const CppAD::mixed::d_sparse_rcv& %H_rcv%
 %$$
 It contains new values for the
 $cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
 we are computing the LDLT factor of.
 The $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$
-must be the same as in $cref/ldlt_eigen_init/ldlt_eigen_init/H_info/$$.
+must be the same as in $cref/ldlt_eigen_init/ldlt_eigen_init/H_rc/$$.
 Hence, in particular, it must be in
 $cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
 and
@@ -206,18 +207,16 @@ example and test that uses this function.
 
 $end
 */
-bool ldlt_eigen::update(const CppAD::mixed::sparse_mat_info& H_info)
-{	assert( H_info.row.size() == H_info.col.size() );
-	assert( H_info.row.size() == H_info.val.size() );
-	//
+bool ldlt_eigen::update(const CppAD::mixed::d_sparse_rcv& H_rcv)
+{	//
 	eigen_sparse hessian;
 	CppAD::mixed::triple2eigen(
 		hessian     ,
 		n_row_      ,
 		n_row_      ,
-		H_info.row  ,
-		H_info.col  ,
-		H_info.val
+		H_rcv.row() ,
+		H_rcv.col() ,
+		H_rcv.val()
 	);
 	// LDLT factorization of for specified values of the Hessian
 	// f_{u,u}(theta, u)

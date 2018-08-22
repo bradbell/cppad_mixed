@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin ldlt_cholmod_init$$
 $spell
+	rc
 	sym
 	ldlt
 	nrow
@@ -28,7 +29,7 @@ $$
 $section Initialize Factor for a Specific Sparsity Pattern$$
 
 $head Syntax$$
-$icode%ldlt_obj%.init(%H_info%)
+$icode%ldlt_obj%.init(%H_rc%)
 %$$
 
 $head Private$$
@@ -42,10 +43,10 @@ $codei%
 	CppAD::mixed::ldlt_cholmod %ldlt_obj%
 %$$
 
-$head H_info$$
+$head H_rc$$
 This argument had prototype
 $codei%
-	const CppAD::mixed::sparse_mat_info& %H_info%
+	const CppAD::mixed::sparse_rc& %H_rc%
 %$$
 It is a
 $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$ for the
@@ -64,7 +65,7 @@ are null when this routine is called.
 $head sym_matrix_$$
 Upon return,
 this is set to a packed, real, sorted, lower triangular, sparse matrix
-with the pattern specified by $icode H_info$$ and
+with the pattern specified by $icode H_rc$$ and
 the value $code nan$$ for each possibly non-zero value.
 
 $head factor_$$
@@ -104,7 +105,7 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& H_info )
+void ldlt_cholmod::init(const CppAD::mixed::sparse_rc& H_rc)
 {
 	assert(sym_matrix_ == CPPAD_NULL );
 	assert(factor_     == CPPAD_NULL );
@@ -118,7 +119,7 @@ void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& H_info )
 	// set triplet corresponding to sparsity pattern and reserve spase
 	// for unspecified values (that end up in sym_matrix_.
 	size_t ncol  = nrow_;
-	size_t nzmax = H_info.row.size();
+	size_t nzmax = H_rc.nnz();
 	int    stype = CHOLMOD_STYPE_LOWER_TRIANGLE;
 	int    xtype = CHOLMOD_REAL;
 	cholmod_triplet* triplet = cholmod_allocate_triplet(
@@ -129,11 +130,11 @@ void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& H_info )
 	double* T_x = (double *) triplet->x;
 	double nan  = std::numeric_limits<double>::quiet_NaN();
 	for(size_t k = 0; k < nzmax; k++)
-	{	assert( H_info.row[k] < nrow_ );
-		assert( H_info.col[k] < nrow_ );
+	{	assert( H_rc.row()[k] < nrow_ );
+		assert( H_rc.col()[k] < nrow_ );
 		//
-		T_i[k] = static_cast<int>( H_info.row[k] );
-		T_j[k] = static_cast<int>( H_info.col[k] );
+		T_i[k] = static_cast<int>( H_rc.row()[k] );
+		T_j[k] = static_cast<int>( H_rc.col()[k] );
 		//
 		T_x[k] = nan;
 	}
@@ -146,7 +147,7 @@ void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& H_info )
 	// check assumptions
 	assert( sym_matrix_->nrow   == nrow_ );
 	assert( sym_matrix_->ncol   == nrow_ );
-	assert( sym_matrix_->nzmax  == H_info.row.size() );
+	assert( sym_matrix_->nzmax  == H_rc.nnz() );
 	assert( sym_matrix_->stype  == CHOLMOD_STYPE_LOWER_TRIANGLE );
 	assert( sym_matrix_->itype  == CHOLMOD_INT );
 	assert( sym_matrix_->xtype  == CHOLMOD_REAL );
@@ -199,8 +200,8 @@ void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& H_info )
 	// set H_info2cholmod_order_
 	int*    H_p = (int *)    sym_matrix_->p;
 	int*    H_i = (int *)    sym_matrix_->i;
-	assert( size_t( H_p[nrow_] ) == H_info.row.size() );
-	nzmax = H_info.row.size();
+	assert( size_t( H_p[nrow_] ) == H_rc.nnz() );
+	nzmax = H_rc.nnz();
 	CppAD::vector<size_t> key(nzmax);
 	H_info2cholmod_order_.resize(nzmax);
 	size_t k = 0;
@@ -209,8 +210,8 @@ void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& H_info )
 	{	size_t start = size_t( H_p[j] );
 		size_t end   = size_t( H_p[j+1] );
 		for(size_t ell = start; ell < end; ell++)
-		{	// H_info is in column major order
-			assert( H_info.col[k] == j );
+		{	// H_rc is in column major order
+			assert( H_rc.col()[k] == j );
 			size_t i = size_t(H_i[ell]);
 			assert( i < nrow_ );
 			// column major order for sym_martrix_
@@ -221,7 +222,7 @@ void ldlt_cholmod::init( const CppAD::mixed::sparse_mat_info& H_info )
 	CppAD::index_sort(key, H_info2cholmod_order_);
 # ifndef NDEBUG
 	for(k = 0; k < nzmax; k++)
-		assert( size_t(H_i[ H_info2cholmod_order_[k] ]) == H_info.row[k] );
+		assert( size_t(H_i[ H_info2cholmod_order_[k] ]) == H_rc.row()[k] );
 # endif
 }
 

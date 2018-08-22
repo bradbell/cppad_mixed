@@ -447,24 +447,40 @@ void cppad_mixed::try_sample_fixed(
 		info_mat += H_ID_C.transpose() + H_ID_C + C.transpose() * H_DD * C;
 	}
 	//
-	// create a sparse_mat_info representation of info_mat
+	// create a sparse_rcv representation of info_mat
 	// in column major order
-	CppAD::mixed::sparse_mat_info  info_mat_info;
+	size_t count = 0;
+	for(size_t j = 0; j < nI; j++)
+	{	for(size_t i = j; i < nI; i++)
+		{	if( info_mat(i, j) != 0.0 )
+				++count;
+		}
+	}
+	sparse_rc info_mat_rc(nI, nI, count);
+	count = 0;
 	for(size_t j = 0; j < nI; j++)
 	{	for(size_t i = j; i < nI; i++)
 		{	double v = info_mat(i, j);
 			if( v != 0.0 )
-			{	info_mat_info.row.push_back(i);
-				info_mat_info.col.push_back(j);
-				info_mat_info.val.push_back(v);
-			}
+				info_mat_rc.set(count++, i, j);
 		}
 	}
+	assert( count == info_mat_rc.nnz() );
+	d_sparse_rcv info_mat_rcv( info_mat_rc );
+	count = 0;
+	for(size_t j = 0; j < nI; j++)
+	{	for(size_t i = j; i < nI; i++)
+		{	double v = info_mat(i, j);
+			if( v != 0.0 )
+				info_mat_rcv.set(count++, v);
+		}
+	}
+
 	//
 	// LDLT factorization of info_mat
 	CPPAD_MIXED_LDLT_CLASS ldlt_info_mat(nI);
-	ldlt_info_mat.init( info_mat_info );
-	bool ok = ldlt_info_mat.update( info_mat_info );
+	ldlt_info_mat.init( info_mat_rcv.pat() );
+	bool ok = ldlt_info_mat.update( info_mat_rcv );
 	if( ! ok )
 	{	std::string msg =
 			"sample_fixed: Implicit information matrix is singular";

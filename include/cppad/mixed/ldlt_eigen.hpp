@@ -81,7 +81,7 @@ $end
 
 # include <Eigen/Sparse>
 # include <cppad/cppad.hpp>
-# include <cppad/mixed/sparse_mat_info.hpp>
+# include <cppad/mixed/typedef.hpp>
 
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
@@ -100,9 +100,9 @@ public:
 	// destructor
 	~ldlt_eigen(void);
 	// init
-	void init(const CppAD::mixed::sparse_mat_info& hes_info);
+	void init(const sparse_rc& hes_rc);
 	// update
-	bool update(const CppAD::mixed::sparse_mat_info& hes_info);
+	bool update(const d_sparse_rcv& hes_rcv);
 	// logdet
 	double logdet(size_t& negative) const;
 	// compute a subset of the inverse

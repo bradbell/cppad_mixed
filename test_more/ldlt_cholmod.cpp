@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -72,13 +72,13 @@ $head init$$
 See the following under
 $cref/Source Code/ldlt_cholmod.cpp/Source Code/$$ below:
 $codep
-	ldlt_obj.init(H_info);
+	ldlt_obj.init( H_rcv.pat() );
 $$
 
 $head update$$
 See the following under Source Code below:
 $codep
-	ldlt_obj.update(H_info);
+	ldlt_obj.update( H_rcv );
 $$
 
 $head logdet$$
@@ -127,40 +127,48 @@ bool ldlt_cholmod(void)
 	CppAD::mixed::ldlt_cholmod ldlt_obj(nrow);
 	assert( nrow * ncol == sizeof(H_inv) / sizeof(H_inv[0]) );
 
-	// create a sparse matrix representation of the lower triangular of H
-	CppAD::mixed::sparse_mat_info H_info;
-	H_info.resize(12);
-	// H_0,0  = 5.0
-	H_info.row[0]  = 0; H_info.col[0]  = 0; H_info.val[0]  = 5.0;
-	// H_1,0  = 4.0
-	H_info.row[1]  = 1; H_info.col[1]  = 0; H_info.val[1]  = 4.0;
-	// H_2,0  = 2.0
-	H_info.row[2]  = 2; H_info.col[2]  = 0; H_info.val[2]  = 2.0;
-	// H_1,1  = 5.0
-	H_info.row[3]  = 1; H_info.col[3]  = 1; H_info.val[3]  = 5.0;
-	// H_2,1  = 1.0
-	H_info.row[4]  = 2; H_info.col[4]  = 1; H_info.val[4]  = 1.0;
-	// H_2,2  = 5.0
-	H_info.row[5]  = 2; H_info.col[5]  = 2; H_info.val[5]  = 5.0;
-	//
-	// H_3,3  = 5.0
-	H_info.row[6]  = 3; H_info.col[6]  = 3; H_info.val[6]  = 5.0;
-	// H_4,3  = 4.0
-	H_info.row[7]  = 4; H_info.col[7]  = 3; H_info.val[7]  = 4.0;
-	// H_5,3  = 2.0
-	H_info.row[8]  = 5; H_info.col[8]  = 3; H_info.val[8]  = 2.0;
-	// H_4,4  = 5.0
-	H_info.row[9]  = 4; H_info.col[9]  = 4; H_info.val[9]  = 5.0;
-	// H_5,4 = 1.0
-	H_info.row[10] = 5; H_info.col[10] = 4; H_info.val[10] = 1.0;
-	// H_5,5 = 5.0
-	H_info.row[11] = 5; H_info.col[11] = 5; H_info.val[11] = 5.0;
+	// sparsity pattern corresponding to lower triangle of H
+	// in column major order
+	size_t nnz = 12;
+	CppAD::mixed::sparse_rc H_rc(nrow, ncol, nnz);
+	{	size_t k = 0;
+		// upper left block
+		H_rc.set(k++, 0, 0);
+		H_rc.set(k++, 1, 0);
+		H_rc.set(k++, 2, 0);
+		H_rc.set(k++, 1, 1);
+		H_rc.set(k++, 2, 1);
+		H_rc.set(k++, 2, 2);
+		// lower right block
+		H_rc.set(k++, 3, 3);
+		H_rc.set(k++, 4, 3);
+		H_rc.set(k++, 5, 3);
+		H_rc.set(k++, 4, 4);
+		H_rc.set(k++, 5, 4);
+		H_rc.set(k++, 5, 5);
+	}
+	// values in lower triangle of H
+	CppAD::mixed::d_sparse_rcv H_rcv( H_rc );
+	{	size_t k = 0;
+		H_rcv.set(k++, 5.0); // H_0,0  = 5.0
+		H_rcv.set(k++, 4.0); // H_1,0  = 4.0
+		H_rcv.set(k++, 2.0); // H_2,0  = 2.0
+		H_rcv.set(k++, 5.0); // H_1,1  = 5.0
+		H_rcv.set(k++, 1.0); // H_2,1  = 1.0
+		H_rcv.set(k++, 5.0); // H_2,2  = 5.0
+		H_rcv.set(k++, 5.0); // H_3,3  = 5.0
+		H_rcv.set(k++, 4.0); // H_4,3  = 4.0
+		H_rcv.set(k++, 2.0); // H_5,3  = 2.0
+		H_rcv.set(k++, 5.0); // H_4,4  = 5.0
+		H_rcv.set(k++, 1.0); // H_5,4  = 1.0
+		H_rcv.set(k++, 5.0); // H_5,5  = 5.0
+	}
 
 	// initialize the matrix using only the sparsity pattern
-	ldlt_obj.init(H_info);
+	ldlt_obj.init( H_rcv.pat() );
 
 	// factor the matrix using the values
-	ldlt_obj.update(H_info);
+	ldlt_obj.update( H_rcv );
 
 	// compute log of determinant of H
 	size_t negative;
