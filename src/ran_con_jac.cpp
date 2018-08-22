@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -64,9 +64,9 @@ $latex \hat{u} ( \theta )$$.
 $head jac_rcv$$
 This argument has prototype
 $codei%
-	sparse_rcv& %jac_rcv%
+	d_sparse_rcv& %jac_rcv%
 %$$
-see $cref/sparse_rcv/typedef/Sparse Types/sparse_rcv/$$.
+see $cref/d_sparse_rcv/typedef/Sparse Types/d_sparse_rcv/$$.
 
 $subhead Sparsity Pattern$$
 In the case where the input value of $icode jac_rcv$$ is empty
@@ -126,7 +126,7 @@ $end
 void cppad_mixed::ran_con_jac(
 	const d_vector&                fixed_vec  ,
 	const d_vector&                random_vec ,
-	sparse_rcv&                    jac_rcv    )
+	d_sparse_rcv&                  jac_rcv    )
 {	assert( fixed_vec.size()  == n_fixed_ );
 	assert( random_vec.size() == n_random_ );
 	assert( A_rcv_.nr() != 0 ); // could just return here in this case
@@ -143,7 +143,7 @@ void cppad_mixed::ran_con_jac(
 				pattern.set(j * nr + i, i, j);
 		}
 		//
-		jac_rcv = sparse_rcv(pattern);
+		jac_rcv = d_sparse_rcv(pattern);
 		//
 		return;
 	}

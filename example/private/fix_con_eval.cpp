@@ -51,7 +51,7 @@ namespace {
 			size_t                               n_random      ,
 			bool                                 quasi_fixed   ,
 			bool                                 bool_sparsity ,
-			const CppAD::mixed::sparse_rcv&      A_rcv         ,
+			const CppAD::mixed::d_sparse_rcv&    A_rcv         ,
 			const vector<double>&                y             ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
@@ -164,7 +164,7 @@ bool fix_con_eval_xam(void)
 	// object that is derived from cppad_mixed
 	bool quasi_fixed   = false;
 	bool bool_sparsity = true;
-	CppAD::mixed::sparse_rcv A_rcv; // empty matrix
+	CppAD::mixed::d_sparse_rcv A_rcv; // empty matrix
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, data
 	);

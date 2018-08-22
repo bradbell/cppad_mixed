@@ -215,7 +215,7 @@ namespace {
 	using CppAD::log;
 	using CppAD::AD;
 	//
-	using CppAD::mixed::sparse_rcv;
+	using CppAD::mixed::d_sparse_rcv;
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
 	using CppAD::mixed::d_vector;
@@ -237,7 +237,7 @@ namespace {
 			size_t                 n_random      ,
 			bool                   quasi_fixed   ,
 			bool                   bool_sparsity ,
-			const sparse_rcv&      A_rcv         ,
+			const d_sparse_rcv&    A_rcv         ,
 			const d_vector&        y             ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
@@ -406,7 +406,7 @@ int main(int argc, const char* argv[])
 		fixed_in[0] = theta_sim[0];
 	//
 	// object that is derived from cppad_mixed
-	CppAD::mixed::sparse_rcv A_rcv; // empty matrix
+	CppAD::mixed::d_sparse_rcv A_rcv; // empty matrix
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, y
 	);
@@ -493,7 +493,7 @@ int main(int argc, const char* argv[])
 	//
 	// information matrix
 	start_seconds = CppAD::elapsed_seconds();
-	sparse_rcv
+	d_sparse_rcv
 	information_rcv = mixed_object.information_mat(solution, u_out);
 	end_seconds = CppAD::elapsed_seconds();
 	label_print("information_mat_seconds", end_seconds - start_seconds);

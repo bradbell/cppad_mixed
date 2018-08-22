@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -134,7 +134,7 @@ namespace {
 	using CppAD::log;
 	using CppAD::exp;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_rcv;
+	using CppAD::mixed::d_sparse_rcv;
 	//
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
@@ -148,7 +148,7 @@ namespace {
 		mixed_derived(
 			size_t n_fixed      ,
 			size_t n_random     ,
-			const CppAD::mixed::sparse_rcv&      A_rcv,
+			const CppAD::mixed::d_sparse_rcv&    A_rcv,
 			double y            ,
 			double sigma_u      ,
 			double sigma_y      ) :
@@ -274,7 +274,7 @@ bool der_var_hes(void)
 	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
 	//
 	// object that is derived from cppad_mixed
-	CppAD::mixed::sparse_rcv A_rcv; // empty matrix
+	CppAD::mixed::d_sparse_rcv A_rcv; // empty matrix
 	mixed_derived mixed_object(
 		n_fixed, n_random, A_rcv, y, sigma_u, sigma_y
 	);

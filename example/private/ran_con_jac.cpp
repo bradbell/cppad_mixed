@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -90,7 +90,7 @@ namespace {
 			size_t                               n_random      ,
 			bool                                 quasi_fixed   ,
 			bool                                 bool_sparsity ,
-			const CppAD::mixed::sparse_rcv&      A_rcv          ,
+			const CppAD::mixed::d_sparse_rcv&    A_rcv          ,
 			const vector<double>&                y             ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
@@ -169,7 +169,7 @@ bool ran_con_jac_xam(void)
 	CppAD::mixed::sparse_rc A_pattern(1, n_random, n_random);
 	for(size_t j = 0; j < n_random; j++)
 		A_pattern.set(j, 0, j);
-	CppAD::mixed::sparse_rcv A_rcv(A_pattern);
+	CppAD::mixed::d_sparse_rcv A_rcv(A_pattern);
 	for(size_t j = 0; j < n_random; j++)
 		A_rcv.set(j, 1.0);
 
@@ -195,7 +195,7 @@ bool ran_con_jac_xam(void)
 	mixed_object.update_factor(fixed_vec, uhat);
 
 	// compute sparstiy pattern for jacobian of random constraints
-	CppAD::mixed::sparse_rcv jac_rcv;
+	CppAD::mixed::d_sparse_rcv jac_rcv;
 	mixed_object.ran_con_jac(fixed_vec, uhat, jac_rcv);
 
 	// check number of possibly non_zero elements.

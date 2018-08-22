@@ -158,7 +158,7 @@ void cppad_mixed::init_laplace_obj_hes(
 	//
 	// laplace_obj_hes_.subset
 	// only compute the lower triangle of H_beta_beta ( beta, theta, u)
-	laplace_obj_hes_.subset = sparse_rcv( beta_beta_pattern );
+	laplace_obj_hes_.subset = d_sparse_rcv( beta_beta_pattern );
 	//
 	// compute work for reuse during sparse Hessian calculations
 	// (value of weight vecgttor does not affectg work, but avoid wanrings)

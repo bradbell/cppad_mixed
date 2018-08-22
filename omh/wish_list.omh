@@ -28,9 +28,9 @@ If $icode quasi_fixed$$ is true, $code fix_like_hes_$$
 would need to be initialized the first time
 $cref information_mat$$ is called.
 
-$head sparse_rcv$$
+$head d_sparse_rcv$$
 Convert all the sparse matrix structures to use
-$code CppAD::sparse_rcv$$ instead of
+$code CppAD::d_sparse_rcv$$ instead of
 Use $cref sparse_mat_info$$ and
 $icode row$$, $icode col$$, $icode val$$ triples.
 

@@ -23,7 +23,13 @@ rename_cmd='s|ran_objcon|laplace_obj|'
 spell_cmd='s|$spell$|&\n\tsuitesparse|'
 #
 cat << EOF > junk.sed
-s|cppad_cxx_flags|extra_cxx_flags|g
+s|sparse_rcv|d_sparse_rcv|g
+#
+s|CppAD::d_sparse_rcv<|CppAD::sparse_rcv<|
+s|a1_d_sparse_rcv|a1_sparse_rcv|g
+#
+s|d_sparse_rcv&   |d_sparse_rcv\\& |
+s|d_sparse_rcv   |d_sparse_rcv |
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

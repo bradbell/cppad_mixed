@@ -252,7 +252,7 @@ namespace {
 // -------------------------------------------------------------------------
 void cppad_mixed::try_sample_fixed(
 	CppAD::vector<double>&                 sample               ,
-	const sparse_rcv&                      information_rcv      ,
+	const d_sparse_rcv&                    information_rcv      ,
 	const CppAD::mixed::fixed_solution&    solution             ,
 	const CppAD::vector<double>&           fixed_lower          ,
 	const CppAD::vector<double>&           fixed_upper          ,
@@ -353,7 +353,7 @@ void cppad_mixed::try_sample_fixed(
 	}
 	// put random constraints in A
 	// (right hand side b for random constraints is zero)
-	sparse_rcv ran_con_rcv;
+	d_sparse_rcv ran_con_rcv;
 	if( n_ran_active > 0 )
 	{	assert( con_row == n_fix_active );
 		//
@@ -533,7 +533,7 @@ void cppad_mixed::try_sample_fixed(
 // BEGIN PROTOTYPE
 void cppad_mixed::sample_fixed(
 	CppAD::vector<double>&                 sample               ,
-	const sparse_rcv&                      information_rcv      ,
+	const d_sparse_rcv&                    information_rcv      ,
 	const CppAD::mixed::fixed_solution&    solution             ,
 	const CppAD::vector<double>&           fixed_lower          ,
 	const CppAD::vector<double>&           fixed_upper          ,

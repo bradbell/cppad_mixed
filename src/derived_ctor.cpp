@@ -116,7 +116,7 @@ is not specified.
 $head A_rcv$$
 This argument has prototype
 $codei%
-	const CppAD::mixed::sparse_rcv& %A_rcv%
+	const CppAD::mixed::d_sparse_rcv& %A_rcv%
 %$$
 It is a
 $cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
@@ -188,7 +188,7 @@ cppad_mixed::cppad_mixed(
 	size_t                                n_random      ,
 	bool                                  quasi_fixed   ,
 	bool                                  bool_sparsity ,
-	const CppAD::mixed::sparse_rcv&       A_rcv         )
+	const CppAD::mixed::d_sparse_rcv&     A_rcv         )
 :
 n_fixed_(n_fixed)               ,
 n_random_(n_random)             ,

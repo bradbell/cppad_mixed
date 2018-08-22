@@ -24,7 +24,7 @@ namespace {
 	//
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
-	using CppAD::mixed::sparse_rcv;
+	using CppAD::mixed::d_sparse_rcv;
 	//
 	typedef Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > double_mat;
 	//
@@ -43,7 +43,7 @@ namespace {
 			size_t n_random                   ,
 			bool   quasi_fixed                ,
 			bool   bool_sparsity              ,
-			const CppAD::mixed::sparse_rcv&      A_rcv  ,
+			const CppAD::mixed::d_sparse_rcv&    A_rcv  ,
 			const vector<double>& y           ) :
 			cppad_mixed(n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv),
 			n_fixed_(n_fixed)                                      ,
@@ -159,7 +159,7 @@ bool sample_fixed_1(void)
 	CppAD::mixed::sparse_rc A_pattern(1, n_random, 2);
 	for(size_t k = 0; k < A_pattern.nnz(); k++)
 		A_pattern.set(k, 0, k);
-	CppAD::mixed::sparse_rcv A_rcv(A_pattern);
+	CppAD::mixed::d_sparse_rcv A_rcv(A_pattern);
 	for(size_t k = 0; k < A_rcv.nnz(); k++)
 		A_rcv.set(k, 1.0);
 
@@ -261,7 +261,7 @@ bool sample_fixed_1(void)
 	);
 	//
 	// compute corresponding information matrix
-	sparse_rcv
+	d_sparse_rcv
 	information_rcv = mixed_object.information_mat(solution, random_opt);
 	//
 	// sample from the posterior for fixed effects
@@ -297,7 +297,7 @@ bool sample_fixed_1(void)
 	}
 	//
 	// Jacobian of random effects at solution
-	sparse_rcv ran_con_jac_rcv;
+	d_sparse_rcv ran_con_jac_rcv;
 	// sparsity pattern
 	mixed_object.ran_con_jac(
 		solution.fixed_opt,

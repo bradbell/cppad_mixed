@@ -17,7 +17,7 @@ namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_rcv;
+	using CppAD::mixed::d_sparse_rcv;
 	//
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a2_double;
@@ -34,7 +34,7 @@ namespace {
 			size_t n_random                   ,
 			bool   quasi_fixed                ,
 			bool   bool_sparsity              ,
-			const sparse_rcv&       A_rcv     ,
+			const d_sparse_rcv&     A_rcv     ,
 			double sigma                      ,
 			const vector<double>& z           ) :
 			cppad_mixed(
@@ -119,7 +119,7 @@ bool abs_fix_con(void)
 	vector<double> random_in(0);
 	vector<double> random_lower(n_random), random_upper(n_random);
 	std::string random_ipopt_options = "";
-	CppAD::mixed::sparse_rcv A_rcv; // empty matrix
+	CppAD::mixed::d_sparse_rcv A_rcv; // empty matrix
 	//
 	// object that is derived from cppad_mixed
 	bool quasi_fixed   = false;

@@ -76,9 +76,9 @@ as in the call to $code optimize_fixed$$ that corresponds to $icode solution$$.
 $head information_rcv$$
 The return value has prototype
 $codei%
-	CppAD::mixed::sparse_rcv %information_rcv%
+	CppAD::mixed::d_sparse_rcv %information_rcv%
 %$$
-see $cref/sparse_rcv/typedef/Sparse Types/sparse_rcv/$$.
+see $cref/d_sparse_rcv/typedef/Sparse Types/d_sparse_rcv/$$.
 This is a sparse matrix representation for the
 lower triangle of the observed information matrix,
 which is symmetric and hence determined by its lower triangle.
@@ -102,7 +102,7 @@ $end
 # include <cppad/mixed/triple2eigen.hpp>
 # include <cppad/mixed/exception.hpp>
 
-CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
+CppAD::mixed::d_sparse_rcv cppad_mixed::try_information_mat(
 	const CppAD::mixed::fixed_solution&  solution             ,
 	const d_vector&                      random_opt           )
 {	using Eigen::Dynamic;
@@ -196,7 +196,7 @@ CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 	// Hessian of total objective (observed information matrix)
 	eigen_sparse total_hes = ran_hes + fix_hes;
 	//
-	// convert from eigen sparse matrix to sparse_rcv
+	// convert from eigen sparse matrix to d_sparse_rcv
 	size_t nr  = total_hes.rows();
 	size_t nc  = total_hes.cols();
 	size_t nnz = total_hes.nonZeros();
@@ -213,17 +213,17 @@ CppAD::mixed::sparse_rcv cppad_mixed::try_information_mat(
 		}
 	}
 	assert( k == nnz );
-	sparse_rcv total_rcv(pattern);
+	d_sparse_rcv total_rcv(pattern);
 	for(k = 0;  k < nnz; k++)
 		total_rcv.set(k, val[k]);
 	//
 	return total_rcv;
 }
 // ---------------------------------------------------------------------------
-CppAD::mixed::sparse_rcv cppad_mixed::information_mat(
+CppAD::mixed::d_sparse_rcv cppad_mixed::information_mat(
 	const CppAD::mixed::fixed_solution&  solution             ,
 	const d_vector&                      random_opt           )
-{	sparse_rcv result;
+{	d_sparse_rcv result;
 	try
 	{	result = try_information_mat(solution, random_opt);
 	}

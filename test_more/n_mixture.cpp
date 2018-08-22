@@ -25,7 +25,7 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 using CppAD::vector;
 using std::exp;
 using std::log;
-using CppAD::mixed::sparse_rcv;
+using CppAD::mixed::d_sparse_rcv;
 
 // simulate covariates, x, and data, y
 void simulate(
@@ -64,7 +64,7 @@ private:
 public:
 	// constructor
 	mixed_derived(
-		const CppAD::mixed::sparse_rcv&      A_rcv,
+		const CppAD::mixed::d_sparse_rcv&    A_rcv,
 		size_t K,
 		size_t I,
 		size_t T,
@@ -162,7 +162,7 @@ bool n_mixture(void)
 	size_t K      = size_t( lambda + 5.0 * sigma) + 1;
 
 	// empty matrix
-	CppAD::mixed::sparse_rcv A_rcv;
+	CppAD::mixed::d_sparse_rcv A_rcv;
 
 	// create derived object
 	mixed_derived mixed_object(A_rcv, K, I, T, y);

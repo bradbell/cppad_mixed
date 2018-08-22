@@ -59,7 +59,7 @@ bool order2random_xam(void)
 	// mixed_object (no information)
 	bool quasi_fixed   = false;
 	bool bool_sparsity = true;
-	CppAD::mixed::sparse_rcv A_rcv; // empty matrix
+	CppAD::mixed::d_sparse_rcv A_rcv; // empty matrix
 	cppad_mixed mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
 	);

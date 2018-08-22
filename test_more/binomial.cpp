@@ -20,7 +20,7 @@ using CppAD::vector;
 using std::exp;
 using std::log;
 using std::endl;
-using CppAD::mixed::sparse_rcv;
+using CppAD::mixed::d_sparse_rcv;
 
 // simulate covariates, x, and data, y
 void simulate(
@@ -52,7 +52,7 @@ public:
 	mixed_derived(
 		size_t N                      ,
 		vector<size_t>&  y            ,
-		const CppAD::mixed::sparse_rcv&      A_rcv
+		const CppAD::mixed::d_sparse_rcv&    A_rcv
 	) :
 		// n_fixed=1, n_random=0, quasi_fixed=false, bool_sparsity=true
 		cppad_mixed(1, 0, false, true, A_rcv) ,
@@ -113,7 +113,7 @@ bool binomial(void)
 	vector<size_t> y(I);
 	simulate(N, I, theta_sim, y);
 
-	CppAD::mixed::sparse_rcv A_rcv; // empty matrix
+	CppAD::mixed::d_sparse_rcv A_rcv; // empty matrix
 
 	// create derived object
 	mixed_derived mixed_object(N, y, A_rcv);

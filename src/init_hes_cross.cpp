@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -176,7 +176,7 @@ void cppad_mixed::init_hes_cross(
 	d_vector w(m);
 	w[0] = 1.0;
 	std::string coloring = "cppad.symmetric";
-	hes_cross_.subset = sparse_rcv( subset_pattern );
+	hes_cross_.subset = d_sparse_rcv( subset_pattern );
 	ran_like_fun_.sparse_hes(
 		both,
 		w,
@@ -188,5 +188,3 @@ void cppad_mixed::init_hes_cross(
 	//
 	init_hes_cross_done_ = true;
 }
-
-

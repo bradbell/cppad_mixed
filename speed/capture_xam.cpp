@@ -550,7 +550,7 @@ using CppAD::mixed::s_vector;
 using CppAD::mixed::d_vector;
 using CppAD::mixed::a2_vector;
 using CppAD::mixed::a3_vector;
-using CppAD::mixed::sparse_rcv;
+using CppAD::mixed::d_sparse_rcv;
 //
 // Convert size_t to string adding commas every three digits
 std::string size_t2string(size_t value )
@@ -636,7 +636,7 @@ public:
 		size_t                  K             ,
 		bool                    quasi_fixed   ,
 		bool                    bool_sparsity ,
-		const sparse_rcv&       A_rcv         ,
+		const d_sparse_rcv&     A_rcv         ,
 		s_vector&               y             ,
 		d_vector&               fixed_in      ,
 		d_vector&               random_in     ) :
@@ -965,7 +965,7 @@ int main(int argc, const char *argv[])
 		for(size_t t = 0; t < T; t++)
 			A_pattern.set(t, 0, t);
 	}
-	sparse_rcv A_rcv( A_pattern );
+	d_sparse_rcv A_rcv( A_pattern );
 	for(size_t t = 0; t < A_rcv.nc(); t++)
 		A_rcv.set(t, 1.0);
 
@@ -1068,7 +1068,7 @@ int main(int argc, const char *argv[])
 	//
 	// information matrix
 	start_seconds = CppAD::elapsed_seconds();
-	sparse_rcv information_rcv = mixed_object.information_mat(
+	d_sparse_rcv information_rcv = mixed_object.information_mat(
 		solution, u_out
 	);
 	end_seconds = CppAD::elapsed_seconds();

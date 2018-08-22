@@ -281,7 +281,7 @@ $head 03-12$$
 $bold API:$$
 change $cref/information_rcv/information_mat/information_rcv/$$
 from type $cref sparse_mat_info$$ to
-$cref/sparse_rcv/typedef/Sparse Types/sparse_rcv/$$.
+$cref/d_sparse_rcv/typedef/Sparse Types/d_sparse_rcv/$$.
 This removes the last use of $code sparse_mat_info$$ from the
 $cref public$$ part of $code cppad_mixed$$.
 The intention here is to remove the $cref private$$ use slowly over time.
@@ -291,7 +291,7 @@ $head 03-11$$
 $bold API$$
 change $cref/A_rcv/derived_ctor/A_rcv/$$
 from type $cref sparse_mat_info$$ to
-$cref/sparse_rcv/typedef/Sparse Types/sparse_rcv/$$.
+$cref/d_sparse_rcv/typedef/Sparse Types/d_sparse_rcv/$$.
 
 $head 03-10$$
 Advance to $code cppad-20170310$$

@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -99,11 +99,11 @@ $srccode%cpp% */
 	typedef CppAD::sparse_rc<s_vector> sparse_rc;
 /* %$$
 
-$subhead sparse_rcv$$
+$subhead d_sparse_rcv$$
 Sparse matrices using index vector of type $code s_vector$$
 and value vectors of type $code d_vector$$:
 $srccode%cpp% */
-	typedef CppAD::sparse_rcv<s_vector, d_vector> sparse_rcv;
+	typedef CppAD::sparse_rcv<s_vector, d_vector> d_sparse_rcv;
 
 /* %$$
 $subhead a1_sparse_rcv$$

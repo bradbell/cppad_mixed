@@ -153,7 +153,7 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec )
 	);
 
 	// compute entire Jacobian
-	fix_con_jac_.subset = sparse_rcv( jac_pattern );
+	fix_con_jac_.subset = d_sparse_rcv( jac_pattern );
 
 	// use reversed mode for this sparse Jacobian
 	// fix_con_jac_.Range() should be less thant fix_con_jac_.Domain()
@@ -207,7 +207,7 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec )
 	assert( nnz == ell );
 	//
 	// only compute the lower traingle of the Hessian
-	fix_con_hes_.subset = sparse_rcv( lower_pattern );
+	fix_con_hes_.subset = d_sparse_rcv( lower_pattern );
 
 	// compute the work vector for reuse during Hessian sparsity calculations
 	// (value of weight vector does not affect work, but avoid warnings)
@@ -227,5 +227,3 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec )
 	init_fix_con_done_ = true;
 	return;
 }
-
-

@@ -111,7 +111,7 @@ $srccode%cpp% */
 	typedef CppAD::mixed::a3_vector      a3_vector;
 	// sparse types
 	typedef CppAD::mixed::sparse_rc      sparse_rc;
-	typedef CppAD::mixed::sparse_rcv     sparse_rcv;
+	typedef CppAD::mixed::d_sparse_rcv   d_sparse_rcv;
 	typedef CppAD::mixed::a1_sparse_rcv  a1_sparse_rcv;
 /* %$$
 
@@ -203,7 +203,7 @@ $srccode%cpp% */
 		size_t               n_random      ,
 		bool                 quasi_fixed   ,
 		bool                 bool_sparsity ,
-		const sparse_rcv&    A_rcv
+		const d_sparse_rcv&  A_rcv
 	);
 /* %$$
 
@@ -251,7 +251,7 @@ $srccode%cpp% */
 $head information_mat$$
 $cref information_mat$$, $title information_mat$$.
 $srccode%cpp% */
-	sparse_rcv information_mat(
+	d_sparse_rcv information_mat(
 		const CppAD::mixed::fixed_solution&  solution             ,
 		const d_vector&                      random_opt
 	);
@@ -261,7 +261,7 @@ $cref sample_fixed$$, $title sample_fixed$$.
 $srccode%cpp% */
 	void sample_fixed(
 		d_vector&                            sample               ,
-		const sparse_rcv&                    information_rcv      ,
+		const d_sparse_rcv&                  information_rcv      ,
 		const CppAD::mixed::fixed_solution&  solution             ,
 		const d_vector&                      fixed_lower          ,
 		const d_vector&                      fixed_upper          ,
@@ -397,7 +397,7 @@ $srccode%cpp% */
 $head A_rcv_$$
 contains the random constraint matrix
 $srccode%cpp% */
-	const sparse_rcv A_rcv_;
+	const d_sparse_rcv A_rcv_;
 /* %$$
 
 $head initialize_done_$$
@@ -480,7 +480,7 @@ with respect to the random effects; i.e.
 $latex f_{u,u} ( \theta , u )$$.
 $srccode%cpp% */
 	// sparse Hessian
-	sparse_rcv                    ran_hes_rcv_;
+	d_sparse_rcv                  ran_hes_rcv_;
 	//
 	// recording of sparse Hessian calculation
 	CppAD::ADFun<double>        ran_hes_fun_;
@@ -772,7 +772,7 @@ $srccode%cpp% */
 $subhead try_information_mat$$
 Called by public $cref/information_mat/public/information_mat/$$
 $srccode%cpp% */
-	sparse_rcv try_information_mat(
+	d_sparse_rcv try_information_mat(
 		const CppAD::mixed::fixed_solution&  solution      ,
 		const d_vector&                      random_opt
 	);
@@ -782,7 +782,7 @@ Called by public $cref/sample_fixed/public/sample_fixed/$$
 $srccode%cpp% */
 	void try_sample_fixed(
 		d_vector&                            sample               ,
-		const sparse_rcv&                    information_rcv      ,
+		const d_sparse_rcv&                  information_rcv      ,
 		const CppAD::mixed::fixed_solution&  solution             ,
 		const d_vector&                      fixed_lower          ,
 		const d_vector&                      fixed_upper          ,
@@ -896,7 +896,7 @@ $srccode%cpp% */
 	void ran_con_jac(
 		const d_vector&                fixed_vec  ,
 		const d_vector&                random_vec ,
-		sparse_rcv&                    jac_info
+		d_sparse_rcv&                  jac_info
 	);
 	friend bool ::ran_con_jac_xam(void);
 	friend bool ::sample_fixed_1(void);

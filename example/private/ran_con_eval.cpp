@@ -68,7 +68,7 @@ namespace {
 			size_t                               n_random      ,
 			bool                                 quasi_fixed   ,
 			bool                                 bool_sparsity ,
-			const CppAD::mixed::sparse_rcv&      A_rcv          ,
+			const CppAD::mixed::d_sparse_rcv&    A_rcv          ,
 			const vector<double>&                y             ) :
 			cppad_mixed(
 				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
@@ -139,7 +139,7 @@ bool ran_con_eval_xam(void)
 	CppAD::mixed::sparse_rc A_pattern(1, n_random, n_random);
 	for(size_t j = 0; j < n_random; j++)
 		A_pattern.set(j, 0, j);
-	CppAD::mixed::sparse_rcv A_rcv(A_pattern);
+	CppAD::mixed::d_sparse_rcv A_rcv(A_pattern);
 	for(size_t j = 0; j < n_random; j++)
 		A_rcv.set(j, 1.0);
 

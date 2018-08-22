@@ -19,7 +19,7 @@ namespace {
 	using CppAD::vector;
 	using CppAD::log;
 	using CppAD::AD;
-	using CppAD::mixed::sparse_rcv;
+	using CppAD::mixed::d_sparse_rcv;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -34,7 +34,7 @@ namespace {
 			size_t n_random                   ,
 			bool   quasi_fixed                ,
 			bool   bool_sparsity              ,
-			const CppAD::mixed::sparse_rcv&      A_rcv,
+			const CppAD::mixed::d_sparse_rcv&    A_rcv,
 			const vector<double>& y           ) :
 			cppad_mixed(n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv),
 			n_fixed_(n_fixed)     ,
@@ -117,7 +117,7 @@ bool no_random_info(void)
 	// object that is derived from cppad_mixed
 	bool quasi_fixed = true;
 	bool bool_sparsity = false;
-	CppAD::mixed::sparse_rcv A_rcv; // empty matrix
+	CppAD::mixed::d_sparse_rcv A_rcv; // empty matrix
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, data
 	);
@@ -155,7 +155,7 @@ bool no_random_info(void)
 		random_in
 	);
 	// compute corresponding information matrix
-	sparse_rcv
+	d_sparse_rcv
 	information_rcv = mixed_object.information_mat(solution, random_opt);
 	//
 	// The infromation matrix is diagonal

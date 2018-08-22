@@ -80,11 +80,11 @@ vector $latex u$$ at which the initialization is done.
 $head ran_hes_rcv_$$
 The input value of the member variable
 $codei%
-	CppAD::mixed::sparse_rcv ran_hes_rcv_
+	CppAD::mixed::d_sparse_rcv ran_hes_rcv_
 %$$
 does not matter.
 Upon return it contains the
-$cref/sparse_rcv/typedef/Sparse Types/sparse_rcv/$$ information
+$cref/d_sparse_rcv/typedef/Sparse Types/d_sparse_rcv/$$ information
 for the lower triangle of the Hessian
 $latex \[
 	f_{u,u} ( \theta , u )
@@ -206,7 +206,7 @@ void cppad_mixed::init_ran_hes(
 	pack(fixed_vec, random_vec, both);
 	// -----------------------------------------------------------------------
 	// structure used for calculating subset with d_vector results
-	ran_hes_rcv_  = sparse_rcv( hes_lower );
+	ran_hes_rcv_  = d_sparse_rcv( hes_lower );
 	//
 	// structure used for calculating subset with a1d_vector results
 	a1_sparse_rcv a1_ran_hes_rcv = a1_sparse_rcv( hes_lower );
@@ -313,7 +313,7 @@ $cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$.
 $head ran_hes_rcv_$$
 The member variable
 $codei%
-	CppAD::mixed::sparse_rcv  ran_hes_rcv_
+	CppAD::mixed::d_sparse_rcv  ran_hes_rcv_
 %$$
 must contain the information for evaluating the random effects
 Hessian using $code ran_like_fun_$$; see
