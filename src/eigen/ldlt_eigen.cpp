@@ -27,7 +27,7 @@ $$
 $section Eigen LDLT Constructor$$
 
 $head Syntax$$
-$codei%CppAD::mixed::ldlt_eigen %ldlt_obj%(%n_row%)%$$
+$codei%CppAD::ldlt_eigen<%Double%> %ldlt_obj%(%n_row%)%$$
 
 $head Prototype$$
 $srcfile%src/eigen/ldlt_eigen.cpp
@@ -50,13 +50,15 @@ $code eigen_ldlt$$ object.
 $end
 */
 // BEGIN_PROTOTYPE_CTOR
-ldlt_eigen::ldlt_eigen(size_t n_row)
+template <typename Double>
+ldlt_eigen<Double>::ldlt_eigen(size_t n_row)
 // END_PROTOTYPE_CTOR
 : n_row_(n_row)
 {	ptr_ = new eigen_ldlt; }
 
 // destructor
-ldlt_eigen::~ldlt_eigen(void)
+template <typename Double>
+ldlt_eigen<Double>::~ldlt_eigen(void)
 {	delete ptr_; }
 
 /*
@@ -91,7 +93,7 @@ $cref/CppAD::mixed/namespace/Private/$$ user API.
 $head ldlt_obj$$
 This object has prototype
 $codei%
-	CppAD::mixed::ldlt_eigen %ldlt_obj%
+	CppAD::ldlt_eigen<%Double%> %ldlt_obj%
 %$$
 
 $head H_rc$$
@@ -110,9 +112,10 @@ example and test that uses this function.
 $end
 */
 // BEGIN_PROTOTYPE_INIT
-void ldlt_eigen::init(const sparse_rc& H_rc)
+template <typename Double>
+void ldlt_eigen<Double>::init(const sparse_rc& H_rc)
 // END_PROTOTYPE_INIT
-{	CppAD::vector<double> not_used(0);
+{	CppAD::vector<Double> not_used(0);
 	//
 	eigen_sparse hessian_pattern;
 	CppAD::mixed::triple2eigen(
@@ -166,7 +169,7 @@ for new values in the square positive definite matrix.
 $head ldlt_obj$$
 This object has prototype
 $codei%
-	CppAD::mixed::ldlt_eigen %ldlt_obj%
+	CppAD::ldlt_eigen<%Double%> %ldlt_obj%
 %$$
 In addition, it must have a previous call to
 $cref ldlt_eigen_init$$.
@@ -204,7 +207,8 @@ example and test that uses this function.
 $end
 */
 // BEGIN_PROTOTYPE_UPDATE
-bool ldlt_eigen::update(const CppAD::mixed::d_sparse_rcv& H_rcv)
+template <typename Double>
+bool ldlt_eigen<Double>::update(const CppAD::sparse_rcv<s_vector, v_vector>& H_rcv)
 // END_PROTOTYPE_UPDATE
 {	//
 	eigen_sparse hessian;
@@ -253,7 +257,7 @@ $cref/CppAD::mixed/namespace/Private/$$ user API.
 $head ldlt_obj$$
 This object has prototype
 $codei%
-	const CppAD::mixed::ldlt_eigen %ldlt_obj%
+	const CppAD::ldlt_eigen<%Double%> %ldlt_obj%
 %$$
 In addition, it must have a previous call to
 $cref ldlt_eigen_update$$.
@@ -278,17 +282,18 @@ example and test that uses this function.
 $end
 */
 // BEGIN_PROTOTYPE_LOGDET
-double ldlt_eigen::logdet(size_t& negative) const
+template <typename Double>
+Double ldlt_eigen<Double>::logdet(size_t& negative) const
 // END_PROTOTYPE_LOGDET
 {	using Eigen::Dynamic;
-    typedef Eigen::Matrix<double, Dynamic, Dynamic> dense_matrix;
+    typedef Eigen::Matrix<Double, Dynamic, Dynamic> dense_matrix;
 
 	// compute the logdet( f_{u,u}(theta, u )
 	dense_matrix diag = ptr_->vectorD();
 	assert( diag.size() == int(n_row_) );
 	negative        = 0;
 	bool   has_zero = false;
-	double logdet   = 0.0;
+	Double logdet   = 0.0;
 	for(size_t j = 0; j < n_row_; j++)
 	{	has_zero |= diag(j) == 0.0;
 		if( diag(j) < 0.0 )
@@ -296,7 +301,7 @@ double ldlt_eigen::logdet(size_t& negative) const
 		logdet += log( std::fabs( diag(j) ) );
 	}
 	if( has_zero )
-		return - std::numeric_limits<double>::infinity();
+		return - std::numeric_limits<Double>::infinity();
 	//
 	return logdet;
 }
@@ -337,7 +342,7 @@ and $latex x$$ is unknown.
 $head ldlt_obj$$
 This object has prototype
 $codei%
-	const CppAD::mixed::ldlt_eigen %ldlt_obj%
+	const CppAD::ldlt_eigen<%Double%> %ldlt_obj%
 %$$
 In addition, it must have a previous call to
 $cref ldlt_eigen_update$$.
@@ -376,10 +381,11 @@ $codei%
 $end
 */
 // BEGIN_PROTOTYPE_SOLVE_H
-void ldlt_eigen::solve_H(
+template <typename Double>
+void ldlt_eigen<Double>::solve_H(
 	const CppAD::vector<size_t>& row     ,
-	const CppAD::vector<double>& val_in  ,
-	CppAD::vector<double>&       val_out )
+	const CppAD::vector<Double>& val_in  ,
+	CppAD::vector<Double>&       val_out )
 // END_PROTOTYPE_SOLVE_H
 {	assert( row.size() == val_in.size() );
 	assert( row.size() == val_out.size() );
@@ -399,7 +405,7 @@ void ldlt_eigen::solve_H(
 	int previous_row = -1;
 # endif
 	size_t k = 0;
-	typedef eigen_sparse::InnerIterator column_itr;
+	typedef typename eigen_sparse::InnerIterator column_itr;
 	for(column_itr itr(x, 0); itr; ++itr)
 	{	assert( size_t( itr.row() ) < n_row_ );
 		assert( previous_row < itr.row() );
@@ -456,7 +462,7 @@ $cref/P/ldlt_eigen/Factorization/P/$$.
 $head ldlt_obj$$
 This object has prototype
 $codei%
-	const CppAD::mixed::ldlt_eigen %ldlt_obj%
+	const CppAD::ldlt_eigen<%Double%> %ldlt_obj%
 %$$
 In addition, it must have a previous call to
 $cref ldlt_eigen_update$$.
@@ -490,7 +496,7 @@ $latex \[
 \end{array} \right.
 \] $$
 where $latex \varepsilon$$
-$code std::numeric_limits<double>::epsilon()$$,
+$code std::numeric_limits<Double>::epsilon()$$,
 and $latex \max(D)$$ is the largest element in $latex D$$.
 
 $head ok$$
@@ -510,11 +516,12 @@ example and test that uses this function.
 $end
 */
 // BEGIN_PROTOTYPE_SIM_COV
-bool ldlt_eigen::sim_cov(
-	const CppAD::vector<double>& w  ,
-	CppAD::vector<double>&       v  )
+template <typename Double>
+bool ldlt_eigen<Double>::sim_cov(
+	const CppAD::vector<Double>& w  ,
+	CppAD::vector<Double>&       v  )
 // END_PROTOTYPE_SIM_COV
-{	typedef Eigen::Matrix<double, Eigen::Dynamic, 1> column_vector;
+{	typedef Eigen::Matrix<Double, Eigen::Dynamic, 1> column_vector;
 	//
 	// set b = w
 	column_vector b(n_row_);
@@ -523,17 +530,17 @@ bool ldlt_eigen::sim_cov(
 	//
 	// diagonal
 	column_vector diag = ptr_->vectorD();
-	double max_D = 0.0;
+	Double max_D = 0.0;
 	for(size_t i = 0; i < n_row_; i++)
 		max_D = std::max(max_D, diag[i] );
 	if( max_D <= 0.0 )
 		return false;
 	//
 	// set b = D^{-1/2} w
-	double eps = std::numeric_limits<double>::epsilon();
+	Double eps = std::numeric_limits<Double>::epsilon();
 	eps        = eps * eps * max_D;
 	for(size_t i = 0; i < n_row_; i++)
-	{	double di = std::max(diag[i], eps);
+	{	Double di = std::max(diag[i], eps);
 		b[i] = b[i] / std::sqrt( di );
 	}
 	//
@@ -582,7 +589,7 @@ sparse symmetric matrix that has been factored.
 $head ldlt_obj$$
 This object has prototype
 $codei%
-	const CppAD::mixed::ldlt_eigen %ldlt_obj%
+	const CppAD::ldlt_eigen<%Double%> %ldlt_obj%
 %$$
 In addition, it must have a previous call to
 $cref ldlt_eigen_update$$.
@@ -613,10 +620,11 @@ $end
 */
 
 // BEGIN_PROTOTYPE_INV
-void ldlt_eigen::inv(
+template <typename Double>
+void ldlt_eigen<Double>::inv(
 	const CppAD::vector<size_t>& row_in    ,
 	const CppAD::vector<size_t>& col_in    ,
-	CppAD::vector<double>&       val_out   )
+	CppAD::vector<Double>&       val_out   )
 // END_PROTOTYPE_INV
 {	using CppAD::vector;
 	//
@@ -633,7 +641,7 @@ void ldlt_eigen::inv(
 	}
 	//
 	CppAD::vector<size_t> row_solve;
-	CppAD::vector<double> rhs_solve, val_solve;
+	CppAD::vector<Double> rhs_solve, val_solve;
 	for(size_t j = 0; j < n_row_; j++)
 	{	// vectors for this column
 		row_solve.resize(0);
@@ -693,3 +701,6 @@ void ldlt_eigen::inv(
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE
+
+// Explicit instantiation of ldlt_eigen
+template class CppAD::mixed::ldlt_eigen<double>;

@@ -125,7 +125,7 @@ bool ldlt_eigen_xam(void)
 	// create eigen object
 	size_t nrow = 3;    // number of rows in H
 	size_t ncol = nrow; // number of columns in H
-	CppAD::mixed::ldlt_eigen ldlt_obj(nrow);
+	CppAD::mixed::ldlt_eigen<double> ldlt_obj(nrow);
 	assert( nrow * ncol == sizeof(H_inv) / sizeof(H_inv[0]) );
 
 	// sparsity pattern for the lower triangle of H (dense)

@@ -53,17 +53,9 @@ is a diagonal matrix.
 $subhead P$$
 is a permutation matrix.
 
-$head eigen_sparse$$
-The type $code CppAD::mixed::ldlt_eigen::eigen_sparse$$ is defined by
-$codei%
-	typedef Eigen::SparseMatrix<double, Eigen::ColMajor>  eigen_sparse;
-%$$
-
-$head eigen_ldlt_eigen$$
-The type $code CppAD::mixed::ldlt_eigen::eigen_ldlt_eigen$$ is defined by
-$codei%
-	typedef Eigen::SimplicialLDLT<eigen_sparse, Eigen::Lower> eigen_ldlt;
-%$$
+$head Double$$
+This is the type of the elements in the matrices and is either
+ double29628 or  a1_double29628.
 
 $head Example$$
 The file $cref ldlt_eigen.cpp$$ contains an example and test
@@ -85,9 +77,11 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
+template <typename Double>
 class ldlt_eigen {
 private:
-	typedef Eigen::SparseMatrix<double, Eigen::ColMajor>      eigen_sparse;
+    typedef CppAD::vector<Double>                             v_vector;
+	typedef Eigen::SparseMatrix<Double, Eigen::ColMajor>      eigen_sparse;
 	typedef Eigen::SimplicialLDLT<eigen_sparse, Eigen::Lower> eigen_ldlt;
 	//
 	const size_t    n_row_;
@@ -101,25 +95,25 @@ public:
 	// init
 	void init(const sparse_rc& hes_rc);
 	// update
-	bool update(const d_sparse_rcv& hes_rcv);
+	bool update(const CppAD::sparse_rcv<s_vector, v_vector>& hes_rcv);
 	// logdet
-	double logdet(size_t& negative) const;
+	Double logdet(size_t& negative) const;
 	// compute a subset of the inverse
 	void inv(
 		const CppAD::vector<size_t>& row      ,
 		const CppAD::vector<size_t>& col      ,
-		CppAD::vector<double>&       val
+		CppAD::vector<Double>&       val
 	);
 	// solve
 	void solve_H(
 		const CppAD::vector<size_t>& row     ,
-		const CppAD::vector<double>& val_in  ,
-		CppAD::vector<double>&       val_out
+		const CppAD::vector<Double>& val_in  ,
+		CppAD::vector<Double>&       val_out
 	);
 	// sim_cov
 	bool sim_cov(
-	const CppAD::vector<double>& w  ,
-	CppAD::vector<double>&       v
+	const CppAD::vector<Double>& w  ,
+	CppAD::vector<Double>&       v
 	);
 };
 
