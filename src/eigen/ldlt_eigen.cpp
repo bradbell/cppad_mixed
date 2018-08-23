@@ -298,7 +298,7 @@ Double ldlt_eigen<Double>::logdet(size_t& negative) const
 	{	has_zero |= diag(j) == 0.0;
 		if( diag(j) < 0.0 )
 			negative++;
-		logdet += log( std::fabs( diag(j) ) );
+		logdet += log( CppAD::fabs( diag(j) ) );
 	}
 	if( has_zero )
 		return - std::numeric_limits<Double>::infinity();
