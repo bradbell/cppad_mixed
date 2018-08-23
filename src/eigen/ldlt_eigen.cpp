@@ -541,7 +541,7 @@ bool ldlt_eigen<Double>::sim_cov(
 	eps        = eps * eps * max_D;
 	for(size_t i = 0; i < n_row_; i++)
 	{	Double di = std::max(diag[i], eps);
-		b[i] = b[i] / std::sqrt( di );
+		b[i] = b[i] / CppAD::sqrt( di );
 	}
 	//
 	// set b = L^{-T} * D^{-1/2} w
@@ -704,3 +704,4 @@ void ldlt_eigen<Double>::inv(
 
 // Explicit instantiation of ldlt_eigen
 template class CppAD::mixed::ldlt_eigen<double>;
+template class CppAD::mixed::ldlt_eigen< CppAD::mixed::a1_double >;
