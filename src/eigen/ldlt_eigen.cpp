@@ -15,6 +15,7 @@ see http://www.gnu.org/licenses/agpl.txt
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
+-------------------------------------------------------------------------------
 $begin ldlt_eigen_ctor$$
 $spell
 	ldlt_obj
@@ -28,6 +29,9 @@ $section Eigen LDLT Constructor$$
 $head Syntax$$
 $codei%CppAD::mixed::ldlt_eigen %ldlt_obj%(%n_row%)%$$
 
+$head Prototype$$
+$srcfile%src/eigen/ldlt_eigen.cpp
+	%0%// BEGIN_PROTOTYPE_CTOR%// END_PROTOTYPE_CTOR%1%$$
 
 $head Private$$
 The $cref ldlt_eigen$$ class is an
@@ -35,11 +39,8 @@ $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head n_row_$$
-The argument $icode n_row$$ has prototype
-$codei%
-	size_t %n_row%
-%$$
-It is the number of rows in the symmetric matrix we will compute factor.
+The argument $icode n_row$$
+is the number of rows in the symmetric matrix we will compute factor.
 The member variable $code n_row_$$ is set to this value.
 
 $head ptr_$$
@@ -48,8 +49,9 @@ $code eigen_ldlt$$ object.
 
 $end
 */
-
+// BEGIN_PROTOTYPE_CTOR
 ldlt_eigen::ldlt_eigen(size_t n_row)
+// END_PROTOTYPE_CTOR
 : n_row_(n_row)
 {	ptr_ = new eigen_ldlt; }
 
@@ -77,6 +79,10 @@ $head Syntax$$
 $icode%ldlt_obj%.init(%H_rc%)
 %$$
 
+$head Prototype$$
+$srcfile%src/eigen/ldlt_eigen.cpp
+	%0%// BEGIN_PROTOTYPE_INIT%// END_PROTOTYPE_INIT%1%$$
+
 $head Private$$
 The $code ldlt_eigen$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
@@ -89,11 +95,7 @@ $codei%
 %$$
 
 $head H_rc$$
-This argument had prototype
-$codei%
-	const CppAD::mixed::sparse_rc& %H_rc%
-%$$
-It is a
+This argument is a
 $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$ for the
 matrix that we will compute the LDLT factor of.
 It is in
@@ -107,7 +109,9 @@ example and test that uses this function.
 
 $end
 */
+// BEGIN_PROTOTYPE_INIT
 void ldlt_eigen::init(const sparse_rc& H_rc)
+// END_PROTOTYPE_INIT
 {	CppAD::vector<double> not_used(0);
 	//
 	eigen_sparse hessian_pattern;
@@ -146,6 +150,10 @@ $section Update Factorization Using new Matrix Values$$
 $head Syntax$$
 $icode%ok% = %ldlt_obj%.update(%H_rcv%)%$$
 
+$head Prototype$$
+$srcfile%src/eigen/ldlt_eigen.cpp
+	%0%// BEGIN_PROTOTYPE_UPDATE%// END_PROTOTYPE_UPDATE%1%$$
+
 $head Private$$
 The $cref ldlt_eigen$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
@@ -164,11 +172,7 @@ In addition, it must have a previous call to
 $cref ldlt_eigen_init$$.
 
 $head H_rcv$$
-This argument has prototype
-$codei%
-	const CppAD::mixed::d_sparse_rcv& %H_rcv%
-%$$
-It contains new values for the
+This argument contains new values for the
 $cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
 we are computing the LDLT factor of.
 The $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$
@@ -179,10 +183,7 @@ and
 $cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
 
 $head ptr_$$
-On input, the member variable
-$codei%
-	eigen_ldlt* ptr_
-%$$
+On input, the member variable $icode ptr_$$
 has been $cref/initialized/ldlt_eigen_init/$$
 using the sparsity pattern for the Hessian.
 Upon return, it contains the factorization
@@ -193,21 +194,18 @@ where $icode hessian$$ is an $code eigen_sparse$$
 representation of the Hessian with values.
 
 $head ok$$
-The return value has prototype
-$codei%
-	bool %ok%
-%$$
-If it is true, the matrix was factored.
+If the return value $icode ok$$ is true, the matrix was factored.
 Otherwise, the matrix is singular.
 
 $head Example$$
 The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/update/$$ contains an
 example and test that uses this function.
 
-
 $end
 */
+// BEGIN_PROTOTYPE_UPDATE
 bool ldlt_eigen::update(const CppAD::mixed::d_sparse_rcv& H_rcv)
+// END_PROTOTYPE_UPDATE
 {	//
 	eigen_sparse hessian;
 	CppAD::mixed::triple2eigen(
@@ -243,6 +241,10 @@ $section Compute Log Determinant for Current LDLT Factor$$
 $head Syntax$$
 $icode%logdet% = %ldlt_obj%.logdet(%negative%)%$$
 
+$head Prototype$$
+$srcfile%src/eigen/ldlt_eigen.cpp
+	%0%// BEGIN_PROTOTYPE_LOGDET%// END_PROTOTYPE_LOGDET%1%$$
+
 $head Private$$
 The $code ldlt_eigen$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
@@ -257,21 +259,14 @@ In addition, it must have a previous call to
 $cref ldlt_eigen_update$$.
 
 $head negative$$
-This argument has prototype
-$codei%
-	size_t& %negative%
-%$$
-Its input value does no matter,
+The input value of $icode negative$$ does no matter,
 upon return it is the number of elements of
 $cref/D/ldlt_cholmod/Factorization/D/$$
 that are less than zero.
 
 $head logdet$$
-This return value has prototype
-$codei%
-	double %logdet%
-%$$
-Is the log of the absolute value of the determinant corresponding
+This return value $icode logdet$$
+is the log of the absolute value of the determinant corresponding
 to the previous call to $cref ldlt_cholmod_update$$.
 If the matrix is singular, $icode logdet$$ is
 minus infinity.
@@ -282,7 +277,9 @@ example and test that uses this function.
 
 $end
 */
+// BEGIN_PROTOTYPE_LOGDET
 double ldlt_eigen::logdet(size_t& negative) const
+// END_PROTOTYPE_LOGDET
 {	using Eigen::Dynamic;
     typedef Eigen::Matrix<double, Dynamic, Dynamic> dense_matrix;
 
@@ -321,6 +318,10 @@ $section Solve Linear Equations Using LDLT Factor$$
 $head Syntax$$
 $codei%%ldlt_obj%.solve_H(%row%, %val_in%, %val_out%)%$$
 
+$head Prototype$$
+$srcfile%src/eigen/ldlt_eigen.cpp
+	%0%// BEGIN_PROTOTYPE_SOLVE_H%// END_PROTOTYPE_SOLVE_H%1%$$
+
 $head Private$$
 The $cref ldlt_eigen$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
@@ -342,11 +343,8 @@ In addition, it must have a previous call to
 $cref ldlt_eigen_update$$.
 
 $head row$$
-This argument has prototype
-$codei%
-	const CppAD::vector<size_t>& %row%
-%$$
-It contains all of the rows of column vector $latex b$$ that are
+This argument
+contains all of the rows of column vector $latex b$$ that are
 non-zero and the rows of the column vector $icode x$$
 that are desired.
 These values are in strictly increasing order; i.e.,
@@ -357,11 +355,7 @@ It follows that $icode%row%.size()%$$ is less than or equal
 $cref/n_row_/ldlt_eigen_ctor/n_row_/$$.
 
 $head val_in$$
-This argument has prototype
-$codei%
-	const CppAD::vector<double>& %val_in%
-%$$
-and it has the same size as $icode row$$.
+This argument has the same size as $icode row$$.
 It specifies the values in the column vector $latex b$$
 for each of the corresponding rows; i.e.,
 for $icode%k% = 0 , %...%, %row%.size()-1%$$,
@@ -370,11 +364,7 @@ $codei%
 %$$.
 
 $head val_out$$
-This argument has prototype
-$codei%
-	const CppAD::vector<double>& %val_out%
-%$$
-and it has the same size as $icode row$$.
+This argument has the same size as $icode row$$.
 On input, the value of its elements do not matter.
 Upon return, it contains the values in the column vector $latex b$$
 for each of the corresponding rows; i.e.,
@@ -383,13 +373,14 @@ $codei%
 	%x%[ %row%[%k%] ] = %val_out%[%k%]
 %$$.
 
-
 $end
 */
+// BEGIN_PROTOTYPE_SOLVE_H
 void ldlt_eigen::solve_H(
 	const CppAD::vector<size_t>& row     ,
 	const CppAD::vector<double>& val_in  ,
 	CppAD::vector<double>&       val_out )
+// END_PROTOTYPE_SOLVE_H
 {	assert( row.size() == val_in.size() );
 	assert( row.size() == val_out.size() );
 	//
@@ -423,6 +414,7 @@ void ldlt_eigen::solve_H(
 	}
 }
 /*
+-------------------------------------------------------------------------------
 $begin ldlt_eigen_sim_cov$$
 $spell
 	std
@@ -439,6 +431,10 @@ $section Simulations with Covariance Corresponding to Factored Matrix$$
 
 $head Syntax$$
 $icode%ok% = %ldlt_obj%.sim_cov(%w%, %v%)%$$
+
+$head Prototype$$
+$srcfile%src/eigen/ldlt_eigen.cpp
+	%0%// BEGIN_PROTOTYPE_SIM_COV%// END_PROTOTYPE_SIM_COV%1%$$
 
 $head Private$$
 The $cref ldlt_eigen$$ class is an
@@ -466,18 +462,12 @@ In addition, it must have a previous call to
 $cref ldlt_eigen_update$$.
 
 $head w$$
-This argument has prototype
-$codei%
-	const CppAD::vector<double>& %w%
-%$$
-and its size is equal to the number of rows in $latex H$$.
+This argument's
+size is equal to the number of rows in $latex H$$.
 
 $head v$$
-This argument has prototype
-$codei%
-	CppAD::vector<double>& %v%
-%$$
-and its size is equal to the number of rows in $latex H$$.
+This argument's
+size is equal to the number of rows in $latex H$$.
 The input value of its elements does not matter.
 Upon return
 $latex \[
@@ -519,9 +509,11 @@ example and test that uses this function.
 
 $end
 */
+// BEGIN_PROTOTYPE_SIM_COV
 bool ldlt_eigen::sim_cov(
 	const CppAD::vector<double>& w  ,
 	CppAD::vector<double>&       v  )
+// END_PROTOTYPE_SIM_COV
 {	typedef Eigen::Matrix<double, Eigen::Dynamic, 1> column_vector;
 	//
 	// set b = w
@@ -556,6 +548,148 @@ bool ldlt_eigen::sim_cov(
 		v[i] = b[i];
 	//
 	return true;
+}
+
+/*
+-------------------------------------------------------------------------------
+$begin ldlt_eigen_inv$$
+
+$section Compute a Subset of the Inverse of Factored Matrix$$
+$spell
+	ldlt_obj
+	inv
+	CppAD
+	const
+	eigen
+$$
+
+$head Syntax$$
+$icode%ldlt_obj%.inv(%row_in%, %col_in%, %val_out%)%$$
+
+$head Prototype$$
+$srcfile%src/eigen/ldlt_eigen.cpp
+	%0%// BEGIN_PROTOTYPE_INV%// END_PROTOTYPE_INV%1%$$
+
+$head Private$$
+The $cref ldlt_eigen$$ class is an
+$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
+$head Purpose$$
+This function solves for a subset of the inverse of the
+sparse symmetric matrix that has been factored.
+
+$head ldlt_obj$$
+This object has prototype
+$codei%
+	const CppAD::mixed::ldlt_eigen %ldlt_obj%
+%$$
+In addition, it must have a previous call to
+$cref ldlt_eigen_update$$.
+
+$head row_in$$
+This vector contains the row indices for the components of the
+inverse that we are computing.
+
+$head col_in$$
+This vector contains the column indices for the components of the
+inverse that we are computing. It must have the same size as $icode row_in$$.
+
+$head val_out$$
+This matrix must have the same size as $icode row_in$$.
+The input values of its elements do not matter.
+Upon return, it
+contains the values for the components of the inverse that we are computing.
+To be specific, for $icode%k% = 0 , %...%, %K%-1%$$,
+$icode%val_out%[%k%]%$$
+is $icode%row_in%[%k%]%$$, $icode%col_in%[%k%]%$$ component of the inverse.
+
+$head Method$$
+This routine uses $cref ldlt_eigen_solve_H$$ to solve for the
+requested components of the inverse one column at a time.
+
+$end
+------------------------------------------------------------------------------
+*/
+
+// BEGIN_PROTOTYPE_INV
+void ldlt_eigen::inv(
+	const CppAD::vector<size_t>& row_in    ,
+	const CppAD::vector<size_t>& col_in    ,
+	CppAD::vector<double>&       val_out   )
+// END_PROTOTYPE_INV
+{	using CppAD::vector;
+	//
+	// starting index
+	size_t K  = row_in.size();
+	size_t k  = 0;
+	size_t row = n_row_;
+	size_t col = n_row_;
+	if( k < K )
+	{	row = row_in[k];
+		col = col_in[k];
+		assert( row < n_row_ );
+		assert( col < n_row_ );
+	}
+	//
+	CppAD::vector<size_t> row_solve;
+	CppAD::vector<double> rhs_solve, val_solve;
+	for(size_t j = 0; j < n_row_; j++)
+	{	// vectors for this column
+		row_solve.resize(0);
+		rhs_solve.resize(0);
+
+		// only need for rows where f_{u,u} (theta_u) is possibly not zero
+		size_t k_start        = K;
+		bool   found_diagonal = false;
+		while( col <= j )
+		{	if( col == j )
+			{	// this row of f_{u,u} (theta, u) is possibly non-zero
+				row_solve.push_back( row );
+				// rhs_solve needs to be j-th column of identity matrix
+				// so solution is j-th column of inverse
+				if( row == j )
+				{	rhs_solve.push_back(1.0);
+					found_diagonal = true;
+				}
+				else
+					rhs_solve.push_back(0.0);
+				//
+				// index in row_in and col_in where j-th column starts
+				if( k_start == K )
+					k_start = k;
+			}
+			k++;
+			if( k < K )
+			{	row = row_in[k];
+				col = col_in[k];
+				assert( row < n_row_ );
+				assert( col < n_row_ );
+			}
+			else
+				row = col = n_row_;
+		}
+		assert( col > j );
+		//
+		// Cannot compute cholesky factor if f_{u,u} (theta, u) is zero
+		if( ! found_diagonal )
+		{	row_solve.push_back(j);
+			rhs_solve.push_back(1.0);
+		}
+		// if k_start == K, we do not need any components of the inverse
+		if( k_start < K )
+		{	val_solve.resize( row_solve.size() );
+			//
+			solve_H(row_solve, rhs_solve, val_solve);
+			//
+			size_t nr = row_solve.size();
+			if( ! found_diagonal )
+				nr--;
+			for(size_t ell = 0; ell < nr; ell++)
+				val_out[k_start + ell] = val_solve[ell];
+		}
+	}
+	return;
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

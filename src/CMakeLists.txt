@@ -19,7 +19,6 @@ ADD_LIBRARY(cppad_mixed
 	derived_ctor.cpp
 	eigen/ldlt_eigen.cpp
 	eigen/information_mat.cpp
-	eigen/ldlt_inv.cpp
 	eigen/order2random.cpp
 	eigen/sample_fixed.cpp
 	eigen/sparse_low_tri_sol.cpp
