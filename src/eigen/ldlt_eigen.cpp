@@ -465,7 +465,7 @@ $end
 // BEGIN_PROTOTYPE_SOLVE_H
 template <typename Double>
 void ldlt_eigen<Double>::solve_H(
-	const CppAD::vector<size_t>& row     ,
+	const s_vector&              row     ,
 	const CppAD::vector<Double>& val_in  ,
 	CppAD::vector<Double>&       val_out )
 // END_PROTOTYPE_SOLVE_H
@@ -706,8 +706,8 @@ $end
 // BEGIN_PROTOTYPE_INV
 template <typename Double>
 void ldlt_eigen<Double>::inv(
-	const CppAD::vector<size_t>& row_in    ,
-	const CppAD::vector<size_t>& col_in    ,
+	const s_vector&              row_in    ,
+	const s_vector&              col_in    ,
 	CppAD::vector<Double>&       val_out   )
 // END_PROTOTYPE_INV
 {	assert( update_called_ );
@@ -725,7 +725,7 @@ void ldlt_eigen<Double>::inv(
 		assert( col < n_row_ );
 	}
 	//
-	CppAD::vector<size_t> row_solve;
+	s_vector row_solve;
 	CppAD::vector<Double> rhs_solve, val_solve;
 	for(size_t j = 0; j < n_row_; j++)
 	{	// vectors for this column

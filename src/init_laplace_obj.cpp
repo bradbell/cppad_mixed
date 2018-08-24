@@ -117,9 +117,6 @@ void cppad_mixed::init_laplace_obj(
 	a1_vector theta_u( n_fixed_ + n_random_ );
 	pack(fixed_vec, random_vec, theta_u);
 	//
-	// theta, u
-	a1_vector theta(n_fixed_), u(n_random_);
-	unpack(theta, u, theta_u);
 	//
 	// sparsity pattern with respect to (theta, u)
 	// for the lower triangle of the random Hessian
@@ -150,6 +147,23 @@ void cppad_mixed::init_laplace_obj(
 	const s_vector& row( ran_hes_uu_rc.row() );
 	const s_vector& col( ran_hes_uu_rc.col() );
 	//
+	// ldlt_obj
+	CppAD::mixed::ldlt_eigen<a1_double> ldlt_obj(n_random_);
+	//
+	// ldlt_obj.init
+	ldlt_obj.init( ran_hes_uu_rc );
+	//
+	// start recording a1_double operations
+	// beta:    independent variables
+	// theta_u: dynamic parameters
+	size_t abort_op_index = 0;
+	bool record_compare   = false;
+	CppAD::Independent(beta, abort_op_index, record_compare, theta_u);
+	//
+	// theta, u
+	a1_vector theta(n_fixed_), u(n_random_);
+	unpack(theta, u, theta_u);
+	//
 	// hes_val
 	a1_vector hes_val = ran_likelihood_hes(theta, u, row, col);
 	if( hes_val.size() == 0 )
@@ -168,20 +182,8 @@ void cppad_mixed::init_laplace_obj(
 	for(size_t k = 0; k < nnz; ++k)
 		ran_hes_uu_rcv.set(k, hes_val[k] );
 	//
-	// ldlt_obj
-	CppAD::mixed::ldlt_eigen<a1_double> ldlt_obj(n_random_);
-	ldlt_obj.init( ran_hes_uu_rcv.pat() );
+	// ldlt_obj.update
 	ldlt_obj.update( ran_hes_uu_rcv );
-	//
-	// start recording a1_double operations
-	// beta:    independent variables
-	// theta_u: dynamic parameters
-	size_t abort_op_index = 0;
-	bool record_compare   = false;
-	CppAD::Independent(beta, abort_op_index, record_compare, theta_u);
-	//
-	// theta, u
-	unpack(theta, u, theta_u);
 	//
 	// beta_theta_u
 	a1_vector beta_theta_u(2 * n_fixed_ + n_random_);
