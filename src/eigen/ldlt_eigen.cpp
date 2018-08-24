@@ -229,6 +229,72 @@ bool ldlt_eigen<Double>::update(const CppAD::sparse_rcv<s_vector, v_vector>& H_r
 	return true;
 }
 /*
+-------------------------------------------------------------------------------
+$begin ldlt_eigen_split$$
+
+$section Split Out a Factorization$$
+$spell
+	ldlt_obj
+	CppAD
+	const
+	eigen
+$$
+
+$head Syntax$$
+$icode%ldlt_obj%.split(%L%, %D%, %P%)%$$
+
+$head Prototype$$
+$srcfile%src/eigen/ldlt_eigen.cpp
+	%0%// BEGIN_PROTOTYPE_SPLIT%// END_PROTOTYPE_SPLIT%1%$$
+
+$head Private$$
+The $cref ldlt_eigen$$ class is an
+$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
+$head Purpose$$
+Extract the components of the $cref/factorization/ldlt_eigen/Factorization/$$
+$latex \[
+    L D L^\R{T} = P H P^{T}
+\] $$
+
+$head ldlt_obj$$
+This object has prototype
+$codei%
+	const CppAD::ldlt_eigen<%Double%> %ldlt_obj%
+%$$
+In addition, it must have a previous call to
+$cref ldlt_eigen_update$$.
+
+$subhead L$$
+is a lower triangular matrix with ones on the diagonal,
+
+$subhead D$$
+is a diagonal matrix.
+
+$subhead P$$
+is a permutation matrix.
+
+$head Example$$
+The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/split/$$ contains an
+example and test that uses this function.
+
+$end
+------------------------------------------------------------------------------
+*/
+
+// BEGIN_PROTOTYPE_SPLIT
+template <typename Double>
+void ldlt_eigen<Double>::split(
+	Eigen::SparseMatrix<Double, Eigen::ColMajor>& L ,
+	Eigen::Matrix<Double, Eigen::Dynamic, 1>&     D ,
+	Eigen::PermutationMatrix<Eigen::Dynamic>&     P ) const
+// END_PROTOTYPE_SPLIT
+{	L = ptr_->matrixL();
+	D = ptr_->vectorD();
+	P = ptr_->permutationP();
+}
+/*
 ------------------------------------------------------------------------------
 $begin ldlt_eigen_logdet$$
 $spell

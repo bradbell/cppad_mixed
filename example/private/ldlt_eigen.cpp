@@ -28,34 +28,41 @@ $latex \[
 	L =
 	\left( \begin{array}{ccc}
 		1 & 0 & 0 \\
-		1 & 2 & 0 \\
-		1 & 2 & 3
+		2 & 1 & 0 \\
+		3 & 2 & 1
+	\end{array} \right)
+	\W{,}
+	D =
+	\left( \begin{array}{ccc}
+		3 & 0 & 0 \\
+		0 & 2 & 0 \\
+		0 & 0 & 1
 	\end{array} \right)
 	\W{,}
 	L^\R{T} =
 	\left( \begin{array}{ccc}
-		1 & 1 & 1 \\
-		0 & 2 & 2 \\
-		0 & 0 & 3
+		1 & 2 & 3 \\
+		0 & 1 & 2 \\
+		0 & 0 & 1
 	\end{array} \right)
 \] $$
 and the positive definite matrix
 $latex \[
-	H = L L^\R{T} =
+	H = L D L^\R{T} =
 	\left( \begin{array}{ccc}
-		1 & 1 & 1 \\
-		1 & 5 & 5 \\
-		1 & 5 & 14
+		3 & 6  & 9 \\
+		6 & 14 & 22 \\
+		9 & 22 & 36
 	\end{array} \right)
 \] $$
 The inverse of $latex H$$ is given by
 $latex \[
-	H^{-1} = L^\R{-T} L^{-1} =
-	\frac{1}{36}
+	H^{-1} =
+	\frac{1}{6}
 	\left( \begin{array}{ccc}
-		45  & -9  & 0  \\
-		-9  & 13  & -4 \\
-		0   & -4  & 4
+		20  & -18  & 6   \\
+		-18 & 27   & -12 \\
+		6   & -12  & 6
 	\end{array} \right)
 \] $$
 which can be checked by multiplying by $latex H H^{-1}$$.
@@ -91,6 +98,12 @@ $codep
 	ldlt_obj.solve_H(row, val_in, val_out);
 $$
 
+$head split$$
+See the following under Source Code below:
+$codep
+	ok &= ldlt_obj.split(L, D, P)
+$$
+
 $head sim_cov$$
 See the following under Source Code below:
 $codep
@@ -115,12 +128,12 @@ bool ldlt_eigen_xam(void)
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 
 	double H_inv[] = {
-		45.0,  -9.0,  0.0,
-		-9.0,  13.0, -4.0,
-		0.0,   -4.0,  4.0
+		20.0,  -18.0,  6.0,
+		-18.0,  27.0, -12.0,
+		6.0,   -12.0,  6.0
 	};
 	for(size_t i = 0; i < sizeof(H_inv)/sizeof(H_inv[0]); i++)
-		H_inv[i] /= 36.;
+		H_inv[i] /= 6.0;
 
 	// create eigen object
 	size_t nrow = 3;    // number of rows in H
@@ -143,12 +156,12 @@ bool ldlt_eigen_xam(void)
 	// values in lower triangle of H
 	CppAD::mixed::d_sparse_rcv H_rcv( H_rc );
 	{	size_t k = 0;
-		H_rcv.set(k++, 1.0);  // H_0,0  = 1.0
-		H_rcv.set(k++, 1.0);  // H_1,0  = 1.0
-		H_rcv.set(k++, 1.0);  // H_2,0  = 1.0
-		H_rcv.set(k++, 5.0);  // H_1,1  = 5.0
-		H_rcv.set(k++, 5.0);  // H_2,1  = 5.0
-		H_rcv.set(k++, 14.0); // H_2,2  = 14.0
+		H_rcv.set(k++,  3.0);  // H_0,0 =  3.0
+		H_rcv.set(k++,  6.0);  // H_1,0 =  6.0
+		H_rcv.set(k++,  9.0);  // H_2,0 =  9.0
+		H_rcv.set(k++, 14.0);  // H_1,1 = 14.0
+		H_rcv.set(k++, 22.0);  // H_2,1 = 22.0
+		H_rcv.set(k++, 36.0);  // H_2,2 = 36.0
 	}
 	//
 	// initialize the matrix using only the sparsity pattern
@@ -163,7 +176,7 @@ bool ldlt_eigen_xam(void)
 	ok &= negative == 0;
 
 	// check its value
-	ok &= std::fabs( logdet_H / std::log(36.0) - 1.0 ) <= eps;
+	ok &= std::fabs( logdet_H / std::log(6.0) - 1.0 ) <= eps;
 
 	// test solve
 	CppAD::vector<size_t> row(3);
@@ -185,17 +198,44 @@ bool ldlt_eigen_xam(void)
 			ok &= std::fabs( val_out[k] - check_i ) <= eps;
 		}
 	}
+
+	// test split
+	typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> eigen_dense;
+	typedef Eigen::SparseMatrix<double, Eigen::ColMajor> eigen_sparse;
+	typedef Eigen::Matrix<double, Eigen::Dynamic, 1>     eigen_vector;
+	typedef Eigen::PermutationMatrix<Eigen::Dynamic>     eigen_perm;
+	eigen_sparse L;
+	eigen_vector D;
+	eigen_perm   P;
+	ldlt_obj.split(L, D, P);
+	eigen_dense denL = L;
+	eigen_dense denP = P;
+	for(size_t i = 0; i < nrow; ++i)
+	{	// D is as described above
+		ok &= std::fabs( D(i) - double(3 - i) ) <= eps;
+		for(size_t j = 0; j < ncol; ++j)
+		{	// L is as described above
+			double	check = std::max(0.0, double(i) + 1.0 - double(j));
+			ok &= std::fabs( denL(i, j) - check ) <= eps;
+			// P is identity
+			check = double( i == j );
+			ok &= std::fabs( denP(i, j) - check ) <= eps;
+		}
+	}
+
 	// test sim_cov
 	CppAD::vector<double> w(3), v(3), c(3);
 	for(size_t i = 0; i < 3; i++)
 		w[i] = double(2 * i + 1);
 	ok &= ldlt_obj.sim_cov(w, v);
-	// solve w = L^{T} c
-	c[2] = w[2] / 3.0;
-	c[1] = ( w[1] - 2 * c[2] ) / 2.0;
-	c[0] = ( w[0] - 1.0 * c[1] - 1.0 * c[2] ) / 1.0;
+	// check that w =  sqrt(D) * L^T P * v = sqrt(D) * L^T * v
 	for(size_t i = 0; i < 3; i++)
-		ok &= std::fabs( v[i] - c[i] ) <= eps;
+	{	double check = 0.0;
+		for(size_t j = i; j < 3; j++)
+			check += denL(j, i) * v[j];
+		check *= std::sqrt( D[i] );
+		ok &= std::fabs( w[i] - check ) <= eps;
+	}
 
 	return ok;
 }

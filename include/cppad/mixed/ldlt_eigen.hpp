@@ -38,7 +38,6 @@ The factorization is
 $latex \[
 	L D L^\R{T} = P H P^{T}
 \] $$
-where
 
 $subhead H$$
 is the matrix corresponding the current
@@ -82,6 +81,8 @@ class ldlt_eigen {
 private:
     typedef CppAD::vector<Double>                             v_vector;
 	typedef Eigen::SparseMatrix<Double, Eigen::ColMajor>      eigen_sparse;
+	typedef Eigen::Matrix<Double, Eigen::Dynamic, 1>          eigen_vector;
+	typedef Eigen::PermutationMatrix<Eigen::Dynamic>          eigen_perm;
 	typedef Eigen::SimplicialLDLT<eigen_sparse, Eigen::Lower> eigen_ldlt;
 	//
 	const size_t    n_row_;
@@ -96,6 +97,8 @@ public:
 	void init(const sparse_rc& hes_rc);
 	// update
 	bool update(const CppAD::sparse_rcv<s_vector, v_vector>& hes_rcv);
+	// split
+	void split(eigen_sparse& L, eigen_vector& D, eigen_perm& P) const;
 	// logdet
 	Double logdet(size_t& negative) const;
 	// compute a subset of the inverse
