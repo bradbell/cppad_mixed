@@ -91,6 +91,9 @@ private:
 	bool            update_called_;
 	//
 public:
+	// ----------------------------------------------------------------------
+	// non-const functions
+	//
 	// constructor
 	ldlt_eigen(size_t n_row);
 	// destructor
@@ -99,27 +102,30 @@ public:
 	void init(const sparse_rc& hes_rc);
 	// update
 	bool update(const CppAD::sparse_rcv<s_vector, v_vector>& hes_rcv);
+	// ----------------------------------------------------------------------
+	// const functions
+	//
 	// split
 	void split(eigen_sparse& L, eigen_vector& D, eigen_perm& P) const;
 	// logdet
 	Double logdet(size_t& negative) const;
-	// compute a subset of the inverse
-	void inv(
-		const CppAD::vector<size_t>& row      ,
-		const CppAD::vector<size_t>& col      ,
-		CppAD::vector<Double>&       val
-	);
 	// solve
 	void solve_H(
 		const CppAD::vector<size_t>& row     ,
 		const CppAD::vector<Double>& val_in  ,
 		CppAD::vector<Double>&       val_out
-	);
+	) const;
 	// sim_cov
 	bool sim_cov(
 	const CppAD::vector<Double>& w  ,
 	CppAD::vector<Double>&       v
-	);
+	) const;
+	// compute a subset of the inverse
+	void inv(
+		const CppAD::vector<size_t>& row      ,
+		const CppAD::vector<size_t>& col      ,
+		CppAD::vector<Double>&       val
+	) const;
 };
 
 

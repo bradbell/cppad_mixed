@@ -467,7 +467,7 @@ template <typename Double>
 void ldlt_eigen<Double>::solve_H(
 	const s_vector&              row     ,
 	const CppAD::vector<Double>& val_in  ,
-	CppAD::vector<Double>&       val_out )
+	CppAD::vector<Double>&       val_out ) const
 // END_PROTOTYPE_SOLVE_H
 {	assert( update_called_ );
 	assert( row.size() == val_in.size() );
@@ -602,7 +602,7 @@ $end
 template <typename Double>
 bool ldlt_eigen<Double>::sim_cov(
 	const CppAD::vector<Double>& w  ,
-	CppAD::vector<Double>&       v  )
+	CppAD::vector<Double>&       v  ) const
 // END_PROTOTYPE_SIM_COV
 {	assert( update_called_ );
 	typedef Eigen::Matrix<Double, Eigen::Dynamic, 1> column_vector;
@@ -708,7 +708,7 @@ template <typename Double>
 void ldlt_eigen<Double>::inv(
 	const s_vector&              row_in    ,
 	const s_vector&              col_in    ,
-	CppAD::vector<Double>&       val_out   )
+	CppAD::vector<Double>&       val_out   ) const
 // END_PROTOTYPE_INV
 {	assert( update_called_ );
 	using CppAD::vector;
