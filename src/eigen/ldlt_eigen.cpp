@@ -53,7 +53,7 @@ $end
 template <typename Double>
 ldlt_eigen<Double>::ldlt_eigen(size_t n_row)
 // END_PROTOTYPE_CTOR
-: n_row_(n_row)
+: n_row_(n_row), init_done_(false), update_called_(false)
 {	ptr_ = new eigen_ldlt; }
 
 // destructor
@@ -105,6 +105,10 @@ $cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
 and
 $cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
 
+$head Order of Operations$$
+This $icode ldlt_obj$$ function must be called once,
+after the constructor and before any other member functions.
+
 $head Example$$
 The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/init/$$ contains an
 example and test that uses this function.
@@ -115,7 +119,8 @@ $end
 template <typename Double>
 void ldlt_eigen<Double>::init(const sparse_rc& H_rc)
 // END_PROTOTYPE_INIT
-{	CppAD::vector<Double> not_used(0);
+{	assert( ! init_done_ );
+	CppAD::vector<Double> not_used(0);
 	//
 	eigen_sparse hessian_pattern;
 	CppAD::mixed::triple2eigen(
@@ -129,6 +134,8 @@ void ldlt_eigen<Double>::init(const sparse_rc& H_rc)
 	// analyze the pattern for an LDLT factorization of
 	// f_{u,u}(theta, u)
 	ptr_->analyzePattern(hessian_pattern);
+	//
+	init_done_ = true;
 }
 /*
 ------------------------------------------------------------------------------
@@ -200,6 +207,11 @@ $head ok$$
 If the return value $icode ok$$ is true, the matrix was factored.
 Otherwise, the matrix is singular.
 
+$head Order of Operations$$
+This $icode ldlt_obj$$ function must be called,
+after the constructor and $cref/init/ldlt_eigen_init/$$
+and before any other member functions.
+
 $head Example$$
 The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/update/$$ contains an
 example and test that uses this function.
@@ -210,7 +222,8 @@ $end
 template <typename Double>
 bool ldlt_eigen<Double>::update(const CppAD::sparse_rcv<s_vector, v_vector>& H_rcv)
 // END_PROTOTYPE_UPDATE
-{	//
+{	assert( init_done_ );
+	//
 	eigen_sparse hessian;
 	CppAD::mixed::triple2eigen(
 		hessian     ,
@@ -226,6 +239,8 @@ bool ldlt_eigen<Double>::update(const CppAD::sparse_rcv<s_vector, v_vector>& H_r
 	//
 	if( ptr_->info() != Eigen::Success )
 		return false;
+	//
+	update_called_ = true;
 	return true;
 }
 /*
@@ -290,7 +305,9 @@ void ldlt_eigen<Double>::split(
 	Eigen::Matrix<Double, Eigen::Dynamic, 1>&     D ,
 	Eigen::PermutationMatrix<Eigen::Dynamic>&     P ) const
 // END_PROTOTYPE_SPLIT
-{	L = ptr_->matrixL();
+{	assert( update_called_ );
+	//
+	L = ptr_->matrixL();
 	D = ptr_->vectorD();
 	P = ptr_->permutationP();
 }
@@ -351,11 +368,10 @@ $end
 template <typename Double>
 Double ldlt_eigen<Double>::logdet(size_t& negative) const
 // END_PROTOTYPE_LOGDET
-{	using Eigen::Dynamic;
-    typedef Eigen::Matrix<Double, Dynamic, Dynamic> dense_matrix;
+{	assert( update_called_ );
 
 	// compute the logdet( f_{u,u}(theta, u )
-	dense_matrix diag = ptr_->vectorD();
+    Eigen::Matrix<Double, Eigen::Dynamic, 1> diag = ptr_->vectorD();
 	assert( diag.size() == int(n_row_) );
 	negative        = 0;
 	bool   has_zero = false;
@@ -453,7 +469,8 @@ void ldlt_eigen<Double>::solve_H(
 	const CppAD::vector<Double>& val_in  ,
 	CppAD::vector<Double>&       val_out )
 // END_PROTOTYPE_SOLVE_H
-{	assert( row.size() == val_in.size() );
+{	assert( update_called_ );
+	assert( row.size() == val_in.size() );
 	assert( row.size() == val_out.size() );
 	//
 	eigen_sparse b( int(n_row_), 1);
@@ -587,7 +604,8 @@ bool ldlt_eigen<Double>::sim_cov(
 	const CppAD::vector<Double>& w  ,
 	CppAD::vector<Double>&       v  )
 // END_PROTOTYPE_SIM_COV
-{	typedef Eigen::Matrix<Double, Eigen::Dynamic, 1> column_vector;
+{	assert( update_called_ );
+	typedef Eigen::Matrix<Double, Eigen::Dynamic, 1> column_vector;
 	//
 	// set b = w
 	column_vector b(n_row_);
@@ -692,7 +710,8 @@ void ldlt_eigen<Double>::inv(
 	const CppAD::vector<size_t>& col_in    ,
 	CppAD::vector<Double>&       val_out   )
 // END_PROTOTYPE_INV
-{	using CppAD::vector;
+{	assert( update_called_ );
+	using CppAD::vector;
 	//
 	// starting index
 	size_t K  = row_in.size();

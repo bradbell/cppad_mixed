@@ -171,6 +171,7 @@ void cppad_mixed::init_laplace_obj(
 	// ldlt_obj
 	CppAD::mixed::ldlt_eigen<a1_double> ldlt_obj(n_random_);
 	ldlt_obj.init( ran_hes_uu_rcv.pat() );
+	ldlt_obj.update( ran_hes_uu_rcv );
 	//
 	// start recording a1_double operations
 	// beta:    independent variables

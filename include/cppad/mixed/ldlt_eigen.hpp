@@ -87,6 +87,8 @@ private:
 	//
 	const size_t    n_row_;
 	eigen_ldlt*     ptr_;
+	bool            init_done_;
+	bool            update_called_;
 	//
 public:
 	// constructor
