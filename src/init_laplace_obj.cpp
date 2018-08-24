@@ -191,7 +191,6 @@ void cppad_mixed::init_laplace_obj(
 		*this,
 		n_fixed_,
 		n_random_,
-		ran_like_a1fun_,
 		ran_jac_a1fun_,
 		ran_hes_both_rc,
 		beta_theta_u

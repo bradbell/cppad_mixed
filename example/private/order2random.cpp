@@ -64,23 +64,10 @@ bool order2random_xam(void)
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
 	);
 	//
-	// a1fun = f(theta, u)
+	// jac_a1fun = f_u (theta, u)
 	vector<a2_double> a2_theta_u(n_both);
 	for(size_t j = 0; j < n_both; j++)
 		a2_theta_u[j] = a2_double(0.0);
-	CppAD::Independent(a2_theta_u);
-	vector<a2_double> a2_f(1);
-	a2_f[0] = a2_double(0.0);
-	for(size_t j = 0; j < n_random; j++)
-	{	// sum (u[j] - theta[j] * theta[j] / 2.0 )
-		a2_double theta_j = a2_theta_u[j];
-		a2_double u_j     = a2_theta_u[j + n_fixed];
-		a2_double term    = ( u_j - theta_j * theta_j );
-		a2_f[0]          += term * term;
-	}
-	CppAD::ADFun<a1_double> a1fun(a2_theta_u, a2_f);
-	//
-	// jac_a1fun = f_u (theta, u)
 	CppAD::Independent(a2_theta_u);
 	vector<a2_double> a2_jac(n_random);
 	for(size_t j = 0; j < n_random; ++j)
@@ -106,7 +93,6 @@ bool order2random_xam(void)
 		mixed_object,
 		n_fixed,
 		n_random,
-		a1fun,
 		jac_a1fun,
 		ran_hes_rc,
 		a1_beta_theta_u

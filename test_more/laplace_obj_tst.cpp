@@ -227,7 +227,6 @@ bool laplace_obj_tst(void)
 		mixed_object,
 		n_fixed,
 		n_random,
-		mixed_object.ran_like_a1fun_,
 		mixed_object.ran_jac_a1fun_,
 		ran_hes_rc,
 		a1_beta_theta_u
@@ -255,7 +254,6 @@ bool laplace_obj_tst(void)
 		mixed_object,
 		n_fixed,
 		n_random,
-		mixed_object.ran_like_a1fun_,
 		mixed_object.ran_jac_a1fun_,
 		ran_hes_rc,
 		a1_beta_theta_u

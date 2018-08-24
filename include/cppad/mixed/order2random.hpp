@@ -19,7 +19,6 @@ a1_vector order2random(
 	cppad_mixed&             mixed_object    ,
 	size_t                   n_fixed         ,
 	size_t                   n_random        ,
-	CppAD::ADFun<a1_double>& a1fun           ,
 	CppAD::ADFun<a1_double>& jac_a1fun       ,
 	const sparse_rc&         ran_hes_rc      ,
 	const a1_vector&         beta_theta_u

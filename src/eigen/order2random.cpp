@@ -25,9 +25,8 @@ $head Syntax$$
 $icode%W% = CppAD::mixed::order2random(
 	%n_fixed%,
 	%n_random%,
-	%a1fun%,
 	%jac_a1fun%,
-	%ran_hes_rc%,
+	%ran_hes_both_rc%,
 	%beta_theta_u%
 )%$$
 
@@ -52,19 +51,15 @@ number of fixed effects.
 $head n_random$$
 number of random effects
 
-$head a1fun$$
-This is the random likelihood
-$cref/f(theta, u)/theory/Random Likelihood, f(theta, u)/$$.
-
 $head jac_a1fun$$
 This is the Jacobian of the random likelihood
 with respect to the random effects
 $latex f_u ( \theta, u )$$.
 
-$head ran_hes_rc$$
+$head ran_hes_both_rc$$
 This is the sparsity pattern for the lower triangle of the Hessian w.r.t the
 random effect.
-The indices in $icode ran_hes_rc$$ are with respect to both the fixed
+The indices in $icode ran_hes_both_rc$$ are with respect to both the fixed
 and random effects and hence are greater than or equal $icode n_fixed$$.
 
 $head beta_theta_u$$
@@ -100,9 +95,8 @@ a1_vector order2random(
 	cppad_mixed&             mixed_object    ,
 	size_t                   n_fixed         ,
 	size_t                   n_random        ,
-	CppAD::ADFun<a1_double>& a1fun           ,
 	CppAD::ADFun<a1_double>& jac_a1fun       ,
-	const sparse_rc&         ran_hes_rc      ,
+	const sparse_rc&         ran_hes_both_rc ,
 	const a1_vector&         beta_theta_u    )
 // END PROTOTYPE
 {	assert( beta_theta_u.size() == 2 * n_fixed + n_random );
@@ -130,16 +124,16 @@ a1_vector order2random(
 	// Evaluate f_{uu} (theta , u).
 	//
 	// n_low, row, col, val_out
-	size_t n_low = ran_hes_rc.nnz();
+	size_t n_low = ran_hes_both_rc.nnz();
 	CppAD::vector<size_t> row(n_low), col(n_low);
 	sparse_rc ran_hes_mix_rc(n_random, n_fixed + n_random, n_low);
 	for(size_t k = 0; k < n_low; k++)
-	{	assert( ran_hes_rc.row()[k] >= n_fixed );
-		assert( ran_hes_rc.col()[k] >= n_fixed );
+	{	assert( ran_hes_both_rc.row()[k] >= n_fixed );
+		assert( ran_hes_both_rc.col()[k] >= n_fixed );
 		//
 		// row and column relative to just random effect
-		row[k] = ran_hes_rc.row()[k] - n_fixed;
-		col[k] = ran_hes_rc.col()[k] - n_fixed;
+		row[k] = ran_hes_both_rc.row()[k] - n_fixed;
+		col[k] = ran_hes_both_rc.col()[k] - n_fixed;
 		//
 		// row relative to random effects, coluimn relative to both
 		ran_hes_mix_rc.set(k, row[k], col[k] + n_fixed);
