@@ -212,7 +212,7 @@ bool laplace_obj_tst(void)
 	//
 	double pi   = CppAD::atan(1.0) * 4.0;
 	double constant_term = CppAD::log(2.0 * pi) * double(n_random) / 2.0;
-	const sparse_rc& ran_hes_rc( mixed_object.ran_hes_rcv_.pat() );
+	const sparse_rc& ran_hes_both_rc( mixed_object.ran_hes_rcv_.pat() );
 	// -----------------------------------------------------------------------
 	// F: recording beta as independent, theta_u as dynamic parameters
 	size_t abort_op_index = 0;
@@ -228,7 +228,7 @@ bool laplace_obj_tst(void)
 		n_fixed,
 		n_random,
 		mixed_object.ran_jac_a1fun_,
-		ran_hes_rc,
+		ran_hes_both_rc,
 		a1_beta_theta_u
 	);
 	//
@@ -255,7 +255,7 @@ bool laplace_obj_tst(void)
 		n_fixed,
 		n_random,
 		mixed_object.ran_jac_a1fun_,
-		ran_hes_rc,
+		ran_hes_both_rc,
 		a1_beta_theta_u
 	);
 	//

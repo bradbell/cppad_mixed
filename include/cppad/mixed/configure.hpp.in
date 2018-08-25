@@ -83,7 +83,7 @@ $end
 # if @ldlt_cholmod_01@
 # define CPPAD_MIXED_LDLT_CLASS              CppAD::mixed::ldlt_cholmod
 # else
-# define CPPAD_MIXED_LDLT_CLASS              CppAD::mixed::ldlt_eigen
+# define CPPAD_MIXED_LDLT_CLASS              CppAD::mixed::ldlt_eigen<double>
 # endif
 
 
