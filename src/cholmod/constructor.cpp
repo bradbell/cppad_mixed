@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -80,15 +80,17 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 ldlt_cholmod::ldlt_cholmod(size_t nrow)
 :
-nrow_      (nrow)            ,
-sym_matrix_(CPPAD_NULL)      ,
-factor_    (CPPAD_NULL)      ,
-rhs_       (CPPAD_NULL)      ,
-rhs_set_   (CPPAD_NULL)      ,
-sol_       (CPPAD_NULL)      ,
-sol_set_   (CPPAD_NULL)      ,
-work_one_  (CPPAD_NULL)      ,
-work_two_  (CPPAD_NULL)
+nrow_          (nrow)            ,
+init_done_     (false)           ,
+update_called_ (false)           ,
+sym_matrix_    (CPPAD_NULL)      ,
+factor_        (CPPAD_NULL)      ,
+rhs_           (CPPAD_NULL)      ,
+rhs_set_       (CPPAD_NULL)      ,
+sol_           (CPPAD_NULL)      ,
+sol_set_       (CPPAD_NULL)      ,
+work_one_      (CPPAD_NULL)      ,
+work_two_      (CPPAD_NULL)
 {	assert( CPPAD_NULL == NULL );
 	cholmod_start(&common_);
 

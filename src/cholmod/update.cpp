@@ -92,6 +92,11 @@ $codei%
 If it is true, the matrix was factored.
 Otherwise, the matrix is singular.
 
+$head Order of Operations$$
+This $icode ldlt_obj$$ function must be called,
+after the constructor and $cref/init/ldlt_eigen_init/$$
+and before any other member functions.
+
 $head Example$$
 The file $cref/ldlt_cholmod.cpp/ldlt_cholmod.cpp/update/$$ contains an
 example and test that uses this function.
@@ -108,7 +113,9 @@ $end
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 bool ldlt_cholmod::update(const CppAD::mixed::d_sparse_rcv& H_rcv)
-{
+{	assert( init_done_ );
+	update_called_ = true;
+	//
 	// set the values in sym_matrix_
 	double* H_x = (double *) sym_matrix_->x;
 # ifndef NDEBUG

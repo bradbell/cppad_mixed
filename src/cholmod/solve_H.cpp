@@ -105,7 +105,8 @@ void ldlt_cholmod::solve_H(
 	const CppAD::vector<size_t>& row      ,
 	const CppAD::vector<double>& val_in   ,
 	CppAD::vector<double>&       val_out  )
-{	assert( row.size() == val_in.size() );
+{	assert( update_called_ );
+	assert( row.size() == val_in.size() );
 	assert( row.size() == val_out.size() );
 	assert( row.size() <= nrow_ );
 # ifndef NDEBUG

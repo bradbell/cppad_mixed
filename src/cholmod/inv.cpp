@@ -151,6 +151,7 @@ void ldlt_cholmod::inv(
 // END_PROTOTYPE
 {	using CppAD::vector;
 	//
+	assert( update_called_ );
 	assert( col_in.size() == row_in.size() );
 	assert( val_out.size() == row_in.size() );
 	//

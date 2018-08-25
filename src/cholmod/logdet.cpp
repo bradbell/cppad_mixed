@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-18 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -73,7 +73,9 @@ $end
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 double ldlt_cholmod::logdet(size_t& negative) const
-{	// factorization P H P' = L D L'
+{	assert( update_called_ );
+	//
+	// factorization P H P' = L D L'
 	int*    L_p  = (int *) factor_->p;
 	double* L_x  = (double *) factor_->x;
 # ifndef NDEBUG

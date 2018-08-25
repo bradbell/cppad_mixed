@@ -92,6 +92,10 @@ possibly non-zero elements, but which elements
 are non-zero is not specified
 (expected to be set for each $cref ldlt_cholmod_solve_H$$ usage).
 
+$head Order of Operations$$
+This $icode ldlt_obj$$ function must be called once,
+after the constructor and before any other member functions.
+
 $head Example$$
 The file $cref/ldlt_cholmod.cpp/ldlt_cholmod.cpp/init/$$ contains an
 example and test that uses this function.
@@ -106,7 +110,8 @@ $end
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 void ldlt_cholmod::init(const CppAD::mixed::sparse_rc& H_rc)
-{
+{	assert( ! init_done_ );
+	//
 	assert(sym_matrix_ == CPPAD_NULL );
 	assert(factor_     == CPPAD_NULL );
 	assert(rhs_        == CPPAD_NULL );
@@ -224,6 +229,7 @@ void ldlt_cholmod::init(const CppAD::mixed::sparse_rc& H_rc)
 	for(k = 0; k < nzmax; k++)
 		assert( size_t(H_i[ H_info2cholmod_order_[k] ]) == H_rc.row()[k] );
 # endif
+	init_done_ = true;
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

@@ -115,7 +115,8 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 bool ldlt_cholmod::sim_cov(
 	const CppAD::vector<double>& w  ,
 	CppAD::vector<double>&       v  )
-{	//
+{	assert( update_called_ );
+	//
 	assert( factor_  != CPPAD_NULL );
 	assert( rhs_     != CPPAD_NULL );
 	assert( rhs_set_ != CPPAD_NULL );

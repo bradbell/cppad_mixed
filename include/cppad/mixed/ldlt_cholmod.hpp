@@ -100,7 +100,10 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 class ldlt_cholmod {
 private:
-	const size_t          nrow_;   // number of rows in sym_matrix_
+	const size_t          nrow_;            // number of rows in sym_matrix_
+	bool                  init_done_;       // has init been called
+	bool                  update_called_;   // has update been called
+	//
 	CppAD::vector<size_t> key_;    // temporary sorting keys
 	CppAD::vector<size_t> index_;  // temporary sorting indices
 	//
