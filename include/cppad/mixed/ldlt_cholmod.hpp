@@ -70,6 +70,7 @@ $srcfile%include/cppad/mixed/ldlt_cholmod.hpp
 
 $childtable%src/cholmod/constructor.cpp
 	%src/cholmod/init.cpp
+	%src/cholmod/pattern.cpp
 	%src/cholmod/update.cpp
 	%src/cholmod/logdet.cpp
 	%src/cholmod/solve_H.cpp
@@ -100,9 +101,11 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 class ldlt_cholmod {
 private:
-	const size_t          nrow_;            // number of rows in sym_matrix_
-	bool                  init_done_;       // has init been called
-	bool                  update_called_;   // has update been called
+	//
+	const size_t    nrow_;           // number of rows (and columns) in H
+	bool            init_done_;     // has init been called
+	bool            update_called_; // has update been called
+	sparse_rc       H_rc_;          // sparsity pattern for H
 	//
 	CppAD::vector<size_t> key_;    // temporary sorting keys
 	CppAD::vector<size_t> index_;  // temporary sorting indices
@@ -127,6 +130,9 @@ private:
 	cholmod_dense*    work_one_;   // first work space for solving equations
 	cholmod_dense*    work_two_;   // second work space for solving equations
 public:
+	// ----------------------------------------------------------------------
+	// non-const functions
+	//
 	// constructor
 	ldlt_cholmod(size_t nrow);
 	// destructor
@@ -135,8 +141,15 @@ public:
 	void init(const sparse_rc& hes_rc);
 	// factorize
 	bool update(const d_sparse_rcv& hes_rcv);
+	// ----------------------------------------------------------------------
+	// const functions
+	//
+	// pattern
+	const sparse_rc& pattern(void) const;
+	//
 	// log determinant
 	double logdet(size_t& negative) const;
+	//
 	// compute a subset of the inverse
 	void inv(
 		const CppAD::vector<size_t>& row      ,

@@ -89,8 +89,9 @@ Otherwise, the matrix is singular.
 
 $head Order of Operations$$
 This $icode ldlt_obj$$ function must be called,
-after the constructor and $cref/init/ldlt_eigen_init/$$
-and before any other member functions.
+after the constructor and $cref/init/ldlt_cholmod_init/$$
+and before any other member functions
+(except $cref/pattern/ldlt_cholmod_pattern/$$).
 
 $head Example$$
 The file $cref/ldlt_cholmod.cpp/ldlt_cholmod.cpp/update/$$ contains an

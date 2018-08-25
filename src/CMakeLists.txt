@@ -13,6 +13,7 @@ ADD_LIBRARY(cppad_mixed
 	cholmod/init.cpp
 	cholmod/inv.cpp
 	cholmod/logdet.cpp
+	cholmod/pattern.cpp
 	cholmod/solve_H.cpp
 	cholmod/sim_cov.cpp
 	cholmod/update.cpp

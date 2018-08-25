@@ -58,6 +58,9 @@ $cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
 and
 $cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
 
+$head H_rc_$$
+This member variable is set to a copy of $icode H_rc$$.
+
 $head Assumptions$$
 All of the $code cholmod$$ private pointers
 are null when this routine is called.
@@ -113,6 +116,9 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 void ldlt_cholmod::init(const CppAD::mixed::sparse_rc& H_rc)
 // END_PROTOTYPE
 {	assert( ! init_done_ );
+	//
+	// H_rc_
+	H_rc_ = H_rc;
 	//
 	assert(sym_matrix_ == CPPAD_NULL );
 	assert(factor_     == CPPAD_NULL );

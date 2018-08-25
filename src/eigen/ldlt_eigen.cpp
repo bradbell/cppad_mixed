@@ -53,7 +53,10 @@ $end
 template <typename Double>
 ldlt_eigen<Double>::ldlt_eigen(size_t n_row)
 // END_PROTOTYPE_CTOR
-: n_row_(n_row), init_done_(false), update_called_(false)
+:
+n_row_(n_row),
+init_done_(false),
+update_called_(false)
 {	ptr_ = new eigen_ldlt; }
 
 // destructor
@@ -105,6 +108,9 @@ $cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
 and
 $cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
 
+$head H_rc_$$
+This member variable is set to a copy of $icode H_rc$$.
+
 $head Order of Operations$$
 This $icode ldlt_obj$$ function must be called once,
 after the constructor and before any other member functions.
@@ -120,8 +126,11 @@ template <typename Double>
 void ldlt_eigen<Double>::init(const sparse_rc& H_rc)
 // END_PROTOTYPE_INIT
 {	assert( ! init_done_ );
-	CppAD::vector<Double> not_used(0);
 	//
+	// H_rc_
+	H_rc_ = H_rc;
+	//
+	CppAD::vector<Double> not_used(0);
 	eigen_sparse hessian_pattern;
 	CppAD::mixed::triple2eigen(
 			hessian_pattern  ,
@@ -137,6 +146,63 @@ void ldlt_eigen<Double>::init(const sparse_rc& H_rc)
 	//
 	init_done_ = true;
 }
+/*
+-------------------------------------------------------------------------------
+$begin ldlt_eigen_pattern$$
+$spell
+	rcv
+	ldlt_eigen
+	obj
+	CppAD
+	init
+	rc
+$$
+
+$section Update Factorization Using new Matrix Values$$
+
+$head Syntax$$
+$icode%H_rc% = %ldlt_obj%.pattern()%$$
+
+$head Prototype$$
+$srcfile%src/eigen/ldlt_eigen.cpp
+	%0%// BEGIN_PROTOTYPE_PATTERN%// END_PROTOTYPE_PATTERN%1%$$
+
+$head Private$$
+The $cref ldlt_eigen$$ class is an
+$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
+$head ldlt_obj$$
+This object has prototype
+$codei%
+	CppAD::mixed::ldlt_eigen %ldlt_obj%
+%$$
+In addition, it must have a previous call to
+$cref ldlt_eigen_init$$.
+
+$head H_rc$$
+The return value is a copy of the sparsity pattern
+$cref/H_rc/ldlt_eigen_init/H_rc/$$ in the corresponding call to
+$icode%ldlt_obj%.init(%H_rc%)%$$.
+
+$head Order of Operations$$
+This $icode ldlt_obj$$ function must be called,
+after the constructor and $cref/init/ldlt_eigen_init/$$.
+
+$head Example$$
+The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/pattern/$$ contains an
+example and test that uses this function.
+
+$end
+*/
+// BEGIN_PROTOTYPE_PATTERN
+template <typename Double>
+const sparse_rc& ldlt_eigen<Double>::pattern(void) const
+// END_PROTOTYPE_PATTERN
+{	assert( init_done_ );
+	return H_rc_;
+}
+
 /*
 ------------------------------------------------------------------------------
 $begin ldlt_eigen_update$$
@@ -348,13 +414,13 @@ $cref ldlt_eigen_update$$.
 $head negative$$
 The input value of $icode negative$$ does no matter,
 upon return it is the number of elements of
-$cref/D/ldlt_cholmod/Factorization/D/$$
+$cref/D/ldlt_eigen/Factorization/D/$$
 that are less than zero.
 
 $head logdet$$
 This return value $icode logdet$$
 is the log of the absolute value of the determinant corresponding
-to the previous call to $cref ldlt_cholmod_update$$.
+to the previous call to $cref ldlt_eigen_update$$.
 If the matrix is singular, $icode logdet$$ is
 minus infinity.
 

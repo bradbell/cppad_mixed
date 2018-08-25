@@ -12,6 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 $begin ldlt_eigen.cpp$$
 $spell
 	rcv
+	rc
 	nrow
 	init
 	CppAD
@@ -78,6 +79,13 @@ See the following under
 $cref/Source Code/ldlt_eigen.cpp/Source Code/$$ below:
 $codep
 	ldlt_obj.init( H_rcv.pat() );
+$$
+
+$head pattern$$
+See the following under
+$cref/Source Code/ldlt_eigen.cpp/Source Code/$$ below:
+$codep
+	H_rc = ldlt_obj.pattern();
 $$
 
 $head update$$
@@ -166,6 +174,14 @@ bool ldlt_eigen_xam(void)
 	//
 	// initialize the matrix using only the sparsity pattern
 	ldlt_obj.init( H_rcv.pat() );
+
+	// check the pattern function
+	const CppAD::mixed::sparse_rc& pattern( ldlt_obj.pattern() );
+	ok &= pattern.nnz() == nnz;
+	for(size_t k = 0; k < nnz; ++k)
+	{	ok &= pattern.row()[k] == H_rc.row()[k];
+		ok &= pattern.col()[k] == H_rc.col()[k];
+	}
 
 	// factor the matrix using the values
 	ldlt_obj.update( H_rcv );

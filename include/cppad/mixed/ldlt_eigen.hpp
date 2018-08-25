@@ -85,10 +85,12 @@ private:
 	typedef Eigen::PermutationMatrix<Eigen::Dynamic>          eigen_perm;
 	typedef Eigen::SimplicialLDLT<eigen_sparse, Eigen::Lower> eigen_ldlt;
 	//
-	const size_t    n_row_;
-	eigen_ldlt*     ptr_;
-	bool            init_done_;
-	bool            update_called_;
+	const size_t    n_row_;         // number of rows (and columns) in H
+	bool            init_done_;     // has init been called
+	bool            update_called_; // has update been called
+	sparse_rc       H_rc_;          // sparsity pattern for H
+	//
+	eigen_ldlt*     ptr_;           // eigens ldlt factorization
 	//
 public:
 	// ----------------------------------------------------------------------
@@ -104,6 +106,9 @@ public:
 	bool update(const CppAD::sparse_rcv<s_vector, v_vector>& hes_rcv);
 	// ----------------------------------------------------------------------
 	// const functions
+	//
+	// pattern
+	const sparse_rc& pattern(void) const;
 	//
 	// split
 	void split(eigen_sparse& L, eigen_vector& D, eigen_perm& P) const;
