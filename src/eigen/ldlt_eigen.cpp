@@ -286,9 +286,18 @@ $end
 */
 // BEGIN_PROTOTYPE_UPDATE
 template <typename Double>
-bool ldlt_eigen<Double>::update(const CppAD::sparse_rcv<s_vector, v_vector>& H_rcv)
+bool ldlt_eigen<Double>::update(
+	const CppAD::sparse_rcv<s_vector, v_vector>& H_rcv
+)
 // END_PROTOTYPE_UPDATE
 {	assert( init_done_ );
+# ifndef NDEBUG
+	assert( H_rcv.nnz() == H_rc_.nnz() );
+	for(size_t k = 0; k < H_rc_.nnz(); ++k)
+	{	assert( H_rcv.row()[k] == H_rc_.row()[k] );
+		assert( H_rcv.col()[k] == H_rc_.col()[k] );
+	}
+# endif
 	//
 	eigen_sparse hessian;
 	CppAD::mixed::triple2eigen(
