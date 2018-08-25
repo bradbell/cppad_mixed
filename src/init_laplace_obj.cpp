@@ -122,12 +122,18 @@ void cppad_mixed::init_laplace_obj(
 	// for the lower triangle of the random Hessian
 	const sparse_rc& ran_hes_both_rc( ran_hes_rcv_.pat() );
 	//
+	// sparsity pattern with respec to u
+	const sparse_rc& ran_hes_uu_rc( a1_ldlt_ran_hes_.pattern() );
+	//
+	// row, col
+	const s_vector& row( ran_hes_uu_rc.row() );
+	const s_vector& col( ran_hes_uu_rc.col() );
+	//
 	// nnz
 	size_t nnz = ran_hes_both_rc.nnz();
 	//
 	// ran_hes_uu_rc
 	// ran_hes_both_rc
-	sparse_rc ran_hes_uu_rc( n_random_, n_random_,            nnz);
 	sparse_rc ran_hes_mix_rc(n_random_, n_fixed_ + n_random_, nnz);
 	for(size_t k = 0; k < nnz; k++)
 	{	size_t r = ran_hes_both_rc.row()[k];
@@ -137,15 +143,9 @@ void cppad_mixed::init_laplace_obj(
 		assert( c >= n_fixed_ );
 		assert( c <= r );
 		//
-		// row and column relative to just random effect
-		ran_hes_uu_rc.set(k,  r - n_fixed_, c - n_fixed_ );
-		//
 		// row relative to random effects, column relative to both
 		ran_hes_mix_rc.set(k, r - n_fixed_, c);
 	}
-	// row, col
-	const s_vector& row( ran_hes_uu_rc.row() );
-	const s_vector& col( ran_hes_uu_rc.col() );
 	//
 	// start recording a1_double operations
 	// beta:    independent variables
