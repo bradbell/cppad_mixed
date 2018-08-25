@@ -30,17 +30,18 @@ $head Syntax$$
 $codei%CppAD::mixed::ldlt_cholmod %ldlt_obj%(%nrow%)%$$
 
 
+$head Prototype$$
+$srcfile%src/cholmod/constructor.cpp
+	%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+
 $head Private$$
 The $cref ldlt_cholmod$$ class is an
 $cref/implementation detail/ldlt_cholmod/Private/$$ and not part of the
 $cref/CppAD::mixed/namespace/Private/$$ user API.
 
 $head nrow_$$
-The argument $icode nrow$$ has prototype
-$codei%
-	size_t %nrow%
-%$$
-It is the number of rows in the symmetric matrix
+The argument $icode nrow$$
+is the number of rows in the symmetric matrix
 we will compute the LDLT factor of.
 The member variable $code nrow_$$ is set to this value.
 
@@ -78,7 +79,9 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
+// BEGIN_PROTOTYPE
 ldlt_cholmod::ldlt_cholmod(size_t nrow)
+// END_PROTOTYPE
 :
 nrow_          (nrow)            ,
 init_done_     (false)           ,

@@ -29,6 +29,9 @@ $section Update Factorization Using new Matrix Values$$
 $head Syntax$$
 $icode%ok% = %ldlt_obj%.update(%H_rcv%)%$$
 
+$head Prototype$$
+$srcfile%src/cholmod/update.cpp
+	%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
 
 $head Private$$
 The $cref ldlt_cholmod$$ class is an
@@ -48,11 +51,7 @@ In addition, it must have a previous call to
 $cref ldlt_cholmod_init$$.
 
 $head H_rcv$$
-This argument has prototype
-$codei%
-	const CppAD::mixed::d_sparse_rcv& %H_rcv%
-%$$
-It contains new values for the
+This argument contains new values for the
 $cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
 we are computing the LDLT factor of.
 The $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$
@@ -85,11 +84,7 @@ $codei%
 %$$
 
 $head ok$$
-The return value has prototype
-$codei%
-	bool %ok%
-%$$
-If it is true, the matrix was factored.
+If $icode ok$$ is true, the matrix was factored.
 Otherwise, the matrix is singular.
 
 $head Order of Operations$$
@@ -112,7 +107,9 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
+// BEGIN_PROTOTYPE
 bool ldlt_cholmod::update(const CppAD::mixed::d_sparse_rcv& H_rcv)
+// END_PROTOTYPE
 {	assert( init_done_ );
 	update_called_ = true;
 	//

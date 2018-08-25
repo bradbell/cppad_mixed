@@ -26,6 +26,10 @@ $section Simulations with Covariance Corresponding to Factored Matrix$$
 $head Syntax$$
 $icode%ok% = %ldlt_obj%.sim_cov(%w%, %v%)%$$
 
+$head Prototype$$
+$srcfile%src/cholmod/sim_cov.cpp
+	%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+
 $head Private$$
 The $cref ldlt_cholmod$$ class is an
 $cref/implementation detail/ldlt_cholmod/Private/$$ and not part of the
@@ -52,18 +56,12 @@ In addition, it must have a previous call to
 $cref ldlt_cholmod_update$$.
 
 $head w$$
-This argument has prototype
-$codei%
-	const CppAD::vector<double>& %w%
-%$$
-and its size is equal to the number of rows in $latex H$$.
+This argument's
+size is equal to the number of rows in $latex H$$.
 
 $head v$$
-This argument has prototype
-$codei%
-	CppAD::vector<double>& %v%
-%$$
-and its size is equal to the number of rows in $latex H$$.
+This argument's
+size is equal to the number of rows in $latex H$$.
 The input value of its elements does not matter.
 Upon return
 $latex \[
@@ -90,10 +88,6 @@ $code std::numeric_limits<double>::epsilon()$$,
 and $latex \max(D)$$ is the largest element in $latex D$$.
 
 $head ok$$
-The return value has prototype
-$codei%
-	bool %ok%
-%$$
 If $latex \max(D) > 0$$, this routine terminates with $icode ok$$
 equal to true.
 Otherwise it is false and the output values in $icode v$$
@@ -112,9 +106,11 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
+// BEGIN_PROTOTYPE
 bool ldlt_cholmod::sim_cov(
 	const CppAD::vector<double>& w  ,
 	CppAD::vector<double>&       v  )
+// END_PROTOTYPE
 {	assert( update_called_ );
 	//
 	assert( factor_  != CPPAD_NULL );

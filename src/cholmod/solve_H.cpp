@@ -26,6 +26,10 @@ $section Solve Linear Equations Using Factor$$
 $head Syntax$$
 $icode%ldlt_obj%.solve_H(%row%, %val_in%, %val_out%)%$$
 
+$head Prototype$$
+$srcfile%src/cholmod/solve_H.cpp
+	%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+
 $head Private$$
 The $cref ldlt_cholmod$$ class is an
 $cref/implementation detail/ldlt_cholmod/Private/$$ and not part of the
@@ -47,11 +51,8 @@ In addition, it must have a previous call to
 $cref ldlt_cholmod_update$$.
 
 $head row$$
-This argument has prototype
-$codei%
-	const CppAD::vector<size_t>& %row%
-%$$
-It contains all of the rows of column vector $latex b$$ that are
+This argument
+contains all of the rows of column vector $latex b$$ that are
 non-zero and the rows of the column vector $icode x$$
 that are desired.
 These values are in strictly increasing order; i.e.,
@@ -62,11 +63,8 @@ It follows that $icode%row%.size()%$$ is less than or equal
 $cref/nrow_/ldlt_cholmod_ctor/nrow_/$$.
 
 $head val_in$$
-This argument has prototype
-$codei%
-	const CppAD::vector<double>& %val_in%
-%$$
-and it has the same size as $icode row$$.
+This argument
+has the same size as $icode row$$.
 It specifies the values in the column vector $latex b$$
 for each of the corresponding rows; i.e.,
 for $icode%k% = 0 , %...%, %row%.size()-1%$$,
@@ -75,11 +73,8 @@ $codei%
 %$$.
 
 $head val_out$$
-This argument has prototype
-$codei%
-	const CppAD::vector<double>& %val_out%
-%$$
-and it has the same size as $icode row$$.
+This argument
+has the same size as $icode row$$.
 On input, the value of its elements do not matter.
 Upon return, it contains the values in the column vector $latex b$$
 for each of the corresponding rows; i.e.,
@@ -87,7 +82,6 @@ for $icode%k% = 0 , %...%, %row%.size()-1%$$,
 $codei%
 	%x%[ %row%[%k%] ] = %val_out%[%k%]
 %$$.
-
 
 $head Example$$
 The file $cref/ldlt_cholmod.cpp/ldlt_cholmod.cpp/solve_H/$$ contains an
@@ -101,10 +95,12 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
+// BEGIN_PROTOTYPE
 void ldlt_cholmod::solve_H(
 	const CppAD::vector<size_t>& row      ,
 	const CppAD::vector<double>& val_in   ,
 	CppAD::vector<double>&       val_out  )
+// END_PROTOTYPE
 {	assert( update_called_ );
 	assert( row.size() == val_in.size() );
 	assert( row.size() == val_out.size() );

@@ -32,6 +32,10 @@ $head Syntax$$
 $icode%ldlt_obj%.init(%H_rc%)
 %$$
 
+$head Prototype$$
+$srcfile%src/cholmod/init.cpp
+	%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+
 $head Private$$
 The $cref ldlt_cholmod$$ class is an
 $cref/implementation detail/ldlt_cholmod/Private/$$ and not part of the
@@ -44,11 +48,7 @@ $codei%
 %$$
 
 $head H_rc$$
-This argument had prototype
-$codei%
-	const CppAD::mixed::sparse_rc& %H_rc%
-%$$
-It is a
+This argument is a
 $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$ for the
 square matrices with
 $cref/nrow_/ldlt_cholmod_ctor/nrow_/$$ rows that we will compute the
@@ -109,7 +109,9 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
+// BEGIN_PROTOTYPE
 void ldlt_cholmod::init(const CppAD::mixed::sparse_rc& H_rc)
+// END_PROTOTYPE
 {	assert( ! init_done_ );
 	//
 	assert(sym_matrix_ == CPPAD_NULL );

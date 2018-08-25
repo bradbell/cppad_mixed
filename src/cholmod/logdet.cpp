@@ -26,6 +26,10 @@ $head Syntax$$
 $icode%logdet% = %ldlt_obj%.logdet(%negative%)
 %$$
 
+$head Prototype$$
+$srcfile%src/cholmod/logdet.cpp
+	%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+
 $head Private$$
 The $cref ldlt_cholmod$$ class is an
 $cref/implementation detail/ldlt_cholmod/Private/$$ and not part of the
@@ -40,21 +44,14 @@ In addition, it must have a previous call to
 $cref ldlt_cholmod_update$$.
 
 $head negative$$
-This argument has prototype
-$codei%
-	size_t& %negative%
-%$$
-Its input value does no matter,
-upon return it is the number of elements of
+The input value of this argument does no matter.
+Upon return, it is the number of elements of
 $cref/D/ldlt_cholmod/Factorization/D/$$
 that are less than zero.
 
 $head logdet$$
-This return value has prototype
-$codei%
-	double %logdet%
-%$$
-Is the log of the absolute value of the determinant corresponding
+This return value
+is the log of the absolute value of the determinant corresponding
 to the previous call to $cref ldlt_cholmod_update$$.
 If the matrix is singular, $icode logdet$$ is
 minus infinity.
@@ -72,7 +69,9 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
+// BEGIN_PROTOTYPE
 double ldlt_cholmod::logdet(size_t& negative) const
+// END_PROTOTYPE
 {	assert( update_called_ );
 	//
 	// factorization P H P' = L D L'
