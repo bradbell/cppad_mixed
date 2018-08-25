@@ -79,10 +79,20 @@ bool order2random_xam(void)
 	}
 	CppAD::ADFun<a1_double> jac_a1fun(a2_theta_u, a2_jac);
 	//
-	// ran_hes_rc = sparsity pattern for f_{uu} (theta , u)
-	CppAD::mixed::sparse_rc ran_hes_rc(n_both, n_both, n_random);
+	// ran_hes_uu_rc = sparsity pattern for f_{uu} (theta , u)
+	CppAD::mixed::sparse_rc ran_hes_uu_rc(n_random, n_random, n_random);
 	for(size_t k = 0; k < n_random; k++)
-		ran_hes_rc.set(k, k + n_fixed, k + n_fixed);
+		ran_hes_uu_rc.set(k, k, k);
+	//
+	// ran_hes_uu_rcv = hessian f_{uu} (theta, u);
+	CppAD::mixed::a1_sparse_rcv ran_hes_uu_rcv( ran_hes_uu_rc );
+	for(size_t k = 0; k < n_random; ++k)
+		ran_hes_uu_rcv.set(k, a1_double(2.0) );
+	//
+	// a1_ldlt_ran_hes
+	CppAD::mixed::ldlt_eigen<a1_double> a1_ldlt_ran_hes(n_random);
+	a1_ldlt_ran_hes.init( ran_hes_uu_rcv.pat() );
+	a1_ldlt_ran_hes.update( ran_hes_uu_rcv );
 	//
 	// record W(beta, theta, u)
 	vector<a1_double> a1_beta_theta_u(n_all);
@@ -94,7 +104,7 @@ bool order2random_xam(void)
 		n_fixed,
 		n_random,
 		jac_a1fun,
-		ran_hes_rc,
+		a1_ldlt_ran_hes,
 		a1_beta_theta_u
 	);
 	CppAD::ADFun<double> W(a1_beta_theta_u, a1_u_opt);

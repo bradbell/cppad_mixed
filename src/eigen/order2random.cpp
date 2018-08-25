@@ -16,6 +16,9 @@ $spell
 	cppad
 	hes
 	Jacobian
+	ldlt
+	uu
+	const
 	rc
 $$
 
@@ -26,7 +29,7 @@ $icode%W% = CppAD::mixed::order2random(
 	%n_fixed%,
 	%n_random%,
 	%jac_a1fun%,
-	%ran_hes_both_rc%,
+	%a1_ldlt_ran_hes%,
 	%beta_theta_u%
 )%$$
 
@@ -56,11 +59,11 @@ This is the Jacobian of the random likelihood
 with respect to the random effects
 $latex f_u ( \theta, u )$$.
 
-$head ran_hes_both_rc$$
-This is the sparsity pattern for the lower triangle of the Hessian w.r.t the
-random effect.
-The indices in $icode ran_hes_both_rc$$ are with respect to both the fixed
-and random effects and hence are greater than or equal $icode n_fixed$$.
+$head a1_ldlt_ran_hes$$
+This is the LDLT factorization for the
+for the Hessian w.r.t the random effect; i.e., f_uu ( theta , u ).
+Note that this object is $code const$$ and hence the previous call to
+$cref/update/ldlt_eigen_update/$$ corresponded to (theta, u).
 
 $head beta_theta_u$$
 This vector has size $codei%2*%n_fixed% + %n_random%$$
@@ -92,12 +95,12 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // BEGIN PROTOTYPE
 a1_vector order2random(
-	cppad_mixed&             mixed_object    ,
-	size_t                   n_fixed         ,
-	size_t                   n_random        ,
-	CppAD::ADFun<a1_double>& jac_a1fun       ,
-	const sparse_rc&         ran_hes_both_rc ,
-	const a1_vector&         beta_theta_u    )
+	cppad_mixed&                        mixed_object    ,
+	size_t                              n_fixed         ,
+	size_t                              n_random        ,
+	CppAD::ADFun<a1_double>&            jac_a1fun       ,
+	const ldlt_eigen<a1_double>&        a1_ldlt_ran_hes ,
+	const a1_vector&                    beta_theta_u    )
 // END PROTOTYPE
 {	assert( beta_theta_u.size() == 2 * n_fixed + n_random );
 	//
@@ -123,21 +126,23 @@ a1_vector order2random(
 	// -----------------------------------------------------------------------
 	// Evaluate f_{uu} (theta , u).
 	//
-	// n_low, row, col, val_out
-	size_t n_low = ran_hes_both_rc.nnz();
-	CppAD::vector<size_t> row(n_low), col(n_low);
+	// ran_hes_uu_rc
+	const sparse_rc& ran_hes_uu_rc( a1_ldlt_ran_hes.pattern() );
+	//
+	// n_low
+	size_t n_low = ran_hes_uu_rc.nnz();
+	//
+	// row, col
+	const s_vector& row( ran_hes_uu_rc.row() );
+	const s_vector& col( ran_hes_uu_rc.col() );
+	//
+	// ran_hes_mix_rc
 	sparse_rc ran_hes_mix_rc(n_random, n_fixed + n_random, n_low);
 	for(size_t k = 0; k < n_low; k++)
-	{	assert( ran_hes_both_rc.row()[k] >= n_fixed );
-		assert( ran_hes_both_rc.col()[k] >= n_fixed );
-		//
-		// row and column relative to just random effect
-		row[k] = ran_hes_both_rc.row()[k] - n_fixed;
-		col[k] = ran_hes_both_rc.col()[k] - n_fixed;
-		//
-		// row relative to random effects, coluimn relative to both
+	{	// row relative to random effects, column relative to both
 		ran_hes_mix_rc.set(k, row[k], col[k] + n_fixed);
 	}
+	// val_out
 	a1_vector val_out = mixed_object.ran_likelihood_hes(theta, u, row, col);
 	if( val_out.size() == 0 )
 	{	// The user has not defined ran_likelihood_hes, so use AD to calcuate
