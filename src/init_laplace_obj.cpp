@@ -147,12 +147,6 @@ void cppad_mixed::init_laplace_obj(
 	const s_vector& row( ran_hes_uu_rc.row() );
 	const s_vector& col( ran_hes_uu_rc.col() );
 	//
-	// ldlt_obj
-	CppAD::mixed::ldlt_eigen<a1_double> ldlt_obj(n_random_);
-	//
-	// ldlt_obj.init
-	ldlt_obj.init( ran_hes_uu_rc );
-	//
 	// start recording a1_double operations
 	// beta:    independent variables
 	// theta_u: dynamic parameters
@@ -182,8 +176,8 @@ void cppad_mixed::init_laplace_obj(
 	for(size_t k = 0; k < nnz; ++k)
 		ran_hes_uu_rcv.set(k, hes_val[k] );
 	//
-	// ldlt_obj.update
-	ldlt_obj.update( ran_hes_uu_rcv );
+	// a1_ldlt_ran_hes_.update
+	a1_ldlt_ran_hes_.update( ran_hes_uu_rcv );
 	//
 	// beta_theta_u
 	a1_vector beta_theta_u(2 * n_fixed_ + n_random_);
@@ -224,11 +218,11 @@ void cppad_mixed::init_laplace_obj(
 		ran_hes_uu_rcv.set(k, hes_val[k]);
 	//
 	// ldlt_obj.update
-	ldlt_obj.update( ran_hes_uu_rcv );
+	a1_ldlt_ran_hes_.update( ran_hes_uu_rcv );
 	//
 	// logdet [ f_{uu} ( beta , W ) ]
 	size_t negative;
-	a1_double logdet = ldlt_obj.logdet(negative);
+	a1_double logdet = a1_ldlt_ran_hes_.logdet(negative);
 	assert( negative == 0 );
 	//
 	// Evaluate the random likelihood using (beta, W)

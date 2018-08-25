@@ -16,9 +16,9 @@ $spell
 	ldlt_ran_hes
 	init
 	cppad
-	const
 	CppAD
-	cholesky
+	eigen
+	Cholesky
 $$
 
 $section Initialize Cholesky Factor of Hessian of Random Likelihood$$
@@ -66,6 +66,13 @@ the corresponding row and column index in $code ran_hes_rcv_$$ is
 $code n_fixed_$$ greater.
 
 
+$head a1_ldlt_ran_hes_$$
+The member variable
+$codei%
+	CppAD::mixed::ldlt_eigen<a1_double> a1_ldlt_ran_hes_
+%$$
+is initialized the same as $code ldlt_ran_hes_$$.
+
 $end
 */
 # include <cppad/mixed/cppad_mixed.hpp>
@@ -87,6 +94,9 @@ void cppad_mixed::init_ldlt_ran_hes(void)
 	//
 	// initialize ldlt_ran_hes_
 	ldlt_ran_hes_.init(hes_rc);
+	//
+	// initialize a1_ldlt_ran_hes_
+	a1_ldlt_ran_hes_.init(hes_rc);
 	//
 	init_ldlt_ran_hes_done_ = true;
 	return;

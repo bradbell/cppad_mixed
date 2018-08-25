@@ -207,7 +207,8 @@ init_fix_like_done_(false)      ,
 init_fix_con_done_(false)       ,
 initialize_done_(false)         ,
 cppad_error_handler_(handler)   ,
-ldlt_ran_hes_(n_random)
+ldlt_ran_hes_(n_random)         ,
+a1_ldlt_ran_hes_(n_random)
 { }
 
 // base class destructor
