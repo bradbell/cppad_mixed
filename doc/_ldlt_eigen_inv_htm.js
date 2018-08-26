@@ -53,7 +53,9 @@ var list_down2 = [
 var list_down1 = [
 'ldlt_eigen_ctor.htm',
 'ldlt_eigen_init.htm',
+'ldlt_eigen_pattern.htm',
 'ldlt_eigen_update.htm',
+'ldlt_eigen_split.htm',
 'ldlt_eigen_logdet.htm',
 'ldlt_eigen_solve_h.htm',
 'ldlt_eigen_sim_cov.htm',
@@ -61,7 +63,6 @@ var list_down1 = [
 'ldlt_eigen.cpp.htm'
 ];
 var list_current0 = [
-'ldlt_eigen_inv.htm#Under Construction',
 'ldlt_eigen_inv.htm#Syntax',
 'ldlt_eigen_inv.htm#Prototype',
 'ldlt_eigen_inv.htm#Private',

@@ -54,6 +54,7 @@ var list_down1 = [
 'ldlt_cholmod_ctor.htm',
 'ldlt_cholmod_dtor.htm',
 'ldlt_cholmod_init.htm',
+'ldlt_cholmod_pattern.htm',
 'ldlt_cholmod_update.htm',
 'ldlt_cholmod_logdet.htm',
 'ldlt_cholmod_solve_h.htm',

@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Second Order Representation of Random Effects, W(beta, theta, u)</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Second Order Representation of Random Effects, W(beta, theta, u)">
-<meta name="keywords" id="keywords" content=" second order representation random effects w(beta theta u) syntax prototype private mixed_object n_fixed n_random a1fun jac_a1fun ran_hes_rc beta_theta_u w example ">
+<meta name="keywords" id="keywords" content=" second order representation random effects w(beta theta u) syntax prototype private mixed_object n_fixed n_random jac_a1fun a1_ldlt_ran_hes beta_theta_u w example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -111,9 +111,8 @@ A:active { color : purple }
 <option>mixed_object</option>
 <option>n_fixed</option>
 <option>n_random</option>
-<option>a1fun</option>
 <option>jac_a1fun</option>
-<option>ran_hes_rc</option>
+<option>a1_ldlt_ran_hes</option>
 <option>beta_theta_u</option>
 <option>W</option>
 <option>Example</option>
@@ -134,9 +133,8 @@ A:active { color : purple }
 <code><i><font color="black"><span style='white-space: nowrap'>W</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;CppAD::mixed::order2random(<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>a1fun</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac_a1fun</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ran_hes_rc</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>a1_ldlt_ran_hes</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>beta_theta_u</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 )</span></font></code>
 
@@ -147,13 +145,12 @@ A:active { color : purple }
 
 <pre><tt>    
     <font color="#008080">a1_vector</font> <b><font color="#000000">order2random</font></b><font color="#990000">(</font>
-     cppad_mixed<font color="#990000">&amp;</font>             mixed_object    <font color="#990000">,</font>
-     <font color="#008080">size_t</font>                   n_fixed         <font color="#990000">,</font>
-     <font color="#008080">size_t</font>                   n_random        <font color="#990000">,</font>
-     CppAD<font color="#990000">::</font>ADFun<font color="#990000">&lt;</font>a1_double<font color="#990000">&gt;&amp;</font> a1fun           <font color="#990000">,</font>
-     CppAD<font color="#990000">::</font>ADFun<font color="#990000">&lt;</font>a1_double<font color="#990000">&gt;&amp;</font> jac_a1fun       <font color="#990000">,</font>
-     <b><font color="#0000FF">const</font></b> sparse_rc<font color="#990000">&amp;</font>         ran_hes_rc      <font color="#990000">,</font>
-     <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>         beta_theta_u    <font color="#990000">)</font></tt></pre>
+     cppad_mixed<font color="#990000">&amp;</font>                        mixed_object    <font color="#990000">,</font>
+     <font color="#008080">size_t</font>                              n_fixed         <font color="#990000">,</font>
+     <font color="#008080">size_t</font>                              n_random        <font color="#990000">,</font>
+     CppAD<font color="#990000">::</font>ADFun<font color="#990000">&lt;</font>a1_double<font color="#990000">&gt;&amp;</font>            jac_a1fun       <font color="#990000">,</font>
+     ldlt_eigen<font color="#990000">&lt;</font>a1_double<font color="#990000">&gt;&amp;</font>              a1_ldlt_ran_hes <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>                    beta_theta_u    <font color="#990000">)</font></tt></pre>
 <br>
 <b><big><a name="Private" id="Private">Private</a></big></b>
 <br>
@@ -186,14 +183,6 @@ number of random effects
 
 <br>
 <br>
-<b><big><a name="a1fun" id="a1fun">a1fun</a></big></b>
-<br>
-This is the random likelihood
-<a href="theory.htm#Random Likelihood, f(theta, u)" target="_top"><span style='white-space: nowrap'>f(theta,&nbsp;u)</span></a>
-.
-
-<br>
-<br>
 <b><big><a name="jac_a1fun" id="jac_a1fun">jac_a1fun</a></big></b>
 <br>
 This is the Jacobian of the random likelihood
@@ -204,16 +193,13 @@ f_u ( \theta, u )
 
 <br>
 <br>
-<b><big><a name="ran_hes_rc" id="ran_hes_rc">ran_hes_rc</a></big></b>
+<b><big><a name="a1_ldlt_ran_hes" id="a1_ldlt_ran_hes">a1_ldlt_ran_hes</a></big></b>
 <br>
-This is the sparsity pattern for the lower triangle of the Hessian w.r.t the
-random effect.
-The indices in 
-<code><i><font color="black"><span style='white-space: nowrap'>ran_hes_rc</span></font></i></code>
- are with respect to both the fixed
-and random effects and hence are greater than or equal 
-<code><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i></code>
-.
+This is the LDLT factorization for the
+for the Hessian w.r.t the random effect; i.e., f_uu ( theta , u ).
+Note that this object is <code><font color="blue">const</font></code> and hence the previous call to
+<a href="ldlt_eigen_update.htm" target="_top"><span style='white-space: nowrap'>update</span></a>
+ corresponded to (theta, u).
 
 <br>
 <br>

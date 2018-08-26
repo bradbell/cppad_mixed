@@ -9,7 +9,7 @@ var list_up0 = [
 'cppad_mixed.htm',
 'namespace.htm',
 'ldlt_eigen.htm',
-'ldlt_eigen_update.htm'
+'ldlt_eigen_pattern.htm'
 ];
 var list_down3 = [
 'install_unix.htm',
@@ -63,16 +63,13 @@ var list_down1 = [
 'ldlt_eigen.cpp.htm'
 ];
 var list_current0 = [
-'ldlt_eigen_update.htm#Syntax',
-'ldlt_eigen_update.htm#Prototype',
-'ldlt_eigen_update.htm#Private',
-'ldlt_eigen_update.htm#Purpose',
-'ldlt_eigen_update.htm#ldlt_obj',
-'ldlt_eigen_update.htm#H_rcv',
-'ldlt_eigen_update.htm#ptr_',
-'ldlt_eigen_update.htm#ok',
-'ldlt_eigen_update.htm#Order of Operations',
-'ldlt_eigen_update.htm#Example'
+'ldlt_eigen_pattern.htm#Syntax',
+'ldlt_eigen_pattern.htm#Prototype',
+'ldlt_eigen_pattern.htm#Private',
+'ldlt_eigen_pattern.htm#ldlt_obj',
+'ldlt_eigen_pattern.htm#H_rc',
+'ldlt_eigen_pattern.htm#Order of Operations',
+'ldlt_eigen_pattern.htm#Example'
 ];
 function choose_across0(item)
 {	var index          = item.selectedIndex;

@@ -53,7 +53,9 @@ var list_down2 = [
 var list_down1 = [
 'ldlt_eigen_ctor.htm',
 'ldlt_eigen_init.htm',
+'ldlt_eigen_pattern.htm',
 'ldlt_eigen_update.htm',
+'ldlt_eigen_split.htm',
 'ldlt_eigen_logdet.htm',
 'ldlt_eigen_solve_h.htm',
 'ldlt_eigen_sim_cov.htm',
@@ -62,6 +64,7 @@ var list_down1 = [
 ];
 var list_current0 = [
 'ldlt_eigen_ctor.htm#Syntax',
+'ldlt_eigen_ctor.htm#Prototype',
 'ldlt_eigen_ctor.htm#Private',
 'ldlt_eigen_ctor.htm#n_row_',
 'ldlt_eigen_ctor.htm#ptr_'

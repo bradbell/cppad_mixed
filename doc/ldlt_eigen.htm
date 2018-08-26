@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>An Eigen LDLT Factor Class</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="An Eigen LDLT Factor Class">
-<meta name="keywords" id="keywords" content=" eigen ldlt factor class see also private factorization h l d p eigen_sparse eigen_ldlt_eigen example ">
+<meta name="keywords" id="keywords" content=" eigen ldlt factor class see also private factorization h l d p double example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -101,7 +101,9 @@ A:active { color : purple }
 <option>ldlt_eigen-&gt;</option>
 <option>ldlt_eigen_ctor</option>
 <option>ldlt_eigen_init</option>
+<option>ldlt_eigen_pattern</option>
 <option>ldlt_eigen_update</option>
+<option>ldlt_eigen_split</option>
 <option>ldlt_eigen_logdet</option>
 <option>ldlt_eigen_solve_H</option>
 <option>ldlt_eigen_sim_cov</option>
@@ -119,8 +121,7 @@ A:active { color : purple }
 <option>---..L</option>
 <option>---..D</option>
 <option>---..P</option>
-<option>eigen_sparse</option>
-<option>eigen_ldlt_eigen</option>
+<option>Double</option>
 <option>Example</option>
 <option>Contents</option>
 </select>
@@ -154,7 +155,6 @@ The factorization is
 	L D L^\R{T} = P H P^{T}
 
 @]@</small>
-where
 
 <br>
 <br>
@@ -184,21 +184,12 @@ is a permutation matrix.
 
 <br>
 <br>
-<b><big><a name="eigen_sparse" id="eigen_sparse">eigen_sparse</a></big></b>
+<b><big><a name="Double" id="Double">Double</a></big></b>
 <br>
-The type <code><font color="blue">CppAD::mixed::ldlt_eigen::eigen_sparse</font></code> is defined by
+This is the type of the elements in the matrices and is either
+ double29628 or  a1_double29628.
 
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;typedef&nbsp;Eigen::SparseMatrix&lt;double,&nbsp;Eigen::ColMajor&gt;&nbsp;&nbsp;eigen_sparse;<br>
-</span></font></code>
 <br>
-<b><big><a name="eigen_ldlt_eigen" id="eigen_ldlt_eigen">eigen_ldlt_eigen</a></big></b>
-<br>
-The type <code><font color="blue">CppAD::mixed::ldlt_eigen::eigen_ldlt_eigen</font></code> is defined by
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;typedef&nbsp;Eigen::SimplicialLDLT&lt;eigen_sparse,&nbsp;Eigen::Lower&gt;&nbsp;eigen_ldlt;<br>
-</span></font></code>
 <br>
 <b><big><a name="Example" id="Example">Example</a></big></b>
 <br>
@@ -212,7 +203,7 @@ using the operations in this class.
 <b><big><a name="Contents" id="Contents">Contents</a></big></b>
 <br>
 <table>
-<tr><td><a href="ldlt_eigen_ctor.htm" target="_top">ldlt_eigen_ctor</a></td><td>Eigen&nbsp;LDLT&nbsp;Constructor</td></tr><tr><td><a href="ldlt_eigen_init.htm" target="_top">ldlt_eigen_init</a></td><td>Initialize&nbsp;LDLT&nbsp;Factor&nbsp;for&nbsp;a&nbsp;Specific&nbsp;Sparsity&nbsp;Pattern</td></tr><tr><td><a href="ldlt_eigen_update.htm" target="_top">ldlt_eigen_update</a></td><td>Update&nbsp;Factorization&nbsp;Using&nbsp;new&nbsp;Matrix&nbsp;Values</td></tr><tr><td><a href="ldlt_eigen_logdet.htm" target="_top">ldlt_eigen_logdet</a></td><td>Compute&nbsp;Log&nbsp;Determinant&nbsp;for&nbsp;Current&nbsp;LDLT&nbsp;Factor</td></tr><tr><td><a href="ldlt_eigen_solve_h.htm" target="_top">ldlt_eigen_solve_H</a></td><td>Solve&nbsp;Linear&nbsp;Equations&nbsp;Using&nbsp;LDLT&nbsp;Factor</td></tr><tr><td><a href="ldlt_eigen_sim_cov.htm" target="_top">ldlt_eigen_sim_cov</a></td><td>Simulations&nbsp;with&nbsp;Covariance&nbsp;Corresponding&nbsp;to&nbsp;Factored&nbsp;Matrix</td></tr><tr><td><a href="ldlt_eigen_inv.htm" target="_top">ldlt_eigen_inv</a></td><td>Compute&nbsp;a&nbsp;Subset&nbsp;of&nbsp;the&nbsp;Inverse&nbsp;of&nbsp;Factored&nbsp;Matrix</td></tr><tr><td><a href="ldlt_eigen.cpp.htm" target="_top">ldlt_eigen.cpp</a></td><td>Example&nbsp;Using&nbsp;Eigen&nbsp;LDLT&nbsp;Factorization</td></tr></table>
+<tr><td><a href="ldlt_eigen_ctor.htm" target="_top">ldlt_eigen_ctor</a></td><td>Eigen&nbsp;LDLT&nbsp;Constructor</td></tr><tr><td><a href="ldlt_eigen_init.htm" target="_top">ldlt_eigen_init</a></td><td>Initialize&nbsp;LDLT&nbsp;Factor&nbsp;for&nbsp;a&nbsp;Specific&nbsp;Sparsity&nbsp;Pattern</td></tr><tr><td><a href="ldlt_eigen_pattern.htm" target="_top">ldlt_eigen_pattern</a></td><td>Update&nbsp;Factorization&nbsp;Using&nbsp;new&nbsp;Matrix&nbsp;Values</td></tr><tr><td><a href="ldlt_eigen_update.htm" target="_top">ldlt_eigen_update</a></td><td>Update&nbsp;Factorization&nbsp;Using&nbsp;new&nbsp;Matrix&nbsp;Values</td></tr><tr><td><a href="ldlt_eigen_split.htm" target="_top">ldlt_eigen_split</a></td><td>Split&nbsp;Out&nbsp;a&nbsp;Factorization</td></tr><tr><td><a href="ldlt_eigen_logdet.htm" target="_top">ldlt_eigen_logdet</a></td><td>Compute&nbsp;Log&nbsp;Determinant&nbsp;for&nbsp;Current&nbsp;LDLT&nbsp;Factor</td></tr><tr><td><a href="ldlt_eigen_solve_h.htm" target="_top">ldlt_eigen_solve_H</a></td><td>Solve&nbsp;Linear&nbsp;Equations&nbsp;Using&nbsp;LDLT&nbsp;Factor</td></tr><tr><td><a href="ldlt_eigen_sim_cov.htm" target="_top">ldlt_eigen_sim_cov</a></td><td>Simulations&nbsp;with&nbsp;Covariance&nbsp;Corresponding&nbsp;to&nbsp;Factored&nbsp;Matrix</td></tr><tr><td><a href="ldlt_eigen_inv.htm" target="_top">ldlt_eigen_inv</a></td><td>Compute&nbsp;a&nbsp;Subset&nbsp;of&nbsp;the&nbsp;Inverse&nbsp;of&nbsp;Factored&nbsp;Matrix</td></tr><tr><td><a href="ldlt_eigen.cpp.htm" target="_top">ldlt_eigen.cpp</a></td><td>Example&nbsp;Using&nbsp;Eigen&nbsp;LDLT&nbsp;Factorization</td></tr></table>
 <hr>Input File: include/cppad/mixed/ldlt_eigen.hpp
 
 </body>

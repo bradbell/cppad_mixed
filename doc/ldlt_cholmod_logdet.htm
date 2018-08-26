@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Compute Log Determinant for Current Factor</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Compute Log Determinant for Current Factor">
-<meta name="keywords" id="keywords" content=" compute log determinant current factor syntax private ldlt_obj negative logdet example ">
+<meta name="keywords" id="keywords" content=" compute log determinant current factor syntax prototype private ldlt_obj negative logdet example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -103,6 +103,7 @@ A:active { color : purple }
 <option>ldlt_cholmod_ctor</option>
 <option>ldlt_cholmod_dtor</option>
 <option>ldlt_cholmod_init</option>
+<option>ldlt_cholmod_pattern</option>
 <option>ldlt_cholmod_update</option>
 <option>ldlt_cholmod_logdet</option>
 <option>ldlt_cholmod_solve_H</option>
@@ -119,6 +120,7 @@ A:active { color : purple }
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
 <option>Syntax</option>
+<option>Prototype</option>
 <option>Private</option>
 <option>ldlt_obj</option>
 <option>negative</option>
@@ -140,6 +142,13 @@ A:active { color : purple }
 
 <code><i><font color="black"><span style='white-space: nowrap'>logdet</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i><font color="blue"><span style='white-space: nowrap'>.logdet(</span></font><i><font color="black"><span style='white-space: nowrap'>negative</span></font></i><font color="blue"><span style='white-space: nowrap'>)<br>
 </span></font></code>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre style='display:inline'><tt>
+
+<font color="#009900">double</font> ldlt_cholmod<font color="#990000">::</font><b><font color="#000000">logdet</font></b><font color="#990000">(</font>size_t<font color="#990000">&amp;</font> negative<font color="#990000">)</font> <b><font color="#0000FF">const</font></b>
+</tt></pre>
 <br>
 <b><big><a name="Private" id="Private">Private</a></big></b>
 <br>
@@ -167,13 +176,8 @@ In addition, it must have a previous call to
 <br>
 <b><big><a name="negative" id="negative">negative</a></big></b>
 <br>
-This argument has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>negative</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
-Its input value does no matter,
-upon return it is the number of elements of
+The input value of this argument does no matter.
+Upon return, it is the number of elements of
 <a href="ldlt_cholmod.htm#Factorization.D" target="_top"><span style='white-space: nowrap'>D</span></a>
 
 that are less than zero.
@@ -182,12 +186,8 @@ that are less than zero.
 <br>
 <b><big><a name="logdet" id="logdet">logdet</a></big></b>
 <br>
-This return value has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>logdet</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
-Is the log of the absolute value of the determinant corresponding
+This return value
+is the log of the absolute value of the determinant corresponding
 to the previous call to <a href="ldlt_cholmod_update.htm" target="_top"><span style='white-space: nowrap'>ldlt_cholmod_update</span></a>
 .
 If the matrix is singular, 

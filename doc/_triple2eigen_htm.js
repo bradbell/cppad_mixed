@@ -51,6 +51,7 @@ var list_down1 = [
 ];
 var list_current0 = [
 'triple2eigen.htm#Syntax',
+'triple2eigen.htm#Prototype',
 'triple2eigen.htm#Private',
 'triple2eigen.htm#Scalar',
 'triple2eigen.htm#nr',

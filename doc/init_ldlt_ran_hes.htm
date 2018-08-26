@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Initialize Cholesky Factor of Hessian of Random Likelihood</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Initialize Cholesky Factor of Hessian of Random Likelihood">
-<meta name="keywords" id="keywords" content=" initialize cholesky factor hessian random likelihood syntax private assumptions init_ldlt_ran_hes_done_ mixed_object ldlt_ran_hes_ ">
+<meta name="keywords" id="keywords" content=" initialize cholesky factor hessian random likelihood syntax private assumptions init_ldlt_ran_hes_done_ mixed_object ldlt_ran_hes_ a1_ldlt_ran_hes_ ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -114,6 +114,7 @@ A:active { color : purple }
 <option>init_ldlt_ran_hes_done_</option>
 <option>mixed_object</option>
 <option>ldlt_ran_hes_</option>
+<option>a1_ldlt_ran_hes_</option>
 </select>
 </td>
 </tr></table><br>
@@ -176,10 +177,10 @@ must not been previously initialized
 Upon return, the function
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ldlt_ran_hes_.init(</span></font><i><font color="black"><span style='white-space: nowrap'>hes_info</span></font></i><font color="blue"><span style='white-space: nowrap'>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ldlt_ran_hes_.init(</span></font><i><font color="black"><span style='white-space: nowrap'>hes_rc</span></font></i><font color="blue"><span style='white-space: nowrap'>)<br>
 </span></font></code>
 has been called with 
-<code><i><font color="black"><span style='white-space: nowrap'>hes_info</span></font></i></code>
+<code><i><font color="black"><span style='white-space: nowrap'>hes_rc</span></font></i></code>
 
 equal to the sparsity pattern for the
 Hessian of the random likelihood with respect to the random effects;
@@ -190,11 +191,22 @@ i.e., the row and column indices are relative to the vector <small>@(@
 u )
 @)@</small>.
 For each row and column indices in 
-<code><i><font color="black"><span style='white-space: nowrap'>hes_info</span></font></i></code>
+<code><i><font color="black"><span style='white-space: nowrap'>hes_rc</span></font></i></code>
 ,
 the corresponding row and column index in <code><font color="blue">ran_hes_rcv_</font></code> is
 <code><font color="blue">n_fixed_</font></code> greater.
 
+
+<br>
+<br>
+<b><big><a name="a1_ldlt_ran_hes_" id="a1_ldlt_ran_hes_">a1_ldlt_ran_hes_</a></big></b>
+<br>
+The member variable
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::mixed::ldlt_eigen&lt;a1_double&gt;&nbsp;a1_ldlt_ran_hes_<br>
+</span></font></code>
+is initialized the same as <code><font color="blue">ldlt_ran_hes_</font></code>.
 
 
 <hr>Input File: src/init_ldlt_ran_hes.cpp

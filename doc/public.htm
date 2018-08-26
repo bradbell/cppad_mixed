@@ -141,7 +141,7 @@ The following Cppad Mixed types are extended into the
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">a3_vector</font>      a3_vector<font color="#990000">;</font>
      <i><font color="#9A1900">// sparse types</font></i>
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">sparse_rc</font>      sparse_rc<font color="#990000">;</font>
-     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">sparse_rcv</font>     sparse_rcv<font color="#990000">;</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">d_sparse_rcv</font>   d_sparse_rcv<font color="#990000">;</font>
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">a1_sparse_rcv</font>  a1_sparse_rcv<font color="#990000">;</font></tt></pre>
 <br>
 <b><big><a name="User Defined Functions" id="User Defined Functions">User Defined Functions</a></big></b>
@@ -250,7 +250,7 @@ Its default definition below can be replaced by a user definition.
           <font color="#008080">size_t</font>               n_random      <font color="#990000">,</font>
           <font color="#009900">bool</font>                 quasi_fixed   <font color="#990000">,</font>
           <font color="#009900">bool</font>                 bool_sparsity <font color="#990000">,</font>
-          <b><font color="#0000FF">const</font></b> sparse_rcv<font color="#990000">&amp;</font>    A_rcv
+          <b><font color="#0000FF">const</font></b> d_sparse_rcv<font color="#990000">&amp;</font>  A_rcv
      <font color="#990000">);</font></tt></pre>
 <br>
 <b><big><a name="destructor" id="destructor">destructor</a></big></b>
@@ -306,7 +306,7 @@ Its default definition below can be replaced by a user definition.
 <br>
 <a href="information_mat.htm" target="_top"><span style='white-space: nowrap'>information_mat</span></a>
 , Compute the Observed Information For Fixed Effects.
-<pre><tt>     <font color="#008080">sparse_rcv</font> <b><font color="#000000">information_mat</font></b><font color="#990000">(</font>
+<pre><tt>     <font color="#008080">d_sparse_rcv</font> <b><font color="#000000">information_mat</font></b><font color="#990000">(</font>
           <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>fixed_solution<font color="#990000">&amp;</font>  solution             <font color="#990000">,</font>
           <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>                      random_opt
      <font color="#990000">);</font></tt></pre>
@@ -318,7 +318,7 @@ Its default definition below can be replaced by a user definition.
 , Sample Posterior for Fixed Effects.
 <pre><tt>     <font color="#009900">void</font> <b><font color="#000000">sample_fixed</font></b><font color="#990000">(</font>
           d_vector<font color="#990000">&amp;</font>                            sample               <font color="#990000">,</font>
-          <b><font color="#0000FF">const</font></b> sparse_rcv<font color="#990000">&amp;</font>                    information_rcv      <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_sparse_rcv<font color="#990000">&amp;</font>                  information_rcv      <font color="#990000">,</font>
           <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>fixed_solution<font color="#990000">&amp;</font>  solution             <font color="#990000">,</font>
           <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>                      fixed_lower          <font color="#990000">,</font>
           <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>                      fixed_upper          <font color="#990000">,</font>

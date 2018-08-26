@@ -21,7 +21,7 @@ var list_down1 = [
 ];
 var list_current0 = [
 'wish_list.htm#Sparse Matrix',
-'wish_list.htm#sparse_rcv',
+'wish_list.htm#d_sparse_rcv',
 'wish_list.htm#Aborting Optimization',
 'wish_list.htm#Second Order Method',
 'wish_list.htm#Random Constraints',

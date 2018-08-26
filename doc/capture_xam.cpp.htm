@@ -1056,7 +1056,7 @@ c( \theta )
 <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>d_vector<font color="#990000">;</font>
 <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>a2_vector<font color="#990000">;</font>
 <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>a3_vector<font color="#990000">;</font>
-<b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>sparse_rcv<font color="#990000">;</font>
+<b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>d_sparse_rcv<font color="#990000">;</font>
 <i><font color="#9A1900">//</font></i>
 <i><font color="#9A1900">// Convert size_t to string adding commas every three digits</font></i>
 std<font color="#990000">::</font><font color="#008080">string</font> <b><font color="#000000">size_t2string</font></b><font color="#990000">(</font><font color="#008080">size_t</font> value <font color="#990000">)</font>
@@ -1142,7 +1142,7 @@ std<font color="#990000">::</font><font color="#008080">string</font> <b><font c
           <font color="#008080">size_t</font>                  K             <font color="#990000">,</font>
           <font color="#009900">bool</font>                    quasi_fixed   <font color="#990000">,</font>
           <font color="#009900">bool</font>                    bool_sparsity <font color="#990000">,</font>
-          <b><font color="#0000FF">const</font></b> sparse_rcv<font color="#990000">&amp;</font>       A_rcv         <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_sparse_rcv<font color="#990000">&amp;</font>     A_rcv         <font color="#990000">,</font>
           s_vector<font color="#990000">&amp;</font>               y             <font color="#990000">,</font>
           d_vector<font color="#990000">&amp;</font>               fixed_in      <font color="#990000">,</font>
           d_vector<font color="#990000">&amp;</font>               random_in     <font color="#990000">)</font> <font color="#990000">:</font>
@@ -1471,7 +1471,7 @@ std<font color="#990000">::</font><font color="#008080">string</font> <b><font c
           <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> t <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> t <font color="#990000">&lt;</font> T<font color="#990000">;</font> t<font color="#990000">++)</font>
                A_pattern<font color="#990000">.</font><b><font color="#000000">set</font></b><font color="#990000">(</font>t<font color="#990000">,</font> <font color="#993399">0</font><font color="#990000">,</font> t<font color="#990000">);</font>
      <font color="#FF0000">}</font>
-     <font color="#008080">sparse_rcv</font> <b><font color="#000000">A_rcv</font></b><font color="#990000">(</font> A_pattern <font color="#990000">);</font>
+     <font color="#008080">d_sparse_rcv</font> <b><font color="#000000">A_rcv</font></b><font color="#990000">(</font> A_pattern <font color="#990000">);</font>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> t <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> t <font color="#990000">&lt;</font> A_rcv<font color="#990000">.</font><b><font color="#000000">nc</font></b><font color="#990000">();</font> t<font color="#990000">++)</font>
           A_rcv<font color="#990000">.</font><b><font color="#000000">set</font></b><font color="#990000">(</font>t<font color="#990000">,</font> <font color="#993399">1.0</font><font color="#990000">);</font>
 
@@ -1574,7 +1574,7 @@ std<font color="#990000">::</font><font color="#008080">string</font> <b><font c
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// information matrix</font></i>
      start_seconds <font color="#990000">=</font> CppAD<font color="#990000">::</font><b><font color="#000000">elapsed_seconds</font></b><font color="#990000">();</font>
-     <font color="#008080">sparse_rcv</font> information_rcv <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">information_mat</font></b><font color="#990000">(</font>
+     <font color="#008080">d_sparse_rcv</font> information_rcv <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">information_mat</font></b><font color="#990000">(</font>
           solution<font color="#990000">,</font> u_out
      <font color="#990000">);</font>
      end_seconds <font color="#990000">=</font> CppAD<font color="#990000">::</font><b><font color="#000000">elapsed_seconds</font></b><font color="#990000">();</font>

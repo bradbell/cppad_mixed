@@ -64,7 +64,7 @@ var list_current0 = [
 'typedef.htm#Vector Types.a3_vector',
 'typedef.htm#Sparse Types',
 'typedef.htm#Sparse Types.sparse_rc',
-'typedef.htm#Sparse Types.sparse_rcv',
+'typedef.htm#Sparse Types.d_sparse_rcv',
 'typedef.htm#Sparse Types.a1_sparse_rcv',
 'typedef.htm#End Namespace'
 ];

@@ -101,7 +101,7 @@ the optimal random effects do not satisfy this condition.
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>log<font color="#990000">;</font>
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>AD<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
-     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>sparse_rcv<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>d_sparse_rcv<font color="#990000">;</font>
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>a1_double<font color="#990000">;</font>
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>a2_double<font color="#990000">;</font>
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>d_vector<font color="#990000">;</font>
@@ -121,7 +121,7 @@ the optimal random effects do not satisfy this condition.
                <font color="#008080">size_t</font>                 n_random      <font color="#990000">,</font>
                <font color="#009900">bool</font>                   quasi_fixed   <font color="#990000">,</font>
                <font color="#009900">bool</font>                   bool_sparsity <font color="#990000">,</font>
-               <b><font color="#0000FF">const</font></b> sparse_rcv<font color="#990000">&amp;</font>      A_rcv         <font color="#990000">,</font>
+               <b><font color="#0000FF">const</font></b> d_sparse_rcv<font color="#990000">&amp;</font>    A_rcv         <font color="#990000">,</font>
                <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>       y              <font color="#990000">)</font> <font color="#990000">:</font>
                <b><font color="#000000">cppad_mixed</font></b><font color="#990000">(</font>
                     n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv
@@ -204,7 +204,7 @@ the optimal random effects do not satisfy this condition.
      <font color="#FF0000">}</font><font color="#990000">;</font>
      <i><font color="#9A1900">// ----------------------------------------------------------------------</font></i>
      <font color="#009900">double</font> <b><font color="#000000">sum_random_effects</font></b><font color="#990000">(</font>
-          <font color="#008080">size_t</font> n_random<font color="#990000">,</font> <b><font color="#0000FF">const</font></b> sparse_rcv<font color="#990000">&amp;</font>      A_rcv
+          <font color="#008080">size_t</font> n_random<font color="#990000">,</font> <b><font color="#0000FF">const</font></b> d_sparse_rcv<font color="#990000">&amp;</font>    A_rcv
      <font color="#990000">)</font>
      <font color="#FF0000">{</font>
           <font color="#009900">double</font> inf <font color="#990000">=</font> std<font color="#990000">::</font>numeric_limits<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;::</font><b><font color="#000000">infinity</font></b><font color="#990000">();</font>
@@ -293,7 +293,7 @@ the optimal random effects do not satisfy this condition.
      <font color="#008080">size_t</font> n_random <font color="#990000">=</font> <font color="#993399">10</font><font color="#990000">;</font>
 
      <i><font color="#9A1900">// empty matrix (no constraints)</font></i>
-     <font color="#008080">sparse_rcv</font> A_empty<font color="#990000">;</font>
+     <font color="#008080">d_sparse_rcv</font> A_empty<font color="#990000">;</font>
      <font color="#009900">double</font> sum <font color="#990000">=</font> <b><font color="#000000">sum_random_effects</font></b><font color="#990000">(</font>n_random<font color="#990000">,</font> A_empty<font color="#990000">);</font>
      ok        <font color="#990000">&amp;=</font> <b><font color="#000000">fabs</font></b><font color="#990000">(</font>sum<font color="#990000">)</font> <font color="#990000">&gt;</font> <font color="#993399">0.5</font><font color="#990000">;</font>
 
@@ -301,7 +301,7 @@ the optimal random effects do not satisfy this condition.
      CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">sparse_rc</font> <b><font color="#000000">A_pattern</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">,</font> n_random<font color="#990000">,</font> n_random<font color="#990000">);</font>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> k <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> k <font color="#990000">&lt;</font> n_random<font color="#990000">;</font> k<font color="#990000">++)</font>
           A_pattern<font color="#990000">.</font><b><font color="#000000">set</font></b><font color="#990000">(</font>k<font color="#990000">,</font> <font color="#993399">0</font><font color="#990000">,</font> k<font color="#990000">);</font>
-     <font color="#008080">sparse_rcv</font> <b><font color="#000000">A_rcv</font></b><font color="#990000">(</font>A_pattern<font color="#990000">);</font>
+     <font color="#008080">d_sparse_rcv</font> <b><font color="#000000">A_rcv</font></b><font color="#990000">(</font>A_pattern<font color="#990000">);</font>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> k <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> k <font color="#990000">&lt;</font> n_random<font color="#990000">;</font> k<font color="#990000">++)</font>
           A_rcv<font color="#990000">.</font><b><font color="#000000">set</font></b><font color="#990000">(</font>k<font color="#990000">,</font> <font color="#993399">1.0</font><font color="#990000">);</font>
      sum <font color="#990000">=</font> <b><font color="#000000">sum_random_effects</font></b><font color="#990000">(</font>n_random<font color="#990000">,</font> A_rcv<font color="#990000">);</font>

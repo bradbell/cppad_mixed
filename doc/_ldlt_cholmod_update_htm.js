@@ -54,6 +54,7 @@ var list_down1 = [
 'ldlt_cholmod_ctor.htm',
 'ldlt_cholmod_dtor.htm',
 'ldlt_cholmod_init.htm',
+'ldlt_cholmod_pattern.htm',
 'ldlt_cholmod_update.htm',
 'ldlt_cholmod_logdet.htm',
 'ldlt_cholmod_solve_h.htm',
@@ -66,13 +67,15 @@ var list_down1 = [
 ];
 var list_current0 = [
 'ldlt_cholmod_update.htm#Syntax',
+'ldlt_cholmod_update.htm#Prototype',
 'ldlt_cholmod_update.htm#Private',
 'ldlt_cholmod_update.htm#Purpose',
 'ldlt_cholmod_update.htm#ldlt_obj',
-'ldlt_cholmod_update.htm#H_info',
+'ldlt_cholmod_update.htm#H_rcv',
 'ldlt_cholmod_update.htm#sym_matrix_',
 'ldlt_cholmod_update.htm#factor_',
 'ldlt_cholmod_update.htm#ok',
+'ldlt_cholmod_update.htm#Order of Operations',
 'ldlt_cholmod_update.htm#Example'
 ];
 function choose_across0(item)

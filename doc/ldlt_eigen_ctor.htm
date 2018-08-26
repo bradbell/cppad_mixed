@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Eigen LDLT Constructor</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Eigen LDLT Constructor">
-<meta name="keywords" id="keywords" content=" eigen ldlt constructor syntax private n_row_ ptr_ ">
+<meta name="keywords" id="keywords" content=" eigen ldlt constructor syntax prototype private n_row_ ptr_ ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -102,7 +102,9 @@ A:active { color : purple }
 <option>ldlt_eigen-&gt;</option>
 <option>ldlt_eigen_ctor</option>
 <option>ldlt_eigen_init</option>
+<option>ldlt_eigen_pattern</option>
 <option>ldlt_eigen_update</option>
+<option>ldlt_eigen_split</option>
 <option>ldlt_eigen_logdet</option>
 <option>ldlt_eigen_solve_H</option>
 <option>ldlt_eigen_sim_cov</option>
@@ -115,6 +117,7 @@ A:active { color : purple }
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
 <option>Syntax</option>
+<option>Prototype</option>
 <option>Private</option>
 <option>n_row_</option>
 <option>ptr_</option>
@@ -129,11 +132,18 @@ A:active { color : purple }
 
 <br>
 
-<code><font color="blue"><span style='white-space: nowrap'>CppAD::mixed::ldlt_eigen&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i><font color="blue"><span style='white-space: nowrap'>(</span></font><i><font color="black"><span style='white-space: nowrap'>n_row</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
-
+<code><font color="blue"><span style='white-space: nowrap'>CppAD::ldlt_eigen&lt;</span></font><i><font color="black"><span style='white-space: nowrap'>Double</span></font></i><font color="blue"><span style='white-space: nowrap'>&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i><font color="blue"><span style='white-space: nowrap'>(</span></font><i><font color="black"><span style='white-space: nowrap'>n_row</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
 
 
 <br>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre style='display:inline'><tt>
+
+<b><font color="#0000FF">template</font></b> <font color="#990000">&lt;</font><b><font color="#0000FF">typename</font></b> <font color="#008080">Double</font><font color="#990000">&gt;</font>
+ldlt_eigen<font color="#990000">&lt;</font>Double<font color="#990000">&gt;::</font><b><font color="#000000">ldlt_eigen</font></b><font color="#990000">(</font><font color="#008080">size_t</font> n_row<font color="#990000">)</font>
+</tt></pre>
 <br>
 <b><big><a name="Private" id="Private">Private</a></big></b>
 <br>
@@ -150,12 +160,8 @@ The <a href="ldlt_eigen.htm" target="_top"><span style='white-space: nowrap'>ldl
 <br>
 The argument 
 <code><i><font color="black"><span style='white-space: nowrap'>n_row</span></font></i></code>
- has prototype
 
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_row</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
-It is the number of rows in the symmetric matrix we will compute factor.
+is the number of rows in the symmetric matrix we will compute factor.
 The member variable <code><font color="blue">n_row_</font></code> is set to this value.
 
 <br>

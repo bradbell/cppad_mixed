@@ -8,8 +8,8 @@ var list_across0 = [
 var list_up0 = [
 'cppad_mixed.htm',
 'namespace.htm',
-'ldlt_eigen.htm',
-'ldlt_eigen_update.htm'
+'ldlt_cholmod.htm',
+'ldlt_cholmod_pattern.htm'
 ];
 var list_down3 = [
 'install_unix.htm',
@@ -51,28 +51,28 @@ var list_down2 = [
 'sparse_ad_cholesky.htm'
 ];
 var list_down1 = [
-'ldlt_eigen_ctor.htm',
-'ldlt_eigen_init.htm',
-'ldlt_eigen_pattern.htm',
-'ldlt_eigen_update.htm',
-'ldlt_eigen_split.htm',
-'ldlt_eigen_logdet.htm',
-'ldlt_eigen_solve_h.htm',
-'ldlt_eigen_sim_cov.htm',
-'ldlt_eigen_inv.htm',
-'ldlt_eigen.cpp.htm'
+'ldlt_cholmod_ctor.htm',
+'ldlt_cholmod_dtor.htm',
+'ldlt_cholmod_init.htm',
+'ldlt_cholmod_pattern.htm',
+'ldlt_cholmod_update.htm',
+'ldlt_cholmod_logdet.htm',
+'ldlt_cholmod_solve_h.htm',
+'ldlt_cholmod_sim_cov.htm',
+'ldlt_cholmod_inv.htm',
+'ldlt_cholmod.cpp.htm',
+'cholmod_solve_xam.htm',
+'cholmod_solve2_a.cpp.htm',
+'cholmod_solve2_sim.cpp.htm'
 ];
 var list_current0 = [
-'ldlt_eigen_update.htm#Syntax',
-'ldlt_eigen_update.htm#Prototype',
-'ldlt_eigen_update.htm#Private',
-'ldlt_eigen_update.htm#Purpose',
-'ldlt_eigen_update.htm#ldlt_obj',
-'ldlt_eigen_update.htm#H_rcv',
-'ldlt_eigen_update.htm#ptr_',
-'ldlt_eigen_update.htm#ok',
-'ldlt_eigen_update.htm#Order of Operations',
-'ldlt_eigen_update.htm#Example'
+'ldlt_cholmod_pattern.htm#Syntax',
+'ldlt_cholmod_pattern.htm#Prototype',
+'ldlt_cholmod_pattern.htm#Private',
+'ldlt_cholmod_pattern.htm#ldlt_obj',
+'ldlt_cholmod_pattern.htm#H_rc',
+'ldlt_cholmod_pattern.htm#Order of Operations',
+'ldlt_cholmod_pattern.htm#Example'
 ];
 function choose_across0(item)
 {	var index          = item.selectedIndex;

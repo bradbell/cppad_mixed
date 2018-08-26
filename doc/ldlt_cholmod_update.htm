@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Update Factorization Using new Matrix Values</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Update Factorization Using new Matrix Values">
-<meta name="keywords" id="keywords" content=" update factorization using new matrix values syntax private purpose ldlt_obj h_info sym_matrix_ factor_ ok example ">
+<meta name="keywords" id="keywords" content=" update factorization using new matrix values syntax prototype private purpose ldlt_obj h_rcv sym_matrix_ factor_ ok order operations example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -31,7 +31,7 @@ A:active { color : purple }
 <td>
 <a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
 </td>
-<td><a href="ldlt_cholmod_init.htm" target="_top">Prev</a>
+<td><a href="ldlt_cholmod_pattern.htm" target="_top">Prev</a>
 </td><td><a href="ldlt_cholmod_logdet.htm" target="_top">Next</a>
 </td><td>
 <select onchange='choose_across0(this)'>
@@ -103,6 +103,7 @@ A:active { color : purple }
 <option>ldlt_cholmod_ctor</option>
 <option>ldlt_cholmod_dtor</option>
 <option>ldlt_cholmod_init</option>
+<option>ldlt_cholmod_pattern</option>
 <option>ldlt_cholmod_update</option>
 <option>ldlt_cholmod_logdet</option>
 <option>ldlt_cholmod_solve_H</option>
@@ -119,13 +120,15 @@ A:active { color : purple }
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
 <option>Syntax</option>
+<option>Prototype</option>
 <option>Private</option>
 <option>Purpose</option>
 <option>ldlt_obj</option>
-<option>H_info</option>
+<option>H_rcv</option>
 <option>sym_matrix_</option>
 <option>factor_</option>
 <option>ok</option>
+<option>Order of Operations</option>
 <option>Example</option>
 </select>
 </td>
@@ -141,11 +144,17 @@ A:active { color : purple }
 
 <br>
 
-<code><i><font color="black"><span style='white-space: nowrap'>ok</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i><font color="blue"><span style='white-space: nowrap'>.update(</span></font><i><font color="black"><span style='white-space: nowrap'>H_info</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
-
+<code><i><font color="black"><span style='white-space: nowrap'>ok</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i><font color="blue"><span style='white-space: nowrap'>.update(</span></font><i><font color="black"><span style='white-space: nowrap'>H_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
 
 
 <br>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre style='display:inline'><tt>
+
+<font color="#009900">bool</font> ldlt_cholmod<font color="#990000">::</font><b><font color="#000000">update</font></b><font color="#990000">(</font><b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>d_sparse_rcv<font color="#990000">&amp;</font> H_rcv<font color="#990000">)</font>
+</tt></pre>
 <br>
 <b><big><a name="Private" id="Private">Private</a></big></b>
 <br>
@@ -179,20 +188,15 @@ In addition, it must have a previous call to
 
 <br>
 <br>
-<b><big><a name="H_info" id="H_info">H_info</a></big></b>
+<b><big><a name="H_rcv" id="H_rcv">H_rcv</a></big></b>
 <br>
-This argument has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::mixed::sparse_mat_info&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>H_info</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
-It contains new values for the
+This argument contains new values for the
 <a href="sparse_mat_info.htm#Notation.Sparse Matrix" target="_top"><span style='white-space: nowrap'>sparse&nbsp;matrix</span></a>
 
 we are computing the LDLT factor of.
 The <a href="sparse_mat_info.htm#Notation.Sparsity Pattern" target="_top"><span style='white-space: nowrap'>sparsity&nbsp;pattern</span></a>
 
-must be the same as in <a href="ldlt_cholmod_init.htm#H_info" target="_top"><span style='white-space: nowrap'>ldlt_cholmod_init</span></a>
+must be the same as in <a href="ldlt_cholmod_init.htm#H_rc" target="_top"><span style='white-space: nowrap'>ldlt_cholmod_init</span></a>
 .
 Hence, in particular, it must be in
 <a href="sparse_mat_info.htm#Notation.Column Major Order" target="_top"><span style='white-space: nowrap'>column&nbsp;major</span></a>
@@ -213,11 +217,11 @@ On input, the member variable
 has been <a href="ldlt_cholmod_init.htm#sym_matrix_" target="_top"><span style='white-space: nowrap'>initialized</span></a>
 
 using the sparsity pattern as is in 
-<code><i><font color="black"><span style='white-space: nowrap'>H_info</span></font></i></code>
+<code><i><font color="black"><span style='white-space: nowrap'>H_rcv</span></font></i></code>
 .
 Upon return, values in <code><font color="blue">sym_matrix_</font></code> have been set to the
 corresponding values in the vector 
-<code><i><font color="black"><span style='white-space: nowrap'>H_info</span></font></i><font color="blue"><span style='white-space: nowrap'>.val</span></font></code>
+<code><i><font color="black"><span style='white-space: nowrap'>H_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.val()</span></font></code>
 .
 
 <br>
@@ -240,13 +244,23 @@ Upon return, it contains the factorization
 <br>
 <b><big><a name="ok" id="ok">ok</a></big></b>
 <br>
-The return value has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ok</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
-If it is true, the matrix was factored.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>ok</span></font></i></code>
+ is true, the matrix was factored.
 Otherwise, the matrix is singular.
+
+<br>
+<br>
+<b><big><a name="Order of Operations" id="Order of Operations">Order of Operations</a></big></b>
+<br>
+This 
+<code><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i></code>
+ function must be called,
+after the constructor and <a href="ldlt_cholmod_init.htm" target="_top"><span style='white-space: nowrap'>init</span></a>
+
+and before any other member functions
+(except <a href="ldlt_cholmod_pattern.htm" target="_top"><span style='white-space: nowrap'>pattern</span></a>
+).
 
 <br>
 <br>

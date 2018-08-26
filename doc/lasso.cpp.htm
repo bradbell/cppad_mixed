@@ -161,7 +161,7 @@ g( \theta ) =
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>log<font color="#990000">;</font>
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>AD<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
-     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>sparse_rcv<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>d_sparse_rcv<font color="#990000">;</font>
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>a1_double<font color="#990000">;</font>
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>d_vector<font color="#990000">;</font>
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>a1_vector<font color="#990000">;</font>
@@ -180,7 +180,7 @@ g( \theta ) =
                <font color="#008080">size_t</font>                 n_random       <font color="#990000">,</font>
                <font color="#009900">bool</font>                   quasi_fixed    <font color="#990000">,</font>
                <font color="#009900">bool</font>                   bool_sparsity  <font color="#990000">,</font>
-               <b><font color="#0000FF">const</font></b> sparse_rcv<font color="#990000">&amp;</font>      A_rcv          <font color="#990000">,</font>
+               <b><font color="#0000FF">const</font></b> d_sparse_rcv<font color="#990000">&amp;</font>    A_rcv          <font color="#990000">,</font>
                <font color="#009900">double</font>                 sigma          <font color="#990000">,</font>
                <font color="#009900">double</font>                 delta          <font color="#990000">,</font>
                <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>        t              <font color="#990000">,</font>
@@ -278,7 +278,7 @@ g( \theta ) =
      <i><font color="#9A1900">// object that is derived from cppad_mixed</font></i>
      <font color="#009900">bool</font> quasi_fixed   <font color="#990000">=</font> <b><font color="#0000FF">false</font></b><font color="#990000">;</font>
      <font color="#009900">bool</font> bool_sparsity <font color="#990000">=</font> <b><font color="#0000FF">false</font></b><font color="#990000">;</font>
-     <font color="#008080">sparse_rcv</font> A_rcv<font color="#990000">;</font> <i><font color="#9A1900">// empty matrix</font></i>
+     <font color="#008080">d_sparse_rcv</font> A_rcv<font color="#990000">;</font> <i><font color="#9A1900">// empty matrix</font></i>
      <font color="#009900">double</font> delta     <font color="#990000">=</font> <font color="#993399">0.002</font><font color="#990000">;</font>
      <font color="#008080">mixed_derived</font> <b><font color="#000000">mixed_object</font></b><font color="#990000">(</font>
           n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv<font color="#990000">,</font>

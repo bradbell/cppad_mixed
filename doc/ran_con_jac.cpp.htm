@@ -215,7 +215,7 @@ The partial w.r.t. <small>@(@
                <font color="#008080">size_t</font>                               n_random      <font color="#990000">,</font>
                <font color="#009900">bool</font>                                 quasi_fixed   <font color="#990000">,</font>
                <font color="#009900">bool</font>                                 bool_sparsity <font color="#990000">,</font>
-               <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>sparse_rcv<font color="#990000">&amp;</font>      A_rcv          <font color="#990000">,</font>
+               <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>d_sparse_rcv<font color="#990000">&amp;</font>    A_rcv          <font color="#990000">,</font>
                <b><font color="#0000FF">const</font></b> vector<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;&amp;</font>                y             <font color="#990000">)</font> <font color="#990000">:</font>
                <b><font color="#000000">cppad_mixed</font></b><font color="#990000">(</font>
                     n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv
@@ -294,7 +294,7 @@ The partial w.r.t. <small>@(@
      CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">sparse_rc</font> <b><font color="#000000">A_pattern</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">,</font> n_random<font color="#990000">,</font> n_random<font color="#990000">);</font>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;</font> n_random<font color="#990000">;</font> j<font color="#990000">++)</font>
           A_pattern<font color="#990000">.</font><b><font color="#000000">set</font></b><font color="#990000">(</font>j<font color="#990000">,</font> <font color="#993399">0</font><font color="#990000">,</font> j<font color="#990000">);</font>
-     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">sparse_rcv</font> <b><font color="#000000">A_rcv</font></b><font color="#990000">(</font>A_pattern<font color="#990000">);</font>
+     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">d_sparse_rcv</font> <b><font color="#000000">A_rcv</font></b><font color="#990000">(</font>A_pattern<font color="#990000">);</font>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;</font> n_random<font color="#990000">;</font> j<font color="#990000">++)</font>
           A_rcv<font color="#990000">.</font><b><font color="#000000">set</font></b><font color="#990000">(</font>j<font color="#990000">,</font> <font color="#993399">1.0</font><font color="#990000">);</font>
 
@@ -320,7 +320,7 @@ The partial w.r.t. <small>@(@
      mixed_object<font color="#990000">.</font><b><font color="#000000">update_factor</font></b><font color="#990000">(</font>fixed_vec<font color="#990000">,</font> uhat<font color="#990000">);</font>
 
      <i><font color="#9A1900">// compute sparstiy pattern for jacobian of random constraints</font></i>
-     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">sparse_rcv</font> jac_rcv<font color="#990000">;</font>
+     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">d_sparse_rcv</font> jac_rcv<font color="#990000">;</font>
      mixed_object<font color="#990000">.</font><b><font color="#000000">ran_con_jac</font></b><font color="#990000">(</font>fixed_vec<font color="#990000">,</font> uhat<font color="#990000">,</font> jac_rcv<font color="#990000">);</font>
 
      <i><font color="#9A1900">// check number of possibly non_zero elements.</font></i>

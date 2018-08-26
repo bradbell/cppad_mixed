@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Example Using Cholmod LDLT Factorization</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Example Using Cholmod LDLT Factorization">
-<meta name="keywords" id="keywords" content=" example using cholmod ldlt factorization problem description constructor init update logdet solve_h sim_cov source code ">
+<meta name="keywords" id="keywords" content=" example using cholmod ldlt factorization problem description constructor init pattern update logdet solve_h sim_cov source code ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -103,6 +103,7 @@ A:active { color : purple }
 <option>ldlt_cholmod_ctor</option>
 <option>ldlt_cholmod_dtor</option>
 <option>ldlt_cholmod_init</option>
+<option>ldlt_cholmod_pattern</option>
 <option>ldlt_cholmod_update</option>
 <option>ldlt_cholmod_logdet</option>
 <option>ldlt_cholmod_solve_H</option>
@@ -121,6 +122,7 @@ A:active { color : purple }
 <option>Problem Description</option>
 <option>constructor</option>
 <option>init</option>
+<option>pattern</option>
 <option>update</option>
 <option>logdet</option>
 <option>solve_H</option>
@@ -200,14 +202,23 @@ See the following under
 <a href="ldlt_cholmod.cpp.htm#Source Code" target="_top"><span style='white-space: nowrap'>Source&nbsp;Code</span></a>
  below:
 <code><font color='blue'><pre style='display:inline'> 
-     ldlt_obj.init(H_info);
+     ldlt_obj.init(H_rcv.pat());
+</pre></font></code>
+<br>
+<b><big><a name="pattern" id="pattern">pattern</a></big></b>
+<br>
+See the following under
+<a href="ldlt_eigen.cpp.htm#Source Code" target="_top"><span style='white-space: nowrap'>Source&nbsp;Code</span></a>
+ below:
+<code><font color='blue'><pre style='display:inline'> 
+     H_rc = ldlt_obj.pattern();
 </pre></font></code>
 <br>
 <b><big><a name="update" id="update">update</a></big></b>
 <br>
 See the following under Source Code below:
 <code><font color='blue'><pre style='display:inline'> 
-     ldlt_obj.update(H_info);
+     ldlt_obj.update(H_rcv);
 </pre></font></code>
 <br>
 <b><big><a name="logdet" id="logdet">logdet</a></big></b>
@@ -258,27 +269,42 @@ See the following under Source Code below:
           CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">ldlt_cholmod</font> <b><font color="#000000">ldlt_obj</font></b><font color="#990000">(</font>nrow<font color="#990000">);</font>
           <b><font color="#000000">assert</font></b><font color="#990000">(</font> nrow <font color="#990000">*</font> ncol <font color="#990000">==</font> <b><font color="#0000FF">sizeof</font></b><font color="#990000">(</font>H_inv<font color="#990000">)</font> <font color="#990000">/</font> <b><font color="#0000FF">sizeof</font></b><font color="#990000">(</font>H_inv<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">])</font> <font color="#990000">);</font>
      
-          <i><font color="#9A1900">// create a sparse matrix representation of the lower triangular of H</font></i>
-          CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">sparse_mat_info</font> H_info<font color="#990000">;</font>
-          H_info<font color="#990000">.</font><b><font color="#000000">resize</font></b><font color="#990000">(</font><font color="#993399">6</font><font color="#990000">);</font>
-          <i><font color="#9A1900">// H_0,0  = 1.0</font></i>
-          H_info<font color="#990000">.</font>row<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> H_info<font color="#990000">.</font>col<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> H_info<font color="#990000">.</font>val<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
-          <i><font color="#9A1900">// H_1,0  = 1.0</font></i>
-          H_info<font color="#990000">.</font>row<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">1</font><font color="#990000">;</font> H_info<font color="#990000">.</font>col<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> H_info<font color="#990000">.</font>val<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
-          <i><font color="#9A1900">// H_2,0  = 1.0</font></i>
-          H_info<font color="#990000">.</font>row<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">2</font><font color="#990000">;</font> H_info<font color="#990000">.</font>col<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> H_info<font color="#990000">.</font>val<font color="#990000">[</font><font color="#993399">2</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
-          <i><font color="#9A1900">// H_1,1  = 5.0</font></i>
-          H_info<font color="#990000">.</font>row<font color="#990000">[</font><font color="#993399">3</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">1</font><font color="#990000">;</font> H_info<font color="#990000">.</font>col<font color="#990000">[</font><font color="#993399">3</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">1</font><font color="#990000">;</font> H_info<font color="#990000">.</font>val<font color="#990000">[</font><font color="#993399">3</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">5.0</font><font color="#990000">;</font>
-          <i><font color="#9A1900">// H_2,1  = 5.0</font></i>
-          H_info<font color="#990000">.</font>row<font color="#990000">[</font><font color="#993399">4</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">2</font><font color="#990000">;</font> H_info<font color="#990000">.</font>col<font color="#990000">[</font><font color="#993399">4</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">1</font><font color="#990000">;</font> H_info<font color="#990000">.</font>val<font color="#990000">[</font><font color="#993399">4</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">5.0</font><font color="#990000">;</font>
-          <i><font color="#9A1900">// H_2,2  = 14.0</font></i>
-          H_info<font color="#990000">.</font>row<font color="#990000">[</font><font color="#993399">5</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">2</font><font color="#990000">;</font> H_info<font color="#990000">.</font>col<font color="#990000">[</font><font color="#993399">5</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">2</font><font color="#990000">;</font> H_info<font color="#990000">.</font>val<font color="#990000">[</font><font color="#993399">5</font><font color="#990000">]</font>  <font color="#990000">=</font> <font color="#993399">14.0</font><font color="#990000">;</font>
+          <i><font color="#9A1900">// sparsity pattern for the lower triangular of H (dense)</font></i>
+          <font color="#008080">size_t</font> nnz <font color="#990000">=</font> <font color="#993399">6</font><font color="#990000">;</font>
+          CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">sparse_rc</font> <b><font color="#000000">H_rc</font></b><font color="#990000">(</font>nrow<font color="#990000">,</font> ncol<font color="#990000">,</font> nnz<font color="#990000">);</font>
+          <font color="#FF0000">{</font>    <font color="#008080">size_t</font> k <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font>
+               H_rc<font color="#990000">.</font><b><font color="#000000">set</font></b><font color="#990000">(</font>k<font color="#990000">++,</font> <font color="#993399">0</font><font color="#990000">,</font> <font color="#993399">0</font><font color="#990000">);</font>
+               H_rc<font color="#990000">.</font><b><font color="#000000">set</font></b><font color="#990000">(</font>k<font color="#990000">++,</font> <font color="#993399">1</font><font color="#990000">,</font> <font color="#993399">0</font><font color="#990000">);</font>
+               H_rc<font color="#990000">.</font><b><font color="#000000">set</font></b><font color="#990000">(</font>k<font color="#990000">++,</font> <font color="#993399">2</font><font color="#990000">,</font> <font color="#993399">0</font><font color="#990000">);</font>
+               H_rc<font color="#990000">.</font><b><font color="#000000">set</font></b><font color="#990000">(</font>k<font color="#990000">++,</font> <font color="#993399">1</font><font color="#990000">,</font> <font color="#993399">1</font><font color="#990000">);</font>
+               H_rc<font color="#990000">.</font><b><font color="#000000">set</font></b><font color="#990000">(</font>k<font color="#990000">++,</font> <font color="#993399">2</font><font color="#990000">,</font> <font color="#993399">1</font><font color="#990000">);</font>
+               H_rc<font color="#990000">.</font><b><font color="#000000">set</font></b><font color="#990000">(</font>k<font color="#990000">++,</font> <font color="#993399">2</font><font color="#990000">,</font> <font color="#993399">2</font><font color="#990000">);</font>
+          <font color="#FF0000">}</font>
+     
+          <i><font color="#9A1900">// values in lower triangle of H</font></i>
+          CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">d_sparse_rcv</font> <b><font color="#000000">H_rcv</font></b><font color="#990000">(</font> H_rc <font color="#990000">);</font>
+          <font color="#FF0000">{</font>    <font color="#008080">size_t</font> k <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font>
+               H_rcv<font color="#990000">.</font><b><font color="#000000">set</font></b><font color="#990000">(</font>k<font color="#990000">++,</font> <font color="#993399">1.0</font><font color="#990000">);</font>  <i><font color="#9A1900">// H_0,0  = 1.0</font></i>
+               H_rcv<font color="#990000">.</font><b><font color="#000000">set</font></b><font color="#990000">(</font>k<font color="#990000">++,</font> <font color="#993399">1.0</font><font color="#990000">);</font>  <i><font color="#9A1900">// H_1,0  = 1.0</font></i>
+               H_rcv<font color="#990000">.</font><b><font color="#000000">set</font></b><font color="#990000">(</font>k<font color="#990000">++,</font> <font color="#993399">1.0</font><font color="#990000">);</font>  <i><font color="#9A1900">// H_2,0  = 1.0</font></i>
+               H_rcv<font color="#990000">.</font><b><font color="#000000">set</font></b><font color="#990000">(</font>k<font color="#990000">++,</font> <font color="#993399">5.0</font><font color="#990000">);</font>  <i><font color="#9A1900">// H_1,1  = 5.0</font></i>
+               H_rcv<font color="#990000">.</font><b><font color="#000000">set</font></b><font color="#990000">(</font>k<font color="#990000">++,</font> <font color="#993399">5.0</font><font color="#990000">);</font>  <i><font color="#9A1900">// H_2,1  = 5.0</font></i>
+               H_rcv<font color="#990000">.</font><b><font color="#000000">set</font></b><font color="#990000">(</font>k<font color="#990000">++,</font> <font color="#993399">14.0</font><font color="#990000">);</font> <i><font color="#9A1900">// H_2,2  = 14.0</font></i>
+          <font color="#FF0000">}</font>
           <i><font color="#9A1900">//</font></i>
           <i><font color="#9A1900">// initialize the matrix using only the sparsity pattern</font></i>
-          ldlt_obj<font color="#990000">.</font><b><font color="#000000">init</font></b><font color="#990000">(</font>H_info<font color="#990000">);</font>
+          ldlt_obj<font color="#990000">.</font><b><font color="#000000">init</font></b><font color="#990000">(</font> H_rcv<font color="#990000">.</font><b><font color="#000000">pat</font></b><font color="#990000">()</font> <font color="#990000">);</font>
+     
+          <i><font color="#9A1900">// check the pattern function</font></i>
+          <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>sparse_rc<font color="#990000">&amp;</font> <b><font color="#000000">pattern</font></b><font color="#990000">(</font> ldlt_obj<font color="#990000">.</font><b><font color="#000000">pattern</font></b><font color="#990000">()</font> <font color="#990000">);</font>
+          ok <font color="#990000">&amp;=</font> pattern<font color="#990000">.</font><b><font color="#000000">nnz</font></b><font color="#990000">()</font> <font color="#990000">==</font> nnz<font color="#990000">;</font>
+          <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> k <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> k <font color="#990000">&lt;</font> nnz<font color="#990000">;</font> <font color="#990000">++</font>k<font color="#990000">)</font>
+          <font color="#FF0000">{</font>    ok <font color="#990000">&amp;=</font> pattern<font color="#990000">.</font><b><font color="#000000">row</font></b><font color="#990000">()[</font>k<font color="#990000">]</font> <font color="#990000">==</font> H_rc<font color="#990000">.</font><b><font color="#000000">row</font></b><font color="#990000">()[</font>k<font color="#990000">];</font>
+               ok <font color="#990000">&amp;=</font> pattern<font color="#990000">.</font><b><font color="#000000">col</font></b><font color="#990000">()[</font>k<font color="#990000">]</font> <font color="#990000">==</font> H_rc<font color="#990000">.</font><b><font color="#000000">col</font></b><font color="#990000">()[</font>k<font color="#990000">];</font>
+          <font color="#FF0000">}</font>
      
           <i><font color="#9A1900">// factor the matrix using the values</font></i>
-          ldlt_obj<font color="#990000">.</font><b><font color="#000000">update</font></b><font color="#990000">(</font>H_info<font color="#990000">);</font>
+          ldlt_obj<font color="#990000">.</font><b><font color="#000000">update</font></b><font color="#990000">(</font> H_rcv <font color="#990000">);</font>
      
           <i><font color="#9A1900">// compute log of determinant of H</font></i>
           <font color="#008080">size_t</font> negative<font color="#990000">;</font>

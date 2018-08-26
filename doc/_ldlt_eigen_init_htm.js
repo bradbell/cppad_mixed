@@ -53,7 +53,9 @@ var list_down2 = [
 var list_down1 = [
 'ldlt_eigen_ctor.htm',
 'ldlt_eigen_init.htm',
+'ldlt_eigen_pattern.htm',
 'ldlt_eigen_update.htm',
+'ldlt_eigen_split.htm',
 'ldlt_eigen_logdet.htm',
 'ldlt_eigen_solve_h.htm',
 'ldlt_eigen_sim_cov.htm',
@@ -62,9 +64,12 @@ var list_down1 = [
 ];
 var list_current0 = [
 'ldlt_eigen_init.htm#Syntax',
+'ldlt_eigen_init.htm#Prototype',
 'ldlt_eigen_init.htm#Private',
 'ldlt_eigen_init.htm#ldlt_obj',
-'ldlt_eigen_init.htm#H_info',
+'ldlt_eigen_init.htm#H_rc',
+'ldlt_eigen_init.htm#H_rc_',
+'ldlt_eigen_init.htm#Order of Operations',
 'ldlt_eigen_init.htm#Example'
 ];
 function choose_across0(item)

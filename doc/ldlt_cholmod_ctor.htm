@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Cholmod LDLT Constructor</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Cholmod LDLT Constructor">
-<meta name="keywords" id="keywords" content=" cholmod ldlt constructor syntax private nrow_ pointers common_ simplicial factorization ldl' example ">
+<meta name="keywords" id="keywords" content=" cholmod ldlt constructor syntax prototype private nrow_ pointers common_ simplicial factorization ldl' example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -103,6 +103,7 @@ A:active { color : purple }
 <option>ldlt_cholmod_ctor</option>
 <option>ldlt_cholmod_dtor</option>
 <option>ldlt_cholmod_init</option>
+<option>ldlt_cholmod_pattern</option>
 <option>ldlt_cholmod_update</option>
 <option>ldlt_cholmod_logdet</option>
 <option>ldlt_cholmod_solve_H</option>
@@ -119,6 +120,7 @@ A:active { color : purple }
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
 <option>Syntax</option>
+<option>Prototype</option>
 <option>Private</option>
 <option>nrow_</option>
 <option>Pointers</option>
@@ -143,6 +145,13 @@ A:active { color : purple }
 
 <br>
 <br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre style='display:inline'><tt>
+
+ldlt_cholmod<font color="#990000">::</font><b><font color="#000000">ldlt_cholmod</font></b><font color="#990000">(</font><font color="#008080">size_t</font> nrow<font color="#990000">)</font>
+</tt></pre>
+<br>
 <b><big><a name="Private" id="Private">Private</a></big></b>
 <br>
 The <a href="ldlt_cholmod.htm" target="_top"><span style='white-space: nowrap'>ldlt_cholmod</span></a>
@@ -158,12 +167,8 @@ The <a href="ldlt_cholmod.htm" target="_top"><span style='white-space: nowrap'>l
 <br>
 The argument 
 <code><i><font color="black"><span style='white-space: nowrap'>nrow</span></font></i></code>
- has prototype
 
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nrow</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
-It is the number of rows in the symmetric matrix
+is the number of rows in the symmetric matrix
 we will compute the LDLT factor of.
 The member variable <code><font color="blue">nrow_</font></code> is set to this value.
 

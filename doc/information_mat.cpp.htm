@@ -229,7 +229,7 @@ The second partial w.r.t <small>@(@
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>log<font color="#990000">;</font>
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>AD<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
-     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>sparse_rcv<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>d_sparse_rcv<font color="#990000">;</font>
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>a1_double<font color="#990000">;</font>
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>a2_double<font color="#990000">;</font>
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>s_vector<font color="#990000">;</font>
@@ -250,7 +250,7 @@ The second partial w.r.t <small>@(@
                <font color="#008080">size_t</font>                 n_random       <font color="#990000">,</font>
                <font color="#009900">bool</font>                   quasi_fixed    <font color="#990000">,</font>
                <font color="#009900">bool</font>                   bool_sparsity  <font color="#990000">,</font>
-               <b><font color="#0000FF">const</font></b> sparse_rcv<font color="#990000">&amp;</font>      A_rcv          <font color="#990000">,</font>
+               <b><font color="#0000FF">const</font></b> d_sparse_rcv<font color="#990000">&amp;</font>    A_rcv          <font color="#990000">,</font>
                <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>        y              <font color="#990000">)</font> <font color="#990000">:</font>
                <b><font color="#000000">cppad_mixed</font></b><font color="#990000">(</font>
                     n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv
@@ -362,7 +362,7 @@ The second partial w.r.t <small>@(@
      <i><font color="#9A1900">// object that is derived from cppad_mixed</font></i>
      <font color="#009900">bool</font> quasi_fixed   <font color="#990000">=</font> <b><font color="#0000FF">false</font></b><font color="#990000">;</font>
      <font color="#009900">bool</font> bool_sparsity <font color="#990000">=</font> <b><font color="#0000FF">false</font></b><font color="#990000">;</font>
-     <font color="#008080">sparse_rcv</font> A_rcv<font color="#990000">;</font> <i><font color="#9A1900">// empty matrix</font></i>
+     <font color="#008080">d_sparse_rcv</font> A_rcv<font color="#990000">;</font> <i><font color="#9A1900">// empty matrix</font></i>
      <font color="#008080">mixed_derived</font> <b><font color="#000000">mixed_object</font></b><font color="#990000">(</font>
           n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv<font color="#990000">,</font> data
      <font color="#990000">);</font>
@@ -411,7 +411,7 @@ The second partial w.r.t <small>@(@
           random_in
      <font color="#990000">);</font>
      <i><font color="#9A1900">// compute corresponding information matrix</font></i>
-     sparse_rcv
+     d_sparse_rcv
      information_rcv <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">information_mat</font></b><font color="#990000">(</font>solution<font color="#990000">,</font> random_opt<font color="#990000">);</font>
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// there are three non-zero entries in the lower triangle</font></i>

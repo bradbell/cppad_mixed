@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Simulations with Covariance Corresponding to Factored Matrix</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Simulations with Covariance Corresponding to Factored Matrix">
-<meta name="keywords" id="keywords" content=" simulations with covariance corresponding to factored matrix syntax private purpose ldlt_obj w v positive definite ok example ">
+<meta name="keywords" id="keywords" content=" simulations with covariance corresponding to factored matrix syntax prototype private purpose ldlt_obj w v positive definite ok example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -103,6 +103,7 @@ A:active { color : purple }
 <option>ldlt_cholmod_ctor</option>
 <option>ldlt_cholmod_dtor</option>
 <option>ldlt_cholmod_init</option>
+<option>ldlt_cholmod_pattern</option>
 <option>ldlt_cholmod_update</option>
 <option>ldlt_cholmod_logdet</option>
 <option>ldlt_cholmod_solve_H</option>
@@ -119,6 +120,7 @@ A:active { color : purple }
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
 <option>Syntax</option>
+<option>Prototype</option>
 <option>Private</option>
 <option>Purpose</option>
 <option>ldlt_obj</option>
@@ -145,6 +147,13 @@ A:active { color : purple }
 
 
 <br>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre><tt>
+<font color="#009900">bool</font> ldlt_cholmod<font color="#990000">::</font><b><font color="#000000">sim_cov</font></b><font color="#990000">(</font>
+     <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;&amp;</font> w  <font color="#990000">,</font>
+     CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;&amp;</font>       v  <font color="#990000">)</font></tt></pre>
 <br>
 <b><big><a name="Private" id="Private">Private</a></big></b>
 <br>
@@ -195,12 +204,8 @@ In addition, it must have a previous call to
 <br>
 <b><big><a name="w" id="w">w</a></big></b>
 <br>
-This argument has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>w</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
-and its size is equal to the number of rows in <small>@(@
+This argument's
+size is equal to the number of rows in <small>@(@
 H
 @)@</small>.
 
@@ -208,12 +213,8 @@ H
 <br>
 <b><big><a name="v" id="v">v</a></big></b>
 <br>
-This argument has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>v</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
-and its size is equal to the number of rows in <small>@(@
+This argument's
+size is equal to the number of rows in <small>@(@
 H
 @)@</small>.
 The input value of its elements does not matter.
@@ -275,11 +276,6 @@ D
 <br>
 <b><big><a name="ok" id="ok">ok</a></big></b>
 <br>
-The return value has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ok</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
 If <small>@(@
 \max(D) > 0
 @)@</small>, this routine terminates with 

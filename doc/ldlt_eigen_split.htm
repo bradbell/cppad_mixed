@@ -12,10 +12,10 @@ MathJax.Hub.Config({
 >
 </script>
 <head>
-<title>Initialize LDLT Factor for a Specific Sparsity Pattern</title>
+<title>Split Out a Factorization</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
-<meta name="description" id="description" content="Initialize LDLT Factor for a Specific Sparsity Pattern">
-<meta name="keywords" id="keywords" content=" initialize ldlt factor specific sparsity pattern syntax prototype private ldlt_obj h_rc h_rc_ order operations example ">
+<meta name="description" id="description" content="Split Out a Factorization">
+<meta name="keywords" id="keywords" content=" split out factorization syntax prototype private purpose ldlt_obj l d p example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -23,7 +23,7 @@ A:link { color : blue }
 A:visited { color : purple }
 A:active { color : purple }
 </style>
-<script type='text/javascript' language='JavaScript' src='_ldlt_eigen_init_htm.js'>
+<script type='text/javascript' language='JavaScript' src='_ldlt_eigen_split_htm.js'>
 </script>
 </head>
 <body>
@@ -31,8 +31,8 @@ A:active { color : purple }
 <td>
 <a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
 </td>
-<td><a href="ldlt_eigen_ctor.htm" target="_top">Prev</a>
-</td><td><a href="ldlt_eigen_pattern.htm" target="_top">Next</a>
+<td><a href="ldlt_eigen_update.htm" target="_top">Prev</a>
+</td><td><a href="ldlt_eigen_logdet.htm" target="_top">Next</a>
 </td><td>
 <select onchange='choose_across0(this)'>
 <option>Index-&gt;</option>
@@ -49,7 +49,7 @@ A:active { color : purple }
 <option>cppad_mixed</option>
 <option>namespace</option>
 <option>ldlt_eigen</option>
-<option>ldlt_eigen_init</option>
+<option>ldlt_eigen_split</option>
 </select>
 </td>
 <td>
@@ -112,17 +112,18 @@ A:active { color : purple }
 <option>ldlt_eigen.cpp</option>
 </select>
 </td>
-<td>ldlt_eigen_init</td>
+<td>ldlt_eigen_split</td>
 <td>
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
 <option>Syntax</option>
 <option>Prototype</option>
 <option>Private</option>
+<option>Purpose</option>
 <option>ldlt_obj</option>
-<option>H_rc</option>
-<option>H_rc_</option>
-<option>Order of Operations</option>
+<option>---..L</option>
+<option>---..D</option>
+<option>---..P</option>
 <option>Example</option>
 </select>
 </td>
@@ -131,31 +132,46 @@ A:active { color : purple }
 \newcommand{\B}[1]{ {\bf #1} }
 \newcommand{\W}[1]{ \; #1 \; }@)@
 
-
-<center><b><big><big>Initialize LDLT Factor for a Specific Sparsity Pattern</big></big></b></center>
+<center><b><big><big>Split Out a Factorization</big></big></b></center>
 <br>
 <b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
 
 <br>
 
-<code><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i><font color="blue"><span style='white-space: nowrap'>.init(</span></font><i><font color="black"><span style='white-space: nowrap'>H_rc</span></font></i><font color="blue"><span style='white-space: nowrap'>)<br>
-</span></font></code>
+<code><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i><font color="blue"><span style='white-space: nowrap'>.split(</span></font><i><font color="black"><span style='white-space: nowrap'>L</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>D</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>P</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
+
+
+<br>
 <br>
 <b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
 
-<pre style='display:inline'><tt>
-
+<pre><tt>
 <b><font color="#0000FF">template</font></b> <font color="#990000">&lt;</font><b><font color="#0000FF">typename</font></b> <font color="#008080">Double</font><font color="#990000">&gt;</font>
-<font color="#009900">void</font> ldlt_eigen<font color="#990000">&lt;</font>Double<font color="#990000">&gt;::</font><b><font color="#000000">init</font></b><font color="#990000">(</font><b><font color="#0000FF">const</font></b> sparse_rc<font color="#990000">&amp;</font> H_rc<font color="#990000">)</font>
-</tt></pre>
+<font color="#009900">void</font> ldlt_eigen<font color="#990000">&lt;</font>Double<font color="#990000">&gt;::</font><b><font color="#000000">split</font></b><font color="#990000">(</font>
+     Eigen<font color="#990000">::</font>SparseMatrix<font color="#990000">&lt;</font>Double<font color="#990000">,</font> Eigen<font color="#990000">::</font>ColMajor<font color="#990000">&gt;&amp;</font> L <font color="#990000">,</font>
+     Eigen<font color="#990000">::</font>Matrix<font color="#990000">&lt;</font>Double<font color="#990000">,</font> Eigen<font color="#990000">::</font>Dynamic<font color="#990000">,</font> <font color="#993399">1</font><font color="#990000">&gt;&amp;</font>     D <font color="#990000">,</font>
+     Eigen<font color="#990000">::</font>PermutationMatrix<font color="#990000">&lt;</font>Eigen<font color="#990000">::</font>Dynamic<font color="#990000">&gt;&amp;</font>     P <font color="#990000">)</font> <b><font color="#0000FF">const</font></b></tt></pre>
 <br>
 <b><big><a name="Private" id="Private">Private</a></big></b>
 <br>
-The <code><font color="blue">ldlt_eigen</font></code> class is an
+The <a href="ldlt_eigen.htm" target="_top"><span style='white-space: nowrap'>ldlt_eigen</span></a>
+ class is an
 <a href="ldlt_eigen.htm#Private" target="_top"><span style='white-space: nowrap'>implementation&nbsp;detail</span></a>
  and not part of the
 <a href="namespace.htm#Private" target="_top"><span style='white-space: nowrap'>CppAD::mixed</span></a>
  user API.
+
+<br>
+<br>
+<b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
+<br>
+Extract the components of the <a href="ldlt_eigen.htm#Factorization" target="_top"><span style='white-space: nowrap'>factorization</span></a>
+
+<small>@[@
+
+    L D L^\R{T} = P H P^{T}
+
+@]@</small>
 
 <br>
 <br>
@@ -164,44 +180,35 @@ The <code><font color="blue">ldlt_eigen</font></code> class is an
 This object has prototype
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::ldlt_eigen&lt;</span></font><i><font color="black"><span style='white-space: nowrap'>Double</span></font></i><font color="blue"><span style='white-space: nowrap'>&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::ldlt_eigen&lt;</span></font><i><font color="black"><span style='white-space: nowrap'>Double</span></font></i><font color="blue"><span style='white-space: nowrap'>&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 </span></font></code>
-<br>
-<b><big><a name="H_rc" id="H_rc">H_rc</a></big></b>
-<br>
-This argument is a
-<a href="sparse_mat_info.htm#Notation.Sparsity Pattern" target="_top"><span style='white-space: nowrap'>sparsity&nbsp;pattern</span></a>
- for the
-matrix that we will compute the LDLT factor of.
-It is in
-<a href="sparse_mat_info.htm#Notation.Column Major Order" target="_top"><span style='white-space: nowrap'>column&nbsp;major</span></a>
- order
-and
-<a href="sparse_mat_info.htm#Notation.Lower Triangular" target="_top"><span style='white-space: nowrap'>lower&nbsp;triangular</span></a>
+In addition, it must have a previous call to
+<a href="ldlt_eigen_update.htm" target="_top"><span style='white-space: nowrap'>ldlt_eigen_update</span></a>
 .
 
 <br>
 <br>
-<b><big><a name="H_rc_" id="H_rc_">H_rc_</a></big></b>
+<big><a name="ldlt_obj.L" id="ldlt_obj.L">L</a></big>
 <br>
-This member variable is set to a copy of 
-<code><i><font color="black"><span style='white-space: nowrap'>H_rc</span></font></i></code>
-.
+is a lower triangular matrix with ones on the diagonal,
 
 <br>
 <br>
-<b><big><a name="Order of Operations" id="Order of Operations">Order of Operations</a></big></b>
+<big><a name="ldlt_obj.D" id="ldlt_obj.D">D</a></big>
 <br>
-This 
-<code><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i></code>
- function must be called once,
-after the constructor and before any other member functions.
+is a diagonal matrix.
+
+<br>
+<br>
+<big><a name="ldlt_obj.P" id="ldlt_obj.P">P</a></big>
+<br>
+is a permutation matrix.
 
 <br>
 <br>
 <b><big><a name="Example" id="Example">Example</a></big></b>
 <br>
-The file <a href="ldlt_eigen.cpp.htm#init" target="_top"><span style='white-space: nowrap'>ldlt_eigen.cpp</span></a>
+The file <a href="ldlt_eigen.cpp.htm#split" target="_top"><span style='white-space: nowrap'>ldlt_eigen.cpp</span></a>
  contains an
 example and test that uses this function.
 

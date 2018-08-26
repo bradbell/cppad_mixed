@@ -60,7 +60,8 @@ var list_current0 = [
 'init_ldlt_ran_hes.htm#Assumptions',
 'init_ldlt_ran_hes.htm#init_ldlt_ran_hes_done_',
 'init_ldlt_ran_hes.htm#mixed_object',
-'init_ldlt_ran_hes.htm#ldlt_ran_hes_'
+'init_ldlt_ran_hes.htm#ldlt_ran_hes_',
+'init_ldlt_ran_hes.htm#a1_ldlt_ran_hes_'
 ];
 function choose_across0(item)
 {	var index          = item.selectedIndex;

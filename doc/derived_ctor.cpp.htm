@@ -113,7 +113,7 @@ A:active { color : purple }
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>log<font color="#990000">;</font>
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>AD<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
-     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>sparse_rcv<font color="#990000">;</font>
+     <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>d_sparse_rcv<font color="#990000">;</font>
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>d_vector<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
      <b><font color="#0000FF">class</font></b> <font color="#008080">mixed_derived</font> <font color="#990000">:</font> <b><font color="#0000FF">public</font></b> cppad_mixed <font color="#FF0000">{</font>
@@ -126,7 +126,7 @@ A:active { color : purple }
                <font color="#008080">size_t</font>                 n_random       <font color="#990000">,</font>
                <font color="#009900">bool</font>                   quasi_fixed    <font color="#990000">,</font>
                <font color="#009900">bool</font>                   bool_sparsity  <font color="#990000">,</font>
-               <b><font color="#0000FF">const</font></b> sparse_rcv<font color="#990000">&amp;</font>      A_rcv          <font color="#990000">)</font>
+               <b><font color="#0000FF">const</font></b> d_sparse_rcv<font color="#990000">&amp;</font>    A_rcv          <font color="#990000">)</font>
                <font color="#990000">:</font>
                <b><font color="#000000">cppad_mixed</font></b><font color="#990000">(</font>
                     n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv
@@ -152,7 +152,7 @@ A:active { color : purple }
      <font color="#008080">size_t</font> n_random    <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font>
      <font color="#009900">bool</font> quasi_fixed   <font color="#990000">=</font> <b><font color="#0000FF">true</font></b><font color="#990000">;</font>
      <font color="#009900">bool</font> bool_sparsity <font color="#990000">=</font> <b><font color="#0000FF">true</font></b><font color="#990000">;</font>
-     <font color="#008080">sparse_rcv</font> A_rcv<font color="#990000">;</font> <i><font color="#9A1900">// empty matrix</font></i>
+     <font color="#008080">d_sparse_rcv</font> A_rcv<font color="#990000">;</font> <i><font color="#9A1900">// empty matrix</font></i>
      <i><font color="#9A1900">//</font></i>
      <font color="#008080">d_vector</font> <b><font color="#000000">fixed_vec</font></b><font color="#990000">(</font>n_fixed<font color="#990000">),</font> <b><font color="#000000">random_vec</font></b><font color="#990000">(</font>n_random<font color="#990000">);</font>
      fixed_vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>

@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Update Factorization Using new Matrix Values</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Update Factorization Using new Matrix Values">
-<meta name="keywords" id="keywords" content=" update factorization using new matrix values syntax prototype private purpose ldlt_obj h_rcv ptr_ ok order operations example ">
+<meta name="keywords" id="keywords" content=" update factorization using new matrix values syntax prototype private ldlt_obj h_rc order operations example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -23,7 +23,7 @@ A:link { color : blue }
 A:visited { color : purple }
 A:active { color : purple }
 </style>
-<script type='text/javascript' language='JavaScript' src='_ldlt_eigen_update_htm.js'>
+<script type='text/javascript' language='JavaScript' src='_ldlt_eigen_pattern_htm.js'>
 </script>
 </head>
 <body>
@@ -31,8 +31,8 @@ A:active { color : purple }
 <td>
 <a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
 </td>
-<td><a href="ldlt_eigen_pattern.htm" target="_top">Prev</a>
-</td><td><a href="ldlt_eigen_split.htm" target="_top">Next</a>
+<td><a href="ldlt_eigen_init.htm" target="_top">Prev</a>
+</td><td><a href="ldlt_eigen_update.htm" target="_top">Next</a>
 </td><td>
 <select onchange='choose_across0(this)'>
 <option>Index-&gt;</option>
@@ -49,7 +49,7 @@ A:active { color : purple }
 <option>cppad_mixed</option>
 <option>namespace</option>
 <option>ldlt_eigen</option>
-<option>ldlt_eigen_update</option>
+<option>ldlt_eigen_pattern</option>
 </select>
 </td>
 <td>
@@ -112,18 +112,15 @@ A:active { color : purple }
 <option>ldlt_eigen.cpp</option>
 </select>
 </td>
-<td>ldlt_eigen_update</td>
+<td>ldlt_eigen_pattern</td>
 <td>
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
 <option>Syntax</option>
 <option>Prototype</option>
 <option>Private</option>
-<option>Purpose</option>
 <option>ldlt_obj</option>
-<option>H_rcv</option>
-<option>ptr_</option>
-<option>ok</option>
+<option>H_rc</option>
 <option>Order of Operations</option>
 <option>Example</option>
 </select>
@@ -140,18 +137,18 @@ A:active { color : purple }
 
 <br>
 
-<code><i><font color="black"><span style='white-space: nowrap'>ok</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i><font color="blue"><span style='white-space: nowrap'>.update(</span></font><i><font color="black"><span style='white-space: nowrap'>H_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
+<code><i><font color="black"><span style='white-space: nowrap'>H_rc</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i><font color="blue"><span style='white-space: nowrap'>.pattern()</span></font></code>
 
 
 <br>
 <br>
 <b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
 
-<pre><tt>
+<pre style='display:inline'><tt>
+
 <b><font color="#0000FF">template</font></b> <font color="#990000">&lt;</font><b><font color="#0000FF">typename</font></b> <font color="#008080">Double</font><font color="#990000">&gt;</font>
-<font color="#009900">bool</font> ldlt_eigen<font color="#990000">&lt;</font>Double<font color="#990000">&gt;::</font><b><font color="#000000">update</font></b><font color="#990000">(</font>
-     <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>sparse_rcv<font color="#990000">&lt;</font>s_vector<font color="#990000">,</font> v_vector<font color="#990000">&gt;&amp;</font> H_rcv
-<font color="#990000">)</font></tt></pre>
+<b><font color="#0000FF">const</font></b> sparse_rc<font color="#990000">&amp;</font> ldlt_eigen<font color="#990000">&lt;</font>Double<font color="#990000">&gt;::</font><b><font color="#000000">pattern</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">)</font> <b><font color="#0000FF">const</font></b>
+</tt></pre>
 <br>
 <b><big><a name="Private" id="Private">Private</a></big></b>
 <br>
@@ -164,20 +161,12 @@ The <a href="ldlt_eigen.htm" target="_top"><span style='white-space: nowrap'>ldl
 
 <br>
 <br>
-<b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
-<br>
-This routine updates the <a href="ldlt_eigen.htm" target="_top"><span style='white-space: nowrap'>ldlt_eigen</span></a>
- factorization
-for new values in the square positive definite matrix.
-
-<br>
-<br>
 <b><big><a name="ldlt_obj" id="ldlt_obj">ldlt_obj</a></big></b>
 <br>
 This object has prototype
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::ldlt_eigen&lt;</span></font><i><font color="black"><span style='white-space: nowrap'>Double</span></font></i><font color="blue"><span style='white-space: nowrap'>&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::mixed::ldlt_eigen&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 </span></font></code>
 In addition, it must have a previous call to
 <a href="ldlt_eigen_init.htm" target="_top"><span style='white-space: nowrap'>ldlt_eigen_init</span></a>
@@ -185,51 +174,14 @@ In addition, it must have a previous call to
 
 <br>
 <br>
-<b><big><a name="H_rcv" id="H_rcv">H_rcv</a></big></b>
+<b><big><a name="H_rc" id="H_rc">H_rc</a></big></b>
 <br>
-This argument contains new values for the
-<a href="sparse_mat_info.htm#Notation.Sparse Matrix" target="_top"><span style='white-space: nowrap'>sparse&nbsp;matrix</span></a>
+The return value is a copy of the sparsity pattern
+<a href="ldlt_eigen_init.htm#H_rc" target="_top"><span style='white-space: nowrap'>H_rc</span></a>
+ in the corresponding call to
 
-we are computing the LDLT factor of.
-The <a href="sparse_mat_info.htm#Notation.Sparsity Pattern" target="_top"><span style='white-space: nowrap'>sparsity&nbsp;pattern</span></a>
-
-must be the same as in <a href="ldlt_eigen_init.htm#H_rc" target="_top"><span style='white-space: nowrap'>ldlt_eigen_init</span></a>
+<code><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i><font color="blue"><span style='white-space: nowrap'>.init(</span></font><i><font color="black"><span style='white-space: nowrap'>H_rc</span></font></i><font color="blue"><span style='white-space: nowrap'>)</span></font></code>
 .
-Hence, in particular, it must be in
-<a href="sparse_mat_info.htm#Notation.Column Major Order" target="_top"><span style='white-space: nowrap'>column&nbsp;major</span></a>
- order
-and
-<a href="sparse_mat_info.htm#Notation.Lower Triangular" target="_top"><span style='white-space: nowrap'>lower&nbsp;triangular</span></a>
-.
-
-<br>
-<br>
-<b><big><a name="ptr_" id="ptr_">ptr_</a></big></b>
-<br>
-On input, the member variable 
-<code><i><font color="black"><span style='white-space: nowrap'>ptr_</span></font></i></code>
-
-has been <a href="ldlt_eigen_init.htm" target="_top"><span style='white-space: nowrap'>initialized</span></a>
-
-using the sparsity pattern for the Hessian.
-Upon return, it contains the factorization
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptr_-&gt;factorize(</span></font><i><font color="black"><span style='white-space: nowrap'>hessian</span></font></i><font color="blue"><span style='white-space: nowrap'>)<br>
-</span></font></code>
-where 
-<code><i><font color="black"><span style='white-space: nowrap'>hessian</span></font></i></code>
- is an <code><font color="blue">eigen_sparse</font></code>
-representation of the Hessian with values.
-
-<br>
-<br>
-<b><big><a name="ok" id="ok">ok</a></big></b>
-<br>
-If the return value 
-<code><i><font color="black"><span style='white-space: nowrap'>ok</span></font></i></code>
- is true, the matrix was factored.
-Otherwise, the matrix is singular.
 
 <br>
 <br>
@@ -239,14 +191,13 @@ This
 <code><i><font color="black"><span style='white-space: nowrap'>ldlt_obj</span></font></i></code>
  function must be called,
 after the constructor and <a href="ldlt_eigen_init.htm" target="_top"><span style='white-space: nowrap'>init</span></a>
-
-and before any other member functions.
+.
 
 <br>
 <br>
 <b><big><a name="Example" id="Example">Example</a></big></b>
 <br>
-The file <a href="ldlt_eigen.cpp.htm#update" target="_top"><span style='white-space: nowrap'>ldlt_eigen.cpp</span></a>
+The file <a href="ldlt_eigen.cpp.htm#pattern" target="_top"><span style='white-space: nowrap'>ldlt_eigen.cpp</span></a>
  contains an
 example and test that uses this function.
 

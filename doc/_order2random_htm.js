@@ -59,9 +59,8 @@ var list_current0 = [
 'order2random.htm#mixed_object',
 'order2random.htm#n_fixed',
 'order2random.htm#n_random',
-'order2random.htm#a1fun',
 'order2random.htm#jac_a1fun',
-'order2random.htm#ran_hes_rc',
+'order2random.htm#a1_ldlt_ran_hes',
 'order2random.htm#beta_theta_u',
 'order2random.htm#W',
 'order2random.htm#Example'

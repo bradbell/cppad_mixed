@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Types Defined in the CppAD Mixed Namespace</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Types Defined in the CppAD Mixed Namespace">
-<meta name="keywords" id="keywords" content=" types defined the cppad mixed namespace syntax begin scalar a1_double a2_double a3_double vector s_vector d_vector a1_vector a2_vector a3_vector sparse sparse_rc sparse_rcv a1_sparse_rcv end ">
+<meta name="keywords" id="keywords" content=" types defined the cppad mixed namespace syntax begin scalar a1_double a2_double a3_double vector s_vector d_vector a1_vector a2_vector a3_vector sparse sparse_rc d_sparse_rcv a1_sparse_rcv end ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -114,7 +114,7 @@ A:active { color : purple }
 <option>---..a3_vector</option>
 <option>Sparse Types</option>
 <option>---..sparse_rc</option>
-<option>---..sparse_rcv</option>
+<option>---..d_sparse_rcv</option>
 <option>---..a1_sparse_rcv</option>
 <option>End Namespace</option>
 </select>
@@ -217,12 +217,12 @@ Sparsity patterns using index vector of type <code><font color="blue">s_vector</
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">sparse_rc&lt;s_vector&gt;</font> sparse_rc<font color="#990000">;</font>
 </tt></pre>
 <br>
-<big><a name="Sparse Types.sparse_rcv" id="Sparse Types.sparse_rcv">sparse_rcv</a></big>
+<big><a name="Sparse Types.d_sparse_rcv" id="Sparse Types.d_sparse_rcv">d_sparse_rcv</a></big>
 <br>
 Sparse matrices using index vector of type <code><font color="blue">s_vector</font></code>
 and value vectors of type <code><font color="blue">d_vector</font></code>:
 <pre style='display:inline'><tt>
-     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">sparse_rcv&lt;s_vector, d_vector&gt;</font> sparse_rcv<font color="#990000">;</font>
+     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">sparse_rcv&lt;s_vector, d_vector&gt;</font> d_sparse_rcv<font color="#990000">;</font>
 
 </tt></pre>
 <big><a name="Sparse Types.a1_sparse_rcv" id="Sparse Types.a1_sparse_rcv">a1_sparse_rcv</a></big>

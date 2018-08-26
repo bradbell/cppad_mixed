@@ -218,7 +218,7 @@ Otherwise, use set sparsity patterns.
 <br>
 contains the random constraint matrix
 <pre style='display:inline'><tt>
-     <b><font color="#0000FF">const</font></b> <font color="#008080">sparse_rcv</font> A_rcv_<font color="#990000">;</font>
+     <b><font color="#0000FF">const</font></b> <font color="#008080">d_sparse_rcv</font> A_rcv_<font color="#990000">;</font>
 </tt></pre>
 <br>
 <b><big><a name="initialize_done_" id="initialize_done_">initialize_done_</a></big></b>
@@ -328,7 +328,7 @@ with respect to the random effects; i.e.
 f_{u,u} ( \theta , u )
 @)@</small>.
 <pre><tt>     <i><font color="#9A1900">// sparse Hessian</font></i>
-     <font color="#008080">sparse_rcv</font>                    ran_hes_rcv_<font color="#990000">;</font>
+     <font color="#008080">d_sparse_rcv</font>                  ran_hes_rcv_<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// recording of sparse Hessian calculation</font></i>
      CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;double&gt;</font>        ran_hes_fun_<font color="#990000">;</font>
@@ -360,7 +360,8 @@ If
 f_{u,u} ( \theta , u )
 @)@</small>.
 <pre style='display:inline'><tt>
-     <font color="#008080">CPPAD_MIXED_LDLT_CLASS</font> ldlt_ran_hes_<font color="#990000">;</font>
+     <font color="#008080">CPPAD_MIXED_LDLT_CLASS</font>              ldlt_ran_hes_<font color="#990000">;</font>
+     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">ldlt_eigen&lt;a1_double&gt;</font> a1_ldlt_ran_hes_<font color="#990000">;</font>
 </tt></pre>
 <br>
 <b><big><a name="hes_cross_" id="hes_cross_">hes_cross_</a></big></b>
@@ -702,7 +703,7 @@ Called by public <a href="public.htm#optimize_fixed" target="_top"><span style='
 <br>
 Called by public <a href="public.htm#information_mat" target="_top"><span style='white-space: nowrap'>information_mat</span></a>
 
-<pre><tt>     <font color="#008080">sparse_rcv</font> <b><font color="#000000">try_information_mat</font></b><font color="#990000">(</font>
+<pre><tt>     <font color="#008080">d_sparse_rcv</font> <b><font color="#000000">try_information_mat</font></b><font color="#990000">(</font>
           <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>fixed_solution<font color="#990000">&amp;</font>  solution      <font color="#990000">,</font>
           <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>                      random_opt
      <font color="#990000">);</font></tt></pre>
@@ -713,7 +714,7 @@ Called by public <a href="public.htm#sample_fixed" target="_top"><span style='wh
 
 <pre><tt>     <font color="#009900">void</font> <b><font color="#000000">try_sample_fixed</font></b><font color="#990000">(</font>
           d_vector<font color="#990000">&amp;</font>                            sample               <font color="#990000">,</font>
-          <b><font color="#0000FF">const</font></b> sparse_rcv<font color="#990000">&amp;</font>                    information_rcv      <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_sparse_rcv<font color="#990000">&amp;</font>                  information_rcv      <font color="#990000">,</font>
           <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>fixed_solution<font color="#990000">&amp;</font>  solution             <font color="#990000">,</font>
           <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>                      fixed_lower          <font color="#990000">,</font>
           <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>                      fixed_upper          <font color="#990000">,</font>
@@ -835,7 +836,7 @@ See <a href="ran_con_jac.htm" target="_top"><span style='white-space: nowrap'>ra
 <pre><tt>     <font color="#009900">void</font> <b><font color="#000000">ran_con_jac</font></b><font color="#990000">(</font>
           <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>                fixed_vec  <font color="#990000">,</font>
           <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>                random_vec <font color="#990000">,</font>
-          sparse_rcv<font color="#990000">&amp;</font>                    jac_info
+          d_sparse_rcv<font color="#990000">&amp;</font>                  jac_info
      <font color="#990000">);</font>
      <b><font color="#0000FF">friend</font></b> <font color="#009900">bool</font> <font color="#990000">::</font><b><font color="#000000">ran_con_jac_xam</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">);</font>
      <b><font color="#0000FF">friend</font></b> <font color="#009900">bool</font> <font color="#990000">::</font><b><font color="#000000">sample_fixed_1</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">);</font></tt></pre>

@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Convert Row, Column, Value Triple to an Eigen Sparse Matrix</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Convert Row, Column, Value Triple to an Eigen Sparse Matrix">
-<meta name="keywords" id="keywords" content=" convert row column value triple to eigen sparse matrix syntax private scalar nr nc col val sparsity pattern mat ">
+<meta name="keywords" id="keywords" content=" convert row column value triple to eigen sparse matrix syntax prototype private scalar nr nc col val sparsity pattern mat ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -101,6 +101,7 @@ A:active { color : purple }
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
 <option>Syntax</option>
+<option>Prototype</option>
 <option>Private</option>
 <option>Scalar</option>
 <option>nr</option>
@@ -132,6 +133,17 @@ A:active { color : purple }
 
 <br>
 <br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre><tt>
+<font color="#009900">void</font> <b><font color="#000000">triple2eigen</font></b><font color="#990000">(</font>
+     Eigen<font color="#990000">::</font>SparseMatrix<font color="#990000">&lt;</font>Scalar<font color="#990000">&gt;&amp;</font>  mat  <font color="#990000">,</font>
+     <font color="#008080">size_t</font>                        nr   <font color="#990000">,</font>
+     <font color="#008080">size_t</font>                        nc   <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> s_vector<font color="#990000">&amp;</font>               row  <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> s_vector<font color="#990000">&amp;</font>               col  <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font>Scalar<font color="#990000">&gt;&amp;</font>  val  <font color="#990000">)</font></tt></pre>
+<br>
 <b><big><a name="Private" id="Private">Private</a></big></b>
 <br>
 This routine is an implementation detail and not part of the
@@ -142,7 +154,7 @@ This routine is an implementation detail and not part of the
 <br>
 <b><big><a name="Scalar" id="Scalar">Scalar</a></big></b>
 <br>
-Is the element type for the sparse matrix.
+is the element type for the sparse matrix.
 If 
 <code><i><font color="black"><span style='white-space: nowrap'>d</span></font></i></code>
  is a <code><font color="blue">double</font></code> value,  
@@ -154,45 +166,25 @@ must be a corresponding element of the matrix.
 <br>
 <b><big><a name="nr" id="nr">nr</a></big></b>
 <br>
-This argument has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nr</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
-and is the number of rows in the matrix.
+is the number of rows in the matrix.
 
 <br>
 <br>
 <b><big><a name="nc" id="nc">nc</a></big></b>
 <br>
-This argument has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>nc</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
-and is the number of columns in the matrix.
+is the number of columns in the matrix.
 
 <br>
 <br>
 <b><big><a name="row" id="row">row</a></big></b>
 <br>
-This argument has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;size_t&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>row</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
-and contains the row indices for possibly non-zero elements of the matrix.
+contains the row indices for possibly non-zero elements of the matrix.
 
 <br>
 <br>
 <b><big><a name="col" id="col">col</a></big></b>
 <br>
-This argument has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;size_t&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>col</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
-it has the same size as 
+has the same size as 
 <code><i><font color="black"><span style='white-space: nowrap'>row</span></font></i></code>
  and
 contains the column indices for possibly non-zero elements of the matrix.
@@ -200,12 +192,9 @@ contains the column indices for possibly non-zero elements of the matrix.
 <br>
 <br>
 <b><big><a name="val" id="val">val</a></big></b>
-<br>
-This argument has prototype
 
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;</span></font><i><font color="black"><span style='white-space: nowrap'>Scalar</span></font></i><font color="blue"><span style='white-space: nowrap'>&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>val</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
+
+<br>
 <br>
 <big><a name="val.Sparsity Pattern" id="val.Sparsity Pattern">Sparsity Pattern</a></big>
 <br>
@@ -216,10 +205,10 @@ the values in the matrix are not specified.
 To be specific, for 
 <code><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;0&nbsp;,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>...</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>row</span></font></i><font color="blue"><span style='white-space: nowrap'>.size()-1</span></font></code>
 ,
-the element with index 
+the element with index
+
 <code><font color="blue"><span style='white-space: nowrap'>(</span></font><i><font color="black"><span style='white-space: nowrap'>row</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>],&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>col</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>])</span></font></code>
- has an unspecified
-value.
+ has an unspecified value.
 
 <br>
 <br>
@@ -243,12 +232,7 @@ the element with index
 <br>
 <b><big><a name="mat" id="mat">mat</a></big></b>
 <br>
-This argument has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Eigen::SparseMatrix&lt;</span></font><i><font color="black"><span style='white-space: nowrap'>Scalar</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;Eigen::ColMajor&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mat</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
-and is a sparse representation of the specified matrix.
+is a sparse representation of the specified matrix.
 The input size and values in the matrix do not matter.
 Upon return it is a sparse matrix with the specified size
 and element values.
