@@ -238,6 +238,10 @@ if [ -e CMakeCache.txt ]
 then
 	rm CMakeCache.txt
 fi
+if [ -e CMakeFiles ]
+then
+	echo_eval rm -r CMakeFiles
+fi
 cmake \
 	-Wno-dev \
 	-D CMAKE_VERBOSE_MAKEFILE=$verbose_makefile \

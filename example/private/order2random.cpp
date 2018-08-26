@@ -43,6 +43,7 @@ bool order2random_xam(void)
 	using CppAD::vector;
 	typedef CppAD::AD<double>    a1_double;
 	typedef CppAD::AD<a1_double> a2_double;
+	typedef CppAD::AD<a2_double> a3_double;
 	//
 	// n_fixed
 	size_t n_fixed     = 3;
@@ -64,20 +65,30 @@ bool order2random_xam(void)
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
 	);
 	//
+	// a2fun = f(theta, u)
+	vector<a3_double> a3_theta_u(n_both), a3_f(1);
+	for(size_t j = 0; j < n_both; j++)
+		a3_theta_u[j] = 0.0;
+	CppAD::Independent(a3_theta_u);
+	a3_f[0] = 0.0;
+	for(size_t j = 0; j < n_random; ++j)
+	{	// Jacobian
+		a3_double theta_j = a3_theta_u[j];
+		a3_double u_j     = a3_theta_u[j + n_fixed];
+		a3_double res     = exp(u_j) - theta_j;
+		a3_f[0]          += res * res;
+	}
+	CppAD::ADFun<a2_double> a2fun(a3_theta_u, a3_f);
+	//
 	// jac_a1fun = f_u (theta, u)
-	vector<a2_double> a2_theta_u(n_both);
+	vector<a2_double> a2_theta_u(n_both), a2_fu(n_random);
 	for(size_t j = 0; j < n_both; j++)
 		a2_theta_u[j] = a2_double(0.0);
 	CppAD::Independent(a2_theta_u);
-	vector<a2_double> a2_jac(n_random);
-	for(size_t j = 0; j < n_random; ++j)
-	{	// Jacobian
-		a2_double theta_j = a2_theta_u[j];
-		a2_double u_j     = a2_theta_u[j + n_fixed];
-		a2_double term    = ( u_j - theta_j * theta_j );
-		a2_jac[j]         = a2_double(2) * term;
-	}
-	CppAD::ADFun<a1_double> jac_a1fun(a2_theta_u, a2_jac);
+	vector<a2_double> jac_all = a2fun.Jacobian(a2_theta_u);
+	for(size_t j = 0; j < n_random; j++)
+		a2_fu[j] = jac_all[j + n_fixed];
+	CppAD::ADFun<a1_double> jac_a1fun(a2_theta_u, a2_fu);
 	//
 	// ran_hes_uu_rc = sparsity pattern for f_{uu} (theta , u)
 	CppAD::mixed::sparse_rc ran_hes_uu_rc(n_random, n_random, n_random);
@@ -95,11 +106,23 @@ bool order2random_xam(void)
 	a1_ldlt_ran_hes.update( ran_hes_uu_rcv );
 	//
 	// record W(beta, theta, u)
+	vector<a1_double> a1_beta(n_fixed), a1_theta_u(n_both);
+	for(size_t j = 0; j < n_fixed; j++)
+		a1_beta[j] = double(j + 1);
+	for(size_t j = 0; j < n_both; j++)
+		a1_theta_u[j] = double(j + 1);
+	size_t abort_op_index = 0;
+	bool   record_compare = true;
+	CppAD::Independent(a1_beta, abort_op_index, record_compare, a1_theta_u);
+	//
 	vector<a1_double> a1_beta_theta_u(n_all);
-	for(size_t j = 0; j < n_all; j++)
-		a1_beta_theta_u[j] = 1.0;
-	CppAD::Independent(a1_beta_theta_u);
-	vector<a1_double> a1_u_opt = CppAD::mixed::order2random(
+	for(size_t j = 0; j < n_fixed; j++)
+	{	a1_beta_theta_u[j]           = a1_beta[j];
+		a1_beta_theta_u[j + n_fixed] = a1_theta_u[j];
+	}
+	for(size_t j = 0; j < n_random; j++)
+		a1_beta_theta_u[j + 2 * n_fixed] = a1_theta_u[j + n_fixed];
+	vector<a1_double> W = CppAD::mixed::order2random(
 		mixed_object,
 		n_fixed,
 		n_random,
@@ -107,33 +130,46 @@ bool order2random_xam(void)
 		a1_ldlt_ran_hes,
 		a1_beta_theta_u
 	);
-	CppAD::ADFun<double> W(a1_beta_theta_u, a1_u_opt);
+	CppAD::ADFun<double> Wfun(a1_beta, W);
 	//
-	// beta_theta_u
-	vector<double> beta_theta_u(n_all);
+	// beta, theta_u
+	vector<double> beta(n_fixed), theta_u(n_both);
 	for(size_t j = 0; j < n_fixed; ++j)
-	{	// theta
-		beta_theta_u[j + n_fixed]     = std::sqrt( double(j+1) );
+	{	// theta[j]
+		double theta_j = double(j+2);
 		//
-		// correspoding beta
-		beta_theta_u[j]               = std::sqrt( double(j+1) );
+		// corresponding optimal u[j]
+		double u_j     = std::log(theta_j);
 		//
-		// corresponding optimal u
-		beta_theta_u[j + 2 * n_fixed] = double(j+1);
+		// theta
+		theta_u[j]  = theta_j;
+		//
+		// beta
+		beta[j]     = theta_j;
+		//
+		// uhat
+		theta_u[j + n_fixed] = u_j;
 	}
+	//
+	// set dynamic parameters
+	Wfun.new_dynamic(theta_u);
 	//
 	// for each component of W
 	for(size_t k = 0; k < n_random; k++)
-	{	// compute the Hessian of k-th component of W w.r.t beta_theta_u
-		vector<double> H = W.Hessian(beta_theta_u, k);
+	{	// compute the Hessian of k-th component of W w.r.t beta
+		vector<double> H = Wfun.Hessian(beta, k);
 		//
 		// Check Hessian w.r.t. beta is equal Hessian of optimal u w.r.t theta
 		for(size_t i = 0; i < n_fixed; i++)
 		{	for(size_t j = 0; j < n_fixed; j++)
-			{	double H_ij = H[ i * n_all + j ];
+			{	double H_ij = H[ i * n_fixed + j ];
 				double check = 0.0;
 				if( i == j && i == k )
-					check = 2.0;
+				{	double theta_j = double(j+2);
+					check =  - 1.0 / (theta_j * theta_j);
+					// std::cout << "H_ij = " << H_ij << " , ";
+					// std::cout << "check = " << check << "\n";
+				}
 				ok &= CppAD::NearEqual(H_ij, check, eps, eps);
 			}
 		}
