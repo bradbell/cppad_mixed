@@ -34,7 +34,7 @@ ADD_CUSTOM_TARGET(speed_ar1_xam
 # -----------------------------------------------------------------------------
 SET(random_seed                0)
 SET(number_random             45)
-SET(quasi_fixed               yes)
+SET(quasi_fixed               no)
 SET(trace_optimize_fixed      yes)
 SET(ipopt_solve               yes)
 SET(bool_sparsity             yes)

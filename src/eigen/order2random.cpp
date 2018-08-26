@@ -91,6 +91,46 @@ $end
 # include <Eigen/Sparse>
 # include <cppad/mixed/order2random.hpp>
 
+namespace { // BEGIN_EMPTY_NAMESPACE
+
+typedef CppAD::mixed::a1_double                     a1_double;
+typedef Eigen::Matrix<a1_double, Eigen::Dynamic, 1> a1_eigen_vector;
+
+// solve for x where:
+// b  = H * x
+// b  = P^T * L * D * L^T * P * x
+a1_eigen_vector a1_LDLT_solve(
+	// Lower Triangular matrix
+	const Eigen::SparseMatrix<a1_double, Eigen::ColMajor>& L  ,
+	// Diagonal matrix
+	const a1_eigen_vector&                                 D  ,
+	// Permutation matrix
+	const Eigen::PermutationMatrix<Eigen::Dynamic>&        P  ,
+	const a1_eigen_vector&                                 b  )
+{	size_t n = size_t( b.size() );
+	//
+	// P * b
+	a1_eigen_vector result = P * b;
+	//
+	// L^-1 * P * b
+	result = L.triangularView<Eigen::Lower>().solve(result);
+	//
+	// D^-1 * L^-1 * P * b
+	for(size_t j = 0; j < n; ++j)
+		result[j] = result[j] / D[j];
+	//
+	// L^-T * D^-1 * L^-1 * P * b
+	result = L.transpose().triangularView<Eigen::Lower>().solve(result);
+	//
+	// P^T * L^-T * D^-1 * L^-1 * P * b
+	result = P.transpose() * result;
+	//
+	return result;
+}
+
+} // END_EMPTY_NAMESPACE
+
+
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // BEGIN PROTOTYPE
@@ -103,6 +143,7 @@ a1_vector order2random(
 	const a1_vector&                    beta_theta_u    )
 // END PROTOTYPE
 {	assert( beta_theta_u.size() == 2 * n_fixed + n_random );
+	//
 	//
 	// beta, theta, u, theta_u, beta_u
 	a1_vector beta(n_fixed), theta(n_fixed), u(n_random);
@@ -160,17 +201,27 @@ a1_vector order2random(
 	for(size_t k = 0; k < n_low; ++k)
 		ran_hes_uu_rcv.set(k, val_out[k]);
 	a1_ldlt_ran_hes.update( ran_hes_uu_rcv );
+	//
+	// L * D * L^T = P * H * P^T
+	Eigen::SparseMatrix<a1_double, Eigen::ColMajor> L;
+	a1_eigen_vector                                 D;
+	Eigen::PermutationMatrix<Eigen::Dynamic>        P;
+	a1_ldlt_ran_hes.split(L, D, P);
+	// b  = H * x
+	// b  = P^T * L * D * L^T * P * x
 	// -----------------------------------------------------------------------
 	// first partial Newton step
 	//------------------------------------------------------------------------
 	// grad = f_u (beta , u )
 	a1_vector grad(n_random);
 	grad = jac_a1fun.Forward(0, beta_u);
-	//
-	// step = f_{u,u} (theta, u)^{-1} * grad
-	a1_vector step(n_random);
-	a1_ldlt_ran_hes.solve_H(row_all, grad, step);
-	//
+	// -----------------------------------------------------------------------
+	// grad = f_{u,u} (theta, u) * step
+	a1_eigen_vector step(n_random);
+	for(size_t j = 0; j < n_random; ++j)
+		step[j] = grad[j];
+	step = a1_LDLT_solve(L, D, P, step);
+	// -----------------------------------------------------------------------
 	// U(beta, theta, u) = u - step
 	a1_vector U(n_random);
 	for(size_t j = 0; j < n_random; j++)
@@ -182,10 +233,12 @@ a1_vector order2random(
 	for(size_t j = 0; j < n_random; ++j)
 		beta_u[n_fixed + j] = U[j];
 	grad = jac_a1fun.Forward(0, beta_u);
-	//
-	// step = f_{u,u} (theta, u)^{-1} * grad
-	a1_ldlt_ran_hes.solve_H(row_all, grad, step);
-	//
+	// -----------------------------------------------------------------------
+	// grad = f_{u,u} (theta, u) * step
+	for(size_t j = 0; j < n_random; ++j)
+		step[j] = grad[j];
+	step = a1_LDLT_solve(L, D, P, step);
+	// ----------------------------------------------------------------------
 	// W(beta, theta, u) = U - step
 	a1_vector W(n_random);
 	for(size_t j = 0; j < n_random; j++)
