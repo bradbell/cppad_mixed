@@ -122,8 +122,11 @@ void cppad_mixed::init_laplace_obj(
 	// for the lower triangle of the random Hessian
 	const sparse_rc& ran_hes_both_rc( ran_hes_rcv_.pat() );
 	//
-	// sparsity pattern with respec to u
+	// ran_hes_uu_rc
 	const sparse_rc& ran_hes_uu_rc( a1_ldlt_ran_hes_.pattern() );
+	//
+	// ran_hes_uu_rcv
+	a1_sparse_rcv ran_hes_uu_rcv( ran_hes_uu_rc );
 	//
 	// row, col
 	const s_vector& row( ran_hes_uu_rc.row() );
@@ -158,27 +161,6 @@ void cppad_mixed::init_laplace_obj(
 	a1_vector theta(n_fixed_), u(n_random_);
 	unpack(theta, u, theta_u);
 	//
-	// hes_val
-	a1_vector hes_val = ran_likelihood_hes(theta, u, row, col);
-	if( hes_val.size() == 0 )
-	{	// The user has not defined ran_likelihood_hes, so use AD to calcuate
-		// the Hessian of the random likelihood w.r.t the random effects.
-		hes_val.resize(nnz);
-		a1_sparse_rcv subset( ran_hes_mix_rc );
-		ran_jac_a1fun_.subgraph_jac_rev(theta_u, subset);
-		ran_jac_a1fun_.clear_subgraph();
-		hes_val = subset.val();
-	}
-	assert( hes_val.size() == nnz );
-	//
-	// ran_hes_uu_rcv
-	a1_sparse_rcv ran_hes_uu_rcv( ran_hes_uu_rc );
-	for(size_t k = 0; k < nnz; ++k)
-		ran_hes_uu_rcv.set(k, hes_val[k] );
-	//
-	// a1_ldlt_ran_hes_.update
-	a1_ldlt_ran_hes_.update( ran_hes_uu_rcv );
-	//
 	// beta_theta_u
 	a1_vector beta_theta_u(2 * n_fixed_ + n_random_);
 	pack(beta, theta, u, beta_theta_u);
@@ -200,8 +182,7 @@ void cppad_mixed::init_laplace_obj(
 	pack(beta, W, beta_W);
 	//
 	// hes_val
-	hes_val.resize(0); // so assignment works for both cases
-	hes_val = ran_likelihood_hes(beta, W, row, col);
+	a1_vector hes_val = ran_likelihood_hes(beta, W, row, col);
 	if( hes_val.size() == 0 )
 	{	// The user has not defined ran_likelihood_hes, so use AD to calcuate
 		// the Hessian of the random likelihood w.r.t the random effects.
