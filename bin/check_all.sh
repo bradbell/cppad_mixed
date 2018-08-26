@@ -15,19 +15,6 @@ then
 	exit 1
 fi
 # ---------------------------------------------------------------------------
-build_type="$1"
-if [ "$build_type" != 'debug' ]  && [ "$build_type" != 'release' ]
-then
-	echo 'bin/check_all.sh (debug|release)'
-	exit 1
-fi
-# -----------------------------------------------------------------------------
-# bash function that echos and executes a command
-echo_eval() {
-	echo $*
-	eval $*
-}
-# -----------------------------------------------------------------------------
 if ! grep "build_type='debug'" bin/run_cmake.sh > /dev/null
 then
 	echo 'bin/check_all.sh: bin/run_cmake.sh build_type not debug'
@@ -38,6 +25,40 @@ then
 	echo 'bin/check_all.sh: bin/run_cmake.sh optimize_cppad_function not no'
 	exit 1
 fi
+# ---------------------------------------------------------------------------
+release='no'
+ldlt_eigen='no'
+while [ "$1" != '' ]
+do
+	if [ "$1" == '--help' ]
+	then
+		cat << EOF
+usage: bin/check_all.sh \\
+	[--help] \\
+	[--release] \\
+	[--ldlt_eigen]
+EOF
+		exit 0
+	fi
+	if [ "$1" == '--release' ]
+	then
+		release='yes'
+	elif [ "$1" == '--ldlt_eigen' ]
+	then
+		ldlt_eigen='yes'
+	else
+		echo "'$1' is an invalid option"
+		bin/check_all.sh --help
+		exit 1
+	fi
+	shift
+done
+# -----------------------------------------------------------------------------
+# bash function that echos and executes a command
+echo_eval() {
+	echo $*
+	eval $*
+}
 # -----------------------------------------------------------------------------
 # run bin/check_*.sh and ~bradbell/bin/check_copyright.sh
 list=`ls bin/check_*.sh`
@@ -66,15 +87,19 @@ then
 	echo_eval rm -rf $installed_include_dir
 fi
 # -----------------------------------------------------------------------------
-if [ "$build_type" == 'release' ]
+# run_cmake.sh
+flags=''
+if [ "$release" == 'yes' ]
 then
-	echo 'bin/run_cmake.sh --release --optimize_cppad_function >& cmake.log'
-	bin/run_cmake.sh --release --optimize_cppad_function >& cmake.log
-else
-	echo 'bin/run_cmake.sh >& cmake.log'
-	bin/run_cmake.sh >& cmake.log
+	flags="$flags --release"
 fi
-#
+if [ "$ldlt_eigen" == 'yes' ]
+then
+	flags="$flags --ldlt_eigen"
+fi
+echo "bin/run_cmake.sh $flags >& cmake.log"
+bin/run_cmake.sh $flags >& cmake.log
+# ----------------------------------------------------------------------------
 cd build
 #
 for target in check speed install
@@ -85,7 +110,7 @@ done
 cd ..
 # -----------------------------------------------------------------------------
 check_install_failed='no'
-if [ "$build_type" == 'release' ]
+if [ "$release" == 'yes' ]
 then
 	sed -i bin/run_cmake.sh -e "s|^build_type=.*|build_type='release'|"
 	if ! bin/check_install.sh
@@ -107,7 +132,7 @@ fi
 # -----------------------------------------------------------------------------
 for target in cmake check speed install
 do
-	if grep -i 'warningL:' $target.log
+	if grep -i 'warning:' $target.log
 	then
 		echo "bin/run_check_all.sh: $target.log is has warnings."
 		exit 1

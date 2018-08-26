@@ -548,34 +548,18 @@ void ldlt_eigen<Double>::solve_H(
 	assert( row.size() == val_in.size() );
 	assert( row.size() == val_out.size() );
 	//
-	eigen_sparse b( int(n_row_), 1);
+	// eigen uses dense vectors during a sparse solve so do the same
+	// (in fact, sparse vectors here fails some test as if short circuiting)
+	eigen_vector b = eigen_vector::Zero(n_row_);
 	for(size_t k = 0; k < row.size(); k++)
 	{	assert( row[k] < n_row_ );
-		b.insert( int(row[k]), 0 ) = val_in[k];
-		val_out[k] = 0.0;
+		b[ row[k]] = val_in[k];
 	}
 	//
-	eigen_sparse x = ptr_->solve(b);
-	assert( x.outerSize() == 1 );
-	assert( size_t( x.innerSize() ) == n_row_ );
-	//
-# ifndef NDEBUG
-	int previous_row = -1;
-# endif
-	size_t k = 0;
-	typedef typename eigen_sparse::InnerIterator column_itr;
-	for(column_itr itr(x, 0); itr; ++itr)
-	{	assert( size_t( itr.row() ) < n_row_ );
-		assert( previous_row < itr.row() );
-# ifndef NDEBUG
-		previous_row = itr.row();
-# endif
-		size_t r = size_t( itr.row() );
-		while( k < row.size() && row[k] < r )
-			k++;
-		if( k < row.size() && row[k] == r )
-			val_out[k] = itr.value();
-	}
+	// val_out
+	eigen_vector x = ptr_->solve(b);
+	for(size_t k = 0; k < row.size(); k++)
+		val_out[k] = x[ row[k] ];
 }
 /*
 -------------------------------------------------------------------------------

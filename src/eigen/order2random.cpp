@@ -91,9 +91,6 @@ $end
 # include <Eigen/Sparse>
 # include <cppad/mixed/order2random.hpp>
 
-// trying to get new method to work
-# define CPPAD_MIXED_NEW_METHOD 0
-
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // BEGIN PROTOTYPE
@@ -106,10 +103,6 @@ a1_vector order2random(
 	const a1_vector&                    beta_theta_u    )
 // END PROTOTYPE
 {	assert( beta_theta_u.size() == 2 * n_fixed + n_random );
-	//
-	// declare eigen matrix types
-	typedef Eigen::Matrix<a1_double, Eigen::Dynamic, 1>     a1_eigen_vector;
-	typedef Eigen::SparseMatrix<a1_double, Eigen::ColMajor> a1_eigen_sparse;
 	//
 	// beta, theta, u, theta_u, beta_u
 	a1_vector beta(n_fixed), theta(n_fixed), u(n_random);
@@ -161,26 +154,12 @@ a1_vector order2random(
 		jac_a1fun.clear_subgraph();
 		val_out = subset.val();
 	}
-# if CPPAD_MIXED_NEW_METHOD
 	//
 	// a1_ldlt_ran_hes.update
 	a1_sparse_rcv ran_hes_uu_rcv( ran_hes_uu_rc );
 	for(size_t k = 0; k < n_low; ++k)
 		ran_hes_uu_rcv.set(k, val_out[k]);
 	a1_ldlt_ran_hes.update( ran_hes_uu_rcv );
-# else
-	//
-	// a1_hessian
-	a1_eigen_sparse hessian;
-	hessian.resize( int(n_random) , int(n_random) );
-	for(size_t k = 0; k < n_low; k++)
-		hessian.insert( int(row[k]), int(col[k]) ) = val_out[k];
-	//
-	// chol = L * D * L^T Cholesky factorization of f_{u,u} (theta, u)
-	Eigen::SimplicialLDLT<a1_eigen_sparse, Eigen::Lower> chol;
-	chol.analyzePattern(hessian);
-	chol.factorize(hessian);
-# endif
 	// -----------------------------------------------------------------------
 	// first partial Newton step
 	//------------------------------------------------------------------------
@@ -189,15 +168,8 @@ a1_vector order2random(
 	grad = jac_a1fun.Forward(0, beta_u);
 	//
 	// step = f_{u,u} (theta, u)^{-1} * grad
-# if CPPAD_MIXED_NEW_METHOD
 	a1_vector step(n_random);
 	a1_ldlt_ran_hes.solve_H(row_all, grad, step);
-# else
-	a1_eigen_vector step(n_random);
-	for(size_t j = 0; j < n_random; ++j)
-		step[j] = grad[j];
-	step = chol.solve(step);
-# endif
 	//
 	// U(beta, theta, u) = u - step
 	a1_vector U(n_random);
@@ -212,13 +184,7 @@ a1_vector order2random(
 	grad = jac_a1fun.Forward(0, beta_u);
 	//
 	// step = f_{u,u} (theta, u)^{-1} * grad
-# if CPPAD_MIXED_NEW_METHOD
 	a1_ldlt_ran_hes.solve_H(row_all, grad, step);
-# else
-	for(size_t j = 0; j < n_random; ++j)
-		step[j] = grad[j];
-	step = chol.solve(step);
-# endif
 	//
 	// W(beta, theta, u) = U - step
 	a1_vector W(n_random);
