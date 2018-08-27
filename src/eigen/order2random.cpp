@@ -96,38 +96,6 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 typedef CppAD::mixed::a1_double                     a1_double;
 typedef Eigen::Matrix<a1_double, Eigen::Dynamic, 1> a1_eigen_vector;
 
-// solve for x where:
-// b  = H * x
-// b  = P^T * L * D * L^T * P * x
-a1_eigen_vector a1_LDLT_solve(
-	// Lower Triangular matrix
-	const Eigen::SparseMatrix<a1_double, Eigen::ColMajor>& L  ,
-	// Diagonal matrix
-	const a1_eigen_vector&                                 D  ,
-	// Permutation matrix
-	const Eigen::PermutationMatrix<Eigen::Dynamic>&        P  ,
-	const a1_eigen_vector&                                 b  )
-{	size_t n = size_t( b.size() );
-	//
-	// P * b
-	a1_eigen_vector result = P * b;
-	//
-	// L^-1 * P * b
-	result = L.triangularView<Eigen::Lower>().solve(result);
-	//
-	// D^-1 * L^-1 * P * b
-	for(size_t j = 0; j < n; ++j)
-		result[j] = result[j] / D[j];
-	//
-	// L^-T * D^-1 * L^-1 * P * b
-	result = L.transpose().triangularView<Eigen::Lower>().solve(result);
-	//
-	// P^T * L^-T * D^-1 * L^-1 * P * b
-	result = P.transpose() * result;
-	//
-	return result;
-}
-
 } // END_EMPTY_NAMESPACE
 
 
@@ -220,7 +188,7 @@ a1_vector order2random(
 	a1_eigen_vector step(n_random);
 	for(size_t j = 0; j < n_random; ++j)
 		step[j] = grad[j];
-	step = a1_LDLT_solve(L, D, P, step);
+	step = ldlt_eigen<a1_double>::solve_LDLT(L, D, P, step);
 	// -----------------------------------------------------------------------
 	// U(beta, theta, u) = u - step
 	a1_vector U(n_random);
@@ -237,7 +205,7 @@ a1_vector order2random(
 	// grad = f_{u,u} (theta, u) * step
 	for(size_t j = 0; j < n_random; ++j)
 		step[j] = grad[j];
-	step = a1_LDLT_solve(L, D, P, step);
+	step = ldlt_eigen<a1_double>::solve_LDLT(L, D, P, step);
 	// ----------------------------------------------------------------------
 	// W(beta, theta, u) = U - step
 	a1_vector W(n_random);

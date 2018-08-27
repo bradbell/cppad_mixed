@@ -356,13 +356,13 @@ $codei%
 In addition, it must have a previous call to
 $cref ldlt_eigen_update$$.
 
-$subhead L$$
-is a lower triangular matrix with ones on the diagonal,
+$head L$$
+is a lower triangular matrix with ones on the diagonal.
 
-$subhead D$$
+$head D$$
 is a diagonal matrix.
 
-$subhead P$$
+$head P$$
 is a permutation matrix.
 
 $head Example$$
@@ -370,7 +370,6 @@ The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/split/$$ contains an
 example and test that uses this function.
 
 $end
-------------------------------------------------------------------------------
 */
 
 // BEGIN_PROTOTYPE_SPLIT
@@ -475,7 +474,7 @@ $spell
 	hes
 $$
 
-$section Solve Linear Equations Using LDLT Factor$$
+$section Solve Linear Equations Using Stored Factor$$
 
 $head Syntax$$
 $codei%%ldlt_obj%.solve_H(%row%, %val_in%, %val_out%)%$$
@@ -492,7 +491,7 @@ $cref/CppAD::mixed/namespace/Private/$$ user API.
 $head Purpose$$
 This function solves the linear equation
 $latex H x = b$$ where $latex H$$ is the positive definite matrix
-that has been factored,
+corresponding to the previous $cref/update/ldlt_eigen_update/$$,
 $latex b$$ is a known column vector,
 and $latex x$$ is unknown.
 
@@ -534,6 +533,10 @@ for $icode%k% = 0 , %...%, %row%.size()-1%$$,
 $codei%
 	%x%[ %row%[%k%] ] = %val_out%[%k%]
 %$$.
+
+$head Example$$
+The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/solve_H/$$ contains an
+example and test that uses this function.
 
 $end
 */
@@ -759,7 +762,6 @@ This routine uses $cref ldlt_eigen_solve_H$$ to solve for the
 requested components of the inverse one column at a time.
 
 $end
-------------------------------------------------------------------------------
 */
 
 // BEGIN_PROTOTYPE_INV
@@ -842,6 +844,93 @@ void ldlt_eigen<Double>::inv(
 		}
 	}
 	return;
+}
+/*
+-------------------------------------------------------------------------------
+$begin ldlt_eigen_solve_LDLT$$
+$spell
+	ldlt
+	eigen
+	CppAD
+$$
+
+$section Solve Linear Equations Corresponding to L, D, and P Factors$$
+
+$head Syntax$$
+$icode%x% = ldlt_eigen<%Double%>::solve_LDLT(%L%, %D%, %P%, %b%)%$$
+
+$head Prototype$$
+$srcfile%src/eigen/ldlt_eigen.cpp
+	%0%// BEGIN_PROTOTYPE_SOLVE_LDLT%// END_PROTOTYPE_SOLVE_LDLT%1%$$
+
+$head Private$$
+The $cref ldlt_eigen$$ class is an
+$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
+$cref/CppAD::mixed/namespace/Private/$$ user API.
+
+$head Purpose$$
+This function solves the linear equation
+$latex H x = b$$ where the positive definite matrix
+$latex H = P^T L D L^T P$$,
+$latex b$$ is a known column vector,
+and $latex x$$ is unknown.
+
+$head L$$
+is a lower triangular matrix with ones on the diagonal.
+
+$head D$$
+is a diagonal matrix.
+
+$head P$$
+is a permutation matrix.
+
+$head b$$
+is the right hand side column vector in the equation.
+
+$head x$$
+is the column vector that solves the equation.
+
+$head Example$$
+The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/solve_LDLT/$$ contains an
+example and test that uses this function.
+
+$end
+*/
+// BEGIN_PROTOTYPE_SOLVE_LDLT
+template <typename Double>
+Eigen::Matrix<Double, Eigen::Dynamic, 1>
+ldlt_eigen<Double>::solve_LDLT(
+	// Lower Triangular matrix
+	const Eigen::SparseMatrix<Double, Eigen::ColMajor>& L  ,
+	// Diagonal matrix
+	const eigen_vector&                                 D  ,
+	// Permutation matrix
+	const Eigen::PermutationMatrix<Eigen::Dynamic>&     P  ,
+	// right hand side of equation
+	const eigen_vector&                                 b  )
+// END_PROTOTYPE_SOLVE_LDLT
+{	using Eigen::Lower;
+	using Eigen::Upper;
+	//
+	size_t n = size_t( b.size() );
+	//
+	// P * b
+	eigen_vector result = P * b;
+	//
+	// L^-1 * P * b
+	result = L. template triangularView<Lower>().solve(result);
+	//
+	// D^-1 * L^-1 * P * b
+	for(size_t j = 0; j < n; ++j)
+		result[j] = result[j] / D[j];
+	//
+	// L^-T * D^-1 * L^-1 * P * b
+	result = L.transpose(). template triangularView<Upper>().solve(result);
+	//
+	// P^T * L^-T * D^-1 * L^-1 * P * b
+	result = P.transpose() * result;
+	//
+	return result;
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

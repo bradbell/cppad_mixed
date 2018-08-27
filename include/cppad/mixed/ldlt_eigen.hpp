@@ -111,7 +111,12 @@ public:
 	const sparse_rc& pattern(void) const;
 	//
 	// split
-	void split(eigen_sparse& L, eigen_vector& D, eigen_perm& P) const;
+	void split(
+		eigen_sparse& L ,
+		eigen_vector& D ,
+		eigen_perm&   P
+	) const;
+	//
 	// logdet
 	Double logdet(size_t& negative) const;
 	// solve
@@ -120,17 +125,29 @@ public:
 		const CppAD::vector<Double>& val_in  ,
 		CppAD::vector<Double>&       val_out
 	) const;
+	//
 	// sim_cov
 	bool sim_cov(
 	const CppAD::vector<Double>& w  ,
 	CppAD::vector<Double>&       v
 	) const;
+	//
 	// compute a subset of the inverse
 	void inv(
 		const CppAD::vector<size_t>& row      ,
 		const CppAD::vector<size_t>& col      ,
 		CppAD::vector<Double>&       val
 	) const;
+	// ----------------------------------------------------------------------
+	// static functions
+	//
+	// solve_LDLT
+	static eigen_vector solve_LDLT(
+		const eigen_sparse& L  ,
+		const eigen_vector& D  ,
+		const eigen_perm&   P  ,
+		const eigen_vector& b
+	);
 };
 
 

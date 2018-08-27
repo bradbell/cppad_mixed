@@ -112,6 +112,13 @@ $codep
 	ok &= ldlt_obj.split(L, D, P)
 $$
 
+$head solve_LDLT$$
+See the following under Source Code below:
+$codep
+	x = ldlt_eigen<double>::solve_LDLT(L, D, P, b);
+$$
+
+
 $head sim_cov$$
 See the following under Source Code below:
 $codep
@@ -194,7 +201,7 @@ bool ldlt_eigen_xam(void)
 	// check its value
 	ok &= std::fabs( logdet_H / std::log(6.0) - 1.0 ) <= eps;
 
-	// test solve
+	// test solve_H
 	CppAD::vector<size_t> row(3);
 	CppAD::vector<double> val_in(3), val_out(3);
 	for(size_t j = 0; j < ncol; j++)
@@ -236,6 +243,24 @@ bool ldlt_eigen_xam(void)
 			// P is identity
 			check = double( i == j );
 			ok &= std::fabs( denP(i, j) - check ) <= eps;
+		}
+	}
+
+	// test solve_LDLT
+	eigen_vector x(nrow), b(nrow);
+	for(size_t j = 0; j < ncol; j++)
+	{	// solve for the j-th column of the inverse matrix
+		for(size_t i = 0; i < nrow; i++)
+		{	if( i == j )
+				b[i] = 1.0;
+			else
+				b[i] = 0.0;
+		}
+		x = CppAD::mixed::ldlt_eigen<double>::solve_LDLT(L, D, P, b);
+		//
+		for(size_t i = 0; i < nrow; i++)
+		{	double check_i = H_inv[ i * nrow + j ];
+			ok &= std::fabs( x[i] - check_i ) <= eps;
 		}
 	}
 
