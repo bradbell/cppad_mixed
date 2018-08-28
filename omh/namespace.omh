@@ -52,6 +52,8 @@ $children%include/cppad/mixed/typedef.hpp
 	%include/cppad/mixed/sparse_mat2low.hpp
 	%include/cppad/mixed/sparse_eigen2info.hpp
 	%include/cppad/mixed/sparse_info2eigen.hpp
+	%include/cppad/mixed/sparse_eigen2rcv.hpp
+	%include/cppad/mixed/sparse_rcv2eigen.hpp
 	%include/cppad/mixed/sparse_print.hpp
 	%include/cppad/mixed/sparsity_print.hpp
 	%cholesky/sparse_ad_cholesky.hpp

@@ -38,6 +38,8 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL example.cpp
 	private/ran_obj_jac.cpp
 	private/sparse_eigen2info.cpp
 	private/sparse_info2eigen.cpp
+	private/sparse_eigen2rcv.cpp
+	private/sparse_rcv2eigen.cpp
 	private/sparse_low2sym.cpp
 	private/sparse_low_tri_sol.cpp
 	private/sparse_mat2low.cpp

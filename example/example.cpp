@@ -71,6 +71,8 @@ extern bool sample_fixed_xam(void);
 extern bool sample_random_xam(void);
 extern bool sparse_eigen2info_xam(void);
 extern bool sparse_info2eigen_xam(void);
+extern bool sparse_eigen2rcv_xam(void);
+extern bool sparse_rcv2eigen_xam(void);
 extern bool sparse_low_tri_sol_xam(void);
 extern bool sparse_low2sym_xam(void);
 extern bool sparse_mat2low_xam(void);
@@ -156,6 +158,8 @@ int main(void)
 	RUN(sample_random_xam);
 	RUN(sparse_eigen2info_xam);
 	RUN(sparse_info2eigen_xam);
+	RUN(sparse_eigen2rcv_xam);
+	RUN(sparse_rcv2eigen_xam);
 	RUN(sparse_low_tri_sol_xam);
 	RUN(sparse_low2sym_xam);
 	RUN(sparse_mat2low_xam);
