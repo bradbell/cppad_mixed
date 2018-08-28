@@ -117,11 +117,6 @@ void cppad_mixed::init_laplace_obj(
 	a1_vector theta_u( n_fixed_ + n_random_ );
 	pack(fixed_vec, random_vec, theta_u);
 	//
-	//
-	// sparsity pattern with respect to (theta, u)
-	// for the lower triangle of the random Hessian
-	const sparse_rc& ran_hes_both_rc( ran_hes_rcv_.pat() );
-	//
 	// ran_hes_uu_rc
 	const sparse_rc& ran_hes_uu_rc( a1_ldlt_ran_hes_.pattern() );
 	//
@@ -133,21 +128,21 @@ void cppad_mixed::init_laplace_obj(
 	const s_vector& col( ran_hes_uu_rc.col() );
 	//
 	// nnz
-	size_t nnz = ran_hes_both_rc.nnz();
+	size_t nnz = ran_hes_uu_rc.nnz();
 	//
 	// ran_hes_uu_rc
-	// ran_hes_both_rc
+	// ran_hes_uu_rc
 	sparse_rc ran_hes_mix_rc(n_random_, n_fixed_ + n_random_, nnz);
 	for(size_t k = 0; k < nnz; k++)
-	{	size_t r = ran_hes_both_rc.row()[k];
-		size_t c = ran_hes_both_rc.col()[k];
+	{	size_t r = ran_hes_uu_rc.row()[k];
+		size_t c = ran_hes_uu_rc.col()[k];
 		//
-		assert( r >= n_fixed_ );
-		assert( c >= n_fixed_ );
+		assert( r <= n_random_ );
+		assert( c <= n_random_ );
 		assert( c <= r );
 		//
 		// row relative to random effects, column relative to both
-		ran_hes_mix_rc.set(k, r - n_fixed_, c);
+		ran_hes_mix_rc.set(k, r, c + n_fixed_);
 	}
 	//
 	// start recording a1_double operations
