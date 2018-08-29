@@ -33,7 +33,59 @@ $$
 $end
 */
 // BEGIN C++
+# include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/order2random.hpp>
+
+namespace {
+	using CppAD::vector;
+	using CppAD::log;
+	using CppAD::AD;
+	using CppAD::mixed::d_sparse_rcv;
+	//
+	using CppAD::mixed::a1_double;
+	using CppAD::mixed::a1_vector;
+	using CppAD::mixed::a2_double;
+	using CppAD::mixed::a2_vector;
+
+	class mixed_derived : public cppad_mixed {
+	public:
+		// constructor
+		mixed_derived(
+			size_t                               n_fixed       ,
+			size_t                               n_random      ,
+			bool                                 quasi_fixed   ,
+			bool                                 bool_sparsity ,
+			const CppAD::mixed::d_sparse_rcv&    A_rcv         ) :
+		cppad_mixed(
+			n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
+		)
+		{ }
+		// implementation of ran_likelihood
+		template <typename Vector>
+		Vector template_ran_likelihood(
+			const Vector& theta  ,
+			const Vector& u      )
+		{	typedef typename Vector::value_type scalar;
+			assert( theta.size() == u.size() );
+
+			Vector vec(1);
+
+			// initialize part of log-density that is always smooth
+			vec[0] = scalar(0.0);
+
+			for(size_t j = 0; j < theta.size(); j++)
+			{	scalar res   = exp(u[j]) - theta[j];
+				vec[0]      += res * res;
+			}
+			return vec;
+		}
+		// a3_vector version of ran_likelihood
+		virtual a3_vector ran_likelihood(
+			const a3_vector& fixed_vec, const a3_vector& random_vec
+		)
+		{	return template_ran_likelihood( fixed_vec, random_vec ); }
+	};
+}
 
 bool order2random_xam(void)
 {
@@ -49,7 +101,7 @@ bool order2random_xam(void)
 	size_t n_fixed     = 3;
 	//
 	// n_random
-	size_t n_random    = 3;
+	size_t n_random    = n_fixed;
 	//
 	// n_both
 	size_t n_both      = n_fixed + n_random;
@@ -61,23 +113,26 @@ bool order2random_xam(void)
 	bool quasi_fixed   = false;
 	bool bool_sparsity = true;
 	CppAD::mixed::d_sparse_rcv A_rcv; // empty matrix
-	cppad_mixed mixed_object(
+	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
 	);
+	vector<double> fixed_vec(n_fixed), random_vec(n_random);
+	for(size_t j = 0; j < n_fixed; ++j)
+	{	fixed_vec[j]  = 0.0;
+		random_vec[j] = 0.0;
+	}
+	mixed_object.initialize(fixed_vec, random_vec);
 	//
 	// a2fun = f(theta, u)
-	vector<a3_double> a3_theta_u(n_both), a3_f(1);
+	vector<a3_double> a3_theta_u(n_both), a3_theta(n_fixed), a3_u(n_random);
 	for(size_t j = 0; j < n_both; j++)
 		a3_theta_u[j] = 0.0;
 	CppAD::Independent(a3_theta_u);
-	a3_f[0] = 0.0;
-	for(size_t j = 0; j < n_random; ++j)
-	{	// Jacobian
-		a3_double theta_j = a3_theta_u[j];
-		a3_double u_j     = a3_theta_u[j + n_fixed];
-		a3_double res     = exp(u_j) - theta_j;
-		a3_f[0]          += res * res;
+	for(size_t j = 0; j < n_fixed; ++j)
+	{	a3_theta[j] = a3_theta_u[j];
+		a3_u[j]     = a3_theta_u[j + n_fixed];
 	}
+	vector<a3_double> a3_f = mixed_object.ran_likelihood(a3_theta, a3_u);
 	CppAD::ADFun<a2_double> a2fun(a3_theta_u, a3_f);
 	//
 	// jac_a1fun = f_u (theta, u)

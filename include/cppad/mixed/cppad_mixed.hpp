@@ -918,11 +918,13 @@ $srccode%cpp% */
 $subhead ran_like_hes$$
 See $cref ran_like_hes$$
 $srccode%cpp% */
+public:
 	a1_sparse_rcv ran_like_hes(
 		const a1_vector&        fixed_vec   ,
 		const a1_vector&        random_vec
 	);
 	friend bool ::ran_like_hes_xam(void);
+private:
 /* %$$
 
 $subhead check_user_ran_jac$$

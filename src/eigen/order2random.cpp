@@ -128,46 +128,13 @@ a1_vector order2random(
 		theta_u[j + n_fixed] = beta_theta_u[j + 2 * n_fixed ];
 		beta_u[j + n_fixed]  = beta_theta_u[j + 2 * n_fixed ];
 	}
-	//
-	// row_all
-	s_vector row_all(n_random);
-	for(size_t k = 0; k < n_random; ++k)
-		row_all[k] = k;
 	// -----------------------------------------------------------------------
-	// Evaluate f_{uu} (theta , u).
 	//
-	// ran_hes_uu_rc
-	const sparse_rc& ran_hes_uu_rc( a1_ldlt_ran_hes.pattern() );
-	//
-	// n_low
-	size_t n_low = ran_hes_uu_rc.nnz();
-	//
-	// row, col
-	const s_vector& row( ran_hes_uu_rc.row() );
-	const s_vector& col( ran_hes_uu_rc.col() );
-	//
-	// ran_hes_mix_rc
-	sparse_rc ran_hes_mix_rc(n_random, n_fixed + n_random, n_low);
-	for(size_t k = 0; k < n_low; k++)
-	{	// row relative to random effects, column relative to both
-		ran_hes_mix_rc.set(k, row[k], col[k] + n_fixed);
-	}
-	// val_out
-	a1_vector val_out = mixed_object.ran_likelihood_hes(theta, u, row, col);
-	if( val_out.size() == 0 )
-	{	// The user has not defined ran_likelihood_hes, so use AD to calcuate
-		// the Hessian of the random likelihood w.r.t the random effects.
-		val_out.resize(n_low);
-		a1_sparse_rcv subset( ran_hes_mix_rc );
-		jac_a1fun.subgraph_jac_rev(theta_u, subset);
-		jac_a1fun.clear_subgraph();
-		val_out = subset.val();
-	}
+	// ran_hes_uu_rcv = f_{uu} (theta , u).
+	a1_sparse_rcv ran_hes_uu_rcv;
+	ran_hes_uu_rcv = mixed_object.ran_like_hes(theta, u);
 	//
 	// a1_ldlt_ran_hes.update
-	a1_sparse_rcv ran_hes_uu_rcv( ran_hes_uu_rc );
-	for(size_t k = 0; k < n_low; ++k)
-		ran_hes_uu_rcv.set(k, val_out[k]);
 	a1_ldlt_ran_hes.update( ran_hes_uu_rcv );
 	//
 	// L * D * L^T = P * H * P^T
