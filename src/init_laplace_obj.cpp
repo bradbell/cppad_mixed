@@ -117,34 +117,6 @@ void cppad_mixed::init_laplace_obj(
 	a1_vector theta_u( n_fixed_ + n_random_ );
 	pack(fixed_vec, random_vec, theta_u);
 	//
-	// ran_hes_uu_rc
-	const sparse_rc& ran_hes_uu_rc( a1_ldlt_ran_hes_.pattern() );
-	//
-	// ran_hes_uu_rcv
-	a1_sparse_rcv ran_hes_uu_rcv( ran_hes_uu_rc );
-	//
-	// row, col
-	const s_vector& row( ran_hes_uu_rc.row() );
-	const s_vector& col( ran_hes_uu_rc.col() );
-	//
-	// nnz
-	size_t nnz = ran_hes_uu_rc.nnz();
-	//
-	// ran_hes_uu_rc
-	// ran_hes_uu_rc
-	sparse_rc ran_hes_mix_rc(n_random_, n_fixed_ + n_random_, nnz);
-	for(size_t k = 0; k < nnz; k++)
-	{	size_t r = ran_hes_uu_rc.row()[k];
-		size_t c = ran_hes_uu_rc.col()[k];
-		//
-		assert( r <= n_random_ );
-		assert( c <= n_random_ );
-		assert( c <= r );
-		//
-		// row relative to random effects, column relative to both
-		ran_hes_mix_rc.set(k, r, c + n_fixed_);
-	}
-	//
 	// start recording a1_double operations
 	// beta:    independent variables
 	// theta_u: dynamic parameters
@@ -176,22 +148,9 @@ void cppad_mixed::init_laplace_obj(
 	a1_vector beta_W(n_fixed_ + n_random_);
 	pack(beta, W, beta_W);
 	//
-	// hes_val
-	a1_vector hes_val = ran_likelihood_hes(beta, W, row, col);
-	if( hes_val.size() == 0 )
-	{	// The user has not defined ran_likelihood_hes, so use AD to calcuate
-		// the Hessian of the random likelihood w.r.t the random effects.
-		hes_val.resize(nnz);
-		a1_sparse_rcv subset( ran_hes_mix_rc );
-		ran_jac_a1fun_.subgraph_jac_rev(beta_W, subset);
-		ran_jac_a1fun_.clear_subgraph();
-		hes_val = subset.val();
-	}
-	assert( hes_val.size() == nnz );
-	//
-	// ran_hes_uu_rcv.val() = hes_val
-	for(size_t k = 0; k < nnz; ++k)
-		ran_hes_uu_rcv.set(k, hes_val[k]);
+	// ran_hes_uu_rcv
+	a1_sparse_rcv ran_hes_uu_rcv;
+	ran_hes_uu_rcv = ran_like_hes(beta, W);
 	//
 	// ldlt_obj.update
 	a1_ldlt_ran_hes_.update( ran_hes_uu_rcv );
