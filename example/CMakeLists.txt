@@ -32,6 +32,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL example.cpp
 	private/ran_con_jac.cpp
 	private/ran_jac_fun.cpp
 	private/ran_hes_fun.cpp
+	private/ran_like_hes.cpp
 	private/ran_like_jac.cpp
 	private/laplace_obj_hes.cpp
 	private/ran_obj_eval.cpp

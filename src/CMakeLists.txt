@@ -72,6 +72,7 @@ ADD_LIBRARY(cppad_mixed
 	optimize_random.cpp
 	ran_con_eval.cpp
 	ran_con_jac.cpp
+	ran_like_hes.cpp
 	ran_like_jac.cpp
 	laplace_obj_hes.cpp
 	ran_obj_eval.cpp

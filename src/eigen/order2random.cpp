@@ -35,7 +35,7 @@ $icode%W% = CppAD::mixed::order2random(
 
 $head Prototype$$
 $srcfile%src/eigen/order2random.cpp
-    %4%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
+    %0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
