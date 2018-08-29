@@ -124,14 +124,6 @@ void cppad_mixed::init_laplace_obj(
 	bool record_compare   = false;
 	CppAD::Independent(beta, abort_op_index, record_compare, theta_u);
 	//
-	// theta, u
-	a1_vector theta(n_fixed_), u(n_random_);
-	unpack(theta, u, theta_u);
-	//
-	// beta_theta_u
-	a1_vector beta_theta_u(2 * n_fixed_ + n_random_);
-	pack(beta, theta, u, beta_theta_u);
-	//
 	// W(beta, theta, u)
 	a1_vector W = CppAD::mixed::order2random(
 		*this,
@@ -139,7 +131,8 @@ void cppad_mixed::init_laplace_obj(
 		n_random_,
 		ran_jac_a1fun_,
 		a1_ldlt_ran_hes_,
-		beta_theta_u
+		beta,
+		theta_u
 	);
 	// -----------------------------------------------------------------------
 	// Evaluate f_{uu} (beta , W).

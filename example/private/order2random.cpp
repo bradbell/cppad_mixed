@@ -106,9 +106,6 @@ bool order2random_xam(void)
 	// n_both
 	size_t n_both      = n_fixed + n_random;
 	//
-	// n_all
-	size_t n_all       = 2 * n_fixed + n_random;
-	//
 	// mixed_object (no information)
 	bool quasi_fixed   = false;
 	bool bool_sparsity = true;
@@ -170,20 +167,14 @@ bool order2random_xam(void)
 	bool   record_compare = true;
 	CppAD::Independent(a1_beta, abort_op_index, record_compare, a1_theta_u);
 	//
-	vector<a1_double> a1_beta_theta_u(n_all);
-	for(size_t j = 0; j < n_fixed; j++)
-	{	a1_beta_theta_u[j]           = a1_beta[j];
-		a1_beta_theta_u[j + n_fixed] = a1_theta_u[j];
-	}
-	for(size_t j = 0; j < n_random; j++)
-		a1_beta_theta_u[j + 2 * n_fixed] = a1_theta_u[j + n_fixed];
 	vector<a1_double> W = CppAD::mixed::order2random(
 		mixed_object,
 		n_fixed,
 		n_random,
 		jac_a1fun,
 		a1_ldlt_ran_hes,
-		a1_beta_theta_u
+		a1_beta,
+		a1_theta_u
 	);
 	CppAD::ADFun<double> Wfun(a1_beta, W);
 	//

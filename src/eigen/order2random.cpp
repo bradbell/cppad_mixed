@@ -26,6 +26,7 @@ $section Second Order Representation of Random Effects, W(beta, theta, u)$$
 
 $head Syntax$$
 $icode%W% = CppAD::mixed::order2random(
+	%mixed_object%
 	%n_fixed%,
 	%n_random%,
 	%jac_a1fun%,
@@ -65,9 +66,19 @@ for the Hessian w.r.t the random effect; i.e., f_uu ( theta , u ).
 Note that this object is $code const$$ and hence the previous call to
 $cref/update/ldlt_eigen_update/$$ corresponded to (theta, u).
 
-$head beta_theta_u$$
-This vector has size $codei%2*%n_fixed% + %n_random%$$
-and specifies the value of $codei%(%beta%, %theta%, %u%)%$$
+$head beta$$
+This vector has size $icode n_fixed$$ and is the CppAD independent
+variable vector at which we are evaluating the second order approximation
+for the optimal random effects
+$cref/W(beta, theta, u)
+	/theory
+	/Approximate Optimal Random Effects
+	/Second Order, W(beta, theta, u)
+/$$.
+
+$head theta_u$$
+This vector has size $icode%n_fixed% + %n_random%$$
+and is the CppAD independent dynamic parameter vector
 at which we are evaluating the second order approximation
 for the optimal random effects
 $cref/W(beta, theta, u)
@@ -75,6 +86,7 @@ $cref/W(beta, theta, u)
 	/Approximate Optimal Random Effects
 	/Second Order, W(beta, theta, u)
 /$$.
+
 $head W$$
 The return value is $icode%W%(%beta%, %theta%, %u%)%$$.
 
@@ -108,24 +120,18 @@ a1_vector order2random(
 	size_t                              n_random        ,
 	CppAD::ADFun<a1_double>&            jac_a1fun       ,
 	ldlt_eigen<a1_double>&              a1_ldlt_ran_hes ,
-	const a1_vector&                    beta_theta_u    )
+	const a1_vector&                    beta            ,
+	const a1_vector&                    theta_u         )
 // END PROTOTYPE
-{	assert( beta_theta_u.size() == 2 * n_fixed + n_random );
+{	assert( beta.size() == n_fixed );
+	assert( theta_u.size() == n_fixed + n_random );
 	//
-	//
-	// beta, theta, u, beta_u
-	a1_vector beta(n_fixed), theta(n_fixed), u(n_random);
-	a1_vector beta_u(n_fixed + n_random);
+	// theta, u
+	a1_vector theta(n_fixed), u(n_random);
 	for(size_t j = 0; j < n_fixed; ++j)
-	{	beta[j]    = beta_theta_u[j];
-		beta_u[j]  = beta_theta_u[j];
-		//
-		theta[j]   = beta_theta_u[j + n_fixed];
-	}
+		theta[j] = theta_u[j];
 	for(size_t j = 0; j < n_random; ++j)
-	{	u[j]                 = beta_theta_u[j + 2 * n_fixed ];
-		beta_u[j + n_fixed]  = beta_theta_u[j + 2 * n_fixed ];
-	}
+		u[j] = theta_u[j + n_fixed ];
 	//
 	// ran_hes_uu_rcv = f_{uu} (theta , u).
 	a1_sparse_rcv ran_hes_uu_rcv;
@@ -144,16 +150,24 @@ a1_vector order2random(
 	// -----------------------------------------------------------------------
 	// first partial Newton step
 	//------------------------------------------------------------------------
+	//
+	// beta_u
+	a1_vector beta_u(n_fixed + n_random);
+	for(size_t j = 0; j < n_fixed; ++j)
+		beta_u[j] = beta[j];
+	for(size_t j = 0; j < n_random; ++j)
+		beta_u[j + n_fixed] = u[j];
+	//
 	// grad = f_u (beta , u )
 	a1_vector grad(n_random);
 	grad = jac_a1fun.Forward(0, beta_u);
-	// -----------------------------------------------------------------------
+	//
 	// grad = f_{u,u} (theta, u) * step
 	a1_eigen_vector step(n_random);
 	for(size_t j = 0; j < n_random; ++j)
 		step[j] = grad[j];
 	step = ldlt_eigen<a1_double>::solve_LDLT(L, D, P, step);
-	// -----------------------------------------------------------------------
+	//
 	// U(beta, theta, u) = u - step
 	a1_vector U(n_random);
 	for(size_t j = 0; j < n_random; j++)
@@ -165,12 +179,12 @@ a1_vector order2random(
 	for(size_t j = 0; j < n_random; ++j)
 		beta_u[n_fixed + j] = U[j];
 	grad = jac_a1fun.Forward(0, beta_u);
-	// -----------------------------------------------------------------------
+	//
 	// grad = f_{u,u} (theta, u) * step
 	for(size_t j = 0; j < n_random; ++j)
 		step[j] = grad[j];
 	step = ldlt_eigen<a1_double>::solve_LDLT(L, D, P, step);
-	// ----------------------------------------------------------------------
+	//
 	// W(beta, theta, u) = U - step
 	a1_vector W(n_random);
 	for(size_t j = 0; j < n_random; j++)

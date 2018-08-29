@@ -218,17 +218,14 @@ bool laplace_obj_tst(void)
 	bool   record_compare = true;
 	CppAD::Independent(a1_beta, abort_op_index, record_compare, a1_theta_u);
 	//
-	a1_beta_theta_u[0] = a1_beta[0];
-	a1_beta_theta_u[1] = a1_theta_u[0];
-	a1_beta_theta_u[2] = a1_theta_u[1];
-	//
 	a1_vector a1_W = CppAD::mixed::order2random(
 		mixed_object,
 		n_fixed,
 		n_random,
 		mixed_object.ran_jac_a1fun_,
 		mixed_object.a1_ldlt_ran_hes_,
-		a1_beta_theta_u
+		a1_beta,
+		a1_theta_u
 	);
 	//
 	// Evaluate random likelihood f(beta, W)
@@ -248,6 +245,9 @@ bool laplace_obj_tst(void)
 	// -----------------------------------------------------------------------
 	// G: recording beta_theta_u as independent variables
 	CppAD::Independent(a1_beta_theta_u);
+	a1_beta[0]    = a1_beta_theta_u[0];
+	a1_theta_u[0] = a1_beta_theta_u[1];
+	a1_theta_u[1] = a1_beta_theta_u[2];
 	//
 	a1_W = CppAD::mixed::order2random(
 		mixed_object,
@@ -255,7 +255,8 @@ bool laplace_obj_tst(void)
 		n_random,
 		mixed_object.ran_jac_a1fun_,
 		mixed_object.a1_ldlt_ran_hes_,
-		a1_beta_theta_u
+		a1_beta,
+		a1_theta_u
 	);
 	//
 	// Evaluate random likelihood f(beta, W)
