@@ -124,6 +124,20 @@ void cppad_mixed::init_laplace_obj(
 	bool record_compare   = false;
 	CppAD::Independent(beta, abort_op_index, record_compare, theta_u);
 	//
+	// theta, u
+	a1_vector theta(n_fixed_), u(n_random_);
+	for(size_t j = 0; j < n_fixed_; ++j)
+		theta[j] = theta_u[j];
+	for(size_t j = 0; j < n_random_; ++j)
+		u[j] = theta_u[j + n_fixed_];
+	//
+	// ran_hes_uu_rcv = f_{uu} (theta , u).
+	a1_sparse_rcv ran_hes_uu_rcv;
+	ran_hes_uu_rcv = ran_like_hes(theta, u);
+	//
+	// a1_ldlt_ran_hes_.update
+	a1_ldlt_ran_hes_.update( ran_hes_uu_rcv );
+	//
 	// W(beta, theta, u)
 	a1_vector W = CppAD::mixed::order2random(
 		*this,
@@ -142,7 +156,6 @@ void cppad_mixed::init_laplace_obj(
 	pack(beta, W, beta_W);
 	//
 	// ran_hes_uu_rcv
-	a1_sparse_rcv ran_hes_uu_rcv;
 	ran_hes_uu_rcv = ran_like_hes(beta, W);
 	//
 	// ldlt_obj.update

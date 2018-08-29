@@ -126,20 +126,6 @@ a1_vector order2random(
 {	assert( beta.size() == n_fixed );
 	assert( theta_u.size() == n_fixed + n_random );
 	//
-	// theta, u
-	a1_vector theta(n_fixed), u(n_random);
-	for(size_t j = 0; j < n_fixed; ++j)
-		theta[j] = theta_u[j];
-	for(size_t j = 0; j < n_random; ++j)
-		u[j] = theta_u[j + n_fixed ];
-	//
-	// ran_hes_uu_rcv = f_{uu} (theta , u).
-	a1_sparse_rcv ran_hes_uu_rcv;
-	ran_hes_uu_rcv = mixed_object.ran_like_hes(theta, u);
-	//
-	// a1_ldlt_ran_hes.update
-	a1_ldlt_ran_hes.update( ran_hes_uu_rcv );
-	//
 	// L * D * L^T = P * H * P^T
 	Eigen::SparseMatrix<a1_double, Eigen::ColMajor> L;
 	a1_eigen_vector                                 D;
@@ -156,7 +142,7 @@ a1_vector order2random(
 	for(size_t j = 0; j < n_fixed; ++j)
 		beta_u[j] = beta[j];
 	for(size_t j = 0; j < n_random; ++j)
-		beta_u[j + n_fixed] = u[j];
+		beta_u[j + n_fixed] = theta_u[j + n_fixed];
 	//
 	// grad = f_u (beta , u )
 	a1_vector grad(n_random);
@@ -171,7 +157,7 @@ a1_vector order2random(
 	// U(beta, theta, u) = u - step
 	a1_vector U(n_random);
 	for(size_t j = 0; j < n_random; j++)
-		U[j] = u[j] - step[j];
+		U[j] = theta_u[j + n_fixed] - step[j];
 	// -----------------------------------------------------------------------
 	// second partial Newton step
 	//------------------------------------------------------------------------
