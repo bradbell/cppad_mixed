@@ -20,7 +20,7 @@ a1_vector order2random(
 	size_t                       n_fixed         ,
 	size_t                       n_random        ,
 	CppAD::ADFun<a1_double>&     jac_a1fun       ,
-	ldlt_eigen<a1_double>&       a1_ldlt_ran_hes ,
+	const ldlt_eigen<a1_double>& a1_ldlt_ran_hes ,
 	const a1_vector&             beta            ,
 	const a1_vector&             theta_u
 );

@@ -42,6 +42,7 @@ extern bool laplace_obj_tst(void);
 extern bool laplace_obj_hes(void);
 extern bool laplace_obj_hes_xam(void);
 extern bool logdet_jac_xam(void);
+extern bool order2random_xam(void);
 extern bool ran_con_eval_xam(void);
 extern bool ran_con_jac_xam(void);
 extern bool ran_hes_fun_xam(void);
@@ -918,13 +919,12 @@ $srccode%cpp% */
 $subhead ran_like_hes$$
 See $cref ran_like_hes$$
 $srccode%cpp% */
-public:
 	a1_sparse_rcv ran_like_hes(
 		const a1_vector&        fixed_vec   ,
 		const a1_vector&        random_vec
 	);
 	friend bool ::ran_like_hes_xam(void);
-private:
+	friend bool ::order2random_xam(void);
 /* %$$
 
 $subhead check_user_ran_jac$$

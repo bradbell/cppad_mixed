@@ -63,7 +63,7 @@ $latex f_u ( \theta, u )$$.
 $head a1_ldlt_ran_hes$$
 This is the LDLT factorization for the
 for the Hessian w.r.t the random effect; i.e., f_uu ( theta , u ).
-Note that this object is $code const$$ and hence the previous call to
+Note that this object is $code const$$ and the previous call to
 $cref/update/ldlt_eigen_update/$$ corresponded to (theta, u).
 
 $head beta$$
@@ -119,7 +119,7 @@ a1_vector order2random(
 	size_t                              n_fixed         ,
 	size_t                              n_random        ,
 	CppAD::ADFun<a1_double>&            jac_a1fun       ,
-	ldlt_eigen<a1_double>&              a1_ldlt_ran_hes ,
+	const ldlt_eigen<a1_double>&        a1_ldlt_ran_hes ,
 	const a1_vector&                    beta            ,
 	const a1_vector&                    theta_u         )
 // END PROTOTYPE
