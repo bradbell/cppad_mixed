@@ -22,6 +22,7 @@ $spell
 	vec
 	const
 	Cpp
+	dyn_ind
 $$
 
 $section Second Order Representation of Laplace Objective and Constraints$$
@@ -83,12 +84,19 @@ $cref/B(beta, theta, u)
 	/theory
 	/Approximate Random Constraint Function, B(beta, theta, u)
 /$$
-$latex B( \beta , \theta , u )$$. Thus
-$codei%
-	laplace_obj_fun_.Domain() == n_fixed_ + n_fixed_ + n_random_
-	laplace_obj_fun_.Range()  == 1 + A_rcv_.nr()
-%$$
+$latex B( \beta , \theta , u )$$.
 
+$subhead beta$$
+The vector $icode beta$$ corresponds to the independent variables; e.g.,
+$code laplace_obj_fun_.Domain() == n_fixed_$$.
+
+$subhead theta, u$$
+The vector $icode (theta, u)$$ corresponds to the dynamic parameters; e.g.,
+$code laplace_obj_fun_.size_dyn_ind() == n_fixed_ + n_random_$$.
+
+$subhead Range Space$$
+The function result corresponds to $icode (H, B)$$; e.g.,
+$code laplace_obj_fun_.Range() == 1 + A_rcv.nr()$$.
 
 $end
 */
