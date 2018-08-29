@@ -113,22 +113,19 @@ a1_vector order2random(
 {	assert( beta_theta_u.size() == 2 * n_fixed + n_random );
 	//
 	//
-	// beta, theta, u, theta_u, beta_u
+	// beta, theta, u, beta_u
 	a1_vector beta(n_fixed), theta(n_fixed), u(n_random);
-	a1_vector theta_u(n_fixed + n_random), beta_u(n_fixed + n_random);
+	a1_vector beta_u(n_fixed + n_random);
 	for(size_t j = 0; j < n_fixed; ++j)
 	{	beta[j]    = beta_theta_u[j];
 		beta_u[j]  = beta_theta_u[j];
 		//
 		theta[j]   = beta_theta_u[j + n_fixed];
-		theta_u[j] = beta_theta_u[j + n_fixed];
 	}
 	for(size_t j = 0; j < n_random; ++j)
 	{	u[j]                 = beta_theta_u[j + 2 * n_fixed ];
-		theta_u[j + n_fixed] = beta_theta_u[j + 2 * n_fixed ];
 		beta_u[j + n_fixed]  = beta_theta_u[j + 2 * n_fixed ];
 	}
-	// -----------------------------------------------------------------------
 	//
 	// ran_hes_uu_rcv = f_{uu} (theta , u).
 	a1_sparse_rcv ran_hes_uu_rcv;
