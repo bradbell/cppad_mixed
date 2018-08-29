@@ -110,7 +110,7 @@ A:active { color : purple }
 <a href="cholmod_solve_xam.htm" target="_top">cholmod_solve_xam</a><br> </td><td> Example Using cholmod_solve With a Non-positive Matrix </td></tr><tr valign="top"><td>
 <a href="configure.hpp.htm" target="_top">configure.hpp</a><br> </td><td> Preprocessor Configuration Symbols in configure.hpp </td></tr><tr valign="top"><td>
 <a href="cppad_mixed.htm" target="_top">cppad_mixed</a><br> </td><td> C++ Laplace Approximation of Mixed Effects Models:
-cppad_mixed-20180826 </td></tr><tr valign="top"><td>
+cppad_mixed-20180829 </td></tr><tr valign="top"><td>
 
 <b><big><a name="D">D</a></big></b> </td><td>  </td></tr><tr valign="top"><td>
 <a href="data_mismatch.cpp.htm" target="_top">data_mismatch.cpp</a><br> </td><td> Random Effects Variance May Cause Data Mismatch </td></tr><tr valign="top"><td>
@@ -222,7 +222,8 @@ cppad_mixed-20180826 </td></tr><tr valign="top"><td>
 <a href="ldlt_eigen_logdet.htm" target="_top">ldlt_eigen_logdet</a><br> </td><td> Compute Log Determinant for Current LDLT Factor </td></tr><tr valign="top"><td>
 <a href="ldlt_eigen_pattern.htm" target="_top">ldlt_eigen_pattern</a><br> </td><td> Update Factorization Using new Matrix Values </td></tr><tr valign="top"><td>
 <a href="ldlt_eigen_sim_cov.htm" target="_top">ldlt_eigen_sim_cov</a><br> </td><td> Simulations with Covariance Corresponding to Factored Matrix </td></tr><tr valign="top"><td>
-<a href="ldlt_eigen_solve_h.htm" target="_top">ldlt_eigen_solve_H</a><br> </td><td> Solve Linear Equations Using LDLT Factor </td></tr><tr valign="top"><td>
+<a href="ldlt_eigen_solve_h.htm" target="_top">ldlt_eigen_solve_H</a><br> </td><td> Solve Linear Equations Using Stored Factor </td></tr><tr valign="top"><td>
+<a href="ldlt_eigen_solve_ldlt.htm" target="_top">ldlt_eigen_solve_LDLT</a><br> </td><td> Solve Linear Equations Corresponding to L, D, and P Factors </td></tr><tr valign="top"><td>
 <a href="ldlt_eigen_split.htm" target="_top">ldlt_eigen_split</a><br> </td><td> Split Out a Factorization </td></tr><tr valign="top"><td>
 <a href="ldlt_eigen_update.htm" target="_top">ldlt_eigen_update</a><br> </td><td> Update Factorization Using new Matrix Values </td></tr><tr valign="top"><td>
 <a href="logdet_jac.htm" target="_top">logdet_jac</a><br> </td><td> Jacobian of Log Determinant of Hessian w.r.t. Random Effects </td></tr><tr valign="top"><td>
@@ -258,6 +259,8 @@ cppad_mixed-20180826 </td></tr><tr valign="top"><td>
 <a href="ran_con_jac.cpp.htm" target="_top">ran_con_jac.cpp</a><br> </td><td> ran_con_jac: Example and Test </td></tr><tr valign="top"><td>
 <a href="ran_constraint.cpp.htm" target="_top">ran_constraint.cpp</a><br> </td><td> Constraints On Random Effects: Example and Test </td></tr><tr valign="top"><td>
 <a href="ran_hes_fun.cpp.htm" target="_top">ran_hes_fun.cpp</a><br> </td><td> ran_hes_fun_: Example and Test </td></tr><tr valign="top"><td>
+<a href="ran_like_hes.htm" target="_top">ran_like_hes</a><br> </td><td> Hessian of Random Likelihood w.r.t. Random Effects </td></tr><tr valign="top"><td>
+<a href="ran_like_hes.cpp.htm" target="_top">ran_like_hes.cpp</a><br> </td><td> ran_like_hes: Example and Test </td></tr><tr valign="top"><td>
 <a href="ran_like_jac.htm" target="_top">ran_like_jac</a><br> </td><td> Jacobian of Random Likelihood w.r.t. Random Effects </td></tr><tr valign="top"><td>
 <a href="ran_like_jac.cpp.htm" target="_top">ran_like_jac.cpp</a><br> </td><td> ran_like_jac: Example and Test </td></tr><tr valign="top"><td>
 <a href="ran_likelihood.htm" target="_top">ran_likelihood</a><br> </td><td> User Defined Random Likelihood Function </td></tr><tr valign="top"><td>
@@ -292,6 +295,8 @@ cppad_mixed-20180826 </td></tr><tr valign="top"><td>
 <a href="sparse_ad_cholesky_p.htm" target="_top">sparse_ad_cholesky_p</a><br> </td><td> Using Sparse AD Cholesky Permutation P </td></tr><tr valign="top"><td>
 <a href="sparse_eigen2info.htm" target="_top">sparse_eigen2info</a><br> </td><td> Convert An Eigen Sparse Matrix to a sparse_mat_info Representation </td></tr><tr valign="top"><td>
 <a href="sparse_eigen2info.cpp.htm" target="_top">sparse_eigen2info.cpp</a><br> </td><td> sparse_eigen2info: Example and Test </td></tr><tr valign="top"><td>
+<a href="sparse_eigen2rcv.htm" target="_top">sparse_eigen2rcv</a><br> </td><td> Convert an Eigen Sparse Matrix to a Cppad Sparse Matrix </td></tr><tr valign="top"><td>
+<a href="sparse_eigen2rcv.cpp.htm" target="_top">sparse_eigen2rcv.cpp</a><br> </td><td> sparse_eigen2rcv: Example and Test </td></tr><tr valign="top"><td>
 <a href="sparse_hes_info.htm" target="_top">sparse_hes_info</a><br> </td><td> Sparse Hessian Information </td></tr><tr valign="top"><td>
 <a href="sparse_hes_rcv.htm" target="_top">sparse_hes_rcv</a><br> </td><td> Sparse Hessian Computation Structure </td></tr><tr valign="top"><td>
 <a href="sparse_info2eigen.htm" target="_top">sparse_info2eigen</a><br> </td><td> Convert a sparse_mat_info Representation to An Eigen Sparse Matrix </td></tr><tr valign="top"><td>
@@ -305,6 +310,8 @@ cppad_mixed-20180826 </td></tr><tr valign="top"><td>
 <a href="sparse_mat2low.cpp.htm" target="_top">sparse_mat2low.cpp</a><br> </td><td> sparse_mat2low: Example and Test </td></tr><tr valign="top"><td>
 <a href="sparse_mat_info.htm" target="_top">sparse_mat_info</a><br> </td><td> Sparse Matrix Information </td></tr><tr valign="top"><td>
 <a href="sparse_print.htm" target="_top">sparse_print</a><br> </td><td> Print and Eigen Sparse Matrix </td></tr><tr valign="top"><td>
+<a href="sparse_rcv2eigen.htm" target="_top">sparse_rcv2eigen</a><br> </td><td> Convert a CppAD Sparse Matrix to an Eigen Sparse Matrix </td></tr><tr valign="top"><td>
+<a href="sparse_rcv2eigen.cpp.htm" target="_top">sparse_rcv2eigen.cpp</a><br> </td><td> sparse_rcv2eigen: Example and Test </td></tr><tr valign="top"><td>
 <a href="sparse_scale_diag.htm" target="_top">sparse_scale_diag</a><br> </td><td> Scales the Diagonal of an Eigen Sparse Matrix </td></tr><tr valign="top"><td>
 <a href="sparse_scale_diag.cpp.htm" target="_top">sparse_scale_diag.cpp</a><br> </td><td> sparse_scale_diag: Example and Test </td></tr><tr valign="top"><td>
 <a href="sparse_up_tri_sol.htm" target="_top">sparse_up_tri_sol</a><br> </td><td> Solve a Sparse Upper Triangular Linear System </td></tr><tr valign="top"><td>

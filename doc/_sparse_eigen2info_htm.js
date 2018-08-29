@@ -45,6 +45,8 @@ var list_down1 = [
 'sparse_mat2low.htm',
 'sparse_eigen2info.htm',
 'sparse_info2eigen.htm',
+'sparse_eigen2rcv.htm',
+'sparse_rcv2eigen.htm',
 'sparse_print.htm',
 'sparsity_print.htm',
 'sparse_ad_cholesky.htm'

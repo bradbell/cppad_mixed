@@ -12,10 +12,10 @@ MathJax.Hub.Config({
 >
 </script>
 <head>
-<title>Solve Linear Equations Using LDLT Factor</title>
+<title>Solve Linear Equations Using Stored Factor</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
-<meta name="description" id="description" content="Solve Linear Equations Using LDLT Factor">
-<meta name="keywords" id="keywords" content=" solve linear equations using ldlt factor syntax prototype private purpose ldlt_obj row val_in val_out ">
+<meta name="description" id="description" content="Solve Linear Equations Using Stored Factor">
+<meta name="keywords" id="keywords" content=" solve linear equations using stored factor syntax prototype private purpose ldlt_obj row val_in val_out example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -92,6 +92,8 @@ A:active { color : purple }
 <option>sparse_mat2low</option>
 <option>sparse_eigen2info</option>
 <option>sparse_info2eigen</option>
+<option>sparse_eigen2rcv</option>
+<option>sparse_rcv2eigen</option>
 <option>sparse_print</option>
 <option>sparsity_print</option>
 <option>sparse_ad_cholesky</option>
@@ -109,6 +111,7 @@ A:active { color : purple }
 <option>ldlt_eigen_solve_H</option>
 <option>ldlt_eigen_sim_cov</option>
 <option>ldlt_eigen_inv</option>
+<option>ldlt_eigen_solve_LDLT</option>
 <option>ldlt_eigen.cpp</option>
 </select>
 </td>
@@ -124,6 +127,7 @@ A:active { color : purple }
 <option>row</option>
 <option>val_in</option>
 <option>val_out</option>
+<option>Example</option>
 </select>
 </td>
 </tr></table><br>
@@ -132,7 +136,7 @@ A:active { color : purple }
 \newcommand{\W}[1]{ \; #1 \; }@)@
 
 
-<center><b><big><big>Solve Linear Equations Using LDLT Factor</big></big></b></center>
+<center><b><big><big>Solve Linear Equations Using Stored Factor</big></big></b></center>
 <br>
 <b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
 
@@ -171,7 +175,8 @@ H x = b
 @)@</small> where <small>@(@
 H
 @)@</small> is the positive definite matrix
-that has been factored,
+corresponding to the previous <a href="ldlt_eigen_update.htm" target="_top"><span style='white-space: nowrap'>update</span></a>
+,
 <small>@(@
 b
 @)@</small> is a known column vector,
@@ -255,6 +260,14 @@ for
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>x</span></font></i><font color="blue"><span style='white-space: nowrap'>[&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>row</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;]&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>val_out</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
 </span></font></code>
 .
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="ldlt_eigen.cpp.htm#solve_H" target="_top"><span style='white-space: nowrap'>ldlt_eigen.cpp</span></a>
+ contains an
+example and test that uses this function.
 
 
 <hr>Input File: src/eigen/ldlt_eigen.cpp

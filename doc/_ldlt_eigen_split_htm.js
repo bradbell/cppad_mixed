@@ -46,6 +46,8 @@ var list_down2 = [
 'sparse_mat2low.htm',
 'sparse_eigen2info.htm',
 'sparse_info2eigen.htm',
+'sparse_eigen2rcv.htm',
+'sparse_rcv2eigen.htm',
 'sparse_print.htm',
 'sparsity_print.htm',
 'sparse_ad_cholesky.htm'
@@ -60,6 +62,7 @@ var list_down1 = [
 'ldlt_eigen_solve_h.htm',
 'ldlt_eigen_sim_cov.htm',
 'ldlt_eigen_inv.htm',
+'ldlt_eigen_solve_ldlt.htm',
 'ldlt_eigen.cpp.htm'
 ];
 var list_current0 = [
@@ -68,9 +71,9 @@ var list_current0 = [
 'ldlt_eigen_split.htm#Private',
 'ldlt_eigen_split.htm#Purpose',
 'ldlt_eigen_split.htm#ldlt_obj',
-'ldlt_eigen_split.htm#ldlt_obj.L',
-'ldlt_eigen_split.htm#ldlt_obj.D',
-'ldlt_eigen_split.htm#ldlt_obj.P',
+'ldlt_eigen_split.htm#L',
+'ldlt_eigen_split.htm#D',
+'ldlt_eigen_split.htm#P',
 'ldlt_eigen_split.htm#Example'
 ];
 function choose_across0(item)

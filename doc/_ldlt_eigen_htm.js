@@ -45,6 +45,8 @@ var list_down1 = [
 'sparse_mat2low.htm',
 'sparse_eigen2info.htm',
 'sparse_info2eigen.htm',
+'sparse_eigen2rcv.htm',
+'sparse_rcv2eigen.htm',
 'sparse_print.htm',
 'sparsity_print.htm',
 'sparse_ad_cholesky.htm'
@@ -59,6 +61,7 @@ var list_down0 = [
 'ldlt_eigen_solve_h.htm',
 'ldlt_eigen_sim_cov.htm',
 'ldlt_eigen_inv.htm',
+'ldlt_eigen_solve_ldlt.htm',
 'ldlt_eigen.cpp.htm'
 ];
 var list_current0 = [

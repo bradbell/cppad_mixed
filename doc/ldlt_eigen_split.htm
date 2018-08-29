@@ -92,6 +92,8 @@ A:active { color : purple }
 <option>sparse_mat2low</option>
 <option>sparse_eigen2info</option>
 <option>sparse_info2eigen</option>
+<option>sparse_eigen2rcv</option>
+<option>sparse_rcv2eigen</option>
 <option>sparse_print</option>
 <option>sparsity_print</option>
 <option>sparse_ad_cholesky</option>
@@ -109,6 +111,7 @@ A:active { color : purple }
 <option>ldlt_eigen_solve_H</option>
 <option>ldlt_eigen_sim_cov</option>
 <option>ldlt_eigen_inv</option>
+<option>ldlt_eigen_solve_LDLT</option>
 <option>ldlt_eigen.cpp</option>
 </select>
 </td>
@@ -121,9 +124,9 @@ A:active { color : purple }
 <option>Private</option>
 <option>Purpose</option>
 <option>ldlt_obj</option>
-<option>---..L</option>
-<option>---..D</option>
-<option>---..P</option>
+<option>L</option>
+<option>D</option>
+<option>P</option>
 <option>Example</option>
 </select>
 </td>
@@ -188,19 +191,19 @@ In addition, it must have a previous call to
 
 <br>
 <br>
-<big><a name="ldlt_obj.L" id="ldlt_obj.L">L</a></big>
+<b><big><a name="L" id="L">L</a></big></b>
 <br>
-is a lower triangular matrix with ones on the diagonal,
+is a lower triangular matrix with ones on the diagonal.
 
 <br>
 <br>
-<big><a name="ldlt_obj.D" id="ldlt_obj.D">D</a></big>
+<b><big><a name="D" id="D">D</a></big></b>
 <br>
 is a diagonal matrix.
 
 <br>
 <br>
-<big><a name="ldlt_obj.P" id="ldlt_obj.P">P</a></big>
+<b><big><a name="P" id="P">P</a></big></b>
 <br>
 is a permutation matrix.
 

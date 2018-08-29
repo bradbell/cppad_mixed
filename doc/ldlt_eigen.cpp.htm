@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Example Using Eigen LDLT Factorization</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Example Using Eigen LDLT Factorization">
-<meta name="keywords" id="keywords" content=" example using eigen ldlt factorization problem description constructor init pattern update logdet solve_h split sim_cov source code ">
+<meta name="keywords" id="keywords" content=" example using eigen ldlt factorization problem description constructor init pattern update logdet solve_h split solve_ldlt sim_cov source code ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -31,7 +31,7 @@ A:active { color : purple }
 <td>
 <a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
 </td>
-<td><a href="ldlt_eigen_inv.htm" target="_top">Prev</a>
+<td><a href="ldlt_eigen_solve_ldlt.htm" target="_top">Prev</a>
 </td><td><a href="manage_gsl_rng.htm" target="_top">Next</a>
 </td><td>
 <select onchange='choose_across0(this)'>
@@ -92,6 +92,8 @@ A:active { color : purple }
 <option>sparse_mat2low</option>
 <option>sparse_eigen2info</option>
 <option>sparse_info2eigen</option>
+<option>sparse_eigen2rcv</option>
+<option>sparse_rcv2eigen</option>
 <option>sparse_print</option>
 <option>sparsity_print</option>
 <option>sparse_ad_cholesky</option>
@@ -109,6 +111,7 @@ A:active { color : purple }
 <option>ldlt_eigen_solve_H</option>
 <option>ldlt_eigen_sim_cov</option>
 <option>ldlt_eigen_inv</option>
+<option>ldlt_eigen_solve_LDLT</option>
 <option>ldlt_eigen.cpp</option>
 </select>
 </td>
@@ -124,6 +127,7 @@ A:active { color : purple }
 <option>logdet</option>
 <option>solve_H</option>
 <option>split</option>
+<option>solve_LDLT</option>
 <option>sim_cov</option>
 <option>Source Code</option>
 </select>
@@ -247,6 +251,13 @@ See the following under Source Code below:
      ok &amp;= ldlt_obj.split(L, D, P)
 </pre></font></code>
 <br>
+<b><big><a name="solve_LDLT" id="solve_LDLT">solve_LDLT</a></big></b>
+<br>
+See the following under Source Code below:
+<code><font color='blue'><pre style='display:inline'> 
+     x = ldlt_eigen&lt;double&gt;::solve_LDLT(L, D, P, b);
+</pre></font></code>
+<br>
 <b><big><a name="sim_cov" id="sim_cov">sim_cov</a></big></b>
 <br>
 See the following under Source Code below:
@@ -326,7 +337,7 @@ See the following under Source Code below:
           <i><font color="#9A1900">// check its value</font></i>
           ok <font color="#990000">&amp;=</font> std<font color="#990000">::</font><b><font color="#000000">fabs</font></b><font color="#990000">(</font> logdet_H <font color="#990000">/</font> std<font color="#990000">::</font><b><font color="#000000">log</font></b><font color="#990000">(</font><font color="#993399">6.0</font><font color="#990000">)</font> <font color="#990000">-</font> <font color="#993399">1.0</font> <font color="#990000">)</font> <font color="#990000">&lt;=</font> eps<font color="#990000">;</font>
      
-          <i><font color="#9A1900">// test solve</font></i>
+          <i><font color="#9A1900">// test solve_H</font></i>
           CppAD<font color="#990000">::</font><font color="#008080">vector&lt;size_t&gt;</font> <b><font color="#000000">row</font></b><font color="#990000">(</font><font color="#993399">3</font><font color="#990000">);</font>
           CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font> <b><font color="#000000">val_in</font></b><font color="#990000">(</font><font color="#993399">3</font><font color="#990000">),</font> <b><font color="#000000">val_out</font></b><font color="#990000">(</font><font color="#993399">3</font><font color="#990000">);</font>
           <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;</font> ncol<font color="#990000">;</font> j<font color="#990000">++)</font>
@@ -368,6 +379,24 @@ See the following under Source Code below:
                     <i><font color="#9A1900">// P is identity</font></i>
                     check <font color="#990000">=</font> <font color="#009900">double</font><font color="#990000">(</font> i <font color="#990000">==</font> j <font color="#990000">);</font>
                     ok <font color="#990000">&amp;=</font> std<font color="#990000">::</font><b><font color="#000000">fabs</font></b><font color="#990000">(</font> <b><font color="#000000">denP</font></b><font color="#990000">(</font>i<font color="#990000">,</font> j<font color="#990000">)</font> <font color="#990000">-</font> check <font color="#990000">)</font> <font color="#990000">&lt;=</font> eps<font color="#990000">;</font>
+               <font color="#FF0000">}</font>
+          <font color="#FF0000">}</font>
+     
+          <i><font color="#9A1900">// test solve_LDLT</font></i>
+          <font color="#008080">eigen_vector</font> <b><font color="#000000">x</font></b><font color="#990000">(</font>nrow<font color="#990000">),</font> <b><font color="#000000">b</font></b><font color="#990000">(</font>nrow<font color="#990000">);</font>
+          <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;</font> ncol<font color="#990000">;</font> j<font color="#990000">++)</font>
+          <font color="#FF0000">{</font>    <i><font color="#9A1900">// solve for the j-th column of the inverse matrix</font></i>
+               <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> nrow<font color="#990000">;</font> i<font color="#990000">++)</font>
+               <font color="#FF0000">{</font>    <b><font color="#0000FF">if</font></b><font color="#990000">(</font> i <font color="#990000">==</font> j <font color="#990000">)</font>
+                         b<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">1.0</font><font color="#990000">;</font>
+                    <b><font color="#0000FF">else</font></b>
+                         b<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
+               <font color="#FF0000">}</font>
+               x <font color="#990000">=</font> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>ldlt_eigen<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;::</font><b><font color="#000000">solve_LDLT</font></b><font color="#990000">(</font>L<font color="#990000">,</font> D<font color="#990000">,</font> P<font color="#990000">,</font> b<font color="#990000">);</font>
+               <i><font color="#9A1900">//</font></i>
+               <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> nrow<font color="#990000">;</font> i<font color="#990000">++)</font>
+               <font color="#FF0000">{</font>    <font color="#009900">double</font> check_i <font color="#990000">=</font> H_inv<font color="#990000">[</font> i <font color="#990000">*</font> nrow <font color="#990000">+</font> j <font color="#990000">];</font>
+                    ok <font color="#990000">&amp;=</font> std<font color="#990000">::</font><b><font color="#000000">fabs</font></b><font color="#990000">(</font> x<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">-</font> check_i <font color="#990000">)</font> <font color="#990000">&lt;=</font> eps<font color="#990000">;</font>
                <font color="#FF0000">}</font>
           <font color="#FF0000">}</font>
      

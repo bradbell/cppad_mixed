@@ -45,6 +45,8 @@ var list_down1 = [
 'sparse_mat2low.htm',
 'sparse_eigen2info.htm',
 'sparse_info2eigen.htm',
+'sparse_eigen2rcv.htm',
+'sparse_rcv2eigen.htm',
 'sparse_print.htm',
 'sparsity_print.htm',
 'sparse_ad_cholesky.htm'
@@ -61,7 +63,8 @@ var list_current0 = [
 'order2random.htm#n_random',
 'order2random.htm#jac_a1fun',
 'order2random.htm#a1_ldlt_ran_hes',
-'order2random.htm#beta_theta_u',
+'order2random.htm#beta',
+'order2random.htm#theta_u',
 'order2random.htm#W',
 'order2random.htm#Example'
 ];
