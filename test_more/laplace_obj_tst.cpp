@@ -233,7 +233,6 @@ bool laplace_obj_tst(void)
 	mixed_object.a1_ldlt_ran_hes_.update( ran_hes_uu_rcv );
 	//
 	a1_vector a1_W = CppAD::mixed::order2random(
-		mixed_object,
 		n_fixed,
 		n_random,
 		mixed_object.ran_jac_a1fun_,
@@ -272,7 +271,6 @@ bool laplace_obj_tst(void)
 	mixed_object.a1_ldlt_ran_hes_.update( ran_hes_uu_rcv );
 	//
 	a1_W = CppAD::mixed::order2random(
-		mixed_object,
 		n_fixed,
 		n_random,
 		mixed_object.ran_jac_a1fun_,

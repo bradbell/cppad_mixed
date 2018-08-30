@@ -181,7 +181,6 @@ bool order2random_xam(void)
 	a1_ldlt_ran_hes.update( ran_hes_uu_rcv );
 	//
 	vector<a1_double> W = CppAD::mixed::order2random(
-		mixed_object,
 		n_fixed,
 		n_random,
 		jac_a1fun,

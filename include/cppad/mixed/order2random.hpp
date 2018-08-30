@@ -16,7 +16,6 @@ see http://www.gnu.org/licenses/agpl.txt
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 a1_vector order2random(
-	cppad_mixed&                 mixed_object    ,
 	size_t                       n_fixed         ,
 	size_t                       n_random        ,
 	CppAD::ADFun<a1_double>&     jac_a1fun       ,

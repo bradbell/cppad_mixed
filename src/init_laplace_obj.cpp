@@ -148,7 +148,6 @@ void cppad_mixed::init_laplace_obj(
 	//
 	// W(beta, theta, u)
 	a1_vector W = CppAD::mixed::order2random(
-		*this,
 		n_fixed_,
 		n_random_,
 		ran_jac_a1fun_,

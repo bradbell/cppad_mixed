@@ -26,7 +26,6 @@ $section Second Order Representation of Random Effects, W(beta, theta, u)$$
 
 $head Syntax$$
 $icode%W% = CppAD::mixed::order2random(
-	%mixed_object%
 	%n_fixed%,
 	%n_random%,
 	%jac_a1fun%,
@@ -40,14 +39,6 @@ $srcfile%src/eigen/order2random.cpp
 
 $head Private$$
 This $code cppad_mixed$$ member function is $cref private$$.
-
-$head mixed_object$$
-is the cppad_mixed object for this problem.
-This object is only used to call
-$codei%
-	%mixed_object%.ran_likelihood_hes
-%$$
-and see if the user has defined the hessian of the random likelihood.
 
 $head n_fixed$$
 number of fixed effects.
@@ -115,7 +106,6 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // BEGIN PROTOTYPE
 a1_vector order2random(
-	cppad_mixed&                        mixed_object    ,
 	size_t                              n_fixed         ,
 	size_t                              n_random        ,
 	CppAD::ADFun<a1_double>&            jac_a1fun       ,
