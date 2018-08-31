@@ -62,8 +62,6 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL example.cpp
 	user/opt_ran_nan.cpp
 	user/ran_constraint.cpp
 	user/ran_likelihood.cpp
-	user/ran_likelihood_hes.cpp
-	user/ran_likelihood_jac.cpp
 	user/sample_fixed.cpp
 	user/sample_random.cpp
 )

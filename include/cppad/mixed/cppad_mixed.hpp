@@ -132,28 +132,6 @@ $srccode%cpp% */
 /* %$$
 See $cref ran_likelihood$$.
 
-$subhead ran_likelihood_jac$$
-This function is only used to increase speed and reduce memory use.
-$srccode%cpp% */
-	virtual a2_vector ran_likelihood_jac(
-		const a2_vector&           fixed_vec  ,
-		const a2_vector&           random_vec )
-	{	return a2_vector(0); }
-/* %$$
-See $cref ran_likelihood_jac$$.
-
-$subhead ran_likelihood_hes$$
-This function is only used to increase speed and reduce memory use.
-$srccode%cpp% */
-	virtual a1_vector ran_likelihood_hes(
-		const a1_vector&             fixed_vec  ,
-		const a1_vector&             random_vec ,
-		const CppAD::vector<size_t>& row        ,
-		const CppAD::vector<size_t>& col        )
-	{	return a1_vector(0); }
-/* %$$
-See $cref ran_likelihood_hes$$.
-
 $subhead fix_likelihood$$
 This function should be used if there is a prior on the fixed effects,
 or there is data that does not depend on the random effects.
@@ -292,8 +270,6 @@ $childtable%src/derived_ctor.cpp
 	%src/eigen/information_mat.cpp
 	%src/eigen/sample_fixed.cpp
 	%src/sample_random.cpp
-	%src/ran_likelihood_jac.omh
-	%src/ran_likelihood_hes.omh
 %$$
 
 
@@ -693,15 +669,6 @@ $srccode%cpp% */
 	);
 /* %$$
 
-$subhead check_user_ran_hes$$
-See $cref check_user_ran_hes$$.
-$srccode%cpp% */
-	void check_user_ran_hes(
-		const d_vector& fixed_vec ,
-		const d_vector& random_vec
-	);
-/* %$$
-
 $subhead init_laplace_obj_hes$$
 See $cref init_laplace_obj_hes$$.
 $srccode%cpp% */
@@ -925,15 +892,6 @@ $srccode%cpp% */
 	);
 	friend bool ::ran_like_hes_xam(void);
 	friend bool ::order2random_xam(void);
-/* %$$
-
-$subhead check_user_ran_jac$$
-See $cref check_user_ran_jac$$
-$srccode%cpp% */
-	void check_user_ran_jac(
-		const d_vector&       fixed_vec     ,
-		const d_vector&       random_vec
-	);
 /* %$$
 
 $subhead ran_obj_eval$$

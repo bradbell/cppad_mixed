@@ -50,7 +50,7 @@ $bold API change$$:
 The $cref ran_likelihood$$ function was changed from having
 $code a2_vector$$ to $code a3_vector$$ arguments and results.
 $lnext
-The $cref ran_likelihood_jac$$ function was changed from having
+The $code ran_likelihood_jac$$ function was changed from having
 $code a1_vector$$ to $code a2_vector$$ arguments and results.
 $lnext
 The method for computing the Hessian of the random likelihood

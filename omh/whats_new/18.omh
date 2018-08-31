@@ -10,6 +10,7 @@ see http://www.gnu.org/licenses/agpl.txt
 
 $begin whats_new_18$$
 $spell
+	hes
 	suitesparse
 	cppad
 	gcc
@@ -46,6 +47,14 @@ $childtable%
 	omh/whats_new/16.omh%
 	omh/whats_new/15.omh
 %$$
+
+$head 08-30$$
+$bold API:$$
+Remove the user defined versions of the Jacobian and Hessian
+of the random likelihood with respect to the random effects;
+$code ran_likelihood_jac$$ and $code ran_likelihood_hes$$.
+These functions are no longer part of the API and are not used
+(even if defined by the user).
 
 $head 08-27$$
 Advance to $code cppad-20180827$$
@@ -299,7 +308,7 @@ during the
 $cref/cppad_mixed/install_unix/cppad_mixed/$$ part of the instal process.
 
 $head 01-14$$
-Change the $cref ran_likelihood_hes.cpp$$ example to use the
+Change the $code ran_likelihood_hes.cpp$$ example to use the
 offset log normal distribution and eliminate the chance of random failure
 during its test.
 

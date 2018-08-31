@@ -90,21 +90,13 @@ CppAD::mixed::a1_sparse_rcv cppad_mixed::ran_like_hes(
 	// ran_hes_uu_rc
 	const sparse_rc& ran_hes_uu_rc( a1_ldlt_ran_hes_.pattern() );
 	//
-	// row, col, val
+	// row, col
 	const s_vector&  row( ran_hes_uu_rc.row() );
 	const s_vector&  col( ran_hes_uu_rc.col() );
-	a1_vector val = ran_likelihood_hes(fixed_vec, random_vec, row, col);
 	//
 	// nnz
 	size_t nnz = ran_hes_uu_rc.nnz();
 	//
-	// ran_hes_rcv
-	a1_sparse_rcv ran_hes_uu_rcv( ran_hes_uu_rc );
-	if( val.size() != 0 )
-	{	for(size_t k = 0; k < nnz; ++k)
-			ran_hes_uu_rcv.set(k, val[k] );
-		return ran_hes_uu_rcv;
-	}
 	// The user has not defined ran_likelihood_hes, so use AD to calcuate
 	// the Hessian of the random likelihood w.r.t the random effects.
 	//
@@ -128,9 +120,9 @@ CppAD::mixed::a1_sparse_rcv cppad_mixed::ran_like_hes(
 	ran_jac_a1fun_.clear_subgraph();
 	//
 	// ran_hes_uu_rcv
-	val = ran_hes_mix_rcv.val();
+	a1_sparse_rcv ran_hes_uu_rcv( ran_hes_uu_rc );
 	for(size_t k = 0; k < nnz; ++k)
-		ran_hes_uu_rcv.set(k, val[k] );
+		ran_hes_uu_rcv.set(k, ran_hes_mix_rcv.val()[k] );
 	//
 	return ran_hes_uu_rcv;
 }

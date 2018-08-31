@@ -79,14 +79,6 @@ $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$ at which certain $code CppAD::ADFun$$
 objects are recorded.
 
-$head ran_likelihood_jac$$
-If $cref ran_likelihood_jac$$ returns a non-empty vector,
-a check is done to make sure the derivative computations are correct.
-
-$head ran_likelihood_hes$$
-If $cref ran_likelihood_hes$$ returns a non-empty vector,
-a check is done to make sure the derivative computations are correct.
-
 $head size_map$$
 The return value has prototype
 $codei%

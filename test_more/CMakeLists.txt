@@ -24,8 +24,6 @@ ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL test_more.cpp
 	no_random.cpp
 	no_random_info.cpp
 	opt_ran_fail.cpp
-	ran_likelihood_hes.cpp
-	ran_likelihood_jac.cpp
 	laplace_obj_hes.cpp
 	laplace_obj_tst.cpp
 	ran_obj_tst.cpp

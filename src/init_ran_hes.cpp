@@ -97,11 +97,6 @@ The matrix is symmetric and hence can be recovered from
 its lower triangle.
 
 
-$head ran_like_fun_$$
-If the return value from $cref ran_likelihood_hes$$ is non-empty,
-and $code NDEBUG$$ is not defined,
-$code ran_likelihood_hes$$ is checked for correctness.
-
 $head Random Effects Index$$
 The indices in $code ran_hes_rcv_$$
 are relative to both the fixed and random effects with the fixed effects
@@ -218,172 +213,20 @@ void cppad_mixed::init_ran_hes(
 	bool record_compare   = false;
 	CppAD::Independent(a1_both, abort_op_index, record_compare);
 
-	// unpack the independent variables into a1_fixed and a1_random
-	a1_vector a1_fixed(n_fixed_), a1_random(n_random_);
-	unpack(a1_fixed, a1_random, a1_both);
-
-	// Evaluate ran_likelihood_hes. Its row indices are relative
-	// to just the random effects, not both fixed and random effects.
-	assert( n_low == a1_ran_hes_rcv.nnz() );
-	CppAD::vector<size_t> row(n_low), col(n_low);
-	for(size_t k = 0; k < n_low; k++)
-	{	assert( a1_ran_hes_rcv.row()[k] >= n_fixed_ );
-		assert( a1_ran_hes_rcv.col()[k] >= n_fixed_ );
-		row[k] = a1_ran_hes_rcv.row()[k] - n_fixed_;
-		col[k] = a1_ran_hes_rcv.col()[k] - n_fixed_;
-	}
-	a1_vector a1_val_out = ran_likelihood_hes(
-		a1_fixed, a1_random, row, col
-	);
-	if( a1_val_out.size() == 0 )
-	{	// The user has not defined ran_likelihood_hes, so use AD to calcuate
-		// the Hessian of the random likelihood w.r.t the random effects.
-		a1_val_out.resize(n_low);
-		a1_sparse_rcv a1_subset( hes_low );
-		ran_jac_a1fun_.subgraph_jac_rev(a1_both, a1_subset);
-		ran_jac_a1fun_.clear_subgraph();
-		a1_val_out = a1_subset.val();
-	}
-# ifndef NDEBUG
-	else	check_user_ran_hes(fixed_vec, random_vec);
-# endif
+	// the Hessian of the random likelihood w.r.t the random effects.
+	a1_sparse_rcv a1_subset( hes_low );
+	ran_jac_a1fun_.subgraph_jac_rev(a1_both, a1_subset);
+	ran_jac_a1fun_.clear_subgraph();
+	a1_vector a1_val_out = a1_subset.val();
+	//
+	// ran_hes_fun_
 	ran_hes_fun_.Dependent(a1_both, a1_val_out);
 	ran_hes_fun_.check_for_nan(false);
-
+	//
 	// optimize the recording
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
 	ran_hes_fun_.optimize("no_conditional_skip");
 # endif
 	//
 	init_ran_hes_done_ = true;
-}
-
-/*
-$begin check_user_ran_hes$$
-$spell
-	rcv
-	cppad
-	const
-	CppAD
-	std
-	vec
-	hes
-	init
-$$
-
-$section Check User Defined ran_likelihood_hes$$
-
-$head Syntax$$
-$icode%mixed_object%.check_user_ran_hes(%fixed_vec%, %random_vec%)%$$
-
-$head Private$$
-This $code cppad_mixed$$ member function is $cref private$$.
-
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
-to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
-
-$head fixed_vec$$
-This argument has prototype
-$codei%
-	const CppAD::vector<double>& %fixed_vec%
-%$$
-It specifies the value of the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$.
-
-$head random_vec$$
-This argument has prototype
-$codei%
-	const CppAD::vector<double>& %random_vec%
-%$$
-It specifies the value of the
-$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
-vector $latex u$$.
-
-$head ran_like_fun_$$
-The member variable
-$codei%
-	CppAD::ADFun<double> ran_like_fun_
-%$$
-must contain a recording of the random likelihood function; see
-$cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$.
-
-$head ran_hes_rcv_$$
-The member variable
-$codei%
-	CppAD::mixed::d_sparse_rcv  ran_hes_rcv_
-%$$
-must contain the information for evaluating the random effects
-Hessian using $code ran_like_fun_$$; see
-$cref/ran_hes_rcv_/init_ran_hes/ran_hes_rcv_/$$.
-
-$head ran_likelihood_hes$$
-The return value from $cref ran_likelihood_hes$$ must be non-empty
-and is checked for correctness.
-To be specific, the return vector is checked using
-$cref/ran_like_fun_/Private/ran_like_fun_/$$.
-If the results do no agree,
-$cref/fatal_error/Public/User Defined Functions/fatal_error/$$ is called with
-an appropriate error message.
-
-$end
------------------------------------------------------------------------------
-*/
-void cppad_mixed::check_user_ran_hes(
-	const d_vector&        fixed_vec       ,
-	const d_vector&        random_vec      )
-{
-	// a1_double versions of fixed_vec and random_vec
-	a1_vector a1_fixed(n_fixed_), a1_random(n_random_);
-	for(size_t i = 0; i < n_fixed_; i++)
-		a1_fixed[i] = fixed_vec[i];
-	for(size_t i = 0; i < n_random_; i++)
-		a1_random[i] = random_vec[i];
-
-	// row indices in ran_likelihood_hes are relative
-	// to just the random effects, not both fixed and random effects.
-	size_t K = ran_hes_rcv_.nnz();
-	CppAD::vector<size_t> row(K), col(K);
-	sparse_rc pattern(n_random_, n_fixed_ + n_random_, K);
-	for(size_t k = 0; k < K; k++)
-	{	assert( ran_hes_rcv_.row()[k] >= n_fixed_ );
-		assert( ran_hes_rcv_.col()[k] >= n_fixed_ );
-		row[k] = ran_hes_rcv_.row()[k] - n_fixed_;
-		col[k] = ran_hes_rcv_.col()[k] - n_fixed_;
-		//
-		pattern.set(k, row[k], col[k] + n_fixed_);
-	}
-	// user's version of Hessian
-	a1_vector a1_val_out = ran_likelihood_hes(
-		a1_fixed, a1_random, row, col
-	);
-	assert( a1_val_out.size() != 0 );
-	//
-	// CppAD's version of Hessian
-	a1_sparse_rcv a1_subset(pattern);
-	a1_vector a1_both( n_fixed_ + n_random_ );
-	pack(fixed_vec, random_vec, a1_both);
-	ran_jac_a1fun_.subgraph_jac_rev(a1_both, a1_subset);
-	ran_jac_a1fun_.clear_subgraph();
-	//
-	double eps = 100. * std::numeric_limits<double>::epsilon();
-	bool ok    = a1_val_out.size() == K;
-	if( ! ok )
-	{	const std::string error_message = "init_ran_hes: "
-		"ran_likelihood_hes return value does not have proper size.";
-		fatal_error(error_message);
-	}
-	for(size_t k = 0; k < K; k++)
-	{	ok &= CppAD::NearEqual(
-			Value(a1_val_out[k]), a1_subset.val()[k], eps, eps
-		);
-	}
-	if( ! ok )
-	{	const std::string error_message = "init_ran_hes: "
-		"a ran_likelihood_hes Hessian value does not agree with AD value.";
-		fatal_error(error_message);
-	}
-	return;
 }
