@@ -30,7 +30,8 @@ $icode%W% = CppAD::mixed::order2random(
 	%n_random%,
 	%jac_a1fun%,
 	%a1_ldlt_ran_hes%,
-	%beta_theta_u%
+	%beta%,
+	%theta_u%
 )%$$
 
 $head Prototype$$
@@ -50,6 +51,12 @@ $head jac_a1fun$$
 This is the Jacobian of the random likelihood
 with respect to the random effects
 $latex f_u ( \theta, u )$$.
+The domain indices (range indices) are with respect to the random effects
+(fixed and random effects); i.e.,
+$codei%
+	%jac_a1fun%.Domain() == %n_fixed% + %n_random%
+	%jac_a1fun%.Range() == %n_random%
+%$$
 
 $head a1_ldlt_ran_hes$$
 This is the LDLT factorization for the
@@ -115,6 +122,8 @@ a1_vector order2random(
 // END PROTOTYPE
 {	assert( beta.size() == n_fixed );
 	assert( theta_u.size() == n_fixed + n_random );
+	assert( jac_a1fun.Domain() == n_fixed + n_random );
+	assert( jac_a1fun.Range()  == n_random);
 	//
 	// L * D * L^T = P * H * P^T
 	Eigen::SparseMatrix<a1_double, Eigen::ColMajor> L;

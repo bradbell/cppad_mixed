@@ -32,6 +32,7 @@ $end
 // BEGIN C++
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/ran_like_hes.hpp>
 
 namespace {
 	using CppAD::vector;
@@ -103,13 +104,13 @@ bool ran_like_hes_xam(void)
 	size_t n_fixed  = n_data;
 	size_t n_random = n_data;
 	vector<double> data(n_data);
-	vector<double> theta(n_fixed), u(n_random);
-	a1_vector fixed_vec(n_fixed), random_vec(n_random);
+	a1_vector      theta_u(n_fixed + n_random);
+	vector<double> fixed_vec(n_fixed), random_vec(n_random);
 
 	for(size_t i = 0; i < n_data; i++)
-	{	data[i]      = double((i + 1) * (i + 1) );
-		fixed_vec[i] = theta[i] = std::sqrt( double(i + 1) );
-		random_vec[i] = u[i] = 0.0;
+	{	data[i]   = double((i + 1) * (i + 1) );
+		theta_u[i] = fixed_vec[i]  = std::sqrt( double(i + 1) );
+		theta_u[i + n_fixed] = random_vec[i] = 0.0;
 	}
 
 	// object that is derived from cppad_mixed
@@ -119,20 +120,25 @@ bool ran_like_hes_xam(void)
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, data
 	);
-	mixed_object.initialize(theta, u);
+	mixed_object.initialize(fixed_vec, random_vec);
 
 	// compute Jacobian with respect to random effects
-	CppAD::mixed::a1_sparse_rcv hes_rcv =
-		mixed_object.ran_like_hes(fixed_vec, random_vec);
+	CppAD::mixed::a1_sparse_rcv ran_hes_uu_rcv = CppAD::mixed::ran_like_hes(
+		n_fixed,
+		n_random,
+		mixed_object.ran_jac_a1fun_,
+		mixed_object.a1_ldlt_ran_hes_.pattern(),
+		theta_u
+	);
 
 	// check the Hessian
-	CppAD::mixed::s_vector col_major = hes_rcv.col_major();
-	size_t nnz = hes_rcv.nnz();
+	CppAD::mixed::s_vector col_major = ran_hes_uu_rcv.col_major();
+	size_t nnz = ran_hes_uu_rcv.nnz();
 	ok &= nnz == n_random;
 	for(size_t k = 0; k < nnz; k++)
-	{	size_t i    = hes_rcv.row()[ col_major[k] ];
-		size_t j    = hes_rcv.col()[ col_major[k] ];
-		a1_double v = hes_rcv.val()[ col_major[k] ];
+	{	size_t i    = ran_hes_uu_rcv.row()[ col_major[k] ];
+		size_t j    = ran_hes_uu_rcv.col()[ col_major[k] ];
+		a1_double v = ran_hes_uu_rcv.val()[ col_major[k] ];
 		ok &= i == k;
 		ok &= j == k;
 		a1_double sigma  = fixed_vec[i];

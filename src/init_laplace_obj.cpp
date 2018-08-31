@@ -101,6 +101,7 @@ $code laplace_obj_fun_.Range() == 1 + A_rcv.nr()$$.
 $end
 */
 # include <Eigen/Sparse>
+# include <cppad/mixed/ran_like_hes.hpp>
 # include <cppad/mixed/order2random.hpp>
 # include <cppad/mixed/exception.hpp>
 # include <cppad/mixed/configure.hpp>
@@ -141,7 +142,13 @@ void cppad_mixed::init_laplace_obj(
 	//
 	// ran_hes_uu_rcv = f_{uu} (theta , u).
 	a1_sparse_rcv ran_hes_uu_rcv;
-	ran_hes_uu_rcv = ran_like_hes(theta, u);
+	ran_hes_uu_rcv = CppAD::mixed::ran_like_hes(
+		n_fixed_,
+		n_random_,
+		ran_jac_a1fun_,
+		a1_ldlt_ran_hes_.pattern(),
+		theta_u
+	);
 	//
 	// a1_ldlt_ran_hes_.update
 	a1_ldlt_ran_hes_.update( ran_hes_uu_rcv );
@@ -163,7 +170,13 @@ void cppad_mixed::init_laplace_obj(
 	pack(beta, W, beta_W);
 	//
 	// ran_hes_uu_rcv
-	ran_hes_uu_rcv = ran_like_hes(beta, W);
+	ran_hes_uu_rcv = CppAD::mixed::ran_like_hes(
+		n_fixed_,
+		n_random_,
+		ran_jac_a1fun_,
+		a1_ldlt_ran_hes_.pattern(),
+		beta_W
+	);
 	//
 	// ldlt_obj.update
 	a1_ldlt_ran_hes_.update( ran_hes_uu_rcv );

@@ -13,7 +13,9 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin ran_like_hes$$
 $spell
-	hes_rcv
+	hes_uu_rcv
+	rc
+	Jacobian
 	jac
 	cppad
 	vec
@@ -25,7 +27,9 @@ $$
 $section Hessian of Random Likelihood w.r.t. Random Effects$$
 
 $head Syntax$$
-$icode%hes_rcv% = %mixed_object%.ran_like_hes(%fixed_vec%, %random_vec%)%$$
+$icode%ran_hes_uu_rcv% = ran_like_hes(
+	%n_fixed%, %n_random%, %ran_jac_a1fun%, %ran_hes_uu_rc%, %theta_u%
+)%$$
 
 $head Prototype$$
 $srcfile%src/ran_like_hes.cpp
@@ -46,30 +50,46 @@ $latex \[
 	f_{uu} ( \theta, u )
 \] $$
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
-to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+$head n_fixed$$
+number of fixed effects.
 
-$head fixed_vec$$
-This argument specifies the
+$head n_random$$
+number of random effects
+
+$head ran_jac_a1fun$$
+This is the Jacobian of the random likelihood
+with respect to the random effects
+$latex f_u ( \theta, u )$$.
+The domain indices (range indices) are with respect to the random effects
+(fixed and random effects); i.e.,
+$codei%
+	%ran_jac_a1fun%.Domain() == %n_fixed% + %n_random%
+	%ran_jac_a1fun%.Range()  == %n_random%
+%$$
+
+$head ran_hes_uu_rc$$
+This is the sparsity pattern for the
+Hessian $latex f_{uu} ( \theta , u )$$.
+The indices in this matrix are just with respect to the random effects;
+i.e., the row and column indices are between zero and  $icode n_random$$.
+
+$head theta_u$$
+This argument contains the
 $cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$.
-
-$head random_vec$$
-This argument specifies the value of the
+vector $icode theta$$ and the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
-vector $latex u$$.
+vector $icode u$$ in that order
 
-$head hes_rcv$$
+$head ran_hes_uu_rcv$$
 The return value
 is the Hessian $latex f_{uu} ( \theta , u )$$.
 The indices in this matrix are just with respect to the random effects;
-i.e., the row and column indices are between zero and  $code n_random_$$.
+i.e., the row and column indices are between zero and  $icode n_random$$.
 
 $children%
 	example/private/ran_like_hes.cpp
 %$$
+
 $head Example$$
 The file $cref ran_like_hes.cpp$$ contains an example
 and test of this procedure.
@@ -77,47 +97,40 @@ It returns true, if the test passes, and false otherwise.
 ----------------------------------------------------------------------------
 $end
 */
+namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+
 // BEGIN_PROTOTYPE
-CppAD::mixed::a1_sparse_rcv cppad_mixed::ran_like_hes(
-	const a1_vector& fixed_vec   ,
-	const a1_vector& random_vec  )
+a1_sparse_rcv ran_like_hes(
+	size_t                        n_fixed         ,
+	size_t                        n_random        ,
+	CppAD::ADFun<a1_double>&      ran_jac_a1fun   ,
+	const sparse_rc&              ran_hes_uu_rc   ,
+	const a1_vector&              theta_u         )
 // END_PROTOTYPE
-{	assert( init_ran_jac_done_ );
-	assert( init_ran_hes_done_ );
-	assert( n_fixed_  == fixed_vec.size() );
-	assert( n_random_ == random_vec.size() );
+{	assert( theta_u.size()     == n_fixed + n_random );
+	assert( ran_jac_a1fun.Domain() == n_fixed + n_random );
+	assert( ran_jac_a1fun.Range()  == n_random);
 	//
-	// ran_hes_uu_rc
-	const sparse_rc& ran_hes_uu_rc( a1_ldlt_ran_hes_.pattern() );
-	//
-	// row, col
+	// nnz, row, col
+	size_t nnz = ran_hes_uu_rc.nnz();
 	const s_vector&  row( ran_hes_uu_rc.row() );
 	const s_vector&  col( ran_hes_uu_rc.col() );
 	//
-	// nnz
-	size_t nnz = ran_hes_uu_rc.nnz();
-	//
-	// The user has not defined ran_likelihood_hes, so use AD to calcuate
-	// the Hessian of the random likelihood w.r.t the random effects.
-	//
 	// ran_hes_mix_rc
-	sparse_rc ran_hes_mix_rc(n_random_, n_fixed_ + n_random_, nnz);
+	sparse_rc ran_hes_mix_rc(n_random, n_fixed + n_random, nnz);
 	for(size_t k = 0; k < nnz; k++)
-	{	assert( row[k] <= n_random_ );
-		assert( col[k] <= n_random_ );
+	{	assert( row[k] <= n_random );
+		assert( col[k] <= n_random );
 		assert( col[k] <= row[k] );
 		//
 		// row relative to random effects, column relative to both
-		ran_hes_mix_rc.set(k, row[k], col[k] + n_fixed_);
+		ran_hes_mix_rc.set(k, row[k], col[k] + n_fixed);
 	}
-	// theta_u
-	a1_vector theta_u(n_fixed_ + n_random_);
-	pack(fixed_vec, random_vec, theta_u);
 	//
 	// ran_hes_mix_rcv
 	a1_sparse_rcv ran_hes_mix_rcv( ran_hes_mix_rc );
-	ran_jac_a1fun_.subgraph_jac_rev(theta_u, ran_hes_mix_rcv);
-	ran_jac_a1fun_.clear_subgraph();
+	ran_jac_a1fun.subgraph_jac_rev(theta_u, ran_hes_mix_rcv);
+	ran_jac_a1fun.clear_subgraph();
 	//
 	// ran_hes_uu_rcv
 	a1_sparse_rcv ran_hes_uu_rcv( ran_hes_uu_rc );
@@ -126,3 +139,5 @@ CppAD::mixed::a1_sparse_rcv cppad_mixed::ran_like_hes(
 	//
 	return ran_hes_uu_rcv;
 }
+
+} } // END_CPPAD_MIXED_NAMESPACE

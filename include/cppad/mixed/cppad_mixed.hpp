@@ -66,6 +66,8 @@ class cppad_mixed {
 	friend class CppAD::mixed::ipopt_fixed;
 	friend class CppAD::mixed::ipopt_random;
 	friend bool ::ran_obj_tst(void);
+	friend bool ::order2random_xam(void);
+	friend bool ::ran_like_hes_xam(void);
 public:
 /*
 $begin public$$
@@ -869,17 +871,6 @@ $srccode%cpp% */
 	);
 	friend bool ::ran_con_jac_xam(void);
 	friend bool ::sample_fixed_1(void);
-/* %$$
-
-$subhead ran_like_hes$$
-See $cref ran_like_hes$$
-$srccode%cpp% */
-	a1_sparse_rcv ran_like_hes(
-		const a1_vector&        fixed_vec   ,
-		const a1_vector&        random_vec
-	);
-	friend bool ::ran_like_hes_xam(void);
-	friend bool ::order2random_xam(void);
 /* %$$
 
 $subhead ran_obj_eval$$

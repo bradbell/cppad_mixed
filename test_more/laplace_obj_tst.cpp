@@ -28,6 +28,7 @@ $latex \[
 # include <cppad/cppad.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/order2random.hpp>
+# include <cppad/mixed/ran_like_hes.hpp>
 
 
 namespace {
@@ -218,16 +219,15 @@ bool laplace_obj_tst(void)
 	bool   record_compare = true;
 	CppAD::Independent(a1_beta, abort_op_index, record_compare, a1_theta_u);
 	//
-	// a1_theta, a1_u
-	a1_vector a1_theta(n_fixed), a1_u(n_random);
-	for(size_t j = 0; j < n_fixed; j++)
-		a1_theta[j] = a1_theta_u[j];
-	for(size_t j = 0; j < n_random; j++)
-		a1_u[j] = a1_theta_u[j + n_fixed];
-	//
 	// ran_hes_uu_rcv = f_uu(theta, u)
 	CppAD::mixed::a1_sparse_rcv ran_hes_uu_rcv;
-	ran_hes_uu_rcv = mixed_object.ran_like_hes(a1_theta, a1_u);
+	ran_hes_uu_rcv = CppAD::mixed::ran_like_hes(
+		n_fixed,
+		n_random,
+		mixed_object.ran_jac_a1fun_,
+		mixed_object.a1_ldlt_ran_hes_.pattern(),
+		a1_theta_u
+	);
 	//
 	// a1_ldlt_ran_hes_.update
 	mixed_object.a1_ldlt_ran_hes_.update( ran_hes_uu_rcv );
@@ -259,13 +259,17 @@ bool laplace_obj_tst(void)
 	// G: recording beta_theta_u as independent variables
 	CppAD::Independent(a1_beta_theta_u);
 	a1_beta[0]    = a1_beta_theta_u[0];
-	a1_theta[0]   = a1_beta_theta_u[1];
-	a1_u[0]       = a1_beta_theta_u[2];
 	a1_theta_u[0] = a1_beta_theta_u[1];
 	a1_theta_u[1] = a1_beta_theta_u[2];
 	//
 	// ran_hes_uu_rcv = f_uu(theta, u)
-	ran_hes_uu_rcv = mixed_object.ran_like_hes(a1_theta, a1_u);
+	ran_hes_uu_rcv = CppAD::mixed::ran_like_hes(
+		n_fixed,
+		n_random,
+		mixed_object.ran_jac_a1fun_,
+		mixed_object.a1_ldlt_ran_hes_.pattern(),
+		a1_theta_u
+	);
 	//
 	// a1_ldlt_ran_hes_.update
 	mixed_object.a1_ldlt_ran_hes_.update( ran_hes_uu_rcv );

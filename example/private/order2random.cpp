@@ -35,6 +35,7 @@ $end
 // BEGIN C++
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/order2random.hpp>
+# include <cppad/mixed/ran_like_hes.hpp>
 
 namespace {
 	using CppAD::vector;
@@ -167,15 +168,14 @@ bool order2random_xam(void)
 	bool   record_compare = true;
 	CppAD::Independent(a1_beta, abort_op_index, record_compare, a1_theta_u);
 	//
-	// a1_theta, a1_u
-	vector<a1_double> a1_theta(n_fixed), a1_u(n_random);
-	for(size_t j = 0; j < n_fixed; j++)
-		a1_theta[j] = a1_theta_u[j];
-	for(size_t j = 0; j < n_random; j++)
-		a1_u[j] = a1_theta_u[j + n_fixed];
-	//
 	// ran_hes_uu_rcv = f_uu(theta, u)
-	ran_hes_uu_rcv = mixed_object.ran_like_hes(a1_theta, a1_u);
+	ran_hes_uu_rcv = CppAD::mixed::ran_like_hes(
+		n_fixed,
+		n_random,
+		jac_a1fun,
+		a1_ldlt_ran_hes.pattern(),
+		a1_theta_u
+	);
 	//
 	// a1_ldlt_ran_hes_.update
 	a1_ldlt_ran_hes.update( ran_hes_uu_rcv );
