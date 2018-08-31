@@ -61,7 +61,6 @@ extern bool ran_constraint_xam(void);
 extern bool ran_jac_fun_xam(void);
 extern bool ran_hes_fun_xam(void);
 extern bool ran_like_hes_xam(void);
-extern bool ran_like_jac_xam(void);
 extern bool ran_likelihood_xam(void);
 extern bool laplace_obj_hes_xam(void);
 extern bool ran_obj_eval_xam(void);
@@ -147,7 +146,6 @@ int main(void)
 	RUN(ran_jac_fun_xam);
 	RUN(ran_hes_fun_xam);
 	RUN(ran_like_hes_xam);
-	RUN(ran_like_jac_xam);
 	RUN(ran_likelihood_xam);
 	RUN(laplace_obj_hes_xam);
 	RUN(ran_obj_eval_xam);

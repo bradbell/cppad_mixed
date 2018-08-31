@@ -47,7 +47,6 @@ extern bool ran_con_eval_xam(void);
 extern bool ran_con_jac_xam(void);
 extern bool ran_hes_fun_xam(void);
 extern bool ran_jac_fun_xam(void);
-extern bool ran_like_jac_xam(void);
 extern bool ran_like_hes_xam(void);
 extern bool ran_obj_eval_xam(void);
 extern bool ran_obj_jac_xam(void);
@@ -337,7 +336,6 @@ $childtable%include/cppad/mixed/pack.hpp
 	%src/fix_like_hes.cpp
 	%src/fix_like_jac.cpp
 	%src/logdet_jac.cpp
-	%src/ran_like_jac.cpp
 	%src/ran_like_hes.cpp
 	%src/ran_con_eval.cpp
 	%src/ran_con_jac.cpp
@@ -871,16 +869,6 @@ $srccode%cpp% */
 	);
 	friend bool ::ran_con_jac_xam(void);
 	friend bool ::sample_fixed_1(void);
-/* %$$
-
-$subhead ran_like_jac$$
-See $cref ran_like_jac$$
-$srccode%cpp% */
-	a1_vector ran_like_jac(
-		const a1_vector&        fixed_vec   ,
-		const a1_vector&        random_vec
-	);
-	friend bool ::ran_like_jac_xam(void);
 /* %$$
 
 $subhead ran_like_hes$$

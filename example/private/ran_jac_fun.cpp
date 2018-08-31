@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin ran_like_jac.cpp$$
+$begin ran_jac_fun.cpp$$
 $spell
 	jac
 	CppAD
@@ -18,7 +18,7 @@ $spell
 	xam
 $$
 
-$section ran_like_jac: Example and Test$$
+$section ran_jac_fun: Example and Test$$
 
 $head Private$$
 This example is not part of the

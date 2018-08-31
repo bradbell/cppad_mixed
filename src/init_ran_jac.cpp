@@ -64,6 +64,8 @@ It specifies the value of the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$.
 
+$children%example/private/ran_jac_fun.cpp
+%$$
 $head ran_jac_a1fun_$$
 The input value of the member variable
 $codei%
@@ -75,7 +77,8 @@ the Jacobian of the random likelihood  with respect to the random effects;
 i.e.,
 $latex \[
 	f_u ( \theta , u )
-\]$$.
+\]$$; see
+$cref ran_jac_fun.cpp$$.
 
 $head ran_jac2hes_rc_$$
 The input value of the member variable
