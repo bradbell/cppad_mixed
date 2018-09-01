@@ -110,26 +110,14 @@ void cppad_mixed::update_factor(
 	if( CppAD::hasnan( hes_val ) ) throw CppAD::mixed::exception(
 		"update_factor", "result has nan"
 	);
-	assert( hes_val.size() == ran_hes_rcv_.nnz() );
 	//
-	// Hessian sparsity pattern corresponding to just random effects
-	size_t nnz = ran_hes_rcv_.nnz();
-	CppAD::mixed::sparse_rc hes_rc(n_random_, n_random_, nnz);
-	for(size_t k = 0; k < nnz; k++)
-	{	size_t r = ran_hes_rcv_.row()[k];
-		size_t c = ran_hes_rcv_.col()[k];
-		assert( n_fixed_ <= r );
-		assert( n_fixed_ <= c );
-		hes_rc.set(k, r - n_fixed_, c - n_fixed_ );
-	}
-	//
-	// Hessian
-	CppAD::mixed::d_sparse_rcv hes_rcv( hes_rc );
+	// ran_hes_uu_rcv_
+	size_t nnz = ran_hes_uu_rcv_.nnz();
 	for(size_t k = 0; k < nnz; ++k)
-		hes_rcv.set(k, hes_val[k]);
+		ran_hes_uu_rcv_.set(k, hes_val[k]);
 	//
 	// update the LDLT factor
-	bool ok = ldlt_ran_hes_.update(hes_rcv);
+	bool ok = ldlt_ran_hes_.update(ran_hes_uu_rcv_);
 	if( ! ok )
 	{
 # if CPPAD_MIXED_LOG_FATAL_ERREOR

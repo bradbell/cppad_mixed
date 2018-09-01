@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin init_ldlt_ran_hes$$
 $spell
+	uu
 	rc
 	rcv
 	ldlt_ran_hes
@@ -53,16 +54,16 @@ $codei%
 %$$
 Upon return, the function
 $codei%
-	ldlt_ran_hes_.init(%hes_rc%)
+	ldlt_ran_hes_.init(ran_hes_uu_rcv_.pat())
 %$$
-has been called with $icode hes_rc$$
+has been called with $icode ran_hes_uu_rcv_.pat()$$
 equal to the sparsity pattern for the
 Hessian of the random likelihood with respect to the random effects;
 see $cref ldlt_eigen_init$$.
 This sparsity information is relative to just the random effects;
 i.e., the row and column indices are relative to the vector $latex u )$$.
-For each row and column indices in $icode hes_rc$$,
-the corresponding row and column index in $code ran_hes_rcv_$$ is
+For each row and column indices in $icode ran_hes_uu_rcv_.pat()$$,
+the corresponding row and column index in $code ran_hes_uu_rcv_$$ is
 $code n_fixed_$$ greater.
 
 
@@ -81,22 +82,12 @@ void cppad_mixed::init_ldlt_ran_hes(void)
 {	assert( ! init_ldlt_ran_hes_done_ );
 	assert( init_ran_hes_done_ );
 	//
-	// Hessian sparsity pattern corresponding to just random effects
-	size_t nnz = ran_hes_rcv_.nnz();
-	CppAD::mixed::sparse_rc hes_rc(n_random_, n_random_, nnz);
-	for(size_t k = 0; k < nnz; k++)
-	{	size_t r = ran_hes_rcv_.row()[k];
-		size_t c = ran_hes_rcv_.col()[k];
-		assert( n_fixed_ <= r );
-		assert( n_fixed_ <= c );
-		hes_rc.set(k, r - n_fixed_, c - n_fixed_ );
-	}
 	//
 	// initialize ldlt_ran_hes_
-	ldlt_ran_hes_.init(hes_rc);
+	ldlt_ran_hes_.init(ran_hes_uu_rcv_.pat());
 	//
 	// initialize a1_ldlt_ran_hes_
-	a1_ldlt_ran_hes_.init(hes_rc);
+	a1_ldlt_ran_hes_.init(ran_hes_uu_rcv_.pat());
 	//
 	init_ldlt_ran_hes_done_ = true;
 	return;

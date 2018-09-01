@@ -122,22 +122,22 @@ bool ran_hes_fun_xam(void)
 	mixed_object.initialize(theta, u);
 
 	// number of non-zeros in Hessian w.r.t random effects
-	ok &= mixed_object.ran_hes_rcv_.nnz() == n_random;
+	ok &= mixed_object.ran_hes_uu_rcv_.nnz() == n_random;
 
 	// compute Hessian with respect to random effects
 	vector<double> both_vec(n_fixed + n_random), val_out(n_random);
 	mixed_object.pack(fixed_vec, random_vec, both_vec);
 	val_out = mixed_object.ran_hes_fun_.Forward(0, both_vec);
 
-	const CppAD::mixed::s_vector& row(mixed_object.ran_hes_rcv_.row());
-	const CppAD::mixed::s_vector& col(mixed_object.ran_hes_rcv_.col());
+	const CppAD::mixed::s_vector& row(mixed_object.ran_hes_uu_rcv_.row());
+	const CppAD::mixed::s_vector& col(mixed_object.ran_hes_uu_rcv_.col());
 
 	// check Hessian
 	for(size_t k = 0; k < n_random; k++)
-	{	ok     &= row[k] >= n_fixed;
-		ok     &= col[k] >= n_fixed;
-		size_t i = row[k] - n_fixed;
-		size_t j = col[k] - n_fixed;
+	{	ok     &= row[k] < n_fixed;
+		ok     &= col[k] < n_fixed;
+		size_t i = row[k];
+		size_t j = col[k];
 		ok      &= (i == j);
 		//
 		double sigma  = fixed_vec[i];

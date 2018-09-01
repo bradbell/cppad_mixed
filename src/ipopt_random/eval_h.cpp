@@ -172,19 +172,18 @@ void ipopt_random::try_eval_h(
 		eval_f(n, x, new_x, obj_value);
 	}
 	//
-	const s_vector& row( mixed_object_.ran_hes_rcv_.row() );
-	const s_vector& col( mixed_object_.ran_hes_rcv_.col() );
+	const s_vector& row( mixed_object_.ran_hes_uu_rcv_.row() );
+	const s_vector& col( mixed_object_.ran_hes_uu_rcv_.col() );
 	assert( row.size() == nnz_h_lag_ );
 	assert( col.size() == nnz_h_lag_ );
 	//
 	if( values == NULL )
 	{	for(size_t k = 0; k < nnz_h_lag_; k++)
 		{	// only returning lower triagle of Hessian of objective
-			assert( n_fixed_ <= col[k] );
 			assert( col[k] <= row[k] );
-			assert( row[k] <= n_fixed_ + n_random_ );
-			iRow[k] = static_cast<Index>( row[k] - n_fixed_ );
-			jCol[k] = static_cast<Index>( col[k] - n_fixed_ );
+			assert( row[k] < n_random_ );
+			iRow[k] = static_cast<Index>( row[k] );
+			jCol[k] = static_cast<Index>( col[k] );
 		}
 		assert( ! new_x );
 		return;

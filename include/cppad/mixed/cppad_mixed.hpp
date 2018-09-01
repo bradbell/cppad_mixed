@@ -449,7 +449,7 @@ $latex ( \theta , u )$$.
 
 $head ran_hes_fun_$$
 If $icode%n_random_% > 0%$$ and $code init_ran_hes_done_$$,
-$cref/ran_hes_rcv_/init_ran_hes/ran_hes_rcv_/$$
+$cref/ran_hes_uu_rcv_/init_ran_hes/ran_hes_uu_rcv_/$$
 contains information for the Hessian of the
 $cref/random likelihood
 	/theory
@@ -459,16 +459,15 @@ with respect to the random effects; i.e.
 $latex f_{u,u} ( \theta , u )$$.
 $srccode%cpp% */
 	// sparse Hessian
-	d_sparse_rcv                  ran_hes_rcv_;
+	d_sparse_rcv                  ran_hes_uu_rcv_;
 	//
 	// recording of sparse Hessian calculation
 	CppAD::ADFun<double>        ran_hes_fun_;
 	//
 	friend bool ::ran_hes_fun_xam(void);
 /* %$$
-The row and column indices in $icode ran_hes_rcv_$$
-are for both the fixed and random effects $latex ( \theta , u )$$
-and hence are all greater than or equal  $icode n_fixed$$.
+The row and column indices in $icode ran_hes_uu_rcv_$$
+are for just random effects and hence are all less than $icode n_random$$.
 
 $head ldlt_ran_hes_$$
 If $icode%n_random_% > 0%$$ and $code init_ldlt_ran_hes_done_$$,

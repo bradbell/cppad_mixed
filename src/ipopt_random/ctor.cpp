@@ -97,7 +97,7 @@ fixed_vec_           ( fixed_vec )                        ,
 random_lower_        ( random_lower )                     ,
 random_upper_        ( random_upper )                     ,
 random_in_           ( random_in )                        ,
-nnz_h_lag_           ( mixed_object.ran_hes_rcv_.nnz() )  ,
+nnz_h_lag_           ( mixed_object.ran_hes_uu_rcv_.nnz() )  ,
 mixed_object_        ( mixed_object    )                  ,
 error_random_        ( n_random_ )
 {	// -----------------------------------------------------------------------

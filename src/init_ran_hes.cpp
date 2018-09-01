@@ -14,6 +14,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin init_ran_hes$$
 $spell
+	uu
 	rcv
 	nnz
 	CppAD
@@ -77,10 +78,10 @@ It specifies the value of the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$ at which the initialization is done.
 
-$head ran_hes_rcv_$$
+$head ran_hes_uu_rcv_$$
 The input value of the member variable
 $codei%
-	CppAD::mixed::d_sparse_rcv ran_hes_rcv_
+	CppAD::mixed::d_sparse_rcv ran_hes_uu_rcv_
 %$$
 does not matter.
 Upon return it contains the
@@ -98,27 +99,15 @@ its lower triangle.
 
 
 $head Random Effects Index$$
-The indices in $code ran_hes_rcv_$$
-are relative to both the fixed and random effects with the fixed effects
-coming first.
-To get the indices relative to just the random effects, subtract
-$code n_fixed_$$; e.g, the value
-$codei%
-	ran_hes_rcv_.val()[%k%]
-%$$
-corresponds the second partial with respect to the following
-two random effect indices:
-$codei%
-	ran_hes_rcv_.row()[%k%] - n_fixed_
-	ran_hes_rcv_.col()[%k%] - n_fixed_
-%$$
+The indices in $icode ran_hes_uu_rcv_$$ are relative to just
+the random effects and hence are all less that $code n_random_$$.
 
 $head Order$$
 The results are in column major order; i.e.,
 $codei%
-	ran_hes_rcv_.col()[%k%] <= ran_hes_rcv_.col()[%k+1%]
-	if( ran_hes_rcv_.col()[%k%] == ran_hes_rcv_.col()[%k+1%] )
-		ran_hes_rcv_.row()[%k%] < ran_hes_rcv_.row()[%k+1%]
+	ran_hes_uu_rcv_.col()[%k%] <= ran_hes_uu_rcv_.col()[%k+1%]
+	if( ran_hes_uu_rcv_.col()[%k%] == ran_hes_uu_rcv_.col()[%k+1%] )
+		ran_hes_uu_rcv_.row()[%k%] < ran_hes_uu_rcv_.row()[%k+1%]
 %$$
 
 $head ran_hes_fun_$$
@@ -133,7 +122,7 @@ $latex \[
 	f_{u,u} ( \theta , u )
 \]$$
 in the same order as the elements of
-$code ran_hes_rcv_$$ (and $code a1_hes_rcv_$$).
+$code ran_hes_uu_rcv_$$ (and $code a1_hes_rcv_$$).
 
 $contents%example/private/ran_hes_fun.cpp
 %$$
@@ -184,16 +173,17 @@ void cppad_mixed::init_ran_hes(
 		size_t r   = hes_pattern.row()[ell];
 		size_t c   = hes_pattern.col()[ell];
 		assert( r >= n_fixed_ );
+		assert( c >= n_fixed_ );
 		if( r >= c )
-		{	hes_lower.set(k_low, r, c);
+		{	hes_lower.set(k_low, r - n_fixed_, c - n_fixed_);
 			hes_low.set(k_low, r - n_fixed_, c);
 			++k_low;
 		}
 	}
 	assert( k_low == n_low );
 	//
-	// ran_hes_rcv_
-	ran_hes_rcv_  = d_sparse_rcv( hes_lower );
+	// ran_hes_uu_rcv_
+	ran_hes_uu_rcv_  = d_sparse_rcv( hes_lower );
 	//
 	// Declare the independent and dependent variables for taping calculation
 	// of Hessian of the random likelihood w.r.t. the random effects
