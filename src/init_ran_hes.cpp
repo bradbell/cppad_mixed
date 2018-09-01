@@ -191,14 +191,10 @@ void cppad_mixed::init_ran_hes(
 		}
 	}
 	assert( k_low == n_low );
-	// -----------------------------------------------------------------------
-	// structure used for calculating subset with d_vector results
+	//
+	// ran_hes_rcv_
 	ran_hes_rcv_  = d_sparse_rcv( hes_lower );
 	//
-	// structure used for calculating subset with a1d_vector results
-	a1_sparse_rcv a1_ran_hes_rcv = a1_sparse_rcv( hes_lower );
-	//
-	// -----------------------------------------------------------------------
 	// Declare the independent and dependent variables for taping calculation
 	// of Hessian of the random likelihood w.r.t. the random effects
 	size_t abort_op_index = 0;
