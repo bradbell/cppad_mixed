@@ -14,19 +14,24 @@ then
 	echo 'bin/speed_date.sh must be run from its parent directory'
 	exit 1
 fi
-if [ "$4" == '' ]
+if [ "$3" == '' ]
 then
-	echo 'usage: bin/speed_date.sh branch date1 date2 quasi_fixed'
+	echo 'usage: bin/speed_date.sh branch yyyymmdd quasi_fixed'
 	exit 1
 fi
 branch="$1"
-date1="$2"
-date2="$3"
-quasi_fixed="$4"
+date="$2"
+quasi_fixed="$3"
 if [ "$quasi_fixed" != 'yes' ] && [ "$quasi_fixed" != 'no' ]
 then
 	echo 'speed_date.sh: quasi_fixed is not yes or no'
 	exit 1
+fi
+current=`git branch | sed -e '/^[^*]/d' -e 's/^\* *//'`
+if [ "$current" != 'master' ]
+then
+	echo 'bin/speed_branch.sh: must be executed from master branch'
+	exit 0
 fi
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
@@ -38,88 +43,83 @@ echo_eval() {
 # erase old version of programs
 for program in ar1_xam capture_xam
 do
-	for date in $date1 $date2
-	do
-		if [ -e "build/$date.$program" ]
-		then
-			echo_eval rm build/$date.$program
-		fi
-	done
+	if [ -e "build/$date.$program" ]
+	then
+		echo_eval rm build/$date.$program
+	fi
 done
 # -----------------------------------------------------------------------------
-for date in $date1 $date2
+edit_failed='no'
+#
+# start with a clean copy of source
+git checkout --quiet $branch
+hash=`git_date2hash.sh $date`
+git checkout $hash
+#
+# setup to build optimized versions
+sed -i bin/run_cmake.sh \
+	-e "s|^build_type=.*|build_type='release'|" \
+	-e "s|^optimize_cppad_function=.*|optimize_cppad_function='yes'|"
+if ! grep "^build_type='release'" bin/run_cmake.sh > /dev/null
+then
+	edit_failed='build_type'
+fi
+if ! grep "^optimize_cppad_function='yes'" bin/run_cmake.sh > /dev/null
+then
+	edit_failed='optimize_cppad_function'
+fi
+#
+bin/run_cmake.sh
+#
+# for each test
+for program in ar1_xam capture_xam
 do
-	edit_failed='no'
-	#
-	# start with a clean copy of source
-	git checkout --quiet $branch
-	hash=`git_date2hash.sh $date`
-	git checkout $hash
-	#
-	# setup to build optimized versions
-	sed -i bin/run_cmake.sh \
-		-e "s|^build_type=.*|build_type='release'|" \
-		-e "s|^optimize_cppad_function=.*|optimize_cppad_function='yes'|"
-	if ! grep "^build_type='release'" bin/run_cmake.sh > /dev/null
+	# -------------------------------------------------------------------
+	# changes to source code
+	sed -i bin/$program.sh \
+		-e 's|^random_seed=.*|random_seed=123|' \
+		-e "s|^quasi_fixed=.*|quasi_fixed=$quasi_fixed|"
+	if ! grep "^random_seed=123" bin/$program.sh > /dev/null
 	then
-		edit_failed='build_type'
+		edit_failed='random_seed'
 	fi
-	if ! grep "^optimize_cppad_function='yes'" bin/run_cmake.sh > /dev/null
+	if ! grep "^quasi_fixed=$quasi_fixed" bin/$program.sh > /dev/null
 	then
-		edit_failed='optimize_cppad_function'
+		edit_failed='quasi_fixed'
 	fi
 	#
-	bin/run_cmake.sh
-	#
-	# for each test
-	for program in ar1_xam capture_xam
-	do
-		# -------------------------------------------------------------------
-		# changes to source code
+	if [ "$program" == 'ar1_xam' ]
+	then
 		sed -i bin/$program.sh \
-			-e 's|^random_seed=.*|random_seed=123|' \
-			-e "s|^quasi_fixed=.*|quasi_fixed=$quasi_fixed|"
-		if ! grep "^random_seed=123" bin/$program.sh > /dev/null
+			-e 's|^number_random=.*|number_random=90000|'
+		if ! grep "^number_random=90000" bin/$program.sh > /dev/null
 		then
-			edit_failed='random_seed'
-		fi
-		if ! grep "^quasi_fixed=$quasi_fixed" bin/$program.sh > /dev/null
-		then
-			edit_failed='quasi_fixed'
+			edit_failed='random_number'
 		fi
 		#
-		if [ "$program" == 'ar1_xam' ]
+		sed -i speed/$program.cpp \
+			-e 's|\(std::fabs(estimate_ratio\[j\])\) *<.*|\1 < 10.0;|'
+		if ! grep "std::fabs(estimate_ratio\[j\]) < 10.0" \
+			speed/$program.cpp > /dev/null
 		then
-			sed -i bin/$program.sh \
-				-e 's|^number_random=.*|number_random=90000|'
-			if ! grep "^number_random=90000" bin/$program.sh > /dev/null
-			then
-				edit_failed='random_number'
-			fi
-			#
-			sed -i speed/$program.cpp \
-				-e 's|\(std::fabs(estimate_ratio\[j\])\) *<.*|\1 < 10.0;|'
-			if ! grep "std::fabs(estimate_ratio\[j\]) < 10.0" \
-				speed/$program.cpp > /dev/null
-			then
-				edit_failed='estimate_ratio'
-			fi
+			edit_failed='estimate_ratio'
 		fi
-		if [ "$edit_failed" != 'no' ]
-		then
-			echo "bin/speed_date.sh: edit failed: $edit_failed"
-			exit 1
-		fi
-		# -------------------------------------------------------------------
-		#
-		cd build; make $program; cd ..
-		cp build/speed/$program build/$date.$program
-		#
-		echo "bin/$program.sh normal > build/$date.$program.out"
-		bin/$program.sh normal > build/$date.$program.out
-	done
-	git reset --hard
+	fi
+	if [ "$edit_failed" != 'no' ]
+	then
+		echo "bin/speed_date.sh: edit failed: $edit_failed"
+		exit 1
+	fi
+	# -------------------------------------------------------------------
+	#
+	cd build; make $program; cd ..
+	cp build/speed/$program build/$date.$program
+	#
+	echo "bin/$program.sh normal > build/$date.$program.out"
+	bin/$program.sh normal > build/$date.$program.out
 done
+git reset --hard
+# -----------------------------------------------------------------------------
 git checkout master
 # -----------------------------------------------------------------------------
 echo 'bin/speed_date.sh: results are in'
