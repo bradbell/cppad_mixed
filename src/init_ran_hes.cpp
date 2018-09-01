@@ -158,10 +158,6 @@ void cppad_mixed::init_ran_hes(
 	a1_vector a1_both(n_both);
 	pack(fixed_vec, random_vec, a1_both);
 	//
-	// a1_w = [ 1.0 ]
-	a1_vector a1_w(1);
-	a1_w[0]  = 1.0;
-	//
 	// hes pattern relative to both fixed and random effects
 	// (also count number of entries in lower traingle)
 	size_t nnz   = ran_jac2hes_rc_.nnz();
@@ -195,10 +191,6 @@ void cppad_mixed::init_ran_hes(
 		}
 	}
 	assert( k_low == n_low );
-	// -----------------------------------------------------------------------
-	// create a d_vector containing (theta, u)
-	d_vector both(n_both);
-	pack(fixed_vec, random_vec, both);
 	// -----------------------------------------------------------------------
 	// structure used for calculating subset with d_vector results
 	ran_hes_rcv_  = d_sparse_rcv( hes_lower );
