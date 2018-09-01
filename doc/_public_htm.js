@@ -34,16 +34,12 @@ var list_down0 = [
 'optimize_fixed.htm',
 'information_mat.htm',
 'sample_fixed.htm',
-'sample_random.htm',
-'ran_likelihood_jac.htm',
-'ran_likelihood_hes.htm'
+'sample_random.htm'
 ];
 var list_current0 = [
 'public.htm#Cppad Mixed Types',
 'public.htm#User Defined Functions',
 'public.htm#User Defined Functions.ran_likelihood',
-'public.htm#User Defined Functions.ran_likelihood_jac',
-'public.htm#User Defined Functions.ran_likelihood_hes',
 'public.htm#User Defined Functions.fix_likelihood',
 'public.htm#User Defined Functions.fix_constraint',
 'public.htm#User Defined Functions.fatal_error',

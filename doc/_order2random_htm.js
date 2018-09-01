@@ -58,7 +58,6 @@ var list_current0 = [
 'order2random.htm#Syntax',
 'order2random.htm#Prototype',
 'order2random.htm#Private',
-'order2random.htm#mixed_object',
 'order2random.htm#n_fixed',
 'order2random.htm#n_random',
 'order2random.htm#jac_a1fun',

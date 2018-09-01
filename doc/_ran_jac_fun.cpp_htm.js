@@ -8,9 +8,9 @@ var list_across0 = [
 var list_up0 = [
 'cppad_mixed.htm',
 'base_class.htm',
-'public.htm',
-'ran_likelihood_hes.htm',
-'ran_likelihood_hes.cpp.htm'
+'private.htm',
+'init_ran_jac.htm',
+'ran_jac_fun.cpp.htm'
 ];
 var list_down4 = [
 'install_unix.htm',
@@ -27,25 +27,37 @@ var list_down3 = [
 'private.htm'
 ];
 var list_down2 = [
-'derived_ctor.htm',
-'ran_likelihood.htm',
-'fix_likelihood.htm',
-'fix_constraint.htm',
-'initialize.htm',
-'optimize_random.htm',
-'optimize_fixed.htm',
-'information_mat.htm',
-'sample_fixed.htm',
-'sample_random.htm',
-'ran_likelihood_jac.htm',
-'ran_likelihood_hes.htm'
+'pack.htm',
+'unpack.htm',
+'init_ran_jac.htm',
+'init_ran_hes.htm',
+'init_laplace_obj.htm',
+'init_ldlt_ran_hes.htm',
+'init_fix_con.htm',
+'init_fix_like.htm',
+'init_hes_cross.htm',
+'init_laplace_obj_hes.htm',
+'init_ran_like.htm',
+'fix_con_eval.htm',
+'fix_con_hes.htm',
+'fix_con_jac.htm',
+'fix_like_eval.htm',
+'fix_like_hes.htm',
+'fix_like_jac.htm',
+'logdet_jac.htm',
+'ran_like_hes.htm',
+'ran_con_eval.htm',
+'ran_con_jac.htm',
+'ran_obj_eval.htm',
+'ran_obj_jac.htm',
+'laplace_obj_hes.htm',
+'update_factor.htm'
 ];
 var list_down1 = [
-'ran_likelihood_hes.cpp.htm'
+'ran_jac_fun.cpp.htm'
 ];
 var list_current0 = [
-'ran_likelihood_hes.cpp.htm#Exponentiating Random Effects',
-'ran_likelihood_hes.cpp.htm#Motivation'
+'ran_jac_fun.cpp.htm#Private'
 ];
 function choose_across0(item)
 {	var index          = item.selectedIndex;

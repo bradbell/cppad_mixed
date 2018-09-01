@@ -36,9 +36,7 @@ var list_down2 = [
 'optimize_fixed.htm',
 'information_mat.htm',
 'sample_fixed.htm',
-'sample_random.htm',
-'ran_likelihood_jac.htm',
-'ran_likelihood_hes.htm'
+'sample_random.htm'
 ];
 var list_down1 = [
 'information_mat.cpp.htm'

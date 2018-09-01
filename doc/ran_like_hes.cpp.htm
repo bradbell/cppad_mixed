@@ -79,9 +79,7 @@ A:active { color : purple }
 <option>pack</option>
 <option>unpack</option>
 <option>init_ran_jac</option>
-<option>check_user_ran_jac</option>
 <option>init_ran_hes</option>
-<option>check_user_ran_hes</option>
 <option>init_laplace_obj</option>
 <option>init_ldlt_ran_hes</option>
 <option>init_fix_con</option>
@@ -96,7 +94,6 @@ A:active { color : purple }
 <option>fix_like_hes</option>
 <option>fix_like_jac</option>
 <option>logdet_jac</option>
-<option>ran_like_jac</option>
 <option>ran_like_hes</option>
 <option>ran_con_eval</option>
 <option>ran_con_jac</option>
@@ -136,6 +133,7 @@ This example is not part of the
 <code><font color="blue">
 <pre><tt><b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;cppad/cppad.hpp&gt;</font>
 <b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;cppad/mixed/cppad_mixed.hpp&gt;</font>
+<b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;cppad/mixed/ran_like_hes.hpp&gt;</font>
 
 <b><font color="#0000FF">namespace</font></b> <font color="#FF0000">{</font>
      <b><font color="#0000FF">using</font></b> CppAD<font color="#990000">::</font>vector<font color="#990000">;</font>
@@ -207,13 +205,13 @@ This example is not part of the
      <font color="#008080">size_t</font> n_fixed  <font color="#990000">=</font> n_data<font color="#990000">;</font>
      <font color="#008080">size_t</font> n_random <font color="#990000">=</font> n_data<font color="#990000">;</font>
      <font color="#008080">vector&lt;double&gt;</font> <b><font color="#000000">data</font></b><font color="#990000">(</font>n_data<font color="#990000">);</font>
-     <font color="#008080">vector&lt;double&gt;</font> <b><font color="#000000">theta</font></b><font color="#990000">(</font>n_fixed<font color="#990000">),</font> <b><font color="#000000">u</font></b><font color="#990000">(</font>n_random<font color="#990000">);</font>
-     <font color="#008080">a1_vector</font> <b><font color="#000000">fixed_vec</font></b><font color="#990000">(</font>n_fixed<font color="#990000">),</font> <b><font color="#000000">random_vec</font></b><font color="#990000">(</font>n_random<font color="#990000">);</font>
+     <font color="#008080">a1_vector</font>      <b><font color="#000000">theta_u</font></b><font color="#990000">(</font>n_fixed <font color="#990000">+</font> n_random<font color="#990000">);</font>
+     <font color="#008080">vector&lt;double&gt;</font> <b><font color="#000000">fixed_vec</font></b><font color="#990000">(</font>n_fixed<font color="#990000">),</font> <b><font color="#000000">random_vec</font></b><font color="#990000">(</font>n_random<font color="#990000">);</font>
 
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> n_data<font color="#990000">;</font> i<font color="#990000">++)</font>
-     <font color="#FF0000">{</font>    data<font color="#990000">[</font>i<font color="#990000">]</font>      <font color="#990000">=</font> <font color="#009900">double</font><font color="#990000">((</font>i <font color="#990000">+</font> <font color="#993399">1</font><font color="#990000">)</font> <font color="#990000">*</font> <font color="#990000">(</font>i <font color="#990000">+</font> <font color="#993399">1</font><font color="#990000">)</font> <font color="#990000">);</font>
-          fixed_vec<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> theta<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> std<font color="#990000">::</font><b><font color="#000000">sqrt</font></b><font color="#990000">(</font> <font color="#009900">double</font><font color="#990000">(</font>i <font color="#990000">+</font> <font color="#993399">1</font><font color="#990000">)</font> <font color="#990000">);</font>
-          random_vec<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> u<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
+     <font color="#FF0000">{</font>    data<font color="#990000">[</font>i<font color="#990000">]</font>   <font color="#990000">=</font> <font color="#009900">double</font><font color="#990000">((</font>i <font color="#990000">+</font> <font color="#993399">1</font><font color="#990000">)</font> <font color="#990000">*</font> <font color="#990000">(</font>i <font color="#990000">+</font> <font color="#993399">1</font><font color="#990000">)</font> <font color="#990000">);</font>
+          theta_u<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> fixed_vec<font color="#990000">[</font>i<font color="#990000">]</font>  <font color="#990000">=</font> std<font color="#990000">::</font><b><font color="#000000">sqrt</font></b><font color="#990000">(</font> <font color="#009900">double</font><font color="#990000">(</font>i <font color="#990000">+</font> <font color="#993399">1</font><font color="#990000">)</font> <font color="#990000">);</font>
+          theta_u<font color="#990000">[</font>i <font color="#990000">+</font> n_fixed<font color="#990000">]</font> <font color="#990000">=</font> random_vec<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
      <font color="#FF0000">}</font>
 
      <i><font color="#9A1900">// object that is derived from cppad_mixed</font></i>
@@ -223,20 +221,25 @@ This example is not part of the
      <font color="#008080">mixed_derived</font> <b><font color="#000000">mixed_object</font></b><font color="#990000">(</font>
           n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv<font color="#990000">,</font> data
      <font color="#990000">);</font>
-     mixed_object<font color="#990000">.</font><b><font color="#000000">initialize</font></b><font color="#990000">(</font>theta<font color="#990000">,</font> u<font color="#990000">);</font>
+     mixed_object<font color="#990000">.</font><b><font color="#000000">initialize</font></b><font color="#990000">(</font>fixed_vec<font color="#990000">,</font> random_vec<font color="#990000">);</font>
 
      <i><font color="#9A1900">// compute Jacobian with respect to random effects</font></i>
-     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">a1_sparse_rcv</font> hes_rcv <font color="#990000">=</font>
-          mixed_object<font color="#990000">.</font><b><font color="#000000">ran_like_hes</font></b><font color="#990000">(</font>fixed_vec<font color="#990000">,</font> random_vec<font color="#990000">);</font>
+     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">a1_sparse_rcv</font> ran_hes_uu_rcv <font color="#990000">=</font> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><b><font color="#000000">ran_like_hes</font></b><font color="#990000">(</font>
+          n_fixed<font color="#990000">,</font>
+          n_random<font color="#990000">,</font>
+          mixed_object<font color="#990000">.</font>ran_jac_a1fun_<font color="#990000">,</font>
+          mixed_object<font color="#990000">.</font>a1_ldlt_ran_hes_<font color="#990000">.</font><b><font color="#000000">pattern</font></b><font color="#990000">(),</font>
+          theta_u
+     <font color="#990000">);</font>
 
      <i><font color="#9A1900">// check the Hessian</font></i>
-     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">s_vector</font> col_major <font color="#990000">=</font> hes_rcv<font color="#990000">.</font><b><font color="#000000">col_major</font></b><font color="#990000">();</font>
-     <font color="#008080">size_t</font> nnz <font color="#990000">=</font> hes_rcv<font color="#990000">.</font><b><font color="#000000">nnz</font></b><font color="#990000">();</font>
+     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">s_vector</font> col_major <font color="#990000">=</font> ran_hes_uu_rcv<font color="#990000">.</font><b><font color="#000000">col_major</font></b><font color="#990000">();</font>
+     <font color="#008080">size_t</font> nnz <font color="#990000">=</font> ran_hes_uu_rcv<font color="#990000">.</font><b><font color="#000000">nnz</font></b><font color="#990000">();</font>
      ok <font color="#990000">&amp;=</font> nnz <font color="#990000">==</font> n_random<font color="#990000">;</font>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> k <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> k <font color="#990000">&lt;</font> nnz<font color="#990000">;</font> k<font color="#990000">++)</font>
-     <font color="#FF0000">{</font>    <font color="#008080">size_t</font> i    <font color="#990000">=</font> hes_rcv<font color="#990000">.</font><b><font color="#000000">row</font></b><font color="#990000">()[</font> col_major<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">];</font>
-          <font color="#008080">size_t</font> j    <font color="#990000">=</font> hes_rcv<font color="#990000">.</font><b><font color="#000000">col</font></b><font color="#990000">()[</font> col_major<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">];</font>
-          <font color="#008080">a1_double</font> v <font color="#990000">=</font> hes_rcv<font color="#990000">.</font><b><font color="#000000">val</font></b><font color="#990000">()[</font> col_major<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">];</font>
+     <font color="#FF0000">{</font>    <font color="#008080">size_t</font> i    <font color="#990000">=</font> ran_hes_uu_rcv<font color="#990000">.</font><b><font color="#000000">row</font></b><font color="#990000">()[</font> col_major<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">];</font>
+          <font color="#008080">size_t</font> j    <font color="#990000">=</font> ran_hes_uu_rcv<font color="#990000">.</font><b><font color="#000000">col</font></b><font color="#990000">()[</font> col_major<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">];</font>
+          <font color="#008080">a1_double</font> v <font color="#990000">=</font> ran_hes_uu_rcv<font color="#990000">.</font><b><font color="#000000">val</font></b><font color="#990000">()[</font> col_major<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">];</font>
           ok <font color="#990000">&amp;=</font> i <font color="#990000">==</font> k<font color="#990000">;</font>
           ok <font color="#990000">&amp;=</font> j <font color="#990000">==</font> k<font color="#990000">;</font>
           <font color="#008080">a1_double</font> sigma  <font color="#990000">=</font> fixed_vec<font color="#990000">[</font>i<font color="#990000">];</font>

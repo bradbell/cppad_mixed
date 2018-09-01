@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Initialize Jacobian of Random Likelihood w.r.t. Random Effects</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Initialize Jacobian of Random Likelihood w.r.t. Random Effects">
-<meta name="keywords" id="keywords" content=" initialize jacobian random likelihood w.r.t. effects syntax private assumptions init_ran_jac_done_ mixed_object fixed_vec random_vec ran_jac_a1fun_ ran_jac2hes_rc_ ran_likelihood_jac ">
+<meta name="keywords" id="keywords" content=" initialize jacobian random likelihood w.r.t. effects syntax private assumptions init_ran_jac_done_ mixed_object fixed_vec random_vec ran_jac_a1fun_ ran_jac2hes_rc_ ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -32,7 +32,7 @@ A:active { color : purple }
 <a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
 </td>
 <td><a href="unpack.htm" target="_top">Prev</a>
-</td><td><a href="check_user_ran_jac.htm" target="_top">Next</a>
+</td><td><a href="ran_jac_fun.cpp.htm" target="_top">Next</a>
 </td><td>
 <select onchange='choose_across0(this)'>
 <option>Index-&gt;</option>
@@ -78,9 +78,7 @@ A:active { color : purple }
 <option>pack</option>
 <option>unpack</option>
 <option>init_ran_jac</option>
-<option>check_user_ran_jac</option>
 <option>init_ran_hes</option>
-<option>check_user_ran_hes</option>
 <option>init_laplace_obj</option>
 <option>init_ldlt_ran_hes</option>
 <option>init_fix_con</option>
@@ -95,7 +93,6 @@ A:active { color : purple }
 <option>fix_like_hes</option>
 <option>fix_like_jac</option>
 <option>logdet_jac</option>
-<option>ran_like_jac</option>
 <option>ran_like_hes</option>
 <option>ran_con_eval</option>
 <option>ran_con_jac</option>
@@ -105,7 +102,12 @@ A:active { color : purple }
 <option>update_factor</option>
 </select>
 </td>
-<td>init_ran_jac</td>
+<td>
+<select onchange='choose_down0(this)'>
+<option>init_ran_jac-&gt;</option>
+<option>ran_jac_fun.cpp</option>
+</select>
+</td>
 <td>
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
@@ -118,7 +120,6 @@ A:active { color : purple }
 <option>random_vec</option>
 <option>ran_jac_a1fun_</option>
 <option>ran_jac2hes_rc_</option>
-<option>ran_likelihood_jac</option>
 </select>
 </td>
 </tr></table><br>
@@ -199,6 +200,7 @@ vector <small>@(@
 u
 @)@</small>.
 
+
 <br>
 <br>
 <b><big><a name="ran_jac_a1fun_" id="ran_jac_a1fun_">ran_jac_a1fun_</a></big></b>
@@ -216,7 +218,9 @@ i.e.,
 
 	f_u ( \theta , u )
 
-@]@</small>.
+@]@</small>; see
+<a href="ran_jac_fun.cpp.htm" target="_top"><span style='white-space: nowrap'>ran_jac_fun.cpp</span></a>
+.
 
 <br>
 <br>
@@ -239,16 +243,6 @@ The column indices are in the vector  <small>@(@
 ( \theta , u )
 @)@</small>; i.e.,
 both fixed and random effects.
-
-<br>
-<br>
-<b><big><a name="ran_likelihood_jac" id="ran_likelihood_jac">ran_likelihood_jac</a></big></b>
-<br>
-If the return value for <a href="ran_likelihood_jac.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_jac</span></a>
- is non-empty,
-and <code><font color="blue">NDEBUG</font></code> is not defined,
-<a href="ran_likelihood_jac.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_jac</span></a>
- is checked for correctness.
 
 
 ----------------------------------------------------------------------------

@@ -29,9 +29,7 @@ var list_down1 = [
 'pack.htm',
 'unpack.htm',
 'init_ran_jac.htm',
-'check_user_ran_jac.htm',
 'init_ran_hes.htm',
-'check_user_ran_hes.htm',
 'init_laplace_obj.htm',
 'init_ldlt_ran_hes.htm',
 'init_fix_con.htm',
@@ -46,7 +44,6 @@ var list_down1 = [
 'fix_like_hes.htm',
 'fix_like_jac.htm',
 'logdet_jac.htm',
-'ran_like_jac.htm',
 'ran_like_hes.htm',
 'ran_con_eval.htm',
 'ran_con_jac.htm',
@@ -63,7 +60,10 @@ var list_current0 = [
 'init_laplace_obj.htm#mixed_object',
 'init_laplace_obj.htm#fixed_vec',
 'init_laplace_obj.htm#random_vec',
-'init_laplace_obj.htm#laplace_obj_fun_'
+'init_laplace_obj.htm#laplace_obj_fun_',
+'init_laplace_obj.htm#laplace_obj_fun_.beta',
+'init_laplace_obj.htm#laplace_obj_fun_.theta, u',
+'init_laplace_obj.htm#laplace_obj_fun_.Range Space'
 ];
 function choose_across0(item)
 {	var index          = item.selectedIndex;

@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Initialization After Constructor</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Initialization After Constructor">
-<meta name="keywords" id="keywords" content=" initialization after constructor syntax public purpose mixed_object fixed_vec random_vec ran_likelihood_jac ran_likelihood_hes size_map init_newton_checkpoint_done_ example ">
+<meta name="keywords" id="keywords" content=" initialization after constructor syntax public purpose mixed_object fixed_vec random_vec size_map init_newton_checkpoint_done_ example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -85,8 +85,6 @@ A:active { color : purple }
 <option>information_mat</option>
 <option>sample_fixed</option>
 <option>sample_random</option>
-<option>ran_likelihood_jac</option>
-<option>ran_likelihood_hes</option>
 </select>
 </td>
 <td>initialize</td>
@@ -99,8 +97,6 @@ A:active { color : purple }
 <option>mixed_object</option>
 <option>fixed_vec</option>
 <option>random_vec</option>
-<option>ran_likelihood_jac</option>
-<option>ran_likelihood_hes</option>
 <option>size_map</option>
 <option>init_newton_checkpoint_done_</option>
 <option>Example</option>
@@ -179,22 +175,6 @@ vector <small>@(@
 u
 @)@</small> at which certain <code><font color="blue">CppAD::ADFun</font></code>
 objects are recorded.
-
-<br>
-<br>
-<b><big><a name="ran_likelihood_jac" id="ran_likelihood_jac">ran_likelihood_jac</a></big></b>
-<br>
-If <a href="ran_likelihood_jac.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_jac</span></a>
- returns a non-empty vector,
-a check is done to make sure the derivative computations are correct.
-
-<br>
-<br>
-<b><big><a name="ran_likelihood_hes" id="ran_likelihood_hes">ran_likelihood_hes</a></big></b>
-<br>
-If <a href="ran_likelihood_hes.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_hes</span></a>
- returns a non-empty vector,
-a check is done to make sure the derivative computations are correct.
 
 <br>
 <br>

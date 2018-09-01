@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>cppad_mixed: Public Declarations</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="cppad_mixed: Public Declarations">
-<meta name="keywords" id="keywords" content=" cppad_mixed: public declarations cppad mixed types user defined functions ran_likelihood ran_likelihood_jac ran_likelihood_hes fix_likelihood fix_constraint fatal_error warning constructor destructor initialize optimize_random optimize_fixed information_mat sample_fixed sample_random ">
+<meta name="keywords" id="keywords" content=" cppad_mixed: public declarations cppad mixed types user defined functions ran_likelihood fix_likelihood fix_constraint fatal_error warning constructor destructor initialize optimize_random optimize_fixed information_mat sample_fixed sample_random ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -84,8 +84,6 @@ A:active { color : purple }
 <option>information_mat</option>
 <option>sample_fixed</option>
 <option>sample_random</option>
-<option>ran_likelihood_jac</option>
-<option>ran_likelihood_hes</option>
 </select>
 </td>
 <td>
@@ -94,8 +92,6 @@ A:active { color : purple }
 <option>Cppad Mixed Types</option>
 <option>User Defined Functions</option>
 <option>---..ran_likelihood</option>
-<option>---..ran_likelihood_jac</option>
-<option>---..ran_likelihood_hes</option>
 <option>---..fix_likelihood</option>
 <option>---..fix_constraint</option>
 <option>---..fatal_error</option>
@@ -160,32 +156,6 @@ This function is necessary if there are random effects in the model.
           <b><font color="#0000FF">const</font></b> a3_vector<font color="#990000">&amp;</font> random_vec <font color="#990000">)</font>
      <font color="#FF0000">{</font>    <b><font color="#0000FF">return</font></b> <b><font color="#000000">a3_vector</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">);</font> <font color="#FF0000">}</font></tt></pre>
 See <a href="ran_likelihood.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood</span></a>
-.
-
-<br>
-<br>
-<big><a name="User Defined Functions.ran_likelihood_jac" id="User Defined Functions.ran_likelihood_jac">ran_likelihood_jac</a></big>
-<br>
-This function is only used to increase speed and reduce memory use.
-<pre><tt>     <b><font color="#0000FF">virtual</font></b> <font color="#008080">a2_vector</font> <b><font color="#000000">ran_likelihood_jac</font></b><font color="#990000">(</font>
-          <b><font color="#0000FF">const</font></b> a2_vector<font color="#990000">&amp;</font>           fixed_vec  <font color="#990000">,</font>
-          <b><font color="#0000FF">const</font></b> a2_vector<font color="#990000">&amp;</font>           random_vec <font color="#990000">)</font>
-     <font color="#FF0000">{</font>    <b><font color="#0000FF">return</font></b> <b><font color="#000000">a2_vector</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">);</font> <font color="#FF0000">}</font></tt></pre>
-See <a href="ran_likelihood_jac.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_jac</span></a>
-.
-
-<br>
-<br>
-<big><a name="User Defined Functions.ran_likelihood_hes" id="User Defined Functions.ran_likelihood_hes">ran_likelihood_hes</a></big>
-<br>
-This function is only used to increase speed and reduce memory use.
-<pre><tt>     <b><font color="#0000FF">virtual</font></b> <font color="#008080">a1_vector</font> <b><font color="#000000">ran_likelihood_hes</font></b><font color="#990000">(</font>
-          <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>             fixed_vec  <font color="#990000">,</font>
-          <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>             random_vec <font color="#990000">,</font>
-          <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font>size_t<font color="#990000">&gt;&amp;</font> row        <font color="#990000">,</font>
-          <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font>size_t<font color="#990000">&gt;&amp;</font> col        <font color="#990000">)</font>
-     <font color="#FF0000">{</font>    <b><font color="#0000FF">return</font></b> <b><font color="#000000">a1_vector</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">);</font> <font color="#FF0000">}</font></tt></pre>
-See <a href="ran_likelihood_hes.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood_hes</span></a>
 .
 
 <br>
@@ -342,7 +312,7 @@ Its default definition below can be replaced by a user definition.
 <b><big><a name="Contents" id="Contents">Contents</a></big></b>
 <br>
 <table>
-<tr><td><a href="derived_ctor.htm" target="_top">derived_ctor</a></td><td>User&nbsp;Defined&nbsp;Class&nbsp;Derived&nbsp;From&nbsp;cppad_mixed</td></tr><tr><td><a href="ran_likelihood.htm" target="_top">ran_likelihood</a></td><td>User&nbsp;Defined&nbsp;Random&nbsp;Likelihood&nbsp;Function</td></tr><tr><td><a href="fix_likelihood.htm" target="_top">fix_likelihood</a></td><td>User&nbsp;Defined&nbsp;Fixed&nbsp;Likelihood&nbsp;Function</td></tr><tr><td><a href="fix_constraint.htm" target="_top">fix_constraint</a></td><td>User&nbsp;Defined&nbsp;Fixed&nbsp;Effects&nbsp;Constraint&nbsp;Function</td></tr><tr><td><a href="initialize.htm" target="_top">initialize</a></td><td>Initialization&nbsp;After&nbsp;Constructor</td></tr><tr><td><a href="optimize_random.htm" target="_top">optimize_random</a></td><td>Optimize&nbsp;Random&nbsp;Effects</td></tr><tr><td><a href="optimize_fixed.htm" target="_top">optimize_fixed</a></td><td>Optimize&nbsp;Fixed&nbsp;Effects</td></tr><tr><td><a href="information_mat.htm" target="_top">information_mat</a></td><td>Compute&nbsp;the&nbsp;Observed&nbsp;Information&nbsp;For&nbsp;Fixed&nbsp;Effects</td></tr><tr><td><a href="sample_fixed.htm" target="_top">sample_fixed</a></td><td>Sample&nbsp;Posterior&nbsp;for&nbsp;Fixed&nbsp;Effects</td></tr><tr><td><a href="sample_random.htm" target="_top">sample_random</a></td><td>Simulation&nbsp;the&nbsp;Posterior&nbsp;Distribution&nbsp;for&nbsp;Random&nbsp;Effects</td></tr><tr><td><a href="ran_likelihood_jac.htm" target="_top">ran_likelihood_jac</a></td><td>User&nbsp;Define&nbsp;Jacobian&nbsp;With&nbsp;Respect&nbsp;to&nbsp;Random&nbsp;Effects</td></tr><tr><td><a href="ran_likelihood_hes.htm" target="_top">ran_likelihood_hes</a></td><td>User&nbsp;Define&nbsp;Hessian&nbsp;With&nbsp;Respect&nbsp;to&nbsp;Random&nbsp;Effects</td></tr></table>
+<tr><td><a href="derived_ctor.htm" target="_top">derived_ctor</a></td><td>User&nbsp;Defined&nbsp;Class&nbsp;Derived&nbsp;From&nbsp;cppad_mixed</td></tr><tr><td><a href="ran_likelihood.htm" target="_top">ran_likelihood</a></td><td>User&nbsp;Defined&nbsp;Random&nbsp;Likelihood&nbsp;Function</td></tr><tr><td><a href="fix_likelihood.htm" target="_top">fix_likelihood</a></td><td>User&nbsp;Defined&nbsp;Fixed&nbsp;Likelihood&nbsp;Function</td></tr><tr><td><a href="fix_constraint.htm" target="_top">fix_constraint</a></td><td>User&nbsp;Defined&nbsp;Fixed&nbsp;Effects&nbsp;Constraint&nbsp;Function</td></tr><tr><td><a href="initialize.htm" target="_top">initialize</a></td><td>Initialization&nbsp;After&nbsp;Constructor</td></tr><tr><td><a href="optimize_random.htm" target="_top">optimize_random</a></td><td>Optimize&nbsp;Random&nbsp;Effects</td></tr><tr><td><a href="optimize_fixed.htm" target="_top">optimize_fixed</a></td><td>Optimize&nbsp;Fixed&nbsp;Effects</td></tr><tr><td><a href="information_mat.htm" target="_top">information_mat</a></td><td>Compute&nbsp;the&nbsp;Observed&nbsp;Information&nbsp;For&nbsp;Fixed&nbsp;Effects</td></tr><tr><td><a href="sample_fixed.htm" target="_top">sample_fixed</a></td><td>Sample&nbsp;Posterior&nbsp;for&nbsp;Fixed&nbsp;Effects</td></tr><tr><td><a href="sample_random.htm" target="_top">sample_random</a></td><td>Simulation&nbsp;the&nbsp;Posterior&nbsp;Distribution&nbsp;for&nbsp;Random&nbsp;Effects</td></tr></table>
 <hr>Input File: include/cppad/mixed/cppad_mixed.hpp
 
 </body>

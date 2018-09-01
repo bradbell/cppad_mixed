@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Second Order Representation of Random Effects, W(beta, theta, u)</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Second Order Representation of Random Effects, W(beta, theta, u)">
-<meta name="keywords" id="keywords" content=" second order representation random effects w(beta theta u) syntax prototype private mixed_object n_fixed n_random jac_a1fun a1_ldlt_ran_hes beta theta_u w example ">
+<meta name="keywords" id="keywords" content=" second order representation random effects w(beta theta u) syntax prototype private n_fixed n_random jac_a1fun a1_ldlt_ran_hes beta theta_u w example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -110,7 +110,6 @@ A:active { color : purple }
 <option>Syntax</option>
 <option>Prototype</option>
 <option>Private</option>
-<option>mixed_object</option>
 <option>n_fixed</option>
 <option>n_random</option>
 <option>jac_a1fun</option>
@@ -134,12 +133,12 @@ A:active { color : purple }
 <br>
 
 <code><i><font color="black"><span style='white-space: nowrap'>W</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;CppAD::mixed::order2random(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac_a1fun</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>a1_ldlt_ran_hes</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>beta_theta_u</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>beta</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>theta_u</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 )</span></font></code>
 
 
@@ -149,7 +148,6 @@ A:active { color : purple }
 
 <pre><tt>
 <font color="#008080">a1_vector</font> <b><font color="#000000">order2random</font></b><font color="#990000">(</font>
-     cppad_mixed<font color="#990000">&amp;</font>                        mixed_object    <font color="#990000">,</font>
      <font color="#008080">size_t</font>                              n_fixed         <font color="#990000">,</font>
      <font color="#008080">size_t</font>                              n_random        <font color="#990000">,</font>
      CppAD<font color="#990000">::</font>ADFun<font color="#990000">&lt;</font>a1_double<font color="#990000">&gt;&amp;</font>            jac_a1fun       <font color="#990000">,</font>
@@ -161,18 +159,6 @@ A:active { color : purple }
 <br>
 This <code><font color="blue">cppad_mixed</font></code> member function is <a href="private.htm" target="_top"><span style='white-space: nowrap'>private</span></a>
 .
-
-<br>
-<br>
-<b><big><a name="mixed_object" id="mixed_object">mixed_object</a></big></b>
-<br>
-is the cppad_mixed object for this problem.
-This object is only used to call
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.ran_likelihood_hes<br>
-</span></font></code>
-and see if the user has defined the hessian of the random likelihood.
 
 <br>
 <br>
@@ -195,8 +181,13 @@ with respect to the random effects
 <small>@(@
 f_u ( \theta, u )
 @)@</small>.
+The domain indices (range indices) are with respect to the random effects
+(fixed and random effects); i.e.,
 
-<br>
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac_a1fun</span></font></i><font color="blue"><span style='white-space: nowrap'>.Domain()&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;+&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>jac_a1fun</span></font></i><font color="blue"><span style='white-space: nowrap'>.Range()&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
 <br>
 <b><big><a name="a1_ldlt_ran_hes" id="a1_ldlt_ran_hes">a1_ldlt_ran_hes</a></big></b>
 <br>

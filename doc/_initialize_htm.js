@@ -35,9 +35,7 @@ var list_down1 = [
 'optimize_fixed.htm',
 'information_mat.htm',
 'sample_fixed.htm',
-'sample_random.htm',
-'ran_likelihood_jac.htm',
-'ran_likelihood_hes.htm'
+'sample_random.htm'
 ];
 var list_current0 = [
 'initialize.htm#Syntax',
@@ -46,8 +44,6 @@ var list_current0 = [
 'initialize.htm#mixed_object',
 'initialize.htm#fixed_vec',
 'initialize.htm#random_vec',
-'initialize.htm#ran_likelihood_jac',
-'initialize.htm#ran_likelihood_hes',
 'initialize.htm#size_map',
 'initialize.htm#init_newton_checkpoint_done_',
 'initialize.htm#Example'

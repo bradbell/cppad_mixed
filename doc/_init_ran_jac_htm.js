@@ -29,9 +29,7 @@ var list_down1 = [
 'pack.htm',
 'unpack.htm',
 'init_ran_jac.htm',
-'check_user_ran_jac.htm',
 'init_ran_hes.htm',
-'check_user_ran_hes.htm',
 'init_laplace_obj.htm',
 'init_ldlt_ran_hes.htm',
 'init_fix_con.htm',
@@ -46,7 +44,6 @@ var list_down1 = [
 'fix_like_hes.htm',
 'fix_like_jac.htm',
 'logdet_jac.htm',
-'ran_like_jac.htm',
 'ran_like_hes.htm',
 'ran_con_eval.htm',
 'ran_con_jac.htm',
@@ -54,6 +51,9 @@ var list_down1 = [
 'ran_obj_jac.htm',
 'laplace_obj_hes.htm',
 'update_factor.htm'
+];
+var list_down0 = [
+'ran_jac_fun.cpp.htm'
 ];
 var list_current0 = [
 'init_ran_jac.htm#Syntax',
@@ -64,8 +64,7 @@ var list_current0 = [
 'init_ran_jac.htm#fixed_vec',
 'init_ran_jac.htm#random_vec',
 'init_ran_jac.htm#ran_jac_a1fun_',
-'init_ran_jac.htm#ran_jac2hes_rc_',
-'init_ran_jac.htm#ran_likelihood_jac'
+'init_ran_jac.htm#ran_jac2hes_rc_'
 ];
 function choose_across0(item)
 {	var index          = item.selectedIndex;
