@@ -10,6 +10,7 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/configure.hpp>
+# include <cppad/mixed/ran_like_hes.hpp>
 
 /*
 $begin init_ran_hes$$
@@ -84,8 +85,7 @@ $codei%
 	CppAD::mixed::d_sparse_rcv ran_hes_uu_rcv_
 %$$
 does not matter.
-Upon return it contains the
-$cref/d_sparse_rcv/typedef/Sparse Types/d_sparse_rcv/$$ information
+Upon return $code ran_hes_uu_rcv_.pat()$$ cntains the sparsity pattern
 for the lower triangle of the Hessian
 $latex \[
 	f_{u,u} ( \theta , u )
@@ -98,11 +98,11 @@ The matrix is symmetric and hence can be recovered from
 its lower triangle.
 
 
-$head Random Effects Index$$
+$subhead Random Effects Index$$
 The indices in $icode ran_hes_uu_rcv_$$ are relative to just
 the random effects and hence are all less that $code n_random_$$.
 
-$head Order$$
+$subhead Order$$
 The results are in column major order; i.e.,
 $codei%
 	ran_hes_uu_rcv_.col()[%k%] <= ran_hes_uu_rcv_.col()[%k+1%]
@@ -164,8 +164,7 @@ void cppad_mixed::init_ran_hes(
 	//
 	// subset of sparstiy pattern that we are calculating
 	// in column major order
-	sparse_rc hes_low(n_random_, n_both, n_low);
-	sparse_rc hes_lower(n_both,  n_both, n_low);
+	sparse_rc ran_hes_uu_rc(n_random_,  n_random_, n_low);
 	s_vector col_major = hes_pattern.col_major();
 	size_t k_low = 0;
 	for(size_t k = 0; k < nnz; k++)
@@ -175,30 +174,29 @@ void cppad_mixed::init_ran_hes(
 		assert( r >= n_fixed_ );
 		assert( c >= n_fixed_ );
 		if( r >= c )
-		{	hes_lower.set(k_low, r - n_fixed_, c - n_fixed_);
-			hes_low.set(k_low, r - n_fixed_, c);
+		{	ran_hes_uu_rc.set(k_low, r - n_fixed_, c - n_fixed_);
 			++k_low;
 		}
 	}
 	assert( k_low == n_low );
 	//
 	// ran_hes_uu_rcv_
-	ran_hes_uu_rcv_  = d_sparse_rcv( hes_lower );
+	ran_hes_uu_rcv_ = d_sparse_rcv( ran_hes_uu_rc );
 	//
 	// Declare the independent and dependent variables for taping calculation
 	// of Hessian of the random likelihood w.r.t. the random effects
 	size_t abort_op_index = 0;
 	bool record_compare   = false;
 	CppAD::Independent(a1_both, abort_op_index, record_compare);
-
-	// the Hessian of the random likelihood w.r.t the random effects.
-	a1_sparse_rcv a1_subset( hes_low );
-	ran_jac_a1fun_.subgraph_jac_rev(a1_both, a1_subset);
-	ran_jac_a1fun_.clear_subgraph();
-	a1_vector a1_val_out = a1_subset.val();
+	//
+	// a1_val
+	a1_sparse_rcv a1_ran_hes_uu_rcv = CppAD::mixed::ran_like_hes(
+		n_fixed_, n_random_, ran_jac_a1fun_, ran_hes_uu_rc, a1_both
+	);
+	const a1_vector& a1_val( a1_ran_hes_uu_rcv.val() );
 	//
 	// ran_hes_fun_
-	ran_hes_fun_.Dependent(a1_both, a1_val_out);
+	ran_hes_fun_.Dependent(a1_both, a1_val);
 	ran_hes_fun_.check_for_nan(false);
 	//
 	// optimize the recording
