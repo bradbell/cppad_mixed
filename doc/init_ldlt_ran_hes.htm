@@ -178,10 +178,10 @@ must not been previously initialized
 Upon return, the function
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ldlt_ran_hes_.init(</span></font><i><font color="black"><span style='white-space: nowrap'>hes_rc</span></font></i><font color="blue"><span style='white-space: nowrap'>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ldlt_ran_hes_.init(ran_hes_uu_rcv_.pat())<br>
 </span></font></code>
 has been called with 
-<code><i><font color="black"><span style='white-space: nowrap'>hes_rc</span></font></i></code>
+<code><i><font color="black"><span style='white-space: nowrap'>ran_hes_uu_rcv_.pat()</span></font></i></code>
 
 equal to the sparsity pattern for the
 Hessian of the random likelihood with respect to the random effects;
@@ -192,9 +192,9 @@ i.e., the row and column indices are relative to the vector <small>@(@
 u )
 @)@</small>.
 For each row and column indices in 
-<code><i><font color="black"><span style='white-space: nowrap'>hes_rc</span></font></i></code>
+<code><i><font color="black"><span style='white-space: nowrap'>ran_hes_uu_rcv_.pat()</span></font></i></code>
 ,
-the corresponding row and column index in <code><font color="blue">ran_hes_rcv_</font></code> is
+the corresponding row and column index in <code><font color="blue">ran_hes_uu_rcv_</font></code> is
 <code><font color="blue">n_fixed_</font></code> greater.
 
 

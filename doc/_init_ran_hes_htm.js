@@ -63,9 +63,9 @@ var list_current0 = [
 'init_ran_hes.htm#mixed_object',
 'init_ran_hes.htm#fixed_vec',
 'init_ran_hes.htm#random_vec',
-'init_ran_hes.htm#ran_hes_rcv_',
-'init_ran_hes.htm#Random Effects Index',
-'init_ran_hes.htm#Order',
+'init_ran_hes.htm#ran_hes_uu_rcv_',
+'init_ran_hes.htm#ran_hes_uu_rcv_.Random Effects Index',
+'init_ran_hes.htm#ran_hes_uu_rcv_.Order',
 'init_ran_hes.htm#ran_hes_fun_',
 'init_ran_hes.htm#Contents'
 ];

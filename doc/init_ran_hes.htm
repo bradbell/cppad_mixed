@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Initialize Hessian of Random Likelihood w.r.t Random Effects</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Initialize Hessian of Random Likelihood w.r.t Random Effects">
-<meta name="keywords" id="keywords" content=" initialize hessian random likelihood w.r.t effects syntax private assumptions init_ran_hes_done_ mixed_object fixed_vec random_vec ran_hes_rcv_ index order ran_hes_fun_ ">
+<meta name="keywords" id="keywords" content=" initialize hessian random likelihood w.r.t effects syntax private assumptions init_ran_hes_done_ mixed_object fixed_vec random_vec ran_hes_uu_rcv_ index order ran_hes_fun_ ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -118,9 +118,9 @@ A:active { color : purple }
 <option>mixed_object</option>
 <option>fixed_vec</option>
 <option>random_vec</option>
-<option>ran_hes_rcv_</option>
-<option>Random Effects Index</option>
-<option>Order</option>
+<option>ran_hes_uu_rcv_</option>
+<option>---..Random Effects Index</option>
+<option>---..Order</option>
 <option>ran_hes_fun_</option>
 <option>Contents</option>
 </select>
@@ -206,17 +206,15 @@ u
 
 <br>
 <br>
-<b><big><a name="ran_hes_rcv_" id="ran_hes_rcv_">ran_hes_rcv_</a></big></b>
+<b><big><a name="ran_hes_uu_rcv_" id="ran_hes_uu_rcv_">ran_hes_uu_rcv_</a></big></b>
 <br>
 The input value of the member variable
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::mixed::d_sparse_rcv&nbsp;ran_hes_rcv_<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::mixed::d_sparse_rcv&nbsp;ran_hes_uu_rcv_<br>
 </span></font></code>
 does not matter.
-Upon return it contains the
-<a href="typedef.htm#Sparse Types.d_sparse_rcv" target="_top"><span style='white-space: nowrap'>d_sparse_rcv</span></a>
- information
+Upon return <code><font color="blue">ran_hes_uu_rcv_.pat()</font></code> contains the sparsity pattern
 for the lower triangle of the Hessian
 <small>@[@
 
@@ -231,33 +229,23 @@ its lower triangle.
 
 <br>
 <br>
-<b><big><a name="Random Effects Index" id="Random Effects Index">Random Effects Index</a></big></b>
+<big><a name="ran_hes_uu_rcv_.Random Effects Index" id="ran_hes_uu_rcv_.Random Effects Index">Random Effects Index</a></big>
 <br>
-The indices in <code><font color="blue">ran_hes_rcv_</font></code>
-are relative to both the fixed and random effects with the fixed effects
-coming first.
-To get the indices relative to just the random effects, subtract
-<code><font color="blue">n_fixed_</font></code>; e.g, the value
+The indices in 
+<code><i><font color="black"><span style='white-space: nowrap'>ran_hes_uu_rcv_</span></font></i></code>
+ are relative to just
+the random effects and hence are all less that <code><font color="blue">n_random_</font></code>.
 
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ran_hes_rcv_.val()[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
-</span></font></code>
-corresponds the second partial with respect to the following
-two random effect indices:
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ran_hes_rcv_.row()[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;-&nbsp;n_fixed_<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ran_hes_rcv_.col()[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;-&nbsp;n_fixed_<br>
-</span></font></code>
 <br>
-<b><big><a name="Order" id="Order">Order</a></big></b>
+<br>
+<big><a name="ran_hes_uu_rcv_.Order" id="ran_hes_uu_rcv_.Order">Order</a></big>
 <br>
 The results are in column major order; i.e.,
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ran_hes_rcv_.col()[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;ran_hes_rcv_.col()[</span></font><i><font color="black"><span style='white-space: nowrap'>k+1</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(&nbsp;ran_hes_rcv_.col()[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;==&nbsp;ran_hes_rcv_.col()[</span></font><i><font color="black"><span style='white-space: nowrap'>k+1</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ran_hes_rcv_.row()[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;&nbsp;ran_hes_rcv_.row()[</span></font><i><font color="black"><span style='white-space: nowrap'>k+1</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ran_hes_uu_rcv_.col()[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;=&nbsp;ran_hes_uu_rcv_.col()[</span></font><i><font color="black"><span style='white-space: nowrap'>k+1</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(&nbsp;ran_hes_uu_rcv_.col()[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;==&nbsp;ran_hes_uu_rcv_.col()[</span></font><i><font color="black"><span style='white-space: nowrap'>k+1</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ran_hes_uu_rcv_.row()[</span></font><i><font color="black"><span style='white-space: nowrap'>k</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;&lt;&nbsp;ran_hes_uu_rcv_.row()[</span></font><i><font color="black"><span style='white-space: nowrap'>k+1</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
 </span></font></code>
 <br>
 <b><big><a name="ran_hes_fun_" id="ran_hes_fun_">ran_hes_fun_</a></big></b>
@@ -276,7 +264,7 @@ the lower triangle of the sparse Hessian
 
 @]@</small>
 in the same order as the elements of
-<code><font color="blue">ran_hes_rcv_</font></code> (and <code><font color="blue">a1_hes_rcv_</font></code>).
+<code><font color="blue">ran_hes_uu_rcv_</font></code> (and <code><font color="blue">a1_hes_rcv_</font></code>).
 
 <br>
 <br>

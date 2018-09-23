@@ -313,7 +313,7 @@ the column indices are for both fixed and random effects
 If 
 <code><i><font color="black"><span style='white-space: nowrap'>n_random_</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;&gt;&nbsp;0</span></font></code>
  and <code><font color="blue">init_ran_hes_done_</font></code>,
-<a href="init_ran_hes.htm#ran_hes_rcv_" target="_top"><span style='white-space: nowrap'>ran_hes_rcv_</span></a>
+<a href="init_ran_hes.htm#ran_hes_uu_rcv_" target="_top"><span style='white-space: nowrap'>ran_hes_uu_rcv_</span></a>
 
 contains information for the Hessian of the
 <a href="theory.htm#Random Likelihood, f(theta, u)" target="_top"><span style='white-space: nowrap'>random&nbsp;likelihood</span></a>
@@ -323,20 +323,17 @@ with respect to the random effects; i.e.
 f_{u,u} ( \theta , u )
 @)@</small>.
 <pre><tt>     <i><font color="#9A1900">// sparse Hessian</font></i>
-     <font color="#008080">d_sparse_rcv</font>                  ran_hes_rcv_<font color="#990000">;</font>
+     <font color="#008080">d_sparse_rcv</font>                  ran_hes_uu_rcv_<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// recording of sparse Hessian calculation</font></i>
      CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;double&gt;</font>        ran_hes_fun_<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
      <b><font color="#0000FF">friend</font></b> <font color="#009900">bool</font> <font color="#990000">::</font><b><font color="#000000">ran_hes_fun_xam</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">);</font></tt></pre>
 The row and column indices in 
-<code><i><font color="black"><span style='white-space: nowrap'>ran_hes_rcv_</span></font></i></code>
+<code><i><font color="black"><span style='white-space: nowrap'>ran_hes_uu_rcv_</span></font></i></code>
 
-are for both the fixed and random effects <small>@(@
-( \theta , u )
-@)@</small>
-and hence are all greater than or equal  
-<code><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i></code>
+are for just random effects and hence are all less than 
+<code><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i></code>
 .
 
 <br>

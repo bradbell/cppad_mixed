@@ -3,7 +3,7 @@
 // ------------------------------------------------------------ 
 Keyword = 
 [
-'cppad_mixed  C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20180831  ',' license source code repository notation fixed theta random data z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood constraints negative log-density vector ',
+'cppad_mixed  C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20180923  ',' license source code repository notation fixed theta random data z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood constraints negative log-density vector ',
 'install_unix  Installing cppad_mixed in Unix  ',' system requirements c++ compiler git cmake pkg-config wget fortran gsl suitesparse download paths pkg_config_path ld_library_path special run_cmake.sh eigen ipopt command check speed example installation linking using ',
 'example_install.sh  An Example Installation  ',' syntax existing source ',
 'run_cmake.sh  bin/run_cmake.sh: User Configuration Options  ',' verbose_makefile build_type cppad_prefix eigen_prefix ipopt_prefix debug release extra_cxx_flags cmake_libdir ldlt_cholmod optimize_cppad_function for_hes_sparsity testing speed memory ',
@@ -38,7 +38,7 @@ Keyword =
 'unpack  Pack Fixed Effect and Random Effects Into One Vector  ',' syntax private mixed_object float_pack float_unpack fixed_one fixed_two random_vec both_vec three_vec ',
 'init_ran_jac  Initialize Jacobian of Random Likelihood w.r.t. Random Effects  ',' syntax private assumptions init_ran_jac_done_ mixed_object fixed_vec random_vec ran_jac_a1fun_ ran_jac2hes_rc_ ',
 'ran_jac_fun.cpp  ran_jac_fun: Example and Test  ',' private ',
-'init_ran_hes  Initialize Hessian of Random Likelihood w.r.t Random Effects  ',' syntax private assumptions init_ran_hes_done_ mixed_object fixed_vec random_vec ran_hes_rcv_ index order ran_hes_fun_ ',
+'init_ran_hes  Initialize Hessian of Random Likelihood w.r.t Random Effects  ',' syntax private assumptions init_ran_hes_done_ mixed_object fixed_vec random_vec ran_hes_uu_rcv_ index order ran_hes_fun_ ',
 'ran_hes_fun.cpp  ran_hes_fun_: Example and Test  ',' private ',
 'init_laplace_obj  Second Order Representation of Laplace Objective and Constraints  ',' syntax private assumptions init_laplace_obj_done_ mixed_object fixed_vec random_vec laplace_obj_fun_ beta theta range space ',
 'init_ldlt_ran_hes  Initialize Cholesky Factor of Hessian of Random Likelihood  ',' syntax private assumptions init_ldlt_ran_hes_done_ mixed_object a1_ldlt_ran_hes_ ',
