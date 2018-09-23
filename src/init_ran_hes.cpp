@@ -85,7 +85,7 @@ $codei%
 	CppAD::mixed::d_sparse_rcv ran_hes_uu_rcv_
 %$$
 does not matter.
-Upon return $code ran_hes_uu_rcv_.pat()$$ cntains the sparsity pattern
+Upon return $code ran_hes_uu_rcv_.pat()$$ contains the sparsity pattern
 for the lower triangle of the Hessian
 $latex \[
 	f_{u,u} ( \theta , u )
