@@ -126,10 +126,10 @@ the user's derived class:
 $subhead ran_likelihood$$
 This function is necessary if there are random effects in the model.
 $srccode%cpp% */
-	virtual a3_vector ran_likelihood(
-		const a3_vector& fixed_vec  ,
-		const a3_vector& random_vec )
-	{	return a3_vector(0); }
+	virtual a1_vector ran_likelihood(
+		const a1_vector& fixed_vec  ,
+		const a1_vector& random_vec )
+	{	return a1_vector(0); }
 /* %$$
 See $cref ran_likelihood$$.
 
@@ -416,8 +416,8 @@ $cref/ran_like_a1fun_/init_ran_like/ran_like_a1fun_/$$.
 are recordings of the user's $cref ran_likelihood$$.
 function.
 $srccode%cpp% */
-	CppAD::ADFun<double>      ran_like_fun_;
-	CppAD::ADFun<a1_double>   ran_like_a1fun_;
+	CppAD::ADFun<double>              ran_like_fun_;
+	CppAD::ADFun<a1_double, double>   ran_like_a1fun_;
 /* %$$
 The following objects hold information for computing derivatives
 with these ADFun objects:

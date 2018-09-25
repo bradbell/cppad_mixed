@@ -37,7 +37,7 @@ namespace {
 	//
 	using CppAD::mixed::d_sparse_rcv;
 	using CppAD::mixed::d_vector;
-	using CppAD::mixed::a3_vector;
+	using CppAD::mixed::a1_vector;
 	//
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -84,9 +84,9 @@ namespace {
 			}
 			return vec;
 		}
-		// a3_vector version of ran_likelihood
-		virtual a3_vector ran_likelihood(
-			const a3_vector& fixed_vec, const a3_vector& random_vec
+		// a1_vector version of ran_likelihood
+		virtual a1_vector ran_likelihood(
+			const a1_vector& fixed_vec, const a1_vector& random_vec
 		)
 		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 	};
@@ -103,16 +103,16 @@ bool ran_likelihood_xam(void)
 	size_t n_random = n_data;
 	d_vector  data(n_data);
 	d_vector  fixed_vec(n_fixed), random_vec(n_random);
-	a3_vector a3_fixed(n_fixed), a3_random(n_random);
+	a1_vector a1_fixed(n_fixed), a1_random(n_random);
 
 	for(size_t i = 0; i < n_data; i++)
 	{	data[i]       = double(i + 1);
 		//
 		fixed_vec[i]  = 1.5;
-		a3_fixed[i]   = fixed_vec[i];
+		a1_fixed[i]   = fixed_vec[i];
 		//
 		random_vec[i] = 0.0;
-		a3_random[i]  = random_vec[i];
+		a1_random[i]  = random_vec[i];
 	}
 
 	// object that is derived from cppad_mixed
@@ -125,8 +125,8 @@ bool ran_likelihood_xam(void)
 	mixed_object.initialize(fixed_vec, random_vec);
 
 	// Evaluate random likelihood
-	a3_vector a3_vec(1);
-	a3_vec = mixed_object.ran_likelihood(a3_fixed, a3_random);
+	a1_vector a1_vec(1);
+	a1_vec = mixed_object.ran_likelihood(a1_fixed, a1_random);
 
 	// check the random likelihood
 	double sum = 0.0;
@@ -136,7 +136,7 @@ bool ran_likelihood_xam(void)
 		double res    = (data[i] - mu) / sigma;
 		sum          += (std::log(2 * pi * sigma * sigma) + res * res) / 2.0;
 	}
-	double check = Value( Value( Value( a3_vec[0] ) ) );
+	double check = Value( a1_vec[0] );
 	ok &= fabs( check / sum - 1.0 ) < eps;
 
 	return ok;

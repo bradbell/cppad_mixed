@@ -107,8 +107,8 @@ namespace {
 		}
 		// a2_vector version of ran_likelihood
 		// a3_vector version of ran_likelihood
-		virtual a3_vector ran_likelihood(
-			const a3_vector& fixed_vec, const a3_vector& random_vec
+		virtual a1_vector ran_likelihood(
+			const a1_vector& fixed_vec, const a1_vector& random_vec
 		)
 		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 	};
