@@ -85,6 +85,11 @@ namespace {
 			const a3_vector& fixed_vec, const a3_vector& random_vec
 		)
 		{	return template_ran_likelihood( fixed_vec, random_vec ); }
+		// a2_vector version of ran_likelihood
+		a2_vector ran_likelihood(
+			const a2_vector& fixed_vec, const a2_vector& random_vec
+		)
+		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 	};
 }
 
@@ -96,7 +101,6 @@ bool order2random_xam(void)
 	using CppAD::vector;
 	typedef CppAD::AD<double>    a1_double;
 	typedef CppAD::AD<a1_double> a2_double;
-	typedef CppAD::AD<a2_double> a3_double;
 	//
 	// n_fixed
 	size_t n_fixed     = 3;
@@ -122,26 +126,30 @@ bool order2random_xam(void)
 	mixed_object.initialize(fixed_vec, random_vec);
 	//
 	// a2fun = f(theta, u)
-	vector<a3_double> a3_theta_u(n_both), a3_theta(n_fixed), a3_u(n_random);
+	vector<a2_double> a2_theta_u(n_both), a2_theta(n_fixed), a2_u(n_random);
 	for(size_t j = 0; j < n_both; j++)
-		a3_theta_u[j] = 0.0;
-	CppAD::Independent(a3_theta_u);
-	for(size_t j = 0; j < n_fixed; ++j)
-	{	a3_theta[j] = a3_theta_u[j];
-		a3_u[j]     = a3_theta_u[j + n_fixed];
-	}
-	vector<a3_double> a3_f = mixed_object.ran_likelihood(a3_theta, a3_u);
-	CppAD::ADFun<a2_double> a2fun(a3_theta_u, a3_f);
-	//
-	// jac_a1fun = f_u (theta, u)
-	vector<a2_double> a2_theta_u(n_both), a2_fu(n_random);
-	for(size_t j = 0; j < n_both; j++)
-		a2_theta_u[j] = a2_double(0.0);
+		a2_theta_u[j] = 0.0;
 	CppAD::Independent(a2_theta_u);
-	vector<a2_double> jac_all = a2fun.Jacobian(a2_theta_u);
+	for(size_t j = 0; j < n_fixed; ++j)
+	{	a2_theta[j] = a2_theta_u[j];
+		a2_u[j]     = a2_theta_u[j + n_fixed];
+	}
+	vector<a2_double> a2_f = mixed_object.ran_likelihood(a2_theta, a2_u);
+	CppAD::ADFun<a1_double> a1fun(a2_theta_u, a2_f);
+	//
+	// jac_fun = f_u (theta, u)
+	vector<a1_double> a1_theta_u(n_both), a1_fu(n_random);
+	for(size_t j = 0; j < n_both; j++)
+		a1_theta_u[j] = a1_double(0.0);
+	CppAD::Independent(a1_theta_u);
+	vector<a1_double> jac_all = a1fun.Jacobian(a1_theta_u);
 	for(size_t j = 0; j < n_random; j++)
-		a2_fu[j] = jac_all[j + n_fixed];
-	CppAD::ADFun<a1_double> jac_a1fun(a2_theta_u, a2_fu);
+		a1_fu[j] = jac_all[j + n_fixed];
+	CppAD::ADFun<double> jac_fun(a1_theta_u, a1_fu);
+	//
+	// jac_a1fun = f_u(theta, u)
+	CppAD::ADFun<a1_double, double> jac_a1fun;
+	jac_a1fun = jac_fun.base2ad();
 	//
 	// ran_hes_uu_rc = sparsity pattern for f_{uu} (theta , u)
 	CppAD::mixed::sparse_rc ran_hes_uu_rc(n_random, n_random, n_random);
@@ -159,7 +167,7 @@ bool order2random_xam(void)
 	a1_ldlt_ran_hes.update( ran_hes_uu_rcv );
 	//
 	// record W(beta, theta, u)
-	vector<a1_double> a1_beta(n_fixed), a1_theta_u(n_both);
+	vector<a1_double> a1_beta(n_fixed);
 	for(size_t j = 0; j < n_fixed; j++)
 		a1_beta[j] = double(j + 1);
 	for(size_t j = 0; j < n_both; j++)

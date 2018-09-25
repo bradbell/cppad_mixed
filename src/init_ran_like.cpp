@@ -76,15 +76,6 @@ does not matter.
 Upon return it contains a recording of the function
 $cref ran_likelihood$$.
 
-$head ran_like_a2fun_$$
-The input value of the member variable
-$codei%
-	CppAD::ADFun<double> ran_like_a2fun_
-%$$
-does not matter.
-Upon return it contains a recording of the function
-$cref ran_likelihood$$.
-
 $end
 */
 
@@ -99,7 +90,7 @@ void cppad_mixed::init_ran_like(
 	using CppAD::Independent;
 	//
 	// ------------------------------------------------------------------
-	// record ran_like_a2fun_
+	// record ran_like_a2fun
 	// ------------------------------------------------------------------
 	// combine into one vector
 	a3_vector a3_both( n_fixed_ + n_random_ );
@@ -128,12 +119,12 @@ void cppad_mixed::init_ran_like(
 	}
 
 	// save the recording
-	ran_like_a2fun_.Dependent(a3_both, a3_vec);
-	ran_like_a2fun_.check_for_nan(false);
+	ADFun<a2_double> ran_like_a2fun(a3_both, a3_vec);
+	ran_like_a2fun.check_for_nan(false);
 
 	// optimize the recording
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
-	ran_like_a2fun_.optimize("no_conditional_skip");
+	ran_like_a2fun.optimize("no_conditional_skip");
 # endif
 	// ------------------------------------------------------------------
 	// record ran_like_a1fun_
@@ -146,7 +137,7 @@ void cppad_mixed::init_ran_like(
 	Independent(a2_both, abort_op_index, record_compare);
 
 	// compute ran_likelihood using a2_double operations
-	a2_vector a2_vec = ran_like_a2fun_.Forward(0, a2_both);
+	a2_vector a2_vec = ran_like_a2fun.Forward(0, a2_both);
 	assert( a2_vec.size() > 0 );
 	assert( a2_vec.size() == 1 );
 
@@ -179,5 +170,3 @@ void cppad_mixed::init_ran_like(
 	init_ran_like_done_ = true;
 	return;
 }
-
-

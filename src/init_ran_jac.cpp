@@ -113,31 +113,32 @@ void cppad_mixed::init_ran_jac(
 	// ran_jac_a1fun_
 	// ------------------------------------------------------------------------
 	//
-	// a2_both = (fixed_vec, random_vec)
-	a2_vector a2_both(n_both);
-	pack(fixed_vec, random_vec, a2_both);
+	// a1_both = (fixed_vec, random_vec)
+	a1_vector a1_both(n_both);
+	pack(fixed_vec, random_vec, a1_both);
 	//
 	// Record gradient of random likelihood
 	size_t abort_op_index = 0;
 	bool record_compare   = false;
-	CppAD::Independent(a2_both, abort_op_index, record_compare);
+	CppAD::Independent(a1_both, abort_op_index, record_compare);
 	//
-	// a2_w = [ 1.0 ]
-	a2_vector a2_w(m);
-	a2_w[0]  = 1.0;
+	// a1_w = [ 1.0 ]
+	a1_vector a1_w(m);
+	a1_w[0]  = 1.0;
 	//
-	// a2_jac
-	ran_like_a2fun_.Forward(0, a2_both);
-	a2_vector a2_jac_both = ran_like_a2fun_.Reverse(1, a2_w);
-	a2_vector a2_jac(n_random_);
+	// a1_jac
+	ran_like_a1fun_.Forward(0, a1_both);
+	a1_vector a1_jac_both = ran_like_a1fun_.Reverse(1, a1_w);
+	a1_vector a1_jac(n_random_);
 	for(size_t j = 0; j < n_random_; ++j)
-		a2_jac[j] = a2_jac_both[n_fixed_ + j];
+		a1_jac[j] = a1_jac_both[n_fixed_ + j];
 	//
 	// ran_jac_a1fun_
-	ran_jac_a1fun_.Dependent(a2_both, a2_jac);
+	CppAD::ADFun<double> ran_jac_fun(a1_both, a1_jac);
 # if CPPAD_MIXED_OPTIMIZE_AD_FUNCTION
-	ran_jac_a1fun_.optimize()
+	ran_jac_fun.optimize()
 # endif
+	ran_jac_a1fun_ = ran_jac_fun.base2ad();
 	// ------------------------------------------------------------------------
 	// ran_jac2hes_rc_
 	// ------------------------------------------------------------------------
