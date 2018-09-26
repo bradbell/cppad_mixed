@@ -60,8 +60,7 @@ var list_current0 = [
 'init_ran_like.htm#fixed_vec',
 'init_ran_like.htm#random_vec',
 'init_ran_like.htm#ran_like_fun_',
-'init_ran_like.htm#ran_like_a1fun_',
-'init_ran_like.htm#ran_like_a2fun_'
+'init_ran_like.htm#ran_like_a1fun_'
 ];
 function choose_across0(item)
 {	var index          = item.selectedIndex;

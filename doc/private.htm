@@ -256,16 +256,13 @@ If
 <a href="init_ran_like.htm#ran_like_fun_" target="_top"><span style='white-space: nowrap'>ran_like_fun_</span></a>
 ,
 <a href="init_ran_like.htm#ran_like_a1fun_" target="_top"><span style='white-space: nowrap'>ran_like_a1fun_</span></a>
-, and
-<a href="init_ran_like.htm#ran_like_a2fun_" target="_top"><span style='white-space: nowrap'>ran_like_a2fun_</span></a>
-,
+.
 are recordings of the user's <a href="ran_likelihood.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood</span></a>
 .
 function.
 <pre style='display:inline'><tt>
-     CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;double&gt;</font>      ran_like_fun_<font color="#990000">;</font>
-     CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;a1_double&gt;</font>   ran_like_a1fun_<font color="#990000">;</font>
-     CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;a2_double&gt;</font>   ran_like_a2fun_<font color="#990000">;</font>
+     CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;double&gt;</font>              ran_like_fun_<font color="#990000">;</font>
+     CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;a1_double, double&gt;</font>   ran_like_a1fun_<font color="#990000">;</font>
 </tt></pre>
 The following objects hold information for computing derivatives
 with these ADFun objects:
@@ -291,8 +288,8 @@ f_u ( \theta , u )
 <small>@(@
 f_{uu} ( \theta, u )
 @)@</small> .
-<pre><tt>     CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;a1_double&gt;</font>  ran_jac_a1fun_<font color="#990000">;</font>
-     <font color="#008080">sparse_rc</font>                ran_jac2hes_rc_<font color="#990000">;</font>
+<pre><tt>     CppAD<font color="#990000">::</font><font color="#008080">ADFun&lt;a1_double, double&gt;</font>  ran_jac_a1fun_<font color="#990000">;</font>
+     <font color="#008080">sparse_rc</font>                        ran_jac2hes_rc_<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
      <b><font color="#0000FF">friend</font></b> <font color="#009900">bool</font> <font color="#990000">::</font><b><font color="#000000">ran_jac_fun_xam</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">);</font></tt></pre>
 The row indices in 

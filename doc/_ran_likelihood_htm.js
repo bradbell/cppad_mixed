@@ -44,7 +44,6 @@ var list_current0 = [
 'ran_likelihood.htm#Syntax',
 'ran_likelihood.htm#Public',
 'ran_likelihood.htm#mixed_object',
-'ran_likelihood.htm#a2_double',
 'ran_likelihood.htm#Virtual Function',
 'ran_likelihood.htm#fixed_vec',
 'ran_likelihood.htm#random_vec',

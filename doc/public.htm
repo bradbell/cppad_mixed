@@ -127,14 +127,10 @@ The following Cppad Mixed types are extended into the
 <code><font color="blue">cppad_mixed</font></code> class:
 <pre><tt>     <i><font color="#9A1900">// scalar types</font></i>
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">a1_double</font>      a1_double<font color="#990000">;</font>
-     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">a2_double</font>      a2_double<font color="#990000">;</font>
-     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">a3_double</font>      a3_double<font color="#990000">;</font>
      <i><font color="#9A1900">// vector types</font></i>
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">s_vector</font>       s_vector<font color="#990000">;</font>
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">d_vector</font>       d_vector<font color="#990000">;</font>
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">a1_vector</font>      a1_vector<font color="#990000">;</font>
-     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">a2_vector</font>      a2_vector<font color="#990000">;</font>
-     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">a3_vector</font>      a3_vector<font color="#990000">;</font>
      <i><font color="#9A1900">// sparse types</font></i>
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">sparse_rc</font>      sparse_rc<font color="#990000">;</font>
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">d_sparse_rcv</font>   d_sparse_rcv<font color="#990000">;</font>
@@ -151,10 +147,10 @@ the user's derived class:
 <big><a name="User Defined Functions.ran_likelihood" id="User Defined Functions.ran_likelihood">ran_likelihood</a></big>
 <br>
 This function is necessary if there are random effects in the model.
-<pre><tt>     <b><font color="#0000FF">virtual</font></b> <font color="#008080">a3_vector</font> <b><font color="#000000">ran_likelihood</font></b><font color="#990000">(</font>
-          <b><font color="#0000FF">const</font></b> a3_vector<font color="#990000">&amp;</font> fixed_vec  <font color="#990000">,</font>
-          <b><font color="#0000FF">const</font></b> a3_vector<font color="#990000">&amp;</font> random_vec <font color="#990000">)</font>
-     <font color="#FF0000">{</font>    <b><font color="#0000FF">return</font></b> <b><font color="#000000">a3_vector</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">);</font> <font color="#FF0000">}</font></tt></pre>
+<pre><tt>     <b><font color="#0000FF">virtual</font></b> <font color="#008080">a1_vector</font> <b><font color="#000000">ran_likelihood</font></b><font color="#990000">(</font>
+          <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font> fixed_vec  <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font> random_vec <font color="#990000">)</font>
+     <font color="#FF0000">{</font>    <b><font color="#0000FF">return</font></b> <b><font color="#000000">a1_vector</font></b><font color="#990000">(</font><font color="#993399">0</font><font color="#990000">);</font> <font color="#FF0000">}</font></tt></pre>
 See <a href="ran_likelihood.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood</span></a>
 .
 

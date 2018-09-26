@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Types Defined in the CppAD Mixed Namespace</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Types Defined in the CppAD Mixed Namespace">
-<meta name="keywords" id="keywords" content=" types defined the cppad mixed namespace syntax begin scalar a1_double a2_double a3_double vector s_vector d_vector a1_vector a2_vector a3_vector sparse sparse_rc d_sparse_rcv a1_sparse_rcv end ">
+<meta name="keywords" id="keywords" content=" types defined the cppad mixed namespace syntax begin scalar a1_double vector s_vector d_vector a1_vector sparse sparse_rc d_sparse_rcv a1_sparse_rcv end ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -106,14 +106,10 @@ A:active { color : purple }
 <option>Begin Namespace</option>
 <option>Scalar Types</option>
 <option>---..a1_double</option>
-<option>---..a2_double</option>
-<option>---..a3_double</option>
 <option>Vector Types</option>
 <option>---..s_vector</option>
 <option>---..d_vector</option>
 <option>---..a1_vector</option>
-<option>---..a2_vector</option>
-<option>---..a3_vector</option>
 <option>Sparse Types</option>
 <option>---..sparse_rc</option>
 <option>---..d_sparse_rcv</option>
@@ -153,20 +149,6 @@ Scalar with one level of AD:
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">AD&lt;double&gt;</font> a1_double<font color="#990000">;</font>
 </tt></pre>
 <br>
-<big><a name="Scalar Types.a2_double" id="Scalar Types.a2_double">a2_double</a></big>
-<br>
-Scalar with two levels of AD:
-<pre style='display:inline'><tt>
-     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">AD&lt;a1_double&gt;</font> a2_double<font color="#990000">;</font>
-</tt></pre>
-<br>
-<big><a name="Scalar Types.a3_double" id="Scalar Types.a3_double">a3_double</a></big>
-<br>
-Scalar with two levels of AD:
-<pre style='display:inline'><tt>
-     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">AD&lt;a2_double&gt;</font> a3_double<font color="#990000">;</font>
-</tt></pre>
-<br>
 <b><big><a name="Vector Types" id="Vector Types">Vector Types</a></big></b>
 
 
@@ -191,20 +173,6 @@ Vectors with elements of type <code><font color="blue">double</font></code>:
 Vectors with elements of that have one level of AD:
 <pre style='display:inline'><tt>
      <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">vector&lt;a1_double&gt;</font> a1_vector<font color="#990000">;</font>
-</tt></pre>
-<br>
-<big><a name="Vector Types.a2_vector" id="Vector Types.a2_vector">a2_vector</a></big>
-<br>
-Vectors with elements of that have two levels of AD:
-<pre style='display:inline'><tt>
-     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">vector&lt;a2_double&gt;</font> a2_vector<font color="#990000">;</font>
-</tt></pre>
-<br>
-<big><a name="Vector Types.a3_vector" id="Vector Types.a3_vector">a3_vector</a></big>
-<br>
-Vectors with elements of that have two levels of AD:
-<pre style='display:inline'><tt>
-     <b><font color="#0000FF">typedef</font></b> CppAD<font color="#990000">::</font><font color="#008080">vector&lt;a3_double&gt;</font> a3_vector<font color="#990000">;</font>
 </tt></pre>
 <br>
 <b><big><a name="Sparse Types" id="Sparse Types">Sparse Types</a></big></b>

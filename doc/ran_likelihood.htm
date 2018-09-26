@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>User Defined Random Likelihood Function</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="User Defined Random Likelihood Function">
-<meta name="keywords" id="keywords" content=" user defined random likelihood function syntax public mixed_object a2_double virtual fixed_vec random_vec vec constant default example ">
+<meta name="keywords" id="keywords" content=" user defined random likelihood function syntax public mixed_object virtual fixed_vec random_vec vec constant default example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -99,7 +99,6 @@ A:active { color : purple }
 <option>Syntax</option>
 <option>Public</option>
 <option>mixed_object</option>
-<option>a2_double</option>
 <option>Virtual Function</option>
 <option>fixed_vec</option>
 <option>random_vec</option>
@@ -139,22 +138,15 @@ derived from the <code><font color="blue">cppad_mixed</font></code> base class.
 
 <br>
 <br>
-<b><big><a name="a2_double" id="a2_double">a2_double</a></big></b>
-<br>
-see <a href="typedef.htm#Scalar Types.a2_double" target="_top"><span style='white-space: nowrap'>a2_double</span></a>
-.
-
-<br>
-<br>
 <b><big><a name="Virtual Function" id="Virtual Function">Virtual Function</a></big></b>
 <br>
 The following virtual function may be implemented
 in the derived class:
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virtual&nbsp;CppAD::vector&lt;a2_double&gt;&nbsp;ran_likelihood(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;a2_double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;&nbsp;,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;a2_double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virtual&nbsp;CppAD::vector&lt;a1_double&gt;&nbsp;ran_likelihood(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;a1_double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;&nbsp;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;a1_double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
 </span></font></code>
 <br>
@@ -163,7 +155,7 @@ in the derived class:
 This argument has prototype
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;a2_double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;a1_double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 </span></font></code>
 It contains a value for the
 <a href="cppad_mixed.htm#Notation.Fixed Effects, theta" target="_top"><span style='white-space: nowrap'>fixed&nbsp;effects</span></a>
@@ -176,7 +168,7 @@ It contains a value for the
 This argument has prototype
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;a2_double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::vector&lt;a1_double&gt;&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 </span></font></code>
 It contains a value for the
 <a href="cppad_mixed.htm#Notation.Random Effects, u" target="_top"><span style='white-space: nowrap'>random&nbsp;effects</span></a>
@@ -189,7 +181,7 @@ It contains a value for the
 This result has prototype
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;a2_double&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;a1_double&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 </span></font></code>
 It is a
 <a href="cppad_mixed.htm#Negative Log-Density Vector" target="_top"><span style='white-space: nowrap'>negative&nbsp;log-density&nbsp;vector</span></a>
