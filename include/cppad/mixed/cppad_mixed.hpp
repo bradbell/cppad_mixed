@@ -104,14 +104,10 @@ $code cppad_mixed$$ class:
 $srccode%cpp% */
 	// scalar types
 	typedef CppAD::mixed::a1_double      a1_double;
-	typedef CppAD::mixed::a2_double      a2_double;
-	typedef CppAD::mixed::a3_double      a3_double;
 	// vector types
 	typedef CppAD::mixed::s_vector       s_vector;
 	typedef CppAD::mixed::d_vector       d_vector;
 	typedef CppAD::mixed::a1_vector      a1_vector;
-	typedef CppAD::mixed::a2_vector      a2_vector;
-	typedef CppAD::mixed::a3_vector      a3_vector;
 	// sparse types
 	typedef CppAD::mixed::sparse_rc      sparse_rc;
 	typedef CppAD::mixed::d_sparse_rcv   d_sparse_rcv;
@@ -126,10 +122,10 @@ the user's derived class:
 $subhead ran_likelihood$$
 This function is necessary if there are random effects in the model.
 $srccode%cpp% */
-	virtual a3_vector ran_likelihood(
-		const a3_vector& fixed_vec  ,
-		const a3_vector& random_vec )
-	{	return a3_vector(0); }
+	virtual a1_vector ran_likelihood(
+		const a1_vector& fixed_vec  ,
+		const a1_vector& random_vec )
+	{	return a1_vector(0); }
 /* %$$
 See $cref ran_likelihood$$.
 
@@ -412,14 +408,12 @@ $srccode%cpp% */
 $head ran_like_fun_$$
 If $icode%n_random_% > 0%$$ and $code init_ran_like_done_$$,
 $cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$,
-$cref/ran_like_a1fun_/init_ran_like/ran_like_a1fun_/$$, and
-$cref/ran_like_a2fun_/init_ran_like/ran_like_a2fun_/$$,
+$cref/ran_like_a1fun_/init_ran_like/ran_like_a1fun_/$$.
 are recordings of the user's $cref ran_likelihood$$.
 function.
 $srccode%cpp% */
-	CppAD::ADFun<double>      ran_like_fun_;
-	CppAD::ADFun<a1_double>   ran_like_a1fun_;
-	CppAD::ADFun<a2_double>   ran_like_a2fun_;
+	CppAD::ADFun<double>              ran_like_fun_;
+	CppAD::ADFun<a1_double, double>   ran_like_a1fun_;
 /* %$$
 The following objects hold information for computing derivatives
 with these ADFun objects:
@@ -437,8 +431,8 @@ with respect to the random effects; i.e.
 $latex f_u ( \theta , u )$$ and the sparsity for
 $latex f_{uu} ( \theta, u )$$ .
 $srccode%cpp% */
-	CppAD::ADFun<a1_double>  ran_jac_a1fun_;
-	sparse_rc                ran_jac2hes_rc_;
+	CppAD::ADFun<a1_double, double>  ran_jac_a1fun_;
+	sparse_rc                        ran_jac2hes_rc_;
 	//
 	friend bool ::ran_jac_fun_xam(void);
 /* %$$

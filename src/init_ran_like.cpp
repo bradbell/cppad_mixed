@@ -76,15 +76,6 @@ does not matter.
 Upon return it contains a recording of the function
 $cref ran_likelihood$$.
 
-$head ran_like_a2fun_$$
-The input value of the member variable
-$codei%
-	CppAD::ADFun<double> ran_like_a2fun_
-%$$
-does not matter.
-Upon return it contains a recording of the function
-$cref ran_likelihood$$.
-
 $end
 */
 
@@ -99,64 +90,6 @@ void cppad_mixed::init_ran_like(
 	using CppAD::Independent;
 	//
 	// ------------------------------------------------------------------
-	// record ran_like_a2fun_
-	// ------------------------------------------------------------------
-	// combine into one vector
-	a3_vector a3_both( n_fixed_ + n_random_ );
-	pack(fixed_vec, random_vec, a3_both);
-
-	// start recording a3_double operations
-	size_t abort_op_index = 0;
-	bool record_compare   = false;
-	Independent(a3_both, abort_op_index, record_compare);
-
-	// extract the fixed and random effects
-	a3_vector a3_theta(n_fixed_), a3_u(n_random_);
-	unpack(a3_theta, a3_u, a3_both);
-
-	// compute ran_likelihood using a3_double operations
-	a3_vector a3_vec = ran_likelihood(a3_theta, a3_u);
-	if( a3_vec.size() == 0 )
-	{	std::string error_message =
-			"init_ran_like: n_random > 0 and ran_likelihood has size 0";
-		fatal_error(error_message);
-	}
-	if( a3_vec.size() != 1 )
-	{	std::string error_message =
-		"init_ran_like: ran_likelihood does not have size zero or one.";
-		fatal_error(error_message);
-	}
-
-	// save the recording
-	ran_like_a2fun_.Dependent(a3_both, a3_vec);
-	ran_like_a2fun_.check_for_nan(false);
-
-	// optimize the recording
-# if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
-	ran_like_a2fun_.optimize("no_conditional_skip");
-# endif
-	// ------------------------------------------------------------------
-	// record ran_like_a1fun_
-	// ------------------------------------------------------------------
-	// combine into one vector
-	a2_vector a2_both( n_fixed_ + n_random_ );
-	pack(fixed_vec, random_vec, a2_both);
-
-	// start recording a2_double operations
-	Independent(a2_both, abort_op_index, record_compare);
-
-	// compute ran_likelihood using a2_double operations
-	a2_vector a2_vec = ran_like_a2fun_.Forward(0, a2_both);
-	assert( a2_vec.size() > 0 );
-	assert( a2_vec.size() == 1 );
-
-	// save the recording
-	ran_like_a1fun_.Dependent(a2_both, a2_vec);
-	ran_like_a1fun_.check_for_nan(false);
-
-	// Brad thinks that re-optimizing will not help
-
-	// ------------------------------------------------------------------
 	// record ran_like_fun_
 	// ------------------------------------------------------------------
 	// combine into one vector
@@ -164,20 +97,41 @@ void cppad_mixed::init_ran_like(
 	pack(fixed_vec, random_vec, a1_both);
 
 	// start recording a1_double operations
+	size_t abort_op_index = 0;
+	bool record_compare   = false;
 	Independent(a1_both, abort_op_index, record_compare);
 
+	// extract the fixed and random effects
+	a1_vector a1_theta(n_fixed_), a1_u(n_random_);
+	unpack(a1_theta, a1_u, a1_both);
+
 	// compute ran_likelihood using a1_double operations
-	a1_vector a1_vec = ran_like_a1fun_.Forward(0, a1_both);
-	assert( a1_vec.size() > 0 );
-	if( a1_vec.size() == 1 );
+	a1_vector a1_vec = ran_likelihood(a1_theta, a1_u);
+	if( a1_vec.size() == 0 )
+	{	std::string error_message =
+			"init_ran_like: n_random > 0 and ran_likelihood has size 0";
+		fatal_error(error_message);
+	}
+	if( a1_vec.size() != 1 )
+	{	std::string error_message =
+		"init_ran_like: ran_likelihood does not have size zero or one.";
+		fatal_error(error_message);
+	}
 
 	// save the recording
 	ran_like_fun_.Dependent(a1_both, a1_vec);
 	ran_like_fun_.check_for_nan(false);
 
+	// optimize the recording
+# if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
+	ran_like_fun_.optimize("no_conditional_skip");
+# endif
+	// ------------------------------------------------------------------
+	// set ran_like_a1fun_
+	// ------------------------------------------------------------------
+	ran_like_a1fun_ = ran_like_fun_.base2ad();
+	//
 	// ------------------------------------------------------------------
 	init_ran_like_done_ = true;
 	return;
 }
-
-

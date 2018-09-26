@@ -544,12 +544,8 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 using std::exp;
 using std::log;
 //
-using CppAD::mixed::a2_double;
-using CppAD::mixed::a3_double;
 using CppAD::mixed::s_vector;
 using CppAD::mixed::d_vector;
-using CppAD::mixed::a2_vector;
-using CppAD::mixed::a3_vector;
 using CppAD::mixed::d_sparse_rcv;
 //
 // Convert size_t to string adding commas every three digits
@@ -673,7 +669,7 @@ public:
 			log_pik_[ell] = 0.0;
 		template_ran_likelihood(fixed_in, random_in, log_pik_);
 	}
-	// implementaion of ran_likelihood, used with Float = double and a2_double
+	// implementaion of ran_likelihood, used with Float = double and a1_double
 	template <class Float>
 	CppAD::vector<Float> template_ran_likelihood(
 		const CppAD::vector<Float>&  theta   ,
@@ -779,21 +775,20 @@ public:
 	}
 // ------------------------------------------------------------------------
 public:
-	// a2_vector ran_likelihood
-	// a3_vector ran_likelihood
-	virtual a3_vector ran_likelihood(
-		const a3_vector& fixed_vec  ,
-		const a3_vector& random_vec )
-	{	a3_vector log_pik(R_ * K_), vec(1);
+	// a1_vector ran_likelihood
+	virtual a1_vector ran_likelihood(
+		const a1_vector& fixed_vec  ,
+		const a1_vector& random_vec )
+	{	a1_vector log_pik(R_ * K_), vec(1);
 		for(size_t ell = 0; ell < R_ * K_; ell++)
-			log_pik[ell] = a3_double(log_pik_[ell]);
+			log_pik[ell] = a1_double(log_pik_[ell]);
 		vec = template_ran_likelihood(fixed_vec, random_vec, log_pik);
 		// make sure result is finite
 # ifndef NDEBUG
 		double inf = std::numeric_limits<double>::infinity();
 # endif
-		assert( vec[0] < + a3_double(inf) );
-		assert( vec[0] > - a3_double(inf) );
+		assert( vec[0] < + a1_double(inf) );
+		assert( vec[0] > - a1_double(inf) );
 		//
 		return vec;
 	}

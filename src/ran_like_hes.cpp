@@ -101,11 +101,11 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // BEGIN_PROTOTYPE
 a1_sparse_rcv ran_like_hes(
-	size_t                        n_fixed         ,
-	size_t                        n_random        ,
-	CppAD::ADFun<a1_double>&      ran_jac_a1fun   ,
-	const sparse_rc&              ran_hes_uu_rc   ,
-	const a1_vector&              theta_u         )
+	size_t                                n_fixed         ,
+	size_t                                n_random        ,
+	CppAD::ADFun<a1_double, double>&      ran_jac_a1fun   ,
+	const sparse_rc&                      ran_hes_uu_rc   ,
+	const a1_vector&                      theta_u         )
 // END_PROTOTYPE
 {	assert( theta_u.size()     == n_fixed + n_random );
 	assert( ran_jac_a1fun.Domain() == n_fixed + n_random );

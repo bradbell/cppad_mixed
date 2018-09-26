@@ -47,18 +47,6 @@ $srccode%cpp% */
 	typedef CppAD::AD<double> a1_double;
 /* %$$
 
-$subhead a2_double$$
-Scalar with two levels of AD:
-$srccode%cpp% */
-	typedef CppAD::AD<a1_double> a2_double;
-/* %$$
-
-$subhead a3_double$$
-Scalar with two levels of AD:
-$srccode%cpp% */
-	typedef CppAD::AD<a2_double> a3_double;
-/* %$$
-
 $head Vector Types$$
 
 $subhead s_vector$$
@@ -77,18 +65,6 @@ $subhead a1_vector$$
 Vectors with elements of that have one level of AD:
 $srccode%cpp% */
 	typedef CppAD::vector<a1_double> a1_vector;
-/* %$$
-
-$subhead a2_vector$$
-Vectors with elements of that have two levels of AD:
-$srccode%cpp% */
-	typedef CppAD::vector<a2_double> a2_vector;
-/* %$$
-
-$subhead a3_vector$$
-Vectors with elements of that have two levels of AD:
-$srccode%cpp% */
-	typedef CppAD::vector<a3_double> a3_vector;
 /* %$$
 
 $head Sparse Types$$

@@ -18,11 +18,11 @@ see http://www.gnu.org/licenses/agpl.txt
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 a1_sparse_rcv ran_like_hes(
-	size_t                       n_fixed         ,
-	size_t                       n_random        ,
-	CppAD::ADFun<a1_double>&     jac_a1fun       ,
-	const sparse_rc&             ran_hes_uu_rc   ,
-	const a1_vector&             theta_u
+	size_t                               n_fixed         ,
+	size_t                               n_random        ,
+	CppAD::ADFun<a1_double, double>&     jac_a1fun       ,
+	const sparse_rc&                     ran_hes_uu_rc   ,
+	const a1_vector&                     theta_u
 );
 
 
