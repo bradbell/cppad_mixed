@@ -48,6 +48,14 @@ $childtable%
 	omh/whats_new/15.omh
 %$$
 
+$head 09-25$$
+Advance to $code cppad-20180925$$.
+This enabled us to remove the need for two and three levels of AD; i.e.
+$code a2_double$$ and $code a3_double$$.
+The arguments and results for the $cref ran_likelihood$$ function
+are now $cref/a1_vector/typedef/Vector Types/a1_vector/$$ objects instead of
+$code a3_vector$$ objects.
+
 $head 08-30$$
 $bold API:$$
 Remove the user defined versions of the Jacobian and Hessian
