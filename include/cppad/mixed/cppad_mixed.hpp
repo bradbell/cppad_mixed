@@ -104,14 +104,10 @@ $code cppad_mixed$$ class:
 $srccode%cpp% */
 	// scalar types
 	typedef CppAD::mixed::a1_double      a1_double;
-	typedef CppAD::mixed::a2_double      a2_double;
-	typedef CppAD::mixed::a3_double      a3_double;
 	// vector types
 	typedef CppAD::mixed::s_vector       s_vector;
 	typedef CppAD::mixed::d_vector       d_vector;
 	typedef CppAD::mixed::a1_vector      a1_vector;
-	typedef CppAD::mixed::a2_vector      a2_vector;
-	typedef CppAD::mixed::a3_vector      a3_vector;
 	// sparse types
 	typedef CppAD::mixed::sparse_rc      sparse_rc;
 	typedef CppAD::mixed::d_sparse_rcv   d_sparse_rcv;

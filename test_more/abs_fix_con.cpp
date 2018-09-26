@@ -20,7 +20,6 @@ namespace {
 	using CppAD::mixed::d_sparse_rcv;
 	//
 	using CppAD::mixed::a1_double;
-	using CppAD::mixed::a2_double;
 
 	class mixed_derived : public cppad_mixed {
 	private:

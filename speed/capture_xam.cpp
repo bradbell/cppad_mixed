@@ -544,12 +544,8 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 using std::exp;
 using std::log;
 //
-using CppAD::mixed::a2_double;
-using CppAD::mixed::a3_double;
 using CppAD::mixed::s_vector;
 using CppAD::mixed::d_vector;
-using CppAD::mixed::a2_vector;
-using CppAD::mixed::a3_vector;
 using CppAD::mixed::d_sparse_rcv;
 //
 // Convert size_t to string adding commas every three digits
@@ -673,7 +669,7 @@ public:
 			log_pik_[ell] = 0.0;
 		template_ran_likelihood(fixed_in, random_in, log_pik_);
 	}
-	// implementaion of ran_likelihood, used with Float = double and a2_double
+	// implementaion of ran_likelihood, used with Float = double and a1_double
 	template <class Float>
 	CppAD::vector<Float> template_ran_likelihood(
 		const CppAD::vector<Float>&  theta   ,

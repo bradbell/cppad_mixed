@@ -23,15 +23,10 @@ rename_cmd='s|ran_objcon|laplace_obj|'
 spell_cmd='s|$spell$|&\n\tsuitesparse|'
 #
 cat << EOF > junk.sed
-/virtual a3_vector ran_likelihood(/! b end
-: loop
-/)/! N
-/)/ b loop
-s|a3_vector|a1_vector|g
-#
-: end
-s|a3_vector log_pik|a1_vector log_pik|
-s|a3_double(log_pik|a1_double(log_pik|
+/CppAD::mixed::a[23]_double/d
+/CppAD::mixed::a[23]_vector/d
+/a2_vector version of ran_likelihood/d
+s/a3_vector version of ran_likelihood/a1_vector version of ran_likelihood/
 EOF
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/batch_edit.sh" ]

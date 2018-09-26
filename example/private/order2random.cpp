@@ -45,8 +45,6 @@ namespace {
 	//
 	using CppAD::mixed::a1_double;
 	using CppAD::mixed::a1_vector;
-	using CppAD::mixed::a2_double;
-	using CppAD::mixed::a2_vector;
 
 	class mixed_derived : public cppad_mixed {
 	public:
@@ -80,14 +78,9 @@ namespace {
 			}
 			return vec;
 		}
-		// a3_vector version of ran_likelihood
+		// a1_vector version of ran_likelihood
 		virtual a1_vector ran_likelihood(
 			const a1_vector& fixed_vec, const a1_vector& random_vec
-		)
-		{	return template_ran_likelihood( fixed_vec, random_vec ); }
-		// a2_vector version of ran_likelihood
-		a2_vector ran_likelihood(
-			const a2_vector& fixed_vec, const a2_vector& random_vec
 		)
 		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 	};
@@ -100,7 +93,6 @@ bool order2random_xam(void)
 	//
 	using CppAD::vector;
 	typedef CppAD::AD<double>    a1_double;
-	typedef CppAD::AD<a1_double> a2_double;
 	//
 	// n_fixed
 	size_t n_fixed     = 3;
@@ -125,20 +117,24 @@ bool order2random_xam(void)
 	}
 	mixed_object.initialize(fixed_vec, random_vec);
 	//
-	// a2fun = f(theta, u)
-	vector<a2_double> a2_theta_u(n_both), a2_theta(n_fixed), a2_u(n_random);
+	// fun = f(theta, u)
+	vector<a1_double> a1_theta_u(n_both), a1_theta(n_fixed), a1_u(n_random);
 	for(size_t j = 0; j < n_both; j++)
-		a2_theta_u[j] = 0.0;
-	CppAD::Independent(a2_theta_u);
+		a1_theta_u[j] = 0.0;
+	CppAD::Independent(a1_theta_u);
 	for(size_t j = 0; j < n_fixed; ++j)
-	{	a2_theta[j] = a2_theta_u[j];
-		a2_u[j]     = a2_theta_u[j + n_fixed];
+	{	a1_theta[j] = a1_theta_u[j];
+		a1_u[j]     = a1_theta_u[j + n_fixed];
 	}
-	vector<a2_double> a2_f = mixed_object.ran_likelihood(a2_theta, a2_u);
-	CppAD::ADFun<a1_double> a1fun(a2_theta_u, a2_f);
+	vector<a1_double> a1_f = mixed_object.ran_likelihood(a1_theta, a1_u);
+	CppAD::ADFun<double> fun(a1_theta_u, a1_f);
+	//
+	// a1fun = f(theta, u)
+	CppAD::ADFun<a1_double, double> a1fun;
+	a1fun = fun.base2ad();
 	//
 	// jac_fun = f_u (theta, u)
-	vector<a1_double> a1_theta_u(n_both), a1_fu(n_random);
+	vector<a1_double> a1_fu(n_random);
 	for(size_t j = 0; j < n_both; j++)
 		a1_theta_u[j] = a1_double(0.0);
 	CppAD::Independent(a1_theta_u);

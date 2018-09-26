@@ -84,7 +84,7 @@ namespace {
 
 			return vec;
 		}
-		// a3_vector version of ran_likelihood
+		// a1_vector version of ran_likelihood
 		virtual a1_vector ran_likelihood(
 			const a1_vector& fixed_vec, const a1_vector& random_vec
 		)

@@ -56,7 +56,6 @@ namespace {
 	using CppAD::mixed::sparse_mat_info;
 	//
 	using CppAD::mixed::a1_double;
-	using CppAD::mixed::a2_double;
 
 	class mixed_derived : public cppad_mixed {
 	private:
@@ -106,8 +105,7 @@ namespace {
 			}
 			return vec;
 		}
-		// a2_vector version of ran_likelihood
-		// a3_vector version of ran_likelihood
+		// a1_vector version of ran_likelihood
 		virtual a1_vector ran_likelihood(
 			const a1_vector& fixed_vec, const a1_vector& random_vec
 		)

@@ -19,9 +19,7 @@ namespace {
 	using CppAD::AD;
 	//
 	using CppAD::mixed::d_sparse_rcv;
-	using CppAD::mixed::a2_double;
 	using CppAD::mixed::d_vector;
-	using CppAD::mixed::a2_vector;
 	//
 	double small = 1e-5;
 	//
@@ -78,8 +76,7 @@ namespace {
 			//
 			return vec;
 		}
-		// a2_vector version of ran_likelihood
-		// a3_vector version of ran_likelihood
+		// a1_vector version of ran_likelihood
 		virtual a1_vector ran_likelihood(
 			const a1_vector& fixed_vec, const a1_vector& random_vec
 		)

@@ -124,7 +124,7 @@ void cppad_mixed::init_ran_like(
 
 	// optimize the recording
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
-	ran_like_a2fun.optimize("no_conditional_skip");
+	ran_like_fun_.optimize("no_conditional_skip");
 # endif
 	// ------------------------------------------------------------------
 	// set ran_like_a1fun_
