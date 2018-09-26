@@ -129,8 +129,13 @@ do
 done
 git checkout master
 # -----------------------------------------------------------------------------
-echo 'bin/speed_branch.sh: results are in'
-echo "build/ar1_xam.$branch1.out,     build/ar1_xam.$branch2.out"
-echo "build/capture_xam.$branch1.out, build/capture_xam.$branch2.out"
+echo 'bin/speed_branch.sh: results are in:'
+for branch in $branch1 $branch2
+do
+	for program in ar1_xam capture_xam
+	do
+		echo "	build/$branch.$program.out"
+	done
+done
 echo 'speed_branch.sh: OK'
 exit 0
