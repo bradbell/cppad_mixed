@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>CppAD Mixed Wish List</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="CppAD Mixed Wish List">
-<meta name="keywords" id="keywords" content=" cppad mixed wish list sparse matrix d_sparse_rcv aborting optimization second order method random constraints windows install ">
+<meta name="keywords" id="keywords" content=" cppad mixed wish list multi-threading sparse matrix d_sparse_rcv aborting optimization random constraints windows install ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -67,10 +67,10 @@ A:active { color : purple }
 <td>
 <select onchange='choose_current0(this)'>
 <option>Headings-&gt;</option>
+<option>Multi-Threading</option>
 <option>Sparse Matrix</option>
 <option>d_sparse_rcv</option>
 <option>Aborting Optimization</option>
-<option>Second Order Method</option>
 <option>Random Constraints</option>
 <option>Windows Install</option>
 </select>
@@ -82,6 +82,24 @@ A:active { color : purple }
 
 
 <center><b><big><big>CppAD Mixed Wish List</big></big></b></center>
+<br>
+<b><big><a name="Multi-Threading" id="Multi-Threading">Multi-Threading</a></big></b>
+<br>
+Change the <code><font color="blue">ran_likelihood</font></code> function to allow for multi-threading.
+For example, if
+<a href="ran_likelihood.htm#vec" target="_top"><span style='white-space: nowrap'>vec.size()</span></a>
+ is greater than one,
+<small>@(@
+f( \theta , u )
+@)@</small> could be the sum the elements of 
+<code><i><font color="black"><span style='white-space: nowrap'>vec</span></font></i></code>
+
+and subsequent calculations would split to sums with each
+component of 
+<code><i><font color="black"><span style='white-space: nowrap'>vec</span></font></i></code>
+ corresponding to a different thread.
+
+<br>
 <br>
 <b><big><a name="Sparse Matrix" id="Sparse Matrix">Sparse Matrix</a></big></b>
 <br>
@@ -120,25 +138,6 @@ Use <a href="sparse_mat_info.htm" target="_top"><span style='white-space: nowrap
 It would be helpful to return the fixed and random effects
 that correspond to the last attempted function evaluations that fail;
 i.e., that result in <code><font color="blue">nan</font></code>.
-
-<br>
-<br>
-<b><big><a name="Second Order Method" id="Second Order Method">Second Order Method</a></big></b>
-<br>
-The second order method,
-when <a href="derived_ctor.htm#quasi_fixed" target="_top"><span style='white-space: nowrap'>quasi_fixed</span></a>
- is false,
-uses the second order approximate optimal random effects
-<a href="theory.htm#Approximate Optimal Random Effects.Second Order, W(beta, theta, u)" target="_top"><span style='white-space: nowrap'>W(beta,&nbsp;theta,&nbsp;u)</span></a>
-.
-It might be an improvement to use the two partial Newton step method.
-Perhaps a reverse over a forward Kedem method would be better.
-See
-<i>
-Newton step methods for AD of an Objective defined using implicit functions
-</i>
-.
-
 
 <br>
 <br>

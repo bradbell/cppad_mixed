@@ -20,10 +20,10 @@ var list_down1 = [
 'math_notation.htm'
 ];
 var list_current0 = [
+'wish_list.htm#Multi-Threading',
 'wish_list.htm#Sparse Matrix',
 'wish_list.htm#d_sparse_rcv',
 'wish_list.htm#Aborting Optimization',
-'wish_list.htm#Second Order Method',
 'wish_list.htm#Random Constraints',
 'wish_list.htm#Windows Install'
 ];
