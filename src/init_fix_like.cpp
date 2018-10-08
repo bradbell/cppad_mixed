@@ -103,7 +103,7 @@ $code fix_like_hes_$$ is not modified.
 Upon return, $code fix_like_hes_$$ contains
 $cref sparse_hes_rcv$$ for the
 lower triangle of a Hessian corresponding to
-$latex g_{\theta,\theta}) ( \theta )$$ see
+$latex g_{\theta,\theta} ( \theta )$$ see
 $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 If $icode quasi_fixed$$ is true,
 this is not used by $cref optimize_fixed$$, but it may be used by

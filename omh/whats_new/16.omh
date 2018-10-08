@@ -783,8 +783,9 @@ the $code cholmod$$ Cholesky factorization package.
 $lend
 
 $head 01-26$$
-Remove the old $cref ldlt_cholmod$$ wish list its (completed) and add a
-$cref/second order method/wish_list/Second Order Method/$$ item.
+Remove the old $cref ldlt_cholmod$$ wish list its (completed) and add
+partial Newton step second order method wish list item
+(this item has been completed).
 
 $head 01-25$$
 $list number$$

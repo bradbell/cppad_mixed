@@ -48,6 +48,15 @@ $childtable%
 	omh/whats_new/15.omh
 %$$
 
+$head 10-08$$
+$list number$$
+Remove partial Newton step wish list item
+(implemented on $cref/2018-06-30/whats_new_18/06-30/$$).
+$lnext
+Add $cref/multi-threading/wish_list/Multi-Threading/$$
+wish list item.
+$lend
+
 $head 09-25$$
 Advance to $code cppad-20180925$$.
 This enabled us to remove the need for two and three levels of AD; i.e.

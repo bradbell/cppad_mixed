@@ -16,9 +16,18 @@ $spell
 	init
 	hes
 	rcv
+	vec
 $$
 
 $section CppAD Mixed Wish List$$
+
+$head Multi-Threading$$
+Change the $code ran_likelihood$$ function to allow for multi-threading.
+For example, if
+$cref/vec.size()/ran_likelihood/vec/$$ is greater than one,
+$latex f( \theta , u )$$ could be the sum the elements of $icode vec$$
+and subsequent calculations would split to sums with each
+component of $icode vec$$ corresponding to a different thread.
 
 $head Sparse Matrix$$
 Move the calculation of $cref/fix_like_hes_/init_fix_like/fix_like_hes_/$$
@@ -38,24 +47,6 @@ $head Aborting Optimization$$
 It would be helpful to return the fixed and random effects
 that correspond to the last attempted function evaluations that fail;
 i.e., that result in $code nan$$.
-
-$head Second Order Method$$
-The second order method,
-when $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false,
-uses the second order approximate optimal random effects
-$cref/W(beta, theta, u)
-	/theory
-	/Approximate Optimal Random Effects
-	/Second Order, W(beta, theta, u)
-/$$.
-It might be an improvement to use the two partial Newton step method.
-Perhaps a reverse over a forward Kedem method would be better.
-See
-$italic
-Newton step methods for AD of an Objective defined using implicit functions
-$$
-.
-
 
 $head Random Constraints$$
 Include the lagrange multipliers for the
