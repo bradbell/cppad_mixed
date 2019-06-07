@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -131,7 +131,7 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec )
 
 	// save the recording
 	fix_con_fun_.Dependent(a1_theta, a1_vec);
-	fix_con_fun_.check_for_nan(false);
+	fix_con_fun_.check_for_nan(true);
 
 	// optimize the recording
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION

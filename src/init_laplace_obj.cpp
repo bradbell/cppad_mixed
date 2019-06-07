@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -218,7 +218,7 @@ void cppad_mixed::init_laplace_obj(
 	}
 	//
 	laplace_obj_fun_.Dependent(beta, HB);
-	laplace_obj_fun_.check_for_nan(false);
+	laplace_obj_fun_.check_for_nan(true);
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
 	laplace_obj_fun_.optimize("no_conditional_skip");
 # endif

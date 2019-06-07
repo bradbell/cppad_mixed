@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -201,7 +201,7 @@ $head cppad_mixed$$
 The steps above need to be executed once,
 for each $cref/build_type/run_cmake.sh/build_type/$$ that you will used.
 They do not need to be executed each new version of $code cppad_mixed$$
-unless the $cref whats_new_18$$ release notes say otherwise.
+unless the $cref whats_new$$ release notes say otherwise.
 The steps below will need to be executed each time you install
 a new version of $code cppad_mixed$$:
 
