@@ -30,7 +30,7 @@ $comment END: settings used by all section ---------------------------- $$
 
 $section
 C++ Laplace Approximation of Mixed Effects Models:
-cppad_mixed-20181008
+cppad_mixed-20190607
 $$
 $table
 $cnext
