@@ -7,31 +7,8 @@ var list_across0 = [
 ];
 var list_up0 = [
 'cppad_mixed.htm',
-'whats_new_18.htm',
+'whats_new.htm',
 'whats_new_15.htm'
-];
-var list_down2 = [
-'install_unix.htm',
-'theory.htm',
-'base_class.htm',
-'namespace.htm',
-'user.htm',
-'whats_new_18.htm',
-'wish_list.htm',
-'math_notation.htm'
-];
-var list_down1 = [
-'whats_new_17.htm',
-'whats_new_16.htm',
-'whats_new_15.htm'
-];
-var list_current0 = [
-'whats_new_15.htm#12-25',
-'whats_new_15.htm#12-24',
-'whats_new_15.htm#12-16',
-'whats_new_15.htm#12-14',
-'whats_new_15.htm#12-13',
-'whats_new_15.htm#12-10'
 ];
 function choose_across0(item)
 {	var index          = item.selectedIndex;
@@ -62,10 +39,4 @@ function choose_down0(item)
 	item.selectedIndex = 0;
 	if(index > 0)
 		document.location = list_down0[index-1];
-}
-function choose_current0(item)
-{	var index          = item.selectedIndex;
-	item.selectedIndex = 0;
-	if(index > 0)
-		document.location = list_current0[index-1];
 }

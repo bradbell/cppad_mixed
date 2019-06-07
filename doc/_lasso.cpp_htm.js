@@ -10,28 +10,6 @@ var list_up0 = [
 'user.htm',
 'lasso.cpp.htm'
 ];
-var list_down2 = [
-'install_unix.htm',
-'theory.htm',
-'base_class.htm',
-'namespace.htm',
-'user.htm',
-'whats_new_18.htm',
-'wish_list.htm',
-'math_notation.htm'
-];
-var list_down1 = [
-'speed.htm',
-'abs_density.cpp.htm',
-'no_random.cpp.htm',
-'ran_constraint.cpp.htm',
-'lasso.cpp.htm',
-'data_mismatch.cpp.htm',
-'opt_ran_nan.cpp.htm'
-];
-var list_current0 = [
-'lasso.cpp.htm#Model'
-];
 function choose_across0(item)
 {	var index          = item.selectedIndex;
 	item.selectedIndex = 0;
@@ -61,10 +39,4 @@ function choose_down0(item)
 	item.selectedIndex = 0;
 	if(index > 0)
 		document.location = list_down0[index-1];
-}
-function choose_current0(item)
-{	var index          = item.selectedIndex;
-	item.selectedIndex = 0;
-	if(index > 0)
-		document.location = list_current0[index-1];
 }

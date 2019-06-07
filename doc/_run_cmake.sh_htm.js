@@ -10,35 +10,6 @@ var list_up0 = [
 'install_unix.htm',
 'run_cmake.sh.htm'
 ];
-var list_down2 = [
-'install_unix.htm',
-'theory.htm',
-'base_class.htm',
-'namespace.htm',
-'user.htm',
-'whats_new_18.htm',
-'wish_list.htm',
-'math_notation.htm'
-];
-var list_down1 = [
-'example_install.sh.htm',
-'run_cmake.sh.htm',
-'check_install.sh.htm'
-];
-var list_current0 = [
-'run_cmake.sh.htm#verbose_makefile',
-'run_cmake.sh.htm#build_type',
-'run_cmake.sh.htm#cppad_prefix',
-'run_cmake.sh.htm#eigen_prefix',
-'run_cmake.sh.htm#ipopt_prefix',
-'run_cmake.sh.htm#Debug and Release',
-'run_cmake.sh.htm#extra_cxx_flags',
-'run_cmake.sh.htm#cmake_libdir',
-'run_cmake.sh.htm#ldlt_cholmod',
-'run_cmake.sh.htm#optimize_cppad_function',
-'run_cmake.sh.htm#for_hes_sparsity',
-'run_cmake.sh.htm#Testing Speed and Memory'
-];
 function choose_across0(item)
 {	var index          = item.selectedIndex;
 	item.selectedIndex = 0;
@@ -68,10 +39,4 @@ function choose_down0(item)
 	item.selectedIndex = 0;
 	if(index > 0)
 		document.location = list_down0[index-1];
-}
-function choose_current0(item)
-{	var index          = item.selectedIndex;
-	item.selectedIndex = 0;
-	if(index > 0)
-		document.location = list_current0[index-1];
 }

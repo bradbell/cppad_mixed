@@ -11,45 +11,6 @@ var list_up0 = [
 'public.htm',
 'information_mat.htm'
 ];
-var list_down3 = [
-'install_unix.htm',
-'theory.htm',
-'base_class.htm',
-'namespace.htm',
-'user.htm',
-'whats_new_18.htm',
-'wish_list.htm',
-'math_notation.htm'
-];
-var list_down2 = [
-'public.htm',
-'private.htm'
-];
-var list_down1 = [
-'derived_ctor.htm',
-'ran_likelihood.htm',
-'fix_likelihood.htm',
-'fix_constraint.htm',
-'initialize.htm',
-'optimize_random.htm',
-'optimize_fixed.htm',
-'information_mat.htm',
-'sample_fixed.htm',
-'sample_random.htm'
-];
-var list_down0 = [
-'information_mat.cpp.htm'
-];
-var list_current0 = [
-'information_mat.htm#Syntax',
-'information_mat.htm#Purpose',
-'information_mat.htm#quasi_fixed',
-'information_mat.htm#mixed_object',
-'information_mat.htm#solution',
-'information_mat.htm#random_opt',
-'information_mat.htm#information_rcv',
-'information_mat.htm#Example'
-];
 function choose_across0(item)
 {	var index          = item.selectedIndex;
 	item.selectedIndex = 0;
@@ -85,10 +46,4 @@ function choose_down0(item)
 	item.selectedIndex = 0;
 	if(index > 0)
 		document.location = list_down0[index-1];
-}
-function choose_current0(item)
-{	var index          = item.selectedIndex;
-	item.selectedIndex = 0;
-	if(index > 0)
-		document.location = list_current0[index-1];
 }

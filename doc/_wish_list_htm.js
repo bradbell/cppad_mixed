@@ -9,24 +9,6 @@ var list_up0 = [
 'cppad_mixed.htm',
 'wish_list.htm'
 ];
-var list_down1 = [
-'install_unix.htm',
-'theory.htm',
-'base_class.htm',
-'namespace.htm',
-'user.htm',
-'whats_new_18.htm',
-'wish_list.htm',
-'math_notation.htm'
-];
-var list_current0 = [
-'wish_list.htm#Multi-Threading',
-'wish_list.htm#Sparse Matrix',
-'wish_list.htm#d_sparse_rcv',
-'wish_list.htm#Aborting Optimization',
-'wish_list.htm#Random Constraints',
-'wish_list.htm#Windows Install'
-];
 function choose_across0(item)
 {	var index          = item.selectedIndex;
 	item.selectedIndex = 0;
@@ -50,10 +32,4 @@ function choose_down0(item)
 	item.selectedIndex = 0;
 	if(index > 0)
 		document.location = list_down0[index-1];
-}
-function choose_current0(item)
-{	var index          = item.selectedIndex;
-	item.selectedIndex = 0;
-	if(index > 0)
-		document.location = list_current0[index-1];
 }

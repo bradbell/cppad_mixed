@@ -11,61 +11,6 @@ var list_up0 = [
 'private.htm',
 'fix_like_jac.htm'
 ];
-var list_down3 = [
-'install_unix.htm',
-'theory.htm',
-'base_class.htm',
-'namespace.htm',
-'user.htm',
-'whats_new_18.htm',
-'wish_list.htm',
-'math_notation.htm'
-];
-var list_down2 = [
-'public.htm',
-'private.htm'
-];
-var list_down1 = [
-'pack.htm',
-'unpack.htm',
-'init_ran_jac.htm',
-'init_ran_hes.htm',
-'init_laplace_obj.htm',
-'init_ldlt_ran_hes.htm',
-'init_fix_con.htm',
-'init_fix_like.htm',
-'init_hes_cross.htm',
-'init_laplace_obj_hes.htm',
-'init_ran_like.htm',
-'fix_con_eval.htm',
-'fix_con_hes.htm',
-'fix_con_jac.htm',
-'fix_like_eval.htm',
-'fix_like_hes.htm',
-'fix_like_jac.htm',
-'logdet_jac.htm',
-'ran_like_hes.htm',
-'ran_con_eval.htm',
-'ran_con_jac.htm',
-'ran_obj_eval.htm',
-'ran_obj_jac.htm',
-'laplace_obj_hes.htm',
-'update_factor.htm'
-];
-var list_down0 = [
-'fix_like_jac.cpp.htm'
-];
-var list_current0 = [
-'fix_like_jac.htm#Syntax',
-'fix_like_jac.htm#Private',
-'fix_like_jac.htm#mixed_object',
-'fix_like_jac.htm#fix_likelihood',
-'fix_like_jac.htm#fixed_vec',
-'fix_like_jac.htm#row_out',
-'fix_like_jac.htm#col_out',
-'fix_like_jac.htm#val_out',
-'fix_like_jac.htm#Example'
-];
 function choose_across0(item)
 {	var index          = item.selectedIndex;
 	item.selectedIndex = 0;
@@ -101,10 +46,4 @@ function choose_down0(item)
 	item.selectedIndex = 0;
 	if(index > 0)
 		document.location = list_down0[index-1];
-}
-function choose_current0(item)
-{	var index          = item.selectedIndex;
-	item.selectedIndex = 0;
-	if(index > 0)
-		document.location = list_current0[index-1];
 }

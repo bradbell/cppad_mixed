@@ -11,58 +11,6 @@ var list_up0 = [
 'private.htm',
 'ran_con_eval.htm'
 ];
-var list_down3 = [
-'install_unix.htm',
-'theory.htm',
-'base_class.htm',
-'namespace.htm',
-'user.htm',
-'whats_new_18.htm',
-'wish_list.htm',
-'math_notation.htm'
-];
-var list_down2 = [
-'public.htm',
-'private.htm'
-];
-var list_down1 = [
-'pack.htm',
-'unpack.htm',
-'init_ran_jac.htm',
-'init_ran_hes.htm',
-'init_laplace_obj.htm',
-'init_ldlt_ran_hes.htm',
-'init_fix_con.htm',
-'init_fix_like.htm',
-'init_hes_cross.htm',
-'init_laplace_obj_hes.htm',
-'init_ran_like.htm',
-'fix_con_eval.htm',
-'fix_con_hes.htm',
-'fix_con_jac.htm',
-'fix_like_eval.htm',
-'fix_like_hes.htm',
-'fix_like_jac.htm',
-'logdet_jac.htm',
-'ran_like_hes.htm',
-'ran_con_eval.htm',
-'ran_con_jac.htm',
-'ran_obj_eval.htm',
-'ran_obj_jac.htm',
-'laplace_obj_hes.htm',
-'update_factor.htm'
-];
-var list_down0 = [
-'ran_con_eval.cpp.htm'
-];
-var list_current0 = [
-'ran_con_eval.htm#Syntax',
-'ran_con_eval.htm#Private',
-'ran_con_eval.htm#mixed_object',
-'ran_con_eval.htm#random_vec',
-'ran_con_eval.htm#Au',
-'ran_con_eval.htm#Example'
-];
 function choose_across0(item)
 {	var index          = item.selectedIndex;
 	item.selectedIndex = 0;
@@ -98,10 +46,4 @@ function choose_down0(item)
 	item.selectedIndex = 0;
 	if(index > 0)
 		document.location = list_down0[index-1];
-}
-function choose_current0(item)
-{	var index          = item.selectedIndex;
-	item.selectedIndex = 0;
-	if(index > 0)
-		document.location = list_current0[index-1];
 }

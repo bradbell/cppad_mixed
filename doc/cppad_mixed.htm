@@ -13,11 +13,11 @@ MathJax.Hub.Config({
 </script>
 <head>
 <title>C++ Laplace Approximation of Mixed Effects Models:
-cppad_mixed-20181008</title>
+cppad_mixed-20190607</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="C++ Laplace Approximation of Mixed Effects Models:
-cppad_mixed-20181008">
-<meta name="keywords" id="keywords" content=" c++ laplace approximation mixed effects models: cppad_mixed-20181008 license source code repository notation fixed theta random u data y z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood no constraints c negative log-density vector ">
+cppad_mixed-20190607">
+<meta name="keywords" id="keywords" content=" c++ laplace approximation mixed effects models: cppad_mixed-20190607 license source code repository notation fixed theta random u data y z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood no constraints c negative log-density vector ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -51,43 +51,7 @@ A:active { color : purple }
 </select>
 </td>
 <td>
-<select onchange='choose_down0(this)'>
-<option>cppad_mixed-&gt;</option>
-<option>install_unix</option>
-<option>theory</option>
-<option>base_class</option>
-<option>namespace</option>
-<option>user</option>
-<option>whats_new_18</option>
-<option>wish_list</option>
-<option>math_notation</option>
-</select>
-</td>
-<td>
-<select onchange='choose_current0(this)'>
-<option>Headings-&gt;</option>
-<option>License</option>
-<option>Source Code Repository</option>
-<option>Notation</option>
-<option>---..Fixed Effects, theta</option>
-<option>---..Random Effects, u</option>
-<option>---..Data, y, z</option>
-<option>---..Fixed Prior Density, p(theta)</option>
-<option>---..Fixed Data Density, p(z|theta)</option>
-<option>---..Random Prior Density, p(u|theta)</option>
-<option>---..Random Data Density, p(y|theta,u)</option>
-<option>---..Fixed Constraint Function, c(theta)</option>
-<option>---..Optimal Random Effects, u^(theta)</option>
-<option>---..Random Constraint Matrix, A</option>
-<option>---..Random Constraint Function, A*u^(theta)</option>
-<option>Problem</option>
-<option>---..Maximum Likelihood</option>
-<option>---..No Random Effects</option>
-<option>---..Fixed Constraints, c</option>
-<option>---..Random Constraints</option>
-<option>Negative Log-Density Vector</option>
-<option>Contents</option>
-</select>
+<script type='text/javascript' language='JavaScript' src='_childtable_cppad_mixed_htm.js'></script>
 </td>
 </tr></table><br>
 <small>@(@
@@ -95,8 +59,30 @@ A:active { color : purple }
 	\newcommand{\B}[1]{ {\bf #1} }
 	\newcommand{\W}[1]{ \; #1 \; }
 @)@</small><center><b><big><big>C++ Laplace Approximation of Mixed Effects Models:
-cppad_mixed-20181008</big></big></b></center>
-<table><tr><td align='left'  valign='top'>
+cppad_mixed-20190607</big></big></b></center>
+
+<br><a href="cppad_mixed.htm#License" target="_top">License</a>
+<br><a href="cppad_mixed.htm#Source Code Repository" target="_top">Source&nbsp;Code&nbsp;Repository</a>
+<br><a href="cppad_mixed.htm#Notation" target="_top">Notation</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="cppad_mixed.htm#Notation.Fixed Effects, theta" target="_top">Fixed&nbsp;Effects,&nbsp;theta</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="cppad_mixed.htm#Notation.Random Effects, u" target="_top">Random&nbsp;Effects,&nbsp;u</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="cppad_mixed.htm#Notation.Data, y, z" target="_top">Data,&nbsp;y,&nbsp;z</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="cppad_mixed.htm#Notation.Fixed Prior Density, p(theta)" target="_top">Fixed&nbsp;Prior&nbsp;Density,&nbsp;p(theta)</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="cppad_mixed.htm#Notation.Fixed Data Density, p(z|theta)" target="_top">Fixed&nbsp;Data&nbsp;Density,&nbsp;p(z|theta)</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="cppad_mixed.htm#Notation.Random Prior Density, p(u|theta)" target="_top">Random&nbsp;Prior&nbsp;Density,&nbsp;p(u|theta)</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="cppad_mixed.htm#Notation.Random Data Density, p(y|theta,u)" target="_top">Random&nbsp;Data&nbsp;Density,&nbsp;p(y|theta,u)</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="cppad_mixed.htm#Notation.Fixed Constraint Function, c(theta)" target="_top">Fixed&nbsp;Constraint&nbsp;Function,&nbsp;c(theta)</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="cppad_mixed.htm#Notation.Optimal Random Effects, u^(theta)" target="_top">Optimal&nbsp;Random&nbsp;Effects,&nbsp;u^(theta)</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="cppad_mixed.htm#Notation.Random Constraint Matrix, A" target="_top">Random&nbsp;Constraint&nbsp;Matrix,&nbsp;A</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="cppad_mixed.htm#Notation.Random Constraint Function, A*u^(theta)" target="_top">Random&nbsp;Constraint&nbsp;Function,&nbsp;A*u^(theta)</a>
+<br><a href="cppad_mixed.htm#Problem" target="_top">Problem</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="cppad_mixed.htm#Problem.Maximum Likelihood" target="_top">Maximum&nbsp;Likelihood</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="cppad_mixed.htm#Problem.No Random Effects" target="_top">No&nbsp;Random&nbsp;Effects</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="cppad_mixed.htm#Problem.Fixed Constraints, c" target="_top">Fixed&nbsp;Constraints,&nbsp;c</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="cppad_mixed.htm#Problem.Random Constraints" target="_top">Random&nbsp;Constraints</a>
+<br><a href="cppad_mixed.htm#Negative Log-Density Vector" target="_top">Negative&nbsp;Log-Density&nbsp;Vector</a>
+<br><a href="cppad_mixed.htm#Contents" target="_top">Contents</a>
+<br><table><tr><td align='left'  valign='top'>
 </td><td align='left'  valign='top'>
 One section per page <code><span style='white-space: nowrap'>&nbsp;&nbsp;</span></code> </td><td align='left'  valign='top'>
 
@@ -368,7 +354,7 @@ where
 <b><big><a name="Contents" id="Contents">Contents</a></big></b>
 <br>
 <table>
-<tr><td><a href="_contents.htm" target="_top">_contents</a></td><td>Table&nbsp;of&nbsp;Contents</td></tr><tr><td><a href="install_unix.htm" target="_top">install_unix</a></td><td>Installing&nbsp;cppad_mixed&nbsp;in&nbsp;Unix</td></tr><tr><td><a href="theory.htm" target="_top">theory</a></td><td>Laplace&nbsp;Approximation&nbsp;for&nbsp;Mixed&nbsp;Effects&nbsp;Models</td></tr><tr><td><a href="base_class.htm" target="_top">base_class</a></td><td>The&nbsp;cppad_mixed&nbsp;Base&nbsp;Class</td></tr><tr><td><a href="namespace.htm" target="_top">namespace</a></td><td>The&nbsp;CppAD::mixed&nbsp;Namespace&nbsp;Declarations</td></tr><tr><td><a href="user.htm" target="_top">user</a></td><td>User&nbsp;API&nbsp;Examples</td></tr><tr><td><a href="whats_new_18.htm" target="_top">whats_new_18</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed&nbsp;During&nbsp;2018</td></tr><tr><td><a href="wish_list.htm" target="_top">wish_list</a></td><td>CppAD&nbsp;Mixed&nbsp;Wish&nbsp;List</td></tr><tr><td><a href="math_notation.htm" target="_top">math_notation</a></td><td>Mathematical&nbsp;Notation</td></tr><tr><td><a href="_reference.htm" target="_top">_reference</a></td><td>Alphabetic&nbsp;Listing&nbsp;of&nbsp;Cross&nbsp;Reference&nbsp;Tags</td></tr><tr><td><a href="_index.htm" target="_top">_index</a></td><td>Keyword&nbsp;Index</td></tr><tr><td><a href="_search.htm" target="_top">_search</a></td><td>Search&nbsp;This&nbsp;Web&nbsp;Site</td></tr><tr><td><a href="_external.htm" target="_top">_external</a></td><td>External&nbsp;Internet&nbsp;References</td></tr></table>
+<tr><td><a href="_contents.htm" target="_top">_contents</a></td><td>Table&nbsp;of&nbsp;Contents</td></tr><tr><td><a href="install_unix.htm" target="_top">install_unix</a></td><td>Installing&nbsp;cppad_mixed&nbsp;in&nbsp;Unix</td></tr><tr><td><a href="theory.htm" target="_top">theory</a></td><td>Laplace&nbsp;Approximation&nbsp;for&nbsp;Mixed&nbsp;Effects&nbsp;Models</td></tr><tr><td><a href="base_class.htm" target="_top">base_class</a></td><td>The&nbsp;cppad_mixed&nbsp;Base&nbsp;Class</td></tr><tr><td><a href="namespace.htm" target="_top">namespace</a></td><td>The&nbsp;CppAD::mixed&nbsp;Namespace&nbsp;Declarations</td></tr><tr><td><a href="user.htm" target="_top">user</a></td><td>User&nbsp;API&nbsp;Examples</td></tr><tr><td><a href="whats_new.htm" target="_top">whats_new</a></td><td>Changes&nbsp;and&nbsp;Additions&nbsp;to&nbsp;cppad_mixed</td></tr><tr><td><a href="wish_list.htm" target="_top">wish_list</a></td><td>CppAD&nbsp;Mixed&nbsp;Wish&nbsp;List</td></tr><tr><td><a href="math_notation.htm" target="_top">math_notation</a></td><td>Mathematical&nbsp;Notation</td></tr><tr><td><a href="_reference.htm" target="_top">_reference</a></td><td>Alphabetic&nbsp;Listing&nbsp;of&nbsp;Cross&nbsp;Reference&nbsp;Tags</td></tr><tr><td><a href="_index.htm" target="_top">_index</a></td><td>Keyword&nbsp;Index</td></tr><tr><td><a href="_search.htm" target="_top">_search</a></td><td>Search&nbsp;This&nbsp;Web&nbsp;Site</td></tr><tr><td><a href="_external.htm" target="_top">_external</a></td><td>External&nbsp;Internet&nbsp;References</td></tr></table>
 <hr>Input File: doc.omh
 
 </body>
