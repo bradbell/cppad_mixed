@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -18,6 +18,7 @@ $spell
 	iterator
 	iterators
 	std
+	setvec
 $$
 
 $section Print a CppAD Internal Sparsity Pattern$$
@@ -40,8 +41,8 @@ If it is empty, no label is printed.
 $head pattern$$
 Is the sparsity pattern which must have one of the following prototypes:
 $codei%
-		CppAD::local::sparse_pack& %pattern%
-		CppAD::local::sparse_list& %pattern%
+		CppAD::local::sparse::pack_setvec& %pattern%
+		CppAD::local::sparse::list_setvec& %pattern%
 %$$
 Note these are effectively $code const$$, but are not declared
 so that the corresponding iterator can be used.
@@ -55,13 +56,13 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 void sparsity_print(
 	const std::string&  label     ,
-	CppAD::local::sparse_pack& pattern   )
+	CppAD::local::sparse::pack_setvec& pattern   )
 {	if( label != "" )
 		std::cout << label << ":\n";
 	for(size_t i = 0; i < pattern.n_set(); i++)
 	{	bool first = true;
 			std::cout << "row " << i << ":";
-		CppAD::local::sparse_pack::const_iterator itr(pattern, i);
+		CppAD::local::sparse::pack_setvec::const_iterator itr(pattern, i);
 		size_t j = *itr;
 		while( j != pattern.end() )
 		{	assert( j < pattern.end() );
@@ -77,13 +78,13 @@ void sparsity_print(
 
 void sparsity_print(
 	const std::string&  label     ,
-	CppAD::local::sparse_list& pattern   )
+	CppAD::local::sparse::list_setvec& pattern   )
 {	if( label != "" )
 		std::cout << label << ":\n";
 	for(size_t i = 0; i < pattern.n_set(); i++)
 	{	bool first = true;
 			std::cout << "row " << i << ":";
-		CppAD::local::sparse_list::const_iterator itr(pattern, i);
+		CppAD::local::sparse::list_setvec::const_iterator itr(pattern, i);
 		size_t j = *itr;
 		while( j != pattern.end() )
 		{	assert( j < pattern.end() );

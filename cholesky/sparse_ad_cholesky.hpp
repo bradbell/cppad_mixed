@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -94,6 +94,7 @@ class sparse_ad_cholesky : public CppAD::atomic_base<double> {
 // -----------------------------------------------------------------
 // BEGIN TYPE DECLARATIONS
 private:
+    typedef CppAD::local::sparse::pack_setvec           pack_setvec;
 	typedef Eigen::
 	SparseMatrix<double, Eigen::ColMajor>               sparse_d_matrix;
 	typedef Eigen::
@@ -133,10 +134,10 @@ private:
 	// (set by initialize).
 	CppAD::vector<size_t> L_row_major_;
 	//
-	// Jacobian sparsity as a sparse_pack.  This is CppAD internal
+	// Jacobian sparsity as a pack_setvec.  This is CppAD internal
 	// representations for vectors of of bools.  Its use is not part of the
 	// CppAD API (yet), but it is more efficient, so we use it here.
-	CppAD::local::sparse_pack jac_sparsity_pack_;
+	pack_setvec jac_sparsity_pack_;
 // END MEMBER VARIABLES
 // -----------------------------------------------------------------
 // BEGIN PUBLIC MEMBER FUNCTIONS

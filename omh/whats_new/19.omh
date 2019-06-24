@@ -17,7 +17,10 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2019$$
 
-$head 06$$
+$head 06-24$$
+Advance to $code cppad-20190623$$.
+
+$head 06-07$$
 Change the $code CppAD::ADFun$$ object to check for $code nan$$.
 This detects them sooner and gives better error messaging
 (when $code NDEBUG$$ is not defined).
