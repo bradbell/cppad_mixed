@@ -3,7 +3,7 @@
 # define CPPAD_MIXED_FIXED_SOLUTION_HPP
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -26,7 +26,7 @@ $codei%CppAD::mixed::fixed_solution %solution%$$
 
 $head Public$$
 This structure is part of the
-$cref/CppAD::mixed/namespace/Public/$$ user API.
+CppAD Mixed user API.
 
 $head Convention$$
 If a Lagrange multiplier is zero, the correspond constraint

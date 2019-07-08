@@ -53,7 +53,7 @@ We use $latex L$$ to refer to the lower triangular matrix.
 
 $head Private$$
 This class is an implementation detail and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head Public Member Functions$$
 $srcfile%cholesky/sparse_ad_cholesky.hpp

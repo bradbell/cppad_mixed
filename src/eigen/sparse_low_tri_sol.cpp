@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -28,7 +28,7 @@ $srcfile%src/eigen/sparse_low_tri_sol.cpp
 
 $head Private$$
 This function is an implementation detail and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head left$$
 This must be a square invertible lower triangular matrix; i.e.,

@@ -46,7 +46,7 @@ $head Public / Private$$
 This is a public member function of the class $code sparse_ad_cholesky$$.
 On the other hand, this class,
 and all of its members, are implementation details and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head cholesky$$
 This is object has prototype
@@ -172,7 +172,7 @@ $head Public / Private$$
 This is a public member function of the class $code sparse_ad_cholesky$$.
 On the other hand, this class,
 and all of its members, are implementation details and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head cholesky$$
 This is object has prototype
@@ -219,7 +219,7 @@ $head Public / Private$$
 This is a public member function of the class $code sparse_ad_cholesky$$.
 On the other hand, this class,
 and all of its members, are implementation details and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head ad_Alow$$
 This matrix has prototype
@@ -306,7 +306,7 @@ $head Private$$
 This is a private member function of the class $code sparse_ad_cholesky$$.
 In addition, this class,
 and all of its members, are implementation details and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head jac_sparsity$$
 This argument has one of the following prototypes
@@ -517,7 +517,7 @@ $head Private$$
 This is a private member function of the class $code sparse_ad_cholesky$$.
 In addition, this class,
 and all of its members, are implementation details and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head s$$
 This argument has prototype

@@ -2,7 +2,7 @@
 # define CPPAD_MIXED_SPARSE_EIGEN2RCV_HPP
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -30,7 +30,7 @@ $srcfile%include/cppad/mixed/sparse_eigen2rcv.hpp
 
 $head Private$$
 This routine is an implementation detail and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head Scalar$$
 is the element type for the sparse matrix.

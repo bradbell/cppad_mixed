@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -36,7 +36,7 @@ $srcfile%src/eigen/ldlt_eigen.cpp
 $head Private$$
 The $cref ldlt_eigen$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head n_row_$$
 The argument $icode n_row$$
@@ -91,7 +91,7 @@ $srcfile%src/eigen/ldlt_eigen.cpp
 $head Private$$
 The $code ldlt_eigen$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head ldlt_obj$$
 This object has prototype
@@ -170,7 +170,7 @@ $srcfile%src/eigen/ldlt_eigen.cpp
 $head Private$$
 The $cref ldlt_eigen$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head ldlt_obj$$
 This object has prototype
@@ -233,7 +233,7 @@ $srcfile%src/eigen/ldlt_eigen.cpp
 $head Private$$
 The $cref ldlt_eigen$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head Purpose$$
 This routine updates the $cref ldlt_eigen$$ factorization
@@ -340,7 +340,7 @@ $srcfile%src/eigen/ldlt_eigen.cpp
 $head Private$$
 The $cref ldlt_eigen$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head Purpose$$
 Extract the components of the $cref/factorization/ldlt_eigen/Factorization/$$
@@ -409,7 +409,7 @@ $srcfile%src/eigen/ldlt_eigen.cpp
 $head Private$$
 The $code ldlt_eigen$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head ldlt_obj$$
 This object has prototype
@@ -486,7 +486,7 @@ $srcfile%src/eigen/ldlt_eigen.cpp
 $head Private$$
 The $cref ldlt_eigen$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head Purpose$$
 This function solves the linear equation
@@ -590,7 +590,7 @@ $srcfile%src/eigen/ldlt_eigen.cpp
 $head Private$$
 The $cref ldlt_eigen$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head Purpose$$
 This function simulates a normal random vector with mean zero
@@ -726,7 +726,7 @@ $srcfile%src/eigen/ldlt_eigen.cpp
 $head Private$$
 The $cref ldlt_eigen$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head Purpose$$
 This function solves for a subset of the inverse of the
@@ -866,7 +866,7 @@ $srcfile%src/eigen/ldlt_eigen.cpp
 $head Private$$
 The $cref ldlt_eigen$$ class is an
 $cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head Purpose$$
 This function solves the linear equation

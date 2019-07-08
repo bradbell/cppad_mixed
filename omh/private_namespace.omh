@@ -28,8 +28,7 @@ The $cref configure.hpp$$ declarations are an exception because
 they are $code cppad_mixed$$ preprocessor symbols and hence
 not in the $code CppAD::mixed$$ namespace.
 
-$childtable%
-	%include/cppad/mixed/configure.hpp.in
+$childtable%include/cppad/mixed/configure.hpp.in
 	%src/ipopt_app_status.cpp
 	%include/cppad/mixed/ipopt_fixed.hpp
 	%include/cppad/mixed/ipopt_random.hpp

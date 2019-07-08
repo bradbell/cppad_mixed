@@ -29,4 +29,5 @@
 # '
 # ----------------------------------------------------------------------------
 # Put other sed commands below here and without # at start of line
-s|check_for_nan(false)|check_for_nan(true)|g
+s|$cref/CppAD::mixed/namespace/Public/$\$|CppAD Mixed|
+s|$cref/CppAD::mixed/namespace/Private/$\$|CppAD Mixed|

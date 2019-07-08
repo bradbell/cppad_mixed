@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -179,7 +179,7 @@ $codei%CppAD::mixed::ipopt_fixed %ipopt_object%(
 $head Private$$
 This class,
 and all of its members, are implementation details and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head References$$
 The values of the arguments are stored by reference and hence

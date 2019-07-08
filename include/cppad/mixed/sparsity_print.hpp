@@ -28,7 +28,7 @@ $codei%sparsity_print(%label%, %pattern%)%$$
 
 $head Private$$
 This routine is an implementation detail and not part of the
-$cref/CppAD::mixed/namespace/Private/$$ user API.
+CppAD Mixed user API.
 
 $head label$$
 This argument has prototype
