@@ -2,7 +2,7 @@
 /*
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -214,7 +214,7 @@ longer used for computing these samples.
 
 $head 2DO$$
 This routine uses dense matrices, perhaps it would be useful
-to converting this (and $cref undetermined$$) to all sparse matrices.
+to converting this to all sparse matrices.
 
 $end
 ------------------------------------------------------------------------------

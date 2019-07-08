@@ -2,7 +2,7 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-18 University of Washington
+#           Copyright (C) 2014-19 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -119,8 +119,8 @@ cmake_libdir='lib64'
 # &&
 #
 # &head ldlt_cholmod&&
-# If yes, use &cref ldlt_cholmod&& LDLT factorization where possible.
-# Otherwise always use &cref ldlt_eigen&& for LDLT factorization.
+# If yes, use &code ldlt_cholmod&& LDLT factorization where possible.
+# Otherwise always use &code ldlt_eigen&& for LDLT factorization.
 # &codep
 ldlt_cholmod='yes'
 # &&

@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -30,7 +30,7 @@ and subsequent calculations would split to sums with each
 component of $icode vec$$ corresponding to a different thread.
 
 $head Sparse Matrix$$
-Move the calculation of $cref/fix_like_hes_/init_fix_like/fix_like_hes_/$$
+Move the initialization of $code fix_like_hes_$$
 to a separate routine so it does not get calculated when
 $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is true.
 If $icode quasi_fixed$$ is true, $code fix_like_hes_$$

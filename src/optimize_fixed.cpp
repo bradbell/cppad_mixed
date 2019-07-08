@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -272,7 +272,7 @@ and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
 $head ipopt_fixed$$
-The  class $cref ipopt_fixed$$ is used by $code optimize_fixed$$
+The  class $code ipopt_fixed$$ is used by $code optimize_fixed$$
 to optimize the fixed effects.
 It's specifications are not part of the $cref cppad_mixed$$ public interface.
 

@@ -8,24 +8,22 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
-$begin base_class$$
+$begin public_namespace$$
 $spell
-	cppad
+	Namespace
+	CppAD
 $$
 
-$section The cppad_mixed Base Class$$
-
-$head Public$$
-The $cref public$$ declarations in the $code cppad_mixed$$ base class
-are part of the user API.
-
-$head Private$$
-The $cref private$$ declarations in the $code cppad_mixed$$ base class
-are implementation details
+$section The CppAD::mixed Namespace Public Declarations$$
+The declarations in the subsections below
+are in the $code CppAD::mixed$$ namespace.
 
 
-$children%include/cppad/mixed/public.hpp
-    %include/cppad/mixed/private.hpp
+$childtable%include/cppad/mixed/typedef.hpp
+	%src/manage_gsl_rng.cpp
+	%include/cppad/mixed/sparse_mat_info.hpp
+	%include/cppad/mixed/fixed_solution.hpp
+	%include/cppad/mixed/exception.hpp
 %$$
 
 $end

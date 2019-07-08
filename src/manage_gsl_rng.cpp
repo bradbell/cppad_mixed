@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -28,8 +28,7 @@ $codei%CppAD::mixed::free_gsl_rng()
 %$$
 
 $head Public$$
-This function is part of the
-$cref/CppAD::mixed/namespace/Public/$$ user API.
+This function is part of the CppAD Mixed user API.
 
 $head Purpose$$
 Create and use a GSL random number generator.

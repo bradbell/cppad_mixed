@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -14,6 +14,8 @@ $spell
 	CppAD
 	namespace
 	cppad
+	Ipopt
+	eval
 $$
 
 $section Changes and Additions to cppad_mixed During 2015$$
@@ -26,13 +28,13 @@ superscripts (1) and (2) from derivatives. This enables us
 $lnext
 Change $latex z^L, z^U$$ to $latex z_L , z_U$$ in
 $cref ipopt_xam$$ (because the corresponding variables are
-$icode z_L$$ and $icode z_U$$); see
-$cref/finalize_solution/ipopt_fixed_finalize_solution/z_L/$$.
+$icode z_L$$ and $icode z_U$$); see Ipopt
+$code finalize_solution$$.
 $lend
 
 $head 12-24$$
 $list number$$
-There was a bug in the $cref ipopt_fixed_eval_g$$ routine.
+There was a bug in the $code ipopt_fixed_eval_g$$ routine.
 It was not caching the value of $latex \hat{u}( \theta )$$
 each time that $latex \theta$$ changed.
 This has been fixed.

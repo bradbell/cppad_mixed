@@ -8,21 +8,15 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
-$begin cppad_mixed$$
-$comment Developer documentation for cppad_mixed$$.
+$begin base_class$$
+$spell
+	cppad
+$$
 
-$include omh/cppad_mixed.omh$$
+$section The cppad_mixed Developer Documentation$$
 
-$childtable%omh/install_unix.omh
-	%omh/theory.omh
-	%include/cppad/mixed/public.hpp
-	%omh/public_namespace.omh
-	%example/user/user.omh
-	%omh/whats_new/whats_new.omh
-	%omh/wish_list.omh
-	%omh/math_notation.omh
-	%omh/devel.omh
+$childtable%include/cppad/mixed/private.hpp
+	%omh/private_namespace.omh
 %$$
-
 
 $end

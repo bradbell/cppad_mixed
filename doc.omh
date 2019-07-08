@@ -15,8 +15,8 @@ $include omh/cppad_mixed.omh$$
 
 $childtable%omh/install_unix.omh
 	%omh/theory.omh
-	%omh/base_class.omh
-	%omh/namespace.omh
+	%include/cppad/mixed/public.hpp
+	%omh/public_namespace.omh
 	%example/user/user.omh
 	%omh/whats_new/whats_new.omh
 	%omh/wish_list.omh

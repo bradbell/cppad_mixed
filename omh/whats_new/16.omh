@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -659,8 +659,7 @@ The routine $cref ipopt_fixed_adaptive_derivative_check$$ now checks
 $cref ipopt_fixed_eval_jac_g$$ in addition to
 $cref ipopt_fixed_eval_grad_f$$.
 $lnext
-Fix a bug in the computation of the derivative of the random constraints
-$cref ran_con_jac$$.
+Fix a bug in the computation of the derivative of the random constraints.
 $lend
 
 $head 04-10$$
@@ -863,7 +862,7 @@ $list number$$
 The $cref/Cholesky factorization/ldlt_eigen/$$ of the Hessian
 with respect to the random effects has been changed from a static
 variable to the private member variable
-$cref/ldlt_ran_hes_/private/ldlt_ran_hes_/$$.
+$code ldlt_ran_hes_$$.
 This has many advantages; e.g.,
 it allows for multiple $cref derived_ctor$$ objects.
 $lnext
@@ -878,8 +877,8 @@ $lend
 $head 01-05$$
 Improve the efficiency of the evaluation of the
 $cref optimize_fixed$$ objective function.
-To be specific, $cref/update/update_factor/$$ the Cholesky
-factor of $latex f_{u,u} [ \theta , \hat{u} ( \theta ) ]$$
+To be specific, the Cholesky factor update for
+$latex f_{u,u} [ \theta , \hat{u} ( \theta ) ]$$
 when there is a change in the fixed effects vector $latex \theta$$.
 In addition, use matrices, instead of just column vectors,
 when back solving (to simplify code and allow sparse solver
