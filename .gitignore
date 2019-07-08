@@ -16,8 +16,9 @@
 # a previous debug build that /build can point to
 /build.debug/
 #
-# directory where documentation is built
+# directories where documentation is built
 /doc/
+/dev/
 #
 # directories that are used for stashing files
 new/

@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
 $begin cppad_mixed$$
-$comment User documentation for cppad_mixed$$
+$comment Developer documentation for cppad_mixed$$.
 
 $include omh/cppad_mixed.omh$$
 

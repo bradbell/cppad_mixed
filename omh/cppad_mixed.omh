@@ -1,0 +1,164 @@
+$comment
+-----------------------------------------------------------------------------
+cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
+          Copyright (C) 2014-19 University of Washington
+             (Bradley M. Bell bradbell@uw.edu)
+
+This program is distributed under the terms of the
+	     GNU Affero General Public License version 3.0 or later
+see http://www.gnu.org/licenses/agpl.txt
+-----------------------------------------------------------------------------
+$$
+$spell
+	Jax
+	CppAD
+	cppad
+	CppAD
+	vec
+	fabs
+$$
+$comment BEGIN: settings used by all section ---------------------------- $$
+$escape $$
+$aindex section head subhead$$
+$latex
+	\newcommand{\R}[1]{ {\rm #1} }
+	\newcommand{\B}[1]{ {\bf #1} }
+	\newcommand{\W}[1]{ \; #1 \; }
+$$
+$aindex section head subhead$$
+$comment END: settings used by all section ---------------------------- $$
+
+$section
+C++ Laplace Approximation of Mixed Effects Models:
+cppad_mixed-20190624
+$$
+$table
+$cnext
+	One section per page $pre  $$ $cnext
+	All sections in one page
+$rnext
+MathJax $pre  $$ $cnext
+	$href%cppad_mixed.htm%$$
+	$pre  $$ $cnext
+	$href%_printable.htm%$$
+$rnext
+MathML $pre  $$ $cnext
+	$href%cppad_mixed.xml%$$ $pre  $$ $cnext
+	$href%_printable.xml%$$
+$tend
+
+$head License$$
+$href%http://www.gnu.org/licenses/agpl.txt
+	%GNU Affero General Public License version 3.0 or later
+%$$
+
+$head Source Code Repository$$
+$href%https://github.com/bradbell/cppad_mixed%$$
+
+$head Notation$$
+The densities below are
+known functions of $latex y$$, $latex z$$, $latex \theta$$, and $latex u$$:
+
+$subhead Fixed Effects, theta$$
+For each $code cppad_mixed$$ object,
+there is a vector of fixed effects $icode theta$$.
+The number of the fixed effects, and their order is constant
+(for each $code cppad_mixed$$ object).
+We sometimes use $latex \theta$$ to denote the vector of fixed effects.
+
+$subhead Random Effects, u$$
+For each $code cppad_mixed$$ object, there is a vector of random effects
+$icode u$$.
+The number of the random effects, and their order is constant
+(for each $code cppad_mixed$$ object).
+
+$subhead Data, y, z$$
+We use $latex y$$, ($latex z$$) to denote the set of data points that are
+dependent on (independent of) the random effects.
+
+$subhead Fixed Prior Density, p(theta)$$
+The fixed effects prior density
+is denoted by $latex \B{p}( \theta )$$.
+
+$subhead Fixed Data Density, p(z|theta)$$
+The data density, that does not depend on the random effects,
+is denoted by $latex \B{p}( z | \theta )$$.
+
+$subhead Random Prior Density, p(u|theta)$$
+The random effects prior density, given the fixed effects,
+is denoted by $latex \B{p}( u | \theta)$$.
+
+$subhead Random Data Density, p(y|theta,u)$$
+The density for the data, given both the fixed and random effects,
+is denoted by $latex \B{p}( y | \theta, u)$$.
+
+$subhead Fixed Constraint Function, c(theta)$$
+The fixed effects constraint function, denoted by $latex c( \theta )$$,
+is a smooth function of the fixed effects,
+
+$subhead Optimal Random Effects, u^(theta)$$
+Given a value for the fixed effects $latex \theta$$,
+the corresponding optimal random effects are defined by
+$latex \[
+\hat{u} ( \theta )
+=
+\R{argmax}  \; \B{p} ( y | \theta , u) \; \B{p} ( u | \theta )
+\] $$
+Note that this definition agrees with the other definition for
+$cref/u^(theta)/theory/Optimal Random Effects, u^(theta)/$$.
+
+$subhead Random Constraint Matrix, A$$
+The random constraint matrix is denoted by $latex A$$.
+It has row dimension equal to the number of constraints
+and column dimension equal to the number of random effects.
+
+$subhead Random Constraint Function, A*u^(theta)$$
+We refer to $latex A \; \hat{u} ( \theta )$$
+as the random constraint function.
+
+
+
+$head Problem$$
+
+$subhead Maximum Likelihood$$
+We are given the problem of
+estimating the fixed effects by maximizing the likelihood with
+respect to $latex \theta$$; i.e.,
+$latex \[
+\B{p}( y , z , \theta )
+=
+\B{p} ( \theta ) \B{p} ( z | \theta ) \int_{-\infty}^{+\infty}
+		\B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) \; \B{d} u
+\] $$
+
+$subhead No Random Effects$$
+In the case where there are not random effects, the vector $latex u$$
+is empty and the optimal fixed effects maximize
+$latex \[
+\B{p} ( \theta ) \B{p} ( z | \theta )
+\] $$
+
+$subhead Fixed Constraints, c$$
+The fixed effects have constraints of the form
+$latex \[
+	c_L \leq c(\theta) \leq c_U
+\] $$
+where and $latex c_L$$, $latex c_U$$ are vectors in the range of $latex c(x)$$.
+In the case where there are no constraints on the fixed effects,
+the range space is the empty vector.
+
+$subhead Random Constraints$$
+The random constraints are defined by the equation
+$latex \[
+	0 = A \; \hat{u} ( \theta )
+\] $$
+
+$head Negative Log-Density Vector$$
+If $icode vec$$ is a density vector corresponding to $latex \B{p}(x)$$,
+the corresponding negative log-density is given by
+$pre
+	$$
+$latex - \log [ \B{p} (x) ] = $$
+$icode%vec%[0] + fabs(%vec%[1]) + %...% fabs(%vec%[%s%-1])
+%$$
+where $icode%s% = %vec%.size()%$$.
