@@ -37,7 +37,7 @@ $spell
 	CppAD
 	rcv
 	namespace
-    xam
+	xam
 $$
 
 $section Changes and Additions to cppad_mixed During 2018$$

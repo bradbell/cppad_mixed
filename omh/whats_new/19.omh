@@ -10,10 +10,10 @@ see http://www.gnu.org/licenses/agpl.txt
 
 $begin whats_new_19$$
 $spell
-    cppad
-    CppAD
-    messaging
-    github
+	cppad
+	CppAD
+	messaging
+	github
 $$
 
 $section Changes and Additions to cppad_mixed During 2019$$

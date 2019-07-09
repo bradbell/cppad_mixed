@@ -46,10 +46,10 @@ $spell
 	checkpointed
 	rcv
 	py
-    tri
-    logdet
-    eval
-    inv
+	tri
+	logdet
+	eval
+	inv
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
@@ -150,9 +150,9 @@ $head 10-15$$
 $bold API Change:$$
 The
 $cref/random constraint matrix
-    /cppad_mixed
-    /Notation
-    /Random Constraint Matrix, A
+	/cppad_mixed
+	/Notation
+	/Random Constraint Matrix, A
 /$$
 $icode A_rcv$$, is now specified in
 $cref/initialize/derived_ctor/A_rcv/$$ instead

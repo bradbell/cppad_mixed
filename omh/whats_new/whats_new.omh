@@ -10,7 +10,7 @@ see http://www.gnu.org/licenses/agpl.txt
 
 $begin whats_new$$
 $spell
-    cppad
+	cppad
 $$
 
 $section Changes and Additions to cppad_mixed$$

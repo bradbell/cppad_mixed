@@ -16,7 +16,7 @@ $spell
 	cppad
 	Ipopt
 	eval
-    xam
+	xam
 $$
 
 $section Changes and Additions to cppad_mixed During 2015$$
