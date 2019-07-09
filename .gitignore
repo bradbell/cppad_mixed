@@ -16,6 +16,10 @@
 # a previous debug build that /build can point to
 /build.debug/
 #
+# directories where documentation is built
+# /doc/ user doc is in gh-pages branch
+/dev/
+#
 # directories that are used for stashing files
 new/
 new.*/
