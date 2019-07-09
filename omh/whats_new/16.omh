@@ -49,6 +49,7 @@ $spell
     tri
     logdet
     eval
+    inv
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
@@ -101,7 +102,7 @@ $lend
 $head 10-28$$
 Fix bug in $code sparse_ad_cholesky$$; to be more specific,
 the inverse permutation $latex P^{-1}$$ was being used where the permutation
-$cref/P/sparse_ad_cholesky/Notation/P/$$ was required.
+$icode P$$ in $code sparse_ad_cholesky$$ was required.
 This the first version with $code cppad_mixed$$ passes all its tests with
 $icode use_atomic_cholesky$$ true.
 
@@ -262,8 +263,8 @@ uses the inverse of the Hessian w.r.t. the random effects
 The
 $cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$ method for computing
 this inverse uses a special inverse subset algorithm; see
-$cref/method/ldlt_cholmod_inv/Method/$$.
-The $cref/method/ldlt_eigen_inv/Method/$$ has not been changed.
+$icode method$$ in $code ldlt_cholmod_inv$$.
+The $icode method$$ in $code ldlt_eigen_inv$$ has not been changed.
 $lnext
 Make order the same for command line arguments that have the same name in
 $cref ar1_xam.cpp$$ and $cref capture_xam.cpp$$.
@@ -332,7 +333,7 @@ Fix a compile error (on some systems)
 in the file $code src/cholmod/sim_cov.cpp$$.
 $lnext
 Improve discussion of Ipopt callback $icode ok$$ flag; e.g., see
-$cref/ok/ipopt_xam_eval_f/ok/$$.
+$code ok$$ in $code ipopt_xam_eval_f$$.
 $lend
 
 $head 07-10$$
@@ -764,7 +765,7 @@ $cref/size_map/initialize/size_map/$$.
 $head 02-26$$
 Fix a bug in the use of $code ldlt_cholmod_solve_H$$.
 to be specific, accessing past the end of the
-$cref/row/ldlt_cholmod_solve_H/row/$$ vector, in addition it must be
+$icode row$$ vector in $code ldlt_cholmod_solve_H$$, in addition it must be
 in increasing order (and was not specified as such).
 
 $head 02-06$$
@@ -814,7 +815,7 @@ the Eigen package (because warnings are suppressed for this directory).
 
 $head 01-19$$
 Fix a bug (found by $code valgrind$$) in the setting of the upper bound
-$cref/g_u/ipopt_fixed_get_bounds_info/g_u/$$ for the
+($icode g_u$$ in $code ipopt_fixed_get_bounds_info$$) for the
 $cref/random constraints
 	/cppad_mixed
 	/Problem
@@ -862,7 +863,7 @@ Go back to using column vectors when solving linear equations
 
 $head 01-09$$
 $list number$$
-The $cref/Cholesky factorization/ldlt_eigen/$$ of the Hessian
+The $code ldlt_eigen$$ Cholesky factorization of the Hessian
 with respect to the random effects has been changed from a static
 variable to the private member variable
 $code ldlt_ran_hes_$$.

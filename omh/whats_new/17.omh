@@ -178,7 +178,7 @@ $head 09-15$$
 $list number$$
 The $code cmake.sh$$ configuration flag $code log_fatal_error$$ was removed.
 $lnext
-An $cref/intermediate_callback/ipopt_xam_intermediate_callback/$$
+An Ipopt $icode intermediate_callback$$
 function was added to the Ipopt example.
 $lend
 
@@ -217,7 +217,7 @@ to continue an optimization from where it left off.
 
 $head 04-23$$
 $list number$$
-Improve the $cref/ipopt example/ipopt_xam/$$ by returning and checking
+Improve the Ipopt example $code ipopt_xam/$$ by returning and checking
 the final solution for the primal variables.
 $lnext
 Include $cref/syntax/check_install.sh/Syntax/$$ and
@@ -285,7 +285,8 @@ from type $cref sparse_mat_info$$ to
 $cref/d_sparse_rcv/typedef/Sparse Types/d_sparse_rcv/$$.
 This removes the last use of $code sparse_mat_info$$ from the
 $cref public$$ part of $code cppad_mixed$$.
-The intention here is to remove the $cref private$$ use slowly over time.
+The intention here is to remove the private use
+(not part of user API) slowly over time.
 
 
 $head 03-11$$
