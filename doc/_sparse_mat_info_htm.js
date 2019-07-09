@@ -7,7 +7,7 @@ var list_across0 = [
 ];
 var list_up0 = [
 'cppad_mixed.htm',
-'namespace.htm',
+'public_namespace.htm',
 'sparse_mat_info.htm'
 ];
 function choose_across0(item)

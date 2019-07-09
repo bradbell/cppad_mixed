@@ -7,7 +7,6 @@ var list_across0 = [
 ];
 var list_up0 = [
 'cppad_mixed.htm',
-'base_class.htm',
 'public.htm',
 'optimize_fixed.htm',
 'optimize_fixed.cpp.htm'
@@ -23,12 +22,6 @@ function choose_up0(item)
 	item.selectedIndex = 0;
 	if(index > 0)
 		document.location = list_up0[index-1];
-}
-function choose_down4(item)
-{	var index          = item.selectedIndex;
-	item.selectedIndex = 0;
-	if(index > 0)
-		document.location = list_down4[index-1];
 }
 function choose_down3(item)
 {	var index          = item.selectedIndex;

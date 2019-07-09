@@ -474,22 +474,21 @@ Change the <code><font color="blue">adaptive</font></code> and <code><font color
 <a href="optimize_fixed.htm#fixed_ipopt_options.derivative_test" target="_top"><span style='white-space: nowrap'>derivative_test</span></a>
 
 options so they check that components of the Jacobian, evaluated by
-<a href="ipopt_fixed_eval_jac_g.htm" target="_top"><span style='white-space: nowrap'>eval_jac_g</span></a>
-,
+<code><font color="blue">eval_jac_g</font></code> in <code><font color="blue">ipopt_fixed_eval_jac_g</font></code>,
 that are not in the sparsity pattern, are zero.
 </li><li>
 
 Change adaptive derivative check to test Hessian evaluated by
-<a href="ipopt_fixed_eval_h.htm" target="_top"><span style='white-space: nowrap'>eval_h</span></a>
-,
+<code><font color="blue">eval_h</font></code> in <code><font color="blue">ipopt_fixed_eval_h</font></code>,
 when <a href="derived_ctor.htm#quasi_fixed" target="_top"><span style='white-space: nowrap'>quasi_fixed</span></a>
  is false.
 </li><li>
 
 Change the ipopt <code><font color="blue">eval_h</font></code> documentation to specify either
 upper or lower triangle; e.g., see
-<a href="ipopt_xam_eval_h.htm#iRow" target="_top"><span style='white-space: nowrap'>iRow</span></a>
-.
+
+<code><i><font color="black"><span style='white-space: nowrap'>iRow</span></font></i></code>
+ in <code><font color="blue">ipopt_xam_eval_h</font></code>.
 </li></ol>
 
 

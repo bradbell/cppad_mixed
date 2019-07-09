@@ -170,9 +170,9 @@ Improve comments in <a href="example_install.sh.htm" target="_top"><span style='
 Advance to <code><font color="blue">cppad-20171215</font></code>.
 </li><li>
 
-The sparsity pattern for the
-<a href="init_ran_hes.htm" target="_top"><span style='white-space: nowrap'>random&nbsp;Hessian</span></a>
- was changed from using CppAD's
+The sparsity pattern for the random Hessian
+(Hessian of random likelihood w.r.t random effects)
+was changed from using CppAD's
 Hessian sparsity patterns to using CppAD's
 subgraphs of the Jacobian of the gradient of the
 <a href="theory.htm#Random Likelihood, f(theta, u)" target="_top"><span style='white-space: nowrap'>random&nbsp;likelihood</span></a>
@@ -332,7 +332,8 @@ evaluation. This is similar to how <a href="optimize_fixed.htm" target="_top"><s
 The <code><font color="blue">cmake.sh</font></code> configuration flag <code><font color="blue">log_fatal_error</font></code> was removed.
 </li><li>
 
-An <a href="ipopt_xam_intermediate_callback.htm" target="_top"><span style='white-space: nowrap'>intermediate_callback</span></a>
+An Ipopt 
+<code><i><font color="black"><span style='white-space: nowrap'>intermediate_callback</span></font></i></code>
 
 function was added to the Ipopt example.
 </li></ol>
@@ -397,8 +398,7 @@ to continue an optimization from where it left off.
 <b><big><a name="04-23" id="04-23">04-23</a></big></b>
 
 <ol type="1"><li>
-Improve the <a href="ipopt_xam.htm" target="_top"><span style='white-space: nowrap'>ipopt&nbsp;example</span></a>
- by returning and checking
+Improve the Ipopt example <code><font color="blue">ipopt_xam/</font></code> by returning and checking
 the final solution for the primal variables.
 </li><li>
 
@@ -522,8 +522,8 @@ from type <a href="sparse_mat_info.htm" target="_top"><span style='white-space: 
 This removes the last use of <code><font color="blue">sparse_mat_info</font></code> from the
 <a href="public.htm" target="_top"><span style='white-space: nowrap'>public</span></a>
  part of <code><font color="blue">cppad_mixed</font></code>.
-The intention here is to remove the <a href="private.htm" target="_top"><span style='white-space: nowrap'>private</span></a>
- use slowly over time.
+The intention here is to remove the private use
+(not part of user API) slowly over time.
 
 
 <br>
