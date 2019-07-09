@@ -13,9 +13,14 @@ $spell
     cppad
     CppAD
     messaging
+    github
 $$
 
 $section Changes and Additions to cppad_mixed During 2019$$
+
+$head 07-09$$
+The developer documentation has been separated from the user documentation
+and no longer included in the web version displayed on $code github$$.
 
 $head 06-24$$
 Advance to $code cppad-20190623$$.
