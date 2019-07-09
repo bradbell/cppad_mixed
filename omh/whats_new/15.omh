@@ -16,6 +16,7 @@ $spell
 	cppad
 	Ipopt
 	eval
+    xam
 $$
 
 $section Changes and Additions to cppad_mixed During 2015$$
@@ -27,7 +28,7 @@ superscripts (1) and (2) from derivatives. This enables us
 (in the future) to use superscripts for indices and subscripts for derivatives.
 $lnext
 Change $latex z^L, z^U$$ to $latex z_L , z_U$$ in
-$cref ipopt_xam$$ (because the corresponding variables are
+$code ipopt_xam$$ (because the corresponding variables are
 $icode z_L$$ and $icode z_U$$); see Ipopt
 $code finalize_solution$$.
 $lend

@@ -46,6 +46,9 @@ $spell
 	checkpointed
 	rcv
 	py
+    tri
+    logdet
+    eval
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
@@ -96,7 +99,7 @@ $cref/speed/install_unix/cppad_mixed/Speed/$$.
 $lend
 
 $head 10-28$$
-Fix bug in $cref sparse_ad_cholesky$$; to be more specific,
+Fix bug in $code sparse_ad_cholesky$$; to be more specific,
 the inverse permutation $latex P^{-1}$$ was being used where the permutation
 $cref/P/sparse_ad_cholesky/Notation/P/$$ was required.
 This the first version with $code cppad_mixed$$ passes all its tests with
@@ -116,7 +119,7 @@ $list number$$
 Add the $icode use_atomic_cholesky$$
 option to the $code cmake$$ command line.
 $lnext
-Fix another bug in $cref sparse_ad_cholesky$$. To be specific,
+Fix another bug in $code sparse_ad_cholesky$$. To be specific,
 when search for the beginning of a row, do not check that at column index
 is less than an element known to be in the row before you get to the row.
 $lnext
@@ -129,7 +132,7 @@ $code install_suitesparse.sh$$
 $lend
 
 $head 10-24$$
-Fix a bug in the $cref sparse_ad_cholesky$$ class forward mode.
+Fix a bug in the $code sparse_ad_cholesky$$ class forward mode.
 To be specific, ignore higher order Taylor coefficients that do
 not appear in the sparsity patter for the zero order coefficient
 (they are no effects).
@@ -173,7 +176,7 @@ $lend
 $head 10-06$$
 A class that performs sparse Cholesky factorization
 as a CppAD atomic operation has been added; see
-$cref sparse_ad_cholesky$$.
+$code sparse_ad_cholesky$$.
 
 $head 09-30$$
 $list number$$
@@ -191,11 +194,11 @@ Advance to cppad-20160929.
 $lend
 
 $head 09-27$$
-Add $cref sparse_up_tri_sol$$
+Add $code sparse_up_tri_sol$$
 (plan to use this with a sparse atomic Cholesky AD operation).
 
 $head 09-24$$
-Create $cref sparse_low_tri_sol$$
+Create $code sparse_low_tri_sol$$
 (plan to use this with a sparse atomic Cholesky AD operation).
 
 $head 09-23$$
@@ -491,13 +494,13 @@ scaled negative projected gradient direction.
 (Step size of one in negative projected gradient direction
 may be much too large or much too small).
 $lnext
-There was a bug in $cref ldlt_cholmod_solve_H$$ where an unnecessary
+There was a bug in $code ldlt_cholmod_solve_H$$ where an unnecessary
 condition was check and failed. The example
-$cref cholmod_solve2_a.cpp$$ has been change to demonstrate that
+$code cholmod_solve2_a.cpp$$ has been change to demonstrate that
 only a subset of the right hand side values matter.
 $lnext
 There was an error in the
-$cref ldlt_eigen_logdet$$ function in the special case where the
+$code ldlt_eigen_logdet$$ function in the special case where the
 determinant was zero. This has been fixed.
 $lend
 
@@ -595,15 +598,15 @@ warning message.
 
 $head 05-03$$
 $list number$$
-Change $code cholmod$$ class to $cref ldlt_cholmod$$ class
-and $code choleig$$ class to $cref ldlt_eigen$$ class.
+Change $code cholmod$$ class to $code ldlt_cholmod$$ class
+and $code choleig$$ class to $code ldlt_eigen$$ class.
 $lnext
 Change $code cholmod_cholesky$$ to
 $cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$ in $code run_cmake.sh$$.
 $lnext
 There was a problem choosing $code ldlt_cholmod$$ to be $code NO$$.
-This has been fixed by changing the $cref ldlt_eigen_solve_H$$
-function to work the same as the $cref ldlt_cholmod_solve_H$$ function.
+This has been fixed by changing the $code ldlt_eigen_solve_H$$
+function to work the same as the $code ldlt_cholmod_solve_H$$ function.
 $lnext
 Add more detection, and reporting as a
 $cref/fatal_error/public/User Defined Functions/fatal_error/$$,
@@ -613,7 +616,7 @@ $lend
 
 
 $head 04-29$$
-Add an $cref cholmod_solve2_sim.cpp$$, an example that shows
+Add an $code cholmod_solve2_sim.cpp$$, an example that shows
 how to use Cholmod to efficiently sample a distribution that
 has covariance equal to the inverse of a sparse positive definite matrix.
 
@@ -655,16 +658,16 @@ $code RELEASE$$.
 
 $head 04-16$$
 $list number$$
-The routine $cref ipopt_fixed_adaptive_derivative_check$$ now checks
-$cref ipopt_fixed_eval_jac_g$$ in addition to
-$cref ipopt_fixed_eval_grad_f$$.
+The routine $code ipopt_fixed_adaptive_derivative_check$$ now checks
+$code ipopt_fixed_eval_jac_g$$ in addition to
+$code ipopt_fixed_eval_grad_f$$.
 $lnext
 Fix a bug in the computation of the derivative of the random constraints.
 $lend
 
 $head 04-10$$
 $list number$$
-If the gradient check $cref ipopt_fixed_adaptive_derivative_check$$ fails,
+If the gradient check $code ipopt_fixed_adaptive_derivative_check$$ fails,
 it now results in warning instead of a fatal error.
 $lnext
 Check the Hessian of the
@@ -686,7 +689,7 @@ equal to $code -1$$.
 
 $head 04-08$$
 $list number$$
-Changed $cref ipopt_fixed_adaptive_derivative_check$$ to handle case where
+Changed $code ipopt_fixed_adaptive_derivative_check$$ to handle case where
 the function at both central difference points is zero,
 and the derivatives is also zero.
 $lnext
@@ -699,7 +702,7 @@ $list number$$
 The new routine $cref sample_fixed$$ samples from the posterior
 distribution for the estimate of the fixed effects.
 $lnext
-Changed $cref ipopt_fixed_adaptive_derivative_check$$ to down to step size
+Changed $code ipopt_fixed_adaptive_derivative_check$$ to down to step size
 $code 1e-9$$ (used to just go to $code 1e-7$$.
 In addition, in error report changed $code step=$$ to $code best_step=$$.
 $lend
@@ -759,7 +762,7 @@ The summary of memory usage has been changed; see
 $cref/size_map/initialize/size_map/$$.
 
 $head 02-26$$
-Fix a bug in the use of $cref ldlt_cholmod_solve_H$$.
+Fix a bug in the use of $code ldlt_cholmod_solve_H$$.
 to be specific, accessing past the end of the
 $cref/row/ldlt_cholmod_solve_H/row/$$ vector, in addition it must be
 in increasing order (and was not specified as such).
@@ -782,7 +785,7 @@ the $code cholmod$$ Cholesky factorization package.
 $lend
 
 $head 01-26$$
-Remove the old $cref ldlt_cholmod$$ wish list its (completed) and add
+Remove the old $code ldlt_cholmod$$ wish list its (completed) and add
 partial Newton step second order method wish list item
 (this item has been completed).
 
