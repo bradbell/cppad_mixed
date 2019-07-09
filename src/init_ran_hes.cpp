@@ -45,7 +45,7 @@ $icode%mixed_object%.init_ran_hes(
 )%$$
 
 $head Private$$
-This $code cppad_mixed$$ member function is $cref private$$.
+This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
 
 $head Assumptions$$
 The member variables

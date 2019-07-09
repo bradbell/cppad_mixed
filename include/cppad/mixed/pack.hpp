@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -33,7 +33,7 @@ $icode%mixed_object%.pack(%fixed_one%, %fixed_two%, %random_vec%, %three_vec%)
 %$$
 
 $head Private$$
-This $code cppad_mixed$$ member function is $cref private$$.
+This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
 
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
@@ -56,7 +56,7 @@ $codei%
 It specifies the a value for the
 $cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$.
 The size of this vector must be equal to
-$cref/n_fixed_/private/n_fixed_/$$.
+$cref/n_fixed_/private_base_class/n_fixed_/$$.
 
 $head fixed_two$$
 This argument has prototype
@@ -66,7 +66,7 @@ $codei%
 If present, it also specifies the a value for the
 $cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$.
 The size of this vector must be equal to
-$cref/n_fixed_/private/n_fixed_/$$.
+$cref/n_fixed_/private_base_class/n_fixed_/$$.
 
 $head random_vec$$
 This argument has prototype
@@ -76,7 +76,7 @@ $codei%
 It specifies a value for the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$.
 The size of this vector must be equal to
-$cref/n_fixed_/private/n_random_/$$.
+$cref/n_fixed_/private_base_class/n_random_/$$.
 
 $head both_vec$$
 This argument has prototype

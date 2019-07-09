@@ -15,7 +15,7 @@ $$
 
 $section The cppad_mixed Developer Documentation$$
 
-$childtable%include/cppad/mixed/private.hpp
+$childtable%include/cppad/mixed/private_base_class.hpp
 	%omh/private_namespace.omh
 %$$
 

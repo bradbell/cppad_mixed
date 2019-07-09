@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -29,7 +29,7 @@ $head Syntax$$
 $icode%vec% = %mixed_object%.fix_like_eval(%fixed_vec%)%$$
 
 $head Private$$
-This $code cppad_mixed$$ member function is $cref private$$.
+This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
 
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
@@ -92,5 +92,3 @@ CppAD::vector<double> cppad_mixed::fix_like_eval(const d_vector& fixed_vec)
 	);
 	return ret;
 }
-
-

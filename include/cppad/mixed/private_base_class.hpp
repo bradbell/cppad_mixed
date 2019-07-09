@@ -7,14 +7,14 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# ifndef CPPAD_MIXED_PRIVATE_HPP
-# define CPPAD_MIXED_PRIVATE_HPP
+# ifndef CPPAD_MIXED_PRIVATE_BASE_CLASS_HPP
+# define CPPAD_MIXED_PRIVATE_BASE_CLASS_HPP
 
 // cppad_mixed.hpp: private member functions and variables
 private:
 /*
 ------------------------------------------------------------------------------
-$begin private$$
+$begin private_base_class$$
 $spell
 	rc
 	rcv

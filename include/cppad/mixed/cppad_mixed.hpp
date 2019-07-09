@@ -72,7 +72,7 @@ class cppad_mixed {
 # include <cppad/mixed/base_class.hpp>
 
 // private member functions and variables
-# include <cppad/mixed/private.hpp>
+# include <cppad/mixed/private_base_class.hpp>
 };
 
 

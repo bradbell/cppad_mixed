@@ -29,7 +29,7 @@ $head Syntax$$
 $icode%mixed_object%.init_ran_like(%fixed_vec%, %random_vec%)%$$
 
 $head Private$$
-This $code cppad_mixed$$ member function is $cref private$$.
+This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
 
 $head init_ran_like_done_$$
 The input value of this member variable must be false.

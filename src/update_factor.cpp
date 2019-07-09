@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -29,7 +29,7 @@ $head Syntax$$
 $icode%mixed_object%.update_factor(%fixed_vec%, %random_vec%)%$$
 
 $head Private$$
-This $code cppad_mixed$$ member function is $cref private$$.
+This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
 
 $head Purpose$$
 This routine updates the Cholesky factorization of the Hessian
@@ -61,7 +61,7 @@ this should be the
 $cref/optimal random effects/theory/Optimal Random Effects, u^(theta)/$$.
 
 $head ran_hes_fun_$$
-The $cref/ran_hes_fun_/private/ran_hes_fun_/$$ member variable
+The $cref/ran_hes_fun_/private_base_class/ran_hes_fun_/$$ member variable
 will hold the first order Taylor coefficient corresponding
 to the specified fixed and random effects; i.e.,
 $codei%
