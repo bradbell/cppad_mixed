@@ -14,12 +14,12 @@
 # '
 # list of files and or directories that are moved to new names
 # move_paths='
-#	include/cppad/mixed/private.hpp
+#	omh/public_namespace.omh
 # '
 # list of sed commands that map old file and directory names to new names.
 # The characters @s, @d, @n get converted to a space, dollar sign, new line.
 # move_seds='
-#	s|private.hpp|private_base_class.hpp|
+#	s|public_namespace|namespace|
 # '
 # list of files that get edited by the extra_seds command
 # extra_files='
@@ -31,10 +31,7 @@
 # '
 # ----------------------------------------------------------------------------
 # Put other sed commands below here and without # at start of line
-s|private.hpp|private_base_class.hpp|
-s|PRIVATE_HPP|PRIVATE_BASE_CLASS_HPP|
-s|$begin private$\$|$begin private_base_class$\$|
-s|$cref/\([A-Za-z_ ]*\)/private/|$cref/\1/private_base_class/|
-#
-s|member function is $cref private$\$|is a $cref private_base_class$$ member function|
-
+s|public_namespace.omh|namespace.omh|
+s|$begin public_namespace\$|$begin namespace$|
+s|$cref public_namespace\$|$cref namespace$|
+s|/public_namespace/|/namespace/|
