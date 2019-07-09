@@ -46,7 +46,7 @@ $icode%mixed_object%.optimize_fixed(
 )%$$
 
 $head Public$$
-This $code cppad_mixed$$ member function is $cref public$$.
+This $code cppad_mixed$$ $cref base_class$$ member function is public.
 
 $head Purpose$$
 This routine maximizes the total objective

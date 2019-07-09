@@ -67,7 +67,7 @@ $lend
 
 $head 12-25$$
 Change an the $cref user$$ examples to use
-template implementations of the virtual $cref public$$
+template implementations of the virtual public $cref base_class$$
 functions.
 
 $head 12-22$$
@@ -284,7 +284,7 @@ change $cref/information_rcv/information_mat/information_rcv/$$
 from type $cref sparse_mat_info$$ to
 $cref/d_sparse_rcv/typedef/Sparse Types/d_sparse_rcv/$$.
 This removes the last use of $code sparse_mat_info$$ from the
-$cref public$$ part of $code cppad_mixed$$.
+public part of the $code cppad_mixed$$ $cref base_class$$.
 The intention here is to remove the private use
 (not part of user API) slowly over time.
 

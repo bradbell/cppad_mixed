@@ -64,8 +64,8 @@ Provide a default definition for
 $cref/ran_likelihood/ran_likelihood/vec/Default/$$,
 $cref/fix_likelihood/fix_likelihood/vec/Default/$$,
 $cref/fix_constraint/fix_constraint/vec/Default/$$,
-$cref/fatal_error/public/User Defined Functions/fatal_error/$$, and
-$cref/warning/public/User Defined Functions/warning/$$.
+$cref/fatal_error/base_class/User Defined Functions/fatal_error/$$, and
+$cref/warning/base_class/User Defined Functions/warning/$$.
 $lnext
 Change section titles for these sections
 to highlight that they are user defined;

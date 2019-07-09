@@ -403,9 +403,9 @@ the Hessian of the
 $cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$
 $latex f_{uu} ( \theta , u )$$ may not be positive definite.
 This case used to aborted the optimization with a
-$cref/fatal_error/public/User Defined Functions/fatal_error/$$.
+$cref/fatal_error/base_class/User Defined Functions/fatal_error/$$.
 Now a
-$cref/warning/public/User Defined Functions/warning/$$
+$cref/warning/base_class/User Defined Functions/warning/$$
 is used to report this condition and the
 $cref/solution/optimize_fixed/solution/$$ is returned with
 $codei%
@@ -475,8 +475,8 @@ $lend
 $head 06-07$$
 $list number$$
 When $code box_newton$$ fails, change message from
-$cref/fatal_error/public/User Defined Functions/fatal_error/$$ to
-$cref/warning/public/User Defined Functions/warning/$$.
+$cref/fatal_error/base_class/User Defined Functions/fatal_error/$$ to
+$cref/warning/base_class/User Defined Functions/warning/$$.
 $lnext
 Change the $code box_newton$$ convergence
 $code tolerance$$ to be in terms of the
@@ -508,7 +508,7 @@ $lend
 
 $head 06-04$$
 Redirect CppAD error messages through
-$cref/fatal_error/public/User Defined Functions/fatal_error/$$.
+$cref/fatal_error/base_class/User Defined Functions/fatal_error/$$.
 
 $head 06-03$$
 Add the option to use
@@ -610,7 +610,7 @@ This has been fixed by changing the $code ldlt_eigen_solve_H$$
 function to work the same as the $code ldlt_cholmod_solve_H$$ function.
 $lnext
 Add more detection, and reporting as a
-$cref/fatal_error/public/User Defined Functions/fatal_error/$$,
+$cref/fatal_error/base_class/User Defined Functions/fatal_error/$$,
 when the Hessian w.r.t. the random effects
 $latex f_{uu} ( \theta , u)$$ is not positive definite.
 $lend
@@ -711,9 +711,9 @@ $lend
 
 $head 04-06$$
 The user defined virtual routines
-$cref/fatal_error/public/User Defined Functions/fatal_error/$$
+$cref/fatal_error/base_class/User Defined Functions/fatal_error/$$
 and
-$cref/warning/public/User Defined Functions/warning/$$
+$cref/warning/base_class/User Defined Functions/warning/$$
 have new examples in $cref derived_ctor.cpp$$.
 All the other user defined virtual routines examples
 have been simplified.
@@ -733,7 +733,7 @@ for $code optimize_fixed$$. This has been fixed.
 
 $head 04-02$$
 Add a brief description for each of the
-$cref/user defined functions/public/User Defined Functions/$$.
+$cref/user defined functions/base_class/User Defined Functions/$$.
 
 $head 04-01$$
 $bold API Change:$$
@@ -845,7 +845,7 @@ For example, see $cref ran_constraint.cpp$$.
 $lnext
 Fix a bug when combining absolute value terms
 with $cref fix_constraint$$.
-In change the default $cref/warning/public/User Defined Functions/warning/$$
+In change the default $cref/warning/base_class/User Defined Functions/warning/$$
 so that it does not abort ($code assert(false)$$).
 Furthermore, change the tolerance in one of the solution tests
 to avoid a warning (when convergence has been achieved).

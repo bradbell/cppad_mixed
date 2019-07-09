@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -41,7 +41,7 @@ $srcfile%src/sample_random.cpp
 	%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
 
 $head Public$$
-This $code cppad_mixed$$ member function is $cref public$$.
+This $code cppad_mixed$$ $cref base_class$$ member function is public.
 
 $head Purpose$$
 This routine draws samples from

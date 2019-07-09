@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -141,9 +141,9 @@ $head CppAD ErrorHandler$$
 If a CppAD error occurs, its
 $href%http://www.coin-or.org/CppAD/Doc/errorhandler.htm%ErrorHandler%$$
 is used to map it to either a
-$cref/fatal_error/public/User Defined Functions/fatal_error/$$
+$cref/fatal_error/base_class/User Defined Functions/fatal_error/$$
 or
-$cref/warning/public/User Defined Functions/warning/$$.
+$cref/warning/base_class/User Defined Functions/warning/$$.
 
 $children%
 	example/user/derived_ctor.cpp

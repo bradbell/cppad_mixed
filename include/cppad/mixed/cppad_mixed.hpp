@@ -69,7 +69,7 @@ class cppad_mixed {
 	friend bool ::order2random_xam(void);
 	friend bool ::ran_like_hes_xam(void);
 // public member functions and variables
-# include <cppad/mixed/public.hpp>
+# include <cppad/mixed/base_class.hpp>
 
 // private member functions and variables
 # include <cppad/mixed/private.hpp>

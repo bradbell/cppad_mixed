@@ -7,13 +7,13 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-# ifndef CPPAD_MIXED_PUBLIC_HPP
-# define CPPAD_MIXED_PUBLIC_HPP
+# ifndef CPPAD_MIXED_BASE_CLASS_HPP
+# define CPPAD_MIXED_BASE_CLASS_HPP
 
 // cppad_mixed.hpp: public member fucntions
 public:
 /*
-$begin public$$
+$begin base_class$$
 $spell
 	rcv
 	jac

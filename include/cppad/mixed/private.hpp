@@ -139,7 +139,7 @@ $srccode%cpp% */
 /* %$$
 $head cppad_error_handler$$
 Used to map CppAD error messages to
-$cref/fatal_error/public/User Defined Functions/fatal_error/$$.
+$cref/fatal_error/base_class/User Defined Functions/fatal_error/$$.
 $srccode%cpp% */
 	CppAD::ErrorHandler cppad_error_handler_;
 /* %$$
@@ -430,14 +430,14 @@ $srccode%cpp% */
 $comment ------------------------------------------------------------------- $$
 $head Try Member Functions$$
 For each $codei%try_%name%$$ case below,
-the $cref public$$ function $icode name$$ calls the private function
+the public function $icode name$$ calls the private function
 $codei%try_%name%$$ from a $code try$$ block
 with a corresponding $code catch$$ that maps a
 $code cppad_mixed$$ $cref exception$$ to a
-$cref/fatal_error/public/User Defined Functions/fatal_error/$$ call.
+$cref/fatal_error/base_class/User Defined Functions/fatal_error/$$ call.
 
 $subhead try_initialize$$
-Called by public $cref/initialize/public/initialize/$$
+Called by public $cref/initialize/base_class/initialize/$$
 $srccode%cpp% */
 	std::map<std::string, size_t> try_initialize(
 		const d_vector&  fixed_vec  ,
@@ -445,7 +445,7 @@ $srccode%cpp% */
 	);
 /* %$$
 $subhead try_optimize_random$$
-Called by public $cref/optimize_random/public/optimize_random/$$
+Called by public $cref/optimize_random/base_class/optimize_random/$$
 $srccode%cpp% */
 	d_vector try_optimize_random(
 		const std::string& options      ,
@@ -456,7 +456,7 @@ $srccode%cpp% */
 	);
 /* %$$
 $subhead try_optimize_fixed$$
-Called by public $cref/optimize_fixed/public/optimize_fixed/$$
+Called by public $cref/optimize_fixed/base_class/optimize_fixed/$$
 $srccode%cpp% */
 	CppAD::mixed::fixed_solution try_optimize_fixed(
 		const std::string& fixed_ipopt_options   ,
@@ -473,7 +473,7 @@ $srccode%cpp% */
 	);
 /* %$$
 $subhead try_information_mat$$
-Called by public $cref/information_mat/public/information_mat/$$
+Called by public $cref/information_mat/base_class/information_mat/$$
 $srccode%cpp% */
 	d_sparse_rcv try_information_mat(
 		const CppAD::mixed::fixed_solution&  solution      ,
@@ -481,7 +481,7 @@ $srccode%cpp% */
 	);
 /* %$$
 $subhead try_sample_fixed$$
-Called by public $cref/sample_fixed/public/sample_fixed/$$
+Called by public $cref/sample_fixed/base_class/sample_fixed/$$
 $srccode%cpp% */
 	void try_sample_fixed(
 		d_vector&                            sample               ,
@@ -493,7 +493,7 @@ $srccode%cpp% */
 	);
 /* %$$
 $subhead sample_random$$
-Called by public $cref/sample_random/public/sample_random/$$
+Called by public $cref/sample_random/base_class/sample_random/$$
 $srccode%cpp% */
 	void try_sample_random(
 		d_vector&             sample               ,

@@ -139,7 +139,7 @@ $cref/max_iter/optimize_fixed/fixed_ipopt_options/max_iter/$$ is minus
 one for the fixed effects.
 In addition, when running the debug (release) version, errors during
 $cref initialize$$ will result in an runtime error
-(call to $cref/fatal_error/public/User Defined Functions/fatal_error/$$).
+(call to $cref/fatal_error/base_class/User Defined Functions/fatal_error/$$).
 This will gives the user the choice to seem the source code where
 the error was detected when
 $cref/build_type/run_cmake.sh/build_type/$$ is $code debug$$.
