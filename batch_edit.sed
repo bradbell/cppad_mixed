@@ -14,12 +14,12 @@
 # '
 # list of files and or directories that are moved to new names
 # move_paths='
-#	omh/public_namespace.omh
+#	src/init_laplace_obj.cpp
 # '
 # list of sed commands that map old file and directory names to new names.
 # The characters @s, @d, @n get converted to a space, dollar sign, new line.
 # move_seds='
-#	s|public_namespace|namespace|
+#	s|init_laplace_obj.cpp|init_laplace_obj_fun.cpp|
 # '
 # list of files that get edited by the extra_seds command
 # extra_files='
@@ -31,7 +31,5 @@
 # '
 # ----------------------------------------------------------------------------
 # Put other sed commands below here and without # at start of line
-s|public_namespace.omh|namespace.omh|
-s|$begin public_namespace\$|$begin namespace$|
-s|$cref public_namespace\$|$cref namespace$|
-s|/public_namespace/|/namespace/|
+s|init_laplace_obj\([/(.$]\)|init_laplace_obj_fun\1|g
+s|init_laplace_obj_done_|init_laplace_obj_fun_done_|g

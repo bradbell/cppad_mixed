@@ -58,7 +58,7 @@ $childtable%include/cppad/mixed/pack.hpp
 
 	%src/init_ran_jac.cpp
 	%src/init_ran_hes.cpp
-	%src/init_laplace_obj.cpp
+	%src/init_laplace_obj_fun.cpp
 	%src/init_ldlt_ran_hes.cpp
 	%src/init_fix_con.cpp
 	%src/init_fix_like.cpp
@@ -128,7 +128,7 @@ $srccode%cpp% */
 	bool                init_hes_cross_done_;
 	// only called when n_random_ > 0 and quasi_fixed_ is false
 	bool                init_newton_checkpoint_done_;
-	bool                init_laplace_obj_done_;
+	bool                init_laplace_obj_fun_done_;
 	bool                init_laplace_obj_hes_done_;
 	// called in all cases
 	bool                init_fix_like_done_;
@@ -235,10 +235,10 @@ $comment ------------------------------------------------------------------- $$
 
 $head laplace_obj_fun_$$
 If $icode%n_random_% > 0%$$, quasi_fixed_ is false, and
-$code init_laplace_obj_done_$$,
+$code init_laplace_obj_fun_done_$$,
 this is a recording of the second order approximation for the
 random part of the Laplace approximation, $latex H( \beta , \theta , u)$$;
-see $cref/laplace_obj_fun_/init_laplace_obj/laplace_obj_fun_/$$.
+see $cref/laplace_obj_fun_/init_laplace_obj_fun/laplace_obj_fun_/$$.
 $srccode%cpp% */
 	CppAD::ADFun<double>        laplace_obj_fun_;   // for computing H_beta_beta
 /* %$$
@@ -419,10 +419,10 @@ $srccode%cpp% */
 	);
 /* %$$
 
-$subhead init_laplace_obj$$
-See $cref init_laplace_obj$$.
+$subhead init_laplace_obj_fun$$
+See $cref init_laplace_obj_fun$$.
 $srccode%cpp% */
-	void init_laplace_obj(
+	void init_laplace_obj_fun(
 		const d_vector& fixed_vec ,
 		const d_vector& random_vec
 	);

@@ -182,13 +182,13 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 		init_hes_cross(fixed_vec, random_vec);
 		assert( init_hes_cross_done_ );
 
-		assert( ! init_laplace_obj_done_ );
+		assert( ! init_laplace_obj_fun_done_ );
 		if( ! quasi_fixed_ )
 		{
 			// laplace_obj_fun_
-			assert( ! init_laplace_obj_done_ );
-			init_laplace_obj(fixed_vec, random_vec);
-			assert( init_laplace_obj_done_ );
+			assert( ! init_laplace_obj_fun_done_ );
+			init_laplace_obj_fun(fixed_vec, random_vec);
+			assert( init_laplace_obj_fun_done_ );
 
 			// laplace_obj_hes_
 			assert( ! init_laplace_obj_hes_done_ );

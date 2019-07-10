@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin init_laplace_obj$$
+$begin init_laplace_obj_fun$$
 $spell
 	rcv
 	nr
@@ -28,7 +28,7 @@ $$
 $section Second Order Representation of Laplace Objective and Constraints$$
 
 $head Syntax$$
-$icode%mixed_object%.init_laplace_obj(%fixed_vec%, %random_vec%)%$$
+$icode%mixed_object%.init_laplace_obj_fun(%fixed_vec%, %random_vec%)%$$
 
 $head Private$$
 This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
@@ -39,7 +39,7 @@ $cref/init_ran_like_done_/init_ran_like/init_ran_like_done_/$$ and
 $cref/init_newton_checkpoint_done_/initialize/init_newton_checkpoint_done_/$$
 are true.
 
-$head init_laplace_obj_done_$$
+$head init_laplace_obj_fun_done_$$
 The input value of this member variable must be false.
 Upon return it is true.
 
@@ -107,10 +107,10 @@ $end
 # include <cppad/mixed/configure.hpp>
 
 // ----------------------------------------------------------------------------
-void cppad_mixed::init_laplace_obj(
+void cppad_mixed::init_laplace_obj_fun(
 	const d_vector& fixed_vec  ,
 	const d_vector& random_vec )
-{	assert( ! init_laplace_obj_done_ );
+{	assert( ! init_laplace_obj_fun_done_ );
 	assert( init_ran_like_done_ );
 	//
 	assert( A_rcv_.nnz() == A_rcv_.row().size() );
@@ -223,6 +223,6 @@ void cppad_mixed::init_laplace_obj(
 	laplace_obj_fun_.optimize("no_conditional_skip");
 # endif
 	//
-	init_laplace_obj_done_ = true;
+	init_laplace_obj_fun_done_ = true;
 	return;
 }

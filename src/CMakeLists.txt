@@ -1,7 +1,7 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-18 University of Washington
+#           Copyright (C) 2014-19 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -41,7 +41,7 @@ ADD_LIBRARY(cppad_mixed
 	init_ran_jac.cpp
 	init_ran_hes.cpp
 	init_ran_like.cpp
-	init_laplace_obj.cpp
+	init_laplace_obj_fun.cpp
 	init_laplace_obj_hes.cpp
 	ipopt_app_status.cpp
 	ipopt_fixed/new_random.cpp

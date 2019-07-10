@@ -95,7 +95,7 @@ $cref/H(beta, theta, u)
 	/Approximate Laplace Objective, H(beta, theta, u)
 /$$.
 The extra routines for initializing the second order accurate
-approximation for the Laplace objective $code init_laplace_obj$$,
+approximation for the Laplace objective $code init_laplace_obj_fun$$,
 and $code init_laplace_obj_hes$$ are used to initialize the
 Hessian of the fixed effects objective.
 
@@ -201,7 +201,7 @@ init_ran_hes_done_(false)       ,
 init_ldlt_ran_hes_done_(false)  ,
 init_hes_cross_done_(false)     ,
 init_newton_checkpoint_done_(false)   ,
-init_laplace_obj_done_(false)    ,
+init_laplace_obj_fun_done_(false)    ,
 init_laplace_obj_hes_done_(false),
 init_fix_like_done_(false)      ,
 init_fix_con_done_(false)       ,

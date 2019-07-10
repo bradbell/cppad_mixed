@@ -37,7 +37,7 @@ This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
 
 $head Assumptions$$
 The member variable
-$cref/init_laplace_obj_done_/init_laplace_obj/init_laplace_obj_done_/$$
+$cref/init_laplace_obj_fun_done_/init_laplace_obj_fun/init_laplace_obj_fun_done_/$$
 is true.
 
 $head init_laplace_obj_hes_done_$$
@@ -100,7 +100,7 @@ void cppad_mixed::init_laplace_obj_hes(
 	const d_vector& fixed_vec     ,
 	const d_vector& random_vec    )
 {	assert( ! init_laplace_obj_hes_done_ );
-	assert( init_laplace_obj_done_ );
+	assert( init_laplace_obj_fun_done_ );
 	//
 	// beta
 	d_vector beta = fixed_vec;

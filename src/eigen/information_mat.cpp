@@ -2,7 +2,7 @@
 /*
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -129,21 +129,21 @@ CppAD::mixed::d_sparse_rcv cppad_mixed::try_information_mat(
 		// ------------------------------------------------------------------
 		// If Quasi-Newton method was used, must initilaize routines
 		// that are only used for the Hessian calculation; see initilaize.cpp
-		if( ! init_laplace_obj_done_ )
+		if( ! init_laplace_obj_fun_done_ )
 		{	assert( quasi_fixed_ );
 			assert( ! init_laplace_obj_hes_done_ );
 			//
 			// laplace_obj_fun_
-			assert( ! init_laplace_obj_done_ );
-			init_laplace_obj(fixed_opt, random_opt);
-			assert( init_laplace_obj_done_ );
+			assert( ! init_laplace_obj_fun_done_ );
+			init_laplace_obj_fun(fixed_opt, random_opt);
+			assert( init_laplace_obj_fun_done_ );
 			//
 			// laplace_obj_hes_
 			assert( ! init_laplace_obj_hes_done_ );
 			init_laplace_obj_hes(fixed_opt, random_opt);
 			assert( init_laplace_obj_hes_done_ );
 		}
-		assert( init_laplace_obj_done_ );
+		assert( init_laplace_obj_fun_done_ );
 		assert( init_laplace_obj_hes_done_ );
 		// ------------------------------------------------------------------
 		// Lower triangle of Hessian w.r.t. fixed effects
