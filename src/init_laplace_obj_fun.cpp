@@ -34,10 +34,9 @@ $head Private$$
 This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
 
 $head Assumptions$$
-The member variables
-$cref/init_ran_like_done_/init_ran_like/init_ran_like_done_/$$ and
-$cref/init_newton_checkpoint_done_/initialize/init_newton_checkpoint_done_/$$
-are true.
+The member variable
+$cref/init_ran_like_done_/init_ran_like/init_ran_like_done_/$$
+is true.
 
 $head init_laplace_obj_fun_done_$$
 The input value of this member variable must be false.

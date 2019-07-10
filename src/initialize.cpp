@@ -93,11 +93,6 @@ $codei%
 		std::cout << itr->first << " = " itr->second << "\n";
 %$$
 
-$head init_newton_checkpoint_done_$$
-The input value of this member variable must be false.
-If $code quasi_fixed_$$ is true, its output value is false,
-otherwise its output value is true.
-
 $head Example$$
 The file $cref derived_ctor.cpp$$ contains an example
 of using $code initialize$$.

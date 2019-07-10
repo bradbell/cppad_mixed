@@ -127,7 +127,6 @@ $srccode%cpp% */
 	bool                init_ldlt_ran_hes_done_;
 	bool                init_hes_cross_done_;
 	// only called when n_random_ > 0 and quasi_fixed_ is false
-	bool                init_newton_checkpoint_done_;
 	bool                init_laplace_obj_fun_done_;
 	bool                init_laplace_obj_hes_done_;
 	// called in all cases
