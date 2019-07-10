@@ -56,15 +56,16 @@ $cref/mixed_object/derived_ctor/mixed_object/$$.
 $childtable%include/cppad/mixed/pack.hpp
 	%include/cppad/mixed/unpack.hpp
 
+	%src/init_ran_like.cpp
 	%src/init_ran_jac.cpp
 	%src/init_ran_hes.cpp
-	%src/init_laplace_obj_fun.cpp
 	%src/init_ldlt_ran_hes.cpp
 	%src/init_fix_con.cpp
 	%src/init_fix_like.cpp
 	%src/init_hes_cross.cpp
+	%src/init_laplace_obj.cpp
+	%src/init_laplace_obj_fun.cpp
 	%src/init_laplace_obj_hes.cpp
-	%src/init_ran_like.cpp
 
 	%src/fix_con_eval.cpp
 	%src/fix_con_hes.cpp
@@ -127,6 +128,7 @@ $srccode%cpp% */
 	bool                init_ldlt_ran_hes_done_;
 	bool                init_hes_cross_done_;
 	// only called when n_random_ > 0 and quasi_fixed_ is false
+	bool                init_laplace_obj_done_;
 	bool                init_laplace_obj_fun_done_;
 	bool                init_laplace_obj_hes_done_;
 	// called in all cases
@@ -397,6 +399,18 @@ $srccode%cpp% */
 	void init_ran_hes(
 		const d_vector& fixed_vec     ,
 		const d_vector& random_vec
+	);
+/* %$$
+
+$subhead init_laplace_obj$$
+See $cref init_laplace_obj$$.
+$srccode%cpp% */
+	void init_laplace_obj(
+		const d_vector& fixed_vec           ,
+		const d_vector& random_in           ,
+		const d_vector& random_lower        ,
+		const d_vector& random_upper        ,
+		const std::string& random_options
 	);
 /* %$$
 

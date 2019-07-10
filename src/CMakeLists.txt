@@ -41,6 +41,7 @@ ADD_LIBRARY(cppad_mixed
 	init_ran_jac.cpp
 	init_ran_hes.cpp
 	init_ran_like.cpp
+	init_laplace_obj.cpp
 	init_laplace_obj_fun.cpp
 	init_laplace_obj_hes.cpp
 	ipopt_app_status.cpp
