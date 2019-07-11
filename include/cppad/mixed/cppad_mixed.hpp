@@ -39,6 +39,7 @@ extern bool fix_like_hes_xam(void);
 extern bool fix_like_jac_xam(void);
 extern bool hes_cross_xam(void);
 extern bool laplace_obj_tst(void);
+extern bool laplace_obj_fun(void);
 extern bool laplace_obj_hes(void);
 extern bool laplace_obj_hes_xam(void);
 extern bool logdet_jac_xam(void);

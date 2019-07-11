@@ -626,6 +626,7 @@ $srccode%cpp% */
 		const d_vector& random_vec
 	);
 	friend bool ::ran_obj_eval_xam(void);
+	friend bool ::laplace_obj_fun(void);
 	friend bool ::laplace_obj_tst(void);
 /* %$$
 

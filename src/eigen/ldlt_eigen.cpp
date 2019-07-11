@@ -446,6 +446,8 @@ Double ldlt_eigen<Double>::logdet(size_t& negative) const
 
 	// compute the logdet( f_{u,u}(theta, u )
     Eigen::Matrix<Double, Eigen::Dynamic, 1> diag = ptr_->vectorD();
+	for(size_t i = 0; i < n_row_; ++i)
+		std::cout << "diag{" << i << "] = " << diag[i] << "\n";
 	assert( diag.size() == int(n_row_) );
 	negative        = 0;
 	bool   has_zero = false;
