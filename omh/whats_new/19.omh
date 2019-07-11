@@ -18,6 +18,17 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2019$$
 
+$head 07-10$$
+In the case were $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false,
+a Newton method is used to optimize the fixed effects.
+In this case computation of the log of the determinant of the
+random Hessian w.r.t.  the random effects
+was computed at the initial value for the random effects.
+This was changed to use the optimal random effects
+corresponding to the initial fixed effects.
+This is more robust because the Hessian is more likely to be positive
+definite.
+
 $head 07-09$$
 The developer documentation has been separated from the user documentation
 and no longer included in the web version displayed on $code github$$.

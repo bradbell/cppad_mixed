@@ -176,20 +176,6 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 		assert( ! init_hes_cross_done_ );
 		init_hes_cross(fixed_vec, random_vec);
 		assert( init_hes_cross_done_ );
-
-		assert( ! init_laplace_obj_fun_done_ );
-		if( ! quasi_fixed_ )
-		{
-			// laplace_obj_fun_
-			assert( ! init_laplace_obj_fun_done_ );
-			init_laplace_obj_fun(fixed_vec, random_vec);
-			assert( init_laplace_obj_fun_done_ );
-
-			// laplace_obj_hes_
-			assert( ! init_laplace_obj_hes_done_ );
-			init_laplace_obj_hes(fixed_vec, random_vec);
-			assert( init_laplace_obj_hes_done_ );
-		}
 	}
 
 	// fix_like_fun_
@@ -218,8 +204,6 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 	size_map["ran_hes_uu_rcv_.nnz()"]      = ran_hes_uu_rcv_.nnz();
 	size_map["ran_hes_fun_.size_var()"]    = ran_hes_fun_.size_var();
 	size_map["hes_cross_.subset.nnz()"]    = hes_cross_.subset.nnz();
-	size_map["laplace_obj_fun_.size_var()"] = laplace_obj_fun_.size_var();
-	size_map["laplace_obj_hes_.subset.nnz()"] = laplace_obj_hes_.subset.nnz();
 	size_map["fix_like_fun_.size_var()"]   = fix_like_fun_.size_var();
 	size_map["fix_like_jac_.subset.nnz()"] = fix_like_jac_.subset.nnz();
 	size_map["fix_like_hes_.subset.nnz()"] = fix_like_hes_.subset.nnz();

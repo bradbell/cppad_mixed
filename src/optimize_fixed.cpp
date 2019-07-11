@@ -320,6 +320,18 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		"cppad_mixed::initialize was not called before optimize_fixed";
 		fatal_error(error_message);
 	}
+	if( ! init_laplace_obj_done_ && ! quasi_fixed_ && n_random_ > 0 )
+	{	init_laplace_obj(
+			fixed_in,
+			random_in,
+			random_lower,
+			random_upper,
+			random_ipopt_options
+		);
+		assert( init_laplace_obj_done_ );
+		assert( init_laplace_obj_fun_done_ );
+		assert( init_laplace_obj_hes_done_ );
+	}
 # ifndef NDEBUG
 	for(size_t j = 0; j < n_fixed_; j++)
 	{	assert( fixed_lower[j] <= fixed_in[j] );

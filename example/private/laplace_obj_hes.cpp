@@ -160,6 +160,18 @@ bool laplace_obj_hes_xam(void)
 	uhat = mixed_object.optimize_random(
 		options, fixed_vec, random_lower, random_upper, random_vec
 	);
+	//
+	// initialize Hessian of Laplace approximation
+	std::string random_options;
+	random_options += "Integer print_level     0\n";
+	random_options += "String  sb              yes\n";
+	mixed_object.init_laplace_obj(
+		fixed_vec,
+		random_vec,
+		random_lower,
+		random_upper,
+		random_options
+	);
 
 	// compute Hessian of random part of Laplace approximation
 	vector<double> weight(1); // no random constraints

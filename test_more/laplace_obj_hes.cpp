@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-19 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -227,6 +227,16 @@ bool laplace_obj_hes(void)
 	a1_double au_2   = u_2(atheta[0], au, az);
 	ar[0]            = h(atheta[0], au_2, az);
 	CppAD::ADFun<double> r(atheta, ar);
+
+	//
+	// initialize Hessian of Laplace approximation
+	mixed_object.init_laplace_obj(
+		fixed_vec,
+		random_vec,
+		random_lower,
+		random_upper,
+		options
+	);
 	//
 	// compute hessian both ways
 	vector<double> weight(1), th(1), hes(1);

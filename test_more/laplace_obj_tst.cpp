@@ -10,7 +10,9 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
 Test Laplace part of the the objective where non-linear and initial
-random effects far from solution.
+random effects far from solution. (Used to faile before initialized
+second order Lapalce objective at optimal random effects
+(for initial fixed effects).
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>
@@ -87,24 +89,78 @@ bool laplace_obj_tst(void)
 	size_t n_data   = 2;
 	size_t n_fixed  = 1;
 	size_t n_random = n_data;
-	d_vector y(n_data), theta(n_fixed), u(n_random);
-	d_vector uhat(n_random);
+	d_vector y(n_data), fixed_in(n_fixed), random_in(n_random);
+	d_vector fixed_lower(n_fixed), fixed_upper(n_fixed);
+	d_vector random_lower(n_random), random_upper(n_random);
 
-	theta[0]  = 1.0;
+	double inf = std::numeric_limits<double>::infinity();
+	fixed_in[0]    = 1.0;
+	fixed_lower[0] = 1e-2;
+	fixed_upper[0] = 1e+2;
 	for(size_t i = 0; i < n_data; ++i)
-	{	y[i] = double(10 * i);
-		u[i] = 0.0;
+	{	random_lower[i] = -inf;
+		random_upper[i] = +inf;
+		random_in[i]    = 0.0;
+		y[i]            = double(10 * i);
 	}
 
 	// object that is derived from cppad_mixed
-	bool quasi_fixed   = false;
+	bool quasi_fixed   = false; // need false to test init_laplace_obj
 	bool bool_sparsity = true;
 	CppAD::mixed::d_sparse_rcv A_rcv; // empty matrix
 	mixed_derived mixed_object(
 		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, y
 	);
-	// Test not yet passing
-	// mixed_object.initialize(theta, u);
+
+	// initialize mixed_object
+	mixed_object.initialize(fixed_in, random_in);
+
+	// optimize with respect to fixed effects
+
+	// optimize the fixed effects using quasi-Newton method
+	std::string fixed_ipopt_options =
+		"Integer print_level               0\n"
+		"String  sb                        yes\n"
+		"String  derivative_test           first-order\n"
+		"String  derivative_test_print_all yes\n"
+		"Numeric tol                       1e-10\n"
+		"Integer max_iter                  30\n"
+	;
+	std::string random_ipopt_options =
+		"Integer print_level 0\n"
+		"String  sb          yes\n"
+		"String  derivative_test second-order\n"
+	;
+	vector<double> fixed_scale = fixed_in;
+	vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
+	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
+		fixed_ipopt_options,
+		random_ipopt_options,
+		fixed_lower,
+		fixed_upper,
+		fix_constraint_lower,
+		fix_constraint_upper,
+		fixed_scale,
+		fixed_in,
+		random_lower,
+		random_upper,
+		random_in
+	);
+	vector<double> fixed_opt = solution.fixed_opt;
+
+	// optimize the random effects
+	vector<double> random_opt = mixed_object.optimize_random(
+		random_ipopt_options, fixed_opt, random_lower, random_upper, random_in
+	);
+
+	// check that derivative is zero
+	vector<double> r_fixed(n_fixed);
+	mixed_object.ran_obj_jac(fixed_opt, random_opt, r_fixed);
+
+	//
+	for(size_t i = 0; i < n_fixed; ++i)
+		ok &= std::fabs(r_fixed[i]) < 1e-6;
+	//
 
 	return ok;
 }
