@@ -1,7 +1,7 @@
-// Child table for section public_namespace
+// Child table for section namespace
 document.write('\
-<select onchange="public_namespace_child(this)">\
-<option>public_namespace-&gt;</option>\
+<select onchange="namespace_child(this)">\
+<option>namespace-&gt;</option>\
 <option>typedef</option>\
 <option>manage_gsl_rng</option>\
 <option>sparse_mat_info</option>\
@@ -9,7 +9,7 @@ document.write('\
 <option>exception</option>\
 </select>\
 ');
-function public_namespace_child(item)
+function namespace_child(item)
 {	var child_list = [
 		'typedef.htm',
 		'manage_gsl_rng.htm',

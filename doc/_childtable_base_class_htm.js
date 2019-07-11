@@ -1,7 +1,7 @@
-// Child table for section public
+// Child table for section base_class
 document.write('\
-<select onchange="public_child(this)">\
-<option>public-&gt;</option>\
+<select onchange="base_class_child(this)">\
+<option>base_class-&gt;</option>\
 <option>derived_ctor</option>\
 <option>ran_likelihood</option>\
 <option>fix_likelihood</option>\
@@ -14,7 +14,7 @@ document.write('\
 <option>sample_random</option>\
 </select>\
 ');
-function public_child(item)
+function base_class_child(item)
 {	var child_list = [
 		'derived_ctor.htm',
 		'ran_likelihood.htm',

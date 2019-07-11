@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2019</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2019">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2019 07-09 06-24 06-07 ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2019 07-10 07-09 06-24 06-07 ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -63,10 +63,26 @@ A:active { color : purple }
 \newcommand{\B}[1]{ {\bf #1} }
 \newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Changes and Additions to cppad_mixed During 2019</big></big></b></center>
 
+<br><a href="whats_new_19.htm#07-10" target="_top">07-10</a>
 <br><a href="whats_new_19.htm#07-09" target="_top">07-09</a>
 <br><a href="whats_new_19.htm#06-24" target="_top">06-24</a>
 <br><a href="whats_new_19.htm#06-07" target="_top">06-07</a>
 <br><br>
+<b><big><a name="07-10" id="07-10">07-10</a></big></b>
+<br>
+In the case were <a href="derived_ctor.htm#quasi_fixed" target="_top"><span style='white-space: nowrap'>quasi_fixed</span></a>
+ is false,
+a Newton method is used to optimize the fixed effects.
+In this case computation of the log of the determinant of the
+random Hessian w.r.t.  the random effects
+was computed at the initial value for the random effects.
+This was changed to use the optimal random effects
+corresponding to the initial fixed effects.
+This is more robust because the Hessian is more likely to be positive
+definite.
+
+<br>
+<br>
 <b><big><a name="07-09" id="07-09">07-09</a></big></b>
 <br>
 The developer documentation has been separated from the user documentation

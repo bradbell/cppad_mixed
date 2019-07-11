@@ -4,8 +4,8 @@ document.write('\
 <option>cppad_mixed-&gt;</option>\
 <option>install_unix</option>\
 <option>theory</option>\
-<option>public</option>\
-<option>public_namespace</option>\
+<option>base_class</option>\
+<option>namespace</option>\
 <option>user</option>\
 <option>whats_new</option>\
 <option>wish_list</option>\
@@ -20,8 +20,8 @@ function cppad_mixed_child(item)
 {	var child_list = [
 		'install_unix.htm',
 		'theory.htm',
-		'public.htm',
-		'public_namespace.htm',
+		'base_class.htm',
+		'namespace.htm',
 		'user.htm',
 		'whats_new.htm',
 		'wish_list.htm',

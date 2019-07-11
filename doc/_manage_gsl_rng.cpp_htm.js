@@ -7,7 +7,7 @@ var list_across0 = [
 ];
 var list_up0 = [
 'cppad_mixed.htm',
-'public_namespace.htm',
+'namespace.htm',
 'manage_gsl_rng.htm',
 'manage_gsl_rng.cpp.htm'
 ];

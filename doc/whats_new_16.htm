@@ -743,10 +743,10 @@ the Hessian of the
 f_{uu} ( \theta , u )
 @)@</small> may not be positive definite.
 This case used to aborted the optimization with a
-<a href="public.htm#User Defined Functions.fatal_error" target="_top"><span style='white-space: nowrap'>fatal_error</span></a>
+<a href="base_class.htm#User Defined Functions.fatal_error" target="_top"><span style='white-space: nowrap'>fatal_error</span></a>
 .
 Now a
-<a href="public.htm#User Defined Functions.warning" target="_top"><span style='white-space: nowrap'>warning</span></a>
+<a href="base_class.htm#User Defined Functions.warning" target="_top"><span style='white-space: nowrap'>warning</span></a>
 
 is used to report this condition and the
 <a href="optimize_fixed.htm#solution" target="_top"><span style='white-space: nowrap'>solution</span></a>
@@ -859,9 +859,9 @@ evaluation of its <a href="ran_likelihood.htm" target="_top"><span style='white-
 
 <ol type="1"><li>
 When <code><font color="blue">box_newton</font></code> fails, change message from
-<a href="public.htm#User Defined Functions.fatal_error" target="_top"><span style='white-space: nowrap'>fatal_error</span></a>
+<a href="base_class.htm#User Defined Functions.fatal_error" target="_top"><span style='white-space: nowrap'>fatal_error</span></a>
  to
-<a href="public.htm#User Defined Functions.warning" target="_top"><span style='white-space: nowrap'>warning</span></a>
+<a href="base_class.htm#User Defined Functions.warning" target="_top"><span style='white-space: nowrap'>warning</span></a>
 .
 </li><li>
 
@@ -908,7 +908,7 @@ determinant was zero. This has been fixed.
 <b><big><a name="06-04" id="06-04">06-04</a></big></b>
 <br>
 Redirect CppAD error messages through
-<a href="public.htm#User Defined Functions.fatal_error" target="_top"><span style='white-space: nowrap'>fatal_error</span></a>
+<a href="base_class.htm#User Defined Functions.fatal_error" target="_top"><span style='white-space: nowrap'>fatal_error</span></a>
 .
 
 <br>
@@ -1080,7 +1080,7 @@ function to work the same as the <code><font color="blue">ldlt_cholmod_solve_H</
 </li><li>
 
 Add more detection, and reporting as a
-<a href="public.htm#User Defined Functions.fatal_error" target="_top"><span style='white-space: nowrap'>fatal_error</span></a>
+<a href="base_class.htm#User Defined Functions.fatal_error" target="_top"><span style='white-space: nowrap'>fatal_error</span></a>
 ,
 when the Hessian w.r.t. the random effects
 <small>@(@
@@ -1250,10 +1250,10 @@ In addition, in error report changed <code><font color="blue">step=</font></code
 <b><big><a name="04-06" id="04-06">04-06</a></big></b>
 <br>
 The user defined virtual routines
-<a href="public.htm#User Defined Functions.fatal_error" target="_top"><span style='white-space: nowrap'>fatal_error</span></a>
+<a href="base_class.htm#User Defined Functions.fatal_error" target="_top"><span style='white-space: nowrap'>fatal_error</span></a>
 
 and
-<a href="public.htm#User Defined Functions.warning" target="_top"><span style='white-space: nowrap'>warning</span></a>
+<a href="base_class.htm#User Defined Functions.warning" target="_top"><span style='white-space: nowrap'>warning</span></a>
 
 have new examples in <a href="derived_ctor.cpp.htm" target="_top"><span style='white-space: nowrap'>derived_ctor.cpp</span></a>
 .
@@ -1287,7 +1287,7 @@ for <code><font color="blue">optimize_fixed</font></code>. This has been fixed.
 <b><big><a name="04-02" id="04-02">04-02</a></big></b>
 <br>
 Add a brief description for each of the
-<a href="public.htm#User Defined Functions" target="_top"><span style='white-space: nowrap'>user&nbsp;defined&nbsp;functions</span></a>
+<a href="base_class.htm#User Defined Functions" target="_top"><span style='white-space: nowrap'>user&nbsp;defined&nbsp;functions</span></a>
 .
 
 <br>
@@ -1481,7 +1481,7 @@ For example, see <a href="ran_constraint.cpp.htm" target="_top"><span style='whi
 Fix a bug when combining absolute value terms
 with <a href="fix_constraint.htm" target="_top"><span style='white-space: nowrap'>fix_constraint</span></a>
 .
-In change the default <a href="public.htm#User Defined Functions.warning" target="_top"><span style='white-space: nowrap'>warning</span></a>
+In change the default <a href="base_class.htm#User Defined Functions.warning" target="_top"><span style='white-space: nowrap'>warning</span></a>
 
 so that it does not abort (<code><font color="blue">assert(false)</font></code>).
 Furthermore, change the tolerance in one of the solution tests

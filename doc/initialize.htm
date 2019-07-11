@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Initialization After Constructor</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Initialization After Constructor">
-<meta name="keywords" id="keywords" content=" initialization after constructor syntax public purpose mixed_object fixed_vec random_vec size_map init_newton_checkpoint_done_ example ">
+<meta name="keywords" id="keywords" content=" initialization after constructor syntax public purpose mixed_object fixed_vec random_vec size_map example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -47,7 +47,7 @@ A:active { color : purple }
 <select onchange='choose_up0(this)'>
 <option>Up-&gt;</option>
 <option>cppad_mixed</option>
-<option>public</option>
+<option>base_class</option>
 <option>initialize</option>
 </select>
 </td>
@@ -55,7 +55,7 @@ A:active { color : purple }
 <script type='text/javascript' language='JavaScript' src='_childtable_cppad_mixed_htm.js'></script>
 </td>
 <td>
-<script type='text/javascript' language='JavaScript' src='_childtable_public_htm.js'></script>
+<script type='text/javascript' language='JavaScript' src='_childtable_base_class_htm.js'></script>
 </td>
 <td>initialize</td>
 </tr></table><br>
@@ -70,7 +70,6 @@ A:active { color : purple }
 <br><a href="initialize.htm#fixed_vec" target="_top">fixed_vec</a>
 <br><a href="initialize.htm#random_vec" target="_top">random_vec</a>
 <br><a href="initialize.htm#size_map" target="_top">size_map</a>
-<br><a href="initialize.htm#init_newton_checkpoint_done_" target="_top">init_newton_checkpoint_done_</a>
 <br><a href="initialize.htm#Example" target="_top">Example</a>
 <br><br>
 <b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
@@ -84,8 +83,8 @@ A:active { color : purple }
 <br>
 <b><big><a name="Public" id="Public">Public</a></big></b>
 <br>
-This <code><font color="blue">cppad_mixed</font></code> member function is <a href="public.htm" target="_top"><span style='white-space: nowrap'>public</span></a>
-.
+This <code><font color="blue">cppad_mixed</font></code> <a href="base_class.htm" target="_top"><span style='white-space: nowrap'>base_class</span></a>
+ member function is public.
 
 <br>
 <br>
@@ -162,14 +161,6 @@ but they can be inspected. For example,
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(itr&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>size_map</span></font></i><font color="blue"><span style='white-space: nowrap'>.begin();&nbsp;itr&nbsp;!=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>size_map</span></font></i><font color="blue"><span style='white-space: nowrap'>.end();&nbsp;itr++)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;itr-&gt;first&nbsp;&lt;&lt;&nbsp;&quot;&nbsp;=&nbsp;&quot;&nbsp;itr-&gt;second&nbsp;&lt;&lt;&nbsp;&quot;\n&quot;;<br>
 </span></font></code>
-<br>
-<b><big><a name="init_newton_checkpoint_done_" id="init_newton_checkpoint_done_">init_newton_checkpoint_done_</a></big></b>
-<br>
-The input value of this member variable must be false.
-If <code><font color="blue">quasi_fixed_</font></code> is true, its output value is false,
-otherwise its output value is true.
-
-<br>
 <br>
 <b><big><a name="Example" id="Example">Example</a></big></b>
 <br>
