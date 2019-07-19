@@ -22,8 +22,8 @@ echo_eval() {
 }
 # --------------------------------------------------------------------------
 web_page='https://github.com/coin-or/CppAD.git'
-hash_key='27f6fad01f1cad8bdac183c427f7a683dac76866'
-version='20190623'
+hash_key='70c03e5791568d111b914540ea02086d84d9b24f'
+version='20190719'
 # --------------------------------------------------------------------------
 # Get user configuration options from run_cmake.sh
 #
@@ -58,13 +58,15 @@ then
 fi
 echo_eval cd build/external
 # --------------------------------------------------------------------------
-if [ ! -e cppad-$version ]
+if [ ! -e cppad.git ]
 then
-	echo_eval git clone $web_page cppad-$version
+	echo_eval git clone $web_page cppad.git
 fi
 pwd
 #
-echo_eval cd cppad-$version
+echo_eval cd cppad.git
+echo_eval git checkout master
+echo_eval git pull
 echo_eval git checkout --quiet $hash_key
 check=`grep '^SET(cppad_version' CMakeLists.txt | \
 	sed -e 's|^[^"]*"\([^"]*\).*|\1|'`

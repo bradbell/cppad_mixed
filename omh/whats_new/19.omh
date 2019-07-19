@@ -18,6 +18,10 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2019$$
 
+$head 07-19$$
+Advance to $code cppad-20190719$$
+(this fixed a problem with the CppAD binary library name on the Mac).
+
 $head 07-10$$
 In the case were $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false,
 a Newton method is used to optimize the fixed effects.
