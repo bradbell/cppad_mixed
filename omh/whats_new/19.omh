@@ -14,9 +14,14 @@ $spell
 	CppAD
 	messaging
 	github
+    ldlt_eigen
 $$
 
 $section Changes and Additions to cppad_mixed During 2019$$
+
+$head 07-20$$
+Remove a print statement
+(that was used for debugging) from the routine $code ldlt_eigen$$ routine.
 
 $head 07-19$$
 Advance to $code cppad-20190719$$
