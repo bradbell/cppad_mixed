@@ -52,7 +52,7 @@ Keyword =
 'data_mismatch.cpp  Random Effects Variance May Cause Data Mismatch  ',' model theory derivatives objective ',
 'opt_ran_nan.cpp  Nan\'s During Optimization of Random Effects: Example and Test  ',' ',
 'whats_new  Changes and Additions to cppad_mixed  ',' ',
-'whats_new_19  Changes and Additions to cppad_mixed During 2019  ',' 07-19 07-10 07-09 06-24 06-07 ',
+'whats_new_19  Changes and Additions to cppad_mixed During 2019  ',' 07-20 07-19 07-10 07-09 06-24 06-07 ',
 'whats_new_18  Changes and Additions to cppad_mixed During 2018  ',' 10-08 09-25 08-30 08-27 08-22 08-20 08-18 08-09 08-08 07-25 07-12 06-30 06-29 06-20 06-14 06-09 06-04 05-21 05-07 05-03 04-06 03-22 03-10 02-20 02-12 02-11 02-10 02-08 02-07 02-05 01-23 01-22 01-21 01-15 01-14 ',
 'whats_new_17  Changes and Additions to cppad_mixed During 2017  ',' 12-28 12-25 12-22 12-16 12-10 10-27 10-24 10-09 10-07 09-30 09-23 09-21 09-18 09-16 09-15 09-14 09-02 08-30 08-01 04-24 04-23 04-06 04-02 03-27 03-25 03-23 03-20 03-12 03-11 03-10 03-09 03-08 03-06 03-02 03-01 01-26 01-24 01-22 01-14 ',
 'whats_new_16  Changes and Additions to cppad_mixed During 2016  ',' 11-09 11-07 11-04 11-02 10-30 10-28 10-27 10-25 10-24 10-18 10-16 10-15 10-14 10-06 09-30 09-27 09-24 09-23 07-28 07-27 07-26 07-25 07-20 07-18 07-14 07-13 07-12 07-10 07-09 06-24 06-22 06-19 06-18 06-17 06-13 06-12 06-11 06-07 06-06 06-05 06-04 06-03 optimize_random optimize_fixed sample_random 05-15 05-11 05-08 05-06 05-04 05-03 04-29 04-27 04-23 04-19 04-18 04-17 04-16 04-10 04-15 04-09 04-08 04-07 04-06 04-05 04-03 04-02 04-01 03-29 03-28 03-09 02-26 02-06 01-26 01-25 01-22 01-21 01-19 01-16 01-15 01-14 01-13 01-10 01-09 01-05 01-04 01-01 ',
