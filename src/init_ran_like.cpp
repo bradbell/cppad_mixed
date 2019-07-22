@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/exception.hpp>
 # include <cppad/mixed/configure.hpp>
+# include <cppad/mixed/is_finite_vec.hpp>
 
 /*
 $begin init_ran_like$$
@@ -88,6 +89,7 @@ void cppad_mixed::init_ran_like(
 	using CppAD::ADFun;
 	using CppAD::vector;
 	using CppAD::Independent;
+	using CppAD::mixed::is_finite_vec;
 	//
 	// ------------------------------------------------------------------
 	// record ran_like_fun_
@@ -115,6 +117,11 @@ void cppad_mixed::init_ran_like(
 	if( a1_vec.size() != 1 )
 	{	std::string error_message =
 		"init_ran_like: ran_likelihood does not have size zero or one.";
+		fatal_error(error_message);
+	}
+	if( ! is_finite_vec( a1_vec ) )
+	{	std::string error_message =
+		"init_ran_like: ran_likelihood not finite at starting variable values";
 		fatal_error(error_message);
 	}
 

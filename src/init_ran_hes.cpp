@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/configure.hpp>
 # include <cppad/mixed/ran_like_hes.hpp>
+# include <cppad/mixed/is_finite_vec.hpp>
 
 /*
 $begin init_ran_hes$$
@@ -194,6 +195,13 @@ void cppad_mixed::init_ran_hes(
 		n_fixed_, n_random_, ran_jac_a1fun_, ran_hes_uu_rc, a1_both
 	);
 	const a1_vector& a1_val( a1_ran_hes_uu_rcv.val() );
+	//
+	if( ! CppAD::mixed::is_finite_vec( a1_val ) )
+	{	std::string error_message =
+		"init_ran_like: Hessian of ran_likelihood w.r.t random effects"
+		" not finite at starting variable values";
+		fatal_error(error_message);
+	}
 	//
 	// ran_hes_fun_
 	ran_hes_fun_.Dependent(a1_both, a1_val);

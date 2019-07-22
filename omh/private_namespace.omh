@@ -32,6 +32,7 @@ $childtable%include/cppad/mixed/configure.hpp.in
 	%src/ipopt_app_status.cpp
 	%include/cppad/mixed/ipopt_fixed.hpp
 	%include/cppad/mixed/ipopt_random.hpp
+	%include/cppad/mixed/is_finite_vec.hpp
 	%include/cppad/mixed/ldlt_cholmod.hpp
 	%include/cppad/mixed/ldlt_eigen.hpp
 	%include/cppad/mixed/sparse_hes_rcv.hpp

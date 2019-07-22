@@ -9,6 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
+# include <cppad/mixed/is_finite_vec.hpp>
 
 /*
 $begin init_hes_cross$$
@@ -185,6 +186,12 @@ void cppad_mixed::init_hes_cross(
 		coloring,
 		hes_cross_.work
 	);
+	if( ! CppAD::mixed::is_finite_vec( hes_cross_.subset.val() ) )
+	{	std::string error_message =
+		"init_ran_like: Hessian of ran_likelihood cross terms not finite "
+		" at starting variable values";
+		fatal_error(error_message);
+	}
 	//
 	init_hes_cross_done_ = true;
 }

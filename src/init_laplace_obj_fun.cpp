@@ -104,6 +104,7 @@ $end
 # include <cppad/mixed/order2random.hpp>
 # include <cppad/mixed/exception.hpp>
 # include <cppad/mixed/configure.hpp>
+# include <cppad/mixed/is_finite_vec.hpp>
 
 // ----------------------------------------------------------------------------
 void cppad_mixed::init_laplace_obj_fun(
@@ -183,13 +184,18 @@ void cppad_mixed::init_laplace_obj_fun(
 	// logdet [ f_{uu} ( beta , W ) ]
 	size_t negative;
 	a1_double logdet = a1_ldlt_ran_hes_.logdet(negative);
-	assert( negative == 0 );
+	if( negative != 0 )
+	{	std::string error_message =
+		"init_laplace_fun: Hessian of ran_likelihood w.r.t. random effects"
+		"\nnot positive at starting fixed and optimal random effects.";
+		fatal_error(error_message);
+	}
 	//
 	// Evaluate the random likelihood using (beta, W)
 	a1_vector f(1);
 	f  = ran_like_a1fun_.Forward(0, beta_W);
-	if( CppAD::hasnan(f) ) throw CppAD::mixed::exception(
-		"init_laplace_obj", "result has a nan"
+	if( ! CppAD::mixed::is_finite_vec(f) ) throw CppAD::mixed::exception(
+		"init_laplace_obj", "result is not finite"
 	);
 	//
 	// constant term

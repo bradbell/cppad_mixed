@@ -10,6 +10,7 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/exception.hpp>
+# include <cppad/mixed/is_finite_vec.hpp>
 /*
 $begin init_ran_jac$$
 $spell
@@ -132,6 +133,13 @@ void cppad_mixed::init_ran_jac(
 	a1_vector a1_jac(n_random_);
 	for(size_t j = 0; j < n_random_; ++j)
 		a1_jac[j] = a1_jac_both[n_fixed_ + j];
+	//
+	if( ! CppAD::mixed::is_finite_vec( a1_jac ) )
+	{	std::string error_message =
+		"init_ran_like: Jacobian of ran_likelihood not finite "
+		" at starting variable values";
+		fatal_error(error_message);
+	}
 	//
 	// ran_jac_a1fun_
 	CppAD::ADFun<double> ran_jac_fun(a1_both, a1_jac);
