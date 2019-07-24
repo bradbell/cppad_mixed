@@ -28,7 +28,7 @@ $$
 $section Second Order Representation of Laplace Objective and Constraints$$
 
 $head Syntax$$
-$icode%mixed_object%.init_laplace_obj_fun(%fixed_vec%, %random_vec%)%$$
+$icode%mixed_object%.init_laplace_obj_fun(%fixed_vec%, %random_opt%)%$$
 
 $head Private$$
 This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
@@ -56,14 +56,17 @@ It specifies the value of the
 $cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$ at which the initialization is done.
 
-$head random_vec$$
+$head random_opt$$
 This argument has prototype
 $codei%
-	const CppAD::vector<double>& %random_vec%
+	const CppAD::vector<double>& %random_opt%
 %$$
 It specifies the value of the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$ at which the initialization is done.
+It should be the optimal value given the fixed effects
+so that the Hessian w.r.t the random effects is more likely to be
+positive definite.
 
 $head laplace_obj_fun_$$
 The input value of the member variable
@@ -109,7 +112,7 @@ $end
 // ----------------------------------------------------------------------------
 void cppad_mixed::init_laplace_obj_fun(
 	const d_vector& fixed_vec  ,
-	const d_vector& random_vec )
+	const d_vector& random_opt )
 {	assert( ! init_laplace_obj_fun_done_ );
 	assert( init_ran_like_done_ );
 	//
@@ -124,7 +127,7 @@ void cppad_mixed::init_laplace_obj_fun(
 	//
 	// theta_u
 	a1_vector theta_u( n_fixed_ + n_random_ );
-	pack(fixed_vec, random_vec, theta_u);
+	pack(fixed_vec, random_opt, theta_u);
 	//
 	// start recording a1_double operations
 	// beta:    independent variables

@@ -23,7 +23,7 @@ $section Initialize Second Order of Approximate Objective and It's Hessian$$
 
 $head Syntax$$
 $icode%mixed_object%.init_laplace_obj(
-	%fixed_vec%, %random_in%, %random_lower%, %random_upper%, %random_options%
+	%fixed_vec%, %random_opt%, %random_lower%, %random_upper%, %random_options%
 )%$$
 
 $head Prototype$$
@@ -49,9 +49,13 @@ This specifies the value of the
 $cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$ at which the initialization is done.
 
-$head random_in$$
-This specifies the initial value for the
-$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ optimization.
+$head random_opt$$
+This specifies the value of the
+$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ optimization
+at which the initialization is done.
+It should be the optimal value given the fixed effects
+so that the Hessian w.r.t the random effects is more likely to be
+positive definite.
 
 $head random_lower$$
 This specifies the lower limits for the random effects optimization.
@@ -87,7 +91,7 @@ $end
 // BEGIN_PROTOTYPE
 void cppad_mixed::init_laplace_obj(
 	const d_vector&	   fixed_vec        ,
-	const d_vector&	   random_in        ,
+	const d_vector&	   random_opt       ,
 	const d_vector&	   random_lower     ,
 	const d_vector&    random_upper     ,
 	const std::string& random_options   )
@@ -96,15 +100,7 @@ void cppad_mixed::init_laplace_obj(
 	assert( ! init_laplace_obj_fun_done_ );
 	assert( ! init_laplace_obj_hes_done_ );
 	assert( ! init_laplace_obj_done_ );
-	//
-	// optimal random effect for initial fixed effects
-	d_vector random_opt = try_optimize_random(
-		random_options,
-		fixed_vec,
-		random_lower,
-		random_upper,
-		random_in
-	);
+
 	// laplace_obj_fun_
 	init_laplace_obj_fun(fixed_vec, random_opt);
 	assert( init_laplace_obj_fun_done_ );

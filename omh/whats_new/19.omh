@@ -19,6 +19,10 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2019$$
 
+$head 07-24$$
+More use of the optimal random effects during initialization
+to avoid the Hessian w.r.t. the random effects not being positive definite.
+
 $head 07-23$$
 Do more checking and reporting of non-finite values during the
 $cref initialize$$ procedure.

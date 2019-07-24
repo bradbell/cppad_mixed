@@ -29,7 +29,7 @@ $section Initialize Hessian of Approximate Laplace Objective$$
 
 $head Syntax$$
 $icode%mixed_object%.init_laplace_obj_hes(
-	%fixed_vec%, %random_vec%
+	%fixed_vec%, %random_opt%
 )%$$
 
 $head Private$$
@@ -58,13 +58,17 @@ It specifies the value of the
 $cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$ at which the initialization is done.
 
-$head random_vec$$
+$head random_opt$$
 This argument has prototype
 $codei%
-	const CppAD::vector<double>& %random_vec%
+	const CppAD::vector<double>& %random_opt%
 %$$
 It specifies the initial value for the
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ optimization.
+It should be the optimal value given the fixed effects
+so that the Hessian w.r.t the random effects is more likely to be
+positive definite.
+
 
 $head laplace_obj_hes_$$
 The input value of the member variable
@@ -98,7 +102,7 @@ $end
 
 void cppad_mixed::init_laplace_obj_hes(
 	const d_vector& fixed_vec     ,
-	const d_vector& random_vec    )
+	const d_vector& random_opt    )
 {	assert( ! init_laplace_obj_hes_done_ );
 	assert( init_laplace_obj_fun_done_ );
 	//
@@ -107,7 +111,7 @@ void cppad_mixed::init_laplace_obj_hes(
 	//
 	// theta_u
 	d_vector theta_u(n_fixed_ + n_random_);
-	pack(fixed_vec, random_vec, theta_u);
+	pack(fixed_vec, random_opt, theta_u);
 	//
 	// Compute Jacobian sparsity for partials w.r.t. beta.
 	// Note that theta and u are dynamic parameters in laplace_obj_fun_.

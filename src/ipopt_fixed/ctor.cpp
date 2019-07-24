@@ -282,6 +282,10 @@ specifies the upper limit for the random effects (during optimization).
 $head random_in$$
 This vector has length equal to $icode n_random_$$ and
 specifies the initial value (for initial optimization) of the random effects.
+It should be the optimal value given the initial fixed effects
+so that the Hessian w.r.t the random effects is more likely to be
+positive definite.
+
 
 $head mixed_object$$
 The argument $icode mixed_object$$ is an object of a class that is

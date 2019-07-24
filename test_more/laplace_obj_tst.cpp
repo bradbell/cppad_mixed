@@ -61,15 +61,11 @@ namespace {
 			// initialize part of log-density that is always smooth
 			vec[0] = scalar(0.0);
 
-			// pi
-			scalar sqrt_2pi = scalar( CppAD::sqrt(8.0 * CppAD::atan(1.0)) );
-
 			// p(y | u, theta) , p(u_i | theta)
-			scalar sigma  = theta[0];
 			for(size_t i = 0; i < y_.size(); ++i)
-			{	scalar res = (y_[i] - exp(u[i]) ) / sigma;
-				vec[0] += log(sqrt_2pi * sigma) + res * res / scalar(2.0);
-				vec[0] += log(sqrt_2pi) + u[i] * u[i] / scalar(2.0);
+			{	scalar res = y_[i] - theta[0] * exp(u[i]);
+				vec[0] += res * res / scalar(2.0);
+				vec[0] += u[i] * u[i] / scalar(2.0);
 			}
 
 			return vec;
@@ -86,7 +82,7 @@ bool laplace_obj_tst(void)
 {
 	bool   ok = true;
 
-	size_t n_data   = 2;
+	size_t n_data   = 1;
 	size_t n_fixed  = 1;
 	size_t n_random = n_data;
 	d_vector y(n_data), fixed_in(n_fixed), random_in(n_random);
@@ -94,18 +90,18 @@ bool laplace_obj_tst(void)
 	d_vector random_lower(n_random), random_upper(n_random);
 
 	double inf = std::numeric_limits<double>::infinity();
-	fixed_in[0]    = 1.0;
-	fixed_lower[0] = 1e-2;
-	fixed_upper[0] = 1e+2;
+	fixed_in[0]     = 1.0;
+	fixed_lower[0]  = 1e-5;
+	fixed_upper[0]  = 1e+2;
 	for(size_t i = 0; i < n_data; ++i)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
 		random_in[i]    = 0.0;
-		y[i]            = double(10 * i);
+		y[i]            = double(20 + i);
 	}
 
 	// object that is derived from cppad_mixed
-	bool quasi_fixed   = false; // need false to test init_laplace_obj
+	bool quasi_fixed   = false;
 	bool bool_sparsity = true;
 	CppAD::mixed::d_sparse_rcv A_rcv; // empty matrix
 	mixed_derived mixed_object(

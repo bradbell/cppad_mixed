@@ -320,10 +320,20 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		"cppad_mixed::initialize was not called before optimize_fixed";
 		fatal_error(error_message);
 	}
+	//
+	// optimal random effect for initial fixed effects
+	d_vector random_opt;
+	if( n_random_ > 0 ) random_opt = try_optimize_random(
+		random_ipopt_options,
+		fixed_in,
+		random_lower,
+		random_upper,
+		random_in
+	);
 	if( ! init_laplace_obj_done_ && ! quasi_fixed_ && n_random_ > 0 )
 	{	init_laplace_obj(
 			fixed_in,
-			random_in,
+			random_opt,
 			random_lower,
 			random_upper,
 			random_ipopt_options
@@ -467,7 +477,7 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		fixed_in,
 		random_lower,
 		random_upper,
-		random_in,
+		random_opt,
 		mixed_object
 	);
 	// error message is empty directly after constructor
