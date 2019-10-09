@@ -14,12 +14,23 @@ $spell
 	CppAD
 	messaging
 	github
-    ldlt_eigen
-    Goto
-    omhelp
+	ldlt_eigen
+	Goto
+	omhelp
+	rcv
+	nr
+	nc
 $$
 
 $section Changes and Additions to cppad_mixed During 2019$$
+
+$head 10-08$$
+If $cref/A_rcv/derived_ctor/A_rcv/$$ is not empty,
+$icode%A_rcv%.nr() > 0%$$ and $icode%A_rcv%.nc()%$$ must equal
+$cref/n_random/derived_ctor/n_random/$$.
+If this is not the case, a
+$cref/fatal_error/base_class/User Defined Functions/fatal_error/$$
+message is generated.
 
 $head 09-30$$
 Use a newer version of the program that generates the documentation

@@ -19,6 +19,8 @@ $spell
 	vec
 	rcv
 	init_obj_hes
+	nr
+	nc
 $$
 
 $section User Defined Class Derived From cppad_mixed$$
@@ -127,7 +129,9 @@ $cref/random constraint matrix
 	/Random Constraint Matrix, A
 /$$
 $latex A$$.
-If $icode%random_vec%.size()%$$ is zero, this must be the empty matrix.
+If $icode%random_vec%.size()%$$ is zero,
+there are no constraint equations and $icode%A_rcv%.nr() == 0%$$.
+Otherwise, $icode%A_rcv%.nc()%$$ must be equal to $icode n_random$$.
 The member variable $icode A_rcv_$$ is set equal to $icode A_rcv$$
 before any other routines are called by this routine.
 
@@ -209,7 +213,11 @@ initialize_done_(false)             ,
 cppad_error_handler_(handler)       ,
 ldlt_ran_hes_(n_random)             ,
 a1_ldlt_ran_hes_(n_random)
-{ }
+{	if( A_rcv.nr() > 0 && A_rcv.nc() != n_random )
+	{	std::string message = "cppad_mixed ctor: A_rcv.nr() > 0 and A_rcv.nc() != n_random";
+		fatal_error(message);
+	}
+}
 
 // base class destructor
 cppad_mixed::~cppad_mixed(void)
