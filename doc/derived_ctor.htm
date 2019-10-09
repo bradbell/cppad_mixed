@@ -240,7 +240,15 @@ A
 @)@</small>.
 If 
 <code><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>.size()</span></font></code>
- is zero, this must be the empty matrix.
+ is zero,
+there are no constraint equations and 
+<code><i><font color="black"><span style='white-space: nowrap'>A_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.nr()&nbsp;==&nbsp;0</span></font></code>
+.
+Otherwise, 
+<code><i><font color="black"><span style='white-space: nowrap'>A_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.nc()</span></font></code>
+ must be equal to 
+<code><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i></code>
+.
 The member variable 
 <code><i><font color="black"><span style='white-space: nowrap'>A_rcv_</span></font></i></code>
  is set equal to 
