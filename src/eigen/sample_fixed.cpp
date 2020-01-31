@@ -2,7 +2,7 @@
 /*
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-19 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -37,8 +37,7 @@ $head See Also$$
 $cref sample_random$$, $cref sample_conditional$$
 
 $head Prototype$$
-$srcfile%src/eigen/sample_fixed.cpp
-	%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
+$srcthisfile%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
 
 $head Public$$
 This $code cppad_mixed$$ $cref base_class$$ member function is public.

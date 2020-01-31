@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -119,8 +119,7 @@ h_u [ \theta , \hat{u} ( \theta ) ] \hat{u}_\theta ( \theta )
 \] $$
 
 $code
-$srcfile%test_more/der_var_hes.cpp
-	%0%// BEGIN C++%// END C++%1%$$
+$srcthisfile%0%// BEGIN C++%// END C++%1%$$
 $$
 
 $end

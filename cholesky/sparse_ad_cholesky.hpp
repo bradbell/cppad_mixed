@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-19 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -56,16 +56,13 @@ This class is an implementation detail and not part of the
 CppAD Mixed user API.
 
 $head Public Member Functions$$
-$srcfile%cholesky/sparse_ad_cholesky.hpp
-	%4%// BEGIN PUBLIC MEMBER FUNCTIONS%// END PUBLIC MEMBER FUNCTIONS%1%$$
+$srcthisfile%4%// BEGIN PUBLIC MEMBER FUNCTIONS%// END PUBLIC MEMBER FUNCTIONS%1%$$
 
 $head Type Declarations$$
-$srcfile%cholesky/sparse_ad_cholesky.hpp
-	%4%// BEGIN TYPE DECLARATIONS%// END TYPE DECLARATIONS%1%$$
+$srcthisfile%4%// BEGIN TYPE DECLARATIONS%// END TYPE DECLARATIONS%1%$$
 
 $head Member Variables$$
-$srcfile%cholesky/sparse_ad_cholesky.hpp
-	%4%// BEGIN MEMBER VARIABLES%// END MEMBER VARIABLES%1%$$
+$srcthisfile%4%// BEGIN MEMBER VARIABLES%// END MEMBER VARIABLES%1%$$
 
 $childtable%cholesky/sparse_ad_cholesky.cpp
 	%cholesky/example/sparse_ad_chol_eval.cpp

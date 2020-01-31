@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-19 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -165,8 +165,7 @@ $head Syntax$$
 $icode%P% = %cholesky%.permutation()%$$
 
 $head Prototype$$
-$srcfile%cholesky/sparse_ad_cholesky.cpp
-	%4%// BEGIN PERMUTATION PROTOTYPE%// END PERMUTATION PROTOTYPE%1%$$
+$srcthisfile%4%// BEGIN PERMUTATION PROTOTYPE%// END PERMUTATION PROTOTYPE%1%$$
 
 $head Public / Private$$
 This is a public member function of the class $code sparse_ad_cholesky$$.

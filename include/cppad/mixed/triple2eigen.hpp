@@ -3,7 +3,7 @@
 # define CPPAD_MIXED_TRIPLE2EIGEN_HPP
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-19 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -28,8 +28,7 @@ $codei%CppAD::mixed::triple2eigen(
 )%$$
 
 $head Prototype$$
-$srcfile%include/cppad/mixed/triple2eigen.hpp
-	%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1
+$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1
 %$$
 
 $head Private$$

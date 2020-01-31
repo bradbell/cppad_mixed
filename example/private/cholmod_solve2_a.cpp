@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -74,7 +74,7 @@ and only these entries are assured to appear in $code Xset$$
 
 $head Source Code$$
 $code
-$srcfile%example/private/cholmod_solve2_a.cpp%5%// BEGIN C++%// END C++%1%$$
+$srcthisfile%5%// BEGIN C++%// END C++%1%$$
 $$
 
 $end

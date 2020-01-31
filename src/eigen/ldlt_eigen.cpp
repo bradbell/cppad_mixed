@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-19 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -30,8 +30,7 @@ $head Syntax$$
 $codei%CppAD::ldlt_eigen<%Double%> %ldlt_obj%(%n_row%)%$$
 
 $head Prototype$$
-$srcfile%src/eigen/ldlt_eigen.cpp
-	%0%// BEGIN_PROTOTYPE_CTOR%// END_PROTOTYPE_CTOR%1%$$
+$srcthisfile%0%// BEGIN_PROTOTYPE_CTOR%// END_PROTOTYPE_CTOR%1%$$
 
 $head Private$$
 The $cref ldlt_eigen$$ class is an
@@ -85,8 +84,7 @@ $icode%ldlt_obj%.init(%H_rc%)
 %$$
 
 $head Prototype$$
-$srcfile%src/eigen/ldlt_eigen.cpp
-	%0%// BEGIN_PROTOTYPE_INIT%// END_PROTOTYPE_INIT%1%$$
+$srcthisfile%0%// BEGIN_PROTOTYPE_INIT%// END_PROTOTYPE_INIT%1%$$
 
 $head Private$$
 The $code ldlt_eigen$$ class is an
@@ -164,8 +162,7 @@ $head Syntax$$
 $icode%H_rc% = %ldlt_obj%.pattern()%$$
 
 $head Prototype$$
-$srcfile%src/eigen/ldlt_eigen.cpp
-	%0%// BEGIN_PROTOTYPE_PATTERN%// END_PROTOTYPE_PATTERN%1%$$
+$srcthisfile%0%// BEGIN_PROTOTYPE_PATTERN%// END_PROTOTYPE_PATTERN%1%$$
 
 $head Private$$
 The $cref ldlt_eigen$$ class is an
@@ -227,8 +224,7 @@ $head Syntax$$
 $icode%ok% = %ldlt_obj%.update(%H_rcv%)%$$
 
 $head Prototype$$
-$srcfile%src/eigen/ldlt_eigen.cpp
-	%0%// BEGIN_PROTOTYPE_UPDATE%// END_PROTOTYPE_UPDATE%1%$$
+$srcthisfile%0%// BEGIN_PROTOTYPE_UPDATE%// END_PROTOTYPE_UPDATE%1%$$
 
 $head Private$$
 The $cref ldlt_eigen$$ class is an
@@ -334,8 +330,7 @@ $head Syntax$$
 $icode%ldlt_obj%.split(%L%, %D%, %P%)%$$
 
 $head Prototype$$
-$srcfile%src/eigen/ldlt_eigen.cpp
-	%0%// BEGIN_PROTOTYPE_SPLIT%// END_PROTOTYPE_SPLIT%1%$$
+$srcthisfile%0%// BEGIN_PROTOTYPE_SPLIT%// END_PROTOTYPE_SPLIT%1%$$
 
 $head Private$$
 The $cref ldlt_eigen$$ class is an
@@ -403,8 +398,7 @@ $head Syntax$$
 $icode%logdet% = %ldlt_obj%.logdet(%negative%)%$$
 
 $head Prototype$$
-$srcfile%src/eigen/ldlt_eigen.cpp
-	%0%// BEGIN_PROTOTYPE_LOGDET%// END_PROTOTYPE_LOGDET%1%$$
+$srcthisfile%0%// BEGIN_PROTOTYPE_LOGDET%// END_PROTOTYPE_LOGDET%1%$$
 
 $head Private$$
 The $code ldlt_eigen$$ class is an
@@ -480,8 +474,7 @@ $head Syntax$$
 $codei%%ldlt_obj%.solve_H(%row%, %val_in%, %val_out%)%$$
 
 $head Prototype$$
-$srcfile%src/eigen/ldlt_eigen.cpp
-	%0%// BEGIN_PROTOTYPE_SOLVE_H%// END_PROTOTYPE_SOLVE_H%1%$$
+$srcthisfile%0%// BEGIN_PROTOTYPE_SOLVE_H%// END_PROTOTYPE_SOLVE_H%1%$$
 
 $head Private$$
 The $cref ldlt_eigen$$ class is an
@@ -584,8 +577,7 @@ $head Syntax$$
 $icode%ok% = %ldlt_obj%.sim_cov(%w%, %v%)%$$
 
 $head Prototype$$
-$srcfile%src/eigen/ldlt_eigen.cpp
-	%0%// BEGIN_PROTOTYPE_SIM_COV%// END_PROTOTYPE_SIM_COV%1%$$
+$srcthisfile%0%// BEGIN_PROTOTYPE_SIM_COV%// END_PROTOTYPE_SIM_COV%1%$$
 
 $head Private$$
 The $cref ldlt_eigen$$ class is an
@@ -720,8 +712,7 @@ $head Syntax$$
 $icode%ldlt_obj%.inv(%row_in%, %col_in%, %val_out%)%$$
 
 $head Prototype$$
-$srcfile%src/eigen/ldlt_eigen.cpp
-	%0%// BEGIN_PROTOTYPE_INV%// END_PROTOTYPE_INV%1%$$
+$srcthisfile%0%// BEGIN_PROTOTYPE_INV%// END_PROTOTYPE_INV%1%$$
 
 $head Private$$
 The $cref ldlt_eigen$$ class is an
@@ -860,8 +851,7 @@ $head Syntax$$
 $icode%x% = ldlt_eigen<%Double%>::solve_LDLT(%L%, %D%, %P%, %b%)%$$
 
 $head Prototype$$
-$srcfile%src/eigen/ldlt_eigen.cpp
-	%0%// BEGIN_PROTOTYPE_SOLVE_LDLT%// END_PROTOTYPE_SOLVE_LDLT%1%$$
+$srcthisfile%0%// BEGIN_PROTOTYPE_SOLVE_LDLT%// END_PROTOTYPE_SOLVE_LDLT%1%$$
 
 $head Private$$
 The $cref ldlt_eigen$$ class is an

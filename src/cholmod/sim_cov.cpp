@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-19 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -27,8 +27,7 @@ $head Syntax$$
 $icode%ok% = %ldlt_obj%.sim_cov(%w%, %v%)%$$
 
 $head Prototype$$
-$srcfile%src/cholmod/sim_cov.cpp
-	%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
 
 $head Private$$
 The $cref ldlt_cholmod$$ class is an
