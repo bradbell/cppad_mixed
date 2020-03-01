@@ -13,7 +13,7 @@ image_link='https://github.com/bradbell/cppad_mixed'
 # version number (can be empty).
 version_files='
     CMakeLists.txt
-    doc.omh
+    omh/cppad_mixed.omh
 '
 #
 # List of special files, for this repository, that the devel tools ignore.
