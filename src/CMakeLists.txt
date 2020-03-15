@@ -1,7 +1,7 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-19 University of Washington
+#           Copyright (C) 2014-20 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -21,10 +21,8 @@ ADD_LIBRARY(cppad_mixed
 	eigen/ldlt_eigen.cpp
 	eigen/information_mat.cpp
 	eigen/order2random.cpp
-	eigen/sample_fixed.cpp
 	eigen/sparse_low_tri_sol.cpp
 	eigen/sparse_up_tri_sol.cpp
-	sample_random.cpp
 	eigen/undetermined.cpp
 	fix_con_eval.cpp
 	fix_con_eval.cpp
@@ -77,6 +75,8 @@ ADD_LIBRARY(cppad_mixed
 	laplace_obj_hes.cpp
 	ran_obj_eval.cpp
 	ran_obj_jac.cpp
+	sample_fixed.cpp
+	sample_random.cpp
 	update_factor.cpp
 )
 SET_TARGET_PROPERTIES(cppad_mixed

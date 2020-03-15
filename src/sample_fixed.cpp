@@ -168,24 +168,6 @@ $end
 
 # define DEBUG_PRINT 0
 
-namespace {
-	using Eigen::Dynamic;
-	using CppAD::mixed::get_gsl_rng;
-	typedef Eigen::Matrix<double, Dynamic, Dynamic>     double_mat;
-	typedef Eigen::Matrix<double, Dynamic, 1>           double_vec;
-	typedef Eigen::Matrix<size_t, Dynamic, 1>           size_vec;
-	typedef Eigen::LDLT<double_mat, Eigen::Lower>       double_cholesky;
-	typedef Eigen::PermutationMatrix<Dynamic, Dynamic, int>  permutation_mat;
-	//
-# if DEBUG_PRINT
-	void print(const char* name , const double_mat& mat)
-	{	std::cout << "\n" << name << " =\n" << mat << "\n"; }
-	void print(const char* name , double_vec& vec)
-	{	std::cout << "\n" << name << "^T = " << vec.transpose() << "\n"; }
-	void print(const char* name , size_vec& vec)
-	{	std::cout << "\n" << name << "^T = " << vec.transpose() << "\n"; }
-# endif
-}
 // -------------------------------------------------------------------------
 void cppad_mixed::try_sample_fixed(
 	CppAD::vector<double>&                 sample               ,
@@ -195,20 +177,12 @@ void cppad_mixed::try_sample_fixed(
 	const CppAD::vector<double>&           fixed_upper          ,
 	const CppAD::vector<double>&           random_opt           )
 {
-	// number of fixed constraints
-	size_t n_fix_con = 0;
-	if( fix_con_fun_.size_var() != 0 )
-		n_fix_con = fix_con_fun_.Range();
-	//
 	// sample
 	assert( sample.size() > 0 );
 	assert( sample.size() % n_fixed_ == 0 );
 	//
 	// solution
 	assert( solution.fixed_opt.size() == n_fixed_ );
-	assert( solution.fixed_lag.size() == n_fixed_ );
-	assert( solution.fix_con_lag.size() == n_fix_con );
-	assert( solution.ran_con_lag.size() == A_rcv_.nr() );
 	//
 	// random_opt
 	assert( random_opt.size() == n_random_ );
