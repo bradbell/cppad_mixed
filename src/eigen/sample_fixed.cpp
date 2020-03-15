@@ -34,7 +34,7 @@ $icode%mixed_object%.sample_fixed(
 )%$$
 
 $head See Also$$
-$cref sample_random$$, $cref sample_conditional$$
+$cref sample_random$$
 
 $head Prototype$$
 $srcthisfile%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
@@ -43,9 +43,30 @@ $head Public$$
 This $code cppad_mixed$$ $cref base_class$$ member function is public.
 
 $head Purpose$$
-This routine draws samples from
+This routine draws independent samples from
 the asymptotic posterior distribution for the
 fixed effects (given the model and the data).
+
+$head Constant Fixed Effects$$
+If the upper and lower limits for a fixed effect are equal,
+$codei%
+	%fixed_lower%[%j%] == %fixed_upper%[%j%]
+%$$
+we refer to the $th j$$ fixed effect as constant.
+
+$head Constraints$$
+Only the constant fixed effect constants are taken into account.
+This can result in samples that are outside the limits
+for the fixed effects that are not constant.
+You may want to adjust the samples to be within
+their upper and lower limits before you use them.
+
+$head Covariance$$
+Each sample of the fixed effects
+(excluding the constant fixed effects)
+has covariance equal to the inverse of the
+$cref/information matrix/information_mat/$$
+(where the constant fixed effects have been removed).
 
 $head manage_gsl_rng$$
 It is assumed that
@@ -74,8 +95,8 @@ $codei%
 is the $th j$$ component of the $th i$$ sample of the
 optimal fixed effects $latex \hat{\theta}$$.
 These samples are independent for different $latex i$$,
-and for fixed $latex i$$, they have the
-$cref/implicit covariance/sample_fixed/Theory/Implicit Covariance/$$.
+and for fixed $latex i$$, they have the specified
+$cref/covariance/sample_fixed/Covariance/$$.
 
 $head information_rcv$$
 This is a sparse matrix representation for the
@@ -118,88 +139,6 @@ $icode random_upper$$, and
 $icode random_in$$, are the same
 as in the call to $code optimize_fixed$$ that corresponds to $icode solution$$.
 
-$head Positive Definite$$
-If the $cref/implicit information/sample_fixed/Theory/Implicit Information/$$
-matrix is not positive definite, at least one fixed effects is not determined
-by the model plus the data.
-You should be able to recognize it because its
-upper and lower limits are not equal, but the limits appear often
-in the simulated values (or it is uniformly distributed between these limits).
-
-$head Theory$$
-
-$subhead Notation$$
-Given two random vectors $latex u$$ and $latex v$$,
-we use the notation $latex \B{C}( u , v )$$
-for the corresponding covariance matrix;
-i.e.,
-$latex \[
-	\B{C}( u , v )
-	=
-	\B{E} \left( [ u - \B{E} (u) ] [ v - \B{E} (v) ]^\R{T} \right)
-\] $$
-
-$subhead Unconstrained Subset Covariance$$
-We use $latex \tilde{L} ( \theta )$$ to denote the
-$cref/total objective/theory/Objective/Total Objective, L(theta)/$$
-as a function of $latex \theta$$ and
-where the absolute values terms in $cref fix_likelihood$$ are excluded.
-We use $latex \tilde{\theta}$$ for the unconstrained optimal estimate
-of the subset of fixed effects and
-approximate its auto-covariance by
-$latex \[
-	\B{C} ( \tilde{\theta} , \tilde{\theta} )
-	=
-	H^{-1}
-\]$$
-Here $latex H$$ is the Hessian corresponding to
-the observed information matrix $icode information_rcv$$.
-
-$subhead Approximate Constraint Equations$$
-Let $latex n$$ be the number of fixed effects in $latex \theta$$,
-$latex m$$ the number of active constraints (not counting bounds),
-and the equations $latex e( \theta ) = b$$ be the active constraints.
-Here $latex e : \B{R}^n \rightarrow \B{R}^m$$ and $latex b \in \B{R}^m$$
-and the inequality constraints have been converted to equalities at the
-active bounds.
-Indices $icode j$$ for which $icode%fixed_lower%[%j%]%$$
-is equal to $icode%fixed_upper%[%j%]%$$ are considered even of the
-corresponding Lagrange multiplier is zero.
-Define the approximate constraint equation by
-$latex \[
-b =
-e \left( \hat{\theta} \right) + e^{(1)} \left( \hat{\theta} \right)
-	\left( \theta - \hat{\theta} \right)
-\] $$
-where $latex \hat{\theta}$$ is the optional estimate
-for the fixed effects $icode%solution%.fixed_opt%$$.
-
-$subhead Implicit Information$$
-We apply the implicit function theorem to the approximate constraint
-equation above to get a representation:
-$latex \[
-	\theta_D = C \theta_I + d
-\] $$
-Here $latex D \in \B{Z}_+^m$$ is the dependent subset of $latex \theta$$,
-$latex I \in \B{Z}_+^{n-m}$$ is the independent subset of $latex \theta$$,
-$latex D \cap I = \emptyset$$,
-$latex C \in \B{R}^{m \times (n - m)}$$,
-$latex d \in \B{R}^m$$.
-For any $latex \theta$$ satisfying the approximate constraint equation,
-the corresponding components $latex \theta_D$$ and $latex \theta_I$$
-satisfy the equation above.
-The maximum likelihood problem corresponding to the approximate constraints,
-as a function of $latex \theta_I$$ alone,
-would have the following observed information matrix:
-$latex \[
-	H_{I,I} + H_{I,D} C + C^\R{T} H_{D,I} + C^\R{T} H_{D,D} C
-\] $$
-This matrix is the observed implicit information matrix.
-
-$subhead Implicit Covariance$$
-The inverse of the implicit information matrix
-is called the implicit covariance.
-
 $children%example/user/sample_fixed.cpp
 	%src/eigen/sample_conditional.cpp
 %$$
@@ -210,10 +149,6 @@ and test of $code sample_fixed$$.
 $head Other Method$$
 The routine $cref sample_conditional$$, is a old method that is no
 longer used for computing these samples.
-
-$head 2DO$$
-This routine uses dense matrices, perhaps it would be useful
-to converting this to all sparse matrices.
 
 $end
 ------------------------------------------------------------------------------

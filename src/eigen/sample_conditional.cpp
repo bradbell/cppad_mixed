@@ -41,10 +41,7 @@ $cref/conditional covariance
 /$$
 to sample the fixed effects.
 This required inverting the $cref information_mat$$.
-It has been replaced by using the
-$cref/implicit covariance/sample_fixed/Theory/Implicit Covariance/$$
-because the implicit covariance has a better chance of being invertible
-(than the observed information matrix).
+It has been replaced by using the $cref sample_fixed$$ because it is faster.
 
 $head Prototype$$
 $srcthisfile%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$

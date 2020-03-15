@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-19 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -534,12 +534,12 @@ $icode random_ipopt_options$$.
 $head 05-15$$
 $list number$$
 The $cref sample_fixed$$ routine now uses an LDLT factorization of the
-$cref/implicit information/sample_fixed/Theory/Implicit Information/$$
-instead of the implicit covariance.
+implicit information matrix instead of the implicit covariance.
 This is more efficient.
 $lnext
-Provide results from when matrix is invertible,
-but not $cref/positive definite/sample_fixed/Positive Definite/$$.
+Provide $code sample_fixed$$ results
+(with a warning) when the information matrix is invertible,
+but not positive definite.
 This is intended to help determine which variables are
 not determined by the model plus data.
 $lnext
@@ -561,9 +561,8 @@ $cref/conditional covariance
 	/Theory
 	/Conditional Covariance
 /$$
-method by the
-$cref/implicit covariance/sample_fixed/Theory/Implicit Covariance/$$
-method.
+method by the implicit covariance method
+(which was removed on 2020-03-15 because it was to slow).
 $lnext
 Return a warning when the
 observed implicit covariance is not positive definite.
