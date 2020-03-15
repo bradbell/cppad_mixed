@@ -265,11 +265,13 @@ void cppad_mixed::try_sample_fixed(
 	// sample
 	assert( sample.size() > 0 );
 	assert( sample.size() % n_fixed_ == 0 );
+	//
 	// solution
 	assert( solution.fixed_opt.size() == n_fixed_ );
 	assert( solution.fixed_lag.size() == n_fixed_ );
 	assert( solution.fix_con_lag.size() == n_fix_con );
 	assert( solution.ran_con_lag.size() == A_rcv_.nr() );
+	//
 	// random_opt
 	assert( random_opt.size() == n_random_ );
 	//
@@ -278,217 +280,77 @@ void cppad_mixed::try_sample_fixed(
 	//
 	// optimal fixed effects
 	const d_vector& fixed_opt( solution.fixed_opt );
-	// -----------------------------------------------------------------------
-	// update the cholesky factor for this fixed and random effect
-	if( n_random_ > 0 )
-		update_factor(fixed_opt, random_opt);
-	// -----------------------------------------------------------------------
-	// Determine the subset of variables that do not have active bounds
-	// mapping from fixed index to subset index and back
+	//
+	// Determine the subset of variables that do not have lower equal to upper
 	CppAD::vector<size_t> fixed2subset(n_fixed_);
 	size_t n_subset = 0;
 	for(size_t j = 0; j < n_fixed_; j++)
-	{	if( solution.fixed_lag[j] != 0.0 )
-			fixed2subset[j] = n_fixed_;
-		else if( fixed_lower[j] == fixed_upper[j] )
+	{	if( fixed_lower[j] == fixed_upper[j] )
 			fixed2subset[j] = n_fixed_;
 		else
 			fixed2subset[j] = n_subset++;
 	}
 	assert( n_subset <= n_fixed_ );
-	// -----------------------------------------------------------------------
-	// Represent approximate constraint as
-	// e = E * alpha
-	// where alpha is subset of fixed effecst that do not have active bounds
 	//
-	// number fixed constraints active
-	size_t n_fix_active = 0;
-	size_vec fix_active_index(n_fix_con);
-	for(size_t i = 0; i < n_fix_con; i++)
-	{	fix_active_index[i] = n_fixed_;
-		if( solution.fix_con_lag[i] != 0.0 )
-			fix_active_index[i] = n_fix_active++;
-	}
-	// random constraints are always active
-	size_t n_ran_active = A_rcv_.nr();
-	//
-	// This A is the matrix with all the active constraints.
-	// This includes fixed and random, but not bound, constraints.
-	size_t n_con_active = n_fix_active + n_ran_active;
-	double_mat A = double_mat::Zero(n_con_active, n_subset);
-	double_vec b = double_vec::Zero(n_con_active);
-	size_t con_row = 0;
-	//
-	// put fixed constraints in A
-	if( n_fix_con > 0 )
-	{	// righth and side for fixed constraints
-		d_vector vec  = fix_con_eval(fixed_opt);
-		size_t i_active = 0;
-		for(size_t r = 0; r < n_fix_con; r++)
-		{	if( solution.fix_con_lag[r] != 0.0 )
-				b[i_active++] = vec[r];
-		}
-		// jacobian of the fixed constraints
-		CppAD::mixed::sparse_mat_info fix_con_info;
-		fix_con_jac(
-			fixed_opt, fix_con_info.row, fix_con_info.col, fix_con_info.val
-		);
-		size_t K = fix_con_info.row.size();
-		for(size_t k = 0; k < K; k++)
-		{	size_t r  = fix_con_info.row[k];
-			size_t c  = fix_con_info.col[k];
-			double v  = fix_con_info.val[k];
-			//
-			bool r_active  = solution.fix_con_lag[r] != 0.0;
-			bool in_subset = fixed2subset[c] != n_fixed_;
-			if( r_active & in_subset )
-			{	assert( fix_active_index[r] != n_fixed_ );
-				size_t i  = fix_active_index[r];
-				size_t j  = fixed2subset[c];
-				A(con_row + i, j) = v;
-			}
-		}
-		con_row += n_fix_active;
-	}
-	// put random constraints in A
-	// (right hand side b for random constraints is zero)
-	d_sparse_rcv ran_con_rcv;
-	if( n_ran_active > 0 )
-	{	assert( con_row == n_fix_active );
-		//
-		// jacobian of the random constraints
-		// sparsity pattern
-		ran_con_jac(fixed_opt, random_opt, ran_con_rcv);
-		// values
-		ran_con_jac(fixed_opt, random_opt, ran_con_rcv);
-		//
-		size_t K = ran_con_rcv.nnz();
-		for(size_t k = 0; k < K; k++)
-		{	size_t r       = ran_con_rcv.row()[k];
-			size_t c       = ran_con_rcv.col()[k];
-			double v       = ran_con_rcv.val()[k];
-			bool in_subset = fixed2subset[c] != n_fixed_;
-			if( in_subset )
-			{	size_t j  = fixed2subset[c];
-				A(con_row + r, j) = v;
-			}
-		}
-	}
-	double tol = 1e3 * std::numeric_limits<double>::epsilon();
-	size_t nD = n_con_active;
-	size_t nI = n_subset - n_con_active;
-	size_vec   D(nD), I(nI);
-	double_mat C(nD, nI);
-	double_vec e(nD);
-	CppAD::mixed::undetermined(A, b, tol, D, I, C, e);
-	// -----------------------------------------------------------------------
-	// map from subset index to dependent and independent variable indices
-	CppAD::vector<size_t> subset2independent(n_subset);
-	CppAD::vector<size_t> subset2dependent(n_subset);
-	for(size_t i = 0; i < nI; i++)
-	{	subset2independent[ I[i] ] = i;
-		subset2dependent[ I[i] ]   = nD;
-	}
-	for(size_t i = 0; i < nD; i++)
-	{	subset2independent[ D[i] ] = nI;
-		subset2dependent[ D[i] ]   = i;
-	}
-	// -----------------------------------------------------------------------
-	// compute implicit information
-	double_mat H_II = double_mat::Zero(nI, nI);
-	double_mat H_ID = double_mat::Zero(nI, nD);
-	double_mat H_DD = double_mat::Zero(nD, nD);
-	for(size_t k = 0; k < information_rcv.nnz(); k++)
-	{	// note only lower triangle is stored in information_rcv
-		// but we must fill both lower and upper triangle for eigen inverse
-		size_t r = information_rcv.row()[k];
-		size_t c = information_rcv.col()[k];
-		double v = information_rcv.val()[k];
-		//
-		bool in_subset = fixed2subset[r] != n_fixed_;
-		in_subset     &= fixed2subset[c] != n_fixed_;
-		//
-		if( in_subset )
-		{	size_t i = fixed2subset[r];
-			size_t j = fixed2subset[c];
-			//
-			size_t i_in_I = subset2independent[i];
-			size_t j_in_I = subset2independent[j];
-			size_t i_in_D = subset2dependent[i];
-			size_t j_in_D = subset2dependent[j];
-			//
-			// H_II
-			if( i_in_I < nI && j_in_I < nI )
-			{	assert( i_in_D == nD && j_in_D == nD );
-				H_II(i_in_I, j_in_I) = v;
-				H_II(j_in_I, i_in_I) = v;
-			}
-			// H_ID
-			if( i_in_I < nI && j_in_D < nD )
-			{	assert( i_in_D == nD && j_in_I == nI );
-				H_ID(i_in_I, j_in_D) = v;
-			}
-			if( i_in_D < nD && j_in_I < nI )
-			{	assert( i_in_I == nI && j_in_D == nD );
-				H_ID(j_in_I, i_in_D) = v;
-			}
-			// H_DD
-			if( i_in_D < nD && j_in_D < nD )
-			{	assert( i_in_I == nI && j_in_I == nI );
-				H_DD(i_in_D, j_in_D) = v;
-				H_DD(j_in_D, i_in_D) = v;
-			}
-		}
-	}
-	double_mat info_mat = H_II;
-	if( nD > 0 )
-	{	double_mat H_ID_C   = double_mat( H_ID * C );
-		info_mat += H_ID_C.transpose() + H_ID_C + C.transpose() * H_DD * C;
-	}
-	//
-	// create a sparse_rcv representation of info_mat
-	// in column major order
+	// create a sparse_rcv representation of information matrix on subset
+	// and in column major order
+	CppAD::vector<size_t> col_major = information_rcv.col_major();
 	size_t count = 0;
-	for(size_t j = 0; j < nI; j++)
-	{	for(size_t i = j; i < nI; i++)
-		{	if( info_mat(i, j) != 0.0 )
-				++count;
+	for(size_t ell = 0; ell < information_rcv.nnz(); ++ell)
+	{	size_t k = col_major[ell];
+		size_t i = information_rcv.row()[k];
+		size_t j = information_rcv.col()[k];
+		i        = fixed2subset[i];
+		j        = fixed2subset[j];
+		if( i != n_fixed_ && j != n_fixed_ && j <= i )
+		{	assert( i < n_subset && j < n_subset );
+			++count;
 		}
 	}
-	sparse_rc info_mat_rc(nI, nI, count);
+	sparse_rc info_mat_rc(n_subset, n_subset, count);
 	count = 0;
-	for(size_t j = 0; j < nI; j++)
-	{	for(size_t i = j; i < nI; i++)
-		{	double v = info_mat(i, j);
-			if( v != 0.0 )
-				info_mat_rc.set(count++, i, j);
+	for(size_t ell = 0; ell < information_rcv.nnz(); ++ell)
+	{	size_t k = col_major[ell];
+		size_t i = information_rcv.row()[k];
+		size_t j = information_rcv.col()[k];
+		i        = fixed2subset[i];
+		j        = fixed2subset[j];
+		if( i != n_fixed_ && j != n_fixed_ && j <= i )
+		{	assert( i < n_subset && j < n_subset );
+			info_mat_rc.set(count++, i, j);
 		}
 	}
 	assert( count == info_mat_rc.nnz() );
 	d_sparse_rcv info_mat_rcv( info_mat_rc );
 	count = 0;
-	for(size_t j = 0; j < nI; j++)
-	{	for(size_t i = j; i < nI; i++)
-		{	double v = info_mat(i, j);
-			if( v != 0.0 )
-				info_mat_rcv.set(count++, v);
+	for(size_t ell = 0; ell < information_rcv.nnz(); ++ell)
+	{	size_t k = col_major[ell];
+		size_t i = information_rcv.row()[k];
+		size_t j = information_rcv.col()[k];
+		double v = information_rcv.val()[k];
+		i        = fixed2subset[i];
+		j        = fixed2subset[j];
+		if( i != n_fixed_ && j != n_fixed_ && j <= i )
+		{	assert( i < n_subset && j < n_subset );
+			info_mat_rcv.set(count++, v);
 		}
 	}
-
+	assert( count == info_mat_rcv.nnz() );
 	//
 	// LDLT factorization of info_mat
-	CPPAD_MIXED_LDLT_CLASS ldlt_info_mat(nI);
+	CPPAD_MIXED_LDLT_CLASS ldlt_info_mat(n_subset);
 	ldlt_info_mat.init( info_mat_rcv.pat() );
 	bool ok = ldlt_info_mat.update( info_mat_rcv );
 	if( ! ok )
 	{	std::string msg =
-			"sample_fixed: Implicit information matrix is singular";
+			"sample_fixed: information matrix is singular";
 		fatal_error(msg);
 	}
 	size_t negative;
 	ldlt_info_mat.logdet(negative);
 	if( negative != 0 )
-	{	std::string msg = "Implicit information matrix is positive definite";
+	{	std::string msg =
+			"sample_fixed: information matrix is not positive definite";
 		warning(msg);
 	}
 	//
@@ -496,13 +358,13 @@ void cppad_mixed::try_sample_fixed(
 	// Simulate the samples
 	// -----------------------------------------------------------------------
 	for(size_t i_sample = 0; i_sample < n_sample; i_sample++)
-	{	d_vector w(nI);
+	{	d_vector w(n_subset);
 		// simulate a normal with mean zero and variance one
-		for(size_t k = 0; k < nI; k++)
+		for(size_t k = 0; k < n_subset; k++)
 			w[k] = gsl_ran_gaussian(CppAD::mixed::get_gsl_rng(), 1.0);
 		//
 		// set v to cholesky factor of info_mat^{-1} times w
-		d_vector v(nI);
+		d_vector v(n_subset);
 		ok = ldlt_info_mat.sim_cov(w, v);
 		if( ! ok )
 		{	std::string msg = "sample_fixed: implicit information matrix"
@@ -510,34 +372,15 @@ void cppad_mixed::try_sample_fixed(
 			fatal_error(msg);
 		}
 		//
-		// independent variable values
-		double_vec alpha_I(nI);
-		for(size_t i = 0; i < nI; i++)
-			alpha_I[i] = v[i];
-		// dependent variables
-		double_vec alpha_D = double_vec( C * alpha_I );
-		//
-		// store in alpha
-		double_vec alpha(n_subset);
-		for(size_t k = 0; k < nI; k++)
-			alpha[I[k]] = alpha_I[k];
-		for(size_t k = 0; k < nD; k++)
-			alpha[D[k]] = alpha_D[k];
-		//
 		// store in sample
 		for(size_t j = 0; j < n_fixed_; j++)
 		{	if( fixed2subset[j] == n_fixed_ )
-				sample[ i_sample * n_fixed_ + j] = fixed_opt[j];
+				sample[ i_sample * n_fixed_ + j] = fixed_lower[j];
 			else
 			{	size_t k       = fixed2subset[j];
-				double fixed_j = fixed_opt[j] + alpha[k];
-				//
-				// check if this component went out of bounds
-				fixed_j = std::min(fixed_j, fixed_upper[j]);
-				fixed_j = std::max(fixed_j, fixed_lower[j]);
 				//
 				// store this component of the sample
-				sample[ i_sample * n_fixed_ + j] = fixed_j;
+				sample[ i_sample * n_fixed_ + j] = fixed_opt[j] + v[k];
 			}
 		}
 	}

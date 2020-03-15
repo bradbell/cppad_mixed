@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -184,7 +184,7 @@ bool sample_fixed_1(void)
 		"String  derivative_test second-order\n"
 		"Numeric tol             1e-8\n"
 	;
-	// lower and uppser limits for random effects
+	// lower and upper limits for random effects
 	vector<double> random_lower(n_random), random_upper(n_random);
 	for(size_t i = 0; i < n_random; i++)
 	{	random_lower[i] = -inf;
@@ -293,56 +293,18 @@ bool sample_fixed_1(void)
 		info_mat(i, j) = information_rcv.val()[k];
 		info_mat(j, i) = information_rcv.val()[k];
 	}
-	//
-	// Jacobian of random effects at solution
-	d_sparse_rcv ran_con_jac_rcv;
-	// sparsity pattern
-	mixed_object.ran_con_jac(
-		solution.fixed_opt,
-		random_opt,
-		ran_con_jac_rcv
-	);
-	// value of jacobian
-	mixed_object.ran_con_jac(
-		solution.fixed_opt,
-		random_opt,
-		ran_con_jac_rcv
-	);
-	//
-	// Derivatives of active constraints
-	double_mat E = double_mat::Zero(3, n_fixed);
-	// the active bound constraint
-	E(0, bnd_j) = 1.0;
-	// the active fix_constraint
-	for(size_t j = 0; j < n_fixed; j++)
-		E(1, j) = 2.0 * solution.fixed_opt[j];
-	// the A_rcv constraints are alwasy active and has one one constraint
-	for(size_t k = 0; k < ran_con_jac_rcv.nnz(); k++)
-	{	size_t r = ran_con_jac_rcv.row()[k];
-		size_t c = ran_con_jac_rcv.col()[k];
-		double v = ran_con_jac_rcv.val()[k];
-		ok &= r == 0;
-		E(2, c) = v;
-	}
-	//
 	// unconstrained covraince
 	double_mat C = info_mat.inverse();
 	//
-	// conditional covaraince matrix
-	double_mat EC   = double_mat( E * C );
-	double_mat ECET = double_mat( EC * E.transpose() );
-	double_mat D  = double_mat( C - EC.transpose() * ECET.inverse() * EC );
-	//
 	double max_cov = 0.0;
 	for(size_t i = 0; i < n_fixed; i++)
-		max_cov = std::max( max_cov, D(i, i) );
-	//
+		max_cov = std::max( max_cov, C(i, i) );
 	//
 	double max_err = 0.0;
 	for(size_t i = 0; i < n_fixed; i++)
 	{	for(size_t j = 0; j < n_fixed; j++)
 		{	double value = sample_cov(i, j);
-			double check = D(i, j);
+			double check = C(i, j);
 			max_err = std::max(max_err, std::fabs(value - check) / max_cov );
 		}
 	}
