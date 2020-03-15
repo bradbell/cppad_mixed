@@ -1,0 +1,33 @@
+-----------------------------------------------------------------------------
+cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
+          Copyright (C) 2014-20 University of Washington
+             (Bradley M. Bell bradbell@uw.edu)
+
+This program is distributed under the terms of the
+	     GNU Affero General Public License version 3.0 or later
+see http://www.gnu.org/licenses/agpl.txt
+-----------------------------------------------------------------------------
+
+$begin whats_new_20$$
+$spell
+	cppad
+$$
+
+$section Changes and Additions to cppad_mixed During 2020$$
+
+$head 03-15$$
+Change the $cref sample_fixed$$ routine to ignore all the constraints
+except where the lower and upper limits for a fixed effect are equal,
+$cref/constant fixed effects/sample_fixed/Constant Fixed Effects/$$.
+This is an over estimate of the variance but is faster to calculate.
+
+$subhead API Change$$
+The new $cref sample_fixed$$ routine may result in samples that
+are not within the lower and upper limits for the fixed effects;
+$cref/fixed_lower/sample_fixed/fixed_lower/$$ and
+$cref/fixed_upper/sample_fixed/fixed_upper/$$.
+You may want to modify these samples to be within these limits
+before you use them.
+
+
+$end

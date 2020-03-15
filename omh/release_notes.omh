@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-19 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -8,20 +8,31 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
 
-$begin whats_new$$
+$begin release_notes$$
 $spell
 	cppad
 $$
 
 $section Changes and Additions to cppad_mixed$$
 
-$childtable%
+$children%
+	omh/whats_new/20.omh%
 	omh/whats_new/19.omh%
 	omh/whats_new/18.omh%
 	omh/whats_new/17.omh%
 	omh/whats_new/16.omh%
 	omh/whats_new/15.omh
 %$$
+
+$head This Year$$
+$cref whats_new_20$$
+
+$head Previous Years$$
+$cref/2019/whats_new_19/$$,
+$cref/2018/whats_new_18/$$,
+$cref/2017/whats_new_17/$$,
+$cref/2016/whats_new_16/$$,
+$cref/2015/whats_new_15/$$.
 
 
 $end

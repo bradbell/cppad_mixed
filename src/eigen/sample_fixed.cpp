@@ -56,7 +56,10 @@ we refer to the $th j$$ fixed effect as constant.
 
 $head Constraints$$
 Only the constant fixed effect constants are taken into account.
-This can result in samples that are outside the limits
+(This is an over estimate of the variance, but is faster to calculate
+than trying to identify active constraints and treating them as equality
+constraints.)
+It can result in samples that are outside the limits
 for the fixed effects that are not constant.
 You may want to adjust the samples to be within
 their upper and lower limits before you use them.
