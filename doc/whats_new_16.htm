@@ -47,7 +47,7 @@ A:active { color : purple }
 <select onchange='choose_up0(this)'>
 <option>Up-&gt;</option>
 <option>cppad_mixed</option>
-<option>whats_new</option>
+<option>release_notes</option>
 <option>whats_new_16</option>
 </select>
 </td>
@@ -55,7 +55,7 @@ A:active { color : purple }
 <script type='text/javascript' language='JavaScript' src='_childtable_cppad_mixed_htm.js'></script>
 </td>
 <td>
-<script type='text/javascript' language='JavaScript' src='_childtable_whats_new_htm.js'></script>
+<script type='text/javascript' language='JavaScript' src='_childtable_release_notes_htm.js'></script>
 </td>
 <td>whats_new_16</td>
 </tr></table><br>
@@ -965,15 +965,13 @@ The
 <ol type="1"><li>
 The <a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
  routine now uses an LDLT factorization of the
-<a href="sample_fixed.htm#Theory.Implicit Information" target="_top"><span style='white-space: nowrap'>implicit&nbsp;information</span></a>
-
-instead of the implicit covariance.
+implicit information matrix instead of the implicit covariance.
 This is more efficient.
 </li><li>
 
-Provide results from when matrix is invertible,
-but not <a href="sample_fixed.htm#Positive Definite" target="_top"><span style='white-space: nowrap'>positive&nbsp;definite</span></a>
-.
+Provide <code><font color="blue">sample_fixed</font></code> results
+(with a warning) when the information matrix is invertible,
+but not positive definite.
 This is intended to help determine which variables are
 not determined by the model plus data.
 </li><li>
@@ -1001,10 +999,8 @@ In <a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sa
  the
 <a href="sample_conditional.htm#Theory.Conditional Covariance" target="_top"><span style='white-space: nowrap'>conditional&nbsp;covariance</span></a>
 
-method by the
-<a href="sample_fixed.htm#Theory.Implicit Covariance" target="_top"><span style='white-space: nowrap'>implicit&nbsp;covariance</span></a>
-
-method.
+method by the implicit covariance method
+(which was removed on 2020-03-15 because it was to slow).
 </li><li>
 
 Return a warning when the

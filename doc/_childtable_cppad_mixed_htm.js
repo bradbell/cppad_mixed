@@ -7,7 +7,7 @@ document.write('\
 <option>base_class</option>\
 <option>namespace</option>\
 <option>user</option>\
-<option>whats_new</option>\
+<option>release_notes</option>\
 <option>wish_list</option>\
 <option>math_notation</option>\
 <option>_reference</option>\
@@ -23,7 +23,7 @@ function cppad_mixed_child(item)
 		'base_class.htm',
 		'namespace.htm',
 		'user.htm',
-		'whats_new.htm',
+		'release_notes.htm',
 		'wish_list.htm',
 		'math_notation.htm',
 		'_reference.htm',

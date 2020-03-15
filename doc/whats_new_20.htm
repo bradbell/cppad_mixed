@@ -1,0 +1,100 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=default'
+>
+</script>
+<head>
+<title>Changes and Additions to cppad_mixed During 2020</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2020">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2020 03-15 api change ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_whats_new_20_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="release_notes.htm" target="_top">Prev</a>
+</td><td><a href="whats_new_19.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>release_notes</option>
+<option>whats_new_20</option>
+</select>
+</td>
+<td>
+<script type='text/javascript' language='JavaScript' src='_childtable_cppad_mixed_htm.js'></script>
+</td>
+<td>
+<script type='text/javascript' language='JavaScript' src='_childtable_release_notes_htm.js'></script>
+</td>
+<td>whats_new_20</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Changes and Additions to cppad_mixed During 2020</big></big></b></center>
+
+<br><a href="whats_new_20.htm#03-15" target="_top">03-15</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="whats_new_20.htm#03-15.API Change" target="_top">API&nbsp;Change</a>
+<br><br>
+<b><big><a name="03-15" id="03-15">03-15</a></big></b>
+<br>
+Change the <a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
+ routine to ignore all the constraints
+except where the lower and upper limits for a fixed effect are equal,
+<a href="sample_fixed.htm#Constant Fixed Effects" target="_top"><span style='white-space: nowrap'>constant&nbsp;fixed&nbsp;effects</span></a>
+.
+This is an over estimate of the variance but is faster to calculate.
+
+<br>
+<br>
+<big><a name="03-15.API Change" id="03-15.API Change">API Change</a></big>
+<br>
+The new <a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
+ routine may result in samples that
+are not within the lower and upper limits for the fixed effects;
+<a href="sample_fixed.htm#fixed_lower" target="_top"><span style='white-space: nowrap'>fixed_lower</span></a>
+ and
+<a href="sample_fixed.htm#fixed_upper" target="_top"><span style='white-space: nowrap'>fixed_upper</span></a>
+.
+You may want to modify these samples to be within these limits
+before you use them.
+
+
+
+<hr>Input File: omh/whats_new/20.omh
+
+</body>
+</html>

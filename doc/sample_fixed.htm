@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Sample Posterior for Fixed Effects</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Sample Posterior for Fixed Effects">
-<meta name="keywords" id="keywords" content=" sample posterior fixed effects syntax see also prototype public purpose manage_gsl_rng mixed_object information_rcv solution fixed_lower fixed_upper random_opt positive definite theory notation unconstrained subset covariance approximate constraint equations implicit information example other method 2do ">
+<meta name="keywords" id="keywords" content=" sample posterior fixed effects syntax see also prototype public purpose constant constraints covariance manage_gsl_rng mixed_object information_rcv solution fixed_lower fixed_upper random_opt example other method ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -70,6 +70,9 @@ A:active { color : purple }
 <br><a href="sample_fixed.htm#Prototype" target="_top">Prototype</a>
 <br><a href="sample_fixed.htm#Public" target="_top">Public</a>
 <br><a href="sample_fixed.htm#Purpose" target="_top">Purpose</a>
+<br><a href="sample_fixed.htm#Constant Fixed Effects" target="_top">Constant&nbsp;Fixed&nbsp;Effects</a>
+<br><a href="sample_fixed.htm#Constraints" target="_top">Constraints</a>
+<br><a href="sample_fixed.htm#Covariance" target="_top">Covariance</a>
 <br><a href="sample_fixed.htm#manage_gsl_rng" target="_top">manage_gsl_rng</a>
 <br><a href="sample_fixed.htm#mixed_object" target="_top">mixed_object</a>
 <br><a href="sample_fixed.htm#sample" target="_top">sample</a>
@@ -78,16 +81,8 @@ A:active { color : purple }
 <br><a href="sample_fixed.htm#fixed_lower" target="_top">fixed_lower</a>
 <br><a href="sample_fixed.htm#fixed_upper" target="_top">fixed_upper</a>
 <br><a href="sample_fixed.htm#random_opt" target="_top">random_opt</a>
-<br><a href="sample_fixed.htm#Positive Definite" target="_top">Positive&nbsp;Definite</a>
-<br><a href="sample_fixed.htm#Theory" target="_top">Theory</a>
-<br>&#160;&#160;&#160;&#160;&#160;<a href="sample_fixed.htm#Theory.Notation" target="_top">Notation</a>
-<br>&#160;&#160;&#160;&#160;&#160;<a href="sample_fixed.htm#Theory.Unconstrained Subset Covariance" target="_top">Unconstrained&nbsp;Subset&nbsp;Covariance</a>
-<br>&#160;&#160;&#160;&#160;&#160;<a href="sample_fixed.htm#Theory.Approximate Constraint Equations" target="_top">Approximate&nbsp;Constraint&nbsp;Equations</a>
-<br>&#160;&#160;&#160;&#160;&#160;<a href="sample_fixed.htm#Theory.Implicit Information" target="_top">Implicit&nbsp;Information</a>
-<br>&#160;&#160;&#160;&#160;&#160;<a href="sample_fixed.htm#Theory.Implicit Covariance" target="_top">Implicit&nbsp;Covariance</a>
 <br><a href="sample_fixed.htm#Example" target="_top">Example</a>
 <br><a href="sample_fixed.htm#Other Method" target="_top">Other&nbsp;Method</a>
-<br><a href="sample_fixed.htm#2DO" target="_top">2DO</a>
 <br><br>
 <b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
 
@@ -109,7 +104,6 @@ A:active { color : purple }
 
 <br>
 <a href="sample_random.htm" target="_top"><span style='white-space: nowrap'>sample_random</span></a>
-, <a href="sample_conditional.htm" target="_top"><span style='white-space: nowrap'>sample_conditional</span></a>
 
 
 <br>
@@ -134,9 +128,44 @@ This <code><font color="blue">cppad_mixed</font></code> <a href="base_class.htm"
 <br>
 <b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
 <br>
-This routine draws samples from
+This routine draws independent samples from
 the asymptotic posterior distribution for the
 fixed effects (given the model and the data).
+
+<br>
+<br>
+<b><big><a name="Constant Fixed Effects" id="Constant Fixed Effects">Constant Fixed Effects</a></big></b>
+<br>
+If the upper and lower limits for a fixed effect are equal,
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]&nbsp;==&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]<br>
+</span></font></code>
+we refer to the <code><i>j</i></code>-th fixed effect as constant.
+
+<br>
+<br>
+<b><big><a name="Constraints" id="Constraints">Constraints</a></big></b>
+<br>
+Only the constant fixed effect constants are taken into account.
+(This is an over estimate of the variance, but is faster to calculate
+than trying to identify active constraints and treating them as equality
+constraints.)
+It can result in samples that are outside the limits
+for the fixed effects that are not constant.
+You may want to adjust the samples to be within
+their upper and lower limits before you use them.
+
+<br>
+<br>
+<b><big><a name="Covariance" id="Covariance">Covariance</a></big></b>
+<br>
+Each sample of the fixed effects
+(excluding the constant fixed effects)
+has covariance equal to the inverse of the
+<a href="information_mat.htm" target="_top"><span style='white-space: nowrap'>information&nbsp;matrix</span></a>
+
+(where the constant fixed effects have been removed).
 
 <br>
 <br>
@@ -191,8 +220,8 @@ i
 @)@</small>,
 and for fixed <small>@(@
 i
-@)@</small>, they have the
-<a href="sample_fixed.htm#Theory.Implicit Covariance" target="_top"><span style='white-space: nowrap'>implicit&nbsp;covariance</span></a>
+@)@</small>, they have the specified
+<a href="sample_fixed.htm#Covariance" target="_top"><span style='white-space: nowrap'>covariance</span></a>
 .
 
 <br>
@@ -276,182 +305,6 @@ as in the call to <code><font color="blue">optimize_fixed</font></code> that cor
 <code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i></code>
 .
 
-<br>
-<br>
-<b><big><a name="Positive Definite" id="Positive Definite">Positive Definite</a></big></b>
-<br>
-If the <a href="sample_fixed.htm#Theory.Implicit Information" target="_top"><span style='white-space: nowrap'>implicit&nbsp;information</span></a>
-
-matrix is not positive definite, at least one fixed effects is not determined
-by the model plus the data.
-You should be able to recognize it because its
-upper and lower limits are not equal, but the limits appear often
-in the simulated values (or it is uniformly distributed between these limits).
-
-<br>
-<br>
-<b><big><a name="Theory" id="Theory">Theory</a></big></b>
-
-
-<br>
-<br>
-<big><a name="Theory.Notation" id="Theory.Notation">Notation</a></big>
-<br>
-Given two random vectors <small>@(@
-u
-@)@</small> and <small>@(@
-v
-@)@</small>,
-we use the notation <small>@(@
-\B{C}( u , v )
-@)@</small>
-for the corresponding covariance matrix;
-i.e.,
-<small>@[@
-
-	\B{C}( u , v )
-	=
-	\B{E} \left( [ u - \B{E} (u) ] [ v - \B{E} (v) ]^\R{T} \right)
-
-@]@</small>
-
-<br>
-<br>
-<big><a name="Theory.Unconstrained Subset Covariance" id="Theory.Unconstrained Subset Covariance">Unconstrained Subset Covariance</a></big>
-<br>
-We use <small>@(@
-\tilde{L} ( \theta )
-@)@</small> to denote the
-<a href="theory.htm#Objective.Total Objective, L(theta)" target="_top"><span style='white-space: nowrap'>total&nbsp;objective</span></a>
-
-as a function of <small>@(@
-\theta
-@)@</small> and
-where the absolute values terms in <a href="fix_likelihood.htm" target="_top"><span style='white-space: nowrap'>fix_likelihood</span></a>
- are excluded.
-We use <small>@(@
-\tilde{\theta}
-@)@</small> for the unconstrained optimal estimate
-of the subset of fixed effects and
-approximate its auto-covariance by
-<small>@[@
-
-	\B{C} ( \tilde{\theta} , \tilde{\theta} )
-	=
-	H^{-1}
-
-@]@</small>
-Here <small>@(@
-H
-@)@</small> is the Hessian corresponding to
-the observed information matrix 
-<code><i><font color="black"><span style='white-space: nowrap'>information_rcv</span></font></i></code>
-.
-
-<br>
-<br>
-<big><a name="Theory.Approximate Constraint Equations" id="Theory.Approximate Constraint Equations">Approximate Constraint Equations</a></big>
-<br>
-Let <small>@(@
-n
-@)@</small> be the number of fixed effects in <small>@(@
-\theta
-@)@</small>,
-<small>@(@
-m
-@)@</small> the number of active constraints (not counting bounds),
-and the equations <small>@(@
-e( \theta ) = b
-@)@</small> be the active constraints.
-Here <small>@(@
-e : \B{R}^n \rightarrow \B{R}^m
-@)@</small> and <small>@(@
-b \in \B{R}^m
-@)@</small>
-and the inequality constraints have been converted to equalities at the
-active bounds.
-Indices 
-<code><i><font color="black"><span style='white-space: nowrap'>j</span></font></i></code>
- for which 
-<code><i><font color="black"><span style='white-space: nowrap'>fixed_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
-
-is equal to 
-<code><i><font color="black"><span style='white-space: nowrap'>fixed_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>[</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
- are considered even of the
-corresponding Lagrange multiplier is zero.
-Define the approximate constraint equation by
-<small>@[@
-
-b =
-e \left( \hat{\theta} \right) + e^{(1)} \left( \hat{\theta} \right)
-	\left( \theta - \hat{\theta} \right)
-
-@]@</small>
-where <small>@(@
-\hat{\theta}
-@)@</small> is the optional estimate
-for the fixed effects 
-<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_opt</span></font></code>
-.
-
-<br>
-<br>
-<big><a name="Theory.Implicit Information" id="Theory.Implicit Information">Implicit Information</a></big>
-<br>
-We apply the implicit function theorem to the approximate constraint
-equation above to get a representation:
-<small>@[@
-
-	\theta_D = C \theta_I + d
-
-@]@</small>
-Here <small>@(@
-D \in \B{Z}_+^m
-@)@</small> is the dependent subset of <small>@(@
-\theta
-@)@</small>,
-<small>@(@
-I \in \B{Z}_+^{n-m}
-@)@</small> is the independent subset of <small>@(@
-\theta
-@)@</small>,
-<small>@(@
-D \cap I = \emptyset
-@)@</small>,
-<small>@(@
-C \in \B{R}^{m \times (n - m)}
-@)@</small>,
-<small>@(@
-d \in \B{R}^m
-@)@</small>.
-For any <small>@(@
-\theta
-@)@</small> satisfying the approximate constraint equation,
-the corresponding components <small>@(@
-\theta_D
-@)@</small> and <small>@(@
-\theta_I
-@)@</small>
-satisfy the equation above.
-The maximum likelihood problem corresponding to the approximate constraints,
-as a function of <small>@(@
-\theta_I
-@)@</small> alone,
-would have the following observed information matrix:
-<small>@[@
-
-	H_{I,I} + H_{I,D} C + C^\R{T} H_{D,I} + C^\R{T} H_{D,D} C
-
-@]@</small>
-This matrix is the observed implicit information matrix.
-
-<br>
-<br>
-<big><a name="Theory.Implicit Covariance" id="Theory.Implicit Covariance">Implicit Covariance</a></big>
-<br>
-The inverse of the implicit information matrix
-is called the implicit covariance.
-
 
 <br>
 <br>
@@ -468,13 +321,6 @@ and test of <code><font color="blue">sample_fixed</font></code>.
 The routine <a href="sample_conditional.htm" target="_top"><span style='white-space: nowrap'>sample_conditional</span></a>
 , is a old method that is no
 longer used for computing these samples.
-
-<br>
-<br>
-<b><big><a name="2DO" id="2DO">2DO</a></big></b>
-<br>
-This routine uses dense matrices, perhaps it would be useful
-to converting this to all sparse matrices.
 
 
 <hr>Input File: src/eigen/sample_fixed.cpp
