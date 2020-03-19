@@ -48,6 +48,7 @@ derived from the $code cppad_mixed$$ base class.
 $head solution$$
 is the $cref/solution/optimize_fixed/solution/$$
 for a previous call to $cref optimize_fixed$$.
+Only the $icode%solution%.fixed_opt%$$ field is used.
 
 $head random_opt$$
 is the optimal random effects corresponding to the solution; i.e.
@@ -103,7 +104,6 @@ CppAD::mixed::d_sparse_rcv cppad_mixed::try_information_mat(
 	typedef eigen_sparse::InnerIterator                       sparse_itr;
 	// solution
 	assert( solution.fixed_opt.size()   == n_fixed_ );
-	assert( solution.fixed_lag.size()   == n_fixed_ );
 	// random_opt
 	assert( random_opt.size() == n_random_ );
 	//
