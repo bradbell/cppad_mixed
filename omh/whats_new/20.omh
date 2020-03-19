@@ -15,6 +15,11 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
+$head 03-18$$
+It is no longer necessary to have the problem Lagrange multipliers
+in the $cref/solution/sample_fixed/solution/$$ argument to
+$code sample_fixed$$.
+
 $head 03-15$$
 Change the $cref sample_fixed$$ routine to ignore all the constraints
 except where the lower and upper limits for a fixed effect are equal,

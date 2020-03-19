@@ -2,7 +2,7 @@
 /*
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-19 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -39,13 +39,6 @@ Absolute value terms in the
 $cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
 for the $cref fix_likelihood$$ are not include in this Hessian
 (because they do not have a derivative, let alone Hessian, at zero).
-
-$head quasi_fixed$$
-If $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ was true when
-$icode mixed_object$$ was constructed,
-The $cref initialize$$ routine did not include the full Newton method
-(hence uses less memory).
-This memory is allocated and used during $code sample_fixed$$.
 
 $head mixed_object$$
 We use $cref/mixed_object/derived_ctor/mixed_object/$$
@@ -130,8 +123,7 @@ CppAD::mixed::d_sparse_rcv cppad_mixed::try_information_mat(
 		// If Quasi-Newton method was used, must initilaize routines
 		// that are only used for the Hessian calculation; see initilaize.cpp
 		if( ! init_laplace_obj_fun_done_ )
-		{	assert( quasi_fixed_ );
-			assert( ! init_laplace_obj_hes_done_ );
+		{	assert( ! init_laplace_obj_hes_done_ );
 			//
 			// laplace_obj_fun_
 			assert( ! init_laplace_obj_fun_done_ );

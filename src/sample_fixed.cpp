@@ -114,6 +114,8 @@ $head solution$$
 is the $cref/solution/optimize_fixed/solution/$$
 for a the call to $cref optimize_fixed$$ corresponding to
 $icode information_rcv$$.
+The only necessary information in this structure is
+$icode%solution%.fixed_opt%$$.
 
 $head fixed_lower$$
 is the same as
@@ -168,6 +170,24 @@ $end
 
 # define DEBUG_PRINT 0
 
+namespace {
+	using Eigen::Dynamic;
+	using CppAD::mixed::get_gsl_rng;
+	typedef Eigen::Matrix<double, Dynamic, Dynamic>     double_mat;
+	typedef Eigen::Matrix<double, Dynamic, 1>           double_vec;
+	typedef Eigen::Matrix<size_t, Dynamic, 1>           size_vec;
+	typedef Eigen::LDLT<double_mat, Eigen::Lower>       double_cholesky;
+	typedef Eigen::PermutationMatrix<Dynamic, Dynamic, int>  permutation_mat;
+	//
+# if DEBUG_PRINT
+	void print(const char* name , const double_mat& mat)
+	{	std::cout << "\n" << name << " =\n" << mat << "\n"; }
+	void print(const char* name , double_vec& vec)
+	{	std::cout << "\n" << name << "^T = " << vec.transpose() << "\n"; }
+	void print(const char* name , size_vec& vec)
+	{	std::cout << "\n" << name << "^T = " << vec.transpose() << "\n"; }
+# endif
+}
 // -------------------------------------------------------------------------
 void cppad_mixed::try_sample_fixed(
 	CppAD::vector<double>&                 sample               ,
