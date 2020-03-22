@@ -26,7 +26,6 @@ $head Syntax$$
 $icode%mixed_object%.sample_random(
 	%sample%,
 	%fixed_vec%,
-	%random_box_options%,
 	%random_ipopt_options%,
 	%random_lower%,
 	%random_upper%,
@@ -45,7 +44,7 @@ This $code cppad_mixed$$ $cref base_class$$ member function is public.
 $head Purpose$$
 This routine draws samples from
 the asymptotic posterior distribution for the
-optimal random effects given the model, the data, and the fixed effects; see
+random effects given the model, the data, and the fixed effects; see
 $cref/sparse observed information/theory/Sparse Observed Information/$$.
 
 $head manage_gsl_rng$$
@@ -77,10 +76,9 @@ $codei%
 	%sample%[ %i% * %n_random% + %j% ]
 %$$
 is the $th j$$ component of the $th i$$ sample of the
-optimal random effects $latex \hat{u}(\theta)$$.
-These samples are independent for different $latex i$$,
-and for fixed $latex i$$, they have the
-$cref/covariance/sample_random/Covariance/$$ defined below.
+optimal random effects.
+The statistics of these samples is specified under
+$cref/covariance/sample_random/Covariance/$$ below.
 
 $head random_ipopt_options$$
 This argument has prototype
@@ -121,17 +119,17 @@ $codei%
 for each valid index $icode i$$.
 
 $head Covariance$$
-Each sample of $icode sample_fixed$$ is an independent normal
-from the asymptotic distribution for the random effects.
-The mean for distribution is the
+Each sample of the random effects is an independent normal.
+The mean for this distribution is the
 $cref/optimal random effects/theory/Optimal Random Effects, u^(theta)/$$
 $latex \hat{u} ( \theta )$$.
-The variance for each call is the inverse of the observed information
+The variance of this distribution
+is the inverse of the observed information
 matrix; i.e.
 $latex \[
 	f_{uu} [ \theta , \hat{u} ( \theta ) ] ^{-1}
 \] $$
-This normal distribution is truncated to be within the limits
+This normal distribution is censored to be within the limits
 $icode random_lower$$, $icode random_upper$$.
 
 $children%example/user/sample_random.cpp

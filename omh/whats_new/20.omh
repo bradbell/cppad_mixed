@@ -15,6 +15,11 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
+$head 02-22$$
+The specifications for the
+$cref/covariance/sample_random/Covariance/$$ of the random effect
+computed by $code sample_random$$ was edited.
+
 $head 03-18$$
 It is no longer necessary to have the problem Lagrange multipliers
 in the $cref/solution/sample_fixed/solution/$$ argument to
