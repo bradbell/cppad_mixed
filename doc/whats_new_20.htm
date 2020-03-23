@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2020</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2020">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2020 03-15 api change ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2020 02-22 03-18 03-15 api change ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -66,9 +66,42 @@ A:active { color : purple }
 
 <center><b><big><big>Changes and Additions to cppad_mixed During 2020</big></big></b></center>
 
+<br><a href="whats_new_20.htm#02-22" target="_top">02-22</a>
+<br><a href="whats_new_20.htm#03-18" target="_top">03-18</a>
 <br><a href="whats_new_20.htm#03-15" target="_top">03-15</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="whats_new_20.htm#03-15.API Change" target="_top">API&nbsp;Change</a>
 <br><br>
+<b><big><a name="02-22" id="02-22">02-22</a></big></b>
+
+<ol type="1"><li>
+The specifications for the
+<a href="sample_random.htm#Covariance" target="_top"><span style='white-space: nowrap'>covariance</span></a>
+ of the random effect
+computed by <code><font color="blue">sample_random</font></code> was edited.
+</li><li>
+
+<a href="information_mat.htm" target="_top"><span style='white-space: nowrap'>information_mat</span></a>
+ was deprecated and replaced by
+<a href="hes_fixed_obj.htm" target="_top"><span style='white-space: nowrap'>hes_fixed_obj</span></a>
+.
+</li><li>
+
+The <a href="hes_random_obj.htm" target="_top"><span style='white-space: nowrap'>hes_random_obj</span></a>
+ routine was added.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="03-18" id="03-18">03-18</a></big></b>
+<br>
+It is no longer necessary to have the problem Lagrange multipliers
+in the <a href="sample_fixed.htm#solution" target="_top"><span style='white-space: nowrap'>solution</span></a>
+ argument to
+<code><font color="blue">sample_fixed</font></code>.
+
+<br>
+<br>
 <b><big><a name="03-15" id="03-15">03-15</a></big></b>
 <br>
 Change the <a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>

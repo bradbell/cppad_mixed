@@ -12,10 +12,10 @@ MathJax.Hub.Config({
 >
 </script>
 <head>
-<title>Observed Information Matrix: Example and Test</title>
+<title>Hessian of Fixed Effects Objective: Example and Test</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
-<meta name="description" id="description" content="Observed Information Matrix: Example and Test">
-<meta name="keywords" id="keywords" content=" observed information matrix: example test deprecated 2020-03-22 model ">
+<meta name="description" id="description" content="Hessian of Fixed Effects Objective: Example and Test">
+<meta name="keywords" id="keywords" content=" hessian fixed effects objective: example test model ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -23,7 +23,7 @@ A:link { color : blue }
 A:visited { color : purple }
 A:active { color : purple }
 </style>
-<script type='text/javascript' language='JavaScript' src='_information_mat.cpp_htm.js'>
+<script type='text/javascript' language='JavaScript' src='_hes_fixed_obj.cpp_htm.js'>
 </script>
 </head>
 <body>
@@ -31,8 +31,8 @@ A:active { color : purple }
 <td>
 <a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
 </td>
-<td><a href="information_mat.htm" target="_top">Prev</a>
-</td><td><a href="namespace.htm" target="_top">Next</a>
+<td><a href="hes_fixed_obj.htm" target="_top">Prev</a>
+</td><td><a href="hes_random_obj.htm" target="_top">Next</a>
 </td><td>
 <select onchange='choose_across0(this)'>
 <option>Index-&gt;</option>
@@ -48,8 +48,8 @@ A:active { color : purple }
 <option>Up-&gt;</option>
 <option>cppad_mixed</option>
 <option>base_class</option>
-<option>information_mat</option>
-<option>information_mat.cpp</option>
+<option>hes_fixed_obj</option>
+<option>hes_fixed_obj.cpp</option>
 </select>
 </td>
 <td>
@@ -59,27 +59,19 @@ A:active { color : purple }
 <script type='text/javascript' language='JavaScript' src='_childtable_base_class_htm.js'></script>
 </td>
 <td>
-<script type='text/javascript' language='JavaScript' src='_childtable_information_mat_htm.js'></script>
+<script type='text/javascript' language='JavaScript' src='_childtable_hes_fixed_obj_htm.js'></script>
 </td>
-<td>information_mat.cpp</td>
+<td>hes_fixed_obj.cpp</td>
 </tr></table><br>
 @(@\newcommand{\R}[1]{ {\rm #1} }
 \newcommand{\B}[1]{ {\bf #1} }
 \newcommand{\W}[1]{ \; #1 \; }@)@
 
 
-<center><b><big><big>Observed Information Matrix: Example and Test</big></big></b></center>
+<center><b><big><big>Hessian of Fixed Effects Objective: Example and Test</big></big></b></center>
 
-<br><a href="information_mat.cpp.htm#Deprecated 2020-03-22" target="_top">Deprecated&nbsp;2020-03-22</a>
-<br><a href="information_mat.cpp.htm#Model" target="_top">Model</a>
+<br><a href="hes_fixed_obj.cpp.htm#Model" target="_top">Model</a>
 <br><br>
-<b><big><a name="Deprecated 2020-03-22" id="Deprecated 2020-03-22">Deprecated 2020-03-22</a></big></b>
-<br>
-Use <a href="hes_fixed_obj.cpp.htm" target="_top"><span style='white-space: nowrap'>hes_fixed_obj.cpp</span></a>
- instead.
-
-<br>
-<br>
 <b><big><a name="Model" id="Model">Model</a></big></b>
 
 <br>
@@ -302,7 +294,7 @@ The second partial w.r.t <small>@(@
      <font color="#FF0000">}</font><font color="#990000">;</font>
 <font color="#FF0000">}</font>
 
-<font color="#009900">bool</font> <b><font color="#000000">information_mat_xam</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">)</font>
+<font color="#009900">bool</font> <b><font color="#000000">hes_fixed_obj_xam</font></b><font color="#990000">(</font><font color="#009900">void</font><font color="#990000">)</font>
 <font color="#FF0000">{</font>
      <font color="#009900">bool</font>   ok <font color="#990000">=</font> <b><font color="#0000FF">true</font></b><font color="#990000">;</font>
      <font color="#009900">double</font> inf <font color="#990000">=</font> std<font color="#990000">::</font>numeric_limits<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;::</font><b><font color="#000000">infinity</font></b><font color="#990000">();</font>
@@ -354,37 +346,24 @@ The second partial w.r.t <small>@(@
      <font color="#FF0000">{</font>    random_lower<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> <font color="#990000">-</font>inf<font color="#990000">;</font>
           random_upper<font color="#990000">[</font>i<font color="#990000">]</font> <font color="#990000">=</font> <font color="#990000">+</font>inf<font color="#990000">;</font>
      <font color="#FF0000">}</font>
-     <i><font color="#9A1900">// optimize fixed effects</font></i>
-     <font color="#008080">d_vector</font> fixed_scale <font color="#990000">=</font> fixed_in<font color="#990000">;</font>
-     CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">fixed_solution</font> solution <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">optimize_fixed</font></b><font color="#990000">(</font>
-          fixed_ipopt_options<font color="#990000">,</font>
-          random_ipopt_options<font color="#990000">,</font>
-          fixed_lower<font color="#990000">,</font>
-          fixed_upper<font color="#990000">,</font>
-          fix_constraint_lower<font color="#990000">,</font>
-          fix_constraint_upper<font color="#990000">,</font>
-          fixed_scale<font color="#990000">,</font>
-          fixed_in<font color="#990000">,</font>
-          random_lower<font color="#990000">,</font>
-          random_upper<font color="#990000">,</font>
-          random_in
-     <font color="#990000">);</font>
+     <i><font color="#9A1900">// value of the fixed effects</font></i>
+     <font color="#008080">d_vector</font> fixed_vec <font color="#990000">=</font> fixed_in<font color="#990000">;</font>
      <font color="#008080">d_vector</font> random_opt <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">optimize_random</font></b><font color="#990000">(</font>
           random_ipopt_options<font color="#990000">,</font>
-          solution<font color="#990000">.</font>fixed_opt<font color="#990000">,</font>
+          fixed_vec<font color="#990000">,</font>
           random_lower<font color="#990000">,</font>
           random_upper<font color="#990000">,</font>
           random_in
      <font color="#990000">);</font>
-     <i><font color="#9A1900">// compute corresponding information matrix</font></i>
+     <i><font color="#9A1900">// compute corresponding Hessian of fixed effects objective</font></i>
      d_sparse_rcv
-     information_rcv <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">information_mat</font></b><font color="#990000">(</font>solution<font color="#990000">,</font> random_opt<font color="#990000">);</font>
+     hes_fixed_obj_rcv <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">hes_fixed_obj</font></b><font color="#990000">(</font>fixed_vec<font color="#990000">,</font> random_opt<font color="#990000">);</font>
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// there are three non-zero entries in the lower triangle</font></i>
-     ok  <font color="#990000">&amp;=</font> information_rcv<font color="#990000">.</font><b><font color="#000000">nnz</font></b><font color="#990000">()</font> <font color="#990000">==</font> <font color="#993399">3</font><font color="#990000">;</font>
+     ok  <font color="#990000">&amp;=</font> hes_fixed_obj_rcv<font color="#990000">.</font><b><font color="#000000">nnz</font></b><font color="#990000">()</font> <font color="#990000">==</font> <font color="#993399">3</font><font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// theta</font></i>
-     <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font> <b><font color="#000000">theta</font></b><font color="#990000">(</font> solution<font color="#990000">.</font>fixed_opt <font color="#990000">);</font>
+     <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font> theta <font color="#990000">=</font> fixed_vec<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// theta_1^2</font></i>
      <font color="#009900">double</font> theta_1_sq <font color="#990000">=</font> theta<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">*</font> theta<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">];</font>
@@ -404,9 +383,9 @@ The second partial w.r.t <small>@(@
      <font color="#FF0000">}</font>
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// check Hessian values</font></i>
-     <b><font color="#0000FF">const</font></b> s_vector<font color="#990000">&amp;</font> <b><font color="#000000">row</font></b><font color="#990000">(</font> information_rcv<font color="#990000">.</font><b><font color="#000000">row</font></b><font color="#990000">()</font> <font color="#990000">);</font>
-     <b><font color="#0000FF">const</font></b> s_vector<font color="#990000">&amp;</font> <b><font color="#000000">col</font></b><font color="#990000">(</font> information_rcv<font color="#990000">.</font><b><font color="#000000">col</font></b><font color="#990000">()</font> <font color="#990000">);</font>
-     <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font> <b><font color="#000000">val</font></b><font color="#990000">(</font> information_rcv<font color="#990000">.</font><b><font color="#000000">val</font></b><font color="#990000">()</font> <font color="#990000">);</font>
+     <b><font color="#0000FF">const</font></b> s_vector<font color="#990000">&amp;</font> <b><font color="#000000">row</font></b><font color="#990000">(</font> hes_fixed_obj_rcv<font color="#990000">.</font><b><font color="#000000">row</font></b><font color="#990000">()</font> <font color="#990000">);</font>
+     <b><font color="#0000FF">const</font></b> s_vector<font color="#990000">&amp;</font> <b><font color="#000000">col</font></b><font color="#990000">(</font> hes_fixed_obj_rcv<font color="#990000">.</font><b><font color="#000000">col</font></b><font color="#990000">()</font> <font color="#990000">);</font>
+     <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font> <b><font color="#000000">val</font></b><font color="#990000">(</font> hes_fixed_obj_rcv<font color="#990000">.</font><b><font color="#000000">val</font></b><font color="#990000">()</font> <font color="#990000">);</font>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> k <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> k <font color="#990000">&lt;</font> <font color="#993399">3</font><font color="#990000">;</font> k<font color="#990000">++)</font>
      <font color="#FF0000">{</font>    <b><font color="#0000FF">if</font></b><font color="#990000">(</font> row<font color="#990000">[</font>k<font color="#990000">]</font> <font color="#990000">==</font> <font color="#993399">0</font> <font color="#990000">)</font>
           <font color="#FF0000">{</font>    <i><font color="#9A1900">// only returning lower triangle</font></i>
@@ -437,7 +416,7 @@ The second partial w.r.t <small>@(@
      <b><font color="#0000FF">return</font></b> ok<font color="#990000">;</font>
 <font color="#FF0000">}</font></tt></pre>
 </font></code>
-<hr>Input File: example/user/information_mat.cpp
+<hr>Input File: example/user/hes_fixed_obj.cpp
 
 </body>
 </html>

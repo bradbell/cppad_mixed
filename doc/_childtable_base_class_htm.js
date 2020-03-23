@@ -9,9 +9,11 @@ document.write('\
 <option>initialize</option>\
 <option>optimize_random</option>\
 <option>optimize_fixed</option>\
-<option>information_mat</option>\
+<option>hes_fixed_obj</option>\
+<option>hes_random_obj</option>\
 <option>sample_fixed</option>\
 <option>sample_random</option>\
+<option>information_mat</option>\
 </select>\
 ');
 function base_class_child(item)
@@ -23,9 +25,11 @@ function base_class_child(item)
 		'initialize.htm',
 		'optimize_random.htm',
 		'optimize_fixed.htm',
-		'information_mat.htm',
+		'hes_fixed_obj.htm',
+		'hes_random_obj.htm',
 		'sample_fixed.htm',
-		'sample_random.htm'
+		'sample_random.htm',
+		'information_mat.htm'
 	];
 	var index = item.selectedIndex;
 	item.selectedIndex = 0;

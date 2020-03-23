@@ -91,7 +91,6 @@ A:active { color : purple }
 <code><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.sample_random(<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>sample</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_box_options</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_ipopt_options</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
@@ -131,7 +130,7 @@ This <code><font color="blue">cppad_mixed</font></code> <a href="base_class.htm"
 <br>
 This routine draws samples from
 the asymptotic posterior distribution for the
-optimal random effects given the model, the data, and the fixed effects; see
+random effects given the model, the data, and the fixed effects; see
 <a href="theory.htm#Sparse Observed Information" target="_top"><span style='white-space: nowrap'>sparse&nbsp;observed&nbsp;information</span></a>
 .
 
@@ -183,17 +182,10 @@ for
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>sample</span></font></i><font color="blue"><span style='white-space: nowrap'>[&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;*&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;+&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>j</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;]<br>
 </span></font></code>
 is the <code><i>j</i></code>-th component of the <code><i>i</i></code>-th sample of the
-optimal random effects <small>@(@
-\hat{u}(\theta)
-@)@</small>.
-These samples are independent for different <small>@(@
-i
-@)@</small>,
-and for fixed <small>@(@
-i
-@)@</small>, they have the
+optimal random effects.
+The statistics of these samples is specified under
 <a href="sample_random.htm#Covariance" target="_top"><span style='white-space: nowrap'>covariance</span></a>
- defined below.
+ below.
 
 <br>
 <br>
@@ -269,24 +261,22 @@ for each valid index
 <br>
 <b><big><a name="Covariance" id="Covariance">Covariance</a></big></b>
 <br>
-Each sample of 
-<code><i><font color="black"><span style='white-space: nowrap'>sample_fixed</span></font></i></code>
- is an independent normal
-from the asymptotic distribution for the random effects.
-The mean for distribution is the
+Each sample of the random effects is an independent normal.
+The mean for this distribution is the
 <a href="theory.htm#Optimal Random Effects, u^(theta)" target="_top"><span style='white-space: nowrap'>optimal&nbsp;random&nbsp;effects</span></a>
 
 <small>@(@
 \hat{u} ( \theta )
 @)@</small>.
-The variance for each call is the inverse of the observed information
+The variance of this distribution
+is the inverse of the observed information
 matrix; i.e.
 <small>@[@
 
 	f_{uu} [ \theta , \hat{u} ( \theta ) ] ^{-1}
 
 @]@</small>
-This normal distribution is truncated to be within the limits
+This normal distribution is censored to be within the limits
 
 <code><i><font color="black"><span style='white-space: nowrap'>random_lower</span></font></i></code>
 , 

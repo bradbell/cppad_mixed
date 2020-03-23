@@ -1,0 +1,166 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=default'
+>
+</script>
+<head>
+<title>Compute the Hessian of The Random Effects Objective</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Compute the Hessian of The Random Effects Objective">
+<meta name="keywords" id="keywords" content=" compute the hessian random effects objective syntax prototype purpose mixed_object fixed_vec random_vec hes_random_obj_rcv example ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_hes_random_obj_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="hes_fixed_obj.cpp.htm" target="_top">Prev</a>
+</td><td><a href="hes_random_obj.cpp.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>base_class</option>
+<option>hes_random_obj</option>
+</select>
+</td>
+<td>
+<script type='text/javascript' language='JavaScript' src='_childtable_cppad_mixed_htm.js'></script>
+</td>
+<td>
+<script type='text/javascript' language='JavaScript' src='_childtable_base_class_htm.js'></script>
+</td>
+<td>
+<script type='text/javascript' language='JavaScript' src='_childtable_hes_random_obj_htm.js'></script>
+</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Compute the Hessian of The Random Effects Objective</big></big></b></center>
+
+<br><a href="hes_random_obj.htm#Syntax" target="_top">Syntax</a>
+<br><a href="hes_random_obj.htm#Prototype" target="_top">Prototype</a>
+<br><a href="hes_random_obj.htm#Purpose" target="_top">Purpose</a>
+<br><a href="hes_random_obj.htm#mixed_object" target="_top">mixed_object</a>
+<br><a href="hes_random_obj.htm#fixed_vec" target="_top">fixed_vec</a>
+<br><a href="hes_random_obj.htm#random_vec" target="_top">random_vec</a>
+<br><a href="hes_random_obj.htm#hes_random_obj_rcv" target="_top">hes_random_obj_rcv</a>
+<br><a href="hes_random_obj.htm#Example" target="_top">Example</a>
+<br><br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><i><font color="black"><span style='white-space: nowrap'>hes_random_obj_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.hes_random_obj(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_vec</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+)</span></font></code>
+
+
+<br>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre><tt>
+CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font color="#008080">d_sparse_rcv</font> cppad_mixed<font color="#990000">::</font><b><font color="#000000">hes_random_obj</font></b><font color="#990000">(</font>
+     <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font> fixed_vec            <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font> random_vec           <font color="#990000">)</font></tt></pre>
+<br>
+<b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
+<br>
+Compute the Hessian of the random effects objective function
+<small>@(@
+f ( u , \theta )
+@)@</small>; see
+<a href="theory.htm#Random Likelihood, f(theta, u)" target="_top"><span style='white-space: nowrap'>random&nbsp;likelihood</span></a>
+.
+The Hessian is
+<small>@[@
+
+	f_{u,u} ( \theta , u )
+
+@]@</small>
+There are no absolute value terms in the
+<a href="cppad_mixed.htm#Negative Log-Density Vector" target="_top"><span style='white-space: nowrap'>negative&nbsp;log-density&nbsp;vector</span></a>
+
+for the <a href="ran_likelihood.htm" target="_top"><span style='white-space: nowrap'>ran_likelihood</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="mixed_object" id="mixed_object">mixed_object</a></big></b>
+<br>
+We use <a href="derived_ctor.htm#mixed_object" target="_top"><span style='white-space: nowrap'>mixed_object</span></a>
+
+to denote an object of a class that is
+derived from the <code><font color="blue">cppad_mixed</font></code> base class.
+
+<br>
+<br>
+<b><big><a name="fixed_vec" id="fixed_vec">fixed_vec</a></big></b>
+<br>
+is the vector of fixed effects <small>@(@
+\theta
+@)@</small> at which
+the Hessian is evaluated.
+
+<br>
+<br>
+<b><big><a name="random_vec" id="random_vec">random_vec</a></big></b>
+<br>
+is the vector of random effects <small>@(@
+u
+@)@</small> at which
+the Hessian is evaluated.
+
+<br>
+<br>
+<b><big><a name="hes_random_obj_rcv" id="hes_random_obj_rcv">hes_random_obj_rcv</a></big></b>
+<br>
+The return value is a
+<a href="typedef.htm#Sparse Types.d_sparse_rcv" target="_top"><span style='white-space: nowrap'>d_sparse_rcv</span></a>
+ representation
+of the lower triangle of the Hessian.
+(The Hessian is symmetric and hence determined by its lower triangle.)
+
+
+
+<br>
+<br>
+<b><big><a name="Example" id="Example">Example</a></big></b>
+<br>
+The file <a href="hes_random_obj.cpp.htm" target="_top"><span style='white-space: nowrap'>hes_random_obj.cpp</span></a>
+ contains an example and
+test of this routine. It returns true for success and false for failure.
+
+
+<hr>Input File: src/eigen/hes_random_obj.cpp
+
+</body>
+</html>
