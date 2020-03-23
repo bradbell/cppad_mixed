@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -89,9 +89,9 @@ is used for the Laplace objective function.
 
 $head L$$
 The notation
-$cref/L(theta)/theory/Objective/Total Objective, L(theta)/$$
+$cref/L(theta)/theory/Objective/Fixed Effects Objective, L(theta)/$$
 ( $latex L( \theta )$$ )
-is used for the total objective function.
+is used for the fixed effects objective function.
 
 $head u$$
 The notation $cref/u/cppad_mixed/Notation/Random Effects, u/$$

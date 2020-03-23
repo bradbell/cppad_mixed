@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-19 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -49,8 +49,8 @@ $head Public$$
 This $code cppad_mixed$$ $cref base_class$$ member function is public.
 
 $head Purpose$$
-This routine maximizes the total objective
-$cref/L(theta)/theory/Objective/Total Objective, L(theta)/$$.
+This routine maximizes the fixed effects objective
+$cref/L(theta)/theory/Objective/Fixed Effects Objective, L(theta)/$$.
 
 $head inf$$
 The value $code inf$$ below refers to

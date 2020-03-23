@@ -38,7 +38,7 @@ It follows that the Laplace approximation is exact and
 $latex \[
 	\B{p}( y_i | \theta ) \sim \B{N} \left( \theta_0 , 1 + \theta_1^2 \right)
 \] $$
-The corresponding total objective for the fixed effects is
+The corresponding fixed effects objective is
 $latex \[
 L( \theta ) =  C + \frac{1}{2} \left[
 	( \theta_0 - 4 )^2 + ( \theta_1 - 4 )^2 +

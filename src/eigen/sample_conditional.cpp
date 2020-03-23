@@ -159,7 +159,7 @@ $subhead Unconstrained Subset Covariance$$
 Note that the bound constraints do not apply to the subset of fixed effects
 represented by $latex \alpha$$.
 We use $latex \tilde{L} ( \alpha )$$ to denote the
-$cref/total objective/theory/Objective/Total Objective, L(theta)/$$
+$cref/fixed effects objective/theory/Objective/Fixed Effects Objective, L(theta)/$$
 as a function of $latex \alpha$$ and
 where the absolute values terms in $cref fix_likelihood$$ are excluded.
 We use $latex \tilde{\alpha}$$ for the unconstrained optimal estimate

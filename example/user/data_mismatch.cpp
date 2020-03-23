@@ -61,7 +61,7 @@ is maximal, and there is no prior for $latex \theta$$.
 This example demonstrates that $latex \theta = z$$ and $latex u = 0$$
 may not be optimal for the this case.
 To be specific it shows that the derivative of
-$cref/L(theta)/theory/Objective/Total Objective, L(theta)/$$
+$cref/L(theta)/theory/Objective/Fixed Effects Objective, L(theta)/$$
 may be non-zero.
 
 $head Theory$$

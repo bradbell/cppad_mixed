@@ -15,7 +15,15 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
-$head 02-22$$
+$head 03-23$$
+Change the notation 'total objective' to
+$cref/fixed effects objective
+	/theory
+	/Objective
+	/Fixed Effects Objective, L(theta)
+/$$.
+
+$head 03-22$$
 $list number$$
 The specifications for the
 $cref/covariance/sample_random/Covariance/$$ of the random effect

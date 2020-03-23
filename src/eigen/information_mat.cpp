@@ -29,7 +29,7 @@ $icode%information_rcv% = %mixed_object%.information_mat(
 $head Purpose$$
 Compute the observed information matrix.
 We use $latex L ( \theta )$$ to denote the
-$cref/total objective/theory/Objective/Total Objective, L(theta)/$$.
+$cref/fixed effects objective/theory/Objective/Fixed Effects Objective, L(theta)/$$.
 The observed information is
 $latex \[
 	L^{(2)} ( \hat{\theta} )

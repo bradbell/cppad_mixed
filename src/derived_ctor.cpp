@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-19 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -77,8 +77,8 @@ $codei%
 
 $subhead true$$
 If $icode quasi_fixed$$ is true,
-a quasi-Newton approximation for the Hessian of the total objective
-$cref/L(theta)/theory/Objective/Total Objective, L(theta)/$$
+a quasi-Newton approximation for the Hessian of the fixed effects objective
+$cref/L(theta)/theory/Objective/Fixed Effects Objective, L(theta)/$$
 is used during the optimization of the fixed effects.
 This is more robust when $cref/fixed_in/optimize_fixed/fixed_in/$$
 is far away from a reasonable value and might lead to the
@@ -90,7 +90,7 @@ the and when the $cref/information matrix/information_mat/$$ is computed.
 
 $subhead false$$
 If $icode quasi_fixed$$ is false,
-the Hessian of the total objective is computed using the
+the Hessian of the fixed effects objective is computed using the
 approximate Laplace objective
 $cref/H(beta, theta, u)
 	/theory

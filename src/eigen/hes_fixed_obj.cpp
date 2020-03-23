@@ -31,7 +31,7 @@ $srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
 $head Purpose$$
 Compute the Hessian of the fixed effects objective function
 $latex L ( \theta )$$; see
-$cref/total objective/theory/Objective/Total Objective, L(theta)/$$.
+$cref/fixed effects objective/theory/Objective/Fixed Effects Objective, L(theta)/$$.
 The Hessian is
 $latex \[
 	L^{(2)} ( \hat{\theta} )
@@ -170,7 +170,7 @@ CppAD::mixed::d_sparse_rcv cppad_mixed::try_hes_fixed_obj(
 		);
 	}
 	// -----------------------------------------------------------------------
-	// Hessian of total objective (observed information matrix)
+	// Hessian of fixed effects objective (observed information matrix)
 	eigen_sparse total_hes = laplace_hes + fixed_only_hes;
 	//
 	// convert from eigen sparse matrix to d_sparse_rcv
