@@ -9,28 +9,30 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
-$begin information_mat$$
+$begin hes_fixed_obj$$
 $spell
-	CppAD
 	cppad
 	rcv
+	hes
+	obj
+	vec
 $$
 
-$section Compute the Observed Information For Fixed Effects$$
-
-$head Deprecated 2020-03-22$$
-Use $cref hes_fixed_obj$$ instead.
+$section Compute the Hessian of The Fixed Effects Objective$$
 
 $head Syntax$$
-$icode%information_rcv% = %mixed_object%.information_mat(
-	%solution%, %random_opt%
+$icode%hes_fixed_obj_rcv% = %mixed_object%.hes_fixed_obj(
+	%fixed_vec%, %random_opt%
 )%$$
 
+$head Prototype$$
+$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+
 $head Purpose$$
-Compute the observed information matrix.
-We use $latex L ( \theta )$$ to denote the
+Compute the Hessian of the fixed effects objective function
+$latex L ( \theta )$$; see
 $cref/total objective/theory/Objective/Total Objective, L(theta)/$$.
-The observed information is
+The Hessian is
 $latex \[
 	L^{(2)} ( \hat{\theta} )
 \]$$
@@ -44,44 +46,27 @@ We use $cref/mixed_object/derived_ctor/mixed_object/$$
 to denote an object of a class that is
 derived from the $code cppad_mixed$$ base class.
 
-$head solution$$
-is the $cref/solution/optimize_fixed/solution/$$
-for a previous call to $cref optimize_fixed$$.
-Only the $icode%solution%.fixed_opt%$$ field is used.
+$head fixed_vec$$
+is the vector of fixed effects $latex \theta$$ at which
+the Hessian is evaluated.
 
 $head random_opt$$
-is the optimal random effects corresponding to the solution; i.e.
-$codei%
-	%random_opt% = %mixed_object%.optimize_random(
-		%random_options%,
-		%solution%.fixed_opt,
-		%random_lower%,
-		%random_upper%,
-		%random_in%
-	)
-%$$
-$icode random_options$$,
-$icode random_lower$$,
-$icode random_upper$$, and
-$icode random_in$$, are the same
-as in the call to $code optimize_fixed$$ that corresponds to $icode solution$$.
+is the optimal random effects corresponding to this value for the
+fixed effects; i.e.,
+$cref/u^(theta)/theory/Optimal Random Effects, u^(theta)/$$.
 
-$head information_rcv$$
-The return value has prototype
-$codei%
-	CppAD::mixed::d_sparse_rcv %information_rcv%
-%$$
-see $cref/d_sparse_rcv/typedef/Sparse Types/d_sparse_rcv/$$.
-This is a sparse matrix representation for the
-lower triangle of the observed information matrix,
-which is symmetric and hence determined by its lower triangle.
+$head hes_fixed_obj_rcv$$
+The return value is a
+$cref/d_sparse_rcv/typedef/Sparse Types/d_sparse_rcv/$$ representation
+of the lower triangle of the Hessian.
+(The Hessian is symmetric and hence determined by its lower triangle.)
 Absolute value terms in the
 $cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
 for the $cref fix_likelihood$$ are not include in this Hessian
 because they do not have a derivative (let alone Hessian) at zero.
 
 $children%
-	example/user/information_mat.cpp
+	example/user/hes_fixed_obj.cpp
 %$$
 
 $head Example$$
@@ -95,18 +80,15 @@ $end
 # include <cppad/mixed/triple2eigen.hpp>
 # include <cppad/mixed/exception.hpp>
 
-CppAD::mixed::d_sparse_rcv cppad_mixed::try_information_mat(
-	const CppAD::mixed::fixed_solution&  solution             ,
-	const d_vector&                      random_opt           )
+CppAD::mixed::d_sparse_rcv cppad_mixed::try_hes_fixed_obj(
+	const d_vector& fixed_vec             ,
+	const d_vector& random_opt            )
 {
 	typedef Eigen::SparseMatrix<double, Eigen::ColMajor>      eigen_sparse;
 	typedef eigen_sparse::InnerIterator                       sparse_itr;
 	//
-	assert( solution.fixed_opt.size()   == n_fixed_ );
+	assert( fixed_vec.size()  == n_fixed_ );
 	assert( random_opt.size() == n_random_ );
-	//
-	// optimal fixed effects
-	const d_vector& fixed_vec( solution.fixed_opt );
 	//
 	// ----------------------------------------------------------------------
 	// Hessian w.r.t. fixed effect of laplace part of fixed evects objective
@@ -214,16 +196,17 @@ CppAD::mixed::d_sparse_rcv cppad_mixed::try_information_mat(
 	//
 	return total_rcv;
 }
-// ---------------------------------------------------------------------------
-CppAD::mixed::d_sparse_rcv cppad_mixed::information_mat(
-	const CppAD::mixed::fixed_solution&  solution             ,
-	const d_vector&                      random_opt           )
+// BEGIN_PROTOTYPE
+CppAD::mixed::d_sparse_rcv cppad_mixed::hes_fixed_obj(
+	const d_vector& fixed_vec            ,
+	const d_vector& random_opt           )
+// END_PROTOTYPE
 {	d_sparse_rcv result;
 	try
-	{	result = try_information_mat(solution, random_opt);
+	{	result = try_hes_fixed_obj(fixed_vec, random_opt);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	std::string error_message = e.message("information_mat");
+	{	std::string error_message = e.message("hes_fixed_obj");
 		fatal_error(error_message);
 		assert(false);
 	}

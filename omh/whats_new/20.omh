@@ -16,9 +16,14 @@ $$
 $section Changes and Additions to cppad_mixed During 2020$$
 
 $head 02-22$$
+$list number$$
 The specifications for the
 $cref/covariance/sample_random/Covariance/$$ of the random effect
 computed by $code sample_random$$ was edited.
+$lnext
+$cref information_mat$$ was deprecated and replaced by
+$cref hes_fixed_obj$$.
+$lend
 
 $head 03-18$$
 It is no longer necessary to have the problem Lagrange multipliers

@@ -9,7 +9,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
-$begin information_mat.cpp$$
+$begin hes_fixed_obj.cpp$$
 $spell
 	CppAD
 	cppad
@@ -19,10 +19,7 @@ $spell
 	xam
 $$
 
-$section Observed Information Matrix: Example and Test$$
-
-$head Deprecated 2020-03-22$$
-Use $cref hes_fixed_obj.cpp$$ instead.
+$section Hessian of Fixed Effects Objective: Example and Test$$
 
 $head Model$$
 $latex \[
@@ -217,7 +214,7 @@ namespace {
 	};
 }
 
-bool information_mat_xam(void)
+bool hes_fixed_obj_xam(void)
 {
 	bool   ok = true;
 	double inf = std::numeric_limits<double>::infinity();
@@ -269,37 +266,24 @@ bool information_mat_xam(void)
 	{	random_lower[i] = -inf;
 		random_upper[i] = +inf;
 	}
-	// optimize fixed effects
-	d_vector fixed_scale = fixed_in;
-	CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
-		fixed_ipopt_options,
-		random_ipopt_options,
-		fixed_lower,
-		fixed_upper,
-		fix_constraint_lower,
-		fix_constraint_upper,
-		fixed_scale,
-		fixed_in,
-		random_lower,
-		random_upper,
-		random_in
-	);
+	// value of the fixed effects
+	d_vector fixed_vec = fixed_in;
 	d_vector random_opt = mixed_object.optimize_random(
 		random_ipopt_options,
-		solution.fixed_opt,
+		fixed_vec,
 		random_lower,
 		random_upper,
 		random_in
 	);
-	// compute corresponding information matrix
+	// compute corresponding Hessian of fixed effects objective
 	d_sparse_rcv
-	information_rcv = mixed_object.information_mat(solution, random_opt);
+	hes_fixed_obj_rcv = mixed_object.hes_fixed_obj(fixed_vec, random_opt);
 	//
 	// there are three non-zero entries in the lower triangle
-	ok  &= information_rcv.nnz() == 3;
+	ok  &= hes_fixed_obj_rcv.nnz() == 3;
 	//
 	// theta
-	const d_vector& theta( solution.fixed_opt );
+	const d_vector& theta = fixed_vec;
 	//
 	// theta_1^2
 	double theta_1_sq = theta[1] * theta[1];
@@ -319,9 +303,9 @@ bool information_mat_xam(void)
 	}
 	//
 	// check Hessian values
-	const s_vector& row( information_rcv.row() );
-	const s_vector& col( information_rcv.col() );
-	const d_vector& val( information_rcv.val() );
+	const s_vector& row( hes_fixed_obj_rcv.row() );
+	const s_vector& col( hes_fixed_obj_rcv.col() );
+	const d_vector& val( hes_fixed_obj_rcv.val() );
 	for(size_t k = 0; k < 3; k++)
 	{	if( row[k] == 0 )
 		{	// only returning lower triangle

@@ -1,7 +1,7 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-18 University of Washington
+#           Copyright (C) 2014-20 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -52,6 +52,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL example.cpp
 	user/derived_ctor.cpp
 	user/fix_constraint.cpp
 	user/fix_likelihood.cpp
+	user/hes_fixed_obj.cpp
 	user/information_mat.cpp
 	user/lasso.cpp
 	user/manage_gsl_rng.cpp

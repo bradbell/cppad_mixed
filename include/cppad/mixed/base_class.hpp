@@ -168,6 +168,14 @@ $srccode%cpp% */
 		const d_vector&    random_in
 	);
 /* %$$
+$head hes_fixed_obj$$
+$cref hes_fixed_obj$$, $title hes_fixed_obj$$.
+$srccode%cpp% */
+	d_sparse_rcv hes_fixed_obj(
+		const d_vector& fixed_vec  ,
+		const d_vector& random_opt
+	);
+/* %$$
 $head information_mat$$
 $cref information_mat$$, $title information_mat$$.
 $srccode%cpp% */
@@ -207,6 +215,7 @@ $childtable%src/derived_ctor.cpp
 	%src/initialize.cpp
 	%src/optimize_random.cpp
 	%src/optimize_fixed.cpp
+	%src/eigen/hes_fixed_obj.cpp
 	%src/eigen/information_mat.cpp
 	%src/sample_fixed.cpp
 	%src/sample_random.cpp
