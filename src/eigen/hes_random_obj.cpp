@@ -29,13 +29,13 @@ $head Prototype$$
 $srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
 
 $head Purpose$$
-Compute the Hessian of the random effects objective function
-$latex f ( u , \theta )$$; see
-$cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$.
-The Hessian is
-$latex \[
-	f_{u,u} ( \theta , u )
-\]$$
+Compute the Hessian of the
+$cref/random effects objective
+	/theory
+	/Random Likelihood, f(theta, u)
+	/Random Effects Objective
+/$$; i.e.,
+$latex f_{u,u} ( \theta , u )$$.
 There are no absolute value terms in the
 $cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
 for the $cref ran_likelihood$$.

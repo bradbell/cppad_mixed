@@ -51,6 +51,11 @@ $subhead Assumption$$
 The function $latex f(\theta, u)$$ is assumed to be smooth.
 Furthermore, there are no constraints on the value of $latex u$$.
 
+$subhead Random Effects Objective$$
+Give a value for the fixed effects $latex \theta$$,
+the random effects objective is the random likelihood as just
+a function of the random effects; i.e., $latex f( \theta , \cdot )$$.
+
 $head Fixed Likelihood, g(theta)$$
 We use $latex g( \theta )$$ for the part of the likelihood
 that only depends on the fixed effects $latex \theta$$;

@@ -21,6 +21,12 @@ $cref/fixed effects objective
 	/theory
 	/Objective
 	/Fixed Effects Objective, L(theta)
+/$$
+and define the
+$cref/random effects objective
+	/theory
+	/Random Likelihood, f(theta, u)
+	/Random Effects Objective
 /$$.
 
 $head 03-22$$
