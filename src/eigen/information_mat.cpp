@@ -22,16 +22,12 @@ $head Syntax$$
 $icode%information_rcv% = %mixed_object%.information_mat(
 	%solution%, %random_opt%
 )%$$
-$icode%information_rcv% = %mixed_object%.information_mat(
-	%solution%, %random_opt%
-)%$$
 
 $head Purpose$$
 Compute the observed information matrix.
 We use $latex L ( \theta )$$ to denote the
 $cref/total objective/theory/Objective/Total Objective, L(theta)/$$.
-If $latex \hat{\theta}$$ is the optimal value for the fixed effects,
-the corresponding observed information is
+The observed information is
 $latex \[
 	L^{(2)} ( \hat{\theta} )
 \]$$
@@ -99,26 +95,25 @@ $end
 CppAD::mixed::d_sparse_rcv cppad_mixed::try_information_mat(
 	const CppAD::mixed::fixed_solution&  solution             ,
 	const d_vector&                      random_opt           )
-{	using Eigen::Dynamic;
+{
 	typedef Eigen::SparseMatrix<double, Eigen::ColMajor>      eigen_sparse;
 	typedef eigen_sparse::InnerIterator                       sparse_itr;
-	// solution
+	//
 	assert( solution.fixed_opt.size()   == n_fixed_ );
-	// random_opt
 	assert( random_opt.size() == n_random_ );
 	//
 	// optimal fixed effects
-	const d_vector& fixed_opt( solution.fixed_opt );
+	const d_vector& fixed_vec( solution.fixed_opt );
 	//
 	// ----------------------------------------------------------------------
-	// compute Hessian w.r.t. fixed effect of random part of objective
-	eigen_sparse ran_hes;
+	// Hessian w.r.t. fixed effect of laplace part of fixed evects objective
+	eigen_sparse laplace_hes;
 	if( n_random_ == 0 )
-		ran_hes.resize( int(n_fixed_), int(n_fixed_) );
+		laplace_hes.resize( int(n_fixed_), int(n_fixed_) );
 	else
 	{	// ------------------------------------------------------------------
 		// update the cholesky factor for this fixed and random effect
-		update_factor(fixed_opt, random_opt);
+		update_factor(fixed_vec, random_opt);
 		// ------------------------------------------------------------------
 		// If Quasi-Newton method was used, must initilaize routines
 		// that are only used for the Hessian calculation; see initilaize.cpp
@@ -127,43 +122,48 @@ CppAD::mixed::d_sparse_rcv cppad_mixed::try_information_mat(
 			//
 			// laplace_obj_fun_
 			assert( ! init_laplace_obj_fun_done_ );
-			init_laplace_obj_fun(fixed_opt, random_opt);
+			init_laplace_obj_fun(fixed_vec, random_opt);
 			assert( init_laplace_obj_fun_done_ );
 			//
 			// laplace_obj_hes_
 			assert( ! init_laplace_obj_hes_done_ );
-			init_laplace_obj_hes(fixed_opt, random_opt);
+			init_laplace_obj_hes(fixed_vec, random_opt);
 			assert( init_laplace_obj_hes_done_ );
 		}
 		assert( init_laplace_obj_fun_done_ );
 		assert( init_laplace_obj_hes_done_ );
 		// ------------------------------------------------------------------
 		// Lower triangle of Hessian w.r.t. fixed effects
-		// for random part of objective,no constraints
-		d_vector w_ran(A_rcv_.nr() + 1);
-		w_ran[0] = 1.0;
+		// for laplace part of the fixed effect objective, no constraints
+		d_vector w_laplace(A_rcv_.nr() + 1);
+		w_laplace[0] = 1.0;
 		for(size_t j = 1; j <=A_rcv_.nr(); j++)
-			w_ran[j] = 0.0;
+			w_laplace[j] = 0.0;
 		//
-		CppAD::mixed::sparse_mat_info ran_info;
+		CppAD::mixed::sparse_mat_info laplace_info;
 		laplace_obj_hes(
-		fixed_opt, random_opt, w_ran, ran_info.row, ran_info.col, ran_info.val
+			fixed_vec,
+			random_opt,
+			w_laplace,
+			laplace_info.row,
+			laplace_info.col,
+			laplace_info.val
 		);
 		CppAD::mixed::triple2eigen(
-			ran_hes       ,
-			n_fixed_      ,
-			n_fixed_      ,
-			ran_info.row  ,
-			ran_info.col  ,
-			ran_info.val
+			laplace_hes       ,
+			n_fixed_          ,
+			n_fixed_          ,
+			laplace_info.row  ,
+			laplace_info.col  ,
+			laplace_info.val
 		);
 	}
 	// --------------------------------------------------------------------
-	// Lower triangle of Hessian of the fixed likelihood
-	eigen_sparse fix_hes;
+	// Lower triangle of Hessian of the fixed part of fixed effects objective
+	eigen_sparse fixed_only_hes;
 	size_t n_fix_like = 0;
 	if( fix_like_fun_.size_var() == 0 )
-		fix_hes.resize( int(n_fixed_) , int(n_fixed_) );
+		fixed_only_hes.resize( int(n_fixed_) , int(n_fixed_) );
 	else
 	{	n_fix_like = fix_like_fun_.Range();
 		d_vector w_fix(n_fix_like);
@@ -173,20 +173,20 @@ CppAD::mixed::d_sparse_rcv cppad_mixed::try_information_mat(
 		//
 		CppAD::mixed::sparse_mat_info fix_info;
 		fix_like_hes(
-				fixed_opt, w_fix, fix_info.row, fix_info.col, fix_info.val
+				fixed_vec, w_fix, fix_info.row, fix_info.col, fix_info.val
 		);
 		CppAD::mixed::triple2eigen(
-			fix_hes       ,
-			n_fixed_      ,
-			n_fixed_      ,
-			fix_info.row  ,
-			fix_info.col  ,
+			fixed_only_hes  ,
+			n_fixed_        ,
+			n_fixed_        ,
+			fix_info.row    ,
+			fix_info.col    ,
 			fix_info.val
 		);
 	}
 	// -----------------------------------------------------------------------
 	// Hessian of total objective (observed information matrix)
-	eigen_sparse total_hes = ran_hes + fix_hes;
+	eigen_sparse total_hes = laplace_hes + fixed_only_hes;
 	//
 	// convert from eigen sparse matrix to d_sparse_rcv
 	size_t nr  = total_hes.rows();
