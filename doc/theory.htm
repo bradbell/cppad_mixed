@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Laplace Approximation for Mixed Effects Models</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Laplace Approximation for Mixed Effects Models">
-<meta name="keywords" id="keywords" content=" laplace approximation mixed effects models reference total likelihood random f(theta u) assumption fixed g(theta) optimal u^(theta) objective h(theta r(theta) l(theta) derivative constraints approximate first order u(beta theta second w(beta h(beta constraint function b(beta hessian sparse observed information ">
+<meta name="keywords" id="keywords" content=" laplace approximation mixed effects models reference total likelihood random f(theta u) assumption objective fixed g(theta) optimal u^(theta) h(theta r(theta) l(theta) derivative constraints approximate first order u(beta theta second w(beta h(beta constraint function b(beta hessian sparse observed information ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -65,12 +65,13 @@ A:active { color : purple }
 <br><a href="theory.htm#Total Likelihood" target="_top">Total&nbsp;Likelihood</a>
 <br><a href="theory.htm#Random Likelihood, f(theta, u)" target="_top">Random&nbsp;Likelihood,&nbsp;f(theta,&nbsp;u)</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="theory.htm#Random Likelihood, f(theta, u).Assumption" target="_top">Assumption</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="theory.htm#Random Likelihood, f(theta, u).Random Effects Objective" target="_top">Random&nbsp;Effects&nbsp;Objective</a>
 <br><a href="theory.htm#Fixed Likelihood, g(theta)" target="_top">Fixed&nbsp;Likelihood,&nbsp;g(theta)</a>
 <br><a href="theory.htm#Optimal Random Effects, u^(theta)" target="_top">Optimal&nbsp;Random&nbsp;Effects,&nbsp;u^(theta)</a>
 <br><a href="theory.htm#Objective" target="_top">Objective</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="theory.htm#Objective.Laplace Approximation, h(theta, u)" target="_top">Laplace&nbsp;Approximation,&nbsp;h(theta,&nbsp;u)</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="theory.htm#Objective.Laplace Objective, r(theta)" target="_top">Laplace&nbsp;Objective,&nbsp;r(theta)</a>
-<br>&#160;&#160;&#160;&#160;&#160;<a href="theory.htm#Objective.Total Objective, L(theta)" target="_top">Total&nbsp;Objective,&nbsp;L(theta)</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="theory.htm#Objective.Fixed Effects Objective, L(theta)" target="_top">Fixed&nbsp;Effects&nbsp;Objective,&nbsp;L(theta)</a>
 <br><a href="theory.htm#Derivative of Optimal Random Effects" target="_top">Derivative&nbsp;of&nbsp;Optimal&nbsp;Random&nbsp;Effects</a>
 <br><a href="theory.htm#Derivative of Random Constraints" target="_top">Derivative&nbsp;of&nbsp;Random&nbsp;Constraints</a>
 <br><a href="theory.htm#Derivative of Laplace Objective" target="_top">Derivative&nbsp;of&nbsp;Laplace&nbsp;Objective</a>
@@ -141,6 +142,18 @@ f(\theta, u)
 @)@</small> is assumed to be smooth.
 Furthermore, there are no constraints on the value of <small>@(@
 u
+@)@</small>.
+
+<br>
+<br>
+<big><a name="Random Likelihood, f(theta, u).Random Effects Objective" id="Random Likelihood, f(theta, u).Random Effects Objective">Random Effects Objective</a></big>
+<br>
+Give a value for the fixed effects <small>@(@
+\theta
+@)@</small>,
+the random effects objective is the random likelihood as just
+a function of the random effects; i.e., <small>@(@
+f( \theta , \cdot )
 @)@</small>.
 
 <br>
@@ -234,9 +247,9 @@ This corresponds to equation (4) in the
 
 <br>
 <br>
-<big><a name="Objective.Total Objective, L(theta)" id="Objective.Total Objective, L(theta)">Total Objective, L(theta)</a></big>
+<big><a name="Objective.Fixed Effects Objective, L(theta)" id="Objective.Fixed Effects Objective, L(theta)">Fixed Effects Objective, L(theta)</a></big>
 <br>
-The total objective, as a function of the fixed effects, is
+The fixed effects objective, as a function of just the fixed effects, is
 <small>@[@
 
 L ( \theta )

@@ -94,18 +94,12 @@ CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><font co
 <br>
 <b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
 <br>
-Compute the Hessian of the random effects objective function
+Compute the Hessian of the
+<a href="theory.htm#Random Likelihood, f(theta, u).Random Effects Objective" target="_top"><span style='white-space: nowrap'>random&nbsp;effects&nbsp;objective</span></a>
+; i.e.,
 <small>@(@
-f ( u , \theta )
-@)@</small>; see
-<a href="theory.htm#Random Likelihood, f(theta, u)" target="_top"><span style='white-space: nowrap'>random&nbsp;likelihood</span></a>
-.
-The Hessian is
-<small>@[@
-
-	f_{u,u} ( \theta , u )
-
-@]@</small>
+f_{u,u} ( \theta , u )
+@)@</small>.
 There are no absolute value terms in the
 <a href="cppad_mixed.htm#Negative Log-Density Vector" target="_top"><span style='white-space: nowrap'>negative&nbsp;log-density&nbsp;vector</span></a>
 
