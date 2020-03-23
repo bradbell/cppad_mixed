@@ -70,7 +70,7 @@ $children%
 %$$
 
 $head Example$$
-The file $cref information_mat.cpp$$ contains an example and
+The file $cref hes_fixed_obj.cpp$$ contains an example and
 test of this routine. It returns true for success and false for failure.
 
 $end

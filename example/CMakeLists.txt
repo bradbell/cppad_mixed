@@ -53,6 +53,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL example.cpp
 	user/fix_constraint.cpp
 	user/fix_likelihood.cpp
 	user/hes_fixed_obj.cpp
+	user/hes_random_obj.cpp
 	user/information_mat.cpp
 	user/lasso.cpp
 	user/manage_gsl_rng.cpp

@@ -486,19 +486,21 @@ $srccode%cpp% */
 	);
 /* %$$
 $subhead try_hes_fixed_obj$$
-Called by public $cref/information_mat/base_class/information_mat/$$
+Called by public
+$cref/hes_fixed_obj/base_class/hes_fixed_obj/$$ and
+$cref/information_mat/base_class/information_mat, Deprecated 2020-03-22/$$.
 $srccode%cpp% */
 	d_sparse_rcv try_hes_fixed_obj(
 		const d_vector& fixed_vec      ,
 		const d_vector& random_opt
 	);
 /* %$$
-$subhead try_information_mat$$
-Called by public $cref/information_mat/base_class/information_mat/$$
+$subhead try_hes_random_obj$$
+Called by public $cref/hes_random_obj/base_class/hes_random_obj/$$
 $srccode%cpp% */
-	d_sparse_rcv try_information_mat(
-		const CppAD::mixed::fixed_solution&  solution      ,
-		const d_vector&                      random_opt
+	d_sparse_rcv try_hes_random_obj(
+		const d_vector& fixed_vec      ,
+		const d_vector& random_vec
 	);
 /* %$$
 $subhead try_sample_fixed$$

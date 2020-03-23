@@ -176,12 +176,12 @@ $srccode%cpp% */
 		const d_vector& random_opt
 	);
 /* %$$
-$head information_mat$$
-$cref information_mat$$, $title information_mat$$.
+$head hes_random_obj$$
+$cref hes_random_obj$$, $title hes_random_obj$$.
 $srccode%cpp% */
-	d_sparse_rcv information_mat(
-		const CppAD::mixed::fixed_solution&  solution             ,
-		const d_vector&                      random_opt
+	d_sparse_rcv hes_random_obj(
+		const d_vector& fixed_vec  ,
+		const d_vector& random_vec
 	);
 /* %$$
 $head sample_fixed$$
@@ -208,6 +208,14 @@ $srccode%cpp% */
 		const d_vector&      random_in
 	);
 /* %$$
+$head information_mat, Deprecated 2020-03-22$$
+$cref information_mat$$, $title information_mat$$.
+$srccode%cpp% */
+	d_sparse_rcv information_mat(
+		const CppAD::mixed::fixed_solution&  solution             ,
+		const d_vector&                      random_opt
+	);
+/* %$$
 $childtable%src/derived_ctor.cpp
 	%src/ran_likelihood.omh
 	%src/fix_likelihood.omh
@@ -216,9 +224,10 @@ $childtable%src/derived_ctor.cpp
 	%src/optimize_random.cpp
 	%src/optimize_fixed.cpp
 	%src/eigen/hes_fixed_obj.cpp
-	%src/eigen/information_mat.cpp
+	%src/eigen/hes_random_obj.cpp
 	%src/sample_fixed.cpp
 	%src/sample_random.cpp
+	%src/eigen/information_mat.cpp
 %$$
 
 

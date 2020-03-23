@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-19 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -113,6 +113,7 @@ void cppad_mixed::update_factor(
 	//
 	// ran_hes_uu_rcv_
 	size_t nnz = ran_hes_uu_rcv_.nnz();
+	assert( hes_val.size() == nnz );
 	for(size_t k = 0; k < nnz; ++k)
 		ran_hes_uu_rcv_.set(k, hes_val[k]);
 	//

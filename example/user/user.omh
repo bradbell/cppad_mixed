@@ -43,6 +43,7 @@ $table
 $rref optimize_random.cpp$$
 $rref optimize_fixed.cpp$$
 $rref hes_fixed_obj.cpp$$
+$rref hes_random_obj.cpp$$
 $rref information_mat.cpp$$
 $rref sample_random.cpp$$
 $rref sample_fixed.cpp$$

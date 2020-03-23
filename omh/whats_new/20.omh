@@ -23,6 +23,8 @@ computed by $code sample_random$$ was edited.
 $lnext
 $cref information_mat$$ was deprecated and replaced by
 $cref hes_fixed_obj$$.
+$lnext
+The $cref hes_random_obj$$ routine was added.
 $lend
 
 $head 03-18$$

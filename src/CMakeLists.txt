@@ -20,6 +20,7 @@ ADD_LIBRARY(cppad_mixed
 	derived_ctor.cpp
 	eigen/ldlt_eigen.cpp
 	eigen/hes_fixed_obj.cpp
+	eigen/hes_random_obj.cpp
 	eigen/information_mat.cpp
 	eigen/order2random.cpp
 	eigen/sparse_low_tri_sol.cpp
