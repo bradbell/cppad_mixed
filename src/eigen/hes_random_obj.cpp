@@ -78,7 +78,15 @@ CppAD::mixed::d_sparse_rcv cppad_mixed::try_hes_random_obj(
 	const d_vector& fixed_vec             ,
 	const d_vector& random_vec            )
 {
-	assert( init_ran_hes_done_ );
+# ifndef NDEBUG
+	if( n_random_ == 0 )
+	{	assert( ran_hes_uu_rcv_.nr() == 0 );
+		assert( ran_hes_uu_rcv_.nr() == 0 );
+		assert( ran_hes_uu_rcv_.nnz() == 0 );
+	}
+	else
+		assert( init_ran_hes_done_ );
+# endif
 	assert( fixed_vec.size()  == n_fixed_ );
 	assert( random_vec.size() == n_random_ );
 	//

@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-19 University of Washington
+#           Copyright (C) 2014-20 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -26,33 +26,26 @@ then
 	exit 1
 fi
 # ---------------------------------------------------------------------------
-release='no'
-ldlt_eigen='no'
-while [ "$1" != '' ]
-do
-	if [ "$1" == '--help' ]
-	then
-		cat << EOF
-usage: bin/check_all.sh \\
-	[--help] \\
-	[--release] \\
-	[--ldlt_eigen]
-EOF
-		exit 0
-	fi
-	if [ "$1" == '--release' ]
-	then
+if [ "$1" == 'debug' ]
+then
+	release='no'
+elif [ "$1" == 'release' ]
+then
 		release='yes'
-	elif [ "$1" == '--ldlt_eigen' ]
-	then
-		ldlt_eigen='yes'
-	else
-		echo "'$1' is an invalid option"
-		bin/check_all.sh --help
-		exit 1
-	fi
-	shift
-done
+else
+	echo 'usage: bin/check_all.sh (debug | release) [--ldlt_eigen]'
+	exit 1
+fi
+if [ "$2" == '' ]
+then
+	ldlt_eigen='no'
+elif [ "$2" == '--ldlt_eigen' ]
+then
+	ldlt_eigen='yes'
+else
+	echo 'usage: bin/check_all.sh (debug | release) [--ldlt_eigen]'
+	exit 1
+fi
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {

@@ -15,6 +15,12 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
+$head 03-25$$
+The debug version of the $cref hes_random_obj$$ routine would
+fail with an assert where there were no random effects.
+This has been changed so it returns an empty matrix
+(the same as the release version).
+
 $head 03-23$$
 Change the notation 'total objective' to
 $cref/fixed effects objective
