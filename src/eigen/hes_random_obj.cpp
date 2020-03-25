@@ -83,6 +83,7 @@ CppAD::mixed::d_sparse_rcv cppad_mixed::try_hes_random_obj(
 	{	assert( ran_hes_uu_rcv_.nr() == 0 );
 		assert( ran_hes_uu_rcv_.nr() == 0 );
 		assert( ran_hes_uu_rcv_.nnz() == 0 );
+		return ran_hes_uu_rcv_;
 	}
 	else
 		assert( init_ran_hes_done_ );
