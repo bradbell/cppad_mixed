@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2020</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2020">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2020 03-23 03-22 03-18 03-15 api change ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2020 03-25 03-23 03-22 03-18 03-15 api change ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -66,12 +66,23 @@ A:active { color : purple }
 
 <center><b><big><big>Changes and Additions to cppad_mixed During 2020</big></big></b></center>
 
+<br><a href="whats_new_20.htm#03-25" target="_top">03-25</a>
 <br><a href="whats_new_20.htm#03-23" target="_top">03-23</a>
 <br><a href="whats_new_20.htm#03-22" target="_top">03-22</a>
 <br><a href="whats_new_20.htm#03-18" target="_top">03-18</a>
 <br><a href="whats_new_20.htm#03-15" target="_top">03-15</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="whats_new_20.htm#03-15.API Change" target="_top">API&nbsp;Change</a>
 <br><br>
+<b><big><a name="03-25" id="03-25">03-25</a></big></b>
+<br>
+The debug version of the <a href="hes_random_obj.htm" target="_top"><span style='white-space: nowrap'>hes_random_obj</span></a>
+ routine would
+fail with an assert where there were no random effects.
+This has been changed so it returns an empty matrix
+(the same as the release version).
+
+<br>
+<br>
 <b><big><a name="03-23" id="03-23">03-23</a></big></b>
 <br>
 Change the notation 'total objective' to
