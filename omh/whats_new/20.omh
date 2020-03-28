@@ -15,6 +15,11 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
+$head 03-28$$
+The release version of the $cref hes_random_obj$$ routine would
+crash when there were no random effects.
+This has been fixed.
+
 $head 03-25$$
 The debug version of the $cref hes_random_obj$$ routine would
 fail with an assert where there were no random effects.
