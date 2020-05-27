@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -149,7 +149,7 @@ $end
 	// minimum scaling factor
 	double scale_min       = 1.0 / scale_max;
 	// log of maximum relatives steps size in finite differences
-	double log_max_rel_step = std::log(1e-3);
+	double log_max_rel_step = std::log(0.001);
 	// log of minimum relative steps size in finite differences
 	double log_min_rel_step = std::log(1e-10);
 	// number of finite difference steps to try
@@ -374,7 +374,7 @@ $end
 		// loop over relative step sizes
 		size_t i_try           = 0;
 		while( i_try < n_try && best_err > relative_tol )
-		{	double log_next      = log_min_rel_step + log_diff * double(i_try);
+		{	double log_next      = log_max_rel_step - log_diff * double(i_try);
 			double relative_step = std::exp(log_next);
 			//
 			// step size
@@ -424,7 +424,7 @@ $end
 			double relative_err  = fabs(diff) / denominator;
 
 			// best
-			if( relative_err < best_err )
+			if( 1.1 * relative_err < best_err )
 			{	best_err    = relative_err;
 				best_step   = step;
 				best_approx = approx;
@@ -483,7 +483,7 @@ $end
 		size_t i_try        = 0;
 		double max_best_err = infinity;
 		while( i_try < n_try && max_best_err > relative_tol )
-		{	double log_next      = log_min_rel_step + log_diff * double(i_try);
+		{	double log_next      = log_max_rel_step - log_diff * double(i_try);
 			double relative_step = std::exp(log_next);
 			//
 			// step size
@@ -539,7 +539,7 @@ $end
 				double relative_err  = fabs(diff) / denominator;
 
 				// best
-				if( relative_err < best_err[i] )
+				if( 1.1 * relative_err < best_err[i] )
 				{	best_err[i]    = relative_err;
 					best_step[i]   = step;
 					best_approx[i] = approx;
@@ -610,7 +610,7 @@ $end
 		size_t i_try        = 0;
 		double max_best_err = infinity;
 		while( i_try < n_try && max_best_err > relative_tol )
-		{	double log_next      = log_min_rel_step + log_diff * double(i_try);
+		{	double log_next      = log_max_rel_step - log_diff * double(i_try);
 			double relative_step = std::exp(log_next);
 			//
 			// step size

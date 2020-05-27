@@ -15,6 +15,14 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
+$head 05-27$$
+The $code adaptive$$ and $code trace-adaptive$$
+$cref/derivative_test/optimize_fixed/fixed_ipopt_options/derivative_test/$$
+options were improved.
+To be specific, the larger step size was used unless significant
+improvement is achieved by a smaller step size.
+This reduces the amount of numerical round off to consider in the comparison.
+
 $head 03-28$$
 The release version of the $cref hes_random_obj$$ routine would
 crash when there were no random effects.
