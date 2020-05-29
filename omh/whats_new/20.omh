@@ -15,6 +15,12 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
+$head 05-29$$
+Add an error message when the Hessian with respect to the
+random effects is not positive definite during the initialization of the
+second order approximation for the objective, when
+$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false.
+
 $head 05-27$$
 The $code adaptive$$ and $code trace-adaptive$$
 $cref/derivative_test/optimize_fixed/fixed_ipopt_options/derivative_test/$$

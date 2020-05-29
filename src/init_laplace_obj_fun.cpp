@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-19 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -154,7 +154,13 @@ void cppad_mixed::init_laplace_obj_fun(
 	);
 	//
 	// a1_ldlt_ran_hes_.update
-	a1_ldlt_ran_hes_.update( ran_hes_uu_rcv );
+	bool ok = a1_ldlt_ran_hes_.update( ran_hes_uu_rcv );
+	if( ! ok )
+	{	CppAD::mixed::exception e(
+			"init_laplace_obj_fun", "Hessian w.r.t. random effects is singular"
+		);
+		throw(e);
+	}
 	//
 	// W(beta, theta, u)
 	a1_vector W = CppAD::mixed::order2random(
