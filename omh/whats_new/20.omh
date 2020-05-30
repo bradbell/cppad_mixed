@@ -15,6 +15,15 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
+$head 05$$
+Some more improvements were made to the
+$code adaptive$$ and $code trace-adaptive$$
+$cref/derivative_test/optimize_fixed/fixed_ipopt_options/derivative_test/$$
+options.
+To be specific, the scale of the function values (derivative values)
+were taking into account when checking derivatives (Hessians).
+
+
 $head 05-29$$
 Add an error message when the Hessian with respect to the
 random effects is not positive definite during the initialization of the

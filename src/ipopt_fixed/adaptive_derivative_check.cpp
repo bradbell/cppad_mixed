@@ -13,6 +13,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 $begin ipopt_fixed_adaptive_derivative_check$$
 $spell
+	differenced
 	CppAD
 	cppad
 	Ipopt
@@ -33,7 +34,7 @@ If true, a trace of this computation is printed on standard output.
 
 $head relative_step$$
 For an unspecified set of relative step sizes between
-$code 1e-3$$ and $code 1e-10$$:
+$code 1e-1$$ and $code 1e-10$$:
 If the upper and lower bounds are finite,
 the step is relative to the upper minus the lower bound
 (for each component of $icode x$$).
@@ -45,7 +46,9 @@ $head relative_tol$$
 This is the relative tolerance for the difference between a finite difference
 approximation and the evaluated derivative.
 The absolute tolerance is the relative tolerance times the
-sum of sum of the absolute value of the gradient and the approximation.
+sum of sum of the absolute value of the gradient, the approximation.
+In addition, the 100 times the square root of machine epsilon time
+the size of the values being differenced was added to the sum.
 In the case of the Hessian, for each column the absolute value of
 the diagonal element for that column is added to the sum before multiplying
 by the relative tolerance.
@@ -138,6 +141,8 @@ $end
 	// ---------------------------------------------------------------------
 	// some constants
 	// ---------------------------------------------------------------------
+	// square root of machine epsilon
+	double sqrt_eps = std::sqrt( std::numeric_limits<double>::epsilon() );
 	// number of components in x
 	const size_t n  = n_fixed_ + fix_likelihood_nabs_;
 	// number of components if g
@@ -149,7 +154,7 @@ $end
 	// minimum scaling factor
 	double scale_min       = 1.0 / scale_max;
 	// log of maximum relatives steps size in finite differences
-	double log_max_rel_step = std::log(0.001);
+	double log_max_rel_step = std::log(0.1);
 	// log of minimum relative steps size in finite differences
 	double log_min_rel_step = std::log(1e-10);
 	// number of finite difference steps to try
@@ -378,12 +383,13 @@ $end
 			double relative_step = std::exp(log_next);
 			//
 			// step size
-			double step = relative_step * ( x_upper[j] - x_lower[j] );
-			if( x_upper[j] == nlp_upper_bound_inf_ ||
-				x_lower[j] == nlp_lower_bound_inf_  )
-			{	step = relative_step * fabs( x_scale[j] );
-				step = std::max( step, relative_step );
-			}
+			double step = relative_step * fabs( x_scale[j] );
+			if( x_upper[j] != nlp_upper_bound_inf_ )
+				step = std::max(step, relative_step * fabs( x_upper[j] ) );
+			if( x_lower[j] != nlp_lower_bound_inf_  )
+				step = std::max(step, relative_step * fabs( x_lower[j] ) );
+			if( step == 0.0 )
+				step = relative_step;
 
 			// x_plus, obj_plus
 			double obj_plus;
@@ -407,7 +413,6 @@ $end
 			{	assert( error_message_ != "" );
 				return false;
 			}
-			abs_obj = std::max(abs_obj, fabs(obj_plus) );
 			abs_obj = std::max(abs_obj, fabs(obj_minus) );
 
 			// restore j-th component of x_step
@@ -417,11 +422,9 @@ $end
 			double approx = (obj_plus - obj_minus) / (x_plus - x_minus);
 
 			// relative difference
-			double diff           = grad_f[j] - approx;
-			double denominator    = fabs(grad_f[j]) + fabs(approx);
-			if( denominator == 0.0 )
-				denominator = 1.0;
-			double relative_err  = fabs(diff) / denominator;
+			double diff = grad_f[j] - approx;
+			double den  = fabs(grad_f[j]) + fabs(approx) + 100.0 * sqrt_eps * abs_obj;
+			double relative_err = fabs(diff) / den;
 
 			// best
 			if( 1.1 * relative_err < best_err )
@@ -487,12 +490,13 @@ $end
 			double relative_step = std::exp(log_next);
 			//
 			// step size
-			double step = relative_step * ( x_upper[j] - x_lower[j] );
-			if( x_upper[j] == nlp_upper_bound_inf_ ||
-				x_lower[j] == nlp_lower_bound_inf_  )
-			{	step = relative_step * fabs( x_scale[j] );
-				step = std::max( step, relative_step );
-			}
+			double step = relative_step * fabs( x_scale[j] );
+			if( x_upper[j] != nlp_upper_bound_inf_ )
+				step = std::max(step, relative_step * fabs( x_upper[j] ) );
+			if( x_lower[j] != nlp_lower_bound_inf_  )
+				step = std::max(step, relative_step * fabs( x_lower[j] ) );
+			if( step == 0.0 )
+				step = relative_step;
 
 			// x_plus, con_plus
 			d_vector con_plus(m);
@@ -530,13 +534,14 @@ $end
 			{
 				// finite difference approximation for derivative
 				double approx = (con_plus[i] - con_minus[i])/ step;
+				double abs_con = fabs( con_value[i] );
+				abs_con        = std::max(abs_con, fabs( con_plus[i] ) );
+				abs_con        = std::max(abs_con, fabs( con_minus[i]) );
 
 				// relative difference
-				double diff           = jac[i] - approx;
-				double denominator    = fabs(jac[i]) + fabs(approx);
-				if( denominator == 0.0 )
-					denominator = 1.0;
-				double relative_err  = fabs(diff) / denominator;
+				double diff = jac[i] - approx;
+				double den  = fabs(jac[i]) + fabs(approx + 100.0 * sqrt_eps * abs_con);
+				double relative_err  = fabs(diff) / den;
 
 				// best
 				if( 1.1 * relative_err < best_err[i] )
@@ -591,11 +596,12 @@ $end
 	for(size_t j2 = 0; j2 < n; j2++)
 	if( x_lower[j2] < x_upper[j2] )
 	{
-		d_vector best_err(n), best_step(n), best_approx(n), hess(n);
+		d_vector best_err(n), best_step(n), best_approx(n), best_grad_L(n),hess(n);
 		for(size_t j1 = 0; j1 < n; j1++)
 		{	best_err[j1]    = infinity;
 			best_step[j1]   = infinity;
 			best_approx[j1] = infinity;
+			best_grad_L[j1] = infinity;
 			hess[j1]        = 0.0;
 		}
 		// value of this column of the hessian
@@ -614,12 +620,13 @@ $end
 			double relative_step = std::exp(log_next);
 			//
 			// step size
-			double step = relative_step * ( x_upper[j2] - x_lower[j2] );
-			if( x_upper[j2] == nlp_upper_bound_inf_ ||
-				x_lower[j2] == nlp_lower_bound_inf_  )
-			{	step = relative_step * fabs( x_scale[j2] );
-				step = std::max( step, relative_step );
-			}
+			double step = relative_step * fabs( x_scale[j2] );
+			if( x_upper[j2] != nlp_upper_bound_inf_ )
+				step = std::max(step, relative_step * fabs( x_upper[j2] ) );
+			if( x_lower[j2] != nlp_lower_bound_inf_  )
+				step = std::max(step, relative_step * fabs( x_lower[j2] ) );
+			if( step == 0.0 )
+				step = relative_step;
 
 			// x_plus, grad_f_plus, jac_g_plus
 			d_vector grad_f_plus(n);
@@ -680,8 +687,10 @@ $end
 
 			// Initailize j-th column of Hessian with f contribution
 			d_vector approx(n);
+			d_vector grad_L(n);
 			for(size_t j1 = 0; j1 < n; j1++)
 			{	double d2f =(grad_f_plus[j1] - grad_f_minus[j1]) / step;
+				grad_L[j1] =(grad_f_plus[j1] + grad_f_minus[j1]) / 2.0;
 				approx[j1] = obj_factor * d2f;
 			}
 			// add in contribution for g
@@ -690,6 +699,7 @@ $end
 				size_t j1   = jac_g_col_[k];
 				double d2g   = (jac_g_plus[k] - jac_g_minus[k])/ step;
 				approx[j1] += lambda[i] * d2g;
+				grad_L[j1] += lambda[i] * (jac_g_plus[k] + jac_g_minus[k]) / 2.0;
 			}
 			//
 			// absolute value of element in this column and on diagonal
@@ -701,8 +711,7 @@ $end
 			{	// relative difference
 				double diff  = hess[j1] - approx[j1];
 				double den   = abs_diag + fabs(hess[j1]) + fabs(approx[j1]);
-				if( den == 0.0 )
-					den = 1.0;
+				den         += 100.0 * sqrt_eps * grad_L[j1];
 				double relative_err  = fabs(diff) / den;
 
 				// best
@@ -710,6 +719,7 @@ $end
 				{	best_err[j1]    = relative_err;
 					best_step[j1]   = step;
 					best_approx[j1] = approx[j1];
+					best_grad_L[j1] = grad_L[j1];
 				}
 				max_best_err = std::max(max_best_err, best_err[j1]);
 			}
@@ -730,6 +740,7 @@ $end
 						<< std::setw(4)  << "j1"
 						<< std::setw(4)  << "j2"
 						<< std::setw(11) << "step"
+						<< std::setw(11) << "grad_L"
 						<< std::setw(11) << "hess"
 						<< std::setw(11) << "apx"
 						<< std::setw(11) << "err"
@@ -739,6 +750,7 @@ $end
 					<< std::setw(4)  << j1
 					<< std::setw(4)  << j2
 					<< std::setw(11) << best_step[j1]
+					<< std::setw(11) << best_grad_L[j1]
 					<< std::setw(11) << hess[j1]
 					<< std::setw(11) << best_approx[j1]
 					<< std::setw(11) << best_err[j1]
