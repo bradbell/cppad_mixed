@@ -424,7 +424,10 @@ $end
 			// relative difference
 			double diff = grad_f[j] - approx;
 			double den  = fabs(grad_f[j]) + fabs(approx) + 100.0 * sqrt_eps * abs_obj;
-			double relative_err = fabs(diff) / den;
+			double relative_err = fabs(diff);
+			if( den > 0.0 )
+				relative_err  = fabs(diff) / den;
+
 
 			// best
 			if( 1.1 * relative_err < best_err )
@@ -540,8 +543,10 @@ $end
 
 				// relative difference
 				double diff = jac[i] - approx;
-				double den  = fabs(jac[i]) + fabs(approx + 100.0 * sqrt_eps * abs_con);
-				double relative_err  = fabs(diff) / den;
+				double den  = fabs(jac[i]) + fabs(approx) + 100.0 * sqrt_eps * abs_con;
+				double relative_err = fabs(diff);
+				if( den > 0.0 )
+					relative_err  = fabs(diff) / den;
 
 				// best
 				if( 1.1 * relative_err < best_err[i] )
@@ -712,7 +717,10 @@ $end
 				double diff  = hess[j1] - approx[j1];
 				double den   = abs_diag + fabs(hess[j1]) + fabs(approx[j1]);
 				den         += 100.0 * sqrt_eps * grad_L[j1];
-				double relative_err  = fabs(diff) / den;
+				double relative_err = fabs(diff);
+				if( den > 0.0 )
+					relative_err  = fabs(diff) / den;
+
 
 				// best
 				if( relative_err < best_err[j1] )
