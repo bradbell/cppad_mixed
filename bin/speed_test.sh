@@ -2,27 +2,29 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-18 University of Washington
+#           Copyright (C) 2014-20 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
 #	     GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
-if [ "$0" != 'bin/speed_branch.sh' ]
+if [ "$0" != 'bin/speed_test.sh' ]
 then
-	echo 'bin/speed_branch.sh must be run from its parent directory'
+	echo 'bin/speed_test.sh must be run from its parent directory'
 	exit 1
 fi
 branch=`git branch | grep '^\*' | sed -e 's|^\* *||'`
 if [ "$branch" != 'master' ]
 then
-	echo 'bin/speed_branch.sh must be run from master branch'
+	echo 'bin/speed_test.sh must be run from master branch'
 	exit 1
 fi
 if [ "$3" == '' ]
 then
-	echo 'usage: bin/speed_branch.sh branch1 branch2 quasi_fixed'
+	echo 'usage: bin/speed_test.sh branch1 (branch2|new) quasi_fixed'
+	echo 'where branch1 and branch2 are git branches and new means'
+	echo 'branch1 with the changes corresponding to get_new.sh from'
 	exit 1
 fi
 branch1="$1"
@@ -30,8 +32,12 @@ branch2="$2"
 quasi_fixed="$3"
 if [ "$quasi_fixed" != 'yes' ] && [ "$quasi_fixed" != 'no' ]
 then
-	echo 'speed_branch.sh: quasi_fixed is not yes or no'
+	echo 'speed_test.sh: quasi_fixed is not yes or no'
 	exit 1
+fi
+if [ "$branch1" == 'new' ]
+then
+	echo 'speed_test.sh: branch1 cannot be "new"'
 fi
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
@@ -45,13 +51,13 @@ for program in ar1_xam capture_xam
 do
 	for ext in $branch1 $branch2
 	do
-		if [ -e "build/$program.$ext" ]
+		if [ -e "build.release/$program.$ext" ]
 		then
-			echo_eval rm build/$program.$ext
+			echo_eval rm build.release/$program.$ext
 		fi
-		if [ -e "build/$ext.$program" ]
+		if [ -e "build.release/$ext.$program" ]
 		then
-			echo_eval rm build/$ext.$program
+			echo_eval rm build.release/$ext.$program
 		fi
 	done
 done
@@ -61,22 +67,14 @@ do
 	edit_failed='no'
 	#
 	# start with a clean copy of branch source
-	git checkout $branch
-	#
-	# setup to build optimized versions
-	sed -i bin/run_cmake.sh \
-		-e "s|^build_type=.*|build_type='release'|" \
-		-e "s|^optimize_cppad_function=.*|optimize_cppad_function='yes'|"
-	if ! grep "^build_type='release'" bin/run_cmake.sh > /dev/null
+	if [ $branch == 'new' ]
 	then
-		edit_failed='build_type'
-	fi
-	if ! grep "^optimize_cppad_function='yes'" bin/run_cmake.sh > /dev/null
-	then
-		edit_failed='optimize_cppad_function'
+		git_new.sh from
+	else
+		git checkout $branch
 	fi
 	#
-	bin/run_cmake.sh
+	echo_eval bin/run_cmake.sh --release --optimize_cppad_function
 	#
 	# for each test
 	for program in ar1_xam capture_xam
@@ -95,26 +93,9 @@ do
 			edit_failed='quasi_fixed'
 		fi
 		#
-		if [ "$program" == 'ar1_xam' ]
-		then
-			sed -i bin/$program.sh \
-				-e 's|^number_random=.*|number_random=90000|'
-			if ! grep "^number_random=90000" bin/$program.sh > /dev/null
-			then
-				edit_failed='random_number'
-			fi
-			#
-			sed -i speed/$program.cpp \
-				-e 's|\(std::fabs(estimate_ratio\[j\])\) *<.*|\1 < 10.0;|'
-			if ! grep "std::fabs(estimate_ratio\[j\]) < 10.0" \
-				speed/$program.cpp > /dev/null
-			then
-				edit_failed='estimate_ratio'
-			fi
-		fi
 		if [ "$edit_failed" != 'no' ]
 		then
-			echo "bin/speed_branch.sh: edit failed: $edit_failed"
+			echo "bin/speed_test.sh: edit failed: $edit_failed"
 			exit 1
 		fi
 		# -------------------------------------------------------------------
@@ -129,7 +110,7 @@ do
 done
 git checkout master
 # -----------------------------------------------------------------------------
-echo 'bin/speed_branch.sh: results are in:'
+echo 'bin/speed_test.sh: results are in:'
 for branch in $branch1 $branch2
 do
 	for program in ar1_xam capture_xam
@@ -137,5 +118,5 @@ do
 		echo "	build/$branch.$program.out"
 	done
 done
-echo 'speed_branch.sh: OK'
+echo 'speed_test.sh: OK'
 exit 0
