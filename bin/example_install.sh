@@ -150,7 +150,7 @@ do
 		;;
 
 		ipopt)
-		eval file="$cppad_prefix/include/coin/IpIpoptApplication.hpp"
+		eval file="$cppad_prefix/include/coin-or/IpIpoptApplication.hpp"
 		;;
 
 		cppad)

@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -21,8 +21,8 @@ $section Ipopt Example: Declare Non-linear Program Problem Class$$
 $nospell
 $srccode%cpp% */
 # include <cmath>
-# include <coin/IpIpoptApplication.hpp>
-# include <coin/IpTNLP.hpp>
+# include <coin-or/IpIpoptApplication.hpp>
+# include <coin-or/IpTNLP.hpp>
 # include <cassert>
 namespace {
 	// Ipopt types used by this file

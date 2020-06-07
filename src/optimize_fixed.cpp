@@ -279,7 +279,7 @@ It's specifications are not part of the $cref cppad_mixed$$ public interface.
 $end
 ------------------------------------------------------------------------------
 */
-# include <coin/IpIpoptApplication.hpp>
+# include <coin-or/IpIpoptApplication.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/ipopt_fixed.hpp>
 # include <cppad/mixed/exception.hpp>

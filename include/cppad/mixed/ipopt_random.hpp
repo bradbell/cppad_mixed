@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-19 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -74,7 +74,7 @@ $childtable%src/ipopt_random/ctor.cpp
 $end
 -----------------------------------------------------------------------------
 */
-# include <coin/IpTNLP.hpp>
+# include <coin-or/IpTNLP.hpp>
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/fixed_solution.hpp>
 

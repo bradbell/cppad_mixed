@@ -29,6 +29,5 @@
 # '
 # ----------------------------------------------------------------------------
 # Put other sed commands below here and without # at start of line
-s|total objective for the fixed effects|fixed effects objective|
-s|total objective|fixed effects objective|g
-s|Total Objective|Fixed Effects Objective|g
+s|<coin/|<coin-or/|
+s|/coin/|/coin-or/|

@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-17 University of Washington
+#           Copyright (C) 2014-20 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -21,9 +21,8 @@ echo_eval() {
 	eval $*
 }
 # --------------------------------------------------------------------------
-version="Ipopt-3.12.6"
-third_party="Mumps Metis"
-web_page="http://www.coin-or.org/download/source/Ipopt"
+version="3.13.2"
+coinbrew='https://raw.githubusercontent.com/coin-or/coinbrew/master/coinbrew'
 # --------------------------------------------------------------------------
 # Get user configuration options from run_cmake.sh
 #
@@ -44,7 +43,6 @@ if echo "$ipopt_prefix" | grep '/cppad_mixed$' > /dev/null
 then
 	bin/build_type.sh install_ipopt $ipopt_prefix $build_type
 fi
-export PKG_CONFIG_PATH=$ipopt_prefix/$cmake_libdir/pkgconfig
 # --------------------------------------------------------------------------
 # change into external directory
 if [ ! -e build/external ]
@@ -52,54 +50,41 @@ then
 	mkdir -p build/external
 fi
 cd build/external
-# --------------------------------------------------------------------------
-# get this version of ipopt
-if [ ! -e $version.tgz ]
+# -----------------------------------------------------------------------------
+if [ ! -e coinbrew ]
 then
-	echo_eval wget $web_page/$version.tgz
+    echo_eval wget $coinbrew
+    echo_eval chmod +x coinbrew
 fi
-if [ -e $version ]
+if [ ! -e Ipoot ]
 then
-	echo_eval rm -rf $version
+    ./coinbrew fetch Ipopt@$version --no-prompt
 fi
-echo_eval tar -xzf $version.tgz
-# --------------------------------------------------------------------------
-# change into ipopt directory and get third party software
-echo_eval cd $version
-if [ -e ThirdParty/HSL ]
-then
-	echo_eval rm -rf ThirdParty/HSL
-fi
-#
-for package in $third_party
-do
-	echo_eval cd ThirdParty/$package
-	echo_eval ./get.$package
-	echo_eval cd ../..
-done
-# ----------------------------------------------------------------------------
-# build ipopt
-if [ ! -e build ]
-then
-	echo_eval mkdir build
-fi
-cd build
-# 2DO: remove coin_skip_warn_cxxflags=yes when bug in gcc is fixed; see
-# https://github.com/JuliaOpt/Ipopt.jl/issues/13
-cat << EOF > config.sh
-../configure \\
-	$build_type_flag \\
-	--enable-shared \\
-	--enable-static \\
-	--prefix=$ipopt_prefix \\
-	--libdir=$ipopt_prefix/$cmake_libdir \\
-	--with-blas-lib="-lblas" \\
-	--with-lapack-lib="-llapack" \\
-	coin_skip_warn_cxxflags=yes
+# -----------------------------------------------------------------------------
+# klugde necessary until coin or mumps fixes this problem
+cat << EOF > junk.f
+      program junk
+      print*, "Hello World"
+      end
 EOF
-echo_eval cat config.sh
-echo_eval sh config.sh
-echo_eval make install
+if gfortran -c -fallow-argument-mismatch junk.f >& /dev/null
+then
+    echo 'Adding -fallow-argument-mismatch to Mumps fortran compiler flags'
+    ADD_FCFLAGS='ADD_FCFLAGS=-fallow-argument-mismatch'
+else
+    ADD_FCFLAGS=''
+fi
+# -----------------------------------------------------------------------------
+echo_eval ./coinbrew build Ipopt@$version \
+	--test \
+	--no-prompt \
+	--verbosity=3 \
+    --prefix=$ipopt_prefix \
+	--libdir=$ipopt_prefix/$cmake_libdir \
+	$ADD_FCFLAGS
+#
+echo_eval ./coinbrew install Ipopt@$version \
+    --no-prompt
 # -----------------------------------------------------------------------------
 echo 'install_ipopt.sh: OK'
 exit 0
