@@ -20,24 +20,17 @@ then
 	echo 'bin/speed_test.sh must be run from master branch'
 	exit 1
 fi
-if [ "$3" == '' ]
+if [ "$2" == '' ]
 then
-	echo 'usage: bin/speed_test.sh branch1 (branch2|new) quasi_fixed'
-	echo 'where branch1 and branch2 are git branches and new means'
-	echo 'branch1 with the changes corresponding to get_new.sh from'
+	echo 'usage: bin/speed_test.sh (branch|new) quasi_fixed'
 	exit 1
 fi
-branch1="$1"
-branch2="$2"
-quasi_fixed="$3"
+branch="$1"
+quasi_fixed="$2"
 if [ "$quasi_fixed" != 'yes' ] && [ "$quasi_fixed" != 'no' ]
 then
 	echo 'speed_test.sh: quasi_fixed is not yes or no'
 	exit 1
-fi
-if [ "$branch1" == 'new' ]
-then
-	echo 'speed_test.sh: branch1 cannot be "new"'
 fi
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
@@ -49,74 +42,65 @@ echo_eval() {
 # erase old version of programs
 for program in ar1_xam capture_xam
 do
-	for ext in $branch1 $branch2
-	do
-		if [ -e "build.release/$program.$ext" ]
-		then
-			echo_eval rm build.release/$program.$ext
-		fi
-		if [ -e "build.release/$ext.$program" ]
-		then
-			echo_eval rm build.release/$ext.$program
-		fi
-	done
+	if [ -e "build.release/$program.$branch" ]
+	then
+		echo_eval rm build.release/$program.$branch
+	fi
+	if [ -e "build.release/$branch.$program" ]
+	then
+		echo_eval rm build.release/$branch.$program
+	fi
 done
 # -----------------------------------------------------------------------------
-for branch in $branch1 $branch2
+edit_failed='no'
+#
+# start with a clean copy of branch source
+git reset --hard
+if [ $branch == 'new' ]
+then
+	git_new.sh from
+else
+	git checkout $branch
+fi
+#
+echo_eval bin/run_cmake.sh --release --optimize_cppad_function
+#
+# for each test
+for program in ar1_xam capture_xam
 do
-	edit_failed='no'
-	#
-	# start with a clean copy of branch source
-	if [ $branch == 'new' ]
+	# -------------------------------------------------------------------
+	# changes to source code
+	sed -i bin/$program.sh \
+		-e 's|^random_seed=.*|random_seed=123|' \
+		-e "s|^quasi_fixed=.*|quasi_fixed=$quasi_fixed|"
+	if ! grep "^random_seed=123" bin/$program.sh > /dev/null
 	then
-		git_new.sh from
-	else
-		git checkout $branch
+		edit_failed='random_seed'
+	fi
+	if ! grep "^quasi_fixed=$quasi_fixed" bin/$program.sh > /dev/null
+	then
+		edit_failed='quasi_fixed'
 	fi
 	#
-	echo_eval bin/run_cmake.sh --release --optimize_cppad_function
+	if [ "$edit_failed" != 'no' ]
+	then
+		echo "bin/speed_test.sh: edit failed: $edit_failed"
+		exit 1
+	fi
+	# -------------------------------------------------------------------
 	#
-	# for each test
-	for program in ar1_xam capture_xam
-	do
-		# -------------------------------------------------------------------
-		# changes to source code
-		sed -i bin/$program.sh \
-			-e 's|^random_seed=.*|random_seed=123|' \
-			-e "s|^quasi_fixed=.*|quasi_fixed=$quasi_fixed|"
-		if ! grep "^random_seed=123" bin/$program.sh > /dev/null
-		then
-			edit_failed='random_seed'
-		fi
-		if ! grep "^quasi_fixed=$quasi_fixed" bin/$program.sh > /dev/null
-		then
-			edit_failed='quasi_fixed'
-		fi
-		#
-		if [ "$edit_failed" != 'no' ]
-		then
-			echo "bin/speed_test.sh: edit failed: $edit_failed"
-			exit 1
-		fi
-		# -------------------------------------------------------------------
-		#
-		cd build; make $program; cd ..
-		cp build/speed/$program build/$branch.$program
-		#
-		echo "bin/$program.sh normal > build/$branch.$program.out"
-		bin/$program.sh normal > build/$branch.$program.out
-	done
-	git reset --hard
+	cd build; make $program; cd ..
+	cp build/speed/$program build/$branch.$program
+	#
+	echo "bin/$program.sh normal > build/$branch.$program.out"
+	bin/$program.sh normal > build/$branch.$program.out
 done
 git checkout master
 # -----------------------------------------------------------------------------
 echo 'bin/speed_test.sh: results are in:'
-for branch in $branch1 $branch2
+for program in ar1_xam capture_xam
 do
-	for program in ar1_xam capture_xam
-	do
-		echo "	build/$branch.$program.out"
-	done
+	echo "	build/$branch.$program.out"
 done
 echo 'speed_test.sh: OK'
 exit 0
