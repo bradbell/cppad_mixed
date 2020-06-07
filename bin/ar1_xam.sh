@@ -42,7 +42,7 @@
 # ----------------------------------------------------------------------------
 # BEGIN SH
 random_seed='123'
-number_random='50000'
+number_random='100000'
 quasi_fixed='no'
 trace_optimize_fixed='no'
 ipopt_solve='no'

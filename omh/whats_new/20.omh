@@ -11,11 +11,30 @@ see http://www.gnu.org/licenses/agpl.txt
 $begin whats_new_20$$
 $spell
 	cppad
+	ndebug
+	cpp
+	ar1_xam
 $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
-$head 05$$
+$head 06-07$$
+$list number$$
+The $code ndebug_defined$$ output was added to the
+$cref/capture_xam.cpp/capture_xam.cpp/Output/ndebug_defined/$$  and
+$cref/ar1_xam.cpp/ar1_xam.cpp/Output/ndebug_defined/$$ examples.
+$lnext
+The following speed test parameters were increased: the
+$cref/number_random/ar1_xam.cpp/Command Arguments/number_random/$$
+effects in $cref ar1_xam.sh$$, the
+$cref/number_random/capture_xam.cpp/Command Arguments/number_random/$$
+effects in $cref capture_xam.sh$$, the
+$cref/number_locations/capture_xam.cpp/Command Arguments/number_locations/$$
+effects in $cref capture_xam.sh$$
+$lend
+
+
+$head 05-30$$
 Some more improvements were made to the
 $code adaptive$$ and $code trace-adaptive$$
 $cref/derivative_test/optimize_fixed/fixed_ipopt_options/derivative_test/$$

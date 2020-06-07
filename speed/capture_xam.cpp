@@ -28,6 +28,7 @@ $spell
 	alloc
 	cholesky
 	ldlt_cholmod
+	ndebug
 $$
 
 $section A Capture Example and Speed Test$$
@@ -221,6 +222,12 @@ $cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$.
 $subhead optimize_cppad_function$$
 is the $code bin/run_cmake.sh$$ configuration option
 $cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$.
+
+$subhead ndebug_defined$$
+is the $code NDEBUG$$ preprocessor symbol defined.
+This should be yes (no) if the $code bin/run_cmake.sh$$ configuration option
+$cref/build_type/run_cmake.sh/build_type/$$ is $code release$$
+($code debug$$).
 
 $subhead actual_seed$$
 If $icode random_seed$$ is zero,
@@ -904,6 +911,11 @@ int main(int argc, const char *argv[])
 	label_print("cppad_mixed_version",    CPPAD_MIXED_VERSION);
 	bool_print("ldlt_cholmod",            CPPAD_MIXED_LDLT_CHOLMOD);
 	bool_print("optimize_cppad_function", CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION);
+# ifdef NDEBUG
+	bool_print("ndebug_defined",          true);
+# else
+	bool_print("ndebug_defined",          false);
+# endif
 	//
 	// Get actual seed (different when random_seed is zero).
 	size_t actual_seed     = CppAD::mixed::new_gsl_rng( random_seed );

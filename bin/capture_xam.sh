@@ -43,7 +43,7 @@
 # ----------------------------------------------------------------------------
 # BEGIN SH
 random_seed='1234'
-number_random='90'
+number_random='100'
 quasi_fixed='no'
 trace_optimize_fixed='no'
 ipopt_solve='no'
@@ -52,7 +52,7 @@ hold_memory='no'
 derivative_test='no'
 start_near_solution='no'
 number_fixed_samples='1000'
-number_locations='30'
+number_locations='50'
 max_population='20.0'
 mean_population='5.0'
 mean_logit_probability='-0.50'
