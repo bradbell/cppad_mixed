@@ -136,7 +136,7 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec )
 	// optimize the recording
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
 	std::string options =
-	"no_conditional_skip no_compare_op no_print_op no_cumulative_sum_op";
+		"no_conditional_skip no_compare_op no_print_op";
 	fix_con_fun_.optimize(options);
 # endif
 	// ------------------------------------------------------------------------

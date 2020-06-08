@@ -210,7 +210,7 @@ void cppad_mixed::init_ran_hes(
 	// optimize the recording
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
 	std::string options =
-	"no_conditional_skip no_compare_op no_print_op no_cumulative_sum_op";
+		"no_conditional_skip no_compare_op no_print_op";
 	ran_hes_fun_.optimize(options);
 # endif
 	//
