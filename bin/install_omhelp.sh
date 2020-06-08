@@ -74,7 +74,6 @@ else
 fi
 if [ ! -e $dir ]
 then
-	echo_eval rm -r $dir
 	echo_eval tar -xzf $dir.tar.gz
 fi
 echo_eval cd $dir

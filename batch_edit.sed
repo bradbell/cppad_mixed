@@ -29,5 +29,10 @@
 # '
 # ----------------------------------------------------------------------------
 # Put other sed commands below here and without # at start of line
-s|<coin/|<coin-or/|
-s|/coin/|/coin-or/|
+/[^a-zA-Z0-9_][a-z_]*\.optimize([^)]*);$/! b end
+s|^\t*|&std::string options =\
+&"no_conditional_skip no_compare_op no_print_op no_cumulative_sum_op";\
+&|
+s|optimize([^)]*)|optimize(options)|
+#
+: end

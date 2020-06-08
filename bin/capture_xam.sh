@@ -42,7 +42,7 @@
 # &end
 # ----------------------------------------------------------------------------
 # BEGIN SH
-random_seed='1234'
+random_seed='123'
 number_random='100'
 quasi_fixed='no'
 trace_optimize_fixed='no'

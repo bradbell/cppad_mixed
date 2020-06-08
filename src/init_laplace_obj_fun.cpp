@@ -234,7 +234,9 @@ void cppad_mixed::init_laplace_obj_fun(
 	laplace_obj_fun_.Dependent(beta, HB);
 	laplace_obj_fun_.check_for_nan(true);
 # if CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION
-	laplace_obj_fun_.optimize("no_conditional_skip");
+	std::string options =
+	"no_conditional_skip no_compare_op no_print_op no_cumulative_sum_op";
+	laplace_obj_fun_.optimize(options);
 # endif
 	//
 	init_laplace_obj_fun_done_ = true;

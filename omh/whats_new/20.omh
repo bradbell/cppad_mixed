@@ -14,12 +14,21 @@ $spell
 	ndebug
 	cpp
 	ar1_xam
+	ipopt
 $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
 $head 06-07$$
 $list number$$
+Advance to ipopt-3.13.2 and cppad-20200606.
+$lnext
+Change the CppAD options used for
+$cref/optimizing cppad functions/run_cmake.sh/optimize_cppad_function/$$.
+This is intended to be an improvement for large problems,
+but the $cref ar1_xam.sh$$ and $cref capture_xam.sh$$ speed tests
+did not show much change.
+$lnext
 The $code ndebug_defined$$ output was added to the
 $cref/capture_xam.cpp/capture_xam.cpp/Output/ndebug_defined/$$  and
 $cref/ar1_xam.cpp/ar1_xam.cpp/Output/ndebug_defined/$$ examples.
