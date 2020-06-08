@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>A Capture Example and Speed Test</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="A Capture Example and Speed Test">
-<meta name="keywords" id="keywords" content=" capture example speed test syntax reference command arguments random_seed number_random quasi_fixed trace_optimize_fixed ipopt_solve bool_sparsity hold_memory derivative_test start_near_solution number_fixed_samples number_locations max_population mean_population mean_logit_probability std_logit_probability random_constraint output cppad_mixed_version ldlt_cholmod optimize_cppad_function actual_seed initialize_bytes initialize_seconds optimize_fixed_seconds optimize_random_seconds information_mat_seconds sample_fixed_seconds final_bytes sum_random_effects mean_population_estimate mean_logit_probability_estimate std_logit_probability_estimate mean_population_std mean_logit_probability_std std_logit_probability_std mean_population_ratio mean_logit_probability_ratio std_probability_ratio capture_xam_ok notation p(y_it|n_iq_t) p(n_i|theta) q_t(thetau) m_i p(y_i|thetau) p(y|thetau) p(u|theta) p(theta) p(z|theta) c(theta) source code ">
+<meta name="keywords" id="keywords" content=" capture example speed test syntax reference command arguments random_seed number_random quasi_fixed trace_optimize_fixed ipopt_solve bool_sparsity hold_memory derivative_test start_near_solution number_fixed_samples number_locations max_population mean_population mean_logit_probability std_logit_probability random_constraint output cppad_mixed_version ldlt_cholmod optimize_cppad_function ndebug_defined actual_seed initialize_bytes initialize_seconds optimize_fixed_seconds optimize_random_seconds information_mat_seconds sample_fixed_seconds final_bytes sum_random_effects mean_population_estimate mean_logit_probability_estimate std_logit_probability_estimate mean_population_std mean_logit_probability_std std_logit_probability_std mean_population_ratio mean_logit_probability_ratio std_probability_ratio capture_xam_ok notation p(y_it|n_iq_t) p(n_i|theta) q_t(thetau) m_i p(y_i|thetau) p(y|thetau) p(u|theta) p(theta) p(z|theta) c(theta) source code ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -92,6 +92,7 @@ A:active { color : purple }
 <br>&#160;&#160;&#160;&#160;&#160;<a href="capture_xam.cpp.htm#Output.cppad_mixed_version" target="_top">cppad_mixed_version</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="capture_xam.cpp.htm#Output.ldlt_cholmod" target="_top">ldlt_cholmod</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="capture_xam.cpp.htm#Output.optimize_cppad_function" target="_top">optimize_cppad_function</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="capture_xam.cpp.htm#Output.ndebug_defined" target="_top">ndebug_defined</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="capture_xam.cpp.htm#Output.actual_seed" target="_top">actual_seed</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="capture_xam.cpp.htm#Output.initialize_bytes" target="_top">initialize_bytes</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="capture_xam.cpp.htm#Output.initialize_seconds" target="_top">initialize_seconds</a>
@@ -419,6 +420,16 @@ is the <code><font color="blue">bin/run_cmake.sh</font></code> configuration opt
 is the <code><font color="blue">bin/run_cmake.sh</font></code> configuration option
 <a href="run_cmake.sh.htm#optimize_cppad_function" target="_top"><span style='white-space: nowrap'>optimize_cppad_function</span></a>
 .
+
+<br>
+<br>
+<big><a name="Output.ndebug_defined" id="Output.ndebug_defined">ndebug_defined</a></big>
+<br>
+is the <code><font color="blue">NDEBUG</font></code> preprocessor symbol defined.
+This should be yes (no) if the <code><font color="blue">bin/run_cmake.sh</font></code> configuration option
+<a href="run_cmake.sh.htm#build_type" target="_top"><span style='white-space: nowrap'>build_type</span></a>
+ is <code><font color="blue">release</font></code>
+(<code><font color="blue">debug</font></code>).
 
 <br>
 <br>
@@ -1381,6 +1392,11 @@ std<font color="#990000">::</font><font color="#008080">string</font> <b><font c
      <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"cppad_mixed_version"</font><font color="#990000">,</font>    CPPAD_MIXED_VERSION<font color="#990000">);</font>
      <b><font color="#000000">bool_print</font></b><font color="#990000">(</font><font color="#FF0000">"ldlt_cholmod"</font><font color="#990000">,</font>            CPPAD_MIXED_LDLT_CHOLMOD<font color="#990000">);</font>
      <b><font color="#000000">bool_print</font></b><font color="#990000">(</font><font color="#FF0000">"optimize_cppad_function"</font><font color="#990000">,</font> CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION<font color="#990000">);</font>
+<b><font color="#000080"># ifdef</font></b> NDEBUG
+     <b><font color="#000000">bool_print</font></b><font color="#990000">(</font><font color="#FF0000">"ndebug_defined"</font><font color="#990000">,</font>          <b><font color="#0000FF">true</font></b><font color="#990000">);</font>
+<b><font color="#000080"># else</font></b>
+     <b><font color="#000000">bool_print</font></b><font color="#990000">(</font><font color="#FF0000">"ndebug_defined"</font><font color="#990000">,</font>          <b><font color="#0000FF">false</font></b><font color="#990000">);</font>
+<b><font color="#000080"># endif</font></b>
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// Get actual seed (different when random_seed is zero).</font></i>
      <font color="#008080">size_t</font> actual_seed     <font color="#990000">=</font> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font><b><font color="#000000">new_gsl_rng</font></b><font color="#990000">(</font> random_seed <font color="#990000">);</font>

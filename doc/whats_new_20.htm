@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2020</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2020">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2020 05 05-29 05-27 03-28 03-25 03-23 03-22 03-18 03-15 api change ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2020 06-07 05-30 05-29 05-27 03-28 03-25 03-23 03-22 03-18 03-15 api change ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -66,7 +66,8 @@ A:active { color : purple }
 
 <center><b><big><big>Changes and Additions to cppad_mixed During 2020</big></big></b></center>
 
-<br><a href="whats_new_20.htm#05" target="_top">05</a>
+<br><a href="whats_new_20.htm#06-07" target="_top">06-07</a>
+<br><a href="whats_new_20.htm#05-30" target="_top">05-30</a>
 <br><a href="whats_new_20.htm#05-29" target="_top">05-29</a>
 <br><a href="whats_new_20.htm#05-27" target="_top">05-27</a>
 <br><a href="whats_new_20.htm#03-28" target="_top">03-28</a>
@@ -77,7 +78,49 @@ A:active { color : purple }
 <br><a href="whats_new_20.htm#03-15" target="_top">03-15</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="whats_new_20.htm#03-15.API Change" target="_top">API&nbsp;Change</a>
 <br><br>
-<b><big><a name="05" id="05">05</a></big></b>
+<b><big><a name="06-07" id="06-07">06-07</a></big></b>
+
+<ol type="1"><li>
+Advance to ipopt-3.13.2 and cppad-20200606.
+</li><li>
+
+Change the CppAD options used for
+<a href="run_cmake.sh.htm#optimize_cppad_function" target="_top"><span style='white-space: nowrap'>optimizing&nbsp;cppad&nbsp;functions</span></a>
+.
+This is intended to be an improvement for large problems,
+but the <a href="ar1_xam.sh.htm" target="_top"><span style='white-space: nowrap'>ar1_xam.sh</span></a>
+ and <a href="capture_xam.sh.htm" target="_top"><span style='white-space: nowrap'>capture_xam.sh</span></a>
+ speed tests
+did not show much change.
+</li><li>
+
+The <code><font color="blue">ndebug_defined</font></code> output was added to the
+<a href="capture_xam.cpp.htm#Output.ndebug_defined" target="_top"><span style='white-space: nowrap'>capture_xam.cpp</span></a>
+  and
+<a href="ar1_xam.cpp.htm#Output.ndebug_defined" target="_top"><span style='white-space: nowrap'>ar1_xam.cpp</span></a>
+ examples.
+</li><li>
+
+The following speed test parameters were increased: the
+<a href="ar1_xam.cpp.htm#Command Arguments.number_random" target="_top"><span style='white-space: nowrap'>number_random</span></a>
+
+effects in <a href="ar1_xam.sh.htm" target="_top"><span style='white-space: nowrap'>ar1_xam.sh</span></a>
+, the
+<a href="capture_xam.cpp.htm#Command Arguments.number_random" target="_top"><span style='white-space: nowrap'>number_random</span></a>
+
+effects in <a href="capture_xam.sh.htm" target="_top"><span style='white-space: nowrap'>capture_xam.sh</span></a>
+, the
+<a href="capture_xam.cpp.htm#Command Arguments.number_locations" target="_top"><span style='white-space: nowrap'>number_locations</span></a>
+
+effects in <a href="capture_xam.sh.htm" target="_top"><span style='white-space: nowrap'>capture_xam.sh</span></a>
+
+</li></ol>
+
+
+
+<br>
+<br>
+<b><big><a name="05-30" id="05-30">05-30</a></big></b>
 <br>
 Some more improvements were made to the
 <code><font color="blue">adaptive</font></code> and <code><font color="blue">trace-adaptive</font></code>
