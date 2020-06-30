@@ -1074,8 +1074,8 @@ int main(int argc, const char *argv[])
 	//
 	// information matrix
 	start_seconds = CppAD::elapsed_seconds();
-	d_sparse_rcv information_rcv = mixed_object.information_mat(
-		solution, u_out
+	d_sparse_rcv hes_fixed_obj_rcv = mixed_object.hes_fixed_obj(
+		solution.fixed_opt, u_out
 	);
 	end_seconds = CppAD::elapsed_seconds();
 	label_print("information_mat_seconds", end_seconds - start_seconds);
@@ -1085,11 +1085,10 @@ int main(int argc, const char *argv[])
 	d_vector sample( number_fixed_samples * n_fixed );
 	mixed_object.sample_fixed(
 		sample,
-		information_rcv,
+		hes_fixed_obj_rcv,
 		solution,
 		theta_lower,
-		theta_upper,
-		u_out
+		theta_upper
 	);
 	end_seconds = CppAD::elapsed_seconds();
 	label_print("sample_fixed_seconds", end_seconds - start_seconds);

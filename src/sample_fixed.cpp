@@ -19,6 +19,8 @@ $spell
 	const
 	gsl_rng
 	rcv
+	hes
+	obj
 $$
 
 $section Sample Posterior for Fixed Effects$$
@@ -26,11 +28,10 @@ $section Sample Posterior for Fixed Effects$$
 $head Syntax$$
 $icode%mixed_object%.sample_fixed(
 	%sample%,
-	%information_rcv%,
+	%hes_fixed_obj_rcv%,
 	%solution%,
 	%fixed_lower%,
-	%fixed_upper%,
-	%random_opt%
+	%fixed_upper%
 )%$$
 
 $head See Also$$
@@ -101,19 +102,21 @@ These samples are independent for different $latex i$$,
 and for fixed $latex i$$, they have the specified
 $cref/covariance/sample_fixed/Covariance/$$.
 
-$head information_rcv$$
+$head hes_fixed_obj_rcv$$
 This is a sparse matrix representation for the
 lower triangle of the observed information matrix corresponding to
 $icode solution$$; i.e., the matrix returned by
 $codei%
-%information_rcv% = %mixed_object%.information_mat(
-	%solution%, %random_options%, %random_lower%, %random_upper%, %random_in%
+%hes_fixed_obj_rcv% = %mixed_object%.hes_fixed_obj(
+	%solution%, %random_opt%
 )%$$
+where $icode random_opt$$ is the optimal random effects corresponding
+to $icode solution$$.
 
 $head solution$$
 is the $cref/solution/optimize_fixed/solution/$$
 for a the call to $cref optimize_fixed$$ corresponding to
-$icode information_rcv$$.
+$icode hes_fixed_obj_rcv$$.
 The only necessary information in this structure is
 $icode%solution%.fixed_opt%$$.
 
@@ -126,23 +129,6 @@ $head fixed_upper$$
 is the same as
 $cref/fixed_upper/optimize_fixed/fixed_upper/$$
 in the call to $code optimize_fixed$$ that corresponding to $icode solution$$.
-
-$head random_opt$$
-is the optimal random effects corresponding to the solution; i.e.
-$codei%
-	%random_opt% = %mixed_object%.optimize_random(
-		%random_options%,
-		%solution%.fixed_opt,
-		%random_lower%,
-		%random_upper%,
-		%random_in%
-	)
-%$$
-$icode random_options$$,
-$icode random_lower$$,
-$icode random_upper$$, and
-$icode random_in$$, are the same
-as in the call to $code optimize_fixed$$ that corresponds to $icode solution$$.
 
 $children%example/user/sample_fixed.cpp
 	%src/eigen/sample_conditional.cpp
@@ -191,11 +177,10 @@ namespace {
 // -------------------------------------------------------------------------
 void cppad_mixed::try_sample_fixed(
 	CppAD::vector<double>&                 sample               ,
-	const d_sparse_rcv&                    information_rcv      ,
+	const d_sparse_rcv&                    hes_fixed_obj_rcv    ,
 	const CppAD::mixed::fixed_solution&    solution             ,
 	const CppAD::vector<double>&           fixed_lower          ,
-	const CppAD::vector<double>&           fixed_upper          ,
-	const CppAD::vector<double>&           random_opt           )
+	const CppAD::vector<double>&           fixed_upper          )
 {
 	// sample
 	assert( sample.size() > 0 );
@@ -203,9 +188,6 @@ void cppad_mixed::try_sample_fixed(
 	//
 	// solution
 	assert( solution.fixed_opt.size() == n_fixed_ );
-	//
-	// random_opt
-	assert( random_opt.size() == n_random_ );
 	//
 	// number of samples
 	size_t n_sample = sample.size() / n_fixed_;
@@ -226,12 +208,12 @@ void cppad_mixed::try_sample_fixed(
 	//
 	// create a sparse_rcv representation of information matrix on subset
 	// and in column major order
-	CppAD::vector<size_t> col_major = information_rcv.col_major();
+	CppAD::vector<size_t> col_major = hes_fixed_obj_rcv.col_major();
 	size_t count = 0;
-	for(size_t ell = 0; ell < information_rcv.nnz(); ++ell)
+	for(size_t ell = 0; ell < hes_fixed_obj_rcv.nnz(); ++ell)
 	{	size_t k = col_major[ell];
-		size_t i = information_rcv.row()[k];
-		size_t j = information_rcv.col()[k];
+		size_t i = hes_fixed_obj_rcv.row()[k];
+		size_t j = hes_fixed_obj_rcv.col()[k];
 		i        = fixed2subset[i];
 		j        = fixed2subset[j];
 		if( i != n_fixed_ && j != n_fixed_ && j <= i )
@@ -241,10 +223,10 @@ void cppad_mixed::try_sample_fixed(
 	}
 	sparse_rc info_mat_rc(n_subset, n_subset, count);
 	count = 0;
-	for(size_t ell = 0; ell < information_rcv.nnz(); ++ell)
+	for(size_t ell = 0; ell < hes_fixed_obj_rcv.nnz(); ++ell)
 	{	size_t k = col_major[ell];
-		size_t i = information_rcv.row()[k];
-		size_t j = information_rcv.col()[k];
+		size_t i = hes_fixed_obj_rcv.row()[k];
+		size_t j = hes_fixed_obj_rcv.col()[k];
 		i        = fixed2subset[i];
 		j        = fixed2subset[j];
 		if( i != n_fixed_ && j != n_fixed_ && j <= i )
@@ -255,11 +237,11 @@ void cppad_mixed::try_sample_fixed(
 	assert( count == info_mat_rc.nnz() );
 	d_sparse_rcv info_mat_rcv( info_mat_rc );
 	count = 0;
-	for(size_t ell = 0; ell < information_rcv.nnz(); ++ell)
+	for(size_t ell = 0; ell < hes_fixed_obj_rcv.nnz(); ++ell)
 	{	size_t k = col_major[ell];
-		size_t i = information_rcv.row()[k];
-		size_t j = information_rcv.col()[k];
-		double v = information_rcv.val()[k];
+		size_t i = hes_fixed_obj_rcv.row()[k];
+		size_t j = hes_fixed_obj_rcv.col()[k];
+		double v = hes_fixed_obj_rcv.val()[k];
 		i        = fixed2subset[i];
 		j        = fixed2subset[j];
 		if( i != n_fixed_ && j != n_fixed_ && j <= i )
@@ -275,15 +257,15 @@ void cppad_mixed::try_sample_fixed(
 	bool ok = ldlt_info_mat.update( info_mat_rcv );
 	if( ! ok )
 	{	std::string msg =
-			"sample_fixed: information matrix is singular";
+			"sample_fixed: fixed effects information matrix is singular";
 		fatal_error(msg);
 	}
 	size_t negative;
 	ldlt_info_mat.logdet(negative);
 	if( negative != 0 )
-	{	std::string msg =
-			"sample_fixed: information matrix is not positive definite";
-		warning(msg);
+	{	std::string msg = "sample_fixed: "
+			"fixed effects information matrix is not positive definite";
+		fatal_error(msg);
 	}
 	//
 	// -----------------------------------------------------------------------
@@ -299,8 +281,8 @@ void cppad_mixed::try_sample_fixed(
 		d_vector v(n_subset);
 		ok = ldlt_info_mat.sim_cov(w, v);
 		if( ! ok )
-		{	std::string msg = "sample_fixed: implicit information matrix"
-				" is not positive definite";
+		{	std::string msg = "sample_fixed: fixed effects "
+				" information matrix is not positive definite";
 			fatal_error(msg);
 		}
 		//
@@ -323,20 +305,18 @@ void cppad_mixed::try_sample_fixed(
 // BEGIN PROTOTYPE
 void cppad_mixed::sample_fixed(
 	CppAD::vector<double>&                 sample               ,
-	const d_sparse_rcv&                    information_rcv      ,
+	const d_sparse_rcv&                    hes_fixed_obj_rcv    ,
 	const CppAD::mixed::fixed_solution&    solution             ,
 	const CppAD::vector<double>&           fixed_lower          ,
-	const CppAD::vector<double>&           fixed_upper          ,
-	const CppAD::vector<double>&           random_opt           )
+	const CppAD::vector<double>&           fixed_upper          )
 // END PROTOTYPE
 {	try
 	{	try_sample_fixed(
 			sample            ,
-			information_rcv   ,
+			hes_fixed_obj_rcv ,
 			solution          ,
 			fixed_lower       ,
-			fixed_upper       ,
-			random_opt
+			fixed_upper
 		);
 	}
 	catch(const CppAD::mixed::exception& e)

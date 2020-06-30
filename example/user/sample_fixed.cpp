@@ -232,19 +232,19 @@ bool sample_fixed_xam(void)
 	);
 	//
 	// compute corresponding information matrix
-	d_sparse_rcv
-	information_rcv = mixed_object.information_mat(solution, random_opt);
+	d_vector& fixed_opt = solution.fixed_opt;
+	d_sparse_rcv hes_fixed_obj_rcv =
+		mixed_object.hes_fixed_obj(fixed_opt, random_opt);
 	//
 	// sample from the posterior for fixed effects
 	size_t n_sample = 20000;
 	d_vector sample( n_sample * n_fixed );
 	mixed_object.sample_fixed(
 		sample,
-		information_rcv,
+		hes_fixed_obj_rcv,
 		solution,
 		fixed_lower,
-		fixed_upper,
-		random_opt
+		fixed_upper
 	);
 	//
 	typedef Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > matrix;
@@ -262,12 +262,12 @@ bool sample_fixed_xam(void)
 	matrix info_mat(n_fixed-1, n_fixed-1);
 	// note theta[2] does not have any non-zero terms in Hessian
 	size_t K = ( (n_fixed-1) * n_fixed ) / 2;
-	ok &= K == information_rcv.nnz();
+	ok &= K == hes_fixed_obj_rcv.nnz();
 	for(size_t k = 0; k < K; k++)
-	{	size_t i = information_rcv.row()[k];
-		size_t j = information_rcv.col()[k];
-		info_mat(i, j) = information_rcv.val()[k];
-		info_mat(j, i) = information_rcv.val()[k];
+	{	size_t i = hes_fixed_obj_rcv.row()[k];
+		size_t j = hes_fixed_obj_rcv.col()[k];
+		info_mat(i, j) = hes_fixed_obj_rcv.val()[k];
+		info_mat(j, i) = hes_fixed_obj_rcv.val()[k];
 	}
 	matrix cov_mat = info_mat.inverse();
 	//

@@ -511,8 +511,7 @@ $srccode%cpp% */
 		const d_sparse_rcv&                  information_rcv      ,
 		const CppAD::mixed::fixed_solution&  solution             ,
 		const d_vector&                      fixed_lower          ,
-		const d_vector&                      fixed_upper          ,
-		const d_vector&                      random_opt
+		const d_vector&                      fixed_upper
 	);
 /* %$$
 $subhead sample_random$$

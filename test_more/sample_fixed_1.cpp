@@ -270,8 +270,7 @@ bool sample_fixed_1(void)
 		information_rcv,
 		solution,
 		fixed_lower,
-		fixed_upper,
-		random_opt
+		fixed_upper
 	);
 	//
 	// compute sample covariance matrix
