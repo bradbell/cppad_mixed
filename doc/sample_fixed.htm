@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Sample Posterior for Fixed Effects</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Sample Posterior for Fixed Effects">
-<meta name="keywords" id="keywords" content=" sample posterior fixed effects syntax see also prototype public purpose constant constraints covariance manage_gsl_rng mixed_object information_rcv solution fixed_lower fixed_upper random_opt example other method ">
+<meta name="keywords" id="keywords" content=" sample posterior fixed effects syntax see also prototype public purpose constant constraints covariance manage_gsl_rng mixed_object hes_fixed_obj_rcv solution fixed_lower fixed_upper example other method ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -76,11 +76,10 @@ A:active { color : purple }
 <br><a href="sample_fixed.htm#manage_gsl_rng" target="_top">manage_gsl_rng</a>
 <br><a href="sample_fixed.htm#mixed_object" target="_top">mixed_object</a>
 <br><a href="sample_fixed.htm#sample" target="_top">sample</a>
-<br><a href="sample_fixed.htm#information_rcv" target="_top">information_rcv</a>
+<br><a href="sample_fixed.htm#hes_fixed_obj_rcv" target="_top">hes_fixed_obj_rcv</a>
 <br><a href="sample_fixed.htm#solution" target="_top">solution</a>
 <br><a href="sample_fixed.htm#fixed_lower" target="_top">fixed_lower</a>
 <br><a href="sample_fixed.htm#fixed_upper" target="_top">fixed_upper</a>
-<br><a href="sample_fixed.htm#random_opt" target="_top">random_opt</a>
 <br><a href="sample_fixed.htm#Example" target="_top">Example</a>
 <br><a href="sample_fixed.htm#Other Method" target="_top">Other&nbsp;Method</a>
 <br><br>
@@ -90,11 +89,10 @@ A:active { color : purple }
 
 <code><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.sample_fixed(<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>sample</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>information_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>hes_fixed_obj_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_opt</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_upper</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 )</span></font></code>
 
 
@@ -113,11 +111,10 @@ A:active { color : purple }
 <pre><tt>
 <font color="#009900">void</font> cppad_mixed<font color="#990000">::</font><b><font color="#000000">sample_fixed</font></b><font color="#990000">(</font>
      CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;&amp;</font>                 sample               <font color="#990000">,</font>
-     <b><font color="#0000FF">const</font></b> d_sparse_rcv<font color="#990000">&amp;</font>                    information_rcv      <font color="#990000">,</font>
+     <b><font color="#0000FF">const</font></b> d_sparse_rcv<font color="#990000">&amp;</font>                    hes_fixed_obj_rcv    <font color="#990000">,</font>
      <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>fixed_solution<font color="#990000">&amp;</font>    solution             <font color="#990000">,</font>
      <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;&amp;</font>           fixed_lower          <font color="#990000">,</font>
-     <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;&amp;</font>           fixed_upper          <font color="#990000">,</font>
-     <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;&amp;</font>           random_opt           <font color="#990000">)</font></tt></pre>
+     <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;&amp;</font>           fixed_upper          <font color="#990000">)</font></tt></pre>
 <br>
 <b><big><a name="Public" id="Public">Public</a></big></b>
 <br>
@@ -226,7 +223,7 @@ i
 
 <br>
 <br>
-<b><big><a name="information_rcv" id="information_rcv">information_rcv</a></big></b>
+<b><big><a name="hes_fixed_obj_rcv" id="hes_fixed_obj_rcv">hes_fixed_obj_rcv</a></big></b>
 <br>
 This is a sparse matrix representation for the
 lower triangle of the observed information matrix corresponding to
@@ -235,10 +232,16 @@ lower triangle of the observed information matrix corresponding to
 ; i.e., the matrix returned by
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-</span></font><i><font color="black"><span style='white-space: nowrap'>information_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.information_mat(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_options</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_in</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font><i><font color="black"><span style='white-space: nowrap'>hes_fixed_obj_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.hes_fixed_obj(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_opt</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 )</span></font></code>
 
+where 
+<code><i><font color="black"><span style='white-space: nowrap'>random_opt</span></font></i></code>
+ is the optimal random effects corresponding
+to 
+<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i></code>
+.
 
 <br>
 <br>
@@ -249,7 +252,7 @@ is the <a href="optimize_fixed.htm#solution" target="_top"><span style='white-sp
 for a the call to <a href="optimize_fixed.htm" target="_top"><span style='white-space: nowrap'>optimize_fixed</span></a>
  corresponding to
 
-<code><i><font color="black"><span style='white-space: nowrap'>information_rcv</span></font></i></code>
+<code><i><font color="black"><span style='white-space: nowrap'>hes_fixed_obj_rcv</span></font></i></code>
 .
 The only necessary information in this structure is
 
@@ -275,37 +278,6 @@ is the same as
 <a href="optimize_fixed.htm#fixed_upper" target="_top"><span style='white-space: nowrap'>fixed_upper</span></a>
 
 in the call to <code><font color="blue">optimize_fixed</font></code> that corresponding to 
-<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i></code>
-.
-
-<br>
-<br>
-<b><big><a name="random_opt" id="random_opt">random_opt</a></big></b>
-<br>
-is the optimal random effects corresponding to the solution; i.e.
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_opt</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.optimize_random(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_options</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_opt,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_in</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
-</span></font></code>
-
-<code><i><font color="black"><span style='white-space: nowrap'>random_options</span></font></i></code>
-,
-
-<code><i><font color="black"><span style='white-space: nowrap'>random_lower</span></font></i></code>
-,
-
-<code><i><font color="black"><span style='white-space: nowrap'>random_upper</span></font></i></code>
-, and
-
-<code><i><font color="black"><span style='white-space: nowrap'>random_in</span></font></i></code>
-, are the same
-as in the call to <code><font color="blue">optimize_fixed</font></code> that corresponds to 
 <code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i></code>
 .
 

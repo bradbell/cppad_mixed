@@ -724,8 +724,9 @@ The file <a href="ar1_xam.sh.htm" target="_top"><span style='white-space: nowrap
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// information matrix</font></i>
      start_seconds <font color="#990000">=</font> CppAD<font color="#990000">::</font><b><font color="#000000">elapsed_seconds</font></b><font color="#990000">();</font>
-     d_sparse_rcv
-     information_rcv <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">information_mat</font></b><font color="#990000">(</font>solution<font color="#990000">,</font> u_out<font color="#990000">);</font>
+     <font color="#008080">d_sparse_rcv</font> hes_fixed_obj_rcv <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">hes_fixed_obj</font></b><font color="#990000">(</font>
+          solution<font color="#990000">.</font>fixed_opt<font color="#990000">,</font> u_out
+     <font color="#990000">);</font>
      end_seconds <font color="#990000">=</font> CppAD<font color="#990000">::</font><b><font color="#000000">elapsed_seconds</font></b><font color="#990000">();</font>
      <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"information_mat_seconds"</font><font color="#990000">,</font> end_seconds <font color="#990000">-</font> start_seconds<font color="#990000">);</font>
      <i><font color="#9A1900">//</font></i>
@@ -735,11 +736,10 @@ The file <a href="ar1_xam.sh.htm" target="_top"><span style='white-space: nowrap
      start_seconds <font color="#990000">=</font> CppAD<font color="#990000">::</font><b><font color="#000000">elapsed_seconds</font></b><font color="#990000">();</font>
      mixed_object<font color="#990000">.</font><b><font color="#000000">sample_fixed</font></b><font color="#990000">(</font>
           sample<font color="#990000">,</font>
-          information_rcv<font color="#990000">,</font>
+          hes_fixed_obj_rcv<font color="#990000">,</font>
           solution<font color="#990000">,</font>
           fixed_lower<font color="#990000">,</font>
-          fixed_upper<font color="#990000">,</font>
-          u_out
+          fixed_upper
      <font color="#990000">);</font>
      end_seconds <font color="#990000">=</font> CppAD<font color="#990000">::</font><b><font color="#000000">elapsed_seconds</font></b><font color="#990000">();</font>
      <b><font color="#000000">label_print</font></b><font color="#990000">(</font><font color="#FF0000">"sample_fixed_seconds"</font><font color="#990000">,</font> end_seconds <font color="#990000">-</font> start_seconds<font color="#990000">);</font>

@@ -274,19 +274,19 @@ A:active { color : purple }
      <font color="#990000">);</font>
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// compute corresponding information matrix</font></i>
-     d_sparse_rcv
-     information_rcv <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">information_mat</font></b><font color="#990000">(</font>solution<font color="#990000">,</font> random_opt<font color="#990000">);</font>
+     d_vector<font color="#990000">&amp;</font> fixed_opt <font color="#990000">=</font> solution<font color="#990000">.</font>fixed_opt<font color="#990000">;</font>
+     <font color="#008080">d_sparse_rcv</font> hes_fixed_obj_rcv <font color="#990000">=</font>
+          mixed_object<font color="#990000">.</font><b><font color="#000000">hes_fixed_obj</font></b><font color="#990000">(</font>fixed_opt<font color="#990000">,</font> random_opt<font color="#990000">);</font>
      <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// sample from the posterior for fixed effects</font></i>
      <font color="#008080">size_t</font> n_sample <font color="#990000">=</font> <font color="#993399">20000</font><font color="#990000">;</font>
      <font color="#008080">d_vector</font> <b><font color="#000000">sample</font></b><font color="#990000">(</font> n_sample <font color="#990000">*</font> n_fixed <font color="#990000">);</font>
      mixed_object<font color="#990000">.</font><b><font color="#000000">sample_fixed</font></b><font color="#990000">(</font>
           sample<font color="#990000">,</font>
-          information_rcv<font color="#990000">,</font>
+          hes_fixed_obj_rcv<font color="#990000">,</font>
           solution<font color="#990000">,</font>
           fixed_lower<font color="#990000">,</font>
-          fixed_upper<font color="#990000">,</font>
-          random_opt
+          fixed_upper
      <font color="#990000">);</font>
      <i><font color="#9A1900">//</font></i>
      <b><font color="#0000FF">typedef</font></b> Eigen<font color="#990000">::</font><font color="#008080">Matrix&lt; double, Eigen::Dynamic, Eigen::Dynamic &gt;</font> matrix<font color="#990000">;</font>
@@ -304,12 +304,12 @@ A:active { color : purple }
      <font color="#008080">matrix</font> <b><font color="#000000">info_mat</font></b><font color="#990000">(</font>n_fixed<font color="#990000">-</font><font color="#993399">1</font><font color="#990000">,</font> n_fixed<font color="#990000">-</font><font color="#993399">1</font><font color="#990000">);</font>
      <i><font color="#9A1900">// note theta[2] does not have any non-zero terms in Hessian</font></i>
      <font color="#008080">size_t</font> K <font color="#990000">=</font> <font color="#990000">(</font> <font color="#990000">(</font>n_fixed<font color="#990000">-</font><font color="#993399">1</font><font color="#990000">)</font> <font color="#990000">*</font> n_fixed <font color="#990000">)</font> <font color="#990000">/</font> <font color="#993399">2</font><font color="#990000">;</font>
-     ok <font color="#990000">&amp;=</font> K <font color="#990000">==</font> information_rcv<font color="#990000">.</font><b><font color="#000000">nnz</font></b><font color="#990000">();</font>
+     ok <font color="#990000">&amp;=</font> K <font color="#990000">==</font> hes_fixed_obj_rcv<font color="#990000">.</font><b><font color="#000000">nnz</font></b><font color="#990000">();</font>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> k <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> k <font color="#990000">&lt;</font> K<font color="#990000">;</font> k<font color="#990000">++)</font>
-     <font color="#FF0000">{</font>    <font color="#008080">size_t</font> i <font color="#990000">=</font> information_rcv<font color="#990000">.</font><b><font color="#000000">row</font></b><font color="#990000">()[</font>k<font color="#990000">];</font>
-          <font color="#008080">size_t</font> j <font color="#990000">=</font> information_rcv<font color="#990000">.</font><b><font color="#000000">col</font></b><font color="#990000">()[</font>k<font color="#990000">];</font>
-          <b><font color="#000000">info_mat</font></b><font color="#990000">(</font>i<font color="#990000">,</font> j<font color="#990000">)</font> <font color="#990000">=</font> information_rcv<font color="#990000">.</font><b><font color="#000000">val</font></b><font color="#990000">()[</font>k<font color="#990000">];</font>
-          <b><font color="#000000">info_mat</font></b><font color="#990000">(</font>j<font color="#990000">,</font> i<font color="#990000">)</font> <font color="#990000">=</font> information_rcv<font color="#990000">.</font><b><font color="#000000">val</font></b><font color="#990000">()[</font>k<font color="#990000">];</font>
+     <font color="#FF0000">{</font>    <font color="#008080">size_t</font> i <font color="#990000">=</font> hes_fixed_obj_rcv<font color="#990000">.</font><b><font color="#000000">row</font></b><font color="#990000">()[</font>k<font color="#990000">];</font>
+          <font color="#008080">size_t</font> j <font color="#990000">=</font> hes_fixed_obj_rcv<font color="#990000">.</font><b><font color="#000000">col</font></b><font color="#990000">()[</font>k<font color="#990000">];</font>
+          <b><font color="#000000">info_mat</font></b><font color="#990000">(</font>i<font color="#990000">,</font> j<font color="#990000">)</font> <font color="#990000">=</font> hes_fixed_obj_rcv<font color="#990000">.</font><b><font color="#000000">val</font></b><font color="#990000">()[</font>k<font color="#990000">];</font>
+          <b><font color="#000000">info_mat</font></b><font color="#990000">(</font>j<font color="#990000">,</font> i<font color="#990000">)</font> <font color="#990000">=</font> hes_fixed_obj_rcv<font color="#990000">.</font><b><font color="#000000">val</font></b><font color="#990000">()[</font>k<font color="#990000">];</font>
      <font color="#FF0000">}</font>
      <font color="#008080">matrix</font> cov_mat <font color="#990000">=</font> info_mat<font color="#990000">.</font><b><font color="#000000">inverse</font></b><font color="#990000">();</font>
      <i><font color="#9A1900">//</font></i>
