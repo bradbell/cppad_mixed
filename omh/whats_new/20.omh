@@ -31,8 +31,9 @@ Improve error message when fixed effects information matrix is
 not positive definite during a $code sample_fixed$$ call.
 In addition, always make this condition a fatal error.
 $lnext
-Change $cref sample_fixed.cpp$$ to use $cref hes_fixed_obj$$,
-instead of the deprecated routine $code information_mat$$,
+Change $cref sample_fixed.cpp$$, $cref capture_xam.cpp$$,
+and $cref ar1_xam.cpp$$ to use $cref hes_fixed_obj$$
+(instead of the deprecated routine $code information_mat$$)
 to calculation the fixed effects information matrix $cref hes_fixed_obj$$.
 $lend
 
