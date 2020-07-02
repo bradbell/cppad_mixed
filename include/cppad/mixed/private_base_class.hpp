@@ -506,7 +506,7 @@ $srccode%cpp% */
 $subhead try_sample_fixed$$
 Called by public $cref/sample_fixed/base_class/sample_fixed/$$
 $srccode%cpp% */
-	void try_sample_fixed(
+	std::string try_sample_fixed(
 		d_vector&                            sample               ,
 		const d_sparse_rcv&                  information_rcv      ,
 		const CppAD::mixed::fixed_solution&  solution             ,
@@ -517,7 +517,7 @@ $srccode%cpp% */
 $subhead sample_random$$
 Called by public $cref/sample_random/base_class/sample_random/$$
 $srccode%cpp% */
-	void try_sample_random(
+	std::string try_sample_random(
 		d_vector&             sample               ,
 		const std::string&    random_ipopt_options ,
 		const d_vector&       fixed_vec            ,

@@ -26,7 +26,7 @@ $$
 $section Sample Posterior for Fixed Effects$$
 
 $head Syntax$$
-$icode%mixed_object%.sample_fixed(
+$icode%error_msg% = %mixed_object%.sample_fixed(
 	%sample%,
 	%hes_fixed_obj_rcv%,
 	%solution%,
@@ -90,7 +90,7 @@ We define
 $codei%
 	%n_sample% = %sample_size% / %n_fixed%
 %$$
-Upon return,
+If $icode error_msg$$ is empty, upon return
 for $codei%i% = 0 , %...%, %n_sample%-1%$$,
 $codei%j% = 0 , %...%, %n_fixed%-1%$$,
 $codei%
@@ -129,6 +129,13 @@ $head fixed_upper$$
 is the same as
 $cref/fixed_upper/optimize_fixed/fixed_upper/$$
 in the call to $code optimize_fixed$$ that corresponding to $icode solution$$.
+
+$head error_msg$$
+If $icode error_msg$$ is empty (non-empty),
+$cref/sample/sample_fixed/sample/$$
+values have been calculated (have not been calculated).
+If $icode error_msg$$ is non-empty,
+it is a message describing the problem.
 
 $children%example/user/sample_fixed.cpp
 	%src/eigen/sample_conditional.cpp
@@ -175,7 +182,7 @@ namespace {
 # endif
 }
 // -------------------------------------------------------------------------
-void cppad_mixed::try_sample_fixed(
+std::string cppad_mixed::try_sample_fixed(
 	CppAD::vector<double>&                 sample               ,
 	const d_sparse_rcv&                    hes_fixed_obj_rcv    ,
 	const CppAD::mixed::fixed_solution&    solution             ,
@@ -256,16 +263,16 @@ void cppad_mixed::try_sample_fixed(
 	ldlt_info_mat.init( info_mat_rcv.pat() );
 	bool ok = ldlt_info_mat.update( info_mat_rcv );
 	if( ! ok )
-	{	std::string msg =
+	{	std::string error_msg =
 			"sample_fixed: fixed effects information matrix is singular";
-		fatal_error(msg);
+		return error_msg;
 	}
 	size_t negative;
 	ldlt_info_mat.logdet(negative);
 	if( negative != 0 )
-	{	std::string msg = "sample_fixed: "
+	{	std::string error_msg = "sample_fixed: "
 			"fixed effects information matrix is not positive definite";
-		fatal_error(msg);
+		return error_msg;
 	}
 	//
 	// -----------------------------------------------------------------------
@@ -281,9 +288,9 @@ void cppad_mixed::try_sample_fixed(
 		d_vector v(n_subset);
 		ok = ldlt_info_mat.sim_cov(w, v);
 		if( ! ok )
-		{	std::string msg = "sample_fixed: fixed effects "
+		{	std::string error_msg = "sample_fixed: fixed effects "
 				" information matrix is not positive definite";
-			fatal_error(msg);
+			return error_msg;
 		}
 		//
 		// store in sample
@@ -299,19 +306,20 @@ void cppad_mixed::try_sample_fixed(
 		}
 	}
 	// -----------------------------------------------------------------------
-	return;
+	return "";
 }
 // -------------------------------------------------------------------------
 // BEGIN PROTOTYPE
-void cppad_mixed::sample_fixed(
+std::string cppad_mixed::sample_fixed(
 	CppAD::vector<double>&                 sample               ,
 	const d_sparse_rcv&                    hes_fixed_obj_rcv    ,
 	const CppAD::mixed::fixed_solution&    solution             ,
 	const CppAD::vector<double>&           fixed_lower          ,
 	const CppAD::vector<double>&           fixed_upper          )
 // END PROTOTYPE
-{	try
-	{	try_sample_fixed(
+{	std::string error_msg = "";
+	try
+	{	error_msg = try_sample_fixed(
 			sample            ,
 			hes_fixed_obj_rcv ,
 			solution          ,
@@ -320,9 +328,8 @@ void cppad_mixed::sample_fixed(
 		);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	std::string error_message = e.message("sample_fixed");
-		fatal_error(error_message);
-		assert(false);
+	{	error_msg = e.message("sample_fixed");
+		return error_msg;
 	}
-	return;
+	return error_msg;
 }

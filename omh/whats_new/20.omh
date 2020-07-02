@@ -20,6 +20,11 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
+$head 07-02$$
+Add the $icode error_msg$$ result to the
+$cref/sample_fixed/sample_fixed/error_msg/$$ and
+$cref/sample_random/sample_random/error_msg/$$ routines.
+
 $head 06-30$$
 $list number$$
 $bold API Change$$:

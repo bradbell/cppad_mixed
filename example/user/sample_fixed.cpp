@@ -239,13 +239,14 @@ bool sample_fixed_xam(void)
 	// sample from the posterior for fixed effects
 	size_t n_sample = 20000;
 	d_vector sample( n_sample * n_fixed );
-	mixed_object.sample_fixed(
+	std::string error_msg = mixed_object.sample_fixed(
 		sample,
 		hes_fixed_obj_rcv,
 		solution,
 		fixed_lower,
 		fixed_upper
 	);
+	ok &= error_msg == "";
 	//
 	typedef Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > matrix;
 	//

@@ -23,7 +23,7 @@ $$
 $section Simulation the Posterior Distribution for Random Effects$$
 
 $head Syntax$$
-$icode%mixed_object%.sample_random(
+$icode%error_msg% = %mixed_object%.sample_random(
 	%sample%,
 	%fixed_vec%,
 	%random_ipopt_options%,
@@ -69,7 +69,7 @@ We define
 $codei%
 	%n_sample% = %sample_size% / %n_random%
 %$$
-Upon return,
+If $icode error_msg$$ is empty, upon return
 for $codei%i% = 0 , %...%, %n_sample%-1%$$,
 $codei%j% = 0 , %...%, %n_random%-1%$$,
 $codei%
@@ -132,6 +132,14 @@ $latex \[
 This normal distribution is censored to be within the limits
 $icode random_lower$$, $icode random_upper$$.
 
+$head error_msg$$
+If $icode error_msg$$ is empty (non-empty),
+$cref/sample/sample_random/sample/$$
+values have been calculated (have not been calculated).
+If $icode error_msg$$ is non-empty,
+it is a message describing the problem.
+
+
 $children%example/user/sample_random.cpp
 %$$
 $head Example$$
@@ -148,7 +156,7 @@ $end
 # include <gsl/gsl_randist.h>
 # include <cppad/mixed/exception.hpp>
 
-void cppad_mixed::try_sample_random(
+std::string cppad_mixed::try_sample_random(
 	d_vector&          sample               ,
 	const std::string& random_ipopt_options ,
 	const d_vector&    fixed_vec            ,
@@ -157,7 +165,7 @@ void cppad_mixed::try_sample_random(
 	const d_vector&    random_in            )
 {	// case where there is nothing to do
 	if( n_random_ == 0 )
-		return;
+		return "";
 	//
 	assert( sample.size() % n_random_ == 0   );
 	assert( fixed_vec.size()    == n_fixed_  );
@@ -188,7 +196,7 @@ void cppad_mixed::try_sample_random(
 		if( ! ok )
 		{	std::string msg = "sample_random: Hessian w.r.t random effects"
 				" is not positive definite";
-			fatal_error(msg);
+			return msg;
 		}
 		//
 		// add random_opt an truncate to random limits
@@ -199,11 +207,11 @@ void cppad_mixed::try_sample_random(
 			sample[i_sample * n_random_ + j] = samp;
 		}
 	}
-	return;
+	return "";
 }
 // --------------------------------------------------------------------------
 // BEGIN PROTOTYPE
-void cppad_mixed::sample_random(
+std::string cppad_mixed::sample_random(
 	d_vector&          sample               ,
 	const std::string& random_ipopt_options ,
 	const d_vector&    fixed_vec            ,
@@ -211,8 +219,9 @@ void cppad_mixed::sample_random(
 	const d_vector&    random_upper         ,
 	const d_vector&    random_in            )
 // END PROTOTYPE
-{	try
-	{	try_sample_random(
+{	std::string error_msg = "";
+	try
+	{	error_msg = try_sample_random(
 			sample                ,
 			random_ipopt_options  ,
 			fixed_vec             ,
@@ -222,9 +231,7 @@ void cppad_mixed::sample_random(
 		);
 	}
 	catch(const CppAD::mixed::exception& e)
-	{	std::string error_message = e.message("sample_random");
-		fatal_error(error_message);
-		assert(false);
+	{	error_msg = e.message("sample_random");
 	}
-	return;
+	return error_msg;
 }

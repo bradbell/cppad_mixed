@@ -187,7 +187,7 @@ $srccode%cpp% */
 $head sample_fixed$$
 $cref sample_fixed$$, $title sample_fixed$$.
 $srccode%cpp% */
-	void sample_fixed(
+	std::string sample_fixed(
 		d_vector&                            sample               ,
 		const d_sparse_rcv&                  information_rcv      ,
 		const CppAD::mixed::fixed_solution&  solution             ,
@@ -198,7 +198,7 @@ $srccode%cpp% */
 $head sample_random$$
 $cref sample_random$$, $title sample_random$$.
 $srccode%cpp% */
-	void sample_random(
+	std::string sample_random(
 		d_vector&            sample               ,
 		const std::string&   random_ipopt_options ,
 		const d_vector&      fixed_vec            ,

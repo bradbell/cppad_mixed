@@ -161,7 +161,7 @@ bool sample_random_xam(void)
 	// and compute the  sample covariance matrix
 	size_t n_sample = 10000;
 	d_vector sample(n_sample * n_random);
-	mixed_object.sample_random(
+	std::string error_msg = mixed_object.sample_random(
 		sample,
 		random_ipopt_options,
 		fixed_vec,
@@ -169,6 +169,7 @@ bool sample_random_xam(void)
 		random_upper,
 		random_in
 	);
+	ok &= error_msg == "";
 	d_vector sample_cov(n_random * n_random);
 	for(size_t i = 0; i < n_random; i++)
 		for(size_t j = 0; j < n_random; j++)
