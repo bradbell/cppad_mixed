@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Sample Posterior for Fixed Effects</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Sample Posterior for Fixed Effects">
-<meta name="keywords" id="keywords" content=" sample posterior fixed effects syntax see also prototype public purpose constant constraints covariance manage_gsl_rng mixed_object hes_fixed_obj_rcv solution fixed_lower fixed_upper example other method ">
+<meta name="keywords" id="keywords" content=" sample posterior fixed effects syntax see also prototype public purpose constant constraints covariance manage_gsl_rng mixed_object hes_fixed_obj_rcv solution fixed_lower fixed_upper error_msg example other method ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -80,6 +80,7 @@ A:active { color : purple }
 <br><a href="sample_fixed.htm#solution" target="_top">solution</a>
 <br><a href="sample_fixed.htm#fixed_lower" target="_top">fixed_lower</a>
 <br><a href="sample_fixed.htm#fixed_upper" target="_top">fixed_upper</a>
+<br><a href="sample_fixed.htm#error_msg" target="_top">error_msg</a>
 <br><a href="sample_fixed.htm#Example" target="_top">Example</a>
 <br><a href="sample_fixed.htm#Other Method" target="_top">Other&nbsp;Method</a>
 <br><br>
@@ -87,7 +88,7 @@ A:active { color : purple }
 
 <br>
 
-<code><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.sample_fixed(<br>
+<code><i><font color="black"><span style='white-space: nowrap'>error_msg</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.sample_fixed(<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>sample</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>hes_fixed_obj_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
@@ -109,7 +110,7 @@ A:active { color : purple }
 <b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
 
 <pre><tt>
-<font color="#009900">void</font> cppad_mixed<font color="#990000">::</font><b><font color="#000000">sample_fixed</font></b><font color="#990000">(</font>
+std<font color="#990000">::</font><font color="#008080">string</font> cppad_mixed<font color="#990000">::</font><b><font color="#000000">sample_fixed</font></b><font color="#990000">(</font>
      CppAD<font color="#990000">::</font>vector<font color="#990000">&lt;</font><font color="#009900">double</font><font color="#990000">&gt;&amp;</font>                 sample               <font color="#990000">,</font>
      <b><font color="#0000FF">const</font></b> d_sparse_rcv<font color="#990000">&amp;</font>                    hes_fixed_obj_rcv    <font color="#990000">,</font>
      <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>fixed_solution<font color="#990000">&amp;</font>    solution             <font color="#990000">,</font>
@@ -197,7 +198,9 @@ We define
 <code><font color="blue"><span style='white-space: nowrap'><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_sample</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>sample_size</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;/&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 </span></font></code>
-Upon return,
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>error_msg</span></font></i></code>
+ is empty, upon return
 for 
 <code><font color="blue"><span style='white-space: nowrap'>i</span></font><i><font color="black"><span style='white-space: nowrap'>&nbsp;=&nbsp;0&nbsp;,&nbsp;</span></font></i><font color="blue"><span style='white-space: nowrap'>...</span></font><i><font color="black"><span style='white-space: nowrap'>,&nbsp;</span></font></i><font color="blue"><span style='white-space: nowrap'>n_sample</span></font><i><font color="black"><span style='white-space: nowrap'>-1</span></font></i></code>
 ,
@@ -280,6 +283,21 @@ is the same as
 in the call to <code><font color="blue">optimize_fixed</font></code> that corresponding to 
 <code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i></code>
 .
+
+<br>
+<br>
+<b><big><a name="error_msg" id="error_msg">error_msg</a></big></b>
+<br>
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>error_msg</span></font></i></code>
+ is empty (non-empty),
+<a href="sample_fixed.htm#sample" target="_top"><span style='white-space: nowrap'>sample</span></a>
+
+values have been calculated (have not been calculated).
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>error_msg</span></font></i></code>
+ is non-empty,
+it is a message describing the problem.
 
 
 <br>

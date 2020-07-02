@@ -203,7 +203,7 @@ A:active { color : purple }
      <i><font color="#9A1900">// and compute the  sample covariance matrix</font></i>
      <font color="#008080">size_t</font> n_sample <font color="#990000">=</font> <font color="#993399">10000</font><font color="#990000">;</font>
      <font color="#008080">d_vector</font> <b><font color="#000000">sample</font></b><font color="#990000">(</font>n_sample <font color="#990000">*</font> n_random<font color="#990000">);</font>
-     mixed_object<font color="#990000">.</font><b><font color="#000000">sample_random</font></b><font color="#990000">(</font>
+     std<font color="#990000">::</font><font color="#008080">string</font> error_msg <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">sample_random</font></b><font color="#990000">(</font>
           sample<font color="#990000">,</font>
           random_ipopt_options<font color="#990000">,</font>
           fixed_vec<font color="#990000">,</font>
@@ -211,6 +211,7 @@ A:active { color : purple }
           random_upper<font color="#990000">,</font>
           random_in
      <font color="#990000">);</font>
+     ok <font color="#990000">&amp;=</font> error_msg <font color="#990000">==</font> <font color="#FF0000">""</font><font color="#990000">;</font>
      <font color="#008080">d_vector</font> <b><font color="#000000">sample_cov</font></b><font color="#990000">(</font>n_random <font color="#990000">*</font> n_random<font color="#990000">);</font>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> n_random<font color="#990000">;</font> i<font color="#990000">++)</font>
           <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;</font> n_random<font color="#990000">;</font> j<font color="#990000">++)</font>

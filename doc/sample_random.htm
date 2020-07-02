@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Simulation the Posterior Distribution for Random Effects</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Simulation the Posterior Distribution for Random Effects">
-<meta name="keywords" id="keywords" content=" simulation the posterior distribution random effects syntax see also prototype public purpose manage_gsl_rng mixed_object sample random_ipopt_options fixed_vec random_lower random_upper random_in covariance example ">
+<meta name="keywords" id="keywords" content=" simulation the posterior distribution random effects syntax see also prototype public purpose manage_gsl_rng mixed_object sample random_ipopt_options fixed_vec random_lower random_upper random_in covariance error_msg example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -82,13 +82,14 @@ A:active { color : purple }
 <br><a href="sample_random.htm#random_upper" target="_top">random_upper</a>
 <br><a href="sample_random.htm#random_in" target="_top">random_in</a>
 <br><a href="sample_random.htm#Covariance" target="_top">Covariance</a>
+<br><a href="sample_random.htm#error_msg" target="_top">error_msg</a>
 <br><a href="sample_random.htm#Example" target="_top">Example</a>
 <br><br>
 <b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
 
 <br>
 
-<code><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.sample_random(<br>
+<code><i><font color="black"><span style='white-space: nowrap'>error_msg</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>.sample_random(<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>sample</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_vec</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_ipopt_options</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
@@ -111,7 +112,7 @@ A:active { color : purple }
 <b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
 
 <pre><tt>
-<font color="#009900">void</font> cppad_mixed<font color="#990000">::</font><b><font color="#000000">sample_random</font></b><font color="#990000">(</font>
+std<font color="#990000">::</font><font color="#008080">string</font> cppad_mixed<font color="#990000">::</font><b><font color="#000000">sample_random</font></b><font color="#990000">(</font>
      d_vector<font color="#990000">&amp;</font>          sample               <font color="#990000">,</font>
      <b><font color="#0000FF">const</font></b> std<font color="#990000">::</font>string<font color="#990000">&amp;</font> random_ipopt_options <font color="#990000">,</font>
      <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>    fixed_vec            <font color="#990000">,</font>
@@ -170,7 +171,9 @@ We define
 <code><font color="blue"><span style='white-space: nowrap'><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_sample</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>sample_size</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;/&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 </span></font></code>
-Upon return,
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>error_msg</span></font></i></code>
+ is empty, upon return
 for 
 <code><font color="blue"><span style='white-space: nowrap'>i</span></font><i><font color="black"><span style='white-space: nowrap'>&nbsp;=&nbsp;0&nbsp;,&nbsp;</span></font></i><font color="blue"><span style='white-space: nowrap'>...</span></font><i><font color="black"><span style='white-space: nowrap'>,&nbsp;</span></font></i><font color="blue"><span style='white-space: nowrap'>n_sample</span></font><i><font color="black"><span style='white-space: nowrap'>-1</span></font></i></code>
 ,
@@ -282,6 +285,22 @@ This normal distribution is censored to be within the limits
 , 
 <code><i><font color="black"><span style='white-space: nowrap'>random_upper</span></font></i></code>
 .
+
+<br>
+<br>
+<b><big><a name="error_msg" id="error_msg">error_msg</a></big></b>
+<br>
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>error_msg</span></font></i></code>
+ is empty (non-empty),
+<a href="sample_random.htm#sample" target="_top"><span style='white-space: nowrap'>sample</span></a>
+
+values have been calculated (have not been calculated).
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>error_msg</span></font></i></code>
+ is non-empty,
+it is a message describing the problem.
+
 
 
 <br>

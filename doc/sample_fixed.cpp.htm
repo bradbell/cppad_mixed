@@ -281,13 +281,14 @@ A:active { color : purple }
      <i><font color="#9A1900">// sample from the posterior for fixed effects</font></i>
      <font color="#008080">size_t</font> n_sample <font color="#990000">=</font> <font color="#993399">20000</font><font color="#990000">;</font>
      <font color="#008080">d_vector</font> <b><font color="#000000">sample</font></b><font color="#990000">(</font> n_sample <font color="#990000">*</font> n_fixed <font color="#990000">);</font>
-     mixed_object<font color="#990000">.</font><b><font color="#000000">sample_fixed</font></b><font color="#990000">(</font>
+     std<font color="#990000">::</font><font color="#008080">string</font> error_msg <font color="#990000">=</font> mixed_object<font color="#990000">.</font><b><font color="#000000">sample_fixed</font></b><font color="#990000">(</font>
           sample<font color="#990000">,</font>
           hes_fixed_obj_rcv<font color="#990000">,</font>
           solution<font color="#990000">,</font>
           fixed_lower<font color="#990000">,</font>
           fixed_upper
      <font color="#990000">);</font>
+     ok <font color="#990000">&amp;=</font> error_msg <font color="#990000">==</font> <font color="#FF0000">""</font><font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
      <b><font color="#0000FF">typedef</font></b> Eigen<font color="#990000">::</font><font color="#008080">Matrix&lt; double, Eigen::Dynamic, Eigen::Dynamic &gt;</font> matrix<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>

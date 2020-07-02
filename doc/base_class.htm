@@ -260,7 +260,7 @@ Its default definition below can be replaced by a user definition.
 <br>
 <a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
 , Sample Posterior for Fixed Effects.
-<pre><tt>     <font color="#009900">void</font> <b><font color="#000000">sample_fixed</font></b><font color="#990000">(</font>
+<pre><tt>     std<font color="#990000">::</font><font color="#008080">string</font> <b><font color="#000000">sample_fixed</font></b><font color="#990000">(</font>
           d_vector<font color="#990000">&amp;</font>                            sample               <font color="#990000">,</font>
           <b><font color="#0000FF">const</font></b> d_sparse_rcv<font color="#990000">&amp;</font>                  information_rcv      <font color="#990000">,</font>
           <b><font color="#0000FF">const</font></b> CppAD<font color="#990000">::</font>mixed<font color="#990000">::</font>fixed_solution<font color="#990000">&amp;</font>  solution             <font color="#990000">,</font>
@@ -273,7 +273,7 @@ Its default definition below can be replaced by a user definition.
 <br>
 <a href="sample_random.htm" target="_top"><span style='white-space: nowrap'>sample_random</span></a>
 , Simulation the Posterior Distribution for Random Effects.
-<pre><tt>     <font color="#009900">void</font> <b><font color="#000000">sample_random</font></b><font color="#990000">(</font>
+<pre><tt>     std<font color="#990000">::</font><font color="#008080">string</font> <b><font color="#000000">sample_random</font></b><font color="#990000">(</font>
           d_vector<font color="#990000">&amp;</font>            sample               <font color="#990000">,</font>
           <b><font color="#0000FF">const</font></b> std<font color="#990000">::</font>string<font color="#990000">&amp;</font>   random_ipopt_options <font color="#990000">,</font>
           <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>      fixed_vec            <font color="#990000">,</font>
