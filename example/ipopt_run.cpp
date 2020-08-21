@@ -520,7 +520,7 @@ bool ipopt_nlp_xam::eval_g(
 	Number*         g        )  // out
 {
 	assert( n == 2 );
-	assert( m = 1 );
+	assert( m == 1 );
 	//
 	g[0] = x[0] + x[1] - 2.0;
 	//
