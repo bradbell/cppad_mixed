@@ -21,9 +21,17 @@ echo_eval() {
 	eval $*
 }
 # --------------------------------------------------------------------------
-version="3.13.2"
-coinbrew='https://raw.githubusercontent.com/coin-or/coinbrew/master/coinbrew'
-# --------------------------------------------------------------------------
+url_list=( \
+	'https://github.com/coin-or-tools/ThirdParty-ASL' \
+	'https://github.com/coin-or-tools/ThirdParty-Mumps' \
+	'https://github.com/coin-or/Ipopt' \
+)
+version_list=( \
+	'stable/2.0' \
+	'stable/2.1' \
+	'releases/3.13.2' \
+)
+# ---------------------------------------------------------------------------
 # Get user configuration options from run_cmake.sh
 #
 # build_type
@@ -44,22 +52,12 @@ then
 	bin/build_type.sh install_ipopt $ipopt_prefix $build_type
 fi
 # --------------------------------------------------------------------------
-# change into external directory
+# do work in build/external
 if [ ! -e build/external ]
 then
 	mkdir -p build/external
 fi
 cd build/external
-# -----------------------------------------------------------------------------
-if [ ! -e coinbrew ]
-then
-    echo_eval wget $coinbrew
-    echo_eval chmod +x coinbrew
-fi
-if [ ! -e Ipoot ]
-then
-    ./coinbrew fetch Ipopt@$version --no-prompt
-fi
 # -----------------------------------------------------------------------------
 # klugde necessary until coin or mumps fixes this problem
 cat << EOF > junk.f
@@ -69,22 +67,61 @@ cat << EOF > junk.f
 EOF
 if gfortran -c -fallow-argument-mismatch junk.f >& /dev/null
 then
-    echo 'Adding -fallow-argument-mismatch to Mumps fortran compiler flags'
-    ADD_FCFLAGS='ADD_FCFLAGS=-fallow-argument-mismatch'
+	echo 'Adding -fallow-argument-mismatch to Mumps fortran compiler flags'
+	add_mumps_fcflags='ADD_FCFLAGS=-fallow-argument-mismatch'
 else
-    ADD_FCFLAGS=''
+	add_mumps_fcflags=''
 fi
 # -----------------------------------------------------------------------------
-echo_eval ./coinbrew build Ipopt@$version \
-	--test \
-	--no-prompt \
-	--verbosity=3 \
-    --prefix=$ipopt_prefix \
-	--libdir=$ipopt_prefix/$cmake_libdir \
-	$ADD_FCFLAGS
-#
-echo_eval ./coinbrew install Ipopt@$version \
-    --no-prompt
-# -----------------------------------------------------------------------------
+for i in {0..2}
+do
+	url=${url_list[$i]}
+	version=${version_list[$i]}
+	name=$(echo $url | sed -e 's|.*/||' -e 's|ThirdParty-||')
+	if [ ! -e $name.git ]
+	then
+		echo_eval git clone $url.git $name.git
+	fi
+	echo_eval cd $name.git
+	if [ -e "get.$name" ] && [ ! -e "get.$name.done" ]
+	then
+		echo_eval ./get.$name
+		touch ./get.$name.done
+	fi
+	echo_eval git checkout --quiet $version
+	if [ ! -e build ]
+	then
+		echo_eval mkdir build
+	fi
+	echo_eval cd build
+	#
+	if [ "$build_type" == 'debug' ]
+	then
+		debug_flags='--enable-debug --disable-shared'
+		if [ "$name" == 'Ipopt' ]
+		then
+			debug_flags="$debug_flags --with-ipopt-verbosity"
+		fi
+	else
+		debug_flags=''
+	fi
+	if [ "$name" == 'Mumps' ]
+	then
+		add_fcflags="$add_mumps_fcflags"
+	else
+		add_fcflags=''
+	fi
+	../configure \
+		--disable-dependency-tracking \
+		--prefix=$ipopt_prefix \
+		--libdir=$ipopt_prefix/$cmake_libdir \
+		$debug_flags \
+		$add_fcflags
+	echo_eval make install
+	#
+	# back to build/external
+	echo_eval cd ../..
+done
+# ----------------------------------------------------------------------------
 echo 'install_ipopt.sh: OK'
 exit 0

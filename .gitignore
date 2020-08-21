@@ -1,6 +1,9 @@
 # temporary file used to make commits
 /git_commit.sh
 #
+# file used by bin/example_install to report errors
+/example_install.err
+#
 # cmake configuration files that is put in source directory
 /include/cppad/mixed/configure.hpp
 /include/cppad/mixed/include_cholmod.hpp

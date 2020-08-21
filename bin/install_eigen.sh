@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-18 University of Washington
+#           Copyright (C) 2014-20 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -22,7 +22,7 @@ echo_eval() {
 }
 # ---------------------------------------------------------------------------
 version='3.2.9'
-web_page='https://bitbucket.org/eigen/eigen/get'
+web_page='https://gitlab.com/libeigen/eigen.git'
 # --------------------------------------------------------------------------
 # Get user configuration options from run_cmake.sh
 #
@@ -47,23 +47,17 @@ then
 fi
 cd build/external
 # --------------------------------------------------------------------------
-if [ ! -e eigen-$version.tar.gz ]
+if [ ! -e eigen.git ]
 then
-	echo_eval wget $web_page/$version.tar.gz
-	echo_eval mv $version.tar.gz eigen-$version.tar.gz
+	echo_eval git clone $web_page eigen.git
 fi
-if [ -e "eigen-$version" ]
+echo_eval cd eigen.git
+echo_eval git checkout $version
+#
+if [ ! -e build ]
 then
-	echo_eval rm -rf eigen-$version
+	echo_eval mkdir build
 fi
-#
-echo_eval tar -xzf eigen-$version.tar.gz
-tar_name=`ls | grep eigen-eigen`
-echo_eval mv $tar_name eigen-$version
-# --------------------------------------------------------------------------
-echo_eval cd eigen-$version
-#
-echo_eval mkdir build
 echo_eval cd build
 # --------------------------------------------------------------------------
 echo_eval cmake \

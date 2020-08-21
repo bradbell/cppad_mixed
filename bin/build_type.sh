@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-17 University of Washington
+#           Copyright (C) 2014-20 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -13,11 +13,12 @@ if [ "$0" != "bin/build_type.sh" ] || [ "$3" == '' ]
 then
 	cat << EOF
 bin/build_type.sh program_name install_prefix build_type
+
 sets up soft links for the following directories:
 	install_prefix -> install_prefix.build_type
 	build          -> build.built_type
 program_name:    is the program name for error reporting.
-install_prefix:  this directory must end with /cppad_mixed or /dismod_at
+install_prefix:  this directory must end with /cppad_mixed
 build_type:      this must be either debug or release
 EOF
 	exit 1
@@ -39,8 +40,7 @@ then
 fi
 dollar='$'
 total_prefix=`echo $install_prefix | sed \
-	-e "s|/cppad_mixed$dollar|/cppad_mixed.$build_type|" \
-	-e "s|/dismod_at$dollar|/dismod_at.$build_type|" `
+	-e "s|/cppad_mixed$dollar|/cppad_mixed.$build_type|"`
 echo "$total_prefix"
 if [ "$total_prefix" == "$install_prefix" ]
 then
