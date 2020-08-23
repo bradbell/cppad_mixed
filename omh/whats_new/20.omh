@@ -16,9 +16,26 @@ $spell
 	ar1_xam
 	ipopt
 	hes
+    eigen
+    bitbucket
+    gitlab
+    coinbrew
 $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
+
+$head 08-21$$
+The following improvements we made to the install process:
+$list number$$
+Fix the check of $cref/ipopt_prefix/run_cmake.sh/ipopt_prefix/$$
+in $code bin/example_install.sh$$.
+$lnext
+Fix $code bin/install_eigen.sh$$ because eigen
+moved from bitbucket to gitlab.
+$lnext
+Change $code bin/install_ipopt.sh$$ to directly run configure
+instead of using $code coinbrew$$.
+$lend
 
 $head 07-02$$
 Add the $icode error_msg$$ result to the
