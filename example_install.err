@@ -1,0 +1,5 @@
+HEAD is now at dc2f92ba4 bump to 3.2.9
+abort: repository /home/bradbell/repo/cppad_mixed.git/build/external/eigen.git not found!
+abort: repository /home/bradbell/repo/cppad_mixed.git/build/external/eigen.git not found!
+Previous HEAD position was f2a12fe4f master: match_op.hpp: simplify optimizing commutative binary operators.
+Switched to branch 'master'

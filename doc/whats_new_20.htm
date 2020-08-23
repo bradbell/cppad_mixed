@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2020</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2020">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2020 07-02 06-30 06-07 05-30 05-29 05-27 03-28 03-25 03-23 03-22 03-18 03-15 api change ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2020 08-21 07-02 06-30 06-07 05-30 05-29 05-27 03-28 03-25 03-23 03-22 03-18 03-15 api change ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -66,6 +66,7 @@ A:active { color : purple }
 
 <center><b><big><big>Changes and Additions to cppad_mixed During 2020</big></big></b></center>
 
+<br><a href="whats_new_20.htm#08-21" target="_top">08-21</a>
 <br><a href="whats_new_20.htm#07-02" target="_top">07-02</a>
 <br><a href="whats_new_20.htm#06-30" target="_top">06-30</a>
 <br><a href="whats_new_20.htm#06-07" target="_top">06-07</a>
@@ -80,6 +81,26 @@ A:active { color : purple }
 <br><a href="whats_new_20.htm#03-15" target="_top">03-15</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="whats_new_20.htm#03-15.API Change" target="_top">API&nbsp;Change</a>
 <br><br>
+<b><big><a name="08-21" id="08-21">08-21</a></big></b>
+<br>
+The following improvements we made to the install process:
+<ol type="1"><li>
+Fix the check of <a href="run_cmake.sh.htm#ipopt_prefix" target="_top"><span style='white-space: nowrap'>ipopt_prefix</span></a>
+
+in <code><font color="blue">bin/example_install.sh</font></code>.
+</li><li>
+
+Fix <code><font color="blue">bin/install_eigen.sh</font></code> because eigen
+moved from bitbucket to gitlab.
+</li><li>
+
+Change <code><font color="blue">bin/install_ipopt.sh</font></code> to directly run configure
+instead of using <code><font color="blue">coinbrew</font></code>.
+</li></ol>
+
+
+<br>
+<br>
 <b><big><a name="07-02" id="07-02">07-02</a></big></b>
 <br>
 Add the 
