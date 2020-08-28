@@ -110,7 +110,7 @@ private:
 	CppAD::vector<size_t> index_;  // temporary sorting indices
 	//
 	// mapping from sparse_mat_info to cholmod_sparse order
-	CppAD::vector<size_t> H_info2cholmod_order_;
+	CppAD::vector<size_t> H_rc2cholmod_order_;
 	//
 	cholmod_common    common_;
 	cholmod_sparse*   sym_matrix_; // The symmetric matrix we are factoring

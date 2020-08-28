@@ -208,19 +208,28 @@ void ldlt_cholmod::init(const CppAD::mixed::sparse_rc& H_rc)
 
 	// done with triplet
 	cholmod_free_triplet(&triplet, &common_ );
-
-	// set H_info2cholmod_order_
-	int*    H_p = (int *)    sym_matrix_->p;
-	int*    H_i = (int *)    sym_matrix_->i;
-	assert( size_t( H_p[nrow_] ) == H_rc.nnz() );
 	//
 	// sym_matrix_ is in column major order
-	H_info2cholmod_order_ = H_rc.col_major();
+	H_rc2cholmod_order_ = H_rc.col_major();
 	//
 # ifndef NDEBUG
-	nzmax = H_rc.nnz();
-	for(size_t k = 0; k < nzmax; k++)
-		assert( size_t(H_i[ H_info2cholmod_order_[k] ]) == H_rc.row()[k] );
+	int*    H_p  = reinterpret_cast<int *>( sym_matrix_->p );
+	int*    H_i  = reinterpret_cast<int *>( sym_matrix_->i );
+	size_t  nnz  = H_rc.nnz();
+	CppAD::vector<size_t> cholmod2H_rc_order(nnz);
+	for(size_t k = 0; k < nnz; k++)
+	{	size_t ell = H_rc2cholmod_order_[k];
+		cholmod2H_rc_order[ell] = k;
+	}
+	size_t ell = 0;
+	for(size_t c = 0; c < nrow_; c++)
+	{	for(int m = H_p[c]; m < H_p[c+1]; ++m)
+		{	size_t k  = cholmod2H_rc_order[ell];
+			assert( H_rc.row()[k]  == size_t( H_i[m] ) );
+			assert( H_rc.col()[k]  == c );
+			ell++;
+		}
+	}
 # endif
 	init_done_ = true;
 }
