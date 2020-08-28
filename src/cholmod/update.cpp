@@ -114,10 +114,10 @@ bool ldlt_cholmod::update(const CppAD::mixed::d_sparse_rcv& H_rcv)
 	update_called_ = true;
 	//
 	// set the values in sym_matrix_
-	double* H_x = (double *) sym_matrix_->x;
+	double* H_x  = reinterpret_cast<double*>( sym_matrix_->x);
 # ifndef NDEBUG
-	int*    H_p = (int *)    sym_matrix_->p;
-	int*    H_i = (int *)    sym_matrix_->i;
+	int*    H_p  = reinterpret_cast<int *>( sym_matrix_->p );
+	int*    H_i  = reinterpret_cast<int *>( sym_matrix_->i );
 # endif
 	for(size_t k = 0; k < H_rcv.nnz(); k++)
 	{	size_t ell = H_info2cholmod_order_[k];

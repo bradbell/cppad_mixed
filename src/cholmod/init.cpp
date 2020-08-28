@@ -213,27 +213,13 @@ void ldlt_cholmod::init(const CppAD::mixed::sparse_rc& H_rc)
 	int*    H_p = (int *)    sym_matrix_->p;
 	int*    H_i = (int *)    sym_matrix_->i;
 	assert( size_t( H_p[nrow_] ) == H_rc.nnz() );
-	nzmax = H_rc.nnz();
-	CppAD::vector<size_t> key(nzmax);
-	H_info2cholmod_order_.resize(nzmax);
-	size_t k = 0;
-	ncol     = nrow_;
-	for(size_t j = 0; j < ncol; j++)
-	{	size_t start = size_t( H_p[j] );
-		size_t end   = size_t( H_p[j+1] );
-		for(size_t ell = start; ell < end; ell++)
-		{	// H_rc is in column major order
-			assert( H_rc.col()[k] == j );
-			size_t i = size_t(H_i[ell]);
-			assert( i < nrow_ );
-			// column major order for sym_martrix_
-			key[k++] = j * nrow_ + i;
-		}
-	}
-	assert( k == nzmax );
-	CppAD::index_sort(key, H_info2cholmod_order_);
+	//
+	// sym_matrix_ is in column major order
+	H_info2cholmod_order_ = H_rc.col_major();
+	//
 # ifndef NDEBUG
-	for(k = 0; k < nzmax; k++)
+	nzmax = H_rc.nnz();
+	for(size_t k = 0; k < nzmax; k++)
 		assert( size_t(H_i[ H_info2cholmod_order_[k] ]) == H_rc.row()[k] );
 # endif
 	init_done_ = true;

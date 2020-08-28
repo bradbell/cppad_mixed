@@ -168,9 +168,11 @@ void ldlt_cholmod::inv(
 	//
 	// check order assumptions on factor
 # ifndef NDEBUG
+	int*    L_nz    = reinterpret_cast<int*>( factor_->nz );
 	for(int j = 0; j < int( nrow_) ; j++)
 	{	// diagonal entry first
 		assert( L_i[ L_p[j] ] == j );
+		assert( L_nz[j] == L_p[j+1] - L_p[j] );
 		for(int k = L_p[j] + 1; k < L_p[j+1]; k++)
 		{	// for each column, rows are sorted
 			assert( L_i[k-1] < L_i[k] );
