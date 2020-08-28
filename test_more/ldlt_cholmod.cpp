@@ -8,6 +8,12 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
+# include <cppad/mixed/ldlt_cholmod.hpp>
+# include <limits>
+# include <cmath>
+# include <cassert>
+
+namespace { // BEGIN_EMPTY_NAMESPACE
 /*
 begin ldlt_cholmod_xam.cpp
 $spell
@@ -101,12 +107,8 @@ $$
 $end
 */
 // BEGIN C++
-# include <cppad/mixed/ldlt_cholmod.hpp>
-# include <limits>
-# include <cmath>
-# include <cassert>
 
-bool ldlt_cholmod(void)
+bool ldlt_cholmod_1(void)
 {	bool ok    = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
 
@@ -224,7 +226,123 @@ bool ldlt_cholmod(void)
 			ok          &= std::fabs( val_out[k] - check ) <= eps;
 		}
 	}
+	return ok;
+}
+// ----------------------------------------------------------------------------
+bool ldlt_cholmod_2(void)
+{	bool ok    = true;
+	double eps = 100. * std::numeric_limits<double>::epsilon();
+	//
+	// determinant of H is 10
+	double H[] = {
+		1.0, 0.0, 0.0,  1.0,
+		0.0, 1.0, 0.0,  0.0,
+		0.0, 0.0, 1.0,  0.0,
+		1.0, 0.0, 0.0, 11.0
+	};
+	// The inverse of H is
+	double H_inv[] = {
+		1.1, 0.0, 0.0, -0.1,
+		0.0, 1.0, 0.0,  0.0,
+		0.0, 0.0, 1.0,  0.0,
+		-0.1, 0.0, 0.0, 0.1
+	};
+	//
+	// create cholmod object
+	size_t nrow = 4;    // number of rows in H
+	size_t ncol = nrow; // number of columns in H
+	CppAD::mixed::ldlt_cholmod ldlt_obj(nrow);
+	assert( nrow * ncol == sizeof(H) / sizeof(H[0]) );
+	//
+	// sparsity pattern corresponding to lower triangle of H
+	// in column major order
+	size_t nnz = 5;
+	CppAD::mixed::sparse_rc H_rc(nrow, ncol, nnz);
+	{	size_t k = 0;
+		// lower triangle
+		H_rc.set(k++, 0, 0);
+		H_rc.set(k++, 3, 0);
+		H_rc.set(k++, 1, 1);
+		H_rc.set(k++, 2, 2);
+		H_rc.set(k++, 3, 3);
+	}
+	// values in lower triangle of H
+	CppAD::mixed::d_sparse_rcv H_rcv( H_rc );
+	{	size_t k = 0;
+		H_rcv.set(k++,  1.0); // H_0,0  =  1.0
+		H_rcv.set(k++,  1.0); // H_3,0  =  1.0
+		H_rcv.set(k++,  1.0); // H_1,1  =  1.0
+		H_rcv.set(k++,  1.0); // H_2,2  =  1.0
+		H_rcv.set(k++, 11.0); // H_2,2  = 11.0
+	}
+	//
+	// initialize the matrix using only the sparsity pattern
+	ldlt_obj.init( H_rcv.pat() );
+	//
+	// factor the matrix using the values
+	ldlt_obj.update( H_rcv );
+	//
+	// compute log of determinant of H
+	size_t negative;
+	double logdet_H = ldlt_obj.logdet(negative);
+	ok &= negative == 0;
+	//
+	// check its value
+	ok &= std::fabs( logdet_H / std::log(10.0) - 1.0 ) <= eps;
+	//
+	// use solve_H to solve for the entie inverse matrix one column at a time
+	{	CppAD::vector<size_t> row(4);
+		for(size_t k = 0; k < 4; ++k)
+			row[k] = k;
+		CppAD::vector<double> val_in(4), val_out(4);
+		for(size_t j = 0; j < ncol; j++)
+		{	// solve for the j-th column of the inverse matrix
+			for(size_t k = 0; k < 4; k++)
+			{	val_in[k] = 0.0;
+				if( k == j )
+					val_in[k] = 1.0;
+			}
+			ldlt_obj.solve_H(row, val_in, val_out);
+			//
+			for(size_t k = 0; k < row.size(); k++)
+			{	size_t i       = row[k];
+				double check_i = H_inv[ i * nrow + j ];
+				ok &= std::fabs( val_out[k] - check_i ) <= eps;
+			}
+		}
+	}
+	/* BEGIN_TEST_NOT_YET_WORKING
+	- ---------------------------------------------------------------------
+	// solve for non-zeros in inverse using H_inv
+	{
+		CppAD::vector<size_t> row_in(nnz), col_in(nnz);
+		CppAD::vector<double> val_out(nnz);
+		{	size_t k = 0;
+			for(size_t i = 0; i < 4; i++)
+			{	row_in[k] = i;
+				col_in[k] = i;
+				k++;
+			}
+			row_in[4] = 3;
+			col_in[4] = 0;
+		}
+		ldlt_obj.inv(row_in, col_in, val_out);
+		for(size_t k = 0; k < nnz; k++)
+		{	double check = H_inv[ row_in[k] * nrow + col_in[k] ];
+			ok          &= std::fabs( val_out[k] - check ) <= eps;
+		}
+	}
+	---------------------------------------------------------------------
+	END_TEST_NOT_YET_WORKING */
+	return ok;
+}
 
+} // END_EMPTY_NAMESPACE
+
+bool ldlt_cholmod(void)
+{	bool ok = true;
+	ok     &= ldlt_cholmod_1();
+	ok     &= ldlt_cholmod_2();
 	return ok;
 }
 // END C++
