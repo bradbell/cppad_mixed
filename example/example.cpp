@@ -70,6 +70,7 @@ extern bool ran_obj_eval_xam(void);
 extern bool ran_obj_jac_xam(void);
 extern bool sample_fixed_xam(void);
 extern bool sample_random_xam(void);
+extern bool sparseinv_xam(void);
 extern bool sparse_eigen2info_xam(void);
 extern bool sparse_info2eigen_xam(void);
 extern bool sparse_eigen2rcv_xam(void);
@@ -158,6 +159,7 @@ int main(void)
 	RUN(ran_obj_jac_xam);
 	RUN(sample_fixed_xam);
 	RUN(sample_random_xam);
+	RUN(sparseinv_xam);
 	RUN(sparse_eigen2info_xam);
 	RUN(sparse_info2eigen_xam);
 	RUN(sparse_eigen2rcv_xam);

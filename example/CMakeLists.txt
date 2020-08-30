@@ -37,6 +37,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL example.cpp
 	private/laplace_obj_hes.cpp
 	private/ran_obj_eval.cpp
 	private/ran_obj_jac.cpp
+	private/sparseinv.cpp
 	private/sparse_eigen2info.cpp
 	private/sparse_info2eigen.cpp
 	private/sparse_eigen2rcv.cpp
