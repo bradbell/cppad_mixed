@@ -22,7 +22,7 @@ $spell
 	pattern
 $$
 
-$section Example Using Cholmod LDLT Factorization$$
+$section Example Using ldlt_cholmod Class$$
 
 $head Problem Description$$
 We define the lower triangular matrix

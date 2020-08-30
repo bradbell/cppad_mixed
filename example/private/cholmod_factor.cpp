@@ -31,7 +31,7 @@ $srcthisfile%0%// BEGIN C++%// END C++%1%$$
 $end
 */
 // BEGIN C++
-# include <cppad/mixed/include_cholmod.hpp>
+# include <suitesparse/cholmod.h>
 # include <limits>
 # include <cmath>
 # include <cassert>
