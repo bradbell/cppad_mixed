@@ -13,6 +13,7 @@
 # bin/test_one.sh expects example.cpp on next line, last line to be just ')'
 ADD_EXECUTABLE(example EXCLUDE_FROM_ALL example.cpp
 	ipopt_run.cpp
+	private/cholmod_factor.cpp
 	private/cholmod_solve2_a.cpp
 	private/cholmod_solve2_sim.cpp
 	private/cholmod_solve.cpp

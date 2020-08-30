@@ -28,6 +28,7 @@ $end
 # include <cstring>
 
 extern bool abs_density_xam(void);
+extern bool cholmod_factor_xam(void);
 extern bool cholmod_solve_xam(void);
 extern bool cholmod_solve2_a_xam(void);
 extern bool cholmod_solve2_sim_xam(void);
@@ -115,6 +116,7 @@ int main(void)
 {
 	// This comment expected by bin/test_one.sh
 	RUN(abs_density_xam);
+	RUN(cholmod_factor_xam);
 	RUN(cholmod_solve_xam);
 	RUN(cholmod_solve2_a_xam);
 	RUN(cholmod_solve2_sim_xam);
