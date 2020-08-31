@@ -311,9 +311,6 @@ bool ldlt_cholmod_2(void)
 			}
 		}
 	}
-	/* BEGIN_TEST_NOT_YET_WORKING
-	- ---------------------------------------------------------------------
-	// solve for non-zeros in inverse using H_inv
 	{
 		CppAD::vector<size_t> row_in(nnz), col_in(nnz);
 		CppAD::vector<double> val_out(nnz);
@@ -332,8 +329,6 @@ bool ldlt_cholmod_2(void)
 			ok          &= std::fabs( val_out[k] - check ) <= eps;
 		}
 	}
-	---------------------------------------------------------------------
-	END_TEST_NOT_YET_WORKING */
 	return ok;
 }
 

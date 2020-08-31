@@ -20,9 +20,17 @@ $spell
     bitbucket
     gitlab
     coinbrew
+	ldlt_cholmod
 $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
+
+$head 08-31$$
+Fix a bug in the computation of the first derivative of the
+fixed effects objective when
+$cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$ was $code yes$$.
+To be more specific, the permutation for the LDLT factor was
+being used where the inverse permutation was required.
 
 $head 08-21$$
 The following improvements we made to the install process:

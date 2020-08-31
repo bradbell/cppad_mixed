@@ -118,7 +118,7 @@ private:
 	cholmod_factor*   factor_;     // lower triangular LDL' factor
 	//
 	// information used by inv and computed during first call to inv
-	CppAD::vector<size_t> out2sparseinv_order_;
+	CppAD::vector<size_t> sparseinv_order_;
 	CppAD::vector<int>    sparseinv_p_, sparseinv_i_;
 	//
 	//

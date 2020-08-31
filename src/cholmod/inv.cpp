@@ -117,17 +117,17 @@ $icode row_in$$, $icode col_in$$,
 all the indices in the factorization $code factor_$$,
 and the transpose of the indices in $code factor_$$.
 
-$subhead out2sparseinv_order_$$
+$subhead sparseinv_order_$$
 This member variable has the prototype
 $codei%
-	CppAD::vector<size_t> out2sparseinv_order_
+	CppAD::vector<size_t> sparseinv_order_
 %$$
 Its initial size is zero.
 After the first call to $code inv$$,
 it has the same size as $icode val_out$$.
 It is a mapping
-from the indices in $icode val_out$$ to the corresponding index in
-the $code sparseinv_i$$ structures.
+from the indices in $icode row_in$$, $icode col_in$$ and $icode val_out$$
+to the corresponding index in $code sparseinv_i$$.
 Note that all the indices in
 $icode row_in$$ and $icode col_in$$ also appear in the representation
 $code sparseinv_p_$$, $code sparseinv_i_$$.
@@ -190,78 +190,119 @@ void ldlt_cholmod::inv(
 		assert( d[j] != 0.0 );
 	}
 	//
-	// number of requested indices and indices in L
-	size_t K_in    = row_in.size();
-	size_t K_L     = static_cast<size_t>( L_p[nrow_] );
-	size_t K_total = K_in + 2 * K_L;
+	// number of requested indices
+	size_t K_nnz  = row_in.size();
 	// --------------------------------------------------------------------
-	if( out2sparseinv_order_.size() == 0 )
-	{
-		// permuted version of requested indices
-		vector<size_t> row(K_total), col(K_total);
-		for(size_t k = 0; k < K_in; k++)
-		{	row[k] = static_cast<size_t>( L_perm[ row_in[k] ] );
-			col[k] = static_cast<size_t>( L_perm[ col_in[k] ] );
+	if( sparseinv_p_.size() == 0 )
+	{	assert( sparseinv_i_.size() == 0 );
+		assert( sparseinv_order_.size() == 0 );
+		//
+		// inverse permutation
+		vector<size_t> p_inv(nrow_);
+# ifndef NDEBUG
+		for(size_t j = 0; j < nrow_; ++j)
+			p_inv[j] = nrow_;
+		for(size_t j = 0; j < nrow_; ++j)
+			p_inv[ L_perm[j] ] = j;
+		for(size_t j = 0; j < nrow_; ++j)
+			assert( p_inv[j] != nrow_ );
+# else
+		for(size_t j = 0; j < nrow_; ++j)
+			p_inv[ L_perm[j] ] = j;
+# endif
+		//
+		// permuted version of indices
+		vector<size_t> K_row(K_nnz), K_col(K_nnz);
+		for(size_t k = 0; k < K_nnz; k++)
+		{	K_row[k] = static_cast<size_t>( p_inv[ row_in[k] ] );
+			K_col[k] = static_cast<size_t>( p_inv[ col_in[k] ] );
 		}
 		//
-		// indices that are in L and L'
+		// indices in K or L
+		vector<size_t> KL_row( K_row ), KL_col( K_col );
 		for(size_t j = 0; j < nrow_; j++)
-		{	for(int k = L_p[j]; k < L_p[j+1]; k++)
-			{	size_t i = static_cast<size_t>( L_i[k] );
+		{	for(int m = L_p[j]; m < L_p[j+1]; ++m)
+			{	size_t i = static_cast<size_t>( L_i[m] );
 				// L
-				row[K_in + 2 * k] = i;
-				col[K_in + 2 * k] = j;
-				// L'
-				row[K_in + 2 * k + 1] = j;
-				col[K_in + 2 * k + 1] = i;
+				KL_row.push_back(i);
+				KL_col.push_back(j);
+				if( i != j )
+				{	KL_row.push_back(j);
+					KL_col.push_back(i);
+				}
 			}
 		}
 		//
 		// column major order
-		vector<size_t> key(K_total), ind(K_total);
-		for(size_t k = 0; k < K_total; k++)
-			key[k] = row[k] + col[k] * nrow_;
+		size_t KL_nnz = KL_row.size();
+		vector<size_t> key(KL_nnz), ind(KL_nnz);
+		for(size_t k = 0; k < KL_nnz; k++)
+			key[k] = KL_row[k] + KL_col[k] * nrow_;
 		CppAD::index_sort(key, ind);
 		//
-		// put sparsity pattern as requred by sparseinv
+		// put sparsity pattern in sparseinv_p_, sparseinv_i_
+		// also fill in sparseinv_order_
 		sparseinv_p_.resize(nrow_+1);
-		sparseinv_i_.resize(0);
-		// index conversize from sparse_mat_info to sparseinv format
-		out2sparseinv_order_.resize(K_in);
-		size_t k = 0;
-		sparseinv_p_[0]    = int( sparseinv_i_.size() );
-		for(size_t j = 0; j < nrow_; j++)
-		{	bool more = k < K_total;
-			while( more )
-			{	size_t r = row[ ind[k] ];
-				size_t c = col[ ind[k] ];
-				assert( c >= j );
-				more = c == j;
-				if( more )
-				{	sparseinv_i_.push_back( int(r) );
-					if( ind[k] < K_in )
-						out2sparseinv_order_[ ind[k] ] = sparseinv_i_.size()-1;
-					k++;
-					bool duplicate = k < K_total;
-					while( duplicate )
-					{	duplicate = (row[ind[k]] == r) & (col[ind[k]] == c);
-						if( duplicate )
-						{	if( ind[k] < K_in )
-								out2sparseinv_order_[ ind[k] ] =
-									sparseinv_i_.size()-1;
-							k++;
-							duplicate = k < K_total;
-						}
+		sparseinv_order_.resize( K_nnz );
+# ifndef NDEBUG
+		for(size_t k = 0; k < K_nnz; ++k)
+			sparseinv_order_[k] = KL_nnz; // invalid value
+# endif
+		sparseinv_p_[0] = 0;
+		{	size_t ell = ind[0];
+			size_t i   = KL_row[ell];
+			size_t j   = KL_col[ell];
+			//
+			size_t i_ell = i;
+			size_t j_ell = j;
+			if( ell < K_nnz )
+			{	i_ell = KL_row[ell];
+				j_ell = KL_col[ell];
+				sparseinv_order_[ell] = sparseinv_i_.size();
+			}
+			assert( i_ell == 0 && j_ell == 0 );
+			//
+			sparseinv_i_.push_back( int(i) );
+			for(size_t k = 1; k < KL_nnz; ++k)
+			{	ell = ind[k];
+				if( ell < K_nnz )
+				{	// same entry must not appear twice in row_in, col_in
+					i_ell = KL_row[ell];
+					j_ell = KL_col[ell];
+					if( i_ell == i && j_ell == j )
+					{	// this is previous entry pused to sparseinv_i_.
+						sparseinv_order_[ell] = sparseinv_i_.size() - 1;
 					}
-					more = k < K_total ;
+					else
+					{	// this will be next entry pushed to sparseinv_i_
+						sparseinv_order_[ell] = sparseinv_i_.size();
+					}
+				}
+				if( KL_col[ell] == j+1 )
+				{	sparseinv_p_[j+1] = int( sparseinv_i_.size() );
+					i = KL_row[ell];
+					j = KL_col[ell];
+					sparseinv_i_.push_back( int(i) );
+				}
+				else
+				{	assert( KL_col[ell] == j );
+					assert( i <= KL_row[ell] );
+					if( i < KL_row[ell] )
+					{	i = KL_row[ell];
+						sparseinv_i_.push_back( int(i) );
+					}
 				}
 			}
-			sparseinv_p_[j+1] = int( sparseinv_i_.size() );
+			sparseinv_p_[nrow_] = int( sparseinv_i_.size() );
+# ifndef NDEBUG
+		for(size_t k = 0; k < K_nnz; ++k)
+			assert( sparseinv_order_[k] < KL_nnz );
+# endif
 		}
 	}
 	// ------------------------------------------------------------------------
 	// place where inverse is returned
-	vector<double> Zx( sparseinv_i_.size() );
+	vector<double> Z_x( sparseinv_i_.size() );
 	//
 	// work space
 	vector<double> z(nrow_);
@@ -279,15 +320,15 @@ void ldlt_cholmod::inv(
 		L_x,
 		sparseinv_p_.data(),
 		sparseinv_i_.data(),
-		Zx.data(),
+		Z_x.data(),
 		z.data(),
 		Zdiagp.data(),
 		Lmunch.data()
 	);
 	//
 	// return the values
-	for(size_t k = 0; k < K_in; k++)
-		val_out[k] = Zx[ out2sparseinv_order_[k] ];
+	for(size_t k = 0; k < K_nnz; k++)
+		val_out[k] = Z_x[ sparseinv_order_[k] ];
 	//
 	return;
 }
