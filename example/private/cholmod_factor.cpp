@@ -137,14 +137,20 @@ bool cholmod_factor_xam(void)
 	int*    L_i    = reinterpret_cast<int*>( factor->i );
 	double* L_x    = reinterpret_cast<double*>( factor->x );
 	//
+	// check relation between Lz and Lp
 	ok &= ( size_t(L_p[n]) == triplet->nnz );
 	for(size_t j = 0; j < n; ++j)
 		ok &= (L_nz[j] == L_p[j+1] - L_p[j] );
 	//
-	// L, D, P
-	std::vector<double> L(n*n, 0.0), D(n*n, 0.0), P(n*n, 0.0);
+	// P: permutation matrix corresponding to L_perm
+	// multiplication by P on the right maps row i to row L_perm[i]
+	std::vector<double> P(n*n, 0.0);
 	for(size_t i = 0; i < n; ++i)
-		P[i * n + L_perm[i]] = 1.0;
+		P[L_perm[i] * n + i] = 1.0;
+
+	//
+	// L, D
+	std::vector<double> L(n*n, 0.0), D(n*n, 0.0);
 	for(size_t j = 0; j < n; ++j)
 	{	for(size_t m = L_p[j]; m < size_t(L_p[j+1]); ++m)
 		{	size_t i     = size_t( L_i[m] );
@@ -162,14 +168,14 @@ bool cholmod_factor_xam(void)
 	matrix_prod(n, false, L.data(), false, D.data(), LD.data());
 	matrix_prod(n, false, LD.data(), true, L.data(), LDLT.data());
 	//
-	// PAPT = P * A * P^T
-	std::vector<double> PA(n*n), PAPT(n*n);
-	matrix_prod(n, false, P.data(), false, A, PA.data());
-	matrix_prod(n, false, PA.data(), true, P.data(), PAPT.data());
+	// PTAP = P^T * A * P
+	std::vector<double> PTA(n*n), PTAP(n*n);
+	matrix_prod(n, true, P.data(), false, A, PTA.data());
+	matrix_prod(n, false, PTA.data(), false, P.data(), PTAP.data());
 	//
-	// check that P * A * P^T = L * D * L^T
+	// check that P^T * A * P = L * D * L^T
 	for(size_t k = 0; k < n * n; ++k)
-	{	double abs_err = std::fabs( PAPT[k] - LDLT[k] );
+	{	double abs_err = std::fabs( PTAP[k] - LDLT[k] );
 		assert( abs_err < eps99 );
 	}
 	//
