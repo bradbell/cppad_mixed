@@ -52,6 +52,8 @@ then
 	echo_eval git clone $web_page eigen.git
 fi
 echo_eval cd eigen.git
+echo_eval git checkout master
+echo_eval git pull
 echo_eval git checkout $version
 #
 if [ ! -e build ]

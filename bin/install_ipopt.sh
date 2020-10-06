@@ -83,11 +83,8 @@ do
 		echo_eval git clone $url.git $name.git
 	fi
 	echo_eval cd $name.git
-	if [ -e "get.$name" ] && [ ! -e "get.$name.done" ]
-	then
-		echo_eval ./get.$name
-		touch ./get.$name.done
-	fi
+	echo_eval git checkout master
+	echo_eval git pull
 	echo_eval git checkout --quiet $version
 	if [ ! -e build ]
 	then
