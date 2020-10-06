@@ -129,7 +129,7 @@ $srccode%cpp% */
 
 $head destructor$$
 $srccode%cpp% */
-	~cppad_mixed(void);
+	virtual ~cppad_mixed(void);
 /* %$$
 
 $head initialize$$

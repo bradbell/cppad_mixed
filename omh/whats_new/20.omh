@@ -25,6 +25,17 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
+$head 10-06$$
+$list number$$
+Change $code bin/install_ipopt.sh$$ to install a shared version
+of the corresponding libraries (even if debug is enabled).
+$lnext
+Change the $code cppad_mixed$$ base class
+$cref/destructor/base_class/destructor/$$ to be virtual
+so that deleting a derived class object calls it.
+This avoid compiler warnings under certain circumstances.
+$lend
+
 $head 08-31$$
 Fix a bug in the computation of the first derivative of the
 fixed effects objective when

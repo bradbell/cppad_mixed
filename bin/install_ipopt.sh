@@ -97,7 +97,7 @@ do
 	#
 	if [ "$build_type" == 'debug' ]
 	then
-		debug_flags='--enable-debug --disable-shared'
+		debug_flags='--enable-debug'
 		if [ "$name" == 'Ipopt' ]
 		then
 			debug_flags="$debug_flags --with-ipopt-verbosity"
@@ -111,12 +111,20 @@ do
 	else
 		add_fcflags=''
 	fi
+cat << EOF
+	../configure \\
+		--disable-dependency-tracking \\
+		--prefix=$ipopt_prefix \\
+		--libdir=$ipopt_prefix/$cmake_libdir \\
+		--enable-shared \\
+		$debug_flags $add_fcflags
+EOF
 	../configure \
 		--disable-dependency-tracking \
 		--prefix=$ipopt_prefix \
 		--libdir=$ipopt_prefix/$cmake_libdir \
-		$debug_flags \
-		$add_fcflags
+		--enable-shared \
+		$debug_flags $add_fcflags
 	echo_eval make install
 	#
 	# back to build/external

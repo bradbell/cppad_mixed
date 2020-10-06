@@ -9,6 +9,7 @@
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
 ADD_LIBRARY(cppad_mixed
+	SHARED
 	cholmod/constructor.cpp
 	cholmod/init.cpp
 	cholmod/inv.cpp
