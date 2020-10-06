@@ -177,8 +177,8 @@ do
 	p='example_install'
 	if [ "$install" == 'true' ]
 	then
-		echo "bin/install_$pkg.sh $build_type 1>> $p.log 2>> $p.err"
-		bin/install_$pkg.sh $build_type 1>> $p.log 2>> $p.err
+		echo "bin/install_$pkg.sh 1>> $p.log 2>> $p.err"
+		bin/install_$pkg.sh 1>> $p.log 2>> $p.err
 	fi
 done
 # ----------------------------------------------------------------------------
