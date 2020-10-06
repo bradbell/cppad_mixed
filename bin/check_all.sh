@@ -124,6 +124,8 @@ then
 	exit 1
 fi
 # -----------------------------------------------------------------------------
+# CppAD uses asserts to make sure this this is not a problem
+sed -i check.log -e "/match_op.hpp:.*warning: ‘arg_match\[[01]\]’/d"
 for target in cmake check speed install
 do
 	if grep -i 'warning:' $target.log
