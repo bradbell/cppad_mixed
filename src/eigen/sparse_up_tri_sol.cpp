@@ -79,13 +79,14 @@ Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_up_tri_sol(
 {	using Eigen::ColMajor;
 	using Eigen::RowMajor;
 	using Eigen::Dynamic;
+	typedef Eigen::Index Int;
 	//
 	typedef Eigen::SparseMatrix<double, ColMajor>::InnerIterator col_itr;
 	typedef Eigen::SparseMatrix<double, RowMajor>::InnerIterator row_itr;
 	//
 	// number of rows and columns in the result
-	int nr = left.rows();
-	int nc = right.cols();
+	Int nr = left.rows();
+	Int nc = right.cols();
 	assert( nr == left.cols() );
 	assert( nr == right.rows() );
 	//
@@ -95,19 +96,19 @@ Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_up_tri_sol(
 	// One column of the result as a singly linked list with no
 	// memory allocation when adding and removing elements.
 	// initialize it as zero
-	int res_first = -1; // null pointer value
+	Int res_first = -1; // null pointer value
 	Eigen::Matrix<double, Dynamic, 1> res_value(nr);
-	Eigen::Matrix<int, Dynamic, 1>    res_next(nr);
+	Eigen::Matrix<Int, Dynamic, 1>    res_next(nr);
 	res_value.setZero();
 	//
 	// One column of the right hand side as a singly linked list
 	// with no memory allocation when adding and removing elements.
-	int rhs_first;
+	Int rhs_first;
 	Eigen::Matrix<double, Dynamic, 1> rhs_value(nr);
-	Eigen::Matrix<int, Dynamic, 1>    rhs_next(nr);
+	Eigen::Matrix<Int, Dynamic, 1>    rhs_next(nr);
 	//
 	// for each column in the right matrix
-	for(int j = 0; j < right.cols(); ++j)
+	for(Int j = 0; j < right.cols(); ++j)
 	{	// iterator for non-zero entries in j-th column of right hand side
 		col_itr right_itr(right, j);
 		//
@@ -118,7 +119,7 @@ Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_up_tri_sol(
 		if( right_itr )
 		{	assert( right_itr.col() == j );
 			//
-			int i        = right_itr.row();
+			Int i        = right_itr.row();
 			rhs_value[i] = right_itr.value();
 			rhs_next[i]  = -1; // null pointer
 			while( ++right_itr )
@@ -134,13 +135,13 @@ Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_up_tri_sol(
 		//
 		// initialize row index for right hand side that is less than
 		// or equal the current row being solved
-		int rhs_le = rhs_first;
+		Int rhs_le = rhs_first;
 		//
 		// initialize pointer to previous non-zero entry in result
-		int res_previous = -1; // null pointer
+		Int res_previous = -1; // null pointer
 		//
 		// for each row in the left matrix
-		for(int i = rhs_first; i >= 0; --i)
+		for(Int i = rhs_first; i >= 0; --i)
 		{	// advance to next right hand side index less than or equal i
 			while( rhs_le > i )
 				rhs_le = rhs_next[ rhs_le ];
@@ -167,7 +168,7 @@ Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_up_tri_sol(
 			double left_ii = 0.0;
 			for(row_itr left_itr(left, i); left_itr; ++left_itr)
 			{	// (i, k) index in left matrix
-				int k = left_itr.col();
+				Int k = left_itr.col();
 				// check that left is upper triangular
 				assert( i <= k );
 				//
@@ -196,7 +197,7 @@ Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_up_tri_sol(
 			}
 		}
 		// restrore the res_value vector to all zeros
-		int i = res_first;
+		Int i = res_first;
 		while( i >= 0 )
 		{	res_value[i] = 0.0;
 			i            = res_next[i];

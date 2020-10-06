@@ -21,7 +21,7 @@ echo_eval() {
 	eval $*
 }
 # ---------------------------------------------------------------------------
-version='3.2.9'
+version='3.3.7'
 web_page='https://gitlab.com/libeigen/eigen.git'
 # --------------------------------------------------------------------------
 # Get user configuration options from run_cmake.sh

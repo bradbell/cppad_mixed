@@ -290,18 +290,20 @@ CONFIGURE_FILE(
 # ----------------------------------------------------------------------------
 # subdirectories
 ADD_SUBDIRECTORY(src)
-ADD_SUBDIRECTORY(cholesky)
 ADD_SUBDIRECTORY(example)
 ADD_SUBDIRECTORY(test_more)
 ADD_SUBDIRECTORY(speed)
+## ADD_SUBDIRECTORY(cholesky)
 # ----------------------------------------------------------------------------
 # tests
 ADD_CUSTOM_TARGET(check DEPENDS
 	cppad_mixed
-	check_cholesky
 	check_example
 	check_test_more
 )
+##	check_cholesky
+#
+#
 ADD_CUSTOM_TARGET(speed DEPENDS
 	speed_ar1_xam
 	speed_capture_xam

@@ -34,15 +34,16 @@ $end
 bool sparse_mat2low_xam(void)
 {	bool ok = true;
 	typedef Eigen::SparseMatrix<size_t> sparse_matrix;
+	typedef Eigen::Index                Int;
 	//
 	size_t nr = 3;
 	sparse_matrix matrix;
-	matrix.resize(int(nr), int(nr));
+	matrix.resize(Int(nr), Int(nr));
 	Eigen::Matrix<size_t, Eigen::Dynamic, Eigen::Dynamic> check(nr, nr);
 	size_t count = 0;
 	for(size_t i = 0; i < nr; i++)
 	{	for(size_t j = 0; j < nr; j++)
-		{	matrix.insert(int(i), int(j)) = count;
+		{	matrix.insert(Int(i), Int(j)) = count;
 			check(i, j)                   = count;
 			++count;
 		}
@@ -52,9 +53,9 @@ bool sparse_mat2low_xam(void)
 	// check the result values
 	count = 0;
 	for(size_t k = 0; k < nr; k++)
-	{	for(sparse_matrix::InnerIterator itr(lower, int(k)); itr; ++itr)
-		{	int i = itr.row();
-			int j = itr.col();
+	{	for(sparse_matrix::InnerIterator itr(lower, Int(k)); itr; ++itr)
+		{	Int i = itr.row();
+			Int j = itr.col();
 			ok   &= itr.value() == check(i, j);
 			// make sure only lower triangle is inclued
 			ok   &= j <= i;

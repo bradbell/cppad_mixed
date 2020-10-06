@@ -34,6 +34,11 @@ Change the $code cppad_mixed$$ base class
 $cref/destructor/base_class/destructor/$$ to be virtual
 so that deleting a derived class object calls it.
 This avoid compiler warnings under certain circumstances.
+$lnext
+Advance to eigen-3.3.7.
+One notable part of this conversion is that
+$code Eigen::Index$$ is no longer $code int$$.
+The examples and tests were changed to remove this assumption.
 $lend
 
 $head 08-31$$
