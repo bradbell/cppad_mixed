@@ -86,6 +86,14 @@ do
 	echo_eval git checkout master
 	echo_eval git pull
 	echo_eval git checkout --quiet $version
+	if [ -e "./get.$name" ]
+	then
+		if [ ! -e "./get.$name.done" ]
+		then
+			echo_eval ./get.$name
+			touch ./get.$name.done
+		fi
+	fi
 	if [ ! -e build ]
 	then
 		echo_eval mkdir build

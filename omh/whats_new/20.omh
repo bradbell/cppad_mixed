@@ -25,6 +25,11 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
+$head 10-10$$
+Fix a problem with $code bin/install_ipopt.sh$$.
+To be specific, it needs to run $code get.ASL$$ and $code get.Mumps$$
+to get supplements to the ASL and Mumps git repositories.
+
 $head 10-06$$
 $list number$$
 Change $code bin/install_ipopt.sh$$ to install a shared version
