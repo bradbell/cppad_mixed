@@ -25,6 +25,10 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
+$head 10-21$$
+Advance to cppad-20201021
+(this fixes a warning on some compilers).
+
 $head 10-10$$
 Fix a problem with $code bin/install_ipopt.sh$$.
 To be specific, it needs to run $code get.ASL$$ and $code get.Mumps$$
