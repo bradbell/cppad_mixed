@@ -93,6 +93,11 @@ then
 	system_type='red_hat'
 	system_list='yum list installed'
 	system_install='sudo yum install -y'
+elif which brew >& /dev/null
+then
+    system_type='macos'
+    system_list='brew list'
+    system_install='brew install'
 else
 	echo 'Cannot find the system pakcage manager'
 	exit 1
@@ -114,8 +119,21 @@ then
 		gfortran
 		libgsl0-dev
 	'
-else
+elif [ "$system_type" == 'macos' ]
+then
 	list='
+		cmake
+		wget
+		lapack
+		suitesparse
+		pkg-config
+		gcc
+		gsl
+        java
+	'
+elif [ "$system_type" == 'red_hat' ]
+then
+    list='
 		cmake
 		git
 		wget
@@ -126,7 +144,13 @@ else
 		gcc-c++
 		gcc-gfortran
 		gsl-devel
-	'
+        java
+    '
+    # make sure Ipopt configure sees brew version of javac (not /usr/bin/javac)
+    PATH="/usr/local/opt/openjdk/bin:$PATH"
+else
+    echo 'example_install.sh: script error'
+    exit 1
 fi
 for package in $list
 do

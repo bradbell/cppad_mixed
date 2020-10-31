@@ -25,6 +25,10 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
+$head 10-31$$
+Extend $cref example_install.sh$$ so that it handles mac OS use
+$href%https://brew.sh/%brew%$$.
+
 $head 10-21$$
 Advance to cppad-20201021
 (this fixes a warning on some compilers).
