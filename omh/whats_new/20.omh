@@ -35,6 +35,9 @@ $lnext
 Remove $icode eigen_prefix$$ from $cref run_cmake.sh$$.
 The example install script $code bin/install_eigen.sh$$ uses the prefix
 $icode%cmake_install_prefix/eigen%$$ to install ipopt.
+$lnext
+The file $cref/cppad_mixed.pc/run_cmake.sh/cmake_libdir/cppad_mixed.pc/$$
+was added to the installation.
 $lend
 
 $head 11-02$$

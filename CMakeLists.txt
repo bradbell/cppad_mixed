@@ -132,7 +132,7 @@ required_definition(for_hes_sparsity BOOL
 # ----------------------------------------------------------------------------
 MESSAGE(STATUS "END:")
 # ----------------------------------------------------------------------------
-# set pkg-config information about gsl, eigen, ipopt
+# set pkg-config information about gsl, eigen3, ipopt, cppad
 FIND_PACKAGE(PkgConfig)
 FOREACH(pkg gsl eigen3 ipopt cppad)
 	pkg_check_modules( ${pkg} QUIET ${pkg} )
@@ -237,6 +237,7 @@ CONFIGURE_FILE(
 )
 # ----------------------------------------------------------------------------
 # subdirectories
+ADD_SUBDIRECTORY(pkgconfig)
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(example)
 ADD_SUBDIRECTORY(test_more)

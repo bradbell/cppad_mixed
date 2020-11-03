@@ -38,6 +38,7 @@
 #	Wshadow
 #	Wconversion
 #	Wpedantic
+#	config
 # &&
 #
 # &section bin/run_cmake.sh: User Configuration Options&&
@@ -92,6 +93,10 @@ extra_cxx_flags='-Wpedantic -std=c++11 -Wall -Wshadow -Wconversion'
 # &codep
 cmake_libdir='lib64'
 # &&
+#
+# &subhead cppad_mixed.pc&&
+# The file pkg-config file &code cppad_mixed.pc&& is installed in the
+# &icode%cmake_install_prefix/cmake_libdir%&& directory.
 #
 # &head ldlt_cholmod&&
 # If yes, use &code ldlt_cholmod&& LDLT factorization where possible.
