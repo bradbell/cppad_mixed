@@ -71,11 +71,11 @@ version.sh check
 echo_eval run_omhelp.sh -xml dev
 echo_eval run_omhelp.sh doc
 # -----------------------------------------------------------------------------
-# cppad_prefix
-cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
+# cmake_install_prefix
+cmd=`grep '^cmake_install_prefix=' bin/run_cmake.sh`
 eval $cmd
 #
-installed_include_dir="$cppad_prefix/include/cppad/mixed"
+installed_include_dir="$cmake_install_prefix/include/cppad/mixed"
 if [ -e "$installed_include_dir" ]
 then
 	echo_eval rm -rf $installed_include_dir

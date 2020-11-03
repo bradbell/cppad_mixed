@@ -207,17 +207,6 @@ done
 # ----------------------------------------------------------------------------
 # cppad_mixed
 # ----------------------------------------------------------------------------
-# Check we can find ipopt.pc, echo PKG_CONFIG_PATH to help user set this value
-dir=`find -L $ipopt_prefix -name 'ipopt.pc' | sed -e 's|/ipopt.pc||'`
-if [ "$dir" == '' ]
-then
-	echo "Cannot find ipopt.pc in $cmake_install_prefix directory"
-	exit 1
-else
-	echo_eval export PKG_CONFIG_PATH="$dir"
-fi
-echo_eval export PYTHONPATH=''
-#
 # bin/run_cmake.sh
 echo "bin/run_cmake.sh 1>> example_install.log 2>> example_install.err"
 bin/run_cmake.sh 1>> ../example_install.log 2>> ../example_install.err

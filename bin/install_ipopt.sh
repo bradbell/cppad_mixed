@@ -47,7 +47,7 @@ cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
 eval $cmd
 #
 # ipopt_prefix
-ipopt_prefix="$cppad_prefix"
+ipopt_prefix="$cmake_install_prefix"
 # --------------------------------------------------------------------------
 # set links for this build_type
 if echo "$ipopt_prefix" | grep '/cppad_mixed$' > /dev/null
