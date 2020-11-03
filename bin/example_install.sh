@@ -58,9 +58,8 @@ eval $cmd
 cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
 eval $cmd
 #
-# set ipopt_prefix to value in run_cmake.sh
-cmd=`grep '^ipopt_prefix=' bin/run_cmake.sh`
-eval $cmd
+# ipopt_prefix
+ipopt_prefix="$cppad_prefix"
 # --------------------------------------------------------------------------
 # remove old version of example_install.log and example_install.err
 for ext in log err
@@ -212,7 +211,7 @@ done
 dir=`find -L $ipopt_prefix -name 'ipopt.pc' | sed -e 's|/ipopt.pc||'`
 if [ "$dir" == '' ]
 then
-	echo "Cannot find ipopt.pc in $ipopt_prefix directory"
+	echo "Cannot find ipopt.pc in $cppad_prefix directory"
 	exit 1
 else
 	echo_eval export PKG_CONFIG_PATH="$dir"

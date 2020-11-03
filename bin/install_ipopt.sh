@@ -38,13 +38,16 @@ version_list=( \
 cmd=`grep '^build_type=' bin/run_cmake.sh`
 eval $cmd
 #
-# ipopt_prefix
-cmd=`grep '^ipopt_prefix=' bin/run_cmake.sh`
+# cppad_prefix
+cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
 eval $cmd
 #
 # cmake_libdir
 cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
 eval $cmd
+#
+# ipopt_prefix
+ipopt_prefix="$cppad_prefix"
 # --------------------------------------------------------------------------
 # set links for this build_type
 if echo "$ipopt_prefix" | grep '/cppad_mixed$' > /dev/null

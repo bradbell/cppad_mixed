@@ -55,7 +55,7 @@ build_type='debug'
 # &&
 #
 # &head cppad_prefix&&
-# Prefix where cppad is installed and where
+# Prefix where cppad, cppad_mixed, and ipopt are installed.
 # cppad_mixed will be installed:
 # &codep
 cppad_prefix="$HOME/prefix/cppad_mixed"
@@ -82,20 +82,6 @@ eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
 # The default &icode eigen_prefix&& is different from the other prefixes
 # because compiler warning for this directory are suppress and we want
 # compiler warnings for the rest of the source code.
-#
-# &head ipopt_prefix&&
-# The prefix where
-# &cref/ipopt/install_unix/Special Requirements/Ipopt/&&
-# is installed:
-# &codep
-ipopt_prefix="$HOME/prefix/cppad_mixed"
-# &&
-# If this prefix end in &code /cppad_mixed&&,
-# &code bin/install_ipopt.sh&&,
-# will use a soft link from &icode ipopt_prefix&& to
-# &icode%ipopt_prefix%.debug%&& or
-# &icode%ipopt_prefix%.release%&&
-# depending on the choice for &icode build_type&&.
 #
 # &head Debug and Release&&
 # If a soft link is used for the install,
@@ -210,7 +196,6 @@ EOF
 	then
 		cppad_prefix="$HOME/prefix/dismod_at"
 		eigen_prefix="$HOME/prefix/dismod_at/eigen"
-		ipopt_prefix="$HOME/prefix/dismod_at"
 	else
 		echo "'$1' is an invalid option"
 		bin/run_cmake.sh --help
@@ -227,7 +212,6 @@ if echo "$cppad_prefix" | grep '/dismod_at$' > /dev/null
 then
 	bin/build_type.sh run_cmake $cppad_prefix $build_type
 fi
-export PKG_CONFIG_PATH=$ipopt_prefix/$cmake_libdir/pkgconfig
 # --------------------------------------------------------------------------
 if [ ! -e build ]
 then
@@ -248,7 +232,6 @@ cmake \
 	-D CMAKE_BUILD_TYPE=$build_type \
 	\
 	-D cppad_prefix="$cppad_prefix" \
-	-D ipopt_prefix="$ipopt_prefix" \
 	-D eigen_prefix="$eigen_prefix" \
 	\
 	-D extra_cxx_flags="$extra_cxx_flags" \

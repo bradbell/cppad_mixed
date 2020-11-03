@@ -116,43 +116,29 @@ This discussion is intended to help with the install of the
 special requirements below.
 
 $subhead PKG_CONFIG_PATH$$
-After $code gsl$$ is installed
+For $icode pkg$$ equal to $code gsl$$ and $code ipopt$$,
 the following command should work:
 $codep%
-	pkg-config gsl     --libs
+	pkg-config %pkg% --libs
 %$$
-If it fails, a corresponding directory is missing
+If it fails, the corresponding directory is missing
 from the $code PKG_CONFIG_PATH$$ environment variable.
-If $icode prefix$$ is the prefix where $code gsl$$ was installed,
+If $icode prefix$$ is the prefix where $code pkg$$ was installed,
 the command
 $codei%
-	find -L %prefix% -name gsl.pc 2> /dev/null
+	find -L %prefix% -name %pkg%.pc 2> /dev/null
 %$$
-should find the directory where $code gsl.pc$$ is located.
-After $code ipopt$$ is installed (see below),
-the following command should work:
-$codep%
-	pkg-config ipopt --libs
-%$$
-If it fails,
-the command
-$codei%
-	find -L %ipopt_prefix% -name ipopt.pc 2> /dev/null
-%$$
-should find the directory where $code ipopt.pc$$ is located;
-see $cref/ipopt_prefix/run_cmake.sh/ipopt_prefix/$$.
+can be used to find the directory where $code %pkg%.pc$$ is located.
 
 $subhead LD_LIBRARY_PATH$$
-After $code ipopt$$ is installed,
-the directory where it's libraries are installed should be in your
-$code LD_LIBRARY_PATH$$.
 If you get an error finding loading the shared library corresponding
 to ipopt, use the following command to find it:
 $codei%
-	find -L %ipopt_prefix% -name 'libipopt.*' 2> /dev/null
+	pkg-config ipopt --libs
 %$$
-see $cref/ipopt_prefix/run_cmake.sh/ipopt_prefix/$$.
-
+The directory specified after the $code -L$$ flag should be in your
+$code LD_LIBRARY_PATH$$.
+(On macOS, the path is $code DYLD_LIBRARY_PATH$$)
 
 $head Special Requirements$$
 The packages listed below are required by cppad_mixed

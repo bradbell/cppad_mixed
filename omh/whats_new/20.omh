@@ -25,6 +25,10 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
+$head 11-02$$
+Remove $icode ipopt_prefix$$ from $cref run_cmake.sh$$,
+ipopt gets installed with the same prefix as cppad and cppad_mixed.
+
 $head 10-31$$
 Extend $cref example_install.sh$$ so that it handles mac OS use
 $href%https://brew.sh/%brew%$$.
@@ -64,7 +68,7 @@ being used where the inverse permutation was required.
 $head 08-21$$
 The following improvements we made to the install process:
 $list number$$
-Fix the check of $cref/ipopt_prefix/run_cmake.sh/ipopt_prefix/$$
+Fix the check of $icode ipopt_prefix$$
 in $code bin/example_install.sh$$.
 $lnext
 Fix $code bin/install_eigen.sh$$ because eigen

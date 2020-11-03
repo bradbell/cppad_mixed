@@ -35,10 +35,6 @@ eval $cmd
 cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
 eval $cmd
 #
-# ipopt_prefix
-cmd=`grep '^ipopt_prefix=' bin/run_cmake.sh`
-eval $cmd
-#
 # extra_cxx_flags
 cmd=`grep '^extra_cxx_flags=' bin/run_cmake.sh`
 eval $cmd
@@ -46,6 +42,9 @@ eval $cmd
 # cmake_libdir
 cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
 eval $cmd
+#
+# ipopt_prefix
+ipopt_prefix="$cppad_prefix"
 # --------------------------------------------------------------------------
 if echo "$cppad_prefix" | grep '/cppad_mixed$' > /dev/null
 then

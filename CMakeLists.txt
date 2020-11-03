@@ -15,7 +15,6 @@
 #                        -D CMAKE_BUILD_TYPE=value \
 # prefixes:              -D cppad_prefix=value \
 #                        -D eigen_prefix=value \
-#                        -D ipopt_prefix=value \
 # required variables:    -D extra_cxx_flags=value \
 #                        -D cmake_libdir=value \
 #                        -D ldlt_cholmod=value \
@@ -152,6 +151,7 @@ FOREACH( var
 	use_atomic_cholesky
 	hide_ipopt_scaling
 	checkpoint_newton_step
+	ipopt_prefix
 )
 	IF( DEFINED ${var})
 		MESSAGE(FATAL_ERROR "${var} cmake option is no longer used")
@@ -169,7 +169,6 @@ ENDIF( NOT "${log_fatal_error}" STREQUAL ""  )
 # get package prefixes
 get_prefix(cppad)
 get_prefix(eigen)
-get_prefix(ipopt)
 # ----------------------------------------------------------------------------
 required_definition( extra_cxx_flags STRING
 	"extra flags used by C++ compiler (debug and release are automatic)"
