@@ -127,14 +127,6 @@ must be installed.
 The <a href="http://www.freedesktop.org/wiki/Software/pkg-config/" target="_top"><span style='white-space: nowrap'>pkg-config</span></a>
 
 program must be installed.
-After <code><font color="blue">gsl</font></code> and <code><font color="blue">ipopt</font></code> are installed
-(see below), the following commands should work:
-<code><font color='blue'><pre style='display:inline'> 
-     pkg-config gsl     --libs
-     pkg-config ipopt   --libs
-</pre></font></code>
-If one of them fails, a corresponding directory is missing
-from the <code><font color="blue">PKG_CONFIG_PATH</font></code> environment variable.
 
 <br>
 <br>
@@ -203,61 +195,44 @@ and check its version number, using the commands:
 </span></font></code>
 <br>
 <b><big><a name="Paths" id="Paths">Paths</a></big></b>
-<br>
-This discussion is intended to help with the install of the
-special requirements below.
+
 
 <br>
 <br>
 <big><a name="Paths.PKG_CONFIG_PATH" id="Paths.PKG_CONFIG_PATH">PKG_CONFIG_PATH</a></big>
 <br>
-After <code><font color="blue">gsl</font></code> is installed
-the following command should work:
+For 
+<code><i><font color="black"><span style='white-space: nowrap'>pkg</span></font></i></code>
+ equal to <code><font color="blue">gsl</font></code>, <code><font color="blue">eigen</font></code>, <code><font color="blue">ipopt</font></code> and
+<code><font color="blue">cppad</font></code>, the following command should work:
 <code><font color='blue'><pre style='display:inline'> 
-     pkg-config gsl     --libs
+     pkg-config %pkg% --libs
 </pre></font></code>
-If it fails, a corresponding directory is missing
+If it fails, the corresponding directory is missing
 from the <code><font color="blue">PKG_CONFIG_PATH</font></code> environment variable.
 If 
 <code><i><font color="black"><span style='white-space: nowrap'>prefix</span></font></i></code>
- is the prefix where <code><font color="blue">gsl</font></code> was installed,
+ is the prefix where <code><font color="blue">pkg</font></code> was installed,
 the command
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;find&nbsp;-L&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;-name&nbsp;gsl.pc&nbsp;2&gt;&nbsp;/dev/null<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;find&nbsp;-L&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;-name&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>pkg</span></font></i><font color="blue"><span style='white-space: nowrap'>.pc&nbsp;2&gt;&nbsp;/dev/null<br>
 </span></font></code>
-should find the directory where <code><font color="blue">gsl.pc</font></code> is located.
-After <code><font color="blue">ipopt</font></code> is installed (see below),
-the following command should work:
-<code><font color='blue'><pre style='display:inline'> 
-     pkg-config ipopt --libs
-</pre></font></code>
-If it fails,
-the command
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;find&nbsp;-L&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ipopt_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;-name&nbsp;ipopt.pc&nbsp;2&gt;&nbsp;/dev/null<br>
-</span></font></code>
-should find the directory where <code><font color="blue">ipopt.pc</font></code> is located;
-see <a href="run_cmake.sh.htm#ipopt_prefix" target="_top"><span style='white-space: nowrap'>ipopt_prefix</span></a>
-.
+can be used to find the directory where <code><font color="blue">%pkg%.pc</font></code> is located.
 
 <br>
 <br>
 <big><a name="Paths.LD_LIBRARY_PATH" id="Paths.LD_LIBRARY_PATH">LD_LIBRARY_PATH</a></big>
 <br>
-After <code><font color="blue">ipopt</font></code> is installed,
-the directory where it's libraries are installed should be in your
-<code><font color="blue">LD_LIBRARY_PATH</font></code>.
 If you get an error finding loading the shared library corresponding
 to ipopt, use the following command to find it:
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;find&nbsp;-L&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>ipopt_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;-name&nbsp;'libipopt.*'&nbsp;2&gt;&nbsp;/dev/null<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pkg-config&nbsp;ipopt&nbsp;--libs<br>
 </span></font></code>
-see <a href="run_cmake.sh.htm#ipopt_prefix" target="_top"><span style='white-space: nowrap'>ipopt_prefix</span></a>
-.
-
+The directory specified after the <code><font color="blue">-L</font></code> flag should be in your
+<code><font color="blue">LD_LIBRARY_PATH</font></code>.
+(On macOS, the path is <code><font color="blue">DYLD_LIBRARY_PATH</font></code>)
 
 <br>
 <br>
@@ -267,8 +242,8 @@ The packages listed below are required by cppad_mixed
 and may not have standard system installs.
 The 
 <code><font color="blue"><span style='white-space: nowrap'>install_</span></font><i><font color="black"><span style='white-space: nowrap'>package</span></font></i></code>
- scripts below should be run
-in the order that they appear.
+ scripts below can be used to install them.
+If so, they should be executed in the order that they appear.
 
 <br>
 <br>

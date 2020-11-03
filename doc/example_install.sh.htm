@@ -113,13 +113,12 @@ will be used (takes less time).
 <font color="#009900">cmd</font><font color="#990000">=</font>`grep <font color="#FF0000">'^build_type='</font> bin/run_cmake<font color="#990000">.</font>sh`
 <b><font color="#0000FF">eval</font></b> <font color="#009900">$cmd</font>
 <i><font color="#9A1900">#</font></i>
-<i><font color="#9A1900"># set cppad_prefix to value in run_cmake.sh</font></i>
-<font color="#009900">cmd</font><font color="#990000">=</font>`grep <font color="#FF0000">'^cppad_prefix='</font> bin/run_cmake<font color="#990000">.</font>sh`
+<i><font color="#9A1900"># set cmake_install_prefix to value in run_cmake.sh</font></i>
+<font color="#009900">cmd</font><font color="#990000">=</font>`grep <font color="#FF0000">'^cmake_install_prefix='</font> bin/run_cmake<font color="#990000">.</font>sh`
 <b><font color="#0000FF">eval</font></b> <font color="#009900">$cmd</font>
 <i><font color="#9A1900">#</font></i>
-<i><font color="#9A1900"># set ipopt_prefix to value in run_cmake.sh</font></i>
-<font color="#009900">cmd</font><font color="#990000">=</font>`grep <font color="#FF0000">'^ipopt_prefix='</font> bin/run_cmake<font color="#990000">.</font>sh`
-<b><font color="#0000FF">eval</font></b> <font color="#009900">$cmd</font>
+<i><font color="#9A1900"># ipopt_prefix</font></i>
+<font color="#009900">ipopt_prefix</font><font color="#990000">=</font><font color="#FF0000">"$cmake_install_prefix"</font>
 <i><font color="#9A1900"># --------------------------------------------------------------------------</font></i>
 <i><font color="#9A1900"># remove old version of example_install.log and example_install.err</font></i>
 <b><font color="#0000FF">for</font></b> ext <b><font color="#0000FF">in</font></b> log err
@@ -131,9 +130,9 @@ will be used (takes less time).
 <b><font color="#0000FF">done</font></b>
 <i><font color="#9A1900"># --------------------------------------------------------------------------</font></i>
 <i><font color="#9A1900"># set build link to build.debug or build.release depending on build_type</font></i>
-<b><font color="#0000FF">if</font></b> echo <font color="#FF0000">"$cppad_prefix"</font> <font color="#990000">|</font> grep <font color="#FF0000">'/cppad_mixed$'</font> <font color="#990000">&gt;</font> /dev/null
+<b><font color="#0000FF">if</font></b> echo <font color="#FF0000">"$cmake_install_prefix"</font> <font color="#990000">|</font> grep <font color="#FF0000">'/cppad_mixed$'</font> <font color="#990000">&gt;</font> /dev/null
 <b><font color="#0000FF">then</font></b>
-     bin/build_type<font color="#990000">.</font>sh example_install<font color="#990000">.</font>sh <font color="#009900">$cppad_prefix</font> <font color="#009900">$build_type</font>
+     bin/build_type<font color="#990000">.</font>sh example_install<font color="#990000">.</font>sh <font color="#009900">$cmake_install_prefix</font> <font color="#009900">$build_type</font>
 <b><font color="#0000FF">fi</font></b>
 <i><font color="#9A1900"># -----------------------------------------------------------------------------</font></i>
 <i><font color="#9A1900"># set system_type, system_list, and system_install</font></i>
@@ -152,6 +151,11 @@ will be used (takes less time).
      <font color="#009900">system_type</font><font color="#990000">=</font><font color="#FF0000">'red_hat'</font>
      <font color="#009900">system_list</font><font color="#990000">=</font><font color="#FF0000">'yum list installed'</font>
      <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">'sudo yum install -y'</font>
+<b><font color="#0000FF">elif</font></b> which brew <font color="#990000">&gt;&amp;</font> /dev/null
+<b><font color="#0000FF">then</font></b>
+    <font color="#009900">system_type</font><font color="#990000">=</font><font color="#FF0000">'macos'</font>
+    <font color="#009900">system_list</font><font color="#990000">=</font><font color="#FF0000">'brew list'</font>
+    <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">'brew install'</font>
 <b><font color="#0000FF">else</font></b>
      echo <font color="#FF0000">'Cannot find the system pakcage manager'</font>
      <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
@@ -173,8 +177,21 @@ will be used (takes less time).
 <font color="#FF0000">          gfortran</font>
 <font color="#FF0000">          libgsl0-dev</font>
 <font color="#FF0000">     '</font>
-<b><font color="#0000FF">else</font></b>
+<b><font color="#0000FF">elif</font></b> <font color="#990000">[</font> <font color="#FF0000">"$system_type"</font> <font color="#990000">==</font> <font color="#FF0000">'macos'</font> <font color="#990000">]</font>
+<b><font color="#0000FF">then</font></b>
      <font color="#009900">list</font><font color="#990000">=</font><font color="#FF0000">'</font>
+<font color="#FF0000">          cmake</font>
+<font color="#FF0000">          wget</font>
+<font color="#FF0000">          lapack</font>
+<font color="#FF0000">          suitesparse</font>
+<font color="#FF0000">          pkg-config</font>
+<font color="#FF0000">          gcc</font>
+<font color="#FF0000">          gsl</font>
+<font color="#FF0000">        java</font>
+<font color="#FF0000">     '</font>
+<b><font color="#0000FF">elif</font></b> <font color="#990000">[</font> <font color="#FF0000">"$system_type"</font> <font color="#990000">==</font> <font color="#FF0000">'red_hat'</font> <font color="#990000">]</font>
+<b><font color="#0000FF">then</font></b>
+    <font color="#009900">list</font><font color="#990000">=</font><font color="#FF0000">'</font>
 <font color="#FF0000">          cmake</font>
 <font color="#FF0000">          git</font>
 <font color="#FF0000">          wget</font>
@@ -185,7 +202,13 @@ will be used (takes less time).
 <font color="#FF0000">          gcc-c++</font>
 <font color="#FF0000">          gcc-gfortran</font>
 <font color="#FF0000">          gsl-devel</font>
-<font color="#FF0000">     '</font>
+<font color="#FF0000">        java</font>
+<font color="#FF0000">    '</font>
+    <i><font color="#9A1900"># make sure Ipopt configure sees brew version of javac (not /usr/bin/javac)</font></i>
+    <font color="#009900">PATH</font><font color="#990000">=</font><font color="#FF0000">"/usr/local/opt/openjdk/bin:$PATH"</font>
+<b><font color="#0000FF">else</font></b>
+    echo <font color="#FF0000">'example_install.sh: script error'</font>
+    <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
 <b><font color="#0000FF">fi</font></b>
 <b><font color="#0000FF">for</font></b> package <b><font color="#0000FF">in</font></b> <font color="#009900">$list</font>
 <b><font color="#0000FF">do</font></b>
@@ -205,7 +228,7 @@ rm example_install<font color="#990000">.</font>tmp
      <i><font color="#9A1900"># eval below converts $HOME in $prefix to its value for current user</font></i>
      <b><font color="#0000FF">case</font></b> <font color="#009900">$pkg</font> <b><font color="#0000FF">in</font></b>
           eigen<font color="#990000">)</font>
-          <b><font color="#0000FF">eval</font></b> <font color="#009900">file</font><font color="#990000">=</font><font color="#FF0000">"$cppad_prefix/eigen/include/Eigen/Core"</font>
+          <b><font color="#0000FF">eval</font></b> <font color="#009900">file</font><font color="#990000">=</font><font color="#FF0000">"$cmake_install_prefix/eigen/include/Eigen/Core"</font>
           <font color="#990000">;;</font>
 
           ipopt<font color="#990000">)</font>
@@ -213,7 +236,7 @@ rm example_install<font color="#990000">.</font>tmp
           <font color="#990000">;;</font>
 
           cppad<font color="#990000">)</font>
-          <b><font color="#0000FF">eval</font></b> <font color="#009900">file</font><font color="#990000">=</font><font color="#FF0000">"$cppad_prefix/include/cppad/cppad.hpp"</font>
+          <b><font color="#0000FF">eval</font></b> <font color="#009900">file</font><font color="#990000">=</font><font color="#FF0000">"$cmake_install_prefix/include/cppad/cppad.hpp"</font>
           <font color="#990000">;;</font>
 
           <font color="#990000">*)</font>
@@ -236,8 +259,8 @@ rm example_install<font color="#990000">.</font>tmp
      <font color="#009900">p</font><font color="#990000">=</font><font color="#FF0000">'example_install'</font>
      <b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$install"</font> <font color="#990000">==</font> <font color="#FF0000">'true'</font> <font color="#990000">]</font>
      <b><font color="#0000FF">then</font></b>
-          echo <font color="#FF0000">"bin/install_$pkg.sh $build_type 1&gt;&gt; $p.log 2&gt;&gt; $p.err"</font>
-          bin/install_<font color="#009900">$pkg</font><font color="#990000">.</font>sh <font color="#009900">$build_type</font> <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> <font color="#009900">$p</font><font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> <font color="#009900">$p</font><font color="#990000">.</font>err
+          echo <font color="#FF0000">"bin/install_$pkg.sh 1&gt;&gt; $p.log 2&gt;&gt; $p.err"</font>
+          bin/install_<font color="#009900">$pkg</font><font color="#990000">.</font>sh <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> <font color="#009900">$p</font><font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> <font color="#009900">$p</font><font color="#990000">.</font>err
      <b><font color="#0000FF">fi</font></b>
 <b><font color="#0000FF">done</font></b>
 <i><font color="#9A1900"># ----------------------------------------------------------------------------</font></i>
@@ -247,7 +270,7 @@ rm example_install<font color="#990000">.</font>tmp
 <font color="#009900">dir</font><font color="#990000">=</font>`find -L <font color="#009900">$ipopt_prefix</font> -name <font color="#FF0000">'ipopt.pc'</font> <font color="#990000">|</font> sed -e <font color="#FF0000">'s|/ipopt.pc||'</font>`
 <b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$dir"</font> <font color="#990000">==</font> <font color="#FF0000">''</font> <font color="#990000">]</font>
 <b><font color="#0000FF">then</font></b>
-     echo <font color="#FF0000">"Cannot find ipopt.pc in $ipopt_prefix directory"</font>
+     echo <font color="#FF0000">"Cannot find ipopt.pc in $cmake_install_prefix directory"</font>
      <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
 <b><font color="#0000FF">else</font></b>
      echo_eval <b><font color="#0000FF">export</font></b> <font color="#009900">PKG_CONFIG_PATH</font><font color="#990000">=</font><font color="#FF0000">"$dir"</font>

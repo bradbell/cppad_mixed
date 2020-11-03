@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>bin/run_cmake.sh: User Configuration Options</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="bin/run_cmake.sh: User Configuration Options">
-<meta name="keywords" id="keywords" content=" bin/run_cmake.sh: user configuration options verbose_makefile build_type cppad_prefix eigen_prefix ipopt_prefix debug release extra_cxx_flags cmake_libdir ldlt_cholmod optimize_cppad_function for_hes_sparsity testing speed memory ">
+<meta name="keywords" id="keywords" content=" bin/run_cmake.sh: user configuration options verbose_makefile build_type cmake_install_prefix debug release eigen prefix extra_cxx_flags cmake_libdir ldlt_cholmod optimize_cppad_function for_hes_sparsity testing speed memory ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -65,10 +65,9 @@ A:active { color : purple }
 
 <br><a href="run_cmake.sh.htm#verbose_makefile" target="_top">verbose_makefile</a>
 <br><a href="run_cmake.sh.htm#build_type" target="_top">build_type</a>
-<br><a href="run_cmake.sh.htm#cppad_prefix" target="_top">cppad_prefix</a>
-<br><a href="run_cmake.sh.htm#eigen_prefix" target="_top">eigen_prefix</a>
-<br><a href="run_cmake.sh.htm#ipopt_prefix" target="_top">ipopt_prefix</a>
+<br><a href="run_cmake.sh.htm#cmake_install_prefix" target="_top">cmake_install_prefix</a>
 <br><a href="run_cmake.sh.htm#Debug and Release" target="_top">Debug&nbsp;and&nbsp;Release</a>
+<br><a href="run_cmake.sh.htm#Eigen Prefix" target="_top">Eigen&nbsp;Prefix</a>
 <br><a href="run_cmake.sh.htm#extra_cxx_flags" target="_top">extra_cxx_flags</a>
 <br><a href="run_cmake.sh.htm#cmake_libdir" target="_top">cmake_libdir</a>
 <br><a href="run_cmake.sh.htm#ldlt_cholmod" target="_top">ldlt_cholmod</a>
@@ -90,79 +89,21 @@ Use either 'debug' or 'release' for the type of this build:
 build_type='debug'
 </pre></font></code>
 <br>
-<b><big><a name="cppad_prefix" id="cppad_prefix">cppad_prefix</a></big></b>
+<b><big><a name="cmake_install_prefix" id="cmake_install_prefix">cmake_install_prefix</a></big></b>
 <br>
-Prefix where cppad is installed and where
-cppad_mixed will be installed:
+Prefix where cppad_mixed is installed:
 <code><font color='blue'><pre style='display:inline'> 
-cppad_prefix=&quot;$HOME/prefix/cppad_mixed&quot;
+cmake_install_prefix=&quot;$HOME/prefix/cppad_mixed&quot;
 </pre></font></code>
 If 
-<code><i><font color="black"><span style='white-space: nowrap'>cppad_prefix</span></font></i></code>
+<code><i><font color="black"><span style='white-space: nowrap'>cmake_install_prefix</span></font></i></code>
  ends in <code><font color="blue">/cppad_mixed</font></code>,
 <code><font color="blue">run_cmake.sh</font></code> will use a soft link from this prefix to
 
-<code><i><font color="black"><span style='white-space: nowrap'>cppad_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.debug</span></font></code>
+<code><i><font color="black"><span style='white-space: nowrap'>cmake_install_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.debug</span></font></code>
  or
 
-<code><i><font color="black"><span style='white-space: nowrap'>cppad_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.release</span></font></code>
-
-depending on the choice for 
-<code><i><font color="black"><span style='white-space: nowrap'>build_type</span></font></i></code>
-.
-
-<br>
-<br>
-<b><big><a name="eigen_prefix" id="eigen_prefix">eigen_prefix</a></big></b>
-<br>
-Prefix where
-<a href="install_unix.htm#Special Requirements.eigen" target="_top"><span style='white-space: nowrap'>eigen</span></a>
-
-is installed:
-<code><font color='blue'><pre style='display:inline'> 
-eigen_prefix=&quot;$HOME/prefix/cppad_mixed/eigen&quot;
-</pre></font></code>
-If this prefix ends in <code><font color="blue">/cppad_mixed/eigen</font></code>,
-<code><font color="blue">bin/install_eigen.sh</font></code> will use a soft link from
-
-<code><font color="blue"><span style='white-space: nowrap'>../</span></font><i><font color="black"><span style='white-space: nowrap'>eigen_prefix</span></font></i></code>
- to
-
-<code><font color="blue"><span style='white-space: nowrap'>../</span></font><i><font color="black"><span style='white-space: nowrap'>eigen_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.debug</span></font></code>
- or
-
-<code><font color="blue"><span style='white-space: nowrap'>../</span></font><i><font color="black"><span style='white-space: nowrap'>eigen_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.release</span></font></code>
-
-depending on the choice for 
-<code><i><font color="black"><span style='white-space: nowrap'>build_type</span></font></i></code>
-.
-The default 
-<code><i><font color="black"><span style='white-space: nowrap'>eigen_prefix</span></font></i></code>
- is different from the other prefixes
-because compiler warning for this directory are suppress and we want
-compiler warnings for the rest of the source code.
-
-<br>
-<br>
-<b><big><a name="ipopt_prefix" id="ipopt_prefix">ipopt_prefix</a></big></b>
-<br>
-The prefix where
-<a href="install_unix.htm#Special Requirements.Ipopt" target="_top"><span style='white-space: nowrap'>ipopt</span></a>
-
-is installed:
-<code><font color='blue'><pre style='display:inline'> 
-ipopt_prefix=&quot;$HOME/prefix/cppad_mixed&quot;
-</pre></font></code>
-If this prefix end in <code><font color="blue">/cppad_mixed</font></code>,
-<code><font color="blue">bin/install_ipopt.sh</font></code>,
-will use a soft link from 
-<code><i><font color="black"><span style='white-space: nowrap'>ipopt_prefix</span></font></i></code>
- to
-
-<code><i><font color="black"><span style='white-space: nowrap'>ipopt_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.debug</span></font></code>
- or
-
-<code><i><font color="black"><span style='white-space: nowrap'>ipopt_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.release</span></font></code>
+<code><i><font color="black"><span style='white-space: nowrap'>cmake_install_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>.release</span></font></code>
 
 depending on the choice for 
 <code><i><font color="black"><span style='white-space: nowrap'>build_type</span></font></i></code>
@@ -180,6 +121,18 @@ both versions of the
 <a href="install_unix.htm#Special Requirements" target="_top"><span style='white-space: nowrap'>special&nbsp;requirements</span></a>
 
 will need to be installed.
+
+<br>
+<br>
+<b><big><a name="Eigen Prefix" id="Eigen Prefix">Eigen Prefix</a></big></b>
+<br>
+It is a good idea to use a different prefix for installing eigen
+because the corresponding include files are treated like system files,
+otherwise the eigen include files would generate lots of warnings.
+The example install script <code><font color="blue">bin/install_eigen.sh</font></code> uses
+
+<code><i><font color="black"><span style='white-space: nowrap'>cmake_install_prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>/eigen</span></font></code>
+ as the prefix for installing eigen.
 
 <br>
 <br>

@@ -103,12 +103,10 @@ eval $cmd
 Get the <a href="run_cmake.sh.htm" target="_top"><span style='white-space: nowrap'>prefixes</span></a>
  used during the install:
 <code><font color='blue'><pre style='display:inline'> 
-cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
+cmd=`grep '^cmake_install_prefix=' bin/run_cmake.sh`
 eval $cmd
-cmd=`grep '^eigen_prefix=' bin/run_cmake.sh`
-eval $cmd
-cmd=`grep '^ipopt_prefix=' bin/run_cmake.sh`
-eval $cmd
+eigen_prefix=&quot;$cmake_install_prefix/eigen&quot;
+ipopt_prefix=&quot;$cmake_install_prefix&quot;
 </pre></font></code>
 <br>
 <b><big><a name="cmake_libdir" id="cmake_libdir">cmake_libdir</a></big></b>
@@ -211,9 +209,7 @@ ipopt_libs=`pkg-config --libs ipopt`
 The following command sets the library link flags necessary
 to link <code><font color="blue">SuiteSparse</font></code> on this system:
 <code><font color='blue'><pre style='display:inline'> 
-suitesparse_libs='
-     -lcholmod -lamd -lcamd -lcolamd -lccolamd -lsuitesparseconfig
-'
+suitesparse_libs='-lcholmod -lamd -lcamd -lcolamd -lccolamd -lsuitesparseconfig'
 </pre></font></code>
 <br>
 <b><big><a name="Compile and Link" id="Compile and Link">Compile and Link</a></big></b>
@@ -229,11 +225,22 @@ then
 else
      flags='-O3 -DNDEBUG -std=c++11 -Wall'
 fi
+cat &lt;&lt; EOF
+g++ example.cpp \\
+     $flags \\
+     -I $cmake_install_prefix/include \\
+     -isystem $eigen_prefix/include \\
+     -L $cmake_install_prefix/$cmake_libdir -lcppad_mixed \\
+     $gsl_libs \\
+     $suitesparse_libs \\
+     $ipopt_libs \\
+     -o example
+EOF
 g++ example.cpp \
      $flags \
-     -I $cppad_prefix/include \
+     -I $cmake_install_prefix/include \
      -isystem $eigen_prefix/include \
-     -L $cppad_prefix/$cmake_libdir -lcppad_mixed \
+     -L $cmake_install_prefix/$cmake_libdir -lcppad_mixed \
      $gsl_libs \
      $suitesparse_libs \
      $ipopt_libs \

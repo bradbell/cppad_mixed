@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2020</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2020">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2020 10-06 08-31 08-21 07-02 06-30 06-07 05-30 05-29 05-27 03-28 03-25 03-23 03-22 03-18 03-15 api change ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2020 11-03 11-02 10-31 10-21 10-10 10-06 08-31 08-21 07-02 06-30 06-07 05-30 05-29 05-27 03-28 03-25 03-23 03-22 03-18 03-15 api change ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -66,6 +66,11 @@ A:active { color : purple }
 
 <center><b><big><big>Changes and Additions to cppad_mixed During 2020</big></big></b></center>
 
+<br><a href="whats_new_20.htm#11-03" target="_top">11-03</a>
+<br><a href="whats_new_20.htm#11-02" target="_top">11-02</a>
+<br><a href="whats_new_20.htm#10-31" target="_top">10-31</a>
+<br><a href="whats_new_20.htm#10-21" target="_top">10-21</a>
+<br><a href="whats_new_20.htm#10-10" target="_top">10-10</a>
 <br><a href="whats_new_20.htm#10-06" target="_top">10-06</a>
 <br><a href="whats_new_20.htm#08-31" target="_top">08-31</a>
 <br><a href="whats_new_20.htm#08-21" target="_top">08-21</a>
@@ -83,6 +88,66 @@ A:active { color : purple }
 <br><a href="whats_new_20.htm#03-15" target="_top">03-15</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="whats_new_20.htm#03-15.API Change" target="_top">API&nbsp;Change</a>
 <br><br>
+<b><big><a name="11-03" id="11-03">11-03</a></big></b>
+
+<ol type="1"><li>
+Change 
+<code><i><font color="black"><span style='white-space: nowrap'>cppad_prefix</span></font></i></code>
+ to
+<a href="run_cmake.sh.htm#cmake_install_prefix" target="_top"><span style='white-space: nowrap'>cmake_install_prefix</span></a>
+.
+</li><li>
+
+Remove 
+<code><i><font color="black"><span style='white-space: nowrap'>eigen_prefix</span></font></i></code>
+ from <a href="run_cmake.sh.htm" target="_top"><span style='white-space: nowrap'>run_cmake.sh</span></a>
+.
+The example install script <code><font color="blue">bin/install_eigen.sh</font></code> uses the prefix
+
+<code><i><font color="black"><span style='white-space: nowrap'>cmake_install_prefix/eigen</span></font></i></code>
+ to install ipopt.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="11-02" id="11-02">11-02</a></big></b>
+<br>
+Remove 
+<code><i><font color="black"><span style='white-space: nowrap'>ipopt_prefix</span></font></i></code>
+ from <a href="run_cmake.sh.htm" target="_top"><span style='white-space: nowrap'>run_cmake.sh</span></a>
+.
+The example <code><font color="blue">bin/install_ipopt.sh</font></code> uses the prefix
+<a href="run_cmake.sh.htm#cmake_install_prefix" target="_top"><span style='white-space: nowrap'>cmake_install_prefix</span></a>
+
+to install ipopt.
+
+<br>
+<br>
+<b><big><a name="10-31" id="10-31">10-31</a></big></b>
+<br>
+Extend <a href="example_install.sh.htm" target="_top"><span style='white-space: nowrap'>example_install.sh</span></a>
+ so that it handles mac OS use
+<a href="https://brew.sh/" target="_top"><span style='white-space: nowrap'>brew</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="10-21" id="10-21">10-21</a></big></b>
+<br>
+Advance to cppad-20201021
+(this fixes a warning on some compilers).
+
+<br>
+<br>
+<b><big><a name="10-10" id="10-10">10-10</a></big></b>
+<br>
+Fix a problem with <code><font color="blue">bin/install_ipopt.sh</font></code>.
+To be specific, it needs to run <code><font color="blue">get.ASL</font></code> and <code><font color="blue">get.Mumps</font></code>
+to get supplements to the ASL and Mumps git repositories.
+
+<br>
+<br>
 <b><big><a name="10-06" id="10-06">10-06</a></big></b>
 
 <ol type="1"><li>
@@ -121,7 +186,8 @@ being used where the inverse permutation was required.
 <br>
 The following improvements we made to the install process:
 <ol type="1"><li>
-Fix the check of <a href="run_cmake.sh.htm#ipopt_prefix" target="_top"><span style='white-space: nowrap'>ipopt_prefix</span></a>
+Fix the check of 
+<code><i><font color="black"><span style='white-space: nowrap'>ipopt_prefix</span></font></i></code>
 
 in <code><font color="blue">bin/example_install.sh</font></code>.
 </li><li>
