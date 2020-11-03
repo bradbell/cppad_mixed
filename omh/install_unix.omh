@@ -106,8 +106,8 @@ $codei%
 $head Paths$$
 
 $subhead PKG_CONFIG_PATH$$
-For $icode pkg$$ equal to $code gsl$$, $code eigen$$, and $code ipopt$$,
-the following command should work:
+For $icode pkg$$ equal to $code gsl$$, $code eigen$$, $code ipopt$$ and
+$code cppad$$, the following command should work:
 $codep%
 	pkg-config %pkg% --libs
 %$$

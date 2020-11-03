@@ -22,30 +22,6 @@
 # ============================================================================
 # Macro definitions
 # ============================================================================
-# get_prefix(package)
-#
-# ${package}_prefix: (out)
-# set to its value (as a path) on the cmake command line.
-# If it is not present a fatal error message is generated.
-#
-# ${${package}_prefix}/include:
-# is added to the set of include directories.
-#
-MACRO(get_prefix package)
-	SET( ${package}_prefix NOTFOUND CACHE PATH
-		"prefix used during the installation of ${package}"
-	)
-	IF( NOT ${package}_prefix )
-		MESSAGE(FATAL_ERROR "${package}_prefix not set by cmake command")
-	ENDIF( NOT ${package}_prefix )
-	MESSAGE(STATUS "${package}_prefix = ${${package}_prefix}")
-	IF( ${package} STREQUAL "eigen" )
-		INCLUDE_DIRECTORIES( SYSTEM ${${package}_prefix}/include )
-	ELSE( ${package} STREQUAL "eigen" )
-		INCLUDE_DIRECTORIES( ${${package}_prefix}/include )
-	ENDIF( ${package} STREQUAL "eigen" )
-ENDMACRO(get_prefix)
-# ----------------------------------------------------------------------------
 # required_definition( variable type docstring )
 #
 # variable
@@ -135,9 +111,9 @@ IF( NOT "${log_fatal_error}" STREQUAL ""  )
 	MESSAGE(FATAL_ERROR "log_fatal_error has been removed from cmake command")
 ENDIF( NOT "${log_fatal_error}" STREQUAL ""  )
 # ----------------------------------------------------------------------------
-# get package prefixes
-get_prefix(cmake_install)
-# ----------------------------------------------------------------------------
+required_definition( cmake_install_prefix PATH
+	"prefix used by cmake for installing cppad_mixed"
+)
 required_definition( extra_cxx_flags STRING
 	"extra flags used by C++ compiler (debug and release are automatic)"
 )
@@ -158,7 +134,7 @@ MESSAGE(STATUS "END:")
 # ----------------------------------------------------------------------------
 # set pkg-config information about gsl, eigen, ipopt
 FIND_PACKAGE(PkgConfig)
-FOREACH(pkg gsl eigen3 ipopt)
+FOREACH(pkg gsl eigen3 ipopt cppad)
 	pkg_check_modules( ${pkg} QUIET ${pkg} )
 	IF( ${pkg}_FOUND )
 		MESSAGE(STATUS "Found ${pkg}.pc file")
