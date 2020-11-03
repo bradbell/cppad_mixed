@@ -232,15 +232,16 @@ bool ldlt_cholmod_1(void)
 bool ldlt_cholmod_2(void)
 {	bool ok    = true;
 	double eps = 100. * std::numeric_limits<double>::epsilon();
-	/*
-	determinant of H is 10
+	//
+	// determinant of H is 10
+# ifndef NDEBUG
 	double H[] = {
 		1.0, 0.0, 0.0,  1.0,
 		0.0, 1.0, 0.0,  0.0,
 		0.0, 0.0, 1.0,  0.0,
 		1.0, 0.0, 0.0, 11.0
 	};
-	*/
+# endif
 	// The inverse of H is
 	double H_inv[] = {
 		1.1, 0.0, 0.0, -0.1,
