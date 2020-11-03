@@ -29,4 +29,6 @@
 # '
 # ----------------------------------------------------------------------------
 # Put other sed commands below here and without # at start of line
-s|"no_conditional_skip no_compare_op no_print_op no_cumulative_sum_op"|\t"no_conditional_skip no_compare_op no_print_op"|
+s|${gsl_library_path_list}|${gsl_LIBRARIES}|g
+s|${ipopt_library_path_list}|${ipopt_LIBRARIES}|g
+s|suitesparse_library_path_list|suitesparse_LIBRARIES|g

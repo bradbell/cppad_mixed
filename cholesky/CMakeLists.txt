@@ -26,8 +26,8 @@ SET_TARGET_PROPERTIES(
 )
 TARGET_LINK_LIBRARIES(cholesky
 	cppad_mixed
-	${gsl_library_path_list}
-	${suitesparse_library_path_list}
-	${ipopt_library_path_list}
+	${gsl_LIBRARIES}
+	${suitesparse_LIBRARIES}
+	${ipopt_LIBRARIES}
 )
 ADD_CUSTOM_TARGET(check_cholesky cholesky DEPENDS cholesky )

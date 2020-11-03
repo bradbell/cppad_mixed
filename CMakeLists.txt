@@ -102,37 +102,6 @@ MACRO( optional_definition variable type docstring )
 		ENDIF( ${variable} )
 	ENDIF( ${type} STREQUAL "BOOL" )
 ENDMACRO( optional_definition )
-# ----------------------------------------------------------------------------
-# set_library_path_list(library_path_list search_directory_list library_list)
-#
-# search_directory_list
-# is a list of directories to search for the specified libraries.
-#
-# library_list
-# is a list of libraries to be search for. It is a fatal error if one
-# of the libraries cannot be found. Otherwise, the absolute path for each
-# library is included to the specifid path list.
-#
-# library_path_list
-# The absolute path for each of the specified libraries is included as a list
-# in this variable. The order for the libraries is the same as in library_list.
-#
-MACRO( set_library_path_list
-	library_path_list  search_directory_list library_list
-)
-	SET( ${library_path_list} "" )
-	FOREACH( lib ${library_list} )
-		FIND_LIBRARY( library_path ${lib} PATHS ${search_directory_list} )
-		IF( ${library_path} STREQUAL "library_path-NOTFOUND" )
-			MESSAGE( STATUS "directory_list = ${search_directory_list}")
-			MESSAGE( FATAL_ERROR "Cannot find library = ${lib}" )
-		ENDIF( ${library_path} STREQUAL "library_path-NOTFOUND" )
-		MESSAGE(STATUS "${lib} path = ${library_path}")
-		SET( ${library_path_list} "${${library_path_list}};${library_path}" )
-		UNSET( library_path CACHE )
-	ENDFOREACH( lib )
-	# MESSAGE(STATUS "${library_path_list}=${${library_path_list}}"  )
-ENDMACRO( set_library_path_list )
 # ============================================================================
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 PROJECT(cppad_mixed)
@@ -197,20 +166,20 @@ FOREACH(pkg gsl eigen3 ipopt)
 		MESSAGE(STATUS "Cannot find ${pkg}.pc file")
 		MESSAGE(FATAL_ERROR  "PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH}")
 	ENDIF( ${pkg}_FOUND )
-	set_library_path_list( ${pkg}_library_path_list
-		"${${pkg}_LIBRARY_DIRS}" "${${pkg}_LIBRARIES}"
-	)
+	# INLCUDE_DIRECTORIES
 	IF( ${pkg} STREQUAL "eigen3" )
 		INCLUDE_DIRECTORIES( SYSTEM ${eigen3_INCLUDE_DIRS} )
 	ELSE( ${pkg} STREQUAL "eigen3" )
 		INCLUDE_DIRECTORIES( ${${pkg}_INCLUDE_DIRS} )
 	ENDIF( ${pkg} STREQUAL "eigen3" )
+	# LINK_DIRECTORIES
+	LINK_DIRECTORIES( ${${pkg}_LIBRARY_DIRS} )
 ENDFOREACH(pkg)
 # ----------------------------------------------------------------------------
-# set suitesparse_library_path_list
+# set suitesparse_LIBRARIES
 #
 # no pkg-config for SuiteSparse so explicitly set corresponding values
-SET(suitesparse_library_path_list
+SET(suitesparse_LIBRARIES
 	"cholmod;amd;camd;colamd;ccolamd;suitesparseconfig"
 )
 # ----------------------------------------------------------------------------
