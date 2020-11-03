@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-19 University of Washington
+          Copyright (C) 2014-20 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -115,8 +115,8 @@ $cref ar1_xam.sh$$ and $cref capture_xam.sh$$ tests.
 
 $head 07-25$$
 $list number$$
-Add discussion of whey the default
-$cref/eigen_prefix/run_cmake.sh/eigen_prefix/$$ is different
+Add discussion of why the default
+$icode eigen_prefix$$ in $code bin/run_cmake.sh$$is different
 from the other prefixes.
 $lnext
 Change the name $code cppad_cxx_flags$$ to

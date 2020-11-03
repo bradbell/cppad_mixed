@@ -30,15 +30,20 @@ web_page='https://gitlab.com/libeigen/eigen.git'
 cmd=`grep '^build_type=' bin/run_cmake.sh`
 eval $cmd
 #
-# eigen_prefix
-cmd=`grep '^eigen_prefix=' bin/run_cmake.sh`
+# cmake_libdir
+cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
 eval $cmd
+#
+# cppad_prefix
+cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
+eval $cmd
+#
+# eigen_prefix
+eigen_prefix="$cppad_prefix/eigen"
 # --------------------------------------------------------------------------
-cppad_mixed_dir=`echo $eigen_prefix | \
-	 sed -e 's|/cppad_mixed/eigen$|/cppad_mixed|'`
-if echo "$cppad_mixed_dir" | grep '/cppad_mixed$' > /dev/null
+if echo "$cppad_prefix" | grep '/cppad_mixed$' > /dev/null
 then
-	bin/build_type.sh install_eigen $cppad_mixed_dir $build_type
+	bin/build_type.sh install_eigen $cppad_prefix $build_type
 fi
 # --------------------------------------------------------------------------
 if [ ! -e build/external ]
@@ -64,8 +69,9 @@ echo_eval cd build
 # --------------------------------------------------------------------------
 echo_eval cmake \
 	-Wno-dev \
-	-DCMAKE_INSTALL_PREFIX=$eigen_prefix \
-	-DCMAKE_BUILD_TYPE=$build_type \
+	-D CMAKE_INSTALL_PREFIX="$eigen_prefix" \
+	-D CMAKE_BUILD_TYPE="$build_type" \
+	-D PKGCONFIG_INSTALL_DIR="$cppad_prefix/$cmake_libdir/pkgconfig" \
 	..
 echo_eval make install
 # --------------------------------------------------------------------------

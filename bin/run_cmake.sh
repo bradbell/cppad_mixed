@@ -66,23 +66,6 @@ cppad_prefix="$HOME/prefix/cppad_mixed"
 # &icode%cppad_prefix%.release%&&
 # depending on the choice for &icode build_type&&.
 #
-# &head eigen_prefix&&
-# Prefix where
-# &cref/eigen/install_unix/Special Requirements/eigen/&&
-# is installed:
-# &codep
-eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
-# &&
-# If this prefix ends in &code /cppad_mixed/eigen&&,
-# &code bin/install_eigen.sh&& will use a soft link from
-# &codei%../%eigen_prefix%&& to
-# &codei%../%eigen_prefix%.debug%&& or
-# &codei%../%eigen_prefix%.release%&&
-# depending on the choice for &icode build_type&&.
-# The default &icode eigen_prefix&& is different from the other prefixes
-# because compiler warning for this directory are suppress and we want
-# compiler warnings for the rest of the source code.
-#
 # &head Debug and Release&&
 # If a soft link is used for the install,
 # the same technique will be used to map the &code build&&
@@ -91,6 +74,13 @@ eigen_prefix="$HOME/prefix/cppad_mixed/eigen"
 # both versions of the
 # &cref/special requirements/install_unix/Special Requirements/&&
 # will need to be installed.
+#
+# &head Eigen Prefix&&
+# It is a good idea to use a different prefix for installing eigen
+# because the corresponding include files are treated like system files,
+# otherwise the eigen include files would generate lots of warnings.
+# The example install script &code bin/install_eigen.sh&& uses
+# &icode%cppad_prefix%/eigen%&& as the prefix for installing eigen.
 #
 # &head extra_cxx_flags&&
 # Extra C++ flags used to compile and test
@@ -195,7 +185,6 @@ EOF
 	elif [ "$1" == '--dismod_at_prefix' ]
 	then
 		cppad_prefix="$HOME/prefix/dismod_at"
-		eigen_prefix="$HOME/prefix/dismod_at/eigen"
 	else
 		echo "'$1' is an invalid option"
 		bin/run_cmake.sh --help
@@ -232,7 +221,6 @@ cmake \
 	-D CMAKE_BUILD_TYPE=$build_type \
 	\
 	-D cppad_prefix="$cppad_prefix" \
-	-D eigen_prefix="$eigen_prefix" \
 	\
 	-D extra_cxx_flags="$extra_cxx_flags" \
 	-D cmake_libdir="$cmake_libdir" \

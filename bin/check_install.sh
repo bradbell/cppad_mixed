@@ -40,8 +40,7 @@ eval $cmd
 # &codep
 cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
 eval $cmd
-cmd=`grep '^eigen_prefix=' bin/run_cmake.sh`
-eval $cmd
+eigen_prefix="$cppad_prefix/eigen"
 ipopt_prefix="$cppad_prefix"
 # &&
 #

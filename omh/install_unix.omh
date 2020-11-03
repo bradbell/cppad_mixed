@@ -62,14 +62,6 @@ must be installed.
 $subhead pkg-config$$
 The $href%http://www.freedesktop.org/wiki/Software/pkg-config/%pkg-config%$$
 program must be installed.
-After $code gsl$$ and $code ipopt$$ are installed
-(see below), the following commands should work:
-$codep%
-	pkg-config gsl     --libs
-	pkg-config ipopt   --libs
-%$$
-If one of them fails, a corresponding directory is missing
-from the $code PKG_CONFIG_PATH$$ environment variable.
 
 $subhead wget$$
 The $href%https://www.gnu.org/software/wget/%wget%$$
@@ -112,11 +104,9 @@ $codei%
 %$$
 
 $head Paths$$
-This discussion is intended to help with the install of the
-special requirements below.
 
 $subhead PKG_CONFIG_PATH$$
-For $icode pkg$$ equal to $code gsl$$ and $code ipopt$$,
+For $icode pkg$$ equal to $code gsl$$, $code eigen$$, and $code ipopt$$,
 the following command should work:
 $codep%
 	pkg-config %pkg% --libs
@@ -143,8 +133,8 @@ $code LD_LIBRARY_PATH$$.
 $head Special Requirements$$
 The packages listed below are required by cppad_mixed
 and may not have standard system installs.
-The $codei%install_%package%$$ scripts below should be run
-in the order that they appear.
+The $codei%install_%package%$$ scripts below can be used to install them.
+If so, they should be executed in the order that they appear.
 
 $subhead run_cmake.sh$$
 The settings in

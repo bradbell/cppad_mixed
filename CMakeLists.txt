@@ -13,9 +13,8 @@
 #                        -Wno-dev \
 # standard variables:    -D CMAKE_VERBOSE_MAKEFILE=value \
 #                        -D CMAKE_BUILD_TYPE=value \
-# prefixes:              -D cppad_prefix=value \
-#                        -D eigen_prefix=value \
-# required variables:    -D extra_cxx_flags=value \
+# required variables:    -D cppad_prefix=value \
+#                        -D extra_cxx_flags=value \
 #                        -D cmake_libdir=value \
 #                        -D ldlt_cholmod=value \
 #                        -D optimize_cppad_function=value \
@@ -152,6 +151,7 @@ FOREACH( var
 	hide_ipopt_scaling
 	checkpoint_newton_step
 	ipopt_prefix
+	eigen_prefix
 )
 	IF( DEFINED ${var})
 		MESSAGE(FATAL_ERROR "${var} cmake option is no longer used")
@@ -168,7 +168,6 @@ ENDIF( NOT "${log_fatal_error}" STREQUAL ""  )
 # ----------------------------------------------------------------------------
 # get package prefixes
 get_prefix(cppad)
-get_prefix(eigen)
 # ----------------------------------------------------------------------------
 required_definition( extra_cxx_flags STRING
 	"extra flags used by C++ compiler (debug and release are automatic)"
@@ -188,9 +187,9 @@ required_definition(for_hes_sparsity BOOL
 # ----------------------------------------------------------------------------
 MESSAGE(STATUS "END:")
 # ----------------------------------------------------------------------------
-# set ipopt_library_path_list and gsl_libirary_path_list
+# set pkg-config information about gsl, eigen, ipopt
 FIND_PACKAGE(PkgConfig)
-FOREACH(pkg ipopt gsl)
+FOREACH(pkg gsl eigen3 ipopt)
 	pkg_check_modules( ${pkg} QUIET ${pkg} )
 	IF( ${pkg}_FOUND )
 		MESSAGE(STATUS "Found ${pkg}.pc file")
@@ -201,6 +200,11 @@ FOREACH(pkg ipopt gsl)
 	set_library_path_list( ${pkg}_library_path_list
 		"${${pkg}_LIBRARY_DIRS}" "${${pkg}_LIBRARIES}"
 	)
+	IF( ${pkg} STREQUAL "eigen3" )
+		INCLUDE_DIRECTORIES( SYSTEM ${eigen3_INCLUDE_DIRS} )
+	ELSE( ${pkg} STREQUAL "eigen3" )
+		INCLUDE_DIRECTORIES( ${${pkg}_INCLUDE_DIRS} )
+	ENDIF( ${pkg} STREQUAL "eigen3" )
 ENDFOREACH(pkg)
 # ----------------------------------------------------------------------------
 # set suitesparse_library_path_list
