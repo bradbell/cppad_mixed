@@ -38,6 +38,11 @@ $icode%cmake_install_prefix/eigen%$$ to install ipopt.
 $lnext
 The file $cref/cppad_mixed.pc/run_cmake.sh/cmake_libdir/cppad_mixed.pc/$$
 was added to the installation.
+$lnext
+There were some unused variable warnings in the files
+$code cholmod_factor.cpp$$ and $code ldlt_cholmod.cpp$$ were fix
+when $cref/build_type/run_cmake.sh/build_type/$$ was $code release$$.
+These have been fixed.
 $lend
 
 $head 11-02$$

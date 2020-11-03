@@ -80,7 +80,6 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 
 bool cholmod_factor_xam(void)
 {	bool ok      = true;
-	double eps99 = 99.0 * std::numeric_limits<double>::epsilon();
 	//
 	// The matrix A
 	size_t n = 4;
@@ -174,10 +173,13 @@ bool cholmod_factor_xam(void)
 	matrix_prod(n, false, PTA.data(), false, P.data(), PTAP.data());
 	//
 	// check that P^T * A * P = L * D * L^T
+# ifndef NDEBUG
+	double eps99 = 99.0 * std::numeric_limits<double>::epsilon();
 	for(size_t k = 0; k < n * n; ++k)
 	{	double abs_err = std::fabs( PTAP[k] - LDLT[k] );
 		assert( abs_err < eps99 );
 	}
+# endif
 	//
 	// free memory
 	cholmod_free_triplet(&triplet,    &com);
