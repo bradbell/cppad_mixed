@@ -38,8 +38,8 @@ version_list=( \
 cmd=`grep '^build_type=' bin/run_cmake.sh`
 eval $cmd
 #
-# cppad_prefix
-cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
+# cmake_install_prefix
+cmd=`grep '^cmake_install_prefix=' bin/run_cmake.sh`
 eval $cmd
 #
 # cmake_libdir

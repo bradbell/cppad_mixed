@@ -54,12 +54,12 @@ existing="$1"
 cmd=`grep '^build_type=' bin/run_cmake.sh`
 eval $cmd
 #
-# set cppad_prefix to value in run_cmake.sh
-cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
+# set cmake_install_prefix to value in run_cmake.sh
+cmd=`grep '^cmake_install_prefix=' bin/run_cmake.sh`
 eval $cmd
 #
 # ipopt_prefix
-ipopt_prefix="$cppad_prefix"
+ipopt_prefix="$cmake_install_prefix"
 # --------------------------------------------------------------------------
 # remove old version of example_install.log and example_install.err
 for ext in log err
@@ -71,9 +71,9 @@ do
 done
 # --------------------------------------------------------------------------
 # set build link to build.debug or build.release depending on build_type
-if echo "$cppad_prefix" | grep '/cppad_mixed$' > /dev/null
+if echo "$cmake_install_prefix" | grep '/cppad_mixed$' > /dev/null
 then
-	bin/build_type.sh example_install.sh $cppad_prefix $build_type
+	bin/build_type.sh example_install.sh $cmake_install_prefix $build_type
 fi
 # -----------------------------------------------------------------------------
 # set system_type, system_list, and system_install
@@ -169,7 +169,7 @@ do
 	# eval below converts $HOME in $prefix to its value for current user
 	case $pkg in
 		eigen)
-		eval file="$cppad_prefix/eigen/include/Eigen/Core"
+		eval file="$cmake_install_prefix/eigen/include/Eigen/Core"
 		;;
 
 		ipopt)
@@ -177,7 +177,7 @@ do
 		;;
 
 		cppad)
-		eval file="$cppad_prefix/include/cppad/cppad.hpp"
+		eval file="$cmake_install_prefix/include/cppad/cppad.hpp"
 		;;
 
 		*)
@@ -211,7 +211,7 @@ done
 dir=`find -L $ipopt_prefix -name 'ipopt.pc' | sed -e 's|/ipopt.pc||'`
 if [ "$dir" == '' ]
 then
-	echo "Cannot find ipopt.pc in $cppad_prefix directory"
+	echo "Cannot find ipopt.pc in $cmake_install_prefix directory"
 	exit 1
 else
 	echo_eval export PKG_CONFIG_PATH="$dir"

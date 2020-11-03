@@ -38,10 +38,10 @@ eval $cmd
 # &head Prefixes&&
 # Get the &cref/prefixes/run_cmake.sh/&& used during the install:
 # &codep
-cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
+cmd=`grep '^cmake_install_prefix=' bin/run_cmake.sh`
 eval $cmd
-eigen_prefix="$cppad_prefix/eigen"
-ipopt_prefix="$cppad_prefix"
+eigen_prefix="$cmake_install_prefix/eigen"
+ipopt_prefix="$cmake_install_prefix"
 # &&
 #
 # &head cmake_libdir&&
@@ -133,9 +133,7 @@ ipopt_libs=`pkg-config --libs ipopt`
 # The following command sets the library link flags necessary
 # to link &code SuiteSparse&& on this system:
 # &codep
-suitesparse_libs='
-	-lcholmod -lamd -lcamd -lcolamd -lccolamd -lsuitesparseconfig
-'
+suitesparse_libs='-lcholmod -lamd -lcamd -lcolamd -lccolamd -lsuitesparseconfig'
 # &&
 #
 # &head Compile and Link&&
@@ -150,11 +148,22 @@ then
 else
 	flags='-O3 -DNDEBUG -std=c++11 -Wall'
 fi
+cat << EOF
+g++ example.cpp \\
+	$flags \\
+	-I $cmake_install_prefix/include \\
+	-isystem $eigen_prefix/include \\
+	-L $cmake_install_prefix/$cmake_libdir -lcppad_mixed \\
+	$gsl_libs \\
+	$suitesparse_libs \\
+	$ipopt_libs \\
+	-o example
+EOF
 g++ example.cpp \
 	$flags \
-	-I $cppad_prefix/include \
+	-I $cmake_install_prefix/include \
 	-isystem $eigen_prefix/include \
-	-L $cppad_prefix/$cmake_libdir -lcppad_mixed \
+	-L $cmake_install_prefix/$cmake_libdir -lcppad_mixed \
 	$gsl_libs \
 	$suitesparse_libs \
 	$ipopt_libs \

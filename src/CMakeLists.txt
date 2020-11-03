@@ -87,5 +87,5 @@ SET_TARGET_PROPERTIES(cppad_mixed
 )
 INSTALL(
 	TARGETS cppad_mixed
-	DESTINATION ${cppad_prefix}/${cmake_libdir}
+	DESTINATION ${cmake_install_prefix}/${cmake_libdir}
 )

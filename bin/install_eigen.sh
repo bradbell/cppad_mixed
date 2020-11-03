@@ -34,16 +34,16 @@ eval $cmd
 cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
 eval $cmd
 #
-# cppad_prefix
-cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
+# cmake_install_prefix
+cmd=`grep '^cmake_install_prefix=' bin/run_cmake.sh`
 eval $cmd
 #
 # eigen_prefix
-eigen_prefix="$cppad_prefix/eigen"
+eigen_prefix="$cmake_install_prefix/eigen"
 # --------------------------------------------------------------------------
-if echo "$cppad_prefix" | grep '/cppad_mixed$' > /dev/null
+if echo "$cmake_install_prefix" | grep '/cppad_mixed$' > /dev/null
 then
-	bin/build_type.sh install_eigen $cppad_prefix $build_type
+	bin/build_type.sh install_eigen $cmake_install_prefix $build_type
 fi
 # --------------------------------------------------------------------------
 if [ ! -e build/external ]
@@ -71,7 +71,7 @@ echo_eval cmake \
 	-Wno-dev \
 	-D CMAKE_INSTALL_PREFIX="$eigen_prefix" \
 	-D CMAKE_BUILD_TYPE="$build_type" \
-	-D PKGCONFIG_INSTALL_DIR="$cppad_prefix/$cmake_libdir/pkgconfig" \
+	-D PKGCONFIG_INSTALL_DIR="$cmake_install_prefix/$cmake_libdir/pkgconfig" \
 	..
 echo_eval make install
 # --------------------------------------------------------------------------

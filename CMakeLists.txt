@@ -13,7 +13,7 @@
 #                        -Wno-dev \
 # standard variables:    -D CMAKE_VERBOSE_MAKEFILE=value \
 #                        -D CMAKE_BUILD_TYPE=value \
-# required variables:    -D cppad_prefix=value \
+# required variables:    -D cmake_install_prefix=value \
 #                        -D extra_cxx_flags=value \
 #                        -D cmake_libdir=value \
 #                        -D ldlt_cholmod=value \
@@ -136,7 +136,7 @@ IF( NOT "${log_fatal_error}" STREQUAL ""  )
 ENDIF( NOT "${log_fatal_error}" STREQUAL ""  )
 # ----------------------------------------------------------------------------
 # get package prefixes
-get_prefix(cppad)
+get_prefix(cmake_install)
 # ----------------------------------------------------------------------------
 required_definition( extra_cxx_flags STRING
 	"extra flags used by C++ compiler (debug and release are automatic)"
@@ -286,5 +286,5 @@ ADD_CUSTOM_TARGET(speed DEPENDS
 # install
 INSTALL(
 	DIRECTORY ${CMAKE_SOURCE_DIR}/include/cppad/mixed/
-	DESTINATION ${cppad_prefix}/include/cppad/mixed
+	DESTINATION ${cmake_install_prefix}/include/cppad/mixed
 )

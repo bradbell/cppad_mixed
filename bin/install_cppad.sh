@@ -31,8 +31,8 @@ version='20201021'
 cmd=`grep '^build_type=' bin/run_cmake.sh`
 eval $cmd
 #
-# cppad_prefix
-cmd=`grep '^cppad_prefix=' bin/run_cmake.sh`
+# cmake_install_prefix
+cmd=`grep '^cmake_install_prefix=' bin/run_cmake.sh`
 eval $cmd
 #
 # extra_cxx_flags
@@ -43,12 +43,15 @@ eval $cmd
 cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
 eval $cmd
 #
+# cppad_prefix
+cppad_prefix="$cmake_install_prefix"
+#
 # ipopt_prefix
-ipopt_prefix="$cppad_prefix"
+ipopt_prefix="$cmake_install_prefix"
 # --------------------------------------------------------------------------
-if echo "$cppad_prefix" | grep '/cppad_mixed$' > /dev/null
+if echo "$cmake_install_prefix" | grep '/cppad_mixed$' > /dev/null
 then
-	bin/build_type.sh install_cppad $cppad_prefix $build_type
+	bin/build_type.sh install_cppad $cmake_install_prefix $build_type
 fi
 # --------------------------------------------------------------------------
 if [ ! -e build/external ]

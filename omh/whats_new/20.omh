@@ -21,21 +21,26 @@ $spell
     gitlab
     coinbrew
 	ldlt_cholmod
+	cmake
 $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
 
 $head 11-03$$
+$list number$$
+Change $icode cppad_prefix$$ to
+$cref/cmake_install_prefix/run_cmake.sh/cmake_install_prefix/$$.
+$lnext
 Remove $icode eigen_prefix$$ from $cref run_cmake.sh$$.
-The example $code bin/install_eigen.sh$$ used the prefix
-$icode%cppad_prefix/eigen%$$ to install ipopt; see
-$cref/cppad_prefix/run_cmake.sh/cppad_prefix/$$.
+The example install script $code bin/install_eigen.sh$$ uses the prefix
+$icode%cmake_install_prefix/eigen%$$ to install ipopt.
+$lend
 
 $head 11-02$$
 Remove $icode ipopt_prefix$$ from $cref run_cmake.sh$$.
-The example $code bin/install_ipopt.sh$$ used the prefix
-$cref/cppad_prefix/run_cmake.sh/cppad_prefix/$$
+The example $code bin/install_ipopt.sh$$ uses the prefix
+$cref/cmake_install_prefix/run_cmake.sh/cmake_install_prefix/$$
 to install ipopt.
 
 $head 10-31$$

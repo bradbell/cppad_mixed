@@ -54,16 +54,15 @@ verbose_makefile='no'
 build_type='debug'
 # &&
 #
-# &head cppad_prefix&&
-# Prefix where cppad, cppad_mixed, and ipopt are installed.
-# cppad_mixed will be installed:
+# &head cmake_install_prefix&&
+# Prefix where cppad_mixed is installed:
 # &codep
-cppad_prefix="$HOME/prefix/cppad_mixed"
+cmake_install_prefix="$HOME/prefix/cppad_mixed"
 # &&
-# If &icode cppad_prefix&& ends in &code /cppad_mixed&&,
+# If &icode cmake_install_prefix&& ends in &code /cppad_mixed&&,
 # &code run_cmake.sh&& will use a soft link from this prefix to
-# &icode%cppad_prefix%.debug%&& or
-# &icode%cppad_prefix%.release%&&
+# &icode%cmake_install_prefix%.debug%&& or
+# &icode%cmake_install_prefix%.release%&&
 # depending on the choice for &icode build_type&&.
 #
 # &head Debug and Release&&
@@ -80,7 +79,7 @@ cppad_prefix="$HOME/prefix/cppad_mixed"
 # because the corresponding include files are treated like system files,
 # otherwise the eigen include files would generate lots of warnings.
 # The example install script &code bin/install_eigen.sh&& uses
-# &icode%cppad_prefix%/eigen%&& as the prefix for installing eigen.
+# &icode%cmake_install_prefix%/eigen%&& as the prefix for installing eigen.
 #
 # &head extra_cxx_flags&&
 # Extra C++ flags used to compile and test
@@ -184,7 +183,7 @@ EOF
 		optimize_cppad_function='yes'
 	elif [ "$1" == '--dismod_at_prefix' ]
 	then
-		cppad_prefix="$HOME/prefix/dismod_at"
+		cmake_install_prefix="$HOME/prefix/dismod_at"
 	else
 		echo "'$1' is an invalid option"
 		bin/run_cmake.sh --help
@@ -193,13 +192,13 @@ EOF
 	shift
 done
 # --------------------------------------------------------------------------
-if echo "$cppad_prefix" | grep '/cppad_mixed$' > /dev/null
+if echo "$cmake_install_prefix" | grep '/cppad_mixed$' > /dev/null
 then
-	bin/build_type.sh run_cmake $cppad_prefix $build_type
+	bin/build_type.sh run_cmake $cmake_install_prefix $build_type
 fi
-if echo "$cppad_prefix" | grep '/dismod_at$' > /dev/null
+if echo "$cmake_install_prefix" | grep '/dismod_at$' > /dev/null
 then
-	bin/build_type.sh run_cmake $cppad_prefix $build_type
+	bin/build_type.sh run_cmake $cmake_install_prefix $build_type
 fi
 # --------------------------------------------------------------------------
 if [ ! -e build ]
@@ -220,7 +219,7 @@ cmake \
 	-D CMAKE_VERBOSE_MAKEFILE=$verbose_makefile \
 	-D CMAKE_BUILD_TYPE=$build_type \
 	\
-	-D cppad_prefix="$cppad_prefix" \
+	-D cmake_install_prefix="$cmake_install_prefix" \
 	\
 	-D extra_cxx_flags="$extra_cxx_flags" \
 	-D cmake_libdir="$cmake_libdir" \
