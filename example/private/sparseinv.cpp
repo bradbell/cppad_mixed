@@ -26,7 +26,7 @@ $srcthisfile%0%// BEGIN C++%// END C++%1%$$
 $end
 */
 // BEGIN C++
-# include <suitesparse/cholmod.h>
+# include <cppad/mixed/include_cholmod.hpp>
 # include <cppad/mixed/sparseinv.hpp>
 # include <cppad/utility/sparse_rc.hpp>
 # include <cppad/utility/vector.hpp>

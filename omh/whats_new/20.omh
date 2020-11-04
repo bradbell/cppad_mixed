@@ -22,9 +22,17 @@ $spell
     coinbrew
 	ldlt_cholmod
 	cmake
+    suitesparse
 $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
+
+$head 11-04$$
+There was a problem with the
+$cref/make check/install_unix/cppad_mixed/Check/$$ command
+when $code cholmod.h$$ was in the include directory
+(instead of a $code suitesparse$$ subdirectory).
+This has been fixed.
 
 
 $head 11-03$$
