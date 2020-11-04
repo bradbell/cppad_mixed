@@ -66,5 +66,5 @@ CONFIGURE_FILE(
 INSTALL(FILES
 	${CMAKE_CURRENT_BINARY_DIR}/cppad_mixed.pc
 	DESTINATION
-	${cmake_install_prefix}/${cmake_libdir}/cppad_mixed.pc/pkgconfig
+	${cmake_install_prefix}/${cmake_libdir}/pkgconfig
 )
