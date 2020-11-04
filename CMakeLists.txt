@@ -132,33 +132,6 @@ required_definition(for_hes_sparsity BOOL
 # ----------------------------------------------------------------------------
 MESSAGE(STATUS "END:")
 # ----------------------------------------------------------------------------
-# set pkg-config information about gsl, eigen3, ipopt, cppad
-FIND_PACKAGE(PkgConfig)
-FOREACH(pkg gsl eigen3 ipopt cppad)
-	pkg_check_modules( ${pkg} QUIET ${pkg} )
-	IF( ${pkg}_FOUND )
-		MESSAGE(STATUS "Found ${pkg}.pc file")
-	ELSE( ${pkg}_FOUND )
-		MESSAGE(STATUS "Cannot find ${pkg}.pc file")
-		MESSAGE(FATAL_ERROR  "PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH}")
-	ENDIF( ${pkg}_FOUND )
-	# INLCUDE_DIRECTORIES
-	IF( ${pkg} STREQUAL "eigen3" )
-		INCLUDE_DIRECTORIES( SYSTEM ${eigen3_INCLUDE_DIRS} )
-	ELSE( ${pkg} STREQUAL "eigen3" )
-		INCLUDE_DIRECTORIES( ${${pkg}_INCLUDE_DIRS} )
-	ENDIF( ${pkg} STREQUAL "eigen3" )
-	# LINK_DIRECTORIES
-	LINK_DIRECTORIES( ${${pkg}_LIBRARY_DIRS} )
-ENDFOREACH(pkg)
-# ----------------------------------------------------------------------------
-# set suitesparse_LIBRARIES
-#
-# no pkg-config for SuiteSparse so explicitly set corresponding values
-SET(suitesparse_LIBRARIES
-	"cholmod;amd;camd;colamd;ccolamd;suitesparseconfig"
-)
-# ----------------------------------------------------------------------------
 # check compiler flags
 #
 SET(CMAKE_REQUIRED_INCLUDES    "" )
@@ -201,7 +174,13 @@ ELSE( cppad_mixed_has_nullptr_flag )
 ENDIF( cppad_mixed_has_nullptr_flag )
 MESSAGE(STATUS "cppad_mixed_has_nullptr = ${cppad_mixed_has_nullptr_01}")
 # ----------------------------------------------------------------------------
+# no pkg-config for SuiteSparse so explicitly set following values:
+# suitesparse_LIBRARY_DIRS
+# suitesparse_INCLUDE_DIRS
+# suitesparse_LIBRARIES
+#
 # suitesparse_prefix
+# suitesparse_suffix
 # suitesparse_in_cholmod_include_01
 SET(suitesparse_prefix "NOTFOUND")
 SET(suitesparse_suffix "NOTFOUND")
@@ -220,12 +199,49 @@ FOREACH(prefix in /usr /usr/local "${cmake_install_prefix}" )
 ENDFOREACH(prefix in /usr /usr/local "${cmake_install_prefix}" )
 IF( NOT suitesparse_prefix )
 	MESSAGE(FATAL_ERROR "cannot find cholmod.h" )
+#
+# suitesparse_INCLUDE_DIRS
+# suitesparse_in_cholmod_include_01
 ENDIF( NOT suitesparse_prefix )
 IF( ${suitesparse_suffix} STREQUAL "include" )
 	SET(suitesparse_in_cholmod_include_01 "0")
+	SET(suitesparse_INCLUDE_DIRS  "${suitesparse_prefix}/include" )
 ELSE( ${suitesparse_suffix} STREQUAL "include" )
 	SET(suitesparse_in_cholmod_include_01 "1")
+	SET(suitesparse_INCLUDE_DIRS  "${suitesparse_prefix}/include/suitesparse" )
 ENDIF( ${suitesparse_suffix} STREQUAL "include" )
+#
+# set suitesparse_LIBRARIES
+SET(suitesparse_LIBRARIES
+	"cholmod;amd;camd;colamd;ccolamd;suitesparseconfig"
+)
+#
+# suitesparse_LIBRARY_DIRS
+SET(suitesparse_LIBRARY_DIRS "${suitesparse_prefix}/${cmake_libdir}")
+# ----------------------------------------------------------------------------
+# set pkg-config information about gsl, eigen3, ipopt, cppad, suitesparse
+FIND_PACKAGE(PkgConfig)
+FOREACH(pkg gsl eigen3 ipopt cppad)
+	pkg_check_modules( ${pkg} QUIET ${pkg} )
+	IF( ${pkg}_FOUND )
+		MESSAGE(STATUS "Found ${pkg}.pc file")
+	ELSE( ${pkg}_FOUND )
+		MESSAGE(STATUS "Cannot find ${pkg}.pc file")
+		MESSAGE(FATAL_ERROR  "PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH}")
+	ENDIF( ${pkg}_FOUND )
+	# INLCUDE_DIRECTORIES
+	IF( ${pkg} STREQUAL "eigen3" )
+		INCLUDE_DIRECTORIES( SYSTEM ${eigen3_INCLUDE_DIRS} )
+	ELSE( ${pkg} STREQUAL "eigen3" )
+		INCLUDE_DIRECTORIES( ${${pkg}_INCLUDE_DIRS} )
+	ENDIF( ${pkg} STREQUAL "eigen3" )
+	# LINK_DIRECTORIES
+	LINK_DIRECTORIES( ${${pkg}_LIBRARY_DIRS} )
+ENDFOREACH(pkg)
+IF( NOT "${suitesparse_prefix}" STREQUAL "/usr/" )
+	INCLUDE_DIRECTORIES( ${suitesparse_INCLUDE_DIRS} )
+	LINK_DIRECTORIES( ${suitesparse_LIBRARY_DIRS} )
+ENDIF( NOT "${suitesparse_prefix}" STREQUAL "/usr/" )
 # ----------------------------------------------------------------------------
 CONFIGURE_FILE(
 	${CMAKE_CURRENT_SOURCE_DIR}/include/cppad/mixed/configure.hpp.in
