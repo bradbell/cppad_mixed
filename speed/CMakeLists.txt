@@ -76,12 +76,8 @@ FOREACH( program_name capture_xam ar1_xam )
 	SET_TARGET_PROPERTIES(
 		${progam_name} PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
 	)
-	TARGET_LINK_LIBRARIES(
-		${program_name}
+	TARGET_LINK_LIBRARIES(${program_name}
 		cppad_mixed
-		${gsl_LIBRARIES}
-		${suitesparse_LIBRARIES}
-		${ipopt_LIBRARIES}
 	)
 	ADD_DEPENDENCIES(
 		speed_${program_name} cppad_mixed

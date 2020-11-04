@@ -74,8 +74,5 @@ SET_TARGET_PROPERTIES(
 )
 TARGET_LINK_LIBRARIES(example
 	cppad_mixed
-	${gsl_LIBRARIES}
-	${suitesparse_LIBRARIES}
-	${ipopt_LIBRARIES}
 )
 ADD_CUSTOM_TARGET(check_example example DEPENDS example )

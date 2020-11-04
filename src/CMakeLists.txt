@@ -85,6 +85,11 @@ ADD_LIBRARY(cppad_mixed
 SET_TARGET_PROPERTIES(cppad_mixed
 	PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
 )
+TARGET_LINK_LIBRARIES(cppad_mixed
+	${gsl_LIBRARIES}
+	${suitesparse_LIBRARIES}
+	${ipopt_LIBRARIES}
+)
 INSTALL(
 	TARGETS cppad_mixed
 	DESTINATION ${cmake_install_prefix}/${cmake_libdir}

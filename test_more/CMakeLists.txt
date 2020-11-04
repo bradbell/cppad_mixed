@@ -40,8 +40,5 @@ SET_TARGET_PROPERTIES(
 )
 TARGET_LINK_LIBRARIES(test_more
 	cppad_mixed
-	${gsl_LIBRARIES}
-	${suitesparse_LIBRARIES}
-	${ipopt_LIBRARIES}
 )
 ADD_CUSTOM_TARGET(check_test_more test_more DEPENDS test_more )

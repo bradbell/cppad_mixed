@@ -355,10 +355,12 @@ bool sparseinv_xam(void)
 	std::vector<double> ZP(n * n), PTZP(n * n);
 	matrix_prod(n, false, Z.data(), false, P.data(), ZP.data());
 	matrix_prod(n, true, P.data(), false, ZP.data(), PTZP.data());
+# ifndef NDEBUG
 	for(size_t k = 0; k < n * n; ++k)
 	{	double abs_err = std::fabs( PTZP[k] - A_inv[k] );
 		assert( abs_err < eps99 );
 	}
+# endif
 	//
 	// free memory
 	cholmod_free_triplet(&triplet,    &com);
