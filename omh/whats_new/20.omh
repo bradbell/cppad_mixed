@@ -27,6 +27,10 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
+$head 11-05$$
+Fix some problems with $cref example_install.sh$$ on mac OS using
+$href%https://brew.sh/%brew%$$.
+
 $head 11-04$$
 There was a problem with the
 $cref/make check/install_unix/cppad_mixed/Check/$$ command
