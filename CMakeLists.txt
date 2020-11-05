@@ -22,6 +22,10 @@
 # ============================================================================
 # Macro definitions
 # ============================================================================
+MACRO(print_variable variable)
+	MESSAGE(STATUS "${variable}=${${variable}}" )
+ENDMACRO(print_variable variable)
+# ----------------------------------------------------------------------------
 # required_definition( variable type docstring )
 #
 # variable
@@ -238,10 +242,10 @@ FOREACH(pkg gsl eigen3 ipopt cppad)
 	# LINK_DIRECTORIES
 	LINK_DIRECTORIES( ${${pkg}_LIBRARY_DIRS} )
 ENDFOREACH(pkg)
-IF( NOT "${suitesparse_prefix}" STREQUAL "/usr/" )
+IF( NOT "${suitesparse_prefix}" STREQUAL "/usr" )
 	INCLUDE_DIRECTORIES( ${suitesparse_INCLUDE_DIRS} )
 	LINK_DIRECTORIES( ${suitesparse_LIBRARY_DIRS} )
-ENDIF( NOT "${suitesparse_prefix}" STREQUAL "/usr/" )
+ENDIF( NOT "${suitesparse_prefix}" STREQUAL "/usr" )
 # ----------------------------------------------------------------------------
 CONFIGURE_FILE(
 	${CMAKE_CURRENT_SOURCE_DIR}/include/cppad/mixed/configure.hpp.in

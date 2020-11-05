@@ -15,7 +15,7 @@
 SET(requires             "gsl eigen3 ipopt cppad" )
 SET(requires_uninstalled "${requires}" )
 #
-# cflagsm libs
+# libs and cflags for other packages
 SET(libs       " ")
 SET(cflags     " ")
 SET(pkg_list gsl eigen3 ipopt cppad)
@@ -46,9 +46,15 @@ FOREACH(pkg ${pkg_list} )
 	ENDFOREACH(entry ${${pkg}_LIBRARIES} )
 	#
 ENDFOREACH(pkg ${pkg_list} )
-SET(cflags_uninstalled   "-I${cppad_mixed_SOURCE_DIR}${cflags}" )
-SET(cflags               "-I${cmake_install_prefix}/include${cflags}" )
 SET(libs_uninstalled     "${libs}" )
+#
+# libs and cflags for cppad_mixed
+SET(cflags_uninstalled   "-I${cppad_mixed_SOURCE_DIR}${cflags}" )
+SET(entry                "${cmake_install_prefix}/include" )
+STRING(FIND "${cflags}" " -I${entry} " position )
+IF( ${position} STREQUAL "-1" )
+	SET(cflags  "${cflags}-I${entry} " )
+ENDIF( ${position} STREQUAL "-1" )
 #
 # cppad_mixed.pc
 CONFIGURE_FILE(

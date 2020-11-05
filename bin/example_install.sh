@@ -82,21 +82,25 @@ then
 	system_type='debian'
 	system_list='apt list --installed'
 	system_install='sudo apt-get install -y'
+	apt list --installed | sed -e 's|  *| |g' > example_install.tmp
 elif which dnf >& /dev/null
 then
 	system_type='red_hat'
 	system_list='dnf list installed'
 	system_install='sudo dnf install -y'
+	dnf list installed | sed -e 's|  *| |g' > example_install.tmp
 elif which yum >& /dev/null
 then
 	system_type='red_hat'
 	system_list='yum list installed'
 	system_install='sudo yum install -y'
+	yum list installed | sed -e 's|  *| |g' > example_install.tmp
 elif which brew >& /dev/null
 then
-    system_type='macos'
-    system_list='brew list'
-    system_install='brew install'
+	system_type='macos'
+	system_list='brew list'
+	system_install='brew install'
+	brew list | sed -e 's|  *|\n|g' > example_install.tmp
 else
 	echo 'Cannot find the system pakcage manager'
 	exit 1
@@ -124,11 +128,11 @@ then
 		cmake
 		wget
 		lapack
-		suitesparse
+		suite-sparse
 		pkg-config
 		gcc
 		gsl
-        java
+        openjdk
 	'
 elif [ "$system_type" == 'red_hat' ]
 then
@@ -156,7 +160,11 @@ do
 	if grep "^$package[^a-zA-Z_]" example_install.tmp > /dev/null
 	then
 		version=`grep "^$package[^a-zA-Z_]" example_install.tmp | head -1`
-		echo "using $version"
+		echo "using installed $version"
+	elif grep "^$package\$" example_install.tmp > /dev/null
+	then
+		# brew list case
+		echo "using installed $package"
 	else
 		echo_eval $system_install $package
 	fi
