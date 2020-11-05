@@ -221,7 +221,21 @@ SET(suitesparse_LIBRARIES
 )
 #
 # suitesparse_LIBRARY_DIRS
-SET(suitesparse_LIBRARY_DIRS "${suitesparse_prefix}/${cmake_libdir}")
+SET(suitesparse_LIBRARY_DIRS "NOTFOUND")
+FOREACH(suffix in "lib" "lib64" "${cmake_libdir}" )
+	SET(globbing_expression "${suitesparse_prefix}/${suffix}/libcholmod.*")
+	FILE(GLOB match ${globbing_expression})
+	IF( match )
+		print_variable(match)
+		SET(suitesparse_LIBRARY_DIRS "${suitesparse_prefix}/${suffix}")
+	ENDIF(match)
+ENDFOREACH(suffix in "lib" "lib64" "${cmake_libdir}" )
+IF( NOT suitesparse_LIBRARY_DIRS )
+	MESSAGE(FATAL_ERROR
+		"Cannot find libcholmod.* in ${suitesparse_prefix}/libdir"
+		"where libdir is lib, lib64, or cmake_libdir"
+	)
+ENDIF( NOT suitesparse_LIBRARY_DIRS )
 # ----------------------------------------------------------------------------
 # set pkg-config information about gsl, eigen3, ipopt, cppad, suitesparse
 FIND_PACKAGE(PkgConfig)
