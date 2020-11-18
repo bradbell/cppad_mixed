@@ -132,11 +132,11 @@ then
 		pkg-config
 		gcc
 		gsl
-        openjdk
+		openjdk
 	'
 elif [ "$system_type" == 'red_hat' ]
 then
-    list='
+	list='
 		cmake
 		git
 		wget
@@ -147,13 +147,13 @@ then
 		gcc-c++
 		gcc-gfortran
 		gsl-devel
-        java
-    '
-    # make sure Ipopt configure sees brew version of javac (not /usr/bin/javac)
-    PATH="/usr/local/opt/openjdk/bin:$PATH"
+		java
+	'
+	# make sure Ipopt configure sees brew version of javac (not /usr/bin/javac)
+	PATH="/usr/local/opt/openjdk/bin:$PATH"
 else
-    echo 'example_install.sh: script error'
-    exit 1
+	echo 'example_install.sh: script error'
+	exit 1
 fi
 for package in $list
 do
