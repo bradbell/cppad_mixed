@@ -76,29 +76,27 @@ then
 	bin/build_type.sh example_install.sh $cmake_install_prefix $build_type
 fi
 # -----------------------------------------------------------------------------
-# set system_type, system_list, and system_install
+# set system_type,
+# system_install
+# example_install.tmp
 if which apt-get >& /dev/null
 then
 	system_type='debian'
-	system_list='apt list --installed'
 	system_install='sudo apt-get install -y'
 	apt list --installed | sed -e 's|  *| |g' > example_install.tmp
 elif which dnf >& /dev/null
 then
 	system_type='red_hat'
-	system_list='dnf list installed'
 	system_install='sudo dnf install -y'
 	dnf list installed | sed -e 's|  *| |g' > example_install.tmp
 elif which yum >& /dev/null
 then
 	system_type='red_hat'
-	system_list='yum list installed'
 	system_install='sudo yum install -y'
 	yum list installed | sed -e 's|  *| |g' > example_install.tmp
 elif which brew >& /dev/null
 then
-	system_type='macos'
-	system_list='brew list'
+	system_type='mac_brew'
 	system_install='brew install'
 	brew list | sed -e 's|  *|\n|g' > example_install.tmp
 else
@@ -107,7 +105,6 @@ else
 fi
 # --------------------------------------------------------------------------
 # system external installs for normal system requirements
-$system_list | sed -e 's|  *| |g' > example_install.tmp
 if [ "$system_type" == 'debian' ]
 then
 	list='
@@ -122,7 +119,7 @@ then
 		gfortran
 		libgsl0-dev
 	'
-elif [ "$system_type" == 'macos' ]
+elif [ "$system_type" == 'mac_brew' ]
 then
 	list='
 		cmake
