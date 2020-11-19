@@ -196,15 +196,26 @@ EOF
 	fi
 	shift
 done
+bin/build_type.sh run_cmake $cmake_install_prefix $build_type
 # --------------------------------------------------------------------------
-if echo "$cmake_install_prefix" | grep '/cppad_mixed$' > /dev/null
-then
-	bin/build_type.sh run_cmake $cmake_install_prefix $build_type
-fi
-if echo "$cmake_install_prefix" | grep '/dismod_at$' > /dev/null
-then
-	bin/build_type.sh run_cmake $cmake_install_prefix $build_type
-fi
+export PKG_CONFIG_PATH=':'
+for pkg in eigen3 ipopt cppad
+do
+    pkg_config_path=$(find -L "$cmake_install_prefix" -name "$pkg.pc" |\
+        head -1 | sed -e "s|/$pkg.pc||" \
+    )
+    if [ "$pkg_config_path" == '' ]
+    then
+        echo "Can't find $pkg.pc: cmake_install_prefix=$cmake_install_prefix"
+        exit 1
+    fi
+    if ! echo $PKG_CONFIG_PATH | grep ":$pkg_config_path:" > /dev/null
+    then
+        PKG_CONFIG_PATH=":$pkg_config_path$PKG_CONFIG_PATH"
+    fi
+done
+PKG_CONFIG_PATH=$(echo $PKG_CONFIG_PATH | sed -e 's|^:||' -e 's|:$||')
+echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH"
 # --------------------------------------------------------------------------
 if [ ! -e build ]
 then

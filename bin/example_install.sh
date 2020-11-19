@@ -144,10 +144,8 @@ then
 	list='
 		cmake
 		wget
-		OpenBLAS
 		SuiteSparse
 		pkgconfig
-		gcc
 		gsl
 		openjdk
 	'
@@ -156,10 +154,8 @@ then
 	list='
 		cmake
 		wget
-		lapack
 		suite-sparse
 		pkg-config
-		gcc
 		gsl
 		openjdk
 	'

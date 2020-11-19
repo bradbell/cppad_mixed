@@ -23,9 +23,22 @@ $spell
 	ldlt_cholmod
 	cmake
     suitesparse
+    lapack
+    gcc
 $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
+
+$head 11-19$$
+$list number$$
+The $cref example_install.sh$$ script was modified so that on
+Mac OS it uses the system version of lapack and gcc
+(instead of using the extra package manager to install them).
+$lnext
+The $cref run_cmake.sh$$ script,
+which is used by $code example_install.sh$$,
+was modified to automatically sets $code PKG_CONFIG_PATH$$.
+$lend
 
 $head 11-18$$
 Extend $cref example_install.sh$$ so it also works on mac with
