@@ -94,6 +94,11 @@ then
 	system_type='red_hat'
 	system_install='sudo yum install -y'
 	yum list installed | sed -e 's|  *| |g' > example_install.tmp
+elif which port >& /dev/null
+then
+	system_type='mac_port'
+	system_install='port install'
+	port installed | sed -e 's|^ *||g' > example_install.tmp
 elif which brew >& /dev/null
 then
 	system_type='mac_brew'
@@ -119,18 +124,6 @@ then
 		gfortran
 		libgsl0-dev
 	'
-elif [ "$system_type" == 'mac_brew' ]
-then
-	list='
-		cmake
-		wget
-		lapack
-		suite-sparse
-		pkg-config
-		gcc
-		gsl
-		openjdk
-	'
 elif [ "$system_type" == 'red_hat' ]
 then
 	list='
@@ -145,6 +138,30 @@ then
 		gcc-gfortran
 		gsl-devel
 		java
+	'
+elif [ "$system_type" == 'mac_port' ]
+then
+	list='
+		cmake
+		wget
+		OpenBLAS
+		SuiteSparse
+		pkgconfig
+		gcc
+		gsl
+		openjdk
+	'
+elif [ "$system_type" == 'mac_brew' ]
+then
+	list='
+		cmake
+		wget
+		lapack
+		suite-sparse
+		pkg-config
+		gcc
+		gsl
+		openjdk
 	'
 	# make sure Ipopt configure sees brew version of javac (not /usr/bin/javac)
 	PATH="/usr/local/opt/openjdk/bin:$PATH"

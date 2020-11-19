@@ -27,6 +27,10 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
+$head 11-18$$
+Extend $cref example_install.sh$$ so it also works on mac with
+$href%https://www.macports.org/%port%$$.
+
 $head 11-05$$
 Fix some problems with $cref example_install.sh$$ on mac OS using
 $href%https://brew.sh/%brew%$$.
