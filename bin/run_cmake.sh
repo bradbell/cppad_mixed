@@ -196,7 +196,10 @@ EOF
 	fi
 	shift
 done
-bin/build_type.sh run_cmake $cmake_install_prefix $build_type
+if echo "$cmake_install_prefix" | grep '/cppad_mixed$' > /dev/null
+then
+    bin/build_type.sh run_cmake $cmake_install_prefix $build_type
+fi
 # --------------------------------------------------------------------------
 export PKG_CONFIG_PATH=':'
 for pkg in eigen3 ipopt cppad
