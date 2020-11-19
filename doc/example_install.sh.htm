@@ -135,34 +135,40 @@ will be used (takes less time).
      bin/build_type<font color="#990000">.</font>sh example_install<font color="#990000">.</font>sh <font color="#009900">$cmake_install_prefix</font> <font color="#009900">$build_type</font>
 <b><font color="#0000FF">fi</font></b>
 <i><font color="#9A1900"># -----------------------------------------------------------------------------</font></i>
-<i><font color="#9A1900"># set system_type, system_list, and system_install</font></i>
+<i><font color="#9A1900"># set system_type,</font></i>
+<i><font color="#9A1900"># system_install</font></i>
+<i><font color="#9A1900"># example_install.tmp</font></i>
 <b><font color="#0000FF">if</font></b> which apt-get <font color="#990000">&gt;&amp;</font> /dev/null
 <b><font color="#0000FF">then</font></b>
      <font color="#009900">system_type</font><font color="#990000">=</font><font color="#FF0000">'debian'</font>
-     <font color="#009900">system_list</font><font color="#990000">=</font><font color="#FF0000">'apt list --installed'</font>
      <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">'sudo apt-get install -y'</font>
+     apt list --installed <font color="#990000">|</font> sed -e <font color="#FF0000">'s|  *| |g'</font> <font color="#990000">&gt;</font> example_install<font color="#990000">.</font>tmp
 <b><font color="#0000FF">elif</font></b> which dnf <font color="#990000">&gt;&amp;</font> /dev/null
 <b><font color="#0000FF">then</font></b>
      <font color="#009900">system_type</font><font color="#990000">=</font><font color="#FF0000">'red_hat'</font>
-     <font color="#009900">system_list</font><font color="#990000">=</font><font color="#FF0000">'dnf list installed'</font>
      <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">'sudo dnf install -y'</font>
+     dnf list installed <font color="#990000">|</font> sed -e <font color="#FF0000">'s|  *| |g'</font> <font color="#990000">&gt;</font> example_install<font color="#990000">.</font>tmp
 <b><font color="#0000FF">elif</font></b> which yum <font color="#990000">&gt;&amp;</font> /dev/null
 <b><font color="#0000FF">then</font></b>
      <font color="#009900">system_type</font><font color="#990000">=</font><font color="#FF0000">'red_hat'</font>
-     <font color="#009900">system_list</font><font color="#990000">=</font><font color="#FF0000">'yum list installed'</font>
      <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">'sudo yum install -y'</font>
+     yum list installed <font color="#990000">|</font> sed -e <font color="#FF0000">'s|  *| |g'</font> <font color="#990000">&gt;</font> example_install<font color="#990000">.</font>tmp
+<b><font color="#0000FF">elif</font></b> which port <font color="#990000">&gt;&amp;</font> /dev/null
+<b><font color="#0000FF">then</font></b>
+     <font color="#009900">system_type</font><font color="#990000">=</font><font color="#FF0000">'mac_port'</font>
+     <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">'port install'</font>
+     port installed <font color="#990000">|</font> sed -e <font color="#FF0000">'s|^ *||g'</font> <font color="#990000">&gt;</font> example_install<font color="#990000">.</font>tmp
 <b><font color="#0000FF">elif</font></b> which brew <font color="#990000">&gt;&amp;</font> /dev/null
 <b><font color="#0000FF">then</font></b>
-    <font color="#009900">system_type</font><font color="#990000">=</font><font color="#FF0000">'macos'</font>
-    <font color="#009900">system_list</font><font color="#990000">=</font><font color="#FF0000">'brew list'</font>
-    <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">'brew install'</font>
+     <font color="#009900">system_type</font><font color="#990000">=</font><font color="#FF0000">'mac_brew'</font>
+     <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">'brew install'</font>
+     brew list <font color="#990000">|</font> sed -e <font color="#FF0000">'s|  *|</font><font color="#CC33CC">\n</font><font color="#FF0000">|g'</font> <font color="#990000">&gt;</font> example_install<font color="#990000">.</font>tmp
 <b><font color="#0000FF">else</font></b>
      echo <font color="#FF0000">'Cannot find the system pakcage manager'</font>
      <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
 <b><font color="#0000FF">fi</font></b>
 <i><font color="#9A1900"># --------------------------------------------------------------------------</font></i>
 <i><font color="#9A1900"># system external installs for normal system requirements</font></i>
-<font color="#009900">$system_list</font> <font color="#990000">|</font> sed -e <font color="#FF0000">'s|  *| |g'</font> <font color="#990000">&gt;</font> example_install<font color="#990000">.</font>tmp
 <b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$system_type"</font> <font color="#990000">==</font> <font color="#FF0000">'debian'</font> <font color="#990000">]</font>
 <b><font color="#0000FF">then</font></b>
      <font color="#009900">list</font><font color="#990000">=</font><font color="#FF0000">'</font>
@@ -177,21 +183,9 @@ will be used (takes less time).
 <font color="#FF0000">          gfortran</font>
 <font color="#FF0000">          libgsl0-dev</font>
 <font color="#FF0000">     '</font>
-<b><font color="#0000FF">elif</font></b> <font color="#990000">[</font> <font color="#FF0000">"$system_type"</font> <font color="#990000">==</font> <font color="#FF0000">'macos'</font> <font color="#990000">]</font>
-<b><font color="#0000FF">then</font></b>
-     <font color="#009900">list</font><font color="#990000">=</font><font color="#FF0000">'</font>
-<font color="#FF0000">          cmake</font>
-<font color="#FF0000">          wget</font>
-<font color="#FF0000">          lapack</font>
-<font color="#FF0000">          suitesparse</font>
-<font color="#FF0000">          pkg-config</font>
-<font color="#FF0000">          gcc</font>
-<font color="#FF0000">          gsl</font>
-<font color="#FF0000">        java</font>
-<font color="#FF0000">     '</font>
 <b><font color="#0000FF">elif</font></b> <font color="#990000">[</font> <font color="#FF0000">"$system_type"</font> <font color="#990000">==</font> <font color="#FF0000">'red_hat'</font> <font color="#990000">]</font>
 <b><font color="#0000FF">then</font></b>
-    <font color="#009900">list</font><font color="#990000">=</font><font color="#FF0000">'</font>
+     <font color="#009900">list</font><font color="#990000">=</font><font color="#FF0000">'</font>
 <font color="#FF0000">          cmake</font>
 <font color="#FF0000">          git</font>
 <font color="#FF0000">          wget</font>
@@ -202,20 +196,48 @@ will be used (takes less time).
 <font color="#FF0000">          gcc-c++</font>
 <font color="#FF0000">          gcc-gfortran</font>
 <font color="#FF0000">          gsl-devel</font>
-<font color="#FF0000">        java</font>
-<font color="#FF0000">    '</font>
-    <i><font color="#9A1900"># make sure Ipopt configure sees brew version of javac (not /usr/bin/javac)</font></i>
-    <font color="#009900">PATH</font><font color="#990000">=</font><font color="#FF0000">"/usr/local/opt/openjdk/bin:$PATH"</font>
+<font color="#FF0000">          java</font>
+<font color="#FF0000">     '</font>
+<b><font color="#0000FF">elif</font></b> <font color="#990000">[</font> <font color="#FF0000">"$system_type"</font> <font color="#990000">==</font> <font color="#FF0000">'mac_port'</font> <font color="#990000">]</font>
+<b><font color="#0000FF">then</font></b>
+     <font color="#009900">list</font><font color="#990000">=</font><font color="#FF0000">'</font>
+<font color="#FF0000">          cmake</font>
+<font color="#FF0000">          wget</font>
+<font color="#FF0000">          OpenBLAS</font>
+<font color="#FF0000">          SuiteSparse</font>
+<font color="#FF0000">          pkgconfig</font>
+<font color="#FF0000">          gcc</font>
+<font color="#FF0000">          gsl</font>
+<font color="#FF0000">          openjdk</font>
+<font color="#FF0000">     '</font>
+<b><font color="#0000FF">elif</font></b> <font color="#990000">[</font> <font color="#FF0000">"$system_type"</font> <font color="#990000">==</font> <font color="#FF0000">'mac_brew'</font> <font color="#990000">]</font>
+<b><font color="#0000FF">then</font></b>
+     <font color="#009900">list</font><font color="#990000">=</font><font color="#FF0000">'</font>
+<font color="#FF0000">          cmake</font>
+<font color="#FF0000">          wget</font>
+<font color="#FF0000">          lapack</font>
+<font color="#FF0000">          suite-sparse</font>
+<font color="#FF0000">          pkg-config</font>
+<font color="#FF0000">          gcc</font>
+<font color="#FF0000">          gsl</font>
+<font color="#FF0000">          openjdk</font>
+<font color="#FF0000">     '</font>
+     <i><font color="#9A1900"># make sure Ipopt configure sees brew version of javac (not /usr/bin/javac)</font></i>
+     <font color="#009900">PATH</font><font color="#990000">=</font><font color="#FF0000">"/usr/local/opt/openjdk/bin:$PATH"</font>
 <b><font color="#0000FF">else</font></b>
-    echo <font color="#FF0000">'example_install.sh: script error'</font>
-    <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
+     echo <font color="#FF0000">'example_install.sh: script error'</font>
+     <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
 <b><font color="#0000FF">fi</font></b>
 <b><font color="#0000FF">for</font></b> package <b><font color="#0000FF">in</font></b> <font color="#009900">$list</font>
 <b><font color="#0000FF">do</font></b>
      <b><font color="#0000FF">if</font></b> grep <font color="#FF0000">"^$package[^a-zA-Z_]"</font> example_install<font color="#990000">.</font>tmp <font color="#990000">&gt;</font> /dev/null
      <b><font color="#0000FF">then</font></b>
           <font color="#009900">version</font><font color="#990000">=</font>`grep <font color="#FF0000">"^$package[^a-zA-Z_]"</font> example_install<font color="#990000">.</font>tmp <font color="#990000">|</font> head -<font color="#993399">1</font>`
-          echo <font color="#FF0000">"using $version"</font>
+          echo <font color="#FF0000">"using installed $version"</font>
+     <b><font color="#0000FF">elif</font></b> grep <font color="#FF0000">"^$package</font><font color="#CC33CC">\$</font><font color="#FF0000">"</font> example_install<font color="#990000">.</font>tmp <font color="#990000">&gt;</font> /dev/null
+     <b><font color="#0000FF">then</font></b>
+          <i><font color="#9A1900"># brew list case</font></i>
+          echo <font color="#FF0000">"using installed $package"</font>
      <b><font color="#0000FF">else</font></b>
           echo_eval <font color="#009900">$system_install</font> <font color="#009900">$package</font>
      <b><font color="#0000FF">fi</font></b>
@@ -266,17 +288,6 @@ rm example_install<font color="#990000">.</font>tmp
 <i><font color="#9A1900"># ----------------------------------------------------------------------------</font></i>
 <i><font color="#9A1900"># cppad_mixed</font></i>
 <i><font color="#9A1900"># ----------------------------------------------------------------------------</font></i>
-<i><font color="#9A1900"># Check we can find ipopt.pc, echo PKG_CONFIG_PATH to help user set this value</font></i>
-<font color="#009900">dir</font><font color="#990000">=</font>`find -L <font color="#009900">$ipopt_prefix</font> -name <font color="#FF0000">'ipopt.pc'</font> <font color="#990000">|</font> sed -e <font color="#FF0000">'s|/ipopt.pc||'</font>`
-<b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$dir"</font> <font color="#990000">==</font> <font color="#FF0000">''</font> <font color="#990000">]</font>
-<b><font color="#0000FF">then</font></b>
-     echo <font color="#FF0000">"Cannot find ipopt.pc in $cmake_install_prefix directory"</font>
-     <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
-<b><font color="#0000FF">else</font></b>
-     echo_eval <b><font color="#0000FF">export</font></b> <font color="#009900">PKG_CONFIG_PATH</font><font color="#990000">=</font><font color="#FF0000">"$dir"</font>
-<b><font color="#0000FF">fi</font></b>
-echo_eval <b><font color="#0000FF">export</font></b> <font color="#009900">PYTHONPATH</font><font color="#990000">=</font><font color="#FF0000">''</font>
-<i><font color="#9A1900">#</font></i>
 <i><font color="#9A1900"># bin/run_cmake.sh</font></i>
 echo <font color="#FF0000">"bin/run_cmake.sh 1&gt;&gt; example_install.log 2&gt;&gt; example_install.err"</font>
 bin/run_cmake<font color="#990000">.</font>sh <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> <font color="#990000">..</font>/example_install<font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> <font color="#990000">..</font>/example_install<font color="#990000">.</font>err

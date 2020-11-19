@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>bin/run_cmake.sh: User Configuration Options</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="bin/run_cmake.sh: User Configuration Options">
-<meta name="keywords" id="keywords" content=" bin/run_cmake.sh: user configuration options verbose_makefile build_type cmake_install_prefix debug release eigen prefix extra_cxx_flags cmake_libdir ldlt_cholmod optimize_cppad_function for_hes_sparsity testing speed memory ">
+<meta name="keywords" id="keywords" content=" bin/run_cmake.sh: user configuration options verbose_makefile build_type cmake_install_prefix debug release eigen prefix extra_cxx_flags cmake_libdir cppad_mixed.pc ldlt_cholmod optimize_cppad_function for_hes_sparsity testing speed memory ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -70,6 +70,7 @@ A:active { color : purple }
 <br><a href="run_cmake.sh.htm#Eigen Prefix" target="_top">Eigen&nbsp;Prefix</a>
 <br><a href="run_cmake.sh.htm#extra_cxx_flags" target="_top">extra_cxx_flags</a>
 <br><a href="run_cmake.sh.htm#cmake_libdir" target="_top">cmake_libdir</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="run_cmake.sh.htm#cmake_libdir.cppad_mixed.pc" target="_top">cppad_mixed.pc</a>
 <br><a href="run_cmake.sh.htm#ldlt_cholmod" target="_top">ldlt_cholmod</a>
 <br><a href="run_cmake.sh.htm#optimize_cppad_function" target="_top">optimize_cppad_function</a>
 <br><a href="run_cmake.sh.htm#for_hes_sparsity" target="_top">for_hes_sparsity</a>
@@ -149,6 +150,15 @@ Sub-directory of each prefix where libraries are installed.
 <code><font color='blue'><pre style='display:inline'> 
 cmake_libdir='lib64'
 </pre></font></code>
+<br>
+<big><a name="cmake_libdir.cppad_mixed.pc" id="cmake_libdir.cppad_mixed.pc">cppad_mixed.pc</a></big>
+<br>
+The file pkg-config file <code><font color="blue">cppad_mixed.pc</font></code> is installed in the
+
+<code><i><font color="black"><span style='white-space: nowrap'>cmake_install_prefix/cmake_libdir</span></font></i></code>
+ directory.
+
+<br>
 <br>
 <b><big><a name="ldlt_cholmod" id="ldlt_cholmod">ldlt_cholmod</a></big></b>
 <br>
