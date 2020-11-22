@@ -75,6 +75,14 @@ if echo "$cmake_install_prefix" | grep '/cppad_mixed$' > /dev/null
 then
 	bin/build_type.sh example_install.sh $cmake_install_prefix $build_type
 fi
+# --------------------------------------------------------------------------
+user=$(whoami)
+if [ "$user" == 'root' ]
+then
+    sudo=''
+else
+    sudo='sudo'
+fi
 # -----------------------------------------------------------------------------
 # set system_type,
 # system_install
@@ -82,22 +90,22 @@ fi
 if which apt-get >& /dev/null
 then
 	system_type='debian'
-	system_install='sudo apt-get install -y'
-	apt list --installed | sed -e 's|  *| |g' > example_install.tmp
+	system_install="$sudo apt-get install -y"
+	apt-get list --installed | sed -e 's|  *| |g' > example_install.tmp
 elif which dnf >& /dev/null
 then
 	system_type='red_hat'
-	system_install='sudo dnf install -y'
+	system_install="$sudo dnf install -y"
 	dnf list installed | sed -e 's|  *| |g' > example_install.tmp
 elif which yum >& /dev/null
 then
 	system_type='red_hat'
-	system_install='sudo yum install -y'
+	system_install="$sudo yum install -y"
 	yum list installed | sed -e 's|  *| |g' > example_install.tmp
 elif which port >& /dev/null
 then
 	system_type='mac_port'
-	system_install='port install'
+	system_install="$sudo port install"
 	port installed | sed -e 's|^ *||g' > example_install.tmp
 elif which brew >& /dev/null
 then
@@ -118,11 +126,11 @@ then
 		wget
 		libblas-dev
 		liblapack-dev
-		suitesparse-dev
+		libsuitesparse-dev
 		pkg-config
 		g++
 		gfortran
-		libgsl0-dev
+		libgsl-dev
 	'
 elif [ "$system_type" == 'red_hat' ]
 then

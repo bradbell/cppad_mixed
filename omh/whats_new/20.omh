@@ -25,9 +25,17 @@ $spell
     suitesparse
     lapack
     gcc
+    sudo
+    debian
 $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
+
+$head 12-21$$
+Remove use of sudo when running
+$cref example_install.sh$$ as root.
+Use $code apt-get$$ instead of $code apt$$ to list installed debian packages
+(this avoids a warning when running example_install.sh).
 
 $head 11-19$$
 $list number$$
