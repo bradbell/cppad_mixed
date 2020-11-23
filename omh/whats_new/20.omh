@@ -32,10 +32,21 @@ $$
 $section Changes and Additions to cppad_mixed During 2020$$
 
 $head 12-21$$
+$list number$$
 Remove use of sudo when running
 $cref example_install.sh$$ as root.
+$lnext
 Use $code apt-get$$ instead of $code apt$$ to list installed debian packages
 (this avoids a warning when running example_install.sh).
+$lnext
+Fix searching for
+$cref/suitesparse/install_unix/System Requirements/suitesparse/$$
+library on debian systems.
+(It seems debian recently added the hardware type to the library path.)
+$lnext
+Use multi-process make to speed up the $cref example_install.sh$$,
+and $code bin/ipopt_install.sh$$ when more that one processor is available.
+$lend
 
 $head 11-19$$
 $list number$$

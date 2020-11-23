@@ -76,6 +76,7 @@ else
 	add_mumps_fcflags=''
 fi
 # -----------------------------------------------------------------------------
+n_job=$(nproc)
 for i in {0..2}
 do
 	url=${url_list[$i]}
@@ -133,7 +134,7 @@ EOF
 		--libdir=$ipopt_prefix/$cmake_libdir \
 		--enable-shared \
 		$debug_flags $add_fcflags
-	echo_eval make install
+	echo_eval make -j $n_job install
 	#
 	# back to build/external
 	echo_eval cd ../..

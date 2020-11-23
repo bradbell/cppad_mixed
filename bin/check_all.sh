@@ -96,9 +96,10 @@ bin/run_cmake.sh $flags >& cmake.log
 # ----------------------------------------------------------------------------
 cd build
 #
+n_job=`nproc`
 for target in check speed install
 do
-	echo "make $target >& $target.log"
+	echo "make -j $n_job $target >& $target.log"
 	make $target >& ../$target.log
 done
 cd ..

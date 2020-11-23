@@ -223,17 +223,23 @@ SET(suitesparse_LIBRARIES
 # suitesparse_LIBRARY_DIRS
 SET(suitesparse_LIBRARY_DIRS "NOTFOUND")
 FOREACH(suffix in "lib" "lib64" "${cmake_libdir}" )
-	SET(globbing_expression "${suitesparse_prefix}/${suffix}/libcholmod.*")
-	FILE(GLOB match ${globbing_expression})
-	IF( match )
-		print_variable(match)
-		SET(suitesparse_LIBRARY_DIRS "${suitesparse_prefix}/${suffix}")
-	ENDIF(match)
+	SET(both "${suitesparse_prefix}/${suffix}")
+	SET(globbing_expression "${both}/libcholmod.*")
+	FILE(GLOB match_1 ${globbing_expression})
+	IF( match_1 )
+		SET(suitesparse_LIBRARY_DIRS "${both}")
+	ELSE( match_1 )
+		SET(globbing_expression "${both}/*/libcholmod.*")
+		FILE(GLOB match_2 ${globbing_expression})
+		IF( match_2 )
+			SET(suitesparse_LIBRARY_DIRS "${both}")
+		ENDIF( match_2 )
+	ENDIF( match_1 )
 ENDFOREACH(suffix in "lib" "lib64" "${cmake_libdir}" )
 IF( NOT suitesparse_LIBRARY_DIRS )
 	MESSAGE(FATAL_ERROR
 		"Cannot find libcholmod.* in ${suitesparse_prefix}/libdir"
-		"where libdir is lib, lib64, or cmake_libdir"
+		" where libdir is lib, lib64, or cmake_libdir"
 	)
 ENDIF( NOT suitesparse_LIBRARY_DIRS )
 # ----------------------------------------------------------------------------
