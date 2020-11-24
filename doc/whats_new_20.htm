@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2020</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2020">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2020 11-19 11-18 11-05 11-04 11-03 11-02 10-31 10-21 10-10 10-06 08-31 08-21 07-02 06-30 06-07 05-30 05-29 05-27 03-28 03-25 03-23 03-22 03-18 03-15 api change ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2020 11-23 11-21 11-19 11-18 11-05 11-04 11-03 11-02 10-31 10-21 10-10 10-06 08-31 08-21 07-02 06-30 06-07 05-30 05-29 05-27 03-28 03-25 03-23 03-22 03-18 03-15 api change ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -66,6 +66,8 @@ A:active { color : purple }
 
 <center><b><big><big>Changes and Additions to cppad_mixed During 2020</big></big></b></center>
 
+<br><a href="whats_new_20.htm#11-23" target="_top">11-23</a>
+<br><a href="whats_new_20.htm#11-21" target="_top">11-21</a>
 <br><a href="whats_new_20.htm#11-19" target="_top">11-19</a>
 <br><a href="whats_new_20.htm#11-18" target="_top">11-18</a>
 <br><a href="whats_new_20.htm#11-05" target="_top">11-05</a>
@@ -92,6 +94,40 @@ A:active { color : purple }
 <br><a href="whats_new_20.htm#03-15" target="_top">03-15</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="whats_new_20.htm#03-15.API Change" target="_top">API&nbsp;Change</a>
 <br><br>
+<b><big><a name="11-23" id="11-23">11-23</a></big></b>
+<br>
+Fix the pkg-config <code><font color="blue">cppad_mixed.pc</font></code> file by separating
+the private part of the libs and requires fields.
+
+<br>
+<br>
+<b><big><a name="11-21" id="11-21">11-21</a></big></b>
+
+<ol type="1"><li>
+Remove use of sudo when running
+<a href="example_install.sh.htm" target="_top"><span style='white-space: nowrap'>example_install.sh</span></a>
+ as root.
+</li><li>
+
+Use <code><font color="blue">apt-get</font></code> instead of <code><font color="blue">apt</font></code> to list installed debian packages
+(this avoids a warning when running example_install.sh).
+</li><li>
+
+Fix searching for
+<a href="install_unix.htm#System Requirements.suitesparse" target="_top"><span style='white-space: nowrap'>suitesparse</span></a>
+
+library on debian systems.
+(It seems debian recently added the hardware type to the library path.)
+</li><li>
+
+Use multi-process make to speed up the <a href="example_install.sh.htm" target="_top"><span style='white-space: nowrap'>example_install.sh</span></a>
+,
+and <code><font color="blue">bin/ipopt_install.sh</font></code> when more that one processor is available.
+</li></ol>
+
+
+<br>
+<br>
 <b><big><a name="11-19" id="11-19">11-19</a></big></b>
 
 <ol type="1"><li>

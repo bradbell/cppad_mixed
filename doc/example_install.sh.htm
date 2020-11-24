@@ -134,6 +134,14 @@ will be used (takes less time).
 <b><font color="#0000FF">then</font></b>
      bin/build_type<font color="#990000">.</font>sh example_install<font color="#990000">.</font>sh <font color="#009900">$cmake_install_prefix</font> <font color="#009900">$build_type</font>
 <b><font color="#0000FF">fi</font></b>
+<i><font color="#9A1900"># --------------------------------------------------------------------------</font></i>
+<font color="#009900">user</font><font color="#990000">=</font><font color="#009900">$(whoami)</font>
+<b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$user"</font> <font color="#990000">==</font> <font color="#FF0000">'root'</font> <font color="#990000">]</font>
+<b><font color="#0000FF">then</font></b>
+    <font color="#009900">sudo</font><font color="#990000">=</font><font color="#FF0000">''</font>
+<b><font color="#0000FF">else</font></b>
+    <font color="#009900">sudo</font><font color="#990000">=</font><font color="#FF0000">'sudo'</font>
+<b><font color="#0000FF">fi</font></b>
 <i><font color="#9A1900"># -----------------------------------------------------------------------------</font></i>
 <i><font color="#9A1900"># set system_type,</font></i>
 <i><font color="#9A1900"># system_install</font></i>
@@ -141,22 +149,22 @@ will be used (takes less time).
 <b><font color="#0000FF">if</font></b> which apt-get <font color="#990000">&gt;&amp;</font> /dev/null
 <b><font color="#0000FF">then</font></b>
      <font color="#009900">system_type</font><font color="#990000">=</font><font color="#FF0000">'debian'</font>
-     <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">'sudo apt-get install -y'</font>
-     apt list --installed <font color="#990000">|</font> sed -e <font color="#FF0000">'s|  *| |g'</font> <font color="#990000">&gt;</font> example_install<font color="#990000">.</font>tmp
+     <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">"$sudo apt-get install -y"</font>
+     apt-get list --installed <font color="#990000">|</font> sed -e <font color="#FF0000">'s|  *| |g'</font> <font color="#990000">&gt;</font> example_install<font color="#990000">.</font>tmp
 <b><font color="#0000FF">elif</font></b> which dnf <font color="#990000">&gt;&amp;</font> /dev/null
 <b><font color="#0000FF">then</font></b>
      <font color="#009900">system_type</font><font color="#990000">=</font><font color="#FF0000">'red_hat'</font>
-     <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">'sudo dnf install -y'</font>
+     <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">"$sudo dnf install -y"</font>
      dnf list installed <font color="#990000">|</font> sed -e <font color="#FF0000">'s|  *| |g'</font> <font color="#990000">&gt;</font> example_install<font color="#990000">.</font>tmp
 <b><font color="#0000FF">elif</font></b> which yum <font color="#990000">&gt;&amp;</font> /dev/null
 <b><font color="#0000FF">then</font></b>
      <font color="#009900">system_type</font><font color="#990000">=</font><font color="#FF0000">'red_hat'</font>
-     <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">'sudo yum install -y'</font>
+     <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">"$sudo yum install -y"</font>
      yum list installed <font color="#990000">|</font> sed -e <font color="#FF0000">'s|  *| |g'</font> <font color="#990000">&gt;</font> example_install<font color="#990000">.</font>tmp
 <b><font color="#0000FF">elif</font></b> which port <font color="#990000">&gt;&amp;</font> /dev/null
 <b><font color="#0000FF">then</font></b>
      <font color="#009900">system_type</font><font color="#990000">=</font><font color="#FF0000">'mac_port'</font>
-     <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">'port install'</font>
+     <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">"$sudo port install"</font>
      port installed <font color="#990000">|</font> sed -e <font color="#FF0000">'s|^ *||g'</font> <font color="#990000">&gt;</font> example_install<font color="#990000">.</font>tmp
 <b><font color="#0000FF">elif</font></b> which brew <font color="#990000">&gt;&amp;</font> /dev/null
 <b><font color="#0000FF">then</font></b>
@@ -177,11 +185,11 @@ will be used (takes less time).
 <font color="#FF0000">          wget</font>
 <font color="#FF0000">          libblas-dev</font>
 <font color="#FF0000">          liblapack-dev</font>
-<font color="#FF0000">          suitesparse-dev</font>
+<font color="#FF0000">          libsuitesparse-dev</font>
 <font color="#FF0000">          pkg-config</font>
 <font color="#FF0000">          g++</font>
 <font color="#FF0000">          gfortran</font>
-<font color="#FF0000">          libgsl0-dev</font>
+<font color="#FF0000">          libgsl-dev</font>
 <font color="#FF0000">     '</font>
 <b><font color="#0000FF">elif</font></b> <font color="#990000">[</font> <font color="#FF0000">"$system_type"</font> <font color="#990000">==</font> <font color="#FF0000">'red_hat'</font> <font color="#990000">]</font>
 <b><font color="#0000FF">then</font></b>
@@ -291,10 +299,17 @@ bin/run_cmake<font color="#990000">.</font>sh <font color="#993399">1</font><fon
 <i><font color="#9A1900"># change into build directory</font></i>
 echo_eval cd build
 <i><font color="#9A1900">#</font></i>
+<b><font color="#0000FF">if</font></b> which nproc <font color="#990000">&gt;&amp;</font> /dev/null
+<b><font color="#0000FF">then</font></b>
+     <font color="#009900">n_job</font><font color="#990000">=</font><font color="#009900">$(nproc)</font>
+<b><font color="#0000FF">else</font></b>
+     <font color="#009900">n_job</font><font color="#990000">=</font><font color="#009900">$(</font>sysctl -n hw<font color="#990000">.</font>ncpu<font color="#990000">)</font>
+<b><font color="#0000FF">fi</font></b>
+<i><font color="#9A1900">#</font></i>
 <i><font color="#9A1900"># make check, speed, and install</font></i>
 <b><font color="#0000FF">for</font></b> cmd <b><font color="#0000FF">in</font></b> check speed install
 <b><font color="#0000FF">do</font></b>
-     echo <font color="#FF0000">"make $cmd 1&gt;&gt; example_install.log 2&gt;&gt; example_install.err"</font>
+     echo <font color="#FF0000">"make -j $n_job $cmd 1&gt;&gt; example_install.log 2&gt;&gt; example_install.err"</font>
      make <font color="#009900">$cmd</font> <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> <font color="#990000">..</font>/example_install<font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> <font color="#990000">..</font>/example_install<font color="#990000">.</font>err
 <b><font color="#0000FF">done</font></b>
 cd <font color="#990000">..</font>
