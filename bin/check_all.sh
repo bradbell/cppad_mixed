@@ -96,7 +96,12 @@ bin/run_cmake.sh $flags >& cmake.log
 # ----------------------------------------------------------------------------
 cd build
 #
-n_job=`nproc`
+if which nproc >& /dev/null
+then
+	n_job=$(nproc)
+else
+	n_job=$(sysctl -n hw.ncpu)
+fi
 for target in check speed install
 do
 	echo "make -j $n_job $target >& $target.log"

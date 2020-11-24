@@ -27,11 +27,16 @@ $spell
     gcc
     sudo
     debian
+	config
 $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
-$head 12-21$$
+$head 11-23$$
+Fix the pkg-config $code cppad_mixed.pc$$ file by separating
+the private part of the libs and requires fields.
+
+$head 11-21$$
 $list number$$
 Remove use of sudo when running
 $cref example_install.sh$$ as root.

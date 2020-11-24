@@ -76,7 +76,12 @@ else
 	add_mumps_fcflags=''
 fi
 # -----------------------------------------------------------------------------
-n_job=$(nproc)
+if which nproc >& /dev/null
+then
+	n_job=$(nproc)
+else
+	n_job=$(sysctl -n hw.ncpu)
+fi
 for i in {0..2}
 do
 	url=${url_list[$i]}

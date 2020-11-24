@@ -9,10 +9,12 @@
 # ---------------------------------------------------------------------------
 # This file is used by pkg-config after cppad_mixed is installed
 #
-Name:            cppad_mixed
-Description:     Laplace Approximation for Mixed Effects Models
-Version:         @cppad_mixed_version@
-URL:             https://github.com/bradbell/cppad_mixed
-Cflags:          @cflags@
-Libs:            @libs@
-Requires:        @requires@
+Name:              cppad_mixed
+Description:       C++ Laplace Approximation for Mixed Effects Models
+Version:           @cppad_mixed_version@
+URL:               https://github.com/bradbell/cppad_mixed
+Cflags:            @cflags@
+Libs:              @libs@
+Libs.private:      @libs_private@
+Requires:          @requires@
+Requires.private:  @requires_private@

@@ -240,8 +240,14 @@ bin/run_cmake.sh 1>> ../example_install.log 2>> ../example_install.err
 # change into build directory
 echo_eval cd build
 #
+if which nproc >& /dev/null
+then
+	n_job=$(nproc)
+else
+	n_job=$(sysctl -n hw.ncpu)
+fi
+#
 # make check, speed, and install
-n_job=$(nproc)
 for cmd in check speed install
 do
 	echo "make -j $n_job $cmd 1>> example_install.log 2>> example_install.err"

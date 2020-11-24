@@ -12,12 +12,13 @@
 # -----------------------------------------------------------------------------
 #
 # requires
-SET(requires             "gsl eigen3 ipopt cppad" )
-SET(requires_uninstalled "${requires}" )
+SET(requires             " " )
+SET(requires_private     "gsl eigen3 ipopt cppad" )
+SET(requires_uninstalled "gsl eigen3 ipopt cppad" )
 #
-# libs and cflags for other packages
-SET(libs       " ")
-SET(cflags     " ")
+# private: libs, cflags
+SET(libs_private       " ")
+SET(cflags_private     " ")
 SET(pkg_list gsl eigen3 ipopt cppad)
 IF( NOT "${suitesparse_prefix}" STREQUAL "/usr" )
 	SET(pkg_list gsl eigen3 ipopt cppad suitesparse)
@@ -32,25 +33,33 @@ FOREACH(pkg ${pkg_list} )
 	ENDFOREACH(entry ${${pkg}_INCLUDE_DIRS} )
 	#
 	FOREACH(entry ${${pkg}_LIBRARY_DIRS} )
-		STRING(FIND "${libs}" " -L${entry} " position )
+		STRING(FIND "${libs_private}" " -L${entry} " position )
 		IF( ${position} STREQUAL "-1" )
-			SET(libs  "${libs}-L${entry} " )
+			SET(libs_private  "${libs_private}-L${entry} " )
 		ENDIF( ${position} STREQUAL "-1" )
 	ENDFOREACH(entry ${${pkg}_LIBRARY_DIRS} )
 	#
 	FOREACH(entry ${${pkg}_LIBRARIES} )
-		STRING(FIND "${libs}" " -l${entry} " position )
+		STRING(FIND "${libs_private}" " -l${entry} " position )
 		IF( ${position} STREQUAL "-1" )
-			SET(libs  "${libs}-l${entry} " )
+			SET(libs_private  "${libs_private}-l${entry} " )
 		ENDIF( ${position} STREQUAL "-1" )
 	ENDFOREACH(entry ${${pkg}_LIBRARIES} )
 	#
 ENDFOREACH(pkg ${pkg_list} )
-SET(libs_uninstalled     "${libs}" )
 #
-# libs and cflags for cppad_mixed
-SET(cflags_uninstalled   "-I${cppad_mixed_SOURCE_DIR}${cflags}" )
-SET(entry                "${cmake_install_prefix}/include" )
+# uninstalled: libs, cflags
+SET(libs_uninstalled     "${libs_private}" )
+SET(cflags_uninstalled
+	"-I${cppad_mixed_SOURCE_DIR}${cflags} ${cflags_private}"
+)
+#
+# libs
+SET(libs  "-lcppad_mixed" )
+#
+# cflags
+SET(cflags "${cflags_private}")
+SET(entry  "${cmake_install_prefix}/include" )
 STRING(FIND "${cflags}" " -I${entry} " position )
 IF( ${position} STREQUAL "-1" )
 	SET(cflags  "${cflags}-I${entry} " )
