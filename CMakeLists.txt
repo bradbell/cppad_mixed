@@ -188,7 +188,7 @@ MESSAGE(STATUS "cppad_mixed_has_nullptr = ${cppad_mixed_has_nullptr_01}")
 # suitesparse_in_cholmod_include_01
 SET(suitesparse_prefix "NOTFOUND")
 SET(suitesparse_suffix "NOTFOUND")
-FOREACH(prefix in /usr /usr/local "${cmake_install_prefix}" )
+FOREACH(prefix in /usr /usr/local /opt/local "${cmake_install_prefix}" )
 	FOREACH(suffix in "include" "include/suitesparse")
 		IF( EXISTS "${prefix}/${suffix}/cholmod.h" )
 			IF( suitespase_prefix )

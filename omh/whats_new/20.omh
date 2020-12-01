@@ -32,6 +32,11 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
+$head 11-30$$
+Add $code /opt/local$$ to the list of prefixes that are searched
+for $code cholmod.h$$. This was necessary to get the install
+to work on a Mac system that uses ports.
+
 $head 11-23$$
 Fix the pkg-config $code cppad_mixed.pc$$ file by separating
 the private part of the libs and requires fields.
