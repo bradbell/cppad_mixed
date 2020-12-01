@@ -28,14 +28,19 @@ $spell
     sudo
     debian
 	config
+	messaging
 $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
 $head 11-30$$
+$list number$$
 Add $code /opt/local$$ to the list of prefixes that are searched
 for $code cholmod.h$$. This was necessary to get the install
 to work on a Mac system that uses ports.
+$lnext
+Improve the error messaging when $cref example_install.sh$$ fails.
+$lend
 
 $head 11-23$$
 Fix the pkg-config $code cppad_mixed.pc$$ file by separating

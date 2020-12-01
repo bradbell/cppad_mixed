@@ -227,7 +227,11 @@ do
 	if [ "$install" == 'true' ]
 	then
 		echo "bin/install_$pkg.sh 1>> $p.log 2>> $p.err"
-		bin/install_$pkg.sh 1>> $p.log 2>> $p.err
+		if ! bin/install_$pkg.sh 1>> $p.log 2>> $p.err
+		then
+			tail $p.err
+			exit 1
+		fi
 	fi
 done
 # ----------------------------------------------------------------------------
@@ -235,7 +239,11 @@ done
 # ----------------------------------------------------------------------------
 # bin/run_cmake.sh
 echo "bin/run_cmake.sh 1>> example_install.log 2>> example_install.err"
-bin/run_cmake.sh 1>> ../example_install.log 2>> ../example_install.err
+if ! bin/run_cmake.sh 1>> example_install.log 2>> example_install.err
+then
+	tail example_install.err
+	exit 1
+fi
 #
 # change into build directory
 echo_eval cd build
@@ -247,11 +255,15 @@ else
 	n_job=$(sysctl -n hw.ncpu)
 fi
 #
-# make check, speed, and install
+# make
 for cmd in check speed install
 do
 	echo "make -j $n_job $cmd 1>> example_install.log 2>> example_install.err"
-	make $cmd 1>> ../example_install.log 2>> ../example_install.err
+	if ! make -j $n_job $cmd 1>> example_install.log 2>> example_install.err
+	then
+		tail example_isntall.err
+		exit 1
+	fi
 done
 cd ..
 # ----------------------------------------------------------------------------
