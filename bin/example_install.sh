@@ -259,11 +259,12 @@ fi
 for cmd in check speed install
 do
 	echo "make -j $n_job $cmd 1>> example_install.log 2>> example_install.err"
-	if ! make -j $n_job $cmd 1>> example_install.log 2>> example_install.err
+	if ! make -j $n_job $cmd \
+		1>> ../example_install.log 2>> ../example_install.err
 	then
 		echo "Try running the following command in $(pwd)"
-		echo "    cd build; make -j $n_job $cmd"
-		echo 'To see why the check of cppad_mixed failed'
+		echo "    make -j $n_job $cmd"
+		echo 'To see why the check of cppad_mixed failed.'
 		exit 1
 	fi
 done
