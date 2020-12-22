@@ -1,6 +1,9 @@
 # temporary file used to make commits
 /git_commit.sh
 #
+# file used by bin/example_install to report errors
+/example_install.err
+#
 # cmake configuration files that is put in source directory
 /include/cppad/mixed/configure.hpp
 /include/cppad/mixed/include_cholmod.hpp
@@ -17,12 +20,15 @@
 /build.debug/
 #
 # directories where documentation is built
-# /doc/ user doc is in gh-pages branch
+# /doc/
 /dev/
 #
+# place where external packages are build
+/external/
+#
 # directories that are used for stashing files
-new/
-new.*/
+/new/
+/new.*/
 #
 # vim swap files
 *.swp
