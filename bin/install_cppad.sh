@@ -54,11 +54,11 @@ then
 	bin/build_type.sh install_cppad $cmake_install_prefix $build_type
 fi
 # --------------------------------------------------------------------------
-if [ ! -e build/external ]
+if [ ! -e external ]
 then
-	mkdir -p build/external
+	mkdir external
 fi
-echo_eval cd build/external
+echo_eval cd external
 # --------------------------------------------------------------------------
 if [ ! -e cppad.git ]
 then
@@ -68,7 +68,7 @@ pwd
 #
 echo_eval cd cppad.git
 echo_eval git checkout master
-echo_eval git pull
+echo_eval git pull --ff-only
 echo_eval git checkout --quiet $hash_key
 check=`grep '^SET(cppad_version' CMakeLists.txt | \
 	sed -e 's|^[^"]*"\([^"]*\).*|\1|'`

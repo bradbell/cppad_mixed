@@ -46,11 +46,11 @@ then
 	bin/build_type.sh install_eigen $cmake_install_prefix $build_type
 fi
 # --------------------------------------------------------------------------
-if [ ! -e build/external ]
+if [ ! -e external ]
 then
-	mkdir -p build/external
+	mkdir external
 fi
-cd build/external
+cd external
 # --------------------------------------------------------------------------
 if [ ! -e eigen.git ]
 then
@@ -58,7 +58,7 @@ then
 fi
 echo_eval cd eigen.git
 echo_eval git checkout master
-echo_eval git pull
+echo_eval git pull --ff-only
 echo_eval git checkout $version
 #
 if [ ! -e build ]

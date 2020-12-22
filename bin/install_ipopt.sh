@@ -55,12 +55,12 @@ then
 	bin/build_type.sh install_ipopt $ipopt_prefix $build_type
 fi
 # --------------------------------------------------------------------------
-# do work in build/external
-if [ ! -e build/external ]
+# do work in external
+if [ ! -e external ]
 then
-	mkdir -p build/external
+	mkdir external
 fi
-cd build/external
+cd external
 # -----------------------------------------------------------------------------
 # klugde necessary until coin or mumps fixes this problem
 cat << EOF > junk.f
@@ -93,7 +93,7 @@ do
 	fi
 	echo_eval cd $name.git
 	echo_eval git checkout master
-	echo_eval git pull
+	echo_eval git pull --ff-only
 	echo_eval git checkout --quiet $version
 	if [ -e "./get.$name" ]
 	then
@@ -112,10 +112,13 @@ do
 	if [ "$build_type" == 'debug' ]
 	then
 		debug_flags='--enable-debug'
-		if [ "$name" == 'Ipopt' ]
-		then
-			debug_flags="$debug_flags --with-ipopt-verbosity"
-		fi
+		# -------------------------------------------------------------------
+		# This yields output for debugging ipopt
+		# if [ "$name" == 'Ipopt' ]
+		# then
+		#	debug_flags="$debug_flags --with-ipopt-verbosity"
+		# fi
+		# -------------------------------------------------------------------
 	else
 		debug_flags=''
 	fi
@@ -141,8 +144,8 @@ EOF
 		$debug_flags $add_fcflags
 	echo_eval make -j $n_job install
 	#
-	# back to build/external
-	echo_eval cd ../..
+	# back to external
+	echo_eval cd ..
 done
 # ----------------------------------------------------------------------------
 echo 'install_ipopt.sh: OK'

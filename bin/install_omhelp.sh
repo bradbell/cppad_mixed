@@ -58,11 +58,11 @@ else
 	exit 1
 fi
 # -----------------------------------------------------------------------------
-if [ ! -e build/external ]
+if [ ! -e external ]
 then
-	mkdir -p build/external
+	mkdir external
 fi
-echo_eval cd build/external
+echo_eval cd external
 # --------------------------------------------------------------------------
 # source-highlight install
 dir="source-highlight-$highlight_version"
@@ -96,7 +96,7 @@ then
 fi
 echo_eval cd omhelp.git
 echo_eval git fetch origin master
-echo_eval git checkout $git_hash
+echo_eval git checkout --quiet $git_hash
 # ----------------------------------------------------------------------------
 if [ ! -e build ]
 then

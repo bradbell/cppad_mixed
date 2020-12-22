@@ -23,9 +23,12 @@
 /doc/
 /dev/
 #
+# place where external packages are build
+/external/
+#
 # directories that are used for stashing files
-new/
-new.*/
+/new/
+/new.*/
 #
 # vim swap files
 *.swp
