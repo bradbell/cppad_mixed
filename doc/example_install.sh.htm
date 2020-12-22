@@ -286,7 +286,11 @@ rm example_install<font color="#990000">.</font>tmp
      <b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$install"</font> <font color="#990000">==</font> <font color="#FF0000">'true'</font> <font color="#990000">]</font>
      <b><font color="#0000FF">then</font></b>
           echo <font color="#FF0000">"bin/install_$pkg.sh 1&gt;&gt; $p.log 2&gt;&gt; $p.err"</font>
-          bin/install_<font color="#009900">$pkg</font><font color="#990000">.</font>sh <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> <font color="#009900">$p</font><font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> <font color="#009900">$p</font><font color="#990000">.</font>err
+          <b><font color="#0000FF">if</font></b> <font color="#990000">!</font> bin/install_<font color="#009900">$pkg</font><font color="#990000">.</font>sh <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> <font color="#009900">$p</font><font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> <font color="#009900">$p</font><font color="#990000">.</font>err
+          <b><font color="#0000FF">then</font></b>
+               tail <font color="#009900">$p</font><font color="#990000">.</font>err
+               <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
+          <b><font color="#0000FF">fi</font></b>
      <b><font color="#0000FF">fi</font></b>
 <b><font color="#0000FF">done</font></b>
 <i><font color="#9A1900"># ----------------------------------------------------------------------------</font></i>
@@ -294,7 +298,11 @@ rm example_install<font color="#990000">.</font>tmp
 <i><font color="#9A1900"># ----------------------------------------------------------------------------</font></i>
 <i><font color="#9A1900"># bin/run_cmake.sh</font></i>
 echo <font color="#FF0000">"bin/run_cmake.sh 1&gt;&gt; example_install.log 2&gt;&gt; example_install.err"</font>
-bin/run_cmake<font color="#990000">.</font>sh <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> <font color="#990000">..</font>/example_install<font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> <font color="#990000">..</font>/example_install<font color="#990000">.</font>err
+<b><font color="#0000FF">if</font></b> <font color="#990000">!</font> bin/run_cmake<font color="#990000">.</font>sh <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> example_install<font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> example_install<font color="#990000">.</font>err
+<b><font color="#0000FF">then</font></b>
+     tail example_install<font color="#990000">.</font>err
+     <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
+<b><font color="#0000FF">fi</font></b>
 <i><font color="#9A1900">#</font></i>
 <i><font color="#9A1900"># change into build directory</font></i>
 echo_eval cd build
@@ -306,11 +314,17 @@ echo_eval cd build
      <font color="#009900">n_job</font><font color="#990000">=</font><font color="#009900">$(</font>sysctl -n hw<font color="#990000">.</font>ncpu<font color="#990000">)</font>
 <b><font color="#0000FF">fi</font></b>
 <i><font color="#9A1900">#</font></i>
-<i><font color="#9A1900"># make check, speed, and install</font></i>
+<i><font color="#9A1900"># make</font></i>
 <b><font color="#0000FF">for</font></b> cmd <b><font color="#0000FF">in</font></b> check speed install
 <b><font color="#0000FF">do</font></b>
      echo <font color="#FF0000">"make -j $n_job $cmd 1&gt;&gt; example_install.log 2&gt;&gt; example_install.err"</font>
-     make <font color="#009900">$cmd</font> <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> <font color="#990000">..</font>/example_install<font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> <font color="#990000">..</font>/example_install<font color="#990000">.</font>err
+     <b><font color="#0000FF">if</font></b> <font color="#990000">!</font> make -j <font color="#009900">$n_job</font> <font color="#009900">$cmd</font> <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> example_install<font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> example_install<font color="#990000">.</font>err
+     <b><font color="#0000FF">then</font></b>
+          echo <font color="#FF0000">"Try running the following command in $(pwd)"</font>
+          echo <font color="#FF0000">"    cd build; make -j $n_job $cmd"</font>
+          echo <font color="#FF0000">'To see why the check of cppad_mixed failed'</font>
+          <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
+     <b><font color="#0000FF">fi</font></b>
 <b><font color="#0000FF">done</font></b>
 cd <font color="#990000">..</font>
 <i><font color="#9A1900"># ----------------------------------------------------------------------------</font></i>
