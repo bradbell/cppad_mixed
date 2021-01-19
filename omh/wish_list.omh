@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-19 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -17,9 +17,23 @@ $spell
 	hes
 	rcv
 	vec
+	optimizer
+	Ipopt
 $$
 
 $section CppAD Mixed Wish List$$
+
+$head Tracing Optimization$$
+Add options to specify the file name for the optimizer trace
+at both the fixed and random effects levels; see
+$href%https://list.coin-or.org/pipermail/ipopt/2015-October/004160.html%
+	output file options
+%$$.
+
+$head Optimize Fixed$$
+Change $cref optimize_fixed$$ so that it can be used as a completely
+general interface to Ipopt.
+This would require allowing any of the possible Ipopt options.
 
 $head Multi-Threading$$
 Change the $code ran_likelihood$$ function to allow for multi-threading.
