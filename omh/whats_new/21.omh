@@ -16,7 +16,7 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
 
-$head 02-02$$
+$head 03-02$$
 The $cref example_install.sh$$ script was putting the Ipopt source in
 $code external/ASL.git/Mumps.git/Ipopt.git$$.
 The script $code bin/install_ipopt.sh$$ has been fixed so the Ipopt source is in
