@@ -2,6 +2,7 @@
 document.write('\
 <select onchange="release_notes_child(this)">\
 <option>release_notes-&gt;</option>\
+<option>whats_new_21</option>\
 <option>whats_new_20</option>\
 <option>whats_new_19</option>\
 <option>whats_new_18</option>\
@@ -12,6 +13,7 @@ document.write('\
 ');
 function release_notes_child(item)
 {	var child_list = [
+		'whats_new_21.htm',
 		'whats_new_20.htm',
 		'whats_new_19.htm',
 		'whats_new_18.htm',

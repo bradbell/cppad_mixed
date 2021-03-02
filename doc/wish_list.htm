@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>CppAD Mixed Wish List</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="CppAD Mixed Wish List">
-<meta name="keywords" id="keywords" content=" cppad mixed wish list multi-threading sparse matrix d_sparse_rcv aborting optimization random constraints windows install ">
+<meta name="keywords" id="keywords" content=" cppad mixed wish list tracing optimization optimize fixed multi-threading sparse matrix d_sparse_rcv aborting random constraints windows install ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -62,6 +62,8 @@ A:active { color : purple }
 
 <center><b><big><big>CppAD Mixed Wish List</big></big></b></center>
 
+<br><a href="wish_list.htm#Tracing Optimization" target="_top">Tracing&nbsp;Optimization</a>
+<br><a href="wish_list.htm#Optimize Fixed" target="_top">Optimize&nbsp;Fixed</a>
 <br><a href="wish_list.htm#Multi-Threading" target="_top">Multi-Threading</a>
 <br><a href="wish_list.htm#Sparse Matrix" target="_top">Sparse&nbsp;Matrix</a>
 <br><a href="wish_list.htm#d_sparse_rcv" target="_top">d_sparse_rcv</a>
@@ -69,6 +71,24 @@ A:active { color : purple }
 <br><a href="wish_list.htm#Random Constraints" target="_top">Random&nbsp;Constraints</a>
 <br><a href="wish_list.htm#Windows Install" target="_top">Windows&nbsp;Install</a>
 <br><br>
+<b><big><a name="Tracing Optimization" id="Tracing Optimization">Tracing Optimization</a></big></b>
+<br>
+Add options to specify the file name for the optimizer trace
+at both the fixed and random effects levels; see
+<a href="https://list.coin-or.org/pipermail/ipopt/2015-October/004160.html" target="_top"><span style='white-space: nowrap'>output&nbsp;file&nbsp;options</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="Optimize Fixed" id="Optimize Fixed">Optimize Fixed</a></big></b>
+<br>
+Change <a href="optimize_fixed.htm" target="_top"><span style='white-space: nowrap'>optimize_fixed</span></a>
+ so that it can be used as a completely
+general interface to Ipopt.
+This would require allowing any of the possible Ipopt options.
+
+<br>
+<br>
 <b><big><a name="Multi-Threading" id="Multi-Threading">Multi-Threading</a></big></b>
 <br>
 Change the <code><font color="blue">ran_likelihood</font></code> function to allow for multi-threading.

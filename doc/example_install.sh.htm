@@ -318,11 +318,12 @@ echo_eval cd build
 <b><font color="#0000FF">for</font></b> cmd <b><font color="#0000FF">in</font></b> check speed install
 <b><font color="#0000FF">do</font></b>
      echo <font color="#FF0000">"make -j $n_job $cmd 1&gt;&gt; example_install.log 2&gt;&gt; example_install.err"</font>
-     <b><font color="#0000FF">if</font></b> <font color="#990000">!</font> make -j <font color="#009900">$n_job</font> <font color="#009900">$cmd</font> <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> example_install<font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> example_install<font color="#990000">.</font>err
+     <b><font color="#0000FF">if</font></b> <font color="#990000">!</font> make -j <font color="#009900">$n_job</font> <font color="#009900">$cmd</font> <font color="#990000">\</font>
+          <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> <font color="#990000">..</font>/example_install<font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> <font color="#990000">..</font>/example_install<font color="#990000">.</font>err
      <b><font color="#0000FF">then</font></b>
           echo <font color="#FF0000">"Try running the following command in $(pwd)"</font>
-          echo <font color="#FF0000">"    cd build; make -j $n_job $cmd"</font>
-          echo <font color="#FF0000">'To see why the check of cppad_mixed failed'</font>
+          echo <font color="#FF0000">"    make -j $n_job $cmd"</font>
+          echo <font color="#FF0000">'To see why the check of cppad_mixed failed.'</font>
           <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
      <b><font color="#0000FF">fi</font></b>
 <b><font color="#0000FF">done</font></b>
