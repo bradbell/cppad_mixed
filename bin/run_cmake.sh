@@ -2,7 +2,7 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-20 University of Washington
+#           Copyright (C) 2014-21 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -52,7 +52,7 @@ verbose_makefile='no'
 # &head build_type&&
 # Use either 'debug' or 'release' for the type of this build:
 # &codep
-build_type='debug'
+build_type='release'
 # &&
 #
 # &head cmake_install_prefix&&
