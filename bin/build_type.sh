@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-20 University of Washington
+#           Copyright (C) 2014-21 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -22,6 +22,13 @@ install_prefix:  this directory must end with /cppad_mixed
 build_type:      this must be either debug or release
 EOF
 	exit 1
+fi
+# -----------------------------------------------------------------------------
+kernel=$(uname -s)
+if [[ "$kernel" =~ MSYS.* ]]
+then
+    echo 'Warning: MSYS does not suppor symbolic links'
+    exit 0
 fi
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command

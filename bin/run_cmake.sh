@@ -52,7 +52,7 @@ verbose_makefile='no'
 # &head build_type&&
 # Use either 'debug' or 'release' for the type of this build:
 # &codep
-build_type='release'
+build_type='debug'
 # &&
 #
 # &head cmake_install_prefix&&

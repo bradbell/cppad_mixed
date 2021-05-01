@@ -12,9 +12,14 @@ $begin whats_new_21$$
 $spell
     cppad
     Ipopt
+    msys
 $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
+
+$head 05-01$$
+Adapt the install for msys to the fact that soft links do now work
+on that system.
 
 $head 03-02$$
 The $cref example_install.sh$$ script was putting the Ipopt source in
