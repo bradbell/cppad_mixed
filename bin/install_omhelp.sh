@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-20 University of Washington
+#           Copyright (C) 2014-21 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -57,12 +57,12 @@ else
 	echo 'cannot find apt-get or dnf'
 	exit 1
 fi
-# -----------------------------------------------------------------------------
-if [ ! -e external ]
+# --------------------------------------------------------------------------
+if [ ! -e external/$build_type ]
 then
-	mkdir external
+	mkdir -p external/$build_type
 fi
-echo_eval cd external
+echo_eval cd external/$build_type
 # --------------------------------------------------------------------------
 # source-highlight install
 dir="source-highlight-$highlight_version"

@@ -17,6 +17,14 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
 
+$head 05-07$$
+$list number$$
+Advance to cppad-20210430.
+$lnext
+Create separate directories $code external/debug$$ and $code external/release$$
+for building the external packages.
+$lend
+
 $head 05-01$$
 Adapt the install for msys to the fact that soft links do now work
 on that system.

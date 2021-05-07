@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-20 University of Washington
+#           Copyright (C) 2014-21 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -21,9 +21,10 @@ echo_eval() {
 	eval $*
 }
 # --------------------------------------------------------------------------
+# Us same version and hash as in cppad_py.git/bin/get_cppad.sh
 web_page='https://github.com/coin-or/CppAD.git'
-hash_key='ab1d7188b97c2a3a34cb071e86284a004a1d9dd4'
-version='20201021'
+cppad_version='20210430'
+hash_code='241d9e18ecad02082b6cd64bef201be141ff31a9'
 # --------------------------------------------------------------------------
 # Get user configuration options from run_cmake.sh
 #
@@ -45,20 +46,24 @@ eval $cmd
 #
 # cppad_prefix
 cppad_prefix="$cmake_install_prefix"
-#
-# ipopt_prefix
-ipopt_prefix="$cmake_install_prefix"
+# --------------------------------------------------------------------------
+# PKG_CONFIG_PATH
+export PKG_CONFIG_PATH=''
+for dir in $(find -L $cmake_install_prefix -name 'pkgconfig')
+do
+    PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$dir"
+done
 # --------------------------------------------------------------------------
 if echo "$cmake_install_prefix" | grep '/cppad_mixed$' > /dev/null
 then
 	bin/build_type.sh install_cppad $cmake_install_prefix $build_type
 fi
 # --------------------------------------------------------------------------
-if [ ! -e external ]
+if [ ! -e external/$build_type ]
 then
-	mkdir external
+	mkdir -p external/$build_type
 fi
-echo_eval cd external
+echo_eval cd external/$build_type
 # --------------------------------------------------------------------------
 if [ ! -e cppad.git ]
 then
@@ -69,12 +74,12 @@ pwd
 echo_eval cd cppad.git
 echo_eval git checkout master
 echo_eval git pull --ff-only
-echo_eval git checkout --quiet $hash_key
+echo_eval git checkout --quiet $hash_code
 check=`grep '^SET(cppad_version' CMakeLists.txt | \
 	sed -e 's|^[^"]*"\([^"]*\).*|\1|'`
-if [ "$version" != "$check" ]
+if [ "$cppad_version" != "$check" ]
 then
-	echo 'install_cppad.sh: version number does not agree with hash_key'
+	echo 'install_cppad.sh: cppad_version number does not agree with hash_code'
 	exit 1
 fi
 # -----------------------------------------------------------------------------
@@ -91,7 +96,7 @@ fi
 #
 cmake_args="-D CMAKE_VERBOSE_MAKEFILE=0"
 cmake_args="$cmake_args -D cppad_prefix=$cppad_prefix"
-cmake_args="$cmake_args -D ipopt_prefix=$ipopt_prefix"
+cmake_args="$cmake_args -D include_ipopt=true"
 cmake_args="$cmake_args -D cmake_install_libdirs=$cmake_libdir"
 echo "cmake $cmake_args -D cppad_cxx_flags='$extra_cxx_flags' .."
 cmake $cmake_args -D cppad_cxx_flags="$extra_cxx_flags" ..

@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-20 University of Washington
+#           Copyright (C) 2014-21 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -46,11 +46,11 @@ then
 	bin/build_type.sh install_eigen $cmake_install_prefix $build_type
 fi
 # --------------------------------------------------------------------------
-if [ ! -e external ]
+if [ ! -e external/$build_type ]
 then
-	mkdir external
+	mkdir -p external/$build_type
 fi
-cd external
+echo_eval cd external/$build_type
 # --------------------------------------------------------------------------
 if [ ! -e eigen.git ]
 then

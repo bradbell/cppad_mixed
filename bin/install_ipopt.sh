@@ -55,12 +55,11 @@ then
 	bin/build_type.sh install_ipopt $ipopt_prefix $build_type
 fi
 # --------------------------------------------------------------------------
-# do work in external
-if [ ! -e external ]
+if [ ! -e external/$build_type ]
 then
-	mkdir external
+	mkdir -p external/$build_type
 fi
-cd external
+echo_eval cd external/$build_type
 # -----------------------------------------------------------------------------
 # klugde necessary until coin or mumps fixes this problem
 cat << EOF > junk.f
