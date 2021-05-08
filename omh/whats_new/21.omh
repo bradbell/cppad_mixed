@@ -13,6 +13,7 @@ $spell
     cppad
     Ipopt
     msys
+    cygwin
 $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
@@ -20,6 +21,7 @@ $section Changes and Additions to cppad_mixed During 2021$$
 $head 05-07$$
 $list number$$
 Advance to cppad-20210430.
+This should solve some install problems on the msys and cygwin systems.
 $lnext
 Create separate directories $code external/debug$$ and $code external/release$$
 for building the external packages.
