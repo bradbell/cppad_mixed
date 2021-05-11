@@ -138,9 +138,9 @@ will be used (takes less time).
 <font color="#009900">user</font><font color="#990000">=</font><font color="#009900">$(whoami)</font>
 <b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$user"</font> <font color="#990000">==</font> <font color="#FF0000">'root'</font> <font color="#990000">]</font>
 <b><font color="#0000FF">then</font></b>
-    <font color="#009900">sudo</font><font color="#990000">=</font><font color="#FF0000">''</font>
+     <font color="#009900">sudo</font><font color="#990000">=</font><font color="#FF0000">''</font>
 <b><font color="#0000FF">else</font></b>
-    <font color="#009900">sudo</font><font color="#990000">=</font><font color="#FF0000">'sudo'</font>
+     <font color="#009900">sudo</font><font color="#990000">=</font><font color="#FF0000">'sudo'</font>
 <b><font color="#0000FF">fi</font></b>
 <i><font color="#9A1900"># -----------------------------------------------------------------------------</font></i>
 <i><font color="#9A1900"># set system_type,</font></i>
@@ -171,6 +171,11 @@ will be used (takes less time).
      <font color="#009900">system_type</font><font color="#990000">=</font><font color="#FF0000">'mac_brew'</font>
      <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">'brew install'</font>
      brew list <font color="#990000">|</font> sed -e <font color="#FF0000">'s|  *|</font><font color="#CC33CC">\n</font><font color="#FF0000">|g'</font> <font color="#990000">&gt;</font> example_install<font color="#990000">.</font>tmp
+<b><font color="#0000FF">elif</font></b> which setup-x86_64 <font color="#990000">&gt;&amp;</font> /dev/null
+<b><font color="#0000FF">then</font></b>
+     <font color="#009900">system_tpye</font><font color="#990000">=</font><font color="#FF0000">'cygwin'</font>
+     <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">'setup-x86_64.exe -q -P'</font>
+     cygcheck -c -d <font color="#990000">|</font> sed -e <font color="#FF0000">'s|  *|-|'</font> <font color="#990000">&gt;</font> example_install<font color="#990000">.</font>tmp
 <b><font color="#0000FF">else</font></b>
      echo <font color="#FF0000">'Cannot find the system pakcage manager'</font>
      <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
@@ -228,6 +233,22 @@ will be used (takes less time).
 <font color="#FF0000">     '</font>
      <i><font color="#9A1900"># make sure Ipopt configure sees brew version of javac (not /usr/bin/javac)</font></i>
      <font color="#009900">PATH</font><font color="#990000">=</font><font color="#FF0000">"/usr/local/opt/openjdk/bin:$PATH"</font>
+<b><font color="#0000FF">elif</font></b> <font color="#990000">[</font> <font color="#FF0000">"$system_tpye"</font> <font color="#990000">==</font> <font color="#FF0000">'cygwin'</font> <font color="#990000">]</font>
+<b><font color="#0000FF">then</font></b>
+     <font color="#009900">list</font><font color="#990000">=</font><font color="#FF0000">'</font>
+<font color="#FF0000">          gsl</font>
+<font color="#FF0000">          cmake</font>
+<font color="#FF0000">          git</font>
+<font color="#FF0000">          wget</font>
+<font color="#FF0000">          liblapack-devel</font>
+<font color="#FF0000">          pkgconf</font>
+<font color="#FF0000">          gcc-core</font>
+<font color="#FF0000">          gcc-g++</font>
+<font color="#FF0000">          gcc-fortran</font>
+<font color="#FF0000">          libgsl-devel</font>
+<font color="#FF0000">          patch</font>
+<font color="#FF0000">          libcholmod-devel</font>
+<font color="#FF0000">     '</font>
 <b><font color="#0000FF">else</font></b>
      echo <font color="#FF0000">'example_install.sh: script error'</font>
      <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
