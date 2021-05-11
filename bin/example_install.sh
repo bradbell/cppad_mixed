@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-20 University of Washington
+#           Copyright (C) 2014-21 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -79,9 +79,9 @@ fi
 user=$(whoami)
 if [ "$user" == 'root' ]
 then
-    sudo=''
+	sudo=''
 else
-    sudo='sudo'
+	sudo='sudo'
 fi
 # -----------------------------------------------------------------------------
 # set system_type,
@@ -112,6 +112,11 @@ then
 	system_type='mac_brew'
 	system_install='brew install'
 	brew list | sed -e 's|  *|\n|g' > example_install.tmp
+elif which setup-x86_64 >& /dev/null
+then
+	system_tpye='cygwin'
+	system_install='setup-x86_64.exe -q -P'
+	cygcheck -c -d | sed -e 's|  *|-|' > example_install.tmp
 else
 	echo 'Cannot find the system pakcage manager'
 	exit 1
@@ -169,6 +174,22 @@ then
 	'
 	# make sure Ipopt configure sees brew version of javac (not /usr/bin/javac)
 	PATH="/usr/local/opt/openjdk/bin:$PATH"
+elif [ "$system_tpye" == 'cygwin' ]
+then
+	list='
+		gsl
+		cmake
+		git
+		wget
+		liblapack-devel
+		pkgconf
+		gcc-core
+		gcc-g++
+		gcc-fortran
+		libgsl-devel
+		patch
+		libcholmod-devel
+	'
 else
 	echo 'example_install.sh: script error'
 	exit 1

@@ -10,13 +10,18 @@ see http://www.gnu.org/licenses/agpl.txt
 
 $begin whats_new_21$$
 $spell
-    cppad
-    Ipopt
-    msys
-    cygwin
+	cppad
+	Ipopt
+	msys
+	cygwin
 $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
+
+$head 05-11$$
+Extend $cref example_install.sh$$ to work for the cygwin system.
+This also required changing the $code cppad_mixed$$ library to be static
+(on the cygwin system).
 
 $head 05-07$$
 $list number$$

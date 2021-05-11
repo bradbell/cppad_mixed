@@ -83,7 +83,7 @@ MACRO( optional_definition variable type docstring )
 	ENDIF( ${type} STREQUAL "BOOL" )
 ENDMACRO( optional_definition )
 # ============================================================================
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 PROJECT(cppad_mixed)
 SET(cppad_mixed_version "20210507")
 INCLUDE_DIRECTORIES( ${cppad_mixed_SOURCE_DIR}/include )

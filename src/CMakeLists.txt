@@ -1,15 +1,28 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-20 University of Washington
+#           Copyright (C) 2014-21 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
 #	     GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
+#
+# Use static library on windows systems because cppad_lib requires this.
+# (Windows dlls handles static variables different from unix).
+STRING( REGEX MATCH "^MSYS" is_msys "${CMAKE_SYSTEM_NAME}" )
+STRING( REGEX MATCH "^CYGWIN" is_cygwin "${CMAKE_SYSTEM_NAME}" )
+STRING( REGEX MATCH "^Windows" is_windows "${CMAKE_SYSTEM_NAME}" )
+IF( is_msys OR is_cygwin OR is_windows )
+	MESSAGE( STATUS "Windows dlls so building static cppad_mixed" )
+	SET(library_type STATIC)
+ELSE( )
+	MESSAGE( STATUS "Not windows dlls so building shared cppad_mixed" )
+	SET(library_type SHARED)
+ENDIF( )
 ADD_LIBRARY(cppad_mixed
-	SHARED
+	${library_type}
 	cholmod/constructor.cpp
 	cholmod/init.cpp
 	cholmod/inv.cpp
@@ -86,6 +99,7 @@ SET_TARGET_PROPERTIES(cppad_mixed
 	PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
 )
 TARGET_LINK_LIBRARIES(cppad_mixed
+	cppad_lib
 	${gsl_LIBRARIES}
 	${suitesparse_LIBRARIES}
 	${ipopt_LIBRARIES}
