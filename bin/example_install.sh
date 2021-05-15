@@ -19,12 +19,17 @@
 # &section An Example Installation&&
 #
 # &head Syntax&&
-# &codei%bin/example_install.sh %run_test%&&
+# &codei%bin/example_install.sh %run_test% %replace%&&
 #
 # &head run_test&&
 # is either &code true&& or &code false&&.
 # If it is true, this cppad_mixed tests will be run before installing.
 # If there is an error in the tests, the install will abort.
+#
+# &head replace&&
+# is either &code true&& or &code false&&.
+# If an external is already installed and &icode replace&& is true (false)
+# the external will (will not) be replaced.
 #
 # &head Source&&
 # &srcthisfile%0%# BEGIN BASH%# END BASH%1%&&
@@ -45,11 +50,18 @@ echo_eval() {
 # --------------------------------------------------------------------------
 if [ "$1" != 'true' ] && [ "$1" != 'false' ]
 then
-	echo 'bin/example_install.sh: run_test'
-	echo 'where run_test is true or false'
+	echo 'bin/example_install.sh: run_test replace'
+	echo 'run_test is not true or false'
 	exit 1
 fi
 run_test="$1"
+if [ "$2" != 'true' ] && [ "$2" != 'false' ]
+then
+	echo 'bin/example_install.sh: run_test replace'
+	echo 'replace is not true or false'
+	exit 1
+fi
+replace="$2"
 # ---------------------------------------------------------------------------
 # set build_type to value in run_cmake.sh
 cmd=`grep '^build_type=' bin/run_cmake.sh`
@@ -236,15 +248,25 @@ do
 		;;
 	esac
 	#
+	install='true'
 	if [ -e "$file" ]
 	then
-		echo "replacing existing $pkg install"
+		if [ "$replace" == 'false' ]
+		then
+			echo "Skipping bin/install_$pkg.sh"
+			echo "Using previously installed version in $cmake_install_prefix"
+			install='false'
+		fi
 	fi
-	echo "bin/install_$pkg.sh 1>> example_install.log 2>> example_install.err"
-	if ! bin/install_$pkg.sh 1>> example_install.log 2>> example_install.err
+	if [ "$install" == 'true' ]
 	then
-		tail example_install.err
-		exit 1
+		name='example_install'
+		echo "bin/install_$pkg.sh 1>> $name.log 2>> $name.err"
+		if ! bin/install_$pkg.sh 1>> $name.log 2>> $name.err
+		then
+			tail $name.err
+			exit 1
+		fi
 	fi
 done
 # ----------------------------------------------------------------------------

@@ -14,12 +14,14 @@ then
 	cat << EOF
 bin/build_type.sh program_name install_prefix build_type
 
-sets up soft links for the following directories:
-	install_prefix -> install_prefix.build_type
-	build          -> build.built_type
 program_name:    is the program name for error reporting.
-install_prefix:  this directory must end with /cppad_mixed
+install_prefix:  prefix used to install cppad_mixed
 build_type:      this must be either debug or release
+
+1. Sets up following soft link:
+	build          -> build.built_type
+2. If install_prefix ends in /cppad_mixed, sets up following soft link:
+	install_prefix -> install_prefix.build_type
 EOF
 	exit 1
 fi
@@ -52,7 +54,8 @@ echo "$total_prefix"
 if [ "$total_prefix" == "$install_prefix" ]
 then
 	echo "$program_name: install prefix does not end in /cppad_mixed"
-	exit 1
+	echo 'Skipping soft link for install prefix'
+	exit 0
 fi
 # -----------------------------------------------------------------------------
 if [ ! -e "$total_prefix" ]
