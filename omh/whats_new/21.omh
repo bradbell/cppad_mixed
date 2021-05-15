@@ -14,17 +14,25 @@ $spell
 	Ipopt
 	msys
 	cygwin
+	op
 $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
 
 $head 05-15$$
+$list number$$
 The $cref/run_test/example_install.sh/run_test/$$ argument was added
-and the $icode existing$$ argument was removed from
+and the $icode existing$$ argument was added to
 $code bin/example_install.sh$$.
-The $icode existing$$ argument is no longer useful because the
-$code external$$ directory caches the object files so replacing the
-install is quick (after the first compile).
+$lnext
+The $icode existing$$ argument was changed to
+$cref/replace/example_install.sh/replace/$$.
+$lnext
+When $cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$
+was yes, there was an error in the cppad optimization options.
+To be specific, $code no_print_op$$ was corrected to $code no_print_for_op$$.
+This was a bug and could cause the optimization to abort.
+$lend
 
 $head 05-11$$
 Extend $cref example_install.sh$$ to work for the cygwin system.
