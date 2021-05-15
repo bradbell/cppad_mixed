@@ -12,18 +12,19 @@
 #
 # $OMhelpKeyCharacter=&
 # &begin example_install.sh&& &newlinech #&&
+# &spell
+#	cppad
+# &&
 #
 # &section An Example Installation&&
 #
 # &head Syntax&&
-# &codei%bin/example_install.sh %existing%&&
+# &codei%bin/example_install.sh %run_test%&&
 #
-# &head existing&&
-# is either &code replace&& or &code use&&.
-# If it is replace, pre-existing installs
-# will be replaced (takes more time).
-# If it is use, pre-existing installs
-# will be used (takes less time).
+# &head run_test&&
+# is either &code true&& or &code false&&.
+# If it is true, this cppad_mixed tests will be run before installing.
+# If there is an error in the tests, the install will abort.
 #
 # &head Source&&
 # &srcthisfile%0%# BEGIN BASH%# END BASH%1%&&
@@ -42,21 +43,23 @@ echo_eval() {
 	eval $*
 }
 # --------------------------------------------------------------------------
-if [ "$1" != 'replace' ] && [ "$1" != 'use' ]
+if [ "$1" != 'true' ] && [ "$1" != 'false' ]
 then
-	echo 'bin/example_install.sh: existing'
-	echo 'where existing is replace or use'
+	echo 'bin/example_install.sh: run_test'
+	echo 'where run_test is true or false'
 	exit 1
 fi
-existing="$1"
+run_test="$1"
 # ---------------------------------------------------------------------------
 # set build_type to value in run_cmake.sh
 cmd=`grep '^build_type=' bin/run_cmake.sh`
 eval $cmd
+echo "build_type=$build_type"
 #
 # set cmake_install_prefix to value in run_cmake.sh
 cmd=`grep '^cmake_install_prefix=' bin/run_cmake.sh`
 eval $cmd
+echo "cmake_install_prefix=$cmake_install_prefix"
 #
 # ipopt_prefix
 ipopt_prefix="$cmake_install_prefix"
@@ -233,26 +236,15 @@ do
 		;;
 	esac
 	#
-	install='true'
 	if [ -e "$file" ]
 	then
-		if [ "$existing" == 'replace' ]
-		then
-			echo "replacing existing $pkg install"
-		else
-			install='false'
-			echo "using existing $pkg install"
-		fi
+		echo "replacing existing $pkg install"
 	fi
-	p='example_install'
-	if [ "$install" == 'true' ]
+	echo "bin/install_$pkg.sh 1>> example_install.log 2>> example_install.err"
+	if ! bin/install_$pkg.sh 1>> example_install.log 2>> example_install.err
 	then
-		echo "bin/install_$pkg.sh 1>> $p.log 2>> $p.err"
-		if ! bin/install_$pkg.sh 1>> $p.log 2>> $p.err
-		then
-			tail $p.err
-			exit 1
-		fi
+		tail example_install.err
+		exit 1
 	fi
 done
 # ----------------------------------------------------------------------------
@@ -277,7 +269,13 @@ else
 fi
 #
 # make
-for cmd in check speed install
+if [ "$run_test" == 'true'  ]
+then
+	cmd_list='check speed install'
+else
+	cmd_list='install'
+fi
+for cmd in $cmd_list
 do
 	echo "make -j $n_job $cmd 1>> example_install.log 2>> example_install.err"
 	if ! make -j $n_job $cmd \

@@ -29,7 +29,7 @@ url_list=( \
 version_list=( \
 	'stable/2.0' \
 	'stable/2.1' \
-	'releases/3.13.2' \
+	'releases/3.13.4' \
 )
 # ---------------------------------------------------------------------------
 # Get user configuration options from run_cmake.sh
@@ -91,6 +91,7 @@ do
 		echo_eval git clone $url.git $name.git
 	fi
 	echo_eval cd $name.git
+	echo_eval git reset --hard
 	echo_eval git checkout master
 	echo_eval git pull --ff-only
 	echo_eval git checkout --quiet $version

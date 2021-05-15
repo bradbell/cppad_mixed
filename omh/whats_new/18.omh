@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-20 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -193,8 +193,7 @@ Change the $code suitesparse$$ library from a special requirement
 (using $code bin/install_suitesparse.sh$$) to a
 $cref/system requirement/install_unix/System Requirements/suitesparse/$$.
 $lnext
-The $code replace$$ option for the
-$cref/existing/example_install.sh/existing/$$ argument to
+The $code replace$$ option for the $icode existing$$ argument to
 $code bin/example_install.sh$$ was not working.
 This has been fixed.
 $lend

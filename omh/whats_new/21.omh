@@ -18,6 +18,14 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
 
+$head 05-15$$
+The $cref/run_test/example_install.sh/run_test/$$ argument was added
+and the $icode existing$$ argument was removed from
+$code bin/example_install.sh$$.
+The $icode existing$$ argument is no longer useful because the
+$code external$$ directory caches the object files so replacing the
+install is quick (after the first compile).
+
 $head 05-11$$
 Extend $cref example_install.sh$$ to work for the cygwin system.
 This also required changing the $code cppad_mixed$$ library to be static
