@@ -5,7 +5,7 @@ Keyword =
 [
 { tag: 'cppad_mixed', title:'C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20210515', other:' license source code repository notation fixed theta random data z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood constraints negative log-density vector' },
 { tag: 'install_unix', title:'Installing cppad_mixed in Unix', other:' system requirements c++ compiler git cmake pkg-config wget fortran gsl suitesparse download paths pkg_config_path ld_library_path special run_cmake.sh eigen ipopt command check speed example installation linking using' },
-{ tag: 'example_install.sh', title:'An Example Installation', other:' syntax run_test source' },
+{ tag: 'example_install.sh', title:'An Example Installation', other:' syntax run_test replace source' },
 { tag: 'run_cmake.sh', title:'bin/run_cmake.sh: User Configuration Options', other:' verbose_makefile build_type cmake_install_prefix debug release eigen extra_cxx_flags cmake_libdir cppad_mixed.pc ldlt_cholmod optimize_cppad_function for_hes_sparsity testing speed memory' },
 { tag: 'check_install.sh', title:'Example and Test Using the Installed Version of cppad_mixed', other:' syntax build_type prefixes cmake_libdir example_file pkg_config_path ld_library_path create temporary example_name main gsl_libs ipopt_libs suitesparse_libs compile link run' },
 { tag: 'theory', title:'Laplace Approximation for Mixed Effects Models', other:' reference total likelihood random f(theta u) assumption objective fixed g(theta) optimal u^(theta) h(theta r(theta) l(theta) derivative constraints approximate first order u(beta second w(beta h(beta function b(beta hessian sparse observed information' },

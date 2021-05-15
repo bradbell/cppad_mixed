@@ -73,18 +73,30 @@ A:active { color : purple }
 <br><a href="whats_new_21.htm#03-02" target="_top">03-02</a>
 <br><br>
 <b><big><a name="05-15" id="05-15">05-15</a></big></b>
-<br>
+
+<ol type="1"><li>
 The <a href="example_install.sh.htm#run_test" target="_top"><span style='white-space: nowrap'>run_test</span></a>
  argument was added
 and the 
 <code><i><font color="black"><span style='white-space: nowrap'>existing</span></font></i></code>
- argument was removed from
+ argument was added to
 <code><font color="blue">bin/example_install.sh</font></code>.
+</li><li>
+
 The 
 <code><i><font color="black"><span style='white-space: nowrap'>existing</span></font></i></code>
- argument is no longer useful because the
-<code><font color="blue">external</font></code> directory caches the object files so replacing the
-install is quick (after the first compile).
+ argument was changed to
+<a href="example_install.sh.htm#replace" target="_top"><span style='white-space: nowrap'>replace</span></a>
+.
+</li><li>
+
+When <a href="run_cmake.sh.htm#optimize_cppad_function" target="_top"><span style='white-space: nowrap'>optimize_cppad_function</span></a>
+
+was yes, there was an error in the cppad optimization options.
+To be specific, <code><font color="blue">no_print_op</font></code> was corrected to <code><font color="blue">no_print_for_op</font></code>.
+This was a bug and could cause the optimization to abort.
+</li></ol>
+
 
 <br>
 <br>

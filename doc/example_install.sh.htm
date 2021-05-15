@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>An Example Installation</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="An Example Installation">
-<meta name="keywords" id="keywords" content=" example installation syntax run_test source ">
+<meta name="keywords" id="keywords" content=" example installation syntax run_test replace source ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -65,13 +65,14 @@ A:active { color : purple }
 
 <br><a href="example_install.sh.htm#Syntax" target="_top">Syntax</a>
 <br><a href="example_install.sh.htm#run_test" target="_top">run_test</a>
+<br><a href="example_install.sh.htm#replace" target="_top">replace</a>
 <br><a href="example_install.sh.htm#Source" target="_top">Source</a>
 <br><br>
 <b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
 
 <br>
 
-<code><font color="blue"><span style='white-space: nowrap'>bin/example_install.sh&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>run_test</span></font></i></code>
+<code><font color="blue"><span style='white-space: nowrap'>bin/example_install.sh&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>run_test</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>replace</span></font></i></code>
 
 
 <br>
@@ -81,6 +82,16 @@ A:active { color : purple }
 is either <code><font color="blue">true</font></code> or <code><font color="blue">false</font></code>.
 If it is true, this cppad_mixed tests will be run before installing.
 If there is an error in the tests, the install will abort.
+
+<br>
+<br>
+<b><big><a name="replace" id="replace">replace</a></big></b>
+<br>
+is either <code><font color="blue">true</font></code> or <code><font color="blue">false</font></code>.
+If an external is already installed and 
+<code><i><font color="black"><span style='white-space: nowrap'>replace</span></font></i></code>
+ is true (false)
+the external will (will not) be replaced.
 
 <br>
 <br>
@@ -101,11 +112,18 @@ If there is an error in the tests, the install will abort.
 <i><font color="#9A1900"># --------------------------------------------------------------------------</font></i>
 <b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$1"</font> <font color="#990000">!=</font> <font color="#FF0000">'true'</font> <font color="#990000">]</font> <font color="#990000">&amp;&amp;</font> <font color="#990000">[</font> <font color="#FF0000">"$1"</font> <font color="#990000">!=</font> <font color="#FF0000">'false'</font> <font color="#990000">]</font>
 <b><font color="#0000FF">then</font></b>
-     echo <font color="#FF0000">'bin/example_install.sh: run_test'</font>
-     echo <font color="#FF0000">'where run_test is true or false'</font>
+     echo <font color="#FF0000">'bin/example_install.sh: run_test replace'</font>
+     echo <font color="#FF0000">'run_test is not true or false'</font>
      <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
 <b><font color="#0000FF">fi</font></b>
 <font color="#009900">run_test</font><font color="#990000">=</font><font color="#FF0000">"$1"</font>
+<b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$2"</font> <font color="#990000">!=</font> <font color="#FF0000">'true'</font> <font color="#990000">]</font> <font color="#990000">&amp;&amp;</font> <font color="#990000">[</font> <font color="#FF0000">"$2"</font> <font color="#990000">!=</font> <font color="#FF0000">'false'</font> <font color="#990000">]</font>
+<b><font color="#0000FF">then</font></b>
+     echo <font color="#FF0000">'bin/example_install.sh: run_test replace'</font>
+     echo <font color="#FF0000">'replace is not true or false'</font>
+     <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
+<b><font color="#0000FF">fi</font></b>
+<font color="#009900">replace</font><font color="#990000">=</font><font color="#FF0000">"$2"</font>
 <i><font color="#9A1900"># ---------------------------------------------------------------------------</font></i>
 <i><font color="#9A1900"># set build_type to value in run_cmake.sh</font></i>
 <font color="#009900">cmd</font><font color="#990000">=</font>`grep <font color="#FF0000">'^build_type='</font> bin/run_cmake<font color="#990000">.</font>sh`
@@ -292,15 +310,25 @@ rm example_install<font color="#990000">.</font>tmp
           <font color="#990000">;;</font>
      <b><font color="#0000FF">esac</font></b>
      <i><font color="#9A1900">#</font></i>
+     <font color="#009900">install</font><font color="#990000">=</font><font color="#FF0000">'true'</font>
      <b><font color="#0000FF">if</font></b> <font color="#990000">[</font> -e <font color="#FF0000">"$file"</font> <font color="#990000">]</font>
      <b><font color="#0000FF">then</font></b>
-          echo <font color="#FF0000">"replacing existing $pkg install"</font>
+          <b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$replace"</font> <font color="#990000">==</font> <font color="#FF0000">'false'</font> <font color="#990000">]</font>
+          <b><font color="#0000FF">then</font></b>
+               echo <font color="#FF0000">"Skipping bin/install_$pkg.sh"</font>
+               echo <font color="#FF0000">"Using previously installed version in $cmake_install_prefix"</font>
+               <font color="#009900">install</font><font color="#990000">=</font><font color="#FF0000">'false'</font>
+          <b><font color="#0000FF">fi</font></b>
      <b><font color="#0000FF">fi</font></b>
-     echo <font color="#FF0000">"bin/install_$pkg.sh 1&gt;&gt; example_install.log 2&gt;&gt; example_install.err"</font>
-     <b><font color="#0000FF">if</font></b> <font color="#990000">!</font> bin/install_<font color="#009900">$pkg</font><font color="#990000">.</font>sh <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> example_install<font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> example_install<font color="#990000">.</font>err
+     <b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$install"</font> <font color="#990000">==</font> <font color="#FF0000">'true'</font> <font color="#990000">]</font>
      <b><font color="#0000FF">then</font></b>
-          tail example_install<font color="#990000">.</font>err
-          <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
+          <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">'example_install'</font>
+          echo <font color="#FF0000">"bin/install_$pkg.sh 1&gt;&gt; $name.log 2&gt;&gt; $name.err"</font>
+          <b><font color="#0000FF">if</font></b> <font color="#990000">!</font> bin/install_<font color="#009900">$pkg</font><font color="#990000">.</font>sh <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> <font color="#009900">$name</font><font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> <font color="#009900">$name</font><font color="#990000">.</font>err
+          <b><font color="#0000FF">then</font></b>
+               tail <font color="#009900">$name</font><font color="#990000">.</font>err
+               <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
+          <b><font color="#0000FF">fi</font></b>
      <b><font color="#0000FF">fi</font></b>
 <b><font color="#0000FF">done</font></b>
 <i><font color="#9A1900"># ----------------------------------------------------------------------------</font></i>
