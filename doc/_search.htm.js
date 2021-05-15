@@ -3,9 +3,9 @@
 // ------------------------------------------------------------ 
 Keyword = 
 [
-{ tag: 'cppad_mixed', title:'C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20210511', other:' license source code repository notation fixed theta random data z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood constraints negative log-density vector' },
+{ tag: 'cppad_mixed', title:'C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20210515', other:' license source code repository notation fixed theta random data z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood constraints negative log-density vector' },
 { tag: 'install_unix', title:'Installing cppad_mixed in Unix', other:' system requirements c++ compiler git cmake pkg-config wget fortran gsl suitesparse download paths pkg_config_path ld_library_path special run_cmake.sh eigen ipopt command check speed example installation linking using' },
-{ tag: 'example_install.sh', title:'An Example Installation', other:' syntax existing source' },
+{ tag: 'example_install.sh', title:'An Example Installation', other:' syntax run_test source' },
 { tag: 'run_cmake.sh', title:'bin/run_cmake.sh: User Configuration Options', other:' verbose_makefile build_type cmake_install_prefix debug release eigen extra_cxx_flags cmake_libdir cppad_mixed.pc ldlt_cholmod optimize_cppad_function for_hes_sparsity testing speed memory' },
 { tag: 'check_install.sh', title:'Example and Test Using the Installed Version of cppad_mixed', other:' syntax build_type prefixes cmake_libdir example_file pkg_config_path ld_library_path create temporary example_name main gsl_libs ipopt_libs suitesparse_libs compile link run' },
 { tag: 'theory', title:'Laplace Approximation for Mixed Effects Models', other:' reference total likelihood random f(theta u) assumption objective fixed g(theta) optimal u^(theta) h(theta r(theta) l(theta) derivative constraints approximate first order u(beta second w(beta h(beta function b(beta hessian sparse observed information' },
@@ -56,7 +56,7 @@ Keyword =
 { tag: 'data_mismatch.cpp', title:'Random Effects Variance May Cause Data Mismatch', other:' model theory derivatives objective' },
 { tag: 'opt_ran_nan.cpp', title:'Nan\'s During Optimization of Random Effects: Example and Test', other:'' },
 { tag: 'release_notes', title:'Changes and Additions to cppad_mixed', other:' this year previous years' },
-{ tag: 'whats_new_21', title:'Changes and Additions to cppad_mixed During 2021', other:' 05-11 05-07 05-01 03-02' },
+{ tag: 'whats_new_21', title:'Changes and Additions to cppad_mixed During 2021', other:' 05-15 05-11 05-07 05-01 03-02' },
 { tag: 'whats_new_20', title:'Changes and Additions to cppad_mixed During 2020', other:' 12-22 11-30 11-23 11-21 11-19 11-18 11-05 11-04 11-03 11-02 10-31 10-21 10-10 10-06 08-31 08-21 07-02 06-30 06-07 05-30 05-29 05-27 03-28 03-25 03-23 03-22 03-18 03-15 api' },
 { tag: 'whats_new_19', title:'Changes and Additions to cppad_mixed During 2019', other:' 10-08 09-30 07-24 07-23 07-20 07-19 07-10 07-09 06-24 06-07' },
 { tag: 'whats_new_18', title:'Changes and Additions to cppad_mixed During 2018', other:' 10-08 09-25 08-30 08-27 08-22 08-20 08-18 08-09 08-08 07-25 07-12 06-30 06-29 06-20 06-14 06-09 06-04 05-21 05-07 05-03 04-06 03-22 03-10 02-20 02-12 02-11 02-10 02-08 02-07 02-05 01-23 01-22 01-21 01-15 01-14' },

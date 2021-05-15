@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2021</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2021">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2021 05-11 05-07 05-01 03-02 ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2021 05-15 05-11 05-07 05-01 03-02 ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -66,11 +66,28 @@ A:active { color : purple }
 
 <center><b><big><big>Changes and Additions to cppad_mixed During 2021</big></big></b></center>
 
+<br><a href="whats_new_21.htm#05-15" target="_top">05-15</a>
 <br><a href="whats_new_21.htm#05-11" target="_top">05-11</a>
 <br><a href="whats_new_21.htm#05-07" target="_top">05-07</a>
 <br><a href="whats_new_21.htm#05-01" target="_top">05-01</a>
 <br><a href="whats_new_21.htm#03-02" target="_top">03-02</a>
 <br><br>
+<b><big><a name="05-15" id="05-15">05-15</a></big></b>
+<br>
+The <a href="example_install.sh.htm#run_test" target="_top"><span style='white-space: nowrap'>run_test</span></a>
+ argument was added
+and the 
+<code><i><font color="black"><span style='white-space: nowrap'>existing</span></font></i></code>
+ argument was removed from
+<code><font color="blue">bin/example_install.sh</font></code>.
+The 
+<code><i><font color="black"><span style='white-space: nowrap'>existing</span></font></i></code>
+ argument is no longer useful because the
+<code><font color="blue">external</font></code> directory caches the object files so replacing the
+install is quick (after the first compile).
+
+<br>
+<br>
 <b><big><a name="05-11" id="05-11">05-11</a></big></b>
 <br>
 Extend <a href="example_install.sh.htm" target="_top"><span style='white-space: nowrap'>example_install.sh</span></a>
