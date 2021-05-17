@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-20 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -229,6 +229,10 @@ std::string cppad_mixed::sample_random(
 			random_upper          ,
 			random_in
 		);
+	}
+	catch(const std::exception& e)
+	{	error_msg = "sample_random: std::exception: ";
+		error_msg += e.what();
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	error_msg = e.message("sample_random");

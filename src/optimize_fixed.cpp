@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-20 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -547,6 +547,11 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 			fix_constraint(a1_theta);
 			fix_likelihood(a1_theta);
 		}
+		catch(const std::exception& e)
+		{	std::string error_message = "optimize_fixed: std::exception: ";
+			error_message += e.what();
+			fatal_error(error_message);
+		}
 		catch(const CppAD::mixed::exception& e)
 		{	std::string error_message = e.message("optimize_fixed");
 			warning(error_message);
@@ -615,6 +620,12 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 			random_upper            ,
 			random_in
 		);
+	}
+	catch(const std::exception& e)
+	{	std::string error_message = "optimize_fixed: std::exception: ";
+		error_message += e.what();
+		fatal_error(error_message);
+		assert(false);
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	std::string error_message = e.message("optimize_fixed");

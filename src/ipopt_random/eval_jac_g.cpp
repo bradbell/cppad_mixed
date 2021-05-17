@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -96,6 +96,12 @@ $end
 */
 {	try
 	{	try_eval_jac_g(n, x, new_x, m, nele_jac, iRow, jCol, values);
+	}
+	catch(const std::exception& e)
+	{	error_message_ = "ipopt_random::eval_jac_g: std::exception: ";
+		for(size_t j = 0; j < n_random_; j++)
+			error_random_[j] = x[j];
+		return false;
 	}
 	catch(const CppAD::mixed::exception& e)
 	{	error_message_ = e.message("ipopt_random::eval_jac_g");

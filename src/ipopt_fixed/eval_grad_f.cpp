@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -69,6 +69,12 @@ $end
 		{	try_eval_grad_f(n, x, new_x, grad_f);
 			for(size_t j = 0; j < size_t(n); j++)
 				grad_f[j] *= scale_f_;
+		}
+		catch(const std::exception& e)
+		{	error_message_ = "ipopt_fixed::eval_g: std::exception: ";
+			for(size_t j = 0; j < n_fixed_; j++)
+				error_fixed_[j] = x[j];
+			return false;
 		}
 		catch(const CppAD::mixed::exception& e)
 		{	error_message_ = e.message("ipopt_fixed::eval_g");
