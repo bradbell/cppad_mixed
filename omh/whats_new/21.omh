@@ -15,9 +15,16 @@ $spell
 	msys
 	cygwin
 	op
+	std
 $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
+
+$head 05-17$$
+Add the catch of $code std::exception$$ to all try blocks,
+except for ipopt call back functions.
+This should improve detection of system errors; e.g., running
+out of memory.
 
 $head 05-15$$
 $list number$$
