@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2021</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2021">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2021 05-15 05-11 05-07 05-01 03-02 ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2021 05-17 05-15 05-11 05-07 05-01 03-02 ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -66,12 +66,22 @@ A:active { color : purple }
 
 <center><b><big><big>Changes and Additions to cppad_mixed During 2021</big></big></b></center>
 
+<br><a href="whats_new_21.htm#05-17" target="_top">05-17</a>
 <br><a href="whats_new_21.htm#05-15" target="_top">05-15</a>
 <br><a href="whats_new_21.htm#05-11" target="_top">05-11</a>
 <br><a href="whats_new_21.htm#05-07" target="_top">05-07</a>
 <br><a href="whats_new_21.htm#05-01" target="_top">05-01</a>
 <br><a href="whats_new_21.htm#03-02" target="_top">03-02</a>
 <br><br>
+<b><big><a name="05-17" id="05-17">05-17</a></big></b>
+<br>
+Add the catch of <code><font color="blue">std::exception</font></code> to all try blocks,
+except for ipopt call back functions.
+This should improve detection of system errors; e.g., running
+out of memory.
+
+<br>
+<br>
 <b><big><a name="05-15" id="05-15">05-15</a></big></b>
 
 <ol type="1"><li>
