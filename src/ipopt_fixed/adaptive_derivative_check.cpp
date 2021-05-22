@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-20 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -8,8 +8,24 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/ipopt_fixed.hpp>
+# include <cppad/mixed/one_dim_derivative_chk.hpp>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+
+// callback used by one_dim_derivative_chk
+bool ipopt_fixed::one_dim_function(double x_in, double& fun_out)
+{	bool    new_x          = true;
+	size_t  n              = n_fixed_ + fix_likelihood_nabs_;
+	size_t  j              = one_dim_function_j_;
+	double  x_save         = one_dim_function_x_[j];
+	one_dim_function_x_[j] = x_in;
+	Number* x              = one_dim_function_x_.data();
+	bool    ok             = eval_f(Index(n), x, new_x, fun_out);
+	one_dim_function_x_[j] = x_save;
+	return ok;
+}
+
+
 /*
 $begin ipopt_fixed_adaptive_derivative_check$$
 $spell
@@ -187,7 +203,7 @@ $end
 	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
 		x_scale[n_fixed_ + j] = std::fabs( fix_likelihood_vec_tmp_[1 + j] );
 	// ------------------------------------------------------------------------
-	// Set new_x, grad_f
+	// Set grad_f
 	d_vector grad_f(n);
 	{	bool new_x    = true;
 		bool ok       = eval_grad_f( Index(n), x, new_x, grad_f.data() );
@@ -370,77 +386,30 @@ $end
 	// ------------------------------------------------------------------------
 	// check grad_f
 	size_t line_count = 0;
+	one_dim_function_x_ = x_scale;
 	for(size_t j = 0; j < n; j++) if( x_lower[j] < x_upper[j] )
-	{	double abs_obj         = fabs(obj_value);
-		double best_err        = infinity;
-		double best_step       = infinity;
-		double best_approx     = infinity;
-		//
-		// loop over relative step sizes
-		size_t i_try           = 0;
-		while( i_try < n_try && best_err > relative_tol )
-		{	double log_next      = log_max_rel_step - log_diff * double(i_try);
-			double relative_step = std::exp(log_next);
-			//
-			// step size
-			double step = relative_step * fabs( x_scale[j] );
-			if( x_upper[j] != nlp_upper_bound_inf_ )
-				step = std::max(step, relative_step * fabs( x_upper[j] ) );
-			if( x_lower[j] != nlp_lower_bound_inf_  )
-				step = std::max(step, relative_step * fabs( x_lower[j] ) );
-			if( step == 0.0 )
-				step = relative_step;
-
-			// x_plus, obj_plus
-			double obj_plus;
-			double x_plus = std::min(x_scale[j] + step, x_upper[j]);
-			x_step[j]     = x_plus;
-			bool new_x    = true;
-			ok = eval_f(Index(n), x_step.data(), new_x, obj_plus);
-			if( ! ok )
-			{	assert( error_message_ != "" );
-				return false;
-			}
-			abs_obj = std::max(abs_obj, fabs(obj_plus) );
-
-			// x_minus, obj_minus
-			double obj_minus;
-			double x_minus = std::max(x_scale[j] - step, x_lower[j]);
-			x_step[j]      = x_minus;
-			new_x          = true;
-			eval_f(Index(n), x_step.data(), new_x, obj_minus);
-			if( ! ok )
-			{	assert( error_message_ != "" );
-				return false;
-			}
-			abs_obj = std::max(abs_obj, fabs(obj_minus) );
-
-			// restore j-th component of x_step
-			x_step[j]      = x_scale[j];
-
-			// finite difference approximation for derivative
-			double approx = (obj_plus - obj_minus) / (x_plus - x_minus);
-
-			// relative difference
-			double diff = grad_f[j] - approx;
-			double den  = fabs(grad_f[j]) + fabs(approx) + 100.0 * sqrt_eps * abs_obj;
-			double relative_err = fabs(diff);
-			if( den > 0.0 )
-				relative_err  = fabs(diff) / den;
-
-
-			// best
-			if( 1.1 * relative_err < best_err )
-			{	best_err    = relative_err;
-				best_step   = step;
-				best_approx = approx;
-			}
-			//
-			// next try
-			++i_try;
+	{	one_dim_function_j_ = j;
+		double x_low = x_lower[j];
+		if( x_low == nlp_lower_bound_inf_ )
+			x_low = -infinity;
+		double x_up = x_upper[j];
+		if( x_up == nlp_upper_bound_inf_ )
+			x_up = infinity;
+		one_dim_derivative_chk_result result = one_dim_derivative_chk(
+			*this,
+			x_low,
+			x_up,
+			x_scale[j],
+			obj_value,
+			grad_f[j],
+			relative_tol
+		);
+		if( result.rel_err == infinity )
+		{	assert( error_message_ != "" );
+			return false;
 		}
 		// trace
-		bool trace_j = trace || best_err > relative_tol;
+		bool trace_j = trace || result.rel_err > relative_tol;
 		if( trace_j )
 		{	if( line_count % 20 == 0 )
 				std::cout << std::endl
@@ -455,17 +424,17 @@ $end
 			std::cout
 				<< std::setprecision(4)
 				<< std::setw(4)  << j
-				<< std::setw(11) << best_step
+				<< std::setw(11) << result.step
 				<< std::setw(11) << obj_value
 				<< std::setw(11) << grad_f[j]
-				<< std::setw(11) << best_approx
-				<< std::setw(11) << best_err
+				<< std::setw(11) << result.apx_dfdx
+				<< std::setw(11) << result.rel_err
 				<< std::endl;
 			line_count++;
 		}
 		//
 		// ok
-		ok &= ok && best_err <= relative_tol;
+		ok &= ok && result.rel_err <= relative_tol;
 	}
 	// ------------------------------------------------------------------------
 	// check jac_g

@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-20 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -152,7 +152,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		d_vector        A_uhat_tmp_;        // size n_ran_con_
 		d_vector        H_beta_tmp_;        // size n_fixed_
 		d_vector        w_fix_con_tmp_;     // size n_fix_con_
-		d_vector        w_laplace_obj_tmp_;  // size n_ran_con_ + 1
+		d_vector        w_laplace_obj_tmp_; // size n_ran_con_ + 1
 
 		// this vector has size fix_likelihood_nabs_ + 1
 		d_vector        w_fix_likelihood_tmp_;
@@ -223,7 +223,14 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			Index*        jCol           ,
 			Number*       values
 		);
+		// -------------------------------------------------------------------
+		// used by adaptive_derivative_check
+		size_t   one_dim_function_j_;
+		d_vector one_dim_function_x_;
 	public:
+		bool one_dim_function(double x_in, double& fun_out);
+		// --------------------------------------------------------------------
+		//
 		//  get and clear the current ipopt_fixed error message
 		std::string get_error_message(void) const
 		{	return error_message_; }
