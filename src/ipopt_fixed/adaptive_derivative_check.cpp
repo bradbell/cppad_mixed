@@ -15,14 +15,23 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // callback used by one_dim_derivative_chk
 bool ipopt_fixed::one_dim_function(double x_in, d_vector& fun_out)
 {	bool    new_x          = true;
+	size_t  m              = fun_out.size();
 	size_t  n              = n_fixed_ + fix_likelihood_nabs_;
 	size_t  j              = one_dim_function_j_;
 	double  x_save         = one_dim_function_x_[j];
 	one_dim_function_x_[j] = x_in;
 	Number* x              = one_dim_function_x_.data();
 	bool ok = false;
-	if( one_dim_function_eval_ == eval_f_enum )
-	{	ok  = eval_f(Index(n), x, new_x, fun_out[0]);
+	switch( one_dim_function_eval_ )
+	{	case eval_f_enum:
+		ok = eval_f(Index(n), x, new_x, fun_out[0]);
+		break;
+		//
+		case eval_g_enum:
+		ok = eval_g(
+			Index(n), x, new_x, Index(m), fun_out.data()
+		);
+		break;
 	}
 	one_dim_function_x_[j] = x_save;
 	return ok;
@@ -441,107 +450,52 @@ $end
 				<< std::endl;
 			line_count++;
 		}
-		//
 		// ok
 		ok &= ok && result.rel_err[0] <= relative_tol;
 	}
 	// ------------------------------------------------------------------------
-	// check jac_g
-	line_count              = 0;
-	double max_best_err_all = 0.0;
+	// check jacobian of g
+	line_count             = 0;
+	double rel_err_max     = 0.0;
+	one_dim_function_x_    = x_scale;
+	one_dim_function_eval_ = eval_g_enum;
 	for(size_t j = 0; j < n; j++) if( x_lower[j] < x_upper[j] )
-	{	d_vector best_err(m), best_step(m), best_approx(m), jac(m);
+	{	// jac_g_j
+		d_vector jac_g_j(m);
 		for(size_t i = 0; i < m; i++)
-		{	best_err[i]     = infinity;
-			best_step[i]    = infinity;
-			best_approx[i]  = infinity;
-			jac[i]          = 0.0;
-		}
-		// value of this coluimn of the jacobian
+			jac_g_j[i] = 0.0;
 		for(size_t k = 0; k < nnz_jac_g_; k++) if( jac_g_col_[k] == j )
-		{	size_t i = jac_g_row_[k];
-			jac[i]   = jac_g[k];
+		{	size_t i   = jac_g_row_[k];
+			jac_g_j[i] = jac_g[k];
 		}
 		//
-		// loop over relative step sizes
-		size_t i_try        = 0;
-		double max_best_err = infinity;
-		while( i_try < n_try && max_best_err > relative_tol )
-		{	double log_next      = log_max_rel_step - log_diff * double(i_try);
-			double relative_step = std::exp(log_next);
-			//
-			// step size
-			double step = relative_step * fabs( x_scale[j] );
-			if( x_upper[j] != nlp_upper_bound_inf_ )
-				step = std::max(step, relative_step * fabs( x_upper[j] ) );
-			if( x_lower[j] != nlp_lower_bound_inf_  )
-				step = std::max(step, relative_step * fabs( x_lower[j] ) );
-			if( step == 0.0 )
-				step = relative_step;
-
-			// x_plus, con_plus
-			d_vector con_plus(m);
-			double x_plus = std::min(x_scale[j] + step, x_upper[j]);
-			x_step[j]     = x_plus;
-			bool new_x    = true;
-			ok = eval_g(
-				Index(n), x_step.data(), new_x, Index(m), con_plus.data()
-			);
-			if( ! ok )
-			{	assert( error_message_ != "" );
-				return false;
-			}
-			// x_minus con_minus
-			d_vector con_minus(m);
-			double x_minus = std::max(x_scale[j] - step, x_lower[j]);
-			x_step[j]      = x_minus;
-			new_x          = true;
-			ok = eval_g(
-				Index(n), x_step.data(), new_x, Index(m), con_minus.data()
-			);
-			if( ! ok )
-			{	assert( error_message_ != "" );
-				return false;
-			}
-
-			// actual step size
-			step = x_plus - x_minus;
-
-			// restore j-th component of x_step
-			x_step[j]  = x_scale[j];
-
-			max_best_err = 0.0;
-			for(size_t i = 0; i < m; i++)
-			{
-				// finite difference approximation for derivative
-				double approx = (con_plus[i] - con_minus[i])/ step;
-				double abs_con = fabs( con_value[i] );
-				abs_con        = std::max(abs_con, fabs( con_plus[i] ) );
-				abs_con        = std::max(abs_con, fabs( con_minus[i]) );
-
-				// relative difference
-				double diff = jac[i] - approx;
-				double den  = fabs(jac[i]) + fabs(approx) + 100.0 * sqrt_eps * abs_con;
-				double relative_err = fabs(diff);
-				if( den > 0.0 )
-					relative_err  = fabs(diff) / den;
-
-				// best
-				if( 1.1 * relative_err < best_err[i] )
-				{	best_err[i]    = relative_err;
-					best_step[i]   = step;
-					best_approx[i] = approx;
-				}
-				max_best_err = std::max(max_best_err, best_err[i]);
-			}
-			//
-			// next try
-			++i_try;
+		one_dim_function_j_ = j;
+		double x_low = x_lower[j];
+		if( x_low == nlp_lower_bound_inf_ )
+			x_low = -infinity;
+		double x_up = x_upper[j];
+		if( x_up == nlp_upper_bound_inf_ )
+			x_up = infinity;
+		one_dim_derivative_chk_result result = one_dim_derivative_chk(
+			*this,
+			x_low,
+			x_up,
+			x_scale[j],
+			con_value,
+			jac_g_j,
+			relative_tol
+		);
+		// rel_err_max
+		rel_err_max = 0.0;
+		for(size_t i = 0; i < m; ++i)
+			rel_err_max = std::max(rel_err_max, result.rel_err[i]);
+		if( rel_err_max == infinity )
+		{	assert( error_message_ != "" );
+			return false;
 		}
-		max_best_err_all = std::max(max_best_err_all, max_best_err);
 		for(size_t i = 0; i < m; i++)
 		{	// trace
-			bool trace_ij = trace || best_err[i] > relative_tol;
+			bool trace_ij = trace || result.rel_err[i] > relative_tol;
 			if( trace_ij )
 			{	if( line_count % 20 == 0 )
 					std::cout << std::endl
@@ -549,8 +503,8 @@ $end
 						<< std::setw(4)  << "i"
 						<< std::setw(4)  << "j"
 						<< std::setw(11) << "step"
-						<< std::setw(11) << "f"
-						<< std::setw(11) << "grad"
+						<< std::setw(11) << "g[i]"
+						<< std::setw(11) << "jac[i,j]"
 						<< std::setw(11) << "apx"
 						<< std::setw(11) << "err"
 						<< std::endl;
@@ -558,23 +512,22 @@ $end
 					<< std::setprecision(4)
 					<< std::setw(4)  << i
 					<< std::setw(4)  << j
-					<< std::setw(11) << best_step[i]
+					<< std::setw(11) << result.step[i]
 					<< std::setw(11) << con_value[i]
-					<< std::setw(11) << jac[i]
-					<< std::setw(11) << best_approx[i]
-					<< std::setw(11) << best_err[i]
+					<< std::setw(11) << jac_g_j[i]
+					<< std::setw(11) << result.apx_dfdx[i]
+					<< std::setw(11) << result.rel_err[i]
 					<< std::endl;
 				line_count++;
 			}
 		}
-		//
 		// ok
-		ok &= ok && max_best_err_all <= relative_tol;
+		ok &= ok && rel_err_max <= relative_tol;
 	}
 	// ------------------------------------------------------------------------
 	// check hes_value
 	line_count       = 0;
-	max_best_err_all = 0.0;
+	double max_best_err_all = 0.0;
 	if( mixed_object_.quasi_fixed_ == false )
 	for(size_t j2 = 0; j2 < n; j2++)
 	if( x_lower[j2] < x_upper[j2] )
