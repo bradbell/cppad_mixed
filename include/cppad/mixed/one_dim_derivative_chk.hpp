@@ -44,7 +44,7 @@ $codei%
 and is the point at which we are evaluating the function.
 The argument $icode f_out$$ has prototype
 $codei%
-	double& f_out
+	d_vector& f_out
 %$$
 Its input value does not matter and upon return it is the
 value of the function at $icode x_in$$.
@@ -81,28 +81,33 @@ $icode dfdx$$ and its finite difference approximation.
 $head result$$
 
 $subhead result.rel_err$$
-This is the smallest relative error that $code one_dim_derivative_check$$ found.
+The smallest relative error that $code one_dim_derivative_check$$ found,
+for the $th i$$ component of the function, is $icode%result%.rel_err[%i%]%$$.
 If it is less than or equal $icode rel_err$$ the derivative check passed.
 Searching for a step size with a smaller relative error stops as soon
-as the derivative check passes.
+as the derivative check passes for all components of the function.
 If $icode%result%.rel_err%$$ is infinity,
 then we were not able to evaluate the function.
 
 $subhead result.step$$
-This is the step size corresponding to $icode%result%.rel_err%$$.
+The step size corresponding to $icode%result%.rel_err[%i%]%$$ is
+$icode%result%.step[%i%]%$$.
 
-$subhead result.apx_dfdx$$
-This is the finite difference approximation for the derivative
-corresponding to $icode%result%.rel_err%$$.
+$subhead result.dfdx$$
+The finite difference approximation for the derivative,
+corresponding to $icode%result%.rel_err[%i%]%$$, is
+$icode%result%.apx_dfdx[%i%]%$$.
 
 $end
 */
+# include <cppad/mixed/typedef.hpp>
+
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // BEGIN_PROTOTYPE
 struct one_dim_derivative_chk_result {
-	double rel_err;
-	double step;
-	double apx_dfdx;
+	d_vector rel_err;
+	d_vector step;
+	d_vector apx_dfdx;
 };
 template <class Object>
 one_dim_derivative_chk_result one_dim_derivative_chk(
@@ -110,13 +115,17 @@ one_dim_derivative_chk_result one_dim_derivative_chk(
 	double     x_lower      ,
 	double     x_upper      ,
 	double     x            ,
-	double     f            ,
-	double     dfdx         ,
+	d_vector   f            ,
+	d_vector   dfdx         ,
 	double     rel_tol      )
 // END_PROTOTYPE
 {	// infinity
 	const double infinity = std::numeric_limits<double>::infinity();
 	const double nan      = std::numeric_limits<double>::quiet_NaN();
+	//
+	// m
+	size_t m = f.size();
+	assert( m == dfdx.size() );
 	//
 	// x_max_abs
 	double x_max_abs = std::fabs(x);
@@ -148,13 +157,20 @@ one_dim_derivative_chk_result one_dim_derivative_chk(
 	// result
 	// initialize
 	one_dim_derivative_chk_result result;
-	result.rel_err   = infinity;
-	result.step      = nan;
-	result.apx_dfdx  = nan;
+	result.rel_err.resize(m);
+	result.step.resize(m);
+	result.apx_dfdx.resize(m);
+	for(size_t i = 0; i < m; ++i)
+	{	result.rel_err[i]   = infinity;
+		result.step[i]      = nan;
+		result.apx_dfdx[i]  = nan;
+	}
 	//
 	// loop over finite difference step sizes
-	size_t i_try    = 0;        // index for this step size
-	while( i_try < n_try && result.rel_err > rel_tol )
+	size_t i_try       = 0;        // index for this step size
+	double rel_err_max = infinity; // maximum in result
+	d_vector f_plus(m), f_minus(m);
+	while( i_try < n_try && rel_err_max > rel_tol )
 	{	// rel_step
 		double log_try  = log_max_rel_step - log_diff * double(i_try);
 		double rel_step = std::exp(log_try);
@@ -171,33 +187,37 @@ one_dim_derivative_chk_result one_dim_derivative_chk(
 		double x_minus = std::max(x - step, x_lower);
 		//
 		// f_plus
-		double f_plus;
 		bool ok = obj.one_dim_function(x_plus, f_plus);
 		//
 		// f_minus
-		double f_minus;
 		ok = ok && obj.one_dim_function(x_minus, f_minus);
 		//
-		// f_max_abs
-		double f_max_abs = std::fabs(f);
-		f_max_abs        = std::max(f_max_abs, std::fabs(f_plus));
-		f_max_abs        = std::max(f_max_abs, std::fabs(f_minus));
-		//
-		// apx_dfdx
-		// finite difference approximation for derivative
-		double apx_dfdx = (f_plus - f_minus) / (x_plus - x_minus);
-		//
-		// rel_err
-		double rel_err = std::fabs(dfdx - apx_dfdx);
-		double den     = std::fabs(dfdx) + std::fabs(apx_dfdx);
-		if( den > 0.0 )
-			rel_err = rel_err / den;
-		//
-		// best_err
-		if( ok && 1.1 * rel_err < result.rel_err )
-		{	result.rel_err  = rel_err;
-			result.step     = step;
-			result.apx_dfdx = apx_dfdx;
+		// rel_err_max
+		rel_err_max = 0.0;
+		for(size_t i = 0; i < m; ++i)
+		{	// f_max_abs
+			double f_max_abs = std::fabs(f[i]);
+			f_max_abs        = std::max(f_max_abs, std::fabs(f_plus[i]));
+			f_max_abs        = std::max(f_max_abs, std::fabs(f_minus[i]));
+			//
+			// apx_dfdx
+			// finite difference approximation for derivative
+			double apx_dfdx = (f_plus[i] - f_minus[i]) / (x_plus - x_minus);
+			//
+			// rel_err
+			double rel_err = std::fabs(dfdx[i] - apx_dfdx);
+			double den     = std::fabs(dfdx[i]) + std::fabs(apx_dfdx);
+			if( den > 0.0 )
+				rel_err = rel_err / den;
+			//
+			// best so far ?
+			if( ok && 1.1 * rel_err < result.rel_err[i] )
+			{	result.rel_err[i]  = rel_err;
+				result.step[i]     = step;
+				result.apx_dfdx[i] = apx_dfdx;
+			}
+			// rel_err_max
+			rel_err_max = std::max(rel_err_max, result.rel_err[i]);
 		}
 		//
 		// next try

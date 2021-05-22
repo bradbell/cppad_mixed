@@ -225,10 +225,11 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		);
 		// -------------------------------------------------------------------
 		// used by adaptive_derivative_check
-		size_t   one_dim_function_j_;
-		d_vector one_dim_function_x_;
+		enum { eval_f_enum, eval_g_enum } one_dim_function_eval_;
+		size_t                            one_dim_function_j_;
+		d_vector                          one_dim_function_x_;
 	public:
-		bool one_dim_function(double x_in, double& fun_out);
+		bool one_dim_function(double x_in, d_vector& fun_out);
 		// --------------------------------------------------------------------
 		//
 		//  get and clear the current ipopt_fixed error message

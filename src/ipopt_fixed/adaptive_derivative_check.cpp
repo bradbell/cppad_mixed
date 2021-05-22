@@ -13,14 +13,17 @@ see http://www.gnu.org/licenses/agpl.txt
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // callback used by one_dim_derivative_chk
-bool ipopt_fixed::one_dim_function(double x_in, double& fun_out)
+bool ipopt_fixed::one_dim_function(double x_in, d_vector& fun_out)
 {	bool    new_x          = true;
 	size_t  n              = n_fixed_ + fix_likelihood_nabs_;
 	size_t  j              = one_dim_function_j_;
 	double  x_save         = one_dim_function_x_[j];
 	one_dim_function_x_[j] = x_in;
 	Number* x              = one_dim_function_x_.data();
-	bool    ok             = eval_f(Index(n), x, new_x, fun_out);
+	bool ok = false;
+	if( one_dim_function_eval_ == eval_f_enum )
+	{	ok  = eval_f(Index(n), x, new_x, fun_out[0]);
+	}
 	one_dim_function_x_[j] = x_save;
 	return ok;
 }
@@ -386,7 +389,12 @@ $end
 	// ------------------------------------------------------------------------
 	// check grad_f
 	size_t line_count = 0;
-	one_dim_function_x_ = x_scale;
+	one_dim_function_x_    = x_scale;
+	one_dim_function_eval_ = eval_f_enum;
+	d_vector obj_value_vec(1);
+	obj_value_vec[0] = obj_value;
+	//
+	d_vector grad_f_j_vec(1);
 	for(size_t j = 0; j < n; j++) if( x_lower[j] < x_upper[j] )
 	{	one_dim_function_j_ = j;
 		double x_low = x_lower[j];
@@ -395,21 +403,22 @@ $end
 		double x_up = x_upper[j];
 		if( x_up == nlp_upper_bound_inf_ )
 			x_up = infinity;
+		grad_f_j_vec[0] = grad_f[j];
 		one_dim_derivative_chk_result result = one_dim_derivative_chk(
 			*this,
 			x_low,
 			x_up,
 			x_scale[j],
-			obj_value,
-			grad_f[j],
+			obj_value_vec,
+			grad_f_j_vec,
 			relative_tol
 		);
-		if( result.rel_err == infinity )
+		if( result.rel_err[0] == infinity )
 		{	assert( error_message_ != "" );
 			return false;
 		}
 		// trace
-		bool trace_j = trace || result.rel_err > relative_tol;
+		bool trace_j = trace || result.rel_err[0] > relative_tol;
 		if( trace_j )
 		{	if( line_count % 20 == 0 )
 				std::cout << std::endl
@@ -424,17 +433,17 @@ $end
 			std::cout
 				<< std::setprecision(4)
 				<< std::setw(4)  << j
-				<< std::setw(11) << result.step
-				<< std::setw(11) << obj_value
-				<< std::setw(11) << grad_f[j]
-				<< std::setw(11) << result.apx_dfdx
-				<< std::setw(11) << result.rel_err
+				<< std::setw(11) << result.step[0]
+				<< std::setw(11) << obj_value_vec[0]
+				<< std::setw(11) << grad_f_j_vec[0]
+				<< std::setw(11) << result.apx_dfdx[0]
+				<< std::setw(11) << result.rel_err[0]
 				<< std::endl;
 			line_count++;
 		}
 		//
 		// ok
-		ok &= ok && result.rel_err <= relative_tol;
+		ok &= ok && result.rel_err[0] <= relative_tol;
 	}
 	// ------------------------------------------------------------------------
 	// check jac_g
