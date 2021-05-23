@@ -80,14 +80,11 @@ bool ipopt_fixed::one_dim_function(double x_in, d_vector& fun_out)
 			jac_g.data()
 		);
 		//
-		// obj_factor: must be same as in adaptive_derivative_check
-		double obj_factor = 2.0;
+		// obj_factor:
+		double obj_factor = one_dim_function_obj_factor_;
 		//
 		// lambda: Lagrange multipliers,`
-		// must be same as in adaptive_derivative_check
-		d_vector lambda(m);
-		for(size_t i = 0; i < m; i++)
-			lambda[i] = double(i + 1 + m) / double(m);
+		d_vector& lambda  = one_dim_function_lambda_;
 		//
 		// L(x) = obj_factor * f(x) = sum_i lambda[i] * g_i(x)
 		//
@@ -598,9 +595,11 @@ $end
 	}
 	// ------------------------------------------------------------------------
 	// check Hessian of L(x)
-	line_count             = 0;
-	one_dim_function_x_    = x_scale;
-	one_dim_function_eval_ = eval_grad_L_enum;
+	line_count                   = 0;
+	one_dim_function_x_          = x_scale;
+	one_dim_function_eval_       = eval_grad_L_enum;
+	one_dim_function_lambda_     = lambda;
+	one_dim_function_obj_factor_ = obj_factor;
 	d_vector hess_j(n), grad_L(n);
 	//
 	// grad_L
