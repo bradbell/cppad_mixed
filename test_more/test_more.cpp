@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -30,7 +30,7 @@ extern bool laplace_obj_hes(void);
 extern bool laplace_obj_tst(void);
 extern bool sample_fixed_1(void);
 extern bool sample_fixed_2(void);
-extern bool scale(void);
+extern bool scale_one(void);
 extern bool solution_check(void);
 extern bool zero_random_one(void);
 extern bool zero_random_two(void);
@@ -86,7 +86,7 @@ int main(void)
 	RUN(laplace_obj_tst);
 	RUN(sample_fixed_1);
 	RUN(sample_fixed_2);
-	RUN(scale);
+	RUN(scale_one);
 	RUN(solution_check);
 	RUN(zero_random_one);
 	RUN(zero_random_two);
