@@ -60,7 +60,7 @@ ADD_LIBRARY(cppad_mixed
 	init_laplace_obj_hes.cpp
 	ipopt_app_status.cpp
 	ipopt_fixed/new_random.cpp
-	ipopt_fixed/adaptive_derivative_check.cpp
+	ipopt_fixed/adapt_derivative_chk.cpp
 	ipopt_fixed/finalize_solution.cpp
 	ipopt_fixed/eval_h.cpp
 	ipopt_fixed/eval_jac_g.cpp

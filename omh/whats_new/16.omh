@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-20 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -11,6 +11,7 @@ see http://www.gnu.org/licenses/agpl.txt
 
 $begin whats_new_16$$
 $spell
+	chk
 	jac
 	ctor
 	metis
@@ -658,7 +659,7 @@ $code RELEASE$$.
 
 $head 04-16$$
 $list number$$
-The routine $code ipopt_fixed_adaptive_derivative_check$$ now checks
+The routine $code ipopt_fixed_adapt_derivative_chk$$ now checks
 $code ipopt_fixed_eval_jac_g$$ in addition to
 $code ipopt_fixed_eval_grad_f$$.
 $lnext
@@ -667,7 +668,7 @@ $lend
 
 $head 04-10$$
 $list number$$
-If the gradient check $code ipopt_fixed_adaptive_derivative_check$$ fails,
+If the gradient check $code ipopt_fixed_adapt_derivative_chk$$ fails,
 it now results in warning instead of a fatal error.
 $lnext
 Check the Hessian of the
@@ -689,7 +690,7 @@ equal to $code -1$$.
 
 $head 04-08$$
 $list number$$
-Changed $code ipopt_fixed_adaptive_derivative_check$$ to handle case where
+Changed $code ipopt_fixed_adapt_derivative_chk$$ to handle case where
 the function at both central difference points is zero,
 and the derivatives is also zero.
 $lnext
@@ -702,7 +703,7 @@ $list number$$
 The new routine $cref sample_fixed$$ samples from the posterior
 distribution for the estimate of the fixed effects.
 $lnext
-Changed $code ipopt_fixed_adaptive_derivative_check$$ to down to step size
+Changed $code ipopt_fixed_adapt_derivative_chk$$ to down to step size
 $code 1e-9$$ (used to just go to $code 1e-7$$.
 In addition, in error report changed $code step=$$ to $code best_step=$$.
 $lend

@@ -64,7 +64,7 @@ $childtable%src/ipopt_fixed/ctor.cpp
 	%src/ipopt_fixed/eval_jac_g.cpp
 	%src/ipopt_fixed/eval_h.cpp
 	%src/ipopt_fixed/finalize_solution.cpp
-	%src/ipopt_fixed/adaptive_derivative_check.cpp
+	%src/ipopt_fixed/adapt_derivative_chk.cpp
 	%src/ipopt_fixed/new_random.cpp
 	%example/ipopt_xam.omh
 %$$
@@ -133,9 +133,9 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		s_vector fix_con_hes_2_lag_; // fix_con_hes_row -> lag_hes_row
 		// ---------------------------------------------------------------
 		// This variable is set false by constructor, true at beginning of
-		// adaptive_derivative_check
+		// adapt_derivative_chk
 		bool adaptive_called_;
-		// The rest of these variables only set by adaptive_derivative_check
+		// The rest of these variables only set by adapt_derivative_chk
 		//
 		// scale factor (multiplies) components of f(x)
 		double scale_f_;
@@ -224,7 +224,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			Number*       values
 		);
 		// -------------------------------------------------------------------
-		// Used by adaptive_derivative_check member function to pass
+		// Used by adapt_derivative_chk member function to pass
 		// information to one_dim_function member function
 		enum { eval_f_enum, eval_g_enum, eval_grad_L_enum }
 		            one_dim_function_eval_;
@@ -366,7 +366,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			Ipopt::IpoptCalculatedQuantities* ip_cq
 		);
 		// -----------------------------------------------------------------
-		bool adaptive_derivative_check( bool trace, double relative_tol);
+		bool adapt_derivative_chk( bool trace, double relative_tol);
 	};
 } } // END_CPPAD_MIXED_NAMESPACE
 

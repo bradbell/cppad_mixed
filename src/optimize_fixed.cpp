@@ -497,7 +497,7 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	}
 	// if trace is false and relative_tol is infinity, no derivative check
 	// is done but the scale factors scale_f_ and scale_g_ are still computed.
-	ok = fixed_nlp->adaptive_derivative_check(trace, relative_tol);
+	ok = fixed_nlp->adapt_derivative_chk(trace, relative_tol);
 	if( fixed_nlp->get_error_message() != "" )
 	{	std::string msg = "optimize_fixed: ";
 		msg            += fixed_nlp->get_error_message();

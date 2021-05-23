@@ -107,7 +107,7 @@ bool ipopt_fixed::one_dim_function(double x_in, d_vector& fun_out)
 }
 
 /*
-$begin ipopt_fixed_adaptive_derivative_check$$
+$begin ipopt_fixed_adapt_derivative_chk$$
 $spell
 	differenced
 	CppAD
@@ -118,12 +118,13 @@ $spell
 	bool
 	jac
 	std
+	chk
 $$
 
 $section Adaptive Step Size check of Derivative Calculations$$
 
 $head Syntax$$
-$icode%ok% = adaptive_derivative_check(%trace%, %relative_tol%)%$$
+$icode%ok% = adapt_derivative_chk(%trace%, %relative_tol%)%$$
 
 $head trace$$
 If true, a trace of this computation is printed on standard output.
@@ -164,7 +165,7 @@ at least one of the differences is not within the specified tolerance.
 
 $head error_message_$$
 Use $code clear_error_message()$$ to set this to the empty
-string before calling $code adaptive_derivative_check$$.
+string before calling $code adapt_derivative_chk$$.
 (Note that it is empty after the $code ipopt_fixed$$ constructor is called.)
 If upon return, $code get_error_message()$$ is non-empty,
 a description of a function evaluation
@@ -176,7 +177,7 @@ $codei%
 	bool adaptive_called_
 %$$
 It's value upon call must be $code false$$.
-It is set to true at the beginning of $code adaptive_derivative_check$$,
+It is set to true at the beginning of $code adapt_derivative_chk$$,
 before any other $code ipopt_fixed$$ routine is called.
 
 $head fixed_scale_$$
@@ -225,7 +226,7 @@ to row and column index in $latex g'(x)$$.
 
 $head Prototype$$
 $srccode%cpp% */
-bool ipopt_fixed::adaptive_derivative_check(bool trace, double relative_tol)
+bool ipopt_fixed::adapt_derivative_chk(bool trace, double relative_tol)
 /* %$$
 $end
 */
