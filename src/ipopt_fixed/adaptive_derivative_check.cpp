@@ -14,26 +14,47 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // callback used by one_dim_derivative_chk
 bool ipopt_fixed::one_dim_function(double x_in, d_vector& fun_out)
-{	bool    new_x          = true;
+{	// new_x
+	bool    new_x          = true;
+	//
+	// m: number of components in one dimensional function range space
 	size_t  m              = fun_out.size();
+	//
+	// n: number of arguemnts to function being optimized
 	size_t  n              = n_fixed_ + fix_likelihood_nabs_;
+	//
+	// j: component in argument space were one dimensional function defined
 	size_t  j              = one_dim_function_j_;
+	//
+	// x_save: original value of j-th component of x (used to restore value)
 	double  x_save         = one_dim_function_x_[j];
+	//
+	// replace the j-th compponent with requested value
 	one_dim_function_x_[j] = x_in;
+	//
+	// x: pointer to argument for n dimensional function
 	Number* x              = one_dim_function_x_.data();
+	//
+	// ok: did the function evaluation complete
 	bool ok = false;
+	//
 	switch( one_dim_function_eval_ )
-	{	case eval_f_enum:
+	{	// evaluting f(x) along j-th component of x
+		case eval_f_enum:
 		ok = eval_f(Index(n), x, new_x, fun_out[0]);
 		break;
 		//
+		// evaluating g(x) along j-th component of x
 		case eval_g_enum:
 		ok = eval_g(
 			Index(n), x, new_x, Index(m), fun_out.data()
 		);
 		break;
 	}
+	// restore one_dimensional_function_x_
 	one_dim_function_x_[j] = x_save;
+	//
+	// return function evaluation status
 	return ok;
 }
 
@@ -169,53 +190,62 @@ $end
 	// ---------------------------------------------------------------------
 	// some constants
 	// ---------------------------------------------------------------------
-	// square root of machine epsilon
+	//
+	// sqrt_eps: square root of machine epsilon
 	double sqrt_eps = std::sqrt( std::numeric_limits<double>::epsilon() );
-	// number of components in x
+	//
+	// n: number of components in x
 	const size_t n  = n_fixed_ + fix_likelihood_nabs_;
-	// number of components if g
+	//
+	// m: number of components if g
 	const size_t m  = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
+	//
 	// infinity
 	const double infinity  = std::numeric_limits<double>::infinity();
-	// maximum scaling factor
+	//
+	// scale_max: maximum scaling factor
 	const double scale_max = 1e+14;
-	// minimum scaling factor
+	//
+	// scale_min: minimum scaling factor
 	double scale_min       = 1.0 / scale_max;
-	// log of maximum relatives steps size in finite differences
+	//
+	// log_max_rel_step: maximum log relatives steps size in finite differences
 	double log_max_rel_step = std::log(0.1);
-	// log of minimum relative steps size in finite differences
+	//
+	// log_min_rel_step: minimum log relative steps size in finite differences
 	double log_min_rel_step = std::log(1e-10);
-	// number of finite difference steps to try
+	//
+	// n_try: number of finite difference steps to try
 	size_t n_try = 5;
-	// -----------------------------------------------------------------------
-	// Set scale_f_, scale_g_, to identity mapping during this routine
+	//
+	// scale_f_, scale_g_: are the identity mapping during this routine
 	// and set to to its final value just before returning.
 	assert( scale_g_.size() == 0 );
 	scale_f_ = 1.0;
 	scale_g_.resize(m);
 	for(size_t i = 0; i < m; i++)
 		scale_g_[i] = 1.0;
-	// -----------------------------------------------------------------------
-	// Set x = x_scale
+	//
+	// x, x_scale: two view of same vector of argument values
 	d_vector x_scale(n);
 	Number*  x = x_scale.data();
+	// set fixed effect in x_scale
+	for(size_t j = 0; j < n_fixed_; j++)
+		x_scale[j] = fixed_scale_[j];
+	// set auxillary variables in x_scale
+	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
+		x_scale[n_fixed_ + j] = std::fabs( fix_likelihood_vec_tmp_[1 + j] );
 	//
-	// fixed likelihood at the fixed effects scaling vector
+	// fixed_likelihood_vec_tmp_: set to value offixed likelihood at the
+	// fixed effects scaling vector
 	if( fix_likelihood_vec_tmp_.size() == 0 )
 		assert( mixed_object_.fix_like_eval(fixed_scale_).size() == 0 );
 	else
 	{	fix_likelihood_vec_tmp_ = mixed_object_.fix_like_eval(fixed_scale_);
 		assert( fix_likelihood_vec_tmp_.size() == 1 + fix_likelihood_nabs_ );
 	}
-	// use scaling values for fixed effects
-	for(size_t j = 0; j < n_fixed_; j++)
-		x_scale[j] = fixed_scale_[j];
 	//
-	// set auxillary variables to corresponding minimum feasible value
-	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
-		x_scale[n_fixed_ + j] = std::fabs( fix_likelihood_vec_tmp_[1 + j] );
-	// ------------------------------------------------------------------------
-	// Set grad_f
+	// grad_f: gradinet of f(x)
 	d_vector grad_f(n);
 	{	bool new_x    = true;
 		bool ok       = eval_grad_f( Index(n), x, new_x, grad_f.data() );
@@ -224,11 +254,11 @@ $end
 			return false;
 		}
 	}
-	// ------------------------------------------------------------------------
-	// Set jac_g, jac_g_row_, jac_g_col_
+	//
+	// jac_g, jac_g_row_, jac_g_col_: sparse representation of Jacobian of g(x)
 	d_vector jac_g(nnz_jac_g_);
-	{
-		// get iRow and jCol for eval_jac_g
+	{	//
+		// iRow, jCol: sparsity pattern for Jacobian of g(x)
 		CppAD::vector<Index> iRow(nnz_jac_g_), jCol(nnz_jac_g_);
 		bool new_x     = false;
 		Index nele_jac = Index( nnz_jac_g_ );
@@ -246,6 +276,8 @@ $end
 		{	assert( error_message_ != "" );
 			return false;
 		}
+		//
+		// jac_g_row_, jac_g_col_
 		assert( jac_g_row_.size() == 0 && jac_g_col_.size() == 0 );
 		jac_g_row_.resize(nnz_jac_g_);
 		jac_g_col_.resize(nnz_jac_g_);
@@ -253,7 +285,8 @@ $end
 		{	jac_g_row_[k] = size_t( iRow[k] );
 			jac_g_col_[k] = size_t( jCol[k] );
 		}
-		// eval_jac_g
+		//
+		// jac_g
 		new_x           = false;
 		nele_jac        = Index( nnz_jac_g_ );
 		Number* values  = jac_g.data();
@@ -272,8 +305,8 @@ $end
 			return false;
 		}
 	}
-	// ------------------------------------------------------------------------
-	// set x_lower, x_upper, g_lower, g_upper
+	//
+	// x_lower, x_upper, g_lower, g_upper
 	d_vector x_lower(n), x_upper(n), g_lower(m), g_upper(m);
 	bool ok = get_bounds_info(
 		Index(n),
@@ -284,8 +317,9 @@ $end
 		g_upper.data()
 	);
 	assert( ok );
-	// ------------------------------------------------------------------------
+	//
 	// max_jac_g : maximum absolute partial for each component of g
+	// not counting components with equal lower and upper limits
 	d_vector max_jac_g(m);
 	for(size_t i = 0; i < m; i++)
 		max_jac_g[i] = scale_min;
@@ -295,31 +329,29 @@ $end
 		if( x_lower[j] < x_upper[j] )
 			max_jac_g[i] = std::max( max_jac_g[i], std::fabs( jac_g[k] ) );
 	}
-	// -----------------------------------------------------------------------
+	//
 	// max_grad_f : maximum absolute partial for objective.
 	// Skip absolute value partials in f, which are one, but
 	// include the corresponding partials in g
 	double max_grad_f = scale_min;
-	//
 	// fixed effect terms
 	for(size_t j = 0; j < n_fixed_; j++) if( x_lower[j] < x_upper[j] )
 		max_grad_f = std::max( max_grad_f, std::fabs( grad_f[j] ) );
-	//
 	// skip axuillary variable terms (gradients are one)
 # ifndef NDEBUG
 	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
 		assert( grad_f[n_fixed_ + j] == 1.0 );
 # endif
-	// include absolute value terms in objective scaling
+	// include absolute value terms in g(x) in max_grad_f
 	for(size_t i = 0; i < fix_likelihood_nabs_; i++)
 	{	assert( max_jac_g[2*i] == max_jac_g[2*i+1] );
 		max_grad_f = std::max( max_grad_f, std::fabs( max_jac_g[2*i] ) );
 	}
-	// -----------------------------------------------------------------------
+	//
 	// scale_f
 	double scale_f = std::max( scale_min, 1.0 / max_grad_f);
 	scale_f        = std::min( scale_max, scale_f);
-	// ----------------------------------------------------------------------
+	//
 	// scale_g
 	d_vector scale_g(m);
 	for(size_t i = 0; i < m; i++)
@@ -330,10 +362,10 @@ $end
 			scale_g[i] = std::min( scale_max, scale_g[i] );
 		}
 	}
-	// ----------------------------------------------------------------------
-	// If no need to compute finite differences, set scaling and return
+	//
+	// If not tracing or checking derivatives, set scaling and return
 	if( (! trace) && relative_tol == infinity )
-	{
+	{	// scale_f_, scale_g_
 		scale_f_       = scale_f;
 		scale_g_       = scale_g;
 		return true;
@@ -341,10 +373,9 @@ $end
 	// ------------------------------------------------------------------------
 	// Test the derivatvie
 	// ------------------------------------------------------------------------
-	// set obj_value = f(x)
+	// obj_value: value of the objective function f(x)
 	double obj_value;
-	{
-		bool new_x = false;
+	{	bool new_x = false;
 		ok = eval_f(Index(n), x, new_x, obj_value);
 		if( ! ok )
 		{	assert( error_message_ != "" );
@@ -352,7 +383,7 @@ $end
 		}
 	}
 	//
-	// set con_value = g(x)
+	// con_value: value of the constraint function g(x)
 	d_vector con_value(m);
 	{
 		bool new_x = false;
@@ -363,12 +394,18 @@ $end
 		}
 	}
 	//
-	// set hes_value = Hessian of obj_factor * f(x) + sum lambda_i * g_i (x)
-	d_vector hes_value( nnz_h_lag_ );
+	// obj_factor:
 	Number   obj_factor = 2.0;
+	//
+	// lambda: Lagrange multipliers`
 	d_vector lambda(m);
 	for(size_t i = 0; i < m; i++)
 		lambda[i] = double(i + 1 + m) / double(m);
+	//
+	// L(x) = obj_factor * f(x) = sum_i lambda[i] * g_i(x)
+	//
+	// hes_value: values in sparse representation of Hessian
+	d_vector hes_value( nnz_h_lag_ );
 	if( mixed_object_.quasi_fixed_ == false )
 	{	bool new_x      = false;
 		bool new_lambda = true;
@@ -390,7 +427,7 @@ $end
 		);
 	}
 	//
-	// difference of log of relative step between trys
+	// log_diff: difference of log of relative step between trys
 	double log_diff = (log_max_rel_step - log_min_rel_step) / double(n_try-1);
 	//
 	// initialize x_step = x_scale
