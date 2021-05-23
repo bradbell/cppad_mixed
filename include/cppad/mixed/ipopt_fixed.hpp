@@ -225,9 +225,10 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		);
 		// -------------------------------------------------------------------
 		// used by adaptive_derivative_check
-		enum { eval_f_enum, eval_g_enum } one_dim_function_eval_;
-		size_t                            one_dim_function_j_;
-		d_vector                          one_dim_function_x_;
+		enum { eval_f_enum, eval_g_enum, eval_grad_L_enum }
+		            one_dim_function_eval_;
+		size_t      one_dim_function_j_;
+		d_vector    one_dim_function_x_;
 	public:
 		bool one_dim_function(double x_in, d_vector& fun_out);
 		// --------------------------------------------------------------------

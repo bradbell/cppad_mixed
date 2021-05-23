@@ -120,8 +120,13 @@ one_dim_derivative_chk_result one_dim_derivative_chk(
 	double     rel_tol      )
 // END_PROTOTYPE
 {	// infinity
-	const double infinity = std::numeric_limits<double>::infinity();
-	const double nan      = std::numeric_limits<double>::quiet_NaN();
+	double infinity = std::numeric_limits<double>::infinity();
+	//
+	// nan
+	double nan      = std::numeric_limits<double>::quiet_NaN();
+	//
+	// sqrt_eps
+	double sqrt_eps = std::sqrt( std::numeric_limits<double>::epsilon() );
 	//
 	// m
 	size_t m = f.size();
@@ -207,6 +212,7 @@ one_dim_derivative_chk_result one_dim_derivative_chk(
 			// rel_err
 			double rel_err = std::fabs(dfdx[i] - apx_dfdx);
 			double den     = std::fabs(dfdx[i]) + std::fabs(apx_dfdx);
+			den           += sqrt_eps * f_max_abs;
 			if( den > 0.0 )
 				rel_err = rel_err / den;
 			//

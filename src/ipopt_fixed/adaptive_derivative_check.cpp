@@ -17,23 +17,23 @@ bool ipopt_fixed::one_dim_function(double x_in, d_vector& fun_out)
 {	// new_x
 	bool    new_x          = true;
 	//
-	// m: number of components in one dimensional function range space
-	size_t  m              = fun_out.size();
+	// m: number of components if g
+	size_t m    = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
 	//
 	// n: number of arguemnts to function being optimized
-	size_t  n              = n_fixed_ + fix_likelihood_nabs_;
+	size_t  n   = n_fixed_ + fix_likelihood_nabs_;
 	//
 	// j: component in argument space were one dimensional function defined
-	size_t  j              = one_dim_function_j_;
+	size_t  j   = one_dim_function_j_;
 	//
 	// x_save: original value of j-th component of x (used to restore value)
-	double  x_save         = one_dim_function_x_[j];
+	double  x_save = one_dim_function_x_[j];
 	//
 	// replace the j-th compponent with requested value
 	one_dim_function_x_[j] = x_in;
 	//
 	// x: pointer to argument for n dimensional function
-	Number* x              = one_dim_function_x_.data();
+	Number* x  = one_dim_function_x_.data();
 	//
 	// ok: did the function evaluation complete
 	bool ok = false;
@@ -41,15 +41,66 @@ bool ipopt_fixed::one_dim_function(double x_in, d_vector& fun_out)
 	switch( one_dim_function_eval_ )
 	{	// evaluting f(x) along j-th component of x
 		case eval_f_enum:
+		assert( fun_out.size() == 1 );
 		ok = eval_f(Index(n), x, new_x, fun_out[0]);
 		break;
-		//
+		// --------------------------------------------------------------------
 		// evaluating g(x) along j-th component of x
 		case eval_g_enum:
+		assert( fun_out.size() == m );
 		ok = eval_g(
 			Index(n), x, new_x, Index(m), fun_out.data()
 		);
 		break;
+		// --------------------------------------------------------------------
+		// evaluating grad L(x) along j-th component of x
+		case eval_grad_L_enum:
+		assert( fun_out.size() == n );
+		//
+		// grad_f
+		d_vector grad_f(n);
+		ok  = eval_grad_f(
+			Index(n), x, new_x, grad_f.data()
+		);
+		//
+		// jac_g
+		Index nele_jac = Index( nnz_jac_g_ );
+		new_x       = false;
+		Index* iRow = nullptr;
+		Index* jCol = nullptr;
+		d_vector jac_g(nnz_jac_g_);
+		ok &= eval_jac_g(
+			Index(n),
+			x,
+			new_x,
+			Index(m),
+			nele_jac,
+			iRow,
+			jCol,
+			jac_g.data()
+		);
+		//
+		// obj_factor: must be same as in adaptive_derivative_check
+		double obj_factor = 2.0;
+		//
+		// lambda: Lagrange multipliers,`
+		// must be same as in adaptive_derivative_check
+		d_vector lambda(m);
+		for(size_t i = 0; i < m; i++)
+			lambda[i] = double(i + 1 + m) / double(m);
+		//
+		// L(x) = obj_factor * f(x) = sum_i lambda[i] * g_i(x)
+		//
+		// fun_out = gradient of L(x)
+		for(size_t j1 = 0; j1 < n; ++j1)
+			fun_out[j1] = obj_factor * grad_f[j1];
+		for(size_t k = 0; k < nnz_jac_g_; ++k)
+		{	size_t i     = jac_g_row_[k];
+			size_t j1    = jac_g_col_[k];
+			fun_out[j1] += lambda[i] * jac_g[k];
+		}
+		break;
+		// --------------------------------------------------------------------
 	}
 	// restore one_dimensional_function_x_
 	one_dim_function_x_[j] = x_save;
@@ -57,7 +108,6 @@ bool ipopt_fixed::one_dim_function(double x_in, d_vector& fun_out)
 	// return function evaluation status
 	return ok;
 }
-
 
 /*
 $begin ipopt_fixed_adaptive_derivative_check$$
@@ -191,9 +241,6 @@ $end
 	// some constants
 	// ---------------------------------------------------------------------
 	//
-	// sqrt_eps: square root of machine epsilon
-	double sqrt_eps = std::sqrt( std::numeric_limits<double>::epsilon() );
-	//
 	// n: number of components in x
 	const size_t n  = n_fixed_ + fix_likelihood_nabs_;
 	//
@@ -208,15 +255,6 @@ $end
 	//
 	// scale_min: minimum scaling factor
 	double scale_min       = 1.0 / scale_max;
-	//
-	// log_max_rel_step: maximum log relatives steps size in finite differences
-	double log_max_rel_step = std::log(0.1);
-	//
-	// log_min_rel_step: minimum log relative steps size in finite differences
-	double log_min_rel_step = std::log(1e-10);
-	//
-	// n_try: number of finite difference steps to try
-	size_t n_try = 5;
 	//
 	// scale_f_, scale_g_: are the identity mapping during this routine
 	// and set to to its final value just before returning.
@@ -394,10 +432,10 @@ $end
 		}
 	}
 	//
-	// obj_factor:
+	// obj_factor: must be same as in one_dim_function
 	Number   obj_factor = 2.0;
 	//
-	// lambda: Lagrange multipliers`
+	// lambda: Lagrange multipliers, must be same as n one_dim_function
 	d_vector lambda(m);
 	for(size_t i = 0; i < m; i++)
 		lambda[i] = double(i + 1 + m) / double(m);
@@ -425,13 +463,11 @@ $end
 			jCol,
 			hes_value.data()
 		);
+		if( ! ok )
+		{	assert( error_message_ != "" );
+			return false;
+		}
 	}
-	//
-	// log_diff: difference of log of relative step between trys
-	double log_diff = (log_max_rel_step - log_min_rel_step) / double(n_try-1);
-	//
-	// initialize x_step = x_scale
-	d_vector x_step(x_scale);
 	// ------------------------------------------------------------------------
 	// check grad_f
 	size_t line_count = 0;
@@ -493,7 +529,6 @@ $end
 	// ------------------------------------------------------------------------
 	// check jacobian of g
 	line_count             = 0;
-	double rel_err_max     = 0.0;
 	one_dim_function_x_    = x_scale;
 	one_dim_function_eval_ = eval_g_enum;
 	for(size_t j = 0; j < n; j++) if( x_lower[j] < x_upper[j] )
@@ -523,7 +558,7 @@ $end
 			relative_tol
 		);
 		// rel_err_max
-		rel_err_max = 0.0;
+		double rel_err_max = 0.0;
 		for(size_t i = 0; i < m; ++i)
 			rel_err_max = std::max(rel_err_max, result.rel_err[i]);
 		if( rel_err_max == infinity )
@@ -562,154 +597,68 @@ $end
 		ok &= ok && rel_err_max <= relative_tol;
 	}
 	// ------------------------------------------------------------------------
-	// check hes_value
-	line_count       = 0;
-	double max_best_err_all = 0.0;
+	// check Hessian of L(x)
+	line_count             = 0;
+	one_dim_function_x_    = x_scale;
+	one_dim_function_eval_ = eval_grad_L_enum;
+	d_vector hess_j(n), grad_L(n);
+	//
+	// grad_L
+	for(size_t j = 0; j < n; ++j)
+		grad_L[j] = obj_factor * grad_f[j];
+	for(size_t k = 0; k < nnz_jac_g_; ++k)
+	{	size_t i   = jac_g_row_[k];
+		size_t j   = jac_g_col_[k];
+		grad_L[j] += lambda[i] * jac_g[k];
+	}
 	if( mixed_object_.quasi_fixed_ == false )
-	for(size_t j2 = 0; j2 < n; j2++)
-	if( x_lower[j2] < x_upper[j2] )
-	{
-		d_vector best_err(n), best_step(n), best_approx(n), best_grad_L(n),hess(n);
-		for(size_t j1 = 0; j1 < n; j1++)
-		{	best_err[j1]    = infinity;
-			best_step[j1]   = infinity;
-			best_approx[j1] = infinity;
-			best_grad_L[j1] = infinity;
-			hess[j1]        = 0.0;
+		for(size_t j2 = 0; j2 < n; j2++)
+			if( x_lower[j2] < x_upper[j2] )
+	{	// hess_j
+		for(size_t j1 = 0; j1 < n; ++j1)
+			hess_j[j1] = 0.0;
+		for(size_t k = 0; k < nnz_h_lag_; ++k)
+		{	// only lower triangle is in hes_value,
+			// use symmetry to get the rest of the Hessian
+			if( lag_hes_col_[k] == j2 )
+			{	size_t j1 = lag_hes_row_[k];
+				hess_j[j1] = hes_value[k];
+				assert( j2 <= j1 );
+			}
+			if( lag_hes_row_[k] == j2 )
+			{	size_t j1 = lag_hes_col_[k];
+				hess_j[j1] = hes_value[k];
+				assert( j1 <= j2 );
+			}
 		}
-		// value of this column of the hessian
-		for(size_t k = 0; k < nnz_h_lag_; k++)
-		if( lag_hes_col_[k] == j2 )
-		{	size_t j1 = lag_hes_row_[k];
-			hess[j1]  = hes_value[k];
+		one_dim_function_j_ = j2;
+		double x_low = x_lower[j2];
+		if( x_low == nlp_lower_bound_inf_ )
+			x_low = -infinity;
+		double x_up = x_upper[j2];
+		if( x_up == nlp_upper_bound_inf_ )
+			x_up = infinity;
+		one_dim_derivative_chk_result result = one_dim_derivative_chk(
+			*this,
+			x_low,
+			x_up,
+			x_scale[j2],
+			grad_L,
+			hess_j,
+			relative_tol
+		);
+		// rel_err_max
+		double rel_err_max = 0.0;
+		for(size_t j1 = 0; j1 < n; ++j1)
+			rel_err_max = std::max(rel_err_max, result.rel_err[j1]);
+		if( rel_err_max == infinity )
+		{	assert( error_message_ != "" );
+			return false;
 		}
-
-		//
-		// loop over relative step sizes
-		size_t i_try        = 0;
-		double max_best_err = infinity;
-		while( i_try < n_try && max_best_err > relative_tol )
-		{	double log_next      = log_max_rel_step - log_diff * double(i_try);
-			double relative_step = std::exp(log_next);
-			//
-			// step size
-			double step = relative_step * fabs( x_scale[j2] );
-			if( x_upper[j2] != nlp_upper_bound_inf_ )
-				step = std::max(step, relative_step * fabs( x_upper[j2] ) );
-			if( x_lower[j2] != nlp_lower_bound_inf_  )
-				step = std::max(step, relative_step * fabs( x_lower[j2] ) );
-			if( step == 0.0 )
-				step = relative_step;
-
-			// x_plus, grad_f_plus, jac_g_plus
-			d_vector grad_f_plus(n);
-			d_vector jac_g_plus(nnz_jac_g_);
-			double x_plus = std::min(x_scale[j2] + step, x_upper[j2]);
-			x_step[j2]    = x_plus;
-			bool new_x    = true;
-			Index* iRow   = NULL;
-			Index* jCol   = NULL;
-			ok  = eval_grad_f(
-				Index(n), x_step.data(), new_x, grad_f_plus.data()
-			);
-			Index nele_jac = Index( nnz_jac_g_ );
-			ok &= eval_jac_g(
-				Index(n),
-				x_step.data(),
-				new_x,
-				Index(m),
-				nele_jac,
-				iRow,
-				jCol,
-				jac_g_plus.data()
-			);
-			if( ! ok )
-			{	assert( error_message_ != "" );
-				return false;
-			}
-
-			// x_minus, grad_f_minus, jac_g_minus
-			d_vector grad_f_minus(n);
-			d_vector jac_g_minus(nnz_jac_g_);
-			double x_minus = std::min(x_scale[j2] - step, x_upper[j2]);
-			x_step[j2]    = x_minus;
-			new_x         = true;
-			ok  = eval_grad_f(
-				Index(n), x_step.data(), new_x, grad_f_minus.data()
-			);
-			ok &= eval_jac_g(
-				Index(n),
-				x_step.data(),
-				new_x,
-				Index(m),
-				nele_jac,
-				iRow,
-				jCol,
-				jac_g_minus.data()
-			);
-			if( ! ok )
-			{	assert( error_message_ != "" );
-				return false;
-			}
-
-			// actual step size
-			step = x_plus - x_minus;
-
-			// restore j-th component of x_step
-			x_step[j2] = x_scale[j2];
-
-			// Initailize j-th column of Hessian with f contribution
-			d_vector approx(n);
-			d_vector grad_L(n);
-			for(size_t j1 = 0; j1 < n; j1++)
-			{	double d2f =(grad_f_plus[j1] - grad_f_minus[j1]) / step;
-				grad_L[j1] =(grad_f_plus[j1] + grad_f_minus[j1]) / 2.0;
-				approx[j1] = obj_factor * d2f;
-			}
-			// add in contribution for g
-			for(size_t k = 0; k < nnz_jac_g_; k++)
-			{	size_t i    = jac_g_row_[k];
-				size_t j1   = jac_g_col_[k];
-				double d2g   = (jac_g_plus[k] - jac_g_minus[k])/ step;
-				approx[j1] += lambda[i] * d2g;
-				grad_L[j1] += lambda[i] * (jac_g_plus[k] + jac_g_minus[k]) / 2.0;
-			}
-			//
-			// absolute value of element in this column and on diagonal
-			double abs_diag = fabs( hess[j2] );
-			//
-			// only check the lower trinagle
-			max_best_err  = 0.0;
-			for(size_t j1 = j2; j1 < n; j1++)
-			{	// relative difference
-				double diff  = hess[j1] - approx[j1];
-				double den   = abs_diag + fabs(hess[j1]) + fabs(approx[j1]);
-				den         += 100.0 * sqrt_eps * grad_L[j1];
-				double relative_err = fabs(diff);
-				if( den > 0.0 )
-					relative_err  = fabs(diff) / den;
-
-
-				// best
-				if( relative_err < best_err[j1] )
-				{	best_err[j1]    = relative_err;
-					best_step[j1]   = step;
-					best_approx[j1] = approx[j1];
-					best_grad_L[j1] = grad_L[j1];
-				}
-				max_best_err = std::max(max_best_err, best_err[j1]);
-			}
-			//
-			// next try
-			++i_try;
-		}
-		max_best_err_all = std::max(max_best_err_all, max_best_err);
-		//
 		// only display the lower triangle
 		for(size_t j1 = j2; j1 < n; j1++)
 		{	// trace
-			bool trace_j1 = trace || best_err[j1] > relative_tol;
-			if( trace_j1 )
+			if(  trace || result.rel_err[j1] > relative_tol )
 			{	if( line_count % 20 == 0 )
 					std::cout << std::endl
 						<< std::right
@@ -725,18 +674,17 @@ $end
 					<< std::setprecision(4)
 					<< std::setw(4)  << j1
 					<< std::setw(4)  << j2
-					<< std::setw(11) << best_step[j1]
-					<< std::setw(11) << best_grad_L[j1]
-					<< std::setw(11) << hess[j1]
-					<< std::setw(11) << best_approx[j1]
-					<< std::setw(11) << best_err[j1]
+					<< std::setw(11) << result.step[j1]
+					<< std::setw(11) << grad_L[j1]
+					<< std::setw(11) << hess_j[j1]
+					<< std::setw(11) << result.apx_dfdx[j1]
+					<< std::setw(11) << result.rel_err[j1]
 					<< std::endl;
 				line_count++;
 			}
 		}
-		//
 		// ok
-		ok &= ok && max_best_err_all <= relative_tol;
+		ok &= ok && rel_err_max <= relative_tol;
 	}
 	// -----------------------------------------------------------------------
 	// Set scaling
