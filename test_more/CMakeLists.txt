@@ -31,6 +31,7 @@ ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL test_more.cpp
 	sample_fixed_1.cpp
 	sample_fixed_2.cpp
 	scale_one.cpp
+	scale_two.cpp
 	solution_check.cpp
 	zero_random_one.cpp
 	zero_random_two.cpp

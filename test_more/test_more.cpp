@@ -31,6 +31,7 @@ extern bool laplace_obj_tst(void);
 extern bool sample_fixed_1(void);
 extern bool sample_fixed_2(void);
 extern bool scale_one(void);
+extern bool scale_two(void);
 extern bool solution_check(void);
 extern bool zero_random_one(void);
 extern bool zero_random_two(void);
@@ -87,6 +88,7 @@ int main(void)
 	RUN(sample_fixed_1);
 	RUN(sample_fixed_2);
 	RUN(scale_one);
+	// RUN(scale_two); not yet working
 	RUN(solution_check);
 	RUN(zero_random_one);
 	RUN(zero_random_two);
