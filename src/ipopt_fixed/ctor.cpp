@@ -523,6 +523,36 @@ error_fixed_           ( n_fixed_ )
 	// derivative of the random constraints
 	nnz_jac_g_ += ran_con_jac_rcv_.nnz();
 	// -----------------------------------------------------------------------
+	// set jac_g_row_, jac_g_col_
+	// -----------------------------------------------------------------------
+	assert( jac_g_row_.size() == 0 && jac_g_col_.size() == 0 );
+	jac_g_row_.resize(nnz_jac_g_);
+	jac_g_col_.resize(nnz_jac_g_);
+	{	CppAD::vector<Index> iRow(nnz_jac_g_), jCol(nnz_jac_g_);
+		bool   new_x  = true;
+		size_t n      = n_fixed_ + fix_likelihood_nabs_;
+		size_t m      = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
+# ifndef NDEBUG
+		bool ok =
+# endif
+		eval_jac_g(
+			Index(n),
+			nullptr,
+			new_x,
+			Index(m),
+			Index(nnz_jac_g_),
+			iRow.data(),
+			jCol.data(),
+			nullptr
+		);
+		assert( ok );
+		for(size_t k = 0; k < nnz_jac_g_; k++)
+		{	jac_g_row_[k] = size_t( iRow[k] );
+			jac_g_col_[k] = size_t( jCol[k] );
+		}
+	}
+	// -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
 	// set lag_hes_row_, lag_hes_col_
 	// laplace_obj_hes_2_lag_, fix_like_hes_2_lag_
 	// -----------------------------------------------------------------------

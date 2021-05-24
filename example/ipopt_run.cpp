@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-20 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -552,7 +552,8 @@ $head n$$
 is the number of variables in the problem (dimension of x).
 
 $head x$$
-is the value for the primal variables at which the Jacobian
+If $icode values$$ is $code NULL$$, $icode x$$ should also be $code NULL$$.
+Otherwise it is the value for the primal variables at which the Jacobian
 of the constraints $latex \nabla g(x)$$ is computed (has size $icode n$$).
 
 $head new_x$$
@@ -655,7 +656,8 @@ $head n$$
 is the number of variables in the problem (dimension of x).
 
 $head x$$
-is the value for the primal variables at which the
+If $icode values$$ is $code NULL$$, $icode x$$ should also be $code NULL$$.
+Otherwise it is the value for the primal variables at which the
 Hessian of the Lagrangian is computed (has size $icode n$$).
 
 $head new_x$$

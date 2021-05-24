@@ -119,6 +119,10 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		size_t nnz_jac_g_;   // number non-zeros in Jacobian of constraints
 		size_t nnz_h_lag_;   // number non-zeros in Hessian of Lagragian
 		//
+		// maps jac_g sparsity index to row and column index in g'(x).
+		s_vector jac_g_row_;
+		s_vector jac_g_col_;
+		//
 		// random constraint jacobian
 		CppAD::mixed::d_sparse_rcv ran_con_jac_rcv_;
 		//
@@ -142,9 +146,6 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		//
 		// scale factor for components of g(x)
 		d_vector scale_g_;
-		//
-		// maps jac_g sparsity index to row and column index in g'(x).
-		s_vector jac_g_row_, jac_g_col_;
 		// ---------------------------------------------------------------
 		// temporaries (size set by constructor only)
 		d_vector        fixed_tmp_;         // size n_fixed_
@@ -226,10 +227,21 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// -------------------------------------------------------------------
 		// Used by adapt_derivative_chk member function to pass
 		// information to one_dim_function member function
-		enum { eval_f_enum, eval_g_enum, eval_grad_L_enum }
-		            one_dim_function_eval_;
+		//
+		// which function is being evaluted along j-th component of x
+		enum {
+			eval_f_enum,       // f(x)
+			eval_g_enum,       // g(x)
+			eval_grad_L_enum , // L'(x)
+		} one_dim_function_eval_;
+		//
+		// argument index along which the one dimensional funciton is defined
 		size_t      one_dim_function_j_;
+		//
+		// vector containing all argments
 		d_vector    one_dim_function_x_;
+		//
+		// function factor and Lagrange multipliers used for testing
 		double      one_dim_function_obj_factor_;
 		d_vector    one_dim_function_lambda_;
 	public:

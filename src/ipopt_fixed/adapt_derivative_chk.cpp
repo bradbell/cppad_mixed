@@ -64,7 +64,6 @@ bool ipopt_fixed::one_dim_function(double x_in, d_vector& fun_out)
 		);
 		//
 		// jac_g
-		Index nele_jac = Index( nnz_jac_g_ );
 		new_x       = false;
 		Index* iRow = nullptr;
 		Index* jCol = nullptr;
@@ -74,7 +73,7 @@ bool ipopt_fixed::one_dim_function(double x_in, d_vector& fun_out)
 			x,
 			new_x,
 			Index(m),
-			nele_jac,
+			Index( nnz_jac_g_ ),
 			iRow,
 			jCol,
 			jac_g.data()
@@ -213,17 +212,6 @@ $latex g_i (x)$$.
 Components of $latex x$$ for which the lower and upper limits are equal
 are not included in the scaling of $latex f(x)$$.
 
-$head jac_g_row_, jac_g_col_$$
-These member variables have prototype
-$codei%
-	s_vector jac_g_row_, jac_g_col_
-%$$
-This input size for these vectors must be zero.
-Upon return these vectors
-map return index for $code eval_jac_g$$ values vector
-to row and column index in $latex g'(x)$$.
-
-
 $head Prototype$$
 $srccode%cpp% */
 bool ipopt_fixed::adapt_derivative_chk(bool trace, double relative_tol)
@@ -291,47 +279,18 @@ $end
 		}
 	}
 	//
-	// jac_g, jac_g_row_, jac_g_col_: sparse representation of Jacobian of g(x)
+	// jac_g: values in sparse representation of Jacobian of g(x)
 	d_vector jac_g(nnz_jac_g_);
 	{	//
-		// iRow, jCol: sparsity pattern for Jacobian of g(x)
-		CppAD::vector<Index> iRow(nnz_jac_g_), jCol(nnz_jac_g_);
-		bool new_x     = false;
-		Index nele_jac = Index( nnz_jac_g_ );
+		// jac_g
+		bool new_x      = false;
+		Number* values  = jac_g.data();
 		bool ok = eval_jac_g(
 			Index(n),
 			x,
 			new_x,
 			Index(m),
-			nele_jac,
-			iRow.data(),
-			jCol.data(),
-			NULL
-		);
-		if( ! ok )
-		{	assert( error_message_ != "" );
-			return false;
-		}
-		//
-		// jac_g_row_, jac_g_col_
-		assert( jac_g_row_.size() == 0 && jac_g_col_.size() == 0 );
-		jac_g_row_.resize(nnz_jac_g_);
-		jac_g_col_.resize(nnz_jac_g_);
-		for(size_t k = 0; k < nnz_jac_g_; k++)
-		{	jac_g_row_[k] = size_t( iRow[k] );
-			jac_g_col_[k] = size_t( jCol[k] );
-		}
-		//
-		// jac_g
-		new_x           = false;
-		nele_jac        = Index( nnz_jac_g_ );
-		Number* values  = jac_g.data();
-		ok = eval_jac_g(
-			Index(n),
-			x,
-			new_x,
-			Index(m),
-			nele_jac,
+			Index( nnz_jac_g_ ),
 			NULL,
 			NULL,
 			values
@@ -445,7 +404,6 @@ $end
 	if( mixed_object_.quasi_fixed_ == false )
 	{	bool new_x      = false;
 		bool new_lambda = true;
-		Index nele_hes  = Index(nnz_h_lag_);
 		Index*  iRow    = NULL;
 		Index*  jCol    = NULL;
 		ok = eval_h(
@@ -456,7 +414,7 @@ $end
 			Index(m),
 			lambda.data(),
 			new_lambda,
-			nele_hes,
+			Index( nnz_h_lag_ ),
 			iRow,
 			jCol,
 			hes_value.data()
