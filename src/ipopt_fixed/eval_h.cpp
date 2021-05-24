@@ -119,23 +119,23 @@ $end
 {
 	double obj_factor_scaled;
 	d_vector lambda_scaled(m);
-	if( values != NULL )
-	{	obj_factor_scaled = scale_f_ * obj_factor;
-		for(size_t i = 0; i < size_t(m); i++)
-			lambda_scaled[i] = scale_g_[i] * lambda[i];
-	}
-	else
-	{	// this case not necessary (avoids warnings)
-		double nan = std::numeric_limits<double>::quiet_NaN();
+	if( values == nullptr )
+	{	double nan = std::numeric_limits<double>::quiet_NaN();
 		obj_factor_scaled = nan;
-		for(size_t i = 0; i < size_t(m); i++)
+		for(Index i = 0; i < m; ++i)
 			lambda_scaled[i] = nan;
 	}
-	//
+	else
+	{	for(Index j = 0; j < n; ++j)
+			x_tmp_[j] = scale_x_[j] * x[j];
+		obj_factor_scaled = scale_f_ * obj_factor;
+		for(Index i = 0; i < m; i++)
+			lambda_scaled[i] = scale_g_[i] * lambda[i];
+	}
 	if( abort_on_eval_error_ )
 	{	try_eval_h(
 			n,
-			x,
+			x_tmp_,
 			new_x,
 			obj_factor_scaled,
 			m,
@@ -151,7 +151,7 @@ $end
 	{	try
 		{	try_eval_h(
 				n,
-				x,
+				x_tmp_,
 				new_x,
 				obj_factor_scaled,
 				m,
@@ -176,20 +176,29 @@ $end
 			return false;
 		}
 	}
+	assert( size_t( nele_hess ) == lag_hes_row_.size() );
+	assert( size_t( nele_hess ) == lag_hes_col_.size() );
+	if( values != nullptr )
+	{	for(Index k = 0; k < nele_hess; ++k)
+		{	size_t i = lag_hes_row_[k];
+			size_t j = lag_hes_col_[k];
+			values[k] *= scale_x_[i] * scale_x_[j];
+		}
+	}
 	return true;
 }
 void ipopt_fixed::try_eval_h(
-	Index         n              ,  // in
-	const Number* x              ,  // in
-	bool          new_x          ,  // in
-	Number        obj_factor     ,  // in
-	Index         m              ,  // in
-	const Number* lambda         ,  // in
-	bool          new_lambda     ,  // in
-	Index         nele_hess      ,  // in
-	Index*        iRow           ,  // out
-	Index*        jCol           ,  // out
-	Number*       values         )  // out
+	Index           n              ,  // in
+	const d_vector& x            ,  // in
+	bool            new_x          ,  // in
+	Number          obj_factor     ,  // in
+	Index           m              ,  // in
+	const Number*   lambda         ,  // in
+	bool            new_lambda     ,  // in
+	Index           nele_hess      ,  // in
+	Index*          iRow           ,  // out
+	Index*          jCol           ,  // out
+	Number*         values         )  // out
 {
 	assert( ! mixed_object_.quasi_fixed_ );
 	assert( n > 0 );

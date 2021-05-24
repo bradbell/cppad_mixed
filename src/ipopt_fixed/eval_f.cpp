@@ -59,14 +59,14 @@ bool ipopt_fixed::eval_f(
 /* %$$
 $end
 */
-{	if( abort_on_eval_error_ )
-	{	try_eval_f(n, x, new_x, obj_value);
-		obj_value *= scale_f_;
+{	for(Index j = 0; j < n; ++j)
+		x_tmp_[j] = scale_x_[j] * x[j];
+	if( abort_on_eval_error_ )
+	{	try_eval_f(n, x_tmp_, new_x, obj_value);
 	}
 	else
 	{	try
-		{	try_eval_f(n, x, new_x, obj_value);
-			obj_value *= scale_f_;
+		{	try_eval_f(n, x_tmp_, new_x, obj_value);
 		}
 		catch(const std::exception& e)
 		{	error_message_ = "ipopt_fixed::eval_f: std::exception: ";
@@ -81,11 +81,12 @@ $end
 			return false;
 		}
 	}
+	obj_value *= scale_f_;
 	return true;
 }
 void ipopt_fixed::try_eval_f(
 	Index           n         ,  // in
-	const Number*   x         ,  // in
+	const d_vector& x         ,  // in
 	bool            new_x     ,  // in
 	Number&         obj_value )  // out
 {

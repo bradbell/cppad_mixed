@@ -236,12 +236,16 @@ $end
 	// infinity
 	const double infinity  = std::numeric_limits<double>::infinity();
 	//
-	// scale_f_, scale_g_: are the identity mapping during this routine
+	// scale_f_, scale_g_, scale_x_: initialize as identity mapping
 	// and set to to its final value just before returning.
 	assert( scale_g_.size() == 0 );
+	assert( scale_x_.size() == 0 );
 	scale_f_ = 1.0;
+	scale_x_.resize(n);
+	for(size_t j = 0; j < n; ++j)
+		scale_x_[j] = 1.0;
 	scale_g_.resize(m);
-	for(size_t i = 0; i < m; i++)
+	for(size_t i = 0; i < m; ++i)
 		scale_g_[i] = 1.0;
 	//
 	// x, x_scale: two view of same vector of argument values

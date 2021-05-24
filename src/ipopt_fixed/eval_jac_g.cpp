@@ -91,25 +91,16 @@ bool ipopt_fixed::eval_jac_g(
 /* %$$
 $end
 */
-{
+{	if( values != nullptr )
+	{	for(Index j = 0; j < n; ++j)
+			x_tmp_[j] = scale_x_[j] * x[j];
+	}
 	if( abort_on_eval_error_ )
-	{	try_eval_jac_g(n, x, new_x, m, nele_jac, iRow, jCol, values);
-		if( values != NULL )
-		{	for(size_t ell = 0; ell < nnz_jac_g_; ell++)
-			{	size_t i     = jac_g_row_[ell];
-				values[ell] *= scale_g_[i];
-			}
-		}
+	{	try_eval_jac_g(n, x_tmp_, new_x, m, nele_jac, iRow, jCol, values);
 	}
 	else
 	{	try
-		{	try_eval_jac_g(n, x, new_x, m, nele_jac, iRow, jCol, values);
-			if( values != NULL )
-			{	for(size_t ell = 0; ell < nnz_jac_g_; ell++)
-				{	size_t i     = jac_g_row_[ell];
-					values[ell] *= scale_g_[i];
-				}
-			}
+		{	try_eval_jac_g(n, x_tmp_, new_x, m, nele_jac, iRow, jCol, values);
 		}
 		catch(const std::exception& e)
 		{	error_message_ = "ipopt_fixed::eval_jac_g: std::exception: ";
@@ -124,11 +115,18 @@ $end
 			return false;
 		}
 	}
+	if( values != nullptr )
+	{	for(size_t ell = 0; ell < nnz_jac_g_; ell++)
+		{	size_t i     = jac_g_row_[ell];
+			size_t j     = jac_g_col_[ell];
+			values[ell] *= scale_g_[i] * scale_x_[j];
+		}
+	}
 	return true;
 }
 void ipopt_fixed::try_eval_jac_g(
 	Index           n        ,  // in
-	const Number*   x        ,  // in
+	const d_vector& x        ,  // in
 	bool            new_x    ,  // in
 	Index           m        ,  // in
 	Index           nele_jac ,  // in

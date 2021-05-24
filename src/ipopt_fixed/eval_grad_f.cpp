@@ -59,16 +59,14 @@ bool ipopt_fixed::eval_grad_f(
 /* %$$
 $end
 */
-{	if( abort_on_eval_error_ )
-	{	try_eval_grad_f(n, x, new_x, grad_f);
-		for(size_t j = 0; j < size_t(n); j++)
-			grad_f[j] *= scale_f_;
+{	for(Index j = 0; j < n; ++j)
+		x_tmp_[j] = scale_x_[j] * x[j];
+	if( abort_on_eval_error_ )
+	{	try_eval_grad_f(n, x_tmp_, new_x, grad_f);
 	}
 	else
 	{	try
-		{	try_eval_grad_f(n, x, new_x, grad_f);
-			for(size_t j = 0; j < size_t(n); j++)
-				grad_f[j] *= scale_f_;
+		{	try_eval_grad_f(n, x_tmp_, new_x, grad_f);
 		}
 		catch(const std::exception& e)
 		{	error_message_ = "ipopt_fixed::eval_g: std::exception: ";
@@ -83,11 +81,13 @@ $end
 			return false;
 		}
 	}
+	for(size_t j = 0; j < size_t(n); j++)
+		grad_f[j] *= scale_f_ * scale_x_[j];
 	return true;
 }
 void ipopt_fixed::try_eval_grad_f(
 	Index           n         ,  // in
-	const Number*   x         ,  // in
+	const d_vector& x         ,  // in
 	bool            new_x     ,  // in
 	Number*         grad_f    )  // out
 {

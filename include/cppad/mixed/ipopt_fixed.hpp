@@ -146,18 +146,25 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		//
 		// scale factor for components of g(x)
 		d_vector scale_g_;
+		//
+		// scale factor for components of x
+		d_vector scale_x_;
 		// ---------------------------------------------------------------
 		// temporaries (size set by constructor only)
+		//
+		// this vector has size n = n_fixed_ + fix_likelihood_nabs_
+		d_vector        x_tmp_;
+		//
 		d_vector        fixed_tmp_;         // size n_fixed_
 		d_vector        c_vec_tmp_;         // size n_fix_con_
 		d_vector        A_uhat_tmp_;        // size n_ran_con_
 		d_vector        H_beta_tmp_;        // size n_fixed_
 		d_vector        w_fix_con_tmp_;     // size n_fix_con_
 		d_vector        w_laplace_obj_tmp_; // size n_ran_con_ + 1
-
+		//
 		// this vector has size fix_likelihood_nabs_ + 1
 		d_vector        w_fix_likelihood_tmp_;
-
+		//
 		// if mixed_object_.fix_like_eval returns a vector of size 0, this
 		// vector has size 0, otherwise it has size fix_likelihood_nabs_ + 1
 		d_vector        fix_likelihood_vec_tmp_;
@@ -184,26 +191,26 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 		// If an eval fails, it sets this message and returns false.
 		void try_eval_f(
 			Index           n        ,
-			const Number*   x        ,
+			const d_vector& x        ,
 			bool            new_x    ,
 			Number&         obj_value
 		);
 		void try_eval_grad_f(
 			Index           n        ,
-			const Number*   x        ,
+			const d_vector& x        ,
 			bool            new_x    ,
 			Number*         grad_f
 		);
 		void try_eval_g(
 			Index           n        ,
-			const Number*   x        ,
+			const d_vector& x        ,
 			bool            new_x    ,
 			Index           m        ,
 			Number*         g
 		);
 		void try_eval_jac_g(
 			Index           n        ,
-			const Number*   x        ,
+			const d_vector& x        ,
 			bool            new_x    ,
 			Index           m        ,
 			Index           nele_jac ,
@@ -212,17 +219,17 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			Number*         values
 		);
 		void try_eval_h(
-			Index         n              ,
-			const Number* x              ,
-			bool          new_x          ,
-			Number        obj_factor     ,
-			Index         m              ,
-			const Number* lambda         ,
-			bool          new_lambda     ,
-			Index         nele_hess      ,
-			Index*        iRow           ,
-			Index*        jCol           ,
-			Number*       values
+			Index           n              ,
+			const d_vector& x            ,
+			bool            new_x          ,
+			Number          obj_factor     ,
+			Index           m              ,
+			const Number*   lambda         ,
+			bool            new_lambda     ,
+			Index           nele_hess      ,
+			Index*          iRow           ,
+			Index*          jCol           ,
+			Number*         values
 		);
 		// -------------------------------------------------------------------
 		// Used by adapt_derivaive_chk to set scale_f_ and scale_g_

@@ -62,16 +62,14 @@ bool ipopt_fixed::eval_g(
 /* %$$
 $end
 */
-{	if( abort_on_eval_error_ )
-	{	try_eval_g(n, x, new_x, m, g);
-		for(size_t i = 0; i < size_t(m); i++)
-			g[i] *= scale_g_[i];
+{	for(Index j = 0; j < n; ++j)
+		x_tmp_[j] = scale_x_[j] * x[j];
+	if( abort_on_eval_error_ )
+	{	try_eval_g(n, x_tmp_, new_x, m, g);
 	}
 	else
 	{	try
-		{	try_eval_g(n, x, new_x, m, g);
-			for(size_t i = 0; i < size_t(m); i++)
-				g[i] *= scale_g_[i];
+		{	try_eval_g(n, x_tmp_, new_x, m, g);
 		}
 		catch(const std::exception& e)
 		{	error_message_ = "ipopt_fixed::eval_g: std::exception: ";
@@ -86,11 +84,13 @@ $end
 			return false;
 		}
 	}
+	for(size_t i = 0; i < size_t(m); i++)
+		g[i] *= scale_g_[i];
 	return true;
 }
 void ipopt_fixed::try_eval_g(
 	Index           n        ,  // in
-	const Number*   x        ,  // in
+	const d_vector& x        ,  // in
 	bool            new_x    ,  // in
 	Index           m        ,  // in
 	Number*         g        )  // out

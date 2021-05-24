@@ -315,6 +315,9 @@ $head Temporaries$$
 The following member variables sized by the constructor.
 They can be used as temporaries, but their sizes should not change.
 
+$subhead x_tmp_$$
+size $icode%n% = n_fixed_ + fix_likelihood_nabs_%$$.
+
 $subhead fixed_tmp_$$
 size $code n_fixed_$$
 
@@ -466,6 +469,7 @@ error_fixed_           ( n_fixed_ )
 	// -----------------------------------------------------------------------
 	// set size of temporary vectors
 	// -----------------------------------------------------------------------
+	x_tmp_.resize(n_fixed_ + fix_likelihood_nabs_);
 	fixed_tmp_.resize( n_fixed_ );
 	c_vec_tmp_.resize( n_fix_con_ );
 	A_uhat_tmp_.resize( n_ran_con_ );
