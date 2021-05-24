@@ -79,24 +79,24 @@ Is an acceptable relative tolerance for the difference between
 $icode dfdx$$ and its finite difference approximation.
 
 $head result$$
+The structure $icode%result%[%i%]%$$ contains
+the following information about the $th i$$ component of the function:
 
-$subhead result.rel_err$$
+$subhead rel_err$$
 The smallest relative error that $code one_dim_derivative_check$$ found,
-for the $th i$$ component of the function, is $icode%result%.rel_err[%i%]%$$.
-If it is less than or equal $icode rel_err$$ the derivative check passed.
+for the $th i$$ component of the function.
+If it is less than or equal $icode rel_tol$$ the derivative check passed.
 Searching for a step size with a smaller relative error stops as soon
 as the derivative check passes for all components of the function.
-If $icode%result%.rel_err%$$ is infinity,
+If $icode%result%[%i%].rel_err%$$ is infinity,
 then we were not able to evaluate the function.
 
-$subhead result.step$$
-The step size corresponding to $icode%result%.rel_err[%i%]%$$ is
-$icode%result%.step[%i%]%$$.
+$subhead step$$
+The step size corresponding to $icode%result%[%i%].rel_err%$$.
 
-$subhead result.dfdx$$
+$subhead dfdx$$
 The finite difference approximation for the derivative,
-corresponding to $icode%result%.rel_err[%i%]%$$, is
-$icode%result%.apx_dfdx[%i%]%$$.
+corresponding to $icode%result%[%i%].rel_err%$$.
 
 $end
 */
@@ -104,13 +104,13 @@ $end
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // BEGIN_PROTOTYPE
-struct one_dim_derivative_chk_result {
-	d_vector rel_err;
-	d_vector step;
-	d_vector apx_dfdx;
+struct one_dim_derivative_result {
+	double rel_err;
+	double step;
+	double apx_dfdx;
 };
 template <class Object>
-one_dim_derivative_chk_result one_dim_derivative_chk(
+CppAD::vector<one_dim_derivative_result> one_dim_derivative_chk(
 	Object&    obj          ,
 	double     x_lower      ,
 	double     x_upper      ,
@@ -161,14 +161,11 @@ one_dim_derivative_chk_result one_dim_derivative_chk(
 	//
 	// result
 	// initialize
-	one_dim_derivative_chk_result result;
-	result.rel_err.resize(m);
-	result.step.resize(m);
-	result.apx_dfdx.resize(m);
+	CppAD::vector<one_dim_derivative_result> result(m);
 	for(size_t i = 0; i < m; ++i)
-	{	result.rel_err[i]   = infinity;
-		result.step[i]      = nan;
-		result.apx_dfdx[i]  = nan;
+	{	result[i].rel_err   = infinity;
+		result[i].step      = nan;
+		result[i].apx_dfdx  = nan;
 	}
 	//
 	// loop over finite difference step sizes
@@ -217,13 +214,13 @@ one_dim_derivative_chk_result one_dim_derivative_chk(
 				rel_err = rel_err / den;
 			//
 			// best so far ?
-			if( ok && 1.1 * rel_err < result.rel_err[i] )
-			{	result.rel_err[i]  = rel_err;
-				result.step[i]     = step;
-				result.apx_dfdx[i] = apx_dfdx;
+			if( ok && 1.1 * rel_err < result[i].rel_err )
+			{	result[i].rel_err  = rel_err;
+				result[i].step     = step;
+				result[i].apx_dfdx = apx_dfdx;
 			}
 			// rel_err_max
-			rel_err_max = std::max(rel_err_max, result.rel_err[i]);
+			rel_err_max = std::max(rel_err_max, result[i].rel_err);
 		}
 		//
 		// next try

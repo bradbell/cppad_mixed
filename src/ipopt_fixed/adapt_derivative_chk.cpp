@@ -484,7 +484,8 @@ $end
 		if( x_up == nlp_upper_bound_inf_ )
 			x_up = infinity;
 		grad_f_j_vec[0] = grad_f[j];
-		one_dim_derivative_chk_result result = one_dim_derivative_chk(
+		CppAD::vector<one_dim_derivative_result> result =
+		one_dim_derivative_chk(
 			*this,
 			x_low,
 			x_up,
@@ -493,12 +494,12 @@ $end
 			grad_f_j_vec,
 			relative_tol
 		);
-		if( result.rel_err[0] == infinity )
+		if( result[0].rel_err == infinity )
 		{	assert( error_message_ != "" );
 			return false;
 		}
 		// trace
-		bool trace_j = trace || result.rel_err[0] > relative_tol;
+		bool trace_j = trace || result[0].rel_err > relative_tol;
 		if( trace_j )
 		{	if( line_count % 20 == 0 )
 				std::cout << std::endl
@@ -513,16 +514,16 @@ $end
 			std::cout
 				<< std::setprecision(4)
 				<< std::setw(4)  << j
-				<< std::setw(11) << result.step[0]
+				<< std::setw(11) << result[0].step
 				<< std::setw(11) << obj_value_vec[0]
 				<< std::setw(11) << grad_f_j_vec[0]
-				<< std::setw(11) << result.apx_dfdx[0]
-				<< std::setw(11) << result.rel_err[0]
+				<< std::setw(11) << result[0].apx_dfdx
+				<< std::setw(11) << result[0].rel_err
 				<< std::endl;
 			line_count++;
 		}
 		// ok
-		ok &= ok && result.rel_err[0] <= relative_tol;
+		ok &= ok && result[0].rel_err <= relative_tol;
 	}
 	// ------------------------------------------------------------------------
 	// check jacobian of g
@@ -546,7 +547,8 @@ $end
 		double x_up = x_upper[j];
 		if( x_up == nlp_upper_bound_inf_ )
 			x_up = infinity;
-		one_dim_derivative_chk_result result = one_dim_derivative_chk(
+		CppAD::vector<one_dim_derivative_result> result =
+		one_dim_derivative_chk(
 			*this,
 			x_low,
 			x_up,
@@ -558,14 +560,14 @@ $end
 		// rel_err_max
 		double rel_err_max = 0.0;
 		for(size_t i = 0; i < m; ++i)
-			rel_err_max = std::max(rel_err_max, result.rel_err[i]);
+			rel_err_max = std::max(rel_err_max, result[i].rel_err);
 		if( rel_err_max == infinity )
 		{	assert( error_message_ != "" );
 			return false;
 		}
 		for(size_t i = 0; i < m; i++)
 		{	// trace
-			bool trace_ij = trace || result.rel_err[i] > relative_tol;
+			bool trace_ij = trace || result[i].rel_err > relative_tol;
 			if( trace_ij )
 			{	if( line_count % 20 == 0 )
 					std::cout << std::endl
@@ -582,11 +584,11 @@ $end
 					<< std::setprecision(4)
 					<< std::setw(4)  << i
 					<< std::setw(4)  << j
-					<< std::setw(11) << result.step[i]
+					<< std::setw(11) << result[i].step
 					<< std::setw(11) << con_value[i]
 					<< std::setw(11) << jac_g_j[i]
-					<< std::setw(11) << result.apx_dfdx[i]
-					<< std::setw(11) << result.rel_err[i]
+					<< std::setw(11) << result[i].apx_dfdx
+					<< std::setw(11) << result[i].rel_err
 					<< std::endl;
 				line_count++;
 			}
@@ -638,7 +640,8 @@ $end
 		double x_up = x_upper[j2];
 		if( x_up == nlp_upper_bound_inf_ )
 			x_up = infinity;
-		one_dim_derivative_chk_result result = one_dim_derivative_chk(
+		CppAD::vector<one_dim_derivative_result> result =
+		one_dim_derivative_chk(
 			*this,
 			x_low,
 			x_up,
@@ -650,7 +653,7 @@ $end
 		// rel_err_max
 		double rel_err_max = 0.0;
 		for(size_t j1 = 0; j1 < n; ++j1)
-			rel_err_max = std::max(rel_err_max, result.rel_err[j1]);
+			rel_err_max = std::max(rel_err_max, result[j1].rel_err);
 		if( rel_err_max == infinity )
 		{	assert( error_message_ != "" );
 			return false;
@@ -658,7 +661,7 @@ $end
 		// only display the lower triangle
 		for(size_t j1 = j2; j1 < n; j1++)
 		{	// trace
-			if(  trace || result.rel_err[j1] > relative_tol )
+			if(  trace || result[j1].rel_err > relative_tol )
 			{	if( line_count % 20 == 0 )
 					std::cout << std::endl
 						<< std::right
@@ -674,11 +677,11 @@ $end
 					<< std::setprecision(4)
 					<< std::setw(4)  << j1
 					<< std::setw(4)  << j2
-					<< std::setw(11) << result.step[j1]
+					<< std::setw(11) << result[j1].step
 					<< std::setw(11) << grad_L[j1]
 					<< std::setw(11) << hess_j[j1]
-					<< std::setw(11) << result.apx_dfdx[j1]
-					<< std::setw(11) << result.rel_err[j1]
+					<< std::setw(11) << result[j1].apx_dfdx
+					<< std::setw(11) << result[j1].rel_err
 					<< std::endl;
 				line_count++;
 			}
