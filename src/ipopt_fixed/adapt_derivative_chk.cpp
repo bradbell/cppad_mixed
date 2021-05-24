@@ -12,7 +12,7 @@ see http://www.gnu.org/licenses/agpl.txt
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
-// callback used by one_dim_derivative_chk
+// callback used by adapt_derivative_chk and one_dim_derivative_chk
 bool ipopt_fixed::one_dim_function(double x_in, d_vector& fun_out)
 {	// new_x
 	bool    new_x          = true;
@@ -236,12 +236,6 @@ $end
 	// infinity
 	const double infinity  = std::numeric_limits<double>::infinity();
 	//
-	// scale_max: maximum scaling factor
-	const double scale_max = 1e+14;
-	//
-	// scale_min: minimum scaling factor
-	double scale_min       = 1.0 / scale_max;
-	//
 	// scale_f_, scale_g_: are the identity mapping during this routine
 	// and set to to its final value just before returning.
 	assert( scale_g_.size() == 0 );
@@ -313,57 +307,10 @@ $end
 	);
 	assert( ok );
 	//
-	// max_jac_g : maximum absolute partial for each component of g
-	// not counting components with equal lower and upper limits
-	d_vector max_jac_g(m);
-	for(size_t i = 0; i < m; i++)
-		max_jac_g[i] = scale_min;
-	for(size_t k = 0; k < nnz_jac_g_; k++)
-	{	size_t i = jac_g_row_[k];
-		size_t j = jac_g_col_[k];
-		if( x_lower[j] < x_upper[j] )
-			max_jac_g[i] = std::max( max_jac_g[i], std::fabs( jac_g[k] ) );
-	}
-	//
-	// max_grad_f : maximum absolute partial for objective.
-	// Skip absolute value partials in f, which are one, but
-	// include the corresponding partials in g
-	double max_grad_f = scale_min;
-	// fixed effect terms
-	for(size_t j = 0; j < n_fixed_; j++) if( x_lower[j] < x_upper[j] )
-		max_grad_f = std::max( max_grad_f, std::fabs( grad_f[j] ) );
-	// skip axuillary variable terms (gradients are one)
-# ifndef NDEBUG
-	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
-		assert( grad_f[n_fixed_ + j] == 1.0 );
-# endif
-	// include absolute value terms in g(x) in max_grad_f
-	for(size_t i = 0; i < fix_likelihood_nabs_; i++)
-	{	assert( max_jac_g[2*i] == max_jac_g[2*i+1] );
-		max_grad_f = std::max( max_grad_f, std::fabs( max_jac_g[2*i] ) );
-	}
-	//
-	// scale_f
-	double scale_f = std::max( scale_min, 1.0 / max_grad_f);
-	scale_f        = std::min( scale_max, scale_f);
-	//
-	// scale_g
-	d_vector scale_g(m);
-	for(size_t i = 0; i < m; i++)
-	{	if( i < 2 * fix_likelihood_nabs_ )
-			scale_g[i] = scale_f;
-		else
-		{	scale_g[i] = std::max( scale_min, 1.0 / max_jac_g[i] );
-			scale_g[i] = std::min( scale_max, scale_g[i] );
-		}
-	}
-	//
 	// If not tracing or checking derivatives, set scaling and return
 	if( (! trace) && relative_tol == infinity )
-	{	// scale_f_, scale_g_
-		scale_f_       = scale_f;
-		scale_g_       = scale_g;
-		return true;
+	{	ok = set_scaling(x_scale, x_lower, x_upper, grad_f, jac_g);
+		return ok;
 	}
 	// ------------------------------------------------------------------------
 	// Test the derivatvie
@@ -388,16 +335,13 @@ $end
 			return false;
 		}
 	}
-	//
-	// obj_factor: must be same as in one_dim_function
+	// L(x) = obj_factor * f(x) = sum_i lambda[i] * g_i(x)
+	// obj_factor:
 	Number   obj_factor = 2.0;
-	//
-	// lambda: Lagrange multipliers, must be same as n one_dim_function
 	d_vector lambda(m);
 	for(size_t i = 0; i < m; i++)
 		lambda[i] = double(i + 1 + m) / double(m);
 	//
-	// L(x) = obj_factor * f(x) = sum_i lambda[i] * g_i(x)
 	//
 	// hes_value: values in sparse representation of Hessian
 	d_vector hes_value( nnz_h_lag_ );
@@ -648,9 +592,7 @@ $end
 		ok &= ok && rel_err_max <= relative_tol;
 	}
 	// -----------------------------------------------------------------------
-	// Set scaling
-	scale_f_       = scale_f;
-	scale_g_       = scale_g;
+	ok &= set_scaling(x_scale, x_lower, x_upper, grad_f, jac_g);
 	return ok;
 }
 } } // END_CPPAD_MIXED_NAMESPACE

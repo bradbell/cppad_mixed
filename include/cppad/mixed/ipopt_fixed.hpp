@@ -225,6 +225,15 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			Number*       values
 		);
 		// -------------------------------------------------------------------
+		// Used by adapt_derivaive_chk to set scale_f_ and scale_g_
+		bool set_scaling(
+			const d_vector& x_scale ,
+			const d_vector& x_lower ,
+			const d_vector& x_upper ,
+			const d_vector& grad_f  ,
+			const d_vector& jac_g
+		);
+		// -------------------------------------------------------------------
 		// Used by adapt_derivative_chk member function to pass
 		// information to one_dim_function member function
 		//
