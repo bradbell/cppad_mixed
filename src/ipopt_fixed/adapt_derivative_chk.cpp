@@ -226,6 +226,9 @@ $end
 	// ------------------------------------------------------------------------
 	// Test the derivatvie
 	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	// check grad_f
+	// ------------------------------------------------------------------------
 	// obj_value: value of the objective function f(x)
 	double obj_value;
 	{	bool new_x = false;
@@ -235,52 +238,6 @@ $end
 			return false;
 		}
 	}
-	//
-	// con_value: value of the constraint function g(x)
-	d_vector con_value(m);
-	{
-		bool new_x = false;
-		ok = eval_g(Index(n), x, new_x, Index(m), con_value.data() );
-		if( ! ok )
-		{	assert( error_message_ != "" );
-			return false;
-		}
-	}
-	// L(x) = obj_factor * f(x) = sum_i lambda[i] * g_i(x)
-	// obj_factor:
-	Number   obj_factor = 2.0;
-	d_vector lambda(m);
-	for(size_t i = 0; i < m; i++)
-		lambda[i] = double(i + 1 + m) / double(m);
-	//
-	//
-	// hes_value: values in sparse representation of Hessian
-	d_vector hes_value( nnz_h_lag_ );
-	if( mixed_object_.quasi_fixed_ == false )
-	{	bool new_x      = false;
-		bool new_lambda = true;
-		Index*  iRow    = NULL;
-		Index*  jCol    = NULL;
-		ok = eval_h(
-			Index(n),
-			x,
-			new_x,
-			obj_factor,
-			Index(m),
-			lambda.data(),
-			new_lambda,
-			Index( nnz_h_lag_ ),
-			iRow,
-			jCol,
-			hes_value.data()
-		);
-		if( ! ok )
-		{	assert( error_message_ != "" );
-			return false;
-		}
-	}
-	// ------------------------------------------------------------------------
-	// check grad_f
 	size_t line_count = 0;
 	one_dim_function_x_    = x_scale;
 	one_dim_function_eval_ = eval_f_enum;
@@ -340,6 +297,17 @@ $end
 	}
 	// ------------------------------------------------------------------------
 	// check jacobian of g
+	// ------------------------------------------------------------------------
+	// con_value: value of the constraint function g(x)
+	d_vector con_value(m);
+	{
+		bool new_x = false;
+		ok = eval_g(Index(n), x, new_x, Index(m), con_value.data() );
+		if( ! ok )
+		{	assert( error_message_ != "" );
+			return false;
+		}
+	}
 	line_count             = 0;
 	one_dim_function_x_    = x_scale;
 	one_dim_function_eval_ = eval_g_enum;
@@ -411,96 +379,128 @@ $end
 	}
 	// ------------------------------------------------------------------------
 	// check Hessian of L(x)
-	line_count                   = 0;
-	one_dim_function_x_          = x_scale;
-	one_dim_function_eval_       = eval_grad_L_enum;
-	one_dim_function_lambda_     = lambda;
-	one_dim_function_obj_factor_ = obj_factor;
-	d_vector hess_j(n), grad_L(n);
-	//
-	// grad_L
-	for(size_t j = 0; j < n; ++j)
-		grad_L[j] = obj_factor * grad_f[j];
-	for(size_t k = 0; k < nnz_jac_g_; ++k)
-	{	size_t i   = jac_g_row_[k];
-		size_t j   = jac_g_col_[k];
-		grad_L[j] += lambda[i] * jac_g[k];
-	}
+	// ------------------------------------------------------------------------
+	// L(x) = obj_factor * f(x) = sum_i lambda[i] * g_i(x)
+	// obj_factor:
 	if( mixed_object_.quasi_fixed_ == false )
-		for(size_t j2 = 0; j2 < n; j2++)
-			if( x_lower[j2] < x_upper[j2] )
-	{	// hess_j
-		for(size_t j1 = 0; j1 < n; ++j1)
-			hess_j[j1] = 0.0;
-		for(size_t k = 0; k < nnz_h_lag_; ++k)
-		{	// only lower triangle is in hes_value,
-			// use symmetry to get the rest of the Hessian
-			if( lag_hes_col_[k] == j2 )
-			{	size_t j1 = lag_hes_row_[k];
-				hess_j[j1] = hes_value[k];
-				assert( j2 <= j1 );
-			}
-			if( lag_hes_row_[k] == j2 )
-			{	size_t j1 = lag_hes_col_[k];
-				hess_j[j1] = hes_value[k];
-				assert( j1 <= j2 );
-			}
-		}
-		one_dim_function_j_ = j2;
-		double x_low = x_lower[j2];
-		if( x_low == nlp_lower_bound_inf_ )
-			x_low = -infinity;
-		double x_up = x_upper[j2];
-		if( x_up == nlp_upper_bound_inf_ )
-			x_up = infinity;
-		CppAD::vector<one_dim_derivative_result> result =
-		one_dim_derivative_chk(
-			*this,
-			x_low,
-			x_up,
-			x_scale[j2],
-			grad_L,
-			hess_j,
-			relative_tol
+	{
+		Number   obj_factor = 2.0;
+		d_vector lambda(m);
+		for(size_t i = 0; i < m; i++)
+			lambda[i] = double(i + 1 + m) / double(m);
+		//
+		// hes_value: values in sparse representation of Hessian
+		d_vector hes_value( nnz_h_lag_ );
+		bool new_x      = false;
+		bool new_lambda = true;
+		Index*  iRow    = NULL;
+		Index*  jCol    = NULL;
+		ok = eval_h(
+			Index(n),
+			x,
+			new_x,
+			obj_factor,
+			Index(m),
+			lambda.data(),
+			new_lambda,
+			Index( nnz_h_lag_ ),
+			iRow,
+			jCol,
+			hes_value.data()
 		);
-		// rel_err_max
-		double rel_err_max = 0.0;
-		for(size_t j1 = 0; j1 < n; ++j1)
-			rel_err_max = std::max(rel_err_max, result[j1].rel_err);
-		if( rel_err_max == infinity )
+		if( ! ok )
 		{	assert( error_message_ != "" );
 			return false;
 		}
-		// only display the lower triangle
-		for(size_t j1 = j2; j1 < n; j1++)
-		{	// trace
-			if(  trace || result[j1].rel_err > relative_tol )
-			{	if( line_count % 20 == 0 )
-					std::cout << std::endl
-						<< std::right
-						<< std::setw(4)  << "j1"
-						<< std::setw(4)  << "j2"
-						<< std::setw(11) << "step"
-						<< std::setw(11) << "grad_L"
-						<< std::setw(11) << "hess"
-						<< std::setw(11) << "apx"
-						<< std::setw(11) << "err"
-						<< std::endl;
-				std::cout
-					<< std::setprecision(4)
-					<< std::setw(4)  << j1
-					<< std::setw(4)  << j2
-					<< std::setw(11) << result[j1].step
-					<< std::setw(11) << grad_L[j1]
-					<< std::setw(11) << hess_j[j1]
-					<< std::setw(11) << result[j1].apx_dfdx
-					<< std::setw(11) << result[j1].rel_err
-					<< std::endl;
-				line_count++;
-			}
+		line_count                   = 0;
+		one_dim_function_x_          = x_scale;
+		one_dim_function_eval_       = eval_grad_L_enum;
+		one_dim_function_lambda_     = lambda;
+		one_dim_function_obj_factor_ = obj_factor;
+		d_vector hess_j(n), grad_L(n);
+		//
+		// grad_L
+		for(size_t j = 0; j < n; ++j)
+			grad_L[j] = obj_factor * grad_f[j];
+		for(size_t k = 0; k < nnz_jac_g_; ++k)
+		{	size_t i   = jac_g_row_[k];
+			size_t j   = jac_g_col_[k];
+			grad_L[j] += lambda[i] * jac_g[k];
 		}
-		// ok
-		ok &= ok && rel_err_max <= relative_tol;
+		for(size_t j2 = 0; j2 < n; j2++) if( x_lower[j2] < x_upper[j2] )
+		{	// hess_j
+			for(size_t j1 = 0; j1 < n; ++j1)
+				hess_j[j1] = 0.0;
+			for(size_t k = 0; k < nnz_h_lag_; ++k)
+			{	// only lower triangle is in hes_value,
+				// use symmetry to get the rest of the Hessian
+				if( lag_hes_col_[k] == j2 )
+				{	size_t j1 = lag_hes_row_[k];
+					hess_j[j1] = hes_value[k];
+					assert( j2 <= j1 );
+				}
+				if( lag_hes_row_[k] == j2 )
+				{	size_t j1 = lag_hes_col_[k];
+					hess_j[j1] = hes_value[k];
+					assert( j1 <= j2 );
+				}
+			}
+			one_dim_function_j_ = j2;
+			double x_low = x_lower[j2];
+			if( x_low == nlp_lower_bound_inf_ )
+				x_low = -infinity;
+			double x_up = x_upper[j2];
+			if( x_up == nlp_upper_bound_inf_ )
+				x_up = infinity;
+			CppAD::vector<one_dim_derivative_result> result =
+			one_dim_derivative_chk(
+				*this,
+				x_low,
+				x_up,
+				x_scale[j2],
+				grad_L,
+				hess_j,
+				relative_tol
+			);
+			// rel_err_max
+			double rel_err_max = 0.0;
+			for(size_t j1 = 0; j1 < n; ++j1)
+				rel_err_max = std::max(rel_err_max, result[j1].rel_err);
+			if( rel_err_max == infinity )
+			{	assert( error_message_ != "" );
+				return false;
+			}
+			// only display the lower triangle
+			for(size_t j1 = j2; j1 < n; j1++)
+			{	// trace
+				if(  trace || result[j1].rel_err > relative_tol )
+				{	if( line_count % 20 == 0 )
+						std::cout << std::endl
+							<< std::right
+							<< std::setw(4)  << "j1"
+							<< std::setw(4)  << "j2"
+							<< std::setw(11) << "step"
+							<< std::setw(11) << "grad_L"
+							<< std::setw(11) << "hess"
+							<< std::setw(11) << "apx"
+							<< std::setw(11) << "err"
+							<< std::endl;
+					std::cout
+						<< std::setprecision(4)
+						<< std::setw(4)  << j1
+						<< std::setw(4)  << j2
+						<< std::setw(11) << result[j1].step
+						<< std::setw(11) << grad_L[j1]
+						<< std::setw(11) << hess_j[j1]
+						<< std::setw(11) << result[j1].apx_dfdx
+						<< std::setw(11) << result[j1].rel_err
+						<< std::endl;
+					line_count++;
+				}
+			}
+			// ok
+			ok &= ok && rel_err_max <= relative_tol;
+		}
 	}
 	// -----------------------------------------------------------------------
 	ok &= set_scaling(x_scale, x_lower, x_upper, grad_f, jac_g);
