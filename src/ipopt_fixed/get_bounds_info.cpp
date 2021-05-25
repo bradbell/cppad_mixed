@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -68,17 +68,20 @@ $end
 	assert( m >= 0 );
 	assert( size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
 
+	// fixed effects
 	for(size_t j = 0; j < n_fixed_; j++)
 	{	// map infinity to crazy value required by ipopt
 		if( fixed_lower_[j] == - std::numeric_limits<double>::infinity() )
 			x_l[j] = nlp_lower_bound_inf_;
 		else
-			x_l[j] = fixed_lower_[j];
+			x_l[j] = scale_x_[j] * fixed_lower_[j];
 		//
 		if( fixed_upper_[j] == std::numeric_limits<double>::infinity() )
 			x_u[j] = nlp_upper_bound_inf_;
 		else
-			x_u[j] = fixed_upper_[j];
+			x_u[j] = scale_x_[j] * fixed_upper_[j];
+		if( fixed_lower_[j] == fixed_upper_[j] )
+			x_u[j] = x_l[j];
 	}
 	// auxillary varibles for absolute value terms
 	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
