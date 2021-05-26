@@ -313,7 +313,7 @@ $end
 		if( at_lower || at_upper )
 			sum = 0.0;
 		//
-		ok &= std::fabs(sum) < 10 * tol;
+		ok &= std::fabs(sum) < 100.0 * tol;
 	}
 
 	// set member variable finalize_solution_ok_
