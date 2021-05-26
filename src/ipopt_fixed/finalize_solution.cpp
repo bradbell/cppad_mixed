@@ -271,74 +271,50 @@ $end
 		jac_g.data()
 	);
 
-	// Check the partial of the Lagrangian w.r.t fixed effects
-	// and set solution_.fixed_lag
+	// check gradient of Lagragian L(x)
+	// solution_.fixed_lag
 	assert( solution_.fixed_lag.size() == 0 );
 	solution_.fixed_lag.resize(n_fixed_);
-	double average = 0.0;
-	for(size_t j = 0; j < n_fixed_; j++)
-	{	Number sum = grad_f[j];
+	for(size_t j = 0; j < size_t(n); ++j)
+	{	// sum will accumulate partial of L(x) w.r.t. x[j]
+		double sum = grad_f[j];
 		for(size_t k = 0; k < nnz_jac_g_; k++)
 		{	if( jac_g_col_[k] == j )
 			{	size_t i = jac_g_row_[k];
 				sum     += lambda[i] * jac_g[k];
 			}
 		}
-		// sum += z_U[j] - z_L[j]; does not work because
-		// Ipopt does not seem to set z_U[j] and z_L[j] accuractely
-		//
-		// initialize
-		solution_.fixed_lag[j] = 0.0;
-		//
 		// scale
 		double scale = std::fabs( x[j] );
-		if( fixed_lower_[j] != - inf )
-			scale = std::max(scale, std::fabs( fixed_lower_[j] ) );
-		if( fixed_upper_[j] != + inf )
-			scale = std::max(scale, std::fabs( fixed_upper_[j] ) );
+		if( x_lower[j] != nlp_lower_bound_inf_ )
+			scale = std::max(scale, std::fabs( x_lower[j] ) );
+		if( x_upper[j] != nlp_upper_bound_inf_ )
+			scale = std::max(scale, std::fabs( x_upper[j] ) );
 		//
 		// at_lower
-		bool at_lower = x[j] - fixed_lower_[j] <= scale * 10. * tol;
-		// catch special case where lower and upper limits are zero
-		at_lower     |= fixed_lower_[j] == fixed_upper_[j];
-		at_lower     &= sum > 0.0;
-		if( at_lower )
-			solution_.fixed_lag[j] = - sum;
+		bool at_lower = x_lower[j] == x_upper[j];
+		if( x_lower[j] != nlp_lower_bound_inf_ )
+			at_lower |= x[j] - x_lower[j] <= scale * 10 * tol;
+		at_lower &= sum > 0.0;
 		//
 		// at_upper
-		bool at_upper = fixed_upper_[j] - x[j] <= scale * 10. * tol;
-		at_upper     |= fixed_lower_[j] == fixed_upper_[j];
-		at_upper     &= sum < 0.0;
-		if( at_upper )
-			solution_.fixed_lag[j] = - sum;
+		bool at_upper = x_lower[j] == x_upper[j];
+		if( x_upper[j] != nlp_upper_bound_inf_ )
+			at_upper |= x_upper[j] - x[j] <= scale * 10 * tol;
+		at_upper &= sum < 0.0;
 		//
-		if( ! (at_lower || at_upper) )
-		{	double check;
-			check = std::fabs(sum);
-			if( sum >= 0.0  && fixed_lower_[j] > -inf )
-				check = sum * (x[j] - fixed_lower_[j]);
-			else if( sum <= 0.0 && fixed_upper_[j] < +inf )
-				check = - sum * (fixed_upper_[j] - x[j]);
-			assert( check >= 0.0 );
-			//
-			average += check / double(n_fixed_);
+		// solution_.fixed_lag[j]
+		if( j < n_fixed_ )
+		{	if( at_lower || at_upper )
+				solution_.fixed_lag[j] = - sum;
+			else
+				solution_.fixed_lag[j] = 0.0;
 		}
+		if( at_lower || at_upper )
+			sum = 0.0;
+		//
+		ok &= std::fabs(sum) < 10 * tol;
 	}
-	ok &= average * scale_f_ <= 10. * tol;
-
-	// Check the partial of the Lagrangian w.r.t auxillary variables
-	average = 0.0;
-	for(size_t j = n_fixed_; j < n_fixed_ + fix_likelihood_nabs_; j++)
-	{	Number sum = grad_f[j];
-		for(size_t k = 0; k < nnz_jac_g_; k++)
-		{	if( jac_g_col_[k] == j )
-			{	size_t  i = jac_g_row_[k];
-				sum      += lambda[i] * jac_g[k];
-			}
-		}
-		average += std::fabs(sum) / double(n_fixed_);
-	}
-	ok &= average * scale_f_ <= tol;
 
 	// set member variable finalize_solution_ok_
 	finalize_solution_ok_ = ok;
