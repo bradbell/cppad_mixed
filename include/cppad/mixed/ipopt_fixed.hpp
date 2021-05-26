@@ -242,6 +242,11 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 			const d_vector& jac_g
 		);
 		// -------------------------------------------------------------------
+		// only used by finalize solution
+		bool check_in_limits(
+			double lower, double x, double upper, double tol
+		);
+		// -------------------------------------------------------------------
 		// Used by adapt_derivative_chk member function to pass
 		// information to one_dim_function member function
 		//

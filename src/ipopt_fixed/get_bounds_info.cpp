@@ -62,6 +62,7 @@ bool ipopt_fixed::get_bounds_info(
 $end
 */
 {	assert( adaptive_called_ );
+	double inf = std::numeric_limits<double>::infinity();
 	//
 	assert( n > 0 );
 	assert( size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
@@ -71,12 +72,12 @@ $end
 	// fixed effects
 	for(size_t j = 0; j < n_fixed_; j++)
 	{	// map infinity to crazy value required by ipopt
-		if( fixed_lower_[j] == - std::numeric_limits<double>::infinity() )
+		if( fixed_lower_[j] == - inf )
 			x_l[j] = nlp_lower_bound_inf_;
 		else
 			x_l[j] = scale_x_[j] * fixed_lower_[j];
 		//
-		if( fixed_upper_[j] == std::numeric_limits<double>::infinity() )
+		if( fixed_upper_[j] == inf )
 			x_u[j] = nlp_upper_bound_inf_;
 		else
 			x_u[j] = scale_x_[j] * fixed_upper_[j];
@@ -98,9 +99,16 @@ $end
 	// fixed constraints
 	for(size_t j = 0; j < n_fix_con_; j++)
 	{	size_t i = 2 * fix_likelihood_nabs_ + j;
-		//
-		g_l[i] = scale_g_[i] * fix_constraint_lower_[j];
-		g_u[i] = scale_g_[i] * fix_constraint_upper_[j];
+		// g_l
+		if( fix_constraint_lower_[j] == - inf )
+			g_l[i] = nlp_lower_bound_inf_;
+		else
+			g_l[i] = scale_g_[i] * fix_constraint_lower_[j];
+		// g_u
+		if( fix_constraint_upper_[j] == inf )
+			g_u[i] = nlp_upper_bound_inf_;
+		else
+			g_u[i] = scale_g_[i] * fix_constraint_upper_[j];
 		if( fix_constraint_lower_[j] == fix_constraint_upper_[j] )
 			g_u[i] = g_l[i];
 	}

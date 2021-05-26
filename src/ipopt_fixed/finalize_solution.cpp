@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -9,25 +9,28 @@ see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/ipopt_fixed.hpp>
 
-namespace {
-	// --------------------------------------------------------------------
-	bool check_in_limits(double lower, double x, double upper, double tol)
-	{	bool flag = true;
-		if( upper >= 0.0 )
-			flag &= x <= (1.0 + tol) * upper;
-		else
-			flag &= x <= (1.0 - tol) * upper;
-		//
-		if( lower >= 0.0 )
-			flag &= (1.0 - tol) * lower <= x;
-		else
-			flag &= (1.0 + tol) * lower <= x;
-		//
-		return flag;
-	}
-}
-
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
+// --------------------------------------------------------------------
+// only used by finalize_solution
+bool ipopt_fixed::check_in_limits(
+	double lower, double x, double upper, double tol
+)
+{	// scale
+	double scale = 0.0;
+	if( lower != nlp_lower_bound_inf_ )
+		scale = std::max(scale, std::fabs(lower) );
+	if( upper != nlp_upper_bound_inf_ )
+		scale = std::max(scale, std::fabs(upper) );
+	if( scale == 0.0 )
+		scale = 1.0;
+	//
+	// flag
+	bool flag = true;
+	flag     &= x <= upper + tol * scale;
+	flag     &= lower - tol * scale <= x;
+	//
+	return flag;
+}
 /*
 $begin ipopt_fixed_finalize_solution$$
 $spell
@@ -165,11 +168,23 @@ $end
 	assert( m >= 0 );
 	assert( size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
 	//
+	// get bounds information
+	d_vector x_lower(n), x_upper(n), g_lower(m), g_upper(m);
+	get_bounds_info(
+		n, x_lower.data(), x_upper.data(), m, g_lower.data(), g_upper.data()
+	);
+	//
+	// g_of_x
+	d_vector g_of_x(m);
+	bool new_x = true;
+	eval_g(n, x, new_x, m, g_of_x.data());
+	new_x = false;
+	//
 	// solution_.fixed_opt
 	assert( solution_.fixed_opt.size() == 0 );
 	solution_.fixed_opt.resize(n_fixed_);
 	for(size_t j = 0; j < n_fixed_; j++)
-		solution_.fixed_opt[j] = x[j];
+		solution_.fixed_opt[j] = scale_x_[j] * x[j];
 	//
 	// solution_.fixed_lag (see below)
 	//
@@ -184,75 +199,63 @@ $end
 	double tol = fixed_tolerance_;
 	//
 	// check that x is within its limits
-	for(size_t j = 0; j < n_fixed_; j++)
+	for(size_t j = 0; j < size_t(n); j++)
 	{	ok &= check_in_limits(
-			fixed_lower_[j], x[j], fixed_upper_[j], 2.0 * tol
+			x_lower[j], x[j], x_upper[j], 2.0 * tol
+		);
+	}
+	//
+	// check that g is within its limits
+	for(size_t i = 0; i < size_t(m); i++)
+	{	ok &= check_in_limits(
+			g_lower[i], g[i], g_upper[i], 2.0 * tol
 		);
 	}
 	//
 	// check that the bound multipliers are feasible
-	for(size_t j = 0; j < n_fixed_ + fix_likelihood_nabs_; j++)
+	for(size_t j = 0; j < size_t(n); j++)
 	{	ok &= 0.0 <= z_L[j];
 		ok &= 0.0 <= z_U[j];
 	}
 	//
-	// fixed_opt is an alias for solution_.fixed_opt
-	d_vector& fixed_opt = solution_.fixed_opt;
-	//
-	// fixed likelihood at the final fixed effects vector
-	if( fix_likelihood_vec_tmp_.size() == 0 )
-		assert( mixed_object_.fix_like_eval(fixed_opt).size() == 0 );
-	else
-	{	fix_likelihood_vec_tmp_ = mixed_object_.fix_like_eval(fixed_opt);
-		assert( fix_likelihood_vec_tmp_.size() == 1 + fix_likelihood_nabs_ );
-
-		// check constraints corresponding to l1 terms
-		for(size_t j = 0; j < fix_likelihood_nabs_; j++)
-		{	double var  = double( x[n_fixed_ + j] );
-			double diff = var - fix_likelihood_vec_tmp_[j + 1];
-			ok         &= scale_g_[2 * j] * diff + 1e2 * tol >= 0;
-			diff        = var + fix_likelihood_vec_tmp_[j + 1];
-			ok         &= scale_g_[2 * j] * diff + 1e2 * tol >= 0;
-		}
-	}
-	//
-	// explicit constraints at the final fixed effects vector
-	c_vec_tmp_ = mixed_object_.fix_con_eval(fixed_opt);
-	assert( c_vec_tmp_.size() == n_fix_con_ );
-
 	// check explicit constraints and set solution_.fix_con_lag
 	assert( solution_.fix_con_lag.size() == 0 );
 	solution_.fix_con_lag.resize(n_fix_con_);
 	offset     = 2 * fix_likelihood_nabs_;
 	double inf = std::numeric_limits<double>::infinity();
 	for(size_t j = 0; j < n_fix_con_; j++)
-	{	// It seems from testing that Ipopt is insuring the constraint to
-		// be within tol, but it seems to Brad is should be within
-		// scale_g_[offset +j] * tol.
-		ok &= check_in_limits(
-			fix_constraint_lower_[j], c_vec_tmp_[j], fix_constraint_upper_[j],
-			2.0 * tol
-		);
+	{
 		double lam_j  = lambda[offset + j];
 		double scale = 0.0;;
+		assert(
+			(g_lower[offset + j] != nlp_lower_bound_inf_)
+			==
+			(fix_constraint_lower_[j] != -inf)
+		);
+		assert(
+			(g_upper[offset + j] != nlp_upper_bound_inf_)
+			==
+			(fix_constraint_upper_[j] != inf)
+		);
 		if( fix_constraint_lower_[j] != -inf )
-			scale = std::fabs( fix_constraint_lower_[j] );
+			scale = std::fabs( g_lower[j] );
 		if( fix_constraint_upper_[j] != inf )
-			scale = std::max(scale, std::fabs( fix_constraint_upper_[j] ) );
+			scale = std::max(scale, std::fabs( g_upper[j] ) );
 		if( scale == 0.0 )
 		{	// both limits are infinity
 			lam_j = 0.0;
 		}
-		if( c_vec_tmp_[j] - fix_constraint_lower_[j] < tol * 10. * scale )
-			lam_j = std::min(lam_j, 0.0);
-		if( fix_constraint_upper_[j] - c_vec_tmp_[j] < tol * 10. * scale )
-			lam_j = std::max(lam_j, 0.0);
+		if( g_lower[j] != nlp_lower_bound_inf_ )
+			if( g[j] - g_lower[j] < tol * 10. * scale )
+				lam_j = std::min(lam_j, 0.0);
+		if( g_upper[j] != nlp_upper_bound_inf_ )
+			if( g_upper[j] - g[j] < tol * 10. * scale )
+				lam_j = std::max(lam_j, 0.0);
 		//
 		solution_.fix_con_lag[j] = lam_j;
 	}
 	// Evaluate gradient of f w.r.t x
 	CppAD::vector<Number> grad_f(n);
-	bool new_x = true;
 	eval_grad_f(n, x, new_x, grad_f.data() );
 
 	// Evaluate gradient of g w.r.t x
