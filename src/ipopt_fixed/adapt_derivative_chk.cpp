@@ -391,7 +391,9 @@ $end
 		//
 		// hes_value: values in sparse representation of Hessian
 		d_vector hes_value( nnz_h_lag_ );
-		bool new_x      = false;
+		// 2DO: Figure out why false here causese the test
+		// example/user/ran_constrant.cpp to fail.
+		bool new_x      = true;
 		bool new_lambda = true;
 		Index*  iRow    = NULL;
 		Index*  jCol    = NULL;
