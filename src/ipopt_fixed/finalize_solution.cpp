@@ -254,21 +254,21 @@ $end
 		//
 		solution_.fix_con_lag[j] = lam_j;
 	}
-	// Evaluate gradient of f w.r.t x
+	// grad_f
 	CppAD::vector<Number> grad_f(n);
 	eval_grad_f(n, x, new_x, grad_f.data() );
 
-	// Evaluate gradient of g w.r.t x
-	CppAD::vector<Index> iRow(nnz_jac_g_), jCol(nnz_jac_g_);
-	iRow.data();
-	eval_jac_g(
-		n, x, new_x, m, Index(nnz_jac_g_),
-		iRow.data(), jCol.data(), NULL
-	);
+	// jac_g
 	CppAD::vector<Number> jac_g(nnz_jac_g_);
 	eval_jac_g(
-		n, x, new_x, m, Index(nnz_jac_g_),
-		iRow.data(), jCol.data(), jac_g.data()
+		n,
+		x,
+		new_x,
+		m,
+		Index(nnz_jac_g_),
+		nullptr,
+		nullptr,
+		jac_g.data()
 	);
 
 	// Check the partial of the Lagrangian w.r.t fixed effects
@@ -279,9 +279,9 @@ $end
 	for(size_t j = 0; j < n_fixed_; j++)
 	{	Number sum = grad_f[j];
 		for(size_t k = 0; k < nnz_jac_g_; k++)
-		{	if( jCol[k] == Index(j) )
-			{	Index  i = iRow[k];
-				sum   += lambda[i] * jac_g[k];
+		{	if( jac_g_col_[k] == j )
+			{	size_t i = jac_g_row_[k];
+				sum     += lambda[i] * jac_g[k];
 			}
 		}
 		// sum += z_U[j] - z_L[j]; does not work because
@@ -331,9 +331,9 @@ $end
 	for(size_t j = n_fixed_; j < n_fixed_ + fix_likelihood_nabs_; j++)
 	{	Number sum = grad_f[j];
 		for(size_t k = 0; k < nnz_jac_g_; k++)
-		{	if( jCol[k] == Index(j) )
-			{	Index  i = iRow[k];
-				sum   += lambda[i] * jac_g[k];
+		{	if( jac_g_col_[k] == j )
+			{	size_t  i = jac_g_row_[k];
+				sum      += lambda[i] * jac_g[k];
 			}
 		}
 		average += std::fabs(sum) / double(n_fixed_);
