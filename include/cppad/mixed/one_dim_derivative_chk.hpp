@@ -25,7 +25,7 @@ $section One Dimensional Finite Difference Derivative Check$$
 
 $head Syntax$$
 $icode%result% = one_dim_derivative_chk(
-	%obj%, %x_lower%, %x_upper%, %x%, %f%, %dfdx%, %rel_tol%
+	%obj%, %x_lower%, %x_upper%, %x_mid%, %f_mid%, %dfdx%, %rel_tol%
 )%$$
 
 $head Prototype$$
@@ -65,14 +65,17 @@ This is a lower limit for the argument $icode x_in$$ to $icode fun$$.
 If it is greater than - infinity, it is used to get an approximation
 for the scale of the argument to the function.
 
-$head x$$
+$head x_mid$$
 Is the argument value at which the derivative is checked.
+It is the mid-point of a central difference approximation for the derivative
+(unless the bounds $icode x_lower$$, $icode x_upper$$ prevent this.)
 
-$head f$$
-Is the value of the function at $icode x$$.
+$head f_mid$$
+Is the value of the function at $icode x_mid$$.
 
 $head dfdx$$
-Is the value of the derivative that we are checking.
+Is the value of the derivative that we are checking with a central difference
+approximation.
 
 $head rel_tol$$
 Is an acceptable relative tolerance for the difference between
@@ -94,9 +97,23 @@ then we were not able to evaluate the function.
 $subhead step$$
 The step size corresponding to $icode%result%[%i%].rel_err%$$.
 
-$subhead dfdx$$
-The finite difference approximation for the derivative,
-corresponding to $icode%result%[%i%].rel_err%$$.
+$subhead f_minus$$
+Is the value of f(x) at
+$codei%
+	%x_minus% = max(%x_mid% - %step%, %x_minus%)
+%$$
+
+$subhead f_plus$$
+Is the value of f(x) at
+$codei%
+	%x_plus% = min(%x_mid% + %step%, %x_upper%)
+%$$
+
+$subhead Derivative Approximation$$
+The corresponding derivative approximation is
+$codei%
+	(%f_plus% - %f_minus%) / (%x_plus% - %x_minus%)
+%$$
 
 $end
 */
@@ -107,7 +124,8 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 struct one_dim_derivative_result {
 	double rel_err;
 	double step;
-	double apx_dfdx;
+	double f_minus;
+	double f_plus;
 };
 template <class Object>
 CppAD::vector<one_dim_derivative_result> one_dim_derivative_chk(
@@ -165,7 +183,8 @@ CppAD::vector<one_dim_derivative_result> one_dim_derivative_chk(
 	for(size_t i = 0; i < m; ++i)
 	{	result[i].rel_err   = infinity;
 		result[i].step      = nan;
-		result[i].apx_dfdx  = nan;
+		result[i].f_minus   = nan;
+		result[i].f_plus    = nan;
 	}
 	//
 	// loop over finite difference step sizes
@@ -217,7 +236,8 @@ CppAD::vector<one_dim_derivative_result> one_dim_derivative_chk(
 			if( ok && 1.1 * rel_err < result[i].rel_err )
 			{	result[i].rel_err  = rel_err;
 				result[i].step     = step;
-				result[i].apx_dfdx = apx_dfdx;
+				result[i].f_minus  = f_minus[i];
+				result[i].f_plus   = f_plus[i];
 			}
 			// rel_err_max
 			rel_err_max = std::max(rel_err_max, result[i].rel_err);

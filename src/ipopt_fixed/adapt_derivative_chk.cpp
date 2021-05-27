@@ -10,8 +10,20 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/ipopt_fixed.hpp>
 # include <cppad/mixed/one_dim_derivative_chk.hpp>
 
+
+
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
+// apx_derivative
+double apx_derivative(
+	const double&                     x_lower,
+	const double&                     x_upper,
+	const double&                     x_mid  ,
+	const one_dim_derivative_result&  info   )
+{	double x_minus = std::max(x_mid - info.step, x_lower);
+	double x_plus  = std::min(x_mid + info.step, x_upper);
+	return (info.f_plus - info.f_minus) /(x_plus - x_minus);
+}
 /*
 $begin ipopt_fixed_adapt_derivative_chk$$
 $spell
@@ -271,7 +283,8 @@ $end
 		// trace
 		bool trace_j = trace || result[0].rel_err > relative_tol;
 		if( trace_j )
-		{	if( line_count % 20 == 0 )
+		{	double apx = apx_derivative(x_low, x_up, x_scale[j], result[0]);
+			if( line_count % 20 == 0 )
 				std::cout << std::endl
 					<< std::right
 					<< std::setw(4)  << "j"
@@ -287,7 +300,7 @@ $end
 				<< std::setw(11) << result[0].step
 				<< std::setw(11) << obj_value_vec[0]
 				<< std::setw(11) << grad_f_j_vec[0]
-				<< std::setw(11) << result[0].apx_dfdx
+				<< std::setw(11) << apx
 				<< std::setw(11) << result[0].rel_err
 				<< std::endl;
 			line_count++;
@@ -350,7 +363,8 @@ $end
 		{	// trace
 			bool trace_ij = trace || result[i].rel_err > relative_tol;
 			if( trace_ij )
-			{	if( line_count % 20 == 0 )
+			{	double apx = apx_derivative(x_low, x_up, x_scale[j], result[0]);
+				if( line_count % 20 == 0 )
 					std::cout << std::endl
 						<< std::right
 						<< std::setw(4)  << "i"
@@ -368,7 +382,7 @@ $end
 					<< std::setw(11) << result[i].step
 					<< std::setw(11) << con_value[i]
 					<< std::setw(11) << jac_g_j[i]
-					<< std::setw(11) << result[i].apx_dfdx
+					<< std::setw(11) << apx
 					<< std::setw(11) << result[i].rel_err
 					<< std::endl;
 				line_count++;
@@ -476,7 +490,10 @@ $end
 			for(size_t j1 = j2; j1 < n; j1++)
 			{	// trace
 				if(  trace || result[j1].rel_err > relative_tol )
-				{	if( line_count % 20 == 0 )
+				{	double apx = apx_derivative(
+						x_low, x_up, x_scale[j2], result[j1]
+					);
+					if( line_count % 20 == 0 )
 						std::cout << std::endl
 							<< std::right
 							<< std::setw(4)  << "j1"
@@ -494,7 +511,7 @@ $end
 						<< std::setw(11) << result[j1].step
 						<< std::setw(11) << grad_L[j1]
 						<< std::setw(11) << hess_j[j1]
-						<< std::setw(11) << result[j1].apx_dfdx
+						<< std::setw(11) << apx
 						<< std::setw(11) << result[j1].rel_err
 						<< std::endl;
 					line_count++;
