@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2021</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2021">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2021 05-17 05-15 05-11 05-07 05-01 03-02 ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2021 05-26 05-17 05-15 05-11 05-07 05-01 03-02 ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -66,6 +66,7 @@ A:active { color : purple }
 
 <center><b><big><big>Changes and Additions to cppad_mixed During 2021</big></big></b></center>
 
+<br><a href="whats_new_21.htm#05-26" target="_top">05-26</a>
 <br><a href="whats_new_21.htm#05-17" target="_top">05-17</a>
 <br><a href="whats_new_21.htm#05-15" target="_top">05-15</a>
 <br><a href="whats_new_21.htm#05-11" target="_top">05-11</a>
@@ -73,6 +74,19 @@ A:active { color : purple }
 <br><a href="whats_new_21.htm#05-01" target="_top">05-01</a>
 <br><a href="whats_new_21.htm#03-02" target="_top">03-02</a>
 <br><br>
+<b><big><a name="05-26" id="05-26">05-26</a></big></b>
+<br>
+Fix a bug in using infinity (-infinity) as the bound for a
+<a href="optimize_fixed.htm#fix_constraint_upper" target="_top"><span style='white-space: nowrap'>fix_constraint_upper</span></a>
+
+( <a href="optimize_fixed.htm#fix_constraint_lower" target="_top"><span style='white-space: nowrap'>fix_constraint_lower</span></a>
+ ).
+To be more specific, properly translate the infinity
+to the special values used by ipopt for these cases.
+
+
+<br>
+<br>
 <b><big><a name="05-17" id="05-17">05-17</a></big></b>
 <br>
 Add the catch of <code><font color="blue">std::exception</font></code> to all try blocks,

@@ -1159,7 +1159,7 @@ Fix some errors and warnings when
 <b><big><a name="04-16" id="04-16">04-16</a></big></b>
 
 <ol type="1"><li>
-The routine <code><font color="blue">ipopt_fixed_adaptive_derivative_check</font></code> now checks
+The routine <code><font color="blue">ipopt_fixed_adapt_derivative_chk</font></code> now checks
 <code><font color="blue">ipopt_fixed_eval_jac_g</font></code> in addition to
 <code><font color="blue">ipopt_fixed_eval_grad_f</font></code>.
 </li><li>
@@ -1173,7 +1173,7 @@ Fix a bug in the computation of the derivative of the random constraints.
 <b><big><a name="04-10" id="04-10">04-10</a></big></b>
 
 <ol type="1"><li>
-If the gradient check <code><font color="blue">ipopt_fixed_adaptive_derivative_check</font></code> fails,
+If the gradient check <code><font color="blue">ipopt_fixed_adapt_derivative_chk</font></code> fails,
 it now results in warning instead of a fatal error.
 </li><li>
 
@@ -1213,7 +1213,7 @@ equal to <code><font color="blue">-1</font></code>.
 <b><big><a name="04-08" id="04-08">04-08</a></big></b>
 
 <ol type="1"><li>
-Changed <code><font color="blue">ipopt_fixed_adaptive_derivative_check</font></code> to handle case where
+Changed <code><font color="blue">ipopt_fixed_adapt_derivative_chk</font></code> to handle case where
 the function at both central difference points is zero,
 and the derivatives is also zero.
 </li><li>
@@ -1234,7 +1234,7 @@ The new routine <a href="sample_fixed.htm" target="_top"><span style='white-spac
 distribution for the estimate of the fixed effects.
 </li><li>
 
-Changed <code><font color="blue">ipopt_fixed_adaptive_derivative_check</font></code> to down to step size
+Changed <code><font color="blue">ipopt_fixed_adapt_derivative_chk</font></code> to down to step size
 <code><font color="blue">1e-9</font></code> (used to just go to <code><font color="blue">1e-7</font></code>.
 In addition, in error report changed <code><font color="blue">step=</font></code> to <code><font color="blue">best_step=</font></code>.
 </li></ol>
