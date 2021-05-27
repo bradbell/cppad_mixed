@@ -20,6 +20,14 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
 
+$head 05-26$$
+Fix a bug in using infinity (-infinity) as the bound for a
+$cref/fix_constraint_upper/optimize_fixed/fix_constraint_upper/$$
+( $cref/fix_constraint_lower/optimize_fixed/fix_constraint_lower/$$ ).
+To be more specific, properly translate the infinity
+to the special values used by ipopt for these cases.
+
+
 $head 05-17$$
 Add the catch of $code std::exception$$ to all try blocks,
 except for ipopt call back functions.
