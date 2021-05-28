@@ -284,12 +284,10 @@ $end
 				sum     += lambda[i] * jac_g[k];
 			}
 		}
-		// scale
-		double scale = std::fabs( x[j] );
-		if( x_lower[j] != nlp_lower_bound_inf_ )
-			scale = std::max(scale, std::fabs( x_lower[j] ) );
-		if( x_upper[j] != nlp_upper_bound_inf_ )
-			scale = std::max(scale, std::fabs( x_upper[j] ) );
+		//
+		// complementarity conditions
+		ok &= (x[j] - x_lower[j]) * z_L[j] < 10.0 * tol;
+		ok &= (x_upper[j] - x[j]) * z_U[j] < 10.0 * tol;
 		//
 		// at_lower
 		bool at_lower = x_lower[j] == x_upper[j];
