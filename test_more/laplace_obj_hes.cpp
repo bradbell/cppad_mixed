@@ -174,7 +174,7 @@ bool laplace_obj_hes(void)
 	std::string options;
 	options += "Integer print_level     0\n";
 	options += "String  sb              yes\n";
-	options += "String  derivative_test trace-adaptive\n";
+	options += "String  derivative_test second-order\n";
 	options += "Numeric tol             1e-11\n";
 	vector<double> random_opt = mixed_object.optimize_random(
 		options, fixed_vec, random_lower, random_upper, random_vec
