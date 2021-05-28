@@ -196,10 +196,9 @@ EOF
 	fi
 	shift
 done
-if echo "$cmake_install_prefix" | grep '/cppad_mixed$' > /dev/null
-then
-    bin/build_type.sh run_cmake $cmake_install_prefix $build_type
-fi
+# Always set soft link for ./build -> ./build.buid_type
+# If install prefix end is cppad_mixed, also set soft link for install dir
+bin/build_type.sh run_cmake $cmake_install_prefix $build_type
 # --------------------------------------------------------------------------
 export PKG_CONFIG_PATH=':'
 for pkg in eigen3 ipopt cppad
