@@ -293,15 +293,11 @@ $end
 		//
 		// at_lower
 		bool at_lower = x_lower[j] == x_upper[j];
-		if( x_lower[j] != nlp_lower_bound_inf_ )
-			at_lower |= x[j] - x_lower[j] <= scale * 10 * tol;
-		at_lower &= sum > 0.0;
+		at_lower |= x[j] - x_lower[j] <= z_L[j];
 		//
 		// at_upper
 		bool at_upper = x_lower[j] == x_upper[j];
-		if( x_upper[j] != nlp_upper_bound_inf_ )
-			at_upper |= x_upper[j] - x[j] <= scale * 10 * tol;
-		at_upper &= sum < 0.0;
+		at_lower |= x_upper[j] - x[j] <= z_U[j];
 		//
 		// solution_.fixed_lag[j]
 		if( j < n_fixed_ )
@@ -318,7 +314,7 @@ $end
 			sum += z_U[j];
 		}
 		//
-		ok &= std::fabs(sum) < 100.0 * tol;
+		ok &= std::fabs(sum) < 10.0 * tol;
 	}
 
 	// set member variable finalize_solution_ok_
