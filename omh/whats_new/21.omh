@@ -16,9 +16,21 @@ $spell
 	cygwin
 	op
 	std
+	obj_hes
 $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
+
+$head 05-28$$
+$list number$$
+Add more testing of the solution check and fix some problem with it.
+$lnext
+Fix an improper derivative test option in the $code laplace_obj_hes$$ test
+(introduced on 05-27).
+$lend
+
+$head 05-27$$.
+Simplify the code for and improve the solution check.
 
 $head 05-26$$
 Fix a bug in using infinity (-infinity) as the bound for a

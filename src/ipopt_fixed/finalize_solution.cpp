@@ -310,8 +310,13 @@ $end
 			else
 				solution_.fixed_lag[j] = 0.0;
 		}
-		if( at_lower || at_upper )
+		//
+		if( x_lower[j] == x_upper[j] )
 			sum = 0.0;
+		else
+		{	sum -= z_L[j];
+			sum += z_U[j];
+		}
 		//
 		ok &= std::fabs(sum) < 100.0 * tol;
 	}
