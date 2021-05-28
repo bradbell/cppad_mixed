@@ -55,24 +55,24 @@ if [ "$total_prefix" == "$install_prefix" ]
 then
 	echo "$program_name: install prefix does not end in /cppad_mixed"
 	echo 'Skipping soft link for install prefix'
-	exit 0
-fi
+else
 # -----------------------------------------------------------------------------
-if [ ! -e "$total_prefix" ]
-then
-	echo_eval mkdir "$total_prefix"
-fi
-if [ -e "$install_prefix" ]
-then
-	if [ ! -L "$install_prefix" ]
+	if [ ! -e "$total_prefix" ]
 	then
-		echo "$program_name: $install_prefix is not a symbolic link"
-		exit 1
+		echo_eval mkdir "$total_prefix"
 	fi
-	echo_eval rm "$install_prefix"
-fi
-echo_eval ln -s $total_prefix $install_prefix
+	if [ -e "$install_prefix" ]
+	then
+		if [ ! -L "$install_prefix" ]
+		then
+			echo "$program_name: $install_prefix is not a symbolic link"
+			exit 1
+		fi
+		echo_eval rm "$install_prefix"
+	fi
+	echo_eval ln -s $total_prefix $install_prefix
 # ---------------------------------------------------------------------------
+fi
 if [ -e build ]
 then
 	if [ ! -L build ]

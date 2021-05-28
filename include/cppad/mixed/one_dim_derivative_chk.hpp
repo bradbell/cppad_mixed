@@ -193,7 +193,7 @@ CppAD::vector<one_dim_derivative_result> one_dim_derivative_chk(
 	d_vector f_plus(m), f_minus(m);
 	while( i_try < n_try && rel_err_max > rel_tol )
 	{	// rel_step
-		double log_try  = log_max_rel_step - log_diff * double(i_try);
+		double log_try  = log_min_rel_step + log_diff * double(i_try);
 		double rel_step = std::exp(log_try);
 		//
 		// step

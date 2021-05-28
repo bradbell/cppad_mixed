@@ -576,9 +576,8 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		}
 		if( ! fixed_nlp->finalize_solution_ok_ )
 		{	warning(
-				"optimize_fixed: solution check failed;\n"
-				"fixed_tolerance may be too small, also\n"
-				"see discussion of bounds in fixed_solution documentation."
+				"optimize_fixed: double check of Ipopt solution failed\n"
+				"bounds, complementarity, or gradient of Lagragian test."
 			);
 		}
 	}

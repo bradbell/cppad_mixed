@@ -23,6 +23,10 @@ $section Changes and Additions to cppad_mixed During 2021$$
 
 $head 05-28$$
 $list number$$
+Speed up the
+$cref/adaptive/optimize_fixed/fixed_ipopt_options/derivative_test/$$
+derivative test be starting at the smallest, instead of largest, step size.
+$lnext
 Further improvements and simplifications to solution check
 and setting Lagrange multipliers; i.e.,
 $cref/fixed_lag/fixed_solution/fixed_lag/$$,
