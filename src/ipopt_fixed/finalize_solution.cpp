@@ -186,15 +186,6 @@ $end
 	for(size_t j = 0; j < n_fixed_; j++)
 		solution_.fixed_opt[j] = scale_x_[j] * x[j];
 	//
-	// solution_.fixed_lag (see below)
-	//
-	// solution_.ran_con_lag
-	assert( solution_.ran_con_lag.size() == 0 );
-	solution_.ran_con_lag.resize(n_ran_con_);
-	size_t offset = 2 * fix_likelihood_nabs_ + n_fix_con_;
-	for(size_t j = 0; j < n_ran_con_; j++)
-		solution_.ran_con_lag[j] = lambda[ offset + j];
-	//
 	// short name for fixed effects tolerance
 	double tol = fixed_tolerance_;
 	//
@@ -234,7 +225,16 @@ $end
 		nullptr,
 		jac_g.data()
 	);
-
+	//
+	// solution_.ran_con_lag
+	assert( solution_.ran_con_lag.size() == 0 );
+	solution_.ran_con_lag.resize(n_ran_con_);
+	size_t offset = 2 * fix_likelihood_nabs_ + n_fix_con_;
+	for(size_t j = 0; j < n_ran_con_; j++)
+	{	assert( g_lower[offset + j] == g_upper[offset + j] );
+		solution_.ran_con_lag[j] = lambda[ offset + j];
+	}
+	//
 	// check complementarity conditions for gl <= g(x) <= gu
 	// set solution_.fix_con_lag
 	solution_.fix_con_lag.resize(n_fix_con_);
