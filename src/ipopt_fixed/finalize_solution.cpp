@@ -271,6 +271,14 @@ $end
 		jac_g.data()
 	);
 
+	// complementarity conditions for gl <= g(x) <= gu
+	for(size_t i = 0; i < size_t(m); ++i)
+	{	if( g_lower[i] != nlp_lower_bound_inf_ )
+			ok &= (g[i] - g_lower[i]) * std::fabs(lambda[i]) < 10.0 * tol;
+		if( g_upper[i] != nlp_upper_bound_inf_ )
+			ok &= (g_upper[i] - g[i]) * std::fabs(lambda[i]) < 10.0 * tol;
+	}
+
 	// check gradient of Lagragian L(x)
 	// solution_.fixed_lag
 	assert( solution_.fixed_lag.size() == 0 );
@@ -285,7 +293,7 @@ $end
 			}
 		}
 		//
-		// complementarity conditions
+		// complementarity conditions for bound constraints
 		ok &= (x[j] - x_lower[j]) * z_L[j] < 10.0 * tol;
 		ok &= (x_upper[j] - x[j]) * z_U[j] < 10.0 * tol;
 		//
@@ -306,7 +314,11 @@ $end
 		}
 		//
 		if( x_lower[j] == x_upper[j] )
+		{	 // this constriant gets removed
+			assert( z_L[j] == 0.0 );
+			assert( z_U[j] == 0.0 );
 			sum = 0.0;
+		}
 		else
 		{	sum -= z_L[j];
 			sum += z_U[j];
