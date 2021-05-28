@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2021</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2021">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2021 05-26 05-17 05-15 05-11 05-07 05-01 03-02 ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2021 05-28 05-27 05-26 05-17 05-15 05-11 05-07 05-01 03-02 ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -66,6 +66,8 @@ A:active { color : purple }
 
 <center><b><big><big>Changes and Additions to cppad_mixed During 2021</big></big></b></center>
 
+<br><a href="whats_new_21.htm#05-28" target="_top">05-28</a>
+<br><a href="whats_new_21.htm#05-27" target="_top">05-27</a>
 <br><a href="whats_new_21.htm#05-26" target="_top">05-26</a>
 <br><a href="whats_new_21.htm#05-17" target="_top">05-17</a>
 <br><a href="whats_new_21.htm#05-15" target="_top">05-15</a>
@@ -74,6 +76,42 @@ A:active { color : purple }
 <br><a href="whats_new_21.htm#05-01" target="_top">05-01</a>
 <br><a href="whats_new_21.htm#03-02" target="_top">03-02</a>
 <br><br>
+<b><big><a name="05-28" id="05-28">05-28</a></big></b>
+
+<ol type="1"><li>
+Further improvements and simplifications to solution check
+and setting Lagrange multipliers; i.e.,
+<a href="fixed_solution.htm#fixed_lag" target="_top"><span style='white-space: nowrap'>fixed_lag</span></a>
+,
+<a href="fixed_solution.htm#fix_con_lag" target="_top"><span style='white-space: nowrap'>fix_con_lag</span></a>
+,
+<a href="fixed_solution.htm#ran_con_lag" target="_top"><span style='white-space: nowrap'>ran_con_lag</span></a>
+.
+</li><li>
+
+Remove the comments about the bounds corresponding to
+<a href="fixed_solution.htm#fixed_lag" target="_top"><span style='white-space: nowrap'>fixed_lag</span></a>
+ because a new (better)
+technique is used to detect when the Lagrange multipliers are zero.
+</li><li>
+
+More testing of the solution check and fix some problem with it.
+</li><li>
+
+Fix an improper derivative test option in the <code><font color="blue">laplace_obj_hes</font></code> test
+(introduced on 05-27).
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="05-27" id="05-27">05-27</a></big></b>
+<br>
+.
+Simplify the code for and improve the solution check.
+
+<br>
+<br>
 <b><big><a name="05-26" id="05-26">05-26</a></big></b>
 <br>
 Fix a bug in using infinity (-infinity) as the bound for a

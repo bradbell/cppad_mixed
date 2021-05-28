@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Optimal Solution Returned by optimize_fixed</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Optimal Solution Returned by optimize_fixed">
-<meta name="keywords" id="keywords" content=" optimal solution returned optimize_fixed syntax public convention fixed_opt fixed_lag bounds fix_con_lag ran_con_lag ">
+<meta name="keywords" id="keywords" content=" optimal solution returned optimize_fixed syntax public convention fixed_opt fixed_lag fix_con_lag ran_con_lag ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -71,9 +71,7 @@ A:active { color : purple }
 <br><a href="fixed_solution.htm#Convention" target="_top">Convention</a>
 <br><a href="fixed_solution.htm#fixed_opt" target="_top">fixed_opt</a>
 <br><a href="fixed_solution.htm#fixed_lag" target="_top">fixed_lag</a>
-<br>&#160;&#160;&#160;&#160;&#160;<a href="fixed_solution.htm#fixed_lag.Bounds" target="_top">Bounds</a>
 <br><a href="fixed_solution.htm#fix_con_lag" target="_top">fix_con_lag</a>
-<br>&#160;&#160;&#160;&#160;&#160;<a href="fixed_solution.htm#fix_con_lag.Bounds" target="_top">Bounds</a>
 <br><a href="fixed_solution.htm#ran_con_lag" target="_top">ran_con_lag</a>
 <br><br>
 <b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
@@ -132,25 +130,6 @@ for the <code><i>i</i></code>-th component of the fixed effects.
 
 <br>
 <br>
-<big><a name="fixed_lag.Bounds" id="fixed_lag.Bounds">Bounds</a></big>
-<br>
-The size of the fixed effects upper and lower limits
-<a href="optimize_fixed.htm#fixed_upper" target="_top"><span style='white-space: nowrap'>fixed_upper</span></a>
- and
-<a href="optimize_fixed.htm#fixed_lower" target="_top"><span style='white-space: nowrap'>fixed_lower</span></a>
- are
-used to determine the scale for the values of the fixed constraint function.
-If for the <code><i>i</i></code>-th component function,
-one of the limits is infinite and the other is zero,
-this scale cannot be determined and the values of
-
-<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fix_[</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
- may not properly indicate
-if the constraint is active.
-In addition, you may get a warning about the solution check failing.
-
-<br>
-<br>
 <b><big><a name="fix_con_lag" id="fix_con_lag">fix_con_lag</a></big></b>
 <br>
 This field has prototype
@@ -169,26 +148,6 @@ If
 is greater than zero (less than zero), it is
 the Lagrange multiplier for the upper (lower) bound
 for the <code><i>i</i></code>-th component of the fixed constraint function.
-
-<br>
-<br>
-<big><a name="fix_con_lag.Bounds" id="fix_con_lag.Bounds">Bounds</a></big>
-<br>
-The size of the fixed constraints upper and lower limits
-<a href="optimize_fixed.htm#fix_constraint_upper" target="_top"><span style='white-space: nowrap'>fix_constraint_upper</span></a>
- and
-<a href="optimize_fixed.htm#fix_constraint_lower" target="_top"><span style='white-space: nowrap'>fix_constraint_lower</span></a>
- are
-used to determine the scale for the values of the fixed constraint function.
-If for the <code><i>i</i></code>-th component function,
-one of the limits is infinite and the other is zero,
-this scale cannot be determined and the values of
-
-<code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fix_con_lag[</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
- may not properly indicate
-if the constraint is active.
-In addition, you may get a warning about the solution check failing.
-
 
 <br>
 <br>
