@@ -23,7 +23,17 @@ $section Changes and Additions to cppad_mixed During 2021$$
 
 $head 05-28$$
 $list number$$
-Add more testing of the solution check and fix some problem with it.
+Further improvements and simplifications to solution check
+and setting Lagrange multipliers; i.e.,
+$cref/fixed_lag/fixed_solution/fixed_lag/$$,
+$cref/fix_con_lag/fixed_solution/fix_con_lag/$$,
+$cref/ran_con_lag/fixed_solution/ran_con_lag/$$.
+$lnext
+Remove the comments about the bounds corresponding to
+$cref/fixed_lag/fixed_solution/fixed_lag/$$ because a new (better)
+technique is used to detect when the Lagrange multipliers are zero.
+$lnext
+More testing of the solution check and fix some problem with it.
 $lnext
 Fix an improper derivative test option in the $code laplace_obj_hes$$ test
 (introduced on 05-27).

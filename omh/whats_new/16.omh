@@ -625,13 +625,13 @@ $head 04-27$$
 $list number$$
 Add more discussion about the connection between the Lagrange multipliers
 and the fixed effects bounds in the
-$cref/fixed_solution/fixed_solution/fixed_lag/Bounds/$$ section.
+$cref/fixed_solution/fixed_solution/fixed_lag/$$ section.
 $lnext
 Relax the tolerance used by $code cppad_mixed$$
 when checking if a fixed effect
-$cref/bound/fixed_solution/fixed_lag/Bounds/$$
+$cref/bound/fixed_solution/fixed_lag/$$
 or a fixed constraint
-$cref/bound/fixed_solution/fix_con_lag/Bounds/$$
+$cref/bound/fixed_solution/fix_con_lag/$$
 is active. This should give better detection.
 $lend
 
