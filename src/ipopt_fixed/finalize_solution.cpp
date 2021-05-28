@@ -218,42 +218,6 @@ $end
 		ok &= 0.0 <= z_U[j];
 	}
 	//
-	// check explicit constraints and set solution_.fix_con_lag
-	assert( solution_.fix_con_lag.size() == 0 );
-	solution_.fix_con_lag.resize(n_fix_con_);
-	offset     = 2 * fix_likelihood_nabs_;
-	double inf = std::numeric_limits<double>::infinity();
-	for(size_t j = 0; j < n_fix_con_; j++)
-	{
-		double lam_j  = lambda[offset + j];
-		double scale = 0.0;;
-		assert(
-			(g_lower[offset + j] != nlp_lower_bound_inf_)
-			==
-			(fix_constraint_lower_[j] != -inf)
-		);
-		assert(
-			(g_upper[offset + j] != nlp_upper_bound_inf_)
-			==
-			(fix_constraint_upper_[j] != inf)
-		);
-		if( fix_constraint_lower_[j] != -inf )
-			scale = std::fabs( g_lower[j] );
-		if( fix_constraint_upper_[j] != inf )
-			scale = std::max(scale, std::fabs( g_upper[j] ) );
-		if( scale == 0.0 )
-		{	// both limits are infinity
-			lam_j = 0.0;
-		}
-		if( g_lower[j] != nlp_lower_bound_inf_ )
-			if( g[j] - g_lower[j] < tol * 10. * scale )
-				lam_j = std::min(lam_j, 0.0);
-		if( g_upper[j] != nlp_upper_bound_inf_ )
-			if( g_upper[j] - g[j] < tol * 10. * scale )
-				lam_j = std::max(lam_j, 0.0);
-		//
-		solution_.fix_con_lag[j] = lam_j;
-	}
 	// grad_f
 	CppAD::vector<Number> grad_f(n);
 	eval_grad_f(n, x, new_x, grad_f.data() );
@@ -271,12 +235,35 @@ $end
 		jac_g.data()
 	);
 
-	// complementarity conditions for gl <= g(x) <= gu
+	// check complementarity conditions for gl <= g(x) <= gu
+	// set solution_.fix_con_lag
+	solution_.fix_con_lag.resize(n_fix_con_);
 	for(size_t i = 0; i < size_t(m); ++i)
-	{	if( g_lower[i] != nlp_lower_bound_inf_ )
-			ok &= (g[i] - g_lower[i]) * std::fabs(lambda[i]) < 10.0 * tol;
+	{	double abs_lam_i = std::fabs( lambda[i] );
+		//
+		bool at_lower = false;
+		if( g_lower[i] != nlp_lower_bound_inf_ )
+		{	ok &= (g[i] - g_lower[i]) * abs_lam_i < 10.0 * tol;
+			at_lower = g[i] - g_lower[i] < abs_lam_i;
+		}
+		//
+		bool at_upper = false;
 		if( g_upper[i] != nlp_upper_bound_inf_ )
-			ok &= (g_upper[i] - g[i]) * std::fabs(lambda[i]) < 10.0 * tol;
+		{	ok &= (g_upper[i] - g[i]) * abs_lam_i < 10.0 * tol;
+			at_upper = g_upper[i] - g[i] < abs_lam_i;
+		}
+		offset = 2 * fix_likelihood_nabs_;
+		if( offset <= i && i < offset + n_fix_con_ )
+		{	size_t j = i - offset;
+			if( at_lower && at_upper )
+				solution_.fix_con_lag[j] = lambda[i];
+			else if( at_lower )
+				solution_.fix_con_lag[j] = std::min(lambda[i], 0.0);
+			else if( at_upper )
+				solution_.fix_con_lag[j] = std::max(lambda[i], 0.0);
+			else
+				solution_.fix_con_lag[j] = 0.0;
+		}
 	}
 
 	// check gradient of Lagragian L(x)
