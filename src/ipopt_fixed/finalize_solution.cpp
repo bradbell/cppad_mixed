@@ -293,17 +293,19 @@ $end
 			}
 		}
 		//
-		// complementarity conditions for bound constraints
-		ok &= (x[j] - x_lower[j]) * z_L[j] < 10.0 * tol;
-		ok &= (x_upper[j] - x[j]) * z_U[j] < 10.0 * tol;
+		// at_lower, check complementarity
+		bool at_lower = false;
+		if( x_lower[j] != nlp_lower_bound_inf_ )
+		{	ok      &= (x[j] - x_lower[j]) * z_L[j] < 10.0 * tol;
+			at_lower = x[j] - x_lower[j] <= z_L[j];
+		}
 		//
-		// at_lower
-		bool at_lower = x_lower[j] == x_upper[j];
-		at_lower |= x[j] - x_lower[j] <= z_L[j];
-		//
-		// at_upper
-		bool at_upper = x_lower[j] == x_upper[j];
-		at_lower |= x_upper[j] - x[j] <= z_U[j];
+		// at_upper, check complementarity
+		bool at_upper = false;
+		if( x_upper[j] != nlp_upper_bound_inf_ )
+		{	ok &= (x_upper[j] - x[j]) * z_U[j] < 10.0 * tol;
+			at_lower = x_upper[j] - x[j] <= z_U[j];
+		}
 		//
 		// solution_.fixed_lag[j]
 		if( j < n_fixed_ )
