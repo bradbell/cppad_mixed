@@ -242,27 +242,23 @@ $end
 	{	double abs_lam_i = std::fabs( lambda[i] );
 		//
 		bool at_lower = false;
-		if( g_lower[i] != nlp_lower_bound_inf_ )
+		if( g_lower[i] != nlp_lower_bound_inf_ && lambda[i] < 0.0 )
 		{	ok &= (g[i] - g_lower[i]) * abs_lam_i < 10.0 * tol;
 			at_lower = g[i] - g_lower[i] < abs_lam_i;
 		}
 		//
 		bool at_upper = false;
-		if( g_upper[i] != nlp_upper_bound_inf_ )
+		if( g_upper[i] != nlp_upper_bound_inf_ && lambda[i] > 0.0)
 		{	ok &= (g_upper[i] - g[i]) * abs_lam_i < 10.0 * tol;
 			at_upper = g_upper[i] - g[i] < abs_lam_i;
 		}
 		offset = 2 * fix_likelihood_nabs_;
 		if( offset <= i && i < offset + n_fix_con_ )
 		{	size_t j = i - offset;
-			if( at_lower && at_upper )
-				solution_.fix_con_lag[j] = lambda[i];
-			else if( at_lower )
-				solution_.fix_con_lag[j] = std::min(lambda[i], 0.0);
-			else if( at_upper )
-				solution_.fix_con_lag[j] = std::max(lambda[i], 0.0);
-			else
+			if( ! (at_lower || at_upper) )
 				solution_.fix_con_lag[j] = 0.0;
+			else
+				solution_.fix_con_lag[j] = lambda[i];
 		}
 	}
 
