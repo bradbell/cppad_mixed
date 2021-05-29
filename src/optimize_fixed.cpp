@@ -78,7 +78,8 @@ If it is $code first-order$$,
 only first order derivatives are tested.
 If it is $code second-order$$ ($code only-second-order$$)
 second derivatives (and first derivatives) are tested.
-In these two cases $icode quasi_fixed$$ must be $code false$$.
+In these two cases
+$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ must be $code false$$.
 If $icode derivative_test$$ is $code adaptive$$,
 a special $code cppad_mixed$$ adaptive step size method is
 used to test first order derivatives.
@@ -86,8 +87,9 @@ If it is $code trace-adaptive$$,
 the adaptive step size results are traced on standard output.
 
 $subhead hessian_approximation$$
-If $icode quasi_fixed$$ is true,
-$icode hessian_approximation$$ will be set to $code limit-memory$$.
+If $icode quasi_fixed$$ is true (false),
+$icode hessian_approximation$$ will be set to
+$code limit-memory$$ ($code exact$$).
 If it is also set in $icode fixed_ipopt_options$$, it must have this value.
 
 $subhead max_iter$$
@@ -355,11 +357,18 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	SmartPtr<Ipopt::IpoptApplication> app = IpoptApplicationFactory();
 	//
 	app->Options()->SetStringValue("nlp_scaling_method", "none");
+	//
+	// hessian_approximation
 	if( quasi_fixed_ )
-	{	// special defaults settings
-		app->Options()->SetStringValue(
+	{	app->Options()->SetStringValue(
 			"hessian_approximation", "limited-memory");
 	}
+	else
+	{	app->Options()->SetStringValue(
+			"hessian_approximation", "exact");
+	}
+	//
+	// accept_after_max_steps
 	app->Options()->SetIntegerValue(
 		"accept_after_max_steps", 2
 	);
@@ -421,11 +430,20 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 					ok &= tok_3 == "limited-memory";
 				if( tok_2 == "derivative_test" )
 					ok &= tok_3 == "none" || tok_3 == "first-order";
-				if( tok_2 == "limited_memory_max_history" )
-					ok = false;
 				if( ! ok )
 				{	std::string msg = "cppad_mixed: constructed with";
 					msg += " quasi_fixed true so cannot have ";
+					msg += tok_2 + " equal to " + tok_3;
+					fatal_error(msg);
+				}
+			}
+			else
+			{	ok = true;
+				if( tok_2 == "hessian_approximation" )
+					ok &= tok_3 == "exact";
+				if( ! ok )
+				{	std::string msg = "cppad_mixed: constructed with";
+					msg += " quasi_fixed false so cannot have ";
 					msg += tok_2 + " equal to " + tok_3;
 					fatal_error(msg);
 				}
