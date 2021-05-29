@@ -107,7 +107,8 @@ it may be that $icode%solution%.fixed_opt != %fixed_in%$$
 (this is the only difference between $code -1$$ and $code 0$$).
 
 $subhead accept_after_max_steps$$
-The default value for $icode accept_after_max_steps$$ is $code 2$$.
+The default value for $icode accept_after_max_steps$$ is $code -1$$
+(no limit).
 This is the maximum number of backtracking steps to take before
 accepting a line search point; see
 $cref/ls/ipopt_trace/ls/$$ is the ipopt tracing documentation.
@@ -370,7 +371,7 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	//
 	// accept_after_max_steps
 	app->Options()->SetIntegerValue(
-		"accept_after_max_steps", 2
+		"accept_after_max_steps", -1
 	);
 	// get the initial value for maximum number of iterations
 	std::string tag    = "max_iter";
