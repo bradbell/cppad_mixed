@@ -21,6 +21,16 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
 
+$head 05-29$$
+The
+$cref/hessian_approximation
+	/optimize_fixed
+	/fixed_ipopt_options
+	/hessian_approximation
+/$$
+is now set and checked when $cref/quasi_fixed/derived_ctor/quasi_fixed/$$
+is false (used to be just when it was true).
+
 $head 05-28$$
 $list number$$
 Speed up the
