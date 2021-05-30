@@ -329,6 +329,7 @@ $head init_z$$
 if true, the ipopt options specify that the this routine
 will provide an initial value for $icode x$$ upper and lower bound
 multipliers.
+This is true during a warm start and false otherwise.
 
 $head z_L$$
 if $icode init_z$$ is true,
@@ -342,6 +343,7 @@ $head init_lambda$$
 if true, the ipopt options specify that the this routine
 will provide an initial value for $icode g(x)$$ upper and lower bound
 multipliers.
+This is true during a warm start and false otherwise.
 
 $head lambda$$
 if $icode init_lambda$$ is true,
@@ -368,12 +370,30 @@ bool ipopt_nlp_xam::get_starting_point(
 {
 	assert( n == 2 );
 	assert( init_x == true );
-	x[0] = 1.0;
-	x[1] = 1.0;
-	assert( init_z == false );
 	assert( m == 1 );
-	assert( init_lambda == false );
-
+	bool warm_start = init_z || init_lambda;
+	if( warm_start )
+	{	// use previous final solution as starting point
+		assert( init_z == true );
+		assert( init_lambda == true );
+		assert( final_solution_x_.size()   == size_t(n) );
+		assert( final_solution_z_L_.size() == size_t(n) );
+		assert( final_solution_z_U_.size() == size_t(n) );
+		assert( final_solution_lambda_.size() == size_t(m) );
+		for(Index j = 0; j < n; ++j)
+		{	x[j]   = final_solution_x_[j];
+			z_L[j] = final_solution_z_L_[j];
+			z_U[j] = final_solution_z_U_[j];
+		}
+		for(Index i = 0; i < m; ++i)
+			lambda[i] = final_solution_lambda_[i];
+	}
+	else
+	{	assert( init_z == false );
+		assert( init_lambda == false );
+		x[0] = 1.0;
+		x[1] = 1.0;
+	}
 	return true;
 }
 /* %$$
@@ -1055,7 +1075,8 @@ bool ipopt_run_xam(void)
 	SmartPtr<Ipopt::IpoptApplication> app = IpoptApplicationFactory();
 
 	// Turn off all Ipopt printed output
-	app->Options()->SetIntegerValue("print_level", 0);
+	app->Options()->SetIntegerValue("print_level", 5);
+	app->Options()->SetIntegerValue("max_iter", 4);
 	app->Options()->SetStringValue("sb", "yes");
 	app->Options()->SetStringValue("derivative_test", "second-order");
 
@@ -1066,8 +1087,14 @@ bool ipopt_run_xam(void)
 	status = app->Initialize();
 	ok    &= status == Ipopt::Solve_Succeeded;
 
-	// solve the problem
+	// first attempt should fail because max_iter is so small
 	status = app->OptimizeTNLP(xam_nlp);
+	ok    &= status != Ipopt::Solve_Succeeded;
+	//
+	// second attemp should succeed with a warm start
+	app->Options()->SetStringValue("warm_start_init_point", "yes");
+	status = app->OptimizeTNLP(xam_nlp);
+	//
 	ok    &= status == Ipopt::Solve_Succeeded;
 	ok    &= xam_nlp->finalize_solution_ok_;
 
