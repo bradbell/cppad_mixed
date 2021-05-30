@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-16 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -60,25 +60,38 @@ $latex \[
 
 $head Solution$$
 If we assume the lower and upper constraints are no active at the solution
-we get
-$latex L = 0$$,
-$latex U = 0$$,
-$latex \lambda_0 = 2 \beta (2 - x_0 )$$,
-$latex x_1 = 2 - x_0$$,
+we get $latex L = 0$$, $latex U = 0$$, and
 $latex \[
 \begin{array}{rcl}
-0 & = & 2 \beta ( 2 - x_0 - 3 ) + 2 \beta ( 2 - x_0 )
+0 & = & 2 \beta ( x_0 - 2 ) + \lambda_0
 \\
-0 & = &  2 - x_0 - 3 + 2 - x_0
+0 & = & 2 \beta ( x_1 - 3 ) + \lambda_0
 \\
-x_0 & = & 0.5
+0 & = & x_0 + x_1 - 2
 \end{array}
 \] $$
-The corresponding solution is
-$latex x_0 = 0.5$$, $latex x_1 = 1.5$$, and $latex \lambda_0 = 3.0$$.
-Note that the upper and lower constraints are not active,
-so this is the solution (with $latex L = 0$$, $latex U = 0$$).
-
+Replacing the second equation above by the first minus the second divided by
+$latex 2 \beta$$, we obtain
+$latex \[
+\begin{array}{rcl}
+0 & = & 2 \beta ( x_0 - 2 ) + \lambda_0
+\\
+0 & = & x_0 - x_1 + 1
+\\
+0 & = & x_0 + x_1 - 2
+\end{array}
+\] $$
+It follows that the stationary conditions are satisfied when
+$latex x_0 = 0.5$$, $latex x_1 = 1.5$$, $latex \lambda_0 = 3 \beta$$,
+$latex L = 0$$, and $latex U = 0$$.
+Furthermore the bound constraints are satisfied; i.e.,
+$latex \[
+\begin{array}{c}
+	0 \leq x_0 \leq 2 \\
+	0 \leq x_1 \leq 3
+\end{array}
+\] $$
+Since the problem is convex, this is the solution.
 
 $childtable%example/ipopt_run.cpp%$$
 

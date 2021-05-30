@@ -43,8 +43,14 @@ namespace {
 		// did check of solution pass
 		bool finalize_solution_ok_;
 		//
-		// final solution
-		std::vector<double> final_solution_;
+		// final solution: primal variables
+		std::vector<double> final_solution_x_;
+		// final solution: lower bound Lagrange multipliers
+		std::vector<double> final_solution_z_L_;
+		// final solution: upper bound Lagrange multipliers
+		std::vector<double> final_solution_z_U_;
+		// final solution: g(x) constraint Lagrange multipliers
+		std::vector<double> final_solution_lambda_;
 		//
 		// default constructor
 		ipopt_nlp_xam(double beta);
@@ -896,10 +902,19 @@ void ipopt_nlp_xam::finalize_solution(
 	// set member variable finalize_solution_ok_
 	finalize_solution_ok_ = ok;
 
-	// set member variable final_solution_
-	final_solution_.resize(n);
-	for(Index j = 0; j < n; j++)
-		final_solution_[j] = x[j];
+	// set member variable corresponding to final solution
+	final_solution_x_.resize(n);
+	final_solution_z_L_.resize(n);
+	final_solution_z_U_.resize(n);
+	final_solution_lambda_.resize(m);
+	final_solution_x_.resize(n);
+	for(Index j = 0; j < n; ++j)
+	{	final_solution_x_[j]     = x[j];
+		final_solution_z_L_[j]   = z_L[j];
+		final_solution_z_U_[j]   = z_U[j];
+	}
+	for(Index i = 0; i < m; ++i)
+		final_solution_lambda_[i] = lambda[i];
 }
 /* %$$
 $end
@@ -1056,11 +1071,25 @@ bool ipopt_run_xam(void)
 	ok    &= status == Ipopt::Solve_Succeeded;
 	ok    &= xam_nlp->finalize_solution_ok_;
 
-	// check the solution
-	const std::vector<double>& x(xam_nlp->final_solution_);
+	// check solution primal variables x
+	const std::vector<double>& x(xam_nlp->final_solution_x_);
 	ok    &= x.size() == 2;
-	ok    &= fabs( x[0] - 0.5 ) <= 10. * tol;
-	ok    &= fabs( x[1] - 1.5 ) <= 10. * tol;
+	ok    &= std::fabs( x[0] - 0.5 ) <= 10. * tol;
+	ok    &= std::fabs( x[1] - 1.5 ) <= 10. * tol;
+
+	// check solution g(x) Lagrange multipliers lambda
+	const std::vector<double>& lambda(xam_nlp->final_solution_lambda_);
+	ok    &= lambda.size() == 1;
+	ok    &= std::fabs(lambda[0] - 3.0 * beta) <= 10. * tol;
+
+	// check solution bound constraint Lagrange multipliers z_L and z_U
+	const std::vector<double>& z_L(xam_nlp->final_solution_z_L_);
+	const std::vector<double>& z_U(xam_nlp->final_solution_z_U_);
+	ok    &= z_L.size() == 2 && z_U.size() == 2;
+	for(size_t j = 0; j < 2; ++j)
+	{	ok &= 0.0 <= z_L[j] && z_L[j] <= 10. * tol;
+		ok &= 0.0 <= z_U[j] && z_U[j] <= 10. * tol;
+	}
 
 	return ok;
 }
