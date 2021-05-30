@@ -52,22 +52,22 @@ namespace {
 		// default destructor
 		virtual ~ipopt_nlp_xam(void);
 		//
-		virtual bool get_nlp_info(
+		bool get_nlp_info(
 			Index&          n            ,
 			Index&          m            ,
 			Index&          nnz_jac_g    ,
 			Index&          nnz_h_lag    ,
 			IndexStyleEnum& index_style
-		);
-		virtual bool get_bounds_info(
+		) override;
+		bool get_bounds_info(
 				Index       n        ,
 				Number*     x_l      ,
 				Number*     x_u      ,
 				Index       m        ,
 				Number*     g_l      ,
 				Number*     g_u
-		);
-		virtual bool get_starting_point(
+		) override;
+		bool get_starting_point(
 			Index           n            ,
 			bool            init_x       ,
 			Number*         x            ,
@@ -77,27 +77,27 @@ namespace {
 			Index           m            ,
 			bool            init_lambda  ,
 			Number*         lambda
-		);
-		virtual bool eval_f(
+		) override;
+		bool eval_f(
 			Index           n        ,
 			const Number*   x        ,
 			bool            new_x    ,
 			Number&         obj_value
-		);
-		virtual bool eval_grad_f(
+		) override;
+		bool eval_grad_f(
 			Index           n        ,
 			const Number*   x        ,
 			bool            new_x    ,
 			Number*         grad_f
-		);
-		virtual bool eval_g(
+		) override;
+		bool eval_g(
 			Index           n        ,
 			const Number*   x        ,
 			bool            new_x    ,
 			Index           m        ,
 			Number*         g
-		);
-		virtual bool eval_jac_g(
+		) override;
+		bool eval_jac_g(
 			Index           n        ,
 			const Number*   x        ,
 			bool            new_x    ,
@@ -106,8 +106,8 @@ namespace {
 			Index*          iRow     ,
 			Index*          jCol     ,
 			Number*         values
-		);
-		virtual bool eval_h(
+		) override;
+		bool eval_h(
 			Index         n              ,
 			const Number* x              ,
 			bool          new_x          ,
@@ -119,7 +119,7 @@ namespace {
 			Index*        iRow           ,
 			Index*        jCol           ,
 			Number*       values
-		);
+		) override;
 		virtual void finalize_solution(
 			Ipopt::SolverReturn               status    ,
 			Index                             n         ,
@@ -132,8 +132,8 @@ namespace {
 			Number                            obj_value ,
 			const Ipopt::IpoptData*           ip_data   ,
 			Ipopt::IpoptCalculatedQuantities* ip_cq
-		);
-		virtual bool intermediate_callback(
+		) override;
+		bool intermediate_callback(
 			AlgorithmMode               mode,
 			Index                       iter,
 			Number                      obj_value,
@@ -147,7 +147,7 @@ namespace {
 			Index                       ls_trials,
 			const IpoptData*            ip_data,
 			IpoptCalculatedQuantities*  ip_cq
-		);
+		) override;
 	};
 }
 /* %$$
