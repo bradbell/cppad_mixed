@@ -47,7 +47,7 @@ $list number$$
 Remove partial Newton step wish list item
 (implemented on $cref/2018-06-30/whats_new_18/06-30/$$).
 $lnext
-Add $cref/multi-threading/wish_list/Multi-Threading/$$
+Add $cref/multi-threading/wish_list/Multi-Threading and Statistics/$$
 wish list item.
 $lend
 
@@ -231,7 +231,7 @@ This has been changed and now the user can choose this ipopt option.
 $head 03-22$$
 In the wish list,
 remove the Student's t item and change the
-$cref/sparse matrix/wish_list/Sparse Matrix/$$ item.
+sparse_matrix item.
 
 $head 03-10$$
 The install $cref/download/install_unix/Download/$$ procedure was changed

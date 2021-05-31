@@ -21,6 +21,19 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
 
+$head 05-31$$
+Edit the $cref wish_list$$ as follows:
+$list number$$
+Remove the random constraint item because it has been completed; see
+$cref/ran_con_lag/fixed_solution/ran_con_lag/$$.
+$lnext
+Add the $cref/examples/wish_list/Examples/$$ item.
+$lnext
+Extend the
+$cref/multi-threading/wish_list/Multi-Threading and Statistics/$$
+item to include statistics.
+$lend
+
 $head 05-29$$
 $list number$$
 The

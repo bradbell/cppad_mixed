@@ -14,12 +14,10 @@
 # '
 # list of files and or directories that are moved to new names
 # move_paths='
-#	src/ipopt_fixed/adaptive_derivative_check.cpp
 # '
 # list of sed commands that map old file and directory names to new names.
 # The characters @s, @d, @n get converted to a space, dollar sign, new line.
 # move_seds='
-#	s|adaptive_derivative_check|adapt_derivative_chk|
 # '
 # list of files that get edited by the extra_seds command
 # extra_files='
@@ -31,4 +29,5 @@
 # '
 # ----------------------------------------------------------------------------
 # Put other sed commands below here and without # at start of line
-s|adaptive_derivative_check|adapt_derivative_chk|
+s|$cref/sparse matrix/wish_list/Sparse Matrix/\$\$|sparse_matrix|
+s|$cref/multi-threading/wish_list/Multi-Threading/\$\$|$cref/multi-threading/wish_list/Multi-Threading and Statistics/$$|

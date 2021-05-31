@@ -19,9 +19,33 @@ $spell
 	vec
 	optimizer
 	Ipopt
+	Jacobians
 $$
 
 $section CppAD Mixed Wish List$$
+
+$head Multi-Threading and Statistics$$
+Change $code fix_likelihood$$ and $code ran_likelihood$$
+so that every data value is a separate element of the return vector.
+This would require a separate argument to the cppad_mixed constructor
+that tells which elements of $code fix_likelihood$$ are absolute value terms.
+It would also enable asymptotic statistics using Jacobians of the likelihood
+vector, instead of Hessians of the total likelihood.
+
+
+$head Fixed Likelihood Hessian$$
+Move the initialization of $code fix_like_hes_$$
+to a separate routine so it does not get calculated when
+$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is true.
+If $icode quasi_fixed$$ is true, $code fix_like_hes_$$
+would need to be initialized the first time
+$cref information_mat$$ is called.
+
+$head Examples$$
+Where appropriate, change $code virtual$$ function definitions
+to $code override$$ definitions.
+In addition, change template functions to regular functions
+when only one type is used as the template argument.
 
 $head Tracing Optimization$$
 Add options to specify the file name for the optimizer trace
@@ -29,27 +53,6 @@ at both the fixed and random effects levels; see
 $href%https://list.coin-or.org/pipermail/ipopt/2015-October/004160.html%
 	output file options
 %$$.
-
-$head Optimize Fixed$$
-Change $cref optimize_fixed$$ so that it can be used as a completely
-general interface to Ipopt.
-This would require allowing any of the possible Ipopt options.
-
-$head Multi-Threading$$
-Change the $code ran_likelihood$$ function to allow for multi-threading.
-For example, if
-$cref/vec.size()/ran_likelihood/vec/$$ is greater than one,
-$latex f( \theta , u )$$ could be the sum the elements of $icode vec$$
-and subsequent calculations would split to sums with each
-component of $icode vec$$ corresponding to a different thread.
-
-$head Sparse Matrix$$
-Move the initialization of $code fix_like_hes_$$
-to a separate routine so it does not get calculated when
-$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is true.
-If $icode quasi_fixed$$ is true, $code fix_like_hes_$$
-would need to be initialized the first time
-$cref information_mat$$ is called.
 
 $head d_sparse_rcv$$
 Convert all the sparse matrix structures to use
@@ -61,15 +64,6 @@ $head Aborting Optimization$$
 It would be helpful to return the fixed and random effects
 that correspond to the last attempted function evaluations that fail;
 i.e., that result in $code nan$$.
-
-$head Random Constraints$$
-Include the lagrange multipliers for the
-$cref/random constraints
-	/cppad_mixed
-	/Notation
-	/Random Constraint Matrix, A
-/$$
-in the $cref optimize_fixed$$ and $cref sample_fixed$$ interfaces.
 
 $head Windows Install$$
 Make and test a set of Windows install instructions for $code cppad_mixed$$.
