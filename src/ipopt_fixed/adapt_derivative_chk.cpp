@@ -161,32 +161,60 @@ $end
 	// infinity
 	const double infinity  = std::numeric_limits<double>::infinity();
 	//
-	// dimension scale_x_, scale_g_
-	assert( scale_g_.size() == 0 );
-	assert( scale_x_.size() == 0 );
-	scale_x_.resize(n);
-	scale_g_.resize(m);
+	// scaling is initialized as identity by constructor
+# ifndef NDEBUG
+	assert( scale_f_ == 1.0 );
+	assert( scale_g_.size() == m );
+	assert( scale_x_.size() == n );
+	for(size_t i = 0; i < m; ++i)
+		assert( scale_g_[i] == 1.0 );
+	for(size_t j = 0; j < n; ++j)
+		assert( scale_x_[j] == 1.0 );
+# endif
+	// x_lower, x_upper, g_lower, g_upper
+	// (These bounds are before the rescaling)
+	d_vector x_lower(n), x_upper(n), g_lower(m), g_upper(m);
+	bool ok = get_bounds_info(
+		Index(n),
+		x_lower.data(),
+		x_upper.data(),
+		Index(m),
+		g_lower.data(),
+		g_upper.data()
+	);
+	assert( ok );
 	//
 	// check for warm start
 	if( warm_start_.x_info.size() != 0 )
-	{	// scale_f_, scale_g_, scale_x_
-		assert( warm_start_.x_info.size() == n );
-		assert( warm_start_.g_info.size() == m );
+	{	// check warm start information
+		const char* msg =
+			"warm_start: information does not agree with this problem";
+		ok &= warm_start_.x_info.size() == n;
+		ok &= warm_start_.g_info.size() == m;
+		if( ! ok )
+		{	assert( error_message_ == "" );
+			error_message_ = msg;
+			return false;
+		}
 		scale_f_ = warm_start_.scale_f;
 		for(size_t j = 0; j < n; ++j)
+		{	double x    = warm_start_.x_info[j].x;
 			scale_x_[j] = warm_start_.x_info[j].scale_x;
+			ok         &= 0.0 < scale_x_[j];
+			ok         &= x_lower[j] * scale_x_[j] <= x;
+			ok         &= x_upper[j] * scale_x_[j] >= x;
+		}
 		for(size_t i = 0; i < m; ++i)
-			scale_g_[i] = warm_start_.g_info[i].scale_g;
+		{	scale_g_[i] = warm_start_.g_info[i].scale_g;
+			ok         &= 0.0 < scale_g_[i];
+		}
+		if( ! ok )
+		{	assert( error_message_ == "" );
+			error_message_ = msg;
+			return false;
+		}
 		return true;
 	}
-	//
-	// scale_f_, scale_g_, scale_x_: initialize as identity mapping
-	// and set to to its final value just before returning.
-	scale_f_ = 1.0;
-	for(size_t j = 0; j < n; ++j)
-		scale_x_[j] = 1.0;
-	for(size_t i = 0; i < m; ++i)
-		scale_g_[i] = 1.0;
 	//
 	// x, x_scale: two view of same vector of argument values
 	d_vector x_scale(n);
@@ -210,7 +238,7 @@ $end
 	// grad_f: gradinet of f(x)
 	d_vector grad_f(n);
 	{	bool new_x    = true;
-		bool ok       = eval_grad_f( Index(n), x, new_x, grad_f.data() );
+		ok            = eval_grad_f( Index(n), x, new_x, grad_f.data() );
 		if( ! ok )
 		{	assert( error_message_ != "" );
 			return false;
@@ -223,7 +251,7 @@ $end
 		// jac_g
 		bool new_x      = false;
 		Number* values  = jac_g.data();
-		bool ok = eval_jac_g(
+		ok = eval_jac_g(
 			Index(n),
 			x,
 			new_x,
@@ -238,18 +266,6 @@ $end
 			return false;
 		}
 	}
-	//
-	// x_lower, x_upper, g_lower, g_upper
-	d_vector x_lower(n), x_upper(n), g_lower(m), g_upper(m);
-	bool ok = get_bounds_info(
-		Index(n),
-		x_lower.data(),
-		x_upper.data(),
-		Index(m),
-		g_lower.data(),
-		g_upper.data()
-	);
-	assert( ok );
 	//
 	// If not tracing or checking derivatives, set scaling and return
 	if( (! trace) && relative_tol == infinity )

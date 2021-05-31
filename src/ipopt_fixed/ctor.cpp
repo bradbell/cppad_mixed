@@ -661,6 +661,18 @@ error_fixed_           ( n_fixed_ )
 		nnz_h_lag_ = lag_hes_row_.size();
 		assert( nnz_h_lag_ == lag_hes_col_.size() );
 	}
+	// ------------------------------------------------------------------------
+	// Initialize scale_f_, scale_x_, scale_g_ to identity mapping
+	// ------------------------------------------------------------------------
+	const size_t n  = n_fixed_ + fix_likelihood_nabs_;
+	const size_t m  = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
+	scale_x_.resize(n);
+	scale_g_.resize(m);
+	scale_f_ = 1.0;
+	for(size_t j = 0; j < n; ++j)
+		scale_x_[j] = 1.0;
+	for(size_t i = 0; i < m; ++i)
+		scale_g_[i] = 1.0;
 	// -----------------------------------------------------------------------
 	adaptive_called_  = false; // changed by adapt_derivative_chk
 }
