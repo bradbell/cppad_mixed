@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2021</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2021">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2021 05-28 05-27 05-26 05-17 05-15 05-11 05-07 05-01 03-02 ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2021 05-31 05-29 05-28 05-27 05-26 05-17 05-15 05-11 05-07 05-01 03-02 ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -66,6 +66,8 @@ A:active { color : purple }
 
 <center><b><big><big>Changes and Additions to cppad_mixed During 2021</big></big></b></center>
 
+<br><a href="whats_new_21.htm#05-31" target="_top">05-31</a>
+<br><a href="whats_new_21.htm#05-29" target="_top">05-29</a>
 <br><a href="whats_new_21.htm#05-28" target="_top">05-28</a>
 <br><a href="whats_new_21.htm#05-27" target="_top">05-27</a>
 <br><a href="whats_new_21.htm#05-26" target="_top">05-26</a>
@@ -76,9 +78,78 @@ A:active { color : purple }
 <br><a href="whats_new_21.htm#05-01" target="_top">05-01</a>
 <br><a href="whats_new_21.htm#03-02" target="_top">03-02</a>
 <br><br>
+<b><big><a name="05-31" id="05-31">05-31</a></big></b>
+
+<ol type="1"><li>
+The optional <a href="optimize_fixed.htm#warm_start" target="_top"><span style='white-space: nowrap'>warm_start</span></a>
+
+argument was added to the <code><font color="blue">optimize_fixed</font></code> function.
+</li><li>
+
+The required
+<a href="install_unix.htm#System Requirements.C++ Compiler" target="_top"><span style='white-space: nowrap'>c++&nbsp;compiler</span></a>
+
+was changed from c++98 to c++11.
+This requirement actually changed on
+<a href="whats_new_21.htm#05-07" target="_top"><span style='white-space: nowrap'>05-07</span></a>
+ when the version of cppad changed to
+cppad-20210430.
+</li><li>
+
+Change the <a href="no_random.cpp.htm" target="_top"><span style='white-space: nowrap'>no_random.cpp</span></a>
+ example as suggested by the new
+<a href="wish_list.htm#Examples" target="_top"><span style='white-space: nowrap'>examples</span></a>
+ with list item.
+</li><li>
+
+Edit the <a href="wish_list.htm" target="_top"><span style='white-space: nowrap'>wish_list</span></a>
+ as follows:
+Remove the random constraint item because it has been completed; see
+<a href="fixed_solution.htm#ran_con_lag" target="_top"><span style='white-space: nowrap'>ran_con_lag</span></a>
+.
+Add the <a href="wish_list.htm#Examples" target="_top"><span style='white-space: nowrap'>examples</span></a>
+ item.
+Extend the
+<a href="wish_list.htm#Multi-Threading and Statistics" target="_top"><span style='white-space: nowrap'>multi-threading</span></a>
+
+item to include statistics.
+</li></ol>
+
+
+<br>
+<br>
+<b><big><a name="05-29" id="05-29">05-29</a></big></b>
+
+<ol type="1"><li>
+The
+<a href="optimize_fixed.htm#fixed_ipopt_options.hessian_approximation" target="_top"><span style='white-space: nowrap'>hessian_approximation</span></a>
+
+is now set and checked when <a href="derived_ctor.htm#quasi_fixed" target="_top"><span style='white-space: nowrap'>quasi_fixed</span></a>
+
+is false (used to be just when it was true).
+</li><li>
+
+Change the default value for
+<a href="optimize_fixed.htm#fixed_ipopt_options.accept_after_max_steps" target="_top"><span style='white-space: nowrap'>accept_after_max_steps</span></a>
+
+from <code><font color="blue">2</font></code> to <code><font color="blue">-1</font></code> (no limit), the standard ipopt default
+for this value.
+</li></ol>
+
+
+
+
+<br>
+<br>
 <b><big><a name="05-28" id="05-28">05-28</a></big></b>
 
 <ol type="1"><li>
+Speed up the
+<a href="optimize_fixed.htm#fixed_ipopt_options.derivative_test" target="_top"><span style='white-space: nowrap'>adaptive</span></a>
+
+derivative test be starting at the smallest, instead of largest, step size.
+</li><li>
+
 Further improvements and simplifications to solution check
 and setting Lagrange multipliers; i.e.,
 <a href="fixed_solution.htm#fixed_lag" target="_top"><span style='white-space: nowrap'>fixed_lag</span></a>

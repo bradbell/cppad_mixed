@@ -9,6 +9,7 @@ document.write('\
 <option>lasso.cpp</option>\
 <option>data_mismatch.cpp</option>\
 <option>opt_ran_nan.cpp</option>\
+<option>warm_start.cpp</option>\
 </select>\
 ');
 function user_child(item)
@@ -19,7 +20,8 @@ function user_child(item)
 		'ran_constraint.cpp.htm',
 		'lasso.cpp.htm',
 		'data_mismatch.cpp.htm',
-		'opt_ran_nan.cpp.htm'
+		'opt_ran_nan.cpp.htm',
+		'warm_start.cpp.htm'
 	];
 	var index = item.selectedIndex;
 	item.selectedIndex = 0;

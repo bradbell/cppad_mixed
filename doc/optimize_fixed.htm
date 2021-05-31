@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Optimize Fixed Effects</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Optimize Fixed Effects">
-<meta name="keywords" id="keywords" content=" optimize fixed effects syntax public purpose inf mixed_object fixed_ipopt_options derivative_test hessian_approximation max_iter accept_after_max_steps nlp_scaling_method random_ipopt_options fixed_lower fixed_upper fix_constraint_lower fix_constraint_upper fixed_scale fixed_in random_lower random_upper random_in solution laplace approximation example ipopt_fixed ">
+<meta name="keywords" id="keywords" content=" optimize fixed effects syntax public purpose inf mixed_object fixed_ipopt_options derivative_test hessian_approximation max_iter accept_after_max_steps nlp_scaling_method random_ipopt_options fixed_lower fixed_upper fix_constraint_lower fix_constraint_upper fixed_scale fixed_in random_lower random_upper random_in warm_start no warm start example solution laplace approximation ipopt_fixed ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -86,6 +86,10 @@ A:active { color : purple }
 <br><a href="optimize_fixed.htm#random_lower" target="_top">random_lower</a>
 <br><a href="optimize_fixed.htm#random_upper" target="_top">random_upper</a>
 <br><a href="optimize_fixed.htm#random_in" target="_top">random_in</a>
+<br><a href="optimize_fixed.htm#warm_start" target="_top">warm_start</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="optimize_fixed.htm#warm_start.No Warm Start" target="_top">No&nbsp;Warm&nbsp;Start</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="optimize_fixed.htm#warm_start.Warm Start" target="_top">Warm&nbsp;Start</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="optimize_fixed.htm#warm_start.Example" target="_top">Example</a>
 <br><a href="optimize_fixed.htm#solution" target="_top">solution</a>
 <br><a href="optimize_fixed.htm#Laplace Approximation" target="_top">Laplace&nbsp;Approximation</a>
 <br><a href="optimize_fixed.htm#Example" target="_top">Example</a>
@@ -109,7 +113,8 @@ A:active { color : purple }
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>fixed_in</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_lower</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_upper</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_in</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>random_in</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>warm_start</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 )</span></font></code>
 
 
@@ -170,8 +175,8 @@ If it is <code><font color="blue">first-order</font></code>,
 only first order derivatives are tested.
 If it is <code><font color="blue">second-order</font></code> (<code><font color="blue">only-second-order</font></code>)
 second derivatives (and first derivatives) are tested.
-In these two cases 
-<code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
+In these two cases
+<a href="derived_ctor.htm#quasi_fixed" target="_top"><span style='white-space: nowrap'>quasi_fixed</span></a>
  must be <code><font color="blue">false</font></code>.
 If 
 <code><i><font color="black"><span style='white-space: nowrap'>derivative_test</span></font></i></code>
@@ -187,10 +192,11 @@ the adaptive step size results are traced on standard output.
 <br>
 If 
 <code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
- is true,
+ is true (false),
 
 <code><i><font color="black"><span style='white-space: nowrap'>hessian_approximation</span></font></i></code>
- will be set to <code><font color="blue">limit-memory</font></code>.
+ will be set to
+<code><font color="blue">limit-memory</font></code> (<code><font color="blue">exact</font></code>).
 If it is also set in 
 <code><i><font color="black"><span style='white-space: nowrap'>fixed_ipopt_options</span></font></i></code>
 , it must have this value.
@@ -230,7 +236,8 @@ it may be that
 <br>
 The default value for 
 <code><i><font color="black"><span style='white-space: nowrap'>accept_after_max_steps</span></font></i></code>
- is <code><font color="blue">2</font></code>.
+ is <code><font color="blue">-1</font></code>
+(no limit).
 This is the maximum number of backtracking steps to take before
 accepting a line search point; see
 <a href="ipopt_trace.htm#ls" target="_top"><span style='white-space: nowrap'>ls</span></a>
@@ -441,7 +448,8 @@ It must have size equal to
  and
 specifies the initial value used for the optimization of the
 <a href="cppad_mixed.htm#Notation.Random Effects, u" target="_top"><span style='white-space: nowrap'>random&nbsp;effects</span></a>
- vector <small>@(@
+
+vector <small>@(@
 u
 @)@</small>.
 It must hold that
@@ -452,6 +460,79 @@ It must hold that
 for each valid index 
 <code><i><font color="black"><span style='white-space: nowrap'>i</span></font></i></code>
 .
+
+<br>
+<br>
+<b><big><a name="warm_start" id="warm_start">warm_start</a></big></b>
+<br>
+This argument is optional and has prototype
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;warm_start_struct&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>warm_start</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+</span></font></code>
+It is an error for the user to specify 
+<code><i><font color="black"><span style='white-space: nowrap'>warm_start_init_point</span></font></i></code>
+ in
+
+<code><i><font color="black"><span style='white-space: nowrap'>fixed_ipopt_options</span></font></i></code>
+.
+
+<br>
+<br>
+<big><a name="warm_start.No Warm Start" id="warm_start.No Warm Start">No Warm Start</a></big>
+<br>
+If the size of 
+<code><i><font color="black"><span style='white-space: nowrap'>warm_start</span></font></i><font color="blue"><span style='white-space: nowrap'>.x_info</span></font></code>
+ is zero,
+there is no warm start information.
+This is the same as when the argument is not present.
+In this case, the ipopt 
+<code><i><font color="black"><span style='white-space: nowrap'>warm_start_init_point</span></font></i></code>
+ option will be set to
+<code><font color="blue">no</font></code>.
+
+<br>
+<br>
+<big><a name="warm_start.Warm Start" id="warm_start.Warm Start">Warm Start</a></big>
+<br>
+If the size of 
+<code><i><font color="black"><span style='white-space: nowrap'>warm_start</span></font></i><font color="blue"><span style='white-space: nowrap'>.x_info</span></font></code>
+ is non-zero,
+
+<code><i><font color="black"><span style='white-space: nowrap'>warm_start</span></font></i></code>
+ must is equal the
+<a href="fixed_solution.htm#warm_start" target="_top"><span style='white-space: nowrap'>warm_start</span></a>
+ field in a
+fixed effects solution returned by a previous call to <code><font color="blue">optimized_fixed</font></code>
+(where all the other arguments to <code><font color="blue">optimize_fixed</font></code> were the same).
+<ol type="1"><li>
+The ipopt 
+<code><i><font color="black"><span style='white-space: nowrap'>warm_start_init_point</span></font></i></code>
+ options will be set to <code><font color="blue">yes</font></code>.
+</li><li>
+
+The 
+<code><i><font color="black"><span style='white-space: nowrap'>fixed_scale</span></font></i></code>
+ and 
+<code><i><font color="black"><span style='white-space: nowrap'>fixed_in</span></font></i></code>
+ arguments are not used
+during a warm start optimization.
+</li><li>
+
+Any derivative test specified in 
+<code><i><font color="black"><span style='white-space: nowrap'>fixed_ipopt_options</span></font></i></code>
+
+will not be passed onto Ipopt; i.e.,
+no derivative testing is done during a warm start.
+</li></ol>
+
+
+<br>
+<br>
+<big><a name="warm_start.Example" id="warm_start.Example">Example</a></big>
+<br>
+see <a href="warm_start.cpp.htm" target="_top"><span style='white-space: nowrap'>warm_start.cpp</span></a>
+
 
 <br>
 <br>

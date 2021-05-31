@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>CppAD Mixed Wish List</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="CppAD Mixed Wish List">
-<meta name="keywords" id="keywords" content=" cppad mixed wish list tracing optimization optimize fixed multi-threading sparse matrix d_sparse_rcv aborting random constraints windows install ">
+<meta name="keywords" id="keywords" content=" cppad mixed wish list multi-threading statistics fixed likelihood hessian examples tracing optimization d_sparse_rcv aborting windows install ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -62,52 +62,27 @@ A:active { color : purple }
 
 <center><b><big><big>CppAD Mixed Wish List</big></big></b></center>
 
+<br><a href="wish_list.htm#Multi-Threading and Statistics" target="_top">Multi-Threading&nbsp;and&nbsp;Statistics</a>
+<br><a href="wish_list.htm#Fixed Likelihood Hessian" target="_top">Fixed&nbsp;Likelihood&nbsp;Hessian</a>
+<br><a href="wish_list.htm#Examples" target="_top">Examples</a>
 <br><a href="wish_list.htm#Tracing Optimization" target="_top">Tracing&nbsp;Optimization</a>
-<br><a href="wish_list.htm#Optimize Fixed" target="_top">Optimize&nbsp;Fixed</a>
-<br><a href="wish_list.htm#Multi-Threading" target="_top">Multi-Threading</a>
-<br><a href="wish_list.htm#Sparse Matrix" target="_top">Sparse&nbsp;Matrix</a>
 <br><a href="wish_list.htm#d_sparse_rcv" target="_top">d_sparse_rcv</a>
 <br><a href="wish_list.htm#Aborting Optimization" target="_top">Aborting&nbsp;Optimization</a>
-<br><a href="wish_list.htm#Random Constraints" target="_top">Random&nbsp;Constraints</a>
 <br><a href="wish_list.htm#Windows Install" target="_top">Windows&nbsp;Install</a>
 <br><br>
-<b><big><a name="Tracing Optimization" id="Tracing Optimization">Tracing Optimization</a></big></b>
+<b><big><a name="Multi-Threading and Statistics" id="Multi-Threading and Statistics">Multi-Threading and Statistics</a></big></b>
 <br>
-Add options to specify the file name for the optimizer trace
-at both the fixed and random effects levels; see
-<a href="https://list.coin-or.org/pipermail/ipopt/2015-October/004160.html" target="_top"><span style='white-space: nowrap'>output&nbsp;file&nbsp;options</span></a>
-.
+Change <code><font color="blue">fix_likelihood</font></code> and <code><font color="blue">ran_likelihood</font></code>
+so that every data value is a separate element of the return vector.
+This would require a separate argument to the cppad_mixed constructor
+that tells which elements of <code><font color="blue">fix_likelihood</font></code> are absolute value terms.
+It would also enable asymptotic statistics using Jacobians of the likelihood
+vector, instead of Hessians of the total likelihood.
+
 
 <br>
 <br>
-<b><big><a name="Optimize Fixed" id="Optimize Fixed">Optimize Fixed</a></big></b>
-<br>
-Change <a href="optimize_fixed.htm" target="_top"><span style='white-space: nowrap'>optimize_fixed</span></a>
- so that it can be used as a completely
-general interface to Ipopt.
-This would require allowing any of the possible Ipopt options.
-
-<br>
-<br>
-<b><big><a name="Multi-Threading" id="Multi-Threading">Multi-Threading</a></big></b>
-<br>
-Change the <code><font color="blue">ran_likelihood</font></code> function to allow for multi-threading.
-For example, if
-<a href="ran_likelihood.htm#vec" target="_top"><span style='white-space: nowrap'>vec.size()</span></a>
- is greater than one,
-<small>@(@
-f( \theta , u )
-@)@</small> could be the sum the elements of 
-<code><i><font color="black"><span style='white-space: nowrap'>vec</span></font></i></code>
-
-and subsequent calculations would split to sums with each
-component of 
-<code><i><font color="black"><span style='white-space: nowrap'>vec</span></font></i></code>
- corresponding to a different thread.
-
-<br>
-<br>
-<b><big><a name="Sparse Matrix" id="Sparse Matrix">Sparse Matrix</a></big></b>
+<b><big><a name="Fixed Likelihood Hessian" id="Fixed Likelihood Hessian">Fixed Likelihood Hessian</a></big></b>
 <br>
 Move the initialization of <code><font color="blue">fix_like_hes_</font></code>
 to a separate routine so it does not get calculated when
@@ -119,6 +94,24 @@ If
 would need to be initialized the first time
 <a href="information_mat.htm" target="_top"><span style='white-space: nowrap'>information_mat</span></a>
  is called.
+
+<br>
+<br>
+<b><big><a name="Examples" id="Examples">Examples</a></big></b>
+<br>
+Where appropriate, change <code><font color="blue">virtual</font></code> function definitions
+to <code><font color="blue">override</font></code> definitions.
+In addition, change template functions to regular functions
+when only one type is used as the template argument.
+
+<br>
+<br>
+<b><big><a name="Tracing Optimization" id="Tracing Optimization">Tracing Optimization</a></big></b>
+<br>
+Add options to specify the file name for the optimizer trace
+at both the fixed and random effects levels; see
+<a href="https://list.coin-or.org/pipermail/ipopt/2015-October/004160.html" target="_top"><span style='white-space: nowrap'>output&nbsp;file&nbsp;options</span></a>
+.
 
 <br>
 <br>
@@ -143,17 +136,6 @@ Use <a href="sparse_mat_info.htm" target="_top"><span style='white-space: nowrap
 It would be helpful to return the fixed and random effects
 that correspond to the last attempted function evaluations that fail;
 i.e., that result in <code><font color="blue">nan</font></code>.
-
-<br>
-<br>
-<b><big><a name="Random Constraints" id="Random Constraints">Random Constraints</a></big></b>
-<br>
-Include the lagrange multipliers for the
-<a href="cppad_mixed.htm#Notation.Random Constraint Matrix, A" target="_top"><span style='white-space: nowrap'>random&nbsp;constraints</span></a>
-
-in the <a href="optimize_fixed.htm" target="_top"><span style='white-space: nowrap'>optimize_fixed</span></a>
- and <a href="sample_fixed.htm" target="_top"><span style='white-space: nowrap'>sample_fixed</span></a>
- interfaces.
 
 <br>
 <br>

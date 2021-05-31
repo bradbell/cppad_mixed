@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Optimal Solution Returned by optimize_fixed</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Optimal Solution Returned by optimize_fixed">
-<meta name="keywords" id="keywords" content=" optimal solution returned optimize_fixed syntax public convention fixed_opt fixed_lag fix_con_lag ran_con_lag ">
+<meta name="keywords" id="keywords" content=" optimal solution returned optimize_fixed syntax prototype public convention fixed_opt fixed_lag fix_con_lag ran_con_lag warm_start ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -32,7 +32,7 @@ A:active { color : purple }
 <a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
 </td>
 <td><a href="sparse_mat_info.htm" target="_top">Prev</a>
-</td><td><a href="exception.htm" target="_top">Next</a>
+</td><td><a href="warm_start_struct.htm" target="_top">Next</a>
 </td><td>
 <select onchange='choose_across0(this)'>
 <option>Index-&gt;</option>
@@ -57,7 +57,9 @@ A:active { color : purple }
 <td>
 <script type='text/javascript' language='JavaScript' src='_childtable_namespace_htm.js'></script>
 </td>
-<td>fixed_solution</td>
+<td>
+<script type='text/javascript' language='JavaScript' src='_childtable_fixed_solution_htm.js'></script>
+</td>
 </tr></table><br>
 @(@\newcommand{\R}[1]{ {\rm #1} }
 \newcommand{\B}[1]{ {\bf #1} }
@@ -67,12 +69,14 @@ A:active { color : purple }
 <center><b><big><big>Optimal Solution Returned by optimize_fixed</big></big></b></center>
 
 <br><a href="fixed_solution.htm#Syntax" target="_top">Syntax</a>
+<br><a href="fixed_solution.htm#Prototype" target="_top">Prototype</a>
 <br><a href="fixed_solution.htm#Public" target="_top">Public</a>
 <br><a href="fixed_solution.htm#Convention" target="_top">Convention</a>
 <br><a href="fixed_solution.htm#fixed_opt" target="_top">fixed_opt</a>
 <br><a href="fixed_solution.htm#fixed_lag" target="_top">fixed_lag</a>
 <br><a href="fixed_solution.htm#fix_con_lag" target="_top">fix_con_lag</a>
 <br><a href="fixed_solution.htm#ran_con_lag" target="_top">ran_con_lag</a>
+<br><a href="fixed_solution.htm#warm_start" target="_top">warm_start</a>
 <br><br>
 <b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
 
@@ -83,6 +87,17 @@ A:active { color : purple }
 
 <br>
 <br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre><tt>
+     <b><font color="#0000FF">struct</font></b> <font color="#008080">fixed_solution</font> <font color="#FF0000">{</font>
+          CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font>  fixed_opt<font color="#990000">;</font>
+          CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font>  fixed_lag<font color="#990000">;</font>
+          CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font>  fix_con_lag<font color="#990000">;</font>
+          CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font>  ran_con_lag<font color="#990000">;</font>
+          <font color="#008080">warm_start_struct</font>      warm_start<font color="#990000">;</font>
+     <font color="#FF0000">}</font><font color="#990000">;</font>     </tt></pre>
+<br>
 <b><big><a name="Public" id="Public">Public</a></big></b>
 <br>
 This structure is part of the
@@ -92,20 +107,18 @@ CppAD Mixed user API.
 <br>
 <b><big><a name="Convention" id="Convention">Convention</a></big></b>
 <br>
-If a Lagrange multiplier is zero, the correspond constraint
-is not active at the optimal solution.
+If a Lagrange multiplier is non-zero (zero), the correspond constraint
+is active (is not active) at the optimal solution.
+The values specified below are as in the
+<a href="optimize_fixed.htm#solution" target="_top"><span style='white-space: nowrap'>solution</span></a>
+ return by <code><font color="blue">optimize_fixed</font></code>.
 
 <br>
 <br>
 <b><big><a name="fixed_opt" id="fixed_opt">fixed_opt</a></big></b>
 <br>
-This field has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;double&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_opt<br>
-</span></font></code>
-It has size zero when constructed
-and when set its size is <a href="derived_ctor.htm#n_fixed" target="_top"><span style='white-space: nowrap'>n_fixed</span></a>
+The size of this field is
+<a href="derived_ctor.htm#n_fixed" target="_top"><span style='white-space: nowrap'>n_fixed</span></a>
 .
 It is the final value (optimal value found) for the fixed effects.
 
@@ -113,13 +126,8 @@ It is the final value (optimal value found) for the fixed effects.
 <br>
 <b><big><a name="fixed_lag" id="fixed_lag">fixed_lag</a></big></b>
 <br>
-This field has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;double&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_lag<br>
-</span></font></code>
-It has size zero when constructed
-and when set its size is <a href="derived_ctor.htm#n_fixed" target="_top"><span style='white-space: nowrap'>n_fixed</span></a>
+The size of this field is
+<a href="derived_ctor.htm#n_fixed" target="_top"><span style='white-space: nowrap'>n_fixed</span></a>
 .
 If 
 <code><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fixed_lag[</span></font><i><font color="black"><span style='white-space: nowrap'>i</span></font></i><font color="blue"><span style='white-space: nowrap'>]</span></font></code>
@@ -132,13 +140,8 @@ for the <code><i>i</i></code>-th component of the fixed effects.
 <br>
 <b><big><a name="fix_con_lag" id="fix_con_lag">fix_con_lag</a></big></b>
 <br>
-This field has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;double&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.fix_con_lag<br>
-</span></font></code>
-It has size zero when constructed
-and when set its size is the number of fixed constraints; i.e., the size of
+The size of this field is
+the number of fixed constraints; i.e., the size of
 the vector <a href="fix_constraint.htm#vec" target="_top"><span style='white-space: nowrap'>vec</span></a>
  returned by
 the <code><font color="blue">fix_constraint</font></code> function.
@@ -153,13 +156,8 @@ for the <code><i>i</i></code>-th component of the fixed constraint function.
 <br>
 <b><big><a name="ran_con_lag" id="ran_con_lag">ran_con_lag</a></big></b>
 <br>
-This field has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CppAD::vector&lt;double&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>solution</span></font></i><font color="blue"><span style='white-space: nowrap'>.ran_con_lag<br>
-</span></font></code>
-It has size zero when constructed
-and when set its size is the number of random constraints; i.e.,
+The size of this field is
+the number of random constraints; i.e.,
 the number of rows
 in the matrix <a href="derived_ctor.htm#A_rcv" target="_top"><span style='white-space: nowrap'>A_rcv</span></a>
 .
@@ -171,6 +169,16 @@ the Lagrange multiplier for the upper (lower) bound
 for the <code><i>i</i></code>-th row of the random constraint matrix <small>@(@
 A
 @)@</small>.
+
+
+<br>
+<br>
+<b><big><a name="warm_start" id="warm_start">warm_start</a></big></b>
+<br>
+This <a href="warm_start_struct.htm" target="_top"><span style='white-space: nowrap'>warm_start_struct</span></a>
+ contains
+the necessary information to continue the ipopt optimization
+from the current solution; i.e., warm start the optimization.
 
 
 <hr>Input File: include/cppad/mixed/fixed_solution.hpp

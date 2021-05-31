@@ -1,0 +1,191 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=default'
+>
+</script>
+<head>
+<title>Ipopt Warm Start Information</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Ipopt Warm Start Information">
+<meta name="keywords" id="keywords" content=" ipopt warm start information syntax prototype scale_f x_info x z_l z_u scale_x g_info lambda scale_g public ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_warm_start_struct_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="fixed_solution.htm" target="_top">Prev</a>
+</td><td><a href="exception.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>fixed_solution</option>
+<option>warm_start_struct</option>
+</select>
+</td>
+<td>
+<script type='text/javascript' language='JavaScript' src='_childtable_cppad_mixed_htm.js'></script>
+</td>
+<td>
+<script type='text/javascript' language='JavaScript' src='_childtable_namespace_htm.js'></script>
+</td>
+<td>
+<script type='text/javascript' language='JavaScript' src='_childtable_fixed_solution_htm.js'></script>
+</td>
+<td>warm_start_struct</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Ipopt Warm Start Information</big></big></b></center>
+
+<br><a href="warm_start_struct.htm#Syntax" target="_top">Syntax</a>
+<br><a href="warm_start_struct.htm#Prototype" target="_top">Prototype</a>
+<br><a href="warm_start_struct.htm#scale_f" target="_top">scale_f</a>
+<br><a href="warm_start_struct.htm#x_info" target="_top">x_info</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="warm_start_struct.htm#x_info.x" target="_top">x</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="warm_start_struct.htm#x_info.z_L" target="_top">z_L</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="warm_start_struct.htm#x_info.z_U" target="_top">z_U</a>
+<br><a href="warm_start_struct.htm#scale_x" target="_top">scale_x</a>
+<br><a href="warm_start_struct.htm#g_info" target="_top">g_info</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="warm_start_struct.htm#g_info.lambda" target="_top">lambda</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="warm_start_struct.htm#g_info.scale_g" target="_top">scale_g</a>
+<br><a href="warm_start_struct.htm#Public" target="_top">Public</a>
+<br><br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><font color="blue"><span style='white-space: nowrap'>CppAD::mixed::warm_start_struct&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>warm_start</span></font></i></code>
+
+
+<br>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre><tt>
+     <b><font color="#0000FF">struct</font></b> <font color="#008080">x_info_struct</font> <font color="#FF0000">{</font>
+          <font color="#009900">double</font> x<font color="#990000">;</font> <font color="#009900">double</font> z_L<font color="#990000">;</font> <font color="#009900">double</font> z_U<font color="#990000">;</font> <font color="#009900">double</font> scale_x<font color="#990000">;</font>
+     <font color="#FF0000">}</font><font color="#990000">;</font>
+     <b><font color="#0000FF">struct</font></b> <font color="#008080">g_info_struct</font> <font color="#FF0000">{</font>
+          <font color="#009900">double</font> lambda<font color="#990000">;</font> <font color="#009900">double</font> scale_g<font color="#990000">;</font>
+     <font color="#FF0000">}</font><font color="#990000">;</font>
+     <b><font color="#0000FF">struct</font></b> <font color="#008080">warm_start_struct</font> <font color="#FF0000">{</font>
+          <font color="#009900">double</font> scale_f<font color="#990000">;</font>
+          CppAD<font color="#990000">::</font><font color="#008080">vector&lt;x_info_struct&gt;</font> x_info<font color="#990000">;</font>
+          CppAD<font color="#990000">::</font><font color="#008080">vector&lt;g_info_struct&gt;</font> g_info<font color="#990000">;</font>
+     <font color="#FF0000">}</font><font color="#990000">;</font>     </tt></pre>
+<br>
+<b><big><a name="scale_f" id="scale_f">scale_f</a></big></b>
+<br>
+This is the cppad_mixed scaling factor for the ipopt objective function
+<small>@(@
+f(x)
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="x_info" id="x_info">x_info</a></big></b>
+<br>
+If the size of this vector is zero, the size of 
+<code><i><font color="black"><span style='white-space: nowrap'>g_info</span></font></i></code>
+
+must also be zero.
+Otherwise, <code><font color="blue">x_info</font></code> has size equal to the number of primal variables
+<small>@(@
+x
+@)@</small>.
+The <code><i>j</i></code>-th element of this vector contains the following fields:
+
+<br>
+<br>
+<big><a name="x_info.x" id="x_info.x">x</a></big>
+<br>
+is the warm start value for x[j].
+
+<br>
+<br>
+<big><a name="x_info.z_L" id="x_info.z_L">z_L</a></big>
+<br>
+is the warm start value for z_L[j].
+
+<br>
+<br>
+<big><a name="x_info.z_U" id="x_info.z_U">z_U</a></big>
+<br>
+is the warm start value for z_U[j].
+
+<br>
+<br>
+<b><big><a name="scale_x" id="scale_x">scale_x</a></big></b>
+<br>
+is the cppad_mixed scaling factor for x[j].
+
+<br>
+<br>
+<b><big><a name="g_info" id="g_info">g_info</a></big></b>
+<br>
+If the size of 
+<code><i><font color="black"><span style='white-space: nowrap'>x_info</span></font></i></code>
+ is non-zero,
+<code><font color="blue">g_info</font></code> has size equal to the number of <small>@(@
+g(x)
+@)@</small> constraints.
+The <code><i>i</i></code>-th element of this vector contains the following fields:
+
+<br>
+<br>
+<big><a name="g_info.lambda" id="g_info.lambda">lambda</a></big>
+<br>
+is the warm start value for lambda[i].
+
+<br>
+<br>
+<big><a name="g_info.scale_g" id="g_info.scale_g">scale_g</a></big>
+<br>
+is the cppad_mixed scaling factor for <small>@(@
+g_i(x)
+@)@</small>.
+
+<br>
+<br>
+<b><big><a name="Public" id="Public">Public</a></big></b>
+<br>
+This structure is part of the CppAD Mixed user API.
+
+
+<hr>Input File: include/cppad/mixed/warm_start_struct.hpp
+
+</body>
+</html>
