@@ -23,6 +23,13 @@ $section Changes and Additions to cppad_mixed During 2021$$
 
 $head 05-31$$
 $list number$$
+The required
+$cref/c++ compiler/install_unix/System Requirements/C++ Compiler/$$
+was changed from c++98 to c++11.
+This requirement actually changed on
+$cref/05-07/whats_new_21/05-07/$$ when the version of cppad changed to
+cppad-20210430.
+$lnext
 Change the $cref no_random.cpp$$ example as suggested by the new
 $cref/examples/wish_list/Examples/$$ with list item.
 $lnext

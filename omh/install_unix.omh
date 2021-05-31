@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-20 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -45,9 +45,8 @@ The following programs are required by cppad_mixed
 and should have standard system installs:
 
 $subhead C++ Compiler$$
-The $code cppad_mixed$$ program can be compiled by any C++98 compliant compiler;
+The $code cppad_mixed$$ program can be compiled by any C++11 compliant compiler;
 e.g., $code g++$$.
-(Note that a C++11 compiler would be better.)
 
 $subhead git$$
 The $href%https://git-scm.com/%git%$$ program,
