@@ -272,6 +272,9 @@ $icode%solution%.warm_start%$$ structure returned by a previous call to
 $code optimized_fixed$$ (where all the other arguments were the same).
 In this case, the ipopt $icode warm_start_init_point$$ options will be set to
 $code yes$$.
+$lnext
+It is an error for the user to specify $icode warm_start_init_point$$ in
+$icode fixed_ipopt_options$$.
 $lend
 
 $head solution$$
@@ -327,6 +330,8 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	const CppAD::mixed::warm_start_struct& warm_start    )
 {	bool ok = true;
 	using Ipopt::SmartPtr;
+	assert( warm_start.x_info.size() == 0 || warm_start.g_info.size() != 0 );
+	assert( warm_start.x_info.size() != 0 || warm_start.g_info.size() == 0 );
 	//
 	// fixed_(lower, upper, in)
 	assert( fixed_lower.size() == n_fixed_ );
@@ -393,6 +398,11 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	{	app->Options()->SetStringValue(
 			"hessian_approximation", "exact");
 	}
+	// warm_start_init_point
+	if( warm_start.x_info.size() == 0 )
+		app->Options()->SetStringValue( "warm_start_init_point", "no");
+	else
+		app->Options()->SetStringValue( "warm_start_init_point", "yes");
 	//
 	// accept_after_max_steps
 	app->Options()->SetIntegerValue(
@@ -447,6 +457,11 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 			if( tok_2 == "nlp_scaling_method" )
 			{	std::string msg = "optimize_fixed: fixed_ipopt_options: ";
 				msg += " nlp_scaling_method cannot be specified";
+				fatal_error(msg);
+			}
+			if( tok_2 == "warm_start_init_point" )
+			{	std::string msg = "optimize_fixed: fixed_ipopt_options: ";
+				msg += " warm_start_init_point cannot be specified";
 				fatal_error(msg);
 			}
 			app->Options()->SetStringValue(tok_2.c_str(), tok_3.c_str());
