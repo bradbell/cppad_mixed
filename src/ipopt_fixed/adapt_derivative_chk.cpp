@@ -161,9 +161,16 @@ $end
 	// infinity
 	const double infinity  = std::numeric_limits<double>::infinity();
 	//
+	// dimension scale_x_, scale_g_
+	assert( scale_g_.size() == 0 );
+	assert( scale_x_.size() == 0 );
+	scale_x_.resize(n);
+	scale_g_.resize(m);
+	//
 	// check for warm start
 	if( warm_start_.x_info.size() != 0 )
-	{	assert( warm_start_.x_info.size() == n );
+	{	// scale_f_, scale_g_, scale_x_
+		assert( warm_start_.x_info.size() == n );
 		assert( warm_start_.g_info.size() == m );
 		scale_f_ = warm_start_.scale_f;
 		for(size_t j = 0; j < n; ++j)
@@ -175,13 +182,9 @@ $end
 	//
 	// scale_f_, scale_g_, scale_x_: initialize as identity mapping
 	// and set to to its final value just before returning.
-	assert( scale_g_.size() == 0 );
-	assert( scale_x_.size() == 0 );
 	scale_f_ = 1.0;
-	scale_x_.resize(n);
 	for(size_t j = 0; j < n; ++j)
 		scale_x_[j] = 1.0;
-	scale_g_.resize(m);
 	for(size_t i = 0; i < m; ++i)
 		scale_g_[i] = 1.0;
 	//

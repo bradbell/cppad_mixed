@@ -321,7 +321,7 @@ $end
 		solution_.warm_start.x_info[j].z_U     = z_U[j];
 		solution_.warm_start.x_info[j].scale_x = scale_x_[j];
 	}
-	solution_.warm_start.g_info.resize(n);
+	solution_.warm_start.g_info.resize(m);
 	for(size_t i = 0; i < size_t(m); ++i)
 	{	solution_.warm_start.g_info[i].lambda   = lambda[i];
 		solution_.warm_start.g_info[i].scale_g  = scale_g_[i];

@@ -259,23 +259,35 @@ This argument is optional and has prototype
 $codei%
 	const warm_start_struct& %warm_start%
 %$$
-$list number$$
+It is an error for the user to specify $icode warm_start_init_point$$ in
+$icode fixed_ipopt_options$$.
+
+$subhead No Warm Start$$
 If the size of $icode%warm_start%.x_info%$$ is zero,
 there is no warm start information.
 This is the same as when the argument is not present.
 In this case, the ipopt $icode warm_start_init_point$$ option will be set to
 $code no$$.
-$lnext
+
+$subhead Warm Start$$
 If the size of $icode%warm_start%.x_info%$$ is non-zero,
 $icode warm_start$$ must is equal the
-$icode%solution%.warm_start%$$ structure returned by a previous call to
-$code optimized_fixed$$ (where all the other arguments were the same).
-In this case, the ipopt $icode warm_start_init_point$$ options will be set to
-$code yes$$.
+$cref/warm_start/fixed_solution/warm_start/$$ field in a
+fixed effects solution returned by a previous call to $code optimized_fixed$$
+(where all the other arguments to $code optimize_fixed$$ were the same).
+$list number$$
+The ipopt $icode warm_start_init_point$$ options will be set to $code yes$$.
 $lnext
-It is an error for the user to specify $icode warm_start_init_point$$ in
-$icode fixed_ipopt_options$$.
+The $icode fixed_scale$$ and $icode fixed_in$$ arguments are not used
+during a warm start optimization.
+$lnext
+Any derivative test specified in $icode fixed_ipopt_options$$
+will not be passed onto Ipopt; i.e.,
+no derivative testing is done during a warm start.
 $lend
+
+$subhead Example$$
+see $cref warm_start.cpp$$
 
 $head solution$$
 The return value has prototype
@@ -448,7 +460,12 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		// switch on option type
 		if ( tok_1 == "String" )
 		{	if( tok_2 == "derivative_test" )
-			{	if( tok_3 == "adaptive" || tok_3 == "trace-adaptive" )
+			{	if( warm_start.x_info.size() != 0 )
+				{	// no derivative testing during a warm start
+					adaptive_check = "none";
+					tok_3          = "none";
+				}
+				if( tok_3 == "adaptive" || tok_3 == "trace-adaptive" )
 				{	adaptive_check = tok_3;
 					tok_3 = "none";
 				}

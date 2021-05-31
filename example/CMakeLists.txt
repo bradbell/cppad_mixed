@@ -1,7 +1,7 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-20 University of Washington
+#           Copyright (C) 2014-21 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -47,8 +47,8 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL example.cpp
 	private/sparse_mat2low.cpp
 	private/sparse_scale_diag.cpp
 	private/sparse_up_tri_sol.cpp
-	private/undetermined.cpp
 	private/update_factor.cpp
+	private/undetermined.cpp
 	user/abs_density.cpp
 	user/data_mismatch.cpp
 	user/derived_ctor.cpp
@@ -67,6 +67,7 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL example.cpp
 	user/ran_likelihood.cpp
 	user/sample_fixed.cpp
 	user/sample_random.cpp
+	user/warm_start.cpp
 )
 
 SET_TARGET_PROPERTIES(

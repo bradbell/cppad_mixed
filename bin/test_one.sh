@@ -2,7 +2,7 @@
 # $Id$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-18 University of Washington
+#           Copyright (C) 2014-21 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -48,6 +48,14 @@ then
 	exit 0
 fi
 file_name="$1"
+# ----------------------------------------------------------------------------
+# n_job
+if which nproc >& /dev/null
+then
+	n_job=$(nproc)
+else
+	n_job=$(sysctl -n hw.ncpu)
+fi
 # ---------------------------------------------------------------------------
 found='no'
 for find_dir in example test_more
@@ -80,8 +88,8 @@ EOF
 		rm test_one.1
 		#
 		echo_eval cd build
-		echo "make check_$find_dir"
-		if ! make "check_$find_dir"
+		echo "make -j $n_job check_$find_dir"
+		if ! make -j $n_job "check_$find_dir"
 		then
 			rm ../test_one.1
 			echo "cd build; make check_$find_dir failed"

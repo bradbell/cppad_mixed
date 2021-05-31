@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-20 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -82,6 +82,7 @@ extern bool sparse_scale_diag_xam(void);
 extern bool sparse_up_tri_sol_xam(void);
 extern bool update_factor_xam(void);
 extern bool undetermined_xam(void);
+extern bool warm_start_xam(void);
 
 // anonymous namespace
 namespace {
@@ -171,6 +172,7 @@ int main(void)
 	RUN(sparse_up_tri_sol_xam);
 	RUN(undetermined_xam);
 	RUN(update_factor_xam);
+	RUN(warm_start_xam);
 	// This comment also expected by bin/test_one.sh
 
 	// summary report

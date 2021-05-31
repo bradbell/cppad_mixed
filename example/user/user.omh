@@ -1,7 +1,7 @@
 $Id:$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-20 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -27,6 +27,7 @@ $children%speed/speed.omh
 	%example/user/lasso.cpp
 	%example/user/data_mismatch.cpp
 	%example/user/opt_ran_nan.cpp
+	%example/user/warm_start.cpp
 %$$
 
 $head Functions Defined by User and Called by cppad_mixed$$
@@ -64,6 +65,7 @@ $rref lasso.cpp$$
 $rref data_mismatch.cpp$$
 $rref manage_gsl_rng.cpp$$
 $rref opt_ran_nan.cpp$$
+$rref warm_start.cpp$$
 $tend
 
 $end

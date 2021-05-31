@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-20 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -180,6 +180,8 @@ namespace { // BEGIN_EMPTY_NAMESPACE
 		brief   += "msg = ";
 		brief   += msg;
 		//
+		// CppAD ErrorHandler: uncomment next line to debug CppAD asserts
+		// assert(false);
 		CppAD::mixed::exception e(thrower, brief);
 		throw(e);
      }
