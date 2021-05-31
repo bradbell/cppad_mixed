@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-18 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -87,21 +87,36 @@ $end
 */
 {	assert( adaptive_called_ == true );
 	assert( init_x == true );
-	assert( init_z == false );
-	assert( init_lambda == false );
 	assert( n > 0 );
 	assert( size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
 	assert( m >= 0 );
 	assert( size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
+	//
+	if( warm_start_.x_info.size() == 0 )
+	{	assert( init_z == false );
+		assert( init_lambda == false );
 
-	// use input values for fixed effects
-	for(size_t j = 0; j < n_fixed_; j++)
-		x[j] = fixed_in_[j];
+		// use input values for fixed effects
+		for(size_t j = 0; j < n_fixed_; j++)
+			x[j] = fixed_in_[j];
 
-	// set auxillary variables to corresponding minimum feasible value
-	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
-		x[n_fixed_ + j] = std::fabs( fix_likelihood_vec_tmp_[1 + j] );
-
+		// set auxillary variables to corresponding minimum feasible value
+		for(size_t j = 0; j < fix_likelihood_nabs_; j++)
+			x[n_fixed_ + j] = std::fabs( fix_likelihood_vec_tmp_[1 + j] );
+	}
+	else
+	{	assert( warm_start_.x_info.size() == size_t(n) );
+		assert( warm_start_.g_info.size() == size_t(m) );
+		assert( init_z  == true );
+		assert( init_lambda == true );
+		for(Index j = 0; j < n; ++j)
+		{	x[j]   = warm_start_.x_info[j].x;
+			z_L[j] = warm_start_.x_info[j].z_L;
+			z_U[j] = warm_start_.x_info[j].z_U;
+		}
+		for(Index i = 0; i < m; ++i)
+			lambda[i] = warm_start_.g_info[i].lambda;
+	}
 	return true;
 }
 } } // END_CPPAD_MIXED_NAMESPACE

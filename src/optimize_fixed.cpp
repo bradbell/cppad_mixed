@@ -260,14 +260,14 @@ $codei%
 	const warm_start_struct& %warm_start%
 %$$
 $list number$$
-If the size of $icode%warm_start%.x_info%$$ and $icode%warm_start%.g_info%$$
-are zero, there is no warm start information.
+If the size of $icode%warm_start%.x_info%$$ is zero,
+there is no warm start information.
 This is the same as when the argument is not present.
 In this case, the ipopt $icode warm_start_init_point$$ option will be set to
 $code no$$.
 $lnext
-If the size of $icode%warm_start%.x_info%$$ and $icode%warm_start%.g_info%$$
-are non-zero, $icode warm_start$$ must is equal the
+If the size of $icode%warm_start%.x_info%$$ is non-zero,
+$icode warm_start$$ must is equal the
 $icode%solution%.warm_start%$$ structure returned by a previous call to
 $code optimized_fixed$$ (where all the other arguments were the same).
 In this case, the ipopt $icode warm_start_init_point$$ options will be set to
@@ -330,7 +330,6 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	const CppAD::mixed::warm_start_struct& warm_start    )
 {	bool ok = true;
 	using Ipopt::SmartPtr;
-	assert( warm_start.x_info.size() == 0 || warm_start.g_info.size() != 0 );
 	assert( warm_start.x_info.size() != 0 || warm_start.g_info.size() == 0 );
 	//
 	// fixed_(lower, upper, in)
@@ -525,6 +524,7 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	// (note that  one does not need to delete an ipopt smart pointer)
 	SmartPtr<CppAD::mixed::ipopt_fixed> fixed_nlp =
 	new CppAD::mixed::ipopt_fixed(
+		warm_start,
 		abort_on_eval_error,
 		random_ipopt_options,
 		fixed_tolerance,

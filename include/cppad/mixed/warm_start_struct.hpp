@@ -35,7 +35,8 @@ $latex f(x)$$.
 $head x_info$$
 If the size of this vector is zero, the size of $icode g_info$$
 must also be zero.
-Otherwise, it has size equal to the number of primal variables $latex x$$.
+Otherwise, $code x_info$$ has size equal to the number of primal variables
+$latex x$$.
 The $th j$$ element of this vector contains the following fields:
 
 $subhead x$$
@@ -51,9 +52,8 @@ $head scale_x$$
 is the cppad_mixed scaling factor for x[j].
 
 $head g_info$$
-If the size of this vector is zero, the size of $icode x_info$$
-must also be zero.
-Otherwise, it has size equal to the number of $latex g(x)$$ constraints.
+If the size of $icode x_info$$ is non-zero,
+$code g_info$$ has size equal to the number of $latex g(x)$$ constraints.
 The $th i$$ element of this vector contains the following fields:
 
 $subhead lambda$$

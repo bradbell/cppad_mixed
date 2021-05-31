@@ -44,6 +44,12 @@ $section Adaptive Step Size check of Derivative Calculations$$
 $head Syntax$$
 $icode%ok% = adapt_derivative_chk(%trace%, %relative_tol%)%$$
 
+$head warm_start_$$
+If $code warm_start_.x_info.size()$$ is non-zero,
+the derivatives are not checked and
+the warm start information is used to set $icode scale_f_$$,
+$icode scale_g_$$ and $icode scale_x_$$.
+
 $head trace$$
 If true, a trace of this computation is printed on standard output.
 
@@ -154,6 +160,18 @@ $end
 	//
 	// infinity
 	const double infinity  = std::numeric_limits<double>::infinity();
+	//
+	// check for warm start
+	if( warm_start_.x_info.size() != 0 )
+	{	assert( warm_start_.x_info.size() == n );
+		assert( warm_start_.g_info.size() == m );
+		scale_f_ = warm_start_.scale_f;
+		for(size_t j = 0; j < n; ++j)
+			scale_x_[j] = warm_start_.x_info[j].scale_x;
+		for(size_t i = 0; i < m; ++i)
+			scale_g_[i] = warm_start_.g_info[i].scale_g;
+		return true;
+	}
 	//
 	// scale_f_, scale_g_, scale_x_: initialize as identity mapping
 	// and set to to its final value just before returning.

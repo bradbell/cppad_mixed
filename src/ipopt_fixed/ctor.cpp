@@ -133,6 +133,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 $begin ipopt_fixed_ctor$$
 $spell
+	struct
 	rcv
 	uhat
 	tmp
@@ -185,6 +186,15 @@ $head References$$
 The values of the arguments are stored by reference and hence
 the arguments must not be deleted while $icode ipopt_object$$
 is still being used.
+
+$head warm_start$$
+This argument has prototype
+$codei%
+	const warm_start_struct& %warm_start%
+%$$
+It $icode%warm_start%.x_info.size()%$$ is non-zero (zero),
+then this optimization is warm started (is not warm started)
+using the information in $icode warm_start$$.
 
 $head abort_on_eval_error$$
 This argument has prototype
@@ -401,22 +411,24 @@ This member variable is set to false.
 $head Prototype$$
 $srccode%cpp% */
 ipopt_fixed::ipopt_fixed(
-	const bool&         abort_on_eval_error          ,
-	const std::string&  random_ipopt_options         ,
-	const double&       fixed_tolerance              ,
-	const d_vector&     fixed_lower                  ,
-	const d_vector&     fixed_upper                  ,
-	const d_vector&     fix_constraint_lower         ,
-	const d_vector&     fix_constraint_upper         ,
-	const d_vector&     fixed_scale                  ,
-	const d_vector&     fixed_in                     ,
-	const d_vector&     random_lower                 ,
-	const d_vector&     random_upper                 ,
-	const d_vector&     random_in                    ,
-	cppad_mixed&        mixed_object                 ) :
+	const warm_start_struct& warm_start                   ,
+	const bool&              abort_on_eval_error          ,
+	const std::string&       random_ipopt_options         ,
+	const double&            fixed_tolerance              ,
+	const d_vector&          fixed_lower                  ,
+	const d_vector&          fixed_upper                  ,
+	const d_vector&          fix_constraint_lower         ,
+	const d_vector&          fix_constraint_upper         ,
+	const d_vector&          fixed_scale                  ,
+	const d_vector&          fixed_in                     ,
+	const d_vector&          random_lower                 ,
+	const d_vector&          random_upper                 ,
+	const d_vector&          random_in                    ,
+	cppad_mixed&             mixed_object                 ) :
 /* %$$
 $end
 */
+warm_start_            ( warm_start )                    ,
 abort_on_eval_error_   ( abort_on_eval_error )           ,
 random_ipopt_options_  ( random_ipopt_options )          ,
 fixed_tolerance_       ( fixed_tolerance )               ,
