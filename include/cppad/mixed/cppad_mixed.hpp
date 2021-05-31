@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-19 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -22,6 +22,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/ldlt_eigen.hpp>
 # include <cppad/mixed/fixed_solution.hpp>
 # include <cppad/mixed/typedef.hpp>
+# include <cppad/mixed/warm_start_struct.hpp>
 
 /*
 Examples and tests that use cppad_mixed private information.

@@ -25,6 +25,8 @@ $spell
 	obj
 	sqrt
 	ls
+	struct
+	init
 $$
 
 $section Optimize Fixed Effects$$
@@ -42,7 +44,8 @@ $icode%mixed_object%.optimize_fixed(
 	%fixed_in%,
 	%random_lower%,
 	%random_upper%,
-	%random_in%
+	%random_in%,
+	%warm_start%
 )%$$
 
 $head Public$$
@@ -243,12 +246,33 @@ $codei%
 It must have size equal to
 $cref/n_random/derived_ctor/n_random/$$ and
 specifies the initial value used for the optimization of the
-$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ vector $latex u$$.
+$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
+vector $latex u$$.
 It must hold that
 $codei%
 	%random_lower%[%i%] <= %random_in%[%i%] <= %random_upper%[%i%]
 %$$
 for each valid index $icode i$$.
+
+$head warm_start$$
+This argument is optional and has prototype
+$codei%
+	const warm_start_struct& %warm_start%
+%$$
+$list number$$
+If the size of $icode%warm_start%.x_info%$$ and $icode%warm_start%.g_info%$$
+are zero, there is no warm start information.
+This is the same as when the argument is not present.
+In this case, the ipopt $icode warm_start_init_point$$ option will be set to
+$code no$$.
+$lnext
+If the size of $icode%warm_start%.x_info%$$ and $icode%warm_start%.g_info%$$
+are non-zero, $icode warm_start$$ must is equal the
+$icode%solution%.warm_start%$$ structure returned by a previous call to
+$code optimized_fixed$$ (where all the other arguments were the same).
+In this case, the ipopt $icode warm_start_init_point$$ options will be set to
+$code yes$$.
+$lend
 
 $head solution$$
 The return value has prototype
@@ -289,17 +313,18 @@ $end
 # include <cppad/mixed/ipopt_app_status.hpp>
 
 CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
-	const std::string& fixed_ipopt_options           ,
-	const std::string& random_ipopt_options          ,
-	const d_vector&    fixed_lower                   ,
-	const d_vector&    fixed_upper                   ,
-	const d_vector&    fix_constraint_lower          ,
-	const d_vector&    fix_constraint_upper          ,
-	const d_vector&    fixed_scale                   ,
-	const d_vector&    fixed_in                      ,
-	const d_vector&    random_lower                  ,
-	const d_vector&    random_upper                  ,
-	const d_vector&    random_in                     )
+	const std::string&     fixed_ipopt_options           ,
+	const std::string&     random_ipopt_options          ,
+	const d_vector&        fixed_lower                   ,
+	const d_vector&        fixed_upper                   ,
+	const d_vector&        fix_constraint_lower          ,
+	const d_vector&        fix_constraint_upper          ,
+	const d_vector&        fixed_scale                   ,
+	const d_vector&        fixed_in                      ,
+	const d_vector&        random_lower                  ,
+	const d_vector&        random_upper                  ,
+	const d_vector&        random_in                     ,
+	const CppAD::mixed::warm_start_struct& warm_start    )
 {	bool ok = true;
 	using Ipopt::SmartPtr;
 	//
@@ -622,7 +647,8 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 	const d_vector&    fixed_in                ,
 	const d_vector&    random_lower            ,
 	const d_vector&    random_upper            ,
-	const d_vector&    random_in               )
+	const d_vector&    random_in               ,
+	const CppAD::mixed::warm_start_struct& warm_start )
 {	CppAD::mixed::fixed_solution ret;
 	try
 	{	ret = try_optimize_fixed(
@@ -636,7 +662,8 @@ CppAD::mixed::fixed_solution cppad_mixed::optimize_fixed(
 			fixed_in                ,
 			random_lower            ,
 			random_upper            ,
-			random_in
+			random_in               ,
+			warm_start
 		);
 	}
 	catch(const std::exception& e)

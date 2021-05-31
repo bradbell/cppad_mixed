@@ -33,7 +33,9 @@ This is the cppad_mixed scaling factor for the ipopt objective function
 $latex f(x)$$.
 
 $head x_info$$
-This vector has size equal to the number of primal variables $latex x$$.
+If the size of this vector is zero, the size of $icode g_info$$
+must also be zero.
+Otherwise, it has size equal to the number of primal variables $latex x$$.
 The $th j$$ element of this vector contains the following fields:
 
 $subhead x$$
@@ -49,7 +51,9 @@ $head scale_x$$
 is the cppad_mixed scaling factor for x[j].
 
 $head g_info$$
-This vector has size equal to the number of $latex g(x)$$ constraints.
+If the size of this vector is zero, the size of $icode x_info$$
+must also be zero.
+Otherwise, it has size equal to the number of $latex g(x)$$ constraints.
 The $th i$$ element of this vector contains the following fields:
 
 $subhead lambda$$

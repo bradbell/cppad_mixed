@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-20 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -482,7 +482,8 @@ $srccode%cpp% */
 		const d_vector&    fixed_in              ,
 		const d_vector&    random_lower          ,
 		const d_vector&    random_upper          ,
-		const d_vector&    random_in
+		const d_vector&    random_in             ,
+		const CppAD::mixed::warm_start_struct& warm_start
 	);
 /* %$$
 $subhead try_hes_fixed_obj$$
