@@ -22,13 +22,14 @@ $$
 $section Changes and Additions to cppad_mixed During 2021$$
 
 $head 05-31$$
-Edit the $cref wish_list$$ as follows:
 $list number$$
+Change the $cref no_random.cpp$$ example as suggested by the new
+$cref/examples/wish_list/Examples/$$ with list item.
+$lnext
+Edit the $cref wish_list$$ as follows:
 Remove the random constraint item because it has been completed; see
 $cref/ran_con_lag/fixed_solution/ran_con_lag/$$.
-$lnext
 Add the $cref/examples/wish_list/Examples/$$ item.
-$lnext
 Extend the
 $cref/multi-threading/wish_list/Multi-Threading and Statistics/$$
 item to include statistics.

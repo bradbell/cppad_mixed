@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-20 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -82,13 +82,12 @@ namespace {
 			z_(z)
 		{	assert(z.size() == n_fixed); }
 		// implementation of fix_likelihood as p(z|theta) * p(theta)
-		template <typename Vector>
-		Vector template_fix_likelihood(
-			const Vector&         fixed_vec  )
-		{	typedef typename Vector::value_type scalar;
+		a1_vector fix_likelihood(
+			const a1_vector&         fixed_vec  ) override
+		{	typedef typename a1_vector::value_type scalar;
 
 			// initialize log-density
-			Vector vec(1);
+			a1_vector vec(1);
 			vec[0] = scalar(0.0);
 
 			// compute this factors once
@@ -110,9 +109,6 @@ namespace {
 			}
 			return vec;
 		}
-		// a1_vector version of fix_likelihood
-		virtual a1_vector fix_likelihood(const a1_vector& fixed_vec)
-		{	return template_fix_likelihood( fixed_vec ); }
 	};
 }
 
