@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>CppAD Mixed Wish List</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="CppAD Mixed Wish List">
-<meta name="keywords" id="keywords" content=" cppad mixed wish list multi-threading statistics fixed likelihood hessian examples tracing optimization d_sparse_rcv aborting windows install ">
+<meta name="keywords" id="keywords" content=" cppad mixed wish list better asymptotic statistics multi-threading fixed likelihood hessian examples tracing optimization d_sparse_rcv aborting windows install ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -62,6 +62,7 @@ A:active { color : purple }
 
 <center><b><big><big>CppAD Mixed Wish List</big></big></b></center>
 
+<br><a href="wish_list.htm#Better Asymptotic Statistics" target="_top">Better&nbsp;Asymptotic&nbsp;Statistics</a>
 <br><a href="wish_list.htm#Multi-Threading and Statistics" target="_top">Multi-Threading&nbsp;and&nbsp;Statistics</a>
 <br><a href="wish_list.htm#Fixed Likelihood Hessian" target="_top">Fixed&nbsp;Likelihood&nbsp;Hessian</a>
 <br><a href="wish_list.htm#Examples" target="_top">Examples</a>
@@ -70,6 +71,25 @@ A:active { color : purple }
 <br><a href="wish_list.htm#Aborting Optimization" target="_top">Aborting&nbsp;Optimization</a>
 <br><a href="wish_list.htm#Windows Install" target="_top">Windows&nbsp;Install</a>
 <br><br>
+<b><big><a name="Better Asymptotic Statistics" id="Better Asymptotic Statistics">Better Asymptotic Statistics</a></big></b>
+
+<ol type="1"><li>
+Detect which fixed effects bound constraints are active and remove them
+from the asymptotic statistics (constant at bound value).
+</li><li>
+
+Use the rejection algorithm to get independent samples from the
+posterior for the fixed effects.
+The probability of acceptance <small>@(@
+p_a
+@)@</small> is a measure of how good
+the Laplace approximation is; see section 3.7.7 of Wakefield's book
+Bayesian and Frequentist Regression Methods.
+</li></ol>
+
+
+<br>
+<br>
 <b><big><a name="Multi-Threading and Statistics" id="Multi-Threading and Statistics">Multi-Threading and Statistics</a></big></b>
 <br>
 Change <code><font color="blue">fix_likelihood</font></code> and <code><font color="blue">ran_likelihood</font></code>
@@ -78,7 +98,6 @@ This would require a separate argument to the cppad_mixed constructor
 that tells which elements of <code><font color="blue">fix_likelihood</font></code> are absolute value terms.
 It would also enable asymptotic statistics using Jacobians of the likelihood
 vector, instead of Hessians of the total likelihood.
-
 
 <br>
 <br>
