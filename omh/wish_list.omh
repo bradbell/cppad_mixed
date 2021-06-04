@@ -20,9 +20,23 @@ $spell
 	optimizer
 	Ipopt
 	Jacobians
+    Wakefield
+    Frequentist
 $$
 
 $section CppAD Mixed Wish List$$
+
+$head Better Asymptotic Statistics$$
+$list number$$
+Detect which fixed effects bound constraints are active and remove them
+from the asymptotic statistics (constant at bound value).
+$lnext
+Use the rejection algorithm to get independent samples from the
+posterior for the fixed effects.
+The probability of acceptance $latex p_a$$ is a measure of how good
+the Laplace approximation is; see section 3.7.7 of Wakefield's book
+Bayesian and Frequentist Regression Methods.
+$lend
 
 $head Multi-Threading and Statistics$$
 Change $code fix_likelihood$$ and $code ran_likelihood$$
@@ -31,7 +45,6 @@ This would require a separate argument to the cppad_mixed constructor
 that tells which elements of $code fix_likelihood$$ are absolute value terms.
 It would also enable asymptotic statistics using Jacobians of the likelihood
 vector, instead of Hessians of the total likelihood.
-
 
 $head Fixed Likelihood Hessian$$
 Move the initialization of $code fix_like_hes_$$

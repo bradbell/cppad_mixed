@@ -21,6 +21,11 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
 
+$head 06-03$$
+Add the
+$cref/better asymptotic statistics/wish_list/Better Asymptotic Statistics/$$
+item to the wish list.
+
 $head 05-31$$
 $list number$$
 The optional $cref/warm_start/optimize_fixed/warm_start/$$
