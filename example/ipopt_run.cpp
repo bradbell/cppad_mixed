@@ -21,9 +21,12 @@ $section Ipopt Example: Declare Non-linear Program Problem Class$$
 $nospell
 $srccode%cpp% */
 # include <cmath>
+# include <iomanip>
 # include <coin-or/IpIpoptApplication.hpp>
 # include <coin-or/IpTNLP.hpp>
 # include <cassert>
+
+# define PRINT_TRACE 0
 namespace {
 	// Ipopt types used by this file
 	typedef Ipopt::Number                      Number;
@@ -1015,7 +1018,7 @@ $code USER_REQUESTED_STOP$$ as the finalize_solution
 $cref/status/ipopt_xam_finalize_solution/status/$$.
 
 $head Source$$
-$srccode%cpp% */
+$srccode@cpp@ */
 bool ipopt_nlp_xam::intermediate_callback(
 	AlgorithmMode               mode                 ,   // in
 	Index                       iter                 ,   // in
@@ -1031,9 +1034,52 @@ bool ipopt_nlp_xam::intermediate_callback(
 	const IpoptData*            ip_data              ,   // in
 	IpoptCalculatedQuantities*  ip_cq                )   // in
 {
+# if PRINT_TRACE
+	using std::cout;
+	using std::right;
+	using std::setw;
+	std::streamsize restore = cout.precision();
+	cout.precision(2);
+	cout << std::scientific;
+	if( iter % 10 == 0 )
+	{	cout << right << setw(4) << "iter";
+		cout << right << setw(10) << "objective";
+		cout << right << setw(10) << "inf_pr";
+		cout << right << setw(10) << "inf_du";
+		cout << right << setw(10) << "||d||";
+		cout << right << setw(6)  << "l(mu)";
+		cout << right << setw(6)  << "l(rg)";
+		cout << right << setw(10) << "alpha_du";
+		cout << right << setw(10) << "alpha_pr";
+		cout << right << setw(3)  << "ls";
+		cout << "\n";
+	}
+	cout << right << setw(4) << iter;
+	cout << right << setw(10) << obj_value;
+	cout << right << setw(10) << inf_pr;
+	cout << right << setw(10) << inf_du;
+	cout << right << setw(10) << d_norm;
+	cout.precision(0);
+	cout << std::fixed;
+	cout << right << setw(6) << std::log(mu);
+	if( regularization_size <= 0.0 )
+		cout << right << setw(6) << "-";
+	else
+		cout << right << setw(6) << std::log( regularization_size );
+	cout << std::scientific;
+	cout.precision(2);
+	cout << right << setw(10) << alpha_du;
+	cout << right << setw(10) << alpha_pr;
+	cout << right << setw(3) << ls_trials;
+	//
+	cout << "\n";
+	cout << std::defaultfloat;
+	cout.precision(restore);
+# endif
+	//
 	return true;
 }
-/* %$$
+/* @$$
 $end
 -------------------------------------------------------------------------------
 $begin ipopt_run_xam$$
@@ -1075,7 +1121,7 @@ bool ipopt_run_xam(void)
 	SmartPtr<Ipopt::IpoptApplication> app = IpoptApplicationFactory();
 
 	// Turn off all Ipopt printed output
-	app->Options()->SetIntegerValue("print_level", 5);
+	app->Options()->SetIntegerValue("print_level", 0);
 	app->Options()->SetIntegerValue("max_iter", 4);
 	app->Options()->SetStringValue("sb", "yes");
 	app->Options()->SetStringValue("derivative_test", "second-order");
