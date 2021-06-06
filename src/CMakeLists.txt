@@ -59,6 +59,7 @@ ADD_LIBRARY(cppad_mixed
 	init_laplace_obj_fun.cpp
 	init_laplace_obj_hes.cpp
 	ipopt_app_status.cpp
+	ipopt_fixed/intermediate_callback.cpp
 	ipopt_fixed/new_random.cpp
 	ipopt_fixed/set_scaling.cpp
 	ipopt_fixed/adapt_derivative_chk.cpp
