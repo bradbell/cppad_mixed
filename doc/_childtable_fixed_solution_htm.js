@@ -3,11 +3,13 @@ document.write('\
 <select onchange="fixed_solution_child(this)">\
 <option>fixed_solution-&gt;</option>\
 <option>warm_start_struct</option>\
+<option>trace_struct</option>\
 </select>\
 ');
 function fixed_solution_child(item)
 {	var child_list = [
-		'warm_start_struct.htm'
+		'warm_start_struct.htm',
+		'trace_struct.htm'
 	];
 	var index = item.selectedIndex;
 	item.selectedIndex = 0;

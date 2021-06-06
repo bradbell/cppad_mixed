@@ -1,0 +1,183 @@
+<html>
+<script type='text/x-mathjax-config'>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath:  [ ['@(@','@)@'] ] ,
+    displayMath: [ ['@[@','@]@'] ]
+  }
+});
+</script>
+<script type='text/javascript' src=
+'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=default'
+>
+</script>
+<head>
+<title>Ipopt Trace Information</title>
+<meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
+<meta name="description" id="description" content="Ipopt Trace Information">
+<meta name="keywords" id="keywords" content=" ipopt trace information syntax prototype iter obj_value inf_pr inf_du mu d_norm regularization_size alpha_du alpha_pr ls_trials ">
+<style type='text/css'>
+body { color : black }
+body { background-color : white }
+A:link { color : blue }
+A:visited { color : purple }
+A:active { color : purple }
+</style>
+<script type='text/javascript' language='JavaScript' src='_trace_struct_htm.js'>
+</script>
+</head>
+<body>
+<table><tr>
+<td>
+<a href="https://github.com/bradbell/cppad_mixed" target="_top"><img border="0" src="_image.gif"></a>
+</td>
+<td><a href="warm_start_struct.htm" target="_top">Prev</a>
+</td><td><a href="exception.htm" target="_top">Next</a>
+</td><td>
+<select onchange='choose_across0(this)'>
+<option>Index-&gt;</option>
+<option>contents</option>
+<option>reference</option>
+<option>index</option>
+<option>search</option>
+<option>external</option>
+</select>
+</td>
+<td>
+<select onchange='choose_up0(this)'>
+<option>Up-&gt;</option>
+<option>cppad_mixed</option>
+<option>namespace</option>
+<option>fixed_solution</option>
+<option>trace_struct</option>
+</select>
+</td>
+<td>
+<script type='text/javascript' language='JavaScript' src='_childtable_cppad_mixed_htm.js'></script>
+</td>
+<td>
+<script type='text/javascript' language='JavaScript' src='_childtable_namespace_htm.js'></script>
+</td>
+<td>
+<script type='text/javascript' language='JavaScript' src='_childtable_fixed_solution_htm.js'></script>
+</td>
+<td>trace_struct</td>
+</tr></table><br>
+@(@\newcommand{\R}[1]{ {\rm #1} }
+\newcommand{\B}[1]{ {\bf #1} }
+\newcommand{\W}[1]{ \; #1 \; }@)@
+
+
+<center><b><big><big>Ipopt Trace Information</big></big></b></center>
+
+<br><a href="trace_struct.htm#Syntax" target="_top">Syntax</a>
+<br><a href="trace_struct.htm#Prototype" target="_top">Prototype</a>
+<br><a href="trace_struct.htm#iter" target="_top">iter</a>
+<br><a href="trace_struct.htm#obj_value" target="_top">obj_value</a>
+<br><a href="trace_struct.htm#inf_pr" target="_top">inf_pr</a>
+<br><a href="trace_struct.htm#inf_du" target="_top">inf_du</a>
+<br><a href="trace_struct.htm#mu" target="_top">mu</a>
+<br><a href="trace_struct.htm#d_norm" target="_top">d_norm</a>
+<br><a href="trace_struct.htm#regularization_size" target="_top">regularization_size</a>
+<br><a href="trace_struct.htm#alpha_du" target="_top">alpha_du</a>
+<br><a href="trace_struct.htm#alpha_pr" target="_top">alpha_pr</a>
+<br><a href="trace_struct.htm#ls_trials" target="_top">ls_trials</a>
+<br><br>
+<b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
+
+<br>
+
+<code><font color="blue"><span style='white-space: nowrap'>CppAD::mixed::trace_struct&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>trace</span></font></i></code>
+
+
+<br>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre><tt>
+     <b><font color="#0000FF">struct</font></b> <font color="#008080">trace_struct</font> <font color="#FF0000">{</font>
+          <font color="#008080">size_t</font> iter<font color="#990000">;</font>
+          <font color="#009900">double</font> obj_value<font color="#990000">;</font>
+          <font color="#009900">double</font> inf_pr<font color="#990000">;</font>
+          <font color="#009900">double</font> inf_du<font color="#990000">;</font>
+          <font color="#009900">double</font> mu<font color="#990000">;</font>
+          <font color="#009900">double</font> d_norm<font color="#990000">;</font>
+          <font color="#009900">double</font> regularization_size<font color="#990000">;</font>
+          <font color="#009900">double</font> alpha_du<font color="#990000">;</font>
+          <font color="#009900">double</font> alpha_pr<font color="#990000">;</font>
+          <font color="#008080">size_t</font> ls_trials<font color="#990000">;</font>
+     <font color="#FF0000">}</font><font color="#990000">;</font>     </tt></pre>
+<br>
+<b><big><a name="iter" id="iter">iter</a></big></b>
+<br>
+See ipopt trace <a href="ipopt_trace.htm#iter" target="_top"><span style='white-space: nowrap'>iter</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="obj_value" id="obj_value">obj_value</a></big></b>
+<br>
+See ipopt trace <a href="ipopt_trace.htm#objective" target="_top"><span style='white-space: nowrap'>objective</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="inf_pr" id="inf_pr">inf_pr</a></big></b>
+<br>
+See ipopt trace <a href="ipopt_trace.htm#inf_pr" target="_top"><span style='white-space: nowrap'>inf_pr</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="inf_du" id="inf_du">inf_du</a></big></b>
+<br>
+See ipopt trace <a href="ipopt_trace.htm#inf_du" target="_top"><span style='white-space: nowrap'>inf_du</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="mu" id="mu">mu</a></big></b>
+<br>
+See ipopt trace <a href="ipopt_trace.htm#lg(mu)" target="_top"><span style='white-space: nowrap'>lg(mu)</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="d_norm" id="d_norm">d_norm</a></big></b>
+<br>
+See ipopt trace <a href="ipopt_trace.htm#||d||" target="_top"><span style='white-space: nowrap'>||d||</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="regularization_size" id="regularization_size">regularization_size</a></big></b>
+<br>
+See ipopt trace <a href="ipopt_trace.htm#lg(rg)" target="_top"><span style='white-space: nowrap'>lg(rg)</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="alpha_du" id="alpha_du">alpha_du</a></big></b>
+<br>
+See ipopt trace <a href="ipopt_trace.htm#alpha_du" target="_top"><span style='white-space: nowrap'>alpha_du</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="alpha_pr" id="alpha_pr">alpha_pr</a></big></b>
+<br>
+See ipopt trace <a href="ipopt_trace.htm#alpha_pr" target="_top"><span style='white-space: nowrap'>alpha_pr</span></a>
+.
+
+<br>
+<br>
+<b><big><a name="ls_trials" id="ls_trials">ls_trials</a></big></b>
+<br>
+See ipopt trace <a href="ipopt_trace.htm#ls" target="_top"><span style='white-space: nowrap'>ls</span></a>
+.
+
+
+<hr>Input File: include/cppad/mixed/trace_struct.hpp
+
+</body>
+</html>

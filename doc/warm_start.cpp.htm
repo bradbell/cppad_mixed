@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Warm Starting Optimization: Example and Test</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Warm Starting Optimization: Example and Test">
-<meta name="keywords" id="keywords" content=" warm starting optimization: example test model bounds maximum iterations ">
+<meta name="keywords" id="keywords" content=" warm starting optimization: example test model bounds maximum iterations optimizer trace ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -66,6 +66,7 @@ A:active { color : purple }
 <br><a href="warm_start.cpp.htm#Model" target="_top">Model</a>
 <br><a href="warm_start.cpp.htm#Bounds" target="_top">Bounds</a>
 <br><a href="warm_start.cpp.htm#Maximum Iterations" target="_top">Maximum&nbsp;Iterations</a>
+<br><a href="warm_start.cpp.htm#Optimizer Trace" target="_top">Optimizer&nbsp;Trace</a>
 <br>.
 
 <br>
@@ -123,6 +124,13 @@ problem does not solve on the first try.
 A warm start is used and the problem does solve within the limit
 of another 5 iterations.
 
+<br>
+<br>
+<b><big><a name="Optimizer Trace" id="Optimizer Trace">Optimizer Trace</a></big></b>
+<br>
+This example uses the optimizer trace information; see
+<a href="fixed_solution.htm#trace_vec" target="_top"><span style='white-space: nowrap'>trace_vec</span></a>
+.
 
 <code><font color="blue">
 <pre><tt><b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;cppad/cppad.hpp&gt;</font>
@@ -269,6 +277,11 @@ of another 5 iterations.
      <i><font color="#9A1900">// optimization did not converge which causes warnings</font></i>
      ok <font color="#990000">&amp;=</font> mixed_object<font color="#990000">.</font>warning_count_ <font color="#990000">&gt;</font> <font color="#993399">0</font><font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// should have reached the maximum number of iterations</font></i>
+     <i><font color="#9A1900">// (the trace includes iteraiton zero as the starting point)</font></i>
+     ok <font color="#990000">&amp;=</font> solution<font color="#990000">.</font>trace_vec<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">==</font> <font color="#993399">6</font><font color="#990000">;</font>
+     ok <font color="#990000">&amp;=</font> solution<font color="#990000">.</font>trace_vec<font color="#990000">[</font><font color="#993399">5</font><font color="#990000">].</font>iter <font color="#990000">==</font> <font color="#993399">5</font><font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
      <i><font color="#9A1900">// second optimzation attempt (max_iter large enough with warm start)</font></i>
      mixed_object<font color="#990000">.</font>warning_count_    <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font>
      mixed_object<font color="#990000">.</font>suppress_warning_ <font color="#990000">=</font> <b><font color="#0000FF">false</font></b><font color="#990000">;</font>
@@ -289,6 +302,11 @@ of another 5 iterations.
      <i><font color="#9A1900">// should not be any warnings this time</font></i>
      ok <font color="#990000">&amp;=</font> mixed_object<font color="#990000">.</font>warning_count_ <font color="#990000">==</font> <font color="#993399">0</font><font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// this time optimization should have completed in 3 iterations</font></i>
+     ok <font color="#990000">&amp;=</font> solution<font color="#990000">.</font>trace_vec<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">==</font> <font color="#993399">4</font><font color="#990000">;</font>
+     ok <font color="#990000">&amp;=</font> solution<font color="#990000">.</font>trace_vec<font color="#990000">[</font><font color="#993399">3</font><font color="#990000">].</font>iter <font color="#990000">==</font> <font color="#993399">3</font><font color="#990000">;</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// final solution</font></i>
      <font color="#008080">d_vector</font> fixed_out <font color="#990000">=</font> solution<font color="#990000">.</font>fixed_opt<font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
      <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> j <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> j <font color="#990000">&lt;</font> n_fixed<font color="#990000">;</font> j<font color="#990000">++)</font>

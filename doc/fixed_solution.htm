@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Optimal Solution Returned by optimize_fixed</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Optimal Solution Returned by optimize_fixed">
-<meta name="keywords" id="keywords" content=" optimal solution returned optimize_fixed syntax prototype public convention fixed_opt fixed_lag fix_con_lag ran_con_lag warm_start ">
+<meta name="keywords" id="keywords" content=" optimal solution returned optimize_fixed syntax prototype public convention fixed_opt fixed_lag fix_con_lag ran_con_lag warm_start trace_vec ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -77,6 +77,7 @@ A:active { color : purple }
 <br><a href="fixed_solution.htm#fix_con_lag" target="_top">fix_con_lag</a>
 <br><a href="fixed_solution.htm#ran_con_lag" target="_top">ran_con_lag</a>
 <br><a href="fixed_solution.htm#warm_start" target="_top">warm_start</a>
+<br><a href="fixed_solution.htm#trace_vec" target="_top">trace_vec</a>
 <br><br>
 <b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
 
@@ -91,11 +92,12 @@ A:active { color : purple }
 
 <pre><tt>
      <b><font color="#0000FF">struct</font></b> <font color="#008080">fixed_solution</font> <font color="#FF0000">{</font>
-          CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font>  fixed_opt<font color="#990000">;</font>
-          CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font>  fixed_lag<font color="#990000">;</font>
-          CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font>  fix_con_lag<font color="#990000">;</font>
-          CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font>  ran_con_lag<font color="#990000">;</font>
-          <font color="#008080">warm_start_struct</font>      warm_start<font color="#990000">;</font>
+          CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font>       fixed_opt<font color="#990000">;</font>
+          CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font>       fixed_lag<font color="#990000">;</font>
+          CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font>       fix_con_lag<font color="#990000">;</font>
+          CppAD<font color="#990000">::</font><font color="#008080">vector&lt;double&gt;</font>       ran_con_lag<font color="#990000">;</font>
+          <font color="#008080">warm_start_struct</font>           warm_start<font color="#990000">;</font>
+          CppAD<font color="#990000">::</font><font color="#008080">vector&lt;trace_struct&gt;</font> trace_vec<font color="#990000">;</font>
      <font color="#FF0000">}</font><font color="#990000">;</font>     </tt></pre>
 <br>
 <b><big><a name="Public" id="Public">Public</a></big></b>
@@ -179,6 +181,15 @@ This <a href="warm_start_struct.htm" target="_top"><span style='white-space: now
  contains
 the necessary information to continue the ipopt optimization
 from the current solution; i.e., warm start the optimization.
+
+<br>
+<br>
+<b><big><a name="trace_vec" id="trace_vec">trace_vec</a></big></b>
+<br>
+The <code><i>i</i></code>-th element of this vector is a <a href="trace_struct.htm" target="_top"><span style='white-space: nowrap'>trace_struct</span></a>
+
+with the information corresponding to the <code><i>i</i></code>-th iteration
+of the optimization algorithm.
 
 
 <hr>Input File: include/cppad/mixed/fixed_solution.hpp
