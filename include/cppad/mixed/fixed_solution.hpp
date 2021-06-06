@@ -10,7 +10,6 @@ This program is distributed under the terms of the
 	     GNU Affero General Public License version 3.0 or later
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
-
 /*
 $begin fixed_solution$$
 $spell
@@ -72,27 +71,35 @@ the Lagrange multiplier for the upper (lower) bound
 for the $th i$$ row of the random constraint matrix $latex A$$.
 
 $children%
-	include/cppad/mixed/warm_start_struct.hpp
+	include/cppad/mixed/warm_start_struct.hpp%
+	include/cppad/mixed/trace_struct.hpp
 %$$
 $head warm_start$$
 This $cref warm_start_struct$$ contains
 the necessary information to continue the ipopt optimization
 from the current solution; i.e., warm start the optimization.
 
+$head trace_vec$$
+The $th i$$ element of this vector is a $cref trace_struct$$
+with the information corresponding to the $th i$$ iteration
+of the optimization algorithm.
+
 $end
 ------------------------------------------------------------------------------
 */
 # include <cppad/utility/vector.hpp>
 # include <cppad/mixed/warm_start_struct.hpp>
+# include <cppad/mixed/trace_struct.hpp>
 
 namespace CppAD { namespace mixed {
 	// BEGIN_PROTOTYPE
 	struct fixed_solution {
-		CppAD::vector<double>  fixed_opt;
-		CppAD::vector<double>  fixed_lag;
-		CppAD::vector<double>  fix_con_lag;
-		CppAD::vector<double>  ran_con_lag;
-		warm_start_struct      warm_start;
+		CppAD::vector<double>       fixed_opt;
+		CppAD::vector<double>       fixed_lag;
+		CppAD::vector<double>       fix_con_lag;
+		CppAD::vector<double>       ran_con_lag;
+		warm_start_struct           warm_start;
+		CppAD::vector<trace_struct> trace_vec;
 	};
 	// END_PROTOTYPE
 } }
