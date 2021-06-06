@@ -129,7 +129,7 @@ namespace {
 			Index*        jCol           ,
 			Number*       values
 		) override;
-		virtual void finalize_solution(
+		void finalize_solution(
 			Ipopt::SolverReturn               status    ,
 			Index                             n         ,
 			const Number*                     x         ,

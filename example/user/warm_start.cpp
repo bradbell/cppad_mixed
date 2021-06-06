@@ -200,6 +200,10 @@ bool warm_start_xam(void)
 	// optimization did not converge which causes warnings
 	ok &= mixed_object.warning_count_ > 0;
 	//
+	// resize trace_vec so it can be assinged a vector of different length
+	// (lenght of other vectors in solution will no change).
+	solution.trace_vec.resize(0);
+	//
 	// second optimzation attempt (max_iter large enough with warm start)
 	mixed_object.warning_count_    = 0;
 	mixed_object.suppress_warning_ = false;

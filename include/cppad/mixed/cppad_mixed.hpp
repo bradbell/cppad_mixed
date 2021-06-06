@@ -23,6 +23,7 @@ see http://www.gnu.org/licenses/agpl.txt
 # include <cppad/mixed/fixed_solution.hpp>
 # include <cppad/mixed/typedef.hpp>
 # include <cppad/mixed/warm_start_struct.hpp>
+# include <cppad/mixed/trace_struct.hpp>
 
 /*
 Examples and tests that use cppad_mixed private information.

@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-20 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -215,6 +215,10 @@ bool sample_fixed_1(void)
 	vector<double> fix_con = mixed_object.fix_constraint(solution.fixed_opt);
 	size_t con_i = 0;
 	fix_constraint_lower[con_i] = 1.5 * fix_con[con_i];
+	//
+	// resize trace_vec so it can be assinged a vector of different length
+	// (lenght of other vectors in solution will no change).
+	solution.trace_vec.resize(0);
 	//
 	// optimize fixed effects
 	solution = mixed_object.optimize_fixed(

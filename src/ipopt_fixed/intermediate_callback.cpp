@@ -103,9 +103,7 @@ bool ipopt_fixed::intermediate_callback(
 	Index                       ls_trials            ,   // in
 	const IpoptData*            ip_data              ,   // in
 	IpoptCalculatedQuantities*  ip_cq                )   // in
-{
-/*
-	size_t size = solution_.trace_vec.size();
+{	size_t size = solution_.trace_vec.size();
 	assert( size == size_t(iter) );
 	trace_struct trace;
 	//
@@ -121,7 +119,6 @@ bool ipopt_fixed::intermediate_callback(
 	trace.ls_trials           = size_t(ls_trials);
 	//
 	solution_.trace_vec.push_back(trace);
-*/
 	return true;
 }
 
