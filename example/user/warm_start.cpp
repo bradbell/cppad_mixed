@@ -11,6 +11,8 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin warm_start.cpp$$
 $spell
+	Optimizer
+	vec
 $$
 
 $section Warm Starting Optimization: Example and Test$$.
@@ -48,6 +50,9 @@ problem does not solve on the first try.
 A warm start is used and the problem does solve within the limit
 of another 5 iterations.
 
+$head Optimizer Trace$$
+This example uses the optimizer trace information; see
+$cref/trace_vec/fixed_solution/trace_vec/$$.
 
 $code
 $srcthisfile%0%// BEGIN C++%// END C++%1%$$
@@ -200,8 +205,13 @@ bool warm_start_xam(void)
 	// optimization did not converge which causes warnings
 	ok &= mixed_object.warning_count_ > 0;
 	//
+	// should have reached the maximum number of iterations
+	// (the trace includes iteraiton zero as the starting point)
+	ok &= solution.trace_vec.size() == 6;
+	ok &= solution.trace_vec[5].iter == 5;
+	//
 	// resize trace_vec so it can be assinged a vector of different length
-	// (lenght of other vectors in solution will no change).
+	// (length of other vectors in solution will no change).
 	solution.trace_vec.resize(0);
 	//
 	// second optimzation attempt (max_iter large enough with warm start)
@@ -224,6 +234,11 @@ bool warm_start_xam(void)
 	// should not be any warnings this time
 	ok &= mixed_object.warning_count_ == 0;
 	//
+	// this time optimization should have completed in 3 iterations
+	ok &= solution.trace_vec.size() == 4;
+	ok &= solution.trace_vec[3].iter == 3;
+	//
+	// final solution
 	d_vector fixed_out = solution.fixed_opt;
 	//
 	for(size_t j = 0; j < n_fixed; j++)

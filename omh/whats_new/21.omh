@@ -17,9 +17,16 @@ $spell
 	op
 	std
 	obj_hes
+	optimizer
+	vec
 $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
+
+$head 05-06$$
+Add the optimizer trace information
+$cref/trace_vec/fixed_solution/trace_vec/$$ to the solution for the
+fixed effects.
 
 $head 06-03$$
 Add the

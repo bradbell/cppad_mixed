@@ -1061,11 +1061,11 @@ bool ipopt_nlp_xam::intermediate_callback(
 	cout << right << setw(10) << d_norm;
 	cout.precision(0);
 	cout << std::fixed;
-	cout << right << setw(6) << std::log(mu);
+	cout << right << setw(6) << std::log10(mu);
 	if( regularization_size <= 0.0 )
 		cout << right << setw(6) << "-";
 	else
-		cout << right << setw(6) << std::log( regularization_size );
+		cout << right << setw(6) << std::log10( regularization_size );
 	cout << std::scientific;
 	cout.precision(2);
 	cout << right << setw(10) << alpha_du;

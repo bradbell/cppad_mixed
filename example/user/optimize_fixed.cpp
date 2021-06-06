@@ -17,6 +17,8 @@ $spell
 	eval
 	interp
 	xam
+	Optimizer
+	vec
 $$
 
 $section Optimize Fixed Effects: Example and Test$$
@@ -70,6 +72,15 @@ N \left( 1 + \theta_1^2 \right)^{-1} \theta_1
 -
 ( 1 + \theta_1^2)^{-2} \theta_1 \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
 \] $$
+
+$head Optimizer Trace$$
+This example uses the optimizer trace information; see
+$cref/trace_vec/fixed_solution/trace_vec/$$.
+
+$head Optimizer Warm Start$$
+This example uses the optimizer warm start information; see
+$cref/warm_start/fixed_solution/warm_start/$$.
+
 
 $head Source Code$$
 $code
@@ -293,7 +304,8 @@ bool optimize_fixed_xam(void)
 		fixed_in,
 		random_lower,
 		random_upper,
-		random_in
+		random_in,
+		solution.warm_start
 	);
 	fixed_out = solution.fixed_opt;
 	// ------------------------------------------------------------------
