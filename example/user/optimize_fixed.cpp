@@ -292,7 +292,6 @@ bool optimize_fixed_xam(void)
 	// continue optimization, from previous, with new tolerance of 1e-8
 	temp_string = fixed_ipopt_options + "Numeric tol 1e-8\n";
 	fixed_in    = fixed_out;
-	solution.trace_vec.resize(0); // must resize so assignment works
 	solution    = mixed_object.optimize_fixed(
 		temp_string,
 		random_ipopt_options,

@@ -216,10 +216,6 @@ bool sample_fixed_1(void)
 	size_t con_i = 0;
 	fix_constraint_lower[con_i] = 1.5 * fix_con[con_i];
 	//
-	// resize trace_vec so it can be assinged a vector of different length
-	// (length of other vectors in solution will no change).
-	solution.trace_vec.resize(0);
-	//
 	// optimize fixed effects
 	solution = mixed_object.optimize_fixed(
 		fixed_ipopt_options,

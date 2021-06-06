@@ -210,10 +210,6 @@ bool warm_start_xam(void)
 	ok &= solution.trace_vec.size() == 6;
 	ok &= solution.trace_vec[5].iter == 5;
 	//
-	// resize trace_vec so it can be assinged a vector of different length
-	// (length of other vectors in solution will no change).
-	solution.trace_vec.resize(0);
-	//
 	// second optimzation attempt (max_iter large enough with warm start)
 	mixed_object.warning_count_    = 0;
 	mixed_object.suppress_warning_ = false;
