@@ -25,8 +25,13 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
 
+$head 06-08$$
+Add link at the top of $cref ipopt_trace$$ information
+to the source for the information.
+
 $head 06-07$$
-Add $cref/restoration/trace_struct/restoration/$$ field to the $code trace_struct$$.
+Add $cref/restoration/trace_struct/restoration/$$
+field to the $code trace_struct$$.
 
 $head 06-06$$
 $list number$$
