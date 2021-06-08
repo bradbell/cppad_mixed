@@ -503,8 +503,9 @@ If the size of
  must is equal the
 <a href="fixed_solution.htm#warm_start" target="_top"><span style='white-space: nowrap'>warm_start</span></a>
  field in a
-fixed effects solution returned by a previous call to <code><font color="blue">optimized_fixed</font></code>
-(where all the other arguments to <code><font color="blue">optimize_fixed</font></code> were the same).
+fixed effects solution returned by a previous call to <code><font color="blue">optimized_fixed</font></code>.
+This can be used to continue a fit when the maximum number of iterations
+is reached or when the tolerance for the fixed or random effects is changed.
 <ol type="1"><li>
 The ipopt 
 <code><i><font color="black"><span style='white-space: nowrap'>warm_start_init_point</span></font></i></code>
