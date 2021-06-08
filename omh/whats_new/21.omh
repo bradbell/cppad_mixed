@@ -31,6 +31,8 @@ Add link at the top of $cref ipopt_trace$$ information
 to the source for the information.
 $lnext
 Improve the $cref/warm_start/optimize_fixed/warm_start/$$ documentation.
+$lnext
+Remove the tracing optimization wish list item because it has been completed.
 $lend
 
 $head 06-07$$

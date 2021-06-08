@@ -60,13 +60,6 @@ to $code override$$ definitions.
 In addition, change template functions to regular functions
 when only one type is used as the template argument.
 
-$head Tracing Optimization$$
-Add options to specify the file name for the optimizer trace
-at both the fixed and random effects levels; see
-$href%https://list.coin-or.org/pipermail/ipopt/2015-October/004160.html%
-	output file options
-%$$.
-
 $head d_sparse_rcv$$
 Convert all the sparse matrix structures to use
 $code CppAD::d_sparse_rcv$$ instead of
