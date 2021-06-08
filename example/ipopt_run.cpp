@@ -25,6 +25,10 @@ $srccode%cpp% */
 # include <coin-or/IpIpoptApplication.hpp>
 # include <coin-or/IpTNLP.hpp>
 # include <cassert>
+// needed by intermediate_callback to determine if in restoration mode
+# include <coin-or/IpIpoptCalculatedQuantities.hpp>
+# include <coin-or/IpOrigIpoptNLP.hpp>
+
 
 # define PRINT_TRACE 0
 namespace {
@@ -1038,6 +1042,12 @@ bool ipopt_nlp_xam::intermediate_callback(
 	using std::cout;
 	using std::right;
 	using std::setw;
+	//
+	using Ipopt::OrigIpoptNLP;
+	using Ipopt::GetRawPtr;
+	void* ptr = dynamic_cast<void*>(GetRawPtr(ip_cq->GetIpoptNLP()));
+	bool  restoration = ptr == nullptr;
+	//
 	std::streamsize restore = cout.precision();
 	cout.precision(2);
 	cout << std::scientific;
@@ -1052,6 +1062,7 @@ bool ipopt_nlp_xam::intermediate_callback(
 		cout << right << setw(10) << "alpha_du";
 		cout << right << setw(10) << "alpha_pr";
 		cout << right << setw(3)  << "ls";
+		cout << right << setw(3)  << "r";
 		cout << "\n";
 	}
 	cout << right << setw(4) << iter;
@@ -1071,6 +1082,7 @@ bool ipopt_nlp_xam::intermediate_callback(
 	cout << right << setw(10) << alpha_du;
 	cout << right << setw(10) << alpha_pr;
 	cout << right << setw(3) << ls_trials;
+	cout << right << setw(3) << restoration;
 	//
 	cout << "\n";
 	cout << std::defaultfloat;
