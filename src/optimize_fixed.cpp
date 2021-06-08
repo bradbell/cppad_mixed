@@ -273,8 +273,9 @@ $subhead Warm Start$$
 If the size of $icode%warm_start%.x_info%$$ is non-zero,
 $icode warm_start$$ must is equal the
 $cref/warm_start/fixed_solution/warm_start/$$ field in a
-fixed effects solution returned by a previous call to $code optimized_fixed$$
-(where all the other arguments to $code optimize_fixed$$ were the same).
+fixed effects solution returned by a previous call to $code optimized_fixed$$.
+This can be used to continue a fit when the maximum number of iterations
+is reached or when the tolerance for the fixed or random effects is changed.
 $list number$$
 The ipopt $icode warm_start_init_point$$ options will be set to $code yes$$.
 $lnext

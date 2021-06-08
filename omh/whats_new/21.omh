@@ -26,8 +26,12 @@ $$
 $section Changes and Additions to cppad_mixed During 2021$$
 
 $head 06-08$$
+$list number$$
 Add link at the top of $cref ipopt_trace$$ information
 to the source for the information.
+$lnext
+Improve the $cref/warm_start/optimize_fixed/warm_start/$$ documentation.
+$lend
 
 $head 06-07$$
 Add $cref/restoration/trace_struct/restoration/$$
