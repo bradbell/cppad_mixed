@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Ipopt Trace Information</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Ipopt Trace Information">
-<meta name="keywords" id="keywords" content=" ipopt trace information syntax prototype iter obj_value inf_pr inf_du mu d_norm regularization_size alpha_du alpha_pr ls_trials ">
+<meta name="keywords" id="keywords" content=" ipopt trace information syntax prototype iter obj_value inf_pr inf_du mu d_norm regularization_size alpha_du alpha_pr ls_trials restoration ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -82,6 +82,7 @@ A:active { color : purple }
 <br><a href="trace_struct.htm#alpha_du" target="_top">alpha_du</a>
 <br><a href="trace_struct.htm#alpha_pr" target="_top">alpha_pr</a>
 <br><a href="trace_struct.htm#ls_trials" target="_top">ls_trials</a>
+<br><a href="trace_struct.htm#restoration" target="_top">restoration</a>
 <br><br>
 <b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
 
@@ -106,6 +107,7 @@ A:active { color : purple }
           <font color="#009900">double</font> alpha_du<font color="#990000">;</font>
           <font color="#009900">double</font> alpha_pr<font color="#990000">;</font>
           <font color="#008080">size_t</font> ls_trials<font color="#990000">;</font>
+          <font color="#009900">bool</font>   restoration<font color="#990000">;</font>
      <font color="#FF0000">}</font><font color="#990000">;</font>     </tt></pre>
 <br>
 <b><big><a name="iter" id="iter">iter</a></big></b>
@@ -175,6 +177,12 @@ See ipopt trace <a href="ipopt_trace.htm#alpha_pr" target="_top"><span style='wh
 <br>
 See ipopt trace <a href="ipopt_trace.htm#ls" target="_top"><span style='white-space: nowrap'>ls</span></a>
 .
+
+<br>
+<br>
+<b><big><a name="restoration" id="restoration">restoration</a></big></b>
+<br>
+Is ipopt currently in restoration mode.
 
 
 <hr>Input File: include/cppad/mixed/trace_struct.hpp
