@@ -66,6 +66,9 @@ See ipopt trace $cref/alpha_pr/ipopt_trace/alpha_pr/$$.
 $head ls_trials$$
 See ipopt trace $cref/ls/ipopt_trace/ls/$$.
 
+$head restoration$$
+Is ipopt currently in restoration mode.
+
 $end
 ------------------------------------------------------------------------------
 */
@@ -82,6 +85,7 @@ namespace CppAD { namespace mixed {
 		double alpha_du;
 		double alpha_pr;
 		size_t ls_trials;
+		bool   restoration;
 	};
 	// END_PROTOTYPE
 } }

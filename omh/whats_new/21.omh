@@ -20,11 +20,15 @@ $spell
 	optimizer
 	vec
 	CppAD
+	struct
 $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
 
-$head 05-06$$
+$head 06-07$$
+Add $cref/restoration/trace_struct/restoration/$$ field to the $code trace_struct$$.
+
+$head 06-06$$
 $list number$$
 Add the optimizer trace information
 $cref/trace_vec/fixed_solution/trace_vec/$$ to the solution for the

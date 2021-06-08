@@ -1043,10 +1043,7 @@ bool ipopt_nlp_xam::intermediate_callback(
 	using std::right;
 	using std::setw;
 	//
-	using Ipopt::OrigIpoptNLP;
-	using Ipopt::GetRawPtr;
-	void* ptr = dynamic_cast<void*>(GetRawPtr(ip_cq->GetIpoptNLP()));
-	bool  restoration = ptr == nullptr;
+	bool restoration = Ipopt::GetRawPtr(ip_cq->GetIpoptNLP()) == nullptr;
 	//
 	std::streamsize restore = cout.precision();
 	cout.precision(2);

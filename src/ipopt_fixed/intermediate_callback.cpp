@@ -8,6 +8,8 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/ipopt_fixed.hpp>
+# include <coin-or/IpIpoptCalculatedQuantities.hpp>
+# include <coin-or/IpOrigIpoptNLP.hpp>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /* %$$
@@ -105,8 +107,10 @@ bool ipopt_fixed::intermediate_callback(
 	IpoptCalculatedQuantities*  ip_cq                )   // in
 {	size_t size = solution_.trace_vec.size();
 	assert( size == size_t(iter) );
-	trace_struct trace;
 	//
+	bool restoration = Ipopt::GetRawPtr(ip_cq->GetIpoptNLP()) == nullptr;
+	//
+	trace_struct trace;
 	trace.iter                = size_t(iter);
 	trace.obj_value           = obj_value;
 	trace.inf_pr              = inf_pr;
@@ -117,6 +121,7 @@ bool ipopt_fixed::intermediate_callback(
 	trace.alpha_du            = alpha_du;
 	trace.alpha_pr            = alpha_pr;
 	trace.ls_trials           = size_t(ls_trials);
+	trace.restoration         = restoration;
 	//
 	solution_.trace_vec.push_back(trace);
 	return true;
