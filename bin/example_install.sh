@@ -106,7 +106,7 @@ if which apt-get >& /dev/null
 then
 	system_type='debian'
 	system_install="$sudo apt-get install -y"
-	apt-get list --installed | sed -e 's|  *| |g' > example_install.tmp
+	apt list --installed | sed -e 's|  *| |g' > example_install.tmp
 elif which dnf >& /dev/null
 then
 	system_type='red_hat'

@@ -21,9 +21,15 @@ $spell
 	vec
 	CppAD
 	struct
+	ubuntu
 $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
+
+$head 06-10$$
+In $cref example_install.sh$$ change
+$code apt-get list --installed$$ to $code apt list --installed$$.
+This fixes the check for previously installed packages on ubuntu.
 
 $head 06-08$$
 $list number$$
