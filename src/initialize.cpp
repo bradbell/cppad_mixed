@@ -90,7 +90,7 @@ but they can be inspected. For example,
 $codei%
 	std::map<std::string, size_t>::iterator itr;
 	for(itr = %size_map%.begin(); itr != %size_map%.end(); itr++)
-		std::cout << itr->first << " = " itr->second << "\n";
+		std::cout << itr->first << " = " << itr->second << "\n";
 %$$
 
 $head Example$$
