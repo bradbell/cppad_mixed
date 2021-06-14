@@ -85,7 +85,36 @@ $codei%
 	std::map<std::string, size_t> %size_map%
 %$$
 It represent the size of certain aspects of the problem.
-The actual fields in $icode size_map$$ are not specified,
+
+$subhead n_fixed$$
+the number of fixed effects.
+
+$subhead n_random$$
+the number of fixed effects.
+
+$subhead quasi_fixed$$
+If this is one (zero) are a using a quasi-Newton (Newton) method
+for optimizing the fixed effects.
+
+$subhead A_nr$$
+is the number of rows in the liner constraint matrix A
+(the matrix has $icode n_fixed$$ columns).
+
+$subhead A_nnz$$
+is the number of non-zeros in the liner constraint matrix A.
+
+$subhead ran_like_fun.size_var$$
+is the number of variables in the algorithm that maps the
+fixed and random effects to the part of the likelihood that depend
+on the random effects.
+
+$subhead fix_like_fun.size_var$$
+is the number of variables in the algorithm that maps the
+fixed effects to the part of the likelihood that does not depend
+on the random effects.
+
+$subhead Other Fields$$
+Not all the fields in $icode size_map$$ are specified,
 but they can be inspected. For example,
 $codei%
 	std::map<std::string, size_t>::iterator itr;
@@ -193,23 +222,27 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 
 	// return value
 	std::map<std::string, size_t> size_map;
+
+	// specified values
+	size_map["n_fixed"]                    = n_fixed_;
+	size_map["n_random"]                   = n_random_;
+	size_map["quasi_fixed"]                = size_t(  quasi_fixed_ );
+	size_map["A_nr"]                       = A_rcv_.nr();
+	size_map["A_nnz"]                      = A_rcv_.nnz();
+	size_map["ran_like_fun.size_var"]      = ran_like_fun_.size_var();
+	size_map["fix_like_fun.size_var"]      = fix_like_fun_.size_var();
+
+	// unspecified values
 	size_map["num_bytes_before"]           = num_bytes_before;
-	size_map["n_fixed_"]                   = n_fixed_;
-	size_map["n_random_"]                  = n_random_;
-	size_map["quasi_fixed_"]               = quasi_fixed_;
-	size_map["A_rcv_.nnz()"]               = A_rcv_.nnz();
-	size_map["A_rcv_.nr()"]                = A_rcv_.nr();
-	size_map["ran_like_fun_.size_var()"]   = ran_like_fun_.size_var();
 	size_map["ran_like_a1fun_.size_var()"] = ran_like_a1fun_.size_var();
 	size_map["ran_hes_uu_rcv_.nnz()"]      = ran_hes_uu_rcv_.nnz();
 	size_map["ran_hes_fun_.size_var()"]    = ran_hes_fun_.size_var();
 	size_map["hes_cross_.subset.nnz()"]    = hes_cross_.subset.nnz();
-	size_map["fix_like_fun_.size_var()"]   = fix_like_fun_.size_var();
 	size_map["fix_like_jac_.subset.nnz()"] = fix_like_jac_.subset.nnz();
 	size_map["fix_like_hes_.subset.nnz()"] = fix_like_hes_.subset.nnz();
 	size_map["fix_con_fun_.size_var()"]    = fix_con_fun_.size_var();
-	size_map["fix_con_jac_.subset.nnz()"]    = fix_con_jac_.subset.nnz();
-	size_map["fix_con_hes_.subset.nnz()"]    = fix_con_hes_.subset.nnz();
+	size_map["fix_con_jac_.subset.nnz()"]  = fix_con_jac_.subset.nnz();
+	size_map["fix_con_hes_.subset.nnz()"]  = fix_con_hes_.subset.nnz();
 	size_map["num_bytes_after"]            = CppAD::thread_alloc::inuse(thread);
 	return size_map;
 }

@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-20 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -102,6 +102,24 @@ bool derived_ctor_xam(void)
 		ok &= mixed_object.warning_message_.size() == 2;
 		ok &= mixed_object.warning_message_[0] == "first warning";
 		ok &= mixed_object.warning_message_[1] == "second warning";
+	}
+	//
+	// check that the specified fields are in size_map
+	const char* key_list[] = {
+		"n_fixed",
+		"n_random",
+		"quasi_fixed",
+		"A_nr",
+		"A_nnz",
+		"ran_like_fun.size_var",
+		"fix_like_fun.size_var"
+	};
+	size_t n_list = sizeof(key_list) / sizeof(key_list[0]);
+	for(size_t i = 0; i < n_list; ++i)
+	{	std::string key = key_list[i];
+		std::map<std::string, size_t>::iterator itr;
+		itr = size_map.find(key);
+		ok &= itr != size_map.end();
 	}
 	// The following code can be used to display size_map
 	// std::map<std::string, size_t>::iterator itr;

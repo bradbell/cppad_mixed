@@ -26,6 +26,12 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
 
+$head 06-13$$
+Add specifications for some of the fields in the initialize return value
+$cref/size_map/initialize/size_map/$$.
+Check these fields are present as part of the
+$cref derived_ctor.cpp$$ example.
+
 $head 06-10$$
 In $cref example_install.sh$$ change
 $code apt-get list --installed$$ to $code apt list --installed$$.
