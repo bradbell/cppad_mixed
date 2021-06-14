@@ -147,6 +147,24 @@ A:active { color : purple }
           ok <font color="#990000">&amp;=</font> mixed_object<font color="#990000">.</font>warning_message_<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">==</font> <font color="#FF0000">"first warning"</font><font color="#990000">;</font>
           ok <font color="#990000">&amp;=</font> mixed_object<font color="#990000">.</font>warning_message_<font color="#990000">[</font><font color="#993399">1</font><font color="#990000">]</font> <font color="#990000">==</font> <font color="#FF0000">"second warning"</font><font color="#990000">;</font>
      <font color="#FF0000">}</font>
+     <i><font color="#9A1900">//</font></i>
+     <i><font color="#9A1900">// check that the specified fields are in size_map</font></i>
+     <b><font color="#0000FF">const</font></b> <font color="#009900">char</font><font color="#990000">*</font> key_list<font color="#990000">[]</font> <font color="#990000">=</font> <font color="#FF0000">{</font>
+          <font color="#FF0000">"n_fixed"</font><font color="#990000">,</font>
+          <font color="#FF0000">"n_random"</font><font color="#990000">,</font>
+          <font color="#FF0000">"quasi_fixed"</font><font color="#990000">,</font>
+          <font color="#FF0000">"A_nr"</font><font color="#990000">,</font>
+          <font color="#FF0000">"A_nnz"</font><font color="#990000">,</font>
+          <font color="#FF0000">"ran_like_fun.size_var"</font><font color="#990000">,</font>
+          <font color="#FF0000">"fix_like_fun.size_var"</font>
+     <font color="#FF0000">}</font><font color="#990000">;</font>
+     <font color="#008080">size_t</font> n_list <font color="#990000">=</font> <b><font color="#0000FF">sizeof</font></b><font color="#990000">(</font>key_list<font color="#990000">)</font> <font color="#990000">/</font> <b><font color="#0000FF">sizeof</font></b><font color="#990000">(</font>key_list<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]);</font>
+     <b><font color="#0000FF">for</font></b><font color="#990000">(</font><font color="#008080">size_t</font> i <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font> i <font color="#990000">&lt;</font> n_list<font color="#990000">;</font> <font color="#990000">++</font>i<font color="#990000">)</font>
+     <font color="#FF0000">{</font>    std<font color="#990000">::</font><font color="#008080">string</font> key <font color="#990000">=</font> key_list<font color="#990000">[</font>i<font color="#990000">];</font>
+          std<font color="#990000">::</font>map<font color="#990000">&lt;</font>std<font color="#990000">::</font>string<font color="#990000">,</font> size_t<font color="#990000">&gt;::</font><font color="#008080">iterator</font> itr<font color="#990000">;</font>
+          itr <font color="#990000">=</font> size_map<font color="#990000">.</font><b><font color="#000000">find</font></b><font color="#990000">(</font>key<font color="#990000">);</font>
+          ok <font color="#990000">&amp;=</font> itr <font color="#990000">!=</font> size_map<font color="#990000">.</font><b><font color="#000000">end</font></b><font color="#990000">();</font>
+     <font color="#FF0000">}</font>
      <i><font color="#9A1900">// The following code can be used to display size_map</font></i>
      <i><font color="#9A1900">// std::map&lt;std::string, size_t&gt;::iterator itr;</font></i>
      <i><font color="#9A1900">// for(itr = size_map.begin(); itr != size_map.end(); itr++)</font></i>

@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Initialization After Constructor</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Initialization After Constructor">
-<meta name="keywords" id="keywords" content=" initialization after constructor syntax public purpose mixed_object fixed_vec random_vec size_map example ">
+<meta name="keywords" id="keywords" content=" initialization after constructor syntax public purpose mixed_object fixed_vec random_vec size_map n_fixed n_random quasi_fixed a_nr a_nnz ran_like_fun.size_var fix_like_fun.size_var other fields example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -70,6 +70,14 @@ A:active { color : purple }
 <br><a href="initialize.htm#fixed_vec" target="_top">fixed_vec</a>
 <br><a href="initialize.htm#random_vec" target="_top">random_vec</a>
 <br><a href="initialize.htm#size_map" target="_top">size_map</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="initialize.htm#size_map.n_fixed" target="_top">n_fixed</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="initialize.htm#size_map.n_random" target="_top">n_random</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="initialize.htm#size_map.quasi_fixed" target="_top">quasi_fixed</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="initialize.htm#size_map.A_nr" target="_top">A_nr</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="initialize.htm#size_map.A_nnz" target="_top">A_nnz</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="initialize.htm#size_map.ran_like_fun.size_var" target="_top">ran_like_fun.size_var</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="initialize.htm#size_map.fix_like_fun.size_var" target="_top">fix_like_fun.size_var</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="initialize.htm#size_map.Other Fields" target="_top">Other&nbsp;Fields</a>
 <br><a href="initialize.htm#Example" target="_top">Example</a>
 <br><br>
 <b><big><a name="Syntax" id="Syntax">Syntax</a></big></b>
@@ -151,15 +159,70 @@ The return value has prototype
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::map&lt;std::string,&nbsp;size_t&gt;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>size_map</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 </span></font></code>
 It represent the size of certain aspects of the problem.
-The actual fields in 
+
+<br>
+<br>
+<big><a name="size_map.n_fixed" id="size_map.n_fixed">n_fixed</a></big>
+<br>
+the number of fixed effects.
+
+<br>
+<br>
+<big><a name="size_map.n_random" id="size_map.n_random">n_random</a></big>
+<br>
+the number of fixed effects.
+
+<br>
+<br>
+<big><a name="size_map.quasi_fixed" id="size_map.quasi_fixed">quasi_fixed</a></big>
+<br>
+If this is one (zero) are a using a quasi-Newton (Newton) method
+for optimizing the fixed effects.
+
+<br>
+<br>
+<big><a name="size_map.A_nr" id="size_map.A_nr">A_nr</a></big>
+<br>
+is the number of rows in the liner constraint matrix A
+(the matrix has 
+<code><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i></code>
+ columns).
+
+<br>
+<br>
+<big><a name="size_map.A_nnz" id="size_map.A_nnz">A_nnz</a></big>
+<br>
+is the number of non-zeros in the liner constraint matrix A.
+
+<br>
+<br>
+<big><a name="size_map.ran_like_fun.size_var" id="size_map.ran_like_fun.size_var">ran_like_fun.size_var</a></big>
+<br>
+is the number of variables in the algorithm that maps the
+fixed and random effects to the part of the likelihood that depend
+on the random effects.
+
+<br>
+<br>
+<big><a name="size_map.fix_like_fun.size_var" id="size_map.fix_like_fun.size_var">fix_like_fun.size_var</a></big>
+<br>
+is the number of variables in the algorithm that maps the
+fixed effects to the part of the likelihood that does not depend
+on the random effects.
+
+<br>
+<br>
+<big><a name="size_map.Other Fields" id="size_map.Other Fields">Other Fields</a></big>
+<br>
+Not all the fields in 
 <code><i><font color="black"><span style='white-space: nowrap'>size_map</span></font></i></code>
- are not specified,
+ are specified,
 but they can be inspected. For example,
 
 <code><font color="blue"><span style='white-space: nowrap'><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::map&lt;std::string,&nbsp;size_t&gt;::iterator&nbsp;itr;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(itr&nbsp;=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>size_map</span></font></i><font color="blue"><span style='white-space: nowrap'>.begin();&nbsp;itr&nbsp;!=&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>size_map</span></font></i><font color="blue"><span style='white-space: nowrap'>.end();&nbsp;itr++)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;itr-&gt;first&nbsp;&lt;&lt;&nbsp;&quot;&nbsp;=&nbsp;&quot;&nbsp;itr-&gt;second&nbsp;&lt;&lt;&nbsp;&quot;\n&quot;;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;itr-&gt;first&nbsp;&lt;&lt;&nbsp;&quot;&nbsp;=&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;itr-&gt;second&nbsp;&lt;&lt;&nbsp;&quot;\n&quot;;<br>
 </span></font></code>
 <br>
 <b><big><a name="Example" id="Example">Example</a></big></b>
