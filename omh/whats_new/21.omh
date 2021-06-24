@@ -22,9 +22,15 @@ $spell
 	CppAD
 	struct
 	ubuntu
+	dpkg
 $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
+
+$head 06-24$$
+Fix $cref example_install.sh$$ of Ipopt (because it no longer has a mater branch).
+Change ubuntu listing of packages from $code apt list --installed$$ to
+$code dpkg-query -l$$ (to avoid warning).
 
 $head 06-13$$
 Add specifications for some of the fields in the initialize return value
