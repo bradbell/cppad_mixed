@@ -92,8 +92,7 @@ do
 	fi
 	echo_eval cd $name.git
 	echo_eval git reset --hard
-	echo_eval git checkout master
-	echo_eval git pull --ff-only
+	echo_eval git fetch origin
 	echo_eval git checkout --quiet $version
 	if [ -e "./get.$name" ]
 	then
