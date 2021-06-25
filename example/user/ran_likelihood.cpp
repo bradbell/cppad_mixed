@@ -60,23 +60,20 @@ namespace {
 		Vector template_ran_likelihood(
 			const Vector&         theta  ,
 			const Vector&         u      )
-		{	typedef typename Vector::value_type scalar;
-
+		{
 			Vector vec(1);
 
 			// compute this factor once
-			scalar sqrt_2pi = scalar(
-				 CppAD::sqrt( 8.0 * CppAD::atan(1.0)
-			));
+			a1_double sqrt_2pi =  CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
 
 			// initialize summation
 			vec[0] = 0.0;
 
 			// for each data and random effect
 			for(size_t i = 0; i < y_.size(); i++)
-			{	scalar mu     = u[i];
-				scalar sigma  = theta[i];
-				scalar res    = (y_[i] - mu) / sigma;
+			{	a1_double mu     = u[i];
+				a1_double sigma  = theta[i];
+				a1_double res    = (y_[i] - mu) / sigma;
 
 				// This is a Gaussian term, so entire density is smooth
 				vec[0]  += log(sqrt_2pi * sigma) + res * res / 2.0;

@@ -59,8 +59,7 @@ namespace {
 		Vector template_ran_likelihood(
 			const Vector&         theta  ,
 			const Vector&         u      )
-		{	typedef typename Vector::value_type scalar;
-
+		{
 			Vector vec(1);
 
 			// initialize part of log-density that is always smooth
@@ -69,9 +68,9 @@ namespace {
 			// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
 
 			for(size_t i = 0; i < y_.size(); i++)
-			{	scalar mu     = u[i];
-				scalar sigma  = theta[i];
-				scalar res    = (y_[i] - mu) / sigma;
+			{	a1_double mu     = u[i];
+				a1_double sigma  = theta[i];
+				a1_double res    = (y_[i] - mu) / sigma;
 
 				// Gaussian likelihood
 				vec[0]  += log(sigma) + res * res / 2.0;

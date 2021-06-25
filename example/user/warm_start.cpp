@@ -105,7 +105,7 @@ namespace {
 			for(size_t j = 0; j < n_fixed_; j++)
 			{
 				// Data term p(z|theta)
-				scalar res  = (z_[j] - fixed_vec[j]);
+				a1_double res  = (z_[j] - fixed_vec[j]);
 				vec[0]    += res * res / 2.0;
 			}
 			return vec;

@@ -149,8 +149,7 @@ namespace {
 		Vector template_ran_likelihood(
 			const Vector&         theta  ,
 			const Vector&         u      )
-		{	typedef typename Vector::value_type scalar;
-
+		{
 			assert( theta.size() == n_fixed_ );
 			assert( u.size() == y_.size() );
 			Vector vec(1);
@@ -161,9 +160,9 @@ namespace {
 			// sqrt_2pi = CppAD::sqrt(8.0 * CppAD::atan(1.0) );
 
 			for(size_t i = 0; i < n_random_; i++)
-			{	scalar mu     = u[i] + theta[0];
-				scalar sigma  = theta[1];
-				scalar res    = (y_[i] - mu) / sigma;
+			{	a1_double mu     = u[i] + theta[0];
+				a1_double sigma  = theta[1];
+				a1_double res    = (y_[i] - mu) / sigma;
 
 				// p(y_i | u, theta)
 				vec[0] += log(sigma) + res * res / 2.0;
@@ -186,8 +185,7 @@ namespace {
 		template <typename Vector>
 		Vector template_fix_likelihood(
 			const Vector&         fixed_vec  )
-		{	typedef typename Vector::value_type scalar;
-
+		{
 			assert( fixed_vec.size() == n_fixed_ );
 			Vector vec(1);
 
@@ -195,14 +193,12 @@ namespace {
 			vec[0] = 0.0;
 
 			// compute these factors once
-			scalar sqrt_2pi = scalar(
-				 CppAD::sqrt( 8.0 * CppAD::atan(1.0)
-			));
+			a1_double sqrt_2pi =  CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
 
 			for(size_t j = 0; j < n_fixed_; j++)
-			{	scalar mu     = 4.0;
-				scalar sigma  = 1.0;
-				scalar res    = (fixed_vec[j] - mu) / sigma;
+			{	a1_double mu     = 4.0;
+				a1_double sigma  = 1.0;
+				a1_double res    = (fixed_vec[j] - mu) / sigma;
 
 				// This is a Gaussian term, so entire density is smooth
 				vec[0]  += res * res / 2.0;

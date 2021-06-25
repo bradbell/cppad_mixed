@@ -84,8 +84,7 @@ namespace {
 		// implementation of fix_likelihood as p(z|theta) * p(theta)
 		a1_vector fix_likelihood(
 			const a1_vector&         fixed_vec  ) override
-		{	typedef typename a1_vector::value_type scalar;
-
+		{
 			// initialize log-density
 			a1_vector vec(1);
 			vec[0] = 0.0;
@@ -96,7 +95,7 @@ namespace {
 			for(size_t j = 0; j < n_fixed_; j++)
 			{
 				// Data term p(z|theta)
-				scalar res  = (z_[j] - fixed_vec[j]);
+				a1_double res  = (z_[j] - fixed_vec[j]);
 				vec[0]    += res * res / 2.0;
 				// following term does not depend on fixed effects
 				// vec[0]    += log(sqrt_2pi );

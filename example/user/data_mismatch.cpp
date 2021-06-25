@@ -194,9 +194,8 @@ namespace {
 		template <typename Vector>
 		Vector template_fix_likelihood(
 			const Vector&         fixed_vec  )
-		{	typedef typename Vector::value_type scalar;
-
-			scalar theta = fixed_vec[0];
+		{
+			a1_double theta = fixed_vec[0];
 
 			// initialize log-density
 			Vector vec(1);
@@ -206,7 +205,7 @@ namespace {
 			// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
 
 			// Data term p(z|theta)
-			scalar res  = (z_ - theta) / sigma_z_;
+			a1_double res  = (z_ - theta) / sigma_z_;
 			vec[0]    += res * res / 2.0;
 			// the following term does not depend on fixed effects
 			// vec[0]    += log(sqrt_2pi * sigma_z_ );
@@ -224,10 +223,9 @@ namespace {
 		Vector template_ran_likelihood(
 			const Vector&         fixed_vec  ,
 			const Vector&         random_vec )
-		{	typedef typename Vector::value_type scalar;
-
-			scalar theta = fixed_vec[0];
-			scalar u     = random_vec[0];
+		{
+			a1_double theta = fixed_vec[0];
+			a1_double u     = random_vec[0];
 
 			// initialize log-density
 			Vector vec(1);
@@ -237,7 +235,7 @@ namespace {
 			// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
 
 			// Data term p(y|theta,u)
-			scalar res  = (y_ - exp(u) * theta) / sigma_y_;
+			a1_double res  = (y_ - exp(u) * theta) / sigma_y_;
 			vec[0]    += res * res / 2.0;
 			// the following term does not depend on fixed or random effects
 			// vec[0]    += log(sqrt_2pi * sigma_y_ );

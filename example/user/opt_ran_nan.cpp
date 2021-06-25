@@ -57,8 +57,7 @@ namespace {
 		Vector template_ran_likelihood(
 			const Vector&         theta  ,
 			const Vector&         u      )
-		{	typedef typename Vector::value_type scalar;
-
+		{
 			Vector vec(1);
 
 			// initialize part of log-density that is always smooth
@@ -67,11 +66,11 @@ namespace {
 			// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
 
 			// sum of residual squared
-			scalar sum_sq  = 0.0;
+			a1_double sum_sq  = 0.0;
 			for(size_t i = 0; i < y_.size(); i++)
-			{	scalar mu     = u[i];
-				scalar sigma  = theta[i];
-				scalar res    = (y_[i] - mu) / sigma;
+			{	a1_double mu     = u[i];
+				a1_double sigma  = theta[i];
+				a1_double res    = (y_[i] - mu) / sigma;
 
 				// Gaussian likelihood
 				vec[0]  += log(sigma) + res * res / 2.0;
@@ -83,8 +82,8 @@ namespace {
 			}
 
 			// return nan when sum of squares is less than 1e-4
-			scalar vec_0 = CppAD::numeric_limits<scalar>::quiet_NaN();
-			scalar small =  1e-4 ;
+			a1_double vec_0 = CppAD::numeric_limits<a1_double>::quiet_NaN();
+			a1_double small =  1e-4 ;
 			vec_0  = CppAD::CondExpGt(sum_sq, + small, vec[0], vec_0);
 			vec[0] = vec_0;
 			//

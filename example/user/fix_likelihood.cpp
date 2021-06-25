@@ -60,8 +60,7 @@ namespace {
 		template <typename Vector>
 		Vector template_fix_likelihood(
 			const Vector&         theta  )
-		{	typedef typename Vector::value_type scalar;
-
+		{
 			Vector vec(1);
 
 			// compute this factor once
@@ -72,8 +71,8 @@ namespace {
 
 			// for each data and random effect
 			for(size_t i = 0; i < z_.size(); i++)
-			{	scalar mu     = theta[i];
-				scalar res    = (z_[i] - mu) / 1.0;
+			{	a1_double mu     = theta[i];
+				a1_double res    = (z_[i] - mu) / 1.0;
 
 				// This is a Gaussian term, so entire density is smooth
 				vec[0]  += log(sqrt_2pi) + res * res / 2.0;

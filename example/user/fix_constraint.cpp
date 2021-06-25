@@ -95,8 +95,7 @@ namespace {
 		Vector template_ran_likelihood(
 			const Vector&         theta  ,
 			const Vector&         u      )
-		{	typedef typename Vector::value_type scalar;
-
+		{
 			assert( u.size() == y_.size() );
 			assert( theta.size() == y_.size() );
 			Vector vec(1);
@@ -108,9 +107,9 @@ namespace {
 			// sqrt_2pi = CppAD::sqrt(8.0 * CppAD::atan(1.0) );
 
 			for(size_t i = 0; i < y_.size(); i++)
-			{	scalar mu     = u[i] + theta[i];
-				scalar sigma  = 1.0;
-				scalar res    = (y_[i] - mu) / sigma;
+			{	a1_double mu     = u[i] + theta[i];
+				a1_double sigma  = 1.0;
+				a1_double res    = (y_[i] - mu) / sigma;
 
 				// p(y_i | u, theta)
 				vec[0] += res*res / 2.0;

@@ -89,18 +89,17 @@ namespace {
 		Vector template_fix_likelihood(
 			const Vector&         fixed_vec  )
 		{	// scalar
-			typedef typename Vector::value_type scalar;
 
 			// initialize log-density
 			Vector vec(1 + n_fixed_);
 			vec[0] = 0.0;
 
 			// compute this factors once
-			scalar sqrt_2 =  CppAD::sqrt( 2.0  );
+			a1_double sqrt_2 =  CppAD::sqrt( 2.0  );
 
 			for(size_t j = 0; j < n_fixed_; j++)
 			{	// Data term
-				scalar res   = z_[j] - CppAD::exp( fixed_vec[j] );
+				a1_double res   = z_[j] - CppAD::exp( fixed_vec[j] );
 				res        /=  sigma_ ;
 				// the following term does not depend on fixed effects
 				// vec[0]     += log(sigma_ * sqrt_2);
