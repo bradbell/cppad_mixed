@@ -57,11 +57,10 @@ namespace {
 			z_(z)
 		{ }
 		// implementation of fix_likelihood
-		template <typename Vector>
-		Vector template_fix_likelihood(
-			const Vector&         theta  )
+		a1_vector template_fix_likelihood(
+			const a1_vector&         theta  )
 		{
-			Vector vec(1);
+			a1_vector vec(1);
 
 			// compute this factor once
 			double sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );

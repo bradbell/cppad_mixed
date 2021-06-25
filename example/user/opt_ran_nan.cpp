@@ -53,12 +53,11 @@ namespace {
 			y_(y)
 		{ }
 		// implementation of ran_likelihood
-		template <typename Vector>
-		Vector template_ran_likelihood(
-			const Vector&         theta  ,
-			const Vector&         u      )
+		a1_vector template_ran_likelihood(
+			const a1_vector&         theta  ,
+			const a1_vector&         u      )
 		{
-			Vector vec(1);
+			a1_vector vec(1);
 
 			// initialize part of log-density that is always smooth
 			vec[0] = 0.0;

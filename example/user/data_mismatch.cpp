@@ -191,14 +191,13 @@ namespace {
 			assert( n_random == 1 );
 		}
 		// implementation of fix_likelihood as p(z|theta) * p(theta)
-		template <typename Vector>
-		Vector template_fix_likelihood(
-			const Vector&         fixed_vec  )
+		a1_vector template_fix_likelihood(
+			const a1_vector&         fixed_vec  )
 		{
 			a1_double theta = fixed_vec[0];
 
 			// initialize log-density
-			Vector vec(1);
+			a1_vector vec(1);
 			vec[0] = 0.0;
 
 			// compute this factor once
@@ -219,16 +218,15 @@ namespace {
 		{	return template_fix_likelihood( fixed_vec ); }
 		// ------------------------------------------------------------------
 		// implementation of ran_likelihood as p(y|theta, u) * p(u|theta)
-		template <typename Vector>
-		Vector template_ran_likelihood(
-			const Vector&         fixed_vec  ,
-			const Vector&         random_vec )
+		a1_vector template_ran_likelihood(
+			const a1_vector&         fixed_vec  ,
+			const a1_vector&         random_vec )
 		{
 			a1_double theta = fixed_vec[0];
 			a1_double u     = random_vec[0];
 
 			// initialize log-density
-			Vector vec(1);
+			a1_vector vec(1);
 			vec[0] = 0.0;
 
 			// compute this factors once

@@ -85,13 +85,12 @@ namespace {
 		{	assert(z.size() == n_fixed); }
 
 		// template version of fix_likelihood; i.e., p(z|theta) * p(theta)
-		template <typename Vector>
-		Vector template_fix_likelihood(
-			const Vector&         fixed_vec  )
+		a1_vector template_fix_likelihood(
+			const a1_vector&         fixed_vec  )
 		{	// scalar
 
 			// initialize log-density
-			Vector vec(1 + n_fixed_);
+			a1_vector vec(1 + n_fixed_);
 			vec[0] = 0.0;
 
 			// compute this factors once

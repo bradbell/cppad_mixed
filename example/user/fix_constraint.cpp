@@ -91,14 +91,13 @@ namespace {
 			y_(y)
 		{}
 		// implementation of ran_likelihood
-		template <typename Vector>
-		Vector template_ran_likelihood(
-			const Vector&         theta  ,
-			const Vector&         u      )
+		a1_vector template_ran_likelihood(
+			const a1_vector&         theta  ,
+			const a1_vector&         u      )
 		{
 			assert( u.size() == y_.size() );
 			assert( theta.size() == y_.size() );
-			Vector vec(1);
+			a1_vector vec(1);
 
 			// initialize part of log-density that is always smooth
 			vec[0] = 0.0;
@@ -130,11 +129,10 @@ namespace {
 		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 		// ------------------------------------------------------------------
 		// fix_constraint
-		template <typename Vector>
-		Vector template_fix_constraint(
-			const Vector&         fixed_vec  )
+		a1_vector template_fix_constraint(
+			const a1_vector&         fixed_vec  )
 		{
-			Vector ret_val(1);
+			a1_vector ret_val(1);
 			//
 			ret_val[0] = 0.0;
 			for(size_t i = 0; i < fixed_vec.size(); i++)

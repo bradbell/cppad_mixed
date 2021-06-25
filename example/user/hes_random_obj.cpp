@@ -57,12 +57,11 @@ namespace {
 			y_(y)
 		{ }
 		// implementation of ran_likelihood
-		template <typename Vector>
-		Vector template_ran_likelihood(
-			const Vector&         theta  ,
-			const Vector&         u      )
+		a1_vector template_ran_likelihood(
+			const a1_vector&         theta  ,
+			const a1_vector&         u      )
 		{
-			Vector vec(1);
+			a1_vector vec(1);
 
 			// compute this factor once
 			a1_double sqrt_2pi =  CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
