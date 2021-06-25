@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-20 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -68,7 +68,7 @@ namespace {
 			double sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
 
 			// initialize summation
-			vec[0] = scalar(0.0);
+			vec[0] = 0.0;
 
 			// for each data and random effect
 			for(size_t i = 0; i < z_.size(); i++)
@@ -76,7 +76,7 @@ namespace {
 				scalar res    = (z_[i] - mu) / 1.0;
 
 				// This is a Gaussian term, so entire density is smooth
-				vec[0]  += log(sqrt_2pi) + res * res / scalar(2.0);
+				vec[0]  += log(sqrt_2pi) + res * res / 2.0;
 			}
 			return vec;
 		}

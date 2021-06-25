@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-20 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -62,19 +62,19 @@ namespace {
 			Vector vec(1);
 
 			// initialize part of log-density that is always smooth
-			vec[0] = scalar(0.0);
+			vec[0] = 0.0;
 
 			// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
 
 			// sum of residual squared
-			scalar sum_sq  = scalar(0.0);
+			scalar sum_sq  = 0.0;
 			for(size_t i = 0; i < y_.size(); i++)
 			{	scalar mu     = u[i];
 				scalar sigma  = theta[i];
 				scalar res    = (y_[i] - mu) / sigma;
 
 				// Gaussian likelihood
-				vec[0]  += log(sigma) + res * res / scalar(2.0);
+				vec[0]  += log(sigma) + res * res / 2.0;
 				// following term does not depend on fixed or random effects
 				// vec[0]  += log(sqrt_2pi);
 
@@ -84,7 +84,7 @@ namespace {
 
 			// return nan when sum of squares is less than 1e-4
 			scalar vec_0 = CppAD::numeric_limits<scalar>::quiet_NaN();
-			scalar small = scalar( 1e-4 );
+			scalar small =  1e-4 ;
 			vec_0  = CppAD::CondExpGt(sum_sq, + small, vec[0], vec_0);
 			vec[0] = vec_0;
 			//

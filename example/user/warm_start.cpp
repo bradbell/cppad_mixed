@@ -100,13 +100,13 @@ namespace {
 
 			// initialize log-density
 			a1_vector vec(1);
-			vec[0] = scalar(0.0);
+			vec[0] = 0.0;
 
 			for(size_t j = 0; j < n_fixed_; j++)
 			{
 				// Data term p(z|theta)
 				scalar res  = (z_[j] - fixed_vec[j]);
-				vec[0]    += res * res / scalar(2.0);
+				vec[0]    += res * res / 2.0;
 			}
 			return vec;
 		}

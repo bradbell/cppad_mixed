@@ -1,7 +1,7 @@
 // $Id$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-20 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -80,7 +80,7 @@ namespace {
 			Vector vec(1);
 
 			// initialize part of log-density that is always smooth
-			vec[0] = scalar(0.0);
+			vec[0] = 0.0;
 
 			// sqrt_2pi = CppAD::sqrt(8.0 * CppAD::atan(1.0) );
 
@@ -90,12 +90,12 @@ namespace {
 				scalar res    = (y_[i] - mu) / sigma;
 
 				// p(y_i | u, theta)
-				vec[0] += log(sigma) + res * res / scalar(2.0);
+				vec[0] += log(sigma) + res * res / 2.0;
 				// following term does not depend on fixed or random effects
 				// vec[0] += log(sqrt_2pi);
 
 				// p(u_i | theta)
-				vec[0] += u[i] * u[i] / scalar(2.0);
+				vec[0] += u[i] * u[i] / 2.0;
 				// following term does not depend on fixed or random effects
 				// vec[0] += log(sqrt_2pi);
 			}
@@ -116,18 +116,18 @@ namespace {
 			Vector vec(1);
 
 			// initialize part of log-density that is smooth
-			vec[0] = scalar(0.0);
+			vec[0] = 0.0;
 
 			// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
 
 			// Note that theta[2] is not included
 			for(size_t j = 0; j < 2; j++)
-			{	scalar mu     = scalar(4.0);
-				scalar sigma  = scalar(1.0);
+			{	scalar mu     = 4.0;
+				scalar sigma  = 1.0;
 				scalar res    = (fixed_vec[j] - mu) / sigma;
 
 				// This is a Gaussian term, so entire density is smooth
-				vec[0]  += res * res / scalar(2.0);
+				vec[0]  += res * res / 2.0;
 				// following term does not depend on fixed effects
 				// vec[0]  += log(sqrt_2pi * sigma);
 			}

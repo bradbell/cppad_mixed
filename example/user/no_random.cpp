@@ -88,7 +88,7 @@ namespace {
 
 			// initialize log-density
 			a1_vector vec(1);
-			vec[0] = scalar(0.0);
+			vec[0] = 0.0;
 
 			// compute this factors once
 			// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );
@@ -97,13 +97,13 @@ namespace {
 			{
 				// Data term p(z|theta)
 				scalar res  = (z_[j] - fixed_vec[j]);
-				vec[0]    += res * res / scalar(2.0);
+				vec[0]    += res * res / 2.0;
 				// following term does not depend on fixed effects
 				// vec[0]    += log(sqrt_2pi );
 
 				// prior term p(theta)
 				res     = fixed_vec[j];
-				vec[0] += res * res / scalar(2.0);
+				vec[0] += res * res / 2.0;
 				// following term does not depend on fixed effects
 				// vec[0]    += log(sqrt_2pi );
 			}
