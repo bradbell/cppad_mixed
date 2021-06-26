@@ -2,7 +2,7 @@
 # $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-20 University of Washington
+#           Copyright (C) 2014-21 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -79,6 +79,7 @@ export LD_LIBRARY_PATH="$ipopt_prefix/$cmake_libdir"
 else
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$ipopt_prefix/$cmake_libdir"
 fi
+echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
 # &&
 #
 # &head Create Temporary&&
