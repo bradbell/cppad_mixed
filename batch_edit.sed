@@ -29,5 +29,10 @@
 # '
 # ----------------------------------------------------------------------------
 # Put other sed commands below here and without # at start of line
-s|$cref/sparse matrix/wish_list/Sparse Matrix/\$\$|sparse_matrix|
-s|$cref/multi-threading/wish_list/Multi-Threading/\$\$|$cref/multi-threading/wish_list/Multi-Threading and Statistics/$$|
+/$head Public\$/! b end
+: loop_1
+N
+/\n$head /! b loop_1
+s|.*\n$head |$head |
+#
+: end

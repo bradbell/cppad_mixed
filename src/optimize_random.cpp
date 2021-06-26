@@ -35,9 +35,6 @@ $icode%mixed_object%.optimize_random(
 	%options%, %fixed_vec%, %random_lower%, %random_upper%, %random_in%
 )%$$
 
-$head Public$$
-This $code cppad_mixed$$ $cref base_class$$ member function is public.
-
 $head Purpose$$
 This routine maximizes the
 $cref/random likelihood/ran_likelihood/$$

@@ -38,9 +38,6 @@ $cref sample_fixed$$
 $head Prototype$$
 $srcthisfile%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
 
-$head Public$$
-This $code cppad_mixed$$ $cref base_class$$ member function is public.
-
 $head Purpose$$
 This routine draws samples from
 the asymptotic posterior distribution for the

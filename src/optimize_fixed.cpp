@@ -48,9 +48,6 @@ $icode%mixed_object%.optimize_fixed(
 	%warm_start%
 )%$$
 
-$head Public$$
-This $code cppad_mixed$$ $cref base_class$$ member function is public.
-
 $head Purpose$$
 This routine maximizes the fixed effects objective
 $cref/L(theta)/theory/Objective/Fixed Effects Objective, L(theta)/$$.

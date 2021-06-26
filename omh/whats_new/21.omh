@@ -27,8 +27,15 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
 
+$head 06-26$$
+Remove the Public heading from documentation sections because all
+the user documentation is now part of the API.
+(The user documentation was separated from the developer documentation
+on $cref/2019-07-09/whats_new_19/07-09/$$.)
+
 $head 06-24$$
-Fix $cref example_install.sh$$ of Ipopt (because it no longer has a mater branch).
+Fix $cref example_install.sh$$ of Ipopt
+(because it no longer has a mater branch).
 Change ubuntu listing of packages from $code apt list --installed$$ to
 $code dpkg-query -l$$ (to avoid warning).
 

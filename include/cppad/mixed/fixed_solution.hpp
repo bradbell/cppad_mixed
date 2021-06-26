@@ -27,10 +27,6 @@ $codei%CppAD::mixed::fixed_solution %solution%$$
 $head Prototype$$
 $srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
 
-$head Public$$
-This structure is part of the
-CppAD Mixed user API.
-
 $head Convention$$
 If a Lagrange multiplier is non-zero (zero), the correspond constraint
 is active (is not active) at the optimal solution.

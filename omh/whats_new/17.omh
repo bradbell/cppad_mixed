@@ -154,8 +154,7 @@ $head 09-23$$
 $list number$$
 Improve error handling and messaging.
 $lnext
-Make the exception class
-$cref/public/exception/Public/$$.
+Make the exception class public.
 $lend
 
 $head 09-21$$
@@ -183,8 +182,7 @@ function was added to the Ipopt example.
 $lend
 
 $head 09-14$$
-The $code fixed_solution$$ structure was changed to be
-$cref/public/fixed_solution/Public/$$.
+The $code fixed_solution$$ structure was changed to be public.
 This was necessary because it is the type for the return
 value of $cref optimize_fixed$$ which is a public routine.
 

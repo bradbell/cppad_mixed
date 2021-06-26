@@ -1,7 +1,7 @@
 // $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-19 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -25,10 +25,6 @@ $section Map Ipopt Application Return Status to a String$$
 $head Syntax$$
 $icode%str% = CppAD::mixed::ipopt_app_status(%status%)
 %$$
-
-$head Public$$
-This function is part of the
-CppAD Mixed user API.
 
 $head Prototype$$
 $srccode%cpp% */
