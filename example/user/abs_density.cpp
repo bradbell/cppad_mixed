@@ -85,8 +85,8 @@ namespace {
 		{	assert(z.size() == n_fixed); }
 
 		// template version of fix_likelihood; i.e., p(z|theta) * p(theta)
-		a1_vector template_fix_likelihood(
-			const a1_vector&         fixed_vec  )
+		a1_vector fix_likelihood(
+			const a1_vector&         fixed_vec  ) override
 		{	// scalar
 
 			// initialize log-density
@@ -106,9 +106,6 @@ namespace {
 			}
 			return vec;
 		}
-		// a1_vector version of fix_likelihood
-		virtual a1_vector fix_likelihood(const a1_vector& fixed_vec)
-		{	return template_fix_likelihood( fixed_vec ); }
 	};
 }
 

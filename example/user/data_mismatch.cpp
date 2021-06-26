@@ -191,8 +191,8 @@ namespace {
 			assert( n_random == 1 );
 		}
 		// implementation of fix_likelihood as p(z|theta) * p(theta)
-		a1_vector template_fix_likelihood(
-			const a1_vector&         fixed_vec  )
+		a1_vector fix_likelihood(
+			const a1_vector&         fixed_vec  ) override
 		{
 			a1_double theta = fixed_vec[0];
 
@@ -213,9 +213,6 @@ namespace {
 
 			return vec;
 		}
-		// a1_vector version of fix_likelihood
-		virtual a1_vector fix_likelihood(const a1_vector& fixed_vec)
-		{	return template_fix_likelihood( fixed_vec ); }
 		// ------------------------------------------------------------------
 		// implementation of ran_likelihood as p(y|theta, u) * p(u|theta)
 		a1_vector template_ran_likelihood(

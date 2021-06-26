@@ -57,7 +57,7 @@ namespace {
 			z_(z)
 		{ }
 		// implementation of fix_likelihood
-		a1_vector template_fix_likelihood(
+		a1_vector fix_likelihood(
 			const a1_vector&         theta  )
 		{
 			a1_vector vec(1);
@@ -78,9 +78,6 @@ namespace {
 			}
 			return vec;
 		}
-		// a1_vector version of fix_likelihood
-		virtual a1_vector fix_likelihood(const a1_vector& fixed_vec)
-		{	return template_fix_likelihood( fixed_vec ); }
 	};
 }
 
