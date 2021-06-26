@@ -105,8 +105,7 @@ bool ipopt_fixed::intermediate_callback(
 	Index                       ls_trials            ,   // in
 	const IpoptData*            ip_data              ,   // in
 	IpoptCalculatedQuantities*  ip_cq                )   // in
-{	size_t size = solution_.trace_vec.size();
-	assert( size == size_t(iter) );
+{	assert( solution_.trace_vec.size() == size_t(iter) );
 	//
 	bool restoration = Ipopt::GetRawPtr(ip_cq->GetIpoptNLP()) == nullptr;
 	//

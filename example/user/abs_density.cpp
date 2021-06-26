@@ -87,8 +87,7 @@ namespace {
 		// template version of fix_likelihood; i.e., p(z|theta) * p(theta)
 		a1_vector fix_likelihood(
 			const a1_vector&         fixed_vec  ) override
-		{	// scalar
-
+		{
 			// initialize log-density
 			a1_vector vec(1 + n_fixed_);
 			vec[0] = 0.0;

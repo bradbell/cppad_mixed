@@ -96,8 +96,7 @@ namespace {
 		// implementation of fix_likelihood as p(z|theta)
 		a1_vector fix_likelihood(
 			const a1_vector&         fixed_vec  ) override
-		{	typedef typename a1_vector::value_type scalar;
-
+		{
 			// initialize log-density
 			a1_vector vec(1);
 			vec[0] = 0.0;
