@@ -29,10 +29,6 @@
 # '
 # ----------------------------------------------------------------------------
 # Put other sed commands below here and without # at start of line
-/$head Public\$/! b end
-: loop_1
-N
-/\n$head /! b loop_1
-s|.*\n$head |$head |
-#
-: end
+s|$begin user\$|$begin user_examples$|
+s|$cref user$$ examples|$cref user_examples$$|
+s|$cref user$$ API example|$cref user_examples$$|

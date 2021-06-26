@@ -215,7 +215,7 @@ directories.
 
 $head 07-28$$
 $list number$$
-Improve the organization of the $cref user$$ API example section.
+Improve the organization of the $cref user_examples$$ section.
 $lnext
 Add the $icode start_near_solution$$ argument to
 $cref ar1_xam.cpp$$ and $cref capture_xam.cpp$$.
@@ -423,7 +423,7 @@ $lnext
 Drop the $code a1_double$$ version of the user defined
 $cref ran_likelihood$$ function.
 Also drop the corresponding template functions from the
-$cref user$$ examples.
+$cref user_examples$$.
 $lend
 
 
@@ -453,7 +453,7 @@ Add comment about fact that constant terms in
 $cref/fix_likelihood/fix_likelihood/vec/constant/$$ and
 $cref/ran_likelihood/ran_likelihood/vec/constant/$$
 do not affect the result.
-In addition, change the $cref user$$ examples to demonstrate this fact.
+In addition, change the $cref user_examples$$ to demonstrate this fact.
 $lnext
 Continue to improve $cref capture_xam.cpp$$ example / speed test.
 $lend
@@ -718,7 +718,7 @@ have new examples in $cref derived_ctor.cpp$$.
 All the other user defined virtual routines examples
 have been simplified.
 To be specific, each has its own specific example.
-In addition, the $cref user$$ examples have been split in
+In addition, the $cref user_examples$$ have been split in
 the user defined routines, $code cppad_mixed$$ defined routines,
 and other examples.
 

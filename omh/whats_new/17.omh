@@ -66,7 +66,7 @@ $icode%number_random%=50000%$$ and $icode%random_seed%=123%$$.
 $lend
 
 $head 12-25$$
-Change an the $cref user$$ examples to use
+Change an the $cref user_examples$$ to use
 template implementations of the virtual public $cref base_class$$
 functions.
 
