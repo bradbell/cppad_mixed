@@ -215,9 +215,9 @@ namespace {
 		}
 		// ------------------------------------------------------------------
 		// implementation of ran_likelihood as p(y|theta, u) * p(u|theta)
-		a1_vector template_ran_likelihood(
+		a1_vector ran_likelihood(
 			const a1_vector&         fixed_vec  ,
-			const a1_vector&         random_vec )
+			const a1_vector&         random_vec ) override
 		{
 			a1_double theta = fixed_vec[0];
 			a1_double u     = random_vec[0];
@@ -243,11 +243,6 @@ namespace {
 
 			return vec;
 		}
-		// a1_vector version of ran_likelihood
-		virtual a1_vector ran_likelihood(
-			const a1_vector& fixed_vec, const a1_vector& random_vec
-		)
-		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 		// ==================================================================
 		// Routines used to check that objective derivative is zero at solution
 		// g(thata)    = (theta - z)^2           / (2.0 * sigma_z * sigma_z)

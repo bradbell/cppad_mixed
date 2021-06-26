@@ -145,9 +145,9 @@ namespace {
 		}
 	// ----------------------------------------------------------------------
 		// implementation of ran_likelihood
-		a1_vector template_ran_likelihood(
+		a1_vector ran_likelihood(
 			const a1_vector&         theta  ,
-			const a1_vector&         u      )
+			const a1_vector&         u      ) override
 		{
 			assert( theta.size() == n_fixed_ );
 			assert( u.size() == y_.size() );
@@ -175,11 +175,6 @@ namespace {
 			}
 			return vec;
 		}
-		// a1_vector version of ran_likelihood
-		virtual a1_vector ran_likelihood(
-			const a1_vector& fixed_vec, const a1_vector& random_vec
-		)
-		{	return template_ran_likelihood( fixed_vec, random_vec ); }
 		// implementation of fix_likelihood
 		a1_vector fix_likelihood(
 			const a1_vector&         fixed_vec  ) override
