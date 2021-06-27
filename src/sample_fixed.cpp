@@ -1,4 +1,3 @@
-// $Id:$
 /*
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models

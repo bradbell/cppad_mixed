@@ -1,4 +1,3 @@
-// $Id:$
 # ifndef CPPAD_MIXED_WARM_START_STRUCT_HPP
 # define CPPAD_MIXED_WARM_START_STRUCT_HPP
 /* --------------------------------------------------------------------------

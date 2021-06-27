@@ -1,5 +1,4 @@
 #! /usr/bin/python3
-# $Id:$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
 #           Copyright (C) 2014-21 University of Washington

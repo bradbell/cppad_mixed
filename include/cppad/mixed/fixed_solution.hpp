@@ -1,4 +1,3 @@
-// $Id:$
 # ifndef CPPAD_MIXED_FIXED_SOLUTION_HPP
 # define CPPAD_MIXED_FIXED_SOLUTION_HPP
 /* --------------------------------------------------------------------------
