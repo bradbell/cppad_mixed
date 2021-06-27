@@ -20,6 +20,7 @@ ELSE( )
 	MESSAGE( STATUS "Not windows dlls so building shared cppad_mixed" )
 	SET(library_type SHARED)
 ENDIF( )
+# BEGIN_SORT_THIS_LINE_PLUS_3
 ADD_LIBRARY(cppad_mixed
 	${library_type}
 	cholmod/constructor.cpp
@@ -27,14 +28,14 @@ ADD_LIBRARY(cppad_mixed
 	cholmod/inv.cpp
 	cholmod/logdet.cpp
 	cholmod/pattern.cpp
-	cholmod/solve_H.cpp
 	cholmod/sim_cov.cpp
+	cholmod/solve_H.cpp
 	cholmod/update.cpp
 	derived_ctor.cpp
-	eigen/ldlt_eigen.cpp
 	eigen/hes_fixed_obj.cpp
 	eigen/hes_random_obj.cpp
 	eigen/information_mat.cpp
+	eigen/ldlt_eigen.cpp
 	eigen/order2random.cpp
 	eigen/sparse_low_tri_sol.cpp
 	eigen/sparse_up_tri_sol.cpp
@@ -46,43 +47,44 @@ ADD_LIBRARY(cppad_mixed
 	fix_like_eval.cpp
 	fix_like_hes.cpp
 	fix_like_jac.cpp
-	init_ldlt_ran_hes.cpp
 	init_fix_con.cpp
 	init_fix_like.cpp
 	init_hes_cross.cpp
-	initialize.cpp
-	init_ran_jac.cpp
-	init_ran_hes.cpp
-	init_ran_like.cpp
 	init_laplace_obj.cpp
 	init_laplace_obj_fun.cpp
 	init_laplace_obj_hes.cpp
+	init_ldlt_ran_hes.cpp
+	init_ran_hes.cpp
+	init_ran_jac.cpp
+	init_ran_like.cpp
+	initialize.cpp
 	ipopt_app_status.cpp
-	ipopt_fixed/intermediate_callback.cpp
-	ipopt_fixed/new_random.cpp
-	ipopt_fixed/set_scaling.cpp
 	ipopt_fixed/adapt_derivative_chk.cpp
-	ipopt_fixed/one_dim_function.cpp
-	ipopt_fixed/finalize_solution.cpp
-	ipopt_fixed/eval_h.cpp
-	ipopt_fixed/eval_jac_g.cpp
+	ipopt_fixed/ctor.cpp
+	ipopt_fixed/eval_f.cpp
 	ipopt_fixed/eval_g.cpp
 	ipopt_fixed/eval_grad_f.cpp
-	ipopt_fixed/eval_f.cpp
-	ipopt_fixed/get_starting_point.cpp
+	ipopt_fixed/eval_h.cpp
+	ipopt_fixed/eval_jac_g.cpp
+	ipopt_fixed/finalize_solution.cpp
 	ipopt_fixed/get_bounds_info.cpp
 	ipopt_fixed/get_nlp_info.cpp
-	ipopt_fixed/ctor.cpp
-	ipopt_random/finalize_solution.cpp
-	ipopt_random/eval_h.cpp
-	ipopt_random/eval_jac_g.cpp
+	ipopt_fixed/get_starting_point.cpp
+	ipopt_fixed/intermediate_callback.cpp
+	ipopt_fixed/new_random.cpp
+	ipopt_fixed/one_dim_function.cpp
+	ipopt_fixed/set_scaling.cpp
+	ipopt_random/ctor.cpp
+	ipopt_random/eval_f.cpp
 	ipopt_random/eval_g.cpp
 	ipopt_random/eval_grad_f.cpp
-	ipopt_random/eval_f.cpp
-	ipopt_random/get_starting_point.cpp
+	ipopt_random/eval_h.cpp
+	ipopt_random/eval_jac_g.cpp
+	ipopt_random/finalize_solution.cpp
 	ipopt_random/get_bounds_info.cpp
 	ipopt_random/get_nlp_info.cpp
-	ipopt_random/ctor.cpp
+	ipopt_random/get_starting_point.cpp
+	laplace_obj_hes.cpp
 	logdet_jac.cpp
 	manage_gsl_rng.cpp
 	optimize_fixed.cpp
@@ -90,13 +92,13 @@ ADD_LIBRARY(cppad_mixed
 	ran_con_eval.cpp
 	ran_con_jac.cpp
 	ran_like_hes.cpp
-	laplace_obj_hes.cpp
 	ran_obj_eval.cpp
 	ran_obj_jac.cpp
 	sample_fixed.cpp
 	sample_random.cpp
 	update_factor.cpp
 )
+# END_SORT_THIS_LINE_MINUS_2
 SET_TARGET_PROPERTIES(cppad_mixed
 	PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
 )
