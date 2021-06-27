@@ -2,11 +2,11 @@
 # $Id$
 # -----------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-17 University of Washington
+#           Copyright (C) 2014-21 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
-#	     GNU Affero General Public License version 3.0 or later
+#        GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/add_copyright.sh" ]
@@ -59,7 +59,7 @@ case $ext in
 // \$Id:\$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -74,7 +74,7 @@ EOF
 \$Id:\$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -89,11 +89,11 @@ EOF
 # \$Id:\$
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-17 University of Washington
+#           Copyright (C) 2014-21 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
-#	     GNU Affero General Public License version 3.0 or later
+#        GNU Affero General Public License version 3.0 or later
 # see http://www.gnu.org/licenses/agpl.txt
 # ---------------------------------------------------------------------------
 EOF
@@ -104,7 +104,7 @@ EOF
 % \$Id:\$
 %  --------------------------------------------------------------------------
 % cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-%           Copyright (C) 2014-17 University of Washington
+%           Copyright (C) 2014-21 University of Washington
 %              (Bradley M. Bell bradbell@uw.edu)
 %
 % This program is distributed under the terms of the
@@ -120,7 +120,7 @@ EOF
 \$Id:\$
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell<at>uw.edu)
 
 This program is distributed under the terms of the
@@ -138,7 +138,7 @@ EOF
 <pre>
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-17 University of Washington
+          Copyright (C) 2014-21 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the

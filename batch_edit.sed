@@ -29,6 +29,4 @@
 # '
 # ----------------------------------------------------------------------------
 # Put other sed commands below here and without # at start of line
-s|$begin user\$|$begin user_examples$|
-s|$cref user$$ examples|$cref user_examples$$|
-s|$cref user$$ API example|$cref user_examples$$|
+s|#	     GNU|#        GNU|
