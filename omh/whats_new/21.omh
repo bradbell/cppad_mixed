@@ -23,9 +23,14 @@ $spell
 	struct
 	ubuntu
 	dpkg
+	gsl_rng
 $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
+
+$head 06-29$$
+Add include file to
+$cref/manage_gsl_rng syntax/manage_gsl_rng/Syntax/$$.
 
 $head 06-26$$
 Remove the Public heading from documentation sections because all

@@ -14,11 +14,15 @@ $spell
 	std
 	gsl
 	rng
+	cppad
+	hpp
 $$
 
 $section Set, Get, And Free A GSL Random Number Generator$$
 
 $head Syntax$$
+$codei%# include <cppad/mixed/manage_gsl_rng.hpp>
+%$$
 $icode%s_out% = CppAD::mixed::new_gsl_rng(%s_in%)
 %$$
 $icode%rng% = CppAD::mixed::get_gsl_rng()
