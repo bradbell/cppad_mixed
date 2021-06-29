@@ -7,7 +7,7 @@ var list_across0 = [
 ];
 var list_up0 = [
 'cppad_mixed.htm',
-'user.htm',
+'user_examples.htm',
 'speed.htm',
 'ar1_xam.cpp.htm'
 ];

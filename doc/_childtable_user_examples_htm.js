@@ -1,7 +1,7 @@
-// Child table for section user
+// Child table for section user_examples
 document.write('\
-<select onchange="user_child(this)">\
-<option>user-&gt;</option>\
+<select onchange="user_examples_child(this)">\
+<option>user_examples-&gt;</option>\
 <option>speed</option>\
 <option>abs_density.cpp</option>\
 <option>no_random.cpp</option>\
@@ -12,7 +12,7 @@ document.write('\
 <option>warm_start.cpp</option>\
 </select>\
 ');
-function user_child(item)
+function user_examples_child(item)
 {	var child_list = [
 		'speed.htm',
 		'abs_density.cpp.htm',

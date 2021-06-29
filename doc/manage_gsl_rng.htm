@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Set, Get, And Free A GSL Random Number Generator</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Set, Get, And Free A GSL Random Number Generator">
-<meta name="keywords" id="keywords" content=" set get free gsl random number generator syntax public purpose new_gsl_rng s_in s_out get_gsl_rng rng free_gsl_rng example ">
+<meta name="keywords" id="keywords" content=" set get free gsl random number generator syntax purpose new_gsl_rng s_in s_out get_gsl_rng rng free_gsl_rng example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -66,7 +66,6 @@ A:active { color : purple }
 \newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>Set, Get, And Free A GSL Random Number Generator</big></big></b></center>
 
 <br><a href="manage_gsl_rng.htm#Syntax" target="_top">Syntax</a>
-<br><a href="manage_gsl_rng.htm#Public" target="_top">Public</a>
 <br><a href="manage_gsl_rng.htm#Purpose" target="_top">Purpose</a>
 <br><a href="manage_gsl_rng.htm#new_gsl_rng" target="_top">new_gsl_rng</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="manage_gsl_rng.htm#new_gsl_rng.s_in" target="_top">s_in</a>
@@ -80,6 +79,9 @@ A:active { color : purple }
 
 <br>
 
+<code><font color="blue"><span style='white-space: nowrap'>#&nbsp;include&nbsp;&lt;cppad/mixed/manage_gsl_rng.hpp&gt;<br>
+</span></font></code>
+
 <code><i><font color="black"><span style='white-space: nowrap'>s_out</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;=&nbsp;CppAD::mixed::new_gsl_rng(</span></font><i><font color="black"><span style='white-space: nowrap'>s_in</span></font></i><font color="blue"><span style='white-space: nowrap'>)<br>
 </span></font></code>
 
@@ -88,12 +90,6 @@ A:active { color : purple }
 
 <code><font color="blue"><span style='white-space: nowrap'>CppAD::mixed::free_gsl_rng()<br>
 </span></font></code>
-<br>
-<b><big><a name="Public" id="Public">Public</a></big></b>
-<br>
-This function is part of the CppAD Mixed user API.
-
-<br>
 <br>
 <b><big><a name="Purpose" id="Purpose">Purpose</a></big></b>
 <br>

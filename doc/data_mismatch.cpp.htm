@@ -47,7 +47,7 @@ A:active { color : purple }
 <select onchange='choose_up0(this)'>
 <option>Up-&gt;</option>
 <option>cppad_mixed</option>
-<option>user</option>
+<option>user_examples</option>
 <option>data_mismatch.cpp</option>
 </select>
 </td>
@@ -55,7 +55,7 @@ A:active { color : purple }
 <script type='text/javascript' language='JavaScript' src='_childtable_cppad_mixed_htm.js'></script>
 </td>
 <td>
-<script type='text/javascript' language='JavaScript' src='_childtable_user_htm.js'></script>
+<script type='text/javascript' language='JavaScript' src='_childtable_user_examples_htm.js'></script>
 </td>
 <td>data_mismatch.cpp</td>
 </tr></table><br>
@@ -268,23 +268,21 @@ g_\theta ( \theta )
                <b><font color="#000000">assert</font></b><font color="#990000">(</font> n_random <font color="#990000">==</font> <font color="#993399">1</font> <font color="#990000">);</font>
           <font color="#FF0000">}</font>
           <i><font color="#9A1900">// implementation of fix_likelihood as p(z|theta) * p(theta)</font></i>
-          <b><font color="#0000FF">template</font></b> <font color="#990000">&lt;</font><b><font color="#0000FF">typename</font></b> <font color="#008080">Vector</font><font color="#990000">&gt;</font>
-          <font color="#008080">Vector</font> <b><font color="#000000">template_fix_likelihood</font></b><font color="#990000">(</font>
-               <b><font color="#0000FF">const</font></b> Vector<font color="#990000">&amp;</font>         fixed_vec  <font color="#990000">)</font>
-          <font color="#FF0000">{</font>    <b><font color="#0000FF">typedef</font></b> <b><font color="#0000FF">typename</font></b> <font color="#008080">Vector</font><font color="#990000">::</font><font color="#008080">value_type</font> scalar<font color="#990000">;</font>
-
-               <font color="#008080">scalar</font> theta <font color="#990000">=</font> fixed_vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
+          <font color="#008080">a1_vector</font> <b><font color="#000000">fix_likelihood</font></b><font color="#990000">(</font>
+               <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>         fixed_vec  <font color="#990000">)</font> override
+          <font color="#FF0000">{</font>
+               <font color="#008080">a1_double</font> theta <font color="#990000">=</font> fixed_vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
 
                <i><font color="#9A1900">// initialize log-density</font></i>
-               <font color="#008080">Vector</font> <b><font color="#000000">vec</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">);</font>
-               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <b><font color="#000000">scalar</font></b><font color="#990000">(</font><font color="#993399">0.0</font><font color="#990000">);</font>
+               <font color="#008080">a1_vector</font> <b><font color="#000000">vec</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">);</font>
+               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
 
                <i><font color="#9A1900">// compute this factor once</font></i>
                <i><font color="#9A1900">// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );</font></i>
 
                <i><font color="#9A1900">// Data term p(z|theta)</font></i>
-               <font color="#008080">scalar</font> res  <font color="#990000">=</font> <font color="#990000">(</font>z_ <font color="#990000">-</font> theta<font color="#990000">)</font> <font color="#990000">/</font> sigma_z_<font color="#990000">;</font>
-               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>    <font color="#990000">+=</font> res <font color="#990000">*</font> res <font color="#990000">/</font> <b><font color="#000000">scalar</font></b><font color="#990000">(</font><font color="#993399">2.0</font><font color="#990000">);</font>
+               <font color="#008080">a1_double</font> res  <font color="#990000">=</font> <font color="#990000">(</font>z_ <font color="#990000">-</font> theta<font color="#990000">)</font> <font color="#990000">/</font> sigma_z_<font color="#990000">;</font>
+               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>    <font color="#990000">+=</font> res <font color="#990000">*</font> res <font color="#990000">/</font> <font color="#993399">2.0</font><font color="#990000">;</font>
                <i><font color="#9A1900">// the following term does not depend on fixed effects</font></i>
                <i><font color="#9A1900">// vec[0]    += log(sqrt_2pi * sigma_z_ );</font></i>
 
@@ -292,46 +290,36 @@ g_\theta ( \theta )
 
                <b><font color="#0000FF">return</font></b> vec<font color="#990000">;</font>
           <font color="#FF0000">}</font>
-          <i><font color="#9A1900">// a1_vector version of fix_likelihood</font></i>
-          <b><font color="#0000FF">virtual</font></b> <font color="#008080">a1_vector</font> <b><font color="#000000">fix_likelihood</font></b><font color="#990000">(</font><b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font> fixed_vec<font color="#990000">)</font>
-          <font color="#FF0000">{</font>    <b><font color="#0000FF">return</font></b> <b><font color="#000000">template_fix_likelihood</font></b><font color="#990000">(</font> fixed_vec <font color="#990000">);</font> <font color="#FF0000">}</font>
           <i><font color="#9A1900">// ------------------------------------------------------------------</font></i>
           <i><font color="#9A1900">// implementation of ran_likelihood as p(y|theta, u) * p(u|theta)</font></i>
-          <b><font color="#0000FF">template</font></b> <font color="#990000">&lt;</font><b><font color="#0000FF">typename</font></b> <font color="#008080">Vector</font><font color="#990000">&gt;</font>
-          <font color="#008080">Vector</font> <b><font color="#000000">template_ran_likelihood</font></b><font color="#990000">(</font>
-               <b><font color="#0000FF">const</font></b> Vector<font color="#990000">&amp;</font>         fixed_vec  <font color="#990000">,</font>
-               <b><font color="#0000FF">const</font></b> Vector<font color="#990000">&amp;</font>         random_vec <font color="#990000">)</font>
-          <font color="#FF0000">{</font>    <b><font color="#0000FF">typedef</font></b> <b><font color="#0000FF">typename</font></b> <font color="#008080">Vector</font><font color="#990000">::</font><font color="#008080">value_type</font> scalar<font color="#990000">;</font>
-
-               <font color="#008080">scalar</font> theta <font color="#990000">=</font> fixed_vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
-               <font color="#008080">scalar</font> u     <font color="#990000">=</font> random_vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
+          <font color="#008080">a1_vector</font> <b><font color="#000000">ran_likelihood</font></b><font color="#990000">(</font>
+               <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>         fixed_vec  <font color="#990000">,</font>
+               <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>         random_vec <font color="#990000">)</font> override
+          <font color="#FF0000">{</font>
+               <font color="#008080">a1_double</font> theta <font color="#990000">=</font> fixed_vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
+               <font color="#008080">a1_double</font> u     <font color="#990000">=</font> random_vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">];</font>
 
                <i><font color="#9A1900">// initialize log-density</font></i>
-               <font color="#008080">Vector</font> <b><font color="#000000">vec</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">);</font>
-               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <b><font color="#000000">scalar</font></b><font color="#990000">(</font><font color="#993399">0.0</font><font color="#990000">);</font>
+               <font color="#008080">a1_vector</font> <b><font color="#000000">vec</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">);</font>
+               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
 
                <i><font color="#9A1900">// compute this factors once</font></i>
                <i><font color="#9A1900">// sqrt_2pi = CppAD::sqrt( 8.0 * CppAD::atan(1.0) );</font></i>
 
                <i><font color="#9A1900">// Data term p(y|theta,u)</font></i>
-               <font color="#008080">scalar</font> res  <font color="#990000">=</font> <font color="#990000">(</font>y_ <font color="#990000">-</font> <b><font color="#000000">exp</font></b><font color="#990000">(</font>u<font color="#990000">)</font> <font color="#990000">*</font> theta<font color="#990000">)</font> <font color="#990000">/</font> sigma_y_<font color="#990000">;</font>
-               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>    <font color="#990000">+=</font> res <font color="#990000">*</font> res <font color="#990000">/</font> <b><font color="#000000">scalar</font></b><font color="#990000">(</font><font color="#993399">2.0</font><font color="#990000">);</font>
+               <font color="#008080">a1_double</font> res  <font color="#990000">=</font> <font color="#990000">(</font>y_ <font color="#990000">-</font> <b><font color="#000000">exp</font></b><font color="#990000">(</font>u<font color="#990000">)</font> <font color="#990000">*</font> theta<font color="#990000">)</font> <font color="#990000">/</font> sigma_y_<font color="#990000">;</font>
+               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>    <font color="#990000">+=</font> res <font color="#990000">*</font> res <font color="#990000">/</font> <font color="#993399">2.0</font><font color="#990000">;</font>
                <i><font color="#9A1900">// the following term does not depend on fixed or random effects</font></i>
                <i><font color="#9A1900">// vec[0]    += log(sqrt_2pi * sigma_y_ );</font></i>
 
                <i><font color="#9A1900">// prior term p(u|theta)</font></i>
                res        <font color="#990000">=</font> u <font color="#990000">/</font> sigma_u_<font color="#990000">;</font>
-               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>    <font color="#990000">+=</font> res <font color="#990000">*</font> res <font color="#990000">/</font> <b><font color="#000000">scalar</font></b><font color="#990000">(</font><font color="#993399">2.0</font><font color="#990000">);</font>
+               vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font>    <font color="#990000">+=</font> res <font color="#990000">*</font> res <font color="#990000">/</font> <font color="#993399">2.0</font><font color="#990000">;</font>
                <i><font color="#9A1900">// the following term does not depend on fixed or random effects</font></i>
                <i><font color="#9A1900">// vec[0]    += log(sqrt_2pi * sigma_u_ );</font></i>
 
                <b><font color="#0000FF">return</font></b> vec<font color="#990000">;</font>
           <font color="#FF0000">}</font>
-          <i><font color="#9A1900">// a1_vector version of ran_likelihood</font></i>
-          <b><font color="#0000FF">virtual</font></b> <font color="#008080">a1_vector</font> <b><font color="#000000">ran_likelihood</font></b><font color="#990000">(</font>
-               <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font> fixed_vec<font color="#990000">,</font> <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font> random_vec
-          <font color="#990000">)</font>
-          <font color="#FF0000">{</font>    <b><font color="#0000FF">return</font></b> <b><font color="#000000">template_ran_likelihood</font></b><font color="#990000">(</font> fixed_vec<font color="#990000">,</font> random_vec <font color="#990000">);</font> <font color="#FF0000">}</font>
           <i><font color="#9A1900">// ==================================================================</font></i>
           <i><font color="#9A1900">// Routines used to check that objective derivative is zero at solution</font></i>
           <i><font color="#9A1900">// g(thata)    = (theta - z)^2           / (2.0 * sigma_z * sigma_z)</font></i>

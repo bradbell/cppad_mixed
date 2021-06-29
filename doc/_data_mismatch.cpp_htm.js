@@ -7,7 +7,7 @@ var list_across0 = [
 ];
 var list_up0 = [
 'cppad_mixed.htm',
-'user.htm',
+'user_examples.htm',
 'data_mismatch.cpp.htm'
 ];
 function choose_across0(item)
