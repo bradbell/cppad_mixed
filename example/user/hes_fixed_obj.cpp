@@ -126,10 +126,16 @@ namespace {
 		mixed_derived(
 			size_t                 n_fixed        ,
 			size_t                 n_random       ,
+			bool                   quasi_fixed    ,
+			bool                   bool_sparsity  ,
+			const d_sparse_rcv&    A_rcv          ,
+			bool                   trace_init     ,
 			const d_vector&        y              ) :
-			cppad_mixed(n_fixed, n_random) ,
-			n_fixed_(n_fixed)              ,
-			n_random_(n_random)            ,
+			cppad_mixed(
+			n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, trace_init
+			)                     ,
+			n_fixed_(n_fixed)     ,
+			n_random_(n_random)   ,
 			y_(y)
 		{	assert( n_fixed == 2);
 			assert( y_.size() == n_random_ );
@@ -218,7 +224,13 @@ bool hes_fixed_obj_xam(void)
 	}
 
 	// object that is derived from cppad_mixed
-	mixed_derived mixed_object(n_fixed, n_random, data);
+	bool quasi_fixed   = false;
+	bool bool_sparsity = false;
+	d_sparse_rcv A_rcv; // empty matrix
+	bool trace_init    = false;
+	mixed_derived mixed_object(
+	n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, trace_init, data
+	);
 	mixed_object.initialize(fixed_in, random_in);
 
 	// optimize the fixed effects using Newton method

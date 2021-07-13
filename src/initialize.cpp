@@ -1,3 +1,4 @@
+// $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
           Copyright (C) 2014-21 University of Washington
@@ -42,6 +43,9 @@ $section Initialization After Constructor$$
 
 $head Syntax$$
 $icode%size_map% = %mixed_object%.initialize(%fixed_vec%, %random_vec%)%$$
+
+$head Public$$
+This $code cppad_mixed$$ $cref base_class$$ member function is public.
 
 $head Purpose$$
 Some of the $code cppad_mixed$$ initialization requires calling the
@@ -130,7 +134,11 @@ $end
 std::map<std::string, size_t> cppad_mixed::try_initialize(
 	const d_vector&                      fixed_ini     ,
 	const d_vector&                      random_ini    )
-{	if( initialize_done_ )
+{
+	if( trace_init_ )
+		std::cout << "Begin cppad_mixeed::initialize\n";
+	//
+	if( initialize_done_ )
 	{	fatal_error("cppad_mixed::initialize was called twice");
 	}
 	if( fixed_ini.size() != n_fixed_ )
@@ -174,6 +182,8 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 			msg += "\nbut ran_likelihood returns a non-empty vector";
 			fatal_error(msg);
 		}
+		if( trace_init_ )
+			std::cout << "No random effects\n";
 	}
 	else
 	{
@@ -181,37 +191,51 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 		assert( ! init_ran_like_done_ );
 		init_ran_like(fixed_vec, random_vec);
 		assert( init_ran_like_done_ );
+		if( trace_init_ )
+			std::cout << "init_ran_like_done_\n";
 
 		// ran_jac_
 		assert( ! init_ran_jac_done_ );
 		init_ran_jac(fixed_vec, random_vec);
 		assert( init_ran_jac_done_ );
+		if( trace_init_ )
+			std::cout << "init_ran_jac_done_\n";
 
 		// ran_hes_
 		assert( ! init_ran_hes_done_ );
 		init_ran_hes(fixed_vec, random_vec);
 		assert( init_ran_hes_done_ );
+		if( trace_init_ )
+			std::cout << "init_ran_hes_done_\n";
 
 		// ldlt_ran_hes_
 		assert( ! init_ldlt_ran_hes_done_ );
 		init_ldlt_ran_hes();
 		assert( init_ldlt_ran_hes_done_ );
+		if( trace_init_ )
+			std::cout << "init_ldlt_ran_hes_done_\n";
 
 		// hes_cross_
 		assert( ! init_hes_cross_done_ );
 		init_hes_cross(fixed_vec, random_vec);
 		assert( init_hes_cross_done_ );
+		if( trace_init_ )
+			std::cout << "init_hes_cross_done_\n";
 	}
 
 	// fix_like_fun_
 	assert( ! init_fix_like_done_ );
 	init_fix_like(fixed_vec);
 	assert( init_fix_like_done_ );
+	if( trace_init_ )
+		std::cout << "init_fix_like_done_\n";
 
 	// fix_con_fun_
 	assert( ! init_fix_con_done_ );
 	init_fix_con(fixed_vec);
 	assert( init_fix_con_done_ );
+	if( trace_init_ )
+		std::cout << "init_fix_con_done_\n";
 
 	// initialize_done_
 	initialize_done_ = true;
@@ -240,6 +264,9 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 	size_map["fix_con_jac_.subset.nnz()"]  = fix_con_jac_.subset.nnz();
 	size_map["fix_con_hes_.subset.nnz()"]  = fix_con_hes_.subset.nnz();
 	size_map["num_bytes_after"]            = CppAD::thread_alloc::inuse(thread);
+	//
+	if( trace_init_ )
+		std::cout << "End cppad_mixed::initialize\n";
 	return size_map;
 }
 // ---------------------------------------------------------------------------

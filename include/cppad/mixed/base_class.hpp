@@ -122,9 +122,10 @@ $srccode%cpp% */
 	cppad_mixed(
 		size_t               n_fixed       ,
 		size_t               n_random      ,
-		bool                 quasi_fixed   = false ,
-		bool                 bool_sparsity = false ,
-		const d_sparse_rcv&  A_rcv         = d_sparse_rcv()
+		bool                 quasi_fixed   = false           ,
+		bool                 bool_sparsity = false           ,
+		const d_sparse_rcv&  A_rcv         = d_sparse_rcv()  ,
+		bool                 trace_init    = false
 	);
 	// END_CPPAD_MIXED_CTOR
 /* %$$

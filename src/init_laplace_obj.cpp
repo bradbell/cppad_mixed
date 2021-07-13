@@ -1,3 +1,4 @@
+// $Id:$
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
           Copyright (C) 2014-21 University of Washington
@@ -82,7 +83,6 @@ These have the same specification as in $cref init_laplace_obj_hes$$.
 This initialization is done at the $icode fixed_vec$$ value for the
 fixed effects and the corresponding optimal value for the random effects.
 
-
 $end
 */
 # include <cppad/mixed/cppad_mixed.hpp>
@@ -95,7 +95,11 @@ void cppad_mixed::init_laplace_obj(
 	const d_vector&    random_upper     ,
 	const std::string& random_options   )
 // END_PROTOTYPE
-{
+{	// This initialization is not called by initialize
+	// so it has its own tracing.
+	if( trace_init_ )
+		std::cout << "Begin cppad_mixed::init_laplace_obj\n";
+	//
 	assert( ! init_laplace_obj_fun_done_ );
 	assert( ! init_laplace_obj_hes_done_ );
 	assert( ! init_laplace_obj_done_ );
@@ -103,11 +107,17 @@ void cppad_mixed::init_laplace_obj(
 	// laplace_obj_fun_
 	init_laplace_obj_fun(fixed_vec, random_opt);
 	assert( init_laplace_obj_fun_done_ );
+	if( trace_init_ )
+		std::cout << "init_laplace_obj_fun_done_\n";
 
 	// laplace_obj_hes_
 	init_laplace_obj_hes(fixed_vec, random_opt);
 	assert( init_laplace_obj_hes_done_ );
+	if( trace_init_ )
+		std::cout << "init_laplace_obj_hes_done_\n";
 
 	// init_laplace_obj_done_
 	init_laplace_obj_done_ = true;
+	if( trace_init_ )
+		std::cout << "End cppad_mixed::init_laplace_obj\n";
 }

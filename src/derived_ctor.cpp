@@ -177,13 +177,15 @@ cppad_mixed::cppad_mixed(
 	size_t                                n_random      ,
 	bool                                  quasi_fixed   ,
 	bool                                  bool_sparsity ,
-	const CppAD::mixed::d_sparse_rcv&     A_rcv         )
+	const CppAD::mixed::d_sparse_rcv&     A_rcv         ,
+	bool                                  trace_init    )
 :
 n_fixed_(n_fixed)                   ,
 n_random_(n_random)                 ,
 quasi_fixed_(quasi_fixed)           ,
 bool_sparsity_(bool_sparsity)       ,
 A_rcv_(A_rcv)                       ,
+trace_init_(trace_init)             ,
 init_ran_like_done_(false)          ,
 init_ran_jac_done_(false)           ,
 init_ran_hes_done_(false)           ,

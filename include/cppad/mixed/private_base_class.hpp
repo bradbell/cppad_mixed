@@ -103,7 +103,7 @@ $srccode%cpp% */
 	const bool quasi_fixed_;
 /* %$$
 $head bool_sparsity_$$
-f true, use boolean sparsity patterns where possible.
+If true, use boolean sparsity patterns where possible.
 Otherwise, use set sparsity patterns.
 $srccode%cpp% */
 	const bool bool_sparsity_;
@@ -113,6 +113,13 @@ $head A_rcv_$$
 contains the random constraint matrix
 $srccode%cpp% */
 	const d_sparse_rcv A_rcv_;
+/* %$$
+$head trace_init_$$
+If true, trace the initialization of cppad_mixed data structures on
+standard output. This can be useful for large problems where the initialization
+takes a significant amount of time.
+$srccode%cpp% */
+	const bool trace_init_;
 /* %$$
 
 $head initialize_done_$$
