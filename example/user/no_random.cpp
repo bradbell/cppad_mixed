@@ -70,14 +70,9 @@ namespace {
 		mixed_derived(
 			size_t                 n_fixed        ,
 			size_t                 n_random       ,
-			bool                   quasi_fixed    ,
-			bool                   bool_sparsity  ,
-			const d_sparse_rcv&    A_rcv          ,
 			const d_vector&        z              ) :
-			cppad_mixed(
-				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
-			)                    ,
-			n_fixed_(n_fixed)    ,
+			cppad_mixed(n_fixed, n_random)  ,
+			n_fixed_(n_fixed)               ,
 			z_(z)
 		{	assert(z.size() == n_fixed); }
 		// implementation of fix_likelihood as p(z|theta) * p(theta)
@@ -139,12 +134,7 @@ bool no_random_xam(void)
 
 	// object that is derived from cppad_mixed
 	// (test full netwon method to make sure it works with no random effects).
-	bool quasi_fixed   = false;
-	bool bool_sparsity = false;
-	d_sparse_rcv A_rcv; // empty matrix
-	mixed_derived mixed_object(
-			n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, z
-	);
+	mixed_derived mixed_object(n_fixed, n_random, z);
 	mixed_object.initialize(fixed_in, random_in);
 
 	// optimize the fixed effects using quasi-Newton method

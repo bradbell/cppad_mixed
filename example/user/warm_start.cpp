@@ -81,14 +81,9 @@ namespace {
 		mixed_derived(
 			size_t                 n_fixed        ,
 			size_t                 n_random       ,
-			bool                   quasi_fixed    ,
-			bool                   bool_sparsity  ,
-			const d_sparse_rcv&    A_rcv          ,
 			const d_vector&        z              ) :
-			cppad_mixed(
-				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
-			)                    ,
-			n_fixed_(n_fixed)    ,
+			cppad_mixed(n_fixed, n_random)  ,
+			n_fixed_(n_fixed)               ,
 			z_(z)
 		{	assert(z.size() == n_fixed); }
 		//
@@ -149,15 +144,8 @@ bool warm_start_xam(void)
 	// fix_constraint_lower, fix_constraint_upper
 	d_vector fix_constraint_lower(0), fix_constraint_upper(0);
 	//
-	// A_rcv
-	d_sparse_rcv A_rcv; // empty matrix
-	//
 	// mixed_object
-	bool quasi_fixed   = false;
-	bool bool_sparsity = false;
-	mixed_derived mixed_object(
-			n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, z
-	);
+	mixed_derived mixed_object(n_fixed, n_random, z);
 	mixed_object.initialize(fixed_in, random_in);
 	//
 	// optimize the fixed effects using quasi-Newton method

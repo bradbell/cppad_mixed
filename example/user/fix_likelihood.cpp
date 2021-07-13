@@ -48,11 +48,8 @@ namespace {
 			size_t                 n_random      ,
 			bool                   quasi_fixed   ,
 			bool                   bool_sparsity ,
-			const d_sparse_rcv&    A_rcv         ,
 			const d_vector&        z             ) :
-			cppad_mixed(
-				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
-			),
+			cppad_mixed(n_fixed, n_random, quasi_fixed, bool_sparsity) ,
 			z_(z)
 		{ }
 		// implementation of fix_likelihood
@@ -105,9 +102,8 @@ bool fix_likelihood_xam(void)
 	// object that is derived from cppad_mixed
 	bool quasi_fixed   = true;
 	bool bool_sparsity = true;
-	d_sparse_rcv A_rcv; // empty matrix
 	mixed_derived mixed_object(
-		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, data
+		n_fixed, n_random, quasi_fixed, bool_sparsity, data
 	);
 	mixed_object.initialize(fixed_vec, random_vec);
 

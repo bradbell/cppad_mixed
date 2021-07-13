@@ -95,20 +95,15 @@ namespace {
 		mixed_derived(
 			size_t                 n_fixed        ,
 			size_t                 n_random       ,
-			bool                   quasi_fixed    ,
-			bool                   bool_sparsity  ,
-			const d_sparse_rcv&    A_rcv          ,
 			double                 sigma          ,
 			double                 delta          ,
 			const d_vector&        t              ,
 			const d_vector&        z              ) :
-			cppad_mixed(
-				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
-			)                   ,
-			n_fixed_(n_fixed)   ,
-			sigma_(sigma)       ,
-			delta_(delta)       ,
-			t_(t)               ,
+			cppad_mixed(n_fixed, n_random)  ,
+			n_fixed_(n_fixed)               ,
+			sigma_(sigma)                   ,
+			delta_(delta)                   ,
+			t_(t)                           ,
 			z_(z)
 		{	assert(n_fixed == 3);
 			assert( t.size() == z.size() );
@@ -193,14 +188,8 @@ bool lasso_xam(void)
 	}
 
 	// object that is derived from cppad_mixed
-	bool quasi_fixed   = false;
-	bool bool_sparsity = false;
-	d_sparse_rcv A_rcv; // empty matrix
 	double delta     = 0.002;
-	mixed_derived mixed_object(
-		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv,
-		sigma, delta, t, z
-	);
+	mixed_derived mixed_object(n_fixed, n_random, sigma, delta, t, z);
 	mixed_object.initialize(fixed_in, random_in);
 
 	// optimize the fixed effects using quasi-Newton method

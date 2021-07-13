@@ -72,14 +72,11 @@ namespace {
 			size_t                 n_random      ,
 			bool                   quasi_fixed   ,
 			bool                   bool_sparsity ,
-			const d_sparse_rcv&    A_rcv         ,
 			double                 sigma         ,
 			const d_vector&        z             ) :
-			cppad_mixed(
-				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
-			),
-			n_fixed_(n_fixed)  ,
-			sigma_(sigma)      ,
+			cppad_mixed(n_fixed, n_random, quasi_fixed, bool_sparsity) ,
+			n_fixed_(n_fixed)                                          ,
+			sigma_(sigma)                                              ,
 			z_(z)
 		{	assert(z.size() == n_fixed); }
 
@@ -139,10 +136,9 @@ bool abs_density_xam(void)
 	// object that is derived from cppad_mixed
 	bool quasi_fixed   = false;
 	bool bool_sparsity = true;
-	d_sparse_rcv A_rcv; // empty matrix
 	double sigma       = 1.0;
 	mixed_derived mixed_object(
-		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv, sigma, z
+		n_fixed, n_random, quasi_fixed, bool_sparsity, sigma, z
 	);
 	mixed_object.initialize(fixed_in, random_in);
 

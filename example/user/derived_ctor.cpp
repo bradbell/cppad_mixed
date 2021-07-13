@@ -45,12 +45,9 @@ namespace {
 			size_t                 n_fixed        ,
 			size_t                 n_random       ,
 			bool                   quasi_fixed    ,
-			bool                   bool_sparsity  ,
-			const d_sparse_rcv&    A_rcv          )
+			bool                   bool_sparsity  )
 			:
-			cppad_mixed(
-				n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
-			)
+			cppad_mixed(n_fixed, n_random, quasi_fixed, bool_sparsity)
 		{ }
 		// example changing fatal error handler
 		virtual void fatal_error(const std::string& error_message)
@@ -72,13 +69,12 @@ bool derived_ctor_xam(void)
 	size_t n_random    = 0;
 	bool quasi_fixed   = true;
 	bool bool_sparsity = true;
-	d_sparse_rcv A_rcv; // empty matrix
 	//
 	d_vector fixed_vec(n_fixed), random_vec(n_random);
 	fixed_vec[0] = 0.0;
 	//
 	mixed_derived mixed_object(
-		n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv
+		n_fixed, n_random, quasi_fixed, bool_sparsity
 	);
 	// One normaly does not store the return value of initialize
 	// (size_map is included here to show how it can be displayed).
