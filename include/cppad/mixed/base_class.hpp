@@ -118,13 +118,15 @@ $srccode%cpp% */
 $head constructor$$
 $cref derived_ctor$$, $title derived_ctor$$.
 $srccode%cpp% */
+	// BEGIN_CPPAD_MIXED_CTOR
 	cppad_mixed(
 		size_t               n_fixed       ,
 		size_t               n_random      ,
-		bool                 quasi_fixed   ,
-		bool                 bool_sparsity ,
-		const d_sparse_rcv&  A_rcv
+		bool                 quasi_fixed   = false ,
+		bool                 bool_sparsity = false ,
+		const d_sparse_rcv&  A_rcv         = d_sparse_rcv()
 	);
+	// END_CPPAD_MIXED_CTOR
 /* %$$
 
 $head destructor$$

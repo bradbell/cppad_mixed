@@ -24,9 +24,17 @@ $spell
 	ubuntu
 	dpkg
 	gsl_rng
+    bool
+    rcv
 $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
+
+$head 07-13$$
+Add default values for the $cref derived_ctor$$ arguments
+$icode quasi_fixed$$,
+$icode bool_sparsity$$, and
+$icode A_rcv$$.
 
 $head 06-29$$
 Add include file to

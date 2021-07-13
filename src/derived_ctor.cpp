@@ -29,6 +29,11 @@ $icode%mixed_derived% %mixed_object%(
 	%n_fixed%, %n_random%, %quasi_fixed%, %bool_sparsity%, %A_rcv%, %...%
 )%$$
 
+$head Prototype$$
+$srcfile%include/cppad/mixed/base_class.hpp%
+	0%// BEGIN_CPPAD_MIXED_CTOR%// END_CPPAD_MIXED_CTOR%0
+%$$
+
 $head See Also$$
 $cref initialize$$
 
@@ -48,31 +53,21 @@ $codei%
 		%n_fixed%, %n_random%, %quasi_fixed%, %bool_sparsity%, %A_rcv%
 	)
 %$$
+The arguments $icode quasi_fixed$$, $icode bool_sparsity$$, $icode A_rcv$$
+are optional; see default values in prototype above.
 
 $head n_fixed$$
-This argument has prototype
-$codei%
-	size_t %n_fixed%
-%$$
-and is the number of
+This is the number of
 $cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$ in the model.
 
 $head n_random$$
-This argument has prototype
-$codei%
-	size_t %n_random%
-%$$
-and is the number of
+This is the number of
 $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ in the model.
 In the case where there are
 $cref/no random effects/cppad_mixed/Problem/No Random Effects/$$,
 $icode%n_random% = 0%$$.
 
 $head quasi_fixed$$
-This argument has prototype
-$codei%
-	bool %quasi_fixed%
-%$$
 
 $subhead true$$
 If $icode quasi_fixed$$ is true,
@@ -100,26 +95,15 @@ approximation for the Laplace objective $code init_laplace_obj_fun$$,
 and $code init_laplace_obj_hes$$ are used to initialize the
 Hessian of the fixed effects objective.
 
-
 $head bool_sparsity$$
-This argument has prototype
-$codei%
-	bool %bool_sparsity%
-%$$
-If it is true, where possible
+If $icode bool_sparsity$$ is true, where possible
 boolean sparsity patterns are used for this computation,
 otherwise set sparsity patterns are used.
 This should only affect to amount of time and memory used for the
 computations.
-If this argument is not present, the type of sparsity patterns
-is not specified.
 
 $head A_rcv$$
-This argument has prototype
-$codei%
-	const CppAD::mixed::d_sparse_rcv& %A_rcv%
-%$$
-It is a
+This is a
 $cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
 representation of the
 $cref/random constraint matrix
@@ -129,10 +113,10 @@ $cref/random constraint matrix
 /$$
 $latex A$$.
 If $icode%random_vec%.size()%$$ is zero,
-there are no constraint equations and $icode%A_rcv%.nr() == 0%$$.
-Otherwise, $icode%A_rcv%.nc()%$$ must be equal to $icode n_random$$.
-The member variable $icode A_rcv_$$ is set equal to $icode A_rcv$$
-before any other routines are called by this routine.
+there are no constraint equations and $icode%A_rcv%.nr() == 0%$$
+(this is the case for the default value of this argument).
+Otherwise, $icode%A_rcv%.nc()%$$ must be equal to $icode n_random$$
+and $icode%A_rcv%.nr()%$$ is the number of constraints.
 
 $head ...$$
 Other arguments to the derived class constructor
