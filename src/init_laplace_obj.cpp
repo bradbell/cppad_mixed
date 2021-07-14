@@ -22,9 +22,7 @@ $$
 $section Initialize Second Order of Approximate Objective and It's Hessian$$
 
 $head Syntax$$
-$icode%mixed_object%.init_laplace_obj(
-	%fixed_vec%, %random_opt%, %random_lower%, %random_upper%, %random_options%
-)%$$
+$icode%mixed_object%.init_laplace_obj(%fixed_vec%, %random_opt%)%$$
 
 $head Prototype$$
 $srcthisfile%
@@ -57,16 +55,6 @@ It should be the optimal value given the fixed effects
 so that the Hessian w.r.t the random effects is more likely to be
 positive definite.
 
-$head random_lower$$
-This specifies the lower limits for the random effects optimization.
-
-$head random_upper$$
-This specifies the upper limits for the random effects optimization.
-
-$head random_options$$
-This specifies the
-$cref ipopt_options$$ for the random effects optimization
-
 $head init_laplace_obj_done_$$
 The input value of this member variable must be false.
 Upon return it is true.
@@ -90,10 +78,7 @@ $end
 // BEGIN_PROTOTYPE
 void cppad_mixed::init_laplace_obj(
 	const d_vector&	   fixed_vec        ,
-	const d_vector&	   random_opt       ,
-	const d_vector&	   random_lower     ,
-	const d_vector&    random_upper     ,
-	const std::string& random_options   )
+	const d_vector&	   random_opt       )
 // END_PROTOTYPE
 {	// This initialization is not called by initialize
 	// so it has its own tracing.

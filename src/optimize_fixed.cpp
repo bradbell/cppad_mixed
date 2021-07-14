@@ -372,13 +372,7 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 		random_in
 	);
 	if( ! init_laplace_obj_done_ && ! quasi_fixed_ && n_random_ > 0 )
-	{	init_laplace_obj(
-			fixed_in,
-			random_opt,
-			random_lower,
-			random_upper,
-			random_ipopt_options
-		);
+	{	init_laplace_obj(fixed_in, random_opt);
 		assert( init_laplace_obj_done_ );
 		assert( init_laplace_obj_fun_done_ );
 		assert( init_laplace_obj_hes_done_ );

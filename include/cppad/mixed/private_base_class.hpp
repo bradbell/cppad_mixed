@@ -414,10 +414,7 @@ See $cref init_laplace_obj$$.
 $srccode%cpp% */
 	void init_laplace_obj(
 		const d_vector& fixed_vec           ,
-		const d_vector& random_in           ,
-		const d_vector& random_lower        ,
-		const d_vector& random_upper        ,
-		const std::string& random_options
+		const d_vector& random_opt
 	);
 /* %$$
 
@@ -426,7 +423,7 @@ See $cref init_laplace_obj_hes$$.
 $srccode%cpp% */
 	void init_laplace_obj_hes(
 		const d_vector& fixed_vec     ,
-		const d_vector& random_vec
+		const d_vector& random_opt
 	);
 /* %$$
 
@@ -444,7 +441,7 @@ See $cref init_laplace_obj_fun$$.
 $srccode%cpp% */
 	void init_laplace_obj_fun(
 		const d_vector& fixed_vec ,
-		const d_vector& random_vec
+		const d_vector& random_opt
 	);
 /* %$$
 $comment ------------------------------------------------------------------- $$

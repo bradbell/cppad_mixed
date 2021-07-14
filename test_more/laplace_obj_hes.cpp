@@ -229,13 +229,7 @@ bool laplace_obj_hes(void)
 
 	//
 	// initialize Hessian of Laplace approximation
-	mixed_object.init_laplace_obj(
-		fixed_vec,
-		random_vec,
-		random_lower,
-		random_upper,
-		options
-	);
+	mixed_object.init_laplace_obj(fixed_vec, random_opt);
 	//
 	// compute hessian both ways
 	vector<double> weight(1), th(1), hes(1);
