@@ -26,15 +26,21 @@ $spell
 	gsl_rng
     bool
     rcv
+	init
 $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
 
 $head 07-13$$
+$list number$$
 Add default values for the $cref derived_ctor$$ arguments
 $icode quasi_fixed$$,
 $icode bool_sparsity$$, and
 $icode A_rcv$$.
+$lnext
+Add the $cref/trace_init/derived_ctor/trace_init/$$ argument
+to the derived constructor.
+$lend
 
 $head 06-29$$
 Add include file to

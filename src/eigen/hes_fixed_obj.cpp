@@ -102,20 +102,10 @@ CppAD::mixed::d_sparse_rcv cppad_mixed::try_hes_fixed_obj(
 		// If Quasi-Newton method was used, must initilaize routines
 		// that are only used for the Hessian calculation; see initilaize.cpp
 		if( ! init_laplace_obj_fun_done_ )
-		{	assert( ! init_laplace_obj_hes_done_ );
-			//
-			// laplace_obj_fun_
-			assert( ! init_laplace_obj_fun_done_ );
-			init_laplace_obj_fun(fixed_vec, random_opt);
-			assert( init_laplace_obj_fun_done_ );
-			//
-			// laplace_obj_hes_
-			assert( ! init_laplace_obj_hes_done_ );
-			init_laplace_obj_hes(fixed_vec, random_opt);
-			assert( init_laplace_obj_hes_done_ );
+		{	assert( ! init_laplace_obj_done_ );
+			init_laplace_obj(fixed_vec, random_opt);
+			assert( init_laplace_obj_done_ );
 		}
-		assert( init_laplace_obj_fun_done_ );
-		assert( init_laplace_obj_hes_done_ );
 		// ------------------------------------------------------------------
 		// Lower triangle of Hessian w.r.t. fixed effects
 		// for laplace part of the fixed effect objective, no constraints

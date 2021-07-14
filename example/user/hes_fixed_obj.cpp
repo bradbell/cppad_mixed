@@ -16,6 +16,7 @@ $spell
 	eval
 	interp
 	xam
+	init
 $$
 
 $section Hessian of Fixed Effects Objective: Example and Test$$
@@ -94,6 +95,10 @@ $latex \[
 2 \left( 1 + \theta_1^2 \right)^{-2} \theta_1
 	\sum_{i=0}^{N-1} ( y_i - \theta_0 )
 \] $$
+
+$head trace_init$$
+If you change $icode trace_init$$ to $code true$$,
+a trace of the initialization will be printed on standard output.
 
 $code
 $srcthisfile%0%// BEGIN C++%// END C++%1%$$

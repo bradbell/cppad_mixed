@@ -26,7 +26,9 @@ $section User Defined Class Derived From cppad_mixed$$
 
 $head Syntax$$
 $icode%mixed_derived% %mixed_object%(
-	%n_fixed%, %n_random%, %quasi_fixed%, %bool_sparsity%, %A_rcv%, %...%
+	%n_fixed%, %n_random%,
+	%quasi_fixed%, %bool_sparsity%, %A_rcv%, %trace_init%,
+	%...%
 )%$$
 
 $head Prototype$$
@@ -117,6 +119,13 @@ there are no constraint equations and $icode%A_rcv%.nr() == 0%$$
 (this is the case for the default value of this argument).
 Otherwise, $icode%A_rcv%.nc()%$$ must be equal to $icode n_random$$
 and $icode%A_rcv%.nr()%$$ is the number of constraints.
+
+$head trace_init$$
+If true, trace the initialization of cppad_mixed data structures on
+standard output. This can be useful for large problems where the initialization
+takes a significant amount of time.
+For an example see
+$cref/trace_init/hes_fixed_obj.cpp/trace_init/$$.
 
 $head ...$$
 Other arguments to the derived class constructor
