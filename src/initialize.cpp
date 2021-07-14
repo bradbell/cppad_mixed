@@ -136,7 +136,7 @@ std::map<std::string, size_t> cppad_mixed::try_initialize(
 	const d_vector&                      random_ini    )
 {
 	if( trace_init_ )
-		std::cout << "Begin cppad_mixeed::initialize\n";
+		std::cout << "Begin cppad_mixed::initialize\n";
 	//
 	if( initialize_done_ )
 	{	fatal_error("cppad_mixed::initialize was called twice");
