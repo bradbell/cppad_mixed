@@ -90,12 +90,9 @@ A:active { color : purple }
                <font color="#008080">size_t</font>                 n_fixed        <font color="#990000">,</font>
                <font color="#008080">size_t</font>                 n_random       <font color="#990000">,</font>
                <font color="#009900">bool</font>                   quasi_fixed    <font color="#990000">,</font>
-               <font color="#009900">bool</font>                   bool_sparsity  <font color="#990000">,</font>
-               <b><font color="#0000FF">const</font></b> d_sparse_rcv<font color="#990000">&amp;</font>    A_rcv          <font color="#990000">)</font>
+               <font color="#009900">bool</font>                   bool_sparsity  <font color="#990000">)</font>
                <font color="#990000">:</font>
-               <b><font color="#000000">cppad_mixed</font></b><font color="#990000">(</font>
-                    n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv
-               <font color="#990000">)</font>
+               <b><font color="#000000">cppad_mixed</font></b><font color="#990000">(</font>n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">)</font>
           <font color="#FF0000">{</font> <font color="#FF0000">}</font>
           <i><font color="#9A1900">// example changing fatal error handler</font></i>
           <b><font color="#0000FF">virtual</font></b> <font color="#009900">void</font> <b><font color="#000000">fatal_error</font></b><font color="#990000">(</font><b><font color="#0000FF">const</font></b> std<font color="#990000">::</font>string<font color="#990000">&amp;</font> error_message<font color="#990000">)</font>
@@ -117,13 +114,12 @@ A:active { color : purple }
      <font color="#008080">size_t</font> n_random    <font color="#990000">=</font> <font color="#993399">0</font><font color="#990000">;</font>
      <font color="#009900">bool</font> quasi_fixed   <font color="#990000">=</font> <b><font color="#0000FF">true</font></b><font color="#990000">;</font>
      <font color="#009900">bool</font> bool_sparsity <font color="#990000">=</font> <b><font color="#0000FF">true</font></b><font color="#990000">;</font>
-     <font color="#008080">d_sparse_rcv</font> A_rcv<font color="#990000">;</font> <i><font color="#9A1900">// empty matrix</font></i>
      <i><font color="#9A1900">//</font></i>
      <font color="#008080">d_vector</font> <b><font color="#000000">fixed_vec</font></b><font color="#990000">(</font>n_fixed<font color="#990000">),</font> <b><font color="#000000">random_vec</font></b><font color="#990000">(</font>n_random<font color="#990000">);</font>
      fixed_vec<font color="#990000">[</font><font color="#993399">0</font><font color="#990000">]</font> <font color="#990000">=</font> <font color="#993399">0.0</font><font color="#990000">;</font>
      <i><font color="#9A1900">//</font></i>
      <font color="#008080">mixed_derived</font> <b><font color="#000000">mixed_object</font></b><font color="#990000">(</font>
-          n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv
+          n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity
      <font color="#990000">);</font>
      <i><font color="#9A1900">// One normaly does not store the return value of initialize</font></i>
      <i><font color="#9A1900">// (size_map is included here to show how it can be displayed).</font></i>

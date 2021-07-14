@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Hessian of Fixed Effects Objective: Example and Test</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Hessian of Fixed Effects Objective: Example and Test">
-<meta name="keywords" id="keywords" content=" hessian fixed effects objective: example test model ">
+<meta name="keywords" id="keywords" content=" hessian fixed effects objective: example test model trace_init ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -71,6 +71,7 @@ A:active { color : purple }
 <center><b><big><big>Hessian of Fixed Effects Objective: Example and Test</big></big></b></center>
 
 <br><a href="hes_fixed_obj.cpp.htm#Model" target="_top">Model</a>
+<br><a href="hes_fixed_obj.cpp.htm#trace_init" target="_top">trace_init</a>
 <br><br>
 <b><big><a name="Model" id="Model">Model</a></big></b>
 
@@ -182,6 +183,15 @@ The second partial w.r.t <small>@(@
 
 @]@</small>
 
+<br>
+<br>
+<b><big><a name="trace_init" id="trace_init">trace_init</a></big></b>
+<br>
+If you change 
+<code><i><font color="black"><span style='white-space: nowrap'>trace_init</span></font></i></code>
+ to <code><font color="blue">true</font></code>,
+a trace of the initialization will be printed on standard output.
+
 <code><font color="blue">
 <pre><tt><b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;cppad/cppad.hpp&gt;</font>
 <b><font color="#000080"># include</font></b> <font color="#FF0000">&lt;cppad/mixed/cppad_mixed.hpp&gt;</font>
@@ -210,9 +220,10 @@ The second partial w.r.t <small>@(@
                <font color="#009900">bool</font>                   quasi_fixed    <font color="#990000">,</font>
                <font color="#009900">bool</font>                   bool_sparsity  <font color="#990000">,</font>
                <b><font color="#0000FF">const</font></b> d_sparse_rcv<font color="#990000">&amp;</font>    A_rcv          <font color="#990000">,</font>
+               <font color="#009900">bool</font>                   trace_init     <font color="#990000">,</font>
                <b><font color="#0000FF">const</font></b> d_vector<font color="#990000">&amp;</font>        y              <font color="#990000">)</font> <font color="#990000">:</font>
                <b><font color="#000000">cppad_mixed</font></b><font color="#990000">(</font>
-                    n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv
+               n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv<font color="#990000">,</font> trace_init
                <font color="#990000">)</font>                     <font color="#990000">,</font>
                <b><font color="#000000">n_fixed_</font></b><font color="#990000">(</font>n_fixed<font color="#990000">)</font>     <font color="#990000">,</font>
                <b><font color="#000000">n_random_</font></b><font color="#990000">(</font>n_random<font color="#990000">)</font>   <font color="#990000">,</font>
@@ -307,8 +318,9 @@ The second partial w.r.t <small>@(@
      <font color="#009900">bool</font> quasi_fixed   <font color="#990000">=</font> <b><font color="#0000FF">false</font></b><font color="#990000">;</font>
      <font color="#009900">bool</font> bool_sparsity <font color="#990000">=</font> <b><font color="#0000FF">false</font></b><font color="#990000">;</font>
      <font color="#008080">d_sparse_rcv</font> A_rcv<font color="#990000">;</font> <i><font color="#9A1900">// empty matrix</font></i>
+     <font color="#009900">bool</font> trace_init    <font color="#990000">=</font> <b><font color="#0000FF">false</font></b><font color="#990000">;</font>
      <font color="#008080">mixed_derived</font> <b><font color="#000000">mixed_object</font></b><font color="#990000">(</font>
-          n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv<font color="#990000">,</font> data
+     n_fixed<font color="#990000">,</font> n_random<font color="#990000">,</font> quasi_fixed<font color="#990000">,</font> bool_sparsity<font color="#990000">,</font> A_rcv<font color="#990000">,</font> trace_init<font color="#990000">,</font> data
      <font color="#990000">);</font>
      mixed_object<font color="#990000">.</font><b><font color="#000000">initialize</font></b><font color="#990000">(</font>fixed_in<font color="#990000">,</font> random_in<font color="#990000">);</font>
 

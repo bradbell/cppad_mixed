@@ -179,13 +179,16 @@ Its default definition below can be replaced by a user definition.
 <br>
 <a href="derived_ctor.htm" target="_top"><span style='white-space: nowrap'>derived_ctor</span></a>
 , User Defined Class Derived From cppad_mixed.
-<pre><tt>     <b><font color="#000000">cppad_mixed</font></b><font color="#990000">(</font>
+<pre><tt>     <i><font color="#9A1900">// BEGIN_CPPAD_MIXED_CTOR</font></i>
+     <b><font color="#000000">cppad_mixed</font></b><font color="#990000">(</font>
           <font color="#008080">size_t</font>               n_fixed       <font color="#990000">,</font>
           <font color="#008080">size_t</font>               n_random      <font color="#990000">,</font>
-          <font color="#009900">bool</font>                 quasi_fixed   <font color="#990000">,</font>
-          <font color="#009900">bool</font>                 bool_sparsity <font color="#990000">,</font>
-          <b><font color="#0000FF">const</font></b> d_sparse_rcv<font color="#990000">&amp;</font>  A_rcv
-     <font color="#990000">);</font></tt></pre>
+          <font color="#009900">bool</font>                 quasi_fixed   <font color="#990000">=</font> <b><font color="#0000FF">false</font></b>           <font color="#990000">,</font>
+          <font color="#009900">bool</font>                 bool_sparsity <font color="#990000">=</font> <b><font color="#0000FF">false</font></b>           <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_sparse_rcv<font color="#990000">&amp;</font>  A_rcv         <font color="#990000">=</font> <b><font color="#000000">d_sparse_rcv</font></b><font color="#990000">()</font>  <font color="#990000">,</font>
+          <font color="#009900">bool</font>                 trace_init    <font color="#990000">=</font> <b><font color="#0000FF">false</font></b>
+     <font color="#990000">);</font>
+     <i><font color="#9A1900">// END_CPPAD_MIXED_CTOR</font></i></tt></pre>
 <br>
 <b><big><a name="destructor" id="destructor">destructor</a></big></b>
 

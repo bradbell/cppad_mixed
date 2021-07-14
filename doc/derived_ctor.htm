@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>User Defined Class Derived From cppad_mixed</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="User Defined Class Derived From cppad_mixed">
-<meta name="keywords" id="keywords" content=" user defined class derived from cppad_mixed syntax see also mixed_derived mixed_object n_fixed n_random quasi_fixed true false bool_sparsity a_rcv ... cppad errorhandler example ">
+<meta name="keywords" id="keywords" content=" user defined class derived from cppad_mixed syntax prototype see also mixed_derived mixed_object n_fixed n_random quasi_fixed true false bool_sparsity a_rcv trace_init ... cppad errorhandler example ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -66,6 +66,7 @@ A:active { color : purple }
 \newcommand{\W}[1]{ \; #1 \; }@)@<center><b><big><big>User Defined Class Derived From cppad_mixed</big></big></b></center>
 
 <br><a href="derived_ctor.htm#Syntax" target="_top">Syntax</a>
+<br><a href="derived_ctor.htm#Prototype" target="_top">Prototype</a>
 <br><a href="derived_ctor.htm#See Also" target="_top">See&nbsp;Also</a>
 <br><a href="derived_ctor.htm#mixed_derived" target="_top">mixed_derived</a>
 <br><a href="derived_ctor.htm#mixed_object" target="_top">mixed_object</a>
@@ -77,6 +78,7 @@ A:active { color : purple }
 <br>&#160;&#160;&#160;&#160;&#160;<a href="derived_ctor.htm#quasi_fixed.false" target="_top">false</a>
 <br><a href="derived_ctor.htm#bool_sparsity" target="_top">bool_sparsity</a>
 <br><a href="derived_ctor.htm#A_rcv" target="_top">A_rcv</a>
+<br><a href="derived_ctor.htm#trace_init" target="_top">trace_init</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="derived_ctor.htm#..." target="_top">..</a>
 <br><a href="derived_ctor.htm#CppAD ErrorHandler" target="_top">CppAD&nbsp;ErrorHandler</a>
 <br><a href="derived_ctor.htm#Example" target="_top">Example</a>
@@ -86,11 +88,25 @@ A:active { color : purple }
 <br>
 
 <code><i><font color="black"><span style='white-space: nowrap'>mixed_derived</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>mixed_object</span></font></i><font color="blue"><span style='white-space: nowrap'>(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>bool_sparsity</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>A_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>...</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>bool_sparsity</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>A_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>trace_init</span></font></i><font color="blue"><span style='white-space: nowrap'>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>...</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 )</span></font></code>
 
 
 <br>
+<br>
+<b><big><a name="Prototype" id="Prototype">Prototype</a></big></b>
+
+<pre><tt>
+     <b><font color="#000000">cppad_mixed</font></b><font color="#990000">(</font>
+          <font color="#008080">size_t</font>               n_fixed       <font color="#990000">,</font>
+          <font color="#008080">size_t</font>               n_random      <font color="#990000">,</font>
+          <font color="#009900">bool</font>                 quasi_fixed   <font color="#990000">=</font> <b><font color="#0000FF">false</font></b>           <font color="#990000">,</font>
+          <font color="#009900">bool</font>                 bool_sparsity <font color="#990000">=</font> <b><font color="#0000FF">false</font></b>           <font color="#990000">,</font>
+          <b><font color="#0000FF">const</font></b> d_sparse_rcv<font color="#990000">&amp;</font>  A_rcv         <font color="#990000">=</font> <b><font color="#000000">d_sparse_rcv</font></b><font color="#990000">()</font>  <font color="#990000">,</font>
+          <font color="#009900">bool</font>                 trace_init    <font color="#990000">=</font> <b><font color="#0000FF">false</font></b>
+     <font color="#990000">);</font>     </tt></pre>
 <br>
 <b><big><a name="See Also" id="See Also">See Also</a></big></b>
 
@@ -123,15 +139,20 @@ The derived class constructor must call its base class constructor as follows:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>bool_sparsity</span></font></i><font color="blue"><span style='white-space: nowrap'>,&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>A_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
 </span></font></code>
+The arguments 
+<code><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i></code>
+, 
+<code><i><font color="black"><span style='white-space: nowrap'>bool_sparsity</span></font></i></code>
+, 
+<code><i><font color="black"><span style='white-space: nowrap'>A_rcv</span></font></i></code>
+
+are optional; see default values in prototype above.
+
+<br>
 <br>
 <b><big><a name="n_fixed" id="n_fixed">n_fixed</a></big></b>
 <br>
-This argument has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
-and is the number of
+This is the number of
 <a href="cppad_mixed.htm#Notation.Fixed Effects, theta" target="_top"><span style='white-space: nowrap'>fixed&nbsp;effects</span></a>
  in the model.
 
@@ -139,12 +160,7 @@ and is the number of
 <br>
 <b><big><a name="n_random" id="n_random">n_random</a></big></b>
 <br>
-This argument has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
-and is the number of
+This is the number of
 <a href="cppad_mixed.htm#Notation.Random Effects, u" target="_top"><span style='white-space: nowrap'>random&nbsp;effects</span></a>
  in the model.
 In the case where there are
@@ -157,12 +173,9 @@ In the case where there are
 <br>
 <br>
 <b><big><a name="quasi_fixed" id="quasi_fixed">quasi_fixed</a></big></b>
-<br>
-This argument has prototype
 
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>quasi_fixed</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
+
+<br>
 <br>
 <big><a name="quasi_fixed.true" id="quasi_fixed.true">true</a></big>
 <br>
@@ -202,34 +215,23 @@ approximation for the Laplace objective <code><font color="blue">init_laplace_ob
 and <code><font color="blue">init_laplace_obj_hes</font></code> are used to initialize the
 Hessian of the fixed effects objective.
 
-
 <br>
 <br>
 <b><big><a name="bool_sparsity" id="bool_sparsity">bool_sparsity</a></big></b>
 <br>
-This argument has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>bool_sparsity</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
-If it is true, where possible
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>bool_sparsity</span></font></i></code>
+ is true, where possible
 boolean sparsity patterns are used for this computation,
 otherwise set sparsity patterns are used.
 This should only affect to amount of time and memory used for the
 computations.
-If this argument is not present, the type of sparsity patterns
-is not specified.
 
 <br>
 <br>
 <b><big><a name="A_rcv" id="A_rcv">A_rcv</a></big></b>
 <br>
-This argument has prototype
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;CppAD::mixed::d_sparse_rcv&amp;&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>A_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
-</span></font></code>
-It is a
+This is a
 <a href="sparse_mat_info.htm#Notation.Sparse Matrix" target="_top"><span style='white-space: nowrap'>sparse&nbsp;matrix</span></a>
 
 representation of the
@@ -243,18 +245,27 @@ If
  is zero,
 there are no constraint equations and 
 <code><i><font color="black"><span style='white-space: nowrap'>A_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.nr()&nbsp;==&nbsp;0</span></font></code>
-.
+
+(this is the case for the default value of this argument).
 Otherwise, 
 <code><i><font color="black"><span style='white-space: nowrap'>A_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.nc()</span></font></code>
  must be equal to 
 <code><i><font color="black"><span style='white-space: nowrap'>n_random</span></font></i></code>
-.
-The member variable 
-<code><i><font color="black"><span style='white-space: nowrap'>A_rcv_</span></font></i></code>
- is set equal to 
-<code><i><font color="black"><span style='white-space: nowrap'>A_rcv</span></font></i></code>
 
-before any other routines are called by this routine.
+and 
+<code><i><font color="black"><span style='white-space: nowrap'>A_rcv</span></font></i><font color="blue"><span style='white-space: nowrap'>.nr()</span></font></code>
+ is the number of constraints.
+
+<br>
+<br>
+<b><big><a name="trace_init" id="trace_init">trace_init</a></big></b>
+<br>
+If true, trace the initialization of cppad_mixed data structures on
+standard output. This can be useful for large problems where the initialization
+takes a significant amount of time.
+For an example see
+<a href="hes_fixed_obj.cpp.htm#trace_init" target="_top"><span style='white-space: nowrap'>trace_init</span></a>
+.
 
 <br>
 <br>
