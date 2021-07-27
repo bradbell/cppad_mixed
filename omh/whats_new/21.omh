@@ -27,9 +27,15 @@ $spell
     bool
     rcv
 	init
+	cxx
 $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
+
+$head 07-27$$
+The $cref/extra_cxx_flags/run_cmake.sh/extra_cxx_flags/$$
+were not being included when building the $cref speed$$ tests.
+This has been fixed.
 
 $head 07-13$$
 $list number$$

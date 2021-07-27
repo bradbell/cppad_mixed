@@ -57,10 +57,6 @@ The $href%http://www.cmake.org/%cmake%$$ program,
 which installs other programs,
 must be installed.
 
-$subhead pkg-config$$
-The $href%http://www.freedesktop.org/wiki/Software/pkg-config/%pkg-config%$$
-program must be installed.
-
 $subhead wget$$
 The $href%https://www.gnu.org/software/wget/%wget%$$
 program must be installed.
@@ -75,11 +71,24 @@ the gnu scientific library.
 Note that the development headers are required; e.g.,
 on Fedora or Red-Hat one needs to install $code gsl-devel$$.
 
+$subhead pkg-config$$
+The $href%http://www.freedesktop.org/wiki/Software/pkg-config/%pkg-config%$$
+program must be installed.
+The following command should work:
+$codep%
+	pkg-config gsl --libs
+%$$
+see $cref/PKG_CONFIG_PATH/install_unix/Paths/PKG_CONFIG_PATH/$$ below.
+
 $subhead suitesparse$$
 The $href%http://faculty.cse.tamu.edu/davis/SuiteSparse%suitesparse%$$
 sparse matrix package.
 Note that the development headers are required; e.g.,
 on Fedora or Red-Hat one needs to install $code suitesparse-devel$$.
+Note that installing $code suitesparse$$ will include the $code metis$$
+package and neither of these packages have $code pkg-config$$ files.
+It may be necessary for you to add the corresponding paths to your
+dynamic library linking path shell variable.
 
 $head Download$$
 After installing the requirements above,
@@ -100,33 +109,6 @@ $codei%
 	git checkout -q %git_hash%
 	grep '^SET(cppad_mixed_version' CMakeLists.txt
 %$$
-
-$head Paths$$
-
-$subhead PKG_CONFIG_PATH$$
-For $icode pkg$$ equal to $code gsl$$, $code eigen$$, $code ipopt$$ and
-$code cppad$$, the following command should work:
-$codep%
-	pkg-config %pkg% --libs
-%$$
-If it fails, the corresponding directory is missing
-from the $code PKG_CONFIG_PATH$$ environment variable.
-If $icode prefix$$ is the prefix where $code pkg$$ was installed,
-the command
-$codei%
-	find -L %prefix% -name %pkg%.pc 2> /dev/null
-%$$
-can be used to find the directory where $code %pkg%.pc$$ is located.
-
-$subhead LD_LIBRARY_PATH$$
-If you get an error finding loading the shared library corresponding
-to ipopt, use the following command to find it:
-$codei%
-	pkg-config ipopt --libs
-%$$
-The directory specified after the $code -L$$ flag should be in your
-$code LD_LIBRARY_PATH$$.
-(On macOS, the path is $code DYLD_LIBRARY_PATH$$)
 
 $head Special Requirements$$
 The packages listed below are required by cppad_mixed
@@ -170,6 +152,35 @@ $codei%
 	bin/install_cppad.sh
 %$$
 can be used to install this package.
+
+$head Paths$$
+
+$subhead PKG_CONFIG_PATH$$
+For $icode pkg$$ equal to $code gsl$$, $code eigen$$, $code ipopt$$ and
+$code cppad$$, the following command should work:
+$codep%
+	pkg-config %pkg% --libs
+%$$
+(This command should work for $code gsl$$ before the special requirements
+are installed.)
+If this command fails, the corresponding directory is missing
+from the $code PKG_CONFIG_PATH$$ environment variable.
+If $icode prefix$$ is the prefix where $code pkg$$ was installed,
+the command
+$codei%
+	find -L %prefix% -name %pkg%.pc 2> /dev/null
+%$$
+can be used to find the directory where $code %pkg%.pc$$ is located.
+
+$subhead LD_LIBRARY_PATH$$
+If you get an error finding loading the shared library corresponding
+to ipopt, use the following command to find it:
+$codei%
+	pkg-config ipopt --libs
+%$$
+The directory specified after the $code -L$$ flag should be in your
+$code LD_LIBRARY_PATH$$.
+(On macOS, the path is $code DYLD_LIBRARY_PATH$$)
 
 $head cppad_mixed$$
 The steps above need to be executed once,

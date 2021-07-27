@@ -609,7 +609,7 @@ void simulate(
 		{	// probability of capture
 			double ex = exp( - u[t] - theta[1] );
 			double q = 1.0 /( 1.0  + ex );
-			y[ i * T + t ] = gsl_ran_binomial(rng, q, N[i]);
+			y[ i * T + t ] = gsl_ran_binomial(rng, q, (unsigned int)N[i] );
 		}
 	}
 	//
@@ -805,7 +805,7 @@ void label_print(const char* label, const Value& value)
 }
 void label_print(const char* label, const double& value)
 {	std::cout << std::setw(35) << std::left << label;
-	size_t n_digits = 3 + size_t( std::log10(value) + 1e-9 );
+	int n_digits = 3 + int( std::log10(value) + 1e-9 );
 	std::cout << " = " << std::setprecision(n_digits) << value << std::endl;
 }
 void bool_print(const char* label, bool value)
@@ -1117,7 +1117,7 @@ int main(int argc, const char *argv[])
 	// estimate_ratio
 	d_vector estimate_ratio(n_fixed);
 	for(size_t j = 0; j < n_fixed; j++)
-	{	sample_std[j] = std::sqrt( sample_std[j] / number_fixed_samples );
+	{	sample_std[j] = std::sqrt(sample_std[j]/double(number_fixed_samples));
 		// check if results results are reasonable
 		estimate_ratio[j] = ( theta_out[j] - theta_sim[j] ) / sample_std[j];
 		ok  &= std::fabs(estimate_ratio[j]) < 10.0;

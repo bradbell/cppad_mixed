@@ -303,7 +303,7 @@ namespace {
 	}
 	void label_print(const char* label, const double& value)
 	{	cout << std::setw(35) << std::left << label;
-		size_t n_digits = 5 + size_t( std::log10(value) + 1e-9 );
+		int n_digits = 5 + int( std::log10(value) + 1e-9 );
 		cout << " = " << std::setprecision(n_digits) << value << std::endl;
 	}
 	void bool_print(const char* label, bool value)
@@ -537,7 +537,7 @@ int main(int argc, const char* argv[])
 		}
 	}
 	for(size_t j = 0; j < n_fixed; j++)
-	{	sample_std[j] = std::sqrt( sample_std[j] / number_fixed_samples );
+	{	sample_std[j] = std::sqrt(sample_std[j]/double(number_fixed_samples));
 		// check if results results are reasonable
 		estimate_ratio[j] = ( theta_out[j] - theta_sim[j] ) / sample_std[j];
 		ok  &= std::fabs(estimate_ratio[j]) < 10.0;

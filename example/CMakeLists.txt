@@ -68,7 +68,6 @@ ADD_EXECUTABLE(example EXCLUDE_FROM_ALL example.cpp
 	user/sample_random.cpp
 	user/warm_start.cpp
 )
-
 SET_TARGET_PROPERTIES(
 	example PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
 )
