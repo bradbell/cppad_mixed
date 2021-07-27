@@ -168,7 +168,7 @@ echo <font color="#FF0000">"cmake_install_prefix=$cmake_install_prefix"</font>
 <b><font color="#0000FF">then</font></b>
      <font color="#009900">system_type</font><font color="#990000">=</font><font color="#FF0000">'debian'</font>
      <font color="#009900">system_install</font><font color="#990000">=</font><font color="#FF0000">"$sudo apt-get install -y"</font>
-     dpkg-query -l <font color="#990000">|</font> sed -e <font color="#FF0000">'s|  *| |g'</font> <font color="#990000">&gt;</font> example_install<font color="#990000">.</font>tmp
+     dpkg-query -l <font color="#990000">|</font> sed -e <font color="#FF0000">'s|  *| |g'</font> -e <font color="#FF0000">'s|^ii ||'</font> <font color="#990000">&gt;</font> example_install<font color="#990000">.</font>tmp
 <b><font color="#0000FF">elif</font></b> which dnf <font color="#990000">&gt;&amp;</font> /dev/null
 <b><font color="#0000FF">then</font></b>
      <font color="#009900">system_type</font><font color="#990000">=</font><font color="#FF0000">'red_hat'</font>

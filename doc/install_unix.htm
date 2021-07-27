@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Installing cppad_mixed in Unix</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Installing cppad_mixed in Unix">
-<meta name="keywords" id="keywords" content=" installing cppad_mixed unix system requirements c++ compiler git cmake pkg-config wget fortran gsl suitesparse download paths pkg_config_path ld_library_path special run_cmake.sh eigen ipopt cppad command check speed install example installation linking using ">
+<meta name="keywords" id="keywords" content=" installing cppad_mixed unix system requirements c++ compiler git cmake wget fortran gsl pkg-config suitesparse download special run_cmake.sh eigen ipopt cppad paths pkg_config_path ld_library_path command check speed install example installation linking using ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -65,20 +65,20 @@ A:active { color : purple }
 <br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#System Requirements.C++ Compiler" target="_top">C++&nbsp;Compiler</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#System Requirements.git" target="_top">git</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#System Requirements.cmake" target="_top">cmake</a>
-<br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#System Requirements.pkg-config" target="_top">pkg-config</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#System Requirements.wget" target="_top">wget</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#System Requirements.Fortran Compiler" target="_top">Fortran&nbsp;Compiler</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#System Requirements.gsl" target="_top">gsl</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#System Requirements.pkg-config" target="_top">pkg-config</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#System Requirements.suitesparse" target="_top">suitesparse</a>
 <br><a href="install_unix.htm#Download" target="_top">Download</a>
-<br><a href="install_unix.htm#Paths" target="_top">Paths</a>
-<br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#Paths.PKG_CONFIG_PATH" target="_top">PKG_CONFIG_PATH</a>
-<br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#Paths.LD_LIBRARY_PATH" target="_top">LD_LIBRARY_PATH</a>
 <br><a href="install_unix.htm#Special Requirements" target="_top">Special&nbsp;Requirements</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#Special Requirements.run_cmake.sh" target="_top">run_cmake.sh</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#Special Requirements.eigen" target="_top">eigen</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#Special Requirements.Ipopt" target="_top">Ipopt</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#Special Requirements.CppAD" target="_top">CppAD</a>
+<br><a href="install_unix.htm#Paths" target="_top">Paths</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#Paths.PKG_CONFIG_PATH" target="_top">PKG_CONFIG_PATH</a>
+<br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#Paths.LD_LIBRARY_PATH" target="_top">LD_LIBRARY_PATH</a>
 <br><a href="install_unix.htm#cppad_mixed" target="_top">cppad_mixed</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#cppad_mixed.Cmake Command" target="_top">Cmake&nbsp;Command</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="install_unix.htm#cppad_mixed.Check" target="_top">Check</a>
@@ -121,14 +121,6 @@ must be installed.
 
 <br>
 <br>
-<big><a name="System Requirements.pkg-config" id="System Requirements.pkg-config">pkg-config</a></big>
-<br>
-The <a href="http://www.freedesktop.org/wiki/Software/pkg-config/" target="_top"><span style='white-space: nowrap'>pkg-config</span></a>
-
-program must be installed.
-
-<br>
-<br>
 <big><a name="System Requirements.wget" id="System Requirements.wget">wget</a></big>
 <br>
 The <a href="https://www.gnu.org/software/wget/" target="_top"><span style='white-space: nowrap'>wget</span></a>
@@ -155,6 +147,20 @@ on Fedora or Red-Hat one needs to install <code><font color="blue">gsl-devel</fo
 
 <br>
 <br>
+<big><a name="System Requirements.pkg-config" id="System Requirements.pkg-config">pkg-config</a></big>
+<br>
+The <a href="http://www.freedesktop.org/wiki/Software/pkg-config/" target="_top"><span style='white-space: nowrap'>pkg-config</span></a>
+
+program must be installed.
+The following command should work:
+<code><font color='blue'><pre style='display:inline'> 
+     pkg-config gsl --libs
+</pre></font></code>
+see <a href="install_unix.htm#Paths.PKG_CONFIG_PATH" target="_top"><span style='white-space: nowrap'>PKG_CONFIG_PATH</span></a>
+ below.
+
+<br>
+<br>
 <big><a name="System Requirements.suitesparse" id="System Requirements.suitesparse">suitesparse</a></big>
 <br>
 The <a href="http://faculty.cse.tamu.edu/davis/SuiteSparse" target="_top"><span style='white-space: nowrap'>suitesparse</span></a>
@@ -162,6 +168,10 @@ The <a href="http://faculty.cse.tamu.edu/davis/SuiteSparse" target="_top"><span 
 sparse matrix package.
 Note that the development headers are required; e.g.,
 on Fedora or Red-Hat one needs to install <code><font color="blue">suitesparse-devel</font></code>.
+Note that installing <code><font color="blue">suitesparse</font></code> will include the <code><font color="blue">metis</font></code>
+package and neither of these packages have <code><font color="blue">pkg-config</font></code> files.
+It may be necessary for you to add the corresponding paths to your
+dynamic library linking path shell variable.
 
 <br>
 <br>
@@ -192,48 +202,6 @@ and check its version number, using the commands:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;git&nbsp;checkout&nbsp;-q&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>git_hash</span></font></i><font color="blue"><span style='white-space: nowrap'><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grep&nbsp;'^SET(cppad_mixed_version'&nbsp;CMakeLists.txt<br>
 </span></font></code>
-<br>
-<b><big><a name="Paths" id="Paths">Paths</a></big></b>
-
-
-<br>
-<br>
-<big><a name="Paths.PKG_CONFIG_PATH" id="Paths.PKG_CONFIG_PATH">PKG_CONFIG_PATH</a></big>
-<br>
-For 
-<code><i><font color="black"><span style='white-space: nowrap'>pkg</span></font></i></code>
- equal to <code><font color="blue">gsl</font></code>, <code><font color="blue">eigen</font></code>, <code><font color="blue">ipopt</font></code> and
-<code><font color="blue">cppad</font></code>, the following command should work:
-<code><font color='blue'><pre style='display:inline'> 
-     pkg-config %pkg% --libs
-</pre></font></code>
-If it fails, the corresponding directory is missing
-from the <code><font color="blue">PKG_CONFIG_PATH</font></code> environment variable.
-If 
-<code><i><font color="black"><span style='white-space: nowrap'>prefix</span></font></i></code>
- is the prefix where <code><font color="blue">pkg</font></code> was installed,
-the command
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;find&nbsp;-L&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;-name&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>pkg</span></font></i><font color="blue"><span style='white-space: nowrap'>.pc&nbsp;2&gt;&nbsp;/dev/null<br>
-</span></font></code>
-can be used to find the directory where <code><font color="blue">%pkg%.pc</font></code> is located.
-
-<br>
-<br>
-<big><a name="Paths.LD_LIBRARY_PATH" id="Paths.LD_LIBRARY_PATH">LD_LIBRARY_PATH</a></big>
-<br>
-If you get an error finding loading the shared library corresponding
-to ipopt, use the following command to find it:
-
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pkg-config&nbsp;ipopt&nbsp;--libs<br>
-</span></font></code>
-The directory specified after the <code><font color="blue">-L</font></code> flag should be in your
-<code><font color="blue">LD_LIBRARY_PATH</font></code>.
-(On macOS, the path is <code><font color="blue">DYLD_LIBRARY_PATH</font></code>)
-
-<br>
 <br>
 <b><big><a name="Special Requirements" id="Special Requirements">Special Requirements</a></big></b>
 <br>
@@ -299,6 +267,50 @@ the command
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bin/install_cppad.sh<br>
 </span></font></code>
 can be used to install this package.
+
+<br>
+<br>
+<b><big><a name="Paths" id="Paths">Paths</a></big></b>
+
+
+<br>
+<br>
+<big><a name="Paths.PKG_CONFIG_PATH" id="Paths.PKG_CONFIG_PATH">PKG_CONFIG_PATH</a></big>
+<br>
+For 
+<code><i><font color="black"><span style='white-space: nowrap'>pkg</span></font></i></code>
+ equal to <code><font color="blue">gsl</font></code>, <code><font color="blue">eigen</font></code>, <code><font color="blue">ipopt</font></code> and
+<code><font color="blue">cppad</font></code>, the following command should work:
+<code><font color='blue'><pre style='display:inline'> 
+     pkg-config %pkg% --libs
+</pre></font></code>
+(This command should work for <code><font color="blue">gsl</font></code> before the special requirements
+are installed.)
+If this command fails, the corresponding directory is missing
+from the <code><font color="blue">PKG_CONFIG_PATH</font></code> environment variable.
+If 
+<code><i><font color="black"><span style='white-space: nowrap'>prefix</span></font></i></code>
+ is the prefix where <code><font color="blue">pkg</font></code> was installed,
+the command
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;find&nbsp;-L&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>prefix</span></font></i><font color="blue"><span style='white-space: nowrap'>&nbsp;-name&nbsp;</span></font><i><font color="black"><span style='white-space: nowrap'>pkg</span></font></i><font color="blue"><span style='white-space: nowrap'>.pc&nbsp;2&gt;&nbsp;/dev/null<br>
+</span></font></code>
+can be used to find the directory where <code><font color="blue">%pkg%.pc</font></code> is located.
+
+<br>
+<br>
+<big><a name="Paths.LD_LIBRARY_PATH" id="Paths.LD_LIBRARY_PATH">LD_LIBRARY_PATH</a></big>
+<br>
+If you get an error finding loading the shared library corresponding
+to ipopt, use the following command to find it:
+
+<code><font color="blue"><span style='white-space: nowrap'><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pkg-config&nbsp;ipopt&nbsp;--libs<br>
+</span></font></code>
+The directory specified after the <code><font color="blue">-L</font></code> flag should be in your
+<code><font color="blue">LD_LIBRARY_PATH</font></code>.
+(On macOS, the path is <code><font color="blue">DYLD_LIBRARY_PATH</font></code>)
 
 <br>
 <br>
