@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2021</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2021">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2021 07-27 07-13 06-29 06-26 06-24 06-13 06-10 06-08 06-07 06-06 06-03 05-31 05-29 05-28 05-27 05-26 05-17 05-15 05-11 05-07 05-01 03-02 ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2021 07-29 07-27 07-13 06-29 06-26 06-24 06-13 06-10 06-08 06-07 06-06 06-03 05-31 05-29 05-28 05-27 05-26 05-17 05-15 05-11 05-07 05-01 03-02 ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -66,6 +66,7 @@ A:active { color : purple }
 
 <center><b><big><big>Changes and Additions to cppad_mixed During 2021</big></big></b></center>
 
+<br><a href="whats_new_21.htm#07-29" target="_top">07-29</a>
 <br><a href="whats_new_21.htm#07-27" target="_top">07-27</a>
 <br><a href="whats_new_21.htm#07-13" target="_top">07-13</a>
 <br><a href="whats_new_21.htm#06-29" target="_top">06-29</a>
@@ -89,6 +90,17 @@ A:active { color : purple }
 <br><a href="whats_new_21.htm#05-01" target="_top">05-01</a>
 <br><a href="whats_new_21.htm#03-02" target="_top">03-02</a>
 <br><br>
+<b><big><a name="07-29" id="07-29">07-29</a></big></b>
+<br>
+The Mac changed how <code><font color="blue">bash</font></code> worked and this broke it's install.
+To be specific, <code><font color="blue">export DYLD_LIBRARY_PATH</font></code> no longer works
+(export works for most shell variables but not others).
+The files <a href="example_install.sh.htm" target="_top"><span style='white-space: nowrap'>example_install.sh</span></a>
+ and <code><font color="blue">bin/install_ipopt.sh</font></code>
+where changed to adapt to this problem.
+
+<br>
+<br>
 <b><big><a name="07-27" id="07-27">07-27</a></big></b>
 <br>
 The <a href="run_cmake.sh.htm#extra_cxx_flags" target="_top"><span style='white-space: nowrap'>extra_cxx_flags</span></a>

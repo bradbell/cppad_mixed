@@ -161,9 +161,7 @@ echo <font color="#FF0000">"cmake_install_prefix=$cmake_install_prefix"</font>
      <font color="#009900">sudo</font><font color="#990000">=</font><font color="#FF0000">'sudo'</font>
 <b><font color="#0000FF">fi</font></b>
 <i><font color="#9A1900"># -----------------------------------------------------------------------------</font></i>
-<i><font color="#9A1900"># set system_type,</font></i>
-<i><font color="#9A1900"># system_install</font></i>
-<i><font color="#9A1900"># example_install.tmp</font></i>
+<i><font color="#9A1900"># set system_type, system_install example_install.tmp</font></i>
 <b><font color="#0000FF">if</font></b> which apt-get <font color="#990000">&gt;&amp;</font> /dev/null
 <b><font color="#0000FF">then</font></b>
      <font color="#009900">system_type</font><font color="#990000">=</font><font color="#FF0000">'debian'</font>
@@ -323,8 +321,8 @@ rm example_install<font color="#990000">.</font>tmp
      <b><font color="#0000FF">if</font></b> <font color="#990000">[</font> <font color="#FF0000">"$install"</font> <font color="#990000">==</font> <font color="#FF0000">'true'</font> <font color="#990000">]</font>
      <b><font color="#0000FF">then</font></b>
           <font color="#009900">name</font><font color="#990000">=</font><font color="#FF0000">'example_install'</font>
-          echo <font color="#FF0000">"bin/install_$pkg.sh 1&gt;&gt; $name.log 2&gt;&gt; $name.err"</font>
-          <b><font color="#0000FF">if</font></b> <font color="#990000">!</font> bin/install_<font color="#009900">$pkg</font><font color="#990000">.</font>sh <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> <font color="#009900">$name</font><font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> <font color="#009900">$name</font><font color="#990000">.</font>err
+          echo <font color="#FF0000">"bin/install_$pkg.sh $system_type 1&gt;&gt; $name.log 2&gt;&gt; $name.err"</font>
+          <b><font color="#0000FF">if</font></b> <font color="#990000">!</font> bin/install_<font color="#009900">$pkg</font><font color="#990000">.</font>sh <font color="#009900">$system_type</font> <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> <font color="#009900">$name</font><font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> <font color="#009900">$name</font><font color="#990000">.</font>err
           <b><font color="#0000FF">then</font></b>
                tail <font color="#009900">$name</font><font color="#990000">.</font>err
                <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
