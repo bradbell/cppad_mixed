@@ -9,6 +9,7 @@
 # ---------------------------------------------------------------------------
 # speed test
 # ---------------------------------------------------------------------------
+# speed_ar1_xam
 SET(random_seed                  0)
 SET(number_random              100)
 SET(quasi_fixed                 no)
@@ -32,6 +33,7 @@ ADD_CUSTOM_TARGET(speed_ar1_xam
 	DEPENDS ar1_xam
 )
 # -----------------------------------------------------------------------------
+# speed_capture_xam
 SET(random_seed                0)
 SET(number_random             45)
 SET(quasi_fixed               no)
@@ -69,14 +71,25 @@ ADD_CUSTOM_TARGET(speed_capture_xam
 	DEPENDS capture_xam
 )
 # -----------------------------------------------------------------------------
-FOREACH( program_name capture_xam ar1_xam )
-	ADD_EXECUTABLE(
-		${program_name} EXCLUDE_FROM_ALL "${program_name}.cpp"
-	)
-	SET_TARGET_PROPERTIES(
-		${program_name} PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
-	)
-	TARGET_LINK_LIBRARIES(${program_name}
-		cppad_mixed
-	)
-ENDFOREACH( program_name )
+# capture_xam
+ADD_EXECUTABLE(
+	capture_xam EXCLUDE_FROM_ALL "capture_xam.cpp"
+)
+SET_TARGET_PROPERTIES(
+	capture_xam PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
+)
+TARGET_LINK_LIBRARIES(
+	capture_xam cppad_mixed
+)
+# -----------------------------------------------------------------------------
+# ar1_xam
+ADD_EXECUTABLE(
+	ar1_xam EXCLUDE_FROM_ALL "ar1_xam.cpp"
+)
+SET_TARGET_PROPERTIES(
+	ar1_xam PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
+)
+TARGET_LINK_LIBRARIES(
+	ar1_xam cppad_mixed
+)
+# -----------------------------------------------------------------------------

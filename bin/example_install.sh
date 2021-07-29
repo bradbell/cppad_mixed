@@ -98,9 +98,7 @@ else
 	sudo='sudo'
 fi
 # -----------------------------------------------------------------------------
-# set system_type,
-# system_install
-# example_install.tmp
+# set system_type, system_install example_install.tmp
 if which apt-get >& /dev/null
 then
 	system_type='debian'
@@ -260,8 +258,8 @@ do
 	if [ "$install" == 'true' ]
 	then
 		name='example_install'
-		echo "bin/install_$pkg.sh 1>> $name.log 2>> $name.err"
-		if ! bin/install_$pkg.sh 1>> $name.log 2>> $name.err
+		echo "bin/install_$pkg.sh $system_type 1>> $name.log 2>> $name.err"
+		if ! bin/install_$pkg.sh $system_type 1>> $name.log 2>> $name.err
 		then
 			tail $name.err
 			exit 1

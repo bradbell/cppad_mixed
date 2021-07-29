@@ -32,6 +32,13 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
 
+$head 07-29$$
+The Mac changed how $code bash$$ worked and this broke it's install.
+To be specific, $code export DYLD_LIBRARY_PATH$$ no longer works
+(export works for most shell variables but not others).
+The files $cref example_install.sh$$ and $code bin/install_ipopt.sh$$
+where changed to adapt to this problem.
+
 $head 07-27$$
 The $cref/extra_cxx_flags/run_cmake.sh/extra_cxx_flags/$$
 were not being included when building the $cref speed$$ tests.

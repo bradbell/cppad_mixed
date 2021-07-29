@@ -13,6 +13,17 @@ then
 	echo 'bin/install_ipopt.sh: must be executed from its parent directory'
 	exit 1
 fi
+#
+# system_type
+system_type="$1"
+system_type_list=' debian red_hat mac_port mac_brew cygwin '
+if ! echo $system_type_list | grep " $system_type " > /dev/null
+then
+	echo 'bin/install_ipopt.sh: system_type'
+	echo "system_type='$system_type' is not one of the following:"
+	echo "$system_type_list"
+	exit 1
+fi
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
@@ -20,6 +31,11 @@ echo_eval() {
 	eval $*
 }
 # --------------------------------------------------------------------------
+name_list=( \
+	'ASL' \
+	'Mumps' \
+	'Ipopt' \
+)
 url_list=( \
 	'https://github.com/coin-or-tools/ThirdParty-ASL' \
 	'https://github.com/coin-or-tools/ThirdParty-Mumps' \
@@ -29,6 +45,11 @@ version_list=( \
 	'stable/2.0' \
 	'stable/2.1' \
 	'releases/3.13.4' \
+)
+java_flag_list=( \
+	'' \
+	'' \
+	'--disable-java' \
 )
 # ---------------------------------------------------------------------------
 # Get user configuration options from run_cmake.sh
@@ -54,12 +75,23 @@ then
 	bin/build_type.sh install_ipopt $ipopt_prefix $build_type
 fi
 # --------------------------------------------------------------------------
+# cd external/build_type
 if [ ! -e external/$build_type ]
 then
 	mkdir -p external/$build_type
 fi
 echo_eval cd external/$build_type
 # -----------------------------------------------------------------------------
+# n_job
+if which nproc >& /dev/null
+then
+	n_job=$(nproc)
+else
+	n_job=$(sysctl -n hw.ncpu)
+fi
+# -----------------------------------------------------------------------------
+# add_mumps_fcflags
+#
 # klugde necessary until coin or mumps fixes this problem
 cat << EOF > junk.f
       program junk
@@ -73,18 +105,21 @@ then
 else
 	add_mumps_fcflags=''
 fi
-# -----------------------------------------------------------------------------
-if which nproc >& /dev/null
+#-----------------------------------------------------------------------------
+# debug_flags
+if [ "$build_type" == 'debug' ]
 then
-	n_job=$(nproc)
+	debug_flags='--enable-debug'
 else
-	n_job=$(sysctl -n hw.ncpu)
+	debug_flags=''
 fi
+# -----------------------------------------------------------------------------
 for i in {0..2}
 do
 	url=${url_list[$i]}
 	version=${version_list[$i]}
-	name=$(echo $url | sed -e 's|.*/||' -e 's|ThirdParty-||')
+	name=${name_list[$i]}
+	java_flag=${java_flag_list[$i]}
 	if [ ! -e $name.git ]
 	then
 		echo_eval git clone $url.git $name.git
@@ -107,24 +142,21 @@ do
 	fi
 	echo_eval cd build
 	#
-	if [ "$build_type" == 'debug' ]
-	then
-		debug_flags='--enable-debug'
-		# -------------------------------------------------------------------
-		# This yields output for debugging ipopt
-		# if [ "$name" == 'Ipopt' ]
-		# then
-		#	debug_flags="$debug_flags --with-ipopt-verbosity"
-		# fi
-		# -------------------------------------------------------------------
-	else
-		debug_flags=''
-	fi
 	if [ "$name" == 'Mumps' ]
 	then
 		add_fcflags="$add_mumps_fcflags"
+		if [ "$system_type" == 'mac_brew' ]
+		then
+			with_metis_lflags='--with-metis-lflags='
+			metis_lflags='-L/usr/local/opt/metis/lib -lmetis'
+		else
+			with_metis_lflags=''
+			metis_lflags=''
+		fi
 	else
 		add_fcflags=''
+		with_metis_lflags=''
+		metis_lflags=''
 	fi
 cat << EOF
 	../configure \\
@@ -132,14 +164,16 @@ cat << EOF
 		--prefix=$ipopt_prefix \\
 		--libdir=$ipopt_prefix/$cmake_libdir \\
 		--enable-shared \\
-		$debug_flags $add_fcflags
+		$java_flag $debug_flags $add_fcflags \\
+		$with_metis_lflags"$metis_lflags"
 EOF
 	../configure \
 		--disable-dependency-tracking \
 		--prefix=$ipopt_prefix \
 		--libdir=$ipopt_prefix/$cmake_libdir \
 		--enable-shared \
-		$debug_flags $add_fcflags
+		$java_flag $debug_flags $add_fcflags \
+		$with_metis_lflags"$metis_lflags"
 	echo_eval make -j $n_job install
 	#
 	# back to external
