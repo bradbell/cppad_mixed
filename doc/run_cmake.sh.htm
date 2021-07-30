@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>bin/run_cmake.sh: User Configuration Options</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="bin/run_cmake.sh: User Configuration Options">
-<meta name="keywords" id="keywords" content=" bin/run_cmake.sh: user configuration options verbose_makefile build_type cmake_install_prefix debug release eigen prefix extra_cxx_flags cmake_libdir cppad_mixed.pc ldlt_cholmod optimize_cppad_function for_hes_sparsity testing speed memory ">
+<meta name="keywords" id="keywords" content=" bin/run_cmake.sh: user configuration options verbose_makefile build_type cmake_install_prefix debug release eigen prefix specific_compiler extra_cxx_flags cmake_libdir cppad_mixed.pc ldlt_cholmod optimize_cppad_function for_hes_sparsity testing speed memory ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -68,6 +68,7 @@ A:active { color : purple }
 <br><a href="run_cmake.sh.htm#cmake_install_prefix" target="_top">cmake_install_prefix</a>
 <br><a href="run_cmake.sh.htm#Debug and Release" target="_top">Debug&nbsp;and&nbsp;Release</a>
 <br><a href="run_cmake.sh.htm#Eigen Prefix" target="_top">Eigen&nbsp;Prefix</a>
+<br><a href="run_cmake.sh.htm#specific_compiler" target="_top">specific_compiler</a>
 <br><a href="run_cmake.sh.htm#extra_cxx_flags" target="_top">extra_cxx_flags</a>
 <br><a href="run_cmake.sh.htm#cmake_libdir" target="_top">cmake_libdir</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="run_cmake.sh.htm#cmake_libdir.cppad_mixed.pc" target="_top">cppad_mixed.pc</a>
@@ -136,6 +137,24 @@ The example install script <code><font color="blue">bin/install_eigen.sh</font><
  as the prefix for installing eigen.
 
 <br>
+<br>
+<b><big><a name="specific_compiler" id="specific_compiler">specific_compiler</a></big></b>
+<br>
+On some systems, e.g. the Mac using port, there are problems with mixing
+different compiler systems for fortran and C++; see
+<a href="https://github.com/coin-or/Ipopt/discussions/471" target="_top"><span style='white-space: nowrap'>ipopt&nbsp;issue&nbsp;471</span></a>
+.
+This variable allows you to set a specific compiler for
+C, CXX, and FC.  For example
+<code><font color="blue">
+	specific_compiler='CC=gcc CXX=g++ FC=gfortran'
+</font></code>
+uses the gnu versions of these compilers.
+The configuration will automatically find compilers if they are
+not specified; i.e., if
+<code><font color='blue'><pre style='display:inline'> 
+specific_compiler=''
+</pre></font></code>
 <br>
 <b><big><a name="extra_cxx_flags" id="extra_cxx_flags">extra_cxx_flags</a></big></b>
 <br>
