@@ -38,6 +38,8 @@
 #	Wconversion
 #	Wpedantic
 #	config
+#	gcc
+#	gfortran
 # &&
 #
 # &section bin/run_cmake.sh: User Configuration Options&&
@@ -80,6 +82,22 @@ cmake_install_prefix="$HOME/prefix/cppad_mixed"
 # otherwise the eigen include files would generate lots of warnings.
 # The example install script &code bin/install_eigen.sh&& uses
 # &icode%cmake_install_prefix%/eigen%&& as the prefix for installing eigen.
+#
+# &head specific_compiler&&
+# On some systems, e.g. the Mac using port, there are problems with mixing
+# different compiler systems for fortran and C++; see
+# &href%https://github.com/coin-or/Ipopt/discussions/471%ipopt issue 471%&&.
+# This variable allows you to set a specific compiler for
+# C, CXX, and FC.  For example
+# &code
+#	specific_compiler='CC=gcc CXX=g++ FC=gfortran'
+# &&
+# uses the gnu versions of these compilers.
+# The configuration will automatically find compilers if they are
+# not specified; i.e., if
+# &codep
+specific_compiler=''
+#&&
 #
 # &head extra_cxx_flags&&
 # Extra C++ flags used to compile and test
@@ -218,6 +236,22 @@ done
 PKG_CONFIG_PATH=$(echo $PKG_CONFIG_PATH | sed -e 's|^:||' -e 's|:$||')
 echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH"
 # --------------------------------------------------------------------------
+# cmake_cxx_compiler
+if echo $specific_compiler | grep 'CC=' > /dev/null
+then
+	cxx=$(echo $specific_compiler | sed -e 's|.*CXX=\([^ ]*\).*|\1|')
+	if ! which $cxx > /dev/null
+	then
+		echo "run_cmake.sh: specific_compiler: cannot execute $cxx compiler"
+		exit 1
+	fi
+	cxx_path=$(which $cxx)
+	cmake_cxx_compiler="-D CMAKE_CXX_COMPILER=$cxx_path"
+else
+	cmake_cxx_compiler=''
+fi
+#
+# --------------------------------------------------------------------------
 if [ ! -e build ]
 then
 	echo_eval mkdir build
@@ -231,10 +265,26 @@ if [ -e CMakeFiles ]
 then
 	echo_eval rm -r CMakeFiles
 fi
+cat << EOF
+cmake \\
+	-Wno-dev \\
+	-D CMAKE_VERBOSE_MAKEFILE=$verbose_makefile \\
+	-D CMAKE_BUILD_TYPE=$build_type \\
+	$cmake_cxx_compiler \\
+	-D cmake_install_prefix="$cmake_install_prefix" \\
+	\\
+	-D extra_cxx_flags="$extra_cxx_flags" \\
+	-D cmake_libdir="$cmake_libdir" \\
+	-D ldlt_cholmod="$ldlt_cholmod" \\
+	-D optimize_cppad_function="$optimize_cppad_function" \\
+	-D for_hes_sparsity="$for_hes_sparsity" \\
+	..
+EOF
 cmake \
 	-Wno-dev \
 	-D CMAKE_VERBOSE_MAKEFILE=$verbose_makefile \
 	-D CMAKE_BUILD_TYPE=$build_type \
+	$cmake_cxx_compiler \
 	\
 	-D cmake_install_prefix="$cmake_install_prefix" \
 	\

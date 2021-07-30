@@ -58,6 +58,10 @@ java_flag_list=( \
 cmd=`grep '^build_type=' bin/run_cmake.sh`
 eval $cmd
 #
+# specific_compiler
+cmd=`grep '^specific_compiler=' bin/run_cmake.sh`
+eval $cmd
+#
 # cmake_install_prefix
 cmd=`grep '^cmake_install_prefix=' bin/run_cmake.sh`
 eval $cmd
@@ -164,6 +168,7 @@ cat << EOF
 		--prefix=$ipopt_prefix \\
 		--libdir=$ipopt_prefix/$cmake_libdir \\
 		--enable-shared \\
+		$specific_compiler \\
 		$java_flag $debug_flags $add_fcflags \\
 		$with_metis_lflags"$metis_lflags"
 EOF
@@ -172,6 +177,7 @@ EOF
 		--prefix=$ipopt_prefix \
 		--libdir=$ipopt_prefix/$cmake_libdir \
 		--enable-shared \
+		$specific_compiler \
 		$java_flag $debug_flags $add_fcflags \
 		$with_metis_lflags"$metis_lflags"
 	echo_eval make -j $n_job install

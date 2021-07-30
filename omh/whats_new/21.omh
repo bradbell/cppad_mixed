@@ -28,6 +28,7 @@ $spell
     rcv
 	init
 	cxx
+	cmake
 $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
@@ -38,6 +39,9 @@ To be specific, $code export DYLD_LIBRARY_PATH$$ no longer works
 (export works for most shell variables but not others).
 The files $cref example_install.sh$$ and $code bin/install_ipopt.sh$$
 where changed to adapt to this problem.
+In addition, the $cref/specific_compiler/run_cmake.sh/specific_compiler/$$
+setting was added to $code bin/run_cmake.sh$$ to make it easier
+to build using MacPorts.
 
 $head 07-27$$
 The $cref/extra_cxx_flags/run_cmake.sh/extra_cxx_flags/$$
