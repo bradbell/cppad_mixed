@@ -88,16 +88,16 @@ cmake_install_prefix="$HOME/prefix/cppad_mixed"
 # different compiler systems for fortran and C++; see
 # &href%https://github.com/coin-or/Ipopt/discussions/471%ipopt issue 471%&&.
 # This variable allows you to set a specific compiler for
-# C, CXX, and FC.  For example
+# C and or CXX and or FC.  For example
 # &code
 #	specific_compiler='CC=gcc CXX=g++ FC=gfortran'
 # &&
 # uses the gnu versions of these compilers.
-# The configuration will automatically find compilers if they are
-# not specified; i.e., if
+# The configuration will automatically find compilers that are not specified;
+# i.e., if
 # &codep
 specific_compiler=''
-#&&
+# &&
 #
 # &head extra_cxx_flags&&
 # Extra C++ flags used to compile and test

@@ -187,25 +187,32 @@ MESSAGE(STATUS "cppad_mixed_has_nullptr = ${cppad_mixed_has_nullptr_01}")
 # suitesparse_in_cholmod_include_01
 SET(suitesparse_prefix "NOTFOUND")
 SET(suitesparse_suffix "NOTFOUND")
-FOREACH(prefix in /usr /usr/local /opt/local "${cmake_install_prefix}" )
+FOREACH(prefix
+	/usr
+	/usr/local
+	/opt/local
+	/usr/local/opt/suitesparse
+	"${cmake_install_prefix}"
+)
 	FOREACH(suffix in "include" "include/suitesparse")
 		IF( EXISTS "${prefix}/${suffix}/cholmod.h" )
 			IF( suitespase_prefix )
-				MESSAGE(FATAL_ERROR
-			"found cholmod.h in ${prefix}/${suffix} and ${suitesparse_prefix}"
+				MESSAGE(STATUS
+					"warning: found cholmod.h in ${prefix}/${suffix}"
+					" and ${suitesparse_prefix}"
 				)
 			ENDIF( suitespase_prefix )
 			SET(suitesparse_prefix "${prefix}")
 			SET(suitesparse_suffix "${suffix}")
 		ENDIF( EXISTS "${prefix}/${suffix}/cholmod.h" )
 	ENDFOREACH(suffix in "include" "include/suitesparse")
-ENDFOREACH(prefix in /usr /usr/local "${cmake_install_prefix}" )
+ENDFOREACH(prefix)
 IF( NOT suitesparse_prefix )
 	MESSAGE(FATAL_ERROR "cannot find cholmod.h" )
+ENDIF( NOT suitesparse_prefix )
 #
 # suitesparse_INCLUDE_DIRS
 # suitesparse_in_cholmod_include_01
-ENDIF( NOT suitesparse_prefix )
 IF( ${suitesparse_suffix} STREQUAL "include" )
 	SET(suitesparse_in_cholmod_include_01 "0")
 	SET(suitesparse_INCLUDE_DIRS  "${suitesparse_prefix}/include" )
