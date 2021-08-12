@@ -24,14 +24,19 @@ $spell
 	ubuntu
 	dpkg
 	gsl_rng
-    bool
-    rcv
+	bool
+	rcv
 	init
 	cxx
 	cmake
+	debian
 $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
+
+$head 08-12$$
+Fix a problem (created on 97-29 change below) with the
+install of ipopt on debian systems.
 
 $head 07-29$$
 The Mac changed how $code bash$$ worked and this broke it's install.

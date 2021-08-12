@@ -17,7 +17,7 @@ fi
 # system_type
 system_type="$1"
 system_type_list=' debian red_hat mac_port mac_brew cygwin '
-if ! echo $system_type_list | grep " $system_type " > /dev/null
+if ! echo "$system_type_list" | grep " $system_type " > /dev/null
 then
 	echo 'bin/install_ipopt.sh: system_type'
 	echo "system_type='$system_type' is not one of the following:"
