@@ -145,13 +145,13 @@ different compiler systems for fortran and C++; see
 <a href="https://github.com/coin-or/Ipopt/discussions/471" target="_top"><span style='white-space: nowrap'>ipopt&nbsp;issue&nbsp;471</span></a>
 .
 This variable allows you to set a specific compiler for
-C, CXX, and FC.  For example
+C and or CXX and or FC.  For example
 <code><font color="blue">
 	specific_compiler='CC=gcc CXX=g++ FC=gfortran'
 </font></code>
 uses the gnu versions of these compilers.
-The configuration will automatically find compilers if they are
-not specified; i.e., if
+The configuration will automatically find compilers that are not specified;
+i.e., if
 <code><font color='blue'><pre style='display:inline'> 
 specific_compiler=''
 </pre></font></code>
