@@ -8,6 +8,7 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 # include <cppad/mixed/ipopt_fixed.hpp>
+# include <IpIpoptData.hpp>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // --------------------------------------------------------------------
@@ -34,6 +35,9 @@ bool ipopt_fixed::check_in_limits(
 /*
 $begin ipopt_fixed_finalize_solution$$
 $spell
+	mu
+	curr
+	doxygen
 	CppAD
 	ran_obj
 	cppad
@@ -96,7 +100,12 @@ $head obj_value$$
 is the value of the objective f(x) at the final $icode x$$ value.
 
 $head ip_data$$
-Unspecified; i.e., not part of the Ipopt user API.
+Expert users see the doxygen documentation for
+$code Ipopt::IpoptData$$ class:
+
+$subhead ip_data.curr_mu()$$
+This function call returns an ipopt $code Number$$ equal to the
+value of the penalty parameter $icode mu$$.
 
 $head ip_cq$$
 Unspecified; i.e., not part of the Ipopt user API.
@@ -313,6 +322,7 @@ $end
 	}
 
 	// set warm_start information
+    solution_.warm_start.mu                    = ip_data->curr_mu();
 	solution_.warm_start.scale_f               = scale_f_;
 	solution_.warm_start.x_info.resize(n);
 	for(size_t j = 0; j < size_t(n); ++j)

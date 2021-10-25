@@ -10,6 +10,7 @@ see http://www.gnu.org/licenses/agpl.txt
 
 $begin whats_new_21$$
 $spell
+	mu
 	cppad
 	Ipopt
 	msys
@@ -33,6 +34,11 @@ $spell
 $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
+
+$head 10-25$$
+Add the barrier penalty parameter $icode mu$$ to the $cref warm_start_struct$$.
+The improves the $cref/warm_start/optimize_fixed/warm_start/$$ option
+when optimizing the fixed effects.
 
 $head 08-12$$
 Fix a problem (created on 97-29 change below) with the

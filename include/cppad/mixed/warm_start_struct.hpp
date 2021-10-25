@@ -13,6 +13,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin warm_start_struct$$
 $spell
+	mu
 	Ipopt
 	struct
 	cppad
@@ -26,6 +27,9 @@ $codei%CppAD::mixed::warm_start_struct %warm_start%$$
 
 $head Prototype$$
 $srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+
+$head mu$$
+This is the warm start value for the barrier penalty parameter.
 
 $head scale_f$$
 This is the cppad_mixed scaling factor for the ipopt objective function
@@ -78,6 +82,7 @@ namespace CppAD { namespace mixed {
 		double lambda; double scale_g;
 	};
 	struct warm_start_struct {
+		double mu;
 		double scale_f;
 		CppAD::vector<x_info_struct> x_info;
 		CppAD::vector<g_info_struct> g_info;

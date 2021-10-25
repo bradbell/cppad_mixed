@@ -10,6 +10,7 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin optimize_fixed$$
 $spell
+	mu
 	nlp
 	CppAD
 	cppad
@@ -275,6 +276,8 @@ is reached or when the tolerance for the fixed or random effects is changed.
 $list number$$
 The ipopt $icode warm_start_init_point$$ options will be set to $code yes$$.
 $lnext
+The ipopt $icode mu_strategy$$ options will be set to $code monotone$$.
+$lnext
 The $icode fixed_scale$$ and $icode fixed_in$$ arguments are not used
 during a warm start optimization.
 $lnext
@@ -402,9 +405,13 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
 	}
 	// warm_start_init_point
 	if( warm_start.x_info.size() == 0 )
-		app->Options()->SetStringValue( "warm_start_init_point", "no");
+	{	app->Options()->SetStringValue( "warm_start_init_point", "no");
+	}
 	else
-		app->Options()->SetStringValue( "warm_start_init_point", "yes");
+	{	app->Options()->SetStringValue( "warm_start_init_point", "yes");
+		app->Options()->SetStringValue( "mu_strategy", "monotone");
+		app->Options()->SetNumericValue("mu_init", warm_start.mu);
+	}
 	//
 	// accept_after_max_steps
 	app->Options()->SetIntegerValue(
