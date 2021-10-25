@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Ipopt Warm Start Information</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Ipopt Warm Start Information">
-<meta name="keywords" id="keywords" content=" ipopt warm start information syntax prototype scale_f x_info x z_l z_u scale_x g_info lambda scale_g public ">
+<meta name="keywords" id="keywords" content=" ipopt warm start information syntax prototype mu scale_f x_info x z_l z_u scale_x g_info lambda scale_g public ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -72,6 +72,7 @@ A:active { color : purple }
 
 <br><a href="warm_start_struct.htm#Syntax" target="_top">Syntax</a>
 <br><a href="warm_start_struct.htm#Prototype" target="_top">Prototype</a>
+<br><a href="warm_start_struct.htm#mu" target="_top">mu</a>
 <br><a href="warm_start_struct.htm#scale_f" target="_top">scale_f</a>
 <br><a href="warm_start_struct.htm#x_info" target="_top">x_info</a>
 <br>&#160;&#160;&#160;&#160;&#160;<a href="warm_start_struct.htm#x_info.x" target="_top">x</a>
@@ -102,10 +103,17 @@ A:active { color : purple }
           <font color="#009900">double</font> lambda<font color="#990000">;</font> <font color="#009900">double</font> scale_g<font color="#990000">;</font>
      <font color="#FF0000">}</font><font color="#990000">;</font>
      <b><font color="#0000FF">struct</font></b> <font color="#008080">warm_start_struct</font> <font color="#FF0000">{</font>
+          <font color="#009900">double</font> mu<font color="#990000">;</font>
           <font color="#009900">double</font> scale_f<font color="#990000">;</font>
           CppAD<font color="#990000">::</font><font color="#008080">vector&lt;x_info_struct&gt;</font> x_info<font color="#990000">;</font>
           CppAD<font color="#990000">::</font><font color="#008080">vector&lt;g_info_struct&gt;</font> g_info<font color="#990000">;</font>
      <font color="#FF0000">}</font><font color="#990000">;</font>     </tt></pre>
+<br>
+<b><big><a name="mu" id="mu">mu</a></big></b>
+<br>
+This is the warm start value for the barrier penalty parameter.
+
+<br>
 <br>
 <b><big><a name="scale_f" id="scale_f">scale_f</a></big></b>
 <br>

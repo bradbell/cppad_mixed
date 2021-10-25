@@ -15,7 +15,7 @@ MathJax.Hub.Config({
 <title>Changes and Additions to cppad_mixed During 2021</title>
 <meta http-equiv='Content-Type' content='text/html' charset='utf-8'>
 <meta name="description" id="description" content="Changes and Additions to cppad_mixed During 2021">
-<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2021 08-12 07-29 07-27 07-13 06-29 06-26 06-24 06-13 06-10 06-08 06-07 06-06 06-03 05-31 05-29 05-28 05-27 05-26 05-17 05-15 05-11 05-07 05-01 03-02 ">
+<meta name="keywords" id="keywords" content=" changes additions to cppad_mixed during 2021 10-25 08-12 07-29 07-27 07-13 06-29 06-26 06-24 06-13 06-10 06-08 06-07 06-06 06-03 05-31 05-29 05-28 05-27 05-26 05-17 05-15 05-11 05-07 05-01 03-02 ">
 <style type='text/css'>
 body { color : black }
 body { background-color : white }
@@ -66,6 +66,7 @@ A:active { color : purple }
 
 <center><b><big><big>Changes and Additions to cppad_mixed During 2021</big></big></b></center>
 
+<br><a href="whats_new_21.htm#10-25" target="_top">10-25</a>
 <br><a href="whats_new_21.htm#08-12" target="_top">08-12</a>
 <br><a href="whats_new_21.htm#07-29" target="_top">07-29</a>
 <br><a href="whats_new_21.htm#07-27" target="_top">07-27</a>
@@ -91,6 +92,18 @@ A:active { color : purple }
 <br><a href="whats_new_21.htm#05-01" target="_top">05-01</a>
 <br><a href="whats_new_21.htm#03-02" target="_top">03-02</a>
 <br><br>
+<b><big><a name="10-25" id="10-25">10-25</a></big></b>
+<br>
+Add the barrier penalty parameter 
+<code><i><font color="black"><span style='white-space: nowrap'>mu</span></font></i></code>
+ to the <a href="warm_start_struct.htm" target="_top"><span style='white-space: nowrap'>warm_start_struct</span></a>
+.
+The improves the <a href="optimize_fixed.htm#warm_start" target="_top"><span style='white-space: nowrap'>warm_start</span></a>
+ option
+when optimizing the fixed effects.
+
+<br>
+<br>
 <b><big><a name="08-12" id="08-12">08-12</a></big></b>
 <br>
 Fix a problem (created on 97-29 change below) with the
