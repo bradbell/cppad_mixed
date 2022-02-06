@@ -1,7 +1,7 @@
 #! /bin/bash -e
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-21 University of Washington
+#           Copyright (C) 2014-22 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -19,7 +19,7 @@ fi
 #	suitesparse cppad eigen xam cpp mkdir tmp cp sed isystem lcppad lgsl
 #	lblas fi bool std cout endl ipopt conig eval config
 #	lcholmod lamd lcamd lcolamd lccolamd lsuitesparseconfig
-#	cmake gsl cmd cmd grep libdir pkgconfig
+#	cmake gsl cmd cmd grep libdir pkgconfig Wl rpath
 # &&
 #
 # &section Example and Test Using the Installed Version of cppad_mixed&&
@@ -70,15 +70,9 @@ fi
 # &&
 #
 # &head LD_LIBRARY_PATH&&
-# Set the path used to load shared libraries:
+# This setting is no longer required so test with it empty:
 # &codep
-if [ "$LD_LIBRARY_PATH" == '' ]
-then
-export LD_LIBRARY_PATH="$ipopt_prefix/$cmake_libdir"
-else
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$ipopt_prefix/$cmake_libdir"
-fi
-echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH=''
 # &&
 #
 # &head Create Temporary&&
@@ -164,6 +158,7 @@ g++ example.cpp \
 	-I $cmake_install_prefix/include \
 	-isystem $eigen_prefix/include \
 	-L $cmake_install_prefix/$cmake_libdir -lcppad_mixed \
+    -Wl,-rpath=$cmake_install_prefix/$cmake_libdir \
 	$gsl_libs \
 	$suitesparse_libs \
 	$ipopt_libs \

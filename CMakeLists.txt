@@ -1,6 +1,6 @@
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-21 University of Washington
+#           Copyright (C) 2014-22 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -134,6 +134,31 @@ required_definition(for_hes_sparsity BOOL
 )
 # ----------------------------------------------------------------------------
 MESSAGE(STATUS "END:")
+# ----------------------------------------------------------------------------
+# https://gitlab.kitware.com/cmake/community/-/wikis/doc/cmake/RPATH-handling
+#
+# use, i.e. don't skip the full RPATH for the build tree
+set(CMAKE_SKIP_BUILD_RPATH FALSE)
+#
+# when building, don't use the install RPATH already
+# (but later on when installing)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+#
+set(CMAKE_INSTALL_RPATH "${cmake_install_prefix}/${cmake_libdir}")
+#
+# add the automatically determined parts of the RPATH
+# which point to directories outside the build tree to the install RPATH
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+#
+# the RPATH to be used when installing, but only if it's not a system directory
+list(FIND
+    CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES
+    "${cmake_install_prefix}/${cmake_libdir}"
+    isSystemDir
+)
+if("${isSystemDir}" STREQUAL "-1")
+    set(CMAKE_INSTALL_RPATH "${dismod_at_pefix}/${cmake_libdir}")
+endif("${isSystemDir}" STREQUAL "-1")
 # ----------------------------------------------------------------------------
 # check compiler flags
 #

@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-21 University of Washington
+          Copyright (C) 2014-22 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -173,14 +173,14 @@ $codei%
 can be used to find the directory where $code %pkg%.pc$$ is located.
 
 $subhead LD_LIBRARY_PATH$$
-If you get an error finding loading the shared library corresponding
-to ipopt, use the following command to find it:
-$codei%
-	pkg-config ipopt --libs
+The library locations are set at link time using cmake's
+$href%
+https://gitlab.kitware.com/cmake/community/-/wikis/doc/cmake/RPATH-handling%
+always full rpath
 %$$
-The directory specified after the $code -L$$ flag should be in your
-$code LD_LIBRARY_PATH$$.
-(On macOS, the path is $code DYLD_LIBRARY_PATH$$)
+commands.
+Hence, it should not be necessary to set $code LD_LIBRARY_PATH$$ in order for
+$code cppad_mixed$$ to work.
 
 $head cppad_mixed$$
 The steps above need to be executed once,
