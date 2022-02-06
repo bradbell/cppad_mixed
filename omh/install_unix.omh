@@ -30,6 +30,7 @@ $spell
 	txt
 	dev
 	libipopt
+    rpath
 $$
 
 $section Installing cppad_mixed in Unix$$
@@ -179,8 +180,9 @@ https://gitlab.kitware.com/cmake/community/-/wikis/doc/cmake/RPATH-handling%
 always full rpath
 %$$
 commands.
-Hence, it should not be necessary to set $code LD_LIBRARY_PATH$$ in order for
-$code cppad_mixed$$ to work.
+It should not be necessary to set $code LD_LIBRARY_PATH$$ in order for
+$code cppad_mixed$$ to work if you specify the directory using an
+$code rpath$$ command when you build your executable.
 
 $head cppad_mixed$$
 The steps above need to be executed once,
