@@ -162,7 +162,7 @@ This example uses the optimizer trace information; see
           <i><font color="#9A1900">//</font></i>
           <i><font color="#9A1900">// implementation of fix_likelihood as p(z|theta)</font></i>
           <font color="#008080">a1_vector</font> <b><font color="#000000">fix_likelihood</font></b><font color="#990000">(</font>
-               <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>         fixed_vec  <font color="#990000">)</font> override
+               <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>         fixed_vec  <font color="#990000">)</font> <b><font color="#0000FF">override</font></b>
           <font color="#FF0000">{</font>
                <i><font color="#9A1900">// initialize log-density</font></i>
                <font color="#008080">a1_vector</font> <b><font color="#000000">vec</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">);</font>
@@ -180,7 +180,7 @@ This example uses the optimizer trace information; see
           <i><font color="#9A1900">// warning</font></i>
           <font color="#009900">bool</font>   suppress_warning_<font color="#990000">;</font>
           <font color="#008080">size_t</font> warning_count_<font color="#990000">;</font>
-          <font color="#009900">void</font> <b><font color="#000000">warning</font></b><font color="#990000">(</font><b><font color="#0000FF">const</font></b> std<font color="#990000">::</font>string<font color="#990000">&amp;</font> warning_message<font color="#990000">)</font> override
+          <font color="#009900">void</font> <b><font color="#000000">warning</font></b><font color="#990000">(</font><b><font color="#0000FF">const</font></b> std<font color="#990000">::</font>string<font color="#990000">&amp;</font> warning_message<font color="#990000">)</font> <b><font color="#0000FF">override</font></b>
           <font color="#FF0000">{</font>    <font color="#990000">++</font>warning_count_<font color="#990000">;</font>
                <b><font color="#0000FF">if</font></b><font color="#990000">(</font> <font color="#990000">!</font> suppress_warning_ <font color="#990000">)</font>
                std<font color="#990000">::</font>cerr <font color="#990000">&lt;&lt;</font> <font color="#FF0000">"cppad_mixed warning: "</font> <font color="#990000">&lt;&lt;</font> warning_message <font color="#990000">&lt;&lt;</font> <font color="#FF0000">"</font><font color="#CC33CC">\n</font><font color="#FF0000">"</font><font color="#990000">;</font>

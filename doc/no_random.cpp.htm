@@ -128,7 +128,7 @@ The optimal solution (with no constraints) is
           <font color="#FF0000">{</font>    <b><font color="#000000">assert</font></b><font color="#990000">(</font>z<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">==</font> n_fixed<font color="#990000">);</font> <font color="#FF0000">}</font>
           <i><font color="#9A1900">// implementation of fix_likelihood as p(z|theta) * p(theta)</font></i>
           <font color="#008080">a1_vector</font> <b><font color="#000000">fix_likelihood</font></b><font color="#990000">(</font>
-               <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>         fixed_vec  <font color="#990000">)</font> override
+               <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>         fixed_vec  <font color="#990000">)</font> <b><font color="#0000FF">override</font></b>
           <font color="#FF0000">{</font>
                <i><font color="#9A1900">// initialize log-density</font></i>
                <font color="#008080">a1_vector</font> <b><font color="#000000">vec</font></b><font color="#990000">(</font><font color="#993399">1</font><font color="#990000">);</font>

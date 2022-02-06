@@ -140,7 +140,7 @@ The optimal solution, with no constraints and no prior on <small>@(@
 
           <i><font color="#9A1900">// template version of fix_likelihood; i.e., p(z|theta) * p(theta)</font></i>
           <font color="#008080">a1_vector</font> <b><font color="#000000">fix_likelihood</font></b><font color="#990000">(</font>
-               <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>         fixed_vec  <font color="#990000">)</font> override
+               <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>         fixed_vec  <font color="#990000">)</font> <b><font color="#0000FF">override</font></b>
           <font color="#FF0000">{</font>
                <i><font color="#9A1900">// initialize log-density</font></i>
                <font color="#008080">a1_vector</font> <b><font color="#000000">vec</font></b><font color="#990000">(</font><font color="#993399">1</font> <font color="#990000">+</font> n_fixed_<font color="#990000">);</font>

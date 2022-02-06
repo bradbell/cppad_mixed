@@ -141,15 +141,9 @@ fi
 <br>
 <b><big><a name="LD_LIBRARY_PATH" id="LD_LIBRARY_PATH">LD_LIBRARY_PATH</a></big></b>
 <br>
-Set the path used to load shared libraries:
+This setting is no longer required so test with it empty:
 <code><font color='blue'><pre style='display:inline'> 
-if [ &quot;$LD_LIBRARY_PATH&quot; == '' ]
-then
-export LD_LIBRARY_PATH=&quot;$ipopt_prefix/$cmake_libdir&quot;
-else
-export LD_LIBRARY_PATH=&quot;$LD_LIBRARY_PATH:$ipopt_prefix/$cmake_libdir&quot;
-fi
-echo &quot;LD_LIBRARY_PATH=$LD_LIBRARY_PATH&quot;
+export LD_LIBRARY_PATH=''
 </pre></font></code>
 <br>
 <b><big><a name="Create Temporary" id="Create Temporary">Create Temporary</a></big></b>
@@ -242,6 +236,7 @@ g++ example.cpp \
      -I $cmake_install_prefix/include \
      -isystem $eigen_prefix/include \
      -L $cmake_install_prefix/$cmake_libdir -lcppad_mixed \
+    -Wl,-rpath=$cmake_install_prefix/$cmake_libdir \
      $gsl_libs \
      $suitesparse_libs \
      $ipopt_libs \

@@ -150,7 +150,7 @@ L( \theta , \lambda ) =
           <i><font color="#9A1900">// implementation of ran_likelihood</font></i>
           <font color="#008080">a1_vector</font> <b><font color="#000000">ran_likelihood</font></b><font color="#990000">(</font>
                <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>         theta  <font color="#990000">,</font>
-               <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>         u      <font color="#990000">)</font> override
+               <b><font color="#0000FF">const</font></b> a1_vector<font color="#990000">&amp;</font>         u      <font color="#990000">)</font> <b><font color="#0000FF">override</font></b>
           <font color="#FF0000">{</font>
                <b><font color="#000000">assert</font></b><font color="#990000">(</font> u<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">==</font> y_<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">);</font>
                <b><font color="#000000">assert</font></b><font color="#990000">(</font> theta<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">==</font> y_<font color="#990000">.</font><b><font color="#000000">size</font></b><font color="#990000">()</font> <font color="#990000">);</font>

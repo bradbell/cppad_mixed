@@ -302,15 +302,12 @@ can be used to find the directory where <code><font color="blue">%pkg%.pc</font>
 <br>
 <big><a name="Paths.LD_LIBRARY_PATH" id="Paths.LD_LIBRARY_PATH">LD_LIBRARY_PATH</a></big>
 <br>
-If you get an error finding loading the shared library corresponding
-to ipopt, use the following command to find it:
+The library locations are set at link time using cmake's
+<a href="https://gitlab.kitware.com/cmake/community/-/wikis/doc/cmake/RPATH-handling" target="_top"><span style='white-space: nowrap'>always&nbsp;full&nbsp;rpath</span></a>
 
-<code><font color="blue"><span style='white-space: nowrap'><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pkg-config&nbsp;ipopt&nbsp;--libs<br>
-</span></font></code>
-The directory specified after the <code><font color="blue">-L</font></code> flag should be in your
-<code><font color="blue">LD_LIBRARY_PATH</font></code>.
-(On macOS, the path is <code><font color="blue">DYLD_LIBRARY_PATH</font></code>)
+commands.
+Hence, it should not be necessary to set <code><font color="blue">LD_LIBRARY_PATH</font></code> in order for
+<code><font color="blue">cppad_mixed</font></code> to work.
 
 <br>
 <br>
