@@ -1,7 +1,7 @@
 #! /bin/bash -e
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-21 University of Washington
+#           Copyright (C) 2014-22 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -30,6 +30,29 @@ echo_eval() {
 	echo $*
 	eval $*
 }
+# --------------------------------------------------------------------------
+if [ "$system_type" == 'mac_brew' ]
+then
+	if [ -d '/usr/local/Cellar/' ]
+	then
+		cellar='/usr/local/Cellar'
+	elif [ -d '/opt/homebrew/Cellar' ]
+	then
+		cellar='/opt/homebrew/Cellar'
+	else
+		echo 'mac_brew: Cellar not found'
+	fi
+	metis_libdir=$(find $cellar -name 'libmetis.*' | sed -e 's|/[^/]*$||')
+	metis_incdir=$(find $cellar -name 'metis.h' | sed -e 's|/[^/]*$||')
+	if [ "metis_libdir" == '' ]
+	then
+		echo 'mac_brew: Cannot find metis library directory'
+	fi
+	if [ "metis_incdir" == '' ]
+	then
+		echo 'mac_brew: Cannot find metis include directory'
+	fi
+fi
 # --------------------------------------------------------------------------
 name_list=( \
 	'ASL' \
@@ -146,21 +169,21 @@ do
 	fi
 	echo_eval cd build
 	#
+	add_fcflags=''
+	with_metis_lflags=''
+	with_metis_cflags=''
+	metis_lflags=''
+	metis_cflags=''
 	if [ "$name" == 'Mumps' ]
 	then
 		add_fcflags="$add_mumps_fcflags"
 		if [ "$system_type" == 'mac_brew' ]
 		then
 			with_metis_lflags='--with-metis-lflags='
-			metis_lflags='-L/usr/local/opt/metis/lib -lmetis'
-		else
-			with_metis_lflags=''
-			metis_lflags=''
+			with_metis_cflags='--with-metis-cflags='
+			metis_lflags="-L$metis_libdir -lmetis"
+			metis_cflags="-I$metis_incdir"
 		fi
-	else
-		add_fcflags=''
-		with_metis_lflags=''
-		metis_lflags=''
 	fi
 cat << EOF
 	../configure \\
@@ -170,7 +193,8 @@ cat << EOF
 		--enable-shared \\
 		$specific_compiler \\
 		$java_flag $debug_flags $add_fcflags \\
-		$with_metis_lflags"$metis_lflags"
+		$with_metis_lflags"$metis_lflags" \\
+		$with_metis_cflags"$metis_cflags"
 EOF
 	../configure \
 		--disable-dependency-tracking \
@@ -179,7 +203,8 @@ EOF
 		--enable-shared \
 		$specific_compiler \
 		$java_flag $debug_flags $add_fcflags \
-		$with_metis_lflags"$metis_lflags"
+		$with_metis_lflags"$metis_lflags" \
+		$with_metis_cflags"$metis_cflags"
 	echo_eval make -j $n_job install
 	#
 	# back to external

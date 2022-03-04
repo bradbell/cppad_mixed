@@ -11,9 +11,13 @@ see http://www.gnu.org/licenses/agpl.txt
 $begin whats_new_22$$
 $spell
     cppad
+	homebrew
 $$
 
 $section Changes and Additions to cppad_mixed During 2022$$
+
+$head 03-04$$
+Fix install on newer macOS systems that use homebrew.
 
 $head 02-05$$
 It is no longer necessary to set
