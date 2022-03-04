@@ -306,8 +306,9 @@ The library locations are set at link time using cmake's
 <a href="https://gitlab.kitware.com/cmake/community/-/wikis/doc/cmake/RPATH-handling" target="_top"><span style='white-space: nowrap'>always&nbsp;full&nbsp;rpath</span></a>
 
 commands.
-Hence, it should not be necessary to set <code><font color="blue">LD_LIBRARY_PATH</font></code> in order for
-<code><font color="blue">cppad_mixed</font></code> to work.
+It should not be necessary to set <code><font color="blue">LD_LIBRARY_PATH</font></code> in order for
+<code><font color="blue">cppad_mixed</font></code> to work if you specify the directory using an
+<code><font color="blue">rpath</font></code> command when you build your executable.
 
 <br>
 <br>
