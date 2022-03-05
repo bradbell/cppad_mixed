@@ -1,7 +1,7 @@
 #! /bin/bash -e
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-21 University of Washington
+#           Copyright (C) 2014-22 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -237,7 +237,7 @@ PKG_CONFIG_PATH=$(echo $PKG_CONFIG_PATH | sed -e 's|^:||' -e 's|:$||')
 echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH"
 # --------------------------------------------------------------------------
 # cmake_cxx_compiler
-if echo $specific_compiler | grep 'CC=' > /dev/null
+if echo $specific_compiler | grep 'CXX=' > /dev/null
 then
 	cxx=$(echo $specific_compiler | sed -e 's|.*CXX=\([^ ]*\).*|\1|')
 	if ! which $cxx > /dev/null
@@ -250,7 +250,21 @@ then
 else
 	cmake_cxx_compiler=''
 fi
-#
+# --------------------------------------------------------------------------
+# cmake_c_compiler
+if echo $specific_compiler | grep 'CXX=' > /dev/null
+then
+	cc=$(echo $specific_compiler | sed -e 's|.*CXX=\([^ ]*\).*|\1|')
+	if ! which $cc > /dev/null
+	then
+		echo "run_cmake.sh: specific_compiler: cannot execute $cc compiler"
+		exit 1
+	fi
+	c_path=$(which $cc)
+	cmake_c_compiler="-D CMAKE_C_COMPILER=$c_path"
+else
+	cmake_c_compiler=''
+fi
 # --------------------------------------------------------------------------
 if [ ! -e build ]
 then
@@ -271,6 +285,7 @@ cmake \\
 	-D CMAKE_VERBOSE_MAKEFILE=$verbose_makefile \\
 	-D CMAKE_BUILD_TYPE=$build_type \\
 	$cmake_cxx_compiler \\
+	$cmake_c_compiler \\
 	-D cmake_install_prefix="$cmake_install_prefix" \\
 	\\
 	-D extra_cxx_flags="$extra_cxx_flags" \\
