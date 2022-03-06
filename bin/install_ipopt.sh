@@ -33,22 +33,13 @@ echo_eval() {
 # --------------------------------------------------------------------------
 if [ "$system_type" == 'mac_brew' ]
 then
-	if [ -d '/usr/local/Cellar/' ]
-	then
-		cellar='/usr/local/Cellar'
-	elif [ -d '/opt/homebrew/Cellar' ]
-	then
-		cellar='/opt/homebrew/Cellar'
-	else
-		echo 'mac_brew: Cellar not found'
-	fi
-	metis_libdir=$(find $cellar -name 'libmetis.*' | sed -e 's|/[^/]*$||')
-	metis_incdir=$(find $cellar -name 'metis.h' | sed -e 's|/[^/]*$||')
-	if [ "metis_libdir" == '' ]
+	metis_libdir=$(brew --prefix)/lib
+	metis_incdir=$(brew --prefix)/include
+	if [ ! -e "$metis_libdir/libmetis.dylib" ]
 	then
 		echo 'mac_brew: Cannot find metis library directory'
 	fi
-	if [ "metis_incdir" == '' ]
+	if [ ! -e "$metis_incdir/metis.h" ]
 	then
 		echo 'mac_brew: Cannot find metis include directory'
 	fi
