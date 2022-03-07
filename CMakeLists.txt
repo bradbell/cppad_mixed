@@ -212,28 +212,51 @@ MESSAGE(STATUS "cppad_mixed_has_nullptr = ${cppad_mixed_has_nullptr_01}")
 # suitesparse_in_cholmod_include_01
 SET(suitesparse_prefix "NOTFOUND")
 SET(suitesparse_suffix "NOTFOUND")
+EXECUTE_PROCESS(
+	COMMAND brew --prefix suitesparse
+	OUTPUT_VARIABLE brew_prefix
+	OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+print_variable(brew_prefix)
+IF( NOT "${brew_prefix}" STREQUAL "" )
+	FOREACH(suffix in "include" "include/suitesparse")
+		IF( EXISTS "${brew_prefix}/${suffix}/cholmod.h" )
+            MESSAGE(STATUS "Using ${brew_prefix}/${suffix}/cholmod.h" )
+			SET(suitesparse_prefix "${brew_prefix}")
+			SET(suitesparse_suffix "${suffix}")
+		ENDIF( EXISTS "${brew_prefix}/${suffix}/cholmod.h" )
+	ENDFOREACH(suffix in "include" "include/suitesparse")
+ENDIF( NOT ( "${brew_prefix}" STREQUAL "" ) )
 FOREACH(prefix
 	/usr
 	/usr/local
 	/opt/local
 	/usr/local/opt/suitesparse
-	"${cmake_install_prefix}"
+    ${cmake_install_prefix}
 )
 	FOREACH(suffix in "include" "include/suitesparse")
 		IF( EXISTS "${prefix}/${suffix}/cholmod.h" )
-			IF( suitespase_prefix )
-				MESSAGE(STATUS
-					"warning: found cholmod.h in ${prefix}/${suffix}"
-					" and ${suitesparse_prefix}"
-				)
-			ENDIF( suitespase_prefix )
-			SET(suitesparse_prefix "${prefix}")
-			SET(suitesparse_suffix "${suffix}")
+			IF( suitesparse_prefix )
+                SET(same "yes")
+                IF( NOT "${prefix}" STREQUAL "${suitesparse_prefix}" )
+                    SET(same "no")
+                ELSEIF( NOT "${suffix}" STREQUAL "${suitesparse_prefix}" )
+                    SET(same "no")
+                ENDIF()
+                IF( same STREQUAL "no" )
+				    MESSAGE(STATUS "Not using ${prefix}/${suffix}/cholmod.h")
+                ENDIF( same STREQUAL "no" )
+			ELSE( suitesparse_prefix )
+                MESSAGE(STATUS "Using ${prefix}/${suffix}/cholmod.h" )
+			    SET(suitesparse_prefix "${prefix}")
+			    SET(suitesparse_suffix "${suffix}")
+			ENDIF( suitesparse_prefix )
 		ENDIF( EXISTS "${prefix}/${suffix}/cholmod.h" )
 	ENDFOREACH(suffix in "include" "include/suitesparse")
 ENDFOREACH(prefix)
 IF( NOT suitesparse_prefix )
 	MESSAGE(FATAL_ERROR "cannot find cholmod.h" )
+ELSE( NOT suitesparse_prefix )
 ENDIF( NOT suitesparse_prefix )
 #
 # suitesparse_INCLUDE_DIRS

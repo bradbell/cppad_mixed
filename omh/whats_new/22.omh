@@ -16,6 +16,9 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2022$$
 
+$head 03-07$$
+More work on install for newer macOS systems that use homebrew.
+
 $head 03-04$$
 Fix install on newer macOS systems that use homebrew.
 
