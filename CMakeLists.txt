@@ -152,12 +152,12 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 #
 # the RPATH to be used when installing, but only if it's not a system directory
 list(FIND
-    CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES
-    "${cmake_install_prefix}/${cmake_libdir}"
-    isSystemDir
+	CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES
+	"${cmake_install_prefix}/${cmake_libdir}"
+	isSystemDir
 )
 if("${isSystemDir}" STREQUAL "-1")
-    set(CMAKE_INSTALL_RPATH "${dismod_at_pefix}/${cmake_libdir}")
+	set(CMAKE_INSTALL_RPATH "${dismod_at_pefix}/${cmake_libdir}")
 endif("${isSystemDir}" STREQUAL "-1")
 # ----------------------------------------------------------------------------
 # check compiler flags
@@ -221,7 +221,7 @@ print_variable(brew_prefix)
 IF( NOT "${brew_prefix}" STREQUAL "" )
 	FOREACH(suffix in "include" "include/suitesparse")
 		IF( EXISTS "${brew_prefix}/${suffix}/cholmod.h" )
-            MESSAGE(STATUS "Using ${brew_prefix}/${suffix}/cholmod.h" )
+			MESSAGE(STATUS "Using ${brew_prefix}/${suffix}/cholmod.h" )
 			SET(suitesparse_prefix "${brew_prefix}")
 			SET(suitesparse_suffix "${suffix}")
 		ENDIF( EXISTS "${brew_prefix}/${suffix}/cholmod.h" )
@@ -232,24 +232,24 @@ FOREACH(prefix
 	/usr/local
 	/opt/local
 	/usr/local/opt/suitesparse
-    ${cmake_install_prefix}
+	${cmake_install_prefix}
 )
 	FOREACH(suffix in "include" "include/suitesparse")
 		IF( EXISTS "${prefix}/${suffix}/cholmod.h" )
 			IF( suitesparse_prefix )
-                SET(same "yes")
-                IF( NOT "${prefix}" STREQUAL "${suitesparse_prefix}" )
-                    SET(same "no")
-                ELSEIF( NOT "${suffix}" STREQUAL "${suitesparse_prefix}" )
-                    SET(same "no")
-                ENDIF()
-                IF( same STREQUAL "no" )
-				    MESSAGE(STATUS "Not using ${prefix}/${suffix}/cholmod.h")
-                ENDIF( same STREQUAL "no" )
+				SET(same "yes")
+				IF( NOT "${prefix}" STREQUAL "${suitesparse_prefix}" )
+					SET(same "no")
+				ELSEIF( NOT "${suffix}" STREQUAL "${suitesparse_prefix}" )
+					SET(same "no")
+				ENDIF()
+				IF( same STREQUAL "no" )
+					MESSAGE(STATUS "Not using ${prefix}/${suffix}/cholmod.h")
+				ENDIF( same STREQUAL "no" )
 			ELSE( suitesparse_prefix )
-                MESSAGE(STATUS "Using ${prefix}/${suffix}/cholmod.h" )
-			    SET(suitesparse_prefix "${prefix}")
-			    SET(suitesparse_suffix "${suffix}")
+				MESSAGE(STATUS "Using ${prefix}/${suffix}/cholmod.h" )
+				SET(suitesparse_prefix "${prefix}")
+				SET(suitesparse_suffix "${suffix}")
 			ENDIF( suitesparse_prefix )
 		ENDIF( EXISTS "${prefix}/${suffix}/cholmod.h" )
 	ENDFOREACH(suffix in "include" "include/suitesparse")
