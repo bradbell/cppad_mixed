@@ -217,15 +217,14 @@ EXECUTE_PROCESS(
 	OUTPUT_VARIABLE brew_prefix
 	OUTPUT_STRIP_TRAILING_WHITESPACE
 )
-print_variable(brew_prefix)
 IF( NOT "${brew_prefix}" STREQUAL "" )
-	FOREACH(suffix in "include" "include/suitesparse")
+	FOREACH(suffix "include" "include/suitesparse")
 		IF( EXISTS "${brew_prefix}/${suffix}/cholmod.h" )
 			MESSAGE(STATUS "Using ${brew_prefix}/${suffix}/cholmod.h" )
 			SET(suitesparse_prefix "${brew_prefix}")
 			SET(suitesparse_suffix "${suffix}")
 		ENDIF( EXISTS "${brew_prefix}/${suffix}/cholmod.h" )
-	ENDFOREACH(suffix in "include" "include/suitesparse")
+	ENDFOREACH(suffix "include" "include/suitesparse")
 ENDIF( NOT ( "${brew_prefix}" STREQUAL "" ) )
 FOREACH(prefix
 	/usr
@@ -234,7 +233,7 @@ FOREACH(prefix
 	/usr/local/opt/suitesparse
 	${cmake_install_prefix}
 )
-	FOREACH(suffix in "include" "include/suitesparse")
+	FOREACH(suffix "include" "include/suitesparse")
 		IF( EXISTS "${prefix}/${suffix}/cholmod.h" )
 			IF( suitesparse_prefix )
 				SET(same "yes")
@@ -252,7 +251,7 @@ FOREACH(prefix
 				SET(suitesparse_suffix "${suffix}")
 			ENDIF( suitesparse_prefix )
 		ENDIF( EXISTS "${prefix}/${suffix}/cholmod.h" )
-	ENDFOREACH(suffix in "include" "include/suitesparse")
+	ENDFOREACH(suffix "include" "include/suitesparse")
 ENDFOREACH(prefix)
 IF( NOT suitesparse_prefix )
 	MESSAGE(FATAL_ERROR "cannot find cholmod.h" )
@@ -276,7 +275,7 @@ SET(suitesparse_LIBRARIES
 #
 # suitesparse_LIBRARY_DIRS
 SET(suitesparse_LIBRARY_DIRS "NOTFOUND")
-FOREACH(suffix in "lib" "lib64" "${cmake_libdir}" )
+FOREACH(suffix "lib" "lib64" "${cmake_libdir}" )
 	SET(both "${suitesparse_prefix}/${suffix}")
 	SET(globbing_expression "${both}/libcholmod.*")
 	FILE(GLOB match_1 ${globbing_expression})
@@ -289,7 +288,7 @@ FOREACH(suffix in "lib" "lib64" "${cmake_libdir}" )
 			SET(suitesparse_LIBRARY_DIRS "${both}")
 		ENDIF( match_2 )
 	ENDIF( match_1 )
-ENDFOREACH(suffix in "lib" "lib64" "${cmake_libdir}" )
+ENDFOREACH(suffix "lib" "lib64" "${cmake_libdir}" )
 IF( NOT suitesparse_LIBRARY_DIRS )
 	MESSAGE(FATAL_ERROR
 		"Cannot find libcholmod.* in ${suitesparse_prefix}/libdir"

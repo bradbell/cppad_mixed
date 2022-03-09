@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------------
 cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-          Copyright (C) 2014-21 University of Washington
+          Copyright (C) 2014-22 University of Washington
              (Bradley M. Bell bradbell@uw.edu)
 
 This program is distributed under the terms of the
@@ -894,7 +894,7 @@ int main(int argc, const char *argv[])
 	assert( number_fixed_samples > 0 );
 	assert( number_locations > 0 );
 	assert( number_random > 0 );
-	assert( max_population > 0.0 );
+	assert( max_population > 0 );
 	assert( mean_population > 0.0 );
 	assert( std_logit_probability > 0.0 );
 	assert( random_constraint || random_constraint_str=="no" );

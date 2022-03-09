@@ -16,6 +16,10 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2022$$
 
+$head 03-08$$
+Fix a warning in $cref capture_xam.cpp$$ when
+compiling with debugging.
+
 $head 03-07$$
 More work on install for newer macOS systems that use homebrew.
 
