@@ -252,9 +252,9 @@ else
 fi
 # --------------------------------------------------------------------------
 # cmake_c_compiler
-if echo $specific_compiler | grep 'CXX=' > /dev/null
+if echo $specific_compiler | grep 'CC=' > /dev/null
 then
-	cc=$(echo $specific_compiler | sed -e 's|.*CXX=\([^ ]*\).*|\1|')
+	cc=$(echo $specific_compiler | sed -e 's|.*CC=\([^ ]*\).*|\1|')
 	if ! which $cc > /dev/null
 	then
 		echo "run_cmake.sh: specific_compiler: cannot execute $cc compiler"
