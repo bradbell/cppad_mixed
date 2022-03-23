@@ -3,7 +3,7 @@
 // ------------------------------------------------------------ 
 Keyword = 
 [
-{ tag: 'cppad_mixed', title:'C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20220311', other:' license source code repository notation fixed theta random data z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood constraints negative log-density vector' },
+{ tag: 'cppad_mixed', title:'C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20220323', other:' license source code repository notation fixed theta random data z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood constraints negative log-density vector' },
 { tag: 'install_unix', title:'Installing cppad_mixed in Unix', other:' system requirements c++ compiler git cmake wget fortran gsl pkg-config suitesparse download special run_cmake.sh eigen ipopt paths pkg_config_path ld_library_path command check speed example installation linking using' },
 { tag: 'example_install.sh', title:'An Example Installation', other:' syntax run_test replace source' },
 { tag: 'run_cmake.sh', title:'bin/run_cmake.sh: User Configuration Options', other:' verbose_makefile build_type cmake_install_prefix debug release eigen specific_compiler extra_cxx_flags cmake_libdir cppad_mixed.pc ldlt_cholmod optimize_cppad_function for_hes_sparsity testing speed memory' },
@@ -59,7 +59,7 @@ Keyword =
 { tag: 'opt_ran_nan.cpp', title:'Nan\'s During Optimization of Random Effects: Example and Test', other:'' },
 { tag: 'warm_start.cpp', title:'Warm Starting Optimization: Example and Test', other:' model bounds maximum iterations optimizer trace' },
 { tag: 'release_notes', title:'Changes and Additions to cppad_mixed', other:' this year previous years' },
-{ tag: 'whats_new_22', title:'Changes and Additions to cppad_mixed During 2022', other:' 03-08 03-07 03-04 02-05' },
+{ tag: 'whats_new_22', title:'Changes and Additions to cppad_mixed During 2022', other:' 03-23 03-08 03-07 03-04 02-05' },
 { tag: 'whats_new_21', title:'Changes and Additions to cppad_mixed During 2021', other:' 10-25 08-12 07-29 07-27 07-13 06-29 06-26 06-24 06-13 06-10 06-08 06-07 06-06 06-03 05-31 05-29 05-28 05-27 05-26 05-17 05-15 05-11 05-07 05-01 03-02' },
 { tag: 'whats_new_20', title:'Changes and Additions to cppad_mixed During 2020', other:' 12-22 11-30 11-23 11-21 11-19 11-18 11-05 11-04 11-03 11-02 10-31 10-21 10-10 10-06 08-31 08-21 07-02 06-30 06-07 05-30 05-29 05-27 03-28 03-25 03-23 03-22 03-18 03-15 api' },
 { tag: 'whats_new_19', title:'Changes and Additions to cppad_mixed During 2019', other:' 10-08 09-30 07-24 07-23 07-20 07-19 07-10 07-09 06-24 06-07' },
