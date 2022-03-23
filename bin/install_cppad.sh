@@ -1,7 +1,7 @@
 #! /bin/bash -e
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-21 University of Washington
+#           Copyright (C) 2014-22 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -22,8 +22,8 @@ echo_eval() {
 # --------------------------------------------------------------------------
 # Us same version and hash as in cppad_py.git/bin/get_cppad.sh
 web_page='https://github.com/coin-or/CppAD.git'
-cppad_version='20210606'
-hash_code='6dcc0ad96b239f852f0fb6956eeb9eda806d231b'
+cppad_version='20220323'
+hash_code='43fb184417ebf78b9a8ecfb33e5ac5c0cbb28744'
 # --------------------------------------------------------------------------
 # Get user configuration options from run_cmake.sh
 #
