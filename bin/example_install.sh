@@ -1,7 +1,7 @@
 #! /bin/bash -e
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-21 University of Washington
+#           Copyright (C) 2014-22 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -261,7 +261,9 @@ do
 		echo "bin/install_$pkg.sh $system_type 1>> $name.log 2>> $name.err"
 		if ! bin/install_$pkg.sh $system_type 1>> $name.log 2>> $name.err
 		then
-			tail $name.err
+			echo "install_$pkg Error: Look at messages in"
+			echo "tail $name.err"
+			echo "tail $name.log"
 			exit 1
 		fi
 	fi

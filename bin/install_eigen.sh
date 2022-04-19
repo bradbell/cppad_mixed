@@ -1,7 +1,7 @@
 #! /bin/bash -e
 #  --------------------------------------------------------------------------
 # cppad_mixed: C++ Laplace Approximation of Mixed Effects Models
-#           Copyright (C) 2014-21 University of Washington
+#           Copyright (C) 2014-22 University of Washington
 #              (Bradley M. Bell bradbell@uw.edu)
 #
 # This program is distributed under the terms of the
@@ -58,7 +58,7 @@ fi
 echo_eval cd eigen.git
 echo_eval git checkout master
 echo_eval git pull --ff-only
-echo_eval git checkout $version
+echo_eval git checkout --quiet $version
 #
 if [ ! -e build ]
 then

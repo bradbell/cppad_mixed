@@ -12,9 +12,14 @@ $begin whats_new_22$$
 $spell
     cppad
 	homebrew
+	messaging
 $$
 
 $section Changes and Additions to cppad_mixed During 2022$$
+
+$head 04-19$$
+Advance to cppad-20220419 an improve $cref example_install.sh$$
+error messaging.
 
 $head 03-23$$
 Advance to cppad-20220323.
