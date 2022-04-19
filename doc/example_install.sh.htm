@@ -324,7 +324,9 @@ rm example_install<font color="#990000">.</font>tmp
           echo <font color="#FF0000">"bin/install_$pkg.sh $system_type 1&gt;&gt; $name.log 2&gt;&gt; $name.err"</font>
           <b><font color="#0000FF">if</font></b> <font color="#990000">!</font> bin/install_<font color="#009900">$pkg</font><font color="#990000">.</font>sh <font color="#009900">$system_type</font> <font color="#993399">1</font><font color="#990000">&gt;&gt;</font> <font color="#009900">$name</font><font color="#990000">.</font>log <font color="#993399">2</font><font color="#990000">&gt;&gt;</font> <font color="#009900">$name</font><font color="#990000">.</font>err
           <b><font color="#0000FF">then</font></b>
-               tail <font color="#009900">$name</font><font color="#990000">.</font>err
+               echo <font color="#FF0000">"install_$pkg Error: Look at messages in"</font>
+               echo <font color="#FF0000">"tail $name.err"</font>
+               echo <font color="#FF0000">"tail $name.log"</font>
                <b><font color="#0000FF">exit</font></b> <font color="#993399">1</font>
           <b><font color="#0000FF">fi</font></b>
      <b><font color="#0000FF">fi</font></b>
