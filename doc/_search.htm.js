@@ -3,7 +3,7 @@
 // ------------------------------------------------------------ 
 Keyword = 
 [
-{ tag: 'cppad_mixed', title:'C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20220518', other:' license source code repository notation fixed theta random data z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood constraints negative log-density vector' },
+{ tag: 'cppad_mixed', title:'C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20220519', other:' license source code repository notation fixed theta random data z prior density p(theta) p(z|theta) p(u|theta) p(y|thetau) constraint function c(theta) optimal u^(theta) matrix a*u^(theta) problem maximum likelihood constraints negative log-density vector' },
 { tag: 'install_unix', title:'Installing cppad_mixed in Unix', other:' system requirements c++ compiler git cmake wget fortran gsl pkg-config suitesparse download special run_cmake.sh eigen ipopt paths pkg_config_path ld_library_path command check speed example installation linking using' },
 { tag: 'example_install.sh', title:'An Example Installation', other:' syntax run_test replace source' },
 { tag: 'run_cmake.sh', title:'bin/run_cmake.sh: User Configuration Options', other:' verbose_makefile build_type cmake_install_prefix debug release eigen specific_compiler extra_cxx_flags cmake_libdir cppad_mixed.pc ldlt_cholmod optimize_cppad_function for_hes_sparsity testing speed memory' },
