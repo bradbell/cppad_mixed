@@ -58,7 +58,8 @@ $srcthisfile%4%// BEGIN TYPE DECLARATIONS%// END TYPE DECLARATIONS%1%$$
 $head Member Variables$$
 $srcthisfile%4%// BEGIN MEMBER VARIABLES%// END MEMBER VARIABLES%1%$$
 
-$childtable%cholesky/sparse_ad_cholesky.cpp
+$childtable%cholesky/cholesky.cpp
+   %cholesky/sparse_ad_cholesky.cpp
    %cholesky/example/sparse_ad_chol_eval.cpp
    %cholesky/example/sparse_ad_chol_perm.cpp
    %cholesky/example/sparse_ad_chol_eq.cpp

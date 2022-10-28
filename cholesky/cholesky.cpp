@@ -4,8 +4,13 @@
 // ----------------------------------------------------------------------------
 /*
 $begin cholesky_devel.cpp$$
+$spell
+   cholesky
+   devel
+   cpp
+$$
 
-$sectin Run C++ Examples$$
+$section Run C++ Examples$$
 
 $head Syntax$$
 $code cholesky/devel/cpp$$
