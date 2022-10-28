@@ -71,7 +71,7 @@ $subhead pkg-config$$
 The $href%http://www.freedesktop.org/wiki/Software/pkg-config/%pkg-config%$$
 program must be installed.
 The following command should work:
-$codep%
+$codei%
    pkg-config gsl --libs
 %$$
 see $cref/PKG_CONFIG_PATH/install_unix/Paths/PKG_CONFIG_PATH/$$ below.
@@ -154,7 +154,7 @@ $head Paths$$
 $subhead PKG_CONFIG_PATH$$
 For $icode pkg$$ equal to $code gsl$$, $code eigen$$, $code ipopt$$ and
 $code cppad$$, the following command should work:
-$codep%
+$codei%
    pkg-config %pkg% --libs
 %$$
 (This command should work for $code gsl$$ before the special requirements
