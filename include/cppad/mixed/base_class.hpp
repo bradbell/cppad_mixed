@@ -111,7 +111,7 @@ $srccode%cpp% */
 /* %$$
 
 $head constructor$$
-$cref derived_ctor$$, $title derived_ctor$$.
+$tref derived_ctor$$.
 $srccode%cpp% */
    // BEGIN_CPPAD_MIXED_CTOR
    cppad_mixed(
@@ -131,7 +131,7 @@ $srccode%cpp% */
 /* %$$
 
 $head initialize$$
-$cref initialize$$, $title initialize$$
+$tref initialize$$
 $srccode%cpp% */
    std::map<std::string, size_t> initialize(
       const d_vector&  fixed_vec   ,
@@ -139,7 +139,7 @@ $srccode%cpp% */
    );
 /* %$$
 $head optimize_random$$
-$cref optimize_random$$, $title optimize_random$$.
+$tref optimize_random$$.
 $srccode%cpp% */
    d_vector optimize_random(
       const std::string& options      ,
@@ -150,7 +150,7 @@ $srccode%cpp% */
    );
 /* %$$
 $head optimize_fixed$$
-$cref optimize_fixed$$, $title optimize_fixed$$.
+$tref optimize_fixed$$.
 $srccode%cpp% */
    CppAD::mixed::fixed_solution optimize_fixed(
       const std::string& fixed_ipopt_options   ,
@@ -169,7 +169,7 @@ $srccode%cpp% */
    );
 /* %$$
 $head hes_fixed_obj$$
-$cref hes_fixed_obj$$, $title hes_fixed_obj$$.
+$tref hes_fixed_obj$$.
 $srccode%cpp% */
    d_sparse_rcv hes_fixed_obj(
       const d_vector& fixed_vec  ,
@@ -177,7 +177,7 @@ $srccode%cpp% */
    );
 /* %$$
 $head hes_random_obj$$
-$cref hes_random_obj$$, $title hes_random_obj$$.
+$tref hes_random_obj$$.
 $srccode%cpp% */
    d_sparse_rcv hes_random_obj(
       const d_vector& fixed_vec  ,
@@ -185,7 +185,7 @@ $srccode%cpp% */
    );
 /* %$$
 $head sample_fixed$$
-$cref sample_fixed$$, $title sample_fixed$$.
+$tref sample_fixed$$.
 $srccode%cpp% */
    std::string sample_fixed(
       d_vector&                            sample               ,
@@ -196,7 +196,7 @@ $srccode%cpp% */
    );
 /* %$$
 $head sample_random$$
-$cref sample_random$$, $title sample_random$$.
+$tref sample_random$$.
 $srccode%cpp% */
    std::string sample_random(
       d_vector&            sample               ,
@@ -208,7 +208,7 @@ $srccode%cpp% */
    );
 /* %$$
 $head information_mat, Deprecated 2020-03-22$$
-$cref information_mat$$, $title information_mat$$.
+$tref information_mat$$.
 $srccode%cpp% */
    d_sparse_rcv information_mat(
       const CppAD::mixed::fixed_solution&  solution             ,
