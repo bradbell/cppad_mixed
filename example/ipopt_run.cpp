@@ -12,7 +12,6 @@ $$
 
 $section Ipopt Example: Declare Non-linear Program Problem Class$$
 
-$nospell
 $srccode%cpp% */
 # include <cmath>
 # include <iomanip>
@@ -158,7 +157,6 @@ namespace {
    };
 }
 /* %$$
-$$ $comment end of nospell$$
 $end
 ------------------------------------------------------------------------------
 $begin ipopt_xam_ctor$$
