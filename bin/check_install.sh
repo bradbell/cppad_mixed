@@ -153,7 +153,7 @@ g++ example.cpp \
 	-I $cmake_install_prefix/include \
 	-isystem $eigen_prefix/include \
 	-L $cmake_install_prefix/$cmake_libdir -lcppad_mixed \
-    -Wl,-rpath=$cmake_install_prefix/$cmake_libdir \
+	-Wl,-rpath=$cmake_install_prefix/$cmake_libdir \
 	$gsl_libs \
 	$suitesparse_libs \
 	$ipopt_libs \

@@ -334,7 +334,7 @@ CppAD Mixed user API.
 $head Purpose$$
 Extract the components of the $cref/factorization/ldlt_eigen/Factorization/$$
 $latex \[
-    L D L^\R{T} = P H P^{T}
+	L D L^\R{T} = P H P^{T}
 \] $$
 
 $head ldlt_obj$$
@@ -433,7 +433,7 @@ Double ldlt_eigen<Double>::logdet(size_t& negative) const
 {	assert( update_called_ );
 
 	// compute the logdet( f_{u,u}(theta, u )
-    Eigen::Matrix<Double, Eigen::Dynamic, 1> diag = ptr_->vectorD();
+	Eigen::Matrix<Double, Eigen::Dynamic, 1> diag = ptr_->vectorD();
 	assert( diag.size() == int(n_row_) );
 	negative        = 0;
 	bool   has_zero = false;

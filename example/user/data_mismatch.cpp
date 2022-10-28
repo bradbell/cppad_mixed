@@ -175,11 +175,11 @@ namespace {
 			double                 sigma_y       ,
 			double                 sigma_z       ) :
 			cppad_mixed(n_fixed, n_random) ,
-            y_(y)                          ,
-            z_(z)                          ,
+			y_(y)                          ,
+			z_(z)                          ,
 			sigma_u_(sigma_u)              ,
-            sigma_y_(sigma_y)              ,
-            sigma_z_(sigma_z )
+			sigma_y_(sigma_y)              ,
+			sigma_z_(sigma_z )
 		{	assert( n_fixed == 1 );
 			assert( n_random == 1 );
 		}

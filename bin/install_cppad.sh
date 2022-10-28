@@ -45,7 +45,7 @@ cppad_prefix="$cmake_install_prefix"
 export PKG_CONFIG_PATH=''
 for dir in $(find -L $cmake_install_prefix -name 'pkgconfig')
 do
-    PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$dir"
+	PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$dir"
 done
 # --------------------------------------------------------------------------
 if echo "$cmake_install_prefix" | grep '/cppad_mixed$' > /dev/null

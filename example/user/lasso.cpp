@@ -146,7 +146,7 @@ bool lasso_xam(void)
 	double inf         = std::numeric_limits<double>::infinity();
 	// size_t random_seed = CppAD::mixed::new_gsl_rng(0);
 	CppAD::mixed::new_gsl_rng(0);
-    gsl_rng* rng       = CppAD::mixed::get_gsl_rng();
+	gsl_rng* rng       = CppAD::mixed::get_gsl_rng();
 
 	// fixed effects
 	size_t n_fixed  = 3;

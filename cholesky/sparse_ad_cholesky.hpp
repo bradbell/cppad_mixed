@@ -85,7 +85,7 @@ class sparse_ad_cholesky : public CppAD::atomic_base<double> {
 // -----------------------------------------------------------------
 // BEGIN TYPE DECLARATIONS
 private:
-    typedef CppAD::local::sparse::pack_setvec           pack_setvec;
+	typedef CppAD::local::sparse::pack_setvec           pack_setvec;
 	typedef Eigen::
 	SparseMatrix<double, Eigen::ColMajor>               sparse_d_matrix;
 	typedef Eigen::

@@ -317,7 +317,7 @@ $end
 	}
 
 	// set warm_start information
-    solution_.warm_start.mu                    = ip_data->curr_mu();
+	solution_.warm_start.mu                    = ip_data->curr_mu();
 	solution_.warm_start.scale_f               = scale_f_;
 	solution_.warm_start.x_info.resize(n);
 	for(size_t j = 0; j < size_t(n); ++j)

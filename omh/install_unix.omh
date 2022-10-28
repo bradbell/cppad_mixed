@@ -25,7 +25,7 @@ $spell
 	txt
 	dev
 	libipopt
-    rpath
+	rpath
 $$
 
 $section Installing cppad_mixed in Unix$$

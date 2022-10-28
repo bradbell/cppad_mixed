@@ -14,8 +14,8 @@ $spell
 	optimizer
 	Ipopt
 	Jacobians
-    Wakefield
-    Frequentist
+	Wakefield
+	Frequentist
 $$
 
 $section CppAD Mixed Wish List$$

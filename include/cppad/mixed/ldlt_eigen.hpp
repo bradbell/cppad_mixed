@@ -73,7 +73,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 template <typename Double>
 class ldlt_eigen {
 private:
-    typedef CppAD::vector<Double>                             v_vector;
+	typedef CppAD::vector<Double>                             v_vector;
 	typedef Eigen::SparseMatrix<Double, Eigen::ColMajor>      eigen_sparse;
 	typedef Eigen::Matrix<Double, Eigen::Dynamic, 1>          eigen_vector;
 	typedef Eigen::PermutationMatrix<Eigen::Dynamic>          eigen_perm;

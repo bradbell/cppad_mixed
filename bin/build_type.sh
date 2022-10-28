@@ -23,8 +23,8 @@ fi
 kernel=$(uname -s)
 if [[ "$kernel" =~ MSYS.* ]]
 then
-    echo 'Warning: MSYS does not suppor symbolic links'
-    exit 0
+	echo 'Warning: MSYS does not suppor symbolic links'
+	exit 0
 fi
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
