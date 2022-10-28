@@ -5,12 +5,19 @@
 
 $begin whats_new_22$$
 $spell
-   cppad
+    cppad
    homebrew
    messaging
 $$
 
 $section Changes and Additions to cppad_mixed During 2022$$
+
+$head 10-28$$
+$list number$$
+Change license message to use SPDX format.
+$lnext
+Change tabs to three spaces.
+$lend
 
 $head 05-18$$
 Advance to cppad-20220518.
