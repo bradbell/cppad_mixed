@@ -36,7 +36,7 @@ type for the matrix.
 
 $head matrix$$
 This argument has prototype
-$code%
+$codei%
    Eigen::SparseMatrix<%Scalar%, %Options%, %Index%>& %matrix%
 %$$
 This is the sparse matrix for which we are scaling the diagonal elements.

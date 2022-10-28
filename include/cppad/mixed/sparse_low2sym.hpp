@@ -26,7 +26,7 @@ CppAD Mixed user API.
 
 $head lower$$
 The argument has prototype
-$code%
+$codei%
    const Eigen::SparseMatrix<%Scalar%, %Options%, %Index%>& %lower%
 %$$
 and has the same number of rows as columns; i.e.

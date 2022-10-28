@@ -220,7 +220,7 @@ This vector has length equal to $icode n_fixed_$$ and
 specifies the lower limits for the
 $fixed_effects/cppad_mixed/Fixed Effects, theta/$$.
 Note that
-$code%
+$codei%
    - std::numeric_limits<double>::infinity()
 %$$
 is used for minus infinity; i.e., no lower limit.
@@ -229,7 +229,7 @@ $head fixed_upper$$
 This vector has length equal to $icode n_fixed_$$ and
 specifies the upper limits for the fixed effects.
 Note that
-$code%
+$codei%
    std::numeric_limits<double>::infinity()
 %$$
 is used for plus infinity; i.e., no upper limit.
@@ -238,7 +238,7 @@ $head fix_constraint_lower$$
 specifies the lower limits for the
 $cref/constraints/fix_constraint/$$.
 Note that
-$code%
+$codei%
    - std::numeric_limits<double>::infinity()
 %$$
 is used for minus infinity; i.e., no lower limit.
@@ -246,7 +246,7 @@ is used for minus infinity; i.e., no lower limit.
 $head fix_constraint_upper$$
 specifies the upper limits for the constraints.
 Note that
-$code%
+$codei%
    std::numeric_limits<double>::infinity()
 %$$
 is used for plus infinity; i.e., no upper limit.

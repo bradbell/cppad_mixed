@@ -29,14 +29,4 @@
 # '
 # ----------------------------------------------------------------------------
 # Put other sed commands below here and without # at start of line
-/$cref\//! b skip
-: loop
-/[$][$]/! N
-/[$][$]/! b loop
-s|$cref/\([^/]*\)/cppad_mixed/|$cref/\1/problem/|
-s|/problem/Problem/|/problem/Maximum Likelihood/|
-#
-s|$cref/\([^/]*\)/cppad_mixed\n|$cref/\1/problem\n|
-s|/problem\n   /Problem\n|/problem\n   /Maximum Likelihood\n|
-#
-: skip
+s|$code%|$codei%|

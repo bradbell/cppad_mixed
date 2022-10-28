@@ -26,7 +26,7 @@ CppAD Mixed user API.
 
 $head matrix$$
 This argument has prototype
-$code%
+$codei%
    const Eigen::SparseMatrix<double, %Option%, %Index%>& %matrix%
 %$$
 The input value of $icode matrix$$ does not matter.
