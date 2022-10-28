@@ -90,8 +90,8 @@ both fixed and random effects.
 $comment
    %example/private/ran_jac_fun_.cpp
 $$
-----------------------------------------------------------------------------
 $end
+----------------------------------------------------------------------------
 */
 void cppad_mixed::init_ran_jac(
    const d_vector& fixed_vec     ,

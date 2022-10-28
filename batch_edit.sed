@@ -29,4 +29,10 @@
 # '
 # ----------------------------------------------------------------------------
 # Put other sed commands below here and without # at start of line
-s|$code%|$codei%|
+/-\{60\}-*$/! b skip
+N
+/\n$end/! b skip
+s|\n$end||
+s|^|$end\n|
+#
+: skip

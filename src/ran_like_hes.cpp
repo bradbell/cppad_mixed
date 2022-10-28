@@ -87,8 +87,8 @@ $head Example$$
 The file $cref ran_like_hes.cpp$$ contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
-----------------------------------------------------------------------------
 $end
+----------------------------------------------------------------------------
 */
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
