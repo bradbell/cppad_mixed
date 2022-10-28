@@ -39,12 +39,12 @@ derived from the $code cppad_mixed$$ base class.
 
 $head fixed_vec$$
 This specifies the value of the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$ at which the initialization is done.
 
 $head random_opt$$
 This specifies the value of the
-$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ optimization
+$cref/random effects/problem/Notation/Random Effects, u/$$ optimization
 at which the initialization is done.
 It should be the optimal value given the fixed effects
 so that the Hessian w.r.t the random effects is more likely to be

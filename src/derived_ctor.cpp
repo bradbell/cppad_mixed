@@ -55,13 +55,13 @@ are optional; see default values in prototype above.
 
 $head n_fixed$$
 This is the number of
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$ in the model.
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$ in the model.
 
 $head n_random$$
 This is the number of
-$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ in the model.
+$cref/random effects/problem/Notation/Random Effects, u/$$ in the model.
 In the case where there are
-$cref/no random effects/cppad_mixed/Problem/No Random Effects/$$,
+$cref/no random effects/problem/Maximum Likelihood/No Random Effects/$$,
 $icode%n_random% = 0%$$.
 
 $head quasi_fixed$$
@@ -104,7 +104,7 @@ This is a
 $cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
 representation of the
 $cref/random constraint matrix
-   /cppad_mixed
+   /problem
    /Notation
    /Random Constraint Matrix, A
 /$$

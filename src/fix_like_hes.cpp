@@ -42,7 +42,7 @@ $codei%
    const CppAD::vector<double>& %fixed_vec%
 %$$
 It specifies the value of the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$ at which the Hessian is evaluated.
 
 $head weight$$
@@ -52,7 +52,7 @@ $codei%
 %$$
 It specifies the value of the weights for the
 components of the
-$cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
+$cref/negative log-density vector/problem/Negative Log-Density Vector/$$
 corresponding to the $cref fix_likelihood$$.
 It has the same size as the corresponding return value
 $cref/vec/fix_likelihood/vec/$$.

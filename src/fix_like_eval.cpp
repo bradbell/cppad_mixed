@@ -40,7 +40,7 @@ $codei%
    const CppAD::vector<double>& %fixed_vec%
 %$$
 It specifies the value of the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$ at which $latex g( \theta )$$ is evaluated.
 
 $head vec$$
@@ -49,7 +49,7 @@ $codei%
    CppAD::vector<double> %vec%
 %$$
 and is a
-$cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
+$cref/negative log-density vector/problem/Negative Log-Density Vector/$$
 corresponding to the fixed part of the negative log-likelihood
 $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 To be specific;

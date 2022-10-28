@@ -16,11 +16,11 @@ $$
 $section Constraints On Random Effects: Example and Test$$
 
 This example demonstrates
-$cref/random constraints/cppad_mixed/Problem/Random Constraints/$$.
+$cref/random constraints/problem/Maximum Likelihood/Random Constraints/$$.
 To be specific, it demonstrates a case where the constraints ensure
 that the sum of the
 $cref/optional random effects
-   /cppad_mixed
+   /problem
    /Notation
    /Optimal Random Effects, u^(theta)
 /$$

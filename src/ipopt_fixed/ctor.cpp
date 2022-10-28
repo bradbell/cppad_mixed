@@ -253,7 +253,7 @@ is used for plus infinity; i.e., no upper limit.
 
 $head fixed_scale$$
 specifies the value of the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$ used for scaling the optimization problem.
 It must hold for each $icode j$$ that
 $codei%

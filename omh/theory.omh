@@ -68,7 +68,7 @@ $latex \[
    \hat{u} ( \theta ) = \R{argmin} \; f( \theta, u ) \; \R{w.r.t.} \; u
 \] $$
 Note that this definition agrees with the other definition for
-$cref/u^(theta)/cppad_mixed/Notation/Optimal Random Effects, u^(theta)/$$.
+$cref/u^(theta)/problem/Notation/Optimal Random Effects, u^(theta)/$$.
 
 $head Objective$$
 
@@ -128,7 +128,7 @@ $latex \[
 $head Derivative of Random Constraints$$
 The derivative of the
 $cref/random constraint function
-   /cppad_mixed
+   /problem
    /Notation
    /Random Constraint Function, A*u^(theta)
 /$$
@@ -236,7 +236,7 @@ H_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
 $head Approximate Random Constraint Function, B(beta, theta, u)$$
 We also define the approximation
 $cref/random constraint function
-   /cppad_mixed
+   /problem
    /Notation
    /Random Constraint Function, A*u^(theta)
 /$$

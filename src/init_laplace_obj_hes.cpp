@@ -49,7 +49,7 @@ $codei%
    const CppAD::vector<double>& %fixed_vec%
 %$$
 It specifies the value of the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$ at which the initialization is done.
 
 $head random_opt$$
@@ -58,7 +58,7 @@ $codei%
    const CppAD::vector<double>& %random_opt%
 %$$
 It specifies the initial value for the
-$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ optimization.
+$cref/random effects/problem/Notation/Random Effects, u/$$ optimization.
 It should be the optimal value given the fixed effects
 so that the Hessian w.r.t the random effects is more likely to be
 positive definite.

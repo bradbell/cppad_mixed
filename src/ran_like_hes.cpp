@@ -68,9 +68,9 @@ i.e., the row and column indices are between zero and  $icode n_random$$.
 
 $head theta_u$$
 This argument contains the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
 vector $icode theta$$ and the
-$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
+$cref/random effects/problem/Notation/Random Effects, u/$$
 vector $icode u$$ in that order
 
 $head ran_hes_uu_rcv$$

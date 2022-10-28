@@ -37,7 +37,7 @@ $codei%
    const CppAD::vector<double>& %fixed_vec%
 %$$
 It specifies the value of the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$.
 
 $head random_vec$$
@@ -46,7 +46,7 @@ $codei%
    const CppAD::vector<double>& %random_vec%
 %$$
 It specifies the value of the
-$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
+$cref/random effects/problem/Notation/Random Effects, u/$$
 vector $latex u$$,
 This must be the
 $cref/optimal random effects
@@ -76,7 +76,7 @@ In the case where the input value of $icode jac_rcv$$ is non-empty
 upon return $icode jac_rcv$$ is a sparse matrix representation
 of the Jacobian of the
 $cref/random constraint function
-   /cppad_mixed
+   /problem
    /Notation
    /Random Constraint Function, A*u^(theta)
 /$$; i.e.,

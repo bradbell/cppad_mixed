@@ -30,7 +30,7 @@ $codei%CppAD::mixed::ipopt_random %ipopt_object%(
 
 $head fixed_vec$$
 specifies the value of the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$.
 It is stored as a reference so it must exist for as long as
 $icode ipopt_object$$ exists.
@@ -39,7 +39,7 @@ $head random_lower$$
 this vector has size
 $cref/n_random/derived_ctor/n_random/$$
 and specifies the lower limits for the optimization of the
-$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
+$cref/random effects/problem/Notation/Random Effects, u/$$
 vector $latex u$$.
 It is stored as a reference so it must exist for as long as
 $icode ipopt_object$$ exists.

@@ -172,8 +172,8 @@ $subhead random_constraint$$
 This is either $code yes$$ or $code no$$.
 If it is $code no$$, there is no
 $cref/random constraint
-   /cppad_mixed
-   /Problem
+   /problem
+   /Maximum Likelihood
    /Random Constraints
 /$$
 for this example.
@@ -184,13 +184,13 @@ $latex \[
 \] $$
 where $latex \hat{u} ( \theta )$$ is the
 $cref/optimal random effects
-   /cppad_mixed
+   /problem
    /Notation
    /Optimal Random Effects, u^(theta)
 /$$.
 The corresponding
 $cref/random constraint matrix
-   /cppad_mixed
+   /problem
    /Notation
    /Random Constraint Matrix, A
 /$$
@@ -471,7 +471,7 @@ $latex \[
 \] $$
 In $code cppad_mixed$$ notation, this specifies the
 $cref/random data density
-   /cppad_mixed
+   /problem
    /Notation
    /Random Data Density, p(y|theta,u)
 /$$.
@@ -490,7 +490,7 @@ $latex \[
 \] $$
 In $code cppad_mixed$$ notation, this specifies the
 $cref/random prior density
-   /cppad_mixed
+   /problem
    /Notation
    /Random Prior Density, p(u|theta)
 /$$.
@@ -498,7 +498,7 @@ $cref/random prior density
 $head p(theta)$$
 For this example there is no
 $cref/fixed prior density
-   /cppad_mixed
+   /problem
    /Notation
    /Fixed Prior Density, p(theta)
 /$$
@@ -507,7 +507,7 @@ $latex \B{p}(\theta)$$.
 $head p(z|theta)$$
 For this example there is no
 $cref/fixed data density
-   /cppad_mixed
+   /problem
    /Notation
    /Fixed Data Density, p(z|theta)
 /$$
@@ -516,7 +516,7 @@ $latex \B{p}(z | \theta)$$.
 $head c(theta)$$
 For this example there is no
 $cref/fixed constraint function
-   /cppad_mixed
+   /problem
    /Notation
    /Fixed Constraint Function, c(theta)
 /$$

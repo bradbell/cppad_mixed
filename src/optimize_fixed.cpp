@@ -129,7 +129,7 @@ $codei%
 %$$
 It has size $cref/n_fixed/derived_ctor/n_fixed/$$ and
 specifies the lower limits for the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$.
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$.
 Note that minus infinity is used for no lower limit.
 
 $head fixed_upper$$
@@ -138,7 +138,7 @@ $codei%
    const CppAD::vector<double>& %fixed_upper%
 %$$
 It has size $icode n_fixed$$ and specifies the upper limits for the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$.
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$.
 Note that plus infinity is used for no upper limit.
 
 $head fix_constraint_lower$$
@@ -192,7 +192,7 @@ $codei%
    const CppAD::vector<double>& %fixed_in%
 %$$
 It specifies the initial value for the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$ during the optimization process.
 It must hold for each $icode j$$ that
 $codei%
@@ -207,7 +207,7 @@ $codei%
 It must have size equal to
 $cref/n_random/derived_ctor/n_random/$$ and
 specifies the lower limits for the optimization of the
-$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
+$cref/random effects/problem/Notation/Random Effects, u/$$
 vector $latex u$$.
 This may be useful to keep the random effects
 out of regions of numerical instability.
@@ -238,7 +238,7 @@ $codei%
 It must have size equal to
 $cref/n_random/derived_ctor/n_random/$$ and
 specifies the initial value used for the optimization of the
-$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
+$cref/random effects/problem/Notation/Random Effects, u/$$
 vector $latex u$$.
 It must hold that
 $codei%

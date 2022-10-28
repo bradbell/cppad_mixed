@@ -80,14 +80,14 @@ and is the $cref ipopt_options$$ for optimizing the random effects.
 
 $head fixed_vec$$
 This argument specifies the value of the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$.
 
 $head random_lower$$
 This argument must have size equal to
 $cref/n_random/derived_ctor/n_random/$$ and
 specifies the lower limits for the optimization of the
-$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
+$cref/random effects/problem/Notation/Random Effects, u/$$
 vector $latex u$$.
 The value minus infinity can be used to specify no lower limit.
 
@@ -101,7 +101,7 @@ $head random_in$$
 This argument must have size equal to
 $cref/n_random/derived_ctor/n_random/$$ and
 specifies the initial value used for the optimization of the
-$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
+$cref/random effects/problem/Notation/Random Effects, u/$$
 vector $latex u$$.
 It must hold that
 $codei%

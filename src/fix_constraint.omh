@@ -38,7 +38,7 @@ $codei%
    const CppAD::vector<a1_double>& %fixed_vec%
 %$$
 It contains a value for the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$ vector.
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$ vector.
 
 $head vec$$
 This result has prototype
@@ -46,7 +46,7 @@ $codei%
    CppAD::vector<%a1_double%> %vec%
 %$$
 It is the value of the
-$cref/constraint function/cppad_mixed/Problem/Fixed Constraints, c/$$
+$cref/constraint function/problem/Maximum Likelihood/Fixed Constraints, c/$$
 $latex c( \theta)$$
 
 $subhead Default$$

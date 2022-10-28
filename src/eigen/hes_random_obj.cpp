@@ -31,7 +31,7 @@ $cref/random effects objective
 /$$; i.e.,
 $latex f_{u,u} ( \theta , u )$$.
 There are no absolute value terms in the
-$cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
+$cref/negative log-density vector/problem/Negative Log-Density Vector/$$
 for the $cref ran_likelihood$$.
 
 $head mixed_object$$

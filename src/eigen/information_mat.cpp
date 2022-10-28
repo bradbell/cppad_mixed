@@ -29,7 +29,7 @@ $latex \[
    L^{(2)} ( \hat{\theta} )
 \]$$
 Absolute value terms in the
-$cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
+$cref/negative log-density vector/problem/Negative Log-Density Vector/$$
 for the $cref fix_likelihood$$ are not include in this Hessian
 (because they do not have a derivative, let alone Hessian, at zero).
 
@@ -70,7 +70,7 @@ This is a sparse matrix representation for the
 lower triangle of the observed information matrix,
 which is symmetric and hence determined by its lower triangle.
 Absolute value terms in the
-$cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
+$cref/negative log-density vector/problem/Negative Log-Density Vector/$$
 for the $cref fix_likelihood$$ are not include in this Hessian
 because they do not have a derivative (let alone Hessian) at zero.
 

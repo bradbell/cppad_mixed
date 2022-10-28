@@ -11,7 +11,6 @@
 # (with the possible exception of the extra_seds commands).
 # The files in bin/devel.sh ignore_files are automatically in this list.
 # ignore_files='
-#  include/cppad/mixed/sparseinv.hpp
 # '
 # list of files and or directories that are moved to new names
 # move_paths='
@@ -30,12 +29,14 @@
 # '
 # ----------------------------------------------------------------------------
 # Put other sed commands below here and without # at start of line
-s|^ \{12\}\([^ ]\) \{3\}\([^ ]\)|\t\t\t\1\t\2|
-s|^ \{12\}\([^ ]\)|\t\t\t\1|
+/$cref\//! b skip
+: loop
+/[$][$]/! N
+/[$][$]/! b loop
+s|$cref/\([^/]*\)/cppad_mixed/|$cref/\1/problem/|
+s|/problem/Problem/|/problem/Maximum Likelihood/|
 #
-s|^ \{8\}\([^ ]\) \{3\}\([^ ]\)|\t\t\1\t\2|
-s|^ \{8\}\([^ ]\)|\t\t\1|
+s|$cref/\([^/]*\)/cppad_mixed\n|$cref/\1/problem\n|
+s|/problem\n   /Problem\n|/problem\n   /Maximum Likelihood\n|
 #
-s|^ \{4\}\([^ ]\) \{3\}\([^ ]\)|\t\1\t\2|
-s|^ \{4\}\([^ ]\)|\t\1|
-#
+: skip

@@ -38,7 +38,7 @@ $codei%
    const CppAD::vector<a1_double>& %fixed_vec%
 %$$
 It contains a value for the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$ vector.
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$ vector.
 
 $head vec$$
 This result has prototype
@@ -47,7 +47,7 @@ $codei%
 %$$
 It is a
 $cref/negative log-density vector
-   /cppad_mixed
+   /problem
    /Negative Log-Density Vector
 /$$
 corresponding to the fixed likelihood
@@ -69,10 +69,10 @@ This corresponds to the case where:
 $list number$$
 All of the data depends on the
 random effects; i.e., the data vector
-$cref/z/cppad_mixed/Notation/Data, y, z/$$ is empty.
+$cref/z/problem/Notation/Data, y, z/$$ is empty.
 $lnext
 There is no prior
-$cref/p(theta)/cppad_mixed/Notation/Fixed Prior Density, p(theta)/$$
+$cref/p(theta)/problem/Notation/Fixed Prior Density, p(theta)/$$
 for the fixed effects.
 $lend
 

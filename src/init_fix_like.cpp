@@ -45,7 +45,7 @@ $codei%
    const CppAD::vector<double>& %fixed_vec%
 %$$
 It specifies the value of the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$ at which the initialization is done.
 
 $head fix_like_fun_$$
@@ -61,7 +61,7 @@ Otherwise,
 upon return it contains the corresponding recording for the
 $cref fix_likelihood$$.
 The function result is the
-$cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$
+$cref/negative log-density vector/problem/Negative Log-Density Vector/$$
 corresponding to the function
 $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
 

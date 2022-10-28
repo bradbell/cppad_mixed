@@ -48,7 +48,7 @@ $codei%
    const CppAD::vector<%Float_unpack%>& %fixed_one%
 %$$
 It specifies the a value for the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$.
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$.
 The size of this vector must be equal to
 $cref/n_fixed_/private_base_class/n_fixed_/$$.
 
@@ -58,7 +58,7 @@ $codei%
    const CppAD::vector<%Float_unpack%>& %fixed_two%
 %$$
 If present, it also specifies the a value for the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$.
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$.
 The size of this vector must be equal to
 $cref/n_fixed_/private_base_class/n_fixed_/$$.
 
@@ -68,7 +68,7 @@ $codei%
    const CppAD::vector<%Float_unpack%>& %random_vec%
 %$$
 It specifies a value for the
-$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$.
+$cref/random effects/problem/Notation/Random Effects, u/$$.
 The size of this vector must be equal to
 $cref/n_fixed_/private_base_class/n_random_/$$.
 

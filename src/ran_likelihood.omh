@@ -37,7 +37,7 @@ $codei%
    const CppAD::vector<a1_double>& %fixed_vec%
 %$$
 It contains a value for the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$ vector.
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$ vector.
 
 $head random_vec$$
 This argument has prototype
@@ -45,7 +45,7 @@ $codei%
    const CppAD::vector<a1_double>& %random_vec%
 %$$
 It contains a value for the
-$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$ vector.
+$cref/random effects/problem/Notation/Random Effects, u/$$ vector.
 
 $head vec$$
 This result has prototype
@@ -54,7 +54,7 @@ $codei%
 %$$
 It is a
 $cref/negative log-density vector
-   /cppad_mixed
+   /problem
    /Negative Log-Density Vector
 /$$
 corresponding to the random likelihood
@@ -80,7 +80,7 @@ returns an empty vector;
 i.e., $icode%vec%.size() == 0%$$.
 This corresponds to the case where none of the data depends on the
 random effects; i.e., the data vector
-$cref/y/cppad_mixed/Notation/Data, y, z/$$ is empty.
+$cref/y/problem/Notation/Data, y, z/$$ is empty.
 In this case there random effects vector should also be empty.
 
 $children%

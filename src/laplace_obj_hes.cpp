@@ -43,7 +43,7 @@ $latex \[
 \] $$
 where $latex m$$ is the number of rows in the
 $cref/random constraint matrix
-   /cppad_mixed
+   /problem
    /Notation
    /Random Constraint Matrix, A
 /$$;
@@ -69,7 +69,7 @@ $codei%
    const CppAD::vector<double>& %fixed_vec%
 %$$
 It specifies the value of the
-$cref/fixed effects/cppad_mixed/Notation/Fixed Effects, theta/$$
+$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
 vector $latex \theta$$.
 
 $head random_vec$$

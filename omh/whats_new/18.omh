@@ -260,7 +260,7 @@ $lend
 $head 02-08$$
 There was a bug in computing the second derivative of the objective when the
 $cref fix_likelihood$$ had absolute value terms in its
-$cref/negative log-density vector/cppad_mixed/Negative Log-Density Vector/$$.
+$cref/negative log-density vector/problem/Negative Log-Density Vector/$$.
 This has been fixed.
 
 $head 02-07$$

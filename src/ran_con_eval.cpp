@@ -33,7 +33,7 @@ $codei%
    const CppAD::vector<double>& %random_vec%
 %$$
 It specifies the value of the
-$cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
+$cref/random effects/problem/Notation/Random Effects, u/$$
 vector $latex u$$ at which $icode%A%*%u%$$ is evaluated.
 
 $head Au$$
@@ -43,7 +43,7 @@ $codei%
 %$$
 Its size must be equal to the number of rows in the
 $cref/random constraint matrix
-   /cppad_mixed
+   /problem
    /Notation
    /Random Constraint Matrix, A
 /$$.
@@ -56,7 +56,7 @@ $cref/optimal random effects
 /$$
 $icode Au$$ is the value of the
 $cref/random constraint Function
-   /cppad_mixed
+   /problem
    /Notation
    /Random Constraint Function, A*u^(theta)
 /$$.

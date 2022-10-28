@@ -9,7 +9,7 @@ $section Mathematical Notation$$
 $head A$$
 The notation $latex A$$ is used for the
 $cref/random constraint matrix
-   /cppad_mixed
+   /problem
    /Notation
    /Random Constraint Matrix, A
 /$$.
@@ -24,19 +24,19 @@ is used for the second order random constraint approximation.
 
 $head c$$
 The notation
-$cref/c(theta)/cppad_mixed/Notation/Fixed Constraint Function, c(theta)/$$
+$cref/c(theta)/problem/Notation/Fixed Constraint Function, c(theta)/$$
 ( $latex c( \theta )$$ )
 is used for the fixed effects constraints as a function.
 
 $head c_L$$
 The notation
-$cref/c_L/cppad_mixed/Notation/Fixed Constraint Function, c(theta)/$$
+$cref/c_L/problem/Notation/Fixed Constraint Function, c(theta)/$$
 ( $latex c_L $$ )
 is used for the lower limit of the constraints on the fixed effects.
 
 $head c_U$$
 The notation
-$cref/c_U/cppad_mixed/Notation/Fixed Constraint Function, c(theta)/$$
+$cref/c_U/problem/Notation/Fixed Constraint Function, c(theta)/$$
 ( $latex c_U $$ )
 is used for the upper limit of the constraints on the fixed effects.
 
@@ -70,10 +70,10 @@ $latex \B{p} ( \cdot )$$ and
 $latex \B{p} ( \cdot | \cdot )$$ are use for the
 probability density (conditional probability density) functions;
 see
-$cref/p(theta)/cppad_mixed/Notation/Fixed Prior Density, p(theta)/$$,
-$cref/p(z | theta)/cppad_mixed/Notation/Fixed Prior Density, p(theta)/$$,
-$cref/p(u | theta)/cppad_mixed/Notation/Fixed Prior Density, p(theta)/$$,
-$cref/p(y | theta, u)/cppad_mixed/Notation/Fixed Prior Density, p(theta)/$$.
+$cref/p(theta)/problem/Notation/Fixed Prior Density, p(theta)/$$,
+$cref/p(z | theta)/problem/Notation/Fixed Prior Density, p(theta)/$$,
+$cref/p(u | theta)/problem/Notation/Fixed Prior Density, p(theta)/$$,
+$cref/p(y | theta, u)/problem/Notation/Fixed Prior Density, p(theta)/$$.
 
 $head r$$
 The notation
@@ -88,13 +88,13 @@ $cref/L(theta)/theory/Objective/Fixed Effects Objective, L(theta)/$$
 is used for the fixed effects objective function.
 
 $head u$$
-The notation $cref/u/cppad_mixed/Notation/Random Effects, u/$$
+The notation $cref/u/problem/Notation/Random Effects, u/$$
 ( $latex \theta$$ )
 is used for the vector of fixed effects.
 
 $head u^(theta)$$
 The notation
-$cref/u^(theta)/cppad_mixed/Notation/Optimal Random Effects, u^(theta)/$$
+$cref/u^(theta)/problem/Notation/Optimal Random Effects, u^(theta)/$$
 ( $latex \hat{u}( \theta )$$ )
 is used for the optimal random effects.
 
@@ -117,16 +117,16 @@ The notation $cref/W(beta, theta, u)
 is used for the second order approximation of optimal random effects.
 
 $head theta$$
-The notation $cref/theta/cppad_mixed/Notation/Fixed Effects, theta/$$
+The notation $cref/theta/problem/Notation/Fixed Effects, theta/$$
 ( $latex \theta$$ )
 is used for the vector of fixed effects.
 
 $head y$$
-The notation $cref/y/cppad_mixed/Notation/Data, y, z/$$
+The notation $cref/y/problem/Notation/Data, y, z/$$
 is used for data that depends on the random effects.
 
 $head z$$
-The notation $cref/z/cppad_mixed/Notation/Data, y, z/$$
+The notation $cref/z/problem/Notation/Data, y, z/$$
 is used for data that does $bold not$$ depend on the random effects.
 
 
