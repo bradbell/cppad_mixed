@@ -23,6 +23,8 @@ ignore_files='
     .gitignore
     batch_edit.sed
     bin/devel.sh
+    include/cppad/mixed/sparseinv.hpp
+    readme.md
 '
 # ----------------------------------------------------------------------------
 echo "copyright_owner=$copyright_owner"
