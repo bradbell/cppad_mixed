@@ -85,7 +85,7 @@ $code USER_REQUESTED_STOP$$ as the finalize_solution
 $cref/status/ipopt_xam_finalize_solution/status/$$.
 
 $head Source$$
-$srccode@cpp@ */
+$srccode%cpp% */
 bool ipopt_fixed::intermediate_callback(
    AlgorithmMode               mode                 ,   // in
    Index                       iter                 ,   // in
@@ -120,5 +120,8 @@ bool ipopt_fixed::intermediate_callback(
    solution_.trace_vec.push_back(trace);
    return true;
 }
+/* %$$
+$end
+*/
 
 } } // END_CPPAD_MIXED_NAMESPACE

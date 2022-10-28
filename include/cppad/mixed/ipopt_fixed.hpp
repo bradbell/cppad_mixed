@@ -58,6 +58,7 @@ $childtable%src/ipopt_fixed/ctor.cpp
    %src/ipopt_fixed/eval_jac_g.cpp
    %src/ipopt_fixed/eval_h.cpp
    %src/ipopt_fixed/finalize_solution.cpp
+   %src/ipopt_fixed/intermediate_callback.cpp
    %src/ipopt_fixed/adapt_derivative_chk.cpp
    %src/ipopt_fixed/one_dim_function.cpp
    %src/ipopt_fixed/new_random.cpp
