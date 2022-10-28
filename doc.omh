@@ -7,21 +7,19 @@ $comment User documentation for cppad_mixed$$
 $spell
    cppad
 $$
-
 $comment BEGIN: settings used by all section ---------------------------- $$
+
 $escape $$
 $aindex section head subhead$$
-$latex
-   \newcommand{\R}[1]{ {\rm #1} }
-   \newcommand{\B}[1]{ {\bf #1} }
-   \newcommand{\W}[1]{ \; #1 \; }
-$$
-$aindex section head subhead$$
+
+$latex \newcommand{\R}[1]{ {\rm #1} } $$
+$latex \newcommand{\B}[1]{ {\bf #1} } $$
+$latex \newcommand{\W}[1]{ \; #1 \; } $$
+
 $comment END: settings used by all section ---------------------------- $$
 
 $section
-C++ Laplace Approximation of Mixed Effects Models:
-cppad_mixed-20221028
+C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20221028
 $$
 
 $head License$$
