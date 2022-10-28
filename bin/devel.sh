@@ -12,7 +12,8 @@ image_link='https://github.com/bradbell/cppad_mixed'
 # List of files, besides CMakeLists.txt, that have have a copy of the
 # version number (can be empty).
 version_files='
-    omh/cppad_mixed.omh
+   dev.omh
+   doc.omh
 '
 #
 # List of special files, for this repository, that the devel tools ignore.
@@ -20,11 +21,11 @@ version_files='
 # Files that are created by a program, and checked into the repository,
 # should also be in this list.
 ignore_files='
-    .gitignore
-    batch_edit.sed
-    bin/devel.sh
-    include/cppad/mixed/sparseinv.hpp
-    readme.md
+   .gitignore
+   batch_edit.sed
+   bin/devel.sh
+   include/cppad/mixed/sparseinv.hpp
+   readme.md
 '
 # ----------------------------------------------------------------------------
 echo "copyright_owner=$copyright_owner"

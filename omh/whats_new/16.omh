@@ -426,7 +426,7 @@ $list number$$
 There was a bug in
 $cref sample_fixed$$ that generated the assert
 $code
-    Assertion `H_info.col[k] == j' failed.
+   Assertion `H_info.col[k] == j' failed.
 $$
 The problem was that $code H_info$$ was not in
 $cref/column manor order/sparse_mat_info/Notation/Column Major Order/$$.
