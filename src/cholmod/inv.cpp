@@ -95,11 +95,11 @@ $codei%
 %$$
 Its initial size is zero.
 After the first call to $code inv$$, it had size
-$codei
+$codei%
    sparseinv_p_[nrow_]
 %$$
 For each column index $icode j$$, and for
-$codei
+$codei%
    %k% = sparseinv_p_[%j%] , %...%, sparseinv_p[%j%+1]-1
 %$$
 $codei%sparseinv_i_[%k%]%$$ is the index of the next entry in the $th j$$
