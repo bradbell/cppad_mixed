@@ -218,7 +218,7 @@ $codei%
 $head fixed_lower$$
 This vector has length equal to $icode n_fixed_$$ and
 specifies the lower limits for the
-$fixed_effects/cppad_mixed/Fixed Effects, theta/$$.
+$cref/fixed_effects/problem/Notation/Fixed Effects, theta/$$.
 Note that
 $codei%
    - std::numeric_limits<double>::infinity()
