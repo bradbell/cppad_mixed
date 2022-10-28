@@ -87,8 +87,9 @@ The row indices are in the vector $latex u$$; i.e., just the random effects.
 The column indices are in the vector  $latex ( \theta , u )$$; i.e.,
 both fixed and random effects.
 
-$comment%example/private/ran_jac_fun_.cpp
-%$$
+$comment
+   %example/private/ran_jac_fun_.cpp
+$$
 ----------------------------------------------------------------------------
 $end
 */
