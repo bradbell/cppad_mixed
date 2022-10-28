@@ -5,10 +5,10 @@
 /*
 $begin example_devel.cpp$$
 
-$sectin Run C++ Examples$$
+$section Run C++ Examples$$
 
 $head Syntax$$
-$code example/devel/cpp$$
+$code build/example/example$$
 
 $head Purpose$$
 This runs all the C++ examples and prints out their correctness

@@ -13,7 +13,7 @@ $$
 $section Run C++ Examples$$
 
 $head Syntax$$
-$code cholesky/devel/cpp$$
+$code cholesky/cholesky$$
 
 $head Purpose$$
 This runs all the C++ sparse Cholesky examples (and tests)
