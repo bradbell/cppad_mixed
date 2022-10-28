@@ -5,15 +5,15 @@
 /*
 $begin init_ldlt_ran_hes$$
 $spell
-	uu
-	rc
-	rcv
-	ldlt_ran_hes
-	init
-	cppad
-	CppAD
-	eigen
-	Cholesky
+   uu
+   rc
+   rcv
+   ldlt_ran_hes
+   init
+   cppad
+   CppAD
+   eigen
+   Cholesky
 $$
 
 $section Initialize Cholesky Factor of Hessian of Random Likelihood$$
@@ -40,15 +40,15 @@ derived from the $code cppad_mixed$$ base class.
 $head ldlt_ran_hes_$$
 The member variable
 $codei%
-	CPPAD_MIXED_LDLT_CLASS ldlt_ran_hes_
+   CPPAD_MIXED_LDLT_CLASS ldlt_ran_hes_
 %$$
 must not been previously initialized
 $codei%
-	size_t ldlt_ran_hes_
+   size_t ldlt_ran_hes_
 %$$
 Upon return, the function
 $codei%
-	ldlt_ran_hes_.init(ran_hes_uu_rcv_.pat())
+   ldlt_ran_hes_.init(ran_hes_uu_rcv_.pat())
 %$$
 has been called with $icode ran_hes_uu_rcv_.pat()$$
 equal to the sparsity pattern for the
@@ -64,7 +64,7 @@ $code n_fixed_$$ greater.
 $head a1_ldlt_ran_hes_$$
 The member variable
 $codei%
-	CppAD::mixed::ldlt_eigen<a1_double> a1_ldlt_ran_hes_
+   CppAD::mixed::ldlt_eigen<a1_double> a1_ldlt_ran_hes_
 %$$
 is initialized the same as $code ldlt_ran_hes_$$.
 
@@ -73,16 +73,16 @@ $end
 # include <cppad/mixed/cppad_mixed.hpp>
 
 void cppad_mixed::init_ldlt_ran_hes(void)
-{	assert( ! init_ldlt_ran_hes_done_ );
-	assert( init_ran_hes_done_ );
-	//
-	//
-	// initialize ldlt_ran_hes_
-	ldlt_ran_hes_.init(ran_hes_uu_rcv_.pat());
-	//
-	// initialize a1_ldlt_ran_hes_
-	a1_ldlt_ran_hes_.init(ran_hes_uu_rcv_.pat());
-	//
-	init_ldlt_ran_hes_done_ = true;
-	return;
+{  assert( ! init_ldlt_ran_hes_done_ );
+   assert( init_ran_hes_done_ );
+   //
+   //
+   // initialize ldlt_ran_hes_
+   ldlt_ran_hes_.init(ran_hes_uu_rcv_.pat());
+   //
+   // initialize a1_ldlt_ran_hes_
+   a1_ldlt_ran_hes_.init(ran_hes_uu_rcv_.pat());
+   //
+   init_ldlt_ran_hes_done_ = true;
+   return;
 }

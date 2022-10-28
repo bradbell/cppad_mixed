@@ -5,12 +5,12 @@
 /*
 $begin ldlt_cholmod_pattern$$
 $spell
-	rcv
-	rc
-	ldlt_obj
-	CppAD
-	cholmod
-	init
+   rcv
+   rc
+   ldlt_obj
+   CppAD
+   cholmod
+   init
 $$
 
 $section Update Factorization Using new Matrix Values$$
@@ -29,7 +29,7 @@ CppAD Mixed user API.
 $head ldlt_obj$$
 This object has prototype
 $codei%
-	CppAD::mixed::ldlt_cholmod %ldlt_obj%
+   CppAD::mixed::ldlt_cholmod %ldlt_obj%
 %$$
 In addition, it must have a previous call to
 $cref ldlt_cholmod_init$$.
@@ -61,8 +61,8 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // BEGIN_PROTOTYPE
 const sparse_rc& ldlt_cholmod::pattern(void) const
 // END_PROTOTYPE
-{	assert( init_done_ );
-	return H_rc_;
+{  assert( init_done_ );
+   return H_rc_;
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

@@ -15,17 +15,17 @@ SET(hold_memory                 no)
 SET(derivative_test             no)
 SET(start_near_solution         no)
 ADD_CUSTOM_TARGET(speed_ar1_xam
-	ar1_xam
-		${random_seed}
-		${number_random}
-		${quasi_fixed}
-		${trace_optimize_fixed}
-		${ipopt_solve}
-		${bool_sparsity}
-		${hold_memory}
-		${derivative_test}
-		${start_near_solution}
-	DEPENDS ar1_xam
+   ar1_xam
+      ${random_seed}
+      ${number_random}
+      ${quasi_fixed}
+      ${trace_optimize_fixed}
+      ${ipopt_solve}
+      ${bool_sparsity}
+      ${hold_memory}
+      ${derivative_test}
+      ${start_near_solution}
+   DEPENDS ar1_xam
 )
 # -----------------------------------------------------------------------------
 # speed_capture_xam
@@ -46,45 +46,45 @@ SET(mean_logit_probability  -0.50)
 SET(std_logit_probability    0.25)
 SET(random_constraint         yes)
 ADD_CUSTOM_TARGET(speed_capture_xam
-	capture_xam
-		${random_seed}
-		${number_random}
-		${quasi_fixed}
-		${trace_optimize_fixed}
-		${ipopt_solve}
-		${bool_sparsity}
-		${hold_memory}
-		${derivative_test}
-		${start_near_solution}
-		${number_fixed_samples}
-		${number_locations}
-		${max_population}
-		${mean_population}
-		${mean_logit_probability}
-		${std_logit_probability}
-		${random_constraint}
-	DEPENDS capture_xam
+   capture_xam
+      ${random_seed}
+      ${number_random}
+      ${quasi_fixed}
+      ${trace_optimize_fixed}
+      ${ipopt_solve}
+      ${bool_sparsity}
+      ${hold_memory}
+      ${derivative_test}
+      ${start_near_solution}
+      ${number_fixed_samples}
+      ${number_locations}
+      ${max_population}
+      ${mean_population}
+      ${mean_logit_probability}
+      ${std_logit_probability}
+      ${random_constraint}
+   DEPENDS capture_xam
 )
 # -----------------------------------------------------------------------------
 # capture_xam
 ADD_EXECUTABLE(
-	capture_xam EXCLUDE_FROM_ALL "capture_xam.cpp"
+   capture_xam EXCLUDE_FROM_ALL "capture_xam.cpp"
 )
 SET_TARGET_PROPERTIES(
-	capture_xam PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
+   capture_xam PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
 )
 TARGET_LINK_LIBRARIES(
-	capture_xam cppad_mixed
+   capture_xam cppad_mixed
 )
 # -----------------------------------------------------------------------------
 # ar1_xam
 ADD_EXECUTABLE(
-	ar1_xam EXCLUDE_FROM_ALL "ar1_xam.cpp"
+   ar1_xam EXCLUDE_FROM_ALL "ar1_xam.cpp"
 )
 SET_TARGET_PROPERTIES(
-	ar1_xam PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
+   ar1_xam PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
 )
 TARGET_LINK_LIBRARIES(
-	ar1_xam cppad_mixed
+   ar1_xam cppad_mixed
 )
 # -----------------------------------------------------------------------------

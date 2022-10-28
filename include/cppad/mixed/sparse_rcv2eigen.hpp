@@ -7,9 +7,9 @@
 /*
 $begin sparse_rcv2eigen$$
 $spell
-	Eigen
-	CppAD
-	rcv
+   Eigen
+   CppAD
+   rcv
 $$
 
 $section Convert a CppAD Sparse Matrix to an Eigen Sparse Matrix$$
@@ -52,29 +52,29 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // BEGIN_PROTOTYPE
 template <class Scalar>
 Eigen::SparseMatrix<Scalar> sparse_rcv2eigen(
-	const CppAD::sparse_rcv<s_vector, CppAD::vector<Scalar> >& m_rcv
+   const CppAD::sparse_rcv<s_vector, CppAD::vector<Scalar> >& m_rcv
 )
 // END_PROTOTYPE
-{	// m_rcv information
-	size_t nr  = m_rcv.nr();
-	size_t nc  = m_rcv.nc();
-	size_t nnz = m_rcv.nnz();
-	const s_vector&              row( m_rcv.row() );
-	const s_vector&              col( m_rcv.col() );
-	const CppAD::vector<Scalar>& val( m_rcv.val() );
-	//
-	// m_triplet corresponding to m_rcv
-	typedef Eigen::Triplet<Scalar> triplet;
-	std::vector<triplet> m_triplet(nnz);
-	for(size_t k = 0; k < nnz; ++k)
-		m_triplet[k] = triplet( int(row[k]), int(col[k]), val[k] );
-	//
-	// m_eigen corresponding to m_triplet
-	Eigen::SparseMatrix<Scalar> m_eigen;
-	m_eigen.resize( int(nr), int(nc) );
-	m_eigen.setFromTriplets( m_triplet.begin(), m_triplet.end() );
-	//
-	return m_eigen;
+{  // m_rcv information
+   size_t nr  = m_rcv.nr();
+   size_t nc  = m_rcv.nc();
+   size_t nnz = m_rcv.nnz();
+   const s_vector&              row( m_rcv.row() );
+   const s_vector&              col( m_rcv.col() );
+   const CppAD::vector<Scalar>& val( m_rcv.val() );
+   //
+   // m_triplet corresponding to m_rcv
+   typedef Eigen::Triplet<Scalar> triplet;
+   std::vector<triplet> m_triplet(nnz);
+   for(size_t k = 0; k < nnz; ++k)
+      m_triplet[k] = triplet( int(row[k]), int(col[k]), val[k] );
+   //
+   // m_eigen corresponding to m_triplet
+   Eigen::SparseMatrix<Scalar> m_eigen;
+   m_eigen.resize( int(nr), int(nc) );
+   m_eigen.setFromTriplets( m_triplet.begin(), m_triplet.end() );
+   //
+   return m_eigen;
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

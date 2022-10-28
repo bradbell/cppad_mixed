@@ -4,24 +4,24 @@
 # ----------------------------------------------------------------------------
 $begin ipopt_trace$$
 $spell
-	Lagragian
-	Ipopt
-	iter
-	inf
-	pr
-	infeasibility
-	inf
-	du
-	lg
-	mu
-	Eq
-	lg
-	rg
-	du
-	pr
-	ls
-	Wachter
-	Biegler
+   Lagragian
+   Ipopt
+   iter
+   inf
+   pr
+   infeasibility
+   inf
+   du
+   lg
+   mu
+   Eq
+   lg
+   rg
+   du
+   pr
+   ls
+   Wachter
+   Biegler
 $$
 
 $section Description of Ipopt Tracing Output$$
@@ -59,7 +59,7 @@ This quantity measure the infinity-norm (max) of the
 internal dual infeasibility, i.e, the derivative of the lagragian
 with respect to the primal variables
 $latex \[
-	\nabla f(x) \nabla c(x) \lambda - z
+   \nabla f(x) \nabla c(x) \lambda - z
 \]$$
 where $latex z $$ are the lagrange multipliers for the box constraints and
 $latex c(x) $$ are the nonlinear equality constraints

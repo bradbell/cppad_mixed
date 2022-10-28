@@ -9,30 +9,30 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 $begin ipopt_random_eval_h$$
 $spell
-	eval
-	obj
-	nele
-	hess
-	Ipopt
-	nnz
-	Teylor
-	vec
-	hes
-	Taylor
+   eval
+   obj
+   nele
+   hess
+   Ipopt
+   nnz
+   Teylor
+   vec
+   hes
+   Taylor
 $$
 
 $section Compute the Hessian of the Lagrangian$$
 
 $head Syntax$$
 $icode%ok% = eval_h(
-	%n%, %x%, %new_x%,%obj_factor%, %m%, %lambda%, %new_lambda%,%$$
+   %n%, %x%, %new_x%,%obj_factor%, %m%, %lambda%, %new_lambda%,%$$
 $icode%nele_hess%, %iRow%, %jCol%, %values%
 )%$$
 
 $head Lagrangian$$
 The Lagrangian is defined to be
 $latex \[
-	L(x) = \alpha f(x) + \sum_{i=0}^{m-1} \lambda_i g_i (x)
+   L(x) = \alpha f(x) + \sum_{i=0}^{m-1} \lambda_i g_i (x)
 \] $$
 
 $head mixed_object.quasi_fixed_$$
@@ -107,117 +107,117 @@ the random effects in $icode x$$.
 $head Prototype$$
 $srccode%cpp% */
 bool ipopt_random::eval_h(
-	Index         n              ,  // in
-	const Number* x              ,  // in
-	bool          new_x          ,  // in
-	Number        obj_factor     ,  // in
-	Index         m              ,  // in
-	const Number* lambda         ,  // in
-	bool          new_lambda     ,  // in
-	Index         nele_hess      ,  // in
-	Index*        iRow           ,  // out
-	Index*        jCol           ,  // out
-	Number*       values         )  // out
+   Index         n              ,  // in
+   const Number* x              ,  // in
+   bool          new_x          ,  // in
+   Number        obj_factor     ,  // in
+   Index         m              ,  // in
+   const Number* lambda         ,  // in
+   bool          new_lambda     ,  // in
+   Index         nele_hess      ,  // in
+   Index*        iRow           ,  // out
+   Index*        jCol           ,  // out
+   Number*       values         )  // out
 /* %$$
 $end
 */
-{	try
-	{	try_eval_h(
-			n,
-			x,
-			new_x,
-			obj_factor,
-			m,
-			lambda,
-			new_lambda,
-			nele_hess,
-			iRow,
-			jCol,
-			values
-		);
-	}
-	catch(const std::exception& e)
-	{	error_message_ = "ipopt_random::eval_h: std::exception: ";
-		for(size_t j = 0; j < n_random_; j++)
-			error_random_[j] = x[j];
-		return false;
-	}
-	catch(const CppAD::mixed::exception& e)
-	{	error_message_ = e.message("ipopt_random::eval_h");
-		for(size_t j = 0; j < n_random_; j++)
-			error_random_[j] = x[j];
-		return false;
-	}
-	return true;
+{  try
+   {  try_eval_h(
+         n,
+         x,
+         new_x,
+         obj_factor,
+         m,
+         lambda,
+         new_lambda,
+         nele_hess,
+         iRow,
+         jCol,
+         values
+      );
+   }
+   catch(const std::exception& e)
+   {  error_message_ = "ipopt_random::eval_h: std::exception: ";
+      for(size_t j = 0; j < n_random_; j++)
+         error_random_[j] = x[j];
+      return false;
+   }
+   catch(const CppAD::mixed::exception& e)
+   {  error_message_ = e.message("ipopt_random::eval_h");
+      for(size_t j = 0; j < n_random_; j++)
+         error_random_[j] = x[j];
+      return false;
+   }
+   return true;
 }
 void ipopt_random::try_eval_h(
-	Index         n              ,  // in
-	const Number* x              ,  // in
-	bool          new_x          ,  // in
-	Number        obj_factor     ,  // in
-	Index         m              ,  // in
-	const Number* lambda         ,  // in
-	bool          new_lambda     ,  // in
-	Index         nele_hess      ,  // in
-	Index*        iRow           ,  // out
-	Index*        jCol           ,  // out
-	Number*       values         )  // out
-{	assert( size_t(n) == n_random_ );
-	assert( m == 0 );
-	assert( size_t(nele_hess) == nnz_h_lag_ );
-	//
-	if( new_x )
-	{	// set the zero order Taylor coefficients in
-		// mixed_object_.ran_like_fun_
-		Number obj_value;
-		eval_f(n, x, new_x, obj_value);
-	}
-	//
-	const s_vector& row( mixed_object_.ran_hes_uu_rcv_.row() );
-	const s_vector& col( mixed_object_.ran_hes_uu_rcv_.col() );
-	assert( row.size() == nnz_h_lag_ );
-	assert( col.size() == nnz_h_lag_ );
-	//
-	if( values == NULL )
-	{	for(size_t k = 0; k < nnz_h_lag_; k++)
-		{	// only returning lower triagle of Hessian of objective
-			assert( col[k] <= row[k] );
-			assert( row[k] < n_random_ );
-			iRow[k] = static_cast<Index>( row[k] );
-			jCol[k] = static_cast<Index>( col[k] );
-		}
-		assert( ! new_x );
-		return;
-	}
-	//
-	// random effects as a vector
-	d_vector random_vec(n_random_);
-	for(size_t j = 0; j < n_random_; j++)
-		random_vec[j] = x[j];
-	//
-	// pack both the fixed and random effects into one vector
-	d_vector both_vec(n_fixed_ + n_random_);
-	mixed_object_.pack(fixed_vec_, random_vec, both_vec);
-	//
-	if( new_x )
-	{	// set zero order Taylor coefficient in ran_like_fun_.
-		d_vector vec = mixed_object_.ran_like_fun_.Forward(0, both_vec);
-		if( CppAD::hasnan( vec ) ) throw CppAD::mixed::exception(
-			"", "Hessian has a nan"
-		);
-	}
-	//
-	// computes the Hessian of objecive w.r.t random effects  f_uu (theta, u)
-	d_vector val = mixed_object_.ran_hes_fun_.Forward(0, both_vec);
-	if( CppAD::hasnan( val ) ) throw CppAD::mixed::exception(
-		"", "Hessian has a nan"
-	);
-	assert( val.size() == nnz_h_lag_ );
-	//
-	// return the values
-	for(size_t k = 0; k < nnz_h_lag_; k++)
-		values[k] = obj_factor * static_cast<Number>( val[k] );
-	//
-	return;
+   Index         n              ,  // in
+   const Number* x              ,  // in
+   bool          new_x          ,  // in
+   Number        obj_factor     ,  // in
+   Index         m              ,  // in
+   const Number* lambda         ,  // in
+   bool          new_lambda     ,  // in
+   Index         nele_hess      ,  // in
+   Index*        iRow           ,  // out
+   Index*        jCol           ,  // out
+   Number*       values         )  // out
+{  assert( size_t(n) == n_random_ );
+   assert( m == 0 );
+   assert( size_t(nele_hess) == nnz_h_lag_ );
+   //
+   if( new_x )
+   {  // set the zero order Taylor coefficients in
+      // mixed_object_.ran_like_fun_
+      Number obj_value;
+      eval_f(n, x, new_x, obj_value);
+   }
+   //
+   const s_vector& row( mixed_object_.ran_hes_uu_rcv_.row() );
+   const s_vector& col( mixed_object_.ran_hes_uu_rcv_.col() );
+   assert( row.size() == nnz_h_lag_ );
+   assert( col.size() == nnz_h_lag_ );
+   //
+   if( values == NULL )
+   {  for(size_t k = 0; k < nnz_h_lag_; k++)
+      {  // only returning lower triagle of Hessian of objective
+         assert( col[k] <= row[k] );
+         assert( row[k] < n_random_ );
+         iRow[k] = static_cast<Index>( row[k] );
+         jCol[k] = static_cast<Index>( col[k] );
+      }
+      assert( ! new_x );
+      return;
+   }
+   //
+   // random effects as a vector
+   d_vector random_vec(n_random_);
+   for(size_t j = 0; j < n_random_; j++)
+      random_vec[j] = x[j];
+   //
+   // pack both the fixed and random effects into one vector
+   d_vector both_vec(n_fixed_ + n_random_);
+   mixed_object_.pack(fixed_vec_, random_vec, both_vec);
+   //
+   if( new_x )
+   {  // set zero order Taylor coefficient in ran_like_fun_.
+      d_vector vec = mixed_object_.ran_like_fun_.Forward(0, both_vec);
+      if( CppAD::hasnan( vec ) ) throw CppAD::mixed::exception(
+         "", "Hessian has a nan"
+      );
+   }
+   //
+   // computes the Hessian of objecive w.r.t random effects  f_uu (theta, u)
+   d_vector val = mixed_object_.ran_hes_fun_.Forward(0, both_vec);
+   if( CppAD::hasnan( val ) ) throw CppAD::mixed::exception(
+      "", "Hessian has a nan"
+   );
+   assert( val.size() == nnz_h_lag_ );
+   //
+   // return the values
+   for(size_t k = 0; k < nnz_h_lag_; k++)
+      values[k] = obj_factor * static_cast<Number>( val[k] );
+   //
+   return;
 }
 } } // END_CPPAD_MIXED_NAMESPACE

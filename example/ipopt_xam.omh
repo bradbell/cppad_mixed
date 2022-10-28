@@ -4,9 +4,9 @@
 # ----------------------------------------------------------------------------
 $begin ipopt_xam$$
 $spell
-	CppAD
-	cppad
-	Ipopt
+   CppAD
+   cppad
+   Ipopt
 $$
 
 $section Example Use of Ipopt$$
@@ -14,14 +14,14 @@ $section Example Use of Ipopt$$
 $head Problem$$
 $latex \[
 \begin{array}{ll}
-	\R{minimize}
-	& \beta (x_0 - 2)^2 + \beta (x_1 - 4)^2 \; \R{w.r.t} \; x \in \B{R}^2
-	\\
-	\R{subject\; to} &  0 = x_0 + x_1 - 2
-	\\
-	& 0 \leq x_0 \leq 2
-	\\
-	& 0 \leq x_1 \leq 3
+   \R{minimize}
+   & \beta (x_0 - 2)^2 + \beta (x_1 - 4)^2 \; \R{w.r.t} \; x \in \B{R}^2
+   \\
+   \R{subject\; to} &  0 = x_0 + x_1 - 2
+   \\
+   & 0 \leq x_0 \leq 2
+   \\
+   & 0 \leq x_1 \leq 3
 \end{array}
 \]$$
 
@@ -81,8 +81,8 @@ $latex L = 0$$, and $latex U = 0$$.
 Furthermore the bound constraints are satisfied; i.e.,
 $latex \[
 \begin{array}{c}
-	0 \leq x_0 \leq 2 \\
-	0 \leq x_1 \leq 3
+   0 \leq x_0 \leq 2 \\
+   0 \leq x_1 \leq 3
 \end{array}
 \] $$
 Since the problem is convex, this is the solution.

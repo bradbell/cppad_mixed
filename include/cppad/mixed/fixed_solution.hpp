@@ -7,10 +7,10 @@
 /*
 $begin fixed_solution$$
 $spell
-	CppAD
-	vec
-	rcv
-	ipopt
+   CppAD
+   vec
+   rcv
+   ipopt
 $$
 
 $section Optimal Solution Returned by optimize_fixed$$
@@ -61,8 +61,8 @@ the Lagrange multiplier for the upper (lower) bound
 for the $th i$$ row of the random constraint matrix $latex A$$.
 
 $children%
-	include/cppad/mixed/warm_start_struct.hpp%
-	include/cppad/mixed/trace_struct.hpp
+   include/cppad/mixed/warm_start_struct.hpp%
+   include/cppad/mixed/trace_struct.hpp
 %$$
 $head warm_start$$
 This $cref warm_start_struct$$ contains
@@ -82,16 +82,16 @@ $end
 # include <cppad/mixed/trace_struct.hpp>
 
 namespace CppAD { namespace mixed {
-	// BEGIN_PROTOTYPE
-	struct fixed_solution {
-		CppAD::vector<double>       fixed_opt;
-		CppAD::vector<double>       fixed_lag;
-		CppAD::vector<double>       fix_con_lag;
-		CppAD::vector<double>       ran_con_lag;
-		warm_start_struct           warm_start;
-		CppAD::vector<trace_struct> trace_vec;
-	};
-	// END_PROTOTYPE
+   // BEGIN_PROTOTYPE
+   struct fixed_solution {
+      CppAD::vector<double>       fixed_opt;
+      CppAD::vector<double>       fixed_lag;
+      CppAD::vector<double>       fix_con_lag;
+      CppAD::vector<double>       ran_con_lag;
+      warm_start_struct           warm_start;
+      CppAD::vector<trace_struct> trace_vec;
+   };
+   // END_PROTOTYPE
 } }
 
 

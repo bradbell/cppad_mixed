@@ -17,7 +17,7 @@
 # Macro definitions
 # ============================================================================
 MACRO(print_variable variable)
-	MESSAGE(STATUS "${variable}=${${variable}}" )
+   MESSAGE(STATUS "${variable}=${${variable}}" )
 ENDMACRO(print_variable variable)
 # ----------------------------------------------------------------------------
 # required_definition( variable type docstring )
@@ -37,19 +37,19 @@ ENDMACRO(print_variable variable)
 #
 #
 MACRO( required_definition variable type docstring )
-	SET( ${variable} NOTFOUND CACHE ${type} "${docstring}" )
-	IF( ${variable} STREQUAL NOTFOUND )
-		MESSAGE( FATAL_ERROR "${variable} is not set by cmake command" )
-	ELSE( ${variable} STREQUAL NOTFOUND )
-		MESSAGE( STATUS "${variable} = ${${variable}}" )
-	ENDIF( ${variable} STREQUAL NOTFOUND )
-	IF( ${type} STREQUAL "BOOL" )
-		IF( ${variable} )
-			SET( ${variable}_01 1 )
-		ELSE( ${variable} )
-			SET( ${variable}_01 0 )
-		ENDIF( ${variable} )
-	ENDIF( ${type} STREQUAL "BOOL" )
+   SET( ${variable} NOTFOUND CACHE ${type} "${docstring}" )
+   IF( ${variable} STREQUAL NOTFOUND )
+      MESSAGE( FATAL_ERROR "${variable} is not set by cmake command" )
+   ELSE( ${variable} STREQUAL NOTFOUND )
+      MESSAGE( STATUS "${variable} = ${${variable}}" )
+   ENDIF( ${variable} STREQUAL NOTFOUND )
+   IF( ${type} STREQUAL "BOOL" )
+      IF( ${variable} )
+         SET( ${variable}_01 1 )
+      ELSE( ${variable} )
+         SET( ${variable}_01 0 )
+      ENDIF( ${variable} )
+   ENDIF( ${type} STREQUAL "BOOL" )
 ENDMACRO( required_definition )
 # ----------------------------------------------------------------------------
 # optional_definition( variable type docstring )
@@ -66,15 +66,15 @@ ENDMACRO( required_definition )
 #
 #
 MACRO( optional_definition variable type docstring )
-	SET( ${variable} NOTFOUND CACHE ${type} "${docstring}" )
-	MESSAGE( STATUS "${variable} = ${${variable}}" )
-	IF( ${type} STREQUAL "BOOL" )
-		IF( ${variable} )
-			SET( ${variable}_01 1 )
-		ELSE( ${variable} )
-			SET( ${variable}_01 0 )
-		ENDIF( ${variable} )
-	ENDIF( ${type} STREQUAL "BOOL" )
+   SET( ${variable} NOTFOUND CACHE ${type} "${docstring}" )
+   MESSAGE( STATUS "${variable} = ${${variable}}" )
+   IF( ${type} STREQUAL "BOOL" )
+      IF( ${variable} )
+         SET( ${variable}_01 1 )
+      ELSE( ${variable} )
+         SET( ${variable}_01 0 )
+      ENDIF( ${variable} )
+   ENDIF( ${type} STREQUAL "BOOL" )
 ENDMACRO( optional_definition )
 # ============================================================================
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
@@ -89,43 +89,43 @@ MESSAGE(STATUS "CMAKE_VERBOSE_MAKEFILE = ${CMAKE_VERBOSE_MAKEFILE}")
 MESSAGE(STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
 # ----------------------------------------------------------------------------
 FOREACH( var
-	set_sparsity
-	use_atomic_cholesky
-	hide_ipopt_scaling
-	checkpoint_newton_step
-	ipopt_prefix
-	eigen_prefix
+   set_sparsity
+   use_atomic_cholesky
+   hide_ipopt_scaling
+   checkpoint_newton_step
+   ipopt_prefix
+   eigen_prefix
 )
-	IF( DEFINED ${var})
-		MESSAGE(FATAL_ERROR "${var} cmake option is no longer used")
-	ENDIF( DEFINED ${var})
+   IF( DEFINED ${var})
+      MESSAGE(FATAL_ERROR "${var} cmake option is no longer used")
+   ENDIF( DEFINED ${var})
 ENDFOREACH( var )
 # ----------------------------------------------------------------------------
 IF( NOT "${cppad_cxx_flags}" STREQUAL "" )
-	MESSAGE(FATAL_ERROR "cppad_cxx_flags has been changed to extra_cxx_flags")
+   MESSAGE(FATAL_ERROR "cppad_cxx_flags has been changed to extra_cxx_flags")
 ENDIF( NOT "${cppad_cxx_flags}" STREQUAL "" )
 # ----------------------------------------------------------------------------
 IF( NOT "${log_fatal_error}" STREQUAL ""  )
-	MESSAGE(FATAL_ERROR "log_fatal_error has been removed from cmake command")
+   MESSAGE(FATAL_ERROR "log_fatal_error has been removed from cmake command")
 ENDIF( NOT "${log_fatal_error}" STREQUAL ""  )
 # ----------------------------------------------------------------------------
 required_definition( cmake_install_prefix PATH
-	"prefix used by cmake for installing cppad_mixed"
+   "prefix used by cmake for installing cppad_mixed"
 )
 required_definition( extra_cxx_flags STRING
-	"extra flags used by C++ compiler (debug and release are automatic)"
+   "extra flags used by C++ compiler (debug and release are automatic)"
 )
 required_definition( cmake_libdir STRING
-	"directory below each prefix where libraries are installed"
+   "directory below each prefix where libraries are installed"
 )
 required_definition(ldlt_cholmod BOOL
-	"use cholmod LDLT factorization where possible (instead of eigen)"
+   "use cholmod LDLT factorization where possible (instead of eigen)"
 )
 required_definition(optimize_cppad_function BOOL
-	"should AD operation sequences be optimized (false is for debug purposes)"
+   "should AD operation sequences be optimized (false is for debug purposes)"
 )
 required_definition(for_hes_sparsity BOOL
-	"use forward (reverse) method for computing Hessian w.r.t. random effects"
+   "use forward (reverse) method for computing Hessian w.r.t. random effects"
 )
 # ----------------------------------------------------------------------------
 MESSAGE(STATUS "END:")
@@ -147,12 +147,12 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 #
 # the RPATH to be used when installing, but only if it's not a system directory
 list(FIND
-	CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES
-	"${cmake_install_prefix}/${cmake_libdir}"
-	isSystemDir
+   CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES
+   "${cmake_install_prefix}/${cmake_libdir}"
+   isSystemDir
 )
 if("${isSystemDir}" STREQUAL "-1")
-	set(CMAKE_INSTALL_RPATH "${dismod_at_pefix}/${cmake_libdir}")
+   set(CMAKE_INSTALL_RPATH "${dismod_at_pefix}/${cmake_libdir}")
 endif("${isSystemDir}" STREQUAL "-1")
 # ----------------------------------------------------------------------------
 # check compiler flags
@@ -162,38 +162,38 @@ SET(CMAKE_REQUIRED_LIBRARIES   "" )
 SET(CMAKE_REQUIRED_DEFINITIONS "" )
 SET(CMAKE_REQUIRED_FLAGS       "" )
 IF( extra_cxx_flags )
-	SET(CMAKE_REQUIRED_FLAGS "${extra_cxx_flags}")
-	SET(source "
-	int main(void)
-	{	return 0; }"
-	)
-	CHECK_CXX_SOURCE_RUNS("${source}" extra_cxx_flags_ok)
-	IF( NOT extra_cxx_flags_ok )
-		MESSAGE(STATUS "Cannot compile a simple C++ program, extra_cxx_flags")
-	ENDIF( NOT extra_cxx_flags_ok )
+   SET(CMAKE_REQUIRED_FLAGS "${extra_cxx_flags}")
+   SET(source "
+   int main(void)
+   {  return 0; }"
+   )
+   CHECK_CXX_SOURCE_RUNS("${source}" extra_cxx_flags_ok)
+   IF( NOT extra_cxx_flags_ok )
+      MESSAGE(STATUS "Cannot compile a simple C++ program, extra_cxx_flags")
+   ENDIF( NOT extra_cxx_flags_ok )
 ENDIF( extra_cxx_flags )
 # ----------------------------------------------------------------------------
 # cppad_mixed_has_nullptr_01
 #
 SET(source "
 int main(void)
-{	char *c = nullptr;
-	return 0;
+{  char *c = nullptr;
+   return 0;
 }"
 )
 SET(CMAKE_REQUIRED_INCLUDES    "" )
 SET(CMAKE_REQUIRED_LIBRARIES   "" )
 SET(CMAKE_REQUIRED_DEFINITIONS "" )
 IF( extra_cxx_flags )
-	SET(CMAKE_REQUIRED_FLAGS "${extra_cxx_flags}")
+   SET(CMAKE_REQUIRED_FLAGS "${extra_cxx_flags}")
 ElSE( extra_cxx_flags )
-	SET(CMAKE_REQUIRED_FLAGS "" )
+   SET(CMAKE_REQUIRED_FLAGS "" )
 ENDIF( extra_cxx_flags )
 CHECK_CXX_SOURCE_RUNS("${source}" cppad_mixed_has_nullptr_flag)
 IF( cppad_mixed_has_nullptr_flag )
-	SET(cppad_mixed_has_nullptr_01 1)
+   SET(cppad_mixed_has_nullptr_01 1)
 ELSE( cppad_mixed_has_nullptr_flag )
-	SET(cppad_mixed_has_nullptr_01 0)
+   SET(cppad_mixed_has_nullptr_01 0)
 ENDIF( cppad_mixed_has_nullptr_flag )
 MESSAGE(STATUS "cppad_mixed_has_nullptr = ${cppad_mixed_has_nullptr_01}")
 # ----------------------------------------------------------------------------
@@ -208,120 +208,120 @@ MESSAGE(STATUS "cppad_mixed_has_nullptr = ${cppad_mixed_has_nullptr_01}")
 SET(suitesparse_prefix "NOTFOUND")
 SET(suitesparse_suffix "NOTFOUND")
 EXECUTE_PROCESS(
-	COMMAND brew --prefix suitesparse
-	OUTPUT_VARIABLE brew_prefix
-	OUTPUT_STRIP_TRAILING_WHITESPACE
+   COMMAND brew --prefix suitesparse
+   OUTPUT_VARIABLE brew_prefix
+   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 IF( NOT "${brew_prefix}" STREQUAL "" )
-	FOREACH(suffix "include" "include/suitesparse")
-		IF( EXISTS "${brew_prefix}/${suffix}/cholmod.h" )
-			MESSAGE(STATUS "Using ${brew_prefix}/${suffix}/cholmod.h" )
-			SET(suitesparse_prefix "${brew_prefix}")
-			SET(suitesparse_suffix "${suffix}")
-		ENDIF( EXISTS "${brew_prefix}/${suffix}/cholmod.h" )
-	ENDFOREACH(suffix "include" "include/suitesparse")
+   FOREACH(suffix "include" "include/suitesparse")
+      IF( EXISTS "${brew_prefix}/${suffix}/cholmod.h" )
+         MESSAGE(STATUS "Using ${brew_prefix}/${suffix}/cholmod.h" )
+         SET(suitesparse_prefix "${brew_prefix}")
+         SET(suitesparse_suffix "${suffix}")
+      ENDIF( EXISTS "${brew_prefix}/${suffix}/cholmod.h" )
+   ENDFOREACH(suffix "include" "include/suitesparse")
 ENDIF( NOT ( "${brew_prefix}" STREQUAL "" ) )
 FOREACH(prefix
-	/usr
-	/usr/local
-	/opt/local
-	/usr/local/opt/suitesparse
-	${cmake_install_prefix}
+   /usr
+   /usr/local
+   /opt/local
+   /usr/local/opt/suitesparse
+   ${cmake_install_prefix}
 )
-	FOREACH(suffix "include" "include/suitesparse")
-		IF( EXISTS "${prefix}/${suffix}/cholmod.h" )
-			IF( suitesparse_prefix )
-				SET(same "yes")
-				IF( NOT "${prefix}" STREQUAL "${suitesparse_prefix}" )
-					SET(same "no")
-				ELSEIF( NOT "${suffix}" STREQUAL "${suitesparse_prefix}" )
-					SET(same "no")
-				ENDIF()
-				IF( same STREQUAL "no" )
-					MESSAGE(STATUS "Not using ${prefix}/${suffix}/cholmod.h")
-				ENDIF( same STREQUAL "no" )
-			ELSE( suitesparse_prefix )
-				MESSAGE(STATUS "Using ${prefix}/${suffix}/cholmod.h" )
-				SET(suitesparse_prefix "${prefix}")
-				SET(suitesparse_suffix "${suffix}")
-			ENDIF( suitesparse_prefix )
-		ENDIF( EXISTS "${prefix}/${suffix}/cholmod.h" )
-	ENDFOREACH(suffix "include" "include/suitesparse")
+   FOREACH(suffix "include" "include/suitesparse")
+      IF( EXISTS "${prefix}/${suffix}/cholmod.h" )
+         IF( suitesparse_prefix )
+            SET(same "yes")
+            IF( NOT "${prefix}" STREQUAL "${suitesparse_prefix}" )
+               SET(same "no")
+            ELSEIF( NOT "${suffix}" STREQUAL "${suitesparse_prefix}" )
+               SET(same "no")
+            ENDIF()
+            IF( same STREQUAL "no" )
+               MESSAGE(STATUS "Not using ${prefix}/${suffix}/cholmod.h")
+            ENDIF( same STREQUAL "no" )
+         ELSE( suitesparse_prefix )
+            MESSAGE(STATUS "Using ${prefix}/${suffix}/cholmod.h" )
+            SET(suitesparse_prefix "${prefix}")
+            SET(suitesparse_suffix "${suffix}")
+         ENDIF( suitesparse_prefix )
+      ENDIF( EXISTS "${prefix}/${suffix}/cholmod.h" )
+   ENDFOREACH(suffix "include" "include/suitesparse")
 ENDFOREACH(prefix)
 IF( NOT suitesparse_prefix )
-	MESSAGE(FATAL_ERROR "cannot find cholmod.h" )
+   MESSAGE(FATAL_ERROR "cannot find cholmod.h" )
 ELSE( NOT suitesparse_prefix )
 ENDIF( NOT suitesparse_prefix )
 #
 # suitesparse_INCLUDE_DIRS
 # suitesparse_in_cholmod_include_01
 IF( ${suitesparse_suffix} STREQUAL "include" )
-	SET(suitesparse_in_cholmod_include_01 "0")
-	SET(suitesparse_INCLUDE_DIRS  "${suitesparse_prefix}/include" )
+   SET(suitesparse_in_cholmod_include_01 "0")
+   SET(suitesparse_INCLUDE_DIRS  "${suitesparse_prefix}/include" )
 ELSE( ${suitesparse_suffix} STREQUAL "include" )
-	SET(suitesparse_in_cholmod_include_01 "1")
-	SET(suitesparse_INCLUDE_DIRS  "${suitesparse_prefix}/include/suitesparse" )
+   SET(suitesparse_in_cholmod_include_01 "1")
+   SET(suitesparse_INCLUDE_DIRS  "${suitesparse_prefix}/include/suitesparse" )
 ENDIF( ${suitesparse_suffix} STREQUAL "include" )
 #
 # set suitesparse_LIBRARIES
 SET(suitesparse_LIBRARIES
-	"cholmod;amd;camd;colamd;ccolamd;suitesparseconfig"
+   "cholmod;amd;camd;colamd;ccolamd;suitesparseconfig"
 )
 #
 # suitesparse_LIBRARY_DIRS
 SET(suitesparse_LIBRARY_DIRS "NOTFOUND")
 FOREACH(suffix "lib" "lib64" "${cmake_libdir}" )
-	SET(both "${suitesparse_prefix}/${suffix}")
-	SET(globbing_expression "${both}/libcholmod.*")
-	FILE(GLOB match_1 ${globbing_expression})
-	IF( match_1 )
-		SET(suitesparse_LIBRARY_DIRS "${both}")
-	ELSE( match_1 )
-		SET(globbing_expression "${both}/*/libcholmod.*")
-		FILE(GLOB match_2 ${globbing_expression})
-		IF( match_2 )
-			SET(suitesparse_LIBRARY_DIRS "${both}")
-		ENDIF( match_2 )
-	ENDIF( match_1 )
+   SET(both "${suitesparse_prefix}/${suffix}")
+   SET(globbing_expression "${both}/libcholmod.*")
+   FILE(GLOB match_1 ${globbing_expression})
+   IF( match_1 )
+      SET(suitesparse_LIBRARY_DIRS "${both}")
+   ELSE( match_1 )
+      SET(globbing_expression "${both}/*/libcholmod.*")
+      FILE(GLOB match_2 ${globbing_expression})
+      IF( match_2 )
+         SET(suitesparse_LIBRARY_DIRS "${both}")
+      ENDIF( match_2 )
+   ENDIF( match_1 )
 ENDFOREACH(suffix "lib" "lib64" "${cmake_libdir}" )
 IF( NOT suitesparse_LIBRARY_DIRS )
-	MESSAGE(FATAL_ERROR
-		"Cannot find libcholmod.* in ${suitesparse_prefix}/libdir"
-		" where libdir is lib, lib64, or cmake_libdir"
-	)
+   MESSAGE(FATAL_ERROR
+      "Cannot find libcholmod.* in ${suitesparse_prefix}/libdir"
+      " where libdir is lib, lib64, or cmake_libdir"
+   )
 ENDIF( NOT suitesparse_LIBRARY_DIRS )
 # ----------------------------------------------------------------------------
 # set pkg-config information about gsl, eigen3, ipopt, cppad, suitesparse
 FIND_PACKAGE(PkgConfig)
 FOREACH(pkg gsl eigen3 ipopt cppad)
-	pkg_check_modules( ${pkg} QUIET ${pkg} )
-	IF( ${pkg}_FOUND )
-		MESSAGE(STATUS "Found ${pkg}.pc file")
-	ELSE( ${pkg}_FOUND )
-		MESSAGE(STATUS "Cannot find ${pkg}.pc file")
-		MESSAGE(FATAL_ERROR  "PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH}")
-	ENDIF( ${pkg}_FOUND )
-	# INLCUDE_DIRECTORIES
-	IF( ${pkg} STREQUAL "eigen3" )
-		INCLUDE_DIRECTORIES( SYSTEM ${eigen3_INCLUDE_DIRS} )
-	ELSE( ${pkg} STREQUAL "eigen3" )
-		INCLUDE_DIRECTORIES( ${${pkg}_INCLUDE_DIRS} )
-	ENDIF( ${pkg} STREQUAL "eigen3" )
-	# LINK_DIRECTORIES
-	LINK_DIRECTORIES( ${${pkg}_LIBRARY_DIRS} )
+   pkg_check_modules( ${pkg} QUIET ${pkg} )
+   IF( ${pkg}_FOUND )
+      MESSAGE(STATUS "Found ${pkg}.pc file")
+   ELSE( ${pkg}_FOUND )
+      MESSAGE(STATUS "Cannot find ${pkg}.pc file")
+      MESSAGE(FATAL_ERROR  "PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH}")
+   ENDIF( ${pkg}_FOUND )
+   # INLCUDE_DIRECTORIES
+   IF( ${pkg} STREQUAL "eigen3" )
+      INCLUDE_DIRECTORIES( SYSTEM ${eigen3_INCLUDE_DIRS} )
+   ELSE( ${pkg} STREQUAL "eigen3" )
+      INCLUDE_DIRECTORIES( ${${pkg}_INCLUDE_DIRS} )
+   ENDIF( ${pkg} STREQUAL "eigen3" )
+   # LINK_DIRECTORIES
+   LINK_DIRECTORIES( ${${pkg}_LIBRARY_DIRS} )
 ENDFOREACH(pkg)
 IF( NOT "${suitesparse_prefix}" STREQUAL "/usr" )
-	INCLUDE_DIRECTORIES( ${suitesparse_INCLUDE_DIRS} )
-	LINK_DIRECTORIES( ${suitesparse_LIBRARY_DIRS} )
+   INCLUDE_DIRECTORIES( ${suitesparse_INCLUDE_DIRS} )
+   LINK_DIRECTORIES( ${suitesparse_LIBRARY_DIRS} )
 ENDIF( NOT "${suitesparse_prefix}" STREQUAL "/usr" )
 # ----------------------------------------------------------------------------
 CONFIGURE_FILE(
-	${CMAKE_CURRENT_SOURCE_DIR}/include/cppad/mixed/configure.hpp.in
-	${CMAKE_CURRENT_SOURCE_DIR}/include/cppad/mixed/configure.hpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/include/cppad/mixed/configure.hpp.in
+   ${CMAKE_CURRENT_SOURCE_DIR}/include/cppad/mixed/configure.hpp
 )
 CONFIGURE_FILE(
-	${CMAKE_CURRENT_SOURCE_DIR}/include/cppad/mixed/include_cholmod.hpp.in
-	${CMAKE_CURRENT_SOURCE_DIR}/include/cppad/mixed/include_cholmod.hpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/include/cppad/mixed/include_cholmod.hpp.in
+   ${CMAKE_CURRENT_SOURCE_DIR}/include/cppad/mixed/include_cholmod.hpp
 )
 # ----------------------------------------------------------------------------
 # subdirectories
@@ -335,21 +335,21 @@ ADD_SUBDIRECTORY(speed)
 # ----------------------------------------------------------------------------
 # tests
 ADD_CUSTOM_TARGET(check DEPENDS
-	cppad_mixed
-	check_example
-	check_test_more
+   cppad_mixed
+   check_example
+   check_test_more
 )
 ## check_cholesky
 ## see https://gitlab.com/libeigen/eigen/-/issues/2013
 #
 #
 ADD_CUSTOM_TARGET(speed DEPENDS
-	speed_ar1_xam
-	speed_capture_xam
+   speed_ar1_xam
+   speed_capture_xam
 )
 # ----------------------------------------------------------------------------
 # install
 INSTALL(
-	DIRECTORY ${CMAKE_SOURCE_DIR}/include/cppad/mixed/
-	DESTINATION ${cmake_install_prefix}/include/cppad/mixed
+   DIRECTORY ${CMAKE_SOURCE_DIR}/include/cppad/mixed/
+   DESTINATION ${cmake_install_prefix}/include/cppad/mixed
 )

@@ -8,28 +8,28 @@
 # include <Eigen/Sparse>
 
 namespace CppAD { namespace mixed {
-	// This would be member of cppad_mixed class if it were not for all the
-	// warnings Eigen generates. 2DO: review this because the Eigen warning
-	// problem has been fixed using the SYSTEM include option.
-	extern Eigen::SimplicialLDLT<
-		Eigen::SparseMatrix<double> , Eigen::Lower
-	> ldlt_ran_hes_;
+   // This would be member of cppad_mixed class if it were not for all the
+   // warnings Eigen generates. 2DO: review this because the Eigen warning
+   // problem has been fixed using the SYSTEM include option.
+   extern Eigen::SimplicialLDLT<
+      Eigen::SparseMatrix<double> , Eigen::Lower
+   > ldlt_ran_hes_;
 
-	extern void analyze_ldlt_ran_hes(
-		size_t                       n_fixed  ,
-		size_t                       n_random ,
-		const CppAD::vector<size_t>& row      ,
-		const CppAD::vector<size_t>& col
-	);
-	extern void factorize_ldlt_ran_hes(
-		size_t                       n_fixed  ,
-		size_t                       n_random ,
-		const CppAD::vector<size_t>& row      ,
-		const CppAD::vector<size_t>& col      ,
-		const CppAD::vector<double>& both     ,
-		CppAD::ADFun<double>&        hessian
-	);
-	extern double logdet_ldlt_ran_hes(size_t n_random);
+   extern void analyze_ldlt_ran_hes(
+      size_t                       n_fixed  ,
+      size_t                       n_random ,
+      const CppAD::vector<size_t>& row      ,
+      const CppAD::vector<size_t>& col
+   );
+   extern void factorize_ldlt_ran_hes(
+      size_t                       n_fixed  ,
+      size_t                       n_random ,
+      const CppAD::vector<size_t>& row      ,
+      const CppAD::vector<size_t>& col      ,
+      const CppAD::vector<double>& both     ,
+      CppAD::ADFun<double>&        hessian
+   );
+   extern double logdet_ldlt_ran_hes(size_t n_random);
 } }
 
 

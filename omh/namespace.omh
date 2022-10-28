@@ -4,8 +4,8 @@
 # ----------------------------------------------------------------------------
 $begin namespace$$
 $spell
-	Namespace
-	CppAD
+   Namespace
+   CppAD
 $$
 
 $section The CppAD::mixed Namespace Public Declarations$$
@@ -14,10 +14,10 @@ are in the $code CppAD::mixed$$ namespace.
 
 
 $childtable%include/cppad/mixed/typedef.hpp
-	%src/manage_gsl_rng.cpp
-	%include/cppad/mixed/sparse_mat_info.hpp
-	%include/cppad/mixed/fixed_solution.hpp
-	%include/cppad/mixed/exception.hpp
+   %src/manage_gsl_rng.cpp
+   %include/cppad/mixed/sparse_mat_info.hpp
+   %include/cppad/mixed/fixed_solution.hpp
+   %include/cppad/mixed/exception.hpp
 %$$
 
 $end

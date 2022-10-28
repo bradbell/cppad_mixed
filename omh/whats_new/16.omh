@@ -5,46 +5,46 @@
 
 $begin whats_new_16$$
 $spell
-	chk
-	jac
-	ctor
-	metis
-	gsl
-	suitesparse
-	Cholesky
-	CppAD
-	namespace
-	cppad
-	dismod
-	ldlt_ran_hes
-	Eigen
-	Wno
-	valgrind
-	bool
-	cholmod
-	iter
-	cmake
-	ldlt
-	choleig
-	ipopt
-	xam
-	debian
-	omhelp
-	config
-	src/cholmod/sim_cov.cpp
-	ar1
-	obj
-	sqrt
-	ls
-	libdir
-	Taylor
-	checkpointed
-	rcv
-	py
-	tri
-	logdet
-	eval
-	inv
+   chk
+   jac
+   ctor
+   metis
+   gsl
+   suitesparse
+   Cholesky
+   CppAD
+   namespace
+   cppad
+   dismod
+   ldlt_ran_hes
+   Eigen
+   Wno
+   valgrind
+   bool
+   cholmod
+   iter
+   cmake
+   ldlt
+   choleig
+   ipopt
+   xam
+   debian
+   omhelp
+   config
+   src/cholmod/sim_cov.cpp
+   ar1
+   obj
+   sqrt
+   ls
+   libdir
+   Taylor
+   checkpointed
+   rcv
+   py
+   tri
+   logdet
+   eval
+   inv
 $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
@@ -145,9 +145,9 @@ $head 10-15$$
 $bold API Change:$$
 The
 $cref/random constraint matrix
-	/cppad_mixed
-	/Notation
-	/Random Constraint Matrix, A
+   /cppad_mixed
+   /Notation
+   /Random Constraint Matrix, A
 /$$
 $icode A_rcv$$, is now specified in
 $cref/initialize/derived_ctor/A_rcv/$$ instead
@@ -220,9 +220,9 @@ and change its position in $cref capture_xam.cpp$$
 $lnext
 Change the default for
 $cref/accept_after_max_steps
-	/optimize_fixed
-	/fixed_ipopt_options
-	/accept_after_max_steps
+   /optimize_fixed
+   /fixed_ipopt_options
+   /accept_after_max_steps
 /$$
 to $code 2$$ and the default for $icode obj_scaling_factor$$
 back to $code 1$$.
@@ -236,7 +236,7 @@ $head 07-26$$
 Change the fixed effects optimization default value for the Ipopt
 $icode obj_scaling_factor$$ from $code 1.0$$ to
 $codei%
-	%obj_scaling_factor% = 1.0 / sqrt( %n_fixed% + %n_random% )
+   %obj_scaling_factor% = 1.0 / sqrt( %n_fixed% + %n_random% )
 
 %$$
 This avoids scaling problems in $cref ar1_xam.cpp$$
@@ -249,9 +249,9 @@ $head 07-25$$
 $list number$$
 Computing the derivative of the log of the determinant term in the
 $cref/Laplace approximation
-	/theory
-	/Objective
-	/Laplace Approximation, h(theta, u)
+   /theory
+   /Objective
+   /Laplace Approximation, h(theta, u)
 /$$
 uses the inverse of the Hessian w.r.t. the random effects
 (where the Hessian is possibly non-zero).
@@ -295,9 +295,9 @@ was implemented.
 To be specific, two partial Newton steps
 (instead of two full Newton steps) are used in the
 $cref/second order
-	/theory
-	/Approximate Optimal Random Effects
-	/Second Order, W(beta, theta, u)
+   /theory
+   /Approximate Optimal Random Effects
+   /Second Order, W(beta, theta, u)
 /$$
 approximation for the optimal random effects
 $latex W( \beta , \theta , u )$$.
@@ -404,7 +404,7 @@ $cref/warning/base_class/User Defined Functions/warning/$$
 is used to report this condition and the
 $cref/solution/optimize_fixed/solution/$$ is returned with
 $codei%
-	%solution%.fixed_opt
+   %solution%.fixed_opt
 %$$
 equal to the fixed effects for this warning.
 
@@ -426,7 +426,7 @@ $list number$$
 There was a bug in
 $cref sample_fixed$$ that generated the assert
 $code
-	 Assertion `H_info.col[k] == j' failed.
+    Assertion `H_info.col[k] == j' failed.
 $$
 The problem was that $code H_info$$ was not in
 $cref/column manor order/sparse_mat_info/Notation/Column Major Order/$$.
@@ -552,9 +552,9 @@ $list number$$
 In $cref sample_fixed$$,
 $cref/Replace/sample_conditional/Replaced/$$ the
 $cref/conditional covariance
-	/sample_conditional
-	/Theory
-	/Conditional Covariance
+   /sample_conditional
+   /Theory
+   /Conditional Covariance
 /$$
 method by the implicit covariance method
 (which was removed on 2020-03-15 because it was to slow).
@@ -736,7 +736,7 @@ multipliers (as well as the optimal fixed effects). If $icode fixed_out$$
 was the return value for the previous version of $code optimize_fixed$$,
 and $icode solution$$ is the current return value,
 $codei%
-	%fixed_out% = %solution%.fixed_opt
+   %fixed_out% = %solution%.fixed_opt
 %$$.
 This shows how to convert old $code optimize_fixed$$ calls to the new form.
 
@@ -811,9 +811,9 @@ $head 01-19$$
 Fix a bug (found by $code valgrind$$) in the setting of the upper bound
 ($icode g_u$$ in $code ipopt_fixed_get_bounds_info$$) for the
 $cref/random constraints
-	/cppad_mixed
-	/Problem
-	/Random Constraints
+   /cppad_mixed
+   /Problem
+   /Random Constraints
 /$$.
 
 $head 01-16$$
@@ -885,8 +885,8 @@ to obtain more efficiency).
 $head 01-04$$
 Regroup information in $cref theory$$ section of documentation so that
 $cref/approximating optimal random effects
-	/theory
-	/Approximate Optimal Random Effects
+   /theory
+   /Approximate Optimal Random Effects
 /$$ is a separate section.
 
 $head 01-01$$

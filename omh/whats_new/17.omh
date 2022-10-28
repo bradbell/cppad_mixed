@@ -5,36 +5,36 @@
 
 $begin whats_new_17$$
 $spell
-	ctor
-	rcv
-	cppad
-	std
-	fabs
-	nlp
-	Ipopt
-	cxx
-	cmake
-	omhelp
-	CppAD
-	bool
-	namespace
-	rc
-	optimizer
-	obj_tst
-	hpp
-	messaging
-	cholesky
-	Eigen
-	ar
-	hes
-	git
-	github
-	logit
-	xam
-	subgraphs
-	Jacobian
-	subgraph
-	jac
+   ctor
+   rcv
+   cppad
+   std
+   fabs
+   nlp
+   Ipopt
+   cxx
+   cmake
+   omhelp
+   CppAD
+   bool
+   namespace
+   rc
+   optimizer
+   obj_tst
+   hpp
+   messaging
+   cholesky
+   Eigen
+   ar
+   hes
+   git
+   github
+   logit
+   xam
+   subgraphs
+   Jacobian
+   subgraph
+   jac
 $$
 
 $section Changes and Additions to cppad_mixed During 2017$$
@@ -84,9 +84,9 @@ from 2.5 to 1.0 (on one test system).
 $lnext
 Change the
 $cref/mean_logit_probability
-	/capture_xam.cpp
-	/Command Arguments
-	/mean_logit_probability
+   /capture_xam.cpp
+   /Command Arguments
+   /mean_logit_probability
 /$$
 used during $cref/make check/install_unix/cppad_mixed/Check/$$
 from -0.25 to -0.50
@@ -190,14 +190,14 @@ $head 08-30$$
 Advance to cppad-20170830. This fixes a problem with the cmake command;
 to be specific,
 $codei%
-	Policy CMP0046 is not set: Error on non-existent dependency
+   Policy CMP0046 is not set: Error on non-existent dependency
 %$$
 
 $head 08-01$$
 The clang-802.0.42 compiler complained that
 routine $code ran_obj_tst$$ was not defined in the statement
 $srccode%cpp%
-	friend bool ::ran_obj_tst(void);
+   friend bool ::ran_obj_tst(void);
 %$$
 in the file $code include/cppad/mixed/cppad_mixed.hpp$$.
 This has been fixed.
@@ -367,10 +367,10 @@ The fixed effects
 objective and constraint functions are now scaled so that
 the maximum absolute norm of the gradient of each of these functions is one;
 see $cref/
-	nlp_scaling_method/
-	optimize_fixed/
-	fixed_ipopt_options/
-	nlp_scaling_method
+   nlp_scaling_method/
+   optimize_fixed/
+   fixed_ipopt_options/
+   nlp_scaling_method
 /$$.
 
 

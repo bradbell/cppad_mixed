@@ -6,35 +6,35 @@
 # $OMhelpKeyCharacter=&
 # &begin run_cmake.sh&& &newlinech #&&
 # &spell
-#	cmake
-#	makefile
-#	cxx
-#	std
-#	dismod
-#	libdir
-#	lcppad
-#	cholmod
-#	cpp
-#	usr
-#	eigen
-#	ipopt
-#	cppad
-#	bools
-#	devel
-#	hpp
-#	ldlt
-#	bool
-#	libdir
-#	cholesky
-#	ar1_xam
-#	callgrind
-#	hes
-#	Wshadow
-#	Wconversion
-#	Wpedantic
-#	config
-#	gcc
-#	gfortran
+#  cmake
+#  makefile
+#  cxx
+#  std
+#  dismod
+#  libdir
+#  lcppad
+#  cholmod
+#  cpp
+#  usr
+#  eigen
+#  ipopt
+#  cppad
+#  bools
+#  devel
+#  hpp
+#  ldlt
+#  bool
+#  libdir
+#  cholesky
+#  ar1_xam
+#  callgrind
+#  hes
+#  Wshadow
+#  Wconversion
+#  Wpedantic
+#  config
+#  gcc
+#  gfortran
 # &&
 #
 # &section bin/run_cmake.sh: User Configuration Options&&
@@ -85,7 +85,7 @@ cmake_install_prefix="$HOME/prefix/cppad_mixed"
 # This variable allows you to set a specific compiler for
 # C and or CXX and or FC.  For example
 # &code
-#	specific_compiler='CC=gcc CXX=g++ FC=gfortran'
+#  specific_compiler='CC=gcc CXX=g++ FC=gfortran'
 # &&
 # uses the gnu versions of these compilers.
 # The configuration will automatically find compilers that are not specified;
@@ -139,10 +139,10 @@ for_hes_sparsity='yes'
 # set &icode build_type&& to &code release&&, include the &code -g&& flag
 # in &icode extra_cxx_flags&&. Then execute the following commands:
 # &codei%
-#	bin/install_cppad.sh
-#	bin/run_cmake.sh
-#	cd build; make %program%; cd ..
-#	bin/%program%.sh %test2run%
+#  bin/install_cppad.sh
+#  bin/run_cmake.sh
+#  cd build; make %program%; cd ..
+#  bin/%program%.sh %test2run%
 # %&&
 # where &icode program&& is
 # &cref/ar1_xam/ar1_xam.cpp/&& or &cref/capture_xam/ar1_xam.cpp/&&
@@ -153,60 +153,60 @@ for_hes_sparsity='yes'
 # ============================================================================
 # bash function that echos and executes a command
 echo_eval() {
-	echo $*
-	eval $*
+   echo $*
+   eval $*
 }
 # ----------------------------------------------------------------------------
 if [ "$0" != "bin/run_cmake.sh" ]
 then
-	echo "bin/run_cmake.sh: must be executed from its parent directory"
-	exit 1
+   echo "bin/run_cmake.sh: must be executed from its parent directory"
+   exit 1
 fi
 if [ "$build_type" != 'debug' ] && [ "$build_type" != 'release' ]
 then
-	echo "bin/run_cmake.sh: build_type is not 'debug' or 'release'"
-	exit 1
+   echo "bin/run_cmake.sh: build_type is not 'debug' or 'release'"
+   exit 1
 fi
 while [ "$1" != '' ]
 do
-	if [ "$1" == '--help' ]
-	then
-		cat << EOF
+   if [ "$1" == '--help' ]
+   then
+      cat << EOF
 usage: bin/run_cmake.sh \\
-	[--help] \\
-	[--verbose] \\
-	[--ldlt_eigen] \\
-	[--rev_hes_sparsity] \\
-	[--release] \\
-	[--optimize_cppad_function] \\
-	[--dismod_at_prefix]
+   [--help] \\
+   [--verbose] \\
+   [--ldlt_eigen] \\
+   [--rev_hes_sparsity] \\
+   [--release] \\
+   [--optimize_cppad_function] \\
+   [--dismod_at_prefix]
 EOF
-		exit 0
-	fi
-	if [ "$1" == '--verbose' ]
-	then
-		verbose_makefile='1'
-	elif [ "$1" == '--ldlt_eigen' ]
-	then
-		ldlt_cholmod='no'
-	elif [ "$1" == '--rev_hes_sparsity' ]
-	then
-		for_hes_sparsity='no'
-	elif [ "$1" == '--release' ]
-	then
-		build_type='release'
-	elif [ "$1" == '--optimize_cppad_function' ]
-	then
-		optimize_cppad_function='yes'
-	elif [ "$1" == '--dismod_at_prefix' ]
-	then
-		cmake_install_prefix="$HOME/prefix/dismod_at"
-	else
-		echo "'$1' is an invalid option"
-		bin/run_cmake.sh --help
-		exit 1
-	fi
-	shift
+      exit 0
+   fi
+   if [ "$1" == '--verbose' ]
+   then
+      verbose_makefile='1'
+   elif [ "$1" == '--ldlt_eigen' ]
+   then
+      ldlt_cholmod='no'
+   elif [ "$1" == '--rev_hes_sparsity' ]
+   then
+      for_hes_sparsity='no'
+   elif [ "$1" == '--release' ]
+   then
+      build_type='release'
+   elif [ "$1" == '--optimize_cppad_function' ]
+   then
+      optimize_cppad_function='yes'
+   elif [ "$1" == '--dismod_at_prefix' ]
+   then
+      cmake_install_prefix="$HOME/prefix/dismod_at"
+   else
+      echo "'$1' is an invalid option"
+      bin/run_cmake.sh --help
+      exit 1
+   fi
+   shift
 done
 # Always set soft link for ./build -> ./build.buid_type
 # If install prefix end is cppad_mixed, also set soft link for install dir
@@ -215,18 +215,18 @@ bin/build_type.sh run_cmake $cmake_install_prefix $build_type
 export PKG_CONFIG_PATH=':'
 for pkg in eigen3 ipopt cppad
 do
-	pkg_config_path=$(find -L "$cmake_install_prefix" -name "$pkg.pc" |\
-		head -1 | sed -e "s|/$pkg.pc||" \
-	)
-	if [ "$pkg_config_path" == '' ]
-	then
-		echo "Can't find $pkg.pc: cmake_install_prefix=$cmake_install_prefix"
-		exit 1
-	fi
-	if ! echo $PKG_CONFIG_PATH | grep ":$pkg_config_path:" > /dev/null
-	then
-		PKG_CONFIG_PATH=":$pkg_config_path$PKG_CONFIG_PATH"
-	fi
+   pkg_config_path=$(find -L "$cmake_install_prefix" -name "$pkg.pc" |\
+      head -1 | sed -e "s|/$pkg.pc||" \
+   )
+   if [ "$pkg_config_path" == '' ]
+   then
+      echo "Can't find $pkg.pc: cmake_install_prefix=$cmake_install_prefix"
+      exit 1
+   fi
+   if ! echo $PKG_CONFIG_PATH | grep ":$pkg_config_path:" > /dev/null
+   then
+      PKG_CONFIG_PATH=":$pkg_config_path$PKG_CONFIG_PATH"
+   fi
 done
 PKG_CONFIG_PATH=$(echo $PKG_CONFIG_PATH | sed -e 's|^:||' -e 's|:$||')
 echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH"
@@ -234,76 +234,76 @@ echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH"
 # cmake_cxx_compiler
 if echo $specific_compiler | grep 'CXX=' > /dev/null
 then
-	cxx=$(echo $specific_compiler | sed -e 's|.*CXX=\([^ ]*\).*|\1|')
-	if ! which $cxx > /dev/null
-	then
-		echo "run_cmake.sh: specific_compiler: cannot execute $cxx compiler"
-		exit 1
-	fi
-	cxx_path=$(which $cxx)
-	cmake_cxx_compiler="-D CMAKE_CXX_COMPILER=$cxx_path"
+   cxx=$(echo $specific_compiler | sed -e 's|.*CXX=\([^ ]*\).*|\1|')
+   if ! which $cxx > /dev/null
+   then
+      echo "run_cmake.sh: specific_compiler: cannot execute $cxx compiler"
+      exit 1
+   fi
+   cxx_path=$(which $cxx)
+   cmake_cxx_compiler="-D CMAKE_CXX_COMPILER=$cxx_path"
 else
-	cmake_cxx_compiler=''
+   cmake_cxx_compiler=''
 fi
 # --------------------------------------------------------------------------
 # cmake_c_compiler
 if echo $specific_compiler | grep 'CC=' > /dev/null
 then
-	cc=$(echo $specific_compiler | sed -e 's|.*CC=\([^ ]*\).*|\1|')
-	if ! which $cc > /dev/null
-	then
-		echo "run_cmake.sh: specific_compiler: cannot execute $cc compiler"
-		exit 1
-	fi
-	c_path=$(which $cc)
-	cmake_c_compiler="-D CMAKE_C_COMPILER=$c_path"
+   cc=$(echo $specific_compiler | sed -e 's|.*CC=\([^ ]*\).*|\1|')
+   if ! which $cc > /dev/null
+   then
+      echo "run_cmake.sh: specific_compiler: cannot execute $cc compiler"
+      exit 1
+   fi
+   c_path=$(which $cc)
+   cmake_c_compiler="-D CMAKE_C_COMPILER=$c_path"
 else
-	cmake_c_compiler=''
+   cmake_c_compiler=''
 fi
 # --------------------------------------------------------------------------
 if [ ! -e build ]
 then
-	echo_eval mkdir build
+   echo_eval mkdir build
 fi
 echo_eval cd build
 if [ -e CMakeCache.txt ]
 then
-	echo_eval rm CMakeCache.txt
+   echo_eval rm CMakeCache.txt
 fi
 if [ -e CMakeFiles ]
 then
-	echo_eval rm -r CMakeFiles
+   echo_eval rm -r CMakeFiles
 fi
 cat << EOF
 cmake \\
-	-Wno-dev \\
-	-D CMAKE_VERBOSE_MAKEFILE=$verbose_makefile \\
-	-D CMAKE_BUILD_TYPE=$build_type \\
-	$cmake_cxx_compiler \\
-	$cmake_c_compiler \\
-	-D cmake_install_prefix="$cmake_install_prefix" \\
-	\\
-	-D extra_cxx_flags="$extra_cxx_flags" \\
-	-D cmake_libdir="$cmake_libdir" \\
-	-D ldlt_cholmod="$ldlt_cholmod" \\
-	-D optimize_cppad_function="$optimize_cppad_function" \\
-	-D for_hes_sparsity="$for_hes_sparsity" \\
-	..
+   -Wno-dev \\
+   -D CMAKE_VERBOSE_MAKEFILE=$verbose_makefile \\
+   -D CMAKE_BUILD_TYPE=$build_type \\
+   $cmake_cxx_compiler \\
+   $cmake_c_compiler \\
+   -D cmake_install_prefix="$cmake_install_prefix" \\
+   \\
+   -D extra_cxx_flags="$extra_cxx_flags" \\
+   -D cmake_libdir="$cmake_libdir" \\
+   -D ldlt_cholmod="$ldlt_cholmod" \\
+   -D optimize_cppad_function="$optimize_cppad_function" \\
+   -D for_hes_sparsity="$for_hes_sparsity" \\
+   ..
 EOF
 cmake \
-	-Wno-dev \
-	-D CMAKE_VERBOSE_MAKEFILE=$verbose_makefile \
-	-D CMAKE_BUILD_TYPE=$build_type \
-	$cmake_cxx_compiler \
-	\
-	-D cmake_install_prefix="$cmake_install_prefix" \
-	\
-	-D extra_cxx_flags="$extra_cxx_flags" \
-	-D cmake_libdir="$cmake_libdir" \
-	-D ldlt_cholmod="$ldlt_cholmod" \
-	-D optimize_cppad_function="$optimize_cppad_function" \
-	-D for_hes_sparsity="$for_hes_sparsity" \
-	..
+   -Wno-dev \
+   -D CMAKE_VERBOSE_MAKEFILE=$verbose_makefile \
+   -D CMAKE_BUILD_TYPE=$build_type \
+   $cmake_cxx_compiler \
+   \
+   -D cmake_install_prefix="$cmake_install_prefix" \
+   \
+   -D extra_cxx_flags="$extra_cxx_flags" \
+   -D cmake_libdir="$cmake_libdir" \
+   -D ldlt_cholmod="$ldlt_cholmod" \
+   -D optimize_cppad_function="$optimize_cppad_function" \
+   -D for_hes_sparsity="$for_hes_sparsity" \
+   ..
 # ---------------------------------------------------------------------------
 echo 'run_cmake.sh: OK'
 exit 0

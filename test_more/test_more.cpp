@@ -32,30 +32,30 @@ extern bool zero_random_two(void);
 
 // anonymous namespace
 namespace {
-	using std::cout;
-	using std::endl;
+   using std::cout;
+   using std::endl;
 
-	// function that runs one test
-	static size_t Run_ok_count    = 0;
-	static size_t Run_error_count = 0;
-	void Run(bool test_fun(void), const char* test_name)
-	{
-		std::streamsize width = 30;
-		cout.width( width );
-		cout.setf( std::ios_base::left );
-		cout << test_name << ':';
-		assert( std::strlen(test_name) < size_t(width) );
-		//
-		bool ok = test_fun();
-		if( ok )
-		{	cout << "OK" << endl;
-			Run_ok_count++;
-		}
-		else
-		{	cout << "Error" << endl;
-			Run_error_count++;
-		}
-	}
+   // function that runs one test
+   static size_t Run_ok_count    = 0;
+   static size_t Run_error_count = 0;
+   void Run(bool test_fun(void), const char* test_name)
+   {
+      std::streamsize width = 30;
+      cout.width( width );
+      cout.setf( std::ios_base::left );
+      cout << test_name << ':';
+      assert( std::strlen(test_name) < size_t(width) );
+      //
+      bool ok = test_fun();
+      if( ok )
+      {  cout << "OK" << endl;
+         Run_ok_count++;
+      }
+      else
+      {  cout << "Error" << endl;
+         Run_error_count++;
+      }
+   }
 }
 // macro for calls Run
 # define RUN(test_name) Run( test_name, #test_name )
@@ -63,40 +63,40 @@ namespace {
 // main program that runs all the tests
 int main(void)
 {
-	// This comment expected by bin/test_one.sh
-	RUN(abs_fix_con);
-	RUN(binomial);
-	RUN(delta_ran_obj);
-	RUN(der_var_hes);
-	RUN(fixed_lag);
-	RUN(ldlt_cholmod);
-	RUN(max_iter_neg);
-	RUN(n_mixture);
-	RUN(no_fix_likelihood);
-	RUN(no_random);
-	RUN(no_random_info);
-	RUN(opt_ran_fail);
-	RUN(ran_obj_tst);
-	RUN(laplace_obj_hes);
-	RUN(laplace_obj_tst);
-	RUN(sample_fixed_1);
-	RUN(sample_fixed_2);
-	RUN(scale_one);
-	// RUN(scale_two); not yet working
-	RUN(solution_check);
-	RUN(zero_random_one);
-	RUN(zero_random_two);
-	// This comment also expected by bin/test_one.sh
+   // This comment expected by bin/test_one.sh
+   RUN(abs_fix_con);
+   RUN(binomial);
+   RUN(delta_ran_obj);
+   RUN(der_var_hes);
+   RUN(fixed_lag);
+   RUN(ldlt_cholmod);
+   RUN(max_iter_neg);
+   RUN(n_mixture);
+   RUN(no_fix_likelihood);
+   RUN(no_random);
+   RUN(no_random_info);
+   RUN(opt_ran_fail);
+   RUN(ran_obj_tst);
+   RUN(laplace_obj_hes);
+   RUN(laplace_obj_tst);
+   RUN(sample_fixed_1);
+   RUN(sample_fixed_2);
+   RUN(scale_one);
+   // RUN(scale_two); not yet working
+   RUN(solution_check);
+   RUN(zero_random_one);
+   RUN(zero_random_two);
+   // This comment also expected by bin/test_one.sh
 
-	// summary report
-	int return_flag;
-	if( Run_error_count == 0 )
-	{	cout << "All " << Run_ok_count << " tests passed." << endl;
-		return_flag = 0;
-	}
-	else
-	{	cout << Run_error_count << " tests failed." << endl;
-		return_flag = 1;
-	}
-	return return_flag;
+   // summary report
+   int return_flag;
+   if( Run_error_count == 0 )
+   {  cout << "All " << Run_ok_count << " tests passed." << endl;
+      return_flag = 0;
+   }
+   else
+   {  cout << Run_error_count << " tests failed." << endl;
+      return_flag = 1;
+   }
+   return return_flag;
 }

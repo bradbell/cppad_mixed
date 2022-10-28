@@ -10,12 +10,12 @@
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 a1_vector order2random(
-	size_t                               n_fixed         ,
-	size_t                               n_random        ,
-	CppAD::ADFun<a1_double, double>&     jac_a1fun       ,
-	const ldlt_eigen<a1_double>&         a1_ldlt_ran_hes ,
-	const a1_vector&                     beta            ,
-	const a1_vector&                     theta_u
+   size_t                               n_fixed         ,
+   size_t                               n_random        ,
+   CppAD::ADFun<a1_double, double>&     jac_a1fun       ,
+   const ldlt_eigen<a1_double>&         a1_ldlt_ran_hes ,
+   const a1_vector&                     beta            ,
+   const a1_vector&                     theta_u
 );
 
 

@@ -7,8 +7,8 @@
 /*
 $begin sparse_mat_info$$
 $spell
-	CppAD
-	resize
+   CppAD
+   resize
 %$$
 
 $section Sparse Matrix Information$$
@@ -24,7 +24,7 @@ This structure holds information about a sparse matrix.
 $head row$$
 The field $icode%mat_info%.row%$$ has prototype
 $codei%
-	CppAD::vector<size_t> %mat_info%.row
+   CppAD::vector<size_t> %mat_info%.row
 %$$
 It has size zero when it is constructed.
 After initialization it should contain the row indices
@@ -36,7 +36,7 @@ We use $icode%K% = %mat_info%.row.size()%$$ below.
 $head col$$
 The field $icode%mat_info%.col%$$ has prototype
 $codei%
-	CppAD::vector<size_t> %mat_info%.col
+   CppAD::vector<size_t> %mat_info%.col
 %$$
 It has size zero when it is constructed.
 After initialization it should have the same size as $icode row$$
@@ -46,7 +46,7 @@ corresponding to possibly non-zero elements of the matrix.
 $head val$$
 The field $icode%mat_info%.val%$$ has prototype
 $codei%
-	CppAD::vector<double> %mat_info%.val
+   CppAD::vector<double> %mat_info%.val
 %$$
 It has size zero when it is constructed.
 After initialization it should either have size zero,
@@ -55,7 +55,7 @@ or the same size as $icode row$$.
 $head resize$$
 The $code resize$$ argument has prototype
 $codei%
-	size_t %size%
+   size_t %size%
 %$$
 All of the vectors,
 $icode row$$, $icode col$$, and $icode val$$,
@@ -68,7 +68,7 @@ We say that $icode mat_info$$ is a sparsity pattern if,
 for $icode%k% = 0 , ... , %K%-1%$$,
 the element with index
 $codei%
-	(%mat_info%.row[%k%], %mat_info%.col[%k%])
+   (%mat_info%.row[%k%], %mat_info%.col[%k%])
 %$$
 is possibly non-zero and the size or elements of
 $icode%mat_info%.val%$$ are not specified.
@@ -78,7 +78,7 @@ We say that $icode mat_info$$ is a sparse matrix if,
 for $icode%k% = 0 , ... , %K%-1%$$,
 the element with index
 $codei%
-	(%mat_info%.row[%k%], %mat_info%.col[%k%])
+   (%mat_info%.row[%k%], %mat_info%.col[%k%])
 %$$
 is possibly non-zero and has value $icode%mat_info%.val[%k%]%$$.
 
@@ -89,25 +89,25 @@ we say that $icode mat_info$$ is the empty matrix.
 $subhead Column Major Order$$
 If for $icode%k% = 0 , ... , %K%-1%$$,
 $codei%
-	%mat_info%.col[%k%] <= %mat_info%.col[%k+1%]
-	if( %mat_info%.col[%k%] == %mat_info%.col[%k+1%] )
-		%mat_info%.row[%k%] < %mat_info%.row[%k+1%]
+   %mat_info%.col[%k%] <= %mat_info%.col[%k+1%]
+   if( %mat_info%.col[%k%] == %mat_info%.col[%k+1%] )
+      %mat_info%.row[%k%] < %mat_info%.row[%k+1%]
 %$$
 we say that $icode mat_info$$ is in column major order.
 
 $subhead Row Major Order$$
 If for $icode%k% = 0 , ... , %K%-1%$$,
 $codei%
-	%mat_info%.row[%k%] <= %mat_info%.row[%k+1%]
-	if( %mat_info%.row[%k%] == %mat_info%.row[%k+1%] )
-		%mat_info%.col[%k%] < %mat_info%.col[%k+1%]
+   %mat_info%.row[%k%] <= %mat_info%.row[%k+1%]
+   if( %mat_info%.row[%k%] == %mat_info%.row[%k+1%] )
+      %mat_info%.col[%k%] < %mat_info%.col[%k+1%]
 %$$
 we say that $icode mat_info$$ is in row major order.
 
 $subhead Lower Triangular$$
 If for $icode%k% = 0 , ... , %K%-1%$$,
 $codei%
-	%mat_info%.row[%k%] >= %mat_info%.col[%k%]
+   %mat_info%.row[%k%] >= %mat_info%.col[%k%]
 %$$
 we say that $icode mat_info$$ is lower triangular.
 
@@ -116,17 +116,17 @@ $end
 # include <cppad/utility/vector.hpp>
 
 namespace CppAD { namespace mixed {
-	struct sparse_mat_info {
-		CppAD::vector<size_t>  row;
-		CppAD::vector<size_t>  col;
-		CppAD::vector<double>  val;
-		//
-		void resize(size_t size)
-		{	row.resize(size);
-			col.resize(size);
-			val.resize(size);
-		}
-	};
+   struct sparse_mat_info {
+      CppAD::vector<size_t>  row;
+      CppAD::vector<size_t>  col;
+      CppAD::vector<double>  val;
+      //
+      void resize(size_t size)
+      {  row.resize(size);
+         col.resize(size);
+         val.resize(size);
+      }
+   };
 } }
 
 # endif

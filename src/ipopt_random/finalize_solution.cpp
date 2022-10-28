@@ -8,31 +8,31 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 $begin ipopt_random_finalize_solution$$
 $spell
-	obj
-	ip
-	cq
-	CppAD
-	solution solution
-	Ipopt
-	namespace
-	infeasibility
-	doesn't
-	Inf
-	naninf
+   obj
+   ip
+   cq
+   CppAD
+   solution solution
+   Ipopt
+   namespace
+   infeasibility
+   doesn't
+   Inf
+   naninf
 $$
 
 $section Get Solution Results$$
 
 $head Syntax$$
 $codei%finalize_solution(
-	%status%, %n%, %x%, %z_L%, %z_U%, %m%, %g%,%$$
+   %status%, %n%, %x%, %z_L%, %z_U%, %m%, %g%,%$$
 $icode%lambda%, %obj_value%, %ip_data%, %ip_cq%
 )%$$
 
 $head solution_$$
 This routine checks the solution values and sets the member variable
 $codei%
-	CppAD::mixed fixed_solution solution_
+   CppAD::mixed fixed_solution solution_
 %$$.
 
 $head n$$
@@ -111,28 +111,28 @@ the NLP; see also option check_derivatives_for_naninf.
 $head Prototype$$
 $srccode%cpp% */
 void ipopt_random::finalize_solution(
-	Ipopt::SolverReturn               status    ,  // in
-	Index                             n         ,  // in
-	const Number*                     x         ,  // in
-	const Number*                     z_L       ,  // in
-	const Number*                     z_U       ,  // in
-	Index                             m         ,  // in
-	const Number*                     g         ,  // in
-	const Number*                     lambda    ,  // in
-	Number                            obj_value ,  // in
-	const Ipopt::IpoptData*           ip_data   ,  // in
-	Ipopt::IpoptCalculatedQuantities* ip_cq     )  // in
+   Ipopt::SolverReturn               status    ,  // in
+   Index                             n         ,  // in
+   const Number*                     x         ,  // in
+   const Number*                     z_L       ,  // in
+   const Number*                     z_U       ,  // in
+   Index                             m         ,  // in
+   const Number*                     g         ,  // in
+   const Number*                     lambda    ,  // in
+   Number                            obj_value ,  // in
+   const Ipopt::IpoptData*           ip_data   ,  // in
+   Ipopt::IpoptCalculatedQuantities* ip_cq     )  // in
 /* %$$
 $end
 */
-{	assert( size_t(n) == n_random_ );
-	assert( m == 0 );
-	//
-	assert( random_opt_.size() == 0 );
-	random_opt_.resize(n_random_);
-	for(size_t j = 0; j < n_random_; j++)
-		random_opt_[j] = x[j];
-	//
-	return;
+{  assert( size_t(n) == n_random_ );
+   assert( m == 0 );
+   //
+   assert( random_opt_.size() == 0 );
+   random_opt_.resize(n_random_);
+   for(size_t j = 0; j < n_random_; j++)
+      random_opt_[j] = x[j];
+   //
+   return;
 }
 } } // END_CPPAD_MIXED_NAMESPACE

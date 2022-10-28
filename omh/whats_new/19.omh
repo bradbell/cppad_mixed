@@ -5,16 +5,16 @@
 
 $begin whats_new_19$$
 $spell
-	cppad
-	CppAD
-	messaging
-	github
-	ldlt_eigen
-	Goto
-	omhelp
-	rcv
-	nr
-	nc
+   cppad
+   CppAD
+   messaging
+   github
+   ldlt_eigen
+   Goto
+   omhelp
+   rcv
+   nr
+   nc
 $$
 
 $section Changes and Additions to cppad_mixed During 2019$$

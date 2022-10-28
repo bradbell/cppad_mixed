@@ -8,24 +8,24 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 $begin ipopt_random_ctor$$
 $spell
-	Ipopt
-	CppAD
-	vec
-	cppad
-	nlp
-	inf
-	nnz
+   Ipopt
+   CppAD
+   vec
+   cppad
+   nlp
+   inf
+   nnz
 $$
 
 $section Ipopt Random Optimization Callback Constructor$$
 
 $head Syntax$$
 $codei%CppAD::mixed::ipopt_random %ipopt_object%(
-	%fixed_vec%,
-	%random_lower%,
-	%random_upper%,
-	%random_in%,
-	%mixed_object%
+   %fixed_vec%,
+   %random_lower%,
+   %random_upper%,
+   %random_in%,
+   %mixed_object%
 )%$$
 
 $head fixed_vec$$
@@ -78,11 +78,11 @@ are no constraints (except for box constraints) in this problem.
 
 $srccode%cpp% */
 ipopt_random::ipopt_random(
-	const d_vector&     fixed_vec          ,
-	const d_vector&     random_lower       ,
-	const d_vector&     random_upper       ,
-	const d_vector&     random_in          ,
-	cppad_mixed&        mixed_object       ) :
+   const d_vector&     fixed_vec          ,
+   const d_vector&     random_lower       ,
+   const d_vector&     random_upper       ,
+   const d_vector&     random_in          ,
+   cppad_mixed&        mixed_object       ) :
 /* %$$
 $end
 */
@@ -95,19 +95,19 @@ random_in_           ( random_in )                        ,
 nnz_h_lag_           ( mixed_object.ran_hes_uu_rcv_.nnz() )  ,
 mixed_object_        ( mixed_object    )                  ,
 error_random_        ( n_random_ )
-{	// -----------------------------------------------------------------------
-	// set nlp_lower_bound_inf_, nlp_upper_bound_inf_
-	double inf           = std::numeric_limits<double>::infinity();
-	nlp_lower_bound_inf_ = - 1e19;
-	nlp_upper_bound_inf_ = + 1e19;
-	for(size_t j = 0; j < n_random_; j++)
-	{	if( random_lower[j] != - inf ) nlp_lower_bound_inf_ =
-				std::min(nlp_lower_bound_inf_, 1.1 * random_lower[j] );
-		//
-		if( random_upper[j] != inf ) nlp_upper_bound_inf_ =
-				std::max(nlp_upper_bound_inf_, 1.1 * random_upper[j] );
-	}
-	objective_current_ = std::numeric_limits<double>::quiet_NaN();
-	return;
+{  // -----------------------------------------------------------------------
+   // set nlp_lower_bound_inf_, nlp_upper_bound_inf_
+   double inf           = std::numeric_limits<double>::infinity();
+   nlp_lower_bound_inf_ = - 1e19;
+   nlp_upper_bound_inf_ = + 1e19;
+   for(size_t j = 0; j < n_random_; j++)
+   {  if( random_lower[j] != - inf ) nlp_lower_bound_inf_ =
+            std::min(nlp_lower_bound_inf_, 1.1 * random_lower[j] );
+      //
+      if( random_upper[j] != inf ) nlp_upper_bound_inf_ =
+            std::max(nlp_upper_bound_inf_, 1.1 * random_upper[j] );
+   }
+   objective_current_ = std::numeric_limits<double>::quiet_NaN();
+   return;
 }
 } } // END_CPPAD_MIXED_NAMESPACE

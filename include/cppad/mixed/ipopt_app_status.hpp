@@ -9,7 +9,7 @@
 # include <coin-or/IpIpoptApplication.hpp>
 
 namespace CppAD { namespace mixed {
-	std::string ipopt_app_status( Ipopt::ApplicationReturnStatus status );
+   std::string ipopt_app_status( Ipopt::ApplicationReturnStatus status );
 } }
 
 # endif

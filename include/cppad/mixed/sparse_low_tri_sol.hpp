@@ -8,10 +8,10 @@
 # include <Eigen/SparseCore>
 
 namespace CppAD { namespace mixed {
-	Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_low_tri_sol(
-		const Eigen::SparseMatrix<double, Eigen::RowMajor>&  left  ,
-		const Eigen::SparseMatrix<double, Eigen::ColMajor>&  right
-	);
+   Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_low_tri_sol(
+      const Eigen::SparseMatrix<double, Eigen::RowMajor>&  left  ,
+      const Eigen::SparseMatrix<double, Eigen::ColMajor>&  right
+   );
 } }
 
 # endif

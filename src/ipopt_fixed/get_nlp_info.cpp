@@ -8,17 +8,17 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 $begin ipopt_fixed_get_nlp_info$$
 $spell
-	CppAD
-	ran_obj
-	cppad
-	obj
-	ipopt_fixed_get_nlp_info
-	nnz_jac
-	Jacobian
-	bool
-	Enum
-	bool
-	nlp
+   CppAD
+   ran_obj
+   cppad
+   obj
+   ipopt_fixed_get_nlp_info
+   nnz_jac
+   Jacobian
+   bool
+   Enum
+   bool
+   nlp
 $$
 
 $section Return Information About Problem Sizes$$
@@ -46,26 +46,26 @@ format (C_STYLE: 0-based, FORTRAN_STYLE: 1-based).
 $head ok$$
 If set to false, the optimization will terminate with status set to
 $cref/USER_REQUESTED_STOP
-	/ipopt_fixed_finalize_solution/status/USER_REQUESTED_STOP/$$.
+   /ipopt_fixed_finalize_solution/status/USER_REQUESTED_STOP/$$.
 
 $head Prototype$$
 $srccode%cpp% */
 bool ipopt_fixed::get_nlp_info(
-	Index&          n            ,  // out
-	Index&          m            ,  // out
-	Index&          nnz_jac_g    ,  // out
-	Index&          nnz_h_lag    ,  // out
-	IndexStyleEnum& index_style  )  // out
+   Index&          n            ,  // out
+   Index&          m            ,  // out
+   Index&          nnz_jac_g    ,  // out
+   Index&          nnz_h_lag    ,  // out
+   IndexStyleEnum& index_style  )  // out
 /* %$$
 $end
 */
 {
-	n           = Index( n_fixed_ + fix_likelihood_nabs_ );
-	m           = Index( 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
-	nnz_jac_g   = Index( nnz_jac_g_ );
-	nnz_h_lag   = Index( nnz_h_lag_ );
-	index_style = C_STYLE;
-	//
-	return true;
+   n           = Index( n_fixed_ + fix_likelihood_nabs_ );
+   m           = Index( 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
+   nnz_jac_g   = Index( nnz_jac_g_ );
+   nnz_h_lag   = Index( nnz_h_lag_ );
+   index_style = C_STYLE;
+   //
+   return true;
 }
 } } // END_CPPAD_MIXED_NAMESPACE

@@ -5,20 +5,20 @@
 
 $begin release_notes$$
 $spell
-	cppad
+   cppad
 $$
 
 $section Changes and Additions to cppad_mixed$$
 
 $children%
-	omh/whats_new/22.omh%
-	omh/whats_new/21.omh%
-	omh/whats_new/20.omh%
-	omh/whats_new/19.omh%
-	omh/whats_new/18.omh%
-	omh/whats_new/17.omh%
-	omh/whats_new/16.omh%
-	omh/whats_new/15.omh
+   omh/whats_new/22.omh%
+   omh/whats_new/21.omh%
+   omh/whats_new/20.omh%
+   omh/whats_new/19.omh%
+   omh/whats_new/18.omh%
+   omh/whats_new/17.omh%
+   omh/whats_new/16.omh%
+   omh/whats_new/15.omh
 %$$
 
 $head This Year$$

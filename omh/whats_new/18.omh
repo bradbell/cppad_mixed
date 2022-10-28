@@ -5,34 +5,34 @@
 
 $begin whats_new_18$$
 $spell
-	hes
-	suitesparse
-	cppad
-	gcc
-	Wshadow
-	Wconversion
-	Wpedantic
-	cxx
-	cmake
-	cholesky
-	Jacobian
-	eval
-	jac
-	ipopt
-	obj
-	uninitialized
-	hpp
-	grep
-	txt
-	cholmod
-	iter
-	runtime
-	eigen
-	valgrind
-	CppAD
-	rcv
-	namespace
-	xam
+   hes
+   suitesparse
+   cppad
+   gcc
+   Wshadow
+   Wconversion
+   Wpedantic
+   cxx
+   cmake
+   cholesky
+   Jacobian
+   eval
+   jac
+   ipopt
+   obj
+   uninitialized
+   hpp
+   grep
+   txt
+   cholmod
+   iter
+   runtime
+   eigen
+   valgrind
+   CppAD
+   rcv
+   namespace
+   xam
 $$
 
 $section Changes and Additions to cppad_mixed During 2018$$
@@ -91,7 +91,7 @@ of the Hessian of the objective
 Cppad needs to improve its optimization of dynamic parameter calculations.
 For example, the optimized tapes that compute the Hessian of
 $cref/H(beta, theta, u)
-	/theory/Approximate Laplace Objective, H(beta, theta, u)
+   /theory/Approximate Laplace Objective, H(beta, theta, u)
 /$$
 are larger when $icode (theta, u)$$ are dynamic parameters
 than when they are variables.
@@ -148,9 +148,9 @@ $list number$$
 Implement the partial Newton step update in definition of
 the second order accurate approximation for the optimal random effects
 $cref/W(beta, theta, u)
-	/theory
-	/Approximate Optimal Random Effects
-	/Second Order, W(beta, theta, u)
+   /theory
+   /Approximate Optimal Random Effects
+   /Second Order, W(beta, theta, u)
 /$$.
 This should lead to a large improvement when the Hessian of the
 random likelihood with respect to the random effects is sparse.
@@ -232,7 +232,7 @@ $head 03-10$$
 The install $cref/download/install_unix/Download/$$ procedure was changed
 to use the following command to determine the version number:
 $codep
-	grep '^SET(cppad_mixed_version' CMakeLists.txt
+   grep '^SET(cppad_mixed_version' CMakeLists.txt
 $$
 
 $head 02-20$$

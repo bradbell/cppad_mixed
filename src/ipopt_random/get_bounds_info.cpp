@@ -41,32 +41,32 @@ it was not feasible
 $head Prototype$$
 $srccode%cpp% */
 bool ipopt_random::get_bounds_info(
-		Index       n        ,   // in
-		Number*     x_l      ,   // out
-		Number*     x_u      ,   // out
-		Index       m        ,   // in
-		Number*     g_l      ,   // out
-		Number*     g_u      )   // out
+      Index       n        ,   // in
+      Number*     x_l      ,   // out
+      Number*     x_u      ,   // out
+      Index       m        ,   // in
+      Number*     g_l      ,   // out
+      Number*     g_u      )   // out
 /* %$$
 $end
 */
 {
-	assert( size_t(n) == n_random_ );
-	assert( m == 0 );
-	//
-	for(size_t j = 0; j < n_random_; j++)
-	{	// map infinity to crazy value required by ipopt
-		if( random_lower_[j] == - std::numeric_limits<double>::infinity() )
-			x_l[j] = nlp_lower_bound_inf_;
-		else
-			x_l[j] = random_lower_[j];
-		//
-		if( random_upper_[j] == std::numeric_limits<double>::infinity() )
-			x_u[j] = nlp_upper_bound_inf_;
-		else
-			x_u[j] = random_upper_[j];
-	}
-	//
-	return true;
+   assert( size_t(n) == n_random_ );
+   assert( m == 0 );
+   //
+   for(size_t j = 0; j < n_random_; j++)
+   {  // map infinity to crazy value required by ipopt
+      if( random_lower_[j] == - std::numeric_limits<double>::infinity() )
+         x_l[j] = nlp_lower_bound_inf_;
+      else
+         x_l[j] = random_lower_[j];
+      //
+      if( random_upper_[j] == std::numeric_limits<double>::infinity() )
+         x_u[j] = nlp_upper_bound_inf_;
+      else
+         x_u[j] = random_upper_[j];
+   }
+   //
+   return true;
 }
 } } // END_CPPAD_MIXED_NAMESPACE

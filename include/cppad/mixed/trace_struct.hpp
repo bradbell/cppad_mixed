@@ -8,18 +8,18 @@
 /*
 $begin trace_struct$$
 $spell
-	Ipopt
-	CppAD
-	struct
-	iter
-	obj
-	inf
-	pr
-	du
-	mu
-	lg
-	rg
-	ls
+   Ipopt
+   CppAD
+   struct
+   iter
+   obj
+   inf
+   pr
+   du
+   mu
+   lg
+   rg
+   ls
 $$
 
 $section Ipopt Trace Information$$
@@ -67,21 +67,21 @@ $end
 ------------------------------------------------------------------------------
 */
 namespace CppAD { namespace mixed {
-	// BEGIN_PROTOTYPE
-	struct trace_struct {
-		size_t iter;
-		double obj_value;
-		double inf_pr;
-		double inf_du;
-		double mu;
-		double d_norm;
-		double regularization_size;
-		double alpha_du;
-		double alpha_pr;
-		size_t ls_trials;
-		bool   restoration;
-	};
-	// END_PROTOTYPE
+   // BEGIN_PROTOTYPE
+   struct trace_struct {
+      size_t iter;
+      double obj_value;
+      double inf_pr;
+      double inf_du;
+      double mu;
+      double d_norm;
+      double regularization_size;
+      double alpha_du;
+      double alpha_pr;
+      size_t ls_trials;
+      bool   restoration;
+   };
+   // END_PROTOTYPE
 } }
 
 

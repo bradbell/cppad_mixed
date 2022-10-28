@@ -4,14 +4,14 @@
 # ----------------------------------------------------------------------------
 if [ "$0" != 'bin/new_cppad.sh' ]
 then
-	echo 'bin/new_cppad.sh must be run from its parent directory'
-	exit 1
+   echo 'bin/new_cppad.sh must be run from its parent directory'
+   exit 1
 fi
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
-	echo $*
-	eval $*
+   echo $*
+   eval $*
 }
 # -----------------------------------------------------------------------------
 dir="$HOME/prefix/cppad_mixed/include/cppad"

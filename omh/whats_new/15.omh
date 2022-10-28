@@ -5,12 +5,12 @@
 
 $begin whats_new_15$$
 $spell
-	CppAD
-	namespace
-	cppad
-	Ipopt
-	eval
-	xam
+   CppAD
+   namespace
+   cppad
+   Ipopt
+   eval
+   xam
 $$
 
 $section Changes and Additions to cppad_mixed During 2015$$
@@ -36,15 +36,15 @@ This has been fixed.
 $lnext
 Change remarks about
 $cref/W(beta, theta, u)
-	/theory
-	/Approximate Optimal Random Effects
-	/Second Order, W(beta, theta, u)
+   /theory
+   /Approximate Optimal Random Effects
+   /Second Order, W(beta, theta, u)
 /$$
 to mention that the following has been proven
 $latex \[
-	W^i_{\beta \beta} [ \theta , \theta , \hat{u} ( \theta ) ]
-	=
-	\hat{u}^i_{\theta , \theta} ( \theta )
+   W^i_{\beta \beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+   =
+   \hat{u}^i_{\theta , \theta} ( \theta )
 \] $$
 $lend
 

@@ -5,9 +5,9 @@
 
 $begin whats_new_22$$
 $spell
-	cppad
-	homebrew
-	messaging
+   cppad
+   homebrew
+   messaging
 $$
 
 $section Changes and Additions to cppad_mixed During 2022$$

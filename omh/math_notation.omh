@@ -9,15 +9,15 @@ $section Mathematical Notation$$
 $head A$$
 The notation $latex A$$ is used for the
 $cref/random constraint matrix
-	/cppad_mixed
-	/Notation
-	/Random Constraint Matrix, A
+   /cppad_mixed
+   /Notation
+   /Random Constraint Matrix, A
 /$$.
 
 $head B$$
 The notation $cref/B(beta, theta, u)
-	/theory
-	/Approximate Random Constraint Function, B(beta, theta, u)
+   /theory
+   /Approximate Random Constraint Function, B(beta, theta, u)
 /$$
 ( $latex B( \beta , \theta , u )$$ )
 is used for the second order random constraint approximation.
@@ -58,8 +58,8 @@ is used for the Laplace approximation function.
 
 $head H$$
 The notation $cref/H(beta, theta, u)
-	/theory
-	/Approximate Laplace Objective, H(beta, theta, u)
+   /theory
+   /Approximate Laplace Objective, H(beta, theta, u)
 /$$
 ( $latex H( \beta , \theta , u )$$ )
 is used for the second order Laplace objective.
@@ -100,18 +100,18 @@ is used for the optimal random effects.
 
 $head U$$
 The notation $cref/U(beta, theta, u)
-	/theory
-	/Approximate Optimal Random Effects
-	/First Order, U(beta, theta, u)
+   /theory
+   /Approximate Optimal Random Effects
+   /First Order, U(beta, theta, u)
 /$$
 ( $latex U( \beta , \theta , u )$$ )
 is used for the first order optimal random effects.
 
 $head W$$
 The notation $cref/W(beta, theta, u)
-	/theory
-	/Approximate Optimal Random Effects
-	/Second Order, W(beta, theta, u)
+   /theory
+   /Approximate Optimal Random Effects
+   /Second Order, W(beta, theta, u)
 /$$
 ( $latex W( \beta , \theta , u )$$ )
 is used for the second order approximation of optimal random effects.

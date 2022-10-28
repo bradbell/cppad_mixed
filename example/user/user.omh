@@ -4,7 +4,7 @@
 # ----------------------------------------------------------------------------
 $begin user_examples$$
 $spell
-	cppad
+   cppad
 $$
 
 $section User API Examples$$
@@ -15,13 +15,13 @@ These user examples are not for a particular public member function.
 (The ones for a particular function are children of that function.)
 $$
 $children%speed/speed.omh
-	%example/user/abs_density.cpp
-	%example/user/no_random.cpp
-	%example/user/ran_constraint.cpp
-	%example/user/lasso.cpp
-	%example/user/data_mismatch.cpp
-	%example/user/opt_ran_nan.cpp
-	%example/user/warm_start.cpp
+   %example/user/abs_density.cpp
+   %example/user/no_random.cpp
+   %example/user/ran_constraint.cpp
+   %example/user/lasso.cpp
+   %example/user/data_mismatch.cpp
+   %example/user/opt_ran_nan.cpp
+   %example/user/warm_start.cpp
 %$$
 
 $head Functions Defined by User and Called by cppad_mixed$$

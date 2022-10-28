@@ -9,31 +9,31 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 $begin ipopt_fixed_eval_h$$
 $spell
-	CppAD
-	ran_obj
-	cppad
-	obj
-	ipopt
-	bool
-	eval
-	const
-	obj
-	nele_hess
-	nnz
+   CppAD
+   ran_obj
+   cppad
+   obj
+   ipopt
+   bool
+   eval
+   const
+   obj
+   nele_hess
+   nnz
 $$
 
 $section Compute the Hessian of the Lagrangian$$
 
 $head Syntax$$
 $icode%ok% = eval_h(
-	%n%, %x%, %new_x%,%obj_factor%, %m%, %lambda%, %new_lambda%,%$$
+   %n%, %x%, %new_x%,%obj_factor%, %m%, %lambda%, %new_lambda%,%$$
 $icode%nele_hess%, %iRow%, %jCol%, %values%
 )%$$
 
 $head Lagrangian$$
 The Lagrangian is defined to be
 $latex \[
-	L(x) = \alpha f(x) + \sum_{i=0}^{m-1} \lambda_i g_i (x)
+   L(x) = \alpha f(x) + \sum_{i=0}^{m-1} \lambda_i g_i (x)
 \] $$
 
 $head mixed_object.quasi_fixed_$$
@@ -92,211 +92,211 @@ and column index $icode%jCol%[%k%]%$$.
 $head ok$$
 if set to false, the optimization will terminate with status set to
 $cref/USER_REQUESTED_STOP
-	/ipopt_fixed_finalize_solution/status/USER_REQUESTED_STOP/$$.
+   /ipopt_fixed_finalize_solution/status/USER_REQUESTED_STOP/$$.
 
 $head Prototype$$
 $srccode%cpp% */
 bool ipopt_fixed::eval_h(
-	Index         n              ,  // in
-	const Number* x              ,  // in
-	bool          new_x          ,  // in
-	Number        obj_factor     ,  // in
-	Index         m              ,  // in
-	const Number* lambda         ,  // in
-	bool          new_lambda     ,  // in
-	Index         nele_hess      ,  // in
-	Index*        iRow           ,  // out
-	Index*        jCol           ,  // out
-	Number*       values         )  // out
+   Index         n              ,  // in
+   const Number* x              ,  // in
+   bool          new_x          ,  // in
+   Number        obj_factor     ,  // in
+   Index         m              ,  // in
+   const Number* lambda         ,  // in
+   bool          new_lambda     ,  // in
+   Index         nele_hess      ,  // in
+   Index*        iRow           ,  // out
+   Index*        jCol           ,  // out
+   Number*       values         )  // out
 /* %$$
 $end
 */
 {
-	double obj_factor_scaled;
-	d_vector lambda_scaled(m);
-	if( values == nullptr )
-	{	double nan = std::numeric_limits<double>::quiet_NaN();
-		obj_factor_scaled = nan;
-		for(Index i = 0; i < m; ++i)
-			lambda_scaled[i] = nan;
-	}
-	else
-	{	for(Index j = 0; j < n; ++j)
-			x_tmp_[j] = scale_x_[j] * x[j];
-		obj_factor_scaled = scale_f_ * obj_factor;
-		for(Index i = 0; i < m; i++)
-			lambda_scaled[i] = scale_g_[i] * lambda[i];
-	}
-	if( abort_on_eval_error_ )
-	{	try_eval_h(
-			n,
-			x_tmp_,
-			new_x,
-			obj_factor_scaled,
-			m,
-			lambda_scaled.data(),
-			new_lambda,
-			nele_hess,
-			iRow,
-			jCol,
-			values
-		);
-	}
-	else
-	{	try
-		{	try_eval_h(
-				n,
-				x_tmp_,
-				new_x,
-				obj_factor_scaled,
-				m,
-				lambda_scaled.data(),
-				new_lambda,
-				nele_hess,
-				iRow,
-				jCol,
-				values
-			);
-		}
-		catch(const std::exception& e)
-		{	error_message_ = "ipopt_fixed::eval_h: std::exception: ";
-			for(size_t j = 0; j < n_fixed_; j++)
-				error_fixed_[j] = x[j];
-			return false;
-		}
-		catch(const CppAD::mixed::exception& e)
-		{	error_message_ = e.message("ipopt_fixed::eval_h");
-			for(size_t j = 0; j < n_fixed_; j++)
-				error_fixed_[j] = x[j];
-			return false;
-		}
-	}
-	assert( size_t( nele_hess ) == lag_hes_row_.size() );
-	assert( size_t( nele_hess ) == lag_hes_col_.size() );
-	if( values != nullptr )
-	{	for(Index k = 0; k < nele_hess; ++k)
-		{	size_t i = lag_hes_row_[k];
-			size_t j = lag_hes_col_[k];
-			values[k] *= scale_x_[i] * scale_x_[j];
-		}
-	}
-	return true;
+   double obj_factor_scaled;
+   d_vector lambda_scaled(m);
+   if( values == nullptr )
+   {  double nan = std::numeric_limits<double>::quiet_NaN();
+      obj_factor_scaled = nan;
+      for(Index i = 0; i < m; ++i)
+         lambda_scaled[i] = nan;
+   }
+   else
+   {  for(Index j = 0; j < n; ++j)
+         x_tmp_[j] = scale_x_[j] * x[j];
+      obj_factor_scaled = scale_f_ * obj_factor;
+      for(Index i = 0; i < m; i++)
+         lambda_scaled[i] = scale_g_[i] * lambda[i];
+   }
+   if( abort_on_eval_error_ )
+   {  try_eval_h(
+         n,
+         x_tmp_,
+         new_x,
+         obj_factor_scaled,
+         m,
+         lambda_scaled.data(),
+         new_lambda,
+         nele_hess,
+         iRow,
+         jCol,
+         values
+      );
+   }
+   else
+   {  try
+      {  try_eval_h(
+            n,
+            x_tmp_,
+            new_x,
+            obj_factor_scaled,
+            m,
+            lambda_scaled.data(),
+            new_lambda,
+            nele_hess,
+            iRow,
+            jCol,
+            values
+         );
+      }
+      catch(const std::exception& e)
+      {  error_message_ = "ipopt_fixed::eval_h: std::exception: ";
+         for(size_t j = 0; j < n_fixed_; j++)
+            error_fixed_[j] = x[j];
+         return false;
+      }
+      catch(const CppAD::mixed::exception& e)
+      {  error_message_ = e.message("ipopt_fixed::eval_h");
+         for(size_t j = 0; j < n_fixed_; j++)
+            error_fixed_[j] = x[j];
+         return false;
+      }
+   }
+   assert( size_t( nele_hess ) == lag_hes_row_.size() );
+   assert( size_t( nele_hess ) == lag_hes_col_.size() );
+   if( values != nullptr )
+   {  for(Index k = 0; k < nele_hess; ++k)
+      {  size_t i = lag_hes_row_[k];
+         size_t j = lag_hes_col_[k];
+         values[k] *= scale_x_[i] * scale_x_[j];
+      }
+   }
+   return true;
 }
 void ipopt_fixed::try_eval_h(
-	Index           n              ,  // in
-	const d_vector& x            ,  // in
-	bool            new_x          ,  // in
-	Number          obj_factor     ,  // in
-	Index           m              ,  // in
-	const Number*   lambda         ,  // in
-	bool            new_lambda     ,  // in
-	Index           nele_hess      ,  // in
-	Index*          iRow           ,  // out
-	Index*          jCol           ,  // out
-	Number*         values         )  // out
+   Index           n              ,  // in
+   const d_vector& x            ,  // in
+   bool            new_x          ,  // in
+   Number          obj_factor     ,  // in
+   Index           m              ,  // in
+   const Number*   lambda         ,  // in
+   bool            new_lambda     ,  // in
+   Index           nele_hess      ,  // in
+   Index*          iRow           ,  // out
+   Index*          jCol           ,  // out
+   Number*         values         )  // out
 {
-	assert( ! mixed_object_.quasi_fixed_ );
-	assert( n > 0 );
-	assert( size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
-	assert( m >= 0 );
-	assert( size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
-	assert( size_t(nele_hess) == nnz_h_lag_ );
-	if( values == NULL )
-	{	for(size_t k = 0; k < nnz_h_lag_; k++)
-		{	iRow[k] = Index( lag_hes_row_[k] );
-			jCol[k] = Index( lag_hes_col_[k] );
-		}
-		return;
-	}
-	//
-	// fixed effects
-	for(size_t j = 0; j < n_fixed_; j++)
-		fixed_tmp_[j] = double( x[j] );
-	//
-	// initialize return value
-	for(size_t k = 0; k < nnz_h_lag_; k++)
-		values[k] = Number( 0.0 );
-	//
-	// random part of objective
-	if( n_random_ > 0 )
-	{
-		// compute the optimal random effects corresponding to fixed effects
-		if( new_x )
-			new_random(fixed_tmp_);
-		// compute Hessian of random part of objective w.r.t. fixed effects
-		w_laplace_obj_tmp_[0] = obj_factor;
-		//
-		// include random constraints in this Hessian calculation
-		size_t offset = 2 * fix_likelihood_nabs_ + n_fix_con_;
-		for(size_t i = 0; i < n_ran_con_; i++)
-		{	w_laplace_obj_tmp_[i+1] = lambda[offset + i];
-		}
-		//
-		mixed_object_.laplace_obj_hes(
-			fixed_tmp_,
-			random_cur_,
-			w_laplace_obj_tmp_,
-			laplace_obj_hes_info_.row,
-			laplace_obj_hes_info_.col,
-			laplace_obj_hes_info_.val
-		);
-		for(size_t k = 0; k < laplace_obj_hes_info_.row.size(); k++)
-		{	size_t index = laplace_obj_hes_2_lag_[k];
-			assert( index < nnz_h_lag_ );
-			values[index] += Number( laplace_obj_hes_info_.val[k] );
-		}
-	}
-	//
-	// Hessian of Lagrangian of weighted fixed likelihood
-	w_fix_likelihood_tmp_[0] = obj_factor;
-	//
-	for(size_t j = 0; j < fix_likelihood_nabs_; j++)
-	{
-		w_fix_likelihood_tmp_[1 + j] = lambda[2*j + 1] - lambda[2*j];
-	}
-	s_vector fix_like_hes_row = mixed_object_.fix_like_hes_.subset.row();
-	s_vector fix_like_hes_col = mixed_object_.fix_like_hes_.subset.col();
-	d_vector fix_like_hes_val = mixed_object_.fix_like_hes_.subset.val();
-	mixed_object_.fix_like_hes(
-		fixed_tmp_,
-		w_fix_likelihood_tmp_,
-		fix_like_hes_row,
-		fix_like_hes_col,
-		fix_like_hes_val
-	);
-	for(size_t k = 0; k < fix_like_hes_row.size(); k++)
-	{	size_t index = fix_like_hes_2_lag_[k];
-		assert( index < nnz_h_lag_ );
-		values[index] += Number( fix_like_hes_val[k] );
-	}
-	//
-	// Hessian of Lagrangian of fixed constraints
-	for(size_t j = 0; j < n_fix_con_; j++)
-	{	size_t ell        = 2 * fix_likelihood_nabs_ + j;
-		w_fix_con_tmp_[j] = lambda[ell];
-	}
-	s_vector fix_con_hes_row = mixed_object_.fix_con_hes_.subset.row();
-	s_vector fix_con_hes_col = mixed_object_.fix_con_hes_.subset.col();
-	d_vector fix_con_hes_val = mixed_object_.fix_con_hes_.subset.val();
-	mixed_object_.fix_con_hes(
-		fixed_tmp_,
-		w_fix_con_tmp_,
-		fix_con_hes_row,
-		fix_con_hes_col,
-		fix_con_hes_val
-	);
-	for(size_t k = 0; k < fix_con_hes_row.size(); k++)
-	{	size_t index = fix_con_hes_2_lag_[k];
-		assert( index < nnz_h_lag_ );
-		values[index] += Number( fix_con_hes_val[k] );
-	}
-	//
-	for(size_t ell = 0; ell < nnz_h_lag_; ell++)
-	{	if( CppAD::isnan( values[ell] ) ) throw CppAD::mixed::exception(
-			"", "Hessian of Lagragian has a nan"
-		);
-	}
-	assert( size_t(nele_hess) == nnz_h_lag_ );
-	return;
+   assert( ! mixed_object_.quasi_fixed_ );
+   assert( n > 0 );
+   assert( size_t(n) == n_fixed_ + fix_likelihood_nabs_ );
+   assert( m >= 0 );
+   assert( size_t(m) == 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
+   assert( size_t(nele_hess) == nnz_h_lag_ );
+   if( values == NULL )
+   {  for(size_t k = 0; k < nnz_h_lag_; k++)
+      {  iRow[k] = Index( lag_hes_row_[k] );
+         jCol[k] = Index( lag_hes_col_[k] );
+      }
+      return;
+   }
+   //
+   // fixed effects
+   for(size_t j = 0; j < n_fixed_; j++)
+      fixed_tmp_[j] = double( x[j] );
+   //
+   // initialize return value
+   for(size_t k = 0; k < nnz_h_lag_; k++)
+      values[k] = Number( 0.0 );
+   //
+   // random part of objective
+   if( n_random_ > 0 )
+   {
+      // compute the optimal random effects corresponding to fixed effects
+      if( new_x )
+         new_random(fixed_tmp_);
+      // compute Hessian of random part of objective w.r.t. fixed effects
+      w_laplace_obj_tmp_[0] = obj_factor;
+      //
+      // include random constraints in this Hessian calculation
+      size_t offset = 2 * fix_likelihood_nabs_ + n_fix_con_;
+      for(size_t i = 0; i < n_ran_con_; i++)
+      {  w_laplace_obj_tmp_[i+1] = lambda[offset + i];
+      }
+      //
+      mixed_object_.laplace_obj_hes(
+         fixed_tmp_,
+         random_cur_,
+         w_laplace_obj_tmp_,
+         laplace_obj_hes_info_.row,
+         laplace_obj_hes_info_.col,
+         laplace_obj_hes_info_.val
+      );
+      for(size_t k = 0; k < laplace_obj_hes_info_.row.size(); k++)
+      {  size_t index = laplace_obj_hes_2_lag_[k];
+         assert( index < nnz_h_lag_ );
+         values[index] += Number( laplace_obj_hes_info_.val[k] );
+      }
+   }
+   //
+   // Hessian of Lagrangian of weighted fixed likelihood
+   w_fix_likelihood_tmp_[0] = obj_factor;
+   //
+   for(size_t j = 0; j < fix_likelihood_nabs_; j++)
+   {
+      w_fix_likelihood_tmp_[1 + j] = lambda[2*j + 1] - lambda[2*j];
+   }
+   s_vector fix_like_hes_row = mixed_object_.fix_like_hes_.subset.row();
+   s_vector fix_like_hes_col = mixed_object_.fix_like_hes_.subset.col();
+   d_vector fix_like_hes_val = mixed_object_.fix_like_hes_.subset.val();
+   mixed_object_.fix_like_hes(
+      fixed_tmp_,
+      w_fix_likelihood_tmp_,
+      fix_like_hes_row,
+      fix_like_hes_col,
+      fix_like_hes_val
+   );
+   for(size_t k = 0; k < fix_like_hes_row.size(); k++)
+   {  size_t index = fix_like_hes_2_lag_[k];
+      assert( index < nnz_h_lag_ );
+      values[index] += Number( fix_like_hes_val[k] );
+   }
+   //
+   // Hessian of Lagrangian of fixed constraints
+   for(size_t j = 0; j < n_fix_con_; j++)
+   {  size_t ell        = 2 * fix_likelihood_nabs_ + j;
+      w_fix_con_tmp_[j] = lambda[ell];
+   }
+   s_vector fix_con_hes_row = mixed_object_.fix_con_hes_.subset.row();
+   s_vector fix_con_hes_col = mixed_object_.fix_con_hes_.subset.col();
+   d_vector fix_con_hes_val = mixed_object_.fix_con_hes_.subset.val();
+   mixed_object_.fix_con_hes(
+      fixed_tmp_,
+      w_fix_con_tmp_,
+      fix_con_hes_row,
+      fix_con_hes_col,
+      fix_con_hes_val
+   );
+   for(size_t k = 0; k < fix_con_hes_row.size(); k++)
+   {  size_t index = fix_con_hes_2_lag_[k];
+      assert( index < nnz_h_lag_ );
+      values[index] += Number( fix_con_hes_val[k] );
+   }
+   //
+   for(size_t ell = 0; ell < nnz_h_lag_; ell++)
+   {  if( CppAD::isnan( values[ell] ) ) throw CppAD::mixed::exception(
+         "", "Hessian of Lagragian has a nan"
+      );
+   }
+   assert( size_t(nele_hess) == nnz_h_lag_ );
+   return;
 }
 } } // END_CPPAD_MIXED_NAMESPACE

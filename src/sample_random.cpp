@@ -5,25 +5,25 @@
 /*
 $begin sample_random$$
 $spell
-	vec
-	gsl_rng
-	cppad
-	const
-	CppAD
-	std
-	ipopt
+   vec
+   gsl_rng
+   cppad
+   const
+   CppAD
+   std
+   ipopt
 $$
 
 $section Simulation the Posterior Distribution for Random Effects$$
 
 $head Syntax$$
 $icode%error_msg% = %mixed_object%.sample_random(
-	%sample%,
-	%fixed_vec%,
-	%random_ipopt_options%,
-	%random_lower%,
-	%random_upper%,
-	%random_in%
+   %sample%,
+   %fixed_vec%,
+   %random_ipopt_options%,
+   %random_lower%,
+   %random_upper%,
+   %random_in%
 )%$$
 
 $head See Also$$
@@ -51,20 +51,20 @@ derived from the $code cppad_mixed$$ base class.
 $head sample$$
 This argument has prototype
 $codei%
-	CppAD::vector<double>& %sample%
+   CppAD::vector<double>& %sample%
 %$$
 and its size is a multiple of
 $cref/n_random/derived_ctor/n_random/$$.
 The input value of its elements does not matter.
 We define
 $codei%
-	%n_sample% = %sample_size% / %n_random%
+   %n_sample% = %sample_size% / %n_random%
 %$$
 If $icode error_msg$$ is empty, upon return
 for $codei%i% = 0 , %...%, %n_sample%-1%$$,
 $codei%j% = 0 , %...%, %n_random%-1%$$,
 $codei%
-	%sample%[ %i% * %n_random% + %j% ]
+   %sample%[ %i% * %n_random% + %j% ]
 %$$
 is the $th j$$ component of the $th i$$ sample of the
 optimal random effects.
@@ -74,7 +74,7 @@ $cref/covariance/sample_random/Covariance/$$ below.
 $head random_ipopt_options$$
 This argument has prototype
 $codei%
-	const std::string& %random_ipopt_options%
+   const std::string& %random_ipopt_options%
 %$$
 and is the $cref ipopt_options$$ for optimizing the random effects.
 
@@ -105,7 +105,7 @@ $cref/random effects/cppad_mixed/Notation/Random Effects, u/$$
 vector $latex u$$.
 It must hold that
 $codei%
-	%random_lower%[%i%] <= %random_in%[%i%] <= %random_upper%[%i%]
+   %random_lower%[%i%] <= %random_in%[%i%] <= %random_upper%[%i%]
 %$$
 for each valid index $icode i$$.
 
@@ -118,7 +118,7 @@ The variance of this distribution
 is the inverse of the observed information
 matrix; i.e.
 $latex \[
-	f_{uu} [ \theta , \hat{u} ( \theta ) ] ^{-1}
+   f_{uu} [ \theta , \hat{u} ( \theta ) ] ^{-1}
 \] $$
 This normal distribution is censored to be within the limits
 $icode random_lower$$, $icode random_upper$$.
@@ -148,85 +148,85 @@ $end
 # include <cppad/mixed/exception.hpp>
 
 std::string cppad_mixed::try_sample_random(
-	d_vector&          sample               ,
-	const std::string& random_ipopt_options ,
-	const d_vector&    fixed_vec            ,
-	const d_vector&    random_lower         ,
-	const d_vector&    random_upper         ,
-	const d_vector&    random_in            )
-{	// case where there is nothing to do
-	if( n_random_ == 0 )
-		return "";
-	//
-	assert( sample.size() % n_random_ == 0   );
-	assert( fixed_vec.size()    == n_fixed_  );
-	assert( random_lower.size() == n_random_ );
-	assert( random_upper.size() == n_random_ );
-	assert( random_in.size()    == n_random_ );
-	//
-	// number of samples
-	size_t n_sample = sample.size() / n_random_;
-	//
-	// optimal random effects
-	d_vector random_opt;
-	random_opt = optimize_random(
-		random_ipopt_options, fixed_vec, random_lower, random_upper, random_in
-	);
-	// update the Cholesky factor corresponding to f_uu (theta, u)
-	update_factor(fixed_vec, random_opt);
-	//
-	for(size_t i_sample = 0; i_sample < n_sample; i_sample++)
-	{	// simulate a normal with mean zero and variance one
-		d_vector w(n_random_);
-		for(size_t j = 0; j < n_random_; j++)
-			w[j] = gsl_ran_gaussian(CppAD::mixed::get_gsl_rng(), 1.0);
-		//
-		// set v to cholesky factor of f_uu(theta, u)^{-1} times w
-		d_vector v(n_random_);
-		bool ok = ldlt_ran_hes_.sim_cov(w, v);
-		if( ! ok )
-		{	std::string msg = "sample_random: Hessian w.r.t random effects"
-				" is not positive definite";
-			return msg;
-		}
-		//
-		// add random_opt an truncate to random limits
-		for(size_t j = 0; j < n_random_; j++)
-		{	double samp = random_opt[j] + v[j];
-			samp = std::min(samp, random_upper[j]);
-			samp = std::max(samp, random_lower[j]);
-			sample[i_sample * n_random_ + j] = samp;
-		}
-	}
-	return "";
+   d_vector&          sample               ,
+   const std::string& random_ipopt_options ,
+   const d_vector&    fixed_vec            ,
+   const d_vector&    random_lower         ,
+   const d_vector&    random_upper         ,
+   const d_vector&    random_in            )
+{  // case where there is nothing to do
+   if( n_random_ == 0 )
+      return "";
+   //
+   assert( sample.size() % n_random_ == 0   );
+   assert( fixed_vec.size()    == n_fixed_  );
+   assert( random_lower.size() == n_random_ );
+   assert( random_upper.size() == n_random_ );
+   assert( random_in.size()    == n_random_ );
+   //
+   // number of samples
+   size_t n_sample = sample.size() / n_random_;
+   //
+   // optimal random effects
+   d_vector random_opt;
+   random_opt = optimize_random(
+      random_ipopt_options, fixed_vec, random_lower, random_upper, random_in
+   );
+   // update the Cholesky factor corresponding to f_uu (theta, u)
+   update_factor(fixed_vec, random_opt);
+   //
+   for(size_t i_sample = 0; i_sample < n_sample; i_sample++)
+   {  // simulate a normal with mean zero and variance one
+      d_vector w(n_random_);
+      for(size_t j = 0; j < n_random_; j++)
+         w[j] = gsl_ran_gaussian(CppAD::mixed::get_gsl_rng(), 1.0);
+      //
+      // set v to cholesky factor of f_uu(theta, u)^{-1} times w
+      d_vector v(n_random_);
+      bool ok = ldlt_ran_hes_.sim_cov(w, v);
+      if( ! ok )
+      {  std::string msg = "sample_random: Hessian w.r.t random effects"
+            " is not positive definite";
+         return msg;
+      }
+      //
+      // add random_opt an truncate to random limits
+      for(size_t j = 0; j < n_random_; j++)
+      {  double samp = random_opt[j] + v[j];
+         samp = std::min(samp, random_upper[j]);
+         samp = std::max(samp, random_lower[j]);
+         sample[i_sample * n_random_ + j] = samp;
+      }
+   }
+   return "";
 }
 // --------------------------------------------------------------------------
 // BEGIN PROTOTYPE
 std::string cppad_mixed::sample_random(
-	d_vector&          sample               ,
-	const std::string& random_ipopt_options ,
-	const d_vector&    fixed_vec            ,
-	const d_vector&    random_lower         ,
-	const d_vector&    random_upper         ,
-	const d_vector&    random_in            )
+   d_vector&          sample               ,
+   const std::string& random_ipopt_options ,
+   const d_vector&    fixed_vec            ,
+   const d_vector&    random_lower         ,
+   const d_vector&    random_upper         ,
+   const d_vector&    random_in            )
 // END PROTOTYPE
-{	std::string error_msg = "";
-	try
-	{	error_msg = try_sample_random(
-			sample                ,
-			random_ipopt_options  ,
-			fixed_vec             ,
-			random_lower          ,
-			random_upper          ,
-			random_in
-		);
-	}
-	catch(const std::exception& e)
-	{	error_msg = "sample_random: std::exception: ";
-		error_msg += e.what();
-	}
-	catch(const CppAD::mixed::exception& e)
-	{	error_msg = e.message("sample_random");
-	}
-	return error_msg;
+{  std::string error_msg = "";
+   try
+   {  error_msg = try_sample_random(
+         sample                ,
+         random_ipopt_options  ,
+         fixed_vec             ,
+         random_lower          ,
+         random_upper          ,
+         random_in
+      );
+   }
+   catch(const std::exception& e)
+   {  error_msg = "sample_random: std::exception: ";
+      error_msg += e.what();
+   }
+   catch(const CppAD::mixed::exception& e)
+   {  error_msg = e.message("sample_random");
+   }
+   return error_msg;
 }

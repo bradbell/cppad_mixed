@@ -5,27 +5,27 @@
 
 $begin whats_new_21$$
 $spell
-	mu
-	cppad
-	Ipopt
-	msys
-	cygwin
-	op
-	std
-	obj_hes
-	optimizer
-	vec
-	CppAD
-	struct
-	ubuntu
-	dpkg
-	gsl_rng
-	bool
-	rcv
-	init
-	cxx
-	cmake
-	debian
+   mu
+   cppad
+   Ipopt
+   msys
+   cygwin
+   op
+   std
+   obj_hes
+   optimizer
+   vec
+   CppAD
+   struct
+   ubuntu
+   dpkg
+   gsl_rng
+   bool
+   rcv
+   init
+   cxx
+   cmake
+   debian
 $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
@@ -149,18 +149,18 @@ $head 05-29$$
 $list number$$
 The
 $cref/hessian_approximation
-	/optimize_fixed
-	/fixed_ipopt_options
-	/hessian_approximation
+   /optimize_fixed
+   /fixed_ipopt_options
+   /hessian_approximation
 /$$
 is now set and checked when $cref/quasi_fixed/derived_ctor/quasi_fixed/$$
 is false (used to be just when it was true).
 $lnext
 Change the default value for
 $cref/accept_after_max_steps
-	/optimize_fixed
-	/fixed_ipopt_options
-	/accept_after_max_steps
+   /optimize_fixed
+   /fixed_ipopt_options
+   /accept_after_max_steps
 /$$
 from $code 2$$ to $code -1$$ (no limit), the standard ipopt default
 for this value.

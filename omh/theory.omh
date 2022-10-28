@@ -8,13 +8,13 @@ $latex \newcommand{\dtheta}[1]{ \frac{\R{d}}{\R{d} \theta_{ #1}} }$$
 
 $section Laplace Approximation for Mixed Effects Models$$
 $spell
-	CppAD
-	cppad
-	Kasper Kristensen
-	Anders Nielsen
-	Casper Berg
-	Hans Skaug
-	Bradley Bell
+   CppAD
+   cppad
+   Kasper Kristensen
+   Anders Nielsen
+   Casper Berg
+   Hans Skaug
+   Bradley Bell
 $$
 
 $head Reference$$
@@ -28,8 +28,8 @@ to be the negative log-likelihood of the
 $latex z$$, $latex y$$, $latex u$$ and $latex \theta$$; i.e.,
 $latex \[
 - \log [  \;
-	\B{p} ( y |  \theta, u ) \B{p} ( u | \theta )  \;
-	\B{p} ( z | \theta )\B{p} ( \theta ) \;
+   \B{p} ( y |  \theta, u ) \B{p} ( u | \theta )  \;
+   \B{p} ( z | \theta )\B{p} ( \theta ) \;
 ]
 \] $$
 
@@ -38,7 +38,7 @@ $head Random Likelihood, f(theta, u)$$
 We use $latex f( \theta , u )$$ for the part of the likelihood
 that depends on the random effects $latex u$$;
 $latex \[
-	f( \theta, u ) = - \log [ \B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) ]
+   f( \theta, u ) = - \log [ \B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) ]
 \] $$
 
 $subhead Assumption$$
@@ -54,7 +54,7 @@ $head Fixed Likelihood, g(theta)$$
 We use $latex g( \theta )$$ for the part of the likelihood
 that only depends on the fixed effects $latex \theta$$;
 $latex \[
-	g( \theta ) = - \log [ \B{p} ( z | \theta ) \B{p} ( \theta ) ]
+   g( \theta ) = - \log [ \B{p} ( z | \theta ) \B{p} ( \theta ) ]
 \]$$
 The function $latex g( \theta )$$ may not be smooth, to be specific, it
 can have absolute values in it (corresponding to the Laplace densities).
@@ -65,7 +65,7 @@ Given the fixed effects $latex \theta$$,
 we use $latex \hat{u} ( \theta )$$ to denote
 the random effects that maximize the random likelihood; i.e.,
 $latex \[
-	\hat{u} ( \theta ) = \R{argmin} \; f( \theta, u ) \; \R{w.r.t.} \; u
+   \hat{u} ( \theta ) = \R{argmin} \; f( \theta, u ) \; \R{w.r.t.} \; u
 \] $$
 Note that this definition agrees with the other definition for
 $cref/u^(theta)/cppad_mixed/Notation/Optimal Random Effects, u^(theta)/$$.
@@ -88,13 +88,13 @@ where $latex n$$ is the number of random effects.
 $subhead Laplace Objective, r(theta)$$
 We refer to
 $latex \[
-	r( \theta )
-	=
-	h[ \theta , \hat{u} ( \theta ) ]
-	\approx
-	- \log \left[ \int_{-\infty}^{+\infty}
-		\B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) \; \B{d} u
-	\right]
+   r( \theta )
+   =
+   h[ \theta , \hat{u} ( \theta ) ]
+   \approx
+   - \log \left[ \int_{-\infty}^{+\infty}
+      \B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) \; \B{d} u
+   \right]
 \] $$
 as the Laplace objective.
 This corresponds to equation (4) in the
@@ -113,7 +113,7 @@ Because $latex f(\theta, u)$$ is smooth,
 and $latex \hat{u} ( \theta )$$ is optimal w.r.t $latex u$$,
 we obtain
 $latex \[
-	f_u [ \theta , \hat{u} ( \theta ) ] = 0
+   f_u [ \theta , \hat{u} ( \theta ) ] = 0
 \] $$
 From this equation,
 and the implicit function theorem,
@@ -122,21 +122,21 @@ $latex \[
 \hat{u}_\theta ( \theta )
 =
 - f_{u,u} \left[ \theta , \hat{u} ( \theta ) \right]^{-1}
-	f_{u,\theta} \left[ \theta , \hat{u} ( \theta )  \right]
+   f_{u,\theta} \left[ \theta , \hat{u} ( \theta )  \right]
 \]$$
 
 $head Derivative of Random Constraints$$
 The derivative of the
 $cref/random constraint function
-	/cppad_mixed
-	/Notation
-	/Random Constraint Function, A*u^(theta)
+   /cppad_mixed
+   /Notation
+   /Random Constraint Function, A*u^(theta)
 /$$
 is given by
 $latex \[
-	\partial_\theta [ A \; \hat{u} ( \theta ) ]
-	=
-	A \; \hat{u}_\theta ( \theta )
+   \partial_\theta [ A \; \hat{u} ( \theta ) ]
+   =
+   A \; \hat{u}_\theta ( \theta )
 \]$$
 
 $head Derivative of Laplace Objective$$
@@ -159,8 +159,8 @@ $latex \[
 \partial_k [ f( \theta , u ) ]
 +
 \frac{1}{2} \sum_{i=0}^{n-1} \sum_{j=0}^{n-1}
-	f_{u,u} ( \theta , u )_{i,j}^{-1}
-	\partial_k [ f_{u,u} ( \theta , u)_{i,j} ]
+   f_{u,u} ( \theta , u )_{i,j}^{-1}
+   \partial_k [ f_{u,u} ( \theta , u)_{i,j} ]
 \] $$
 where $latex n$$ is the number of random effects.
 Note that $latex f_{u,u} ( \theta , u )$$
@@ -170,7 +170,7 @@ This is discussed in more detail near equation (8) in the
 $cref/reference/theory/Reference/$$.
 We also note that if $latex k$$ corresponds to a component of $latex u$$ then
 $latex \[
-	\partial_k ( f[ \theta , \hat{u} ( \theta ) ] ) = 0
+   \partial_k ( f[ \theta , \hat{u} ( \theta ) ] ) = 0
 \] $$
 
 $head Approximate Optimal Random Effects$$
@@ -184,12 +184,12 @@ u - f_{u,u} ( \theta , u )^{-1} f_u ( \beta , u  )
 \] $$
 It follows that
 $latex \[
-	U \left[ \theta , \theta , \hat{u} ( \theta ) \right] = \hat{u} ( \theta )
+   U \left[ \theta , \theta , \hat{u} ( \theta ) \right] = \hat{u} ( \theta )
 \] $$
 $latex \[
-	U_{\beta} [ \theta , \theta , \hat{u} ( \theta ) ]
-	=
-	\hat{u}_\theta ( \theta )
+   U_{\beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+   =
+   \hat{u}_\theta ( \theta )
 \] $$
 
 $subhead Second Order, W(beta, theta, u)$$
@@ -203,18 +203,18 @@ f_{u,u} ( \theta , u )^{-1} f_u [ \beta , U( \beta , \theta , u)  ]
 \] $$
 It follows that
 $latex \[
-	W \left[ \theta , \theta , \hat{u} ( \theta ) \right] = \hat{u} ( \theta )
+   W \left[ \theta , \theta , \hat{u} ( \theta ) \right] = \hat{u} ( \theta )
 \] $$
 $latex \[
-	W_{\beta} [ \theta , \theta , \hat{u} ( \theta ) ]
-	=
-	\hat{u}_\theta ( \theta )
+   W_{\beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+   =
+   \hat{u}_\theta ( \theta )
 \] $$
 and for random effects indices $latex i$$,
 $latex \[
-	W^i_{\beta \beta} [ \theta , \theta , \hat{u} ( \theta ) ]
-	=
-	\hat{u}^i_{\theta , \theta} ( \theta )
+   W^i_{\beta \beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+   =
+   \hat{u}^i_{\theta , \theta} ( \theta )
 \] $$
 
 $head Approximate Laplace Objective, H(beta, theta, u)$$
@@ -236,12 +236,12 @@ H_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
 $head Approximate Random Constraint Function, B(beta, theta, u)$$
 We also define the approximation
 $cref/random constraint function
-	/cppad_mixed
-	/Notation
-	/Random Constraint Function, A*u^(theta)
+   /cppad_mixed
+   /Notation
+   /Random Constraint Function, A*u^(theta)
 /$$
 $latex \[
-	B( \beta , \theta , u) = A \; W( \beta , \theta , u )
+   B( \beta , \theta , u) = A \; W( \beta , \theta , u )
 \] $$
 
 $head Hessian of Laplace Objective$$
@@ -265,9 +265,9 @@ rows of the random constraint matrix
 ( approximate random constraint function ).
 The Hessian of the random constraints can be computed using the formula
 $latex \[
-	\partial_\theta \partial_\theta [ A^i \; \hat{u} ( \theta ) ]
-	=
-	B^i_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
+   \partial_\theta \partial_\theta [ A^i \; \hat{u} ( \theta ) ]
+   =
+   B^i_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
 \] $$
 
 $head Sparse Observed Information$$
@@ -277,35 +277,35 @@ The corresponding asymptotic covariance for posterior distribution
 of the parameters is normal with covariance $latex H^{-1}$$.
 A vector $latex v$$ with this covariance can be simulated as
 $latex \[
-	v = R w
+   v = R w
 \] $$
 where $latex R$$ is defined by $latex H^{-1} = R R^\R{T}$$ and
 $latex w$$ is a normal with mean zero and the identity covariance.
 Suppose we have a sparse factorization of the form
 $latex \[
-	L D L^\R{T} = P H P^\R{T}
+   L D L^\R{T} = P H P^\R{T}
 \] $$
 where $latex L$$ is lower triangular, $latex D$$ is diagonal,
 and $latex P$$ is a permutation matrix.
 It follows that
 $latex \[
-	H = P^\R{T} L D L^\R{T} P
+   H = P^\R{T} L D L^\R{T} P
 \] $$
 $latex \[
-	H^{-1} = P^\R{T} L^{-\R{T}} D^{-1} L^{-1} P
+   H^{-1} = P^\R{T} L^{-\R{T}} D^{-1} L^{-1} P
 \] $$
 $latex \[
-	R = P^\R{T} L^{-\R{T}} D^{-1/2}
+   R = P^\R{T} L^{-\R{T}} D^{-1/2}
 \] $$
 $latex \[
-	v = P^\R{T} L^{-\R{T}} D^{-1/2} w
+   v = P^\R{T} L^{-\R{T}} D^{-1/2} w
 \] $$
 If $latex w$$ is simulated as a normal random vector
 with  mean zero and identity covariance,
 and $latex v$$ is computed using this formula,
 the mean of $latex v$$ is zero and its covariance is given by
 $latex \[
-	\B{E}[ v v^\R{T} ] = H^{-1}
+   \B{E}[ v v^\R{T} ] = H^{-1}
 \] $$
 
 $end

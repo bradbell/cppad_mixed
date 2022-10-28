@@ -4,13 +4,13 @@
 # ----------------------------------------------------------------------------
 $begin devel$$
 $spell
-	cppad
+   cppad
 $$
 
 $section The cppad_mixed Developer Documentation$$
 
 $childtable%include/cppad/mixed/private_base_class.hpp
-	%omh/private_namespace.omh
+   %omh/private_namespace.omh
 %$$
 
 $end

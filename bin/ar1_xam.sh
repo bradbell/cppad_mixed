@@ -6,9 +6,9 @@
 # $OMhelpKeyCharacter=&
 # &begin ar1_xam.sh&& &newlinech #&&
 # &spell
-#	ar1_xam
-#	callgrind
-#	valgrind
+#  ar1_xam
+#  callgrind
+#  valgrind
 # &&
 #
 # &section Example Using ar1_xam&&
@@ -49,28 +49,28 @@ start_near_solution='no'
 program='bin/ar1_xam.sh'
 if [ "$0" != "$program" ]
 then
-	echo "$program: must be executed from its parent directory"
-	exit 1
+   echo "$program: must be executed from its parent directory"
+   exit 1
 fi
 speed_dir='build/speed'
 if [ ! -e "$speed_dir" ]
 then
-	echo "$program: must first run:"
-	echo '	bin/run_cmake.sh'
-	exit 1
+   echo "$program: must first run:"
+   echo '  bin/run_cmake.sh'
+   exit 1
 fi
 #
 if [ "$1" != 'normal' ] && [ "$1" != 'callgrind' ] && [ "$1" != 'massif' ]
 then
-	echo "usage: $program (normal|callgrind|massif)"
-	exit 1
+   echo "usage: $program (normal|callgrind|massif)"
+   exit 1
 fi
 test2run="$1"
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
-	echo $*
-	eval $*
+   echo $*
+   eval $*
 }
 # ----------------------------------------------------------------------------
 echo_eval cd $speed_dir
@@ -90,24 +90,24 @@ arguments=`echo $arguments | sed -e 's|\n| |'`
 #
 if [ "$test2run" == 'normal' ]
 then
-	echo_eval ./ar1_xam $arguments
+   echo_eval ./ar1_xam $arguments
 fi
 if [ "$test2run" == 'callgrind' ]
 then
-	echo_eval valgrind \
-		--tool=callgrind \
-		--callgrind-out-file=callgrind.out.$$ \
-		./ar1_xam $arguments
-	echo "view with: kcachegrind build/speed/callgrind.out.$$"
+   echo_eval valgrind \
+      --tool=callgrind \
+      --callgrind-out-file=callgrind.out.$$ \
+      ./ar1_xam $arguments
+   echo "view with: kcachegrind build/speed/callgrind.out.$$"
 fi
 if [ "$test2run" == 'massif' ]
 then
-	echo_eval valgrind \
-		--tool=massif \
-		--massif-out-file=massif.out.$$ \
-		./ar1_xam $arguments
-	echo_eval ms_print massif.out.$$ > massif.out
-	echo "resutls are in build/speed/massif.out"
+   echo_eval valgrind \
+      --tool=massif \
+      --massif-out-file=massif.out.$$ \
+      ./ar1_xam $arguments
+   echo_eval ms_print massif.out.$$ > massif.out
+   echo "resutls are in build/speed/massif.out"
 fi
 # ----------------------------------------------------------------------------
 echo 'ar1_xam.sh: OK'

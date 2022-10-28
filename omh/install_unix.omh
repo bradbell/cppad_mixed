@@ -5,34 +5,34 @@
 $begin install_unix$$
 $dollar @$$
 $spell
-	grep
-	https://github.com/bradbell/cppad_mixed.git
-	metis
-	cholmod
-	Cholesky
-	tarball
-	xzf
-	tgz
-	ipopt
-	config
-	gsl-devel
-	eigen
-	CppAD
-	pkgconfig
-	cmake
-	suitesparse
-	wget
-	txt
-	dev
-	libipopt
-	rpath
+   grep
+   https://github.com/bradbell/cppad_mixed.git
+   metis
+   cholmod
+   Cholesky
+   tarball
+   xzf
+   tgz
+   ipopt
+   config
+   gsl-devel
+   eigen
+   CppAD
+   pkgconfig
+   cmake
+   suitesparse
+   wget
+   txt
+   dev
+   libipopt
+   rpath
 $$
 
 $section Installing cppad_mixed in Unix$$
 
 $children%bin/example_install.sh
-	%bin/run_cmake.sh
-	%bin/check_install.sh
+   %bin/run_cmake.sh
+   %bin/check_install.sh
 %$$
 
 $head System Requirements$$
@@ -72,7 +72,7 @@ The $href%http://www.freedesktop.org/wiki/Software/pkg-config/%pkg-config%$$
 program must be installed.
 The following command should work:
 $codep%
-	pkg-config gsl --libs
+   pkg-config gsl --libs
 %$$
 see $cref/PKG_CONFIG_PATH/install_unix/Paths/PKG_CONFIG_PATH/$$ below.
 
@@ -90,20 +90,20 @@ $head Download$$
 After installing the requirements above,
 use the following command to get the current version of cppad_mixed:
 $codei%
-	git clone https://github.com/bradbell/cppad_mixed.git cppad_mixed.git
-	cd cppad_mixed.git
+   git clone https://github.com/bradbell/cppad_mixed.git cppad_mixed.git
+   cd cppad_mixed.git
 %$$
 You can determine the $icode git_hash$$ and version number
 corresponding to this checkout of the master branch using the commands:
 $codei%
-	git show-ref | grep 'refs/heads/master'
-	grep '^SET(cppad_mixed_version' CMakeLists.txt
+   git show-ref | grep 'refs/heads/master'
+   grep '^SET(cppad_mixed_version' CMakeLists.txt
 %$$
 You can checkout an old version corresponding to a specific $icode git_hash$$,
 and check its version number, using the commands:
 $codei%
-	git checkout -q %git_hash%
-	grep '^SET(cppad_mixed_version' CMakeLists.txt
+   git checkout -q %git_hash%
+   grep '^SET(cppad_mixed_version' CMakeLists.txt
 %$$
 
 $head Special Requirements$$
@@ -125,7 +125,7 @@ linear algebra package.
 Starting in the $code cppad_mixed.git$$ directory,
 the command
 $codei%
-	bin/install_eigen.sh
+   bin/install_eigen.sh
 %$$
 can be used to install this package.
 
@@ -135,7 +135,7 @@ optimization package.
 Starting in the $code cppad_mixed.git$$ directory,
 the command
 $codei%
-	bin/install_ipopt.sh
+   bin/install_ipopt.sh
 %$$
 can be used to install this package.
 
@@ -145,7 +145,7 @@ C++ algorithmic differentiation package.
 Starting in the $code cppad_mixed.git$$ directory,
 the command
 $codei%
-	bin/install_cppad.sh
+   bin/install_cppad.sh
 %$$
 can be used to install this package.
 
@@ -155,7 +155,7 @@ $subhead PKG_CONFIG_PATH$$
 For $icode pkg$$ equal to $code gsl$$, $code eigen$$, $code ipopt$$ and
 $code cppad$$, the following command should work:
 $codep%
-	pkg-config %pkg% --libs
+   pkg-config %pkg% --libs
 %$$
 (This command should work for $code gsl$$ before the special requirements
 are installed.)
@@ -164,7 +164,7 @@ from the $code PKG_CONFIG_PATH$$ environment variable.
 If $icode prefix$$ is the prefix where $code pkg$$ was installed,
 the command
 $codei%
-	find -L %prefix% -name %pkg%.pc 2> /dev/null
+   find -L %prefix% -name %pkg%.pc 2> /dev/null
 %$$
 can be used to find the directory where $code %pkg%.pc$$ is located.
 
@@ -191,7 +191,7 @@ $subhead Cmake Command$$
 Starting in the $code cppad_mixed.git$$ directory:
 The following command will configure $code cppad_mixed$$:
 $codep
-	bin/run_cmake.sh
+   bin/run_cmake.sh
 $$
 
 $subhead Check$$
@@ -199,8 +199,8 @@ Starting in the $code cppad_mixed.git$$ directory:
 The following commands are optional and will
 build and run the examples and correctness tests:
 $codep
-	cd build
-	make check
+   cd build
+   make check
 $$
 
 $subhead Speed$$
@@ -208,8 +208,8 @@ Starting in the $code cppad_mixed.git$$ directory:
 The following commands are optional and will
 build and run the speed tests:
 $codep
-	cd build
-	make speed
+   cd build
+   make speed
 $$
 
 $subhead Install$$
@@ -217,8 +217,8 @@ Starting in the $code cppad_mixed.git$$ directory:
 The following command will
 install the cppad_mixed library and include files:
 $codep
-	cd build
-	make install
+   cd build
+   make install
 $$
 
 $head Example$$
@@ -239,8 +239,8 @@ contain examples and speed tests
 of $code cppad_mixed$$.
 These examples run when one executes the commands
 $codep
-	cd build
-	make speed
+   cd build
+   make speed
 $$
 
 $end

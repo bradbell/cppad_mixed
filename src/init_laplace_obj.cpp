@@ -7,11 +7,11 @@
 /*
 $begin init_laplace_obj$$
 $spell
-	init
-	obj
-	vec
-	cppad
-	hes
+   init
+   obj
+   vec
+   cppad
+   hes
 $$
 
 $section Initialize Second Order of Approximate Objective and It's Hessian$$
@@ -21,7 +21,7 @@ $icode%mixed_object%.init_laplace_obj(%fixed_vec%, %random_opt%)%$$
 
 $head Prototype$$
 $srcthisfile%
-	0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1
+   0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1
 %$$
 
 $head Private$$
@@ -72,32 +72,32 @@ $end
 
 // BEGIN_PROTOTYPE
 void cppad_mixed::init_laplace_obj(
-	const d_vector&	   fixed_vec        ,
-	const d_vector&	   random_opt       )
+   const d_vector&     fixed_vec        ,
+   const d_vector&     random_opt       )
 // END_PROTOTYPE
-{	// This initialization is not called by initialize
-	// so it has its own tracing.
-	if( trace_init_ )
-		std::cout << "Begin cppad_mixed::init_laplace_obj\n";
-	//
-	assert( ! init_laplace_obj_fun_done_ );
-	assert( ! init_laplace_obj_hes_done_ );
-	assert( ! init_laplace_obj_done_ );
+{  // This initialization is not called by initialize
+   // so it has its own tracing.
+   if( trace_init_ )
+      std::cout << "Begin cppad_mixed::init_laplace_obj\n";
+   //
+   assert( ! init_laplace_obj_fun_done_ );
+   assert( ! init_laplace_obj_hes_done_ );
+   assert( ! init_laplace_obj_done_ );
 
-	// laplace_obj_fun_
-	init_laplace_obj_fun(fixed_vec, random_opt);
-	assert( init_laplace_obj_fun_done_ );
-	if( trace_init_ )
-		std::cout << "init_laplace_obj_fun_done_\n";
+   // laplace_obj_fun_
+   init_laplace_obj_fun(fixed_vec, random_opt);
+   assert( init_laplace_obj_fun_done_ );
+   if( trace_init_ )
+      std::cout << "init_laplace_obj_fun_done_\n";
 
-	// laplace_obj_hes_
-	init_laplace_obj_hes(fixed_vec, random_opt);
-	assert( init_laplace_obj_hes_done_ );
-	if( trace_init_ )
-		std::cout << "init_laplace_obj_hes_done_\n";
+   // laplace_obj_hes_
+   init_laplace_obj_hes(fixed_vec, random_opt);
+   assert( init_laplace_obj_hes_done_ );
+   if( trace_init_ )
+      std::cout << "init_laplace_obj_hes_done_\n";
 
-	// init_laplace_obj_done_
-	init_laplace_obj_done_ = true;
-	if( trace_init_ )
-		std::cout << "End cppad_mixed::init_laplace_obj\n";
+   // init_laplace_obj_done_
+   init_laplace_obj_done_ = true;
+   if( trace_init_ )
+      std::cout << "End cppad_mixed::init_laplace_obj\n";
 }

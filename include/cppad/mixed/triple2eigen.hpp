@@ -7,18 +7,18 @@
 /*
 $begin triple2eigen$$
 $spell
-	Eigen
-	CppAD
-	nr
-	nc
-	const
+   Eigen
+   CppAD
+   nr
+   nc
+   const
 $$
 
 $section Convert Row, Column, Value Triple to an Eigen Sparse Matrix$$
 
 $head Syntax$$
 $codei%CppAD::mixed::triple2eigen(
-	%mat%, %nr%, %nc%,  %row%, %col%, %val%
+   %mat%, %nr%, %nc%,  %row%, %col%, %val%
 )%$$
 
 $head Prototype$$
@@ -78,26 +78,26 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 template <class Scalar>
 // BEGIN_PROTOTYPE
 void triple2eigen(
-	Eigen::SparseMatrix<Scalar>&  mat  ,
-	size_t                        nr   ,
-	size_t                        nc   ,
-	const s_vector&               row  ,
-	const s_vector&               col  ,
-	const CppAD::vector<Scalar>&  val  )
+   Eigen::SparseMatrix<Scalar>&  mat  ,
+   size_t                        nr   ,
+   size_t                        nc   ,
+   const s_vector&               row  ,
+   const s_vector&               col  ,
+   const CppAD::vector<Scalar>&  val  )
 // END_PROTOTYPE
-{	assert( row.size() == col.size() );
-	assert( val.size() ==  0 || row.size() == val.size() );
-	//
-	mat.resize( int(nr), int(nc) );
-	if( val.size() == 0 )
-	{	for(size_t k = 0; k < row.size(); k++)
-			mat.insert( int(row[k]), int(col[k]) ) = Scalar(0.0);
-	}
-	else
-	{	for(size_t k = 0; k < row.size(); k++)
-			mat.insert( int(row[k]), int(col[k]) ) = val[k];
-	}
-	return;
+{  assert( row.size() == col.size() );
+   assert( val.size() ==  0 || row.size() == val.size() );
+   //
+   mat.resize( int(nr), int(nc) );
+   if( val.size() == 0 )
+   {  for(size_t k = 0; k < row.size(); k++)
+         mat.insert( int(row[k]), int(col[k]) ) = Scalar(0.0);
+   }
+   else
+   {  for(size_t k = 0; k < row.size(); k++)
+         mat.insert( int(row[k]), int(col[k]) ) = val[k];
+   }
+   return;
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

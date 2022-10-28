@@ -7,16 +7,16 @@
 /*
 $begin sparse_hes_rcv$$
 $spell
-	rc
-	rcv
-	nnz
-	CppAD
-	const
-	std
-	bool
-	work work
-	hes
-	CppAD
+   rc
+   rcv
+   nnz
+   CppAD
+   const
+   std
+   bool
+   work work
+   hes
+   CppAD
 %$$
 
 $section Sparse Hessian Computation Structure$$
@@ -31,14 +31,14 @@ CppAD Mixed user API.
 $head Purpose$$
 This structure holds information about the Hessian
 $latex \[
-	H(x) = \sum_{i=0}^{m-1} w_i f_i^{(2)} (x)
+   H(x) = \sum_{i=0}^{m-1} w_i f_i^{(2)} (x)
 \] $$
 where $latex m$$ is the number of components in the function $latex f(x)$$.
 
 $head subset$$
 The field $icode%hes_rcv%.subset%$$ has prototype
 $codei%
-	CppAD::mixed::d_sparse_rcv %hes_rcv%.subset
+   CppAD::mixed::d_sparse_rcv %hes_rcv%.subset
 %$$
 It is empty zero when it is constructed; i.e.,
 all of its sizes are zero.
@@ -48,31 +48,31 @@ that is computed.
 $subhead nnz$$
 We use the notation
 $codei%
-	%nnz% = %hes_rcv%.subset.nnz()
+   %nnz% = %hes_rcv%.subset.nnz()
 %$$
 
 $subhead row$$
 We use the notation
 $codei%
-	%row% = %hes_rcv%.subset.row()
+   %row% = %hes_rcv%.subset.row()
 %$$
 
 $subhead col$$
 We use the notation
 $codei%
-	%col% = %hes_rcv%.subset.col()
+   %col% = %hes_rcv%.subset.col()
 %$$
 
 $subhead val$$
 We use the notation
 $codei%
-	%val% = %hes_rcv%.subset.val()
+   %val% = %hes_rcv%.subset.val()
 %$$
 
 $head work$$
 The field $icode%hes_rcv%.work%$$ has prototype
 $codei%
-	CppAD::sparse_hes_work %hes_rcv%.work
+   CppAD::sparse_hes_work %hes_rcv%.work
 %$$
 It has no information when it is constructed; i.e., it is empty.
 After initialization it should contain the CppAD cached information
@@ -80,14 +80,14 @@ for the call to $code sparse_hes$$ specified below.
 
 $head Computing Sparse Hessians$$
 $codei%
-	%f%.sparse_hes(
-		%x%,
-		%w%
-		%hes_rcv%.subset,
-		%not_used_pattern%,
-		%not_used_coloring%,
-		%hes_rcv%.work
-	)
+   %f%.sparse_hes(
+      %x%,
+      %w%
+      %hes_rcv%.subset,
+      %not_used_pattern%,
+      %not_used_coloring%,
+      %hes_rcv%.work
+   )
 %$$
 Upon return,
 for $icode%k% = 0 , %...%, %nnz%-1%$$,
@@ -97,13 +97,13 @@ where $icode%i% = %row%[%k%]%$$ and $icode%j% = %col[%k%]%$$.
 $subhead f$$
 The function $icode f$$ has prototype
 $codei%
-	CppAD::ADFun<double> %f%
+   CppAD::ADFun<double> %f%
 %$$
 
 $subhead x$$
 The argument $icode x$$ has prototype
 $codei%
-	const CppAD::vector<double>& %x%
+   const CppAD::vector<double>& %x%
 %$$
 and its size is $icode%f%.Domain()%$$.
 It is the location where the Hessian is being evaluated.
@@ -111,7 +111,7 @@ It is the location where the Hessian is being evaluated.
 $subhead w$$
 The argument $icode w$$ has prototype
 $codei%
-	const CppAD::vector<double>& %w%
+   const CppAD::vector<double>& %w%
 %$$
 and its size is $icode%f%.Range()%$$.
 It is the weighting for the components of the Hessian that is
@@ -120,14 +120,14 @@ being computed.
 $subhead not_used_pattern$$
 This argument has the following prototype
 $codei%
-	const CppAD::mixed::sparse_rc& %not_used_pattern%
+   const CppAD::mixed::sparse_rc& %not_used_pattern%
 %$$
 It is not used and hence its value does not matter.
 
 $subhead not_used_coloring$$
 This argument has the following prototype
 $codei%
-	const std::string& %not_used_coloring%
+   const std::string& %not_used_coloring%
 %$$
 It is not used and hence its value does not matter.
 
@@ -136,10 +136,10 @@ $end
 # include <cppad/mixed/typedef.hpp>
 
 namespace CppAD { namespace mixed {
-	struct sparse_hes_rcv {
-		d_sparse_rcv           subset;
-		CppAD::sparse_hes_work work;
-	};
+   struct sparse_hes_rcv {
+      d_sparse_rcv           subset;
+      CppAD::sparse_hes_work work;
+   };
 } }
 
 # endif

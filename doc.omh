@@ -8,13 +8,13 @@ $comment User documentation for cppad_mixed$$
 $include omh/cppad_mixed.omh$$
 
 $childtable%omh/install_unix.omh
-	%omh/theory.omh
-	%include/cppad/mixed/base_class.hpp
-	%omh/namespace.omh
-	%example/user/user.omh
-	%omh/release_notes.omh
-	%omh/wish_list.omh
-	%omh/math_notation.omh
+   %omh/theory.omh
+   %include/cppad/mixed/base_class.hpp
+   %omh/namespace.omh
+   %example/user/user.omh
+   %omh/release_notes.omh
+   %omh/wish_list.omh
+   %omh/math_notation.omh
 %$$
 
 

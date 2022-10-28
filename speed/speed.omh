@@ -13,7 +13,7 @@ These choices are command line input options
 and $cref run_cmake.sh$$ configuration options.
 
 $childtable%speed/ar1_xam.cpp
-	%speed/capture_xam.cpp
+   %speed/capture_xam.cpp
 %$$
 
 

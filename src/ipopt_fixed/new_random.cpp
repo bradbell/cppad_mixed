@@ -8,9 +8,9 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 $begin ipopt_fixed_new_random$$
 $spell
-	vec
-	ipopt
-	const
+   vec
+   ipopt
+   const
 $$
 
 $section Compute New Random Effects and Update Factor$$
@@ -48,7 +48,7 @@ in the $code ipopt_fixed$$ constructor.
 $head fixed_vec$$
 This argument has prototype
 $codei%
-	const d_vector& %fixed_vec%
+   const d_vector& %fixed_vec%
 %$$
 it is the value of the fixed effects that we are computing the random
 effects and updated factor for.
@@ -60,7 +60,7 @@ corresponding to $icode fixed_vec$$.
 $head mixed_object_$$
 The factor in this member variables is updated using the call
 $codei%
-	mixed_object_.update_factor(%fixed_vec%, random_cur_)
+   mixed_object_.update_factor(%fixed_vec%, random_cur_)
 %$$
 see $cref update_factor$$ for side effects.
 
@@ -70,17 +70,17 @@ void ipopt_fixed::new_random(const d_vector& fixed_vec)
 /* %$$
 $end
 */
-{	assert( n_random_ > 0 );
-	// Compute the optimal random effects corresponding to fixed effects.
-	// Use try_optimize_random instead of optimize_random, so that thows
-	// are caught at the fixed effects, not random effects, level.
-	random_cur_ = mixed_object_.try_optimize_random(
-		random_ipopt_options_,
-		fixed_vec,
-		random_lower_,
-		random_upper_,
-		random_in_
-	);
-	mixed_object_.update_factor(fixed_vec, random_cur_);
+{  assert( n_random_ > 0 );
+   // Compute the optimal random effects corresponding to fixed effects.
+   // Use try_optimize_random instead of optimize_random, so that thows
+   // are caught at the fixed effects, not random effects, level.
+   random_cur_ = mixed_object_.try_optimize_random(
+      random_ipopt_options_,
+      fixed_vec,
+      random_lower_,
+      random_upper_,
+      random_in_
+   );
+   mixed_object_.update_factor(fixed_vec, random_cur_);
 }
 } } // END_CPPAD_MIXED_NAMESPACE

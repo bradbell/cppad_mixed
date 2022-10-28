@@ -5,14 +5,14 @@
 # ----------------------------------------------------------------------------
 if [ $0 != 'bin/install_cppad.sh' ]
 then
-	echo 'bin/install_cppad.sh: must be executed from its parent directory'
-	exit 1
+   echo 'bin/install_cppad.sh: must be executed from its parent directory'
+   exit 1
 fi
 # -----------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
-	echo $*
-	eval $*
+   echo $*
+   eval $*
 }
 # --------------------------------------------------------------------------
 # Use same version and hash as in cppad_py.git/bin/get_cppad.sh
@@ -45,23 +45,23 @@ cppad_prefix="$cmake_install_prefix"
 export PKG_CONFIG_PATH=''
 for dir in $(find -L $cmake_install_prefix -name 'pkgconfig')
 do
-	PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$dir"
+   PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$dir"
 done
 # --------------------------------------------------------------------------
 if echo "$cmake_install_prefix" | grep '/cppad_mixed$' > /dev/null
 then
-	bin/build_type.sh install_cppad $cmake_install_prefix $build_type
+   bin/build_type.sh install_cppad $cmake_install_prefix $build_type
 fi
 # --------------------------------------------------------------------------
 if [ ! -e external/$build_type ]
 then
-	mkdir -p external/$build_type
+   mkdir -p external/$build_type
 fi
 echo_eval cd external/$build_type
 # --------------------------------------------------------------------------
 if [ ! -e cppad.git ]
 then
-	echo_eval git clone $web_page cppad.git
+   echo_eval git clone $web_page cppad.git
 fi
 pwd
 #
@@ -70,22 +70,22 @@ echo_eval git checkout master
 echo_eval git pull --ff-only
 echo_eval git checkout --quiet $hash_code
 check=`grep '^SET(cppad_version' CMakeLists.txt | \
-	sed -e 's|^[^"]*"\([^"]*\).*|\1|'`
+   sed -e 's|^[^"]*"\([^"]*\).*|\1|'`
 if [ "$cppad_version" != "$check" ]
 then
-	echo 'install_cppad.sh: cppad_version number does not agree with hash_code'
-	exit 1
+   echo 'install_cppad.sh: cppad_version number does not agree with hash_code'
+   exit 1
 fi
 # -----------------------------------------------------------------------------
 #
 if [ ! -e build ]
 then
-	mkdir build
+   mkdir build
 fi
 echo_eval cd build
 if [ -e CMakeCache.txt ]
 then
-	rm CMakeCache.txt
+   rm CMakeCache.txt
 fi
 #
 cmake_args="-D CMAKE_VERBOSE_MAKEFILE=0"

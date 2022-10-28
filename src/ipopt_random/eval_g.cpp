@@ -8,10 +8,10 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 $begin ipopt_random_eval_g$$
 $spell
-	eval
-	Ipopt
-	Taylor
-	vec
+   eval
+   Ipopt
+   Taylor
+   vec
 $$
 
 $section Compute Value of Constraint Functions$$
@@ -50,24 +50,24 @@ the random effects in $icode x$$.
 $head Prototype$$
 $srccode%cpp% */
 bool ipopt_random::eval_g(
-	Index           n        ,  // in
-	const Number*   x        ,  // in
-	bool            new_x    ,  // in
-	Index           m        ,  // in
-	Number*         g        )  // out
+   Index           n        ,  // in
+   const Number*   x        ,  // in
+   bool            new_x    ,  // in
+   Index           m        ,  // in
+   Number*         g        )  // out
 /* %$$
 $end
 */
-{	assert( size_t(n) == n_random_ );
-	assert( m == 0 );
-	//
-	if( new_x )
-	{	// set the zero order Taylor coefficients in
-		// mixed_object_.ran_like_fun_
-		Number obj_value;
-		eval_f(n, x, new_x, obj_value);
-	}
-	//
-	return true;
+{  assert( size_t(n) == n_random_ );
+   assert( m == 0 );
+   //
+   if( new_x )
+   {  // set the zero order Taylor coefficients in
+      // mixed_object_.ran_like_fun_
+      Number obj_value;
+      eval_f(n, x, new_x, obj_value);
+   }
+   //
+   return true;
 }
 } } // END_CPPAD_MIXED_NAMESPACE

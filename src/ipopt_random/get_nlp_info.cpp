@@ -8,10 +8,10 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 $begin ipopt_random_get_nlp_info$$
 $spell
-	nlp
-	nnz
-	jac
-	Jacobian
+   nlp
+   nnz
+   jac
+   Jacobian
 $$
 
 $section Return Information About Problem Sizes$$
@@ -44,21 +44,21 @@ it was not feasible
 $head Prototype$$
 $srccode%cpp% */
 bool ipopt_random::get_nlp_info(
-	Index&          n            ,  // out
-	Index&          m            ,  // out
-	Index&          nnz_jac_g    ,  // out
-	Index&          nnz_h_lag    ,  // out
-	IndexStyleEnum& index_style  )  // out
+   Index&          n            ,  // out
+   Index&          m            ,  // out
+   Index&          nnz_jac_g    ,  // out
+   Index&          nnz_h_lag    ,  // out
+   IndexStyleEnum& index_style  )  // out
 /* %$$
 $end
 */
 {
-	n           = Index(n_random_);
-	m           = 0;
-	nnz_jac_g   = 0;
-	nnz_h_lag   = Index(nnz_h_lag_);
-	index_style = C_STYLE;
-	//
-	return true;
+   n           = Index(n_random_);
+   m           = 0;
+   nnz_jac_g   = 0;
+   nnz_h_lag   = Index(nnz_h_lag_);
+   index_style = C_STYLE;
+   //
+   return true;
 }
 } } // END_CPPAD_MIXED_NAMESPACE

@@ -5,16 +5,16 @@
 # ----------------------------------------------------------------------------
 if [ ! -e 'bin/check_install.sh' ]
 then
-	echo 'bin/check_install.sh: must be executed from its parent directory'
-	exit 1
+   echo 'bin/check_install.sh: must be executed from its parent directory'
+   exit 1
 fi
 # $OMhelpKeyCharacter=&
 # &begin check_install.sh&& &newlinech #&&
 # &spell
-#	suitesparse cppad eigen xam cpp mkdir tmp cp sed isystem lcppad lgsl
-#	lblas fi bool std cout endl ipopt conig eval config
-#	lcholmod lamd lcamd lcolamd lccolamd lsuitesparseconfig
-#	cmake gsl cmd cmd grep libdir pkgconfig Wl rpath
+#  suitesparse cppad eigen xam cpp mkdir tmp cp sed isystem lcppad lgsl
+#  lblas fi bool std cout endl ipopt conig eval config
+#  lcholmod lamd lcamd lcolamd lccolamd lsuitesparseconfig
+#  cmake gsl cmd cmd grep libdir pkgconfig Wl rpath
 # &&
 #
 # &section Example and Test Using the Installed Version of cppad_mixed&&
@@ -94,12 +94,12 @@ example_name=`echo $example_file | sed -e 's|.*/||' -e 's|\.cpp|_xam|'`
 # &codep
 cat << EOF >> example.cpp
 int main(void)
-{	if( ! $example_name() )
-	{	std::cout << "$example_name: Error" << std::endl;
-		std::exit(1);
-	}
-	std::cout << "$example_name: OK" << std::endl;
-	exit(0);
+{  if( ! $example_name() )
+   {  std::cout << "$example_name: Error" << std::endl;
+      std::exit(1);
+   }
+   std::cout << "$example_name: OK" << std::endl;
+   exit(0);
 }
 EOF
 # &&
@@ -133,31 +133,31 @@ suitesparse_libs='-lcholmod -lamd -lcamd -lcolamd -lccolamd -lsuitesparseconfig'
 # &codep
 if [ "$build_type" == 'debug' ]
 then
-	flags='-g -O0 -std=c++11 -Wall'
+   flags='-g -O0 -std=c++11 -Wall'
 else
-	flags='-O3 -DNDEBUG -std=c++11 -Wall'
+   flags='-O3 -DNDEBUG -std=c++11 -Wall'
 fi
 cat << EOF
 g++ example.cpp \\
-	$flags \\
-	-I $cmake_install_prefix/include \\
-	-isystem $eigen_prefix/include \\
-	-L $cmake_install_prefix/$cmake_libdir -lcppad_mixed \\
-	$gsl_libs \\
-	$suitesparse_libs \\
-	$ipopt_libs \\
-	-o example
+   $flags \\
+   -I $cmake_install_prefix/include \\
+   -isystem $eigen_prefix/include \\
+   -L $cmake_install_prefix/$cmake_libdir -lcppad_mixed \\
+   $gsl_libs \\
+   $suitesparse_libs \\
+   $ipopt_libs \\
+   -o example
 EOF
 g++ example.cpp \
-	$flags \
-	-I $cmake_install_prefix/include \
-	-isystem $eigen_prefix/include \
-	-L $cmake_install_prefix/$cmake_libdir -lcppad_mixed \
-	-Wl,-rpath=$cmake_install_prefix/$cmake_libdir \
-	$gsl_libs \
-	$suitesparse_libs \
-	$ipopt_libs \
-	-o example
+   $flags \
+   -I $cmake_install_prefix/include \
+   -isystem $eigen_prefix/include \
+   -L $cmake_install_prefix/$cmake_libdir -lcppad_mixed \
+   -Wl,-rpath=$cmake_install_prefix/$cmake_libdir \
+   $gsl_libs \
+   $suitesparse_libs \
+   $ipopt_libs \
+   -o example
 # &&
 #
 # &head Run Example&&
@@ -165,8 +165,8 @@ g++ example.cpp \
 # &codep
 if ! ./example
 then
-	echo 'check_install.sh: Error'
-	exit 1
+   echo 'check_install.sh: Error'
+   exit 1
 fi
 echo 'check_install.sh: OK'
 exit 0

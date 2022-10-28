@@ -5,30 +5,30 @@
 /*
 $begin derived_ctor$$
 $spell
-	CppAD
-	bool
-	cppad
-	dismod
-	const
-	vec
-	rcv
-	init_obj_hes
-	nr
-	nc
+   CppAD
+   bool
+   cppad
+   dismod
+   const
+   vec
+   rcv
+   init_obj_hes
+   nr
+   nc
 $$
 
 $section User Defined Class Derived From cppad_mixed$$
 
 $head Syntax$$
 $icode%mixed_derived% %mixed_object%(
-	%n_fixed%, %n_random%,
-	%quasi_fixed%, %bool_sparsity%, %A_rcv%, %trace_init%,
-	%...%
+   %n_fixed%, %n_random%,
+   %quasi_fixed%, %bool_sparsity%, %A_rcv%, %trace_init%,
+   %...%
 )%$$
 
 $head Prototype$$
 $srcfile%include/cppad/mixed/base_class.hpp%
-	0%// BEGIN_CPPAD_MIXED_CTOR%// END_CPPAD_MIXED_CTOR%0
+   0%// BEGIN_CPPAD_MIXED_CTOR%// END_CPPAD_MIXED_CTOR%0
 %$$
 
 $head See Also$$
@@ -37,7 +37,7 @@ $cref initialize$$
 $head mixed_derived$$
 This is the name of the class derived in the following fashion:
 $codei%
-	class %mixed_derived% : public cppad_mixed {
+   class %mixed_derived% : public cppad_mixed {
 %$$
 
 $head mixed_object$$
@@ -46,9 +46,9 @@ This is the derived class object that is constructed by the syntax above.
 $head cppad_mixed$$
 The derived class constructor must call its base class constructor as follows:
 $codei%
-	cppad_mixed(
-		%n_fixed%, %n_random%, %quasi_fixed%, %bool_sparsity%, %A_rcv%
-	)
+   cppad_mixed(
+      %n_fixed%, %n_random%, %quasi_fixed%, %bool_sparsity%, %A_rcv%
+   )
 %$$
 The arguments $icode quasi_fixed$$, $icode bool_sparsity$$, $icode A_rcv$$
 are optional; see default values in prototype above.
@@ -84,8 +84,8 @@ If $icode quasi_fixed$$ is false,
 the Hessian of the fixed effects objective is computed using the
 approximate Laplace objective
 $cref/H(beta, theta, u)
-	/theory
-	/Approximate Laplace Objective, H(beta, theta, u)
+   /theory
+   /Approximate Laplace Objective, H(beta, theta, u)
 /$$.
 The extra routines for initializing the second order accurate
 approximation for the Laplace objective $code init_laplace_obj_fun$$,
@@ -104,9 +104,9 @@ This is a
 $cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
 representation of the
 $cref/random constraint matrix
-	/cppad_mixed
-	/Notation
-	/Random Constraint Matrix, A
+   /cppad_mixed
+   /Notation
+   /Random Constraint Matrix, A
 /$$
 $latex A$$.
 If $icode%random_vec%.size()%$$ is zero,
@@ -137,7 +137,7 @@ or
 $cref/warning/base_class/User Defined Functions/warning/$$.
 
 $children%
-	example/user/derived_ctor.cpp
+   example/user/derived_ctor.cpp
 %$$
 $head Example$$
 The file $cref derived_ctor.cpp$$ contains an example and test
@@ -150,39 +150,39 @@ $end
 # include<cppad/mixed/exception.hpp>
 
 namespace { // BEGIN_EMPTY_NAMESPACE
-	void handler(
-		bool known       ,
-		int  line        ,
-		const char *file ,
-		const char *exp  ,
-		const char *msg  )
-     {	// use the most recent cppad_mixed fatal_error routine
-		std::string thrower, brief;
-		//
-		thrower += "\nCppAD: file = ";
-		thrower += file;
-		thrower += "\nline = ";
-		thrower += CppAD::to_string(line);
-		//
-		brief   += "msg = ";
-		brief   += msg;
-		//
-		// CppAD ErrorHandler: uncomment next line to debug CppAD asserts
-		// assert(false);
-		CppAD::mixed::exception e(thrower, brief);
-		throw(e);
+   void handler(
+      bool known       ,
+      int  line        ,
+      const char *file ,
+      const char *exp  ,
+      const char *msg  )
+     {  // use the most recent cppad_mixed fatal_error routine
+      std::string thrower, brief;
+      //
+      thrower += "\nCppAD: file = ";
+      thrower += file;
+      thrower += "\nline = ";
+      thrower += CppAD::to_string(line);
+      //
+      brief   += "msg = ";
+      brief   += msg;
+      //
+      // CppAD ErrorHandler: uncomment next line to debug CppAD asserts
+      // assert(false);
+      CppAD::mixed::exception e(thrower, brief);
+      throw(e);
      }
 
 } // END_EMPTY_NAMESPACE
 
 // base class constructor
 cppad_mixed::cppad_mixed(
-	size_t                                n_fixed       ,
-	size_t                                n_random      ,
-	bool                                  quasi_fixed   ,
-	bool                                  bool_sparsity ,
-	const CppAD::mixed::d_sparse_rcv&     A_rcv         ,
-	bool                                  trace_init    )
+   size_t                                n_fixed       ,
+   size_t                                n_random      ,
+   bool                                  quasi_fixed   ,
+   bool                                  bool_sparsity ,
+   const CppAD::mixed::d_sparse_rcv&     A_rcv         ,
+   bool                                  trace_init    )
 :
 n_fixed_(n_fixed)                   ,
 n_random_(n_random)                 ,
@@ -204,10 +204,10 @@ initialize_done_(false)             ,
 cppad_error_handler_(handler)       ,
 ldlt_ran_hes_(n_random)             ,
 a1_ldlt_ran_hes_(n_random)
-{	if( A_rcv.nr() > 0 && A_rcv.nc() != n_random )
-	{	std::string message = "cppad_mixed ctor: A_rcv.nr() > 0 and A_rcv.nc() != n_random";
-		fatal_error(message);
-	}
+{  if( A_rcv.nr() > 0 && A_rcv.nc() != n_random )
+   {  std::string message = "cppad_mixed ctor: A_rcv.nr() > 0 and A_rcv.nc() != n_random";
+      fatal_error(message);
+   }
 }
 
 // base class destructor

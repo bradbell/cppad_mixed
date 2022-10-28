@@ -7,17 +7,17 @@
 /*
 $begin configure.hpp$$
 $spell
-	ldlt_eigen
-	hpp
-	CppAD
-	yyyymmdd
-	nullptr
-	cholmod
-	Cholesky
-	Bool
-	cppad
-	ipopt
-	hes
+   ldlt_eigen
+   hpp
+   CppAD
+   yyyymmdd
+   nullptr
+   cholmod
+   Cholesky
+   Bool
+   cppad
+   ipopt
+   hes
 $$
 
 $section Preprocessor Configuration Symbols in configure.hpp$$
@@ -30,7 +30,7 @@ $head CPPAD_MIXED_VERSION$$
 This is a C string with the year, month, and date
 for this version in the following format:
 $codei%
-	"%yyyymmdd%"
+   "%yyyymmdd%"
 %$$
 
 $head CPPAD_MIXED_FOR_HES_SPARSITY$$
@@ -52,11 +52,11 @@ $head CPPAD_MIXED_LDLT_CLASS$$
 If $cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$ is $code yes$$,
 this symbol is defined as
 $codep
-	CppAD::mixed::ldlt_cholmod
+   CppAD::mixed::ldlt_cholmod
 $$
 Otherwise it is defined as
 $codep
-	CppAD::mixed::ldlt_eigen
+   CppAD::mixed::ldlt_eigen
 $$
 
 $head CPPAD_MIXED_NULL_PTR$$

@@ -8,10 +8,10 @@
 /*
 $begin exception$$
 $spell
-	cppad
-	CppAD
-	const
-	std
+   cppad
+   CppAD
+   const
+   std
 $$
 
 $section CppAD Mixed Exceptions$$
@@ -25,7 +25,7 @@ $icode%description% = %e%.message(%catcher%)
 $head thrower$$
 This argument has prototype
 $codei%
-	const std::string& %thrower%
+   const std::string& %thrower%
 %$$
 and is the name of the routine in which the exception occurred
 (the routine that threw the exception).
@@ -33,21 +33,21 @@ and is the name of the routine in which the exception occurred
 $head brief$$
 This argument has prototype
 $codei%
-	const std::string& %brief%
+   const std::string& %brief%
 %$$
 and is a brief description of the exception.
 
 $head catcher$$
 This argument has prototype
 $codei%
-	const std::string& %catcher%
+   const std::string& %catcher%
 %$$
 and is the name of the routine that caught the exception.
 
 $head description$$
 This return has prototype
 $codei%
-	std::string %description%
+   std::string %description%
 %$$
 it is a message that includes
 $icode catcher$$, $icode thrower$$ and $icode brief$$.
@@ -58,19 +58,19 @@ $end
 # include <cppad/mixed/configure.hpp>
 
 namespace CppAD { namespace mixed {
-	class exception {
-	private:
-		std::string thrower_;
-		std::string brief_;
-	public:
-		exception(const std::string& thrower, const std::string& brief)
-		: thrower_( thrower ) , brief_(brief)
-		{ }
-		const std::string message(const std::string& catcher) const
-		{	std::string msg = catcher + ": " + thrower_ + ":\n" + brief_;
-			return msg;
-		}
-	};
+   class exception {
+   private:
+      std::string thrower_;
+      std::string brief_;
+   public:
+      exception(const std::string& thrower, const std::string& brief)
+      : thrower_( thrower ) , brief_(brief)
+      { }
+      const std::string message(const std::string& catcher) const
+      {  std::string msg = catcher + ": " + thrower_ + ":\n" + brief_;
+         return msg;
+      }
+   };
 } }
 
 # endif

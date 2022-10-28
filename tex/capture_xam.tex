@@ -28,22 +28,22 @@
 \newcommand{\B}[1]{{\bf #1}}
 \newcommand{\R}[1]{{\rm #1}}
 \newcommand{\Section}[1]{
-	\section{#1}
-	\begin{frame}
-	\begin{center}
-	\Blue{ \Large{#1} }
-	\end{center}
-	\end{frame}
+   \section{#1}
+   \begin{frame}
+   \begin{center}
+   \Blue{ \Large{#1} }
+   \end{center}
+   \end{frame}
 }
 %
 \title[cppad\_mixed]{
 The cppad\_mixed Capture Example and Speed Test}
 \author{Bradley M. Bell}
 \institute{
-	Applied Physics Laboratory, \\
-	Health Metrics and Evaluation, \\
-	University of Washington, \\
-	{\tt bradbell@uw.edu}
+   Applied Physics Laboratory, \\
+   Health Metrics and Evaluation, \\
+   University of Washington, \\
+   {\tt bradbell@uw.edu}
 }
 \date[2016-06-(20-24)]
 {ADMB and TMB Developer's Workshop \\ June, 2016}
@@ -61,7 +61,7 @@ The cppad\_mixed Capture Example and Speed Test}
 \begin{document}
 
 \begin{frame}
-	\titlepage
+   \titlepage
 \end{frame}
 
 \begin{frame}{Contents}
@@ -304,18 +304,18 @@ $u$ is the vector of random effects.
 \item
 The logit of $q_t$ is
 \[
-	\log [ q_t / ( 1 - q_t ) ] = u_t + \theta_1
+   \log [ q_t / ( 1 - q_t ) ] = u_t + \theta_1
 \]
 \pause
 
 \item
 The probability of capture at time $t$ given $\theta$ and $u$ is
 \[
-	q_t ( \theta , u )
-	=
-	\B{p} ( q_t | \theta , u )
-	=
-	[ 1 + \exp( - u_t - \theta_1 ) ]^{-1}
+   q_t ( \theta , u )
+   =
+   \B{p} ( q_t | \theta , u )
+   =
+   [ 1 + \exp( - u_t - \theta_1 ) ]^{-1}
 \]
 
 
@@ -341,8 +341,8 @@ The probability of $y_i$ given $N_i$, $\theta$, and $u$ is
 =
 \prod_{t=0}^{T-1}
 \left( \begin{array}{c} {N(i)} \\ y_{i,t} \end{array} \right)
-	q_t ( \theta , u)^{y(i,t)}
-	\left( 1 - q_t( \theta , u) \right)^{y(i,t)}
+   q_t ( \theta , u)^{y(i,t)}
+   \left( 1 - q_t( \theta , u) \right)^{y(i,t)}
 \]
 \pause
 
@@ -390,8 +390,8 @@ The probability of $y$ given $\theta$, and $u$ is
 \theta_0^k \frac{ \exp[ - \theta_0 ] }{ k ! }
 \prod_{t=0}^{T-1}
 \left( \begin{array}{c} {k} \\ y_{i,t} \end{array} \right)
-	q_t ( \theta , u)^{y(i,t)}
-	\left( 1 - q_t( \theta , u) \right)^{y(i,t)}
+   q_t ( \theta , u)^{y(i,t)}
+   \left( 1 - q_t( \theta , u) \right)^{y(i,t)}
 \right]
 \]
 
@@ -414,8 +414,8 @@ We use a normal distribution for $u$ given $\theta$,
 \B{p} ( u | \theta )
 =
 \prod_{t=0}^{T-1}
-	\frac{1}{ \theta_2 \sqrt{ 2 \pi } }
-		\exp \left[ - \frac{1}{2} \frac{ u_t^2 }{ \theta_2^2 } \right]
+   \frac{1}{ \theta_2 \sqrt{ 2 \pi } }
+      \exp \left[ - \frac{1}{2} \frac{ u_t^2 }{ \theta_2^2 } \right]
 \]
 \pause
 

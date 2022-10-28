@@ -23,7 +23,7 @@
 Examples and tests that use cppad_mixed private information.
 This list can be generated using the following command:
 grep -P '^\t*friend *bool *::' cppad_mixed.hpp | \
-	sed -e 's|^\t*friend *bool *::|extern bool |' | sort
+   sed -e 's|^\t*friend *bool *::|extern bool |' | sort
 */
 extern bool delta_ran_obj(void);
 extern bool der_var_hes(void);
@@ -53,18 +53,18 @@ extern bool update_factor_xam(void);
 
 
 namespace CppAD { namespace mixed {
-	class optimize_random_ipopt;
-	class ipopt_fixed;
-	class ipopt_random;
+   class optimize_random_ipopt;
+   class ipopt_fixed;
+   class ipopt_random;
 } }
 
 class cppad_mixed {
-	friend class CppAD::mixed::optimize_random_ipopt;
-	friend class CppAD::mixed::ipopt_fixed;
-	friend class CppAD::mixed::ipopt_random;
-	friend bool ::ran_obj_tst(void);
-	friend bool ::order2random_xam(void);
-	friend bool ::ran_like_hes_xam(void);
+   friend class CppAD::mixed::optimize_random_ipopt;
+   friend class CppAD::mixed::ipopt_fixed;
+   friend class CppAD::mixed::ipopt_random;
+   friend bool ::ran_obj_tst(void);
+   friend bool ::order2random_xam(void);
+   friend bool ::ran_like_hes_xam(void);
 // public member functions and variables
 # include <cppad/mixed/base_class.hpp>
 

@@ -8,15 +8,15 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 $begin ipopt_random_get_starting_point$$
 $spell
-	init
-	ipopt
+   init
+   ipopt
 $$
 
 $section Return Initial Values Where Optimization is Started$$
 
 $head Syntax$$
 $icode%ok% = get_starting_point(
-	%n%, %init_x%, %x%, %init_z%, %z_L%, %z_U%, %m%, %init_lambda%, %lambda%
+   %n%, %init_x%, %x%, %init_z%, %z_L%, %z_U%, %m%, %init_lambda%, %lambda%
 )%$$
 
 $head n$$
@@ -63,29 +63,29 @@ it was not feasible
 $head Prototype$$
 $srccode%cpp% */
 bool ipopt_random::get_starting_point(
-	Index           n            ,  // in
-	bool            init_x       ,  // in
-	Number*         x            ,  // out
-	bool            init_z       ,  // in
-	Number*         z_L          ,  // out
-	Number*         z_U          ,  // out
-	Index           m            ,  // in
-	bool            init_lambda  ,  // in
-	Number*         lambda       )  // out
+   Index           n            ,  // in
+   bool            init_x       ,  // in
+   Number*         x            ,  // out
+   bool            init_z       ,  // in
+   Number*         z_L          ,  // out
+   Number*         z_U          ,  // out
+   Index           m            ,  // in
+   bool            init_lambda  ,  // in
+   Number*         lambda       )  // out
 /* %$$
 $end
 */
 {
-	assert( init_x == true );
-	assert( init_z == false );
-	assert( init_lambda == false );
-	assert( size_t(n) == n_random_ );
-	assert( m == 0 );
-	//
-	// initial value for random effects
-	for(size_t j = 0; j < n_random_; j++)
-		x[j] = random_in_[j];
+   assert( init_x == true );
+   assert( init_z == false );
+   assert( init_lambda == false );
+   assert( size_t(n) == n_random_ );
+   assert( m == 0 );
+   //
+   // initial value for random effects
+   for(size_t j = 0; j < n_random_; j++)
+      x[j] = random_in_[j];
 
-	return true;
+   return true;
 }
 } } // END_CPPAD_MIXED_NAMESPACE

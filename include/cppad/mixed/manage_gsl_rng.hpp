@@ -8,9 +8,9 @@
 # include <gsl/gsl_rng.h>
 
 namespace CppAD { namespace mixed {
-	size_t   new_gsl_rng(size_t seed);
-	gsl_rng* get_gsl_rng(void);
-	void     free_gsl_rng(void);
+   size_t   new_gsl_rng(size_t seed);
+   gsl_rng* get_gsl_rng(void);
+   void     free_gsl_rng(void);
 } }
 
 # endif

@@ -80,29 +80,29 @@ extern bool warm_start_xam(void);
 
 // anonymous namespace
 namespace {
-	// function that runs one test
-	static size_t Run_ok_count    = 0;
-	static size_t Run_error_count = 0;
-	void Run(bool test_fun(void), const char* test_name)
-	{	using std::cout;
-		using std::endl;
-		//
-		std::streamsize width = 30;
-		cout.width( width );
-		cout.setf( std::ios_base::left );
-		cout << test_name << ':';
-		assert( std::strlen(test_name) < size_t(width) );
-		//
-		bool ok = test_fun();
-		if( ok )
-		{	cout << "OK" << endl;
-			Run_ok_count++;
-		}
-		else
-		{	cout << "Error" << endl;
-			Run_error_count++;
-		}
-	}
+   // function that runs one test
+   static size_t Run_ok_count    = 0;
+   static size_t Run_error_count = 0;
+   void Run(bool test_fun(void), const char* test_name)
+   {  using std::cout;
+      using std::endl;
+      //
+      std::streamsize width = 30;
+      cout.width( width );
+      cout.setf( std::ios_base::left );
+      cout << test_name << ':';
+      assert( std::strlen(test_name) < size_t(width) );
+      //
+      bool ok = test_fun();
+      if( ok )
+      {  cout << "OK" << endl;
+         Run_ok_count++;
+      }
+      else
+      {  cout << "Error" << endl;
+         Run_error_count++;
+      }
+   }
 }
 // macro for calls Run
 # define RUN(test_name) Run( test_name, #test_name )
@@ -110,77 +110,77 @@ namespace {
 // main program that runs all the tests
 int main(void)
 {
-	// This comment expected by bin/test_one.sh
-	RUN(abs_density_xam);
-	RUN(cholmod_factor_xam);
-	RUN(cholmod_solve_xam);
-	RUN(cholmod_solve2_a_xam);
-	RUN(cholmod_solve2_sim_xam);
-	RUN(ldlt_cholmod_xam);
-	RUN(ldlt_eigen_xam);
-	RUN(data_mismatch_xam);
-	RUN(derived_ctor_xam);
-	RUN(eigen_xam);
-	RUN(fix_con_eval_xam);
-	RUN(fix_con_hes_xam);
-	RUN(fix_con_jac_xam);
-	RUN(fix_constraint_xam);
-	RUN(fix_likelihood_xam);
-	RUN(fix_like_eval_xam);
-	RUN(fix_like_hes_xam);
-	RUN(fix_like_jac_xam);
-	RUN(hes_cross_xam);
-	RUN(hes_fixed_obj_xam);
-	RUN(hes_random_obj_xam);
-	RUN(information_mat_xam);
-	RUN(ipopt_run_xam);
-	RUN(lasso_xam);
-	RUN(logdet_jac_xam);
-	RUN(manage_gsl_rng_xam);
-	RUN(no_random_xam);
-	RUN(opt_ran_nan_xam);
-	RUN(optimize_fixed_xam);
-	RUN(optimize_random_xam);
-	RUN(order2random_xam);
-	RUN(ran_con_eval_xam);
-	RUN(ran_con_jac_xam);
-	RUN(ran_constraint_xam);
-	RUN(ran_jac_fun_xam);
-	RUN(ran_hes_fun_xam);
-	RUN(ran_like_hes_xam);
-	RUN(ran_likelihood_xam);
-	RUN(laplace_obj_hes_xam);
-	RUN(ran_obj_eval_xam);
-	RUN(ran_obj_jac_xam);
-	RUN(sample_fixed_xam);
-	RUN(sample_random_xam);
-	RUN(sparseinv_xam);
-	RUN(sparse_eigen2info_xam);
-	RUN(sparse_info2eigen_xam);
-	RUN(sparse_eigen2rcv_xam);
-	RUN(sparse_rcv2eigen_xam);
-	RUN(sparse_low_tri_sol_xam);
-	RUN(sparse_low2sym_xam);
-	RUN(sparse_mat2low_xam);
-	RUN(sparse_scale_diag_xam);
-	RUN(sparse_up_tri_sol_xam);
-	RUN(undetermined_xam);
-	RUN(update_factor_xam);
-	RUN(warm_start_xam);
-	// This comment also expected by bin/test_one.sh
+   // This comment expected by bin/test_one.sh
+   RUN(abs_density_xam);
+   RUN(cholmod_factor_xam);
+   RUN(cholmod_solve_xam);
+   RUN(cholmod_solve2_a_xam);
+   RUN(cholmod_solve2_sim_xam);
+   RUN(ldlt_cholmod_xam);
+   RUN(ldlt_eigen_xam);
+   RUN(data_mismatch_xam);
+   RUN(derived_ctor_xam);
+   RUN(eigen_xam);
+   RUN(fix_con_eval_xam);
+   RUN(fix_con_hes_xam);
+   RUN(fix_con_jac_xam);
+   RUN(fix_constraint_xam);
+   RUN(fix_likelihood_xam);
+   RUN(fix_like_eval_xam);
+   RUN(fix_like_hes_xam);
+   RUN(fix_like_jac_xam);
+   RUN(hes_cross_xam);
+   RUN(hes_fixed_obj_xam);
+   RUN(hes_random_obj_xam);
+   RUN(information_mat_xam);
+   RUN(ipopt_run_xam);
+   RUN(lasso_xam);
+   RUN(logdet_jac_xam);
+   RUN(manage_gsl_rng_xam);
+   RUN(no_random_xam);
+   RUN(opt_ran_nan_xam);
+   RUN(optimize_fixed_xam);
+   RUN(optimize_random_xam);
+   RUN(order2random_xam);
+   RUN(ran_con_eval_xam);
+   RUN(ran_con_jac_xam);
+   RUN(ran_constraint_xam);
+   RUN(ran_jac_fun_xam);
+   RUN(ran_hes_fun_xam);
+   RUN(ran_like_hes_xam);
+   RUN(ran_likelihood_xam);
+   RUN(laplace_obj_hes_xam);
+   RUN(ran_obj_eval_xam);
+   RUN(ran_obj_jac_xam);
+   RUN(sample_fixed_xam);
+   RUN(sample_random_xam);
+   RUN(sparseinv_xam);
+   RUN(sparse_eigen2info_xam);
+   RUN(sparse_info2eigen_xam);
+   RUN(sparse_eigen2rcv_xam);
+   RUN(sparse_rcv2eigen_xam);
+   RUN(sparse_low_tri_sol_xam);
+   RUN(sparse_low2sym_xam);
+   RUN(sparse_mat2low_xam);
+   RUN(sparse_scale_diag_xam);
+   RUN(sparse_up_tri_sol_xam);
+   RUN(undetermined_xam);
+   RUN(update_factor_xam);
+   RUN(warm_start_xam);
+   // This comment also expected by bin/test_one.sh
 
-	// summary report
-	using std::cout;
-	using std::endl;
-	int return_flag;
-	if( Run_error_count == 0 )
-	{	cout << "All " << Run_ok_count << " tests passed." << endl;
-		return_flag = 0;
-	}
-	else
-	{	cout << Run_error_count << " tests failed." << endl;
-		return_flag = 1;
-	}
+   // summary report
+   using std::cout;
+   using std::endl;
+   int return_flag;
+   if( Run_error_count == 0 )
+   {  cout << "All " << Run_ok_count << " tests passed." << endl;
+      return_flag = 0;
+   }
+   else
+   {  cout << Run_error_count << " tests failed." << endl;
+      return_flag = 1;
+   }
 
-	return return_flag;
+   return return_flag;
 }

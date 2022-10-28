@@ -5,20 +5,20 @@ $comment
 # ----------------------------------------------------------------------------
 $$
 $spell
-	Jax
-	CppAD
-	cppad
-	CppAD
-	vec
-	fabs
+   Jax
+   CppAD
+   cppad
+   CppAD
+   vec
+   fabs
 $$
 $comment BEGIN: settings used by all section ---------------------------- $$
 $escape $$
 $aindex section head subhead$$
 $latex
-	\newcommand{\R}[1]{ {\rm #1} }
-	\newcommand{\B}[1]{ {\bf #1} }
-	\newcommand{\W}[1]{ \; #1 \; }
+   \newcommand{\R}[1]{ {\rm #1} }
+   \newcommand{\B}[1]{ {\bf #1} }
+   \newcommand{\W}[1]{ \; #1 \; }
 $$
 $aindex section head subhead$$
 $comment END: settings used by all section ---------------------------- $$
@@ -29,22 +29,22 @@ cppad_mixed-20221028
 $$
 $table
 $cnext
-	One section per page $pre  $$ $cnext
-	All sections in one page
+   One section per page $pre  $$ $cnext
+   All sections in one page
 $rnext
 MathJax $pre  $$ $cnext
-	$href%cppad_mixed.htm%$$
-	$pre  $$ $cnext
-	$href%_printable.htm%$$
+   $href%cppad_mixed.htm%$$
+   $pre  $$ $cnext
+   $href%_printable.htm%$$
 $rnext
 MathML $pre  $$ $cnext
-	$href%cppad_mixed.xml%$$ $pre  $$ $cnext
-	$href%_printable.xml%$$
+   $href%cppad_mixed.xml%$$ $pre  $$ $cnext
+   $href%_printable.xml%$$
 $tend
 
 $head License$$
 $href%http://www.gnu.org/licenses/agpl.txt
-	%GNU Affero General Public License version 3.0 or later
+   %GNU Affero General Public License version 3.0 or later
 %$$
 
 $head Source Code Repository$$
@@ -123,7 +123,7 @@ $latex \[
 \B{p}( y , z , \theta )
 =
 \B{p} ( \theta ) \B{p} ( z | \theta ) \int_{-\infty}^{+\infty}
-		\B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) \; \B{d} u
+      \B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) \; \B{d} u
 \] $$
 
 $subhead No Random Effects$$
@@ -136,7 +136,7 @@ $latex \[
 $subhead Fixed Constraints, c$$
 The fixed effects have constraints of the form
 $latex \[
-	c_L \leq c(\theta) \leq c_U
+   c_L \leq c(\theta) \leq c_U
 \] $$
 where and $latex c_L$$, $latex c_U$$ are vectors in the range of $latex c(x)$$.
 In the case where there are no constraints on the fixed effects,
@@ -145,14 +145,14 @@ the range space is the empty vector.
 $subhead Random Constraints$$
 The random constraints are defined by the equation
 $latex \[
-	0 = A \; \hat{u} ( \theta )
+   0 = A \; \hat{u} ( \theta )
 \] $$
 
 $head Negative Log-Density Vector$$
 If $icode vec$$ is a density vector corresponding to $latex \B{p}(x)$$,
 the corresponding negative log-density is given by
 $pre
-	$$
+   $$
 $latex - \log [ \B{p} (x) ] = $$
 $icode%vec%[0] + fabs(%vec%[1]) + %...% fabs(%vec%[%s%-1])
 %$$

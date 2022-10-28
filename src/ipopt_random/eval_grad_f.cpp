@@ -9,10 +9,10 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 $begin ipopt_random_eval_grad_f$$
 $spell
-	eval
-	Ipopt
-	Taylor
-	vec
+   eval
+   Ipopt
+   Taylor
+   vec
 $$
 
 $section Compute Gradient of the Objective$$
@@ -49,56 +49,56 @@ the random effects in $icode x$$.
 $head Prototype$$
 $srccode%cpp% */
 bool ipopt_random::eval_grad_f(
-	Index           n         ,  // in
-	const Number*   x         ,  // in
-	bool            new_x     ,  // in
-	Number*         grad_f    )  // out
+   Index           n         ,  // in
+   const Number*   x         ,  // in
+   bool            new_x     ,  // in
+   Number*         grad_f    )  // out
 /* %$$
 $end
 */
-{	try
-	{	try_eval_grad_f(n, x, new_x, grad_f);
-	}
-	catch(const std::exception& e)
-	{	error_message_ = "ipopt_random::eval_grad_f: std::exception: ";
-		for(size_t j = 0; j < n_random_; j++)
-			error_random_[j] = x[j];
-		return false;
-	}
-	catch(const CppAD::mixed::exception& e)
-	{	error_message_ = e.message("ipopt_random::eval_grad_f");
-		for(size_t j = 0; j < n_random_; j++)
-			error_random_[j] = x[j];
-		return false;
-	}
-	return true;
+{  try
+   {  try_eval_grad_f(n, x, new_x, grad_f);
+   }
+   catch(const std::exception& e)
+   {  error_message_ = "ipopt_random::eval_grad_f: std::exception: ";
+      for(size_t j = 0; j < n_random_; j++)
+         error_random_[j] = x[j];
+      return false;
+   }
+   catch(const CppAD::mixed::exception& e)
+   {  error_message_ = e.message("ipopt_random::eval_grad_f");
+      for(size_t j = 0; j < n_random_; j++)
+         error_random_[j] = x[j];
+      return false;
+   }
+   return true;
 }
 void ipopt_random::try_eval_grad_f(
-	Index           n         ,  // in
-	const Number*   x         ,  // in
-	bool            new_x     ,  // in
-	Number*         grad_f    )  // out
-{	assert( size_t(n) == n_random_ );
-	assert( mixed_object_.ran_like_fun_.Domain() == n_fixed_ + n_random_ );
-	assert( mixed_object_.ran_like_fun_.Range()  == 1 );
-	//
-	if( new_x )
-	{	// set the zero order Taylor coefficients in
-		// mixed_object_.ran_like_fun_
-		Number obj_value;
-		eval_f(n, x, new_x, obj_value);
-	}
-	// compute the gradient w.r.t fixed and random effects
-	d_vector w(1);
-	w[0] = 1.0;
-	d_vector dw = mixed_object_.ran_like_fun_.Reverse(1, w);
-	if( CppAD::hasnan( dw ) ) throw CppAD::mixed::exception(
-		"", "gradient has nan"
-	);
-	//
-	// return gradient w.r.t random effects
-	for(size_t j = 0; j < n_random_; j++)
-		grad_f[j] = dw[ n_fixed_ + j ];
-	return;
+   Index           n         ,  // in
+   const Number*   x         ,  // in
+   bool            new_x     ,  // in
+   Number*         grad_f    )  // out
+{  assert( size_t(n) == n_random_ );
+   assert( mixed_object_.ran_like_fun_.Domain() == n_fixed_ + n_random_ );
+   assert( mixed_object_.ran_like_fun_.Range()  == 1 );
+   //
+   if( new_x )
+   {  // set the zero order Taylor coefficients in
+      // mixed_object_.ran_like_fun_
+      Number obj_value;
+      eval_f(n, x, new_x, obj_value);
+   }
+   // compute the gradient w.r.t fixed and random effects
+   d_vector w(1);
+   w[0] = 1.0;
+   d_vector dw = mixed_object_.ran_like_fun_.Reverse(1, w);
+   if( CppAD::hasnan( dw ) ) throw CppAD::mixed::exception(
+      "", "gradient has nan"
+   );
+   //
+   // return gradient w.r.t random effects
+   for(size_t j = 0; j < n_random_; j++)
+      grad_f[j] = dw[ n_fixed_ + j ];
+   return;
 }
 } } // END_CPPAD_MIXED_NAMESPACE
