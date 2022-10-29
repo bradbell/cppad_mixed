@@ -237,7 +237,7 @@ $srccode%cpp% */
 $comment ------------------------------------------------------------------- $$
 
 $head laplace_obj_fun_$$
-If $icode%n_random_% > 0%$$, quasi_fixed_ is false, and
+If $icode%n_random_% > 0%$$, quasi_fixed\_ is false, and
 $code init_laplace_obj_fun_done_$$,
 this is a recording of the second order approximation for the
 random part of the Laplace approximation, $latex H( \beta , \theta , u)$$;
@@ -249,7 +249,7 @@ The following objects hold information for computing derivatives
 with this ADFun object:
 
 $subhead laplace_obj_hes_$$
-If $icode%n_random_% > 0%$$, quasi_fixed_ is false, and
+If $icode%n_random_% > 0%$$, quasi_fixed\_ is false, and
 $code init_laplace_obj_hes_done_$$,
 $cref/laplace_obj_hes_/init_laplace_obj_hes/laplace_obj_hes_/$$ contains
 information for the Hessian of the
