@@ -50,13 +50,13 @@ The notation $cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$
 ( $latex g( \theta )$$ )
 is used for the fixed likelihood function.
 
-$head h$$
+$head Lower h$$
 The notation
 $cref/h(theta, u)/theory/Objective/Laplace Approximation, h(theta, u)/$$
 ( $latex h( \theta , u )$$ )
 is used for the Laplace approximation function.
 
-$head H$$
+$head Capital H$$
 The notation $cref/H(beta, theta, u)
    /theory
    /Approximate Laplace Objective, H(beta, theta, u)
@@ -87,7 +87,7 @@ $cref/L(theta)/theory/Objective/Fixed Effects Objective, L(theta)/$$
 ( $latex L( \theta )$$ )
 is used for the fixed effects objective function.
 
-$head u$$
+$head Lower u$$
 The notation $cref/u/problem/Notation/Random Effects, u/$$
 ( $latex \theta$$ )
 is used for the vector of fixed effects.
@@ -98,7 +98,7 @@ $cref/u^(theta)/problem/Notation/Optimal Random Effects, u^(theta)/$$
 ( $latex \hat{u}( \theta )$$ )
 is used for the optimal random effects.
 
-$head U$$
+$head Capital U$$
 The notation $cref/U(beta, theta, u)
    /theory
    /Approximate Optimal Random Effects
