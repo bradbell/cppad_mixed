@@ -100,7 +100,7 @@ $cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
 and
 $cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
 
-$head H_rc_$$
+$subhead H_rc_$$
 This member variable is set to a copy of $icode H_rc$$.
 
 $head Order of Operations$$
