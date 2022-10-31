@@ -19,7 +19,7 @@ $latex \newcommand{\W}[1]{ \; #1 \; } $$
 $comment END: settings used by all section ---------------------------- $$
 
 $section
-C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20221029
+C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20221031
 $$
 
 $head License$$
