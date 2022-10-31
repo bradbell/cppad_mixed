@@ -26,6 +26,8 @@ ignore_files='
    bin/devel.sh
    include/cppad/mixed/sparseinv.hpp
    readme.md
+   sphinx/preamble.rst
+   sphinx/spelling
 '
 # ----------------------------------------------------------------------------
 echo "copyright_owner=$copyright_owner"
