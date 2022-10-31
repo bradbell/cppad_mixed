@@ -5,6 +5,8 @@
 
 $begin whats_new_17$$
 $spell
+   mm
+   dd
    ctor
    rcv
    cppad
@@ -39,7 +41,9 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2017$$
 
-$head 12-28$$
+$head mm-dd$$
+
+$subhead 12-28$$
 $list number$$
 $bold API change$$:
 The $cref ran_likelihood$$ function was changed from having
@@ -60,15 +64,15 @@ The following settings in $code ar1_xam.sh$$ where modified for this test:
 $icode%number_random%=50000%$$ and $icode%random_seed%=123%$$.
 $lend
 
-$head 12-25$$
+$subhead 12-25$$
 Change an the $cref user_examples$$ to use
 template implementations of the virtual public $cref base_class$$
 functions.
 
-$head 12-22$$
+$subhead 12-22$$
 Improve comments in $cref example_install.sh$$.
 
-$head 12-16$$
+$subhead 12-16$$
 $list number$$
 Advance to $code cppad-20171215$$.
 $lnext
@@ -96,7 +100,7 @@ Correct the threshold for error from 4.0 to 5.0 in the definition of
 $cref/capture_xam_ok/capture_xam.cpp/Output/capture_xam_ok/$$.
 $lend
 
-$head 12-10$$
+$subhead 12-10$$
 $list number$$
 Move documentation from IHME to github; see
 $pre
@@ -110,11 +114,11 @@ The $cref/download/install_unix/Download/$$ instructions
 were changed to use $code git$$ for distributing the program.
 $lend
 
-$head 10-27$$
+$subhead 10-27$$
 Reduce the chance of a random failure in $cref capture_xam.cpp$$
 during the $cref/speed/install_unix/cppad_mixed/Speed/$$ tests.
 
-$head 10-24$$
+$subhead 10-24$$
 $list number$$
 Add comments about
 $cref/testing speed and memory/run_cmake.sh/Testing Speed and Memory/$$.
@@ -123,7 +127,7 @@ Add the $cref/for_hes_sparsity/run_cmake.sh/for_hes_sparsity/$$ argument
 to the configuration script.
 $lend
 
-$head 10-09$$
+$subhead 10-09$$
 The $cref data_mismatch.cpp$$ example was failing when
 $icode use_atomic_cholesky$$ was $code yes$$.
 This was because
@@ -134,41 +138,41 @@ The $cref initialize$$ routine has been changed to perturb zero values
 to avoid this problem. This is not a bullet proof solution because
 zero may result from calculations.
 
-$head 10-07$$
+$subhead 10-07$$
 Fix a bug in the Newton step initialize routine.
 This bug was probably introduced on the master branch on 2017-03-22
 and only affected the case where
 $icode use_atomic_cholesky$$ was $code yes$$.
 
-$head 09-30$$
+$subhead 09-30$$
 There was a mistake in the logic for recovering from
 random effect optimization failures during optimization of the fixed effects.
 This has been fixed.
 
-$head 09-23$$
+$subhead 09-23$$
 $list number$$
 Improve error handling and messaging.
 $lnext
 Make the exception class public.
 $lend
 
-$head 09-21$$
+$subhead 09-21$$
 If optimizing the fixed effects, trap errors in optimizing random effects
 at the fixed effects level, so do not terminate but rather cut back and
 try a smaller fixed effects step size.
 
-$head 09-18$$
+$subhead 09-18$$
 If during $cref optimize_random$$ an $code nan$$ occurs in the random
 objective, the corresponding source code is re-run with the random
 effects corresponding to the last such occurrence.
 This often provides more useful error messaging.
 
-$head 09-16$$
+$subhead 09-16$$
 The optimization of the random effects, $cref optimize_random$$,
 has been changed to back up when it detects a $code nan$$ in the function
 evaluation. This is similar to how $cref optimize_fixed$$ works.
 
-$head 09-15$$
+$subhead 09-15$$
 $list number$$
 The $code cmake.sh$$ configuration flag $code log_fatal_error$$ was removed.
 $lnext
@@ -176,24 +180,24 @@ An Ipopt $icode intermediate_callback$$
 function was added to the Ipopt example.
 $lend
 
-$head 09-14$$
+$subhead 09-14$$
 The $code fixed_solution$$ structure was changed to be public.
 This was necessary because it is the type for the return
 value of $cref optimize_fixed$$ which is a public routine.
 
-$head 09-02$$
+$subhead 09-02$$
 Instructions were added for building both
 $cref/debug and release/run_cmake.sh/Debug and Release/$$
 version of $code cppad_mixed$$.
 
-$head 08-30$$
+$subhead 08-30$$
 Advance to cppad-20170830. This fixes a problem with the cmake command;
 to be specific,
 $codei%
    Policy CMP0046 is not set: Error on non-existent dependency
 %$$
 
-$head 08-01$$
+$subhead 08-01$$
 The clang-802.0.42 compiler complained that
 routine $code ran_obj_tst$$ was not defined in the statement
 $srccode%cpp%
@@ -202,13 +206,13 @@ $srccode%cpp%
 in the file $code include/cppad/mixed/cppad_mixed.hpp$$.
 This has been fixed.
 
-$head 04-24$$
+$subhead 04-24$$
 Add $cref/fixed_scale/optimize_fixed/fixed_scale/$$ for specifying the
 scale for the fixed effects optimization.
 Change the $cref optimize_fixed.cpp$$ example to use $icode fixed_scale$$
 to continue an optimization from where it left off.
 
-$head 04-23$$
+$subhead 04-23$$
 $list number$$
 Improve the Ipopt example $code ipopt_xam/$$ by returning and checking
 the final solution for the primal variables.
@@ -220,14 +224,14 @@ $lnext
 Add the
 $code hide_ipopt_scaling$$ option
 to the install configuration script $cref run_cmake.sh$$.
-(This option was removed on $cref/2018-02-10/whats_new_18/02-10/$$.)
+(This option was removed on $cref/2018-02-10/whats_new_18/mm-dd/02-10/$$.)
 $lend
 
-$head 04-06$$
+$subhead 04-06$$
 Add $cref/LD_LIBRARY_PATH/check_install.sh/LD_LIBRARY_PATH/$$ to
 the $code bin/check_install.sh$$ example.
 
-$head 04-02$$
+$subhead 04-02$$
 $list number$$
 Advanced to $code cppad-20170402$$.
 This fixes a bug in the CppAD optimizer.
@@ -240,12 +244,12 @@ The $cref install_unix$$ procedure has been modified to reflect
 this change.
 $lend
 
-$head 03-27$$
+$subhead 03-27$$
 Add $code no_conditional_skip$$ option to CppAD function optimization
 when $cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$
 is $code yes$$.
 
-$head 03-25$$
+$subhead 03-25$$
 Advance to $code cppad-20170320$$.
 This gave a significant improvement in
 $icode optimize_fixed_seconds$$ for $cref ar1_xam.cpp$$
@@ -256,12 +260,12 @@ This was due to a change in the way CppAD computes sparse Hessians
 (see the heading 03-25 on the CppAD whats new page for 2017).
 
 
-$head 03-23$$
+$subhead 03-23$$
 $bold API:$$
 The actual fields in the $code initialize$$ return value are no longer
 specified; see $cref/size_map/initialize/size_map/$$.
 
-$head 03-20$$
+$subhead 03-20$$
 $list number$$
 $bold API:$$
 remove $icode bool_sparsity$$ from $cref information_mat$$
@@ -271,7 +275,7 @@ $lnext
 Advance to $code cppad-20170320$$.
 $lend
 
-$head 03-12$$
+$subhead 03-12$$
 $bold API:$$
 change $cref/information_rcv/information_mat/information_rcv/$$
 from type $cref sparse_mat_info$$ to
@@ -282,22 +286,22 @@ The intention here is to remove the private use
 (not part of user API) slowly over time.
 
 
-$head 03-11$$
+$subhead 03-11$$
 $bold API$$
 change $cref/A_rcv/derived_ctor/A_rcv/$$
 from type $cref sparse_mat_info$$ to
 $cref/d_sparse_rcv/typedef/Sparse Types/d_sparse_rcv/$$.
 
-$head 03-10$$
+$subhead 03-10$$
 Advance to $code cppad-20170310$$
 (has a $cref/sparse_rc/typedef/Sparse Types/sparse_rc/$$ sizing constructor).
 
-$head 03-09$$
+$subhead 03-09$$
 Move some type definitions from the $code cppad_mixed$$ class
 to the $code CppAD::mixed$$ namespace; see
 $cref typedef$$.
 
-$head 03-08$$
+$subhead 03-08$$
 $list number$$
 $bold API:$$
 Move the arguments
@@ -311,7 +315,7 @@ Change $code a1d_vector$$ and $code a2d_vector$$ to
 $code a1_vector$$ and $code a2_vector$$ respectively.
 $lend
 
-$head 03-06$$
+$subhead 03-06$$
 $list number$$
 Advance to $code cppad-20170306$$. This fixes a bug in the sparsity pattern
 efficiency and in the optimization of
@@ -321,7 +325,7 @@ Add the $icode existing$$ argument
 to the example install script.
 $lend
 
-$head 03-02$$
+$subhead 03-02$$
 $list number$$
 Simplify the install procedure. Now it is only necessary to adjust
 the settings in
@@ -339,7 +343,7 @@ Make some improvements to the $code bin/install_omhelp.sh$$ script
 (this can be used to build the documentation for $code cppad_mixed$$.)
 $lend
 
-$head 03-01$$
+$subhead 03-01$$
 $list number$$
 The $code solution check failed$$ warning was being output
 because the check was not properly accounting for the scaling.
@@ -356,13 +360,13 @@ optimize_fixed/fixed_ipopt_options/nlp_scaling_method/$$
 cannot be specified for the fixed effects.
 $lend
 
-$head 01-26$$
+$subhead 01-26$$
 Change the objective and constraint function scaling so that it is
 done by Ipopt using it's user-scaling option.
 This fixes the $cref ipopt_trace$$ so that it prints the original
 objective (instead of the scaled object which depends on the starting point).
 
-$head 01-24$$
+$subhead 01-24$$
 The fixed effects
 objective and constraint functions are now scaled so that
 the maximum absolute norm of the gradient of each of these functions is one;
@@ -374,11 +378,11 @@ see $cref/
 /$$.
 
 
-$head 01-22$$
+$subhead 01-22$$
 Some of the tests were using the integer function $code std::abs$$ by mistake.
 Change $code abs$$ to $code fabs$$ so this does not happen.
 
-$head 01-14$$
+$subhead 01-14$$
 Increase the $code trace-adaptive$$ field width
 for step size from 7 to 11 characters
 (so that exponential format fits in the field); see

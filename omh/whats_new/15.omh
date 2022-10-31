@@ -5,6 +5,8 @@
 
 $begin whats_new_15$$
 $spell
+   mm
+   dd
    CppAD
    namespace
    cppad
@@ -15,7 +17,9 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2015$$
 
-$head 12-25$$
+$head mm-dd$$
+
+$subhead 12-25$$
 $list number$$
 Only use subscripts for derivative notation; i.e., remove the
 superscripts (1) and (2) from derivatives. This enables us
@@ -27,7 +31,7 @@ $icode z_L$$ and $icode z_U$$); see Ipopt
 $code finalize_solution$$.
 $lend
 
-$head 12-24$$
+$subhead 12-24$$
 $list number$$
 There was a bug in the $code ipopt_fixed_eval_g$$ routine.
 It was not caching the value of $latex \hat{u}( \theta )$$
@@ -48,11 +52,11 @@ $latex \[
 \] $$
 $lend
 
-$head 12-16$$
+$subhead 12-16$$
 Overhaul the set of values and documentation for the
 $cref/size_map/initialize/size_map/$$ memory diagnostic.
 
-$head 12-14$$
+$subhead 12-14$$
 $list number$$
 Provide a default definition for
 $cref/ran_likelihood/ran_likelihood/vec/Default/$$,
@@ -65,13 +69,13 @@ Change section titles for these sections
 to highlight that they are user defined;
 $lend
 
-$head 12-13$$
+$subhead 12-13$$
 Change
 $code constraint$$ to $cref fix_constraint$$,
 $code ran_likelihood$$ to $cref ran_likelihood$$, and
 $code fix_likelihood$$ to $cref fix_likelihood$$.
 
-$head 12-10$$
+$subhead 12-10$$
 $list number$$
 First version of $code cppad_mixed$$ as a package separate from
 the $href%http://moby.ihme.washington.edu/bradbell/dismod_at%dismod_at%$$

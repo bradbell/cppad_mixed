@@ -5,6 +5,8 @@
 
 $begin whats_new_18$$
 $spell
+   mm
+   dd
    hes
    suitesparse
    cppad
@@ -37,16 +39,18 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2018$$
 
-$head 10-08$$
+$head mm-dd$$
+
+$subhead 10-08$$
 $list number$$
 Remove partial Newton step wish list item
-(implemented on $cref/2018-06-30/whats_new_18/06-30/$$).
+(implemented on $cref/2018-06-30/whats_new_18/mm-dd/06-30/$$).
 $lnext
 Add $cref/multi-threading/wish_list/Multi-Threading and Statistics/$$
 wish list item.
 $lend
 
-$head 09-25$$
+$subhead 09-25$$
 Advance to $code cppad-20180925$$.
 This enabled us to remove the need for two and three levels of AD; i.e.
 $code a2_double$$ and $code a3_double$$.
@@ -54,7 +58,7 @@ The arguments and results for the $cref ran_likelihood$$ function
 are now $cref/a1_vector/typedef/Vector Types/a1_vector/$$ objects instead of
 $code a3_vector$$ objects.
 
-$head 08-30$$
+$subhead 08-30$$
 $bold API:$$
 Remove the user defined versions of the Jacobian and Hessian
 of the random likelihood with respect to the random effects;
@@ -62,10 +66,10 @@ $code ran_likelihood_jac$$ and $code ran_likelihood_hes$$.
 These functions are no longer part of the API and are not used
 (even if defined by the user).
 
-$head 08-27$$
+$subhead 08-27$$
 Advance to $code cppad-20180827$$
 
-$head 08-22$$
+$subhead 08-22$$
 $bold API:$$
 Change the type $code CppAD::mixed::sparse_rcv$$ to
 $cref/d_sparse_rcv/typedef/Sparse Types/d_sparse_rcv/$$
@@ -77,11 +81,11 @@ in the constructor for the derived class,
 the type for $cref/A_rcv/derived_ctor/$$ has changed from
 $code sparse_rcv$$ to $code d_sparse_rcv$$.
 
-$head 08-20$$
+$subhead 08-20$$
 Advance to $code cppad-20180820$$
 (this version has optimization of dynamic parameters).
 
-$head 08-18$$
+$subhead 08-18$$
 $list number$$
 Advance to $code cppad-20810818$$.
 $lnext
@@ -99,16 +103,16 @@ These tapes are about the same size before being optimized.
 $lend
 
 
-$head 08-09$$
+$subhead 08-09$$
 Advance to $code cppad-20810809$$.
 This fixed valgrind warnings and a bug in cppad.
 
-$head 08-08$$
+$subhead 08-08$$
 Advance to $code cppad-20810730$$.
 This resulted is and speed improvement for the current version of the
 $cref ar1_xam.sh$$ and $cref capture_xam.sh$$ tests.
 
-$head 07-25$$
+$subhead 07-25$$
 $list number$$
 Add discussion of why the default
 $icode eigen_prefix$$ in $code bin/run_cmake.sh$$is different
@@ -127,7 +131,7 @@ $cref/extra_cxx_flags/run_cmake.sh/extra_cxx_flags/$$ do not work.
 $lend
 
 
-$head 07-12$$
+$subhead 07-12$$
 $list number$$
 The fixed effects optimization will not try to backup and recover when
 $cref/max_iter/optimize_fixed/fixed_ipopt_options/max_iter/$$ is minus
@@ -143,7 +147,7 @@ Improve documentation for
 $cref/quasi_fixed/derived_ctor/quasi_fixed/$$.
 $lend
 
-$head 06-30$$
+$subhead 06-30$$
 $list number$$
 Implement the partial Newton step update in definition of
 the second order accurate approximation for the optimal random effects
@@ -160,16 +164,16 @@ $cref run_cmake.sh$$ has been removed.
 $lend
 
 
-$head 06-29$$
+$subhead 06-29$$
 Advance to $code cppad-20180627$$.
 
-$head 06-20$$
+$subhead 06-20$$
 Advance to $code cppad-20180620$$.
 This should use increase speed and use less memory during the
 optimization of cppad functions; see
 $cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$.
 
-$head 06-14$$
+$subhead 06-14$$
 $list number$$
 Some systems installs of
 $cref/suitesparse/install_unix/System Requirements/suitesparse/$$
@@ -182,7 +186,7 @@ This should use less memory during the optimization of cppad functions; see
 $cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$.
 $lend
 
-$head 06-09$$
+$subhead 06-09$$
 $list number$$
 Change the $code suitesparse$$ library from a special requirement
 (using $code bin/install_suitesparse.sh$$) to a
@@ -193,61 +197,61 @@ $code bin/example_install.sh$$ was not working.
 This has been fixed.
 $lend
 
-$head 06-04$$
+$subhead 06-04$$
 Advance to using
 $cref/cppad-20180604/install_unix/Special Requirements/CppAD/$$.
 This will probably have no effect but might reduce the amount of memory
 $code cppad_mixed$$ uses.
 
-$head 05-21$$
+$subhead 05-21$$
 Advance to using
 $cref/cppad-20180521/install_unix/Special Requirements/CppAD/$$.
 This should reduce the amount of memory
 $code cppad_mixed$$ uses.
 
-$head 05-07$$
+$subhead 05-07$$
 Advance to using
 $cref/cppad-20180507/install_unix/Special Requirements/CppAD/$$.
 This should both increase the speed of $code cppad_mixed$$
 and reduce the amount of memory it uses.
 
-$head 05-03$$
+$subhead 05-03$$
 Advance to using
 $cref/cppad-20180503/install_unix/Special Requirements/CppAD/$$.
 This should reduce the amount of memory used by $code cppad_mixed$$,
 without adversely affecting its speed.
 
-$head 04-06$$
+$subhead 04-06$$
 The $code limited_memory_max_history$$ setting used to be forbidden as an
 $cref/fixed_ipopt_option/optimize_fixed/fixed_ipopt_options/$$ because
 it was chosen by $code cppad_mixed$$.
 This has been changed and now the user can choose this ipopt option.
 
-$head 03-22$$
+$subhead 03-22$$
 In the wish list,
 remove the Student's t item and change the
 sparse_matrix item.
 
-$head 03-10$$
+$subhead 03-10$$
 The install $cref/download/install_unix/Download/$$ procedure was changed
 to use the following command to determine the version number:
 $codep
    grep '^SET(cppad_mixed_version' CMakeLists.txt
 $$
 
-$head 02-20$$
+$subhead 02-20$$
 Some function declarations for friends in $code cppad_mixed.hpp$$
 were missing. This has been fixed.
 
-$head 02-12$$
+$subhead 02-12$$
 Add more discussion of
 $cref/fixed_scale/optimize_fixed/fixed_scale/$$.
 
-$head 02-11$$
+$subhead 02-11$$
 Avoid warning: 'obj_factor_scaled' may be used uninitialized in eval_h
 on some systems.
 
-$head 02-10$$
+$subhead 02-10$$
 $list number$$
 The $code hide_ipopt_scaling$$ option was removed from the
 $cref/cmake command/run_cmake.sh/$$ and the scaling is always
@@ -257,13 +261,13 @@ Improve discussion of the $cref/fixed_scale/optimize_fixed/fixed_scale/$$
 argument to the $code optimize_fixed$$ function.
 $lend
 
-$head 02-08$$
+$subhead 02-08$$
 There was a bug in computing the second derivative of the objective when the
 $cref fix_likelihood$$ had absolute value terms in its
 $cref/negative log-density vector/problem/Negative Log-Density Vector/$$.
 This has been fixed.
 
-$head 02-07$$
+$subhead 02-07$$
 $list number$$
 Change the $code adaptive$$ and $code trace-adaptive$$
 $cref/derivative_test/optimize_fixed/fixed_ipopt_options/derivative_test/$$
@@ -280,7 +284,7 @@ upper or lower triangle; e.g., see
 $icode iRow$$ in $code ipopt_xam_eval_h$$.
 $lend
 
-$head 02-05$$
+$subhead 02-05$$
 $list number$$
 The scaling of the fixed effects optimization has been
 changed to not include components of the fixed effects for which
@@ -291,20 +295,20 @@ Reduce the changes of a random failure (false negative result)
 during the testing of $cref lasso.cpp$$.
 $lend
 
-$head 01-23$$
+$subhead 01-23$$
 There was a mistake in the removal of $icode use_atomic_cholesky$$;
 see 01-21 below.  This has been fixed.
 
-$head 01-22$$
+$subhead 01-22$$
 Improve the instructions for combining both
 $cref/debug and release/run_cmake.sh/Debug and Release/$$
 versions of cppad_mixed on the same system.
 
-$head 01-21$$
+$subhead 01-21$$
 Remove the $icode use_atomic_cholesky$$ option from the
 $cref/cmake/run_cmake.sh/$$ script.
 
-$head 01-15$$
+$subhead 01-15$$
 The flags $code -Wpedantic$$, $code -Wshadow$$ and $code -Wconversion$$
 were added to the default value of
 $cref/extra_cxx_flags/run_cmake.sh/extra_cxx_flags/$$.
@@ -312,7 +316,7 @@ In addition, fix the corresponding warning messages generated by gcc
 during the
 $cref/cppad_mixed/install_unix/cppad_mixed/$$ part of the instal process.
 
-$head 01-14$$
+$subhead 01-14$$
 Change the $code ran_likelihood_hes.cpp$$ example to use the
 offset log normal distribution and eliminate the chance of random failure
 during its test.

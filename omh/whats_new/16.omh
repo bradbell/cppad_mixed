@@ -5,6 +5,8 @@
 
 $begin whats_new_16$$
 $spell
+   mm
+   dd
    chk
    jac
    ctor
@@ -49,7 +51,9 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2016$$
 
-$head 11-09$$
+$head mm-dd$$
+
+$subhead 11-09$$
 The values $code true$$ and $code false$$ in the $code ar1_xam$$
 $cref/input arguments/ar1_xam.cpp/Command Arguments/$$ and
 $cref/output/ar1_xam.cpp/Output/$$ were changed to
@@ -57,7 +61,7 @@ $code yes$$ and $code no$$ respectively.
 This was also done for the $cref/capture_xam/capture_xam.cpp/$$ program.
 
 
-$head 11-07$$
+$subhead 11-07$$
 $list number$$
 Add the $code bin/speed_compare.py$$ program
 (which has since been moved to $code bin/speed_old.py$$).
@@ -67,13 +71,13 @@ to $code capture_xam$$ be more similar to
 $cref/ar1_xam/ar1_xam.cpp/Command Arguments/$$.
 $lend
 
-$head 11-04$$
+$subhead 11-04$$
 This the first version with $code cppad_mixed$$ with the
 checkpoint_newton_step option.
 Previously, the Newton step was always checkpointed.
 
 
-$head 11-02$$
+$subhead 11-02$$
 The sparsity pattern and other information related to the Hessian of the
 $cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$,
 $latex f_{uu} ( \theta , u )$$, was being computed twice, if
@@ -82,7 +86,7 @@ or if $cref information_mat$$ was called.
 This has been fixed
 
 
-$head 10-30$$
+$subhead 10-30$$
 $list number$$
 The $cref/A_rcv/derived_ctor/A_rcv/$$ argument was missing
 from the $code initialize$$ Syntax. This has been fixed.
@@ -94,7 +98,7 @@ during the $code make speed$$ command; see
 $cref/speed/install_unix/cppad_mixed/Speed/$$.
 $lend
 
-$head 10-28$$
+$subhead 10-28$$
 Fix bug in $code sparse_ad_cholesky$$; to be more specific,
 the inverse permutation $latex P^{-1}$$ was being used where the permutation
 $icode P$$ in $code sparse_ad_cholesky$$ was required.
@@ -102,7 +106,7 @@ This the first version with $code cppad_mixed$$ passes all its tests with
 $icode use_atomic_cholesky$$ true.
 
 
-$head 10-27$$
+$subhead 10-27$$
 $list number$$
 Add the $cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$
 option to the $code cmake$$ command line.
@@ -110,7 +114,7 @@ $lnext
 Advance to cppad-20161027.
 $lend
 
-$head 10-25$$
+$subhead 10-25$$
 $list number$$
 Add the $icode use_atomic_cholesky$$
 option to the $code cmake$$ command line.
@@ -127,21 +131,21 @@ $code install_suitesparse.sh$$
 (introduced on 2016-10-24).
 $lend
 
-$head 10-24$$
+$subhead 10-24$$
 Fix a bug in the $code sparse_ad_cholesky$$ class forward mode.
 To be specific, ignore higher order Taylor coefficients that do
 not appear in the sparsity patter for the zero order coefficient
 (they are no effects).
 
-$head 10-18$$
+$subhead 10-18$$
 Fix a bug in implementation of the $cref run_cmake.sh$$
 $code log_fatal_error$$ option (which has since been removed).
 
-$head 10-16$$
+$subhead 10-16$$
 Add the
 $code log_fatal_error$$ option to the cppad_mixed configuration.
 
-$head 10-15$$
+$subhead 10-15$$
 $bold API Change:$$
 The
 $cref/random constraint matrix
@@ -153,9 +157,9 @@ $icode A_rcv$$, is now specified in
 $cref/initialize/derived_ctor/A_rcv/$$ instead
 $cref derived_ctor$$.
 This was undone on
-$cref/2017-03-08/whats_new_17/03-08/$$.
+$cref/2017-03-08/whats_new_17/mm-dd/03-08/$$.
 
-$head 10-14$$
+$subhead 10-14$$
 $list number$$
 The way the
 $cref/install/install_unix/$$ searches for libraries,
@@ -169,12 +173,12 @@ in the suitesparse install,
 is printed at the end of the ipopt install.
 $lend
 
-$head 10-06$$
+$subhead 10-06$$
 A class that performs sparse Cholesky factorization
 as a CppAD atomic operation has been added; see
 $code sparse_ad_cholesky$$.
 
-$head 09-30$$
+$subhead 09-30$$
 $list number$$
 Use one value for $icode libdir$$ for all the install scripts;
 see $cref/cmake_libdir/run_cmake.sh/cmake_libdir/$$.
@@ -189,15 +193,15 @@ $lnext
 Advance to cppad-20160929.
 $lend
 
-$head 09-27$$
+$subhead 09-27$$
 Add $code sparse_up_tri_sol$$
 (plan to use this with a sparse atomic Cholesky AD operation).
 
-$head 09-24$$
+$subhead 09-24$$
 Create $code sparse_low_tri_sol$$
 (plan to use this with a sparse atomic Cholesky AD operation).
 
-$head 09-23$$
+$subhead 09-23$$
 Improve
 $cref%bin/install_eigen.sh%install_unix%Special Requirements%eigen%$$,
 $cref%bin/install_ipopt.sh%install_unix%Special Requirements%Ipopt%$$,
@@ -207,7 +211,7 @@ so they better ensure that debug and release versions got into proper
 directories.
 
 
-$head 07-28$$
+$subhead 07-28$$
 $list number$$
 Improve the organization of the $cref user_examples$$ section.
 $lnext
@@ -228,11 +232,11 @@ to $code 2$$ and the default for $icode obj_scaling_factor$$
 back to $code 1$$.
 $lend
 
-$head 07-27$$
+$subhead 07-27$$
 Mention having both debug and release versions of build on same file
 system; see $cref/build_type/run_cmake.sh/build_type/$$.
 
-$head 07-26$$
+$subhead 07-26$$
 Change the fixed effects optimization default value for the Ipopt
 $icode obj_scaling_factor$$ from $code 1.0$$ to
 $codei%
@@ -245,7 +249,7 @@ To be specific, the number of backtracking line search steps
 $cref/ls/ipopt_trace/ls/$$ is much smaller.
 
 
-$head 07-25$$
+$subhead 07-25$$
 $list number$$
 Computing the derivative of the log of the determinant term in the
 $cref/Laplace approximation
@@ -268,13 +272,13 @@ $icode number_random$$ (in both programs).
 In addition, the $icode derivative_test$$ argument was added to both programs.
 $lend
 
-$head 07-20$$
+$subhead 07-20$$
 Add the $icode hold_memory$$ parameter to
 $cref/capture_xam.cpp/capture_xam.cpp/Command Arguments/hold_memory/$$ and
 $cref/ar1_xam.cpp/ar1_xam.cpp/Command Arguments/hold_memory/$$.
 
 
-$head 07-18$$
+$subhead 07-18$$
 Add the $icode bool_sparsity$$ parameter to the following:
 $cref initialize$$,
 $cref information_mat$$,
@@ -288,7 +292,7 @@ The $icode bool_sparsity$$ parameter has since been moved for
 $code initialize$$ and $code information_mat$$ to
 $cref/derived_ctor/derived_ctor/bool_sparsity/$$.
 
-$head 07-14$$
+$subhead 07-14$$
 A new method for computing the Hessian of the Laplace objective
 $cref/Hessian of the Laplace objective/theory/Hessian of Laplace Objective/$$
 was implemented.
@@ -306,7 +310,7 @@ $cref/information matrix/information_mat/$$.
 It should also speed up $cref optimize_fixed$$ when
 $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false.
 
-$head 07-13$$
+$subhead 07-13$$
 A new method for optimizing the random effects has been included; see
 $cref/evaluation_method/optimize_random/options/evaluation_method/$$.
 The new method is now the default.
@@ -316,7 +320,7 @@ $cref/capture_xam/capture_xam.cpp/Command Arguments/ipopt_solve/$$ and
 $cref/ar1_xam/ar1_xam.cpp/Command Arguments/ipopt_solve/$$.
 
 
-$head 07-12$$
+$subhead 07-12$$
 $list number$$
 Improve the error messages when
 $cref/pkg-config/install_unix/System Requirements/pkg-config/$$
@@ -331,7 +335,7 @@ Improve discussion of Ipopt callback $icode ok$$ flag; e.g., see
 $code ok$$ in $code ipopt_xam_eval_f$$.
 $lend
 
-$head 07-10$$
+$subhead 07-10$$
 $list number$$
 Improve $cref example_install.sh$$.
 To be specific, give the user the option to use existing installs.
@@ -343,11 +347,11 @@ $cref/example/capture_xam.cpp/Example/$$ settings
 for $code capture_xam.cpp$$.
 $lend
 
-$head 07-09$$
+$subhead 07-09$$
 Change the $code auto_regressive_xam.cpp$$ example to the
 $cref ar1_xam.cpp$$ example and speed test.
 
-$head 06-24$$
+$subhead 06-24$$
 $list number$$
 There was a problem with how
 $cref/gsl/install_unix/System Requirements/gsl/$$
@@ -359,7 +363,7 @@ $cref%bin/example_install.sh%example_install.sh%$$
 and it should work for both Debian and Red Hat systems.
 $lend
 
-$head 06-22$$
+$subhead 06-22$$
 $list number$$
 Add the $code auto_regressive_xam.cpp$$ example.
 $lnext
@@ -372,7 +376,7 @@ for Debian systems. This is needed to do $code cppad_mixed$$ development.
 $lend
 
 
-$head 06-19$$
+$subhead 06-19$$
 $list number$$
 If during a call to $cref optimize_fixed$$ a
 $cref/CppAD error/derived_ctor/CppAD ErrorHandler/$$ occurs,
@@ -392,7 +396,7 @@ $cref/optimize_fixed_seconds/capture_xam.cpp/Output/optimize_fixed_seconds/$$.
 $lend
 
 
-$head 06-18$$
+$subhead 06-18$$
 If during a call to $cref optimize_fixed$$,
 the Hessian of the
 $cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$
@@ -410,7 +414,7 @@ equal to the fixed effects for this warning.
 
 
 
-$head 06-17$$
+$subhead 06-17$$
 $list number$$
 Continue to improve $cref capture_xam.cpp$$ example / speed test.
 $lnext
@@ -421,7 +425,7 @@ $cref user_examples$$.
 $lend
 
 
-$head 06-13$$
+$subhead 06-13$$
 $list number$$
 There was a bug in
 $cref sample_fixed$$ that generated the assert
@@ -435,11 +439,11 @@ $lnext
 Continue to improve $cref capture_xam.cpp$$ example / speed test.
 $lend
 
-$head 06-12$$
+$subhead 06-12$$
 $list number$$
 Remove the option,
 to use $code box_newton$$ to optimize the random effects
-(added on $cref/06-03/whats_new_16/06-03/$$).
+(added on $cref/06-03/whats_new_16/mm-dd/06-03/$$).
 It turns out this had some problems and did not yield the hoped for
 improvements in speed.
 $lnext
@@ -453,7 +457,7 @@ Continue to improve $cref capture_xam.cpp$$ example / speed test.
 $lend
 
 
-$head 06-11$$
+$subhead 06-11$$
 Improve the $cref capture_xam.cpp$$ example:
 $list number$$
 Make the  correspondence to its
@@ -467,7 +471,7 @@ evaluation of its $cref ran_likelihood$$.
 $lend
 
 
-$head 06-07$$
+$subhead 06-07$$
 $list number$$
 When $code box_newton$$ fails, change message from
 $cref/fatal_error/base_class/User Defined Functions/fatal_error/$$ to
@@ -479,11 +483,11 @@ Newton step (instead of projected gradient).
 $lend
 
 
-$head 06-06$$
+$subhead 06-06$$
 Fix an minor error in $code box_newton$$ line search termination criteria
 (did not affect any test results).
 
-$head 06-05$$
+$subhead 06-05$$
 $list number$$
 Make $code box_newton$$ more robust by doing line search in a
 scaled negative projected gradient direction.
@@ -501,11 +505,11 @@ determinant was zero. This has been fixed.
 $lend
 
 
-$head 06-04$$
+$subhead 06-04$$
 Redirect CppAD error messages through
 $cref/fatal_error/base_class/User Defined Functions/fatal_error/$$.
 
-$head 06-03$$
+$subhead 06-03$$
 Add the option to use
 $code box_newton$$
 to optimize the random effects.
@@ -526,7 +530,7 @@ The $icode random_options$$ have been split into
 $icode random_box_options/$$ and
 $icode random_ipopt_options$$.
 
-$head 05-15$$
+$subhead 05-15$$
 $list number$$
 The $cref sample_fixed$$ routine now uses an LDLT factorization of the
 implicit information matrix instead of the implicit covariance.
@@ -547,7 +551,7 @@ Note that this gives the user direct control over doing this test
 (which can be time intensive for large problems).
 $lend
 
-$head 05-11$$
+$subhead 05-11$$
 $list number$$
 In $cref sample_fixed$$,
 $cref/Replace/sample_conditional/Replaced/$$ the
@@ -568,7 +572,7 @@ matrix space;
 see the $code sample_fixed$$ wish list item.
 $lend
 
-$head 05-08$$
+$subhead 05-08$$
 $list number$$
 Improve $cref sample_fixed$$ by removing fixed effects that have
 their upper or lower limits active (or equal); see
@@ -582,16 +586,16 @@ $cref/sparse observed information/theory/Sparse Observed Information/$$ method.
 This reduces the memory and time for computing these samples.
 $lend
 
-$head 05-06$$
+$subhead 05-06$$
 Fix a bug in the $cref information_mat$$ and $cref sample_fixed$$
 when the number of random effects
 $cref/n_random/derived_ctor/n_random/$$ was zero.
 
-$head 05-04$$
+$subhead 05-04$$
 Make some improvements to the solution check and its corresponding
 warning message.
 
-$head 05-03$$
+$subhead 05-03$$
 $list number$$
 Change $code cholmod$$ class to $code ldlt_cholmod$$ class
 and $code choleig$$ class to $code ldlt_eigen$$ class.
@@ -610,12 +614,12 @@ $latex f_{uu} ( \theta , u)$$ is not positive definite.
 $lend
 
 
-$head 04-29$$
+$subhead 04-29$$
 Add an $code cholmod_solve2_sim.cpp$$, an example that shows
 how to use Cholmod to efficiently sample a distribution that
 has covariance equal to the inverse of a sparse positive definite matrix.
 
-$head 04-27$$
+$subhead 04-27$$
 $list number$$
 Add more discussion about the connection between the Lagrange multipliers
 and the fixed effects bounds in the
@@ -631,27 +635,27 @@ $lend
 
 
 
-$head 04-23$$
+$subhead 04-23$$
 There was bug whereby the $cref/solution/optimize_fixed/solution/$$
 returned by $code optimize_fixed$$ would have non-zero values for
 $cref/fixed_lag/fixed_solution/fixed_lag/$$ that should have been zero.
 This has been fixed.
 
-$head 04-19$$
+$subhead 04-19$$
 Add $cref sample_random$$ for sampling the posterior of the random
 effects given the fixed effects.
 
-$head 04-18$$
+$subhead 04-18$$
 Advance to newer version of CppAD; (must rerun $code bin/install_cppad.sh$$).
 This fixed the remaining warnings when building a release version.
 
-$head 04-17$$
+$subhead 04-17$$
 Fix some errors and warnings when
 $cref/build_type/run_cmake.sh/build_type/$$ was
 $code RELEASE$$.
 
 
-$head 04-16$$
+$subhead 04-16$$
 $list number$$
 The routine $code ipopt_fixed_adapt_derivative_chk$$ now checks
 $code ipopt_fixed_eval_jac_g$$ in addition to
@@ -660,7 +664,7 @@ $lnext
 Fix a bug in the computation of the derivative of the random constraints.
 $lend
 
-$head 04-10$$
+$subhead 04-10$$
 $list number$$
 If the gradient check $code ipopt_fixed_adapt_derivative_chk$$ fails,
 it now results in warning instead of a fatal error.
@@ -670,11 +674,11 @@ $cref/random likelihood/theory/Random Likelihood, f(theta, u)/$$
 $latex f_uu ( \theta , u)$$ is positive definite.
 $lend
 
-$head 04-15$$
+$subhead 04-15$$
 Fix $cref sample_fixed$$ so that it now works properly
 when some of the components of $cref fix_constraint$$ are active.
 
-$head 04-09$$
+$subhead 04-09$$
 Improve documentation of
 $cref/fixed_ipopt_options/optimize_fixed/fixed_ipopt_options/$$
 and add the special case of
@@ -682,7 +686,7 @@ $cref/max_iter/optimize_fixed/fixed_ipopt_options/max_iter/$$
 equal to $code -1$$.
 
 
-$head 04-08$$
+$subhead 04-08$$
 $list number$$
 Changed $code ipopt_fixed_adapt_derivative_chk$$ to handle case where
 the function at both central difference points is zero,
@@ -692,7 +696,7 @@ Test (and fix) $cref sample_fixed$$ for a case where one of the fixed effects
 was at its upper or lower limit.
 $lend
 
-$head 04-07$$
+$subhead 04-07$$
 $list number$$
 The new routine $cref sample_fixed$$ samples from the posterior
 distribution for the estimate of the fixed effects.
@@ -703,7 +707,7 @@ In addition, in error report changed $code step=$$ to $code best_step=$$.
 $lend
 
 
-$head 04-06$$
+$subhead 04-06$$
 The user defined virtual routines
 $cref/fatal_error/base_class/User Defined Functions/fatal_error/$$
 and
@@ -716,20 +720,20 @@ In addition, the $cref user_examples$$ have been split in
 the user defined routines, $code cppad_mixed$$ defined routines,
 and other examples.
 
-$head 04-05$$
+$subhead 04-05$$
 The new routine $cref information_mat$$ computes
 the observed information matrix.
 
-$head 04-03$$
+$subhead 04-03$$
 There was an error (introduced on 04-02 )
 in the new $cref/syntax/optimize_fixed/Syntax/$$
 for $code optimize_fixed$$. This has been fixed.
 
-$head 04-02$$
+$subhead 04-02$$
 Add a brief description for each of the
 $cref/user defined functions/base_class/User Defined Functions/$$.
 
-$head 04-01$$
+$subhead 04-01$$
 $bold API Change:$$
 The $cref optimize_fixed$$ routine now returns the optimal Lagrange
 multipliers (as well as the optimal fixed effects). If $icode fixed_out$$
@@ -740,11 +744,11 @@ $codei%
 %$$.
 This shows how to convert old $code optimize_fixed$$ calls to the new form.
 
-$head 03-29$$
+$subhead 03-29$$
 Add the option for a user defined $code ran_likelihood_hes$$ function
 (since removed).
 
-$head 03-28$$
+$subhead 03-28$$
 $list number$$
 Add the $cref ran_likelihood.cpp$$ example.
 $lnext
@@ -752,17 +756,17 @@ Add the option for a user defined $code ran_likelihood_jac$$ function
 (since removed).
 $lend
 
-$head 03-09$$
+$subhead 03-09$$
 The summary of memory usage has been changed; see
 $cref/size_map/initialize/size_map/$$.
 
-$head 02-26$$
+$subhead 02-26$$
 Fix a bug in the use of $code ldlt_cholmod_solve_H$$.
 to be specific, accessing past the end of the
 $icode row$$ vector in $code ldlt_cholmod_solve_H$$, in addition it must be
 in increasing order (and was not specified as such).
 
-$head 02-06$$
+$subhead 02-06$$
 $list number$$
 Change the random constraint matrix $icode A_rcv$$
 to be an argument to the
@@ -770,8 +774,8 @@ $cref/derived class constructor/derived_ctor/A_rcv/$$
 instead of an argument to the
 $cref initialize$$ routine.
 This was undone on
-$cref/2016-10-15/whats_new_16/10-15/$$ and redone on
-$cref/2017-03-08/whats_new_17/03-08/$$.
+$cref/2016-10-15/whats_new_16/mm-dd/10-15/$$ and redone on
+$cref/2017-03-08/whats_new_17/mm-dd/03-08/$$.
 $lnext
 Simplify the random constraint matrix source code.
 $lnext
@@ -779,12 +783,12 @@ Make more efficient use of
 the $code cholmod$$ Cholesky factorization package.
 $lend
 
-$head 01-26$$
+$subhead 01-26$$
 Remove the old $code ldlt_cholmod$$ wish list its (completed) and add
 partial Newton step second order method wish list item
 (this item has been completed).
 
-$head 01-25$$
+$subhead 01-25$$
 $list number$$
 Make $cref/suitesparse/install_unix/System Requirements/suitesparse/$$
 a required package.
@@ -797,17 +801,17 @@ Add the option to use $code cholmod$$ for sparse Cholesky factorization;
 see $cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$.
 $lend
 
-$head 01-22$$
+$subhead 01-22$$
 It is no longer necessary to link a separate $code cppad_mixed_eigen$$
 library. In addition, the new example $cref check_install.sh$$
 demonstrates compiling, linking and running a program using
 $code cppad_mixed$$.
 
-$head 01-21$$
+$subhead 01-21$$
 Change default directory where $code bin/install_eigen.sh$$ places
 the Eigen package (because warnings are suppressed for this directory).
 
-$head 01-19$$
+$subhead 01-19$$
 Fix a bug (found by $code valgrind$$) in the setting of the upper bound
 ($icode g_u$$ in $code ipopt_fixed_get_bounds_info$$) for the
 $cref/random constraints
@@ -816,7 +820,7 @@ $cref/random constraints
    /Random Constraints
 /$$.
 
-$head 01-16$$
+$subhead 01-16$$
 $list number$$
 Include a
 $cref/random_constraint/capture_xam.cpp/Command Arguments/random_constraint/$$
@@ -828,10 +832,10 @@ Start a $cref wish_list$$.
 $lend
 
 
-$head 01-15$$
+$subhead 01-15$$
 Add a $cref/Lasso/lasso.cpp/$$ example.
 
-$head 01-14$$
+$subhead 01-14$$
 $list number$$
 First version that actually works with
 $cref/random constraints/problem/Maximum Likelihood/Random Constraints/$$.
@@ -845,17 +849,17 @@ Furthermore, change the tolerance in one of the solution tests
 to avoid a warning (when convergence has been achieved).
 $lend
 
-$head 01-13$$
+$subhead 01-13$$
 Add test of absolute value terms in the
 $cref/negative log-density vector/problem/Negative Log-Density Vector/$$
 $cref abs_density.cpp$$,
 and fix a bug demonstrated by the test.
 
-$head 01-10$$
+$subhead 01-10$$
 Go back to using column vectors when solving linear equations
 (in case matrix results would be dense and require a lot of memory).
 
-$head 01-09$$
+$subhead 01-09$$
 $list number$$
 The $code ldlt_eigen$$ Cholesky factorization of the Hessian
 with respect to the random effects has been changed from a static
@@ -872,7 +876,7 @@ $href%http://eigen.tuxfamily.org%Eigen%$$ include directories.
 This should work on more systems.
 $lend
 
-$head 01-05$$
+$subhead 01-05$$
 Improve the efficiency of the evaluation of the
 $cref optimize_fixed$$ objective function.
 To be specific, the Cholesky factor update for
@@ -882,14 +886,14 @@ In addition, use matrices, instead of just column vectors,
 when back solving (to simplify code and allow sparse solver
 to obtain more efficiency).
 
-$head 01-04$$
+$subhead 01-04$$
 Regroup information in $cref theory$$ section of documentation so that
 $cref/approximating optimal random effects
    /theory
    /Approximate Optimal Random Effects
 /$$ is a separate section.
 
-$head 01-01$$
+$subhead 01-01$$
 $list number$$
 Advance to newer version of CppAD; (must rerun $code bin/install_cppad.sh$$).
 $lnext

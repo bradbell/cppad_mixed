@@ -5,6 +5,8 @@
 
 $begin whats_new_20$$
 $spell
+   mm
+   dd
    cppad
    ndebug
    cpp
@@ -28,7 +30,9 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2020$$
 
-$head 12-22$$
+$head mm-dd$$
+
+$subhead 12-22$$
 $list number$$
 If $cref/build_type/run_cmake.sh/build_type/$$ was debug,
 ipopt was creating a $code debug.out$$ file.
@@ -44,7 +48,7 @@ $lnext
 Better error messaging if an error occurs during $cref example_install.sh$$.
 $lend
 
-$head 11-30$$
+$subhead 11-30$$
 $list number$$
 Add $code /opt/local$$ to the list of prefixes that are searched
 for $code cholmod.h$$. This was necessary to get the install
@@ -53,11 +57,11 @@ $lnext
 Improve the error messaging when $cref example_install.sh$$ fails.
 $lend
 
-$head 11-23$$
+$subhead 11-23$$
 Fix the pkg-config $code cppad_mixed.pc$$ file by separating
 the private part of the libs and requires fields.
 
-$head 11-21$$
+$subhead 11-21$$
 $list number$$
 Remove use of sudo when running
 $cref example_install.sh$$ as root.
@@ -74,7 +78,7 @@ Use multi-process make to speed up the $cref example_install.sh$$,
 and $code bin/ipopt_install.sh$$ when more that one processor is available.
 $lend
 
-$head 11-19$$
+$subhead 11-19$$
 $list number$$
 The $cref example_install.sh$$ script was modified so that on
 Mac OS it uses the system version of lapack and gcc
@@ -85,15 +89,15 @@ which is used by $code example_install.sh$$,
 was modified to automatically sets $code PKG_CONFIG_PATH$$.
 $lend
 
-$head 11-18$$
+$subhead 11-18$$
 Extend $cref example_install.sh$$ so it also works on mac with
 $href%https://www.macports.org/%port%$$.
 
-$head 11-05$$
+$subhead 11-05$$
 Fix some problems with $cref example_install.sh$$ on mac OS using
 $href%https://brew.sh/%brew%$$.
 
-$head 11-04$$
+$subhead 11-04$$
 There was a problem with the
 $cref/make check/install_unix/cppad_mixed/Check/$$ command
 when $code cholmod.h$$ was in the include directory
@@ -101,7 +105,7 @@ when $code cholmod.h$$ was in the include directory
 This has been fixed.
 
 
-$head 11-03$$
+$subhead 11-03$$
 $list number$$
 Change $icode cppad_prefix$$ to
 $cref/cmake_install_prefix/run_cmake.sh/cmake_install_prefix/$$.
@@ -119,26 +123,26 @@ when $cref/build_type/run_cmake.sh/build_type/$$ was $code release$$.
 These have been fixed.
 $lend
 
-$head 11-02$$
+$subhead 11-02$$
 Remove $icode ipopt_prefix$$ from $cref run_cmake.sh$$.
 The example $code bin/install_ipopt.sh$$ uses the prefix
 $cref/cmake_install_prefix/run_cmake.sh/cmake_install_prefix/$$
 to install ipopt.
 
-$head 10-31$$
+$subhead 10-31$$
 Extend $cref example_install.sh$$ so that it handles mac OS use
 $href%https://brew.sh/%brew%$$.
 
-$head 10-21$$
+$subhead 10-21$$
 Advance to cppad-20201021
 (this fixes a warning on some compilers).
 
-$head 10-10$$
+$subhead 10-10$$
 Fix a problem with $code bin/install_ipopt.sh$$.
 To be specific, it needs to run $code get.ASL$$ and $code get.Mumps$$
 to get supplements to the ASL and Mumps git repositories.
 
-$head 10-06$$
+$subhead 10-06$$
 $list number$$
 Change $code bin/install_ipopt.sh$$ to install a shared version
 of the corresponding libraries (even if debug is enabled).
@@ -154,14 +158,14 @@ $code Eigen::Index$$ is no longer $code int$$.
 The examples and tests were changed to remove this assumption.
 $lend
 
-$head 08-31$$
+$subhead 08-31$$
 Fix a bug in the computation of the first derivative of the
 fixed effects objective when
 $cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$ was $code yes$$.
 To be more specific, the permutation for the LDLT factor was
 being used where the inverse permutation was required.
 
-$head 08-21$$
+$subhead 08-21$$
 The following improvements we made to the install process:
 $list number$$
 Fix the check of $icode ipopt_prefix$$
@@ -174,12 +178,12 @@ Change $code bin/install_ipopt.sh$$ to directly run configure
 instead of using $code coinbrew$$.
 $lend
 
-$head 07-02$$
+$subhead 07-02$$
 Add the $icode error_msg$$ result to the
 $cref/sample_fixed/sample_fixed/error_msg/$$ and
 $cref/sample_random/sample_random/error_msg/$$ routines.
 
-$head 06-30$$
+$subhead 06-30$$
 $list number$$
 $bold API Change$$:
 The last (6th) argument to the $cref sample_fixed$$ function
@@ -197,7 +201,7 @@ to calculation the fixed effects information matrix $cref hes_fixed_obj$$.
 $lend
 
 
-$head 06-07$$
+$subhead 06-07$$
 $list number$$
 Advance to ipopt-3.13.2 and cppad-20200606.
 $lnext
@@ -221,7 +225,7 @@ effects in $cref capture_xam.sh$$
 $lend
 
 
-$head 05-30$$
+$subhead 05-30$$
 Some more improvements were made to the
 $code adaptive$$ and $code trace-adaptive$$
 $cref/derivative_test/optimize_fixed/fixed_ipopt_options/derivative_test/$$
@@ -230,13 +234,13 @@ To be specific, the scale of the function values (derivative values)
 were taking into account when checking derivatives (Hessians).
 
 
-$head 05-29$$
+$subhead 05-29$$
 Add an error message when the Hessian with respect to the
 random effects is not positive definite during the initialization of the
 second order approximation for the objective, when
 $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false.
 
-$head 05-27$$
+$subhead 05-27$$
 The $code adaptive$$ and $code trace-adaptive$$
 $cref/derivative_test/optimize_fixed/fixed_ipopt_options/derivative_test/$$
 options were improved.
@@ -244,18 +248,18 @@ To be specific, the larger step size was used unless significant
 improvement is achieved by a smaller step size.
 This reduces the amount of numerical round off to consider in the comparison.
 
-$head 03-28$$
+$subhead 03-28$$
 The release version of the $cref hes_random_obj$$ routine would
 crash when there were no random effects.
 This has been fixed.
 
-$head 03-25$$
+$subhead 03-25$$
 The debug version of the $cref hes_random_obj$$ routine would
 fail with an assert where there were no random effects.
 This has been changed so it returns an empty matrix
 (the same as the release version).
 
-$head 03-23$$
+$subhead 03-23$$
 Change the notation 'total objective' to
 $cref/fixed effects objective
    /theory
@@ -269,7 +273,7 @@ $cref/random effects objective
    /Random Effects Objective
 /$$.
 
-$head 03-22$$
+$subhead 03-22$$
 $list number$$
 The specifications for the
 $cref/covariance/sample_random/Covariance/$$ of the random effect
@@ -281,12 +285,12 @@ $lnext
 The $cref hes_random_obj$$ routine was added.
 $lend
 
-$head 03-18$$
+$subhead 03-18$$
 It is no longer necessary to have the problem Lagrange multipliers
 in the $cref/solution/sample_fixed/solution/$$ argument to
 $code sample_fixed$$.
 
-$head 03-15$$
+$subhead 03-15$$
 Change the $cref sample_fixed$$ routine to ignore all the constraints
 except where the lower and upper limits for a fixed effect are equal,
 $cref/constant fixed effects/sample_fixed/Constant Fixed Effects/$$.

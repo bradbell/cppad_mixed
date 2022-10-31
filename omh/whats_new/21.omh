@@ -5,6 +5,8 @@
 
 $begin whats_new_21$$
 $spell
+   mm
+   dd
    mu
    cppad
    Ipopt
@@ -30,16 +32,18 @@ $$
 
 $section Changes and Additions to cppad_mixed During 2021$$
 
-$head 10-25$$
+$head mm-dd$$
+
+$subhead 10-25$$
 Add the barrier penalty parameter $icode mu$$ to the $cref warm_start_struct$$.
 The improves the $cref/warm_start/optimize_fixed/warm_start/$$ option
 when optimizing the fixed effects.
 
-$head 08-12$$
+$subhead 08-12$$
 Fix a problem (created on 97-29 change below) with the
 install of ipopt on debian systems.
 
-$head 07-29$$
+$subhead 07-29$$
 The Mac changed how $code bash$$ worked and this broke it's install.
 To be specific, $code export DYLD_LIBRARY_PATH$$ no longer works
 (export works for most shell variables but not others).
@@ -49,12 +53,12 @@ In addition, the $cref/specific_compiler/run_cmake.sh/specific_compiler/$$
 setting was added to $code bin/run_cmake.sh$$ to make it easier
 to build using MacPorts.
 
-$head 07-27$$
+$subhead 07-27$$
 The $cref/extra_cxx_flags/run_cmake.sh/extra_cxx_flags/$$
 were not being included when building the $cref speed$$ tests.
 This has been fixed.
 
-$head 07-13$$
+$subhead 07-13$$
 $list number$$
 Add default values for the $cref derived_ctor$$ arguments
 $icode quasi_fixed$$,
@@ -65,34 +69,34 @@ Add the $cref/trace_init/derived_ctor/trace_init/$$ argument
 to the derived constructor.
 $lend
 
-$head 06-29$$
+$subhead 06-29$$
 Add include file to
 $cref/manage_gsl_rng syntax/manage_gsl_rng/Syntax/$$.
 
-$head 06-26$$
+$subhead 06-26$$
 Remove the Public heading from documentation sections because all
 the user documentation is now part of the API.
 (The user documentation was separated from the developer documentation
-on $cref/2019-07-09/whats_new_19/07-09/$$.)
+on $cref/2019-07-09/whats_new_19/mm-dd/07-09/$$.)
 
-$head 06-24$$
+$subhead 06-24$$
 Fix $cref example_install.sh$$ of Ipopt
 (because it no longer has a mater branch).
 Change ubuntu listing of packages from $code apt list --installed$$ to
 $code dpkg-query -l$$ (to avoid warning).
 
-$head 06-13$$
+$subhead 06-13$$
 Add specifications for some of the fields in the initialize return value
 $cref/size_map/initialize/size_map/$$.
 Check these fields are present as part of the
 $cref derived_ctor.cpp$$ example.
 
-$head 06-10$$
+$subhead 06-10$$
 In $cref example_install.sh$$ change
 $code apt-get list --installed$$ to $code apt list --installed$$.
 This fixes the check for previously installed packages on ubuntu.
 
-$head 06-08$$
+$subhead 06-08$$
 $list number$$
 Add link at the top of $cref ipopt_trace$$ information
 to the source for the information.
@@ -102,11 +106,11 @@ $lnext
 Remove the tracing optimization wish list item because it has been completed.
 $lend
 
-$head 06-07$$
+$subhead 06-07$$
 Add $cref/restoration/trace_struct/restoration/$$
 field to the $code trace_struct$$.
 
-$head 06-06$$
+$subhead 06-06$$
 $list number$$
 Add the optimizer trace information
 $cref/trace_vec/fixed_solution/trace_vec/$$ to the solution for the
@@ -116,12 +120,12 @@ Advance to cppad-20210606.
 This makes the CppAD::vector assignment more like std::vector assignment.
 $lend
 
-$head 06-03$$
+$subhead 06-03$$
 Add the
 $cref/better asymptotic statistics/wish_list/Better Asymptotic Statistics/$$
 item to the wish list.
 
-$head 05-31$$
+$subhead 05-31$$
 $list number$$
 The optional $cref/warm_start/optimize_fixed/warm_start/$$
 argument was added to the $code optimize_fixed$$ function.
@@ -130,7 +134,7 @@ The required
 $cref/c++ compiler/install_unix/System Requirements/C++ Compiler/$$
 was changed from c++98 to c++11.
 This requirement actually changed on
-$cref/05-07/whats_new_21/05-07/$$ when the version of cppad changed to
+$cref/05-07/whats_new_21/mm-dd/05-07/$$ when the version of cppad changed to
 cppad-20210430.
 $lnext
 Change the $cref no_random.cpp$$ example as suggested by the new
@@ -145,7 +149,7 @@ $cref/multi-threading/wish_list/Multi-Threading and Statistics/$$
 item to include statistics.
 $lend
 
-$head 05-29$$
+$subhead 05-29$$
 $list number$$
 The
 $cref/hessian_approximation
@@ -168,7 +172,7 @@ $lend
 
 
 
-$head 05-28$$
+$subhead 05-28$$
 $list number$$
 Speed up the
 $cref/adaptive/optimize_fixed/fixed_ipopt_options/derivative_test/$$
@@ -190,10 +194,10 @@ Fix an improper derivative test option in the $code laplace_obj_hes$$ test
 (introduced on 05-27).
 $lend
 
-$head 05-27$$.
+$subhead 05-27$$.
 Simplify the code for and improve the solution check.
 
-$head 05-26$$
+$subhead 05-26$$
 Fix a bug in using infinity (-infinity) as the bound for a
 $cref/fix_constraint_upper/optimize_fixed/fix_constraint_upper/$$
 ( $cref/fix_constraint_lower/optimize_fixed/fix_constraint_lower/$$ ).
@@ -201,13 +205,13 @@ To be more specific, properly translate the infinity
 to the special values used by ipopt for these cases.
 
 
-$head 05-17$$
+$subhead 05-17$$
 Add the catch of $code std::exception$$ to all try blocks,
 except for ipopt call back functions.
 This should improve detection of system errors; e.g., running
 out of memory.
 
-$head 05-15$$
+$subhead 05-15$$
 $list number$$
 The $cref/run_test/example_install.sh/run_test/$$ argument was added
 and the $icode existing$$ argument was added to
@@ -222,12 +226,12 @@ To be specific, $code no_print_op$$ was corrected to $code no_print_for_op$$.
 This was a bug and could cause the optimization to abort.
 $lend
 
-$head 05-11$$
+$subhead 05-11$$
 Extend $cref example_install.sh$$ to work for the cygwin system.
 This also required changing the $code cppad_mixed$$ library to be static
 (on the cygwin system).
 
-$head 05-07$$
+$subhead 05-07$$
 $list number$$
 Advance to cppad-20210430.
 This should solve some install problems on the msys and cygwin systems.
@@ -236,11 +240,11 @@ Create separate directories $code external/debug$$ and $code external/release$$
 for building the external packages.
 $lend
 
-$head 05-01$$
+$subhead 05-01$$
 Adapt the install for msys to the fact that soft links do now work
 on that system.
 
-$head 03-02$$
+$subhead 03-02$$
 The $cref example_install.sh$$ script was putting the Ipopt source in
 $code external/ASL.git/Mumps.git/Ipopt.git$$.
 The script $code bin/install_ipopt.sh$$ has been fixed so the Ipopt source is in
