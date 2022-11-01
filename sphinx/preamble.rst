@@ -1,4 +1,7 @@
-.. commnet xrst preamble.rst
+.. comment xrst preamble.rst
+
+.. |space| unicode:: 0xA0
+.. |tab| replace:: |space| |space| |space|
 
 .. rst-class:: hidden
 
