@@ -130,8 +130,7 @@ $cref/cmake_install_prefix/run_cmake.sh/cmake_install_prefix/$$
 to install ipopt.
 
 $subhead 10-31$$
-Extend $cref example_install.sh$$ so that it handles mac OS use
-$href%https://brew.sh/%brew%$$.
+Extend $cref example_install.sh$$ so that it handles mac OS use brew.
 
 $subhead 10-21$$
 Advance to cppad-20201021
