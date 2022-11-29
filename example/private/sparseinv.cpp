@@ -14,8 +14,13 @@ $section Example Using sparseinv With Cholmod Factors$$
 $head Example Description$$
 This example uses a Cholmod LDLT factor to
 compute the inversion of a
-sparse symetric matrix $latex A$$
+sparse symmetric matrix $latex A$$
 on the sets of indices where $latex A$$ is non-zero.
+
+$head sparseinv$$
+The routine sparseinv comes from here:
+$href%https://github.com/DrTimothyAldenDavis/SuiteSparse/blob/stable/MATLAB_Tools/sparseinv/sparseinv.c%sparceinv.c%$$
+
 $srcthisfile%0%// BEGIN C++%// END C++%1%$$
 $end
 */
