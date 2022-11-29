@@ -62,6 +62,7 @@ $childtable%src/ipopt_fixed/ctor.cpp
    %src/ipopt_fixed/adapt_derivative_chk.cpp
    %src/ipopt_fixed/one_dim_function.cpp
    %src/ipopt_fixed/new_random.cpp
+   %src/ipopt_fixed/set_scaling.cpp
    %example/ipopt_xam.omh
 %$$
 

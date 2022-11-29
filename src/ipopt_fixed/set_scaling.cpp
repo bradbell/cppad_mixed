@@ -10,13 +10,17 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 $begin ipopt_fixed_set_scaling$$
 $spell
+   jac
+   Jacobian
+   eval
 $$
 
 $section Set Scaling Factors$$
 
 $head Syntax$$
 $icode%ok% = set_scaling(
-   %x_scale%, %x_lower%, %x_upper%, %grad_f%, %jac_g%)
+   %x_scale%, %x_lower%, %x_upper%, %grad_f%, %jac_g%
+)%$$
 
 $head x_scale$$
 is the argument value at which the scaling is computer.
@@ -36,12 +40,12 @@ This is a sparse representation of the jacobian using the member variables
 $code jac_g_row_$$ and $code jac_g_col_$$.
 
 $head scale_f_$$
-The input value of this member varable must be one.
+The input value of this member variable must be one.
 Upon return it is set to a value that should be used to multiply
 the values return by $code eval_f$$.
 
 $head scale_g_$$
-The input value of this member varable must be a vector with size
+The input value of this member variable must be a vector with size
 equal to the range space of g(x) and all its components must be one.
 Upon return $codei%scale_g_[%i%]%$$ is set to a value that should be used to
 multiply the $th i$$ component returned by $code eval_g$$.
