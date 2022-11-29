@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin zero_random_two.cpp$$
+@begin zero_random_two.cpp@@
 $spell
    CppAD
    cppad
