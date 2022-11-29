@@ -35,7 +35,6 @@ echo_eval xrst \\\\\\
 : end
 EOF
 edit_file bin/check_all.sh
-exit 0
 # -----------------------------------------------------------------------------
 for name in sphinx/spelling sphinx/preamble.rst
 do
