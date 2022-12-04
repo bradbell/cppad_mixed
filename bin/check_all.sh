@@ -60,10 +60,6 @@ done
 #
 # check version number
 version.sh check
-#
-# check latex in omhelp
-echo_eval run_omhelp.sh -xml dev
-echo_eval run_omhelp.sh doc
 # -----------------------------------------------------------------------------
 # cmake_install_prefix
 cmd=`grep '^cmake_install_prefix=' bin/run_cmake.sh`
@@ -87,6 +83,14 @@ then
 fi
 echo "bin/run_cmake.sh $flags >& cmake.log"
 bin/run_cmake.sh $flags >& cmake.log
+# ----------------------------------------------------------------------------
+# build
+# The command above sets up the build directory as a soft link.
+# This is necessary so xrst does not create a normal directory called build.
+#
+# check latex in omhelp
+echo_eval run_omhelp.sh -xml dev
+echo_eval run_omhelp.sh doc
 # ----------------------------------------------------------------------------
 cd build
 #

@@ -19,8 +19,6 @@
 # a previous debug build that /build can point to
 /build.debug/
 #
-# directories where documentation is built
-/sphinx/rst
 /doc/
 /dev/
 #

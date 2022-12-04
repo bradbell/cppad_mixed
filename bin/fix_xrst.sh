@@ -29,8 +29,7 @@ then\n\
 fi\n\
 echo_eval xrst \\\\\\
    --local_toc \\\\\\
-   --html_theme sphinx_rtd_theme \\\\\\
-   --output_dir doc/
+   --html_theme sphinx_rtd_theme/
 #
 : end
 EOF
