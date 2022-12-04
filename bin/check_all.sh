@@ -105,11 +105,14 @@ then
 else
    n_job=$(sysctl -n hw.ncpu)
 fi
-for target in check speed install
-do
-   echo "make -j $n_job $target >& $target.log"
-   make $target >& ../$target.log
-done
+echo "make -j $n_job check >& check.log"
+make -j $n_job check >& check.log
+#
+echo "make speed >& speed.log"
+make speed >& speed.log
+#
+echo_eval make -j $n_job install
+#
 cd ..
 # -----------------------------------------------------------------------------
 check_install_failed='no'
