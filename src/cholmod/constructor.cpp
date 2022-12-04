@@ -3,67 +3,69 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin ldlt_cholmod_ctor$$
-$spell
-   ldlt
+{xrst_begin ldlt_cholmod_ctor}
+{xrst_spell
+   ll
    nrow
-   xam
-   ldlt_obj
-   cholmod
-   Cpp
-   chol
-   hes
-   initializes
    simplicial
    supernodal
-$$
+}
 
-$section Cholmod LDLT Constructor$$
+Cholmod LDLT Constructor
+########################
 
-$head Syntax$$
-$codei%CppAD::mixed::ldlt_cholmod %ldlt_obj%(%nrow%)%$$
+Syntax
+******
+``CppAD::mixed::ldlt_cholmod`` *ldlt_obj* ( *nrow* )
 
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
-
-$head Private$$
-The $cref ldlt_cholmod$$ class is an
-$cref/implementation detail/ldlt_cholmod/Private/$$ and not part of the
+Private
+*******
+The :ref:`ldlt_cholmod-name` class is an
+:ref:`implementation detail<ldlt_cholmod@Private>` and not part of the
 CppAD Mixed user API.
 
-$head nrow_$$
-The argument $icode nrow$$
+nrow\_
+******
+The argument *nrow*
 is the number of rows in the symmetric matrix
 we will compute the LDLT factor of.
-The member variable $code nrow_$$ is set to this value.
+The member variable ``nrow_`` is set to this value.
 
-$head Pointers$$
+Pointers
+********
 This sets all the pointer private member variable equal to null.
 
-$head common_$$
-The $code common_$$ variable is initialized as follows:
-$codei%
-   cholmod_start(&common_);
-%$$
+common\_
+********
+The ``common_`` variable is initialized as follows:
 
-$subhead Simplicial Factorization$$
+   ``cholmod_start`` (& ``common_`` );
+
+Simplicial Factorization
+========================
 The following value is set (and does not change):
-$codei%
-   common_.supernodal = CHOLMOD_SIMPLICIAL;
-%$$
 
-$subhead LDL' Factorization$$
+   ``common_.supernodal`` = ``CHOLMOD_SIMPLICIAL`` ;
+
+LDL' Factorization
+==================
 The following value is set (and does not change):
-$codei%
-   common_.final_ll = CHOLMOD_FLASE;
-%$$
 
-$head Example$$
-The file $cref/ldlt_cholmod.cpp/ldlt_cholmod.cpp/constructor/$$ contains an
+   ``common_.final_ll`` = ``CHOLMOD_FLASE`` ;
+
+Example
+*******
+The file :ref:`ldlt_cholmod.cpp<ldlt_cholmod.cpp@constructor>` contains an
 example and test that uses this constructor.
 
-$end
+{xrst_end ldlt_cholmod_ctor}
 */
 
 # include <cppad/mixed/ldlt_cholmod.hpp>
@@ -102,27 +104,24 @@ work_two_      (CPPAD_NULL)
 }
 
 /*
-$begin ldlt_cholmod_dtor$$
-$spell
-   ldlt
-   Cholmod
-   Cpp
-$$
+{xrst_begin ldlt_cholmod_dtor}
 
-$section Cholmod Destructor$$
+Cholmod Destructor
+##################
 
-$head Private$$
+Private
+*******
 This class is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head Discussion$$
+Discussion
+**********
 This frees the memory corresponding to all the
 private member variables and the clear the common with
-$codei%
-   cholmod_finish(&common_);
-%$$
 
-$end
+   ``cholmod_finish`` (& ``common_`` );
+
+{xrst_end ldlt_cholmod_dtor}
 */
 ldlt_cholmod::~ldlt_cholmod(void)
 {  // free all the private pointers

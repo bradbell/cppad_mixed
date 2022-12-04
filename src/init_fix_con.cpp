@@ -6,95 +6,94 @@
 # include <cppad/mixed/configure.hpp>
 
 /*
-$begin init_fix_con$$
-$spell
-   rcv
-   Jacobians
-   CppAD
-   init
-   cppad
-   jac
-   vec
-   const
-   Cpp
-   Jacobian
+{xrst_begin init_fix_con}
+{xrst_spell
    var
-   hes
-   bool
-$$
+}
 
-$section Initialize Constraints as Function of Fixed Effects$$
+Initialize Constraints as Function of Fixed Effects
+###################################################
 
-$head Syntax$$
-$icode%mixed_object%.init_fix_con(%fixed_vec%)%$$
+Syntax
+******
+*mixed_object* . ``init_fix_con`` ( *fixed_vec* )
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
 
-$head init_fix_con_done_$$
+init_fix_con_done\_
+*******************
 The input value of this member variable must be false.
 Upon return it is true.
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_vec%
-%$$
-It specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$ at which the initialization is done.
 
-$head fix_con_fun_$$
+   ``const CppAD::vector<double>&`` *fixed_vec*
+
+It specifies the value of the
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta` at which the initialization is done.
+
+fix_con_fun\_
+*************
 On input, the member variable
-$codei%
-   CppAD::ADFun<double> fix_con_fun_
-%$$
-must be empty; i.e., $code fix_con_fun_.size_var() == 0$$.
+
+   ``CppAD::ADFun<double> fix_con_fun_``
+
+must be empty; i.e., ``fix_con_fun_.size_var() == 0`` .
 If the return value for
-$cref fix_constraint$$ is empty,
-$code fix_con_fun_$$ is not modified.
+:ref:`fix_constraint-name` is empty,
+``fix_con_fun_`` is not modified.
 Otherwise,
 upon return it contains the corresponding recording for the
-$cref fix_constraint$$ $latex c( \theta )$$.
+:ref:`fix_constraint-name` :math:`c( \theta )`.
 
-$head fix_con_jac_$$
+fix_con_jac\_
+*************
 The input value of
-$codei%
-   CppAD::mixed::sparse_jac_rcv fix_con_jac_
-%$$
-must be empty.
-Upon return, $code fix_con_jac_$$ contains the
-$cref sparse_jac_rcv$$ structure for the
-Jacobian of the $cref/constraints/fix_constraint/$$.
 
-$subhead fix_con_fun_$$
-This ADFun object can be used, with $code fix_con_jac_$$,
+   ``CppAD::mixed::sparse_jac_rcv fix_con_jac_``
+
+must be empty.
+Upon return, ``fix_con_jac_`` contains the
+:ref:`sparse_jac_rcv-name` structure for the
+Jacobian of the :ref:`constraints<fix_constraint-name>` .
+
+fix_con_fun\_
+=============
+This ADFun object can be used, with ``fix_con_jac_`` ,
 for computing sparse Jacobians; see
-$cref/f/sparse_jac_rcv/Computing Sparse Jacobians/f/$$.
+:ref:`sparse_jac_rcv@Computing Sparse Jacobians@f` .
 
-$head fix_con_hes_$$
+fix_con_hes\_
+*************
 The input value of
-$codei%
-   CppAD::mixed::sparse_hes_rcv fix_con_hes_
-%$$
+
+   ``CppAD::mixed::sparse_hes_rcv fix_con_hes_``
+
 must be empty.
-If $icode quasi_fixed$$ is false,
-upon return $code fix_con_hes_$$ contains
-$cref sparse_hes_rcv$$ for the
+If *quasi_fixed* is false,
+upon return ``fix_con_hes_`` contains
+:ref:`sparse_hes_rcv-name` for the
 lower triangle of a weighted Hessian for the
-$cref/constraints/fix_constraint/$$.
+:ref:`constraints<fix_constraint-name>` .
 
-$subhead fix_con_fun_$$
-This ADFun object can be used, with $code fix_con_hes_$$,
+fix_con_fun\_
+=============
+This ADFun object can be used, with ``fix_con_hes_`` ,
 for computing sparse Hessians; see
-$cref/f/sparse_hes_rcv/Computing Sparse Hessians/f/$$.
+:ref:`sparse_hes_rcv@Computing Sparse Hessians@f` .
 
-$end
+{xrst_end init_fix_con}
 */
 
 void cppad_mixed::init_fix_con(const d_vector& fixed_vec )

@@ -8,70 +8,71 @@
 # include <cppad/mixed/is_finite_vec.hpp>
 
 /*
-$begin init_ran_like$$
-$spell
-   CppAD
-   init
-   cppad
-   vec
-   const
-   Cpp
-$$
+{xrst_begin init_ran_like}
 
-$section Initialize Random Likelihood$$
+Initialize Random Likelihood
+############################
 
-$head Syntax$$
-$icode%mixed_object%.init_ran_like(%fixed_vec%, %random_vec%)%$$
+Syntax
+******
+*mixed_object* . ``init_ran_like`` ( *fixed_vec* , *random_vec* )
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
 
-$head init_ran_like_done_$$
+init_ran_like_done\_
+********************
 The input value of this member variable must be false.
 Upon return it is true.
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_vec%
-%$$
-It specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$ at which the initialization is done.
 
-$head random_vec$$
+   ``const CppAD::vector<double>&`` *fixed_vec*
+
+It specifies the value of the
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta` at which the initialization is done.
+
+random_vec
+**********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_vec%
-%$$
-It specifies the value of the
-$cref/random effects/problem/Notation/Random Effects, u/$$
-vector $latex u$$ at which the initialization is done.
 
-$head ran_like_fun_$$
+   ``const CppAD::vector<double>&`` *random_vec*
+
+It specifies the value of the
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector :math:`u` at which the initialization is done.
+
+ran_like_fun\_
+**************
 The input value of the member variable
-$codei%
-   CppAD::ADFun<double> ran_like_fun_
-%$$
+
+   ``CppAD::ADFun<double> ran_like_fun_``
+
 does not matter.
 Upon return it contains a recording of the function
-$cref ran_likelihood$$.
+:ref:`ran_likelihood-name` .
 
-$head ran_like_a1fun_$$
+ran_like_a1fun\_
+****************
 The input value of the member variable
-$codei%
-   CppAD::ADFun<double> ran_like_a1fun_
-%$$
+
+   ``CppAD::ADFun<double> ran_like_a1fun_``
+
 does not matter.
 Upon return it contains a recording of the function
-$cref ran_likelihood$$.
+:ref:`ran_likelihood-name` .
 
-$end
+{xrst_end init_ran_like}
 */
 
 void cppad_mixed::init_ran_like(

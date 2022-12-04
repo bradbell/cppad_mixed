@@ -3,24 +3,28 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin cholmod_solve2_a.cpp$$
-$spell
-   Cholmod
-   Cholesky
-   Xset
-   Bset
-   sys
-   Pt
-$$
+{xrst_begin cholmod_solve2_a.cpp}
+{xrst_spell
+   bset
+   cc
+   ccc
+   determinant
+   pt
+   xset
+}
 
-$section Example Using cholmod_solve2 Cholesky Factorization$$
+Example Using cholmod_solve2 Cholesky Factorization
+###################################################
 
-$head Problem Description$$
-Solve for $latex x$$ in the equation $latex A x = b$$ where $latex A$$
-is defined below and $latex b$$ is a column of the identity matrix.
-Hence the solution $latex x$$ is the corresponding column of
-$latex A^{-1}$$.
-$latex \[
+Problem Description
+*******************
+Solve for :math:`x` in the equation :math:`A x = b` where :math:`A`
+is defined below and :math:`b` is a column of the identity matrix.
+Hence the solution :math:`x` is the corresponding column of
+:math:`A^{-1}`.
+
+.. math::
+
    G = \left( \begin{array}{ccc}
       5 & 4 & 2 \\
       4 & 5 & 1 \\
@@ -31,17 +35,21 @@ $latex \[
       G & 0 \\
       0 & G
    \end{array} \right)
-\] $$
-We use $latex G^k$$ to denote the upper-left $latex k \times k$$
+
+We use :math:`G^k` to denote the upper-left :math:`k \times k`
 principal minor. The determinant of its principal minors are:
-$latex \[
+
+.. math::
+
    \det \left( G^1 \right) = 5  \W{,}
    \det \left( G^2 \right) = 9  \W{,}
    \det \left( G^3 \right) = 36
-\] $$
-Hence, $latex G$$ and $latex A$$ are positive definite.
+
+Hence, :math:`G` and :math:`A` are positive definite.
 In addition
-$latex \[
+
+.. math::
+
    G^{-1} = \frac{1}{36}
    \left( \begin{array}{ccc}
       24  & -18 & -6 \\
@@ -53,25 +61,28 @@ $latex \[
       G^{-1} & 0 \\
       0 & G^{-1}
    \end{array} \right)
-\] $$
-which can be checked by multiplying by $latex G G^{-1}$$.
 
-$head Bset$$
-I think the $code cholmod_solve2$$ documentation would be clearer if
+which can be checked by multiplying by :math:`G G^{-1}`.
+
+Bset
+****
+I think the ``cholmod_solve2`` documentation would be clearer if
 the sentence
-'The entries in $code Bset$$ are a subset of $code Xset$$
-(except if sys is $code CHOLMOD_P$$ or $code CHOLMOD_Pt$$ ).'
+'The entries in ``Bset`` are a subset of ``Xset``
+(except if sys is ``CHOLMOD_P`` or ``CHOLMOD_Pt`` ).'
 were changed to
-'The entries in $code Bset$$ are a subset of $code Xset$$
-and only these entries are assured to appear in $code Xset$$
-(except if sys is $code CHOLMOD_P$$ or $code CHOLMOD_Pt$$ ).'
+'The entries in ``Bset`` are a subset of ``Xset``
+and only these entries are assured to appear in ``Xset``
+(except if sys is ``CHOLMOD_P`` or ``CHOLMOD_Pt`` ).'
 
-$head Source Code$$
-$code
-$srcthisfile%5%// BEGIN C++%// END C++%1%$$
-$$
+Source Code
+***********
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end cholmod_solve2_a.cpp}
 */
 // BEGIN C++
 # include <cppad/mixed/include_cholmod.hpp>

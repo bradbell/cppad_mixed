@@ -7,54 +7,60 @@
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-$begin ipopt_random_eval_grad_f$$
-$spell
-   eval
-   Ipopt
-   Taylor
-   vec
-$$
+{xrst_begin ipopt_random_eval_grad_f}
 
-$section Compute Gradient of the Objective$$
+Compute Gradient of the Objective
+#################################
 
-$head Syntax$$
-$icode%ok% = eval_grad_f(%n%, %x%, %new_x%, %grad_f%)%$$
+Syntax
+******
+*ok* = ``eval_grad_f`` ( *n* , *x* , *new_x* , *grad_f* )
 
-$head n$$
+n
+*
 is the number of variables in the problem (dimension of x).
 
-$head x$$
+x
+*
 is the value for the primal variables at which the gradient
-$latex \nabla f(x)$$ is computed (has size $icode n$$).
+:math:`\nabla f(x)` is computed (has size *n* ).
 
-$head new_x$$
+new_x
+*****
 if true, no Ipopt evaluation method was previous called with the same
-value for $icode x$$.
+value for *x* .
 
-$head grad_f$$
-is set to the value for the gradient $latex \nabla f(x)$$
-(has size $icode m$$).
+grad_f
+******
+is set to the value for the gradient :math:`\nabla f(x)`
+(has size *m* ).
 
-$head ok$$
+ok
+**
 if set to false, the optimization will treat this point like
 it was not feasible
 (the function could not be evaluated at this point).
 
-$head mixed_object_.ran_like_fun_$$
-if $icode new_x$$ is true,
+mixed_object\_.ran_like_fun\_
+*****************************
+if *new_x* is true,
 after this call, the zero order Taylor coefficients in this function
-will corresponding to the value of $icode fixed_vec_$$ and
-the random effects in $icode x$$.
+will corresponding to the value of *fixed_vec_* and
+the random effects in *x* .
 
-$head Prototype$$
-$srccode%cpp% */
+Prototype
+*********
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_random::eval_grad_f(
    Index           n         ,  // in
    const Number*   x         ,  // in
    bool            new_x     ,  // in
    Number*         grad_f    )  // out
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_random_eval_grad_f}
 */
 {  try
    {  try_eval_grad_f(n, x, new_x, grad_f);

@@ -3,57 +3,63 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin ldlt_cholmod_logdet$$
-$spell
-   ldlt
-   xam
-   const
-   ldlt_obj
-   cholmod
+{xrst_begin ldlt_cholmod_logdet}
+{xrst_spell
+   determinant
    logdet
-   CppAD
-$$
+}
 
-$section Compute Log Determinant for Current Factor$$
+Compute Log Determinant for Current Factor
+##########################################
 
-$head Syntax$$
-$icode%logdet% = %ldlt_obj%.logdet(%negative%)
-%$$
+Syntax
+******
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+   *logdet* = *ldlt_obj* . ``logdet`` ( *negative* )
 
-$head Private$$
-The $cref ldlt_cholmod$$ class is an
-$cref/implementation detail/ldlt_cholmod/Private/$$ and not part of the
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
+
+Private
+*******
+The :ref:`ldlt_cholmod-name` class is an
+:ref:`implementation detail<ldlt_cholmod@Private>` and not part of the
 CppAD Mixed user API.
 
-$head ldlt_obj$$
+ldlt_obj
+********
 This object has prototype
-$codei%
-   const CppAD::mixed::ldlt_cholmod %ldlt_obj%
-%$$
-In addition, it must have a previous call to
-$cref ldlt_cholmod_update$$.
 
-$head negative$$
+   ``const CppAD::mixed::ldlt_cholmod`` *ldlt_obj*
+
+In addition, it must have a previous call to
+:ref:`ldlt_cholmod_update-name` .
+
+negative
+********
 The input value of this argument does no matter.
 Upon return, it is the number of elements of
-$cref/D/ldlt_cholmod/Factorization/D/$$
+:ref:`ldlt_cholmod@Factorization@D`
 that are less than zero.
 
-$head logdet$$
+logdet
+******
 This return value
 is the log of the absolute value of the determinant corresponding
-to the previous call to $cref ldlt_cholmod_update$$.
-If the matrix is singular, $icode logdet$$ is
+to the previous call to :ref:`ldlt_cholmod_update-name` .
+If the matrix is singular, *logdet* is
 minus infinity.
 
-$head Example$$
-The file $cref/ldlt_cholmod.cpp/ldlt_cholmod.cpp/logdet/$$ contains an
+Example
+*******
+The file :ref:`ldlt_cholmod.cpp<ldlt_cholmod.cpp@logdet>` contains an
 example and test that uses this function.
 
-$end
+{xrst_end ldlt_cholmod_logdet}
 */
 
 # include <cppad/mixed/ldlt_cholmod.hpp>

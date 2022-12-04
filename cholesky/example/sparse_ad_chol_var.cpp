@@ -6,29 +6,36 @@
 # include "../sparse_ad_cholesky.hpp"
 
 /*
-$begin sparse_ad_chol_var.cpp$$
-$spell
-   Cholesky
-$$
+{xrst_begin sparse_ad_chol_var.cpp}
+{xrst_spell
+   ccc
+   transposes
+}
 
-$section Sparse AD Cholesky Variable Calculation: Example and Test$$
+Sparse AD Cholesky Variable Calculation: Example and Test
+#########################################################
 
-$head Problem$$
-We are given the function $latex A : \B{R}^3 \rightarrow \B{R}^{3 \times 3}$$
+Problem
+*******
+We are given the function :math:`A : \B{R}^3 \rightarrow \B{R}^{3 \times 3}`
 defined by
-$latex \[
+
+.. math::
+
    A(x) = \left( \begin{array}{ccc}
       x_0 & 0    & x_2  \\
       0   & x_1  & 0   \\
       x_2 & 0    & x_3
    \end{array} \right)
-\] $$
 
-$head Permutation$$
+Permutation
+***********
 The fill reducing permutation
-$cref/P/sparse_ad_cholesky/Notation/P/$$
+:ref:`sparse_ad_cholesky@Notation@P`
 transposes indices zero and one; i.e.
-$latex \[
+
+.. math::
+
    P= \left( \begin{array}{ccc}
       0   & 1    & 0    \\
       1   & 0    & 0   \\
@@ -40,24 +47,31 @@ $latex \[
       0   & x_0  & x_2 \\
       0   & x_2  & x_3
    \end{array} \right)
-\] $$
 
-$head Cholesky Factor$$
+Cholesky Factor
+***************
 The Cholesky factor
-$cref/L/sparse_ad_cholesky/Notation/L/$$ is
-$latex \[
+:ref:`sparse_ad_cholesky@Notation@L` is
+
+.. math::
+
    L(x) = \left( \begin{array}{ccc}
       \sqrt{x_1} & 0                   & 0    \\
       0          & \sqrt{x_0}          & 0   \\
       0          & x_2 / \sqrt{x_0}    & \sqrt{ x_3 - x_2^2 / x_0 }
    \end{array} \right)
-\] $$
-This can be verified by checking
-$latex P * A(x) * P^\R{T} = L * L^\R{T}$$.
 
-$head Source$$
-$srcthisfile%4%// BEGIN C++%// END C++%1%$$
-$end
+This can be verified by checking
+:math:`P * A(x) * P^\R{T} = L * L^\R{T}`.
+
+Source
+******
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end sparse_ad_chol_var.cpp}
 */
 // BEGIN C++
 bool sparse_ad_chol_var(void)

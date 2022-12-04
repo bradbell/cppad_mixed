@@ -6,85 +6,95 @@
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-$begin ipopt_random_ctor$$
-$spell
-   Ipopt
-   CppAD
-   vec
-   cppad
+{xrst_begin ipopt_random_ctor}
+{xrst_spell
    nlp
-   inf
    nnz
-$$
+}
 
-$section Ipopt Random Optimization Callback Constructor$$
+Ipopt Random Optimization Callback Constructor
+##############################################
 
-$head Syntax$$
-$codei%CppAD::mixed::ipopt_random %ipopt_object%(
-   %fixed_vec%,
-   %random_lower%,
-   %random_upper%,
-   %random_in%,
-   %mixed_object%
-)%$$
+Syntax
+******
 
-$head fixed_vec$$
+| ``CppAD::mixed::ipopt_random`` *ipopt_object* (
+| |tab| *fixed_vec* ,
+| |tab| *random_lower* ,
+| |tab| *random_upper* ,
+| |tab| *random_in* ,
+| |tab| *mixed_object*
+| )
+
+fixed_vec
+*********
 specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$.
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta`.
 It is stored as a reference so it must exist for as long as
-$icode ipopt_object$$ exists.
+*ipopt_object* exists.
 
-$head random_lower$$
+random_lower
+************
 this vector has size
-$cref/n_random/derived_ctor/n_random/$$
+:ref:`derived_ctor@n_random`
 and specifies the lower limits for the optimization of the
-$cref/random effects/problem/Notation/Random Effects, u/$$
-vector $latex u$$.
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector :math:`u`.
 It is stored as a reference so it must exist for as long as
-$icode ipopt_object$$ exists.
+*ipopt_object* exists.
 The value minus infinity can be used to specify no lower limit.
 
-$head random_upper$$
-this vector has size $icode n_random$$
+random_upper
+************
+this vector has size *n_random*
 and specifies the upper limits for the optimization of the random effects.
 It is stored as a reference so it must exist for as long as
-$icode ipopt_object$$ exists.
+*ipopt_object* exists.
 The value plus infinity can be used to specify no upper limit.
 
-$head random_in$$
-this vector has size $icode n_random$$ and specifies
+random_in
+*********
+this vector has size *n_random* and specifies
 the initial value used for the optimization of the random effects.
 It is stored as a reference so it must exist for as long as
-$icode ipopt_object$$ exists.
+*ipopt_object* exists.
 The value plus infinity can be used to specify no upper limit.
 
-$head mixed_object$$
-The argument $icode mixed_object$$ is an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+mixed_object
+************
+The argument *mixed_object* is an object of a class that is
+derived from the ``cppad_mixed`` base class.
 
-$head Member Variables$$
+Member Variables
+****************
 
-$subhead nlp_lower_bound_inf_$$
+nlp_lower_bound_inf\_
+=====================
 set to a finite value that is used by Ipopt for minus infinity.
 
-$subhead nlp_upper_bound_inf_$$
+nlp_upper_bound_inf\_
+=====================
 set to a finite value that is used by Ipopt for plus infinity.
 
-$subhead nnz_h_lag_$$
+nnz_h_lag\_
+===========
 set to the number of non-zero entries in the Hessian of the Lagrangian.
 This is the same as for the Hessian of the objective because there
 are no constraints (except for box constraints) in this problem.
 
-$srccode%cpp% */
+{xrst_spell_off}
+{xrst_code cpp} */
 ipopt_random::ipopt_random(
    const d_vector&     fixed_vec          ,
    const d_vector&     random_lower       ,
    const d_vector&     random_upper       ,
    const d_vector&     random_in          ,
    cppad_mixed&        mixed_object       ) :
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_random_ctor}
 */
 n_fixed_             ( fixed_vec.size()  )                ,
 n_random_            ( random_lower.size() )              ,

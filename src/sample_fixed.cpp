@@ -3,50 +3,54 @@
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
-$begin sample_fixed$$
-$spell
-   Cholesky
+{xrst_begin sample_fixed}
+{xrst_spell
    covariance
-   pairwise
-   CppAD
-   cppad
-   const
-   gsl_rng
-   rcv
-   hes
-   obj
-$$
+   msg
+   rng
+}
 
-$section Sample Posterior for Fixed Effects$$
+Sample Posterior for Fixed Effects
+##################################
 
-$head Syntax$$
-$icode%error_msg% = %mixed_object%.sample_fixed(
-   %sample%,
-   %hes_fixed_obj_rcv%,
-   %solution%,
-   %fixed_lower%,
-   %fixed_upper%
-)%$$
+Syntax
+******
 
-$head See Also$$
-$cref sample_random$$
+| *error_msg* = *mixed_object* . ``sample_fixed`` (
+| |tab| *sample* ,
+| |tab| *hes_fixed_obj_rcv* ,
+| |tab| *solution* ,
+| |tab| *fixed_lower* ,
+| |tab| *fixed_upper*
+| )
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
+See Also
+********
+:ref:`sample_random-name`
 
-$head Purpose$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN PROTOTYPE
+   // END PROTOTYPE
+}
+
+Purpose
+*******
 This routine draws independent samples from
 the asymptotic posterior distribution for the
 fixed effects (given the model and the data).
 
-$head Constant Fixed Effects$$
+Constant Fixed Effects
+**********************
 If the upper and lower limits for a fixed effect are equal,
-$codei%
-   %fixed_lower%[%j%] == %fixed_upper%[%j%]
-%$$
-we refer to the $th j$$ fixed effect as constant.
 
-$head Constraints$$
+   *fixed_lower* [ *j* ] == *fixed_upper* [ *j* ]
+
+we refer to the *j*-th fixed effect as constant.
+
+Constraints
+***********
 Only the constant fixed effect constants are taken into account.
 (This is an over estimate of the variance, but is faster to calculate
 than trying to identify active constraints and treating them as equality
@@ -56,90 +60,102 @@ for the fixed effects that are not constant.
 You may want to adjust the samples to be within
 their upper and lower limits before you use them.
 
-$head Covariance$$
+Covariance
+**********
 Each sample of the fixed effects
 (excluding the constant fixed effects)
 has covariance equal to the inverse of the
-$cref/information matrix/information_mat/$$
+:ref:`information matrix<information_mat-name>`
 (where the constant fixed effects have been removed).
 
-$head manage_gsl_rng$$
+manage_gsl_rng
+**************
 It is assumed that
-$cref/get_gsl_rng/manage_gsl_rng/get_gsl_rng/$$ will return
+:ref:`manage_gsl_rng@get_gsl_rng` will return
 a pointer to a GSL random number generator.
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head sample$$
-The size $icode%sample%.size()%$$ is a multiple of
-$cref/n_fixed/derived_ctor/n_fixed/$$.
+sample
+******
+The size *sample* . ``size`` () is a multiple of
+:ref:`derived_ctor@n_fixed` .
 The input value of its elements does not matter.
 We define
-$codei%
-   %n_sample% = %sample_size% / %n_fixed%
-%$$
-If $icode error_msg$$ is empty, upon return
-for $codei%i% = 0 , %...%, %n_sample%-1%$$,
-$codei%j% = 0 , %...%, %n_fixed%-1%$$,
-$codei%
-   %sample%[ %i% * %n_fixed% + %j% ]
-%$$
-is the $th j$$ component of the $th i$$ sample of the
-optimal fixed effects $latex \hat{\theta}$$.
-These samples are independent for different $latex i$$,
-and for fixed $latex i$$, they have the specified
-$cref/covariance/sample_fixed/Covariance/$$.
 
-$head hes_fixed_obj_rcv$$
+   *n_sample* = *sample_size* / *n_fixed*
+
+If *error_msg* is empty, upon return
+for ``i`` = 0 , ..., ``n_sample`` *-1* ,
+``j`` = 0 , ..., ``n_fixed`` *-1* ,
+
+   *sample* [ *i* * *n_fixed* + *j*  ]
+
+is the *j*-th component of the *i*-th sample of the
+optimal fixed effects :math:`\hat{\theta}`.
+These samples are independent for different :math:`i`,
+and for fixed :math:`i`, they have the specified
+:ref:`sample_fixed@Covariance` .
+
+hes_fixed_obj_rcv
+*****************
 This is a sparse matrix representation for the
 lower triangle of the observed information matrix corresponding to
-$icode solution$$; i.e., the matrix returned by
-$codei%
-%hes_fixed_obj_rcv% = %mixed_object%.hes_fixed_obj(
-   %solution%, %random_opt%
-)%$$
-where $icode random_opt$$ is the optimal random effects corresponding
-to $icode solution$$.
+*solution* ; i.e., the matrix returned by
 
-$head solution$$
-is the $cref/solution/optimize_fixed/solution/$$
-for a the call to $cref optimize_fixed$$ corresponding to
-$icode hes_fixed_obj_rcv$$.
+| *hes_fixed_obj_rcv* = *mixed_object* . ``hes_fixed_obj`` (
+| |tab| *solution* , *random_opt*
+| )
+
+where *random_opt* is the optimal random effects corresponding
+to *solution* .
+
+solution
+********
+is the :ref:`optimize_fixed@solution`
+for a the call to :ref:`optimize_fixed-name` corresponding to
+*hes_fixed_obj_rcv* .
 The only necessary information in this structure is
-$icode%solution%.fixed_opt%$$.
+*solution* . ``fixed_opt`` .
 
-$head fixed_lower$$
+fixed_lower
+***********
 is the same as
-$cref/fixed_lower/optimize_fixed/fixed_lower/$$
-in the call to $code optimize_fixed$$ that corresponding to $icode solution$$.
+:ref:`optimize_fixed@fixed_lower`
+in the call to ``optimize_fixed`` that corresponding to *solution* .
 
-$head fixed_upper$$
+fixed_upper
+***********
 is the same as
-$cref/fixed_upper/optimize_fixed/fixed_upper/$$
-in the call to $code optimize_fixed$$ that corresponding to $icode solution$$.
+:ref:`optimize_fixed@fixed_upper`
+in the call to ``optimize_fixed`` that corresponding to *solution* .
 
-$head error_msg$$
-If $icode error_msg$$ is empty (non-empty),
-$cref/sample/sample_fixed/sample/$$
+error_msg
+*********
+If *error_msg* is empty (non-empty),
+:ref:`sample_fixed@sample`
 values have been calculated (have not been calculated).
-If $icode error_msg$$ is non-empty,
+If *error_msg* is non-empty,
 it is a message describing the problem.
+{xrst_toc_hidden
+   example/user/sample_fixed.cpp
+   src/eigen/sample_conditional.cpp
+}
+Example
+*******
+The file :ref:`sample_fixed.cpp-name` is an example
+and test of ``sample_fixed`` .
 
-$children%example/user/sample_fixed.cpp
-   %src/eigen/sample_conditional.cpp
-%$$
-$head Example$$
-The file $cref sample_fixed.cpp$$ is an example
-and test of $code sample_fixed$$.
-
-$head Other Method$$
-The routine $cref sample_conditional$$, is a old method that is no
+Other Method
+************
+The routine :ref:`sample_conditional-name` , is a old method that is no
 longer used for computing these samples.
 
-$end
+{xrst_end sample_fixed}
 ------------------------------------------------------------------------------
 */
 # include <Eigen/Core>

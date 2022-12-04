@@ -6,104 +6,106 @@
 # include <cppad/mixed/exception.hpp>
 
 /*
-$begin fix_con_hes$$
-$spell
-   CppAD
-   cppad
-   eval
-   vec
-   const
-   Cpp
-   hes
-$$
+{xrst_begin fix_con_hes}
 
-$section Hessian of Fixed Constraints$$
+Hessian of Fixed Constraints
+############################
 
-$head Syntax$$
-$icode%mixed_object%.fix_con_hes(
-   %fixed_vec%, %weight%, %row_out%, %col_out%, %val_out%
-)%$$
+Syntax
+******
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+| *mixed_object* . ``fix_con_hes`` (
+| |tab| *fixed_vec* , *weight* , *row_out* , *col_out* , *val_out*
+| )
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
+
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_vec%
-%$$
+
+   ``const CppAD::vector<double>&`` *fixed_vec*
+
 It specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$ at which the Hessian is evaluated.
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta` at which the Hessian is evaluated.
 
-$head weight$$
+weight
+******
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %weight%
-%$$
-It specifies the value of the weights for the
-components of the $cref fix_constraint$$.
-It has the same size as the corresponding return value
-$cref/vec/fix_constraint/vec/$$.
 
-$head Hessian$$
-We use $latex w$$ to denote the vector corresponding to $icode weight$$
-and $latex c( \theta )$$ to denote the function corresponding th
+   ``const CppAD::vector<double>&`` *weight*
+
+It specifies the value of the weights for the
+components of the :ref:`fix_constraint-name` .
+It has the same size as the corresponding return value
+:ref:`fix_constraint@vec` .
+
+Hessian
+*******
+We use :math:`w` to denote the vector corresponding to *weight*
+and :math:`c( \theta )` to denote the function corresponding th
 the constraints
 The Hessian is for the function
-$latex \[
+
+.. math::
+
    \sum_{i} w_i c_i ( \theta )
-\] $$.
 
-
-$head row_out$$
+row_out
+*******
 This argument has prototype
-$codei%
-   CppAD::vector<size_t>& %row_out%
-%$$
+
+   ``CppAD::vector<size_t>&`` *row_out*
+
 If the input size of this array is non-zero,
 the entire vector must be the same
-as for a previous call to $code constraint_hes$$.
+as for a previous call to ``constraint_hes`` .
 If it's input size is zero,
 upon return it contains the row indices for the Hessian elements
 that are possibly non-zero.
 
-$head col_out$$
+col_out
+*******
 This argument has prototype
-$codei%
-   CppAD::vector<size_t>& %col_out%
-%$$
+
+   ``CppAD::vector<size_t>&`` *col_out*
+
 If the input size of this array is non-zero,
 the entire vector must be the same as for
-a previous call to $code constraint_hes$$.
+a previous call to ``constraint_hes`` .
 If it's input size is zero,
 upon return it contains the column indices for the Hessian elements
-that are possibly non-zero (and will have the same size as $icode row_out$$).
+that are possibly non-zero (and will have the same size as *row_out* ).
 
-$head val_out$$
+val_out
+*******
 This argument has prototype
-$codei%
-   CppAD::vector<double>& %val_out%
-%$$
-If the input size of this array is non-zero, it must have the same size
-as for a previous call to $code constraint_hes$$.
-Upon return, it contains the value of the Hessian elements
-that are possibly non-zero (and will have the same size as $icode row_out$$).
 
-$children%
+   ``CppAD::vector<double>&`` *val_out*
+
+If the input size of this array is non-zero, it must have the same size
+as for a previous call to ``constraint_hes`` .
+Upon return, it contains the value of the Hessian elements
+that are possibly non-zero (and will have the same size as *row_out* ).
+{xrst_toc_hidden
    example/private/fix_con_hes.cpp
-%$$
-$head Example$$
-The file $cref fix_con_hes.cpp$$ contains an example
+}
+Example
+*******
+The file :ref:`fix_con_hes.cpp-name` contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
-$end
+{xrst_end fix_con_hes}
 */
 
 

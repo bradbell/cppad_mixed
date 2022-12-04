@@ -3,94 +3,110 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin ldlt_cholmod_sim_cov$$
-$spell
-   std
-   ldlt_obj
-   sim_cov
-   const
-   cholmod
-   bool
-   xam
-   CppAD
-$$
+{xrst_begin ldlt_cholmod_sim_cov}
+{xrst_spell
+   cov
+   covariance
+   ll
+   sim
+}
 
-$section Simulations with Covariance Corresponding to Factored Matrix$$
+Simulations with Covariance Corresponding to Factored Matrix
+############################################################
 
-$head Syntax$$
-$icode%ok% = %ldlt_obj%.sim_cov(%w%, %v%)%$$
+Syntax
+******
+*ok* = *ldlt_obj* . ``sim_cov`` ( *w* , *v* )
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
 
-$head Private$$
-The $cref ldlt_cholmod$$ class is an
-$cref/implementation detail/ldlt_cholmod/Private/$$ and not part of the
+Private
+*******
+The :ref:`ldlt_cholmod-name` class is an
+:ref:`implementation detail<ldlt_cholmod@Private>` and not part of the
 CppAD Mixed user API.
 
-$head Purpose$$
+Purpose
+*******
 This function simulates a normal random vector with mean zero
-and covariance $latex H^{-1}$$ where
-$latex \[
+and covariance :math:`H^{-1}` where
+
+.. math::
+
    L D L^\R{T} = P H P^\R{T}
-\] $$
+
 is the current factorization; see
-$cref/H/ldlt_cholmod/Factorization/H/$$,
-$cref/L/ldlt_cholmod/Factorization/L/$$,
-$cref/D/ldlt_cholmod/Factorization/D/$$, and
-$cref/P/ldlt_cholmod/Factorization/P/$$.
+:ref:`ldlt_cholmod@Factorization@H` ,
+:ref:`ldlt_cholmod@Factorization@L` ,
+:ref:`ldlt_cholmod@Factorization@D` , and
+:ref:`ldlt_cholmod@Factorization@P` .
 
-$head ldlt_obj$$
+ldlt_obj
+********
 This object has prototype
-$codei%
-   const CppAD::mixed::ldlt_cholmod %ldlt_obj%
-%$$
+
+   ``const CppAD::mixed::ldlt_cholmod`` *ldlt_obj*
+
 In addition, it must have a previous call to
-$cref ldlt_cholmod_update$$.
+:ref:`ldlt_cholmod_update-name` .
 
-$head w$$
+w
+*
 This argument's
-size is equal to the number of rows in $latex H$$.
+size is equal to the number of rows in :math:`H`.
 
-$head v$$
+v
+*
 This argument's
-size is equal to the number of rows in $latex H$$.
+size is equal to the number of rows in :math:`H`.
 The input value of its elements does not matter.
 Upon return
-$latex \[
+
+.. math::
+
    v = P^\R{T} L^{-\R{T}} \tilde{D}^{-1/2} w
-\] $$
-If $latex w$$ is mean zero, variance identity white noise,
-$latex w \sim \B{N} ( 0 , I )$$,
-then $latex v$$ will be mean zero and variance $latex H^{-1}$$,
-$latex v \sim \B{N} ( 0 , H^{-1} )$$; see
-$cref/sparse observed information/theory/Sparse Observed Information/$$.
 
-$head Positive Definite$$
-In the formula for $latex v$$ above,
-the matrix $latex \tilde{D}$$ is a positive version of $latex D$$.
+If :math:`w` is mean zero, variance identity white noise,
+:math:`w \sim \B{N} ( 0 , I )`,
+then :math:`v` will be mean zero and variance :math:`H^{-1}`,
+:math:`v \sim \B{N} ( 0 , H^{-1} )`; see
+:ref:`theory@Sparse Observed Information` .
+
+Positive Definite
+*****************
+In the formula for :math:`v` above,
+the matrix :math:`\tilde{D}` is a positive version of :math:`D`.
 To be specific,
-$latex \[
-\tilde{D}_{i,i} = \left\{ \begin{array}{ll}
-   D_{i,i} & \R{if} \; D_{i,i} \geq  \varepsilon^2 \; \max(D) \\
-   \varepsilon^2 \; \max(D) & \R{otherwise}
-\end{array} \right.
-\] $$
-where $latex \varepsilon$$
-$code std::numeric_limits<double>::epsilon()$$,
-and $latex \max(D)$$ is the largest element in $latex D$$.
 
-$head ok$$
-If $latex \max(D) > 0$$, this routine terminates with $icode ok$$
+.. math::
+
+   \tilde{D}_{i,i} = \left\{ \begin{array}{ll}
+      D_{i,i} & \R{if} \; D_{i,i} \geq  \varepsilon^2 \; \max(D) \\
+      \varepsilon^2 \; \max(D) & \R{otherwise}
+   \end{array} \right.
+
+where :math:`\varepsilon`
+``std::numeric_limits<double>::epsilon()`` ,
+and :math:`\max(D)` is the largest element in :math:`D`.
+
+ok
+**
+If :math:`\max(D) > 0`, this routine terminates with *ok*
 equal to true.
-Otherwise it is false and the output values in $icode v$$
+Otherwise it is false and the output values in *v*
 are the same as their input values.
 
-$head Example$$
-The file $cref/ldlt_cholmod.cpp/ldlt_cholmod.cpp/sim_cov/$$ contains an
+Example
+*******
+The file :ref:`ldlt_cholmod.cpp<ldlt_cholmod.cpp@sim_cov>` contains an
 example and test that uses this function.
 
-$end
+{xrst_end ldlt_cholmod_sim_cov}
 */
 # include <cmath>
 # include <cppad/mixed/ldlt_cholmod.hpp>

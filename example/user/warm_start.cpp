@@ -3,56 +3,67 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin warm_start.cpp$$
-$spell
-   Optimizer
-   vec
-$$
+{xrst_begin warm_start.cpp}
+{xrst_spell
+   optimizer
+}
 
-$section Warm Starting Optimization: Example and Test$$.
+Warm Starting Optimization: Example and Test
+############################################
 
-$head Model$$
-$latex \[
+Model
+*****
+
+.. math::
+
    \B{p}( z_i | \theta ) \sim \B{N} ( \theta_i , 1 )
-\] $$
-with no prior on $latex \theta$$.
+
+with no prior on :math:`\theta`.
 The corresponding fixed likelihood
-$cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$
+:ref:`g(theta)<theory@Fixed Likelihood, g(theta)>`
 is
-$latex \[
-g( \theta ) = \frac{1}{2} \sum_{i} \left[
-   \log ( 2 \pi ) + ( z_i - \theta_i )^2
-\right]
-\] $$
-We do not include the constant term $latex \log( 2 \pi )$$
+
+.. math::
+
+   g( \theta ) = \frac{1}{2} \sum_{i} \left[
+      \log ( 2 \pi ) + ( z_i - \theta_i )^2
+   \right]
+
+We do not include the constant term :math:`\log( 2 \pi )`
 in the fixed likelihood.
 The optimal solution (with no constraints) is
-$latex \[
-   \hat{\theta}_i = z_i
-\] $$
 
-$head Bounds$$
+.. math::
+
+   \hat{\theta}_i = z_i
+
+Bounds
+******
 We add lower and upper bounds that are not active at the optimal solution.
 To be specific
-$latex \[
-   0 \leq \theta_i \leq z_i + 1
-\] $$
 
-$head Maximum Iterations$$
+.. math::
+
+   0 \leq \theta_i \leq z_i + 1
+
+Maximum Iterations
+******************
 We use 5 for the maximum number of iterations so that the optimization
 problem does not solve on the first try.
 A warm start is used and the problem does solve within the limit
 of another 5 iterations.
 
-$head Optimizer Trace$$
+Optimizer Trace
+***************
 This example uses the optimizer trace information; see
-$cref/trace_vec/fixed_solution/trace_vec/$$.
+:ref:`fixed_solution@trace_vec` .
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end warm_start.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

@@ -6,109 +6,109 @@
 # include <cppad/mixed/configure.hpp>
 
 /*
-$begin init_fix_like$$
-$spell
-   rcv
-   Jacobians
-   CppAD
-   init
-   cppad
-   jac
-   vec
-   const
-   Cpp
-   Jacobian
+{xrst_begin init_fix_like}
+{xrst_spell
    var
-   hes
-$$
+}
 
-$section Initialize Fixed Likelihood$$
+Initialize Fixed Likelihood
+###########################
 
-$head Syntax$$
-$icode%mixed_object%.init_fix_like(%fixed_vec%)%$$
+Syntax
+******
+*mixed_object* . ``init_fix_like`` ( *fixed_vec* )
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
 
-$head init_fix_like_done_$$
+init_fix_like_done\_
+********************
 The input value of this member variable must be false.
 Upon return it is true.
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_vec%
-%$$
-It specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$ at which the initialization is done.
 
-$head fix_like_fun_$$
+   ``const CppAD::vector<double>&`` *fixed_vec*
+
+It specifies the value of the
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta` at which the initialization is done.
+
+fix_like_fun\_
+**************
 On input, the member variable
-$codei%
-   CppAD::ADFun<double> fix_like_fun_
-%$$
-must be empty; i.e., $code fix_like_fun_.size_var() == 0$$.
+
+   ``CppAD::ADFun<double> fix_like_fun_``
+
+must be empty; i.e., ``fix_like_fun_.size_var() == 0`` .
 If the return value for
-$cref fix_likelihood$$ is empty,
-$code fix_like_fun_$$ is not modified.
+:ref:`fix_likelihood-name` is empty,
+``fix_like_fun_`` is not modified.
 Otherwise,
 upon return it contains the corresponding recording for the
-$cref fix_likelihood$$.
+:ref:`fix_likelihood-name` .
 The function result is the
-$cref/negative log-density vector/problem/Negative Log-Density Vector/$$
+:ref:`problem@Negative Log-Density Vector`
 corresponding to the function
-$cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
+:ref:`g(theta)<theory@Fixed Likelihood, g(theta)>` .
 
-$head fix_like_jac_$$
+fix_like_jac\_
+**************
 The input value of
-$codei%
-   CppAD::mixed::sparse_jac_rcv fix_like_jac_
-%$$
+
+   ``CppAD::mixed::sparse_jac_rcv fix_like_jac_``
+
 must be empty.
 If the return value for
-$cref fix_likelihood$$ is empty,
-$code fix_like_jac_$$ is not modified.
-Upon return, $code fix_like_jac_$$ contains the
-$cref sparse_jac_rcv$$ structure for the
+:ref:`fix_likelihood-name` is empty,
+``fix_like_jac_`` is not modified.
+Upon return, ``fix_like_jac_`` contains the
+:ref:`sparse_jac_rcv-name` structure for the
 Jacobian corresponding to
-$latex g_\theta ( \theta )$$ see
-$cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
+:math:`g_\theta ( \theta )` see
+:ref:`g(theta)<theory@Fixed Likelihood, g(theta)>` .
 
-$subhead fix_like_fun_$$
-This ADFun object can be used, with $code fix_like_jac_$$,
+fix_like_fun\_
+==============
+This ADFun object can be used, with ``fix_like_jac_`` ,
 for computing sparse Jacobians; see
-$cref/f/sparse_jac_rcv/Computing Sparse Jacobians/f/$$.
+:ref:`sparse_jac_rcv@Computing Sparse Jacobians@f` .
 
-$head fix_like_hes_$$
+fix_like_hes\_
+**************
 The input value of
-$codei%
-   CppAD::mixed::sparse_hes_rcv fix_like_hes_
-%$$
+
+   ``CppAD::mixed::sparse_hes_rcv fix_like_hes_``
+
 must be empty.
 If the return value for
-$cref fix_likelihood$$ is empty,
-$code fix_like_hes_$$ is not modified.
-Upon return, $code fix_like_hes_$$ contains
-$cref sparse_hes_rcv$$ for the
+:ref:`fix_likelihood-name` is empty,
+``fix_like_hes_`` is not modified.
+Upon return, ``fix_like_hes_`` contains
+:ref:`sparse_hes_rcv-name` for the
 lower triangle of a Hessian corresponding to
-$latex g_{\theta,\theta} ( \theta )$$ see
-$cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
-If $icode quasi_fixed$$ is true,
-this is not used by $cref optimize_fixed$$, but it may be used by
-$cref information_mat$$.
+:math:`g_{\theta,\theta} ( \theta )` see
+:ref:`g(theta)<theory@Fixed Likelihood, g(theta)>` .
+If *quasi_fixed* is true,
+this is not used by :ref:`optimize_fixed-name` , but it may be used by
+:ref:`information_mat-name` .
 
-$subhead fix_like_fun_$$
-This ADFun object can be used, with $code fix_like_hes_$$,
+fix_like_fun\_
+==============
+This ADFun object can be used, with ``fix_like_hes_`` ,
 for computing sparse Hessians; see
-$cref/f/sparse_hes_rcv/Computing Sparse Hessians/f/$$.
+:ref:`sparse_hes_rcv@Computing Sparse Hessians@f` .
 
-$end
+{xrst_end init_fix_like}
 */
 
 

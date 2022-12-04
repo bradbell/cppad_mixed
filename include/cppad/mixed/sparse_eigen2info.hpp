@@ -6,74 +6,75 @@
 # define CPPAD_MIXED_SPARSE_EIGEN2INFO_HPP
 
 /*
-$begin sparse_eigen2info$$
-$spell
-   CppAD
-   eigen
-   const
-$$
+{xrst_begin sparse_eigen2info}
 
-$section Convert An Eigen Sparse Matrix to a sparse_mat_info Representation$$.
+Convert An Eigen Sparse Matrix to a sparse_mat_info Representation
+##################################################################
 
-$head Syntax$$
-$codei%CppAD::mixed::sparse_eigen2info(%matrix%, %info%)%$$
+Syntax
+******
+``CppAD::mixed::sparse_eigen2info`` ( *matrix* , *info* )
 
-$head Private$$
+Private
+*******
 This routine is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head matrix$$
+matrix
+******
 The argument has prototype
-$codei%
-   const Eigen::SparseMatrix<double, %Option%, %Index%>& %matrix%
-%$$
 
-$subhead Option$$
-This must be $code Eigen::ColMajor$$.
+   ``const Eigen::SparseMatrix<double`` , *Option* , *Index* >& *matrix*
 
-$subhead Index$$
+Option
+======
+This must be ``Eigen::ColMajor`` .
+
+Index
+=====
 The index type fro this sparse matrix are arbitrary; i.e.,
 has no restrictions.
 
-$head info$$
+info
+****
 This argument has prototype
-$codei%
-   CppAD::mixed::sparse_mat_info %info%
-%$$
+
+   ``CppAD::mixed::sparse_mat_info`` *info*
+
 There are different cases depending on if it is the
-$cref/empty matrix/sparse_mat_info/Notation/Empty Matrix/$$ on input;
+:ref:`sparse_mat_info@Notation@Empty Matrix` on input;
 
-$subhead Empty on Input$$
-Upon return $icode info$$ has the same sparse matrix information
-as $icode matrix$$ and is in
-$cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order.
+Empty on Input
+==============
+Upon return *info* has the same sparse matrix information
+as *matrix* and is in
+:ref:`column major<sparse_mat_info@Notation@Column Major Order>` order.
 In this case it is assumed that there is at least one entry in every
-column of $icode matrix$$.
+column of *matrix* .
 
-$subhead Non-Empty on Input$$
-It is assumed that on input, the size of $icode%info%.val%$$
-is the same as $icode%info%.row%$$ and $icode%info%.col%$$.
+Non-Empty on Input
+==================
+It is assumed that on input, the size of *info* . ``val``
+is the same as *info* . ``row`` and *info* . ``col`` .
 Upon return, the following conditions hold:
-$list number$$
-The sparsity pattern in $icode info$$ is not modified.
-$lnext
-The value of any elements in $icode matrix$$,
-that also appear in the $icode info$$, are copied to $icode info$$.
-$lnext
-Any elements that appear in $icode info$$, but not in $icode matrix$$,
-have value zero in the return value of $icode info$$.
-$lnext
-The elements of $icode matrix$$,
-that do not appear in $icode info$$, are ignored.
-$lend
 
-$children%example/private/sparse_eigen2info.cpp
-%$$
-$head Example$$
-The file $cref sparse_eigen2info.cpp$$ is an example
-and test of $code sparse_eigen2info$$.
+#. The sparsity pattern in *info* is not modified.
+#. The value of any elements in *matrix* ,
+   that also appear in the *info* , are copied to *info* .
+#. Any elements that appear in *info* , but not in *matrix* ,
+   have value zero in the return value of *info* .
+#. The elements of *matrix* ,
+   that do not appear in *info* , are ignored.
 
-$end
+{xrst_toc_hidden
+   example/private/sparse_eigen2info.cpp
+}
+Example
+*******
+The file :ref:`sparse_eigen2info.cpp-name` is an example
+and test of ``sparse_eigen2info`` .
+
+{xrst_end sparse_eigen2info}
 */
 # include <Eigen/SparseCore>
 # include <cppad/mixed/sparse_mat_info.hpp>

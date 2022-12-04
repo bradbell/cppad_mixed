@@ -3,86 +3,92 @@
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
-$begin information_mat$$
-$spell
-   CppAD
-   cppad
-   rcv
-$$
+{xrst_begin information_mat}
 
-$section Compute the Observed Information For Fixed Effects$$
+Compute the Observed Information For Fixed Effects
+##################################################
 
-$head Deprecated 2020-03-22$$
-Use $cref hes_fixed_obj$$ instead.
+Deprecated 2020-03-22
+*********************
+Use :ref:`hes_fixed_obj-name` instead.
 
-$head Syntax$$
-$icode%information_rcv% = %mixed_object%.information_mat(
-   %solution%, %random_opt%
-)%$$
+Syntax
+******
 
-$head Purpose$$
+| *information_rcv* = *mixed_object* . ``information_mat`` (
+| |tab| *solution* , *random_opt*
+| )
+
+Purpose
+*******
 Compute the observed information matrix.
-We use $latex L ( \theta )$$ to denote the
-$cref/fixed effects objective/theory/Objective/Fixed Effects Objective, L(theta)/$$.
+We use :math:`L ( \theta )` to denote the
+:ref:`fixed effects objective<theory@Objective@Fixed Effects Objective, L(theta)>` .
 The observed information is
-$latex \[
+
+.. math::
+
    L^{(2)} ( \hat{\theta} )
-\]$$
+
 Absolute value terms in the
-$cref/negative log-density vector/problem/Negative Log-Density Vector/$$
-for the $cref fix_likelihood$$ are not include in this Hessian
+:ref:`problem@Negative Log-Density Vector`
+for the :ref:`fix_likelihood-name` are not include in this Hessian
 (because they do not have a derivative, let alone Hessian, at zero).
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head solution$$
-is the $cref/solution/optimize_fixed/solution/$$
-for a previous call to $cref optimize_fixed$$.
-Only the $icode%solution%.fixed_opt%$$ field is used.
+solution
+********
+is the :ref:`optimize_fixed@solution`
+for a previous call to :ref:`optimize_fixed-name` .
+Only the *solution* . ``fixed_opt`` field is used.
 
-$head random_opt$$
+random_opt
+**********
 is the optimal random effects corresponding to the solution; i.e.
-$codei%
-   %random_opt% = %mixed_object%.optimize_random(
-      %random_options%,
-      %solution%.fixed_opt,
-      %random_lower%,
-      %random_upper%,
-      %random_in%
-   )
-%$$
-$icode random_options$$,
-$icode random_lower$$,
-$icode random_upper$$, and
-$icode random_in$$, are the same
-as in the call to $code optimize_fixed$$ that corresponds to $icode solution$$.
 
-$head information_rcv$$
+| |tab| *random_opt* = *mixed_object* . ``optimize_random`` (
+| |tab| |tab| *random_options* ,
+| |tab| |tab| *solution* . ``fixed_opt`` ,
+| |tab| |tab| *random_lower* ,
+| |tab| |tab| *random_upper* ,
+| |tab| |tab| *random_in*
+| |tab| )
+
+*random_options* ,
+*random_lower* ,
+*random_upper* , and
+*random_in* , are the same
+as in the call to ``optimize_fixed`` that corresponds to *solution* .
+
+information_rcv
+***************
 The return value has prototype
-$codei%
-   CppAD::mixed::d_sparse_rcv %information_rcv%
-%$$
-see $cref/d_sparse_rcv/typedef/Sparse Types/d_sparse_rcv/$$.
+
+   ``CppAD::mixed::d_sparse_rcv`` *information_rcv*
+
+see :ref:`typedef@Sparse Types@d_sparse_rcv` .
 This is a sparse matrix representation for the
 lower triangle of the observed information matrix,
 which is symmetric and hence determined by its lower triangle.
 Absolute value terms in the
-$cref/negative log-density vector/problem/Negative Log-Density Vector/$$
-for the $cref fix_likelihood$$ are not include in this Hessian
+:ref:`problem@Negative Log-Density Vector`
+for the :ref:`fix_likelihood-name` are not include in this Hessian
 because they do not have a derivative (let alone Hessian) at zero.
-
-$children%
+{xrst_toc_hidden
    example/user/information_mat.cpp
-%$$
+}
 
-$head Example$$
-The file $cref information_mat.cpp$$ contains an example and
+Example
+*******
+The file :ref:`information_mat.cpp-name` contains an example and
 test of this routine. It returns true for success and false for failure.
 
-$end
+{xrst_end information_mat}
 ------------------------------------------------------------------------------
 */
 # include <cppad/mixed/cppad_mixed.hpp>

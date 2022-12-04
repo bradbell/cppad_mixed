@@ -9,123 +9,125 @@
 # include <cppad/mixed/exception.hpp>
 # include <cppad/mixed/ipopt_app_status.hpp>
 /*
-$begin optimize_random$$
-$spell
-   CppAD
-   cppad
-   vec
-   const
-   CppAD
-   std
-   Ipopt
-   optimizer
-$$
+{xrst_begin optimize_random}
 
-$section Optimize Random Effects$$
+Optimize Random Effects
+#######################
 
-$head Syntax$$
-$icode%random_out% =%$$
-$icode%mixed_object%.optimize_random(
-   %options%, %fixed_vec%, %random_lower%, %random_upper%, %random_in%
-)%$$
+Syntax
+******
+*random_out*  =
 
-$head Purpose$$
+| *mixed_object* . ``optimize_random`` (
+| |tab| *options* , *fixed_vec* , *random_lower* , *random_upper* , *random_in*
+| )
+
+Purpose
+*******
 This routine maximizes the
-$cref/random likelihood/ran_likelihood/$$
-corresponding to the object $icode mixed_object$$.
+:ref:`random likelihood<ran_likelihood-name>`
+corresponding to the object *mixed_object* .
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head options$$
+options
+*******
 This argument  has the prototype
-$codei%
-   const std::string& %options%
-%$$
-This is the $cref ipopt_options$$ for optimizing the random effects
+
+   ``const std::string&`` *options*
+
+This is the :ref:`ipopt_options-name` for optimizing the random effects
 with the following qualifications:
 
-$subhead evaluation_method$$
-There is an additional $cref/String/ipopt_options/String/$$ option with
-$icode%name%=evaluation_method%$$
-and $icode value$$ is either $code ipopt_random$$  or $code ipopt_solve$$.
-The $code ipopt_random$$ choice uses
-$code CppAD::mixed::ipopt_random$$ for optimizing random effects.
+evaluation_method
+=================
+There is an additional :ref:`ipopt_options@String` option with
+*name* = ``evaluation_method``
+and *value* is either ``ipopt_random``  or ``ipopt_solve`` .
+The ``ipopt_random`` choice uses
+``CppAD::mixed::ipopt_random`` for optimizing random effects.
 This special purpose class
 is expected to eventually be the faster choice.
-This is the default choice; i.e., $code ipopt_random$$ will be used
+This is the default choice; i.e., ``ipopt_random`` will be used
 if this option is not present.
-The $code ipopt_solve$$ choice uses
-$code CppAD::ipopt::solve$$ for optimizing random effects.
+The ``ipopt_solve`` choice uses
+``CppAD::ipopt::solve`` for optimizing random effects.
 Currently this is sometimes faster and so this choice is still included
 (but may be removed in the future).
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_vec%
-%$$
-It specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$.
 
-$head random_lower$$
+   ``const CppAD::vector<double>&`` *fixed_vec*
+
+It specifies the value of the
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta`.
+
+random_lower
+************
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_lower%
-%$$
+
+   ``const CppAD::vector<double>&`` *random_lower*
+
 It must have size equal to
-$cref/n_random/derived_ctor/n_random/$$ and
+:ref:`derived_ctor@n_random` and
 specifies the lower limits for the optimization of the
-$cref/random effects/problem/Notation/Random Effects, u/$$
-vector $latex u$$.
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector :math:`u`.
 The value minus infinity can be used to specify no lower limit.
 
-$head random_upper$$
+random_upper
+************
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_upper%
-%$$
+
+   ``const CppAD::vector<double>&`` *random_upper*
+
 It must have size equal to
-$cref/n_random/derived_ctor/n_random/$$ and
+:ref:`derived_ctor@n_random` and
 specifies the upper limits for the optimization of the random effect.
 The value plus infinity can be used to specify no lower limit.
 
-$head random_in$$
+random_in
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_in%
-%$$
+
+   ``const CppAD::vector<double>&`` *random_in*
+
 It must have size equal to
-$cref/n_random/derived_ctor/n_random/$$ and
+:ref:`derived_ctor@n_random` and
 specifies the initial value used for the optimization of the
-$cref/random effects/problem/Notation/Random Effects, u/$$ vector $latex u$$.
+:ref:`random effects<problem@Notation@Random Effects, u>` vector :math:`u`.
 It must hold that
-$codei%
-   %random_lower%[%i%] <= %random_in%[%i%] <= %random_upper%[%i%]
-%$$
-for each valid index $icode i$$.
 
-$head random_out$$
+   *random_lower* [ *i* ] <= *random_in* [ *i* ] <= *random_upper* [ *i* ]
+
+for each valid index *i* .
+
+random_out
+**********
 The return value  has prototype
-$codei%
-   CppAD::vector<double> %random_out%
-%$$
-It is the final value (obtained by optimization) of the
-$cref/random effects/problem/Notation/Random Effects, u/$$
-vector $latex u$$.
 
-$children%
+   ``CppAD::vector<double>`` *random_out*
+
+It is the final value (obtained by optimization) of the
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector :math:`u`.
+{xrst_toc_hidden
    example/user/optimize_random.cpp
-%$$
-$head Example$$
-The file $cref optimize_random.cpp$$ contains an example
+}
+Example
+*******
+The file :ref:`optimize_random.cpp-name` contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
-$end
+{xrst_end optimize_random}
 */
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE

@@ -7,52 +7,51 @@
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-$begin ipopt_fixed_eval_f$$
-$spell
-   CppAD
-   ran_obj
-   cppad
-   obj
-   ipopt
-   bool
-   eval
-   obj
-   const
-$$
+{xrst_begin ipopt_fixed_eval_f}
 
-$section Compute Value of Objective$$
+Compute Value of Objective
+##########################
 
-$head Syntax$$
-$icode%ok% = eval_f(%n%, %x%, %new_x%, %obj_value%)%$$
+Syntax
+******
+*ok* = ``eval_f`` ( *n* , *x* , *new_x* , *obj_value* )
 
-$head n$$
+n
+*
 is the number of variables in the problem (dimension of x).
 
-$head x$$
+x
+*
 is the value for the primal variables at which the objective
-f(x) is computed (has size $icode n$$).
+f(x) is computed (has size *n* ).
 
-$head new_x$$
+new_x
+*****
 if true, no Ipopt evaluation method was previous called with the same
-value for $icode x$$.
+value for *x* .
 
-$head obj_val$$
+obj_val
+*******
 set to the initial value of the objective function f(x).
 
-$head ok$$
+ok
+**
 If set to false, the optimization will terminate with status set to
-$cref/USER_REQUESTED_STOP
-   /ipopt_fixed_finalize_solution/status/USER_REQUESTED_STOP/$$.
+:ref:`ipopt_fixed_finalize_solution@status@USER_REQUESTED_STOP` .
 
-$head Prototype$$
-$srccode%cpp% */
+Prototype
+*********
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_fixed::eval_f(
    Index           n         ,  // in
    const Number*   x         ,  // in
    bool            new_x     ,  // in
    Number&         obj_value )  // out
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_fixed_eval_f}
 */
 {  for(Index j = 0; j < n; ++j)
       x_tmp_[j] = scale_x_[j] * x[j];

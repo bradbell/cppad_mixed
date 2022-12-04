@@ -3,84 +3,89 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin ldlt_cholmod_solve_H$$
-$spell
-   ldlt
-   rhs
-   ldlt_obj
-   cholmod
-   const
-   xam
-   CppAD
-   nrow
-$$
+{xrst_begin ldlt_cholmod_solve_H}
 
-$section Solve Linear Equations Using Factor$$
+Solve Linear Equations Using Factor
+###################################
 
-$head Syntax$$
-$icode%ldlt_obj%.solve_H(%row%, %val_in%, %val_out%)%$$
+Syntax
+******
+*ldlt_obj* . ``solve_H`` ( *row* , *val_in* , *val_out* )
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
 
-$head Private$$
-The $cref ldlt_cholmod$$ class is an
-$cref/implementation detail/ldlt_cholmod/Private/$$ and not part of the
+Private
+*******
+The :ref:`ldlt_cholmod-name` class is an
+:ref:`implementation detail<ldlt_cholmod@Private>` and not part of the
 CppAD Mixed user API.
 
-$head Purpose$$
+Purpose
+*******
 This function solves the linear equation
-$latex H x = b$$ where $latex H$$ is the symmetric matrix
+:math:`H x = b` where :math:`H` is the symmetric matrix
 that has been factored,
-$latex b$$ is a known column vector,
-and $latex x$$ is unknown.
+:math:`b` is a known column vector,
+and :math:`x` is unknown.
 
-$head ldlt_obj$$
+ldlt_obj
+********
 This object has prototype
-$codei%
-   const CppAD::mixed::ldlt_cholmod %ldlt_obj%
-%$$
-In addition, it must have a previous call to
-$cref ldlt_cholmod_update$$.
 
-$head row$$
+   ``const CppAD::mixed::ldlt_cholmod`` *ldlt_obj*
+
+In addition, it must have a previous call to
+:ref:`ldlt_cholmod_update-name` .
+
+row
+***
 This argument
-contains all of the rows of column vector $latex b$$ that are
-non-zero and the rows of the column vector $icode x$$
+contains all of the rows of column vector :math:`b` that are
+non-zero and the rows of the column vector *x*
 that are desired.
 These values are in strictly increasing order; i.e.,
-$codei%
-   %row%[%k%] < %row%[%k%+1]
-%$$
-It follows that $icode%row%.size()%$$ is less than or equal
-$cref/nrow_/ldlt_cholmod_ctor/nrow_/$$.
 
-$head val_in$$
+   *row* [ *k* ] < *row* [ *k* +1]
+
+It follows that *row* . ``size`` () is less than or equal
+:ref:`ldlt_cholmod_ctor@nrow_` .
+
+val_in
+******
 This argument
-has the same size as $icode row$$.
-It specifies the values in the column vector $latex b$$
+has the same size as *row* .
+It specifies the values in the column vector :math:`b`
 for each of the corresponding rows; i.e.,
-for $icode%k% = 0 , %...%, %row%.size()-1%$$,
-$codei%
-   %b%[ %row%[%k%] ] = %val_in%[%k%]
-%$$.
+for *k* = 0 , ..., *row* . ``size`` () ``-1`` ,
 
-$head val_out$$
+   *b* [ *row* [ *k* ] ] = *val_in* [ *k* ]
+
+.
+
+val_out
+*******
 This argument
-has the same size as $icode row$$.
+has the same size as *row* .
 On input, the value of its elements do not matter.
-Upon return, it contains the values in the column vector $latex b$$
+Upon return, it contains the values in the column vector :math:`b`
 for each of the corresponding rows; i.e.,
-for $icode%k% = 0 , %...%, %row%.size()-1%$$,
-$codei%
-   %x%[ %row%[%k%] ] = %val_out%[%k%]
-%$$.
+for *k* = 0 , ..., *row* . ``size`` () ``-1`` ,
 
-$head Example$$
-The file $cref/ldlt_cholmod.cpp/ldlt_cholmod.cpp/solve_H/$$ contains an
+   *x* [ *row* [ *k* ] ] = *val_out* [ *k* ]
+
+.
+
+Example
+*******
+The file :ref:`ldlt_cholmod.cpp<ldlt_cholmod.cpp@solve_H>` contains an
 example and test that uses this function.
 
-$end
+{xrst_end ldlt_cholmod_solve_H}
 */
 # include <cppad/mixed/ldlt_cholmod.hpp>
 # include <cppad/utility/index_sort.hpp>

@@ -8,121 +8,117 @@
 # include <cppad/mixed/is_finite_vec.hpp>
 
 /*
-$begin init_ran_hes$$
-$spell
+{xrst_begin init_ran_hes}
+{xrst_spell
    uu
-   rcv
-   nnz
-   CppAD
-   init
-   cppad
-   hes hes
-   vec
-   const
-   Cpp
-   logdet
-   Cholesky
-   namespace
-   hpp
-   Simplicial
-   triangular
-   chol
-   dismod
-   bool
-   jac
-$$
+}
 
-$section Initialize Hessian of Random Likelihood w.r.t Random Effects$$
+Initialize Hessian of Random Likelihood w.r.t Random Effects
+############################################################
 
-$head Syntax$$
-$icode%mixed_object%.init_ran_hes(
-   %fixed_vec%, %random_vec%
-)%$$
+Syntax
+******
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+| *mixed_object* . ``init_ran_hes`` (
+| |tab| *fixed_vec* , *random_vec*
+| )
 
-$head Assumptions$$
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
+
+Assumptions
+***********
 The member variables
-$cref/init_ran_like_done_/init_ran_like/init_ran_like_done_/$$ and
-$cref/init_ran_jac_done_/init_ran_jac/init_ran_jac_done_/$$ are true.
+:ref:`init_ran_like@init_ran_like_done_` and
+:ref:`init_ran_jac@init_ran_jac_done_` are true.
 
-$head init_ran_hes_done_$$
+init_ran_hes_done\_
+*******************
 The input value of this member variable must be false.
 Upon return it is true.
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_vec%
-%$$
-It specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$ at which the initialization is done.
 
-$head random_vec$$
+   ``const CppAD::vector<double>&`` *fixed_vec*
+
+It specifies the value of the
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta` at which the initialization is done.
+
+random_vec
+**********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_vec%
-%$$
-It specifies the value of the
-$cref/random effects/problem/Notation/Random Effects, u/$$
-vector $latex u$$ at which the initialization is done.
 
-$head ran_hes_uu_rcv_$$
+   ``const CppAD::vector<double>&`` *random_vec*
+
+It specifies the value of the
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector :math:`u` at which the initialization is done.
+
+ran_hes_uu_rcv\_
+****************
 The input value of the member variable
-$codei%
-   CppAD::mixed::d_sparse_rcv ran_hes_uu_rcv_
-%$$
+
+   ``CppAD::mixed::d_sparse_rcv ran_hes_uu_rcv_``
+
 does not matter.
-Upon return $code ran_hes_uu_rcv_.pat()$$ contains the sparsity pattern
+Upon return ``ran_hes_uu_rcv_.pat()`` contains the sparsity pattern
 for the lower triangle of the Hessian
-$latex \[
+
+.. math::
+
    f_{u,u} ( \theta , u )
-\]$$
-see $cref/f(theta, u)/
-   theory/
-   Random Likelihood, f(theta, u)
-/$$
+
+see :ref:`f(theta, u)<theory@Random Likelihood, f(theta, u)>`
 The matrix is symmetric and hence can be recovered from
 its lower triangle.
 
+Random Effects Index
+====================
+The indices in *ran_hes_uu_rcv_* are relative to just
+the random effects and hence are all less that ``n_random_`` .
 
-$subhead Random Effects Index$$
-The indices in $icode ran_hes_uu_rcv_$$ are relative to just
-the random effects and hence are all less that $code n_random_$$.
-
-$subhead Order$$
+Order
+=====
 The results are in column major order; i.e.,
-$codei%
-   ran_hes_uu_rcv_.col()[%k%] <= ran_hes_uu_rcv_.col()[%k+1%]
-   if( ran_hes_uu_rcv_.col()[%k%] == ran_hes_uu_rcv_.col()[%k+1%] )
-      ran_hes_uu_rcv_.row()[%k%] < ran_hes_uu_rcv_.row()[%k+1%]
-%$$
 
-$head ran_hes_fun_$$
+| |tab| ``ran_hes_uu_rcv_.col`` ()[ *k* ] <= ``ran_hes_uu_rcv_.col`` ()[ *k* +1]
+| |tab| ``if`` ( ``ran_hes_uu_rcv_.col`` ()[ *k* ] == ``ran_hes_uu_rcv_.col`` ()[ *k* +1] )
+| |tab| |tab| ``ran_hes_uu_rcv_.row`` ()[ *k* ] < ``ran_hes_uu_rcv_.row`` ()[ *k* +1]
+
+ran_hes_fun\_
+*************
 The input value of the member variables
-$codei%
-   CppAD::ADFun<double> ran_hes_fun_
-%$$
+
+   ``CppAD::ADFun<double> ran_hes_fun_``
+
 does not matter.
 Upon return its zero order forward mode computes
 the lower triangle of the sparse Hessian
-$latex \[
+
+.. math::
+
    f_{u,u} ( \theta , u )
-\]$$
+
 in the same order as the elements of
-$code ran_hes_uu_rcv_$$ (and $code a1_hes_rcv_$$).
+``ran_hes_uu_rcv_`` (and ``a1_hes_rcv_`` ).
 
-$contents%example/private/ran_hes_fun.cpp
-%$$
+Contents
+********
+{xrst_toc_list
+   example/private/ran_hes_fun.cpp
+}
 
-$end
+{xrst_end init_ran_hes}
 */
 
 void cppad_mixed::init_ran_hes(

@@ -3,98 +3,95 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin init_laplace_obj_fun$$
-$spell
-   rcv
+{xrst_begin init_laplace_obj_fun}
+{xrst_spell
+   dyn
+   ind
    nr
-   objcon
-   CppAD
-   init
-   ran_obj
-   cppad
-   obj
-   vec
-   const
-   Cpp
-   dyn_ind
-$$
+}
 
-$section Second Order Representation of Laplace Objective and Constraints$$
+Second Order Representation of Laplace Objective and Constraints
+################################################################
 
-$head Syntax$$
-$icode%mixed_object%.init_laplace_obj_fun(%fixed_vec%, %random_opt%)%$$
+Syntax
+******
+*mixed_object* . ``init_laplace_obj_fun`` ( *fixed_vec* , *random_opt* )
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
 
-$head Assumptions$$
+Assumptions
+***********
 The member variable
-$cref/init_ran_like_done_/init_ran_like/init_ran_like_done_/$$
+:ref:`init_ran_like@init_ran_like_done_`
 is true.
 
-$head init_laplace_obj_fun_done_$$
+init_laplace_obj_fun_done\_
+***************************
 The input value of this member variable must be false.
 Upon return it is true.
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_vec%
-%$$
-It specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$ at which the initialization is done.
 
-$head random_opt$$
-This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_opt%
-%$$
+   ``const CppAD::vector<double>&`` *fixed_vec*
+
 It specifies the value of the
-$cref/random effects/problem/Notation/Random Effects, u/$$
-vector $latex u$$ at which the initialization is done.
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta` at which the initialization is done.
+
+random_opt
+**********
+This argument has prototype
+
+   ``const CppAD::vector<double>&`` *random_opt*
+
+It specifies the value of the
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector :math:`u` at which the initialization is done.
 It should be the optimal value given the fixed effects
 so that the Hessian w.r.t the random effects is more likely to be
 positive definite.
 
-$head laplace_obj_fun_$$
+laplace_obj_fun\_
+*****************
 The input value of the member variable
-$codei%
-   CppAD::ADFun<double> laplace_obj_fun_
-%$$
+
+   ``CppAD::ADFun<double> laplace_obj_fun_``
+
 does not matter.
 Upon return it contains a second order accurate recording of the
 approximate Laplace objective; see
-$cref/H(beta, theta, u)
-   /theory
-   /Approximate Laplace Objective, H(beta, theta, u)
-/$$
-$latex H( \beta , \theta , u )$$,
+:ref:`H(beta, theta, u)<theory@Approximate Laplace Objective, H(beta, theta, u)>`
+:math:`H( \beta , \theta , u )`,
 followed by the approximate random constraint function; see
-$cref/B(beta, theta, u)
-   /theory
-   /Approximate Random Constraint Function, B(beta, theta, u)
-/$$
-$latex B( \beta , \theta , u )$$.
+:ref:`B(beta, theta, u)<theory@Approximate Random Constraint Function, B(beta, theta, u)>`
+:math:`B( \beta , \theta , u )`.
 
-$subhead beta$$
-The vector $icode beta$$ corresponds to the independent variables; e.g.,
-$code laplace_obj_fun_.Domain() == n_fixed_$$.
+beta
+====
+The vector *beta* corresponds to the independent variables; e.g.,
+``laplace_obj_fun_.Domain() == n_fixed_`` .
 
-$subhead theta, u$$
-The vector $icode (theta, u)$$ corresponds to the dynamic parameters; e.g.,
-$code laplace_obj_fun_.size_dyn_ind() == n_fixed_ + n_random_$$.
+theta, u
+========
+The vector ( *theta* , *u* ) corresponds to the dynamic parameters; e.g.,
+``laplace_obj_fun_.size_dyn_ind() == n_fixed_ + n_random_`` .
 
-$subhead Range Space$$
-The function result corresponds to $icode (H, B)$$; e.g.,
-$code laplace_obj_fun_.Range() == 1 + A_rcv.nr()$$.
+Range Space
+===========
+The function result corresponds to ( *H* , *B* ) ; e.g.,
+``laplace_obj_fun_.Range() == 1 + A_rcv.nr()`` .
 
-$end
+{xrst_end init_laplace_obj_fun}
 */
 # include <Eigen/Sparse>
 # include <cppad/mixed/ran_like_hes.hpp>

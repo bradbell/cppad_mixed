@@ -3,26 +3,33 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin sparseinv_xam.cpp$$
-$spell
+{xrst_begin sparseinv_xam.cpp}
+{xrst_spell
+   sparceinv
    sparseinv
-   Cholmod
-$$
+}
 
-$section Example Using sparseinv With Cholmod Factors$$
+Example Using sparseinv With Cholmod Factors
+############################################
 
-$head Example Description$$
+Example Description
+*******************
 This example uses a Cholmod LDLT factor to
 compute the inversion of a
-sparse symmetric matrix $latex A$$
-on the sets of indices where $latex A$$ is non-zero.
+sparse symmetric matrix :math:`A`
+on the sets of indices where :math:`A` is non-zero.
 
-$head sparseinv$$
+sparseinv
+*********
 The routine sparseinv comes from here:
-$href%https://github.com/DrTimothyAldenDavis/SuiteSparse/blob/stable/MATLAB_Tools/sparseinv/sparseinv.c%sparceinv.c%$$
+`sparceinv.c <https://github.com/DrTimothyAldenDavis/SuiteSparse/blob/stable/MATLAB_Tools/sparseinv/sparseinv.c>`_
 
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$end
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end sparseinv_xam.cpp}
 */
 // BEGIN C++
 # include <cppad/mixed/include_cholmod.hpp>

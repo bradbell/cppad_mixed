@@ -6,78 +6,89 @@
 # define CPPAD_MIXED_LDLT_CHOLMOD_HPP
 
 /*
-$begin ldlt_cholmod$$
-$spell
-   suitesparse
-   suitesparse
-   Cholmod
-   CppAD
-   cholesky
-   chol
-   hes
-$$
+{xrst_begin ldlt_cholmod}
+{xrst_spell
+   preprocessor
+}
 
-$section A Cholmod Cholesky Factor Class$$
+A Cholmod Cholesky Factor Class
+###############################
 
-$head See Also$$
-$cref ldlt_eigen$$
+See Also
+********
+:ref:`ldlt_eigen-name`
 
-$head Private$$
+Private
+*******
 This class is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head Purpose$$
-This class has utilities that work with a $code cholmod$$ LDLT factor,
-$code cholmod$$ is part of the
-$cref/suitesparse/install_unix/System Requirements/suitesparse/$$ package.
+Purpose
+*******
+This class has utilities that work with a ``cholmod`` LDLT factor,
+``cholmod`` is part of the
+:ref:`install_unix@System Requirements@suitesparse` package.
 
-$head Factorization$$
+Factorization
+*************
 The factorization is
-$latex \[
+
+.. math::
+
    L D L^\R{T} = P H P^{T}
-\] $$
+
 where
 
-$subhead H$$
+H
+=
 is the matrix corresponding the current
-$cref/update/ldlt_cholmod_update/$$.
+:ref:`update<ldlt_cholmod_update-name>` .
 
-$subhead L$$
+L
+=
 is a lower triangular matrix with ones on the diagonal,
 
-$subhead D$$
+D
+=
 is a diagonal matrix.
 
-$subhead P$$
+P
+=
 is a permutation matrix.
 
-
-$head Example$$
-The file $cref ldlt_cholmod.cpp$$ contains an example and test
+Example
+*******
+The file :ref:`ldlt_cholmod.cpp-name` contains an example and test
 using the operations in this class.
 
-$head Preprocessor Symbols$$
-The following extra $codei%CHOLMOD_%*%$$ symbols are defined
-$srcthisfile%4%// BEGIN SYMBOLS%// END SYMBOLS%1%$$
+Preprocessor Symbols
+********************
+The following extra ``CHOLMOD_`` * symbols are defined
+{xrst_literal
+   // BEGIN SYMBOLS
+   // END SYMBOLS
+}
 
+Contents
+********
+{xrst_toc_table
+   src/cholmod/constructor.cpp
+   src/cholmod/init.cpp
+   src/cholmod/pattern.cpp
+   src/cholmod/update.cpp
+   src/cholmod/logdet.cpp
+   src/cholmod/solve_H.cpp
+   src/cholmod/sim_cov.cpp
+   src/cholmod/inv.cpp
+   example/private/ldlt_cholmod.cpp
+   example/private/cholmod_factor.cpp
+   example/private/cholmod_solve.cpp
+   example/private/cholmod_solve2_a.cpp
+   example/private/cholmod_solve2_sim.cpp
+   example/private/sparseinv.cpp
+}
 
-$childtable%src/cholmod/constructor.cpp
-   %src/cholmod/init.cpp
-   %src/cholmod/pattern.cpp
-   %src/cholmod/update.cpp
-   %src/cholmod/logdet.cpp
-   %src/cholmod/solve_H.cpp
-   %src/cholmod/sim_cov.cpp
-   %src/cholmod/inv.cpp
-   %example/private/ldlt_cholmod.cpp
-   %example/private/cholmod_factor.cpp
-   %example/private/cholmod_solve.cpp
-   %example/private/cholmod_solve2_a.cpp
-   %example/private/cholmod_solve2_sim.cpp
-   %example/private/sparseinv.cpp
-%$$
-
-$end
+{xrst_end ldlt_cholmod}
 ------------------------------------------------------------------------------
 */
 

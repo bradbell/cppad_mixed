@@ -1,0 +1,371 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
+# SPDX-FileContributor: 2014-22 Bradley M. Bell
+# ----------------------------------------------------------------------------
+
+{xrst_begin whats_new_17}
+{xrst_spell
+   circuiting
+   ctor
+   cxx
+   dd
+   fabs
+   github
+   hpp
+   implementations
+   mm
+   namespace
+   nan
+   omhelp
+   optimizer
+   perturb
+   subgraph
+   subgraphs
+   tst
+   uu
+}
+
+Changes and Additions to cppad_mixed During 2017
+################################################
+
+mm-dd
+*****
+
+12-28
+=====
+
+#. **API change** :
+   The :ref:`ran_likelihood-name` function was changed from having
+   ``a2_vector`` to ``a3_vector`` arguments and results.
+#. The ``ran_likelihood_jac`` function was changed from having
+   ``a1_vector`` to ``a2_vector`` arguments and results.
+#. The method for computing the Hessian of the random likelihood
+   with respect to the random effects; :math:`f_{uu} ( \theta , u )`
+   was changed from using ``sparse_hes``
+   to using CppAD ``subgraph_jac_rev``
+   applied to the gradient of the random likelihood :math:`f_u ( \theta , u )`.
+   This resulted in the following difference in the :ref:`ar1_xam.sh-name` :
+   before *initialize_seconds* =34.16 ,
+   after *initialize_seconds* =0.82 .
+   The following settings in ``ar1_xam.sh`` where modified for this test:
+   *number_random* =50000 and *random_seed* =123 .
+
+12-25
+=====
+Change an the :ref:`user_examples-name` to use
+template implementations of the virtual public :ref:`base_class-name`
+functions.
+
+12-22
+=====
+Improve comments in :ref:`example_install.sh-name` .
+
+12-16
+=====
+
+#. Advance to ``cppad-20171215`` .
+#. The sparsity pattern for the random Hessian
+   (Hessian of random likelihood w.r.t random effects)
+   was changed from using CppAD's
+   Hessian sparsity patterns to using CppAD's
+   subgraphs of the Jacobian of the gradient of the
+   :ref:`random likelihood<theory@Random Likelihood, f(theta, u)>` .
+   This changed the ``ar1_xam``
+   :ref:`ar1_xam.cpp@Output@initialize_seconds`
+   from 2.5 to 1.0 (on one test system).
+#. Change the
+   :ref:`capture_xam.cpp@Command Arguments@mean_logit_probability`
+   used during :ref:`make check<install_unix@cppad_mixed@Check>`
+   from -0.25 to -0.50
+   (to reduce the chance of a random failure).
+#. Correct the threshold for error from 4.0 to 5.0 in the definition of
+   :ref:`capture_xam.cpp@Output@capture_xam_ok` .
+
+12-10
+=====
+
+#. Move documentation from IHME to github; see
+
+   https://bradbell.github.io/cppad_mixed/doc/index.html.
+#. The :ref:`install_unix@System Requirements@git` program
+   was added to the system requirements.
+#. The :ref:`install_unix@Download` instructions
+   were changed to use ``git`` for distributing the program.
+
+10-27
+=====
+Reduce the chance of a random failure in :ref:`capture_xam.cpp-name`
+during the :ref:`install_unix@cppad_mixed@Speed` tests.
+
+10-24
+=====
+
+#. Add comments about
+   :ref:`run_cmake.sh@Testing Speed and Memory` .
+#. Add the :ref:`run_cmake.sh@for_hes_sparsity` argument
+   to the configuration script.
+
+10-09
+=====
+The :ref:`data_mismatch.cpp-name` example was failing when
+*use_atomic_cholesky* was ``yes`` .
+This was because
+the Eigen package was short circuiting operations when values were zero.
+This caused the CppAD operation sequence to be incorrect for non-zero values
+of the independent variables.
+The :ref:`initialize-name` routine has been changed to perturb zero values
+to avoid this problem. This is not a bullet proof solution because
+zero may result from calculations.
+
+10-07
+=====
+Fix a bug in the Newton step initialize routine.
+This bug was probably introduced on the master branch on 2017-03-22
+and only affected the case where
+*use_atomic_cholesky* was ``yes`` .
+
+09-30
+=====
+There was a mistake in the logic for recovering from
+random effect optimization failures during optimization of the fixed effects.
+This has been fixed.
+
+09-23
+=====
+
+#. Improve error handling and messaging.
+#. Make the exception class public.
+
+09-21
+=====
+If optimizing the fixed effects, trap errors in optimizing random effects
+at the fixed effects level, so do not terminate but rather cut back and
+try a smaller fixed effects step size.
+
+09-18
+=====
+If during :ref:`optimize_random-name` an ``nan`` occurs in the random
+objective, the corresponding source code is re-run with the random
+effects corresponding to the last such occurrence.
+This often provides more useful error messaging.
+
+09-16
+=====
+The optimization of the random effects, :ref:`optimize_random-name` ,
+has been changed to back up when it detects a ``nan`` in the function
+evaluation. This is similar to how :ref:`optimize_fixed-name` works.
+
+09-15
+=====
+
+#. The ``cmake.sh`` configuration flag ``log_fatal_error`` was removed.
+#. An Ipopt *intermediate_callback*
+   function was added to the Ipopt example.
+
+09-14
+=====
+The ``fixed_solution`` structure was changed to be public.
+This was necessary because it is the type for the return
+value of :ref:`optimize_fixed-name` which is a public routine.
+
+09-02
+=====
+Instructions were added for building both
+:ref:`run_cmake.sh@Debug and Release`
+version of ``cppad_mixed`` .
+
+08-30
+=====
+Advance to cppad-20170830. This fixes a problem with the cmake command;
+to be specific,
+
+   ``Policy CMP0046 is not set: Error on non-existent dependency``
+
+08-01
+=====
+The clang-802.0.42 compiler complained that
+routine ``ran_obj_tst`` was not defined in the statement
+{xrst_spell_off}
+{xrst_code cpp}
+   friend bool ::ran_obj_tst(void);
+{xrst_code}
+{xrst_spell_on}
+in the file ``include/cppad/mixed/cppad_mixed.hpp`` .
+This has been fixed.
+
+04-24
+=====
+Add :ref:`optimize_fixed@fixed_scale` for specifying the
+scale for the fixed effects optimization.
+Change the :ref:`optimize_fixed.cpp-name` example to use *fixed_scale*
+to continue an optimization from where it left off.
+
+04-23
+=====
+
+#. Improve the Ipopt example ``ipopt_xam/`` by returning and checking
+   the final solution for the primal variables.
+#. Include :ref:`check_install.sh@Syntax` and
+   setting :ref:`check_install.sh@LD_LIBRARY_PATH`
+   in the ``bin/check_install.sh`` example.
+#. Add the
+   ``hide_ipopt_scaling`` option
+   to the install configuration script :ref:`run_cmake.sh-name` .
+   (This option was removed on :ref:`2018-02-10<whats_new_18@mm-dd@02-10>` .)
+
+04-06
+=====
+Add :ref:`check_install.sh@LD_LIBRARY_PATH` to
+the ``bin/check_install.sh`` example.
+
+04-02
+=====
+
+#. Advanced to ``cppad-20170402`` .
+   This fixes a bug in the CppAD optimizer.
+#. Simplify the install procedure by using
+   :ref:`run_cmake.sh@build_type` and
+   prefix values in :ref:`run_cmake.sh-name`
+   during the other installs.
+   The :ref:`install_unix-name` procedure has been modified to reflect
+   this change.
+
+03-27
+=====
+Add ``no_conditional_skip`` option to CppAD function optimization
+when :ref:`run_cmake.sh@optimize_cppad_function`
+is ``yes`` .
+
+03-25
+=====
+Advance to ``cppad-20170320`` .
+This gave a significant improvement in
+*optimize_fixed_seconds* for :ref:`ar1_xam.cpp-name`
+and both
+*optimize_fixed_seconds* , *initialize_bytes* ,
+for :ref:`capture_xam.cpp-name` .
+This was due to a change in the way CppAD computes sparse Hessians
+(see the heading 03-25 on the CppAD whats new page for 2017).
+
+03-23
+=====
+**API:**
+The actual fields in the ``initialize`` return value are no longer
+specified; see :ref:`initialize@size_map` .
+
+03-20
+=====
+
+#. **API:**
+   remove *bool_sparsity* from :ref:`information_mat-name`
+   (use the corresponding :ref:`derived_ctor<derived_ctor@bool_sparsity>`
+   argument in its place).
+#. Advance to ``cppad-20170320`` .
+
+03-12
+=====
+**API:**
+change :ref:`information_mat@information_rcv`
+from type :ref:`sparse_mat_info-name` to
+:ref:`typedef@Sparse Types@d_sparse_rcv` .
+This removes the last use of ``sparse_mat_info`` from the
+public part of the ``cppad_mixed`` :ref:`base_class-name` .
+The intention here is to remove the private use
+(not part of user API) slowly over time.
+
+03-11
+=====
+**API**
+change :ref:`derived_ctor@A_rcv`
+from type :ref:`sparse_mat_info-name` to
+:ref:`typedef@Sparse Types@d_sparse_rcv` .
+
+03-10
+=====
+Advance to ``cppad-20170310``
+(has a :ref:`typedef@Sparse Types@sparse_rc` sizing constructor).
+
+03-09
+=====
+Move some type definitions from the ``cppad_mixed`` class
+to the ``CppAD::mixed`` namespace; see
+:ref:`typedef-name` .
+
+03-08
+=====
+
+#. **API:**
+   Move the arguments
+   :ref:`derived_ctor@bool_sparsity` and
+   :ref:`derived_ctor@A_rcv` from :ref:`initialize-name`
+   to the base class constructor
+   :ref:`derived_ctor@cppad_mixed` .
+#. **API:**
+   Change ``a1d_vector`` and ``a2d_vector`` to
+   ``a1_vector`` and ``a2_vector`` respectively.
+
+03-06
+=====
+
+#. Advance to ``cppad-20170306`` . This fixes a bug in the sparsity pattern
+   efficiency and in the optimization of
+   conditional expressions in ``CppAD::ADFun<%Base%>%`` objects.
+#. Add the *existing* argument
+   to the example install script.
+
+03-02
+=====
+
+#. Simplify the install procedure. Now it is only necessary to adjust
+   the settings in
+   :ref:`install_unix@Special Requirements@run_cmake.sh` .
+   (These settings are now automatically used by all the
+   ``bin/install_`` *package* . ``sh`` scripts.)
+#. The configuration variable *extra_cxx_flags*
+   has been changed to :ref:`run_cmake.sh@extra_cxx_flags` .
+#. Document the necessary install order for
+   :ref:`install_unix@Special Requirements` .
+#. Make some improvements to the ``bin/install_omhelp.sh`` script
+   (this can be used to build the documentation for ``cppad_mixed`` .)
+
+03-01
+=====
+
+#. The ``solution check failed`` warning was being output
+   because the check was not properly accounting for the scaling.
+   This has been fixed.
+#. The scaling has be fixed to
+   correctly account for the constraints corresponding to absolute
+   value terms in the
+   :ref:`negative log-density<problem@Negative Log-Density Vector>` .
+#. Document the fact that an
+   :ref:`optimize_fixed@fixed_ipopt_options@nlp_scaling_method`
+   cannot be specified for the fixed effects.
+
+01-26
+=====
+Change the objective and constraint function scaling so that it is
+done by Ipopt using it's user-scaling option.
+This fixes the :ref:`ipopt_trace-name` so that it prints the original
+objective (instead of the scaled object which depends on the starting point).
+
+01-24
+=====
+The fixed effects
+objective and constraint functions are now scaled so that
+the maximum absolute norm of the gradient of each of these functions is one;
+see :ref:`optimize_fixed@fixed_ipopt_options@nlp_scaling_method` .
+
+01-22
+=====
+Some of the tests were using the integer function ``std::abs`` by mistake.
+Change ``abs`` to ``fabs`` so this does not happen.
+
+01-14
+=====
+Increase the ``trace-adaptive`` field width
+for step size from 7 to 11 characters
+(so that exponential format fits in the field); see
+:ref:`optimize_fixed@fixed_ipopt_options@derivative_test` .
+
+{xrst_end whats_new_17}

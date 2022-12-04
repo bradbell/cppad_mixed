@@ -5,48 +5,49 @@
 # ifndef CPPAD_MIXED_SPARSE_PRINT_HPP
 # define CPPAD_MIXED_SPARSE_PRINT_HPP
 /*
-$begin sparse_print$$
-$spell
-   Eigen
-   std
+{xrst_begin sparse_print}
+{xrst_spell
    cout
-   const
-   CppAD
-$$
+}
 
-$section Print and Eigen Sparse Matrix$$
+Print and Eigen Sparse Matrix
+#############################
 
-$head Syntax$$
-$codei%sparse_print(%label%, %mat%)%$$
+Syntax
+******
+``sparse_print`` ( *label* , *mat* )
 
-$head Private$$
+Private
+*******
 This routine is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head Scalar$$
+Scalar
+******
 It is the type for a scalar in the matrix.
-If $icode s$$ has type $icode Scalar$$,
-$codei%
-   std::cout << %s%
-%$$
-must print the value of $icode s$$ on standard output.
+If *s* has type *Scalar* ,
 
-$head label$$
+   ``std::cout <<`` *s*
+
+must print the value of *s* on standard output.
+
+label
+*****
 This argument has prototype
-$codei%
-   const std::string& %label%
-%$$
+
+   ``const std::string&`` *label*
+
 Is a label printed before the matrix,
 If it is empty, no label is printed.
 
-$head mat$$
+mat
+***
 Is the sparse matrix which must have one of the following prototypes:
-$codei%
-      const Eigen::SparseMatrix<%Scalar%, Eigen::ColMajor>& %mat%
-      const Eigen::SparseMatrix<%Scalar%, Eigen::RowMajor>& %mat%
-%$$
 
-$end
+| |tab| |tab| ``const Eigen::SparseMatrix<`` *Scalar* , ``Eigen::ColMajor>&`` *mat*
+| |tab| |tab| ``const Eigen::SparseMatrix<`` *Scalar* , ``Eigen::RowMajor>&`` *mat*
+
+{xrst_end sparse_print}
 */
 # include <Eigen/SparseCore>
 

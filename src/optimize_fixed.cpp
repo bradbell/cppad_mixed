@@ -3,317 +3,326 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin optimize_fixed$$
-$spell
-   mu
-   nlp
-   CppAD
-   cppad
-   ipopt
-   xam
-   vec
-   const
-   CppAD
-   std
-   inf
+{xrst_begin optimize_fixed}
+{xrst_spell
    iter
-   obj
-   sqrt
-   ls
+   lagrange
+   nlp
    struct
-   init
-$$
+}
 
-$section Optimize Fixed Effects$$
+Optimize Fixed Effects
+######################
 
-$head Syntax$$
-$icode%solution% =%$$
-$icode%mixed_object%.optimize_fixed(
-   %fixed_ipopt_options%,
-   %random_ipopt_options%,
-   %fixed_lower%,
-   %fixed_upper%,
-   %fix_constraint_lower%,
-   %fix_constraint_upper%,
-   %fixed_scale%,
-   %fixed_in%,
-   %random_lower%,
-   %random_upper%,
-   %random_in%,
-   %warm_start%
-)%$$
+Syntax
+******
+*solution*  =
 
-$head Purpose$$
+| *mixed_object* . ``optimize_fixed`` (
+| |tab| *fixed_ipopt_options* ,
+| |tab| *random_ipopt_options* ,
+| |tab| *fixed_lower* ,
+| |tab| *fixed_upper* ,
+| |tab| *fix_constraint_lower* ,
+| |tab| *fix_constraint_upper* ,
+| |tab| *fixed_scale* ,
+| |tab| *fixed_in* ,
+| |tab| *random_lower* ,
+| |tab| *random_upper* ,
+| |tab| *random_in* ,
+| |tab| *warm_start*
+| )
+
+Purpose
+*******
 This routine maximizes the fixed effects objective
-$cref/L(theta)/theory/Objective/Fixed Effects Objective, L(theta)/$$.
+:ref:`L(theta)<theory@Objective@Fixed Effects Objective, L(theta)>` .
 
-$head inf$$
-The value $code inf$$ below refers to
-$codei%
-   std::numeric_limits<double>::infinity()
-%$$
+inf
+***
+The value ``inf`` below refers to
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+   ``std::numeric_limits<double>::infinity`` ()
+
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head fixed_ipopt_options$$
+fixed_ipopt_options
+*******************
 This argument has prototype
-$codei%
-   const std::string& %fixed_ipopt_options%
-%$$
-and is the $cref ipopt_options$$ for optimizing the fixed effects
+
+   ``const std::string&`` *fixed_ipopt_options*
+
+and is the :ref:`ipopt_options-name` for optimizing the fixed effects
 with the following qualifications:
 
-$subhead derivative_test$$
-If $icode derivative_test$$ is $code none$$,
+derivative_test
+===============
+If *derivative_test* is ``none`` ,
 no derivative testing is done.
-If it is $code first-order$$,
+If it is ``first-order`` ,
 only first order derivatives are tested.
-If it is $code second-order$$ ($code only-second-order$$)
+If it is ``second-order`` (``only-second-order`` )
 second derivatives (and first derivatives) are tested.
 In these two cases
-$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ must be $code false$$.
-If $icode derivative_test$$ is $code adaptive$$,
-a special $code cppad_mixed$$ adaptive step size method is
+:ref:`derived_ctor@quasi_fixed` must be ``false`` .
+If *derivative_test* is ``adaptive`` ,
+a special ``cppad_mixed`` adaptive step size method is
 used to test first order derivatives.
-If it is $code trace-adaptive$$,
+If it is ``trace-adaptive`` ,
 the adaptive step size results are traced on standard output.
 
-$subhead hessian_approximation$$
-If $icode quasi_fixed$$ is true (false),
-$icode hessian_approximation$$ will be set to
-$code limit-memory$$ ($code exact$$).
-If it is also set in $icode fixed_ipopt_options$$, it must have this value.
+hessian_approximation
+=====================
+If *quasi_fixed* is true (false),
+*hessian_approximation* will be set to
+``limit-memory`` (``exact`` ).
+If it is also set in *fixed_ipopt_options* , it must have this value.
 
-$subhead max_iter$$
-If $icode%max_iter% == -1%$$ in $icode fixed_ipopt_options$$,
-$icode%solution%.fixed_opt == %fixed_in%$$.
-In addition, Ipopt is run with $icode%max_iter% = 0%$$ and the return status
-$code Ipopt::Maximum_Iterations_Exceeded$$ is consider normal; i.e.,
+max_iter
+========
+If *max_iter* == ``-1`` in *fixed_ipopt_options* ,
+*solution* . ``fixed_opt`` == *fixed_in* .
+In addition, Ipopt is run with *max_iter*  = 0 and the return status
+``Ipopt::Maximum_Iterations_Exceeded`` is consider normal; i.e.,
 does not generate a warning or error message.
 Furthermore, the fixed effects optimization will return immediately
 (not try to backup and recover) if an error occur during evaluation of
 the fixed effects objective, constraints, or their derivatives.
-If $icode%max_iter% == 0%$$ in the options,
-it may be that $icode%solution%.fixed_opt != %fixed_in%$$
+If *max_iter*  == 0 in the options,
+it may be that *solution* . ``fixed_opt`` != *fixed_in*
 (Ipopt moves non-equality constraints to the interior of the constraint).
-(this is the only difference between $code -1$$ and $code 0$$).
+(this is the only difference between ``-1`` and ``0`` ).
 
-$subhead accept_after_max_steps$$
-The default value for $icode accept_after_max_steps$$ is $code -1$$
+accept_after_max_steps
+======================
+The default value for *accept_after_max_steps* is ``-1``
 (no limit).
 This is the maximum number of backtracking steps to take before
 accepting a line search point; see
-$cref/ls/ipopt_trace/ls/$$ is the ipopt tracing documentation.
+:ref:`ipopt_trace@ls` is the ipopt tracing documentation.
 
-$subhead nlp_scaling_method$$
+nlp_scaling_method
+==================
 When optimizing the fixed effects,
 the objective and the constraint functions are automatically scaled
-by $code cppad_mixed$$.
+by ``cppad_mixed`` .
 It is an error for the user to specify this option in
-$icode fixed_ipopt_options$$.
+*fixed_ipopt_options* .
 
-$head random_ipopt_options$$
+random_ipopt_options
+********************
 This argument has prototype
-$codei%
-   const std::string& %random_ipopt_options%
-%$$
-and is the $cref ipopt_options$$ for optimizing the random effects.
 
-$head fixed_lower$$
+   ``const std::string&`` *random_ipopt_options*
+
+and is the :ref:`ipopt_options-name` for optimizing the random effects.
+
+fixed_lower
+***********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_lower%
-%$$
-It has size $cref/n_fixed/derived_ctor/n_fixed/$$ and
+
+   ``const CppAD::vector<double>&`` *fixed_lower*
+
+It has size :ref:`derived_ctor@n_fixed` and
 specifies the lower limits for the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$.
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>` .
 Note that minus infinity is used for no lower limit.
 
-$head fixed_upper$$
+fixed_upper
+***********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_upper%
-%$$
-It has size $icode n_fixed$$ and specifies the upper limits for the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$.
+
+   ``const CppAD::vector<double>&`` *fixed_upper*
+
+It has size *n_fixed* and specifies the upper limits for the
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>` .
 Note that plus infinity is used for no upper limit.
 
-$head fix_constraint_lower$$
+fix_constraint_lower
+********************
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fix_constraint_lower%
-%$$
-it has size $icode n_fixed$$ and specifies the lower limits for the
-$cref/fixed constraints/fix_constraint/$$.
+
+   ``const CppAD::vector<double>&`` *fix_constraint_lower*
+
+it has size *n_fixed* and specifies the lower limits for the
+:ref:`fixed constraints<fix_constraint-name>` .
 Note that minus infinity is used for no lower limit.
 
-$head fix_constraint_upper$$
+fix_constraint_upper
+********************
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fix_constraint_upper%
-%$$
+
+   ``const CppAD::vector<double>&`` *fix_constraint_upper*
+
 it specifies the upper limits for the
-$cref/fixed constraints/fix_constraint/$$.
+:ref:`fixed constraints<fix_constraint-name>` .
 Note that plus infinity is used for no upper limit.
 
-$head fixed_scale$$
+fixed_scale
+***********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_scale%
-%$$
+
+   ``const CppAD::vector<double>&`` *fixed_scale*
+
 The fixed effect objective and constraint functions are multiplied by a
-scale factor so that their derivatives are near one at $icode fixed_scale$$.
+scale factor so that their derivatives are near one at *fixed_scale* .
 This makes the Ipopt tolerance be relative to the derivatives at
-$icode fixed_scale$$.
-It must hold for each $icode j$$ that
-$codei%
-   %fixed_lower%[%j%] <= %fixed_scale%[%j%] <= %fixed_upper%[%j%]
-%$$
+*fixed_scale* .
+It must hold for each *j* that
+
+   *fixed_lower* [ *j* ] <= *fixed_scale* [ *j* ] <= *fixed_upper* [ *j* ]
+
 Partial derivatives with respect to components for which
-$codei%
-   %fixed_lower%[%j%] == %fixed_upper%[%j%]
-%$$
+
+   *fixed_lower* [ *j* ] == *fixed_upper* [ *j* ]
+
 are not included in this scaling.
 Note that you can continue an optimization with the same scaling
 by setting
-$codei%
-   %fixed_in% = %solution%.fixed_opt
-%$$
+
+   *fixed_in* = *solution* . ``fixed_opt``
+
 and the re-running the optimization.
-Also note that scaling the fixed effects is not done by $code cppad_mixed$$
+Also note that scaling the fixed effects is not done by ``cppad_mixed``
 and should be done by the users program when it is useful.
 
-$head fixed_in$$
+fixed_in
+********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_in%
-%$$
-It specifies the initial value for the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$ during the optimization process.
-It must hold for each $icode j$$ that
-$codei%
-   %fixed_lower%[%j%] <= %fixed_in%[%j%] <= %fixed_upper%[%j%]
-%$$
 
-$head random_lower$$
+   ``const CppAD::vector<double>&`` *fixed_in*
+
+It specifies the initial value for the
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta` during the optimization process.
+It must hold for each *j* that
+
+   *fixed_lower* [ *j* ] <= *fixed_in* [ *j* ] <= *fixed_upper* [ *j* ]
+
+random_lower
+************
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_lower%
-%$$
+
+   ``const CppAD::vector<double>&`` *random_lower*
+
 It must have size equal to
-$cref/n_random/derived_ctor/n_random/$$ and
+:ref:`derived_ctor@n_random` and
 specifies the lower limits for the optimization of the
-$cref/random effects/problem/Notation/Random Effects, u/$$
-vector $latex u$$.
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector :math:`u`.
 This may be useful to keep the random effects
 out of regions of numerical instability.
 On the other hand, the calculation of the
-$cref/derivative of optimal random effects
-   /theory
-   /Derivative of Optimal Random Effects
-/$$
-$latex \hat{u}_\theta ( \theta )$$ will not be correct when these constraints
+:ref:`theory@Derivative of Optimal Random Effects`
+:math:`\hat{u}_\theta ( \theta )` will not be correct when these constraints
 are active (and this could have adverse effects on the optimization).
 The value minus infinity can be used to specify no lower limit.
 
-$head random_upper$$
+random_upper
+************
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_upper%
-%$$
+
+   ``const CppAD::vector<double>&`` *random_upper*
+
 It must have size equal to
-$cref/n_random/derived_ctor/n_random/$$ and
+:ref:`derived_ctor@n_random` and
 specifies the upper limits for the optimization of the random effect.
 The value plus infinity can be used to specify no lower limit.
 
-$head random_in$$
+random_in
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_in%
-%$$
+
+   ``const CppAD::vector<double>&`` *random_in*
+
 It must have size equal to
-$cref/n_random/derived_ctor/n_random/$$ and
+:ref:`derived_ctor@n_random` and
 specifies the initial value used for the optimization of the
-$cref/random effects/problem/Notation/Random Effects, u/$$
-vector $latex u$$.
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector :math:`u`.
 It must hold that
-$codei%
-   %random_lower%[%i%] <= %random_in%[%i%] <= %random_upper%[%i%]
-%$$
-for each valid index $icode i$$.
 
-$head warm_start$$
+   *random_lower* [ *i* ] <= *random_in* [ *i* ] <= *random_upper* [ *i* ]
+
+for each valid index *i* .
+
+warm_start
+**********
 This argument is optional and has prototype
-$codei%
-   const warm_start_struct& %warm_start%
-%$$
-It is an error for the user to specify $icode warm_start_init_point$$ in
-$icode fixed_ipopt_options$$.
 
-$subhead No Warm Start$$
-If the size of $icode%warm_start%.x_info%$$ is zero,
+   ``const warm_start_struct&`` *warm_start*
+
+It is an error for the user to specify *warm_start_init_point* in
+*fixed_ipopt_options* .
+
+No Warm Start
+=============
+If the size of *warm_start* . ``x_info`` is zero,
 there is no warm start information.
 This is the same as when the argument is not present.
-In this case, the ipopt $icode warm_start_init_point$$ option will be set to
-$code no$$.
+In this case, the ipopt *warm_start_init_point* option will be set to
+``no`` .
 
-$subhead Warm Start$$
-If the size of $icode%warm_start%.x_info%$$ is non-zero,
-$icode warm_start$$ must is equal the
-$cref/warm_start/fixed_solution/warm_start/$$ field in a
-fixed effects solution returned by a previous call to $code optimized_fixed$$.
+Warm Start
+==========
+If the size of *warm_start* . ``x_info`` is non-zero,
+*warm_start* must is equal the
+:ref:`fixed_solution@warm_start` field in a
+fixed effects solution returned by a previous call to ``optimized_fixed`` .
 This can be used to continue a fit when the maximum number of iterations
 is reached or when the tolerance for the fixed or random effects is changed.
-$list number$$
-The ipopt $icode warm_start_init_point$$ options will be set to $code yes$$.
-$lnext
-The ipopt $icode mu_strategy$$ options will be set to $code monotone$$.
-$lnext
-The $icode fixed_scale$$ and $icode fixed_in$$ arguments are not used
-during a warm start optimization.
-$lnext
-Any derivative test specified in $icode fixed_ipopt_options$$
-will not be passed onto Ipopt; i.e.,
-no derivative testing is done during a warm start.
-$lend
 
-$subhead Example$$
-see $cref warm_start.cpp$$
+#. The ipopt *warm_start_init_point* options will be set to ``yes`` .
+#. The ipopt *mu_strategy* options will be set to ``monotone`` .
+#. The *fixed_scale* and *fixed_in* arguments are not used
+   during a warm start optimization.
+#. Any derivative test specified in *fixed_ipopt_options*
+   will not be passed onto Ipopt; i.e.,
+   no derivative testing is done during a warm start.
 
-$head solution$$
+Example
+=======
+see :ref:`warm_start.cpp-name`
+
+solution
+********
 The return value has prototype
-$codei%
-   CppAD::mixed::fixed_solution %solution%
-%$$
+
+   ``CppAD::mixed::fixed_solution`` *solution*
+
 It is the solution (obtained by optimization) of the
 fixed effects vector and its Lagrange multipliers; see
-$cref fixed_solution$$.
+:ref:`fixed_solution-name` .
 
-$head Laplace Approximation$$
-The $cref theory$$ for the
+Laplace Approximation
+*********************
+The :ref:`theory-name` for the
 Laplace approximation optimization only includes the case where
-the $cref/random likelihood/ran_likelihood/$$ is smooth.
+the :ref:`random likelihood<ran_likelihood-name>` is smooth.
 
-$comment ipopt_options is also used by optimize_random$$
-$children%example/user/optimize_fixed.cpp
-   %omh/ipopt_options.omh
-   %omh/ipopt_trace.omh
-%$$
-$head Example$$
-The file $cref optimize_fixed.cpp$$ contains an example
+{xrst_comment ipopt_options is also used by optimize_random}
+{xrst_toc_hidden
+   example/user/optimize_fixed.cpp
+   xrst/ipopt_options.xrst
+   xrst/ipopt_trace.xrst
+}
+Example
+*******
+The file :ref:`optimize_fixed.cpp-name` contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
-$head ipopt_fixed$$
-The  class $code ipopt_fixed$$ is used by $code optimize_fixed$$
+ipopt_fixed
+***********
+The  class ``ipopt_fixed`` is used by ``optimize_fixed``
 to optimize the fixed effects.
-It's specifications are not part of the $cref cppad_mixed$$ public interface.
+It's specifications are not part of the :ref:`cppad_mixed-name` public interface.
 
-$end
+{xrst_end optimize_fixed}
 ------------------------------------------------------------------------------
 */
 # include <coin-or/IpIpoptApplication.hpp>

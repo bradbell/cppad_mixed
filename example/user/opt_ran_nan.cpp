@@ -3,19 +3,20 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin opt_ran_nan.cpp$$
-$spell
-   CppAD
-   cppad
-$$
+{xrst_begin opt_ran_nan.cpp}
+{xrst_spell
+   nan
+}
 
-$section Nan's During Optimization of Random Effects: Example and Test$$
+Nan's During Optimization of Random Effects: Example and Test
+#############################################################
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end opt_ran_nan.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

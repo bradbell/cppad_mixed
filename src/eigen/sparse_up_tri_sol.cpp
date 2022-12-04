@@ -3,53 +3,61 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin sparse_up_tri_sol$$
-$spell
-   CppAD
+{xrst_begin sparse_up_tri_sol}
+{xrst_spell
    cols
-   tri
-$$
+}
 
-$section Solve a Sparse Upper Triangular Linear System$$
+Solve a Sparse Upper Triangular Linear System
+#############################################
 
-$head Syntax$$
-$icode%result% = CppAD::mixed::sparse_up_tri_sol(%left%, %right%)%$$.
+Syntax
+******
+*result* = ``CppAD::mixed::sparse_up_tri_sol`` ( *left* , *right* ) .
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1
-%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN PROTOTYPE
+   // END PROTOTYPE
+}
 
-$head Private$$
+Private
+*******
 This function is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head left$$
+left
+****
 This must be a square invertible upper triangular matrix; i.e.,
-$icode%left%.rows() == %left%.cols()%$$ and
-for each $icode%left%(%i%, %j%)%$$ in this sparse matrix,
-$icode%i% <= %j%$$.
+*left* . ``rows`` () == *left* . ``cols`` () and
+for each *left* ( *i* , *j* ) in this sparse matrix,
+*i* <= *j* .
 
-$head right$$
+right
+*****
 The number of rows in this matrix must equal the number of columns in
-$icode left$$; i.e.,
-$icode%right%.rows() == %left%.cols()%$$.
+*left* ; i.e.,
+*right* . ``rows`` () == *left* . ``cols`` () .
 
-$head result$$
-This result has the same number of rows as $icode left$$,
-the same number of columns as $icode right$$,
+result
+******
+This result has the same number of rows as *left* ,
+the same number of columns as *right* ,
 and satisfies the equation
-$codei%
-   %left% * %result% = %right%
-%$$
-where $code *$$ is matrix multiplication.
 
-$children%example/private/sparse_up_tri_sol.cpp
-%$$
-$head Example$$
-The file $cref sparse_up_tri_sol.cpp$$ is an example
-and test of $code sparse_up_tri_sol$$.
+   *left* * *result* = *right*
 
-$end
+where ``*`` is matrix multiplication.
+{xrst_toc_hidden
+   example/private/sparse_up_tri_sol.cpp
+}
+Example
+*******
+The file :ref:`sparse_up_tri_sol.cpp-name` is an example
+and test of ``sparse_up_tri_sol`` .
+
+{xrst_end sparse_up_tri_sol}
 */
 # include <cppad/mixed/sparse_up_tri_sol.hpp>
 # include <iostream>

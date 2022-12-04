@@ -4,15 +4,13 @@
 // ----------------------------------------------------------------------------
 
 /*
-$begin ipopt_nlp_xam$$
-$spell
-   CppAD
-   Ipopt
-$$
+{xrst_begin ipopt_nlp_xam}
 
-$section Ipopt Example: Declare Non-linear Program Problem Class$$
+Ipopt Example: Declare Non-linear Program Problem Class
+#######################################################
 
-$srccode%cpp% */
+{xrst_spell_off}
+{xrst_code cpp} */
 # include <cmath>
 # include <iomanip>
 # include <coin-or/IpIpoptApplication.hpp>
@@ -21,7 +19,6 @@ $srccode%cpp% */
 // needed by intermediate_callback to determine if in restoration mode
 # include <coin-or/IpIpoptCalculatedQuantities.hpp>
 # include <coin-or/IpOrigIpoptNLP.hpp>
-
 
 # define PRINT_TRACE 0
 namespace {
@@ -156,68 +153,75 @@ namespace {
       ) override;
    };
 }
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_nlp_xam}
 ------------------------------------------------------------------------------
-$begin ipopt_xam_ctor$$
-$spell
-   CppAD
-   ipopt_nlp_xam
-$$
+{xrst_begin ipopt_xam_ctor}
 
-$section Ipopt Example: Constructor and Destructor$$
+Ipopt Example: Constructor and Destructor
+#########################################
 
-$srccode%cpp% */
+{xrst_spell_off}
+{xrst_code cpp} */
 ipopt_nlp_xam::ipopt_nlp_xam(double beta) : beta_(beta)
 { }
 ipopt_nlp_xam::~ipopt_nlp_xam(void)
 { }
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_xam_ctor}
 ------------------------------------------------------------------------------
-$begin ipopt_xam_get_nlp_info$$
-$spell
-   CppAD
-   ipopt_xam_get_nlp_info
-   nnz_jac
-   Jacobian
-   bool
-   Enum
-   bool
+{xrst_begin ipopt_xam_get_nlp_info}
+{xrst_spell
    nlp
-$$
+   nnz
+   nonzero
+}
 
-$section Return Information About Problem Sizes$$
+Return Information About Problem Sizes
+######################################
 
-$head Syntax$$
-$icode%ok% = get_nlp_info(%n%, %m%, %nnz_jac_g%, %nnz_h_lag%, %index_style%)%$$
+Syntax
+******
+*ok* = ``get_nlp_info`` ( *n* , *m* , *nnz_jac_g* , *nnz_h_lag* , *index_style* )
 
-$head n$$
+n
+*
 is set to the number of variables in the problem (dimension of x).
 
-$head m$$
+m
+*
 is set to the number of constraints in the problem (dimension of g(x)).
 
-$head nnz_jac_g$$
+nnz_jac_g
+*********
 is set to the number of nonzero entries in the Jacobian of g(x).
 
-$head nnz_h_lag$$
+nnz_h_lag
+*********
 is set to the number of nonzero entries in the
 lower-left triangle of the Hessian of the Lagrangian
-$latex f(x) + \lambda^\R{T} g(x)$$.
+:math:`f(x) + \lambda^\R{T} g(x)`.
 (The Hessian is symmetric, and hence determined by its lower-left triangle.)
 
-$head index_style$$
+index_style
+***********
 is set to the numbering style used for row/col entries in the sparse matrix
 format (C_STYLE: 0-based, FORTRAN_STYLE: 1-based).
 
-$head ok$$
+ok
+**
 if set to false, the optimization will treat this point like
 it was not feasible
 (the function could not be evaluated at this point).
 
-$head Source$$
-$srccode%cpp% */
+Source
+******
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_nlp_xam::get_nlp_info(
    Index&          n            ,  // out
    Index&          m            ,  // out
@@ -232,46 +236,54 @@ bool ipopt_nlp_xam::get_nlp_info(
    index_style = C_STYLE;
    return true;
 }
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_xam_get_nlp_info}
 -------------------------------------------------------------------------------
-$begin ipopt_xam_get_bounds_info$$
-$spell
-   CppAD
-   ipopt_nlp_xam
-   bool
-$$
+{xrst_begin ipopt_xam_get_bounds_info}
 
-$section Return Optimization Bounds$$
+Return Optimization Bounds
+##########################
 
-$head Syntax$$
-$icode%ok% = get_bounds_info(%n%, %x_l%, %x_u%, %m%, %g_l%, %g_u%)%$$
+Syntax
+******
+*ok* = ``get_bounds_info`` ( *n* , *x_l* , *x_u* , *m* , *g_l* , *g_u* )
 
-$head n$$
+n
+*
 is the number of variables in the problem (dimension of x).
 
-$head x_l$$
-set to the lower bounds for $icode x$$ (has size $icode n$$).
+x_l
+***
+set to the lower bounds for *x* (has size *n* ).
 
-$head x_u$$
-set to the upper bounds for $icode x$$ (has size $icode n$$).
+x_u
+***
+set to the upper bounds for *x* (has size *n* ).
 
-$head m$$
+m
+*
 is the number of constraints in the problem (dimension of g(x)).
 
-$head g_l$$
-set to the lower bounds for $icode g(x)$$ (has size $icode m$$).
+g_l
+***
+set to the lower bounds for *g* ( *x* ) (has size *m* ).
 
-$head g_u$$
-set to the upper bounds for $icode g(x)$$ (has size $icode m$$).
+g_u
+***
+set to the upper bounds for *g* ( *x* ) (has size *m* ).
 
-$head ok$$
+ok
+**
 if set to false, the optimization will treat this point like
 it was not feasible
 (the function could not be evaluated at this point).
 
-$head Source$$
-$srccode%cpp% */
+Source
+******
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_nlp_xam::get_bounds_info(
       Index       n        ,   // in
       Number*     x_l      ,   // out
@@ -295,67 +307,77 @@ bool ipopt_nlp_xam::get_bounds_info(
    //
    return true;
 }
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_xam_get_bounds_info}
 -------------------------------------------------------------------------------
-$begin ipopt_xam_get_starting_point$$
-$spell
-   CppAD
-   init
-   ipopt_nlp_xam
-   bool
-$$
+{xrst_begin ipopt_xam_get_starting_point}
 
-$section Return Initial Values Where Optimization is Started$$
+Return Initial Values Where Optimization is Started
+###################################################
 
-$head Syntax$$
-$icode%ok% = get_starting_point(
-   %n%, %init_x%, %x%, %init_z%, %z_L%, %z_U%, %m%, %init_lambda%, %lambda%
-)%$$
+Syntax
+******
 
-$head n$$
+| *ok* = ``get_starting_point`` (
+| |tab| *n* , *init_x* , *x* , *init_z* , *z_L* , *z_U* , *m* , *init_lambda* , *lambda*
+| )
+
+n
+*
 is the number of variables in the problem (dimension of x).
 
-$head init_x$$
+init_x
+******
 if true, the ipopt options specify that the this routine
-will provide an initial value for $icode x$$.
+will provide an initial value for *x* .
 
-$head x$$
-if $icode init_x$$ is true,
-set to the initial value for the primal variables (has size $icode n$$).
+x
+*
+if *init_x* is true,
+set to the initial value for the primal variables (has size *n* ).
 
-$head init_z$$
+init_z
+******
 if true, the ipopt options specify that the this routine
-will provide an initial value for $icode x$$ upper and lower bound
+will provide an initial value for *x* upper and lower bound
 multipliers.
 This is true during a warm start and false otherwise.
 
-$head z_L$$
-if $icode init_z$$ is true,
-set to the initial value for the lower bound multipliers (has size $icode n$$).
+z_L
+***
+if *init_z* is true,
+set to the initial value for the lower bound multipliers (has size *n* ).
 
-$head z_U$$
-if $icode init_z$$ is true,
-set to the initial value for the upper bound multipliers (has size $icode n$$).
+z_U
+***
+if *init_z* is true,
+set to the initial value for the upper bound multipliers (has size *n* ).
 
-$head init_lambda$$
+init_lambda
+***********
 if true, the ipopt options specify that the this routine
-will provide an initial value for $icode g(x)$$ upper and lower bound
+will provide an initial value for *g* ( *x* ) upper and lower bound
 multipliers.
 This is true during a warm start and false otherwise.
 
-$head lambda$$
-if $icode init_lambda$$ is true,
-set to the initial value for the $icode g(x)$$ multipliers
-(has size $icode m$$).
+lambda
+******
+if *init_lambda* is true,
+set to the initial value for the *g* ( *x* ) multipliers
+(has size *m* ).
 
-$head ok$$
+ok
+**
 if set to false, the optimization will treat this point like
 it was not feasible
 (the function could not be evaluated at this point).
 
-$head Source$$
-$srccode%cpp% */
+Source
+******
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_nlp_xam::get_starting_point(
    Index           n            ,  // in
    bool            init_x       ,  // in
@@ -395,45 +417,48 @@ bool ipopt_nlp_xam::get_starting_point(
    }
    return true;
 }
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_xam_get_starting_point}
 -------------------------------------------------------------------------------
-$begin ipopt_xam_eval_f$$
-$spell
-   CppAD
-   ipopt_nlp_xam
-   bool
-   eval
-   obj
-   const
-$$
+{xrst_begin ipopt_xam_eval_f}
 
-$section Compute Value of Objective$$
+Compute Value of Objective
+##########################
 
-$head Syntax$$
-$icode%ok% = eval_f(%n%, %x%, %new_x%, %obj_value%)%$$
+Syntax
+******
+*ok* = ``eval_f`` ( *n* , *x* , *new_x* , *obj_value* )
 
-$head n$$
+n
+*
 is the number of variables in the problem (dimension of x).
 
-$head x$$
+x
+*
 is the value for the primal variables at which the objective
-f(x) is computed (has size $icode n$$).
+f(x) is computed (has size *n* ).
 
-$head new_x$$
+new_x
+*****
 if true, no Ipopt evaluation method was previous called with the same
-value for $icode x$$.
+value for *x* .
 
-$head obj_val$$
+obj_val
+*******
 set to the initial value of the objective function f(x).
 
-$head ok$$
+ok
+**
 if set to false, the optimization will treat this point like
 it was not feasible
 (the function could not be evaluated at this point).
 
-$head Source$$
-$srccode%cpp% */
+Source
+******
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_nlp_xam::eval_f(
    Index           n         ,  // in
    const Number*   x         ,  // in
@@ -446,45 +471,49 @@ bool ipopt_nlp_xam::eval_f(
 
    return true;
 }
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_xam_eval_f}
 -------------------------------------------------------------------------------
-$begin ipopt_xam_eval_grad_f$$
-$spell
-   CppAD
-   ipopt_nlp_xam
-   bool
-   eval
-   const
-$$
+{xrst_begin ipopt_xam_eval_grad_f}
 
-$section Compute Gradient of the Objective$$
+Compute Gradient of the Objective
+#################################
 
-$head Syntax$$
-$icode%ok% = eval_grad_f(%n%, %x%, %new_x%, %grad_f%)%$$
+Syntax
+******
+*ok* = ``eval_grad_f`` ( *n* , *x* , *new_x* , *grad_f* )
 
-$head n$$
+n
+*
 is the number of variables in the problem (dimension of x).
 
-$head x$$
+x
+*
 is the value for the primal variables at which the gradient
-$latex \nabla f(x)$$ is computed (has size $icode n$$).
+:math:`\nabla f(x)` is computed (has size *n* ).
 
-$head new_x$$
+new_x
+*****
 if true, no Ipopt evaluation method was previous called with the same
-value for $icode x$$.
+value for *x* .
 
-$head grad_f$$
-is set to the value for the gradient $latex \nabla f(x)$$
-(has size $icode m$$).
+grad_f
+******
+is set to the value for the gradient :math:`\nabla f(x)`
+(has size *m* ).
 
-$head ok$$
+ok
+**
 if set to false, the optimization will treat this point like
 it was not feasible
 (the function could not be evaluated at this point).
 
-$head Source$$
-$srccode%cpp% */
+Source
+******
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_nlp_xam::eval_grad_f(
    Index           n         ,  // in
    const Number*   x         ,  // in
@@ -496,47 +525,52 @@ bool ipopt_nlp_xam::eval_grad_f(
    grad_f[1] = 2.0 * beta_ * (x[1] - 3.0);
    return true;
 }
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_xam_eval_grad_f}
 -------------------------------------------------------------------------------
-$begin ipopt_xam_eval_g$$
-$spell
-   CppAD
-   ipopt_nlp_xam
-   bool
-   const
-   eval
-$$
+{xrst_begin ipopt_xam_eval_g}
 
-$section Compute Value of Constraint Functions$$
+Compute Value of Constraint Functions
+#####################################
 
-$head Syntax$$
-$icode%ok% = eval_g(%n%, %x%, %new_x%, %m%, %g%)%$$
+Syntax
+******
+*ok* = ``eval_g`` ( *n* , *x* , *new_x* , *m* , *g* )
 
-$head n$$
+n
+*
 is the number of variables in the problem (dimension of x).
 
-$head x$$
+x
+*
 is the value for the primal variables at which the constraints
-$latex g(x)$$ is computed (has size $icode n$$).
+:math:`g(x)` is computed (has size *n* ).
 
-$head new_x$$
+new_x
+*****
 if true, no Ipopt evaluation method was previous called with the same
-value for $icode x$$.
+value for *x* .
 
-$head m$$
+m
+*
 is the number of constraints in the problem (dimension of g(x)).
 
-$head g$$
-is set to the value for the constraint functions (has size $icode m$$).
+g
+*
+is set to the value for the constraint functions (has size *m* ).
 
-$head ok$$
+ok
+**
 if set to false, the optimization will treat this point like
 it was not feasible
 (the function could not be evaluated at this point).
 
-$head Source$$
-$srccode%cpp% */
+Source
+******
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_nlp_xam::eval_g(
    Index           n        ,  // in
    const Number*   x        ,  // in
@@ -551,74 +585,83 @@ bool ipopt_nlp_xam::eval_g(
    //
    return true;
 }
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_xam_eval_g}
 -------------------------------------------------------------------------------
-$begin ipopt_xam_eval_jac_g$$
-$spell
-   CppAD
-   ipopt_nlp_xam
-   bool
-   eval
-   const
-   nele_jac
-   Jacobian
-   nnz
-$$
+{xrst_begin ipopt_xam_eval_jac_g}
+{xrst_spell
+   nele
+}
 
-$section Compute Jacobian of Constraint Functions$$
+Compute Jacobian of Constraint Functions
+########################################
 
-$head Syntax$$
-$icode%ok% = eval_jac_g(
-   %n%, %x%, %new_x%, %m%, %nele_jac%, %iRow%, %jCol%, %values%
-)%$$
+Syntax
+******
 
-$head n$$
+| *ok* = ``eval_jac_g`` (
+| |tab| *n* , *x* , *new_x* , *m* , *nele_jac* , *iRow* , *jCol* , *values*
+| )
+
+n
+*
 is the number of variables in the problem (dimension of x).
 
-$head x$$
-If $icode values$$ is $code NULL$$, $icode x$$ should also be $code NULL$$.
+x
+*
+If *values* is ``NULL`` , *x* should also be ``NULL`` .
 Otherwise it is the value for the primal variables at which the Jacobian
-of the constraints $latex \nabla g(x)$$ is computed (has size $icode n$$).
+of the constraints :math:`\nabla g(x)` is computed (has size *n* ).
 
-$head new_x$$
+new_x
+*****
 if true, no Ipopt evaluation method was previous called with the same
-value for $icode x$$.
+value for *x* .
 
-$head m$$
+m
+*
 is the number of constraints in the problem (dimension of g(x)).
 
-$head nele_jac$$
-is the number of non-zero elements in the Jacobian of $icode g(x)$$; i.e.,
+nele_jac
+********
+is the number of non-zero elements in the Jacobian of *g* ( *x* ) ; i.e.,
 the same as
-$cref/nnz_jac_g/ipopt_xam_get_nlp_info/nnz_jac_g/$$.
+:ref:`ipopt_xam_get_nlp_info@nnz_jac_g` .
 
-$head iRow$$
-If $icode values$$ is $code NULL$$,
-$icode iRow$$ has size $icode nele_jac$$ and is set to the
+iRow
+****
+If *values* is ``NULL`` ,
+*iRow* has size *nele_jac* and is set to the
 row indices for the non-zero entries in the Jacobian of the constraints
-$latex g_x (x)$$.
+:math:`g_x (x)`.
 
-$head jCol$$
-If $icode values$$ is $code NULL$$,
-$icode jCol$$ has size $icode nele_jac$$ and is set to the
+jCol
+****
+If *values* is ``NULL`` ,
+*jCol* has size *nele_jac* and is set to the
 column indices for the non-zero entries in the Jacobian of the constraints
-$latex g_x (x)$$.
+:math:`g_x (x)`.
 
-$head values$$
-If $icode values$$ is not $code NULL$$,
-it has size $icode nele_jac$$ and $icode%values%[%k%]%$$
-is set to the value of element of the Jacobian $latex g_x (x)$$
-with row index $icode%iRow%[%k%]%$$
-and column index $icode%jCol%[%k%]%$$.
+values
+******
+If *values* is not ``NULL`` ,
+it has size *nele_jac* and *values* [ *k* ]
+is set to the value of element of the Jacobian :math:`g_x (x)`
+with row index *iRow* [ *k* ]
+and column index *jCol* [ *k* ] .
 
-$head ok$$
+ok
+**
 if set to false, the optimization will treat this point like
 it was not feasible
 (the function could not be evaluated at this point).
 
-$head Source$$
-$srccode%cpp% */
+Source
+******
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_nlp_xam::eval_jac_g(
    Index           n        ,  // in
    const Number*   x        ,  // in
@@ -648,93 +691,107 @@ bool ipopt_nlp_xam::eval_jac_g(
    //
    return true;
 }
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_xam_eval_jac_g}
 -------------------------------------------------------------------------------
-$begin ipopt_xam_eval_h$$
-$spell
-   CppAD
-   ipopt_nlp_xam
-   bool
-   eval
-   const
-   obj
-   nele_hess
-   nnz
-$$
+{xrst_begin ipopt_xam_eval_h}
+{xrst_spell
+   hess
+   nele
+}
 
-$section Compute the Hessian of the Lagrangian$$
+Compute the Hessian of the Lagrangian
+#####################################
 
-$head Syntax$$
-$icode%ok% = eval_h(
-   %n%, %x%, %new_x%,%obj_factor%, %m%, %lambda%, %new_lambda%,%$$
-$icode%nele_hess%, %iRow%, %jCol%, %values%
-)%$$
+Syntax
+******
 
-$head Lagrangian$$
+| *ok* = ``eval_h`` (
+| |tab| *n* , *x* , *new_x* , *obj_factor* , *m* , *lambda* , *new_lambda* , *nele_hess* , *iRow* , *jCol* , *values*
+| )
+
+Lagrangian
+**********
 The Lagrangian is defined to be
-$latex \[
-   L(x) = \alpha f(x) + \sum_{i=0}^{m-1} \lambda_i g_i (x)
-\] $$
 
-$head n$$
+.. math::
+
+   L(x) = \alpha f(x) + \sum_{i=0}^{m-1} \lambda_i g_i (x)
+
+n
+*
 is the number of variables in the problem (dimension of x).
 
-$head x$$
-If $icode values$$ is $code NULL$$, $icode x$$ should also be $code NULL$$.
+x
+*
+If *values* is ``NULL`` , *x* should also be ``NULL`` .
 Otherwise it is the value for the primal variables at which the
-Hessian of the Lagrangian is computed (has size $icode n$$).
+Hessian of the Lagrangian is computed (has size *n* ).
 
-$head new_x$$
+new_x
+*****
 if true, no Ipopt evaluation method was previous called with the same
-value for $icode x$$.
+value for *x* .
 
-$head obj_factor$$
-is the factor $latex \alpha$$ that multiplies the objective f(x)
+obj_factor
+**********
+is the factor :math:`\alpha` that multiplies the objective f(x)
 in the definition of the Lagrangian.
 
-$head m$$
+m
+*
 is the number of constraints in the problem (dimension of g(x)).
 
-$head lambda$$
-is the value of the constraint multipliers $latex \lambda$$
-at which the Hessian is to be evaluated (has size $icode m$$).
+lambda
+******
+is the value of the constraint multipliers :math:`\lambda`
+at which the Hessian is to be evaluated (has size *m* ).
 
-$head new_lambda$$
+new_lambda
+**********
 if true, no Ipopt evaluation method was previous called with the same
-value for $icode lambda$$.
+value for *lambda* .
 
-$head nele_hess$$
-is the number of non-zero elements in the Hessian $latex L_{x,x} (x)$$; i.e.,
+nele_hess
+*********
+is the number of non-zero elements in the Hessian :math:`L_{x,x} (x)`; i.e.,
 the same as
-$cref/nnz_h_lag/ipopt_xam_get_nlp_info/nnz_h_lag/$$.
+:ref:`ipopt_xam_get_nlp_info@nnz_h_lag` .
 
-$head iRow$$
-If $icode values$$ is $code NULL$$,
-$icode iRow$$ has size $icode nele_hess$$ and is set to the
+iRow
+****
+If *values* is ``NULL`` ,
+*iRow* has size *nele_hess* and is set to the
 row indices for the non-zero entries in the
-lower (or upper) triangle of the Hessian $latex L_{x,x} (x)$$.
+lower (or upper) triangle of the Hessian :math:`L_{x,x} (x)`.
 
-$head jCol$$
-If $icode values$$ is $code NULL$$,
-$icode jCol$$ has size $icode nele_hess$$ and is set to the
+jCol
+****
+If *values* is ``NULL`` ,
+*jCol* has size *nele_hess* and is set to the
 column indices for the non-zero entries in the
-lower (or upper) triangle of the Hessian $latex L_{x,x} (x)$$.
+lower (or upper) triangle of the Hessian :math:`L_{x,x} (x)`.
 
-$head values$$
-If $icode values$$ is not $code NULL$$,
-it has size $icode nele_hess$$ and $icode%values%[%k%]%$$
-is set to the value of element of the Hessian $latex L_{x,x} (x)$$
-with row index $icode%iRow%[%k%]%$$
-and column index $icode%jCol%[%k%]%$$.
+values
+******
+If *values* is not ``NULL`` ,
+it has size *nele_hess* and *values* [ *k* ]
+is set to the value of element of the Hessian :math:`L_{x,x} (x)`
+with row index *iRow* [ *k* ]
+and column index *jCol* [ *k* ] .
 
-$head ok$$
+ok
+**
 if set to false, the optimization will treat this point like
 it was not feasible
 (the objective function could not be evaluated at this point).
 
-$head Source$$
-$srccode%cpp% */
+Source
+******
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_nlp_xam::eval_h(
    Index         n              ,  // in
    const Number* x              ,  // in
@@ -767,114 +824,130 @@ bool ipopt_nlp_xam::eval_h(
    //
    return true;
 }
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_xam_eval_h}
 -------------------------------------------------------------------------------
-$begin ipopt_xam_finalize_solution$$
-$spell
-   CppAD
-   ipopt_nlp_xam
-   bool
-   eval
-   const
-   obj
-   ip
+{xrst_begin ipopt_xam_finalize_solution}
+{xrst_spell
    cq
-   namespace
    infeasibility
-   doesn't
-   Inf
+   infeasible
+   iterates
+   namespace
    naninf
-   std
-   cout
-   endl
-   fabs
-   tol
-$$
+   unrecoverable
+}
 
-$section Get Solution Results$$
+Get Solution Results
+####################
 
-$head Syntax$$
-$codei%finalize_solution(
-   %status%, %n%, %x%, %z_L%, %z_U%, %m%, %g%,%$$
-$icode%lambda%, %obj_value%, %ip_data%, %ip_cq%
-)%$$
+Syntax
+******
 
-$head n$$
+| ``finalize_solution`` (
+| |tab| *status* , *n* , *x* , *z_L* , *z_U* , *m* , *g* , *lambda* , *obj_value* , *ip_data* , *ip_cq*
+| )
+
+n
+*
 is the number of variables in the problem (dimension of x).
 
-$head x$$
+x
+*
 is the final value (best value found) for the primal variables
-(has size $icode n$$).
+(has size *n* ).
 
-$head z_L$$
-is the final value for the $icode x$$ lower bound constraint multipliers
-(has size $icode n$$).
+z_L
+***
+is the final value for the *x* lower bound constraint multipliers
+(has size *n* ).
 
-$head z_U$$
-is the final value for the $icode x$$ upper bound constraint multipliers
-(has size $icode n$$).
+z_U
+***
+is the final value for the *x* upper bound constraint multipliers
+(has size *n* ).
 
-$head m$$
+m
+*
 is the number of constraints in the problem (dimension of g(x)).
 
-$head lambda$$
-is the final value for the g(x) constraint multipliers $latex \lambda$$.
+lambda
+******
+is the final value for the g(x) constraint multipliers :math:`\lambda`.
 
-$head obj_value$$
-is the value of the objective f(x) at the final $icode x$$ value.
+obj_value
+*********
+is the value of the objective f(x) at the final *x* value.
 
-$head ip_data$$
+ip_data
+*******
 Unspecified; i.e., not part of the Ipopt user API.
 
-$head ip_cq$$
+ip_cq
+*****
 Unspecified; i.e., not part of the Ipopt user API.
 
-$head status$$
-These status values are in the $code Ipopt$$ namespace; e.g.,
-$code SUCCESS$$ is short for $code Ipopt::SUCCESS$$:
+status
+******
+These status values are in the ``Ipopt`` namespace; e.g.,
+``SUCCESS`` is short for ``Ipopt::SUCCESS`` :
 
-$subhead SUCCESS$$
+SUCCESS
+=======
 Algorithm terminated successfully at a locally optimal point,
 satisfying the convergence tolerances (can be specified by options).
 
-$subhead MAXITER_EXCEEDED$$
+MAXITER_EXCEEDED
+================
 Maximum number of iterations exceeded (can be specified by an option).
 
-$subhead CPUTIME_EXCEEDED$$
+CPUTIME_EXCEEDED
+================
 Maximum number of CPU seconds exceeded (can be specified by an option).
 
-$subhead STOP_AT_TINY_STEP$$
+STOP_AT_TINY_STEP
+=================
 Algorithm proceeds with very little progress.
 
-$subhead STOP_AT_ACCEPTABLE_POINT$$
+STOP_AT_ACCEPTABLE_POINT
+========================
 Algorithm stopped at a point that was converged, not to desired
 tolerances, but to acceptable tolerances (see the acceptable-... options).
 
-$subhead LOCAL_INFEASIBILITY$$
+LOCAL_INFEASIBILITY
+===================
 Algorithm converged to a point of local infeasibility. Problem may be
 infeasible.
 
-$subhead USER_REQUESTED_STOP$$
+USER_REQUESTED_STOP
+===================
 A user call-back function returned false, i.e.,
 the user code requested a premature termination of the optimization.
 
-$subhead DIVERGING_ITERATES$$
+DIVERGING_ITERATES
+==================
 It seems that the iterates diverge.
 
-$subhead RESTORATION_FAILURE$$
+RESTORATION_FAILURE
+===================
 Restoration phase failed, algorithm doesn't know how to proceed.
 
-$subhead ERROR_IN_STEP_COMPUTATION$$
+ERROR_IN_STEP_COMPUTATION
+=========================
 An unrecoverable error occurred while Ipopt tried to compute
 the search direction.
 
-$subhead INVALID_NUMBER_DETECTED$$
+INVALID_NUMBER_DETECTED
+=======================
 Algorithm received an invalid number (such as NaN or Inf) from
 the NLP; see also option check_derivatives_for_naninf.
 
-$head Source$$
-$srccode%cpp% */
+Source
+******
+{xrst_spell_off}
+{xrst_code cpp} */
 void ipopt_nlp_xam::finalize_solution(
    Ipopt::SolverReturn               status    ,  // in
    Index                             n         ,  // in
@@ -935,86 +1008,98 @@ void ipopt_nlp_xam::finalize_solution(
    for(Index i = 0; i < m; ++i)
       final_solution_lambda_[i] = lambda[i];
 }
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_xam_finalize_solution}
 -------------------------------------------------------------------------------
-$begin ipopt_xam_intermediate_callback$$
-$spell
-   Ipopt
-   iter
-   obj
-   inf
-   pr
-   du
-   ls
-   ip_cq
-   lg
-   rg
-   optimizer
-   mu
+{xrst_begin ipopt_xam_intermediate_callback}
+{xrst_spell
+   cq
    enum
-$$
+   iter
+   ls
+   optimizer
+   pr
+}
 
-$section Ipopt Example: Optimization Progress Report$$
+Ipopt Example: Optimization Progress Report
+###########################################
 
-$head Syntax$$
-$icode%ok% = intermediate_callback(
-   %mode%,
-   %iter%,
-   %obj_value%,
-   %inf_pr%,
-   %inf_du%,
-   %mu%,
-   %d_norm%,
-   %regularization_size%,
-   %alpha_du%,
-   %alpha_pr%,
-   %ls_trials%,
-   %ip_data%,
-   %ip_cq%
-)%$$
+Syntax
+******
 
-$head mode$$
-This is an $code enum$$ value and equal to
-$code RegularMode$$ or $code RestorationPhaseMode$$.
+| *ok* = ``intermediate_callback`` (
+| |tab| *mode* ,
+| |tab| *iter* ,
+| |tab| *obj_value* ,
+| |tab| *inf_pr* ,
+| |tab| *inf_du* ,
+| |tab| *mu* ,
+| |tab| *d_norm* ,
+| |tab| *regularization_size* ,
+| |tab| *alpha_du* ,
+| |tab| *alpha_pr* ,
+| |tab| *ls_trials* ,
+| |tab| *ip_data* ,
+| |tab| *ip_cq*
+| )
 
-$head iter$$
-See ipopt trace $cref/iter/ipopt_trace/iter/$$.
+mode
+****
+This is an ``enum`` value and equal to
+``RegularMode`` or ``RestorationPhaseMode`` .
 
-$head obj_value$$
-See ipopt trace $cref/objective/ipopt_trace/objective/$$.
+iter
+****
+See ipopt trace :ref:`ipopt_trace@iter` .
 
-$head inf_pr$$
-See ipopt trace $cref/inf_pr/ipopt_trace/inf_pr/$$.
+obj_value
+*********
+See ipopt trace :ref:`ipopt_trace@objective` .
 
-$head inf_du$$
-See ipopt trace $cref/inf_du/ipopt_trace/inf_du/$$.
+inf_pr
+******
+See ipopt trace :ref:`ipopt_trace@inf_pr` .
 
-$head mu$$
-See ipopt trace $cref/lg(mu)/ipopt_trace/lg(mu)/$$.
+inf_du
+******
+See ipopt trace :ref:`ipopt_trace@inf_du` .
 
-$head d_norm$$
-See ipopt trace $cref/||d||/ipopt_trace/||d||/$$.
+mu
+**
+See ipopt trace :ref:`ipopt_trace@lg(mu)` .
 
-$head regularization_size$$
-See ipopt trace $cref/lg(rg)/ipopt_trace/lg(rg)/$$.
+d_norm
+******
+See ipopt trace :ref:`ipopt_trace@||d||` .
 
-$head alpha_du$$
-See ipopt trace $cref/alpha_du/ipopt_trace/alpha_du/$$.
+regularization_size
+*******************
+See ipopt trace :ref:`ipopt_trace@lg(rg)` .
 
-$head alpha_pr$$
-See ipopt trace $cref/alpha_pr/ipopt_trace/alpha_pr/$$.
+alpha_du
+********
+See ipopt trace :ref:`ipopt_trace@alpha_du` .
 
-$head ls_trials$$
-See ipopt trace $cref/ls/ipopt_trace/ls/$$.
+alpha_pr
+********
+See ipopt trace :ref:`ipopt_trace@alpha_pr` .
 
-$head ok$$
+ls_trials
+*********
+See ipopt trace :ref:`ipopt_trace@ls` .
+
+ok
+**
 If set to false, the optimizer will terminate with
-$code USER_REQUESTED_STOP$$ as the finalize_solution
-$cref/status/ipopt_xam_finalize_solution/status/$$.
+``USER_REQUESTED_STOP`` as the finalize_solution
+:ref:`ipopt_xam_finalize_solution@status` .
 
-$head Source$$
-$srccode@cpp@ */
+Source
+******
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_nlp_xam::intermediate_callback(
    AlgorithmMode               mode                 ,   // in
    Index                       iter                 ,   // in
@@ -1080,33 +1165,29 @@ bool ipopt_nlp_xam::intermediate_callback(
    //
    return true;
 }
-/* @$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_xam_intermediate_callback}
 -------------------------------------------------------------------------------
-$begin ipopt_run_xam$$
-$spell
-   CppAD
-   ipopt_run_xam
-   bool
-   eval
-   const
-   Ptr
-   nlp
-   sb
-   Status status
-$$
+{xrst_begin ipopt_run_xam}
 
-$section Ipopt: Example and Test$$
+Ipopt: Example and Test
+#######################
 
-$head Syntax$$
-$icode%ok% = ipopt_run_xam()%$$
+Syntax
+******
+*ok* = ``ipopt_run_xam`` ()
 
-$head ok$$
+ok
+**
 This return value is true, if the test passes,
 and false otherwise.
 
-$head Source$$
-$srccode%cpp% */
+Source
+******
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_run_xam(void)
 {  bool ok    = true;
    double tol = 1e-8;
@@ -1167,6 +1248,8 @@ bool ipopt_run_xam(void)
 
    return ok;
 }
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_run_xam}
 */

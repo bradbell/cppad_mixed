@@ -3,103 +3,110 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin hes_fixed_obj.cpp$$
-$spell
-   CppAD
-   cppad
-   hes
-   eval
-   interp
-   xam
-   init
-$$
+{xrst_begin hes_fixed_obj.cpp}
 
-$section Hessian of Fixed Effects Objective: Example and Test$$
+Hessian of Fixed Effects Objective: Example and Test
+####################################################
 
-$head Model$$
-$latex \[
+Model
+*****
+
+.. math::
+
    \B{p}( y_i | \theta , u ) \sim \B{N} ( u_i + \theta_0 , \theta_1^2 )
-\] $$
-$latex \[
+
+.. math::
+
    \B{p}( u_i | \theta ) \sim \B{N} ( 0 , 1 )
-\] $$
-$latex \[
+
+.. math::
+
    \B{p}( \theta ) \sim \B{N} ( 4 , 1 )
-\] $$
+
 It follows that the Laplace approximation is exact and
-$latex \[
+
+.. math::
+
    \B{p}( y_i | \theta ) \sim \B{N} \left( \theta_0 , 1 + \theta_1^2 \right)
-\] $$
+
 The corresponding fixed effects objective is
-$latex \[
-L( \theta ) =  C + \frac{1}{2} \left[
-   ( \theta_0 - 4 )^2 + ( \theta_1 - 4 )^2 +
-   N \log \left( 1 + \theta_1^2 \right) +
-   \left( 1 + \theta_1^2 \right)^{-1} \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
-\right]
-\] $$
 
-The partial of the objective w.r.t $latex \theta_0$$ is
-$latex \[
-\partial_{\theta(0)} L ( \theta )
-=
-( \theta_0 - 4 )
--
-\left( 1 + \theta_1^2 \right)^{-1} \sum_{i=0}^{N-1} ( y_i - \theta_0 )
-\] $$
+.. math::
 
-The partial of the objective w.r.t $latex \theta_1$$ is
-$latex \[
-\partial_{\theta(1)} L ( \theta )
-=
-( \theta_1 - 4 )
-+
-N \left( 1 + \theta_1^2 \right)^{-1} \theta_1
--
-\left( 1 + \theta_1^2 \right)^{-2} \theta_1
-   \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
-\] $$
+   L( \theta ) =  C + \frac{1}{2} \left[
+      ( \theta_0 - 4 )^2 + ( \theta_1 - 4 )^2 +
+      N \log \left( 1 + \theta_1^2 \right) +
+      \left( 1 + \theta_1^2 \right)^{-1} \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
+   \right]
 
-The second partial w.r.t $latex \theta_0$$, $latex \theta_0$$ is
-$latex \[
-\partial_{\theta(0)} \partial_{\theta(0)} L ( \theta )
-=
-1 + N \left( 1 + \theta_1^2 \right)^{-1}
-\] $$
+The partial of the objective w.r.t :math:`\theta_0` is
 
-The second partial w.r.t $latex \theta_1$$, $latex \theta_1$$ is
-$latex \[
-\partial_{\theta(1)} \partial_{\theta(1)} L ( \theta )
-=
-1
-+
-N \left( 1 + \theta_1^2 \right)^{-1}
--
-2 N \left( 1 + \theta_1^2 \right)^{-2} \theta_1^2
--
-\left( 1 + \theta_1^2 \right)^{-2} \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
-+
-4 \left( 1 + \theta_1^2 \right)^{-3} \theta_1^2
-   \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
-\] $$
+.. math::
 
-The second partial w.r.t $latex \theta_0$$, $latex \theta_1$$ is
-$latex \[
-\partial_{\theta(0)} \partial_{\theta(1)} L ( \theta )
-=
-2 \left( 1 + \theta_1^2 \right)^{-2} \theta_1
-   \sum_{i=0}^{N-1} ( y_i - \theta_0 )
-\] $$
+   \partial_{\theta(0)} L ( \theta )
+   =
+   ( \theta_0 - 4 )
+   -
+   \left( 1 + \theta_1^2 \right)^{-1} \sum_{i=0}^{N-1} ( y_i - \theta_0 )
 
-$head trace_init$$
-If you change $icode trace_init$$ to $code true$$,
+The partial of the objective w.r.t :math:`\theta_1` is
+
+.. math::
+
+   \partial_{\theta(1)} L ( \theta )
+   =
+   ( \theta_1 - 4 )
+   +
+   N \left( 1 + \theta_1^2 \right)^{-1} \theta_1
+   -
+   \left( 1 + \theta_1^2 \right)^{-2} \theta_1
+      \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
+
+The second partial w.r.t :math:`\theta_0`, :math:`\theta_0` is
+
+.. math::
+
+   \partial_{\theta(0)} \partial_{\theta(0)} L ( \theta )
+   =
+   1 + N \left( 1 + \theta_1^2 \right)^{-1}
+
+The second partial w.r.t :math:`\theta_1`, :math:`\theta_1` is
+
+.. math::
+
+   \partial_{\theta(1)} \partial_{\theta(1)} L ( \theta )
+   =
+   1
+   +
+   N \left( 1 + \theta_1^2 \right)^{-1}
+   -
+   2 N \left( 1 + \theta_1^2 \right)^{-2} \theta_1^2
+   -
+   \left( 1 + \theta_1^2 \right)^{-2} \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
+   +
+   4 \left( 1 + \theta_1^2 \right)^{-3} \theta_1^2
+      \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
+
+The second partial w.r.t :math:`\theta_0`, :math:`\theta_1` is
+
+.. math::
+
+   \partial_{\theta(0)} \partial_{\theta(1)} L ( \theta )
+   =
+   2 \left( 1 + \theta_1^2 \right)^{-2} \theta_1
+      \sum_{i=0}^{N-1} ( y_i - \theta_0 )
+
+trace_init
+**********
+If you change *trace_init* to ``true`` ,
 a trace of the initialization will be printed on standard output.
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end hes_fixed_obj.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

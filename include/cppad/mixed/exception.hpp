@@ -6,53 +6,52 @@
 # define CPPAD_MIXED_EXCEPTION_HPP
 
 /*
-$begin exception$$
-$spell
-   cppad
-   CppAD
-   const
-   std
-$$
+{xrst_begin exception}
 
-$section CppAD Mixed Exceptions$$
+CppAD Mixed Exceptions
+######################
 
-$head Syntax$$
-$codei%CppAD::mixed exception(%thrower%, %brief%) %e%
-%$$
-$icode%description% = %e%.message(%catcher%)
-%$$
+Syntax
+******
 
-$head thrower$$
+| ``CppAD::mixed exception`` ( *thrower* , *brief* ) *e*
+| *description* = *e* . ``message`` ( *catcher* )
+
+thrower
+*******
 This argument has prototype
-$codei%
-   const std::string& %thrower%
-%$$
+
+   ``const std::string&`` *thrower*
+
 and is the name of the routine in which the exception occurred
 (the routine that threw the exception).
 
-$head brief$$
+brief
+*****
 This argument has prototype
-$codei%
-   const std::string& %brief%
-%$$
+
+   ``const std::string&`` *brief*
+
 and is a brief description of the exception.
 
-$head catcher$$
+catcher
+*******
 This argument has prototype
-$codei%
-   const std::string& %catcher%
-%$$
+
+   ``const std::string&`` *catcher*
+
 and is the name of the routine that caught the exception.
 
-$head description$$
+description
+***********
 This return has prototype
-$codei%
-   std::string %description%
-%$$
-it is a message that includes
-$icode catcher$$, $icode thrower$$ and $icode brief$$.
 
-$end
+   ``std::string`` *description*
+
+it is a message that includes
+*catcher* , *thrower* and *brief* .
+
+{xrst_end exception}
 */
 # include <string>
 # include <cppad/mixed/configure.hpp>

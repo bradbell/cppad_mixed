@@ -5,89 +5,98 @@
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/exception.hpp>
 /*
-$begin ran_like_hes$$
-$spell
-   hes_uu_rcv
-   rc
-   Jacobian
-   jac
-   cppad
-   vec
-   const
-   xam
-   init
-$$
+{xrst_begin ran_like_hes}
+{xrst_spell
+   uu
+}
 
-$section Hessian of Random Likelihood w.r.t. Random Effects$$
+Hessian of Random Likelihood w.r.t. Random Effects
+##################################################
 
-$head Syntax$$
-$icode%ran_hes_uu_rcv% = ran_like_hes(
-   %n_fixed%, %n_random%, %ran_jac_a1fun%, %ran_hes_uu_rc%, %theta_u%
-)%$$
+Syntax
+******
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+| *ran_hes_uu_rcv* = ``ran_like_hes`` (
+| |tab| *n_fixed* , *n_random* , *ran_jac_a1fun* , *ran_hes_uu_rc* , *theta_u*
+| )
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
 
-$head Assumptions$$
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
+
+Assumptions
+***********
 The member variable
-$cref/init_ran_jac_done_/init_ran_jac/init_ran_jac_done_/$$ is true.
+:ref:`init_ran_jac@init_ran_jac_done_` is true.
 
-$head Purpose$$
+Purpose
+*******
 This routine computes the Hessian of the random likelihood
-$cref/f(theta, u)/theory/Random Likelihood, f(theta, u)/$$
-with respect to the random effects vector $latex u$$; i.e.
-$latex \[
-   f_{uu} ( \theta, u )
-\] $$
+:ref:`f(theta, u)<theory@Random Likelihood, f(theta, u)>`
+with respect to the random effects vector :math:`u`; i.e.
 
-$head n_fixed$$
+.. math::
+
+   f_{uu} ( \theta, u )
+
+n_fixed
+*******
 number of fixed effects.
 
-$head n_random$$
+n_random
+********
 number of random effects
 
-$head ran_jac_a1fun$$
+ran_jac_a1fun
+*************
 This is the Jacobian of the random likelihood
 with respect to the random effects
-$latex f_u ( \theta, u )$$.
+:math:`f_u ( \theta, u )`.
 The domain indices (range indices) are with respect to the random effects
 (fixed and random effects); i.e.,
-$codei%
-   %ran_jac_a1fun%.Domain() == %n_fixed% + %n_random%
-   %ran_jac_a1fun%.Range()  == %n_random%
-%$$
 
-$head ran_hes_uu_rc$$
+| |tab| *ran_jac_a1fun* . ``Domain`` () == *n_fixed* + *n_random*
+| |tab| *ran_jac_a1fun* . ``Range`` ()  == *n_random*
+
+ran_hes_uu_rc
+*************
 This is the sparsity pattern for the
-Hessian $latex f_{uu} ( \theta , u )$$.
+Hessian :math:`f_{uu} ( \theta , u )`.
 The indices in this matrix are just with respect to the random effects;
-i.e., the row and column indices are between zero and  $icode n_random$$.
+i.e., the row and column indices are between zero and  *n_random* .
 
-$head theta_u$$
+theta_u
+*******
 This argument contains the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $icode theta$$ and the
-$cref/random effects/problem/Notation/Random Effects, u/$$
-vector $icode u$$ in that order
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector *theta* and the
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector *u* in that order
 
-$head ran_hes_uu_rcv$$
+ran_hes_uu_rcv
+**************
 The return value
-is the Hessian $latex f_{uu} ( \theta , u )$$.
+is the Hessian :math:`f_{uu} ( \theta , u )`.
 The indices in this matrix are just with respect to the random effects;
-i.e., the row and column indices are between zero and  $icode n_random$$.
-
-$children%
+i.e., the row and column indices are between zero and  *n_random* .
+{xrst_toc_hidden
    example/private/ran_like_hes.cpp
-%$$
+}
 
-$head Example$$
-The file $cref ran_like_hes.cpp$$ contains an example
+Example
+*******
+The file :ref:`ran_like_hes.cpp-name` contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
-$end
+
+{xrst_end ran_like_hes}
 ----------------------------------------------------------------------------
 */
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE

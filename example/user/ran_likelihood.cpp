@@ -3,21 +3,17 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin ran_likelihood.cpp$$
-$spell
-   CppAD
-   cppad
-   interp
-   xam
-$$
+{xrst_begin ran_likelihood.cpp}
 
-$section Random Likelihood: Example and Test$$
+Random Likelihood: Example and Test
+###################################
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end ran_likelihood.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

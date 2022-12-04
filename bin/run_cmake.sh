@@ -3,153 +3,154 @@
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
-# $OMhelpKeyCharacter=&
-# &begin run_cmake.sh&& &newlinech #&&
-# &spell
-#  cmake
-#  makefile
-#  cxx
-#  std
-#  dismod
-#  libdir
-#  lcppad
-#  cholmod
-#  cpp
-#  usr
-#  eigen
-#  ipopt
-#  cppad
-#  bools
-#  devel
-#  hpp
-#  ldlt
-#  bool
-#  libdir
-#  cholesky
-#  ar1_xam
-#  callgrind
-#  hes
-#  Wshadow
-#  Wconversion
-#  Wpedantic
-#  config
-#  gcc
-#  gfortran
-# &&
+# 
+# {xrst_begin run_cmake.sh} 
+# {xrst_spell
+#     callgrind
+#     cd
+#     compilers
+#     config
+#     cxx
+#     fortran
+#     gcc
+#     gfortran
+#     gnu
+#     libdir
+#     makefile
+#     massif
+#     pc
+#     pkg
+#     wconversion
+#     wpedantic
+#     wshadow
+# }
+# {xrst_comment_ch #}
 #
-# &section bin/run_cmake.sh: User Configuration Options&&
+# bin/run_cmake.sh: User Configuration Options
+# ############################################
 #
-# &head verbose_makefile&&
+# verbose_makefile
+# ****************
 # Use 'no' for normal and 'yes' for verbose make output:
-# &codep
+# {xrst_code sh}
 verbose_makefile='no'
-# &&
+# {xrst_code}
 #
-# &head build_type&&
+# build_type
+# **********
 # Use either 'debug' or 'release' for the type of this build:
-# &codep
+# {xrst_code sh}
 build_type='debug'
-# &&
+# {xrst_code}
 #
-# &head cmake_install_prefix&&
+# cmake_install_prefix
+# ********************
 # Prefix where cppad_mixed is installed:
-# &codep
+# {xrst_code sh}
 cmake_install_prefix="$HOME/prefix/cppad_mixed"
-# &&
-# If &icode cmake_install_prefix&& ends in &code /cppad_mixed&&,
-# &code run_cmake.sh&& will use a soft link from this prefix to
-# &icode%cmake_install_prefix%.debug%&& or
-# &icode%cmake_install_prefix%.release%&&
-# depending on the choice for &icode build_type&&.
+# {xrst_code}
+# If *cmake_install_prefix* ends in ``/cppad_mixed`` ,
+# ``run_cmake.sh`` will use a soft link from this prefix to
+# *cmake_install_prefix* . ``debug`` or
+# *cmake_install_prefix* . ``release``
+# depending on the choice for *build_type* .
 #
-# &head Debug and Release&&
+# Debug and Release
+# *****************
 # If a soft link is used for the install,
-# the same technique will be used to map the &code build&&
+# the same technique will be used to map the ``build``
 # directory to the debug or release version.
 # If you are using both a debug and release versions of cppad_mixed,
 # both versions of the
-# &cref/special requirements/install_unix/Special Requirements/&&
+# :ref:`install_unix@Special Requirements`
 # will need to be installed.
 #
-# &head Eigen Prefix&&
+# Eigen Prefix
+# ************
 # It is a good idea to use a different prefix for installing eigen
 # because the corresponding include files are treated like system files,
 # otherwise the eigen include files would generate lots of warnings.
-# The example install script &code bin/install_eigen.sh&& uses
-# &icode%cmake_install_prefix%/eigen%&& as the prefix for installing eigen.
+# The example install script ``bin/install_eigen.sh`` uses
+# *cmake_install_prefix* / ``eigen`` as the prefix for installing eigen.
 #
-# &head specific_compiler&&
+# specific_compiler
+# *****************
 # On some systems, e.g. the Mac using port, there are problems with mixing
 # different compiler systems for fortran and C++; see
-# &href%https://github.com/coin-or/Ipopt/discussions/471%ipopt issue 471%&&.
+# `ipopt issue 471 <https://github.com/coin-or/Ipopt/discussions/471>`_.
 # This variable allows you to set a specific compiler for
 # C and or CXX and or FC.  For example
-# &code
-#  specific_compiler='CC=gcc CXX=g++ FC=gfortran'
-# &&
+# ``specific_compiler='CC=gcc CXX=g++ FC=gfortran'``
 # uses the gnu versions of these compilers.
 # The configuration will automatically find compilers that are not specified;
 # i.e., if
-# &codep
+# {xrst_code sh}
 specific_compiler=''
-# &&
+# {xrst_code}
 #
-# &head extra_cxx_flags&&
+# extra_cxx_flags
+# ***************
 # Extra C++ flags used to compile and test
-# &codep
+# {xrst_code sh}
 extra_cxx_flags='-Wpedantic -std=c++11 -Wall -Wshadow -Wconversion'
-# &&
+# {xrst_code}
 #
-# &head cmake_libdir&&
+# cmake_libdir
+# ************
 # Sub-directory of each prefix where libraries are installed.
-# &codep
+# {xrst_code sh}
 cmake_libdir='lib64'
-# &&
+# {xrst_code}
 #
-# &subhead cppad_mixed.pc&&
-# The file pkg-config file &code cppad_mixed.pc&& is installed in the
-# &icode%cmake_install_prefix/cmake_libdir%&& directory.
+# cppad_mixed.pc
+# ==============
+# The file pkg-config file ``cppad_mixed.pc`` is installed in the
+# *cmake_install_prefix/cmake_libdir* directory.
 #
-# &head ldlt_cholmod&&
-# If yes, use &code ldlt_cholmod&& LDLT factorization where possible.
-# Otherwise always use &code ldlt_eigen&& for LDLT factorization.
-# &codep
+# ldlt_cholmod
+# ************
+# If yes, use ``ldlt_cholmod`` LDLT factorization where possible.
+# Otherwise always use ``ldlt_eigen`` for LDLT factorization.
+# {xrst_code sh}
 ldlt_cholmod='yes'
-# &&
+# {xrst_code}
 #
-# &head optimize_cppad_function&&
+# optimize_cppad_function
+# ***********************
 # If yes, the operation sequence for certain CppAD functions
 # will be optimized. This makes the code run faster but in some cases
 # it can make debugging more complicated. It is suggested that you use
-# &code no&& when &icode build_type&& is &code debug&& and &code yes&&
-# when &icode build_type&& is &code release&&.
-# &codep
+# ``no`` when *build_type* is ``debug`` and ``yes``
+# when *build_type* is ``release`` .
+# {xrst_code sh}
 optimize_cppad_function='no'
-# &&
+# {xrst_code}
 #
-# &head for_hes_sparsity&&
-# If yes, user &code for_hes_sparsity&& to compute sparsity w.r.t. random
-# effects (otherwise use &code rev_hes_sparsity&&).
-# &codep
+# for_hes_sparsity
+# ****************
+# If yes, user ``for_hes_sparsity`` to compute sparsity w.r.t. random
+# effects (otherwise use ``rev_hes_sparsity`` ).
+# {xrst_code sh}
 for_hes_sparsity='yes'
-# &&
+# {xrst_code}
 #
-# &head Testing Speed and Memory&&
-# If you wish to test the speed or memory used by &code cppad_mixed&&,
-# set &icode build_type&& to &code release&&, include the &code -g&& flag
-# in &icode extra_cxx_flags&&. Then execute the following commands:
-# &codei%
-#  bin/install_cppad.sh
-#  bin/run_cmake.sh
-#  cd build; make %program%; cd ..
-#  bin/%program%.sh %test2run%
-# %&&
-# where &icode program&& is
-# &cref/ar1_xam/ar1_xam.cpp/&& or &cref/capture_xam/ar1_xam.cpp/&&
-# and &icode test2run&& is
-# &code normal&&, &code callgrind&&, or &code massif&&.
+# Testing Speed and Memory
+# ************************
+# If you wish to test the speed or memory used by ``cppad_mixed`` ,
+# set *build_type* to ``release`` , include the ``-g`` flag
+# in *extra_cxx_flags* . Then execute the following commands:
 #
-# &end
+# | |tab| ``bin/install_cppad.sh``
+# | |tab| ``bin/run_cmake.sh``
+# | |tab| ``cd build`` ; ``make`` *program* ; ``cd ..``
+# | |tab| ``bin/`` *program* . ``sh`` *test2run*
+#
+# where *program* is
+# :ref:`ar1_xam<ar1_xam.cpp-name>` or :ref:`capture_xam<ar1_xam.cpp-name>`
+# and *test2run* is
+# ``normal`` , ``callgrind`` , or ``massif`` .
+#
+# {xrst_end run_cmake.sh}
 # ============================================================================
 # bash function that echos and executes a command
 echo_eval() {

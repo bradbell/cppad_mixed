@@ -3,42 +3,41 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin ran_obj_jac.cpp$$
-$spell
-   jac
-   CppAD
-   ran_obj
-   cppad
-   obj
-   interp
-   xam
-$$
+{xrst_begin ran_obj_jac.cpp}
 
-$section ran_obj_jac: Example and Test$$
+ran_obj_jac: Example and Test
+#############################
 
-$head Private$$
+Private
+*******
 This example is not part of the
-$cref/cppad_mixed public API/base_class/$$.
+:ref:`cppad_mixed public API<base_class-name>` .
 
-$head Model$$
-$latex \[
-\B{p}( y_i | \theta , u ) \sim \B{N} ( \theta_0 + \theta_1 u_i, \theta_2^2 )
-\] $$
-$latex \[
+Model
+*****
+
+.. math::
+
+   \B{p}( y_i | \theta , u ) \sim \B{N} ( \theta_0 + \theta_1 u_i, \theta_2^2 )
+
+.. math::
+
    \B{p}( u_i | \theta ) \sim \B{N} ( 0 , 1 )
-\] $$
+
 It follows that the Laplace approximation is exact and
-$latex \[
-\B{p}( y_i | \theta )
-\sim
-\B{N} \left( \theta_0 , \theta_1^2 + \theta_2^2 \right)
-\] $$
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+.. math::
 
-$end
+   \B{p}( y_i | \theta )
+   \sim
+   \B{N} \left( \theta_0 , \theta_1^2 + \theta_2^2 \right)
+
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end ran_obj_jac.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

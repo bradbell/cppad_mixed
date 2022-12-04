@@ -6,33 +6,42 @@
 # include "../sparse_ad_cholesky.hpp"
 
 /*
-$begin sparse_ad_chol_sp2.cpp$$
-$spell
-   Cholesky
-$$
+{xrst_begin sparse_ad_chol_sp2.cpp}
+{xrst_spell
+   cccc
+   subscripts
+   transposes
+}
 
-$section Sparse AD Cholesky Sparsity Calculation: Example and Test$$
+Sparse AD Cholesky Sparsity Calculation: Example and Test
+#########################################################
 
-$head Problem$$
+Problem
+*******
 We are given the function
-$latex A : \B{R}^6 \rightarrow \B{R}^{4 \times 4}$$
+:math:`A : \B{R}^6 \rightarrow \B{R}^{4 \times 4}`
 defined by
-$latex \[
+
+.. math::
+
    A(x) = \left( \begin{array}{cccc}
       x_0 & x_1  & 0   & 0   \\
       x_1 & x_2  & x_3 & 0   \\
       0   & x_3  & x_4 & x_5 \\
       0   & 0    & x_5 & x_6
    \end{array} \right)
-\] $$
-Note that the subscripts are in column major order for the
-lower triangle of $latex A(x)$$.
 
-$head Permutation$$
+Note that the subscripts are in column major order for the
+lower triangle of :math:`A(x)`.
+
+Permutation
+***********
 The fill reducing permutation
-$cref/P/sparse_ad_cholesky/Notation/P/$$
+:ref:`sparse_ad_cholesky@Notation@P`
 transposes indices zero and one; i.e.
-$latex \[
+
+.. math::
+
    P= \left( \begin{array}{cccc}
       1   & 0    & 0  & 0  \\
       0   & 0    & 0  & 1  \\
@@ -53,31 +62,40 @@ $latex \[
       x_1 & 0   & x_2 & x_3 \\
       0   & x_5 & x_3 & x_4
    \end{array} \right)
-\] $$
 
-$head Cholesky Factor$$
+Cholesky Factor
+***************
 Define the function
-$latex \[
-   c(x) = x_3 / \sqrt{x_2 - x_1^2/ x_0}
-\] $$
-The Cholesky factor
-$cref/L/sparse_ad_cholesky/Notation/L/$$ is
-$latex \[
-L(x) = \left(
-\begin{array}{cccc}
-\sqrt{x_0}       & 0                &  0                      & 0 \\
-0                & \sqrt{x_6}       &  0                      & 0 \\
-x_1 / \sqrt{x_0} & 0                & \sqrt{x_2 - x_1^2/ x_0} & 0 \\
-0                & x_5 / \sqrt{x_6} & c(x) & \sqrt{x_4 - x_5^2 / x_6 - c(x)^2 }
-\end{array}
-\right)
-\] $$
-This can be verified by checking
-$latex P * A(x) * P^\R{T} = L * L^\R{T}$$.
 
-$head Source$$
-$srcthisfile%4%// BEGIN C++%// END C++%1%$$
-$end
+.. math::
+
+   c(x) = x_3 / \sqrt{x_2 - x_1^2/ x_0}
+
+The Cholesky factor
+:ref:`sparse_ad_cholesky@Notation@L` is
+
+.. math::
+
+   L(x) = \left(
+   \begin{array}{cccc}
+   \sqrt{x_0}       & 0                &  0                      & 0 \\
+   0                & \sqrt{x_6}       &  0                      & 0 \\
+   x_1 / \sqrt{x_0} & 0                & \sqrt{x_2 - x_1^2/ x_0} & 0 \\
+   0                & x_5 / \sqrt{x_6} & c(x) & \sqrt{x_4 - x_5^2 / x_6 - c(x)^2 }
+   \end{array}
+   \right)
+
+This can be verified by checking
+:math:`P * A(x) * P^\R{T} = L * L^\R{T}`.
+
+Source
+******
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end sparse_ad_chol_sp2.cpp}
 */
 
 // include tests that are not yet working

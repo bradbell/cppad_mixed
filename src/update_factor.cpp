@@ -5,87 +5,86 @@
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/exception.hpp>
 /*
-$begin update_factor$$
-$spell
-   Taylor
-   vec
-   Cholesky
-   cppad
-   const
-   CppAD
-   ldlt
-   hes
-$$
+{xrst_begin update_factor}
 
-$section Update the Factorization of Hessian w.r.t. Random Effects$$
+Update the Factorization of Hessian w.r.t. Random Effects
+#########################################################
 
-$head Syntax$$
-$icode%mixed_object%.update_factor(%fixed_vec%, %random_vec%)%$$
+Syntax
+******
+*mixed_object* . ``update_factor`` ( *fixed_vec* , *random_vec* )
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
 
-$head Purpose$$
+Purpose
+*******
 This routine updates the Cholesky factorization of the Hessian
-$latex f_{u,u} ( \theta , u )^{-1} $$
+:math:`f_{u,u} ( \theta , u )^{-1}`
 so that it corresponds to the current value of
-$latex \theta$$ and $latex u$$.
+:math:`\theta` and :math:`u`.
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_vec%
-%$$
-and is the value of fixed effects $latex \theta$$.
 
-$head random_vec$$
+   ``const CppAD::vector<double>&`` *fixed_vec*
+
+and is the value of fixed effects :math:`\theta`.
+
+random_vec
+**********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_vec%
-%$$
-and is the value of fixed effects $latex u$$.
+
+   ``const CppAD::vector<double>&`` *random_vec*
+
+and is the value of fixed effects :math:`u`.
 If this factorization is used for computing derivatives of the
-$cref/Laplace objective/theory/Objective/Laplace Objective, r(theta)/$$,
+:ref:`Laplace objective<theory@Objective@Laplace Objective, r(theta)>` ,
 this should be the
-$cref/optimal random effects/theory/Optimal Random Effects, u^(theta)/$$.
+:ref:`optimal random effects<theory@Optimal Random Effects, u^(theta)>` .
 
-$head ran_hes_fun_$$
-The $cref/ran_hes_fun_/private_base_class/ran_hes_fun_/$$ member variable
+ran_hes_fun\_
+*************
+The :ref:`private_base_class@ran_hes_fun_` member variable
 will hold the first order Taylor coefficient corresponding
 to the specified fixed and random effects; i.e.,
-$codei%
-   ran_hes_fun_.Forward(0, %both%)
-%$$
-has been called where $icode both$$ is a packed version
+
+   ``ran_hes_fun_.Forward`` (0, *both* )
+
+has been called where *both* is a packed version
 of the fixed and random effects.
 
-$head ldlt_ran_hes_$$
+ldlt_ran_hes\_
+**************
 On input, the member variable
-$codei%
-   CPPAD_MIXED_LDLT_CLASS ldlt_ran_hes_
-%$$
+
+   ``CPPAD_MIXED_LDLT_CLASS ldlt_ran_hes_``
+
 has been
-$cref/initialized/ldlt_eigen_init/$$
+:ref:`initialized<ldlt_eigen_init-name>`
 using the sparsity pattern for the Hessian.
-Upon return, $code ldlt_ran_hes_$$ contains the updated
-$cref/factorization/ldlt_eigen_update/$$
+Upon return, ``ldlt_ran_hes_`` contains the updated
+:ref:`factorization<ldlt_eigen_update-name>`
 corresponding to the specified values for the fixed
 and random effects.
-
-$children%
+{xrst_toc_hidden
    example/private/update_factor.cpp
-%$$
-$head Example$$
-The file $cref update_factor.cpp$$ contains an example
+}
+Example
+*******
+The file :ref:`update_factor.cpp-name` contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
-$end
+{xrst_end update_factor}
 */
 // ----------------------------------------------------------------------------
 void cppad_mixed::update_factor(

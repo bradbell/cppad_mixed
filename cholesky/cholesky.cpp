@@ -3,24 +3,22 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin cholesky_devel.cpp$$
-$spell
-   cholesky
-   devel
-   cpp
-$$
+{xrst_begin cholesky_devel.cpp}
 
-$section Run C++ Examples$$
+Run C++ Examples
+################
 
-$head Syntax$$
-$code cholesky/cholesky$$
+Syntax
+******
+``cholesky/cholesky``
 
-$head Purpose$$
+Purpose
+*******
 This runs all the C++ sparse Cholesky examples (and tests)
 and prints out their correctness
 test results together with a summary result at the end.
 
-$end
+{xrst_end cholesky_devel.cpp}
 -----------------------------------------------------------------------------
 */
 # include <iostream>

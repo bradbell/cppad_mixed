@@ -3,30 +3,30 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin sparse_up_tri_sol.cpp$$
-$spell
-   tri
-   cppad
-$$
+{xrst_begin sparse_up_tri_sol.cpp}
 
-$section sparse_up_tri_sol: Example and Test$$
+sparse_up_tri_sol: Example and Test
+###################################
 
-$head Private$$
+Private
+*******
 This example is not part of the
-$cref/cppad_mixed public API/base_class/$$.
+:ref:`cppad_mixed public API<base_class-name>` .
 
-$head Problem$$
+Problem
+*******
 This example solves the equation
-$codei%
-   [ 1 2 4 ]   %%         [ 1 2 4 ]
-   [ 0 3 5 ] * %result% = [ 0 3 5 ]
-   [ 0 0 6 ]   %%         [ 0 0 6 ]
-%$$
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
-$end
+| |tab| [ 1 2 4 ]            [ 1 2 4 ]
+| |tab| [ 0 3 5 ] * *result*  = [ 0 3 5 ]
+| |tab| [ 0 0 6 ]            [ 0 0 6 ]
+
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end sparse_up_tri_sol.cpp}
 */
 // BEGIN C++
 # include <cppad/mixed/sparse_up_tri_sol.hpp>

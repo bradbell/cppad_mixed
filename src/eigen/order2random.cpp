@@ -3,92 +3,90 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin order2random$$
-$spell
-   CppAD
-   jac
-   cppad
-   hes
-   Jacobian
-   ldlt
+{xrst_begin order2random}
+{xrst_spell
    uu
-   const
-   rc
-$$
+}
 
-$section Second Order Representation of Random Effects, W(beta, theta, u)$$
+Second Order Representation of Random Effects, W(beta, theta, u)
+################################################################
 
-$head Syntax$$
-$icode%W% = CppAD::mixed::order2random(
-   %n_fixed%,
-   %n_random%,
-   %jac_a1fun%,
-   %a1_ldlt_ran_hes%,
-   %beta%,
-   %theta_u%
-)%$$
+Syntax
+******
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
+| *W* = ``CppAD::mixed::order2random`` (
+| |tab| *n_fixed* ,
+| |tab| *n_random* ,
+| |tab| *jac_a1fun* ,
+| |tab| *a1_ldlt_ran_hes* ,
+| |tab| *beta* ,
+| |tab| *theta_u*
+| )
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+Prototype
+*********
+{xrst_literal
+   // BEGIN PROTOTYPE
+   // END PROTOTYPE
+}
 
-$head n_fixed$$
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
+
+n_fixed
+*******
 number of fixed effects.
 
-$head n_random$$
+n_random
+********
 number of random effects
 
-$head jac_a1fun$$
+jac_a1fun
+*********
 This is the Jacobian of the random likelihood
 with respect to the random effects
-$latex f_u ( \theta, u )$$.
+:math:`f_u ( \theta, u )`.
 The domain indices (range indices) are with respect to the random effects
 (fixed and random effects); i.e.,
-$codei%
-   %jac_a1fun%.Domain() == %n_fixed% + %n_random%
-   %jac_a1fun%.Range() == %n_random%
-%$$
 
-$head a1_ldlt_ran_hes$$
+| |tab| *jac_a1fun* . ``Domain`` () == *n_fixed* + *n_random*
+| |tab| *jac_a1fun* . ``Range`` () == *n_random*
+
+a1_ldlt_ran_hes
+***************
 This is the LDLT factorization for the
 for the Hessian w.r.t the random effect; i.e., f_uu ( theta , u ).
-Note that this object is $code const$$ and the previous call to
-$cref/update/ldlt_eigen_update/$$ corresponded to (theta, u).
+Note that this object is ``const`` and the previous call to
+:ref:`update<ldlt_eigen_update-name>` corresponded to (theta, u).
 
-$head beta$$
-This vector has size $icode n_fixed$$ and is the CppAD independent
+beta
+****
+This vector has size *n_fixed* and is the CppAD independent
 variable vector at which we are evaluating the second order approximation
 for the optimal random effects
-$cref/W(beta, theta, u)
-   /theory
-   /Approximate Optimal Random Effects
-   /Second Order, W(beta, theta, u)
-/$$.
+:ref:`W(beta, theta, u)<theory@Approximate Optimal Random Effects@Second Order, W(beta, theta, u)>` .
 
-$head theta_u$$
-This vector has size $icode%n_fixed% + %n_random%$$
+theta_u
+*******
+This vector has size *n_fixed* + *n_random*
 and is the CppAD independent dynamic parameter vector
 at which we are evaluating the second order approximation
 for the optimal random effects
-$cref/W(beta, theta, u)
-   /theory
-   /Approximate Optimal Random Effects
-   /Second Order, W(beta, theta, u)
-/$$.
+:ref:`W(beta, theta, u)<theory@Approximate Optimal Random Effects@Second Order, W(beta, theta, u)>` .
 
-$head W$$
-The return value is $icode%W%(%beta%, %theta%, %u%)%$$.
-
-$children%
+W
+*
+The return value is *W* ( *beta* , *theta* , *u* ) .
+{xrst_toc_hidden
    example/private/order2random.cpp
-%$$
-$head Example$$
-The file $cref order2random.cpp$$ is an example and test of this
+}
+Example
+*******
+The file :ref:`order2random.cpp-name` is an example and test of this
 routine.
 
-$end
+{xrst_end order2random}
 */
 
 # include <Eigen/Sparse>

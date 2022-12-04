@@ -6,111 +6,126 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin one_dim_derivative_chk$$
-$spell
-   apx
+{xrst_begin one_dim_derivative_chk}
+{xrst_spell
    chk
-   obj
    dfdx
-   rel_tol
-   bool
-$$
+   rel
+   tol
+}
 
-$section One Dimensional Finite Difference Derivative Check$$
+One Dimensional Finite Difference Derivative Check
+##################################################
 
-$head Syntax$$
-$icode%result% = one_dim_derivative_chk(
-   %obj%, %x_lower%, %x_upper%, %x_mid%, %f_mid%, %dfdx%, %rel_tol%
-)%$$
+Syntax
+******
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+| *result* = ``one_dim_derivative_chk`` (
+| |tab| *obj* , *x_lower* , *x_upper* , *x_mid* , *f_mid* , *dfdx* , *rel_tol*
+| )
 
-$head obj$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
+
+obj
+***
 This is a object such that the syntax
-$codei%
-   %ok% = %obj%.one_dim_function(%x_in%, %f_out%)
-%$$
+
+   *ok* = *obj* . ``one_dim_function`` ( *x_in* , *f_out* )
+
 evaluates the function.
-The argument $icode x_in$$ has prototype
-$codei%
-   double x
-%$$
+The argument *x_in* has prototype
+
+   ``double x``
+
 and is the point at which we are evaluating the function.
-The argument $icode f_out$$ has prototype
-$codei%
-   d_vector& f_out
-%$$
+The argument *f_out* has prototype
+
+   ``d_vector& f_out``
+
 Its input value does not matter and upon return it is the
-value of the function at $icode x_in$$.
-The return value $icode ok$$ has prototype
-$codei%
-   bool %ok%
-%$$
-If it is true, the computation of $icode f_out$$ completed.
+value of the function at *x_in* .
+The return value *ok* has prototype
+
+   ``bool`` *ok*
+
+If it is true, the computation of *f_out* completed.
 Otherwise, an error was detected and the computation was aborted.
 
-$head x_lower$$
-This is a lower limit for the argument $icode x_in$$ to $icode fun$$.
+x_lower
+*******
+This is a lower limit for the argument *x_in* to *fun* .
 If it is less than infinity, it is used to get an approximation
 for the scale of the argument to the function.
 
-$head x_upper$$
-This is a lower limit for the argument $icode x_in$$ to $icode fun$$.
+x_upper
+*******
+This is a lower limit for the argument *x_in* to *fun* .
 If it is greater than - infinity, it is used to get an approximation
 for the scale of the argument to the function.
 
-$head x_mid$$
+x_mid
+*****
 Is the argument value at which the derivative is checked.
 It is the mid-point of a central difference approximation for the derivative
-(unless the bounds $icode x_lower$$, $icode x_upper$$ prevent this.)
+(unless the bounds *x_lower* , *x_upper* prevent this.)
 
-$head f_mid$$
-Is the value of the function at $icode x_mid$$.
+f_mid
+*****
+Is the value of the function at *x_mid* .
 
-$head dfdx$$
+dfdx
+****
 Is the value of the derivative that we are checking with a central difference
 approximation.
 
-$head rel_tol$$
+rel_tol
+*******
 Is an acceptable relative tolerance for the difference between
-$icode dfdx$$ and its finite difference approximation.
+*dfdx* and its finite difference approximation.
 
-$head result$$
-The structure $icode%result%[%i%]%$$ contains
-the following information about the $th i$$ component of the function:
+result
+******
+The structure *result* [ *i* ] contains
+the following information about the *i*-th component of the function:
 
-$subhead rel_err$$
-The smallest relative error that $code one_dim_derivative_check$$ found,
-for the $th i$$ component of the function.
-If it is less than or equal $icode rel_tol$$ the derivative check passed.
+rel_err
+=======
+The smallest relative error that ``one_dim_derivative_check`` found,
+for the *i*-th component of the function.
+If it is less than or equal *rel_tol* the derivative check passed.
 Searching for a step size with a smaller relative error stops as soon
 as the derivative check passes for all components of the function.
-If $icode%result%[%i%].rel_err%$$ is infinity,
+If *result* [ *i* ]. ``rel_err`` is infinity,
 then we were not able to evaluate the function.
 
-$subhead step$$
-The step size corresponding to $icode%result%[%i%].rel_err%$$.
+step
+====
+The step size corresponding to *result* [ *i* ]. ``rel_err`` .
 
-$subhead f_minus$$
+f_minus
+=======
 Is the value of f(x) at
-$codei%
-   %x_minus% = max(%x_mid% - %step%, %x_minus%)
-%$$
 
-$subhead f_plus$$
+   *x_minus* = ``max`` ( *x_mid* ``-`` *step* , *x_minus* )
+
+f_plus
+======
 Is the value of f(x) at
-$codei%
-   %x_plus% = min(%x_mid% + %step%, %x_upper%)
-%$$
 
-$subhead Derivative Approximation$$
+   *x_plus* = ``min`` ( *x_mid* + *step* , *x_upper* )
+
+Derivative Approximation
+========================
 The corresponding derivative approximation is
-$codei%
-   (%f_plus% - %f_minus%) / (%x_plus% - %x_minus%)
-%$$
 
-$end
+   ( *f_plus* ``-`` *f_minus* ) / ( *x_plus* ``-`` *x_minus* )
+
+{xrst_end one_dim_derivative_chk}
 */
 # include <cppad/mixed/typedef.hpp>
 

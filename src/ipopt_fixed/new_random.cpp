@@ -6,69 +6,79 @@
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-$begin ipopt_fixed_new_random$$
-$spell
-   vec
-   ipopt
-   const
-$$
+{xrst_begin ipopt_fixed_new_random}
 
-$section Compute New Random Effects and Update Factor$$
+Compute New Random Effects and Update Factor
+############################################
 
-$head Syntax$$
-$codei%new_random(%fixed_vec%)%$$
+Syntax
+******
+``new_random`` ( *fixed_vec* )
 
-$head ipopt_fixed$$
-This is a private member function of the $cref ipopt_fixed$$ class.
+ipopt_fixed
+***********
+This is a private member function of the :ref:`ipopt_fixed-name` class.
 
-$head n_random_$$
+n_random\_
+**********
 Is assumed that this member variable is greater than zero.
 
-$head random_ipopt_options_$$
+random_ipopt_options\_
+**********************
 This member variable contains
 the value of the
-$cref/random_ipopt_options/ipopt_fixed_ctor/random_ipopt_options/$$
-in the $code ipopt_fixed$$ constructor.
+:ref:`ipopt_fixed_ctor@random_ipopt_options`
+in the ``ipopt_fixed`` constructor.
 
-$head random_lower_$$
+random_lower\_
+**************
 This member variable contains
-the value of the $cref/random_lower/ipopt_fixed_ctor/random_lower/$$
-in the $code ipopt_fixed$$ constructor.
+the value of the :ref:`ipopt_fixed_ctor@random_lower`
+in the ``ipopt_fixed`` constructor.
 
-$head random_upper_$$
+random_upper\_
+**************
 This member variable contains
-the value of the $cref/random_upper/ipopt_fixed_ctor/random_upper/$$
-in the $code ipopt_fixed$$ constructor.
+the value of the :ref:`ipopt_fixed_ctor@random_upper`
+in the ``ipopt_fixed`` constructor.
 
-$head random_in_$$
+random_in\_
+***********
 This member variable contains
-the value of the $cref/random_in/ipopt_fixed_ctor/random_in/$$
-in the $code ipopt_fixed$$ constructor.
+the value of the :ref:`ipopt_fixed_ctor@random_in`
+in the ``ipopt_fixed`` constructor.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const d_vector& %fixed_vec%
-%$$
+
+   ``const d_vector&`` *fixed_vec*
+
 it is the value of the fixed effects that we are computing the random
 effects and updated factor for.
 
-$head random_cur_$$
+random_cur\_
+************
 This member variable contain is set the optimal random effects
-corresponding to $icode fixed_vec$$.
+corresponding to *fixed_vec* .
 
-$head mixed_object_$$
+mixed_object\_
+**************
 The factor in this member variables is updated using the call
-$codei%
-   mixed_object_.update_factor(%fixed_vec%, random_cur_)
-%$$
-see $cref update_factor$$ for side effects.
 
-$head Prototype$$
-$srccode%cpp% */
+   ``mixed_object_.update_factor`` ( *fixed_vec* , ``random_cur_`` )
+
+see :ref:`update_factor-name` for side effects.
+
+Prototype
+*********
+{xrst_spell_off}
+{xrst_code cpp} */
 void ipopt_fixed::new_random(const d_vector& fixed_vec)
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_fixed_new_random}
 */
 {  assert( n_random_ > 0 );
    // Compute the optimal random effects corresponding to fixed effects.

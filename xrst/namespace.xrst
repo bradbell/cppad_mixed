@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
+# SPDX-FileContributor: 2014-22 Bradley M. Bell
+# ----------------------------------------------------------------------------
+{xrst_begin namespace}
+{xrst_spell
+   namespace
+}
+
+The CppAD::mixed Namespace Public Declarations
+##############################################
+The declarations in the subsections below
+are in the ``CppAD::mixed`` namespace.
+
+Contents
+********
+{xrst_toc_table
+   include/cppad/mixed/typedef.hpp
+   src/manage_gsl_rng.cpp
+   include/cppad/mixed/sparse_mat_info.hpp
+   include/cppad/mixed/fixed_solution.hpp
+   include/cppad/mixed/exception.hpp
+}
+
+{xrst_end namespace}

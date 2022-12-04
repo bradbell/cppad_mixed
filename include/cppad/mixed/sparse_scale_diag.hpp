@@ -6,63 +6,72 @@
 # define CPPAD_MIXED_SPARSE_SCALE_DIAG_HPP
 
 /*
-$begin sparse_scale_diag$$
-$spell
-   Eigen
-   CppAD
-   const
-$$
+{xrst_begin sparse_scale_diag}
+{xrst_spell
+   diag
+}
 
-$section Scales the Diagonal of an Eigen Sparse Matrix$$
+Scales the Diagonal of an Eigen Sparse Matrix
+#############################################
 
-$head Syntax$$
-$codei%CppAD::mixed::sparse_scale_diag(%scale%, %matrix%)%$$
+Syntax
+******
+``CppAD::mixed::sparse_scale_diag`` ( *scale* , *matrix* )
 
-$head Purpose$$
-Each of the diagonal elements of $icode matrix$$ is replaced by
-$icode scale$$ times its original value.
+Purpose
+*******
+Each of the diagonal elements of *matrix* is replaced by
+*scale* times its original value.
 
-$head Private$$
+Private
+*******
 This routine is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head scale$$
+scale
+*****
 This argument has prototype
-$codei%
-   const %Float%& %scale%
-%$$
-where the type $icode Float$$ can be converted to the scalar
+
+   ``const`` *Float* & *scale*
+
+where the type *Float* can be converted to the scalar
 type for the matrix.
 
-$head matrix$$
+matrix
+******
 This argument has prototype
-$codei%
-   Eigen::SparseMatrix<%Scalar%, %Options%, %Index%>& %matrix%
-%$$
+
+   ``Eigen::SparseMatrix<`` *Scalar* , *Options* , *Index* >& *matrix*
+
 This is the sparse matrix for which we are scaling the diagonal elements.
 The sparsity pattern for the matrix is not modified.
 
-$subhead Scalar$$
+Scalar
+======
 This type must support the conversion
-$codei%
-   static_cast<%Scalar%>(%scale%)
-%$$.
 
-$subhead Options$$
+   ``static_cast<`` *Scalar* >( *scale* )
+
+.
+
+Options
+=======
 The options for this sparse matrix are arbitrary; i.e.,
 has no restrictions.
 
-$subhead Index$$
+Index
+=====
 The index type fro this sparse matrix are arbitrary; i.e.,
 has no restrictions.
+{xrst_toc_hidden
+   example/private/sparse_scale_diag.cpp
+}
+Example
+*******
+The file :ref:`sparse_scale_diag.cpp-name` is an example
+and test of ``sparse_scale_diag`` .
 
-$children%example/private/sparse_scale_diag.cpp
-%$$
-$head Example$$
-The file $cref sparse_scale_diag.cpp$$ is an example
-and test of $code sparse_scale_diag$$.
-
-$end
+{xrst_end sparse_scale_diag}
 */
 # include <Eigen/SparseCore>
 

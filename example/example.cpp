@@ -3,18 +3,21 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin example_devel.cpp$$
+{xrst_begin example_devel.cpp}
 
-$section Run C++ Examples$$
+Run C++ Examples
+################
 
-$head Syntax$$
-$code build/example/example$$
+Syntax
+******
+``build/example/example``
 
-$head Purpose$$
+Purpose
+*******
 This runs all the C++ examples and prints out their correctness
 test results together with a summary result at the end.
 
-$end
+{xrst_end example_devel.cpp}
 -----------------------------------------------------------------------------
 */
 # include <iostream>

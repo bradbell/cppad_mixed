@@ -5,76 +5,86 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin fixed_solution$$
-$spell
-   CppAD
-   vec
-   rcv
-   ipopt
-$$
+{xrst_begin fixed_solution}
+{xrst_spell
+   lagrange
+   multiplier
+}
 
-$section Optimal Solution Returned by optimize_fixed$$
+Optimal Solution Returned by optimize_fixed
+###########################################
 
-$head Syntax$$
-$codei%CppAD::mixed::fixed_solution %solution%$$
+Syntax
+******
+``CppAD::mixed::fixed_solution`` *solution*
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
 
-$head Convention$$
+Convention
+**********
 If a Lagrange multiplier is non-zero (zero), the correspond constraint
 is active (is not active) at the optimal solution.
 The values specified below are as in the
-$cref/solution/optimize_fixed/solution/$$ return by $code optimize_fixed$$.
+:ref:`optimize_fixed@solution` return by ``optimize_fixed`` .
 
-$head fixed_opt$$
+fixed_opt
+*********
 The size of this field is
-$cref/n_fixed/derived_ctor/n_fixed/$$.
+:ref:`derived_ctor@n_fixed` .
 It is the final value (optimal value found) for the fixed effects.
 
-$head fixed_lag$$
+fixed_lag
+*********
 The size of this field is
-$cref/n_fixed/derived_ctor/n_fixed/$$.
-If $icode%solution%.fixed_lag[%i%]%$$
+:ref:`derived_ctor@n_fixed` .
+If *solution* . ``fixed_lag`` [ *i* ]
 is greater than zero (less than zero), it is
 the Lagrange multiplier for the upper (lower) bound
-for the $th i$$ component of the fixed effects.
+for the *i*-th component of the fixed effects.
 
-$head fix_con_lag$$
+fix_con_lag
+***********
 The size of this field is
 the number of fixed constraints; i.e., the size of
-the vector $cref/vec/fix_constraint/vec/$$ returned by
-the $code fix_constraint$$ function.
-If $icode%solution%.fix_con_lag[%i%]%$$
+the vector :ref:`fix_constraint@vec` returned by
+the ``fix_constraint`` function.
+If *solution* . ``fix_con_lag`` [ *i* ]
 is greater than zero (less than zero), it is
 the Lagrange multiplier for the upper (lower) bound
-for the $th i$$ component of the fixed constraint function.
+for the *i*-th component of the fixed constraint function.
 
-$head ran_con_lag$$
+ran_con_lag
+***********
 The size of this field is
 the number of random constraints; i.e.,
 the number of rows
-in the matrix $cref/A_rcv/derived_ctor/A_rcv/$$.
-If $icode%solution%.ran_con_lag[%i%]%$$
+in the matrix :ref:`derived_ctor@A_rcv` .
+If *solution* . ``ran_con_lag`` [ *i* ]
 is greater than zero (less than zero), it is
 the Lagrange multiplier for the upper (lower) bound
-for the $th i$$ row of the random constraint matrix $latex A$$.
-
-$children%
-   include/cppad/mixed/warm_start_struct.hpp%
+for the *i*-th row of the random constraint matrix :math:`A`.
+{xrst_toc_hidden
+   include/cppad/mixed/warm_start_struct.hpp
    include/cppad/mixed/trace_struct.hpp
-%$$
-$head warm_start$$
-This $cref warm_start_struct$$ contains
+}
+warm_start
+**********
+This :ref:`warm_start_struct-name` contains
 the necessary information to continue the ipopt optimization
 from the current solution; i.e., warm start the optimization.
 
-$head trace_vec$$
-The $th i$$ element of this vector is a $cref trace_struct$$
-with the information corresponding to the $th i$$ iteration
+trace_vec
+*********
+The *i*-th element of this vector is a :ref:`trace_struct-name`
+with the information corresponding to the *i*-th iteration
 of the optimization algorithm.
 
-$end
+{xrst_end fixed_solution}
 ------------------------------------------------------------------------------
 */
 # include <cppad/utility/vector.hpp>

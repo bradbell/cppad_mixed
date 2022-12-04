@@ -5,123 +5,120 @@
 // ----------------------------------------------------------------------------
 
 /*
-$begin initialize$$
-$spell
+{xrst_begin initialize}
+{xrst_spell
+   cout
    iterator
    itr
-   cout
-   nr
-   bool
-   ldlt
-   objcon
-   init
-   CppAD
-   ran_obj
-   logdet
-   cppad
-   std
-   obj
-   vec
-   const
-   Cpp
-   var
-   hes
-   num
-   alloc
-   jac
-   Jacobian
-   rcv
    nnz
-$$
+   nr
+   var
+}
 
-$section Initialization After Constructor$$
+Initialization After Constructor
+################################
 
-$head Syntax$$
-$icode%size_map% = %mixed_object%.initialize(%fixed_vec%, %random_vec%)%$$
+Syntax
+******
+*size_map* = *mixed_object* . ``initialize`` ( *fixed_vec* , *random_vec* )
 
-$head Public$$
-This $code cppad_mixed$$ $cref base_class$$ member function is public.
+Public
+******
+This ``cppad_mixed`` :ref:`base_class-name` member function is public.
 
-$head Purpose$$
-Some of the $code cppad_mixed$$ initialization requires calling the
+Purpose
+*******
+Some of the ``cppad_mixed`` initialization requires calling the
 derived class version of the
-$cref ran_likelihood$$ function.
+:ref:`ran_likelihood-name` function.
 Hence this initialization cannot be done until
-after the $cref/derived constructor/derived_ctor/$$ completes.
+after the :ref:`derived constructor<derived_ctor-name>` completes.
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_vec%
-%$$
+
+   ``const CppAD::vector<double>&`` *fixed_vec*
+
 It specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$ at which certain $code CppAD::ADFun$$
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta` at which certain ``CppAD::ADFun``
 objects are recorded.
 
-$head random_vec$$
+random_vec
+**********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_vec%
-%$$
+
+   ``const CppAD::vector<double>&`` *random_vec*
+
 It specifies the value of the
-$cref/random effects/problem/Notation/Random Effects, u/$$
-vector $latex u$$ at which certain $code CppAD::ADFun$$
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector :math:`u` at which certain ``CppAD::ADFun``
 objects are recorded.
 
-$head size_map$$
+size_map
+********
 The return value has prototype
-$codei%
-   std::map<std::string, size_t> %size_map%
-%$$
+
+   ``std::map<std::string`` , ``size_t>`` *size_map*
+
 It represent the size of certain aspects of the problem.
 
-$subhead n_fixed$$
+n_fixed
+=======
 the number of fixed effects.
 
-$subhead n_random$$
+n_random
+========
 the number of fixed effects.
 
-$subhead quasi_fixed$$
+quasi_fixed
+===========
 If this is one (zero) are a using a quasi-Newton (Newton) method
 for optimizing the fixed effects.
 
-$subhead A_nr$$
+A_nr
+====
 is the number of rows in the liner constraint matrix A
-(the matrix has $icode n_fixed$$ columns).
+(the matrix has *n_fixed* columns).
 
-$subhead A_nnz$$
+A_nnz
+=====
 is the number of non-zeros in the liner constraint matrix A.
 
-$subhead ran_like_fun.size_var$$
+ran_like_fun.size_var
+=====================
 is the number of variables in the algorithm that maps the
 fixed and random effects to the part of the likelihood that depend
 on the random effects.
 
-$subhead fix_like_fun.size_var$$
+fix_like_fun.size_var
+=====================
 is the number of variables in the algorithm that maps the
 fixed effects to the part of the likelihood that does not depend
 on the random effects.
 
-$subhead Other Fields$$
-Not all the fields in $icode size_map$$ are specified,
+Other Fields
+============
+Not all the fields in *size_map* are specified,
 but they can be inspected. For example,
-$codei%
-   std::map<std::string, size_t>::iterator itr;
-   for(itr = %size_map%.begin(); itr != %size_map%.end(); itr++)
-      std::cout << itr->first << " = " << itr->second << "\n";
-%$$
 
-$head Example$$
-The file $cref derived_ctor.cpp$$ contains an example
-of using $code initialize$$.
+| |tab| ``std::map<std::string`` , ``size_t>::iterator itr`` ;
+| |tab| ``for`` ( ``itr`` = *size_map* . ``begin`` (); ``itr`` != *size_map* . ``end`` (); ``itr`` ++)
+| |tab| |tab| ``std::cout << itr->first <<`` " = " << ``itr->second <<`` "\\ ``n`` ";
 
-$end
+Example
+*******
+The file :ref:`derived_ctor.cpp-name` contains an example
+of using ``initialize`` .
+
+{xrst_end initialize}
 */
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/exception.hpp>

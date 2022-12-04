@@ -6,69 +6,74 @@
 # define CPPAD_MIXED_SPARSE_INFO2EIGEN_HPP
 
 /*
-$begin sparse_info2eigen$$
-$spell
-   CppAD
-   eigen
-   const
-   nr
+{xrst_begin sparse_info2eigen}
+{xrst_spell
    nc
-$$
+   nr
+}
 
-$section Convert a sparse_mat_info Representation to An Eigen Sparse Matrix$$
+Convert a sparse_mat_info Representation to An Eigen Sparse Matrix
+##################################################################
 
-$head Syntax$$
-$codei%CppAD::mixed::sparse_info2eigen(%matrix%, %info%, %nr%, %nc%)%$$
+Syntax
+******
+``CppAD::mixed::sparse_info2eigen`` ( *matrix* , *info* , *nr* , *nc* )
 
-$head Private$$
+Private
+*******
 This routine is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head matrix$$
+matrix
+******
 This argument has prototype
-$codei%
-   const Eigen::SparseMatrix<double, %Option%, %Index%>& %matrix%
-%$$
-The input value of $icode matrix$$ does not matter.
-Upon return, it contains the $icode nr$$ by $icode nc$$ matrix specified by
-$icode info$$.
 
-$subhead Option$$
-This must be $code Eigen::ColMajor$$.
+   ``const Eigen::SparseMatrix<double`` , *Option* , *Index* >& *matrix*
 
-$subhead Index$$
+The input value of *matrix* does not matter.
+Upon return, it contains the *nr* by *nc* matrix specified by
+*info* .
+
+Option
+======
+This must be ``Eigen::ColMajor`` .
+
+Index
+=====
 The index type fro this sparse matrix are arbitrary; i.e.,
 has no restrictions.
 
-$head info$$
+info
+****
 This argument has prototype
-$codei%
-   const CppAD::mixed::sparse_mat_info& %info%
-%$$
-This object must be in
-$cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order.
 
-$icode nr$$
+   ``const CppAD::mixed::sparse_mat_info&`` *info*
+
+This object must be in
+:ref:`column major<sparse_mat_info@Notation@Column Major Order>` order.
+
+*nr*
 This argument has prototype
-$icode%
-   size_t %nr%
-%$$
+
+   *size_t* ``nr``
+
 and is the number of rows in the matrix.
 
-$icode nc$$
+*nc*
 This argument has prototype
-$icode%
-   size_t %nc%
-%$$
+
+   *size_t* ``nc``
+
 and is the number of columns in the matrix.
+{xrst_toc_hidden
+   example/private/sparse_info2eigen.cpp
+}
+Example
+*******
+The file :ref:`sparse_info2eigen.cpp-name` is an example
+and test of ``sparse_info2eigen`` .
 
-$children%example/private/sparse_info2eigen.cpp
-%$$
-$head Example$$
-The file $cref sparse_info2eigen.cpp$$ is an example
-and test of $code sparse_info2eigen$$.
-
-$end
+{xrst_end sparse_info2eigen}
 */
 # include <Eigen/SparseCore>
 # include <cppad/mixed/sparse_mat_info.hpp>

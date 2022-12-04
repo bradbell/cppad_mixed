@@ -8,86 +8,115 @@
 # include <cppad/cppad.hpp>
 
 /*
-$begin typedef$$
-$spell
-   CppAD
-   Namespace
+{xrst_begin typedef}
+{xrst_spell
+   hpp
+   namespace
    typedef
-   rc
-   rcv
-   cppad.hpp
-$$
+}
 
-$section Types Defined in the CppAD Mixed Namespace$$
+Types Defined in the CppAD Mixed Namespace
+##########################################
 
-$head Syntax$$
-$codei%# include <cppad/mixed/typedef.hpp>
-%$$
+Syntax
+******
 
+   # ``include <cppad/mixed/typedef.hpp>``
 
-$head Begin Namespace$$
-All the definitions below are made inside the $code CppAD::mixed$$ namespace;
+Begin Namespace
+***************
+All the definitions below are made inside the ``CppAD::mixed`` namespace;
 i.e.,
-$srccode%cpp% */
+{xrst_spell_off}
+{xrst_code cpp} */
 namespace CppAD { namespace mixed {
 
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$head Scalar Types$$
+Scalar Types
+************
 
-$subhead a1_double$$
+a1_double
+=========
 Scalar with one level of AD:
-$srccode%cpp% */
+{xrst_spell_off}
+{xrst_code cpp} */
    typedef CppAD::AD<double> a1_double;
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$head Vector Types$$
+Vector Types
+************
 
-$subhead s_vector$$
-Vectors with elements of type $code size_t$$:
-$srccode%cpp% */
+s_vector
+========
+Vectors with elements of type ``size_t`` :
+{xrst_spell_off}
+{xrst_code cpp} */
    typedef CppAD::vector<size_t> s_vector;
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead d_vector$$
-Vectors with elements of type $code double$$:
-$srccode%cpp% */
+d_vector
+========
+Vectors with elements of type ``double`` :
+{xrst_spell_off}
+{xrst_code cpp} */
    typedef CppAD::vector<double> d_vector;
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead a1_vector$$
+a1_vector
+=========
 Vectors with elements of that have one level of AD:
-$srccode%cpp% */
+{xrst_spell_off}
+{xrst_code cpp} */
    typedef CppAD::vector<a1_double> a1_vector;
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$head Sparse Types$$
+Sparse Types
+************
 
-$subhead sparse_rc$$
-Sparsity patterns using index vector of type $code s_vector$$:
-$srccode%cpp% */
+sparse_rc
+=========
+Sparsity patterns using index vector of type ``s_vector`` :
+{xrst_spell_off}
+{xrst_code cpp} */
    typedef CppAD::sparse_rc<s_vector> sparse_rc;
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead d_sparse_rcv$$
-Sparse matrices using index vector of type $code s_vector$$
-and value vectors of type $code d_vector$$:
-$srccode%cpp% */
+d_sparse_rcv
+============
+Sparse matrices using index vector of type ``s_vector``
+and value vectors of type ``d_vector`` :
+{xrst_spell_off}
+{xrst_code cpp} */
    typedef CppAD::sparse_rcv<s_vector, d_vector> d_sparse_rcv;
 
-/* %$$
-$subhead a1_sparse_rcv$$
-Sparse matrices using index vector of type $code s_vector$$
-and value vectors of type $code a1_vector$$:
-$srccode%cpp% */
+/* {xrst_code}
+{xrst_spell_on}
+a1_sparse_rcv
+=============
+Sparse matrices using index vector of type ``s_vector``
+and value vectors of type ``a1_vector`` :
+{xrst_spell_off}
+{xrst_code cpp} */
    typedef CppAD::sparse_rcv<s_vector, a1_vector> a1_sparse_rcv;
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$head End Namespace$$
-$srccode%cpp% */
+End Namespace
+*************
+{xrst_spell_off}
+{xrst_code cpp} */
 } }
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end typedef}
 */
 
 # endif

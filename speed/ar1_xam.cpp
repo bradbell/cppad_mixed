@@ -3,202 +3,226 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin ar1_xam.cpp$$
-$spell
-   cmake
-   bool
-   ar1_xam
-   gsl_rng
-   ipopt
-   cppad
-   CppAD
+{xrst_begin ar1_xam.cpp}
+{xrst_spell
    alloc
-   cholesky
-   ldlt_cholmod
+   allocator
+   boolean
    ndebug
-$$
+   preprocessor
+   rng
+}
 
-$section A First Order Auto-Regressive Example and Speed Test$$
+A First Order Auto-Regressive Example and Speed Test
+####################################################
 
-$head Syntax$$
-$codei%./ar1_xam \
-   %random_seed% \
-   %number_random% \
-   %quasi_fixed% \
-   %trace_optimize_fixed% \
-   %ipopt_solve% \
-   %bool_sparsity% \
-   %hold_memory% \
-   %derivative_test% \
-   %start_near_solution%
-%$$
+Syntax
+******
 
-$head Problem$$
+| ./ ``ar1_xam`` \\
+| |tab| *random_seed*  \\
+| |tab| *number_random*  \\
+| |tab| *quasi_fixed*  \\
+| |tab| *trace_optimize_fixed*  \\
+| |tab| *ipopt_solve*  \\
+| |tab| *bool_sparsity*  \\
+| |tab| *hold_memory*  \\
+| |tab| *derivative_test*  \\
+| |tab| *start_near_solution*
 
-$subhead Data$$
-For $latex t = 0 , \ldots , T - 1$$,
-$latex y_t = (1 + t) + e_t $$,
-where $latex e_t \sim \B{N}( 0, \sigma_y^2 )$$.
+Problem
+*******
 
+Data
+====
+For :math:`t = 0 , \ldots , T - 1`,
+:math:`y_t = (1 + t) + e_t`,
+where :math:`e_t \sim \B{N}( 0, \sigma_y^2 )`.
 
-$subhead p( y_t | u , theta )$$
-For $latex t = 0 , \ldots , T - 1$$,
-$latex y_t \sim \B{N}( u_t , \sigma_y^2 )$$.
+p( y_t | u , theta )
+====================
+For :math:`t = 0 , \ldots , T - 1`,
+:math:`y_t \sim \B{N}( u_t , \sigma_y^2 )`.
 
-$subhead p( u | theta )$$
-For $latex t = 0$$, $latex u_t \sim \B{N}( 0 , \theta_0^2 )$$,
-and for $latex t = 1 , \ldots , T - 1$$,
-$latex u_t - u_{t-1} \sim \B{N}( 0 , \theta_0^2 )$$.
+p( u | theta )
+==============
+For :math:`t = 0`, :math:`u_t \sim \B{N}( 0 , \theta_0^2 )`,
+and for :math:`t = 1 , \ldots , T - 1`,
+:math:`u_t - u_{t-1} \sim \B{N}( 0 , \theta_0^2 )`.
 
+Command Arguments
+*****************
 
-$head Command Arguments$$
-
-$subhead random_seed$$
+random_seed
+===========
 This is a non-negative integer equal to the
 seed for the random number generator,
 to be specific,
-$cref/s_in/manage_gsl_rng/new_gsl_rng/s_in/$$ used during the call to
-$code new_gsl_rng$$.
+:ref:`manage_gsl_rng@new_gsl_rng@s_in` used during the call to
+``new_gsl_rng`` .
 
-$subhead number_random$$
+number_random
+=============
 This is a positive integer specifying the number of random effects.
 This is also the number of time points and number of data values.
 
-$subhead quasi_fixed$$
-This is either $code yes$$ or $code no$$ and is the value of
-$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ in the
-$code cppad_mixed$$ derived class constructor.
+quasi_fixed
+===========
+This is either ``yes`` or ``no`` and is the value of
+:ref:`derived_ctor@quasi_fixed` in the
+``cppad_mixed`` derived class constructor.
 The amount of memory used by the
-$cref/mixed_derived/derived_ctor/mixed_derived/$$ object,
+:ref:`derived_ctor@mixed_derived` object,
 after the information matrix is computed,
-will be similar to after the initialization when $icode quasi_fixed$$ is no.
+will be similar to after the initialization when *quasi_fixed* is no.
 
-$subhead trace_optimize_fixed$$
-This is either $code yes$$ or $code no$$.
-If it is yes, a $icode%print_level% = 5%$$
-$cref/trace/ipopt_trace/$$ of the fixed effects optimization
+trace_optimize_fixed
+====================
+This is either ``yes`` or ``no`` .
+If it is yes, a *print_level*  = 5
+:ref:`trace<ipopt_trace-name>` of the fixed effects optimization
 is included in the program output.
-Otherwise the ipopt $icode print_level$$ is zero and
+Otherwise the ipopt *print_level* is zero and
 no such trace is printed.
 
-$subhead ipopt_solve$$
-This is either $code yes$$ or $code no$$.
-If it is yes, the $code CppAD::ipopt::solve$$
+ipopt_solve
+===========
+This is either ``yes`` or ``no`` .
+If it is yes, the ``CppAD::ipopt::solve``
 routine is used for optimizing the random effects,
-otherwise $code CppAD::mixed::ipopt_random$$ is used; see
-$cref/evaluation_method/optimize_random/options/evaluation_method/$$.
+otherwise ``CppAD::mixed::ipopt_random`` is used; see
+:ref:`optimize_random@options@evaluation_method` .
 
-$subhead bool_sparsity$$
-This is either $code yes$$ or $code no$$.
+bool_sparsity
+=============
+This is either ``yes`` or ``no`` .
 If it is yes, boolean sparsity patterns are used for this computation,
 otherwise set sparsity patterns are used.
 
-$subhead hold_memory$$
+hold_memory
+===========
 The CppAD memory allocator has a hold memory option will be set by
-$codei%
-   CppAD::thread_alloc::hold_memory(%hold_memory%);
-%$$
-where $icode hold_memory$$ is either $code yes$$ or $code no$$.
 
-$subhead derivative_test$$
-This is either $code yes$$ or $code no$$.
+   ``CppAD::thread_alloc::hold_memory`` ( *hold_memory* );
+
+where *hold_memory* is either ``yes`` or ``no`` .
+
+derivative_test
+===============
+This is either ``yes`` or ``no`` .
 If it is yes, the derivatives of functions used in the optimization
 of the fixed effects are checked for correctness.
 (This requires extra time).
 
-$subhead start_near_solution$$
-This is either $code yes$$ or $code no$$.
+start_near_solution
+===================
+This is either ``yes`` or ``no`` .
 If it is yes, the initial point for the optimization
 is the value of the fixed effects used to simulate the data.
 Otherwise, the initial point is significantly different from this value.
 
-
-$head Output$$
-Each output name, value pair is written in as $icode%name% = %value%$$
+Output
+******
+Each output name, value pair is written in as *name* = *value*
 where the amount of spaces surrounding the equal sign is not specified.
 All of the pairs listed above are output.
 In addition, the following name value pairs are also output.
 
-$subhead cppad_mixed_version$$
-The $code cppad_mixed$$ version number.
+cppad_mixed_version
+===================
+The ``cppad_mixed`` version number.
 
-$subhead ldlt_cholmod$$
-is the $code bin/run_cmake.sh$$ configuration option
-$cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$.
+ldlt_cholmod
+============
+is the ``bin/run_cmake.sh`` configuration option
+:ref:`run_cmake.sh@ldlt_cholmod` .
 
-$subhead optimize_cppad_function$$
-is the $code bin/run_cmake.sh$$ configuration option
-$cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$.
+optimize_cppad_function
+=======================
+is the ``bin/run_cmake.sh`` configuration option
+:ref:`run_cmake.sh@optimize_cppad_function` .
 
-$subhead ndebug_defined$$
-is the $code NDEBUG$$ preprocessor symbol defined.
-This should be yes (no) if the $code bin/run_cmake.sh$$ configuration option
-$cref/build_type/run_cmake.sh/build_type/$$ is $code release$$
-($code debug$$).
+ndebug_defined
+==============
+is the ``NDEBUG`` preprocessor symbol defined.
+This should be yes (no) if the ``bin/run_cmake.sh`` configuration option
+:ref:`run_cmake.sh@build_type` is ``release``
+(``debug`` ).
 
-$subhead actual_seed$$
-If $icode random_seed$$ is zero,
-the system clock, instead of $icode random_seed$$,
+actual_seed
+===========
+If *random_seed* is zero,
+the system clock, instead of *random_seed* ,
 is used to seed the random number generator.
-The actual random seed $icode actual_seed$$ is printed
-so that you can reproduce results when $icode random_seed$$ is zero.
+The actual random seed *actual_seed* is printed
+so that you can reproduce results when *random_seed* is zero.
 
-$subhead initialize_bytes$$
+initialize_bytes
+================
 Is the amount of heap memory, in bytes,
-added to the program during its $cref initialize$$ call.
+added to the program during its :ref:`initialize-name` call.
 Note that more temporary memory may have been used during this call.
-In addition, only memory allocated using $code CppAD::thread_alloc$$ is
+In addition, only memory allocated using ``CppAD::thread_alloc`` is
 included.
 
-$subhead initialize_seconds$$
-Is the number of seconds used by the derived class $cref initialize$$ call.
+initialize_seconds
+==================
+Is the number of seconds used by the derived class :ref:`initialize-name` call.
 
-$subhead optimize_fixed_seconds$$
+optimize_fixed_seconds
+======================
 Is the number of seconds used by the call to
-$cref optimize_fixed$$ that is used to compute the
+:ref:`optimize_fixed-name` that is used to compute the
 optimal fixed effects.
 
-$subhead optimize_random_seconds$$
+optimize_random_seconds
+=======================
 Is the number of seconds used by a single call to
-$cref optimize_random$$ that is used to compute the
+:ref:`optimize_random-name` that is used to compute the
 optimal random effects.
 
-$subhead information_mat_seconds$$
+information_mat_seconds
+=======================
 Is the number of seconds used by the call to
-$cref information_mat$$ that computes the observed information matrix.
+:ref:`information_mat-name` that computes the observed information matrix.
 
-$subhead sample_fixed_seconds$$
+sample_fixed_seconds
+====================
 Is the number of seconds used by the call to
-$cref sample_fixed$$ that computes the
-$cref/number_sample_fixed
-   /capture_xam.cpp/Command Arguments/number_fixed_samples/$$
+:ref:`sample_fixed-name` that computes the
+:ref:`number_sample_fixed<capture_xam.cpp@Command Arguments@number_fixed_samples>`
 samples for the fixed effects.
 
-$subhead final_bytes$$
+final_bytes
+===========
 Is final amount of heap memory, in bytes, added and retained by the program.
-Only memory allocated using $code CppAD::thread_alloc$$ is included.
+Only memory allocated using ``CppAD::thread_alloc`` is included.
 
-$subhead theta_0_estimate$$
-Is the optimal estimate for $latex \theta_0$$; see the
-$cref/problem/ar1_xam.cpp/Problem/$$ definition.
+theta_0_estimate
+================
+Is the optimal estimate for :math:`\theta_0`; see the
+:ref:`ar1_xam.cpp@Problem` definition.
 
-$subhead ar1_xam_ok$$
+ar1_xam_ok
+==========
 If this program passes it's correctness test,
-$icode ar1_xam_ok$$ is yes and the program return code is $code 0$$.
-Otherwise $icode ar1_xam_ok$$ it is no and the return code is $code 1$$.
+*ar1_xam_ok* is yes and the program return code is ``0`` .
+Otherwise *ar1_xam_ok* it is no and the return code is ``1`` .
+{xrst_toc_hidden
+   bin/ar1_xam.sh
+}
+Example
+*******
+The file :ref:`ar1_xam.sh-name` is an example using this program.
 
-$children%bin/ar1_xam.sh
-%$$
-$head Example$$
-The file $cref ar1_xam.sh$$ is an example using this program.
+Source Code
+***********
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$head Source Code$$
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
-
-
-$end
+{xrst_end ar1_xam.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

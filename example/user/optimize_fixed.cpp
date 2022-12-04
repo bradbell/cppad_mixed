@@ -3,85 +3,95 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin optimize_fixed.cpp$$
-$spell
-   CppAD
-   cppad
-   hes
-   eval
-   interp
-   xam
-   Optimizer
-   vec
-$$
+{xrst_begin optimize_fixed.cpp}
+{xrst_spell
+   optimizer
+}
 
-$section Optimize Fixed Effects: Example and Test$$
+Optimize Fixed Effects: Example and Test
+########################################
 
-$head Model$$
-$latex \[
+Model
+*****
+
+.. math::
+
    \B{p}( y_i | \theta , u ) \sim \B{N} ( u_i + \theta_0 , \theta_1^2 )
-\] $$
-$latex \[
+
+.. math::
+
    \B{p}( u_i | \theta ) \sim \B{N} ( 0 , 1 )
-\] $$
-$latex \[
+
+.. math::
+
    \B{p}( \theta ) \sim \B{N} ( 4 , 1 )
-\] $$
+
 It follows that the Laplace approximation is exact and
-$latex \[
+
+.. math::
+
    \B{p}( y_i | \theta ) \sim \B{N} \left( \theta_0 , 1 + \theta_1^2 \right)
-\] $$
+
 The constraints on the fixed effect are
-$latex \[
+
+.. math::
+
    - \infty \leq \theta_0 \leq + \infty
    \R{\; and \;}
    0.1 \leq \theta_1 \leq 100
-\] $$
 
-$head Objective$$
+Objective
+*********
 The corresponding objective for the fixed effects is equivalent to:
-$latex \[
-F( \theta ) = \frac{1}{2} \left[
-   ( \theta_0 - 4 )^2 + ( \theta_1 - 4 )^2 +
-      N \log \left( 1 + \theta_1^2 \right) +
-      ( 1 + \theta_1^2)^{-1} \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
-\right]
-\] $$
 
-$head First Order Partials$$
+.. math::
+
+   F( \theta ) = \frac{1}{2} \left[
+      ( \theta_0 - 4 )^2 + ( \theta_1 - 4 )^2 +
+         N \log \left( 1 + \theta_1^2 \right) +
+         ( 1 + \theta_1^2)^{-1} \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
+   \right]
+
+First Order Partials
+********************
 The first order partial derivatives of the objective are:
-$latex \[
-F_0 ( \theta )
-=
-( \theta_0 - 4 )
--
-( 1 + \theta_1^2)^{-1} \sum_{i=0}^{N-1} ( y_i - \theta_0 )
-\] $$
-$latex \[
-F_1 ( \theta )
-=
-( \theta_1 - 4 )
-+
-N \left( 1 + \theta_1^2 \right)^{-1} \theta_1
--
-( 1 + \theta_1^2)^{-2} \theta_1 \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
-\] $$
 
-$head Optimizer Trace$$
+.. math::
+
+   F_0 ( \theta )
+   =
+   ( \theta_0 - 4 )
+   -
+   ( 1 + \theta_1^2)^{-1} \sum_{i=0}^{N-1} ( y_i - \theta_0 )
+
+.. math::
+
+   F_1 ( \theta )
+   =
+   ( \theta_1 - 4 )
+   +
+   N \left( 1 + \theta_1^2 \right)^{-1} \theta_1
+   -
+   ( 1 + \theta_1^2)^{-2} \theta_1 \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
+
+Optimizer Trace
+***************
 This example uses the optimizer trace information; see
-$cref/trace_vec/fixed_solution/trace_vec/$$.
+:ref:`fixed_solution@trace_vec` .
 
-$head Optimizer Warm Start$$
+Optimizer Warm Start
+********************
 This example uses the optimizer warm start information; see
-$cref/warm_start/fixed_solution/warm_start/$$.
+:ref:`fixed_solution@warm_start` .
 
+Source Code
+***********
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$head Source Code$$
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
-
-$end
+{xrst_end optimize_fixed.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

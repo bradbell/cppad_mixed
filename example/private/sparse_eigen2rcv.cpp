@@ -3,23 +3,22 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin sparse_eigen2rcv.cpp$$
-$spell
-   cppad
-   eigen
-   rcv
-$$
+{xrst_begin sparse_eigen2rcv.cpp}
 
-$section sparse_eigen2rcv: Example and Test$$
+sparse_eigen2rcv: Example and Test
+##################################
 
-$head Private$$
+Private
+*******
 This example is not part of the
-$cref/cppad_mixed public API/base_class/$$.
+:ref:`cppad_mixed public API<base_class-name>` .
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
-$end
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end sparse_eigen2rcv.cpp}
 */
 // BEGIN C++
 # include <cppad/mixed/sparse_eigen2rcv.hpp>

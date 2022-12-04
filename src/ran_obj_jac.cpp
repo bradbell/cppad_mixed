@@ -5,83 +5,76 @@
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/exception.hpp>
 /*
-$begin ran_obj_jac$$
-$spell
-   ldlt
-   jac
-   CppAD
-   ran_obj
-   cppad
-   hes
-   vec
-   const
-   Cpp
-   xam
-   cholesky
-$$
+{xrst_begin ran_obj_jac}
 
-$section Derivative of Laplace Objective$$
+Derivative of Laplace Objective
+###############################
 
-$head Syntax$$
-$icode%mixed_object%.ran_obj_jac(%fixed_vec%, %random_vec%, %r_fixed%)%$$
+Syntax
+******
+*mixed_object* . ``ran_obj_jac`` ( *fixed_vec* , *random_vec* , *r_fixed* )
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
 
-$head Purpose$$
+Purpose
+*******
 This routine computes the
-$cref/derivative of the Laplace objective
-   /theory/
-   Derivative of Laplace Objective
-/$$.
+:ref:`derivative of the Laplace objective<theory@Derivative of Laplace Objective>` .
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head ldlt_ran_hes_$$
+ldlt_ran_hes\_
+**************
 It is assumed that the member variable
-$codei%
-   CPPAD_MIXED_LDLT_CLASS ldlt_ran_hes_
-%$$
-was updated using $cref update_factor$$ for the specified values of the
+
+   ``CPPAD_MIXED_LDLT_CLASS ldlt_ran_hes_``
+
+was updated using :ref:`update_factor-name` for the specified values of the
 fixed and random effects.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_vec%
-%$$
-and is the value of fixed effects $latex \theta$$.
 
-$head random_vec$$
+   ``const CppAD::vector<double>&`` *fixed_vec*
+
+and is the value of fixed effects :math:`\theta`.
+
+random_vec
+**********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_vec%
-%$$
-and is the value of fixed effects $latex u$$.
+
+   ``const CppAD::vector<double>&`` *random_vec*
+
+and is the value of fixed effects :math:`u`.
 It is assumed that these random effects are optimal for the specified
-fixed effects and hence $latex f_u ( \theta , u ) = 0$$.
+fixed effects and hence :math:`f_u ( \theta , u ) = 0`.
 
-$head r_fixed$$
+r_fixed
+*******
 This argument has prototype
-$codei%
-   CppAD::vector<double>& %r_fixed%
-%$$
-If the input size must be equal to $code n_fixed_$$.
-Upon return, it contains the value of the derivative w.r.t
-the fixed effects; i.e. $latex r_\theta ( \theta )$$.
 
-$children%
+   ``CppAD::vector<double>&`` *r_fixed*
+
+If the input size must be equal to ``n_fixed_`` .
+Upon return, it contains the value of the derivative w.r.t
+the fixed effects; i.e. :math:`r_\theta ( \theta )`.
+{xrst_toc_hidden
    example/private/ran_obj_jac.cpp
-%$$
-$head Example$$
-The file $cref ran_obj_jac.cpp$$ contains an example
+}
+Example
+*******
+The file :ref:`ran_obj_jac.cpp-name` contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
-$end
+{xrst_end ran_obj_jac}
 */
 // ----------------------------------------------------------------------------
 void cppad_mixed::ran_obj_jac(

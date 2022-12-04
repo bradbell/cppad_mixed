@@ -3,531 +3,551 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin capture_xam.cpp$$
-$spell
-   cmake
-   bool
-   std
-   CppAD
-   cppad
-   Biometrics
-   Royle
-   Resample
-   Poisson
-   xam
-   logit
-   covariate
-   ipopt
-   gsl_rng
+{xrst_begin capture_xam.cpp}
+{xrst_spell
    alloc
-   cholesky
-   ldlt_cholmod
+   allocator
+   boolean
+   logit
    ndebug
-$$
+   poisson
+   preprocessor
+   rng
+   royle
+   truncation
+}
 
-$section A Capture Example and Speed Test$$
+A Capture Example and Speed Test
+################################
 
-$head Syntax$$
-$codei%build/speed/capture_xam  \
-   %random_seed% \
-   %number_random%  \
-   %quasi_fixed% \
-   %trace_optimize_fixed% \
-   %ipopt_solve% \
-   %bool_sparsity% \
-   %hold_memory% \
-   %derivative_test% \
-   %start_near_solution% \
-   %number_fixed_samples% \
-   %number_locations% \
-   %max_population% \
-   %mean_population% \
-   %mean_logit_probability% \
-   %std_logit_probability% \
-   %random_constraint%
-%$$
+Syntax
+******
 
-$head Reference$$
+| ``build/speed/capture_xam`` \\
+| |tab| *random_seed*  \\
+| |tab| *number_random*   \\
+| |tab| *quasi_fixed*  \\
+| |tab| *trace_optimize_fixed*  \\
+| |tab| *ipopt_solve*  \\
+| |tab| *bool_sparsity*  \\
+| |tab| *hold_memory*  \\
+| |tab| *derivative_test*  \\
+| |tab| *start_near_solution*  \\
+| |tab| *number_fixed_samples*  \\
+| |tab| *number_locations*  \\
+| |tab| *max_population*  \\
+| |tab| *mean_population*  \\
+| |tab| *mean_logit_probability*  \\
+| |tab| *std_logit_probability*  \\
+| |tab| *random_constraint*
+
+Reference
+*********
 J. Andrew Royle,
 Biometrics 60, 108-115 March 2004,
-$italic
-N-Mixture Models for Estimating Population Size
-from Spatially Replicated Counts.
-$$
+*N-Mixture Models for Estimating Population Size*
+*from Spatially Replicated Counts.*
 
-$head Command Arguments$$
+Command Arguments
+*****************
 
-$subhead random_seed$$
+random_seed
+===========
 This is a non-negative integer equal to the
 seed for the random number generator,
 to be specific,
-$cref/s_in/manage_gsl_rng/new_gsl_rng/s_in/$$ used during the call to
-$code new_gsl_rng$$.
+:ref:`manage_gsl_rng@new_gsl_rng@s_in` used during the call to
+``new_gsl_rng`` .
 
-$subhead number_random$$
+number_random
+=============
 This is a positive integer equal to the number of random effects.
 This is also equal to the
 number of times at which the measurements are made and is denoted by
-$latex T$$ below.
+:math:`T` below.
 
-$subhead quasi_fixed$$
-This is either $code yes$$ or $code no$$ and is the value of
-$cref/quasi_fixed/derived_ctor/quasi_fixed/$$ in the
-$code cppad_mixed$$ derived class constructor.
+quasi_fixed
+===========
+This is either ``yes`` or ``no`` and is the value of
+:ref:`derived_ctor@quasi_fixed` in the
+``cppad_mixed`` derived class constructor.
 The amount of memory used by the
-$cref/mixed_derived/derived_ctor/mixed_derived/$$ object,
+:ref:`derived_ctor@mixed_derived` object,
 after the information matrix is computed,
-will be similar to after the initialization when $icode quasi_fixed$$ is no.
+will be similar to after the initialization when *quasi_fixed* is no.
 
-$subhead trace_optimize_fixed$$
-This is either $code yes$$ or $code no$$.
-If it is yes, a $icode%print_level% = 5%$$
-$cref/trace/ipopt_trace/$$ of the fixed effects optimization
+trace_optimize_fixed
+====================
+This is either ``yes`` or ``no`` .
+If it is yes, a *print_level*  = 5
+:ref:`trace<ipopt_trace-name>` of the fixed effects optimization
 is included in the program output.
-Otherwise the ipopt $icode print_level$$ is zero and
+Otherwise the ipopt *print_level* is zero and
 no such trace is printed.
 
-$subhead ipopt_solve$$
-This is either $code yes$$ or $code no$$.
-If it is yes, the $code CppAD::ipopt::solve$$
+ipopt_solve
+===========
+This is either ``yes`` or ``no`` .
+If it is yes, the ``CppAD::ipopt::solve``
 routine is used for optimizing the random effects,
-otherwise $code CppAD::mixed::ipopt_random$$ is used; see
-$cref/evaluation_method/optimize_random/options/evaluation_method/$$.
+otherwise ``CppAD::mixed::ipopt_random`` is used; see
+:ref:`optimize_random@options@evaluation_method` .
 
-$subhead bool_sparsity$$
-This is either $code yes$$ or $code no$$.
+bool_sparsity
+=============
+This is either ``yes`` or ``no`` .
 If it is yes, boolean sparsity patterns are used for this computation,
 otherwise set sparsity patterns are used.
 
-$subhead hold_memory$$
+hold_memory
+===========
 The CppAD memory allocator has a hold memory option will be set by
-$codei%
-   CppAD::thread_alloc::hold_memory(%hold_memory%);
-%$$
-where $icode hold_memory$$ is either $code yes$$ or $code no$$.
 
-$subhead derivative_test$$
-This is either $code yes$$ or $code no$$.
+   ``CppAD::thread_alloc::hold_memory`` ( *hold_memory* );
+
+where *hold_memory* is either ``yes`` or ``no`` .
+
+derivative_test
+===============
+This is either ``yes`` or ``no`` .
 If it is yes, the derivatives of functions used in the optimization
 of the fixed effects are checked for correctness.
 (This requires extra time).
 
-$subhead start_near_solution$$
-This is either $code yes$$ or $code no$$.
+start_near_solution
+===================
+This is either ``yes`` or ``no`` .
 If it is yes, the initial point for the optimization
 is the value of the fixed effects used to simulate the data.
 Otherwise, the initial point is significantly different from this value.
 
-$subhead number_fixed_samples$$
+number_fixed_samples
+====================
 This is a positive integer equal to the number of samples simulated
 from the posterior distribution for the fixed effects using
-$cref sample_fixed$$.
+:ref:`sample_fixed-name` .
 The samples are used to approximation the
 standard deviation for the optimal fixed effects.
 One should use a large number of samples (at least 100)
 for this purpose.
 
-$subhead number_locations$$
+number_locations
+================
 This is a positive integer equal to the
 number of locations at which the measurements are made; i.e.
-$latex R$$ in the reference.
+:math:`R` in the reference.
 Increasing this value increases the amount for each function evaluation,
 but does not change the number of fixed or random effects.
 
-$subhead max_population$$
+max_population
+==============
 This is a positive integer equal to the
 maximum value in the finite summation with respect to
 population size; i.e.,
-$latex K$$ in the reference.
+:math:`K` in the reference.
 This must be greater than any of the simulated number of captures
-at any location and time; i.e., and $latex y_{i,t}$$.
-Also note that $icode max_population$$ does not affect the simulated
-data $latex y_{i,t}$$.
-A suggested value is five times $icode mean_population$$.
-The value of $icode max_population$$ is large enough if increasing it
+at any location and time; i.e., and :math:`y_{i,t}`.
+Also note that *max_population* does not affect the simulated
+data :math:`y_{i,t}`.
+A suggested value is five times *mean_population* .
+The value of *max_population* is large enough if increasing it
 takes more time but does not make a difference in the optimal fixed effects
 (use the same value for the other arguments and same actual seed).
 
-$subhead mean_population$$
+mean_population
+===============
 This is a positive floating point value equal to the
 mean of the Poisson distribution for the population
 used to simulate data values;
-$latex \lambda$$ in reference.
+:math:`\lambda` in reference.
 
-$subhead mean_logit_probability$$
+mean_logit_probability
+======================
 This is a positive floating point value equal to the
 mean of the logit of the capture probability
 (independent of the random effects)
 used to simulate data values.
 The is also equal to the mean of the random effects.
 
-$subhead std_logit_probability$$
+std_logit_probability
+=====================
 This is a positive floating point value equal to the
 standard deviation of the logit of the capture probability
 (independent of the random effects)
 used to simulate data values.
 The is also equal to the standard deviation of the random effects.
 
-$subhead random_constraint$$
-This is either $code yes$$ or $code no$$.
-If it is $code no$$, there is no
-$cref/random constraint
-   /problem
-   /Maximum Likelihood
-   /Random Constraints
-/$$
+random_constraint
+=================
+This is either ``yes`` or ``no`` .
+If it is ``no`` , there is no
+:ref:`random constraint<problem@Maximum Likelihood@Random Constraints>`
 for this example.
-If it is $code yes$$,
+If it is ``yes`` ,
 the random constraint is
-$latex \[
+
+.. math::
+
    0 = \hat{u}_0 ( \theta ) + \cdots + \hat{u}_{T-1} ( \theta )
-\] $$
-where $latex \hat{u} ( \theta )$$ is the
-$cref/optimal random effects
-   /problem
-   /Notation
-   /Optimal Random Effects, u^(theta)
-/$$.
+
+where :math:`\hat{u} ( \theta )` is the
+:ref:`optimal random effects<problem@Notation@Optimal Random Effects, u^(theta)>` .
 The corresponding
-$cref/random constraint matrix
-   /problem
-   /Notation
-   /Random Constraint Matrix, A
-/$$
-$latex A$$ is the row vector of size $latex T$$ with all ones; i.e.,
-$latex \[
+:ref:`random constraint matrix<problem@Notation@Random Constraint Matrix, A>`
+:math:`A` is the row vector of size :math:`T` with all ones; i.e.,
+
+.. math::
+
    A = [ 1 , \cdots , 1 ] \in \B{R}^{1 \times T}
-\] $$
 
-
-$head Output$$
-Each output name, value pair is written in as $icode%name% = %value%$$
+Output
+******
+Each output name, value pair is written in as *name* = *value*
 where the amount of spaces surrounding the equal sign is not specified.
 All of the pairs listed above are output.
 In addition, the following name value pairs are also output.
 
-$subhead cppad_mixed_version$$
-The $code cppad_mixed$$ version number.
+cppad_mixed_version
+===================
+The ``cppad_mixed`` version number.
 
-$subhead ldlt_cholmod$$
-is the $code bin/run_cmake.sh$$ configuration option
-$cref/ldlt_cholmod/run_cmake.sh/ldlt_cholmod/$$.
+ldlt_cholmod
+============
+is the ``bin/run_cmake.sh`` configuration option
+:ref:`run_cmake.sh@ldlt_cholmod` .
 
-$subhead optimize_cppad_function$$
-is the $code bin/run_cmake.sh$$ configuration option
-$cref/optimize_cppad_function/run_cmake.sh/optimize_cppad_function/$$.
+optimize_cppad_function
+=======================
+is the ``bin/run_cmake.sh`` configuration option
+:ref:`run_cmake.sh@optimize_cppad_function` .
 
-$subhead ndebug_defined$$
-is the $code NDEBUG$$ preprocessor symbol defined.
-This should be yes (no) if the $code bin/run_cmake.sh$$ configuration option
-$cref/build_type/run_cmake.sh/build_type/$$ is $code release$$
-($code debug$$).
+ndebug_defined
+==============
+is the ``NDEBUG`` preprocessor symbol defined.
+This should be yes (no) if the ``bin/run_cmake.sh`` configuration option
+:ref:`run_cmake.sh@build_type` is ``release``
+(``debug`` ).
 
-$subhead actual_seed$$
-If $icode random_seed$$ is zero,
-the system clock, instead of $icode random_seed$$,
+actual_seed
+===========
+If *random_seed* is zero,
+the system clock, instead of *random_seed* ,
 is used to seed the random number generator.
-The actual random seed $icode actual_seed$$ is printed
-so that you can reproduce results when $icode random_seed$$ is zero.
+The actual random seed *actual_seed* is printed
+so that you can reproduce results when *random_seed* is zero.
 
-$subhead initialize_bytes$$
+initialize_bytes
+================
 Is the amount of heap memory, in bytes,
-added to the program during its $cref initialize$$ call.
+added to the program during its :ref:`initialize-name` call.
 Note that more temporary memory may have been used during this call.
-In addition, only memory allocated using $code CppAD::thread_alloc$$ is
+In addition, only memory allocated using ``CppAD::thread_alloc`` is
 included.
 
-$subhead initialize_seconds$$
-Is the number of seconds used by the derived class $cref initialize$$ call.
+initialize_seconds
+==================
+Is the number of seconds used by the derived class :ref:`initialize-name` call.
 
-$subhead optimize_fixed_seconds$$
+optimize_fixed_seconds
+======================
 Is the number of seconds used by the call to
-$cref optimize_fixed$$ that is used to compute the
+:ref:`optimize_fixed-name` that is used to compute the
 optimal fixed effects.
 
-$subhead optimize_random_seconds$$
+optimize_random_seconds
+=======================
 Is the number of seconds used by a single call to
-$cref optimize_random$$ that is used to compute the
+:ref:`optimize_random-name` that is used to compute the
 optimal random effects.
 
-$subhead information_mat_seconds$$
+information_mat_seconds
+=======================
 Is the number of seconds used by the call to
-$cref information_mat$$ that computes the observed information matrix.
+:ref:`information_mat-name` that computes the observed information matrix.
 
-$subhead sample_fixed_seconds$$
+sample_fixed_seconds
+====================
 Is the number of seconds used by the call to
-$cref sample_fixed$$ that computes the
-$cref/number_sample_fixed
-   /capture_xam.cpp/Command Arguments/number_fixed_samples/$$
+:ref:`sample_fixed-name` that computes the
+:ref:`number_sample_fixed<capture_xam.cpp@Command Arguments@number_fixed_samples>`
 samples for the fixed effects.
 
-$subhead final_bytes$$
+final_bytes
+===========
 Is final amount of heap memory, in bytes, added and retained by the program.
-Only memory allocated using $code CppAD::thread_alloc$$ is included.
+Only memory allocated using ``CppAD::thread_alloc`` is included.
 
-$subhead sum_random_effects$$
+sum_random_effects
+==================
 Is the sum of the optimal random effects.
 
-$subhead mean_population_estimate$$
+mean_population_estimate
+========================
 Is the estimate for the
-$cref/mean_population/capture_xam.cpp/Command Arguments/mean_population/$$
-computed by $cref optimize_fixed$$.
+:ref:`capture_xam.cpp@Command Arguments@mean_population`
+computed by :ref:`optimize_fixed-name` .
 
-$subhead mean_logit_probability_estimate$$
+mean_logit_probability_estimate
+===============================
 Is the optimal estimate for the
-$cref/mean_logit_probability
-   /capture_xam.cpp/Command Arguments/mean_logit_probability/$$
-(computed by $cref optimize_fixed$$).
+:ref:`capture_xam.cpp@Command Arguments@mean_logit_probability`
+(computed by :ref:`optimize_fixed-name` ).
 
-$subhead std_logit_probability_estimate$$
+std_logit_probability_estimate
+==============================
 Is the optimal estimate for the
-$cref/std_logit_probability
-   /capture_xam.cpp/Command Arguments/std_logit_probability/$$.
+:ref:`capture_xam.cpp@Command Arguments@std_logit_probability` .
 
-$subhead mean_population_std$$
-Is the sample standard deviation of $icode mean_population_estimate$$
-(corresponding to the sample computed by $cref sample_fixed$$).
+mean_population_std
+===================
+Is the sample standard deviation of *mean_population_estimate*
+(corresponding to the sample computed by :ref:`sample_fixed-name` ).
 
-$subhead mean_logit_probability_std$$
-Is the sample standard deviation of $icode mean_logit_probability_estimate$$.
+mean_logit_probability_std
+==========================
+Is the sample standard deviation of *mean_logit_probability_estimate* .
 
-$subhead std_logit_probability_std$$
-Is the sample standard deviation of $icode std_logit_probability_estimate$$.
+std_logit_probability_std
+=========================
+Is the sample standard deviation of *std_logit_probability_estimate* .
 
-$subhead mean_population_ratio$$
-$codei%( %mean_population_estimate% - %mean_population% ) /
-   %mean_population_std%
-%$$
+mean_population_ratio
+=====================
 
-$subhead mean_logit_probability_ratio$$
-$codei%( %mean_logit_probability_estimate% - %mean_logit_probability% ) /
-   %mean_logit_probability_std%
-%$$
+| ( *mean_population_estimate* ``-`` *mean_population*  ) /
+| |tab| *mean_population_std*
 
-$subhead std_probability_ratio$$
-$codei%( %std_probability_estimate% - %std_probability% ) /
-   %std_probability_std%
-%$$
+mean_logit_probability_ratio
+============================
 
-$subhead capture_xam_ok$$
+| ( *mean_logit_probability_estimate* ``-`` *mean_logit_probability*  ) /
+| |tab| *mean_logit_probability_std*
+
+std_probability_ratio
+=====================
+
+| ( *std_probability_estimate* ``-`` *std_probability*  ) /
+| |tab| *std_probability_std*
+
+capture_xam_ok
+==============
 The following conditions are checked. If they are all true,
-$icode capture_xam_ok$$ is yes. Otherwise it is no.
-$list number$$
-$icode%sum_random_effects% < 1e-8 || (%random_constraint% == no)%$$
-$lnext
-$icode%mean_population_ratio% < 5.0%$$
-$lnext
-$icode%mean_logit_probability_ratio% < 5.0%$$
-$lnext
-$icode%std_logit_probability_ratio% < 5.0%$$
-$lend
-If $icode capture_xam_ok$$ is yes, the program return value is
-$code 0$$ (no error condition).
-Otherwise it is $code 1$$ (error condition).
+*capture_xam_ok* is yes. Otherwise it is no.
 
-$children%bin/capture_xam.sh
-%$$
-$head Example$$
-The file $cref capture_xam.sh$$ is an example using this program.
+#. *sum_random_effects* < 1 ``e-8`` || ( *random_constraint* == ``no`` )
+#. *mean_population_ratio*  < 5.0
+#. *mean_logit_probability_ratio*  < 5.0
+#. *std_logit_probability_ratio*  < 5.0
 
-$head Notation$$
-$table
-$latex R$$     $cnext
-   number of sampling locations; i.e., $icode number_locations$$.
-$rnext
-$latex T$$     $cnext
-   number of sampling times; i.e., $icode number_random$$.
-$rnext
-$latex K$$     $cnext
-   maximum population in truncation of infinite summation; i.e.,
-   $icode max_population$$
-$rnext
-$latex \theta_0$$
-   $cnext mean for $latex N_i$$ given $latex \theta$$
-   ($latex \lambda$$ in reference); i.e.,
-   $icode mean_population$$.
-$rnext
-$latex \theta_1$$
-   $cnext mean of logit of capture probability; i.e.,
-   $icode mean_logit_probability$$.
-$rnext
-$latex \theta_2$$
-   $cnext standard deviation of logit of capture probability; i.e.,
-   $icode std_logit_probability$$.
-$rnext
-$latex N_i$$   $cnext
-   size of the population at $th i$$ location
-$rnext
-$latex y_{i,t}$$ $cnext
-   number of captures at location $latex i$$ and time $latex t$$
-   ($latex n_{i,t}$$ in reference)
-$rnext
-$latex y_i$$ $cnext
-   is the vector of captures at location $latex i$$
-   $latex ( y_{i,0} , \ldots , y_{i, T-1} )$$.
-$rnext
-$latex M_i$$   $cnext
-   maximum of captures at $th i$$ location
-   ($latex \max_t n_{i,t}$$ in reference)
-$rnext
-$latex q_t$$ $cnext
-   capture probability at $latex t$$ same for all locations
-   ($latex p_{i,t}$$ in reference)
-$rnext
-$latex u_t$$
-   $cnext random effect for each sampling time
-$tend
+If *capture_xam_ok* is yes, the program return value is
+``0`` (no error condition).
+Otherwise it is ``1`` (error condition).
+{xrst_toc_hidden
+   bin/capture_xam.sh
+}
+Example
+*******
+The file :ref:`capture_xam.sh-name` is an example using this program.
 
-$head p(y_it|N_i,q_t)$$
+Notation
+********
+
+.. list-table::
+
+   * - :math:`R`
+     - number of sampling locations; i.e., *number_locations* .
+   * - :math:`T`
+     - number of sampling times; i.e., *number_random* .
+   * - :math:`K`
+     - maximum population in truncation of infinite summation; i.e.,
+       *max_population*
+   * - :math:`\theta_0`
+     - mean for :math:`N_i` given :math:`\theta`
+       (:math:`\lambda` in reference); i.e.,
+       *mean_population* .
+   * - :math:`\theta_1`
+     - mean of logit of capture probability; i.e.,
+       *mean_logit_probability* .
+   * - :math:`\theta_2`
+     - standard deviation of logit of capture probability; i.e.,
+       *std_logit_probability* .
+   * - :math:`N_i`
+     - size of the population at *i*-th location
+   * - :math:`y_{i,t}`
+     - number of captures at location :math:`i` and time :math:`t`
+       (:math:`n_{i,t}` in reference)
+   * - :math:`y_i`
+     - is the vector of captures at location :math:`i`
+       :math:`( y_{i,0} , \ldots , y_{i, T-1} )`.
+   * - :math:`M_i`
+     - maximum of captures at *i*-th location
+       (:math:`\max_t n_{i,t}` in reference)
+   * - :math:`q_t`
+     - capture probability at :math:`t` same for all locations
+       (:math:`p_{i,t}` in reference)
+   * - :math:`u_t`
+     - random effect for each sampling time
+
+p(y_it|N_i,q_t)
+***************
 We use a binomial distribution to model the
-probability of $latex y_{i,t}$$ given $latex N_i$$ and $latex q_t$$; i.e,
-$latex \[
-\B{p} ( y_{i,t} | N_i , q_t )
-=
-\left( \begin{array}{c} N_i \\ y_{i,t} \end{array} \right)
-q_t^{y(i,t)} \left( 1 - q_t \right)^{y(i,t)}
-\] $$
+probability of :math:`y_{i,t}` given :math:`N_i` and :math:`q_t`; i.e,
+
+.. math::
+
+   \B{p} ( y_{i,t} | N_i , q_t )
+   =
+   \left( \begin{array}{c} N_i \\ y_{i,t} \end{array} \right)
+   q_t^{y(i,t)} \left( 1 - q_t \right)^{y(i,t)}
+
 Furthermore, we assume that this probability
-is independent for each $latex (i, t)$$.
+is independent for each :math:`(i, t)`.
 
-$head p(N_i|theta)$$
+p(N_i|theta)
+************
 We use a Poisson distribution to model the
-probability of $latex N_i$$ given $latex \theta_0$$; i.e.,
-$latex \[
-\B{p} ( N_i | \theta  )
-=
-\theta_0^{N(i)} \frac{ \exp[ - \theta_0 ] }{ N_i ! }
-\] $$
-We assume these this probability
-is independent for each $latex i$$.
+probability of :math:`N_i` given :math:`\theta_0`; i.e.,
 
-$head q_t(theta,u)$$
+.. math::
+
+   \B{p} ( N_i | \theta  )
+   =
+   \theta_0^{N(i)} \frac{ \exp[ - \theta_0 ] }{ N_i ! }
+
+We assume these this probability
+is independent for each :math:`i`.
+
+q_t(theta,u)
+************
 Section 2.4 of the
-$cref/reference/capture_xam.cpp/Reference/$$ suggests a
+:ref:`capture_xam.cpp@Reference` suggests a
 covariate model for the probability of capture.
 We use a similar model defined by
-$latex \[
+
+.. math::
+
    \R{logit} ( q_t ) = u_t + \theta_1
-\] $$
+
 It follows that
-$latex \[
-q_t( \theta , u) = [ 1 + \exp(- u_t - \theta_1 ) ]^{-1}
-\] $$
 
-$head M_i$$
+.. math::
+
+   q_t( \theta , u) = [ 1 + \exp(- u_t - \theta_1 ) ]^{-1}
+
+M_i
+***
 We define the vector of maximum measurement for each location by
-$latex \[
+
+.. math::
+
    M_i = \max \left\{ y_{i,0} , \cdots , y_{i, T-1} \right\}
-\] $$
 
-$head p(y_i|theta,u)$$
-The probability for $latex y_i$$ (the captures at location $latex i$$)
-given $latex N_i$$, $latex \theta$$, and $latex u$$ is
-$latex \[
-\B{p}( y_i | N_i, \theta , u )
-=
-\prod_{t=0}^{T-1}
-\left( \begin{array}{c} {N(i)} \\ y_{i,t} \end{array} \right)
-   q_t ( \theta , u)^{y(i,t)}
-   \left( 1 - q_t( \theta , u) \right)^{y(i,t)}
-\] $$
-We do not know the population at each location $latex N_i$$,
-but instead have a Poisson prior for $latex N_i$$.
-We sum with respect to the possible values for $latex N_i$$
-to get the probability of $latex y_i$$ given
-$latex \theta$$ and $latex u$$.
-$latex \[
-\B{p}( y_i | \theta , u )
-=
-\sum_{k=0}^K \B{p}( y_i | N_i=k, \theta , u ) \B{p}( N_i=k | \theta )
-\] $$
-where $latex k$$ is the possible values for $latex N_i$$.
-Note that $latex K$$ should be plus infinity, but we use a fixed
-finite value for $latex K$$ as an approximation for the infinite sum.
+p(y_i|theta,u)
+**************
+The probability for :math:`y_i` (the captures at location :math:`i`)
+given :math:`N_i`, :math:`\theta`, and :math:`u` is
 
-$head p(y|theta,u)$$
+.. math::
+
+   \B{p}( y_i | N_i, \theta , u )
+   =
+   \prod_{t=0}^{T-1}
+   \left( \begin{array}{c} {N(i)} \\ y_{i,t} \end{array} \right)
+      q_t ( \theta , u)^{y(i,t)}
+      \left( 1 - q_t( \theta , u) \right)^{y(i,t)}
+
+We do not know the population at each location :math:`N_i`,
+but instead have a Poisson prior for :math:`N_i`.
+We sum with respect to the possible values for :math:`N_i`
+to get the probability of :math:`y_i` given
+:math:`\theta` and :math:`u`.
+
+.. math::
+
+   \B{p}( y_i | \theta , u )
+   =
+   \sum_{k=0}^K \B{p}( y_i | N_i=k, \theta , u ) \B{p}( N_i=k | \theta )
+
+where :math:`k` is the possible values for :math:`N_i`.
+Note that :math:`K` should be plus infinity, but we use a fixed
+finite value for :math:`K` as an approximation for the infinite sum.
+
+p(y|theta,u)
+************
 Our model for the likelihood of the data at all the locations,
 given the fixed and random effects, is
-$latex \[
-\B{p}( y | \theta , u )
-=
-\prod_{i=0}^{R-1} \B{p}( y_i | \theta , u )
-\] $$
-Expressed in terms of fixed effects $latex \theta$$,
-the random effects $latex u$$,
-and the data $latex y$$, this is
-$latex \[
-\B{p}( y | \theta , u )
-=
-\prod_{i=0}^{R-1}
-\left[
-\sum_{k=0}^{K-1}
-\theta_0^k \frac{ \exp[ - \theta_0 ] }{ k ! }
-\prod_{t=0}^{T-1}
-\left( \begin{array}{c} {k} \\ y_{i,t} \end{array} \right)
-   q_t ( \theta , u)^{y(i,t)}
-   \left( 1 - q_t( \theta , u) \right)^{y(i,t)}
-\right]
-\] $$
-In $code cppad_mixed$$ notation, this specifies the
-$cref/random data density
-   /problem
-   /Notation
-   /Random Data Density, p(y|theta,u)
-/$$.
 
-$head p(u|theta)$$
+.. math::
+
+   \B{p}( y | \theta , u )
+   =
+   \prod_{i=0}^{R-1} \B{p}( y_i | \theta , u )
+
+Expressed in terms of fixed effects :math:`\theta`,
+the random effects :math:`u`,
+and the data :math:`y`, this is
+
+.. math::
+
+   \B{p}( y | \theta , u )
+   =
+   \prod_{i=0}^{R-1}
+   \left[
+   \sum_{k=0}^{K-1}
+   \theta_0^k \frac{ \exp[ - \theta_0 ] }{ k ! }
+   \prod_{t=0}^{T-1}
+   \left( \begin{array}{c} {k} \\ y_{i,t} \end{array} \right)
+      q_t ( \theta , u)^{y(i,t)}
+      \left( 1 - q_t( \theta , u) \right)^{y(i,t)}
+   \right]
+
+In ``cppad_mixed`` notation, this specifies the
+:ref:`random data density<problem@Notation@Random Data Density, p(y|theta,u)>` .
+
+p(u|theta)
+**********
 We use a normal distribution, with mean zero and standard deviation
-$latex \theta_2$$,
-for the distribution of the random effects $latex u$$
-given the fixed effects $latex \theta$$; i.e.,
-$latex \[
-\B{p} ( u | \theta )
-=
-\prod_{t=0}^{T-1}
-   \frac{1}{ \theta_2 \sqrt{ 2 \pi } }
-      \exp \left[ - \frac{1}{2} \frac{ u_t^2 }{ \theta_2^2 } \right]
-\] $$
-In $code cppad_mixed$$ notation, this specifies the
-$cref/random prior density
-   /problem
-   /Notation
-   /Random Prior Density, p(u|theta)
-/$$.
+:math:`\theta_2`,
+for the distribution of the random effects :math:`u`
+given the fixed effects :math:`\theta`; i.e.,
 
-$head p(theta)$$
+.. math::
+
+   \B{p} ( u | \theta )
+   =
+   \prod_{t=0}^{T-1}
+      \frac{1}{ \theta_2 \sqrt{ 2 \pi } }
+         \exp \left[ - \frac{1}{2} \frac{ u_t^2 }{ \theta_2^2 } \right]
+
+In ``cppad_mixed`` notation, this specifies the
+:ref:`random prior density<problem@Notation@Random Prior Density, p(u|theta)>` .
+
+p(theta)
+********
 For this example there is no
-$cref/fixed prior density
-   /problem
-   /Notation
-   /Fixed Prior Density, p(theta)
-/$$
-$latex \B{p}(\theta)$$.
+:ref:`fixed prior density<problem@Notation@Fixed Prior Density, p(theta)>`
+:math:`\B{p}(\theta)`.
 
-$head p(z|theta)$$
+p(z|theta)
+**********
 For this example there is no
-$cref/fixed data density
-   /problem
-   /Notation
-   /Fixed Data Density, p(z|theta)
-/$$
-$latex \B{p}(z | \theta)$$.
+:ref:`fixed data density<problem@Notation@Fixed Data Density, p(z|theta)>`
+:math:`\B{p}(z | \theta)`.
 
-$head c(theta)$$
+c(theta)
+********
 For this example there is no
-$cref/fixed constraint function
-   /problem
-   /Notation
-   /Fixed Constraint Function, c(theta)
-/$$
-$latex c( \theta )$$.
+:ref:`fixed constraint function<problem@Notation@Fixed Constraint Function, c(theta)>`
+:math:`c( \theta )`.
 
-$head Source Code$$
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+Source Code
+***********
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end capture_xam.cpp}
 -----------------------------------------------------------------------------
 */
 // BEGIN C++

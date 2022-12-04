@@ -3,45 +3,46 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin no_random.cpp$$
-$spell
-   CppAD
-   cppad
-   hes
-   eval
-   interp
-   xam
-$$
+{xrst_begin no_random.cpp}
 
-$section No Random Effects: Example and Test$$.
+No Random Effects: Example and Test
+###################################
 
-$head Model$$
-$latex \[
+Model
+*****
+
+.. math::
+
    \B{p}( z_i | \theta ) \sim \B{N} ( \theta_i , 1 )
-\] $$
-$latex \[
+
+.. math::
+
    \B{p}( \theta_i ) \sim \B{N} ( 0 , 1 )
-\] $$
+
 The corresponding fixed likelihood
-$cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$
+:ref:`g(theta)<theory@Fixed Likelihood, g(theta)>`
 is
-$latex \[
-g( \theta ) = \frac{1}{2} \sum_{i} \left[
-   \log ( 2 \pi ) + \theta_i^2
-   +
-   \log ( 2 \pi ) + ( z_i - \theta_i )^2
-\right]
-\] $$
+
+.. math::
+
+   g( \theta ) = \frac{1}{2} \sum_{i} \left[
+      \log ( 2 \pi ) + \theta_i^2
+      +
+      \log ( 2 \pi ) + ( z_i - \theta_i )^2
+   \right]
+
 The optimal solution (with no constraints) is
-$latex \[
+
+.. math::
+
    \hat{\theta}_i = z_i / 2
-\] $$
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end no_random.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

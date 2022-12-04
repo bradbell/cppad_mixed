@@ -5,118 +5,124 @@
 # ifndef CPPAD_MIXED_SPARSE_HES_INFO_HPP
 # define CPPAD_MIXED_SPARSE_HES_INFO_HPP
 /*
-$begin sparse_hes_info$$
-$spell
-   CppAD
-   const
-   std
-   bool
+{xrst_begin sparse_hes_info}
+{xrst_spell
    work work
-   hes
-   CppAD
-%$$
+}
 
-$section Sparse Hessian Information$$
+Sparse Hessian Information
+##########################
 
-$head Syntax$$
-$codei%CppAD::mixed::sparse_hes_info %hes_info%$$
+Syntax
+******
+``CppAD::mixed::sparse_hes_info`` *hes_info*
 
-$head Private$$
+Private
+*******
 This structure is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head Purpose$$
+Purpose
+*******
 This structure holds information about a specific Hessian.
 
-$head row$$
-The field $icode%hes_info%.row%$$ has prototype
-$codei%
-   CppAD::vector<size_t> %hes_info%.row
-%$$
+row
+***
+The field *hes_info* . ``row`` has prototype
+
+   ``CppAD::vector<size_t>`` *hes_info* . ``row``
+
 It has size zero when it is constructed.
 After initialization it should contain the row indices
 for elements of the Hessian that get computed.
 
-$head col$$
-The field $icode%hes_info%.col%$$ has prototype
-$codei%
-   CppAD::vector<size_t> %hes_info%.col
-%$$
+col
+***
+The field *hes_info* . ``col`` has prototype
+
+   ``CppAD::vector<size_t>`` *hes_info* . ``col``
+
 It has size zero when it is constructed.
 After initialization it should contain the column indices
 for elements of the Hessian that get computed.
-It must has the same size as $icode%hes_info%.row%$$.
+It must has the same size as *hes_info* . ``row`` .
 
-$head val$$
-The field $icode%hes_info%.val%$$ has prototype
-$codei%
-   CppAD::vector<double> %hes_info%.val
-%$$
+val
+***
+The field *hes_info* . ``val`` has prototype
+
+   ``CppAD::vector<double>`` *hes_info* . ``val``
+
 It has size zero when it is constructed.
-After initialization it should be that same size as $icode%hes_info%.row%$$.
-(In the special case where $icode hes_info$$ is used to compute
-Hessian values with type other than $code double$$,
-$icode%hes_info%.val%$$ can have size zero.)
+After initialization it should be that same size as *hes_info* . ``row`` .
+(In the special case where *hes_info* is used to compute
+Hessian values with type other than ``double`` ,
+*hes_info* . ``val`` can have size zero.)
 
-$head work$$
-The field $icode%hes_info%.work%$$ has prototype
-$codei%
-   CppAD::sparse_hessian_work work
-%$$
+work
+****
+The field *hes_info* . ``work`` has prototype
+
+   ``CppAD::sparse_hessian_work work``
+
 It has no information when it is constructed.
 After initialization it should contain the CppAD cached information.
 
-$head Sparse Hessian Call$$
-$codei%
-   %f%.SparseHessian(
-      %x%,
-      %w%
-      %not_used%,
-      %hes_info%.row,
-      %hes_info%.col,
-      %hes_info%.val,
-      %hes_info%.work
-   )
-%$$
+Sparse Hessian Call
+*******************
 
-$subhead f$$
-The function $icode f$$ has prototype
-$codei%
-   CppAD::ADFun<double> %f%
-%$$
+| |tab| *f* . ``SparseHessian`` (
+| |tab| |tab| *x* ,
+| |tab| |tab| *w*
+| |tab| |tab| *not_used* ,
+| |tab| |tab| *hes_info* . ``row`` ,
+| |tab| |tab| *hes_info* . ``col`` ,
+| |tab| |tab| *hes_info* . ``val`` ,
+| |tab| |tab| *hes_info* . ``work``
+| |tab| )
 
-$subhead x$$
-The argument $icode x$$ has prototype
-$codei%
-   const CppAD::vector<double>& %x%
-%$$
-and its size is $icode%f%.Domain()%$$.
+f
+=
+The function *f* has prototype
+
+   ``CppAD::ADFun<double>`` *f*
+
+x
+=
+The argument *x* has prototype
+
+   ``const CppAD::vector<double>&`` *x*
+
+and its size is *f* . ``Domain`` () .
 It is the location where the Hessian is being evaluated.
 
-$subhead w$$
-The argument $icode w$$ has prototype
-$codei%
-   const CppAD::vector<double>& %w%
-%$$
-and its size is $icode%f%.Range()%$$.
+w
+=
+The argument *w* has prototype
+
+   ``const CppAD::vector<double>&`` *w*
+
+and its size is *f* . ``Range`` () .
 It is the weighting for the components of the Hessian that is
 being computed.
 
-$subhead not_used$$
+not_used
+========
 This argument has one of the following prototypes
-$codei%
-   CppAD::vector < std::set<size_t> > %not_used%
-   CppAD::vector<bool>  %not_used%
-   CppAD::vectorBool    %not_used%
-%$$
+
+| |tab| ``CppAD::vector < std::set<size_t> >`` *not_used*
+| |tab| ``CppAD::vector<bool>`` *not_used*
+| |tab| ``CppAD::vectorBool`` *not_used*
+
 It does not matter which and it is not used.
 
-$subhead hes_info.val$$
-Upon return $icode%hes_info%.val[%k%]%$$ is the Hessian at row index
-$icode%hes_info%.row[%k%]%$$ and column index
-$icode%hes_info%.col[%k%]%$$.
+hes_info.val
+============
+Upon return *hes_info* . ``val`` [ *k* ] is the Hessian at row index
+*hes_info* . ``row`` [ *k* ] and column index
+*hes_info* . ``col`` [ *k* ] .
 
-$end
+{xrst_end sparse_hes_info}
 */
 namespace CppAD { namespace mixed {
    struct sparse_hes_info {

@@ -9,83 +9,93 @@
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /* %$$
 -------------------------------------------------------------------------------
-$begin ipopt_fixed_intermediate_callback$$
-$spell
-   Ipopt
-   iter
-   obj
-   inf
-   pr
-   du
-   ls
-   ip_cq
-   lg
-   rg
-   optimizer
-   mu
+{xrst_begin ipopt_fixed_intermediate_callback}
+{xrst_spell
+   cq
    enum
-$$
+   iter
+   ls
+   optimizer
+   pr
+}
 
-$section Get Optimizer Trace Information From Ipopt$$
+Get Optimizer Trace Information From Ipopt
+##########################################
 
-$head Syntax$$
-$icode%ok% = intermediate_callback(
-   %mode%,
-   %iter%,
-   %obj_value%,
-   %inf_pr%,
-   %inf_du%,
-   %mu%,
-   %d_norm%,
-   %regularization_size%,
-   %alpha_du%,
-   %alpha_pr%,
-   %ls_trials%,
-   %ip_data%,
-   %ip_cq%
-)%$$
+Syntax
+******
 
-$head mode$$
-This is an $code enum$$ value and equal to
-$code RegularMode$$ or $code RestorationPhaseMode$$.
+| *ok* = ``intermediate_callback`` (
+| |tab| *mode* ,
+| |tab| *iter* ,
+| |tab| *obj_value* ,
+| |tab| *inf_pr* ,
+| |tab| *inf_du* ,
+| |tab| *mu* ,
+| |tab| *d_norm* ,
+| |tab| *regularization_size* ,
+| |tab| *alpha_du* ,
+| |tab| *alpha_pr* ,
+| |tab| *ls_trials* ,
+| |tab| *ip_data* ,
+| |tab| *ip_cq*
+| )
 
-$head iter$$
-See ipopt trace $cref/iter/ipopt_trace/iter/$$.
+mode
+****
+This is an ``enum`` value and equal to
+``RegularMode`` or ``RestorationPhaseMode`` .
 
-$head obj_value$$
-See ipopt trace $cref/objective/ipopt_trace/objective/$$.
+iter
+****
+See ipopt trace :ref:`ipopt_trace@iter` .
 
-$head inf_pr$$
-See ipopt trace $cref/inf_pr/ipopt_trace/inf_pr/$$.
+obj_value
+*********
+See ipopt trace :ref:`ipopt_trace@objective` .
 
-$head inf_du$$
-See ipopt trace $cref/inf_du/ipopt_trace/inf_du/$$.
+inf_pr
+******
+See ipopt trace :ref:`ipopt_trace@inf_pr` .
 
-$head mu$$
-See ipopt trace $cref/lg(mu)/ipopt_trace/lg(mu)/$$.
+inf_du
+******
+See ipopt trace :ref:`ipopt_trace@inf_du` .
 
-$head d_norm$$
-See ipopt trace $cref/||d||/ipopt_trace/||d||/$$.
+mu
+**
+See ipopt trace :ref:`ipopt_trace@lg(mu)` .
 
-$head regularization_size$$
-See ipopt trace $cref/lg(rg)/ipopt_trace/lg(rg)/$$.
+d_norm
+******
+See ipopt trace :ref:`ipopt_trace@||d||` .
 
-$head alpha_du$$
-See ipopt trace $cref/alpha_du/ipopt_trace/alpha_du/$$.
+regularization_size
+*******************
+See ipopt trace :ref:`ipopt_trace@lg(rg)` .
 
-$head alpha_pr$$
-See ipopt trace $cref/alpha_pr/ipopt_trace/alpha_pr/$$.
+alpha_du
+********
+See ipopt trace :ref:`ipopt_trace@alpha_du` .
 
-$head ls_trials$$
-See ipopt trace $cref/ls/ipopt_trace/ls/$$.
+alpha_pr
+********
+See ipopt trace :ref:`ipopt_trace@alpha_pr` .
 
-$head ok$$
+ls_trials
+*********
+See ipopt trace :ref:`ipopt_trace@ls` .
+
+ok
+**
 If set to false, the optimizer will terminate with
-$code USER_REQUESTED_STOP$$ as the finalize_solution
-$cref/status/ipopt_xam_finalize_solution/status/$$.
+``USER_REQUESTED_STOP`` as the finalize_solution
+:ref:`ipopt_xam_finalize_solution@status` .
 
-$head Source$$
-$srccode%cpp% */
+Source
+******
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_fixed::intermediate_callback(
    AlgorithmMode               mode                 ,   // in
    Index                       iter                 ,   // in
@@ -120,8 +130,10 @@ bool ipopt_fixed::intermediate_callback(
    solution_.trace_vec.push_back(trace);
    return true;
 }
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_fixed_intermediate_callback}
 */
 
 } } // END_CPPAD_MIXED_NAMESPACE

@@ -3,23 +3,22 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin update_factor.cpp$$
-$spell
-   cppad
-$$
+{xrst_begin update_factor.cpp}
 
-$section update_factor: Example and Test$$
+update_factor: Example and Test
+###############################
 
-
-$head Private$$
+Private
+*******
 This example is not part of the
-$cref/cppad_mixed public API/base_class/$$.
+:ref:`cppad_mixed public API<base_class-name>` .
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end update_factor.cpp}
 */
 // BEGIN C++
 # include <Eigen/Sparse>

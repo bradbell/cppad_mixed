@@ -7,95 +7,96 @@
 # include <cppad/mixed/cppad_mixed.hpp>
 
 /*
-$begin unpack$$
-$spell
-   CppAD
-   cppad
-   vec
-   const
-   Cpp
-   dismod
-   hpp
-$$
+{xrst_begin unpack}
 
-$section Pack Fixed Effect and Random Effects Into One Vector$$
+Pack Fixed Effect and Random Effects Into One Vector
+####################################################
 
-$head Syntax$$
-$icode%mixed_object%.unpack(%fixed_one%, %random_vec%, %both_vec%)
-%$$
-$icode%mixed_object%.unpack(%fixed_one%, %fixed_two%, %random_vec%, %three_vec%)
-%$$
+Syntax
+******
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+| *mixed_object* . ``unpack`` ( *fixed_one* , *random_vec* , *both_vec* )
+| *mixed_object* . ``unpack`` ( *fixed_one* , *fixed_two* , *random_vec* , *three_vec* )
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
+
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head Float_pack$$
+Float_pack
+**********
 This can be any type.
 
-$head Float_unpack$$
-If $icode x$$ has type $icode Float_pack$$,
-the syntax $icode%Float_unpack%(%x%)%$$ must convert $icode x$$
-to the type $icode Float_unpack$$.
+Float_unpack
+************
+If *x* has type *Float_pack* ,
+the syntax *Float_unpack* ( *x* ) must convert *x*
+to the type *Float_unpack* .
 
-$head fixed_one$$
+fixed_one
+*********
 This argument has prototype
-$codei%
-   CppAD::vector<%Float_unpack%>& %fixed_one%
-%$$
+
+   ``CppAD::vector<`` *Float_unpack* >& *fixed_one*
+
 The input value of its elements does not matter.
 Upon return, it contains the value of the first
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$.
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>` .
 The size of this vector must be equal to
-$cref/n_fixed_/private_base_class/n_fixed_/$$.
+:ref:`private_base_class@n_fixed_` .
 
-$head fixed_two$$
+fixed_two
+*********
 This argument has prototype
-$codei%
-   CppAD::vector<%Float_unpack%>& %fixed_two%
-%$$
+
+   ``CppAD::vector<`` *Float_unpack* >& *fixed_two*
+
 The input value of its elements does not matter.
 Upon return, it contains the value of the second
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$.
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>` .
 The size of this vector must be equal to
-$cref/n_fixed_/private_base_class/n_fixed_/$$.
+:ref:`private_base_class@n_fixed_` .
 
-$head random_vec$$
+random_vec
+**********
 This argument has prototype
-$codei%
-   CppAD::vector<%Float_unpack%>& %random_vec%
-%$$
+
+   ``CppAD::vector<`` *Float_unpack* >& *random_vec*
+
 The input value of its elements does not matter.
 Upon return, it contains the value of the
-$cref/random effects/problem/Notation/Random Effects, u/$$.
+:ref:`random effects<problem@Notation@Random Effects, u>` .
 The size of this vector must be equal to
-$cref/n_random_/private_base_class/n_random_/$$.
+:ref:`private_base_class@n_random_` .
 
-$head both_vec$$
+both_vec
+********
 This argument has prototype
-$codei%
-   const CppAD::vector<%Float_pack%>& %both_vec%
-%$$
+
+   ``const CppAD::vector<`` *Float_pack* >& *both_vec*
+
 If present, the size of this vector must be equal to
-$icode%n_fixed_% + %n_random_%$$.
+*n_fixed_* + *n_random_* .
 It contains the fixed effect and random effects as one vector.
 
-$head three_vec$$
+three_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<%Float_pack%>& %three_vec%
-%$$
+
+   ``const CppAD::vector<`` *Float_pack* >& *three_vec*
+
 If present, the size of this vector must be equal to
-$codei%2*%n_fixed_% + %n_random_%$$.
+2* *n_fixed_* + *n_random_* .
 It contains the first fixed effects vector,
 the second fixed effects vector,
 and random effects as one vector.
 
-$end
+{xrst_end unpack}
 */
 
 template <class Float_unpack, class Float_pack>

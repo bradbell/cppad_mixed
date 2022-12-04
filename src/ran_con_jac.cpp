@@ -3,84 +3,81 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin ran_con_jac$$
-$spell
-   Jacobian
-   jac
-   vec
-   cppad
-   const
-   CppAD
-   rcv
-   rc
+{xrst_begin ran_con_jac}
+{xrst_spell
    nnz
-$$
+}
 
-$section Jacobian of the Random Constraint Function$$
+Jacobian of the Random Constraint Function
+##########################################
 
-$head Syntax$$
-$icode%mixed_object%.ran_con_jac(
-   %fixed_vec%, %random_vec%, %jac_rcv%
-)%$$
+Syntax
+******
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+| *mixed_object* . ``ran_con_jac`` (
+| |tab| *fixed_vec* , *random_vec* , *jac_rcv*
+| )
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
+
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_vec%
-%$$
-It specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$.
 
-$head random_vec$$
-This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_vec%
-%$$
+   ``const CppAD::vector<double>&`` *fixed_vec*
+
 It specifies the value of the
-$cref/random effects/problem/Notation/Random Effects, u/$$
-vector $latex u$$,
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta`.
+
+random_vec
+**********
+This argument has prototype
+
+   ``const CppAD::vector<double>&`` *random_vec*
+
+It specifies the value of the
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector :math:`u`,
 This must be the
-$cref/optimal random effects
-   /theory
-   /Optimal Random Effects, u^(theta)
-/$$
-$latex \hat{u} ( \theta )$$.
+:ref:`optimal random effects<theory@Optimal Random Effects, u^(theta)>`
+:math:`\hat{u} ( \theta )`.
 
-$head jac_rcv$$
+jac_rcv
+*******
 This argument has prototype
-$codei%
-   d_sparse_rcv& %jac_rcv%
-%$$
-see $cref/d_sparse_rcv/typedef/Sparse Types/d_sparse_rcv/$$.
 
-$subhead Sparsity Pattern$$
-In the case where the input value of $icode jac_rcv$$ is empty
+   ``d_sparse_rcv&`` *jac_rcv*
+
+see :ref:`typedef@Sparse Types@d_sparse_rcv` .
+
+Sparsity Pattern
+================
+In the case where the input value of *jac_rcv* is empty
 (all its sizes are zero)
-only the $cref/sparse_rc/typedef/Sparse Types/sparse_rc/$$
-sparsity pattern in $icode jac_rcv$$ computes.
-To be specific, upon return $icode%jac_rcv%.val()%$$ has size
+only the :ref:`typedef@Sparse Types@sparse_rc`
+sparsity pattern in *jac_rcv* computes.
+To be specific, upon return *jac_rcv* . ``val`` () has size
 equal to the number of non-zero elements in the sparsity pattern,
 but the value of the elements is not specified.
 
-$subhead Sparse Matrix$$
-In the case where the input value of $icode jac_rcv$$ is non-empty
-upon return $icode jac_rcv$$ is a sparse matrix representation
+Sparse Matrix
+=============
+In the case where the input value of *jac_rcv* is non-empty
+upon return *jac_rcv* is a sparse matrix representation
 of the Jacobian of the
-$cref/random constraint function
-   /problem
-   /Notation
-   /Random Constraint Function, A*u^(theta)
-/$$; i.e.,
-$latex \[
+:ref:`random constraint function<problem@Notation@Random Constraint Function, A*u^(theta)>` ; i.e.,
+
+.. math::
+
    \partial_\theta [ A \hat{u} ( \theta ) ]
    =
    A \hat{u}_\theta ( \theta )
@@ -88,31 +85,29 @@ $latex \[
    - A
    f_{u,u} \left[ \theta , \hat{u} ( \theta ) \right]^{-1}
    f_{u,\theta} \left[ \theta , \hat{u} ( \theta )  \right]
-\] $$
+
 see
-$cref/derivative of optimal random effects
-   /theory
-   /Derivative of Optimal Random Effects
-/$$.
+:ref:`theory@Derivative of Optimal Random Effects` .
 
-$subhead Column Major Order$$
-The results in $icode jac_rcv$$ are in column major order; i.e.,
+Column Major Order
+==================
+The results in *jac_rcv* are in column major order; i.e.,
 upon return
-$codei%
-   %jac_rcv%.col_major[%k%] = %k%
-%$$
-for $icode%k% = 0, %...%, %jac_rcv%.nnz()-1%$$.
 
-$children%
+   *jac_rcv* . ``col_major`` [ *k* ] = *k*
+
+for *k* = 0, ..., *jac_rcv* . ``nnz`` () ``-1`` .
+{xrst_toc_hidden
    example/private/ran_con_jac.cpp
-%$$
+}
 
-$head Example$$
-The file $cref ran_con_jac.cpp$$ contains an example
+Example
+*******
+The file :ref:`ran_con_jac.cpp-name` contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
-$end
+{xrst_end ran_con_jac}
 */
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/exception.hpp>

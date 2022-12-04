@@ -5,113 +5,125 @@
 # ifndef CPPAD_MIXED_SPARSE_MAT_INFO_HPP
 # define CPPAD_MIXED_SPARSE_MAT_INFO_HPP
 /*
-$begin sparse_mat_info$$
-$spell
-   CppAD
-   resize
-%$$
+{xrst_begin sparse_mat_info}
 
-$section Sparse Matrix Information$$
+Sparse Matrix Information
+#########################
 
-$head Syntax$$
-$codei%CppAD::mixed::sparse_mat_info %mat_info
-%$$
-$icode%mat_info%.resize(%size%)%$$
+Syntax
+******
 
-$head Purpose$$
+   *CppAD::mixed::sparse_mat_info* ``mat_info``
+
+*mat_info* . ``resize`` ( *size* )
+
+Purpose
+*******
 This structure holds information about a sparse matrix.
 
-$head row$$
-The field $icode%mat_info%.row%$$ has prototype
-$codei%
-   CppAD::vector<size_t> %mat_info%.row
-%$$
+row
+***
+The field *mat_info* . ``row`` has prototype
+
+   ``CppAD::vector<size_t>`` *mat_info* . ``row``
+
 It has size zero when it is constructed.
 After initialization it should contain the row indices
 corresponding to possibly non-zero elements of the matrix.
 
-$subhead K$$
-We use $icode%K% = %mat_info%.row.size()%$$ below.
+K
+=
+We use *K* = *mat_info* . ``row.size`` () below.
 
-$head col$$
-The field $icode%mat_info%.col%$$ has prototype
-$codei%
-   CppAD::vector<size_t> %mat_info%.col
-%$$
+col
+***
+The field *mat_info* . ``col`` has prototype
+
+   ``CppAD::vector<size_t>`` *mat_info* . ``col``
+
 It has size zero when it is constructed.
-After initialization it should have the same size as $icode row$$
+After initialization it should have the same size as *row*
 and contain the column indices
 corresponding to possibly non-zero elements of the matrix.
 
-$head val$$
-The field $icode%mat_info%.val%$$ has prototype
-$codei%
-   CppAD::vector<double> %mat_info%.val
-%$$
+val
+***
+The field *mat_info* . ``val`` has prototype
+
+   ``CppAD::vector<double>`` *mat_info* . ``val``
+
 It has size zero when it is constructed.
 After initialization it should either have size zero,
-or the same size as $icode row$$.
+or the same size as *row* .
 
-$head resize$$
-The $code resize$$ argument has prototype
-$codei%
-   size_t %size%
-%$$
+resize
+******
+The ``resize`` argument has prototype
+
+   ``size_t`` *size*
+
 All of the vectors,
-$icode row$$, $icode col$$, and $icode val$$,
+*row* , *col* , and *val* ,
 are modified to have the specified size.
 
-$head Notation$$
+Notation
+********
 
-$subhead Sparsity Pattern$$
-We say that $icode mat_info$$ is a sparsity pattern if,
-for $icode%k% = 0 , ... , %K%-1%$$,
+Sparsity Pattern
+================
+We say that *mat_info* is a sparsity pattern if,
+for *k* = 0 , ... , *K* ``-1`` ,
 the element with index
-$codei%
-   (%mat_info%.row[%k%], %mat_info%.col[%k%])
-%$$
+
+   ( *mat_info* . ``row`` [ *k* ], *mat_info* . ``col`` [ *k* ])
+
 is possibly non-zero and the size or elements of
-$icode%mat_info%.val%$$ are not specified.
+*mat_info* . ``val`` are not specified.
 
-$subhead Sparse Matrix$$
-We say that $icode mat_info$$ is a sparse matrix if,
-for $icode%k% = 0 , ... , %K%-1%$$,
+Sparse Matrix
+=============
+We say that *mat_info* is a sparse matrix if,
+for *k* = 0 , ... , *K* ``-1`` ,
 the element with index
-$codei%
-   (%mat_info%.row[%k%], %mat_info%.col[%k%])
-%$$
-is possibly non-zero and has value $icode%mat_info%.val[%k%]%$$.
 
-$subhead Empty Matrix$$
-If $icode K$$ is zero ($icode%mat_info%.row.size()%$$ is zero),
-we say that $icode mat_info$$ is the empty matrix.
+   ( *mat_info* . ``row`` [ *k* ], *mat_info* . ``col`` [ *k* ])
 
-$subhead Column Major Order$$
-If for $icode%k% = 0 , ... , %K%-1%$$,
-$codei%
-   %mat_info%.col[%k%] <= %mat_info%.col[%k+1%]
-   if( %mat_info%.col[%k%] == %mat_info%.col[%k+1%] )
-      %mat_info%.row[%k%] < %mat_info%.row[%k+1%]
-%$$
-we say that $icode mat_info$$ is in column major order.
+is possibly non-zero and has value *mat_info* . ``val`` [ *k* ] .
 
-$subhead Row Major Order$$
-If for $icode%k% = 0 , ... , %K%-1%$$,
-$codei%
-   %mat_info%.row[%k%] <= %mat_info%.row[%k+1%]
-   if( %mat_info%.row[%k%] == %mat_info%.row[%k+1%] )
-      %mat_info%.col[%k%] < %mat_info%.col[%k+1%]
-%$$
-we say that $icode mat_info$$ is in row major order.
+Empty Matrix
+============
+If *K* is zero ( *mat_info* . ``row.size`` () is zero),
+we say that *mat_info* is the empty matrix.
 
-$subhead Lower Triangular$$
-If for $icode%k% = 0 , ... , %K%-1%$$,
-$codei%
-   %mat_info%.row[%k%] >= %mat_info%.col[%k%]
-%$$
-we say that $icode mat_info$$ is lower triangular.
+Column Major Order
+==================
+If for *k* = 0 , ... , *K* ``-1`` ,
 
-$end
+| |tab| *mat_info* . ``col`` [ *k* ] <= *mat_info* . ``col`` [ *k* +1]
+| |tab| ``if`` ( *mat_info* . ``col`` [ *k* ] == *mat_info* . ``col`` [ *k* +1] )
+| |tab| |tab| *mat_info* . ``row`` [ *k* ] < *mat_info* . ``row`` [ *k* +1]
+
+we say that *mat_info* is in column major order.
+
+Row Major Order
+===============
+If for *k* = 0 , ... , *K* ``-1`` ,
+
+| |tab| *mat_info* . ``row`` [ *k* ] <= *mat_info* . ``row`` [ *k* +1]
+| |tab| ``if`` ( *mat_info* . ``row`` [ *k* ] == *mat_info* . ``row`` [ *k* +1] )
+| |tab| |tab| *mat_info* . ``col`` [ *k* ] < *mat_info* . ``col`` [ *k* +1]
+
+we say that *mat_info* is in row major order.
+
+Lower Triangular
+================
+If for *k* = 0 , ... , *K* ``-1`` ,
+
+   *mat_info* . ``row`` [ *k* ] >= *mat_info* . ``col`` [ *k* ]
+
+we say that *mat_info* is lower triangular.
+
+{xrst_end sparse_mat_info}
 */
 # include <cppad/utility/vector.hpp>
 

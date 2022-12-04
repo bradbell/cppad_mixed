@@ -4,93 +4,89 @@
 // ----------------------------------------------------------------------------
 
 /*
-$begin init_laplace_obj_hes$$
-$spell
-   objcon
-   CppAD
-   init
-   ran_obj
-   cppad
-   obj
-   hes
-   vec
-   const
-   Cpp
-   bool
-$$
+{xrst_begin init_laplace_obj_hes}
 
-$section Initialize Hessian of Approximate Laplace Objective$$
+Initialize Hessian of Approximate Laplace Objective
+###################################################
 
-$head Syntax$$
-$icode%mixed_object%.init_laplace_obj_hes(
-   %fixed_vec%, %random_opt%
-)%$$
+Syntax
+******
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+| *mixed_object* . ``init_laplace_obj_hes`` (
+| |tab| *fixed_vec* , *random_opt*
+| )
 
-$head Assumptions$$
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
+
+Assumptions
+***********
 The member variable
-$cref/init_laplace_obj_fun_done_/init_laplace_obj_fun/init_laplace_obj_fun_done_/$$
+:ref:`init_laplace_obj_fun@init_laplace_obj_fun_done_`
 is true.
 
-$head init_laplace_obj_hes_done_$$
+init_laplace_obj_hes_done\_
+***************************
 The input value of this member variable must be false.
 Upon return it is true.
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_vec%
-%$$
+
+   ``const CppAD::vector<double>&`` *fixed_vec*
+
 It specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$ at which the initialization is done.
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta` at which the initialization is done.
 
-$head random_opt$$
+random_opt
+**********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_opt%
-%$$
+
+   ``const CppAD::vector<double>&`` *random_opt*
+
 It specifies the initial value for the
-$cref/random effects/problem/Notation/Random Effects, u/$$ optimization.
+:ref:`random effects<problem@Notation@Random Effects, u>` optimization.
 It should be the optimal value given the fixed effects
 so that the Hessian w.r.t the random effects is more likely to be
 positive definite.
 
-
-$head laplace_obj_hes_$$
+laplace_obj_hes\_
+*****************
 The input value of the member variable
-$codei%
-   CppAD::mixed::sparse_hes_info laplace_obj_hes_
-%$$
+
+   ``CppAD::mixed::sparse_hes_info laplace_obj_hes_``
+
 does not matter.
 Upon return it contains the
-$cref sparse_hes_info$$
+:ref:`sparse_hes_info-name`
 for the lower triangle of the Hessian
-$latex \[
+
+.. math::
+
    r_{\theta,\theta} ( \theta )
    =
    H_{\beta,\beta} [ \beta, \theta , \hat{u} ( \theta) ]
-\] $$
+
 see
-$cref/H(beta, theta, u)
-   /theory
-   /Approximate Laplace Objective, H(beta, theta, u)
-/$$.
+:ref:`H(beta, theta, u)<theory@Approximate Laplace Objective, H(beta, theta, u)>` .
 Note that the matrix is symmetric and hence can be recovered from
 its lower triangle.
 
-$subhead laplace_obj_fun_$$
+laplace_obj_fun\_
+=================
 This ADFun object should be used in the
-$cref/sparse Hessian Call/sparse_hes_info/Sparse Hessian Call/f/$$.
+:ref:`sparse Hessian Call<sparse_hes_info@Sparse Hessian Call@f>` .
 
-$end
+{xrst_end init_laplace_obj_hes}
 */
 # include <cppad/mixed/cppad_mixed.hpp>
 

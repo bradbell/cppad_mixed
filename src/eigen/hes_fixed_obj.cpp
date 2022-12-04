@@ -3,71 +3,78 @@
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
-$begin hes_fixed_obj$$
-$spell
-   cppad
-   rcv
-   hes
-   obj
-   vec
-$$
+{xrst_begin hes_fixed_obj}
 
-$section Compute the Hessian of The Fixed Effects Objective$$
+Compute the Hessian of The Fixed Effects Objective
+##################################################
 
-$head Syntax$$
-$icode%hes_fixed_obj_rcv% = %mixed_object%.hes_fixed_obj(
-   %fixed_vec%, %random_opt%
-)%$$
+Syntax
+******
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+| *hes_fixed_obj_rcv* = *mixed_object* . ``hes_fixed_obj`` (
+| |tab| *fixed_vec* , *random_opt*
+| )
 
-$head Purpose$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
+
+Purpose
+*******
 Compute the Hessian of the fixed effects objective function
-$latex L ( \theta )$$; see
-$cref/fixed effects objective/theory/Objective/Fixed Effects Objective, L(theta)/$$.
+:math:`L ( \theta )`; see
+:ref:`fixed effects objective<theory@Objective@Fixed Effects Objective, L(theta)>` .
 The Hessian is
-$latex \[
+
+.. math::
+
    L^{(2)} ( \hat{\theta} )
-\]$$
+
 Absolute value terms in the
-$cref/negative log-density vector/problem/Negative Log-Density Vector/$$
-for the $cref fix_likelihood$$ are not include in this Hessian
+:ref:`problem@Negative Log-Density Vector`
+for the :ref:`fix_likelihood-name` are not include in this Hessian
 (because they do not have a derivative, let alone Hessian, at zero).
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head fixed_vec$$
-is the vector of fixed effects $latex \theta$$ at which
+fixed_vec
+*********
+is the vector of fixed effects :math:`\theta` at which
 the Hessian is evaluated.
 
-$head random_opt$$
+random_opt
+**********
 is the optimal random effects corresponding to this value for the
 fixed effects; i.e.,
-$cref/u^(theta)/theory/Optimal Random Effects, u^(theta)/$$.
+:ref:`u^(theta)<theory@Optimal Random Effects, u^(theta)>` .
 
-$head hes_fixed_obj_rcv$$
+hes_fixed_obj_rcv
+*****************
 The return value is a
-$cref/d_sparse_rcv/typedef/Sparse Types/d_sparse_rcv/$$ representation
+:ref:`typedef@Sparse Types@d_sparse_rcv` representation
 of the lower triangle of the Hessian.
 (The Hessian is symmetric and hence determined by its lower triangle.)
 Absolute value terms in the
-$cref/negative log-density vector/problem/Negative Log-Density Vector/$$
-for the $cref fix_likelihood$$ are not include in this Hessian
+:ref:`problem@Negative Log-Density Vector`
+for the :ref:`fix_likelihood-name` are not include in this Hessian
 because they do not have a derivative (let alone Hessian) at zero.
-
-$children%
+{xrst_toc_hidden
    example/user/hes_fixed_obj.cpp
-%$$
+}
 
-$head Example$$
-The file $cref hes_fixed_obj.cpp$$ contains an example and
+Example
+*******
+The file :ref:`hes_fixed_obj.cpp-name` contains an example and
 test of this routine. It returns true for success and false for failure.
 
-$end
+{xrst_end hes_fixed_obj}
 ------------------------------------------------------------------------------
 */
 # include <cppad/mixed/cppad_mixed.hpp>

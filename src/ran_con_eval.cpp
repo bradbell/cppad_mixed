@@ -3,73 +3,60 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin ran_con_eval$$
-$spell
-   Au
-   vec
-   eval
-   cppad
-   const
-   CppAD
-$$
+{xrst_begin ran_con_eval}
 
-$section Evaluate the Random Constraint Function$$
+Evaluate the Random Constraint Function
+#######################################
 
-$head Syntax$$
-$icode%mixed_object%.ran_con_eval(%random_vec%, %Au%)
-%$$
+Syntax
+******
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+   *mixed_object* . ``ran_con_eval`` ( *random_vec* , *Au* )
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
+
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head random_vec$$
+random_vec
+**********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_vec%
-%$$
+
+   ``const CppAD::vector<double>&`` *random_vec*
+
 It specifies the value of the
-$cref/random effects/problem/Notation/Random Effects, u/$$
-vector $latex u$$ at which $icode%A%*%u%$$ is evaluated.
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector :math:`u` at which *A* * *u* is evaluated.
 
-$head Au$$
+Au
+**
 This argument has prototype
-$codei%
-   CppAD::vector<double> %Au%
-%$$
-Its size must be equal to the number of rows in the
-$cref/random constraint matrix
-   /problem
-   /Notation
-   /Random Constraint Matrix, A
-/$$.
-The input value of its elements does not matter.
-Upon return, it contains the product $icode%A%*%u%$$.
-If the argument $icode random_vec$$ is the
-$cref/optimal random effects
-   /theory
-   /Optimal Random Effects, u^(theta)
-/$$
-$icode Au$$ is the value of the
-$cref/random constraint Function
-   /problem
-   /Notation
-   /Random Constraint Function, A*u^(theta)
-/$$.
 
-$children%
+   ``CppAD::vector<double>`` *Au*
+
+Its size must be equal to the number of rows in the
+:ref:`random constraint matrix<problem@Notation@Random Constraint Matrix, A>` .
+The input value of its elements does not matter.
+Upon return, it contains the product *A* * *u* .
+If the argument *random_vec* is the
+:ref:`optimal random effects<theory@Optimal Random Effects, u^(theta)>`
+*Au* is the value of the
+:ref:`random constraint Function<problem@Notation@Random Constraint Function, A*u^(theta)>` .
+{xrst_toc_hidden
    example/private/ran_con_eval.cpp
-%$$
-$head Example$$
-The file $cref ran_con_eval.cpp$$ contains an example
+}
+Example
+*******
+The file :ref:`ran_con_eval.cpp-name` contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
-$end
+{xrst_end ran_con_eval}
 */
 # include <cppad/mixed/cppad_mixed.hpp>
 

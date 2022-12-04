@@ -3,140 +3,159 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin sample_random$$
-$spell
-   vec
-   gsl_rng
-   cppad
-   const
-   CppAD
-   std
-   ipopt
-$$
+{xrst_begin sample_random}
+{xrst_spell
+   covariance
+   msg
+   rng
+   uu
+}
 
-$section Simulation the Posterior Distribution for Random Effects$$
+Simulation the Posterior Distribution for Random Effects
+########################################################
 
-$head Syntax$$
-$icode%error_msg% = %mixed_object%.sample_random(
-   %sample%,
-   %fixed_vec%,
-   %random_ipopt_options%,
-   %random_lower%,
-   %random_upper%,
-   %random_in%
-)%$$
+Syntax
+******
 
-$head See Also$$
-$cref sample_fixed$$
+| *error_msg* = *mixed_object* . ``sample_random`` (
+| |tab| *sample* ,
+| |tab| *fixed_vec* ,
+| |tab| *random_ipopt_options* ,
+| |tab| *random_lower* ,
+| |tab| *random_upper* ,
+| |tab| *random_in*
+| )
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
+See Also
+********
+:ref:`sample_fixed-name`
 
-$head Purpose$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN PROTOTYPE
+   // END PROTOTYPE
+}
+
+Purpose
+*******
 This routine draws samples from
 the asymptotic posterior distribution for the
 random effects given the model, the data, and the fixed effects; see
-$cref/sparse observed information/theory/Sparse Observed Information/$$.
+:ref:`theory@Sparse Observed Information` .
 
-$head manage_gsl_rng$$
+manage_gsl_rng
+**************
 It is assumed that
-$cref/get_gsl_rng/manage_gsl_rng/get_gsl_rng/$$ will return
+:ref:`manage_gsl_rng@get_gsl_rng` will return
 a pointer to a GSL random number generator.
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head sample$$
+sample
+******
 This argument has prototype
-$codei%
-   CppAD::vector<double>& %sample%
-%$$
+
+   ``CppAD::vector<double>&`` *sample*
+
 and its size is a multiple of
-$cref/n_random/derived_ctor/n_random/$$.
+:ref:`derived_ctor@n_random` .
 The input value of its elements does not matter.
 We define
-$codei%
-   %n_sample% = %sample_size% / %n_random%
-%$$
-If $icode error_msg$$ is empty, upon return
-for $codei%i% = 0 , %...%, %n_sample%-1%$$,
-$codei%j% = 0 , %...%, %n_random%-1%$$,
-$codei%
-   %sample%[ %i% * %n_random% + %j% ]
-%$$
-is the $th j$$ component of the $th i$$ sample of the
+
+   *n_sample* = *sample_size* / *n_random*
+
+If *error_msg* is empty, upon return
+for ``i`` = 0 , ..., ``n_sample`` *-1* ,
+``j`` = 0 , ..., ``n_random`` *-1* ,
+
+   *sample* [ *i* * *n_random* + *j*  ]
+
+is the *j*-th component of the *i*-th sample of the
 optimal random effects.
 The statistics of these samples is specified under
-$cref/covariance/sample_random/Covariance/$$ below.
+:ref:`sample_random@Covariance` below.
 
-$head random_ipopt_options$$
+random_ipopt_options
+********************
 This argument has prototype
-$codei%
-   const std::string& %random_ipopt_options%
-%$$
-and is the $cref ipopt_options$$ for optimizing the random effects.
 
-$head fixed_vec$$
+   ``const std::string&`` *random_ipopt_options*
+
+and is the :ref:`ipopt_options-name` for optimizing the random effects.
+
+fixed_vec
+*********
 This argument specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$.
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta`.
 
-$head random_lower$$
+random_lower
+************
 This argument must have size equal to
-$cref/n_random/derived_ctor/n_random/$$ and
+:ref:`derived_ctor@n_random` and
 specifies the lower limits for the optimization of the
-$cref/random effects/problem/Notation/Random Effects, u/$$
-vector $latex u$$.
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector :math:`u`.
 The value minus infinity can be used to specify no lower limit.
 
-$head random_upper$$
+random_upper
+************
 This argument must have size equal to
-$cref/n_random/derived_ctor/n_random/$$ and
+:ref:`derived_ctor@n_random` and
 specifies the upper limits for the optimization of the random effect.
 The value plus infinity can be used to specify no lower limit.
 
-$head random_in$$
+random_in
+*********
 This argument must have size equal to
-$cref/n_random/derived_ctor/n_random/$$ and
+:ref:`derived_ctor@n_random` and
 specifies the initial value used for the optimization of the
-$cref/random effects/problem/Notation/Random Effects, u/$$
-vector $latex u$$.
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector :math:`u`.
 It must hold that
-$codei%
-   %random_lower%[%i%] <= %random_in%[%i%] <= %random_upper%[%i%]
-%$$
-for each valid index $icode i$$.
 
-$head Covariance$$
+   *random_lower* [ *i* ] <= *random_in* [ *i* ] <= *random_upper* [ *i* ]
+
+for each valid index *i* .
+
+Covariance
+**********
 Each sample of the random effects is an independent normal.
 The mean for this distribution is the
-$cref/optimal random effects/theory/Optimal Random Effects, u^(theta)/$$
-$latex \hat{u} ( \theta )$$.
+:ref:`optimal random effects<theory@Optimal Random Effects, u^(theta)>`
+:math:`\hat{u} ( \theta )`.
 The variance of this distribution
 is the inverse of the observed information
 matrix; i.e.
-$latex \[
+
+.. math::
+
    f_{uu} [ \theta , \hat{u} ( \theta ) ] ^{-1}
-\] $$
+
 This normal distribution is censored to be within the limits
-$icode random_lower$$, $icode random_upper$$.
+*random_lower* , *random_upper* .
 
-$head error_msg$$
-If $icode error_msg$$ is empty (non-empty),
-$cref/sample/sample_random/sample/$$
+error_msg
+*********
+If *error_msg* is empty (non-empty),
+:ref:`sample_random@sample`
 values have been calculated (have not been calculated).
-If $icode error_msg$$ is non-empty,
+If *error_msg* is non-empty,
 it is a message describing the problem.
+{xrst_toc_hidden
+   example/user/sample_random.cpp
+}
+Example
+*******
+The file :ref:`sample_random.cpp-name` is an example
+and test of ``sample_random`` .
 
-
-$children%example/user/sample_random.cpp
-%$$
-$head Example$$
-The file $cref sample_random.cpp$$ is an example
-and test of $code sample_random$$.
-$end
+{xrst_end sample_random}
 -----------------------------------------------------------------------------
 */
 

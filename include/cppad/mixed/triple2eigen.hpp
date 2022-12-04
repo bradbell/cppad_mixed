@@ -5,71 +5,84 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin triple2eigen$$
-$spell
-   Eigen
-   CppAD
-   nr
+{xrst_begin triple2eigen}
+{xrst_spell
    nc
-   const
-$$
+   nr
+}
 
-$section Convert Row, Column, Value Triple to an Eigen Sparse Matrix$$
+Convert Row, Column, Value Triple to an Eigen Sparse Matrix
+###########################################################
 
-$head Syntax$$
-$codei%CppAD::mixed::triple2eigen(
-   %mat%, %nr%, %nc%,  %row%, %col%, %val%
-)%$$
+Syntax
+******
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1
-%$$
+| ``CppAD::mixed::triple2eigen`` (
+| |tab| *mat* , *nr* , *nc* , *row* , *col* , *val*
+| )
 
-$head Private$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
+
+Private
+*******
 This routine is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head Scalar$$
+Scalar
+******
 is the element type for the sparse matrix.
-If $icode d$$ is a $code double$$ value,  $icode%Scalar%(d)%$$
+If *d* is a ``double`` value,  *Scalar* ( ``d`` )
 must be a corresponding element of the matrix.
 
-$head nr$$
+nr
+**
 is the number of rows in the matrix.
 
-$head nc$$
+nc
+**
 is the number of columns in the matrix.
 
-$head row$$
+row
+***
 contains the row indices for possibly non-zero elements of the matrix.
 
-$head col$$
-has the same size as $icode row$$ and
+col
+***
+has the same size as *row* and
 contains the column indices for possibly non-zero elements of the matrix.
 
-$head val$$
+val
+***
 
-$subhead Sparsity Pattern$$
-If $icode%val%.size() == 0%$$,
+Sparsity Pattern
+================
+If *val* . ``size`` () == 0 ,
 the values in the matrix are not specified.
-To be specific, for $icode%k% = 0 , %...%, %row%.size()-1%$$,
+To be specific, for *k* = 0 , ..., *row* . ``size`` () ``-1`` ,
 the element with index
-$codei%(%row%[%k%], %col%[%k%])%$$ has an unspecified value.
+( *row* [ *k* ], *col* [ *k* ]) has an unspecified value.
 
-$subhead Sparse Matrix$$
-If $icode%val%.size() != 0%$$,
+Sparse Matrix
+=============
+If *val* . ``size`` () != 0 ,
 it contains the possibly non-zero values in the matrix.
-To be specific, for $icode%k% = 0 , %...%, %row%.size()-1%$$,
-the element with index $codei%(%row%[%k%], %col%[%k%])%$$ has value
-$icode%val%[%k%]%$$.
+To be specific, for *k* = 0 , ..., *row* . ``size`` () ``-1`` ,
+the element with index ( *row* [ *k* ], *col* [ *k* ]) has value
+*val* [ *k* ] .
 
-$head mat$$
+mat
+***
 is a sparse representation of the specified matrix.
 The input size and values in the matrix do not matter.
 Upon return it is a sparse matrix with the specified size
 and element values.
 
-$end
+{xrst_end triple2eigen}
 -----------------------------------------------------------------------------
 */
 

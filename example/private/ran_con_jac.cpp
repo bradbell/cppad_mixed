@@ -3,62 +3,72 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin ran_con_jac.cpp$$
-$spell
-   CppAD
-   ran_con
-   cppad
-   xam
-   jac
-$$
+{xrst_begin ran_con_jac.cpp}
 
-$section ran_con_jac: Example and Test$$
+ran_con_jac: Example and Test
+#############################
 
-$head Private$$
+Private
+*******
 This example is not part of the
-$cref/cppad_mixed public API/base_class/$$.
+:ref:`cppad_mixed public API<base_class-name>` .
 
-$head Model$$
-$latex \[
+Model
+*****
+
+.. math::
+
    \B{p}( y_i | \theta , u ) \sim \B{N} ( u_i + \theta_0 , \theta_1^2 )
-\] $$
-$latex \[
+
+.. math::
+
    \B{p}( u_i | \theta ) \sim \B{N} ( 0 , 1 )
-\] $$
-$latex \[
+
+.. math::
+
    A = [ 1 , \cdots , 1 ]
-\] $$
-It follows that the $th i$$ component of the
+
+It follows that the *i*-th component of the
 optimal random effects minimize the function
-$latex \[
+
+.. math::
+
    0.5 ( u_i + theta_0 - y_i )^2 / \theta_1^2 + 0.5 u_i^2
-\] $$
-Taking the derivative w.r.t $latex u_i$$ and setting it equal to zero
+
+Taking the derivative w.r.t :math:`u_i` and setting it equal to zero
 we have
-$latex \[
+
+.. math::
+
    \hat{u}_i ( \theta ) = ( y_i - \theta_0 ) / ( 1 + \theta_1^2 )
-\] $$
+
 The random constraint function is
-$latex \[
+
+.. math::
+
    \sum_i \hat{u}_i ( \theta )
    =
    \sum_i
    ( y_i - \theta_0 ) / ( 1 + \theta_1^2 )
-\] $$
-The partial w.r.t. $latex \theta_0$$ is
-$latex \[
+
+The partial w.r.t. :math:`\theta_0` is
+
+.. math::
+
    - \sum_i  1.0 / ( 1 + \theta_1^2 )
-\] $$
-The partial w.r.t. $latex \theta_1$$ is
-$latex \[
+
+The partial w.r.t. :math:`\theta_1` is
+
+.. math::
+
    - 2 \sum_i ( y_i - \theta_0 ) \theta_1 / ( 1 + \theta_1^2 )
-\] $$
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end ran_con_jac.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

@@ -6,67 +6,71 @@
 # define CPPAD_MIXED_IPOPT_FIXED_HPP
 
 /*
-$begin ipopt_fixed$$
-$spell
-   CppAD
-   ran_obj
-   cppad
-   obj
-   Ipopt
+{xrst_begin ipopt_fixed}
+{xrst_spell
    nlp
-   inf
-   std
-$$
+}
 
-$section Ipopt NLP Class Used to Optimize Fixed Effects$$
+Ipopt NLP Class Used to Optimize Fixed Effects
+##############################################
 
-$head Private$$
+Private
+*******
 This class is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head get_error_message()$$
-This function returns a $code std::string$$ value that
+get_error_message()
+*******************
+This function returns a ``std::string`` value that
 corresponds to the most recent error message.
 If it is non-empty, there is no error.
 
-$head clear_error_message()$$
+clear_error_message()
+*********************
 This function sets the current error message to the empty string.
 
-$head nlp_lower_bound_inf()$$
-This member function returns the $code double$$ value used
+nlp_lower_bound_inf()
+*********************
+This member function returns the ``double`` value used
 for minus infinity as a lower bound.
 
-$head nlp_upper_bound_inf()$$
-This member function returns the $code double$$ value used
+nlp_upper_bound_inf()
+*********************
+This member function returns the ``double`` value used
 for plus infinity as an upper bound.
 
-$head solution()$$
+solution()
+**********
 This member function returns a
-$cref fixed_solution$$ object containing the
+:ref:`fixed_solution-name` object containing the
 optimal solution information.
 
-$head Default Destructor$$
+Default Destructor
+******************
 The default destructor is defined by this include file.
 
-$childtable%src/ipopt_fixed/ctor.cpp
-   %src/ipopt_fixed/get_nlp_info.cpp
-   %src/ipopt_fixed/get_bounds_info.cpp
-   %src/ipopt_fixed/get_starting_point.cpp
-   %src/ipopt_fixed/eval_f.cpp
-   %src/ipopt_fixed/eval_grad_f.cpp
-   %src/ipopt_fixed/eval_g.cpp
-   %src/ipopt_fixed/eval_jac_g.cpp
-   %src/ipopt_fixed/eval_h.cpp
-   %src/ipopt_fixed/finalize_solution.cpp
-   %src/ipopt_fixed/intermediate_callback.cpp
-   %src/ipopt_fixed/adapt_derivative_chk.cpp
-   %src/ipopt_fixed/one_dim_function.cpp
-   %src/ipopt_fixed/new_random.cpp
-   %src/ipopt_fixed/set_scaling.cpp
-   %example/ipopt_xam.omh
-%$$
+Contents
+********
+{xrst_toc_table
+   src/ipopt_fixed/ctor.cpp
+   src/ipopt_fixed/get_nlp_info.cpp
+   src/ipopt_fixed/get_bounds_info.cpp
+   src/ipopt_fixed/get_starting_point.cpp
+   src/ipopt_fixed/eval_f.cpp
+   src/ipopt_fixed/eval_grad_f.cpp
+   src/ipopt_fixed/eval_g.cpp
+   src/ipopt_fixed/eval_jac_g.cpp
+   src/ipopt_fixed/eval_h.cpp
+   src/ipopt_fixed/finalize_solution.cpp
+   src/ipopt_fixed/intermediate_callback.cpp
+   src/ipopt_fixed/adapt_derivative_chk.cpp
+   src/ipopt_fixed/one_dim_function.cpp
+   src/ipopt_fixed/new_random.cpp
+   src/ipopt_fixed/set_scaling.cpp
+   example/ipopt_xam.xrst
+}
 
-$end
+{xrst_end ipopt_fixed}
 -----------------------------------------------------------------------------
 */
 # include <coin-or/IpTNLP.hpp>

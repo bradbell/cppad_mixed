@@ -9,119 +9,116 @@
 private:
 /*
 ------------------------------------------------------------------------------
-$begin private_base_class$$
-$spell
-   rc
-   rcv
-   ldlt_eigen
-   objcon
-   eigen
-   chol
-   Cholesky
-   CppAD
-   init
-   ran_obj
-   var
-   cppad
-   hes hes
-   obj
-   jac
-   Jacobians
-   jacobian
-   hes
-   eval
-   typedef
-   CppAD
-   vec
-   const
-   bool
-   xam
-   uu
+{xrst_begin private_base_class}
+{xrst_spell
+   boolean
    logdet
-   Au
-$$
+   uu
+}
 
-$section cppad_mixed: Private Declarations$$
-These $code cppad_mixed$$ class declarations are $code private$$.
-They are $bold not$$ part of the user API,
+cppad_mixed: Private Declarations
+#################################
+These ``cppad_mixed`` class declarations are ``private`` .
+They are **not** part of the user API,
 they may change with time, and they
-can $bold not$$ be used by a derived class object
-$cref/mixed_object/derived_ctor/mixed_object/$$.
+can **not** be used by a derived class object
+:ref:`derived_ctor@mixed_object` .
 
-$childtable%include/cppad/mixed/pack.hpp
-   %include/cppad/mixed/unpack.hpp
-
-   %src/init_ran_like.cpp
-   %src/init_ran_jac.cpp
-   %src/init_ran_hes.cpp
-   %src/init_ldlt_ran_hes.cpp
-   %src/init_fix_con.cpp
-   %src/init_fix_like.cpp
-   %src/init_hes_cross.cpp
-   %src/init_laplace_obj.cpp
-   %src/init_laplace_obj_fun.cpp
-   %src/init_laplace_obj_hes.cpp
-
-   %src/fix_con_eval.cpp
-   %src/fix_con_hes.cpp
-   %src/fix_con_jac.cpp
-   %src/fix_like_eval.cpp
-   %src/fix_like_hes.cpp
-   %src/fix_like_jac.cpp
-   %src/logdet_jac.cpp
-   %src/ran_like_hes.cpp
-   %src/ran_con_eval.cpp
-   %src/ran_con_jac.cpp
-   %src/ran_obj_eval.cpp
-   %src/ran_obj_jac.cpp
-   %src/laplace_obj_hes.cpp
-   %src/update_factor.cpp
-%$$
-$comment -------------------------------------------------------------------
+Contents
+********
+{xrst_toc_table
+   include/cppad/mixed/pack.hpp
+   include/cppad/mixed/unpack.hpp
+   src/init_ran_like.cpp
+   src/init_ran_jac.cpp
+   src/init_ran_hes.cpp
+   src/init_ldlt_ran_hes.cpp
+   src/init_fix_con.cpp
+   src/init_fix_like.cpp
+   src/init_hes_cross.cpp
+   src/init_laplace_obj.cpp
+   src/init_laplace_obj_fun.cpp
+   src/init_laplace_obj_hes.cpp
+   src/fix_con_eval.cpp
+   src/fix_con_hes.cpp
+   src/fix_con_jac.cpp
+   src/fix_like_eval.cpp
+   src/fix_like_hes.cpp
+   src/fix_like_jac.cpp
+   src/logdet_jac.cpp
+   src/ran_like_hes.cpp
+   src/ran_con_eval.cpp
+   src/ran_con_jac.cpp
+   src/ran_obj_eval.cpp
+   src/ran_obj_jac.cpp
+   src/laplace_obj_hes.cpp
+   src/update_factor.cpp
+}
+{xrst_comment --------------------------------------------------------------
    Private Member Variables
-$$
+}
 
-$head n_fixed_$$
+n_fixed\_
+*********
 The number of fixed effects is given by
-$srccode%cpp% */
+{xrst_spell_off}
+{xrst_code cpp} */
    const size_t n_fixed_;
-/* %$$
-$head n_random_$$
+/* {xrst_code}
+{xrst_spell_on}
+n_random\_
+**********
 The number of random effects is given by
-$srccode%cpp% */
+{xrst_spell_off}
+{xrst_code cpp} */
    const size_t n_random_;
-/* %$$
-$head quasi_fixed_$$
+/* {xrst_code}
+{xrst_spell_on}
+quasi_fixed\_
+*************
 Are we using a quasi-Newton method (or full Newton method)
-when $cref/optimizing fixed effects/optimize_fixed/$$.
-$srccode%cpp% */
+when :ref:`optimizing fixed effects<optimize_fixed-name>` .
+{xrst_spell_off}
+{xrst_code cpp} */
    const bool quasi_fixed_;
-/* %$$
-$head bool_sparsity_$$
+/* {xrst_code}
+{xrst_spell_on}
+bool_sparsity\_
+***************
 If true, use boolean sparsity patterns where possible.
 Otherwise, use set sparsity patterns.
-$srccode%cpp% */
+{xrst_spell_off}
+{xrst_code cpp} */
    const bool bool_sparsity_;
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$head A_rcv_$$
+A_rcv\_
+*******
 contains the random constraint matrix
-$srccode%cpp% */
+{xrst_spell_off}
+{xrst_code cpp} */
    const d_sparse_rcv A_rcv_;
-/* %$$
-$head trace_init_$$
+/* {xrst_code}
+{xrst_spell_on}
+trace_init\_
+************
 If true, trace the initialization of cppad_mixed data structures on
 standard output. This can be useful for large problems where the initialization
 takes a significant amount of time.
-$srccode%cpp% */
+{xrst_spell_off}
+{xrst_code cpp} */
    const bool trace_init_;
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$head initialize_done_$$
+initialize_done\_
+*****************
 The following flag is false after construction and true after
 the corresponding member function is called.
-This is the same order as the calls in the file $cref initialize$$:
-$srccode%cpp% */
+This is the same order as the calls in the file :ref:`initialize-name` :
+{xrst_spell_off}
+{xrst_code cpp} */
    // only called when n_random_ > 0
    bool                init_ran_con_done_;
    bool                init_ran_like_done_;
@@ -139,61 +136,67 @@ $srccode%cpp% */
    // true when all initialization (for this case) is done
    bool                initialize_done_;
 
-/* %$$
-$head cppad_error_handler$$
+/* {xrst_code}
+{xrst_spell_on}
+cppad_error_handler
+*******************
 Used to map CppAD error messages to
-$cref/fatal_error/base_class/User Defined Functions/fatal_error/$$.
-$srccode%cpp% */
+:ref:`base_class@User Defined Functions@fatal_error` .
+{xrst_spell_off}
+{xrst_code cpp} */
    CppAD::ErrorHandler cppad_error_handler_;
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$head ran_like_fun_$$
-If $icode%n_random_% > 0%$$ and $code init_ran_like_done_$$,
-$cref/ran_like_fun_/init_ran_like/ran_like_fun_/$$,
-$cref/ran_like_a1fun_/init_ran_like/ran_like_a1fun_/$$.
-are recordings of the user's $cref ran_likelihood$$.
+ran_like_fun\_
+**************
+If *n_random_*  > 0 and ``init_ran_like_done_`` ,
+:ref:`init_ran_like@ran_like_fun_` ,
+:ref:`init_ran_like@ran_like_a1fun_` .
+are recordings of the user's :ref:`ran_likelihood-name` .
 function.
-$srccode%cpp% */
+{xrst_spell_off}
+{xrst_code cpp} */
    CppAD::ADFun<double>              ran_like_fun_;
    CppAD::ADFun<a1_double, double>   ran_like_a1fun_;
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 The following objects hold information for computing derivatives
 with these ADFun objects:
 
-$head ran_jac_fun_$$
-If $icode%n_random_% > 0%$$ and $code init_ran_jac_done_$$,
-$cref/ran_jac_a1fun_/init_ran_jac/ran_jac_a1fun_/$$, and
-$cref/ran_jac2hes_rc_/init_ran_jac/ran_jac2hes_rc_/$$,
+ran_jac_fun\_
+*************
+If *n_random_*  > 0 and ``init_ran_jac_done_`` ,
+:ref:`init_ran_jac@ran_jac_a1fun_` , and
+:ref:`init_ran_jac@ran_jac2hes_rc_` ,
 contain the Jacobian of the
-$cref/random likelihood
-   /theory
-   /Random Likelihood, f(theta, u)
-/$$
+:ref:`random likelihood<theory@Random Likelihood, f(theta, u)>`
 with respect to the random effects; i.e.
-$latex f_u ( \theta , u )$$ and the sparsity for
-$latex f_{uu} ( \theta, u )$$ .
-$srccode%cpp% */
+:math:`f_u ( \theta , u )` and the sparsity for
+:math:`f_{uu} ( \theta, u )` .
+{xrst_spell_off}
+{xrst_code cpp} */
    CppAD::ADFun<a1_double, double>  ran_jac_a1fun_;
    sparse_rc                        ran_jac2hes_rc_;
    //
    friend bool ::ran_jac_fun_xam(void);
-/* %$$
-The row indices in $icode ran_jac2hes_rc_$$
-are for just the random effects $latex u$$,
+/* {xrst_code}
+{xrst_spell_on}
+The row indices in *ran_jac2hes_rc_*
+are for just the random effects :math:`u`,
 the column indices are for both fixed and random effects
-$latex ( \theta , u )$$.
+:math:`( \theta , u )`.
 
-$head ran_hes_fun_$$
-If $icode%n_random_% > 0%$$ and $code init_ran_hes_done_$$,
-$cref/ran_hes_uu_rcv_/init_ran_hes/ran_hes_uu_rcv_/$$
+ran_hes_fun\_
+*************
+If *n_random_*  > 0 and ``init_ran_hes_done_`` ,
+:ref:`init_ran_hes@ran_hes_uu_rcv_`
 contains information for the Hessian of the
-$cref/random likelihood
-   /theory
-   /Random Likelihood, f(theta, u)
-/$$
+:ref:`random likelihood<theory@Random Likelihood, f(theta, u)>`
 with respect to the random effects; i.e.
-$latex f_{u,u} ( \theta , u )$$.
-$srccode%cpp% */
+:math:`f_{u,u} ( \theta , u )`.
+{xrst_spell_off}
+{xrst_code cpp} */
    // sparse Hessian
    d_sparse_rcv                  ran_hes_uu_rcv_;
    //
@@ -201,128 +204,152 @@ $srccode%cpp% */
    CppAD::ADFun<double>        ran_hes_fun_;
    //
    friend bool ::ran_hes_fun_xam(void);
-/* %$$
-The row and column indices in $icode ran_hes_uu_rcv_$$
-are for just random effects and hence are all less than $icode n_random$$.
+/* {xrst_code}
+{xrst_spell_on}
+The row and column indices in *ran_hes_uu_rcv_*
+are for just random effects and hence are all less than *n_random* .
 
-$head ldlt_ran_hes_$$
-If $icode%n_random_% > 0%$$ and $code init_ldlt_ran_hes_done_$$,
-$code ldlt_ran_hes_$$ contains a
-$cref ldlt_eigen$$ factor for the Hessian of the
-$cref/random likelihood
-   /theory
-   /Random Likelihood, f(theta, u)
-/$$
-; i.e.  $latex f_{u,u} ( \theta , u )$$.
-$srccode%cpp% */
+ldlt_ran_hes\_
+**************
+If *n_random_*  > 0 and ``init_ldlt_ran_hes_done_`` ,
+``ldlt_ran_hes_`` contains a
+:ref:`ldlt_eigen-name` factor for the Hessian of the
+:ref:`random likelihood<theory@Random Likelihood, f(theta, u)>`
+; i.e.  :math:`f_{u,u} ( \theta , u )`.
+{xrst_spell_off}
+{xrst_code cpp} */
    CPPAD_MIXED_LDLT_CLASS              ldlt_ran_hes_;
    CppAD::mixed::ldlt_eigen<a1_double> a1_ldlt_ran_hes_;
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$head hes_cross_$$
-If $icode%n_random_% > 0%$$ and $code init_hes_cross_done_$$,
-$cref/hes_cross_/init_hes_cross/hes_cross_/$$ contains
+hes_cross\_
+***********
+If *n_random_*  > 0 and ``init_hes_cross_done_`` ,
+:ref:`init_hes_cross@hes_cross_` contains
 information for the cross partials of the Hessian of the
-$cref/random likelihood
-   /theory
-   /Random Likelihood, f(theta, u)
-/$$
-; i.e.  $latex f_{u,\theta} ( \theta , u )$$.
-$srccode%cpp% */
+:ref:`random likelihood<theory@Random Likelihood, f(theta, u)>`
+; i.e.  :math:`f_{u,\theta} ( \theta , u )`.
+{xrst_spell_off}
+{xrst_code cpp} */
    CppAD::mixed::sparse_hes_rcv hes_cross_;
    //
    friend bool ::hes_cross_xam(void);
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$comment ------------------------------------------------------------------- $$
+{xrst_comment -------------------------------------------------------------- }
 
-$head laplace_obj_fun_$$
-If $icode%n_random_% > 0%$$, quasi_fixed\_ is false, and
-$code init_laplace_obj_fun_done_$$,
+laplace_obj_fun\_
+*****************
+If *n_random_*  > 0 , quasi_fixed\_ is false, and
+``init_laplace_obj_fun_done_`` ,
 this is a recording of the second order approximation for the
-random part of the Laplace approximation, $latex H( \beta , \theta , u)$$;
-see $cref/laplace_obj_fun_/init_laplace_obj_fun/laplace_obj_fun_/$$.
-$srccode%cpp% */
+random part of the Laplace approximation, :math:`H( \beta , \theta , u)`;
+see :ref:`init_laplace_obj_fun@laplace_obj_fun_` .
+{xrst_spell_off}
+{xrst_code cpp} */
    CppAD::ADFun<double>        laplace_obj_fun_;   // for computing H_beta_beta
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 The following objects hold information for computing derivatives
 with this ADFun object:
 
-$subhead laplace_obj_hes_$$
-If $icode%n_random_% > 0%$$, quasi_fixed\_ is false, and
-$code init_laplace_obj_hes_done_$$,
-$cref/laplace_obj_hes_/init_laplace_obj_hes/laplace_obj_hes_/$$ contains
+laplace_obj_hes\_
+=================
+If *n_random_*  > 0 , quasi_fixed\_ is false, and
+``init_laplace_obj_hes_done_`` ,
+:ref:`init_laplace_obj_hes@laplace_obj_hes_` contains
 information for the Hessian of the
-$cref/Laplace objective
-   /theory
-   /Objective
-   /Laplace Objective, r(theta)
-/$$
-$srccode%cpp% */
+:ref:`Laplace objective<theory@Objective@Laplace Objective, r(theta)>`
+{xrst_spell_off}
+{xrst_code cpp} */
    CppAD::mixed::sparse_hes_rcv laplace_obj_hes_;
-/* %$$
-$comment ------------------------------------------------------------------- $$
+/* {xrst_code}
+{xrst_spell_on}
+{xrst_comment -------------------------------------------------------------- }
 
-$head fix_like_fun_$$
-$cref/fix_like_fun_/init_fix_like/fix_like_fun_/$$
+fix_like_fun\_
+**************
+:ref:`init_fix_like@fix_like_fun_`
 is a recording of the fixed part of the likelihood function; see,
-$cref fix_likelihood$$.
-$srccode%cpp% */
+:ref:`fix_likelihood-name` .
+{xrst_spell_off}
+{xrst_code cpp} */
    CppAD::ADFun<double>        fix_like_fun_;     // g(theta)
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 The following objects hold information for computing derivatives
 with this ADFun object:
 
-$subhead fix_like_jac_$$
-$cref/fix_like_jac_/init_fix_like/fix_like_jac_/$$
+fix_like_jac\_
+==============
+:ref:`init_fix_like@fix_like_jac_`
 contains information for the Jacobian of the
-$cref/fixed likelihood/theory/Fixed Likelihood, g(theta)/$$.
-$srccode%cpp% */
+:ref:`fixed likelihood<theory@Fixed Likelihood, g(theta)>` .
+{xrst_spell_off}
+{xrst_code cpp} */
    CppAD::mixed::sparse_jac_rcv fix_like_jac_;
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead fix_like_hes_$$
-$cref/fix_like_hes_/init_fix_like/fix_like_hes_/$$
+fix_like_hes\_
+==============
+:ref:`init_fix_like@fix_like_hes_`
 contains information for the Hessian of the
-$cref/fixed likelihood/theory/Fixed Likelihood, g(theta)/$$.
-$srccode%cpp% */
+:ref:`fixed likelihood<theory@Fixed Likelihood, g(theta)>` .
+{xrst_spell_off}
+{xrst_code cpp} */
    CppAD::mixed::sparse_hes_rcv fix_like_hes_;
-/* %$$
-$comment ------------------------------------------------------------------- $$
+/* {xrst_code}
+{xrst_spell_on}
+{xrst_comment -------------------------------------------------------------- }
 
-$head fix_con_fun_$$
-$cref/fix_con_fun_/init_fix_con/fix_con_fun_/$$
+fix_con_fun\_
+*************
+:ref:`init_fix_con@fix_con_fun_`
 is a recording of the fixed part of the likelihood function; see,
-$cref fix_constraint$$.
-$srccode%cpp% */
+:ref:`fix_constraint-name` .
+{xrst_spell_off}
+{xrst_code cpp} */
    CppAD::ADFun<double>        fix_con_fun_;     // c(theta)
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 The following objects hold information for computing derivatives
 with this ADFun object:
 
-$subhead fix_con_jac_$$
-$cref/fix_con_jac_/init_fix_con/fix_con_jac_/$$
+fix_con_jac\_
+=============
+:ref:`init_fix_con@fix_con_jac_`
 contains information for the Jacobian of the
-constraint function $latex c ( \theta )$$.
-$srccode%cpp% */
+constraint function :math:`c ( \theta )`.
+{xrst_spell_off}
+{xrst_code cpp} */
    CppAD::mixed::sparse_jac_rcv fix_con_jac_;
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead fix_con_hes_$$
-If $icode quasi_fixed$$ is false,
-$cref/fix_con_hes_/init_fix_con/fix_con_hes_/$$
+fix_con_hes\_
+=============
+If *quasi_fixed* is false,
+:ref:`init_fix_con@fix_con_hes_`
 contains information for the Hessian of the
-$cref/constraints/fix_constraint/$$ function $latex c( \theta )$$.
+:ref:`constraints<fix_constraint-name>` function :math:`c( \theta )`.
 The corresponding ADFun object is
-$cref/fix_con_fun_/init_fix_con/fix_con_fun_/$$.
-$srccode%cpp% */
+:ref:`init_fix_con@fix_con_fun_` .
+{xrst_spell_off}
+{xrst_code cpp} */
    CppAD::mixed::sparse_hes_rcv fix_con_hes_;
-/* %$$
-$comment ------------------------------------------------------------------- $$
-$head Template Member Functions$$
-$subhead pack$$
-See $cref pack$$.
-$srccode%cpp% */
+/* {xrst_code}
+{xrst_spell_on}
+{xrst_comment -------------------------------------------------------------- }
+Template Member Functions
+*************************
+pack
+====
+See :ref:`pack-name` .
+{xrst_spell_off}
+{xrst_code cpp} */
    template <class Float_unpack, class Float_pack>
    void pack(
       const CppAD::vector<Float_unpack>& fixed_one  ,
@@ -336,10 +363,13 @@ $srccode%cpp% */
       const CppAD::vector<Float_unpack>& random_vec ,
       CppAD::vector<Float_pack>&         three_vec
    ) const;
-/* %$$
-$subhead unpack$$
-See $cref unpack$$.
-$srccode%cpp% */
+/* {xrst_code}
+{xrst_spell_on}
+unpack
+======
+See :ref:`unpack-name` .
+{xrst_spell_off}
+{xrst_code cpp} */
    template <class Float_unpack, class Float_pack>
    void unpack(
       CppAD::vector<Float_unpack>&       fixed_one  ,
@@ -353,112 +383,150 @@ $srccode%cpp% */
       CppAD::vector<Float_unpack>&       random_vec ,
       const CppAD::vector<Float_pack>&   three_vec
    ) const;
-/* %$$
-$comment ------------------------------------------------------------------- $$
-$head Initialization Member Functions$$
+/* {xrst_code}
+{xrst_spell_on}
+{xrst_comment -------------------------------------------------------------- }
+Initialization Member Functions
+*******************************
 
-$subhead init_ldlt_ran_hes$$
-See $cref init_ldlt_ran_hes$$.
-$srccode%cpp% */
+init_ldlt_ran_hes
+=================
+See :ref:`init_ldlt_ran_hes-name` .
+{xrst_spell_off}
+{xrst_code cpp} */
    void init_ldlt_ran_hes(void);
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead init_fix_con$$
-See $cref init_fix_con$$.
-$srccode%cpp% */
+init_fix_con
+============
+See :ref:`init_fix_con-name` .
+{xrst_spell_off}
+{xrst_code cpp} */
    void init_fix_con(
       const d_vector& fixed_vec
    );
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead init_fix_like$$
-See $cref init_fix_like$$.
-$srccode%cpp% */
+init_fix_like
+=============
+See :ref:`init_fix_like-name` .
+{xrst_spell_off}
+{xrst_code cpp} */
    void init_fix_like(const d_vector& fixed_vec);
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead init_hes_cross$$
-See $cref init_hes_cross$$.
-$srccode%cpp% */
+init_hes_cross
+==============
+See :ref:`init_hes_cross-name` .
+{xrst_spell_off}
+{xrst_code cpp} */
    void init_hes_cross(
       const d_vector& fixed_vec     ,
       const d_vector& random_vec
    );
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead init_ran_jac$$
-See $cref init_ran_jac$$.
-$srccode%cpp% */
+init_ran_jac
+============
+See :ref:`init_ran_jac-name` .
+{xrst_spell_off}
+{xrst_code cpp} */
    void init_ran_jac(
       const d_vector& fixed_vec     ,
       const d_vector& random_vec
    );
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead init_ran_hes$$
-See $cref init_ran_hes$$.
-$srccode%cpp% */
+init_ran_hes
+============
+See :ref:`init_ran_hes-name` .
+{xrst_spell_off}
+{xrst_code cpp} */
    void init_ran_hes(
       const d_vector& fixed_vec     ,
       const d_vector& random_vec
    );
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead init_laplace_obj$$
-See $cref init_laplace_obj$$.
-$srccode%cpp% */
+init_laplace_obj
+================
+See :ref:`init_laplace_obj-name` .
+{xrst_spell_off}
+{xrst_code cpp} */
    void init_laplace_obj(
       const d_vector& fixed_vec           ,
       const d_vector& random_opt
    );
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead init_laplace_obj_hes$$
-See $cref init_laplace_obj_hes$$.
-$srccode%cpp% */
+init_laplace_obj_hes
+====================
+See :ref:`init_laplace_obj_hes-name` .
+{xrst_spell_off}
+{xrst_code cpp} */
    void init_laplace_obj_hes(
       const d_vector& fixed_vec     ,
       const d_vector& random_opt
    );
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead init_ran_like$$
-See $cref init_ran_like$$.
-$srccode%cpp% */
+init_ran_like
+=============
+See :ref:`init_ran_like-name` .
+{xrst_spell_off}
+{xrst_code cpp} */
    void init_ran_like(
       const d_vector& fixed_vec ,
       const d_vector& random_vec
    );
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead init_laplace_obj_fun$$
-See $cref init_laplace_obj_fun$$.
-$srccode%cpp% */
+init_laplace_obj_fun
+====================
+See :ref:`init_laplace_obj_fun-name` .
+{xrst_spell_off}
+{xrst_code cpp} */
    void init_laplace_obj_fun(
       const d_vector& fixed_vec ,
       const d_vector& random_opt
    );
-/* %$$
-$comment ------------------------------------------------------------------- $$
-$head Try Member Functions$$
-For each $codei%try_%name%$$ case below,
-the public function $icode name$$ calls the private function
-$codei%try_%name%$$ from a $code try$$ block
-with a corresponding $code catch$$ that maps a
-$code cppad_mixed$$ $cref exception$$ to a
-$cref/fatal_error/base_class/User Defined Functions/fatal_error/$$ call.
+/* {xrst_code}
+{xrst_spell_on}
+{xrst_comment -------------------------------------------------------------- }
+Try Member Functions
+********************
+For each ``try_`` *name* case below,
+the public function *name* calls the private function
+``try_`` *name* from a ``try`` block
+with a corresponding ``catch`` that maps a
+``cppad_mixed`` :ref:`exception-name` to a
+:ref:`base_class@User Defined Functions@fatal_error` call.
 
-$subhead try_initialize$$
-Called by public $cref/initialize/base_class/initialize/$$
-$srccode%cpp% */
+try_initialize
+==============
+Called by public :ref:`base_class@initialize`
+{xrst_spell_off}
+{xrst_code cpp} */
    std::map<std::string, size_t> try_initialize(
       const d_vector&  fixed_vec  ,
       const d_vector&  random_vec
    );
-/* %$$
-$subhead try_optimize_random$$
-Called by public $cref/optimize_random/base_class/optimize_random/$$
-$srccode%cpp% */
+/* {xrst_code}
+{xrst_spell_on}
+try_optimize_random
+===================
+Called by public :ref:`base_class@optimize_random`
+{xrst_spell_off}
+{xrst_code cpp} */
    d_vector try_optimize_random(
       const std::string& options      ,
       const d_vector&    fixed_vec    ,
@@ -466,10 +534,13 @@ $srccode%cpp% */
       const d_vector&    random_upper ,
       const d_vector&    random_in
    );
-/* %$$
-$subhead try_optimize_fixed$$
-Called by public $cref/optimize_fixed/base_class/optimize_fixed/$$
-$srccode%cpp% */
+/* {xrst_code}
+{xrst_spell_on}
+try_optimize_fixed
+==================
+Called by public :ref:`base_class@optimize_fixed`
+{xrst_spell_off}
+{xrst_code cpp} */
    CppAD::mixed::fixed_solution try_optimize_fixed(
       const std::string& fixed_ipopt_options   ,
       const std::string& random_ipopt_options  ,
@@ -484,28 +555,37 @@ $srccode%cpp% */
       const d_vector&    random_in             ,
       const CppAD::mixed::warm_start_struct& warm_start
    );
-/* %$$
-$subhead try_hes_fixed_obj$$
+/* {xrst_code}
+{xrst_spell_on}
+try_hes_fixed_obj
+=================
 Called by public
-$cref/hes_fixed_obj/base_class/hes_fixed_obj/$$ and
-$cref/information_mat/base_class/information_mat, Deprecated 2020-03-22/$$.
-$srccode%cpp% */
+:ref:`base_class@hes_fixed_obj` and
+:ref:`information_mat<base_class@information_mat, Deprecated 2020-03-22>` .
+{xrst_spell_off}
+{xrst_code cpp} */
    d_sparse_rcv try_hes_fixed_obj(
       const d_vector& fixed_vec      ,
       const d_vector& random_opt
    );
-/* %$$
-$subhead try_hes_random_obj$$
-Called by public $cref/hes_random_obj/base_class/hes_random_obj/$$
-$srccode%cpp% */
+/* {xrst_code}
+{xrst_spell_on}
+try_hes_random_obj
+==================
+Called by public :ref:`base_class@hes_random_obj`
+{xrst_spell_off}
+{xrst_code cpp} */
    d_sparse_rcv try_hes_random_obj(
       const d_vector& fixed_vec      ,
       const d_vector& random_vec
    );
-/* %$$
-$subhead try_sample_fixed$$
-Called by public $cref/sample_fixed/base_class/sample_fixed/$$
-$srccode%cpp% */
+/* {xrst_code}
+{xrst_spell_on}
+try_sample_fixed
+================
+Called by public :ref:`base_class@sample_fixed`
+{xrst_spell_off}
+{xrst_code cpp} */
    std::string try_sample_fixed(
       d_vector&                            sample               ,
       const d_sparse_rcv&                  information_rcv      ,
@@ -513,10 +593,13 @@ $srccode%cpp% */
       const d_vector&                      fixed_lower          ,
       const d_vector&                      fixed_upper
    );
-/* %$$
-$subhead sample_random$$
-Called by public $cref/sample_random/base_class/sample_random/$$
-$srccode%cpp% */
+/* {xrst_code}
+{xrst_spell_on}
+sample_random
+=============
+Called by public :ref:`base_class@sample_random`
+{xrst_spell_off}
+{xrst_code cpp} */
    std::string try_sample_random(
       d_vector&             sample               ,
       const std::string&    random_ipopt_options ,
@@ -525,20 +608,27 @@ $srccode%cpp% */
       const d_vector&       random_upper         ,
       const d_vector&       random_in
    );
-/* %$$
-$comment ------------------------------------------------------------------- $$
-$head Other Member Functions$$
+/* {xrst_code}
+{xrst_spell_on}
+{xrst_comment -------------------------------------------------------------- }
+Other Member Functions
+**********************
 
-$subhead fix_con_eval$$
-See $cref fix_con_eval$$
-$srccode%cpp% */
+fix_con_eval
+============
+See :ref:`fix_con_eval-name`
+{xrst_spell_off}
+{xrst_code cpp} */
    d_vector fix_con_eval(const d_vector& fixed_vec);
    friend bool ::fix_con_eval_xam(void);
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead fix_con_jac$$
-See $cref fix_con_jac$$
-$srccode%cpp% */
+fix_con_jac
+===========
+See :ref:`fix_con_jac-name`
+{xrst_spell_off}
+{xrst_code cpp} */
    void fix_con_jac(
       const d_vector&        fixed_vec   ,
       CppAD::vector<size_t>& row_out     ,
@@ -546,11 +636,14 @@ $srccode%cpp% */
       d_vector&              val_out
    );
    friend bool ::fix_con_jac_xam(void);
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead fix_con_hes$$
-See $cref fix_con_hes$$
-$srccode%cpp% */
+fix_con_hes
+===========
+See :ref:`fix_con_hes-name`
+{xrst_spell_off}
+{xrst_code cpp} */
    void fix_con_hes(
       const d_vector&        fixed_vec   ,
       const d_vector&        weight      ,
@@ -559,18 +652,24 @@ $srccode%cpp% */
       d_vector&              val_out
    );
    friend bool ::fix_con_hes_xam(void);
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead fix_like_eval$$
-See $cref fix_like_eval$$
-$srccode%cpp% */
+fix_like_eval
+=============
+See :ref:`fix_like_eval-name`
+{xrst_spell_off}
+{xrst_code cpp} */
    d_vector fix_like_eval(const d_vector& fixed_vec);
    friend bool ::fix_like_eval_xam(void);
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead fix_like_jac$$
-See $cref fix_like_jac$$
-$srccode%cpp% */
+fix_like_jac
+============
+See :ref:`fix_like_jac-name`
+{xrst_spell_off}
+{xrst_code cpp} */
    void fix_like_jac(
       const d_vector&        fixed_vec   ,
       CppAD::vector<size_t>& row_out     ,
@@ -578,11 +677,14 @@ $srccode%cpp% */
       d_vector&              val_out
    );
    friend bool ::fix_like_jac_xam(void);
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead fix_like_hes$$
-See $cref fix_like_hes$$
-$srccode%cpp% */
+fix_like_hes
+============
+See :ref:`fix_like_hes-name`
+{xrst_spell_off}
+{xrst_code cpp} */
    void fix_like_hes(
       const d_vector&        fixed_vec   ,
       const d_vector&        weight      ,
@@ -591,11 +693,14 @@ $srccode%cpp% */
       d_vector&              val_out
    );
    friend bool ::fix_like_hes_xam(void);
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead logdet_jac$$
-See $cref logdet_jac$$
-$srccode%cpp% */
+logdet_jac
+==========
+See :ref:`logdet_jac-name`
+{xrst_spell_off}
+{xrst_code cpp} */
    void logdet_jac(
       const d_vector& fixed_vec  ,
       const d_vector& random_vec ,
@@ -603,21 +708,27 @@ $srccode%cpp% */
       d_vector&       logdet_ran
    );
    friend bool ::logdet_jac_xam(void);
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead ran_con_eval$$
-See $cref ran_con_eval$$
-$srccode%cpp% */
+ran_con_eval
+============
+See :ref:`ran_con_eval-name`
+{xrst_spell_off}
+{xrst_code cpp} */
    void ran_con_eval(
       const d_vector& random_vec ,
       d_vector&       Au
    );
    friend bool ::ran_con_eval_xam(void);
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead ran_con_jac$$
-See $cref ran_con_jac$$
-$srccode%cpp% */
+ran_con_jac
+===========
+See :ref:`ran_con_jac-name`
+{xrst_spell_off}
+{xrst_code cpp} */
    void ran_con_jac(
       const d_vector&                fixed_vec  ,
       const d_vector&                random_vec ,
@@ -625,11 +736,14 @@ $srccode%cpp% */
    );
    friend bool ::ran_con_jac_xam(void);
    friend bool ::sample_fixed_1(void);
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead ran_obj_eval$$
-See $cref ran_obj_eval$$
-$srccode%cpp% */
+ran_obj_eval
+============
+See :ref:`ran_obj_eval-name`
+{xrst_spell_off}
+{xrst_code cpp} */
    double ran_obj_eval(
       const d_vector& fixed_vec  ,
       const d_vector& random_vec
@@ -637,11 +751,14 @@ $srccode%cpp% */
    friend bool ::ran_obj_eval_xam(void);
    friend bool ::laplace_obj_fun(void);
    friend bool ::laplace_obj_tst(void);
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead ran_obj_jac$$
-See $cref ran_obj_jac$$
-$srccode%cpp% */
+ran_obj_jac
+===========
+See :ref:`ran_obj_jac-name`
+{xrst_spell_off}
+{xrst_code cpp} */
    void ran_obj_jac(
       const d_vector& fixed_vec  ,
       const d_vector& random_vec ,
@@ -650,11 +767,14 @@ $srccode%cpp% */
    friend bool ::ran_obj_jac_xam(void);
    friend bool ::der_var_hes(void);
    friend bool ::delta_ran_obj(void);
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead laplace_obj_hes$$
-See $cref laplace_obj_hes$$
-$srccode%cpp% */
+laplace_obj_hes
+===============
+See :ref:`laplace_obj_hes-name`
+{xrst_spell_off}
+{xrst_code cpp} */
    void laplace_obj_hes(
       const d_vector&         fixed_vec   ,
       const d_vector&         random_vec  ,
@@ -665,18 +785,23 @@ $srccode%cpp% */
    );
    friend bool ::laplace_obj_hes_xam(void);
    friend bool ::laplace_obj_hes(void);
-/* %$$
+/* {xrst_code}
+{xrst_spell_on}
 
-$subhead update_factor$$
-See $cref update_factor$$
-$srccode%cpp% */
+update_factor
+=============
+See :ref:`update_factor-name`
+{xrst_spell_off}
+{xrst_code cpp} */
    void update_factor(
       const d_vector&         fixed_vec   ,
       const d_vector&         random_vec
    );
    friend bool ::update_factor_xam(void);
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end private_base_class}
 -------------------------------------------------------------------------------
 */
 # endif

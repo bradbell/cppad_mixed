@@ -6,91 +6,96 @@
 # include <cppad/mixed/exception.hpp>
 # include <cppad/mixed/is_finite_vec.hpp>
 /*
-$begin init_ran_jac$$
-$spell
-   Jacobian
-   jac
-   CppAD
-   cppad
-   vec
-   const
-   Cpp
-   init
-   hes
-   rc
-$$
+{xrst_begin init_ran_jac}
+{xrst_spell
+   uu
+}
 
-$section Initialize Jacobian of Random Likelihood w.r.t. Random Effects$$
+Initialize Jacobian of Random Likelihood w.r.t. Random Effects
+##############################################################
 
-$head Syntax$$
-$icode%mixed_object%.init_ran_jac(%fixed_vec%, %random_vec%)%$$
+Syntax
+******
+*mixed_object* . ``init_ran_jac`` ( *fixed_vec* , *random_vec* )
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
 
-$head Assumptions$$
+Assumptions
+***********
 The member variable
-$cref/init_ran_like_done_/init_ran_like/init_ran_like_done_/$$ is true.
+:ref:`init_ran_like@init_ran_like_done_` is true.
 
-$head init_ran_jac_done_$$
+init_ran_jac_done\_
+*******************
 The input value of this member variable must be false.
 Upon return it is true.
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<a1_double>& %fixed_vec%
-%$$
-It specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$.
 
-$head random_vec$$
+   ``const CppAD::vector<a1_double>&`` *fixed_vec*
+
+It specifies the value of the
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta`.
+
+random_vec
+**********
 This argument has prototype
-$codei%
-   const CppAD::vector<a1_double>& %random_vec%
-%$$
-It specifies the value of the
-$cref/random effects/problem/Notation/Random Effects, u/$$
-vector $latex u$$.
 
-$children%example/private/ran_jac_fun.cpp
-%$$
-$head ran_jac_a1fun_$$
+   ``const CppAD::vector<a1_double>&`` *random_vec*
+
+It specifies the value of the
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector :math:`u`.
+{xrst_toc_hidden
+   example/private/ran_jac_fun.cpp
+}
+ran_jac_a1fun\_
+***************
 The input value of the member variable
-$codei%
-   CppAD::ADFun<a1_double> ran_jac_a1fun_
-%$$
+
+   ``CppAD::ADFun<a1_double> ran_jac_a1fun_``
+
 does not matter.
 upon return zero order forward mode for this function computes
 the Jacobian of the random likelihood  with respect to the random effects;
 i.e.,
-$latex \[
-   f_u ( \theta , u )
-\]$$; see
-$cref ran_jac_fun.cpp$$.
 
-$head ran_jac2hes_rc_$$
+.. math::
+
+   f_u ( \theta , u )
+
+see
+:ref:`ran_jac_fun.cpp-name` .
+
+ran_jac2hes_rc\_
+****************
 The input value of the member variable
-$codei%
-   CppAD::mixed::sparse_rc ran_jac2hes_rc_
-%$$
+
+   ``CppAD::mixed::sparse_rc ran_jac2hes_rc_``
+
 does not matter.
 Upon return it contains the sparsity pattern for
-$latex f_{uu} ( \theta , u )$$ (not just lower triangle).
-The row indices are in the vector $latex u$$; i.e., just the random effects.
-The column indices are in the vector  $latex ( \theta , u )$$; i.e.,
+:math:`f_{uu} ( \theta , u )` (not just lower triangle).
+The row indices are in the vector :math:`u`; i.e., just the random effects.
+The column indices are in the vector  :math:`( \theta , u )`; i.e.,
 both fixed and random effects.
 
-$comment
+{xrst_comment
    %example/private/ran_jac_fun_.cpp
-$$
-$end
+}
+
+{xrst_end init_ran_jac}
 ----------------------------------------------------------------------------
 */
 void cppad_mixed::init_ran_jac(

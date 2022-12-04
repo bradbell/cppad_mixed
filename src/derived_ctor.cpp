@@ -3,148 +3,153 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin derived_ctor$$
-$spell
-   CppAD
-   bool
-   cppad
-   dismod
-   const
-   vec
-   rcv
-   init_obj_hes
-   nr
+{xrst_begin derived_ctor}
+{xrst_spell
+   boolean
    nc
-$$
+   nr
+}
 
-$section User Defined Class Derived From cppad_mixed$$
+User Defined Class Derived From cppad_mixed
+###########################################
 
-$head Syntax$$
-$icode%mixed_derived% %mixed_object%(
-   %n_fixed%, %n_random%,
-   %quasi_fixed%, %bool_sparsity%, %A_rcv%, %trace_init%,
-   %...%
-)%$$
+Syntax
+******
 
-$head Prototype$$
-$srcfile%include/cppad/mixed/base_class.hpp%
-   0%// BEGIN_CPPAD_MIXED_CTOR%// END_CPPAD_MIXED_CTOR%0
-%$$
+| *mixed_derived* *mixed_object* (
+| |tab| *n_fixed* , *n_random* ,
+| |tab| *quasi_fixed* , *bool_sparsity* , *A_rcv* , *trace_init* ,
+| |tab| ...
+| )
 
-$head See Also$$
-$cref initialize$$
+Prototype
+*********
+{xrst_literal
+   include/cppad/mixed/base_class.hpp
+   // BEGIN_CPPAD_MIXED_CTOR
+   // END_CPPAD_MIXED_CTOR
+}
 
-$head mixed_derived$$
+See Also
+********
+:ref:`initialize-name`
+
+mixed_derived
+*************
 This is the name of the class derived in the following fashion:
-$codei%
-   class %mixed_derived% : public cppad_mixed {
-%$$
 
-$head mixed_object$$
+   ``class`` *mixed_derived* : ``public cppad_mixed`` {
+
+mixed_object
+************
 This is the derived class object that is constructed by the syntax above.
 
-$head cppad_mixed$$
+cppad_mixed
+***********
 The derived class constructor must call its base class constructor as follows:
-$codei%
-   cppad_mixed(
-      %n_fixed%, %n_random%, %quasi_fixed%, %bool_sparsity%, %A_rcv%
-   )
-%$$
-The arguments $icode quasi_fixed$$, $icode bool_sparsity$$, $icode A_rcv$$
+
+| |tab| ``cppad_mixed`` (
+| |tab| |tab| *n_fixed* , *n_random* , *quasi_fixed* , *bool_sparsity* , *A_rcv*
+| |tab| )
+
+The arguments *quasi_fixed* , *bool_sparsity* , *A_rcv*
 are optional; see default values in prototype above.
 
-$head n_fixed$$
+n_fixed
+*******
 This is the number of
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$ in the model.
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>` in the model.
 
-$head n_random$$
+n_random
+********
 This is the number of
-$cref/random effects/problem/Notation/Random Effects, u/$$ in the model.
+:ref:`random effects<problem@Notation@Random Effects, u>` in the model.
 In the case where there are
-$cref/no random effects/problem/Maximum Likelihood/No Random Effects/$$,
-$icode%n_random% = 0%$$.
+:ref:`problem@Maximum Likelihood@No Random Effects` ,
+*n_random*  = 0 .
 
-$head quasi_fixed$$
+quasi_fixed
+***********
 
-$subhead true$$
-If $icode quasi_fixed$$ is true,
+true
+====
+If *quasi_fixed* is true,
 a quasi-Newton approximation for the Hessian of the fixed effects objective
-$cref/L(theta)/theory/Objective/Fixed Effects Objective, L(theta)/$$
+:ref:`L(theta)<theory@Objective@Fixed Effects Objective, L(theta)>`
 is used during the optimization of the fixed effects.
-This is more robust when $cref/fixed_in/optimize_fixed/fixed_in/$$
+This is more robust when :ref:`optimize_fixed@fixed_in`
 is far away from a reasonable value and might lead to the
 Hessian w.r.t. the random effects not being positive definite.
-If $icode quasi_fixed$$ is true,
-some initialization is skipped during $cref initialize$$.
+If *quasi_fixed* is true,
+some initialization is skipped during :ref:`initialize-name` .
 This initialization is needed, and hence computed if
-the and when the $cref/information matrix/information_mat/$$ is computed.
+the and when the :ref:`information matrix<information_mat-name>` is computed.
 
-$subhead false$$
-If $icode quasi_fixed$$ is false,
+false
+=====
+If *quasi_fixed* is false,
 the Hessian of the fixed effects objective is computed using the
 approximate Laplace objective
-$cref/H(beta, theta, u)
-   /theory
-   /Approximate Laplace Objective, H(beta, theta, u)
-/$$.
+:ref:`H(beta, theta, u)<theory@Approximate Laplace Objective, H(beta, theta, u)>` .
 The extra routines for initializing the second order accurate
-approximation for the Laplace objective $code init_laplace_obj_fun$$,
-and $code init_laplace_obj_hes$$ are used to initialize the
+approximation for the Laplace objective ``init_laplace_obj_fun`` ,
+and ``init_laplace_obj_hes`` are used to initialize the
 Hessian of the fixed effects objective.
 
-$head bool_sparsity$$
-If $icode bool_sparsity$$ is true, where possible
+bool_sparsity
+*************
+If *bool_sparsity* is true, where possible
 boolean sparsity patterns are used for this computation,
 otherwise set sparsity patterns are used.
 This should only affect to amount of time and memory used for the
 computations.
 
-$head A_rcv$$
+A_rcv
+*****
 This is a
-$cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
+:ref:`sparse_mat_info@Notation@Sparse Matrix`
 representation of the
-$cref/random constraint matrix
-   /problem
-   /Notation
-   /Random Constraint Matrix, A
-/$$
-$latex A$$.
-If $icode%random_vec%.size()%$$ is zero,
-there are no constraint equations and $icode%A_rcv%.nr() == 0%$$
+:ref:`random constraint matrix<problem@Notation@Random Constraint Matrix, A>`
+:math:`A`.
+If *random_vec* . ``size`` () is zero,
+there are no constraint equations and *A_rcv* . ``nr`` () == 0
 (this is the case for the default value of this argument).
-Otherwise, $icode%A_rcv%.nc()%$$ must be equal to $icode n_random$$
-and $icode%A_rcv%.nr()%$$ is the number of constraints.
+Otherwise, *A_rcv* . ``nc`` () must be equal to *n_random*
+and *A_rcv* . ``nr`` () is the number of constraints.
 
-$head trace_init$$
+trace_init
+**********
 If true, trace the initialization of cppad_mixed data structures on
 standard output. This can be useful for large problems where the initialization
 takes a significant amount of time.
 For an example see
-$cref/trace_init/hes_fixed_obj.cpp/trace_init/$$.
+:ref:`hes_fixed_obj.cpp@trace_init` .
 
-$head ...$$
+...
+***
 Other arguments to the derived class constructor
 (that are not used by the base class constructor).
 The other arguments need not appear at the end of the derived
 class constructor (as in the syntax above).
 
-$head CppAD ErrorHandler$$
+CppAD ErrorHandler
+******************
 If a CppAD error occurs, its
-$href%http://www.coin-or.org/CppAD/Doc/errorhandler.htm%ErrorHandler%$$
+`ErrorHandler <http://www.coin-or.org/CppAD/Doc/errorhandler.htm>`_
 is used to map it to either a
-$cref/fatal_error/base_class/User Defined Functions/fatal_error/$$
+:ref:`base_class@User Defined Functions@fatal_error`
 or
-$cref/warning/base_class/User Defined Functions/warning/$$.
-
-$children%
+:ref:`base_class@User Defined Functions@warning` .
+{xrst_toc_hidden
    example/user/derived_ctor.cpp
-%$$
-$head Example$$
-The file $cref derived_ctor.cpp$$ contains an example and test
+}
+Example
+*******
+The file :ref:`derived_ctor.cpp-name` contains an example and test
 that uses this derived class.
 It returns true for success and false for failure.
 
-$end
+{xrst_end derived_ctor}
 */
 # include<cppad/mixed/cppad_mixed.hpp>
 # include<cppad/mixed/exception.hpp>

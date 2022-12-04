@@ -3,23 +3,25 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin sparse_low2sym.cpp$$
-$spell
-   tri
-   cppad
+{xrst_begin sparse_low2sym.cpp}
+{xrst_spell
    sym
-$$
+}
 
-$section sparse_low2sym: Example and Test$$
+sparse_low2sym: Example and Test
+################################
 
-$head Private$$
+Private
+*******
 This example is not part of the
-$cref/cppad_mixed public API/base_class/$$.
+:ref:`cppad_mixed public API<base_class-name>` .
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
-$end
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end sparse_low2sym.cpp}
 */
 // BEGIN C++
 # include <cmath>

@@ -3,40 +3,39 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin ran_con_eval.cpp$$
-$spell
-   CppAD
-   ran_con
-   cppad
-   con
-   eval
-   interp
-   xam
-$$
+{xrst_begin ran_con_eval.cpp}
 
-$section ran_con_eval: Example and Test$$
+ran_con_eval: Example and Test
+##############################
 
-$head Private$$
+Private
+*******
 This example is not part of the
-$cref/cppad_mixed public API/base_class/$$.
+:ref:`cppad_mixed public API<base_class-name>` .
 
-$head Model$$
-$latex \[
+Model
+*****
+
+.. math::
+
    \B{p}( y_i | \theta , u ) \sim \B{N} ( u_i + \theta_0 , \theta_1^2 )
-\] $$
-$latex \[
+
+.. math::
+
    \B{p}( u_i | \theta ) \sim \B{N} ( 0 , 1 )
-\] $$
+
 It follows that the Laplace approximation is exact and
-$latex \[
+
+.. math::
+
    \B{p}( y_i | \theta ) \sim \B{N} \left( \theta_0 , 1 + \theta_1^2 \right)
-\] $$
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end ran_con_eval.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

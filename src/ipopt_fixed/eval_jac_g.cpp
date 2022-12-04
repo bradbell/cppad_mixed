@@ -7,73 +7,76 @@
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-$begin ipopt_fixed_eval_jac_g$$
-$spell
-   CppAD
-   ran_obj
-   cppad
-   obj
-   ipopt
-   bool
-   eval
-   const
-   nele_jac
-   Jacobian
-   nnz
-$$
+{xrst_begin ipopt_fixed_eval_jac_g}
+{xrst_spell
+   nele
+}
 
-$section Compute Jacobian of Constraint Functions$$
+Compute Jacobian of Constraint Functions
+########################################
 
-$head Syntax$$
-$icode%ok% = eval_jac_g(
-   %n%, %x%, %new_x%, %m%, %nele_jac%, %iRow%, %jCol%, %values%
-)%$$
+Syntax
+******
 
-$head n$$
+| *ok* = ``eval_jac_g`` (
+| |tab| *n* , *x* , *new_x* , *m* , *nele_jac* , *iRow* , *jCol* , *values*
+| )
+
+n
+*
 is the number of variables in the problem (dimension of x).
 
-$head x$$
+x
+*
 is the value for the primal variables at which the Jacobian
-of the constraints $latex \nabla g(x)$$ is computed (has size $icode n$$).
+of the constraints :math:`\nabla g(x)` is computed (has size *n* ).
 
-$head new_x$$
+new_x
+*****
 if true, no Ipopt evaluation method was previous called with the same
-value for $icode x$$.
+value for *x* .
 
-$head m$$
+m
+*
 is the number of constraints in the problem (dimension of g(x)).
 
-$head nele_jac$$
-is the number of non-zero elements in the Jacobian of $icode g(x)$$; i.e.,
+nele_jac
+********
+is the number of non-zero elements in the Jacobian of *g* ( *x* ) ; i.e.,
 the same as
-$cref/nnz_jac_g/ipopt_fixed_get_nlp_info/nnz_jac_g/$$.
+:ref:`ipopt_fixed_get_nlp_info@nnz_jac_g` .
 
-$head iRow$$
-If $icode values$$ is $code NULL$$,
-$icode iRow$$ has size $icode nele_jac$$ and is set to the
+iRow
+****
+If *values* is ``NULL`` ,
+*iRow* has size *nele_jac* and is set to the
 row indices for the non-zero entries in the Jacobian of the constraints
-$latex g_x (x)$$.
+:math:`g_x (x)`.
 
-$head jCol$$
-If $icode values$$ is $code NULL$$,
-$icode jCol$$ has size $icode nele_jac$$ and is set to the
+jCol
+****
+If *values* is ``NULL`` ,
+*jCol* has size *nele_jac* and is set to the
 column indices for the non-zero entries in the Jacobian of the constraints
-$latex g_x (x)$$.
+:math:`g_x (x)`.
 
-$head values$$
-If $icode values$$ is not $code NULL$$,
-it has size $icode nele_jac$$ and $icode%values%[%k%]%$$
-is set to the value of element of the Jacobian $latex g_x (x)$$
-with row index $icode%iRow%[%k%]%$$
-and column index $icode%jCol%[%k%]%$$.
+values
+******
+If *values* is not ``NULL`` ,
+it has size *nele_jac* and *values* [ *k* ]
+is set to the value of element of the Jacobian :math:`g_x (x)`
+with row index *iRow* [ *k* ]
+and column index *jCol* [ *k* ] .
 
-$head ok$$
+ok
+**
 if set to false, the optimization will terminate with status set to
-$cref/USER_REQUESTED_STOP
-   /ipopt_fixed_finalize_solution/status/USER_REQUESTED_STOP/$$.
+:ref:`ipopt_fixed_finalize_solution@status@USER_REQUESTED_STOP` .
 
-$head Prototype$$
-$srccode%cpp% */
+Prototype
+*********
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_fixed::eval_jac_g(
    Index           n        ,  // in
    const Number*   x        ,  // in
@@ -83,8 +86,10 @@ bool ipopt_fixed::eval_jac_g(
    Index*          iRow     ,  // out
    Index*          jCol     ,  // out
    Number*         values   )  // out
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_fixed_eval_jac_g}
 */
 {  if( values != nullptr )
    {  for(Index j = 0; j < n; ++j)

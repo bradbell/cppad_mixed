@@ -3,21 +3,17 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin manage_gsl_rng.cpp$$
-$spell
-   CppAD
-   gsl
-   rng
-$$
+{xrst_begin manage_gsl_rng.cpp}
 
-$section Manage GSL Random Number Generator: Example and Test$$
+Manage GSL Random Number Generator: Example and Test
+####################################################
 
-$code
-$srcthisfile%
-   0%// BEGIN C++%// END C++%1%$$
-$$
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end manage_gsl_rng.cpp}
 */
 // BEGIN C++
 # include <cppad/utility/vector.hpp>

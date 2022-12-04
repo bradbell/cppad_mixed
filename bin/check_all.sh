@@ -88,9 +88,14 @@ bin/run_cmake.sh $flags >& cmake.log
 # The command above sets up the build directory as a soft link.
 # This is necessary so xrst does not create a normal directory called build.
 #
-# check latex in omhelp
-echo_eval run_omhelp.sh -xml dev
-echo_eval run_omhelp.sh doc
+# build developer documentation
+if [ -e doc ]
+then
+   echo_eval rm -r doc
+fi
+echo_eval xrst \
+   --local_toc \
+   --html_theme sphinx_rtd_theme
 # ----------------------------------------------------------------------------
 cd build
 #

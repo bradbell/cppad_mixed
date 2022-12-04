@@ -3,23 +3,17 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin sample_fixed.cpp$$
-$spell
-   CppAD
-   cppad
-   hes
-   eval
-   interp
-   xam
-$$
+{xrst_begin sample_fixed.cpp}
 
-$section Sample From Fixed Effects Posterior: Example and Test$$
+Sample From Fixed Effects Posterior: Example and Test
+#####################################################
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end sample_fixed.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

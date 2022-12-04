@@ -6,69 +6,70 @@
 # include <cppad/mixed/exception.hpp>
 
 /*
-$begin fix_like_eval$$
-$spell
-   CppAD
-   cppad
-   eval
-   vec
-   const
-   Cpp
+{xrst_begin fix_like_eval}
+{xrst_spell
    fabs
-$$
+}
 
-$section Evaluate Fixed Likelihood$$
+Evaluate Fixed Likelihood
+#########################
 
-$head Syntax$$
-$icode%vec% = %mixed_object%.fix_like_eval(%fixed_vec%)%$$
+Syntax
+******
+*vec* = *mixed_object* . ``fix_like_eval`` ( *fixed_vec* )
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head fix_likelihood$$
-In the special case where $cref fix_likelihood$$ returns the empty vector,
-$icode vec$$ is also the empty vector.
+fix_likelihood
+**************
+In the special case where :ref:`fix_likelihood-name` returns the empty vector,
+*vec* is also the empty vector.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_vec%
-%$$
+
+   ``const CppAD::vector<double>&`` *fixed_vec*
+
 It specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$ at which $latex g( \theta )$$ is evaluated.
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta` at which :math:`g( \theta )` is evaluated.
 
-$head vec$$
+vec
+***
 The return value has prototype
-$codei%
-   CppAD::vector<double> %vec%
-%$$
-and is a
-$cref/negative log-density vector/problem/Negative Log-Density Vector/$$
-corresponding to the fixed part of the negative log-likelihood
-$cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$.
-To be specific;
-$pre
-   $$
-$latex g( \theta ) = $$
-$icode%vec%[0] + fabs(%vec%[1]) + %...% fabs(%vec%[%s%-1])
-%$$
-where $icode%s% = %vec%.size()%$$.
 
-$children%
+   ``CppAD::vector<double>`` *vec*
+
+and is a
+:ref:`problem@Negative Log-Density Vector`
+corresponding to the fixed part of the negative log-likelihood
+:ref:`g(theta)<theory@Fixed Likelihood, g(theta)>` .
+To be specific;
+
+:math:`g( \theta ) =`
+
+   *vec* [0] + ``fabs`` ( *vec* [1]) + ... ``fabs`` ( *vec* [ *s* ``-1`` ])
+
+where *s* = *vec* . ``size`` () .
+{xrst_toc_hidden
    example/private/fix_like_eval.cpp
-%$$
-$head Example$$
-The file $cref fix_like_eval.cpp$$ contains an example
+}
+Example
+*******
+The file :ref:`fix_like_eval.cpp-name` contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
-$end
+{xrst_end fix_like_eval}
 */
 
 

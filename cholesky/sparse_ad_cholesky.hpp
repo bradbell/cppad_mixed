@@ -5,70 +5,91 @@
 # ifndef CPPAD_MIXED_SPARSE_AD_CHOLESKY_HPP
 # define CPPAD_MIXED_SPARSE_AD_CHOLESKY_HPP
 /*
-$begin sparse_ad_cholesky$$
-$spell
-   CppAD
-   Cholesky
-   cppad
-$$
+{xrst_begin sparse_ad_cholesky}
 
-$section Sparse Cholesky Factorization as an Atomic CppAD Operation$$
+Sparse Cholesky Factorization as an Atomic CppAD Operation
+##########################################################
 
-$head Syntax$$
-$codei%CppAD::mixed::sparse_ad_cholesky %cholesky%$$
+Syntax
+******
+``CppAD::mixed::sparse_ad_cholesky`` *cholesky*
 
-$head Not Used$$
-The option for $code cppad_mixed$$ to use this class was removed on 2017-01-21.
+Not Used
+********
+The option for ``cppad_mixed`` to use this class was removed on 2017-01-21.
 Is implementation and examples have been stored in the
-$code cholesky$$ directory for possible future research.
+``cholesky`` directory for possible future research.
 
-$head Purpose$$
-Given a symmetric positive definite matrix $latex A \in \B{R}^{n \times n}$$,
-this routine computes a permutation matrix $latex P \in \B{R}^{n \times n}$$
-and a lower triangular matrix $latex L \in \B{R}^{n \times n}$$
+Purpose
+*******
+Given a symmetric positive definite matrix :math:`A \in \B{R}^{n \times n}`,
+this routine computes a permutation matrix :math:`P \in \B{R}^{n \times n}`
+and a lower triangular matrix :math:`L \in \B{R}^{n \times n}`
 such that
-$latex \[
+
+.. math::
+
    P A P^\R{T} = L L^\R{T}
-\] $$
+
 The permutation matrix is chosen to be fill reducing; i.e.,
-to make $latex L$$ sparse.
+to make :math:`L` sparse.
 
-$head Notation$$
+Notation
+********
 
-$subhead A$$
-We use $latex A$$ to refer to the symmetric positive definite
+A
+=
+We use :math:`A` to refer to the symmetric positive definite
 matrix.
 
-$subhead P$$
-We use $latex P$$ to refer to the permutation matrix.
+P
+=
+We use :math:`P` to refer to the permutation matrix.
 
-$subhead L$$
-We use $latex L$$ to refer to the lower triangular matrix.
+L
+=
+We use :math:`L` to refer to the lower triangular matrix.
 
-$head Private$$
+Private
+*******
 This class is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head Public Member Functions$$
-$srcthisfile%4%// BEGIN PUBLIC MEMBER FUNCTIONS%// END PUBLIC MEMBER FUNCTIONS%1%$$
+Public Member Functions
+***********************
+{xrst_literal
+   // BEGIN PUBLIC MEMBER FUNCTIONS
+   // END PUBLIC MEMBER FUNCTIONS
+}
 
-$head Type Declarations$$
-$srcthisfile%4%// BEGIN TYPE DECLARATIONS%// END TYPE DECLARATIONS%1%$$
+Type Declarations
+*****************
+{xrst_literal
+   // BEGIN TYPE DECLARATIONS
+   // END TYPE DECLARATIONS
+}
 
-$head Member Variables$$
-$srcthisfile%4%// BEGIN MEMBER VARIABLES%// END MEMBER VARIABLES%1%$$
+Member Variables
+****************
+{xrst_literal
+   // BEGIN MEMBER VARIABLES
+   // END MEMBER VARIABLES
+}
 
-$childtable%cholesky/cholesky.cpp
-   %cholesky/sparse_ad_cholesky.cpp
-   %cholesky/example/sparse_ad_chol_eval.cpp
-   %cholesky/example/sparse_ad_chol_perm.cpp
-   %cholesky/example/sparse_ad_chol_eq.cpp
-   %cholesky/example/sparse_ad_chol_var.cpp
-   %cholesky/example/sparse_ad_chol_sp1.cpp
-   %cholesky/example/sparse_ad_chol_sp2.cpp
-%$$
+Contents
+********
+{xrst_toc_table
+   cholesky/cholesky.cpp
+   cholesky/sparse_ad_cholesky.cpp
+   cholesky/example/sparse_ad_chol_eval.cpp
+   cholesky/example/sparse_ad_chol_perm.cpp
+   cholesky/example/sparse_ad_chol_eq.cpp
+   cholesky/example/sparse_ad_chol_var.cpp
+   cholesky/example/sparse_ad_chol_sp1.cpp
+   cholesky/example/sparse_ad_chol_sp2.cpp
+}
 
-$end
+{xrst_end sparse_ad_cholesky}
 */
 # include <cppad/cppad.hpp>
 # include <Eigen/SparseCore>

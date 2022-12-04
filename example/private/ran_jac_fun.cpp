@@ -3,26 +3,22 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin ran_jac_fun.cpp$$
-$spell
-   jac
-   CppAD
-   cppad
-   interp
-   xam
-$$
+{xrst_begin ran_jac_fun.cpp}
 
-$section ran_jac_fun: Example and Test$$
+ran_jac_fun: Example and Test
+#############################
 
-$head Private$$
+Private
+*******
 This example is not part of the
-$cref/cppad_mixed public API/base_class/$$.
+:ref:`cppad_mixed public API<base_class-name>` .
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end ran_jac_fun.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

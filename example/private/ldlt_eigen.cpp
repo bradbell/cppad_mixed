@@ -3,23 +3,24 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin ldlt_eigen.cpp$$
-$spell
-   rcv
-   rc
-   nrow
-   init
-   CppAD
-   eigen ldlt_obj
+{xrst_begin ldlt_eigen.cpp}
+{xrst_spell
+   ccc
+   cov
    logdet
-   sim_cov
-$$
+   nrow
+   sim
+}
 
-$section Example Using Eigen LDLT Factorization$$
+Example Using Eigen LDLT Factorization
+######################################
 
-$head Problem Description$$
+Problem Description
+*******************
 We define the lower triangular matrix
-$latex \[
+
+.. math::
+
    L =
    \left( \begin{array}{ccc}
       1 & 0 & 0 \\
@@ -40,18 +41,22 @@ $latex \[
       0 & 1 & 2 \\
       0 & 0 & 1
    \end{array} \right)
-\] $$
+
 and the positive definite matrix
-$latex \[
+
+.. math::
+
    H = L D L^\R{T} =
    \left( \begin{array}{ccc}
       3 & 6  & 9 \\
       6 & 14 & 22 \\
       9 & 22 & 36
    \end{array} \right)
-\] $$
-The inverse of $latex H$$ is given by
-$latex \[
+
+The inverse of :math:`H` is given by
+
+.. math::
+
    H^{-1} =
    \frac{1}{6}
    \left( \begin{array}{ccc}
@@ -59,72 +64,82 @@ $latex \[
       -18 & 27   & -12 \\
       6   & -12  & 6
    \end{array} \right)
-\] $$
-which can be checked by multiplying by $latex H H^{-1}$$.
 
-$head constructor$$
+which can be checked by multiplying by :math:`H H^{-1}`.
+
+constructor
+***********
 See the following code below:
-$codep
+::
+
    CppAD::mixed::ldlt_eigen ldlt_obj(nrow);
-$$
 
-$head init$$
+init
+****
 See the following under
-$cref/Source Code/ldlt_eigen.cpp/Source Code/$$ below:
-$codep
+:ref:`ldlt_eigen.cpp@Source Code` below:
+::
+
    ldlt_obj.init( H_rcv.pat() );
-$$
 
-$head pattern$$
+pattern
+*******
 See the following under
-$cref/Source Code/ldlt_eigen.cpp/Source Code/$$ below:
-$codep
+:ref:`ldlt_eigen.cpp@Source Code` below:
+::
+
    H_rc = ldlt_obj.pattern();
-$$
 
-$head update$$
+update
+******
 See the following under Source Code below:
-$codep
+::
+
    ldlt_obj.update( H_rcv );
-$$
 
-$head logdet$$
+logdet
+******
 See the following under Source Code below:
-$codep
+::
+
    logdet_H = ldlt_obj.logdet(negative);
-$$
 
-$head solve_H$$
+solve_H
+*******
 See the following under Source Code below:
-$codep
+::
+
    ldlt_obj.solve_H(row, val_in, val_out);
-$$
 
-$head split$$
+split
+*****
 See the following under Source Code below:
-$codep
+::
+
    ok &= ldlt_obj.split(L, D, P)
-$$
 
-$head solve_LDLT$$
+solve_LDLT
+**********
 See the following under Source Code below:
-$codep
+::
+
    x = ldlt_eigen<double>::solve_LDLT(L, D, P, b);
-$$
 
-
-$head sim_cov$$
+sim_cov
+*******
 See the following under Source Code below:
-$codep
+::
+
    ok &= ldlt_obj.sim_cov(w, v)
-$$
 
-$head Source Code$$
-$code
-$srcthisfile%5%// BEGIN C++%// END C++%1%$$
-$$
+Source Code
+***********
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end ldlt_eigen.cpp}
 */
 // BEGIN C++
 # include <cppad/mixed/ldlt_eigen.hpp>

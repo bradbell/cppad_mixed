@@ -6,101 +6,99 @@
 # include <cppad/mixed/is_finite_vec.hpp>
 
 /*
-$begin init_hes_cross$$
-$spell
-   rcv
-   CppAD
-   init
-   cppad
-   hes hes
-   vec
-   const
-   Cpp
-   logdet
-   bool
-$$
+{xrst_begin init_hes_cross}
 
-$section Cross Terms of Sparse Hessian w.r.t Fixed and Random Effects$$
+Cross Terms of Sparse Hessian w.r.t Fixed and Random Effects
+############################################################
 
-$head Syntax$$
-$icode%mixed_object%.init_hes_cross(
-   %fixed_vec%, %random_vec%
-)%$$
+Syntax
+******
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+| *mixed_object* . ``init_hes_cross`` (
+| |tab| *fixed_vec* , *random_vec*
+| )
 
-$head Assumptions$$
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
+
+Assumptions
+***********
 The member variable
-$cref/init_ran_like_done_/init_ran_like/init_ran_like_done_/$$ is true.
+:ref:`init_ran_like@init_ran_like_done_` is true.
 
-$head init_hes_cross_done_$$
+init_hes_cross_done\_
+*********************
 The input value of this member variable must be false.
 Upon return it is true.
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_vec%
-%$$
-It specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$ at which the initialization is done.
 
-$head random_vec$$
+   ``const CppAD::vector<double>&`` *fixed_vec*
+
+It specifies the value of the
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta` at which the initialization is done.
+
+random_vec
+**********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_vec%
-%$$
-It specifies the value of the
-$cref/random effects/problem/Notation/Random Effects, u/$$
-vector $latex u$$ at which the initialization is done.
 
-$head hes_cross_$$
+   ``const CppAD::vector<double>&`` *random_vec*
+
+It specifies the value of the
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector :math:`u` at which the initialization is done.
+
+hes_cross\_
+***********
 The input value of the member variable
-$codei%
-   CppAD::mixed::sparse_hes_rcv hes_cross_
-%$$
+
+   ``CppAD::mixed::sparse_hes_rcv hes_cross_``
+
 does not matter.
 Upon return it contains the
-$cref sparse_hes_info$$
+:ref:`sparse_hes_info-name`
 for the Hessian
-$latex \[
+
+.. math::
+
    f_{u,\theta} ( \theta , u )
-\]$$
-see $cref/f(theta, u)/
-   theory/
-   Random Likelihood, f(theta, u)
-/$$
 
-$subhead ran_like_fun_, ran_like_a1fun_$$
-Either $code ran_like_fun_$$ or $code ran_like_a1fun_$$
+see :ref:`f(theta, u)<theory@Random Likelihood, f(theta, u)>`
+
+ran_like_fun\_, ran_like_a1fun\_
+================================
+Either ``ran_like_fun_`` or ``ran_like_a1fun_``
 can be used for the ADFun object in the
-$cref/sparse Hessian Call/sparse_hes_info/Sparse Hessian Call/f/$$.
+:ref:`sparse Hessian Call<sparse_hes_info@Sparse Hessian Call@f>` .
 
-
-$head Order$$
+Order
+*****
 The results are in column major order; i.e.,
-$codei%
-   hes_cross_.subset.col()[%k%] <= hes_cross_.subset.col()[%k+1%]
-   if( hes_cross_.subset.col()[%k%] == hes_cross_.subset.col()[%k+1%] )
-      hes_cross_.subset.row()[%k%] < hes_cross_.subset.row()[%k+1%]
-%$$
 
-$children%
+| |tab| ``hes_cross_.subset.col`` ()[ *k* ] <= ``hes_cross_.subset.col`` ()[ *k* +1]
+| |tab| ``if`` ( ``hes_cross_.subset.col`` ()[ *k* ] == ``hes_cross_.subset.col`` ()[ *k* +1] )
+| |tab| |tab| ``hes_cross_.subset.row`` ()[ *k* ] < ``hes_cross_.subset.row`` ()[ *k* +1]
+
+{xrst_toc_hidden
    example/private/hes_cross.cpp
-%$$
-$head Example$$
-The file $cref hes_cross.cpp$$ contains an example
+}
+Example
+*******
+The file :ref:`hes_cross.cpp-name` contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
-$end
+{xrst_end init_hes_cross}
 */
 
 void cppad_mixed::init_hes_cross(

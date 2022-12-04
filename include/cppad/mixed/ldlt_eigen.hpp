@@ -6,60 +6,63 @@
 # define CPPAD_MIXED_LDLT_EIGEN_HPP
 
 /*
-$begin ldlt_eigen$$
-$spell
-   ldlt_eigen
-   Simplicial
-   CppAD
-   cholesky
-   chol
-   hes
-   eigen
-   typedef
-$$
+{xrst_begin ldlt_eigen}
 
-$section An Eigen LDLT Factor Class$$
+An Eigen LDLT Factor Class
+##########################
 
-$head See Also$$
-$cref ldlt_cholmod$$
+See Also
+********
+:ref:`ldlt_cholmod-name`
 
-$head Private$$
+Private
+*******
 This class is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head Factorization$$
+Factorization
+*************
 The factorization is
-$latex \[
+
+.. math::
+
    L D L^\R{T} = P H P^{T}
-\] $$
 
-$subhead H$$
+H
+=
 is the matrix corresponding the current
-$cref/update/ldlt_cholmod_update/$$.
+:ref:`update<ldlt_cholmod_update-name>` .
 
-$subhead L$$
+L
+=
 is a lower triangular matrix with ones on the diagonal,
 
-$subhead D$$
+D
+=
 is a diagonal matrix.
 
-$subhead P$$
+P
+=
 is a permutation matrix.
 
-$head Double$$
+Double
+******
 This is the type of the elements in the matrices and is either
  double29628 or  a1_double29628.
 
-$head Example$$
-The file $cref ldlt_eigen.cpp$$ contains an example and test
+Example
+*******
+The file :ref:`ldlt_eigen.cpp-name` contains an example and test
 using the operations in this class.
 
+Contents
+********
+{xrst_toc_table
+   src/eigen/ldlt_eigen.cpp
+   example/private/ldlt_eigen.cpp
+}
 
-$childtable%src/eigen/ldlt_eigen.cpp
-   %example/private/ldlt_eigen.cpp
-%$$
-
-$end
+{xrst_end ldlt_eigen}
 ------------------------------------------------------------------------------
 */
 

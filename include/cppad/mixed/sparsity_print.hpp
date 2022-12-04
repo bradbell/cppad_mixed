@@ -5,44 +5,46 @@
 # ifndef CPPAD_MIXED_SPARSITY_PRINT_HPP
 # define CPPAD_MIXED_SPARSITY_PRINT_HPP
 /*
-$begin sparsity_print$$
-$spell
-   CppAD
-   const
+{xrst_begin sparsity_print}
+{xrst_spell
    iterator
    iterators
-   std
    setvec
-$$
+}
 
-$section Print a CppAD Internal Sparsity Pattern$$
+Print a CppAD Internal Sparsity Pattern
+#######################################
 
-$head Syntax$$
-$codei%sparsity_print(%label%, %pattern%)%$$
+Syntax
+******
+``sparsity_print`` ( *label* , *pattern* )
 
-$head Private$$
+Private
+*******
 This routine is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head label$$
+label
+*****
 This argument has prototype
-$codei%
-   const std::string& %label%
-%$$
+
+   ``const std::string&`` *label*
+
 It is a label printed before the matrix,
 If it is empty, no label is printed.
 
-$head pattern$$
+pattern
+*******
 Is the sparsity pattern which must have one of the following prototypes:
-$codei%
-      CppAD::local::sparse::pack_setvec& %pattern%
-      CppAD::local::sparse::list_setvec& %pattern%
-%$$
-Note these are effectively $code const$$, but are not declared
-so that the corresponding iterator can be used.
-(The iterators for these types do not support $code const$$.)
 
-$end
+| |tab| |tab| ``CppAD::local::sparse::pack_setvec&`` *pattern*
+| |tab| |tab| ``CppAD::local::sparse::list_setvec&`` *pattern*
+
+Note these are effectively ``const`` , but are not declared
+so that the corresponding iterator can be used.
+(The iterators for these types do not support ``const`` .)
+
+{xrst_end sparsity_print}
 */
 # include <cppad/cppad.hpp>
 

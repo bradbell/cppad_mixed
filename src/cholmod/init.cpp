@@ -3,100 +3,105 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin ldlt_cholmod_init$$
-$spell
-   rc
-   sym
-   ldlt
+{xrst_begin ldlt_cholmod_init}
+{xrst_spell
+   nan
    nrow
-   xam
-   CppAD
-   const
-   init
-   ldlt_obj
-   cholmod
-   pos
    rhs
-   hes
-$$
+   sym
+}
 
-$section Initialize Factor for a Specific Sparsity Pattern$$
+Initialize Factor for a Specific Sparsity Pattern
+#################################################
 
-$head Syntax$$
-$icode%ldlt_obj%.init(%H_rc%)
-%$$
+Syntax
+******
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+   *ldlt_obj* . ``init`` ( *H_rc* )
 
-$head Private$$
-The $cref ldlt_cholmod$$ class is an
-$cref/implementation detail/ldlt_cholmod/Private/$$ and not part of the
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
+
+Private
+*******
+The :ref:`ldlt_cholmod-name` class is an
+:ref:`implementation detail<ldlt_cholmod@Private>` and not part of the
 CppAD Mixed user API.
 
-$head ldlt_obj$$
+ldlt_obj
+********
 This object has prototype
-$codei%
-   CppAD::mixed::ldlt_cholmod %ldlt_obj%
-%$$
 
-$head H_rc$$
+   ``CppAD::mixed::ldlt_cholmod`` *ldlt_obj*
+
+H_rc
+****
 This argument is a
-$cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$ for the
+:ref:`sparse_mat_info@Notation@Sparsity Pattern` for the
 square matrices with
-$cref/nrow_/ldlt_cholmod_ctor/nrow_/$$ rows that we will compute the
+:ref:`ldlt_cholmod_ctor@nrow_` rows that we will compute the
 LDLT factor of.
 It is in
-$cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
+:ref:`column major<sparse_mat_info@Notation@Column Major Order>` order
 and
-$cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
+:ref:`sparse_mat_info@Notation@Lower Triangular` .
 
-$subhead H_rc_$$
-This member variable is set to a copy of $icode H_rc$$.
+H_rc\_
+======
+This member variable is set to a copy of *H_rc* .
 
-$head Assumptions$$
-All of the $code cholmod$$ private pointers
+Assumptions
+***********
+All of the ``cholmod`` private pointers
 are null when this routine is called.
 
-$head sym_matrix_$$
+sym_matrix\_
+************
 Upon return,
 this is set to a packed, real, sorted, lower triangular, sparse matrix
-with the pattern specified by $icode H_rc$$ and
-the value $code nan$$ for each possibly non-zero value.
+with the pattern specified by *H_rc* and
+the value ``nan`` for each possibly non-zero value.
 
-$head factor_$$
+factor\_
+********
 Upon return,
 this is the result of
-$codei%
-   factor_ = cholmod_analyze(sym_matrix_, &common_)
-%$$
 
-$head rhs_$$
-Upon return,
-this is set to dense column vector of $code nrow_$$ zeros as follows:
-$codei%
-   rhs_ = cholmod_zeros(nrow_, 1, CHOLMOD_REAL, &common_)
-%$$
+   ``factor_`` = ``cholmod_analyze`` ( ``sym_matrix_`` , & ``common_`` )
 
-$head rhs_set_$$
+rhs\_
+*****
 Upon return,
-this is a sparse column vector with $code nrow_$$ rows.
+this is set to dense column vector of ``nrow_`` zeros as follows:
+
+   ``rhs_`` = ``cholmod_zeros`` ( ``nrow_`` , 1, ``CHOLMOD_REAL`` , & ``common_`` )
+
+rhs_set\_
+*********
+Upon return,
+this is a sparse column vector with ``nrow_`` rows.
 It is packed, sorted, not symmetric, and just a sparsity pattern.
 (Note that sorted refers the column order and does not matter for vectors.)
-There are $code nrow_$$
+There are ``nrow_``
 possibly non-zero elements, but which elements
 are non-zero is not specified
-(expected to be set for each $cref ldlt_cholmod_solve_H$$ usage).
+(expected to be set for each :ref:`ldlt_cholmod_solve_H-name` usage).
 
-$head Order of Operations$$
-This $icode ldlt_obj$$ function must be called once,
+Order of Operations
+*******************
+This *ldlt_obj* function must be called once,
 after the constructor and before any other member functions.
 
-$head Example$$
-The file $cref/ldlt_cholmod.cpp/ldlt_cholmod.cpp/init/$$ contains an
+Example
+*******
+The file :ref:`ldlt_cholmod.cpp<ldlt_cholmod.cpp@init>` contains an
 example and test that uses this function.
 
-$end
+{xrst_end ldlt_cholmod_init}
 */
 
 # include <cppad/mixed/ldlt_cholmod.hpp>

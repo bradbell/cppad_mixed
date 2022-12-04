@@ -5,43 +5,47 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin sparse_eigen2rcv$$
-$spell
-   Eigen
-   CppAD
-   rcv
-   Cppad
-$$
+{xrst_begin sparse_eigen2rcv}
 
-$section Convert an Eigen Sparse Matrix to a Cppad Sparse Matrix$$
+Convert an Eigen Sparse Matrix to a Cppad Sparse Matrix
+#######################################################
 
-$head Syntax$$
-$icode%m_rcv% = CppAD::mixed::sparse_eigen2rcv(%m_eigen%)%$$
+Syntax
+******
+*m_rcv* = ``CppAD::mixed::sparse_eigen2rcv`` ( *m_eigen* )
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1
-%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
 
-$head Private$$
+Private
+*******
 This routine is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head Scalar$$
+Scalar
+******
 is the element type for the sparse matrix.
 
-$head m_eigen$$
+m_eigen
+*******
 is an Eigen representation of the sparse matrix.
 
-$head m_rcv$$
+m_rcv
+*****
 is a Cppad representation of the matrix.
+{xrst_toc_hidden
+   example/private/sparse_eigen2rcv.cpp
+}
+Example
+*******
+The file :ref:`sparse_eigen2rcv.cpp-name` is an example
+and test of ``sparse_eigen2rcv`` .
 
-$children%example/private/sparse_eigen2rcv.cpp
-%$$
-$head Example$$
-The file $cref sparse_eigen2rcv.cpp$$ is an example
-and test of $code sparse_eigen2rcv$$.
-
-$end
+{xrst_end sparse_eigen2rcv}
 -----------------------------------------------------------------------------
 */
 

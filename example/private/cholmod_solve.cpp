@@ -3,29 +3,36 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin cholmod_solve_xam$$
-$spell
-   cholmod
-$$
+{xrst_begin cholmod_solve_xam}
+{xrst_spell
+   cc
+}
 
-$section Example Using cholmod_solve With a Non-positive Matrix$$
+Example Using cholmod_solve With a Non-positive Matrix
+######################################################
 
-$head Problem Description$$
-Solve for $latex x$$ in the equation $latex H x = b$$ where $latex H$$
-is defined below and $latex b$$ is a column of the identity matrix.
-Hence the solution $latex x$$ is the corresponding column of
-$latex H^{-1}$$ which for this case is equal to $latex H$$.
-$latex \[
+Problem Description
+*******************
+Solve for :math:`x` in the equation :math:`H x = b` where :math:`H`
+is defined below and :math:`b` is a column of the identity matrix.
+Hence the solution :math:`x` is the corresponding column of
+:math:`H^{-1}` which for this case is equal to :math:`H`.
+
+.. math::
+
    H = \left( \begin{array}{cc}
       1 & 0 \\
       0 & -1
    \end{array} \right)
-\] $$
 
-$head Source Code$$
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
+Source Code
+***********
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end cholmod_solve_xam}
 */
 // BEGIN C++
 # include <cppad/mixed/include_cholmod.hpp>

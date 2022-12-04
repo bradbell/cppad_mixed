@@ -126,285 +126,319 @@ namespace {
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-$begin ipopt_fixed_ctor$$
-$spell
-   struct
-   rcv
-   uhat
-   tmp
-   objcon
-   CppAD
-   ran_obj
-   cppad
-   obj
-   hes
-   vec
-   eval
-   ipopt
-   const
-   CppAD
-   nnz_jac
-   Jacobian
-   std
-   tol
+{xrst_begin ipopt_fixed_ctor}
+{xrst_spell
+   lagrange
+   multiplier
    nlp
-   inf
-   bool
+   nnz
    optimizer
-$$
+   struct
+   temporaries
+   tmp
+   tol
+   uhat
+}
 
-$section Ipopt Fixed Optimization Callback Constructor and Destructor$$
+Ipopt Fixed Optimization Callback Constructor and Destructor
+############################################################
 
-$head Syntax$$
-$codei%CppAD::mixed::ipopt_fixed %ipopt_object%(
-   %abort_on_eval_error%,
-   %random_ipopt_options%,
-   %fixed_tolerance%,
-   %fixed_lower%,
-   %fixed_upper%,
-   %fix_constraint_lower%,
-   %fix_constraint_upper%,
-   %fixed_scale%,
-   %fixed_in%,
-   %random_lower%,
-   %random_upper%,
-   %random_in%,
-   %mixed_object%
-)%$$
+Syntax
+******
 
-$head Private$$
+| ``CppAD::mixed::ipopt_fixed`` *ipopt_object* (
+| |tab| *abort_on_eval_error* ,
+| |tab| *random_ipopt_options* ,
+| |tab| *fixed_tolerance* ,
+| |tab| *fixed_lower* ,
+| |tab| *fixed_upper* ,
+| |tab| *fix_constraint_lower* ,
+| |tab| *fix_constraint_upper* ,
+| |tab| *fixed_scale* ,
+| |tab| *fixed_in* ,
+| |tab| *random_lower* ,
+| |tab| *random_upper* ,
+| |tab| *random_in* ,
+| |tab| *mixed_object*
+| )
+
+Private
+*******
 This class,
 and all of its members, are implementation details and not part of the
 CppAD Mixed user API.
 
-$head References$$
+References
+**********
 The values of the arguments are stored by reference and hence
-the arguments must not be deleted while $icode ipopt_object$$
+the arguments must not be deleted while *ipopt_object*
 is still being used.
 
-$head warm_start$$
+warm_start
+**********
 This argument has prototype
-$codei%
-   const warm_start_struct& %warm_start%
-%$$
-It $icode%warm_start%.x_info.size()%$$ is non-zero (zero),
-then this optimization is warm started (is not warm started)
-using the information in $icode warm_start$$.
 
-$head abort_on_eval_error$$
+   ``const warm_start_struct&`` *warm_start*
+
+It *warm_start* . ``x_info.size`` () is non-zero (zero),
+then this optimization is warm started (is not warm started)
+using the information in *warm_start* .
+
+abort_on_eval_error
+*******************
 This argument has prototype
-$codei%
-   const bool& %abort_on_eval_error%
-%$$
+
+   ``const bool&`` *abort_on_eval_error*
+
 If it is true, the fixed effects optimization will abort if an error
 occurs during the evaluation of one of fixed effects optimizer functions
 (otherwise it will try to backup).
 
-$head random_ipopt_options$$
+random_ipopt_options
+********************
 This argument has prototype
-$codei%
-   const std::string& %random_ipopt_options%
-%$$
-and is the $cref ipopt_options$$ for optimizing the random effects.
 
-$head fixed_tolerance$$
+   ``const std::string&`` *random_ipopt_options*
+
+and is the :ref:`ipopt_options-name` for optimizing the random effects.
+
+fixed_tolerance
+***************
 Is the relative convergence criteria used by Ipopt for optimize fixed effects.
 This only informs ipopt_fixed,
 the IpoptApplication must be informed separately using
-$codei%
-   %app%->Options()->SetNumericValue("tol", %fixed_tolerance%)
-%$$
 
-$head fixed_lower$$
-This vector has length equal to $icode n_fixed_$$ and
+   *app* ``->Options`` () ``->SetNumericValue`` ( ``"tol"`` , *fixed_tolerance* )
+
+fixed_lower
+***********
+This vector has length equal to *n_fixed_* and
 specifies the lower limits for the
-$cref/fixed_effects/problem/Notation/Fixed Effects, theta/$$.
+:ref:`fixed_effects<problem@Notation@Fixed Effects, theta>` .
 Note that
-$codei%
-   - std::numeric_limits<double>::infinity()
-%$$
+
+   ``- std::numeric_limits<double>::infinity`` ()
+
 is used for minus infinity; i.e., no lower limit.
 
-$head fixed_upper$$
-This vector has length equal to $icode n_fixed_$$ and
+fixed_upper
+***********
+This vector has length equal to *n_fixed_* and
 specifies the upper limits for the fixed effects.
 Note that
-$codei%
-   std::numeric_limits<double>::infinity()
-%$$
+
+   ``std::numeric_limits<double>::infinity`` ()
+
 is used for plus infinity; i.e., no upper limit.
 
-$head fix_constraint_lower$$
+fix_constraint_lower
+********************
 specifies the lower limits for the
-$cref/constraints/fix_constraint/$$.
+:ref:`constraints<fix_constraint-name>` .
 Note that
-$codei%
-   - std::numeric_limits<double>::infinity()
-%$$
+
+   ``- std::numeric_limits<double>::infinity`` ()
+
 is used for minus infinity; i.e., no lower limit.
 
-$head fix_constraint_upper$$
+fix_constraint_upper
+********************
 specifies the upper limits for the constraints.
 Note that
-$codei%
-   std::numeric_limits<double>::infinity()
-%$$
+
+   ``std::numeric_limits<double>::infinity`` ()
+
 is used for plus infinity; i.e., no upper limit.
 
-$head fixed_scale$$
+fixed_scale
+***********
 specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$ used for scaling the optimization problem.
-It must hold for each $icode j$$ that
-$codei%
-   %fixed_lower%[%j%] <= %fixed_scale%[%j%] <= %fixed_upper%[%j%]
-%$$
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta` used for scaling the optimization problem.
+It must hold for each *j* that
+
+   *fixed_lower* [ *j* ] <= *fixed_scale* [ *j* ] <= *fixed_upper* [ *j* ]
+
 The derivative of the objective and constraints at this value for the
 fixed effects are used to scale the objective and constraint functions.
 Note that component for which
-$codei%
-   %fixed_lower%[%j%] == %fixed_upper%[%j%]
-%$$
+
+   *fixed_lower* [ *j* ] == *fixed_upper* [ *j* ]
+
 are excluded from this scaling.
 
-
-$head fixed_in$$
-This vector has length equal to $icode n_fixed_$$ and
+fixed_in
+********
+This vector has length equal to *n_fixed_* and
 specifies the initial value (during optimization) for the fixed effects.
-It must hold for each $icode j$$ that
-$codei%
-   %fixed_lower%[%j%] <= %fixed_in%[%j%] <= %fixed_upper%[%j%]
-%$$
+It must hold for each *j* that
 
-$head random_lower$$
-This vector has length equal to $icode n_random_$$ and
+   *fixed_lower* [ *j* ] <= *fixed_in* [ *j* ] <= *fixed_upper* [ *j* ]
+
+random_lower
+************
+This vector has length equal to *n_random_* and
 specifies the lower limit for the random effects (during optimization).
 
-$head random_upper$$
-This vector has length equal to $icode n_random_$$ and
+random_upper
+************
+This vector has length equal to *n_random_* and
 specifies the upper limit for the random effects (during optimization).
 
-$head random_in$$
-This vector has length equal to $icode n_random_$$ and
+random_in
+*********
+This vector has length equal to *n_random_* and
 specifies the initial value (for initial optimization) of the random effects.
 It should be the optimal value given the initial fixed effects
 so that the Hessian w.r.t the random effects is more likely to be
 positive definite.
 
+mixed_object
+************
+The argument *mixed_object* is an object of a class that is
+derived from the ``cppad_mixed`` base class.
 
-$head mixed_object$$
-The argument $icode mixed_object$$ is an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+Argument
+********
+If *name* is an argument to the constructor,
+the variable *name* _ is a copy of that argument.
+The variable ``mixed_object_`` is not a copy but rather a reference
+to *mixed_object* .
 
-$head Argument$$
-If $icode name$$ is an argument to the constructor,
-the variable $icode%name%_%$$ is a copy of that argument.
-The variable $code mixed_object_$$ is not a copy but rather a reference
-to $icode mixed_object$$.
+Constants
+*********
 
-$head Constants$$
-
-$subhead n_fixed_$$
+n_fixed\_
+=========
 is the number of fixed effects.
 
-$subhead n_random_$$
+n_random\_
+==========
 is the number of random effects.
 
-$subhead n_fix_con_$$
+n_fix_con\_
+===========
 is the number of fixed constraints.
 
-$subhead n_ran_con$$
+n_ran_con
+=========
 is the number of random constraints.
 
-$head Temporaries$$
+Temporaries
+***********
 The following member variables sized by the constructor.
 They can be used as temporaries, but their sizes should not change.
 
-$subhead x_tmp_$$
-size $icode%n% = n_fixed_ + fix_likelihood_nabs_%$$.
+x_tmp\_
+=======
+size *n* = ``n_fixed_`` + ``fix_likelihood_nabs_`` .
 
-$subhead fixed_tmp_$$
-size $code n_fixed_$$
+fixed_tmp\_
+===========
+size ``n_fixed_``
 
-$subhead c_vec_tmp_$$
-size $code n_fix_con_$$
+c_vec_tmp\_
+===========
+size ``n_fix_con_``
 
-$subhead A_uhat_tmp_$$
-size $code n_ran_con_$$
+A_uhat_tmp\_
+============
+size ``n_ran_con_``
 
-$subhead H_beta_tmp_$$
-size $code n_fixed_$$
+H_beta_tmp\_
+============
+size ``n_fixed_``
 
-$subhead w_fix_con_tmp_$$
-size $code n_fix_con_$$
+w_fix_con_tmp\_
+===============
+size ``n_fix_con_``
 
-$subhead w_laplace_obj_tmp_$$
-size $code n_ran_con_ + 1$$.
+w_laplace_obj_tmp\_
+===================
+size ``n_ran_con_ + 1`` .
 
-$subhead w_fix_likelihood_tmp_$$
-size $code fix_likelihood_nabs_ + 1$$
+w_fix_likelihood_tmp\_
+======================
+size ``fix_likelihood_nabs_ + 1``
 
-$subhead fix_likelihood_vec_tmp_$$
-If $code mixed_object_.fix_like_eval$$
+fix_likelihood_vec_tmp\_
+========================
+If ``mixed_object_.fix_like_eval``
 returns a vector of size zero, this vector has size zero,
-otherwise it has size $code fix_likelihood_nabs_ + 1$$
+otherwise it has size ``fix_likelihood_nabs_ + 1``
 
-$head Effectively Constant Member Variables$$
+Effectively Constant Member Variables
+*************************************
 The following member variables are set by the constructor
 and should not be modified.
 
-$subhead nlp_lower_bound_inf_$$
+nlp_lower_bound_inf\_
+=====================
 set to a finite value that is used by Ipopt for minus infinity.
 
-$subhead nlp_upper_bound_inf_$$
+nlp_upper_bound_inf\_
+=====================
 set to a finite value that is used by Ipopt for plus infinity.
 
-$subhead fix_likelihood_nabs_$$
+fix_likelihood_nabs\_
+=====================
 number of absolute value terms in the
-$cref fix_likelihood$$.
+:ref:`fix_likelihood-name` .
 
-$subhead nnz_jac_g_$$
+nnz_jac_g\_
+===========
 number of non-zeros in the Jacobian of the ipopt constraints.
 
-$subhead nnz_h_lag_$$
+nnz_h_lag\_
+===========
 number of non-zeros in the Hessian of the ipopt constraints.
 
-$subhead lag_hes_row_$$
+lag_hes_row\_
+=============
 Ipopt row indices for the sparse representation of the Hessian
 of the Lagrangian (for any Lagrange multiplier values).
 
-$subhead lag_hes_col_$$
+lag_hes_col\_
+=============
 Ipopt column indices for the sparse representation of the Hessian
 of the Lagrangian (for any Lagrange multiplier values).
 
-$subhead laplace_obj_hes_2_lag_$$
+laplace_obj_hes_2_lag\_
+=======================
 Mapping from random object plus constraint Hessian sparse indices
 to ipopt Hessian sparse indices.
 
-$subhead fix_like_hes_2_lag_$$
+fix_like_hes_2_lag\_
+====================
 Mapping from fixed likelihood Hessian sparse indices
 to ipopt Hessian sparse indices.
 
-$head Sparsity Information$$
-The $code row$$ and $code col$$ vectors of these
-$cref sparse_mat_info$$ structures are set by the constructor
+Sparsity Information
+********************
+The ``row`` and ``col`` vectors of these
+:ref:`sparse_mat_info-name` structures are set by the constructor
 and assumed to not change.
-The size of the $code val$$ vectors is set by the constructor,
+The size of the ``val`` vectors is set by the constructor,
 but element values may change.
 
-$subhead ran_con_jac_rcv_$$
+ran_con_jac_rcv\_
+=================
 Sparse matrix information for the Jacobian of the
 random constraints.
 
-$subhead laplace_obj_hes_info_$$
-If $code n_random_ > 0$$, sparse matrix information for the Hessian of the
+laplace_obj_hes_info\_
+======================
+If ``n_random_ > 0`` , sparse matrix information for the Hessian of the
 Laplace objective and constraints.
 
-$head adaptive_called_$$
+adaptive_called\_
+*****************
 This member variable is set to false.
 
-$head Prototype$$
-$srccode%cpp% */
+Prototype
+*********
+{xrst_spell_off}
+{xrst_code cpp} */
 ipopt_fixed::ipopt_fixed(
    const warm_start_struct& warm_start                   ,
    const bool&              abort_on_eval_error          ,
@@ -420,8 +454,10 @@ ipopt_fixed::ipopt_fixed(
    const d_vector&          random_upper                 ,
    const d_vector&          random_in                    ,
    cppad_mixed&             mixed_object                 ) :
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_fixed_ctor}
 */
 warm_start_            ( warm_start )                    ,
 abort_on_eval_error_   ( abort_on_eval_error )           ,

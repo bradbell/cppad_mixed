@@ -3,51 +3,54 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin ldlt_cholmod_pattern$$
-$spell
-   rcv
-   rc
-   ldlt_obj
-   CppAD
-   cholmod
-   init
-$$
+{xrst_begin ldlt_cholmod_pattern}
 
-$section Update Factorization Using new Matrix Values$$
+Update Factorization Using new Matrix Values
+############################################
 
-$head Syntax$$
-$icode%H_rc% = %ldlt_obj%.pattern()%$$
+Syntax
+******
+*H_rc* = *ldlt_obj* . ``pattern`` ()
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
 
-$head Private$$
-The $cref ldlt_cholmod$$ class is an
-$cref/implementation detail/ldlt_cholmod/Private/$$ and not part of the
+Private
+*******
+The :ref:`ldlt_cholmod-name` class is an
+:ref:`implementation detail<ldlt_cholmod@Private>` and not part of the
 CppAD Mixed user API.
 
-$head ldlt_obj$$
+ldlt_obj
+********
 This object has prototype
-$codei%
-   CppAD::mixed::ldlt_cholmod %ldlt_obj%
-%$$
+
+   ``CppAD::mixed::ldlt_cholmod`` *ldlt_obj*
+
 In addition, it must have a previous call to
-$cref ldlt_cholmod_init$$.
+:ref:`ldlt_cholmod_init-name` .
 
-$head H_rc$$
+H_rc
+****
 The return value is a copy of the sparsity pattern
-$cref/H_rc/ldlt_cholmod_init/H_rc/$$ in the corresponding call to
-$icode%ldlt_obj%.init(%H_rc%)%$$.
+:ref:`ldlt_cholmod_init@H_rc` in the corresponding call to
+*ldlt_obj* . ``init`` ( *H_rc* ) .
 
-$head Order of Operations$$
-This $icode ldlt_obj$$ function must be called,
-after the constructor and $cref/init/ldlt_cholmod_init/$$.
+Order of Operations
+*******************
+This *ldlt_obj* function must be called,
+after the constructor and :ref:`init<ldlt_cholmod_init-name>` .
 
-$head Example$$
-The file $cref/ldlt_cholmod.cpp/ldlt_cholmod.cpp/pattern/$$ contains an
+Example
+*******
+The file :ref:`ldlt_cholmod.cpp<ldlt_cholmod.cpp@pattern>` contains an
 example and test that uses this function.
 
-$end
+{xrst_end ldlt_cholmod_pattern}
 */
 // ----------------------------------------------------------------------------
 

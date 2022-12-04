@@ -3,29 +3,25 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin logdet_jac.cpp$$
-$spell
-   jac
-   CppAD
-   cppad
-   hes
-   interp
-   xam
+{xrst_begin logdet_jac.cpp}
+{xrst_spell
    logdet
-$$
+}
 
-$section logdet_jac: Example and Test$$
+logdet_jac: Example and Test
+############################
 
-
-$head Private$$
+Private
+*******
 This example is not part of the
-$cref/cppad_mixed public API/base_class/$$.
+:ref:`cppad_mixed public API<base_class-name>` .
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end logdet_jac.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

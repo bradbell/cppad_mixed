@@ -6,56 +6,54 @@
 # include <cppad/mixed/exception.hpp>
 
 /*
-$begin fix_con_eval$$
-$spell
-   CppAD
-   cppad
-   eval
-   vec
-   const
-   Cpp
-$$
+{xrst_begin fix_con_eval}
 
-$section Evaluate Fixed Constraint Function$$
+Evaluate Fixed Constraint Function
+##################################
 
-$head Syntax$$
-$icode%vec% = %mixed_object%.fix_con_eval(%fixed_vec%)%$$
+Syntax
+******
+*vec* = *mixed_object* . ``fix_con_eval`` ( *fixed_vec* )
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_vec%
-%$$
-It specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$ at which $latex c( \theta )$$ is evaluated.
 
-$head vec$$
+   ``const CppAD::vector<double>&`` *fixed_vec*
+
+It specifies the value of the
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta` at which :math:`c( \theta )` is evaluated.
+
+vec
+***
 The return value has prototype
-$codei%
-   CppAD::vector<double> %vec%
-%$$
+
+   ``CppAD::vector<double>`` *vec*
+
 and is the constraint function value
 corresponding to the fixed effects; see
-$cref/vec/fix_constraint/vec/$$.
-
-$children%
+:ref:`fix_constraint@vec` .
+{xrst_toc_hidden
    example/private/fix_con_eval.cpp
-%$$
-$head Example$$
-The file $cref fix_con_eval.cpp$$ contains an example
+}
+Example
+*******
+The file :ref:`fix_con_eval.cpp-name` contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
-$end
+{xrst_end fix_con_eval}
 */
 
 

@@ -3,37 +3,48 @@
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
-# $OMhelpKeyCharacter=&
-# &begin ar1_xam.sh&& &newlinech #&&
-# &spell
-#  ar1_xam
-#  callgrind
-#  valgrind
-# &&
+# 
+# {xrst_begin ar1_xam.sh} 
+# {xrst_spell
+#     callgrind
+#     massif
+#     valgrind
+# }
+# {xrst_comment_ch #}
 #
-# &section Example Using ar1_xam&&
+# Example Using ar1_xam
+# #####################
 #
-# &head Syntax&&
-# &codei%bin/ar1_xam.sh %test2run%&&
+# Syntax
+# ******
+# ``bin/ar1_xam.sh`` *test2run*
 #
-# &head test2run&&
+# test2run
+# ********
 # This argument must be one of the following:
 #
-# &subhead normal&&
-# This test will just run &cref/ar1_xam/ar1_xam.cpp/&&.
+# normal
+# ======
+# This test will just run :ref:`ar1_xam<ar1_xam.cpp-name>` .
 #
-# &subhead callgrind&&
-# This test will run &code ar1_xam&& with
-# &code valgrind --tool=callgrind&&. This tool does execution profiling.
+# callgrind
+# =========
+# This test will run ``ar1_xam`` with
+# ``valgrind --tool=callgrind`` . This tool does execution profiling.
 #
-# &subhead massif&&
-# This test will run &code ar1_xam&& with
-# &code valgrind --tool=massif&&. This tool does memory profiling.
+# massif
+# ======
+# This test will run ``ar1_xam`` with
+# ``valgrind --tool=massif`` . This tool does memory profiling.
 #
-# &subhead Source Code&&
-# &srcthisfile%0%# BEGIN SH%# END SH%1%&&
+# Source Code
+# ===========
+# {xrst_literal
+#     BEGIN SH
+#     END SH
+# }
 #
-# &end
+# {xrst_end ar1_xam.sh}
 # ----------------------------------------------------------------------------
 # BEGIN SH
 random_seed='123'

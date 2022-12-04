@@ -6,64 +6,77 @@
 // ----------------------------------------------------------------------------
 
 /*
-$begin warm_start_struct$$
-$spell
-   mu
-   Ipopt
+{xrst_begin warm_start_struct}
+{xrst_spell
    struct
-   cppad
-   CppAD
-$$
+}
 
-$section Ipopt Warm Start Information$$
+Ipopt Warm Start Information
+############################
 
-$head Syntax$$
-$codei%CppAD::mixed::warm_start_struct %warm_start%$$
+Syntax
+******
+``CppAD::mixed::warm_start_struct`` *warm_start*
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
 
-$head mu$$
+mu
+**
 This is the warm start value for the barrier penalty parameter.
 
-$head scale_f$$
+scale_f
+*******
 This is the cppad_mixed scaling factor for the ipopt objective function
-$latex f(x)$$.
+:math:`f(x)`.
 
-$head x_info$$
-If the size of this vector is zero, the size of $icode g_info$$
+x_info
+******
+If the size of this vector is zero, the size of *g_info*
 must also be zero.
-Otherwise, $code x_info$$ has size equal to the number of primal variables
-$latex x$$.
-The $th j$$ element of this vector contains the following fields:
+Otherwise, ``x_info`` has size equal to the number of primal variables
+:math:`x`.
+The *j*-th element of this vector contains the following fields:
 
-$subhead x$$
+x
+=
 is the warm start value for x[j].
 
-$subhead z_L$$
+z_L
+===
 is the warm start value for z_L[j].
 
-$subhead z_U$$
+z_U
+===
 is the warm start value for z_U[j].
 
-$head scale_x$$
+scale_x
+*******
 is the cppad_mixed scaling factor for x[j].
 
-$head g_info$$
-If the size of $icode x_info$$ is non-zero,
-$code g_info$$ has size equal to the number of $latex g(x)$$ constraints.
-The $th i$$ element of this vector contains the following fields:
+g_info
+******
+If the size of *x_info* is non-zero,
+``g_info`` has size equal to the number of :math:`g(x)` constraints.
+The *i*-th element of this vector contains the following fields:
 
-$subhead lambda$$
+lambda
+======
 is the warm start value for lambda[i].
 
-$subhead scale_g$$
-is the cppad_mixed scaling factor for $latex g_i(x)$$.
+scale_g
+=======
+is the cppad_mixed scaling factor for :math:`g_i(x)`.
 
-$head Public$$
+Public
+******
 This structure is part of the CppAD Mixed user API.
 
-$end
+{xrst_end warm_start_struct}
 ------------------------------------------------------------------------------
 */
 # include <cppad/utility/vector.hpp>

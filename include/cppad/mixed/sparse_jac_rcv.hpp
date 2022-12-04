@@ -5,161 +5,163 @@
 # ifndef CPPAD_MIXED_SPARSE_JAC_RCV_HPP
 # define CPPAD_MIXED_SPARSE_JAC_RCV_HPP
 /*
-$begin sparse_jac_rcv$$
-$spell
-   jac
+{xrst_begin sparse_jac_rcv}
+{xrst_spell
    nnz
-   rc
-   rcv
-   CppAD
-   const
-   std
-   bool
-   work work
-   hes
-   CppAD
-   Jacobian
-   Jacobians
-%$$
+}
 
-$section Sparse Jacobian Computation Structure$$
+Sparse Jacobian Computation Structure
+#####################################
 
-$head Syntax$$
-$codei%CppAD::mixed::sparse_jac_rcv %jac_rcv%$$
+Syntax
+******
+``CppAD::mixed::sparse_jac_rcv`` *jac_rcv*
 
-$head Private$$
+Private
+*******
 This structure is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head Purpose$$
+Purpose
+*******
 This structure holds information about a specific Jacobian
-$latex \[
-   J(x) = f^{(1)} (x)
-\] $$
 
-$head subset$$
-The field $icode%jac_rcv%.subset%$$ has prototype
-$codei%
-   CppAD::mixed::d_sparse_rcv %jac_rcv%.subset
-%$$
+.. math::
+
+   J(x) = f^{(1)} (x)
+
+subset
+******
+The field *jac_rcv* . ``subset`` has prototype
+
+   ``CppAD::mixed::d_sparse_rcv`` *jac_rcv* . ``subset``
+
 It is empty zero when it is constructed; i.e.,
 all of its sizes are zero.
 After initialization it corresponds to the subset of the Jacobian
 that is computed.
 
-$subhead nnz$$
+nnz
+===
 We use the notation
-$codei%
-   %nnz% = %jac_rcv%.subset.nnz()
-%$$
 
-$subhead row$$
+   *nnz* = *jac_rcv* . ``subset.nnz`` ()
+
+row
+===
 We use the notation
-$codei%
-   %row% = %jac_rcv%.subset.row()
-%$$
 
-$subhead col$$
+   *row* = *jac_rcv* . ``subset.row`` ()
+
+col
+===
 We use the notation
-$codei%
-   %col% = %jac_rcv%.subset.col()
-%$$
 
-$subhead val$$
+   *col* = *jac_rcv* . ``subset.col`` ()
+
+val
+===
 We use the notation
-$codei%
-   %val% = %jac_rcv%.subset.val()
-%$$
 
-$head forward$$
-The field $icode%jac_rcv%.forward%$$ has prototype
-$codei%
-   bool %jac_rcv%.forward%
-%$$
+   *val* = *jac_rcv* . ``subset.val`` ()
 
-$head work$$
-The field $icode%jac_rcv%.work%$$ has prototype
-$codei%
-   CppAD::sparse_jac_work %jac_rcv%.work
-%$$
+forward
+*******
+The field *jac_rcv* . ``forward`` has prototype
+
+   *bool* ``jac_rcv`` . *forward*
+
+work
+****
+The field *jac_rcv* . ``work`` has prototype
+
+   ``CppAD::sparse_jac_work`` *jac_rcv* . ``work``
+
 It has no information when it is constructed; i.e., it is empty.
 After initialization it should contain the CppAD cached information
-for the call to $code sparse_jac_for$$ or $code sparse_jac_rev$$
+for the call to ``sparse_jac_for`` or ``sparse_jac_rev``
 specified below.
 
-$head Computing Sparse Jacobians$$
-Upon return (from $code sparse_jac_for$$ or $code sparse_jac_rev$$),
-for $icode%k% = 0 , %...%, %nnz%-1%$$,
-$icode%val%[%k%]%$$ is the value of $latex J_{i,j} (x)$$
-where $icode%i% = %row%[%k%]%$$ and $icode%j% = %col[%k%]%$$.
+Computing Sparse Jacobians
+**************************
+Upon return (from ``sparse_jac_for`` or ``sparse_jac_rev`` ),
+for *k* = 0 , ..., *nnz* ``-1`` ,
+*val* [ *k* ] is the value of :math:`J_{i,j} (x)`
+where *i* = *row* [ *k* ] and *j* = *col* [ ``k`` ] .
 
-$subhead Forward Mode$$
-If $icode%jac_rcv%.forward%$$ is true,
-$codei%
-   %f%.sparse_jac_for(
-      %group_max%,
-      %x%,
-      %jac_rcv%.subset,
-      %not_used_pattern%,
-      %not_used_coloring%,
-      %jac_rcv%.work
-   )
-%$$
+Forward Mode
+============
+If *jac_rcv* . ``forward`` is true,
+
+| |tab| *f* . ``sparse_jac_for`` (
+| |tab| |tab| *group_max* ,
+| |tab| |tab| *x* ,
+| |tab| |tab| *jac_rcv* . ``subset`` ,
+| |tab| |tab| *not_used_pattern* ,
+| |tab| |tab| *not_used_coloring* ,
+| |tab| |tab| *jac_rcv* . ``work``
+| |tab| )
+
 computes the Jacobian values.
 
-$subhead Reverse Mode$$
-If $icode%jac_rcv%.forward%$$ is false,
-$codei%
-   %f%.sparse_jac_for(
-      %x%,
-      %jac_rcv%.subset,
-      %not_used_pattern%,
-      %not_used_coloring%,
-      %jac_rcv%.work
-   )
-%$$
+Reverse Mode
+============
+If *jac_rcv* . ``forward`` is false,
+
+| |tab| *f* . ``sparse_jac_for`` (
+| |tab| |tab| *x* ,
+| |tab| |tab| *jac_rcv* . ``subset`` ,
+| |tab| |tab| *not_used_pattern* ,
+| |tab| |tab| *not_used_coloring* ,
+| |tab| |tab| *jac_rcv* . ``work``
+| |tab| )
+
 computes the Jacobian values.
 
-$subhead f$$
-The function $icode f$$ has prototype
-$codei%
-   CppAD::ADFun<double> %f%
-%$$
+f
+=
+The function *f* has prototype
 
-$subhead group_max$$
-The parameter $icode group_max$$ has prototype
-$codei%
-   size_t %group_max%
-%$$
+   ``CppAD::ADFun<double>`` *f*
+
+group_max
+=========
+The parameter *group_max* has prototype
+
+   ``size_t`` *group_max*
+
 and must be greater than zero.
 It specifies the maximum number of directions to group during
 a single forward sweep.
 This uses separate memory for each direction (more memory),
 but my be significantly faster.
 
-$subhead x$$
-The argument $icode x$$ has prototype
-$codei%
-   const CppAD::vector<double>& %x%
-%$$
-and its size is $icode%f%.Domain()%$$.
+x
+=
+The argument *x* has prototype
+
+   ``const CppAD::vector<double>&`` *x*
+
+and its size is *f* . ``Domain`` () .
 It is the location where the Jacobian is being evaluated.
 
-$subhead not_used_pattern$$
+not_used_pattern
+================
 This argument has the following prototype
-$codei%
-   const CppAD::mixed::sparse_rc& %not_used_pattern%
-%$$
+
+   ``const CppAD::mixed::sparse_rc&`` *not_used_pattern*
+
 It is not used and hence its value does not matter.
 
-$subhead not_used_coloring$$
+not_used_coloring
+=================
 This argument has the following prototype
-$codei%
-   const std::string& %not_used_coloring%
-%$$
+
+   ``const std::string&`` *not_used_coloring*
+
 It is not used and hence its value does not matter.
 
-$end
+{xrst_end sparse_jac_rcv}
 */
 # include <cppad/mixed/typedef.hpp>
 

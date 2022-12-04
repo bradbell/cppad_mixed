@@ -3,30 +3,33 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin sparse_scale_diag.cpp$$
-$spell
-   tri
-   cppad
-$$
+{xrst_begin sparse_scale_diag.cpp}
+{xrst_spell
+   diag
+}
 
-$section sparse_scale_diag: Example and Test$$
+sparse_scale_diag: Example and Test
+###################################
 
-$head Private$$
+Private
+*******
 This example is not part of the
-$cref/cppad_mixed public API/base_class/$$.
+:ref:`cppad_mixed public API<base_class-name>` .
 
-$head Description$$
-The call to $cref sparse_scale_diag$$ below computes the matrix
-$codei%
-   [ 3*1 0   0   ]
-   [ 2   3*3 0   ]
-   [ 4   5   3*6 ]
-%$$
+Description
+***********
+The call to :ref:`sparse_scale_diag-name` below computes the matrix
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
-$end
+| |tab| [ 3* 1 0   0   ]
+| |tab| [ 2   3* 3 0   ]
+| |tab| [ 4   5   3* 6 ]
+
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end sparse_scale_diag.cpp}
 */
 // BEGIN C++
 # include <cmath>

@@ -3,65 +3,70 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin lasso.cpp$$
-$spell
-   CppAD
-   cppad
-   hes
-   eval
-   interp
-   xam
-$$
+{xrst_begin lasso.cpp}
+{xrst_spell
+   eqnarray
+   nowrap
+}
 
-$section Lasso on Fixed Effects: Example and Test$$.
+Lasso on Fixed Effects: Example and Test
+########################################
 
-$head Model$$
+Model
+*****
 We are given a set of times
-$latex \{ t_i \W{:} i = 0 , \ldots , N-1 \}$$ and
-$latex \[
-\begin{array}{rcl}
-   q( \theta, s )
-   & = &
-   \theta_0 (s / N)
-   + \theta_1 \sin ( 2 \pi s  )
-   + \theta_2 \cos ( 2 \pi s )
-   \\
-   z_i & = & q( \theta , t_i ) + e_i
-   \\
-   \B{p} ( e_i | \theta ) & \sim & \B{N} ( 0, \sigma )
-\end{array}
-\] $$
+:math:`\{ t_i \W{:} i = 0 , \ldots , N-1 \}` and
+
+.. math::
+   :nowrap:
+
+   \begin{eqnarray}
+      q( \theta, s )
+      & = &
+      \theta_0 (s / N)
+      + \theta_1 \sin ( 2 \pi s  )
+      + \theta_2 \cos ( 2 \pi s )
+      \\
+      z_i & = & q( \theta , t_i ) + e_i
+      \\
+      \B{p} ( e_i | \theta ) & \sim & \B{N} ( 0, \sigma )
+   \end{eqnarray}
+
 The idea in Lasso is that one or more of the components of
-$latex \theta$$ are zero and using the Laplace prior
+:math:`\theta` are zero and using the Laplace prior
 we can recover this fact.
-We use $latex \B{L} ( \mu , \sigma )$$ to denote the Laplace distribution
-with mean $latex \mu$$ and standard deviation $latex \sigma$$.
-$latex \[
+We use :math:`\B{L} ( \mu , \sigma )` to denote the Laplace distribution
+with mean :math:`\mu` and standard deviation :math:`\sigma`.
+
+.. math::
+
    \B{p} ( \theta ) \sim \B{L} ( 0 , \delta )
-\] $$
+
 The corresponding fixed likelihood
-$cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$
+:ref:`g(theta)<theory@Fixed Likelihood, g(theta)>`
 is
-$latex \[
-g( \theta ) =
-\sum_{i=0}^{N-1} \left[
-   \log ( \sigma \sqrt{2 \pi} )
-   +
-   \left( \frac{ z_i - q( \theta , t_i ) }{2 \sigma} \right)^2
-\right]
-+
-\sum_{j=0}^2 \left[
-   \log \left( \delta \sqrt{2} \right)
-   +
-   \sqrt{2} \; \left| \frac{\theta_j}{\delta} \right|
-\right]
-\] $$
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+.. math::
 
-$end
+   g( \theta ) =
+   \sum_{i=0}^{N-1} \left[
+      \log ( \sigma \sqrt{2 \pi} )
+      +
+      \left( \frac{ z_i - q( \theta , t_i ) }{2 \sigma} \right)^2
+   \right]
+   +
+   \sum_{j=0}^2 \left[
+      \log \left( \delta \sqrt{2} \right)
+      +
+      \sqrt{2} \; \left| \frac{\theta_j}{\delta} \right|
+   \right]
+
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end lasso.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

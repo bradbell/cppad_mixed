@@ -8,78 +8,94 @@
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 /*
-$begin ipopt_fixed_one_dim_function$$
-$spell
-   eval
+{xrst_begin ipopt_fixed_one_dim_function}
+{xrst_spell
    enum
-   obj
-$$
-$section Compute Model Functions Along One Direction$$
+   lagrange
+}
+Compute Model Functions Along One Direction
+###########################################
 
-$head Syntax$$
-$icode%ok% = one_dim_function(%x_j%, %fun_out%)
-%$$
+Syntax
+******
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+   *ok* = ``one_dim_function`` ( *x_j* , *fun_out* )
 
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
 
-$head Member Variables$$
+Member Variables
+****************
 
-$subhead one_dim_function_j_$$
+one_dim_function_j\_
+====================
 This determines which component of the optimization variables
-$icode x$$ we are evaluating this function along.
-This is referred to as the index $icode j$$ below.
+*x* we are evaluating this function along.
+This is referred to as the index *j* below.
 
-$subhead one_dim_function_x_$$
-This determines the value for $icode x$$, except for the $th j$$ component,
+one_dim_function_x\_
+====================
+This determines the value for *x* , except for the *j*-th component,
 that is used to evaluate the function.
-It's $th j$$ component is changed to $icode x_j$$ and than
+It's *j*-th component is changed to *x_j* and than
 restored back to it's original value before this function returns.
 
-$subhead one_dim_function_eval_$$
+one_dim_function_eval\_
+=======================
 This determines which function is being evaluated.
 Its possible values are:
-$table
-$code eval_f_enum$$ $cnext objective function f(x) $rnext
-$code eval_g_enum$$ $cnext constraint function g(x) $rnext
-$code eval_grad_L_enum$$ $cnext gradient of the Lagrangian L'(x) $rnext
-$tend
 
-$subhead one_dim_function_obj_factor_$$
+.. csv-table::
+   :widths: auto
+
+   ``eval_f_enum``,objective function f(x)
+   ``eval_g_enum``,constraint function g(x)
+   ``eval_grad_L_enum``,gradient of the Lagrangian L'(x)
+
+one_dim_function_obj_factor\_
+=============================
 This determines the objective function and is referred to
-as $latex \alpha$$ in the definition of L(x) below.
+as :math:`\alpha` in the definition of L(x) below.
 
-$subhead one_dim_function_lambda_$$
+one_dim_function_lambda\_
+=========================
 This determines the Lagrange multipliers and is referred to
-as $latex \lambda$$ in the definition of L(x) below.
+as :math:`\lambda` in the definition of L(x) below.
 
-$head x_j$$
-This is the value used for the $th j$$ component of the optimization variables
-when evaluating the function; see $code one_dim_function_j_$$ above.
+x_j
+***
+This is the value used for the *j*-th component of the optimization variables
+when evaluating the function; see ``one_dim_function_j_`` above.
 
-$head fun_out$$
+fun_out
+*******
 The function value is returned in this vector.
 It has the following size depending on the value of
-$icode one_dim_function_eval_$$:
-$table
-$icode one_dim_function_eval_$$ $cnext $icode%fun_out%.size()%$$ $rnext
-$code eval_f_enum$$ $cnext size of range space for f(x); i.e. 1  $rnext
-$code eval_g_enum$$ $cnext size of range space for g(x); i.e. $icode m$$ $rnext
-$code eval_grad_L_enum$$ $cnext
-   number of optimization variables; i.e. $icode n$$
-$rnext
-$tend
+*one_dim_function_eval_* :
+
+.. csv-table::
+   :widths: auto
+
+   *one_dim_function_eval_*,*fun_out* . ``size`` ()
+   ``eval_f_enum``,size of range space for f(x); i.e. 1
+   ``eval_g_enum``,size of range space for g(x); i.e. *m*
+   ``eval_grad_L_enum``,number of optimization variables; i.e. *n*
+
 The input value of its elements does not matter.
 Upon return it contains the specified function value.
 
+Definition of L(x)
+******************
 
-$head Definition of L(x)$$
-$latex \[
+.. math::
+
    L(x) = \alpha f(x) + \sum_{i=1}^m \lambda_i g_i (x)
-\] $$
 
-$end
+{xrst_end ipopt_fixed_one_dim_function}
 */
 // BEGIN_PROTOTYPE
 bool ipopt_fixed::one_dim_function(double x_j, d_vector& fun_out)

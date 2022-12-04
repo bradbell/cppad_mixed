@@ -2,19 +2,23 @@
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
-$begin speed$$
+{xrst_begin speed}
 
-$section Example Programs That are Also Speed and Memory Tests$$
+Example Programs That are Also Speed and Memory Tests
+#####################################################
 
-$head Purpose$$
+Purpose
+*******
 These programs test speed and memory usage.
 They are also user examples that demonstrate many of the choices one can make.
 These choices are command line input options
-and $cref run_cmake.sh$$ configuration options.
+and :ref:`run_cmake.sh-name` configuration options.
 
-$childtable%speed/ar1_xam.cpp
-   %speed/capture_xam.cpp
-%$$
+Contents
+********
+{xrst_toc_table
+   speed/ar1_xam.cpp
+   speed/capture_xam.cpp
+}
 
-
-$end
+{xrst_end speed}

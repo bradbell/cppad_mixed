@@ -8,52 +8,61 @@
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 /*
-$begin ipopt_fixed_set_scaling$$
-$spell
-   jac
-   Jacobian
-   eval
-$$
+{xrst_begin ipopt_fixed_set_scaling}
 
-$section Set Scaling Factors$$
+Set Scaling Factors
+###################
 
-$head Syntax$$
-$icode%ok% = set_scaling(
-   %x_scale%, %x_lower%, %x_upper%, %grad_f%, %jac_g%
-)%$$
+Syntax
+******
 
-$head x_scale$$
+| *ok* = ``set_scaling`` (
+| |tab| *x_scale* , *x_lower* , *x_upper* , *grad_f* , *jac_g*
+| )
+
+x_scale
+*******
 is the argument value at which the scaling is computer.
 
-$head x_lower$$
+x_lower
+*******
 is the optimization lower limit for x.
 
-$head x_upper$$
+x_upper
+*******
 is the optimization upper limit for x.
 
-$head grad_f$$
-is the gradient of f(x) at $icode x_scale$$.
+grad_f
+******
+is the gradient of f(x) at *x_scale* .
 
-$head jac_g$$
-is the Jacobian of g(x) at $icode x_scale$$.
+jac_g
+*****
+is the Jacobian of g(x) at *x_scale* .
 This is a sparse representation of the jacobian using the member variables
-$code jac_g_row_$$ and $code jac_g_col_$$.
+``jac_g_row_`` and ``jac_g_col_`` .
 
-$head scale_f_$$
+scale_f\_
+*********
 The input value of this member variable must be one.
 Upon return it is set to a value that should be used to multiply
-the values return by $code eval_f$$.
+the values return by ``eval_f`` .
 
-$head scale_g_$$
+scale_g\_
+*********
 The input value of this member variable must be a vector with size
 equal to the range space of g(x) and all its components must be one.
-Upon return $codei%scale_g_[%i%]%$$ is set to a value that should be used to
-multiply the $th i$$ component returned by $code eval_g$$.
+Upon return ``scale_g_`` [ *i* ] is set to a value that should be used to
+multiply the *i*-th component returned by ``eval_g`` .
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
 
-$end
+{xrst_end ipopt_fixed_set_scaling}
 -------------------------------------------------------------------------------
 */
 // BEGIN_PROTOTYPE

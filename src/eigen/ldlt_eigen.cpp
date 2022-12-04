@@ -10,37 +10,43 @@
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 -------------------------------------------------------------------------------
-$begin ldlt_eigen_ctor$$
-$spell
-   ldlt_obj
-   eigen
+{xrst_begin ldlt_eigen_ctor}
+{xrst_spell
    ptr
-   CppAD
-$$
+}
 
-$section Eigen LDLT Constructor$$
+Eigen LDLT Constructor
+######################
 
-$head Syntax$$
-$codei%CppAD::ldlt_eigen<%Double%> %ldlt_obj%(%n_row%)%$$
+Syntax
+******
+``CppAD::ldlt_eigen<`` *Double* > *ldlt_obj* ( *n_row* )
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE_CTOR%// END_PROTOTYPE_CTOR%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE_CTOR
+   // END_PROTOTYPE_CTOR
+}
 
-$head Private$$
-The $cref ldlt_eigen$$ class is an
-$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
+Private
+*******
+The :ref:`ldlt_eigen-name` class is an
+:ref:`implementation detail<ldlt_eigen@Private>` and not part of the
 CppAD Mixed user API.
 
-$head n_row_$$
-The argument $icode n_row$$
+n_row\_
+*******
+The argument *n_row*
 is the number of rows in the symmetric matrix we will compute factor.
-The member variable $code n_row_$$ is set to this value.
+The member variable ``n_row_`` is set to this value.
 
-$head ptr_$$
+ptr\_
+*****
 This member variable points to a newly constructed
-$code eigen_ldlt$$ object.
+``eigen_ldlt`` object.
 
-$end
+{xrst_end ldlt_eigen_ctor}
 */
 // BEGIN_PROTOTYPE_CTOR
 template <typename Double>
@@ -59,59 +65,60 @@ ldlt_eigen<Double>::~ldlt_eigen(void)
 
 /*
 ------------------------------------------------------------------------------
-$begin ldlt_eigen_init$$
-$spell
-   rc
-   xam
-   ldlt_eigen
-   ldlt_obj
-   CppAD
-   const
-   init
-   hes
-$$
+{xrst_begin ldlt_eigen_init}
 
-$section Initialize LDLT Factor for a Specific Sparsity Pattern$$
+Initialize LDLT Factor for a Specific Sparsity Pattern
+######################################################
 
-$head Syntax$$
-$icode%ldlt_obj%.init(%H_rc%)
-%$$
+Syntax
+******
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE_INIT%// END_PROTOTYPE_INIT%1%$$
+   *ldlt_obj* . ``init`` ( *H_rc* )
 
-$head Private$$
-The $code ldlt_eigen$$ class is an
-$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE_INIT
+   // END_PROTOTYPE_INIT
+}
+
+Private
+*******
+The ``ldlt_eigen`` class is an
+:ref:`implementation detail<ldlt_eigen@Private>` and not part of the
 CppAD Mixed user API.
 
-$head ldlt_obj$$
+ldlt_obj
+********
 This object has prototype
-$codei%
-   CppAD::ldlt_eigen<%Double%> %ldlt_obj%
-%$$
 
-$head H_rc$$
+   ``CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
+
+H_rc
+****
 This argument is a
-$cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$ for the
+:ref:`sparse_mat_info@Notation@Sparsity Pattern` for the
 matrix that we will compute the LDLT factor of.
 It is in
-$cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
+:ref:`column major<sparse_mat_info@Notation@Column Major Order>` order
 and
-$cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
+:ref:`sparse_mat_info@Notation@Lower Triangular` .
 
-$subhead H_rc_$$
-This member variable is set to a copy of $icode H_rc$$.
+H_rc\_
+======
+This member variable is set to a copy of *H_rc* .
 
-$head Order of Operations$$
-This $icode ldlt_obj$$ function must be called once,
+Order of Operations
+*******************
+This *ldlt_obj* function must be called once,
 after the constructor and before any other member functions.
 
-$head Example$$
-The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/init/$$ contains an
+Example
+*******
+The file :ref:`ldlt_eigen.cpp<ldlt_eigen.cpp@init>` contains an
 example and test that uses this function.
 
-$end
+{xrst_end ldlt_eigen_init}
 */
 // BEGIN_PROTOTYPE_INIT
 template <typename Double>
@@ -140,51 +147,54 @@ void ldlt_eigen<Double>::init(const sparse_rc& H_rc)
 }
 /*
 -------------------------------------------------------------------------------
-$begin ldlt_eigen_pattern$$
-$spell
-   rcv
-   ldlt_eigen
-   obj
-   CppAD
-   init
-   rc
-$$
+{xrst_begin ldlt_eigen_pattern}
 
-$section Update Factorization Using new Matrix Values$$
+Update Factorization Using new Matrix Values
+############################################
 
-$head Syntax$$
-$icode%H_rc% = %ldlt_obj%.pattern()%$$
+Syntax
+******
+*H_rc* = *ldlt_obj* . ``pattern`` ()
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE_PATTERN%// END_PROTOTYPE_PATTERN%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE_PATTERN
+   // END_PROTOTYPE_PATTERN
+}
 
-$head Private$$
-The $cref ldlt_eigen$$ class is an
-$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
+Private
+*******
+The :ref:`ldlt_eigen-name` class is an
+:ref:`implementation detail<ldlt_eigen@Private>` and not part of the
 CppAD Mixed user API.
 
-$head ldlt_obj$$
+ldlt_obj
+********
 This object has prototype
-$codei%
-   CppAD::mixed::ldlt_eigen %ldlt_obj%
-%$$
+
+   ``CppAD::mixed::ldlt_eigen`` *ldlt_obj*
+
 In addition, it must have a previous call to
-$cref ldlt_eigen_init$$.
+:ref:`ldlt_eigen_init-name` .
 
-$head H_rc$$
+H_rc
+****
 The return value is a copy of the sparsity pattern
-$cref/H_rc/ldlt_eigen_init/H_rc/$$ in the corresponding call to
-$icode%ldlt_obj%.init(%H_rc%)%$$.
+:ref:`ldlt_eigen_init@H_rc` in the corresponding call to
+*ldlt_obj* . ``init`` ( *H_rc* ) .
 
-$head Order of Operations$$
-This $icode ldlt_obj$$ function must be called,
-after the constructor and $cref/init/ldlt_eigen_init/$$.
+Order of Operations
+*******************
+This *ldlt_obj* function must be called,
+after the constructor and :ref:`init<ldlt_eigen_init-name>` .
 
-$head Example$$
-The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/pattern/$$ contains an
+Example
+*******
+The file :ref:`ldlt_eigen.cpp<ldlt_eigen.cpp@pattern>` contains an
 example and test that uses this function.
 
-$end
+{xrst_end ldlt_eigen_pattern}
 */
 // BEGIN_PROTOTYPE_PATTERN
 template <typename Double>
@@ -196,83 +206,87 @@ const sparse_rc& ldlt_eigen<Double>::pattern(void) const
 
 /*
 ------------------------------------------------------------------------------
-$begin ldlt_eigen_update$$
-$spell
-   rcv
-   ldlt_eigen
-   xam
-   const
-   CppAD
-   ldlt_obj
-   init
-   pos
+{xrst_begin ldlt_eigen_update}
+{xrst_spell
+   factorize
    ptr
-   eigen
-   hes
-   bool
-$$
+}
 
-$section Update Factorization Using new Matrix Values$$
+Update Factorization Using new Matrix Values
+############################################
 
-$head Syntax$$
-$icode%ok% = %ldlt_obj%.update(%H_rcv%)%$$
+Syntax
+******
+*ok* = *ldlt_obj* . ``update`` ( *H_rcv* )
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE_UPDATE%// END_PROTOTYPE_UPDATE%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE_UPDATE
+   // END_PROTOTYPE_UPDATE
+}
 
-$head Private$$
-The $cref ldlt_eigen$$ class is an
-$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
+Private
+*******
+The :ref:`ldlt_eigen-name` class is an
+:ref:`implementation detail<ldlt_eigen@Private>` and not part of the
 CppAD Mixed user API.
 
-$head Purpose$$
-This routine updates the $cref ldlt_eigen$$ factorization
+Purpose
+*******
+This routine updates the :ref:`ldlt_eigen-name` factorization
 for new values in the square positive definite matrix.
 
-$head ldlt_obj$$
+ldlt_obj
+********
 This object has prototype
-$codei%
-   CppAD::ldlt_eigen<%Double%> %ldlt_obj%
-%$$
+
+   ``CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
+
 In addition, it must have a previous call to
-$cref ldlt_eigen_init$$.
+:ref:`ldlt_eigen_init-name` .
 
-$head H_rcv$$
+H_rcv
+*****
 This argument contains new values for the
-$cref/sparse matrix/sparse_mat_info/Notation/Sparse Matrix/$$
+:ref:`sparse_mat_info@Notation@Sparse Matrix`
 we are computing the LDLT factor of.
-The $cref/sparsity pattern/sparse_mat_info/Notation/Sparsity Pattern/$$
-must be the same as in $cref/ldlt_eigen_init/ldlt_eigen_init/H_rc/$$.
+The :ref:`sparse_mat_info@Notation@Sparsity Pattern`
+must be the same as in :ref:`ldlt_eigen_init<ldlt_eigen_init@H_rc>` .
 Hence, in particular, it must be in
-$cref/column major/sparse_mat_info/Notation/Column Major Order/$$ order
+:ref:`column major<sparse_mat_info@Notation@Column Major Order>` order
 and
-$cref/lower triangular/sparse_mat_info/Notation/Lower Triangular/$$.
+:ref:`sparse_mat_info@Notation@Lower Triangular` .
 
-$head ptr_$$
-On input, the member variable $icode ptr_$$
-has been $cref/initialized/ldlt_eigen_init/$$
+ptr\_
+*****
+On input, the member variable *ptr_*
+has been :ref:`initialized<ldlt_eigen_init-name>`
 using the sparsity pattern for the Hessian.
 Upon return, it contains the factorization
-$codei%
-   ptr_->factorize(%hessian%)
-%$$
-where $icode hessian$$ is an $code eigen_sparse$$
+
+   ``ptr_->factorize`` ( *hessian* )
+
+where *hessian* is an ``eigen_sparse``
 representation of the Hessian with values.
 
-$head ok$$
-If the return value $icode ok$$ is true, the matrix was factored.
+ok
+**
+If the return value *ok* is true, the matrix was factored.
 Otherwise, the matrix is singular.
 
-$head Order of Operations$$
-This $icode ldlt_obj$$ function must be called,
-after the constructor and $cref/init/ldlt_eigen_init/$$
+Order of Operations
+*******************
+This *ldlt_obj* function must be called,
+after the constructor and :ref:`init<ldlt_eigen_init-name>`
 and before any other member functions.
 
-$head Example$$
-The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/update/$$ contains an
+Example
+*******
+The file :ref:`ldlt_eigen.cpp<ldlt_eigen.cpp@update>` contains an
 example and test that uses this function.
 
-$end
+{xrst_end ldlt_eigen_update}
 */
 // BEGIN_PROTOTYPE_UPDATE
 template <typename Double>
@@ -310,55 +324,63 @@ bool ldlt_eigen<Double>::update(
 }
 /*
 -------------------------------------------------------------------------------
-$begin ldlt_eigen_split$$
+{xrst_begin ldlt_eigen_split}
 
-$section Split Out a Factorization$$
-$spell
-   ldlt_obj
-   CppAD
-   const
-   eigen
-$$
+Split Out a Factorization
+#########################
 
-$head Syntax$$
-$icode%ldlt_obj%.split(%L%, %D%, %P%)%$$
+Syntax
+******
+*ldlt_obj* . ``split`` ( *L* , *D* , *P* )
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE_SPLIT%// END_PROTOTYPE_SPLIT%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE_SPLIT
+   // END_PROTOTYPE_SPLIT
+}
 
-$head Private$$
-The $cref ldlt_eigen$$ class is an
-$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
+Private
+*******
+The :ref:`ldlt_eigen-name` class is an
+:ref:`implementation detail<ldlt_eigen@Private>` and not part of the
 CppAD Mixed user API.
 
-$head Purpose$$
-Extract the components of the $cref/factorization/ldlt_eigen/Factorization/$$
-$latex \[
+Purpose
+*******
+Extract the components of the :ref:`ldlt_eigen@Factorization`
+
+.. math::
+
    L D L^\R{T} = P H P^{T}
-\] $$
 
-$head ldlt_obj$$
+ldlt_obj
+********
 This object has prototype
-$codei%
-   const CppAD::ldlt_eigen<%Double%> %ldlt_obj%
-%$$
-In addition, it must have a previous call to
-$cref ldlt_eigen_update$$.
 
-$head L$$
+   ``const CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
+
+In addition, it must have a previous call to
+:ref:`ldlt_eigen_update-name` .
+
+L
+*
 is a lower triangular matrix with ones on the diagonal.
 
-$head D$$
+D
+*
 is a diagonal matrix.
 
-$head P$$
+P
+*
 is a permutation matrix.
 
-$head Example$$
-The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/split/$$ contains an
+Example
+*******
+The file :ref:`ldlt_eigen.cpp<ldlt_eigen.cpp@split>` contains an
 example and test that uses this function.
 
-$end
+{xrst_end ldlt_eigen_split}
 */
 
 // BEGIN_PROTOTYPE_SPLIT
@@ -376,55 +398,62 @@ void ldlt_eigen<Double>::split(
 }
 /*
 ------------------------------------------------------------------------------
-$begin ldlt_eigen_logdet$$
-$spell
-   xam
-   ldlt_eigen
+{xrst_begin ldlt_eigen_logdet}
+{xrst_spell
+   determinant
    logdet
-   ldlt_obj
-   CppAD
-   const
-$$
+}
 
-$section Compute Log Determinant for Current LDLT Factor$$
+Compute Log Determinant for Current LDLT Factor
+###############################################
 
-$head Syntax$$
-$icode%logdet% = %ldlt_obj%.logdet(%negative%)%$$
+Syntax
+******
+*logdet* = *ldlt_obj* . ``logdet`` ( *negative* )
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE_LOGDET%// END_PROTOTYPE_LOGDET%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE_LOGDET
+   // END_PROTOTYPE_LOGDET
+}
 
-$head Private$$
-The $code ldlt_eigen$$ class is an
-$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
+Private
+*******
+The ``ldlt_eigen`` class is an
+:ref:`implementation detail<ldlt_eigen@Private>` and not part of the
 CppAD Mixed user API.
 
-$head ldlt_obj$$
+ldlt_obj
+********
 This object has prototype
-$codei%
-   const CppAD::ldlt_eigen<%Double%> %ldlt_obj%
-%$$
-In addition, it must have a previous call to
-$cref ldlt_eigen_update$$.
 
-$head negative$$
-The input value of $icode negative$$ does no matter,
+   ``const CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
+
+In addition, it must have a previous call to
+:ref:`ldlt_eigen_update-name` .
+
+negative
+********
+The input value of *negative* does no matter,
 upon return it is the number of elements of
-$cref/D/ldlt_eigen/Factorization/D/$$
+:ref:`ldlt_eigen@Factorization@D`
 that are less than zero.
 
-$head logdet$$
-This return value $icode logdet$$
+logdet
+******
+This return value *logdet*
 is the log of the absolute value of the determinant corresponding
-to the previous call to $cref ldlt_eigen_update$$.
-If the matrix is singular, $icode logdet$$ is
+to the previous call to :ref:`ldlt_eigen_update-name` .
+If the matrix is singular, *logdet* is
 minus infinity.
 
-$head Example$$
-The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/logdet/$$ contains an
+Example
+*******
+The file :ref:`ldlt_eigen.cpp<ldlt_eigen.cpp@logdet>` contains an
 example and test that uses this function.
 
-$end
+{xrst_end ldlt_eigen_logdet}
 */
 // BEGIN_PROTOTYPE_LOGDET
 template <typename Double>
@@ -451,81 +480,87 @@ Double ldlt_eigen<Double>::logdet(size_t& negative) const
 }
 /*
 -----------------------------------------------------------------------------
-$begin ldlt_eigen_solve_H$$
-$spell
-   ldlt_eigen
-   ldlt_obj
-   cholesky
-   const
-   xam
-   CppAD
-   hes
-$$
+{xrst_begin ldlt_eigen_solve_H}
 
-$section Solve Linear Equations Using Stored Factor$$
+Solve Linear Equations Using Stored Factor
+##########################################
 
-$head Syntax$$
-$codei%%ldlt_obj%.solve_H(%row%, %val_in%, %val_out%)%$$
+Syntax
+******
+*ldlt_obj* . ``solve_H`` ( *row* , *val_in* , *val_out* )
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE_SOLVE_H%// END_PROTOTYPE_SOLVE_H%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE_SOLVE_H
+   // END_PROTOTYPE_SOLVE_H
+}
 
-$head Private$$
-The $cref ldlt_eigen$$ class is an
-$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
+Private
+*******
+The :ref:`ldlt_eigen-name` class is an
+:ref:`implementation detail<ldlt_eigen@Private>` and not part of the
 CppAD Mixed user API.
 
-$head Purpose$$
+Purpose
+*******
 This function solves the linear equation
-$latex H x = b$$ where $latex H$$ is the positive definite matrix
-corresponding to the previous $cref/update/ldlt_eigen_update/$$,
-$latex b$$ is a known column vector,
-and $latex x$$ is unknown.
+:math:`H x = b` where :math:`H` is the positive definite matrix
+corresponding to the previous :ref:`update<ldlt_eigen_update-name>` ,
+:math:`b` is a known column vector,
+and :math:`x` is unknown.
 
-$head ldlt_obj$$
+ldlt_obj
+********
 This object has prototype
-$codei%
-   const CppAD::ldlt_eigen<%Double%> %ldlt_obj%
-%$$
-In addition, it must have a previous call to
-$cref ldlt_eigen_update$$.
 
-$head row$$
+   ``const CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
+
+In addition, it must have a previous call to
+:ref:`ldlt_eigen_update-name` .
+
+row
+***
 This argument
-contains all of the rows of column vector $latex b$$ that are
-non-zero and the rows of the column vector $icode x$$
+contains all of the rows of column vector :math:`b` that are
+non-zero and the rows of the column vector *x*
 that are desired.
 These values are in strictly increasing order; i.e.,
-$codei%
-   %row%[%k%] < %row%[%k%+1]
-%$$
-It follows that $icode%row%.size()%$$ is less than or equal
-$cref/n_row_/ldlt_eigen_ctor/n_row_/$$.
 
-$head val_in$$
-This argument has the same size as $icode row$$.
-It specifies the values in the column vector $latex b$$
+   *row* [ *k* ] < *row* [ *k* +1]
+
+It follows that *row* . ``size`` () is less than or equal
+:ref:`ldlt_eigen_ctor@n_row_` .
+
+val_in
+******
+This argument has the same size as *row* .
+It specifies the values in the column vector :math:`b`
 for each of the corresponding rows; i.e.,
-for $icode%k% = 0 , %...%, %row%.size()-1%$$,
-$codei%
-   %b%[ %row%[%k%] ] = %val_in%[%k%]
-%$$.
+for *k* = 0 , ..., *row* . ``size`` () ``-1`` ,
 
-$head val_out$$
-This argument has the same size as $icode row$$.
+   *b* [ *row* [ *k* ] ] = *val_in* [ *k* ]
+
+.
+
+val_out
+*******
+This argument has the same size as *row* .
 On input, the value of its elements do not matter.
-Upon return, it contains the values in the column vector $latex b$$
+Upon return, it contains the values in the column vector :math:`b`
 for each of the corresponding rows; i.e.,
-for $icode%k% = 0 , %...%, %row%.size()-1%$$,
-$codei%
-   %x%[ %row%[%k%] ] = %val_out%[%k%]
-%$$.
+for *k* = 0 , ..., *row* . ``size`` () ``-1`` ,
 
-$head Example$$
-The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/solve_H/$$ contains an
+   *x* [ *row* [ *k* ] ] = *val_out* [ *k* ]
+
+.
+
+Example
+*******
+The file :ref:`ldlt_eigen.cpp<ldlt_eigen.cpp@solve_H>` contains an
 example and test that uses this function.
 
-$end
+{xrst_end ldlt_eigen_solve_H}
 */
 // BEGIN_PROTOTYPE_SOLVE_H
 template <typename Double>
@@ -553,98 +588,114 @@ void ldlt_eigen<Double>::solve_H(
 }
 /*
 -------------------------------------------------------------------------------
-$begin ldlt_eigen_sim_cov$$
-$spell
-   std
-   ldlt_obj
-   sim_cov
-   const
-   eigen
-   bool
-   xam
-   CppAD
-$$
+{xrst_begin ldlt_eigen_sim_cov}
+{xrst_spell
+   cov
+   covariance
+   ll
+   sim
+}
 
-$section Simulations with Covariance Corresponding to Factored Matrix$$
+Simulations with Covariance Corresponding to Factored Matrix
+############################################################
 
-$head Syntax$$
-$icode%ok% = %ldlt_obj%.sim_cov(%w%, %v%)%$$
+Syntax
+******
+*ok* = *ldlt_obj* . ``sim_cov`` ( *w* , *v* )
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE_SIM_COV%// END_PROTOTYPE_SIM_COV%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE_SIM_COV
+   // END_PROTOTYPE_SIM_COV
+}
 
-$head Private$$
-The $cref ldlt_eigen$$ class is an
-$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
+Private
+*******
+The :ref:`ldlt_eigen-name` class is an
+:ref:`implementation detail<ldlt_eigen@Private>` and not part of the
 CppAD Mixed user API.
 
-$head Purpose$$
+Purpose
+*******
 This function simulates a normal random vector with mean zero
-and covariance $latex H^{-1}$$ where
-$latex \[
+and covariance :math:`H^{-1}` where
+
+.. math::
+
    L D L^\R{T} = P H P^\R{T}
-\] $$
+
 is the current factorization; see
-$cref/H/ldlt_eigen/Factorization/H/$$,
-$cref/L/ldlt_eigen/Factorization/L/$$,
-$cref/D/ldlt_eigen/Factorization/D/$$, and
-$cref/P/ldlt_eigen/Factorization/P/$$.
+:ref:`ldlt_eigen@Factorization@H` ,
+:ref:`ldlt_eigen@Factorization@L` ,
+:ref:`ldlt_eigen@Factorization@D` , and
+:ref:`ldlt_eigen@Factorization@P` .
 
-$head ldlt_obj$$
+ldlt_obj
+********
 This object has prototype
-$codei%
-   const CppAD::ldlt_eigen<%Double%> %ldlt_obj%
-%$$
+
+   ``const CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
+
 In addition, it must have a previous call to
-$cref ldlt_eigen_update$$.
+:ref:`ldlt_eigen_update-name` .
 
-$head w$$
+w
+*
 This argument's
-size is equal to the number of rows in $latex H$$.
+size is equal to the number of rows in :math:`H`.
 
-$head v$$
+v
+*
 This argument's
-size is equal to the number of rows in $latex H$$.
+size is equal to the number of rows in :math:`H`.
 The input value of its elements does not matter.
 Upon return
-$latex \[
+
+.. math::
+
    v = P^\R{T} L^{-\R{T}} \tilde{D}^{-1/2} w
-\] $$
-If $latex w$$ is mean zero, variance identity white noise,
-$latex w \sim \B{N} ( 0 , I )$$,
-then $latex v$$ will be mean zero and variance $latex H^{-1}$$,
-$latex v \sim \B{N} ( 0 , H^{-1} )$$; see
-$cref/sparse observed information/theory/Sparse Observed Information/$$.
 
-$head Positive Definite$$
-In the formula for $latex v$$ above,
-the matrix $latex \tilde{D}$$ is a positive version of $latex D$$.
+If :math:`w` is mean zero, variance identity white noise,
+:math:`w \sim \B{N} ( 0 , I )`,
+then :math:`v` will be mean zero and variance :math:`H^{-1}`,
+:math:`v \sim \B{N} ( 0 , H^{-1} )`; see
+:ref:`theory@Sparse Observed Information` .
+
+Positive Definite
+*****************
+In the formula for :math:`v` above,
+the matrix :math:`\tilde{D}` is a positive version of :math:`D`.
 To be specific,
-$latex \[
-\tilde{D}_{i,i} = \left\{ \begin{array}{ll}
-   D_{i,i} & \R{if} \; D_{i,i} \geq  \varepsilon^2 \; \max(D) \\
-   \varepsilon^2 \; \max(D) & \R{otherwise}
-\end{array} \right.
-\] $$
-where $latex \varepsilon$$
-$code std::numeric_limits<Double>::epsilon()$$,
-and $latex \max(D)$$ is the largest element in $latex D$$.
 
-$head ok$$
+.. math::
+
+   \tilde{D}_{i,i} = \left\{ \begin{array}{ll}
+      D_{i,i} & \R{if} \; D_{i,i} \geq  \varepsilon^2 \; \max(D) \\
+      \varepsilon^2 \; \max(D) & \R{otherwise}
+   \end{array} \right.
+
+where :math:`\varepsilon`
+``std::numeric_limits<Double>::epsilon()`` ,
+and :math:`\max(D)` is the largest element in :math:`D`.
+
+ok
+**
 The return value has prototype
-$codei%
-   bool %ok%
-%$$
-If $latex \max(D) > 0$$, this routine terminates with $icode ok$$
+
+   ``bool`` *ok*
+
+If :math:`\max(D) > 0`, this routine terminates with *ok*
 equal to true.
-Otherwise it is false and the output values in $icode v$$
+Otherwise it is false and the output values in *v*
 are the same as their input values.
 
-$head Example$$
-The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/sim_cov/$$ contains an
+Example
+*******
+The file :ref:`ldlt_eigen.cpp<ldlt_eigen.cpp@sim_cov>` contains an
 example and test that uses this function.
 
-$end
+{xrst_end ldlt_eigen_sim_cov}
 */
 // BEGIN_PROTOTYPE_SIM_COV
 template <typename Double>
@@ -691,62 +742,68 @@ bool ldlt_eigen<Double>::sim_cov(
 
 /*
 -------------------------------------------------------------------------------
-$begin ldlt_eigen_inv$$
+{xrst_begin ldlt_eigen_inv}
 
-$section Compute a Subset of the Inverse of Factored Matrix$$
-$spell
-   ldlt_obj
-   inv
-   CppAD
-   const
-   eigen
-$$
+Compute a Subset of the Inverse of Factored Matrix
+##################################################
 
-$head Syntax$$
-$icode%ldlt_obj%.inv(%row_in%, %col_in%, %val_out%)%$$
+Syntax
+******
+*ldlt_obj* . ``inv`` ( *row_in* , *col_in* , *val_out* )
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE_INV%// END_PROTOTYPE_INV%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE_INV
+   // END_PROTOTYPE_INV
+}
 
-$head Private$$
-The $cref ldlt_eigen$$ class is an
-$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
+Private
+*******
+The :ref:`ldlt_eigen-name` class is an
+:ref:`implementation detail<ldlt_eigen@Private>` and not part of the
 CppAD Mixed user API.
 
-$head Purpose$$
+Purpose
+*******
 This function solves for a subset of the inverse of the
 sparse symmetric matrix that has been factored.
 
-$head ldlt_obj$$
+ldlt_obj
+********
 This object has prototype
-$codei%
-   const CppAD::ldlt_eigen<%Double%> %ldlt_obj%
-%$$
-In addition, it must have a previous call to
-$cref ldlt_eigen_update$$.
 
-$head row_in$$
+   ``const CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
+
+In addition, it must have a previous call to
+:ref:`ldlt_eigen_update-name` .
+
+row_in
+******
 This vector contains the row indices for the components of the
 inverse that we are computing.
 
-$head col_in$$
+col_in
+******
 This vector contains the column indices for the components of the
-inverse that we are computing. It must have the same size as $icode row_in$$.
+inverse that we are computing. It must have the same size as *row_in* .
 
-$head val_out$$
-This matrix must have the same size as $icode row_in$$.
+val_out
+*******
+This matrix must have the same size as *row_in* .
 The input values of its elements do not matter.
 Upon return, it
 contains the values for the components of the inverse that we are computing.
-To be specific, for $icode%k% = 0 , %...%, %K%-1%$$,
-$icode%val_out%[%k%]%$$
-is $icode%row_in%[%k%]%$$, $icode%col_in%[%k%]%$$ component of the inverse.
+To be specific, for *k* = 0 , ..., *K* ``-1`` ,
+*val_out* [ *k* ]
+is *row_in* [ *k* ] , *col_in* [ *k* ] component of the inverse.
 
-$head Method$$
-This routine uses $cref ldlt_eigen_solve_H$$ to solve for the
+Method
+******
+This routine uses :ref:`ldlt_eigen_solve_H-name` to solve for the
 requested components of the inverse one column at a time.
 
-$end
+{xrst_end ldlt_eigen_inv}
 */
 
 // BEGIN_PROTOTYPE_INV
@@ -832,53 +889,62 @@ void ldlt_eigen<Double>::inv(
 }
 /*
 -------------------------------------------------------------------------------
-$begin ldlt_eigen_solve_LDLT$$
-$spell
-   ldlt
-   eigen
-   CppAD
-$$
+{xrst_begin ldlt_eigen_solve_LDLT}
 
-$section Solve Linear Equations Corresponding to L, D, and P Factors$$
+Solve Linear Equations Corresponding to L, D, and P Factors
+###########################################################
 
-$head Syntax$$
-$icode%x% = ldlt_eigen<%Double%>::solve_LDLT(%L%, %D%, %P%, %b%)%$$
+Syntax
+******
+*x* = ``ldlt_eigen<`` *Double* >:: ``solve_LDLT`` ( *L* , *D* , *P* , *b* )
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE_SOLVE_LDLT%// END_PROTOTYPE_SOLVE_LDLT%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE_SOLVE_LDLT
+   // END_PROTOTYPE_SOLVE_LDLT
+}
 
-$head Private$$
-The $cref ldlt_eigen$$ class is an
-$cref/implementation detail/ldlt_eigen/Private/$$ and not part of the
+Private
+*******
+The :ref:`ldlt_eigen-name` class is an
+:ref:`implementation detail<ldlt_eigen@Private>` and not part of the
 CppAD Mixed user API.
 
-$head Purpose$$
+Purpose
+*******
 This function solves the linear equation
-$latex H x = b$$ where the positive definite matrix
-$latex H = P^T L D L^T P$$,
-$latex b$$ is a known column vector,
-and $latex x$$ is unknown.
+:math:`H x = b` where the positive definite matrix
+:math:`H = P^T L D L^T P`,
+:math:`b` is a known column vector,
+and :math:`x` is unknown.
 
-$head L$$
+L
+*
 is a lower triangular matrix with ones on the diagonal.
 
-$head D$$
+D
+*
 is a diagonal matrix.
 
-$head P$$
+P
+*
 is a permutation matrix.
 
-$head b$$
+b
+*
 is the right hand side column vector in the equation.
 
-$head x$$
+x
+*
 is the column vector that solves the equation.
 
-$head Example$$
-The file $cref/ldlt_eigen.cpp/ldlt_eigen.cpp/solve_LDLT/$$ contains an
+Example
+*******
+The file :ref:`ldlt_eigen.cpp<ldlt_eigen.cpp@solve_LDLT>` contains an
 example and test that uses this function.
 
-$end
+{xrst_end ldlt_eigen_solve_LDLT}
 */
 // BEGIN_PROTOTYPE_SOLVE_LDLT
 template <typename Double>

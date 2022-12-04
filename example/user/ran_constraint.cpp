@@ -3,36 +3,26 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin ran_constraint.cpp$$
-$spell
-   CppAD
-   cppad
-   hes
-   eval
-   interp
-   xam
-$$
+{xrst_begin ran_constraint.cpp}
 
-$section Constraints On Random Effects: Example and Test$$
+Constraints On Random Effects: Example and Test
+###############################################
 
 This example demonstrates
-$cref/random constraints/problem/Maximum Likelihood/Random Constraints/$$.
+:ref:`problem@Maximum Likelihood@Random Constraints` .
 To be specific, it demonstrates a case where the constraints ensure
 that the sum of the
-$cref/optional random effects
-   /problem
-   /Notation
-   /Optimal Random Effects, u^(theta)
-/$$
+:ref:`optional random effects<problem@Notation@Optimal Random Effects, u^(theta)>`
 is zero.
 In addition, for the same case without the constraint,
 the optimal random effects do not satisfy this condition.
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end ran_constraint.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

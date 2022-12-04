@@ -3,134 +3,152 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin undetermined$$
-$spell
-   const
-   Eigen
-   CppAD
+{xrst_begin undetermined}
+{xrst_spell
    cols
-   nr
    nc
+   nr
    tol
-$$
+}
 
-$section
 Express An Undetermined Linear System As Dependent and Independent Variables
-$$
+############################################################################
 
-$head Syntax$$
-$icode%rank% = CppAD::mixed::undetermined(%A%, %b%, %tol%, %D%, %I%, %C%, %e%)%$$
+Syntax
+******
+*rank* = ``CppAD::mixed::undetermined`` ( *A* , *b* , *tol* , *D* , *I* , *C* , *e* )
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN PROTOTYPE
+   // END PROTOTYPE
+}
 
-$head Private$$
+Private
+*******
 This function is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head Purpose$$
-We are give a matrix $latex A \in \B{R}^{m \times n}$$
-and a vector $latex b \in \B{R}^m$$,
-where $latex m < n$$ and $latex A$$ has rank $latex m$$.
+Purpose
+*******
+We are give a matrix :math:`A \in \B{R}^{m \times n}`
+and a vector :math:`b \in \B{R}^m`,
+where :math:`m < n` and :math:`A` has rank :math:`m`.
 Furthermore, we are interested in the linear constraint equation
-$latex \[
+
+.. math::
+
    A x = b
-\] $$
-A matrix $latex C \in \B{R}^{m \times (n - m)}$$
-and a vector $latex e \in \B{R}^m$$,
+
+A matrix :math:`C \in \B{R}^{m \times (n - m)}`
+and a vector :math:`e \in \B{R}^m`,
 such that the constraint is equivalent to
-$latex \[
+
+.. math::
+
    x_D = C x_I + e
-\] $$
-where $latex D$$ is a subset, of size $latex m$$,
-of the column indices and $latex I$$ is the complementary subset of the
+
+where :math:`D` is a subset, of size :math:`m`,
+of the column indices and :math:`I` is the complementary subset of the
 column indices.
 Note that one can use this equation to
-solve for the dependent  variables $latex x_D$$
-as a function of independent variables $latex x_I$$.
+solve for the dependent  variables :math:`x_D`
+as a function of independent variables :math:`x_I`.
 
-$head A$$
+A
+*
 It is assumed that the rank of
-$latex A$$ is equal to $icode%A%.rows()%$$.
+:math:`A` is equal to *A* . ``rows`` () .
 
-$subhead nr$$
-We use the notation $icode%nr% = %A%.rows()%$$; i.e.,
-the number of rows in $icode A$$.
-It is ok if $icode%nr% == 0%$$ no constraints in which case
-$icode D$$ is empty.
+nr
+==
+We use the notation *nr* = *A* . ``rows`` () ; i.e.,
+the number of rows in *A* .
+It is ok if *nr*  == 0 no constraints in which case
+*D* is empty.
 
-$subhead nc$$
-We use the notation $icode%nc% = %A%.cols()%$$; i.e.,
-the number of columns in $icode A$$.
+nc
+==
+We use the notation *nc* = *A* . ``cols`` () ; i.e.,
+the number of columns in *A* .
 
-$head b$$
-It is assumed that $icode%b%.rows() = %nr%$$
-(note that $icode%b%.cols() == 1%$$).
+b
+*
+It is assumed that *b* . ``rows`` () = *nr*
+(note that *b* . ``cols`` () == 1 ).
 
-$head tol$$
+tol
+***
 This is the tolerance, relative to one,
 used for detecting a rank deficient matrix.
-To be specific, $icode tol$$ times the maximum value in a row
+To be specific, *tol* times the maximum value in a row
 is considered a zero element for that row.
 
-$head D$$
-It is assumed that $icode%D%.rows() = %nr%$$
-(note that $icode%D%.cols() == 1%$$).
+D
+*
+It is assumed that *D* . ``rows`` () = *nr*
+(note that *D* . ``cols`` () == 1 ).
 The input value of its elements does not matter.
-If $icode%rank% == %nr%$$,
-upon return the vector $latex x_D$$ is
-$codei%
-   ( %x%[%D%[0]] , %x%[%D%[1]] , %...% , %x%[%D%[%nr%-1]] )^T
-%$$
+If *rank* == *nr* ,
+upon return the vector :math:`x_D` is
 
-$head I$$
-It is assumed that $icode%I%.rows() = %nc% - %nr%$$
-(note that $icode%I%.cols() == 1%$$).
+   ( *x* [ *D* [0]] , *x* [ *D* [1]] , ... , *x* [ *D* [ *nr* ``-1`` ]] )^ ``T``
+
+I
+*
+It is assumed that *I* . ``rows`` () = *nc* ``-`` *nr*
+(note that *I* . ``cols`` () == 1 ).
 The input value of its elements does not matter.
-If $icode%rank% == %nr%$$,
-upon return the vector $latex x_I$$ is
-$codei%
-   ( %x%[%I%[0]] , %x%[%I%[1]] , %...% , %x%[%I%[%nr%-%nc%-1]] )^T
-%$$
+If *rank* == *nr* ,
+upon return the vector :math:`x_I` is
+
+   ( *x* [ *I* [0]] , *x* [ *I* [1]] , ... , *x* [ *I* [ *nr* ``-`` *nc* ``-1`` ]] )^ ``T``
+
 Furthermore the union of the sets corresponding
-to $latex D$$ and $latex I$$ is $codei%{ 0 , %...% , %nc%-1 }%$$.
+to :math:`D` and :math:`I` is { 0 , ... , *nc* ``-1`` } .
 It follows that the sets do not intersect and none of the elements are
-repeated in the vectors $icode D$$ or $icode I$$.
+repeated in the vectors *D* or *I* .
 
-$head C$$
-It is assumed that $icode%C%.rows() == %nr%$$ and
-$icode%C%.cols() == %nc% - %nr%$$.
+C
+*
+It is assumed that *C* . ``rows`` () == *nr* and
+*C* . ``cols`` () == *nc* ``-`` *nr* .
 The input value of its elements does not matter.
-If $icode%rank% == %nr%$$,
-upon return it is the matrix $latex C$$ in $latex x_D = C x_I + e$$.
+If *rank* == *nr* ,
+upon return it is the matrix :math:`C` in :math:`x_D = C x_I + e`.
 
-$head e$$
-It is assumed that $icode%e%.rows() == %nr%$$
-(note that $icode%e%.cols() == 1%$$).
+e
+*
+It is assumed that *e* . ``rows`` () == *nr*
+(note that *e* . ``cols`` () == 1 ).
 The input value of its elements does not matter.
-If $icode%rank% == %nr%$$,
-upon return it is the vector $latex e$$ in $latex x_D = C x_I + e$$.
+If *rank* == *nr* ,
+upon return it is the vector :math:`e` in :math:`x_D = C x_I + e`.
 
-$head rank$$
+rank
+****
 The return value has prototype
-$codei%
-   size_t %rank%
-%$$
+
+   ``size_t`` *rank*
+
 and it is the rank of the matrix to tolerance
-$cref/tol/undetermined/tol/$$.
+:ref:`undetermined@tol` .
+{xrst_toc_hidden
+   example/private/undetermined.cpp
+}
 
-$children%example/private/undetermined.cpp
-%$$
+Example
+*******
+The file :ref:`undetermined.cpp-name` is an example
+and test of ``undetermined`` .
 
-$head Example$$
-The file $cref undetermined.cpp$$ is an example
-and test of $code undetermined$$.
-
-$head 2DO$$
+2DO
+***
 This routine uses dense matrices, perhaps it would be useful
-to convert this (and $cref sample_fixed$$) to all sparse matrices.
+to convert this (and :ref:`sample_fixed-name` ) to all sparse matrices.
 
-$end
+{xrst_end undetermined}
 ------------------------------------------------------------------------------
 */
 

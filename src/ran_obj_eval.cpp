@@ -6,93 +6,82 @@
 # include <cppad/mixed/exception.hpp>
 
 /*
-$begin ran_obj_eval$$
-$spell
-   ldlt
-   hes
-   CppAD
-   ran_obj
-   cppad
-   obj
-   eval
-   vec
-   const
-   Cpp
-   cholesky
-$$
+{xrst_begin ran_obj_eval}
 
-$section Evaluate Laplace Approximation and Laplace Objective$$
+Evaluate Laplace Approximation and Laplace Objective
+####################################################
 
-$head Syntax$$
-$icode%h% = %mixed_object%.ran_obj_eval(%fixed_vec%, %random_vec%)%$$
+Syntax
+******
+*h* = *mixed_object* . ``ran_obj_eval`` ( *fixed_vec* , *random_vec* )
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
 
-$head Purpose$$
+Purpose
+*******
 This routine evaluates the Laplace approximation
-$cref/h(theta, u)
-   /theory
-   /Objective
-   /Laplace Approximation, h(theta, u)
-/$$.
+:ref:`h(theta, u)<theory@Objective@Laplace Approximation, h(theta, u)>` .
 Note that if the random effects are optimal,
 then the Laplace approximation is equal to the Laplace objective.
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head ldlt_ran_hes_$$
+ldlt_ran_hes\_
+**************
 It is assumed that the member variable
-$codei%
-   CPPAD_MIXED_LDLT_CLASS ldlt_ran_hes_
-%$$
-was updated using $cref update_factor$$ for the specified values of the
+
+   ``CPPAD_MIXED_LDLT_CLASS ldlt_ran_hes_``
+
+was updated using :ref:`update_factor-name` for the specified values of the
 fixed and random effects.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_vec%
-%$$
-It specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$ at which $latex h( \theta , u)$$ is evaluated.
 
-$head random_vec$$
-This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_vec%
-%$$
+   ``const CppAD::vector<double>&`` *fixed_vec*
+
 It specifies the value of the
-$cref/random effects/problem/Notation/Random Effects, u/$$
-vector $latex u$$ at which $latex h( \theta , u)$$ is evaluated.
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta` at which :math:`h( \theta , u)` is evaluated.
+
+random_vec
+**********
+This argument has prototype
+
+   ``const CppAD::vector<double>&`` *random_vec*
+
+It specifies the value of the
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector :math:`u` at which :math:`h( \theta , u)` is evaluated.
 Note that the Laplace approximation is equal to the Laplace objective when
-$latex u$$ is the
-$cref/optimal random effects
-   /theory
-   /Optimal Random Effects, u^(theta)
-/$$
-$latex \hat{u} ( \theta )$$.
+:math:`u` is the
+:ref:`optimal random effects<theory@Optimal Random Effects, u^(theta)>`
+:math:`\hat{u} ( \theta )`.
 
-$head h$$
+h
+*
 The return value has prototype
-$codei%
-   double %h%
-%$$
-and is the value of the Laplace approximation.
 
-$children%
+   ``double`` *h*
+
+and is the value of the Laplace approximation.
+{xrst_toc_hidden
    example/private/ran_obj_eval.cpp
-%$$
-$head Example$$
-The file $cref ran_obj_eval.cpp$$ contains an example
+}
+Example
+*******
+The file :ref:`ran_obj_eval.cpp-name` contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
-$end
+{xrst_end ran_obj_eval}
 */
 
 // ----------------------------------------------------------------------------

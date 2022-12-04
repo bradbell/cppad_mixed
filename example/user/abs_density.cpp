@@ -3,44 +3,44 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin abs_density.cpp$$
-$spell
-   CppAD
-   cppad
-   hes
-   eval
-   interp
-   xam
-$$
+{xrst_begin abs_density.cpp}
 
-$section Absolute Value In Log-Density: Example and Test$$.
+Absolute Value In Log-Density: Example and Test
+###############################################
 
-$head Model$$
-$latex \[
+Model
+*****
+
+.. math::
+
    \B{p}( z_i | \theta ) \sim \B{L} ( \theta_i , \sigma )
-\] $$
-where $latex \B{L} ( \mu , \sigma )$$ is the Laplace distribution
-with mean $latex \mu$$ and standard deviation $latex \sigma$$.
+
+where :math:`\B{L} ( \mu , \sigma )` is the Laplace distribution
+with mean :math:`\mu` and standard deviation :math:`\sigma`.
 The corresponding fixed likelihood
-$cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$
+:ref:`g(theta)<theory@Fixed Likelihood, g(theta)>`
 is
-$latex \[
-g( \theta ) = \sum_{i} \left[
-   \log ( \sigma \sqrt{2} )
-   +
-   \sqrt{2} \; \left| \frac{ z_i - \exp( \theta_i )}{\sigma} \right|
-\right]
-\] $$
-The optimal solution, with no constraints and no prior on $latex \theta$$ is
-$latex \[
+
+.. math::
+
+   g( \theta ) = \sum_{i} \left[
+      \log ( \sigma \sqrt{2} )
+      +
+      \sqrt{2} \; \left| \frac{ z_i - \exp( \theta_i )}{\sigma} \right|
+   \right]
+
+The optimal solution, with no constraints and no prior on :math:`\theta` is
+
+.. math::
+
    \hat{\theta}_i = \log( z_i )
-\] $$
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end abs_density.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

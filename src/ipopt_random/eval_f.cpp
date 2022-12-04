@@ -7,61 +7,65 @@
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-$begin ipopt_random_eval_f$$
-$spell
-   eval
-   obj
-   Ipopt
-   Taylor
-   vec
-   eval
-   Ipopt
-$$
+{xrst_begin ipopt_random_eval_f}
 
-$section Compute Value of Objective$$
+Compute Value of Objective
+##########################
 
-$head Syntax$$
-$icode%ok% = eval_f(%n%, %x%, %new_x%, %obj_value%)%$$
+Syntax
+******
+*ok* = ``eval_f`` ( *n* , *x* , *new_x* , *obj_value* )
 
-$head n$$
+n
+*
 is the number of variables in the problem (dimension of x).
 
-$head x$$
+x
+*
 is the value for the primal variables at which the objective
-f(x) is computed (has size $icode n$$).
+f(x) is computed (has size *n* ).
 
-$head new_x$$
+new_x
+*****
 if true, no Ipopt evaluation method was previous called with the same
-value for $icode x$$.
+value for *x* .
 
-$head obj_val$$
+obj_val
+*******
 set to the initial value of the objective function f(x).
 
-$head ok$$
+ok
+**
 if set to false, the optimization will treat this point like
 it was not feasible
 (the function could not be evaluated at this point).
 
-$head objective_current_$$
-After this call, $code objective_current_$$ will be the
-value of the objective corresponding to $icode x$$.
-Note that if $icode new_x$$ is false,
+objective_current\_
+*******************
+After this call, ``objective_current_`` will be the
+value of the objective corresponding to *x* .
+Note that if *new_x* is false,
 this value does not change.
 
-$head mixed_object_.ran_like_fun_$$
+mixed_object\_.ran_like_fun\_
+*****************************
 After this call, the zero order Taylor coefficients in this function
-will corresponding to the value of $icode fixed_vec_$$ and
-the random effects in $icode x$$.
+will corresponding to the value of *fixed_vec_* and
+the random effects in *x* .
 
-$head Prototype$$
-$srccode%cpp% */
+Prototype
+*********
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_random::eval_f(
    Index           n         ,  // in
    const Number*   x         ,  // in
    bool            new_x     ,  // in
    Number&         obj_value )  // out
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_random_eval_f}
 */
 {  try
    {  try_eval_f(n, x, new_x, obj_value);

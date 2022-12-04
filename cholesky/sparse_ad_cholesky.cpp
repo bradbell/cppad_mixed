@@ -21,54 +21,55 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // Public member functions
 // ============================================================================
 /*
-$begin sparse_ad_cholesky_initialize$$
-$spell
-   cholesky cholesky
-   CppAD
-   Alow
-   const
-   Eigen
-   Cholesky
-$$
+{xrst_begin sparse_ad_cholesky_initialize}
+{xrst_spell
+   alow
+}
 
-$section Initialize Sparse AD Cholesky Factorization$$
+Initialize Sparse AD Cholesky Factorization
+###########################################
 
-$head Syntax$$
-$icode%cholesky%(%ad_Alow%)%$$
+Syntax
+******
+*cholesky* ( *ad_Alow* )
 
-$head Public / Private$$
-This is a public member function of the class $code sparse_ad_cholesky$$.
+Public / Private
+****************
+This is a public member function of the class ``sparse_ad_cholesky`` .
 On the other hand, this class,
 and all of its members, are implementation details and not part of the
 CppAD Mixed user API.
 
-$head cholesky$$
+cholesky
+********
 This is object has prototype
-$codei%
-   sparse_ad_cholesky %cholesky%
-%$$
-and was created with the default constructor.
-The $code initialize$$ routine should be called once
-for each $icode cholesky$$ object.
 
-$head ad_Alow$$
+   ``sparse_ad_cholesky`` *cholesky*
+
+and was created with the default constructor.
+The ``initialize`` routine should be called once
+for each *cholesky* object.
+
+ad_Alow
+*******
 This matrix has prototype
-$codei%
-   const Eigen::SparseMatrix< CppAD::AD<double>, Eigen::ColMajor>& %ad_Alow%
-%$$
+
+   ``const Eigen::SparseMatrix< CppAD::AD<double>`` , ``Eigen::ColMajor>&`` *ad_Alow*
+
 and is the lower triangle of a positive definite matrix.
 Only positive definite matrices
-$cref/A/sparse_ad_cholesky/Notation/A/$$ with the same sparsity pattern
-can be factored using the $icode cholesky$$ object; i.e.,
+:ref:`sparse_ad_cholesky@Notation@A` with the same sparsity pattern
+can be factored using the *cholesky* object; i.e.,
 square matrices with the same column size and
 same set of possibly non-zero entries.
 
-$head Restriction$$
-The $code CppAD::AD<double>$$ tape cannot be recording when this
+Restriction
+***********
+The ``CppAD::AD<double>`` tape cannot be recording when this
 function is called and hence all such AD objects are parameters
 (not variables).
 
-$end
+{xrst_end sparse_ad_cholesky_initialize}
 */
 void sparse_ad_cholesky::initialize(const sparse_ad_matrix& ad_Alow)
 {  assert( ad_Alow.rows() == ad_Alow.cols() );
@@ -147,44 +148,50 @@ void sparse_ad_cholesky::initialize(const sparse_ad_matrix& ad_Alow)
    CppAD::index_sort(keys, L_row_major_);
 }
 /*
-$begin sparse_ad_cholesky_p$$
-$spell
-   Cholesky
-   CppAD
-$$
+{xrst_begin sparse_ad_cholesky_p}
 
-$section Using Sparse AD Cholesky Permutation P$$
+Using Sparse AD Cholesky Permutation P
+######################################
 
-$head Syntax$$
-$icode%P% = %cholesky%.permutation()%$$
+Syntax
+******
+*P* = *cholesky* . ``permutation`` ()
 
-$head Prototype$$
-$srcthisfile%4%// BEGIN PERMUTATION PROTOTYPE%// END PERMUTATION PROTOTYPE%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN PERMUTATION PROTOTYPE
+   // END PERMUTATION PROTOTYPE
+}
 
-$head Public / Private$$
-This is a public member function of the class $code sparse_ad_cholesky$$.
+Public / Private
+****************
+This is a public member function of the class ``sparse_ad_cholesky`` .
 On the other hand, this class,
 and all of its members, are implementation details and not part of the
 CppAD Mixed user API.
 
-$head cholesky$$
+cholesky
+********
 This is object has prototype
-$codei%
-   sparse_ad_cholesky %cholesky%
-%$$
-The $cref/initialize/sparse_ad_cholesky_initialize/$$ routine must be called
-before using $code permutation$$ for a $icode cholesky$$ object.
 
-$head P$$
+   ``sparse_ad_cholesky`` *cholesky*
+
+The :ref:`initialize<sparse_ad_cholesky_initialize-name>` routine must be called
+before using ``permutation`` for a *cholesky* object.
+
+P
+*
 The return value is the permutation matrix
-$cref/P/sparse_ad_cholesky/Notation/P/$$.
-The permutation corresponding to $icode cholesky$$ does not change.
+:ref:`sparse_ad_cholesky@Notation@P` .
+The permutation corresponding to *cholesky* does not change.
 
-$head Example$$
-The file $cref sparse_ad_chol_perm.cpp$$ is an example
+Example
+*******
+The file :ref:`sparse_ad_chol_perm.cpp-name` is an example
 and test using this operation.
 
-$end
+{xrst_end sparse_ad_cholesky_p}
 */
 // BEGIN PERMUTATION PROTOTYPE
 const Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic>&
@@ -193,53 +200,54 @@ sparse_ad_cholesky::permutation(void)
 {  return P_; }
 /*
 ------------------------------------------------------------------------------
-$begin sparse_ad_cholesky_eval$$
-$spell
-   Cholesky
-   Alow
-   CppAD
-   const
-   Eigen
-   eval
-$$
+{xrst_begin sparse_ad_cholesky_eval}
+{xrst_spell
+   alow
+}
 
-$section Using Sparse AD Cholesky Factor L$$
+Using Sparse AD Cholesky Factor L
+#################################
 
-$head Syntax$$
-$icode%cholesky%.eval(%ad_Alow%, %ad_L%)%$$
+Syntax
+******
+*cholesky* . ``eval`` ( *ad_Alow* , *ad_L* )
 
-$head Public / Private$$
-This is a public member function of the class $code sparse_ad_cholesky$$.
+Public / Private
+****************
+This is a public member function of the class ``sparse_ad_cholesky`` .
 On the other hand, this class,
 and all of its members, are implementation details and not part of the
 CppAD Mixed user API.
 
-$head ad_Alow$$
+ad_Alow
+*******
 This matrix has prototype
-$codei%
-   const Eigen::SparseMatrix< CppAD::AD<double>, Eigen::ColMajor>& %ad_Alow%
-%$$
+
+   ``const Eigen::SparseMatrix< CppAD::AD<double>`` , ``Eigen::ColMajor>&`` *ad_Alow*
+
 and is the lower triangle of a positive definite matrix
-$cref/A/sparse_ad_cholesky/Notation/A/$$.
+:ref:`sparse_ad_cholesky@Notation@A` .
 It must have the same sparsity pattern as
-$cref/ad_Alow/sparse_ad_cholesky_initialize/ad_Alow/$$ in the $icode cholesky$$
+:ref:`sparse_ad_cholesky_initialize@ad_Alow` in the *cholesky*
 initialization.
 
-$head ad_L$$
+ad_L
+****
 This matrix has prototype
-$codei%
-   Eigen::SparseMatrix< CppAD::AD<double>, Eigen::ColMajor>& %ad_L%
-%$$
+
+   ``Eigen::SparseMatrix< CppAD::AD<double>`` , ``Eigen::ColMajor>&`` *ad_L*
+
 The input value of its elements does not matter.
 Upon return, it is a lower triangular matrix
-$cref/L/sparse_ad_cholesky/Notation/L/$$ corresponding to the matrix $latex A$$
-specified by $icode ad_Alow$$.
+:ref:`sparse_ad_cholesky@Notation@L` corresponding to the matrix :math:`A`
+specified by *ad_Alow* .
 
-$head Example$$
-The file $cref sparse_ad_chol_eval.cpp$$ is an example
+Example
+*******
+The file :ref:`sparse_ad_chol_eval.cpp-name` is an example
 and test using this operation.
 
-$end
+{xrst_end sparse_ad_cholesky_eval}
 */
 void sparse_ad_cholesky::eval(
    const sparse_ad_matrix& ad_Alow  ,
@@ -280,57 +288,59 @@ void sparse_ad_cholesky::eval(
 private functions
 ==============================================================================
 
-$begin set_jac_sparsity$$
-$spell
-   Jacobian
-   jac
-   cholesky
-   CppAD
-   Alow
+{xrst_begin set_jac_sparsity}
+{xrst_spell
+   alow
    setvec
-$$
+}
 
-$section Set the Jacobian Sparsity Pattern$$
+Set the Jacobian Sparsity Pattern
+#################################
 
-$head Syntax$$
-$codei%set_jac_sparsity(%jac_sparsity%)%$$
+Syntax
+******
+``set_jac_sparsity`` ( *jac_sparsity* )
 
-$head Private$$
-This is a private member function of the class $code sparse_ad_cholesky$$.
+Private
+*******
+This is a private member function of the class ``sparse_ad_cholesky`` .
 In addition, this class,
 and all of its members, are implementation details and not part of the
 CppAD Mixed user API.
 
-$head jac_sparsity$$
+jac_sparsity
+************
 This argument has one of the following prototypes
-$codei%
-   CppAD::local::sparse::pack_setvec& %jac_sparsity%
-   CppAD::local::sparse::list_setvec& %jac_sparsity%
-%$$
+
+| |tab| ``CppAD::local::sparse::pack_setvec&`` *jac_sparsity*
+| |tab| ``CppAD::local::sparse::list_setvec&`` *jac_sparsity*
+
 Its input value does not matter.
 Upon return it contains the jacobian sparsity pattern for the mapping from
 the lower triangle of the symmetric matrix
-$cref/Alow/sparse_ad_cholesky_eval/ad_Alow/$$ to the Cholesky factor
-$cref/L/sparse_ad_cholesky_eval/ad_L/$$.
+:ref:`Alow<sparse_ad_cholesky_eval@ad_Alow>` to the Cholesky factor
+:ref:`L<sparse_ad_cholesky_eval@ad_L>` .
 
-$subhead n_set$$
-The number of sets $icode%jac_sparsity%.n_set()%$$ is equal
-to the number of elements in the Cholesky factor $latex L$$.
+n_set
+=====
+The number of sets *jac_sparsity* . ``n_set`` () is equal
+to the number of elements in the Cholesky factor :math:`L`.
 
-$subhead end$$
-The end for each set $icode%jac_sparsity%.end()%$$ is equal
+end
+===
+The end for each set *jac_sparsity* . ``end`` () is equal
 to the number of elements in the lower triangle of the symmetric
-matrix $latex A$$. The elements of the set are greater than or equal zero
+matrix :math:`A`. The elements of the set are greater than or equal zero
 and less than the end value.
 
-$subhead elements$$
-If $icode j$$ is an element of set $icode i$$,
-then the $th i$$ element of $latex L$$ depends on the
-$th j$$ element of the lower triangle of $latex A$$
+elements
+========
+If *j* is an element of set *i* ,
+then the *i*-th element of :math:`L` depends on the
+*j*-th element of the lower triangle of :math:`A`
 (using column major ordering).
 
-
-$end
+{xrst_end set_jac_sparsity}
 */
 template <class Sparsity>
 void sparse_ad_cholesky::set_jac_sparsity(Sparsity& jac_sparsity)
@@ -480,83 +490,87 @@ void sparse_ad_cholesky::set_jac_sparsity(Sparsity& jac_sparsity)
 }
 /*
 -----------------------------------------------------------------------------
-$begin set_hes_sparsity$$
-$spell
-   Jacobian
-   jac
-   cholesky
-   CppAD
-   Alow
-   const
-   bool
+{xrst_begin set_hes_sparsity}
+{xrst_spell
    nx
-   hes
    setvec
-$$
+}
 
-$section Set the Hessian Sparsity Pattern$$
+Set the Hessian Sparsity Pattern
+################################
 
-$head Syntax$$
-$codei%set_hes_sparsity(%s%, %hes_sparsity%)%$$
+Syntax
+******
+``set_hes_sparsity`` ( *s* , *hes_sparsity* )
 
-$head Purpose$$
-Compute the sparsity pattern for $latex S(x) L(x)$$ where
-$latex S(x)$$ is a row vector valued function and
-$latex L(x)$$ is the mapping from the lower triangle of
-$cref/A/sparse_ad_cholesky/Notation/A/$$ to the Cholesky factor
-$cref/L/sparse_ad_cholesky/Notation/L/$$.
+Purpose
+*******
+Compute the sparsity pattern for :math:`S(x) L(x)` where
+:math:`S(x)` is a row vector valued function and
+:math:`L(x)` is the mapping from the lower triangle of
+:ref:`sparse_ad_cholesky@Notation@A` to the Cholesky factor
+:ref:`sparse_ad_cholesky@Notation@L` .
 
-$head Private$$
-This is a private member function of the class $code sparse_ad_cholesky$$.
+Private
+*******
+This is a private member function of the class ``sparse_ad_cholesky`` .
 In addition, this class,
 and all of its members, are implementation details and not part of the
 CppAD Mixed user API.
 
-$head s$$
+s
+*
 This argument has prototype
-$codei%
-   const CppAD::vector<bool>& %s%
-%$$
-and its size is the number of elements in
-$cref/L/sparse_ad_cholesky/Notation/L/$$ ($icode ny$$).
-It is the sparsity pattern for $latex S(x)$$.
 
-$head jac_sparsity$$
+   ``const CppAD::vector<bool>&`` *s*
+
+and its size is the number of elements in
+:ref:`sparse_ad_cholesky@Notation@L` ( *ny* ).
+It is the sparsity pattern for :math:`S(x)`.
+
+jac_sparsity
+************
 This argument has one of the following prototypes
-$codei%
-   CppAD::local::sparse_list& %jac_sparsity%
-   pack_setvec& %jac_sparsity%
-%$$
-It is the Jacobian sparsity pattern for $latex L(x)$$ and is
+
+| |tab| ``CppAD::local::sparse_list&`` *jac_sparsity*
+| |tab| ``pack_setvec&`` *jac_sparsity*
+
+It is the Jacobian sparsity pattern for :math:`L(x)` and is
 effectively const.
 
-$head hes_sparsity$$
-This argument has the same type as $icode jac_sparsity$$.
+hes_sparsity
+************
+This argument has the same type as *jac_sparsity* .
 Its input value does not matter.
 Upon return it contains the Hessian sparsity pattern for
-$latex S(x) L(x)$$.
+:math:`S(x) L(x)`.
 
-$subhead n_set$$
-The number of sets $icode%hes_sparsity%.n_set()%$$ is equal
+n_set
+=====
+The number of sets *hes_sparsity* . ``n_set`` () is equal
 to the number of elements in the lower triangle of
-$cref/A/sparse_ad_cholesky/Notation/A/$$ ($icode nx$$).
+:ref:`sparse_ad_cholesky@Notation@A` ( *nx* ).
 
-$subhead end$$
-The end for each set $icode%hes_sparsity%.end()%$$ is equal
+end
+===
+The end for each set *hes_sparsity* . ``end`` () is equal
 to the number of elements in the lower triangle of the symmetric
-matrix $latex A$$ ($icode nx$$).
+matrix :math:`A` ( *nx* ).
 The elements of the set are greater than or equal zero
 and less than the end value.
 
-$subhead elements$$
-If $icode j$$ is an element of set $icode i$$,
-the $latex (i,j)$$ element of the Hessian
-$latex \[
+elements
+========
+If *j* is an element of set *i* ,
+the :math:`(i,j)` element of the Hessian
+
+.. math::
+
    \sum_k S_k (x) L_k^{(2)} (x)
-\]$$
+
 may be non-zero.
 
-$end
+{xrst_end set_hes_sparsity}
 */
 template <class Sparsity>
 void sparse_ad_cholesky::set_hes_sparsity(

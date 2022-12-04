@@ -6,64 +6,73 @@
 // ----------------------------------------------------------------------------
 
 /*
-$begin trace_struct$$
-$spell
-   Ipopt
-   CppAD
-   struct
+{xrst_begin trace_struct}
+{xrst_spell
    iter
-   obj
-   inf
-   pr
-   du
-   mu
-   lg
-   rg
    ls
-$$
+   pr
+   struct
+}
 
-$section Ipopt Trace Information$$
+Ipopt Trace Information
+#######################
 
-$head Syntax$$
-$codei%CppAD::mixed::trace_struct %trace%$$
+Syntax
+******
+``CppAD::mixed::trace_struct`` *trace*
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
 
-$head iter$$
-See ipopt trace $cref/iter/ipopt_trace/iter/$$.
+iter
+****
+See ipopt trace :ref:`ipopt_trace@iter` .
 
-$head obj_value$$
-See ipopt trace $cref/objective/ipopt_trace/objective/$$.
+obj_value
+*********
+See ipopt trace :ref:`ipopt_trace@objective` .
 
-$head inf_pr$$
-See ipopt trace $cref/inf_pr/ipopt_trace/inf_pr/$$.
+inf_pr
+******
+See ipopt trace :ref:`ipopt_trace@inf_pr` .
 
-$head inf_du$$
-See ipopt trace $cref/inf_du/ipopt_trace/inf_du/$$.
+inf_du
+******
+See ipopt trace :ref:`ipopt_trace@inf_du` .
 
-$head mu$$
-See ipopt trace $cref/lg(mu)/ipopt_trace/lg(mu)/$$.
+mu
+**
+See ipopt trace :ref:`ipopt_trace@lg(mu)` .
 
-$head d_norm$$
-See ipopt trace $cref/||d||/ipopt_trace/||d||/$$.
+d_norm
+******
+See ipopt trace :ref:`ipopt_trace@||d||` .
 
-$head regularization_size$$
-See ipopt trace $cref/lg(rg)/ipopt_trace/lg(rg)/$$.
+regularization_size
+*******************
+See ipopt trace :ref:`ipopt_trace@lg(rg)` .
 
-$head alpha_du$$
-See ipopt trace $cref/alpha_du/ipopt_trace/alpha_du/$$.
+alpha_du
+********
+See ipopt trace :ref:`ipopt_trace@alpha_du` .
 
-$head alpha_pr$$
-See ipopt trace $cref/alpha_pr/ipopt_trace/alpha_pr/$$.
+alpha_pr
+********
+See ipopt trace :ref:`ipopt_trace@alpha_pr` .
 
-$head ls_trials$$
-See ipopt trace $cref/ls/ipopt_trace/ls/$$.
+ls_trials
+*********
+See ipopt trace :ref:`ipopt_trace@ls` .
 
-$head restoration$$
+restoration
+***********
 Is ipopt currently in restoration mode.
 
-$end
+{xrst_end trace_struct}
 ------------------------------------------------------------------------------
 */
 namespace CppAD { namespace mixed {

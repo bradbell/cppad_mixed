@@ -6,66 +6,72 @@
 # define CPPAD_MIXED_SPARSE_LOW2SYM_HPP
 
 /*
-$begin sparse_low2sym$$
-$spell
-   Eigen
-   CppAD
-   const
+{xrst_begin sparse_low2sym}
+{xrst_spell
    cols
    sym
-$$
+}
 
-$section Convert an Eigen Lower Triangular Matrix To a Symmetric Matrix$$
+Convert an Eigen Lower Triangular Matrix To a Symmetric Matrix
+##############################################################
 
-$head Syntax$$
-$icode%symmetric% = %CppAD::mixed::sparse_low2sym(%lower%)%$$
+Syntax
+******
+*symmetric* = *CppAD::mixed::sparse_low2sym* ( ``lower`` )
 
-$head Private$$
+Private
+*******
 This routine is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head lower$$
+lower
+*****
 The argument has prototype
-$codei%
-   const Eigen::SparseMatrix<%Scalar%, %Options%, %Index%>& %lower%
-%$$
+
+   ``const Eigen::SparseMatrix<`` *Scalar* , *Options* , *Index* >& *lower*
+
 and has the same number of rows as columns; i.e.
-$codei%
-   %lower%.rows() == %lower.cols()
-%$$
+
+   ``lower`` . *rows* () == ``lower.cols`` ()
+
 This is a lower triangular sparse matrix; i.e.,
-for each entry in $icode lower$$ has a row index
+for each entry in *lower* has a row index
 that is greater than or equal its column index.
 
-$subhead Scalar$$
+Scalar
+======
 The scalar type fro this sparse matrix are arbitrary; i.e,
 has no restrictions.
 
-$subhead Options$$
+Options
+=======
 The options for this sparse matrix are arbitrary; i.e.,
 has no restrictions.
 
-$subhead Index$$
+Index
+=====
 The index type fro this sparse matrix are arbitrary; i.e.,
 has no restrictions.
 
-$head symmetric$$
+symmetric
+*********
 The return value has prototype
-$codei%
-   Eigen::SparseMatrix<%Scalar%, %Options%, %Index%> %symmetric%
-%$$
-Its lower triangle has the same entries as $icode lower$$
+
+   ``Eigen::SparseMatrix<`` *Scalar* , *Options* , *Index* > *symmetric*
+
+Its lower triangle has the same entries as *lower*
 and it is a symmetric matrix; i.e.,
 the entries above the diagonal have been set using the corresponding
 entry below the diagonal.
+{xrst_toc_hidden
+   example/private/sparse_low2sym.cpp
+}
+Example
+*******
+The file :ref:`sparse_low2sym.cpp-name` is an example
+and test of ``sparse_low2sym`` .
 
-$children%example/private/sparse_low2sym.cpp
-%$$
-$head Example$$
-The file $cref sparse_low2sym.cpp$$ is an example
-and test of $code sparse_low2sym$$.
-
-$end
+{xrst_end sparse_low2sym}
 */
 # include <Eigen/SparseCore>
 

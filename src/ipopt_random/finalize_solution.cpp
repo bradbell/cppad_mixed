@@ -6,110 +6,134 @@
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-$begin ipopt_random_finalize_solution$$
-$spell
-   obj
-   ip
+{xrst_begin ipopt_random_finalize_solution}
+{xrst_spell
    cq
-   CppAD
-   solution solution
-   Ipopt
-   namespace
    infeasibility
-   doesn't
-   Inf
+   infeasible
+   iterates
+   namespace
    naninf
-$$
+   solution solution
+   unrecoverable
+}
 
-$section Get Solution Results$$
+Get Solution Results
+####################
 
-$head Syntax$$
-$codei%finalize_solution(
-   %status%, %n%, %x%, %z_L%, %z_U%, %m%, %g%,%$$
-$icode%lambda%, %obj_value%, %ip_data%, %ip_cq%
-)%$$
+Syntax
+******
 
-$head solution_$$
+| ``finalize_solution`` (
+| |tab| *status* , *n* , *x* , *z_L* , *z_U* , *m* , *g* , *lambda* , *obj_value* , *ip_data* , *ip_cq*
+| )
+
+solution\_
+**********
 This routine checks the solution values and sets the member variable
-$codei%
-   CppAD::mixed fixed_solution solution_
-%$$.
 
-$head n$$
+   ``CppAD::mixed fixed_solution solution_``
+
+.
+
+n
+*
 is the number of variables in the problem (dimension of x).
 
-$head x$$
+x
+*
 is the final value (best value found) for the primal variables
-(has size $icode n$$).
+(has size *n* ).
 
-$head z_L$$
-is the final value for the $icode x$$ lower bound constraint multipliers
-(has size $icode n$$).
+z_L
+***
+is the final value for the *x* lower bound constraint multipliers
+(has size *n* ).
 
-$head z_U$$
-is the final value for the $icode x$$ upper bound constraint multipliers
-(has size $icode n$$).
+z_U
+***
+is the final value for the *x* upper bound constraint multipliers
+(has size *n* ).
 
-$head m$$
+m
+*
 is the number of constraints in the problem (dimension of g(x)).
 
-$head lambda$$
-is the final value for the g(x) constraint multipliers $latex \lambda$$.
+lambda
+******
+is the final value for the g(x) constraint multipliers :math:`\lambda`.
 
-$head obj_value$$
-is the value of the objective f(x) at the final $icode x$$ value.
+obj_value
+*********
+is the value of the objective f(x) at the final *x* value.
 
-$head ip_data$$
+ip_data
+*******
 Unspecified; i.e., not part of the Ipopt user API.
 
-$head ip_cq$$
+ip_cq
+*****
 Unspecified; i.e., not part of the Ipopt user API.
 
-$head status$$
-These status values are in the $code Ipopt$$ namespace; e.g.,
-$code SUCCESS$$ is short for $code Ipopt::SUCCESS$$:
+status
+******
+These status values are in the ``Ipopt`` namespace; e.g.,
+``SUCCESS`` is short for ``Ipopt::SUCCESS`` :
 
-$subhead SUCCESS$$
+SUCCESS
+=======
 Algorithm terminated successfully at a locally optimal point,
 satisfying the convergence tolerances (can be specified by options).
 
-$subhead MAXITER_EXCEEDED$$
+MAXITER_EXCEEDED
+================
 Maximum number of iterations exceeded (can be specified by an option).
 
-$subhead CPUTIME_EXCEEDED$$
+CPUTIME_EXCEEDED
+================
 Maximum number of CPU seconds exceeded (can be specified by an option).
 
-$subhead STOP_AT_TINY_STEP$$
+STOP_AT_TINY_STEP
+=================
 Algorithm proceeds with very little progress.
 
-$subhead STOP_AT_ACCEPTABLE_POINT$$
+STOP_AT_ACCEPTABLE_POINT
+========================
 Algorithm stopped at a point that was converged, not to desired
 tolerances, but to acceptable tolerances (see the acceptable-... options).
 
-$subhead LOCAL_INFEASIBILITY$$
+LOCAL_INFEASIBILITY
+===================
 Algorithm converged to a point of local infeasibility. Problem may be
 infeasible.
 
-$subhead USER_REQUESTED_STOP$$
+USER_REQUESTED_STOP
+===================
 A user call-back function returned false, i.e.,
 the user code requested a premature termination of the optimization.
 
-$subhead DIVERGING_ITERATES$$
+DIVERGING_ITERATES
+==================
 It seems that the iterates diverge.
 
-$subhead RESTORATION_FAILURE$$
+RESTORATION_FAILURE
+===================
 Restoration phase failed, algorithm doesn't know how to proceed.
 
-$subhead ERROR_IN_STEP_COMPUTATION$$
+ERROR_IN_STEP_COMPUTATION
+=========================
 An unrecoverable error occurred while Ipopt tried to compute
 the search direction.
 
-$subhead INVALID_NUMBER_DETECTED$$
+INVALID_NUMBER_DETECTED
+=======================
 Algorithm received an invalid number (such as NaN or Inf) from
 the NLP; see also option check_derivatives_for_naninf.
 
-$head Prototype$$
-$srccode%cpp% */
+Prototype
+*********
+{xrst_spell_off}
+{xrst_code cpp} */
 void ipopt_random::finalize_solution(
    Ipopt::SolverReturn               status    ,  // in
    Index                             n         ,  // in
@@ -122,8 +146,10 @@ void ipopt_random::finalize_solution(
    Number                            obj_value ,  // in
    const Ipopt::IpoptData*           ip_data   ,  // in
    Ipopt::IpoptCalculatedQuantities* ip_cq     )  // in
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_random_finalize_solution}
 */
 {  assert( size_t(n) == n_random_ );
    assert( m == 0 );

@@ -6,46 +6,48 @@
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-$begin ipopt_fixed_get_bounds_info$$
-$spell
-   CppAD
-   ran_obj
-   cppad
-   obj
-   ipopt
-   bool
-$$
+{xrst_begin ipopt_fixed_get_bounds_info}
 
-$section Return Optimization Bounds$$
+Return Optimization Bounds
+##########################
 
-$head Syntax$$
-$icode%ok% = get_bounds_info(%n%, %x_l%, %x_u%, %m%, %g_l%, %g_u%)%$$
+Syntax
+******
+*ok* = ``get_bounds_info`` ( *n* , *x_l* , *x_u* , *m* , *g_l* , *g_u* )
 
-$head n$$
+n
+*
 is the number of variables in the problem (dimension of x).
 
-$head x_l$$
-set to the lower bounds for $icode x$$ (has size $icode n$$).
+x_l
+***
+set to the lower bounds for *x* (has size *n* ).
 
-$head x_u$$
-set to the upper bounds for $icode x$$ (has size $icode n$$).
+x_u
+***
+set to the upper bounds for *x* (has size *n* ).
 
-$head m$$
+m
+*
 is the number of constraints in the problem (dimension of g(x)).
 
-$head g_l$$
-set to the lower bounds for $icode g(x)$$ (has size $icode m$$).
+g_l
+***
+set to the lower bounds for *g* ( *x* ) (has size *m* ).
 
-$head g_u$$
-set to the upper bounds for $icode g(x)$$ (has size $icode m$$).
+g_u
+***
+set to the upper bounds for *g* ( *x* ) (has size *m* ).
 
-$head ok$$
+ok
+**
 If set to false, the optimization will terminate with status set to
-$cref/USER_REQUESTED_STOP
-   /ipopt_fixed_finalize_solution/status/USER_REQUESTED_STOP/$$.
+:ref:`ipopt_fixed_finalize_solution@status@USER_REQUESTED_STOP` .
 
-$head Prototype$$
-$srccode%cpp% */
+Prototype
+*********
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_fixed::get_bounds_info(
       Index       n        ,   // in
       Number*     x_l      ,   // out
@@ -53,8 +55,10 @@ bool ipopt_fixed::get_bounds_info(
       Index       m        ,   // in
       Number*     g_l      ,   // out
       Number*     g_u      )   // out
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_fixed_get_bounds_info}
 */
 {  assert( adaptive_called_ );
    double inf = std::numeric_limits<double>::infinity();

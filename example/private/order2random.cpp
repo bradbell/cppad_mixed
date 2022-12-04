@@ -3,27 +3,22 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin order2random.cpp$$
-$spell
-   CppAD
-   cppad
-   hes
-   interp
-   xam
-$$
+{xrst_begin order2random.cpp}
 
-$section order2random: Example and Test$$
+order2random: Example and Test
+##############################
 
-
-$head Private$$
+Private
+*******
 This example is not part of the
-$cref/cppad_mixed public API/base_class/$$.
+:ref:`cppad_mixed public API<base_class-name>` .
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end order2random.cpp}
 */
 // BEGIN C++
 # include <cppad/mixed/cppad_mixed.hpp>

@@ -4,37 +4,48 @@
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
-# $OMhelpKeyCharacter=&
-# &begin capture_xam.sh&& &newlinech #&&
-# &spell
-#  capture_xam
-#  callgrind
-#  valgrind
-# &&
+# 
+# {xrst_begin capture_xam.sh} 
+# {xrst_spell
+#     callgrind
+#     massif
+#     valgrind
+# }
+# {xrst_comment_ch #}
 #
-# &section Example Using capture_xam&&
+# Example Using capture_xam
+# #########################
 #
-# &head Syntax&&
-# &codei%bin/capture_xam.sh %test2run%&&
+# Syntax
+# ******
+# ``bin/capture_xam.sh`` *test2run*
 #
-# &head test2run&&
+# test2run
+# ********
 # This argument must be one of the following:
 #
-# &subhead normal&&
-# This test will just run &cref/capture_xam/capture_xam.cpp/&&.
+# normal
+# ======
+# This test will just run :ref:`capture_xam<capture_xam.cpp-name>` .
 #
-# &subhead callgrind&&
-# This test will run &code capture_xam&& with
-# &code valgrind --tool=callgrind&&. This tool does execution profiling.
+# callgrind
+# =========
+# This test will run ``capture_xam`` with
+# ``valgrind --tool=callgrind`` . This tool does execution profiling.
 #
-# &subhead massif&&
-# This test will run &code capture_xam&& with
-# &code valgrind --tool=massif&&. This tool does memory profiling.
+# massif
+# ======
+# This test will run ``capture_xam`` with
+# ``valgrind --tool=massif`` . This tool does memory profiling.
 #
-# &subhead Source Code&&
-# &srcthisfile%0%# BEGIN SH%# END SH%1%&&
+# Source Code
+# ===========
+# {xrst_literal
+#     BEGIN SH
+#     END SH
+# }
 #
-# &end
+# {xrst_end capture_xam.sh}
 # ----------------------------------------------------------------------------
 # BEGIN SH
 random_seed='123'

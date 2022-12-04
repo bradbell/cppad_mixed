@@ -3,86 +3,87 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin manage_gsl_rng$$
-$spell
-   CppAD
-   std
-   gsl
-   rng
-   cppad
+{xrst_begin manage_gsl_rng}
+{xrst_spell
    hpp
-$$
+   rng
+}
 
-$section Set, Get, And Free A GSL Random Number Generator$$
+Set, Get, And Free A GSL Random Number Generator
+################################################
 
-$head Syntax$$
-$codei%# include <cppad/mixed/manage_gsl_rng.hpp>
-%$$
-$icode%s_out% = CppAD::mixed::new_gsl_rng(%s_in%)
-%$$
-$icode%rng% = CppAD::mixed::get_gsl_rng()
-%$$
-$codei%CppAD::mixed::free_gsl_rng()
-%$$
+Syntax
+******
 
-$head Purpose$$
+| # ``include <cppad/mixed/manage_gsl_rng.hpp>``
+| *s_out* = ``CppAD::mixed::new_gsl_rng`` ( *s_in* )
+| *rng* = ``CppAD::mixed::get_gsl_rng`` ()
+| ``CppAD::mixed::free_gsl_rng`` ()
+
+Purpose
+*******
 Create and use a GSL random number generator.
 
-$head new_gsl_rng$$
+new_gsl_rng
+***********
 This routine creates a new GSL random number generator.
 If a previous random number generator was created, it must
-be freed using $code free_gsl_rng$$ before $code new_gsl_rng$$
+be freed using ``free_gsl_rng`` before ``new_gsl_rng``
 can be called again.
 
-$subhead s_in$$
+s_in
+====
 This argument has prototype
-$codei%
-   size_t %s_in%
-%$$
-If $icode%s_in% != 0%$$,
+
+   ``size_t`` *s_in*
+
+If *s_in*  != 0 ,
 it is used as a seed for the random number generator.
 Otherwise the actual seed is the number of seconds returned by
-$code std::time$$ plus the number of previous calls to $code set_gsl_rng$$.
+``std::time`` plus the number of previous calls to ``set_gsl_rng`` .
 (Adding the number of calls prevents the same
 seed from being used by calls that are close together in time.)
 
-$subhead s_out$$
+s_out
+=====
 This return value prototype
-$codei%
-   size_t %s_out%
-%$$
+
+   ``size_t`` *s_out*
+
 and is the actual seed that was used to initialize the random number generator.
 
-$head get_gsl_rng$$
+get_gsl_rng
+***********
 If we are between a call to
-$code new_gsl_rng$$ and $code free_gsl_rng$$,
+``new_gsl_rng`` and ``free_gsl_rng`` ,
 this routine retrieves a pointer to the current
 GSL random number generator.
 Otherwise it returns the null pointer.
 
-$subhead rng$$
-The return value $icode rng$$ has prototype
-$codei%
-   gsl_rng* %rng%
-%$$
+rng
+===
+The return value *rng* has prototype
 
-$head free_gsl_rng$$
-Once you are done with a generator created by $code new_gsl_rng$$,
+   ``gsl_rng`` * *rng*
+
+free_gsl_rng
+************
+Once you are done with a generator created by ``new_gsl_rng`` ,
 you should free the corresponding memory using
-$codei%
-   gsl_rng_free()
-%$$.
 
+   ``gsl_rng_free`` ()
 
-$children%
+.
+{xrst_toc_hidden
    example/user/manage_gsl_rng.cpp
-%$$
-$head Example$$
-The file $cref manage_gsl_rng.cpp$$ contains an example and test of
-$code manage_gsl_rng$$.  It returns $code true$$, if the test passes,
-and $code false$$ otherwise.
+}
+Example
+*******
+The file :ref:`manage_gsl_rng.cpp-name` contains an example and test of
+``manage_gsl_rng`` .  It returns ``true`` , if the test passes,
+and ``false`` otherwise.
 
-$end
+{xrst_end manage_gsl_rng}
 -----------------------------------------------------------------------------
 */
 # include <gsl/gsl_rng.h>

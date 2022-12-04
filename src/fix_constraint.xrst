@@ -1,0 +1,66 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
+# SPDX-FileContributor: 2014-22 Bradley M. Bell
+# ----------------------------------------------------------------------------
+{xrst_begin fix_constraint}
+
+User Defined Fixed Effects Constraint Function
+##############################################
+
+Syntax
+******
+*vec* = *mixed_object* . ``fix_constraint`` ( *fixed_vec* )
+
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
+to denote an object of a class that is
+derived from the ``cppad_mixed`` base class.
+
+a1_double
+*********
+see :ref:`typedef@Scalar Types@a1_double` .
+
+Virtual Function
+****************
+The following virtual function may be implemented in the derived class:
+
+| |tab| ``virtual CppAD::vector<a1_double> fix_constraint`` (
+| |tab| |tab| ``const CppAD::vector<a1_double>&`` *fixed_vec*
+| |tab| )
+
+fixed_vec
+*********
+This argument has prototype
+
+   ``const CppAD::vector<a1_double>&`` *fixed_vec*
+
+It contains a value for the
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>` vector.
+
+vec
+***
+This result has prototype
+
+   ``CppAD::vector<`` *a1_double* > *vec*
+
+It is the value of the
+:ref:`constraint function<problem@Maximum Likelihood@Fixed Constraints, c>`
+:math:`c( \theta)`
+
+Default
+=======
+The base class definition (default) for ``fix_constraint``
+returns an empty vector;
+i.e., *vec* . ``size`` () == 0 .
+In the case where there are no constraints of this form.
+{xrst_toc_hidden
+   example/user/fix_constraint.cpp
+}
+Example
+*******
+The file :ref:`fix_constraint.cpp-name` contains an example
+using constraints.
+It returns true, if the test passes, and false otherwise.
+
+{xrst_end fix_constraint}

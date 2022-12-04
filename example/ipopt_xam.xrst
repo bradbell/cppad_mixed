@@ -1,0 +1,113 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
+# SPDX-FileContributor: 2014-22 Bradley M. Bell
+# ----------------------------------------------------------------------------
+{xrst_begin ipopt_xam}
+{xrst_spell
+   eqnarray
+   ll
+   nowrap
+}
+
+Example Use of Ipopt
+####################
+
+Problem
+*******
+
+.. math::
+
+   \begin{array}{ll}
+      \R{minimize}
+      & \beta (x_0 - 2)^2 + \beta (x_1 - 4)^2 \; \R{w.r.t} \; x \in \B{R}^2
+      \\
+      \R{subject\; to} &  0 = x_0 + x_1 - 2
+      \\
+      & 0 \leq x_0 \leq 2
+      \\
+      & 0 \leq x_1 \leq 3
+   \end{array}
+
+Lagrangian
+**********
+For :math:`x \in \B{R}^2`,
+:math:`\lambda \in \B{R}`,
+:math:`L \in \B{R}_+^2`,
+:math:`U \in \B{R}_+^2`,
+the Lagrangian is
+
+.. math::
+
+   \beta ( x_0 - 2 )^2 + \beta ( x_1 - 3 )^2
+   +
+   \lambda_0 ( x_0 + x_1 - 2 )
+   +
+   U_0 ( x_0 - 2 ) - L_0 x_0
+   +
+   U_1 ( x_0 - 3 ) - L_1 x_1
+
+Stationary Conditions
+*********************
+
+.. math::
+   :nowrap:
+
+   \begin{eqnarray}
+   0 & = & 2 \beta ( x_0 - 2 ) + \lambda_0 - L_0 + U_0
+   \\
+   0 & = & 2 \beta ( x_1 - 3 ) + \lambda_0 - L_1 + U_1
+   \\
+   0 & = & x_0 + x_1 - 2
+   \end{eqnarray}
+
+Solution
+********
+If we assume the lower and upper constraints are no active at the solution
+we get :math:`L = 0`, :math:`U = 0`, and
+
+.. math::
+   :nowrap:
+
+   \begin{eqnarray}
+   0 & = & 2 \beta ( x_0 - 2 ) + \lambda_0
+   \\
+   0 & = & 2 \beta ( x_1 - 3 ) + \lambda_0
+   \\
+   0 & = & x_0 + x_1 - 2
+   \end{eqnarray}
+
+Replacing the second equation above by the first minus the second divided by
+:math:`2 \beta`, we obtain
+
+.. math::
+   :nowrap:
+
+   \begin{eqnarray}
+   0 & = & 2 \beta ( x_0 - 2 ) + \lambda_0
+   \\
+   0 & = & x_0 - x_1 + 1
+   \\
+   0 & = & x_0 + x_1 - 2
+   \end{eqnarray}
+
+It follows that the stationary conditions are satisfied when
+:math:`x_0 = 0.5`, :math:`x_1 = 1.5`, :math:`\lambda_0 = 3 \beta`,
+:math:`L = 0`, and :math:`U = 0`.
+Furthermore the bound constraints are satisfied; i.e.,
+
+.. math::
+
+   \begin{array}{c}
+      0 \leq x_0 \leq 2 \\
+      0 \leq x_1 \leq 3
+   \end{array}
+
+Since the problem is convex, this is the solution.
+
+Contents
+********
+{xrst_toc_table
+   example/ipopt_run.cpp
+}
+
+{xrst_end ipopt_xam}

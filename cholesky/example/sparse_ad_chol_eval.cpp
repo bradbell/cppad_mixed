@@ -6,33 +6,42 @@
 # include "../sparse_ad_cholesky.hpp"
 
 /*
-$begin sparse_ad_chol_eval.cpp$$
-$spell
-   Cholesky
-$$
+{xrst_begin sparse_ad_chol_eval.cpp}
+{xrst_spell
+   ccc
+}
 
-$section Sparse AD Cholesky Factorization: Example and Test$$
+Sparse AD Cholesky Factorization: Example and Test
+##################################################
 
-$head Problem$$
-We are given the function $latex A : \B{R}^3 \rightarrow \B{R}^{3 \times 3}$$
+Problem
+*******
+We are given the function :math:`A : \B{R}^3 \rightarrow \B{R}^{3 \times 3}`
 defined by
-$latex \[
+
+.. math::
+
    A(x) = \left( \begin{array}{ccc}
       x_0 & 0    & x_1  \\
       0   & x_1  & 0   \\
       x_1 & 0    & x_2
    \end{array} \right)
-\] $$
+
 The leading principal minors of this matrix are
-$latex x_0$$,
-$latex x_0 x_1$$,
-$latex x_0 x_1 x_2 - x_1 x_1 x_1$$,
-If all these minors are positive, the matrix $latex A(x)$$ is
+:math:`x_0`,
+:math:`x_0 x_1`,
+:math:`x_0 x_1 x_2 - x_1 x_1 x_1`,
+If all these minors are positive, the matrix :math:`A(x)` is
 positive definite.
 
-$head Source$$
-$srcthisfile%4%// BEGIN C++%// END C++%1%$$
-$end
+Source
+******
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end sparse_ad_chol_eval.cpp}
 */
 // BEGIN C++
 bool sparse_ad_chol_eval(void)

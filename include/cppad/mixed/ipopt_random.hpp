@@ -6,66 +6,70 @@
 # define CPPAD_MIXED_IPOPT_RANDOM_HPP
 
 /*
-$begin ipopt_random$$
-$spell
-   CppAD
-   ran_obj
-   cppad
-   obj
-   Ipopt
-   nlp
-   inf
+{xrst_begin ipopt_random}
+{xrst_spell
    hpp
-   std
-$$
+   nlp
+}
 
-$section Ipopt NLP Class Used to Optimize Random Effects$$
+Ipopt NLP Class Used to Optimize Random Effects
+###############################################
 
-$head Syntax$$
-$code # include <cppad/mixed/ipopt_random.hpp>$$
+Syntax
+******
+``# include <cppad/mixed/ipopt_random.hpp>``
 
-$head Private$$
+Private
+*******
 This class is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head get_error_message()$$
-This function returns a $code std::string$$ value that
+get_error_message()
+*******************
+This function returns a ``std::string`` value that
 corresponds to the most recent error message.
 If it is non-empty, there is no error.
 
-$head clear_error_message()$$
+clear_error_message()
+*********************
 This function sets the current error message to the empty string.
 
-$head nlp_lower_bound_inf()$$
-This member function returns the $code double$$ value used
+nlp_lower_bound_inf()
+*********************
+This member function returns the ``double`` value used
 for minus infinity as a lower bound.
 
-$head nlp_upper_bound_inf()$$
-This member function returns the $code double$$ value used
+nlp_upper_bound_inf()
+*********************
+This member function returns the ``double`` value used
 for plus infinity as an upper bound.
 
-$head solution()$$
+solution()
+**********
 This member function returns a
-$cref fixed_solution$$ object containing the
+:ref:`fixed_solution-name` object containing the
 optimal solution information.
 
-$head Default Destructor$$
+Default Destructor
+******************
 The default destructor is defined by this include file.
 
+Contents
+********
+{xrst_toc_table
+   src/ipopt_random/ctor.cpp
+   src/ipopt_random/get_nlp_info.cpp
+   src/ipopt_random/get_bounds_info.cpp
+   src/ipopt_random/get_starting_point.cpp
+   src/ipopt_random/eval_f.cpp
+   src/ipopt_random/eval_grad_f.cpp
+   src/ipopt_random/eval_g.cpp
+   src/ipopt_random/eval_jac_g.cpp
+   src/ipopt_random/eval_h.cpp
+   src/ipopt_random/finalize_solution.cpp
+}
 
-$childtable%src/ipopt_random/ctor.cpp
-   %src/ipopt_random/get_nlp_info.cpp
-   %src/ipopt_random/get_bounds_info.cpp
-   %src/ipopt_random/get_starting_point.cpp
-   %src/ipopt_random/eval_f.cpp
-   %src/ipopt_random/eval_grad_f.cpp
-   %src/ipopt_random/eval_g.cpp
-   %src/ipopt_random/eval_jac_g.cpp
-   %src/ipopt_random/eval_h.cpp
-   %src/ipopt_random/finalize_solution.cpp
-%$$
-
-$end
+{xrst_end ipopt_random}
 -----------------------------------------------------------------------------
 */
 # include <coin-or/IpTNLP.hpp>

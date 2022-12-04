@@ -6,57 +6,64 @@
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-$begin ipopt_random_eval_g$$
-$spell
-   eval
-   Ipopt
-   Taylor
-   vec
-$$
+{xrst_begin ipopt_random_eval_g}
 
-$section Compute Value of Constraint Functions$$
+Compute Value of Constraint Functions
+#####################################
 
-$head Syntax$$
-$icode%ok% = eval_g(%n%, %x%, %new_x%, %m%, %g%)%$$
+Syntax
+******
+*ok* = ``eval_g`` ( *n* , *x* , *new_x* , *m* , *g* )
 
-$head n$$
+n
+*
 is the number of variables in the problem (dimension of x).
 
-$head x$$
+x
+*
 is the value for the primal variables at which the constraints
-$latex g(x)$$ is computed (has size $icode n$$).
+:math:`g(x)` is computed (has size *n* ).
 
-$head new_x$$
+new_x
+*****
 if true, no Ipopt evaluation method was previous called with the same
-value for $icode x$$.
+value for *x* .
 
-$head m$$
+m
+*
 is the number of constraints in the problem (dimension of g(x)).
 
-$head g$$
-is set to the value for the constraint functions (has size $icode m$$).
+g
+*
+is set to the value for the constraint functions (has size *m* ).
 
-$head ok$$
+ok
+**
 if set to false, the optimization will treat this point like
 it was not feasible
 (the function could not be evaluated at this point).
 
-$head mixed_object_.ran_like_fun_$$
-if $icode new_x$$ is true,
+mixed_object\_.ran_like_fun\_
+*****************************
+if *new_x* is true,
 after this call, the zero order Taylor coefficients in this function
-will corresponding to the value of $icode fixed_vec_$$ and
-the random effects in $icode x$$.
+will corresponding to the value of *fixed_vec_* and
+the random effects in *x* .
 
-$head Prototype$$
-$srccode%cpp% */
+Prototype
+*********
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_random::eval_g(
    Index           n        ,  // in
    const Number*   x        ,  // in
    bool            new_x    ,  // in
    Index           m        ,  // in
    Number*         g        )  // out
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_random_eval_g}
 */
 {  assert( size_t(n) == n_random_ );
    assert( m == 0 );

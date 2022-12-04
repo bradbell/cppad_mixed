@@ -3,44 +3,49 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin cholmod_solve2_sim.cpp$$
-$spell
-   Cholmod
-   Cholesky
-   Xset
-   Bset
-   sys
-   Pt
-$$
+{xrst_begin cholmod_solve2_sim.cpp}
+{xrst_spell
+   ccc
+}
 
-$section Cholmod Posterior Simulations Using Sparse Hessian of Likelihood$$
+Cholmod Posterior Simulations Using Sparse Hessian of Likelihood
+################################################################
 
-$head Problem$$
-Suppose that $latex H$$ is a sparse positive definite matrix and
+Problem
+*******
+Suppose that :math:`H` is a sparse positive definite matrix and
 the factorization
-$latex \[
+
+.. math::
+
    L D L^\R{T} = P H P^\R{T}
-\] $$
-where $latex L$$ is lower triangular, $latex D$$ is diagonal,
-and $latex P$$ is a permutation matrix.
-Furthermore, we are given a vector $latex w$$ and wish to compute
-$latex \[
+
+where :math:`L` is lower triangular, :math:`D` is diagonal,
+and :math:`P` is a permutation matrix.
+Furthermore, we are given a vector :math:`w` and wish to compute
+
+.. math::
+
    v = P^\R{T} L^{-\R{T}} D^{-1/2} w
-\] $$
-See $cref/sparse observed information/theory/Sparse Observed Information/$$.
 
+See :ref:`theory@Sparse Observed Information` .
 
-$head Example$$
+Example
+*******
 Solve for this example
-$latex \[
+
+.. math::
+
    H = \left( \begin{array}{ccc}
       1 & 1 & 0 \\
       1 & 5 & 0 \\
       0 & 0 & 4
    \end{array} \right)
-\] $$
+
 The corresponding cholesky factorization is
-$latex \[
+
+.. math::
+
    L = \left( \begin{array}{ccc}
       1 & 0 & 0 \\
       2 & 1 & 0 \\
@@ -58,8 +63,9 @@ $latex \[
       0 & 1 & 0 \\
       0 & 0 & 1
    \end{array} \right)
-\] $$
-$latex \[
+
+.. math::
+
    L^{-1} = \left( \begin{array}{ccc}
       1  & 0 & 0 \\
       -2 & 1 & 0 \\
@@ -71,21 +77,25 @@ $latex \[
       0 & 1  & 0 \\
       0 & 0  & 1
    \end{array} \right)
-\] $$
+
 It follows that, for this example
-$latex \[
+
+.. math::
+
    v = L^{-\R{T}} ( w_0 , w_1 , w_2 / 2 )^\R{T}
-\] $$
-$latex \[
+
+.. math::
+
    v = ( w_0 - 2 w_1 , w_1 , w_2 / 2 )^\R{T}
-\] $$
 
-$head Source Code$$
-$code
-$srcthisfile%5%// BEGIN C++%// END C++%1%$$
-$$
+Source Code
+***********
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end cholmod_solve2_sim.cpp}
 */
 // BEGIN C++
 # include <cppad/mixed/include_cholmod.hpp>

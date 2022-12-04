@@ -7,105 +7,118 @@
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-$begin ipopt_random_eval_h$$
-$spell
-   eval
-   obj
-   nele
+{xrst_begin ipopt_random_eval_h}
+{xrst_spell
    hess
-   Ipopt
-   nnz
-   Teylor
-   vec
-   hes
-   Taylor
-$$
+   nele
+}
 
-$section Compute the Hessian of the Lagrangian$$
+Compute the Hessian of the Lagrangian
+#####################################
 
-$head Syntax$$
-$icode%ok% = eval_h(
-   %n%, %x%, %new_x%,%obj_factor%, %m%, %lambda%, %new_lambda%,%$$
-$icode%nele_hess%, %iRow%, %jCol%, %values%
-)%$$
+Syntax
+******
 
-$head Lagrangian$$
+| *ok* = ``eval_h`` (
+| |tab| *n* , *x* , *new_x* , *obj_factor* , *m* , *lambda* , *new_lambda* , *nele_hess* , *iRow* , *jCol* , *values*
+| )
+
+Lagrangian
+**********
 The Lagrangian is defined to be
-$latex \[
-   L(x) = \alpha f(x) + \sum_{i=0}^{m-1} \lambda_i g_i (x)
-\] $$
 
-$head mixed_object.quasi_fixed_$$
+.. math::
+
+   L(x) = \alpha f(x) + \sum_{i=0}^{m-1} \lambda_i g_i (x)
+
+mixed_object.quasi_fixed\_
+**************************
 It is assumed that this member variable is false.
 
-$head n$$
+n
+*
 is the number of variables in the problem (dimension of x).
 
-$head x$$
+x
+*
 is the value for the primal variables at which the
-Hessian of the Lagrangian is computed (has size $icode n$$).
+Hessian of the Lagrangian is computed (has size *n* ).
 
-$head new_x$$
+new_x
+*****
 if true, no Ipopt evaluation method was previous called with the same
-value for $icode x$$.
+value for *x* .
 
-$head obj_factor$$
-is the factor $latex \alpha$$ that multiplies the objective f(x)
+obj_factor
+**********
+is the factor :math:`\alpha` that multiplies the objective f(x)
 in the definition of the Lagrangian.
 
-$head m$$
+m
+*
 is the number of constraints in the problem (dimension of g(x)).
 
-$head lambda$$
-is the value of the constraint multipliers $latex \lambda$$
-at which the Hessian is to be evaluated (has size $icode m$$).
+lambda
+******
+is the value of the constraint multipliers :math:`\lambda`
+at which the Hessian is to be evaluated (has size *m* ).
 
-$head new_lambda$$
+new_lambda
+**********
 if true, no Ipopt evaluation method was previous called with the same
-value for $icode lambda$$.
+value for *lambda* .
 
-$head nele_hess$$
-is the number of non-zero elements in the Hessian $latex L_{x,x} (x)$$; i.e.,
+nele_hess
+*********
+is the number of non-zero elements in the Hessian :math:`L_{x,x} (x)`; i.e.,
 the same as
-$cref/nnz_h_lag/ipopt_random_get_nlp_info/nnz_h_lag/$$.
+:ref:`ipopt_random_get_nlp_info@nnz_h_lag` .
 
-$head iRow$$
-If $icode values$$ is $code NULL$$,
-$icode iRow$$ has size $icode nele_hess$$ and is set to the
+iRow
+****
+If *values* is ``NULL`` ,
+*iRow* has size *nele_hess* and is set to the
 row indices for the non-zero entries in the
-lower triangle of the Hessian $latex L_{x,x} (x)$$.
+lower triangle of the Hessian :math:`L_{x,x} (x)`.
 
-$head jCol$$
-If $icode values$$ is $code NULL$$,
-$icode jCol$$ has size $icode nele_hess$$ and is set to the
+jCol
+****
+If *values* is ``NULL`` ,
+*jCol* has size *nele_hess* and is set to the
 column indices for the non-zero entries in the
-lower triangle of the Hessian $latex L_{x,x} (x)$$.
+lower triangle of the Hessian :math:`L_{x,x} (x)`.
 
-$head values$$
-If $icode values$$ is not $code NULL$$,
-it has size $icode nele_hess$$ and $icode%values%[%k%]%$$
-is set to the value of element of the Hessian $latex L_{x,x} (x)$$
-with row index $icode%iRow%[%k%]%$$
-and column index $icode%jCol%[%k%]%$$.
+values
+******
+If *values* is not ``NULL`` ,
+it has size *nele_hess* and *values* [ *k* ]
+is set to the value of element of the Hessian :math:`L_{x,x} (x)`
+with row index *iRow* [ *k* ]
+and column index *jCol* [ *k* ] .
 
-$head ok$$
+ok
+**
 if set to false, the optimization will treat this point like
 it was not feasible
 (the function could not be evaluated at this point).
 
-$head mixed_object_.ran_like_fun_$$
-if $icode new_x$$ is true,
+mixed_object\_.ran_like_fun\_
+*****************************
+if *new_x* is true,
 after this call, the zero order Taylor coefficients in this function
-will corresponding to the value of $icode fixed_vec_$$ and
-the random effects in $icode x$$.
+will corresponding to the value of *fixed_vec_* and
+the random effects in *x* .
 
-$head mixed_object_.ran_hes_fun_$$
+mixed_object\_.ran_hes_fun\_
+****************************
 After this call, the zero order Taylor coefficients in this function
-will corresponding to the value of $icode fixed_vec_$$ and
-the random effects in $icode x$$.
+will corresponding to the value of *fixed_vec_* and
+the random effects in *x* .
 
-$head Prototype$$
-$srccode%cpp% */
+Prototype
+*********
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_random::eval_h(
    Index         n              ,  // in
    const Number* x              ,  // in
@@ -118,8 +131,10 @@ bool ipopt_random::eval_h(
    Index*        iRow           ,  // out
    Index*        jCol           ,  // out
    Number*       values         )  // out
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_random_eval_h}
 */
 {  try
    {  try_eval_h(

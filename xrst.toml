@@ -1,0 +1,52 @@
+[project_name]
+data = 'cppad_mixed'
+
+[directory]
+project_directory = '.'
+rst_directory     = 'build/rst'
+html_directory    = 'build/html'
+pdf_directory     = 'build/pdf'
+
+[root_file]
+default = 'dev.xrst'
+
+[preamble]
+rst_substitution = '''
+.. |space| unicode:: 0xA0
+.. |tab| replace:: |space| |space| |space|
+'''
+latex_macro = [
+   '\newcommand{\B}[1]{ {\bf #1} }' ,
+   '\newcommand{\R}[1]{ {\rm #1} }' ,
+   '\newcommand{\W}[1]{ \; #1 \; }'
+]
+
+[project_dictionary]
+data = [ '''
+   bool
+   cholesky
+   cholmod
+   cmake
+   const
+   cpp
+   cppad
+   eigen
+   factorization
+   gsl
+   hes
+   init
+   ipopt
+   jac
+   lagrangian
+   laplace
+   ldlt
+   obj
+   rc
+   rcv
+   sh
+   sparsity
+   std
+   th
+   vec
+   xam
+''' ]

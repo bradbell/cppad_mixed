@@ -1,0 +1,7 @@
+.gitignore
+batch_edit.sed
+bin/devel.sh
+include/cppad/mixed/sparseinv.hpp
+readme.md
+sphinx/preamble.rst
+sphinx/spelling

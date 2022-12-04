@@ -7,24 +7,28 @@
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-$begin ipopt_app_status$$
-$spell
-   Ipopt
+{xrst_begin ipopt_app_status}
+{xrst_spell
    str
-   CppAD
-$$
+}
 
-$section Map Ipopt Application Return Status to a String$$
+Map Ipopt Application Return Status to a String
+###############################################
 
-$head Syntax$$
-$icode%str% = CppAD::mixed::ipopt_app_status(%status%)
-%$$
+Syntax
+******
 
-$head Prototype$$
-$srccode%cpp% */
+   *str* = ``CppAD::mixed::ipopt_app_status`` ( *status* )
+
+Prototype
+*********
+{xrst_spell_off}
+{xrst_code cpp} */
 std::string ipopt_app_status( Ipopt::ApplicationReturnStatus status )
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_app_status}
 -----------------------------------------------------------------------------
 */
 {  std::string str;

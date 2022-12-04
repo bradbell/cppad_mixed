@@ -3,148 +3,159 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin data_mismatch.cpp$$
-$spell
-   CppAD
-   cppad
-   hes
-   eval
-   interp
-   xam
-$$
+{xrst_begin data_mismatch.cpp}
+{xrst_spell
+   eqnarray
+   nowrap
+}
 
-$section Random Effects Variance May Cause Data Mismatch$$
+Random Effects Variance May Cause Data Mismatch
+###############################################
 
-$head Model$$
-$latex \[
+Model
+*****
+
+.. math::
+
    \B{p}( z | \theta ) \sim \B{N} ( \theta , \sigma_z^2 )
-\] $$
-$latex \[
-   \B{p}( y | \theta ) \sim \B{N} [ \exp( u ) \theta , \sigma_y^2 ]
-\] $$
-$latex \[
-   \B{p}( u | \theta ) \sim \B{N} ( 0 , \sigma_u^2 )
-\] $$
-The fixed likelihood
-$cref/g(theta)/theory/Fixed Likelihood, g(theta)/$$
-is
-$latex \[
-g( \theta ) = \frac{1}{2} \left[
-   \log ( 2 \pi \sigma_z^2 ) + ( z - \theta )^2
-\right]
-\] $$
-The random likelihood
-$cref/f(theta, u)
-   /theory/
-   Random Likelihood, f(theta, u)
-/$$
-is
-$latex \[
-f(\theta , u ) = \frac{1}{2} \left[
-   \log ( 2 \pi \sigma_u^2 ) + u^2 / \sigma_u^2
-   +
-   \log ( 2 \pi \sigma_y^2 ) + [ y - \exp(u) \theta ]^2 / \sigma_y^2
-\right]
-\] $$
 
-$head Mismatch$$
-In the case where $latex y = z$$, one might expect the solution
-$latex \theta = z$$ and $latex u = 0$$ because
-all the data residuals are zero, $latex \B{p}(u | \theta )$$
-is maximal, and there is no prior for $latex \theta$$.
-This example demonstrates that $latex \theta = z$$ and $latex u = 0$$
+.. math::
+
+   \B{p}( y | \theta ) \sim \B{N} [ \exp( u ) \theta , \sigma_y^2 ]
+
+.. math::
+
+   \B{p}( u | \theta ) \sim \B{N} ( 0 , \sigma_u^2 )
+
+The fixed likelihood
+:ref:`g(theta)<theory@Fixed Likelihood, g(theta)>`
+is
+
+.. math::
+
+   g( \theta ) = \frac{1}{2} \left[
+      \log ( 2 \pi \sigma_z^2 ) + ( z - \theta )^2
+   \right]
+
+The random likelihood
+:ref:`f(theta, u)<theory@Random Likelihood, f(theta, u)>`
+is
+
+.. math::
+
+   f(\theta , u ) = \frac{1}{2} \left[
+      \log ( 2 \pi \sigma_u^2 ) + u^2 / \sigma_u^2
+      +
+      \log ( 2 \pi \sigma_y^2 ) + [ y - \exp(u) \theta ]^2 / \sigma_y^2
+   \right]
+
+Mismatch
+********
+In the case where :math:`y = z`, one might expect the solution
+:math:`\theta = z` and :math:`u = 0` because
+all the data residuals are zero, :math:`\B{p}(u | \theta )`
+is maximal, and there is no prior for :math:`\theta`.
+This example demonstrates that :math:`\theta = z` and :math:`u = 0`
 may not be optimal for the this case.
 To be specific it shows that the derivative of
-$cref/L(theta)/theory/Objective/Fixed Effects Objective, L(theta)/$$
+:ref:`L(theta)<theory@Objective@Fixed Effects Objective, L(theta)>`
 may be non-zero.
 
-$head Theory$$
-See the $tref theory$$ section for the
+Theory
+******
+See the :ref:`theory-title` section for the
 theory behind the calculations below:
 
-$head Derivatives$$
-$latex \[
-\begin{array}{rcl}
-g_\theta ( \theta )
-& = &
-( \theta - z ) \sigma_z^{-2}
-\\
-f_\theta ( \theta , u )
-& = &
-[ \exp(u) \theta - y ] \exp(u) \sigma_y^{-2}
-\\
-f_u ( \theta , u )
-& = &
-u / \sigma_u^2 + [ \exp(u) \theta - y ] \exp(u) \theta \sigma_y^{-2}
-\\
-f_{u,u} ( \theta , u )
-& = &
-\sigma_u^{-2}
-+
-[ 2 \exp(u) \theta - y ] \exp(u) \theta \sigma_y^{-2}
-\\
-f_{u,\theta} ( \theta , u )
-& = &
-[ 2 \exp(u) \theta - y ] \exp(u) \sigma_y^{-2}
-\\
-\hat{u}_\theta ( \theta )
-& = &
-- f_{u,\theta} [ \theta , \hat{u} ( \theta ) ]
-/
-f_{u,u} [ \theta , \hat{u} ( \theta ) ]
-\\
-f_{u,u,u} ( \theta , u )
-& = &
-[ 4 \exp(u) \theta - y ] \exp(u) \theta \sigma_y^{-2}
-\\
-f_{u,u,\theta} ( \theta , u )
-& = &
-[ 4 \exp(u) \theta - y ] \exp(u) \sigma_y^{-2}
-\end{array}
-\] $$
+Derivatives
+***********
 
-$head Objective$$
-$latex \[
-\begin{array}{rcl}
-h( \theta , u )
-& = &
-\frac{1}{2} \log f_{u,u} ( \theta , u )
-+
-f( \theta , u )
--
-\log( 2 \pi )
-\\
-h_\theta ( \theta , u )
-& = &
-\frac{1}{2} f_{u,u,\theta} ( \theta , u ) / f_{u,u} ( \theta , u )
-+
-f_\theta ( \theta , u )
-\\
-h_u ( \theta , u )
-& = &
-\frac{1}{2} f_{u,u,u} ( \theta , u ) / f_{u,u} ( \theta , u )
-+
-f_u ( \theta , u )
-\\
-L( \theta )
-& = &
-h [ \theta , \hat{u} ( \theta ) ] + g ( \theta )
-\\
-L_\theta ( \theta )
-& = &
-h_\theta [ \theta , \hat{u} ( \theta ) ]
-+
-h_u [ \theta , \hat{u} ( \theta ) ] \hat{u}_\theta ( \theta )
-+
-g_\theta ( \theta )
-\end{array}
-\] $$
+.. math::
+   :nowrap:
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+   \begin{eqnarray}
+   g_\theta ( \theta )
+   & = &
+   ( \theta - z ) \sigma_z^{-2}
+   \\
+   f_\theta ( \theta , u )
+   & = &
+   [ \exp(u) \theta - y ] \exp(u) \sigma_y^{-2}
+   \\
+   f_u ( \theta , u )
+   & = &
+   u / \sigma_u^2 + [ \exp(u) \theta - y ] \exp(u) \theta \sigma_y^{-2}
+   \\
+   f_{u,u} ( \theta , u )
+   & = &
+   \sigma_u^{-2}
+   +
+   [ 2 \exp(u) \theta - y ] \exp(u) \theta \sigma_y^{-2}
+   \\
+   f_{u,\theta} ( \theta , u )
+   & = &
+   [ 2 \exp(u) \theta - y ] \exp(u) \sigma_y^{-2}
+   \\
+   \hat{u}_\theta ( \theta )
+   & = &
+   - f_{u,\theta} [ \theta , \hat{u} ( \theta ) ]
+   /
+   f_{u,u} [ \theta , \hat{u} ( \theta ) ]
+   \\
+   f_{u,u,u} ( \theta , u )
+   & = &
+   [ 4 \exp(u) \theta - y ] \exp(u) \theta \sigma_y^{-2}
+   \\
+   f_{u,u,\theta} ( \theta , u )
+   & = &
+   [ 4 \exp(u) \theta - y ] \exp(u) \sigma_y^{-2}
+   \end{eqnarray}
 
-$end
+Objective
+*********
+
+.. math::
+   :nowrap:
+
+   \begin{eqnarray}
+   h( \theta , u )
+   & = &
+   \frac{1}{2} \log f_{u,u} ( \theta , u )
+   +
+   f( \theta , u )
+   -
+   \log( 2 \pi )
+   \\
+   h_\theta ( \theta , u )
+   & = &
+   \frac{1}{2} f_{u,u,\theta} ( \theta , u ) / f_{u,u} ( \theta , u )
+   +
+   f_\theta ( \theta , u )
+   \\
+   h_u ( \theta , u )
+   & = &
+   \frac{1}{2} f_{u,u,u} ( \theta , u ) / f_{u,u} ( \theta , u )
+   +
+   f_u ( \theta , u )
+   \\
+   L( \theta )
+   & = &
+   h [ \theta , \hat{u} ( \theta ) ] + g ( \theta )
+   \\
+   L_\theta ( \theta )
+   & = &
+   h_\theta [ \theta , \hat{u} ( \theta ) ]
+   +
+   h_u [ \theta , \hat{u} ( \theta ) ] \hat{u}_\theta ( \theta )
+   +
+   g_\theta ( \theta )
+   \end{eqnarray}
+
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end data_mismatch.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

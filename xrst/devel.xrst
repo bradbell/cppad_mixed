@@ -2,16 +2,17 @@
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
-$begin devel$$
-$spell
-   cppad
-$$
+{xrst_begin devel}
 
-$section The cppad_mixed Developer Documentation$$
+The cppad_mixed Developer Documentation
+#######################################
 
-$childtable%include/cppad/mixed/private_base_class.hpp
-   %omh/private_namespace.omh
-   %example/example.cpp
-%$$
+Contents
+********
+{xrst_toc_table
+   include/cppad/mixed/private_base_class.hpp
+   xrst/private_namespace.xrst
+   example/example.cpp
+}
 
-$end
+{xrst_end devel}

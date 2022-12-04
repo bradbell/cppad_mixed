@@ -6,27 +6,27 @@
 # define CPPAD_MIXED_IS_FINITE_VEC_HPP
 
 /*
-$begin is_finite_vec$$
-$spell
-   dev
-   CppAD
-   vec
-$$
+{xrst_begin is_finite_vec}
 
-$section Are All Elements of a Vector Finite$$
+Are All Elements of a Vector Finite
+###################################
 
-$head Syntax$$
-$icode%finite% = CppAD::mixed::is_finite_vec(%vec%)%$$
+Syntax
+******
+*finite* = ``CppAD::mixed::is_finite_vec`` ( *vec* )
 
-$head Prototype$$
-$srcthisfile%
-   0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1
-%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
 
-$head Vector$$
+Vector
+******
 Is a simple vector class.
 
-$end
+{xrst_end is_finite_vec}
 */
 
 // BEGIN_PROTOTYPE

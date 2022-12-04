@@ -20,45 +20,46 @@ double apx_derivative(
    return (info.f_plus - info.f_minus) /(x_plus - x_minus);
 }
 /*
-$begin ipopt_fixed_adapt_derivative_chk$$
-$spell
-   differenced
-   CppAD
-   cppad
-   Ipopt
-   eval
-   tol
-   bool
-   jac
-   std
+{xrst_begin ipopt_fixed_adapt_derivative_chk}
+{xrst_spell
+   approximations
    chk
-$$
+   differenced
+   multiplier
+   tol
+}
 
-$section Adaptive Step Size check of Derivative Calculations$$
+Adaptive Step Size check of Derivative Calculations
+###################################################
 
-$head Syntax$$
-$icode%ok% = adapt_derivative_chk(%trace%, %relative_tol%)%$$
+Syntax
+******
+*ok* = ``adapt_derivative_chk`` ( *trace* , *relative_tol* )
 
-$head warm_start_$$
-If $code warm_start_.x_info.size()$$ is non-zero,
+warm_start\_
+************
+If ``warm_start_.x_info.size()`` is non-zero,
 the derivatives are not checked and
-the warm start information is used to set $icode scale_f_$$,
-$icode scale_g_$$ and $icode scale_x_$$.
+the warm start information is used to set *scale_f_* ,
+*scale_g_* and *scale_x_* .
 
-$head trace$$
+trace
+*****
 If true, a trace of this computation is printed on standard output.
 
-$head relative_step$$
+relative_step
+*************
 For an unspecified set of relative step sizes between
-$code 1e-1$$ and $code 1e-10$$:
+``1e-1`` and ``1e-10`` :
 If the upper and lower bounds are finite,
 the step is relative to the upper minus the lower bound
-(for each component of $icode x$$).
+(for each component of *x* ).
 If the upper or lower bound is infinite,
 the step is the maximum of the relative step
-and the relative step times the absolute component of $icode x$$.
+and the relative step times the absolute component of *x* .
 
-$head relative_tol$$
+relative_tol
+************
 This is the relative tolerance for the difference between a finite difference
 approximation and the evaluated derivative.
 The absolute tolerance is the relative tolerance times the
@@ -69,12 +70,14 @@ In the case of the Hessian, for each column the absolute value of
 the diagonal element for that column is added to the sum before multiplying
 by the relative tolerance.
 
-$subhead infinity$$
-If $icode trace$$ is false and $icode relative_tol$$ is equal to
-$code std::numeric_limits<double>::infinity()$$,
+infinity
+========
+If *trace* is false and *relative_tol* is equal to
+``std::numeric_limits<double>::infinity()`` ,
 the finite difference approximations for the derivatives are not calculated.
 
-$head ok$$
+ok
+**
 If it is true, no function evaluation error occurred and
 all the differences between the finite difference approximation
 and the evaluated derivative are within the relative tolerance
@@ -82,61 +85,70 @@ and the evaluated derivative are within the relative tolerance
 Otherwise,
 at least one of the differences is not within the specified tolerance.
 
-$head error_message_$$
-Use $code clear_error_message()$$ to set this to the empty
-string before calling $code adapt_derivative_chk$$.
-(Note that it is empty after the $code ipopt_fixed$$ constructor is called.)
-If upon return, $code get_error_message()$$ is non-empty,
+error_message\_
+***************
+Use ``clear_error_message()`` to set this to the empty
+string before calling ``adapt_derivative_chk`` .
+(Note that it is empty after the ``ipopt_fixed`` constructor is called.)
+If upon return, ``get_error_message()`` is non-empty,
 a description of a function evaluation
 error that occurred during this routine.
 
-$head adaptive_called_$$
+adaptive_called\_
+*****************
 This member variable has prototype
-$codei%
-   bool adaptive_called_
-%$$
-It's value upon call must be $code false$$.
-It is set to true at the beginning of $code adapt_derivative_chk$$,
-before any other $code ipopt_fixed$$ routine is called.
 
-$head fixed_scale_$$
+   ``bool adaptive_called_``
+
+It's value upon call must be ``false`` .
+It is set to true at the beginning of ``adapt_derivative_chk`` ,
+before any other ``ipopt_fixed`` routine is called.
+
+fixed_scale\_
+*************
 This member variable has prototype
-$codei%
-   d_vector fixed_scale_
-%$$
+
+   ``d_vector fixed_scale_``
+
 and is size is equal to the number of fixed effects.
-It is used as the point where in the extended space $icode x$$
+It is used as the point where in the extended space *x*
 where the scaling and derivative testing is done.
 
-$head scale_f_$$
+scale_f\_
+*********
 This member variable has prototype
-$codei%
-   double scale_f_
-%$$
+
+   ``double scale_f_``
+
 and its input value does not matter.
-If $icode ok$$ is true, upon return $icode scale_f_$$
-is a scale factor of $latex f(x)$$; i.e., multiplier for f.
-Components of $latex x$$ for which the lower and upper limits are equal
-are not included in the scaling of $latex f(x)$$.
+If *ok* is true, upon return *scale_f_*
+is a scale factor of :math:`f(x)`; i.e., multiplier for f.
+Components of :math:`x` for which the lower and upper limits are equal
+are not included in the scaling of :math:`f(x)`.
 
-$head scale_g_$$
+scale_g\_
+*********
 This member variable has prototype
-$codei%
-   d_vector scale_g_
-%$$
-and its input size is zero.
-If $icode ok$$ is true, upon return $icode scale_g_$$
-has size equal to range for $latex g(x)$$; i.e., $icode m$$.
-For each $latex i$$, $icode%scale_g_%[%i%]%$$ is scale factor for
-$latex g_i (x)$$.
-Components of $latex x$$ for which the lower and upper limits are equal
-are not included in the scaling of $latex f(x)$$.
 
-$head Prototype$$
-$srccode%cpp% */
+   ``d_vector scale_g_``
+
+and its input size is zero.
+If *ok* is true, upon return *scale_g_*
+has size equal to range for :math:`g(x)`; i.e., *m* .
+For each :math:`i`, *scale_g_* [ *i* ] is scale factor for
+:math:`g_i (x)`.
+Components of :math:`x` for which the lower and upper limits are equal
+are not included in the scaling of :math:`f(x)`.
+
+Prototype
+*********
+{xrst_spell_off}
+{xrst_code cpp} */
 bool ipopt_fixed::adapt_derivative_chk(bool trace, double relative_tol)
-/* %$$
-$end
+/* {xrst_code}
+{xrst_spell_on}
+
+{xrst_end ipopt_fixed_adapt_derivative_chk}
 */
 {  assert( error_message_ == "" );
    assert( adaptive_called_ == false );

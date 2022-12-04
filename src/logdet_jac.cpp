@@ -5,102 +5,101 @@
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/exception.hpp>
 /*
-$begin logdet_jac$$
-$spell
-   ldlt
-   Jacobian
-   jac
-   CppAD
-   cppad
-   hes
-   vec
-   const
-   Cpp
-   xam
+{xrst_begin logdet_jac}
+{xrst_spell
+   determinant
    logdet
-   cholesky
-$$
+}
 
-$section Jacobian of Log Determinant of Hessian w.r.t. Random Effects$$
+Jacobian of Log Determinant of Hessian w.r.t. Random Effects
+############################################################
 
-$head Syntax$$
-$icode%mixed_object%.logdet_jac(
-   %fixed_vec%, %random_vec%, %logdet_fix%, %logdet_ran%
-)%$$
+Syntax
+******
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+| *mixed_object* . ``logdet_jac`` (
+| |tab| *fixed_vec* , *random_vec* , *logdet_fix* , *logdet_ran*
+| )
 
-$head Purpose$$
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
+
+Purpose
+*******
 This routine computes the Jacobian of the log determinant
 of the Hessian of the random likelihood
-$cref/f(theta, u)
-   /theory/
-   Random Likelihood, f(theta, u)
-/$$
-with respect to the random effects vector $latex u$$.
+:ref:`f(theta, u)<theory@Random Likelihood, f(theta, u)>`
+with respect to the random effects vector :math:`u`.
 To be specific, it computes both
-$latex \[
+
+.. math::
+
    \partial_\theta \log \det [ f_{u,u} ( \theta, u ) ]
    \; \R{and} \;
    \partial_u \log \det [ f_{u,u} ( \theta, u ) ]
-\] $$
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head ldlt_ran_hes_$$
+ldlt_ran_hes\_
+**************
 It is assumed that the member variable
-$codei%
-   CPPAD_MIXED_LDLT ldlt_ran_hes_
-%$$
-was updated using $cref update_factor$$ for the specified values of the
+
+   ``CPPAD_MIXED_LDLT ldlt_ran_hes_``
+
+was updated using :ref:`update_factor-name` for the specified values of the
 fixed and random effects.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_vec%
-%$$
-and is the value of fixed effects $latex \theta$$.
 
-$head random_vec$$
-This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_vec%
-%$$
-and is the value of fixed effects $latex u$$.
+   ``const CppAD::vector<double>&`` *fixed_vec*
 
-$head logdet_fix$$
+and is the value of fixed effects :math:`\theta`.
+
+random_vec
+**********
 This argument has prototype
-$codei%
-   CppAD::vector<double>& %logdet_fix%
-%$$
-Its input size must be equal to $code n_fixed_$$.
+
+   ``const CppAD::vector<double>&`` *random_vec*
+
+and is the value of fixed effects :math:`u`.
+
+logdet_fix
+**********
+This argument has prototype
+
+   ``CppAD::vector<double>&`` *logdet_fix*
+
+Its input size must be equal to ``n_fixed_`` .
 Upon return, it contains the value of the derivative w.r.t
 the fixed effects.
-$codei%ran_hes_.col[%k%] - n_fixed_%$$ of the Hessian.
+``ran_hes_.col`` [ *k* ] ``- n_fixed_`` of the Hessian.
 
-$head logdet_ran$$
+logdet_ran
+**********
 This argument has prototype
-$codei%
-   CppAD::vector<double>& %logdet_ran%
-%$$
-Its input size must be equal to $code n_random_$$.
+
+   ``CppAD::vector<double>&`` *logdet_ran*
+
+Its input size must be equal to ``n_random_`` .
 Upon return, it contains the value of the derivative w.r.t
 the random effects.
-
-$children%
+{xrst_toc_hidden
    example/private/logdet_jac.cpp
-%$$
-$head Example$$
-The file $cref logdet_jac.cpp$$ contains an example
+}
+Example
+*******
+The file :ref:`logdet_jac.cpp-name` contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
-$end
+{xrst_end logdet_jac}
 */
 // ----------------------------------------------------------------------------
 void cppad_mixed::logdet_jac(

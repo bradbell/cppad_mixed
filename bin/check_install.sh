@@ -8,90 +8,123 @@ then
    echo 'bin/check_install.sh: must be executed from its parent directory'
    exit 1
 fi
-# $OMhelpKeyCharacter=&
-# &begin check_install.sh&& &newlinech #&&
-# &spell
-#  suitesparse cppad eigen xam cpp mkdir tmp cp sed isystem lcppad lgsl
-#  lblas fi bool std cout endl ipopt conig eval config
-#  lcholmod lamd lcamd lcolamd lccolamd lsuitesparseconfig
-#  cmake gsl cmd cmd grep libdir pkgconfig Wl rpath
-# &&
+# 
+# {xrst_begin check_install.sh} 
+# {xrst_spell
+#     cd
+#     cmd
+#     config
+#     cout
+#     cp
+#     endl
+#     grep
+#     isystem
+#     lamd
+#     lcamd
+#     lccolamd
+#     lcholmod
+#     lcolamd
+#     lcppad
+#     libdir
+#     libs
+#     lsuitesparseconfig
+#     mkdir
+#     pkg
+#     pkgconfig
+#     prefixes
+#     rpath
+#     suitesparse
+#     tmp
+#     wl
+# }
+# {xrst_comment_ch #}
 #
-# &section Example and Test Using the Installed Version of cppad_mixed&&
+# Example and Test Using the Installed Version of cppad_mixed
+# ###########################################################
 #
-# &head Syntax&&
-# &code bin/check_install.sh&&
+# Syntax
+# ******
+# ``bin/check_install.sh``
 #
-# &head build_type&&
-# Get the &cref/build_type/run_cmake.sh/build_type/&& used during the install:
-# &codep
+# build_type
+# **********
+# Get the :ref:`run_cmake.sh@build_type` used during the install:
+# {xrst_code sh}
 cmd=`grep '^build_type=' bin/run_cmake.sh`
 eval $cmd
-# &&
+# {xrst_code}
 #
-# &head Prefixes&&
-# Get the &cref/prefixes/run_cmake.sh/&& used during the install:
-# &codep
+# Prefixes
+# ********
+# Get the :ref:`prefixes<run_cmake.sh-name>` used during the install:
+# {xrst_code sh}
 cmd=`grep '^cmake_install_prefix=' bin/run_cmake.sh`
 eval $cmd
 eigen_prefix="$cmake_install_prefix/eigen"
 ipopt_prefix="$cmake_install_prefix"
-# &&
+# {xrst_code}
 #
-# &head cmake_libdir&&
-# Get the &cref/cmake_libdir/run_cmake.sh/cmake_libdir/&&
+# cmake_libdir
+# ************
+# Get the :ref:`run_cmake.sh@cmake_libdir`
 # used during the install:
-# &codep
+# {xrst_code sh}
 cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
 eval $cmd
-# &&
+# {xrst_code}
 #
-# &head example_file&&
+# example_file
+# ************
 # This is the user example that we will compile using
-# the installed version of &code cppad_mixed&&:
-# &codep
+# the installed version of ``cppad_mixed`` :
+# {xrst_code sh}
 example_file='example/user/no_random.cpp'
-# &&
+# {xrst_code}
 #
-# &head PKG_CONFIG_PATH&&
+# PKG_CONFIG_PATH
+# ***************
 # Set the path used by $code pkg-config$$:
-# &codep
+# {xrst_code sh}
 if [ "$PKG_CONFIG_PATH" == '' ]
 then
 export PKG_CONFIG_PATH="$ipopt_prefix/$cmake_libdir/pkgconfig"
 else
 export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$ipopt_prefix/$cmake_libdir/pkgconfig"
 fi
-# &&
+# {xrst_code}
 #
-# &head LD_LIBRARY_PATH&&
+# LD_LIBRARY_PATH
+# ***************
 # This setting is no longer required so test with it empty:
-# &codep
+# {xrst_code sh}
 export LD_LIBRARY_PATH=''
-# &&
+# {xrst_code}
 #
-# &head Create Temporary&&
+# Create Temporary
+# ****************
 # The following commands create a temporary directory,
 # copy the example file into it,
 # and make it the working directory:
-# &codep
+# {xrst_code sh}
 mkdir -p build/tmp
 cp $example_file build/tmp/example.cpp
 cd build/tmp
-# &&
+# {xrst_code}
 #
-# &head example_name&&
+# example_name
+# ************
 # The following command gets the example name, which is the example file
-# with the &code .cpp&& at the end replaced by &code _xam&&:
-# &codep
+# with the ``.cpp`` at the end replaced by ``_xam`` :
+# {xrst_code sh}
 example_name=`echo $example_file | sed -e 's|.*/||' -e 's|\.cpp|_xam|'`
-# &&
+# {xrst_code}
 #
-# &head main&&
+# main
+# ****
 # The following command creates a main program
-# (in the &code example.cpp&& file) that runs the example
-# and reports the result of its return &code bool&& value:
-# &codep
+# (in the ``example.cpp`` file) that runs the example
+# and reports the result of its return ``bool`` value:
+# {xrst_code sh}
 cat << EOF >> example.cpp
 int main(void)
 {  if( ! $example_name() )
@@ -102,35 +135,39 @@ int main(void)
    exit(0);
 }
 EOF
-# &&
+# {xrst_code}
 #
-# &head gsl_libs&&
+# gsl_libs
+# ********
 # The following command determines the library link flags necessary
-# to link &code ipopt&& on this system:
-# &codep
+# to link ``ipopt`` on this system:
+# {xrst_code sh}
 gsl_libs=`pkg-config --libs gsl`
-# &&
+# {xrst_code}
 #
-# &head ipopt_libs&&
+# ipopt_libs
+# **********
 # The following command determines the library link flags necessary
-# to link &code ipopt&& on this system:
-# &codep
+# to link ``ipopt`` on this system:
+# {xrst_code sh}
 ipopt_libs=`pkg-config --libs ipopt`
-# &&
+# {xrst_code}
 #
-# &head suitesparse_libs&&
+# suitesparse_libs
+# ****************
 # The following command sets the library link flags necessary
-# to link &code SuiteSparse&& on this system:
-# &codep
+# to link ``SuiteSparse`` on this system:
+# {xrst_code sh}
 suitesparse_libs='-lcholmod -lamd -lcamd -lcolamd -lccolamd -lsuitesparseconfig'
-# &&
+# {xrst_code}
 #
-# &head Compile and Link&&
+# Compile and Link
+# ****************
 # The command below compiles and links the example program.
-# Note that the &code eigen&& include files have installed in a
+# Note that the ``eigen`` include files have installed in a
 # different directory and treated like system files because
 # they otherwise generate lots of warnings.
-# &codep
+# {xrst_code sh}
 if [ "$build_type" == 'debug' ]
 then
    flags='-g -O0 -std=c++11 -Wall'
@@ -158,11 +195,12 @@ g++ example.cpp \
    $suitesparse_libs \
    $ipopt_libs \
    -o example
-# &&
+# {xrst_code}
 #
-# &head Run Example&&
+# Run Example
+# ***********
 # The following commands run the example:
-# &codep
+# {xrst_code sh}
 if ! ./example
 then
    echo 'check_install.sh: Error'
@@ -170,5 +208,6 @@ then
 fi
 echo 'check_install.sh: OK'
 exit 0
-# &&
-# &end
+# {xrst_code}
+#
+# {xrst_end check_install.sh}

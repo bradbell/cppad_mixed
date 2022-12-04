@@ -3,65 +3,66 @@
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
-$begin hes_random_obj$$
-$spell
-   cppad
-   rcv
-   hes
-   obj
-   vec
-$$
+{xrst_begin hes_random_obj}
 
-$section Compute the Hessian of The Random Effects Objective$$
+Compute the Hessian of The Random Effects Objective
+###################################################
 
-$head Syntax$$
-$icode%hes_random_obj_rcv% = %mixed_object%.hes_random_obj(
-   %fixed_vec%, %random_vec%
-)%$$
+Syntax
+******
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN_PROTOTYPE%// END_PROTOTYPE%1%$$
+| *hes_random_obj_rcv* = *mixed_object* . ``hes_random_obj`` (
+| |tab| *fixed_vec* , *random_vec*
+| )
 
-$head Purpose$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
+
+Purpose
+*******
 Compute the Hessian of the
-$cref/random effects objective
-   /theory
-   /Random Likelihood, f(theta, u)
-   /Random Effects Objective
-/$$; i.e.,
-$latex f_{u,u} ( \theta , u )$$.
+:ref:`theory@Random Likelihood, f(theta, u)@Random Effects Objective` ; i.e.,
+:math:`f_{u,u} ( \theta , u )`.
 There are no absolute value terms in the
-$cref/negative log-density vector/problem/Negative Log-Density Vector/$$
-for the $cref ran_likelihood$$.
+:ref:`problem@Negative Log-Density Vector`
+for the :ref:`ran_likelihood-name` .
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head fixed_vec$$
-is the vector of fixed effects $latex \theta$$ at which
+fixed_vec
+*********
+is the vector of fixed effects :math:`\theta` at which
 the Hessian is evaluated.
 
-$head random_vec$$
-is the vector of random effects $latex u$$ at which
+random_vec
+**********
+is the vector of random effects :math:`u` at which
 the Hessian is evaluated.
 
-$head hes_random_obj_rcv$$
+hes_random_obj_rcv
+******************
 The return value is a
-$cref/d_sparse_rcv/typedef/Sparse Types/d_sparse_rcv/$$ representation
+:ref:`typedef@Sparse Types@d_sparse_rcv` representation
 of the lower triangle of the Hessian.
 (The Hessian is symmetric and hence determined by its lower triangle.)
-
-$children%
+{xrst_toc_hidden
    example/user/hes_random_obj.cpp
-%$$
+}
 
-$head Example$$
-The file $cref hes_random_obj.cpp$$ contains an example and
+Example
+*******
+The file :ref:`hes_random_obj.cpp-name` contains an example and
 test of this routine. It returns true for success and false for failure.
 
-$end
+{xrst_end hes_random_obj}
 ------------------------------------------------------------------------------
 */
 # include <cppad/mixed/cppad_mixed.hpp>

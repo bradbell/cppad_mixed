@@ -3,27 +3,22 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin hes_cross.cpp$$
-$spell
-   CppAD
-   cppad
-   hes
-   interp
-   xam
-$$
+{xrst_begin hes_cross.cpp}
 
-$section Hessian Cross Terms: Example and Test$$
+Hessian Cross Terms: Example and Test
+#####################################
 
-
-$head Private$$
+Private
+*******
 This example is not part of the
-$cref/cppad_mixed public API/base_class/$$.
+:ref:`cppad_mixed public API<base_class-name>` .
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end hes_cross.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

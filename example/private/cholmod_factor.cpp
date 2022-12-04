@@ -3,26 +3,31 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin cholmod_factor_xam$$
-$spell
-   cholmod
-$$
+{xrst_begin cholmod_factor_xam}
 
-$section Example Using Cholmod LDLT Factors$$
+Example Using Cholmod LDLT Factors
+##################################
 
-$head Problem Description$$
+Problem Description
+*******************
 Solve for and check
-$latex L$$, $latex D$$, and $latex P$$
+:math:`L`, :math:`D`, and :math:`P`
 in the factorization
-$latex \[
+
+.. math::
+
    P * A * P^{\R{T}} = L * D * L^{\R{T}}
-\] $$
-where $latex A$$ is a symmetric matrix,
-$latex L$$ is lower triangular with ones on the diagonal,
-$latex D$$ is diagonal,
-and $latex P$$ is a permutation matrix.
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$end
+
+where :math:`A` is a symmetric matrix,
+:math:`L` is lower triangular with ones on the diagonal,
+:math:`D` is diagonal,
+and :math:`P` is a permutation matrix.
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end cholmod_factor_xam}
 */
 // BEGIN C++
 # include <cppad/mixed/include_cholmod.hpp>

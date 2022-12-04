@@ -3,21 +3,17 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$begin hes_random_obj.cpp$$
-$spell
-   CppAD
-   cppad
-   interp
-   xam
-$$
+{xrst_begin hes_random_obj.cpp}
 
-$section Hessian of Random Effects Objective: Example and Test$$
+Hessian of Random Effects Objective: Example and Test
+#####################################################
 
-$code
-$srcthisfile%0%// BEGIN C++%// END C++%1%$$
-$$
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$end
+{xrst_end hes_random_obj.cpp}
 */
 // BEGIN C++
 # include <cppad/cppad.hpp>

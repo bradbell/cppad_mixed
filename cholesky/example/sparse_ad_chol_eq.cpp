@@ -5,18 +5,19 @@
 # include "../sparse_ad_cholesky.hpp"
 
 /*
-$begin sparse_ad_chol_eq.cpp$$
-$spell
-   Cholesky
-$$
+{xrst_begin sparse_ad_chol_eq.cpp}
 
-$section Using Sparse AD Cholesky To Solve Equations: Example and Test$$
+Using Sparse AD Cholesky To Solve Equations: Example and Test
+#############################################################
 
-$tabsize 4$$
+Source
+******
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
 
-$head Source$$
-$srcthisfile%4%// BEGIN C++%// END C++%1%$$
-$end
+{xrst_end sparse_ad_chol_eq.cpp}
 */
 // BEGIN C++
 bool sparse_ad_chol_eq(void)

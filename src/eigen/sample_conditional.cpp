@@ -3,191 +3,209 @@
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
-$begin sample_conditional$$
-$spell
-   Cholesky
+{xrst_begin sample_conditional}
+{xrst_spell
    covariance
-   pairwise
-   CppAD
-   cppad
-   const
-   gsl_rng
-$$
+   equalities
+   rng
+   unconstrained
+}
 
-$section Sample Posterior for Fixed Effects Using Conditional Covariance$$
+Sample Posterior for Fixed Effects Using Conditional Covariance
+###############################################################
 
-$head Syntax$$
-$icode%mixed_object%.sample_conditional(
-   %sample%,
-   %information_info%,
-   %solution%,
-   %fixed_lower%,
-   %fixed_upper%,
-   %random_opt%
-)%$$
+Syntax
+******
 
-$head Replaced$$
+| *mixed_object* . ``sample_conditional`` (
+| |tab| *sample* ,
+| |tab| *information_info* ,
+| |tab| *solution* ,
+| |tab| *fixed_lower* ,
+| |tab| *fixed_upper* ,
+| |tab| *random_opt*
+| )
+
+Replaced
+********
 This routine uses the
-$cref/conditional covariance
-   /sample_conditional
-   /Theory
-   /Conditional Covariance
-/$$
+:ref:`sample_conditional@Theory@Conditional Covariance`
 to sample the fixed effects.
-This required inverting the $cref information_mat$$.
-It has been replaced by using the $cref sample_fixed$$ because it is faster.
+This required inverting the :ref:`information_mat-name` .
+It has been replaced by using the :ref:`sample_fixed-name` because it is faster.
 
-$head Prototype$$
-$srcthisfile%0%// BEGIN PROTOTYPE%// END PROTOTYPE%1%$$
+Prototype
+*********
+{xrst_literal
+   // BEGIN PROTOTYPE
+   // END PROTOTYPE
+}
 
-$head Purpose$$
+Purpose
+*******
 This routine draw samples from
 the asymptotic posterior distribution for the
 optimal fixed effects (given the model and the data).
 
-$head manage_gsl_rng$$
+manage_gsl_rng
+**************
 It is assumed that
-$cref/get_gsl_rng/manage_gsl_rng/get_gsl_rng/$$ will return
+:ref:`manage_gsl_rng@get_gsl_rng` will return
 a pointer to a GSL random number generator.
 
-
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head sample$$
-The size $icode%sample%.size()%$$ is a multiple of
-$cref/n_fixed/derived_ctor/n_fixed/$$.
+sample
+******
+The size *sample* . ``size`` () is a multiple of
+:ref:`derived_ctor@n_fixed` .
 The input value of its elements does not matter.
 We define
-$codei%
-   %n_sample% = %sample_size% / %n_fixed%
-%$$
-Upon return,
-for $codei%i% = 0 , %...%, %n_sample%-1%$$,
-$codei%j% = 0 , %...%, %n_fixed%-1%$$,
-$codei%
-   %sample%[ %i% * %n_fixed% + %j% ]
-%$$
-is the $th j$$ component of the $th i$$ sample of the
-optimal fixed effects $latex \hat{\theta}$$.
-These samples are independent for different $latex i$$,
-and for fixed $latex i$$, they have the
-$cref/conditional covariance
-   /sample_conditional
-   /Theory
-   /Conditional Covariance
-/$$
-$latex D$$.
 
-$head information_info$$
+   *n_sample* = *sample_size* / *n_fixed*
+
+Upon return,
+for ``i`` = 0 , ..., ``n_sample`` *-1* ,
+``j`` = 0 , ..., ``n_fixed`` *-1* ,
+
+   *sample* [ *i* * *n_fixed* + *j*  ]
+
+is the *j*-th component of the *i*-th sample of the
+optimal fixed effects :math:`\hat{\theta}`.
+These samples are independent for different :math:`i`,
+and for fixed :math:`i`, they have the
+:ref:`sample_conditional@Theory@Conditional Covariance`
+:math:`D`.
+
+information_info
+****************
 This is a sparse matrix representation for the
 lower triangle of the observed information matrix corresponding to
-$icode solution$$; i.e., the matrix returned by
-$codei%
-%information_info% = %mixed_object%.information_mat(
-   %solution%, %random_options%, %random_lower%, %random_upper%, %random_in%
-)%$$
+*solution* ; i.e., the matrix returned by
 
-$head solution$$
-is the $cref/solution/optimize_fixed/solution/$$
-for a the call to $cref optimize_fixed$$ corresponding to
-$icode information_info$$.
+| *information_info* = *mixed_object* . ``information_mat`` (
+| |tab| *solution* , *random_options* , *random_lower* , *random_upper* , *random_in*
+| )
 
-$head fixed_lower$$
+solution
+********
+is the :ref:`optimize_fixed@solution`
+for a the call to :ref:`optimize_fixed-name` corresponding to
+*information_info* .
+
+fixed_lower
+***********
 is the same as
-$cref/fixed_lower/optimize_fixed/fixed_lower/$$
-in the call to $code optimize_fixed$$ that corresponds to $icode solution$$.
+:ref:`optimize_fixed@fixed_lower`
+in the call to ``optimize_fixed`` that corresponds to *solution* .
 
-$head fixed_upper$$
+fixed_upper
+***********
 is the same as
-$cref/fixed_upper/optimize_fixed/fixed_upper/$$
-in the call to $code optimize_fixed$$ that corresponds to $icode solution$$.
+:ref:`optimize_fixed@fixed_upper`
+in the call to ``optimize_fixed`` that corresponds to *solution* .
 
-$head random_opt$$
+random_opt
+**********
 is the optimal random effects corresponding to the solution; i.e.
-$codei%
-   %random_opt% = %mixed_object%.optimize_random(
-      %random_options%,
-      %solution%.fixed_opt,
-      %random_lower%,
-      %random_upper%,
-      %random_in%
-   )
-%$$
-$icode random_options$$,
-$icode random_lower$$,
-$icode random_upper$$, and
-$icode random_in$$, are the same
-as in the call to $code optimize_fixed$$ that corresponds to $icode solution$$.
 
-$head Theory$$
+| |tab| *random_opt* = *mixed_object* . ``optimize_random`` (
+| |tab| |tab| *random_options* ,
+| |tab| |tab| *solution* . ``fixed_opt`` ,
+| |tab| |tab| *random_lower* ,
+| |tab| |tab| *random_upper* ,
+| |tab| |tab| *random_in*
+| |tab| )
 
-$subhead Notation$$
-Given two random vectors $latex u$$ and $latex v$$,
-we use the notation $latex \B{C}( u , v )$$
+*random_options* ,
+*random_lower* ,
+*random_upper* , and
+*random_in* , are the same
+as in the call to ``optimize_fixed`` that corresponds to *solution* .
+
+Theory
+******
+
+Notation
+========
+Given two random vectors :math:`u` and :math:`v`,
+we use the notation :math:`\B{C}( u , v )`
 for the corresponding covariance matrix;
 i.e.,
-$latex \[
+
+.. math::
+
    \B{C}( u , v )
    =
    \B{E} \left( [ u - \B{E} (u) ] [ v - \B{E} (v) ]^\R{T} \right)
-\] $$
 
-$subhead Fixed Effects Subset$$
-We use $latex \alpha$$ for the vector of fixed effects that do not have
-their upper or lower bound active (or equal); i.e., if $icode j$$ is such that
-$codei%
-%solution%.fixed_lag[%j%] == 0.0 && %fixed_lower%[%j%] < %fixed_upper%[%j%]
-%$$
-then $latex \theta_j$$ is one of the components in $latex \alpha$$.
-Note that each value of $latex \alpha$$ has a corresponding value for
-$latex \theta$$ where the active bounds are used for the components
-not in $latex \alpha$$.
+Fixed Effects Subset
+====================
+We use :math:`\alpha` for the vector of fixed effects that do not have
+their upper or lower bound active (or equal); i.e., if *j* is such that
 
-$subhead Unconstrained Subset Covariance$$
+   *solution* . ``fixed_lag`` [ *j* ] == 0.0 && *fixed_lower* [ *j* ] < *fixed_upper* [ *j* ]
+
+then :math:`\theta_j` is one of the components in :math:`\alpha`.
+Note that each value of :math:`\alpha` has a corresponding value for
+:math:`\theta` where the active bounds are used for the components
+not in :math:`\alpha`.
+
+Unconstrained Subset Covariance
+===============================
 Note that the bound constraints do not apply to the subset of fixed effects
-represented by $latex \alpha$$.
-We use $latex \tilde{L} ( \alpha )$$ to denote the
-$cref/fixed effects objective/theory/Objective/Fixed Effects Objective, L(theta)/$$
-as a function of $latex \alpha$$ and
-where the absolute values terms in $cref fix_likelihood$$ are excluded.
-We use $latex \tilde{\alpha}$$ for the unconstrained optimal estimate
+represented by :math:`\alpha`.
+We use :math:`\tilde{L} ( \alpha )` to denote the
+:ref:`fixed effects objective<theory@Objective@Fixed Effects Objective, L(theta)>`
+as a function of :math:`\alpha` and
+where the absolute values terms in :ref:`fix_likelihood-name` are excluded.
+We use :math:`\tilde{\alpha}` for the unconstrained optimal estimate
 of the subset of fixed effects and
 approximate its auto-covariance by
-$latex \[
+
+.. math::
+
    \B{C} ( \tilde{\alpha} , \tilde{\alpha} )
    =
    H^{-1}
-\]$$
-Here $latex H$$ is the Hessian corresponding to $icode information_info$$.
-Note that $icode information_info$$ is the observed information matrix
-corresponding to all the fixed effects $latex \theta$$.
 
-$subhead Constraint Equations$$
-Let $latex n$$ be the number of fixed effects in $latex \alpha$$,
-$latex m$$ the number of active constraints (not counting bounds),
-and the equations $latex e( \alpha ) = b$$ be those active constraints.
-Here $latex e : \B{R}^n \rightarrow \B{R}^m$$ and $latex b \in \B{R}^m$$
+Here :math:`H` is the Hessian corresponding to *information_info* .
+Note that *information_info* is the observed information matrix
+corresponding to all the fixed effects :math:`\theta`.
+
+Constraint Equations
+====================
+Let :math:`n` be the number of fixed effects in :math:`\alpha`,
+:math:`m` the number of active constraints (not counting bounds),
+and the equations :math:`e( \alpha ) = b` be those active constraints.
+Here :math:`e : \B{R}^n \rightarrow \B{R}^m` and :math:`b \in \B{R}^m`
 and the inequality constraints have been converted to equalities at the
 active bounds (excluding the bounds on the fixed effects).
-Define the random variable the approximation for $latex e( \alpha )$$ by
-$latex \[
-\tilde{e} ( \alpha ) =
-e \left( \hat{\alpha} \right) + e^{(1)} \left( \hat{\alpha} \right)
-   \left( \alpha - \hat{\alpha} \right)
-\] $$
-where $latex \hat{\alpha}$$ is the subset of the optional estimate
-for the fixed effects $icode%solution%.fixed_opt%$$.
+Define the random variable the approximation for :math:`e( \alpha )` by
 
-$subhead Conditional Covariance$$
+.. math::
+
+   \tilde{e} ( \alpha ) =
+   e \left( \hat{\alpha} \right) + e^{(1)} \left( \hat{\alpha} \right)
+      \left( \alpha - \hat{\alpha} \right)
+
+where :math:`\hat{\alpha}` is the subset of the optional estimate
+for the fixed effects *solution* . ``fixed_opt`` .
+
+Conditional Covariance
+======================
 We approximate the distribution for
-$latex \tilde{\alpha}$$ normal,
-and the distribution for $latex \hat{\alpha}$$
-as the conditional distribution of $latex \tilde{\alpha}$$ given
-the value of $latex \tilde{e} ( \tilde{\alpha} )$$; i.e.,
-$latex \[
+:math:`\tilde{\alpha}` normal,
+and the distribution for :math:`\hat{\alpha}`
+as the conditional distribution of :math:`\tilde{\alpha}` given
+the value of :math:`\tilde{e} ( \tilde{\alpha} )`; i.e.,
+
+.. math::
+
    \B{C} \left( \hat{\alpha} \W{,} \hat{\alpha} \right)
    =
    \B{C} \left( \tilde{\alpha} \W{,} \tilde{\alpha} \right)
@@ -195,22 +213,24 @@ $latex \[
    \B{C} \left( \tilde{\alpha} \W{,} \tilde{e} \right)
    \B{C} \left( \tilde{e}  \W{,} \tilde{e} \right)^{-1}
    \B{C} \left( \tilde{e}  \W{,} \tilde{\alpha} \right)
-\] $$
+
 Using the notation
-$latex D = \B{C} \left( \hat{\alpha} \W{,} \hat{\alpha} \right)$$,
-$latex C = \B{C} \left( \tilde{\alpha} \W{,} \tilde{\alpha} \right)$$,
-$latex E = e^{(1)} \left( \hat{\alpha} \right)$$,
+:math:`D = \B{C} \left( \hat{\alpha} \W{,} \hat{\alpha} \right)`,
+:math:`C = \B{C} \left( \tilde{\alpha} \W{,} \tilde{\alpha} \right)`,
+:math:`E = e^{(1)} \left( \hat{\alpha} \right)`,
 we have
-$latex \[
+
+.. math::
+
    D = C - C E^\R{T} \left( E C E^\R{T} \right)^{-1}  E C
-\] $$
 
-$head Example$$
-The file $cref sample_fixed.cpp$$ is an example
-and test of $code sample_conditional$$ was used before it was
-$cref/replaced/sample_conditional/Replaced/$$.
+Example
+*******
+The file :ref:`sample_fixed.cpp-name` is an example
+and test of ``sample_conditional`` was used before it was
+:ref:`sample_conditional@Replaced` .
 
-$end
+{xrst_end sample_conditional}
 ------------------------------------------------------------------------------
 */
 # include <Eigen/Core>

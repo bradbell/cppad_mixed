@@ -6,61 +6,66 @@
 # define CPPAD_MIXED_SPARSE_MAT2LOW_HPP
 
 /*
-$begin sparse_mat2low$$
-$spell
-   Eigen
-   CppAD
-   const
+{xrst_begin sparse_mat2low}
+{xrst_spell
    cols
-$$
+}
 
-$section Extract the Lower Triangular From an Eigen Symmetric Matrix$$
+Extract the Lower Triangular From an Eigen Symmetric Matrix
+###########################################################
 
-$head Syntax$$
-$icode%lower% = %CppAD::mixed::sparse_mat2low(%matrix%)%$$
+Syntax
+******
+*lower* = *CppAD::mixed::sparse_mat2low* ( ``matrix`` )
 
-$head Private$$
+Private
+*******
 This routine is an implementation detail and not part of the
 CppAD Mixed user API.
 
-$head matrix$$
+matrix
+******
 The argument has prototype
-$codei%
-   const Eigen::SparseMatrix<%Scalar%, %Options%, %Index%>& %matrix%
-%$$
-and has the same number of rows as columns; i.e.
-$codei%
-   %matrix%.rows() == %matrix%.cols()
-%$$
 
-$subhead Scalar$$
+   ``const Eigen::SparseMatrix<`` *Scalar* , *Options* , *Index* >& *matrix*
+
+and has the same number of rows as columns; i.e.
+
+   *matrix* . ``rows`` () == *matrix* . ``cols`` ()
+
+Scalar
+======
 The scalar type fro this sparse matrix are arbitrary; i.e,
 has no restrictions.
 
-$subhead Options$$
+Options
+=======
 The options for this sparse matrix are arbitrary; i.e.,
 has no restrictions.
 
-$subhead Index$$
+Index
+=====
 The index type fro this sparse matrix are arbitrary; i.e.,
 has no restrictions.
 
-$head lower$$
+lower
+*****
 The return value has prototype
-$codei%
-   Eigen::SparseMatrix<%Scalar%, %Options%, %Index%> %lower%
-%$$
-and is the lower triangle of $icode matrix$$; i.e.,
-it has the same lower triangle as $icode matrix$$ and it has no entries
+
+   ``Eigen::SparseMatrix<`` *Scalar* , *Options* , *Index* > *lower*
+
+and is the lower triangle of *matrix* ; i.e.,
+it has the same lower triangle as *matrix* and it has no entries
 above the diagonal.
+{xrst_toc_hidden
+   example/private/sparse_mat2low.cpp
+}
+Example
+*******
+The file :ref:`sparse_mat2low.cpp-name` is an example
+and test of ``sparse_mat2low`` .
 
-$children%example/private/sparse_mat2low.cpp
-%$$
-$head Example$$
-The file $cref sparse_mat2low.cpp$$ is an example
-and test of $code sparse_mat2low$$.
-
-$end
+{xrst_end sparse_mat2low}
 */
 # include <Eigen/SparseCore>
 

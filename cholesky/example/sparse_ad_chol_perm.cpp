@@ -5,16 +5,19 @@
 # include "../sparse_ad_cholesky.hpp"
 
 /*
-$begin sparse_ad_chol_perm.cpp$$
-$spell
-   Cholesky
-$$
+{xrst_begin sparse_ad_chol_perm.cpp}
 
-$section Sparse AD Cholesky Permutation: Example and Test$$
+Sparse AD Cholesky Permutation: Example and Test
+################################################
 
-$head Source$$
-$srcthisfile%4%// BEGIN C++%// END C++%1%$$
-$end
+Source
+******
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end sparse_ad_chol_perm.cpp}
 */
 // BEGIN C++
 bool sparse_ad_chol_perm(void)

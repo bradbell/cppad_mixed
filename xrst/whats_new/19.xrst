@@ -3,61 +3,66 @@
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
 
-$begin whats_new_19$$
-$spell
-   mm
+{xrst_begin whats_new_19}
+{xrst_spell
    dd
-   cppad
-   CppAD
-   messaging
+   determinant
    github
-   ldlt_eigen
-   Goto
-   omhelp
-   rcv
-   nr
+   mm
+   nan
    nc
-$$
+   nr
+   omhelp
+}
 
-$section Changes and Additions to cppad_mixed During 2019$$
+Changes and Additions to cppad_mixed During 2019
+################################################
 
-$head mm-dd$$
+mm-dd
+*****
 
-$subhead 10-08$$
-If $cref/A_rcv/derived_ctor/A_rcv/$$ is not empty,
-$icode%A_rcv%.nr() > 0%$$ and $icode%A_rcv%.nc()%$$ must equal
-$cref/n_random/derived_ctor/n_random/$$.
+10-08
+=====
+If :ref:`derived_ctor@A_rcv` is not empty,
+*A_rcv* . ``nr`` () > 0 and *A_rcv* . ``nc`` () must equal
+:ref:`derived_ctor@n_random` .
 If this is not the case, a
-$cref/fatal_error/base_class/User Defined Functions/fatal_error/$$
+:ref:`base_class@User Defined Functions@fatal_error`
 message is generated.
 
-$subhead 09-30$$
+09-30
+=====
 Use a newer version of the program that generates the documentation
-$code omhelp$$.
+``omhelp`` .
 The search utility now shows the title and section tag in separate
 areas and hides the other keywords.
 Hitting return or double clicking in the title area,
-in addition to choosing the $code Goto$$ button, will go to
+in addition to choosing the ``Goto`` button, will go to
 the selected section.
 
-$subhead 07-24$$
+07-24
+=====
 More use of the optimal random effects during initialization
 to avoid the Hessian w.r.t. the random effects not being positive definite.
 
-$subhead 07-23$$
+07-23
+=====
 Do more checking and reporting of non-finite values during the
-$cref initialize$$ procedure.
+:ref:`initialize-name` procedure.
 
-$subhead 07-20$$
+07-20
+=====
 Remove a print statement
-(that was used for debugging) from the routine $code ldlt_eigen$$ routine.
+(that was used for debugging) from the routine ``ldlt_eigen`` routine.
 
-$subhead 07-19$$
-Advance to $code cppad-20190719$$
+07-19
+=====
+Advance to ``cppad-20190719``
 (this fixed a problem with the CppAD binary library name on the Mac).
 
-$subhead 07-10$$
-In the case were $cref/quasi_fixed/derived_ctor/quasi_fixed/$$ is false,
+07-10
+=====
+In the case were :ref:`derived_ctor@quasi_fixed` is false,
 a Newton method is used to optimize the fixed effects.
 In this case computation of the log of the determinant of the
 random Hessian w.r.t.  the random effects
@@ -67,17 +72,19 @@ corresponding to the initial fixed effects.
 This is more robust because the Hessian is more likely to be positive
 definite.
 
-$subhead 07-09$$
+07-09
+=====
 The developer documentation has been separated from the user documentation
-and no longer included in the web version displayed on $code github$$.
+and no longer included in the web version displayed on ``github`` .
 
-$subhead 06-24$$
-Advance to $code cppad-20190623$$.
+06-24
+=====
+Advance to ``cppad-20190623`` .
 
-$subhead 06-07$$
-Change the $code CppAD::ADFun$$ object to check for $code nan$$.
+06-07
+=====
+Change the ``CppAD::ADFun`` object to check for ``nan`` .
 This detects them sooner and gives better error messaging
-(when $code NDEBUG$$ is not defined).
+(when ``NDEBUG`` is not defined).
 
-
-$end
+{xrst_end whats_new_19}

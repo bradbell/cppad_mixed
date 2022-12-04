@@ -5,152 +5,144 @@
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/exception.hpp>
 /*
-$begin laplace_obj_hes$$
-$spell
-   rcv
+{xrst_begin laplace_obj_hes}
+{xrst_spell
    nr
-   objcon
-   CppAD
-   ran_obj
-   cppad
-   obj
-   hes
-   vec
-   const
-   Cpp
-   xam
-$$
+}
 
-$section Hessian of Laplace Objective and Random Constraints$$
+Hessian of Laplace Objective and Random Constraints
+###################################################
 
-$head Syntax$$
-$icode%mixed_object%.laplace_obj_hes(
-   %fixed_vec%, %random_vec%, %weight%, %row_out%, %col_out%, %val_out%
-)%$$
+Syntax
+******
 
-$head Private$$
-This $code cppad_mixed$$ is a $cref private_base_class$$ member function.
+| *mixed_object* . ``laplace_obj_hes`` (
+| |tab| *fixed_vec* , *random_vec* , *weight* , *row_out* , *col_out* , *val_out*
+| )
 
-$head Purpose$$
+Private
+*******
+This ``cppad_mixed`` is a :ref:`private_base_class-name` member function.
+
+Purpose
+*******
 This routine computes the Hessian, w.r.t the fixed effects,
 of a vector times the random part of the of the objective
 and random constraints; i.e.,
-$latex \[
+
+.. math::
+
    w_0 H_{\beta, \beta} ( \beta , \theta , u )
    +
    \sum_{i=1}^m
    w_i B^{i-1}_{\beta, \beta} ( \beta , \theta , u )
-\] $$
-where $latex m$$ is the number of rows in the
-$cref/random constraint matrix
-   /problem
-   /Notation
-   /Random Constraint Matrix, A
-/$$;
+
+where :math:`m` is the number of rows in the
+:ref:`random constraint matrix<problem@Notation@Random Constraint Matrix, A>` ;
 see
-$cref/H(beta, theta, u)
-   /theory
-   /Approximate Laplace Objective, H(beta, theta, u)
-/$$
+:ref:`H(beta, theta, u)<theory@Approximate Laplace Objective, H(beta, theta, u)>`
 and
-$cref/B(beta, theta, u)
-   /theory
-   /Approximate Random Constraint Function, B(beta, theta, u)
-/$$.
+:ref:`B(beta, theta, u)<theory@Approximate Random Constraint Function, B(beta, theta, u)>` .
 
-$head mixed_object$$
-We use $cref/mixed_object/derived_ctor/mixed_object/$$
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
 to denote an object of a class that is
-derived from the $code cppad_mixed$$ base class.
+derived from the ``cppad_mixed`` base class.
 
-$head fixed_vec$$
+fixed_vec
+*********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %fixed_vec%
-%$$
+
+   ``const CppAD::vector<double>&`` *fixed_vec*
+
 It specifies the value of the
-$cref/fixed effects/problem/Notation/Fixed Effects, theta/$$
-vector $latex \theta$$.
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta`.
 
-$head random_vec$$
+random_vec
+**********
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %random_vec%
-%$$
-Given the fixed effects $latex \theta$$, it is the corresponding
-$cref/optimal random effects
-   /theory
-   /Optimal Random Effects, u^(theta)
-/$$
-$latex \hat{u} ( \theta )$$.
 
-$head weight$$
+   ``const CppAD::vector<double>&`` *random_vec*
+
+Given the fixed effects :math:`\theta`, it is the corresponding
+:ref:`optimal random effects<theory@Optimal Random Effects, u^(theta)>`
+:math:`\hat{u} ( \theta )`.
+
+weight
+******
 This argument has prototype
-$codei%
-   const CppAD::vector<double>& %weight%
-%$$
-It determines the weighting vector $latex w$$ in the summation
-$latex \[
+
+   ``const CppAD::vector<double>&`` *weight*
+
+It determines the weighting vector :math:`w` in the summation
+
+.. math::
+
    w_0 H_{\beta, \beta} ( \beta , \theta , u )
    +
    \sum_{i=1}^m
    w_i B^{i-1}_{\beta, \beta} ( \beta , \theta , u )
-\] $$
-The size of $icode weight$$ is
-$cref/A_rcv.nr()/derived_ctor/A_rcv/$$ plus one.
 
-$head row_out$$
+The size of *weight* is
+:ref:`A_rcv.nr()<derived_ctor@A_rcv>` plus one.
+
+row_out
+*******
 This argument has prototype
-$codei%
-   CppAD::vector<size_t>& %row_out%
-%$$
+
+   ``CppAD::vector<size_t>&`` *row_out*
+
 If the input size of this array is non-zero,
 the entire vector must be the same
-as for a previous call to $code laplace_obj_hes$$.
+as for a previous call to ``laplace_obj_hes`` .
 If it's input size is zero,
 upon return it contains the row indices for the Hessian elements
 that are possibly non-zero;
-$codei%
-   %row_out%[%k%] < %n_fixed%
-%$$
-for all $icode%k% = 0 , %...%, %row_out%.size()-1%$$
 
-$head col_out$$
+   *row_out* [ *k* ] < *n_fixed*
+
+for all *k* = 0 , ..., *row_out* . ``size`` () ``-1``
+
+col_out
+*******
 This argument has prototype
-$codei%
-   CppAD::vector<size_t>& %col_out%
-%$$
+
+   ``CppAD::vector<size_t>&`` *col_out*
+
 If the input size of this array is non-zero,
 the entire vector must be the same as for
-a previous call to $code laplace_obj_hes$$.
+a previous call to ``laplace_obj_hes`` .
 If it's input size is zero,
 upon return it contains the column indices for the Hessian elements
-that are possibly non-zero (and will have the same size as $icode row_out$$).
+that are possibly non-zero (and will have the same size as *row_out* ).
 Note that only the lower triangle of the Hessian is computed and hence
-$codei%
-   %col_out%[%k%] <= %row_out%[%k%]
-%$$
-for all $icode%k% = 0 , %...%, %row_out%.size()-1%$$
 
-$head val_out$$
+   *col_out* [ *k* ] <= *row_out* [ *k* ]
+
+for all *k* = 0 , ..., *row_out* . ``size`` () ``-1``
+
+val_out
+*******
 This argument has prototype
-$codei%
-   CppAD::vector<double>& %val_out%
-%$$
-If the input size of this array is non-zero, it must have the same size
-as for a previous call to $code laplace_obj_hes$$.
-Upon return, it contains the value of the Hessian elements
-that are possibly non-zero (and will have the same size as $icode row_out$$).
 
-$children%
+   ``CppAD::vector<double>&`` *val_out*
+
+If the input size of this array is non-zero, it must have the same size
+as for a previous call to ``laplace_obj_hes`` .
+Upon return, it contains the value of the Hessian elements
+that are possibly non-zero (and will have the same size as *row_out* ).
+{xrst_toc_hidden
    example/private/laplace_obj_hes.cpp
-%$$
-$head Example$$
-The file $cref laplace_obj_hes.cpp$$ contains an example
+}
+Example
+*******
+The file :ref:`laplace_obj_hes.cpp-name` contains an example
 and test of this procedure.
 It returns true, if the test passes, and false otherwise.
 
-$end
+{xrst_end laplace_obj_hes}
 */
 
 
