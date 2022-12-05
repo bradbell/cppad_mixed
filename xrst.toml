@@ -5,7 +5,7 @@ data = 'cppad_mixed'
 project_directory = '.'
 rst_directory     = 'build/rst'
 html_directory    = 'build/html'
-pdf_directory     = 'build/pdf'
+tex_directory     = 'build/tex'
 
 [root_file]
 default = 'dev.xrst'
