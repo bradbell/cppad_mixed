@@ -19,9 +19,6 @@
 # a previous debug build that /build can point to
 /build.debug/
 #
-/doc/
-/dev/
-#
 # place where external packages are build
 /external/
 #
