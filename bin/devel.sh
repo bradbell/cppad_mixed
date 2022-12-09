@@ -12,7 +12,6 @@ image_link='https://github.com/bradbell/cppad_mixed'
 # List of files, besides CMakeLists.txt, that have have a copy of the
 # version number (can be empty).
 version_files='
-   dev.xrst
    doc.xrst
 '
 #

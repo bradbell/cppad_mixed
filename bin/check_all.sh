@@ -85,17 +85,18 @@ echo "bin/run_cmake.sh $flags >& cmake.log"
 bin/run_cmake.sh $flags >& cmake.log
 # ----------------------------------------------------------------------------
 # build
-# The command above sets up the build directory as a soft link.
+# The run_cmake.sh script sets up the build directory as a soft link.
 # This is necessary so xrst does not create a normal directory called build.
 #
 # build developer documentation
-if [ -e doc ]
+if [ -e build/html ]
 then
-   echo_eval rm -r doc
+   echo_eval rm -r build/html
 fi
 echo_eval xrst \
    --local_toc \
-   --html_theme sphinx_rtd_theme
+   --html_theme sphinx_rtd_theme \
+   --group_list default dev
 # ----------------------------------------------------------------------------
 cd build
 #
