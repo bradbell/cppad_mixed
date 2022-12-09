@@ -19,10 +19,6 @@
 # a previous debug build that /build can point to
 /build.debug/
 #
-# directories where documentation is built
-# /doc/
-/dev/
-#
 # place where external packages are build
 /external/
 #
@@ -37,5 +33,5 @@
 *.log
 #
 # temporary file for many purposes
-junk
-junk.*
+temp
+temp.*
