@@ -1,0 +1,1028 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta content="ar1_xam.cpp, a, first, order, auto-regressive, example, and, speed, test" name="keywords" />
+<meta content="syntax" name="keywords" />
+<meta content="problem" name="keywords" />
+<meta content="data" name="keywords" />
+<meta content="p(, y_t, |, u, ,, theta, )" name="keywords" />
+<meta content="p(, u, |, theta, )" name="keywords" />
+<meta content="command, arguments" name="keywords" />
+<meta content="random_seed" name="keywords" />
+<meta content="number_random" name="keywords" />
+<meta content="quasi_fixed" name="keywords" />
+<meta content="trace_optimize_fixed" name="keywords" />
+<meta content="ipopt_solve" name="keywords" />
+<meta content="bool_sparsity" name="keywords" />
+<meta content="hold_memory" name="keywords" />
+<meta content="derivative_test" name="keywords" />
+<meta content="start_near_solution" name="keywords" />
+<meta content="output" name="keywords" />
+<meta content="cppad_mixed_version" name="keywords" />
+<meta content="ldlt_cholmod" name="keywords" />
+<meta content="optimize_cppad_function" name="keywords" />
+<meta content="ndebug_defined" name="keywords" />
+<meta content="actual_seed" name="keywords" />
+<meta content="initialize_bytes" name="keywords" />
+<meta content="initialize_seconds" name="keywords" />
+<meta content="optimize_fixed_seconds" name="keywords" />
+<meta content="optimize_random_seconds" name="keywords" />
+<meta content="information_mat_seconds" name="keywords" />
+<meta content="sample_fixed_seconds" name="keywords" />
+<meta content="final_bytes" name="keywords" />
+<meta content="theta_0_estimate" name="keywords" />
+<meta content="ar1_xam_ok" name="keywords" />
+<meta content="example" name="keywords" />
+<meta content="source, code" name="keywords" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="ar1_xam.sh" href="ar1_xam.sh.html" /><link rel="prev" title="speed" href="speed.html" />
+
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.09.29"/>
+        <title>ar1_xam.cpp - cppad_mixed documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">cppad_mixed  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">cppad_mixed  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="xrst_table_of_contents.html">Table of Contents</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="cppad_mixed.html">cppad_mixed</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="problem.html">problem</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="install_unix.html">install_unix</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="example_install.sh.html">example_install.sh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="run_cmake.sh.html">run_cmake.sh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="check_install.sh.html">check_install.sh</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html">theory</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="base_class.html">base_class</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="derived_ctor.html">derived_ctor</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="derived_ctor.cpp.html">derived_ctor.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="ran_likelihood.html">ran_likelihood</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="ran_likelihood.cpp.html">ran_likelihood.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="fix_likelihood.html">fix_likelihood</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="fix_likelihood.cpp.html">fix_likelihood.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="fix_constraint.html">fix_constraint</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="fix_constraint.cpp.html">fix_constraint.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="initialize.html">initialize</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="optimize_random.html">optimize_random</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="optimize_random.cpp.html">optimize_random.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="optimize_fixed.html">optimize_fixed</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="optimize_fixed.cpp.html">optimize_fixed.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ipopt_options.html">ipopt_options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ipopt_trace.html">ipopt_trace</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="hes_fixed_obj.html">hes_fixed_obj</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="hes_fixed_obj.cpp.html">hes_fixed_obj.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="hes_random_obj.html">hes_random_obj</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="hes_random_obj.cpp.html">hes_random_obj.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="sample_fixed.html">sample_fixed</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="sample_fixed.cpp.html">sample_fixed.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sample_conditional.html">sample_conditional</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="sample_random.html">sample_random</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="sample_random.cpp.html">sample_random.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="information_mat.html">information_mat</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="information_mat.cpp.html">information_mat.cpp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="namespace.html">namespace</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="typedef.html">typedef</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="manage_gsl_rng.html">manage_gsl_rng</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="manage_gsl_rng.cpp.html">manage_gsl_rng.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sparse_mat_info.html">sparse_mat_info</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="fixed_solution.html">fixed_solution</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="warm_start_struct.html">warm_start_struct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="trace_struct.html">trace_struct</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="exception.html">exception</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="user_examples.html">user_examples</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 current has-children"><a class="reference internal" href="speed.html">speed</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l4 current has-children current-page"><a class="current reference internal" href="#">ar1_xam.cpp</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="ar1_xam.sh.html">ar1_xam.sh</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="capture_xam.cpp.html">capture_xam.cpp</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="capture_xam.sh.html">capture_xam.sh</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="abs_density.cpp.html">abs_density.cpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="no_random.cpp.html">no_random.cpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ran_constraint.cpp.html">ran_constraint.cpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lasso.cpp.html">lasso.cpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_mismatch.cpp.html">data_mismatch.cpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opt_ran_nan.cpp.html">opt_ran_nan.cpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="warm_start.cpp.html">warm_start.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="release_notes.html">release_notes</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_22.html">whats_new_22</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_21.html">whats_new_21</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_20.html">whats_new_20</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_19.html">whats_new_19</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_18.html">whats_new_18</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_17.html">whats_new_17</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_16.html">whats_new_16</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_15.html">whats_new_15</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="wish_list.html">wish_list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math_notation.html">math_notation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="xrst_index.html">Index</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <p class="hidden"><span class="math notranslate nohighlight">\(\newcommand{\B}[1]{ {\bf #1} }\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\R}[1]{ {\rm #1} }\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\W}[1]{ \; #1 \; }\)</span></p>
+<section id="ar1-xam-cpp">
+<span id="ar1-xam-cpp-name"></span><h1>ar1_xam.cpp<a class="headerlink" href="#ar1-xam-cpp" title="Permalink to this headline">#</a></h1>
+<p>xrst input file: <code class="docutils literal notranslate"><span class="pre">speed/ar1_xam.cpp</span></code></p>
+<section id="a-first-order-auto-regressive-example-and-speed-test">
+<span id="ar1-xam-cpp-title"></span><span id="index-0"></span><h2>A First Order Auto-Regressive Example and Speed Test<a class="headerlink" href="#a-first-order-auto-regressive-example-and-speed-test" title="Permalink to this headline">#</a></h2>
+<section id="syntax">
+<span id="ar1-xam-cpp-syntax"></span><span id="index-1"></span><h3>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline">#</a></h3>
+<div class="line-block">
+<div class="line">./ <code class="docutils literal notranslate"><span class="pre">ar1_xam</span></code> \</div>
+<div class="line">      <em>random_seed</em>  \</div>
+<div class="line">      <em>number_random</em>  \</div>
+<div class="line">      <em>quasi_fixed</em>  \</div>
+<div class="line">      <em>trace_optimize_fixed</em>  \</div>
+<div class="line">      <em>ipopt_solve</em>  \</div>
+<div class="line">      <em>bool_sparsity</em>  \</div>
+<div class="line">      <em>hold_memory</em>  \</div>
+<div class="line">      <em>derivative_test</em>  \</div>
+<div class="line">      <em>start_near_solution</em></div>
+</div>
+</section>
+<section id="problem">
+<span id="ar1-xam-cpp-problem"></span><span id="index-2"></span><h3>Problem<a class="headerlink" href="#problem" title="Permalink to this headline">#</a></h3>
+<section id="data">
+<span id="ar1-xam-cpp-problem-data"></span><span id="index-3"></span><h4>Data<a class="headerlink" href="#data" title="Permalink to this headline">#</a></h4>
+<p>For <span class="math notranslate nohighlight">\(t = 0 , \ldots , T - 1\)</span>,
+<span class="math notranslate nohighlight">\(y_t = (1 + t) + e_t\)</span>,
+where <span class="math notranslate nohighlight">\(e_t \sim \B{N}( 0, \sigma_y^2 )\)</span>.</p>
+</section>
+<section id="p-y-t-u-theta">
+<span id="ar1-xam-cpp-problem-p-y-t-u-theta"></span><span id="index-4"></span><h4>p( y_t | u , theta )<a class="headerlink" href="#p-y-t-u-theta" title="Permalink to this headline">#</a></h4>
+<p>For <span class="math notranslate nohighlight">\(t = 0 , \ldots , T - 1\)</span>,
+<span class="math notranslate nohighlight">\(y_t \sim \B{N}( u_t , \sigma_y^2 )\)</span>.</p>
+</section>
+<section id="p-u-theta">
+<span id="ar1-xam-cpp-problem-p-u-theta"></span><span id="index-5"></span><h4>p( u | theta )<a class="headerlink" href="#p-u-theta" title="Permalink to this headline">#</a></h4>
+<p>For <span class="math notranslate nohighlight">\(t = 0\)</span>, <span class="math notranslate nohighlight">\(u_t \sim \B{N}( 0 , \theta_0^2 )\)</span>,
+and for <span class="math notranslate nohighlight">\(t = 1 , \ldots , T - 1\)</span>,
+<span class="math notranslate nohighlight">\(u_t - u_{t-1} \sim \B{N}( 0 , \theta_0^2 )\)</span>.</p>
+</section>
+</section>
+<section id="command-arguments">
+<span id="ar1-xam-cpp-command-arguments"></span><span id="index-6"></span><h3>Command Arguments<a class="headerlink" href="#command-arguments" title="Permalink to this headline">#</a></h3>
+<section id="random-seed">
+<span id="ar1-xam-cpp-command-arguments-random-seed"></span><span id="index-7"></span><h4>random_seed<a class="headerlink" href="#random-seed" title="Permalink to this headline">#</a></h4>
+<p>This is a non-negative integer equal to the
+seed for the random number generator,
+to be specific,
+<a class="reference internal" href="manage_gsl_rng.html#manage-gsl-rng-new-gsl-rng-s-in"><span class="std std-ref">s_in</span></a> used during the call to
+<code class="docutils literal notranslate"><span class="pre">new_gsl_rng</span></code> .</p>
+</section>
+<section id="number-random">
+<span id="ar1-xam-cpp-command-arguments-number-random"></span><span id="index-8"></span><h4>number_random<a class="headerlink" href="#number-random" title="Permalink to this headline">#</a></h4>
+<p>This is a positive integer specifying the number of random effects.
+This is also the number of time points and number of data values.</p>
+</section>
+<section id="quasi-fixed">
+<span id="ar1-xam-cpp-command-arguments-quasi-fixed"></span><span id="index-9"></span><h4>quasi_fixed<a class="headerlink" href="#quasi-fixed" title="Permalink to this headline">#</a></h4>
+<p>This is either <code class="docutils literal notranslate"><span class="pre">yes</span></code> or <code class="docutils literal notranslate"><span class="pre">no</span></code> and is the value of
+<a class="reference internal" href="derived_ctor.html#derived-ctor-quasi-fixed"><span class="std std-ref">quasi_fixed</span></a> in the
+<code class="docutils literal notranslate"><span class="pre">cppad_mixed</span></code> derived class constructor.
+The amount of memory used by the
+<a class="reference internal" href="derived_ctor.html#derived-ctor-mixed-derived"><span class="std std-ref">mixed_derived</span></a> object,
+after the information matrix is computed,
+will be similar to after the initialization when <em>quasi_fixed</em> is no.</p>
+</section>
+<section id="trace-optimize-fixed">
+<span id="ar1-xam-cpp-command-arguments-trace-optimize-fixed"></span><span id="index-10"></span><h4>trace_optimize_fixed<a class="headerlink" href="#trace-optimize-fixed" title="Permalink to this headline">#</a></h4>
+<p>This is either <code class="docutils literal notranslate"><span class="pre">yes</span></code> or <code class="docutils literal notranslate"><span class="pre">no</span></code> .
+If it is yes, a <em>print_level</em>  = 5
+<a class="reference internal" href="ipopt_trace.html#ipopt-trace-name"><span class="std std-ref">trace</span></a> of the fixed effects optimization
+is included in the program output.
+Otherwise the ipopt <em>print_level</em> is zero and
+no such trace is printed.</p>
+</section>
+<section id="ipopt-solve">
+<span id="ar1-xam-cpp-command-arguments-ipopt-solve"></span><span id="index-11"></span><h4>ipopt_solve<a class="headerlink" href="#ipopt-solve" title="Permalink to this headline">#</a></h4>
+<p>This is either <code class="docutils literal notranslate"><span class="pre">yes</span></code> or <code class="docutils literal notranslate"><span class="pre">no</span></code> .
+If it is yes, the <code class="docutils literal notranslate"><span class="pre">CppAD::ipopt::solve</span></code>
+routine is used for optimizing the random effects,
+otherwise <code class="docutils literal notranslate"><span class="pre">CppAD::mixed::ipopt_random</span></code> is used; see
+<a class="reference internal" href="optimize_random.html#optimize-random-options-evaluation-method"><span class="std std-ref">evaluation_method</span></a> .</p>
+</section>
+<section id="bool-sparsity">
+<span id="ar1-xam-cpp-command-arguments-bool-sparsity"></span><span id="index-12"></span><h4>bool_sparsity<a class="headerlink" href="#bool-sparsity" title="Permalink to this headline">#</a></h4>
+<p>This is either <code class="docutils literal notranslate"><span class="pre">yes</span></code> or <code class="docutils literal notranslate"><span class="pre">no</span></code> .
+If it is yes, boolean sparsity patterns are used for this computation,
+otherwise set sparsity patterns are used.</p>
+</section>
+<section id="hold-memory">
+<span id="ar1-xam-cpp-command-arguments-hold-memory"></span><span id="index-13"></span><h4>hold_memory<a class="headerlink" href="#hold-memory" title="Permalink to this headline">#</a></h4>
+<p>The CppAD memory allocator has a hold memory option will be set by</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">CppAD::thread_alloc::hold_memory</span></code> ( <em>hold_memory</em> );</p>
+</div></blockquote>
+<p>where <em>hold_memory</em> is either <code class="docutils literal notranslate"><span class="pre">yes</span></code> or <code class="docutils literal notranslate"><span class="pre">no</span></code> .</p>
+</section>
+<section id="derivative-test">
+<span id="ar1-xam-cpp-command-arguments-derivative-test"></span><span id="index-14"></span><h4>derivative_test<a class="headerlink" href="#derivative-test" title="Permalink to this headline">#</a></h4>
+<p>This is either <code class="docutils literal notranslate"><span class="pre">yes</span></code> or <code class="docutils literal notranslate"><span class="pre">no</span></code> .
+If it is yes, the derivatives of functions used in the optimization
+of the fixed effects are checked for correctness.
+(This requires extra time).</p>
+</section>
+<section id="start-near-solution">
+<span id="ar1-xam-cpp-command-arguments-start-near-solution"></span><span id="index-15"></span><h4>start_near_solution<a class="headerlink" href="#start-near-solution" title="Permalink to this headline">#</a></h4>
+<p>This is either <code class="docutils literal notranslate"><span class="pre">yes</span></code> or <code class="docutils literal notranslate"><span class="pre">no</span></code> .
+If it is yes, the initial point for the optimization
+is the value of the fixed effects used to simulate the data.
+Otherwise, the initial point is significantly different from this value.</p>
+</section>
+</section>
+<section id="output">
+<span id="ar1-xam-cpp-output"></span><span id="index-16"></span><h3>Output<a class="headerlink" href="#output" title="Permalink to this headline">#</a></h3>
+<p>Each output name, value pair is written in as <em>name</em> = <em>value</em>
+where the amount of spaces surrounding the equal sign is not specified.
+All of the pairs listed above are output.
+In addition, the following name value pairs are also output.</p>
+<section id="cppad-mixed-version">
+<span id="ar1-xam-cpp-output-cppad-mixed-version"></span><span id="index-17"></span><h4>cppad_mixed_version<a class="headerlink" href="#cppad-mixed-version" title="Permalink to this headline">#</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">cppad_mixed</span></code> version number.</p>
+</section>
+<section id="ldlt-cholmod">
+<span id="ar1-xam-cpp-output-ldlt-cholmod"></span><span id="index-18"></span><h4>ldlt_cholmod<a class="headerlink" href="#ldlt-cholmod" title="Permalink to this headline">#</a></h4>
+<p>is the <code class="docutils literal notranslate"><span class="pre">bin/run_cmake.sh</span></code> configuration option
+<a class="reference internal" href="run_cmake.sh.html#run-cmake-sh-ldlt-cholmod"><span class="std std-ref">ldlt_cholmod</span></a> .</p>
+</section>
+<section id="optimize-cppad-function">
+<span id="ar1-xam-cpp-output-optimize-cppad-function"></span><span id="index-19"></span><h4>optimize_cppad_function<a class="headerlink" href="#optimize-cppad-function" title="Permalink to this headline">#</a></h4>
+<p>is the <code class="docutils literal notranslate"><span class="pre">bin/run_cmake.sh</span></code> configuration option
+<a class="reference internal" href="run_cmake.sh.html#run-cmake-sh-optimize-cppad-function"><span class="std std-ref">optimize_cppad_function</span></a> .</p>
+</section>
+<section id="ndebug-defined">
+<span id="ar1-xam-cpp-output-ndebug-defined"></span><span id="index-20"></span><h4>ndebug_defined<a class="headerlink" href="#ndebug-defined" title="Permalink to this headline">#</a></h4>
+<p>is the <code class="docutils literal notranslate"><span class="pre">NDEBUG</span></code> preprocessor symbol defined.
+This should be yes (no) if the <code class="docutils literal notranslate"><span class="pre">bin/run_cmake.sh</span></code> configuration option
+<a class="reference internal" href="run_cmake.sh.html#run-cmake-sh-build-type"><span class="std std-ref">build_type</span></a> is <code class="docutils literal notranslate"><span class="pre">release</span></code>
+(<code class="docutils literal notranslate"><span class="pre">debug</span></code> ).</p>
+</section>
+<section id="actual-seed">
+<span id="ar1-xam-cpp-output-actual-seed"></span><span id="index-21"></span><h4>actual_seed<a class="headerlink" href="#actual-seed" title="Permalink to this headline">#</a></h4>
+<p>If <em>random_seed</em> is zero,
+the system clock, instead of <em>random_seed</em> ,
+is used to seed the random number generator.
+The actual random seed <em>actual_seed</em> is printed
+so that you can reproduce results when <em>random_seed</em> is zero.</p>
+</section>
+<section id="initialize-bytes">
+<span id="ar1-xam-cpp-output-initialize-bytes"></span><span id="index-22"></span><h4>initialize_bytes<a class="headerlink" href="#initialize-bytes" title="Permalink to this headline">#</a></h4>
+<p>Is the amount of heap memory, in bytes,
+added to the program during its <a class="reference internal" href="initialize.html#initialize-name"><span class="std std-ref">initialize</span></a> call.
+Note that more temporary memory may have been used during this call.
+In addition, only memory allocated using <code class="docutils literal notranslate"><span class="pre">CppAD::thread_alloc</span></code> is
+included.</p>
+</section>
+<section id="initialize-seconds">
+<span id="ar1-xam-cpp-output-initialize-seconds"></span><span id="index-23"></span><h4>initialize_seconds<a class="headerlink" href="#initialize-seconds" title="Permalink to this headline">#</a></h4>
+<p>Is the number of seconds used by the derived class <a class="reference internal" href="initialize.html#initialize-name"><span class="std std-ref">initialize</span></a> call.</p>
+</section>
+<section id="optimize-fixed-seconds">
+<span id="ar1-xam-cpp-output-optimize-fixed-seconds"></span><span id="index-24"></span><h4>optimize_fixed_seconds<a class="headerlink" href="#optimize-fixed-seconds" title="Permalink to this headline">#</a></h4>
+<p>Is the number of seconds used by the call to
+<a class="reference internal" href="optimize_fixed.html#optimize-fixed-name"><span class="std std-ref">optimize_fixed</span></a> that is used to compute the
+optimal fixed effects.</p>
+</section>
+<section id="optimize-random-seconds">
+<span id="ar1-xam-cpp-output-optimize-random-seconds"></span><span id="index-25"></span><h4>optimize_random_seconds<a class="headerlink" href="#optimize-random-seconds" title="Permalink to this headline">#</a></h4>
+<p>Is the number of seconds used by a single call to
+<a class="reference internal" href="optimize_random.html#optimize-random-name"><span class="std std-ref">optimize_random</span></a> that is used to compute the
+optimal random effects.</p>
+</section>
+<section id="information-mat-seconds">
+<span id="ar1-xam-cpp-output-information-mat-seconds"></span><span id="index-26"></span><h4>information_mat_seconds<a class="headerlink" href="#information-mat-seconds" title="Permalink to this headline">#</a></h4>
+<p>Is the number of seconds used by the call to
+<a class="reference internal" href="information_mat.html#information-mat-name"><span class="std std-ref">information_mat</span></a> that computes the observed information matrix.</p>
+</section>
+<section id="sample-fixed-seconds">
+<span id="ar1-xam-cpp-output-sample-fixed-seconds"></span><span id="index-27"></span><h4>sample_fixed_seconds<a class="headerlink" href="#sample-fixed-seconds" title="Permalink to this headline">#</a></h4>
+<p>Is the number of seconds used by the call to
+<a class="reference internal" href="sample_fixed.html#sample-fixed-name"><span class="std std-ref">sample_fixed</span></a> that computes the
+<a class="reference internal" href="capture_xam.cpp.html#capture-xam-cpp-command-arguments-number-fixed-samples"><span class="std std-ref">number_sample_fixed</span></a>
+samples for the fixed effects.</p>
+</section>
+<section id="final-bytes">
+<span id="ar1-xam-cpp-output-final-bytes"></span><span id="index-28"></span><h4>final_bytes<a class="headerlink" href="#final-bytes" title="Permalink to this headline">#</a></h4>
+<p>Is final amount of heap memory, in bytes, added and retained by the program.
+Only memory allocated using <code class="docutils literal notranslate"><span class="pre">CppAD::thread_alloc</span></code> is included.</p>
+</section>
+<section id="theta-0-estimate">
+<span id="ar1-xam-cpp-output-theta-0-estimate"></span><span id="index-29"></span><h4>theta_0_estimate<a class="headerlink" href="#theta-0-estimate" title="Permalink to this headline">#</a></h4>
+<p>Is the optimal estimate for <span class="math notranslate nohighlight">\(\theta_0\)</span>; see the
+<a class="reference internal" href="#ar1-xam-cpp-problem"><span class="std std-ref">Problem</span></a> definition.</p>
+</section>
+<section id="ar1-xam-ok">
+<span id="ar1-xam-cpp-output-ar1-xam-ok"></span><span id="index-30"></span><h4>ar1_xam_ok<a class="headerlink" href="#ar1-xam-ok" title="Permalink to this headline">#</a></h4>
+<p>If this program passes it’s correctness test,
+<em>ar1_xam_ok</em> is yes and the program return code is <code class="docutils literal notranslate"><span class="pre">0</span></code> .
+Otherwise <em>ar1_xam_ok</em> it is no and the return code is <code class="docutils literal notranslate"><span class="pre">1</span></code> .</p>
+</section>
+</section>
+<section id="example">
+<span id="ar1-xam-cpp-example"></span><span id="index-31"></span><h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">#</a></h3>
+<p>The file <a class="reference internal" href="ar1_xam.sh.html#ar1-xam-sh-name"><span class="std std-ref">ar1_xam.sh</span></a> is an example using this program.</p>
+</section>
+<section id="source-code">
+<span id="ar1-xam-cpp-source-code"></span><span id="index-32"></span><h3>Source Code<a class="headerlink" href="#source-code" title="Permalink to this headline">#</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#</span><span class="w"> </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;cppad/cppad.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#</span><span class="w"> </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;gsl/gsl_randist.h&gt;</span><span class="cp"></span>
+<span class="cp">#</span><span class="w"> </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;Eigen/Dense&gt;</span><span class="cp"></span>
+<span class="cp">#</span><span class="w"> </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;cppad/mixed/cppad_mixed.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#</span><span class="w"> </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;cppad/mixed/sparse_mat_info.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#</span><span class="w"> </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;cppad/mixed/manage_gsl_rng.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#</span><span class="w"> </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;cppad/mixed/configure.hpp&gt;</span><span class="cp"></span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="k">using</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="k">using</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="k">using</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">log</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="k">using</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">AD</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="k">using</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">mixed</span><span class="o">::</span><span class="n">d_sparse_rcv</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="k">using</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">mixed</span><span class="o">::</span><span class="n">a1_double</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="k">using</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">mixed</span><span class="o">::</span><span class="n">d_vector</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// The constant sigma_y</span>
+<span class="w">   </span><span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">sigma_y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="k">class</span><span class="w"> </span><span class="nc">mixed_derived</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">cppad_mixed</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="w">          </span><span class="n">n_fixed_</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="kt">size_t</span><span class="w">          </span><span class="n">n_random_</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="n">d_vector</span><span class="o">&amp;</span><span class="w">       </span><span class="n">y_</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="c1">// ----------------------------------------------------------------------</span>
+<span class="w">   </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// constructor</span>
+<span class="w">      </span><span class="n">mixed_derived</span><span class="p">(</span><span class="w"></span>
+<span class="w">         </span><span class="kt">size_t</span><span class="w">                 </span><span class="n">n_fixed</span><span class="w">       </span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="kt">size_t</span><span class="w">                 </span><span class="n">n_random</span><span class="w">      </span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="kt">bool</span><span class="w">                   </span><span class="n">quasi_fixed</span><span class="w">   </span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="kt">bool</span><span class="w">                   </span><span class="n">bool_sparsity</span><span class="w"> </span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="k">const</span><span class="w"> </span><span class="n">d_sparse_rcv</span><span class="o">&amp;</span><span class="w">    </span><span class="n">A_rcv</span><span class="w">         </span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="k">const</span><span class="w"> </span><span class="n">d_vector</span><span class="o">&amp;</span><span class="w">        </span><span class="n">y</span><span class="w">             </span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"></span>
+<span class="w">         </span><span class="n">cppad_mixed</span><span class="p">(</span><span class="w"></span>
+<span class="w">            </span><span class="n">n_fixed</span><span class="p">,</span><span class="w"> </span><span class="n">n_random</span><span class="p">,</span><span class="w"> </span><span class="n">quasi_fixed</span><span class="p">,</span><span class="w"> </span><span class="n">bool_sparsity</span><span class="p">,</span><span class="w"> </span><span class="n">A_rcv</span><span class="w"></span>
+<span class="w">         </span><span class="p">)</span><span class="w">                     </span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">n_fixed_</span><span class="p">(</span><span class="n">n_fixed</span><span class="p">)</span><span class="w">     </span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">n_random_</span><span class="p">(</span><span class="n">n_random</span><span class="p">)</span><span class="w">   </span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="n">y_</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w">  </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="n">n_fixed</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">         </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="n">y_</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">n_random_</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// -------------------------------------------------------------------</span>
+<span class="w">      </span><span class="c1">// implementation of ran_likelihood</span>
+<span class="w">      </span><span class="c1">// Note that theta[2] is not used</span>
+<span class="w">      </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Vector</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">      </span><span class="n">Vector</span><span class="w"> </span><span class="n">template_ran_likelihood</span><span class="p">(</span><span class="w"></span>
+<span class="w">         </span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&amp;</span><span class="w"> </span><span class="n">theta</span><span class="w">  </span><span class="p">,</span><span class="w"></span>
+<span class="w">         </span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&amp;</span><span class="w"> </span><span class="n">u</span><span class="w">      </span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w">  </span><span class="k">typedef</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">Vector</span><span class="o">::</span><span class="n">value_type</span><span class="w"> </span><span class="n">scalar</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">         </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="n">theta</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">n_fixed_</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<span class="w">         </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="n">u</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">y_</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<span class="w">         </span><span class="n">Vector</span><span class="w"> </span><span class="nf">vec</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">         </span><span class="c1">//</span>
+<span class="w">         </span><span class="c1">// initialize summation</span>
+<span class="w">         </span><span class="n">vec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scalar</span><span class="p">(</span><span class="mf">0.0</span><span class="p">);</span><span class="w"></span>
+<span class="w">         </span><span class="c1">//</span>
+<span class="w">         </span><span class="c1">// sqrt_2pi = CppAD::sqrt(8.0 * CppAD::atan(1.0) );</span>
+<span class="w">         </span><span class="c1">//</span>
+<span class="w">         </span><span class="k">for</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_random_</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="p">{</span><span class="w">  </span><span class="n">scalar</span><span class="w"> </span><span class="n">sigma</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">scalar</span><span class="p">(</span><span class="n">sigma_y</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="n">scalar</span><span class="w"> </span><span class="n">res</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">y_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">sigma</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="c1">//</span>
+<span class="w">            </span><span class="c1">// p(y_i | u, theta)</span>
+<span class="w">            </span><span class="n">vec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">scalar</span><span class="p">(</span><span class="mf">2.0</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// following term does not depend on fixed or random effects</span>
+<span class="w">            </span><span class="c1">// vec[0] += log(sqrt_2pi);</span>
+<span class="w">            </span><span class="c1">//</span>
+<span class="w">            </span><span class="c1">// p(u_i | theta)</span>
+<span class="w">            </span><span class="n">sigma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">               </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">sigma</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="k">else</span><span class="w"></span>
+<span class="w">               </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">sigma</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">vec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">log</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">scalar</span><span class="p">(</span><span class="mf">2.0</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// following term does not depend on fixed or random effects</span>
+<span class="w">            </span><span class="c1">// vec[0] += log(sqrt_2pi);</span>
+<span class="w">         </span><span class="p">}</span><span class="w"></span>
+<span class="w">         </span><span class="k">return</span><span class="w"> </span><span class="n">vec</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// a1_vector version of ran_likelihood</span>
+<span class="w">      </span><span class="k">virtual</span><span class="w"> </span><span class="n">a1_vector</span><span class="w"> </span><span class="n">ran_likelihood</span><span class="p">(</span><span class="w"></span>
+<span class="w">         </span><span class="k">const</span><span class="w"> </span><span class="n">a1_vector</span><span class="o">&amp;</span><span class="w"> </span><span class="n">fixed_vec</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">a1_vector</span><span class="o">&amp;</span><span class="w"> </span><span class="n">random_vec</span><span class="w"></span>
+<span class="w">      </span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">template_ran_likelihood</span><span class="p">(</span><span class="w"> </span><span class="n">fixed_vec</span><span class="p">,</span><span class="w"> </span><span class="n">random_vec</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">   </span><span class="p">};</span><span class="w"></span>
+<span class="w">   </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Value</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">   </span><span class="kt">void</span><span class="w"> </span><span class="n">label_print</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Value</span><span class="o">&amp;</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="p">{</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">setw</span><span class="p">(</span><span class="mi">35</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">left</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">label</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
+<span class="w">   </span><span class="kt">void</span><span class="w"> </span><span class="n">label_print</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="o">&amp;</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="p">{</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">setw</span><span class="p">(</span><span class="mi">35</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">left</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">label</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="kt">int</span><span class="w"> </span><span class="n">n_digits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">log10</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1e-9</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">setprecision</span><span class="p">(</span><span class="n">n_digits</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
+<span class="w">   </span><span class="kt">void</span><span class="w"> </span><span class="n">bool_print</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="p">{</span><span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">setw</span><span class="p">(</span><span class="mi">35</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">left</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">label</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; = yes&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="k">else</span><span class="w"></span>
+<span class="w">         </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; = no&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
+<span class="w">   </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">size_t2string</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="p">{</span><span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">raw_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">value</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n_raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">raw_string</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="k">for</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_raw</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">n_raw</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="s">&quot;,&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">         </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">raw_string</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="p">[])</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="kt">bool</span><span class="w">   </span><span class="n">ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="kt">double</span><span class="w"> </span><span class="n">inf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">infinity</span><span class="p">();</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">arg_name</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;random_seed&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;number_random&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;quasi_fixed&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;trace_optimize_fixed&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;ipopt_solve&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;bool_sparsity&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;hold_memory&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;derivative_test&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;start_near_solution&quot;</span><span class="w"></span>
+<span class="w">   </span><span class="p">};</span><span class="w"></span>
+<span class="w">   </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n_arg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">arg_name</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">arg_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="kt">size_t</span><span class="p">(</span><span class="n">argc</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n_arg</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="p">{</span><span class="w">  </span><span class="c1">// print usage error message</span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;expected &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">n_arg</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; arguments and found &quot;</span><span class="w"></span>
+<span class="w">      </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">argc</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">usage: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<span class="w">      </span><span class="k">for</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_arg</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; </span><span class="se">\\</span><span class="s"> </span><span class="se">\n\t</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">arg_name</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// get command line arguments</span>
+<span class="w">   </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="n">n_arg</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="kt">size_t</span><span class="w"> </span><span class="n">random_seed</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">atoi</span><span class="p">(</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="kt">size_t</span><span class="w"> </span><span class="n">number_random</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">atoi</span><span class="p">(</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="kt">bool</span><span class="w">   </span><span class="n">quasi_fixed</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="n">string</span><span class="p">(</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;yes&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="kt">bool</span><span class="w">   </span><span class="n">trace_optimize_fixed</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">string</span><span class="p">(</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;yes&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="kt">bool</span><span class="w">   </span><span class="n">ipopt_solve</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="n">string</span><span class="p">(</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;yes&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="kt">bool</span><span class="w">   </span><span class="n">bool_sparsity</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="n">string</span><span class="p">(</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;yes&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="kt">bool</span><span class="w">   </span><span class="n">hold_memory</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="n">string</span><span class="p">(</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;yes&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="kt">bool</span><span class="w">   </span><span class="n">derivative_test</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">string</span><span class="p">(</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;yes&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="kt">bool</span><span class="w">   </span><span class="n">start_near_solution</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">string</span><span class="p">(</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;yes&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// hold memory setting</span>
+<span class="w">   </span><span class="n">CppAD</span><span class="o">::</span><span class="n">thread_alloc</span><span class="o">::</span><span class="n">hold_memory</span><span class="p">(</span><span class="n">hold_memory</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// print the command line arugments with labels for each value</span>
+<span class="w">   </span><span class="k">for</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_arg</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">label_print</span><span class="p">(</span><span class="n">arg_name</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="o">+</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// configuration options</span>
+<span class="w">   </span><span class="n">label_print</span><span class="p">(</span><span class="s">&quot;cppad_mixed_version&quot;</span><span class="p">,</span><span class="w">    </span><span class="n">CPPAD_MIXED_VERSION</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">bool_print</span><span class="p">(</span><span class="s">&quot;ldlt_cholmod&quot;</span><span class="p">,</span><span class="w">            </span><span class="n">CPPAD_MIXED_LDLT_CHOLMOD</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">bool_print</span><span class="p">(</span><span class="s">&quot;optimize_cppad_function&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">CPPAD_MIXED_OPTIMIZE_CPPAD_FUNCTION</span><span class="p">);</span><span class="w"></span>
+<span class="cp"># ifdef NDEBUG</span>
+<span class="w">   </span><span class="n">bool_print</span><span class="p">(</span><span class="s">&quot;ndebug_defined&quot;</span><span class="p">,</span><span class="w">          </span><span class="nb">true</span><span class="p">);</span><span class="w"></span>
+<span class="cp"># else</span>
+<span class="w">   </span><span class="n">bool_print</span><span class="p">(</span><span class="s">&quot;ndebug_defined&quot;</span><span class="p">,</span><span class="w">          </span><span class="nb">false</span><span class="p">);</span><span class="w"></span>
+<span class="cp"># endif</span>
+
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// initialize gsl random number generator</span>
+<span class="w">   </span><span class="kt">size_t</span><span class="w"> </span><span class="n">actual_seed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">mixed</span><span class="o">::</span><span class="n">new_gsl_rng</span><span class="p">(</span><span class="n">random_seed</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">label_print</span><span class="p">(</span><span class="s">&quot;actual_seed&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">actual_seed</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n_data</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">number_random</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n_random</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">number_random</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="kt">size_t</span><span class="w"> </span><span class="n">n_fixed</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// explicit constriants</span>
+<span class="w">   </span><span class="n">d_vector</span><span class="w"> </span><span class="nf">fix_constraint_lower</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="n">fix_constraint_upper</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// difference</span>
+<span class="w">   </span><span class="n">gsl_rng</span><span class="o">*</span><span class="w"> </span><span class="n">rng</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">mixed</span><span class="o">::</span><span class="n">get_gsl_rng</span><span class="p">();</span><span class="w"></span>
+<span class="w">   </span><span class="n">d_vector</span><span class="w"> </span><span class="nf">y</span><span class="p">(</span><span class="n">n_data</span><span class="p">),</span><span class="w"> </span><span class="n">random_in</span><span class="p">(</span><span class="n">n_random</span><span class="p">),</span><span class="w"> </span><span class="n">theta_sim</span><span class="p">(</span><span class="n">n_fixed</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">theta_sim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="k">for</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_data</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="p">{</span><span class="w">  </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="kt">double</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">theta_sim</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<span class="w">      </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w">        </span><span class="o">+=</span><span class="w"> </span><span class="n">gsl_ran_gaussian</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span><span class="w"> </span><span class="n">sigma_y</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">random_in</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="n">d_vector</span><span class="w"></span>
+<span class="w">      </span><span class="n">fixed_lower</span><span class="p">(</span><span class="n">n_fixed</span><span class="p">),</span><span class="w"> </span><span class="n">fixed_in</span><span class="p">(</span><span class="n">n_fixed</span><span class="p">),</span><span class="w"> </span><span class="n">fixed_upper</span><span class="p">(</span><span class="n">n_fixed</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">fixed_lower</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e-5</span><span class="p">;</span><span class="w"> </span><span class="n">fixed_in</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span><span class="w"> </span><span class="n">fixed_upper</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inf</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="n">start_near_solution</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">fixed_in</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">theta_sim</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// object that is derived from cppad_mixed</span>
+<span class="w">   </span><span class="n">CppAD</span><span class="o">::</span><span class="n">mixed</span><span class="o">::</span><span class="n">d_sparse_rcv</span><span class="w"> </span><span class="n">A_rcv</span><span class="p">;</span><span class="w"> </span><span class="c1">// empty matrix</span>
+<span class="w">   </span><span class="n">mixed_derived</span><span class="w"> </span><span class="nf">mixed_object</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">n_fixed</span><span class="p">,</span><span class="w"> </span><span class="n">n_random</span><span class="p">,</span><span class="w"> </span><span class="n">quasi_fixed</span><span class="p">,</span><span class="w"> </span><span class="n">bool_sparsity</span><span class="p">,</span><span class="w"> </span><span class="n">A_rcv</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"></span>
+<span class="w">   </span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="c1">// initialization</span>
+<span class="w">   </span><span class="kt">size_t</span><span class="w"> </span><span class="kr">thread</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">thread_alloc</span><span class="o">::</span><span class="n">thread_num</span><span class="p">();</span><span class="w"></span>
+<span class="w">   </span><span class="kt">size_t</span><span class="w"> </span><span class="n">start_bytes</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">thread_alloc</span><span class="o">::</span><span class="n">inuse</span><span class="p">(</span><span class="kr">thread</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="kt">double</span><span class="w"> </span><span class="n">start_seconds</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">elapsed_seconds</span><span class="p">();</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="n">mixed_object</span><span class="p">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">fixed_in</span><span class="p">,</span><span class="w"> </span><span class="n">random_in</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="kt">double</span><span class="w"> </span><span class="n">end_seconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">elapsed_seconds</span><span class="p">();</span><span class="w"></span>
+<span class="w">   </span><span class="kt">size_t</span><span class="w"> </span><span class="n">end_bytes</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">thread_alloc</span><span class="o">::</span><span class="n">inuse</span><span class="p">(</span><span class="kr">thread</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// print amoumt of memory added to mixed_object during initialize</span>
+<span class="w">   </span><span class="c1">// (use commans to separate every three digits).</span>
+<span class="w">   </span><span class="n">string</span><span class="w"> </span><span class="n">initialize_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size_t2string</span><span class="p">(</span><span class="n">end_bytes</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_bytes</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">label_print</span><span class="p">(</span><span class="s">&quot;initialize_bytes&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">initialize_bytes</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">label_print</span><span class="p">(</span><span class="s">&quot;initialize_seconds&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">end_seconds</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_seconds</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// optimize the fixed effects using quasi-Newton method</span>
+<span class="w">   </span><span class="n">string</span><span class="w"> </span><span class="n">random_ipopt_options</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;Integer print_level               0</span><span class="se">\n</span><span class="s">&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;String  sb                        yes</span><span class="se">\n</span><span class="s">&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;String  derivative_test           none</span><span class="se">\n</span><span class="s">&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;Numeric tol                       1e-7</span><span class="se">\n</span><span class="s">&quot;</span><span class="w"></span>
+<span class="w">   </span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="n">ipopt_solve</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="n">random_ipopt_options</span><span class="w"> </span><span class="o">+=</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;String  evaluation_method         ipopt_solve</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">string</span><span class="w"> </span><span class="n">fixed_ipopt_options</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;String  sb                        yes</span><span class="se">\n</span><span class="s">&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;Numeric tol                       1e-7</span><span class="se">\n</span><span class="s">&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;Integer max_iter                  15</span><span class="se">\n</span><span class="s">&quot;</span><span class="w"></span>
+<span class="w">   </span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="n">trace_optimize_fixed</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">fixed_ipopt_options</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="s">&quot;Integer print_level         5</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="k">else</span><span class="w"></span>
+<span class="w">      </span><span class="n">fixed_ipopt_options</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="s">&quot;Integer print_level         0</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="n">derivative_test</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">fixed_ipopt_options</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="s">&quot;String derivative_test      first-order</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="k">else</span><span class="w"></span>
+<span class="w">      </span><span class="n">fixed_ipopt_options</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="s">&quot;String derivative_test      none</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="n">d_vector</span><span class="w"> </span><span class="nf">random_lower</span><span class="p">(</span><span class="n">n_random</span><span class="p">),</span><span class="w"> </span><span class="n">random_upper</span><span class="p">(</span><span class="n">n_random</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="k">for</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_random</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="p">{</span><span class="w">  </span><span class="n">random_lower</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">inf</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">random_upper</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">+</span><span class="n">inf</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
+<span class="w">   </span><span class="c1">// optimize fixed effects</span>
+<span class="w">   </span><span class="n">start_seconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">elapsed_seconds</span><span class="p">();</span><span class="w"></span>
+<span class="w">   </span><span class="n">d_vector</span><span class="w"> </span><span class="n">fixed_scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fixed_in</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">CppAD</span><span class="o">::</span><span class="n">mixed</span><span class="o">::</span><span class="n">fixed_solution</span><span class="w"> </span><span class="n">solution</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mixed_object</span><span class="p">.</span><span class="n">optimize_fixed</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">fixed_ipopt_options</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">random_ipopt_options</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">fixed_lower</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">fixed_upper</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">fix_constraint_lower</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">fix_constraint_upper</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">fixed_scale</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">fixed_in</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">random_lower</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">random_upper</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">random_in</span><span class="w"></span>
+<span class="w">   </span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">end_seconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">elapsed_seconds</span><span class="p">();</span><span class="w"></span>
+<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="n">trace_optimize_fixed</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">label_print</span><span class="p">(</span><span class="s">&quot;optimize_fixed_seconds&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">end_seconds</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_seconds</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// estimate of fixed effects</span>
+<span class="w">   </span><span class="n">d_vector</span><span class="w"> </span><span class="n">theta_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">solution</span><span class="p">.</span><span class="n">fixed_opt</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// estimate of random effects</span>
+<span class="w">   </span><span class="n">start_seconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">elapsed_seconds</span><span class="p">();</span><span class="w"></span>
+<span class="w">   </span><span class="n">d_vector</span><span class="w"> </span><span class="n">u_out</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">mixed_object</span><span class="p">.</span><span class="n">optimize_random</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">random_ipopt_options</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">theta_out</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">random_lower</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">random_upper</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">random_in</span><span class="w"></span>
+<span class="w">   </span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">end_seconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">elapsed_seconds</span><span class="p">();</span><span class="w"></span>
+<span class="w">   </span><span class="n">label_print</span><span class="p">(</span><span class="s">&quot;optimize_random_seconds&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">end_seconds</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_seconds</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// information matrix</span>
+<span class="w">   </span><span class="n">start_seconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">elapsed_seconds</span><span class="p">();</span><span class="w"></span>
+<span class="w">   </span><span class="n">d_sparse_rcv</span><span class="w"> </span><span class="n">hes_fixed_obj_rcv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mixed_object</span><span class="p">.</span><span class="n">hes_fixed_obj</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">solution</span><span class="p">.</span><span class="n">fixed_opt</span><span class="p">,</span><span class="w"> </span><span class="n">u_out</span><span class="w"></span>
+<span class="w">   </span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">end_seconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">elapsed_seconds</span><span class="p">();</span><span class="w"></span>
+<span class="w">   </span><span class="n">label_print</span><span class="p">(</span><span class="s">&quot;information_mat_seconds&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">end_seconds</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_seconds</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// sample approximate posteroior for fixed effects</span>
+<span class="w">   </span><span class="kt">size_t</span><span class="w"> </span><span class="n">number_fixed_samples</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">d_vector</span><span class="w"> </span><span class="nf">sample</span><span class="p">(</span><span class="w"> </span><span class="n">number_fixed_samples</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">n_fixed</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">start_seconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">elapsed_seconds</span><span class="p">();</span><span class="w"></span>
+<span class="w">   </span><span class="n">mixed_object</span><span class="p">.</span><span class="n">sample_fixed</span><span class="p">(</span><span class="w"></span>
+<span class="w">      </span><span class="n">sample</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">hes_fixed_obj_rcv</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">solution</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">fixed_lower</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="n">fixed_upper</span><span class="w"></span>
+<span class="w">   </span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">end_seconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">elapsed_seconds</span><span class="p">();</span><span class="w"></span>
+<span class="w">   </span><span class="n">label_print</span><span class="p">(</span><span class="s">&quot;sample_fixed_seconds&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">end_seconds</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_seconds</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="n">end_bytes</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="n">CppAD</span><span class="o">::</span><span class="n">thread_alloc</span><span class="o">::</span><span class="n">inuse</span><span class="p">(</span><span class="kr">thread</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">string</span><span class="w"> </span><span class="n">final_bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size_t2string</span><span class="p">(</span><span class="n">end_bytes</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_bytes</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">label_print</span><span class="p">(</span><span class="s">&quot;final_bytes&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">final_bytes</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// compute the sample standard deviations</span>
+<span class="w">   </span><span class="c1">// and ratio of error divided by sample standard deviation</span>
+<span class="w">   </span><span class="n">d_vector</span><span class="w"> </span><span class="nf">sample_std</span><span class="p">(</span><span class="n">n_fixed</span><span class="p">),</span><span class="w"> </span><span class="n">estimate_ratio</span><span class="p">(</span><span class="n">n_fixed</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="k">for</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_fixed</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">sample_std</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="k">for</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">number_fixed_samples</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="p">{</span><span class="w">  </span><span class="k">for</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_fixed</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">diff</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">sample</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">n_fixed</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">theta_out</span><span class="p">[</span><span class="n">j</span><span class="p">];</span><span class="w"></span>
+<span class="w">         </span><span class="n">sample_std</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">diff</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">diff</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
+<span class="w">   </span><span class="k">for</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n_fixed</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="p">{</span><span class="w">  </span><span class="n">sample_std</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sample_std</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">/</span><span class="kt">double</span><span class="p">(</span><span class="n">number_fixed_samples</span><span class="p">));</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// check if results results are reasonable</span>
+<span class="w">      </span><span class="n">estimate_ratio</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">theta_out</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">theta_sim</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">sample_std</span><span class="p">[</span><span class="n">j</span><span class="p">];</span><span class="w"></span>
+<span class="w">      </span><span class="n">ok</span><span class="w">  </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">fabs</span><span class="p">(</span><span class="n">estimate_ratio</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">10.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
+<span class="w">   </span><span class="n">label_print</span><span class="p">(</span><span class="s">&quot;theta_0_estimate&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">theta_out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">label_print</span><span class="p">(</span><span class="s">&quot;theta_0_std&quot;</span><span class="p">,</span><span class="w">      </span><span class="n">sample_std</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">label_print</span><span class="p">(</span><span class="s">&quot;theta_0_ratio&quot;</span><span class="p">,</span><span class="w">    </span><span class="n">estimate_ratio</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// Check that only the lower limit on theta[1] is active.</span>
+<span class="w">   </span><span class="n">ok</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">solution</span><span class="p">.</span><span class="n">fixed_lag</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">n_fixed</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">ok</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">solution</span><span class="p">.</span><span class="n">fixed_lag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">ok</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">solution</span><span class="p">.</span><span class="n">fix_con_lag</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">ok</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">solution</span><span class="p">.</span><span class="n">ran_con_lag</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="n">ok</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">label_print</span><span class="p">(</span><span class="s">&quot;ar1_xam_ok&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;yes&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="k">else</span><span class="w"></span>
+<span class="w">      </span><span class="n">label_print</span><span class="p">(</span><span class="s">&quot;ar1_xam_ok&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;no&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="n">CppAD</span><span class="o">::</span><span class="n">thread_alloc</span><span class="o">::</span><span class="n">hold_memory</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">CppAD</span><span class="o">::</span><span class="n">mixed</span><span class="o">::</span><span class="n">free_gsl_rng</span><span class="p">();</span><span class="w"></span>
+<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="n">ok</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="ar1_xam.sh.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">ar1_xam.sh</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="speed.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">speed</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">ar1_xam.cpp</a><ul>
+<li><a class="reference internal" href="#a-first-order-auto-regressive-example-and-speed-test">A First Order Auto-Regressive Example and Speed Test</a><ul>
+<li><a class="reference internal" href="#syntax">Syntax</a></li>
+<li><a class="reference internal" href="#problem">Problem</a><ul>
+<li><a class="reference internal" href="#data">Data</a></li>
+<li><a class="reference internal" href="#p-y-t-u-theta">p( y_t | u , theta )</a></li>
+<li><a class="reference internal" href="#p-u-theta">p( u | theta )</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#command-arguments">Command Arguments</a><ul>
+<li><a class="reference internal" href="#random-seed">random_seed</a></li>
+<li><a class="reference internal" href="#number-random">number_random</a></li>
+<li><a class="reference internal" href="#quasi-fixed">quasi_fixed</a></li>
+<li><a class="reference internal" href="#trace-optimize-fixed">trace_optimize_fixed</a></li>
+<li><a class="reference internal" href="#ipopt-solve">ipopt_solve</a></li>
+<li><a class="reference internal" href="#bool-sparsity">bool_sparsity</a></li>
+<li><a class="reference internal" href="#hold-memory">hold_memory</a></li>
+<li><a class="reference internal" href="#derivative-test">derivative_test</a></li>
+<li><a class="reference internal" href="#start-near-solution">start_near_solution</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#output">Output</a><ul>
+<li><a class="reference internal" href="#cppad-mixed-version">cppad_mixed_version</a></li>
+<li><a class="reference internal" href="#ldlt-cholmod">ldlt_cholmod</a></li>
+<li><a class="reference internal" href="#optimize-cppad-function">optimize_cppad_function</a></li>
+<li><a class="reference internal" href="#ndebug-defined">ndebug_defined</a></li>
+<li><a class="reference internal" href="#actual-seed">actual_seed</a></li>
+<li><a class="reference internal" href="#initialize-bytes">initialize_bytes</a></li>
+<li><a class="reference internal" href="#initialize-seconds">initialize_seconds</a></li>
+<li><a class="reference internal" href="#optimize-fixed-seconds">optimize_fixed_seconds</a></li>
+<li><a class="reference internal" href="#optimize-random-seconds">optimize_random_seconds</a></li>
+<li><a class="reference internal" href="#information-mat-seconds">information_mat_seconds</a></li>
+<li><a class="reference internal" href="#sample-fixed-seconds">sample_fixed_seconds</a></li>
+<li><a class="reference internal" href="#final-bytes">final_bytes</a></li>
+<li><a class="reference internal" href="#theta-0-estimate">theta_0_estimate</a></li>
+<li><a class="reference internal" href="#ar1-xam-ok">ar1_xam_ok</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#source-code">Source Code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>

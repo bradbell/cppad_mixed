@@ -1,0 +1,526 @@
+.. include:: xrst_preamble.rst
+
+.. _theory-name:
+
+!!!!!!
+theory
+!!!!!!
+
+xrst input file: ``xrst/theory.xrst``
+
+:math:`\newcommand{\dtheta}[1]{ \frac{\R{d}}{\R{d} \theta_{ #1}} }`
+
+.. meta::
+   :keywords: theory, laplace, approximation, for, mixed, effects, models
+
+.. index:: theory, laplace, approximation, for, mixed, effects, models
+
+.. _theory-title:
+
+Laplace Approximation for Mixed Effects Models
+##############################################
+
+.. meta::
+   :keywords: reference
+
+.. index:: reference
+
+.. _theory@Reference:
+
+Reference
+*********
+TMB: Automatic Differentiation and Laplace Approximation,
+Kasper Kristensen, Anders Nielsen, Casper W. Berg, Hans Skaug, Bradley M. Bell,
+Journal of Statistical Software 70, 1-21 April 2016.
+
+.. meta::
+   :keywords: total, likelihood
+
+.. index:: total, likelihood
+
+.. _theory@Total Likelihood:
+
+Total Likelihood
+****************
+The reference above defines :math:`f( \theta, u)`
+to be the negative log-likelihood of the
+:math:`z`, :math:`y`, :math:`u` and :math:`\theta`; i.e.,
+
+.. math::
+
+   - \log [  \;
+      \B{p} ( y |  \theta, u ) \B{p} ( u | \theta )  \;
+      \B{p} ( z | \theta )\B{p} ( \theta ) \;
+   ]
+
+.. meta::
+   :keywords: random, likelihood,, f(theta,, u)
+
+.. index:: random, likelihood,, f(theta,, u)
+
+.. _theory@Random Likelihood, f(theta, u):
+
+Random Likelihood, f(theta, u)
+******************************
+We use :math:`f( \theta , u )` for the part of the likelihood
+that depends on the random effects :math:`u`;
+
+.. math::
+
+   f( \theta, u ) = - \log [ \B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) ]
+
+.. meta::
+   :keywords: assumption
+
+.. index:: assumption
+
+.. _theory@Random Likelihood, f(theta, u)@Assumption:
+
+Assumption
+==========
+The function :math:`f(\theta, u)` is assumed to be smooth.
+Furthermore, there are no constraints on the value of :math:`u`.
+
+.. meta::
+   :keywords: random, effects, objective
+
+.. index:: random, effects, objective
+
+.. _theory@Random Likelihood, f(theta, u)@Random Effects Objective:
+
+Random Effects Objective
+========================
+Give a value for the fixed effects :math:`\theta`,
+the random effects objective is the random likelihood as just
+a function of the random effects; i.e., :math:`f( \theta , \cdot )`.
+
+.. meta::
+   :keywords: fixed, likelihood,, g(theta)
+
+.. index:: fixed, likelihood,, g(theta)
+
+.. _theory@Fixed Likelihood, g(theta):
+
+Fixed Likelihood, g(theta)
+**************************
+We use :math:`g( \theta )` for the part of the likelihood
+that only depends on the fixed effects :math:`\theta`;
+
+.. math::
+
+   g( \theta ) = - \log [ \B{p} ( z | \theta ) \B{p} ( \theta ) ]
+
+The function :math:`g( \theta )` may not be smooth, to be specific, it
+can have absolute values in it (corresponding to the Laplace densities).
+Furthermore, there may be  constraints on the value of :math:`\theta`.
+
+.. meta::
+   :keywords: optimal, random, effects,, u^(theta)
+
+.. index:: optimal, random, effects,, u^(theta)
+
+.. _theory@Optimal Random Effects, u^(theta):
+
+Optimal Random Effects, u^(theta)
+*********************************
+Given the fixed effects :math:`\theta`,
+we use :math:`\hat{u} ( \theta )` to denote
+the random effects that maximize the random likelihood; i.e.,
+
+.. math::
+
+   \hat{u} ( \theta ) = \R{argmin} \; f( \theta, u ) \; \R{w.r.t.} \; u
+
+Note that this definition agrees with the other definition for
+:ref:`u^(theta)<problem@Notation@Optimal Random Effects, u^(theta)>` .
+
+.. meta::
+   :keywords: objective
+
+.. index:: objective
+
+.. _theory@Objective:
+
+Objective
+*********
+
+.. meta::
+   :keywords: laplace, approximation,, h(theta,, u)
+
+.. index:: laplace, approximation,, h(theta,, u)
+
+.. _theory@Objective@Laplace Approximation, h(theta, u):
+
+Laplace Approximation, h(theta, u)
+==================================
+Using the notation above,
+the Laplace approximation as a function of both
+the fixed and random effects is
+
+.. math::
+
+   h( \theta, u )
+   =
+   + \frac{1}{2} \log \det f_{u,u} ( \theta, u )
+   + f( \theta, u )
+   - \frac{n}{2} \log ( 2 \pi )
+
+where :math:`n` is the number of random effects.
+
+.. meta::
+   :keywords: laplace, objective,, r(theta)
+
+.. index:: laplace, objective,, r(theta)
+
+.. _theory@Objective@Laplace Objective, r(theta):
+
+Laplace Objective, r(theta)
+===========================
+We refer to
+
+.. math::
+
+   r( \theta )
+   =
+   h[ \theta , \hat{u} ( \theta ) ]
+   \approx
+   - \log \left[ \int_{-\infty}^{+\infty}
+      \B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) \; \B{d} u
+   \right]
+
+as the Laplace objective.
+This corresponds to equation (4) in the
+:ref:`theory@Reference` .
+
+.. meta::
+   :keywords: fixed, effects, objective,, l(theta)
+
+.. index:: fixed, effects, objective,, l(theta)
+
+.. _theory@Objective@Fixed Effects Objective, L(theta):
+
+Fixed Effects Objective, L(theta)
+=================================
+The fixed effects objective, as a function of just the fixed effects, is
+
+.. math::
+
+   L ( \theta )
+   =
+   r( \theta ) + g( \theta )
+
+.. meta::
+   :keywords: derivative, of, optimal, random, effects
+
+.. index:: derivative, of, optimal, random, effects
+
+.. _theory@Derivative of Optimal Random Effects:
+
+Derivative of Optimal Random Effects
+************************************
+Because :math:`f(\theta, u)` is smooth,
+and :math:`\hat{u} ( \theta )` is optimal w.r.t :math:`u`,
+we obtain
+
+.. math::
+
+   f_u [ \theta , \hat{u} ( \theta ) ] = 0
+
+From this equation,
+and the implicit function theorem,
+it follows that
+
+.. math::
+
+   \hat{u}_\theta ( \theta )
+   =
+   - f_{u,u} \left[ \theta , \hat{u} ( \theta ) \right]^{-1}
+      f_{u,\theta} \left[ \theta , \hat{u} ( \theta )  \right]
+
+.. meta::
+   :keywords: derivative, of, random, constraints
+
+.. index:: derivative, of, random, constraints
+
+.. _theory@Derivative of Random Constraints:
+
+Derivative of Random Constraints
+********************************
+The derivative of the
+:ref:`random constraint function<problem@Notation@Random Constraint Function, A*u^(theta)>`
+is given by
+
+.. math::
+
+   \partial_\theta [ A \; \hat{u} ( \theta ) ]
+   =
+   A \; \hat{u}_\theta ( \theta )
+
+.. meta::
+   :keywords: derivative, of, laplace, objective
+
+.. index:: derivative, of, laplace, objective
+
+.. _theory@Derivative of Laplace Objective:
+
+Derivative of Laplace Objective
+*******************************
+The derivative of the random part of the objective is given by
+
+.. math::
+
+   r_\theta ( \theta )
+   =
+   h_\theta [ \theta , \hat{u} ( \theta ) ]
+   +
+   h_u [ \theta , \hat{u} ( \theta ) ] \hat{u}_\theta ( \theta )
+
+Thus the derivative of :math:`r ( \theta )` can be computed
+using the derivative of :math:`\hat{u} ( \theta )`
+and the partials of :math:`h( \theta , u )`.
+Let :math:`\partial_k` denote the partial with respect to the *k*-th
+component of the combined vector :math:`( \theta , u )`.
+
+.. math::
+
+   \partial_k [ h( \theta , u ) ]
+   =
+   \partial_k [ f( \theta , u ) ]
+   +
+   \frac{1}{2} \sum_{i=0}^{n-1} \sum_{j=0}^{n-1}
+      f_{u,u} ( \theta , u )_{i,j}^{-1}
+      \partial_k [ f_{u,u} ( \theta , u)_{i,j} ]
+
+where :math:`n` is the number of random effects.
+Note that :math:`f_{u,u} ( \theta , u )`
+is often sparse and only non-zero
+components need be included in the summation.
+This is discussed in more detail near equation (8) in the
+:ref:`theory@Reference` .
+We also note that if :math:`k` corresponds to a component of :math:`u` then
+
+.. math::
+
+   \partial_k ( f[ \theta , \hat{u} ( \theta ) ] ) = 0
+
+.. meta::
+   :keywords: approximate, optimal, random, effects
+
+.. index:: approximate, optimal, random, effects
+
+.. _theory@Approximate Optimal Random Effects:
+
+Approximate Optimal Random Effects
+**********************************
+
+.. meta::
+   :keywords: first, order,, u(beta,, theta,, u)
+
+.. index:: first, order,, u(beta,, theta,, u)
+
+.. _theory@Approximate Optimal Random Effects@First Order, U(beta, theta, u):
+
+First Order, U(beta, theta, u)
+==============================
+We define  the function
+
+.. math::
+
+   U ( \beta , \theta , u )
+   =
+   u - f_{u,u} ( \theta , u )^{-1} f_u ( \beta , u  )
+
+It follows that
+
+.. math::
+
+   U \left[ \theta , \theta , \hat{u} ( \theta ) \right] = \hat{u} ( \theta )
+
+.. math::
+
+   U_{\beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+   =
+   \hat{u}_\theta ( \theta )
+
+.. meta::
+   :keywords: second, order,, w(beta,, theta,, u)
+
+.. index:: second, order,, w(beta,, theta,, u)
+
+.. _theory@Approximate Optimal Random Effects@Second Order, W(beta, theta, u):
+
+Second Order, W(beta, theta, u)
+===============================
+We define  the function
+
+.. math::
+
+   W ( \beta , \theta , u )
+   =
+   U( \beta , \theta , u )
+   -
+   f_{u,u} ( \theta , u )^{-1} f_u [ \beta , U( \beta , \theta , u)  ]
+
+It follows that
+
+.. math::
+
+   W \left[ \theta , \theta , \hat{u} ( \theta ) \right] = \hat{u} ( \theta )
+
+.. math::
+
+   W_{\beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+   =
+   \hat{u}_\theta ( \theta )
+
+and for random effects indices :math:`i`,
+
+.. math::
+
+   W^i_{\beta \beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+   =
+   \hat{u}^i_{\theta , \theta} ( \theta )
+
+.. meta::
+   :keywords: approximate, laplace, objective,, h(beta,, theta,, u)
+
+.. index:: approximate, laplace, objective,, h(beta,, theta,, u)
+
+.. _theory@Approximate Laplace Objective, H(beta, theta, u):
+
+Approximate Laplace Objective, H(beta, theta, u)
+************************************************
+Given these facts we define
+
+.. math::
+
+   H( \beta , \theta , u)
+   =
+   + \frac{1}{2} \log \det f_{u,u} [ \beta, W( \beta , \theta , u) ]
+   + f[ \beta, U( \beta , \theta , u) ]
+   - \frac{n}{2} \log ( 2 \pi )
+
+It follow that
+
+.. math::
+
+   r_{\theta,\theta} ( \theta )
+   =
+   H_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
+
+.. meta::
+   :keywords: approximate, random, constraint, function,, b(beta,, theta,, u)
+
+.. index:: approximate, random, constraint, function,, b(beta,, theta,, u)
+
+.. _theory@Approximate Random Constraint Function, B(beta, theta, u):
+
+Approximate Random Constraint Function, B(beta, theta, u)
+*********************************************************
+We also define the approximation
+:ref:`random constraint function<problem@Notation@Random Constraint Function, A*u^(theta)>`
+
+.. math::
+
+   B( \beta , \theta , u) = A \; W( \beta , \theta , u )
+
+.. meta::
+   :keywords: hessian, of, laplace, objective
+
+.. index:: hessian, of, laplace, objective
+
+.. _theory@Hessian of Laplace Objective:
+
+Hessian of Laplace Objective
+****************************
+Note that the Hessian of the Laplace objective
+:math:`r_{\theta,\theta} ( \theta )` is required when
+:ref:`derived_ctor@quasi_fixed` is false.
+In this case, the representation
+
+.. math::
+
+   r_{\theta,\theta} ( \theta )
+   =
+   H_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
+
+is used to compute this Hessian.
+
+.. meta::
+   :keywords: hessian, of, random, constraints
+
+.. index:: hessian, of, random, constraints
+
+.. _theory@Hessian of Random Constraints:
+
+Hessian of Random Constraints
+*****************************
+In the case where
+:ref:`derived_ctor@quasi_fixed` is false
+we need to compute second derivatives of the random constraint function.
+We use :math:`A^i` ( :math:`B^i`) to denote one of the
+rows of the random constraint matrix
+( approximate random constraint function ).
+The Hessian of the random constraints can be computed using the formula
+
+.. math::
+
+   \partial_\theta \partial_\theta [ A^i \; \hat{u} ( \theta ) ]
+   =
+   B^i_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
+
+.. meta::
+   :keywords: sparse, observed, information
+
+.. index:: sparse, observed, information
+
+.. _theory@Sparse Observed Information:
+
+Sparse Observed Information
+***************************
+Suppose that :math:`H` is a sparse positive definite Hessian of
+a likelihood at the maximum likelihood estimate for its unknown parameters.
+The corresponding asymptotic covariance for posterior distribution
+of the parameters is normal with covariance :math:`H^{-1}`.
+A vector :math:`v` with this covariance can be simulated as
+
+.. math::
+
+   v = R w
+
+where :math:`R` is defined by :math:`H^{-1} = R R^\R{T}` and
+:math:`w` is a normal with mean zero and the identity covariance.
+Suppose we have a sparse factorization of the form
+
+.. math::
+
+   L D L^\R{T} = P H P^\R{T}
+
+where :math:`L` is lower triangular, :math:`D` is diagonal,
+and :math:`P` is a permutation matrix.
+It follows that
+
+.. math::
+
+   H = P^\R{T} L D L^\R{T} P
+
+.. math::
+
+   H^{-1} = P^\R{T} L^{-\R{T}} D^{-1} L^{-1} P
+
+.. math::
+
+   R = P^\R{T} L^{-\R{T}} D^{-1/2}
+
+.. math::
+
+   v = P^\R{T} L^{-\R{T}} D^{-1/2} w
+
+If :math:`w` is simulated as a normal random vector
+with  mean zero and identity covariance,
+and :math:`v` is computed using this formula,
+the mean of :math:`v` is zero and its covariance is given by
+
+.. math::
+
+   \B{E}[ v v^\R{T} ] = H^{-1}

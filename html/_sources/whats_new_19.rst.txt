@@ -1,0 +1,165 @@
+.. include:: xrst_preamble.rst
+
+.. _whats_new_19-name:
+
+!!!!!!!!!!!!
+whats_new_19
+!!!!!!!!!!!!
+
+xrst input file: ``xrst/whats_new/19.xrst``
+
+.. meta::
+   :keywords: whats_new_19, changes, and, additions, to, cppad_mixed, during, 2019
+
+.. index:: whats_new_19, changes, and, additions, to, cppad_mixed, during, 2019
+
+.. _whats_new_19-title:
+
+Changes and Additions to cppad_mixed During 2019
+################################################
+
+.. meta::
+   :keywords: mm-dd
+
+.. index:: mm-dd
+
+.. _whats_new_19@mm-dd:
+
+mm-dd
+*****
+
+.. meta::
+   :keywords: 10-08
+
+.. index:: 10-08
+
+.. _whats_new_19@mm-dd@10-08:
+
+10-08
+=====
+If :ref:`derived_ctor@A_rcv` is not empty,
+*A_rcv* . ``nr`` () > 0 and *A_rcv* . ``nc`` () must equal
+:ref:`derived_ctor@n_random` .
+If this is not the case, a
+:ref:`base_class@User Defined Functions@fatal_error`
+message is generated.
+
+.. meta::
+   :keywords: 09-30
+
+.. index:: 09-30
+
+.. _whats_new_19@mm-dd@09-30:
+
+09-30
+=====
+Use a newer version of the program that generates the documentation
+``omhelp`` .
+The search utility now shows the title and section tag in separate
+areas and hides the other keywords.
+Hitting return or double clicking in the title area,
+in addition to choosing the ``Goto`` button, will go to
+the selected section.
+
+.. meta::
+   :keywords: 07-24
+
+.. index:: 07-24
+
+.. _whats_new_19@mm-dd@07-24:
+
+07-24
+=====
+More use of the optimal random effects during initialization
+to avoid the Hessian w.r.t. the random effects not being positive definite.
+
+.. meta::
+   :keywords: 07-23
+
+.. index:: 07-23
+
+.. _whats_new_19@mm-dd@07-23:
+
+07-23
+=====
+Do more checking and reporting of non-finite values during the
+:ref:`initialize-name` procedure.
+
+.. meta::
+   :keywords: 07-20
+
+.. index:: 07-20
+
+.. _whats_new_19@mm-dd@07-20:
+
+07-20
+=====
+Remove a print statement
+(that was used for debugging) from the routine ``ldlt_eigen`` routine.
+
+.. meta::
+   :keywords: 07-19
+
+.. index:: 07-19
+
+.. _whats_new_19@mm-dd@07-19:
+
+07-19
+=====
+Advance to ``cppad-20190719``
+(this fixed a problem with the CppAD binary library name on the Mac).
+
+.. meta::
+   :keywords: 07-10
+
+.. index:: 07-10
+
+.. _whats_new_19@mm-dd@07-10:
+
+07-10
+=====
+In the case were :ref:`derived_ctor@quasi_fixed` is false,
+a Newton method is used to optimize the fixed effects.
+In this case computation of the log of the determinant of the
+random Hessian w.r.t.  the random effects
+was computed at the initial value for the random effects.
+This was changed to use the optimal random effects
+corresponding to the initial fixed effects.
+This is more robust because the Hessian is more likely to be positive
+definite.
+
+.. meta::
+   :keywords: 07-09
+
+.. index:: 07-09
+
+.. _whats_new_19@mm-dd@07-09:
+
+07-09
+=====
+The developer documentation has been separated from the user documentation
+and no longer included in the web version displayed on ``github`` .
+
+.. meta::
+   :keywords: 06-24
+
+.. index:: 06-24
+
+.. _whats_new_19@mm-dd@06-24:
+
+06-24
+=====
+Advance to ``cppad-20190623`` .
+
+.. meta::
+   :keywords: 06-07
+
+.. index:: 06-07
+
+.. _whats_new_19@mm-dd@06-07:
+
+06-07
+=====
+Change the ``CppAD::ADFun`` object to check for ``nan`` .
+This detects them sooner and gives better error messaging
+(when ``NDEBUG`` is not defined).

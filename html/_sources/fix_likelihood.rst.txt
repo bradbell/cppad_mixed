@@ -1,0 +1,160 @@
+.. include:: xrst_preamble.rst
+
+.. _fix_likelihood-name:
+
+!!!!!!!!!!!!!!
+fix_likelihood
+!!!!!!!!!!!!!!
+
+xrst input file: ``src/fix_likelihood.xrst``
+
+.. meta::
+   :keywords: fix_likelihood, user, defined, fixed, likelihood, function
+
+.. index:: fix_likelihood, user, defined, fixed, likelihood, function
+
+.. _fix_likelihood-title:
+
+User Defined Fixed Likelihood Function
+######################################
+
+.. meta::
+   :keywords: syntax
+
+.. index:: syntax
+
+.. _fix_likelihood@Syntax:
+
+Syntax
+******
+*vec* = *mixed_object* . ``fix_likelihood`` ( *fixed_vec* )
+
+.. meta::
+   :keywords: mixed_object
+
+.. index:: mixed_object
+
+.. _fix_likelihood@mixed_object:
+
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
+to denote an object of a class that is
+derived from the ``cppad_mixed`` base class.
+
+.. meta::
+   :keywords: a1_double
+
+.. index:: a1_double
+
+.. _fix_likelihood@a1_double:
+
+a1_double
+*********
+see :ref:`typedef@Scalar Types@a1_double` .
+
+.. meta::
+   :keywords: virtual, function
+
+.. index:: virtual, function
+
+.. _fix_likelihood@Virtual Function:
+
+Virtual Function
+****************
+The following virtual function may be implemented in the derived class:
+
+| |tab| ``virtual CppAD::vector<a1_double> fix_likelihood`` (
+| |tab| |tab| ``const CppAD::vector<a1_double>&`` *fixed_vec*
+| |tab| )
+
+.. meta::
+   :keywords: fixed_vec
+
+.. index:: fixed_vec
+
+.. _fix_likelihood@fixed_vec:
+
+fixed_vec
+*********
+This argument has prototype
+
+   ``const CppAD::vector<a1_double>&`` *fixed_vec*
+
+It contains a value for the
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>` vector.
+
+.. meta::
+   :keywords: vec
+
+.. index:: vec
+
+.. _fix_likelihood@vec:
+
+vec
+***
+This result has prototype
+
+   ``CppAD::vector<`` *a1_double* > *vec*
+
+It is a
+:ref:`problem@Negative Log-Density Vector`
+corresponding to the fixed likelihood
+:ref:`g(theta)<theory@Fixed Likelihood, g(theta)>` where
+
+.. math::
+
+   g( \theta ) = - \log [ \B{p} ( z | \theta ) \B{p} ( \theta ) ]
+
+.. meta::
+   :keywords: constant
+
+.. index:: constant
+
+.. _fix_likelihood@vec@constant:
+
+constant
+========
+Adding or subtracting a constant to *vec* [0] ,
+that does not depend on the fixed effects :math:`\theta`,
+does not affect the optimal estimates for the fixed or random effects.
+
+.. meta::
+   :keywords: default
+
+.. index:: default
+
+.. _fix_likelihood@vec@Default:
+
+Default
+=======
+The base class definition (default) for ``fix_likelihood``
+returns an empty vector;
+i.e., *vec* . ``size`` () == 0 .
+This corresponds to the case where:
+
+#. All of the data depends on the
+   random effects; i.e., the data vector
+   :ref:`z<problem@Notation@Data, y, z>` is empty.
+#. There is no prior
+   :ref:`p(theta)<problem@Notation@Fixed Prior Density, p(theta)>`
+   for the fixed effects.
+
+.. meta::
+   :keywords: example
+
+.. index:: example
+
+.. _fix_likelihood@Example:
+
+Example
+*******
+The file :ref:`fix_likelihood.cpp-name` contains an example and test
+of defining this virtual function.
+It returns true, if the test passes, and false otherwise.
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   fix_likelihood.cpp

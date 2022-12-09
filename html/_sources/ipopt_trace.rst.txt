@@ -1,0 +1,195 @@
+.. include:: xrst_preamble.rst
+
+.. _ipopt_trace-name:
+
+!!!!!!!!!!!
+ipopt_trace
+!!!!!!!!!!!
+
+xrst input file: ``xrst/ipopt_trace.xrst``
+
+.. meta::
+   :keywords: ipopt_trace, description, of, ipopt, tracing, output
+
+.. index:: ipopt_trace, description, of, ipopt, tracing, output
+
+.. _ipopt_trace-title:
+
+Description of Ipopt Tracing Output
+###################################
+
+.. meta::
+   :keywords: discussion
+
+.. index:: discussion
+
+.. _ipopt_trace@Discussion:
+
+Discussion
+**********
+The following is a description, by column name, of the output for each iteration
+when its *print_level* option is ``5`` .
+This information comes from the
+`ipopt output <https://coin-or.github.io/Ipopt/OUTPUT.html>`_
+documentation.
+
+.. meta::
+   :keywords: iter
+
+.. index:: iter
+
+.. _ipopt_trace@iter:
+
+iter
+****
+The current iteration count.
+This includes regular iterations and iterations during the restoration phase.
+If the algorithm is in the restoration phase,
+the letter r will be appended to the iteration number.
+
+.. meta::
+   :keywords: objective
+
+.. index:: objective
+
+.. _ipopt_trace@objective:
+
+objective
+*********
+The unscaled objective value at the current point.
+During the restoration phase, this value remains the unscaled objective
+value for the original problem.
+
+.. meta::
+   :keywords: inf_pr
+
+.. index:: inf_pr
+
+.. _ipopt_trace@inf_pr:
+
+inf_pr
+******
+The unscaled constraint violation at the current point.
+This quantity is the infinity-norm (max) of the (unscaled) constraint
+violation for :math:`g(x)` in the Ipopt documentation.
+During the restoration phase, this value remains the constraint
+violation of the original problem at the current point.
+The option ``inf_pr_output`` can be used to switch to the printing of
+a different quantity.
+
+.. meta::
+   :keywords: inf_du
+
+.. index:: inf_du
+
+.. _ipopt_trace@inf_du:
+
+inf_du
+******
+The scaled dual infeasibility at the current point.
+This quantity measure the infinity-norm (max) of the
+internal dual infeasibility, i.e, the derivative of the lagragian
+with respect to the primal variables
+
+.. math::
+
+   \nabla f(x) \nabla c(x) \lambda - z
+
+where :math:`z` are the lagrange multipliers for the box constraints and
+:math:`c(x)` are the nonlinear equality constraints
+(inequality constraints are reformulated using slack variables
+and problem scaling).
+During the restoration phase,
+this is the value of the dual infeasibility for the restoration phase problem.
+
+.. meta::
+   :keywords: lg(mu)
+
+.. index:: lg(mu)
+
+.. _ipopt_trace@lg(mu):
+
+lg(mu)
+******
+:math:`\log_{10}` of the value of the barrier parameter :math:`\mu`.
+
+.. meta::
+   :keywords: ||d||
+
+.. index:: ||d||
+
+.. _ipopt_trace@||d||:
+
+||d||
+*****
+The infinity norm (max) of the primal step
+(for the original variables :math:`x` and the internal slack
+variables :math:`s`).
+During the restoration phase,
+this value includes the values of additional variables that
+capture the violation in :math:`c(x) = 0`.
+
+.. meta::
+   :keywords: lg(rg)
+
+.. index:: lg(rg)
+
+.. _ipopt_trace@lg(rg):
+
+lg(rg)
+******
+:math:`\log_{10}` of the value of the regularization term for the Hessian
+of the Lagrangian in the augmented system.
+A dash (-) indicates that no regularization was done.
+
+.. meta::
+   :keywords: alpha_du
+
+.. index:: alpha_du
+
+.. _ipopt_trace@alpha_du:
+
+alpha_du
+********
+The step size for the dual variables for the box constraints in the
+equality constrained formulation; i.e., :math:`z`.
+
+.. meta::
+   :keywords: alpha_pr
+
+.. index:: alpha_pr
+
+.. _ipopt_trace@alpha_pr:
+
+alpha_pr
+********
+The step size for the primal variables
+:math:`x` and :math:`\lambda` in the equality constrained formulation.
+The number is usually followed by a character for additional diagnostic
+information regarding the step acceptance criterion.
+
+.. meta::
+   :keywords: ls
+
+.. index:: ls
+
+.. _ipopt_trace@ls:
+
+ls
+**
+The number of backtracking line search steps
+(does not include second-order correction steps).
+
+.. meta::
+   :keywords: reference
+
+.. index:: reference
+
+.. _ipopt_trace@Reference:
+
+Reference
+*********
+A. Wachter and L. T. Biegler.,
+On the implementation of a primal-dual interior point
+filter line search algorithm for large-scale nonlinear programming.
+Mathematical Programming, 106(1):25-57, 2006.

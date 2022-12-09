@@ -1,0 +1,132 @@
+.. include:: xrst_preamble.rst
+
+.. _hes_random_obj-name:
+
+!!!!!!!!!!!!!!
+hes_random_obj
+!!!!!!!!!!!!!!
+
+xrst input file: ``src/eigen/hes_random_obj.cpp``
+
+.. meta::
+   :keywords: hes_random_obj, compute, the, hessian, of, the, random, effects, objective
+
+.. index:: hes_random_obj, compute, the, hessian, of, the, random, effects, objective
+
+.. _hes_random_obj-title:
+
+Compute the Hessian of The Random Effects Objective
+###################################################
+
+.. meta::
+   :keywords: syntax
+
+.. index:: syntax
+
+.. _hes_random_obj@Syntax:
+
+Syntax
+******
+
+| *hes_random_obj_rcv* = *mixed_object* . ``hes_random_obj`` (
+| |tab| *fixed_vec* , *random_vec*
+| )
+
+.. meta::
+   :keywords: prototype
+
+.. index:: prototype
+
+.. _hes_random_obj@Prototype:
+
+Prototype
+*********
+
+.. literalinclude:: ../../src/eigen/hes_random_obj.cpp
+   :lines: 108-110
+   :language: cpp
+
+.. meta::
+   :keywords: purpose
+
+.. index:: purpose
+
+.. _hes_random_obj@Purpose:
+
+Purpose
+*******
+Compute the Hessian of the
+:ref:`theory@Random Likelihood, f(theta, u)@Random Effects Objective` ; i.e.,
+:math:`f_{u,u} ( \theta , u )`.
+There are no absolute value terms in the
+:ref:`problem@Negative Log-Density Vector`
+for the :ref:`ran_likelihood-name` .
+
+.. meta::
+   :keywords: mixed_object
+
+.. index:: mixed_object
+
+.. _hes_random_obj@mixed_object:
+
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
+to denote an object of a class that is
+derived from the ``cppad_mixed`` base class.
+
+.. meta::
+   :keywords: fixed_vec
+
+.. index:: fixed_vec
+
+.. _hes_random_obj@fixed_vec:
+
+fixed_vec
+*********
+is the vector of fixed effects :math:`\theta` at which
+the Hessian is evaluated.
+
+.. meta::
+   :keywords: random_vec
+
+.. index:: random_vec
+
+.. _hes_random_obj@random_vec:
+
+random_vec
+**********
+is the vector of random effects :math:`u` at which
+the Hessian is evaluated.
+
+.. meta::
+   :keywords: hes_random_obj_rcv
+
+.. index:: hes_random_obj_rcv
+
+.. _hes_random_obj@hes_random_obj_rcv:
+
+hes_random_obj_rcv
+******************
+The return value is a
+:ref:`typedef@Sparse Types@d_sparse_rcv` representation
+of the lower triangle of the Hessian.
+(The Hessian is symmetric and hence determined by its lower triangle.)
+
+.. meta::
+   :keywords: example
+
+.. index:: example
+
+.. _hes_random_obj@Example:
+
+Example
+*******
+The file :ref:`hes_random_obj.cpp-name` contains an example and
+test of this routine. It returns true for success and false for failure.
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   hes_random_obj.cpp

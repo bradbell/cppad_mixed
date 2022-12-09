@@ -1,0 +1,57 @@
+.. include:: xrst_preamble.rst
+
+.. _abs_density.cpp-name:
+
+!!!!!!!!!!!!!!!
+abs_density.cpp
+!!!!!!!!!!!!!!!
+
+xrst input file: ``example/user/abs_density.cpp``
+
+.. meta::
+   :keywords: abs_density.cpp, absolute, value, in, log-density:, example, and, test
+
+.. index:: abs_density.cpp, absolute, value, in, log-density:, example, and, test
+
+.. _abs_density.cpp-title:
+
+Absolute Value In Log-Density: Example and Test
+###############################################
+
+.. meta::
+   :keywords: model
+
+.. index:: model
+
+.. _abs_density.cpp@Model:
+
+Model
+*****
+
+.. math::
+
+   \B{p}( z_i | \theta ) \sim \B{L} ( \theta_i , \sigma )
+
+where :math:`\B{L} ( \mu , \sigma )` is the Laplace distribution
+with mean :math:`\mu` and standard deviation :math:`\sigma`.
+The corresponding fixed likelihood
+:ref:`g(theta)<theory@Fixed Likelihood, g(theta)>`
+is
+
+.. math::
+
+   g( \theta ) = \sum_{i} \left[
+      \log ( \sigma \sqrt{2} )
+      +
+      \sqrt{2} \; \left| \frac{ z_i - \exp( \theta_i )}{\sigma} \right|
+   \right]
+
+The optimal solution, with no constraints and no prior on :math:`\theta` is
+
+.. math::
+
+   \hat{\theta}_i = \log( z_i )
+
+.. literalinclude:: ../../example/user/abs_density.cpp
+   :lines: 46-169
+   :language: cpp

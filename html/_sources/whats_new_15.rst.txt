@@ -1,0 +1,137 @@
+.. include:: xrst_preamble.rst
+
+.. _whats_new_15-name:
+
+!!!!!!!!!!!!
+whats_new_15
+!!!!!!!!!!!!
+
+xrst input file: ``xrst/whats_new/15.xrst``
+
+.. meta::
+   :keywords: whats_new_15, changes, and, additions, to, cppad_mixed, during, 2015
+
+.. index:: whats_new_15, changes, and, additions, to, cppad_mixed, during, 2015
+
+.. _whats_new_15-title:
+
+Changes and Additions to cppad_mixed During 2015
+################################################
+
+.. meta::
+   :keywords: mm-dd
+
+.. index:: mm-dd
+
+.. _whats_new_15@mm-dd:
+
+mm-dd
+*****
+
+.. meta::
+   :keywords: 12-25
+
+.. index:: 12-25
+
+.. _whats_new_15@mm-dd@12-25:
+
+12-25
+=====
+
+#. Only use subscripts for derivative notation; i.e., remove the
+   superscripts (1) and (2) from derivatives. This enables us
+   (in the future) to use superscripts for indices and subscripts for derivatives.
+#. Change :math:`z^L, z^U` to :math:`z_L , z_U` in
+   ``ipopt_xam`` (because the corresponding variables are
+   *z_L* and *z_U* ); see Ipopt
+   ``finalize_solution`` .
+
+.. meta::
+   :keywords: 12-24
+
+.. index:: 12-24
+
+.. _whats_new_15@mm-dd@12-24:
+
+12-24
+=====
+
+#. There was a bug in the ``ipopt_fixed_eval_g`` routine.
+   It was not caching the value of :math:`\hat{u}( \theta )`
+   each time that :math:`\theta` changed.
+   This has been fixed.
+#. Change remarks about
+   :ref:`W(beta, theta, u)<theory@Approximate Optimal Random Effects@Second Order, W(beta, theta, u)>`
+   to mention that the following has been proven
+
+   .. math::
+
+      W^i_{\beta \beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+      =
+      \hat{u}^i_{\theta , \theta} ( \theta )
+
+.. meta::
+   :keywords: 12-16
+
+.. index:: 12-16
+
+.. _whats_new_15@mm-dd@12-16:
+
+12-16
+=====
+Overhaul the set of values and documentation for the
+:ref:`initialize@size_map` memory diagnostic.
+
+.. meta::
+   :keywords: 12-14
+
+.. index:: 12-14
+
+.. _whats_new_15@mm-dd@12-14:
+
+12-14
+=====
+
+#. Provide a default definition for
+   :ref:`ran_likelihood<ran_likelihood@vec@Default>` ,
+   :ref:`fix_likelihood<fix_likelihood@vec@Default>` ,
+   :ref:`fix_constraint<fix_constraint@vec@Default>` ,
+   :ref:`base_class@User Defined Functions@fatal_error` , and
+   :ref:`base_class@User Defined Functions@warning` .
+#. Change section titles for these sections
+   to highlight that they are user defined;
+
+.. meta::
+   :keywords: 12-13
+
+.. index:: 12-13
+
+.. _whats_new_15@mm-dd@12-13:
+
+12-13
+=====
+Change
+``constraint`` to :ref:`fix_constraint-name` ,
+``ran_likelihood`` to :ref:`ran_likelihood-name` , and
+``fix_likelihood`` to :ref:`fix_likelihood-name` .
+
+.. meta::
+   :keywords: 12-10
+
+.. index:: 12-10
+
+.. _whats_new_15@mm-dd@12-10:
+
+12-10
+=====
+
+#. First version of ``cppad_mixed`` as a package separate from
+   the `dismod_at <http://moby.ihme.washington.edu/bradbell/dismod_at>`_
+   package.
+#. Use the
+   `CppAD addon <http://www.coin-or.org/CppAD/Doc/addon.htm>`_
+   conventions for the install of ``cppad_mixed`` .
+#. Put ``cppad_mixed`` class in the global namespace,
+   (objects are in the ``CppAD::mixed`` namespace).
+#. Modify file names and documentation because everything now refers to
+   the ``cppad_mixed`` package.

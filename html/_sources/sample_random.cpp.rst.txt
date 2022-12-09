@@ -1,0 +1,23 @@
+.. include:: xrst_preamble.rst
+
+.. _sample_random.cpp-name:
+
+!!!!!!!!!!!!!!!!!
+sample_random.cpp
+!!!!!!!!!!!!!!!!!
+
+xrst input file: ``example/user/sample_random.cpp``
+
+.. meta::
+   :keywords: sample_random.cpp, sample, from, fixed, effects, posterior:, example, and, test
+
+.. index:: sample_random.cpp, sample, from, fixed, effects, posterior:, example, and, test
+
+.. _sample_random.cpp-title:
+
+Sample From Fixed Effects Posterior: Example and Test
+#####################################################
+
+.. literalinclude:: ../../example/user/sample_random.cpp
+   :lines: 19-195
+   :language: cpp

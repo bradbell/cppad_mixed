@@ -1,0 +1,23 @@
+.. include:: xrst_preamble.rst
+
+.. _hes_random_obj.cpp-name:
+
+!!!!!!!!!!!!!!!!!!
+hes_random_obj.cpp
+!!!!!!!!!!!!!!!!!!
+
+xrst input file: ``example/user/hes_random_obj.cpp``
+
+.. meta::
+   :keywords: hes_random_obj.cpp, hessian, of, random, effects, objective:, example, and, test
+
+.. index:: hes_random_obj.cpp, hessian, of, random, effects, objective:, example, and, test
+
+.. _hes_random_obj.cpp-title:
+
+Hessian of Random Effects Objective: Example and Test
+#####################################################
+
+.. literalinclude:: ../../example/user/hes_random_obj.cpp
+   :lines: 19-120
+   :language: cpp

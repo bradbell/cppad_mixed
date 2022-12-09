@@ -1,0 +1,331 @@
+.. include:: xrst_preamble.rst
+
+.. _base_class-name:
+
+!!!!!!!!!!
+base_class
+!!!!!!!!!!
+
+xrst input file: ``include/cppad/mixed/base_class.hpp``
+
+.. meta::
+   :keywords: base_class, cppad_mixed:, public, declarations
+
+.. index:: base_class, cppad_mixed:, public, declarations
+
+.. _base_class-title:
+
+cppad_mixed: Public Declarations
+################################
+These ``cppad_mixed`` class declarations are ``public`` .
+They are part of the user API and can be used by a derived class object
+:ref:`derived_ctor@mixed_object` .
+
+.. meta::
+   :keywords: cppad, mixed, types
+
+.. index:: cppad, mixed, types
+
+.. _base_class@Cppad Mixed Types:
+
+Cppad Mixed Types
+*****************
+The following Cppad Mixed types are extended into the
+``cppad_mixed`` class:
+
+.. literalinclude:: ../../include/cppad/mixed/base_class.hpp
+   :lines: 25-34
+   :language: cpp
+
+.. meta::
+   :keywords: user, defined, functions
+
+.. index:: user, defined, functions
+
+.. _base_class@User Defined Functions:
+
+User Defined Functions
+**********************
+The following are ``cppad_mixed`` pure virtual functions.
+Each one has a default definition that may be replaced by
+the user's derived class:
+
+.. meta::
+   :keywords: ran_likelihood
+
+.. index:: ran_likelihood
+
+.. _base_class@User Defined Functions@ran_likelihood:
+
+ran_likelihood
+==============
+This function is necessary if there are random effects in the model.
+
+.. literalinclude:: ../../include/cppad/mixed/base_class.hpp
+   :lines: 49-52
+   :language: cpp
+
+See :ref:`ran_likelihood-name` .
+
+.. meta::
+   :keywords: fix_likelihood
+
+.. index:: fix_likelihood
+
+.. _base_class@User Defined Functions@fix_likelihood:
+
+fix_likelihood
+==============
+This function should be used if there is a prior on the fixed effects,
+or there is data that does not depend on the random effects.
+
+.. literalinclude:: ../../include/cppad/mixed/base_class.hpp
+   :lines: 63-65
+   :language: cpp
+
+See :ref:`fix_likelihood-name` .
+
+.. meta::
+   :keywords: fix_constraint
+
+.. index:: fix_constraint
+
+.. _base_class@User Defined Functions@fix_constraint:
+
+fix_constraint
+==============
+This function is used to define constraints
+that only depend on the fixed effects.
+
+.. literalinclude:: ../../include/cppad/mixed/base_class.hpp
+   :lines: 76-78
+   :language: cpp
+
+See :ref:`fix_constraint-name` .
+
+.. meta::
+   :keywords: fatal_error
+
+.. index:: fatal_error
+
+.. _base_class@User Defined Functions@fatal_error:
+
+fatal_error
+===========
+This routine displays an error message and then exits the program.
+Its default definition below can be replaced by a user definition.
+Note that if ``NDEBUG`` is not defined, this generates an assert,
+otherwise it exits.
+
+.. literalinclude:: ../../include/cppad/mixed/base_class.hpp
+   :lines: 91-96
+   :language: cpp
+
+.. meta::
+   :keywords: warning
+
+.. index:: warning
+
+.. _base_class@User Defined Functions@warning:
+
+warning
+=======
+This routine displays a warning message and then returns.
+Its default definition below can be replaced by a user definition.
+
+.. literalinclude:: ../../include/cppad/mixed/base_class.hpp
+   :lines: 106-108
+   :language: cpp
+
+.. meta::
+   :keywords: constructor
+
+.. index:: constructor
+
+.. _base_class@constructor:
+
+constructor
+***********
+:ref:`derived_ctor-title`.
+
+.. literalinclude:: ../../include/cppad/mixed/base_class.hpp
+   :lines: 117-126
+   :language: cpp
+
+.. meta::
+   :keywords: destructor
+
+.. index:: destructor
+
+.. _base_class@destructor:
+
+destructor
+**********
+
+.. literalinclude:: ../../include/cppad/mixed/base_class.hpp
+   :lines: 134-134
+   :language: cpp
+
+.. meta::
+   :keywords: initialize
+
+.. index:: initialize
+
+.. _base_class@initialize:
+
+initialize
+**********
+:ref:`initialize-title`
+
+.. literalinclude:: ../../include/cppad/mixed/base_class.hpp
+   :lines: 143-146
+   :language: cpp
+
+.. meta::
+   :keywords: optimize_random
+
+.. index:: optimize_random
+
+.. _base_class@optimize_random:
+
+optimize_random
+***************
+:ref:`optimize_random-title`.
+
+.. literalinclude:: ../../include/cppad/mixed/base_class.hpp
+   :lines: 154-160
+   :language: cpp
+
+.. meta::
+   :keywords: optimize_fixed
+
+.. index:: optimize_fixed
+
+.. _base_class@optimize_fixed:
+
+optimize_fixed
+**************
+:ref:`optimize_fixed-title`.
+
+.. literalinclude:: ../../include/cppad/mixed/base_class.hpp
+   :lines: 168-182
+   :language: cpp
+
+.. meta::
+   :keywords: hes_fixed_obj
+
+.. index:: hes_fixed_obj
+
+.. _base_class@hes_fixed_obj:
+
+hes_fixed_obj
+*************
+:ref:`hes_fixed_obj-title`.
+
+.. literalinclude:: ../../include/cppad/mixed/base_class.hpp
+   :lines: 190-193
+   :language: cpp
+
+.. meta::
+   :keywords: hes_random_obj
+
+.. index:: hes_random_obj
+
+.. _base_class@hes_random_obj:
+
+hes_random_obj
+**************
+:ref:`hes_random_obj-title`.
+
+.. literalinclude:: ../../include/cppad/mixed/base_class.hpp
+   :lines: 201-204
+   :language: cpp
+
+.. meta::
+   :keywords: sample_fixed
+
+.. index:: sample_fixed
+
+.. _base_class@sample_fixed:
+
+sample_fixed
+************
+:ref:`sample_fixed-title`.
+
+.. literalinclude:: ../../include/cppad/mixed/base_class.hpp
+   :lines: 212-218
+   :language: cpp
+
+.. meta::
+   :keywords: sample_random
+
+.. index:: sample_random
+
+.. _base_class@sample_random:
+
+sample_random
+*************
+:ref:`sample_random-title`.
+
+.. literalinclude:: ../../include/cppad/mixed/base_class.hpp
+   :lines: 226-233
+   :language: cpp
+
+.. meta::
+   :keywords: information_mat,, deprecated, 2020-03-22
+
+.. index:: information_mat,, deprecated, 2020-03-22
+
+.. _base_class@information_mat, Deprecated 2020-03-22:
+
+information_mat, Deprecated 2020-03-22
+**************************************
+:ref:`information_mat-title`.
+
+.. literalinclude:: ../../include/cppad/mixed/base_class.hpp
+   :lines: 241-244
+   :language: cpp
+
+.. meta::
+   :keywords: contents
+
+.. index:: contents
+
+.. _base_class@Contents:
+
+Contents
+********
+
+.. csv-table::
+   :header:  "Child", "Title"
+   :widths: auto
+
+   "derived_ctor", :ref:`derived_ctor-title`
+   "ran_likelihood", :ref:`ran_likelihood-title`
+   "fix_likelihood", :ref:`fix_likelihood-title`
+   "fix_constraint", :ref:`fix_constraint-title`
+   "initialize", :ref:`initialize-title`
+   "optimize_random", :ref:`optimize_random-title`
+   "optimize_fixed", :ref:`optimize_fixed-title`
+   "hes_fixed_obj", :ref:`hes_fixed_obj-title`
+   "hes_random_obj", :ref:`hes_random_obj-title`
+   "sample_fixed", :ref:`sample_fixed-title`
+   "sample_random", :ref:`sample_random-title`
+   "information_mat", :ref:`information_mat-title`
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   derived_ctor
+   ran_likelihood
+   fix_likelihood
+   fix_constraint
+   initialize
+   optimize_random
+   optimize_fixed
+   hes_fixed_obj
+   hes_random_obj
+   sample_fixed
+   sample_random
+   information_mat

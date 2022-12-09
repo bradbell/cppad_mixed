@@ -1,0 +1,135 @@
+.. include:: xrst_preamble.rst
+
+.. _fix_constraint-name:
+
+!!!!!!!!!!!!!!
+fix_constraint
+!!!!!!!!!!!!!!
+
+xrst input file: ``src/fix_constraint.xrst``
+
+.. meta::
+   :keywords: fix_constraint, user, defined, fixed, effects, constraint, function
+
+.. index:: fix_constraint, user, defined, fixed, effects, constraint, function
+
+.. _fix_constraint-title:
+
+User Defined Fixed Effects Constraint Function
+##############################################
+
+.. meta::
+   :keywords: syntax
+
+.. index:: syntax
+
+.. _fix_constraint@Syntax:
+
+Syntax
+******
+*vec* = *mixed_object* . ``fix_constraint`` ( *fixed_vec* )
+
+.. meta::
+   :keywords: mixed_object
+
+.. index:: mixed_object
+
+.. _fix_constraint@mixed_object:
+
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
+to denote an object of a class that is
+derived from the ``cppad_mixed`` base class.
+
+.. meta::
+   :keywords: a1_double
+
+.. index:: a1_double
+
+.. _fix_constraint@a1_double:
+
+a1_double
+*********
+see :ref:`typedef@Scalar Types@a1_double` .
+
+.. meta::
+   :keywords: virtual, function
+
+.. index:: virtual, function
+
+.. _fix_constraint@Virtual Function:
+
+Virtual Function
+****************
+The following virtual function may be implemented in the derived class:
+
+| |tab| ``virtual CppAD::vector<a1_double> fix_constraint`` (
+| |tab| |tab| ``const CppAD::vector<a1_double>&`` *fixed_vec*
+| |tab| )
+
+.. meta::
+   :keywords: fixed_vec
+
+.. index:: fixed_vec
+
+.. _fix_constraint@fixed_vec:
+
+fixed_vec
+*********
+This argument has prototype
+
+   ``const CppAD::vector<a1_double>&`` *fixed_vec*
+
+It contains a value for the
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>` vector.
+
+.. meta::
+   :keywords: vec
+
+.. index:: vec
+
+.. _fix_constraint@vec:
+
+vec
+***
+This result has prototype
+
+   ``CppAD::vector<`` *a1_double* > *vec*
+
+It is the value of the
+:ref:`constraint function<problem@Maximum Likelihood@Fixed Constraints, c>`
+:math:`c( \theta)`
+
+.. meta::
+   :keywords: default
+
+.. index:: default
+
+.. _fix_constraint@vec@Default:
+
+Default
+=======
+The base class definition (default) for ``fix_constraint``
+returns an empty vector;
+i.e., *vec* . ``size`` () == 0 .
+In the case where there are no constraints of this form.
+
+.. meta::
+   :keywords: example
+
+.. index:: example
+
+.. _fix_constraint@Example:
+
+Example
+*******
+The file :ref:`fix_constraint.cpp-name` contains an example
+using constraints.
+It returns true, if the test passes, and false otherwise.
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   fix_constraint.cpp

@@ -1,0 +1,74 @@
+.. |space| unicode:: 0xA0
+
+.. _xrst_table_of_contents-title:
+
+Table of Contents
+*****************
+:ref:`cppad_mixed-title`
+
+| :ref:`1<problem-title>` The cppad_mixed Maximum Likelihood Problem
+| :ref:`2<install_unix-title>` Installing cppad_mixed in Unix
+|    :ref:`2.1<example_install.sh-title>` An Example Installation
+|    :ref:`2.2<run_cmake.sh-title>` bin/run_cmake.sh: User Configuration Options
+|    :ref:`2.3<check_install.sh-title>` Example and Test Using the Installed Version of cppad_mixed
+| :ref:`3<theory-title>` Laplace Approximation for Mixed Effects Models
+| :ref:`4<base_class-title>` cppad_mixed: Public Declarations
+|    :ref:`4.1<derived_ctor-title>` User Defined Class Derived From cppad_mixed
+|       :ref:`4.1.1<derived_ctor.cpp-title>` mixed_cppad Derived Class: Example and Test
+|    :ref:`4.2<ran_likelihood-title>` User Defined Random Likelihood Function
+|       :ref:`4.2.1<ran_likelihood.cpp-title>` Random Likelihood: Example and Test
+|    :ref:`4.3<fix_likelihood-title>` User Defined Fixed Likelihood Function
+|       :ref:`4.3.1<fix_likelihood.cpp-title>` Random Likelihood: Example and Test
+|    :ref:`4.4<fix_constraint-title>` User Defined Fixed Effects Constraint Function
+|       :ref:`4.4.1<fix_constraint.cpp-title>` Using Constraints: Example and Test
+|    :ref:`4.5<initialize-title>` Initialization After Constructor
+|    :ref:`4.6<optimize_random-title>` Optimize Random Effects
+|       :ref:`4.6.1<optimize_random.cpp-title>` Optimize Random Effects: Example and Test
+|    :ref:`4.7<optimize_fixed-title>` Optimize Fixed Effects
+|       :ref:`4.7.1<optimize_fixed.cpp-title>` Optimize Fixed Effects: Example and Test
+|       :ref:`4.7.2<ipopt_options-title>` An Ipopt Options Argument
+|       :ref:`4.7.3<ipopt_trace-title>` Description of Ipopt Tracing Output
+|    :ref:`4.8<hes_fixed_obj-title>` Compute the Hessian of The Fixed Effects Objective
+|       :ref:`4.8.1<hes_fixed_obj.cpp-title>` Hessian of Fixed Effects Objective: Example and Test
+|    :ref:`4.9<hes_random_obj-title>` Compute the Hessian of The Random Effects Objective
+|       :ref:`4.9.1<hes_random_obj.cpp-title>` Hessian of Random Effects Objective: Example and Test
+|    :ref:`4.10<sample_fixed-title>` Sample Posterior for Fixed Effects
+|       :ref:`4.10.1<sample_fixed.cpp-title>` Sample From Fixed Effects Posterior: Example and Test
+|       :ref:`4.10.2<sample_conditional-title>` Sample Posterior for Fixed Effects Using Conditional Covariance
+|    :ref:`4.11<sample_random-title>` Simulation the Posterior Distribution for Random Effects
+|       :ref:`4.11.1<sample_random.cpp-title>` Sample From Fixed Effects Posterior: Example and Test
+|    :ref:`4.12<information_mat-title>` Compute the Observed Information For Fixed Effects
+|       :ref:`4.12.1<information_mat.cpp-title>` Observed Information Matrix: Example and Test
+| :ref:`5<namespace-title>` The CppAD::mixed Namespace Public Declarations
+|    :ref:`5.1<typedef-title>` Types Defined in the CppAD Mixed Namespace
+|    :ref:`5.2<manage_gsl_rng-title>` Set, Get, And Free A GSL Random Number Generator
+|       :ref:`5.2.1<manage_gsl_rng.cpp-title>` Manage GSL Random Number Generator: Example and Test
+|    :ref:`5.3<sparse_mat_info-title>` Sparse Matrix Information
+|    :ref:`5.4<fixed_solution-title>` Optimal Solution Returned by optimize_fixed
+|       :ref:`5.4.1<warm_start_struct-title>` Ipopt Warm Start Information
+|       :ref:`5.4.2<trace_struct-title>` Ipopt Trace Information
+|    :ref:`5.5<exception-title>` CppAD Mixed Exceptions
+| :ref:`6<user_examples-title>` User API Examples
+|    :ref:`6.1<speed-title>` Example Programs That are Also Speed and Memory Tests
+|       :ref:`6.1.1<ar1_xam.cpp-title>` A First Order Auto-Regressive Example and Speed Test
+|          :ref:`6.1.1.1<ar1_xam.sh-title>` Example Using ar1_xam
+|       :ref:`6.1.2<capture_xam.cpp-title>` A Capture Example and Speed Test
+|          :ref:`6.1.2.1<capture_xam.sh-title>` Example Using capture_xam
+|    :ref:`6.2<abs_density.cpp-title>` Absolute Value In Log-Density: Example and Test
+|    :ref:`6.3<no_random.cpp-title>` No Random Effects: Example and Test
+|    :ref:`6.4<ran_constraint.cpp-title>` Constraints On Random Effects: Example and Test
+|    :ref:`6.5<lasso.cpp-title>` Lasso on Fixed Effects: Example and Test
+|    :ref:`6.6<data_mismatch.cpp-title>` Random Effects Variance May Cause Data Mismatch
+|    :ref:`6.7<opt_ran_nan.cpp-title>` Nan's During Optimization of Random Effects: Example and Test
+|    :ref:`6.8<warm_start.cpp-title>` Warm Starting Optimization: Example and Test
+| :ref:`7<release_notes-title>` Changes and Additions to cppad_mixed
+|    :ref:`7.1<whats_new_22-title>` Changes and Additions to cppad_mixed During 2022
+|    :ref:`7.2<whats_new_21-title>` Changes and Additions to cppad_mixed During 2021
+|    :ref:`7.3<whats_new_20-title>` Changes and Additions to cppad_mixed During 2020
+|    :ref:`7.4<whats_new_19-title>` Changes and Additions to cppad_mixed During 2019
+|    :ref:`7.5<whats_new_18-title>` Changes and Additions to cppad_mixed During 2018
+|    :ref:`7.6<whats_new_17-title>` Changes and Additions to cppad_mixed During 2017
+|    :ref:`7.7<whats_new_16-title>` Changes and Additions to cppad_mixed During 2016
+|    :ref:`7.8<whats_new_15-title>` Changes and Additions to cppad_mixed During 2015
+| :ref:`8<wish_list-title>` CppAD Mixed Wish List
+| :ref:`9<math_notation-title>` Mathematical Notation

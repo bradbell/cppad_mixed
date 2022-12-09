@@ -1,0 +1,942 @@
+.. include:: xrst_preamble.rst
+
+.. _capture_xam.cpp-name:
+
+!!!!!!!!!!!!!!!
+capture_xam.cpp
+!!!!!!!!!!!!!!!
+
+xrst input file: ``speed/capture_xam.cpp``
+
+.. meta::
+   :keywords: capture_xam.cpp, a, capture, example, and, speed, test
+
+.. index:: capture_xam.cpp, a, capture, example, and, speed, test
+
+.. _capture_xam.cpp-title:
+
+A Capture Example and Speed Test
+################################
+
+.. meta::
+   :keywords: syntax
+
+.. index:: syntax
+
+.. _capture_xam.cpp@Syntax:
+
+Syntax
+******
+
+| ``build/speed/capture_xam`` \\
+| |tab| *random_seed*  \\
+| |tab| *number_random*   \\
+| |tab| *quasi_fixed*  \\
+| |tab| *trace_optimize_fixed*  \\
+| |tab| *ipopt_solve*  \\
+| |tab| *bool_sparsity*  \\
+| |tab| *hold_memory*  \\
+| |tab| *derivative_test*  \\
+| |tab| *start_near_solution*  \\
+| |tab| *number_fixed_samples*  \\
+| |tab| *number_locations*  \\
+| |tab| *max_population*  \\
+| |tab| *mean_population*  \\
+| |tab| *mean_logit_probability*  \\
+| |tab| *std_logit_probability*  \\
+| |tab| *random_constraint*
+
+.. meta::
+   :keywords: reference
+
+.. index:: reference
+
+.. _capture_xam.cpp@Reference:
+
+Reference
+*********
+J. Andrew Royle,
+Biometrics 60, 108-115 March 2004,
+*N-Mixture Models for Estimating Population Size*
+*from Spatially Replicated Counts.*
+
+.. meta::
+   :keywords: command, arguments
+
+.. index:: command, arguments
+
+.. _capture_xam.cpp@Command Arguments:
+
+Command Arguments
+*****************
+
+.. meta::
+   :keywords: random_seed
+
+.. index:: random_seed
+
+.. _capture_xam.cpp@Command Arguments@random_seed:
+
+random_seed
+===========
+This is a non-negative integer equal to the
+seed for the random number generator,
+to be specific,
+:ref:`manage_gsl_rng@new_gsl_rng@s_in` used during the call to
+``new_gsl_rng`` .
+
+.. meta::
+   :keywords: number_random
+
+.. index:: number_random
+
+.. _capture_xam.cpp@Command Arguments@number_random:
+
+number_random
+=============
+This is a positive integer equal to the number of random effects.
+This is also equal to the
+number of times at which the measurements are made and is denoted by
+:math:`T` below.
+
+.. meta::
+   :keywords: quasi_fixed
+
+.. index:: quasi_fixed
+
+.. _capture_xam.cpp@Command Arguments@quasi_fixed:
+
+quasi_fixed
+===========
+This is either ``yes`` or ``no`` and is the value of
+:ref:`derived_ctor@quasi_fixed` in the
+``cppad_mixed`` derived class constructor.
+The amount of memory used by the
+:ref:`derived_ctor@mixed_derived` object,
+after the information matrix is computed,
+will be similar to after the initialization when *quasi_fixed* is no.
+
+.. meta::
+   :keywords: trace_optimize_fixed
+
+.. index:: trace_optimize_fixed
+
+.. _capture_xam.cpp@Command Arguments@trace_optimize_fixed:
+
+trace_optimize_fixed
+====================
+This is either ``yes`` or ``no`` .
+If it is yes, a *print_level*  = 5
+:ref:`trace<ipopt_trace-name>` of the fixed effects optimization
+is included in the program output.
+Otherwise the ipopt *print_level* is zero and
+no such trace is printed.
+
+.. meta::
+   :keywords: ipopt_solve
+
+.. index:: ipopt_solve
+
+.. _capture_xam.cpp@Command Arguments@ipopt_solve:
+
+ipopt_solve
+===========
+This is either ``yes`` or ``no`` .
+If it is yes, the ``CppAD::ipopt::solve``
+routine is used for optimizing the random effects,
+otherwise ``CppAD::mixed::ipopt_random`` is used; see
+:ref:`optimize_random@options@evaluation_method` .
+
+.. meta::
+   :keywords: bool_sparsity
+
+.. index:: bool_sparsity
+
+.. _capture_xam.cpp@Command Arguments@bool_sparsity:
+
+bool_sparsity
+=============
+This is either ``yes`` or ``no`` .
+If it is yes, boolean sparsity patterns are used for this computation,
+otherwise set sparsity patterns are used.
+
+.. meta::
+   :keywords: hold_memory
+
+.. index:: hold_memory
+
+.. _capture_xam.cpp@Command Arguments@hold_memory:
+
+hold_memory
+===========
+The CppAD memory allocator has a hold memory option will be set by
+
+   ``CppAD::thread_alloc::hold_memory`` ( *hold_memory* );
+
+where *hold_memory* is either ``yes`` or ``no`` .
+
+.. meta::
+   :keywords: derivative_test
+
+.. index:: derivative_test
+
+.. _capture_xam.cpp@Command Arguments@derivative_test:
+
+derivative_test
+===============
+This is either ``yes`` or ``no`` .
+If it is yes, the derivatives of functions used in the optimization
+of the fixed effects are checked for correctness.
+(This requires extra time).
+
+.. meta::
+   :keywords: start_near_solution
+
+.. index:: start_near_solution
+
+.. _capture_xam.cpp@Command Arguments@start_near_solution:
+
+start_near_solution
+===================
+This is either ``yes`` or ``no`` .
+If it is yes, the initial point for the optimization
+is the value of the fixed effects used to simulate the data.
+Otherwise, the initial point is significantly different from this value.
+
+.. meta::
+   :keywords: number_fixed_samples
+
+.. index:: number_fixed_samples
+
+.. _capture_xam.cpp@Command Arguments@number_fixed_samples:
+
+number_fixed_samples
+====================
+This is a positive integer equal to the number of samples simulated
+from the posterior distribution for the fixed effects using
+:ref:`sample_fixed-name` .
+The samples are used to approximation the
+standard deviation for the optimal fixed effects.
+One should use a large number of samples (at least 100)
+for this purpose.
+
+.. meta::
+   :keywords: number_locations
+
+.. index:: number_locations
+
+.. _capture_xam.cpp@Command Arguments@number_locations:
+
+number_locations
+================
+This is a positive integer equal to the
+number of locations at which the measurements are made; i.e.
+:math:`R` in the reference.
+Increasing this value increases the amount for each function evaluation,
+but does not change the number of fixed or random effects.
+
+.. meta::
+   :keywords: max_population
+
+.. index:: max_population
+
+.. _capture_xam.cpp@Command Arguments@max_population:
+
+max_population
+==============
+This is a positive integer equal to the
+maximum value in the finite summation with respect to
+population size; i.e.,
+:math:`K` in the reference.
+This must be greater than any of the simulated number of captures
+at any location and time; i.e., and :math:`y_{i,t}`.
+Also note that *max_population* does not affect the simulated
+data :math:`y_{i,t}`.
+A suggested value is five times *mean_population* .
+The value of *max_population* is large enough if increasing it
+takes more time but does not make a difference in the optimal fixed effects
+(use the same value for the other arguments and same actual seed).
+
+.. meta::
+   :keywords: mean_population
+
+.. index:: mean_population
+
+.. _capture_xam.cpp@Command Arguments@mean_population:
+
+mean_population
+===============
+This is a positive floating point value equal to the
+mean of the Poisson distribution for the population
+used to simulate data values;
+:math:`\lambda` in reference.
+
+.. meta::
+   :keywords: mean_logit_probability
+
+.. index:: mean_logit_probability
+
+.. _capture_xam.cpp@Command Arguments@mean_logit_probability:
+
+mean_logit_probability
+======================
+This is a positive floating point value equal to the
+mean of the logit of the capture probability
+(independent of the random effects)
+used to simulate data values.
+The is also equal to the mean of the random effects.
+
+.. meta::
+   :keywords: std_logit_probability
+
+.. index:: std_logit_probability
+
+.. _capture_xam.cpp@Command Arguments@std_logit_probability:
+
+std_logit_probability
+=====================
+This is a positive floating point value equal to the
+standard deviation of the logit of the capture probability
+(independent of the random effects)
+used to simulate data values.
+The is also equal to the standard deviation of the random effects.
+
+.. meta::
+   :keywords: random_constraint
+
+.. index:: random_constraint
+
+.. _capture_xam.cpp@Command Arguments@random_constraint:
+
+random_constraint
+=================
+This is either ``yes`` or ``no`` .
+If it is ``no`` , there is no
+:ref:`random constraint<problem@Maximum Likelihood@Random Constraints>`
+for this example.
+If it is ``yes`` ,
+the random constraint is
+
+.. math::
+
+   0 = \hat{u}_0 ( \theta ) + \cdots + \hat{u}_{T-1} ( \theta )
+
+where :math:`\hat{u} ( \theta )` is the
+:ref:`optimal random effects<problem@Notation@Optimal Random Effects, u^(theta)>` .
+The corresponding
+:ref:`random constraint matrix<problem@Notation@Random Constraint Matrix, A>`
+:math:`A` is the row vector of size :math:`T` with all ones; i.e.,
+
+.. math::
+
+   A = [ 1 , \cdots , 1 ] \in \B{R}^{1 \times T}
+
+.. meta::
+   :keywords: output
+
+.. index:: output
+
+.. _capture_xam.cpp@Output:
+
+Output
+******
+Each output name, value pair is written in as *name* = *value*
+where the amount of spaces surrounding the equal sign is not specified.
+All of the pairs listed above are output.
+In addition, the following name value pairs are also output.
+
+.. meta::
+   :keywords: cppad_mixed_version
+
+.. index:: cppad_mixed_version
+
+.. _capture_xam.cpp@Output@cppad_mixed_version:
+
+cppad_mixed_version
+===================
+The ``cppad_mixed`` version number.
+
+.. meta::
+   :keywords: ldlt_cholmod
+
+.. index:: ldlt_cholmod
+
+.. _capture_xam.cpp@Output@ldlt_cholmod:
+
+ldlt_cholmod
+============
+is the ``bin/run_cmake.sh`` configuration option
+:ref:`run_cmake.sh@ldlt_cholmod` .
+
+.. meta::
+   :keywords: optimize_cppad_function
+
+.. index:: optimize_cppad_function
+
+.. _capture_xam.cpp@Output@optimize_cppad_function:
+
+optimize_cppad_function
+=======================
+is the ``bin/run_cmake.sh`` configuration option
+:ref:`run_cmake.sh@optimize_cppad_function` .
+
+.. meta::
+   :keywords: ndebug_defined
+
+.. index:: ndebug_defined
+
+.. _capture_xam.cpp@Output@ndebug_defined:
+
+ndebug_defined
+==============
+is the ``NDEBUG`` preprocessor symbol defined.
+This should be yes (no) if the ``bin/run_cmake.sh`` configuration option
+:ref:`run_cmake.sh@build_type` is ``release``
+(``debug`` ).
+
+.. meta::
+   :keywords: actual_seed
+
+.. index:: actual_seed
+
+.. _capture_xam.cpp@Output@actual_seed:
+
+actual_seed
+===========
+If *random_seed* is zero,
+the system clock, instead of *random_seed* ,
+is used to seed the random number generator.
+The actual random seed *actual_seed* is printed
+so that you can reproduce results when *random_seed* is zero.
+
+.. meta::
+   :keywords: initialize_bytes
+
+.. index:: initialize_bytes
+
+.. _capture_xam.cpp@Output@initialize_bytes:
+
+initialize_bytes
+================
+Is the amount of heap memory, in bytes,
+added to the program during its :ref:`initialize-name` call.
+Note that more temporary memory may have been used during this call.
+In addition, only memory allocated using ``CppAD::thread_alloc`` is
+included.
+
+.. meta::
+   :keywords: initialize_seconds
+
+.. index:: initialize_seconds
+
+.. _capture_xam.cpp@Output@initialize_seconds:
+
+initialize_seconds
+==================
+Is the number of seconds used by the derived class :ref:`initialize-name` call.
+
+.. meta::
+   :keywords: optimize_fixed_seconds
+
+.. index:: optimize_fixed_seconds
+
+.. _capture_xam.cpp@Output@optimize_fixed_seconds:
+
+optimize_fixed_seconds
+======================
+Is the number of seconds used by the call to
+:ref:`optimize_fixed-name` that is used to compute the
+optimal fixed effects.
+
+.. meta::
+   :keywords: optimize_random_seconds
+
+.. index:: optimize_random_seconds
+
+.. _capture_xam.cpp@Output@optimize_random_seconds:
+
+optimize_random_seconds
+=======================
+Is the number of seconds used by a single call to
+:ref:`optimize_random-name` that is used to compute the
+optimal random effects.
+
+.. meta::
+   :keywords: information_mat_seconds
+
+.. index:: information_mat_seconds
+
+.. _capture_xam.cpp@Output@information_mat_seconds:
+
+information_mat_seconds
+=======================
+Is the number of seconds used by the call to
+:ref:`information_mat-name` that computes the observed information matrix.
+
+.. meta::
+   :keywords: sample_fixed_seconds
+
+.. index:: sample_fixed_seconds
+
+.. _capture_xam.cpp@Output@sample_fixed_seconds:
+
+sample_fixed_seconds
+====================
+Is the number of seconds used by the call to
+:ref:`sample_fixed-name` that computes the
+:ref:`number_sample_fixed<capture_xam.cpp@Command Arguments@number_fixed_samples>`
+samples for the fixed effects.
+
+.. meta::
+   :keywords: final_bytes
+
+.. index:: final_bytes
+
+.. _capture_xam.cpp@Output@final_bytes:
+
+final_bytes
+===========
+Is final amount of heap memory, in bytes, added and retained by the program.
+Only memory allocated using ``CppAD::thread_alloc`` is included.
+
+.. meta::
+   :keywords: sum_random_effects
+
+.. index:: sum_random_effects
+
+.. _capture_xam.cpp@Output@sum_random_effects:
+
+sum_random_effects
+==================
+Is the sum of the optimal random effects.
+
+.. meta::
+   :keywords: mean_population_estimate
+
+.. index:: mean_population_estimate
+
+.. _capture_xam.cpp@Output@mean_population_estimate:
+
+mean_population_estimate
+========================
+Is the estimate for the
+:ref:`capture_xam.cpp@Command Arguments@mean_population`
+computed by :ref:`optimize_fixed-name` .
+
+.. meta::
+   :keywords: mean_logit_probability_estimate
+
+.. index:: mean_logit_probability_estimate
+
+.. _capture_xam.cpp@Output@mean_logit_probability_estimate:
+
+mean_logit_probability_estimate
+===============================
+Is the optimal estimate for the
+:ref:`capture_xam.cpp@Command Arguments@mean_logit_probability`
+(computed by :ref:`optimize_fixed-name` ).
+
+.. meta::
+   :keywords: std_logit_probability_estimate
+
+.. index:: std_logit_probability_estimate
+
+.. _capture_xam.cpp@Output@std_logit_probability_estimate:
+
+std_logit_probability_estimate
+==============================
+Is the optimal estimate for the
+:ref:`capture_xam.cpp@Command Arguments@std_logit_probability` .
+
+.. meta::
+   :keywords: mean_population_std
+
+.. index:: mean_population_std
+
+.. _capture_xam.cpp@Output@mean_population_std:
+
+mean_population_std
+===================
+Is the sample standard deviation of *mean_population_estimate*
+(corresponding to the sample computed by :ref:`sample_fixed-name` ).
+
+.. meta::
+   :keywords: mean_logit_probability_std
+
+.. index:: mean_logit_probability_std
+
+.. _capture_xam.cpp@Output@mean_logit_probability_std:
+
+mean_logit_probability_std
+==========================
+Is the sample standard deviation of *mean_logit_probability_estimate* .
+
+.. meta::
+   :keywords: std_logit_probability_std
+
+.. index:: std_logit_probability_std
+
+.. _capture_xam.cpp@Output@std_logit_probability_std:
+
+std_logit_probability_std
+=========================
+Is the sample standard deviation of *std_logit_probability_estimate* .
+
+.. meta::
+   :keywords: mean_population_ratio
+
+.. index:: mean_population_ratio
+
+.. _capture_xam.cpp@Output@mean_population_ratio:
+
+mean_population_ratio
+=====================
+
+| ( *mean_population_estimate* ``-`` *mean_population*  ) /
+| |tab| *mean_population_std*
+
+.. meta::
+   :keywords: mean_logit_probability_ratio
+
+.. index:: mean_logit_probability_ratio
+
+.. _capture_xam.cpp@Output@mean_logit_probability_ratio:
+
+mean_logit_probability_ratio
+============================
+
+| ( *mean_logit_probability_estimate* ``-`` *mean_logit_probability*  ) /
+| |tab| *mean_logit_probability_std*
+
+.. meta::
+   :keywords: std_probability_ratio
+
+.. index:: std_probability_ratio
+
+.. _capture_xam.cpp@Output@std_probability_ratio:
+
+std_probability_ratio
+=====================
+
+| ( *std_probability_estimate* ``-`` *std_probability*  ) /
+| |tab| *std_probability_std*
+
+.. meta::
+   :keywords: capture_xam_ok
+
+.. index:: capture_xam_ok
+
+.. _capture_xam.cpp@Output@capture_xam_ok:
+
+capture_xam_ok
+==============
+The following conditions are checked. If they are all true,
+*capture_xam_ok* is yes. Otherwise it is no.
+
+#. *sum_random_effects* < 1 ``e-8`` || ( *random_constraint* == ``no`` )
+#. *mean_population_ratio*  < 5.0
+#. *mean_logit_probability_ratio*  < 5.0
+#. *std_logit_probability_ratio*  < 5.0
+
+If *capture_xam_ok* is yes, the program return value is
+``0`` (no error condition).
+Otherwise it is ``1`` (error condition).
+
+.. meta::
+   :keywords: example
+
+.. index:: example
+
+.. _capture_xam.cpp@Example:
+
+Example
+*******
+The file :ref:`capture_xam.sh-name` is an example using this program.
+
+.. meta::
+   :keywords: notation
+
+.. index:: notation
+
+.. _capture_xam.cpp@Notation:
+
+Notation
+********
+
+.. list-table::
+
+   * - :math:`R`
+     - number of sampling locations; i.e., *number_locations* .
+   * - :math:`T`
+     - number of sampling times; i.e., *number_random* .
+   * - :math:`K`
+     - maximum population in truncation of infinite summation; i.e.,
+       *max_population*
+   * - :math:`\theta_0`
+     - mean for :math:`N_i` given :math:`\theta`
+       (:math:`\lambda` in reference); i.e.,
+       *mean_population* .
+   * - :math:`\theta_1`
+     - mean of logit of capture probability; i.e.,
+       *mean_logit_probability* .
+   * - :math:`\theta_2`
+     - standard deviation of logit of capture probability; i.e.,
+       *std_logit_probability* .
+   * - :math:`N_i`
+     - size of the population at *i*-th location
+   * - :math:`y_{i,t}`
+     - number of captures at location :math:`i` and time :math:`t`
+       (:math:`n_{i,t}` in reference)
+   * - :math:`y_i`
+     - is the vector of captures at location :math:`i`
+       :math:`( y_{i,0} , \ldots , y_{i, T-1} )`.
+   * - :math:`M_i`
+     - maximum of captures at *i*-th location
+       (:math:`\max_t n_{i,t}` in reference)
+   * - :math:`q_t`
+     - capture probability at :math:`t` same for all locations
+       (:math:`p_{i,t}` in reference)
+   * - :math:`u_t`
+     - random effect for each sampling time
+
+.. meta::
+   :keywords: p(y_it|n_i,q_t)
+
+.. index:: p(y_it|n_i,q_t)
+
+.. _capture_xam.cpp@p(y_it|N_i,q_t):
+
+p(y_it|N_i,q_t)
+***************
+We use a binomial distribution to model the
+probability of :math:`y_{i,t}` given :math:`N_i` and :math:`q_t`; i.e,
+
+.. math::
+
+   \B{p} ( y_{i,t} | N_i , q_t )
+   =
+   \left( \begin{array}{c} N_i \\ y_{i,t} \end{array} \right)
+   q_t^{y(i,t)} \left( 1 - q_t \right)^{y(i,t)}
+
+Furthermore, we assume that this probability
+is independent for each :math:`(i, t)`.
+
+.. meta::
+   :keywords: p(n_i|theta)
+
+.. index:: p(n_i|theta)
+
+.. _capture_xam.cpp@p(N_i|theta):
+
+p(N_i|theta)
+************
+We use a Poisson distribution to model the
+probability of :math:`N_i` given :math:`\theta_0`; i.e.,
+
+.. math::
+
+   \B{p} ( N_i | \theta  )
+   =
+   \theta_0^{N(i)} \frac{ \exp[ - \theta_0 ] }{ N_i ! }
+
+We assume these this probability
+is independent for each :math:`i`.
+
+.. meta::
+   :keywords: q_t(theta,u)
+
+.. index:: q_t(theta,u)
+
+.. _capture_xam.cpp@q_t(theta,u):
+
+q_t(theta,u)
+************
+Section 2.4 of the
+:ref:`capture_xam.cpp@Reference` suggests a
+covariate model for the probability of capture.
+We use a similar model defined by
+
+.. math::
+
+   \R{logit} ( q_t ) = u_t + \theta_1
+
+It follows that
+
+.. math::
+
+   q_t( \theta , u) = [ 1 + \exp(- u_t - \theta_1 ) ]^{-1}
+
+.. meta::
+   :keywords: m_i
+
+.. index:: m_i
+
+.. _capture_xam.cpp@M_i:
+
+M_i
+***
+We define the vector of maximum measurement for each location by
+
+.. math::
+
+   M_i = \max \left\{ y_{i,0} , \cdots , y_{i, T-1} \right\}
+
+.. meta::
+   :keywords: p(y_i|theta,u)
+
+.. index:: p(y_i|theta,u)
+
+.. _capture_xam.cpp@p(y_i|theta,u):
+
+p(y_i|theta,u)
+**************
+The probability for :math:`y_i` (the captures at location :math:`i`)
+given :math:`N_i`, :math:`\theta`, and :math:`u` is
+
+.. math::
+
+   \B{p}( y_i | N_i, \theta , u )
+   =
+   \prod_{t=0}^{T-1}
+   \left( \begin{array}{c} {N(i)} \\ y_{i,t} \end{array} \right)
+      q_t ( \theta , u)^{y(i,t)}
+      \left( 1 - q_t( \theta , u) \right)^{y(i,t)}
+
+We do not know the population at each location :math:`N_i`,
+but instead have a Poisson prior for :math:`N_i`.
+We sum with respect to the possible values for :math:`N_i`
+to get the probability of :math:`y_i` given
+:math:`\theta` and :math:`u`.
+
+.. math::
+
+   \B{p}( y_i | \theta , u )
+   =
+   \sum_{k=0}^K \B{p}( y_i | N_i=k, \theta , u ) \B{p}( N_i=k | \theta )
+
+where :math:`k` is the possible values for :math:`N_i`.
+Note that :math:`K` should be plus infinity, but we use a fixed
+finite value for :math:`K` as an approximation for the infinite sum.
+
+.. meta::
+   :keywords: p(y|theta,u)
+
+.. index:: p(y|theta,u)
+
+.. _capture_xam.cpp@p(y|theta,u):
+
+p(y|theta,u)
+************
+Our model for the likelihood of the data at all the locations,
+given the fixed and random effects, is
+
+.. math::
+
+   \B{p}( y | \theta , u )
+   =
+   \prod_{i=0}^{R-1} \B{p}( y_i | \theta , u )
+
+Expressed in terms of fixed effects :math:`\theta`,
+the random effects :math:`u`,
+and the data :math:`y`, this is
+
+.. math::
+
+   \B{p}( y | \theta , u )
+   =
+   \prod_{i=0}^{R-1}
+   \left[
+   \sum_{k=0}^{K-1}
+   \theta_0^k \frac{ \exp[ - \theta_0 ] }{ k ! }
+   \prod_{t=0}^{T-1}
+   \left( \begin{array}{c} {k} \\ y_{i,t} \end{array} \right)
+      q_t ( \theta , u)^{y(i,t)}
+      \left( 1 - q_t( \theta , u) \right)^{y(i,t)}
+   \right]
+
+In ``cppad_mixed`` notation, this specifies the
+:ref:`random data density<problem@Notation@Random Data Density, p(y|theta,u)>` .
+
+.. meta::
+   :keywords: p(u|theta)
+
+.. index:: p(u|theta)
+
+.. _capture_xam.cpp@p(u|theta):
+
+p(u|theta)
+**********
+We use a normal distribution, with mean zero and standard deviation
+:math:`\theta_2`,
+for the distribution of the random effects :math:`u`
+given the fixed effects :math:`\theta`; i.e.,
+
+.. math::
+
+   \B{p} ( u | \theta )
+   =
+   \prod_{t=0}^{T-1}
+      \frac{1}{ \theta_2 \sqrt{ 2 \pi } }
+         \exp \left[ - \frac{1}{2} \frac{ u_t^2 }{ \theta_2^2 } \right]
+
+In ``cppad_mixed`` notation, this specifies the
+:ref:`random prior density<problem@Notation@Random Prior Density, p(u|theta)>` .
+
+.. meta::
+   :keywords: p(theta)
+
+.. index:: p(theta)
+
+.. _capture_xam.cpp@p(theta):
+
+p(theta)
+********
+For this example there is no
+:ref:`fixed prior density<problem@Notation@Fixed Prior Density, p(theta)>`
+:math:`\B{p}(\theta)`.
+
+.. meta::
+   :keywords: p(z|theta)
+
+.. index:: p(z|theta)
+
+.. _capture_xam.cpp@p(z|theta):
+
+p(z|theta)
+**********
+For this example there is no
+:ref:`fixed data density<problem@Notation@Fixed Data Density, p(z|theta)>`
+:math:`\B{p}(z | \theta)`.
+
+.. meta::
+   :keywords: c(theta)
+
+.. index:: c(theta)
+
+.. _capture_xam.cpp@c(theta):
+
+c(theta)
+********
+For this example there is no
+:ref:`fixed constraint function<problem@Notation@Fixed Constraint Function, c(theta)>`
+:math:`c( \theta )`.
+
+.. meta::
+   :keywords: source, code
+
+.. index:: source, code
+
+.. _capture_xam.cpp@Source Code:
+
+Source Code
+***********
+
+.. literalinclude:: ../../speed/capture_xam.cpp
+   :lines: 554-1165
+   :language: cpp
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   capture_xam.sh

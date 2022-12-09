@@ -1,0 +1,368 @@
+.. include:: xrst_preamble.rst
+
+.. _sample_conditional-name:
+
+!!!!!!!!!!!!!!!!!!
+sample_conditional
+!!!!!!!!!!!!!!!!!!
+
+xrst input file: ``src/eigen/sample_conditional.cpp``
+
+.. meta::
+   :keywords: sample_conditional, sample, posterior, for, fixed, effects, using, conditional, covariance
+
+.. index:: sample_conditional, sample, posterior, for, fixed, effects, using, conditional, covariance
+
+.. _sample_conditional-title:
+
+Sample Posterior for Fixed Effects Using Conditional Covariance
+###############################################################
+
+.. meta::
+   :keywords: syntax
+
+.. index:: syntax
+
+.. _sample_conditional@Syntax:
+
+Syntax
+******
+
+| *mixed_object* . ``sample_conditional`` (
+| |tab| *sample* ,
+| |tab| *information_info* ,
+| |tab| *solution* ,
+| |tab| *fixed_lower* ,
+| |tab| *fixed_upper* ,
+| |tab| *random_opt*
+| )
+
+.. meta::
+   :keywords: replaced
+
+.. index:: replaced
+
+.. _sample_conditional@Replaced:
+
+Replaced
+********
+This routine uses the
+:ref:`sample_conditional@Theory@Conditional Covariance`
+to sample the fixed effects.
+This required inverting the :ref:`information_mat-name` .
+It has been replaced by using the :ref:`sample_fixed-name` because it is faster.
+
+.. meta::
+   :keywords: prototype
+
+.. index:: prototype
+
+.. _sample_conditional@Prototype:
+
+Prototype
+*********
+
+.. literalinclude:: ../../src/eigen/sample_conditional.cpp
+   :lines: 265-271
+   :language: cpp
+
+.. meta::
+   :keywords: purpose
+
+.. index:: purpose
+
+.. _sample_conditional@Purpose:
+
+Purpose
+*******
+This routine draw samples from
+the asymptotic posterior distribution for the
+optimal fixed effects (given the model and the data).
+
+.. meta::
+   :keywords: manage_gsl_rng
+
+.. index:: manage_gsl_rng
+
+.. _sample_conditional@manage_gsl_rng:
+
+manage_gsl_rng
+**************
+It is assumed that
+:ref:`manage_gsl_rng@get_gsl_rng` will return
+a pointer to a GSL random number generator.
+
+.. meta::
+   :keywords: mixed_object
+
+.. index:: mixed_object
+
+.. _sample_conditional@mixed_object:
+
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
+to denote an object of a class that is
+derived from the ``cppad_mixed`` base class.
+
+.. meta::
+   :keywords: sample
+
+.. index:: sample
+
+.. _sample_conditional@sample:
+
+sample
+******
+The size *sample* . ``size`` () is a multiple of
+:ref:`derived_ctor@n_fixed` .
+The input value of its elements does not matter.
+We define
+
+   *n_sample* = *sample_size* / *n_fixed*
+
+Upon return,
+for ``i`` = 0 , ..., ``n_sample`` *-1* ,
+``j`` = 0 , ..., ``n_fixed`` *-1* ,
+
+   *sample* [ *i* * *n_fixed* + *j*  ]
+
+is the *j*-th component of the *i*-th sample of the
+optimal fixed effects :math:`\hat{\theta}`.
+These samples are independent for different :math:`i`,
+and for fixed :math:`i`, they have the
+:ref:`sample_conditional@Theory@Conditional Covariance`
+:math:`D`.
+
+.. meta::
+   :keywords: information_info
+
+.. index:: information_info
+
+.. _sample_conditional@information_info:
+
+information_info
+****************
+This is a sparse matrix representation for the
+lower triangle of the observed information matrix corresponding to
+*solution* ; i.e., the matrix returned by
+
+| *information_info* = *mixed_object* . ``information_mat`` (
+| |tab| *solution* , *random_options* , *random_lower* , *random_upper* , *random_in*
+| )
+
+.. meta::
+   :keywords: solution
+
+.. index:: solution
+
+.. _sample_conditional@solution:
+
+solution
+********
+is the :ref:`optimize_fixed@solution`
+for a the call to :ref:`optimize_fixed-name` corresponding to
+*information_info* .
+
+.. meta::
+   :keywords: fixed_lower
+
+.. index:: fixed_lower
+
+.. _sample_conditional@fixed_lower:
+
+fixed_lower
+***********
+is the same as
+:ref:`optimize_fixed@fixed_lower`
+in the call to ``optimize_fixed`` that corresponds to *solution* .
+
+.. meta::
+   :keywords: fixed_upper
+
+.. index:: fixed_upper
+
+.. _sample_conditional@fixed_upper:
+
+fixed_upper
+***********
+is the same as
+:ref:`optimize_fixed@fixed_upper`
+in the call to ``optimize_fixed`` that corresponds to *solution* .
+
+.. meta::
+   :keywords: random_opt
+
+.. index:: random_opt
+
+.. _sample_conditional@random_opt:
+
+random_opt
+**********
+is the optimal random effects corresponding to the solution; i.e.
+
+| |tab| *random_opt* = *mixed_object* . ``optimize_random`` (
+| |tab| |tab| *random_options* ,
+| |tab| |tab| *solution* . ``fixed_opt`` ,
+| |tab| |tab| *random_lower* ,
+| |tab| |tab| *random_upper* ,
+| |tab| |tab| *random_in*
+| |tab| )
+
+*random_options* ,
+*random_lower* ,
+*random_upper* , and
+*random_in* , are the same
+as in the call to ``optimize_fixed`` that corresponds to *solution* .
+
+.. meta::
+   :keywords: theory
+
+.. index:: theory
+
+.. _sample_conditional@Theory:
+
+Theory
+******
+
+.. meta::
+   :keywords: notation
+
+.. index:: notation
+
+.. _sample_conditional@Theory@Notation:
+
+Notation
+========
+Given two random vectors :math:`u` and :math:`v`,
+we use the notation :math:`\B{C}( u , v )`
+for the corresponding covariance matrix;
+i.e.,
+
+.. math::
+
+   \B{C}( u , v )
+   =
+   \B{E} \left( [ u - \B{E} (u) ] [ v - \B{E} (v) ]^\R{T} \right)
+
+.. meta::
+   :keywords: fixed, effects, subset
+
+.. index:: fixed, effects, subset
+
+.. _sample_conditional@Theory@Fixed Effects Subset:
+
+Fixed Effects Subset
+====================
+We use :math:`\alpha` for the vector of fixed effects that do not have
+their upper or lower bound active (or equal); i.e., if *j* is such that
+
+   *solution* . ``fixed_lag`` [ *j* ] == 0.0 && *fixed_lower* [ *j* ] < *fixed_upper* [ *j* ]
+
+then :math:`\theta_j` is one of the components in :math:`\alpha`.
+Note that each value of :math:`\alpha` has a corresponding value for
+:math:`\theta` where the active bounds are used for the components
+not in :math:`\alpha`.
+
+.. meta::
+   :keywords: unconstrained, subset, covariance
+
+.. index:: unconstrained, subset, covariance
+
+.. _sample_conditional@Theory@Unconstrained Subset Covariance:
+
+Unconstrained Subset Covariance
+===============================
+Note that the bound constraints do not apply to the subset of fixed effects
+represented by :math:`\alpha`.
+We use :math:`\tilde{L} ( \alpha )` to denote the
+:ref:`fixed effects objective<theory@Objective@Fixed Effects Objective, L(theta)>`
+as a function of :math:`\alpha` and
+where the absolute values terms in :ref:`fix_likelihood-name` are excluded.
+We use :math:`\tilde{\alpha}` for the unconstrained optimal estimate
+of the subset of fixed effects and
+approximate its auto-covariance by
+
+.. math::
+
+   \B{C} ( \tilde{\alpha} , \tilde{\alpha} )
+   =
+   H^{-1}
+
+Here :math:`H` is the Hessian corresponding to *information_info* .
+Note that *information_info* is the observed information matrix
+corresponding to all the fixed effects :math:`\theta`.
+
+.. meta::
+   :keywords: constraint, equations
+
+.. index:: constraint, equations
+
+.. _sample_conditional@Theory@Constraint Equations:
+
+Constraint Equations
+====================
+Let :math:`n` be the number of fixed effects in :math:`\alpha`,
+:math:`m` the number of active constraints (not counting bounds),
+and the equations :math:`e( \alpha ) = b` be those active constraints.
+Here :math:`e : \B{R}^n \rightarrow \B{R}^m` and :math:`b \in \B{R}^m`
+and the inequality constraints have been converted to equalities at the
+active bounds (excluding the bounds on the fixed effects).
+Define the random variable the approximation for :math:`e( \alpha )` by
+
+.. math::
+
+   \tilde{e} ( \alpha ) =
+   e \left( \hat{\alpha} \right) + e^{(1)} \left( \hat{\alpha} \right)
+      \left( \alpha - \hat{\alpha} \right)
+
+where :math:`\hat{\alpha}` is the subset of the optional estimate
+for the fixed effects *solution* . ``fixed_opt`` .
+
+.. meta::
+   :keywords: conditional, covariance
+
+.. index:: conditional, covariance
+
+.. _sample_conditional@Theory@Conditional Covariance:
+
+Conditional Covariance
+======================
+We approximate the distribution for
+:math:`\tilde{\alpha}` normal,
+and the distribution for :math:`\hat{\alpha}`
+as the conditional distribution of :math:`\tilde{\alpha}` given
+the value of :math:`\tilde{e} ( \tilde{\alpha} )`; i.e.,
+
+.. math::
+
+   \B{C} \left( \hat{\alpha} \W{,} \hat{\alpha} \right)
+   =
+   \B{C} \left( \tilde{\alpha} \W{,} \tilde{\alpha} \right)
+   -
+   \B{C} \left( \tilde{\alpha} \W{,} \tilde{e} \right)
+   \B{C} \left( \tilde{e}  \W{,} \tilde{e} \right)^{-1}
+   \B{C} \left( \tilde{e}  \W{,} \tilde{\alpha} \right)
+
+Using the notation
+:math:`D = \B{C} \left( \hat{\alpha} \W{,} \hat{\alpha} \right)`,
+:math:`C = \B{C} \left( \tilde{\alpha} \W{,} \tilde{\alpha} \right)`,
+:math:`E = e^{(1)} \left( \hat{\alpha} \right)`,
+we have
+
+.. math::
+
+   D = C - C E^\R{T} \left( E C E^\R{T} \right)^{-1}  E C
+
+.. meta::
+   :keywords: example
+
+.. index:: example
+
+.. _sample_conditional@Example:
+
+Example
+*******
+The file :ref:`sample_fixed.cpp-name` is an example
+and test of ``sample_conditional`` was used before it was
+:ref:`sample_conditional@Replaced` .

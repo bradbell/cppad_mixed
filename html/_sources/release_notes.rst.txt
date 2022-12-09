@@ -1,0 +1,60 @@
+.. include:: xrst_preamble.rst
+
+.. _release_notes-name:
+
+!!!!!!!!!!!!!
+release_notes
+!!!!!!!!!!!!!
+
+xrst input file: ``xrst/release_notes.xrst``
+
+.. meta::
+   :keywords: release_notes, changes, and, additions, to, cppad_mixed
+
+.. index:: release_notes, changes, and, additions, to, cppad_mixed
+
+.. _release_notes-title:
+
+Changes and Additions to cppad_mixed
+####################################
+
+.. meta::
+   :keywords: this, year
+
+.. index:: this, year
+
+.. _release_notes@This Year:
+
+This Year
+*********
+:ref:`whats_new_22-name`
+
+.. meta::
+   :keywords: previous, years
+
+.. index:: previous, years
+
+.. _release_notes@Previous Years:
+
+Previous Years
+**************
+:ref:`2021<whats_new_21-name>` ,
+:ref:`2020<whats_new_20-name>` ,
+:ref:`2019<whats_new_19-name>` ,
+:ref:`2018<whats_new_18-name>` ,
+:ref:`2017<whats_new_17-name>` ,
+:ref:`2016<whats_new_16-name>` ,
+:ref:`2015<whats_new_15-name>` .
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   whats_new_22
+   whats_new_21
+   whats_new_20
+   whats_new_19
+   whats_new_18
+   whats_new_17
+   whats_new_16
+   whats_new_15

@@ -1,0 +1,702 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta content="example_install.sh, an, example, installation" name="keywords" />
+<meta content="syntax" name="keywords" />
+<meta content="run_test" name="keywords" />
+<meta content="replace" name="keywords" />
+<meta content="source" name="keywords" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="run_cmake.sh" href="run_cmake.sh.html" /><link rel="prev" title="install_unix" href="install_unix.html" />
+
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.09.29"/>
+        <title>example_install.sh - cppad_mixed documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">cppad_mixed  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">cppad_mixed  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="xrst_table_of_contents.html">Table of Contents</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="cppad_mixed.html">cppad_mixed</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="problem.html">problem</a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="install_unix.html">install_unix</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">example_install.sh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="run_cmake.sh.html">run_cmake.sh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="check_install.sh.html">check_install.sh</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html">theory</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="base_class.html">base_class</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="derived_ctor.html">derived_ctor</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="derived_ctor.cpp.html">derived_ctor.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="ran_likelihood.html">ran_likelihood</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="ran_likelihood.cpp.html">ran_likelihood.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="fix_likelihood.html">fix_likelihood</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="fix_likelihood.cpp.html">fix_likelihood.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="fix_constraint.html">fix_constraint</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="fix_constraint.cpp.html">fix_constraint.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="initialize.html">initialize</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="optimize_random.html">optimize_random</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="optimize_random.cpp.html">optimize_random.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="optimize_fixed.html">optimize_fixed</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="optimize_fixed.cpp.html">optimize_fixed.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ipopt_options.html">ipopt_options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ipopt_trace.html">ipopt_trace</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="hes_fixed_obj.html">hes_fixed_obj</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="hes_fixed_obj.cpp.html">hes_fixed_obj.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="hes_random_obj.html">hes_random_obj</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="hes_random_obj.cpp.html">hes_random_obj.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="sample_fixed.html">sample_fixed</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="sample_fixed.cpp.html">sample_fixed.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sample_conditional.html">sample_conditional</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="sample_random.html">sample_random</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="sample_random.cpp.html">sample_random.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="information_mat.html">information_mat</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="information_mat.cpp.html">information_mat.cpp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="namespace.html">namespace</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="typedef.html">typedef</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="manage_gsl_rng.html">manage_gsl_rng</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="manage_gsl_rng.cpp.html">manage_gsl_rng.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sparse_mat_info.html">sparse_mat_info</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="fixed_solution.html">fixed_solution</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="warm_start_struct.html">warm_start_struct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="trace_struct.html">trace_struct</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="exception.html">exception</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="user_examples.html">user_examples</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="speed.html">speed</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="ar1_xam.cpp.html">ar1_xam.cpp</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="ar1_xam.sh.html">ar1_xam.sh</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="capture_xam.cpp.html">capture_xam.cpp</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="capture_xam.sh.html">capture_xam.sh</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="abs_density.cpp.html">abs_density.cpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="no_random.cpp.html">no_random.cpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ran_constraint.cpp.html">ran_constraint.cpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lasso.cpp.html">lasso.cpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_mismatch.cpp.html">data_mismatch.cpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opt_ran_nan.cpp.html">opt_ran_nan.cpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="warm_start.cpp.html">warm_start.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="release_notes.html">release_notes</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_22.html">whats_new_22</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_21.html">whats_new_21</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_20.html">whats_new_20</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_19.html">whats_new_19</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_18.html">whats_new_18</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_17.html">whats_new_17</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_16.html">whats_new_16</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_15.html">whats_new_15</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="wish_list.html">wish_list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math_notation.html">math_notation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="xrst_index.html">Index</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <p class="hidden"><span class="math notranslate nohighlight">\(\newcommand{\B}[1]{ {\bf #1} }\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\R}[1]{ {\rm #1} }\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\W}[1]{ \; #1 \; }\)</span></p>
+<section id="example-install-sh">
+<span id="example-install-sh-name"></span><h1>example_install.sh<a class="headerlink" href="#example-install-sh" title="Permalink to this headline">#</a></h1>
+<p>xrst input file: <code class="docutils literal notranslate"><span class="pre">bin/example_install.sh</span></code></p>
+<section id="an-example-installation">
+<span id="example-install-sh-title"></span><span id="index-0"></span><h2>An Example Installation<a class="headerlink" href="#an-example-installation" title="Permalink to this headline">#</a></h2>
+<section id="syntax">
+<span id="example-install-sh-syntax"></span><span id="index-1"></span><h3>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">bin/example_install.sh</span></code> <em>run_test</em> <em>replace</em></p>
+</section>
+<section id="run-test">
+<span id="example-install-sh-run-test"></span><span id="index-2"></span><h3>run_test<a class="headerlink" href="#run-test" title="Permalink to this headline">#</a></h3>
+<p>is either <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code> .
+If it is true, this cppad_mixed tests will be run before installing.
+If there is an error in the tests, the install will abort.</p>
+</section>
+<section id="replace">
+<span id="example-install-sh-replace"></span><span id="index-3"></span><h3>replace<a class="headerlink" href="#replace" title="Permalink to this headline">#</a></h3>
+<p>is either <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code> .
+If an external is already installed and <em>replace</em> is true (false)
+the external will (will not) be replaced.</p>
+</section>
+<section id="source">
+<span id="example-install-sh-source"></span><span id="index-4"></span><h3>Source<a class="headerlink" href="#source" title="Permalink to this headline">#</a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">[</span> <span class="nv">$0</span> !<span class="o">=</span> <span class="s1">&#39;bin/example_install.sh&#39;</span> <span class="o">]</span>
+<span class="k">then</span>
+   <span class="nb">echo</span> <span class="s1">&#39;bin/example_install.sh: must be executed from its parent directory&#39;</span>
+   <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="c1"># bash function that echos and executes a command</span>
+echo_eval<span class="o">()</span> <span class="o">{</span>
+   <span class="nb">echo</span> <span class="nv">$*</span>
+   <span class="nb">eval</span> <span class="nv">$*</span>
+<span class="o">}</span>
+<span class="c1"># --------------------------------------------------------------------------</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> !<span class="o">=</span> <span class="s1">&#39;true&#39;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> !<span class="o">=</span> <span class="s1">&#39;false&#39;</span> <span class="o">]</span>
+<span class="k">then</span>
+   <span class="nb">echo</span> <span class="s1">&#39;bin/example_install.sh: run_test replace&#39;</span>
+   <span class="nb">echo</span> <span class="s1">&#39;run_test is not true or false&#39;</span>
+   <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+<span class="nv">run_test</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$2</span><span class="s2">&quot;</span> !<span class="o">=</span> <span class="s1">&#39;true&#39;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$2</span><span class="s2">&quot;</span> !<span class="o">=</span> <span class="s1">&#39;false&#39;</span> <span class="o">]</span>
+<span class="k">then</span>
+   <span class="nb">echo</span> <span class="s1">&#39;bin/example_install.sh: run_test replace&#39;</span>
+   <span class="nb">echo</span> <span class="s1">&#39;replace is not true or false&#39;</span>
+   <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+<span class="nv">replace</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$2</span><span class="s2">&quot;</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># set build_type to value in run_cmake.sh</span>
+<span class="nv">cmd</span><span class="o">=</span><span class="sb">`</span>grep <span class="s1">&#39;^build_type=&#39;</span> bin/run_cmake.sh<span class="sb">`</span>
+<span class="nb">eval</span> <span class="nv">$cmd</span>
+<span class="nb">echo</span> <span class="s2">&quot;build_type=</span><span class="nv">$build_type</span><span class="s2">&quot;</span>
+<span class="c1">#</span>
+<span class="c1"># set cmake_install_prefix to value in run_cmake.sh</span>
+<span class="nv">cmd</span><span class="o">=</span><span class="sb">`</span>grep <span class="s1">&#39;^cmake_install_prefix=&#39;</span> bin/run_cmake.sh<span class="sb">`</span>
+<span class="nb">eval</span> <span class="nv">$cmd</span>
+<span class="nb">echo</span> <span class="s2">&quot;cmake_install_prefix=</span><span class="nv">$cmake_install_prefix</span><span class="s2">&quot;</span>
+<span class="c1">#</span>
+<span class="c1"># ipopt_prefix</span>
+<span class="nv">ipopt_prefix</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$cmake_install_prefix</span><span class="s2">&quot;</span>
+<span class="c1"># --------------------------------------------------------------------------</span>
+<span class="c1"># remove old version of example_install.log and example_install.err</span>
+<span class="k">for</span> ext <span class="k">in</span> log err
+<span class="k">do</span>
+   <span class="k">if</span> <span class="o">[</span> -e <span class="s2">&quot;example_install.</span><span class="nv">$ext</span><span class="s2">&quot;</span> <span class="o">]</span>
+   <span class="k">then</span>
+      echo_eval rm <span class="s2">&quot;example_install.</span><span class="nv">$ext</span><span class="s2">&quot;</span>
+   <span class="k">fi</span>
+<span class="k">done</span>
+<span class="c1"># --------------------------------------------------------------------------</span>
+<span class="c1"># set build link to build.debug or build.release depending on build_type</span>
+<span class="k">if</span> <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$cmake_install_prefix</span><span class="s2">&quot;</span> <span class="p">|</span> grep <span class="s1">&#39;/cppad_mixed$&#39;</span> &gt; /dev/null
+<span class="k">then</span>
+   bin/build_type.sh example_install.sh <span class="nv">$cmake_install_prefix</span> <span class="nv">$build_type</span>
+<span class="k">fi</span>
+<span class="c1"># --------------------------------------------------------------------------</span>
+<span class="nv">user</span><span class="o">=</span><span class="k">$(</span>whoami<span class="k">)</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$user</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s1">&#39;root&#39;</span> <span class="o">]</span>
+<span class="k">then</span>
+   <span class="nv">sudo</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+<span class="k">else</span>
+   <span class="nv">sudo</span><span class="o">=</span><span class="s1">&#39;sudo&#39;</span>
+<span class="k">fi</span>
+<span class="c1"># -----------------------------------------------------------------------------</span>
+<span class="c1"># set system_type, system_install example_install.tmp</span>
+<span class="k">if</span> which apt-get &gt;<span class="p">&amp;</span> /dev/null
+<span class="k">then</span>
+   <span class="nv">system_type</span><span class="o">=</span><span class="s1">&#39;debian&#39;</span>
+   <span class="nv">system_install</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$sudo</span><span class="s2"> apt-get install -y&quot;</span>
+   dpkg-query -l <span class="p">|</span> sed -e <span class="s1">&#39;s|  *| |g&#39;</span> -e <span class="s1">&#39;s|^ii ||&#39;</span> &gt; example_install.tmp
+<span class="k">elif</span> which dnf &gt;<span class="p">&amp;</span> /dev/null
+<span class="k">then</span>
+   <span class="nv">system_type</span><span class="o">=</span><span class="s1">&#39;red_hat&#39;</span>
+   <span class="nv">system_install</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$sudo</span><span class="s2"> dnf install -y&quot;</span>
+   dnf list installed <span class="p">|</span> sed -e <span class="s1">&#39;s|  *| |g&#39;</span> &gt; example_install.tmp
+<span class="k">elif</span> which yum &gt;<span class="p">&amp;</span> /dev/null
+<span class="k">then</span>
+   <span class="nv">system_type</span><span class="o">=</span><span class="s1">&#39;red_hat&#39;</span>
+   <span class="nv">system_install</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$sudo</span><span class="s2"> yum install -y&quot;</span>
+   yum list installed <span class="p">|</span> sed -e <span class="s1">&#39;s|  *| |g&#39;</span> &gt; example_install.tmp
+<span class="k">elif</span> which port &gt;<span class="p">&amp;</span> /dev/null
+<span class="k">then</span>
+   <span class="nv">system_type</span><span class="o">=</span><span class="s1">&#39;mac_port&#39;</span>
+   <span class="nv">system_install</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$sudo</span><span class="s2"> port install&quot;</span>
+   port installed <span class="p">|</span> sed -e <span class="s1">&#39;s|^ *||g&#39;</span> &gt; example_install.tmp
+<span class="k">elif</span> which brew &gt;<span class="p">&amp;</span> /dev/null
+<span class="k">then</span>
+   <span class="nv">system_type</span><span class="o">=</span><span class="s1">&#39;mac_brew&#39;</span>
+   <span class="nv">system_install</span><span class="o">=</span><span class="s1">&#39;brew install&#39;</span>
+   brew list <span class="p">|</span> sed -e <span class="s1">&#39;s|  *|\n|g&#39;</span> &gt; example_install.tmp
+<span class="k">elif</span> which setup-x86_64 &gt;<span class="p">&amp;</span> /dev/null
+<span class="k">then</span>
+   <span class="nv">system_tpye</span><span class="o">=</span><span class="s1">&#39;cygwin&#39;</span>
+   <span class="nv">system_install</span><span class="o">=</span><span class="s1">&#39;setup-x86_64.exe -q -P&#39;</span>
+   cygcheck -c -d <span class="p">|</span> sed -e <span class="s1">&#39;s|  *|-|&#39;</span> &gt; example_install.tmp
+<span class="k">else</span>
+   <span class="nb">echo</span> <span class="s1">&#39;Cannot find the system pakcage manager&#39;</span>
+   <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+<span class="c1"># --------------------------------------------------------------------------</span>
+<span class="c1"># system external installs for normal system requirements</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$system_type</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s1">&#39;debian&#39;</span> <span class="o">]</span>
+<span class="k">then</span>
+   <span class="nv">list</span><span class="o">=</span><span class="s1">&#39;</span>
+<span class="s1">      cmake</span>
+<span class="s1">      git</span>
+<span class="s1">      wget</span>
+<span class="s1">      libblas-dev</span>
+<span class="s1">      liblapack-dev</span>
+<span class="s1">      libsuitesparse-dev</span>
+<span class="s1">      pkg-config</span>
+<span class="s1">      g++</span>
+<span class="s1">      gfortran</span>
+<span class="s1">      libgsl-dev</span>
+<span class="s1">   &#39;</span>
+<span class="k">elif</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$system_type</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s1">&#39;red_hat&#39;</span> <span class="o">]</span>
+<span class="k">then</span>
+   <span class="nv">list</span><span class="o">=</span><span class="s1">&#39;</span>
+<span class="s1">      cmake</span>
+<span class="s1">      git</span>
+<span class="s1">      wget</span>
+<span class="s1">      blas-devel</span>
+<span class="s1">      lapack-devel</span>
+<span class="s1">      suitesparse-devel</span>
+<span class="s1">      pkgconf</span>
+<span class="s1">      gcc-c++</span>
+<span class="s1">      gcc-gfortran</span>
+<span class="s1">      gsl-devel</span>
+<span class="s1">      java</span>
+<span class="s1">   &#39;</span>
+<span class="k">elif</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$system_type</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s1">&#39;mac_port&#39;</span> <span class="o">]</span>
+<span class="k">then</span>
+   <span class="nv">list</span><span class="o">=</span><span class="s1">&#39;</span>
+<span class="s1">      cmake</span>
+<span class="s1">      wget</span>
+<span class="s1">      SuiteSparse</span>
+<span class="s1">      pkgconfig</span>
+<span class="s1">      gsl</span>
+<span class="s1">      openjdk</span>
+<span class="s1">   &#39;</span>
+<span class="k">elif</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$system_type</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s1">&#39;mac_brew&#39;</span> <span class="o">]</span>
+<span class="k">then</span>
+   <span class="nv">list</span><span class="o">=</span><span class="s1">&#39;</span>
+<span class="s1">      cmake</span>
+<span class="s1">      wget</span>
+<span class="s1">      suite-sparse</span>
+<span class="s1">      pkg-config</span>
+<span class="s1">      gsl</span>
+<span class="s1">      openjdk</span>
+<span class="s1">   &#39;</span>
+   <span class="c1"># make sure Ipopt configure sees brew version of javac (not /usr/bin/javac)</span>
+   <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/usr/local/opt/openjdk/bin:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
+<span class="k">elif</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$system_tpye</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s1">&#39;cygwin&#39;</span> <span class="o">]</span>
+<span class="k">then</span>
+   <span class="nv">list</span><span class="o">=</span><span class="s1">&#39;</span>
+<span class="s1">      gsl</span>
+<span class="s1">      cmake</span>
+<span class="s1">      git</span>
+<span class="s1">      wget</span>
+<span class="s1">      liblapack-devel</span>
+<span class="s1">      pkgconf</span>
+<span class="s1">      gcc-core</span>
+<span class="s1">      gcc-g++</span>
+<span class="s1">      gcc-fortran</span>
+<span class="s1">      libgsl-devel</span>
+<span class="s1">      patch</span>
+<span class="s1">      libcholmod-devel</span>
+<span class="s1">   &#39;</span>
+<span class="k">else</span>
+   <span class="nb">echo</span> <span class="s1">&#39;example_install.sh: script error&#39;</span>
+   <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+<span class="k">for</span> package <span class="k">in</span> <span class="nv">$list</span>
+<span class="k">do</span>
+   <span class="k">if</span> grep <span class="s2">&quot;^</span><span class="nv">$package</span><span class="s2">[^a-zA-Z_]&quot;</span> example_install.tmp &gt; /dev/null
+   <span class="k">then</span>
+      <span class="nv">version</span><span class="o">=</span><span class="sb">`</span>grep <span class="s2">&quot;^</span><span class="nv">$package</span><span class="s2">[^a-zA-Z_]&quot;</span> example_install.tmp <span class="p">|</span> head -1<span class="sb">`</span>
+      <span class="nb">echo</span> <span class="s2">&quot;using installed </span><span class="nv">$version</span><span class="s2">&quot;</span>
+   <span class="k">elif</span> grep <span class="s2">&quot;^</span><span class="nv">$package</span><span class="s2">\$&quot;</span> example_install.tmp &gt; /dev/null
+   <span class="k">then</span>
+      <span class="c1"># brew list case</span>
+      <span class="nb">echo</span> <span class="s2">&quot;using installed </span><span class="nv">$package</span><span class="s2">&quot;</span>
+   <span class="k">else</span>
+      echo_eval <span class="nv">$system_install</span> <span class="nv">$package</span>
+   <span class="k">fi</span>
+<span class="k">done</span>
+rm example_install.tmp
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c1"># local external installs for special requirements</span>
+<span class="k">for</span> pkg <span class="k">in</span> eigen ipopt cppad
+<span class="k">do</span>
+   <span class="c1"># eval below converts $HOME in $prefix to its value for current user</span>
+   <span class="k">case</span> <span class="nv">$pkg</span> <span class="k">in</span>
+      eigen<span class="o">)</span>
+      <span class="nb">eval</span> <span class="nv">file</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$cmake_install_prefix</span><span class="s2">/eigen/include/Eigen/Core&quot;</span>
+      <span class="p">;;</span>
+
+      ipopt<span class="o">)</span>
+      <span class="nb">eval</span> <span class="nv">file</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$ipopt_prefix</span><span class="s2">/include/coin-or/IpIpoptApplication.hpp&quot;</span>
+      <span class="p">;;</span>
+
+      cppad<span class="o">)</span>
+      <span class="nb">eval</span> <span class="nv">file</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$cmake_install_prefix</span><span class="s2">/include/cppad/cppad.hpp&quot;</span>
+      <span class="p">;;</span>
+
+      *<span class="o">)</span>
+      <span class="nb">echo</span> <span class="s1">&#39;bin/example_install.sh: program error&#39;</span>
+      <span class="nb">exit</span> <span class="m">1</span>
+      <span class="p">;;</span>
+   <span class="k">esac</span>
+   <span class="c1">#</span>
+   <span class="nv">install</span><span class="o">=</span><span class="s1">&#39;true&#39;</span>
+   <span class="k">if</span> <span class="o">[</span> -e <span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span> <span class="o">]</span>
+   <span class="k">then</span>
+      <span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$replace</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s1">&#39;false&#39;</span> <span class="o">]</span>
+      <span class="k">then</span>
+         <span class="nb">echo</span> <span class="s2">&quot;Skipping bin/install_</span><span class="nv">$pkg</span><span class="s2">.sh&quot;</span>
+         <span class="nb">echo</span> <span class="s2">&quot;Using previously installed version in </span><span class="nv">$cmake_install_prefix</span><span class="s2">&quot;</span>
+         <span class="nv">install</span><span class="o">=</span><span class="s1">&#39;false&#39;</span>
+      <span class="k">fi</span>
+   <span class="k">fi</span>
+   <span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$install</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s1">&#39;true&#39;</span> <span class="o">]</span>
+   <span class="k">then</span>
+      <span class="nv">name</span><span class="o">=</span><span class="s1">&#39;example_install&#39;</span>
+      <span class="nb">echo</span> <span class="s2">&quot;bin/install_</span><span class="nv">$pkg</span><span class="s2">.sh </span><span class="nv">$system_type</span><span class="s2"> 1&gt;&gt; </span><span class="nv">$name</span><span class="s2">.log 2&gt;&gt; </span><span class="nv">$name</span><span class="s2">.err&quot;</span>
+      <span class="k">if</span> ! bin/install_<span class="nv">$pkg</span>.sh <span class="nv">$system_type</span> <span class="m">1</span>&gt;&gt; <span class="nv">$name</span>.log <span class="m">2</span>&gt;&gt; <span class="nv">$name</span>.err
+      <span class="k">then</span>
+         <span class="nb">echo</span> <span class="s2">&quot;install_</span><span class="nv">$pkg</span><span class="s2"> Error: Look at messages in&quot;</span>
+         <span class="nb">echo</span> <span class="s2">&quot;tail </span><span class="nv">$name</span><span class="s2">.err&quot;</span>
+         <span class="nb">echo</span> <span class="s2">&quot;tail </span><span class="nv">$name</span><span class="s2">.log&quot;</span>
+         <span class="nb">exit</span> <span class="m">1</span>
+      <span class="k">fi</span>
+   <span class="k">fi</span>
+<span class="k">done</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c1"># cppad_mixed</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c1"># bin/run_cmake.sh</span>
+<span class="nb">echo</span> <span class="s2">&quot;bin/run_cmake.sh 1&gt;&gt; example_install.log 2&gt;&gt; example_install.err&quot;</span>
+<span class="k">if</span> ! bin/run_cmake.sh <span class="m">1</span>&gt;&gt; example_install.log <span class="m">2</span>&gt;&gt; example_install.err
+<span class="k">then</span>
+   tail example_install.err
+   <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+<span class="c1">#</span>
+<span class="c1"># change into build directory</span>
+echo_eval <span class="nb">cd</span> build
+<span class="c1">#</span>
+<span class="k">if</span> which nproc &gt;<span class="p">&amp;</span> /dev/null
+<span class="k">then</span>
+   <span class="nv">n_job</span><span class="o">=</span><span class="k">$(</span>nproc<span class="k">)</span>
+<span class="k">else</span>
+   <span class="nv">n_job</span><span class="o">=</span><span class="k">$(</span>sysctl -n hw.ncpu<span class="k">)</span>
+<span class="k">fi</span>
+<span class="c1">#</span>
+<span class="c1"># make</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$run_test</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s1">&#39;true&#39;</span>  <span class="o">]</span>
+<span class="k">then</span>
+   <span class="nv">cmd_list</span><span class="o">=</span><span class="s1">&#39;check speed install&#39;</span>
+<span class="k">else</span>
+   <span class="nv">cmd_list</span><span class="o">=</span><span class="s1">&#39;install&#39;</span>
+<span class="k">fi</span>
+<span class="k">for</span> cmd <span class="k">in</span> <span class="nv">$cmd_list</span>
+<span class="k">do</span>
+   <span class="nb">echo</span> <span class="s2">&quot;make -j </span><span class="nv">$n_job</span><span class="s2"> </span><span class="nv">$cmd</span><span class="s2"> 1&gt;&gt; example_install.log 2&gt;&gt; example_install.err&quot;</span>
+   <span class="k">if</span> ! make -j <span class="nv">$n_job</span> <span class="nv">$cmd</span> <span class="se">\</span>
+      <span class="m">1</span>&gt;&gt; ../example_install.log <span class="m">2</span>&gt;&gt; ../example_install.err
+   <span class="k">then</span>
+      <span class="nb">echo</span> <span class="s2">&quot;Try running the following command in </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">&quot;</span>
+      <span class="nb">echo</span> <span class="s2">&quot;    make -j </span><span class="nv">$n_job</span><span class="s2"> </span><span class="nv">$cmd</span><span class="s2">&quot;</span>
+      <span class="nb">echo</span> <span class="s1">&#39;To see why the check of cppad_mixed failed.&#39;</span>
+      <span class="nb">exit</span> <span class="m">1</span>
+   <span class="k">fi</span>
+<span class="k">done</span>
+<span class="nb">cd</span> ..
+<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="nb">echo</span> <span class="s1">&#39;example_install.sh: OK&#39;</span>
+<span class="nb">exit</span> <span class="m">0</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="run_cmake.sh.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">run_cmake.sh</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="install_unix.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">install_unix</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">example_install.sh</a><ul>
+<li><a class="reference internal" href="#an-example-installation">An Example Installation</a><ul>
+<li><a class="reference internal" href="#syntax">Syntax</a></li>
+<li><a class="reference internal" href="#run-test">run_test</a></li>
+<li><a class="reference internal" href="#replace">replace</a></li>
+<li><a class="reference internal" href="#source">Source</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>

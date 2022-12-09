@@ -1,0 +1,165 @@
+.. include:: xrst_preamble.rst
+
+.. _trace_struct-name:
+
+!!!!!!!!!!!!
+trace_struct
+!!!!!!!!!!!!
+
+xrst input file: ``include/cppad/mixed/trace_struct.hpp``
+
+.. meta::
+   :keywords: trace_struct, ipopt, trace, information
+
+.. index:: trace_struct, ipopt, trace, information
+
+.. _trace_struct-title:
+
+Ipopt Trace Information
+#######################
+
+.. meta::
+   :keywords: syntax
+
+.. index:: syntax
+
+.. _trace_struct@Syntax:
+
+Syntax
+******
+``CppAD::mixed::trace_struct`` *trace*
+
+.. meta::
+   :keywords: prototype
+
+.. index:: prototype
+
+.. _trace_struct@Prototype:
+
+Prototype
+*********
+
+.. literalinclude:: ../../include/cppad/mixed/trace_struct.hpp
+   :lines: 80-92
+   :language: cpp
+
+.. meta::
+   :keywords: iter
+
+.. index:: iter
+
+.. _trace_struct@iter:
+
+iter
+****
+See ipopt trace :ref:`ipopt_trace@iter` .
+
+.. meta::
+   :keywords: obj_value
+
+.. index:: obj_value
+
+.. _trace_struct@obj_value:
+
+obj_value
+*********
+See ipopt trace :ref:`ipopt_trace@objective` .
+
+.. meta::
+   :keywords: inf_pr
+
+.. index:: inf_pr
+
+.. _trace_struct@inf_pr:
+
+inf_pr
+******
+See ipopt trace :ref:`ipopt_trace@inf_pr` .
+
+.. meta::
+   :keywords: inf_du
+
+.. index:: inf_du
+
+.. _trace_struct@inf_du:
+
+inf_du
+******
+See ipopt trace :ref:`ipopt_trace@inf_du` .
+
+.. meta::
+   :keywords: mu
+
+.. index:: mu
+
+.. _trace_struct@mu:
+
+mu
+**
+See ipopt trace :ref:`ipopt_trace@lg(mu)` .
+
+.. meta::
+   :keywords: d_norm
+
+.. index:: d_norm
+
+.. _trace_struct@d_norm:
+
+d_norm
+******
+See ipopt trace :ref:`ipopt_trace@||d||` .
+
+.. meta::
+   :keywords: regularization_size
+
+.. index:: regularization_size
+
+.. _trace_struct@regularization_size:
+
+regularization_size
+*******************
+See ipopt trace :ref:`ipopt_trace@lg(rg)` .
+
+.. meta::
+   :keywords: alpha_du
+
+.. index:: alpha_du
+
+.. _trace_struct@alpha_du:
+
+alpha_du
+********
+See ipopt trace :ref:`ipopt_trace@alpha_du` .
+
+.. meta::
+   :keywords: alpha_pr
+
+.. index:: alpha_pr
+
+.. _trace_struct@alpha_pr:
+
+alpha_pr
+********
+See ipopt trace :ref:`ipopt_trace@alpha_pr` .
+
+.. meta::
+   :keywords: ls_trials
+
+.. index:: ls_trials
+
+.. _trace_struct@ls_trials:
+
+ls_trials
+*********
+See ipopt trace :ref:`ipopt_trace@ls` .
+
+.. meta::
+   :keywords: restoration
+
+.. index:: restoration
+
+.. _trace_struct@restoration:
+
+restoration
+***********
+Is ipopt currently in restoration mode.

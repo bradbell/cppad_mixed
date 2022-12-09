@@ -1,0 +1,99 @@
+.. include:: xrst_preamble.rst
+
+.. _ipopt_options-name:
+
+!!!!!!!!!!!!!
+ipopt_options
+!!!!!!!!!!!!!
+
+xrst input file: ``xrst/ipopt_options.xrst``
+
+.. meta::
+   :keywords: ipopt_options, an, ipopt, options, argument
+
+.. index:: ipopt_options, an, ipopt, options, argument
+
+.. _ipopt_options-title:
+
+An Ipopt Options Argument
+#########################
+
+.. meta::
+   :keywords: prototype
+
+.. index:: prototype
+
+.. _ipopt_options@Prototype:
+
+Prototype
+*********
+An Ipopt options argument *options* has prototype
+
+   ``const std::string&`` *options*
+
+It contains a list of
+`Ipopt <http://www.coin-or.org/Ipopt/documentation/>`_ options.
+
+.. meta::
+   :keywords: format
+
+.. index:: format
+
+.. _ipopt_options@Format:
+
+Format
+******
+Each option corresponds to a line in *options* and
+is terminated by the ``'\n'`` character.
+This includes the last line; i.e., the last character in *options*
+is a ``'\n'`` .
+Each line
+consists of three non-empty tokens separated by one or more spaces.
+
+.. meta::
+   :keywords: string
+
+.. index:: string
+
+.. _ipopt_options@String:
+
+String
+******
+You can set any Ipopt string option using a line with the following syntax:
+
+   ``String`` *name* *value*
+
+Here *name* is any valid Ipopt string option
+and *value* is its setting.
+
+.. meta::
+   :keywords: integer
+
+.. index:: integer
+
+.. _ipopt_options@Integer:
+
+Integer
+*******
+You can set any Ipopt integer option using a line with the following syntax:
+
+   ``Integer`` *name* *value*
+
+Here *name* is any valid Ipopt integer option
+and *value* is its setting.
+
+.. meta::
+   :keywords: numeric
+
+.. index:: numeric
+
+.. _ipopt_options@Numeric:
+
+Numeric
+*******
+You can set any Ipopt numeric option using a line with the following syntax:
+
+   ``Numeric`` *name* *value*
+
+Here *name* is any valid Ipopt numeric option
+and *value* is its setting.

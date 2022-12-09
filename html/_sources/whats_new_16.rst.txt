@@ -1,0 +1,1435 @@
+.. include:: xrst_preamble.rst
+
+.. _whats_new_16-name:
+
+!!!!!!!!!!!!
+whats_new_16
+!!!!!!!!!!!!
+
+xrst input file: ``xrst/whats_new/16.xrst``
+
+.. meta::
+   :keywords: whats_new_16, changes, and, additions, to, cppad_mixed, during, 2016
+
+.. index:: whats_new_16, changes, and, additions, to, cppad_mixed, during, 2016
+
+.. _whats_new_16-title:
+
+Changes and Additions to cppad_mixed During 2016
+################################################
+
+.. meta::
+   :keywords: mm-dd
+
+.. index:: mm-dd
+
+.. _whats_new_16@mm-dd:
+
+mm-dd
+*****
+
+.. meta::
+   :keywords: 11-09
+
+.. index:: 11-09
+
+.. _whats_new_16@mm-dd@11-09:
+
+11-09
+=====
+The values ``true`` and ``false`` in the ``ar1_xam``
+:ref:`input arguments<ar1_xam.cpp@Command Arguments>` and
+:ref:`ar1_xam.cpp@Output` were changed to
+``yes`` and ``no`` respectively.
+This was also done for the :ref:`capture_xam<capture_xam.cpp-name>` program.
+
+.. meta::
+   :keywords: 11-07
+
+.. index:: 11-07
+
+.. _whats_new_16@mm-dd@11-07:
+
+11-07
+=====
+
+#. Add the ``bin/speed_compare.py`` program
+   (which has since been moved to ``bin/speed_old.py`` ).
+#. Change order of :ref:`input arguments<capture_xam.cpp@Command Arguments>`
+   to ``capture_xam`` be more similar to
+   :ref:`ar1_xam<ar1_xam.cpp@Command Arguments>` .
+
+.. meta::
+   :keywords: 11-04
+
+.. index:: 11-04
+
+.. _whats_new_16@mm-dd@11-04:
+
+11-04
+=====
+This the first version with ``cppad_mixed`` with the
+checkpoint_newton_step option.
+Previously, the Newton step was always checkpointed.
+
+.. meta::
+   :keywords: 11-02
+
+.. index:: 11-02
+
+.. _whats_new_16@mm-dd@11-02:
+
+11-02
+=====
+The sparsity pattern and other information related to the Hessian of the
+:ref:`random likelihood<theory@Random Likelihood, f(theta, u)>` ,
+:math:`f_{uu} ( \theta , u )`, was being computed twice, if
+:ref:`derived_ctor@quasi_fixed` was false,
+or if :ref:`information_mat-name` was called.
+This has been fixed
+
+.. meta::
+   :keywords: 10-30
+
+.. index:: 10-30
+
+.. _whats_new_16@mm-dd@10-30:
+
+10-30
+=====
+
+#. The :ref:`derived_ctor@A_rcv` argument was missing
+   from the ``initialize`` Syntax. This has been fixed.
+#. The value of
+   :ref:`capture_xam.cpp@Command Arguments@number_random`
+   was increased (from 30 to 35) to lessen the change of a random failure
+   during the ``make speed`` command; see
+   :ref:`install_unix@cppad_mixed@Speed` .
+
+.. meta::
+   :keywords: 10-28
+
+.. index:: 10-28
+
+.. _whats_new_16@mm-dd@10-28:
+
+10-28
+=====
+Fix bug in ``sparse_ad_cholesky`` ; to be more specific,
+the inverse permutation :math:`P^{-1}` was being used where the permutation
+*P* in ``sparse_ad_cholesky`` was required.
+This the first version with ``cppad_mixed`` passes all its tests with
+*use_atomic_cholesky* true.
+
+.. meta::
+   :keywords: 10-27
+
+.. index:: 10-27
+
+.. _whats_new_16@mm-dd@10-27:
+
+10-27
+=====
+
+#. Add the :ref:`run_cmake.sh@optimize_cppad_function`
+   option to the ``cmake`` command line.
+#. Advance to cppad-20161027.
+
+.. meta::
+   :keywords: 10-25
+
+.. index:: 10-25
+
+.. _whats_new_16@mm-dd@10-25:
+
+10-25
+=====
+
+#. Add the *use_atomic_cholesky*
+   option to the ``cmake`` command line.
+#. Fix another bug in ``sparse_ad_cholesky`` . To be specific,
+   when search for the beginning of a row, do not check that at column index
+   is less than an element known to be in the row before you get to the row.
+#. Fix a problem with, and improve, :ref:`example_install.sh-name`
+   (the problem was introduced on 2016-10-24).
+#. Fix a problem with
+   ``install_suitesparse.sh``
+   (introduced on 2016-10-24).
+
+.. meta::
+   :keywords: 10-24
+
+.. index:: 10-24
+
+.. _whats_new_16@mm-dd@10-24:
+
+10-24
+=====
+Fix a bug in the ``sparse_ad_cholesky`` class forward mode.
+To be specific, ignore higher order Taylor coefficients that do
+not appear in the sparsity patter for the zero order coefficient
+(they are no effects).
+
+.. meta::
+   :keywords: 10-18
+
+.. index:: 10-18
+
+.. _whats_new_16@mm-dd@10-18:
+
+10-18
+=====
+Fix a bug in implementation of the :ref:`run_cmake.sh-name`
+``log_fatal_error`` option (which has since been removed).
+
+.. meta::
+   :keywords: 10-16
+
+.. index:: 10-16
+
+.. _whats_new_16@mm-dd@10-16:
+
+10-16
+=====
+Add the
+``log_fatal_error`` option to the cppad_mixed configuration.
+
+.. meta::
+   :keywords: 10-15
+
+.. index:: 10-15
+
+.. _whats_new_16@mm-dd@10-15:
+
+10-15
+=====
+**API Change:**
+The
+:ref:`random constraint matrix<problem@Notation@Random Constraint Matrix, A>`
+*A_rcv* , is now specified in
+:ref:`initialize<derived_ctor@A_rcv>` instead
+:ref:`derived_ctor-name` .
+This was undone on
+:ref:`2017-03-08<whats_new_17@mm-dd@03-08>` .
+
+.. meta::
+   :keywords: 10-14
+
+.. index:: 10-14
+
+.. _whats_new_16@mm-dd@10-14:
+
+10-14
+=====
+
+#. The way the
+   :ref:`install<install_unix-name>` searches for libraries,
+   and reports missing libraries,
+   has been improved.
+#. Improve the :ref:`install_unix@System Requirements@suitesparse`
+   so that it automatically includes the ``metis`` package.
+   Note that the proper value for *metis_version* ,
+   in the suitesparse install,
+   is printed at the end of the ipopt install.
+
+.. meta::
+   :keywords: 10-06
+
+.. index:: 10-06
+
+.. _whats_new_16@mm-dd@10-06:
+
+10-06
+=====
+A class that performs sparse Cholesky factorization
+as a CppAD atomic operation has been added; see
+``sparse_ad_cholesky`` .
+
+.. meta::
+   :keywords: 09-30
+
+.. index:: 09-30
+
+.. _whats_new_16@mm-dd@09-30:
+
+09-30
+=====
+
+#. Use one value for *libdir* for all the install scripts;
+   see :ref:`run_cmake.sh@cmake_libdir` .
+#. Use a link to switch the build and install directories between
+   the debug and release versions (when the install prefix ends with
+   ``cppad_mixed`` ).
+   This enables one to build into the actual prefix
+   (without ``debug`` or ``release`` at the end)
+   by not ending the prefix with ``cppad_mixed`` .
+#. Advance to cppad-20160929.
+
+.. meta::
+   :keywords: 09-27
+
+.. index:: 09-27
+
+.. _whats_new_16@mm-dd@09-27:
+
+09-27
+=====
+Add ``sparse_up_tri_sol``
+(plan to use this with a sparse atomic Cholesky AD operation).
+
+.. meta::
+   :keywords: 09-24
+
+.. index:: 09-24
+
+.. _whats_new_16@mm-dd@09-24:
+
+09-24
+=====
+Create ``sparse_low_tri_sol``
+(plan to use this with a sparse atomic Cholesky AD operation).
+
+.. meta::
+   :keywords: 09-23
+
+.. index:: 09-23
+
+.. _whats_new_16@mm-dd@09-23:
+
+09-23
+=====
+Improve
+:ref:`bin/install_eigen.sh<install_unix@Special Requirements@eigen>` ,
+:ref:`bin/install_ipopt.sh<install_unix@Special Requirements@Ipopt>` ,
+and
+``install_suitesparse.sh``
+so they better ensure that debug and release versions got into proper
+directories.
+
+.. meta::
+   :keywords: 07-28
+
+.. index:: 07-28
+
+.. _whats_new_16@mm-dd@07-28:
+
+07-28
+=====
+
+#. Improve the organization of the :ref:`user_examples-name` section.
+#. Add the *start_near_solution* argument to
+   :ref:`ar1_xam.cpp-name` and :ref:`capture_xam.cpp-name` .
+#. Add the *quasi_fixed* argument to :ref:`ar1_xam.cpp-name`
+   and change its position in :ref:`capture_xam.cpp-name`
+   (so it has same relative location as in ``ar1_xam.cpp`` ).
+#. Change the default for
+   :ref:`optimize_fixed@fixed_ipopt_options@accept_after_max_steps`
+   to ``2`` and the default for *obj_scaling_factor*
+   back to ``1`` .
+
+.. meta::
+   :keywords: 07-27
+
+.. index:: 07-27
+
+.. _whats_new_16@mm-dd@07-27:
+
+07-27
+=====
+Mention having both debug and release versions of build on same file
+system; see :ref:`run_cmake.sh@build_type` .
+
+.. meta::
+   :keywords: 07-26
+
+.. index:: 07-26
+
+.. _whats_new_16@mm-dd@07-26:
+
+07-26
+=====
+Change the fixed effects optimization default value for the Ipopt
+*obj_scaling_factor* from ``1.0`` to
+
+   *obj_scaling_factor* = 1.0 / ``sqrt`` ( *n_fixed* + *n_random*  )
+
+This avoids scaling problems in :ref:`ar1_xam.cpp-name`
+with there is a large number of random effects (10,000 or more).
+To be specific, the number of backtracking line search steps
+:ref:`ipopt_trace@ls` is much smaller.
+
+.. meta::
+   :keywords: 07-25
+
+.. index:: 07-25
+
+.. _whats_new_16@mm-dd@07-25:
+
+07-25
+=====
+
+#. Computing the derivative of the log of the determinant term in the
+   :ref:`Laplace approximation<theory@Objective@Laplace Approximation, h(theta, u)>`
+   uses the inverse of the Hessian w.r.t. the random effects
+   (where the Hessian is possibly non-zero).
+   The
+   :ref:`run_cmake.sh@ldlt_cholmod` method for computing
+   this inverse uses a special inverse subset algorithm; see
+   *method* in ``ldlt_cholmod_inv`` .
+   The *method* in ``ldlt_eigen_inv`` has not been changed.
+#. Make order the same for command line arguments that have the same name in
+   :ref:`ar1_xam.cpp-name` and :ref:`capture_xam.cpp-name` .
+   Change the argument *number_times* to
+   *number_random* (in both programs).
+   In addition, the *derivative_test* argument was added to both programs.
+
+.. meta::
+   :keywords: 07-20
+
+.. index:: 07-20
+
+.. _whats_new_16@mm-dd@07-20:
+
+07-20
+=====
+Add the *hold_memory* parameter to
+:ref:`capture_xam.cpp<capture_xam.cpp@Command Arguments@hold_memory>` and
+:ref:`ar1_xam.cpp<ar1_xam.cpp@Command Arguments@hold_memory>` .
+
+.. meta::
+   :keywords: 07-18
+
+.. index:: 07-18
+
+.. _whats_new_16@mm-dd@07-18:
+
+07-18
+=====
+Add the *bool_sparsity* parameter to the following:
+:ref:`initialize-name` ,
+:ref:`information_mat-name` ,
+:ref:`capture_xam.cpp<capture_xam.cpp@Command Arguments@bool_sparsity>` ,
+:ref:`ar1_xam.cpp<ar1_xam.cpp@Command Arguments@bool_sparsity>` .
+In addition, remove *bool_sparsity* from the :ref:`run_cmake.sh-name`
+configuration script.
+This puts the choose between boolean and set sparsity patterns
+during run-time, instead of during the :ref:`install<install_unix-name>` process.
+The *bool_sparsity* parameter has since been moved for
+``initialize`` and ``information_mat`` to
+:ref:`derived_ctor<derived_ctor@bool_sparsity>` .
+
+.. meta::
+   :keywords: 07-14
+
+.. index:: 07-14
+
+.. _whats_new_16@mm-dd@07-14:
+
+07-14
+=====
+A new method for computing the Hessian of the Laplace objective
+:ref:`Hessian of the Laplace objective<theory@Hessian of Laplace Objective>`
+was implemented.
+To be specific, two partial Newton steps
+(instead of two full Newton steps) are used in the
+:ref:`second order<theory@Approximate Optimal Random Effects@Second Order, W(beta, theta, u)>`
+approximation for the optimal random effects
+:math:`W( \beta , \theta , u )`.
+This should speed up the computation of the
+:ref:`information matrix<information_mat-name>` .
+It should also speed up :ref:`optimize_fixed-name` when
+:ref:`derived_ctor@quasi_fixed` is false.
+
+.. meta::
+   :keywords: 07-13
+
+.. index:: 07-13
+
+.. _whats_new_16@mm-dd@07-13:
+
+07-13
+=====
+A new method for optimizing the random effects has been included; see
+:ref:`optimize_random@options@evaluation_method` .
+The new method is now the default.
+An option was added so the speed tests could use the new or old method; see
+*ipopt_solve* in
+:ref:`capture_xam<capture_xam.cpp@Command Arguments@ipopt_solve>` and
+:ref:`ar1_xam<ar1_xam.cpp@Command Arguments@ipopt_solve>` .
+
+.. meta::
+   :keywords: 07-12
+
+.. index:: 07-12
+
+.. _whats_new_16@mm-dd@07-12:
+
+07-12
+=====
+
+#. Improve the error messages when
+   :ref:`install_unix@System Requirements@pkg-config`
+   cannot find the configuration information
+   for :ref:`install_unix@System Requirements@gsl`
+   or :ref:`install_unix@Special Requirements@Ipopt` .
+#. Fix a compile error (on some systems)
+   in the file ``src/cholmod/sim_cov.cpp`` .
+#. Improve discussion of Ipopt callback *ok* flag; e.g., see
+   ``ok`` in ``ipopt_xam_eval_f`` .
+
+.. meta::
+   :keywords: 07-10
+
+.. index:: 07-10
+
+.. _whats_new_16@mm-dd@07-10:
+
+07-10
+=====
+
+#. Improve :ref:`example_install.sh-name` .
+   To be specific, give the user the option to use existing installs.
+#. Add more input and output options to :ref:`ar1_xam.cpp-name` .
+#. Reduce that chance of random test failure using the
+   :ref:`capture_xam.cpp@Example` settings
+   for ``capture_xam.cpp`` .
+
+.. meta::
+   :keywords: 07-09
+
+.. index:: 07-09
+
+.. _whats_new_16@mm-dd@07-09:
+
+07-09
+=====
+Change the ``auto_regressive_xam.cpp`` example to the
+:ref:`ar1_xam.cpp-name` example and speed test.
+
+.. meta::
+   :keywords: 06-24
+
+.. index:: 06-24
+
+.. _whats_new_16@mm-dd@06-24:
+
+06-24
+=====
+
+#. There was a problem with how
+   :ref:`install_unix@System Requirements@gsl`
+   was linked on some systems.
+   This has been fixed.
+#. The script ``bin/debian_install`` has been moved to
+   :ref:`bin/example_install.sh<example_install.sh-name>`
+   and it should work for both Debian and Red Hat systems.
+
+.. meta::
+   :keywords: 06-22
+
+.. index:: 06-22
+
+.. _whats_new_16@mm-dd@06-22:
+
+06-22
+=====
+
+#. Add the ``auto_regressive_xam.cpp`` example.
+#. Create the scripts ``bin/debian_install.sh`` for an easy install on Debian
+   systems. There are some 2DO items in this install that need to be
+   fixed so they work on all systems.
+#. Create the script ``bin/install_omhelp`` an easy install of omhelp
+   for Debian systems. This is needed to do ``cppad_mixed`` development.
+
+.. meta::
+   :keywords: 06-19
+
+.. index:: 06-19
+
+.. _whats_new_16@mm-dd@06-19:
+
+06-19
+=====
+
+#. If during a call to :ref:`optimize_fixed-name` a
+   :ref:`CppAD error<derived_ctor@CppAD ErrorHandler>` occurs,
+   it no longer aborts the optimization.
+#. Add the *build_type* choice
+   (debug or release) to the install script for
+   :ref:`install_unix@Special Requirements@eigen` ,
+   :ref:`install_unix@Special Requirements@Ipopt` , and
+   :ref:`install_unix@System Requirements@suitesparse` .
+   Compiling debug versus release
+   for the installs above and for the
+   :ref:`run_cmake.sh@build_type`
+   made a difference of 40.0 seconds versus 5.5 seconds
+   for the average of 20 values of ``capture_xam``
+   :ref:`capture_xam.cpp@Output@optimize_fixed_seconds` .
+
+.. meta::
+   :keywords: 06-18
+
+.. index:: 06-18
+
+.. _whats_new_16@mm-dd@06-18:
+
+06-18
+=====
+If during a call to :ref:`optimize_fixed-name` ,
+the Hessian of the
+:ref:`random likelihood<theory@Random Likelihood, f(theta, u)>`
+:math:`f_{uu} ( \theta , u )` may not be positive definite.
+This case used to aborted the optimization with a
+:ref:`base_class@User Defined Functions@fatal_error` .
+Now a
+:ref:`base_class@User Defined Functions@warning`
+is used to report this condition and the
+:ref:`optimize_fixed@solution` is returned with
+
+   *solution* . ``fixed_opt``
+
+equal to the fixed effects for this warning.
+
+.. meta::
+   :keywords: 06-17
+
+.. index:: 06-17
+
+.. _whats_new_16@mm-dd@06-17:
+
+06-17
+=====
+
+#. Continue to improve :ref:`capture_xam.cpp-name` example / speed test.
+#. Drop the ``a1_double`` version of the user defined
+   :ref:`ran_likelihood-name` function.
+   Also drop the corresponding template functions from the
+   :ref:`user_examples-name` .
+
+.. meta::
+   :keywords: 06-13
+
+.. index:: 06-13
+
+.. _whats_new_16@mm-dd@06-13:
+
+06-13
+=====
+
+#. There was a bug in
+   :ref:`sample_fixed-name` that generated the assert
+   ``Assertion `H_info.col[k] == j' failed.``
+   The problem was that ``H_info`` was not in
+   :ref:`column manor order<sparse_mat_info@Notation@Column Major Order>` .
+   This has been fixed.
+#. Continue to improve :ref:`capture_xam.cpp-name` example / speed test.
+
+.. meta::
+   :keywords: 06-12
+
+.. index:: 06-12
+
+.. _whats_new_16@mm-dd@06-12:
+
+06-12
+=====
+
+#. Remove the option,
+   to use ``box_newton`` to optimize the random effects
+   (added on :ref:`whats_new_16@mm-dd@06-03` ).
+   It turns out this had some problems and did not yield the hoped for
+   improvements in speed.
+#. Add comment about fact that constant terms in
+   :ref:`fix_likelihood<fix_likelihood@vec@constant>` and
+   :ref:`ran_likelihood<ran_likelihood@vec@constant>`
+   do not affect the result.
+   In addition, change the :ref:`user_examples-name` to demonstrate this fact.
+#. Continue to improve :ref:`capture_xam.cpp-name` example / speed test.
+
+.. meta::
+   :keywords: 06-11
+
+.. index:: 06-11
+
+.. _whats_new_16@mm-dd@06-11:
+
+06-11
+=====
+Improve the :ref:`capture_xam.cpp-name` example:
+
+#. Make the  correspondence to its
+   :ref:`capture_xam.cpp@Reference` clearer.
+#. Add lots of command line arguments for optional settings; see
+   :ref:`capture_xam.cpp@Syntax` .
+#. Add a normalization factor to avoid floating point overflow during
+   evaluation of its :ref:`ran_likelihood-name` .
+
+.. meta::
+   :keywords: 06-07
+
+.. index:: 06-07
+
+.. _whats_new_16@mm-dd@06-07:
+
+06-07
+=====
+
+#. When ``box_newton`` fails, change message from
+   :ref:`base_class@User Defined Functions@fatal_error` to
+   :ref:`base_class@User Defined Functions@warning` .
+#. Change the ``box_newton`` convergence
+   ``tolerance`` to be in terms of the
+   Newton step (instead of projected gradient).
+
+.. meta::
+   :keywords: 06-06
+
+.. index:: 06-06
+
+.. _whats_new_16@mm-dd@06-06:
+
+06-06
+=====
+Fix an minor error in ``box_newton`` line search termination criteria
+(did not affect any test results).
+
+.. meta::
+   :keywords: 06-05
+
+.. index:: 06-05
+
+.. _whats_new_16@mm-dd@06-05:
+
+06-05
+=====
+
+#. Make ``box_newton`` more robust by doing line search in a
+   scaled negative projected gradient direction.
+   (Step size of one in negative projected gradient direction
+   may be much too large or much too small).
+#. There was a bug in ``ldlt_cholmod_solve_H`` where an unnecessary
+   condition was check and failed. The example
+   ``cholmod_solve2_a.cpp`` has been change to demonstrate that
+   only a subset of the right hand side values matter.
+#. There was an error in the
+   ``ldlt_eigen_logdet`` function in the special case where the
+   determinant was zero. This has been fixed.
+
+.. meta::
+   :keywords: 06-04
+
+.. index:: 06-04
+
+.. _whats_new_16@mm-dd@06-04:
+
+06-04
+=====
+Redirect CppAD error messages through
+:ref:`base_class@User Defined Functions@fatal_error` .
+
+.. meta::
+   :keywords: 06-03
+
+.. index:: 06-03
+
+.. _whats_new_16@mm-dd@06-03:
+
+06-03
+=====
+Add the option to use
+``box_newton``
+to optimize the random effects.
+This changed the user API for the functions listed below
+(but has since been remove and the API has been changed back):
+
+.. meta::
+   :keywords: optimize_random
+
+.. index:: optimize_random
+
+.. _whats_new_16@mm-dd@optimize_random:
+
+optimize_random
+===============
+The *options* argument determines
+if ``ipopt`` or ``box_newton`` is used.
+
+.. meta::
+   :keywords: optimize_fixed
+
+.. index:: optimize_fixed
+
+.. _whats_new_16@mm-dd@optimize_fixed:
+
+optimize_fixed
+==============
+The *random_options* have been split into
+*random_box_options/* and
+*random_ipopt_options* .
+
+.. meta::
+   :keywords: sample_random
+
+.. index:: sample_random
+
+.. _whats_new_16@mm-dd@sample_random:
+
+sample_random
+=============
+The *random_options* have been split into
+*random_box_options/* and
+*random_ipopt_options* .
+
+.. meta::
+   :keywords: 05-15
+
+.. index:: 05-15
+
+.. _whats_new_16@mm-dd@05-15:
+
+05-15
+=====
+
+#. The :ref:`sample_fixed-name` routine now uses an LDLT factorization of the
+   implicit information matrix instead of the implicit covariance.
+   This is more efficient.
+#. Provide ``sample_fixed`` results
+   (with a warning) when the information matrix is invertible,
+   but not positive definite.
+   This is intended to help determine which variables are
+   not determined by the model plus data.
+#. Remove ``sample_fixed`` wish list item.
+#. Add the ``adaptive`` and ``trace-adaptive`` choices to the
+   :ref:`optimize_fixed@fixed_ipopt_options@derivative_test`
+   fixed effects options.
+   Note that this gives the user direct control over doing this test
+   (which can be time intensive for large problems).
+
+.. meta::
+   :keywords: 05-11
+
+.. index:: 05-11
+
+.. _whats_new_16@mm-dd@05-11:
+
+05-11
+=====
+
+#. In :ref:`sample_fixed-name` ,
+   :ref:`Replace<sample_conditional@Replaced>` the
+   :ref:`sample_conditional@Theory@Conditional Covariance`
+   method by the implicit covariance method
+   (which was removed on 2020-03-15 because it was to slow).
+#. Return a warning when the
+   observed implicit covariance is not positive definite.
+   In addition, simulate samples from a modified covariance so user
+   can look for variables that vary a lot and are undetermined.
+   This method is suspect. It would be better to do this in information
+   matrix space;
+   see the ``sample_fixed`` wish list item.
+
+.. meta::
+   :keywords: 05-08
+
+.. index:: 05-08
+
+.. _whats_new_16@mm-dd@05-08:
+
+05-08
+=====
+
+#. Improve :ref:`sample_fixed-name` by removing fixed effects that have
+   their upper or lower limits active (or equal); see
+   :ref:`sample_conditional@Theory@Fixed Effects Subset` .
+   With this change the :ref:`information_mat-name` only needs to be
+   positive definite on a subset of the fixed effects.
+   The example :ref:`sample_fixed.cpp-name` demonstrates this fact.
+#. Change :ref:`sample_random-name` to use the
+   :ref:`theory@Sparse Observed Information` method.
+   This reduces the memory and time for computing these samples.
+
+.. meta::
+   :keywords: 05-06
+
+.. index:: 05-06
+
+.. _whats_new_16@mm-dd@05-06:
+
+05-06
+=====
+Fix a bug in the :ref:`information_mat-name` and :ref:`sample_fixed-name`
+when the number of random effects
+:ref:`derived_ctor@n_random` was zero.
+
+.. meta::
+   :keywords: 05-04
+
+.. index:: 05-04
+
+.. _whats_new_16@mm-dd@05-04:
+
+05-04
+=====
+Make some improvements to the solution check and its corresponding
+warning message.
+
+.. meta::
+   :keywords: 05-03
+
+.. index:: 05-03
+
+.. _whats_new_16@mm-dd@05-03:
+
+05-03
+=====
+
+#. Change ``cholmod`` class to ``ldlt_cholmod`` class
+   and ``choleig`` class to ``ldlt_eigen`` class.
+#. Change ``cholmod_cholesky`` to
+   :ref:`run_cmake.sh@ldlt_cholmod` in ``run_cmake.sh`` .
+#. There was a problem choosing ``ldlt_cholmod`` to be ``NO`` .
+   This has been fixed by changing the ``ldlt_eigen_solve_H``
+   function to work the same as the ``ldlt_cholmod_solve_H`` function.
+#. Add more detection, and reporting as a
+   :ref:`base_class@User Defined Functions@fatal_error` ,
+   when the Hessian w.r.t. the random effects
+   :math:`f_{uu} ( \theta , u)` is not positive definite.
+
+.. meta::
+   :keywords: 04-29
+
+.. index:: 04-29
+
+.. _whats_new_16@mm-dd@04-29:
+
+04-29
+=====
+Add an ``cholmod_solve2_sim.cpp`` , an example that shows
+how to use Cholmod to efficiently sample a distribution that
+has covariance equal to the inverse of a sparse positive definite matrix.
+
+.. meta::
+   :keywords: 04-27
+
+.. index:: 04-27
+
+.. _whats_new_16@mm-dd@04-27:
+
+04-27
+=====
+
+#. Add more discussion about the connection between the Lagrange multipliers
+   and the fixed effects bounds in the
+   :ref:`fixed_solution<fixed_solution@fixed_lag>` section.
+#. Relax the tolerance used by ``cppad_mixed``
+   when checking if a fixed effect
+   :ref:`bound<fixed_solution@fixed_lag>`
+   or a fixed constraint
+   :ref:`bound<fixed_solution@fix_con_lag>`
+   is active. This should give better detection.
+
+.. meta::
+   :keywords: 04-23
+
+.. index:: 04-23
+
+.. _whats_new_16@mm-dd@04-23:
+
+04-23
+=====
+There was bug whereby the :ref:`optimize_fixed@solution`
+returned by ``optimize_fixed`` would have non-zero values for
+:ref:`fixed_solution@fixed_lag` that should have been zero.
+This has been fixed.
+
+.. meta::
+   :keywords: 04-19
+
+.. index:: 04-19
+
+.. _whats_new_16@mm-dd@04-19:
+
+04-19
+=====
+Add :ref:`sample_random-name` for sampling the posterior of the random
+effects given the fixed effects.
+
+.. meta::
+   :keywords: 04-18
+
+.. index:: 04-18
+
+.. _whats_new_16@mm-dd@04-18:
+
+04-18
+=====
+Advance to newer version of CppAD; (must rerun ``bin/install_cppad.sh`` ).
+This fixed the remaining warnings when building a release version.
+
+.. meta::
+   :keywords: 04-17
+
+.. index:: 04-17
+
+.. _whats_new_16@mm-dd@04-17:
+
+04-17
+=====
+Fix some errors and warnings when
+:ref:`run_cmake.sh@build_type` was
+``RELEASE`` .
+
+.. meta::
+   :keywords: 04-16
+
+.. index:: 04-16
+
+.. _whats_new_16@mm-dd@04-16:
+
+04-16
+=====
+
+#. The routine ``ipopt_fixed_adapt_derivative_chk`` now checks
+   ``ipopt_fixed_eval_jac_g`` in addition to
+   ``ipopt_fixed_eval_grad_f`` .
+#. Fix a bug in the computation of the derivative of the random constraints.
+
+.. meta::
+   :keywords: 04-10
+
+.. index:: 04-10
+
+.. _whats_new_16@mm-dd@04-10:
+
+04-10
+=====
+
+#. If the gradient check ``ipopt_fixed_adapt_derivative_chk`` fails,
+   it now results in warning instead of a fatal error.
+#. Check the Hessian of the
+   :ref:`random likelihood<theory@Random Likelihood, f(theta, u)>`
+   :math:`f_uu ( \theta , u)` is positive definite.
+
+.. meta::
+   :keywords: 04-15
+
+.. index:: 04-15
+
+.. _whats_new_16@mm-dd@04-15:
+
+04-15
+=====
+Fix :ref:`sample_fixed-name` so that it now works properly
+when some of the components of :ref:`fix_constraint-name` are active.
+
+.. meta::
+   :keywords: 04-09
+
+.. index:: 04-09
+
+.. _whats_new_16@mm-dd@04-09:
+
+04-09
+=====
+Improve documentation of
+:ref:`optimize_fixed@fixed_ipopt_options`
+and add the special case of
+:ref:`optimize_fixed@fixed_ipopt_options@max_iter`
+equal to ``-1`` .
+
+.. meta::
+   :keywords: 04-08
+
+.. index:: 04-08
+
+.. _whats_new_16@mm-dd@04-08:
+
+04-08
+=====
+
+#. Changed ``ipopt_fixed_adapt_derivative_chk`` to handle case where
+   the function at both central difference points is zero,
+   and the derivatives is also zero.
+#. Test (and fix) :ref:`sample_fixed-name` for a case where one of the fixed effects
+   was at its upper or lower limit.
+
+.. meta::
+   :keywords: 04-07
+
+.. index:: 04-07
+
+.. _whats_new_16@mm-dd@04-07:
+
+04-07
+=====
+
+#. The new routine :ref:`sample_fixed-name` samples from the posterior
+   distribution for the estimate of the fixed effects.
+#. Changed ``ipopt_fixed_adapt_derivative_chk`` to down to step size
+   ``1e-9`` (used to just go to ``1e-7`` .
+   In addition, in error report changed ``step=`` to ``best_step=`` .
+
+.. meta::
+   :keywords: 04-06
+
+.. index:: 04-06
+
+.. _whats_new_16@mm-dd@04-06:
+
+04-06
+=====
+The user defined virtual routines
+:ref:`base_class@User Defined Functions@fatal_error`
+and
+:ref:`base_class@User Defined Functions@warning`
+have new examples in :ref:`derived_ctor.cpp-name` .
+All the other user defined virtual routines examples
+have been simplified.
+To be specific, each has its own specific example.
+In addition, the :ref:`user_examples-name` have been split in
+the user defined routines, ``cppad_mixed`` defined routines,
+and other examples.
+
+.. meta::
+   :keywords: 04-05
+
+.. index:: 04-05
+
+.. _whats_new_16@mm-dd@04-05:
+
+04-05
+=====
+The new routine :ref:`information_mat-name` computes
+the observed information matrix.
+
+.. meta::
+   :keywords: 04-03
+
+.. index:: 04-03
+
+.. _whats_new_16@mm-dd@04-03:
+
+04-03
+=====
+There was an error (introduced on 04-02 )
+in the new :ref:`optimize_fixed@Syntax`
+for ``optimize_fixed`` . This has been fixed.
+
+.. meta::
+   :keywords: 04-02
+
+.. index:: 04-02
+
+.. _whats_new_16@mm-dd@04-02:
+
+04-02
+=====
+Add a brief description for each of the
+:ref:`base_class@User Defined Functions` .
+
+.. meta::
+   :keywords: 04-01
+
+.. index:: 04-01
+
+.. _whats_new_16@mm-dd@04-01:
+
+04-01
+=====
+**API Change:**
+The :ref:`optimize_fixed-name` routine now returns the optimal Lagrange
+multipliers (as well as the optimal fixed effects). If *fixed_out*
+was the return value for the previous version of ``optimize_fixed`` ,
+and *solution* is the current return value,
+
+   *fixed_out* = *solution* . ``fixed_opt``
+
+.
+This shows how to convert old ``optimize_fixed`` calls to the new form.
+
+.. meta::
+   :keywords: 03-29
+
+.. index:: 03-29
+
+.. _whats_new_16@mm-dd@03-29:
+
+03-29
+=====
+Add the option for a user defined ``ran_likelihood_hes`` function
+(since removed).
+
+.. meta::
+   :keywords: 03-28
+
+.. index:: 03-28
+
+.. _whats_new_16@mm-dd@03-28:
+
+03-28
+=====
+
+#. Add the :ref:`ran_likelihood.cpp-name` example.
+#. Add the option for a user defined ``ran_likelihood_jac`` function
+   (since removed).
+
+.. meta::
+   :keywords: 03-09
+
+.. index:: 03-09
+
+.. _whats_new_16@mm-dd@03-09:
+
+03-09
+=====
+The summary of memory usage has been changed; see
+:ref:`initialize@size_map` .
+
+.. meta::
+   :keywords: 02-26
+
+.. index:: 02-26
+
+.. _whats_new_16@mm-dd@02-26:
+
+02-26
+=====
+Fix a bug in the use of ``ldlt_cholmod_solve_H`` .
+to be specific, accessing past the end of the
+*row* vector in ``ldlt_cholmod_solve_H`` , in addition it must be
+in increasing order (and was not specified as such).
+
+.. meta::
+   :keywords: 02-06
+
+.. index:: 02-06
+
+.. _whats_new_16@mm-dd@02-06:
+
+02-06
+=====
+
+#. Change the random constraint matrix *A_rcv*
+   to be an argument to the
+   :ref:`derived class constructor<derived_ctor@A_rcv>`
+   instead of an argument to the
+   :ref:`initialize-name` routine.
+   This was undone on
+   :ref:`2016-10-15<whats_new_16@mm-dd@10-15>` and redone on
+   :ref:`2017-03-08<whats_new_17@mm-dd@03-08>` .
+#. Simplify the random constraint matrix source code.
+#. Make more efficient use of
+   the ``cholmod`` Cholesky factorization package.
+
+.. meta::
+   :keywords: 01-26
+
+.. index:: 01-26
+
+.. _whats_new_16@mm-dd@01-26:
+
+01-26
+=====
+Remove the old ``ldlt_cholmod`` wish list its (completed) and add
+partial Newton step second order method wish list item
+(this item has been completed).
+
+.. meta::
+   :keywords: 01-25
+
+.. index:: 01-25
+
+.. _whats_new_16@mm-dd@01-25:
+
+01-25
+=====
+
+#. Make :ref:`install_unix@System Requirements@suitesparse`
+   a required package.
+#. Change the :ref:`run_cmake.sh-name` argument
+   ``set_sparsity`` to ``bool_sparsity``
+   (so that the default value is ``YES`` ).
+#. Add the option to use ``cholmod`` for sparse Cholesky factorization;
+   see :ref:`run_cmake.sh@ldlt_cholmod` .
+
+.. meta::
+   :keywords: 01-22
+
+.. index:: 01-22
+
+.. _whats_new_16@mm-dd@01-22:
+
+01-22
+=====
+It is no longer necessary to link a separate ``cppad_mixed_eigen``
+library. In addition, the new example :ref:`check_install.sh-name`
+demonstrates compiling, linking and running a program using
+``cppad_mixed`` .
+
+.. meta::
+   :keywords: 01-21
+
+.. index:: 01-21
+
+.. _whats_new_16@mm-dd@01-21:
+
+01-21
+=====
+Change default directory where ``bin/install_eigen.sh`` places
+the Eigen package (because warnings are suppressed for this directory).
+
+.. meta::
+   :keywords: 01-19
+
+.. index:: 01-19
+
+.. _whats_new_16@mm-dd@01-19:
+
+01-19
+=====
+Fix a bug (found by ``valgrind`` ) in the setting of the upper bound
+( *g_u* in ``ipopt_fixed_get_bounds_info`` ) for the
+:ref:`problem@Maximum Likelihood@Random Constraints` .
+
+.. meta::
+   :keywords: 01-16
+
+.. index:: 01-16
+
+.. _whats_new_16@mm-dd@01-16:
+
+01-16
+=====
+
+#. Include a
+   :ref:`capture_xam.cpp@Command Arguments@random_constraint`
+   in implementation and documentation of the :ref:`capture_xam.cpp-name` example.
+   In addition, check that the result satisfies the constraint that
+   the sum of the random effects is zero.
+#. Start a :ref:`wish_list-name` .
+
+.. meta::
+   :keywords: 01-15
+
+.. index:: 01-15
+
+.. _whats_new_16@mm-dd@01-15:
+
+01-15
+=====
+Add a :ref:`Lasso<lasso.cpp-name>` example.
+
+.. meta::
+   :keywords: 01-14
+
+.. index:: 01-14
+
+.. _whats_new_16@mm-dd@01-14:
+
+01-14
+=====
+
+#. First version that actually works with
+   :ref:`problem@Maximum Likelihood@Random Constraints` .
+   For example, see :ref:`ran_constraint.cpp-name` .
+#. Fix a bug when combining absolute value terms
+   with :ref:`fix_constraint-name` .
+   In change the default :ref:`base_class@User Defined Functions@warning`
+   so that it does not abort (``assert(false)`` ).
+   Furthermore, change the tolerance in one of the solution tests
+   to avoid a warning (when convergence has been achieved).
+
+.. meta::
+   :keywords: 01-13
+
+.. index:: 01-13
+
+.. _whats_new_16@mm-dd@01-13:
+
+01-13
+=====
+Add test of absolute value terms in the
+:ref:`problem@Negative Log-Density Vector`
+:ref:`abs_density.cpp-name` ,
+and fix a bug demonstrated by the test.
+
+.. meta::
+   :keywords: 01-10
+
+.. index:: 01-10
+
+.. _whats_new_16@mm-dd@01-10:
+
+01-10
+=====
+Go back to using column vectors when solving linear equations
+(in case matrix results would be dense and require a lot of memory).
+
+.. meta::
+   :keywords: 01-09
+
+.. index:: 01-09
+
+.. _whats_new_16@mm-dd@01-09:
+
+01-09
+=====
+
+#. The ``ldlt_eigen`` Cholesky factorization of the Hessian
+   with respect to the random effects has been changed from a static
+   variable to the private member variable
+   ``ldlt_ran_hes_`` .
+   This has many advantages; e.g.,
+   it allows for multiple :ref:`derived_ctor-name` objects.
+#. Remove the need for the
+   ``-Wno-shadow`` and ``-Wno-deprecated-declarations`` options
+   when compiling Eigen files by using the CMake system option
+   for the
+   `Eigen <http://eigen.tuxfamily.org>`_ include directories.
+   This should work on more systems.
+
+.. meta::
+   :keywords: 01-05
+
+.. index:: 01-05
+
+.. _whats_new_16@mm-dd@01-05:
+
+01-05
+=====
+Improve the efficiency of the evaluation of the
+:ref:`optimize_fixed-name` objective function.
+To be specific, the Cholesky factor update for
+:math:`f_{u,u} [ \theta , \hat{u} ( \theta ) ]`
+when there is a change in the fixed effects vector :math:`\theta`.
+In addition, use matrices, instead of just column vectors,
+when back solving (to simplify code and allow sparse solver
+to obtain more efficiency).
+
+.. meta::
+   :keywords: 01-04
+
+.. index:: 01-04
+
+.. _whats_new_16@mm-dd@01-04:
+
+01-04
+=====
+Regroup information in :ref:`theory-name` section of documentation so that
+:ref:`approximating optimal random effects<theory@Approximate Optimal Random Effects>` is a separate section.
+
+.. meta::
+   :keywords: 01-01
+
+.. index:: 01-01
+
+.. _whats_new_16@mm-dd@01-01:
+
+01-01
+=====
+
+#. Advance to newer version of CppAD; (must rerun ``bin/install_cppad.sh`` ).
+#. Change package name in copyright message from ``dismod_at`` to
+   ``cppad_mixed`` .
+   This should have been done when ``cppad_mixed`` was extracted
+   from ``dismod_at`` .

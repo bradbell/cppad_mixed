@@ -1,0 +1,766 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta content="whats_new_18, changes, and, additions, to, cppad_mixed, during, 2018" name="keywords" />
+<meta content="mm-dd" name="keywords" />
+<meta content="10-08" name="keywords" />
+<meta content="09-25" name="keywords" />
+<meta content="08-30" name="keywords" />
+<meta content="08-27" name="keywords" />
+<meta content="08-22" name="keywords" />
+<meta content="08-20" name="keywords" />
+<meta content="08-18" name="keywords" />
+<meta content="08-09" name="keywords" />
+<meta content="08-08" name="keywords" />
+<meta content="07-25" name="keywords" />
+<meta content="07-12" name="keywords" />
+<meta content="06-30" name="keywords" />
+<meta content="06-29" name="keywords" />
+<meta content="06-20" name="keywords" />
+<meta content="06-14" name="keywords" />
+<meta content="06-09" name="keywords" />
+<meta content="06-04" name="keywords" />
+<meta content="05-21" name="keywords" />
+<meta content="05-07" name="keywords" />
+<meta content="05-03" name="keywords" />
+<meta content="04-06" name="keywords" />
+<meta content="03-22" name="keywords" />
+<meta content="03-10" name="keywords" />
+<meta content="02-20" name="keywords" />
+<meta content="02-12" name="keywords" />
+<meta content="02-11" name="keywords" />
+<meta content="02-10" name="keywords" />
+<meta content="02-08" name="keywords" />
+<meta content="02-07" name="keywords" />
+<meta content="02-05" name="keywords" />
+<meta content="01-23" name="keywords" />
+<meta content="01-22" name="keywords" />
+<meta content="01-21" name="keywords" />
+<meta content="01-15" name="keywords" />
+<meta content="01-14" name="keywords" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="whats_new_17" href="whats_new_17.html" /><link rel="prev" title="whats_new_19" href="whats_new_19.html" />
+
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.09.29"/>
+        <title>whats_new_18 - cppad_mixed documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">cppad_mixed  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">cppad_mixed  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="xrst_table_of_contents.html">Table of Contents</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="cppad_mixed.html">cppad_mixed</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="problem.html">problem</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="install_unix.html">install_unix</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="example_install.sh.html">example_install.sh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="run_cmake.sh.html">run_cmake.sh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="check_install.sh.html">check_install.sh</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html">theory</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="base_class.html">base_class</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="derived_ctor.html">derived_ctor</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="derived_ctor.cpp.html">derived_ctor.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="ran_likelihood.html">ran_likelihood</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="ran_likelihood.cpp.html">ran_likelihood.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="fix_likelihood.html">fix_likelihood</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="fix_likelihood.cpp.html">fix_likelihood.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="fix_constraint.html">fix_constraint</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="fix_constraint.cpp.html">fix_constraint.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="initialize.html">initialize</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="optimize_random.html">optimize_random</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="optimize_random.cpp.html">optimize_random.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="optimize_fixed.html">optimize_fixed</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="optimize_fixed.cpp.html">optimize_fixed.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ipopt_options.html">ipopt_options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ipopt_trace.html">ipopt_trace</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="hes_fixed_obj.html">hes_fixed_obj</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="hes_fixed_obj.cpp.html">hes_fixed_obj.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="hes_random_obj.html">hes_random_obj</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="hes_random_obj.cpp.html">hes_random_obj.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="sample_fixed.html">sample_fixed</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="sample_fixed.cpp.html">sample_fixed.cpp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sample_conditional.html">sample_conditional</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="sample_random.html">sample_random</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="sample_random.cpp.html">sample_random.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="information_mat.html">information_mat</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="information_mat.cpp.html">information_mat.cpp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="namespace.html">namespace</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="typedef.html">typedef</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="manage_gsl_rng.html">manage_gsl_rng</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="manage_gsl_rng.cpp.html">manage_gsl_rng.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sparse_mat_info.html">sparse_mat_info</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="fixed_solution.html">fixed_solution</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="warm_start_struct.html">warm_start_struct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="trace_struct.html">trace_struct</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="exception.html">exception</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="user_examples.html">user_examples</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="speed.html">speed</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="ar1_xam.cpp.html">ar1_xam.cpp</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="ar1_xam.sh.html">ar1_xam.sh</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="capture_xam.cpp.html">capture_xam.cpp</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="capture_xam.sh.html">capture_xam.sh</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="abs_density.cpp.html">abs_density.cpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="no_random.cpp.html">no_random.cpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ran_constraint.cpp.html">ran_constraint.cpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lasso.cpp.html">lasso.cpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_mismatch.cpp.html">data_mismatch.cpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opt_ran_nan.cpp.html">opt_ran_nan.cpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="warm_start.cpp.html">warm_start.cpp</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="release_notes.html">release_notes</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="whats_new_22.html">whats_new_22</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_21.html">whats_new_21</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_20.html">whats_new_20</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_19.html">whats_new_19</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">whats_new_18</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_17.html">whats_new_17</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_16.html">whats_new_16</a></li>
+<li class="toctree-l3"><a class="reference internal" href="whats_new_15.html">whats_new_15</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="wish_list.html">wish_list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math_notation.html">math_notation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="xrst_index.html">Index</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <p class="hidden"><span class="math notranslate nohighlight">\(\newcommand{\B}[1]{ {\bf #1} }\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\R}[1]{ {\rm #1} }\)</span>
+<span class="math notranslate nohighlight">\(\newcommand{\W}[1]{ \; #1 \; }\)</span></p>
+<section id="whats-new-18">
+<span id="whats-new-18-name"></span><h1>whats_new_18<a class="headerlink" href="#whats-new-18" title="Permalink to this headline">#</a></h1>
+<p>xrst input file: <code class="docutils literal notranslate"><span class="pre">xrst/whats_new/18.xrst</span></code></p>
+<section id="changes-and-additions-to-cppad-mixed-during-2018">
+<span id="whats-new-18-title"></span><span id="index-0"></span><h2>Changes and Additions to cppad_mixed During 2018<a class="headerlink" href="#changes-and-additions-to-cppad-mixed-during-2018" title="Permalink to this headline">#</a></h2>
+<section id="mm-dd">
+<span id="whats-new-18-mm-dd"></span><span id="index-1"></span><h3>mm-dd<a class="headerlink" href="#mm-dd" title="Permalink to this headline">#</a></h3>
+<section id="whats-new-18-mm-dd-10-08">
+<span id="index-2"></span><span id="id1"></span><h4>10-08<a class="headerlink" href="#whats-new-18-mm-dd-10-08" title="Permalink to this headline">#</a></h4>
+<ol class="arabic simple">
+<li><p>Remove partial Newton step wish list item
+(implemented on <a class="reference internal" href="#whats-new-18-mm-dd-06-30"><span class="std std-ref">2018-06-30</span></a> ).</p></li>
+<li><p>Add <a class="reference internal" href="wish_list.html#wish-list-multi-threading-and-statistics"><span class="std std-ref">multi-threading</span></a>
+wish list item.</p></li>
+</ol>
+</section>
+<section id="whats-new-18-mm-dd-09-25">
+<span id="index-3"></span><span id="id2"></span><h4>09-25<a class="headerlink" href="#whats-new-18-mm-dd-09-25" title="Permalink to this headline">#</a></h4>
+<p>Advance to <code class="docutils literal notranslate"><span class="pre">cppad-20180925</span></code> .
+This enabled us to remove the need for two and three levels of AD; i.e.
+<code class="docutils literal notranslate"><span class="pre">a2_double</span></code> and <code class="docutils literal notranslate"><span class="pre">a3_double</span></code> .
+The arguments and results for the <a class="reference internal" href="ran_likelihood.html#ran-likelihood-name"><span class="std std-ref">ran_likelihood</span></a> function
+are now <a class="reference internal" href="typedef.html#typedef-vector-types-a1-vector"><span class="std std-ref">a1_vector</span></a> objects instead of
+<code class="docutils literal notranslate"><span class="pre">a3_vector</span></code> objects.</p>
+</section>
+<section id="whats-new-18-mm-dd-08-30">
+<span id="index-4"></span><span id="id3"></span><h4>08-30<a class="headerlink" href="#whats-new-18-mm-dd-08-30" title="Permalink to this headline">#</a></h4>
+<p><strong>API:</strong>
+Remove the user defined versions of the Jacobian and Hessian
+of the random likelihood with respect to the random effects;
+<code class="docutils literal notranslate"><span class="pre">ran_likelihood_jac</span></code> and <code class="docutils literal notranslate"><span class="pre">ran_likelihood_hes</span></code> .
+These functions are no longer part of the API and are not used
+(even if defined by the user).</p>
+</section>
+<section id="whats-new-18-mm-dd-08-27">
+<span id="index-5"></span><span id="id4"></span><h4>08-27<a class="headerlink" href="#whats-new-18-mm-dd-08-27" title="Permalink to this headline">#</a></h4>
+<p>Advance to <code class="docutils literal notranslate"><span class="pre">cppad-20180827</span></code></p>
+</section>
+<section id="whats-new-18-mm-dd-08-22">
+<span id="index-6"></span><span id="id5"></span><h4>08-22<a class="headerlink" href="#whats-new-18-mm-dd-08-22" title="Permalink to this headline">#</a></h4>
+<p><strong>API:</strong>
+Change the type <code class="docutils literal notranslate"><span class="pre">CppAD::mixed::sparse_rcv</span></code> to
+<a class="reference internal" href="typedef.html#typedef-sparse-types-d-sparse-rcv"><span class="std std-ref">d_sparse_rcv</span></a>
+to better be more consistent with the other
+CppAD mixed <a class="reference internal" href="typedef.html#typedef-name"><span class="std std-ref">type definitions</span></a> .
+This will require some minor changes to the user’s code.
+For example,
+in the constructor for the derived class,
+the type for <a class="reference internal" href="derived_ctor.html#derived-ctor-name"><span class="std std-ref">A_rcv</span></a> has changed from
+<code class="docutils literal notranslate"><span class="pre">sparse_rcv</span></code> to <code class="docutils literal notranslate"><span class="pre">d_sparse_rcv</span></code> .</p>
+</section>
+<section id="whats-new-18-mm-dd-08-20">
+<span id="index-7"></span><span id="id6"></span><h4>08-20<a class="headerlink" href="#whats-new-18-mm-dd-08-20" title="Permalink to this headline">#</a></h4>
+<p>Advance to <code class="docutils literal notranslate"><span class="pre">cppad-20180820</span></code>
+(this version has optimization of dynamic parameters).</p>
+</section>
+<section id="whats-new-18-mm-dd-08-18">
+<span id="index-8"></span><span id="id7"></span><h4>08-18<a class="headerlink" href="#whats-new-18-mm-dd-08-18" title="Permalink to this headline">#</a></h4>
+<ol class="arabic simple">
+<li><p>Advance to <code class="docutils literal notranslate"><span class="pre">cppad-20810818</span></code> .</p></li>
+<li><p>Use Cppad dynamic parameters (new feature) to speed up the computation
+of the Hessian of the objective
+(when <a class="reference internal" href="derived_ctor.html#derived-ctor-quasi-fixed"><span class="std std-ref">quasi_fixed</span></a> is true).
+Cppad needs to improve its optimization of dynamic parameter calculations.
+For example, the optimized tapes that compute the Hessian of
+<a class="reference internal" href="theory.html#theory-approximate-laplace-objective-h-beta-theta-u"><span class="std std-ref">H(beta, theta, u)</span></a>
+are larger when ( <em>theta</em> , <em>u</em> ) are dynamic parameters
+than when they are variables.
+These tapes are about the same size before being optimized.</p></li>
+</ol>
+</section>
+<section id="whats-new-18-mm-dd-08-09">
+<span id="index-9"></span><span id="id8"></span><h4>08-09<a class="headerlink" href="#whats-new-18-mm-dd-08-09" title="Permalink to this headline">#</a></h4>
+<p>Advance to <code class="docutils literal notranslate"><span class="pre">cppad-20810809</span></code> .
+This fixed valgrind warnings and a bug in cppad.</p>
+</section>
+<section id="whats-new-18-mm-dd-08-08">
+<span id="index-10"></span><span id="id9"></span><h4>08-08<a class="headerlink" href="#whats-new-18-mm-dd-08-08" title="Permalink to this headline">#</a></h4>
+<p>Advance to <code class="docutils literal notranslate"><span class="pre">cppad-20810730</span></code> .
+This resulted is and speed improvement for the current version of the
+<a class="reference internal" href="ar1_xam.sh.html#ar1-xam-sh-name"><span class="std std-ref">ar1_xam.sh</span></a> and <a class="reference internal" href="capture_xam.sh.html#capture-xam-sh-name"><span class="std std-ref">capture_xam.sh</span></a> tests.</p>
+</section>
+<section id="whats-new-18-mm-dd-07-25">
+<span id="index-11"></span><span id="id10"></span><h4>07-25<a class="headerlink" href="#whats-new-18-mm-dd-07-25" title="Permalink to this headline">#</a></h4>
+<ol class="arabic simple">
+<li><p>Add discussion of why the default
+<em>eigen_prefix</em> in <code class="docutils literal notranslate"><span class="pre">bin/run_cmake.sh</span></code> is different
+from the other prefixes.</p></li>
+<li><p>Change the name <code class="docutils literal notranslate"><span class="pre">cppad_cxx_flags</span></code> to
+<a class="reference internal" href="run_cmake.sh.html#run-cmake-sh-extra-cxx-flags"><span class="std std-ref">extra_cxx_flags</span></a> .</p></li>
+<li><p>Improve discussion of the
+<a class="reference internal" href="install_unix.html#install-unix-paths"><span class="std std-ref">Paths</span></a> needed during and after the install process.</p></li>
+<li><p>Improve detection
+(during the <a class="reference internal" href="install_unix.html#install-unix-name"><span class="std std-ref">install</span></a> )
+of when the default settings for
+<a class="reference internal" href="run_cmake.sh.html#run-cmake-sh-extra-cxx-flags"><span class="std std-ref">extra_cxx_flags</span></a> do not work.</p></li>
+</ol>
+</section>
+<section id="whats-new-18-mm-dd-07-12">
+<span id="index-12"></span><span id="id11"></span><h4>07-12<a class="headerlink" href="#whats-new-18-mm-dd-07-12" title="Permalink to this headline">#</a></h4>
+<ol class="arabic simple">
+<li><p>The fixed effects optimization will not try to backup and recover when
+<a class="reference internal" href="optimize_fixed.html#optimize-fixed-fixed-ipopt-options-max-iter"><span class="std std-ref">max_iter</span></a> is minus
+one for the fixed effects.
+In addition, when running the debug (release) version, errors during
+<a class="reference internal" href="initialize.html#initialize-name"><span class="std std-ref">initialize</span></a> will result in an runtime error
+(call to <a class="reference internal" href="base_class.html#base-class-user-defined-functions-fatal-error"><span class="std std-ref">fatal_error</span></a> ).
+This will gives the user the choice to seem the source code where
+the error was detected when
+<a class="reference internal" href="run_cmake.sh.html#run-cmake-sh-build-type"><span class="std std-ref">build_type</span></a> is <code class="docutils literal notranslate"><span class="pre">debug</span></code> .</p></li>
+<li><p>Improve documentation for
+<a class="reference internal" href="derived_ctor.html#derived-ctor-quasi-fixed"><span class="std std-ref">quasi_fixed</span></a> .</p></li>
+</ol>
+</section>
+<section id="whats-new-18-mm-dd-06-30">
+<span id="index-13"></span><span id="id12"></span><h4>06-30<a class="headerlink" href="#whats-new-18-mm-dd-06-30" title="Permalink to this headline">#</a></h4>
+<ol class="arabic simple">
+<li><p>Implement the partial Newton step update in definition of
+the second order accurate approximation for the optimal random effects
+<a class="reference internal" href="theory.html#theory-approximate-optimal-random-effects-second-order-w-beta-theta-u"><span class="std std-ref">W(beta, theta, u)</span></a> .
+This should lead to a large improvement when the Hessian of the
+random likelihood with respect to the random effects is sparse.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">checkpoint_newton_step</span></code> setting in
+<a class="reference internal" href="run_cmake.sh.html#run-cmake-sh-name"><span class="std std-ref">run_cmake.sh</span></a> has been removed.</p></li>
+</ol>
+</section>
+<section id="whats-new-18-mm-dd-06-29">
+<span id="index-14"></span><span id="id13"></span><h4>06-29<a class="headerlink" href="#whats-new-18-mm-dd-06-29" title="Permalink to this headline">#</a></h4>
+<p>Advance to <code class="docutils literal notranslate"><span class="pre">cppad-20180627</span></code> .</p>
+</section>
+<section id="whats-new-18-mm-dd-06-20">
+<span id="index-15"></span><span id="id14"></span><h4>06-20<a class="headerlink" href="#whats-new-18-mm-dd-06-20" title="Permalink to this headline">#</a></h4>
+<p>Advance to <code class="docutils literal notranslate"><span class="pre">cppad-20180620</span></code> .
+This should use increase speed and use less memory during the
+optimization of cppad functions; see
+<a class="reference internal" href="run_cmake.sh.html#run-cmake-sh-optimize-cppad-function"><span class="std std-ref">optimize_cppad_function</span></a> .</p>
+</section>
+<section id="whats-new-18-mm-dd-06-14">
+<span id="index-16"></span><span id="id15"></span><h4>06-14<a class="headerlink" href="#whats-new-18-mm-dd-06-14" title="Permalink to this headline">#</a></h4>
+<ol class="arabic simple">
+<li><p>Some systems installs of
+<a class="reference internal" href="install_unix.html#install-unix-system-requirements-suitesparse"><span class="std std-ref">suitesparse</span></a>
+install <code class="docutils literal notranslate"><span class="pre">cholmod.h</span></code> in the systems include path instead of
+a <code class="docutils literal notranslate"><span class="pre">suitesparse</span></code> subdirector of the system include path.
+The install of <code class="docutils literal notranslate"><span class="pre">cppad_mixed</span></code> now automatically detects both these cases.</p></li>
+<li><p>Advance to <code class="docutils literal notranslate"><span class="pre">cppad-20180613</span></code> .
+This should use less memory during the optimization of cppad functions; see
+<a class="reference internal" href="run_cmake.sh.html#run-cmake-sh-optimize-cppad-function"><span class="std std-ref">optimize_cppad_function</span></a> .</p></li>
+</ol>
+</section>
+<section id="whats-new-18-mm-dd-06-09">
+<span id="index-17"></span><span id="id16"></span><h4>06-09<a class="headerlink" href="#whats-new-18-mm-dd-06-09" title="Permalink to this headline">#</a></h4>
+<ol class="arabic simple">
+<li><p>Change the <code class="docutils literal notranslate"><span class="pre">suitesparse</span></code> library from a special requirement
+(using <code class="docutils literal notranslate"><span class="pre">bin/install_suitesparse.sh</span></code> ) to a
+<a class="reference internal" href="install_unix.html#install-unix-system-requirements-suitesparse"><span class="std std-ref">system requirement</span></a> .</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">replace</span></code> option for the <em>existing</em> argument to
+<code class="docutils literal notranslate"><span class="pre">bin/example_install.sh</span></code> was not working.
+This has been fixed.</p></li>
+</ol>
+</section>
+<section id="whats-new-18-mm-dd-06-04">
+<span id="index-18"></span><span id="id17"></span><h4>06-04<a class="headerlink" href="#whats-new-18-mm-dd-06-04" title="Permalink to this headline">#</a></h4>
+<p>Advance to using
+<a class="reference internal" href="install_unix.html#install-unix-special-requirements-cppad"><span class="std std-ref">cppad-20180604</span></a> .
+This will probably have no effect but might reduce the amount of memory
+<code class="docutils literal notranslate"><span class="pre">cppad_mixed</span></code> uses.</p>
+</section>
+<section id="whats-new-18-mm-dd-05-21">
+<span id="index-19"></span><span id="id18"></span><h4>05-21<a class="headerlink" href="#whats-new-18-mm-dd-05-21" title="Permalink to this headline">#</a></h4>
+<p>Advance to using
+<a class="reference internal" href="install_unix.html#install-unix-special-requirements-cppad"><span class="std std-ref">cppad-20180521</span></a> .
+This should reduce the amount of memory
+<code class="docutils literal notranslate"><span class="pre">cppad_mixed</span></code> uses.</p>
+</section>
+<section id="whats-new-18-mm-dd-05-07">
+<span id="index-20"></span><span id="id19"></span><h4>05-07<a class="headerlink" href="#whats-new-18-mm-dd-05-07" title="Permalink to this headline">#</a></h4>
+<p>Advance to using
+<a class="reference internal" href="install_unix.html#install-unix-special-requirements-cppad"><span class="std std-ref">cppad-20180507</span></a> .
+This should both increase the speed of <code class="docutils literal notranslate"><span class="pre">cppad_mixed</span></code>
+and reduce the amount of memory it uses.</p>
+</section>
+<section id="whats-new-18-mm-dd-05-03">
+<span id="index-21"></span><span id="id20"></span><h4>05-03<a class="headerlink" href="#whats-new-18-mm-dd-05-03" title="Permalink to this headline">#</a></h4>
+<p>Advance to using
+<a class="reference internal" href="install_unix.html#install-unix-special-requirements-cppad"><span class="std std-ref">cppad-20180503</span></a> .
+This should reduce the amount of memory used by <code class="docutils literal notranslate"><span class="pre">cppad_mixed</span></code> ,
+without adversely affecting its speed.</p>
+</section>
+<section id="whats-new-18-mm-dd-04-06">
+<span id="index-22"></span><span id="id21"></span><h4>04-06<a class="headerlink" href="#whats-new-18-mm-dd-04-06" title="Permalink to this headline">#</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">limited_memory_max_history</span></code> setting used to be forbidden as an
+<a class="reference internal" href="optimize_fixed.html#optimize-fixed-fixed-ipopt-options"><span class="std std-ref">fixed_ipopt_option</span></a> because
+it was chosen by <code class="docutils literal notranslate"><span class="pre">cppad_mixed</span></code> .
+This has been changed and now the user can choose this ipopt option.</p>
+</section>
+<section id="whats-new-18-mm-dd-03-22">
+<span id="index-23"></span><span id="id22"></span><h4>03-22<a class="headerlink" href="#whats-new-18-mm-dd-03-22" title="Permalink to this headline">#</a></h4>
+<p>In the wish list,
+remove the Student’s t item and change the
+sparse_matrix item.</p>
+</section>
+<section id="whats-new-18-mm-dd-03-10">
+<span id="index-24"></span><span id="id23"></span><h4>03-10<a class="headerlink" href="#whats-new-18-mm-dd-03-10" title="Permalink to this headline">#</a></h4>
+<p>The install <a class="reference internal" href="install_unix.html#install-unix-download"><span class="std std-ref">Download</span></a> procedure was changed
+to use the following command to determine the version number:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">grep</span> <span class="s1">&#39;^SET(cppad_mixed_version&#39;</span> <span class="n">CMakeLists</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+</section>
+<section id="whats-new-18-mm-dd-02-20">
+<span id="index-25"></span><span id="id24"></span><h4>02-20<a class="headerlink" href="#whats-new-18-mm-dd-02-20" title="Permalink to this headline">#</a></h4>
+<p>Some function declarations for friends in <code class="docutils literal notranslate"><span class="pre">cppad_mixed.hpp</span></code>
+were missing. This has been fixed.</p>
+</section>
+<section id="whats-new-18-mm-dd-02-12">
+<span id="index-26"></span><span id="id25"></span><h4>02-12<a class="headerlink" href="#whats-new-18-mm-dd-02-12" title="Permalink to this headline">#</a></h4>
+<p>Add more discussion of
+<a class="reference internal" href="optimize_fixed.html#optimize-fixed-fixed-scale"><span class="std std-ref">fixed_scale</span></a> .</p>
+</section>
+<section id="whats-new-18-mm-dd-02-11">
+<span id="index-27"></span><span id="id26"></span><h4>02-11<a class="headerlink" href="#whats-new-18-mm-dd-02-11" title="Permalink to this headline">#</a></h4>
+<p>Avoid warning: ‘obj_factor_scaled’ may be used uninitialized in eval_h
+on some systems.</p>
+</section>
+<section id="whats-new-18-mm-dd-02-10">
+<span id="index-28"></span><span id="id27"></span><h4>02-10<a class="headerlink" href="#whats-new-18-mm-dd-02-10" title="Permalink to this headline">#</a></h4>
+<ol class="arabic simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">hide_ipopt_scaling</span></code> option was removed from the
+<a class="reference internal" href="run_cmake.sh.html#run-cmake-sh-name"><span class="std std-ref">cmake command</span></a> and the scaling is always
+hidden from ipopt.</p></li>
+<li><p>Improve discussion of the <a class="reference internal" href="optimize_fixed.html#optimize-fixed-fixed-scale"><span class="std std-ref">fixed_scale</span></a>
+argument to the <code class="docutils literal notranslate"><span class="pre">optimize_fixed</span></code> function.</p></li>
+</ol>
+</section>
+<section id="whats-new-18-mm-dd-02-08">
+<span id="index-29"></span><span id="id28"></span><h4>02-08<a class="headerlink" href="#whats-new-18-mm-dd-02-08" title="Permalink to this headline">#</a></h4>
+<p>There was a bug in computing the second derivative of the objective when the
+<a class="reference internal" href="fix_likelihood.html#fix-likelihood-name"><span class="std std-ref">fix_likelihood</span></a> had absolute value terms in its
+<a class="reference internal" href="problem.html#problem-negative-log-density-vector"><span class="std std-ref">Negative Log-Density Vector</span></a> .
+This has been fixed.</p>
+</section>
+<section id="whats-new-18-mm-dd-02-07">
+<span id="index-30"></span><span id="id29"></span><h4>02-07<a class="headerlink" href="#whats-new-18-mm-dd-02-07" title="Permalink to this headline">#</a></h4>
+<ol class="arabic simple">
+<li><p>Change the <code class="docutils literal notranslate"><span class="pre">adaptive</span></code> and <code class="docutils literal notranslate"><span class="pre">trace-adaptive</span></code>
+<a class="reference internal" href="optimize_fixed.html#optimize-fixed-fixed-ipopt-options-derivative-test"><span class="std std-ref">derivative_test</span></a>
+options so they check that components of the Jacobian, evaluated by
+<code class="docutils literal notranslate"><span class="pre">eval_jac_g</span></code> in <code class="docutils literal notranslate"><span class="pre">ipopt_fixed_eval_jac_g</span></code> ,
+that are not in the sparsity pattern, are zero.</p></li>
+<li><p>Change adaptive derivative check to test Hessian evaluated by
+<code class="docutils literal notranslate"><span class="pre">eval_h</span></code> in <code class="docutils literal notranslate"><span class="pre">ipopt_fixed_eval_h</span></code> ,
+when <a class="reference internal" href="derived_ctor.html#derived-ctor-quasi-fixed"><span class="std std-ref">quasi_fixed</span></a> is false.</p></li>
+<li><p>Change the ipopt <code class="docutils literal notranslate"><span class="pre">eval_h</span></code> documentation to specify either
+upper or lower triangle; e.g., see
+<em>iRow</em> in <code class="docutils literal notranslate"><span class="pre">ipopt_xam_eval_h</span></code> .</p></li>
+</ol>
+</section>
+<section id="whats-new-18-mm-dd-02-05">
+<span id="index-31"></span><span id="id30"></span><h4>02-05<a class="headerlink" href="#whats-new-18-mm-dd-02-05" title="Permalink to this headline">#</a></h4>
+<ol class="arabic simple">
+<li><p>The scaling of the fixed effects optimization has been
+changed to not include components of the fixed effects for which
+the lower and upper limits are equal; see
+<a class="reference internal" href="optimize_fixed.html#optimize-fixed-fixed-scale"><span class="std std-ref">fixed_scale</span></a> .</p></li>
+<li><p>Reduce the changes of a random failure (false negative result)
+during the testing of <a class="reference internal" href="lasso.cpp.html#lasso-cpp-name"><span class="std std-ref">lasso.cpp</span></a> .</p></li>
+</ol>
+</section>
+<section id="whats-new-18-mm-dd-01-23">
+<span id="index-32"></span><span id="id31"></span><h4>01-23<a class="headerlink" href="#whats-new-18-mm-dd-01-23" title="Permalink to this headline">#</a></h4>
+<p>There was a mistake in the removal of <em>use_atomic_cholesky</em> ;
+see 01-21 below.  This has been fixed.</p>
+</section>
+<section id="whats-new-18-mm-dd-01-22">
+<span id="index-33"></span><span id="id32"></span><h4>01-22<a class="headerlink" href="#whats-new-18-mm-dd-01-22" title="Permalink to this headline">#</a></h4>
+<p>Improve the instructions for combining both
+<a class="reference internal" href="run_cmake.sh.html#run-cmake-sh-debug-and-release"><span class="std std-ref">Debug and Release</span></a>
+versions of cppad_mixed on the same system.</p>
+</section>
+<section id="whats-new-18-mm-dd-01-21">
+<span id="index-34"></span><span id="id33"></span><h4>01-21<a class="headerlink" href="#whats-new-18-mm-dd-01-21" title="Permalink to this headline">#</a></h4>
+<p>Remove the <em>use_atomic_cholesky</em> option from the
+<a class="reference internal" href="run_cmake.sh.html#run-cmake-sh-name"><span class="std std-ref">cmake</span></a> script.</p>
+</section>
+<section id="whats-new-18-mm-dd-01-15">
+<span id="index-35"></span><span id="id34"></span><h4>01-15<a class="headerlink" href="#whats-new-18-mm-dd-01-15" title="Permalink to this headline">#</a></h4>
+<p>The flags <code class="docutils literal notranslate"><span class="pre">-Wpedantic</span></code> , <code class="docutils literal notranslate"><span class="pre">-Wshadow</span></code> and <code class="docutils literal notranslate"><span class="pre">-Wconversion</span></code>
+were added to the default value of
+<a class="reference internal" href="run_cmake.sh.html#run-cmake-sh-extra-cxx-flags"><span class="std std-ref">extra_cxx_flags</span></a> .
+In addition, fix the corresponding warning messages generated by gcc
+during the
+<a class="reference internal" href="install_unix.html#install-unix-cppad-mixed"><span class="std std-ref">cppad_mixed</span></a> part of the instal process.</p>
+</section>
+<section id="whats-new-18-mm-dd-01-14">
+<span id="index-36"></span><span id="id35"></span><h4>01-14<a class="headerlink" href="#whats-new-18-mm-dd-01-14" title="Permalink to this headline">#</a></h4>
+<p>Change the <code class="docutils literal notranslate"><span class="pre">ran_likelihood_hes.cpp</span></code> example to use the
+offset log normal distribution and eliminate the chance of random failure
+during its test.</p>
+</section>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="whats_new_17.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">whats_new_17</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="whats_new_19.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">whats_new_19</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">whats_new_18</a><ul>
+<li><a class="reference internal" href="#changes-and-additions-to-cppad-mixed-during-2018">Changes and Additions to cppad_mixed During 2018</a><ul>
+<li><a class="reference internal" href="#mm-dd">mm-dd</a><ul>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-10-08">10-08</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-09-25">09-25</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-08-30">08-30</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-08-27">08-27</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-08-22">08-22</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-08-20">08-20</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-08-18">08-18</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-08-09">08-09</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-08-08">08-08</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-07-25">07-25</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-07-12">07-12</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-06-30">06-30</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-06-29">06-29</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-06-20">06-20</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-06-14">06-14</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-06-09">06-09</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-06-04">06-04</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-05-21">05-21</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-05-07">05-07</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-05-03">05-03</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-04-06">04-06</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-03-22">03-22</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-03-10">03-10</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-02-20">02-20</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-02-12">02-12</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-02-11">02-11</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-02-10">02-10</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-02-08">02-08</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-02-07">02-07</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-02-05">02-05</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-01-23">01-23</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-01-22">01-22</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-01-21">01-21</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-01-15">01-15</a></li>
+<li><a class="reference internal" href="#whats-new-18-mm-dd-01-14">01-14</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>

@@ -1,0 +1,23 @@
+.. include:: xrst_preamble.rst
+
+.. _opt_ran_nan.cpp-name:
+
+!!!!!!!!!!!!!!!
+opt_ran_nan.cpp
+!!!!!!!!!!!!!!!
+
+xrst input file: ``example/user/opt_ran_nan.cpp``
+
+.. meta::
+   :keywords: opt_ran_nan.cpp, nan's, during, optimization, of, random, effects:, example, and, test
+
+.. index:: opt_ran_nan.cpp, nan's, during, optimization, of, random, effects:, example, and, test
+
+.. _opt_ran_nan.cpp-title:
+
+Nan's During Optimization of Random Effects: Example and Test
+#############################################################
+
+.. literalinclude:: ../../example/user/opt_ran_nan.cpp
+   :lines: 22-144
+   :language: cpp

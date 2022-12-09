@@ -1,0 +1,90 @@
+.. include:: xrst_preamble.rst
+
+.. _capture_xam.sh-name:
+
+!!!!!!!!!!!!!!
+capture_xam.sh
+!!!!!!!!!!!!!!
+
+xrst input file: ``bin/capture_xam.sh``
+
+.. meta::
+   :keywords: capture_xam.sh, example, using, capture_xam
+
+.. index:: capture_xam.sh, example, using, capture_xam
+
+.. _capture_xam.sh-title:
+
+Example Using capture_xam
+#########################
+
+.. meta::
+   :keywords: syntax
+
+.. index:: syntax
+
+.. _capture_xam.sh@Syntax:
+
+Syntax
+******
+``bin/capture_xam.sh`` *test2run*
+
+.. meta::
+   :keywords: test2run
+
+.. index:: test2run
+
+.. _capture_xam.sh@test2run:
+
+test2run
+********
+This argument must be one of the following:
+
+.. meta::
+   :keywords: normal
+
+.. index:: normal
+
+.. _capture_xam.sh@test2run@normal:
+
+normal
+======
+This test will just run :ref:`capture_xam<capture_xam.cpp-name>` .
+
+.. meta::
+   :keywords: callgrind
+
+.. index:: callgrind
+
+.. _capture_xam.sh@test2run@callgrind:
+
+callgrind
+=========
+This test will run ``capture_xam`` with
+``valgrind --tool=callgrind`` . This tool does execution profiling.
+
+.. meta::
+   :keywords: massif
+
+.. index:: massif
+
+.. _capture_xam.sh@test2run@massif:
+
+massif
+======
+This test will run ``capture_xam`` with
+``valgrind --tool=massif`` . This tool does memory profiling.
+
+.. meta::
+   :keywords: source, code
+
+.. index:: source, code
+
+.. _capture_xam.sh@test2run@Source Code:
+
+Source Code
+===========
+
+.. literalinclude:: ../../bin/capture_xam.sh
+   :lines: 51-140
+   :language: sh

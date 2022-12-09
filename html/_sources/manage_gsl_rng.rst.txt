@@ -1,0 +1,157 @@
+.. include:: xrst_preamble.rst
+
+.. _manage_gsl_rng-name:
+
+!!!!!!!!!!!!!!
+manage_gsl_rng
+!!!!!!!!!!!!!!
+
+xrst input file: ``src/manage_gsl_rng.cpp``
+
+.. meta::
+   :keywords: manage_gsl_rng, set,, get,, and, free, a, gsl, random, number, generator
+
+.. index:: manage_gsl_rng, set,, get,, and, free, a, gsl, random, number, generator
+
+.. _manage_gsl_rng-title:
+
+Set, Get, And Free A GSL Random Number Generator
+################################################
+
+.. meta::
+   :keywords: syntax
+
+.. index:: syntax
+
+.. _manage_gsl_rng@Syntax:
+
+Syntax
+******
+
+| # ``include <cppad/mixed/manage_gsl_rng.hpp>``
+| *s_out* = ``CppAD::mixed::new_gsl_rng`` ( *s_in* )
+| *rng* = ``CppAD::mixed::get_gsl_rng`` ()
+| ``CppAD::mixed::free_gsl_rng`` ()
+
+.. meta::
+   :keywords: purpose
+
+.. index:: purpose
+
+.. _manage_gsl_rng@Purpose:
+
+Purpose
+*******
+Create and use a GSL random number generator.
+
+.. meta::
+   :keywords: new_gsl_rng
+
+.. index:: new_gsl_rng
+
+.. _manage_gsl_rng@new_gsl_rng:
+
+new_gsl_rng
+***********
+This routine creates a new GSL random number generator.
+If a previous random number generator was created, it must
+be freed using ``free_gsl_rng`` before ``new_gsl_rng``
+can be called again.
+
+.. meta::
+   :keywords: s_in
+
+.. index:: s_in
+
+.. _manage_gsl_rng@new_gsl_rng@s_in:
+
+s_in
+====
+This argument has prototype
+
+   ``size_t`` *s_in*
+
+If *s_in*  != 0 ,
+it is used as a seed for the random number generator.
+Otherwise the actual seed is the number of seconds returned by
+``std::time`` plus the number of previous calls to ``set_gsl_rng`` .
+(Adding the number of calls prevents the same
+seed from being used by calls that are close together in time.)
+
+.. meta::
+   :keywords: s_out
+
+.. index:: s_out
+
+.. _manage_gsl_rng@new_gsl_rng@s_out:
+
+s_out
+=====
+This return value prototype
+
+   ``size_t`` *s_out*
+
+and is the actual seed that was used to initialize the random number generator.
+
+.. meta::
+   :keywords: get_gsl_rng
+
+.. index:: get_gsl_rng
+
+.. _manage_gsl_rng@get_gsl_rng:
+
+get_gsl_rng
+***********
+If we are between a call to
+``new_gsl_rng`` and ``free_gsl_rng`` ,
+this routine retrieves a pointer to the current
+GSL random number generator.
+Otherwise it returns the null pointer.
+
+.. meta::
+   :keywords: rng
+
+.. index:: rng
+
+.. _manage_gsl_rng@get_gsl_rng@rng:
+
+rng
+===
+The return value *rng* has prototype
+
+   ``gsl_rng`` * *rng*
+
+.. meta::
+   :keywords: free_gsl_rng
+
+.. index:: free_gsl_rng
+
+.. _manage_gsl_rng@free_gsl_rng:
+
+free_gsl_rng
+************
+Once you are done with a generator created by ``new_gsl_rng`` ,
+you should free the corresponding memory using
+
+   ``gsl_rng_free`` ()
+
+.
+
+.. meta::
+   :keywords: example
+
+.. index:: example
+
+.. _manage_gsl_rng@Example:
+
+Example
+*******
+The file :ref:`manage_gsl_rng.cpp-name` contains an example and test of
+``manage_gsl_rng`` .  It returns ``true`` , if the test passes,
+and ``false`` otherwise.
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   manage_gsl_rng.cpp

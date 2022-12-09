@@ -1,0 +1,284 @@
+.. include:: xrst_preamble.rst
+
+.. _sample_fixed-name:
+
+!!!!!!!!!!!!
+sample_fixed
+!!!!!!!!!!!!
+
+xrst input file: ``src/sample_fixed.cpp``
+
+.. meta::
+   :keywords: sample_fixed, sample, posterior, for, fixed, effects
+
+.. index:: sample_fixed, sample, posterior, for, fixed, effects
+
+.. _sample_fixed-title:
+
+Sample Posterior for Fixed Effects
+##################################
+
+.. meta::
+   :keywords: syntax
+
+.. index:: syntax
+
+.. _sample_fixed@Syntax:
+
+Syntax
+******
+
+| *error_msg* = *mixed_object* . ``sample_fixed`` (
+| |tab| *sample* ,
+| |tab| *hes_fixed_obj_rcv* ,
+| |tab| *solution* ,
+| |tab| *fixed_lower* ,
+| |tab| *fixed_upper*
+| )
+
+.. meta::
+   :keywords: see, also
+
+.. index:: see, also
+
+.. _sample_fixed@See Also:
+
+See Also
+********
+:ref:`sample_random-name`
+
+.. meta::
+   :keywords: prototype
+
+.. index:: prototype
+
+.. _sample_fixed@Prototype:
+
+Prototype
+*********
+
+.. literalinclude:: ../../src/sample_fixed.cpp
+   :lines: 320-325
+   :language: cpp
+
+.. meta::
+   :keywords: purpose
+
+.. index:: purpose
+
+.. _sample_fixed@Purpose:
+
+Purpose
+*******
+This routine draws independent samples from
+the asymptotic posterior distribution for the
+fixed effects (given the model and the data).
+
+.. meta::
+   :keywords: constant, fixed, effects
+
+.. index:: constant, fixed, effects
+
+.. _sample_fixed@Constant Fixed Effects:
+
+Constant Fixed Effects
+**********************
+If the upper and lower limits for a fixed effect are equal,
+
+   *fixed_lower* [ *j* ] == *fixed_upper* [ *j* ]
+
+we refer to the *j*-th fixed effect as constant.
+
+.. meta::
+   :keywords: constraints
+
+.. index:: constraints
+
+.. _sample_fixed@Constraints:
+
+Constraints
+***********
+Only the constant fixed effect constants are taken into account.
+(This is an over estimate of the variance, but is faster to calculate
+than trying to identify active constraints and treating them as equality
+constraints.)
+It can result in samples that are outside the limits
+for the fixed effects that are not constant.
+You may want to adjust the samples to be within
+their upper and lower limits before you use them.
+
+.. meta::
+   :keywords: covariance
+
+.. index:: covariance
+
+.. _sample_fixed@Covariance:
+
+Covariance
+**********
+Each sample of the fixed effects
+(excluding the constant fixed effects)
+has covariance equal to the inverse of the
+:ref:`information matrix<information_mat-name>`
+(where the constant fixed effects have been removed).
+
+.. meta::
+   :keywords: manage_gsl_rng
+
+.. index:: manage_gsl_rng
+
+.. _sample_fixed@manage_gsl_rng:
+
+manage_gsl_rng
+**************
+It is assumed that
+:ref:`manage_gsl_rng@get_gsl_rng` will return
+a pointer to a GSL random number generator.
+
+.. meta::
+   :keywords: mixed_object
+
+.. index:: mixed_object
+
+.. _sample_fixed@mixed_object:
+
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
+to denote an object of a class that is
+derived from the ``cppad_mixed`` base class.
+
+.. meta::
+   :keywords: sample
+
+.. index:: sample
+
+.. _sample_fixed@sample:
+
+sample
+******
+The size *sample* . ``size`` () is a multiple of
+:ref:`derived_ctor@n_fixed` .
+The input value of its elements does not matter.
+We define
+
+   *n_sample* = *sample_size* / *n_fixed*
+
+If *error_msg* is empty, upon return
+for ``i`` = 0 , ..., ``n_sample`` *-1* ,
+``j`` = 0 , ..., ``n_fixed`` *-1* ,
+
+   *sample* [ *i* * *n_fixed* + *j*  ]
+
+is the *j*-th component of the *i*-th sample of the
+optimal fixed effects :math:`\hat{\theta}`.
+These samples are independent for different :math:`i`,
+and for fixed :math:`i`, they have the specified
+:ref:`sample_fixed@Covariance` .
+
+.. meta::
+   :keywords: hes_fixed_obj_rcv
+
+.. index:: hes_fixed_obj_rcv
+
+.. _sample_fixed@hes_fixed_obj_rcv:
+
+hes_fixed_obj_rcv
+*****************
+This is a sparse matrix representation for the
+lower triangle of the observed information matrix corresponding to
+*solution* ; i.e., the matrix returned by
+
+| *hes_fixed_obj_rcv* = *mixed_object* . ``hes_fixed_obj`` (
+| |tab| *solution* , *random_opt*
+| )
+
+where *random_opt* is the optimal random effects corresponding
+to *solution* .
+
+.. meta::
+   :keywords: solution
+
+.. index:: solution
+
+.. _sample_fixed@solution:
+
+solution
+********
+is the :ref:`optimize_fixed@solution`
+for a the call to :ref:`optimize_fixed-name` corresponding to
+*hes_fixed_obj_rcv* .
+The only necessary information in this structure is
+*solution* . ``fixed_opt`` .
+
+.. meta::
+   :keywords: fixed_lower
+
+.. index:: fixed_lower
+
+.. _sample_fixed@fixed_lower:
+
+fixed_lower
+***********
+is the same as
+:ref:`optimize_fixed@fixed_lower`
+in the call to ``optimize_fixed`` that corresponding to *solution* .
+
+.. meta::
+   :keywords: fixed_upper
+
+.. index:: fixed_upper
+
+.. _sample_fixed@fixed_upper:
+
+fixed_upper
+***********
+is the same as
+:ref:`optimize_fixed@fixed_upper`
+in the call to ``optimize_fixed`` that corresponding to *solution* .
+
+.. meta::
+   :keywords: error_msg
+
+.. index:: error_msg
+
+.. _sample_fixed@error_msg:
+
+error_msg
+*********
+If *error_msg* is empty (non-empty),
+:ref:`sample_fixed@sample`
+values have been calculated (have not been calculated).
+If *error_msg* is non-empty,
+it is a message describing the problem.
+
+.. meta::
+   :keywords: example
+
+.. index:: example
+
+.. _sample_fixed@Example:
+
+Example
+*******
+The file :ref:`sample_fixed.cpp-name` is an example
+and test of ``sample_fixed`` .
+
+.. meta::
+   :keywords: other, method
+
+.. index:: other, method
+
+.. _sample_fixed@Other Method:
+
+Other Method
+************
+The routine :ref:`sample_conditional-name` , is a old method that is no
+longer used for computing these samples.
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   sample_fixed.cpp
+   sample_conditional

@@ -1,0 +1,23 @@
+.. include:: xrst_preamble.rst
+
+.. _fix_likelihood.cpp-name:
+
+!!!!!!!!!!!!!!!!!!
+fix_likelihood.cpp
+!!!!!!!!!!!!!!!!!!
+
+xrst input file: ``example/user/fix_likelihood.cpp``
+
+.. meta::
+   :keywords: fix_likelihood.cpp, random, likelihood:, example, and, test
+
+.. index:: fix_likelihood.cpp, random, likelihood:, example, and, test
+
+.. _fix_likelihood.cpp-title:
+
+Random Likelihood: Example and Test
+###################################
+
+.. literalinclude:: ../../example/user/fix_likelihood.cpp
+   :lines: 19-115
+   :language: cpp
