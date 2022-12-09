@@ -10,6 +10,20 @@ see http://www.gnu.org/licenses/agpl.txt
 $begin cppad_mixed$$
 $comment User documentation for cppad_mixed$$
 
+$head Old Documentation$$
+This is an old version of the documentation built using
+$href%http://bradbell.github.io/omhelp%omhelp%$$.
+
+$head Current Documentation$$
+The current version of the documentation is build using
+$href%http://bradbell.github.io/xrst%xrst%$$.
+Use this link to get the
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+
+$pre
+
+$$
+
 $include omh/cppad_mixed.omh$$
 
 $childtable%omh/install_unix.omh
