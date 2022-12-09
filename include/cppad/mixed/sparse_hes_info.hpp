@@ -5,7 +5,7 @@
 # ifndef CPPAD_MIXED_SPARSE_HES_INFO_HPP
 # define CPPAD_MIXED_SPARSE_HES_INFO_HPP
 /*
-{xrst_begin sparse_hes_info}
+{xrst_begin sparse_hes_info dev}
 {xrst_spell
    work work
 }

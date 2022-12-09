@@ -6,7 +6,7 @@
 # include <cppad/mixed/is_finite_vec.hpp>
 
 /*
-{xrst_begin init_hes_cross}
+{xrst_begin init_hes_cross dev}
 
 Cross Terms of Sparse Hessian w.r.t Fixed and Random Effects
 ############################################################

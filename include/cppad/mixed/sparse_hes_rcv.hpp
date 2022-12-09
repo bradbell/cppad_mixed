@@ -5,7 +5,7 @@
 # ifndef CPPAD_MIXED_SPARSE_HES_RCV_HPP
 # define CPPAD_MIXED_SPARSE_HES_RCV_HPP
 /*
-{xrst_begin sparse_hes_rcv}
+{xrst_begin sparse_hes_rcv dev}
 {xrst_spell
    nnz
 }

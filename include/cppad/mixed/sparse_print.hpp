@@ -5,7 +5,7 @@
 # ifndef CPPAD_MIXED_SPARSE_PRINT_HPP
 # define CPPAD_MIXED_SPARSE_PRINT_HPP
 /*
-{xrst_begin sparse_print}
+{xrst_begin sparse_print dev}
 {xrst_spell
    cout
 }

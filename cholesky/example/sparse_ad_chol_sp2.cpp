@@ -6,7 +6,7 @@
 # include "../sparse_ad_cholesky.hpp"
 
 /*
-{xrst_begin sparse_ad_chol_sp2.cpp}
+{xrst_begin sparse_ad_chol_sp2.cpp dev}
 {xrst_spell
    cccc
    subscripts

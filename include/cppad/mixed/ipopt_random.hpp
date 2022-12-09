@@ -6,7 +6,7 @@
 # define CPPAD_MIXED_IPOPT_RANDOM_HPP
 
 /*
-{xrst_begin ipopt_random}
+{xrst_begin ipopt_random dev}
 {xrst_spell
    hpp
    nlp

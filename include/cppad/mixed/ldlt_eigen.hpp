@@ -6,7 +6,7 @@
 # define CPPAD_MIXED_LDLT_EIGEN_HPP
 
 /*
-{xrst_begin ldlt_eigen}
+{xrst_begin ldlt_eigen dev}
 
 An Eigen LDLT Factor Class
 ##########################

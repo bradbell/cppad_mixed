@@ -8,7 +8,7 @@
 # include <cppad/mixed/is_finite_vec.hpp>
 
 /*
-{xrst_begin init_ran_like}
+{xrst_begin init_ran_like dev}
 
 Initialize Random Likelihood
 ############################

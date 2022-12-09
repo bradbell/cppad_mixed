@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
-{xrst_begin private_namespace}
+{xrst_begin private_namespace dev}
 {xrst_spell
    hpp
    namespace

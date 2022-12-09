@@ -6,7 +6,7 @@
 # define CPPAD_MIXED_SPARSE_LOW2SYM_HPP
 
 /*
-{xrst_begin sparse_low2sym}
+{xrst_begin sparse_low2sym dev}
 {xrst_spell
    cols
    sym

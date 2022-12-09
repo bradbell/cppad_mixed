@@ -5,7 +5,7 @@
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/exception.hpp>
 /*
-{xrst_begin ran_like_hes}
+{xrst_begin ran_like_hes dev}
 {xrst_spell
    uu
 }

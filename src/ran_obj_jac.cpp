@@ -5,7 +5,7 @@
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/exception.hpp>
 /*
-{xrst_begin ran_obj_jac}
+{xrst_begin ran_obj_jac dev}
 
 Derivative of Laplace Objective
 ###############################

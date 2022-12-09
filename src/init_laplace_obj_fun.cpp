@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin init_laplace_obj_fun}
+{xrst_begin init_laplace_obj_fun dev}
 {xrst_spell
    dyn
    ind

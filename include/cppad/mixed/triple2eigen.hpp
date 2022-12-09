@@ -5,7 +5,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin triple2eigen}
+{xrst_begin triple2eigen dev}
 {xrst_spell
    nc
    nr

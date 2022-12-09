@@ -6,7 +6,7 @@
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-{xrst_begin ipopt_random_eval_g}
+{xrst_begin ipopt_random_eval_g dev}
 
 Compute Value of Constraint Functions
 #####################################

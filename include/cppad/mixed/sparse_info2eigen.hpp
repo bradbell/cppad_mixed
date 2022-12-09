@@ -6,7 +6,7 @@
 # define CPPAD_MIXED_SPARSE_INFO2EIGEN_HPP
 
 /*
-{xrst_begin sparse_info2eigen}
+{xrst_begin sparse_info2eigen dev}
 {xrst_spell
    nc
    nr

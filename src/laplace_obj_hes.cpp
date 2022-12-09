@@ -5,7 +5,7 @@
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/exception.hpp>
 /*
-{xrst_begin laplace_obj_hes}
+{xrst_begin laplace_obj_hes dev}
 {xrst_spell
    nr
 }

@@ -7,7 +7,7 @@
 # include <cppad/mixed/cppad_mixed.hpp>
 
 /*
-{xrst_begin pack}
+{xrst_begin pack dev}
 
 Pack Fixed Effect and Random Effects Into One Vector
 ####################################################

@@ -6,7 +6,7 @@
 # include <cppad/mixed/exception.hpp>
 
 /*
-{xrst_begin fix_like_hes}
+{xrst_begin fix_like_hes dev}
 
 Hessian of Fixed Likelihood
 ###########################

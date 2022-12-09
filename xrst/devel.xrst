@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
-{xrst_begin devel}
+{xrst_begin devel dev}
 
 The cppad_mixed Developer Documentation
 #######################################

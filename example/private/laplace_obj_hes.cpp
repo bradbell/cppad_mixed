@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin laplace_obj_hes.cpp}
+{xrst_begin laplace_obj_hes.cpp dev}
 
 laplace_obj_hes: Example and Test
 #################################

@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin sparse_mat2low.cpp}
+{xrst_begin sparse_mat2low.cpp dev}
 
 sparse_mat2low: Example and Test
 ################################

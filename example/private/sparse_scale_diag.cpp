@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin sparse_scale_diag.cpp}
+{xrst_begin sparse_scale_diag.cpp dev}
 {xrst_spell
    diag
 }

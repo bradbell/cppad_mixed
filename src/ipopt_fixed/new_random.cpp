@@ -6,7 +6,7 @@
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-{xrst_begin ipopt_fixed_new_random}
+{xrst_begin ipopt_fixed_new_random dev}
 
 Compute New Random Effects and Update Factor
 ############################################

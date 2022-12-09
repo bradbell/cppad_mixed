@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin ldlt_eigen.cpp}
+{xrst_begin ldlt_eigen.cpp dev}
 {xrst_spell
    ccc
    cov

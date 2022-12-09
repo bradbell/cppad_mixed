@@ -6,7 +6,7 @@
 # include <cppad/mixed/configure.hpp>
 
 /*
-{xrst_begin init_fix_like}
+{xrst_begin init_fix_like dev}
 {xrst_spell
    var
 }

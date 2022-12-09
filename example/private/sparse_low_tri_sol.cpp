@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin sparse_low_tri_sol.cpp}
+{xrst_begin sparse_low_tri_sol.cpp dev}
 
 sparse_low_tri_sol: Example and Test
 ####################################

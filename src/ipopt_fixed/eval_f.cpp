@@ -7,7 +7,7 @@
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-{xrst_begin ipopt_fixed_eval_f}
+{xrst_begin ipopt_fixed_eval_f dev}
 
 Compute Value of Objective
 ##########################

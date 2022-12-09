@@ -4,7 +4,7 @@
 // ----------------------------------------------------------------------------
 
 /*
-{xrst_begin ipopt_nlp_xam}
+{xrst_begin ipopt_nlp_xam dev}
 
 Ipopt Example: Declare Non-linear Program Problem Class
 #######################################################
@@ -158,7 +158,7 @@ namespace {
 
 {xrst_end ipopt_nlp_xam}
 ------------------------------------------------------------------------------
-{xrst_begin ipopt_xam_ctor}
+{xrst_begin ipopt_xam_ctor dev}
 
 Ipopt Example: Constructor and Destructor
 #########################################
@@ -174,7 +174,7 @@ ipopt_nlp_xam::~ipopt_nlp_xam(void)
 
 {xrst_end ipopt_xam_ctor}
 ------------------------------------------------------------------------------
-{xrst_begin ipopt_xam_get_nlp_info}
+{xrst_begin ipopt_xam_get_nlp_info dev}
 {xrst_spell
    nlp
    nnz
@@ -241,7 +241,7 @@ bool ipopt_nlp_xam::get_nlp_info(
 
 {xrst_end ipopt_xam_get_nlp_info}
 -------------------------------------------------------------------------------
-{xrst_begin ipopt_xam_get_bounds_info}
+{xrst_begin ipopt_xam_get_bounds_info dev}
 
 Return Optimization Bounds
 ##########################
@@ -312,7 +312,7 @@ bool ipopt_nlp_xam::get_bounds_info(
 
 {xrst_end ipopt_xam_get_bounds_info}
 -------------------------------------------------------------------------------
-{xrst_begin ipopt_xam_get_starting_point}
+{xrst_begin ipopt_xam_get_starting_point dev}
 
 Return Initial Values Where Optimization is Started
 ###################################################
@@ -422,7 +422,7 @@ bool ipopt_nlp_xam::get_starting_point(
 
 {xrst_end ipopt_xam_get_starting_point}
 -------------------------------------------------------------------------------
-{xrst_begin ipopt_xam_eval_f}
+{xrst_begin ipopt_xam_eval_f dev}
 
 Compute Value of Objective
 ##########################
@@ -476,7 +476,7 @@ bool ipopt_nlp_xam::eval_f(
 
 {xrst_end ipopt_xam_eval_f}
 -------------------------------------------------------------------------------
-{xrst_begin ipopt_xam_eval_grad_f}
+{xrst_begin ipopt_xam_eval_grad_f dev}
 
 Compute Gradient of the Objective
 #################################
@@ -530,7 +530,7 @@ bool ipopt_nlp_xam::eval_grad_f(
 
 {xrst_end ipopt_xam_eval_grad_f}
 -------------------------------------------------------------------------------
-{xrst_begin ipopt_xam_eval_g}
+{xrst_begin ipopt_xam_eval_g dev}
 
 Compute Value of Constraint Functions
 #####################################
@@ -590,7 +590,7 @@ bool ipopt_nlp_xam::eval_g(
 
 {xrst_end ipopt_xam_eval_g}
 -------------------------------------------------------------------------------
-{xrst_begin ipopt_xam_eval_jac_g}
+{xrst_begin ipopt_xam_eval_jac_g dev}
 {xrst_spell
    nele
 }
@@ -696,7 +696,7 @@ bool ipopt_nlp_xam::eval_jac_g(
 
 {xrst_end ipopt_xam_eval_jac_g}
 -------------------------------------------------------------------------------
-{xrst_begin ipopt_xam_eval_h}
+{xrst_begin ipopt_xam_eval_h dev}
 {xrst_spell
    hess
    nele
@@ -829,7 +829,7 @@ bool ipopt_nlp_xam::eval_h(
 
 {xrst_end ipopt_xam_eval_h}
 -------------------------------------------------------------------------------
-{xrst_begin ipopt_xam_finalize_solution}
+{xrst_begin ipopt_xam_finalize_solution dev}
 {xrst_spell
    cq
    infeasibility
@@ -1013,7 +1013,7 @@ void ipopt_nlp_xam::finalize_solution(
 
 {xrst_end ipopt_xam_finalize_solution}
 -------------------------------------------------------------------------------
-{xrst_begin ipopt_xam_intermediate_callback}
+{xrst_begin ipopt_xam_intermediate_callback dev}
 {xrst_spell
    cq
    enum
@@ -1170,7 +1170,7 @@ bool ipopt_nlp_xam::intermediate_callback(
 
 {xrst_end ipopt_xam_intermediate_callback}
 -------------------------------------------------------------------------------
-{xrst_begin ipopt_run_xam}
+{xrst_begin ipopt_run_xam dev}
 
 Ipopt: Example and Test
 #######################

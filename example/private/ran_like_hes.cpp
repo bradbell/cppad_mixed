@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin ran_like_hes.cpp}
+{xrst_begin ran_like_hes.cpp dev}
 
 ran_like_hes: Example and Test
 ##############################

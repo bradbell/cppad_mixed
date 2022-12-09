@@ -6,7 +6,7 @@
 # define CPPAD_MIXED_SPARSE_SCALE_DIAG_HPP
 
 /*
-{xrst_begin sparse_scale_diag}
+{xrst_begin sparse_scale_diag dev}
 {xrst_spell
    diag
 }

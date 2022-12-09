@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin undetermined}
+{xrst_begin undetermined dev}
 {xrst_spell
    cols
    nc

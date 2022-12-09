@@ -5,7 +5,7 @@
 # include "../sparse_ad_cholesky.hpp"
 
 /*
-{xrst_begin sparse_ad_chol_eq.cpp}
+{xrst_begin sparse_ad_chol_eq.cpp dev}
 
 Using Sparse AD Cholesky To Solve Equations: Example and Test
 #############################################################

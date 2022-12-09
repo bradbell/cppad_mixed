@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin cholmod_solve2_a.cpp}
+{xrst_begin cholmod_solve2_a.cpp dev}
 {xrst_spell
    bset
    cc

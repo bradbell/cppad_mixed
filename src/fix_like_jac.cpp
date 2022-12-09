@@ -6,7 +6,7 @@
 # include <cppad/mixed/exception.hpp>
 
 /*
-{xrst_begin fix_like_jac}
+{xrst_begin fix_like_jac dev}
 
 Jacobian of Fixed Likelihood
 ############################

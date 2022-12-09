@@ -6,7 +6,7 @@
 # define CPPAD_MIXED_LDLT_CHOLMOD_HPP
 
 /*
-{xrst_begin ldlt_cholmod}
+{xrst_begin ldlt_cholmod dev}
 {xrst_spell
    preprocessor
 }

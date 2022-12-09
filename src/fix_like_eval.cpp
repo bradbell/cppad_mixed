@@ -6,7 +6,7 @@
 # include <cppad/mixed/exception.hpp>
 
 /*
-{xrst_begin fix_like_eval}
+{xrst_begin fix_like_eval dev}
 {xrst_spell
    fabs
 }

@@ -6,7 +6,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin one_dim_derivative_chk}
+{xrst_begin one_dim_derivative_chk dev}
 {xrst_spell
    chk
    dfdx

@@ -20,7 +20,7 @@ double apx_derivative(
    return (info.f_plus - info.f_minus) /(x_plus - x_minus);
 }
 /*
-{xrst_begin ipopt_fixed_adapt_derivative_chk}
+{xrst_begin ipopt_fixed_adapt_derivative_chk dev}
 {xrst_spell
    approximations
    chk

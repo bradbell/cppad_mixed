@@ -126,7 +126,7 @@ namespace {
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-{xrst_begin ipopt_fixed_ctor}
+{xrst_begin ipopt_fixed_ctor dev}
 {xrst_spell
    lagrange
    multiplier

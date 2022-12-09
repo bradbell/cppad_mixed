@@ -5,7 +5,7 @@
 // ----------------------------------------------------------------------------
 
 /*
-{xrst_begin init_laplace_obj}
+{xrst_begin init_laplace_obj dev}
 
 Initialize Second Order of Approximate Objective and It's Hessian
 #################################################################

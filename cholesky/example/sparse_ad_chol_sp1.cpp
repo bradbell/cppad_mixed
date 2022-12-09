@@ -5,7 +5,7 @@
 # include <cppad/mixed/typedef.hpp>
 # include "../sparse_ad_cholesky.hpp"
 /*
-{xrst_begin sparse_ad_chol_sp1.cpp}
+{xrst_begin sparse_ad_chol_sp1.cpp dev}
 {xrst_spell
    ccc
    transposes

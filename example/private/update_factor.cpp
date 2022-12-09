@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin update_factor.cpp}
+{xrst_begin update_factor.cpp dev}
 
 update_factor: Example and Test
 ###############################

@@ -6,7 +6,7 @@
 # define CPPAD_MIXED_IS_FINITE_VEC_HPP
 
 /*
-{xrst_begin is_finite_vec}
+{xrst_begin is_finite_vec dev}
 
 Are All Elements of a Vector Finite
 ###################################

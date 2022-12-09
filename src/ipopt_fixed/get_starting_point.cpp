@@ -6,7 +6,7 @@
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-{xrst_begin ipopt_fixed_get_starting_point}
+{xrst_begin ipopt_fixed_get_starting_point dev}
 
 Return Initial Values Where Optimization is Started
 ###################################################

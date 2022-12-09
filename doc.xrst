@@ -3,6 +3,9 @@
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
 {xrst_begin cppad_mixed}
+{xrst_spell
+   Affero
+}
 {xrst_comment User documentation for cppad_mixed}
 {xrst_comment BEGIN: settings used by all section ---------------------------- }
 

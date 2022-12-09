@@ -7,7 +7,7 @@
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-{xrst_begin ipopt_app_status}
+{xrst_begin ipopt_app_status dev}
 {xrst_spell
    str
 }

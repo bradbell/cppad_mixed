@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin cholmod_factor_xam}
+{xrst_begin cholmod_factor_xam dev}
 
 Example Using Cholmod LDLT Factors
 ##################################

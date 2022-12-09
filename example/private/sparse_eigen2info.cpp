@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin sparse_eigen2info.cpp}
+{xrst_begin sparse_eigen2info.cpp dev}
 
 sparse_eigen2info: Example and Test
 ###################################

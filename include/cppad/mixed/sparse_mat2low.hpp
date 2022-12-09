@@ -6,7 +6,7 @@
 # define CPPAD_MIXED_SPARSE_MAT2LOW_HPP
 
 /*
-{xrst_begin sparse_mat2low}
+{xrst_begin sparse_mat2low dev}
 {xrst_spell
    cols
 }

@@ -6,7 +6,7 @@
 # include <cppad/mixed/exception.hpp>
 
 /*
-{xrst_begin ran_obj_eval}
+{xrst_begin ran_obj_eval dev}
 
 Evaluate Laplace Approximation and Laplace Objective
 ####################################################

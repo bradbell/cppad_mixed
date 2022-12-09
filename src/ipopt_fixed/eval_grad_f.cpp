@@ -7,7 +7,7 @@
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-{xrst_begin ipopt_fixed_eval_grad_f}
+{xrst_begin ipopt_fixed_eval_grad_f dev}
 
 Compute Gradient of the Objective
 #################################

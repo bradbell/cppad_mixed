@@ -7,7 +7,7 @@
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
-{xrst_begin ipopt_fixed_eval_h}
+{xrst_begin ipopt_fixed_eval_h dev}
 {xrst_spell
    hess
    nele

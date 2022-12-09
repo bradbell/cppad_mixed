@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin ldlt_cholmod_logdet}
+{xrst_begin ldlt_cholmod_logdet dev}
 {xrst_spell
    determinant
    logdet

@@ -10,7 +10,7 @@
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 -------------------------------------------------------------------------------
-{xrst_begin ldlt_eigen_ctor}
+{xrst_begin ldlt_eigen_ctor dev}
 {xrst_spell
    ptr
 }
@@ -65,7 +65,7 @@ ldlt_eigen<Double>::~ldlt_eigen(void)
 
 /*
 ------------------------------------------------------------------------------
-{xrst_begin ldlt_eigen_init}
+{xrst_begin ldlt_eigen_init dev}
 
 Initialize LDLT Factor for a Specific Sparsity Pattern
 ######################################################
@@ -147,7 +147,7 @@ void ldlt_eigen<Double>::init(const sparse_rc& H_rc)
 }
 /*
 -------------------------------------------------------------------------------
-{xrst_begin ldlt_eigen_pattern}
+{xrst_begin ldlt_eigen_pattern dev}
 
 Update Factorization Using new Matrix Values
 ############################################
@@ -206,7 +206,7 @@ const sparse_rc& ldlt_eigen<Double>::pattern(void) const
 
 /*
 ------------------------------------------------------------------------------
-{xrst_begin ldlt_eigen_update}
+{xrst_begin ldlt_eigen_update dev}
 {xrst_spell
    factorize
    ptr
@@ -324,7 +324,7 @@ bool ldlt_eigen<Double>::update(
 }
 /*
 -------------------------------------------------------------------------------
-{xrst_begin ldlt_eigen_split}
+{xrst_begin ldlt_eigen_split dev}
 
 Split Out a Factorization
 #########################
@@ -398,7 +398,7 @@ void ldlt_eigen<Double>::split(
 }
 /*
 ------------------------------------------------------------------------------
-{xrst_begin ldlt_eigen_logdet}
+{xrst_begin ldlt_eigen_logdet dev}
 {xrst_spell
    determinant
    logdet
@@ -480,7 +480,7 @@ Double ldlt_eigen<Double>::logdet(size_t& negative) const
 }
 /*
 -----------------------------------------------------------------------------
-{xrst_begin ldlt_eigen_solve_H}
+{xrst_begin ldlt_eigen_solve_H dev}
 
 Solve Linear Equations Using Stored Factor
 ##########################################
@@ -588,7 +588,7 @@ void ldlt_eigen<Double>::solve_H(
 }
 /*
 -------------------------------------------------------------------------------
-{xrst_begin ldlt_eigen_sim_cov}
+{xrst_begin ldlt_eigen_sim_cov dev}
 {xrst_spell
    cov
    covariance
@@ -742,7 +742,7 @@ bool ldlt_eigen<Double>::sim_cov(
 
 /*
 -------------------------------------------------------------------------------
-{xrst_begin ldlt_eigen_inv}
+{xrst_begin ldlt_eigen_inv dev}
 
 Compute a Subset of the Inverse of Factored Matrix
 ##################################################
@@ -889,7 +889,7 @@ void ldlt_eigen<Double>::inv(
 }
 /*
 -------------------------------------------------------------------------------
-{xrst_begin ldlt_eigen_solve_LDLT}
+{xrst_begin ldlt_eigen_solve_LDLT dev}
 
 Solve Linear Equations Corresponding to L, D, and P Factors
 ###########################################################

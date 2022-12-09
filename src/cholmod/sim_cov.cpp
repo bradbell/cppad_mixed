@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin ldlt_cholmod_sim_cov}
+{xrst_begin ldlt_cholmod_sim_cov dev}
 {xrst_spell
    cov
    covariance

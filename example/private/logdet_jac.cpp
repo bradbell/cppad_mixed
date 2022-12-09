@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin logdet_jac.cpp}
+{xrst_begin logdet_jac.cpp dev}
 {xrst_spell
    logdet
 }

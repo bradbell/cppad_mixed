@@ -4,7 +4,7 @@
 // ----------------------------------------------------------------------------
 
 /*
-{xrst_begin init_laplace_obj_hes}
+{xrst_begin init_laplace_obj_hes dev}
 
 Initialize Hessian of Approximate Laplace Objective
 ###################################################

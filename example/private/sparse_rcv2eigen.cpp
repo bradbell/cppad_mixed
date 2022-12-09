@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin sparse_rcv2eigen.cpp}
+{xrst_begin sparse_rcv2eigen.cpp dev}
 
 sparse_rcv2eigen: Example and Test
 ##################################

@@ -28,7 +28,7 @@ bool ipopt_fixed::check_in_limits(
    return flag;
 }
 /*
-{xrst_begin ipopt_fixed_finalize_solution}
+{xrst_begin ipopt_fixed_finalize_solution dev}
 {xrst_spell
    cq
    curr

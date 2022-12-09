@@ -5,7 +5,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin sparse_rcv2eigen}
+{xrst_begin sparse_rcv2eigen dev}
 
 Convert a CppAD Sparse Matrix to an Eigen Sparse Matrix
 #######################################################

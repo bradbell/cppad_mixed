@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin ran_con_jac.cpp}
+{xrst_begin ran_con_jac.cpp dev}
 
 ran_con_jac: Example and Test
 #############################

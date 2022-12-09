@@ -5,7 +5,7 @@
 # ifndef CPPAD_MIXED_SPARSE_JAC_RCV_HPP
 # define CPPAD_MIXED_SPARSE_JAC_RCV_HPP
 /*
-{xrst_begin sparse_jac_rcv}
+{xrst_begin sparse_jac_rcv dev}
 {xrst_spell
    nnz
 }

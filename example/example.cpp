@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin example_devel.cpp}
+{xrst_begin example_devel.cpp dev}
 
 Run C++ Examples
 ################

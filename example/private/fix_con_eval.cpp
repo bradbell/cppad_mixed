@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin fix_con_eval.cpp}
+{xrst_begin fix_con_eval.cpp dev}
 
 constraint_eval: Example and Test
 #################################

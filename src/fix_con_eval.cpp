@@ -6,7 +6,7 @@
 # include <cppad/mixed/exception.hpp>
 
 /*
-{xrst_begin fix_con_eval}
+{xrst_begin fix_con_eval dev}
 
 Evaluate Fixed Constraint Function
 ##################################

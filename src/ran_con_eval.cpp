@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin ran_con_eval}
+{xrst_begin ran_con_eval dev}
 
 Evaluate the Random Constraint Function
 #######################################

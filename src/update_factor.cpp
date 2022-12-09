@@ -5,7 +5,7 @@
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/exception.hpp>
 /*
-{xrst_begin update_factor}
+{xrst_begin update_factor dev}
 
 Update the Factorization of Hessian w.r.t. Random Effects
 #########################################################

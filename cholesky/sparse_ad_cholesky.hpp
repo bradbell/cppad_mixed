@@ -5,7 +5,7 @@
 # ifndef CPPAD_MIXED_SPARSE_AD_CHOLESKY_HPP
 # define CPPAD_MIXED_SPARSE_AD_CHOLESKY_HPP
 /*
-{xrst_begin sparse_ad_cholesky}
+{xrst_begin sparse_ad_cholesky dev}
 
 Sparse Cholesky Factorization as an Atomic CppAD Operation
 ##########################################################

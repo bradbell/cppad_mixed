@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin fix_like_hes.cpp}
+{xrst_begin fix_like_hes.cpp dev}
 
 fix_like_hes: Example and Test
 ##############################

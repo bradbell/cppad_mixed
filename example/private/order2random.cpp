@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin order2random.cpp}
+{xrst_begin order2random.cpp dev}
 
 order2random: Example and Test
 ##############################

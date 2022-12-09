@@ -5,7 +5,7 @@
 # ifndef CPPAD_MIXED_CONFIGURE_HPP
 # define CPPAD_MIXED_CONFIGURE_HPP
 /*
-{xrst_begin configure.hpp}
+{xrst_begin configure.hpp dev}
 {xrst_spell
    hpp
    nullptr

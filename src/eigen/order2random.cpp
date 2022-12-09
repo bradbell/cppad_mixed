@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin order2random}
+{xrst_begin order2random dev}
 {xrst_spell
    uu
 }

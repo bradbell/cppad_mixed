@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin sparse_low2sym.cpp}
+{xrst_begin sparse_low2sym.cpp dev}
 {xrst_spell
    sym
 }

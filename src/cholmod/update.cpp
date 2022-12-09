@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin ldlt_cholmod_update}
+{xrst_begin ldlt_cholmod_update dev}
 {xrst_spell
    factorize
    sym

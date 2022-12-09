@@ -5,7 +5,7 @@
 # ifndef CPPAD_MIXED_SPARSITY_PRINT_HPP
 # define CPPAD_MIXED_SPARSITY_PRINT_HPP
 /*
-{xrst_begin sparsity_print}
+{xrst_begin sparsity_print dev}
 {xrst_spell
    iterator
    iterators

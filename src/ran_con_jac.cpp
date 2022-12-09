@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin ran_con_jac}
+{xrst_begin ran_con_jac dev}
 {xrst_spell
    nnz
 }

@@ -6,7 +6,7 @@
 # include <cppad/mixed/exception.hpp>
 # include <cppad/mixed/is_finite_vec.hpp>
 /*
-{xrst_begin init_ran_jac}
+{xrst_begin init_ran_jac dev}
 {xrst_spell
    uu
 }

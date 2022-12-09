@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin ldlt_cholmod_inv}
+{xrst_begin ldlt_cholmod_inv dev}
 {xrst_spell
    nrow
    sparseinv

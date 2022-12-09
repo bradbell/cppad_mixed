@@ -8,7 +8,7 @@
 # include <cppad/mixed/is_finite_vec.hpp>
 
 /*
-{xrst_begin init_ran_hes}
+{xrst_begin init_ran_hes dev}
 {xrst_spell
    uu
 }

@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin ran_con_eval.cpp}
+{xrst_begin ran_con_eval.cpp dev}
 
 ran_con_eval: Example and Test
 ##############################

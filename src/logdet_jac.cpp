@@ -5,7 +5,7 @@
 # include <cppad/mixed/cppad_mixed.hpp>
 # include <cppad/mixed/exception.hpp>
 /*
-{xrst_begin logdet_jac}
+{xrst_begin logdet_jac dev}
 {xrst_spell
    determinant
    logdet

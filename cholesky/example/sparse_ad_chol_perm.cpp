@@ -5,7 +5,7 @@
 # include "../sparse_ad_cholesky.hpp"
 
 /*
-{xrst_begin sparse_ad_chol_perm.cpp}
+{xrst_begin sparse_ad_chol_perm.cpp dev}
 
 Sparse AD Cholesky Permutation: Example and Test
 ################################################

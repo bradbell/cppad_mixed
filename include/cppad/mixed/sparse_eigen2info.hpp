@@ -6,7 +6,7 @@
 # define CPPAD_MIXED_SPARSE_EIGEN2INFO_HPP
 
 /*
-{xrst_begin sparse_eigen2info}
+{xrst_begin sparse_eigen2info dev}
 
 Convert An Eigen Sparse Matrix to a sparse_mat_info Representation
 ##################################################################

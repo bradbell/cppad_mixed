@@ -6,7 +6,7 @@
 # define CPPAD_MIXED_IPOPT_FIXED_HPP
 
 /*
-{xrst_begin ipopt_fixed}
+{xrst_begin ipopt_fixed dev}
 {xrst_spell
    nlp
 }

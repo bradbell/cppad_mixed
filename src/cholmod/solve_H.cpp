@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin ldlt_cholmod_solve_H}
+{xrst_begin ldlt_cholmod_solve_H dev}
 
 Solve Linear Equations Using Factor
 ###################################

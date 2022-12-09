@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-{xrst_begin ldlt_cholmod_ctor}
+{xrst_begin ldlt_cholmod_ctor dev}
 {xrst_spell
    ll
    nrow
@@ -104,7 +104,7 @@ work_two_      (CPPAD_NULL)
 }
 
 /*
-{xrst_begin ldlt_cholmod_dtor}
+{xrst_begin ldlt_cholmod_dtor dev}
 
 Cholmod Destructor
 ##################
