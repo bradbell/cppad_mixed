@@ -8,11 +8,12 @@ html_directory    = 'build/html'
 tex_directory     = 'build/tex'
 
 [root_file]
-default = 'doc.xrst'
+default = 'cppad_mixed.xrst'
 dev     = 'xrst/devel.xrst'
 
-[preamble]
-rst_substitution = '''
+[include_all]
+rst_epilog = ''
+rst_prolog = '''
 .. |space| unicode:: 0xA0
 .. |tab| replace:: |space| |space| |space|
 '''
