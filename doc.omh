@@ -15,8 +15,8 @@ This is an old version of the documentation built using
 $href%http://bradbell.github.io/omhelp%omhelp%$$.
 
 $head Current Documentation$$
-The current version of the documentation is build using
-$href%http://bradbell.github.io/xrst%xrst%$$.
+The current version of the documentation is built using the sphinx
+$href%http://bradbell.github.io/html/purpose.html%xrst%$$ wrapper.
 Use this link to get the
 $href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
 
