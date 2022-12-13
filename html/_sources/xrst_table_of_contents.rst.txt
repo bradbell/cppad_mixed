@@ -1,5 +1,3 @@
-.. |space| unicode:: 0xA0
-
 .. _xrst_table_of_contents-title:
 
 Table of Contents

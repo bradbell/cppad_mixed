@@ -1,5 +1,3 @@
-.. include:: xrst_preamble.rst
-
 .. _install_unix-name:
 
 !!!!!!!!!!!!

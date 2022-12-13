@@ -1,21 +1,19 @@
-.. include:: xrst_preamble.rst
-
 .. _cppad_mixed-name:
 
 !!!!!!!!!!!
 cppad_mixed
 !!!!!!!!!!!
 
-xrst input file: ``doc.xrst``
+xrst input file: ``cppad_mixed.xrst``
 
 .. meta::
-   :keywords: cppad_mixed, c++, laplace, approximation, of, mixed, effects, models:, cppad_mixed-20221209
+   :keywords: cppad_mixed, c++, laplace, approximation, of, mixed, effects, models:, cppad_mixed-20221213
 
-.. index:: cppad_mixed, c++, laplace, approximation, of, mixed, effects, models:, cppad_mixed-20221209
+.. index:: cppad_mixed, c++, laplace, approximation, of, mixed, effects, models:, cppad_mixed-20221213
 
 .. _cppad_mixed-title:
 
-C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20221209
+C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20221213
 #######################################################################
 
 .. meta::
@@ -38,7 +36,7 @@ License
 
 Source Code Repository
 **********************
-https://github.com/bradbell/cppad_mixed
+`<https://github.com/bradbell/cppad_mixed>`_
 
 .. meta::
    :keywords: contents
