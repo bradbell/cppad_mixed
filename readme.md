@@ -9,4 +9,4 @@ SPDX-FileContributor: 2014-22 Bradley M. Bell
 </pre>
 
 # Documentation
-https://bradbell.github.io/cppad_mixed/html/cppad_mixed.html
+https://bradbell.github.io/cppad_mixed
