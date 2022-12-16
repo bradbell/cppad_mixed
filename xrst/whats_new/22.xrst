@@ -8,6 +8,7 @@
    dd
    homebrew
    mm
+   omhelp
 }
 
 Changes and Additions to cppad_mixed During 2022
@@ -15,6 +16,16 @@ Changes and Additions to cppad_mixed During 2022
 
 mm-dd
 *****
+
+12-13
+=====
+Finish conversion of cppad_mixed documentation from
+`omhelp <http://bradbell.github.io/omhelp/doc/omhelp.htm>`_
+to the sphinx
+`xrst <http://bradbell.github.io/xrst/html/purpose.html>`_  wrapper.
+The following is a link to the
+`old documentation <http://bradbell.github.io/cppad_mixed/doc/cppad_mixed.htm>`_ .
+
 
 10-28
 =====
