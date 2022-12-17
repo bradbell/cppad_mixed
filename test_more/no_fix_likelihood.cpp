@@ -8,6 +8,10 @@ This program is distributed under the terms of the
 see http://www.gnu.org/licenses/agpl.txt
 -------------------------------------------------------------------------- */
 /*
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Optimize Fixed Effects With No fix_likelihood: Example and Test$$
 
 $head Model$$

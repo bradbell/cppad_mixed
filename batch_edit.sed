@@ -11,6 +11,7 @@
 # (with the possible exception of the extra_seds commands).
 # The files in bin/devel.sh ignore_files are automatically in this list.
 # ignore_files='
+#     doc.omh
 # '
 # list of files and or directories that are moved to new names
 # move_paths='
@@ -29,5 +30,9 @@
 # '
 # ----------------------------------------------------------------------------
 # Put other sed commands below here and without # at start of line
-/$Id:\$/d
-/$Id\$/d
+s|$section|$nospell\
+$bold This is old cppad_mixed documentation:$$ Here is a link to its\
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.\
+$$\
+&|
+#

@@ -18,6 +18,10 @@ $spell
 	xam
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Observed Information Matrix: Example and Test$$
 
 $head Deprecated 2020-03-22$$

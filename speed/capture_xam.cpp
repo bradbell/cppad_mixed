@@ -30,6 +30,10 @@ $spell
 	ndebug
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section A Capture Example and Speed Test$$
 
 $head Syntax$$

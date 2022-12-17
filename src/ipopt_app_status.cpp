@@ -19,6 +19,10 @@ $spell
 	CppAD
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Map Ipopt Application Return Status to a String$$
 
 $head Syntax$$

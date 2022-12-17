@@ -10,6 +10,10 @@ see http://www.gnu.org/licenses/agpl.txt
 /*
 $begin ldlt_cholmod_inv$$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Compute a Subset of the Inverse of Factored Matrix$$
 $spell
 	suitesparse

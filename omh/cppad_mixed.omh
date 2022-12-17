@@ -28,6 +28,10 @@ $$
 $aindex section head subhead$$
 $comment END: settings used by all section ---------------------------- $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section
 C++ Laplace Approximation of Mixed Effects Models:
 cppad_mixed-20220519

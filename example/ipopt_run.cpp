@@ -15,6 +15,10 @@ $spell
 	Ipopt
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Ipopt Example: Declare Non-linear Program Problem Class$$
 
 $nospell
@@ -172,6 +176,10 @@ $spell
 	ipopt_nlp_xam
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Ipopt Example: Constructor and Destructor$$
 
 $srccode%cpp% */
@@ -194,6 +202,10 @@ $spell
 	nlp
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Return Information About Problem Sizes$$
 
 $head Syntax$$
@@ -249,6 +261,10 @@ $spell
 	bool
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Return Optimization Bounds$$
 
 $head Syntax$$
@@ -313,6 +329,10 @@ $spell
 	bool
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Return Initial Values Where Optimization is Started$$
 
 $head Syntax$$
@@ -415,6 +435,10 @@ $spell
 	const
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Compute Value of Objective$$
 
 $head Syntax$$
@@ -465,6 +489,10 @@ $spell
 	const
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Compute Gradient of the Objective$$
 
 $head Syntax$$
@@ -515,6 +543,10 @@ $spell
 	eval
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Compute Value of Constraint Functions$$
 
 $head Syntax$$
@@ -573,6 +605,10 @@ $spell
 	nnz
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Compute Jacobian of Constraint Functions$$
 
 $head Syntax$$
@@ -670,6 +706,10 @@ $spell
 	nnz
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Compute the Hessian of the Lagrangian$$
 
 $head Syntax$$
@@ -799,6 +839,10 @@ $spell
 	tol
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Get Solution Results$$
 
 $head Syntax$$
@@ -962,6 +1006,10 @@ $spell
 	enum
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Ipopt Example: Optimization Progress Report$$
 
 $head Syntax$$
@@ -1103,6 +1151,10 @@ $spell
 	Status status
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Ipopt: Example and Test$$
 
 $head Syntax$$

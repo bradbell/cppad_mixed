@@ -23,6 +23,10 @@ $spell
 	CppAD
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Eigen LDLT Constructor$$
 
 $head Syntax$$
@@ -76,6 +80,10 @@ $spell
 	hes
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Initialize LDLT Factor for a Specific Sparsity Pattern$$
 
 $head Syntax$$
@@ -155,6 +163,10 @@ $spell
 	rc
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Update Factorization Using new Matrix Values$$
 
 $head Syntax$$
@@ -217,6 +229,10 @@ $spell
 	bool
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Update Factorization Using new Matrix Values$$
 
 $head Syntax$$
@@ -317,6 +333,10 @@ bool ldlt_eigen<Double>::update(
 -------------------------------------------------------------------------------
 $begin ldlt_eigen_split$$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Split Out a Factorization$$
 $spell
 	ldlt_obj
@@ -391,6 +411,10 @@ $spell
 	const
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Compute Log Determinant for Current LDLT Factor$$
 
 $head Syntax$$
@@ -467,6 +491,10 @@ $spell
 	hes
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Solve Linear Equations Using Stored Factor$$
 
 $head Syntax$$
@@ -570,6 +598,10 @@ $spell
 	CppAD
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Simulations with Covariance Corresponding to Factored Matrix$$
 
 $head Syntax$$
@@ -698,6 +730,10 @@ bool ldlt_eigen<Double>::sim_cov(
 -------------------------------------------------------------------------------
 $begin ldlt_eigen_inv$$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Compute a Subset of the Inverse of Factored Matrix$$
 $spell
 	ldlt_obj
@@ -844,6 +880,10 @@ $spell
 	CppAD
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Solve Linear Equations Corresponding to L, D, and P Factors$$
 
 $head Syntax$$

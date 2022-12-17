@@ -36,6 +36,10 @@ $spell
 	Cholesky
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Initialize Sparse AD Cholesky Factorization$$
 
 $head Syntax$$
@@ -158,6 +162,10 @@ $spell
 	CppAD
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Using Sparse AD Cholesky Permutation P$$
 
 $head Syntax$$
@@ -208,6 +216,10 @@ $spell
 	eval
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Using Sparse AD Cholesky Factor L$$
 
 $head Syntax$$
@@ -295,6 +307,10 @@ $spell
 	setvec
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Set the Jacobian Sparsity Pattern$$
 
 $head Syntax$$
@@ -499,6 +515,10 @@ $spell
 	setvec
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section Set the Hessian Sparsity Pattern$$
 
 $head Syntax$$

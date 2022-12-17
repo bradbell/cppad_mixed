@@ -36,6 +36,10 @@ $spell
 	hes
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section cppad_mixed: Public Declarations$$
 These $code cppad_mixed$$ class declarations are $code public$$.
 They are part of the user API and can be used by a derived class object

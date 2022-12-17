@@ -13,6 +13,10 @@ $spell
 	CppAD
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section The CppAD::mixed Namespace Public Declarations$$
 The declarations in the subsections below
 are in the $code CppAD::mixed$$ namespace.

@@ -46,6 +46,10 @@ $spell
 	Au
 $$
 
+$nospell
+$bold This is old cppad_mixed documentation:$$ Here is a link to its
+$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$$
 $section cppad_mixed: Private Declarations$$
 These $code cppad_mixed$$ class declarations are $code private$$.
 They are $bold not$$ part of the user API,
