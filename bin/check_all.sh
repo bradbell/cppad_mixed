@@ -65,6 +65,14 @@ version.sh check
 cmd=`grep '^cmake_install_prefix=' bin/run_cmake.sh`
 eval $cmd
 #
+# cmake_libdir
+cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
+eval $cmd
+if ls $cmake_install_prefix/$cmake_libdir/libcppad_mixed.* > /dev/null
+then
+   echo_eval rm $cmake_install_prefix/$cmake_libdir/libcppad_mixed.*
+fi
+#
 installed_include_dir="$cmake_install_prefix/include/cppad/mixed"
 if [ -e "$installed_include_dir" ]
 then
@@ -106,13 +114,14 @@ then
 else
    n_job=$(sysctl -n hw.ncpu)
 fi
-echo "make -j $n_job check >& build/check.log"
-make -j $n_job check >& check.log
+echo "make -j $n_job check >& check.log"
+make -j $n_job check >& ../check.log
 #
-echo "make speed >& build/speed.log"
-make speed >& speed.log
+echo "make speed >& speed.log"
+make speed >& ../speed.log
 #
-echo_eval make -j $n_job install
+echo "make -j $n_job install >& install.log"
+echo_eval make -j $n_job install >& ../install.log
 #
 cd ..
 # -----------------------------------------------------------------------------
@@ -137,13 +146,13 @@ then
    exit 1
 fi
 # -----------------------------------------------------------------------------
-# CppAD uses asserts to make sure this this is not a problem
-sed -i build/check.log -e "/match_op.hpp:.*warning: ‘arg_match\[[01]\]’/d"
+# CppAD uses asserts to make sure this is not a problem
+sed -i check.log -e "/match_op.hpp:.*warning: ‘arg_match\[[01]\]’/d"
 for target in cmake check speed install
 do
-   if grep -i 'warning:' build/$target.log
+   if grep -i 'warning:' $target.log
    then
-      echo "bin/run_check_all.sh: build/$target.log is has warnings."
+      echo "bin/run_check_all.sh: $target.log is has warnings."
       exit 1
    fi
 done

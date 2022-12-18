@@ -11,7 +11,10 @@ extern bool abs_fix_con(void);
 extern bool binomial(void);
 extern bool delta_ran_obj(void);
 extern bool der_var_hes(void);
+extern bool fixed_eq_constrain(void);
 extern bool fixed_lag(void);
+extern bool laplace_obj_hes(void);
+extern bool laplace_obj_tst(void);
 extern bool ldlt_cholmod(void);
 extern bool max_iter_neg(void);
 extern bool n_mixture(void);
@@ -20,8 +23,6 @@ extern bool no_random(void);
 extern bool no_random_info(void);
 extern bool opt_ran_fail(void);
 extern bool ran_obj_tst(void);
-extern bool laplace_obj_hes(void);
-extern bool laplace_obj_tst(void);
 extern bool sample_fixed_1(void);
 extern bool sample_fixed_2(void);
 extern bool scale_one(void);
@@ -29,7 +30,6 @@ extern bool scale_two(void);
 extern bool solution_check(void);
 extern bool zero_random_one(void);
 extern bool zero_random_two(void);
-extern bool fixed_eq_constrain(void);
 // END_SORT_THIS_LINE_MINUS_1
 
 // anonymous namespace

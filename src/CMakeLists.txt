@@ -55,7 +55,6 @@ ADD_LIBRARY(cppad_mixed
    initialize.cpp
    ipopt_app_status.cpp
    ipopt_fixed/adapt_derivative_chk.cpp
-   ipopt_fixed/fixed_eq_constrain.cpp
    ipopt_fixed/ctor.cpp
    ipopt_fixed/eval_f.cpp
    ipopt_fixed/eval_g.cpp
@@ -63,6 +62,7 @@ ADD_LIBRARY(cppad_mixed
    ipopt_fixed/eval_h.cpp
    ipopt_fixed/eval_jac_g.cpp
    ipopt_fixed/finalize_solution.cpp
+   ipopt_fixed/fixed_eq_constrain.cpp
    ipopt_fixed/get_bounds_info.cpp
    ipopt_fixed/get_nlp_info.cpp
    ipopt_fixed/get_starting_point.cpp
