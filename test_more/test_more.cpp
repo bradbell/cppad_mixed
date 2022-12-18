@@ -6,7 +6,7 @@
 # include <cassert>
 # include <cstring>
 
-// cppad_mixed subdirectory
+// BEGIN_SORT_THIS_LINE_PLUS_1
 extern bool abs_fix_con(void);
 extern bool binomial(void);
 extern bool delta_ran_obj(void);
@@ -29,6 +29,8 @@ extern bool scale_two(void);
 extern bool solution_check(void);
 extern bool zero_random_one(void);
 extern bool zero_random_two(void);
+extern bool fixed_eq_constrain(void);
+// END_SORT_THIS_LINE_MINUS_1
 
 // anonymous namespace
 namespace {
@@ -64,6 +66,8 @@ namespace {
 int main(void)
 {
    // This comment expected by bin/test_one.sh
+   // BEGIN_SORT_THIS_LIST_PLUS_1
+   RUN(fixed_eq_constrain);
    RUN(abs_fix_con);
    RUN(binomial);
    RUN(delta_ran_obj);
@@ -82,10 +86,11 @@ int main(void)
    RUN(sample_fixed_1);
    RUN(sample_fixed_2);
    RUN(scale_one);
-   // RUN(scale_two); not yet working
    RUN(solution_check);
    RUN(zero_random_one);
    RUN(zero_random_two);
+   // RUN(scale_two); not yet working
+   // END_SORT_THIS_LIST_MINUS_2
    // This comment also expected by bin/test_one.sh
 
    // summary report

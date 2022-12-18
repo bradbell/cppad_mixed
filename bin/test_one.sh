@@ -85,7 +85,6 @@ EOF
       echo "make -j $n_job check_$find_dir"
       if ! make -j $n_job "check_$find_dir"
       then
-         rm ../test_one.1
          echo "cd build; make check_$find_dir failed"
          echo 'bin/test_one.sh: Error'
          exit 1

@@ -605,8 +605,24 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
          fatal_error(message);
    }
    //
-   // solve the problem
-   status = app->OptimizeTNLP(fixed_nlp);
+   // all_constrained
+   bool all_constrained = true;
+   for(size_t j = 0; j < n_fixed_; ++j)
+      all_constrained &= fixed_lower[j] == fixed_upper[j];
+   //
+   // fixed_nlp.solution_
+   if( all_constrained )
+   {  // ipopt crashes when all_constrained is true,
+      // so just set the solution to fixed_in
+      std::string message =
+         "optimize_fixed: all the fixed effects are equality constrained.";
+      warning( message );
+      fixed_nlp -> fixed_eq_constrain( fixed_in );
+   }
+   else
+   { // solve the problem
+      status = app->OptimizeTNLP(fixed_nlp);
+   }
    //
    // check if fixed_nlp could not evaluate one of its functions
    if(  fixed_nlp->get_error_message() != "" )
@@ -647,7 +663,7 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
       {  warning("optimize_fixed: unexpected error during zero iterations");
       }
    }
-   else
+   else if( ! all_constrained )
    {
       if( status != Ipopt::Solve_Succeeded )
       {  warning("optimize_fixed: ipopt failed to converge");

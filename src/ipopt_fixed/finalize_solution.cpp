@@ -58,8 +58,6 @@ This routine checks the solution values and sets the member variable
 
    ``CppAD::mixed fixed_solution solution_``
 
-.
-
 n
 *
 is the number of variables in the problem (dimension of x).

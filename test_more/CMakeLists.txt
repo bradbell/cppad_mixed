@@ -4,6 +4,7 @@
 # ----------------------------------------------------------------------------
 # Build C++ Examples / Tests
 #
+# BEGIN_SORT_THIS_LINE_PLUS_3
 # bin/test_one.sh expects test_more.cpp on next line, last line to be just ')'
 ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL test_more.cpp
    finalize.cpp
@@ -15,6 +16,7 @@ ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL test_more.cpp
    ldlt_cholmod.cpp
    max_iter_neg.cpp
    n_mixture.cpp
+   fixed_eq_constrain.cpp
    no_fix_likelihood.cpp
    no_random.cpp
    no_random_info.cpp
@@ -31,6 +33,7 @@ ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL test_more.cpp
    zero_random_one.cpp
    zero_random_two.cpp
 )
+# END_SORT_THIS_LINE_MINUS_2
 SET_TARGET_PROPERTIES(
    test_more PROPERTIES COMPILE_FLAGS "${extra_cxx_flags}"
 )

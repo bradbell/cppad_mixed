@@ -106,10 +106,10 @@ then
 else
    n_job=$(sysctl -n hw.ncpu)
 fi
-echo "make -j $n_job check >& check.log"
+echo "make -j $n_job check >& build/check.log"
 make -j $n_job check >& check.log
 #
-echo "make speed >& speed.log"
+echo "make speed >& build/speed.log"
 make speed >& speed.log
 #
 echo_eval make -j $n_job install
@@ -138,12 +138,12 @@ then
 fi
 # -----------------------------------------------------------------------------
 # CppAD uses asserts to make sure this this is not a problem
-sed -i check.log -e "/match_op.hpp:.*warning: ‘arg_match\[[01]\]’/d"
+sed -i build/check.log -e "/match_op.hpp:.*warning: ‘arg_match\[[01]\]’/d"
 for target in cmake check speed install
 do
-   if grep -i 'warning:' $target.log
+   if grep -i 'warning:' build/$target.log
    then
-      echo "bin/run_check_all.sh: $target.log is has warnings."
+      echo "bin/run_check_all.sh: build/$target.log is has warnings."
       exit 1
    fi
 done
