@@ -330,7 +330,9 @@
 <p>If all of the fixed effects has equal lower and upper bounds,
 ipopt would crash during <a class="reference internal" href="optimize_fixed.html#optimize-fixed-name"><span class="std std-ref">optimize_fixed</span></a> .
 This has been fixed by not optimizing and using the initial point
-(which is equal to the bounds) as the solution.</p>
+(which is equal to the bounds) as the solution.
+In addition, a special case was added to
+<a class="reference internal" href="sample_fixed.html#sample-fixed-name"><span class="std std-ref">sample_fixed</span></a> because the hessian matrix is empty in this case.</p>
 <section id="whats-new-22-12-18-12-13">
 <span id="index-3"></span><span id="id2"></span><h4>12-13<a class="headerlink" href="#whats-new-22-12-18-12-13" title="Permalink to this headline">#</a></h4>
 <p>Finish conversion of cppad_mixed documentation from
