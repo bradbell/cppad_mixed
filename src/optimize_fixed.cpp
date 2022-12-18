@@ -614,9 +614,6 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
    if( all_constrained )
    {  // ipopt crashes when all_constrained is true,
       // so just set the solution to fixed_in
-      std::string message =
-         "optimize_fixed: all the fixed effects are equality constrained.";
-      warning( message );
       fixed_nlp -> fixed_eq_constrain( fixed_in );
    }
    else
