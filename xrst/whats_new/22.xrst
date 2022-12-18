@@ -23,6 +23,8 @@ If all of the fixed effects has equal lower and upper bounds,
 ipopt would crash during :ref:`optimize_fixed-name` .
 This has been fixed by not optimizing and using the initial point
 (which is equal to the bounds) as the solution.
+In addition, a special case was added to
+:ref:`sample_fixed-name` because the hessian matrix is empty in this case.
 
 12-13
 =====

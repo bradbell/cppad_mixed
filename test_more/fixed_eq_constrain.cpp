@@ -121,6 +121,23 @@ bool fixed_eq_constrain(void)
    //
    for(size_t j = 0; j < n_fixed; j++)
       ok &= fixed_out[j] == fixed_in[j];
+   //
+   // compute corresponding information matrix
+   CppAD::mixed::d_vector& fixed_opt = solution.fixed_opt;
+   d_sparse_rcv hes_fixed_obj_rcv =
+      mixed_object.hes_fixed_obj(fixed_opt, random_in);
+   //
+   // compute the samples
+   size_t n_sample = 2;
+   CppAD::mixed::d_vector sample( n_sample * n_fixed );
+   std::string error_msg = mixed_object.sample_fixed(
+      sample, hes_fixed_obj_rcv, solution, fixed_lower, fixed_upper
+   );
+   //
+   // check the samples
+   for(size_t i = 0; i < n_sample; ++i)
+      for(size_t j = 0; j < n_fixed; ++j)
+         ok &= sample[ i * n_fixed + j] == fixed_lower[j];
 
    return ok;
 }

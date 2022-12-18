@@ -220,6 +220,16 @@ std::string cppad_mixed::try_sample_fixed(
    }
    assert( n_subset <= n_fixed_ );
    //
+   // sample
+   if( n_subset == 0 )
+   {  // All of the fixed effects have lower bound equal to upper bound
+      for(size_t j = 0; j < n_fixed_; j++)
+         for(size_t i_sample = 0; i_sample < n_sample; ++i_sample)
+            sample[ i_sample * n_fixed_ + j] = fixed_lower[j];
+      std::string error_msg = "";
+      return error_msg;
+   }
+   //
    // create a sparse_rcv representation of information matrix on subset
    // and in column major order
    CppAD::vector<size_t> col_major = hes_fixed_obj_rcv.col_major();
