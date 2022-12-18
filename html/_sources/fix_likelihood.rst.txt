@@ -1,0 +1,83 @@
+lines 5-85 of file: src/fix_likelihood.xrst
+
+{xrst_begin fix_likelihood}
+
+User Defined Fixed Likelihood Function
+######################################
+
+Syntax
+******
+*vec* = *mixed_object* . ``fix_likelihood`` ( *fixed_vec* )
+
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
+to denote an object of a class that is
+derived from the ``cppad_mixed`` base class.
+
+a1_double
+*********
+see :ref:`typedef@Scalar Types@a1_double` .
+
+Virtual Function
+****************
+The following virtual function may be implemented in the derived class:
+
+| |tab| ``virtual CppAD::vector<a1_double> fix_likelihood`` (
+| |tab| |tab| ``const CppAD::vector<a1_double>&`` *fixed_vec*
+| |tab| )
+
+fixed_vec
+*********
+This argument has prototype
+
+   ``const CppAD::vector<a1_double>&`` *fixed_vec*
+
+It contains a value for the
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>` vector.
+
+vec
+***
+This result has prototype
+
+   ``CppAD::vector<`` *a1_double* > *vec*
+
+It is a
+:ref:`problem@Negative Log-Density Vector`
+corresponding to the fixed likelihood
+:ref:`g(theta)<theory@Fixed Likelihood, g(theta)>` where
+
+.. math::
+
+   g( \theta ) = - \log [ \B{p} ( z | \theta ) \B{p} ( \theta ) ]
+
+constant
+========
+Adding or subtracting a constant to *vec* [0] ,
+that does not depend on the fixed effects :math:`\theta`,
+does not affect the optimal estimates for the fixed or random effects.
+
+Default
+=======
+The base class definition (default) for ``fix_likelihood``
+returns an empty vector;
+i.e., *vec* . ``size`` () == 0 .
+This corresponds to the case where:
+
+#. All of the data depends on the
+   random effects; i.e., the data vector
+   :ref:`z<problem@Notation@Data, y, z>` is empty.
+#. There is no prior
+   :ref:`p(theta)<problem@Notation@Fixed Prior Density, p(theta)>`
+   for the fixed effects.
+
+{xrst_toc_hidden
+   example/user/fix_likelihood.cpp
+}
+Example
+*******
+The file :ref:`fix_likelihood.cpp-name` contains an example and test
+of defining this virtual function.
+It returns true, if the test passes, and false otherwise.
+
+{xrst_end fix_likelihood}

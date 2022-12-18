@@ -1,0 +1,89 @@
+lines 5-91 of file: src/ran_likelihood.xrst
+
+{xrst_begin ran_likelihood}
+
+User Defined Random Likelihood Function
+#######################################
+
+Syntax
+******
+*vec* = *mixed_object* . ``ran_likelihood`` ( *fixed_vec* , *random_vec* )
+
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
+to denote an object of a class that is
+derived from the ``cppad_mixed`` base class.
+
+Virtual Function
+****************
+The following virtual function may be implemented
+in the derived class:
+
+| |tab| ``virtual CppAD::vector<a1_double> ran_likelihood`` (
+| |tab| |tab| ``const CppAD::vector<a1_double>&`` *fixed_vec*   ,
+| |tab| |tab| ``const CppAD::vector<a1_double>&`` *random_vec*
+| |tab| )
+
+fixed_vec
+*********
+This argument has prototype
+
+   ``const CppAD::vector<a1_double>&`` *fixed_vec*
+
+It contains a value for the
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>` vector.
+
+random_vec
+**********
+This argument has prototype
+
+   ``const CppAD::vector<a1_double>&`` *random_vec*
+
+It contains a value for the
+:ref:`random effects<problem@Notation@Random Effects, u>` vector.
+
+vec
+***
+This result has prototype
+
+   ``CppAD::vector<a1_double>`` *vec*
+
+It is a
+:ref:`problem@Negative Log-Density Vector`
+corresponding to the random likelihood
+:ref:`f(theta, u)<theory@Random Likelihood, f(theta, u)>` where
+
+.. math::
+
+   f( \theta , u) = - \log [ \B{p}( y | \theta, u) \B{p} ( u | \theta ) ]
+
+The Laplace approximation only makes sense if this function is smooth; i.e,
+
+   *vec* . ``size`` () == 1
+
+constant
+========
+Adding or subtracting a constant to *vec* [0] ,
+that does not depend on the fixed effects :math:`\theta`
+or the random effects :math:`u`,
+does not affect the optimal estimates for the fixed and random effects.
+
+Default
+=======
+The base class definition (default) for ``ran_likelihood``
+returns an empty vector;
+i.e., *vec* . ``size`` () == 0 .
+This corresponds to the case where none of the data depends on the
+random effects; i.e., the data vector
+:ref:`y<problem@Notation@Data, y, z>` is empty.
+In this case there random effects vector should also be empty.
+{xrst_toc_hidden
+   example/user/ran_likelihood.cpp
+}
+Example
+*******
+The file :ref:`ran_likelihood.cpp-name` contains an example
+of defining this virtual function.
+
+{xrst_end ran_likelihood}

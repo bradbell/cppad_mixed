@@ -1,0 +1,73 @@
+lines 9-79 of file: include/cppad/mixed/warm_start_struct.hpp
+
+{xrst_begin warm_start_struct}
+{xrst_spell
+   struct
+}
+
+Ipopt Warm Start Information
+############################
+
+Syntax
+******
+``CppAD::mixed::warm_start_struct`` *warm_start*
+
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE
+   // END_PROTOTYPE
+}
+
+mu
+**
+This is the warm start value for the barrier penalty parameter.
+
+scale_f
+*******
+This is the cppad_mixed scaling factor for the ipopt objective function
+:math:`f(x)`.
+
+x_info
+******
+If the size of this vector is zero, the size of *g_info*
+must also be zero.
+Otherwise, ``x_info`` has size equal to the number of primal variables
+:math:`x`.
+The *j*-th element of this vector contains the following fields:
+
+x
+=
+is the warm start value for x[j].
+
+z_L
+===
+is the warm start value for z_L[j].
+
+z_U
+===
+is the warm start value for z_U[j].
+
+scale_x
+*******
+is the cppad_mixed scaling factor for x[j].
+
+g_info
+******
+If the size of *x_info* is non-zero,
+``g_info`` has size equal to the number of :math:`g(x)` constraints.
+The *i*-th element of this vector contains the following fields:
+
+lambda
+======
+is the warm start value for lambda[i].
+
+scale_g
+=======
+is the cppad_mixed scaling factor for :math:`g_i(x)`.
+
+Public
+******
+This structure is part of the CppAD Mixed user API.
+
+{xrst_end warm_start_struct}

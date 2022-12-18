@@ -1,0 +1,22 @@
+lines 5-24 of file: speed/speed.xrst
+
+{xrst_begin speed}
+
+Example Programs That are Also Speed and Memory Tests
+#####################################################
+
+Purpose
+*******
+These programs test speed and memory usage.
+They are also user examples that demonstrate many of the choices one can make.
+These choices are command line input options
+and :ref:`run_cmake.sh-name` configuration options.
+
+Contents
+********
+{xrst_toc_table
+   speed/ar1_xam.cpp
+   speed/capture_xam.cpp
+}
+
+{xrst_end speed}

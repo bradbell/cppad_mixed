@@ -1,0 +1,40 @@
+lines 6-43 of file: example/user/abs_density.cpp
+
+{xrst_begin abs_density.cpp}
+
+Absolute Value In Log-Density: Example and Test
+###############################################
+
+Model
+*****
+
+.. math::
+
+   \B{p}( z_i | \theta ) \sim \B{L} ( \theta_i , \sigma )
+
+where :math:`\B{L} ( \mu , \sigma )` is the Laplace distribution
+with mean :math:`\mu` and standard deviation :math:`\sigma`.
+The corresponding fixed likelihood
+:ref:`g(theta)<theory@Fixed Likelihood, g(theta)>`
+is
+
+.. math::
+
+   g( \theta ) = \sum_{i} \left[
+      \log ( \sigma \sqrt{2} )
+      +
+      \sqrt{2} \; \left| \frac{ z_i - \exp( \theta_i )}{\sigma} \right|
+   \right]
+
+The optimal solution, with no constraints and no prior on :math:`\theta` is
+
+.. math::
+
+   \hat{\theta}_i = \log( z_i )
+
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end abs_density.cpp}

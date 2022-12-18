@@ -1,0 +1,132 @@
+lines 5-134 of file: xrst/math_notation.xrst
+
+{xrst_begin math_notation}
+
+Mathematical Notation
+#####################
+
+A
+*
+The notation :math:`A` is used for the
+:ref:`random constraint matrix<problem@Notation@Random Constraint Matrix, A>` .
+
+B
+*
+The notation :ref:`B(beta, theta, u)<theory@Approximate Random Constraint Function, B(beta, theta, u)>`
+( :math:`B( \beta , \theta , u )` )
+is used for the second order random constraint approximation.
+
+c
+*
+The notation
+:ref:`c(theta)<problem@Notation@Fixed Constraint Function, c(theta)>`
+( :math:`c( \theta )` )
+is used for the fixed effects constraints as a function.
+
+c_L
+***
+The notation
+:ref:`c_L<problem@Notation@Fixed Constraint Function, c(theta)>`
+( :math:`c_L` )
+is used for the lower limit of the constraints on the fixed effects.
+
+c_U
+***
+The notation
+:ref:`c_U<problem@Notation@Fixed Constraint Function, c(theta)>`
+( :math:`c_U` )
+is used for the upper limit of the constraints on the fixed effects.
+
+f
+*
+The notation :ref:`f(theta, u)<theory@Random Likelihood, f(theta, u)>`
+( :math:`f( \theta , u )` )
+is used for the random likelihood function.
+
+g
+*
+The notation :ref:`g(theta)<theory@Fixed Likelihood, g(theta)>`
+( :math:`g( \theta )` )
+is used for the fixed likelihood function.
+
+Lower h
+*******
+The notation
+:ref:`h(theta, u)<theory@Objective@Laplace Approximation, h(theta, u)>`
+( :math:`h( \theta , u )` )
+is used for the Laplace approximation function.
+
+Capital H
+*********
+The notation :ref:`H(beta, theta, u)<theory@Approximate Laplace Objective, H(beta, theta, u)>`
+( :math:`H( \beta , \theta , u )` )
+is used for the second order Laplace objective.
+
+p
+*
+The notations
+:math:`\B{p} ( \cdot )` and
+:math:`\B{p} ( \cdot | \cdot )` are use for the
+probability density (conditional probability density) functions;
+see
+:ref:`p(theta)<problem@Notation@Fixed Prior Density, p(theta)>` ,
+:ref:`p(z | theta)<problem@Notation@Fixed Prior Density, p(theta)>` ,
+:ref:`p(u | theta)<problem@Notation@Fixed Prior Density, p(theta)>` ,
+:ref:`p(y | theta, u)<problem@Notation@Fixed Prior Density, p(theta)>` .
+
+r
+*
+The notation
+:ref:`r(theta)<theory@Objective@Laplace Objective, r(theta)>`
+( :math:`r( \theta )` )
+is used for the Laplace objective function.
+
+L
+*
+The notation
+:ref:`L(theta)<theory@Objective@Fixed Effects Objective, L(theta)>`
+( :math:`L( \theta )` )
+is used for the fixed effects objective function.
+
+Lower u
+*******
+The notation :ref:`u<problem@Notation@Random Effects, u>`
+( :math:`\theta` )
+is used for the vector of fixed effects.
+
+u^(theta)
+*********
+The notation
+:ref:`u^(theta)<problem@Notation@Optimal Random Effects, u^(theta)>`
+( :math:`\hat{u}( \theta )` )
+is used for the optimal random effects.
+
+Capital U
+*********
+The notation :ref:`U(beta, theta, u)<theory@Approximate Optimal Random Effects@First Order, U(beta, theta, u)>`
+( :math:`U( \beta , \theta , u )` )
+is used for the first order optimal random effects.
+
+W
+*
+The notation :ref:`W(beta, theta, u)<theory@Approximate Optimal Random Effects@Second Order, W(beta, theta, u)>`
+( :math:`W( \beta , \theta , u )` )
+is used for the second order approximation of optimal random effects.
+
+theta
+*****
+The notation :ref:`theta<problem@Notation@Fixed Effects, theta>`
+( :math:`\theta` )
+is used for the vector of fixed effects.
+
+y
+*
+The notation :ref:`y<problem@Notation@Data, y, z>`
+is used for data that depends on the random effects.
+
+z
+*
+The notation :ref:`z<problem@Notation@Data, y, z>`
+is used for data that does **not** depend on the random effects.
+
+{xrst_end math_notation}

@@ -1,0 +1,32 @@
+lines 8-37 of file: bin/example_install.sh
+
+# {xrst_begin example_install.sh} 
+# {xrst_comment_ch #}
+#
+# An Example Installation
+# #######################
+#
+# Syntax
+# ******
+# ``bin/example_install.sh`` *run_test* *replace*
+#
+# run_test
+# ********
+# is either ``true`` or ``false`` .
+# If it is true, this cppad_mixed tests will be run before installing.
+# If there is an error in the tests, the install will abort.
+#
+# replace
+# *******
+# is either ``true`` or ``false`` .
+# If an external is already installed and *replace* is true (false)
+# the external will (will not) be replaced.
+#
+# Source
+# ******
+# {xrst_literal
+#     BEGIN BASH
+#     END BASH
+# }
+#
+# {xrst_end example_install.sh}

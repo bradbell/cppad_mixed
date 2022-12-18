@@ -1,0 +1,106 @@
+lines 6-109 of file: example/user/hes_fixed_obj.cpp
+
+{xrst_begin hes_fixed_obj.cpp}
+
+Hessian of Fixed Effects Objective: Example and Test
+####################################################
+
+Model
+*****
+
+.. math::
+
+   \B{p}( y_i | \theta , u ) \sim \B{N} ( u_i + \theta_0 , \theta_1^2 )
+
+.. math::
+
+   \B{p}( u_i | \theta ) \sim \B{N} ( 0 , 1 )
+
+.. math::
+
+   \B{p}( \theta ) \sim \B{N} ( 4 , 1 )
+
+It follows that the Laplace approximation is exact and
+
+.. math::
+
+   \B{p}( y_i | \theta ) \sim \B{N} \left( \theta_0 , 1 + \theta_1^2 \right)
+
+The corresponding fixed effects objective is
+
+.. math::
+
+   L( \theta ) =  C + \frac{1}{2} \left[
+      ( \theta_0 - 4 )^2 + ( \theta_1 - 4 )^2 +
+      N \log \left( 1 + \theta_1^2 \right) +
+      \left( 1 + \theta_1^2 \right)^{-1} \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
+   \right]
+
+The partial of the objective w.r.t :math:`\theta_0` is
+
+.. math::
+
+   \partial_{\theta(0)} L ( \theta )
+   =
+   ( \theta_0 - 4 )
+   -
+   \left( 1 + \theta_1^2 \right)^{-1} \sum_{i=0}^{N-1} ( y_i - \theta_0 )
+
+The partial of the objective w.r.t :math:`\theta_1` is
+
+.. math::
+
+   \partial_{\theta(1)} L ( \theta )
+   =
+   ( \theta_1 - 4 )
+   +
+   N \left( 1 + \theta_1^2 \right)^{-1} \theta_1
+   -
+   \left( 1 + \theta_1^2 \right)^{-2} \theta_1
+      \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
+
+The second partial w.r.t :math:`\theta_0`, :math:`\theta_0` is
+
+.. math::
+
+   \partial_{\theta(0)} \partial_{\theta(0)} L ( \theta )
+   =
+   1 + N \left( 1 + \theta_1^2 \right)^{-1}
+
+The second partial w.r.t :math:`\theta_1`, :math:`\theta_1` is
+
+.. math::
+
+   \partial_{\theta(1)} \partial_{\theta(1)} L ( \theta )
+   =
+   1
+   +
+   N \left( 1 + \theta_1^2 \right)^{-1}
+   -
+   2 N \left( 1 + \theta_1^2 \right)^{-2} \theta_1^2
+   -
+   \left( 1 + \theta_1^2 \right)^{-2} \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
+   +
+   4 \left( 1 + \theta_1^2 \right)^{-3} \theta_1^2
+      \sum_{i=0}^{N-1} ( y_i - \theta_0 )^2
+
+The second partial w.r.t :math:`\theta_0`, :math:`\theta_1` is
+
+.. math::
+
+   \partial_{\theta(0)} \partial_{\theta(1)} L ( \theta )
+   =
+   2 \left( 1 + \theta_1^2 \right)^{-2} \theta_1
+      \sum_{i=0}^{N-1} ( y_i - \theta_0 )
+
+trace_init
+**********
+If you change *trace_init* to ``true`` ,
+a trace of the initialization will be printed on standard output.
+
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end hes_fixed_obj.cpp}

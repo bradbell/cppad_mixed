@@ -1,0 +1,66 @@
+lines 6-69 of file: example/user/lasso.cpp
+
+{xrst_begin lasso.cpp}
+{xrst_spell
+   eqnarray
+   nowrap
+}
+
+Lasso on Fixed Effects: Example and Test
+########################################
+
+Model
+*****
+We are given a set of times
+:math:`\{ t_i \W{:} i = 0 , \ldots , N-1 \}` and
+
+.. math::
+   :nowrap:
+
+   \begin{eqnarray}
+      q( \theta, s )
+      & = &
+      \theta_0 (s / N)
+      + \theta_1 \sin ( 2 \pi s  )
+      + \theta_2 \cos ( 2 \pi s )
+      \\
+      z_i & = & q( \theta , t_i ) + e_i
+      \\
+      \B{p} ( e_i | \theta ) & \sim & \B{N} ( 0, \sigma )
+   \end{eqnarray}
+
+The idea in Lasso is that one or more of the components of
+:math:`\theta` are zero and using the Laplace prior
+we can recover this fact.
+We use :math:`\B{L} ( \mu , \sigma )` to denote the Laplace distribution
+with mean :math:`\mu` and standard deviation :math:`\sigma`.
+
+.. math::
+
+   \B{p} ( \theta ) \sim \B{L} ( 0 , \delta )
+
+The corresponding fixed likelihood
+:ref:`g(theta)<theory@Fixed Likelihood, g(theta)>`
+is
+
+.. math::
+
+   g( \theta ) =
+   \sum_{i=0}^{N-1} \left[
+      \log ( \sigma \sqrt{2 \pi} )
+      +
+      \left( \frac{ z_i - q( \theta , t_i ) }{2 \sigma} \right)^2
+   \right]
+   +
+   \sum_{j=0}^2 \left[
+      \log \left( \delta \sqrt{2} \right)
+      +
+      \sqrt{2} \; \left| \frac{\theta_j}{\delta} \right|
+   \right]
+
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end lasso.cpp}

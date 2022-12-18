@@ -1,0 +1,140 @@
+lines 5-142 of file: xrst/problem.xrst
+
+{xrst_begin problem}
+{xrst_spell
+   argmax
+   fabs
+}
+
+The cppad_mixed Maximum Likelihood Problem
+##########################################
+
+Notation
+********
+The densities below are
+known functions of :math:`y`, :math:`z`, :math:`\theta`, and :math:`u`:
+
+Fixed Effects, theta
+====================
+For each ``cppad_mixed`` object,
+there is a vector of fixed effects *theta* .
+The number of the fixed effects, and their order is constant
+(for each ``cppad_mixed`` object).
+We sometimes use :math:`\theta` to denote the vector of fixed effects.
+
+Random Effects, u
+=================
+For each ``cppad_mixed`` object, there is a vector of random effects
+*u* .
+The number of the random effects, and their order is constant
+(for each ``cppad_mixed`` object).
+
+Data, y, z
+==========
+We use :math:`y`, (:math:`z`) to denote the set of data points that are
+dependent on (independent of) the random effects.
+
+Fixed Prior Density, p(theta)
+=============================
+The fixed effects prior density
+is denoted by :math:`\B{p}( \theta )`.
+
+Fixed Data Density, p(z|theta)
+==============================
+The data density, that does not depend on the random effects,
+is denoted by :math:`\B{p}( z | \theta )`.
+
+Random Prior Density, p(u|theta)
+================================
+The random effects prior density, given the fixed effects,
+is denoted by :math:`\B{p}( u | \theta)`.
+
+Random Data Density, p(y|theta,u)
+=================================
+The density for the data, given both the fixed and random effects,
+is denoted by :math:`\B{p}( y | \theta, u)`.
+
+Fixed Constraint Function, c(theta)
+===================================
+The fixed effects constraint function, denoted by :math:`c( \theta )`,
+is a smooth function of the fixed effects,
+
+Optimal Random Effects, u^(theta)
+=================================
+Given a value for the fixed effects :math:`\theta`,
+the corresponding optimal random effects are defined by
+
+.. math::
+
+   \hat{u} ( \theta )
+   =
+   \R{argmax}  \; \B{p} ( y | \theta , u) \; \B{p} ( u | \theta )
+
+Note that this definition agrees with the other definition for
+:ref:`u^(theta)<theory@Optimal Random Effects, u^(theta)>` .
+
+Random Constraint Matrix, A
+===========================
+The random constraint matrix is denoted by :math:`A`.
+It has row dimension equal to the number of constraints
+and column dimension equal to the number of random effects.
+
+Random Constraint Function, A*u^(theta)
+=======================================
+We refer to :math:`A \; \hat{u} ( \theta )`
+as the random constraint function.
+
+Maximum Likelihood
+******************
+We are given the problem of
+estimating the fixed effects by maximizing the likelihood with
+respect to :math:`\theta`; i.e.,
+
+.. math::
+
+   \B{p}( y , z , \theta )
+   =
+   \B{p} ( \theta ) \B{p} ( z | \theta ) \int_{-\infty}^{+\infty}
+         \B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) \; \B{d} u
+
+No Random Effects
+=================
+In the case where there are not random effects, the vector :math:`u`
+is empty and the optimal fixed effects maximize
+
+.. math::
+
+   \B{p} ( \theta ) \B{p} ( z | \theta )
+
+Fixed Constraints, c
+====================
+The fixed effects have constraints of the form
+
+.. math::
+
+   c_L \leq c(\theta) \leq c_U
+
+where and :math:`c_L`, :math:`c_U` are vectors in the range of :math:`c(x)`.
+In the case where there are no constraints on the fixed effects,
+the range space is the empty vector.
+
+Random Constraints
+==================
+The random constraints are defined by the equation
+
+.. math::
+
+   0 = A \; \hat{u} ( \theta )
+
+Negative Log-Density Vector
+***************************
+If *vec* is a density vector corresponding to :math:`\B{p}(x)`,
+the corresponding negative log-density is given by
+
+:math:`- \log [ \B{p} (x) ] =`
+
+   *vec* [0] + ``fabs`` ( *vec* [1]) + ... ``fabs`` ( *vec* [ *s* ``-1`` ])
+
+where *s* = *vec* . ``size`` () .
+
+{xrst_end problem}

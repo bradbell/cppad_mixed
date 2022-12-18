@@ -1,0 +1,155 @@
+lines 6-158 of file: src/sample_random.cpp
+
+{xrst_begin sample_random}
+{xrst_spell
+   covariance
+   msg
+   rng
+   uu
+}
+
+Simulation the Posterior Distribution for Random Effects
+########################################################
+
+Syntax
+******
+
+| *error_msg* = *mixed_object* . ``sample_random`` (
+| |tab| *sample* ,
+| |tab| *fixed_vec* ,
+| |tab| *random_ipopt_options* ,
+| |tab| *random_lower* ,
+| |tab| *random_upper* ,
+| |tab| *random_in*
+| )
+
+See Also
+********
+:ref:`sample_fixed-name`
+
+Prototype
+*********
+{xrst_literal
+   // BEGIN PROTOTYPE
+   // END PROTOTYPE
+}
+
+Purpose
+*******
+This routine draws samples from
+the asymptotic posterior distribution for the
+random effects given the model, the data, and the fixed effects; see
+:ref:`theory@Sparse Observed Information` .
+
+manage_gsl_rng
+**************
+It is assumed that
+:ref:`manage_gsl_rng@get_gsl_rng` will return
+a pointer to a GSL random number generator.
+
+mixed_object
+************
+We use :ref:`derived_ctor@mixed_object`
+to denote an object of a class that is
+derived from the ``cppad_mixed`` base class.
+
+sample
+******
+This argument has prototype
+
+   ``CppAD::vector<double>&`` *sample*
+
+and its size is a multiple of
+:ref:`derived_ctor@n_random` .
+The input value of its elements does not matter.
+We define
+
+   *n_sample* = *sample_size* / *n_random*
+
+If *error_msg* is empty, upon return
+for ``i`` = 0 , ..., ``n_sample`` *-1* ,
+``j`` = 0 , ..., ``n_random`` *-1* ,
+
+   *sample* [ *i* * *n_random* + *j*  ]
+
+is the *j*-th component of the *i*-th sample of the
+optimal random effects.
+The statistics of these samples is specified under
+:ref:`sample_random@Covariance` below.
+
+random_ipopt_options
+********************
+This argument has prototype
+
+   ``const std::string&`` *random_ipopt_options*
+
+and is the :ref:`ipopt_options-name` for optimizing the random effects.
+
+fixed_vec
+*********
+This argument specifies the value of the
+:ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
+vector :math:`\theta`.
+
+random_lower
+************
+This argument must have size equal to
+:ref:`derived_ctor@n_random` and
+specifies the lower limits for the optimization of the
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector :math:`u`.
+The value minus infinity can be used to specify no lower limit.
+
+random_upper
+************
+This argument must have size equal to
+:ref:`derived_ctor@n_random` and
+specifies the upper limits for the optimization of the random effect.
+The value plus infinity can be used to specify no lower limit.
+
+random_in
+*********
+This argument must have size equal to
+:ref:`derived_ctor@n_random` and
+specifies the initial value used for the optimization of the
+:ref:`random effects<problem@Notation@Random Effects, u>`
+vector :math:`u`.
+It must hold that
+
+   *random_lower* [ *i* ] <= *random_in* [ *i* ] <= *random_upper* [ *i* ]
+
+for each valid index *i* .
+
+Covariance
+**********
+Each sample of the random effects is an independent normal.
+The mean for this distribution is the
+:ref:`optimal random effects<theory@Optimal Random Effects, u^(theta)>`
+:math:`\hat{u} ( \theta )`.
+The variance of this distribution
+is the inverse of the observed information
+matrix; i.e.
+
+.. math::
+
+   f_{uu} [ \theta , \hat{u} ( \theta ) ] ^{-1}
+
+This normal distribution is censored to be within the limits
+*random_lower* , *random_upper* .
+
+error_msg
+*********
+If *error_msg* is empty (non-empty),
+:ref:`sample_random@sample`
+values have been calculated (have not been calculated).
+If *error_msg* is non-empty,
+it is a message describing the problem.
+{xrst_toc_hidden
+   example/user/sample_random.cpp
+}
+Example
+*******
+The file :ref:`sample_random.cpp-name` is an example
+and test of ``sample_random`` .
+
+{xrst_end sample_random}

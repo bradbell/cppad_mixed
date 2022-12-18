@@ -1,0 +1,233 @@
+lines 6-236 of file: xrst/whats_new/21.xrst
+
+{xrst_begin whats_new_21}
+{xrst_spell
+   cygwin
+   dd
+   debian
+   dpkg
+   lagrange
+   mm
+   msys
+   op
+   optimizer
+   rng
+   simplifications
+   struct
+   ubuntu
+}
+
+Changes and Additions to cppad_mixed During 2021
+################################################
+
+mm-dd
+*****
+
+10-25
+=====
+Add the barrier penalty parameter *mu* to the :ref:`warm_start_struct-name` .
+The improves the :ref:`optimize_fixed@warm_start` option
+when optimizing the fixed effects.
+
+08-12
+=====
+Fix a problem (created on 97-29 change below) with the
+install of ipopt on debian systems.
+
+07-29
+=====
+The Mac changed how ``bash`` worked and this broke it's install.
+To be specific, ``export DYLD_LIBRARY_PATH`` no longer works
+(export works for most shell variables but not others).
+The files :ref:`example_install.sh-name` and ``bin/install_ipopt.sh``
+where changed to adapt to this problem.
+In addition, the :ref:`run_cmake.sh@specific_compiler`
+setting was added to ``bin/run_cmake.sh`` to make it easier
+to build using MacPorts.
+
+07-27
+=====
+The :ref:`run_cmake.sh@extra_cxx_flags`
+were not being included when building the :ref:`speed-name` tests.
+This has been fixed.
+
+07-13
+=====
+
+#. Add default values for the :ref:`derived_ctor-name` arguments
+   *quasi_fixed* ,
+   *bool_sparsity* , and
+   *A_rcv* .
+#. Add the :ref:`derived_ctor@trace_init` argument
+   to the derived constructor.
+
+06-29
+=====
+Add include file to
+:ref:`manage_gsl_rng syntax<manage_gsl_rng@Syntax>` .
+
+06-26
+=====
+Remove the Public heading from documentation sections because all
+the user documentation is now part of the API.
+(The user documentation was separated from the developer documentation
+on :ref:`2019-07-09<whats_new_19@mm-dd@07-09>` .)
+
+06-24
+=====
+Fix :ref:`example_install.sh-name` of Ipopt
+(because it no longer has a mater branch).
+Change ubuntu listing of packages from ``apt list --installed`` to
+``dpkg-query -l`` (to avoid warning).
+
+06-13
+=====
+Add specifications for some of the fields in the initialize return value
+:ref:`initialize@size_map` .
+Check these fields are present as part of the
+:ref:`derived_ctor.cpp-name` example.
+
+06-10
+=====
+In :ref:`example_install.sh-name` change
+``apt-get list --installed`` to ``apt list --installed`` .
+This fixes the check for previously installed packages on ubuntu.
+
+06-08
+=====
+
+#. Add link at the top of :ref:`ipopt_trace-name` information
+   to the source for the information.
+#. Improve the :ref:`optimize_fixed@warm_start` documentation.
+#. Remove the tracing optimization wish list item because it has been completed.
+
+06-07
+=====
+Add :ref:`trace_struct@restoration`
+field to the ``trace_struct`` .
+
+06-06
+=====
+
+#. Add the optimizer trace information
+   :ref:`fixed_solution@trace_vec` to the solution for the
+   fixed effects.
+#. Advance to cppad-20210606.
+   This makes the CppAD::vector assignment more like std::vector assignment.
+
+06-03
+=====
+Add the
+:ref:`wish_list@Better Asymptotic Statistics`
+item to the wish list.
+
+05-31
+=====
+
+#. The optional :ref:`optimize_fixed@warm_start`
+   argument was added to the ``optimize_fixed`` function.
+#. The required
+   :ref:`install_unix@System Requirements@C++ Compiler`
+   was changed from c++98 to c++11.
+   This requirement actually changed on
+   :ref:`whats_new_21@mm-dd@05-07` when the version of cppad changed to
+   cppad-20210430.
+#. Change the :ref:`no_random.cpp-name` example as suggested by the new
+   :ref:`wish_list@Examples` with list item.
+#. Edit the :ref:`wish_list-name` as follows:
+   Remove the random constraint item because it has been completed; see
+   :ref:`fixed_solution@ran_con_lag` .
+   Add the :ref:`wish_list@Examples` item.
+   Extend the
+   :ref:`multi-threading<wish_list@Multi-Threading and Statistics>`
+   item to include statistics.
+
+05-29
+=====
+
+#. The
+   :ref:`optimize_fixed@fixed_ipopt_options@hessian_approximation`
+   is now set and checked when :ref:`derived_ctor@quasi_fixed`
+   is false (used to be just when it was true).
+#. Change the default value for
+   :ref:`optimize_fixed@fixed_ipopt_options@accept_after_max_steps`
+   from ``2`` to ``-1`` (no limit), the standard ipopt default
+   for this value.
+
+05-28
+=====
+
+#. Speed up the
+   :ref:`adaptive<optimize_fixed@fixed_ipopt_options@derivative_test>`
+   derivative test be starting at the smallest, instead of largest, step size.
+#. Further improvements and simplifications to solution check
+   and setting Lagrange multipliers; i.e.,
+   :ref:`fixed_solution@fixed_lag` ,
+   :ref:`fixed_solution@fix_con_lag` ,
+   :ref:`fixed_solution@ran_con_lag` .
+#. Remove the comments about the bounds corresponding to
+   :ref:`fixed_solution@fixed_lag` because a new (better)
+   technique is used to detect when the Lagrange multipliers are zero.
+#. More testing of the solution check and fix some problem with it.
+#. Fix an improper derivative test option in the ``laplace_obj_hes`` test
+   (introduced on 05-27).
+
+05-27
+=====
+Simplify the code for and improve the solution check.
+
+05-26
+=====
+Fix a bug in using infinity (-infinity) as the bound for a
+:ref:`optimize_fixed@fix_constraint_upper`
+( :ref:`optimize_fixed@fix_constraint_lower` ).
+To be more specific, properly translate the infinity
+to the special values used by ipopt for these cases.
+
+05-17
+=====
+Add the catch of ``std::exception`` to all try blocks,
+except for ipopt call back functions.
+This should improve detection of system errors; e.g., running
+out of memory.
+
+05-15
+=====
+
+#. The :ref:`example_install.sh@run_test` argument was added
+   and the *existing* argument was added to
+   ``bin/example_install.sh`` .
+#. The *existing* argument was changed to
+   :ref:`example_install.sh@replace` .
+#. When :ref:`run_cmake.sh@optimize_cppad_function`
+   was yes, there was an error in the cppad optimization options.
+   To be specific, ``no_print_op`` was corrected to ``no_print_for_op`` .
+   This was a bug and could cause the optimization to abort.
+
+05-11
+=====
+Extend :ref:`example_install.sh-name` to work for the cygwin system.
+This also required changing the ``cppad_mixed`` library to be static
+(on the cygwin system).
+
+05-07
+=====
+
+#. Advance to cppad-20210430.
+   This should solve some install problems on the msys and cygwin systems.
+#. Create separate directories ``external/debug`` and ``external/release``
+   for building the external packages.
+
+05-01
+=====
+Adapt the install for msys to the fact that soft links do now work
+on that system.
+
+03-02
+=====
+The :ref:`example_install.sh-name` script was putting the Ipopt source in
+``external/ASL.git/Mumps.git/Ipopt.git`` .
+The script ``bin/install_ipopt.sh`` has been fixed so the Ipopt source is in
+``external/Ipopt.git`` and the Mumps source is in ``external/Mumps.git`` .
+
+{xrst_end whats_new_21}

@@ -1,0 +1,13 @@
+lines 6-16 of file: example/user/optimize_random.cpp
+
+{xrst_begin optimize_random.cpp}
+
+Optimize Random Effects: Example and Test
+#########################################
+
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end optimize_random.cpp}

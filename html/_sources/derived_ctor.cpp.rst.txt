@@ -1,0 +1,13 @@
+lines 6-16 of file: example/user/derived_ctor.cpp
+
+{xrst_begin derived_ctor.cpp}
+
+mixed_cppad Derived Class: Example and Test
+###########################################
+
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end derived_ctor.cpp}

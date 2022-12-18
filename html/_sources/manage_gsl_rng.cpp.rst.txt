@@ -1,0 +1,13 @@
+lines 6-16 of file: example/user/manage_gsl_rng.cpp
+
+{xrst_begin manage_gsl_rng.cpp}
+
+Manage GSL Random Number Generator: Example and Test
+####################################################
+
+{xrst_literal
+   // BEGIN C++
+   // END C++
+}
+
+{xrst_end manage_gsl_rng.cpp}

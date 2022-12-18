@@ -1,0 +1,78 @@
+lines 5-80 of file: example/user/user.xrst
+
+{xrst_begin user_examples}
+{xrst_spell
+   ctor
+   nan
+   rng
+}
+
+User API Examples
+#################
+
+{xrst_comment
+These user examples are not for a particular public member function.
+(The ones for a particular function are children of that function.)
+}
+{xrst_toc_hidden
+   speed/speed.xrst
+   example/user/abs_density.cpp
+   example/user/no_random.cpp
+   example/user/ran_constraint.cpp
+   example/user/lasso.cpp
+   example/user/data_mismatch.cpp
+   example/user/opt_ran_nan.cpp
+   example/user/warm_start.cpp
+}
+
+Functions Defined by User and Called by cppad_mixed
+***************************************************
+
+.. csv-table::
+   :widths: auto
+
+   derived_ctor.cpp,:ref:`derived_ctor.cpp-title`
+   ran_likelihood.cpp,:ref:`ran_likelihood.cpp-title`
+   fix_likelihood.cpp,:ref:`fix_likelihood.cpp-title`
+   fix_constraint.cpp,:ref:`fix_constraint.cpp-title`
+   ran_constraint.cpp,:ref:`ran_constraint.cpp-title`
+
+Functions Defined by cppad_mixed and Called by User
+***************************************************
+
+.. csv-table::
+   :widths: auto
+
+   optimize_random.cpp,:ref:`optimize_random.cpp-title`
+   optimize_fixed.cpp,:ref:`optimize_fixed.cpp-title`
+   hes_fixed_obj.cpp,:ref:`hes_fixed_obj.cpp-title`
+   hes_random_obj.cpp,:ref:`hes_random_obj.cpp-title`
+   information_mat.cpp,:ref:`information_mat.cpp-title`
+   sample_random.cpp,:ref:`sample_random.cpp-title`
+   sample_fixed.cpp,:ref:`sample_fixed.cpp-title`
+
+Programs That are Examples and Speed Tests
+******************************************
+
+.. csv-table::
+   :widths: auto
+
+   ar1_xam.cpp,:ref:`ar1_xam.cpp-title`
+   capture_xam.cpp,:ref:`capture_xam.cpp-title`
+
+Demonstrate Specific Features
+*****************************
+
+.. csv-table::
+   :widths: auto
+
+   abs_density.cpp,:ref:`abs_density.cpp-title`
+   no_random.cpp,:ref:`no_random.cpp-title`
+   ran_constraint.cpp,:ref:`ran_constraint.cpp-title`
+   lasso.cpp,:ref:`lasso.cpp-title`
+   data_mismatch.cpp,:ref:`data_mismatch.cpp-title`
+   manage_gsl_rng.cpp,:ref:`manage_gsl_rng.cpp-title`
+   opt_ran_nan.cpp,:ref:`opt_ran_nan.cpp-title`
+   warm_start.cpp,:ref:`warm_start.cpp-title`
+
+{xrst_end user_examples}
