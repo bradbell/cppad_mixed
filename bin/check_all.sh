@@ -68,7 +68,7 @@ eval $cmd
 # cmake_libdir
 cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
 eval $cmd
-if ls $cmake_install_prefix/$cmake_libdir/libcppad_mixed.* > /dev/null
+if ls $cmake_install_prefix/$cmake_libdir/libcppad_mixed.* >& /dev/null
 then
    echo_eval rm $cmake_install_prefix/$cmake_libdir/libcppad_mixed.*
 fi

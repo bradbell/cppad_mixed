@@ -29,10 +29,7 @@
 # '
 # ----------------------------------------------------------------------------
 # Put other sed commands below here and without # at start of line
-/-\{60\}-*$/! b skip
-N
-/\n$end/! b skip
-s|\n$end||
-s|^|$end\n|
-#
-: skip
+s|^[.][.] list-table::|&\
+   :widths: auto|
+s|^# [.][.] list-table::|&\
+#     t:widths: auto|

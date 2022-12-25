@@ -353,6 +353,7 @@ Notation
 ********
 
 .. list-table::
+   :widths: auto
 
    * - :math:`R`
      - number of sampling locations; i.e., *number_locations* .
