@@ -19,14 +19,17 @@ version_files='
 # The files .gitignore, batch_edit.sed, bin/devel.sh should be in this list.
 # Files that are created by a program, and checked into the repository,
 # should also be in this list.
+# BEGIN_SORT_THIS_LINE_PLUS_2
 ignore_files='
-   .gitignore
-   batch_edit.sed
-   bin/devel.sh
-   include/cppad/mixed/sparseinv.hpp
-   readme.md
-   xrst.toml
+   /.gitignore
+   /.readthedocs.yaml
+   /batch_edit.sed
+   /bin/devel.sh
+   /include/cppad/mixed/sparseinv.hpp
+   /readme.md
+   /xrst.toml
 '
+# END_SORT_THIS_LINE_MINUS_2
 # ----------------------------------------------------------------------------
 echo "copyright_owner=$copyright_owner"
 echo "image_link=$version_files"
