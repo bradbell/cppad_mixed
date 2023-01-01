@@ -9,16 +9,19 @@ see http://www.gnu.org/licenses/agpl.txt
 -----------------------------------------------------------------------------
 $begin cppad_mixed$$
 $comment User documentation for cppad_mixed$$
+$spell
+   cppad
+$$
 
 $head Old Documentation$$
-This is an old version of the documentation built using
+This is cppad_mixed--20220519 documentation built using
 $href%http://bradbell.github.io/omhelp%omhelp%$$.
 
 $head Current Documentation$$
 The current version of the documentation is built using the sphinx
-$href%http://bradbell.github.io/html/purpose.html%xrst%$$ wrapper.
+$href%https://xrst.readthedocs.io%xrst%$$ wrapper.
 Use this link to get the
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 
 $pre
 

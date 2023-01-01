@@ -24,8 +24,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Jacobian of Fixed Likelihood$$
 

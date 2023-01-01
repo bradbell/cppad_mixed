@@ -24,8 +24,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Eigen LDLT Constructor$$
 
@@ -81,8 +81,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Initialize LDLT Factor for a Specific Sparsity Pattern$$
 
@@ -164,8 +164,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Update Factorization Using new Matrix Values$$
 
@@ -230,8 +230,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Update Factorization Using new Matrix Values$$
 
@@ -334,8 +334,8 @@ bool ldlt_eigen<Double>::update(
 $begin ldlt_eigen_split$$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Split Out a Factorization$$
 $spell
@@ -412,8 +412,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Compute Log Determinant for Current LDLT Factor$$
 
@@ -492,8 +492,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Solve Linear Equations Using Stored Factor$$
 
@@ -599,8 +599,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Simulations with Covariance Corresponding to Factored Matrix$$
 
@@ -731,8 +731,8 @@ bool ldlt_eigen<Double>::sim_cov(
 $begin ldlt_eigen_inv$$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Compute a Subset of the Inverse of Factored Matrix$$
 $spell
@@ -881,8 +881,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Solve Linear Equations Corresponding to L, D, and P Factors$$
 

@@ -16,8 +16,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Ipopt Example: Declare Non-linear Program Problem Class$$
 
@@ -177,8 +177,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Ipopt Example: Constructor and Destructor$$
 
@@ -203,8 +203,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Return Information About Problem Sizes$$
 
@@ -262,8 +262,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Return Optimization Bounds$$
 
@@ -330,8 +330,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Return Initial Values Where Optimization is Started$$
 
@@ -436,8 +436,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Compute Value of Objective$$
 
@@ -490,8 +490,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Compute Gradient of the Objective$$
 
@@ -544,8 +544,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Compute Value of Constraint Functions$$
 
@@ -606,8 +606,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Compute Jacobian of Constraint Functions$$
 
@@ -707,8 +707,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Compute the Hessian of the Lagrangian$$
 
@@ -840,8 +840,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Get Solution Results$$
 
@@ -1007,8 +1007,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Ipopt Example: Optimization Progress Report$$
 
@@ -1152,8 +1152,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section Ipopt: Example and Test$$
 

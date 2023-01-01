@@ -37,8 +37,8 @@ $spell
 $$
 
 $nospell
-$bold This is old cppad_mixed documentation:$$ Here is a link to its
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.
+$bold This is cppad_mixed--20220519 documentation:$$ Here is a link to its
+$href%https://cppad-mixed.readthedocs.io%current documentation%$$.
 $$
 $section cppad_mixed: Public Declarations$$
 These $code cppad_mixed$$ class declarations are $code public$$.

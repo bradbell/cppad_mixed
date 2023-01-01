@@ -30,9 +30,5 @@
 # '
 # ----------------------------------------------------------------------------
 # Put other sed commands below here and without # at start of line
-s|$section|$nospell\
-$bold This is old cppad_mixed documentation:$$ Here is a link to its\
-$href%http://bradbell.github.io/cppad_mixed%current documentation%$$.\
-$$\
-&|
-#
+s|This is old cppad_mixed documentation:[$]|This is cppad_mixed--20220519 documentation:$|
+s|$href%http://bradbell.github.io/cppad_mixed%|$href%https://cppad-mixed.readthedocs.io%|
