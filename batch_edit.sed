@@ -28,8 +28,8 @@
 # extra_seds='
 # '
 # ----------------------------------------------------------------------------
-# Put other sed commands below here and without # at start of line
-s|^[.][.] list-table::|&\
-   :widths: auto|
-s|^# [.][.] list-table::|&\
-#     t:widths: auto|
+# Put other sed commands below here and without # at start of linei
+s|``\([a-zA-Z0-9_ ]*[a-zA-Z0-9_]\)<`` *[*]|``\1`` < *|g
+s|``\([a-zA-Z0-9_ ]*\) <`` *[*]|``\1`` < *|g
+#
+s|[*]\([a-zA-Z0-9_]*\)<[*] *``|*\1* < ``|g

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-23 Bradley M. Bell
 // ----------------------------------------------------------------------------
 # ifndef CPPAD_MIXED_SPARSE_SCALE_DIAG_HPP
 # define CPPAD_MIXED_SPARSE_SCALE_DIAG_HPP
@@ -50,7 +50,7 @@ Scalar
 ======
 This type must support the conversion
 
-   ``static_cast<`` *Scalar* >( *scale* )
+   ``static_cast`` < *Scalar* >( *scale* )
 
 .
 

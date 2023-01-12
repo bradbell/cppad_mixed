@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-23 Bradley M. Bell
 // ----------------------------------------------------------------------------
 
 # include <Eigen/Sparse>
@@ -896,7 +896,7 @@ Solve Linear Equations Corresponding to L, D, and P Factors
 
 Syntax
 ******
-*x* = ``ldlt_eigen<`` *Double* >:: ``solve_LDLT`` ( *L* , *D* , *P* , *b* )
+*x* = ``ldlt_eigen`` < *Double* >:: ``solve_LDLT`` ( *L* , *D* , *P* , *b* )
 
 Prototype
 *********
