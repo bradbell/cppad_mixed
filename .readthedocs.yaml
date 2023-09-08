@@ -9,12 +9,21 @@ build:
       # xrst
       - pip install xrst
       #
+      # This is only necessary if you need the most recent testing verison
+      - pip uninstall -y xrst
+      - pip install --index-url https://test.pypi.org/simple/ xrst
+      #
+      # This command prints the version of xrst that is being used
+      - xrst --version
+      #
       # build/html
+      # Suppress spell warnings because readthdocs uses a different dictionry.
       - xrst
          --page_source
-         --html_theme furo
+         --html_theme sphinx_book_theme
          --group_list default
          --index_page_name cppad_mixed
+         --suppress_spell_warnings
       #
       # _readthedocs/html
       - mkdir _readthedocs
