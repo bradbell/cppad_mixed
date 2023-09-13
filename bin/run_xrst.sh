@@ -9,9 +9,9 @@ echo_eval() {
    eval $*
 }
 # -----------------------------------------------------------------------------
-if [ "$0" != 'bin/check_xrst.sh' ]
+if [ "$0" != 'bin/run_xrst.sh' ]
 then
-   echo 'bin/check_xrst.sh must be run from its parent directory.'
+   echo 'bin/run_xrst.sh must be run from its parent directory.'
    exit 1
 fi
 # -----------------------------------------------------------------------------
@@ -19,7 +19,7 @@ fi
 eval $(grep '^build_type=' bin/run_cmake.sh)
 #
 # build_type.sh
-bin/build_type.sh check_xrst $build_type
+bin/build_type.sh run_xrst $build_type
 #
 if [ -e build/html ]
 then
@@ -41,19 +41,19 @@ cmd="xrst \
 --group_list default dev \
 "
 echo "$cmd"
-if ! $cmd >& >( tee check_xrst.$$ )
+if ! $cmd >& >( tee run_xrst.$$ )
 then
-   echo 'check_xrst.sh: aboring due to xrst errors above'
-   rm check_xrst.$$
+   echo 'run_xrst.sh: aboring due to xrst errors above'
+   rm run_xrst.$$
    exit 1
 fi
-if grep '^warning:' check_xrst.$$ > /dev/null
+if grep '^warning:' run_xrst.$$ > /dev/null
 then
-   echo 'check_xrst.sh: aboring due to xrst warnings above'
-   rm check_xrst.$$
+   echo 'run_xrst.sh: aboring due to xrst warnings above'
+   rm run_xrst.$$
    exit 1
 fi
 # -----------------------------------------------------------------------------
-rm check_xrst.$$
-echo 'check_xrst.sh: OK'
+rm run_xrst.$$
+echo 'run_xrst.sh: OK'
 exit 0

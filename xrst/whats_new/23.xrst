@@ -16,6 +16,10 @@ Changes and Additions to cppad_mixed During 2023
 mm-dd
 *****
 
+09-13
+=====
+Advance to cppad-20230908.
+
 09-12
 =====
 Add ``make  uninstall`` for cppad_mixed and

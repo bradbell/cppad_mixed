@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-22 Bradley M. Bell
+# SPDX-FileContributor: 2014-23 Bradley M. Bell
 # ----------------------------------------------------------------------------
 if [ "$0" != "bin/check_all.sh" ]
 then
@@ -47,9 +47,19 @@ echo_eval() {
    eval $*
 }
 # -----------------------------------------------------------------------------
-# run bin/check_*.sh and ~bradbell/bin/check_copyright.sh
+#
+# version.sh cehck
+version.sh check
+#
+# check_copyright.sh
+check_copyright.sh
+#
+# run_xrst.sh
+bin/run_xrst.sh
+#
+# bin/check_*.sh
 list=`ls bin/check_*.sh`
-for script in check_copyright.sh $list
+for script in $list
 do
    if [ "$script" != 'bin/check_all.sh' ] \
    && [ "$script" != 'bin/check_install.sh' ]
@@ -57,9 +67,6 @@ do
       $script
    fi
 done
-#
-# check version number
-version.sh check
 # -----------------------------------------------------------------------------
 # cmake_install_prefix
 cmd=`grep '^cmake_install_prefix=' bin/run_cmake.sh`
