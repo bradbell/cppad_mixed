@@ -98,7 +98,7 @@ done
 # set build link to build.debug or build.release depending on build_type
 if echo "$cmake_install_prefix" | grep '/cppad_mixed$' > /dev/null
 then
-   bin/build_type.sh example_install.sh $cmake_install_prefix $build_type
+   bin/build_type.sh example_install.sh $build_type
 fi
 # --------------------------------------------------------------------------
 user=$(whoami)

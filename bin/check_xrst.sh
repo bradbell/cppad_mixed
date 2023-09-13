@@ -18,11 +18,8 @@ fi
 # build_type
 eval $(grep '^build_type=' bin/run_cmake.sh)
 #
-# cmake_install_prefix
-eval $(grep '^cmake_install_prefix=' bin/run_cmake.sh)
-#
 # build_type.sh
-bin/build_type.sh check_xrst $cmake_install_prefix $build_type
+bin/build_type.sh check_xrst $build_type
 #
 if [ -e build/html ]
 then

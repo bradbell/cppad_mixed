@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-22 Bradley M. Bell
+# SPDX-FileContributor: 2014-23 Bradley M. Bell
 # ----------------------------------------------------------------------------
 if [ $0 != 'bin/install_ipopt.sh' ]
 then
@@ -78,15 +78,9 @@ eval $cmd
 # cmake_libdir
 cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
 eval $cmd
-#
-# ipopt_prefix
-ipopt_prefix="$cmake_install_prefix"
 # --------------------------------------------------------------------------
-# set links for this build_type
-if echo "$ipopt_prefix" | grep '/cppad_mixed$' > /dev/null
-then
-   bin/build_type.sh install_ipopt $ipopt_prefix $build_type
-fi
+# build_type.sh
+bin/build_type.sh install_ipopt $build_type
 # --------------------------------------------------------------------------
 # cd external/build_type
 if [ ! -e external/$build_type ]
@@ -174,8 +168,8 @@ do
 cat << EOF
    ../configure \\
       --disable-dependency-tracking \\
-      --prefix=$ipopt_prefix \\
-      --libdir=$ipopt_prefix/$cmake_libdir \\
+      --prefix=$cmake_install_prefix \\
+      --libdir=$cmake_install_prefix/$cmake_libdir \\
       --enable-shared \\
       $specific_compiler \\
       $java_flag $debug_flags $add_fcflags \\
@@ -184,8 +178,8 @@ cat << EOF
 EOF
    ../configure \
       --disable-dependency-tracking \
-      --prefix=$ipopt_prefix \
-      --libdir=$ipopt_prefix/$cmake_libdir \
+      --prefix=$cmake_install_prefix \
+      --libdir=$cmake_install_prefix/$cmake_libdir \
       --enable-shared \
       $specific_compiler \
       $java_flag $debug_flags $add_fcflags \

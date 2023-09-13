@@ -50,7 +50,7 @@ done
 # --------------------------------------------------------------------------
 if echo "$cmake_install_prefix" | grep '/cppad_mixed$' > /dev/null
 then
-   bin/build_type.sh install_cppad $cmake_install_prefix $build_type
+   bin/build_type.sh install_cppad $build_type
 fi
 # --------------------------------------------------------------------------
 if [ ! -e external/$build_type ]

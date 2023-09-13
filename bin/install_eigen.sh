@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-22 Bradley M. Bell
+# SPDX-FileContributor: 2014-23 Bradley M. Bell
 # ----------------------------------------------------------------------------
 if [ $0 != 'bin/install_eigen.sh' ]
 then
@@ -37,7 +37,7 @@ eigen_prefix="$cmake_install_prefix/eigen"
 # --------------------------------------------------------------------------
 if echo "$cmake_install_prefix" | grep '/cppad_mixed$' > /dev/null
 then
-   bin/build_type.sh install_eigen $cmake_install_prefix $build_type
+   bin/build_type.sh install_eigen $build_type
 fi
 # --------------------------------------------------------------------------
 if [ ! -e external/$build_type ]

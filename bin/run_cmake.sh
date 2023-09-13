@@ -1,10 +1,10 @@
 #! /bin/bash -e
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-22 Bradley M. Bell
+# SPDX-FileContributor: 2014-23 Bradley M. Bell
 # ----------------------------------------------------------------------------
-# 
-# {xrst_begin run_cmake.sh} 
+#
+# {xrst_begin run_cmake.sh}
 # {xrst_spell
 #     callgrind
 #     cd
@@ -210,8 +210,8 @@ EOF
    shift
 done
 # Always set soft link for ./build -> ./build.buid_type
-# If install prefix end is cppad_mixed, also set soft link for install dir
-bin/build_type.sh run_cmake $cmake_install_prefix $build_type
+# If install prefix ends with cppad_mixed, also soft link install prefix
+bin/build_type.sh run_cmake $build_type
 # --------------------------------------------------------------------------
 export PKG_CONFIG_PATH=':'
 for pkg in eigen3 ipopt cppad
