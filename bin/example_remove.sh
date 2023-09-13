@@ -61,15 +61,16 @@ then
 fi
 #
 # prune cmake_install_prefix
-echo "Remove empty directories below $cmake_install_prefix"
 if [ ! -L $cmake_install_prefix ]
 then
+   echo "Remove empty directories below $cmake_install_prefix"
    find $cmake_install_prefix -type d -empty -delete
    if [ ! -d $cmake_install_prefix ]
    then
       mkdir $cmake_install_prefix
    fi
 else
+   echo "Remove empty directories below $cmake_install_prefix.$build_type"
    find $cmake_install_prefix.$build_type -type d -empty -delete
    if [ ! -d $cmake_install_prefix.$build_type ]
    then
