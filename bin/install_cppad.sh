@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-22 Bradley M. Bell
+# SPDX-FileContributor: 2014-23 Bradley M. Bell
 # ----------------------------------------------------------------------------
 if [ $0 != 'bin/install_cppad.sh' ]
 then
@@ -17,8 +17,8 @@ echo_eval() {
 # --------------------------------------------------------------------------
 # Use same version and hash as in cppad_py.git/bin/get_cppad.sh
 web_page='https://github.com/coin-or/CppAD.git'
-cppad_version='20220518'
-hash_code='82c20cb49badae1d38b0900624e79ff6bcf5f16e'
+cppad_version='20230908'
+hash_code='74e04ec848c590dfccae30318a2f6668306fc314'
 # --------------------------------------------------------------------------
 # Get user configuration options from run_cmake.sh
 #
