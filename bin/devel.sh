@@ -28,6 +28,7 @@ ignore_files='
    /include/cppad/mixed/sparseinv.hpp
    /readme.md
    /xrst.toml
+   /uninstall.cmake.in
 '
 # END_SORT_THIS_LINE_MINUS_2
 # ----------------------------------------------------------------------------

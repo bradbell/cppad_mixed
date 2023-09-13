@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
+# SPDX-FileContributor: 2014-23 Bradley M. Bell
+# ----------------------------------------------------------------------------
+
+{xrst_begin whats_new_23}
+{xrst_spell
+   mm
+   dd
+   uninstall
+}
+
+Changes and Additions to cppad_mixed During 2023
+################################################
+
+mm-dd
+*****
+
+09-12
+=====
+Add ``make  uninstall`` for cppad_mixed and
+:ref:`example_remove.sh-name` .
+
+{xrst_end whats_new_23}

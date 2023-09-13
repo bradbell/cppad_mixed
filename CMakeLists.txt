@@ -323,6 +323,11 @@ CONFIGURE_FILE(
    ${CMAKE_CURRENT_SOURCE_DIR}/include/cppad/mixed/include_cholmod.hpp.in
    ${CMAKE_CURRENT_SOURCE_DIR}/include/cppad/mixed/include_cholmod.hpp
 )
+CONFIGURE_FILE(
+   ${CMAKE_CURRENT_SOURCE_DIR}/uninstall.cmake.in
+   ${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake
+   @ONLY
+)
 # ----------------------------------------------------------------------------
 # subdirectories
 ADD_SUBDIRECTORY(pkgconfig)
@@ -352,4 +357,9 @@ ADD_CUSTOM_TARGET(speed DEPENDS
 INSTALL(
    DIRECTORY ${CMAKE_SOURCE_DIR}/include/cppad/mixed/
    DESTINATION ${cmake_install_prefix}/include/cppad/mixed
+)
+# ----------------------------------------------------------------------------
+# uninstall target
+ADD_CUSTOM_TARGET(uninstall
+   COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake
 )
