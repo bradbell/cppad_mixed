@@ -1,7 +1,7 @@
 /*
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-23 Bradley M. Bell
 // ----------------------------------------------------------------------------
 {xrst_begin sample_fixed}
 {xrst_spell
@@ -43,9 +43,9 @@ fixed effects (given the model and the data).
 
 Constant Fixed Effects
 **********************
-If the upper and lower limits for a fixed effect are equal,
+If the upper and lower limits for the *j*-th fixed effect are equal::
 
-   *fixed_lower* [ *j* ] == *fixed_upper* [ *j* ]
+   fixed_lower[j] == fixed_upper[j]
 
 we refer to the *j*-th fixed effect as constant.
 
@@ -85,21 +85,29 @@ sample
 The size *sample* . ``size`` () is a multiple of
 :ref:`derived_ctor@n_fixed` .
 The input value of its elements does not matter.
-We define
+We define::
 
-   *n_sample* = *sample_size* / *n_fixed*
+   n_sample = sample_size / n_fixed
 
 If *error_msg* is empty, upon return
-for ``i`` = 0 , ..., ``n_sample`` *-1* ,
-``j`` = 0 , ..., ``n_fixed`` *-1* ,
+for *i* = 0 , ..., *n_sample*-1 ,
+*j* = 0 , ..., *n_fixed*-1 ::
 
-   *sample* [ *i* * *n_fixed* + *j*  ]
+   sample[i * n_fixed + j]
 
 is the *j*-th component of the *i*-th sample of the
 optimal fixed effects :math:`\hat{\theta}`.
-These samples are independent for different :math:`i`,
-and for fixed :math:`i`, they have the specified
-:ref:`sample_fixed@Covariance` .
+
+#. These samples are independent for different :math:`i` .
+#. For each :math:`i`, the corresponding sample has the specified
+   :ref:`sample_fixed@Covariance` .
+#. The constraints are only enforced for the
+   :ref:`sample_fixed@Constant Fixed Effects` ; i.e.,
+   if the *j*-th fixed effect is not constant,
+   the sample may not satisfy the condition::
+
+      fixed_lower[j] <= sample[i * n_fixed + j] <= fixed_upper[j]
+
 
 hes_fixed_obj_rcv
 *****************
