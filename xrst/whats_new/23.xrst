@@ -15,6 +15,9 @@ Changes and Additions to cppad_mixed During 2023
 
 mm-dd
 *****
+
+09-21
+=====
 Improve the documentation for the ``sample_fixed``
 :ref:`sample_fixed@sample` vector.
 This includes mention that the samples may not satisfy the constraints.
