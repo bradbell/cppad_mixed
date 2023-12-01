@@ -16,6 +16,11 @@ Changes and Additions to cppad_mixed During 2023
 mm-dd
 *****
 
+12-01
+=====
+Use the run_cmake.sh :ref:`run_cmake.sh@build_type`
+when building the cppad object library.
+
 09-21
 =====
 Improve the documentation for the ``sample_fixed``

@@ -89,6 +89,7 @@ then
 fi
 #
 cmake_args="-D CMAKE_VERBOSE_MAKEFILE=0"
+cmake_args="$cmake_args -D CMAKE_BUILD_TYPE=$build_type"
 cmake_args="$cmake_args -D cppad_prefix=$cppad_prefix"
 cmake_args="$cmake_args -D include_ipopt=true"
 cmake_args="$cmake_args -D cmake_install_libdirs=$cmake_libdir"
