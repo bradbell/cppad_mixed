@@ -23,16 +23,19 @@ latex_macro = [
    '\newcommand{\W}[1]{ \; #1 \; }'
 ]
 
+# BEGIN_SORT_THIS_LINE_PLUS_3
 [project_dictionary]
 data = [ '''
    bool
    cholesky
    cholmod
    cmake
+   col
    const
    cpp
    cppad
    eigen
+   eval
    factorization
    gsl
    hes
@@ -42,13 +45,18 @@ data = [ '''
    lagrangian
    laplace
    ldlt
+   max
    obj
+   ok
    rc
    rcv
    sh
    sparsity
    std
+   taylor
    th
+   val
    vec
    xam
 ''' ]
+# END_SORT_THIS_LINE_MINUS_2
