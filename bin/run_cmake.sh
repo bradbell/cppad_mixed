@@ -38,7 +38,7 @@ verbose_makefile='no'
 # **********
 # Use either 'debug' or 'release' for the type of this build:
 # {xrst_code sh}
-build_type='debug'
+build_type='release'
 # {xrst_code}
 #
 # cmake_install_prefix

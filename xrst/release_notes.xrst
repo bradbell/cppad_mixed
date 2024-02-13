@@ -8,6 +8,7 @@
 Changes and Additions to cppad_mixed
 ####################################
 {xrst_toc_hidden
+   xrst/whats_new/24.xrst
    xrst/whats_new/23.xrst
    xrst/whats_new/22.xrst
    xrst/whats_new/21.xrst
@@ -21,10 +22,11 @@ Changes and Additions to cppad_mixed
 
 This Year
 *********
-:ref:`whats_new_23-name`
+:ref:`whats_new_24-name`
 
 Previous Years
 **************
+:ref:`2023<whats_new_23-name>` ,
 :ref:`2022<whats_new_22-name>` ,
 :ref:`2021<whats_new_21-name>` ,
 :ref:`2020<whats_new_20-name>` ,
