@@ -7,9 +7,6 @@
 
 /*
 {xrst_begin warm_start_struct}
-{xrst_spell
-   struct
-}
 
 Ipopt Warm Start Information
 ############################

@@ -4,9 +4,6 @@
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin warm_start.cpp}
-{xrst_spell
-   optimizer
-}
 
 Warm Starting Optimization: Example and Test
 ############################################

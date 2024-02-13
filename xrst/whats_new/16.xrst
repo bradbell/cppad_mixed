@@ -5,21 +5,20 @@
 
 {xrst_begin whats_new_16}
 {xrst_spell
+   ar
    boolean
    checkpointed
    chk
    choleig
    cov
-   covariance
    ctor
    dd
    debian
-   determinant
    dismod
+   inv
    lagrange
    libdir
    logdet
-   metis
    mm
    omhelp
    py
@@ -27,6 +26,7 @@
    sqrt
    src
    suitesparse
+   tri
    uu
    valgrind
    wno

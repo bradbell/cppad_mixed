@@ -4,10 +4,6 @@
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin ldlt_cholmod_logdet dev}
-{xrst_spell
-   determinant
-   logdet
-}
 
 Compute Log Determinant for Current Factor
 ##########################################

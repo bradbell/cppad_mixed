@@ -5,7 +5,6 @@
 // ----------------------------------------------------------------------------
 {xrst_begin sample_fixed}
 {xrst_spell
-   covariance
    msg
    rng
 }

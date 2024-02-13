@@ -208,7 +208,6 @@ const sparse_rc& ldlt_eigen<Double>::pattern(void) const
 ------------------------------------------------------------------------------
 {xrst_begin ldlt_eigen_update dev}
 {xrst_spell
-   factorize
    ptr
 }
 
@@ -399,10 +398,6 @@ void ldlt_eigen<Double>::split(
 /*
 ------------------------------------------------------------------------------
 {xrst_begin ldlt_eigen_logdet dev}
-{xrst_spell
-   determinant
-   logdet
-}
 
 Compute Log Determinant for Current LDLT Factor
 ###############################################
@@ -590,10 +585,7 @@ void ldlt_eigen<Double>::solve_H(
 -------------------------------------------------------------------------------
 {xrst_begin ldlt_eigen_sim_cov dev}
 {xrst_spell
-   cov
-   covariance
    ll
-   sim
 }
 
 Simulations with Covariance Corresponding to Factored Matrix

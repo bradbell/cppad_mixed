@@ -22,9 +22,6 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // ============================================================================
 /*
 {xrst_begin sparse_ad_cholesky_initialize dev}
-{xrst_spell
-   alow
-}
 
 Initialize Sparse AD Cholesky Factorization
 ###########################################
@@ -201,9 +198,6 @@ sparse_ad_cholesky::permutation(void)
 /*
 ------------------------------------------------------------------------------
 {xrst_begin sparse_ad_cholesky_eval dev}
-{xrst_spell
-   alow
-}
 
 Using Sparse AD Cholesky Factor L
 #################################
@@ -290,7 +284,6 @@ private functions
 
 {xrst_begin set_jac_sparsity dev}
 {xrst_spell
-   alow
    setvec
 }
 
@@ -493,6 +486,7 @@ void sparse_ad_cholesky::set_jac_sparsity(Sparsity& jac_sparsity)
 {xrst_begin set_hes_sparsity dev}
 {xrst_spell
    nx
+   ny
    setvec
 }
 

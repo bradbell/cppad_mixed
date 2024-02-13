@@ -12,7 +12,6 @@
 {xrst_spell
    hpp
    namespace
-   typedef
 }
 
 Types Defined in the CppAD Mixed Namespace

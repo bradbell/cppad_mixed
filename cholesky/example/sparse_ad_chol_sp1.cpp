@@ -8,7 +8,6 @@
 {xrst_begin sparse_ad_chol_sp1.cpp dev}
 {xrst_spell
    ccc
-   transposes
 }
 
 Sparse AD Cholesky Sparsity Calculation: Example and Test

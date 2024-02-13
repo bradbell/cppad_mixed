@@ -3,9 +3,6 @@
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
 {xrst_begin namespace}
-{xrst_spell
-   namespace
-}
 
 The CppAD::mixed Namespace Public Declarations
 ##############################################

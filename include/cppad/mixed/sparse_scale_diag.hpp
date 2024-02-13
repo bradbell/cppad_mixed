@@ -7,9 +7,6 @@
 
 /*
 {xrst_begin sparse_scale_diag dev}
-{xrst_spell
-   diag
-}
 
 Scales the Diagonal of an Eigen Sparse Matrix
 #############################################

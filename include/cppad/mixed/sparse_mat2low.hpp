@@ -7,9 +7,6 @@
 
 /*
 {xrst_begin sparse_mat2low dev}
-{xrst_spell
-   cols
-}
 
 Extract the Lower Triangular From an Eigen Symmetric Matrix
 ###########################################################

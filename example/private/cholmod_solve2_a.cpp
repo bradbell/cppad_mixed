@@ -8,8 +8,8 @@
    bset
    cc
    ccc
-   determinant
    pt
+   sys
    xset
 }
 

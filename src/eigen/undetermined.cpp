@@ -5,7 +5,6 @@
 /*
 {xrst_begin undetermined dev}
 {xrst_spell
-   cols
    nc
    nr
    tol

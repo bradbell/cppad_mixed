@@ -5,7 +5,6 @@
 /*
 {xrst_begin sample_random}
 {xrst_spell
-   covariance
    msg
    rng
    uu

@@ -6,7 +6,7 @@
 {xrst_begin capture_xam.cpp}
 {xrst_spell
    alloc
-   allocator
+   andrew
    boolean
    logit
    ndebug
@@ -14,7 +14,6 @@
    preprocessor
    rng
    royle
-   truncation
 }
 
 A Capture Example and Speed Test

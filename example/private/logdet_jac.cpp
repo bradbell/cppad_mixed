@@ -4,9 +4,6 @@
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin logdet_jac.cpp dev}
-{xrst_spell
-   logdet
-}
 
 logdet_jac: Example and Test
 ############################

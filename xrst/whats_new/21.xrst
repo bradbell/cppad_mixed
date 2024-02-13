@@ -12,10 +12,9 @@
    lagrange
    mm
    msys
+   multi
    op
-   optimizer
    rng
-   simplifications
    struct
    ubuntu
 }

@@ -4,9 +4,6 @@
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin sparse_low_tri_sol dev}
-{xrst_spell
-   cols
-}
 
 Solve a Sparse Lower Triangular Linear System
 #############################################

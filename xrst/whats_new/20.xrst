@@ -5,24 +5,24 @@
 
 {xrst_begin whats_new_20}
 {xrst_spell
+   ar
    bitbucket
    coinbrew
-   compilers
    config
    dd
    debian
-   externals
    gcc
    gitlab
+   int
    lagrange
    lapack
    libs
    mm
    msg
+   multi
    ndebug
    pc
    pkg
-   prefixes
    sudo
    suitesparse
 }

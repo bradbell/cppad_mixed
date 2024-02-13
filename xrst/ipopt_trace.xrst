@@ -5,16 +5,13 @@
 {xrst_begin ipopt_trace}
 {xrst_spell
    biegler
-   infeasibility
+   du
    iter
    lagragian
    lagrange
    lg
-   ls
    pr
-   reformulated
    rg
-   unscaled
    wachter
 }
 

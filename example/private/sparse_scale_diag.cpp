@@ -4,9 +4,6 @@
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin sparse_scale_diag.cpp dev}
-{xrst_spell
-   diag
-}
 
 sparse_scale_diag: Example and Test
 ###################################

@@ -4,9 +4,6 @@
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin optimize_fixed.cpp}
-{xrst_spell
-   optimizer
-}
 
 Optimize Fixed Effects: Example and Test
 ########################################

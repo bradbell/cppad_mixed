@@ -5,10 +5,7 @@
 // ----------------------------------------------------------------------------
 {xrst_begin sample_conditional}
 {xrst_spell
-   covariance
-   equalities
    rng
-   unconstrained
 }
 
 Sample Posterior for Fixed Effects Using Conditional Covariance

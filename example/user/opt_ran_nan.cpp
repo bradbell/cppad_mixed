@@ -4,9 +4,6 @@
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin opt_ran_nan.cpp}
-{xrst_spell
-   nan
-}
 
 Nan's During Optimization of Random Effects: Example and Test
 #############################################################

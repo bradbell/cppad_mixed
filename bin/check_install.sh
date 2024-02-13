@@ -8,8 +8,8 @@ then
    echo 'bin/check_install.sh: must be executed from its parent directory'
    exit 1
 fi
-# 
-# {xrst_begin check_install.sh} 
+#
+# {xrst_begin check_install.sh}
 # {xrst_spell
 #     cd
 #     cmd
@@ -17,7 +17,9 @@ fi
 #     cout
 #     cp
 #     endl
+#     fi
 #     grep
+#     int
 #     isystem
 #     lamd
 #     lcamd
@@ -31,8 +33,8 @@ fi
 #     mkdir
 #     pkg
 #     pkgconfig
-#     prefixes
 #     rpath
+#     sed
 #     suitesparse
 #     tmp
 #     wl

@@ -4,9 +4,6 @@
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin sparse_low2sym.cpp dev}
-{xrst_spell
-   sym
-}
 
 sparse_low2sym: Example and Test
 ################################

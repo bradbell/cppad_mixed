@@ -8,10 +8,9 @@
 /*
 {xrst_begin trace_struct}
 {xrst_spell
+   du
    iter
-   ls
    pr
-   struct
 }
 
 Ipopt Trace Information

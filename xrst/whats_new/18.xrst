@@ -10,14 +10,11 @@
    gcc
    grep
    hpp
-   instal
    mm
-   prefixes
+   multi
    runtime
-   subdirector
    suitesparse
    txt
-   uninitialized
    valgrind
    wconversion
    wpedantic

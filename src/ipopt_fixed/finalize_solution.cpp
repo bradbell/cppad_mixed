@@ -32,14 +32,13 @@ bool ipopt_fixed::check_in_limits(
 {xrst_spell
    cq
    curr
+   doesn
    doxygen
-   infeasibility
-   infeasible
-   iterates
+   ip
+   na
    namespace
    naninf
    solution solution
-   unrecoverable
 }
 
 Get Solution Results

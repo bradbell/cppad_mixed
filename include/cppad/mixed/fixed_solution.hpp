@@ -8,7 +8,6 @@
 {xrst_begin fixed_solution}
 {xrst_spell
    lagrange
-   multiplier
 }
 
 Optimal Solution Returned by optimize_fixed

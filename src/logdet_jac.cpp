@@ -6,10 +6,6 @@
 # include <cppad/mixed/exception.hpp>
 /*
 {xrst_begin logdet_jac dev}
-{xrst_spell
-   determinant
-   logdet
-}
 
 Jacobian of Log Determinant of Hessian w.r.t. Random Effects
 ############################################################

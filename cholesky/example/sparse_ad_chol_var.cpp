@@ -9,7 +9,6 @@
 {xrst_begin sparse_ad_chol_var.cpp dev}
 {xrst_spell
    ccc
-   transposes
 }
 
 Sparse AD Cholesky Variable Calculation: Example and Test

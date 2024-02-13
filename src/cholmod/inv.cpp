@@ -5,6 +5,7 @@
 /*
 {xrst_begin ldlt_cholmod_inv dev}
 {xrst_spell
+   int
    nrow
    sparseinv
 }

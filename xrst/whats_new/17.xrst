@@ -5,20 +5,16 @@
 
 {xrst_begin whats_new_17}
 {xrst_spell
-   circuiting
+   ar
    ctor
    cxx
    dd
    fabs
    github
    hpp
-   implementations
    mm
    namespace
-   nan
    omhelp
-   optimizer
-   perturb
    subgraph
    subgraphs
    tst

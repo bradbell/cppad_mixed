@@ -6,18 +6,16 @@
 {xrst_spell
    cd
    config
+   dev
    devel
    fortran
-   gnu
    grep
    libs
-   metis
    pc
    pkg
    rpath
    suitesparse
    txt
-   unix
    wget
 }
 

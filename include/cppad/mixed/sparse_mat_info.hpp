@@ -6,6 +6,9 @@
 # define CPPAD_MIXED_SPARSE_MAT_INFO_HPP
 /*
 {xrst_begin sparse_mat_info}
+{xrst_spell
+   resize
+}
 
 Sparse Matrix Information
 #########################

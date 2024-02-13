@@ -5,7 +5,6 @@
 /*
 {xrst_begin ldlt_cholmod_init dev}
 {xrst_spell
-   nan
    nrow
    rhs
    sym

@@ -7,10 +7,6 @@
 
 /*
 {xrst_begin sparse_low2sym dev}
-{xrst_spell
-   cols
-   sym
-}
 
 Convert an Eigen Lower Triangular Matrix To a Symmetric Matrix
 ##############################################################

@@ -6,18 +6,16 @@
 #
 # {xrst_begin run_cmake.sh}
 # {xrst_spell
+#     ar
 #     callgrind
 #     cd
-#     compilers
 #     config
 #     cxx
 #     fortran
 #     gcc
 #     gfortran
-#     gnu
 #     libdir
 #     makefile
-#     massif
 #     pc
 #     pkg
 #     wconversion

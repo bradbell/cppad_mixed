@@ -4,9 +4,6 @@
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin sparse_up_tri_sol dev}
-{xrst_spell
-   cols
-}
 
 Solve a Sparse Upper Triangular Linear System
 #############################################

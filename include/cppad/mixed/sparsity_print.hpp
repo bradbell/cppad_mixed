@@ -7,8 +7,6 @@
 /*
 {xrst_begin sparsity_print dev}
 {xrst_spell
-   iterator
-   iterators
    setvec
 }
 

@@ -6,7 +6,6 @@
 {xrst_begin ar1_xam.cpp}
 {xrst_spell
    alloc
-   allocator
    boolean
    ndebug
    preprocessor

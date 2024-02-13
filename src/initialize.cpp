@@ -8,7 +8,6 @@
 {xrst_begin initialize}
 {xrst_spell
    cout
-   iterator
    itr
    nnz
    nr

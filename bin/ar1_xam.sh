@@ -3,11 +3,10 @@
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
-# 
-# {xrst_begin ar1_xam.sh} 
+#
+# {xrst_begin ar1_xam.sh}
 # {xrst_spell
 #     callgrind
-#     massif
 #     valgrind
 # }
 # {xrst_comment_ch #}

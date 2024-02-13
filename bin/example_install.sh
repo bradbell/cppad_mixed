@@ -6,9 +6,6 @@
 #
 #
 # {xrst_begin example_install.sh}
-# {xrst_spell
-#     uninstall
-# }
 # {xrst_comment_ch #}
 #
 # An Example Installation

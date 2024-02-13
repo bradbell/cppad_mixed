@@ -8,8 +8,8 @@
 /*
 {xrst_begin one_dim_derivative_chk dev}
 {xrst_spell
-   chk
    dfdx
+   min
    rel
    tol
 }

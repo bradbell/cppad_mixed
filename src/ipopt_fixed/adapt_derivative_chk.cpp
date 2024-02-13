@@ -22,10 +22,7 @@ double apx_derivative(
 /*
 {xrst_begin ipopt_fixed_adapt_derivative_chk dev}
 {xrst_spell
-   approximations
-   chk
    differenced
-   multiplier
    tol
 }
 

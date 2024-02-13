@@ -176,9 +176,7 @@ ipopt_nlp_xam::~ipopt_nlp_xam(void)
 ------------------------------------------------------------------------------
 {xrst_begin ipopt_xam_get_nlp_info dev}
 {xrst_spell
-   nlp
    nnz
-   nonzero
 }
 
 Return Information About Problem Sizes
@@ -832,12 +830,11 @@ bool ipopt_nlp_xam::eval_h(
 {xrst_begin ipopt_xam_finalize_solution dev}
 {xrst_spell
    cq
-   infeasibility
-   infeasible
-   iterates
+   doesn
+   ip
+   na
    namespace
    naninf
-   unrecoverable
 }
 
 Get Solution Results
@@ -1016,10 +1013,10 @@ void ipopt_nlp_xam::finalize_solution(
 {xrst_begin ipopt_xam_intermediate_callback dev}
 {xrst_spell
    cq
+   du
    enum
+   ip
    iter
-   ls
-   optimizer
    pr
 }
 

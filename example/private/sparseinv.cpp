@@ -6,7 +6,6 @@
 {xrst_begin sparseinv_xam.cpp dev}
 {xrst_spell
    sparceinv
-   sparseinv
 }
 
 Example Using sparseinv With Cholmod Factors
