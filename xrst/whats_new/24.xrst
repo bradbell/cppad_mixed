@@ -15,6 +15,12 @@ Changes and Additions to cppad_mixed During 2023
 mm-dd
 *****
 
+02-14
+=====
+Advance :ref:`example_install.sh-name` version of cppad to cppad-20240000.3.
+This fixes a bug in the CppAD optimizer and
+does more error checking (when NDEBUG is not defined).
+
 02-13
 =====
 Advance :ref:`example_install.sh-name` version of cppad from

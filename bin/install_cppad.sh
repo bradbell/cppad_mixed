@@ -17,8 +17,8 @@ echo_eval() {
 # --------------------------------------------------------------------------
 # Use same version and hash as in cppad_py.git/bin/get_cppad.sh
 web_page='https://github.com/coin-or/CppAD.git'
-cppad_version='20240000.2'
-hash_code='7f0d22bd8ebd6f5dd5babef800ffe05feb1712a1'
+cppad_version='20240000.3'
+hash_code='7fb3105b6faa102499c4ce9c299718798032bcf8'
 # --------------------------------------------------------------------------
 # Get user configuration options from run_cmake.sh
 #
