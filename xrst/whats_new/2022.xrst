@@ -3,7 +3,7 @@
 # SPDX-FileContributor: 2014-23 Bradley M. Bell
 # ----------------------------------------------------------------------------
 
-{xrst_begin whats_new_22}
+{xrst_begin 2022}
 {xrst_spell
    dd
    homebrew
@@ -11,8 +11,8 @@
    omhelp
 }
 
-Changes and Additions to cppad_mixed During 2022
-################################################
+Release Notes for 2022
+######################
 
 mm-dd
 *****
@@ -78,4 +78,4 @@ It is no longer necessary to set
 :ref:`install_unix@Paths@LD_LIBRARY_PATH`
 for the install to work.
 
-{xrst_end whats_new_22}
+{xrst_end 2022}

@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
+# SPDX-FileContributor: 2014-23 Bradley M. Bell
+# ----------------------------------------------------------------------------
+
+{xrst_begin 2024}
+{xrst_spell
+   mm
+   dd
+   yy
+   yyyy
+}
+
+Release Notes for 2023
+######################
+
+mm-dd
+*****
+
+02-21
+=====
+For each year, change the web page name ``whats_new_``\ *yy*
+to *yyyy* where *yy* and *yyyy* identify the year. In addition, change the
+title for these pages to Release Notes for the corresponding year.
+This breaks old links to these web pages.
+For example, the old link to the heading directly below was::
+
+   https://cppad-mixed.readthedocs.io/whats_new_24.html#whats-new-24-mm-dd-02-14
+
+Its new link, which is much shorter, is::
+
+   https://cppad-mixed.readthedocs.io/2024.html#mm-dd-02-14
+
+02-14
+=====
+Advance :ref:`example_install.sh-name` version of cppad to cppad-20240000.3.
+This fixes a bug in the CppAD optimizer and
+does more error checking (when NDEBUG is not defined).
+
+02-13
+=====
+Advance :ref:`example_install.sh-name` version of cppad from
+cppad-2023090 to cppad-20240000.2.
+
+{xrst_end 2024}

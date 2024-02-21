@@ -3,7 +3,7 @@
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
 
-{xrst_begin whats_new_18}
+{xrst_begin 2018}
 {xrst_spell
    cxx
    dd
@@ -21,8 +21,8 @@
    wshadow
 }
 
-Changes and Additions to cppad_mixed During 2018
-################################################
+Release Notes for 2018
+######################
 
 mm-dd
 *****
@@ -31,7 +31,7 @@ mm-dd
 =====
 
 #. Remove partial Newton step wish list item
-   (implemented on :ref:`2018-06-30<whats_new_18@mm-dd@06-30>` ).
+   (implemented on :ref:`2018-06-30<2018@mm-dd@06-30>` ).
 #. Add :ref:`multi-threading<wish_list@Multi-Threading and Statistics>`
    wish list item.
 
@@ -310,4 +310,4 @@ Change the ``ran_likelihood_hes.cpp`` example to use the
 offset log normal distribution and eliminate the chance of random failure
 during its test.
 
-{xrst_end whats_new_18}
+{xrst_end 2018}

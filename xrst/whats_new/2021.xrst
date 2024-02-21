@@ -3,7 +3,7 @@
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
 
-{xrst_begin whats_new_21}
+{xrst_begin 2021}
 {xrst_spell
    cygwin
    dd
@@ -19,8 +19,8 @@
    ubuntu
 }
 
-Changes and Additions to cppad_mixed During 2021
-################################################
+Release Notes for 2021
+######################
 
 mm-dd
 *****
@@ -73,7 +73,7 @@ Add include file to
 Remove the Public heading from documentation sections because all
 the user documentation is now part of the API.
 (The user documentation was separated from the developer documentation
-on :ref:`2019-07-09<whats_new_19@mm-dd@07-09>` .)
+on :ref:`2019-07-09<2019@mm-dd@07-09>` .)
 
 06-24
 =====
@@ -132,7 +132,7 @@ item to the wish list.
    :ref:`install_unix@System Requirements@C++ Compiler`
    was changed from c++98 to c++11.
    This requirement actually changed on
-   :ref:`whats_new_21@mm-dd@05-07` when the version of cppad changed to
+   :ref:`2021@mm-dd@05-07` when the version of cppad changed to
    cppad-20210430.
 #. Change the :ref:`no_random.cpp-name` example as suggested by the new
    :ref:`wish_list@Examples` with list item.
@@ -232,4 +232,4 @@ The :ref:`example_install.sh-name` script was putting the Ipopt source in
 The script ``bin/install_ipopt.sh`` has been fixed so the Ipopt source is in
 ``external/Ipopt.git`` and the Mumps source is in ``external/Mumps.git`` .
 
-{xrst_end whats_new_21}
+{xrst_end 2021}

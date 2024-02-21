@@ -3,7 +3,7 @@
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
 
-{xrst_begin whats_new_17}
+{xrst_begin 2017}
 {xrst_spell
    ar
    ctor
@@ -21,8 +21,8 @@
    uu
 }
 
-Changes and Additions to cppad_mixed During 2017
-################################################
+Release Notes for 2017
+######################
 
 mm-dd
 *****
@@ -207,7 +207,7 @@ to continue an optimization from where it left off.
 #. Add the
    ``hide_ipopt_scaling`` option
    to the install configuration script :ref:`run_cmake.sh-name` .
-   (This option was removed on :ref:`2018-02-10<whats_new_18@mm-dd@02-10>` .)
+   (This option was removed on :ref:`2018-02-10<2018@mm-dd@02-10>` .)
 
 04-06
 =====
@@ -364,4 +364,4 @@ for step size from 7 to 11 characters
 (so that exponential format fits in the field); see
 :ref:`optimize_fixed@fixed_ipopt_options@derivative_test` .
 
-{xrst_end whats_new_17}
+{xrst_end 2017}

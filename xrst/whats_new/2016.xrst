@@ -3,7 +3,7 @@
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
 
-{xrst_begin whats_new_16}
+{xrst_begin 2016}
 {xrst_spell
    ar
    boolean
@@ -32,8 +32,8 @@
    wno
 }
 
-Changes and Additions to cppad_mixed During 2016
-################################################
+Release Notes for 2016
+######################
 
 mm-dd
 *****
@@ -136,7 +136,7 @@ The
 :ref:`initialize<derived_ctor@A_rcv>` instead
 :ref:`derived_ctor-name` .
 This was undone on
-:ref:`2017-03-08<whats_new_17@mm-dd@03-08>` .
+:ref:`2017-03-08<2017@mm-dd@03-08>` .
 
 10-14
 =====
@@ -394,7 +394,7 @@ equal to the fixed effects for this warning.
 
 #. Remove the option,
    to use ``box_newton`` to optimize the random effects
-   (added on :ref:`whats_new_16@mm-dd@06-03` ).
+   (added on :ref:`2016@mm-dd@06-03` ).
    It turns out this had some problems and did not yield the hoped for
    improvements in speed.
 #. Add comment about fact that constant terms in
@@ -714,8 +714,8 @@ in increasing order (and was not specified as such).
    instead of an argument to the
    :ref:`initialize-name` routine.
    This was undone on
-   :ref:`2016-10-15<whats_new_16@mm-dd@10-15>` and redone on
-   :ref:`2017-03-08<whats_new_17@mm-dd@03-08>` .
+   :ref:`2016-10-15<2016@mm-dd@10-15>` and redone on
+   :ref:`2017-03-08<2017@mm-dd@03-08>` .
 #. Simplify the random constraint matrix source code.
 #. Make more efficient use of
    the ``cholmod`` Cholesky factorization package.
@@ -835,4 +835,4 @@ Regroup information in :ref:`theory-name` section of documentation so that
    This should have been done when ``cppad_mixed`` was extracted
    from ``dismod_at`` .
 
-{xrst_end whats_new_16}
+{xrst_end 2016}

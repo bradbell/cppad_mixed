@@ -3,7 +3,7 @@
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
 
-{xrst_begin whats_new_20}
+{xrst_begin 2020}
 {xrst_spell
    ar
    bitbucket
@@ -27,8 +27,8 @@
    suitesparse
 }
 
-Changes and Additions to cppad_mixed During 2020
-################################################
+Release Notes for 2020
+######################
 
 mm-dd
 *****
@@ -289,4 +289,4 @@ are not within the lower and upper limits for the fixed effects;
 You may want to modify these samples to be within these limits
 before you use them.
 
-{xrst_end whats_new_20}
+{xrst_end 2020}

@@ -3,7 +3,7 @@
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
 
-{xrst_begin whats_new_15}
+{xrst_begin 2015}
 {xrst_spell
    addon
    dd
@@ -12,8 +12,8 @@
    namespace
 }
 
-Changes and Additions to cppad_mixed During 2015
-################################################
+Release Notes for 2015
+######################
 
 mm-dd
 *****
@@ -84,4 +84,4 @@ Change
 #. Modify file names and documentation because everything now refers to
    the ``cppad_mixed`` package.
 
-{xrst_end whats_new_15}
+{xrst_end 2015}

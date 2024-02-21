@@ -3,7 +3,7 @@
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
 
-{xrst_begin whats_new_19}
+{xrst_begin 2019}
 {xrst_spell
    dd
    github
@@ -14,8 +14,8 @@
    omhelp
 }
 
-Changes and Additions to cppad_mixed During 2019
-################################################
+Release Notes for 2019
+######################
 
 mm-dd
 *****
@@ -86,4 +86,4 @@ Change the ``CppAD::ADFun`` object to check for ``nan`` .
 This detects them sooner and gives better error messaging
 (when ``NDEBUG`` is not defined).
 
-{xrst_end whats_new_19}
+{xrst_end 2019}
