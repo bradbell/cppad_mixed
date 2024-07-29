@@ -17,6 +17,11 @@ Release Notes for 2023
 mm-dd
 *****
 
+07-29
+=====
+Advance :ref:`example_install.sh-name` version of cppad from
+cppad-20240000.3 to cppad-20240000.6.
+
 02-21
 =====
 For each year, change the web page name ``whats_new_``\ *yy*
