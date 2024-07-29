@@ -5,13 +5,11 @@
 
 {xrst_begin 2016}
 {xrst_spell
-   ar
    boolean
    checkpointed
    chk
    choleig
    cov
-   ctor
    dd
    debian
    dismod

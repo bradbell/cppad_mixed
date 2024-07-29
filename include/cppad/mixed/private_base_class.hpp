@@ -12,7 +12,6 @@ private:
 {xrst_begin private_base_class dev}
 {xrst_spell
    boolean
-   logdet
    uu
 }
 
