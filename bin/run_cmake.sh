@@ -6,6 +6,9 @@
 #
 # {xrst_begin run_cmake.sh}
 # {xrst_spell
+#     homebrew
+#     wno
+#     bitwise
 #     callgrind
 #     cd
 #     config
@@ -90,6 +93,8 @@ specific_compiler=''
 # Extra C++ flags used to compile and test
 # {xrst_code sh}
 extra_cxx_flags='-Wpedantic -std=c++11 -Wall -Wshadow -Wconversion'
+# for homebrew on mac:
+extra_cxx_flags+=' -I /opt/homebrew/include -Wno-bitwise-instead-of-logical'
 # {xrst_code}
 #
 # cmake_libdir

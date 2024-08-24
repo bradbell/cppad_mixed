@@ -2,6 +2,21 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
 # SPDX-FileContributor: 2014-23 Bradley M. Bell
+# -----------------------------------------------------------------------------
+# echo_eval
+echo_eval() {
+   echo $*
+   eval $*
+}
+#
+# sed
+if which gsed >& /dev/null
+then
+   sed=$(which gsed)
+   echo "check_all.sh: replacing sed by $sed"
+else
+   sed='sed'
+fi
 # ----------------------------------------------------------------------------
 if [ "$0" != "bin/check_all.sh" ]
 then
@@ -26,6 +41,7 @@ then
 elif [ "$1" == 'release' ]
 then
       release='yes'
+      $sed -i bin/run_cmake.sh -e "s|^build_type=.*|build_type='release'|"
 else
    echo 'usage: bin/check_all.sh (debug | release) [--ldlt_eigen]'
    exit 1
@@ -40,12 +56,6 @@ else
    echo 'usage: bin/check_all.sh (debug | release) [--ldlt_eigen]'
    exit 1
 fi
-# -----------------------------------------------------------------------------
-# bash function that echos and executes a command
-echo_eval() {
-   echo $*
-   eval $*
-}
 # -----------------------------------------------------------------------------
 #
 # version.sh cehck
@@ -135,12 +145,11 @@ cd ..
 check_install_failed='no'
 if [ "$release" == 'yes' ]
 then
-   sed -i bin/run_cmake.sh -e "s|^build_type=.*|build_type='release'|"
    if ! bin/check_install.sh
    then
       check_install_failed='yes'
    fi
-   sed -i bin/run_cmake.sh -e "s|^build_type=.*|build_type='debug'|"
+   $sed -i bin/run_cmake.sh -e "s|^build_type=.*|build_type='debug'|"
 else
    if ! bin/check_install.sh
    then
@@ -154,7 +163,7 @@ then
 fi
 # -----------------------------------------------------------------------------
 # CppAD uses asserts to make sure this is not a problem
-sed -i check.log -e "/match_op.hpp:.*warning: ‘arg_match\[[01]\]’/d"
+$sed -i check.log -e "/match_op.hpp:.*warning: ‘arg_match\[[01]\]’/d"
 for target in cmake check speed install
 do
    if grep -i 'warning:' $target.log

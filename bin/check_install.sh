@@ -9,8 +9,10 @@ then
    exit 1
 fi
 #
+# BEGIN_SORT_THIS_LINE_PLUS_3
 # {xrst_begin check_install.sh}
 # {xrst_spell
+#     bitwise
 #     cd
 #     cmd
 #     config
@@ -19,6 +21,7 @@ fi
 #     endl
 #     fi
 #     grep
+#     homebrew
 #     int
 #     isystem
 #     lamd
@@ -38,7 +41,9 @@ fi
 #     suitesparse
 #     tmp
 #     wl
+#     wno
 # }
+# {xrst_comment END_SORT_THIS_LINE_MINUS_2}
 # {xrst_comment_ch #}
 #
 # Example and Test Using the Installed Version of cppad_mixed
@@ -170,29 +175,46 @@ suitesparse_libs='-lcholmod -lamd -lcamd -lcolamd -lccolamd -lsuitesparseconfig'
 # different directory and treated like system files because
 # they otherwise generate lots of warnings.
 # {xrst_code sh}
+#
+# optimize_flags
 if [ "$build_type" == 'debug' ]
 then
-   flags='-g -O0 -std=c++11 -Wall'
+   optimize_flags='-g -O0 -std=c++11 -Wall'
 else
-   flags='-O3 -DNDEBUG -std=c++11 -Wall'
+   optimize_flags='-O3 -DNDEBUG -std=c++11 -Wall'
 fi
+#
+# path2libdir
+path2libdir="$cmake_install_prefix/$cmake_libdir"
+#
+# homebrew_flags
+if [ -e /opt/homebrew ]
+then
+   homebrew_flags='-Wno-bitwise-instead-of-logical'
+   homebrew_flags+=' -I /opt/homebrew/include'
+   homebrew_flags+=" -L /opt/homebrew/lib -Wl,-rpath,/opt/homebrew/lib"
+else
+   homebrew_flags=""
+fi
+#
 cat << EOF
 g++ example.cpp \\
-   $flags \\
+   $optimize_flags \\
    -I $cmake_install_prefix/include \\
    -isystem $eigen_prefix/include \\
-   -L $cmake_install_prefix/$cmake_libdir -lcppad_mixed \\
+   -L $path2libdir -Wl,-rpath,$path2libdir -lcppad_mixed \\
+   $homebrew_flags \\
    $gsl_libs \\
    $suitesparse_libs \\
    $ipopt_libs \\
    -o example
 EOF
 g++ example.cpp \
-   $flags \
+   $optimize_flags \
    -I $cmake_install_prefix/include \
    -isystem $eigen_prefix/include \
-   -L $cmake_install_prefix/$cmake_libdir -lcppad_mixed \
-   -Wl,-rpath=$cmake_install_prefix/$cmake_libdir \
+   -L $path2libdir -Wl,-rpath,$path2libdir -lcppad_mixed \
+   $homebrew_flags \
    $gsl_libs \
    $suitesparse_libs \
    $ipopt_libs \

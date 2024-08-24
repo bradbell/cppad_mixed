@@ -17,6 +17,11 @@ Release Notes for 2023
 mm-dd
 *****
 
+08-24
+=====
+Remove java from the packages installed by `example_install.sh-name`
+(it is no longer needed).
+
 07-29
 =====
 Advance :ref:`example_install.sh-name` version of cppad from

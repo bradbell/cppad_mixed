@@ -1,8 +1,9 @@
-#! /bin/bash -e
+#! /usr/bin/env bash
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
 # SPDX-FileContributor: 2014-23 Bradley M. Bell
 # ----------------------------------------------------------------------------
+set -e -u
 #
 #
 # {xrst_begin example_install.sh}
@@ -55,6 +56,13 @@ echo_eval() {
    eval $*
 }
 # --------------------------------------------------------------------------
+if [ "$#" != 2 ]
+then
+   echo 'bin/example_install.sh: run_test replace'
+   echo 'run_test: is true or false'
+   echo 'replace:  is true or false'
+   exit 1
+fi
 if [ "$1" != 'true' ] && [ "$1" != 'false' ]
 then
    echo 'bin/example_install.sh: run_test replace'
@@ -170,7 +178,6 @@ then
       gcc-c++
       gcc-gfortran
       gsl-devel
-      java
    '
 elif [ "$system_type" == 'mac_port' ]
 then
@@ -180,7 +187,6 @@ then
       SuiteSparse
       pkgconfig
       gsl
-      openjdk
    '
 elif [ "$system_type" == 'mac_brew' ]
 then
@@ -190,10 +196,7 @@ then
       suite-sparse
       pkg-config
       gsl
-      openjdk
    '
-   # make sure Ipopt configure sees brew version of javac (not /usr/bin/javac)
-   PATH="/usr/local/opt/openjdk/bin:$PATH"
 elif [ "$system_tpye" == 'cygwin' ]
 then
    list='
