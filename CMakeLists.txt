@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-23 Bradley M. Bell
+# SPDX-FileContributor: 2014-24 Bradley M. Bell
 # ----------------------------------------------------------------------------
 # Sample Command line
 #                     cmake \
@@ -79,7 +79,7 @@ ENDMACRO( optional_definition )
 # ============================================================================
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 PROJECT(cppad_mixed)
-SET(cppad_mixed_version "20240729")
+SET(cppad_mixed_version "20240825")
 INCLUDE_DIRECTORIES( ${cppad_mixed_SOURCE_DIR}/include )
 INCLUDE(CheckCXXSourceRuns)
 MESSAGE(STATUS "BEGIN:")
@@ -301,12 +301,10 @@ FOREACH(pkg gsl eigen3 ipopt cppad)
       MESSAGE(STATUS "Cannot find ${pkg}.pc file")
       MESSAGE(FATAL_ERROR  "PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH}")
    ENDIF( ${pkg}_FOUND )
+   #
    # INLCUDE_DIRECTORIES
-   IF( ${pkg} STREQUAL "eigen3" )
-      INCLUDE_DIRECTORIES( SYSTEM ${eigen3_INCLUDE_DIRS} )
-   ELSE( ${pkg} STREQUAL "eigen3" )
-      INCLUDE_DIRECTORIES( ${${pkg}_INCLUDE_DIRS} )
-   ENDIF( ${pkg} STREQUAL "eigen3" )
+   INCLUDE_DIRECTORIES( SYSTEM ${${pkg}_INCLUDE_DIRS} )
+   #
    # LINK_DIRECTORIES
    LINK_DIRECTORIES( ${${pkg}_LIBRARY_DIRS} )
 ENDFOREACH(pkg)

@@ -1,7 +1,7 @@
 /*
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-24 Bradley M. Bell
 // ----------------------------------------------------------------------------
 {xrst_begin hes_fixed_obj}
 
@@ -165,9 +165,9 @@ CppAD::mixed::d_sparse_rcv cppad_mixed::try_hes_fixed_obj(
    eigen_sparse total_hes = laplace_hes + fixed_only_hes;
    //
    // convert from eigen sparse matrix to d_sparse_rcv
-   size_t nr  = total_hes.rows();
-   size_t nc  = total_hes.cols();
-   size_t nnz = total_hes.nonZeros();
+   size_t nr  = size_t( total_hes.rows() );
+   size_t nc  = size_t( total_hes.cols() );
+   size_t nnz = size_t( total_hes.nonZeros() );
    sparse_rc pattern(nr, nc, nnz);
    d_vector val(nnz);
    size_t k = 0;
