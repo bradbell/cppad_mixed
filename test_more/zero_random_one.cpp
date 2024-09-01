@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-24 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
 @begin zero_random_one.cpp@@
@@ -64,8 +64,10 @@ namespace {
 
    class mixed_derived : public cppad_mixed {
    private:
+# ifndef NDEBUG
       const size_t n_fixed_;
       const size_t n_random_;
+# endif
       const double sigma_u_;
       const double sigma_y_;
       const vector<double> y_;
@@ -81,8 +83,10 @@ namespace {
          const vector<double>& y           ) :
          // quasi_fixed = false, bool_sparsity = true
          cppad_mixed(n_fixed, n_random, false, true, A_rcv) ,
+# ifndef NDEBUG
          n_fixed_(n_fixed)                          ,
          n_random_(n_random)                        ,
+# endif
          sigma_u_(sigma_u)                          ,
          sigma_y_(sigma_y)                          ,
          y_(y)

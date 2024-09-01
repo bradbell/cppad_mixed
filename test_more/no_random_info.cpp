@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-24 Bradley M. Bell
 // ----------------------------------------------------------------------------
 // information matrix and sample_fixed in case where with no random effects.
 
@@ -18,7 +18,9 @@ namespace {
    class mixed_derived : public cppad_mixed {
    private:
       const size_t          n_fixed_;
+# ifndef NDEBUG
       const size_t          n_random_;
+# endif
       const vector<double>& y_;
    // ----------------------------------------------------------------------
    public:
@@ -32,7 +34,9 @@ namespace {
          const vector<double>& y           ) :
          cppad_mixed(n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv),
          n_fixed_(n_fixed)     ,
+# ifndef NDEBUG
          n_random_(n_random)   ,
+# endif
          y_(y)
       {  assert( y_.size() == n_fixed_ );
          assert( n_random_ == 0 );

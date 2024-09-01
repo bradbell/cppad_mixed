@@ -9,30 +9,42 @@ echo_eval() {
    eval $*
 }
 #
-# sed
-if which gsed >& /dev/null
-then
-   sed=$(which gsed)
-   echo "check_all.sh: replacing sed by $sed"
-else
-   sed='sed'
-fi
+# restore_and_exit
+restore_and_exit() {
+   $sed -i bin/run_cmake.sh \
+      -e "s|^build_type=.*|build_type='debug'|" \
+      -e 's|^\(.*\)\(# mac_brew: *\)|\2 \1|' \
+      -e 's|  *$||'
+   exit $1
+}
+#
 # ----------------------------------------------------------------------------
 if [ "$0" != "bin/check_all.sh" ]
 then
    echo 'bin/check_all.sh must be executed from its parent directory'
    exit 1
 fi
+#
+# grep, sed
+source bin/grep_and_sed.sh
 # ---------------------------------------------------------------------------
-if ! grep "build_type='debug'" bin/run_cmake.sh > /dev/null
+if ! $grep "build_type='debug'" bin/run_cmake.sh > /dev/null
 then
    echo 'bin/check_all.sh: bin/run_cmake.sh build_type not debug'
-   exit 1
+   echo 'Attempted to automatically fix this.'
+   restore_and_exit 1
 fi
-if ! grep "optimize_cppad_function='no'" bin/run_cmake.sh > /dev/null
+line_count=$($grep '^# mac_brew:' bin/run_cmake.sh | wc -l)
+if [ $line_count != 3 ]
+then
+   echo 'check_all.sh: Cannot find three # mac_brew: lines in bin/run_cmake.sh'
+   echo 'Attempted to automatically fix this.'
+   restore_and_exit 1
+fi 
+if ! $grep "optimize_cppad_function='no'" bin/run_cmake.sh > /dev/null
 then
    echo 'bin/check_all.sh: bin/run_cmake.sh optimize_cppad_function not no'
-   exit 1
+   restore_and_exit 1
 fi
 # ---------------------------------------------------------------------------
 if [ "$1" == 'debug' ]
@@ -57,6 +69,14 @@ else
    exit 1
 fi
 # -----------------------------------------------------------------------------
+if [ "$(uname)" == 'Darwin' ]
+then
+   if which brew
+   then
+      $sed -i -e 's|^\(# mac_brew:\) *\(.*\)|\2 \1|' bin/run_cmake.sh
+   fi
+fi
+# -----------------------------------------------------------------------------
 #
 # run_xrst.sh
 bin/run_xrst.sh
@@ -73,11 +93,11 @@ do
 done
 # -----------------------------------------------------------------------------
 # cmake_install_prefix
-cmd=`grep '^cmake_install_prefix=' bin/run_cmake.sh`
+cmd=`$grep '^cmake_install_prefix=' bin/run_cmake.sh`
 eval $cmd
 #
 # cmake_libdir
-cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
+cmd=`$grep '^cmake_libdir=' bin/run_cmake.sh`
 eval $cmd
 if ls $cmake_install_prefix/$cmake_libdir/libcppad_mixed.* >& /dev/null
 then
@@ -143,7 +163,6 @@ then
    then
       check_install_failed='yes'
    fi
-   $sed -i bin/run_cmake.sh -e "s|^build_type=.*|build_type='debug'|"
 else
    if ! bin/check_install.sh
    then
@@ -160,12 +179,12 @@ fi
 $sed -i check.log -e "/match_op.hpp:.*warning: ‘arg_match\[[01]\]’/d"
 for target in cmake check speed install
 do
-   if grep -i 'warning:' $target.log
+   if $grep -i 'warning:' $target.log
    then
       echo "bin/run_check_all.sh: $target.log is has warnings."
-      # 2DO: exit 1 after we fix some warning on MacOS
+      exit 1
    fi
 done
 # -----------------------------------------------------------------------------
 echo 'check_all.sh: OK'
-exit 0
+restore_and_exit 0

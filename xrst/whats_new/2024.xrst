@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-23 Bradley M. Bell
+# SPDX-FileContributor: 2014-24 Bradley M. Bell
 # ----------------------------------------------------------------------------
 
 {xrst_begin 2024}
@@ -16,6 +16,12 @@ Release Notes for 2023
 
 mm-dd
 *****
+
+09-01
+=====
+Add a change to example install so the
+:ref:`example_install.sh@mac_brew` case does not require
+one to by hand edit :ref:`run_cmake.sh-name` .
 
 08-32
 =====

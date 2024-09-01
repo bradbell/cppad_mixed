@@ -1,12 +1,16 @@
 #! /usr/bin/env bash
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-23 Bradley M. Bell
+# SPDX-FileContributor: 2014-24 Bradley M. Bell
 # ----------------------------------------------------------------------------
 set -e -u
 #
 #
 # {xrst_begin example_install.sh}
+# {xrst_spell
+#     homebrew
+#     uncommented
+# }
 # {xrst_comment_ch #}
 #
 # An Example Installation
@@ -27,6 +31,12 @@ set -e -u
 # is either ``true`` or ``false`` .
 # If an external is already installed and *replace* is true (false)
 # the external will (will not) be replaced.
+#
+# mac_brew
+# ********
+# If example_installs detects that this is a macOS system using homebrew,
+# lines in :ref:`run_cmake.sh-name` that begin with 
+# ``# mac_brew:`` are uncommented; i.e., they will be executed.
 #
 # Uninstall
 # *********
@@ -190,7 +200,11 @@ then
    '
 elif [ "$system_type" == 'mac_brew' ]
 then
+   # gnu-sed installs gsed
+   # grep    installs ggrep
    list='
+      gnu-sed
+      grep
       cmake
       wget
       suite-sparse
@@ -232,6 +246,11 @@ do
    fi
 done
 rm example_install.tmp
+#
+if [ "$system_type" == 'mac_brew' ]
+then
+   gsed -i -e 's|^\(# mac_brew:\) *\(.*\)|\2 \1|' bin/run_cmake.sh
+fi
 # ----------------------------------------------------------------------------
 # local external installs for special requirements
 for pkg in eigen ipopt cppad
@@ -320,6 +339,14 @@ do
    fi
 done
 cd ..
+# ----------------------------------------------------------------------------
+# restore bin/run_cmake.sh
+if [ "$system_type" == 'mac_brew' ]
+then
+   gsed -i bin/run_cmake.sh \
+      -e 's|^\(.*\)\(# mac_brew:\)|\2 \1|' \
+      -e 's|  *$||'
+fi
 # ----------------------------------------------------------------------------
 echo 'example_install.sh: OK'
 exit 0
