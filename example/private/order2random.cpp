@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-24 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin order2random.cpp dev}
@@ -80,7 +80,7 @@ bool order2random_xam(void)
    double eps = 100. * std::numeric_limits<double>::epsilon();
    //
    using CppAD::vector;
-   typedef CppAD::AD<double>    a1_double;
+   // typedef CppAD::AD<double> a1_double;
    //
    // n_fixed
    size_t n_fixed     = 3;

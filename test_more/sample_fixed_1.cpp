@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-24 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
 $section Sample From Fixed Effects Posterior: Example and Test$$
@@ -27,7 +27,6 @@ namespace {
    //
    class mixed_derived : public cppad_mixed {
    private:
-      size_t                n_fixed_;
       const vector<double>& y_;
    public:
       // constructor
@@ -39,7 +38,6 @@ namespace {
          const CppAD::mixed::d_sparse_rcv&    A_rcv  ,
          const vector<double>& y           ) :
          cppad_mixed(n_fixed, n_random, quasi_fixed, bool_sparsity, A_rcv),
-         n_fixed_(n_fixed)                                      ,
          y_(y)
       {  assert( n_fixed      == y_.size() );
          assert( n_random % 2 == 0 );

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-24 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin fix_constraint.cpp}
@@ -73,7 +73,6 @@ namespace {
    //
    class mixed_derived : public cppad_mixed {
    private:
-      size_t                n_fixed_;
       const d_vector&       y_;
    public:
       // constructor
@@ -82,7 +81,6 @@ namespace {
          size_t                   n_random       ,
          const d_vector&          y              ) :
          cppad_mixed(n_fixed, n_random) ,
-         n_fixed_(n_fixed)              ,
          y_(y)
       {}
       // implementation of ran_likelihood
@@ -132,7 +130,7 @@ namespace {
          return ret_val;
       }
       // a1_vector version of fix_constraint
-      virtual a1_vector fix_constraint(const a1_vector& fixed_vec)
+      a1_vector fix_constraint(const a1_vector& fixed_vec) override
       {  return template_fix_constraint( fixed_vec ); }
    };
 }
