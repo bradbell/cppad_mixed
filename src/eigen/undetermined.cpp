@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-24 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin undetermined dev}
@@ -158,27 +158,29 @@ to convert this (and :ref:`sample_fixed-name` ) to all sparse matrices.
 
 namespace {
    using Eigen::Dynamic;
+   using Eigen::Index;
+   //
    typedef Eigen::Matrix<double, Dynamic, Dynamic> double_mat;
    typedef Eigen::Matrix<bool,   Dynamic, 1>       bool_vec;
    typedef Eigen::Matrix<size_t, Dynamic, 1>       size_vec;
-   typedef std::pair<size_t, size_t>               size_pair;
+   typedef std::pair<Index, Index>                 index_pair;
    //
-   size_pair max_abs(
+   index_pair max_abs(
       const double_mat&    E        ,
       const bool_vec&      row_used ,
       const bool_vec&      col_used )
    {
       // number of rows in E
-      size_t nr      = size_t( E.rows() );
+      Index nr      = E.rows();
       // number of columns in E
-      size_t nc      = size_t( E.cols() ) - 1;
+      Index nc      = E.cols() - 1;
       //
-      size_pair ret(0,0);
+      index_pair ret(0,0);
       double max_abs_val = -1.0;
-      for(size_t i = 0; i < nr; i++) if( ! row_used[i] )
-      {  for(size_t j = 0; j < nc; j++) if( ! col_used[j] )
+      for(Index i = 0; i < nr; i++) if( ! row_used[i] )
+      {  for(Index j = 0; j < nc; j++) if( ! col_used[j] )
          {  if( std::fabs( E(i, j) ) > max_abs_val )
-            {  ret = size_pair(i, j);
+            {  ret = index_pair(i, j);
                max_abs_val = std::fabs( E(i, j) );
             }
          }
@@ -189,15 +191,15 @@ namespace {
       return ret;
    }
    //
-   void elementary(size_pair pivot, double_mat& E)
-   {  size_t nr = size_t( E.rows() );
-      size_t r  = pivot.first;
-      size_t c  = pivot.second;
+   void elementary(index_pair pivot, double_mat& E)
+   {  Index nr = E.rows();
+      Index r  = pivot.first;
+      Index c  = pivot.second;
       double v  = E(r, c);
       E.row(r) /= v;
       // fix roundoff on piovot element
       E(r, c) = 1.0;
-      for(size_t i = 0; i < nr; i++)
+      for(Index i = 0; i < nr; i++)
       {  if( i != r )
          {  E.row(i) -= E(i, c) * E.row(r);
             // fix roundoff on pivot column
@@ -218,20 +220,20 @@ size_t undetermined(
    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>&       C     ,
    Eigen::Matrix<double, Eigen::Dynamic, 1>&                    e     )
 // END PROTOTYPE
-{  size_t nr = A.rows();
-   size_t nc = A.cols();
+{  Index nr = A.rows();
+   Index nc = A.cols();
    assert(  nr < nc );
-   assert(  size_t( b.rows() ) == nr );
-   assert(  size_t( D.rows() ) == nr );
-   assert(  size_t( I.rows() ) == nc - nr );
-   assert(  size_t( C.rows() ) == nr );
-   assert(  size_t( e.rows() ) == nr );
-   assert(  size_t( C.cols() ) == nc - nr );
+   assert(   b.rows() == nr );
+   assert(   D.rows() == nr );
+   assert(   I.rows() == nc - nr );
+   assert(   C.rows() == nr );
+   assert(   e.rows() == nr );
+   assert(   C.cols() == nc - nr );
    //
    // special case
    if( nr == 0 )
-   {  for(size_t i = 0; i < nc; i++)
-         I[i] = i;
+   {  for(Index i = 0; i < nc; i++)
+         I[i] = size_t(i);
    }
    //
    // E = [ A | b ]
@@ -240,9 +242,9 @@ size_t undetermined(
    E.block(0, nc, nr, 1)  = b;
    //
    // Normalize E so all rows have same size maximum element
-   for(size_t i = 0; i < nr; i++)
+   for(Index i = 0; i < nr; i++)
    {  double scale = 0.0;
-      for(size_t j = 0; j < nc; j++)
+      for(Index j = 0; j < nc; j++)
          scale = std::max(scale, fabs( E(i, j) ) );
       if( scale > 0.0 )
          E.row(i) /= scale;
@@ -251,23 +253,23 @@ size_t undetermined(
    //
    // which rows and colums have been used for pivots
    bool_vec row_used(nr), col_used(nc);
-   for(size_t i = 0; i < nr; i++)
+   for(Index i = 0; i < nr; i++)
       row_used[i] = false;
-   for(size_t j = 0; j < nc; j++)
+   for(Index j = 0; j < nc; j++)
       col_used[j] = false;
    //
    // mapping from pivot row to pivot column
    size_vec pivotrow2col(nr);
    //
    //
-   for(size_t rank = 0; rank < nr; rank++)
+   for(Index rank = 0; rank < nr; rank++)
    {  //
       // determine the next pivot element
-      size_pair pivot = max_abs(E, row_used, col_used);
-      size_t r = pivot.first;
-      size_t c = pivot.second;
+      index_pair pivot = max_abs(E, row_used, col_used);
+      Index r = pivot.first;
+      Index c = pivot.second;
       if( std::fabs( E(r, c) ) <= tol )
-         return rank;
+         return size_t( rank );
       //
       // preform elementary row operations for this pivot
       elementary(pivot, E);
@@ -277,18 +279,18 @@ size_t undetermined(
       col_used[c] = true;
       //
       // record the column corresponding to this row
-      pivotrow2col[r] = c;
+      pivotrow2col[r] = size_t(c);
    }
    //
    // D
    D = pivotrow2col;
    //
    // I and C
-   size_t k = 0;
-   for(size_t j = 0; j < nc; j++)
+   Index k = 0;
+   for(Index j = 0; j < nc; j++)
    {  // skip columns that are used for pivot operations
       if( ! col_used[j] )
-      {  I[k] = j;
+      {  I[k] = size_t(j);
          C.col(k) = - E.col(j);
          k++;
       }
@@ -297,7 +299,7 @@ size_t undetermined(
    // e
    e = E.col(nc);
    //
-   return nr;
+   return size_t( nr );
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

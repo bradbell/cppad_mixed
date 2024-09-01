@@ -5,6 +5,7 @@
 
 {xrst_begin 2024}
 {xrst_spell
+   src
    dd
    mm
    yy
@@ -16,6 +17,10 @@ Release Notes for 2023
 
 mm-dd
 *****
+
+08-32
+=====
+Fix some integer conversion warnings in src/eigen/undetermined.cpp.
 
 08-24
 =====
