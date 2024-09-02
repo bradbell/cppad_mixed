@@ -4,8 +4,10 @@
 # SPDX-FileContributor: 2003-24 Bradley M. Bell
 # ---------------------------------------------------------------------------
 #
+# source bin/grep_and_sed
+# Sets the shell variables grep and sed to the gnu version for this system
+#
 # sed, grep
-# Sets these variables to the gnu version for this system
 if [ "$(uname)" == 'Darwin' ]
 then
 if which gsed > /dev/null

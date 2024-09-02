@@ -18,32 +18,8 @@ fi
 # grep, sed
 source bin/grep_and_sed.sh
 #
-# BEGIN: SECTION THAT DEPENDS ON GIT REPOSITORY
-#
-# spdx_license_id
-# Each file, except those specified by no_copyright_list, should have a line
-# that ends with the following text:
-spdx_license_id='SPDX-License-Identifier: AGPL-3.0-or-later'
-#
-# no_copyright_list
-# These files do not have the spdx license id in them.
-# If an entry below is a directory it specifies all the files in the directory.
-# BEGIN_SORT_THIS_LINE_PLUS_2
-no_copyright_list='
-   .gitignore
-   .readthedocs.yaml
-   include/cppad/mixed/sparseinv.hpp
-   readme.md
-   xrst.toml
-   uninstall.cmake.in
-   bin/check_copy.sh
-   bin/check_version.sh
-   bin/git_commit.sh
-   bin/grep_and_sed.sh
-   bin/run_xrst.sh
-'
-# END_SORT_THIS_LINE_MINUS_2
-# END: SECTION THAT DEPENDS ON GIT REPOSITORY
+# spdx_license_id, no_copyright_list
+source bin/dev_settings.sh
 # ----------------------------------------------------------------------------
 if [ $# != 0 ]
 then
