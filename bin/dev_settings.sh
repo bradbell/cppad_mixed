@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: Bradley M. Bell <bradbell@seanet.com>
 # SPDX-FileContributor: 2003-24 Bradley M. Bell
 # ---------------------------------------------------------------------------
@@ -19,15 +19,6 @@ spdx_license_id='SPDX-License-Identifier: AGPL-3.0-or-later'
 no_copyright_list='
    .gitignore
    .readthedocs.yaml
-   bin/check_copy.sh
-   bin/check_invisible.sh
-   bin/check_sort.sh
-   bin/check_tab.sh
-   bin/check_version.sh
-   bin/dev_settings.sh
-   bin/git_commit.sh
-   bin/grep_and_sed.sh
-   bin/sort.sh
    include/cppad/mixed/sparseinv.hpp
    readme.md
    uninstall.cmake.in

@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 set -e -u
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: Bradley M. Bell <bradbell@seanet.com>
 # SPDX-FileContributor: 2023-24 Bradley M. Bell
 # ----------------------------------------------------------------------------
@@ -23,13 +23,17 @@ EOF
    exit 1
 fi
 file_name="$1"
-if grep 'BEGIN_SORT_THIS_LINE_PLUS_[1-9][0-9]' "$file_name"
+#
+# grep, sed
+source bin/grep_and_sed.sh
+#
+if $grep 'BEGIN_SORT_THIS_LINE_PLUS_[1-9][0-9]' "$file_name"
 then
    echo "in BEGIN_SORT_THIS_LINE_PLUS_nb in file $file_name"
    echo 'nb has more that one decial digit.'
    exit 1
 fi
-if grep 'END_SORT_THIS_LINE_MINUS_[1-9][0-9]' "$file_name"
+if $grep 'END_SORT_THIS_LINE_MINUS_[1-9][0-9]' "$file_name"
 then
    echo "in END_SORT_THIS_LINE_PLUS_ne in file $file_name"
    echo 'ne has more that one decial digit.'
@@ -48,8 +52,8 @@ fi
 # begin_sum
 # is th sum for the beginning line number
 set +e
-begin_sum=`grep --line-number 'BEGIN_SORT_THIS_LINE_PLUS_[1-9]' $file_name | \
-   sed -e 's|\([0-9]*\):.*BEGIN_SORT_THIS_LINE_PLUS_\([1-9]\).*|\1+\2|'`
+begin_sum=`$grep --line-number 'BEGIN_SORT_THIS_LINE_PLUS_[1-9]' $file_name | \
+   $sed -e 's|\([0-9]*\):.*BEGIN_SORT_THIS_LINE_PLUS_\([1-9]\).*|\1+\2|'`
 set -e
 if [ "$begin_sum" == '' ]
 then
@@ -70,8 +74,8 @@ done
 # end_diff
 # ios the difference for the ending line number
 set +e
-end_diff=`grep --line-number 'END_SORT_THIS_LINE_MINUS_[1-9]' $file_name | \
-   sed -e 's|\([0-9]*\):.*END_SORT_THIS_LINE_MINUS_\([1-9]\).*|\1-\2|'`
+end_diff=`$grep --line-number 'END_SORT_THIS_LINE_MINUS_[1-9]' $file_name | \
+   $sed -e 's|\([0-9]*\):.*END_SORT_THIS_LINE_MINUS_\([1-9]\).*|\1-\2|'`
 set -e
 if [ "$end_diff" == '' ]
 then
@@ -100,7 +104,7 @@ fi
 first_line='1'
 #
 # last_line
-last_line=`wc -l $file_name | sed -e 's|^ *\([0-9]*\) .*|\1|'`
+last_line=`wc -l $file_name | $sed -e 's|^ *\([0-9]*\) .*|\1|'`
 #
 # count, stop_line_previous, sorted.$$
 count=0
@@ -133,15 +137,15 @@ do
    if [ "$start_line" != "$first_line" ]
    then
       let start_m1="$start_line - 1"
-      sed -n -e "1,${start_m1}p" sorted.$$ >> temp.$$
+      $sed -n -e "1,${start_m1}p" sorted.$$ >> temp.$$
    fi
    #
-   sed -n -e "${start_line},${stop_line}p" sorted.$$ | sort >> temp.$$
+   $sed -n -e "${start_line},${stop_line}p" sorted.$$ | sort >> temp.$$
    #
    if [ "$stop_line" != "$last_line" ]
    then
       stop_p1=`expr $stop_line + 1`
-      sed -n -e "${stop_p1},${last_line}p" sorted.$$ >> temp.$$
+      $sed -n -e "${stop_p1},${last_line}p" sorted.$$ >> temp.$$
    fi
    #
    # sorted.$$

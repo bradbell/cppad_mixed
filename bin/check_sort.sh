@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 set -e -u
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: Bradley M. Bell <bradbell@seanet.com>
 # SPDX-FileContributor: 2020-24 Bradley M. Bell
 # -----------------------------------------------------------------------------
@@ -20,13 +20,16 @@ else
    echo 'see usage message forbin/sort.sh'
    exit 1
 fi
+#
+# grep, sed
+source bin/grep_and_sed.sh
 # ----------------------------------------------------------------------------
 # file_list
 if [ "$all" == 'true' ]
 then
-   file_list=$(git grep -l 'BEGIN_SORT_THIS_LINE_PLUS_')
+   file_list=$(git $grep -l 'BEGIN_SORT_THIS_LINE_PLUS_')
 else
-   file_list=$(git status --porcelain | sed -e '/^D/d' -e 's|^...||')
+   file_list=$(git status --porcelain | $sed -e 's|^...||')
 fi
 #
 # ok
@@ -42,7 +45,7 @@ do
    then
       check='no'
    fi
-   if ! grep BEGIN_SORT_THIS_LINE $file_name > /dev/null
+   if ! $grep BEGIN_SORT_THIS_LINE $file_name > /dev/null
    then
       check='no'
    fi
@@ -51,7 +54,7 @@ do
       if ! bin/sort.sh $file_name >& temp.$$
       then
          cat temp.$$
-         echo 'check_sorted.sh: Error'
+         echo 'check_sort.sh: Error'
          exit 1
       fi
       last_line=$(tail -1 temp.$$)

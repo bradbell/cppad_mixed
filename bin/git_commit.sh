@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 set -e -u
 # ---------------------------------------------------------------------------
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: Bradley M. Bell <bradbell@seanet.com>
 # SPDX-FileContributor: 2003-24 Bradley M. Bell
 # ---------------------------------------------------------------------------
