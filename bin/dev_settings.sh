@@ -19,16 +19,21 @@ spdx_license_id='SPDX-License-Identifier: AGPL-3.0-or-later'
 no_copyright_list='
    .gitignore
    .readthedocs.yaml
-   include/cppad/mixed/sparseinv.hpp
-   readme.md
-   xrst.toml
-   uninstall.cmake.in
    bin/check_copy.sh
+   bin/check_invisible.sh
+   bin/check_sort.sh
+   bin/check_tab.sh
    bin/check_version.sh
+   bin/dev_settings.sh
    bin/git_commit.sh
    bin/grep_and_sed.sh
-   bin/run_xrst.sh
+   bin/sort.sh
+   include/cppad/mixed/sparseinv.hpp
+   readme.md
+   uninstall.cmake.in
+   xrst.toml
 '
+# END_SORT_THIS_LINE_MINUS_2
 #
 # invisible_and_tab_ok
 # These files are not checked for invisible white space or tabs.
