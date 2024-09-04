@@ -27,7 +27,7 @@ source bin/grep_and_sed.sh
 # file_list
 if [ "$all" == 'true' ]
 then
-   file_list=$(git $grep -l 'BEGIN_SORT_THIS_LINE_PLUS_')
+   file_list=$(git grep -l 'BEGIN_SORT_THIS_LINE_PLUS_')
 else
    file_list=$(git status --porcelain | $sed -e 's|^...||')
 fi
