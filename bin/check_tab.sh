@@ -48,7 +48,8 @@ if [ "$all" == 'true' ]
 then
    file_list=$(git ls-files | $sed -f sed.$$)
 else
-   file_list=$(git status --porcelain | $sed -e 's|^...||' | $sed -f sed.$$)
+   file_list=$(git status --porcelain | \
+      $sed -e '/^D/d' -e 's|^...||' | $sed -f sed.$$)
 fi
 #
 # ok
