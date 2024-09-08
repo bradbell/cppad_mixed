@@ -8,6 +8,8 @@
 # Sets the shell variables grep and sed to the gnu version for this system
 #
 # sed, grep
+sed=sed
+grep=grep
 if [ "$(uname)" == 'Darwin' ]
 then
 if which gsed > /dev/null
@@ -15,13 +17,11 @@ if which gsed > /dev/null
       sed=gsed
    else
       echo 'darwin_names.sh: cannot find gsed (gnu sed) on MacOS system'
-      sed=sed
    fi
    if which ggrep > /dev/null
    then
       grep=ggrep
    else
       echo 'darwin_names.sh: cannot find ggrep (gnu grep) on MacOS system'
-      grep=grep
    fi
 fi
