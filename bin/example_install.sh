@@ -35,7 +35,7 @@ set -e -u
 # mac_brew
 # ********
 # If example_installs detects that this is a macOS system using homebrew,
-# lines in :ref:`run_cmake.sh-name` that begin with 
+# lines in :ref:`run_cmake.sh-name` that begin with
 # ``# mac_brew:`` are uncommented; i.e., they will be executed.
 #
 # Uninstall
@@ -332,9 +332,9 @@ do
    if ! make -j $n_job $cmd \
       1>> ../example_install.log 2>> ../example_install.err
    then
-      echo "Try running the following command in $(pwd)"
+      echo "Try following command in $(pwd) failed:"
       echo "    make -j $n_job $cmd"
-      echo 'To see why the check of cppad_mixed failed.'
+      echo 'To see why look at example_install.err or run the comamnd'
       exit 1
    fi
 done

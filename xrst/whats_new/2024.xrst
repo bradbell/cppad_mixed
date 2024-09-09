@@ -6,7 +6,10 @@
 {xrst_begin 2024}
 {xrst_spell
    dd
+   grep
+   homebrew
    mm
+   sed
    yy
    yyyy
 }
@@ -16,6 +19,14 @@ Release Notes for 2023
 
 mm-dd
 *****
+
+09-09
+=====
+The development and install tools were extended to work well on
+MacOS with homebrew.
+The versions between 08-25 and 09-08
+were not tested and may have trouble on other systems.
+(There was a problem with the new ``bin/grep_and_sed.sh`` script.)
 
 09-01
 =====
