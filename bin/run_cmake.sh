@@ -95,9 +95,9 @@ specific_compiler=''
 extra_cxx_flags='-Wpedantic -std=c++11 -Wall -Wshadow -Wconversion'
 # for macOS using homebrew:
 # 2DO: fix the warnings that are suppressed here.
-# mac_brew:  extra_cxx_flags+=' -I /opt/homebrew/include'
-# mac_brew:  extra_cxx_flags+=' -Wno-bitwise-instead-of-logical'
-# mac_brew:  extra_cxx_flags+=' -Wno-sign-conversion'
+# mac_brew: extra_cxx_flags+=' -I /opt/homebrew/include'
+# mac_brew: extra_cxx_flags+=' -Wno-bitwise-instead-of-logical'
+# mac_brew: extra_cxx_flags+=' -Wno-sign-conversion'
 # {xrst_code}
 #
 # cmake_libdir

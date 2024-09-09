@@ -13,7 +13,7 @@ echo_eval() {
 restore_and_exit() {
    $sed -i bin/run_cmake.sh \
       -e "s|^build_type=.*|build_type='debug'|" \
-      -e 's|^\(.*\)\(# mac_brew: *\)|\2 \1|' \
+      -e 's|^\(.*\)\(# mac_brew:\) *|\2 \1|' \
       -e 's|  *$||'
    exit $1
 }
@@ -40,7 +40,7 @@ then
    echo 'check_all.sh: Cannot find three # mac_brew: lines in bin/run_cmake.sh'
    echo 'Attempted to automatically fix this.'
    restore_and_exit 1
-fi 
+fi
 if ! $grep "optimize_cppad_function='no'" bin/run_cmake.sh > /dev/null
 then
    echo 'bin/check_all.sh: bin/run_cmake.sh optimize_cppad_function not no'
