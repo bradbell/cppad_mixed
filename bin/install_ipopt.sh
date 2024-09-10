@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-23 Bradley M. Bell
+# SPDX-FileContributor: 2014-24 Bradley M. Bell
 # ----------------------------------------------------------------------------
 if [ $0 != 'bin/install_ipopt.sh' ]
 then
@@ -10,7 +10,11 @@ then
 fi
 #
 # system_type
-system_type="$1"
+system_type="unknown"
+if [ "$#" == 1 ]
+then
+   system_type="$1"
+fi
 system_type_list=' debian red_hat mac_port mac_brew cygwin '
 if ! echo "$system_type_list" | grep " $system_type " > /dev/null
 then
@@ -19,13 +23,14 @@ then
    echo "$system_type_list"
    exit 1
 fi
-# -----------------------------------------------------------------------------
-# bash function that echos and executes a command
+#
+# echo_eval
 echo_eval() {
    echo $*
    eval $*
 }
-# --------------------------------------------------------------------------
+#
+# metis_libdir, metis_incdir
 if [ "$system_type" == 'mac_brew' ]
 then
    metis_libdir=$(brew --prefix)/lib
@@ -39,7 +44,51 @@ then
       echo 'mac_brew: Cannot find metis include directory'
    fi
 fi
-# --------------------------------------------------------------------------
+#
+# build_type
+cmd=`grep '^build_type=' bin/run_cmake.sh`
+eval $cmd
+#
+# specific_compiler
+cmd=`grep '^specific_compiler=' bin/run_cmake.sh`
+eval $cmd
+#
+# cmake_install_prefix
+cmd=`grep '^cmake_install_prefix=' bin/run_cmake.sh`
+eval $cmd
+#
+# cmake_libdir
+cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
+eval $cmd
+#
+# build_type.sh
+bin/build_type.sh install_ipopt $build_type
+#
+# external/$build_type
+# cd external/build_type
+if [ ! -e external/$build_type ]
+then
+   mkdir -p external/$build_type
+fi
+echo_eval cd external/$build_type
+#
+# n_job
+if which nproc >& /dev/null
+then
+   n_job=$(nproc)
+else
+   n_job=$(sysctl -n hw.ncpu)
+fi
+#
+# debug_flags
+if [ "$build_type" == 'debug' ]
+then
+   debug_flags='--enable-debug'
+else
+   debug_flags=''
+fi
+#
+# name_list, url_list, java_flag_list
 name_list=( \
    'ASL' \
    'Mumps' \
@@ -60,73 +109,16 @@ java_flag_list=( \
    '' \
    '--disable-java' \
 )
-# ---------------------------------------------------------------------------
-# Get user configuration options from run_cmake.sh
 #
-# build_type
-cmd=`grep '^build_type=' bin/run_cmake.sh`
-eval $cmd
-#
-# specific_compiler
-cmd=`grep '^specific_compiler=' bin/run_cmake.sh`
-eval $cmd
-#
-# cmake_install_prefix
-cmd=`grep '^cmake_install_prefix=' bin/run_cmake.sh`
-eval $cmd
-#
-# cmake_libdir
-cmd=`grep '^cmake_libdir=' bin/run_cmake.sh`
-eval $cmd
-# --------------------------------------------------------------------------
-# build_type.sh
-bin/build_type.sh install_ipopt $build_type
-# --------------------------------------------------------------------------
-# cd external/build_type
-if [ ! -e external/$build_type ]
-then
-   mkdir -p external/$build_type
-fi
-echo_eval cd external/$build_type
-# -----------------------------------------------------------------------------
-# n_job
-if which nproc >& /dev/null
-then
-   n_job=$(nproc)
-else
-   n_job=$(sysctl -n hw.ncpu)
-fi
-# -----------------------------------------------------------------------------
-# add_mumps_fcflags
-#
-# klugde necessary until coin or mumps fixes this problem
-cat << EOF > junk.f
-      program junk
-      print*, "Hello World"
-      end
-EOF
-if gfortran -c -fallow-argument-mismatch junk.f >& /dev/null
-then
-   echo 'Adding -fallow-argument-mismatch to Mumps fortran compiler flags'
-   add_mumps_fcflags='ADD_FCFLAGS=-fallow-argument-mismatch'
-else
-   add_mumps_fcflags=''
-fi
-#-----------------------------------------------------------------------------
-# debug_flags
-if [ "$build_type" == 'debug' ]
-then
-   debug_flags='--enable-debug'
-else
-   debug_flags=''
-fi
-# -----------------------------------------------------------------------------
+# url, version, name
 for i in {0..2}
 do
    url=${url_list[$i]}
    version=${version_list[$i]}
    name=${name_list[$i]}
    java_flag=${java_flag_list[$i]}
+   #
+   # external/$build_type/$name.git
    if [ ! -e $name.git ]
    then
       echo_eval git clone $url.git $name.git
@@ -135,6 +127,8 @@ do
    echo_eval git reset --hard
    echo_eval git fetch origin
    echo_eval git checkout --quiet $version
+   #
+   # get.$name
    if [ -e "./get.$name" ]
    then
       if [ ! -e "./get.$name.done" ]
@@ -143,20 +137,21 @@ do
          touch ./get.$name.done
       fi
    fi
+   #
+   # external/$build_type/$name.git/build
    if [ ! -e build ]
    then
       echo_eval mkdir build
    fi
    echo_eval cd build
    #
-   add_fcflags=''
+   # configure
    with_metis_lflags=''
    with_metis_cflags=''
    metis_lflags=''
    metis_cflags=''
    if [ "$name" == 'Mumps' ]
    then
-      add_fcflags="$add_mumps_fcflags"
       if [ "$system_type" == 'mac_brew' ]
       then
          with_metis_lflags='--with-metis-lflags='
@@ -172,7 +167,7 @@ cat << EOF
       --libdir=$cmake_install_prefix/$cmake_libdir \\
       --enable-shared \\
       $specific_compiler \\
-      $java_flag $debug_flags $add_fcflags \\
+      $java_flag $debug_flags \\
       $with_metis_lflags"$metis_lflags" \\
       $with_metis_cflags"$metis_cflags"
 EOF
@@ -182,7 +177,7 @@ EOF
       --libdir=$cmake_install_prefix/$cmake_libdir \
       --enable-shared \
       $specific_compiler \
-      $java_flag $debug_flags $add_fcflags \
+      $java_flag $debug_flags \
       $with_metis_lflags"$metis_lflags" \
       $with_metis_cflags"$metis_cflags"
    echo_eval make -j $n_job install
