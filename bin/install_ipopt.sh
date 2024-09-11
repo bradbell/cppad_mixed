@@ -154,8 +154,8 @@ then
    then
       echo 'mac_brew: Cannot find metis include directory'
    fi
-   configure_mumps+="--with-metis-lflags=-L$metis_libdir -lmetis"
-   configure_mumps+="--with-metis-cflags=-I$metis_incdir"
+   configure_mumps+=" --with-metis-lflags='-L$metis_libdir -lmetis'"
+   configure_mumps+=" --with-metis-cflags='-I$metis_incdir'"
 fi
 cd Mumps.git/build
 echo_eval ../configure $configure_mumps
