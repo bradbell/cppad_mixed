@@ -4,6 +4,9 @@ set -e -u
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
 # SPDX-FileContributor: 2014-24 Bradley M. Bell
 # ----------------------------------------------------------------------------
+ipopt_url='https://github.com/coin-or/Ipopt'
+ipopt_version='releases/3.13.4'
+# ----------------------------------------------------------------------------
 #
 # echo_eval
 function echo_eval() {
@@ -105,10 +108,8 @@ configure_all+=" $specific_compiler"
 configureall+=" $debug_flags"
 #
 # external/build_type/Ipopt.git
-url='https://github.com/coin-or/Ipopt'
 name='Ipopt'
-version='releases/3.13.4'
-clone_url_name_version $url $name $version
+clone_url_name_version $ipopt_url $name $ipopt_version
 #
 # external/build_type/ASL.git
 # external/build_type/mumps.git
