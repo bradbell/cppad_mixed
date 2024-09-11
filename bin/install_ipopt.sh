@@ -1,7 +1,36 @@
-#! /bin/bash -e
+#! /usr/bin/env bash
+set -e -u
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
 # SPDX-FileContributor: 2014-24 Bradley M. Bell
+# ----------------------------------------------------------------------------
+#
+# echo_eval
+function echo_eval() {
+   echo $*
+   eval $*
+}
+#
+# clone_url_name_version
+# creates ./name.git from corresponding url and version
+# $1 = url
+# $2 = name
+# $3 = version
+function clone_url_name_version() {
+   if [ ! -e $2.git ]
+   then
+      echo_eval git clone $1.git $2.git
+   fi
+   echo_eval cd $2.git
+   echo_eval git reset --hard
+   echo_eval git fetch origin
+   echo_eval git checkout --quiet $3
+   if [ ! -e build ]
+   then
+      echo_eval mkdir build
+   fi
+   cd ..
+}
 # ----------------------------------------------------------------------------
 if [ $0 != 'bin/install_ipopt.sh' ]
 then
@@ -23,28 +52,7 @@ then
    echo "$system_type_list"
    exit 1
 fi
-#
-# echo_eval
-echo_eval() {
-   echo $*
-   eval $*
-}
-#
-# metis_libdir, metis_incdir
-if [ "$system_type" == 'mac_brew' ]
-then
-   metis_libdir=$(brew --prefix)/lib
-   metis_incdir=$(brew --prefix)/include
-   if [ ! -e "$metis_libdir/libmetis.dylib" ]
-   then
-      echo 'mac_brew: Cannot find metis library directory'
-   fi
-   if [ ! -e "$metis_incdir/metis.h" ]
-   then
-      echo 'mac_brew: Cannot find metis include directory'
-   fi
-fi
-#
+# ----------------------------------------------------------------------------
 # build_type
 cmd=`grep '^build_type=' bin/run_cmake.sh`
 eval $cmd
@@ -88,47 +96,32 @@ else
    debug_flags=''
 fi
 #
-# name_list, url_list, java_flag_list
-name_list=( \
-   'ASL' \
-   'Mumps' \
-   'Ipopt' \
-)
-url_list=( \
-   'https://github.com/coin-or-tools/ThirdParty-ASL' \
-   'https://github.com/coin-or-tools/ThirdParty-Mumps' \
-   'https://github.com/coin-or/Ipopt' \
-)
-version_list=( \
-   'stable/2.0' \
-   'stable/2.1' \
-   'releases/3.13.4' \
-)
-java_flag_list=( \
-   '' \
-   '' \
-   '--disable-java' \
-)
+# configure_all
+configure_all="--disable-dependency-tracking"
+configure_all+=" --prefix=$cmake_install_prefix"
+configure_all+=" --libdir=$cmake_install_prefix/$cmake_libdir"
+configure_all+=" --enable-shared"
+configure_all+=" $specific_compiler"
+configureall+=" $debug_flags"
 #
-# url, version, name
-for i in {0..2}
+# external/build_type/Ipopt.git
+url='https://github.com/coin-or/Ipopt'
+name='Ipopt'
+version='releases/3.13.4'
+clone_url_name_version $url $name $version
+#
+# external/build_type/ASL.git
+# external/build_type/mumps.git
+for name in 'ASL' 'Mumps'
 do
-   url=${url_list[$i]}
-   version=${version_list[$i]}
-   name=${name_list[$i]}
-   java_flag=${java_flag_list[$i]}
-   #
-   # external/$build_type/$name.git
-   if [ ! -e $name.git ]
-   then
-      echo_eval git clone $url.git $name.git
-   fi
-   echo_eval cd $name.git
-   echo_eval git reset --hard
-   echo_eval git fetch origin
-   echo_eval git checkout --quiet $version
+   # clone_url_name_version
+   line=$(grep "ThirdParty/$name" 'Ipopt.git/.coin-or/Dependencies')
+   url=$(echo $line | awk '{print $2}' )
+   version=$(echo $line | awk '{print $3}' )
+   clone_url_name_version $url $name $version
    #
    # get.$name
+   cd $name.git
    if [ -e "./get.$name" ]
    then
       if [ ! -e "./get.$name.done" ]
@@ -137,54 +130,42 @@ do
          touch ./get.$name.done
       fi
    fi
-   #
-   # external/$build_type/$name.git/build
-   if [ ! -e build ]
-   then
-      echo_eval mkdir build
-   fi
-   echo_eval cd build
-   #
-   # configure
-   with_metis_lflags=''
-   with_metis_cflags=''
-   metis_lflags=''
-   metis_cflags=''
-   if [ "$name" == 'Mumps' ]
-   then
-      if [ "$system_type" == 'mac_brew' ]
-      then
-         with_metis_lflags='--with-metis-lflags='
-         with_metis_cflags='--with-metis-cflags='
-         metis_lflags="-L$metis_libdir -lmetis"
-         metis_cflags="-I$metis_incdir"
-      fi
-   fi
-cat << EOF
-   ../configure \\
-      --disable-dependency-tracking \\
-      --prefix=$cmake_install_prefix \\
-      --libdir=$cmake_install_prefix/$cmake_libdir \\
-      --enable-shared \\
-      $specific_compiler \\
-      $java_flag $debug_flags \\
-      $with_metis_lflags"$metis_lflags" \\
-      $with_metis_cflags"$metis_cflags"
-EOF
-   ../configure \
-      --disable-dependency-tracking \
-      --prefix=$cmake_install_prefix \
-      --libdir=$cmake_install_prefix/$cmake_libdir \
-      --enable-shared \
-      $specific_compiler \
-      $java_flag $debug_flags \
-      $with_metis_lflags"$metis_lflags" \
-      $with_metis_cflags"$metis_cflags"
-   echo_eval make -j $n_job install
-   #
-   # back to external
-   echo_eval cd ../..
+   cd ..
 done
+#
+# Install ASL
+cd ASL.git/build
+echo_eval ../configure $configure_all
+echo_eval make -j $n_job install
+cd ../..
+#
+# Install Mumps
+configure_mumps="$configure_all"
+if [ "$system_type" == 'mac_brew' ]
+then
+   metis_libdir=$(brew --prefix)/lib
+   metis_incdir=$(brew --prefix)/include
+   if [ ! -e "$metis_libdir/libmetis.dylib" ]
+   then
+      echo 'mac_brew: Cannot find metis library directory'
+   fi
+   if [ ! -e "$metis_incdir/metis.h" ]
+   then
+      echo 'mac_brew: Cannot find metis include directory'
+   fi
+   configure_mumps+="--with-metis-lflags=-L$metis_libdir -lmetis"
+   configure_mumps+="--with-metis-cflags=-I$metis_incdir"
+fi
+cd Mumps.git/build
+echo_eval ../configure $configure_mumps
+echo_eval make -j $n_job install
+cd ../..
+#
+# Install Ipopt
+cd Ipopt.git/build
+echo_eval ../configure $configure_all --disable-java
+echo_eval make -j $n_job install
+cd ../..
 # ----------------------------------------------------------------------------
 echo 'install_ipopt.sh: OK'
 exit 0
