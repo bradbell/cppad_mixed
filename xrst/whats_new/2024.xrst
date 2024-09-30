@@ -20,6 +20,10 @@ Release Notes for 2023
 mm-dd
 *****
 
+09-30
+=====
+Advance from ipopt from version 3.13.4 to 3.14.16.
+
 09-09
 =====
 The development and install tools were extended to work well on

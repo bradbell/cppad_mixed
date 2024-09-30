@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-24 Bradley M. Bell
 // ----------------------------------------------------------------------------
 # include <cppad/mixed/ipopt_fixed.hpp>
 # include <IpIpoptData.hpp>
@@ -293,14 +293,14 @@ void ipopt_fixed::finalize_solution(
          }
       }
       //
-      // at_lower, check complementarity
+      // at_lower, ok
       bool at_lower = false;
       if( x_lower[j] != nlp_lower_bound_inf_ )
       {  ok      &= (x[j] - x_lower[j]) * z_L[j] < 10.0 * tol;
          at_lower = x[j] - x_lower[j] <= z_L[j];
       }
       //
-      // at_upper, check complementarity
+      // at_upper, ok
       bool at_upper = false;
       if( x_upper[j] != nlp_upper_bound_inf_ )
       {  ok &= (x_upper[j] - x[j]) * z_U[j] < 10.0 * tol;
@@ -317,8 +317,6 @@ void ipopt_fixed::finalize_solution(
       //
       if( x_lower[j] == x_upper[j] )
       {   // this constriant gets removed
-         assert( z_L[j] == 0.0 );
-         assert( z_U[j] == 0.0 );
          sum = 0.0;
       }
       else

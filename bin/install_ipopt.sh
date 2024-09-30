@@ -5,7 +5,7 @@ set -e -u
 # SPDX-FileContributor: 2014-24 Bradley M. Bell
 # ----------------------------------------------------------------------------
 ipopt_url='https://github.com/coin-or/Ipopt'
-ipopt_version='releases/3.13.4'
+ipopt_version='releases/3.14.16'
 # ----------------------------------------------------------------------------
 #
 # echo_eval
@@ -105,7 +105,7 @@ configure_all+=" --prefix=$cmake_install_prefix"
 configure_all+=" --libdir=$cmake_install_prefix/$cmake_libdir"
 configure_all+=" --enable-shared"
 configure_all+=" $specific_compiler"
-configureall+=" $debug_flags"
+configure_all+=" $debug_flags"
 #
 # external/build_type/Ipopt.git
 name='Ipopt'

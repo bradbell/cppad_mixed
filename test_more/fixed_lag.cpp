@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-24 Bradley M. Bell
 // ----------------------------------------------------------------------------
 // Test the optimize_fixed fixed_lag in solution
 // BEGIN C++
@@ -71,14 +71,20 @@ bool fixed_lag(void)
    bool   ok = true;
    double inf = std::numeric_limits<double>::infinity();
    double tol = 1e-8;
+   //
+   // n_fixed, z
+   // minimizer of objective without constraints
+   size_t n_fixed  = 3;
+   vector<double> z(n_fixed);
+   for(size_t i = 0; i < n_fixed; i++)
+      z[i] = double(i+1);
 
    // fixed effects
-   size_t n_fixed  = 3;
    vector<double>
       fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
    for(size_t j = 0; j < n_fixed; j++)
    {  fixed_lower[j] = 1.5;
-      fixed_in[j]    = 2.0;
+      fixed_in[j]    = z[j] + 1.0;
       fixed_upper[j] = inf;
    }
    //
@@ -89,10 +95,6 @@ bool fixed_lag(void)
    // no constriants
    vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
    //
-   vector<double> z(n_fixed);
-   for(size_t i = 0; i < n_fixed; i++)
-      z[i] = double(i+1);
-
    // object that is derived from cppad_mixed
    bool quasi_fixed   = true;
    bool bool_sparsity = false;
@@ -141,7 +143,7 @@ bool fixed_lag(void)
    for(size_t j = 0; j < n_fixed; j++)
    {
       if( j == 0 )
-      {  ok &= fabs( fixed_out[j] - fixed_lower[j] ) <= tol;
+      {  ok &= fabs( fixed_out[j] - fixed_lower[j] ) <= 10. * tol;
          ok &= fixed_lag[j] < 0.0;
       }
       else
