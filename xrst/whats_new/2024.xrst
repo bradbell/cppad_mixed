@@ -22,7 +22,10 @@ mm-dd
 
 09-30
 =====
-Advance from ipopt from version 3.13.4 to 3.14.16.
+#. Advance from ipopt from version 3.13.4 to 3.14.16.
+#. Change :ref:`example_install-name` to install eigen using the
+   system package manager (instead of ``bin/install_eigen.sh`` installing
+   it in :ref:`run_cmake.sh@cmake_install_prefix` ).
 
 09-09
 =====

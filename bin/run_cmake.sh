@@ -40,7 +40,7 @@ verbose_makefile='no'
 # **********
 # Use either 'debug' or 'release' for the type of this build:
 # {xrst_code sh}
-build_type='debug'
+build_type='release'
 # {xrst_code}
 #
 # cmake_install_prefix
@@ -219,7 +219,7 @@ done
 bin/build_type.sh run_cmake $build_type
 # --------------------------------------------------------------------------
 export PKG_CONFIG_PATH=':'
-for pkg in eigen3 ipopt cppad
+for pkg in ipopt cppad
 do
    pkg_config_path=$(find -L "$cmake_install_prefix" -name "$pkg.pc" |\
       head -1 | sed -e "s|/$pkg.pc||" \

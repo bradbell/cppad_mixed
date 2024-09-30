@@ -168,6 +168,7 @@ then
       git
       wget
       libblas-dev
+      libeigen3-dev
       liblapack-dev
       libsuitesparse-dev
       pkg-config
@@ -179,6 +180,7 @@ elif [ "$system_type" == 'red_hat' ]
 then
    list='
       cmake
+      eigen3-devel
       git
       wget
       blas-devel
@@ -193,6 +195,7 @@ elif [ "$system_type" == 'mac_port' ]
 then
    list='
       cmake
+      eigen3
       wget
       SuiteSparse
       pkgconfig
@@ -206,6 +209,7 @@ then
       gnu-sed
       grep
       cmake
+      eigen
       wget
       suite-sparse
       pkg-config
@@ -216,6 +220,7 @@ then
    list='
       gsl
       cmake
+      eigen3
       git
       wget
       liblapack-devel
@@ -253,13 +258,10 @@ then
 fi
 # ----------------------------------------------------------------------------
 # local external installs for special requirements
-for pkg in eigen ipopt cppad
+for pkg in ipopt cppad
 do
    # eval below converts $HOME in $prefix to its value for current user
    case $pkg in
-      eigen)
-      eval file="$cmake_install_prefix/eigen/include/Eigen/Core"
-      ;;
 
       ipopt)
       eval file="$ipopt_prefix/include/coin-or/IpIpoptApplication.hpp"
