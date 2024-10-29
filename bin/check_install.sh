@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-22 Bradley M. Bell
+# SPDX-FileContributor: 2014-24 Bradley M. Bell
 # ----------------------------------------------------------------------------
 if [ ! -e 'bin/check_install.sh' ]
 then
@@ -14,6 +14,7 @@ fi
 # {xrst_spell
 #     bitwise
 #     cd
+#     cflags
 #     cmd
 #     config
 #     cout
@@ -23,7 +24,6 @@ fi
 #     grep
 #     homebrew
 #     int
-#     isystem
 #     lamd
 #     lcamd
 #     lccolamd
@@ -67,7 +67,6 @@ eval $cmd
 # {xrst_code sh}
 cmd=`grep '^cmake_install_prefix=' bin/run_cmake.sh`
 eval $cmd
-eigen_prefix="$cmake_install_prefix/eigen"
 ipopt_prefix="$cmake_install_prefix"
 # {xrst_code}
 #
@@ -144,6 +143,13 @@ int main(void)
 EOF
 # {xrst_code}
 #
+# eigen_cflags
+# The following command determines the flags necessary
+# to compile with ``eigen`` on this system:
+# {xrst_code sh}
+eigen_cflags=$(pkg-config --cflags eigen3)
+# {xrst_code}
+#
 # gsl_libs
 # ********
 # The following command determines the library link flags necessary
@@ -171,9 +177,6 @@ suitesparse_libs='-lcholmod -lamd -lcamd -lcolamd -lccolamd -lsuitesparseconfig'
 # Compile and Link
 # ****************
 # The command below compiles and links the example program.
-# Note that the ``eigen`` include files have installed in a
-# different directory and treated like system files because
-# they otherwise generate lots of warnings.
 # {xrst_code sh}
 #
 # optimize_flags
@@ -201,9 +204,9 @@ cat << EOF
 g++ example.cpp \\
    $optimize_flags \\
    -I $cmake_install_prefix/include \\
-   -isystem $eigen_prefix/include \\
    -L $path2libdir -Wl,-rpath,$path2libdir -lcppad_mixed \\
    $homebrew_flags \\
+   $eigen_cflags \\
    $gsl_libs \\
    $suitesparse_libs \\
    $ipopt_libs \\
@@ -212,8 +215,8 @@ EOF
 g++ example.cpp \
    $optimize_flags \
    -I $cmake_install_prefix/include \
-   -isystem $eigen_prefix/include \
    -L $path2libdir -Wl,-rpath,$path2libdir -lcppad_mixed \
+   $eigen_cflags \
    $homebrew_flags \
    $gsl_libs \
    $suitesparse_libs \
