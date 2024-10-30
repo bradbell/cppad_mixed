@@ -20,6 +20,11 @@ Release Notes for 2023
 mm-dd
 *****
 
+10-29
+=====
+Fix ``bin/check_install.sh`` so that it works when eigen is installed using
+the system package manager (see 09-30 below).
+
 09-30
 =====
 #. Advance from ipopt from version 3.13.4 to 3.14.16.
