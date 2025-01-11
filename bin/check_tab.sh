@@ -1,8 +1,12 @@
 #! /usr/bin/env bash
 set -e -u
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: Bradley M. Bell <bradbell@seanet.com>
-# SPDX-FileContributor: 2020-24 Bradley M. Bell
+# SPDX-FileContributor: 2020-25 Bradley M. Bell
+# -----------------------------------------------------------------------------
+# bin/check_tabls.h
+# Checks for tabs in the source and returns an error if it finds any.
+# Files that are not checked can be specified in bin/dev_settings.sh.
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/check_tab.sh" ]
 then

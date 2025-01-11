@@ -1,9 +1,20 @@
 #! /usr/bin/env bash
 set -e -u
 # ---------------------------------------------------------------------------
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: Bradley M. Bell <bradbell@seanet.com>
-# SPDX-FileContributor: 2003-24 Bradley M. Bell
+# SPDX-FileContributor: 2003-25 Bradley M. Bell
+# ---------------------------------------------------------------------------
+# bin/git_commit.sh
+# Opens your editor with comments about this git commit.
+# 1.  The git commit log message will not include comment lines.
+# 2.  The file git_commit.log contains the message for the previous commit
+#     so that you can read it in and modify it for this commit.
+# 3.  The branch of the commit is automatically placed a the beginning
+#     of the first line for the message.
+# 4.  All the modified files are automatically included in the commit.
+# 4.  The variable check_commit in bin/dev_settings.sh can be used
+#     to selectively revert certain files before the commit.
 # ---------------------------------------------------------------------------
 # bash function that echos and executes a command
 echo_eval() {
@@ -29,6 +40,9 @@ fi
 #
 # grep, sed
 source bin/grep_and_sed.sh
+#
+# check_commit
+source bin/dev_settings.sh
 # -----------------------------------------------------------------------------
 # EDITOR
 set +u
@@ -38,6 +52,38 @@ then
    exit 1
 fi
 set -u
+# -----------------------------------------------------------------------------
+# check_commit
+echo 's|^...||' > temp.sed
+for name in $check_commit
+do
+   if [ -f $name ]
+   then
+      echo "^$name\$" | $sed -e 's|/|[/]|g' -e 's|.*|/&/p|' >> temp.sed
+   elif [ -d $name ]
+   then
+      echo "^$name/" | $sed -e 's|/|[/]|g' -e 's|.*|/&/p|' >> temp.sed
+   else
+      echo "$name in check_commit is not a file or directory"
+      exit 1
+   fi
+done
+list=$(
+   git status --porcelain | $sed -n -f temp.sed
+)
+for file in $list
+do
+   res=''
+   while [ "$res" != 'revert' ] && [ "$res" != 'commit' ]
+   do
+      read -p "$file: Revert or commit changes [revert/commit] ?" res
+   done
+   if [ "$res" == 'revert' ]
+   then
+      git reset    $file
+      git checkout $file
+   fi
+done
 # -----------------------------------------------------------------------------
 # new files
 # convert spaces in file names to @@

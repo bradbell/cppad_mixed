@@ -1,22 +1,36 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-23 Bradley M. Bell
+# SPDX-FileContributor: 2014-25 Bradley M. Bell
 # ----------------------------------------------------------------------------
 {xrst_begin cppad_mixed}
-{xrst_spell
-  affero
-}
 
-C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20240729
-#######################################################################
+C++ Laplace Approximation of Mixed Effects Models
+#################################################
 
 License
 *******
-`GNU Affero General Public License version 3.0 or later <http://www.gnu.org/licenses/agpl.txt>`_
+`AGPL-3.0-or-later <https://spdx.org/licenses/AGPL-3.0-or-later.html>`_
 
 Source Code Repository
 **********************
 `<https://github.com/bradbell/cppad_mixed>`_
+
+
+Versions
+********
+
+.. list-table::
+   :widths: auto
+
+   * - This version
+     - cppad_mixed-2025.1.11
+   * - Documentation for latest version
+     - `latest <https://cppad-mixed.readthedocs.io/latest>`_
+   * - Documentation for most recent stable version
+     - `stable-2025 <https://cppad-mixed.readthedocs.io/stable-2025>`_
+   * - Most recent release of this stable version
+     - `release-2025 <https://github.com/bradbell/cppad_mixed/archive/2025.0.0.tar.gz>`_
+
 
 Contents
 ********

@@ -1,8 +1,13 @@
 #! /usr/bin/env bash
 set -e -u
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: Bradley M. Bell <bradbell@seanet.com>
-# SPDX-FileContributor: 2023-24 Bradley M. Bell
+# SPDX-FileContributor: 2023-25 Bradley M. Bell
+# ----------------------------------------------------------------------------
+# bin/check_copy.sh
+# Checks that the copyright message, in all the source files,
+# is correct and up to date. If here were any invisible white space in
+# the original source, and error is returned.
 # ----------------------------------------------------------------------------
 if [ "$0" != "bin/check_copy.sh" ]
 then
@@ -20,6 +25,9 @@ source bin/grep_and_sed.sh
 #
 # spdx_license_id, no_copyright_list
 source bin/dev_settings.sh
+#
+# yy
+yy=$(date +%y)
 # ----------------------------------------------------------------------------
 if [ $# != 0 ]
 then
@@ -75,8 +83,8 @@ do
 done
 # ---------------------------------------------------------------------------
 cat << EOF > temp.sed
-s|\\(SPDX-FileContributor: *[0-9]\\{4\\}\\)[-0-9]* $fullname|\\1-24 $fullname|
-s|\\(SPDX-FileContributor\\): 2024-24 |\\1: 2024 |
+s|\\(SPDX-FileContributor: *[0-9]\\{4\\}\\)[-0-9]* $fullname|\\1-$yy $fullname|
+s|\\(SPDX-FileContributor\\): 20$yy-$yy |\\1: 20$yy |
 EOF
 list=''
 if [ "${USER+x}" != '' ]
@@ -88,11 +96,11 @@ then
 fi
 for file_name in $list
 do
-   if [ -e $file_name ]
+   if [ -e $file_name ] && [ -f $file_name ]
    then
       $sed \
-      -e 's|\(SPDX-FileContributor\): *\([0-9]\{4\}\)[-0-9]* |\1: \2-24 |' \
-      -e 's|\(SPDX-FileContributor\): 2024-24 |\1: 2024 |' \
+      -e "s|\\(SPDX-FileContributor\\): *\\([0-9]\\{4\\}\\)[-0-9]* |\\1: \\2-$yy |" \
+      -e "s|\\(SPDX-FileContributor\\): 20$yy-$yy |\\1: 20$yy |" \
       $file_name > temp.$$
       if diff $file_name temp.$$ > /dev/null
       then

@@ -1,8 +1,14 @@
 #! /usr/bin/env bash
 set -e -u
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: Bradley M. Bell <bradbell@seanet.com>
-# SPDX-FileContributor: 2020-24 Bradley M. Bell
+# SPDX-FileContributor: 2020-25 Bradley M. Bell
+# -----------------------------------------------------------------------------
+# bin/check_sort.sh
+# Checks that for all files, all the sections between
+#  BEGIN_SORT_THIS_LINE_PLUS_#
+#  END_SORT_THIS_LINE_MINUS_#
+# are sorted. If not, it is corrected and an error is returned.
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/check_sort.sh" ]
 then
@@ -29,7 +35,10 @@ if [ "$all" == 'true' ]
 then
    file_list=$(git grep -l 'BEGIN_SORT_THIS_LINE_PLUS_')
 else
-   file_list=$(git status --porcelain | $sed -e '/^D/d' -e 's|^...||')
+   file_list=$(\
+      git status --porcelain | \
+         $sed -e '/^D/d' -e 's|^...||' -e 's|^.*-> *||' \
+   )
 fi
 #
 # ok
@@ -45,9 +54,14 @@ do
    then
       check='no'
    fi
-   if ! $grep BEGIN_SORT_THIS_LINE $file_name > /dev/null
+   if [ -d "$file_name" ]
    then
       check='no'
+   else
+      if ! $grep BEGIN_SORT_THIS_LINE $file_name > /dev/null
+      then
+         check='no'
+      fi
    fi
    if [ "$check" == 'yes' ]
    then
@@ -55,6 +69,7 @@ do
       then
          cat temp.$$
          echo 'check_sort.sh: Error'
+         rm temp.$$
          exit 1
       fi
       last_line=$(tail -1 temp.$$)
@@ -66,6 +81,10 @@ do
    fi
 done
 #
+if [ -e "temp.$$" ]
+then
+   rm temp.$$
+fi
 if [ "$ok" == 'no' ]
 then
    echo 'check_sort.sh: Some files have been sorted (run again to get OK).'

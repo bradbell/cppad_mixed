@@ -1,8 +1,12 @@
 #! /usr/bin/env bash
 set -e -u
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: Bradley M. Bell <bradbell@seanet.com>
-# SPDX-FileContributor: 2020-24 Bradley M. Bell
+# SPDX-FileContributor: 2020-25 Bradley M. Bell
+# -----------------------------------------------------------------------------
+# bin/check_verison.sh
+# Checks that the version number in the version_file_list are correct;
+# see bin/dev_settings.sh for more discussion.
 # -----------------------------------------------------------------------------
 #
 # echo_eval
@@ -13,44 +17,18 @@ echo_eval() {
 #
 # sed
 source bin/grep_and_sed.sh
-# -----------------------------------------------------------------------------
-# BEGIN: SECTION THAT DEPENDS ON GIT REPOSITORY
 #
-# stable_version_file
-# This file contains the version number unless the branch is master or main.
-# The current date is used when the branch is master or main.
-stable_version_file='CMakeLists.txt'
+# package_name, version_file_list
+source bin/dev_settings.sh
 #
-# version_files
-# These are the files that are check to make sure version number is correct.
-version_files='
-   CMakeLists.txt
-   cppad_mixed.xrst
-'
-#
-# create_temp_sed
-# The sed script temp.sed is used to check the version number in files above.
-function create_temp_sed {
-year=$( echo $version | $sed -e 's|\([0-9]\{4\}\).*|\1|' )
-cat << EOF > temp.sed
-#
-# CMakeLists.txt
-s|cppad_mixed_version "[0-9]\\{8\\}"|cppad_mixed_version "$version"|
-#
-# cppad_mixeddd.xrst
-s|cppad_mixed_version-[0-9]\\{8\\}|cppad_mixed_version-$version|
-EOF
-}
-# END: SECTION THAT DEPENDS ON GIT REPOSITORY
-# -----------------------------------------------------------------------------
-if [ $# != 0 ]
+if [ "$0" != "bin/check_version.sh" ]
 then
-   echo 'bin/check_version.sh: does not expect any arguments'
+   echo "bin/check_version.sh: must be executed from its parent directory"
    exit 1
 fi
-if [ "$0" != 'bin/check_version.sh' ]
+if [ "$#" != 0 ]
 then
-   echo 'bin/check_version.sh: must be executed from its parent directory'
+   echo 'check_version does not expect any arguments'
    exit 1
 fi
 if [ ! -e './.git' ]
@@ -59,12 +37,104 @@ then
    exit 1
 fi
 # -----------------------------------------------------------------------------
+#
+# branch
+branch=$(git branch --show-current)
+#
+# first_version_file
+first_version_file=$(echo $version_file_list | $sed -e 's|^ *||' -e 's| .*||')
+#
+# version
+cat << EOF > temp.sed
+/["'][0-9]{8}["']/b one
+/["'][0-9]{8}[.][0-9]{1,2}["']/b one
+/["'][0-9]{4}[.][0-9]{1,2}[.][0-9]{1,2}["']/b one
+b end
+#
+: one
+s|.*["']([0-9]{8})["'].*|\\1|
+s|.*["']([0-9]{8}[.][0-9]{1,2})["'].*|\\1|
+s|.*["']([0-9]{4}[.][0-9]{1,2}[.][0-9]{1,2})["'].*|\\1|
+p
+#
+: end
+EOF
+version=$($sed -n -r -f temp.sed $first_version_file)
+#
+# version_type
+if [[ "$version" =~ ^[0-9]{8}$ ]]
+then
+   version_type=1
+elif [[ "$version" =~ ^[0-9]{8}[.][0-9]{1,2}$ ]]
+then
+   version_type=2
+elif [[ "$version" =~ ^[0-9]{4}[.][0-9]{1,2}[.][0-9]{1,2}$ ]]
+then
+   version_type=3
+else
+   echo "check_version.sh: can't find version number in $first_version_file"
+   exit 1
+fi
+if [[ "$branch" =~ ^stable/.* ]]
+then
+   if [ "$version_type" == 1 ]
+   then
+      echo "check_version.sh: version in $first_version_file"
+      echo "is not for a release but this is the $branch branch"
+      exit 1
+   elif [ "$version_type" == 3 ]
+   then
+      if [[ "$version" =~  ^[0-9]{4}[.][^0].*$ ]]
+      then
+         echo "check_version.sh: version in $first_version_file"
+         echo "is not for a release but this is the $branch branch"
+         exit 1
+      fi
+   fi
+fi
+#
+# version
+if [ "$branch" == 'master' ] || [ "$branch" == 'main' ]
+then
+   if [ "$version_type" == 1 ]
+   then
+      version=$(date +%Y%m%d)
+   elif [ "$version_type" == 2 ]
+   then
+      echo "check_version.sh: version in $first_version_file"
+      echo "is for a release but this is the $branch branch"
+      exit 1
+   else
+      if [[ "$version" =~  ^[0-9]{4}[.]0[.][0-9]{1,2}$ ]]
+      then
+         echo "check_version.sh: version in $first_version_file"
+         echo "is for a release but this is the $branch branch"
+         exit 1
+      fi
+      version=$(date +%Y.%-m.%-d)
+   fi
+fi
+#
+# temp.sed
+cat << EOF > temp.sed
+s|(["'])[0-9]{8}(["'])|\\1$version\\2|
+s|(["'])[0-9]{8}[.][0-9]{1,2}(["'])|\\1$version\\2|
+s|(["'])[0-9]{4}[.][0-9]{1,2}[.][0-9]{1,2}(["'])|\\1$version\\2|
+s|$package_name-[0-9]{8}|$package_name-$version|
+s|$package_name-[0-9]{8}[.][0-9]{1,2}|$package_name-$version|
+s|$package_name-[0-9]{4}[.][0-9]{1,2}[.][0-9]{1,2}|$package_name-$version|
+EOF
+#
 # check_version
 check_version() {
-   $sed "$1" -f temp.sed > temp.out
+   $sed -r "$1" -f temp.sed > temp.out
    if ! diff "$1" temp.out > /dev/null
    then
       version_ok='no'
+      echo "check_version.sh: changes to $1"
+      set +e
+      diff "$1" temp.out
+      set -e
       #
       if [ -x "$1" ]
       then
@@ -73,37 +143,14 @@ check_version() {
       else
          mv temp.out "$1"
       fi
-      echo_eval git diff "$1"
    fi
 }
-#
-# branch
-branch=$(git rev-parse --abbrev-ref HEAD)
-#
-# version
-version=$(
-   $sed -n -e '/cppad_mixd_version=/p' $stable_version_file | \
-      $sed -e 's|.*"\([^"]*\)"|\1|'
-)
-if [ "$branch" == 'master' ] || [ "$branch" == 'main' ]
-then
-   version=$(date +%Y%m%d )
-fi
-if echo $branch | grep '^stable/' > /dev/null
-then
-   if ! echo $version | grep '[0-9]\{4\}[.]0[.]' > /dev/null
-   then
-      echo 'check_version.sh: stable version does not begin with yyyy.0.'
-      exit 1
-   fi
-fi
 #
 # version_ok
 version_ok='yes'
 #
 # check_version
-create_temp_sed
-for file in $version_files
+for file in $version_file_list
 do
    check_version $file
 done
@@ -112,7 +159,7 @@ done
 if [ "$version_ok" == 'no' ]
 then
    echo 'bin/check_version.sh: version numbers were fixed (see above).'
-   echo "Re-execute bin/check_version.sh $version ?"
+   echo 'Re-execute bin/check_version.sh ?'
    exit 1
 fi
 echo 'check_version.sh OK'
