@@ -7,7 +7,7 @@
 /*
 {xrst_begin sparse_mat_info}
 {xrst_spell
-   resize
+  resize
 }
 
 Sparse Matrix Information

@@ -5,12 +5,11 @@
 /*
 {xrst_begin cholmod_solve2_a.cpp dev}
 {xrst_spell
-   bset
-   cc
-   ccc
-   pt
-   sys
-   xset
+  bset
+  cc
+  ccc
+  sys
+  xset
 }
 
 Example Using cholmod_solve2 Cholesky Factorization

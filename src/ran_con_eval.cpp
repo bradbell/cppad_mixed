@@ -4,9 +4,6 @@
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin ran_con_eval dev}
-{xrst_spell
-   au
-}
 
 Evaluate the Random Constraint Function
 #######################################

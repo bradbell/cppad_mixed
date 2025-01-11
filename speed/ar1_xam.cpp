@@ -5,11 +5,10 @@
 /*
 {xrst_begin ar1_xam.cpp}
 {xrst_spell
-   alloc
-   boolean
-   ndebug
-   preprocessor
-   rng
+  alloc
+  ndebug
+  preprocessor
+  rng
 }
 
 A First Order Auto-Regressive Example and Speed Test

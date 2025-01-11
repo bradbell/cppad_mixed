@@ -5,11 +5,11 @@
 /*
 {xrst_begin ldlt_eigen.cpp dev}
 {xrst_spell
-   ccc
-   cov
-   logdet
-   nrow
-   sim
+  ccc
+  cov
+  logdet
+  nrow
+  sim
 }
 
 Example Using Eigen LDLT Factorization

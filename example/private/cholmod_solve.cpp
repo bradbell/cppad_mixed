@@ -5,7 +5,7 @@
 /*
 {xrst_begin cholmod_solve_xam dev}
 {xrst_spell
-   cc
+  cc
 }
 
 Example Using cholmod_solve With a Non-positive Matrix

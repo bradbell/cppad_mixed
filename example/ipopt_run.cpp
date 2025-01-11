@@ -176,7 +176,7 @@ ipopt_nlp_xam::~ipopt_nlp_xam(void)
 ------------------------------------------------------------------------------
 {xrst_begin ipopt_xam_get_nlp_info dev}
 {xrst_spell
-   nnz
+  nnz
 }
 
 Return Information About Problem Sizes
@@ -590,7 +590,7 @@ bool ipopt_nlp_xam::eval_g(
 -------------------------------------------------------------------------------
 {xrst_begin ipopt_xam_eval_jac_g dev}
 {xrst_spell
-   nele
+  nele
 }
 
 Compute Jacobian of Constraint Functions
@@ -696,8 +696,8 @@ bool ipopt_nlp_xam::eval_jac_g(
 -------------------------------------------------------------------------------
 {xrst_begin ipopt_xam_eval_h dev}
 {xrst_spell
-   hess
-   nele
+  hess
+  nele
 }
 
 Compute the Hessian of the Lagrangian
@@ -829,12 +829,11 @@ bool ipopt_nlp_xam::eval_h(
 -------------------------------------------------------------------------------
 {xrst_begin ipopt_xam_finalize_solution dev}
 {xrst_spell
-   cq
-   doesn
-   ip
-   na
-   namespace
-   naninf
+  cq
+  doesn
+  ip
+  namespace
+  naninf
 }
 
 Get Solution Results
@@ -1012,12 +1011,10 @@ void ipopt_nlp_xam::finalize_solution(
 -------------------------------------------------------------------------------
 {xrst_begin ipopt_xam_intermediate_callback dev}
 {xrst_spell
-   cq
-   du
-   enum
-   ip
-   iter
-   pr
+  cq
+  enum
+  ip
+  iter
 }
 
 Ipopt Example: Optimization Progress Report

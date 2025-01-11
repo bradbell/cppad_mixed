@@ -8,7 +8,7 @@
 /*
 {xrst_begin init_fix_con dev}
 {xrst_spell
-   var
+  var
 }
 
 Initialize Constraints as Function of Fixed Effects

@@ -8,7 +8,7 @@
 /*
 {xrst_begin sparse_ad_chol_eval.cpp dev}
 {xrst_spell
-   ccc
+  ccc
 }
 
 Sparse AD Cholesky Factorization: Example and Test

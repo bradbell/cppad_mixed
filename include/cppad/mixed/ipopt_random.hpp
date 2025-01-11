@@ -8,8 +8,8 @@
 /*
 {xrst_begin ipopt_random dev}
 {xrst_spell
-   hpp
-   nlp
+  hpp
+  nlp
 }
 
 Ipopt NLP Class Used to Optimize Random Effects

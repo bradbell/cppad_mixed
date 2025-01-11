@@ -8,10 +8,9 @@
 /*
 {xrst_begin one_dim_derivative_chk dev}
 {xrst_spell
-   dfdx
-   min
-   rel
-   tol
+  dfdx
+  rel
+  tol
 }
 
 One Dimensional Finite Difference Derivative Check

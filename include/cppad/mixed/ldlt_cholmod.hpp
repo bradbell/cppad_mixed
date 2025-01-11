@@ -8,7 +8,7 @@
 /*
 {xrst_begin ldlt_cholmod dev}
 {xrst_spell
-   preprocessor
+  preprocessor
 }
 
 A Cholmod Cholesky Factor Class

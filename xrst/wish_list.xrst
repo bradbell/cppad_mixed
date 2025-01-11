@@ -4,10 +4,8 @@
 # ----------------------------------------------------------------------------
 {xrst_begin wish_list}
 {xrst_spell
-   bayesian
-   frequentist
-   multi
-   wakefield
+  frequentist
+  multi
 }
 
 CppAD Mixed Wish List

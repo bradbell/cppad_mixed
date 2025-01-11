@@ -9,7 +9,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 {xrst_begin ipopt_app_status dev}
 {xrst_spell
-   str
+  str
 }
 
 Map Ipopt Application Return Status to a String

@@ -5,20 +5,20 @@
 
 {xrst_begin 2018}
 {xrst_spell
-   cxx
-   dd
-   gcc
-   grep
-   hpp
-   mm
-   multi
-   runtime
-   suitesparse
-   txt
-   valgrind
-   wconversion
-   wpedantic
-   wshadow
+  cxx
+  dd
+  gcc
+  grep
+  hpp
+  mm
+  multi
+  runtime
+  suitesparse
+  txt
+  valgrind
+  wconversion
+  wpedantic
+  wshadow
 }
 
 Release Notes for 2018

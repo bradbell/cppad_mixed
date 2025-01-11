@@ -4,9 +4,8 @@
 # ----------------------------------------------------------------------------
 {xrst_begin user_examples}
 {xrst_spell
-   ar
-   ctor
-   rng
+  ctor
+  rng
 }
 
 User API Examples

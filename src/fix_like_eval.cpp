@@ -8,7 +8,7 @@
 /*
 {xrst_begin fix_like_eval dev}
 {xrst_spell
-   fabs
+  fabs
 }
 
 Evaluate Fixed Likelihood

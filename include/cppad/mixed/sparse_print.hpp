@@ -7,7 +7,7 @@
 /*
 {xrst_begin sparse_print dev}
 {xrst_spell
-   cout
+  cout
 }
 
 Print and Eigen Sparse Matrix

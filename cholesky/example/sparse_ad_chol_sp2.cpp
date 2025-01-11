@@ -8,7 +8,7 @@
 /*
 {xrst_begin sparse_ad_chol_sp2.cpp dev}
 {xrst_spell
-   cccc
+  cccc
 }
 
 Sparse AD Cholesky Sparsity Calculation: Example and Test

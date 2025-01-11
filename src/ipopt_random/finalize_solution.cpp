@@ -8,13 +8,12 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 {xrst_begin ipopt_random_finalize_solution dev}
 {xrst_spell
-   cq
-   doesn
-   ip
-   na
-   namespace
-   naninf
-   solution solution
+  cq
+  doesn
+  ip
+  namespace
+  naninf
+  solution solution
 }
 
 Get Solution Results

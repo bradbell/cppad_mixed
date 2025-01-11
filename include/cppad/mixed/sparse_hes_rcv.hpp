@@ -7,7 +7,7 @@
 /*
 {xrst_begin sparse_hes_rcv dev}
 {xrst_spell
-   nnz
+  nnz
 }
 
 Sparse Hessian Computation Structure

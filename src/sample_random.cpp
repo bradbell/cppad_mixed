@@ -5,9 +5,9 @@
 /*
 {xrst_begin sample_random}
 {xrst_spell
-   msg
-   rng
-   uu
+  msg
+  rng
+  uu
 }
 
 Simulation the Posterior Distribution for Random Effects

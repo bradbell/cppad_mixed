@@ -6,21 +6,20 @@
 #
 # {xrst_begin run_cmake.sh}
 # {xrst_spell
-#     homebrew
-#     wno
 #     bitwise
 #     callgrind
-#     cd
 #     config
 #     cxx
 #     fortran
 #     gcc
 #     gfortran
+#     homebrew
 #     libdir
 #     makefile
 #     pc
 #     pkg
 #     wconversion
+#     wno
 #     wpedantic
 #     wshadow
 # }

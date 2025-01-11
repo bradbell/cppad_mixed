@@ -9,8 +9,8 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 {xrst_begin ipopt_random_eval_h dev}
 {xrst_spell
-   hess
-   nele
+  hess
+  nele
 }
 
 Compute the Hessian of the Lagrangian

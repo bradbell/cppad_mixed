@@ -5,25 +5,23 @@
 
 {xrst_begin 2020}
 {xrst_spell
-   bitbucket
-   coinbrew
-   config
-   dd
-   debian
-   gcc
-   gitlab
-   int
-   lagrange
-   lapack
-   libs
-   mm
-   msg
-   multi
-   ndebug
-   pc
-   pkg
-   sudo
-   suitesparse
+  bitbucket
+  coinbrew
+  config
+  dd
+  gcc
+  gitlab
+  int
+  lapack
+  libs
+  mm
+  msg
+  multi
+  ndebug
+  pc
+  pkg
+  sudo
+  suitesparse
 }
 
 Release Notes for 2020

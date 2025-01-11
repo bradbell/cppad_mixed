@@ -5,9 +5,8 @@
 /*
 {xrst_begin derived_ctor}
 {xrst_spell
-   boolean
-   nc
-   nr
+  nc
+  nr
 }
 
 User Defined Class Derived From cppad_mixed

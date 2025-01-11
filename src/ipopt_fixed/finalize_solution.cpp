@@ -30,15 +30,14 @@ bool ipopt_fixed::check_in_limits(
 /*
 {xrst_begin ipopt_fixed_finalize_solution dev}
 {xrst_spell
-   cq
-   curr
-   doesn
-   doxygen
-   ip
-   na
-   namespace
-   naninf
-   solution solution
+  cq
+  curr
+  doesn
+  doxygen
+  ip
+  namespace
+  naninf
+  solution solution
 }
 
 Get Solution Results

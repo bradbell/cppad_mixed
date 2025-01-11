@@ -5,9 +5,9 @@
 /*
 {xrst_begin undetermined dev}
 {xrst_spell
-   nc
-   nr
-   tol
+  nc
+  nr
+  tol
 }
 
 Express An Undetermined Linear System As Dependent and Independent Variables

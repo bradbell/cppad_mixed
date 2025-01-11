@@ -5,10 +5,9 @@
 /*
 {xrst_begin optimize_fixed}
 {xrst_spell
-   iter
-   lagrange
-   nlp
-   struct
+  iter
+  nlp
+  struct
 }
 
 Optimize Fixed Effects

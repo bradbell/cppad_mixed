@@ -5,7 +5,7 @@
 /*
 {xrst_begin manage_gsl_rng}
 {xrst_spell
-   hpp
+  hpp
 }
 
 Set, Get, And Free A GSL Random Number Generator

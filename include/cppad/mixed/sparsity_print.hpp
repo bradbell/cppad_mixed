@@ -7,7 +7,7 @@
 /*
 {xrst_begin sparsity_print dev}
 {xrst_spell
-   setvec
+  setvec
 }
 
 Print a CppAD Internal Sparsity Pattern

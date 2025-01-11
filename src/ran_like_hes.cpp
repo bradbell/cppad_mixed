@@ -7,7 +7,7 @@
 /*
 {xrst_begin ran_like_hes dev}
 {xrst_spell
-   uu
+  uu
 }
 
 Hessian of Random Likelihood w.r.t. Random Effects

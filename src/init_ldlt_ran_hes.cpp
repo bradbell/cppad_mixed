@@ -5,7 +5,7 @@
 /*
 {xrst_begin init_ldlt_ran_hes dev}
 {xrst_spell
-   uu
+  uu
 }
 
 Initialize Cholesky Factor of Hessian of Random Likelihood

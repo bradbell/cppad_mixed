@@ -4,7 +4,7 @@
 # ----------------------------------------------------------------------------
 {xrst_begin cppad_mixed}
 {xrst_spell
-   affero
+  affero
 }
 
 C++ Laplace Approximation of Mixed Effects Models: cppad_mixed-20240729

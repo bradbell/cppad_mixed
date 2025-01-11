@@ -7,7 +7,7 @@
 /*
 {xrst_begin laplace_obj_hes dev}
 {xrst_spell
-   nr
+  nr
 }
 
 Hessian of Laplace Objective and Random Constraints

@@ -13,7 +13,6 @@ fi
 # {xrst_begin check_install.sh}
 # {xrst_spell
 #     bitwise
-#     cd
 #     cflags
 #     cmd
 #     config

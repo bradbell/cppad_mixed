@@ -5,8 +5,8 @@
 // ----------------------------------------------------------------------------
 {xrst_begin sample_fixed}
 {xrst_spell
-   msg
-   rng
+  msg
+  rng
 }
 
 Sample Posterior for Fixed Effects

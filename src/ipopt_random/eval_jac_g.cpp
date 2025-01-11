@@ -9,7 +9,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 {xrst_begin ipopt_random_eval_jac_g dev}
 {xrst_spell
-   nele
+  nele
 }
 
 Compute Jacobian of Constraint Functions

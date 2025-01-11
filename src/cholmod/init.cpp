@@ -5,9 +5,9 @@
 /*
 {xrst_begin ldlt_cholmod_init dev}
 {xrst_spell
-   nrow
-   rhs
-   sym
+  nrow
+  rhs
+  sym
 }
 
 Initialize Factor for a Specific Sparsity Pattern

@@ -4,8 +4,8 @@
 # ----------------------------------------------------------------------------
 {xrst_begin problem}
 {xrst_spell
-   argmax
-   fabs
+  argmax
+  fabs
 }
 
 The cppad_mixed Maximum Likelihood Problem

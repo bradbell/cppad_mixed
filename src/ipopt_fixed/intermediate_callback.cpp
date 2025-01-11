@@ -11,12 +11,10 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 -------------------------------------------------------------------------------
 {xrst_begin ipopt_fixed_intermediate_callback dev}
 {xrst_spell
-   cq
-   du
-   enum
-   ip
-   iter
-   pr
+  cq
+  enum
+  ip
+  iter
 }
 
 Get Optimizer Trace Information From Ipopt

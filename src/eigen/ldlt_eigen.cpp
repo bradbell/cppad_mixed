@@ -12,7 +12,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 -------------------------------------------------------------------------------
 {xrst_begin ldlt_eigen_ctor dev}
 {xrst_spell
-   ptr
+  ptr
 }
 
 Eigen LDLT Constructor
@@ -208,7 +208,7 @@ const sparse_rc& ldlt_eigen<Double>::pattern(void) const
 ------------------------------------------------------------------------------
 {xrst_begin ldlt_eigen_update dev}
 {xrst_spell
-   ptr
+  ptr
 }
 
 Update Factorization Using new Matrix Values
@@ -585,7 +585,7 @@ void ldlt_eigen<Double>::solve_H(
 -------------------------------------------------------------------------------
 {xrst_begin ldlt_eigen_sim_cov dev}
 {xrst_spell
-   ll
+  ll
 }
 
 Simulations with Covariance Corresponding to Factored Matrix

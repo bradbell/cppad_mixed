@@ -10,8 +10,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 {xrst_begin ipopt_fixed_one_dim_function dev}
 {xrst_spell
-   enum
-   lagrange
+  enum
 }
 Compute Model Functions Along One Direction
 ###########################################

@@ -22,8 +22,8 @@ double apx_derivative(
 /*
 {xrst_begin ipopt_fixed_adapt_derivative_chk dev}
 {xrst_spell
-   differenced
-   tol
+  differenced
+  tol
 }
 
 Adaptive Step Size check of Derivative Calculations

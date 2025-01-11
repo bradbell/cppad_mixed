@@ -7,11 +7,11 @@
 /*
 {xrst_begin initialize}
 {xrst_spell
-   cout
-   itr
-   nnz
-   nr
-   var
+  cout
+  itr
+  nnz
+  nr
+  var
 }
 
 Initialization After Constructor

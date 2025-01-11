@@ -5,7 +5,7 @@
 /*
 {xrst_begin cholmod_solve2_sim.cpp dev}
 {xrst_spell
-   ccc
+  ccc
 }
 
 Cholmod Posterior Simulations Using Sparse Hessian of Likelihood

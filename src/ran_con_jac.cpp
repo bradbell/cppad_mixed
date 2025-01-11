@@ -5,7 +5,7 @@
 /*
 {xrst_begin ran_con_jac dev}
 {xrst_spell
-   nnz
+  nnz
 }
 
 Jacobian of the Random Constraint Function

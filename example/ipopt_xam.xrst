@@ -4,9 +4,9 @@
 # ----------------------------------------------------------------------------
 {xrst_begin ipopt_xam dev}
 {xrst_spell
-   eqnarray
-   ll
-   nowrap
+  eqnarray
+  ll
+  nowrap
 }
 
 Example Use of Ipopt

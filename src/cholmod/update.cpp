@@ -5,7 +5,7 @@
 /*
 {xrst_begin ldlt_cholmod_update dev}
 {xrst_spell
-   sym
+  sym
 }
 
 Update Factorization Using new Matrix Values

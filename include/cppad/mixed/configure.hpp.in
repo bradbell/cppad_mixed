@@ -7,9 +7,9 @@
 /*
 {xrst_begin configure.hpp dev}
 {xrst_spell
-   nullptr
-   preprocessor
-   yyyymmdd
+  nullptr
+  preprocessor
+  yyyymmdd
 }
 
 Preprocessor Configuration Symbols in configure.hpp

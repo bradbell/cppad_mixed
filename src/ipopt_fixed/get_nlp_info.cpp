@@ -8,7 +8,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 {xrst_begin ipopt_fixed_get_nlp_info dev}
 {xrst_spell
-   nnz
+  nnz
 }
 
 Return Information About Problem Sizes

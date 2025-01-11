@@ -284,7 +284,7 @@ private functions
 
 {xrst_begin set_jac_sparsity dev}
 {xrst_spell
-   setvec
+  setvec
 }
 
 Set the Jacobian Sparsity Pattern
@@ -485,9 +485,9 @@ void sparse_ad_cholesky::set_jac_sparsity(Sparsity& jac_sparsity)
 -----------------------------------------------------------------------------
 {xrst_begin set_hes_sparsity dev}
 {xrst_spell
-   nx
-   ny
-   setvec
+  nx
+  ny
+  setvec
 }
 
 Set the Hessian Sparsity Pattern

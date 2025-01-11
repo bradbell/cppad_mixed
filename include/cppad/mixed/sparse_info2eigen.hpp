@@ -8,8 +8,8 @@
 /*
 {xrst_begin sparse_info2eigen dev}
 {xrst_spell
-   nc
-   nr
+  nc
+  nr
 }
 
 Convert a sparse_mat_info Representation to An Eigen Sparse Matrix

@@ -11,8 +11,7 @@ private:
 ------------------------------------------------------------------------------
 {xrst_begin private_base_class dev}
 {xrst_spell
-   boolean
-   uu
+  uu
 }
 
 cppad_mixed: Private Declarations

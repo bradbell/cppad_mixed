@@ -5,8 +5,8 @@
 /*
 {xrst_begin lasso.cpp}
 {xrst_spell
-   eqnarray
-   nowrap
+  eqnarray
+  nowrap
 }
 
 Lasso on Fixed Effects: Example and Test

@@ -10,7 +10,7 @@
 /*
 {xrst_begin init_ran_hes dev}
 {xrst_spell
-   uu
+  uu
 }
 
 Initialize Hessian of Random Likelihood w.r.t Random Effects

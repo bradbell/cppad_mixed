@@ -128,14 +128,13 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 /*
 {xrst_begin ipopt_fixed_ctor dev}
 {xrst_spell
-   app
-   lagrange
-   nlp
-   nnz
-   struct
-   tmp
-   tol
-   uhat
+  app
+  nlp
+  nnz
+  struct
+  tmp
+  tol
+  uhat
 }
 
 Ipopt Fixed Optimization Callback Constructor and Destructor

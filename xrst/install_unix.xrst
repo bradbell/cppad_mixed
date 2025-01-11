@@ -4,19 +4,18 @@
 # ----------------------------------------------------------------------------
 {xrst_begin install_unix}
 {xrst_spell
-   cd
-   config
-   dev
-   devel
-   fortran
-   grep
-   libs
-   pc
-   pkg
-   rpath
-   suitesparse
-   txt
-   wget
+  config
+  dev
+  devel
+  fortran
+  grep
+  libs
+  pc
+  pkg
+  rpath
+  suitesparse
+  txt
+  wget
 }
 
 Installing cppad_mixed in Unix

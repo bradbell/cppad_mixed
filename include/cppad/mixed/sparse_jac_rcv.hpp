@@ -7,7 +7,7 @@
 /*
 {xrst_begin sparse_jac_rcv dev}
 {xrst_spell
-   nnz
+  nnz
 }
 
 Sparse Jacobian Computation Structure

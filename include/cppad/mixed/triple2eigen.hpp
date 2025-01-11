@@ -7,8 +7,8 @@
 /*
 {xrst_begin triple2eigen dev}
 {xrst_spell
-   nc
-   nr
+  nc
+  nr
 }
 
 Convert Row, Column, Value Triple to an Eigen Sparse Matrix

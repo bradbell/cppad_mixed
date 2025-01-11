@@ -4,15 +4,12 @@
 # ----------------------------------------------------------------------------
 {xrst_begin ipopt_trace}
 {xrst_spell
-   biegler
-   du
-   iter
-   lagragian
-   lagrange
-   lg
-   pr
-   rg
-   wachter
+  biegler
+  iter
+  lagragian
+  lg
+  rg
+  wachter
 }
 
 Description of Ipopt Tracing Output

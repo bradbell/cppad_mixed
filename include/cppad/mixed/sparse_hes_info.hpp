@@ -7,7 +7,7 @@
 /*
 {xrst_begin sparse_hes_info dev}
 {xrst_spell
-   work work
+  work work
 }
 
 Sparse Hessian Information

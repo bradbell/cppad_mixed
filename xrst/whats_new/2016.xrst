@@ -5,29 +5,26 @@
 
 {xrst_begin 2016}
 {xrst_spell
-   boolean
-   checkpointed
-   chk
-   choleig
-   cov
-   dd
-   debian
-   dismod
-   inv
-   lagrange
-   libdir
-   logdet
-   mm
-   omhelp
-   py
-   sim
-   sqrt
-   src
-   suitesparse
-   tri
-   uu
-   valgrind
-   wno
+  checkpointed
+  chk
+  choleig
+  cov
+  dd
+  dismod
+  inv
+  libdir
+  logdet
+  mm
+  omhelp
+  py
+  sim
+  sqrt
+  src
+  suitesparse
+  tri
+  uu
+  valgrind
+  wno
 }
 
 Release Notes for 2016

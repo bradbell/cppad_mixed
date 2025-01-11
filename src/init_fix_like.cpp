@@ -8,7 +8,7 @@
 /*
 {xrst_begin init_fix_like dev}
 {xrst_spell
-   var
+  var
 }
 
 Initialize Fixed Likelihood

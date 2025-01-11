@@ -5,9 +5,9 @@
 /*
 {xrst_begin ldlt_cholmod_inv dev}
 {xrst_spell
-   int
-   nrow
-   sparseinv
+  int
+  nrow
+  sparseinv
 }
 
 Compute a Subset of the Inverse of Factored Matrix

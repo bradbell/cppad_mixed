@@ -5,17 +5,14 @@
 
 {xrst_begin 2021}
 {xrst_spell
-   cygwin
-   dd
-   debian
-   dpkg
-   lagrange
-   mm
-   msys
-   multi
-   op
-   rng
-   ubuntu
+  cygwin
+  dd
+  dpkg
+  mm
+  msys
+  multi
+  op
+  rng
 }
 
 Release Notes for 2021

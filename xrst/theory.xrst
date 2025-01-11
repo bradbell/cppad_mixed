@@ -4,16 +4,11 @@
 # ----------------------------------------------------------------------------
 {xrst_begin theory}
 {xrst_spell
-   anders
-   april
-   argmin
-   bradley
-   casper
-   hans
-   kasper
-   kristensen
-   nielsen
-   skaug
+  anders
+  argmin
+  kasper
+  kristensen
+  skaug
 }
 :math:`\newcommand{\dtheta}[1]{ \frac{\R{d}}{\R{d} \theta_{ #1}} }`
 

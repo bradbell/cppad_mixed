@@ -5,15 +5,12 @@
 /*
 {xrst_begin capture_xam.cpp}
 {xrst_spell
-   alloc
-   andrew
-   boolean
-   logit
-   ndebug
-   poisson
-   preprocessor
-   rng
-   royle
+  alloc
+  logit
+  ndebug
+  preprocessor
+  rng
+  royle
 }
 
 A Capture Example and Speed Test

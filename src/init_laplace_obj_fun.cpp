@@ -5,9 +5,9 @@
 /*
 {xrst_begin init_laplace_obj_fun dev}
 {xrst_spell
-   dyn
-   ind
-   nr
+  dyn
+  ind
+  nr
 }
 
 Second Order Representation of Laplace Objective and Constraints

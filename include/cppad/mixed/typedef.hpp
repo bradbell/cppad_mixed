@@ -10,8 +10,8 @@
 /*
 {xrst_begin typedef}
 {xrst_spell
-   hpp
-   namespace
+  hpp
+  namespace
 }
 
 Types Defined in the CppAD Mixed Namespace

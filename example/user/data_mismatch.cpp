@@ -5,8 +5,8 @@
 /*
 {xrst_begin data_mismatch.cpp}
 {xrst_spell
-   eqnarray
-   nowrap
+  eqnarray
+  nowrap
 }
 
 Random Effects Variance May Cause Data Mismatch

@@ -5,7 +5,7 @@
 /*
 {xrst_begin order2random dev}
 {xrst_spell
-   uu
+  uu
 }
 
 Second Order Representation of Random Effects, W(beta, theta, u)

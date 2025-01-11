@@ -8,7 +8,7 @@
 /*
 {xrst_begin init_ran_jac dev}
 {xrst_spell
-   uu
+  uu
 }
 
 Initialize Jacobian of Random Likelihood w.r.t. Random Effects

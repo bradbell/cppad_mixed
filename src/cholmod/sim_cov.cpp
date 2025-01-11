@@ -5,7 +5,7 @@
 /*
 {xrst_begin ldlt_cholmod_sim_cov dev}
 {xrst_spell
-   ll
+  ll
 }
 
 Simulations with Covariance Corresponding to Factored Matrix

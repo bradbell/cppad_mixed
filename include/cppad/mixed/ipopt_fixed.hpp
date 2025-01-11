@@ -8,7 +8,7 @@
 /*
 {xrst_begin ipopt_fixed dev}
 {xrst_spell
-   nlp
+  nlp
 }
 
 Ipopt NLP Class Used to Optimize Fixed Effects

@@ -5,10 +5,10 @@
 /*
 {xrst_begin ldlt_cholmod_ctor dev}
 {xrst_spell
-   ll
-   nrow
-   simplicial
-   supernodal
+  ll
+  nrow
+  simplicial
+  supernodal
 }
 
 Cholmod LDLT Constructor
