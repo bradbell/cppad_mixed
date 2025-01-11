@@ -15,7 +15,7 @@ set -e -u
 # before the remote branch exists.
 # -----------------------------------------------------------------------------
 year='2025' # Year for this stable version
-release='2' # first release for each year starts with 0
+release='0' # first release for each year starts with 0
 # -----------------------------------------------------------------------------
 if [ "$0" != 'bin/new_release.sh' ]
 then

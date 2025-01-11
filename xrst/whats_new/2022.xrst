@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-23 Bradley M. Bell
+# SPDX-FileContributor: 2014-25 Bradley M. Bell
 # ----------------------------------------------------------------------------
 
 {xrst_begin 2022}
@@ -29,9 +29,9 @@ In addition, a special case was added to
 12-13
 =====
 Finish conversion of cppad_mixed documentation from
-`omhelp <http://bradbell.github.io/omhelp/doc/omhelp.htm>`_
+`omhelp <https://github.com/bradbell/omhelp>`_
 to the sphinx
-`xrst <http://bradbell.github.io/xrst/html/purpose.html>`_  wrapper.
+`xrst <https://xrst.readthedocs.io/latest>`_  wrapper.
 The following is a link to the
 `old documentation <http://bradbell.github.io/cppad_mixed/doc/cppad_mixed.htm>`_ .
 
