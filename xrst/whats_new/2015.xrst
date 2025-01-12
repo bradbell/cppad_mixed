@@ -77,7 +77,7 @@ Change
    the `dismod_at <https://dismod-at.readthedocs.io>`_
    package.
 #. Use the
-   `CppAD addon <http://www.coin-or.org/CppAD/Doc/addon.htm>`_
+   `CppAD addon <https://www.coin-or.org/CppAD/Doc/addon.htm>`_
    conventions for the install of ``cppad_mixed`` .
 #. Put ``cppad_mixed`` class in the global namespace,
    (objects are in the ``CppAD::mixed`` namespace).

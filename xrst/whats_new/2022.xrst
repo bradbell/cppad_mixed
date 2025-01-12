@@ -33,7 +33,8 @@ Finish conversion of cppad_mixed documentation from
 to the sphinx
 `xrst <https://xrst.readthedocs.io/latest>`_  wrapper.
 The following is a link to the
-`old documentation <http://bradbell.github.io/cppad_mixed/doc/cppad_mixed.htm>`_ .
+`old documentation
+<https://bradbell.github.io/cppad_mixed/doc/cppad_mixed.htm>`_ .
 
 
 10-28

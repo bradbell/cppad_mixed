@@ -3,6 +3,9 @@
 # SPDX-FileContributor: 2014-25 Bradley M. Bell
 # ----------------------------------------------------------------------------
 {xrst_begin cppad_mixed}
+{xrst_spell
+   gz
+}
 
 C++ Laplace Approximation of Mixed Effects Models
 #################################################
@@ -23,14 +26,16 @@ Versions
    :widths: auto
 
    * - This version
-     - cppad_mixed-2025.1.11
+     - cppad_mixed-2025.1.12
    * - Documentation for latest version
      - `latest <https://cppad-mixed.readthedocs.io/latest>`_
    * - Documentation for most recent stable version
      - `stable-2025 <https://cppad-mixed.readthedocs.io/stable-2025>`_
    * - Most recent release of this stable version
-     - `release-2025 <https://github.com/bradbell/cppad_mixed/archive/2025.0.0.tar.gz>`_
+     - release-2025_
 
+.. _release-2025: https://codeload.github.com/bradbell/
+   cppad_mixed/tar.gz/refs/tags/2025.0.0
 
 Contents
 ********

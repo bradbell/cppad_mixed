@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-22 Bradley M. Bell
+# SPDX-FileContributor: 2014-25 Bradley M. Bell
 # ----------------------------------------------------------------------------
 {xrst_begin install_unix}
 {xrst_spell
@@ -44,7 +44,7 @@ must be installed.
 
 cmake
 =====
-The `cmake <http://www.cmake.org/>`_ program,
+The `cmake <https://cmake.org/>`_ program,
 which installs other programs,
 must be installed.
 
@@ -60,14 +60,14 @@ is required by ``cppad_mixed`` .
 
 gsl
 ===
-`gsl <http://gnuwin32.sourceforge.net/packages/gsl.htm>`_,
+`gsl <https://gnuwin32.sourceforge.net/packages/gsl.htm>`_,
 the gnu scientific library.
 Note that the development headers are required; e.g.,
 on Fedora or Red-Hat one needs to install ``gsl-devel`` .
 
 pkg-config
 ==========
-The `pkg-config <http://www.freedesktop.org/wiki/Software/pkg-config/>`_
+The `pkg-config <https://www.freedesktop.org/wiki/Software/pkg-config/>`_
 program must be installed.
 The following command should work:
 
@@ -77,7 +77,7 @@ see :ref:`install_unix@Paths@PKG_CONFIG_PATH` below.
 
 suitesparse
 ===========
-The `suitesparse <http://faculty.cse.tamu.edu/davis/SuiteSparse>`_
+The `suitesparse <https://people.engr.tamu.edu/davis/SuiteSparse/index.html>`_
 sparse matrix package.
 Note that the development headers are required; e.g.,
 on Fedora or Red-Hat one needs to install ``suitesparse-devel`` .
@@ -123,7 +123,7 @@ running these scripts.
 
 eigen
 =====
-The `eigen <http://eigen.tuxfamily.org>`_
+The `eigen <https://eigen.tuxfamily.org/index.php?title=Main_Page>`_
 linear algebra package.
 Starting in the ``cppad_mixed.git`` directory,
 the command
@@ -134,7 +134,7 @@ can be used to install this package.
 
 Ipopt
 =====
-The `Ipopt <https://projects.coin-or.org/Ipopt>`_
+The `Ipopt <https://github.com/coin-or/Ipopt>`_
 optimization package.
 Starting in the ``cppad_mixed.git`` directory,
 the command
@@ -145,7 +145,7 @@ can be used to install this package.
 
 CppAD
 =====
-The `cppad <http://www.coin-or.org/CppAD/>`_
+The `cppad <https://www.coin-or.org/CppAD/>`_
 C++ algorithmic differentiation package.
 Starting in the ``cppad_mixed.git`` directory,
 the command
