@@ -801,7 +801,7 @@ Go back to using column vectors when solving linear equations
 #. Remove the need for the
    ``-Wno-shadow`` and ``-Wno-deprecated-declarations`` options
    when compiling Eigen files by using the CMake system option for the
-   `Eigen <https://eigen.tuxfamily.org/index.php?title=Main_Page>`_
+   `Eigen <https://libeigen.gitlab.io/docs/index.html>`_
    include directories.
    This should work on more systems.
 

@@ -123,7 +123,7 @@ running these scripts.
 
 eigen
 =====
-The `eigen <https://eigen.tuxfamily.org/index.php?title=Main_Page>`_
+The `eigen <https://libeigen.gitlab.io/docs/index.html>`_
 linear algebra package.
 Starting in the ``cppad_mixed.git`` directory,
 the command
