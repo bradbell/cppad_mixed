@@ -176,6 +176,10 @@ s|tags/[0-9]{4}[.][0-9]*[.][0-9]*>|tags/$tag>|
 s|tags/[0-9]{8}>|tags/$tag>|
 s|tags/[0-9]{8}[.][0-9]*>|tags/$tag>|
 #
+s|tags/[0-9]{4}[.][0-9]*[.][0-9]* *\$|tags/$tag|
+s|tags/[0-9]{8} *\$|tags/$tag|
+s|tags/[0-9]{8}[.][0-9]* *\$|tags/$tag|
+#
 EOF
 for file in $version_file_list
 do
@@ -194,7 +198,7 @@ fi
 git_status=$(git status --porcelain)
 if [ "$git_status" != '' ]
 then
-   echo "bin/new_release: git staus is not empty for $main_branch branch"
+   echo "bin/new_release: git status is not empty for $main_branch branch"
    echo 'use bin/git_commit.sh to commit its changes ?'
    exit 1
 fi
@@ -226,6 +230,10 @@ s|archive/[0-9]{8}[.][0-9]*[.]tar[.]gz|archive/$tag.tar.gz|
 s|tags/[0-9]{4}[.][0-9]*[.][0-9]*>|tags/$tag>|
 s|tags/[0-9]{8}>|tags/$tag>|
 s|tags/[0-9]{8}[.][0-9]*>|tags/$tag>|
+#
+s|tags/[0-9]{4}[.][0-9]*[.][0-9]* *\$|tags/$tag|
+s|tags/[0-9]{8} *\$|tags/$tag|
+s|tags/[0-9]{8}[.][0-9]* *\$|tags/$tag|
 #
 EOF
 for file in $version_file_list
@@ -270,7 +278,7 @@ fi
 git_status=$(git status --porcelain)
 if [ "$git_status" != '' ]
 then
-   echo "bin/new_release: git staus --porcelean not empty for $stable_branch"
+   echo "bin/new_release: git status --porcelean not empty for $stable_branch"
    echo 'use bin/git_commit.sh to commit its changes ?'
    exit 1
 fi
