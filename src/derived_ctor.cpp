@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-25 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin derived_ctor}
@@ -134,7 +134,7 @@ class constructor (as in the syntax above).
 CppAD ErrorHandler
 ******************
 If a CppAD error occurs, its
-`ErrorHandler <http://www.coin-or.org/CppAD/Doc/errorhandler.htm>`_
+`ErrorHandler <https://www.coin-or.org/CppAD/Doc/errorhandler.htm>`_
 is used to map it to either a
 :ref:`base_class@User Defined Functions@fatal_error`
 or

@@ -74,10 +74,10 @@ Change
 =====
 
 #. First version of ``cppad_mixed`` as a package separate from
-   the `dismod_at <https://dismod-at.readthedocs.io>`_
+   the `dismod_at <https://dismod-at.readthedocs.io/latest>`_
    package.
 #. Use the
-   `CppAD addon <http://www.coin-or.org/CppAD/Doc/addon.htm>`_
+   `CppAD addon <https://www.coin-or.org/CppAD/Doc/addon.htm>`_
    conventions for the install of ``cppad_mixed`` .
 #. Put ``cppad_mixed`` class in the global namespace,
    (objects are in the ``CppAD::mixed`` namespace).
