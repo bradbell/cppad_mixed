@@ -14,7 +14,7 @@
 # spdx_license_id
 # Each file, except those specified by no_copyright_list, should have a line
 # that ends with the following text:
-spdx_license_id='SPDX-License-Identifier: AGPL-3.0-or-later'
+spdx_license_id='AGPL-3.0-or-later'
 #
 # package_name
 package_name=''
@@ -60,6 +60,7 @@ version_file_list='
 no_copyright_list='
    .gitignore
    .readthedocs.yaml
+   agpl-3.0.txt
    include/cppad/mixed/sparseinv.hpp
    readme.md
    uninstall.cmake.in
