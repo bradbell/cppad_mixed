@@ -23,13 +23,13 @@ Versions
    :widths: auto
 
    * - This version
-     - cppad_mixed-2025.0.0
+     - cppad_mixed-2025.0.1
    * - Documentation for latest version
      - `latest <https://cppad-mixed.readthedocs.io/latest>`_
    * - Documentation for most recent stable version
      - `stable-2025 <https://cppad-mixed.readthedocs.io/stable-2025>`_
    * - Most recent release of this stable version
-     - `release-2025 <https://github.com/bradbell/cppad_mixed/archive/2025.0.0.tar.gz>`_
+     - `release-2025 <https://github.com/bradbell/cppad_mixed/archive/2025.0.1.tar.gz>`_
 
 
 Contents
