@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-22 Bradley M. Bell
+# SPDX-FileContributor: 2014-25 Bradley M. Bell
 # ----------------------------------------------------------------------------
 # Construct cppad_mixed.pc from cppad_mixed.pc.in; see
 # http://people.freedesktop.org/~dbn/pkg-config-guide.html
@@ -17,7 +17,7 @@ SET(cflags_private     " ")
 SET(pkg_list gsl eigen3 ipopt cppad)
 IF( NOT "${suitesparse_prefix}" STREQUAL "/usr" )
    SET(pkg_list gsl eigen3 ipopt cppad suitesparse)
-ENDIF( "${suitesparse_prefix}" STREQUAL "/usr" )
+ENDIF( )
 FOREACH(pkg ${pkg_list} )
    #
    FOREACH(entry ${${pkg}_INCLUDE_DIRS} )
