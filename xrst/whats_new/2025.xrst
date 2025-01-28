@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
+# SPDX-FileContributor: 2014-25 Bradley M. Bell
+# ----------------------------------------------------------------------------
+
+{xrst_begin 2025}
+{xrst_spell
+  conda
+  dd
+  mm
+}
+
+Release Notes for 2025
+######################
+
+mm-dd
+*****
+
+01-28
+=====
+Add the optional ``cmake_search_prefix`` to the cmake command
+(to help with conda install on windows).
+
+{xrst_end 2025}

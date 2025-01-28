@@ -12,7 +12,8 @@
 #                        -D cmake_libdir=value \
 #                        -D ldlt_cholmod=value \
 #                        -D optimize_cppad_function=value \
-#                        -D for_hes_sparsity=value
+#                        -D for_hes_sparsity=value \
+# optional variables:    -D cmake_search_prefix=value
 # ============================================================================
 # Macro definitions
 # ============================================================================
@@ -50,6 +51,10 @@ MACRO( required_definition variable type docstring )
          SET( ${variable}_01 0 )
       ENDIF( ${variable} )
    ENDIF( ${type} STREQUAL "BOOL" )
+   IF( ${type} STREQUAL "PATH" )
+      CMAKE_PATH(SET ${variable} "${${variable}}" )
+      MESSAGE( STATUS "${variable} = ${${variable}}" )
+   ENDIF( ${type} STREQUAL "PATH" )
 ENDMACRO( required_definition )
 # ----------------------------------------------------------------------------
 # optional_definition( variable type docstring )
@@ -75,11 +80,15 @@ MACRO( optional_definition variable type docstring )
          SET( ${variable}_01 0 )
       ENDIF( ${variable} )
    ENDIF( ${type} STREQUAL "BOOL" )
+   IF( ${type} STREQUAL "PATH" )
+      CMAKE_PATH(SET ${variable} "${${variable}}" )
+      MESSAGE( STATUS "${variable} = ${${variable}}" )
+   ENDIF( ${type} STREQUAL "PATH" )
 ENDMACRO( optional_definition )
 # ============================================================================
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 PROJECT(cppad_mixed)
-SET(cppad_mixed_version "2025.1.25")
+SET(cppad_mixed_version "2025.1.28")
 INCLUDE_DIRECTORIES( ${cppad_mixed_SOURCE_DIR}/include )
 INCLUDE(CheckCXXSourceRuns)
 MESSAGE(STATUS "BEGIN:")
@@ -126,6 +135,9 @@ required_definition(optimize_cppad_function BOOL
 )
 required_definition(for_hes_sparsity BOOL
    "use forward (reverse) method for computing Hessian w.r.t. random effects"
+)
+optional_definition( cmake_search_prefix PATH
+   "another prefix used when searching for installed tools"
 )
 # ----------------------------------------------------------------------------
 MESSAGE(STATUS "END:")
@@ -198,13 +210,9 @@ ENDIF( cppad_mixed_has_nullptr_flag )
 MESSAGE(STATUS "cppad_mixed_has_nullptr = ${cppad_mixed_has_nullptr_01}")
 # ----------------------------------------------------------------------------
 # no pkg-config for SuiteSparse so explicitly set following values:
-# suitesparse_LIBRARY_DIRS
-# suitesparse_INCLUDE_DIRS
-# suitesparse_LIBRARIES
 #
 # suitesparse_prefix
 # suitesparse_suffix
-# suitesparse_in_cholmod_include_01
 SET(suitesparse_prefix "NOTFOUND")
 SET(suitesparse_suffix "NOTFOUND")
 EXECUTE_PROCESS(
@@ -220,13 +228,17 @@ IF( NOT "${brew_prefix}" STREQUAL "" )
          SET(suitesparse_suffix "${suffix}")
       ENDIF( EXISTS "${brew_prefix}/${suffix}/cholmod.h" )
    ENDFOREACH(suffix "include" "include/suitesparse")
-ENDIF( NOT ( "${brew_prefix}" STREQUAL "" ) )
+ENDIF( NOT "${brew_prefix}" STREQUAL "" )
+IF( NOT cmake_search_prefix )
+   SET(cmake_search_prefix "" )
+ENDIF( NOT cmake_search_prefix )
 FOREACH(prefix
    /usr
    /usr/local
    /opt/local
    /usr/local/opt/suitesparse
    ${cmake_install_prefix}
+   ${cmake_search_prefix}
 )
    FOREACH(suffix "include" "include/suitesparse")
       IF( EXISTS "${prefix}/${suffix}/cholmod.h" )
@@ -263,7 +275,7 @@ ELSE( ${suitesparse_suffix} STREQUAL "include" )
    SET(suitesparse_INCLUDE_DIRS  "${suitesparse_prefix}/include/suitesparse" )
 ENDIF( ${suitesparse_suffix} STREQUAL "include" )
 #
-# set suitesparse_LIBRARIES
+# suitesparse_LIBRARIES
 SET(suitesparse_LIBRARIES
    "cholmod;amd;camd;colamd;ccolamd;suitesparseconfig"
 )
@@ -271,22 +283,29 @@ SET(suitesparse_LIBRARIES
 # suitesparse_LIBRARY_DIRS
 SET(suitesparse_LIBRARY_DIRS "NOTFOUND")
 FOREACH(suffix "lib" "lib64" "${cmake_libdir}" )
-   SET(both "${suitesparse_prefix}/${suffix}")
-   SET(globbing_expression "${both}/libcholmod.*")
-   FILE(GLOB match_1 ${globbing_expression})
-   IF( match_1 )
-      SET(suitesparse_LIBRARY_DIRS "${both}")
-   ELSE( match_1 )
-      SET(globbing_expression "${both}/*/libcholmod.*")
-      FILE(GLOB match_2 ${globbing_expression})
-      IF( match_2 )
-         SET(suitesparse_LIBRARY_DIRS "${both}")
-      ENDIF( match_2 )
-   ENDIF( match_1 )
+   SET(libdir "${suitesparse_prefix}/${suffix}")
+   FOREACH(name "libcholmod" "cholmod")
+      SET(globbing_expression "${libdir}/${name}.*")
+      FILE(GLOB match_1 ${globbing_expression})
+      IF( match_1 )
+         SET(suitesparse_LIBRARY_DIRS "${libdir}")
+      ELSE( match_1 )
+         SET(globbing_expression "${libdir}/*/${name}.*")
+         FILE(GLOB match_2 ${globbing_expression})
+         IF( match_2 )
+            SET(suitesparse_LIBRARY_DIRS "${libdir}")
+            MESSAGE(FATAL_ERROR
+               "Report this error as a cppad-mixed issue. The search results"
+               "seem to be incorrect and never get used because the true"
+               "libdir is ${libdir}/* where * is the match found by GLOB"
+            )
+         ENDIF( match_2 )
+      ENDIF( match_1 )
+   ENDFOREACH(name "libcholmod" "cholmod")
 ENDFOREACH(suffix "lib" "lib64" "${cmake_libdir}" )
 IF( NOT suitesparse_LIBRARY_DIRS )
    MESSAGE(FATAL_ERROR
-      "Cannot find libcholmod.* in ${suitesparse_prefix}/libdir"
+      "Cannot find cholmod library in ${suitesparse_prefix}/libdir"
       " where libdir is lib, lib64, or cmake_libdir"
    )
 ENDIF( NOT suitesparse_LIBRARY_DIRS )
