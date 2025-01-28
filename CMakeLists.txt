@@ -17,9 +17,16 @@
 # ============================================================================
 # Macro definitions
 # ============================================================================
+#
+# print_variable(variable)
 MACRO(print_variable variable)
    MESSAGE(STATUS "${variable}=${${variable}}" )
 ENDMACRO(print_variable variable)
+#
+# trace_line_in_file(${CMAKE_CURRENT_LIST_LINE}, ${CMAKE_CURRENT_LIST_FILE} )
+MACRO(trace_line_in_file line file)
+   MESSAGE(STATUS "Line ${line} in ${file}")
+ENDMACRO( )
 # ----------------------------------------------------------------------------
 # required_definition( variable type docstring )
 #
@@ -209,110 +216,10 @@ ELSE( cppad_mixed_has_nullptr_flag )
 ENDIF( cppad_mixed_has_nullptr_flag )
 MESSAGE(STATUS "cppad_mixed_has_nullptr = ${cppad_mixed_has_nullptr_01}")
 # ----------------------------------------------------------------------------
-# no pkg-config for SuiteSparse so explicitly set following values:
-#
-# suitesparse_prefix
-# suitesparse_suffix
-SET(suitesparse_prefix "NOTFOUND")
-SET(suitesparse_suffix "NOTFOUND")
-EXECUTE_PROCESS(
-   COMMAND brew --prefix suitesparse
-   OUTPUT_VARIABLE brew_prefix
-   OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-IF( NOT "${brew_prefix}" STREQUAL "" )
-   FOREACH(suffix "include" "include/suitesparse")
-      IF( EXISTS "${brew_prefix}/${suffix}/cholmod.h" )
-         MESSAGE(STATUS "Using ${brew_prefix}/${suffix}/cholmod.h" )
-         SET(suitesparse_prefix "${brew_prefix}")
-         SET(suitesparse_suffix "${suffix}")
-      ENDIF( EXISTS "${brew_prefix}/${suffix}/cholmod.h" )
-   ENDFOREACH(suffix "include" "include/suitesparse")
-ENDIF( NOT "${brew_prefix}" STREQUAL "" )
-IF( NOT cmake_search_prefix )
-   SET(cmake_search_prefix "" )
-ENDIF( NOT cmake_search_prefix )
-FOREACH(prefix
-   /usr
-   /usr/local
-   /opt/local
-   /usr/local/opt/suitesparse
-   ${cmake_install_prefix}
-   ${cmake_search_prefix}
-)
-   FOREACH(suffix "include" "include/suitesparse")
-      IF( EXISTS "${prefix}/${suffix}/cholmod.h" )
-         IF( suitesparse_prefix )
-            SET(same "yes")
-            IF( NOT "${prefix}" STREQUAL "${suitesparse_prefix}" )
-               SET(same "no")
-            ELSEIF( NOT "${suffix}" STREQUAL "${suitesparse_prefix}" )
-               SET(same "no")
-            ENDIF()
-            IF( same STREQUAL "no" )
-               MESSAGE(STATUS "Not using ${prefix}/${suffix}/cholmod.h")
-            ENDIF( same STREQUAL "no" )
-         ELSE( suitesparse_prefix )
-            MESSAGE(STATUS "Using ${prefix}/${suffix}/cholmod.h" )
-            SET(suitesparse_prefix "${prefix}")
-            SET(suitesparse_suffix "${suffix}")
-         ENDIF( suitesparse_prefix )
-      ENDIF( EXISTS "${prefix}/${suffix}/cholmod.h" )
-   ENDFOREACH(suffix "include" "include/suitesparse")
-ENDFOREACH(prefix)
-IF( NOT suitesparse_prefix )
-   MESSAGE(FATAL_ERROR "cannot find cholmod.h" )
-ELSE( NOT suitesparse_prefix )
-ENDIF( NOT suitesparse_prefix )
-#
-# suitesparse_INCLUDE_DIRS
-# suitesparse_in_cholmod_include_01
-IF( ${suitesparse_suffix} STREQUAL "include" )
-   SET(suitesparse_in_cholmod_include_01 "0")
-   SET(suitesparse_INCLUDE_DIRS  "${suitesparse_prefix}/include" )
-ELSE( ${suitesparse_suffix} STREQUAL "include" )
-   SET(suitesparse_in_cholmod_include_01 "1")
-   SET(suitesparse_INCLUDE_DIRS  "${suitesparse_prefix}/include/suitesparse" )
-ENDIF( ${suitesparse_suffix} STREQUAL "include" )
-#
-# suitesparse_LIBRARIES
-SET(suitesparse_LIBRARIES
-   "cholmod;amd;camd;colamd;ccolamd;suitesparseconfig"
-)
-#
-# suitesparse_LIBRARY_DIRS
-SET(suitesparse_LIBRARY_DIRS "NOTFOUND")
-FOREACH(suffix "lib" "lib64" "${cmake_libdir}" )
-   SET(libdir "${suitesparse_prefix}/${suffix}")
-   FOREACH(name "libcholmod" "cholmod")
-      SET(globbing_expression "${libdir}/${name}.*")
-      FILE(GLOB match_1 ${globbing_expression})
-      IF( match_1 )
-         SET(suitesparse_LIBRARY_DIRS "${libdir}")
-      ELSE( match_1 )
-         SET(globbing_expression "${libdir}/*/${name}.*")
-         FILE(GLOB match_2 ${globbing_expression})
-         IF( match_2 )
-            SET(suitesparse_LIBRARY_DIRS "${libdir}")
-            MESSAGE(FATAL_ERROR
-               "Report this error as a cppad-mixed issue. The search results"
-               "seem to be incorrect and never get used because the true"
-               "libdir is ${libdir}/* where * is the match found by GLOB"
-            )
-         ENDIF( match_2 )
-      ENDIF( match_1 )
-   ENDFOREACH(name "libcholmod" "cholmod")
-ENDFOREACH(suffix "lib" "lib64" "${cmake_libdir}" )
-IF( NOT suitesparse_LIBRARY_DIRS )
-   MESSAGE(FATAL_ERROR
-      "Cannot find cholmod library in ${suitesparse_prefix}/libdir"
-      " where libdir is lib, lib64, or cmake_libdir"
-   )
-ENDIF( NOT suitesparse_LIBRARY_DIRS )
-# ----------------------------------------------------------------------------
-# set pkg-config information about gsl, eigen3, ipopt, cppad, suitesparse
+# gsl, eigen3, ipopt, cppad, CHOLMOD
+# INCLUDE_DIRECTORIES and LINK_DIRECTORIES
 FIND_PACKAGE(PkgConfig)
-FOREACH(pkg gsl eigen3 ipopt cppad)
+FOREACH(pkg gsl eigen3 ipopt cppad CHOLMOD)
    pkg_check_modules( ${pkg} QUIET ${pkg} )
    IF( ${pkg}_FOUND )
       MESSAGE(STATUS "Found ${pkg}.pc file")
@@ -327,10 +234,21 @@ FOREACH(pkg gsl eigen3 ipopt cppad)
    # LINK_DIRECTORIES
    LINK_DIRECTORIES( ${${pkg}_LIBRARY_DIRS} )
 ENDFOREACH(pkg)
-IF( NOT "${suitesparse_prefix}" STREQUAL "/usr" )
-   INCLUDE_DIRECTORIES( ${suitesparse_INCLUDE_DIRS} )
-   LINK_DIRECTORIES( ${suitesparse_LIBRARY_DIRS} )
-ENDIF( NOT "${suitesparse_prefix}" STREQUAL "/usr" )
+#
+# suitesparse_in_cholmod_include_01
+SET(suitesparse_in_cholmod_include_01 "")
+FOREACH(dir ${CHOLMOD_INCLUDE_DIRS} )
+   IF( EXISTS "${dir}/cholmod.h" )
+      SET(suitesparse_in_cholmod_include_01 0)
+   ENDIF( )
+   IF( EXISTS "${dir}/suitesparse/cholmod.h" )
+      SET(suitesparse_in_cholmod_include_01 1)
+   ENDIF( )
+ENDFOREACH( )
+IF( ${suitesparse_in_cholmod_include_01} STREQUAL "" )
+   MESSAGE(FATAL_ERROR "Did not find cholmod.h in ${CHOLMOD_INCLUDE_DIRS}")
+ENDIF( )
+#
 # ----------------------------------------------------------------------------
 CONFIGURE_FILE(
    ${CMAKE_CURRENT_SOURCE_DIR}/include/cppad/mixed/configure.hpp.in
