@@ -205,7 +205,7 @@ cat << EOF
 g++ example.cpp \\
    $optimize_flags \\
    -I $cmake_install_prefix/include \\
-   -L $path2libdir -Wl,-rpath,$path2libdir -lcppad_mixed \\
+   -Wl,-rpath,$path2libdir -lcppad_mixed \\
    $homebrew_flags \\
    $eigen_cflags \\
    $CHOLMOD_cflags \\
@@ -217,7 +217,7 @@ EOF
 g++ example.cpp \
    $optimize_flags \
    -I $cmake_install_prefix/include \
-   -L $path2libdir -Wl,-rpath,$path2libdir -lcppad_mixed \
+   -Wl,-rpath,$path2libdir -lcppad_mixed \
    $eigen_cflags \
    $CHOLMOD_cflags \
    $homebrew_flags \
