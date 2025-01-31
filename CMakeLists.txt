@@ -95,7 +95,7 @@ ENDMACRO( optional_definition )
 # ============================================================================
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 PROJECT(cppad_mixed)
-SET(cppad_mixed_version "2025.1.28")
+SET(cppad_mixed_version "2025.1.31")
 INCLUDE_DIRECTORIES( ${cppad_mixed_SOURCE_DIR}/include )
 INCLUDE(CheckCXXSourceRuns)
 MESSAGE(STATUS "BEGIN:")
@@ -151,28 +151,35 @@ MESSAGE(STATUS "END:")
 # ----------------------------------------------------------------------------
 # https://gitlab.kitware.com/cmake/community/-/wikis/doc/cmake/RPATH-handling
 #
+# CMAKE_SKIP_BUILD_RPATH
 # use, i.e. don't skip the full RPATH for the build tree
-set(CMAKE_SKIP_BUILD_RPATH FALSE)
+SET(CMAKE_SKIP_BUILD_RPATH FALSE)
 #
+# CMAKE_BUILD_WITH_INSTALL_RPATH
 # when building, don't use the install RPATH already
 # (but later on when installing)
-set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
 #
-set(CMAKE_INSTALL_RPATH "${cmake_install_prefix}/${cmake_libdir}")
-#
+# CMAKE_INSTAL_RPATH_USE_LINK_PATH
 # add the automatically determined parts of the RPATH
 # which point to directories outside the build tree to the install RPATH
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 #
-# the RPATH to be used when installing, but only if it's not a system directory
-list(FIND
+# isSyatemDir
+# is this RPATH choice a system directory
+LIST(FIND
    CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES
    "${cmake_install_prefix}/${cmake_libdir}"
    isSystemDir
 )
+#
+# CMAKE_INSTALL_RPATH
+# the RPATH to be used when installing, but only if it's not a system directory
+SET(CMAKE_INSTALL_RPATH "")
 if("${isSystemDir}" STREQUAL "-1")
-   set(CMAKE_INSTALL_RPATH "${dismod_at_pefix}/${cmake_libdir}")
+   SET(CMAKE_INSTALL_RPATH "${cmake_install_prefix}/${cmake_libdir}")
 endif("${isSystemDir}" STREQUAL "-1")
+print_variable( CMAKE_INSTALL_RPATH )
 # ----------------------------------------------------------------------------
 # check compiler flags
 #
