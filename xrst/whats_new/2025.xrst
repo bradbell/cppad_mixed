@@ -8,6 +8,11 @@
   conda
   dd
   mm
+  config
+  pkgconfig
+  pc
+  suitesparse
+  rpath
 }
 
 Release Notes for 2025
@@ -16,9 +21,22 @@ Release Notes for 2025
 mm-dd
 *****
 
+02-01
+=====
+The ``cmake_search_prefix`` is no longer needed,
+since finding the cholmod pkgconfig file, so it was removed.
+
+01-31
+=====
+Fix the setting of the rpath in the cppad_mixed library.
+This was causing linking problems on Mac-OS.
+
 01-28
 =====
-Add the optional ``cmake_search_prefix`` to the cmake command
-(to help with conda install on windows).
+#. The cholmod library has a package config file called CHOLMOD.pc,
+   even though it is part of the suitesparse library.
+   Use this file to simplify finding cholmod.
+#. Add the optional ``cmake_search_prefix`` to the cmake command
+   (to help with conda install on windows).
 
 {xrst_end 2025}

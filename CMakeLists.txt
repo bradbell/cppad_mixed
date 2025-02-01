@@ -13,7 +13,6 @@
 #                        -D ldlt_cholmod=value \
 #                        -D optimize_cppad_function=value \
 #                        -D for_hes_sparsity=value \
-# optional variables:    -D cmake_search_prefix=value
 # ============================================================================
 # Macro definitions
 # ============================================================================
@@ -95,7 +94,7 @@ ENDMACRO( optional_definition )
 # ============================================================================
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 PROJECT(cppad_mixed)
-SET(cppad_mixed_version "2025.1.31")
+SET(cppad_mixed_version "2025.2.1")
 INCLUDE_DIRECTORIES( ${cppad_mixed_SOURCE_DIR}/include )
 INCLUDE(CheckCXXSourceRuns)
 MESSAGE(STATUS "BEGIN:")
@@ -142,9 +141,6 @@ required_definition(optimize_cppad_function BOOL
 )
 required_definition(for_hes_sparsity BOOL
    "use forward (reverse) method for computing Hessian w.r.t. random effects"
-)
-optional_definition( cmake_search_prefix PATH
-   "another prefix used when searching for installed tools"
 )
 # ----------------------------------------------------------------------------
 MESSAGE(STATUS "END:")
