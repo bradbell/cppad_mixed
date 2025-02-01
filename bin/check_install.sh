@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-24 Bradley M. Bell
+# SPDX-FileContributor: 2014-25 Bradley M. Bell
 # ----------------------------------------------------------------------------
 if [ ! -e 'bin/check_install.sh' ]
 then
@@ -23,21 +23,14 @@ fi
 #     grep
 #     homebrew
 #     int
-#     lamd
-#     lcamd
-#     lccolamd
-#     lcholmod
-#     lcolamd
 #     lcppad
 #     libdir
 #     libs
-#     lsuitesparseconfig
 #     mkdir
 #     pkg
 #     pkgconfig
 #     rpath
 #     sed
-#     suitesparse
 #     tmp
 #     wl
 #     wno
@@ -143,10 +136,19 @@ EOF
 # {xrst_code}
 #
 # eigen_cflags
+# ************
 # The following command determines the flags necessary
 # to compile with ``eigen`` on this system:
 # {xrst_code sh}
 eigen_cflags=$(pkg-config --cflags eigen3)
+# {xrst_code}
+#
+# CHOLMOD_cflags
+# **************
+# The following command determines the flags necessary
+# to compile with ``eigen`` on this system:
+# {xrst_code sh}
+CHOLMOD_cflags=$(pkg-config --cflags CHOLMOD)
 # {xrst_code}
 #
 # gsl_libs
@@ -165,12 +167,12 @@ gsl_libs=`pkg-config --libs gsl`
 ipopt_libs=`pkg-config --libs ipopt`
 # {xrst_code}
 #
-# suitesparse_libs
-# ****************
+# CHOLMOD_libs
+# ************
 # The following command sets the library link flags necessary
-# to link ``SuiteSparse`` on this system:
+# to link ``cholmod`` on this system:
 # {xrst_code sh}
-suitesparse_libs='-lcholmod -lamd -lcamd -lcolamd -lccolamd -lsuitesparseconfig'
+CHOLMOD_libs=`pkg-config --libs CHOLMOD`
 # {xrst_code}
 #
 # Compile and Link
@@ -206,8 +208,9 @@ g++ example.cpp \\
    -L $path2libdir -Wl,-rpath,$path2libdir -lcppad_mixed \\
    $homebrew_flags \\
    $eigen_cflags \\
+   $CHOLMOD_cflags \\
    $gsl_libs \\
-   $suitesparse_libs \\
+   $CHOLMOD_libs \\
    $ipopt_libs \\
    -o example
 EOF
@@ -216,9 +219,10 @@ g++ example.cpp \
    -I $cmake_install_prefix/include \
    -L $path2libdir -Wl,-rpath,$path2libdir -lcppad_mixed \
    $eigen_cflags \
+   $CHOLMOD_cflags \
    $homebrew_flags \
    $gsl_libs \
-   $suitesparse_libs \
+   $CHOLMOD_libs \
    $ipopt_libs \
    -o example
 # {xrst_code}

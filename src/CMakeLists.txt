@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-22 Bradley M. Bell
+# SPDX-FileContributor: 2014-25 Bradley M. Bell
 # ----------------------------------------------------------------------------
 #
 # Use static library on windows systems because cppad_lib requires this.
@@ -101,7 +101,7 @@ SET_TARGET_PROPERTIES(cppad_mixed
 TARGET_LINK_LIBRARIES(cppad_mixed
    cppad_lib
    ${gsl_LIBRARIES}
-   ${suitesparse_LIBRARIES}
+   ${CHOLMOD_LIBRARIES}
    ${ipopt_LIBRARIES}
 )
 INSTALL(
