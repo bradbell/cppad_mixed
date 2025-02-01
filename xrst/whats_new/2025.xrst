@@ -35,7 +35,8 @@ This was causing linking problems on Mac-OS.
 =====
 #. The cholmod library has a package config file called CHOLMOD.pc,
    even though it is part of the suitesparse library.
-   Use this file to simplify finding cholmod.
+   Use this file to simplify finding cholmod; see
+   :ref:`check_install.sh@CHOLMOD_libs` in check_install.sh.
 #. Add the optional ``cmake_search_prefix`` to the cmake command
    (to help with conda install on windows).
 
