@@ -14,10 +14,7 @@ SET(requires_uninstalled "gsl eigen3 ipopt cppad" )
 # private: libs, cflags
 SET(libs_private       " ")
 SET(cflags_private     " ")
-SET(pkg_list gsl eigen3 ipopt cppad)
-IF( NOT "${suitesparse_prefix}" STREQUAL "/usr" )
-   SET(pkg_list gsl eigen3 ipopt cppad suitesparse)
-ENDIF( )
+SET(pkg_list gsl eigen3 ipopt cppad CHOLMOD)
 FOREACH(pkg ${pkg_list} )
    #
    FOREACH(entry ${${pkg}_INCLUDE_DIRS} )
