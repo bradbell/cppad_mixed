@@ -1,14 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-25 Bradley M. Bell
 // ----------------------------------------------------------------------------
 # ifndef CPPAD_MIXED_INCLUDE_CHOLMOD_HPP
 # define CPPAD_MIXED_INCLUDE_CHOLMOD_HPP
 
-# if @suitesparse_in_cholmod_include_01@
-# include <suitesparse/cholmod.h>
-# else
 # include <cholmod.h>
-# endif
 
 # endif

@@ -16,7 +16,6 @@
 # ============================================================================
 # Macro definitions
 # ============================================================================
-#
 # print_variable(variable)
 MACRO(print_variable variable)
    MESSAGE(STATUS "${variable}=${${variable}}" )
@@ -26,6 +25,12 @@ ENDMACRO(print_variable variable)
 MACRO(trace_line_in_file line file)
    MESSAGE(STATUS "Line ${line} in ${file}")
 ENDMACRO( )
+#
+# add_to_set(variable_set element_set)
+INCLUDE(cmake/add_to_set.cmake)
+#
+# find_CHOLMOD
+INCLUDE(cmake/find_cholmod.cmake)
 # ----------------------------------------------------------------------------
 # required_definition( variable type docstring )
 #
@@ -94,7 +99,7 @@ ENDMACRO( optional_definition )
 # ============================================================================
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 PROJECT(cppad_mixed)
-SET(cppad_mixed_version "2025.2.1")
+SET(cppad_mixed_version "2025.2.2")
 INCLUDE_DIRECTORIES( ${cppad_mixed_SOURCE_DIR}/include )
 INCLUDE(CheckCXXSourceRuns)
 MESSAGE(STATUS "BEGIN:")
@@ -219,13 +224,28 @@ ELSE( cppad_mixed_has_nullptr_flag )
 ENDIF( cppad_mixed_has_nullptr_flag )
 MESSAGE(STATUS "cppad_mixed_has_nullptr = ${cppad_mixed_has_nullptr_01}")
 # ----------------------------------------------------------------------------
-# gsl, eigen3, ipopt, cppad, CHOLMOD
+# CHOLMOD.pc is missing for the conda-forge windows case, so use our own
+# search for CHOLMOD until that is fixed.
+# CHOLMOD_INCLUDE_DIRS, CHOLMOD_LIBRARY, CHOLMOD_LIBRARIES
+find_CHOLMOD( )
+#
+# pkg_config_list
 # INCLUDE_DIRECTORIES and LINK_DIRECTORIES
+IF( ${CHOLMOD_INCLUDE_DIRS} STREQUAL "NOTFOUND" )
+   SET(pkg_config_list gsl eigen3 ipopt cppad CHOLMOD)
+ELSE( )
+   SET(pkg_config_list gsl eigen3 ipopt cppad)
+   INCLUDE_DIRECTORIES( SYSTEM ${CHOLMOD_INCLUDE_DIRS} )
+   LINK_DIRECTORIES( ${CHOLMOD_LIBRARY_DIRS} )
+ENDIF( )
+#
+# gsl, eigen3, ipopt, cppad, ( CHOLMOD ? )
+# INCLUDE_DIRECTORIES and LINK_DIRECTORIES ${pkg}_LIBRARIES
 FIND_PACKAGE(PkgConfig)
-FOREACH(pkg gsl eigen3 ipopt cppad CHOLMOD)
+FOREACH(pkg ${pkg_config_list} )
    pkg_check_modules( ${pkg} QUIET ${pkg} )
    IF( ${pkg}_FOUND )
-      MESSAGE(STATUS "Found ${pkg}.pc file")
+      MESSAGE(STATUS "Found ${pkg}.pc ")
    ELSE( ${pkg}_FOUND )
       MESSAGE(STATUS "Cannot find ${pkg}.pc file")
       MESSAGE(FATAL_ERROR  "PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH}")
