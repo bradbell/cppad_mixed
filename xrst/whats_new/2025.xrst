@@ -21,6 +21,11 @@ Release Notes for 2025
 mm-dd
 *****
 
+02-02
+=====
+As it turns out, the CHOLMOD.pc file is not available on window,
+so add find_cholmod.cmake to find where it is installed.
+
 02-01
 =====
 The ``cmake_search_prefix`` is no longer needed,
