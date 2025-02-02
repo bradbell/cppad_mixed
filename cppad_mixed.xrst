@@ -4,7 +4,10 @@
 # ----------------------------------------------------------------------------
 {xrst_begin cppad_mixed}
 {xrst_spell
+   bradbell
    gz
+   codeload
+   github
 }
 
 C++ Laplace Approximation of Mixed Effects Models
@@ -32,10 +35,10 @@ Versions
    * - Documentation for most recent stable version
      - `stable-2025 <https://cppad-mixed.readthedocs.io/stable-2025>`_
    * - Most recent release of this stable version
-     - release-2025_
+     - `release-2025`_
 
-.. _release-2025: https://codeload.github.com/bradbell/
-   cppad_mixed/tar.gz/refs/tags/2025.0.2
+.. _release-2025: https://
+   codeload.github.com/bradbell/cppad_mixed/tar.gz/refs/tags/2025.0.2
 
 Contents
 ********
