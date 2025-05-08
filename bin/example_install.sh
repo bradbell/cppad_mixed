@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-24 Bradley M. Bell
+# SPDX-FileContributor: 2014-25 Bradley M. Bell
 # ----------------------------------------------------------------------------
 set -e -u
 #
@@ -134,7 +134,7 @@ elif which dnf >& /dev/null
 then
    system_type='red_hat'
    system_install="$sudo dnf install -y"
-   dnf list installed | sed -e 's|  *| |g' > example_install.tmp
+   dnf list --installed | sed -e 's|  *| |g' > example_install.tmp
 elif which yum >& /dev/null
 then
    system_type='red_hat'
