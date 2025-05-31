@@ -43,7 +43,7 @@ were not tested and may have trouble on other systems.
 09-01
 =====
 Add a change to example install so the
-:ref:`example_install.sh@mac_brew` case does not require
+``mac_brew`` case does not require
 one to by hand edit :ref:`run_cmake.sh-name` .
 
 08-32

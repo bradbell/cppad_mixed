@@ -13,9 +13,7 @@ echo_eval() {
 # restore_and_exit
 restore_and_exit() {
    $sed -i bin/run_cmake.sh \
-      -e "s|^build_type=.*|build_type='debug'|" \
-      -e 's|^\(.*\)\(# mac_brew:\) *|\2 \1|' \
-      -e 's|  *$||'
+      -e "s|^build_type=.*|build_type='debug'|"
    exit $1
 }
 # ----------------------------------------------------------------------------
@@ -31,13 +29,6 @@ source bin/grep_and_sed.sh
 if ! $grep "build_type='debug'" bin/run_cmake.sh > /dev/null
 then
    echo 'bin/check_all.sh: bin/run_cmake.sh build_type not debug'
-   echo 'Attempted to automatically fix this.'
-   restore_and_exit 1
-fi
-line_count=$($grep '^# mac_brew:' bin/run_cmake.sh | wc -l)
-if [ $line_count != 3 ]
-then
-   echo 'check_all.sh: Cannot find three # mac_brew: lines in bin/run_cmake.sh'
    echo 'Attempted to automatically fix this.'
    restore_and_exit 1
 fi
@@ -109,13 +100,6 @@ done
 if [ "$release" == 'yes' ]
 then
    $sed -i bin/run_cmake.sh -e "s|^build_type=.*|build_type='release'|"
-fi
-if [ "$(uname)" == 'Darwin' ]
-then
-   if which brew
-   then
-      $sed -i -e 's|^\(# mac_brew:\) *\(.*\)|\2 \1|' bin/run_cmake.sh
-   fi
 fi
 #
 # bin/check_*.sh

@@ -13,6 +13,7 @@
   pc
   suitesparse
   rpath
+  homebrew
 }
 
 Release Notes for 2025
@@ -20,6 +21,12 @@ Release Notes for 2025
 
 mm-dd
 *****
+
+05-31
+=====
+The :ref:`run_cmake.sh@extra_cxx_flags`
+were modified to automatically handle the homebrew case; i.e.,
+the file ``run_cmake.sh`` no longer needs to be edited for this case.
 
 02-02
 =====

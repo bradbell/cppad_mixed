@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-25 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin lasso.cpp}
 {xrst_spell
-  eqnarray
   nowrap
 }
 

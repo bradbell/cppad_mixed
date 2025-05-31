@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-24 Bradley M. Bell
+# SPDX-FileContributor: 2014-25 Bradley M. Bell
 # ----------------------------------------------------------------------------
 #
 # {xrst_begin run_cmake.sh}
@@ -22,6 +22,9 @@
 #     wno
 #     wpedantic
 #     wshadow
+#     uname
+#     dev
+#     fi fi
 # }
 # {xrst_comment_ch #}
 #
@@ -92,11 +95,17 @@ specific_compiler=''
 # Extra C++ flags used to compile and test
 # {xrst_code sh}
 extra_cxx_flags='-Wpedantic -std=c++11 -Wall -Wshadow -Wconversion'
+#
 # for macOS using homebrew:
-# 2DO: fix the warnings that are suppressed here.
-# mac_brew: extra_cxx_flags+=' -I /opt/homebrew/include'
-# mac_brew: extra_cxx_flags+=' -Wno-bitwise-instead-of-logical'
-# mac_brew: extra_cxx_flags+=' -Wno-sign-conversion'
+if [ "$(uname)" == 'Darwin' ]
+then
+   if which brew > /dev/null
+   then
+      extra_cxx_flags+=' -I /opt/homebrew/include'
+      extra_cxx_flags+=' -Wno-bitwise-instead-of-logical'
+      extra_cxx_flags+=' -Wno-sign-conversion'
+   fi
+fi
 # {xrst_code}
 #
 # cmake_libdir
