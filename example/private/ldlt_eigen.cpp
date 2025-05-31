@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-25 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin ldlt_eigen.cpp dev}
@@ -10,6 +10,7 @@
   logdet
   nrow
   sim
+  rcond
 }
 
 Example Using Eigen LDLT Factorization
@@ -96,6 +97,13 @@ See the following under Source Code below:
 ::
 
    ldlt_obj.update( H_rcv );
+
+rcond
+*****
+See the following under Source Code below:
+::
+
+   rcond_H = ldlt_obj.rcond(negative);
 
 logdet
 ******
@@ -206,9 +214,12 @@ bool ldlt_eigen_xam(void)
    size_t negative;
    double logdet_H = ldlt_obj.logdet(negative);
    ok &= negative == 0;
-
-   // check its value
    ok &= std::fabs( logdet_H / std::log(6.0) - 1.0 ) <= eps;
+
+   // compute reciprocal of condition number of D
+   double rcond_D = ldlt_obj.rcond(negative);
+   ok &= negative == 0;
+   ok &= std::fabs( rcond_D * 3.0 - 1.0 ) <= eps;
 
    // test solve_H
    CppAD::vector<size_t> row(3);

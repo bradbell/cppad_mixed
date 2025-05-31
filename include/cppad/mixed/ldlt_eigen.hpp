@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-25 Bradley M. Bell
 // ----------------------------------------------------------------------------
 # ifndef CPPAD_MIXED_LDLT_EIGEN_HPP
 # define CPPAD_MIXED_LDLT_EIGEN_HPP
@@ -114,8 +114,12 @@ public:
       eigen_perm&   P
    ) const;
    //
+   // rcond
+   Double rcond(size_t& negative) const;
+   //
    // logdet
    Double logdet(size_t& negative) const;
+   //
    // solve
    void solve_H(
       const CppAD::vector<size_t>& row     ,

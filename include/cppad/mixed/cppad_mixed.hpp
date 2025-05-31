@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-25 Bradley M. Bell
 // ----------------------------------------------------------------------------
 # ifndef CPPAD_MIXED_CPPAD_MIXED_HPP
 # define CPPAD_MIXED_CPPAD_MIXED_HPP
@@ -13,7 +13,6 @@
 # include <cppad/mixed/sparse_mat_info.hpp>
 # include <cppad/mixed/configure.hpp>
 # include <cppad/mixed/ldlt_cholmod.hpp>
-# include <cppad/mixed/ldlt_eigen.hpp>
 # include <cppad/mixed/fixed_solution.hpp>
 # include <cppad/mixed/typedef.hpp>
 # include <cppad/mixed/warm_start_struct.hpp>

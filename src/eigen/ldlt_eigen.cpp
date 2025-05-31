@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-23 Bradley M. Bell
+// SPDX-FileContributor: 2014-25 Bradley M. Bell
 // ----------------------------------------------------------------------------
 
 # include <Eigen/Sparse>
@@ -394,6 +394,89 @@ void ldlt_eigen<Double>::split(
    L = ptr_->matrixL();
    D = ptr_->vectorD();
    P = ptr_->permutationP();
+}
+/*
+------------------------------------------------------------------------------
+{xrst_begin ldlt_eigen_rcond dev}
+
+Reciprocal of Condition Number for D
+####################################
+
+Syntax
+******
+*rcond* = *ldlt_obj* . ``rcond`` ( *negative* )
+
+Prototype
+*********
+{xrst_literal
+   // BEGIN_PROTOTYPE_RCOND
+   // END_PROTOTYPE_RCOND
+}
+
+Private
+*******
+The ``ldlt_eigen`` class is an
+:ref:`implementation detail<ldlt_eigen@Private>` and not part of the
+CppAD Mixed user API.
+
+ldlt_obj
+********
+The object *ldlt_obj*
+ must have a previous call to :ref:`ldlt_eigen_update-name` .
+
+negative
+********
+The input value of *negative* does no matter,
+upon return it is the number of elements of
+:ref:`ldlt_eigen@Factorization@D`
+that are less than zero.
+
+rcond
+*****
+This return value *rcond*
+is the reciprocal of the condition number for the diagonal matrix *D*
+in the factorization.
+In other words, it is the minimum absolute entry in *D* divided
+by the maximum absolute entry in *D* .
+If the matrix *D* is singular, or any entry in *D* nan or infinite,
+*rcond* is zero.
+
+Example
+*******
+The file :ref:`ldlt_eigen.cpp<ldlt_eigen.cpp@rcond>` contains an
+example and test that uses this function.
+
+{xrst_end ldlt_eigen_rcond}
+*/
+// BEGIN_PROTOTYPE_RCOND
+template <typename Double>
+Double ldlt_eigen<Double>::rcond(size_t& negative) const
+// END_PROTOTYPE_RCOND
+{  assert( update_called_ );
+
+   // diag
+   Eigen::Matrix<Double, Eigen::Dynamic, 1> diag = ptr_->vectorD();
+   assert( diag.size() == int(n_row_) );
+   //
+   // negative, max_abs, min_abs
+   negative       = 0;
+   Double max_abs = diag[0];
+   Double min_abs = diag[0];
+   for(size_t j = 1; j < n_row_; j++)
+   {  negative += diag[j] < 0.0;
+      Double abs = fabs( diag[j] );
+      if( isnan( abs ) )
+         abs = 0.0;
+      max_abs    = std::max( abs, max_abs);
+      min_abs    = std::min( abs, min_abs );
+   }
+   //
+   // rcond
+   if( min_abs == 0.0 )
+      return 0.0;
+   if( max_abs == CppAD::numeric_limits<Double>::infinity() )
+      return 0.0;
+   return min_abs / max_abs;
 }
 /*
 ------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-22 Bradley M. Bell
+# SPDX-FileContributor: 2014-25 Bradley M. Bell
 # ----------------------------------------------------------------------------
 if [ "$0" != "bin/test_one.sh" ]
 then
@@ -31,6 +31,10 @@ and the corresponding test is run by modifying the files listed above.
 EOF
    exit 1
 fi
+#
+# sed
+source bin/grep_and_sed.sh
+#
 # ---------------------------------------------------------------------------
 if [ "$1" == 'checkout' ]
 then
@@ -55,10 +59,10 @@ found='no'
 for find_dir in example test_more
 do
    find_path=`find $find_dir -name "$file_name" | \
-       sed -e '/\/new\//d' -e "s|$find_dir/||"`
+       $sed -e '/\/new\//d' -e "s|$find_dir/||"`
    if [ "$find_path" != '' ]
    then
-      test_name=`echo $file_name | sed -e 's|.*/||' -e 's|\.cpp$||'`
+      test_name=`echo $file_name | $sed -e 's|.*/||' -e 's|\.cpp$||'`
       if [ "$find_dir" == 'example' ]
       then
          test_name="${test_name}_xam"
@@ -78,7 +82,7 @@ s|\$|\\n# endif|
 : done
 EOF
       git checkout $find_dir/$find_dir.cpp
-      echo_eval sed -f test_one.1 -i $find_dir/$find_dir.cpp
+      echo_eval $sed -f test_one.1 -i $find_dir/$find_dir.cpp
       rm test_one.1
       #
       echo_eval cd build
