@@ -404,7 +404,7 @@ Reciprocal of Condition Number for D
 
 Syntax
 ******
-*rcond* = *ldlt_obj* . ``rcond`` ( *negative* )
+*rcond* = *ldlt_obj* . ``rcond`` ()
 
 Prototype
 *********
@@ -422,14 +422,8 @@ CppAD Mixed user API.
 ldlt_obj
 ********
 The object *ldlt_obj*
- must have a previous call to :ref:`ldlt_eigen_update-name` .
+must have a previous call to :ref:`ldlt_eigen_update-name` .
 
-negative
-********
-The input value of *negative* does no matter,
-upon return it is the number of elements of
-:ref:`ldlt_eigen@Factorization@D`
-that are less than zero.
 
 rcond
 *****
@@ -450,7 +444,7 @@ example and test that uses this function.
 */
 // BEGIN_PROTOTYPE_RCOND
 template <typename Double>
-Double ldlt_eigen<Double>::rcond(size_t& negative) const
+Double ldlt_eigen<Double>::rcond(void) const
 // END_PROTOTYPE_RCOND
 {  assert( update_called_ );
 
@@ -458,13 +452,11 @@ Double ldlt_eigen<Double>::rcond(size_t& negative) const
    Eigen::Matrix<Double, Eigen::Dynamic, 1> diag = ptr_->vectorD();
    assert( diag.size() == int(n_row_) );
    //
-   // negative, max_abs, min_abs
-   negative       = 0;
+   // max_abs, min_abs
    Double max_abs = 0.0;
    Double min_abs = CppAD::numeric_limits<Double>::infinity();
    for(size_t j = 0; j < n_row_; j++)
-   {  negative  += diag[j] < 0.0;
-      Double abs = fabs( diag[j] );
+   {  Double abs = fabs( diag[j] );
       if( isnan( abs ) )
          abs = 0.0;
       max_abs    = std::max( abs, max_abs);

@@ -115,7 +115,7 @@ public:
    ) const;
    //
    // rcond
-   Double rcond(size_t& negative) const;
+   Double rcond(void) const;
    //
    // logdet
    Double logdet(size_t& negative) const;

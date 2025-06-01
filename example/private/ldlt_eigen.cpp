@@ -103,7 +103,7 @@ rcond
 See the following under Source Code below:
 ::
 
-   rcond_D = ldlt_obj.rcond(negative);
+   rcond_D = ldlt_obj.rcond( );
 
 logdet
 ******
@@ -217,8 +217,7 @@ bool ldlt_eigen_xam(void)
    ok &= std::fabs( logdet_H / std::log(6.0) - 1.0 ) <= eps;
 
    // compute reciprocal of condition number of D
-   double rcond_D = ldlt_obj.rcond(negative);
-   ok &= negative == 0;
+   double rcond_D = ldlt_obj.rcond();
    ok &= std::fabs( rcond_D * 3.0 - 1.0 ) <= eps;
 
    // test solve_H

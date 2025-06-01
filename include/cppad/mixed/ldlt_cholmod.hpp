@@ -156,7 +156,7 @@ public:
    //
    // rcond
    // reciprocal of condition number of D
-   double rcond(size_t& negative) const;
+   double rcond(void) const;
    //
    // logdet
    // log determinant

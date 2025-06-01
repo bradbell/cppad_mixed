@@ -1,5 +1,8 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+// SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
+// SPDX-FileContributor: 2025 Bradley M. Bell
+// ----------------------------------------------------------------------------
 /*
-------------------------------------------------------------------------------
 {xrst_begin ldlt_cholmod_rcond dev}
 
 Reciprocal of Condition Number for D
@@ -7,7 +10,7 @@ Reciprocal of Condition Number for D
 
 Syntax
 ******
-*rcond* = *ldlt_obj* . ``rcond`` ( *negative* )
+*rcond* = *ldlt_obj* . ``rcond`` ( )
 
 Prototype
 *********
@@ -26,13 +29,6 @@ ldlt_obj
 ********
 The object *ldlt_obj*
 must have a previous call to :ref:`ldlt_cholmod_update-name` .
-
-negative
-********
-The input value of *negative* does no matter,
-upon return it is the number of elements of
-:ref:`ldlt_cholmod@Factorization@D`
-that are less than zero.
 
 rcond
 *****
@@ -57,7 +53,7 @@ example and test that uses this function.
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // BEGIN_PROTOTYPE
-double ldlt_cholmod::rcond(size_t& negative) const
+double ldlt_cholmod::rcond(void) const
 // END_PROTOTYPE
 {  assert( update_called_ );
    //
@@ -67,7 +63,6 @@ double ldlt_cholmod::rcond(size_t& negative) const
 # ifndef NDEBUG
    int*    L_i  = (int *) factor_->i;
 # endif
-   negative        = 0;
    double max_abs  = 0.0;
    double min_abs  = CppAD::numeric_limits<double>::infinity();
    for(size_t j = 0; j < nrow_; j++)
