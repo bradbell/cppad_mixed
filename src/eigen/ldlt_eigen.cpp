@@ -460,19 +460,21 @@ Double ldlt_eigen<Double>::rcond(size_t& negative) const
    //
    // negative, max_abs, min_abs
    negative       = 0;
-   Double max_abs = diag[0];
-   Double min_abs = diag[0];
-   for(size_t j = 1; j < n_row_; j++)
-   {  negative += diag[j] < 0.0;
+   Double max_abs = 0.0;
+   Double min_abs = CppAD::numeric_limits<Double>::infinity();
+   for(size_t j = 0; j < n_row_; j++)
+   {  negative  += diag[j] < 0.0;
       Double abs = fabs( diag[j] );
       if( isnan( abs ) )
          abs = 0.0;
       max_abs    = std::max( abs, max_abs);
-      min_abs    = std::min( abs, min_abs );
+      min_abs    = std::min( abs, min_abs);
    }
    //
    // rcond
    if( min_abs == 0.0 )
+      return 0.0;
+   if( min_abs == CppAD::numeric_limits<Double>::infinity() )
       return 0.0;
    if( max_abs == CppAD::numeric_limits<Double>::infinity() )
       return 0.0;

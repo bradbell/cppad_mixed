@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-25 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin ldlt_cholmod.cpp dev}
@@ -10,6 +10,7 @@
   logdet
   nrow
   sim
+  rcond
 }
 
 Example Using ldlt_cholmod Class
@@ -24,22 +25,29 @@ We define the lower triangular matrix
    L =
    \left( \begin{array}{ccc}
       1 & 0 & 0 \\
-      1 & 2 & 0 \\
-      1 & 2 & 3
+      1 & 1 & 0 \\
+      1 & 1 & 1
+   \end{array} \right)
+   \W{,}
+   D =
+   \left( \begin{array}{ccc}
+      1 & 0 & 0 \\
+      0 & 4 & 0 \\
+      0 & 0 & 9
    \end{array} \right)
    \W{,}
    L^\R{T} =
    \left( \begin{array}{ccc}
       1 & 1 & 1 \\
-      0 & 2 & 2 \\
-      0 & 0 & 3
+      0 & 1 & 1 \\
+      0 & 0 & 1
    \end{array} \right)
 
 and the positive definite matrix
 
 .. math::
 
-   H = L L^\R{T} =
+   H = L D L^\R{T} =
    \left( \begin{array}{ccc}
       1 & 1 & 1 \\
       1 & 5 & 5 \\
@@ -50,7 +58,7 @@ The inverse of :math:`H` is given by
 
 .. math::
 
-   H^{-1} = L^\R{-T} L^{-1} =
+   H^{-1} = L^\R{-T} D^{-1} L^{-1} =
    \frac{1}{36}
    \left( \begin{array}{ccc}
       45  & -9  & 0  \\
@@ -89,6 +97,13 @@ See the following under Source Code below:
 ::
 
    ldlt_obj.update(H_rcv);
+
+rcond
+*****
+See the following under Source Code below:
+::
+
+   rcond_D = ldlt_obj.rcond(negative);
 
 logdet
 ******
@@ -185,9 +200,12 @@ bool ldlt_cholmod_xam(void)
    size_t negative;
    double logdet_H = ldlt_obj.logdet(negative);
    ok &= negative == 0;
-
-   // check its value
    ok &= std::fabs( logdet_H / std::log(36.0) - 1.0 ) <= eps;
+
+   // compute reciprocal of condition number of D
+   double rcond_D = ldlt_obj.rcond(negative);
+   ok &= negative == 0;
+   ok &= std::fabs( rcond_D * 9.0 - 1.0 ) <= eps;
 
    // test solve_H
    {  CppAD::vector<size_t> row(3);

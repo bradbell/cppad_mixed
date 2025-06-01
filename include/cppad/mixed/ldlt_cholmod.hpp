@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-25 Bradley M. Bell
 // ----------------------------------------------------------------------------
 # ifndef CPPAD_MIXED_LDLT_CHOLMOD_HPP
 # define CPPAD_MIXED_LDLT_CHOLMOD_HPP
@@ -76,6 +76,7 @@ Contents
    src/cholmod/init.cpp
    src/cholmod/pattern.cpp
    src/cholmod/update.cpp
+   src/cholmod/rcond.cpp
    src/cholmod/logdet.cpp
    src/cholmod/solve_H.cpp
    src/cholmod/sim_cov.cpp
@@ -153,6 +154,11 @@ public:
    // pattern
    const sparse_rc& pattern(void) const;
    //
+   // rcond
+   // reciprocal of condition number of D
+   double rcond(size_t& negative) const;
+   //
+   // logdet
    // log determinant
    double logdet(size_t& negative) const;
    //

@@ -103,7 +103,7 @@ rcond
 See the following under Source Code below:
 ::
 
-   rcond_H = ldlt_obj.rcond(negative);
+   rcond_D = ldlt_obj.rcond(negative);
 
 logdet
 ******
