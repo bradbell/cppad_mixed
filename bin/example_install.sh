@@ -124,7 +124,7 @@ elif which dnf >& /dev/null
 then
    system_type='red_hat'
    system_install="$sudo dnf install -y"
-   dnf list --installed | sed -e 's|  *| |g' > example_install.tmp
+   dnf list --installed | sed -e 's|  *| |g' -e '/^cmake-filesystem/d' > example_install.tmp
 elif which yum >& /dev/null
 then
    system_type='red_hat'
@@ -180,6 +180,7 @@ then
       gcc-c++
       gcc-gfortran
       gsl-devel
+      patch
    '
 elif [ "$system_type" == 'mac_port' ]
 then

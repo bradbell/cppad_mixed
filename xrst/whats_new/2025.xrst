@@ -23,6 +23,12 @@ Release Notes for 2025
 mm-dd
 *****
 
+06-02
+=====
+On ``dnf`` systems, the ``patch`` utility
+was added to the requirements that are automatically installed by
+:ref:`example_install.sh-name` .
+
 05-31
 =====
 The :ref:`run_cmake.sh@extra_cxx_flags`
