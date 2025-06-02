@@ -7,6 +7,7 @@
 {xrst_spell
   conda
   dd
+  dnf
   mm
   config
   pkgconfig
@@ -27,6 +28,13 @@ mm-dd
 The :ref:`run_cmake.sh@extra_cxx_flags`
 were modified to automatically handle the homebrew case; i.e.,
 the file ``run_cmake.sh`` no longer needs to be edited for this case.
+
+05-08
+=====
+On ``dnf`` systems, :ref:`example_install.sh-name` was using
+``dnf list installed`` .
+This has been corrected to
+``dnf list --installed`` .
 
 02-02
 =====
