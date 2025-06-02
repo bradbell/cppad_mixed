@@ -285,17 +285,19 @@ bool sample_fixed_xam(void)
          }
       }
    }
-   /* 2DO: This check of rcond is not yet working
    //
    // ok
-   Eigen::Matrix< double, Eigen::Dynamic, 1> diag = info_mat.ldlt().vectorD();
+   typedef Eigen::SparseMatrix<double, Eigen::ColMajor>     eigen_sparse;
+   Eigen::SimplicialLDLT<eigen_sparse, Eigen::Lower>        ldlt;
+   Eigen::SparseMatrix<double, Eigen::ColMajor>             info_sparse;
+   info_sparse = info_mat.sparseView();
+   ldlt.compute(info_sparse);
+   Eigen::Matrix< double, Eigen::Dynamic, 1> diag = ldlt.vectorD();
    ok &= diag.size() == 2;
    double check = std::fabs( diag[0] ) / std::fabs( diag[1] );
    if( check > 1.0 )
       check = 1.0 / check;
-   std::cout << "diag = " << diag << "\n";
-   std::cout << "check = " << check << ", rcond = " << rcond << "\n";
-   */
+   ok &= std::fabs( rcond / check - 1.0 ) < eps;
    //
    if( ! ok )
       std::cout << "\nrandom_seed = " << random_seed << "\n";

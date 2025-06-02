@@ -259,7 +259,7 @@ and
 
 ptr\_
 *****
-On input, the member variable ``ldlt_``
+On input, the member variable r_*
 has been :ref:`initialized<ldlt_eigen_init-name>`
 using the sparsity pattern for the Hessian.
 Upon return, it contains the factorization

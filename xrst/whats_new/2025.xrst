@@ -25,9 +25,11 @@ mm-dd
 
 06-02
 =====
-On ``dnf`` systems, the ``patch`` utility
-was added to the requirements that are automatically installed by
-:ref:`example_install.sh-name` .
+#. On ``dnf`` systems, the ``patch`` utility
+   was added to the requirements that are automatically installed by
+   :ref:`example_install.sh-name` .
+#. The optional :ref:`sample_fixed@rcond` return value was added to
+   the ``sample_fixed`` routine.
 
 05-31
 =====

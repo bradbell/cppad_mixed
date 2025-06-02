@@ -259,6 +259,7 @@ std::string cppad_mixed::try_sample_fixed(
       return error_msg;
    }
    //
+   // info_mat_rcv
    // create a sparse_rcv representation of information matrix on subset
    // and in column major order
    CppAD::vector<size_t> col_major = hes_fixed_obj_rcv.col_major();
@@ -304,6 +305,7 @@ std::string cppad_mixed::try_sample_fixed(
    }
    assert( count == info_mat_rcv.nnz() );
    //
+   // ldlt_info_mat
    // LDLT factorization of info_mat
    CPPAD_MIXED_LDLT_CLASS ldlt_info_mat(n_subset);
    ldlt_info_mat.init( info_mat_rcv.pat() );
@@ -324,9 +326,8 @@ std::string cppad_mixed::try_sample_fixed(
    // rcond
    rcond = ldlt_info_mat.rcond();
    //
-   // -----------------------------------------------------------------------
+   // sample
    // Simulate the samples
-   // -----------------------------------------------------------------------
    for(size_t i_sample = 0; i_sample < n_sample; i_sample++)
    {  d_vector w(n_subset);
       // simulate a normal with mean zero and variance one
