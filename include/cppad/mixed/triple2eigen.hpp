@@ -2,7 +2,7 @@
 # define CPPAD_MIXED_TRIPLE2EIGEN_HPP
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-25 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin triple2eigen dev}
@@ -101,10 +101,13 @@ void triple2eigen(
 {  assert( row.size() == col.size() );
    assert( val.size() ==  0 || row.size() == val.size() );
    //
+   // nan
+   Scalar nan = Scalar( std::numeric_limits<double>::quiet_NaN() );
+   //
    mat.resize( int(nr), int(nc) );
    if( val.size() == 0 )
    {  for(size_t k = 0; k < row.size(); k++)
-         mat.insert( int(row[k]), int(col[k]) ) = Scalar(0.0);
+         mat.insert( int(row[k]), int(col[k]) ) = nan;
    }
    else
    {  for(size_t k = 0; k < row.size(); k++)

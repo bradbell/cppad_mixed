@@ -296,9 +296,13 @@ bool ldlt_eigen<Double>::update(
 {  assert( init_done_ );
 # ifndef NDEBUG
    assert( H_rcv.nnz() == H_rc_.nnz() );
+   assert( H_rcv.nr() == H_rc_.nr() );
+   assert( H_rcv.nc() == H_rc_.nc() );
+   s_vector col_major = H_rcv.col_major();
    for(size_t k = 0; k < H_rc_.nnz(); ++k)
    {  assert( H_rcv.row()[k] == H_rc_.row()[k] );
       assert( H_rcv.col()[k] == H_rc_.col()[k] );
+      assert( col_major[k] == k );
    }
 # endif
    //
@@ -311,9 +315,14 @@ bool ldlt_eigen<Double>::update(
       H_rcv.col() ,
       H_rcv.val()
    );
-   // LDLT factorization of for specified values of the Hessian
-   // f_{u,u}(theta, u)
+   // typedef Eigen::Matrix< Double, Eigen::Dynamic, Eigen::Dynamic > dense;
+   // std::cout << "hessian =\n" << dense( hessian ) << "\n";
+   //
+   // factorize
+   // LDLT factorization of the matrix H_rcv. This is the same as compute
+   // except that compute does not use the result of analyzePattern.
    ptr_->factorize(hessian);
+   // std::cout << "D = \n" << dense( ptr_->vectorD().transpose() ) << "\n";
    //
    if( ptr_->info() != Eigen::Success )
       return false;
