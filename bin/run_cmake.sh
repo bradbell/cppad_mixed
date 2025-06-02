@@ -125,7 +125,7 @@ cmake_libdir='lib64'
 # If yes, use ``ldlt_cholmod`` LDLT factorization where possible.
 # Otherwise always use ``ldlt_eigen`` for LDLT factorization.
 # {xrst_code sh}
-ldlt_cholmod='yes'
+ldlt_cholmod='no'
 # {xrst_code}
 #
 # optimize_cppad_function

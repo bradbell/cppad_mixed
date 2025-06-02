@@ -87,7 +87,7 @@ private:
    bool            update_called_; // has update been called
    sparse_rc       H_rc_;          // sparsity pattern for H
    //
-   eigen_ldlt*     ptr_;           // eigens ldlt factorization
+   eigen_ldlt      ldlt_;          // eigens ldlt factorization
    //
 public:
    // ----------------------------------------------------------------------

@@ -52,16 +52,16 @@ This member variable points to a newly constructed
 template <typename Double>
 ldlt_eigen<Double>::ldlt_eigen(size_t n_row)
 // END_PROTOTYPE_CTOR
-:
-n_row_(n_row),
-init_done_(false),
-update_called_(false)
-{  ptr_ = new eigen_ldlt; }
+: n_row_(n_row)
+, init_done_(false)
+, update_called_(false)
+, ldlt_()
+{  }
 
 // destructor
 template <typename Double>
 ldlt_eigen<Double>::~ldlt_eigen(void)
-{  delete ptr_; }
+{  }
 
 /*
 ------------------------------------------------------------------------------
@@ -141,7 +141,7 @@ void ldlt_eigen<Double>::init(const sparse_rc& H_rc)
    );
    // analyze the pattern for an LDLT factorization of
    // f_{u,u}(theta, u)
-   ptr_->analyzePattern(hessian_pattern);
+   ldlt_.analyzePattern(hessian_pattern);
    //
    init_done_ = true;
 }
@@ -259,12 +259,12 @@ and
 
 ptr\_
 *****
-On input, the member variable *ptr_*
+On input, the member variable ``ldlt_``
 has been :ref:`initialized<ldlt_eigen_init-name>`
 using the sparsity pattern for the Hessian.
 Upon return, it contains the factorization
 
-   ``ptr_->factorize`` ( *hessian* )
+   ``ldlt_.factorize`` ( *hessian* )
 
 where *hessian* is an ``eigen_sparse``
 representation of the Hessian with values.
@@ -321,10 +321,10 @@ bool ldlt_eigen<Double>::update(
    // factorize
    // LDLT factorization of the matrix H_rcv. This is the same as compute
    // except that compute does not use the result of analyzePattern.
-   ptr_->factorize(hessian);
-   // std::cout << "D = \n" << dense( ptr_->vectorD().transpose() ) << "\n";
+   ldlt_.factorize(hessian);
+   // std::cout << "D = \n" << dense( ldlt_.vectorD().transpose() ) << "\n";
    //
-   if( ptr_->info() != Eigen::Success )
+   if( ldlt_.info() != Eigen::Success )
       return false;
    //
    update_called_ = true;
@@ -400,9 +400,9 @@ void ldlt_eigen<Double>::split(
 // END_PROTOTYPE_SPLIT
 {  assert( update_called_ );
    //
-   L = ptr_->matrixL();
-   D = ptr_->vectorD();
-   P = ptr_->permutationP();
+   L = ldlt_.matrixL();
+   D = ldlt_.vectorD();
+   P = ldlt_.permutationP();
 }
 /*
 ------------------------------------------------------------------------------
@@ -458,7 +458,7 @@ Double ldlt_eigen<Double>::rcond(void) const
 {  assert( update_called_ );
 
    // diag
-   Eigen::Matrix<Double, Eigen::Dynamic, 1> diag = ptr_->vectorD();
+   Eigen::Matrix<Double, Eigen::Dynamic, 1> diag = ldlt_.vectorD();
    assert( diag.size() == int(n_row_) );
    //
    // max_abs, min_abs
@@ -543,7 +543,7 @@ Double ldlt_eigen<Double>::logdet(size_t& negative) const
 {  assert( update_called_ );
 
    // compute the logdet( f_{u,u}(theta, u )
-   Eigen::Matrix<Double, Eigen::Dynamic, 1> diag = ptr_->vectorD();
+   Eigen::Matrix<Double, Eigen::Dynamic, 1> diag = ldlt_.vectorD();
    assert( diag.size() == int(n_row_) );
    negative        = 0;
    bool   has_zero = false;
@@ -663,7 +663,7 @@ void ldlt_eigen<Double>::solve_H(
    }
    //
    // val_out
-   eigen_vector x = ptr_->solve(b);
+   eigen_vector x = ldlt_.solve(b);
    for(size_t k = 0; k < row.size(); k++)
       val_out[k] = x[ row[k] ];
 }
@@ -790,7 +790,7 @@ bool ldlt_eigen<Double>::sim_cov(
       b[i] = w[i];
    //
    // diagonal
-   column_vector diag = ptr_->vectorD();
+   column_vector diag = ldlt_.vectorD();
    Double max_D = 0.0;
    for(size_t i = 0; i < n_row_; i++)
       max_D = std::max(max_D, diag[i] );
@@ -806,10 +806,10 @@ bool ldlt_eigen<Double>::sim_cov(
    }
    //
    // set b = L^{-T} * D^{-1/2} w
-   b = ptr_->matrixU().solve(b);
+   b = ldlt_.matrixU().solve(b);
    //
    // set b = P^T L^{-T} * D^{-1/2} w
-   b = ptr_->permutationP().transpose() * b;
+   b = ldlt_.permutationP().transpose() * b;
    //
    // return v
    for(size_t i = 0 ; i < n_row_; i++)
