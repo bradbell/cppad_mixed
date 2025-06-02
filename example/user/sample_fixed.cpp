@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-24 Bradley M. Bell
+// SPDX-FileContributor: 2014-25 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin sample_fixed.cpp}
@@ -30,6 +30,7 @@ namespace {
    using CppAD::mixed::d_vector;
    using CppAD::mixed::a1_vector;
    //
+   // mixed_derived
    class mixed_derived : public cppad_mixed {
    private:
 # ifndef NDEBUG
@@ -57,8 +58,8 @@ namespace {
       {  assert( n_fixed == 3);
          assert( y_.size() == n_random_ );
       }
-   // ----------------------------------------------------------------------
-      // implementation of ran_likelihood
+      //
+      // ran_likelihood
       // Note that theta[2] is not used
       a1_vector ran_likelihood(
          const a1_vector&         theta  ,
@@ -90,7 +91,8 @@ namespace {
          }
          return vec;
       }
-      // implementation of fix_likelihood
+      //
+      // fix_likelihood
       a1_vector fix_likelihood(
          const a1_vector&         fixed_vec  ) override
       {
@@ -117,19 +119,25 @@ namespace {
       }
    };
 }
-
+//
+// sample_fixed_xam
 bool sample_fixed_xam(void)
 {
+   // ok, inf, eps
    bool   ok = true;
    double inf = std::numeric_limits<double>::infinity();
    double eps = 10. * std::numeric_limits<double>::epsilon();
    //
+   // random_seed
    // initialize gsl random number generator
-   size_t random_seed = CppAD::mixed::new_gsl_rng(0);
+   size_t random_seed = CppAD::mixed::new_gsl_rng(123);
    //
+   // n_data, n_fixed, n_random
    size_t n_data   = 10;
    size_t n_fixed  = 3;
    size_t n_random = n_data;
+   //
+   // fixed_lower, fixed_in, fixed_upper
    d_vector
       fixed_lower(n_fixed), fixed_in(n_fixed), fixed_upper(n_fixed);
    fixed_lower[0] = - inf; fixed_in[0] = 2.0; fixed_upper[0] = inf;
@@ -138,15 +146,18 @@ bool sample_fixed_xam(void)
    // (otherwise the implicit information matrix would be singular).
    fixed_lower[2] = 1.0;   fixed_in[2] = 1.0; fixed_upper[2] = 1.0;
    //
+   // fix_consteraint_lower, fix_constraint_upper
    // explicit constriants (in addition to l1 terms)
    d_vector fix_constraint_lower(0), fix_constraint_upper(0);
    //
+   // data_in, random_in
    d_vector data(n_data), random_in(n_random);
    for(size_t i = 0; i < n_data; i++)
    {  data[i]       = double(i + 1);
       random_in[i] = 0.0;
    }
-
+   //
+   // mixed_object
    // object that is derived from cppad_mixed
    bool quasi_fixed   = true;
    bool bool_sparsity = true;
@@ -154,7 +165,15 @@ bool sample_fixed_xam(void)
       n_fixed, n_random, quasi_fixed, bool_sparsity, data
    );
    mixed_object.initialize(fixed_in, random_in);
-
+   //
+   // random_lower, random_upper
+   d_vector random_lower(n_random), random_upper(n_random);
+   for(size_t i = 0; i < n_random; i++)
+   {  random_lower[i] = -inf;
+      random_upper[i] = +inf;
+   }
+   //
+   // solution
    // optimize the fixed effects using quasi-Newton method
    std::string fixed_ipopt_options =
       "Integer print_level               0\n"
@@ -170,12 +189,6 @@ bool sample_fixed_xam(void)
       "String  derivative_test           second-order\n"
       "Numeric tol                       1e-8\n"
    ;
-   d_vector random_lower(n_random), random_upper(n_random);
-   for(size_t i = 0; i < n_random; i++)
-   {  random_lower[i] = -inf;
-      random_upper[i] = +inf;
-   }
-   // optimize fixed effects
    d_vector fixed_scale = fixed_in;
    CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
       fixed_ipopt_options,
@@ -191,6 +204,7 @@ bool sample_fixed_xam(void)
       random_in
    );
    //
+   // ok
    // check that none of the constraints are active
    // (Note that the Lagragian w.r.t. theta[2] will be zero because
    // it does not affect the objective).
@@ -200,6 +214,7 @@ bool sample_fixed_xam(void)
    ok &= solution.fix_con_lag.size() == 0;
    ok &= solution.ran_con_lag.size() == 0;
    //
+   // random_opt
    // corresponding optimal random effects
    d_vector random_opt = mixed_object.optimize_random(
       random_ipopt_options,
@@ -209,12 +224,15 @@ bool sample_fixed_xam(void)
       random_in
    );
    //
+   // hes_fixed_obj_rcv
    // compute corresponding information matrix
    d_vector& fixed_opt = solution.fixed_opt;
    d_sparse_rcv hes_fixed_obj_rcv =
       mixed_object.hes_fixed_obj(fixed_opt, random_opt);
    //
+   // sample, rcond, ok
    // sample from the posterior for fixed effects
+   double rcond = std::numeric_limits<double>::quiet_NaN();
    size_t n_sample = 20000;
    d_vector sample( n_sample * n_fixed );
    std::string error_msg = mixed_object.sample_fixed(
@@ -222,13 +240,16 @@ bool sample_fixed_xam(void)
       hes_fixed_obj_rcv,
       solution,
       fixed_lower,
-      fixed_upper
+      fixed_upper,
+      rcond
    );
    ok &= error_msg == "";
    //
+   // matrix
    typedef Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > matrix;
    //
-   // compute sample covariance matrix
+   // sample_cov
+   // sample covariance matrix
    matrix sample_cov = matrix::Zero(n_fixed, n_fixed);
    for(size_t i = 0; i < n_sample; i++)
    {  matrix diff(n_fixed, 1);
@@ -238,6 +259,7 @@ bool sample_fixed_xam(void)
    }
    sample_cov *= 1.0 / double(n_sample);
    //
+   // info_mat
    matrix info_mat(n_fixed-1, n_fixed-1);
    // note theta[2] does not have any non-zero terms in Hessian
    size_t K = ( (n_fixed-1) * n_fixed ) / 2;
@@ -248,8 +270,9 @@ bool sample_fixed_xam(void)
       info_mat(i, j) = hes_fixed_obj_rcv.val()[k];
       info_mat(j, i) = hes_fixed_obj_rcv.val()[k];
    }
-   matrix cov_mat = info_mat.inverse();
    //
+   // ok
+   matrix cov_mat = info_mat.inverse();
    for(size_t i = 0; i < n_fixed; i++)
    {  for(size_t j = 0; j < n_fixed; j++)
       {  double value = sample_cov(i, j);
@@ -262,6 +285,17 @@ bool sample_fixed_xam(void)
          }
       }
    }
+   /* 2DO: This check of rcond is not yet working
+   //
+   // ok
+   Eigen::Matrix< double, Eigen::Dynamic, 1> diag = info_mat.ldlt().vectorD();
+   ok &= diag.size() == 2;
+   double check = std::fabs( diag[0] ) / std::fabs( diag[1] );
+   if( check > 1.0 )
+      check = 1.0 / check;
+   std::cout << "diag = " << diag << "\n";
+   std::cout << "check = " << check << ", rcond = " << rcond << "\n";
+   */
    //
    if( ! ok )
       std::cout << "\nrandom_seed = " << random_seed << "\n";

@@ -1,12 +1,13 @@
 /*
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-23 Bradley M. Bell
+// SPDX-FileContributor: 2014-25 Bradley M. Bell
 // ----------------------------------------------------------------------------
 {xrst_begin sample_fixed}
 {xrst_spell
   msg
   rng
+  rcond
 }
 
 Sample Posterior for Fixed Effects
@@ -20,7 +21,8 @@ Syntax
 | |tab| *hes_fixed_obj_rcv* ,
 | |tab| *solution* ,
 | |tab| *fixed_lower* ,
-| |tab| *fixed_upper*
+| |tab| *fixed_upper* ,
+| |tab| *rcond*
 | )
 
 See Also
@@ -141,6 +143,25 @@ is the same as
 :ref:`optimize_fixed@fixed_upper`
 in the call to ``optimize_fixed`` that corresponding to *solution* .
 
+Factorization
+*************
+The subset of the matrix *hes_fixed_obj_rcv* that corresponds to
+fixed effects that are not constant is factored into L * D * L^T
+where L is lower triangular and D is diagonal.
+
+rcond
+*****
+This argument is optional and its input value does not matter.
+Upon return it is the reciprocal of the condition number for
+the diagonal matrix D in the factorization.
+In other words, it is the minimum absolute entry in *D* divided
+by the maximum absolute entry in D .
+If the matrix D is singular, or any entry in D nan or infinite,
+*rcond* is zero.
+
+2DO: This result is not yet passing its test; see
+:ref:`sample_fixed.cpp-name` .
+
 error_msg
 *********
 If *error_msg* is empty (non-empty),
@@ -201,7 +222,8 @@ std::string cppad_mixed::try_sample_fixed(
    const d_sparse_rcv&                    hes_fixed_obj_rcv    ,
    const CppAD::mixed::fixed_solution&    solution             ,
    const CppAD::vector<double>&           fixed_lower          ,
-   const CppAD::vector<double>&           fixed_upper          )
+   const CppAD::vector<double>&           fixed_upper          ,
+   double&                                rcond                )
 {
    // sample
    assert( sample.size() > 0 );
@@ -299,6 +321,9 @@ std::string cppad_mixed::try_sample_fixed(
       return error_msg;
    }
    //
+   // rcond
+   rcond = ldlt_info_mat.rcond();
+   //
    // -----------------------------------------------------------------------
    // Simulate the samples
    // -----------------------------------------------------------------------
@@ -339,7 +364,8 @@ std::string cppad_mixed::sample_fixed(
    const d_sparse_rcv&                    hes_fixed_obj_rcv    ,
    const CppAD::mixed::fixed_solution&    solution             ,
    const CppAD::vector<double>&           fixed_lower          ,
-   const CppAD::vector<double>&           fixed_upper          )
+   const CppAD::vector<double>&           fixed_upper          ,
+   double&                                rcond                )
 // END PROTOTYPE
 {  std::string error_msg = "";
    try
@@ -348,7 +374,8 @@ std::string cppad_mixed::sample_fixed(
          hes_fixed_obj_rcv ,
          solution          ,
          fixed_lower       ,
-         fixed_upper
+         fixed_upper       ,
+         rcond
       );
    }
    catch(const std::exception& e)

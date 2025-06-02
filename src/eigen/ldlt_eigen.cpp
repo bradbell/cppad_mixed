@@ -427,7 +427,7 @@ must have a previous call to :ref:`ldlt_eigen_update-name` .
 
 rcond
 *****
-This return value *rcond*
+The return value *rcond*
 is the reciprocal of the condition number for the diagonal matrix *D*
 in the factorization.
 In other words, it is the minimum absolute entry in *D* divided

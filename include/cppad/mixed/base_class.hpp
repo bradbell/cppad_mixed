@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-25 Bradley M. Bell
 // ----------------------------------------------------------------------------
 # ifndef CPPAD_MIXED_BASE_CLASS_HPP
 # define CPPAD_MIXED_BASE_CLASS_HPP
@@ -214,8 +214,20 @@ sample_fixed
       const d_sparse_rcv&                  information_rcv      ,
       const CppAD::mixed::fixed_solution&  solution             ,
       const d_vector&                      fixed_lower          ,
-      const d_vector&                      fixed_upper
+      const d_vector&                      fixed_upper          ,
+      double&                              rcond
    );
+   std::string sample_fixed(
+      d_vector&                            sample               ,
+      const d_sparse_rcv&                  information_rcv      ,
+      const CppAD::mixed::fixed_solution&  solution             ,
+      const d_vector&                      fixed_lower          ,
+      const d_vector&                      fixed_upper          )
+   {  double rcond;
+      return sample_fixed(
+         sample, information_rcv, solution, fixed_lower, fixed_upper, rcond
+      );
+   }
 /* {xrst_code}
 {xrst_spell_on}
 sample_random
