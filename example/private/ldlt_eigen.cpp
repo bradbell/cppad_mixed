@@ -216,7 +216,9 @@ bool ldlt_eigen_xam(void)
    ok &= negative == 0;
    ok &= std::fabs( logdet_H / std::log(6.0) - 1.0 ) <= eps;
 
-   // compute reciprocal of condition number of D
+   // ok
+   // This test will fail if the permutation matrix is not the identity;
+   // see ldlt_rcond in the documentation.
    double rcond_D = ldlt_obj.rcond();
    ok &= std::fabs( rcond_D * 3.0 - 1.0 ) <= eps;
 

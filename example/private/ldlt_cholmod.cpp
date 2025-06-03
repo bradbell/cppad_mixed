@@ -202,7 +202,9 @@ bool ldlt_cholmod_xam(void)
    ok &= negative == 0;
    ok &= std::fabs( logdet_H / std::log(36.0) - 1.0 ) <= eps;
 
-   // compute reciprocal of condition number of D
+   // ok
+   // This test will fail if the Permutation is not the identity;
+   // see ldlt_rcond in the documentation.
    double rcond_D = ldlt_obj.rcond( );
    ok &= std::fabs( rcond_D * 9.0 - 1.0 ) <= eps;
 

@@ -7,6 +7,9 @@
 
 Sample From Fixed Effects Posterior: Example and Test
 #####################################################
+{xrst_toc_list
+   example/user/ldlt_rcond.xrst
+}
 
 {xrst_literal
    // BEGIN C++
@@ -286,18 +289,29 @@ bool sample_fixed_xam(void)
       }
    }
    //
+   // a, b, c
+   // Elements of info_mat (see the ldlt_rcond page of the documentation)
+   double a = info_mat(0,0);
+   double b = info_mat(1,0);
+   double c = info_mat(1,1);
+   //
+   // rcond_1
+   double rcond_1 = std::fabs( a / (c - b * b / a) );
+   if( rcond_1 > 1.0 )
+      rcond_1 = 1.0 / rcond_1;
+   //
+   // rcond_2
+   double rcond_2 = std::fabs( c / (a - b * b / c) );
+   if( rcond_2 > 1.0 )
+      rcond_2 = 1.0 / rcond_2;
+   //
+   // rel_error
+   double rel_error_1 = std::fabs( rcond / rcond_1 - 1.0 );
+   double rel_error_2 = std::fabs( rcond / rcond_2 - 1.0 );
+   double rel_error   = std::min(rel_error_1, rel_error_2);
+   //
    // ok
-   typedef Eigen::SparseMatrix<double, Eigen::ColMajor>     eigen_sparse;
-   Eigen::SimplicialLDLT<eigen_sparse, Eigen::Lower>        ldlt;
-   Eigen::SparseMatrix<double, Eigen::ColMajor>             info_sparse;
-   info_sparse = info_mat.sparseView();
-   ldlt.compute(info_sparse);
-   Eigen::Matrix< double, Eigen::Dynamic, 1> diag = ldlt.vectorD();
-   ok &= diag.size() == 2;
-   double check = std::fabs( diag[0] ) / std::fabs( diag[1] );
-   if( check > 1.0 )
-      check = 1.0 / check;
-   ok &= std::fabs( rcond / check - 1.0 ) < eps;
+   ok = rel_error < eps;
    //
    if( ! ok )
       std::cout << "\nrandom_seed = " << random_seed << "\n";

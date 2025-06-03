@@ -1,0 +1,154 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
+# SPDX-FileContributor: 2014-25 Bradley M. Bell
+# ----------------------------------------------------------------------------
+{xrst_begin ldlt_rcond}
+
+Testing the LDLT Reciprocal Condition Number Approximation
+##########################################################
+
+Background
+**********
+An LDLT factorization of a symmetric matrix A determines
+a permutation matrix P,
+a unitary lower triangular matrix L,
+and a diagonal matrix D such that
+:math:`P * A * P^T = L * D * L^T` .
+The condition reciprocal condition number is the minimal absolute element
+of D divided by the maximum absolute element of D.
+Given the elements of A,
+we need to be able to compute the elements of D to test
+the computation of this reciprocal condition number.
+
+Test Case
+*********
+Suppose that A is a two by two symmetric matrix
+ans use the following notation for the elements of A, L, and D
+
+.. math::
+
+   A = \begin{pmatrix}
+      a & b \\
+      b & c
+   \end{pmatrix}
+   \text{ , }
+   L = \begin{pmatrix}
+      1 & 0 \\
+      \ell & 1
+   \end{pmatrix}
+   \text{ , }
+   D = \begin{pmatrix}
+      d & 0 \\
+      0 & e
+   \end{pmatrix}
+
+
+There are two cases for the matrix P.
+
+.. math::
+
+   P = \begin{pmatrix}
+      1 & 0 \\
+      0 & 1
+   \end{pmatrix}
+   \text{ , }
+   P = \begin{pmatrix}
+      0 & 1 \\
+      1 & 0
+   \end{pmatrix}
+
+Case I
+******
+In the first case, P is the identity and
+:math:`P * A * P^T = A` .
+It follows that
+
+.. math::
+
+   \begin{pmatrix}
+      a & b \\
+      b & c
+   \end{pmatrix}
+   = &
+   \begin{pmatrix}
+      1 & 0 \\
+      \ell & 1
+   \end{pmatrix}
+   \begin{pmatrix}
+      d & 0 \\
+      0 & e
+   \end{pmatrix}
+   \begin{pmatrix}
+      1 & \ell \\
+      0 & 1
+   \end{pmatrix}
+   \\
+   = &
+   \begin{pmatrix}
+      d      & 0 \\
+      \ell d & e
+   \end{pmatrix}
+   \begin{pmatrix}
+      1 & \ell \\
+      0 & 1
+   \end{pmatrix}
+   \\
+   = &
+   \begin{pmatrix}
+      d      & d \ell \\
+      \ell d & \ell d \ell + e
+   \end{pmatrix}
+
+It follows for this case that the elements of L and D are given by:
+
+.. math::
+
+   d = a \text{ , } \ell = b / a  \text { , } e = c - b^2 / a
+
+Case II
+*******
+In the second case define :math:`B = P * A * P^T`
+
+.. math::
+
+   B = &
+   \begin{pmatrix}
+      0 & 1 \\
+      1 & 0
+   \end{pmatrix}
+   \begin{pmatrix}
+      a & b \\
+      b & c
+   \end{pmatrix}
+   \begin{pmatrix}
+      0 & 1 \\
+      1 & 0
+   \end{pmatrix}
+   \\
+   = &
+   \begin{pmatrix}
+      b & c \\
+      a & b
+   \end{pmatrix}
+   \begin{pmatrix}
+      0 & 1 \\
+      1 & 0
+   \end{pmatrix}
+   \\
+   = &
+   \begin{pmatrix}
+      c & b\\
+      b & a
+   \end{pmatrix}
+
+This is the same as the first case except
+the elements a and c have swapped places.
+It follows for this case that the elements of L and D are given by:
+
+.. math::
+
+   d = c \text{ , } \ell = b / c  \text { , } e = a - b^2 / c
+
+
+
+{xrst_end ldlt_rcond}
