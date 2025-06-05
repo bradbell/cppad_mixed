@@ -23,6 +23,12 @@ Release Notes for 2025
 mm-dd
 *****
 
+06-05
+=====
+The :ref:`example_install.sh-name` now does a build of the default target
+before building the check target.
+This was done to fix the parallel build of the check target on some systems.
+
 06-02
 =====
 #. On ``dnf`` systems, the ``patch`` utility

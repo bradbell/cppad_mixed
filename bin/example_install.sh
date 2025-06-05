@@ -311,18 +311,24 @@ fi
 # make
 if [ "$run_test" == 'true'  ]
 then
-   cmd_list='check speed install'
+   target_list='default check speed install'
 else
-   cmd_list='install'
+   target_list='install'
 fi
-for cmd in $cmd_list
+for target in $target_list
 do
-   echo "make -j $n_job $cmd 1>> example_install.log 2>> example_install.err"
-   if ! make -j $n_job $cmd \
+   if [ "$target" == 'default' ]
+   then
+      cmd="make -j $n_job"
+   else
+      cmd="make -j $n_job $target"
+   fi
+   echo "$cmd 1>> example_install.log 2>> example_install.err"
+   if ! $cmd \
       1>> ../example_install.log 2>> ../example_install.err
    then
       echo "Try following command in $(pwd) failed:"
-      echo "    make -j $n_job $cmd"
+      echo "    $cmd"
       echo 'To see why look at example_install.err or run the comamnd'
       exit 1
    fi
