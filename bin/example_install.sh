@@ -313,7 +313,7 @@ if [ "$run_test" == 'true'  ]
 then
    target_list='default check speed install'
 else
-   target_list='install'
+   target_list='default install'
 fi
 for target in $target_list
 do
