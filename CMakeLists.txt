@@ -97,7 +97,7 @@ MACRO( optional_definition variable type docstring )
    ENDIF( ${type} STREQUAL "PATH" )
 ENDMACRO( optional_definition )
 # ============================================================================
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 PROJECT(cppad_mixed)
 SET(cppad_mixed_version "2025.0.2")
 INCLUDE_DIRECTORIES( ${cppad_mixed_SOURCE_DIR}/include )
