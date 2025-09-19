@@ -1,5 +1,6 @@
 #! /usr/bin/env bash
 set -e -u
+# !! EDITS TO THIS FILE ARE LOST DURING UPDATES BY xrst.git/bin/dev_tools.sh !!
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: Bradley M. Bell <bradbell@seanet.com>
 # SPDX-FileContributor: 2020-25 Bradley M. Bell
@@ -59,7 +60,7 @@ p
 #
 : end
 EOF
-version=$($sed -n -r -f temp.sed $first_version_file)
+version=$($sed -n -r -f temp.sed $first_version_file | head -1)
 #
 # version_type
 if [[ "$version" =~ ^[0-9]{8}$ ]]
@@ -158,7 +159,7 @@ done
 # ----------------------------------------------------------------------------
 if [ "$version_ok" == 'no' ]
 then
-   echo 'bin/check_version.sh: version numbers were fixed (see above).'
+   echo 'check_version.sh: The version numbers were fixed (see above).'
    echo 'Re-execute bin/check_version.sh ?'
    exit 1
 fi

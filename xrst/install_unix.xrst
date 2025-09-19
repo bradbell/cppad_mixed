@@ -60,7 +60,7 @@ is required by ``cppad_mixed`` .
 
 gsl
 ===
-`gsl <https://gnuwin32.sourceforge.net/packages/gsl.htm>`_,
+`gsl <https://www.gnu.org/software/gsl/>`_,
 the gnu scientific library.
 Note that the development headers are required; e.g.,
 on Fedora or Red-Hat one needs to install ``gsl-devel`` .

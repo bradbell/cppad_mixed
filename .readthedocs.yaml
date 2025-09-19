@@ -1,9 +1,25 @@
+# !! EDITS TO THIS FILE ARE LOST DURING UPDATES BY xrst.git/bin/dev_tools.sh !!
+# {xrst_comment_ch #}
+#
+# Example Read the Docs Configuration
+# ###################################
+#
+# Read the Docs Specification
+# ***************************
+# `<https://docs.readthedocs.com/platform/stable/config-file>`_
+#
+# This Example File
+# *****************
+# {xrst_literal}
+#
 version: 2
 
 build:
-   os: "ubuntu-20.04"
+   os: "ubuntu-22.04"
    tools:
       python: "3.10"
+   #
+   # The readthedocs commands feature is still in beta
    commands:
       #
       # xrst
@@ -17,6 +33,7 @@ build:
       - xrst --version
       #
       # build/html
+      # This comamnd builds the xrst user documentaiton.
       # Suppress spell warnings because readthdocs uses a different dictionry.
       - xrst
          --page_source
@@ -26,6 +43,7 @@ build:
          --suppress_spell_warnings
       #
       # _readthedocs/html
+      # The directory that Read the Docs uploads when commands is used.
       - mkdir _readthedocs
       - rm -r build/html/.doctrees
       - cp -r build/html _readthedocs/html

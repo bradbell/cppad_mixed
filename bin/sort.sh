@@ -1,5 +1,6 @@
 #! /usr/bin/env bash
 set -e -u
+# !! EDITS TO THIS FILE ARE LOST DURING UPDATES BY xrst.git/bin/dev_tools.sh !!
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: Bradley M. Bell <bradbell@seanet.com>
 # SPDX-FileContributor: 2023-25 Bradley M. Bell
@@ -125,7 +126,7 @@ do
    let count="$count + 1"
    echo "sort.sh: sorting lines $start_line to $stop_line in $file_name"
    #
-   if [ $start_line -ge $stop_line ]
+   if [ $start_line -gt $stop_line ]
    then
       echo "start_line = $start_line >= stop_line = $stop_line "
       rm sorted.$$

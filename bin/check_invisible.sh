@@ -1,13 +1,15 @@
 #! /usr/bin/env bash
 set -e -u
+# !! EDITS TO THIS FILE ARE LOST DURING UPDATES BY xrst.git/bin/dev_tools.sh !!
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: Bradley M. Bell <bradbell@seanet.com>
 # SPDX-FileContributor: 2020-25 Bradley M. Bell
 # -----------------------------------------------------------------------------
 # bin/check_invisible.sh
 # Checks that there is no invisible white space in any of the source files.
-# If there is, and you want to, it is automatically removed.
-# Files that are not checked can be sepcified in bin/dev_setting.sh
+# If there is, a message is printed about it, it is automatically removed,
+# and this script exits with an error.
+# Files that are not checked can be specified in bin/dev_setting.sh
 # -----------------------------------------------------------------------------
 if [ "$0" != "bin/check_invisible.sh" ]
 then
@@ -67,7 +69,8 @@ s| *\t|\t|g
 \${/^[ \\t]*\$/d}
 EOF
 #
-# file
+# changed, file
+changed='no'
 for file in $file_list
 do
    if [ -f "$file" ]
@@ -75,23 +78,14 @@ do
       $sed -f sed.$$ $file > copy.$$
       if ! diff $file copy.$$ > diff.$$
       then
-         echo "original (<) invisible white space removed (>)"
+         changed='yes'
+         echo "$file: original (<) invisible space removed (>)"
          cat diff.$$
-         res=''
-         while [ "$res" != 'yes' ] && [ "$res" != 'no' ]
-         do
-            read -p "Remove invisible white space in $file [yes/no] ?" res
-         done
-         if [ "$res" == 'yes' ]
+         if [ -x $file ]
          then
-            if [ -x $file ]
-            then
-               chmod +x copy.$$
-            fi
-            mv copy.$$ $file
-         else
-            rm copy.$$
+            chmod +x copy.$$
          fi
+         mv copy.$$ $file
       else
          rm copy.$$
       fi
@@ -99,5 +93,11 @@ do
    fi
 done
 rm sed.$$
+if [ "$changed" == 'yes' ]
+then
+   echo 'check_invisible.sh: The invisible white space above have been fixed'
+   echo 'Re-execute bin/check_invisible.sh ?'
+   exit 1
+fi
 echo 'check_invisible.sh: OK'
 exit 0
