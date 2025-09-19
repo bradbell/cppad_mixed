@@ -233,9 +233,10 @@ bool sample_fixed_xam(void)
    d_sparse_rcv hes_fixed_obj_rcv =
       mixed_object.hes_fixed_obj(fixed_opt, random_opt);
    //
-   // sample, rcond, ok
+   // sample, rcond, cov_factor, ok
    // sample from the posterior for fixed effects
-   double rcond = std::numeric_limits<double>::quiet_NaN();
+   double rcond      = std::numeric_limits<double>::quiet_NaN();
+   double cov_factor = 4.0;
    size_t n_sample = 20000;
    d_vector sample( n_sample * n_fixed );
    std::string error_msg = mixed_object.sample_fixed(
@@ -263,10 +264,10 @@ bool sample_fixed_xam(void)
    sample_cov *= 1.0 / double(n_sample);
    //
    // info_mat
-   matrix info_mat(n_fixed-1, n_fixed-1);
    // note theta[2] does not have any non-zero terms in Hessian
+   matrix info_mat(n_fixed-1, n_fixed-1);
    size_t K = ( (n_fixed-1) * n_fixed ) / 2;
-   ok &= K == hes_fixed_obj_rcv.nnz();
+   ok      &= K == hes_fixed_obj_rcv.nnz();
    for(size_t k = 0; k < K; k++)
    {  size_t i = hes_fixed_obj_rcv.row()[k];
       size_t j = hes_fixed_obj_rcv.col()[k];
@@ -275,7 +276,8 @@ bool sample_fixed_xam(void)
    }
    //
    // ok
-   matrix cov_mat = info_mat.inverse();
+   // note the multiplication by cov_factor
+   matrix cov_mat = cov_factor * info_mat.inverse();
    for(size_t i = 0; i < n_fixed; i++)
    {  for(size_t j = 0; j < n_fixed; j++)
       {  double value = sample_cov(i, j);

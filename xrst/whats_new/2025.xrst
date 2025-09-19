@@ -26,8 +26,10 @@ mm-dd
 
 09-19
 =====
-Remove the 2DO remark under :ref`sample_fixed@rcond` for sample_fixed.
-This example / test was fixed on 06-03.
+#. Remove the 2DO remark under :ref`sample_fixed@rcond` for sample_fixed.
+   This example / test was fixed on 06-03.
+#. Add the optional :ref:`sample_fixed@cov_factor` argument to
+   the sample_fixed function.
 
 06-05
 =====

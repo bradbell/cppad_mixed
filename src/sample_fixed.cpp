@@ -8,6 +8,7 @@
   msg
   rng
   rcond
+  cov
 }
 
 Sample Posterior for Fixed Effects
@@ -22,7 +23,8 @@ Syntax
 | |tab| *solution* ,
 | |tab| *fixed_lower* ,
 | |tab| *fixed_upper* ,
-| |tab| *rcond*
+| |tab| *rcond* ,
+| |tab| *factor* ,
 | )
 
 See Also
@@ -53,21 +55,24 @@ we refer to the *j*-th fixed effect as constant.
 Constraints
 ***********
 Only the constant fixed effect constants are taken into account.
-(This is an over estimate of the variance, but is faster to calculate
+This results in an over estimate of the variance, but is faster to calculate
 than trying to identify active constraints and treating them as equality
-constraints.)
-It can result in samples that are outside the limits
+constraints.
+In addition, the samples that are outside the limits
 for the fixed effects that are not constant.
 You may want to adjust the samples to be within
 their upper and lower limits before you use them.
 
 Covariance
 **********
-Each sample of the fixed effects
-(excluding the constant fixed effects)
-has covariance equal to the inverse of the
+The sample of the fixed effects,
+excluding the constant fixed effects,
+has covariance equal to the
+:ref:`sample_fixed@cov_factor` times the inverse of the
 :ref:`information matrix<information_mat-name>`
-(where the constant fixed effects have been removed).
+where the constant fixed effects have been removed.
+If *cov_factor* is one, this is the asymptotic covariance for the estimates
+(excluding the constraints that are not on the constant fixed effects).
 
 manage_gsl_rng
 **************
@@ -156,8 +161,18 @@ Upon return it is the reciprocal of the condition number for
 the diagonal matrix D in the factorization.
 In other words, it is the minimum absolute entry in *D* divided
 by the maximum absolute entry in D .
-If the matrix D is singular, or any entry in D nan or infinite,
+If the matrix D is singular, or any entry in D is nan or infinite,
 *rcond* is zero.
+
+cov_factor
+**********
+This argument is optional, must be greater than zero,
+and its default value is one.
+It can be used to expand or contract the random variation of the
+fixed effects; see :ref:`sample_fixed@Covariance` .
+Note that the factor corresponding to the standard deviations of the samples
+is the square root of *cov_factor* .
+Also note that *cov_factor* does not affect the factorization or *rcond* .
 
 error_msg
 *********
@@ -220,8 +235,12 @@ std::string cppad_mixed::try_sample_fixed(
    const CppAD::mixed::fixed_solution&    solution             ,
    const CppAD::vector<double>&           fixed_lower          ,
    const CppAD::vector<double>&           fixed_upper          ,
-   double&                                rcond                )
+   double&                                rcond                ,
+   double                                 cov_factor           )
 {
+   // cov_factor
+   assert( 0.0 < cov_factor );
+   //
    // sample
    assert( sample.size() > 0 );
    assert( sample.size() % n_fixed_ == 0 );
@@ -292,7 +311,7 @@ std::string cppad_mixed::try_sample_fixed(
    {  size_t k = col_major[ell];
       size_t i = hes_fixed_obj_rcv.row()[k];
       size_t j = hes_fixed_obj_rcv.col()[k];
-      double v = hes_fixed_obj_rcv.val()[k];
+      double v = hes_fixed_obj_rcv.val()[k] / cov_factor;
       i        = fixed2subset[i];
       j        = fixed2subset[j];
       if( i != n_fixed_ && j != n_fixed_ && j <= i )
@@ -363,7 +382,8 @@ std::string cppad_mixed::sample_fixed(
    const CppAD::mixed::fixed_solution&    solution             ,
    const CppAD::vector<double>&           fixed_lower          ,
    const CppAD::vector<double>&           fixed_upper          ,
-   double&                                rcond                )
+   double&                                rcond                ,
+   double                                 cov_factor           )
 // END PROTOTYPE
 {  std::string error_msg = "";
    try
@@ -373,7 +393,8 @@ std::string cppad_mixed::sample_fixed(
          solution          ,
          fixed_lower       ,
          fixed_upper       ,
-         rcond
+         rcond             ,
+         cov_factor
       );
    }
    catch(const std::exception& e)

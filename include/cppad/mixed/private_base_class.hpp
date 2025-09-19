@@ -590,7 +590,8 @@ Called by public :ref:`base_class@sample_fixed`
       const CppAD::mixed::fixed_solution&  solution             ,
       const d_vector&                      fixed_lower          ,
       const d_vector&                      fixed_upper          ,
-      double&                              rcond
+      double&                              rcond                ,
+      double                               cov_factor
    );
 /* {xrst_code}
 {xrst_spell_on}

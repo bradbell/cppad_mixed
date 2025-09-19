@@ -215,7 +215,8 @@ sample_fixed
       const CppAD::mixed::fixed_solution&  solution             ,
       const d_vector&                      fixed_lower          ,
       const d_vector&                      fixed_upper          ,
-      double&                              rcond
+      double&                              rcond                ,
+      double                               cov_factor = 1.0
    );
    std::string sample_fixed(
       d_vector&                            sample               ,
