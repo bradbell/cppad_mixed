@@ -159,9 +159,6 @@ by the maximum absolute entry in D .
 If the matrix D is singular, or any entry in D nan or infinite,
 *rcond* is zero.
 
-2DO: This result is not yet passing its test; see
-:ref:`sample_fixed.cpp-name` .
-
 error_msg
 *********
 If *error_msg* is empty (non-empty),
