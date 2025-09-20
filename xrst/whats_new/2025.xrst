@@ -30,6 +30,9 @@ mm-dd
    This example / test was fixed on 06-03.
 #. Add the optional :ref:`sample_fixed@cov_factor` argument to
    the sample_fixed function.
+#. The :ref:`sample_random.cpp-name` example was not checking that
+   the sample covariance is close to the asymptotic covariance.
+   This has been fixed.
 
 06-05
 =====

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-24 Bradley M. Bell
+// SPDX-FileContributor: 2014-25 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin sample_random.cpp}
@@ -142,7 +142,7 @@ bool sample_random_xam(void)
    //
    // sample from the posterior for random effects given fixed effects
    // and compute the  sample covariance matrix
-   size_t n_sample = 10000;
+   size_t n_sample = 20000;
    d_vector sample(n_sample * n_random);
    std::string error_msg = mixed_object.sample_random(
       sample,
@@ -182,12 +182,13 @@ bool sample_random_xam(void)
    info_mat(1, 1) += 1.0;
    //
    double_mat cov_mat = info_mat.inverse();
-   double max_err = 0.0;
    for(size_t i = 0; i < n_random; i++)
    {  for(size_t j = 0; j < n_random; j++)
-      {  double value = sample_cov[i * n_random + j];
-         double check = cov_mat(i, j);
-         max_err = std::max(max_err, fabs(value - check) / diag);
+      {  double value  = sample_cov[i * n_random + j];
+         double check  = cov_mat(i, j);
+         double scale  = std::sqrt( cov_mat(i,i) * cov_mat(j,j) );
+         double relerr = (value - check) / scale;
+         ok           &= std::fabs(relerr) < .05;
       }
    }
    //
