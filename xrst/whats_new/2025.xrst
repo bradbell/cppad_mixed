@@ -29,7 +29,11 @@ mm-dd
 #. Remove the 2DO remark under :ref`sample_fixed@rcond` for sample_fixed.
    This example / test was fixed on 06-03.
 #. Add the optional :ref:`sample_fixed@cov_factor` argument to
-   the sample_fixed function.
+   the sample_fixed function. The :ref:`sample_fixed.cpp-name` example
+   was modified to use this factor.
+#. Add the optional :ref:`sample_random@cov_factor` argument to
+   the sample_random function. The :ref:`sample_random.cpp-name` example
+   was modified to use this factor.
 #. The :ref:`sample_random.cpp-name` example was not checking that
    the sample covariance is close to the asymptotic covariance.
    This has been fixed.

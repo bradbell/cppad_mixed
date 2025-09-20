@@ -606,7 +606,8 @@ Called by public :ref:`base_class@sample_random`
       const d_vector&       fixed_vec            ,
       const d_vector&       random_lower         ,
       const d_vector&       random_upper         ,
-      const d_vector&       random_in
+      const d_vector&       random_in            ,
+      double                cov_factor
    );
 /* {xrst_code}
 {xrst_spell_on}

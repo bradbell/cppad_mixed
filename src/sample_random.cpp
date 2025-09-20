@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-25 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin sample_random}
@@ -8,6 +8,7 @@
   msg
   rng
   uu
+  cov
 }
 
 Simulation the Posterior Distribution for Random Effects
@@ -22,7 +23,8 @@ Syntax
 | |tab| *random_ipopt_options* ,
 | |tab| *random_lower* ,
 | |tab| *random_upper* ,
-| |tab| *random_in*
+| |tab| *random_in* ,
+| |tab| *cov_factor*
 | )
 
 See Also
@@ -122,6 +124,15 @@ It must hold that
 
 for each valid index *i* .
 
+cov_factor
+**********
+This argument is optional, must be greater than zero,
+and its default value is one.
+It can be used to expand or contract the random variation of the
+random effects; see Covariance below.
+Note that the factor corresponding to the standard deviations of the samples
+is the square root of *cov_factor* .
+
 Covariance
 **********
 Each sample of the random effects is an independent normal.
@@ -129,14 +140,15 @@ The mean for this distribution is the
 :ref:`optimal random effects<theory@Optimal Random Effects, u^(theta)>`
 :math:`\hat{u} ( \theta )`.
 The variance of this distribution
-is the inverse of the observed information
+is *cov_factor* times the inverse of the observed information
 matrix; i.e.
 
 .. math::
 
-   f_{uu} [ \theta , \hat{u} ( \theta ) ] ^{-1}
+   \lambda f_{uu} [ \theta , \hat{u} ( \theta ) ] ^{-1}
 
-This normal distribution is censored to be within the limits
+where :math:`\lambda` is *cov_factor* .
+The samples from this normal distribution are censored to be within the limits
 *random_lower* , *random_upper* .
 
 error_msg
@@ -171,7 +183,8 @@ std::string cppad_mixed::try_sample_random(
    const d_vector&    fixed_vec            ,
    const d_vector&    random_lower         ,
    const d_vector&    random_upper         ,
-   const d_vector&    random_in            )
+   const d_vector&    random_in            ,
+   double             cov_factor           )
 {  // case where there is nothing to do
    if( n_random_ == 0 )
       return "";
@@ -208,9 +221,12 @@ std::string cppad_mixed::try_sample_random(
          return msg;
       }
       //
+      // root_cov_factor
+      double root_cov_factor = std::sqrt( cov_factor );
+      //
       // add random_opt an truncate to random limits
       for(size_t j = 0; j < n_random_; j++)
-      {  double samp = random_opt[j] + v[j];
+      {  double samp = random_opt[j] + v[j] * root_cov_factor;
          samp = std::min(samp, random_upper[j]);
          samp = std::max(samp, random_lower[j]);
          sample[i_sample * n_random_ + j] = samp;
@@ -226,7 +242,8 @@ std::string cppad_mixed::sample_random(
    const d_vector&    fixed_vec            ,
    const d_vector&    random_lower         ,
    const d_vector&    random_upper         ,
-   const d_vector&    random_in            )
+   const d_vector&    random_in            ,
+   double             cov_factor           )
 // END PROTOTYPE
 {  std::string error_msg = "";
    try
@@ -236,7 +253,8 @@ std::string cppad_mixed::sample_random(
          fixed_vec             ,
          random_lower          ,
          random_upper          ,
-         random_in
+         random_in             ,
+         cov_factor
       );
    }
    catch(const std::exception& e)

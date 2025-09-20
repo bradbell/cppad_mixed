@@ -142,7 +142,8 @@ bool sample_random_xam(void)
    //
    // sample from the posterior for random effects given fixed effects
    // and compute the  sample covariance matrix
-   size_t n_sample = 20000;
+   double cov_factor = 4.0;
+   size_t n_sample   = 20000;
    d_vector sample(n_sample * n_random);
    std::string error_msg = mixed_object.sample_random(
       sample,
@@ -150,7 +151,8 @@ bool sample_random_xam(void)
       fixed_vec,
       random_lower,
       random_upper,
-      random_in
+      random_in,
+      cov_factor
    );
    ok &= error_msg == "";
    d_vector sample_cov(n_random * n_random);
@@ -181,14 +183,14 @@ bool sample_random_xam(void)
    info_mat(1, 0)  = 1.0;
    info_mat(1, 1) += 1.0;
    //
-   double_mat cov_mat = info_mat.inverse();
+   double_mat cov_mat = cov_factor * info_mat.inverse();
    for(size_t i = 0; i < n_random; i++)
    {  for(size_t j = 0; j < n_random; j++)
-      {  double value  = sample_cov[i * n_random + j];
-         double check  = cov_mat(i, j);
-         double scale  = std::sqrt( cov_mat(i,i) * cov_mat(j,j) );
+      {  double value = sample_cov[i * n_random + j];
+         double check = cov_mat(i, j);
+         double scale = std::sqrt( cov_mat(i,i) * cov_mat(j,j) );
          double relerr = (value - check) / scale;
-         ok           &= std::fabs(relerr) < .05;
+         ok           &= std::fabs(relerr) < 0.05;
       }
    }
    //
