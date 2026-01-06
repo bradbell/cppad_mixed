@@ -3,9 +3,9 @@ set -e -u
 # !! EDITS TO THIS FILE ARE LOST DURING UPDATES BY xrst.git/bin/dev_tools.sh !!
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: Bradley M. Bell <bradbell@seanet.com>
-# SPDX-FileContributor: 2020-25 Bradley M. Bell
+# SPDX-FileContributor: 2020-26 Bradley M. Bell
 # -----------------------------------------------------------------------------
-# bin/check_version.sh
+# bin/check_verison.sh
 # Checks that the version number in the version_file_list are correct;
 # see bin/dev_settings.sh for more discussion.
 # -----------------------------------------------------------------------------
@@ -121,7 +121,9 @@ cat << EOF > temp.sed
 s|(["'])[0-9]{8}(["'])|\\1$version\\2|
 s|(["'])[0-9]{8}[.][0-9]{1,2}(["'])|\\1$version\\2|
 s|(["'])[0-9]{4}[.][0-9]{1,2}[.][0-9]{1,2}(["'])|\\1$version\\2|
-s|$package_name-[0-9]{8}|$package_name-$version|
+#
+s|$package_name-[0-9]{8}\$|$package_name-$version|
+s|$package_name-[0-9]{8}([^.])|$package_name-$version\\1|
 s|$package_name-[0-9]{8}[.][0-9]{1,2}|$package_name-$version|
 s|$package_name-[0-9]{4}[.][0-9]{1,2}[.][0-9]{1,2}|$package_name-$version|
 EOF
