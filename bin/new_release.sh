@@ -13,8 +13,8 @@ set -e -u
 # new_release.sh uses --skip_external_links when testing before the
 # new release (tag)  exists.
 # -----------------------------------------------------------------------------
-year='2025' # Year for this stable version
-release='3' # first release for each year starts with 0
+year='2026' # Year for this stable version
+release='0' # first release for each year starts with 0
 # -----------------------------------------------------------------------------
 if [ "$0" != 'bin/new_release.sh' ]
 then

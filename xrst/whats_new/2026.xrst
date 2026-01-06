@@ -17,6 +17,8 @@ mm-dd
 
 01-06
 =====
+These changes are included in the 2026.0.0 version of cppad_mixed:
+
 #. Advance to cppad-20260000.0.
 
 #. Fix some documentation links to external web that have changed.
@@ -25,6 +27,8 @@ mm-dd
    Most all of theses were id comments that were not part of the documentation.
    One however was a source code configuration error in the spelling of
    CHOLMOD_suffix_try.
+
+#. Change the default branch from master to main.
 
 
 {xrst_end 2026}
