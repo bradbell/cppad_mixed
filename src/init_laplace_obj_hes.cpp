@@ -132,7 +132,7 @@ void cppad_mixed::init_laplace_obj_hes(
    assert( hes_pattern.nc() == n_fixed_ );
    //
    // beta_beta_pattern
-   // sparsity pattern for lower traingle of H_{beta,beta} (beta, theta, u)
+   // sparsity pattern for lower triangle of H_{beta,beta} (beta, theta, u)
    size_t nnz = 0;
    for(size_t k = 0; k < hes_pattern.nnz(); k++)
    {  size_t r = hes_pattern.row()[k];
@@ -155,7 +155,7 @@ void cppad_mixed::init_laplace_obj_hes(
    laplace_obj_hes_.subset = d_sparse_rcv( beta_beta_pattern );
    //
    // compute work for reuse during sparse Hessian calculations
-   // (value of weight vecgttor does not affectg work, but avoid wanrings)
+   // (value of weight vecgttor does not affectg work, but avoid warnings)
    d_vector weight(m);
    for(size_t i = 0; i < m; i++)
       weight[i] = 1.0;

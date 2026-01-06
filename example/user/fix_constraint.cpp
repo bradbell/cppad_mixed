@@ -152,7 +152,7 @@ bool fix_constraint_xam(void)
       fixed_upper[i] = inf;
    }
    //
-   // explicit constriants (in addition to l1 terms)
+   // explicit constraints (in addition to l1 terms)
    d_vector fix_constraint_lower(1), fix_constraint_upper(1);
    fix_constraint_lower[0] = 1.0;
    fix_constraint_upper[0] = 1.0;

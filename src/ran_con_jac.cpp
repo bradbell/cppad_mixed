@@ -121,7 +121,7 @@ void cppad_mixed::ran_con_jac(
    assert( A_rcv_.nr() != 0 ); // could just return here in this case
    //
    bool empty =  jac_rcv.nr()==0 && jac_rcv.nc()==0 && jac_rcv.nnz()==0;
-   // 2DO: convert jac_rcv from a dense matrix to a truely sparse matrix
+   // 2DO: convert jac_rcv from a dense matrix to a truly sparse matrix
    if( empty )
    {  size_t nr  = A_rcv_.nr();
       size_t nc  = n_fixed_;
@@ -207,7 +207,7 @@ void cppad_mixed::ran_con_jac(
       //   = j-th column of uhat_theta ( theta )
       ldlt_ran_hes_.solve_H(row_solve, val_b, val_x);
       //
-      // multipliy A times j-th column of uhat_theta
+      // multiply A times j-th column of uhat_theta
       for(size_t i = 0; i < A_rcv_.nr(); i++)
          Au_theta_j[i] = 0.0;
       size_t M = A_rcv_.row().size();

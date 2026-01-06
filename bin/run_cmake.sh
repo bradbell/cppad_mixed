@@ -222,7 +222,7 @@ EOF
    fi
    shift
 done
-# Always set soft link for ./build -> ./build.buid_type
+# Always set soft link for ./build -> ./build.build_type
 # If install prefix ends with cppad_mixed, also soft link install prefix
 bin/build_type.sh run_cmake $build_type
 # --------------------------------------------------------------------------

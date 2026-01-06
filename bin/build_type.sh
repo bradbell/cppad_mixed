@@ -38,7 +38,7 @@ fi
 kernel=$(uname -s)
 if [[ "$kernel" =~ MSYS.* ]]
 then
-   echo 'Warning: MSYS does not suppor symbolic links'
+   echo 'Warning: MSYS does not support symbolic links'
    exit 0
 fi
 # -----------------------------------------------------------------------------

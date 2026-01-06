@@ -183,7 +183,7 @@ CppAD::vector<one_dim_derivative_result> one_dim_derivative_chk(
       n_try = 7;
    //
    // log_diff
-   // difference of log of relative step between trys
+   // difference of log of relative step between tries
    double log_diff = (log_max_rel_step - log_min_rel_step)/double(n_try - 1);
    //
    // result

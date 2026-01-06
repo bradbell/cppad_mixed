@@ -29,7 +29,7 @@ number_runs = int( sys.argv[1] )
 assert number_runs % 2 == 0
 os.chdir('build/speed')
 # ----------------------------------------------------------------------------
-# captue_xam comand line arugments
+# capture_xam command line arguments
 # random_seed            = '0'
 number_fixed_samples     = '1000'
 number_locations         = '50'
@@ -42,7 +42,7 @@ quasi_fixed              = 'true'
 # random_constraint      = 'true'
 trace_optimize_fixed     = 'false' # cannot change this setting
 # ----------------------------------------------------------------------------
-# make sure cature_xam is up to date
+# make sure capture_xam is up to date
 subprocess.call( [ 'make', 'capture_xam' ] )
 # ----------------------------------------------------------------------------
 # create capture_xam.# files
@@ -79,7 +79,7 @@ for run_index in range( number_runs ) :
       subprocess.call(command_list, stdout=fp)
       fp.close()
 # ----------------------------------------------------------------------------
-# read results into list of dictionarys
+# read results into list of dictionaries
 result_list = list()
 for run_index in range( number_runs ) :
    file_name = 'capture_xam.' + str(run_index)

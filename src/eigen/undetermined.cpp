@@ -251,7 +251,7 @@ size_t undetermined(
    }
    // note that the maximum absolute element in E(:,nc-1) is 1
    //
-   // which rows and colums have been used for pivots
+   // which rows and columns have been used for pivots
    bool_vec row_used(nr), col_used(nc);
    for(Index i = 0; i < nr; i++)
       row_used[i] = false;
@@ -274,7 +274,7 @@ size_t undetermined(
       // preform elementary row operations for this pivot
       elementary(pivot, E);
       //
-      // mark this pivot row and colum as used
+      // mark this pivot row and column as used
       row_used[r] = true;
       col_used[c] = true;
       //

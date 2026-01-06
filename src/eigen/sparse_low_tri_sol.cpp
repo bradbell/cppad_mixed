@@ -194,13 +194,13 @@ Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_low_tri_sol(
             result.insert(i, j) = res_value[i];
          }
       }
-      // restrore the res_value vector to all zeros
+      // restore the res_value vector to all zeros
       Int i = res_first;
       while( i < nr )
       {  res_value[i] = 0.0;
          i            = res_next[i];
       }
-      // restor the res list to empty
+      // restore the res list to empty
       res_first = nr;
    }
    return result;

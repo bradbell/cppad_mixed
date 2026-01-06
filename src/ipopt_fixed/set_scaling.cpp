@@ -78,7 +78,7 @@ bool ipopt_fixed::set_scaling(
    size_t m    = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
    //
 # ifndef NDEBUG
-   // n: number of arguemnts to function being optimized
+   // n: number of arguments to function being optimized
    size_t  n   = n_fixed_ + fix_likelihood_nabs_;
    //
    assert( scale_f_ == 1.0 );

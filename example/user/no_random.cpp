@@ -121,7 +121,7 @@ bool no_random_xam(void)
    size_t n_random = 0;
    d_vector random_in(0);
    //
-   // no constriants
+   // no constraints
    d_vector fix_constraint_lower(0), fix_constraint_upper(0);
    //
    d_vector z(n_fixed);
@@ -129,7 +129,7 @@ bool no_random_xam(void)
       z[i] = double(i+1);
 
    // object that is derived from cppad_mixed
-   // (test full netwon method to make sure it works with no random effects).
+   // (test full newton method to make sure it works with no random effects).
    mixed_derived mixed_object(n_fixed, n_random, z);
    mixed_object.initialize(fixed_in, random_in);
 

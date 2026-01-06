@@ -45,7 +45,7 @@ do
    fi
    if [ "$required" == 'no' ] && [ "$present" == 'yes' ]
    then
-      echo "unecessary: # include <cppad/mixed/configure.hpp>"
+      echo "unnecessary: # include <cppad/mixed/configure.hpp>"
       echo "  $file"
       rm temp.$$
       exit 1

@@ -105,7 +105,7 @@ bool ipopt_fixed::one_dim_function(double x_j, d_vector& fun_out)
    // m: number of components if g
    size_t m    = 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_;
    //
-   // n: number of arguemnts to function being optimized
+   // n: number of arguments to function being optimized
    size_t  n   = n_fixed_ + fix_likelihood_nabs_;
    //
    // j: component in argument space were one dimensional function defined
@@ -124,7 +124,7 @@ bool ipopt_fixed::one_dim_function(double x_j, d_vector& fun_out)
    bool ok = false;
    //
    switch( one_dim_function_eval_ )
-   {  // evaluting f(x) along j-th component of x
+   {  // evaluating f(x) along j-th component of x
       case eval_f_enum:
       assert( fun_out.size() == 1 );
       ok = eval_f(Index(n), x, new_x, fun_out[0]);

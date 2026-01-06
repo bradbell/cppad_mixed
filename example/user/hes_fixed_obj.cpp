@@ -221,7 +221,7 @@ bool hes_fixed_obj_xam(void)
    fixed_lower[0] = - inf; fixed_in[0] = 2.0; fixed_upper[0] = inf;
    fixed_lower[1] = .01;   fixed_in[1] = 0.5; fixed_upper[1] = inf;
    //
-   // explicit constriants (in addition to l1 terms)
+   // explicit constraints (in addition to l1 terms)
    d_vector fix_constraint_lower(0), fix_constraint_upper(0);
    //
    d_vector data(n_data), random_in(n_random);

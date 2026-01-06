@@ -195,7 +195,7 @@ void ipopt_random::try_eval_h(
    //
    if( values == NULL )
    {  for(size_t k = 0; k < nnz_h_lag_; k++)
-      {  // only returning lower triagle of Hessian of objective
+      {  // only returning lower triangle of Hessian of objective
          assert( col[k] <= row[k] );
          assert( row[k] < n_random_ );
          iRow[k] = static_cast<Index>( row[k] );

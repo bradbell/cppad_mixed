@@ -96,7 +96,7 @@ bool delta_ran_obj(void)
    for(size_t i = 0; i < n_random; i++)
       random_vec[i] = 0.0;
    //
-   // no constriants
+   // no constraints
    vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
    //
    // object that is derived from cppad_mixed

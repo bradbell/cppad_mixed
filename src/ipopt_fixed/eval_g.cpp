@@ -136,7 +136,7 @@ void ipopt_fixed::try_eval_g(
    }
    for(size_t i = 0; i < size_t(m); i++)
    {  if( CppAD::isnan( g[i] ) ) throw CppAD::mixed::exception(
-         "", "constaint function has a nan"
+         "", "constraint function has a nan"
       );
    }
    return;

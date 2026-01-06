@@ -55,7 +55,7 @@ bool sparse_mat2low_xam(void)
          ++count;
       }
    }
-   // make sure all of lower traingle is included
+   // make sure all of lower triangle is included
    ok &= count == (nr * (nr + 1) ) / 2;
    return ok;
 }

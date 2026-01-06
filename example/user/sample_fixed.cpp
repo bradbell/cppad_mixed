@@ -150,7 +150,7 @@ bool sample_fixed_xam(void)
    fixed_lower[2] = 1.0;   fixed_in[2] = 1.0; fixed_upper[2] = 1.0;
    //
    // fix_consteraint_lower, fix_constraint_upper
-   // explicit constriants (in addition to l1 terms)
+   // explicit constraints (in addition to l1 terms)
    d_vector fix_constraint_lower(0), fix_constraint_upper(0);
    //
    // data_in, random_in

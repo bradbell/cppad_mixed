@@ -87,7 +87,7 @@ bool solution_check(void)
    size_t n_random = 0;
    vector<double> random_in(0);
    //
-   // no constriants
+   // no constraints
    vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
    //
    vector<double> z(n_fixed);

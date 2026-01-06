@@ -58,7 +58,7 @@ public:
       for(size_t k = 2; k <= N; k++)
          logfac_[k] = log( double(k) ) + logfac_[k-1];
    }
-   // implementaion of ran_likelihood
+   // implementation of ran_likelihood
    template <class Float>
    vector<Float> template_fix_likelihood(const vector<Float>&  theta)
    {  vector<Float> vec(1);

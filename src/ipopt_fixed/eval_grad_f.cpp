@@ -126,7 +126,7 @@ void ipopt_fixed::try_eval_grad_f(
    {  assert( j < size_t(n) );
       grad_f[j] = Number( H_beta_tmp_[j] );
    }
-   // auxillary variable part of grad_f
+   // auxiliary variable part of grad_f
    for(size_t j = 0; j < fix_likelihood_nabs_; j++)
    {  assert( n_fixed_ + j < size_t(n) );
       grad_f[n_fixed_ + j] = Number( 1.0 );

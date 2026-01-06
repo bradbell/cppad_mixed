@@ -101,8 +101,8 @@ CppAD::mixed::d_sparse_rcv cppad_mixed::try_hes_fixed_obj(
       // update the cholesky factor for this fixed and random effect
       update_factor(fixed_vec, random_opt);
       // ------------------------------------------------------------------
-      // If Quasi-Newton method was used, must initilaize routines
-      // that are only used for the Hessian calculation; see initilaize.cpp
+      // If Quasi-Newton method was used, must initialize routines
+      // that are only used for the Hessian calculation; see initialize.cpp
       if( ! init_laplace_obj_fun_done_ )
       {  assert( ! init_laplace_obj_done_ );
          init_laplace_obj(fixed_vec, random_opt);

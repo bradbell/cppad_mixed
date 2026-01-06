@@ -85,7 +85,7 @@ public:
       for(size_t k = 2; k <= K; k++)
          logfac_[k] = log( double(k) ) + logfac_[k-1];
    }
-   // implementaion of fix_likelihood
+   // implementation of fix_likelihood
    template <class Float>
    vector<Float> template_fix_likelihood(const vector<Float>&  theta)
    {  vector<Float> vec(1);
@@ -104,7 +104,7 @@ public:
             sum_log      -= logfac_[k];
             //
             for(size_t t = 0; t < T_; t++)
-            {  // data at loation i and time t
+            {  // data at location i and time t
                size_t yit = y_[ i * T_ + t];
                //
                // log (k choose yit) - log(k!)

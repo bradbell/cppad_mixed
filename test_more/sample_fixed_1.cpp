@@ -132,7 +132,7 @@ bool sample_fixed_1(void)
       fixed_upper[i] = inf;
    }
    //
-   // explicit constriants (in addition to l1 terms)
+   // explicit constraints (in addition to l1 terms)
    vector<double> fix_constraint_lower(2), fix_constraint_upper(2);
    for(size_t i = 0; i < 2; i++)
    {  fix_constraint_lower[i] = -inf;

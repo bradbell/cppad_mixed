@@ -35,7 +35,7 @@ INCLUDE(cmake/find_cholmod.cmake)
 # required_definition( variable type docstring )
 #
 # variable
-# If this varaible is defined, echo its definition in the output.
+# If this variable is defined, echo its definition in the output.
 # Otherwise output a fatal error message.
 #
 # type
@@ -251,7 +251,7 @@ FOREACH(pkg ${pkg_config_list} )
       MESSAGE(FATAL_ERROR  "PKG_CONFIG_PATH=$ENV{PKG_CONFIG_PATH}")
    ENDIF( ${pkg}_FOUND )
    #
-   # INLCUDE_DIRECTORIES
+   # INCLUDE_DIRECTORIES
    INCLUDE_DIRECTORIES( SYSTEM ${${pkg}_INCLUDE_DIRS} )
    #
    # LINK_DIRECTORIES

@@ -104,7 +104,7 @@ bool cholmod_solve_xam(void)
 
    // check properties of factor
    assert( flag     == CHOLMOD_TRUE );  // return flag OK
-   assert( L->n     == nrow );          // number of rows and coluns
+   assert( L->n     == nrow );          // number of rows and columns
    assert( L->minor == nrow );          // successful factorization
    assert( L->is_ll == CHOLMOD_FALSE ); // factorization is LDL'
    assert( com.status == CHOLMOD_OK  ); // no problem with factorization

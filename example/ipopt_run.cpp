@@ -1213,7 +1213,7 @@ bool ipopt_run_xam(void)
    status = app->OptimizeTNLP(xam_nlp);
    ok    &= status != Ipopt::Solve_Succeeded;
    //
-   // second attemp should succeed with a warm start
+   // second attempt should succeed with a warm start
    app->Options()->SetStringValue("warm_start_init_point", "yes");
    status = app->OptimizeTNLP(xam_nlp);
    //

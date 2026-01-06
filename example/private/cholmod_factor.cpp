@@ -123,7 +123,7 @@ bool cholmod_factor_xam(void)
    //
    // check properties of factor
    ok &= ( flag          == CHOLMOD_TRUE );  // return flag OK
-   ok &= ( factor->n     == n );             // number of rows and coluns
+   ok &= ( factor->n     == n );             // number of rows and columns
    ok &= ( factor->minor == n );             // successful factorization
    ok &= ( factor->is_ll == CHOLMOD_FALSE ); // factorization is LDLT
    ok &= ( com.status == CHOLMOD_OK  );      // no problem with factorization

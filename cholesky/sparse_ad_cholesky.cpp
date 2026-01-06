@@ -263,7 +263,7 @@ void sparse_ad_cholesky::eval(
    }
    assert( ia == nx );
    // -------------------------------------------------------------------
-   // make call to packed vector verison of the atomic function
+   // make call to packed vector version of the atomic function
    size_t ny = L_pattern_.row.size();
    CppAD::vector< CppAD::AD<double> > ay( ny );
    (*this)(ax, ay);

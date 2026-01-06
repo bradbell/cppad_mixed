@@ -101,7 +101,7 @@ bool ipopt_fixed::get_starting_point(
       for(size_t j = 0; j < n_fixed_; j++)
          x[j] = fixed_in_[j];
 
-      // set auxillary variables to corresponding minimum feasible value
+      // set auxiliary variables to corresponding minimum feasible value
       for(size_t j = 0; j < fix_likelihood_nabs_; j++)
          x[n_fixed_ + j] = std::fabs( fix_likelihood_vec_tmp_[1 + j] );
    }

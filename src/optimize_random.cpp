@@ -190,7 +190,7 @@ namespace { // BEGIN_EMPTY_NAMESPACE
       std::string&                             evaluation_method  )
    {  Ipopt::SmartPtr<Ipopt::IpoptApplication> null(NULL);
       //
-      // initilaize return value
+      // initialize return value
       std::string ret;
       //
       // Set options for optimization of the random effects
@@ -274,7 +274,7 @@ namespace { // BEGIN_EMPTY_NAMESPACE
       std::string not_used;
       set_options(app, options, not_used);
       //
-      // object that is used to evalute objective and its derivatives
+      // object that is used to evaluate objective and its derivatives
       // (note that one does not need to delete an ipopt smart pointer)
       Ipopt::SmartPtr<CppAD::mixed::ipopt_random> random_nlp =
       new CppAD::mixed::ipopt_random(
@@ -289,7 +289,7 @@ namespace { // BEGIN_EMPTY_NAMESPACE
       // initialize app
       status = app->Initialize();
       if(status != Ipopt::Solve_Succeeded )
-         mixed_object.fatal_error("optimize_random: initalization failed");
+         mixed_object.fatal_error("optimize_random: initialization failed");
       //
       // solve the problem
       status = app->OptimizeTNLP(random_nlp);

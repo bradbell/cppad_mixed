@@ -226,7 +226,7 @@ bool ipopt_fixed::adapt_derivative_chk(bool trace, double relative_tol)
    // set fixed effect in x_scale
    for(size_t j = 0; j < n_fixed_; j++)
       x_scale[j] = fixed_scale_[j];
-   // set auxillary variables in x_scale
+   // set auxiliary variables in x_scale
    for(size_t j = 0; j < fix_likelihood_nabs_; j++)
       x_scale[n_fixed_ + j] = std::fabs( fix_likelihood_vec_tmp_[1 + j] );
    //

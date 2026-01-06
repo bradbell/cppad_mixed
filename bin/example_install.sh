@@ -142,11 +142,11 @@ then
    brew list | sed -e 's|  *|\n|g' > example_install.tmp
 elif which setup-x86_64 >& /dev/null
 then
-   system_tpye='cygwin'
+   system_type='cygwin'
    system_install='setup-x86_64.exe -q -P'
    cygcheck -c -d | sed -e 's|  *|-|' > example_install.tmp
 else
-   echo 'Cannot find the system pakcage manager'
+   echo 'Cannot find the system package manager'
    exit 1
 fi
 # --------------------------------------------------------------------------
@@ -206,7 +206,7 @@ then
       pkg-config
       gsl
    '
-elif [ "$system_tpye" == 'cygwin' ]
+elif [ "$system_type" == 'cygwin' ]
 then
    list='
       gsl
@@ -329,7 +329,7 @@ do
    then
       echo "Try following command in $(pwd) failed:"
       echo "    $cmd"
-      echo 'To see why look at example_install.err or run the comamnd'
+      echo 'To see why look at example_install.err or run the command'
       exit 1
    fi
 done

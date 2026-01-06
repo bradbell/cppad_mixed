@@ -139,7 +139,7 @@ void cppad_mixed::init_ran_hes(
    pack(fixed_vec, random_vec, a1_both);
    //
    // hes pattern relative to both fixed and random effects
-   // (also count number of entries in lower traingle)
+   // (also count number of entries in lower triangle)
    size_t nnz   = ran_jac2hes_rc_.nnz();
    size_t n_low = 0;
    sparse_rc hes_pattern(n_both, n_both, nnz);

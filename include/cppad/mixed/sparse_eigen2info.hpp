@@ -104,7 +104,7 @@ namespace CppAD { namespace mixed {
          }
          // case where input value of info is non-empty
          //
-         // initilize all the values as zero
+         // initialize all the values as zero
          size_t K = info.row.size();
          for(size_t k = 0; k < K; k++)
             info.val[k] = 0.0;

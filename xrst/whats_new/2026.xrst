@@ -21,5 +21,10 @@ mm-dd
 
 #. Fix some documentation links to external web that have changed.
 
+#. Use typos to find and fix spelling errors in the source code.
+   Most all of theses were id comments that were not part of the documentation.
+   One however was a source code configuration error in the spelling of
+   CHOLMOD_suffix_try.
+
 
 {xrst_end 2026}

@@ -25,7 +25,7 @@ build:
       # xrst
       - pip install xrst
       #
-      # This is only necessary if you need the most recent testing verison
+      # This is only necessary if you need the most recent testing version
       - pip uninstall -y xrst
       - pip install --index-url https://test.pypi.org/simple/ xrst
       #
@@ -33,7 +33,7 @@ build:
       - xrst --version
       #
       # build/html
-      # This comamnd builds the xrst user documentaiton.
+      # This command builds the xrst user documentation.
       # Suppress spell warnings because readthdocs uses a different dictionry.
       - xrst
          --page_source

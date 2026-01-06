@@ -35,7 +35,7 @@ bool test_one(void)
       A_inv[i] /= 36.;
 
    // Start tape of function that maps non-zeros in lower triangle of a
-   // positive definate A to the log of its determinant
+   // positive definite A to the log of its determinant
    CppAD::vector<real> A_vec(n * (n + 1) / 2 );
    A_vec[0] = 5.0; // A(0, 0)
    A_vec[1] = 4.0; // A(1, 0)
@@ -119,7 +119,7 @@ bool test_two(void)
    A_vec[4] = 1.0; // A(2, 1)
    A_vec[5] = 5.0; // A(2, 2)
 
-   // Lower triangle of positive definate A
+   // Lower triangle of positive definite A
    real_sparse_matrix A;
    A.resize(int(n), int(n));
    A.insert(0, 0) = 5.0;

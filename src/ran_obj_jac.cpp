@@ -195,7 +195,7 @@ void cppad_mixed::ran_obj_jac(
       val_x.resize( row_solve.size() );
       ldlt_ran_hes_.solve_H(row_solve, val_b, val_x);
       //
-      // parial w.r.t fixed effects contribution to total derivative
+      // partial w.r.t fixed effects contribution to total derivative
       r_fixed[j] =  f_fixed[j] + 0.5 * logdet_fix[j];
       //
       // compute effect of uhat_{theta(j)} (theta) on the total derivative

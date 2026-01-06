@@ -391,7 +391,7 @@ int main(int argc, const char* argv[])
    // hold memory setting
    CppAD::thread_alloc::hold_memory(hold_memory);
    //
-   // print the command line arugments with labels for each value
+   // print the command line arguments with labels for each value
    for(size_t i = 0; i < n_arg; i++)
       label_print(arg_name[i], argv[1+i]);
    //
@@ -414,7 +414,7 @@ int main(int argc, const char* argv[])
    size_t n_random = number_random;
    size_t n_fixed  = 1;
    //
-   // explicit constriants
+   // explicit constraints
    d_vector fix_constraint_lower(0), fix_constraint_upper(0);
    //
    //

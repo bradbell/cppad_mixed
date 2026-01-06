@@ -183,7 +183,7 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec )
       select_range, transpose, internal_bool, hes_pattern
    );
    //
-   // sparsity pattern corresponding to lower traingle of Hessian
+   // sparsity pattern corresponding to lower triangle of Hessian
    size_t nnz = 0;
    for(size_t k = 0; k < hes_pattern.nnz(); k++)
    {  if( hes_pattern.row()[k] >= hes_pattern.col()[k] )
@@ -201,7 +201,7 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec )
    }
    assert( nnz == ell );
    //
-   // only compute the lower traingle of the Hessian
+   // only compute the lower triangle of the Hessian
    fix_con_hes_.subset = d_sparse_rcv( lower_pattern );
 
    // compute the work vector for reuse during Hessian sparsity calculations

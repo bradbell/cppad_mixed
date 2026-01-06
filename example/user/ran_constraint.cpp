@@ -130,7 +130,7 @@ namespace {
       fixed_lower[0] = - inf; fixed_in[0] = 2.0; fixed_upper[0] = inf;
       fixed_lower[1] = .01;   fixed_in[1] = 0.5; fixed_upper[1] = inf;
       //
-      // explicit constriants (in addition to l1 terms)
+      // explicit constraints (in addition to l1 terms)
       d_vector fix_constraint_lower(0), fix_constraint_upper(0);
       //
       d_vector data(n_data), random_in(n_random);
@@ -167,7 +167,7 @@ namespace {
       {  random_lower[i] = -inf;
          random_upper[i] = +inf;
       }
-      // optmize fixed effects
+      // optimize fixed effects
       d_vector fixed_scale = fixed_in;
       CppAD::mixed::fixed_solution solution = mixed_object.optimize_fixed(
          fixed_ipopt_options,

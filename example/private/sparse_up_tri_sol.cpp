@@ -56,7 +56,7 @@ bool sparse_up_tri_sol_xam(void)
    //
    sparse_by_col result = CppAD::mixed::sparse_up_tri_sol(left, right);
    //
-   // check that the result is a upper triangular verison of identity matrix
+   // check that the result is a upper triangular version of identity matrix
    for(size_t j = 0; j < nc; j++)
    {  count = 0;
       for(sparse_by_col::InnerIterator itr(result, int(j)); itr; ++itr)

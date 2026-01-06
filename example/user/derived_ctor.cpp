@@ -67,7 +67,7 @@ bool derived_ctor_xam(void)
    mixed_derived mixed_object(
       n_fixed, n_random, quasi_fixed, bool_sparsity
    );
-   // One normaly does not store the return value of initialize
+   // One normally does not store the return value of initialize
    // (size_map is included here to show how it can be displayed).
    std::map<std::string, size_t> size_map;
    size_map = mixed_object.initialize(fixed_vec, random_vec);

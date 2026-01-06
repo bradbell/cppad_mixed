@@ -48,8 +48,9 @@ possible flags
 --ldlt_eigne               use eigen for LDLT factorization
 --release                  only compile for release
 --verbose_make             generate verbose makefiles
+--skip_check_copy          do not check copyright messages
 --skip_external_links      do not check documentation external links
---suppress_spell_warnings  do not check for documentaiton spelling errors
+--suppress_spell_warnings  do not check for documentation spelling errors
 EOF
       exit 0
    fi
@@ -60,6 +61,7 @@ fi
 ldlt_eigen='no'
 release='no'
 verbose_make='no'
+skip_check_copy='no'
 skip_external_links='no'
 suppress_spell_warnings='no'
 while [ $# != 0 ]
@@ -76,6 +78,10 @@ do
 
       --verbose_make)
       verbose_make='yes'
+      ;;
+
+      --skip_check_copy)
+      skip_check_copy='yes'
       ;;
 
       --skip_external_links)
@@ -107,11 +113,16 @@ list=`ls bin/check_*.sh`
 for script in $list
 do
    if [ "$script" != 'bin/check_all.sh' ] \
+   && [ "$script" != 'bin/check_copy.sh' ] \
    && [ "$script" != 'bin/check_install.sh' ]
    then
       $script
    fi
 done
+if [ "$skip_check_copy" == 'no' ]
+then
+   bin/check_copy.sh
+fi
 #
 # cmake_install_prefix
 cmd=`$grep '^cmake_install_prefix=' bin/run_cmake.sh`

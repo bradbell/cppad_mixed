@@ -168,7 +168,7 @@ bool lasso_xam(void)
    d_vector random_lower(n_random), random_upper(n_random);
    std::string random_ipopt_options = "";
    //
-   // no constriants
+   // no constraints
    d_vector fix_constraint_lower(0), fix_constraint_upper(0);
    //
    size_t n_data = 50;

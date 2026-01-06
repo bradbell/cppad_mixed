@@ -160,7 +160,7 @@ void ipopt_fixed::try_eval_jac_g(
             ell++;
          }
       }
-      // auxillary variables for l1 constraints
+      // auxiliary variables for l1 constraints
       for(size_t j = 0; j < fix_likelihood_nabs_; j++)
       {  assert( ell + 1 < nnz_jac_g_ );
          iRow[ell] = Index( 2 * j );

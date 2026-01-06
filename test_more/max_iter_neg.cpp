@@ -3,7 +3,7 @@
 // SPDX-FileContributor: 2014-22 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
-$section Fixed Iterations Eqaul to Minus One$$.
+$section Fixed Iterations Equal to Minus One$$.
 
 $head Model$$
 $latex \[
@@ -113,7 +113,7 @@ bool max_iter_neg(void)
    size_t n_random = 0;
    vector<double> random_in(0), random_lower(0), random_upper(0);
    //
-   // no constriants
+   // no constraints
    vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
    //
    vector<double> z(n_fixed);

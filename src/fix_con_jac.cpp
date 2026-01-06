@@ -93,7 +93,7 @@ void cppad_mixed::fix_con_jac(
    CppAD::vector<size_t>& col_out     ,
    d_vector&              val_out     )
 {
-   // make sure initilialize has been called
+   // make sure initialize has been called
    if( ! initialize_done_  )
    {  std::string error_message =
       "fix_con_jac: initialize was not called before constraint_jac";

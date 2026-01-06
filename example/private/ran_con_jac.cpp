@@ -227,7 +227,7 @@ bool ran_con_jac_xam(void)
       check_1 -= (data[i] - theta_0) * theta_1 / (1.0 + theta_1sq );
    }
 
-   // used 1e-10 for random_optmize tolerance
+   // used 1e-10 for random_optimize tolerance
    ok &= fabs( jac_0 / check_0 - 1.0 ) < 1e-9;
    ok &= fabs( jac_1 / check_1 - 1.0 ) < 1e-9;
 

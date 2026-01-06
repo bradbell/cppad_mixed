@@ -560,7 +560,7 @@ error_fixed_           ( n_fixed_ )
          nnz_jac_g_ += 2;
       }
    }
-   // derivative w.r.t auxillary variables
+   // derivative w.r.t auxiliary variables
    nnz_jac_g_ += 2 * fix_likelihood_nabs_;
    // derivative of the fixed constraints
    nnz_jac_g_ += fix_con_jac_row.size();

@@ -538,7 +538,7 @@ CppAD::mixed::fixed_solution cppad_mixed::try_optimize_fixed(
    double fixed_tolerance;
    app->Options()->GetNumericValue(tag, fixed_tolerance, prefix);
    //
-   // object used to evalutate objective, constraints, and their derivatives
+   // object used to evaluate objective, constraints, and their derivatives
    // (note that  one does not need to delete an ipopt smart pointer)
    SmartPtr<CppAD::mixed::ipopt_fixed> fixed_nlp =
    new CppAD::mixed::ipopt_fixed(

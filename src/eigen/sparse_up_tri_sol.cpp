@@ -113,7 +113,7 @@ Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_up_tri_sol(
       //
       // -----------------------------------------------------------------
       // convert this column of the right hand side to a singly linked list
-      // (invert the order so that rows are in decending order)
+      // (invert the order so that rows are in descending order)
       rhs_first = -1;   // null pointer
       if( right_itr )
       {  assert( right_itr.col() == j );
@@ -195,7 +195,7 @@ Eigen::SparseMatrix<double, Eigen::ColMajor> sparse_up_tri_sol(
             result.insert(i, j) = res_value[i];
          }
       }
-      // restrore the res_value vector to all zeros
+      // restore the res_value vector to all zeros
       Int i = res_first;
       while( i >= 0 )
       {  res_value[i] = 0.0;

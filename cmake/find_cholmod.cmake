@@ -7,7 +7,7 @@
 # CHOLMOD_INCLUDE_DIRS
 # This variable is set to the directory where the cholmod.h file is located.
 #
-# CHOLMOD_LIBARIES
+# CHOLMOD_LIBRARIES
 # This variable is set to a list of libraries that must be linked with CHOLMOD.
 #
 # CHOLMOD_LIBRARY_DIRS
@@ -28,7 +28,7 @@ MACRO( find_CHOLMOD )
    SET(CHOLMOD_LIBRARY_DIRS "NOTFOUND")
    #
    # CHOLMOD_prefix_set
-   SET(CHOLMOD_prefix_set  
+   SET(CHOLMOD_prefix_set
       "${cmake_install_prefix};/usr;/usr/local;/opt/local;/usr/local/opt"
    )
    #
@@ -46,7 +46,7 @@ MACRO( find_CHOLMOD )
    # CHOLMOD_prefix, CHOLMOD_INCLUDE_DIRS
    SET(CHOLMOD_prefix "NOTFOUND")
    FOREACH(CHOLMOD_prefix_try ${CHOLMOD_prefix_set} )
-      FOREACH(CHOLMOD_suffix_try 
+      FOREACH(CHOLMOD_suffix_try
          "include/suitesparse"
          "Library/include/suitesparse"
       )
@@ -58,7 +58,7 @@ MACRO( find_CHOLMOD )
             ENDIF( )
          ENDIF( )
       ENDFOREACH( CHOLMOD_suffix_try )
-   ENDFOREACH( CHOLMOD_suffic_try )
+   ENDFOREACH( CHOLMOD_suffix_try )
    #
    # CHOLMOD_LIBRARY_DIRS, CHOLDMOD_INCLUDE_DIRS, CHOLMOD_LIBRARIES
    IF( NOT "${CHOLMOD_prefix}" STREQUAL "NOTFOUND" )

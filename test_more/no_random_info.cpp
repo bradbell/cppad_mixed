@@ -102,14 +102,14 @@ bool no_random_info(void)
    fixed_in[set_zero_index]    = 0.0;
    fixed_upper[set_zero_index] = 0.0;
    //
-   // explicit constriants (in addition to l1 terms)
+   // explicit constraints (in addition to l1 terms)
    vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
    //
    vector<double> data(n_data);
    for(size_t i = 0; i < n_data; i++)
       data[i]       = double(i + 1);
 
-   // zero length vecors
+   // zero length vectors
    vector<double> random_lower, random_in, random_upper, random_opt;
 
    // object that is derived from cppad_mixed
@@ -156,7 +156,7 @@ bool no_random_info(void)
    d_sparse_rcv
    information_rcv = mixed_object.information_mat(solution, random_opt);
    //
-   // The infromation matrix is diagonal
+   // The information matrix is diagonal
    ok  &= information_rcv.nnz() == n_fixed;
    //
    // check Hessian values

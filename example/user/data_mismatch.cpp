@@ -337,7 +337,7 @@ bool data_mismatch_xam(void)
    fixed_upper[0] = + inf;
    random_in[0]   = 0.0;
    //
-   // no constriants
+   // no constraints
    d_vector fix_constraint_lower(0), fix_constraint_upper(0);
    //
    //

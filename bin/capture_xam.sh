@@ -132,7 +132,7 @@ then
       --massif-out-file=massif.out.$$ \
       ./capture_xam $arguments
    echo_eval ms_print massif.out.$$ > massif.out
-   echo "resutls are in build/speed/massif.out"
+   echo "results are in build/speed/massif.out"
 fi
 # ----------------------------------------------------------------------------
 echo 'capture_xam.sh: OK'

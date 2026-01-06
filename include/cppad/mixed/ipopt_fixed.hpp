@@ -238,7 +238,7 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
          Number*         values
       );
       // -------------------------------------------------------------------
-      // Used by adapt_derivaive_chk to set scale_f_ and scale_g_
+      // Used by adapt_derivative_chk to set scale_f_ and scale_g_
       bool set_scaling(
          const d_vector& x_scale ,
          const d_vector& x_lower ,
@@ -255,17 +255,17 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
       // Used by adapt_derivative_chk member function to pass
       // information to one_dim_function member function
       //
-      // which function is being evaluted along j-th component of x
+      // which function is being evaluated along j-th component of x
       enum {
          eval_f_enum,       // f(x)
          eval_g_enum,       // g(x)
          eval_grad_L_enum , // L'(x)
       } one_dim_function_eval_;
       //
-      // argument index along which the one dimensional funciton is defined
+      // argument index along which the one dimensional function is defined
       size_t      one_dim_function_j_;
       //
-      // vector containing all argments
+      // vector containing all arguments
       d_vector    one_dim_function_x_;
       //
       // function factor and Lagrange multipliers used for testing

@@ -139,7 +139,7 @@ private:
    // (set by initialize).
    CppAD::mixed::sparse_mat_info L_pattern_;
    //
-   // Indices that access lower traingle of B = P * A * P^T
+   // Indices that access lower triangle of B = P * A * P^T
    // in column major order (set by initialize).
    CppAD::vector<size_t> Alow_permuted_;
    //

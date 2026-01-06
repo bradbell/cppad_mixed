@@ -66,7 +66,7 @@ bool undetermined_xam(void)
    // compute the corresponding value for the dependent variables
    double_vec xD = C * xI + e;
    //
-   // from the correponding x vector
+   // from the corresponding x vector
    double_vec x(nc);
    for(size_t j = 0; j < nc - nr; j++)
       x[ I[j] ] = xI[j];

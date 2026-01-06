@@ -434,7 +434,7 @@ void cppad_mixed::sample_conditional(
       // simulate a normal with mean zero and variance sqrt{D(k,k)}
       for(size_t k = 0; k < n_subset; k++)
          w[k] = diag_root[k] * gsl_ran_gaussian(get_gsl_rng(), 1.0);
-      // multily by Cholesky factor
+      // multiply by Cholesky factor
       double_vec s = P.transpose() * L * w;
       //
       // store this sample

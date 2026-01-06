@@ -5,7 +5,7 @@
 # ifndef CPPAD_MIXED_BASE_CLASS_HPP
 # define CPPAD_MIXED_BASE_CLASS_HPP
 
-// cppad_mixed.hpp: public member fucntions
+// cppad_mixed.hpp: public member functions
 public:
 /*
 {xrst_begin base_class}

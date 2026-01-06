@@ -117,7 +117,7 @@ then
       --massif-out-file=massif.out.$$ \
       ./ar1_xam $arguments
    echo_eval ms_print massif.out.$$ > massif.out
-   echo "resutls are in build/speed/massif.out"
+   echo "results are in build/speed/massif.out"
 fi
 # ----------------------------------------------------------------------------
 echo 'ar1_xam.sh: OK'

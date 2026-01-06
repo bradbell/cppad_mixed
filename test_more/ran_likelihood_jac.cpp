@@ -207,7 +207,7 @@ bool ran_likelihood_jac(void)
    fixed_lower[0] = - inf; fixed_in[0] = 2.0; fixed_upper[0] = inf;
    fixed_lower[1] = .01;   fixed_in[1] = 0.5; fixed_upper[1] = inf;
    //
-   // explicit constriants (in addition to l1 terms)
+   // explicit constraints (in addition to l1 terms)
    vector<double> fix_constraint_lower(0), fix_constraint_upper(0);
    //
    vector<double> data(n_data), random_in(n_random);
@@ -226,7 +226,7 @@ bool ran_likelihood_jac(void)
    mixed_object.initialize(fixed_in, random_in);
 
    // optimize the fixed effects using quasi-Newton method
-   // If the derivatives are correct, the optimzation converges in 11
+   // If the derivatives are correct, the optimization converges in 11
    // iterations. If convergence fails, change print_level to 5
    std::string fixed_ipopt_options =
       "Integer print_level               0\n"

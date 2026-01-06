@@ -315,7 +315,7 @@ void ipopt_fixed::finalize_solution(
       }
       //
       if( x_lower[j] == x_upper[j] )
-      {   // this constriant gets removed
+      {   // this constraint gets removed
          sum = 0.0;
       }
       else

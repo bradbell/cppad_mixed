@@ -83,7 +83,7 @@ bool ipopt_fixed::get_bounds_info(
       if( fixed_lower_[j] == fixed_upper_[j] )
          x_u[j] = x_l[j];
    }
-   // auxillary varibles for absolute value terms
+   // auxiliary variables for absolute value terms
    for(size_t j = 0; j < fix_likelihood_nabs_; j++)
    {  x_l[n_fixed_ + j] = nlp_lower_bound_inf_;
       x_u[n_fixed_ + j] = nlp_upper_bound_inf_;

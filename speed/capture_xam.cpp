@@ -686,7 +686,7 @@ public:
          log_pik_[ell] = 0.0;
       template_ran_likelihood(fixed_in, random_in, log_pik_);
    }
-   // implementaion of ran_likelihood, used with Float = double and a1_double
+   // implementation of ran_likelihood, used with Float = double and a1_double
    template <class Float>
    CppAD::vector<Float> template_ran_likelihood(
       const CppAD::vector<Float>&  theta   ,
@@ -786,7 +786,7 @@ public:
       // - log [ p(y|theta,u) p(u|theta) ]
       vec[0] = - vec[0];
       //
-      // result may be inifite or nan when only computing log_pik
+      // result may be infinite or nan when only computing log_pik
       // (initial log_pik is used to compute normalization factors)
       return vec;
    }
@@ -899,7 +899,7 @@ int main(int argc, const char *argv[])
    // hold memory setting
    CppAD::thread_alloc::hold_memory(hold_memory);
    //
-   // print the command line arugments with labels for each value
+   // print the command line arguments with labels for each value
    for(size_t i = 0; i < n_arg; i++)
       label_print(arg_name[i], argv[1+i]);
    //
@@ -1142,7 +1142,7 @@ int main(int argc, const char *argv[])
    label_print("mean_population_std", sample_std[0]);
    label_print("mean_logit_probability_std", sample_std[1]);
    label_print("std_logit_probability_std", sample_std[2]);
-   // ratios, error conditon is ratio >= 5.0
+   // ratios, error condition is ratio >= 5.0
    label_print("mean_population_ratio", estimate_ratio[0]);
    label_print("mean_logit_probability_ratio", estimate_ratio[1]);
    label_print("std_logit_probability_ratio", estimate_ratio[2]);

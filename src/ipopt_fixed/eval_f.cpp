@@ -111,7 +111,7 @@ void ipopt_fixed::try_eval_f(
       // only include smooth part of prior in objective
       obj_value += Number( fix_likelihood_vec_tmp_[0] );
       //
-      // auxillary variable with index j is constrainted to be
+      // auxiliary variable with index j is constrained to be
       // greater than absolute value of 1+j component of fixed likelihood
       for(size_t j = 0; j < fix_likelihood_nabs_; j++)
          obj_value += x[n_fixed_ + j];
