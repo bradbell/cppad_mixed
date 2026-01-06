@@ -185,12 +185,12 @@ private:
    // -------------------------------------------------------------------
    // private functions only used by this class
    // -------------------------------------------------------------------
-   // compute the Jacobian sparsity patten for map Alow -> L
+   // compute the Jacobian sparsity pattern for map Alow -> L
    template <class Sparsity> void set_jac_sparsity(
       Sparsity& jac_sparsity
    );
    //
-   // compute the Hessian sparsity patten for map Alow -> L
+   // compute the Hessian sparsity pattern for map Alow -> L
    template <class Sparsity> void set_hes_sparsity(
       const CppAD::vector<bool>&    s            ,
       Sparsity&                     jac_sparsity ,

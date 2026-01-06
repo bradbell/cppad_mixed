@@ -72,7 +72,7 @@ CppAD::vector<double> cppad_mixed::fix_con_eval(const d_vector& fixed_vec)
    //
    d_vector ret = fix_con_fun_.Forward(0, fixed_vec);
    if( CppAD::hasnan( ret ) ) throw CppAD::mixed::exception(
-      "fix_con_eval", "resut has a nan"
+      "fix_con_eval", "result has a nan"
    );
    return ret;
 }

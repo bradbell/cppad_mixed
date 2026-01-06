@@ -3,7 +3,7 @@
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
 # SPDX-FileContributor: 2014-22 Bradley M. Bell
 # ----------------------------------------------------------------------------
-# This scipt demonstrates that changing cppad-20171215 to cppad-20180503
+# This script demonstrates that changing cppad-20171215 to cppad-20180503
 # uses less mmeory and does not affect speed.
 declare -A branch
 branch[one]='6894f1'

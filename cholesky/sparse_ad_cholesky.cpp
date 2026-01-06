@@ -615,7 +615,7 @@ void sparse_ad_cholesky::set_hes_sparsity(
             ++cij;
          }
          else
-         {  // element L(i,j) is inclued in S(x)
+         {  // element L(i,j) is included in S(x)
             //
             // The row index for element of L corresponding to cij
             size_t i = L_pattern_.row[cij];

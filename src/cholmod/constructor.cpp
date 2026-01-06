@@ -58,7 +58,7 @@ LDL' Factorization
 ==================
 The following value is set (and does not change):
 
-   ``common_.final_ll`` = ``CHOLMOD_FLASE`` ;
+   ``common_.final_ll`` = ``CHOLMOD_FALSE`` ;
 
 Example
 *******

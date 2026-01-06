@@ -450,7 +450,7 @@ int main(int argc, const char* argv[])
    size_t end_bytes   = CppAD::thread_alloc::inuse(thread);
    //
    // print amoumt of memory added to mixed_object during initialize
-   // (use commans to separate every three digits).
+   // (use commas to separate every three digits).
    string initialize_bytes = size_t2string(end_bytes - start_bytes);
    label_print("initialize_bytes", initialize_bytes);
    label_print("initialize_seconds", end_seconds - start_seconds);

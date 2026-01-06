@@ -151,7 +151,7 @@ void cppad_mixed::init_fix_con(const d_vector& fixed_vec )
    fix_con_jac_.subset = d_sparse_rcv( jac_pattern );
 
    // use reversed mode for this sparse Jacobian
-   // fix_con_jac_.Range() should be less thant fix_con_jac_.Domain()
+   // fix_con_jac_.Range() should be less than fix_con_jac_.Domain()
    fix_con_jac_.forward = false;
 
    // use clear to make it clear that work is being computed

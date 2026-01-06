@@ -158,7 +158,7 @@ bool no_fix_likelihood(void)
       random_in[i] = 0.0;
    }
 
-   // use full Newton method to test Hessian calcualtion
+   // use full Newton method to test Hessian calculation
    // when there is no fix_likelihood
    bool quasi_fixed   = false;
    bool bool_sparsity = true;

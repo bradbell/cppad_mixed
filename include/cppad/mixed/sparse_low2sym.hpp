@@ -84,7 +84,7 @@ namespace CppAD { namespace mixed {
       for(index k = 0; k < lower.outerSize(); ++k)
       {  nnz[k] = index(0);
          for(iterator itr(lower, k); itr; ++itr)
-         {  ++nnz[k]; // cound entries in lower triangle
+         {  ++nnz[k]; // count entries in lower triangle
             if( itr.row() != itr.col() )
                ++nnz[k]; // entries above the diagonal
          }

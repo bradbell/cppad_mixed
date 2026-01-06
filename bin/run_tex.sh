@@ -33,7 +33,7 @@ cd $dir
 echo "latex $name > latex.log (enter X if program hangs)"
 if ! latex $name > latex.log
 then
-   echo 'latex comman failed.'
+   echo 'latex command failed.'
    echo "see $dir/latex.log"
    exit 1
 fi
@@ -41,14 +41,14 @@ fi
 echo "bibtex $name >& bibtex.log"
 if ! bibtex $name > bibtex.log
 then
-   echo 'bibtex comman failed.'
+   echo 'bibtex command failed.'
    echo "see $dir/bibtex.log"
    exit 1
 fi
 echo "pdflatex $name > pdflatex.log"
 if ! pdflatex $name > pdflatex.log
 then
-   echo 'pdflatex comman failed.'
+   echo 'pdflatex command failed.'
    echo "see $dir/pdflatex.log"
    exit 1
 fi

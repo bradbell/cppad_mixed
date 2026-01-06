@@ -108,6 +108,16 @@ then
    $sed -i bin/run_cmake.sh -e "s|^build_type=.*|build_type='release'|"
 fi
 #
+# typos
+if which typos >& /dev/null
+then
+   if ! typos
+   then
+      echo 'check_all: see typos errors above'
+      exit 1
+   fi
+fi
+#
 # bin/check_*.sh
 list=`ls bin/check_*.sh`
 for script in $list

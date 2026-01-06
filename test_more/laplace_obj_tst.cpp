@@ -4,7 +4,7 @@
 // ----------------------------------------------------------------------------
 /*
 Test Laplace part of the the objective where non-linear and initial
-random effects far from solution. (Used to faile before initialized
+random effects far from solution. (Used to fail before initialized
 second order Lapalce objective at optimal random effects
 (for initial fixed effects).
 */

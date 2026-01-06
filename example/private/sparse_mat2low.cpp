@@ -50,7 +50,7 @@ bool sparse_mat2low_xam(void)
       {  Int i = itr.row();
          Int j = itr.col();
          ok   &= itr.value() == check(i, j);
-         // make sure only lower triangle is inclued
+         // make sure only lower triangle is included
          ok   &= j <= i;
          ++count;
       }
