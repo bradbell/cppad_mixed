@@ -1,7 +1,7 @@
 # ---------------------------------------------------------------------------
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: Bradley M. Bell <bradbell@seanet.com>
-# SPDX-FileContributor: 2003-25 Bradley M. Bell
+# SPDX-FileContributor: 2003-26 Bradley M. Bell
 # ---------------------------------------------------------------------------
 # source bin/dev_settings.sh
 # Sets the value of the the development tool variables for this package.
@@ -80,6 +80,7 @@ no_copyright_list='
    agpl-3.0.txt
    include/cppad/mixed/sparseinv.hpp
    readme.md
+   typos.toml
    uninstall.cmake.in
    xrst.toml
 '
