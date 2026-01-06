@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-25 Bradley M. Bell
+# SPDX-FileContributor: 2014-26 Bradley M. Bell
 # ----------------------------------------------------------------------------
 {xrst_begin install_unix}
 {xrst_spell
@@ -67,7 +67,7 @@ on Fedora or Red-Hat one needs to install ``gsl-devel`` .
 
 pkg-config
 ==========
-The `pkg-config <https://www.freedesktop.org/wiki/Software/pkg-config/>`_
+The `pkg-config <https://en.wikipedia.org/wiki/Pkg-config>`_
 program must be installed.
 The following command should work:
 
@@ -123,7 +123,7 @@ running these scripts.
 
 eigen
 =====
-The `eigen <https://libeigen.gitlab.io/docs/index.html>`_
+The `eigen <https://libeigen.gitlab.io/>`_
 linear algebra package.
 Starting in the ``cppad_mixed.git`` directory,
 the command

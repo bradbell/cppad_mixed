@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-25 Bradley M. Bell
+# SPDX-FileContributor: 2014-26 Bradley M. Bell
 # ----------------------------------------------------------------------------
 
 {xrst_begin release_notes}
@@ -8,6 +8,7 @@
 Changes and Additions to cppad_mixed
 ####################################
 {xrst_toc_hidden
+   xrst/whats_new/2026.xrst
    xrst/whats_new/2025.xrst
    xrst/whats_new/2024.xrst
    xrst/whats_new/2023.xrst
@@ -23,10 +24,11 @@ Changes and Additions to cppad_mixed
 
 This Year
 *********
-:ref:`2025-name`
+:ref:`2026-name`
 
 Previous Years
 **************
+:ref:`2025-name` ,
 :ref:`2024-name` ,
 :ref:`2023-name` ,
 :ref:`2022-name` ,

@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-25 Bradley M. Bell
+# SPDX-FileContributor: 2014-26 Bradley M. Bell
 # ----------------------------------------------------------------------------
 
 {xrst_begin 2016}
@@ -801,7 +801,7 @@ Go back to using column vectors when solving linear equations
 #. Remove the need for the
    ``-Wno-shadow`` and ``-Wno-deprecated-declarations`` options
    when compiling Eigen files by using the CMake system option for the
-   `Eigen <https://libeigen.gitlab.io/docs/index.html>`_
+   `Eigen <https://libeigen.gitlab.io/>`_
    include directories.
    This should work on more systems.
 

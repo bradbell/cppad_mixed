@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-25 Bradley M. Bell
+# SPDX-FileContributor: 2014-26 Bradley M. Bell
 # ----------------------------------------------------------------------------
 # Sample Command line
 #                     cmake \
@@ -99,7 +99,7 @@ ENDMACRO( optional_definition )
 # ============================================================================
 CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 PROJECT(cppad_mixed)
-SET(cppad_mixed_version "2025.9.19")
+SET(cppad_mixed_version "2026.1.6")
 INCLUDE_DIRECTORIES( ${cppad_mixed_SOURCE_DIR}/include )
 INCLUDE(CheckCXXSourceRuns)
 MESSAGE(STATUS "BEGIN:")

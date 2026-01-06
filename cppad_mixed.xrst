@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-25 Bradley M. Bell
+# SPDX-FileContributor: 2014-26 Bradley M. Bell
 # ----------------------------------------------------------------------------
 {xrst_begin cppad_mixed}
 {xrst_spell
@@ -29,7 +29,7 @@ Versions
    :widths: auto
 
    * - This version
-     - cppad_mixed-2025.9.19
+     - cppad_mixed-2026.1.6
    * - Documentation for latest version
      - `latest <https://cppad-mixed.readthedocs.io/latest>`_
    * - Documentation for most recent stable version
