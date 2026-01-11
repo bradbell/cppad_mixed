@@ -30,5 +30,7 @@ These changes are included in the 2026.0.0 version of cppad_mixed:
 
 #. Change the default branch from master to main.
 
+#. Create the cppad_mixed-2026.0.0 release.
+
 
 {xrst_end 2026}
