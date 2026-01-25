@@ -31,6 +31,9 @@ INCLUDE(cmake/add_to_set.cmake)
 #
 # find_CHOLMOD
 INCLUDE(cmake/find_cholmod.cmake)
+#
+# CHECK_CXX_SOURCE_COMPILES
+INCLUDE(CheckCXXSourceCompiles)
 # ----------------------------------------------------------------------------
 # required_definition( variable type docstring )
 #
@@ -97,9 +100,9 @@ MACRO( optional_definition variable type docstring )
    ENDIF( ${type} STREQUAL "PATH" )
 ENDMACRO( optional_definition )
 # ============================================================================
-CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 PROJECT(cppad_mixed)
-SET(cppad_mixed_version "2026.1.11")
+SET(cppad_mixed_version "2026.1.25")
 INCLUDE_DIRECTORIES( ${cppad_mixed_SOURCE_DIR}/include )
 INCLUDE(CheckCXXSourceRuns)
 MESSAGE(STATUS "BEGIN:")
@@ -194,7 +197,7 @@ IF( extra_cxx_flags )
    int main(void)
    {  return 0; }"
    )
-   CHECK_CXX_SOURCE_RUNS("${source}" extra_cxx_flags_ok)
+   CHECK_CXX_SOURCE_COMPILES("${source}" extra_cxx_flags_ok)
    IF( NOT extra_cxx_flags_ok )
       MESSAGE(STATUS "Cannot compile a simple C++ program, extra_cxx_flags")
    ENDIF( NOT extra_cxx_flags_ok )
@@ -216,7 +219,7 @@ IF( extra_cxx_flags )
 ElSE( extra_cxx_flags )
    SET(CMAKE_REQUIRED_FLAGS "" )
 ENDIF( extra_cxx_flags )
-CHECK_CXX_SOURCE_RUNS("${source}" cppad_mixed_has_nullptr_flag)
+CHECK_CXX_SOURCE_COMPILES("${source}" cppad_mixed_has_nullptr_flag)
 IF( cppad_mixed_has_nullptr_flag )
    SET(cppad_mixed_has_nullptr_01 1)
 ELSE( cppad_mixed_has_nullptr_flag )
