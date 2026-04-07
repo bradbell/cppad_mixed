@@ -15,6 +15,13 @@ Release Notes for 2026
 mm-dd
 *****
 
+04-06
+=====
+
+#. In ``bin/example_install.sh``, when ``system_install`` is ``'mac_brew'``,
+   add ``'metis'`` to the list of homebrew formulae checked for and/or
+   installed at runtime.
+
 01-06
 =====
 These changes are included in the 2026.0.0 version of cppad_mixed:
