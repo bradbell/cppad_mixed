@@ -205,6 +205,7 @@ then
       suite-sparse
       pkg-config
       gsl
+      metis
    '
 elif [ "$system_type" == 'cygwin' ]
 then
