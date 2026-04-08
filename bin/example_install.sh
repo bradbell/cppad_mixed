@@ -153,76 +153,86 @@ fi
 # system external installs for normal system requirements
 if [ "$system_type" == 'debian' ]
 then
+    # BEGIN_SORT_THIS_LINE_PLUS_2
     list='
         cmake
+        g++
+        gfortran
         git
-        wget
         libblas-dev
         libeigen3-dev
+        libgsl-dev
         liblapack-dev
         libsuitesparse-dev
         pkg-config
-        g++
-        gfortran
-        libgsl-dev
+        wget
     '
+    # END_SORT_THIS_LINE_MINUS_2
 elif [ "$system_type" == 'red_hat' ]
 then
+    # BEGIN_SORT_THIS_LINE_PLUS_2
     list='
+        blas-devel
         cmake
         eigen3-devel
-        git
-        wget
-        blas-devel
-        lapack-devel
-        suitesparse-devel
-        pkgconf
         gcc-c++
         gcc-gfortran
+        git
         gsl-devel
+        lapack-devel
         patch
+        pkgconf
+        suitesparse-devel
+        wget
     '
+    # END_SORT_THIS_LINE_MINUS_2
 elif [ "$system_type" == 'mac_port' ]
 then
+    # BEGIN_SORT_THIS_LINE_PLUS_2
     list='
+        SuiteSparse
         cmake
         eigen3
-        wget
-        SuiteSparse
-        pkgconfig
         gsl
+        pkgconfig
+        wget
     '
+    # END_SORT_THIS_LINE_MINUS_2
 elif [ "$system_type" == 'mac_brew' ]
 then
     # gnu-sed installs gsed
     # grep    installs ggrep
+    # BEGIN_SORT_THIS_LINE_PLUS_2
     list='
-        gnu-sed
-        grep
         cmake
         eigen
-        wget
-        suite-sparse
-        pkg-config
+        gnu-sed
+        grep
         gsl
+        pkg-config
+        suite-sparse
+        wget
     '
+    # END_SORT_THIS_LINE_MINUS_2
 elif [ "$system_type" == 'cygwin' ]
 then
+    # BEGIN_SORT_THIS_LINE_PLUS_2
     list='
-        gsl
         cmake
         eigen3
-        git
-        wget
-        liblapack-devel
-        pkgconf
         gcc-core
-        gcc-g++
         gcc-fortran
-        libgsl-devel
-        patch
+        gcc-g++
+        git
+        gsl
         libcholmod-devel
+        libgsl-devel
+        liblapack-devel
+        patch
+        pkgconf
+        wget
     '
+    # END_SORT_THIS_LINE_MINUS_2
 else
     echo 'example_install.sh: script error'
     exit 1
