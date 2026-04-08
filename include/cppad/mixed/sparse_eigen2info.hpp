@@ -24,7 +24,7 @@ matrix
 ******
 The argument has prototype
 
-   ``const Eigen::SparseMatrix<double`` , *Option* , *Index* >& *matrix*
+    ``const Eigen::SparseMatrix<double`` , *Option* , *Index* >& *matrix*
 
 Option
 ======
@@ -39,7 +39,7 @@ info
 ****
 This argument has prototype
 
-   ``CppAD::mixed::sparse_mat_info`` *info*
+    ``CppAD::mixed::sparse_mat_info`` *info*
 
 There are different cases depending on if it is the
 :ref:`sparse_mat_info@Notation@Empty Matrix` on input;
@@ -67,7 +67,7 @@ Upon return, the following conditions hold:
    that do not appear in *info* , are ignored.
 
 {xrst_toc_hidden
-   example/private/sparse_eigen2info.cpp
+    example/private/sparse_eigen2info.cpp
 }
 Example
 *******
@@ -81,52 +81,52 @@ and test of ``sparse_eigen2info`` .
 
 namespace CppAD { namespace mixed {
 
-      template <class Index>
-      void sparse_eigen2info(
-         const Eigen::SparseMatrix<double, Eigen::ColMajor, Index>& matrix ,
-         sparse_mat_info&                                           info   )
-      {  using Eigen::ColMajor;
-         typedef typename Eigen::
-         SparseMatrix<double, ColMajor, Index>::InnerIterator iterator;
-         typedef typename Eigen::
-         SparseMatrix<double, ColMajor, Index>::Index         index;
-         //
-         // case where input value of info is empty matrix
-         if( info.row.size() == 0 )
-         {  for(index j = 0; j < matrix.outerSize(); j++)
-            {  for(iterator itr(matrix, j); itr; ++itr)
-               {  info.row.push_back( size_t( itr.row() ) );
-                  info.col.push_back( size_t( itr.col() ) );
-                  info.val.push_back( itr.value() );
-               }
+        template <class Index>
+        void sparse_eigen2info(
+            const Eigen::SparseMatrix<double, Eigen::ColMajor, Index>& matrix ,
+            sparse_mat_info&                                           info   )
+        {   using Eigen::ColMajor;
+            typedef typename Eigen::
+            SparseMatrix<double, ColMajor, Index>::InnerIterator iterator;
+            typedef typename Eigen::
+            SparseMatrix<double, ColMajor, Index>::Index         index;
+            //
+            // case where input value of info is empty matrix
+            if( info.row.size() == 0 )
+            {   for(index j = 0; j < matrix.outerSize(); j++)
+                {   for(iterator itr(matrix, j); itr; ++itr)
+                    {   info.row.push_back( size_t( itr.row() ) );
+                        info.col.push_back( size_t( itr.col() ) );
+                        info.val.push_back( itr.value() );
+                    }
+                }
+                return;
+            }
+            // case where input value of info is non-empty
+            //
+            // initialize all the values as zero
+            size_t K = info.row.size();
+            for(size_t k = 0; k < K; k++)
+                info.val[k] = 0.0;
+            //
+            size_t k = 0;
+            for(index j = 0; j < matrix.outerSize(); j++)
+            {   // skip entries in info that are not in matrix
+                size_t c = size_t(j);
+                while( info.col[k] < c )
+                    k++;
+                assert( info.col[k] == c );
+                for(iterator itr(matrix, j); itr; ++itr)
+                {   // skip entries in info that are not in matrix
+                    size_t r = size_t( itr.row() );
+                    while( k < K && info.col[k] == c && info.row[k] < r )
+                        k++;
+                    // check if this entry is in both matrix and info
+                    if( k < K && info.col[k] == c && info.row[k] == r )
+                        info.val[k++] = itr.value();
+                }
             }
             return;
-         }
-         // case where input value of info is non-empty
-         //
-         // initialize all the values as zero
-         size_t K = info.row.size();
-         for(size_t k = 0; k < K; k++)
-            info.val[k] = 0.0;
-         //
-         size_t k = 0;
-         for(index j = 0; j < matrix.outerSize(); j++)
-         {  // skip entries in info that are not in matrix
-            size_t c = size_t(j);
-            while( info.col[k] < c )
-               k++;
-            assert( info.col[k] == c );
-            for(iterator itr(matrix, j); itr; ++itr)
-            {  // skip entries in info that are not in matrix
-               size_t r = size_t( itr.row() );
-               while( k < K && info.col[k] == c && info.row[k] < r )
-                  k++;
-               // check if this entry is in both matrix and info
-               if( k < K && info.col[k] == c && info.row[k] == r )
-                  info.val[k++] = itr.value();
-            }
-         }
-         return;
-      }
+        }
 } }
 # endif

@@ -55,26 +55,26 @@ Prototype
 {xrst_spell_off}
 {xrst_code cpp} */
 bool ipopt_random::eval_g(
-   Index           n        ,  // in
-   const Number*   x        ,  // in
-   bool            new_x    ,  // in
-   Index           m        ,  // in
-   Number*         g        )  // out
+    Index           n        ,  // in
+    const Number*   x        ,  // in
+    bool            new_x    ,  // in
+    Index           m        ,  // in
+    Number*         g        )  // out
 /* {xrst_code}
 {xrst_spell_on}
 
 {xrst_end ipopt_random_eval_g}
 */
-{  assert( size_t(n) == n_random_ );
-   assert( m == 0 );
-   //
-   if( new_x )
-   {  // set the zero order Taylor coefficients in
-      // mixed_object_.ran_like_fun_
-      Number obj_value;
-      eval_f(n, x, new_x, obj_value);
-   }
-   //
-   return true;
+{   assert( size_t(n) == n_random_ );
+    assert( m == 0 );
+    //
+    if( new_x )
+    {   // set the zero order Taylor coefficients in
+        // mixed_object_.ran_like_fun_
+        Number obj_value;
+        eval_f(n, x, new_x, obj_value);
+    }
+    //
+    return true;
 }
 } } // END_CPPAD_MIXED_NAMESPACE

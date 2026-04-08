@@ -21,8 +21,8 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE
-   // END_PROTOTYPE
+    // BEGIN_PROTOTYPE
+    // END_PROTOTYPE
 }
 
 Private
@@ -46,19 +46,19 @@ common\_
 ********
 The ``common_`` variable is initialized as follows:
 
-   ``cholmod_start`` (& ``common_`` );
+    ``cholmod_start`` (& ``common_`` );
 
 Simplicial Factorization
 ========================
 The following value is set (and does not change):
 
-   ``common_.supernodal`` = ``CHOLMOD_SIMPLICIAL`` ;
+    ``common_.supernodal`` = ``CHOLMOD_SIMPLICIAL`` ;
 
 LDL' Factorization
 ==================
 The following value is set (and does not change):
 
-   ``common_.final_ll`` = ``CHOLMOD_FALSE`` ;
+    ``common_.final_ll`` = ``CHOLMOD_FALSE`` ;
 
 Example
 *******
@@ -90,16 +90,16 @@ sol_set_       (CPPAD_NULL)      ,
 work_one_      (CPPAD_NULL)      ,
 work_two_      (CPPAD_NULL)
 {  assert( CPPAD_NULL == nullptr );
-   cholmod_start(&common_);
+    cholmod_start(&common_);
 
-   // Both simplical and supernodal have been tested.
-   // common_.supernodal = CHOLMOD_SIMPLICIAL;
-   // common_.supernodal = CHOLMOD_AUTO;
-   // common_.supernodal = CHOLMOD_SUPERNODAL;
-   common_.supernodal = CHOLMOD_SIMPLICIAL;
+    // Both simplical and supernodal have been tested.
+    // common_.supernodal = CHOLMOD_SIMPLICIAL;
+    // common_.supernodal = CHOLMOD_AUTO;
+    // common_.supernodal = CHOLMOD_SUPERNODAL;
+    common_.supernodal = CHOLMOD_SIMPLICIAL;
 
-   // is factorization LLT or LDLT
-   common_.final_ll = CHOLMOD_FALSE;
+    // is factorization LLT or LDLT
+    common_.final_ll = CHOLMOD_FALSE;
 
 }
 
@@ -119,31 +119,31 @@ Discussion
 This frees the memory corresponding to all the
 private member variables and the clear the common with
 
-   ``cholmod_finish`` (& ``common_`` );
+    ``cholmod_finish`` (& ``common_`` );
 
 {xrst_end ldlt_cholmod_dtor}
 */
 ldlt_cholmod::~ldlt_cholmod(void)
-{  // free all the private pointers
-   cholmod_free_sparse (&sym_matrix_, &common_ );
-   cholmod_free_factor (&factor_,     &common_ );
-   cholmod_free_dense  (&rhs_,        &common_ );
-   cholmod_free_sparse (&rhs_set_,    &common_ );
-   cholmod_free_dense  (&sol_,        &common_ );
-   cholmod_free_sparse (&sol_set_,    &common_ );
-   cholmod_free_dense  (&work_one_,   &common_ );
-   cholmod_free_dense  (&work_two_,   &common_ );
-   // clear common
-   cholmod_finish(&common_);
+{   // free all the private pointers
+    cholmod_free_sparse (&sym_matrix_, &common_ );
+    cholmod_free_factor (&factor_,     &common_ );
+    cholmod_free_dense  (&rhs_,        &common_ );
+    cholmod_free_sparse (&rhs_set_,    &common_ );
+    cholmod_free_dense  (&sol_,        &common_ );
+    cholmod_free_sparse (&sol_set_,    &common_ );
+    cholmod_free_dense  (&work_one_,   &common_ );
+    cholmod_free_dense  (&work_two_,   &common_ );
+    // clear common
+    cholmod_finish(&common_);
 
-   // always do simplicial factorization
-   assert( common_.supernodal == CHOLMOD_SIMPLICIAL );
+    // always do simplicial factorization
+    assert( common_.supernodal == CHOLMOD_SIMPLICIAL );
 
-   // do LDL' factorization and leave in LDL' form
-   assert( common_.final_ll == CHOLMOD_FALSE );
+    // do LDL' factorization and leave in LDL' form
+    assert( common_.final_ll == CHOLMOD_FALSE );
 
-   // check nothing left allocated
-   assert( common_.malloc_count == 0 );
+    // check nothing left allocated
+    assert( common_.malloc_count == 0 );
 }
 
 

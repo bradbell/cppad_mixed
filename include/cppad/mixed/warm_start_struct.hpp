@@ -18,8 +18,8 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE
-   // END_PROTOTYPE
+    // BEGIN_PROTOTYPE
+    // END_PROTOTYPE
 }
 
 mu
@@ -79,20 +79,20 @@ This structure is part of the CppAD Mixed user API.
 # include <cppad/utility/vector.hpp>
 
 namespace CppAD { namespace mixed {
-   // BEGIN_PROTOTYPE
-   struct x_info_struct {
-      double x; double z_L; double z_U; double scale_x;
-   };
-   struct g_info_struct {
-      double lambda; double scale_g;
-   };
-   struct warm_start_struct {
-      double mu;
-      double scale_f;
-      CppAD::vector<x_info_struct> x_info;
-      CppAD::vector<g_info_struct> g_info;
-   };
-   // END_PROTOTYPE
+    // BEGIN_PROTOTYPE
+    struct x_info_struct {
+        double x; double z_L; double z_U; double scale_x;
+    };
+    struct g_info_struct {
+        double lambda; double scale_g;
+    };
+    struct warm_start_struct {
+        double mu;
+        double scale_f;
+        CppAD::vector<x_info_struct> x_info;
+        CppAD::vector<g_info_struct> g_info;
+    };
+    // END_PROTOTYPE
 } }
 
 

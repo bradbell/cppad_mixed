@@ -99,12 +99,12 @@ extra_cxx_flags='-Wpedantic -std=c++11 -Wall -Wshadow -Wconversion'
 # for macOS using homebrew:
 if [ "$(uname)" == 'Darwin' ]
 then
-   if which brew > /dev/null
-   then
-      extra_cxx_flags+=' -I /opt/homebrew/include'
-      extra_cxx_flags+=' -Wno-bitwise-instead-of-logical'
-      extra_cxx_flags+=' -Wno-sign-conversion'
-   fi
+    if which brew > /dev/null
+    then
+        extra_cxx_flags+=' -I /opt/homebrew/include'
+        extra_cxx_flags+=' -Wno-bitwise-instead-of-logical'
+        extra_cxx_flags+=' -Wno-sign-conversion'
+    fi
 fi
 # {xrst_code}
 #
@@ -167,60 +167,60 @@ for_hes_sparsity='yes'
 # ============================================================================
 # bash function that echos and executes a command
 echo_eval() {
-   echo $*
-   eval $*
+    echo $*
+    eval $*
 }
 # ----------------------------------------------------------------------------
 if [ "$0" != "bin/run_cmake.sh" ]
 then
-   echo "bin/run_cmake.sh: must be executed from its parent directory"
-   exit 1
+    echo "bin/run_cmake.sh: must be executed from its parent directory"
+    exit 1
 fi
 if [ "$build_type" != 'debug' ] && [ "$build_type" != 'release' ]
 then
-   echo "bin/run_cmake.sh: build_type is not 'debug' or 'release'"
-   exit 1
+    echo "bin/run_cmake.sh: build_type is not 'debug' or 'release'"
+    exit 1
 fi
 while [ "$1" != '' ]
 do
-   if [ "$1" == '--help' ]
-   then
-      cat << EOF
+    if [ "$1" == '--help' ]
+    then
+        cat << EOF
 usage: bin/run_cmake.sh \\
-   [--help] \\
-   [--verbose] \\
-   [--ldlt_eigen] \\
-   [--rev_hes_sparsity] \\
-   [--release] \\
-   [--optimize_cppad_function] \\
-   [--dismod_at_prefix]
+    [--help] \\
+    [--verbose] \\
+    [--ldlt_eigen] \\
+    [--rev_hes_sparsity] \\
+    [--release] \\
+    [--optimize_cppad_function] \\
+    [--dismod_at_prefix]
 EOF
-      exit 0
-   fi
-   if [ "$1" == '--verbose' ]
-   then
-      verbose_makefile='1'
-   elif [ "$1" == '--ldlt_eigen' ]
-   then
-      ldlt_cholmod='no'
-   elif [ "$1" == '--rev_hes_sparsity' ]
-   then
-      for_hes_sparsity='no'
-   elif [ "$1" == '--release' ]
-   then
-      build_type='release'
-   elif [ "$1" == '--optimize_cppad_function' ]
-   then
-      optimize_cppad_function='yes'
-   elif [ "$1" == '--dismod_at_prefix' ]
-   then
-      cmake_install_prefix="$HOME/prefix/dismod_at"
-   else
-      echo "'$1' is an invalid option"
-      bin/run_cmake.sh --help
-      exit 1
-   fi
-   shift
+        exit 0
+    fi
+    if [ "$1" == '--verbose' ]
+    then
+        verbose_makefile='1'
+    elif [ "$1" == '--ldlt_eigen' ]
+    then
+        ldlt_cholmod='no'
+    elif [ "$1" == '--rev_hes_sparsity' ]
+    then
+        for_hes_sparsity='no'
+    elif [ "$1" == '--release' ]
+    then
+        build_type='release'
+    elif [ "$1" == '--optimize_cppad_function' ]
+    then
+        optimize_cppad_function='yes'
+    elif [ "$1" == '--dismod_at_prefix' ]
+    then
+        cmake_install_prefix="$HOME/prefix/dismod_at"
+    else
+        echo "'$1' is an invalid option"
+        bin/run_cmake.sh --help
+        exit 1
+    fi
+    shift
 done
 # Always set soft link for ./build -> ./build.build_type
 # If install prefix ends with cppad_mixed, also soft link install prefix
@@ -229,18 +229,18 @@ bin/build_type.sh run_cmake $build_type
 export PKG_CONFIG_PATH=':'
 for pkg in ipopt cppad
 do
-   pkg_config_path=$(find -L "$cmake_install_prefix" -name "$pkg.pc" |\
-      head -1 | sed -e "s|/$pkg.pc||" \
-   )
-   if [ "$pkg_config_path" == '' ]
-   then
-      echo "Can't find $pkg.pc: cmake_install_prefix=$cmake_install_prefix"
-      exit 1
-   fi
-   if ! echo $PKG_CONFIG_PATH | grep ":$pkg_config_path:" > /dev/null
-   then
-      PKG_CONFIG_PATH=":$pkg_config_path$PKG_CONFIG_PATH"
-   fi
+    pkg_config_path=$(find -L "$cmake_install_prefix" -name "$pkg.pc" |\
+        head -1 | sed -e "s|/$pkg.pc||" \
+    )
+    if [ "$pkg_config_path" == '' ]
+    then
+        echo "Can't find $pkg.pc: cmake_install_prefix=$cmake_install_prefix"
+        exit 1
+    fi
+    if ! echo $PKG_CONFIG_PATH | grep ":$pkg_config_path:" > /dev/null
+    then
+        PKG_CONFIG_PATH=":$pkg_config_path$PKG_CONFIG_PATH"
+    fi
 done
 PKG_CONFIG_PATH=$(echo $PKG_CONFIG_PATH | sed -e 's|^:||' -e 's|:$||')
 echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH"
@@ -248,76 +248,76 @@ echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH"
 # cmake_cxx_compiler
 if echo $specific_compiler | grep 'CXX=' > /dev/null
 then
-   cxx=$(echo $specific_compiler | sed -e 's|.*CXX=\([^ ]*\).*|\1|')
-   if ! which $cxx > /dev/null
-   then
-      echo "run_cmake.sh: specific_compiler: cannot execute $cxx compiler"
-      exit 1
-   fi
-   cxx_path=$(which $cxx)
-   cmake_cxx_compiler="-D CMAKE_CXX_COMPILER=$cxx_path"
+    cxx=$(echo $specific_compiler | sed -e 's|.*CXX=\([^ ]*\).*|\1|')
+    if ! which $cxx > /dev/null
+    then
+        echo "run_cmake.sh: specific_compiler: cannot execute $cxx compiler"
+        exit 1
+    fi
+    cxx_path=$(which $cxx)
+    cmake_cxx_compiler="-D CMAKE_CXX_COMPILER=$cxx_path"
 else
-   cmake_cxx_compiler=''
+    cmake_cxx_compiler=''
 fi
 # --------------------------------------------------------------------------
 # cmake_c_compiler
 if echo $specific_compiler | grep 'CC=' > /dev/null
 then
-   cc=$(echo $specific_compiler | sed -e 's|.*CC=\([^ ]*\).*|\1|')
-   if ! which $cc > /dev/null
-   then
-      echo "run_cmake.sh: specific_compiler: cannot execute $cc compiler"
-      exit 1
-   fi
-   c_path=$(which $cc)
-   cmake_c_compiler="-D CMAKE_C_COMPILER=$c_path"
+    cc=$(echo $specific_compiler | sed -e 's|.*CC=\([^ ]*\).*|\1|')
+    if ! which $cc > /dev/null
+    then
+        echo "run_cmake.sh: specific_compiler: cannot execute $cc compiler"
+        exit 1
+    fi
+    c_path=$(which $cc)
+    cmake_c_compiler="-D CMAKE_C_COMPILER=$c_path"
 else
-   cmake_c_compiler=''
+    cmake_c_compiler=''
 fi
 # --------------------------------------------------------------------------
 if [ ! -e build ]
 then
-   echo_eval mkdir build
+    echo_eval mkdir build
 fi
 echo_eval cd build
 if [ -e CMakeCache.txt ]
 then
-   echo_eval rm CMakeCache.txt
+    echo_eval rm CMakeCache.txt
 fi
 if [ -e CMakeFiles ]
 then
-   echo_eval rm -r CMakeFiles
+    echo_eval rm -r CMakeFiles
 fi
 cat << EOF
 cmake \\
-   -Wno-dev \\
-   -D CMAKE_VERBOSE_MAKEFILE=$verbose_makefile \\
-   -D CMAKE_BUILD_TYPE=$build_type \\
-   $cmake_cxx_compiler \\
-   $cmake_c_compiler \\
-   -D cmake_install_prefix="$cmake_install_prefix" \\
-   \\
-   -D extra_cxx_flags="$extra_cxx_flags" \\
-   -D cmake_libdir="$cmake_libdir" \\
-   -D ldlt_cholmod="$ldlt_cholmod" \\
-   -D optimize_cppad_function="$optimize_cppad_function" \\
-   -D for_hes_sparsity="$for_hes_sparsity" \\
-   ..
+    -Wno-dev \\
+    -D CMAKE_VERBOSE_MAKEFILE=$verbose_makefile \\
+    -D CMAKE_BUILD_TYPE=$build_type \\
+    $cmake_cxx_compiler \\
+    $cmake_c_compiler \\
+    -D cmake_install_prefix="$cmake_install_prefix" \\
+    \\
+    -D extra_cxx_flags="$extra_cxx_flags" \\
+    -D cmake_libdir="$cmake_libdir" \\
+    -D ldlt_cholmod="$ldlt_cholmod" \\
+    -D optimize_cppad_function="$optimize_cppad_function" \\
+    -D for_hes_sparsity="$for_hes_sparsity" \\
+    ..
 EOF
 cmake \
-   -Wno-dev \
-   -D CMAKE_VERBOSE_MAKEFILE=$verbose_makefile \
-   -D CMAKE_BUILD_TYPE=$build_type \
-   $cmake_cxx_compiler \
-   \
-   -D cmake_install_prefix="$cmake_install_prefix" \
-   \
-   -D extra_cxx_flags="$extra_cxx_flags" \
-   -D cmake_libdir="$cmake_libdir" \
-   -D ldlt_cholmod="$ldlt_cholmod" \
-   -D optimize_cppad_function="$optimize_cppad_function" \
-   -D for_hes_sparsity="$for_hes_sparsity" \
-   ..
+    -Wno-dev \
+    -D CMAKE_VERBOSE_MAKEFILE=$verbose_makefile \
+    -D CMAKE_BUILD_TYPE=$build_type \
+    $cmake_cxx_compiler \
+    \
+    -D cmake_install_prefix="$cmake_install_prefix" \
+    \
+    -D extra_cxx_flags="$extra_cxx_flags" \
+    -D cmake_libdir="$cmake_libdir" \
+    -D ldlt_cholmod="$ldlt_cholmod" \
+    -D optimize_cppad_function="$optimize_cppad_function" \
+    -D for_hes_sparsity="$for_hes_sparsity" \
+    ..
 # ---------------------------------------------------------------------------
 echo 'run_cmake.sh: OK'
 exit 0

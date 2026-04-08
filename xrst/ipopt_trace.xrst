@@ -55,7 +55,7 @@ with respect to the primal variables
 
 .. math::
 
-   \nabla f(x) \nabla c(x) \lambda - z
+    \nabla f(x) \nabla c(x) \lambda - z
 
 where :math:`z` are the lagrange multipliers for the box constraints and
 :math:`c(x)` are the nonlinear equality constraints

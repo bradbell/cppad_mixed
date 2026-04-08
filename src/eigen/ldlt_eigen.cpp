@@ -25,8 +25,8 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE_CTOR
-   // END_PROTOTYPE_CTOR
+    // BEGIN_PROTOTYPE_CTOR
+    // END_PROTOTYPE_CTOR
 }
 
 Private
@@ -56,12 +56,12 @@ ldlt_eigen<Double>::ldlt_eigen(size_t n_row)
 , init_done_(false)
 , update_called_(false)
 , ldlt_()
-{  }
+{   }
 
 // destructor
 template <typename Double>
 ldlt_eigen<Double>::~ldlt_eigen(void)
-{  }
+{   }
 
 /*
 ------------------------------------------------------------------------------
@@ -73,13 +73,13 @@ Initialize LDLT Factor for a Specific Sparsity Pattern
 Syntax
 ******
 
-   *ldlt_obj* . ``init`` ( *H_rc* )
+    *ldlt_obj* . ``init`` ( *H_rc* )
 
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE_INIT
-   // END_PROTOTYPE_INIT
+    // BEGIN_PROTOTYPE_INIT
+    // END_PROTOTYPE_INIT
 }
 
 Private
@@ -92,7 +92,7 @@ ldlt_obj
 ********
 This object has prototype
 
-   ``CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
+    ``CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
 
 H_rc
 ****
@@ -125,25 +125,25 @@ template <typename Double>
 void ldlt_eigen<Double>::init(const sparse_rc& H_rc)
 // END_PROTOTYPE_INIT
 {  assert( ! init_done_ );
-   //
-   // H_rc_
-   H_rc_ = H_rc;
-   //
-   CppAD::vector<Double> not_used(0);
-   eigen_sparse hessian_pattern;
-   CppAD::mixed::triple2eigen(
-         hessian_pattern  ,
-         n_row_           ,
-         n_row_           ,
-         H_rc.row()       ,
-         H_rc.col()       ,
-         not_used
-   );
-   // analyze the pattern for an LDLT factorization of
-   // f_{u,u}(theta, u)
-   ldlt_.analyzePattern(hessian_pattern);
-   //
-   init_done_ = true;
+    //
+    // H_rc_
+    H_rc_ = H_rc;
+    //
+    CppAD::vector<Double> not_used(0);
+    eigen_sparse hessian_pattern;
+    CppAD::mixed::triple2eigen(
+            hessian_pattern  ,
+            n_row_           ,
+            n_row_           ,
+            H_rc.row()       ,
+            H_rc.col()       ,
+            not_used
+    );
+    // analyze the pattern for an LDLT factorization of
+    // f_{u,u}(theta, u)
+    ldlt_.analyzePattern(hessian_pattern);
+    //
+    init_done_ = true;
 }
 /*
 -------------------------------------------------------------------------------
@@ -159,8 +159,8 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE_PATTERN
-   // END_PROTOTYPE_PATTERN
+    // BEGIN_PROTOTYPE_PATTERN
+    // END_PROTOTYPE_PATTERN
 }
 
 Private
@@ -173,7 +173,7 @@ ldlt_obj
 ********
 This object has prototype
 
-   ``CppAD::mixed::ldlt_eigen`` *ldlt_obj*
+    ``CppAD::mixed::ldlt_eigen`` *ldlt_obj*
 
 In addition, it must have a previous call to
 :ref:`ldlt_eigen_init-name` .
@@ -200,8 +200,8 @@ example and test that uses this function.
 template <typename Double>
 const sparse_rc& ldlt_eigen<Double>::pattern(void) const
 // END_PROTOTYPE_PATTERN
-{  assert( init_done_ );
-   return H_rc_;
+{   assert( init_done_ );
+    return H_rc_;
 }
 
 /*
@@ -221,8 +221,8 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE_UPDATE
-   // END_PROTOTYPE_UPDATE
+    // BEGIN_PROTOTYPE_UPDATE
+    // END_PROTOTYPE_UPDATE
 }
 
 Private
@@ -240,7 +240,7 @@ ldlt_obj
 ********
 This object has prototype
 
-   ``CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
+    ``CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
 
 In addition, it must have a previous call to
 :ref:`ldlt_eigen_init-name` .
@@ -264,7 +264,7 @@ has been :ref:`initialized<ldlt_eigen_init-name>`
 using the sparsity pattern for the Hessian.
 Upon return, it contains the factorization
 
-   ``ldlt_.factorize`` ( *hessian* )
+    ``ldlt_.factorize`` ( *hessian* )
 
 where *hessian* is an ``eigen_sparse``
 representation of the Hessian with values.
@@ -290,45 +290,45 @@ example and test that uses this function.
 // BEGIN_PROTOTYPE_UPDATE
 template <typename Double>
 bool ldlt_eigen<Double>::update(
-   const CppAD::sparse_rcv<s_vector, v_vector>& H_rcv
+    const CppAD::sparse_rcv<s_vector, v_vector>& H_rcv
 )
 // END_PROTOTYPE_UPDATE
-{  assert( init_done_ );
+{   assert( init_done_ );
 # ifndef NDEBUG
-   assert( H_rcv.nnz() == H_rc_.nnz() );
-   assert( H_rcv.nr() == H_rc_.nr() );
-   assert( H_rcv.nc() == H_rc_.nc() );
-   s_vector col_major = H_rcv.col_major();
-   for(size_t k = 0; k < H_rc_.nnz(); ++k)
-   {  assert( H_rcv.row()[k] == H_rc_.row()[k] );
-      assert( H_rcv.col()[k] == H_rc_.col()[k] );
-      assert( col_major[k] == k );
-   }
+    assert( H_rcv.nnz() == H_rc_.nnz() );
+    assert( H_rcv.nr() == H_rc_.nr() );
+    assert( H_rcv.nc() == H_rc_.nc() );
+    s_vector col_major = H_rcv.col_major();
+    for(size_t k = 0; k < H_rc_.nnz(); ++k)
+    {   assert( H_rcv.row()[k] == H_rc_.row()[k] );
+        assert( H_rcv.col()[k] == H_rc_.col()[k] );
+        assert( col_major[k] == k );
+    }
 # endif
-   //
-   eigen_sparse hessian;
-   CppAD::mixed::triple2eigen(
-      hessian     ,
-      n_row_      ,
-      n_row_      ,
-      H_rcv.row() ,
-      H_rcv.col() ,
-      H_rcv.val()
-   );
-   // typedef Eigen::Matrix< Double, Eigen::Dynamic, Eigen::Dynamic > dense;
-   // std::cout << "hessian =\n" << dense( hessian ) << "\n";
-   //
-   // factorize
-   // LDLT factorization of the matrix H_rcv. This is the same as compute
-   // except that compute does not use the result of analyzePattern.
-   ldlt_.factorize(hessian);
-   // std::cout << "D = \n" << dense( ldlt_.vectorD().transpose() ) << "\n";
-   //
-   if( ldlt_.info() != Eigen::Success )
-      return false;
-   //
-   update_called_ = true;
-   return true;
+    //
+    eigen_sparse hessian;
+    CppAD::mixed::triple2eigen(
+        hessian     ,
+        n_row_      ,
+        n_row_      ,
+        H_rcv.row() ,
+        H_rcv.col() ,
+        H_rcv.val()
+    );
+    // typedef Eigen::Matrix< Double, Eigen::Dynamic, Eigen::Dynamic > dense;
+    // std::cout << "hessian =\n" << dense( hessian ) << "\n";
+    //
+    // factorize
+    // LDLT factorization of the matrix H_rcv. This is the same as compute
+    // except that compute does not use the result of analyzePattern.
+    ldlt_.factorize(hessian);
+    // std::cout << "D = \n" << dense( ldlt_.vectorD().transpose() ) << "\n";
+    //
+    if( ldlt_.info() != Eigen::Success )
+        return false;
+    //
+    update_called_ = true;
+    return true;
 }
 /*
 -------------------------------------------------------------------------------
@@ -344,8 +344,8 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE_SPLIT
-   // END_PROTOTYPE_SPLIT
+    // BEGIN_PROTOTYPE_SPLIT
+    // END_PROTOTYPE_SPLIT
 }
 
 Private
@@ -360,13 +360,13 @@ Extract the components of the :ref:`ldlt_eigen@Factorization`
 
 .. math::
 
-   L D L^\R{T} = P H P^{T}
+    L D L^\R{T} = P H P^{T}
 
 ldlt_obj
 ********
 This object has prototype
 
-   ``const CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
+    ``const CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
 
 In addition, it must have a previous call to
 :ref:`ldlt_eigen_update-name` .
@@ -394,15 +394,15 @@ example and test that uses this function.
 // BEGIN_PROTOTYPE_SPLIT
 template <typename Double>
 void ldlt_eigen<Double>::split(
-   Eigen::SparseMatrix<Double, Eigen::ColMajor>& L ,
-   Eigen::Matrix<Double, Eigen::Dynamic, 1>&     D ,
-   Eigen::PermutationMatrix<Eigen::Dynamic>&     P ) const
+    Eigen::SparseMatrix<Double, Eigen::ColMajor>& L ,
+    Eigen::Matrix<Double, Eigen::Dynamic, 1>&     D ,
+    Eigen::PermutationMatrix<Eigen::Dynamic>&     P ) const
 // END_PROTOTYPE_SPLIT
 {  assert( update_called_ );
-   //
-   L = ldlt_.matrixL();
-   D = ldlt_.vectorD();
-   P = ldlt_.permutationP();
+    //
+    L = ldlt_.matrixL();
+    D = ldlt_.vectorD();
+    P = ldlt_.permutationP();
 }
 /*
 ------------------------------------------------------------------------------
@@ -418,8 +418,8 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE_RCOND
-   // END_PROTOTYPE_RCOND
+    // BEGIN_PROTOTYPE_RCOND
+    // END_PROTOTYPE_RCOND
 }
 
 Private
@@ -457,29 +457,29 @@ Double ldlt_eigen<Double>::rcond(void) const
 // END_PROTOTYPE_RCOND
 {  assert( update_called_ );
 
-   // diag
-   Eigen::Matrix<Double, Eigen::Dynamic, 1> diag = ldlt_.vectorD();
-   assert( diag.size() == int(n_row_) );
-   //
-   // max_abs, min_abs
-   Double max_abs = 0.0;
-   Double min_abs = CppAD::numeric_limits<Double>::infinity();
-   for(size_t j = 0; j < n_row_; j++)
-   {  Double abs = fabs( diag[j] );
-      if( isnan( abs ) )
-         abs = 0.0;
-      max_abs    = std::max( abs, max_abs);
-      min_abs    = std::min( abs, min_abs);
-   }
-   //
-   // rcond
-   if( min_abs == 0.0 )
-      return 0.0;
-   if( min_abs == CppAD::numeric_limits<Double>::infinity() )
-      return 0.0;
-   if( max_abs == CppAD::numeric_limits<Double>::infinity() )
-      return 0.0;
-   return min_abs / max_abs;
+    // diag
+    Eigen::Matrix<Double, Eigen::Dynamic, 1> diag = ldlt_.vectorD();
+    assert( diag.size() == int(n_row_) );
+    //
+    // max_abs, min_abs
+    Double max_abs = 0.0;
+    Double min_abs = CppAD::numeric_limits<Double>::infinity();
+    for(size_t j = 0; j < n_row_; j++)
+    {  Double abs = fabs( diag[j] );
+        if( isnan( abs ) )
+            abs = 0.0;
+        max_abs    = std::max( abs, max_abs);
+        min_abs    = std::min( abs, min_abs);
+    }
+    //
+    // rcond
+    if( min_abs == 0.0 )
+        return 0.0;
+    if( min_abs == CppAD::numeric_limits<Double>::infinity() )
+        return 0.0;
+    if( max_abs == CppAD::numeric_limits<Double>::infinity() )
+        return 0.0;
+    return min_abs / max_abs;
 }
 /*
 ------------------------------------------------------------------------------
@@ -495,8 +495,8 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE_LOGDET
-   // END_PROTOTYPE_LOGDET
+    // BEGIN_PROTOTYPE_LOGDET
+    // END_PROTOTYPE_LOGDET
 }
 
 Private
@@ -509,7 +509,7 @@ ldlt_obj
 ********
 This object has prototype
 
-   ``const CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
+    ``const CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
 
 In addition, it must have a previous call to
 :ref:`ldlt_eigen_update-name` .
@@ -542,22 +542,22 @@ Double ldlt_eigen<Double>::logdet(size_t& negative) const
 // END_PROTOTYPE_LOGDET
 {  assert( update_called_ );
 
-   // compute the logdet( f_{u,u}(theta, u )
-   Eigen::Matrix<Double, Eigen::Dynamic, 1> diag = ldlt_.vectorD();
-   assert( diag.size() == int(n_row_) );
-   negative        = 0;
-   bool   has_zero = false;
-   Double logdet   = 0.0;
-   for(size_t j = 0; j < n_row_; j++)
-   {  has_zero |= diag(j) == 0.0;
-      if( diag(j) < 0.0 )
-         negative++;
-      logdet += log( CppAD::fabs( diag(j) ) );
-   }
-   if( has_zero )
-      return - std::numeric_limits<Double>::infinity();
-   //
-   return logdet;
+    // compute the logdet( f_{u,u}(theta, u )
+    Eigen::Matrix<Double, Eigen::Dynamic, 1> diag = ldlt_.vectorD();
+    assert( diag.size() == int(n_row_) );
+    negative        = 0;
+    bool   has_zero = false;
+    Double logdet   = 0.0;
+    for(size_t j = 0; j < n_row_; j++)
+    {  has_zero |= diag(j) == 0.0;
+        if( diag(j) < 0.0 )
+            negative++;
+        logdet += log( CppAD::fabs( diag(j) ) );
+    }
+    if( has_zero )
+        return - std::numeric_limits<Double>::infinity();
+    //
+    return logdet;
 }
 /*
 -----------------------------------------------------------------------------
@@ -573,8 +573,8 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE_SOLVE_H
-   // END_PROTOTYPE_SOLVE_H
+    // BEGIN_PROTOTYPE_SOLVE_H
+    // END_PROTOTYPE_SOLVE_H
 }
 
 Private
@@ -595,7 +595,7 @@ ldlt_obj
 ********
 This object has prototype
 
-   ``const CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
+    ``const CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
 
 In addition, it must have a previous call to
 :ref:`ldlt_eigen_update-name` .
@@ -608,7 +608,7 @@ non-zero and the rows of the column vector *x*
 that are desired.
 These values are in strictly increasing order; i.e.,
 
-   *row* [ *k* ] < *row* [ *k* +1]
+    *row* [ *k* ] < *row* [ *k* +1]
 
 It follows that *row* . ``size`` () is less than or equal
 :ref:`ldlt_eigen_ctor@n_row_` .
@@ -620,7 +620,7 @@ It specifies the values in the column vector :math:`b`
 for each of the corresponding rows; i.e.,
 for *k* = 0 , ..., *row* . ``size`` () ``-1`` ,
 
-   *b* [ *row* [ *k* ] ] = *val_in* [ *k* ]
+    *b* [ *row* [ *k* ] ] = *val_in* [ *k* ]
 
 .
 
@@ -632,7 +632,7 @@ Upon return, it contains the values in the column vector :math:`b`
 for each of the corresponding rows; i.e.,
 for *k* = 0 , ..., *row* . ``size`` () ``-1`` ,
 
-   *x* [ *row* [ *k* ] ] = *val_out* [ *k* ]
+    *x* [ *row* [ *k* ] ] = *val_out* [ *k* ]
 
 .
 
@@ -646,26 +646,26 @@ example and test that uses this function.
 // BEGIN_PROTOTYPE_SOLVE_H
 template <typename Double>
 void ldlt_eigen<Double>::solve_H(
-   const s_vector&              row     ,
-   const CppAD::vector<Double>& val_in  ,
-   CppAD::vector<Double>&       val_out ) const
+    const s_vector&              row     ,
+    const CppAD::vector<Double>& val_in  ,
+    CppAD::vector<Double>&       val_out ) const
 // END_PROTOTYPE_SOLVE_H
-{  assert( update_called_ );
-   assert( row.size() == val_in.size() );
-   assert( row.size() == val_out.size() );
-   //
-   // eigen uses dense vectors during a sparse solve so do the same
-   // (in fact, sparse vectors here fails some test as if short circuiting)
-   eigen_vector b = eigen_vector::Zero(n_row_);
-   for(size_t k = 0; k < row.size(); k++)
-   {  assert( row[k] < n_row_ );
-      b[ row[k]] = val_in[k];
-   }
-   //
-   // val_out
-   eigen_vector x = ldlt_.solve(b);
-   for(size_t k = 0; k < row.size(); k++)
-      val_out[k] = x[ row[k] ];
+{   assert( update_called_ );
+    assert( row.size() == val_in.size() );
+    assert( row.size() == val_out.size() );
+    //
+    // eigen uses dense vectors during a sparse solve so do the same
+    // (in fact, sparse vectors here fails some test as if short circuiting)
+    eigen_vector b = eigen_vector::Zero(n_row_);
+    for(size_t k = 0; k < row.size(); k++)
+    {   assert( row[k] < n_row_ );
+        b[ row[k]] = val_in[k];
+    }
+    //
+    // val_out
+    eigen_vector x = ldlt_.solve(b);
+    for(size_t k = 0; k < row.size(); k++)
+        val_out[k] = x[ row[k] ];
 }
 /*
 -------------------------------------------------------------------------------
@@ -684,8 +684,8 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE_SIM_COV
-   // END_PROTOTYPE_SIM_COV
+    // BEGIN_PROTOTYPE_SIM_COV
+    // END_PROTOTYPE_SIM_COV
 }
 
 Private
@@ -701,7 +701,7 @@ and covariance :math:`H^{-1}` where
 
 .. math::
 
-   L D L^\R{T} = P H P^\R{T}
+    L D L^\R{T} = P H P^\R{T}
 
 is the current factorization; see
 :ref:`ldlt_eigen@Factorization@H` ,
@@ -713,7 +713,7 @@ ldlt_obj
 ********
 This object has prototype
 
-   ``const CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
+    ``const CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
 
 In addition, it must have a previous call to
 :ref:`ldlt_eigen_update-name` .
@@ -732,7 +732,7 @@ Upon return
 
 .. math::
 
-   v = P^\R{T} L^{-\R{T}} \tilde{D}^{-1/2} w
+    v = P^\R{T} L^{-\R{T}} \tilde{D}^{-1/2} w
 
 If :math:`w` is mean zero, variance identity white noise,
 :math:`w \sim \B{N} ( 0 , I )`,
@@ -748,10 +748,10 @@ To be specific,
 
 .. math::
 
-   \tilde{D}_{i,i} = \left\{ \begin{array}{ll}
-      D_{i,i} & \R{if} \; D_{i,i} \geq  \varepsilon^2 \; \max(D) \\
-      \varepsilon^2 \; \max(D) & \R{otherwise}
-   \end{array} \right.
+    \tilde{D}_{i,i} = \left\{ \begin{array}{ll}
+        D_{i,i} & \R{if} \; D_{i,i} \geq  \varepsilon^2 \; \max(D) \\
+        \varepsilon^2 \; \max(D) & \R{otherwise}
+    \end{array} \right.
 
 where :math:`\varepsilon`
 ``std::numeric_limits<Double>::epsilon()`` ,
@@ -761,7 +761,7 @@ ok
 **
 The return value has prototype
 
-   ``bool`` *ok*
+    ``bool`` *ok*
 
 If :math:`\max(D) > 0`, this routine terminates with *ok*
 equal to true.
@@ -778,44 +778,44 @@ example and test that uses this function.
 // BEGIN_PROTOTYPE_SIM_COV
 template <typename Double>
 bool ldlt_eigen<Double>::sim_cov(
-   const CppAD::vector<Double>& w  ,
-   CppAD::vector<Double>&       v  ) const
+    const CppAD::vector<Double>& w  ,
+    CppAD::vector<Double>&       v  ) const
 // END_PROTOTYPE_SIM_COV
 {  assert( update_called_ );
-   typedef Eigen::Matrix<Double, Eigen::Dynamic, 1> column_vector;
-   //
-   // set b = w
-   column_vector b(n_row_);
-   for(size_t i = 0; i < n_row_; i++)
-      b[i] = w[i];
-   //
-   // diagonal
-   column_vector diag = ldlt_.vectorD();
-   Double max_D = 0.0;
-   for(size_t i = 0; i < n_row_; i++)
-      max_D = std::max(max_D, diag[i] );
-   if( max_D <= 0.0 )
-      return false;
-   //
-   // set b = D^{-1/2} w
-   Double eps = std::numeric_limits<Double>::epsilon();
-   eps        = eps * eps * max_D;
-   for(size_t i = 0; i < n_row_; i++)
-   {  Double di = std::max(diag[i], eps);
-      b[i] = b[i] / CppAD::sqrt( di );
-   }
-   //
-   // set b = L^{-T} * D^{-1/2} w
-   b = ldlt_.matrixU().solve(b);
-   //
-   // set b = P^T L^{-T} * D^{-1/2} w
-   b = ldlt_.permutationP().transpose() * b;
-   //
-   // return v
-   for(size_t i = 0 ; i < n_row_; i++)
-      v[i] = b[i];
-   //
-   return true;
+    typedef Eigen::Matrix<Double, Eigen::Dynamic, 1> column_vector;
+    //
+    // set b = w
+    column_vector b(n_row_);
+    for(size_t i = 0; i < n_row_; i++)
+        b[i] = w[i];
+    //
+    // diagonal
+    column_vector diag = ldlt_.vectorD();
+    Double max_D = 0.0;
+    for(size_t i = 0; i < n_row_; i++)
+        max_D = std::max(max_D, diag[i] );
+    if( max_D <= 0.0 )
+        return false;
+    //
+    // set b = D^{-1/2} w
+    Double eps = std::numeric_limits<Double>::epsilon();
+    eps        = eps * eps * max_D;
+    for(size_t i = 0; i < n_row_; i++)
+    {  Double di = std::max(diag[i], eps);
+        b[i] = b[i] / CppAD::sqrt( di );
+    }
+    //
+    // set b = L^{-T} * D^{-1/2} w
+    b = ldlt_.matrixU().solve(b);
+    //
+    // set b = P^T L^{-T} * D^{-1/2} w
+    b = ldlt_.permutationP().transpose() * b;
+    //
+    // return v
+    for(size_t i = 0 ; i < n_row_; i++)
+        v[i] = b[i];
+    //
+    return true;
 }
 
 /*
@@ -832,8 +832,8 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE_INV
-   // END_PROTOTYPE_INV
+    // BEGIN_PROTOTYPE_INV
+    // END_PROTOTYPE_INV
 }
 
 Private
@@ -851,7 +851,7 @@ ldlt_obj
 ********
 This object has prototype
 
-   ``const CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
+    ``const CppAD::ldlt_eigen<`` *Double* > *ldlt_obj*
 
 In addition, it must have a previous call to
 :ref:`ldlt_eigen_update-name` .
@@ -887,83 +887,83 @@ requested components of the inverse one column at a time.
 // BEGIN_PROTOTYPE_INV
 template <typename Double>
 void ldlt_eigen<Double>::inv(
-   const s_vector&              row_in    ,
-   const s_vector&              col_in    ,
-   CppAD::vector<Double>&       val_out   ) const
+    const s_vector&              row_in    ,
+    const s_vector&              col_in    ,
+    CppAD::vector<Double>&       val_out   ) const
 // END_PROTOTYPE_INV
 {  assert( update_called_ );
-   using CppAD::vector;
-   //
-   // starting index
-   size_t K  = row_in.size();
-   size_t k  = 0;
-   size_t row = n_row_;
-   size_t col = n_row_;
-   if( k < K )
-   {  row = row_in[k];
-      col = col_in[k];
-      assert( row < n_row_ );
-      assert( col < n_row_ );
-   }
-   //
-   s_vector row_solve;
-   CppAD::vector<Double> rhs_solve, val_solve;
-   for(size_t j = 0; j < n_row_; j++)
-   {  // vectors for this column
-      row_solve.resize(0);
-      rhs_solve.resize(0);
+    using CppAD::vector;
+    //
+    // starting index
+    size_t K  = row_in.size();
+    size_t k  = 0;
+    size_t row = n_row_;
+    size_t col = n_row_;
+    if( k < K )
+    {  row = row_in[k];
+        col = col_in[k];
+        assert( row < n_row_ );
+        assert( col < n_row_ );
+    }
+    //
+    s_vector row_solve;
+    CppAD::vector<Double> rhs_solve, val_solve;
+    for(size_t j = 0; j < n_row_; j++)
+    {  // vectors for this column
+        row_solve.resize(0);
+        rhs_solve.resize(0);
 
-      // only need for rows where f_{u,u} (theta_u) is possibly not zero
-      size_t k_start        = K;
-      bool   found_diagonal = false;
-      while( col <= j )
-      {  if( col == j )
-         {  // this row of f_{u,u} (theta, u) is possibly non-zero
-            row_solve.push_back( row );
-            // rhs_solve needs to be j-th column of identity matrix
-            // so solution is j-th column of inverse
-            if( row == j )
-            {  rhs_solve.push_back(1.0);
-               found_diagonal = true;
+        // only need for rows where f_{u,u} (theta_u) is possibly not zero
+        size_t k_start        = K;
+        bool   found_diagonal = false;
+        while( col <= j )
+        {  if( col == j )
+            {  // this row of f_{u,u} (theta, u) is possibly non-zero
+                row_solve.push_back( row );
+                // rhs_solve needs to be j-th column of identity matrix
+                // so solution is j-th column of inverse
+                if( row == j )
+                {  rhs_solve.push_back(1.0);
+                    found_diagonal = true;
+                }
+                else
+                    rhs_solve.push_back(0.0);
+                //
+                // index in row_in and col_in where j-th column starts
+                if( k_start == K )
+                    k_start = k;
+            }
+            k++;
+            if( k < K )
+            {  row = row_in[k];
+                col = col_in[k];
+                assert( row < n_row_ );
+                assert( col < n_row_ );
             }
             else
-               rhs_solve.push_back(0.0);
+                row = col = n_row_;
+        }
+        assert( col > j );
+        //
+        // Cannot compute cholesky factor if f_{u,u} (theta, u) is zero
+        if( ! found_diagonal )
+        {  row_solve.push_back(j);
+            rhs_solve.push_back(1.0);
+        }
+        // if k_start == K, we do not need any components of the inverse
+        if( k_start < K )
+        {  val_solve.resize( row_solve.size() );
             //
-            // index in row_in and col_in where j-th column starts
-            if( k_start == K )
-               k_start = k;
-         }
-         k++;
-         if( k < K )
-         {  row = row_in[k];
-            col = col_in[k];
-            assert( row < n_row_ );
-            assert( col < n_row_ );
-         }
-         else
-            row = col = n_row_;
-      }
-      assert( col > j );
-      //
-      // Cannot compute cholesky factor if f_{u,u} (theta, u) is zero
-      if( ! found_diagonal )
-      {  row_solve.push_back(j);
-         rhs_solve.push_back(1.0);
-      }
-      // if k_start == K, we do not need any components of the inverse
-      if( k_start < K )
-      {  val_solve.resize( row_solve.size() );
-         //
-         solve_H(row_solve, rhs_solve, val_solve);
-         //
-         size_t nr = row_solve.size();
-         if( ! found_diagonal )
-            nr--;
-         for(size_t ell = 0; ell < nr; ell++)
-            val_out[k_start + ell] = val_solve[ell];
-      }
-   }
-   return;
+            solve_H(row_solve, rhs_solve, val_solve);
+            //
+            size_t nr = row_solve.size();
+            if( ! found_diagonal )
+                nr--;
+            for(size_t ell = 0; ell < nr; ell++)
+                val_out[k_start + ell] = val_solve[ell];
+        }
+    }
+    return;
 }
 /*
 -------------------------------------------------------------------------------
@@ -979,8 +979,8 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE_SOLVE_LDLT
-   // END_PROTOTYPE_SOLVE_LDLT
+    // BEGIN_PROTOTYPE_SOLVE_LDLT
+    // END_PROTOTYPE_SOLVE_LDLT
 }
 
 Private
@@ -1028,37 +1028,37 @@ example and test that uses this function.
 template <typename Double>
 Eigen::Matrix<Double, Eigen::Dynamic, 1>
 ldlt_eigen<Double>::solve_LDLT(
-   // Lower Triangular matrix
-   const Eigen::SparseMatrix<Double, Eigen::ColMajor>& L  ,
-   // Diagonal matrix
-   const eigen_vector&                                 D  ,
-   // Permutation matrix
-   const Eigen::PermutationMatrix<Eigen::Dynamic>&     P  ,
-   // right hand side of equation
-   const eigen_vector&                                 b  )
+    // Lower Triangular matrix
+    const Eigen::SparseMatrix<Double, Eigen::ColMajor>& L  ,
+    // Diagonal matrix
+    const eigen_vector&                                 D  ,
+    // Permutation matrix
+    const Eigen::PermutationMatrix<Eigen::Dynamic>&     P  ,
+    // right hand side of equation
+    const eigen_vector&                                 b  )
 // END_PROTOTYPE_SOLVE_LDLT
-{  using Eigen::Lower;
-   using Eigen::Upper;
-   //
-   size_t n = size_t( b.size() );
-   //
-   // P * b
-   eigen_vector result = P * b;
-   //
-   // L^-1 * P * b
-   result = L. template triangularView<Lower>().solve(result);
-   //
-   // D^-1 * L^-1 * P * b
-   for(size_t j = 0; j < n; ++j)
-      result[j] = result[j] / D[j];
-   //
-   // L^-T * D^-1 * L^-1 * P * b
-   result = L.transpose(). template triangularView<Upper>().solve(result);
-   //
-   // P^T * L^-T * D^-1 * L^-1 * P * b
-   result = P.transpose() * result;
-   //
-   return result;
+{   using Eigen::Lower;
+    using Eigen::Upper;
+    //
+    size_t n = size_t( b.size() );
+    //
+    // P * b
+    eigen_vector result = P * b;
+    //
+    // L^-1 * P * b
+    result = L. template triangularView<Lower>().solve(result);
+    //
+    // D^-1 * L^-1 * P * b
+    for(size_t j = 0; j < n; ++j)
+        result[j] = result[j] / D[j];
+    //
+    // L^-T * D^-1 * L^-1 * P * b
+    result = L.transpose(). template triangularView<Upper>().solve(result);
+    //
+    // P^T * L^-T * D^-1 * L^-1 * P * b
+    result = P.transpose() * result;
+    //
+    return result;
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

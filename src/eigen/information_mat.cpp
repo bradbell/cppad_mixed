@@ -28,7 +28,7 @@ The observed information is
 
 .. math::
 
-   L^{(2)} ( \hat{\theta} )
+    L^{(2)} ( \hat{\theta} )
 
 Absolute value terms in the
 :ref:`problem@Negative Log-Density Vector`
@@ -69,7 +69,7 @@ information_rcv
 ***************
 The return value has prototype
 
-   ``CppAD::mixed::d_sparse_rcv`` *information_rcv*
+    ``CppAD::mixed::d_sparse_rcv`` *information_rcv*
 
 see :ref:`typedef@Sparse Types@d_sparse_rcv` .
 This is a sparse matrix representation for the
@@ -80,7 +80,7 @@ Absolute value terms in the
 for the :ref:`fix_likelihood-name` are not include in this Hessian
 because they do not have a derivative (let alone Hessian) at zero.
 {xrst_toc_hidden
-   example/user/information_mat.cpp
+    example/user/information_mat.cpp
 }
 
 Example
@@ -97,23 +97,23 @@ test of this routine. It returns true for success and false for failure.
 
 // ---------------------------------------------------------------------------
 CppAD::mixed::d_sparse_rcv cppad_mixed::information_mat(
-   const CppAD::mixed::fixed_solution&  solution             ,
-   const d_vector&                      random_opt           )
-{  d_sparse_rcv result;
-   try
-   {  result = try_hes_fixed_obj(solution.fixed_opt, random_opt);
-   }
-   catch(const std::exception& e)
-   {  std::string error_message = "information_mat: std::exception: ";
-      error_message += e.what();
-      fatal_error(error_message);
-      assert(false);
-   }
-   catch(const CppAD::mixed::exception& e)
-   {  std::string error_message = e.message("information_mat");
-      fatal_error(error_message);
-      assert(false);
-   }
-   //
-   return result;
+    const CppAD::mixed::fixed_solution&  solution             ,
+    const d_vector&                      random_opt           )
+{   d_sparse_rcv result;
+    try
+    {   result = try_hes_fixed_obj(solution.fixed_opt, random_opt);
+    }
+    catch(const std::exception& e)
+    {   std::string error_message = "information_mat: std::exception: ";
+        error_message += e.what();
+        fatal_error(error_message);
+        assert(false);
+    }
+    catch(const CppAD::mixed::exception& e)
+    {   std::string error_message = e.message("information_mat");
+        fatal_error(error_message);
+        assert(false);
+    }
+    //
+    return result;
 }

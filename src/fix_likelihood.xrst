@@ -33,7 +33,7 @@ fixed_vec
 *********
 This argument has prototype
 
-   ``const CppAD::vector<a1_double>&`` *fixed_vec*
+    ``const CppAD::vector<a1_double>&`` *fixed_vec*
 
 It contains a value for the
 :ref:`fixed effects<problem@Notation@Fixed Effects, theta>` vector.
@@ -42,7 +42,7 @@ vec
 ***
 This result has prototype
 
-   ``CppAD::vector<`` *a1_double* > *vec*
+    ``CppAD::vector<`` *a1_double* > *vec*
 
 It is a
 :ref:`problem@Negative Log-Density Vector`
@@ -51,7 +51,7 @@ corresponding to the fixed likelihood
 
 .. math::
 
-   g( \theta ) = - \log [ \B{p} ( z | \theta ) \B{p} ( \theta ) ]
+    g( \theta ) = - \log [ \B{p} ( z | \theta ) \B{p} ( \theta ) ]
 
 constant
 ========
@@ -74,7 +74,7 @@ This corresponds to the case where:
    for the fixed effects.
 
 {xrst_toc_hidden
-   example/user/fix_likelihood.cpp
+    example/user/fix_likelihood.cpp
 }
 Example
 *******

@@ -5,35 +5,35 @@
 # ----------------------------------------------------------------------------
 if [ ! -e 'bin/check_install.sh' ]
 then
-   echo 'bin/check_install.sh: must be executed from its parent directory'
-   exit 1
+    echo 'bin/check_install.sh: must be executed from its parent directory'
+    exit 1
 fi
 #
 # BEGIN_SORT_THIS_LINE_PLUS_3
 # {xrst_begin check_install.sh}
 # {xrst_spell
-#     bitwise
-#     cflags
-#     cmd
-#     config
-#     cout
-#     cp
-#     endl
-#     fi
-#     grep
-#     homebrew
-#     int
-#     lcppad
-#     libdir
-#     libs
-#     mkdir
-#     pkg
-#     pkgconfig
-#     rpath
-#     sed
-#     tmp
-#     wl
-#     wno
+#       bitwise
+#       cflags
+#       cmd
+#       config
+#       cout
+#       cp
+#       endl
+#       fi
+#       grep
+#       homebrew
+#       int
+#       lcppad
+#       libdir
+#       libs
+#       mkdir
+#       pkg
+#       pkgconfig
+#       rpath
+#       sed
+#       tmp
+#       wl
+#       wno
 # }
 # {xrst_comment END_SORT_THIS_LINE_MINUS_2}
 # {xrst_comment_ch #}
@@ -126,11 +126,11 @@ example_name=`echo $example_file | sed -e 's|.*/||' -e 's|\.cpp|_xam|'`
 cat << EOF >> example.cpp
 int main(void)
 {  if( ! $example_name() )
-   {  std::cout << "$example_name: Error" << std::endl;
-      std::exit(1);
-   }
-   std::cout << "$example_name: OK" << std::endl;
-   exit(0);
+    {  std::cout << "$example_name: Error" << std::endl;
+        std::exit(1);
+    }
+    std::cout << "$example_name: OK" << std::endl;
+    exit(0);
 }
 EOF
 # {xrst_code}
@@ -183,9 +183,9 @@ CHOLMOD_libs=`pkg-config --libs CHOLMOD`
 # optimize_flags
 if [ "$build_type" == 'debug' ]
 then
-   optimize_flags='-g -O0 -std=c++11 -Wall'
+    optimize_flags='-g -O0 -std=c++11 -Wall'
 else
-   optimize_flags='-O3 -DNDEBUG -std=c++11 -Wall'
+    optimize_flags='-O3 -DNDEBUG -std=c++11 -Wall'
 fi
 #
 # path2libdir
@@ -194,37 +194,37 @@ path2libdir="$cmake_install_prefix/$cmake_libdir"
 # homebrew_flags
 if [ -e /opt/homebrew ]
 then
-   homebrew_flags='-Wno-bitwise-instead-of-logical'
-   homebrew_flags+=' -I /opt/homebrew/include'
-   homebrew_flags+=" -L /opt/homebrew/lib -Wl,-rpath,/opt/homebrew/lib"
+    homebrew_flags='-Wno-bitwise-instead-of-logical'
+    homebrew_flags+=' -I /opt/homebrew/include'
+    homebrew_flags+=" -L /opt/homebrew/lib -Wl,-rpath,/opt/homebrew/lib"
 else
-   homebrew_flags=""
+    homebrew_flags=""
 fi
 #
 cat << EOF
 g++ example.cpp \\
-   $optimize_flags \\
-   -I $cmake_install_prefix/include \\
-   -L $path2libdir -Wl,-rpath,$path2libdir -lcppad_mixed \\
-   $homebrew_flags \\
-   $eigen_cflags \\
-   $CHOLMOD_cflags \\
-   $gsl_libs \\
-   $CHOLMOD_libs \\
-   $ipopt_libs \\
-   -o example
+    $optimize_flags \\
+    -I $cmake_install_prefix/include \\
+    -L $path2libdir -Wl,-rpath,$path2libdir -lcppad_mixed \\
+    $homebrew_flags \\
+    $eigen_cflags \\
+    $CHOLMOD_cflags \\
+    $gsl_libs \\
+    $CHOLMOD_libs \\
+    $ipopt_libs \\
+    -o example
 EOF
 g++ example.cpp \
-   $optimize_flags \
-   -I $cmake_install_prefix/include \
-   -L $path2libdir -Wl,-rpath,$path2libdir -lcppad_mixed \
-   $eigen_cflags \
-   $CHOLMOD_cflags \
-   $homebrew_flags \
-   $gsl_libs \
-   $CHOLMOD_libs \
-   $ipopt_libs \
-   -o example
+    $optimize_flags \
+    -I $cmake_install_prefix/include \
+    -L $path2libdir -Wl,-rpath,$path2libdir -lcppad_mixed \
+    $eigen_cflags \
+    $CHOLMOD_cflags \
+    $homebrew_flags \
+    $gsl_libs \
+    $CHOLMOD_libs \
+    $ipopt_libs \
+    -o example
 # {xrst_code}
 #
 # Run Example
@@ -233,8 +233,8 @@ g++ example.cpp \
 # {xrst_code sh}
 if ! ./example
 then
-   echo 'check_install.sh: Error'
-   exit 1
+    echo 'check_install.sh: Error'
+    exit 1
 fi
 echo 'check_install.sh: OK'
 exit 0

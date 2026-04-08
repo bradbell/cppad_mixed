@@ -28,13 +28,13 @@ This structure holds information about a specific Jacobian
 
 .. math::
 
-   J(x) = f^{(1)} (x)
+    J(x) = f^{(1)} (x)
 
 subset
 ******
 The field *jac_rcv* . ``subset`` has prototype
 
-   ``CppAD::mixed::d_sparse_rcv`` *jac_rcv* . ``subset``
+    ``CppAD::mixed::d_sparse_rcv`` *jac_rcv* . ``subset``
 
 It is empty zero when it is constructed; i.e.,
 all of its sizes are zero.
@@ -45,37 +45,37 @@ nnz
 ===
 We use the notation
 
-   *nnz* = *jac_rcv* . ``subset.nnz`` ()
+    *nnz* = *jac_rcv* . ``subset.nnz`` ()
 
 row
 ===
 We use the notation
 
-   *row* = *jac_rcv* . ``subset.row`` ()
+    *row* = *jac_rcv* . ``subset.row`` ()
 
 col
 ===
 We use the notation
 
-   *col* = *jac_rcv* . ``subset.col`` ()
+    *col* = *jac_rcv* . ``subset.col`` ()
 
 val
 ===
 We use the notation
 
-   *val* = *jac_rcv* . ``subset.val`` ()
+    *val* = *jac_rcv* . ``subset.val`` ()
 
 forward
 *******
 The field *jac_rcv* . ``forward`` has prototype
 
-   *bool* ``jac_rcv`` . *forward*
+    *bool* ``jac_rcv`` . *forward*
 
 work
 ****
 The field *jac_rcv* . ``work`` has prototype
 
-   ``CppAD::sparse_jac_work`` *jac_rcv* . ``work``
+    ``CppAD::sparse_jac_work`` *jac_rcv* . ``work``
 
 It has no information when it is constructed; i.e., it is empty.
 After initialization it should contain the CppAD cached information
@@ -122,13 +122,13 @@ f
 =
 The function *f* has prototype
 
-   ``CppAD::ADFun<double>`` *f*
+    ``CppAD::ADFun<double>`` *f*
 
 group_max
 =========
 The parameter *group_max* has prototype
 
-   ``size_t`` *group_max*
+    ``size_t`` *group_max*
 
 and must be greater than zero.
 It specifies the maximum number of directions to group during
@@ -140,7 +140,7 @@ x
 =
 The argument *x* has prototype
 
-   ``const CppAD::vector<double>&`` *x*
+    ``const CppAD::vector<double>&`` *x*
 
 and its size is *f* . ``Domain`` () .
 It is the location where the Jacobian is being evaluated.
@@ -149,7 +149,7 @@ not_used_pattern
 ================
 This argument has the following prototype
 
-   ``const CppAD::mixed::sparse_rc&`` *not_used_pattern*
+    ``const CppAD::mixed::sparse_rc&`` *not_used_pattern*
 
 It is not used and hence its value does not matter.
 
@@ -157,7 +157,7 @@ not_used_coloring
 =================
 This argument has the following prototype
 
-   ``const std::string&`` *not_used_coloring*
+    ``const std::string&`` *not_used_coloring*
 
 It is not used and hence its value does not matter.
 
@@ -166,11 +166,11 @@ It is not used and hence its value does not matter.
 # include <cppad/mixed/typedef.hpp>
 
 namespace CppAD { namespace mixed {
-   struct sparse_jac_rcv {
-      bool                   forward;
-      d_sparse_rcv           subset;
-      CppAD::sparse_jac_work work;
-   };
+    struct sparse_jac_rcv {
+        bool                   forward;
+        d_sparse_rcv           subset;
+        CppAD::sparse_jac_work work;
+    };
 } }
 
 # endif

@@ -5,8 +5,9 @@
 
 {xrst_begin 2026}
 {xrst_spell
-   mm
-   dd
+    mm
+    dd
+    rst
 }
 
 Release Notes for 2026
@@ -14,6 +15,14 @@ Release Notes for 2026
 
 mm-dd
 *****
+
+04-08
+=====
+Change the cppad_mixed source code and documentation to use 4 spaces for
+one tab; i.e., one level of indentation.
+This used to be 3 spaces because that works well with rst lists
+(the cppad_mixed documentation uses rst),
+but 4 spaces is the most common choice used by programmers.
 
 01-25
 =====

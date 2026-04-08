@@ -34,8 +34,8 @@ See Also
 Prototype
 *********
 {xrst_literal
-   // BEGIN PROTOTYPE
-   // END PROTOTYPE
+    // BEGIN PROTOTYPE
+    // END PROTOTYPE
 }
 
 Purpose
@@ -48,7 +48,7 @@ Constant Fixed Effects
 **********************
 If the upper and lower limits for the *j*-th fixed effect are equal::
 
-   fixed_lower[j] == fixed_upper[j]
+    fixed_lower[j] == fixed_upper[j]
 
 we refer to the *j*-th fixed effect as constant.
 
@@ -93,13 +93,13 @@ The size *sample* . ``size`` () is a multiple of
 The input value of its elements does not matter.
 We define::
 
-   n_sample = sample_size / n_fixed
+    n_sample = sample_size / n_fixed
 
 If *error_msg* is empty, upon return
 for *i* = 0 , ..., *n_sample*-1 ,
 *j* = 0 , ..., *n_fixed*-1 ::
 
-   sample[i * n_fixed + j]
+    sample[i * n_fixed + j]
 
 is the *j*-th component of the *i*-th sample of the
 optimal fixed effects :math:`\hat{\theta}`.
@@ -112,7 +112,7 @@ optimal fixed effects :math:`\hat{\theta}`.
    if the *j*-th fixed effect is not constant,
    the sample may not satisfy the condition::
 
-      fixed_lower[j] <= sample[i * n_fixed + j] <= fixed_upper[j]
+        fixed_lower[j] <= sample[i * n_fixed + j] <= fixed_upper[j]
 
 
 hes_fixed_obj_rcv
@@ -182,8 +182,8 @@ values have been calculated (have not been calculated).
 If *error_msg* is non-empty,
 it is a message describing the problem.
 {xrst_toc_hidden
-   example/user/sample_fixed.cpp
-   src/eigen/sample_conditional.cpp
+    example/user/sample_fixed.cpp
+    src/eigen/sample_conditional.cpp
 }
 Example
 *******
@@ -211,200 +211,200 @@ longer used for computing these samples.
 # define DEBUG_PRINT 0
 
 namespace {
-   using Eigen::Dynamic;
-   using CppAD::mixed::get_gsl_rng;
-   typedef Eigen::Matrix<double, Dynamic, Dynamic>     double_mat;
-   typedef Eigen::Matrix<double, Dynamic, 1>           double_vec;
-   typedef Eigen::Matrix<size_t, Dynamic, 1>           size_vec;
-   typedef Eigen::LDLT<double_mat, Eigen::Lower>       double_cholesky;
-   typedef Eigen::PermutationMatrix<Dynamic, Dynamic, int>  permutation_mat;
-   //
+    using Eigen::Dynamic;
+    using CppAD::mixed::get_gsl_rng;
+    typedef Eigen::Matrix<double, Dynamic, Dynamic>     double_mat;
+    typedef Eigen::Matrix<double, Dynamic, 1>           double_vec;
+    typedef Eigen::Matrix<size_t, Dynamic, 1>           size_vec;
+    typedef Eigen::LDLT<double_mat, Eigen::Lower>       double_cholesky;
+    typedef Eigen::PermutationMatrix<Dynamic, Dynamic, int>  permutation_mat;
+    //
 # if DEBUG_PRINT
-   void print(const char* name , const double_mat& mat)
-   {  std::cout << "\n" << name << " =\n" << mat << "\n"; }
-   void print(const char* name , double_vec& vec)
-   {  std::cout << "\n" << name << "^T = " << vec.transpose() << "\n"; }
-   void print(const char* name , size_vec& vec)
-   {  std::cout << "\n" << name << "^T = " << vec.transpose() << "\n"; }
+    void print(const char* name , const double_mat& mat)
+    {   std::cout << "\n" << name << " =\n" << mat << "\n"; }
+    void print(const char* name , double_vec& vec)
+    {   std::cout << "\n" << name << "^T = " << vec.transpose() << "\n"; }
+    void print(const char* name , size_vec& vec)
+    {   std::cout << "\n" << name << "^T = " << vec.transpose() << "\n"; }
 # endif
 }
 // -------------------------------------------------------------------------
 std::string cppad_mixed::try_sample_fixed(
-   CppAD::vector<double>&                 sample               ,
-   const d_sparse_rcv&                    hes_fixed_obj_rcv    ,
-   const CppAD::mixed::fixed_solution&    solution             ,
-   const CppAD::vector<double>&           fixed_lower          ,
-   const CppAD::vector<double>&           fixed_upper          ,
-   double&                                rcond                ,
-   double                                 cov_factor           )
+    CppAD::vector<double>&                 sample               ,
+    const d_sparse_rcv&                    hes_fixed_obj_rcv    ,
+    const CppAD::mixed::fixed_solution&    solution             ,
+    const CppAD::vector<double>&           fixed_lower          ,
+    const CppAD::vector<double>&           fixed_upper          ,
+    double&                                rcond                ,
+    double                                 cov_factor           )
 {
-   // cov_factor
-   assert( 0.0 < cov_factor );
-   //
-   // sample
-   assert( sample.size() > 0 );
-   assert( sample.size() % n_fixed_ == 0 );
-   //
-   // solution
-   assert( solution.fixed_opt.size() == n_fixed_ );
-   //
-   // number of samples
-   size_t n_sample = sample.size() / n_fixed_;
-   //
-   // optimal fixed effects
-   const d_vector& fixed_opt( solution.fixed_opt );
-   //
-   // Determine the subset of variables that do not have lower equal to upper
-   CppAD::vector<size_t> fixed2subset(n_fixed_);
-   size_t n_subset = 0;
-   for(size_t j = 0; j < n_fixed_; j++)
-   {  if( fixed_lower[j] == fixed_upper[j] )
-         fixed2subset[j] = n_fixed_;
-      else
-         fixed2subset[j] = n_subset++;
-   }
-   assert( n_subset <= n_fixed_ );
-   //
-   // sample
-   if( n_subset == 0 )
-   {  // All of the fixed effects have lower bound equal to upper bound
-      for(size_t j = 0; j < n_fixed_; j++)
-         for(size_t i_sample = 0; i_sample < n_sample; ++i_sample)
-            sample[ i_sample * n_fixed_ + j] = fixed_lower[j];
-      std::string error_msg = "";
-      return error_msg;
-   }
-   //
-   // info_mat_rcv
-   // create a sparse_rcv representation of information matrix on subset
-   // and in column major order
-   CppAD::vector<size_t> col_major = hes_fixed_obj_rcv.col_major();
-   size_t count = 0;
-   for(size_t ell = 0; ell < hes_fixed_obj_rcv.nnz(); ++ell)
-   {  size_t k = col_major[ell];
-      size_t i = hes_fixed_obj_rcv.row()[k];
-      size_t j = hes_fixed_obj_rcv.col()[k];
-      i        = fixed2subset[i];
-      j        = fixed2subset[j];
-      if( i != n_fixed_ && j != n_fixed_ && j <= i )
-      {  assert( i < n_subset && j < n_subset );
-         ++count;
-      }
-   }
-   sparse_rc info_mat_rc(n_subset, n_subset, count);
-   count = 0;
-   for(size_t ell = 0; ell < hes_fixed_obj_rcv.nnz(); ++ell)
-   {  size_t k = col_major[ell];
-      size_t i = hes_fixed_obj_rcv.row()[k];
-      size_t j = hes_fixed_obj_rcv.col()[k];
-      i        = fixed2subset[i];
-      j        = fixed2subset[j];
-      if( i != n_fixed_ && j != n_fixed_ && j <= i )
-      {  assert( i < n_subset && j < n_subset );
-         info_mat_rc.set(count++, i, j);
-      }
-   }
-   assert( count == info_mat_rc.nnz() );
-   d_sparse_rcv info_mat_rcv( info_mat_rc );
-   count = 0;
-   for(size_t ell = 0; ell < hes_fixed_obj_rcv.nnz(); ++ell)
-   {  size_t k = col_major[ell];
-      size_t i = hes_fixed_obj_rcv.row()[k];
-      size_t j = hes_fixed_obj_rcv.col()[k];
-      double v = hes_fixed_obj_rcv.val()[k] / cov_factor;
-      i        = fixed2subset[i];
-      j        = fixed2subset[j];
-      if( i != n_fixed_ && j != n_fixed_ && j <= i )
-      {  assert( i < n_subset && j < n_subset );
-         info_mat_rcv.set(count++, v);
-      }
-   }
-   assert( count == info_mat_rcv.nnz() );
-   //
-   // ldlt_info_mat
-   // LDLT factorization of info_mat
-   CPPAD_MIXED_LDLT_CLASS ldlt_info_mat(n_subset);
-   ldlt_info_mat.init( info_mat_rcv.pat() );
-   bool ok = ldlt_info_mat.update( info_mat_rcv );
-   if( ! ok )
-   {  std::string error_msg =
-         "sample_fixed: fixed effects information matrix is singular";
-      return error_msg;
-   }
-   size_t negative;
-   ldlt_info_mat.logdet(negative);
-   if( negative != 0 )
-   {  std::string error_msg = "sample_fixed: "
-         "fixed effects information matrix is not positive definite";
-      return error_msg;
-   }
-   //
-   // rcond
-   rcond = ldlt_info_mat.rcond();
-   //
-   // sample
-   // Simulate the samples
-   for(size_t i_sample = 0; i_sample < n_sample; i_sample++)
-   {  d_vector w(n_subset);
-      // simulate a normal with mean zero and variance one
-      for(size_t k = 0; k < n_subset; k++)
-         w[k] = gsl_ran_gaussian(CppAD::mixed::get_gsl_rng(), 1.0);
-      //
-      // set v to cholesky factor of info_mat^{-1} times w
-      d_vector v(n_subset);
-      ok = ldlt_info_mat.sim_cov(w, v);
-      if( ! ok )
-      {  std::string error_msg = "sample_fixed: fixed effects "
-            " information matrix is not positive definite";
-         return error_msg;
-      }
-      //
-      // store in sample
-      for(size_t j = 0; j < n_fixed_; j++)
-      {  if( fixed2subset[j] == n_fixed_ )
-            sample[ i_sample * n_fixed_ + j] = fixed_lower[j];
-         else
-         {  size_t k       = fixed2subset[j];
-            //
-            // store this component of the sample
-            sample[ i_sample * n_fixed_ + j] = fixed_opt[j] + v[k];
-         }
-      }
-   }
-   // -----------------------------------------------------------------------
-   return "";
+    // cov_factor
+    assert( 0.0 < cov_factor );
+    //
+    // sample
+    assert( sample.size() > 0 );
+    assert( sample.size() % n_fixed_ == 0 );
+    //
+    // solution
+    assert( solution.fixed_opt.size() == n_fixed_ );
+    //
+    // number of samples
+    size_t n_sample = sample.size() / n_fixed_;
+    //
+    // optimal fixed effects
+    const d_vector& fixed_opt( solution.fixed_opt );
+    //
+    // Determine the subset of variables that do not have lower equal to upper
+    CppAD::vector<size_t> fixed2subset(n_fixed_);
+    size_t n_subset = 0;
+    for(size_t j = 0; j < n_fixed_; j++)
+    {   if( fixed_lower[j] == fixed_upper[j] )
+            fixed2subset[j] = n_fixed_;
+        else
+            fixed2subset[j] = n_subset++;
+    }
+    assert( n_subset <= n_fixed_ );
+    //
+    // sample
+    if( n_subset == 0 )
+    {   // All of the fixed effects have lower bound equal to upper bound
+        for(size_t j = 0; j < n_fixed_; j++)
+            for(size_t i_sample = 0; i_sample < n_sample; ++i_sample)
+                sample[ i_sample * n_fixed_ + j] = fixed_lower[j];
+        std::string error_msg = "";
+        return error_msg;
+    }
+    //
+    // info_mat_rcv
+    // create a sparse_rcv representation of information matrix on subset
+    // and in column major order
+    CppAD::vector<size_t> col_major = hes_fixed_obj_rcv.col_major();
+    size_t count = 0;
+    for(size_t ell = 0; ell < hes_fixed_obj_rcv.nnz(); ++ell)
+    {   size_t k = col_major[ell];
+        size_t i = hes_fixed_obj_rcv.row()[k];
+        size_t j = hes_fixed_obj_rcv.col()[k];
+        i        = fixed2subset[i];
+        j        = fixed2subset[j];
+        if( i != n_fixed_ && j != n_fixed_ && j <= i )
+        {   assert( i < n_subset && j < n_subset );
+            ++count;
+        }
+    }
+    sparse_rc info_mat_rc(n_subset, n_subset, count);
+    count = 0;
+    for(size_t ell = 0; ell < hes_fixed_obj_rcv.nnz(); ++ell)
+    {   size_t k = col_major[ell];
+        size_t i = hes_fixed_obj_rcv.row()[k];
+        size_t j = hes_fixed_obj_rcv.col()[k];
+        i        = fixed2subset[i];
+        j        = fixed2subset[j];
+        if( i != n_fixed_ && j != n_fixed_ && j <= i )
+        {   assert( i < n_subset && j < n_subset );
+            info_mat_rc.set(count++, i, j);
+        }
+    }
+    assert( count == info_mat_rc.nnz() );
+    d_sparse_rcv info_mat_rcv( info_mat_rc );
+    count = 0;
+    for(size_t ell = 0; ell < hes_fixed_obj_rcv.nnz(); ++ell)
+    {   size_t k = col_major[ell];
+        size_t i = hes_fixed_obj_rcv.row()[k];
+        size_t j = hes_fixed_obj_rcv.col()[k];
+        double v = hes_fixed_obj_rcv.val()[k] / cov_factor;
+        i        = fixed2subset[i];
+        j        = fixed2subset[j];
+        if( i != n_fixed_ && j != n_fixed_ && j <= i )
+        {   assert( i < n_subset && j < n_subset );
+            info_mat_rcv.set(count++, v);
+        }
+    }
+    assert( count == info_mat_rcv.nnz() );
+    //
+    // ldlt_info_mat
+    // LDLT factorization of info_mat
+    CPPAD_MIXED_LDLT_CLASS ldlt_info_mat(n_subset);
+    ldlt_info_mat.init( info_mat_rcv.pat() );
+    bool ok = ldlt_info_mat.update( info_mat_rcv );
+    if( ! ok )
+    {   std::string error_msg =
+            "sample_fixed: fixed effects information matrix is singular";
+        return error_msg;
+    }
+    size_t negative;
+    ldlt_info_mat.logdet(negative);
+    if( negative != 0 )
+    {   std::string error_msg = "sample_fixed: "
+            "fixed effects information matrix is not positive definite";
+        return error_msg;
+    }
+    //
+    // rcond
+    rcond = ldlt_info_mat.rcond();
+    //
+    // sample
+    // Simulate the samples
+    for(size_t i_sample = 0; i_sample < n_sample; i_sample++)
+    {   d_vector w(n_subset);
+        // simulate a normal with mean zero and variance one
+        for(size_t k = 0; k < n_subset; k++)
+            w[k] = gsl_ran_gaussian(CppAD::mixed::get_gsl_rng(), 1.0);
+        //
+        // set v to cholesky factor of info_mat^{-1} times w
+        d_vector v(n_subset);
+        ok = ldlt_info_mat.sim_cov(w, v);
+        if( ! ok )
+        {   std::string error_msg = "sample_fixed: fixed effects "
+                " information matrix is not positive definite";
+            return error_msg;
+        }
+        //
+        // store in sample
+        for(size_t j = 0; j < n_fixed_; j++)
+        {   if( fixed2subset[j] == n_fixed_ )
+                sample[ i_sample * n_fixed_ + j] = fixed_lower[j];
+            else
+            {   size_t k       = fixed2subset[j];
+                //
+                // store this component of the sample
+                sample[ i_sample * n_fixed_ + j] = fixed_opt[j] + v[k];
+            }
+        }
+    }
+    // -----------------------------------------------------------------------
+    return "";
 }
 // -------------------------------------------------------------------------
 // BEGIN PROTOTYPE
 std::string cppad_mixed::sample_fixed(
-   CppAD::vector<double>&                 sample               ,
-   const d_sparse_rcv&                    hes_fixed_obj_rcv    ,
-   const CppAD::mixed::fixed_solution&    solution             ,
-   const CppAD::vector<double>&           fixed_lower          ,
-   const CppAD::vector<double>&           fixed_upper          ,
-   double&                                rcond                ,
-   double                                 cov_factor           )
+    CppAD::vector<double>&                 sample               ,
+    const d_sparse_rcv&                    hes_fixed_obj_rcv    ,
+    const CppAD::mixed::fixed_solution&    solution             ,
+    const CppAD::vector<double>&           fixed_lower          ,
+    const CppAD::vector<double>&           fixed_upper          ,
+    double&                                rcond                ,
+    double                                 cov_factor           )
 // END PROTOTYPE
-{  std::string error_msg = "";
-   try
-   {  error_msg = try_sample_fixed(
-         sample            ,
-         hes_fixed_obj_rcv ,
-         solution          ,
-         fixed_lower       ,
-         fixed_upper       ,
-         rcond             ,
-         cov_factor
-      );
-   }
-   catch(const std::exception& e)
-   {  error_msg = "sample_fixed: std::exception: ";
-      error_msg += e.what();
-      return error_msg;
-   }
-   catch(const CppAD::mixed::exception& e)
-   {  error_msg = e.message("sample_fixed");
-      return error_msg;
-   }
-   return error_msg;
+{   std::string error_msg = "";
+    try
+    {   error_msg = try_sample_fixed(
+            sample            ,
+            hes_fixed_obj_rcv ,
+            solution          ,
+            fixed_lower       ,
+            fixed_upper       ,
+            rcond             ,
+            cov_factor
+        );
+    }
+    catch(const std::exception& e)
+    {   error_msg = "sample_fixed: std::exception: ";
+        error_msg += e.what();
+        return error_msg;
+    }
+    catch(const CppAD::mixed::exception& e)
+    {   error_msg = e.message("sample_fixed");
+        return error_msg;
+    }
+    return error_msg;
 }

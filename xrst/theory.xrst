@@ -29,10 +29,10 @@ to be the negative log-likelihood of the
 
 .. math::
 
-   - \log [  \;
-      \B{p} ( y |  \theta, u ) \B{p} ( u | \theta )  \;
-      \B{p} ( z | \theta )\B{p} ( \theta ) \;
-   ]
+    - \log [  \;
+        \B{p} ( y |  \theta, u ) \B{p} ( u | \theta )  \;
+        \B{p} ( z | \theta )\B{p} ( \theta ) \;
+    ]
 
 Random Likelihood, f(theta, u)
 ******************************
@@ -41,7 +41,7 @@ that depends on the random effects :math:`u`;
 
 .. math::
 
-   f( \theta, u ) = - \log [ \B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) ]
+    f( \theta, u ) = - \log [ \B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) ]
 
 Assumption
 ==========
@@ -61,7 +61,7 @@ that only depends on the fixed effects :math:`\theta`;
 
 .. math::
 
-   g( \theta ) = - \log [ \B{p} ( z | \theta ) \B{p} ( \theta ) ]
+    g( \theta ) = - \log [ \B{p} ( z | \theta ) \B{p} ( \theta ) ]
 
 The function :math:`g( \theta )` may not be smooth, to be specific, it
 can have absolute values in it (corresponding to the Laplace densities).
@@ -75,7 +75,7 @@ the random effects that maximize the random likelihood; i.e.,
 
 .. math::
 
-   \hat{u} ( \theta ) = \R{argmin} \; f( \theta, u ) \; \R{w.r.t.} \; u
+    \hat{u} ( \theta ) = \R{argmin} \; f( \theta, u ) \; \R{w.r.t.} \; u
 
 Note that this definition agrees with the other definition for
 :ref:`u^(theta)<problem@Notation@Optimal Random Effects, u^(theta)>` .
@@ -91,11 +91,11 @@ the fixed and random effects is
 
 .. math::
 
-   h( \theta, u )
-   =
-   + \frac{1}{2} \log \det f_{u,u} ( \theta, u )
-   + f( \theta, u )
-   - \frac{n}{2} \log ( 2 \pi )
+    h( \theta, u )
+    =
+    + \frac{1}{2} \log \det f_{u,u} ( \theta, u )
+    + f( \theta, u )
+    - \frac{n}{2} \log ( 2 \pi )
 
 where :math:`n` is the number of random effects.
 
@@ -105,13 +105,13 @@ We refer to
 
 .. math::
 
-   r( \theta )
-   =
-   h[ \theta , \hat{u} ( \theta ) ]
-   \approx
-   - \log \left[ \int_{-\infty}^{+\infty}
-      \B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) \; \B{d} u
-   \right]
+    r( \theta )
+    =
+    h[ \theta , \hat{u} ( \theta ) ]
+    \approx
+    - \log \left[ \int_{-\infty}^{+\infty}
+        \B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) \; \B{d} u
+    \right]
 
 as the Laplace objective.
 This corresponds to equation (4) in the
@@ -123,9 +123,9 @@ The fixed effects objective, as a function of just the fixed effects, is
 
 .. math::
 
-   L ( \theta )
-   =
-   r( \theta ) + g( \theta )
+    L ( \theta )
+    =
+    r( \theta ) + g( \theta )
 
 Derivative of Optimal Random Effects
 ************************************
@@ -135,7 +135,7 @@ we obtain
 
 .. math::
 
-   f_u [ \theta , \hat{u} ( \theta ) ] = 0
+    f_u [ \theta , \hat{u} ( \theta ) ] = 0
 
 From this equation,
 and the implicit function theorem,
@@ -143,10 +143,10 @@ it follows that
 
 .. math::
 
-   \hat{u}_\theta ( \theta )
-   =
-   - f_{u,u} \left[ \theta , \hat{u} ( \theta ) \right]^{-1}
-      f_{u,\theta} \left[ \theta , \hat{u} ( \theta )  \right]
+    \hat{u}_\theta ( \theta )
+    =
+    - f_{u,u} \left[ \theta , \hat{u} ( \theta ) \right]^{-1}
+        f_{u,\theta} \left[ \theta , \hat{u} ( \theta )  \right]
 
 Derivative of Random Constraints
 ********************************
@@ -156,9 +156,9 @@ is given by
 
 .. math::
 
-   \partial_\theta [ A \; \hat{u} ( \theta ) ]
-   =
-   A \; \hat{u}_\theta ( \theta )
+    \partial_\theta [ A \; \hat{u} ( \theta ) ]
+    =
+    A \; \hat{u}_\theta ( \theta )
 
 Derivative of Laplace Objective
 *******************************
@@ -166,11 +166,11 @@ The derivative of the random part of the objective is given by
 
 .. math::
 
-   r_\theta ( \theta )
-   =
-   h_\theta [ \theta , \hat{u} ( \theta ) ]
-   +
-   h_u [ \theta , \hat{u} ( \theta ) ] \hat{u}_\theta ( \theta )
+    r_\theta ( \theta )
+    =
+    h_\theta [ \theta , \hat{u} ( \theta ) ]
+    +
+    h_u [ \theta , \hat{u} ( \theta ) ] \hat{u}_\theta ( \theta )
 
 Thus the derivative of :math:`r ( \theta )` can be computed
 using the derivative of :math:`\hat{u} ( \theta )`
@@ -180,13 +180,13 @@ component of the combined vector :math:`( \theta , u )`.
 
 .. math::
 
-   \partial_k [ h( \theta , u ) ]
-   =
-   \partial_k [ f( \theta , u ) ]
-   +
-   \frac{1}{2} \sum_{i=0}^{n-1} \sum_{j=0}^{n-1}
-      f_{u,u} ( \theta , u )_{i,j}^{-1}
-      \partial_k [ f_{u,u} ( \theta , u)_{i,j} ]
+    \partial_k [ h( \theta , u ) ]
+    =
+    \partial_k [ f( \theta , u ) ]
+    +
+    \frac{1}{2} \sum_{i=0}^{n-1} \sum_{j=0}^{n-1}
+        f_{u,u} ( \theta , u )_{i,j}^{-1}
+        \partial_k [ f_{u,u} ( \theta , u)_{i,j} ]
 
 where :math:`n` is the number of random effects.
 Note that :math:`f_{u,u} ( \theta , u )`
@@ -198,7 +198,7 @@ We also note that if :math:`k` corresponds to a component of :math:`u` then
 
 .. math::
 
-   \partial_k ( f[ \theta , \hat{u} ( \theta ) ] ) = 0
+    \partial_k ( f[ \theta , \hat{u} ( \theta ) ] ) = 0
 
 Approximate Optimal Random Effects
 **********************************
@@ -209,21 +209,21 @@ We define  the function
 
 .. math::
 
-   U ( \beta , \theta , u )
-   =
-   u - f_{u,u} ( \theta , u )^{-1} f_u ( \beta , u  )
+    U ( \beta , \theta , u )
+    =
+    u - f_{u,u} ( \theta , u )^{-1} f_u ( \beta , u  )
 
 It follows that
 
 .. math::
 
-   U \left[ \theta , \theta , \hat{u} ( \theta ) \right] = \hat{u} ( \theta )
+    U \left[ \theta , \theta , \hat{u} ( \theta ) \right] = \hat{u} ( \theta )
 
 .. math::
 
-   U_{\beta} [ \theta , \theta , \hat{u} ( \theta ) ]
-   =
-   \hat{u}_\theta ( \theta )
+    U_{\beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+    =
+    \hat{u}_\theta ( \theta )
 
 Second Order, W(beta, theta, u)
 ===============================
@@ -231,31 +231,31 @@ We define  the function
 
 .. math::
 
-   W ( \beta , \theta , u )
-   =
-   U( \beta , \theta , u )
-   -
-   f_{u,u} ( \theta , u )^{-1} f_u [ \beta , U( \beta , \theta , u)  ]
+    W ( \beta , \theta , u )
+    =
+    U( \beta , \theta , u )
+    -
+    f_{u,u} ( \theta , u )^{-1} f_u [ \beta , U( \beta , \theta , u)  ]
 
 It follows that
 
 .. math::
 
-   W \left[ \theta , \theta , \hat{u} ( \theta ) \right] = \hat{u} ( \theta )
+    W \left[ \theta , \theta , \hat{u} ( \theta ) \right] = \hat{u} ( \theta )
 
 .. math::
 
-   W_{\beta} [ \theta , \theta , \hat{u} ( \theta ) ]
-   =
-   \hat{u}_\theta ( \theta )
+    W_{\beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+    =
+    \hat{u}_\theta ( \theta )
 
 and for random effects indices :math:`i`,
 
 .. math::
 
-   W^i_{\beta \beta} [ \theta , \theta , \hat{u} ( \theta ) ]
-   =
-   \hat{u}^i_{\theta , \theta} ( \theta )
+    W^i_{\beta \beta} [ \theta , \theta , \hat{u} ( \theta ) ]
+    =
+    \hat{u}^i_{\theta , \theta} ( \theta )
 
 Approximate Laplace Objective, H(beta, theta, u)
 ************************************************
@@ -263,19 +263,19 @@ Given these facts we define
 
 .. math::
 
-   H( \beta , \theta , u)
-   =
-   + \frac{1}{2} \log \det f_{u,u} [ \beta, W( \beta , \theta , u) ]
-   + f[ \beta, U( \beta , \theta , u) ]
-   - \frac{n}{2} \log ( 2 \pi )
+    H( \beta , \theta , u)
+    =
+    + \frac{1}{2} \log \det f_{u,u} [ \beta, W( \beta , \theta , u) ]
+    + f[ \beta, U( \beta , \theta , u) ]
+    - \frac{n}{2} \log ( 2 \pi )
 
 It follow that
 
 .. math::
 
-   r_{\theta,\theta} ( \theta )
-   =
-   H_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
+    r_{\theta,\theta} ( \theta )
+    =
+    H_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
 
 Approximate Random Constraint Function, B(beta, theta, u)
 *********************************************************
@@ -284,7 +284,7 @@ We also define the approximation
 
 .. math::
 
-   B( \beta , \theta , u) = A \; W( \beta , \theta , u )
+    B( \beta , \theta , u) = A \; W( \beta , \theta , u )
 
 Hessian of Laplace Objective
 ****************************
@@ -295,9 +295,9 @@ In this case, the representation
 
 .. math::
 
-   r_{\theta,\theta} ( \theta )
-   =
-   H_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
+    r_{\theta,\theta} ( \theta )
+    =
+    H_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
 
 is used to compute this Hessian.
 
@@ -313,9 +313,9 @@ The Hessian of the random constraints can be computed using the formula
 
 .. math::
 
-   \partial_\theta \partial_\theta [ A^i \; \hat{u} ( \theta ) ]
-   =
-   B^i_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
+    \partial_\theta \partial_\theta [ A^i \; \hat{u} ( \theta ) ]
+    =
+    B^i_{\beta,\beta} \left[ \theta , \theta , \hat{u} ( \theta ) \right]
 
 Sparse Observed Information
 ***************************
@@ -327,7 +327,7 @@ A vector :math:`v` with this covariance can be simulated as
 
 .. math::
 
-   v = R w
+    v = R w
 
 where :math:`R` is defined by :math:`H^{-1} = R R^\R{T}` and
 :math:`w` is a normal with mean zero and the identity covariance.
@@ -335,7 +335,7 @@ Suppose we have a sparse factorization of the form
 
 .. math::
 
-   L D L^\R{T} = P H P^\R{T}
+    L D L^\R{T} = P H P^\R{T}
 
 where :math:`L` is lower triangular, :math:`D` is diagonal,
 and :math:`P` is a permutation matrix.
@@ -343,19 +343,19 @@ It follows that
 
 .. math::
 
-   H = P^\R{T} L D L^\R{T} P
+    H = P^\R{T} L D L^\R{T} P
 
 .. math::
 
-   H^{-1} = P^\R{T} L^{-\R{T}} D^{-1} L^{-1} P
+    H^{-1} = P^\R{T} L^{-\R{T}} D^{-1} L^{-1} P
 
 .. math::
 
-   R = P^\R{T} L^{-\R{T}} D^{-1/2}
+    R = P^\R{T} L^{-\R{T}} D^{-1/2}
 
 .. math::
 
-   v = P^\R{T} L^{-\R{T}} D^{-1/2} w
+    v = P^\R{T} L^{-\R{T}} D^{-1/2} w
 
 If :math:`w` is simulated as a normal random vector
 with  mean zero and identity covariance,
@@ -364,6 +364,6 @@ the mean of :math:`v` is zero and its covariance is given by
 
 .. math::
 
-   \B{E}[ v v^\R{T} ] = H^{-1}
+    \B{E}[ v v^\R{T} ] = H^{-1}
 
 {xrst_end theory}

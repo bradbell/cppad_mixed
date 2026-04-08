@@ -81,7 +81,7 @@ Improve comments in :ref:`example_install.sh-name` .
 
 #. Move documentation from IHME to github; see
 
-   https://bradbell.github.io/cppad_mixed/doc/index.html.
+    https://bradbell.github.io/cppad_mixed/doc/index.html.
 #. The :ref:`install_unix@System Requirements@git` program
    was added to the system requirements.
 #. The :ref:`install_unix@Download` instructions
@@ -174,7 +174,7 @@ version of ``cppad_mixed`` .
 Advance to cppad-20170830. This fixes a problem with the cmake command;
 to be specific,
 
-   ``Policy CMP0046 is not set: Error on non-existent dependency``
+    ``Policy CMP0046 is not set: Error on non-existent dependency``
 
 08-01
 =====
@@ -182,7 +182,7 @@ The clang-802.0.42 compiler complained that
 routine ``ran_obj_tst`` was not defined in the statement
 {xrst_spell_off}
 {xrst_code cpp}
-   friend bool ::ran_obj_tst(void);
+    friend bool ::ran_obj_tst(void);
 {xrst_code}
 {xrst_spell_on}
 in the file ``include/cppad/mixed/cppad_mixed.hpp`` .

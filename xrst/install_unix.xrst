@@ -21,9 +21,9 @@
 Installing cppad_mixed in Unix
 ##############################
 {xrst_toc_hidden
-   bin/example_install.sh
-   bin/run_cmake.sh
-   bin/check_install.sh
+    bin/example_install.sh
+    bin/run_cmake.sh
+    bin/check_install.sh
 }
 
 System Requirements
@@ -71,7 +71,7 @@ The `pkg-config <https://en.wikipedia.org/wiki/Pkg-config>`_
 program must be installed.
 The following command should work:
 
-   ``pkg-config gsl --libs``
+    ``pkg-config gsl --libs``
 
 see :ref:`install_unix@Paths@PKG_CONFIG_PATH` below.
 
@@ -128,7 +128,7 @@ linear algebra package.
 Starting in the ``cppad_mixed.git`` directory,
 the command
 
-   ``bin/install_eigen.sh``
+    ``bin/install_eigen.sh``
 
 can be used to install this package.
 
@@ -139,7 +139,7 @@ optimization package.
 Starting in the ``cppad_mixed.git`` directory,
 the command
 
-   ``bin/install_ipopt.sh``
+    ``bin/install_ipopt.sh``
 
 can be used to install this package.
 
@@ -150,7 +150,7 @@ C++ algorithmic differentiation package.
 Starting in the ``cppad_mixed.git`` directory,
 the command
 
-   ``bin/install_cppad.sh``
+    ``bin/install_cppad.sh``
 
 can be used to install this package.
 
@@ -162,7 +162,7 @@ PKG_CONFIG_PATH
 For *pkg* equal to ``gsl`` , ``eigen`` , ``ipopt`` and
 ``cppad`` , the following command should work:
 
-   ``pkg-config`` *pkg* ``--libs``
+    ``pkg-config`` *pkg* ``--libs``
 
 (This command should work for ``gsl`` before the special requirements
 are installed.)
@@ -171,7 +171,7 @@ from the ``PKG_CONFIG_PATH`` environment variable.
 If *prefix* is the prefix where ``pkg`` was installed,
 the command
 
-   ``find -L`` *prefix* ``-name`` *pkg* . ``pc 2> /dev/null``
+    ``find -L`` *prefix* ``-name`` *pkg* . ``pc 2> /dev/null``
 
 can be used to find the directory where ``%pkg%.pc`` is located.
 
@@ -199,7 +199,7 @@ Starting in the ``cppad_mixed.git`` directory:
 The following command will configure ``cppad_mixed`` :
 ::
 
-   bin/run_cmake.sh
+    bin/run_cmake.sh
 
 Check
 =====
@@ -208,8 +208,8 @@ The following commands are optional and will
 build and run the examples and correctness tests:
 ::
 
-   cd build
-   make check
+    cd build
+    make check
 
 Speed
 =====
@@ -218,8 +218,8 @@ The following commands are optional and will
 build and run the speed tests:
 ::
 
-   cd build
-   make speed
+    cd build
+    make speed
 
 Install
 =======
@@ -228,8 +228,8 @@ The following command will
 install the cppad_mixed library and include files:
 ::
 
-   cd build
-   make install
+    cd build
+    make install
 
 Example
 *******
@@ -254,7 +254,7 @@ of ``cppad_mixed`` .
 These examples run when one executes the commands
 ::
 
-   cd build
-   make speed
+    cd build
+    make speed
 
 {xrst_end install_unix}

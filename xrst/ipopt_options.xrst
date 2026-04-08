@@ -11,7 +11,7 @@ Prototype
 *********
 An Ipopt options argument *options* has prototype
 
-   ``const std::string&`` *options*
+    ``const std::string&`` *options*
 
 It contains a list of
 `Ipopt <https://www.coin-or.org/Ipopt/documentation/>`_ options.
@@ -29,7 +29,7 @@ String
 ******
 You can set any Ipopt string option using a line with the following syntax:
 
-   ``String`` *name* *value*
+    ``String`` *name* *value*
 
 Here *name* is any valid Ipopt string option
 and *value* is its setting.
@@ -38,7 +38,7 @@ Integer
 *******
 You can set any Ipopt integer option using a line with the following syntax:
 
-   ``Integer`` *name* *value*
+    ``Integer`` *name* *value*
 
 Here *name* is any valid Ipopt integer option
 and *value* is its setting.
@@ -47,7 +47,7 @@ Numeric
 *******
 You can set any Ipopt numeric option using a line with the following syntax:
 
-   ``Numeric`` *name* *value*
+    ``Numeric`` *name* *value*
 
 Here *name* is any valid Ipopt numeric option
 and *value* is its setting.

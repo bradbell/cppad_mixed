@@ -50,23 +50,23 @@ Prototype
 {xrst_spell_off}
 {xrst_code cpp} */
 bool ipopt_fixed::get_nlp_info(
-   Index&          n            ,  // out
-   Index&          m            ,  // out
-   Index&          nnz_jac_g    ,  // out
-   Index&          nnz_h_lag    ,  // out
-   IndexStyleEnum& index_style  )  // out
+    Index&          n            ,  // out
+    Index&          m            ,  // out
+    Index&          nnz_jac_g    ,  // out
+    Index&          nnz_h_lag    ,  // out
+    IndexStyleEnum& index_style  )  // out
 /* {xrst_code}
 {xrst_spell_on}
 
 {xrst_end ipopt_fixed_get_nlp_info}
 */
 {
-   n           = Index( n_fixed_ + fix_likelihood_nabs_ );
-   m           = Index( 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
-   nnz_jac_g   = Index( nnz_jac_g_ );
-   nnz_h_lag   = Index( nnz_h_lag_ );
-   index_style = C_STYLE;
-   //
-   return true;
+    n           = Index( n_fixed_ + fix_likelihood_nabs_ );
+    m           = Index( 2 * fix_likelihood_nabs_ + n_fix_con_ + n_ran_con_ );
+    nnz_jac_g   = Index( nnz_jac_g_ );
+    nnz_h_lag   = Index( nnz_h_lag_ );
+    index_style = C_STYLE;
+    //
+    return true;
 }
 } } // END_CPPAD_MIXED_NAMESPACE

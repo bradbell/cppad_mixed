@@ -21,64 +21,64 @@
 #     variables listed above will have the value NOTFOUND.
 # ----------------------------------------------------------------------------
 MACRO( find_CHOLMOD )
-   #
-   # CHOLMOD_INCLUDE_DIRS
-   SET(CHOLMOD_INCLUDE_DIRS "NOTFOUND")
-   SET(CHOLMOD_LIBRARIES    "NOTFOUND")
-   SET(CHOLMOD_LIBRARY_DIRS "NOTFOUND")
-   #
-   # CHOLMOD_prefix_set
-   SET(CHOLMOD_prefix_set
-      "${cmake_install_prefix};/usr;/usr/local;/opt/local;/usr/local/opt"
-   )
-   #
-   # CHOLMOD_prefix_set
-   EXECUTE_PROCESS(
-      COMMAND brew --prefix suitesparse
-      RESULT_VARIABLE CHOLMOD_brew_result
-      OUTPUT_VARIABLE CHOLMOD_brew_prefix
-      OUTPUT_STRIP_TRAILING_WHITESPACE
-   )
-   IF( NOT "${CHOLMOD_brew_prefix}" STREQUAL "" )
-      add_to_set(CHOLMOD_prefix_set "${CHOLMOD_brew_prefix}")
-   ENDIF( )
-   #
-   # CHOLMOD_prefix, CHOLMOD_INCLUDE_DIRS
-   SET(CHOLMOD_prefix "NOTFOUND")
-   FOREACH(CHOLMOD_prefix_try ${CHOLMOD_prefix_set} )
-      FOREACH(CHOLMOD_suffix_try
-         "include/suitesparse"
-         "Library/include/suitesparse"
-      )
-         SET(CHOLMOD_include_try "${CHOLMOD_prefix_try}/${CHOLMOD_suffix_try}")
-         IF( EXISTS "${CHOLMOD_include_try}/cholmod.h" )
-            IF( "${CHOLMOD_prefix}" STREQUAL "NOTFOUND" )
-               SET( CHOLMOD_prefix "${CHOLMOD_prefix_try}" )
-               SET( CHOLMOD_INCLUDE_DIRS "${CHOLMOD_include_try}" )
+    #
+    # CHOLMOD_INCLUDE_DIRS
+    SET(CHOLMOD_INCLUDE_DIRS "NOTFOUND")
+    SET(CHOLMOD_LIBRARIES    "NOTFOUND")
+    SET(CHOLMOD_LIBRARY_DIRS "NOTFOUND")
+    #
+    # CHOLMOD_prefix_set
+    SET(CHOLMOD_prefix_set
+        "${cmake_install_prefix};/usr;/usr/local;/opt/local;/usr/local/opt"
+    )
+    #
+    # CHOLMOD_prefix_set
+    EXECUTE_PROCESS(
+        COMMAND brew --prefix suitesparse
+        RESULT_VARIABLE CHOLMOD_brew_result
+        OUTPUT_VARIABLE CHOLMOD_brew_prefix
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    IF( NOT "${CHOLMOD_brew_prefix}" STREQUAL "" )
+        add_to_set(CHOLMOD_prefix_set "${CHOLMOD_brew_prefix}")
+    ENDIF( )
+    #
+    # CHOLMOD_prefix, CHOLMOD_INCLUDE_DIRS
+    SET(CHOLMOD_prefix "NOTFOUND")
+    FOREACH(CHOLMOD_prefix_try ${CHOLMOD_prefix_set} )
+        FOREACH(CHOLMOD_suffix_try
+            "include/suitesparse"
+            "Library/include/suitesparse"
+        )
+            SET(CHOLMOD_include_try "${CHOLMOD_prefix_try}/${CHOLMOD_suffix_try}")
+            IF( EXISTS "${CHOLMOD_include_try}/cholmod.h" )
+                IF( "${CHOLMOD_prefix}" STREQUAL "NOTFOUND" )
+                    SET( CHOLMOD_prefix "${CHOLMOD_prefix_try}" )
+                    SET( CHOLMOD_INCLUDE_DIRS "${CHOLMOD_include_try}" )
+                ENDIF( )
             ENDIF( )
-         ENDIF( )
-      ENDFOREACH( CHOLMOD_suffix_try )
-   ENDFOREACH( CHOLMOD_suffix_try )
-   #
-   # CHOLMOD_LIBRARY_DIRS, CHOLDMOD_INCLUDE_DIRS, CHOLMOD_LIBRARIES
-   IF( NOT "${CHOLMOD_prefix}" STREQUAL "NOTFOUND" )
-      FOREACH(CHOLMOD_suffix_try "lib" "lib64" "${cmake_libdir}" )
-         SET(CHOLMOD_libdir "${CHOLMOD_prefix}/${CHOLMOD_suffix_try}")
-         FOREACH(CHOLMOD_name "libcholmod" "cholmod")
-            SET(globbing_expression "${CHOLMOD_libdir}/${CHOLMOD_name}.*")
-            FILE(GLOB CHOLMOD_match ${globbing_expression})
-            IF( NOT "${CHOLMOD_match}" STREQUAL ""  )
-               SET(CHOLMOD_LIBRARY_DIRS "${CHOLMOD_libdir}")
-            ENDIF( )
-         ENDFOREACH( )
-      ENDFOREACH( )
-      IF( "${CHOLMOD_LIBRARY_DIRS}" STREQUAL "NOTFOUND" )
-         SET(CHOLMOD_INCLUDE_DIRS "NOTFOUND")
-      ELSE( )
-         SET(CHOLMOD_LIBRARIES
-            "cholmod;amd;camd;colamd;ccolamd;suitesparseconfig"
-         )
-         MESSAGE(STATUS "Using ${CHOLMOD_INCLUDE_DIRS}/cholmod.h")
-      ENDIF( )
-   ENDIF( "${CHOLMOD_prefix}" STREQUAL "NOTFOUND" )
+        ENDFOREACH( CHOLMOD_suffix_try )
+    ENDFOREACH( CHOLMOD_suffix_try )
+    #
+    # CHOLMOD_LIBRARY_DIRS, CHOLDMOD_INCLUDE_DIRS, CHOLMOD_LIBRARIES
+    IF( NOT "${CHOLMOD_prefix}" STREQUAL "NOTFOUND" )
+        FOREACH(CHOLMOD_suffix_try "lib" "lib64" "${cmake_libdir}" )
+            SET(CHOLMOD_libdir "${CHOLMOD_prefix}/${CHOLMOD_suffix_try}")
+            FOREACH(CHOLMOD_name "libcholmod" "cholmod")
+                SET(globbing_expression "${CHOLMOD_libdir}/${CHOLMOD_name}.*")
+                FILE(GLOB CHOLMOD_match ${globbing_expression})
+                IF( NOT "${CHOLMOD_match}" STREQUAL ""  )
+                    SET(CHOLMOD_LIBRARY_DIRS "${CHOLMOD_libdir}")
+                ENDIF( )
+            ENDFOREACH( )
+        ENDFOREACH( )
+        IF( "${CHOLMOD_LIBRARY_DIRS}" STREQUAL "NOTFOUND" )
+            SET(CHOLMOD_INCLUDE_DIRS "NOTFOUND")
+        ELSE( )
+            SET(CHOLMOD_LIBRARIES
+                "cholmod;amd;camd;colamd;ccolamd;suitesparseconfig"
+            )
+            MESSAGE(STATUS "Using ${CHOLMOD_INCLUDE_DIRS}/cholmod.h")
+        ENDIF( )
+    ENDIF( "${CHOLMOD_prefix}" STREQUAL "NOTFOUND" )
 ENDMACRO( find_CHOLMOD )

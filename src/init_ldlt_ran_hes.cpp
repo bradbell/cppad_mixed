@@ -39,15 +39,15 @@ ldlt_ran_hes\_
 **************
 The member variable
 
-   ``CPPAD_MIXED_LDLT_CLASS ldlt_ran_hes_``
+    ``CPPAD_MIXED_LDLT_CLASS ldlt_ran_hes_``
 
 must not been previously initialized
 
-   ``size_t ldlt_ran_hes_``
+    ``size_t ldlt_ran_hes_``
 
 Upon return, the function
 
-   ``ldlt_ran_hes_.init`` ( ``ran_hes_uu_rcv_.pat`` ())
+    ``ldlt_ran_hes_.init`` ( ``ran_hes_uu_rcv_.pat`` ())
 
 has been called with *ran_hes_uu_rcv_.pat* ()
 equal to the sparsity pattern for the
@@ -63,7 +63,7 @@ a1_ldlt_ran_hes\_
 *****************
 The member variable
 
-   ``CppAD::mixed::ldlt_eigen<a1_double> a1_ldlt_ran_hes_``
+    ``CppAD::mixed::ldlt_eigen<a1_double> a1_ldlt_ran_hes_``
 
 is initialized the same as ``ldlt_ran_hes_`` .
 
@@ -72,16 +72,16 @@ is initialized the same as ``ldlt_ran_hes_`` .
 # include <cppad/mixed/cppad_mixed.hpp>
 
 void cppad_mixed::init_ldlt_ran_hes(void)
-{  assert( ! init_ldlt_ran_hes_done_ );
-   assert( init_ran_hes_done_ );
-   //
-   //
-   // initialize ldlt_ran_hes_
-   ldlt_ran_hes_.init(ran_hes_uu_rcv_.pat());
-   //
-   // initialize a1_ldlt_ran_hes_
-   a1_ldlt_ran_hes_.init(ran_hes_uu_rcv_.pat());
-   //
-   init_ldlt_ran_hes_done_ = true;
-   return;
+{   assert( ! init_ldlt_ran_hes_done_ );
+    assert( init_ran_hes_done_ );
+    //
+    //
+    // initialize ldlt_ran_hes_
+    ldlt_ran_hes_.init(ran_hes_uu_rcv_.pat());
+    //
+    // initialize a1_ldlt_ran_hes_
+    a1_ldlt_ran_hes_.init(ran_hes_uu_rcv_.pat());
+    //
+    init_ldlt_ran_hes_done_ = true;
+    return;
 }

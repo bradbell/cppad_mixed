@@ -27,35 +27,35 @@ ans use the following notation for the elements of A, L, and D
 
 .. math::
 
-   A = \begin{pmatrix}
-      a & b \\
-      b & c
-   \end{pmatrix}
-   \text{ , }
-   L = \begin{pmatrix}
-      1 & 0 \\
-      \ell & 1
-   \end{pmatrix}
-   \text{ , }
-   D = \begin{pmatrix}
-      d & 0 \\
-      0 & e
-   \end{pmatrix}
+    A = \begin{pmatrix}
+        a & b \\
+        b & c
+    \end{pmatrix}
+    \text{ , }
+    L = \begin{pmatrix}
+        1 & 0 \\
+        \ell & 1
+    \end{pmatrix}
+    \text{ , }
+    D = \begin{pmatrix}
+        d & 0 \\
+        0 & e
+    \end{pmatrix}
 
 
 There are two cases for the matrix P.
 
 .. math::
 
-   P = \begin{pmatrix}
-      1 & 0 \\
-      0 & 1
-   \end{pmatrix}
-   \text{ , }
-   P = \begin{pmatrix}
-      0 & 1 \\
-      1 & 0
-   \end{pmatrix}
+    P = \begin{pmatrix}
+        1 & 0 \\
+        0 & 1
+    \end{pmatrix}
+    \text{ , }
+    P = \begin{pmatrix}
+        0 & 1 \\
+        1 & 0
+    \end{pmatrix}
 
 Case I
 ******
@@ -65,45 +65,45 @@ It follows that
 
 .. math::
 
-   \begin{pmatrix}
-      a & b \\
-      b & c
-   \end{pmatrix}
-   = &
-   \begin{pmatrix}
-      1 & 0 \\
-      \ell & 1
-   \end{pmatrix}
-   \begin{pmatrix}
-      d & 0 \\
-      0 & e
-   \end{pmatrix}
-   \begin{pmatrix}
-      1 & \ell \\
-      0 & 1
-   \end{pmatrix}
-   \\
-   = &
-   \begin{pmatrix}
-      d      & 0 \\
-      \ell d & e
-   \end{pmatrix}
-   \begin{pmatrix}
-      1 & \ell \\
-      0 & 1
-   \end{pmatrix}
-   \\
-   = &
-   \begin{pmatrix}
-      d      & d \ell \\
-      \ell d & \ell d \ell + e
-   \end{pmatrix}
+    \begin{pmatrix}
+        a & b \\
+        b & c
+    \end{pmatrix}
+    = &
+    \begin{pmatrix}
+        1 & 0 \\
+        \ell & 1
+    \end{pmatrix}
+    \begin{pmatrix}
+        d & 0 \\
+        0 & e
+    \end{pmatrix}
+    \begin{pmatrix}
+        1 & \ell \\
+        0 & 1
+    \end{pmatrix}
+    \\
+    = &
+    \begin{pmatrix}
+        d      & 0 \\
+        \ell d & e
+    \end{pmatrix}
+    \begin{pmatrix}
+        1 & \ell \\
+        0 & 1
+    \end{pmatrix}
+    \\
+    = &
+    \begin{pmatrix}
+        d      & d \ell \\
+        \ell d & \ell d \ell + e
+    \end{pmatrix}
 
 It follows for this case that the elements of L and D are given by:
 
 .. math::
 
-   d = a \text{ , } \ell = b / a  \text { , } e = c - b^2 / a
+    d = a \text{ , } \ell = b / a  \text { , } e = c - b^2 / a
 
 Case II
 *******
@@ -111,35 +111,35 @@ In the second case define :math:`B = P * A * P^T`
 
 .. math::
 
-   B = &
-   \begin{pmatrix}
-      0 & 1 \\
-      1 & 0
-   \end{pmatrix}
-   \begin{pmatrix}
-      a & b \\
-      b & c
-   \end{pmatrix}
-   \begin{pmatrix}
-      0 & 1 \\
-      1 & 0
-   \end{pmatrix}
-   \\
-   = &
-   \begin{pmatrix}
-      b & c \\
-      a & b
-   \end{pmatrix}
-   \begin{pmatrix}
-      0 & 1 \\
-      1 & 0
-   \end{pmatrix}
-   \\
-   = &
-   \begin{pmatrix}
-      c & b\\
-      b & a
-   \end{pmatrix}
+    B = &
+    \begin{pmatrix}
+        0 & 1 \\
+        1 & 0
+    \end{pmatrix}
+    \begin{pmatrix}
+        a & b \\
+        b & c
+    \end{pmatrix}
+    \begin{pmatrix}
+        0 & 1 \\
+        1 & 0
+    \end{pmatrix}
+    \\
+    = &
+    \begin{pmatrix}
+        b & c \\
+        a & b
+    \end{pmatrix}
+    \begin{pmatrix}
+        0 & 1 \\
+        1 & 0
+    \end{pmatrix}
+    \\
+    = &
+    \begin{pmatrix}
+        c & b\\
+        b & a
+    \end{pmatrix}
 
 This is the same as the first case except
 the elements a and c have swapped places.
@@ -147,7 +147,7 @@ It follows for this case that the elements of L and D are given by:
 
 .. math::
 
-   d = c \text{ , } \ell = b / c  \text { , } e = a - b^2 / c
+    d = c \text{ , } \ell = b / c  \text { , } e = a - b^2 / c
 
 
 

@@ -21,8 +21,8 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE
-   // END_PROTOTYPE
+    // BEGIN_PROTOTYPE
+    // END_PROTOTYPE
 }
 
 iter
@@ -73,21 +73,21 @@ Is ipopt currently in restoration mode.
 ------------------------------------------------------------------------------
 */
 namespace CppAD { namespace mixed {
-   // BEGIN_PROTOTYPE
-   struct trace_struct {
-      size_t iter;
-      double obj_value;
-      double inf_pr;
-      double inf_du;
-      double mu;
-      double d_norm;
-      double regularization_size;
-      double alpha_du;
-      double alpha_pr;
-      size_t ls_trials;
-      bool   restoration;
-   };
-   // END_PROTOTYPE
+    // BEGIN_PROTOTYPE
+    struct trace_struct {
+        size_t iter;
+        double obj_value;
+        double inf_pr;
+        double inf_du;
+        double mu;
+        double d_norm;
+        double regularization_size;
+        double alpha_du;
+        double alpha_pr;
+        size_t ls_trials;
+        bool   restoration;
+    };
+    // END_PROTOTYPE
 } }
 
 

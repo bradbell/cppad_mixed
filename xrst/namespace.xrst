@@ -12,11 +12,11 @@ are in the ``CppAD::mixed`` namespace.
 Contents
 ********
 {xrst_toc_table
-   include/cppad/mixed/typedef.hpp
-   src/manage_gsl_rng.cpp
-   include/cppad/mixed/sparse_mat_info.hpp
-   include/cppad/mixed/fixed_solution.hpp
-   include/cppad/mixed/exception.hpp
+    include/cppad/mixed/typedef.hpp
+    src/manage_gsl_rng.cpp
+    include/cppad/mixed/sparse_mat_info.hpp
+    include/cppad/mixed/fixed_solution.hpp
+    include/cppad/mixed/exception.hpp
 }
 
 {xrst_end namespace}

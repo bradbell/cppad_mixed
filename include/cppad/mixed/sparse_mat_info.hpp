@@ -16,7 +16,7 @@ Sparse Matrix Information
 Syntax
 ******
 
-   *CppAD::mixed::sparse_mat_info* ``mat_info``
+    *CppAD::mixed::sparse_mat_info* ``mat_info``
 
 *mat_info* . ``resize`` ( *size* )
 
@@ -28,7 +28,7 @@ row
 ***
 The field *mat_info* . ``row`` has prototype
 
-   ``CppAD::vector<size_t>`` *mat_info* . ``row``
+    ``CppAD::vector<size_t>`` *mat_info* . ``row``
 
 It has size zero when it is constructed.
 After initialization it should contain the row indices
@@ -42,7 +42,7 @@ col
 ***
 The field *mat_info* . ``col`` has prototype
 
-   ``CppAD::vector<size_t>`` *mat_info* . ``col``
+    ``CppAD::vector<size_t>`` *mat_info* . ``col``
 
 It has size zero when it is constructed.
 After initialization it should have the same size as *row*
@@ -53,7 +53,7 @@ val
 ***
 The field *mat_info* . ``val`` has prototype
 
-   ``CppAD::vector<double>`` *mat_info* . ``val``
+    ``CppAD::vector<double>`` *mat_info* . ``val``
 
 It has size zero when it is constructed.
 After initialization it should either have size zero,
@@ -63,7 +63,7 @@ resize
 ******
 The ``resize`` argument has prototype
 
-   ``size_t`` *size*
+    ``size_t`` *size*
 
 All of the vectors,
 *row* , *col* , and *val* ,
@@ -78,7 +78,7 @@ We say that *mat_info* is a sparsity pattern if,
 for *k* = 0 , ... , *K* ``-1`` ,
 the element with index
 
-   ( *mat_info* . ``row`` [ *k* ], *mat_info* . ``col`` [ *k* ])
+    ( *mat_info* . ``row`` [ *k* ], *mat_info* . ``col`` [ *k* ])
 
 is possibly non-zero and the size or elements of
 *mat_info* . ``val`` are not specified.
@@ -89,7 +89,7 @@ We say that *mat_info* is a sparse matrix if,
 for *k* = 0 , ... , *K* ``-1`` ,
 the element with index
 
-   ( *mat_info* . ``row`` [ *k* ], *mat_info* . ``col`` [ *k* ])
+    ( *mat_info* . ``row`` [ *k* ], *mat_info* . ``col`` [ *k* ])
 
 is possibly non-zero and has value *mat_info* . ``val`` [ *k* ] .
 
@@ -122,7 +122,7 @@ Lower Triangular
 ================
 If for *k* = 0 , ... , *K* ``-1`` ,
 
-   *mat_info* . ``row`` [ *k* ] >= *mat_info* . ``col`` [ *k* ]
+    *mat_info* . ``row`` [ *k* ] >= *mat_info* . ``col`` [ *k* ]
 
 we say that *mat_info* is lower triangular.
 
@@ -131,17 +131,17 @@ we say that *mat_info* is lower triangular.
 # include <cppad/utility/vector.hpp>
 
 namespace CppAD { namespace mixed {
-   struct sparse_mat_info {
-      CppAD::vector<size_t>  row;
-      CppAD::vector<size_t>  col;
-      CppAD::vector<double>  val;
-      //
-      void resize(size_t size)
-      {  row.resize(size);
-         col.resize(size);
-         val.resize(size);
-      }
-   };
+    struct sparse_mat_info {
+        CppAD::vector<size_t>  row;
+        CppAD::vector<size_t>  col;
+        CppAD::vector<double>  val;
+        //
+        void resize(size_t size)
+        {   row.resize(size);
+            col.resize(size);
+            val.resize(size);
+        }
+    };
 } }
 
 # endif

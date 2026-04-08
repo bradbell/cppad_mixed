@@ -11,13 +11,13 @@ Compute Log Determinant for Current Factor
 Syntax
 ******
 
-   *logdet* = *ldlt_obj* . ``logdet`` ( *negative* )
+    *logdet* = *ldlt_obj* . ``logdet`` ( *negative* )
 
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE
-   // END_PROTOTYPE
+    // BEGIN_PROTOTYPE
+    // END_PROTOTYPE
 }
 
 Private
@@ -30,7 +30,7 @@ ldlt_obj
 ********
 This object has prototype
 
-   ``const CppAD::mixed::ldlt_cholmod`` *ldlt_obj*
+    ``const CppAD::mixed::ldlt_cholmod`` *ldlt_obj*
 
 In addition, it must have a previous call to
 :ref:`ldlt_cholmod_update-name` .
@@ -67,32 +67,32 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // BEGIN_PROTOTYPE
 double ldlt_cholmod::logdet(size_t& negative) const
 // END_PROTOTYPE
-{  assert( update_called_ );
-   //
-   // factorization P H P' = L D L'
-   int*    L_p  = (int *) factor_->p;
-   double* L_x  = (double *) factor_->x;
+{   assert( update_called_ );
+    //
+    // factorization P H P' = L D L'
+    int*    L_p  = (int *) factor_->p;
+    double* L_x  = (double *) factor_->x;
 # ifndef NDEBUG
-   int*    L_i  = (int *) factor_->i;
+    int*    L_i  = (int *) factor_->i;
 # endif
-   negative        = 0;
-   bool has_zero   = false;
-   double logdet_H = 0.0;
-   for(size_t j = 0; j < nrow_; j++)
-   {  // first element for each column is always the diagonal element
-      assert( size_t( L_i [ L_p[j] ] ) == j );
-      // j-th element on diagonal of D in factorization
-      double dj = L_x[ L_p[j] ];
-      has_zero |= dj == 0.0;
-      if( dj < 0.0 )
-         negative++;
-      if( ! has_zero )
-         logdet_H += std::log( std::fabs(dj) );
-   }
-   if( has_zero )
-      return - std::numeric_limits<double>::infinity();
-   //
-   return logdet_H;
+    negative        = 0;
+    bool has_zero   = false;
+    double logdet_H = 0.0;
+    for(size_t j = 0; j < nrow_; j++)
+    {   // first element for each column is always the diagonal element
+        assert( size_t( L_i [ L_p[j] ] ) == j );
+        // j-th element on diagonal of D in factorization
+        double dj = L_x[ L_p[j] ];
+        has_zero |= dj == 0.0;
+        if( dj < 0.0 )
+            negative++;
+        if( ! has_zero )
+            logdet_H += std::log( std::fabs(dj) );
+    }
+    if( has_zero )
+        return - std::numeric_limits<double>::infinity();
+    //
+    return logdet_H;
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

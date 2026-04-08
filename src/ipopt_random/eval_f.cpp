@@ -58,62 +58,62 @@ Prototype
 {xrst_spell_off}
 {xrst_code cpp} */
 bool ipopt_random::eval_f(
-   Index           n         ,  // in
-   const Number*   x         ,  // in
-   bool            new_x     ,  // in
-   Number&         obj_value )  // out
+    Index           n         ,  // in
+    const Number*   x         ,  // in
+    bool            new_x     ,  // in
+    Number&         obj_value )  // out
 /* {xrst_code}
 {xrst_spell_on}
 
 {xrst_end ipopt_random_eval_f}
 */
-{  try
-   {  try_eval_f(n, x, new_x, obj_value);
-   }
-   catch(const std::exception& e)
-   {  error_message_ = "ipopt_random::eval_f: std::exception: ";
-      for(size_t j = 0; j < n_random_; j++)
-         error_random_[j] = x[j];
-      return false;
-   }
-   catch(const CppAD::mixed::exception& e)
-   {  error_message_ = e.message("ipopt_random::eval_f");
-      for(size_t j = 0; j < n_random_; j++)
-         error_random_[j] = x[j];
-      return false;
-   }
-   return true;
+{   try
+    {   try_eval_f(n, x, new_x, obj_value);
+    }
+    catch(const std::exception& e)
+    {   error_message_ = "ipopt_random::eval_f: std::exception: ";
+        for(size_t j = 0; j < n_random_; j++)
+            error_random_[j] = x[j];
+        return false;
+    }
+    catch(const CppAD::mixed::exception& e)
+    {   error_message_ = e.message("ipopt_random::eval_f");
+        for(size_t j = 0; j < n_random_; j++)
+            error_random_[j] = x[j];
+        return false;
+    }
+    return true;
 }
 void ipopt_random::try_eval_f(
-   Index           n         ,  // in
-   const Number*   x         ,  // in
-   bool            new_x     ,  // in
-   Number&         obj_value )  // out
-{  assert( size_t(n) == n_random_ );
-   assert( mixed_object_.ran_like_fun_.Domain() == n_fixed_ + n_random_ );
-   assert( mixed_object_.ran_like_fun_.Range()  == 1 );
-   //
-   if( new_x )
-   {  // random effects as a vector
-      d_vector random_vec(n_random_);
-      for(size_t j = 0; j < n_random_; j++)
-         random_vec[j] = x[j];
-      //
-      // pack both the fixed and random effects into one vector
-      d_vector both_vec(n_fixed_ + n_random_);
-      mixed_object_.pack(fixed_vec_, random_vec, both_vec);
-      //
-      // compute the log-density vector
-      d_vector vec = mixed_object_.ran_like_fun_.Forward(0, both_vec);
-      assert( vec.size() == 1 );
-      if( CppAD::hasnan( vec ) ) throw CppAD::mixed::exception(
-         "", "objective has a nan"
-      );
-      // store for re-use
-      objective_current_ = vec[0];
-   }
-   //
-   obj_value = objective_current_;
-   return;
+    Index           n         ,  // in
+    const Number*   x         ,  // in
+    bool            new_x     ,  // in
+    Number&         obj_value )  // out
+{   assert( size_t(n) == n_random_ );
+    assert( mixed_object_.ran_like_fun_.Domain() == n_fixed_ + n_random_ );
+    assert( mixed_object_.ran_like_fun_.Range()  == 1 );
+    //
+    if( new_x )
+    {   // random effects as a vector
+        d_vector random_vec(n_random_);
+        for(size_t j = 0; j < n_random_; j++)
+            random_vec[j] = x[j];
+        //
+        // pack both the fixed and random effects into one vector
+        d_vector both_vec(n_fixed_ + n_random_);
+        mixed_object_.pack(fixed_vec_, random_vec, both_vec);
+        //
+        // compute the log-density vector
+        d_vector vec = mixed_object_.ran_like_fun_.Forward(0, both_vec);
+        assert( vec.size() == 1 );
+        if( CppAD::hasnan( vec ) ) throw CppAD::mixed::exception(
+            "", "objective has a nan"
+        );
+        // store for re-use
+        objective_current_ = vec[0];
+    }
+    //
+    obj_value = objective_current_;
+    return;
 }
 } } // END_CPPAD_MIXED_NAMESPACE

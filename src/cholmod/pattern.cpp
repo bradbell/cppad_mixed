@@ -15,8 +15,8 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE
-   // END_PROTOTYPE
+    // BEGIN_PROTOTYPE
+    // END_PROTOTYPE
 }
 
 Private
@@ -29,7 +29,7 @@ ldlt_obj
 ********
 This object has prototype
 
-   ``CppAD::mixed::ldlt_cholmod`` *ldlt_obj*
+    ``CppAD::mixed::ldlt_cholmod`` *ldlt_obj*
 
 In addition, it must have a previous call to
 :ref:`ldlt_cholmod_init-name` .
@@ -64,8 +64,8 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // BEGIN_PROTOTYPE
 const sparse_rc& ldlt_cholmod::pattern(void) const
 // END_PROTOTYPE
-{  assert( init_done_ );
-   return H_rc_;
+{   assert( init_done_ );
+    return H_rc_;
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

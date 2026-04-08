@@ -18,8 +18,8 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE
-   // END_PROTOTYPE
+    // BEGIN_PROTOTYPE
+    // END_PROTOTYPE
 }
 
 Private
@@ -37,7 +37,7 @@ ldlt_obj
 ********
 This object has prototype
 
-   ``CppAD::mixed::ldlt_cholmod`` *ldlt_obj*
+    ``CppAD::mixed::ldlt_cholmod`` *ldlt_obj*
 
 In addition, it must have a previous call to
 :ref:`ldlt_cholmod_init-name` .
@@ -58,7 +58,7 @@ sym_matrix\_
 ************
 On input, the member variable
 
-   ``cholmod_sparse`` * ``sym_matrix_``
+    ``cholmod_sparse`` * ``sym_matrix_``
 
 has been :ref:`initialized<ldlt_cholmod_init@sym_matrix_>`
 using the sparsity pattern as is in *H_rcv* .
@@ -69,13 +69,13 @@ factor\_
 ********
 On input, the member variable
 
-   ``cholmod_factor`` * ``factor_``
+    ``cholmod_factor`` * ``factor_``
 
 has been :ref:`initialized<ldlt_cholmod_init@factor_>`
 using the sparsity pattern for the Hessian.
 Upon return, it contains the factorization
 
-   ``cholmod_factorize`` ( ``sym_matrix_`` , ``factor_`` , & ``common_`` )
+    ``cholmod_factorize`` ( ``sym_matrix_`` , ``factor_`` , & ``common_`` )
 
 ok
 **
@@ -108,45 +108,45 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // BEGIN_PROTOTYPE
 bool ldlt_cholmod::update(const CppAD::mixed::d_sparse_rcv& H_rcv)
 // END_PROTOTYPE
-{  assert( init_done_ );
-   update_called_ = true;
-   //
-   // set the values in sym_matrix_
-   double* H_x  = reinterpret_cast<double*>( sym_matrix_->x);
+{   assert( init_done_ );
+    update_called_ = true;
+    //
+    // set the values in sym_matrix_
+    double* H_x  = reinterpret_cast<double*>( sym_matrix_->x);
 # ifndef NDEBUG
-   int*    H_p  = reinterpret_cast<int *>( sym_matrix_->p );
-   int*    H_i  = reinterpret_cast<int *>( sym_matrix_->i );
+    int*    H_p  = reinterpret_cast<int *>( sym_matrix_->p );
+    int*    H_i  = reinterpret_cast<int *>( sym_matrix_->i );
 # endif
-   for(size_t k = 0; k < H_rcv.nnz(); k++)
-   {  size_t ell = H_rc2cholmod_order_[k];
-      H_x[ell]   = H_rcv.val()[k];
+    for(size_t k = 0; k < H_rcv.nnz(); k++)
+    {   size_t ell = H_rc2cholmod_order_[k];
+        H_x[ell]   = H_rcv.val()[k];
 # ifndef NDEBUG
-      assert( size_t( H_i[ell] ) == H_rcv.row()[k] );
-      size_t j = H_rcv.col()[k];
-      assert( size_t(H_p[j]) <= ell && ell < size_t(H_p[j+1]) );
+        assert( size_t( H_i[ell] ) == H_rcv.row()[k] );
+        size_t j = H_rcv.col()[k];
+        assert( size_t(H_p[j]) <= ell && ell < size_t(H_p[j+1]) );
 # endif
-   }
-   // set factor_ to LDL^T factorization for this value of Hessian
+    }
+    // set factor_ to LDL^T factorization for this value of Hessian
 # ifndef NDEBUG
-   int flag =
+    int flag =
 # endif
-   cholmod_factorize(sym_matrix_, factor_, &common_);
-   //
-   if( common_.status == CHOLMOD_NOT_POSDEF )
-      return false;
-   else
-      assert( common_.status == CHOLMOD_OK );
+    cholmod_factorize(sym_matrix_, factor_, &common_);
+    //
+    if( common_.status == CHOLMOD_NOT_POSDEF )
+        return false;
+    else
+        assert( common_.status == CHOLMOD_OK );
 
-   // check assumptions
-   assert( flag           == CHOLMOD_TRUE );
-   assert( factor_->n     == nrow_ );
-   assert( factor_->minor <= nrow_ );
-   assert( factor_->is_ll == CHOLMOD_FALSE );
-   assert( factor_->xtype == CHOLMOD_REAL );
-   // ---------------------------------------------------------------------
-   if( factor_->minor < nrow_ )
-      return false;
-   return true;
+    // check assumptions
+    assert( flag           == CHOLMOD_TRUE );
+    assert( factor_->n     == nrow_ );
+    assert( factor_->minor <= nrow_ );
+    assert( factor_->is_ll == CHOLMOD_FALSE );
+    assert( factor_->xtype == CHOLMOD_REAL );
+    // ---------------------------------------------------------------------
+    if( factor_->minor < nrow_ )
+        return false;
+    return true;
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

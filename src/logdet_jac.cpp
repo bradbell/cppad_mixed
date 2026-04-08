@@ -31,9 +31,9 @@ To be specific, it computes both
 
 .. math::
 
-   \partial_\theta \log \det [ f_{u,u} ( \theta, u ) ]
-   \; \R{and} \;
-   \partial_u \log \det [ f_{u,u} ( \theta, u ) ]
+    \partial_\theta \log \det [ f_{u,u} ( \theta, u ) ]
+    \; \R{and} \;
+    \partial_u \log \det [ f_{u,u} ( \theta, u ) ]
 
 mixed_object
 ************
@@ -45,7 +45,7 @@ ldlt_ran_hes\_
 **************
 It is assumed that the member variable
 
-   ``CPPAD_MIXED_LDLT ldlt_ran_hes_``
+    ``CPPAD_MIXED_LDLT ldlt_ran_hes_``
 
 was updated using :ref:`update_factor-name` for the specified values of the
 fixed and random effects.
@@ -54,7 +54,7 @@ fixed_vec
 *********
 This argument has prototype
 
-   ``const CppAD::vector<double>&`` *fixed_vec*
+    ``const CppAD::vector<double>&`` *fixed_vec*
 
 and is the value of fixed effects :math:`\theta`.
 
@@ -62,7 +62,7 @@ random_vec
 **********
 This argument has prototype
 
-   ``const CppAD::vector<double>&`` *random_vec*
+    ``const CppAD::vector<double>&`` *random_vec*
 
 and is the value of fixed effects :math:`u`.
 
@@ -70,7 +70,7 @@ logdet_fix
 **********
 This argument has prototype
 
-   ``CppAD::vector<double>&`` *logdet_fix*
+    ``CppAD::vector<double>&`` *logdet_fix*
 
 Its input size must be equal to ``n_fixed_`` .
 Upon return, it contains the value of the derivative w.r.t
@@ -81,13 +81,13 @@ logdet_ran
 **********
 This argument has prototype
 
-   ``CppAD::vector<double>&`` *logdet_ran*
+    ``CppAD::vector<double>&`` *logdet_ran*
 
 Its input size must be equal to ``n_random_`` .
 Upon return, it contains the value of the derivative w.r.t
 the random effects.
 {xrst_toc_hidden
-   example/private/logdet_jac.cpp
+    example/private/logdet_jac.cpp
 }
 Example
 *******
@@ -99,50 +99,50 @@ It returns true, if the test passes, and false otherwise.
 */
 // ----------------------------------------------------------------------------
 void cppad_mixed::logdet_jac(
-   const d_vector& fixed_vec  ,
-   const d_vector& random_vec ,
-   d_vector&       logdet_fix ,
-   d_vector&       logdet_ran )
-{  assert( init_ran_hes_done_ );
-   //
-   assert( fixed_vec.size() == n_fixed_ );
-   assert( random_vec.size() == n_random_ );
-   assert( logdet_fix.size() == n_fixed_ );
-   assert( logdet_ran.size() == n_random_ );
-   //
-   // compute the inverse where Hessian is possibly non-zero
-   CppAD::mixed::sparse_mat_info weight_info;
-   size_t K = ran_hes_uu_rcv_.nnz();
-   weight_info.row.resize(K);
-   weight_info.col.resize(K);
-   weight_info.val.resize(K);
-   for(size_t k = 0; k < K; k++)
-   {  size_t r = ran_hes_uu_rcv_.row()[k];
-      size_t c = ran_hes_uu_rcv_.col()[k];
-      assert(r < n_random_);
-      assert(c < n_random_);
-      weight_info.row[k] = r;
-      weight_info.col[k] = c;
-   }
-   ldlt_ran_hes_.inv(
-         weight_info.row,
-         weight_info.col,
-         weight_info.val
-   );
-   // must weight the off diagonal elements twice
-   // (to account for upper diagonal entry which is not present)
-   for(size_t k = 0; k < K; k++)
-   {  if( weight_info.row[k] != weight_info.col[k] )
-         weight_info.val[k] *= 2.0;
-   }
-   d_vector dw(n_fixed_ + n_random_);
-   dw = ran_hes_fun_.Reverse(1, weight_info.val);
-   if( CppAD::hasnan( dw ) ) throw CppAD::mixed::exception(
-      "logdet_jac", "result has a nan"
-   );
-   //
-   // split out fixed and random parts of the derivative
-   unpack(logdet_fix, logdet_ran, dw);
-   //
-   return;
+    const d_vector& fixed_vec  ,
+    const d_vector& random_vec ,
+    d_vector&       logdet_fix ,
+    d_vector&       logdet_ran )
+{   assert( init_ran_hes_done_ );
+    //
+    assert( fixed_vec.size() == n_fixed_ );
+    assert( random_vec.size() == n_random_ );
+    assert( logdet_fix.size() == n_fixed_ );
+    assert( logdet_ran.size() == n_random_ );
+    //
+    // compute the inverse where Hessian is possibly non-zero
+    CppAD::mixed::sparse_mat_info weight_info;
+    size_t K = ran_hes_uu_rcv_.nnz();
+    weight_info.row.resize(K);
+    weight_info.col.resize(K);
+    weight_info.val.resize(K);
+    for(size_t k = 0; k < K; k++)
+    {   size_t r = ran_hes_uu_rcv_.row()[k];
+        size_t c = ran_hes_uu_rcv_.col()[k];
+        assert(r < n_random_);
+        assert(c < n_random_);
+        weight_info.row[k] = r;
+        weight_info.col[k] = c;
+    }
+    ldlt_ran_hes_.inv(
+            weight_info.row,
+            weight_info.col,
+            weight_info.val
+    );
+    // must weight the off diagonal elements twice
+    // (to account for upper diagonal entry which is not present)
+    for(size_t k = 0; k < K; k++)
+    {   if( weight_info.row[k] != weight_info.col[k] )
+            weight_info.val[k] *= 2.0;
+    }
+    d_vector dw(n_fixed_ + n_random_);
+    dw = ran_hes_fun_.Reverse(1, weight_info.val);
+    if( CppAD::hasnan( dw ) ) throw CppAD::mixed::exception(
+        "logdet_jac", "result has a nan"
+    );
+    //
+    // split out fixed and random parts of the derivative
+    unpack(logdet_fix, logdet_ran, dw);
+    //
+    return;
 }

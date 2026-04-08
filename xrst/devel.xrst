@@ -10,9 +10,9 @@ The cppad_mixed Developer Documentation
 Contents
 ********
 {xrst_toc_table
-   include/cppad/mixed/private_base_class.hpp
-   xrst/private_namespace.xrst
-   example/example.cpp
+    include/cppad/mixed/private_base_class.hpp
+    xrst/private_namespace.xrst
+    example/example.cpp
 }
 
 {xrst_end devel}
