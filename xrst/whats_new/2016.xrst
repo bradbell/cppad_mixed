@@ -209,7 +209,7 @@ system; see :ref:`run_cmake.sh@build_type` .
 Change the fixed effects optimization default value for the Ipopt
 *obj_scaling_factor* from ``1.0`` to
 
-   *obj_scaling_factor* = 1.0 / ``sqrt`` ( *n_fixed* + *n_random*  )
+    *obj_scaling_factor* = 1.0 / ``sqrt`` ( *n_fixed* + *n_random*  )
 
 This avoids scaling problems in :ref:`ar1_xam.cpp-name`
 with there is a large number of random effects (10,000 or more).
@@ -360,7 +360,7 @@ Now a
 is used to report this condition and the
 :ref:`optimize_fixed@solution` is returned with
 
-   *solution* . ``fixed_opt``
+    *solution* . ``fixed_opt``
 
 equal to the fixed effects for this warning.
 
@@ -671,7 +671,7 @@ multipliers (as well as the optimal fixed effects). If *fixed_out*
 was the return value for the previous version of ``optimize_fixed`` ,
 and *solution* is the current return value,
 
-   *fixed_out* = *solution* . ``fixed_opt``
+    *fixed_out* = *solution* . ``fixed_opt``
 
 .
 This shows how to convert old ``optimize_fixed`` calls to the new form.

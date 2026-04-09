@@ -54,8 +54,8 @@ index_page_name='cppad_mixed'
 #     archive/$tag.tar.gz
 # In addition, all occurrences of stable-yyyy and release-yyyy are updated.
 version_file_list='
-   CMakeLists.txt
-   cppad_mixed.xrst
+    CMakeLists.txt
+    cppad_mixed.xrst
 '
 # All the occurrences of the version in the files above are checked to see
 # that they agree.
@@ -67,7 +67,7 @@ version_file_list='
 # The entries are separate by white space, so the under bar character is used
 # for spaces in the full name.
 contributor_list='
-   bradbell:Bradley_M._Bell
+    bradbell:Bradley_M._Bell
 '
 #
 # no_copyright_list
@@ -75,14 +75,14 @@ contributor_list='
 # If an entry below is a directory it specifies all the files in the directory.
 # BEGIN_SORT_THIS_LINE_PLUS_2
 no_copyright_list='
-   .gitignore
-   .readthedocs.yaml
-   agpl-3.0.txt
-   include/cppad/mixed/sparseinv.hpp
-   readme.md
-   typos.toml
-   uninstall.cmake.in
-   xrst.toml
+    .gitignore
+    .readthedocs.yaml
+    agpl-3.0.txt
+    include/cppad/mixed/sparseinv.hpp
+    readme.md
+    typos.toml
+    uninstall.cmake.in
+    xrst.toml
 '
 # END_SORT_THIS_LINE_MINUS_2
 #

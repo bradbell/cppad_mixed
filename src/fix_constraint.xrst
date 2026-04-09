@@ -33,7 +33,7 @@ fixed_vec
 *********
 This argument has prototype
 
-   ``const CppAD::vector<a1_double>&`` *fixed_vec*
+    ``const CppAD::vector<a1_double>&`` *fixed_vec*
 
 It contains a value for the
 :ref:`fixed effects<problem@Notation@Fixed Effects, theta>` vector.
@@ -42,7 +42,7 @@ vec
 ***
 This result has prototype
 
-   ``CppAD::vector<`` *a1_double* > *vec*
+    ``CppAD::vector<`` *a1_double* > *vec*
 
 It is the value of the
 :ref:`constraint function<problem@Maximum Likelihood@Fixed Constraints, c>`
@@ -55,7 +55,7 @@ returns an empty vector;
 i.e., *vec* . ``size`` () == 0 .
 In the case where there are no constraints of this form.
 {xrst_toc_hidden
-   example/user/fix_constraint.cpp
+    example/user/fix_constraint.cpp
 }
 Example
 *******

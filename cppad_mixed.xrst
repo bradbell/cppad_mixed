@@ -4,10 +4,10 @@
 # ----------------------------------------------------------------------------
 {xrst_begin cppad_mixed}
 {xrst_spell
-   bradbell
-   gz
-   codeload
-   github
+    bradbell
+    gz
+    codeload
+    github
 }
 
 C++ Laplace Approximation of Mixed Effects Models
@@ -26,32 +26,32 @@ Versions
 ********
 
 .. list-table::
-   :widths: auto
+    :widths: auto
 
-   * - This version
-     - cppad_mixed-2026.1.11
-   * - Documentation for latest version
-     - `latest <https://cppad-mixed.readthedocs.io/latest>`_
-   * - Documentation for most recent stable version
-     - `stable-2026 <https://cppad-mixed.readthedocs.io/stable-2026>`_
-   * - Most recent release of this stable version
-     - `release-2026`_
+    * - This version
+      - cppad_mixed-2026.4.8
+    * - Documentation for latest version
+      - `latest <https://cppad-mixed.readthedocs.io/latest>`_
+    * - Documentation for most recent stable version
+      - `stable-2026 <https://cppad-mixed.readthedocs.io/stable-2026>`_
+    * - Most recent release of this stable version
+      - `release-2026`_
 
 .. _release-2026: https://
-   codeload.github.com/bradbell/cppad_mixed/tar.gz/refs/tags/2026.0.0
+    codeload.github.com/bradbell/cppad_mixed/tar.gz/refs/tags/2026.0.0
 
 Contents
 ********
 {xrst_toc_table
-   xrst/problem.xrst
-   xrst/install_unix.xrst
-   xrst/theory.xrst
-   include/cppad/mixed/base_class.hpp
-   xrst/namespace.xrst
-   example/user/user.xrst
-   xrst/release_notes.xrst
-   xrst/wish_list.xrst
-   xrst/math_notation.xrst
+    xrst/problem.xrst
+    xrst/install_unix.xrst
+    xrst/theory.xrst
+    include/cppad/mixed/base_class.hpp
+    xrst/namespace.xrst
+    example/user/user.xrst
+    xrst/release_notes.xrst
+    xrst/wish_list.xrst
+    xrst/math_notation.xrst
 }
 
 {xrst_end cppad_mixed}

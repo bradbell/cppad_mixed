@@ -24,9 +24,9 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   include/cppad/mixed/base_class.hpp
-   // BEGIN_CPPAD_MIXED_CTOR
-   // END_CPPAD_MIXED_CTOR
+    include/cppad/mixed/base_class.hpp
+    // BEGIN_CPPAD_MIXED_CTOR
+    // END_CPPAD_MIXED_CTOR
 }
 
 See Also
@@ -37,7 +37,7 @@ mixed_derived
 *************
 This is the name of the class derived in the following fashion:
 
-   ``class`` *mixed_derived* : ``public cppad_mixed`` {
+    ``class`` *mixed_derived* : ``public cppad_mixed`` {
 
 mixed_object
 ************
@@ -140,7 +140,7 @@ is used to map it to either a
 or
 :ref:`base_class@User Defined Functions@warning` .
 {xrst_toc_hidden
-   example/user/derived_ctor.cpp
+    example/user/derived_ctor.cpp
 }
 Example
 *******
@@ -154,39 +154,39 @@ It returns true for success and false for failure.
 # include<cppad/mixed/exception.hpp>
 
 namespace { // BEGIN_EMPTY_NAMESPACE
-   void handler(
-      bool known       ,
-      int  line        ,
-      const char *file ,
-      const char *exp  ,
-      const char *msg  )
-     {  // use the most recent cppad_mixed fatal_error routine
-      std::string thrower, brief;
-      //
-      thrower += "\nCppAD: file = ";
-      thrower += file;
-      thrower += "\nline = ";
-      thrower += CppAD::to_string(line);
-      //
-      brief   += "msg = ";
-      brief   += msg;
-      //
-      // CppAD ErrorHandler: uncomment next line to debug CppAD asserts
-      // assert(false);
-      CppAD::mixed::exception e(thrower, brief);
-      throw(e);
-     }
+    void handler(
+        bool known       ,
+        int  line        ,
+        const char *file ,
+        const char *exp  ,
+        const char *msg  )
+      {   // use the most recent cppad_mixed fatal_error routine
+        std::string thrower, brief;
+        //
+        thrower += "\nCppAD: file = ";
+        thrower += file;
+        thrower += "\nline = ";
+        thrower += CppAD::to_string(line);
+        //
+        brief   += "msg = ";
+        brief   += msg;
+        //
+        // CppAD ErrorHandler: uncomment next line to debug CppAD asserts
+        // assert(false);
+        CppAD::mixed::exception e(thrower, brief);
+        throw(e);
+      }
 
 } // END_EMPTY_NAMESPACE
 
 // base class constructor
 cppad_mixed::cppad_mixed(
-   size_t                                n_fixed       ,
-   size_t                                n_random      ,
-   bool                                  quasi_fixed   ,
-   bool                                  bool_sparsity ,
-   const CppAD::mixed::d_sparse_rcv&     A_rcv         ,
-   bool                                  trace_init    )
+    size_t                                n_fixed       ,
+    size_t                                n_random      ,
+    bool                                  quasi_fixed   ,
+    bool                                  bool_sparsity ,
+    const CppAD::mixed::d_sparse_rcv&     A_rcv         ,
+    bool                                  trace_init    )
 :
 n_fixed_(n_fixed)                   ,
 n_random_(n_random)                 ,
@@ -208,10 +208,10 @@ initialize_done_(false)             ,
 cppad_error_handler_(handler)       ,
 ldlt_ran_hes_(n_random)             ,
 a1_ldlt_ran_hes_(n_random)
-{  if( A_rcv.nr() > 0 && A_rcv.nc() != n_random )
-   {  std::string message = "cppad_mixed ctor: A_rcv.nr() > 0 and A_rcv.nc() != n_random";
-      fatal_error(message);
-   }
+{   if( A_rcv.nr() > 0 && A_rcv.nc() != n_random )
+    {   std::string message = "cppad_mixed ctor: A_rcv.nr() > 0 and A_rcv.nc() != n_random";
+        fatal_error(message);
+    }
 }
 
 // base class destructor

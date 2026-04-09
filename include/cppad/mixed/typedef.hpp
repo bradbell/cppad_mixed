@@ -20,7 +20,7 @@ Types Defined in the CppAD Mixed Namespace
 Syntax
 ******
 
-   # ``include <cppad/mixed/typedef.hpp>``
+    # ``include <cppad/mixed/typedef.hpp>``
 
 Begin Namespace
 ***************
@@ -41,7 +41,7 @@ a1_double
 Scalar with one level of AD:
 {xrst_spell_off}
 {xrst_code cpp} */
-   typedef CppAD::AD<double> a1_double;
+    typedef CppAD::AD<double> a1_double;
 /* {xrst_code}
 {xrst_spell_on}
 
@@ -53,7 +53,7 @@ s_vector
 Vectors with elements of type ``size_t`` :
 {xrst_spell_off}
 {xrst_code cpp} */
-   typedef CppAD::vector<size_t> s_vector;
+    typedef CppAD::vector<size_t> s_vector;
 /* {xrst_code}
 {xrst_spell_on}
 
@@ -62,7 +62,7 @@ d_vector
 Vectors with elements of type ``double`` :
 {xrst_spell_off}
 {xrst_code cpp} */
-   typedef CppAD::vector<double> d_vector;
+    typedef CppAD::vector<double> d_vector;
 /* {xrst_code}
 {xrst_spell_on}
 
@@ -71,7 +71,7 @@ a1_vector
 Vectors with elements of that have one level of AD:
 {xrst_spell_off}
 {xrst_code cpp} */
-   typedef CppAD::vector<a1_double> a1_vector;
+    typedef CppAD::vector<a1_double> a1_vector;
 /* {xrst_code}
 {xrst_spell_on}
 
@@ -83,7 +83,7 @@ sparse_rc
 Sparsity patterns using index vector of type ``s_vector`` :
 {xrst_spell_off}
 {xrst_code cpp} */
-   typedef CppAD::sparse_rc<s_vector> sparse_rc;
+    typedef CppAD::sparse_rc<s_vector> sparse_rc;
 /* {xrst_code}
 {xrst_spell_on}
 
@@ -93,7 +93,7 @@ Sparse matrices using index vector of type ``s_vector``
 and value vectors of type ``d_vector`` :
 {xrst_spell_off}
 {xrst_code cpp} */
-   typedef CppAD::sparse_rcv<s_vector, d_vector> d_sparse_rcv;
+    typedef CppAD::sparse_rcv<s_vector, d_vector> d_sparse_rcv;
 
 /* {xrst_code}
 {xrst_spell_on}
@@ -103,7 +103,7 @@ Sparse matrices using index vector of type ``s_vector``
 and value vectors of type ``a1_vector`` :
 {xrst_spell_off}
 {xrst_code cpp} */
-   typedef CppAD::sparse_rcv<s_vector, a1_vector> a1_sparse_rcv;
+    typedef CppAD::sparse_rcv<s_vector, a1_vector> a1_sparse_rcv;
 /* {xrst_code}
 {xrst_spell_on}
 

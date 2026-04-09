@@ -24,11 +24,11 @@ matrix
 ******
 The argument has prototype
 
-   ``const Eigen::SparseMatrix<`` *Scalar* , *Options* , *Index* >& *matrix*
+    ``const Eigen::SparseMatrix<`` *Scalar* , *Options* , *Index* >& *matrix*
 
 and has the same number of rows as columns; i.e.
 
-   *matrix* . ``rows`` () == *matrix* . ``cols`` ()
+    *matrix* . ``rows`` () == *matrix* . ``cols`` ()
 
 Scalar
 ======
@@ -49,13 +49,13 @@ lower
 *****
 The return value has prototype
 
-   ``Eigen::SparseMatrix<`` *Scalar* , *Options* , *Index* > *lower*
+    ``Eigen::SparseMatrix<`` *Scalar* , *Options* , *Index* > *lower*
 
 and is the lower triangle of *matrix* ; i.e.,
 it has the same lower triangle as *matrix* and it has no entries
 above the diagonal.
 {xrst_toc_hidden
-   example/private/sparse_mat2low.cpp
+    example/private/sparse_mat2low.cpp
 }
 Example
 *******
@@ -68,35 +68,35 @@ and test of ``sparse_mat2low`` .
 
 namespace CppAD { namespace mixed {
 
-   template <class Sparse_matrix>
-   Sparse_matrix sparse_mat2low(const Sparse_matrix& matrix)
-   {  typedef typename Sparse_matrix::Index         index;
-      typedef typename Sparse_matrix::InnerIterator iterator;
-      assert( matrix.rows() == matrix.cols() );
-      assert( matrix.rows() == matrix.outerSize() );
-      //
-      // determine the number of non-zeros entries for each outer iteration
-      Eigen::Matrix<index, Eigen::Dynamic, 1> nnz( matrix.outerSize() );
-      for(index k = 0; k < matrix.outerSize(); ++k)
-      {  nnz[k] = index(0);
-         for(iterator itr(matrix, k); itr; ++itr)
-         {  if( itr.col() <= itr.row() )
-               ++nnz[k]; // entries is at or below the diagonal
-         }
-      }
-      //
-      // reserve space for the result
-      Sparse_matrix result( matrix.rows(), matrix.rows() );
-      result.reserve(nnz);
-      //
-      for(index k = 0; k < matrix.outerSize(); ++k)
-      {  for(iterator itr(matrix, k); itr; ++itr)
-         {  if( itr.col() <= itr.row() )
-               result.insert(itr.row(), itr.col()) = itr.value();
-         }
-      }
-      return result;
-   }
+    template <class Sparse_matrix>
+    Sparse_matrix sparse_mat2low(const Sparse_matrix& matrix)
+    {   typedef typename Sparse_matrix::Index         index;
+        typedef typename Sparse_matrix::InnerIterator iterator;
+        assert( matrix.rows() == matrix.cols() );
+        assert( matrix.rows() == matrix.outerSize() );
+        //
+        // determine the number of non-zeros entries for each outer iteration
+        Eigen::Matrix<index, Eigen::Dynamic, 1> nnz( matrix.outerSize() );
+        for(index k = 0; k < matrix.outerSize(); ++k)
+        {   nnz[k] = index(0);
+            for(iterator itr(matrix, k); itr; ++itr)
+            {   if( itr.col() <= itr.row() )
+                    ++nnz[k]; // entries is at or below the diagonal
+            }
+        }
+        //
+        // reserve space for the result
+        Sparse_matrix result( matrix.rows(), matrix.rows() );
+        result.reserve(nnz);
+        //
+        for(index k = 0; k < matrix.outerSize(); ++k)
+        {   for(iterator itr(matrix, k); itr; ++itr)
+            {   if( itr.col() <= itr.row() )
+                    result.insert(itr.row(), itr.col()) = itr.value();
+            }
+        }
+        return result;
+    }
 } }
 
 # endif

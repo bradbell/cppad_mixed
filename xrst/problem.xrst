@@ -68,9 +68,9 @@ the corresponding optimal random effects are defined by
 
 .. math::
 
-   \hat{u} ( \theta )
-   =
-   \R{argmax}  \; \B{p} ( y | \theta , u) \; \B{p} ( u | \theta )
+    \hat{u} ( \theta )
+    =
+    \R{argmax}  \; \B{p} ( y | \theta , u) \; \B{p} ( u | \theta )
 
 Note that this definition agrees with the other definition for
 :ref:`u^(theta)<theory@Optimal Random Effects, u^(theta)>` .
@@ -94,10 +94,10 @@ respect to :math:`\theta`; i.e.,
 
 .. math::
 
-   \B{p}( y , z , \theta )
-   =
-   \B{p} ( \theta ) \B{p} ( z | \theta ) \int_{-\infty}^{+\infty}
-         \B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) \; \B{d} u
+    \B{p}( y , z , \theta )
+    =
+    \B{p} ( \theta ) \B{p} ( z | \theta ) \int_{-\infty}^{+\infty}
+            \B{p} ( y |  \theta, u ) \B{p} ( u | \theta ) \; \B{d} u
 
 No Random Effects
 =================
@@ -106,7 +106,7 @@ is empty and the optimal fixed effects maximize
 
 .. math::
 
-   \B{p} ( \theta ) \B{p} ( z | \theta )
+    \B{p} ( \theta ) \B{p} ( z | \theta )
 
 Fixed Constraints, c
 ====================
@@ -114,7 +114,7 @@ The fixed effects have constraints of the form
 
 .. math::
 
-   c_L \leq c(\theta) \leq c_U
+    c_L \leq c(\theta) \leq c_U
 
 where and :math:`c_L`, :math:`c_U` are vectors in the range of :math:`c(x)`.
 In the case where there are no constraints on the fixed effects,
@@ -126,7 +126,7 @@ The random constraints are defined by the equation
 
 .. math::
 
-   0 = A \; \hat{u} ( \theta )
+    0 = A \; \hat{u} ( \theta )
 
 Negative Log-Density Vector
 ***************************
@@ -135,7 +135,7 @@ the corresponding negative log-density is given by
 
 :math:`- \log [ \B{p} (x) ] =`
 
-   *vec* [0] + ``fabs`` ( *vec* [1]) + ... ``fabs`` ( *vec* [ *s* ``-1`` ])
+    *vec* [0] + ``fabs`` ( *vec* [1]) + ... ``fabs`` ( *vec* [ *s* ``-1`` ])
 
 where *s* = *vec* . ``size`` () .
 

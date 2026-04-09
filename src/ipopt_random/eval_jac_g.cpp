@@ -86,59 +86,59 @@ Prototype
 {xrst_spell_off}
 {xrst_code cpp} */
 bool ipopt_random::eval_jac_g(
-   Index           n        ,  // in
-   const Number*   x        ,  // in
-   bool            new_x    ,  // in
-   Index           m        ,  // in
-   Index           nele_jac ,  // in
-   Index*          iRow     ,  // out
-   Index*          jCol     ,  // out
-   Number*         values   )  // out
+    Index           n        ,  // in
+    const Number*   x        ,  // in
+    bool            new_x    ,  // in
+    Index           m        ,  // in
+    Index           nele_jac ,  // in
+    Index*          iRow     ,  // out
+    Index*          jCol     ,  // out
+    Number*         values   )  // out
 /* {xrst_code}
 {xrst_spell_on}
 
 {xrst_end ipopt_random_eval_jac_g}
 */
-{  try
-   {  try_eval_jac_g(n, x, new_x, m, nele_jac, iRow, jCol, values);
-   }
-   catch(const std::exception& e)
-   {  error_message_ = "ipopt_random::eval_jac_g: std::exception: ";
-      for(size_t j = 0; j < n_random_; j++)
-         error_random_[j] = x[j];
-      return false;
-   }
-   catch(const CppAD::mixed::exception& e)
-   {  error_message_ = e.message("ipopt_random::eval_jac_g");
-      for(size_t j = 0; j < n_random_; j++)
-         error_random_[j] = x[j];
-      return false;
-   }
-   return true;
+{   try
+    {   try_eval_jac_g(n, x, new_x, m, nele_jac, iRow, jCol, values);
+    }
+    catch(const std::exception& e)
+    {   error_message_ = "ipopt_random::eval_jac_g: std::exception: ";
+        for(size_t j = 0; j < n_random_; j++)
+            error_random_[j] = x[j];
+        return false;
+    }
+    catch(const CppAD::mixed::exception& e)
+    {   error_message_ = e.message("ipopt_random::eval_jac_g");
+        for(size_t j = 0; j < n_random_; j++)
+            error_random_[j] = x[j];
+        return false;
+    }
+    return true;
 }
 void ipopt_random::try_eval_jac_g(
-   Index           n        ,  // in
-   const Number*   x        ,  // in
-   bool            new_x    ,  // in
-   Index           m        ,  // in
-   Index           nele_jac ,  // in
-   Index*          iRow     ,  // out
-   Index*          jCol     ,  // out
-   Number*         values   )  // out
-{  assert( size_t(n) == n_random_ );
-   assert( m == 0 );
-   assert( nele_jac == 0 );
-   if( values == NULL )
-   {  assert( ! new_x );
-      return;
-   }
-   //
-   if( new_x )
-   {  // set the zero order Taylor coefficients in
-      // mixed_object_.ran_like_fun_
-      Number obj_value;
-      eval_f(n, x, new_x, obj_value);
-   }
-   return;
+    Index           n        ,  // in
+    const Number*   x        ,  // in
+    bool            new_x    ,  // in
+    Index           m        ,  // in
+    Index           nele_jac ,  // in
+    Index*          iRow     ,  // out
+    Index*          jCol     ,  // out
+    Number*         values   )  // out
+{   assert( size_t(n) == n_random_ );
+    assert( m == 0 );
+    assert( nele_jac == 0 );
+    if( values == NULL )
+    {   assert( ! new_x );
+        return;
+    }
+    //
+    if( new_x )
+    {   // set the zero order Taylor coefficients in
+        // mixed_object_.ran_like_fun_
+        Number obj_value;
+        eval_f(n, x, new_x, obj_value);
+    }
+    return;
 }
 } } // END_CPPAD_MIXED_NAMESPACE

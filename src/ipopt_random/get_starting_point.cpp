@@ -73,31 +73,31 @@ Prototype
 {xrst_spell_off}
 {xrst_code cpp} */
 bool ipopt_random::get_starting_point(
-   Index           n            ,  // in
-   bool            init_x       ,  // in
-   Number*         x            ,  // out
-   bool            init_z       ,  // in
-   Number*         z_L          ,  // out
-   Number*         z_U          ,  // out
-   Index           m            ,  // in
-   bool            init_lambda  ,  // in
-   Number*         lambda       )  // out
+    Index           n            ,  // in
+    bool            init_x       ,  // in
+    Number*         x            ,  // out
+    bool            init_z       ,  // in
+    Number*         z_L          ,  // out
+    Number*         z_U          ,  // out
+    Index           m            ,  // in
+    bool            init_lambda  ,  // in
+    Number*         lambda       )  // out
 /* {xrst_code}
 {xrst_spell_on}
 
 {xrst_end ipopt_random_get_starting_point}
 */
 {
-   assert( init_x == true );
-   assert( init_z == false );
-   assert( init_lambda == false );
-   assert( size_t(n) == n_random_ );
-   assert( m == 0 );
-   //
-   // initial value for random effects
-   for(size_t j = 0; j < n_random_; j++)
-      x[j] = random_in_[j];
+    assert( init_x == true );
+    assert( init_z == false );
+    assert( init_lambda == false );
+    assert( size_t(n) == n_random_ );
+    assert( m == 0 );
+    //
+    // initial value for random effects
+    for(size_t j = 0; j < n_random_; j++)
+        x[j] = random_in_[j];
 
-   return true;
+    return true;
 }
 } } // END_CPPAD_MIXED_NAMESPACE

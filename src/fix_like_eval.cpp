@@ -37,7 +37,7 @@ fixed_vec
 *********
 This argument has prototype
 
-   ``const CppAD::vector<double>&`` *fixed_vec*
+    ``const CppAD::vector<double>&`` *fixed_vec*
 
 It specifies the value of the
 :ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
@@ -47,7 +47,7 @@ vec
 ***
 The return value has prototype
 
-   ``CppAD::vector<double>`` *vec*
+    ``CppAD::vector<double>`` *vec*
 
 and is a
 :ref:`problem@Negative Log-Density Vector`
@@ -57,11 +57,11 @@ To be specific;
 
 :math:`g( \theta ) =`
 
-   *vec* [0] + ``fabs`` ( *vec* [1]) + ... ``fabs`` ( *vec* [ *s* ``-1`` ])
+    *vec* [0] + ``fabs`` ( *vec* [1]) + ... ``fabs`` ( *vec* [ *s* ``-1`` ])
 
 where *s* = *vec* . ``size`` () .
 {xrst_toc_hidden
-   example/private/fix_like_eval.cpp
+    example/private/fix_like_eval.cpp
 }
 Example
 *******
@@ -74,16 +74,16 @@ It returns true, if the test passes, and false otherwise.
 
 
 CppAD::vector<double> cppad_mixed::fix_like_eval(const d_vector& fixed_vec)
-{  assert( init_fix_like_done_ );
-   if( fix_like_fun_.size_var() == 0 )
-   {  // empty vector case
-      return CppAD::vector<double>(0);
-   }
-   assert( fix_like_fun_.Domain() == n_fixed_ );
-   //
-   d_vector ret = fix_like_fun_.Forward(0, fixed_vec);
-   if( CppAD::hasnan( ret ) ) throw CppAD::mixed::exception(
-      "fix_like_eval", "result has a nan"
-   );
-   return ret;
+{   assert( init_fix_like_done_ );
+    if( fix_like_fun_.size_var() == 0 )
+    {   // empty vector case
+        return CppAD::vector<double>(0);
+    }
+    assert( fix_like_fun_.Domain() == n_fixed_ );
+    //
+    d_vector ret = fix_like_fun_.Forward(0, fixed_vec);
+    if( CppAD::hasnan( ret ) ) throw CppAD::mixed::exception(
+        "fix_like_eval", "result has a nan"
+    );
+    return ret;
 }

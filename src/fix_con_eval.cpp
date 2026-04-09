@@ -29,7 +29,7 @@ fixed_vec
 *********
 This argument has prototype
 
-   ``const CppAD::vector<double>&`` *fixed_vec*
+    ``const CppAD::vector<double>&`` *fixed_vec*
 
 It specifies the value of the
 :ref:`fixed effects<problem@Notation@Fixed Effects, theta>`
@@ -39,13 +39,13 @@ vec
 ***
 The return value has prototype
 
-   ``CppAD::vector<double>`` *vec*
+    ``CppAD::vector<double>`` *vec*
 
 and is the constraint function value
 corresponding to the fixed effects; see
 :ref:`fix_constraint@vec` .
 {xrst_toc_hidden
-   example/private/fix_con_eval.cpp
+    example/private/fix_con_eval.cpp
 }
 Example
 *******
@@ -59,20 +59,20 @@ It returns true, if the test passes, and false otherwise.
 
 CppAD::vector<double> cppad_mixed::fix_con_eval(const d_vector& fixed_vec)
 {
-   // make sure initialize has been called
-   if( ! initialize_done_ )
-   {  std::string error_message =
-      "fix_con_eval: initialize was not called before constraint_eval";
-      fatal_error(error_message);
-   }
-   if( fix_con_fun_.size_var() == 0 )
-   {  return CppAD::vector<double>(0); // empty vector
-   }
-   assert( fix_con_fun_.Domain() == n_fixed_ );
-   //
-   d_vector ret = fix_con_fun_.Forward(0, fixed_vec);
-   if( CppAD::hasnan( ret ) ) throw CppAD::mixed::exception(
-      "fix_con_eval", "result has a nan"
-   );
-   return ret;
+    // make sure initialize has been called
+    if( ! initialize_done_ )
+    {   std::string error_message =
+        "fix_con_eval: initialize was not called before constraint_eval";
+        fatal_error(error_message);
+    }
+    if( fix_con_fun_.size_var() == 0 )
+    {   return CppAD::vector<double>(0); // empty vector
+    }
+    assert( fix_con_fun_.Domain() == n_fixed_ );
+    //
+    d_vector ret = fix_con_fun_.Forward(0, fixed_vec);
+    if( CppAD::hasnan( ret ) ) throw CppAD::mixed::exception(
+        "fix_con_eval", "result has a nan"
+    );
+    return ret;
 }

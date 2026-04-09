@@ -17,8 +17,8 @@ and :ref:`run_cmake.sh-name` configuration options.
 Contents
 ********
 {xrst_toc_table
-   speed/ar1_xam.cpp
-   speed/capture_xam.cpp
+    speed/ar1_xam.cpp
+    speed/capture_xam.cpp
 }
 
 {xrst_end speed}

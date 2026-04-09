@@ -35,7 +35,7 @@ fixed_vec
 *********
 This argument has prototype
 
-   ``const CppAD::vector<double>&`` *fixed_vec*
+    ``const CppAD::vector<double>&`` *fixed_vec*
 
 and is the value of fixed effects :math:`\theta`.
 
@@ -43,7 +43,7 @@ random_vec
 **********
 This argument has prototype
 
-   ``const CppAD::vector<double>&`` *random_vec*
+    ``const CppAD::vector<double>&`` *random_vec*
 
 and is the value of fixed effects :math:`u`.
 If this factorization is used for computing derivatives of the
@@ -57,7 +57,7 @@ The :ref:`private_base_class@ran_hes_fun_` member variable
 will hold the first order Taylor coefficient corresponding
 to the specified fixed and random effects; i.e.,
 
-   ``ran_hes_fun_.Forward`` (0, *both* )
+    ``ran_hes_fun_.Forward`` (0, *both* )
 
 has been called where *both* is a packed version
 of the fixed and random effects.
@@ -66,7 +66,7 @@ ldlt_ran_hes\_
 **************
 On input, the member variable
 
-   ``CPPAD_MIXED_LDLT_CLASS ldlt_ran_hes_``
+    ``CPPAD_MIXED_LDLT_CLASS ldlt_ran_hes_``
 
 has been
 :ref:`initialized<ldlt_eigen_init-name>`
@@ -76,7 +76,7 @@ Upon return, ``ldlt_ran_hes_`` contains the updated
 corresponding to the specified values for the fixed
 and random effects.
 {xrst_toc_hidden
-   example/private/update_factor.cpp
+    example/private/update_factor.cpp
 }
 Example
 *******
@@ -88,35 +88,35 @@ It returns true, if the test passes, and false otherwise.
 */
 // ----------------------------------------------------------------------------
 void cppad_mixed::update_factor(
-   const d_vector& fixed_vec  ,
-   const d_vector& random_vec )
-{  assert( init_ran_hes_done_ );
-   assert( fixed_vec.size() == n_fixed_ );
-   assert( random_vec.size() == n_random_ );
-   //
-   // pack fixed and random effects into one vector
-   d_vector both(n_fixed_ + n_random_);
-   pack(fixed_vec, random_vec, both);
-   //
-   // set the value vector in the sparse matrix information
-   d_vector hes_val = ran_hes_fun_.Forward(0, both);
-   if( CppAD::hasnan( hes_val ) ) throw CppAD::mixed::exception(
-      "update_factor", "result has nan"
-   );
-   //
-   // ran_hes_uu_rcv_
-   size_t nnz = ran_hes_uu_rcv_.nnz();
-   assert( hes_val.size() == nnz );
-   for(size_t k = 0; k < nnz; ++k)
-      ran_hes_uu_rcv_.set(k, hes_val[k]);
-   //
-   // update the LDLT factor
-   bool ok = ldlt_ran_hes_.update(ran_hes_uu_rcv_);
-   if( ! ok )
-   {  CppAD::mixed::exception e(
-         "update_factor", "Hessian w.r.t. random effects is singular"
-      );
-      throw(e);
-   }
-   return;
+    const d_vector& fixed_vec  ,
+    const d_vector& random_vec )
+{   assert( init_ran_hes_done_ );
+    assert( fixed_vec.size() == n_fixed_ );
+    assert( random_vec.size() == n_random_ );
+    //
+    // pack fixed and random effects into one vector
+    d_vector both(n_fixed_ + n_random_);
+    pack(fixed_vec, random_vec, both);
+    //
+    // set the value vector in the sparse matrix information
+    d_vector hes_val = ran_hes_fun_.Forward(0, both);
+    if( CppAD::hasnan( hes_val ) ) throw CppAD::mixed::exception(
+        "update_factor", "result has nan"
+    );
+    //
+    // ran_hes_uu_rcv_
+    size_t nnz = ran_hes_uu_rcv_.nnz();
+    assert( hes_val.size() == nnz );
+    for(size_t k = 0; k < nnz; ++k)
+        ran_hes_uu_rcv_.set(k, hes_val[k]);
+    //
+    // update the LDLT factor
+    bool ok = ldlt_ran_hes_.update(ran_hes_uu_rcv_);
+    if( ! ok )
+    {   CppAD::mixed::exception e(
+            "update_factor", "Hessian w.r.t. random effects is singular"
+        );
+        throw(e);
+    }
+    return;
 }

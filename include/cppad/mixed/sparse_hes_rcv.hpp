@@ -28,7 +28,7 @@ This structure holds information about the Hessian
 
 .. math::
 
-   H(x) = \sum_{i=0}^{m-1} w_i f_i^{(2)} (x)
+    H(x) = \sum_{i=0}^{m-1} w_i f_i^{(2)} (x)
 
 where :math:`m` is the number of components in the function :math:`f(x)`.
 
@@ -36,7 +36,7 @@ subset
 ******
 The field *hes_rcv* . ``subset`` has prototype
 
-   ``CppAD::mixed::d_sparse_rcv`` *hes_rcv* . ``subset``
+    ``CppAD::mixed::d_sparse_rcv`` *hes_rcv* . ``subset``
 
 It is empty zero when it is constructed; i.e.,
 all of its sizes are zero.
@@ -47,31 +47,31 @@ nnz
 ===
 We use the notation
 
-   *nnz* = *hes_rcv* . ``subset.nnz`` ()
+    *nnz* = *hes_rcv* . ``subset.nnz`` ()
 
 row
 ===
 We use the notation
 
-   *row* = *hes_rcv* . ``subset.row`` ()
+    *row* = *hes_rcv* . ``subset.row`` ()
 
 col
 ===
 We use the notation
 
-   *col* = *hes_rcv* . ``subset.col`` ()
+    *col* = *hes_rcv* . ``subset.col`` ()
 
 val
 ===
 We use the notation
 
-   *val* = *hes_rcv* . ``subset.val`` ()
+    *val* = *hes_rcv* . ``subset.val`` ()
 
 work
 ****
 The field *hes_rcv* . ``work`` has prototype
 
-   ``CppAD::sparse_hes_work`` *hes_rcv* . ``work``
+    ``CppAD::sparse_hes_work`` *hes_rcv* . ``work``
 
 It has no information when it is constructed; i.e., it is empty.
 After initialization it should contain the CppAD cached information
@@ -98,13 +98,13 @@ f
 =
 The function *f* has prototype
 
-   ``CppAD::ADFun<double>`` *f*
+    ``CppAD::ADFun<double>`` *f*
 
 x
 =
 The argument *x* has prototype
 
-   ``const CppAD::vector<double>&`` *x*
+    ``const CppAD::vector<double>&`` *x*
 
 and its size is *f* . ``Domain`` () .
 It is the location where the Hessian is being evaluated.
@@ -113,7 +113,7 @@ w
 =
 The argument *w* has prototype
 
-   ``const CppAD::vector<double>&`` *w*
+    ``const CppAD::vector<double>&`` *w*
 
 and its size is *f* . ``Range`` () .
 It is the weighting for the components of the Hessian that is
@@ -123,7 +123,7 @@ not_used_pattern
 ================
 This argument has the following prototype
 
-   ``const CppAD::mixed::sparse_rc&`` *not_used_pattern*
+    ``const CppAD::mixed::sparse_rc&`` *not_used_pattern*
 
 It is not used and hence its value does not matter.
 
@@ -131,7 +131,7 @@ not_used_coloring
 =================
 This argument has the following prototype
 
-   ``const std::string&`` *not_used_coloring*
+    ``const std::string&`` *not_used_coloring*
 
 It is not used and hence its value does not matter.
 
@@ -140,10 +140,10 @@ It is not used and hence its value does not matter.
 # include <cppad/mixed/typedef.hpp>
 
 namespace CppAD { namespace mixed {
-   struct sparse_hes_rcv {
-      d_sparse_rcv           subset;
-      CppAD::sparse_hes_work work;
-   };
+    struct sparse_hes_rcv {
+        d_sparse_rcv           subset;
+        CppAD::sparse_hes_work work;
+    };
 } }
 
 # endif

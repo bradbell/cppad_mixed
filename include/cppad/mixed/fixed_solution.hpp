@@ -17,8 +17,8 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE
-   // END_PROTOTYPE
+    // BEGIN_PROTOTYPE
+    // END_PROTOTYPE
 }
 
 Convention
@@ -65,8 +65,8 @@ is greater than zero (less than zero), it is
 the Lagrange multiplier for the upper (lower) bound
 for the *i*-th row of the random constraint matrix :math:`A`.
 {xrst_toc_hidden
-   include/cppad/mixed/warm_start_struct.hpp
-   include/cppad/mixed/trace_struct.hpp
+    include/cppad/mixed/warm_start_struct.hpp
+    include/cppad/mixed/trace_struct.hpp
 }
 warm_start
 **********
@@ -88,16 +88,16 @@ of the optimization algorithm.
 # include <cppad/mixed/trace_struct.hpp>
 
 namespace CppAD { namespace mixed {
-   // BEGIN_PROTOTYPE
-   struct fixed_solution {
-      CppAD::vector<double>       fixed_opt;
-      CppAD::vector<double>       fixed_lag;
-      CppAD::vector<double>       fix_con_lag;
-      CppAD::vector<double>       ran_con_lag;
-      warm_start_struct           warm_start;
-      CppAD::vector<trace_struct> trace_vec;
-   };
-   // END_PROTOTYPE
+    // BEGIN_PROTOTYPE
+    struct fixed_solution {
+        CppAD::vector<double>       fixed_opt;
+        CppAD::vector<double>       fixed_lag;
+        CppAD::vector<double>       fix_con_lag;
+        CppAD::vector<double>       ran_con_lag;
+        warm_start_struct           warm_start;
+        CppAD::vector<trace_struct> trace_vec;
+    };
+    // END_PROTOTYPE
 } }
 
 

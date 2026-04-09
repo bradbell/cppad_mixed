@@ -42,7 +42,7 @@ fixed_one
 *********
 This argument has prototype
 
-   ``CppAD::vector<`` *Float_unpack* >& *fixed_one*
+    ``CppAD::vector<`` *Float_unpack* >& *fixed_one*
 
 The input value of its elements does not matter.
 Upon return, it contains the value of the first
@@ -54,7 +54,7 @@ fixed_two
 *********
 This argument has prototype
 
-   ``CppAD::vector<`` *Float_unpack* >& *fixed_two*
+    ``CppAD::vector<`` *Float_unpack* >& *fixed_two*
 
 The input value of its elements does not matter.
 Upon return, it contains the value of the second
@@ -66,7 +66,7 @@ random_vec
 **********
 This argument has prototype
 
-   ``CppAD::vector<`` *Float_unpack* >& *random_vec*
+    ``CppAD::vector<`` *Float_unpack* >& *random_vec*
 
 The input value of its elements does not matter.
 Upon return, it contains the value of the
@@ -78,7 +78,7 @@ both_vec
 ********
 This argument has prototype
 
-   ``const CppAD::vector<`` *Float_pack* >& *both_vec*
+    ``const CppAD::vector<`` *Float_pack* >& *both_vec*
 
 If present, the size of this vector must be equal to
 *n_fixed_* + *n_random_* .
@@ -88,7 +88,7 @@ three_vec
 *********
 This argument has prototype
 
-   ``const CppAD::vector<`` *Float_pack* >& *three_vec*
+    ``const CppAD::vector<`` *Float_pack* >& *three_vec*
 
 If present, the size of this vector must be equal to
 2* *n_fixed_* + *n_random_* .
@@ -101,36 +101,36 @@ and random effects as one vector.
 
 template <class Float_unpack, class Float_pack>
 void cppad_mixed::unpack(
-   CppAD::vector<Float_unpack>&      fixed_one  ,
-   CppAD::vector<Float_unpack>&      random_vec ,
-   const CppAD::vector<Float_pack>&  both_vec   ) const
+    CppAD::vector<Float_unpack>&      fixed_one  ,
+    CppAD::vector<Float_unpack>&      random_vec ,
+    const CppAD::vector<Float_pack>&  both_vec   ) const
 {
-   assert( fixed_one.size() == n_fixed_ );
-   assert( random_vec.size() == n_random_ );
-   assert( both_vec.size() == n_fixed_ + n_random_ );
-   for(size_t j = 0; j < n_fixed_; j++)
-      fixed_one[j] = Float_unpack( both_vec[j] );
-   for(size_t j = 0; j < n_random_; j++)
-      random_vec[j] = Float_unpack( both_vec[n_fixed_ + j] );
+    assert( fixed_one.size() == n_fixed_ );
+    assert( random_vec.size() == n_random_ );
+    assert( both_vec.size() == n_fixed_ + n_random_ );
+    for(size_t j = 0; j < n_fixed_; j++)
+        fixed_one[j] = Float_unpack( both_vec[j] );
+    for(size_t j = 0; j < n_random_; j++)
+        random_vec[j] = Float_unpack( both_vec[n_fixed_ + j] );
 }
 
 template <class Float_unpack, class Float_pack>
 void cppad_mixed::unpack(
-   CppAD::vector<Float_unpack>&      fixed_one  ,
-   CppAD::vector<Float_unpack>&      fixed_two  ,
-   CppAD::vector<Float_unpack>&      random_vec ,
-   const CppAD::vector<Float_pack>&  three_vec  ) const
+    CppAD::vector<Float_unpack>&      fixed_one  ,
+    CppAD::vector<Float_unpack>&      fixed_two  ,
+    CppAD::vector<Float_unpack>&      random_vec ,
+    const CppAD::vector<Float_pack>&  three_vec  ) const
 {
-   assert( fixed_one.size() == n_fixed_ );
-   assert( fixed_two.size() == n_fixed_ );
-   assert( random_vec.size() == n_random_ );
-   assert( three_vec.size() == 2 * n_fixed_ + n_random_ );
-   for(size_t j = 0; j < n_fixed_; j++)
-   {  fixed_one[j] = Float_unpack( three_vec[j] );
-      fixed_two[j] = Float_unpack( three_vec[n_fixed_ + j] );
-   }
-   for(size_t j = 0; j < n_random_; j++)
-      random_vec[j] = Float_unpack( three_vec[2 * n_fixed_ + j] );
+    assert( fixed_one.size() == n_fixed_ );
+    assert( fixed_two.size() == n_fixed_ );
+    assert( random_vec.size() == n_random_ );
+    assert( three_vec.size() == 2 * n_fixed_ + n_random_ );
+    for(size_t j = 0; j < n_fixed_; j++)
+    {   fixed_one[j] = Float_unpack( three_vec[j] );
+        fixed_two[j] = Float_unpack( three_vec[n_fixed_ + j] );
+    }
+    for(size_t j = 0; j < n_random_; j++)
+        random_vec[j] = Float_unpack( three_vec[2 * n_fixed_ + j] );
 }
 
 

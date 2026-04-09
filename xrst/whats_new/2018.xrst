@@ -221,7 +221,7 @@ The install :ref:`install_unix@Download` procedure was changed
 to use the following command to determine the version number:
 ::
 
-   grep '^SET(cppad_mixed_version' CMakeLists.txt
+    grep '^SET(cppad_mixed_version' CMakeLists.txt
 
 02-20
 =====

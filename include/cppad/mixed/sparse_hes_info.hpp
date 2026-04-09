@@ -30,7 +30,7 @@ row
 ***
 The field *hes_info* . ``row`` has prototype
 
-   ``CppAD::vector<size_t>`` *hes_info* . ``row``
+    ``CppAD::vector<size_t>`` *hes_info* . ``row``
 
 It has size zero when it is constructed.
 After initialization it should contain the row indices
@@ -40,7 +40,7 @@ col
 ***
 The field *hes_info* . ``col`` has prototype
 
-   ``CppAD::vector<size_t>`` *hes_info* . ``col``
+    ``CppAD::vector<size_t>`` *hes_info* . ``col``
 
 It has size zero when it is constructed.
 After initialization it should contain the column indices
@@ -51,7 +51,7 @@ val
 ***
 The field *hes_info* . ``val`` has prototype
 
-   ``CppAD::vector<double>`` *hes_info* . ``val``
+    ``CppAD::vector<double>`` *hes_info* . ``val``
 
 It has size zero when it is constructed.
 After initialization it should be that same size as *hes_info* . ``row`` .
@@ -63,7 +63,7 @@ work
 ****
 The field *hes_info* . ``work`` has prototype
 
-   ``CppAD::sparse_hessian_work work``
+    ``CppAD::sparse_hessian_work work``
 
 It has no information when it is constructed.
 After initialization it should contain the CppAD cached information.
@@ -85,13 +85,13 @@ f
 =
 The function *f* has prototype
 
-   ``CppAD::ADFun<double>`` *f*
+    ``CppAD::ADFun<double>`` *f*
 
 x
 =
 The argument *x* has prototype
 
-   ``const CppAD::vector<double>&`` *x*
+    ``const CppAD::vector<double>&`` *x*
 
 and its size is *f* . ``Domain`` () .
 It is the location where the Hessian is being evaluated.
@@ -100,7 +100,7 @@ w
 =
 The argument *w* has prototype
 
-   ``const CppAD::vector<double>&`` *w*
+    ``const CppAD::vector<double>&`` *w*
 
 and its size is *f* . ``Range`` () .
 It is the weighting for the components of the Hessian that is
@@ -125,12 +125,12 @@ Upon return *hes_info* . ``val`` [ *k* ] is the Hessian at row index
 {xrst_end sparse_hes_info}
 */
 namespace CppAD { namespace mixed {
-   struct sparse_hes_info {
-      CppAD::vector<size_t>      row;
-      CppAD::vector<size_t>      col;
-      CppAD::vector<double>      val;
-      CppAD::sparse_hessian_work work;
-   };
+    struct sparse_hes_info {
+        CppAD::vector<size_t>      row;
+        CppAD::vector<size_t>      col;
+        CppAD::vector<double>      val;
+        CppAD::sparse_hessian_work work;
+    };
 } }
 
 # endif

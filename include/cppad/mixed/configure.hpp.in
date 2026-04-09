@@ -25,7 +25,7 @@ CPPAD_MIXED_VERSION
 This is a C string with the year, month, and date
 for this version in the following format:
 
-   " *yyyymmdd* "
+    " *yyyymmdd* "
 
 CPPAD_MIXED_FOR_HES_SPARSITY
 ****************************
@@ -51,12 +51,12 @@ If :ref:`run_cmake.sh@ldlt_cholmod` is ``yes`` ,
 this symbol is defined as
 ::
 
-   CppAD::mixed::ldlt_cholmod
+    CppAD::mixed::ldlt_cholmod
 
 Otherwise it is defined as
 ::
 
-   CppAD::mixed::ldlt_eigen
+    CppAD::mixed::ldlt_eigen
 
 CPPAD_MIXED_NULL_PTR
 ********************

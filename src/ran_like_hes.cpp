@@ -23,8 +23,8 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE
-   // END_PROTOTYPE
+    // BEGIN_PROTOTYPE
+    // END_PROTOTYPE
 }
 
 Private
@@ -44,7 +44,7 @@ with respect to the random effects vector :math:`u`; i.e.
 
 .. math::
 
-   f_{uu} ( \theta, u )
+    f_{uu} ( \theta, u )
 
 n_fixed
 *******
@@ -87,7 +87,7 @@ is the Hessian :math:`f_{uu} ( \theta , u )`.
 The indices in this matrix are just with respect to the random effects;
 i.e., the row and column indices are between zero and  *n_random* .
 {xrst_toc_hidden
-   example/private/ran_like_hes.cpp
+    example/private/ran_like_hes.cpp
 }
 
 Example
@@ -103,43 +103,43 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 
 // BEGIN_PROTOTYPE
 a1_sparse_rcv ran_like_hes(
-   size_t                                n_fixed         ,
-   size_t                                n_random        ,
-   CppAD::ADFun<a1_double, double>&      ran_jac_a1fun   ,
-   const sparse_rc&                      ran_hes_uu_rc   ,
-   const a1_vector&                      theta_u         )
+    size_t                                n_fixed         ,
+    size_t                                n_random        ,
+    CppAD::ADFun<a1_double, double>&      ran_jac_a1fun   ,
+    const sparse_rc&                      ran_hes_uu_rc   ,
+    const a1_vector&                      theta_u         )
 // END_PROTOTYPE
-{  assert( theta_u.size()     == n_fixed + n_random );
-   assert( ran_jac_a1fun.Domain() == n_fixed + n_random );
-   assert( ran_jac_a1fun.Range()  == n_random);
-   //
-   // nnz, row, col
-   size_t nnz = ran_hes_uu_rc.nnz();
-   const s_vector&  row( ran_hes_uu_rc.row() );
-   const s_vector&  col( ran_hes_uu_rc.col() );
-   //
-   // ran_hes_mix_rc
-   sparse_rc ran_hes_mix_rc(n_random, n_fixed + n_random, nnz);
-   for(size_t k = 0; k < nnz; k++)
-   {  assert( row[k] <= n_random );
-      assert( col[k] <= n_random );
-      assert( col[k] <= row[k] );
-      //
-      // row relative to random effects, column relative to both
-      ran_hes_mix_rc.set(k, row[k], col[k] + n_fixed);
-   }
-   //
-   // ran_hes_mix_rcv
-   a1_sparse_rcv ran_hes_mix_rcv( ran_hes_mix_rc );
-   ran_jac_a1fun.subgraph_jac_rev(theta_u, ran_hes_mix_rcv);
-   ran_jac_a1fun.clear_subgraph();
-   //
-   // ran_hes_uu_rcv
-   a1_sparse_rcv ran_hes_uu_rcv( ran_hes_uu_rc );
-   for(size_t k = 0; k < nnz; ++k)
-      ran_hes_uu_rcv.set(k, ran_hes_mix_rcv.val()[k] );
-   //
-   return ran_hes_uu_rcv;
+{   assert( theta_u.size()     == n_fixed + n_random );
+    assert( ran_jac_a1fun.Domain() == n_fixed + n_random );
+    assert( ran_jac_a1fun.Range()  == n_random);
+    //
+    // nnz, row, col
+    size_t nnz = ran_hes_uu_rc.nnz();
+    const s_vector&  row( ran_hes_uu_rc.row() );
+    const s_vector&  col( ran_hes_uu_rc.col() );
+    //
+    // ran_hes_mix_rc
+    sparse_rc ran_hes_mix_rc(n_random, n_fixed + n_random, nnz);
+    for(size_t k = 0; k < nnz; k++)
+    {   assert( row[k] <= n_random );
+        assert( col[k] <= n_random );
+        assert( col[k] <= row[k] );
+        //
+        // row relative to random effects, column relative to both
+        ran_hes_mix_rc.set(k, row[k], col[k] + n_fixed);
+    }
+    //
+    // ran_hes_mix_rcv
+    a1_sparse_rcv ran_hes_mix_rcv( ran_hes_mix_rc );
+    ran_jac_a1fun.subgraph_jac_rev(theta_u, ran_hes_mix_rcv);
+    ran_jac_a1fun.clear_subgraph();
+    //
+    // ran_hes_uu_rcv
+    a1_sparse_rcv ran_hes_uu_rcv( ran_hes_uu_rc );
+    for(size_t k = 0; k < nnz; ++k)
+        ran_hes_uu_rcv.set(k, ran_hes_mix_rcv.val()[k] );
+    //
+    return ran_hes_uu_rcv;
 }
 
 } } // END_CPPAD_MIXED_NAMESPACE

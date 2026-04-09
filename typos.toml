@@ -1,6 +1,6 @@
 [files]
 extend-exclude = [
-   ".git",
+    ".git",
 ]
 ignore-hidden = false
 

@@ -15,8 +15,8 @@ Syntax
 Prototype
 *********
 {xrst_literal
-   // BEGIN_PROTOTYPE
-   // END_PROTOTYPE
+    // BEGIN_PROTOTYPE
+    // END_PROTOTYPE
 }
 
 Private
@@ -55,35 +55,35 @@ namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 // BEGIN_PROTOTYPE
 double ldlt_cholmod::rcond(void) const
 // END_PROTOTYPE
-{  assert( update_called_ );
-   //
-   // factorization P H P' = L D L'
-   int*    L_p  = (int *) factor_->p;
-   double* L_x  = (double *) factor_->x;
+{   assert( update_called_ );
+    //
+    // factorization P H P' = L D L'
+    int*    L_p  = (int *) factor_->p;
+    double* L_x  = (double *) factor_->x;
 # ifndef NDEBUG
-   int*    L_i  = (int *) factor_->i;
+    int*    L_i  = (int *) factor_->i;
 # endif
-   double max_abs  = 0.0;
-   double min_abs  = CppAD::numeric_limits<double>::infinity();
-   for(size_t j = 0; j < nrow_; j++)
-   {  // first element for each column is always the diagonal element
-      assert( size_t( L_i [ L_p[j] ] ) == j );
-      // j-th element on diagonal of D in factorization
-      double dj  = L_x[ L_p[j] ];
-      double abs = fabs( dj );
-      if( isnan( abs ) )
-         abs = 0.0;
-      max_abs    = std::max( abs, max_abs);
-      min_abs    = std::min( abs, min_abs);
-   }
-   //
-   // rcond
-   if( min_abs == 0.0 )
-      return 0.0;
-   if( min_abs == CppAD::numeric_limits<double>::infinity() )
-      return 0.0;
-   if( max_abs == CppAD::numeric_limits<double>::infinity() )
-      return 0.0;
-   return min_abs / max_abs;
+    double max_abs  = 0.0;
+    double min_abs  = CppAD::numeric_limits<double>::infinity();
+    for(size_t j = 0; j < nrow_; j++)
+    {   // first element for each column is always the diagonal element
+        assert( size_t( L_i [ L_p[j] ] ) == j );
+        // j-th element on diagonal of D in factorization
+        double dj  = L_x[ L_p[j] ];
+        double abs = fabs( dj );
+        if( isnan( abs ) )
+            abs = 0.0;
+        max_abs    = std::max( abs, max_abs);
+        min_abs    = std::min( abs, min_abs);
+    }
+    //
+    // rcond
+    if( min_abs == 0.0 )
+        return 0.0;
+    if( min_abs == CppAD::numeric_limits<double>::infinity() )
+        return 0.0;
+    if( max_abs == CppAD::numeric_limits<double>::infinity() )
+        return 0.0;
+    return min_abs / max_abs;
 }
 } } // END_CPPAD_MIXED_NAMESPACE

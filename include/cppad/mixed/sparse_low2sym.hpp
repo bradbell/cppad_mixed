@@ -24,11 +24,11 @@ lower
 *****
 The argument has prototype
 
-   ``const Eigen::SparseMatrix<`` *Scalar* , *Options* , *Index* >& *lower*
+    ``const Eigen::SparseMatrix<`` *Scalar* , *Options* , *Index* >& *lower*
 
 and has the same number of rows as columns; i.e.
 
-   ``lower`` . *rows* () == ``lower.cols`` ()
+    ``lower`` . *rows* () == ``lower.cols`` ()
 
 This is a lower triangular sparse matrix; i.e.,
 for each entry in *lower* has a row index
@@ -53,14 +53,14 @@ symmetric
 *********
 The return value has prototype
 
-   ``Eigen::SparseMatrix<`` *Scalar* , *Options* , *Index* > *symmetric*
+    ``Eigen::SparseMatrix<`` *Scalar* , *Options* , *Index* > *symmetric*
 
 Its lower triangle has the same entries as *lower*
 and it is a symmetric matrix; i.e.,
 the entries above the diagonal have been set using the corresponding
 entry below the diagonal.
 {xrst_toc_hidden
-   example/private/sparse_low2sym.cpp
+    example/private/sparse_low2sym.cpp
 }
 Example
 *******
@@ -72,40 +72,40 @@ and test of ``sparse_low2sym`` .
 # include <Eigen/SparseCore>
 
 namespace CppAD { namespace mixed {
-   template <class Sparse_matrix>
-   Sparse_matrix sparse_low2sym(const Sparse_matrix& lower)
-   {  typedef typename Sparse_matrix::Index         index;
-      typedef typename Sparse_matrix::InnerIterator iterator;
-      assert( lower.rows() == lower.cols() );
-      assert( lower.rows() == lower.outerSize() );
-      //
-      // determine the number of non-zeros in each row or column of result
-      Eigen::Matrix<index, Eigen::Dynamic, 1> nnz( lower.outerSize() );
-      for(index k = 0; k < lower.outerSize(); ++k)
-      {  nnz[k] = index(0);
-         for(iterator itr(lower, k); itr; ++itr)
-         {  ++nnz[k]; // count entries in lower triangle
-            if( itr.row() != itr.col() )
-               ++nnz[k]; // entries above the diagonal
-         }
-      }
-      //
-      // reserve space for the result
-      Sparse_matrix result( lower.rows(), lower.rows() );
-      result.reserve(nnz);
-      //
-      for(index k = 0; k < lower.outerSize(); ++k)
-      {  for(iterator itr(lower, k); itr; ++itr)
-         {  index i = itr.row();
-            index j = itr.col();
-            assert( j <= i );
-            result.insert(i, j) = itr.value();
-            if( i != j )
-               result.insert(j, i) = itr.value();
-         }
-      }
-      return result;
-   }
+    template <class Sparse_matrix>
+    Sparse_matrix sparse_low2sym(const Sparse_matrix& lower)
+    {   typedef typename Sparse_matrix::Index         index;
+        typedef typename Sparse_matrix::InnerIterator iterator;
+        assert( lower.rows() == lower.cols() );
+        assert( lower.rows() == lower.outerSize() );
+        //
+        // determine the number of non-zeros in each row or column of result
+        Eigen::Matrix<index, Eigen::Dynamic, 1> nnz( lower.outerSize() );
+        for(index k = 0; k < lower.outerSize(); ++k)
+        {   nnz[k] = index(0);
+            for(iterator itr(lower, k); itr; ++itr)
+            {   ++nnz[k]; // count entries in lower triangle
+                if( itr.row() != itr.col() )
+                    ++nnz[k]; // entries above the diagonal
+            }
+        }
+        //
+        // reserve space for the result
+        Sparse_matrix result( lower.rows(), lower.rows() );
+        result.reserve(nnz);
+        //
+        for(index k = 0; k < lower.outerSize(); ++k)
+        {   for(iterator itr(lower, k); itr; ++itr)
+            {   index i = itr.row();
+                index j = itr.col();
+                assert( j <= i );
+                result.insert(i, j) = itr.value();
+                if( i != j )
+                    result.insert(j, i) = itr.value();
+            }
+        }
+        return result;
+    }
 } }
 
 # endif

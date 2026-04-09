@@ -5,8 +5,9 @@
 
 {xrst_begin 2026}
 {xrst_spell
-   mm
-   dd
+    mm
+    dd
+    rst
 }
 
 Release Notes for 2026
@@ -15,12 +16,26 @@ Release Notes for 2026
 mm-dd
 *****
 
+
+04-08
+=====
+Change the cppad_mixed source code and documentation to use 4 spaces for
+one tab; i.e., one level of indentation.
+This used to be 3 spaces because that works well with rst lists
+(the cppad_mixed documentation uses rst),
+but 4 spaces is the most common choice used by programmers.
+
 04-06
 =====
 
 #. In ``bin/example_install.sh``, when ``system_install`` is ``'mac_brew'``,
    add ``'metis'`` to the list of homebrew formulae checked for and/or
    installed at runtime.
+
+01-25
+=====
+#. Change cmake commands so they work when cross compiling.
+#. Change minimum required cmake version to 3.10 (to avoid warnings).
 
 01-06
 =====

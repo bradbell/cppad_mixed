@@ -69,11 +69,11 @@ title for these pages to Release Notes for the corresponding year.
 This breaks old links to these web pages.
 For example, the old link to the heading directly below was::
 
-   https://cppad-mixed.readthedocs.io/whats_new_24.html#whats-new-24-mm-dd-02-14
+    https://cppad-mixed.readthedocs.io/whats_new_24.html#whats-new-24-mm-dd-02-14
 
 Its new link, which is much shorter, is::
 
-   https://cppad-mixed.readthedocs.io/2024.html#mm-dd-02-14
+    https://cppad-mixed.readthedocs.io/2024.html#mm-dd-02-14
 
 02-14
 =====

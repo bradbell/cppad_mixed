@@ -21,7 +21,7 @@ thrower
 *******
 This argument has prototype
 
-   ``const std::string&`` *thrower*
+    ``const std::string&`` *thrower*
 
 and is the name of the routine in which the exception occurred
 (the routine that threw the exception).
@@ -30,7 +30,7 @@ brief
 *****
 This argument has prototype
 
-   ``const std::string&`` *brief*
+    ``const std::string&`` *brief*
 
 and is a brief description of the exception.
 
@@ -38,7 +38,7 @@ catcher
 *******
 This argument has prototype
 
-   ``const std::string&`` *catcher*
+    ``const std::string&`` *catcher*
 
 and is the name of the routine that caught the exception.
 
@@ -46,7 +46,7 @@ description
 ***********
 This return has prototype
 
-   ``std::string`` *description*
+    ``std::string`` *description*
 
 it is a message that includes
 *catcher* , *thrower* and *brief* .
@@ -57,19 +57,19 @@ it is a message that includes
 # include <cppad/mixed/configure.hpp>
 
 namespace CppAD { namespace mixed {
-   class exception {
-   private:
-      std::string thrower_;
-      std::string brief_;
-   public:
-      exception(const std::string& thrower, const std::string& brief)
-      : thrower_( thrower ) , brief_(brief)
-      { }
-      const std::string message(const std::string& catcher) const
-      {  std::string msg = catcher + ": " + thrower_ + ":\n" + brief_;
-         return msg;
-      }
-   };
+    class exception {
+    private:
+        std::string thrower_;
+        std::string brief_;
+    public:
+        exception(const std::string& thrower, const std::string& brief)
+        : thrower_( thrower ) , brief_(brief)
+        { }
+        const std::string message(const std::string& catcher) const
+        {   std::string msg = catcher + ": " + thrower_ + ":\n" + brief_;
+            return msg;
+        }
+    };
 } }
 
 # endif

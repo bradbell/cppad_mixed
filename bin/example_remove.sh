@@ -49,33 +49,33 @@ popd
 external_list=$(find external/$build_type -regex '.*[a-zA-Z_].git')
 for repo in $external_list
 do
-   pushd $repo/build
-   make uninstall
-   popd
+    pushd $repo/build
+    make uninstall
+    popd
 done
 #
 # remove links
 if [ -L $cmake_install_prefix/eigen/include/Eigen ]
 then
-   rm $cmake_install_prefix/eigen/include/Eigen
+    rm $cmake_install_prefix/eigen/include/Eigen
 fi
 #
 # prune cmake_install_prefix
 if [ ! -L $cmake_install_prefix ]
 then
-   echo "Remove empty directories below $cmake_install_prefix"
-   find $cmake_install_prefix -type d -empty -delete
-   if [ ! -d $cmake_install_prefix ]
-   then
-      mkdir $cmake_install_prefix
-   fi
+    echo "Remove empty directories below $cmake_install_prefix"
+    find $cmake_install_prefix -type d -empty -delete
+    if [ ! -d $cmake_install_prefix ]
+    then
+        mkdir $cmake_install_prefix
+    fi
 else
-   echo "Remove empty directories below $cmake_install_prefix.$build_type"
-   find $cmake_install_prefix.$build_type -type d -empty -delete
-   if [ ! -d $cmake_install_prefix.$build_type ]
-   then
-      mkdir $cmake_install_prefix.$build_type
-   fi
+    echo "Remove empty directories below $cmake_install_prefix.$build_type"
+    find $cmake_install_prefix.$build_type -type d -empty -delete
+    if [ ! -d $cmake_install_prefix.$build_type ]
+    then
+        mkdir $cmake_install_prefix.$build_type
+    fi
 fi
 #
 echo 'example_remove.sh: OK'
