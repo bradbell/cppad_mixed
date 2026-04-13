@@ -16,6 +16,11 @@ Release Notes for 2026
 mm-dd
 *****
 
+04-13
+=====
+Fix some warnings during :ref:`check_install.sh-name` by treating
+eigen include files like system include files.
+
 04-08
 =====
 Change the cppad_mixed source code and documentation to use 4 spaces for
