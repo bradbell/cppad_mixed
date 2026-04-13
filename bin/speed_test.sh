@@ -9,9 +9,9 @@ then
     exit 1
 fi
 branch=`git branch | grep '^\*' | sed -e 's|^\* *||'`
-if [ "$branch" != 'master' ]
+if [ "$branch" != 'main' ]
 then
-    echo 'bin/speed_test.sh must be run from master branch'
+    echo 'bin/speed_test.sh must be run from main branch'
     exit 1
 fi
 if [ "$2" == '' ]
@@ -89,7 +89,7 @@ do
     echo "bin/$program.sh normal > build/$branch.$program.out"
     bin/$program.sh normal > build/$branch.$program.out
 done
-git checkout master
+git checkout main
 # -----------------------------------------------------------------------------
 echo 'bin/speed_test.sh: results are in:'
 for program in ar1_xam capture_xam

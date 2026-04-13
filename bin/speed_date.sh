@@ -22,9 +22,9 @@ then
     exit 1
 fi
 current=`git branch | sed -e '/^[^*]/d' -e 's/^\* *//'`
-if [ "$current" != 'master' ]
+if [ "$current" != 'main' ]
 then
-    echo 'bin/speed_branch.sh: must be executed from master branch'
+    echo 'bin/speed_branch.sh: must be executed from main branch'
     exit 0
 fi
 # -----------------------------------------------------------------------------
@@ -114,7 +114,7 @@ do
 done
 git reset --hard
 # -----------------------------------------------------------------------------
-git checkout master
+git checkout main
 # -----------------------------------------------------------------------------
 echo 'bin/speed_date.sh: results are in'
 echo "build/ar1_xam.$date1.out,     build/ar1_xam.$date2.out"

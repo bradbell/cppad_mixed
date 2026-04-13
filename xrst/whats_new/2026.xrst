@@ -16,6 +16,10 @@ Release Notes for 2026
 mm-dd
 *****
 
+04-13
+=====
+Fix some warnings during :ref:`check_install.sh-name` by treating
+eigen include files like system include files.
 
 04-08
 =====
@@ -27,10 +31,9 @@ but 4 spaces is the most common choice used by programmers.
 
 04-06
 =====
-
-#. In ``bin/example_install.sh``, when ``system_install`` is ``'mac_brew'``,
-   add ``'metis'`` to the list of homebrew formulae checked for and/or
-   installed at runtime.
+In ``bin/example_install.sh``, when ``system_install`` is ``'mac_brew'``,
+add ``'metis'`` to the list of homebrew formulae checked for and/or
+installed at runtime.
 
 01-25
 =====

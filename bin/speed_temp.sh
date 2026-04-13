@@ -7,7 +7,7 @@
 # uses less mmeory and does not affect speed.
 declare -A branch
 branch[one]='6894f1'
-branch[two]='master'
+branch[two]='main'
 # -----------------------------------------------------------------------------
 if [ "$0" != 'bin/speed_temp.sh' ]
 then
@@ -58,7 +58,7 @@ do
     for program in capture_xam ar1_xam
     do
         # temporary change to bin/$program.sh
-        git show master:bin/$program.sh | sed \
+        git show main:bin/$program.sh | sed \
             -e "s|random_seed='0'|random_seed='123'|" \
             -e "s|number_locations='30'|number_locations='30'|" \
             -e "s|number_random='10000'|number_random='10000'|" \

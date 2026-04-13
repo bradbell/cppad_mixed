@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-25 Bradley M. Bell
+# SPDX-FileContributor: 2014-26 Bradley M. Bell
 # ----------------------------------------------------------------------------
 if [ ! -e 'bin/check_install.sh' ]
 then
@@ -23,6 +23,7 @@ fi
 #       grep
 #       homebrew
 #       int
+#       isystem
 #       lcppad
 #       libdir
 #       libs
@@ -140,7 +141,8 @@ EOF
 # The following command determines the flags necessary
 # to compile with ``eigen`` on this system:
 # {xrst_code sh}
-eigen_cflags=$(pkg-config --cflags eigen3)
+eigen_cflags=$(pkg-config --cflags eigen3 | sed -e 's|-I */|-isystem /|' )
+# Changing -I to -isystem suppresses warnings in the eigen source code.
 # {xrst_code}
 #
 # CHOLMOD_cflags
