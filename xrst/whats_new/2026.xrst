@@ -18,8 +18,14 @@ mm-dd
 
 04-13
 =====
-Fix some warnings during :ref:`check_install.sh-name` by treating
-eigen include files like system include files.
+#.  Fix some warnings during :ref:`check_install.sh-name` by treating
+    eigen include files like system include files.
+
+#.  Advance to cppad-20260412. This makes the cppad library dynamic,
+    instead of static in the Darwin system case; i.e. Mac OS.
+
+#.  Change the C++ compiler standard from -std=c++11 to -std=c++17
+    (c++14 or higher is necessary for modern eigen).
 
 04-08
 =====
