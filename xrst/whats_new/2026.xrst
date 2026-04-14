@@ -13,6 +13,12 @@
 Release Notes for 2026
 ######################
 
+Branch: brew-install-metis 
+**************************
+In ``bin/example_install.sh``, when ``system_install`` is ``'mac_brew'``,
+add ``'metis'`` to the list of system install packages that are required
+by cppad_mixed.
+
 mm-dd
 *****
 
@@ -34,12 +40,6 @@ one tab; i.e., one level of indentation.
 This used to be 3 spaces because that works well with rst lists
 (the cppad_mixed documentation uses rst),
 but 4 spaces is the most common choice used by programmers.
-
-04-06
-=====
-In ``bin/example_install.sh``, when ``system_install`` is ``'mac_brew'``,
-add ``'metis'`` to the list of homebrew formulae checked for and/or
-installed at runtime.
 
 01-25
 =====
