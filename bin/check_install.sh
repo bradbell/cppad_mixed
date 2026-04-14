@@ -185,9 +185,9 @@ CHOLMOD_libs=`pkg-config --libs CHOLMOD`
 # optimize_flags
 if [ "$build_type" == 'debug' ]
 then
-    optimize_flags='-g -O0 -std=c++11 -Wall'
+    optimize_flags='-g -O0 -std=c++17 -Wall'
 else
-    optimize_flags='-O3 -DNDEBUG -std=c++11 -Wall'
+    optimize_flags='-O3 -DNDEBUG -std=c++17 -Wall'
 fi
 #
 # path2libdir

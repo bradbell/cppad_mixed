@@ -1,7 +1,7 @@
 #! /bin/bash -e
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-25 Bradley M. Bell
+# SPDX-FileContributor: 2014-26 Bradley M. Bell
 # ----------------------------------------------------------------------------
 #
 # {xrst_begin run_cmake.sh}
@@ -94,7 +94,7 @@ specific_compiler=''
 # ***************
 # Extra C++ flags used to compile and test
 # {xrst_code sh}
-extra_cxx_flags='-Wpedantic -std=c++11 -Wall -Wshadow -Wconversion'
+extra_cxx_flags='-Wpedantic -std=c++17 -Wall -Wshadow -Wconversion'
 #
 # for macOS using homebrew:
 if [ "$(uname)" == 'Darwin' ]
