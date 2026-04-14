@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-# SPDX-FileContributor: 2014-25 Bradley M. Bell
+# SPDX-FileContributor: 2014-26 Bradley M. Bell
 # ----------------------------------------------------------------------------
 set -e -u
 #
@@ -163,6 +163,7 @@ then
         libeigen3-dev
         libgsl-dev
         liblapack-dev
+        libmetis-dev
         libsuitesparse-dev
         pkg-config
         wget
@@ -180,6 +181,7 @@ then
         git
         gsl-devel
         lapack-devel
+        metis-devel
         patch
         pkgconf
         suitesparse-devel
@@ -194,6 +196,7 @@ then
         cmake
         eigen3
         gsl
+        metis
         pkgconfig
         wget
     '

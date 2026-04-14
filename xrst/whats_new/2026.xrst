@@ -18,9 +18,10 @@ mm-dd
 
 04-14
 =====
-In ``bin/example_install.sh``, when ``system_install`` is ``'mac_brew'``,
+In ``bin/example_install.sh``,
 add ``'metis'`` to the list of system install packages that are required
 by cppad_mixed.
+This improves the sparse linear algebra solver used by the ipopt (the cppad_mixed optimizer).
 
 04-13
 =====
