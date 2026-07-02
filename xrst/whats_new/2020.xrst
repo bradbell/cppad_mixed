@@ -68,7 +68,7 @@ the private part of the libs and requires fields.
    library on debian systems.
    (It seems debian recently added the hardware type to the library path.)
 #. Use multi-process make to speed up the :ref:`example_install.sh-name` ,
-   and ``tools/ipopt_install.sh`` when more that one processor is available.
+   and ``bin/ipopt_install.sh`` when more that one processor is available.
 
 11-19
 =====
@@ -104,7 +104,7 @@ This has been fixed.
 #. Change *cppad_prefix* to
    :ref:`run_cmake.sh@cmake_install_prefix` .
 #. Remove *eigen_prefix* from :ref:`run_cmake.sh-name` .
-   The example install script ``tools/install_eigen.sh`` uses the prefix
+   The example install script ``bin/install_eigen.sh`` uses the prefix
    *cmake_install_prefix/eigen* to install ipopt.
 #. The file :ref:`run_cmake.sh@cmake_libdir@cppad_mixed.pc`
    was added to the installation.
@@ -116,7 +116,7 @@ This has been fixed.
 11-02
 =====
 Remove *ipopt_prefix* from :ref:`run_cmake.sh-name` .
-The example ``tools/install_ipopt.sh`` uses the prefix
+The example ``bin/install_ipopt.sh`` uses the prefix
 :ref:`run_cmake.sh@cmake_install_prefix`
 to install ipopt.
 
@@ -131,14 +131,14 @@ Advance to cppad-20201021
 
 10-10
 =====
-Fix a problem with ``tools/install_ipopt.sh`` .
+Fix a problem with ``bin/install_ipopt.sh`` .
 To be specific, it needs to run ``get.ASL`` and ``get.Mumps``
 to get supplements to the ASL and Mumps git repositories.
 
 10-06
 =====
 
-#. Change ``tools/install_ipopt.sh`` to install a shared version
+#. Change ``bin/install_ipopt.sh`` to install a shared version
    of the corresponding libraries (even if debug is enabled).
 #. Change the ``cppad_mixed`` base class
    :ref:`base_class@destructor` to be virtual
@@ -162,10 +162,10 @@ being used where the inverse permutation was required.
 The following improvements we made to the install process:
 
 #. Fix the check of *ipopt_prefix*
-   in ``tools/example_install.sh`` .
-#. Fix ``tools/install_eigen.sh`` because eigen
+   in ``bin/example_install.sh`` .
+#. Fix ``bin/install_eigen.sh`` because eigen
    moved from bitbucket to gitlab.
-#. Change ``tools/install_ipopt.sh`` to directly run configure
+#. Change ``bin/install_ipopt.sh`` to directly run configure
    instead of using ``coinbrew`` .
 
 07-02

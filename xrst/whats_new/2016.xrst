@@ -44,8 +44,8 @@ This was also done for the :ref:`capture_xam<capture_xam.cpp-name>` program.
 11-07
 =====
 
-#. Add the ``tools/speed_compare.py`` program
-   (which has since been moved to ``tools/speed_old.py`` ).
+#. Add the ``bin/speed_compare.py`` program
+   (which has since been moved to ``bin/speed_old.py`` ).
 #. Change order of :ref:`input arguments<capture_xam.cpp@Command Arguments>`
    to ``capture_xam`` be more similar to
    :ref:`ar1_xam<ar1_xam.cpp@Command Arguments>` .
@@ -178,8 +178,8 @@ Create ``sparse_low_tri_sol``
 09-23
 =====
 Improve
-:ref:`tools/install_eigen.sh<install_unix@Special Requirements@eigen>` ,
-:ref:`tools/install_ipopt.sh<install_unix@Special Requirements@Ipopt>` ,
+:ref:`bin/install_eigen.sh<install_unix@Special Requirements@eigen>` ,
+:ref:`bin/install_ipopt.sh<install_unix@Special Requirements@Ipopt>` ,
 and
 ``install_suitesparse.sh``
 so they better ensure that debug and release versions got into proper
@@ -315,18 +315,18 @@ Change the ``auto_regressive_xam.cpp`` example to the
    :ref:`install_unix@System Requirements@gsl`
    was linked on some systems.
    This has been fixed.
-#. The script ``tools/debian_install`` has been moved to
-   :ref:`tools/example_install.sh<example_install.sh-name>`
+#. The script ``bin/debian_install`` has been moved to
+   :ref:`bin/example_install.sh<example_install.sh-name>`
    and it should work for both Debian and Red Hat systems.
 
 06-22
 =====
 
 #. Add the ``auto_regressive_xam.cpp`` example.
-#. Create the scripts ``tools/debian_install.sh`` for an easy install on Debian
+#. Create the scripts ``bin/debian_install.sh`` for an easy install on Debian
    systems. There are some 2DO items in this install that need to be
    fixed so they work on all systems.
-#. Create the script ``tools/install_omhelp`` an easy install of omhelp
+#. Create the script ``bin/install_omhelp`` an easy install of omhelp
    for Debian systems. This is needed to do ``cppad_mixed`` development.
 
 06-19
@@ -576,7 +576,7 @@ effects given the fixed effects.
 
 04-18
 =====
-Advance to newer version of CppAD; (must rerun ``tools/install_cppad.sh`` ).
+Advance to newer version of CppAD; (must rerun ``bin/install_cppad.sh`` ).
 This fixed the remaining warnings when building a release version.
 
 04-17
@@ -741,7 +741,7 @@ demonstrates compiling, linking and running a program using
 
 01-21
 =====
-Change default directory where ``tools/install_eigen.sh`` places
+Change default directory where ``bin/install_eigen.sh`` places
 the Eigen package (because warnings are suppressed for this directory).
 
 01-19
@@ -824,7 +824,7 @@ Regroup information in :ref:`theory-name` section of documentation so that
 01-01
 =====
 
-#. Advance to newer version of CppAD; (must rerun ``tools/install_cppad.sh`` ).
+#. Advance to newer version of CppAD; (must rerun ``bin/install_cppad.sh`` ).
 #. Change package name in copyright message from ``dismod_at`` to
    ``cppad_mixed`` .
    This should have been done when ``cppad_mixed`` was extracted

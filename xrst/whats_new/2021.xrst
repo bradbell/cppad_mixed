@@ -37,10 +37,10 @@ install of ipopt on debian systems.
 The Mac changed how ``bash`` worked and this broke it's install.
 To be specific, ``export DYLD_LIBRARY_PATH`` no longer works
 (export works for most shell variables but not others).
-The files :ref:`example_install.sh-name` and ``tools/install_ipopt.sh``
+The files :ref:`example_install.sh-name` and ``bin/install_ipopt.sh``
 where changed to adapt to this problem.
 In addition, the :ref:`run_cmake.sh@specific_compiler`
-setting was added to ``tools/run_cmake.sh`` to make it easier
+setting was added to ``bin/run_cmake.sh`` to make it easier
 to build using MacPorts.
 
 07-27
@@ -194,7 +194,7 @@ out of memory.
 
 #. The :ref:`example_install.sh@run_test` argument was added
    and the *existing* argument was added to
-   ``tools/example_install.sh`` .
+   ``bin/example_install.sh`` .
 #. The *existing* argument was changed to
    :ref:`example_install.sh@replace` .
 #. When :ref:`run_cmake.sh@optimize_cppad_function`
@@ -225,7 +225,7 @@ on that system.
 =====
 The :ref:`example_install.sh-name` script was putting the Ipopt source in
 ``external/ASL.git/Mumps.git/Ipopt.git`` .
-The script ``tools/install_ipopt.sh`` has been fixed so the Ipopt source is in
+The script ``bin/install_ipopt.sh`` has been fixed so the Ipopt source is in
 ``external/Ipopt.git`` and the Mumps source is in ``external/Mumps.git`` .
 
 {xrst_end 2021}
