@@ -65,7 +65,7 @@ namespace {
 // main program that runs all the tests
 int main(void)
 {
-    // This comment expected by bin/test_one.sh
+    // This comment expected by tools/test_one.sh
     // BEGIN_SORT_THIS_LIST_PLUS_1
     RUN(fixed_eq_constrain);
     RUN(abs_fix_con);
@@ -91,7 +91,7 @@ int main(void)
     RUN(zero_random_two);
     // RUN(scale_two); not yet working
     // END_SORT_THIS_LIST_MINUS_2
-    // This comment also expected by bin/test_one.sh
+    // This comment also expected by tools/test_one.sh
 
     // summary report
     int return_flag;

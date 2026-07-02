@@ -4,7 +4,7 @@
 # ----------------------------------------------------------------------------
 # Build C++ Examples / Tests
 # -----------------------------------------------------------------------------
-# bin/test_one.sh expects example.cpp on next line, last line to be just ')'
+# tools/test_one.sh expects example.cpp on next line, last line to be just ')'
 ADD_EXECUTABLE(example EXCLUDE_FROM_ALL example.cpp
     ipopt_run.cpp
     private/cholmod_factor.cpp

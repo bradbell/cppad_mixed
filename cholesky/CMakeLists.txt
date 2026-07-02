@@ -4,7 +4,7 @@
 # ----------------------------------------------------------------------------
 # Build C++ Examples / Tests
 # -----------------------------------------------------------------------------
-# bin/test_one.sh expects example.cpp on next line, last line to be just ')'
+# tools/test_one.sh expects example.cpp on next line, last line to be just ')'
 ADD_EXECUTABLE(cholesky EXCLUDE_FROM_ALL cholesky.cpp
     cholesky.cpp
     sparse_ad_cholesky.cpp

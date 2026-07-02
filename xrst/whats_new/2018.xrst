@@ -104,7 +104,7 @@ This resulted is and speed improvement for the current version of the
 =====
 
 #. Add discussion of why the default
-   *eigen_prefix* in ``bin/run_cmake.sh`` is different
+   *eigen_prefix* in ``tools/run_cmake.sh`` is different
    from the other prefixes.
 #. Change the name ``cppad_cxx_flags`` to
    :ref:`run_cmake.sh@extra_cxx_flags` .
@@ -168,10 +168,10 @@ optimization of cppad functions; see
 =====
 
 #. Change the ``suitesparse`` library from a special requirement
-   (using ``bin/install_suitesparse.sh`` ) to a
+   (using ``tools/install_suitesparse.sh`` ) to a
    :ref:`system requirement<install_unix@System Requirements@suitesparse>` .
 #. The ``replace`` option for the *existing* argument to
-   ``bin/example_install.sh`` was not working.
+   ``tools/example_install.sh`` was not working.
    This has been fixed.
 
 06-04

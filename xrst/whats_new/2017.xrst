@@ -202,7 +202,7 @@ to continue an optimization from where it left off.
    the final solution for the primal variables.
 #. Include :ref:`check_install.sh@Syntax` and
    setting :ref:`check_install.sh@LD_LIBRARY_PATH`
-   in the ``bin/check_install.sh`` example.
+   in the ``tools/check_install.sh`` example.
 #. Add the
    ``hide_ipopt_scaling`` option
    to the install configuration script :ref:`run_cmake.sh-name` .
@@ -211,7 +211,7 @@ to continue an optimization from where it left off.
 04-06
 =====
 Add :ref:`check_install.sh@LD_LIBRARY_PATH` to
-the ``bin/check_install.sh`` example.
+the ``tools/check_install.sh`` example.
 
 04-02
 =====
@@ -315,12 +315,12 @@ to the ``CppAD::mixed`` namespace; see
    the settings in
    :ref:`install_unix@Special Requirements@run_cmake.sh` .
    (These settings are now automatically used by all the
-   ``bin/install_`` *package* . ``sh`` scripts.)
+   ``tools/install_`` *package* . ``sh`` scripts.)
 #. The configuration variable *extra_cxx_flags*
    has been changed to :ref:`run_cmake.sh@extra_cxx_flags` .
 #. Document the necessary install order for
    :ref:`install_unix@Special Requirements` .
-#. Make some improvements to the ``bin/install_omhelp.sh`` script
+#. Make some improvements to the ``tools/install_omhelp.sh`` script
    (this can be used to build the documentation for ``cppad_mixed`` .)
 
 03-01

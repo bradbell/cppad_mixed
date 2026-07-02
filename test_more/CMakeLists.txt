@@ -5,7 +5,7 @@
 # Build C++ Examples / Tests
 #
 # BEGIN_SORT_THIS_LINE_PLUS_3
-# bin/test_one.sh expects test_more.cpp on next line, last line to be just ')'
+# tools/test_one.sh expects test_more.cpp on next line, last line to be just ')'
 ADD_EXECUTABLE(test_more EXCLUDE_FROM_ALL test_more.cpp
     abs_fix_con.cpp
     binomial.cpp

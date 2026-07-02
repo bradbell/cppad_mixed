@@ -113,7 +113,7 @@ namespace {
 // main program that runs all the tests
 int main(void)
 {
-    // This comment expected by bin/test_one.sh
+    // This comment expected by tools/test_one.sh
     RUN(abs_density_xam);
     RUN(cholmod_factor_xam);
     RUN(cholmod_solve_xam);
@@ -170,7 +170,7 @@ int main(void)
     RUN(undetermined_xam);
     RUN(update_factor_xam);
     RUN(warm_start_xam);
-    // This comment also expected by bin/test_one.sh
+    // This comment also expected by tools/test_one.sh
 
     // summary report
     using std::cout;

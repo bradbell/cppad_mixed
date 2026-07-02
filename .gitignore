@@ -1,7 +1,7 @@
 # temporary file used to make commits
 /git_commit.sh
 #
-# file used by bin/example_install to report errors
+# file used by tools/example_install to report errors
 /example_install.err
 #
 # cmake configuration files that is put in source directory

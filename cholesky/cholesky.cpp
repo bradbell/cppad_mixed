@@ -64,14 +64,14 @@ namespace {
 // main program that runs all the tests
 int main(void)
 {
-    // This comment expected by bin/test_one.sh
+    // This comment expected by tools/test_one.sh
     RUN(sparse_ad_chol_eval);
     RUN(sparse_ad_chol_eq);
     RUN(sparse_ad_chol_perm);
     RUN(sparse_ad_chol_sp1);
     RUN(sparse_ad_chol_sp2);
     RUN(sparse_ad_chol_var);
-    // This comment also expected by bin/test_one.sh
+    // This comment also expected by tools/test_one.sh
 
     // summary report
     using std::cout;

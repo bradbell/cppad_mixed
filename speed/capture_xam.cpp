@@ -209,18 +209,18 @@ The ``cppad_mixed`` version number.
 
 ldlt_cholmod
 ============
-is the ``bin/run_cmake.sh`` configuration option
+is the ``tools/run_cmake.sh`` configuration option
 :ref:`run_cmake.sh@ldlt_cholmod` .
 
 optimize_cppad_function
 =======================
-is the ``bin/run_cmake.sh`` configuration option
+is the ``tools/run_cmake.sh`` configuration option
 :ref:`run_cmake.sh@optimize_cppad_function` .
 
 ndebug_defined
 ==============
 is the ``NDEBUG`` preprocessor symbol defined.
-This should be yes (no) if the ``bin/run_cmake.sh`` configuration option
+This should be yes (no) if the ``tools/run_cmake.sh`` configuration option
 :ref:`run_cmake.sh@build_type` is ``release``
 (``debug`` ).
 
@@ -339,7 +339,7 @@ If *capture_xam_ok* is yes, the program return value is
 ``0`` (no error condition).
 Otherwise it is ``1`` (error condition).
 {xrst_toc_hidden
-    bin/capture_xam.sh
+    tools/capture_xam.sh
 }
 Example
 *******
