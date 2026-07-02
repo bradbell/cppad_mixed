@@ -20,7 +20,7 @@
 # Each file, except those specified by no_copyright_list, should have a line
 # that ends with each of the following text cases:
 spdx_license_id='AGPL-3.0-or-later'
-spdx_copyright_text='Bradley M. Bell <bradbell@seanet.com>'
+spdx_copyright_text='University of Washington <https://www.washington.edu>'
 #
 # package_name
 package_name='cppad_mixed'

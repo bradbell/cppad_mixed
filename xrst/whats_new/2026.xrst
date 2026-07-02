@@ -9,6 +9,7 @@
     dd
     rst
     cassert
+    dev
 }
 
 Release Notes for 2026
@@ -19,8 +20,10 @@ mm-dd
 
 07-02
 =====
-The newer g++ (16.1.1 20260515) requires including <cassert> when using
-asserts. The code has been fixed to do this.
+#.  The newer g++ (16.1.1 20260515) requires including <cassert> when using
+    asserts. The code has been fixed to do this.
+#.  Update the development tools using xrst.git/tools/dev_tools.sh.
+    This also required moving the tools from the bin to tools directory.
 
 04-14
 =====
