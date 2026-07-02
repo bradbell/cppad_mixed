@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-22 Bradley M. Bell
+// SPDX-FileContributor: 2014-26 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin sparse_low_tri_sol dev}
@@ -58,6 +58,7 @@ and test of ``sparse_low_tri_sol`` .
 */
 # include <cppad/mixed/sparse_low_tri_sol.hpp>
 # include <iostream>
+# include <cassert>
 
 namespace CppAD { namespace mixed { // BEGIN_CPPAD_MIXED_NAMESPACE
 

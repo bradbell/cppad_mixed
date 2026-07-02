@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // SPDX-FileCopyrightText: University of Washington <https://www.washington.edu>
-// SPDX-FileContributor: 2014-24 Bradley M. Bell
+// SPDX-FileContributor: 2014-26 Bradley M. Bell
 // ----------------------------------------------------------------------------
 /*
 {xrst_begin undetermined dev}
@@ -154,6 +154,7 @@ to convert this (and :ref:`sample_fixed-name` ) to all sparse matrices.
 
 # include <cmath>
 # include <iostream>
+# include <cassert>
 # include <Eigen/Core>
 
 namespace {
