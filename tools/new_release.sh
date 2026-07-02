@@ -3,8 +3,13 @@ set -e -u
 # !! EDITS TO THIS FILE ARE LOST DURING UPDATES BY xrst.git/tools/dev_tools.sh !!
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: Bradley M. Bell <bradbell@seanet.com>
-# SPDX-FileContributor: 2020-26 Bradley M. Bell
+# SPDX-FileContributor: 2026 Bradley M. Bell
 # -----------------------------------------------------------------------------
+# script_path
+script_dir="$( dirname -- "${BASH_SOURCE[0]}" )"
+script_dir="$( cd -- "$script_dir" &> /dev/null && pwd )"
+script_path="$script_dir/$(basename $0)"
+#
 # tools/new_release.sh  [--skip_stable_check_all]
 # Creates and check a release for the year and release number specified below.
 #
@@ -328,5 +333,5 @@ then
     exit 1
 fi
 # ----------------------------------------------------------------------------
-echo 'tools/new_release.sh: OK'
+echo "$script_path: OK"
 exit 0

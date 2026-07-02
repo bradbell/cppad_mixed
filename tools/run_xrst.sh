@@ -3,8 +3,13 @@ set -e -u
 # !! EDITS TO THIS FILE ARE LOST DURING UPDATES BY xrst.git/tools/dev_tools.sh !!
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # SPDX-FileCopyrightText: Bradley M. Bell <bradbell@seanet.com>
-# SPDX-FileContributor: 2020-25 Bradley M. Bell
+# SPDX-FileContributor: 2026 Bradley M. Bell
 # ----------------------------------------------------------------------------
+# script_path
+script_dir="$( dirname -- "${BASH_SOURCE[0]}" )"
+script_dir="$( cd -- "$script_dir" &> /dev/null && pwd )"
+script_path="$script_dir/$(basename $0)"
+#
 # tools/run_xrst.sh flags
 # possible flags
 # --help                     print the run_xrst.sh help message
@@ -78,7 +83,7 @@ do
         ;;
 
         --external_links)
-        extra_flags+=" $1 --link_timeout 5"
+        extra_flags+=" $1 --link_timeout 10"
         ;;
 
         *)
@@ -131,5 +136,5 @@ echo_eval python3 -m xrst \
     --number_jobs $n_job \
     $extra_flags
 # -----------------------------------------------------------------------------
-echo 'run_xrst.sh: OK'
+echo "$script_path: OK"
 exit 0
